@@ -48,7 +48,7 @@ jobs:
           opencode run --agent software-architect \
             "Execute management cycle. Read 'docs/findings.md' and 'docs/roadmap.md'. Triage existing issues. Create new issues if roadmap requires it." \
             --model opencode/glm-4.7-free \
-            --share false
+            --share false \
 
       - name: Commit Strategic Updates
         run: |
@@ -152,3 +152,4 @@ jobs:
             "Check all open PRs. For each: Attempt merge main -> Build/Test -> If green, Merge PR. If red, comment." \
             --model opencode/glm-4.7-free \
             --share false
+
