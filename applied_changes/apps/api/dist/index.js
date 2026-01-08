@@ -13613,8 +13613,7 @@ async function withRetry(operation, options = {}) {
 __name(withRetry, "withRetry");
 function isRetryableError(error) {
   if (!error) return true;
-  const err = error;
-  const status = err.status || err.response?.status;
+  const status = error.status || error.response?.status;
   if (status) {
     return status === 429 || status >= 500;
   }
@@ -13709,111 +13708,301 @@ function createStreamFromGenerator(generator, onComplete) {
 }
 __name(createStreamFromGenerator, "createStreamFromGenerator");
 
+// src/utils/errors.ts
+function createErrorResponse(message, status = 500, details) {
+  const response = {
+    error: message,
+    status,
+    timestamp: (/* @__PURE__ */ new Date()).toISOString()
+  };
+  if (details) {
+    response.details = details;
+  }
+  return response;
+}
+__name(createErrorResponse, "createErrorResponse");
+function createSuccessResponse(data, message, status = 200) {
+  const response = {
+    data,
+    message,
+    status,
+    timestamp: (/* @__PURE__ */ new Date()).toISOString()
+  };
+  return response;
+}
+__name(createSuccessResponse, "createSuccessResponse");
+var ERROR_CODE_STATUS_MAP = {
+  ["UNAUTHORIZED" /* UNAUTHORIZED */]: 401,
+  ["FORBIDDEN" /* FORBIDDEN */]: 403,
+  ["VALIDATION_ERROR" /* VALIDATION_ERROR */]: 400,
+  ["INVALID_INPUT" /* INVALID_INPUT */]: 400,
+  ["MISSING_REQUIRED_FIELD" /* MISSING_REQUIRED_FIELD */]: 400,
+  ["API_KEY_MISSING" /* API_KEY_MISSING */]: 500,
+  ["API_CONFIG_ERROR" /* API_CONFIG_ERROR */]: 500,
+  ["GENERATION_FAILED" /* GENERATION_FAILED */]: 500,
+  ["STREAM_ERROR" /* STREAM_ERROR */]: 500,
+  ["AI_SERVICE_ERROR" /* AI_SERVICE_ERROR */]: 502,
+  ["NETWORK_ERROR" /* NETWORK_ERROR */]: 503,
+  ["TIMEOUT_ERROR" /* TIMEOUT_ERROR */]: 504,
+  ["SERVICE_UNAVAILABLE" /* SERVICE_UNAVAILABLE */]: 503,
+  ["INTERNAL_ERROR" /* INTERNAL_ERROR */]: 500,
+  ["NOT_FOUND" /* NOT_FOUND */]: 404,
+  ["CONFLICT" /* CONFLICT */]: 409
+};
+function getStatusForErrorCode(code) {
+  return ERROR_CODE_STATUS_MAP[code] || 500;
+}
+__name(getStatusForErrorCode, "getStatusForErrorCode");
+function createDetailedErrorResponse(code, message, details) {
+  const defaultMessage = getDefaultMessageForErrorCode(code);
+  const status = getStatusForErrorCode(code);
+  const response = {
+    error: message || defaultMessage,
+    status,
+    timestamp: (/* @__PURE__ */ new Date()).toISOString()
+  };
+  if (details !== void 0) {
+    response.details = { code, details };
+  } else {
+    response.details = { code };
+  }
+  return response;
+}
+__name(createDetailedErrorResponse, "createDetailedErrorResponse");
+function getDefaultMessageForErrorCode(code) {
+  const messages = {
+    ["UNAUTHORIZED" /* UNAUTHORIZED */]: "Authentication required",
+    ["FORBIDDEN" /* FORBIDDEN */]: "You do not have permission to perform this action",
+    ["VALIDATION_ERROR" /* VALIDATION_ERROR */]: "Invalid input data",
+    ["INVALID_INPUT" /* INVALID_INPUT */]: "Invalid input provided",
+    ["MISSING_REQUIRED_FIELD" /* MISSING_REQUIRED_FIELD */]: "A required field is missing",
+    ["API_KEY_MISSING" /* API_KEY_MISSING */]: "OpenAI API key not configured",
+    ["API_CONFIG_ERROR" /* API_CONFIG_ERROR */]: "API configuration error",
+    ["GENERATION_FAILED" /* GENERATION_FAILED */]: "Generation failed",
+    ["STREAM_ERROR" /* STREAM_ERROR */]: "Stream error occurred",
+    ["AI_SERVICE_ERROR" /* AI_SERVICE_ERROR */]: "AI service returned an error",
+    ["NETWORK_ERROR" /* NETWORK_ERROR */]: "Network error occurred",
+    ["TIMEOUT_ERROR" /* TIMEOUT_ERROR */]: "Request timed out",
+    ["SERVICE_UNAVAILABLE" /* SERVICE_UNAVAILABLE */]: "Service temporarily unavailable",
+    ["INTERNAL_ERROR" /* INTERNAL_ERROR */]: "Internal server error",
+    ["NOT_FOUND" /* NOT_FOUND */]: "Resource not found",
+    ["CONFLICT" /* CONFLICT */]: "Resource conflict"
+  };
+  return messages[code] || "An error occurred";
+}
+__name(getDefaultMessageForErrorCode, "getDefaultMessageForErrorCode");
+function handleControllerError(error, c, defaultErrorCode = "INTERNAL_ERROR" /* INTERNAL_ERROR */) {
+  console.error("Controller Error:", error);
+  if (error instanceof Error) {
+    if (error.message.includes("API key") || error.message.includes("OPENAI_API_KEY")) {
+      const response2 = createDetailedErrorResponse("API_KEY_MISSING" /* API_KEY_MISSING */);
+      return c.json(response2, response2.status);
+    }
+    if (error.message.includes("timeout") || error.message.includes("Timeout")) {
+      const response2 = createDetailedErrorResponse("TIMEOUT_ERROR" /* TIMEOUT_ERROR */);
+      return c.json(response2, response2.status);
+    }
+    if (error.message.includes("network") || error.message.includes("Network")) {
+      const response2 = createDetailedErrorResponse("NETWORK_ERROR" /* NETWORK_ERROR */);
+      return c.json(response2, response2.status);
+    }
+    if (error.message.includes("validation") || error.message.includes("Validation")) {
+      const response2 = createDetailedErrorResponse(
+        "VALIDATION_ERROR" /* VALIDATION_ERROR */,
+        error.message
+      );
+      return c.json(response2, response2.status);
+    }
+  }
+  const response = createDetailedErrorResponse(defaultErrorCode);
+  return c.json(response, response.status);
+}
+__name(handleControllerError, "handleControllerError");
+
+// src/services/controllers/generateController.ts
+var GenerateController = class {
+  static {
+    __name(this, "GenerateController");
+  }
+  /**
+   * Validates and creates AI configuration from environment
+   */
+  createAIConfig(env) {
+    if (!env.OPENAI_API_KEY) {
+      throw new Error("Missing required environment variable: OPENAI_API_KEY");
+    }
+    return {
+      apiKey: env.OPENAI_API_KEY,
+      baseURL: env.OPENAI_BASE_URL,
+      model: env.OPENAI_MODEL || "gpt-4o-mini"
+    };
+  }
+  /**
+   * Handles blueprint generation request
+   */
+  async generateBlueprint(c, request) {
+    try {
+      const config = this.createAIConfig(c.env);
+      const userPrompt = buildBlueprintPrompt(request);
+      const generator = streamCompletion({
+        systemPrompt: ARCHITECT_SYSTEM_PROMPT,
+        userPrompt,
+        config
+      });
+      const stream = createStreamFromGenerator(generator);
+      return createSSEResponse(stream);
+    } catch (error) {
+      return handleControllerError(error, c, "GENERATION_FAILED" /* GENERATION_FAILED */);
+    }
+  }
+};
+var generateController = new GenerateController();
+
 // src/routes/generate.ts
 var app = new Hono2();
 app.post("/", zValidator("json", BlueprintRequestSchema), async (c) => {
   const request = c.req.valid("json");
-  const config = {
-    apiKey: c.env.OPENAI_API_KEY,
-    baseURL: c.env.OPENAI_BASE_URL,
-    model: c.env.OPENAI_MODEL
-  };
-  if (!config.apiKey) {
-    return c.json({ error: "OpenAI API key not configured" }, 500);
-  }
-  const userPrompt = buildBlueprintPrompt(request);
-  const generator = streamCompletion({
-    systemPrompt: ARCHITECT_SYSTEM_PROMPT,
-    userPrompt,
-    config
-  });
-  const stream = createStreamFromGenerator(generator);
-  return createSSEResponse(stream);
+  return generateController.generateBlueprint(c, request);
 });
 var generate_default = app;
+
+// src/services/controllers/tasksController.ts
+var TasksController = class {
+  static {
+    __name(this, "TasksController");
+  }
+  /**
+   * Validates and creates AI configuration from environment
+   */
+  createAIConfig(env) {
+    if (!env.OPENAI_API_KEY) {
+      throw new Error("Missing required environment variable: OPENAI_API_KEY");
+    }
+    return {
+      apiKey: env.OPENAI_API_KEY,
+      baseURL: env.OPENAI_BASE_URL,
+      model: env.OPENAI_MODEL || "gpt-4o-mini"
+    };
+  }
+  /**
+   * Handles task generation request
+   */
+  async generateTasks(c, request) {
+    try {
+      const config = this.createAIConfig(c.env);
+      const userPrompt = buildTaskPrompt(
+        request.blueprint,
+        request.projectName
+      );
+      const generator = streamCompletion({
+        systemPrompt: TASK_SPLITTER_SYSTEM_PROMPT,
+        userPrompt,
+        config
+      });
+      const stream = createStreamFromGenerator(generator);
+      return createSSEResponse(stream);
+    } catch (error) {
+      return handleControllerError(error, c, "GENERATION_FAILED" /* GENERATION_FAILED */);
+    }
+  }
+};
+var tasksController = new TasksController();
 
 // src/routes/tasks.ts
 var app2 = new Hono2();
 app2.post("/", zValidator("json", TaskGenerationRequestSchema), async (c) => {
-  const { blueprint, projectName } = c.req.valid("json");
-  const config = {
-    apiKey: c.env.OPENAI_API_KEY,
-    baseURL: c.env.OPENAI_BASE_URL,
-    model: c.env.OPENAI_MODEL
-  };
-  if (!config.apiKey) {
-    return c.json({ error: "OpenAI API key not configured" }, 500);
-  }
-  const userPrompt = buildTaskPrompt(blueprint, projectName);
-  const generator = streamCompletion({
-    systemPrompt: TASK_SPLITTER_SYSTEM_PROMPT,
-    userPrompt,
-    config
-  });
-  const stream = createStreamFromGenerator(generator);
-  return createSSEResponse(stream);
+  const request = c.req.valid("json");
+  return tasksController.generateTasks(c, request);
 });
 var tasks_default = app2;
+
+// src/services/controllers/refineController.ts
+var RefineController = class {
+  static {
+    __name(this, "RefineController");
+  }
+  /**
+   * Validates and creates AI configuration from environment
+   */
+  createAIConfig(env) {
+    if (!env.OPENAI_API_KEY) {
+      throw new Error("Missing required environment variable: OPENAI_API_KEY");
+    }
+    return {
+      apiKey: env.OPENAI_API_KEY,
+      baseURL: env.OPENAI_BASE_URL,
+      model: env.OPENAI_MODEL || "gpt-4o-mini"
+    };
+  }
+  /**
+   * Handles content refinement request
+   */
+  async refineContent(c, request) {
+    try {
+      const config = this.createAIConfig(c.env);
+      const userPrompt = buildRefinePrompt(request);
+      const generator = streamCompletion({
+        systemPrompt: REFINER_SYSTEM_PROMPT,
+        userPrompt,
+        config
+      });
+      const stream = createStreamFromGenerator(generator);
+      return createSSEResponse(stream);
+    } catch (error) {
+      return handleControllerError(error, c, "GENERATION_FAILED" /* GENERATION_FAILED */);
+    }
+  }
+};
+var refineController = new RefineController();
 
 // src/routes/refine.ts
 var app3 = new Hono2();
 app3.post("/", zValidator("json", RefineRequestSchema), async (c) => {
   const request = c.req.valid("json");
-  const config = {
-    apiKey: c.env.OPENAI_API_KEY,
-    baseURL: c.env.OPENAI_BASE_URL,
-    model: c.env.OPENAI_MODEL
-  };
-  if (!config.apiKey) {
-    return c.json({ error: "OpenAI API key not configured" }, 500);
-  }
-  const userPrompt = buildRefinePrompt(request);
-  const generator = streamCompletion({
-    systemPrompt: REFINER_SYSTEM_PROMPT,
-    userPrompt,
-    config
-  });
-  const stream = createStreamFromGenerator(generator);
-  return createSSEResponse(stream);
+  return refineController.refineContent(c, request);
 });
 var refine_default = app3;
 
 // src/index.ts
 var app4 = new Hono2();
 app4.use("*", secureHeaders());
-app4.use("*", cors({
-  origin: "*",
-  allowMethods: ["GET", "POST", "OPTIONS"],
-  allowHeaders: ["Content-Type", "Authorization"]
-}));
+app4.use(
+  "*",
+  cors({
+    origin: "*",
+    allowMethods: ["GET", "POST", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"]
+  })
+);
 app4.use("*", prettyJSON());
 app4.get("/", (c) => {
-  return c.json({
-    name: "Blueprint Generator API",
-    version: "1.0.0",
-    status: "healthy",
-    endpoints: {
-      generate: "POST /generate",
-      tasks: "POST /tasks",
-      refine: "POST /refine"
-    }
-  });
+  const response = createSuccessResponse(
+    {
+      name: "Blueprint Generator API",
+      version: "1.0.0",
+      status: "healthy",
+      endpoints: {
+        generate: "POST /generate",
+        tasks: "POST /tasks",
+        refine: "POST /refine"
+      }
+    },
+    "API is healthy",
+    200
+  );
+  return c.json(response, response.status);
 });
 app4.route("/generate", generate_default);
 app4.route("/tasks", tasks_default);
 app4.route("/refine", refine_default);
 app4.onError((err, c) => {
-  console.error("API Error:", err);
-  return c.json({
-    error: err.message || "Internal server error",
-    status: 500
-  }, 500);
+  return handleControllerError(err, c);
 });
 app4.notFound((c) => {
-  return c.json({
-    error: "Not found",
+  const response = createErrorResponse("Not found", 404, {
     availableEndpoints: ["/", "/generate", "/tasks", "/refine"]
-  }, 404);
+  });
+  return c.json(response, response.status);
 });
 var index_default = app4;
 export {

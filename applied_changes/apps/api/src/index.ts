@@ -1,59 +1,68 @@
-import { Hono } from 'hono';
-import { cors } from 'hono/cors';
-import { secureHeaders } from 'hono/secure-headers';
-import { prettyJSON } from 'hono/pretty-json';
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+import { secureHeaders } from "hono/secure-headers";
+import { prettyJSON } from "hono/pretty-json";
 
-import generateRoute from './routes/generate';
-import tasksRoute from './routes/tasks';
-import refineRoute from './routes/refine';
-import type { Env } from './types';
+import generateRoute from "./routes/generate";
+import tasksRoute from "./routes/tasks";
+import refineRoute from "./routes/refine";
+import {
+  handleControllerError,
+  createErrorResponse,
+  createSuccessResponse,
+} from "./utils/errors";
+import type { Env } from "./types";
 
 // ===== App Initialization =====
 const app = new Hono<{ Bindings: Env }>();
 
 // ===== Middleware =====
-app.use('*', secureHeaders());
-app.use('*', cors({
-  origin: '*',
-  allowMethods: ['GET', 'POST', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization']
-}));
-app.use('*', prettyJSON());
+app.use("*", secureHeaders());
+app.use(
+  "*",
+  cors({
+    origin: "*",
+    allowMethods: ["GET", "POST", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+app.use("*", prettyJSON());
 
 // ===== Health Check =====
-app.get('/', (c) => {
-  return c.json({
-    name: 'Blueprint Generator API',
-    version: '1.0.0',
-    status: 'healthy',
-    endpoints: {
-      generate: 'POST /generate',
-      tasks: 'POST /tasks',
-      refine: 'POST /refine'
-    }
-  });
+app.get("/", (c) => {
+  const response = createSuccessResponse(
+    {
+      name: "Blueprint Generator API",
+      version: "1.0.0",
+      status: "healthy",
+      endpoints: {
+        generate: "POST /generate",
+        tasks: "POST /tasks",
+        refine: "POST /refine",
+      },
+    },
+    "API is healthy",
+    200,
+  );
+  return c.json(response, response.status as any);
 });
 
 // ===== Routes =====
-app.route('/generate', generateRoute);
-app.route('/tasks', tasksRoute);
-app.route('/refine', refineRoute);
+app.route("/generate", generateRoute);
+app.route("/tasks", tasksRoute);
+app.route("/refine", refineRoute);
 
 // ===== Error Handler =====
 app.onError((err, c) => {
-  console.error('API Error:', err);
-  return c.json({
-    error: err.message || 'Internal server error',
-    status: 500
-  }, 500);
+  return handleControllerError(err, c);
 });
 
 // ===== 404 Handler =====
 app.notFound((c) => {
-  return c.json({
-    error: 'Not found',
-    availableEndpoints: ['/', '/generate', '/tasks', '/refine']
-  }, 404);
+  const response = createErrorResponse("Not found", 404, {
+    availableEndpoints: ["/", "/generate", "/tasks", "/refine"],
+  });
+  return c.json(response, response.status as any);
 });
 
 export default app;

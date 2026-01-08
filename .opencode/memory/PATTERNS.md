@@ -7,14 +7,20 @@
 
 - [Init] Use `opencode/glm-4.7-free` for all agent models.
 - [Init] Use `ubuntu-24.04-arm` for CI runners.
+- [Refactoring] Extract controllers when you have shared business logic across multiple routes (e.g., AI configuration validation, streaming generation, error handling).
+- [Error Handling] Create centralized error handling with error code mappings for consistent API responses; map error codes to HTTP status codes (e.g., API_KEY_MISSING → 500, VALIDATION_ERROR → 400).
+- [Response Format] Use standardized response builders (`createSuccessResponse`, `createErrorResponse`, `createDetailedErrorResponse`) to ensure API consistency; all responses should include `timestamp` for debugging.
+- [Response Format] Include `details` object in error responses to provide additional context (e.g., error code, validation details) without exposing sensitive information.
 
 ## ⚠️ Anti-Patterns (Do Not Repeat)
 
 - [Workflow] Do not use `ask` permission in CI environments (causes timeouts).
 - [Workflow] Do not rely on `cat` for reading prompts; use `--agent` flag.
 - [Code Style] Do not mix single and double quotes in string literals; use single quotes consistently.
-- [Architecture] Do not create unnecessary abstraction layers (controllers, services) if routes are simple enough to contain the logic inline.
+- [Architecture] Do not create unnecessary abstraction layers (controllers, services) if routes are simple enough to contain the logic inline. **Updated**: Extract to controllers only when you have shared business logic across routes or need to standardize error handling.
 - [Architecture] Do not create complex error type hierarchies in early development; prefer simple generic error handling until the need for specific error types is clear.
+- [Error Handling] Do not duplicate error handling logic across routes; create a centralized error handler with error code mapping for consistency.
+- [Response Format] Do not manually construct JSON responses with inconsistent shapes; use standardized response builders (`createSuccessResponse`, `createErrorResponse`) to ensure API consistency.
 
 ## 🎨 Code Style Conventions
 
@@ -38,12 +44,14 @@
 
 ## 🔧 API Patterns (Cloudflare Workers + Hono)
 
-- **Inline Route Logic**: Keep route logic inline when simple; only extract to controllers/services when complexity warrants it
+- **Inline Route Logic**: Keep route logic inline when simple; extract to controllers when you have shared business logic across routes or need standardized error handling
 - **Route Separation**: Each API route in its own file (e.g., `routes/generate.ts`, `routes/tasks.ts`)
+- **Controller Pattern**: Use controller classes for routes with shared logic; controllers should have methods for each operation (e.g., `generateBlueprint`, `generateTasks`, `refineContent`)
+- **Controller Configuration**: Create shared configuration methods in controllers (e.g., `createAIConfig`) to avoid duplication of environment variable validation and setup
 - **Type-Safe Bindings**: Use `Hono<{ Bindings: Env }>()` generic for environment variable type safety
 - **Middleware Chain**: Apply security middleware early (`secureHeaders()`, `cors()`, `prettyJSON()`)
-- **Centralized Error Handling**: Single `app.onError()` handler with generic error responses; customize only when error-specific handling is needed
-- **Health Check Endpoint**: Always include `GET /` with status and available endpoints for monitoring
+- **Centralized Error Handling**: Create `handleControllerError` utility for consistent error responses; use error code mapping for status codes; include detailed error context without exposing sensitive information
+- **Health Check Endpoint**: Always include `GET /` with status and available endpoints for monitoring; use standardized response format
 - **Zod Validation**: Use `zValidator('json', Schema)` middleware for request validation
 - **Streaming SSE**: Use Server-Sent Events with `AsyncGenerator` for streaming AI responses
 
@@ -77,14 +85,20 @@
 
 - **YAGNI Principle**: Avoid creating controllers, services, or helper layers until they are actually needed
 - **Inline Logic**: Keep business logic inline in route handlers when the logic is simple (e.g., single AI call, validation + stream response)
-- **Extract on Complexity**: Create separate layers only when you need to reuse code across multiple routes or the logic becomes complex
+- **Extract on Complexity**: Create separate layers only when you need to reuse code across multiple routes, standardize error handling, or the logic becomes complex enough to warrant testing separately
+- **Controller Structure**: When using controllers, follow a consistent structure: configuration validation method (e.g., `createAIConfig`), operation methods (e.g., `generateBlueprint`), and wrap operations in try-catch with centralized error handling
 - **Explicit Return Types**: All route handlers should have explicit return types (e.g., `Promise<Response>`)
 - **Environment Binding Access**: Routes receive `Context<{ Bindings: Env }>` to access environment variables directly
 
 ## 🔄 Error Handling & Resilience
 
+- **Error Code System**: Define explicit error codes (e.g., `API_KEY_MISSING`, `VALIDATION_ERROR`, `TIMEOUT_ERROR`) as constants/enums to maintain consistent error identifiers across the codebase
+- **Error Code Status Mapping**: Create a mapping from error codes to HTTP status codes (e.g., `UNAUTHORIZED` → 401, `GENERATION_FAILED` → 500) to ensure appropriate HTTP responses
+- **Detailed Error Responses**: Use `createDetailedErrorResponse` to provide error context without exposing sensitive information; always include error code in response details
+- **Centralized Error Handler**: Create `handleControllerError` utility that inspects error types and messages to determine appropriate error codes and HTTP status codes
+- **Environment Variable Validation**: Validate required environment variables (e.g., `OPENAI_API_KEY`) at the start of operations and throw descriptive errors that can be caught and converted to proper API responses
 - **Simple Generic Errors**: Use generic error handling for API responses; avoid complex error type hierarchies in early development
-- **Error Response Format**: Simple error responses with `error` message and `status` code
+- **Error Response Format**: Standardized error responses with `error` message, `status` code, and `timestamp`; optional `details` object for additional context
 - **Exponential Backoff**: Use retry logic with configurable delay and backoff factor
 - **Retryable Error Detection**: Retry on 429 (rate limit) and 5xx errors; fail fast on 4xx client errors
 - **Type-Safe Error Parameters**: Use `unknown` type for error parameters; narrow type with type guards when accessing properties (e.g., `error as { status?: number }`)
