@@ -24,12 +24,17 @@
 - **Import Grouping**: Group imports by type: external libraries, internal services, then local modules
 - **Default Exports**: Use `export default` for route handlers and main modules to simplify importing
 - **Section Headers**: Use JSDoc-style section headers (`// ===== Section Name =====`) for better readability
+- **Barrel Files**: Create `index.ts` files in directories to aggregate and re-export modules, providing clean import paths and organizing exports logically
+- **Export Documentation**: Add descriptive comments at the top of barrel files to explain what they contain (e.g., `// UI Components`, `// Custom React Hooks`)
+- **Logical Export Grouping**: Group related exports in barrel files with comments to indicate categorization (e.g., `// Editor sub-components`, `// Wizard sub-components`)
 
 ## 🏗️ Architectural Decisions
 
 - Centralized configuration in `.opencode/`.
 - Headless "Act, Don't Ask" protocol for all agents.
 - Monorepo with shared types package (`@blueprint/shared`) for type safety across apps.
+- **Barrel File Pattern**: Use `index.ts` files to aggregate exports from subdirectories, providing clean import paths like `@blueprint/components` instead of deep relative paths
+- **Export Flexibility**: Provide both named exports and default exports in barrel files when modules might be imported in different ways (e.g., `export { Route }` and `export { default as route }`)
 
 ## 🔧 API Patterns (Cloudflare Workers + Hono)
 
