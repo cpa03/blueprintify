@@ -28,14 +28,27 @@ jobs:
         with:
           path: ~/.opencode/bin
           key: ${{ runner.os }}-opencode-v1
-      - name: Install Opencode CLI
-        if: steps.cache-opencode.outputs.cache-hit != 'true'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        continue-on-error: true
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Configure Git
         run: |
-          echo "Installing Opencode CLI..."
-          # Mock installation matching the plan's assumption
-          mkdir -p ~/.opencode/bin
-          echo "Mock Opencode Binary" > ~/.opencode/bin/opencode
-          chmod +x ~/.opencode/bin/opencode
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+
+      - name: Install Dependencies
+        continue-on-error: true
+        run: npm ci
+
+      - name: Install OpenCode CLI
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+          
       - name: Run Code Auditor AI
         continue-on-error: true # Don't fail workflow if AI has issues
         run: |
@@ -478,4 +491,5 @@ jobs:
           echo "Test: ${{ steps.test.outcome }}"
           echo "Build: ${{ steps.build.outcome }}"
           exit 1
+
 
