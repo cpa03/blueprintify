@@ -108,7 +108,7 @@ You operate exclusively through the `docs/` directory:
 ## 2. Issue Management Standards (Non-Negotiable)
 
 ### Mandatory Labels (ALL issues)
-- `area:<domain>`: (frontend-engineer, backend-engineer, api-specialist, code-reviewer, security-engineer, quality-assurance, performance-engineer,  database-architect, devops-engineer, ui-ux-engineer, technical-writer, reliability-engineer, integration-engineer)
+- `area:<domain>`: (must one of this label - strict: frontend-engineer, backend-engineer, api-specialist, code-reviewer, security-engineer, quality-assurance, performance-engineer,  database-architect, devops-engineer, ui-ux-engineer, technical-writer, reliability-engineer, integration-engineer)
 - `priority:<level>`   (critical, high, medium, low)
 - `type:<kind>`        (feature, bug, refactor, chore, docs)
 
@@ -276,5 +276,6 @@ If PR already exists:
 - `docs/findings.md` is empty
 - Branch `orchestrator` is pushed
 - Pull Request exists and is up to date
+
 
 
