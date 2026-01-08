@@ -12,13 +12,13 @@ export interface RetryOptions {
  */
 export async function withRetry<T>(
   operation: () => Promise<T>,
-  options: RetryOptions = {}
+  options: RetryOptions = {},
 ): Promise<T> {
   const {
     retries = 3,
     initialDelay = 1000,
     backoffFactor = 2,
-    onRetry
+    onRetry,
   } = options;
 
   let lastError: unknown;
@@ -39,7 +39,7 @@ export async function withRetry<T>(
       // e.g., don't retry 400 Bad Request, but do retry 429 or 5xx
       // For now, we retry generic network errors or 5xx/429 if the error object suggests it
       const shouldRetry = isRetryableError(error);
-      
+
       if (!shouldRetry) {
         throw error;
       }
@@ -49,7 +49,7 @@ export async function withRetry<T>(
       }
 
       // Wait before next attempt
-      await new Promise(resolve => setTimeout(resolve, delay));
+      await new Promise((resolve) => setTimeout(resolve, delay));
       delay *= backoffFactor;
     }
   }
@@ -57,12 +57,13 @@ export async function withRetry<T>(
   throw lastError;
 }
 
-function isRetryableError(error: any): boolean {
+function isRetryableError(error: unknown): boolean {
   // If no detailed error info, assume it's transient and retry
   if (!error) return true;
 
   // OpenAI specific error structure often has 'status' or 'response.status'
-  const status = error.status || error.response?.status;
+  const err = error as { status?: number; response?: { status?: number } };
+  const status = err.status || err.response?.status;
 
   if (status) {
     // 429: Too Many Requests
