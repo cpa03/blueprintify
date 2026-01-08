@@ -8,5 +8,7 @@
     "lib": ["ES2022"]
   },
   "include": ["src/**/*"],
-  "references": [{ "path": "../../packages/shared" }]
+  "references": [
+    { "path": "../../packages/shared" }
+  ]
 }

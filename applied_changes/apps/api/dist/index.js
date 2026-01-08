@@ -51,10 +51,7 @@ var compose = /* @__PURE__ */ __name((middleware, onError, onNotFound) => {
 }, "compose");
 
 // ../../node_modules/hono/dist/http-exception.js
-var HTTPException = class extends Error {
-  static {
-    __name(this, "HTTPException");
-  }
+var HTTPException = /* @__PURE__ */ __name(class extends Error {
   res;
   status;
   /**
@@ -84,7 +81,7 @@ var HTTPException = class extends Error {
       status: this.status
     });
   }
-};
+}, "HTTPException");
 
 // ../../node_modules/hono/dist/request/constants.js
 var GET_MATCH_RESULT = /* @__PURE__ */ Symbol();
@@ -364,10 +361,7 @@ var decodeURIComponent_ = decodeURIComponent;
 
 // ../../node_modules/hono/dist/request.js
 var tryDecodeURIComponent = /* @__PURE__ */ __name((str2) => tryDecode(str2, decodeURIComponent_), "tryDecodeURIComponent");
-var HonoRequest = class {
-  static {
-    __name(this, "HonoRequest");
-  }
+var HonoRequest = /* @__PURE__ */ __name(class {
   /**
    * `.raw` can get the raw Request object.
    *
@@ -448,7 +442,7 @@ var HonoRequest = class {
   async parseBody(options) {
     return this.bodyCache.parsedBody ??= await parseBody(this, options);
   }
-  #cachedBody = /* @__PURE__ */ __name((key) => {
+  #cachedBody = (key) => {
     const { bodyCache, raw: raw2 } = this;
     const cachedBody = bodyCache[key];
     if (cachedBody) {
@@ -464,7 +458,7 @@ var HonoRequest = class {
       });
     }
     return bodyCache[key] = raw2[key]();
-  }, "#cachedBody");
+  };
   /**
    * `.json()` can parse Request body of type `application/json`
    *
@@ -631,7 +625,7 @@ var HonoRequest = class {
   get routePath() {
     return this.#matchResult[0].map(([[, route]]) => route)[this.routeIndex].path;
   }
-};
+}, "HonoRequest");
 
 // ../../node_modules/hono/dist/utils/html.js
 var HtmlEscapedCallbackPhase = {
@@ -683,10 +677,7 @@ var setDefaultContentType = /* @__PURE__ */ __name((contentType, headers) => {
     ...headers
   };
 }, "setDefaultContentType");
-var Context = class {
-  static {
-    __name(this, "Context");
-  }
+var Context = /* @__PURE__ */ __name(class {
   #rawRequest;
   #req;
   /**
@@ -826,23 +817,23 @@ var Context = class {
    * })
    * ```
    */
-  render = /* @__PURE__ */ __name((...args) => {
+  render = (...args) => {
     this.#renderer ??= (content) => this.html(content);
     return this.#renderer(...args);
-  }, "render");
+  };
   /**
    * Sets the layout for the response.
    *
    * @param layout - The layout to set.
    * @returns The layout function.
    */
-  setLayout = /* @__PURE__ */ __name((layout) => this.#layout = layout, "setLayout");
+  setLayout = (layout) => this.#layout = layout;
   /**
    * Gets the current layout for the response.
    *
    * @returns The current layout function.
    */
-  getLayout = /* @__PURE__ */ __name(() => this.#layout, "getLayout");
+  getLayout = () => this.#layout;
   /**
    * `.setRenderer()` can set the layout in the custom middleware.
    *
@@ -864,9 +855,9 @@ var Context = class {
    * })
    * ```
    */
-  setRenderer = /* @__PURE__ */ __name((renderer) => {
+  setRenderer = (renderer) => {
     this.#renderer = renderer;
-  }, "setRenderer");
+  };
   /**
    * `.header()` can set headers.
    *
@@ -883,7 +874,7 @@ var Context = class {
    * })
    * ```
    */
-  header = /* @__PURE__ */ __name((name, value, options) => {
+  header = (name, value, options) => {
     if (this.finalized) {
       this.#res = new Response(this.#res.body, this.#res);
     }
@@ -895,10 +886,10 @@ var Context = class {
     } else {
       headers.set(name, value);
     }
-  }, "header");
-  status = /* @__PURE__ */ __name((status) => {
+  };
+  status = (status) => {
     this.#status = status;
-  }, "status");
+  };
   /**
    * `.set()` can set the value specified by the key.
    *
@@ -912,10 +903,10 @@ var Context = class {
    * })
    * ```
    */
-  set = /* @__PURE__ */ __name((key, value) => {
+  set = (key, value) => {
     this.#var ??= /* @__PURE__ */ new Map();
     this.#var.set(key, value);
-  }, "set");
+  };
   /**
    * `.get()` can use the value specified by the key.
    *
@@ -929,9 +920,9 @@ var Context = class {
    * })
    * ```
    */
-  get = /* @__PURE__ */ __name((key) => {
+  get = (key) => {
     return this.#var ? this.#var.get(key) : void 0;
-  }, "get");
+  };
   /**
    * `.var` can access the value of a variable.
    *
@@ -976,7 +967,7 @@ var Context = class {
     const status = typeof arg === "number" ? arg : arg?.status ?? this.#status;
     return new Response(data, { status, headers: responseHeaders });
   }
-  newResponse = /* @__PURE__ */ __name((...args) => this.#newResponse(...args), "newResponse");
+  newResponse = (...args) => this.#newResponse(...args);
   /**
    * `.body()` can return the HTTP response.
    * You can set headers with `.header()` and set HTTP status code with `.status`.
@@ -998,7 +989,7 @@ var Context = class {
    * })
    * ```
    */
-  body = /* @__PURE__ */ __name((data, arg, headers) => this.#newResponse(data, arg, headers), "body");
+  body = (data, arg, headers) => this.#newResponse(data, arg, headers);
   /**
    * `.text()` can render text as `Content-Type:text/plain`.
    *
@@ -1011,13 +1002,13 @@ var Context = class {
    * })
    * ```
    */
-  text = /* @__PURE__ */ __name((text, arg, headers) => {
+  text = (text, arg, headers) => {
     return !this.#preparedHeaders && !this.#status && !arg && !headers && !this.finalized ? new Response(text) : this.#newResponse(
       text,
       arg,
       setDefaultContentType(TEXT_PLAIN, headers)
     );
-  }, "text");
+  };
   /**
    * `.json()` can render JSON as `Content-Type:application/json`.
    *
@@ -1030,17 +1021,17 @@ var Context = class {
    * })
    * ```
    */
-  json = /* @__PURE__ */ __name((object, arg, headers) => {
+  json = (object, arg, headers) => {
     return this.#newResponse(
       JSON.stringify(object),
       arg,
       setDefaultContentType("application/json", headers)
     );
-  }, "json");
-  html = /* @__PURE__ */ __name((html, arg, headers) => {
+  };
+  html = (html, arg, headers) => {
     const res = /* @__PURE__ */ __name((html2) => this.#newResponse(html2, arg, setDefaultContentType("text/html; charset=UTF-8", headers)), "res");
     return typeof html === "object" ? resolveCallback(html, HtmlEscapedCallbackPhase.Stringify, false, {}).then(res) : res(html);
-  }, "html");
+  };
   /**
    * `.redirect()` can Redirect, default status code is 302.
    *
@@ -1056,7 +1047,7 @@ var Context = class {
    * })
    * ```
    */
-  redirect = /* @__PURE__ */ __name((location, status) => {
+  redirect = (location, status) => {
     const locationString = String(location);
     this.header(
       "Location",
@@ -1065,7 +1056,7 @@ var Context = class {
       !/[^\x00-\xFF]/.test(locationString) ? locationString : encodeURI(locationString)
     );
     return this.newResponse(null, status ?? 302);
-  }, "redirect");
+  };
   /**
    * `.notFound()` can return the Not Found Response.
    *
@@ -1078,22 +1069,19 @@ var Context = class {
    * })
    * ```
    */
-  notFound = /* @__PURE__ */ __name(() => {
+  notFound = () => {
     this.#notFoundHandler ??= () => new Response();
     return this.#notFoundHandler(this);
-  }, "notFound");
-};
+  };
+}, "Context");
 
 // ../../node_modules/hono/dist/router.js
 var METHOD_NAME_ALL = "ALL";
 var METHOD_NAME_ALL_LOWERCASE = "all";
 var METHODS = ["get", "post", "put", "delete", "options", "patch"];
 var MESSAGE_MATCHER_IS_ALREADY_BUILT = "Can not add a route since the matcher is already built.";
-var UnsupportedPathError = class extends Error {
-  static {
-    __name(this, "UnsupportedPathError");
-  }
-};
+var UnsupportedPathError = /* @__PURE__ */ __name(class extends Error {
+}, "UnsupportedPathError");
 
 // ../../node_modules/hono/dist/utils/constants.js
 var COMPOSED_HANDLER = "__COMPOSED_HANDLER";
@@ -1110,10 +1098,7 @@ var errorHandler = /* @__PURE__ */ __name((err, c) => {
   console.error(err);
   return c.text("Internal Server Error", 500);
 }, "errorHandler");
-var Hono = class _Hono {
-  static {
-    __name(this, "_Hono");
-  }
+var Hono = /* @__PURE__ */ __name(class _Hono {
   get;
   post;
   put;
@@ -1254,10 +1239,10 @@ var Hono = class _Hono {
    * })
    * ```
    */
-  onError = /* @__PURE__ */ __name((handler) => {
+  onError = (handler) => {
     this.errorHandler = handler;
     return this;
-  }, "onError");
+  };
   /**
    * `.notFound()` allows you to customize a Not Found Response.
    *
@@ -1273,10 +1258,10 @@ var Hono = class _Hono {
    * })
    * ```
    */
-  notFound = /* @__PURE__ */ __name((handler) => {
+  notFound = (handler) => {
     this.#notFoundHandler = handler;
     return this;
-  }, "notFound");
+  };
   /**
    * `.mount()` allows you to mount applications built with other frameworks into your Hono application.
    *
@@ -1419,9 +1404,9 @@ var Hono = class _Hono {
    * @returns {Response | Promise<Response>} response of request
    *
    */
-  fetch = /* @__PURE__ */ __name((request, ...rest) => {
+  fetch = (request, ...rest) => {
     return this.#dispatch(request, rest[1], rest[0], request.method);
-  }, "fetch");
+  };
   /**
    * `.request()` is a useful method for testing.
    * You can pass a URL or pathname to send a GET request.
@@ -1434,7 +1419,7 @@ var Hono = class _Hono {
    * ```
    * @see https://hono.dev/docs/api/hono#request
    */
-  request = /* @__PURE__ */ __name((input, requestInit, Env, executionCtx) => {
+  request = (input, requestInit, Env, executionCtx) => {
     if (input instanceof Request) {
       return this.fetch(requestInit ? new Request(input, requestInit) : input, Env, executionCtx);
     }
@@ -1447,7 +1432,7 @@ var Hono = class _Hono {
       Env,
       executionCtx
     );
-  }, "request");
+  };
   /**
    * `.fire()` automatically adds a global fetch event listener.
    * This can be useful for environments that adhere to the Service Worker API, such as non-ES module Cloudflare Workers.
@@ -1465,18 +1450,18 @@ var Hono = class _Hono {
    * @see https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
    * @see https://developers.cloudflare.com/workers/reference/migrate-to-module-workers/
    */
-  fire = /* @__PURE__ */ __name(() => {
+  fire = () => {
     addEventListener("fetch", (event) => {
       event.respondWith(this.#dispatch(event.request, event, void 0, event.request.method));
     });
-  }, "fire");
-};
+  };
+}, "_Hono");
 
 // ../../node_modules/hono/dist/router/reg-exp-router/matcher.js
 var emptyParam = [];
 function match(method, path) {
   const matchers = this.buildAllMatchers();
-  const match2 = /* @__PURE__ */ __name(((method2, path2) => {
+  const match2 = /* @__PURE__ */ __name((method2, path2) => {
     const matcher = matchers[method2] || matchers[METHOD_NAME_ALL];
     const staticMatch = matcher[2][path2];
     if (staticMatch) {
@@ -1488,7 +1473,7 @@ function match(method, path) {
     }
     const index = match3.indexOf("", 1);
     return [matcher[1][index], match3];
-  }), "match2");
+  }, "match2");
   this.match = match2;
   return match2(method, path);
 }
@@ -1520,10 +1505,7 @@ function compareKey(a, b) {
   return a.length === b.length ? a < b ? -1 : 1 : b.length - a.length;
 }
 __name(compareKey, "compareKey");
-var Node = class _Node {
-  static {
-    __name(this, "_Node");
-  }
+var Node = /* @__PURE__ */ __name(class _Node {
   #index;
   #varIndex;
   #children = /* @__PURE__ */ Object.create(null);
@@ -1604,13 +1586,10 @@ var Node = class _Node {
     }
     return "(?:" + strList.join("|") + ")";
   }
-};
+}, "_Node");
 
 // ../../node_modules/hono/dist/router/reg-exp-router/trie.js
-var Trie = class {
-  static {
-    __name(this, "Trie");
-  }
+var Trie = /* @__PURE__ */ __name(class {
   #context = { varIndex: 0 };
   #root = new Node();
   insert(path, index, pathErrorCheckOnly) {
@@ -1663,7 +1642,7 @@ var Trie = class {
     });
     return [new RegExp(`^${regexp}`), indexReplacementMap, paramReplacementMap];
   }
-};
+}, "Trie");
 
 // ../../node_modules/hono/dist/router/reg-exp-router/router.js
 var nullMatcher = [/^$/, [], /* @__PURE__ */ Object.create(null)];
@@ -1751,10 +1730,7 @@ function findMiddleware(middleware, path) {
   return void 0;
 }
 __name(findMiddleware, "findMiddleware");
-var RegExpRouter = class {
-  static {
-    __name(this, "RegExpRouter");
-  }
+var RegExpRouter = /* @__PURE__ */ __name(class {
   name = "RegExpRouter";
   #middleware;
   #routes;
@@ -1849,13 +1825,10 @@ var RegExpRouter = class {
       return buildMatcherFromPreprocessedRoutes(routes);
     }
   }
-};
+}, "RegExpRouter");
 
 // ../../node_modules/hono/dist/router/smart-router/router.js
-var SmartRouter = class {
-  static {
-    __name(this, "SmartRouter");
-  }
+var SmartRouter = /* @__PURE__ */ __name(class {
   name = "SmartRouter";
   #routers = [];
   #routes = [];
@@ -1907,14 +1880,11 @@ var SmartRouter = class {
     }
     return this.#routers[0];
   }
-};
+}, "SmartRouter");
 
 // ../../node_modules/hono/dist/router/trie-router/node.js
 var emptyParams = /* @__PURE__ */ Object.create(null);
-var Node2 = class _Node2 {
-  static {
-    __name(this, "_Node");
-  }
+var Node2 = /* @__PURE__ */ __name(class _Node2 {
   #methods;
   #children;
   #patterns;
@@ -2068,13 +2038,10 @@ var Node2 = class _Node2 {
     }
     return [handlerSets.map(({ handler, params }) => [handler, params])];
   }
-};
+}, "_Node");
 
 // ../../node_modules/hono/dist/router/trie-router/router.js
-var TrieRouter = class {
-  static {
-    __name(this, "TrieRouter");
-  }
+var TrieRouter = /* @__PURE__ */ __name(class {
   name = "TrieRouter";
   #node;
   constructor() {
@@ -2093,13 +2060,10 @@ var TrieRouter = class {
   match(method, path) {
     return this.#node.search(method, path);
   }
-};
+}, "TrieRouter");
 
 // ../../node_modules/hono/dist/hono.js
-var Hono2 = class extends Hono {
-  static {
-    __name(this, "Hono");
-  }
+var Hono2 = /* @__PURE__ */ __name(class extends Hono {
   /**
    * Creates an instance of the Hono class.
    *
@@ -2111,7 +2075,7 @@ var Hono2 = class extends Hono {
       routers: [new RegExpRouter(), new TrieRouter()]
     });
   }
-};
+}, "Hono");
 
 // ../../node_modules/hono/dist/middleware/cors/index.js
 var cors = /* @__PURE__ */ __name((options) => {
@@ -2198,161 +2162,6 @@ var cors = /* @__PURE__ */ __name((options) => {
     }
   }, "cors2");
 }, "cors");
-
-// ../../node_modules/hono/dist/middleware/secure-headers/secure-headers.js
-var HEADERS_MAP = {
-  crossOriginEmbedderPolicy: ["Cross-Origin-Embedder-Policy", "require-corp"],
-  crossOriginResourcePolicy: ["Cross-Origin-Resource-Policy", "same-origin"],
-  crossOriginOpenerPolicy: ["Cross-Origin-Opener-Policy", "same-origin"],
-  originAgentCluster: ["Origin-Agent-Cluster", "?1"],
-  referrerPolicy: ["Referrer-Policy", "no-referrer"],
-  strictTransportSecurity: ["Strict-Transport-Security", "max-age=15552000; includeSubDomains"],
-  xContentTypeOptions: ["X-Content-Type-Options", "nosniff"],
-  xDnsPrefetchControl: ["X-DNS-Prefetch-Control", "off"],
-  xDownloadOptions: ["X-Download-Options", "noopen"],
-  xFrameOptions: ["X-Frame-Options", "SAMEORIGIN"],
-  xPermittedCrossDomainPolicies: ["X-Permitted-Cross-Domain-Policies", "none"],
-  xXssProtection: ["X-XSS-Protection", "0"]
-};
-var DEFAULT_OPTIONS = {
-  crossOriginEmbedderPolicy: false,
-  crossOriginResourcePolicy: true,
-  crossOriginOpenerPolicy: true,
-  originAgentCluster: true,
-  referrerPolicy: true,
-  strictTransportSecurity: true,
-  xContentTypeOptions: true,
-  xDnsPrefetchControl: true,
-  xDownloadOptions: true,
-  xFrameOptions: true,
-  xPermittedCrossDomainPolicies: true,
-  xXssProtection: true,
-  removePoweredBy: true,
-  permissionsPolicy: {}
-};
-var secureHeaders = /* @__PURE__ */ __name((customOptions) => {
-  const options = { ...DEFAULT_OPTIONS, ...customOptions };
-  const headersToSet = getFilteredHeaders(options);
-  const callbacks = [];
-  if (options.contentSecurityPolicy) {
-    const [callback, value] = getCSPDirectives(options.contentSecurityPolicy);
-    if (callback) {
-      callbacks.push(callback);
-    }
-    headersToSet.push(["Content-Security-Policy", value]);
-  }
-  if (options.contentSecurityPolicyReportOnly) {
-    const [callback, value] = getCSPDirectives(options.contentSecurityPolicyReportOnly);
-    if (callback) {
-      callbacks.push(callback);
-    }
-    headersToSet.push(["Content-Security-Policy-Report-Only", value]);
-  }
-  if (options.permissionsPolicy && Object.keys(options.permissionsPolicy).length > 0) {
-    headersToSet.push([
-      "Permissions-Policy",
-      getPermissionsPolicyDirectives(options.permissionsPolicy)
-    ]);
-  }
-  if (options.reportingEndpoints) {
-    headersToSet.push(["Reporting-Endpoints", getReportingEndpoints(options.reportingEndpoints)]);
-  }
-  if (options.reportTo) {
-    headersToSet.push(["Report-To", getReportToOptions(options.reportTo)]);
-  }
-  return /* @__PURE__ */ __name(async function secureHeaders2(ctx, next) {
-    const headersToSetForReq = callbacks.length === 0 ? headersToSet : callbacks.reduce((acc, cb) => cb(ctx, acc), headersToSet);
-    await next();
-    setHeaders(ctx, headersToSetForReq);
-    if (options?.removePoweredBy) {
-      ctx.res.headers.delete("X-Powered-By");
-    }
-  }, "secureHeaders2");
-}, "secureHeaders");
-function getFilteredHeaders(options) {
-  return Object.entries(HEADERS_MAP).filter(([key]) => options[key]).map(([key, defaultValue]) => {
-    const overrideValue = options[key];
-    return typeof overrideValue === "string" ? [defaultValue[0], overrideValue] : defaultValue;
-  });
-}
-__name(getFilteredHeaders, "getFilteredHeaders");
-function getCSPDirectives(contentSecurityPolicy) {
-  const callbacks = [];
-  const resultValues = [];
-  for (const [directive, value] of Object.entries(contentSecurityPolicy)) {
-    const valueArray = Array.isArray(value) ? value : [value];
-    valueArray.forEach((value2, i) => {
-      if (typeof value2 === "function") {
-        const index = i * 2 + 2 + resultValues.length;
-        callbacks.push((ctx, values) => {
-          values[index] = value2(ctx, directive);
-        });
-      }
-    });
-    resultValues.push(
-      directive.replace(
-        /[A-Z]+(?![a-z])|[A-Z]/g,
-        (match2, offset) => offset ? "-" + match2.toLowerCase() : match2.toLowerCase()
-      ),
-      ...valueArray.flatMap((value2) => [" ", value2]),
-      "; "
-    );
-  }
-  resultValues.pop();
-  return callbacks.length === 0 ? [void 0, resultValues.join("")] : [
-    (ctx, headersToSet) => headersToSet.map((values) => {
-      if (values[0] === "Content-Security-Policy" || values[0] === "Content-Security-Policy-Report-Only") {
-        const clone = values[1].slice();
-        callbacks.forEach((cb) => {
-          cb(ctx, clone);
-        });
-        return [values[0], clone.join("")];
-      } else {
-        return values;
-      }
-    }),
-    resultValues
-  ];
-}
-__name(getCSPDirectives, "getCSPDirectives");
-function getPermissionsPolicyDirectives(policy) {
-  return Object.entries(policy).map(([directive, value]) => {
-    const kebabDirective = camelToKebab(directive);
-    if (typeof value === "boolean") {
-      return `${kebabDirective}=${value ? "*" : "none"}`;
-    }
-    if (Array.isArray(value)) {
-      if (value.length === 0) {
-        return `${kebabDirective}=()`;
-      }
-      if (value.length === 1 && (value[0] === "*" || value[0] === "none")) {
-        return `${kebabDirective}=${value[0]}`;
-      }
-      const allowlist = value.map((item) => ["self", "src"].includes(item) ? item : `"${item}"`);
-      return `${kebabDirective}=(${allowlist.join(" ")})`;
-    }
-    return "";
-  }).filter(Boolean).join(", ");
-}
-__name(getPermissionsPolicyDirectives, "getPermissionsPolicyDirectives");
-function camelToKebab(str2) {
-  return str2.replace(/([a-z\d])([A-Z])/g, "$1-$2").toLowerCase();
-}
-__name(camelToKebab, "camelToKebab");
-function getReportingEndpoints(reportingEndpoints = []) {
-  return reportingEndpoints.map((endpoint) => `${endpoint.name}="${endpoint.url}"`).join(", ");
-}
-__name(getReportingEndpoints, "getReportingEndpoints");
-function getReportToOptions(reportTo = []) {
-  return reportTo.map((option) => JSON.stringify(option)).join(", ");
-}
-__name(getReportToOptions, "getReportToOptions");
-function setHeaders(ctx, headersToSet) {
-  headersToSet.forEach(([header, value]) => {
-    ctx.res.headers.set(header, value);
-  });
-}
-__name(setHeaders, "setHeaders");
 
 // ../../node_modules/hono/dist/middleware/pretty-json/index.js
 var prettyJSON = /* @__PURE__ */ __name((options) => {
@@ -2809,10 +2618,7 @@ var quotelessJson = /* @__PURE__ */ __name((obj) => {
   const json = JSON.stringify(obj, null, 2);
   return json.replace(/"([^"]+)":/g, "$1:");
 }, "quotelessJson");
-var ZodError = class _ZodError extends Error {
-  static {
-    __name(this, "ZodError");
-  }
+var ZodError = class extends Error {
   get errors() {
     return this.issues;
   }
@@ -2871,7 +2677,7 @@ var ZodError = class _ZodError extends Error {
     return fieldErrors;
   }
   static assert(value) {
-    if (!(value instanceof _ZodError)) {
+    if (!(value instanceof ZodError)) {
       throw new Error(`Not a ZodError: ${value}`);
     }
   }
@@ -2902,6 +2708,7 @@ var ZodError = class _ZodError extends Error {
     return this.flatten();
   }
 };
+__name(ZodError, "ZodError");
 ZodError.create = (issues) => {
   const error = new ZodError(issues);
   return error;
@@ -3068,10 +2875,7 @@ function addIssueToContext(ctx, issueData) {
   ctx.common.issues.push(issue);
 }
 __name(addIssueToContext, "addIssueToContext");
-var ParseStatus = class _ParseStatus {
-  static {
-    __name(this, "ParseStatus");
-  }
+var ParseStatus = class {
   constructor() {
     this.value = "valid";
   }
@@ -3104,7 +2908,7 @@ var ParseStatus = class _ParseStatus {
         value
       });
     }
-    return _ParseStatus.mergeObjectSync(status, syncPairs);
+    return ParseStatus.mergeObjectSync(status, syncPairs);
   }
   static mergeObjectSync(status, pairs) {
     const finalObject = {};
@@ -3125,6 +2929,7 @@ var ParseStatus = class _ParseStatus {
     return { status: status.value, value: finalObject };
   }
 };
+__name(ParseStatus, "ParseStatus");
 var INVALID = Object.freeze({
   status: "aborted"
 });
@@ -3144,9 +2949,6 @@ var errorUtil;
 
 // ../../node_modules/zod/v3/types.js
 var ParseInputLazyPath = class {
-  static {
-    __name(this, "ParseInputLazyPath");
-  }
   constructor(parent, value, path, key) {
     this._cachedPath = [];
     this.parent = parent;
@@ -3165,6 +2967,7 @@ var ParseInputLazyPath = class {
     return this._cachedPath;
   }
 };
+__name(ParseInputLazyPath, "ParseInputLazyPath");
 var handleResult = /* @__PURE__ */ __name((ctx, result) => {
   if (isValid(result)) {
     return { success: true, data: result.value };
@@ -3209,9 +3012,6 @@ function processCreateParams(params) {
 }
 __name(processCreateParams, "processCreateParams");
 var ZodType = class {
-  static {
-    __name(this, "ZodType");
-  }
   get description() {
     return this._def.description;
   }
@@ -3417,7 +3217,7 @@ var ZodType = class {
     this["~standard"] = {
       version: 1,
       vendor: "zod",
-      validate: /* @__PURE__ */ __name((data) => this["~validate"](data), "validate")
+      validate: (data) => this["~validate"](data)
     };
   }
   optional() {
@@ -3494,6 +3294,7 @@ var ZodType = class {
     return this.safeParse(null).success;
   }
 };
+__name(ZodType, "ZodType");
 var cuidRegex = /^c[^\s-]{8,}$/i;
 var cuid2Regex = /^[0-9a-z]+$/;
 var ulidRegex = /^[0-9A-HJKMNP-TV-Z]{26}$/i;
@@ -3580,10 +3381,7 @@ function isValidCidr(ip, version) {
   return false;
 }
 __name(isValidCidr, "isValidCidr");
-var ZodString = class _ZodString extends ZodType {
-  static {
-    __name(this, "ZodString");
-  }
+var ZodString = class extends ZodType {
   _parse(input) {
     if (this._def.coerce) {
       input.data = String(input.data);
@@ -3893,7 +3691,7 @@ var ZodString = class _ZodString extends ZodType {
     });
   }
   _addCheck(check) {
-    return new _ZodString({
+    return new ZodString({
       ...this._def,
       checks: [...this._def.checks, check]
     });
@@ -4035,19 +3833,19 @@ var ZodString = class _ZodString extends ZodType {
     return this.min(1, errorUtil.errToObj(message));
   }
   trim() {
-    return new _ZodString({
+    return new ZodString({
       ...this._def,
       checks: [...this._def.checks, { kind: "trim" }]
     });
   }
   toLowerCase() {
-    return new _ZodString({
+    return new ZodString({
       ...this._def,
       checks: [...this._def.checks, { kind: "toLowerCase" }]
     });
   }
   toUpperCase() {
-    return new _ZodString({
+    return new ZodString({
       ...this._def,
       checks: [...this._def.checks, { kind: "toUpperCase" }]
     });
@@ -4121,6 +3919,7 @@ var ZodString = class _ZodString extends ZodType {
     return max;
   }
 };
+__name(ZodString, "ZodString");
 ZodString.create = (params) => {
   return new ZodString({
     checks: [],
@@ -4138,10 +3937,7 @@ function floatSafeRemainder(val, step) {
   return valInt % stepInt / 10 ** decCount;
 }
 __name(floatSafeRemainder, "floatSafeRemainder");
-var ZodNumber = class _ZodNumber extends ZodType {
-  static {
-    __name(this, "ZodNumber");
-  }
+var ZodNumber = class extends ZodType {
   constructor() {
     super(...arguments);
     this.min = this.gte;
@@ -4242,7 +4038,7 @@ var ZodNumber = class _ZodNumber extends ZodType {
     return this.setLimit("max", value, false, errorUtil.toString(message));
   }
   setLimit(kind2, value, inclusive, message) {
-    return new _ZodNumber({
+    return new ZodNumber({
       ...this._def,
       checks: [
         ...this._def.checks,
@@ -4256,7 +4052,7 @@ var ZodNumber = class _ZodNumber extends ZodType {
     });
   }
   _addCheck(check) {
-    return new _ZodNumber({
+    return new ZodNumber({
       ...this._def,
       checks: [...this._def.checks, check]
     });
@@ -4365,6 +4161,7 @@ var ZodNumber = class _ZodNumber extends ZodType {
     return Number.isFinite(min) && Number.isFinite(max);
   }
 };
+__name(ZodNumber, "ZodNumber");
 ZodNumber.create = (params) => {
   return new ZodNumber({
     checks: [],
@@ -4373,10 +4170,7 @@ ZodNumber.create = (params) => {
     ...processCreateParams(params)
   });
 };
-var ZodBigInt = class _ZodBigInt extends ZodType {
-  static {
-    __name(this, "ZodBigInt");
-  }
+var ZodBigInt = class extends ZodType {
   constructor() {
     super(...arguments);
     this.min = this.gte;
@@ -4461,7 +4255,7 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
     return this.setLimit("max", value, false, errorUtil.toString(message));
   }
   setLimit(kind2, value, inclusive, message) {
-    return new _ZodBigInt({
+    return new ZodBigInt({
       ...this._def,
       checks: [
         ...this._def.checks,
@@ -4475,7 +4269,7 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
     });
   }
   _addCheck(check) {
-    return new _ZodBigInt({
+    return new ZodBigInt({
       ...this._def,
       checks: [...this._def.checks, check]
     });
@@ -4540,6 +4334,7 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
     return max;
   }
 };
+__name(ZodBigInt, "ZodBigInt");
 ZodBigInt.create = (params) => {
   return new ZodBigInt({
     checks: [],
@@ -4549,9 +4344,6 @@ ZodBigInt.create = (params) => {
   });
 };
 var ZodBoolean = class extends ZodType {
-  static {
-    __name(this, "ZodBoolean");
-  }
   _parse(input) {
     if (this._def.coerce) {
       input.data = Boolean(input.data);
@@ -4569,6 +4361,7 @@ var ZodBoolean = class extends ZodType {
     return OK(input.data);
   }
 };
+__name(ZodBoolean, "ZodBoolean");
 ZodBoolean.create = (params) => {
   return new ZodBoolean({
     typeName: ZodFirstPartyTypeKind.ZodBoolean,
@@ -4576,10 +4369,7 @@ ZodBoolean.create = (params) => {
     ...processCreateParams(params)
   });
 };
-var ZodDate = class _ZodDate extends ZodType {
-  static {
-    __name(this, "ZodDate");
-  }
+var ZodDate = class extends ZodType {
   _parse(input) {
     if (this._def.coerce) {
       input.data = new Date(input.data);
@@ -4640,7 +4430,7 @@ var ZodDate = class _ZodDate extends ZodType {
     };
   }
   _addCheck(check) {
-    return new _ZodDate({
+    return new ZodDate({
       ...this._def,
       checks: [...this._def.checks, check]
     });
@@ -4680,6 +4470,7 @@ var ZodDate = class _ZodDate extends ZodType {
     return max != null ? new Date(max) : null;
   }
 };
+__name(ZodDate, "ZodDate");
 ZodDate.create = (params) => {
   return new ZodDate({
     checks: [],
@@ -4689,9 +4480,6 @@ ZodDate.create = (params) => {
   });
 };
 var ZodSymbol = class extends ZodType {
-  static {
-    __name(this, "ZodSymbol");
-  }
   _parse(input) {
     const parsedType = this._getType(input);
     if (parsedType !== ZodParsedType.symbol) {
@@ -4706,6 +4494,7 @@ var ZodSymbol = class extends ZodType {
     return OK(input.data);
   }
 };
+__name(ZodSymbol, "ZodSymbol");
 ZodSymbol.create = (params) => {
   return new ZodSymbol({
     typeName: ZodFirstPartyTypeKind.ZodSymbol,
@@ -4713,9 +4502,6 @@ ZodSymbol.create = (params) => {
   });
 };
 var ZodUndefined = class extends ZodType {
-  static {
-    __name(this, "ZodUndefined");
-  }
   _parse(input) {
     const parsedType = this._getType(input);
     if (parsedType !== ZodParsedType.undefined) {
@@ -4730,6 +4516,7 @@ var ZodUndefined = class extends ZodType {
     return OK(input.data);
   }
 };
+__name(ZodUndefined, "ZodUndefined");
 ZodUndefined.create = (params) => {
   return new ZodUndefined({
     typeName: ZodFirstPartyTypeKind.ZodUndefined,
@@ -4737,9 +4524,6 @@ ZodUndefined.create = (params) => {
   });
 };
 var ZodNull = class extends ZodType {
-  static {
-    __name(this, "ZodNull");
-  }
   _parse(input) {
     const parsedType = this._getType(input);
     if (parsedType !== ZodParsedType.null) {
@@ -4754,6 +4538,7 @@ var ZodNull = class extends ZodType {
     return OK(input.data);
   }
 };
+__name(ZodNull, "ZodNull");
 ZodNull.create = (params) => {
   return new ZodNull({
     typeName: ZodFirstPartyTypeKind.ZodNull,
@@ -4761,9 +4546,6 @@ ZodNull.create = (params) => {
   });
 };
 var ZodAny = class extends ZodType {
-  static {
-    __name(this, "ZodAny");
-  }
   constructor() {
     super(...arguments);
     this._any = true;
@@ -4772,6 +4554,7 @@ var ZodAny = class extends ZodType {
     return OK(input.data);
   }
 };
+__name(ZodAny, "ZodAny");
 ZodAny.create = (params) => {
   return new ZodAny({
     typeName: ZodFirstPartyTypeKind.ZodAny,
@@ -4779,9 +4562,6 @@ ZodAny.create = (params) => {
   });
 };
 var ZodUnknown = class extends ZodType {
-  static {
-    __name(this, "ZodUnknown");
-  }
   constructor() {
     super(...arguments);
     this._unknown = true;
@@ -4790,6 +4570,7 @@ var ZodUnknown = class extends ZodType {
     return OK(input.data);
   }
 };
+__name(ZodUnknown, "ZodUnknown");
 ZodUnknown.create = (params) => {
   return new ZodUnknown({
     typeName: ZodFirstPartyTypeKind.ZodUnknown,
@@ -4797,9 +4578,6 @@ ZodUnknown.create = (params) => {
   });
 };
 var ZodNever = class extends ZodType {
-  static {
-    __name(this, "ZodNever");
-  }
   _parse(input) {
     const ctx = this._getOrReturnCtx(input);
     addIssueToContext(ctx, {
@@ -4810,6 +4588,7 @@ var ZodNever = class extends ZodType {
     return INVALID;
   }
 };
+__name(ZodNever, "ZodNever");
 ZodNever.create = (params) => {
   return new ZodNever({
     typeName: ZodFirstPartyTypeKind.ZodNever,
@@ -4817,9 +4596,6 @@ ZodNever.create = (params) => {
   });
 };
 var ZodVoid = class extends ZodType {
-  static {
-    __name(this, "ZodVoid");
-  }
   _parse(input) {
     const parsedType = this._getType(input);
     if (parsedType !== ZodParsedType.undefined) {
@@ -4834,16 +4610,14 @@ var ZodVoid = class extends ZodType {
     return OK(input.data);
   }
 };
+__name(ZodVoid, "ZodVoid");
 ZodVoid.create = (params) => {
   return new ZodVoid({
     typeName: ZodFirstPartyTypeKind.ZodVoid,
     ...processCreateParams(params)
   });
 };
-var ZodArray = class _ZodArray extends ZodType {
-  static {
-    __name(this, "ZodArray");
-  }
+var ZodArray = class extends ZodType {
   _parse(input) {
     const { ctx, status } = this._processInputParams(input);
     const def = this._def;
@@ -4913,19 +4687,19 @@ var ZodArray = class _ZodArray extends ZodType {
     return this._def.type;
   }
   min(minLength, message) {
-    return new _ZodArray({
+    return new ZodArray({
       ...this._def,
       minLength: { value: minLength, message: errorUtil.toString(message) }
     });
   }
   max(maxLength, message) {
-    return new _ZodArray({
+    return new ZodArray({
       ...this._def,
       maxLength: { value: maxLength, message: errorUtil.toString(message) }
     });
   }
   length(len, message) {
-    return new _ZodArray({
+    return new ZodArray({
       ...this._def,
       exactLength: { value: len, message: errorUtil.toString(message) }
     });
@@ -4934,6 +4708,7 @@ var ZodArray = class _ZodArray extends ZodType {
     return this.min(1, message);
   }
 };
+__name(ZodArray, "ZodArray");
 ZodArray.create = (schema, params) => {
   return new ZodArray({
     type: schema,
@@ -4953,7 +4728,7 @@ function deepPartialify(schema) {
     }
     return new ZodObject({
       ...schema._def,
-      shape: /* @__PURE__ */ __name(() => newShape, "shape")
+      shape: () => newShape
     });
   } else if (schema instanceof ZodArray) {
     return new ZodArray({
@@ -4971,10 +4746,7 @@ function deepPartialify(schema) {
   }
 }
 __name(deepPartialify, "deepPartialify");
-var ZodObject = class _ZodObject extends ZodType {
-  static {
-    __name(this, "ZodObject");
-  }
+var ZodObject = class extends ZodType {
   constructor() {
     super(...arguments);
     this._cached = null;
@@ -5080,11 +4852,11 @@ var ZodObject = class _ZodObject extends ZodType {
   }
   strict(message) {
     errorUtil.errToObj;
-    return new _ZodObject({
+    return new ZodObject({
       ...this._def,
       unknownKeys: "strict",
       ...message !== void 0 ? {
-        errorMap: /* @__PURE__ */ __name((issue, ctx) => {
+        errorMap: (issue, ctx) => {
           const defaultError = this._def.errorMap?.(issue, ctx).message ?? ctx.defaultError;
           if (issue.code === "unrecognized_keys")
             return {
@@ -5093,18 +4865,18 @@ var ZodObject = class _ZodObject extends ZodType {
           return {
             message: defaultError
           };
-        }, "errorMap")
+        }
       } : {}
     });
   }
   strip() {
-    return new _ZodObject({
+    return new ZodObject({
       ...this._def,
       unknownKeys: "strip"
     });
   }
   passthrough() {
-    return new _ZodObject({
+    return new ZodObject({
       ...this._def,
       unknownKeys: "passthrough"
     });
@@ -5127,12 +4899,12 @@ var ZodObject = class _ZodObject extends ZodType {
   //     }) as any;
   //   };
   extend(augmentation) {
-    return new _ZodObject({
+    return new ZodObject({
       ...this._def,
-      shape: /* @__PURE__ */ __name(() => ({
+      shape: () => ({
         ...this._def.shape(),
         ...augmentation
-      }), "shape")
+      })
     });
   }
   /**
@@ -5141,13 +4913,13 @@ var ZodObject = class _ZodObject extends ZodType {
    * upgrade if you are experiencing issues.
    */
   merge(merging) {
-    const merged = new _ZodObject({
+    const merged = new ZodObject({
       unknownKeys: merging._def.unknownKeys,
       catchall: merging._def.catchall,
-      shape: /* @__PURE__ */ __name(() => ({
+      shape: () => ({
         ...this._def.shape(),
         ...merging._def.shape()
-      }), "shape"),
+      }),
       typeName: ZodFirstPartyTypeKind.ZodObject
     });
     return merged;
@@ -5212,7 +4984,7 @@ var ZodObject = class _ZodObject extends ZodType {
   //   return merged;
   // }
   catchall(index) {
-    return new _ZodObject({
+    return new ZodObject({
       ...this._def,
       catchall: index
     });
@@ -5224,9 +4996,9 @@ var ZodObject = class _ZodObject extends ZodType {
         shape[key] = this.shape[key];
       }
     }
-    return new _ZodObject({
+    return new ZodObject({
       ...this._def,
-      shape: /* @__PURE__ */ __name(() => shape, "shape")
+      shape: () => shape
     });
   }
   omit(mask) {
@@ -5236,9 +5008,9 @@ var ZodObject = class _ZodObject extends ZodType {
         shape[key] = this.shape[key];
       }
     }
-    return new _ZodObject({
+    return new ZodObject({
       ...this._def,
-      shape: /* @__PURE__ */ __name(() => shape, "shape")
+      shape: () => shape
     });
   }
   /**
@@ -5257,9 +5029,9 @@ var ZodObject = class _ZodObject extends ZodType {
         newShape[key] = fieldSchema.optional();
       }
     }
-    return new _ZodObject({
+    return new ZodObject({
       ...this._def,
-      shape: /* @__PURE__ */ __name(() => newShape, "shape")
+      shape: () => newShape
     });
   }
   required(mask) {
@@ -5276,18 +5048,19 @@ var ZodObject = class _ZodObject extends ZodType {
         newShape[key] = newField;
       }
     }
-    return new _ZodObject({
+    return new ZodObject({
       ...this._def,
-      shape: /* @__PURE__ */ __name(() => newShape, "shape")
+      shape: () => newShape
     });
   }
   keyof() {
     return createZodEnum(util.objectKeys(this.shape));
   }
 };
+__name(ZodObject, "ZodObject");
 ZodObject.create = (shape, params) => {
   return new ZodObject({
-    shape: /* @__PURE__ */ __name(() => shape, "shape"),
+    shape: () => shape,
     unknownKeys: "strip",
     catchall: ZodNever.create(),
     typeName: ZodFirstPartyTypeKind.ZodObject,
@@ -5296,7 +5069,7 @@ ZodObject.create = (shape, params) => {
 };
 ZodObject.strictCreate = (shape, params) => {
   return new ZodObject({
-    shape: /* @__PURE__ */ __name(() => shape, "shape"),
+    shape: () => shape,
     unknownKeys: "strict",
     catchall: ZodNever.create(),
     typeName: ZodFirstPartyTypeKind.ZodObject,
@@ -5313,9 +5086,6 @@ ZodObject.lazycreate = (shape, params) => {
   });
 };
 var ZodUnion = class extends ZodType {
-  static {
-    __name(this, "ZodUnion");
-  }
   _parse(input) {
     const { ctx } = this._processInputParams(input);
     const options = this._def.options;
@@ -5400,6 +5170,7 @@ var ZodUnion = class extends ZodType {
     return this._def.options;
   }
 };
+__name(ZodUnion, "ZodUnion");
 ZodUnion.create = (types, params) => {
   return new ZodUnion({
     options: types,
@@ -5438,10 +5209,7 @@ var getDiscriminator = /* @__PURE__ */ __name((type) => {
     return [];
   }
 }, "getDiscriminator");
-var ZodDiscriminatedUnion = class _ZodDiscriminatedUnion extends ZodType {
-  static {
-    __name(this, "ZodDiscriminatedUnion");
-  }
+var ZodDiscriminatedUnion = class extends ZodType {
   _parse(input) {
     const { ctx } = this._processInputParams(input);
     if (ctx.parsedType !== ZodParsedType.object) {
@@ -5508,7 +5276,7 @@ var ZodDiscriminatedUnion = class _ZodDiscriminatedUnion extends ZodType {
         optionsMap.set(value, type);
       }
     }
-    return new _ZodDiscriminatedUnion({
+    return new ZodDiscriminatedUnion({
       typeName: ZodFirstPartyTypeKind.ZodDiscriminatedUnion,
       discriminator,
       options,
@@ -5517,6 +5285,7 @@ var ZodDiscriminatedUnion = class _ZodDiscriminatedUnion extends ZodType {
     });
   }
 };
+__name(ZodDiscriminatedUnion, "ZodDiscriminatedUnion");
 function mergeValues(a, b) {
   const aType = getParsedType(a);
   const bType = getParsedType(b);
@@ -5557,9 +5326,6 @@ function mergeValues(a, b) {
 }
 __name(mergeValues, "mergeValues");
 var ZodIntersection = class extends ZodType {
-  static {
-    __name(this, "ZodIntersection");
-  }
   _parse(input) {
     const { status, ctx } = this._processInputParams(input);
     const handleParsed = /* @__PURE__ */ __name((parsedLeft, parsedRight) => {
@@ -5604,6 +5370,7 @@ var ZodIntersection = class extends ZodType {
     }
   }
 };
+__name(ZodIntersection, "ZodIntersection");
 ZodIntersection.create = (left, right, params) => {
   return new ZodIntersection({
     left,
@@ -5612,10 +5379,7 @@ ZodIntersection.create = (left, right, params) => {
     ...processCreateParams(params)
   });
 };
-var ZodTuple = class _ZodTuple extends ZodType {
-  static {
-    __name(this, "ZodTuple");
-  }
+var ZodTuple = class extends ZodType {
   _parse(input) {
     const { status, ctx } = this._processInputParams(input);
     if (ctx.parsedType !== ZodParsedType.array) {
@@ -5665,12 +5429,13 @@ var ZodTuple = class _ZodTuple extends ZodType {
     return this._def.items;
   }
   rest(rest) {
-    return new _ZodTuple({
+    return new ZodTuple({
       ...this._def,
       rest
     });
   }
 };
+__name(ZodTuple, "ZodTuple");
 ZodTuple.create = (schemas, params) => {
   if (!Array.isArray(schemas)) {
     throw new Error("You must pass an array of schemas to z.tuple([ ... ])");
@@ -5682,10 +5447,7 @@ ZodTuple.create = (schemas, params) => {
     ...processCreateParams(params)
   });
 };
-var ZodRecord = class _ZodRecord extends ZodType {
-  static {
-    __name(this, "ZodRecord");
-  }
+var ZodRecord = class extends ZodType {
   get keySchema() {
     return this._def.keyType;
   }
@@ -5723,14 +5485,14 @@ var ZodRecord = class _ZodRecord extends ZodType {
   }
   static create(first, second, third) {
     if (second instanceof ZodType) {
-      return new _ZodRecord({
+      return new ZodRecord({
         keyType: first,
         valueType: second,
         typeName: ZodFirstPartyTypeKind.ZodRecord,
         ...processCreateParams(third)
       });
     }
-    return new _ZodRecord({
+    return new ZodRecord({
       keyType: ZodString.create(),
       valueType: first,
       typeName: ZodFirstPartyTypeKind.ZodRecord,
@@ -5738,10 +5500,8 @@ var ZodRecord = class _ZodRecord extends ZodType {
     });
   }
 };
+__name(ZodRecord, "ZodRecord");
 var ZodMap = class extends ZodType {
-  static {
-    __name(this, "ZodMap");
-  }
   get keySchema() {
     return this._def.keyType;
   }
@@ -5799,6 +5559,7 @@ var ZodMap = class extends ZodType {
     }
   }
 };
+__name(ZodMap, "ZodMap");
 ZodMap.create = (keyType, valueType, params) => {
   return new ZodMap({
     valueType,
@@ -5807,10 +5568,7 @@ ZodMap.create = (keyType, valueType, params) => {
     ...processCreateParams(params)
   });
 };
-var ZodSet = class _ZodSet extends ZodType {
-  static {
-    __name(this, "ZodSet");
-  }
+var ZodSet = class extends ZodType {
   _parse(input) {
     const { status, ctx } = this._processInputParams(input);
     if (ctx.parsedType !== ZodParsedType.set) {
@@ -5869,13 +5627,13 @@ var ZodSet = class _ZodSet extends ZodType {
     }
   }
   min(minSize, message) {
-    return new _ZodSet({
+    return new ZodSet({
       ...this._def,
       minSize: { value: minSize, message: errorUtil.toString(message) }
     });
   }
   max(maxSize, message) {
-    return new _ZodSet({
+    return new ZodSet({
       ...this._def,
       maxSize: { value: maxSize, message: errorUtil.toString(message) }
     });
@@ -5887,6 +5645,7 @@ var ZodSet = class _ZodSet extends ZodType {
     return this.min(1, message);
   }
 };
+__name(ZodSet, "ZodSet");
 ZodSet.create = (valueType, params) => {
   return new ZodSet({
     valueType,
@@ -5896,10 +5655,7 @@ ZodSet.create = (valueType, params) => {
     ...processCreateParams(params)
   });
 };
-var ZodFunction = class _ZodFunction extends ZodType {
-  static {
-    __name(this, "ZodFunction");
-  }
+var ZodFunction = class extends ZodType {
   constructor() {
     super(...arguments);
     this.validate = this.implement;
@@ -5978,13 +5734,13 @@ var ZodFunction = class _ZodFunction extends ZodType {
     return this._def.returns;
   }
   args(...items) {
-    return new _ZodFunction({
+    return new ZodFunction({
       ...this._def,
       args: ZodTuple.create(items).rest(ZodUnknown.create())
     });
   }
   returns(returnType) {
-    return new _ZodFunction({
+    return new ZodFunction({
       ...this._def,
       returns: returnType
     });
@@ -5998,7 +5754,7 @@ var ZodFunction = class _ZodFunction extends ZodType {
     return validatedFunc;
   }
   static create(args, returns, params) {
-    return new _ZodFunction({
+    return new ZodFunction({
       args: args ? args : ZodTuple.create([]).rest(ZodUnknown.create()),
       returns: returns || ZodUnknown.create(),
       typeName: ZodFirstPartyTypeKind.ZodFunction,
@@ -6006,10 +5762,8 @@ var ZodFunction = class _ZodFunction extends ZodType {
     });
   }
 };
+__name(ZodFunction, "ZodFunction");
 var ZodLazy = class extends ZodType {
-  static {
-    __name(this, "ZodLazy");
-  }
   get schema() {
     return this._def.getter();
   }
@@ -6019,6 +5773,7 @@ var ZodLazy = class extends ZodType {
     return lazySchema._parse({ data: ctx.data, path: ctx.path, parent: ctx });
   }
 };
+__name(ZodLazy, "ZodLazy");
 ZodLazy.create = (getter, params) => {
   return new ZodLazy({
     getter,
@@ -6027,9 +5782,6 @@ ZodLazy.create = (getter, params) => {
   });
 };
 var ZodLiteral = class extends ZodType {
-  static {
-    __name(this, "ZodLiteral");
-  }
   _parse(input) {
     if (input.data !== this._def.value) {
       const ctx = this._getOrReturnCtx(input);
@@ -6046,6 +5798,7 @@ var ZodLiteral = class extends ZodType {
     return this._def.value;
   }
 };
+__name(ZodLiteral, "ZodLiteral");
 ZodLiteral.create = (value, params) => {
   return new ZodLiteral({
     value,
@@ -6061,10 +5814,7 @@ function createZodEnum(values, params) {
   });
 }
 __name(createZodEnum, "createZodEnum");
-var ZodEnum = class _ZodEnum extends ZodType {
-  static {
-    __name(this, "ZodEnum");
-  }
+var ZodEnum = class extends ZodType {
   _parse(input) {
     if (typeof input.data !== "string") {
       const ctx = this._getOrReturnCtx(input);
@@ -6116,23 +5866,21 @@ var ZodEnum = class _ZodEnum extends ZodType {
     return enumValues;
   }
   extract(values, newDef = this._def) {
-    return _ZodEnum.create(values, {
+    return ZodEnum.create(values, {
       ...this._def,
       ...newDef
     });
   }
   exclude(values, newDef = this._def) {
-    return _ZodEnum.create(this.options.filter((opt) => !values.includes(opt)), {
+    return ZodEnum.create(this.options.filter((opt) => !values.includes(opt)), {
       ...this._def,
       ...newDef
     });
   }
 };
+__name(ZodEnum, "ZodEnum");
 ZodEnum.create = createZodEnum;
 var ZodNativeEnum = class extends ZodType {
-  static {
-    __name(this, "ZodNativeEnum");
-  }
   _parse(input) {
     const nativeEnumValues = util.getValidEnumValues(this._def.values);
     const ctx = this._getOrReturnCtx(input);
@@ -6163,6 +5911,7 @@ var ZodNativeEnum = class extends ZodType {
     return this._def.values;
   }
 };
+__name(ZodNativeEnum, "ZodNativeEnum");
 ZodNativeEnum.create = (values, params) => {
   return new ZodNativeEnum({
     values,
@@ -6171,9 +5920,6 @@ ZodNativeEnum.create = (values, params) => {
   });
 };
 var ZodPromise = class extends ZodType {
-  static {
-    __name(this, "ZodPromise");
-  }
   unwrap() {
     return this._def.type;
   }
@@ -6196,6 +5942,7 @@ var ZodPromise = class extends ZodType {
     }));
   }
 };
+__name(ZodPromise, "ZodPromise");
 ZodPromise.create = (schema, params) => {
   return new ZodPromise({
     type: schema,
@@ -6204,9 +5951,6 @@ ZodPromise.create = (schema, params) => {
   });
 };
 var ZodEffects = class extends ZodType {
-  static {
-    __name(this, "ZodEffects");
-  }
   innerType() {
     return this._def.schema;
   }
@@ -6217,14 +5961,14 @@ var ZodEffects = class extends ZodType {
     const { status, ctx } = this._processInputParams(input);
     const effect = this._def.effect || null;
     const checkCtx = {
-      addIssue: /* @__PURE__ */ __name((arg) => {
+      addIssue: (arg) => {
         addIssueToContext(ctx, arg);
         if (arg.fatal) {
           status.abort();
         } else {
           status.dirty();
         }
-      }, "addIssue"),
+      },
       get path() {
         return ctx.path;
       }
@@ -6329,6 +6073,7 @@ var ZodEffects = class extends ZodType {
     util.assertNever(effect);
   }
 };
+__name(ZodEffects, "ZodEffects");
 ZodEffects.create = (schema, effect, params) => {
   return new ZodEffects({
     schema,
@@ -6346,9 +6091,6 @@ ZodEffects.createWithPreprocess = (preprocess, schema, params) => {
   });
 };
 var ZodOptional = class extends ZodType {
-  static {
-    __name(this, "ZodOptional");
-  }
   _parse(input) {
     const parsedType = this._getType(input);
     if (parsedType === ZodParsedType.undefined) {
@@ -6360,6 +6102,7 @@ var ZodOptional = class extends ZodType {
     return this._def.innerType;
   }
 };
+__name(ZodOptional, "ZodOptional");
 ZodOptional.create = (type, params) => {
   return new ZodOptional({
     innerType: type,
@@ -6368,9 +6111,6 @@ ZodOptional.create = (type, params) => {
   });
 };
 var ZodNullable = class extends ZodType {
-  static {
-    __name(this, "ZodNullable");
-  }
   _parse(input) {
     const parsedType = this._getType(input);
     if (parsedType === ZodParsedType.null) {
@@ -6382,6 +6122,7 @@ var ZodNullable = class extends ZodType {
     return this._def.innerType;
   }
 };
+__name(ZodNullable, "ZodNullable");
 ZodNullable.create = (type, params) => {
   return new ZodNullable({
     innerType: type,
@@ -6390,9 +6131,6 @@ ZodNullable.create = (type, params) => {
   });
 };
 var ZodDefault = class extends ZodType {
-  static {
-    __name(this, "ZodDefault");
-  }
   _parse(input) {
     const { ctx } = this._processInputParams(input);
     let data = ctx.data;
@@ -6409,6 +6147,7 @@ var ZodDefault = class extends ZodType {
     return this._def.innerType;
   }
 };
+__name(ZodDefault, "ZodDefault");
 ZodDefault.create = (type, params) => {
   return new ZodDefault({
     innerType: type,
@@ -6418,9 +6157,6 @@ ZodDefault.create = (type, params) => {
   });
 };
 var ZodCatch = class extends ZodType {
-  static {
-    __name(this, "ZodCatch");
-  }
   _parse(input) {
     const { ctx } = this._processInputParams(input);
     const newCtx = {
@@ -6465,6 +6201,7 @@ var ZodCatch = class extends ZodType {
     return this._def.innerType;
   }
 };
+__name(ZodCatch, "ZodCatch");
 ZodCatch.create = (type, params) => {
   return new ZodCatch({
     innerType: type,
@@ -6474,9 +6211,6 @@ ZodCatch.create = (type, params) => {
   });
 };
 var ZodNaN = class extends ZodType {
-  static {
-    __name(this, "ZodNaN");
-  }
   _parse(input) {
     const parsedType = this._getType(input);
     if (parsedType !== ZodParsedType.nan) {
@@ -6491,6 +6225,7 @@ var ZodNaN = class extends ZodType {
     return { status: "valid", value: input.data };
   }
 };
+__name(ZodNaN, "ZodNaN");
 ZodNaN.create = (params) => {
   return new ZodNaN({
     typeName: ZodFirstPartyTypeKind.ZodNaN,
@@ -6499,9 +6234,6 @@ ZodNaN.create = (params) => {
 };
 var BRAND = Symbol("zod_brand");
 var ZodBranded = class extends ZodType {
-  static {
-    __name(this, "ZodBranded");
-  }
   _parse(input) {
     const { ctx } = this._processInputParams(input);
     const data = ctx.data;
@@ -6515,10 +6247,8 @@ var ZodBranded = class extends ZodType {
     return this._def.type;
   }
 };
-var ZodPipeline = class _ZodPipeline extends ZodType {
-  static {
-    __name(this, "ZodPipeline");
-  }
+__name(ZodBranded, "ZodBranded");
+var ZodPipeline = class extends ZodType {
   _parse(input) {
     const { status, ctx } = this._processInputParams(input);
     if (ctx.common.async) {
@@ -6566,17 +6296,15 @@ var ZodPipeline = class _ZodPipeline extends ZodType {
     }
   }
   static create(a, b) {
-    return new _ZodPipeline({
+    return new ZodPipeline({
       in: a,
       out: b,
       typeName: ZodFirstPartyTypeKind.ZodPipeline
     });
   }
 };
+__name(ZodPipeline, "ZodPipeline");
 var ZodReadonly = class extends ZodType {
-  static {
-    __name(this, "ZodReadonly");
-  }
   _parse(input) {
     const result = this._def.innerType._parse(input);
     const freeze = /* @__PURE__ */ __name((data) => {
@@ -6591,6 +6319,7 @@ var ZodReadonly = class extends ZodType {
     return this._def.innerType;
   }
 };
+__name(ZodReadonly, "ZodReadonly");
 ZodReadonly.create = (type, params) => {
   return new ZodReadonly({
     innerType: type,
@@ -6710,14 +6439,14 @@ var ostring = /* @__PURE__ */ __name(() => stringType().optional(), "ostring");
 var onumber = /* @__PURE__ */ __name(() => numberType().optional(), "onumber");
 var oboolean = /* @__PURE__ */ __name(() => booleanType().optional(), "oboolean");
 var coerce = {
-  string: /* @__PURE__ */ __name(((arg) => ZodString.create({ ...arg, coerce: true })), "string"),
-  number: /* @__PURE__ */ __name(((arg) => ZodNumber.create({ ...arg, coerce: true })), "number"),
-  boolean: /* @__PURE__ */ __name(((arg) => ZodBoolean.create({
+  string: (arg) => ZodString.create({ ...arg, coerce: true }),
+  number: (arg) => ZodNumber.create({ ...arg, coerce: true }),
+  boolean: (arg) => ZodBoolean.create({
     ...arg,
     coerce: true
-  })), "boolean"),
-  bigint: /* @__PURE__ */ __name(((arg) => ZodBigInt.create({ ...arg, coerce: true })), "bigint"),
-  date: /* @__PURE__ */ __name(((arg) => ZodDate.create({ ...arg, coerce: true })), "date")
+  }),
+  bigint: (arg) => ZodBigInt.create({ ...arg, coerce: true }),
+  date: (arg) => ZodDate.create({ ...arg, coerce: true })
 };
 var NEVER = INVALID;
 
@@ -6749,17 +6478,6 @@ var TaskGenerationRequestSchema = external_exports.object({
   blueprint: external_exports.string().min(1, "Blueprint content is required"),
   projectName: external_exports.string().min(1)
 });
-var TaskStatusSchema = external_exports.enum(["todo", "in_progress", "done"]);
-var TaskPrioritySchema = external_exports.enum(["low", "medium", "high", "critical"]);
-var TaskItemSchema = external_exports.object({
-  id: external_exports.string(),
-  title: external_exports.string(),
-  status: TaskStatusSchema,
-  priority: TaskPrioritySchema.optional(),
-  description: external_exports.string().optional(),
-  dependencies: external_exports.array(external_exports.string()).optional()
-});
-var TaskListSchema = external_exports.array(TaskItemSchema);
 var RefineRequestSchema = external_exports.object({
   content: external_exports.string().min(1, "Content to refine is required"),
   instruction: external_exports.string().min(1, "Refinement instruction is required"),
@@ -6903,8 +6621,8 @@ __name(buildRefinePrompt, "buildRefinePrompt");
 // ../../node_modules/openai/internal/qs/formats.mjs
 var default_format = "RFC3986";
 var formatters = {
-  RFC1738: /* @__PURE__ */ __name((v) => String(v).replace(/%20/g, "+"), "RFC1738"),
-  RFC3986: /* @__PURE__ */ __name((v) => String(v), "RFC3986")
+  RFC1738: (v) => String(v).replace(/%20/g, "+"),
+  RFC3986: (v) => String(v)
 };
 var RFC1738 = "RFC1738";
 
@@ -7318,9 +7036,6 @@ __name(setShims, "setShims");
 
 // ../../node_modules/openai/_shims/MultipartBody.mjs
 var MultipartBody = class {
-  static {
-    __name(this, "MultipartBody");
-  }
   constructor(body) {
     this.body = body;
   }
@@ -7328,6 +7043,7 @@ var MultipartBody = class {
     return "MultipartBody";
   }
 };
+__name(MultipartBody, "MultipartBody");
 
 // ../../node_modules/openai/_shims/web-runtime.mjs
 function getRuntime({ manuallyImported } = {}) {
@@ -7352,79 +7068,63 @@ function getRuntime({ manuallyImported } = {}) {
     Headers: _Headers,
     FormData: (
       // @ts-ignore
-      typeof FormData !== "undefined" ? FormData : class FormData {
-        static {
-          __name(this, "FormData");
-        }
+      typeof FormData !== "undefined" ? FormData : /* @__PURE__ */ __name(class FormData {
         // @ts-ignore
         constructor() {
           throw new Error(`file uploads aren't supported in this environment yet as 'FormData' is undefined. ${recommendation}`);
         }
-      }
+      }, "FormData")
     ),
-    Blob: typeof Blob !== "undefined" ? Blob : class Blob {
-      static {
-        __name(this, "Blob");
-      }
+    Blob: typeof Blob !== "undefined" ? Blob : /* @__PURE__ */ __name(class Blob {
       constructor() {
         throw new Error(`file uploads aren't supported in this environment yet as 'Blob' is undefined. ${recommendation}`);
       }
-    },
+    }, "Blob"),
     File: (
       // @ts-ignore
-      typeof File !== "undefined" ? File : class File {
-        static {
-          __name(this, "File");
-        }
+      typeof File !== "undefined" ? File : /* @__PURE__ */ __name(class File {
         // @ts-ignore
         constructor() {
           throw new Error(`file uploads aren't supported in this environment yet as 'File' is undefined. ${recommendation}`);
         }
-      }
+      }, "File")
     ),
     ReadableStream: (
       // @ts-ignore
-      typeof ReadableStream !== "undefined" ? ReadableStream : class ReadableStream {
-        static {
-          __name(this, "ReadableStream");
-        }
+      typeof ReadableStream !== "undefined" ? ReadableStream : /* @__PURE__ */ __name(class ReadableStream {
         // @ts-ignore
         constructor() {
           throw new Error(`streaming isn't supported in this environment yet as 'ReadableStream' is undefined. ${recommendation}`);
         }
-      }
+      }, "ReadableStream")
     ),
-    getMultipartRequestOptions: /* @__PURE__ */ __name(async (form, opts) => ({
+    getMultipartRequestOptions: async (form, opts) => ({
       ...opts,
       body: new MultipartBody(form)
-    }), "getMultipartRequestOptions"),
-    getDefaultAgent: /* @__PURE__ */ __name((url) => void 0, "getDefaultAgent"),
-    fileFromPath: /* @__PURE__ */ __name(() => {
+    }),
+    getDefaultAgent: (url) => void 0,
+    fileFromPath: () => {
       throw new Error("The `fileFromPath` function is only supported in Node. See the README for more details: https://www.github.com/openai/openai-node#file-uploads");
-    }, "fileFromPath"),
-    isFsReadStream: /* @__PURE__ */ __name((value) => false, "isFsReadStream")
+    },
+    isFsReadStream: (value) => false
   };
 }
 __name(getRuntime, "getRuntime");
 
 // ../../node_modules/openai/_shims/index.mjs
 var init = /* @__PURE__ */ __name(() => {
-  if (!kind) setShims(getRuntime(), { auto: true });
+  if (!kind)
+    setShims(getRuntime(), { auto: true });
 }, "init");
 init();
 
 // ../../node_modules/openai/error.mjs
 var OpenAIError = class extends Error {
-  static {
-    __name(this, "OpenAIError");
-  }
 };
-var APIError = class _APIError extends OpenAIError {
-  static {
-    __name(this, "APIError");
-  }
+__name(OpenAIError, "OpenAIError");
+var APIError = class extends OpenAIError {
   constructor(status, error, message, headers) {
-    super(`${_APIError.makeMessage(status, error, message)}`);
+    super(`${APIError.makeMessage(status, error, message)}`);
     this.status = status;
     this.headers = headers;
     this.request_id = headers?.["x-request-id"];
@@ -7476,109 +7176,86 @@ var APIError = class _APIError extends OpenAIError {
     if (status >= 500) {
       return new InternalServerError(status, error, message, headers);
     }
-    return new _APIError(status, error, message, headers);
+    return new APIError(status, error, message, headers);
   }
 };
+__name(APIError, "APIError");
 var APIUserAbortError = class extends APIError {
-  static {
-    __name(this, "APIUserAbortError");
-  }
   constructor({ message } = {}) {
     super(void 0, void 0, message || "Request was aborted.", void 0);
   }
 };
+__name(APIUserAbortError, "APIUserAbortError");
 var APIConnectionError = class extends APIError {
-  static {
-    __name(this, "APIConnectionError");
-  }
   constructor({ message, cause }) {
     super(void 0, void 0, message || "Connection error.", void 0);
     if (cause)
       this.cause = cause;
   }
 };
+__name(APIConnectionError, "APIConnectionError");
 var APIConnectionTimeoutError = class extends APIConnectionError {
-  static {
-    __name(this, "APIConnectionTimeoutError");
-  }
   constructor({ message } = {}) {
     super({ message: message ?? "Request timed out." });
   }
 };
+__name(APIConnectionTimeoutError, "APIConnectionTimeoutError");
 var BadRequestError = class extends APIError {
-  static {
-    __name(this, "BadRequestError");
-  }
 };
+__name(BadRequestError, "BadRequestError");
 var AuthenticationError = class extends APIError {
-  static {
-    __name(this, "AuthenticationError");
-  }
 };
+__name(AuthenticationError, "AuthenticationError");
 var PermissionDeniedError = class extends APIError {
-  static {
-    __name(this, "PermissionDeniedError");
-  }
 };
+__name(PermissionDeniedError, "PermissionDeniedError");
 var NotFoundError = class extends APIError {
-  static {
-    __name(this, "NotFoundError");
-  }
 };
+__name(NotFoundError, "NotFoundError");
 var ConflictError = class extends APIError {
-  static {
-    __name(this, "ConflictError");
-  }
 };
+__name(ConflictError, "ConflictError");
 var UnprocessableEntityError = class extends APIError {
-  static {
-    __name(this, "UnprocessableEntityError");
-  }
 };
+__name(UnprocessableEntityError, "UnprocessableEntityError");
 var RateLimitError = class extends APIError {
-  static {
-    __name(this, "RateLimitError");
-  }
 };
+__name(RateLimitError, "RateLimitError");
 var InternalServerError = class extends APIError {
-  static {
-    __name(this, "InternalServerError");
-  }
 };
+__name(InternalServerError, "InternalServerError");
 var LengthFinishReasonError = class extends OpenAIError {
-  static {
-    __name(this, "LengthFinishReasonError");
-  }
   constructor() {
     super(`Could not parse response content as the length limit was reached`);
   }
 };
+__name(LengthFinishReasonError, "LengthFinishReasonError");
 var ContentFilterFinishReasonError = class extends OpenAIError {
-  static {
-    __name(this, "ContentFilterFinishReasonError");
-  }
   constructor() {
     super(`Could not parse response content as the request was rejected by the content filter`);
   }
 };
+__name(ContentFilterFinishReasonError, "ContentFilterFinishReasonError");
 
 // ../../node_modules/openai/internal/decoders/line.mjs
 var __classPrivateFieldSet = function(receiver, state, value, kind2, f) {
-  if (kind2 === "m") throw new TypeError("Private method is not writable");
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+  if (kind2 === "m")
+    throw new TypeError("Private method is not writable");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a setter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot write private member to an object whose class did not declare it");
   return kind2 === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
 };
 var __classPrivateFieldGet = function(receiver, state, kind2, f) {
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot read private member from an object whose class did not declare it");
   return kind2 === "m" ? f : kind2 === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _LineDecoder_carriageReturnIndex;
 var LineDecoder = class {
-  static {
-    __name(this, "LineDecoder");
-  }
   constructor() {
     _LineDecoder_carriageReturnIndex.set(this, void 0);
     this.buffer = new Uint8Array();
@@ -7644,6 +7321,7 @@ var LineDecoder = class {
     return this.decode("\n");
   }
 };
+__name(LineDecoder, "LineDecoder");
 _LineDecoder_carriageReturnIndex = /* @__PURE__ */ new WeakMap();
 LineDecoder.NEWLINE_CHARS = /* @__PURE__ */ new Set(["\n", "\r"]);
 LineDecoder.NEWLINE_REGEXP = /\r\n|[\n\r]/g;
@@ -7710,10 +7388,7 @@ function ReadableStreamToAsyncIterable(stream) {
 __name(ReadableStreamToAsyncIterable, "ReadableStreamToAsyncIterable");
 
 // ../../node_modules/openai/streaming.mjs
-var Stream = class _Stream {
-  static {
-    __name(this, "Stream");
-  }
+var Stream = class {
   constructor(iterator, controller) {
     this.iterator = iterator;
     this.controller = controller;
@@ -7773,7 +7448,7 @@ var Stream = class _Stream {
       }
     }
     __name(iterator, "iterator");
-    return new _Stream(iterator, controller);
+    return new Stream(iterator, controller);
   }
   /**
    * Generates a Stream from a newline-separated ReadableStream
@@ -7818,7 +7493,7 @@ var Stream = class _Stream {
       }
     }
     __name(iterator, "iterator");
-    return new _Stream(iterator, controller);
+    return new Stream(iterator, controller);
   }
   [Symbol.asyncIterator]() {
     return this.iterator();
@@ -7833,19 +7508,19 @@ var Stream = class _Stream {
     const iterator = this.iterator();
     const teeIterator = /* @__PURE__ */ __name((queue) => {
       return {
-        next: /* @__PURE__ */ __name(() => {
+        next: () => {
           if (queue.length === 0) {
             const result = iterator.next();
             left.push(result);
             right.push(result);
           }
           return queue.shift();
-        }, "next")
+        }
       };
     }, "teeIterator");
     return [
-      new _Stream(() => teeIterator(left), this.controller),
-      new _Stream(() => teeIterator(right), this.controller)
+      new Stream(() => teeIterator(left), this.controller),
+      new Stream(() => teeIterator(right), this.controller)
     ];
   }
   /**
@@ -7878,6 +7553,7 @@ var Stream = class _Stream {
     });
   }
 };
+__name(Stream, "Stream");
 async function* _iterSSEMessages(response, controller) {
   if (!response.body) {
     controller.abort();
@@ -7923,9 +7599,6 @@ async function* iterSSEChunks(iterator) {
 }
 __name(iterSSEChunks, "iterSSEChunks");
 var SSEDecoder = class {
-  static {
-    __name(this, "SSEDecoder");
-  }
   constructor() {
     this.event = null;
     this.data = [];
@@ -7964,6 +7637,7 @@ var SSEDecoder = class {
     return null;
   }
 };
+__name(SSEDecoder, "SSEDecoder");
 function partition(str2, delimiter) {
   const index = str2.indexOf(delimiter);
   if (index !== -1) {
@@ -8069,14 +7743,19 @@ var addFormValue = /* @__PURE__ */ __name(async (form, key, value) => {
 
 // ../../node_modules/openai/core.mjs
 var __classPrivateFieldSet2 = function(receiver, state, value, kind2, f) {
-  if (kind2 === "m") throw new TypeError("Private method is not writable");
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+  if (kind2 === "m")
+    throw new TypeError("Private method is not writable");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a setter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot write private member to an object whose class did not declare it");
   return kind2 === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
 };
 var __classPrivateFieldGet2 = function(receiver, state, kind2, f) {
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot read private member from an object whose class did not declare it");
   return kind2 === "m" ? f : kind2 === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _AbstractPage_client;
@@ -8119,10 +7798,7 @@ function _addRequestID(value, response) {
   });
 }
 __name(_addRequestID, "_addRequestID");
-var APIPromise = class _APIPromise extends Promise {
-  static {
-    __name(this, "APIPromise");
-  }
+var APIPromise = class extends Promise {
   constructor(responsePromise, parseResponse2 = defaultParseResponse) {
     super((resolve) => {
       resolve(null);
@@ -8131,7 +7807,7 @@ var APIPromise = class _APIPromise extends Promise {
     this.parseResponse = parseResponse2;
   }
   _thenUnwrap(transform) {
-    return new _APIPromise(this.responsePromise, async (props) => _addRequestID(transform(await this.parseResponse(props), props), props.response));
+    return new APIPromise(this.responsePromise, async (props) => _addRequestID(transform(await this.parseResponse(props), props), props.response));
   }
   /**
    * Gets the raw `Response` instance instead of parsing the response
@@ -8184,10 +7860,8 @@ var APIPromise = class _APIPromise extends Promise {
     return this.parse().finally(onfinally);
   }
 };
+__name(APIPromise, "APIPromise");
 var APIClient = class {
-  static {
-    __name(this, "APIClient");
-  }
   constructor({
     baseURL,
     maxRetries = 2,
@@ -8484,10 +8158,8 @@ var APIClient = class {
     return `${this.constructor.name}/JS ${VERSION}`;
   }
 };
+__name(APIClient, "APIClient");
 var AbstractPage = class {
-  static {
-    __name(this, "AbstractPage");
-  }
   constructor(client, response, body, options) {
     _AbstractPage_client.set(this, void 0);
     __classPrivateFieldSet2(this, _AbstractPage_client, client, "f");
@@ -8535,10 +8207,8 @@ var AbstractPage = class {
     }
   }
 };
+__name(AbstractPage, "AbstractPage");
 var PagePromise = class extends APIPromise {
-  static {
-    __name(this, "PagePromise");
-  }
   constructor(client, request, Page2) {
     super(request, async (props) => new Page2(client, props.response, await defaultParseResponse(props), props.options));
   }
@@ -8556,6 +8226,7 @@ var PagePromise = class extends APIPromise {
     }
   }
 };
+__name(PagePromise, "PagePromise");
 var createResponseHeaders = /* @__PURE__ */ __name((headers) => {
   return new Proxy(Object.fromEntries(
     // @ts-ignore
@@ -8860,9 +8531,6 @@ __name(isObj, "isObj");
 
 // ../../node_modules/openai/pagination.mjs
 var Page = class extends AbstractPage {
-  static {
-    __name(this, "Page");
-  }
   constructor(client, response, body, options) {
     super(client, response, body, options);
     this.data = body.data || [];
@@ -8883,10 +8551,8 @@ var Page = class extends AbstractPage {
     return null;
   }
 };
+__name(Page, "Page");
 var CursorPage = class extends AbstractPage {
-  static {
-    __name(this, "CursorPage");
-  }
   constructor(client, response, body, options) {
     super(client, response, body, options);
     this.data = body.data || [];
@@ -8925,22 +8591,18 @@ var CursorPage = class extends AbstractPage {
     return { params: { after: id } };
   }
 };
+__name(CursorPage, "CursorPage");
 
 // ../../node_modules/openai/resource.mjs
 var APIResource = class {
-  static {
-    __name(this, "APIResource");
-  }
   constructor(client) {
     this._client = client;
   }
 };
+__name(APIResource, "APIResource");
 
 // ../../node_modules/openai/resources/chat/completions/messages.mjs
 var Messages = class extends APIResource {
-  static {
-    __name(this, "Messages");
-  }
   list(completionId, query = {}, options) {
     if (isRequestOptions(query)) {
       return this.list(completionId, {}, query);
@@ -8948,12 +8610,10 @@ var Messages = class extends APIResource {
     return this._client.getAPIList(`/chat/completions/${completionId}/messages`, ChatCompletionStoreMessagesPage, { query, ...options });
   }
 };
+__name(Messages, "Messages");
 
 // ../../node_modules/openai/resources/chat/completions/completions.mjs
 var Completions = class extends APIResource {
-  static {
-    __name(this, "Completions");
-  }
   constructor() {
     super(...arguments);
     this.messages = new Messages(this._client);
@@ -9010,37 +8670,29 @@ var Completions = class extends APIResource {
     return this._client.delete(`/chat/completions/${completionId}`, options);
   }
 };
+__name(Completions, "Completions");
 var ChatCompletionsPage = class extends CursorPage {
-  static {
-    __name(this, "ChatCompletionsPage");
-  }
 };
+__name(ChatCompletionsPage, "ChatCompletionsPage");
 var ChatCompletionStoreMessagesPage = class extends CursorPage {
-  static {
-    __name(this, "ChatCompletionStoreMessagesPage");
-  }
 };
+__name(ChatCompletionStoreMessagesPage, "ChatCompletionStoreMessagesPage");
 Completions.ChatCompletionsPage = ChatCompletionsPage;
 Completions.Messages = Messages;
 
 // ../../node_modules/openai/resources/chat/chat.mjs
 var Chat = class extends APIResource {
-  static {
-    __name(this, "Chat");
-  }
   constructor() {
     super(...arguments);
     this.completions = new Completions(this._client);
   }
 };
+__name(Chat, "Chat");
 Chat.Completions = Completions;
 Chat.ChatCompletionsPage = ChatCompletionsPage;
 
 // ../../node_modules/openai/resources/audio/speech.mjs
 var Speech = class extends APIResource {
-  static {
-    __name(this, "Speech");
-  }
   /**
    * Generates audio from the input text.
    *
@@ -9065,12 +8717,10 @@ var Speech = class extends APIResource {
     });
   }
 };
+__name(Speech, "Speech");
 
 // ../../node_modules/openai/resources/audio/transcriptions.mjs
 var Transcriptions = class extends APIResource {
-  static {
-    __name(this, "Transcriptions");
-  }
   create(body, options) {
     return this._client.post("/audio/transcriptions", multipartFormRequestOptions({
       body,
@@ -9080,22 +8730,18 @@ var Transcriptions = class extends APIResource {
     }));
   }
 };
+__name(Transcriptions, "Transcriptions");
 
 // ../../node_modules/openai/resources/audio/translations.mjs
 var Translations = class extends APIResource {
-  static {
-    __name(this, "Translations");
-  }
   create(body, options) {
     return this._client.post("/audio/translations", multipartFormRequestOptions({ body, ...options, __metadata: { model: body.model } }));
   }
 };
+__name(Translations, "Translations");
 
 // ../../node_modules/openai/resources/audio/audio.mjs
 var Audio = class extends APIResource {
-  static {
-    __name(this, "Audio");
-  }
   constructor() {
     super(...arguments);
     this.transcriptions = new Transcriptions(this._client);
@@ -9103,15 +8749,13 @@ var Audio = class extends APIResource {
     this.speech = new Speech(this._client);
   }
 };
+__name(Audio, "Audio");
 Audio.Transcriptions = Transcriptions;
 Audio.Translations = Translations;
 Audio.Speech = Speech;
 
 // ../../node_modules/openai/resources/batches.mjs
 var Batches = class extends APIResource {
-  static {
-    __name(this, "Batches");
-  }
   /**
    * Creates and executes a batch from an uploaded file of requests
    */
@@ -9139,23 +8783,27 @@ var Batches = class extends APIResource {
     return this._client.post(`/batches/${batchId}/cancel`, options);
   }
 };
+__name(Batches, "Batches");
 var BatchesPage = class extends CursorPage {
-  static {
-    __name(this, "BatchesPage");
-  }
 };
+__name(BatchesPage, "BatchesPage");
 Batches.BatchesPage = BatchesPage;
 
 // ../../node_modules/openai/lib/EventStream.mjs
 var __classPrivateFieldSet3 = function(receiver, state, value, kind2, f) {
-  if (kind2 === "m") throw new TypeError("Private method is not writable");
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+  if (kind2 === "m")
+    throw new TypeError("Private method is not writable");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a setter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot write private member to an object whose class did not declare it");
   return kind2 === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
 };
 var __classPrivateFieldGet3 = function(receiver, state, kind2, f) {
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot read private member from an object whose class did not declare it");
   return kind2 === "m" ? f : kind2 === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _EventStream_instances;
@@ -9172,9 +8820,6 @@ var _EventStream_aborted;
 var _EventStream_catchingPromiseCreated;
 var _EventStream_handleError;
 var EventStream = class {
-  static {
-    __name(this, "EventStream");
-  }
   constructor() {
     _EventStream_instances.add(this);
     this.controller = new AbortController();
@@ -9329,6 +8974,7 @@ var EventStream = class {
   _emitFinal() {
   }
 };
+__name(EventStream, "EventStream");
 _EventStream_connectedPromise = /* @__PURE__ */ new WeakMap(), _EventStream_resolveConnectedPromise = /* @__PURE__ */ new WeakMap(), _EventStream_rejectConnectedPromise = /* @__PURE__ */ new WeakMap(), _EventStream_endPromise = /* @__PURE__ */ new WeakMap(), _EventStream_resolveEndPromise = /* @__PURE__ */ new WeakMap(), _EventStream_rejectEndPromise = /* @__PURE__ */ new WeakMap(), _EventStream_listeners = /* @__PURE__ */ new WeakMap(), _EventStream_ended = /* @__PURE__ */ new WeakMap(), _EventStream_errored = /* @__PURE__ */ new WeakMap(), _EventStream_aborted = /* @__PURE__ */ new WeakMap(), _EventStream_catchingPromiseCreated = /* @__PURE__ */ new WeakMap(), _EventStream_instances = /* @__PURE__ */ new WeakSet(), _EventStream_handleError = /* @__PURE__ */ __name(function _EventStream_handleError2(error) {
   __classPrivateFieldSet3(this, _EventStream_errored, true, "f");
   if (error instanceof Error && error.name === "AbortError") {
@@ -9351,14 +8997,19 @@ _EventStream_connectedPromise = /* @__PURE__ */ new WeakMap(), _EventStream_reso
 
 // ../../node_modules/openai/lib/AssistantStream.mjs
 var __classPrivateFieldGet4 = function(receiver, state, kind2, f) {
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot read private member from an object whose class did not declare it");
   return kind2 === "m" ? f : kind2 === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var __classPrivateFieldSet4 = function(receiver, state, value, kind2, f) {
-  if (kind2 === "m") throw new TypeError("Private method is not writable");
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+  if (kind2 === "m")
+    throw new TypeError("Private method is not writable");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a setter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot write private member to an object whose class did not declare it");
   return kind2 === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
 };
 var _AssistantStream_instances;
@@ -9383,10 +9034,7 @@ var _AssistantStream_accumulateRunStep;
 var _AssistantStream_accumulateMessage;
 var _AssistantStream_accumulateContent;
 var _AssistantStream_handleRun;
-var AssistantStream = class _AssistantStream extends EventStream {
-  static {
-    __name(this, "AssistantStream");
-  }
+var AssistantStream = class extends EventStream {
   constructor() {
     super(...arguments);
     _AssistantStream_instances.add(this);
@@ -9437,7 +9085,7 @@ var AssistantStream = class _AssistantStream extends EventStream {
       readQueue.length = 0;
     });
     return {
-      next: /* @__PURE__ */ __name(async () => {
+      next: async () => {
         if (!pushQueue.length) {
           if (done) {
             return { value: void 0, done: true };
@@ -9446,15 +9094,15 @@ var AssistantStream = class _AssistantStream extends EventStream {
         }
         const chunk = pushQueue.shift();
         return { value: chunk, done: false };
-      }, "next"),
-      return: /* @__PURE__ */ __name(async () => {
+      },
+      return: async () => {
         this.abort();
         return { value: void 0, done: true };
-      }, "return")
+      }
     };
   }
   static fromReadableStream(stream) {
-    const runner = new _AssistantStream();
+    const runner = new AssistantStream();
     runner._run(() => runner._fromReadableStream(stream));
     return runner;
   }
@@ -9480,7 +9128,7 @@ var AssistantStream = class _AssistantStream extends EventStream {
     return stream.toReadableStream();
   }
   static createToolAssistantStream(threadId, runId, runs, params, options) {
-    const runner = new _AssistantStream();
+    const runner = new AssistantStream();
     runner._run(() => runner._runToolAssistantStream(threadId, runId, runs, params, {
       ...options,
       headers: { ...options?.headers, "X-Stainless-Helper-Method": "stream" }
@@ -9509,7 +9157,7 @@ var AssistantStream = class _AssistantStream extends EventStream {
     return this._addRun(__classPrivateFieldGet4(this, _AssistantStream_instances, "m", _AssistantStream_endRequest).call(this));
   }
   static createThreadAssistantStream(params, thread, options) {
-    const runner = new _AssistantStream();
+    const runner = new AssistantStream();
     runner._run(() => runner._threadAssistantStream(params, thread, {
       ...options,
       headers: { ...options?.headers, "X-Stainless-Helper-Method": "stream" }
@@ -9517,7 +9165,7 @@ var AssistantStream = class _AssistantStream extends EventStream {
     return runner;
   }
   static createAssistantStream(threadId, runs, params, options) {
-    const runner = new _AssistantStream();
+    const runner = new AssistantStream();
     runner._run(() => runner._runAssistantStream(threadId, runs, params, {
       ...options,
       headers: { ...options?.headers, "X-Stainless-Helper-Method": "stream" }
@@ -9652,6 +9300,7 @@ var AssistantStream = class _AssistantStream extends EventStream {
     return await this._createToolAssistantStream(runs, threadId, runId, params, options);
   }
 };
+__name(AssistantStream, "AssistantStream");
 _AssistantStream_addEvent = /* @__PURE__ */ __name(function _AssistantStream_addEvent2(event) {
   if (this.ended)
     return;
@@ -9903,9 +9552,6 @@ __name(assertNever, "assertNever");
 
 // ../../node_modules/openai/resources/beta/assistants.mjs
 var Assistants = class extends APIResource {
-  static {
-    __name(this, "Assistants");
-  }
   /**
    * Create an assistant with a model and instructions.
    *
@@ -9983,11 +9629,10 @@ var Assistants = class extends APIResource {
     });
   }
 };
+__name(Assistants, "Assistants");
 var AssistantsPage = class extends CursorPage {
-  static {
-    __name(this, "AssistantsPage");
-  }
 };
+__name(AssistantsPage, "AssistantsPage");
 Assistants.AssistantsPage = AssistantsPage;
 
 // ../../node_modules/openai/lib/RunnableFunction.mjs
@@ -10111,8 +9756,10 @@ __name(validateInputTools, "validateInputTools");
 
 // ../../node_modules/openai/lib/AbstractChatCompletionRunner.mjs
 var __classPrivateFieldGet5 = function(receiver, state, kind2, f) {
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot read private member from an object whose class did not declare it");
   return kind2 === "m" ? f : kind2 === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _AbstractChatCompletionRunner_instances;
@@ -10125,9 +9772,6 @@ var _AbstractChatCompletionRunner_validateParams;
 var _AbstractChatCompletionRunner_stringifyFunctionCallResult;
 var DEFAULT_MAX_CHAT_COMPLETIONS = 10;
 var AbstractChatCompletionRunner = class extends EventStream {
-  static {
-    __name(this, "AbstractChatCompletionRunner");
-  }
   constructor() {
     super(...arguments);
     _AbstractChatCompletionRunner_instances.add(this);
@@ -10394,6 +10038,7 @@ var AbstractChatCompletionRunner = class extends EventStream {
     return;
   }
 };
+__name(AbstractChatCompletionRunner, "AbstractChatCompletionRunner");
 _AbstractChatCompletionRunner_instances = /* @__PURE__ */ new WeakSet(), _AbstractChatCompletionRunner_getFinalContent = /* @__PURE__ */ __name(function _AbstractChatCompletionRunner_getFinalContent2() {
   return __classPrivateFieldGet5(this, _AbstractChatCompletionRunner_instances, "m", _AbstractChatCompletionRunner_getFinalMessage).call(this).content ?? null;
 }, "_AbstractChatCompletionRunner_getFinalContent"), _AbstractChatCompletionRunner_getFinalMessage = /* @__PURE__ */ __name(function _AbstractChatCompletionRunner_getFinalMessage2() {
@@ -10459,13 +10104,10 @@ _AbstractChatCompletionRunner_instances = /* @__PURE__ */ new WeakSet(), _Abstra
 }, "_AbstractChatCompletionRunner_stringifyFunctionCallResult");
 
 // ../../node_modules/openai/lib/ChatCompletionRunner.mjs
-var ChatCompletionRunner = class _ChatCompletionRunner extends AbstractChatCompletionRunner {
-  static {
-    __name(this, "ChatCompletionRunner");
-  }
+var ChatCompletionRunner = class extends AbstractChatCompletionRunner {
   /** @deprecated - please use `runTools` instead. */
   static runFunctions(client, params, options) {
-    const runner = new _ChatCompletionRunner();
+    const runner = new ChatCompletionRunner();
     const opts = {
       ...options,
       headers: { ...options?.headers, "X-Stainless-Helper-Method": "runFunctions" }
@@ -10474,7 +10116,7 @@ var ChatCompletionRunner = class _ChatCompletionRunner extends AbstractChatCompl
     return runner;
   }
   static runTools(client, params, options) {
-    const runner = new _ChatCompletionRunner();
+    const runner = new ChatCompletionRunner();
     const opts = {
       ...options,
       headers: { ...options?.headers, "X-Stainless-Helper-Method": "runTools" }
@@ -10489,6 +10131,7 @@ var ChatCompletionRunner = class _ChatCompletionRunner extends AbstractChatCompl
     }
   }
 };
+__name(ChatCompletionRunner, "ChatCompletionRunner");
 
 // ../../node_modules/openai/_vendor/partial-json-parser/parser.mjs
 var STR = 1;
@@ -10522,15 +10165,11 @@ var Allow = {
   ALL
 };
 var PartialJSON = class extends Error {
-  static {
-    __name(this, "PartialJSON");
-  }
 };
+__name(PartialJSON, "PartialJSON");
 var MalformedJSON = class extends Error {
-  static {
-    __name(this, "MalformedJSON");
-  }
 };
+__name(MalformedJSON, "MalformedJSON");
 function parseJSON(jsonString, allowPartial = Allow.ALL) {
   if (typeof jsonString !== "string") {
     throw new TypeError(`expecting str, got ${typeof jsonString}`);
@@ -10711,14 +10350,19 @@ var partialParse = /* @__PURE__ */ __name((input) => parseJSON(input, Allow.ALL 
 
 // ../../node_modules/openai/lib/ChatCompletionStream.mjs
 var __classPrivateFieldSet5 = function(receiver, state, value, kind2, f) {
-  if (kind2 === "m") throw new TypeError("Private method is not writable");
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+  if (kind2 === "m")
+    throw new TypeError("Private method is not writable");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a setter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot write private member to an object whose class did not declare it");
   return kind2 === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
 };
 var __classPrivateFieldGet6 = function(receiver, state, kind2, f) {
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot read private member from an object whose class did not declare it");
   return kind2 === "m" ? f : kind2 === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _ChatCompletionStream_instances;
@@ -10733,10 +10377,7 @@ var _ChatCompletionStream_emitContentDoneEvents;
 var _ChatCompletionStream_endRequest;
 var _ChatCompletionStream_getAutoParseableResponseFormat;
 var _ChatCompletionStream_accumulateChatCompletion;
-var ChatCompletionStream = class _ChatCompletionStream extends AbstractChatCompletionRunner {
-  static {
-    __name(this, "ChatCompletionStream");
-  }
+var ChatCompletionStream = class extends AbstractChatCompletionRunner {
   constructor(params) {
     super();
     _ChatCompletionStream_instances.add(this);
@@ -10757,12 +10398,12 @@ var ChatCompletionStream = class _ChatCompletionStream extends AbstractChatCompl
    * in this context.
    */
   static fromReadableStream(stream) {
-    const runner = new _ChatCompletionStream(null);
+    const runner = new ChatCompletionStream(null);
     runner._run(() => runner._fromReadableStream(stream));
     return runner;
   }
   static createChatCompletion(client, params, options) {
-    const runner = new _ChatCompletionStream(params);
+    const runner = new ChatCompletionStream(params);
     runner._run(() => runner._runChatCompletion(client, { ...params, stream: true }, { ...options, headers: { ...options?.headers, "X-Stainless-Helper-Method": "stream" } }));
     return runner;
   }
@@ -11088,7 +10729,7 @@ var ChatCompletionStream = class _ChatCompletionStream extends AbstractChatCompl
       readQueue.length = 0;
     });
     return {
-      next: /* @__PURE__ */ __name(async () => {
+      next: async () => {
         if (!pushQueue.length) {
           if (done) {
             return { value: void 0, done: true };
@@ -11097,11 +10738,11 @@ var ChatCompletionStream = class _ChatCompletionStream extends AbstractChatCompl
         }
         const chunk = pushQueue.shift();
         return { value: chunk, done: false };
-      }, "next"),
-      return: /* @__PURE__ */ __name(async () => {
+      },
+      return: async () => {
         this.abort();
         return { value: void 0, done: true };
-      }, "return")
+      }
     };
   }
   toReadableStream() {
@@ -11109,6 +10750,7 @@ var ChatCompletionStream = class _ChatCompletionStream extends AbstractChatCompl
     return stream.toReadableStream();
   }
 };
+__name(ChatCompletionStream, "ChatCompletionStream");
 function finalizeChatCompletion(snapshot, params) {
   const { id, choices, created, model, system_fingerprint, ...rest } = snapshot;
   const completion = {
@@ -11208,18 +10850,15 @@ function assertNever2(_x) {
 __name(assertNever2, "assertNever");
 
 // ../../node_modules/openai/lib/ChatCompletionStreamingRunner.mjs
-var ChatCompletionStreamingRunner = class _ChatCompletionStreamingRunner extends ChatCompletionStream {
-  static {
-    __name(this, "ChatCompletionStreamingRunner");
-  }
+var ChatCompletionStreamingRunner = class extends ChatCompletionStream {
   static fromReadableStream(stream) {
-    const runner = new _ChatCompletionStreamingRunner(null);
+    const runner = new ChatCompletionStreamingRunner(null);
     runner._run(() => runner._fromReadableStream(stream));
     return runner;
   }
   /** @deprecated - please use `runTools` instead. */
   static runFunctions(client, params, options) {
-    const runner = new _ChatCompletionStreamingRunner(null);
+    const runner = new ChatCompletionStreamingRunner(null);
     const opts = {
       ...options,
       headers: { ...options?.headers, "X-Stainless-Helper-Method": "runFunctions" }
@@ -11228,7 +10867,7 @@ var ChatCompletionStreamingRunner = class _ChatCompletionStreamingRunner extends
     return runner;
   }
   static runTools(client, params, options) {
-    const runner = new _ChatCompletionStreamingRunner(
+    const runner = new ChatCompletionStreamingRunner(
       // @ts-expect-error TODO these types are incompatible
       params
     );
@@ -11240,12 +10879,10 @@ var ChatCompletionStreamingRunner = class _ChatCompletionStreamingRunner extends
     return runner;
   }
 };
+__name(ChatCompletionStreamingRunner, "ChatCompletionStreamingRunner");
 
 // ../../node_modules/openai/resources/beta/chat/completions.mjs
 var Completions2 = class extends APIResource {
-  static {
-    __name(this, "Completions");
-  }
   parse(body, options) {
     validateInputTools(body.tools);
     return this._client.chat.completions.create(body, {
@@ -11275,26 +10912,22 @@ var Completions2 = class extends APIResource {
     return ChatCompletionStream.createChatCompletion(this._client, body, options);
   }
 };
+__name(Completions2, "Completions");
 
 // ../../node_modules/openai/resources/beta/chat/chat.mjs
 var Chat2 = class extends APIResource {
-  static {
-    __name(this, "Chat");
-  }
   constructor() {
     super(...arguments);
     this.completions = new Completions2(this._client);
   }
 };
+__name(Chat2, "Chat");
 (function(Chat3) {
   Chat3.Completions = Completions2;
 })(Chat2 || (Chat2 = {}));
 
 // ../../node_modules/openai/resources/beta/realtime/sessions.mjs
 var Sessions = class extends APIResource {
-  static {
-    __name(this, "Sessions");
-  }
   /**
    * Create an ephemeral API token for use in client-side applications with the
    * Realtime API. Can be configured with the same session parameters as the
@@ -11318,12 +10951,10 @@ var Sessions = class extends APIResource {
     });
   }
 };
+__name(Sessions, "Sessions");
 
 // ../../node_modules/openai/resources/beta/realtime/transcription-sessions.mjs
 var TranscriptionSessions = class extends APIResource {
-  static {
-    __name(this, "TranscriptionSessions");
-  }
   /**
    * Create an ephemeral API token for use in client-side applications with the
    * Realtime API specifically for realtime transcriptions. Can be configured with
@@ -11347,26 +10978,22 @@ var TranscriptionSessions = class extends APIResource {
     });
   }
 };
+__name(TranscriptionSessions, "TranscriptionSessions");
 
 // ../../node_modules/openai/resources/beta/realtime/realtime.mjs
 var Realtime = class extends APIResource {
-  static {
-    __name(this, "Realtime");
-  }
   constructor() {
     super(...arguments);
     this.sessions = new Sessions(this._client);
     this.transcriptionSessions = new TranscriptionSessions(this._client);
   }
 };
+__name(Realtime, "Realtime");
 Realtime.Sessions = Sessions;
 Realtime.TranscriptionSessions = TranscriptionSessions;
 
 // ../../node_modules/openai/resources/beta/threads/messages.mjs
 var Messages2 = class extends APIResource {
-  static {
-    __name(this, "Messages");
-  }
   /**
    * Create a message.
    *
@@ -11424,18 +11051,14 @@ var Messages2 = class extends APIResource {
     });
   }
 };
+__name(Messages2, "Messages");
 var MessagesPage = class extends CursorPage {
-  static {
-    __name(this, "MessagesPage");
-  }
 };
+__name(MessagesPage, "MessagesPage");
 Messages2.MessagesPage = MessagesPage;
 
 // ../../node_modules/openai/resources/beta/threads/runs/steps.mjs
 var Steps = class extends APIResource {
-  static {
-    __name(this, "Steps");
-  }
   retrieve(threadId, runId, stepId, query = {}, options) {
     if (isRequestOptions(query)) {
       return this.retrieve(threadId, runId, stepId, {}, query);
@@ -11457,18 +11080,14 @@ var Steps = class extends APIResource {
     });
   }
 };
+__name(Steps, "Steps");
 var RunStepsPage = class extends CursorPage {
-  static {
-    __name(this, "RunStepsPage");
-  }
 };
+__name(RunStepsPage, "RunStepsPage");
 Steps.RunStepsPage = RunStepsPage;
 
 // ../../node_modules/openai/resources/beta/threads/runs/runs.mjs
 var Runs = class extends APIResource {
-  static {
-    __name(this, "Runs");
-  }
   constructor() {
     super(...arguments);
     this.steps = new Steps(this._client);
@@ -11560,7 +11179,6 @@ var Runs = class extends APIResource {
         headers: { ...options?.headers, ...headers }
       }).withResponse();
       switch (run.status) {
-        //If we are in any sort of intermediate state we poll
         case "queued":
         case "in_progress":
         case "cancelling":
@@ -11578,7 +11196,6 @@ var Runs = class extends APIResource {
           }
           await sleep(sleepInterval);
           break;
-        //We return the run in any terminal state.
         case "requires_action":
         case "incomplete":
         case "cancelled":
@@ -11621,20 +11238,16 @@ var Runs = class extends APIResource {
     return AssistantStream.createToolAssistantStream(threadId, runId, this._client.beta.threads.runs, body, options);
   }
 };
+__name(Runs, "Runs");
 var RunsPage = class extends CursorPage {
-  static {
-    __name(this, "RunsPage");
-  }
 };
+__name(RunsPage, "RunsPage");
 Runs.RunsPage = RunsPage;
 Runs.Steps = Steps;
 Runs.RunStepsPage = RunStepsPage;
 
 // ../../node_modules/openai/resources/beta/threads/threads.mjs
 var Threads = class extends APIResource {
-  static {
-    __name(this, "Threads");
-  }
   constructor() {
     super(...arguments);
     this.runs = new Runs(this._client);
@@ -11708,6 +11321,7 @@ var Threads = class extends APIResource {
     return AssistantStream.createThreadAssistantStream(body, this._client.beta.threads, options);
   }
 };
+__name(Threads, "Threads");
 Threads.Runs = Runs;
 Threads.RunsPage = RunsPage;
 Threads.Messages = Messages2;
@@ -11715,9 +11329,6 @@ Threads.MessagesPage = MessagesPage;
 
 // ../../node_modules/openai/resources/beta/beta.mjs
 var Beta = class extends APIResource {
-  static {
-    __name(this, "Beta");
-  }
   constructor() {
     super(...arguments);
     this.realtime = new Realtime(this._client);
@@ -11726,6 +11337,7 @@ var Beta = class extends APIResource {
     this.threads = new Threads(this._client);
   }
 };
+__name(Beta, "Beta");
 Beta.Realtime = Realtime;
 Beta.Assistants = Assistants;
 Beta.AssistantsPage = AssistantsPage;
@@ -11733,19 +11345,14 @@ Beta.Threads = Threads;
 
 // ../../node_modules/openai/resources/completions.mjs
 var Completions3 = class extends APIResource {
-  static {
-    __name(this, "Completions");
-  }
   create(body, options) {
     return this._client.post("/completions", { body, ...options, stream: body.stream ?? false });
   }
 };
+__name(Completions3, "Completions");
 
 // ../../node_modules/openai/resources/containers/files/content.mjs
 var Content = class extends APIResource {
-  static {
-    __name(this, "Content");
-  }
   /**
    * Retrieve Container File Content
    */
@@ -11757,12 +11364,10 @@ var Content = class extends APIResource {
     });
   }
 };
+__name(Content, "Content");
 
 // ../../node_modules/openai/resources/containers/files/files.mjs
 var Files = class extends APIResource {
-  static {
-    __name(this, "Files");
-  }
   constructor() {
     super(...arguments);
     this.content = new Content(this._client);
@@ -11801,19 +11406,15 @@ var Files = class extends APIResource {
     });
   }
 };
+__name(Files, "Files");
 var FileListResponsesPage = class extends CursorPage {
-  static {
-    __name(this, "FileListResponsesPage");
-  }
 };
+__name(FileListResponsesPage, "FileListResponsesPage");
 Files.FileListResponsesPage = FileListResponsesPage;
 Files.Content = Content;
 
 // ../../node_modules/openai/resources/containers/containers.mjs
 var Containers = class extends APIResource {
-  static {
-    __name(this, "Containers");
-  }
   constructor() {
     super(...arguments);
     this.files = new Files(this._client);
@@ -11846,20 +11447,16 @@ var Containers = class extends APIResource {
     });
   }
 };
+__name(Containers, "Containers");
 var ContainerListResponsesPage = class extends CursorPage {
-  static {
-    __name(this, "ContainerListResponsesPage");
-  }
 };
+__name(ContainerListResponsesPage, "ContainerListResponsesPage");
 Containers.ContainerListResponsesPage = ContainerListResponsesPage;
 Containers.Files = Files;
 Containers.FileListResponsesPage = FileListResponsesPage;
 
 // ../../node_modules/openai/resources/embeddings.mjs
 var Embeddings = class extends APIResource {
-  static {
-    __name(this, "Embeddings");
-  }
   /**
    * Creates an embedding vector representing the input text.
    *
@@ -11900,12 +11497,10 @@ var Embeddings = class extends APIResource {
     });
   }
 };
+__name(Embeddings, "Embeddings");
 
 // ../../node_modules/openai/resources/evals/runs/output-items.mjs
 var OutputItems = class extends APIResource {
-  static {
-    __name(this, "OutputItems");
-  }
   /**
    * Get an evaluation run output item by ID.
    */
@@ -11919,18 +11514,14 @@ var OutputItems = class extends APIResource {
     return this._client.getAPIList(`/evals/${evalId}/runs/${runId}/output_items`, OutputItemListResponsesPage, { query, ...options });
   }
 };
+__name(OutputItems, "OutputItems");
 var OutputItemListResponsesPage = class extends CursorPage {
-  static {
-    __name(this, "OutputItemListResponsesPage");
-  }
 };
+__name(OutputItemListResponsesPage, "OutputItemListResponsesPage");
 OutputItems.OutputItemListResponsesPage = OutputItemListResponsesPage;
 
 // ../../node_modules/openai/resources/evals/runs/runs.mjs
 var Runs2 = class extends APIResource {
-  static {
-    __name(this, "Runs");
-  }
   constructor() {
     super(...arguments);
     this.outputItems = new OutputItems(this._client);
@@ -11968,20 +11559,16 @@ var Runs2 = class extends APIResource {
     return this._client.post(`/evals/${evalId}/runs/${runId}`, options);
   }
 };
+__name(Runs2, "Runs");
 var RunListResponsesPage = class extends CursorPage {
-  static {
-    __name(this, "RunListResponsesPage");
-  }
 };
+__name(RunListResponsesPage, "RunListResponsesPage");
 Runs2.RunListResponsesPage = RunListResponsesPage;
 Runs2.OutputItems = OutputItems;
 Runs2.OutputItemListResponsesPage = OutputItemListResponsesPage;
 
 // ../../node_modules/openai/resources/evals/evals.mjs
 var Evals = class extends APIResource {
-  static {
-    __name(this, "Evals");
-  }
   constructor() {
     super(...arguments);
     this.runs = new Runs2(this._client);
@@ -12022,20 +11609,16 @@ var Evals = class extends APIResource {
     return this._client.delete(`/evals/${evalId}`, options);
   }
 };
+__name(Evals, "Evals");
 var EvalListResponsesPage = class extends CursorPage {
-  static {
-    __name(this, "EvalListResponsesPage");
-  }
 };
+__name(EvalListResponsesPage, "EvalListResponsesPage");
 Evals.EvalListResponsesPage = EvalListResponsesPage;
 Evals.Runs = Runs2;
 Evals.RunListResponsesPage = RunListResponsesPage;
 
 // ../../node_modules/openai/resources/files.mjs
 var Files2 = class extends APIResource {
-  static {
-    __name(this, "Files");
-  }
   /**
    * Upload a file that can be used across various endpoints. Individual files can be
    * up to 512 MB, and the size of all files uploaded by one organization can be up
@@ -12117,25 +11700,19 @@ var Files2 = class extends APIResource {
     return file;
   }
 };
+__name(Files2, "Files");
 var FileObjectsPage = class extends CursorPage {
-  static {
-    __name(this, "FileObjectsPage");
-  }
 };
+__name(FileObjectsPage, "FileObjectsPage");
 Files2.FileObjectsPage = FileObjectsPage;
 
 // ../../node_modules/openai/resources/fine-tuning/methods.mjs
 var Methods = class extends APIResource {
-  static {
-    __name(this, "Methods");
-  }
 };
+__name(Methods, "Methods");
 
 // ../../node_modules/openai/resources/fine-tuning/alpha/graders.mjs
 var Graders = class extends APIResource {
-  static {
-    __name(this, "Graders");
-  }
   /**
    * Run a grader.
    *
@@ -12178,24 +11755,20 @@ var Graders = class extends APIResource {
     return this._client.post("/fine_tuning/alpha/graders/validate", { body, ...options });
   }
 };
+__name(Graders, "Graders");
 
 // ../../node_modules/openai/resources/fine-tuning/alpha/alpha.mjs
 var Alpha = class extends APIResource {
-  static {
-    __name(this, "Alpha");
-  }
   constructor() {
     super(...arguments);
     this.graders = new Graders(this._client);
   }
 };
+__name(Alpha, "Alpha");
 Alpha.Graders = Graders;
 
 // ../../node_modules/openai/resources/fine-tuning/checkpoints/permissions.mjs
 var Permissions = class extends APIResource {
-  static {
-    __name(this, "Permissions");
-  }
   /**
    * **NOTE:** Calling this endpoint requires an [admin API key](../admin-api-keys).
    *
@@ -12244,31 +11817,25 @@ var Permissions = class extends APIResource {
     return this._client.delete(`/fine_tuning/checkpoints/${fineTunedModelCheckpoint}/permissions/${permissionId}`, options);
   }
 };
+__name(Permissions, "Permissions");
 var PermissionCreateResponsesPage = class extends Page {
-  static {
-    __name(this, "PermissionCreateResponsesPage");
-  }
 };
+__name(PermissionCreateResponsesPage, "PermissionCreateResponsesPage");
 Permissions.PermissionCreateResponsesPage = PermissionCreateResponsesPage;
 
 // ../../node_modules/openai/resources/fine-tuning/checkpoints/checkpoints.mjs
 var Checkpoints = class extends APIResource {
-  static {
-    __name(this, "Checkpoints");
-  }
   constructor() {
     super(...arguments);
     this.permissions = new Permissions(this._client);
   }
 };
+__name(Checkpoints, "Checkpoints");
 Checkpoints.Permissions = Permissions;
 Checkpoints.PermissionCreateResponsesPage = PermissionCreateResponsesPage;
 
 // ../../node_modules/openai/resources/fine-tuning/jobs/checkpoints.mjs
 var Checkpoints2 = class extends APIResource {
-  static {
-    __name(this, "Checkpoints");
-  }
   list(fineTuningJobId, query = {}, options) {
     if (isRequestOptions(query)) {
       return this.list(fineTuningJobId, {}, query);
@@ -12276,18 +11843,14 @@ var Checkpoints2 = class extends APIResource {
     return this._client.getAPIList(`/fine_tuning/jobs/${fineTuningJobId}/checkpoints`, FineTuningJobCheckpointsPage, { query, ...options });
   }
 };
+__name(Checkpoints2, "Checkpoints");
 var FineTuningJobCheckpointsPage = class extends CursorPage {
-  static {
-    __name(this, "FineTuningJobCheckpointsPage");
-  }
 };
+__name(FineTuningJobCheckpointsPage, "FineTuningJobCheckpointsPage");
 Checkpoints2.FineTuningJobCheckpointsPage = FineTuningJobCheckpointsPage;
 
 // ../../node_modules/openai/resources/fine-tuning/jobs/jobs.mjs
 var Jobs = class extends APIResource {
-  static {
-    __name(this, "Jobs");
-  }
   constructor() {
     super(...arguments);
     this.checkpoints = new Checkpoints2(this._client);
@@ -12382,16 +11945,13 @@ var Jobs = class extends APIResource {
     return this._client.post(`/fine_tuning/jobs/${fineTuningJobId}/resume`, options);
   }
 };
+__name(Jobs, "Jobs");
 var FineTuningJobsPage = class extends CursorPage {
-  static {
-    __name(this, "FineTuningJobsPage");
-  }
 };
+__name(FineTuningJobsPage, "FineTuningJobsPage");
 var FineTuningJobEventsPage = class extends CursorPage {
-  static {
-    __name(this, "FineTuningJobEventsPage");
-  }
 };
+__name(FineTuningJobEventsPage, "FineTuningJobEventsPage");
 Jobs.FineTuningJobsPage = FineTuningJobsPage;
 Jobs.FineTuningJobEventsPage = FineTuningJobEventsPage;
 Jobs.Checkpoints = Checkpoints2;
@@ -12399,9 +11959,6 @@ Jobs.FineTuningJobCheckpointsPage = FineTuningJobCheckpointsPage;
 
 // ../../node_modules/openai/resources/fine-tuning/fine-tuning.mjs
 var FineTuning = class extends APIResource {
-  static {
-    __name(this, "FineTuning");
-  }
   constructor() {
     super(...arguments);
     this.methods = new Methods(this._client);
@@ -12410,6 +11967,7 @@ var FineTuning = class extends APIResource {
     this.alpha = new Alpha(this._client);
   }
 };
+__name(FineTuning, "FineTuning");
 FineTuning.Methods = Methods;
 FineTuning.Jobs = Jobs;
 FineTuning.FineTuningJobsPage = FineTuningJobsPage;
@@ -12419,28 +11977,21 @@ FineTuning.Alpha = Alpha;
 
 // ../../node_modules/openai/resources/graders/grader-models.mjs
 var GraderModels = class extends APIResource {
-  static {
-    __name(this, "GraderModels");
-  }
 };
+__name(GraderModels, "GraderModels");
 
 // ../../node_modules/openai/resources/graders/graders.mjs
 var Graders2 = class extends APIResource {
-  static {
-    __name(this, "Graders");
-  }
   constructor() {
     super(...arguments);
     this.graderModels = new GraderModels(this._client);
   }
 };
+__name(Graders2, "Graders");
 Graders2.GraderModels = GraderModels;
 
 // ../../node_modules/openai/resources/images.mjs
 var Images = class extends APIResource {
-  static {
-    __name(this, "Images");
-  }
   /**
    * Creates a variation of a given image. This endpoint only supports `dall-e-2`.
    *
@@ -12484,12 +12035,10 @@ var Images = class extends APIResource {
     return this._client.post("/images/generations", { body, ...options });
   }
 };
+__name(Images, "Images");
 
 // ../../node_modules/openai/resources/models.mjs
 var Models = class extends APIResource {
-  static {
-    __name(this, "Models");
-  }
   /**
    * Retrieves a model instance, providing basic information about the model such as
    * the owner and permissioning.
@@ -12512,18 +12061,14 @@ var Models = class extends APIResource {
     return this._client.delete(`/models/${model}`, options);
   }
 };
+__name(Models, "Models");
 var ModelsPage = class extends Page {
-  static {
-    __name(this, "ModelsPage");
-  }
 };
+__name(ModelsPage, "ModelsPage");
 Models.ModelsPage = ModelsPage;
 
 // ../../node_modules/openai/resources/moderations.mjs
 var Moderations = class extends APIResource {
-  static {
-    __name(this, "Moderations");
-  }
   /**
    * Classifies if text and/or image inputs are potentially harmful. Learn more in
    * the [moderation guide](https://platform.openai.com/docs/guides/moderation).
@@ -12532,6 +12077,7 @@ var Moderations = class extends APIResource {
     return this._client.post("/moderations", { body, ...options });
   }
 };
+__name(Moderations, "Moderations");
 
 // ../../node_modules/openai/lib/ResponsesParser.mjs
 function maybeParseResponse(response, params) {
@@ -12664,9 +12210,6 @@ __name(addOutputText, "addOutputText");
 
 // ../../node_modules/openai/resources/responses/input-items.mjs
 var InputItems = class extends APIResource {
-  static {
-    __name(this, "InputItems");
-  }
   list(responseId, query = {}, options) {
     if (isRequestOptions(query)) {
       return this.list(responseId, {}, query);
@@ -12677,17 +12220,23 @@ var InputItems = class extends APIResource {
     });
   }
 };
+__name(InputItems, "InputItems");
 
 // ../../node_modules/openai/lib/responses/ResponseStream.mjs
 var __classPrivateFieldSet6 = function(receiver, state, value, kind2, f) {
-  if (kind2 === "m") throw new TypeError("Private method is not writable");
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+  if (kind2 === "m")
+    throw new TypeError("Private method is not writable");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a setter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot write private member to an object whose class did not declare it");
   return kind2 === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
 };
 var __classPrivateFieldGet7 = function(receiver, state, kind2, f) {
-  if (kind2 === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  if (kind2 === "a" && !f)
+    throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+    throw new TypeError("Cannot read private member from an object whose class did not declare it");
   return kind2 === "m" ? f : kind2 === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _ResponseStream_instances;
@@ -12698,10 +12247,7 @@ var _ResponseStream_beginRequest;
 var _ResponseStream_addEvent;
 var _ResponseStream_endRequest;
 var _ResponseStream_accumulateResponse;
-var ResponseStream = class _ResponseStream extends EventStream {
-  static {
-    __name(this, "ResponseStream");
-  }
+var ResponseStream = class extends EventStream {
   constructor(params) {
     super();
     _ResponseStream_instances.add(this);
@@ -12711,7 +12257,7 @@ var ResponseStream = class _ResponseStream extends EventStream {
     __classPrivateFieldSet6(this, _ResponseStream_params, params, "f");
   }
   static createResponse(client, params, options) {
-    const runner = new _ResponseStream(params);
+    const runner = new ResponseStream(params);
     runner._run(() => runner._createOrRetrieveResponse(client, params, {
       ...options,
       headers: { ...options?.headers, "X-Stainless-Helper-Method": "stream" }
@@ -12898,7 +12444,7 @@ var ResponseStream = class _ResponseStream extends EventStream {
       readQueue.length = 0;
     });
     return {
-      next: /* @__PURE__ */ __name(async () => {
+      next: async () => {
         if (!pushQueue.length) {
           if (done) {
             return { value: void 0, done: true };
@@ -12907,11 +12453,11 @@ var ResponseStream = class _ResponseStream extends EventStream {
         }
         const event = pushQueue.shift();
         return { value: event, done: false };
-      }, "next"),
-      return: /* @__PURE__ */ __name(async () => {
+      },
+      return: async () => {
         this.abort();
         return { value: void 0, done: true };
-      }, "return")
+      }
     };
   }
   /**
@@ -12926,6 +12472,7 @@ var ResponseStream = class _ResponseStream extends EventStream {
     return response;
   }
 };
+__name(ResponseStream, "ResponseStream");
 function finalizeResponse(snapshot, params) {
   return maybeParseResponse(snapshot, params);
 }
@@ -12933,9 +12480,6 @@ __name(finalizeResponse, "finalizeResponse");
 
 // ../../node_modules/openai/resources/responses/responses.mjs
 var Responses = class extends APIResource {
-  static {
-    __name(this, "Responses");
-  }
   constructor() {
     super(...arguments);
     this.inputItems = new InputItems(this._client);
@@ -12999,18 +12543,14 @@ var Responses = class extends APIResource {
     });
   }
 };
+__name(Responses, "Responses");
 var ResponseItemsPage = class extends CursorPage {
-  static {
-    __name(this, "ResponseItemsPage");
-  }
 };
+__name(ResponseItemsPage, "ResponseItemsPage");
 Responses.InputItems = InputItems;
 
 // ../../node_modules/openai/resources/uploads/parts.mjs
 var Parts = class extends APIResource {
-  static {
-    __name(this, "Parts");
-  }
   /**
    * Adds a
    * [Part](https://platform.openai.com/docs/api-reference/uploads/part-object) to an
@@ -13028,12 +12568,10 @@ var Parts = class extends APIResource {
     return this._client.post(`/uploads/${uploadId}/parts`, multipartFormRequestOptions({ body, ...options }));
   }
 };
+__name(Parts, "Parts");
 
 // ../../node_modules/openai/resources/uploads/uploads.mjs
 var Uploads = class extends APIResource {
-  static {
-    __name(this, "Uploads");
-  }
   constructor() {
     super(...arguments);
     this.parts = new Parts(this._client);
@@ -13087,6 +12625,7 @@ var Uploads = class extends APIResource {
     return this._client.post(`/uploads/${uploadId}/complete`, { body, ...options });
   }
 };
+__name(Uploads, "Uploads");
 Uploads.Parts = Parts;
 
 // ../../node_modules/openai/lib/Util.mjs
@@ -13110,9 +12649,6 @@ var allSettledWithThrow = /* @__PURE__ */ __name(async (promises) => {
 
 // ../../node_modules/openai/resources/vector-stores/files.mjs
 var Files3 = class extends APIResource {
-  static {
-    __name(this, "Files");
-  }
   /**
    * Create a vector store file by attaching a
    * [File](https://platform.openai.com/docs/api-reference/files) to a
@@ -13236,24 +12772,18 @@ var Files3 = class extends APIResource {
     return this._client.getAPIList(`/vector_stores/${vectorStoreId}/files/${fileId}/content`, FileContentResponsesPage, { ...options, headers: { "OpenAI-Beta": "assistants=v2", ...options?.headers } });
   }
 };
+__name(Files3, "Files");
 var VectorStoreFilesPage = class extends CursorPage {
-  static {
-    __name(this, "VectorStoreFilesPage");
-  }
 };
+__name(VectorStoreFilesPage, "VectorStoreFilesPage");
 var FileContentResponsesPage = class extends Page {
-  static {
-    __name(this, "FileContentResponsesPage");
-  }
 };
+__name(FileContentResponsesPage, "FileContentResponsesPage");
 Files3.VectorStoreFilesPage = VectorStoreFilesPage;
 Files3.FileContentResponsesPage = FileContentResponsesPage;
 
 // ../../node_modules/openai/resources/vector-stores/file-batches.mjs
 var FileBatches = class extends APIResource {
-  static {
-    __name(this, "FileBatches");
-  }
   /**
    * Create a vector store file batch.
    */
@@ -13363,12 +12893,10 @@ var FileBatches = class extends APIResource {
     });
   }
 };
+__name(FileBatches, "FileBatches");
 
 // ../../node_modules/openai/resources/vector-stores/vector-stores.mjs
 var VectorStores = class extends APIResource {
-  static {
-    __name(this, "VectorStores");
-  }
   constructor() {
     super(...arguments);
     this.files = new Files3(this._client);
@@ -13435,16 +12963,13 @@ var VectorStores = class extends APIResource {
     });
   }
 };
+__name(VectorStores, "VectorStores");
 var VectorStoresPage = class extends CursorPage {
-  static {
-    __name(this, "VectorStoresPage");
-  }
 };
+__name(VectorStoresPage, "VectorStoresPage");
 var VectorStoreSearchResponsesPage = class extends Page {
-  static {
-    __name(this, "VectorStoreSearchResponsesPage");
-  }
 };
+__name(VectorStoreSearchResponsesPage, "VectorStoreSearchResponsesPage");
 VectorStores.VectorStoresPage = VectorStoresPage;
 VectorStores.VectorStoreSearchResponsesPage = VectorStoreSearchResponsesPage;
 VectorStores.Files = Files3;
@@ -13455,9 +12980,6 @@ VectorStores.FileBatches = FileBatches;
 // ../../node_modules/openai/index.mjs
 var _a;
 var OpenAI = class extends APIClient {
-  static {
-    __name(this, "OpenAI");
-  }
   /**
    * API Client for interfacing with the OpenAI API.
    *
@@ -13534,6 +13056,7 @@ var OpenAI = class extends APIClient {
     return stringify(query, { arrayFormat: "brackets" });
   }
 };
+__name(OpenAI, "OpenAI");
 _a = OpenAI;
 OpenAI.OpenAI = _a;
 OpenAI.DEFAULT_TIMEOUT = 6e5;
@@ -13579,49 +13102,6 @@ OpenAI.Containers = Containers;
 OpenAI.ContainerListResponsesPage = ContainerListResponsesPage;
 var openai_default = OpenAI;
 
-// src/utils/retry.ts
-async function withRetry(operation, options = {}) {
-  const {
-    retries = 3,
-    initialDelay = 1e3,
-    backoffFactor = 2,
-    onRetry
-  } = options;
-  let lastError;
-  let delay = initialDelay;
-  for (let attempt = 0; attempt <= retries; attempt++) {
-    try {
-      return await operation();
-    } catch (error) {
-      lastError = error;
-      if (attempt === retries) {
-        break;
-      }
-      const shouldRetry = isRetryableError(error);
-      if (!shouldRetry) {
-        throw error;
-      }
-      if (onRetry) {
-        onRetry(error, attempt + 1);
-      }
-      await new Promise((resolve) => setTimeout(resolve, delay));
-      delay *= backoffFactor;
-    }
-  }
-  throw lastError;
-}
-__name(withRetry, "withRetry");
-function isRetryableError(error) {
-  if (!error) return true;
-  const err = error;
-  const status = err.status || err.response?.status;
-  if (status) {
-    return status === 429 || status >= 500;
-  }
-  return true;
-}
-__name(isRetryableError, "isRetryableError");
-
 // src/services/openai.ts
 function createAIClient(config) {
   return new openai_default({
@@ -13633,7 +13113,7 @@ __name(createAIClient, "createAIClient");
 async function* streamCompletion(options) {
   const client = createAIClient(options.config);
   const model = options.config.model || "gpt-4o-mini";
-  const stream = await withRetry(() => client.chat.completions.create({
+  const stream = await client.chat.completions.create({
     model,
     messages: [
       { role: "system", content: options.systemPrompt },
@@ -13642,7 +13122,7 @@ async function* streamCompletion(options) {
     stream: true,
     temperature: 0.7,
     max_tokens: 4096
-  }));
+  });
   for await (const chunk of stream) {
     const content = chunk.choices[0]?.delta?.content;
     if (content) {
@@ -13780,7 +13260,6 @@ var refine_default = app3;
 
 // src/index.ts
 var app4 = new Hono2();
-app4.use("*", secureHeaders());
 app4.use("*", cors({
   origin: "*",
   allowMethods: ["GET", "POST", "OPTIONS"],
@@ -13815,8 +13294,8 @@ app4.notFound((c) => {
     availableEndpoints: ["/", "/generate", "/tasks", "/refine"]
   }, 404);
 });
-var index_default = app4;
+var src_default = app4;
 export {
-  index_default as default
+  src_default as default
 };
 //# sourceMappingURL=index.js.map

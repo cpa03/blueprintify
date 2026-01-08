@@ -1,1 +1,1 @@
-This folder contains the built output assets for the worker "blueprint-generator-api" generated at 2026-01-08T18:41:41.226Z.
+This folder contains the built output assets for the worker "blueprint-generator-api" generated at 2026-01-07T17:56:42.286Z.

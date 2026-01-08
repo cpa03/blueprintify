@@ -65,52 +65,6 @@ export declare const TaskGenerationRequestSchema: z.ZodObject<{
     projectName: string;
     blueprint: string;
 }>;
-export declare const TaskStatusSchema: z.ZodEnum<["todo", "in_progress", "done"]>;
-export declare const TaskPrioritySchema: z.ZodEnum<["low", "medium", "high", "critical"]>;
-export declare const TaskItemSchema: z.ZodObject<{
-    id: z.ZodString;
-    title: z.ZodString;
-    status: z.ZodEnum<["todo", "in_progress", "done"]>;
-    priority: z.ZodOptional<z.ZodEnum<["low", "medium", "high", "critical"]>>;
-    description: z.ZodOptional<z.ZodString>;
-    dependencies: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
-}, "strip", z.ZodTypeAny, {
-    status: "todo" | "in_progress" | "done";
-    id: string;
-    title: string;
-    description?: string | undefined;
-    priority?: "low" | "medium" | "high" | "critical" | undefined;
-    dependencies?: string[] | undefined;
-}, {
-    status: "todo" | "in_progress" | "done";
-    id: string;
-    title: string;
-    description?: string | undefined;
-    priority?: "low" | "medium" | "high" | "critical" | undefined;
-    dependencies?: string[] | undefined;
-}>;
-export declare const TaskListSchema: z.ZodArray<z.ZodObject<{
-    id: z.ZodString;
-    title: z.ZodString;
-    status: z.ZodEnum<["todo", "in_progress", "done"]>;
-    priority: z.ZodOptional<z.ZodEnum<["low", "medium", "high", "critical"]>>;
-    description: z.ZodOptional<z.ZodString>;
-    dependencies: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
-}, "strip", z.ZodTypeAny, {
-    status: "todo" | "in_progress" | "done";
-    id: string;
-    title: string;
-    description?: string | undefined;
-    priority?: "low" | "medium" | "high" | "critical" | undefined;
-    dependencies?: string[] | undefined;
-}, {
-    status: "todo" | "in_progress" | "done";
-    id: string;
-    title: string;
-    description?: string | undefined;
-    priority?: "low" | "medium" | "high" | "critical" | undefined;
-    dependencies?: string[] | undefined;
-}>, "many">;
 export declare const RefineRequestSchema: z.ZodObject<{
     content: z.ZodString;
     instruction: z.ZodString;
@@ -177,11 +131,11 @@ export declare const StreamChunkSchema: z.ZodObject<{
     content: z.ZodOptional<z.ZodString>;
     error: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    type: "done" | "content" | "error";
+    type: "content" | "error" | "done";
     content?: string | undefined;
     error?: string | undefined;
 }, {
-    type: "done" | "content" | "error";
+    type: "content" | "error" | "done";
     content?: string | undefined;
     error?: string | undefined;
 }>;
