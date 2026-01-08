@@ -49,5 +49,6 @@ jobs:
         uses: anomalyco/opencode/github@latest
         with:
           model: opencode/glm-4.7-free
+          share: disabled
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
