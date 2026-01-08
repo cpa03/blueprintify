@@ -1,0 +1,58 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "opencode/glm-4.7-free",
+  "theme": "opencode",
+  "share": false,
+  "tools": {
+    "bash": true,
+    "write": true,
+    "edit": true,
+    "read": true,
+    "glob": true,
+    "grep": true,
+    "webfetch": true,
+    "skill": true,
+    "todo": true,
+    "subagent": true
+  },
+  "permission": {
+    "bash": "allow",
+    "write": "allow",
+    "edit": "allow",
+    "read": "allow",
+    "webfetch": "allow",
+    "subagent": "allow"
+  },
+  "watcher": {
+    "ignore": [
+      "node_modules/**",
+      ".git/**",
+      "dist/**",
+      "build/**",
+      ".next/**",
+      "coverage/**",
+      "*.log",
+      ".env*"
+    ]
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true
+  },
+  "formatter": {
+    "prettier": {
+      "command": ["npx", "prettier", "--write", "$FILE"],
+      "extensions": [".ts", ".tsx", ".js", ".jsx", ".json", ".md"]
+    }
+  },
+  "mcp": {
+    "filesystem": {
+      "type": "local",
+      "command": ["npx", "-y", "@anthropic-ai/mcp-server-filesystem", "./"]
+    },
+    "github": {
+      "type": "local",
+      "command": ["npx", "-y", "@anthropic-ai/mcp-server-github"]
+    }
+  }
+}

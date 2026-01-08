@@ -13,7 +13,16 @@
   - [x] Create Monorepo Structure (`apps/`, `packages/`)
   - [x] Create `blueprint.md` (System Architecture)
   - [x] **TASK-DOC-01**: Update Documentation for QA & CI
-  - [x] **TASK-INFRA-01**: Implement GitHub Actions CI
+  - [x] **TASK-INFRA-01**: Implement Autonomous GitHub Actions CI/CD Workflow
+    - [x] Create `.github/workflows/ai-on-push.yml` with Think/Plan/Execute stages
+    - [x] Implement Concurrency Locking
+    - [x] Configure Agent Specialists
+  - [x] **TASK-InFRA-02**: Configure Agent Prompts
+    - [x] Create `.agent/prompts/` directory
+    - [x] Create prompt files for all 12 specialists
+  - [x] **TASK-INFRA-03**: Configure OpenCode CLI (opencode-ai)
+    - [x] Update `ai-on-push.yml` with correct package name
+    - [x] Fix CLI command syntax
   - [x] **TASK-SEC-01**: Implement API Security Headers (Hono `secureHeaders`)
   - [x] **TASK-001**: Configure Shared Zod Schemas in `packages/shared` <!-- id: 1 -->
   - [x] **TASK-002**: Setup Hono API basic routing in `apps/api` <!-- id: 2 -->
