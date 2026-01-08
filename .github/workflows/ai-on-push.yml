@@ -1,0 +1,467 @@
+name: AI Agent CI/CD
+
+# Trigger on push to main or pull requests
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ========================================
+  # STAGE 0: THINKERS (PARALLEL)
+  # Multiple AI specialists analyze the codebase
+  # without making modifications, outputting findings
+  # ========================================
+
+  thinker_code_auditor:
+    name: "Thinker: Code Auditor"
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for better context
+
+      - name: Run Code Auditor AI
+        continue-on-error: true # Don't fail workflow if AI has issues
+        run: |
+          opencode run \
+            --model opencode/glm-4.7-free \
+            --share false \
+            -p .github/prompt/code_auditor.md \
+            -o code_auditor_report.json
+
+      - name: Upload auditor report
+        uses: actions/upload-artifact@v4
+        if: always() # Upload even if AI step failed
+        with:
+          name: code_auditor_report
+          path: code_auditor_report.json
+          retention-days: 7
+
+  thinker_test_analyst:
+    name: "Thinker: Test Analyst"
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Test Analyst AI
+        continue-on-error: true
+        run: |
+          opencode run \
+            --model opencode/glm-4.7-free \
+            --share false \
+            -p .github/prompt/test_analyst.md \
+            -o test_analyst_report.json
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test_analyst_report
+          path: test_analyst_report.json
+          retention-days: 7
+
+  thinker_security_reviewer:
+    name: "Thinker: Security Reviewer"
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Security Reviewer AI
+        continue-on-error: true
+        run: |
+          opencode run \
+            --model opencode/glm-4.7-free \
+            --share false \
+            -p .github/prompt/security_reviewer.md \
+            -o security_reviewer_report.json
+
+      - name: Upload security report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security_reviewer_report
+          path: security_reviewer_report.json
+          retention-days: 7
+
+  thinker_dx_reviewer:
+    name: "Thinker: DX Reviewer"
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run DX Reviewer AI
+        continue-on-error: true
+        run: |
+          opencode run \
+            --model opencode/glm-4.7-free \
+            --share false \
+            -p .github/prompt/dx_reviewer.md \
+            -o dx_reviewer_report.json
+
+      - name: Upload DX report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dx_reviewer_report
+          path: dx_reviewer_report.json
+          retention-days: 7
+
+  thinker_docs_checker:
+    name: "Thinker: Docs Checker"
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Docs Checker AI
+        continue-on-error: true
+        run: |
+          opencode run \
+            --model opencode/glm-4.7-free \
+            --share false \
+            -p .github/prompt/docs_checker.md \
+            -o docs_checker_report.json
+
+      - name: Upload docs report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: docs_checker_report
+          path: docs_checker_report.json
+          retention-days: 7
+
+  # ========================================
+  # STAGE 1: SYNTHESIZER (SERIAL)
+  # Consumes all thinker outputs and produces
+  # a unified execution plan with task grouping
+  # ========================================
+
+  synthesizer:
+    name: "Synthesizer: Task Planning"
+    needs:
+      - thinker_code_auditor
+      - thinker_test_analyst
+      - thinker_security_reviewer
+      - thinker_dx_reviewer
+      - thinker_docs_checker
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download all thinker reports
+        uses: actions/download-artifact@v4
+        with:
+          path: reports
+
+      - name: Run Synthesizer AI
+        run: |
+          opencode run \
+            --model opencode/glm-4.7-free \
+            --share false \
+            -p .github/prompt/synthesizer.md \
+            -i reports \
+            -o execution_plan.json
+
+      - name: Validate execution plan
+        run: |
+          # Ensure execution_plan.json exists and is valid JSON
+          if [ ! -f execution_plan.json ]; then
+            echo '{"tasks": []}' > execution_plan.json
+          fi
+          python3 -c "import json; json.load(open('execution_plan.json'))"
+
+      - name: Upload execution plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: execution_plan
+          path: execution_plan.json
+          retention-days: 7
+
+  # ========================================
+  # STAGE 2: PLANNER (SERIAL, LIGHTWEIGHT)
+  # Converts execution plan into a dynamic
+  # matrix with file-path based lock keys
+  # ========================================
+
+  planner:
+    name: "Planner: Matrix Generation"
+    needs: synthesizer
+    runs-on: ubuntu-24.04-arm
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      has_tasks: ${{ steps.set-matrix.outputs.has_tasks }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download execution plan
+        uses: actions/download-artifact@v4
+        with:
+          name: execution_plan
+          path: .
+
+      - name: Generate dynamic matrix from execution plan
+        id: set-matrix
+        run: |
+          python3 - <<'PYTHON'
+          import json
+          import hashlib
+
+          # Load execution plan
+          with open('execution_plan.json', 'r') as f:
+              plan = json.load(f)
+
+          tasks = plan.get('tasks', [])
+
+          # Generate matrix
+          matrix = {"include": []}
+
+          for task in tasks:
+              task_id = task.get('id', '')
+              paths = task.get('paths', [])
+              
+              # Generate lock_key from paths to enable file-based concurrency control
+              # Tasks with overlapping paths will have the same lock_key
+              if 'lock_key' in task:
+                  lock_key = task['lock_key']
+              else:
+                  # Fallback: generate lock_key from paths
+                  lock_key = '-'.join(sorted([p.replace('/', '-').replace('.', '-') for p in paths]))
+              
+              matrix['include'].append({
+                  "task_id": task_id,
+                  "lock_key": lock_key,
+                  "paths": ','.join(paths)
+              })
+
+          # Output matrix
+          matrix_json = json.dumps(matrix)
+          has_tasks = 'true' if len(matrix['include']) > 0 else 'false'
+
+          print(f'matrix={matrix_json}')
+          print(f'has_tasks={has_tasks}')
+
+          # Write to GitHub output
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f'matrix={matrix_json}\n')
+              f.write(f'has_tasks={has_tasks}\n')
+          PYTHON
+
+      - name: Display generated matrix
+        run: |
+          echo "Generated Matrix:"
+          echo '${{ steps.set-matrix.outputs.matrix }}'
+          echo "Has Tasks: ${{ steps.set-matrix.outputs.has_tasks }}"
+
+  # ========================================
+  # STAGE 3: EXECUTORS (PARALLEL, DYNAMIC)
+  # One job per task, with file-path based
+  # concurrency control to prevent conflicts
+  # ========================================
+
+  executor:
+    name: "Executor: ${{ matrix.task_id }}"
+    needs: planner
+    if: needs.planner.outputs.has_tasks == 'true'
+    runs-on: ubuntu-24.04-arm
+    strategy:
+      matrix: ${{ fromJson(needs.planner.outputs.matrix) }}
+      fail-fast: false # Continue other tasks even if one fails
+    # CRITICAL: File-path based concurrency control
+    # Tasks with the same lock_key will be serialized
+    concurrency:
+      group: executor-${{ matrix.lock_key }}
+      cancel-in-progress: false # Queue tasks, don't cancel
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download execution plan
+        uses: actions/download-artifact@v4
+        with:
+          name: execution_plan
+          path: .
+
+      - name: Run Executor AI for task ${{ matrix.task_id }}
+        env:
+          TASK_ID: ${{ matrix.task_id }}
+          TASK_PATHS: ${{ matrix.paths }}
+        run: |
+          opencode run \
+            --model opencode/glm-4.7-free \
+            --share false \
+            -p .github/prompt/executor.md \
+            -i execution_plan.json \
+            -o executor_output_${{ matrix.task_id }}.json
+
+      - name: Create patch from changes
+        id: create-patch
+        run: |
+          # Generate diff of changes made by executor
+          git diff > patch_${{ matrix.task_id }}.diff
+
+          # Check if patch is non-empty
+          if [ -s patch_${{ matrix.task_id }}.diff ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes generated for task ${{ matrix.task_id }}"
+          fi
+
+      - name: Upload patch artifact
+        if: steps.create-patch.outputs.has_changes == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: patch_${{ matrix.task_id }}
+          path: patch_${{ matrix.task_id }}.diff
+          retention-days: 7
+
+  # ========================================
+  # STAGE 5: MUTATOR / MERGER (GLOBAL SERIAL)
+  # Applies all patches, runs validation,
+  # and commits only if all checks pass
+  # ========================================
+
+  mutator:
+    name: "Mutator: Apply & Validate"
+    needs: executor
+    if: always() && needs.planner.outputs.has_tasks == 'true'
+    runs-on: ubuntu-24.04-arm
+    # CRITICAL: Global concurrency lock
+    # Only one mutator can run at a time across all workflows
+    concurrency:
+      group: mutator-global
+      cancel-in-progress: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Download all patches
+        uses: actions/download-artifact@v4
+        with:
+          path: patches
+          pattern: patch_*
+          merge-multiple: false
+
+      - name: Apply all patches
+        id: apply-patches
+        continue-on-error: true
+        run: |
+          # Apply each patch file
+          patch_count=0
+          failed_patches=0
+
+          for patch_dir in patches/patch_*; do
+            if [ -d "$patch_dir" ]; then
+              for patch_file in "$patch_dir"/*.diff; do
+                if [ -f "$patch_file" ]; then
+                  echo "Applying patch: $patch_file"
+                  if git apply --check "$patch_file" 2>/dev/null; then
+                    git apply "$patch_file"
+                    patch_count=$((patch_count + 1))
+                  else
+                    echo "Failed to apply patch: $patch_file"
+                    failed_patches=$((failed_patches + 1))
+                  fi
+                fi
+              done
+            fi
+          done
+
+          echo "Applied $patch_count patches successfully"
+          echo "Failed to apply $failed_patches patches"
+          echo "patch_count=$patch_count" >> $GITHUB_OUTPUT
+          echo "failed_patches=$failed_patches" >> $GITHUB_OUTPUT
+
+      - name: Setup Node.js
+        if: steps.apply-patches.outputs.patch_count > 0
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        if: steps.apply-patches.outputs.patch_count > 0
+        run: npm ci
+
+      - name: Run linter
+        if: steps.apply-patches.outputs.patch_count > 0
+        id: lint
+        continue-on-error: true
+        run: npm run lint
+
+      - name: Run tests
+        if: steps.apply-patches.outputs.patch_count > 0
+        id: test
+        continue-on-error: true
+        run: npm test
+
+      - name: Run build
+        if: steps.apply-patches.outputs.patch_count > 0
+        id: build
+        continue-on-error: true
+        run: npm run build
+
+      - name: Commit and push changes
+        if: |
+          steps.apply-patches.outputs.patch_count > 0 &&
+          steps.lint.outcome == 'success' &&
+          steps.test.outcome == 'success' &&
+          steps.build.outcome == 'success'
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add .
+
+          # Create detailed commit message
+          cat > commit_msg.txt <<EOF
+          chore: AI agents applied automated fixes
+
+          Applied ${{ steps.apply-patches.outputs.patch_count }} patches from AI agents.
+
+          - Lint: ✅ Passed
+          - Tests: ✅ Passed
+          - Build: ✅ Passed
+
+          Generated by AI Agent CI/CD workflow
+          EOF
+
+          git commit -F commit_msg.txt
+          git push
+
+      - name: Report validation failure
+        if: |
+          steps.apply-patches.outputs.patch_count > 0 &&
+          (steps.lint.outcome != 'success' ||
+           steps.test.outcome != 'success' ||
+           steps.build.outcome != 'success')
+        run: |
+          echo "::error::Validation failed - changes not committed"
+          echo "Lint: ${{ steps.lint.outcome }}"
+          echo "Test: ${{ steps.test.outcome }}"
+          echo "Build: ${{ steps.build.outcome }}"
+          exit 1
