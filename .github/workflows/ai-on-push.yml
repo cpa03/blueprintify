@@ -111,7 +111,6 @@ jobs:
           fi
 
       - name: Execute Work (Ticket Taker)
-        if: steps.check_issues.outputs.has_work == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
@@ -152,5 +151,6 @@ jobs:
             "Check all open PRs. For each: Attempt merge main -> Build/Test -> If green, Merge PR. If red, comment." \
             --model opencode/glm-4.7-free \
             --share false
+
 
 
