@@ -101,7 +101,7 @@ jobs:
         run: |
           # Simple logic: If there are open issues with label 'area:<role>', proceed.
           # Mapping role to label logic can be handled by the agent or simple grep
-          COUNT=$(gh issue list --label "area:${{ matrix.role }}" --json number --q 'length')
+          COUNT=$(gh issue list --label "area:${{ matrix.role }}" --json number -q 'length')
           if [ "$COUNT" -gt 0 ]; then
              echo "Issues found matching this specialist."
              echo "has_work=true" >> $GITHUB_OUTPUT
@@ -152,4 +152,5 @@ jobs:
             "Check all open PRs. For each: Attempt merge main -> Build/Test -> If green, Merge PR. If red, comment." \
             --model opencode/glm-4.7-free \
             --share false
+
 
