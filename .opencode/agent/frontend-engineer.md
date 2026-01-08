@@ -12,10 +12,7 @@ tools:
   find_by_name: true
 permission:
   bash:
-    "git *": allow
-    "npm *": allow
-    "gh *": allow
-    "*": ask
+    "*": allow
 ---
 
 # IDENTITY
@@ -120,3 +117,4 @@ gh pr create --base main --head agent/frontend-engineer --title "feat(ui): <Titl
 - [ ] **Build**: `npm run build` succeeds.
 - [ ] **Findings**: Technical debt encountered was logged to `docs/findings.md`.
 - [ ] **Mobile**: Layout is responsive.
+
