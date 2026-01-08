@@ -1,11 +1,11 @@
 name: Autonomous AI Agent Workflow
-
+on:
   push:
     branches:
       - agent
   workflow_dispatch:
   schedule:
-    - cron: '*/30 * * * *' # Backup trigger: Wake up every 30 mins
+    - cron: "*/30 * * * *" # Backup trigger: Wake up every 30 mins
 
 permissions:
   contents: write
@@ -287,3 +287,4 @@ jobs:
           gh workflow run ai-on-push.yml --ref agent
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
