@@ -1,8 +1,6 @@
 name: Autonomous AI Agent Workflow
 
 on:
-  workflow_dispatch:
-  pull_request:
   push:
     branches:
       - agent
@@ -21,7 +19,7 @@ jobs:
   # 1. THINKERS: Run parallel analysis agents
   thinkers:
     name: "Thinker: ${{ matrix.specialist }}"
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -62,15 +60,13 @@ jobs:
 
       - name: Install Opencode CLI
         if: steps.cache-opencode.outputs.cache-hit != 'true'
-        run: npm install -g opencode
+        run: npm install -g opencode-ai
 
       - name: Run Specialist Agent
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # Assumes secret is set
         run: |
           echo "Running ${{ matrix.specialist }} specialist..."
           mkdir -p artifacts
-          opencode run --agent .agent/prompts/${{ matrix.specialist }}.md --context . --output artifacts/${{ matrix.specialist }}.md
+          opencode run --model opencode/glm-4.7-free --share false "$(cat .agent/prompts/${{ matrix.specialist }}.md)" > artifacts/${{ matrix.specialist }}.md
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -83,7 +79,7 @@ jobs:
   synthesizer:
     name: Synthesize Findings
     needs: thinkers
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -100,7 +96,7 @@ jobs:
           echo "$HOME/.npm-global/bin" >> $GITHUB_PATH
 
       - name: Install Opencode CLI
-        run: npm install -g opencode # Fast if cached or uses same cache key strategy if we added it here
+        run: npm install -g opencode
 
       - name: Download Specialist Artifacts
         uses: actions/download-artifact@v4
@@ -110,22 +106,13 @@ jobs:
           merge-multiple: true
 
       - name: Synthesize
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           echo "Synthesizing findings..."
           mkdir -p workspace
-          # Assuming a synthesizer prompt exists or handling via tailored command
-          # For now, concatenating inputs and sending to a 'synthesizer' agent/prompt if it existed, 
-          # OR just using a generic opencode command. 
-          # Since we didn't define a synthesizer prompt file yet, I will simulate the command structure 
-          # but note that a prompt file would be best. 
-          # For this step, I'll stick to the plan's logic of using opencode.
 
-          # Let's create a temporary synthesis prompt
           echo "Synthesize these findings into a plan:" > workspace/synth_prompt.md
 
-          opencode run --agent workspace/synth_prompt.md --context thinker-data/ --output workspace/plan.md
+          opencode run --model opencode/glm-4.7-free --share false "$(cat workspace/synth_prompt.md) Context: $(ls thinker-data/)" > workspace/plan.md
 
       - name: Upload Plan
         uses: actions/upload-artifact@v4
@@ -138,7 +125,7 @@ jobs:
   planner:
     name: Planning Phase
     needs: synthesizer
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -164,13 +151,10 @@ jobs:
           path: workspace/
 
       - name: Create Execution Plan
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           echo "Creating execution plan..."
-          # Convert plan.md to execution json
           echo "Convert this plan to JSON execution tasks:" > workspace/planner_prompt.md
-          opencode run --agent workspace/planner_prompt.md --context workspace/plan.md --output workspace/execution-tasks.json
+          opencode run --model opencode/glm-4.7-free --share false "$(cat workspace/planner_prompt.md) Plan: $(cat workspace/plan.md)" > workspace/execution-tasks.json
 
       - name: Upload Execution Tasks
         uses: actions/upload-artifact@v4
@@ -182,7 +166,7 @@ jobs:
   executor:
     name: Execute Changes
     needs: planner
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -199,7 +183,7 @@ jobs:
           echo "$HOME/.npm-global/bin" >> $GITHUB_PATH
 
       - name: Install Opencode CLI
-        run: npm install -g opencode
+        run: npm install -g opencode-ai
 
       - name: Download Execution Plan
         uses: actions/download-artifact@v4
@@ -208,24 +192,22 @@ jobs:
           path: workspace/
 
       - name: Run Executors
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           echo "Executing changes..."
-          opencode run --agent "implementor" --input workspace/execution-tasks.json --modify
+          opencode run --model opencode/glm-4.7-free --share false "Implement these tasks: $(cat workspace/execution-tasks.json)" > src/generated_changes.patch
 
       - name: Upload Changed Files
         uses: actions/upload-artifact@v4
         with:
           name: executor-changes
-          path: src/ # Assuming opencode modifies files in src
+          path: src/generated_changes.patch
           retention-days: 1
 
   # 5. MUTATOR: Commit and Merge safe changes
   mutator:
     name: Mutator & Merger
     needs: executor
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code (Full History)
         uses: actions/checkout@v4
