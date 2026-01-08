@@ -226,13 +226,32 @@ jobs:
       - name: Checkout Code (Full History)
         uses: actions/checkout@v4
         with:
-          ref: agent
+          # Checkout the triggering ref first
           fetch-depth: 0
 
-      - name: Configure Git
+      - name: Robust Synchronization
         run: |
+          # 1. Setup User Identity FIRST for any git ops
           git config user.name "AI Agent"
           git config user.email "agent@bot.local"
+
+          # 2. Fetch everything
+          git fetch --all
+
+          # 3. Handle Agent Branch
+          if git ls-remote --exit-code --heads origin agent; then
+            echo "Branch 'agent' exists on remote. Checking out..."
+            git checkout agent
+            git pull origin agent --rebase
+          else
+            echo "Branch 'agent' does not exist. Creating from HEAD..."
+            git checkout -b agent
+          fi
+
+          # 4. Sync with Main (The Source of Truth)
+          # Ensure 'agent' is up to date with 'main' to prevent future conflicts
+          echo "Rebasing 'agent' onto 'origin/main' to minimize conflicts..."
+          git pull origin main --rebase || echo "Rebase conflict with main! Proceeding, but manual merge might be needed later."
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
