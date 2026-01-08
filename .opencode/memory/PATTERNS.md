@@ -12,14 +12,18 @@
 
 - [Workflow] Do not use `ask` permission in CI environments (causes timeouts).
 - [Workflow] Do not rely on `cat` for reading prompts; use `--agent` flag.
-- [Code Style] Do not mix single and double quotes in string literals; use double quotes consistently.
+- [Code Style] Do not mix single and double quotes in string literals; use single quotes consistently.
+- [Architecture] Do not create unnecessary abstraction layers (controllers, services) if routes are simple enough to contain the logic inline.
+- [Architecture] Do not create complex error type hierarchies in early development; prefer simple generic error handling until the need for specific error types is clear.
 
 ## 🎨 Code Style Conventions
 
-- **String Quotes**: Use double quotes (`"`) for all string literals (consistency across codebase)
-- **Section Headers**: Use JSDoc-style section headers (`// ===== Section Name =====`) for better readability
-- **Export Placement**: Place controller exports at the bottom of files (e.g., `export const controller = { method }`)
+- **String Quotes**: Use single quotes (`'`) for all string literals (consistency across codebase)
+- **Type Safety**: Always use `unknown` instead of `any` when the type is uncertain (e.g., error parameters, generic data)
+- **Import Formatting**: Use multi-line imports for better readability when importing multiple items from a module; single-line imports are acceptable for 1-2 items
 - **Import Grouping**: Group imports by type: external libraries, internal services, then local modules
+- **Default Exports**: Use `export default` for route handlers and main modules to simplify importing
+- **Section Headers**: Use JSDoc-style section headers (`// ===== Section Name =====`) for better readability
 
 ## 🏗️ Architectural Decisions
 
@@ -29,11 +33,11 @@
 
 ## 🔧 API Patterns (Cloudflare Workers + Hono)
 
-- **Controller Pattern**: Separate business logic from route handlers - routes delegate to controllers (e.g., `generateController.generateBlueprint`)
+- **Inline Route Logic**: Keep route logic inline when simple; only extract to controllers/services when complexity warrants it
 - **Route Separation**: Each API route in its own file (e.g., `routes/generate.ts`, `routes/tasks.ts`)
 - **Type-Safe Bindings**: Use `Hono<{ Bindings: Env }>()` generic for environment variable type safety
 - **Middleware Chain**: Apply security middleware early (`secureHeaders()`, `cors()`, `prettyJSON()`)
-- **Centralized Error Handling**: Single `app.onError()` handler with type guard checking (`isAPIError`) for consistent error responses
+- **Centralized Error Handling**: Single `app.onError()` handler with generic error responses; customize only when error-specific handling is needed
 - **Health Check Endpoint**: Always include `GET /` with status and available endpoints for monitoring
 - **Zod Validation**: Use `zValidator('json', Schema)` middleware for request validation
 - **Streaming SSE**: Use Server-Sent Events with `AsyncGenerator` for streaming AI responses
@@ -64,28 +68,31 @@
 - **Shared Types Package**: Extract common types, schemas, and interfaces to `packages/shared`
 - **Project References**: Use TypeScript `references` in `tsconfig.json` for monorepo type checking
 
-## 🎯 Controller Pattern (Business Logic Layer)
+## 🎯 Architecture Simplicity
 
-- **Export Object Pattern**: Export controllers as objects containing methods (e.g., `export const generateController = { generateBlueprint }`)
-- **Environment Binding Access**: Controllers receive `Context<{ Bindings: Env }>` to access environment variables
-- **Validation Before Business Logic**: Validate configuration and dependencies early in controller methods
-- **Explicit Return Types**: All controller functions have explicit `Promise<Response>` return types
-- **JSDoc Comments**: Document controller methods with parameter descriptions and return types
+- **YAGNI Principle**: Avoid creating controllers, services, or helper layers until they are actually needed
+- **Inline Logic**: Keep business logic inline in route handlers when the logic is simple (e.g., single AI call, validation + stream response)
+- **Extract on Complexity**: Create separate layers only when you need to reuse code across multiple routes or the logic becomes complex
+- **Explicit Return Types**: All route handlers should have explicit return types (e.g., `Promise<Response>`)
+- **Environment Binding Access**: Routes receive `Context<{ Bindings: Env }>` to access environment variables directly
 
 ## 🔄 Error Handling & Resilience
 
-- **Error Class Hierarchy**: Use base `APIError` class with specific subclasses (`ValidationError`, `ConfigurationError`, `AIServiceError`, `StreamError`)
-- **Standardized Error Format**: Error responses include `code`, `message`, `statusCode`, `timestamp`, and optional `details`
-- **Type Guard Pattern**: Use `isAPIError()` type guard for safe error type checking before accessing error properties
-- **Error Helper Functions**: Create helper functions for common errors (`createOpenAIConfigError`, `wrapOpenAIError`, `wrapStreamError`)
-- **Error Wrapping**: Wrap external service errors (OpenAI, streams) in domain-specific error types for better error handling
-- **Error Response Builder**: Use `errorToResponse()` to convert `APIError` instances to standardized response format
+- **Simple Generic Errors**: Use generic error handling for API responses; avoid complex error type hierarchies in early development
+- **Error Response Format**: Simple error responses with `error` message and `status` code
 - **Exponential Backoff**: Use retry logic with configurable delay and backoff factor
 - **Retryable Error Detection**: Retry on 429 (rate limit) and 5xx errors; fail fast on 4xx client errors
-- **Streaming Resilience**: Handle stream errors with cleanup and proper error propagation
+- **Type-Safe Error Parameters**: Use `unknown` type for error parameters; narrow type with type guards when accessing properties (e.g., `error as { status?: number }`)
 
 ## 🚀 Deployment & Configuration
 
 - **Wrangler.toml**: Use for Cloudflare Workers configuration; store non-secret vars in `[vars]`
 - **Environment Types**: Define `Env` interface for type-safe access to bindings
 - **Source Maps**: Enable sourcemaps in production (`sourcemap: true` in vite.config)
+- **Config File TS Handling**: Use `// @ts-nocheck` directive for config files with non-standard TypeScript (e.g., tailwind.config.js) instead of trying to fix every type issue
+- **ESM Path Handling**: When using ES modules in Node.js config files, properly handle `__filename` and `__dirname` using `fileURLToPath` and `import.meta.url`:
+  ```typescript
+  import { fileURLToPath } from "node:url";
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  ```
