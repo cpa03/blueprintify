@@ -1,309 +1,154 @@
-name: Autonomous AI Agent Workflow
+name: Autonomous AI Ecosystem
 
 on:
   push:
     branches:
-      - agent
-  workflow_dispatch:
+      - main # Architect runs on main changes
   schedule:
-    - cron: "*/30 * * * *" # Backup trigger: Wake up every 30 mins
+    - cron: "0 */4 * * *" # Routine check every 4 hours
+  workflow_dispatch:
 
 permissions:
   contents: write
-  pull-requests: write
   issues: write
-  checks: write
-  actions: write # Required to trigger next loop
+  pull-requests: write
+  actions: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  thinkers:
-    name: "Thinker: ${{ matrix.specialist }}"
+  # ------------------------------------------------------------------
+  # STAGE 1: THE BRAIN (Architect & Manager)
+  # ------------------------------------------------------------------
+  architect:
+    name: "Architect: Strategy & Triage"
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "OpenCode Architect"
+          git config --global user.email "architect@bot.local"
+
+      - name: Setup Node & OpenCode
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install -g opencode-ai
+
+      - name: Architect Intelligence Cycle
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+        run: |
+          # The Architect reads findings.md, updates roadmap, and creates/updates issues
+          opencode run --agent software-architect \
+            "Execute management cycle. Read 'docs/findings.md' and 'docs/roadmap.md'. Triage existing issues. Create new issues if roadmap requires it." \
+            --model opencode/glm-4.7-free \
+            --share false
+
+      - name: Commit Strategic Updates
+        run: |
+          git add docs/
+          git diff --staged --quiet || git commit -m "chore(strategy): update roadmap and findings [skip ci]"
+          git push origin main || echo "Push failed, likely race condition but acceptable."
+
+  # ------------------------------------------------------------------
+  # STAGE 2: THE MUSCLE (Specialist Executors)
+  # ------------------------------------------------------------------
+  specialists:
+    name: "Specialist: ${{ matrix.role }}"
+    needs: architect
     runs-on: ubuntu-24.04-arm
     strategy:
       fail-fast: false
       matrix:
-        specialist:
-          - product-strategist
-          - software-architect
-          - reliability-engineer
-          - quality-assurance
+        role:
+          - frontend-engineer
+          - backend-engineer
+          - api-specialist
+          - code-reviewer
           - security-engineer
+          - quality-assurance
           - performance-engineer
           - database-architect
-          - integration-engineer
-          - ui-ux-engineer
           - devops-engineer
+          - ui-ux-engineer
           - technical-writer
-          - code-reviewer
+          - reliability-engineer
+          - integration-engineer
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Configure Git
+        run: |
+          git config --global user.name "AI Specialist"
+          git config --global user.email "specialist@bot.local"
+
+      - name: Setup Node & OpenCode
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
+      - run: npm install -g opencode-ai
 
-      - name: Install OpenCode CLI
-        run: npm install -g opencode-ai
-
-      - name: Debug Config Presence
-        run: |
-          if [ -f "opencode.json" ]; then echo "✅ opencode.json found"; else echo "❌ opencode.json MISSING"; exit 1; fi
-          ls -R .opencode/agent
-
-      - name: Run Specialist Agent
-        continue-on-error: true
-        run: |
-          mkdir -p artifacts
-          # Call agent by name to load its specific config (frontmatter)
-          # The agent will execute its system prompt logic autonomously
-          opencode run --agent "${{ matrix.specialist }}" \
-            "Execute your designated mission on this codebase. Report findings to artifacts/${{ matrix.specialist }}.md" \
-            --model opencode/glm-4.7-free \
-            --share disabled \
-            > artifacts/${{ matrix.specialist }}.md
-        env:
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: thinker-artifacts-${{ matrix.specialist }}
-          path: artifacts/
-          retention-days: 1
-
-  synthesizer:
-    name: Synthesize Findings
-    needs: thinkers
-    if: ${{ !cancelled() }} # Run even if thinkers fail (Partial Failure Handling)
-    runs-on: ubuntu-24.04-arm
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-
-      - name: Install OpenCode CLI
-        run: npm install -g opencode-ai
-
-      - name: Download Specialist Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          pattern: thinker-artifacts-*
-          path: thinker-data/
-          merge-multiple: true
-
-      - name: Synthesize
-        continue-on-error: true
-        run: |
-          mkdir -p workspace
-
-          # Check for artifacts or create empty fallback
-          if ls thinker-data/*.md 1> /dev/null 2>&1; then
-            cat thinker-data/*.md > workspace/all-findings.md
-          else
-            echo "CRITICAL: No Thinker artifacts found. Creating emergency input."
-            echo "# Emergency Report" > workspace/all-findings.md
-            echo "All Thinker agents failed to report. Immediate investigation required." >> workspace/all-findings.md
-          fi
-
-          # Synthesize with error context
-          opencode run --agent synthesizer \
-            "Synthesize these findings (or lack thereof) into a cohesive action plan. If data is missing, plan a debugging session. Input: $(cat workspace/all-findings.md)" \
-            --model opencode/glm-4.7-free \
-            --share disabled \
-            > workspace/plan.md || echo "# Plan Creation Failed" > workspace/plan.md
-        env:
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-
-      - name: Upload Plan
-        uses: actions/upload-artifact@v4
-        with:
-          name: synthesis-plan
-          path: workspace/plan.md
-          retention-days: 1
-
-  planner:
-    name: Planning Phase
-    needs: synthesizer
-    runs-on: ubuntu-24.04-arm
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-
-      - name: Install OpenCode CLI
-        run: npm install -g opencode-ai
-
-      - name: Download Plan
-        uses: actions/download-artifact@v4
-        with:
-          name: synthesis-plan
-          path: workspace/
-
-      - name: Create Execution Plan
-        continue-on-error: true
-        run: |
-          opencode run --agent planner \
-            "Create a JSON array of executable tasks from this plan: $(cat workspace/plan.md)" \
-            --model opencode/glm-4.7-free \
-            --share disabled \
-            > workspace/execution-tasks.json
-        env:
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-
-      - name: Upload Execution Tasks
-        uses: actions/upload-artifact@v4
-        with:
-          name: execution-plan
-          path: workspace/execution-tasks.json
-
-  executor:
-    name: Execute Changes
-    needs: planner
-    runs-on: ubuntu-24.04-arm
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Install OpenCode CLI
-        run: npm install -g opencode-ai
-
-      - name: Download Execution Plan
-        uses: actions/download-artifact@v4
-        with:
-          name: execution-plan
-          path: workspace/
-
-      - name: Run Executors
-        continue-on-error: true
-        run: |
-          opencode run --agent coder \
-            "Execute these tasks on the codebase: $(cat workspace/execution-tasks.json)" \
-            --model opencode/glm-4.7-free \
-            --share disabled
-        env:
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-
-      - name: Upload Changed Files
-        uses: actions/upload-artifact@v4
-        with:
-          name: executor-changes
-          path: |
-            apps/
-            packages/
-          retention-days: 1
-
-  mutator:
-    name: Mutator & Merger
-    needs: executor
-    runs-on: ubuntu-24.04-arm
-    steps:
-      - name: Checkout Code (Full History)
-        uses: actions/checkout@v4
-        with:
-          # Checkout the triggering ref first
-          fetch-depth: 0
-
-      - name: Robust Synchronization
-        run: |
-          # 1. Setup User Identity FIRST for any git ops
-          git config user.name "AI Agent"
-          git config user.email "agent@bot.local"
-
-          # 2. Fetch everything
-          git fetch --all
-
-          # 3. Handle Agent Branch
-          if git ls-remote --exit-code --heads origin agent; then
-            echo "Branch 'agent' exists on remote. Checking out..."
-            git checkout agent
-            git pull origin agent --rebase
-          else
-            echo "Branch 'agent' does not exist. Creating from HEAD..."
-            git checkout -b agent
-          fi
-
-          # 4. Sync with Main (The Source of Truth)
-          # Ensure 'agent' is up to date with 'main' to prevent future conflicts
-          echo "Rebasing 'agent' onto 'origin/main' to minimize conflicts..."
-          git pull origin main --rebase || echo "Rebase conflict with main! Proceeding, but manual merge might be needed later."
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-
-      - name: Install OpenCode CLI
-        run: npm install -g opencode-ai
-
-      - name: Download Changes
-        uses: actions/download-artifact@v4
-        with:
-          name: executor-changes
-          path: applied_changes/
-
-      - name: Learn Patterns
-        continue-on-error: true
-        run: |
-          # Apply changes temporarily to analyze diff
-          cp -r applied_changes/* . 2>/dev/null || true
-          git add .
-
-          # Run System Improver to update PATTERNS.md based on staged changes
-          opencode run --agent system-improver \
-            "Analyze the staged changes (git diff --staged) and update .opencode/memory/PATTERNS.md with any new patterns or lessons learned." \
-            --model opencode/glm-4.7-free \
-            --share disabled
-        env:
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-
-      - name: Apply, Commit, and Recurse
-        continue-on-error: true
-        id: auto-commit
-        run: |
-          cp -r applied_changes/* . 2>/dev/null || true
-          git add .
-          if git diff --staged --quiet; then
-            echo "No changes to commit. Autonomous loop pausing."
-            echo "committed=false" >> $GITHUB_OUTPUT
-          else
-            git commit -m "chore(ai): autonomous progress"
-            git pull --rebase origin agent
-            git push origin agent
-            echo "committed=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Trigger Next Agent Cycle
-        continue-on-error: true
-        if: steps.auto-commit.outputs.committed == 'true'
-        run: |
-          echo "🚀 Progress made. Triggering next autonomous cycle..."
-          gh workflow run ai-on-push.yml --ref agent
+      - name: Check for Assigned Issues
+        id: check_issues
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Simple logic: If there are open issues with label 'area:<role>', proceed.
+          # Mapping role to label logic can be handled by the agent or simple grep
+          COUNT=$(gh issue list --label "area:${{ matrix.role }}" --json number --q 'length')
+          if [ "$COUNT" -gt 0 ]; then
+             echo "Issues found matching this specialist."
+             echo "has_work=true" >> $GITHUB_OUTPUT
+          else
+             echo "No issues for me. Sleeping."
+             echo "has_work=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Execute Work (Ticket Taker)
+        if: steps.check_issues.outputs.has_work == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+        run: |
+          # Specialist will pick an issue, branch off, fix, and PR.
+          opencode run --agent ${{ matrix.role }} \
+            "Check for OPEN issues with label 'area:${{ matrix.role }}' or assigned to you. Pick the highest priority ONE. Execute the fix in a new branch. Update 'docs/findings.md' with any notes." \
+            --model opencode/glm-4.7-free \
+            --share false
+
+  # ------------------------------------------------------------------
+  # STAGE 3: THE GATEKEEPER (Integrator)
+  # ------------------------------------------------------------------
+  integrator:
+    name: "Integrator: PR Merge & Validate"
+    needs: specialists
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "Integrator Bot"
+          git config --global user.email "integrator@bot.local"
+
+      - name: Setup Node & OpenCode
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install -g opencode-ai
+
+      - name: Process Pull Requests
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+        run: |
+          opencode run --agent integrator \
+            "Check all open PRs. For each: Attempt merge main -> Build/Test -> If green, Merge PR. If red, comment." \
+            --model opencode/glm-4.7-free \
+            --share false
