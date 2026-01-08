@@ -1,8 +1,8 @@
 name: Autonomous AI Agent Workflow
 
 on:
-  workflow_dispatch:
   pull_request:
+  workflow_dispatch:
   push:
     branches:
       - agent
@@ -98,7 +98,7 @@ jobs:
           echo "$HOME/.npm-global/bin" >> $GITHUB_PATH
 
       - name: Install Opencode CLI
-        run: npm install -g opencode
+        run: npm install -g opencode-ai
 
       - name: Download Specialist Artifacts
         uses: actions/download-artifact@v4
@@ -114,7 +114,7 @@ jobs:
 
           echo "Synthesize these findings into a plan:" > workspace/synth_prompt.md
 
-          opencode run --model opencode/glm-4.7-free --share false "$(cat workspace/synth_prompt.md) Context: $(ls thinker-data/)" > workspace/plan.md
+          opencode run --model opencode/glm-4.7-free --share false "$(cat workspace/synth_prompt.md) Context: $(cat thinker-data/*.md)" > workspace/plan.md
 
       - name: Upload Plan
         uses: actions/upload-artifact@v4
@@ -144,7 +144,7 @@ jobs:
           echo "$HOME/.npm-global/bin" >> $GITHUB_PATH
 
       - name: Install Opencode CLI
-        run: npm install -g opencode
+        run: npm install -g opencode-ai
 
       - name: Download Plan
         uses: actions/download-artifact@v4
@@ -196,7 +196,7 @@ jobs:
       - name: Run Executors
         run: |
           echo "Executing changes..."
-          opencode run --model opencode/glm-4.7-free --share false "Implement these tasks: $(cat workspace/execution-tasks.json)" > src/generated_changes.patch
+          opencode run --model opencode/glm-4.7-free --share false "Implement these tasks and output ONLY a valid git patch for the changes: $(cat workspace/execution-tasks.json)" > src/generated_changes.patch
 
       - name: Upload Changed Files
         uses: actions/upload-artifact@v4
@@ -241,4 +241,3 @@ jobs:
             git pull --rebase origin agent
             git push origin agent
           fi
-
