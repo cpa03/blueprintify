@@ -1,6 +1,8 @@
 name: Autonomous AI Agent Workflow
 
 on:
+  workflow_dispatch:
+  pull_request:
   push:
     branches:
       - agent
@@ -205,3 +207,4 @@ jobs:
             git pull --rebase origin agent
             git push origin agent
           fi
+
