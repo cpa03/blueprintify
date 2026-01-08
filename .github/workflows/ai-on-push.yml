@@ -1,6 +1,8 @@
 name: Autonomous AI Agent Workflow
 
 on:
+  workflow_dispatch:
+  pull_request:
   push:
     branches:
       - agent
@@ -19,7 +21,7 @@ jobs:
   # 1. THINKERS: Run parallel analysis agents
   thinkers:
     name: "Thinker: ${{ matrix.specialist }}"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     strategy:
       fail-fast: false
       matrix:
@@ -79,7 +81,7 @@ jobs:
   synthesizer:
     name: Synthesize Findings
     needs: thinkers
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -125,7 +127,7 @@ jobs:
   planner:
     name: Planning Phase
     needs: synthesizer
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -166,7 +168,7 @@ jobs:
   executor:
     name: Execute Changes
     needs: planner
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -207,7 +209,7 @@ jobs:
   mutator:
     name: Mutator & Merger
     needs: executor
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout Code (Full History)
         uses: actions/checkout@v4
@@ -239,3 +241,4 @@ jobs:
             git pull --rebase origin agent
             git push origin agent
           fi
+
