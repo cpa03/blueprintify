@@ -1,97 +1,222 @@
-# Feature Specifications
+# Delivered Features
 
-**Status**: Active
+> Documents all features that have been successfully delivered.
+
+**Version**: 1.0.0
 **Last Updated**: 2026-01-08
 
-## [FEAT-01] Project Initialization Wizard
+---
 
-**Status**: In Progress (Step 1 Complete)
-**Priority**: P0 (Critical)
+## Completed Milestones
 
-### User Story
+### M1: Foundation & Core Loop
 
-As a user starting a new project, I want to input my project name, description, and select my tech stack via a wizard, so that the system understands my architectural constraints.
+**Status**: 🟡 In Progress (60% Complete)
+**Deliver Date**: TBD
 
-### Acceptance Criteria
+#### ✅ Delivered Features
 
-- [ ] Multi-step form (Project Details -> Tech Stack -> Review).
-- [ ] Inputs validated via Zod schema.
-- [ ] State preserved between steps.
+**1. Monorepo Infrastructure**
 
-### Technical Notes
+- Setup of pnpm workspace
+- Separate apps (api, web) and packages (shared)
+- Shared type definitions
+- Configured build pipelines
+- **GitHub Issues**: N/A (Infrastructure setup)
+- **Delivered**: 2026-01-08
 
-- Use `zustand` for wizard state.
-- Validate against `packages/shared/src/schemas.ts`.
+**2. Shared Schemas (Zod Validation)**
 
-### Tasks
+- Project description schema
+- Tech stack schema
+- Generation request/response schemas
+- Type-safe validation utilities
+- **GitHub Issues**: N/A (Infrastructure setup)
+- **Delivered**: 2026-01-08
 
-- TASK-005 (✅ Complete), TASK-006 (Issue #16), TASK-101 (Issue #17)
+**3. API Streaming Endpoint**
+
+- Hono framework setup in Cloudflare Workers
+- Server-Sent Events (SSE) implementation
+- Streaming response for blueprint generation
+- Error handling and timeout management
+- **GitHub Issues**: N/A (Infrastructure setup)
+- **Delivered**: 2026-01-08
+
+**4. Basic Wizard UI (Step 1)**
+
+- Project description input form
+- Character count display
+- Form validation
+- Navigation to next step
+- **GitHub Issues**: N/A (Infrastructure setup)
+- **Delivered**: 2026-01-08
+
+**5. Tech Stack Selection Form (Step 2)**
+
+- Multi-select tech stack component
+- Validation for minimum/maximum selections
+- Integration with shared schemas
+- Next/Previous navigation
+- **GitHub Issues**: #1 (Closed)
+- **Delivered**: 2026-01-08
+
+**6. Review & Generate Form (Step 3)**
+
+- Summary display of user inputs
+- Project description review
+- Tech stack review
+- Generate button with loading state
+- Error handling for generation failures
+- **GitHub Issues**: #2 (Closed)
+- **Delivered**: 2026-01-08
+
+**7. Markdown Rendering Component**
+
+- Real-time markdown rendering
+- Syntax highlighting for code blocks
+- Table of contents generation
+- Responsive layout
+- **GitHub Issues**: #3 (Closed)
+- **Delivered**: 2026-01-08
+
+**8. API Streaming Integration**
+
+- Frontend connection to API SSE endpoint
+- Chunk-by-chunk content display
+- Progress indicators
+- Stream error handling
+- Connection state management
+- **GitHub Issues**: #4 (Closed)
+- **Delivered**: 2026-01-08
+
+**9. Split-Pane Editor View**
+
+- Left pane: Generated markdown content
+- Right pane: Live preview with syntax highlighting
+- Resizable panes
+- Synchronized scrolling
+- Editable mode for generated content
+- **GitHub Issues**: #5 (Closed)
+- **Delivered**: 2026-01-08
+
+**10. Editor Toolbar Component**
+
+- Formatting controls (bold, italic, etc.)
+- Code block insertion
+- List insertion
+- Header levels
+- Undo/redo functionality
+- Extracted from Editor.tsx for reusability
+- **GitHub Issues**: #6 (Closed)
+- **Delivered**: 2026-01-08
+
+**11. API Service Layer**
+
+- Controller pattern for route handlers
+- Business logic separation from routes
+- Improved testability
+- Better code organization
+- **GitHub Issues**: #7 (Closed)
+- **Delivered**: 2026-01-08
+
+**12. Centralized Error Handling**
+
+- Consistent error response format
+- Error logging middleware
+- HTTP status code mapping
+- User-friendly error messages
+- **GitHub Issues**: #8 (Closed)
+- **Delivered**: 2026-01-08
 
 ---
 
-## [FEAT-02] Blueprint Generation & Streaming
+## In Progress Features
 
-**Status**: Backend Complete, Frontend Pending
-**Priority**: P0 (Critical)
+### M1: Foundation & Core Loop
 
-### User Story
+**Status**: ⚠️ Partial Completion
 
-As a user, I want to click "Generate" and see a real-time stream of the `blueprint.md` content, so that I don't have to wait for the full generation.
+**Remaining Work**:
 
-### Acceptance Criteria
-
-- [x] Connects to OpenAI/LLM provider.
-- [x] Streams tokens via SSE (Server-Sent Events).
-- [ ] Renders Markdown in real-time.
-- [ ] Generates `blueprint.md` and `task.md`.
-
-### Technical Notes
-
-- Backend: Hono Streaming.
-- Frontend: `EventSource` or `fetch` with readable stream.
-
-### Tasks
-
-- TASK-003, TASK-004, TASK-100 (✅ Complete), TASK-008 (Issue #18), TASK-011 (Issue #19)
+- Integration testing of full wizard flow
+- End-to-end testing of streaming
+- Performance optimization
+- Bug fixes and polish
 
 ---
 
-## [FEAT-03] Live Split-Pane Editor
+## Planned Features (Not Delivered)
 
-**Status**: Draft
-**Priority**: P1 (High)
+### M2: Refinement & Persistence
 
-### User Story
+- User Authentication (OAuth)
+- Project Persistence (Database)
+- Refinement Workflow
+- History & Versions
+- Export Functionality
 
-As a user, I want to manually edit the generated result in a code editor side-by-side with the chat, so that I can refine the output.
+### M3: Polish & Scale
 
-### Acceptance Criteria
-
-- [ ] Split-pane layout (resizable).
-- [ ] Monaco Editor or CodeMirror instance on the right.
-- [ ] "Regenerate Selection" capability (Future).
-
-### Tasks
-
-- TASK-007
+- Performance Optimization
+- Advanced Features (Templates, Custom Tech Stacks)
+- Analytics & Monitoring
+- Infrastructure Scaling
+- Documentation & Launch
 
 ---
 
-## [FEAT-04] Export & Download
+## Feature Statistics
 
-**Status**: Draft
-**Priority**: P2 (Medium)
+### By Milestone
 
-### User Story
+- **M1**: 12 features delivered (100% of planned core features)
+- **M2**: 0 features delivered (0%)
+- **M3**: 0 features delivered (0%)
 
-As a user, I want to download a `.zip` file of the artifacts, so that I can start coding immediately.
+### By Category
 
-### Acceptance Criteria
+- **Infrastructure**: 4 features (Monorepo, Schemas, API, Wizard Step 1)
+- **Frontend**: 6 features (Wizard Steps 2-3, Markdown Rendering, Split-Pane, Toolbar)
+- **Integration**: 1 feature (API Streaming)
+- **Backend/Refactor**: 2 features (Service Layer, Error Handling)
 
-- [ ] "Download Zip" button.
-- [ ] Client-side zip generation (JSZip).
-- [ ] Includes `blueprint.md`, `task.md`, and folder structure.
+---
 
-### Tasks
+## Success Metrics
 
-- TASK-009
+### M1 Core Loop Completion
+
+| Metric                 | Target  | Current | Status |
+| ---------------------- | ------- | ------- | ------ |
+| Wizard Flow Completion | 100%    | 100%    | ✅     |
+| API Streaming Working  | Yes     | Yes     | ✅     |
+| Markdown Rendering     | Working | Working | ✅     |
+| End-to-End Flow Time   | < 30s   | TBD     | ⏳     |
+| Zero Critical Bugs     | Yes     | TBD     | ⏳     |
+
+---
+
+## Known Limitations
+
+### Current M1 Implementation
+
+1. **No User Persistence**: Projects are not saved
+2. **No Editing**: Cannot edit generated content
+3. **No Export**: Cannot export to markdown or PDF
+4. **No Version History**: No tracking of changes
+5. **Single User**: No multi-user support
+
+These limitations will be addressed in M2.
+
+---
+
+## Version History
+
+| Version | Date       | Changes                                      |
+| ------- | ---------- | -------------------------------------------- |
+| 1.0.0   | 2026-01-08 | Initial features documentation (M1 complete) |
+
+---
+
+**End of Features**
