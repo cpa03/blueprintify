@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 import {
   TechStackCategory,
   TechStackItem,
@@ -10,8 +10,8 @@ import {
   GenerationResultSchema,
   TaskStatusSchema,
   TaskPrioritySchema,
-  TaskItemSchema,
-} from "./schema";
+  TaskItemSchema
+} from './schema';
 
 // ===== Inferred Types from Zod Schemas =====
 export type TechStackCategoryType = z.infer<typeof TechStackCategory>;
@@ -27,12 +27,7 @@ export type TaskPriority = z.infer<typeof TaskPrioritySchema>;
 export type TaskItem = z.infer<typeof TaskItemSchema>;
 
 // ===== Wizard Step Types =====
-export type WizardStep =
-  | "info"
-  | "stack"
-  | "features"
-  | "review"
-  | "generating";
+export type WizardStep = 'info' | 'stack' | 'features' | 'review' | 'generating';
 
 export interface WizardState {
   currentStep: WizardStep;
@@ -62,7 +57,7 @@ export interface StreamCallbacks {
 }
 
 // ===== Editor Types =====
-export type EditorTab = "blueprint" | "tasks";
+export type EditorTab = 'blueprint' | 'tasks';
 
 export interface EditorState {
   activeTab: EditorTab;
@@ -70,24 +65,3 @@ export interface EditorState {
   tasksContent: string;
   isDirty: boolean;
 }
-
-// ===== API Error Response Types =====
-
-export interface ApiErrorResponse {
-  error: string;
-  status: number;
-  timestamp?: string;
-  details?: {
-    code?: string;
-    details?: unknown;
-  };
-}
-
-export interface ApiSuccessResponse<T = unknown> {
-  data?: T;
-  message?: string;
-  status: number;
-  timestamp?: string;
-}
-
-export type ApiResponse<T = unknown> = ApiSuccessResponse<T> | ApiErrorResponse;
