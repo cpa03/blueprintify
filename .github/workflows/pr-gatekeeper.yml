@@ -80,7 +80,7 @@ jobs:
           opencode run --agent debugger \
              "The active PR failed validation checks. Analyze the logs in validation_errors.log and FIX the code errors to make the build pass. Focus ONLY on fixing errors." \
              --model opencode/glm-4.7-free \
-             --share false
+             --share disabled
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
 
@@ -92,7 +92,7 @@ jobs:
           opencode run --agent security-engineer \
              "Scan the changed files in this PR (git diff --name-only origin/${{ github.base_ref }}). Remove any introduced vulnerabilities, secrets, or usage of deprecated functions." \
              --model opencode/glm-4.7-free \
-             --share false
+             --share disabled
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
 
@@ -104,7 +104,7 @@ jobs:
           opencode run --agent janitor \
              "Scan the codebase for redundant file, unused exports, and commented-out dead code. Remove them to clean up before merge." \
              --model opencode/glm-4.7-free \
-             --share false
+             --share disabled
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
 
