@@ -2,7 +2,7 @@ name: Active PR Gatekeeper
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -137,3 +137,4 @@ jobs:
           gh pr merge --auto --squash --delete-branch || echo "⚠️ Auto-merge set failed. Check repo settings."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
