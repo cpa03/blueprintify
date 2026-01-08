@@ -1,0 +1,139 @@
+name: Active PR Gatekeeper
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  checks: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gatekeeper:
+    name: Validate, Fix, & Clean
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Cache Build & Deps
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            **/.tsbuildinfo
+            .next/cache
+            .opencode/cache
+          key: ${{ runner.os }}-gatekeeper-${{ hashFiles('**/package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-gatekeeper-${{ hashFiles('**/package-lock.json') }}-
+            ${{ runner.os }}-gatekeeper-
+
+      - name: Install OpenCode CLI
+        run: npm install -g opencode-ai
+
+      - name: Install Dependencies
+        run: npm ci
+
+      # --- STAGE 1: HEALTH CHECK & AUTO-FIX ---
+      - name: Run Health Checks
+        id: health
+        continue-on-error: true
+        run: |
+          npm run typecheck > typecheck.log 2>&1 || echo "Typecheck Failed"
+          npm run lint > lint.log 2>&1 || echo "Lint Failed"
+          npm run build > build.log 2>&1 || echo "Build Failed"
+
+          # Check for failures
+          if grep -q "Failed" typecheck.log || grep -q "Failed" lint.log || grep -q "Failed" build.log; then
+             echo "Health check failed. Engaging Debugger."
+             echo "status=fail" >> $GITHUB_OUTPUT
+             exit 1
+          else
+             echo "Health check passed."
+             echo "status=pass" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Engage Debugger (Auto-Fix)
+        if: steps.health.outcome == 'failure'
+        continue-on-error: true
+        timeout-minutes: 30 # Increased buffer to prevent waste
+        run: |
+          echo "Health check failed. Asking Debugger to fix..."
+          cat typecheck.log lint.log build.log > validation_errors.log
+
+          opencode run --agent debugger \
+             "The active PR failed validation checks. Analyze the logs in validation_errors.log and FIX the code errors to make the build pass. Focus ONLY on fixing errors." \
+             --model opencode/glm-4.7-free \
+             --share false
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+
+      # --- STAGE 2: SECURITY & DEPRECATION ---
+      - name: Engage Security Engineer
+        continue-on-error: true
+        timeout-minutes: 20
+        run: |
+          opencode run --agent security-engineer \
+             "Scan the changed files in this PR (git diff --name-only origin/${{ github.base_ref }}). Remove any introduced vulnerabilities, secrets, or usage of deprecated functions." \
+             --model opencode/glm-4.7-free \
+             --share false
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+
+      # --- STAGE 3: CLEANUP & JANITOR ---
+      - name: Engage Janitor
+        continue-on-error: true
+        timeout-minutes: 20
+        run: |
+          opencode run --agent janitor \
+             "Scan the codebase for redundant file, unused exports, and commented-out dead code. Remove them to clean up before merge." \
+             --model opencode/glm-4.7-free \
+             --share false
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+
+      # --- FINALIZATION ---
+      - name: Commit fixes back to PR
+        if: always() # Commit any partial successes even if previous steps "failed"
+        run: |
+          git config user.name "Gatekeeper Agent"
+          git config user.email "gatekeeper@bot.local"
+          git add .
+          if git diff --staged --quiet; then
+            echo "No fixes needed. Code is clean."
+          else
+            git commit -m "chore(gatekeeper): auto-fixed build errors and cleaned up code"
+            git push
+          fi
+
+      # --- STAGE 4: VERIFICATION & MERGE ---
+      - name: Final Integrity Check
+        id: final_verify
+        run: |
+          echo "🛡️ Verifying system integrity after agent interventions..."
+          # Fail immediately if build/types are still broken after fixes
+          npm run build && npm run typecheck
+
+      - name: Enable Auto-Merge
+        if: steps.final_verify.outcome == 'success'
+        run: |
+          echo "✅ Integrity Confirmed. Enabling Auto-Merge."
+          gh pr merge --auto --squash --delete-branch || echo "⚠️ Auto-merge set failed. Check repo settings."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
