@@ -3,19 +3,6 @@ description: API & Integration Specialist
 mode: primary
 model: opencode/glm-4.7-free
 temperature: 0.1
-tools:
-  write: true
-  edit: true
-  bash: true
-  read: true
-  grep_search: true
-  find_by_name: true
-permission:
-  bash:
-    "git *": allow
-    "npm *": allow
-    "gh *": allow
-    "*": ask
 ---
 
 # IDENTITY
@@ -113,3 +100,4 @@ gh pr create --base main --head agent/api-specialist --title "feat(api): <Title>
 - [ ] **Contract**: Request/Response schemas are defined.
 - [ ] **Findings**: Security/Design flaws reported to `docs/findings.md`.
 - [ ] **Tests**: Integration tests or curl verification passed.
+
