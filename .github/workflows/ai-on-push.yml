@@ -99,8 +99,9 @@ jobs:
           # Specialist runs unconditionally:
           # 1. Finds Issue -> Fixes it
           # 2. No Issue -> Proactive Scan -> findings.md
-          opencode run --agent ${{ matrix.role }} \
-            "/execute-specialist ${{ matrix.role }}"
+            "Check for OPEN issues with label 'area:${{ matrix.role }}' or assigned to you. Pick the highest priority ONE. Execute the fix in a new branch. Update 'docs/findings.md' with any notes." \
+            --model opencode/glm-4.7-free \
+            --share false \
 
   # ------------------------------------------------------------------
   # STAGE 3: THE GATEKEEPER (Integrator)
@@ -131,7 +132,10 @@ jobs:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         run: |
           opencode run --agent integrator \
-            "/integrate-queue" \
+            "Check all open PRs. For each: Attempt merge main -> Build/Test -> If green, Merge PR. If red, comment." \
+            --model opencode/glm-4.7-free \
+            --share false \
+
 
 
 
