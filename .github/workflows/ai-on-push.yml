@@ -47,8 +47,7 @@ jobs:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         run: |
           # The Architect reads findings.md, updates roadmap, and creates/updates issues
-          opencode run --agent software-architect \
-            "Execute management cycle. Read 'docs/findings.md' and 'docs/roadmap.md'. Triage existing issues. Create new issues if roadmap requires it." \
+          opencode run --agent software-architect "Execute management cycle. Read 'docs/findings.md' and 'docs/roadmap.md'. Triage existing issues. Create new issues if roadmap requires it."
 
   # ------------------------------------------------------------------
   # STAGE 2: THE MUSCLE (Specialist Executors)
@@ -131,3 +130,4 @@ jobs:
         run: |
           opencode run --agent integrator \
             "/integrate-queue" \
+
