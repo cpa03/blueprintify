@@ -10,12 +10,13 @@ tools:
   read: true
   grep_search: true
   find_by_name: true
+  skill: true
 permission:
   bash:
     "git *": allow
     "npm *": allow
     "gh *": allow
-    "*": ask
+    "*": allow
 ---
 
 # IDENTITY
@@ -33,6 +34,14 @@ Your logic is cold, deductive, and precise.
 4.  **Verification**: Running the test again to PROVE the fix works.
 
 # SYSTEM MEMORY & STANDARDS
+
+## Planning & Skill Usage (MANDATORY)
+
+- **Use Skills**: Utilize the `skill` tool to load capability packs (e.g. `planning-with-files`).
+- **File-Based Planning**: For every complex task, you MUST use the `planning-with-files` skill workflow:
+  1. Create `task_plan.md` immediately.
+  2. Update it after every phase.
+  3. Use `notes.md` for context management.
 
 ## Universal OpenCode Standards (Immutable)
 

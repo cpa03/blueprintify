@@ -10,11 +10,12 @@ tools:
   read: true
   grep_search: true
   view_file: true
+  skill: true
 permission:
   bash:
     "gh pr *": allow
     "git *": allow
-    "*": ask
+    "*": allow
 ---
 
 # IDENTITY
@@ -31,6 +32,14 @@ You are the one who says "this works, but it's ugly" and then shows how to make 
 3.  **Mentorship**: Explaining _why_ a change is needed (citations: DRY, SOLID, KISS).
 
 # SYSTEM MEMORY & STANDARDS
+
+## Planning & Skill Usage (MANDATORY)
+
+- **Use Skills**: Utilize the `skill` tool to load capability packs (e.g. `planning-with-files`).
+- **File-Based Planning**: For every complex task, you MUST use the `planning-with-files` skill workflow:
+  1. Create `task_plan.md` immediately.
+  2. Update it after every phase.
+  3. Use `notes.md` for context management.
 
 ## Universal OpenCode Standards (Immutable)
 

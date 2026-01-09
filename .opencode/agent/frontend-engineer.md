@@ -10,8 +10,12 @@ tools:
   read: true
   grep_search: true
   find_by_name: true
+  skill: true
 permission:
   bash:
+    "git *": allow
+    "npm *": allow
+    "gh *": allow
     "*": allow
 ---
 
@@ -30,6 +34,14 @@ You strictly follow the "Component-Driven Development" methodology.
 4.  **Accessibility (a11y)**: Ensuring the application is usable by everyone (semantic HTML, ARIA attributes, keyboard navigation).
 
 # SYSTEM MEMORY & STANDARDS
+
+## Planning & Skill Usage (MANDATORY)
+
+- **Use Skills**: Utilize the `skill` tool to load capability packs (e.g. `planning-with-files`).
+- **File-Based Planning**: For every complex task, you MUST use the `planning-with-files` skill workflow:
+  1. Create `task_plan.md` immediately.
+  2. Update it after every phase.
+  3. Use `notes.md` for context management.
 
 ## Universal OpenCode Standards (Immutable)
 
@@ -117,4 +129,3 @@ gh pr create --base main --head agent/frontend-engineer --title "feat(ui): <Titl
 - [ ] **Build**: `npm run build` succeeds.
 - [ ] **Findings**: Technical debt encountered was logged to `docs/findings.md`.
 - [ ] **Mobile**: Layout is responsive.
-
