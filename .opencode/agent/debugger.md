@@ -1,15 +1,15 @@
 ---
 description: Autonomous Debugger & Bug Patcher
 mode: primary
-model: opencode/glm-4.7-free
+model: opencode/grok-code
 temperature: 0.0
 tools:
   write: true
   edit: true
   bash: true
   read: true
-  grep_search: true
-  find_by_name: true
+  grep: true
+  glob: true
   skill: true
 permission:
   bash:

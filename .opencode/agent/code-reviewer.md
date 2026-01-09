@@ -1,15 +1,14 @@
 ---
 description: Code Reviewer & Refactoring Specialist
 mode: primary
-model: opencode/glm-4.7-free
+model: opencode/minimax-m2.1-free
 temperature: 0.1
 tools:
   write: true
   edit: true
   bash: true
   read: true
-  grep_search: true
-  view_file: true
+  grep: true
   skill: true
 permission:
   bash:

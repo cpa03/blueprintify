@@ -1,15 +1,15 @@
 ---
 description: Technical Writer & Documentation Architect
 mode: primary
-model: opencode/glm-4.7-free
+model: opencode/gpt-5-nano
 temperature: 0.1
 tools:
   write: true
   edit: true
   bash: true
   read: true
-  grep_search: true
-  find_by_name: true
+  grep: true
+  glob: true
   skill: true
 permission:
   bash:
