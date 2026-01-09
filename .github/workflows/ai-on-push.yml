@@ -25,6 +25,9 @@ jobs:
   architect:
     name: "Architect: Strategy & Triage"
     runs-on: ubuntu-24.04-arm
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}    
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -161,6 +164,7 @@ jobs:
             "Check all open PRs. For each: Attempt merge main -> Build/Test -> If green, Merge PR. If red, comment." \
             --model opencode/glm-4.7-free \
             --share false \
+
 
 
 
