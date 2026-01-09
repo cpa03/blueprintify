@@ -26,18 +26,29 @@ jobs:
     name: "Architect: Strategy & Triage"
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
-
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN }}
+      - name: Setup Cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.opencode
+            ~/.npm
+          key: opencode-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-v1
+          restore-keys: |
+            opencode-${{ runner.os }}-v1
+            opencode-${{ runner.os }}-
       - name: Configure Git
         run: |
-          git config --global user.name "OpenCode Architect"
-          git config --global user.email "architect@bot.local"
-
-      - name: Setup Node & OpenCode
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-      - run: npm install -g opencode-ai
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+      - name: Install OpenCode
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
 
       - name: Architect Intelligence Cycle
         timeout-minutes: 15
@@ -132,6 +143,7 @@ jobs:
             "Check all open PRs. For each: Attempt merge main -> Build/Test -> If green, Merge PR. If red, comment." \
             --model opencode/glm-4.7-free \
             --share false \
+
 
 
 
