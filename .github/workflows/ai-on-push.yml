@@ -62,9 +62,9 @@ jobs:
           while [ $retry_count -lt $max_retries ]; do
             echo "Attempt $((retry_count + 1)) of $max_retries"
 
-            if opencode run "Execute management cycle, Read 'docs/findings.md' and 'docs/roadmap.md', Triage existing issues, Create new issues if roadmap requires it."
-              --agent software-archtect
-              --model opencode/glm-4.7-free
+            if opencode run "Execute management cycle, Read 'docs/findings.md' and 'docs/roadmap.md', Triage existing issues, Create new issues if roadmap requires it." \
+              --agent software-archtect \
+              --model iflowcn/glm-4.6 \
               --share false; then
               echo "OpenCode execution succeeded"
               break
@@ -161,6 +161,7 @@ jobs:
             "Check all open PRs. For each: Attempt merge main -> Build/Test -> If green, Merge PR. If red, comment." \
             --model opencode/glm-4.7-free \
             --share false \
+
 
 
 
