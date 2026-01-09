@@ -40,6 +40,8 @@ jobs:
       - run: npm install -g opencode-ai
 
       - name: Architect Intelligence Cycle
+        timeout-minutes: 15
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
@@ -47,14 +49,6 @@ jobs:
           # The Architect reads findings.md, updates roadmap, and creates/updates issues
           opencode run --agent software-architect \
             "Execute management cycle. Read 'docs/findings.md' and 'docs/roadmap.md'. Triage existing issues. Create new issues if roadmap requires it." \
-            --model opencode/glm-4.7-free \
-            --share false \
-
-      - name: Commit Strategic Updates
-        run: |
-          git add docs/
-          git diff --staged --quiet || git commit -m "chore(strategy): update roadmap and findings [skip ci]"
-          git push origin main || echo "Push failed, likely race condition but acceptable."
 
   # ------------------------------------------------------------------
   # STAGE 2: THE MUSCLE (Specialist Executors)
@@ -94,33 +88,18 @@ jobs:
           node-version: "20"
       - run: npm install -g opencode-ai
 
-      - name: Check for Assigned Issues
-        id: check_issues
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Simple logic: If there are open issues with label 'area:<role>', proceed.
-          # Mapping role to label logic can be handled by the agent or simple grep
-          COUNT=$(gh issue list --label "area:${{ matrix.role }}" --json number -q 'length')
-          if [ "$COUNT" -gt 0 ]; then
-             echo "Issues found matching this specialist."
-             echo "has_work=true" >> $GITHUB_OUTPUT
-          else
-             echo "No issues for me. Sleeping."
-             echo "has_work=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Execute Work (Ticket Taker)
-        if: steps.check_issues.outputs.has_work == 'true'
+      - name: Execute Work (Active or Proactive)
+        timeout-minutes: 20
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         run: |
-          # Specialist will pick an issue, branch off, fix, and PR.
+          # Specialist runs unconditionally:
+          # 1. Finds Issue -> Fixes it
+          # 2. No Issue -> Proactive Scan -> findings.md
           opencode run --agent ${{ matrix.role }} \
-            "Check for OPEN issues with label 'area:${{ matrix.role }}' or assigned to you. Pick the highest priority ONE. Execute the fix in a new branch. Update 'docs/findings.md' with any notes." \
-            --model opencode/glm-4.7-free \
-            --share false
+            "/execute-specialist ${{ matrix.role }}"
 
   # ------------------------------------------------------------------
   # STAGE 3: THE GATEKEEPER (Integrator)
@@ -144,11 +123,11 @@ jobs:
       - run: npm install -g opencode-ai
 
       - name: Process Pull Requests
+        timeout-minutes: 30
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         run: |
           opencode run --agent integrator \
-            "Check all open PRs. For each: Attempt merge main -> Build/Test -> If green, Merge PR. If red, comment." \
-            --model opencode/glm-4.7-free \
-            --share false
+            "/integrate-queue" \

@@ -2,7 +2,7 @@ name: Active PR Gatekeeper
 
 on:
   pull_request:
-  workflow_dispatch:
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   gatekeeper:
@@ -137,4 +137,3 @@ jobs:
           gh pr merge --auto --squash --delete-branch || echo "⚠️ Auto-merge set failed. Check repo settings."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
