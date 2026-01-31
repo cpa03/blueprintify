@@ -52,9 +52,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Install OpenCode
-        run: npm install -g opencode-ai
-
+      - name: Install OpenCode CLI
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: Architect Intelligence Cycle
         timeout-minutes: 15
         continue-on-error: true
@@ -120,8 +121,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - run: npm install -g opencode-ai
-
+      - name: Install OpenCode CLI
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: Execute Work (Active or Proactive)
         timeout-minutes: 20
         continue-on-error: true
@@ -155,8 +158,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - run: npm install -g opencode-ai
-
+      - name: Install OpenCode CLI
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: Process Pull Requests
         timeout-minutes: 30
         continue-on-error: true
@@ -167,6 +172,7 @@ jobs:
             "Check all open PRs. For each: Attempt merge main -> Build/Test -> If green, Merge PR. If red, comment." \
             --model opencode/glm-4.7-free \
             --share false \
+
 
 
 
