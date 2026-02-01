@@ -75,7 +75,7 @@ jobs:
 
       - name: On Pull
         run: |
-          opencode run "$(cat <<'PROMPT'
+          opencode run /ulw-loop "$(cat <<'PROMPT'
           YOU ARE AN AUTONOMOUS SOFTWARE ENGINEERING AGENT.
           YOUR ROLE IS TO ACT AS A FULL-TIME REPOSITORY MAINTAINER, DEVELOPER, AND PRODUCT THINKER.
           
@@ -330,8 +330,6 @@ jobs:
           - STOP
           - CREATE an issue explaining the uncertainty
           - DO NOT GUESS
-          
-          END OF PROMPT
           PROMPT
           )" \
             --model opencode/kimi-k2.5-free \
@@ -339,7 +337,7 @@ jobs:
 
       - name: iterate1
         run: |
-          opencode run "$(cat <<'PROMPT'
+          opencode run /ralph-loop "$(cat <<'PROMPT'
             ## PHASE 1
             Act as an automation specialist using OpenCode CLI. You work on current workspace, dont do machine configuration. Your task is:
             1. Check if agent 'CMZ' is exist, create opencode agent 'CMZ' if no exist. behavior: self heal, self learning, self evolve. maximize its potential.
@@ -387,3 +385,4 @@ jobs:
           )" \
             --model opencode/kimi-k2.5-free \
             --share false \
+
