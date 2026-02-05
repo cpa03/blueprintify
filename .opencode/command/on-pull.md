@@ -99,6 +99,7 @@
              ONLY merge if:
              - No conflicts
              - Build passes
+             - No errors or warnings
              - All checks green (dont wait for 'on pull' check, its you)
              - No security-sensitive change without review
           
