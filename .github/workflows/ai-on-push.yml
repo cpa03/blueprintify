@@ -57,13 +57,15 @@ jobs:
           curl -fsSL https://opencode.ai/install | bash
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: Architect Intelligence Cycle
-        timeout-minutes: 15
+        timeout-minutes: 20
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           max_retries=2
           retry_count=0
+
+          echo "🏗️ Starting Architect Intelligence Cycle"
 
           while [ $retry_count -lt $max_retries ]; do
             echo "Attempt $((retry_count + 1)) of $max_retries"
@@ -72,14 +74,14 @@ jobs:
               --agent software-architect \
               --model opencode/big-pickle \
               --share false; then
-              echo "OpenCode execution succeeded"
+              echo "✅ Architect work completed successfully"
               break
             else
               retry_count=$((retry_count + 1))
-              echo "OpenCode execution failed, retrying in 30 seconds..."
+              echo "❌ Architect execution failed, retrying in 30 seconds..."
               sleep 30
               if [ $retry_count -eq $max_retries ]; then
-                echo "All retry attempts failed"
+                echo "❌ All retry attempts failed"
                 exit 1
               fi
             fi
@@ -126,7 +128,7 @@ jobs:
           curl -fsSL https://opencode.ai/install | bash
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: Execute Work (Active or Proactive)
-        timeout-minutes: 20
+        timeout-minutes: 30
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -134,10 +136,18 @@ jobs:
           # Specialist runs unconditionally:
           # 1. Finds Issue -> Fixes it
           # 2. No Issue -> Proactive Scan -> findings.md
-          opencode run \
+          echo "Starting specialist work for ${{ matrix.role }}"
+          
+          if opencode run \
             "Check for OPEN issues with label 'area:${{ matrix.role }}' or assigned to you. Pick the highest priority ONE. Execute the fix in a new branch. Update 'docs/findings.md' with any notes." \
             --model opencode/big-pickle \
-            --share false
+            --share false; then
+            echo "✅ Specialist work completed successfully for ${{ matrix.role }}"
+          else
+            echo "❌ Specialist work failed or timed out for ${{ matrix.role }}"
+            echo "This may be expected if no issues were found or work took longer than timeout"
+            exit 0  # Don't fail the workflow, just log the issue
+          fi
 
   # ------------------------------------------------------------------
   # STAGE 3: THE GATEKEEPER (Integrator)
@@ -163,7 +173,7 @@ jobs:
           curl -fsSL https://opencode.ai/install | bash
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: Process Pull Requests
-        timeout-minutes: 30
+        timeout-minutes: 40
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
