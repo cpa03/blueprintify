@@ -2,9 +2,17 @@ name = "blueprint-generator-api"
 main = "src/index.ts"
 compatibility_date = "2024-01-01"
 
-[vars]
-ENVIRONMENT = "development"
+# Environment-specific configuration
+[env.staging]
+name = "blueprint-generator-api-staging"
+vars = { ENVIRONMENT = "staging" }
 
-# Uncomment and add your OpenAI API key when deploying
-# [secrets]
-# OPENAI_API_KEY = ""
+[env.production]
+name = "blueprint-generator-api"
+vars = { ENVIRONMENT = "production" }
+
+# Production secrets (set via: wrangler secret put <SECRET_NAME> --env production)
+# Required secrets:
+# - OPENAI_API_KEY
+# - SUPABASE_URL
+# - SUPABASE_SERVICE_ROLE_KEY

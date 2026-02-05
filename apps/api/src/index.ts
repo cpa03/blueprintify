@@ -38,6 +38,16 @@ app.get("/", (c) => {
   });
 });
 
+// ===== Dedicated Health Check for Monitoring =====
+app.get("/health", (c) => {
+  return c.json({
+    status: "healthy",
+    timestamp: new Date().toISOString(),
+    environment: c.env.ENVIRONMENT || "unknown",
+    version: "1.0.0",
+  });
+});
+
 // ===== Routes =====
 app.route("/generate", generateRoute);
 app.route("/tasks", tasksRoute);
