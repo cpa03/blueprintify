@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { TechStackCategory, TechStackItem, BlueprintRequestSchema, TaskGenerationRequestSchema, RefineRequestSchema, TemplateSchema, StreamChunkSchema, GenerationResultSchema } from './schema';
+import { z } from "zod";
+import { TechStackCategory, TechStackItem, BlueprintRequestSchema, TaskGenerationRequestSchema, RefineRequestSchema, TemplateSchema, StreamChunkSchema, GenerationResultSchema, TaskStatusSchema, TaskPrioritySchema, TaskItemSchema } from "./schema";
 export type TechStackCategoryType = z.infer<typeof TechStackCategory>;
 export type TechStackItemType = z.infer<typeof TechStackItem>;
 export type BlueprintRequest = z.infer<typeof BlueprintRequestSchema>;
@@ -8,7 +8,10 @@ export type RefineRequest = z.infer<typeof RefineRequestSchema>;
 export type Template = z.infer<typeof TemplateSchema>;
 export type StreamChunk = z.infer<typeof StreamChunkSchema>;
 export type GenerationResult = z.infer<typeof GenerationResultSchema>;
-export type WizardStep = 'info' | 'stack' | 'features' | 'review' | 'generating';
+export type TaskStatus = z.infer<typeof TaskStatusSchema>;
+export type TaskPriority = z.infer<typeof TaskPrioritySchema>;
+export type TaskItem = z.infer<typeof TaskItemSchema>;
+export type WizardStep = "info" | "stack" | "features" | "review" | "generating";
 export interface WizardState {
     currentStep: WizardStep;
     projectName: string;
@@ -30,8 +33,9 @@ export interface StreamCallbacks {
     onChunk: (chunk: string) => void;
     onError: (error: string) => void;
     onDone: () => void;
+    onRetry?: (attempt: number, maxRetries: number) => void;
 }
-export type EditorTab = 'blueprint' | 'tasks';
+export type EditorTab = "blueprint" | "tasks";
 export interface EditorState {
     activeTab: EditorTab;
     blueprintContent: string;
