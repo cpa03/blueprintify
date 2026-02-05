@@ -1,0 +1,126 @@
+/* Markdown Renderer Responsive Styles */
+
+.markdown-content {
+  /* Responsive font sizes */
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.6;
+  
+  /* Ensure proper word wrapping */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  
+  /* Responsive spacing */
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+  
+  @media (min-width: 769px) {
+    padding: 1.5rem;
+  }
+}
+
+/* Code block responsiveness */
+.markdown-content pre {
+  max-width: 100%;
+  overflow-x: auto;
+  
+  @media (max-width: 640px) {
+    font-size: 0.75rem;
+    padding: 0.75rem;
+  }
+}
+
+/* Table responsiveness */
+.markdown-content table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  
+  @media (max-width: 640px) {
+    font-size: 0.875rem;
+  }
+}
+
+.markdown-content th,
+.markdown-content td {
+  min-width: 120px;
+  
+  @media (max-width: 640px) {
+    min-width: 80px;
+    padding: 0.5rem;
+  }
+}
+
+/* List responsiveness */
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 1.5rem;
+  
+  @media (max-width: 640px) {
+    padding-left: 1rem;
+  }
+}
+
+/* Header responsiveness */
+.markdown-content h1 {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+}
+
+.markdown-content h2 {
+  font-size: clamp(1.25rem, 3vw, 1.875rem);
+}
+
+.markdown-content h3 {
+  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+}
+
+/* Blockquote responsiveness */
+.markdown-content blockquote {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  
+  @media (max-width: 640px) {
+    padding: 0.5rem 0.75rem;
+    margin: 0.75rem 0;
+  }
+}
+
+/* Image responsiveness */
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+/* Inline code responsiveness */
+.markdown-content code:not(pre code) {
+  font-size: 0.875em;
+  
+  @media (max-width: 640px) {
+    font-size: 0.75em;
+    padding: 0.125rem 0.375rem;
+  }
+}
+
+/* Streaming indicator positioning */
+.streaming-indicator {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  
+  @media (max-width: 768px) {
+    bottom: 0.5rem;
+    right: 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Error boundary responsiveness */
+.error-boundary {
+  margin: 1rem;
+  
+  @media (max-width: 640px) {
+    margin: 0.5rem;
+    padding: 0.75rem;
+  }
+}

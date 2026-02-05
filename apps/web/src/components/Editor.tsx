@@ -1,18 +1,17 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import CodeMirror from '@uiw/react-codemirror';
-import { markdown } from '@codemirror/lang-markdown';
-import { oneDark } from '@codemirror/theme-one-dark';
-import ReactMarkdown from 'react-markdown';
-import { EditorHeader, type ViewMode } from './editor/EditorHeader';
-import { useEditorStore, useWizardStore } from '../store';
-import { exportAsZip, copyToClipboard, formatForIDE } from '../lib/export';
-import clsx from 'clsx';
-
-
+import { useState } from "react";
+import { motion } from "framer-motion";
+import CodeMirror from "@uiw/react-codemirror";
+import { markdown } from "@codemirror/lang-markdown";
+import { oneDark } from "@codemirror/theme-one-dark";
+import ReactMarkdown from "react-markdown";
+import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
+import { StreamingMarkdownRenderer } from "./StreamingMarkdownRenderer";
+import { useEditorStore, useWizardStore } from "../store";
+import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
+import clsx from "clsx";
 
 export function Editor() {
-  const [viewMode, setViewMode] = useState<ViewMode>('split');
+  const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [copied, setCopied] = useState<string | null>(null);
 
   const activeTab = useEditorStore((s) => s.activeTab);
@@ -26,8 +25,10 @@ export function Editor() {
   const resetWizard = useWizardStore((s) => s.reset);
   const resetEditor = useEditorStore((s) => s.reset);
 
-  const currentContent = activeTab === 'blueprint' ? blueprintContent : tasksContent;
-  const setCurrentContent = activeTab === 'blueprint' ? setBlueprintContent : setTasksContent;
+  const currentContent =
+    activeTab === "blueprint" ? blueprintContent : tasksContent;
+  const setCurrentContent =
+    activeTab === "blueprint" ? setBlueprintContent : setTasksContent;
 
   const handleCopy = async () => {
     const formatted = formatForIDE(currentContent);
@@ -42,7 +43,7 @@ export function Editor() {
     await exportAsZip({
       blueprint: blueprintContent,
       tasks: tasksContent,
-      projectName: projectName || 'my-project'
+      projectName: projectName || "my-project",
     });
   };
 
@@ -81,8 +82,15 @@ export function Editor() {
         ) : (
           <div className="h-full flex">
             {/* Code Editor */}
-            {(viewMode === 'edit' || viewMode === 'split') && (
-              <div className={clsx('h-full overflow-hidden', viewMode === 'split' ? 'w-1/2 border-r border-dark-700' : 'w-full')}>
+            {(viewMode === "edit" || viewMode === "split") && (
+              <div
+                className={clsx(
+                  "h-full overflow-hidden",
+                  viewMode === "split"
+                    ? "w-1/2 border-r border-dark-700"
+                    : "w-full",
+                )}
+              >
                 <CodeMirror
                   value={currentContent}
                   onChange={setCurrentContent}
@@ -92,25 +100,35 @@ export function Editor() {
                   basicSetup={{
                     lineNumbers: true,
                     foldGutter: true,
-                    highlightActiveLine: true
+                    highlightActiveLine: true,
                   }}
                 />
               </div>
             )}
 
             {/* Preview */}
-            {(viewMode === 'preview' || viewMode === 'split') && (
+            {(viewMode === "preview" || viewMode === "split") && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className={clsx(
-                  'h-full overflow-y-auto p-6',
-                  viewMode === 'split' ? 'w-1/2' : 'w-full'
+                  "h-full overflow-hidden",
+                  viewMode === "split" ? "w-1/2" : "w-full",
                 )}
               >
-                <div className="markdown-content">
-                  <ReactMarkdown>{currentContent || '*No content yet...*'}</ReactMarkdown>
-                </div>
+                <StreamingMarkdownRenderer
+                  content={currentContent}
+                  isStreaming={isGenerating}
+                  className="h-full overflow-y-auto"
+                  maxLines={1000}
+                  onRenderComplete={() => {
+                    // Could trigger analytics or other completion callbacks
+                    console.debug("Markdown render completed");
+                  }}
+                  onError={(error) => {
+                    console.error("Markdown rendering error:", error);
+                  }}
+                />
               </motion.div>
             )}
           </div>
