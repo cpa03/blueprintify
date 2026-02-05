@@ -1,0 +1,61 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agents": {
+    "sisyphus": {
+      "model": "opencode/glm-4.7-free",
+      "temperature": 0.0,
+      "description": "Main orchestrator agent - persistent task execution until completion"
+    },
+    "oracle": {
+      "model": "opencode/kimi-k2.5-free",
+      "temperature": 0.0,
+      "description": "Design and debugging specialist"
+    },
+    "librarian": {
+      "model": "opencode/glm-4.7-free",
+      "temperature": 0.0,
+      "description": "Official docs and codebase exploration"
+    },
+    "explore": {
+      "model": "opencode/minimax-m2.1-free",
+      "temperature": 0.0,
+      "description": "Fast codebase exploration"
+    },
+    "frontend": {
+      "model": "opencode/kimi-k2.5-free",
+      "temperature": 0.0,
+      "description": "Frontend development specialist"
+    },
+    "hephaestus": {
+      "model": "opencode/glm-4.7-free",
+      "temperature": 0.0,
+      "description": "Autonomous deep worker - goal-oriented execution"
+    }
+  },
+  "background_tasks": {
+    "enabled": true,
+    "max_concurrent": 3,
+    "timeout_ms": 300000
+  },
+  "hooks": {
+    "disabled_hooks": []
+  },
+  "mcps": {
+    "enabled": true,
+    "providers": ["exa", "context7", "grep_app"]
+  },
+  "lsp": {
+    "enabled": true,
+    "refactor_tools": true
+  },
+  "productivity": {
+    "todo_enforcer": true,
+    "comment_checker": true,
+    "think_mode": true,
+    "ultrawork_keyword": true
+  },
+  "skills": {
+    "auto_load": true,
+    "priority": ["project", "personal", "superpowers"]
+  }
+}
