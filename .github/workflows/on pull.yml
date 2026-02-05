@@ -2,9 +2,6 @@ name: on pull
 on:
   pull_request:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["iterate"]
-    types: [completed]
 permissions:
   contents: write
   pull-requests: write
@@ -132,5 +129,6 @@ jobs:
           )" \
             --model opencode/kimi-k2.5-free \
             --share false \
+
 
 
