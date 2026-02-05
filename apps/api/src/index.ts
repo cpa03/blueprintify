@@ -6,6 +6,7 @@ import { prettyJSON } from "hono/pretty-json";
 import generateRoute from "./routes/generate";
 import tasksRoute from "./routes/tasks";
 import refineRoute from "./routes/refine";
+import databaseRoute from "./routes/database";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 import type { Env } from "./types";
 
@@ -34,6 +35,7 @@ app.get("/", (c) => {
       generate: "POST /generate",
       tasks: "POST /tasks",
       refine: "POST /refine",
+      database: "GET|POST|PATCH|DELETE /database/*",
     },
   });
 });
@@ -42,6 +44,7 @@ app.get("/", (c) => {
 app.route("/generate", generateRoute);
 app.route("/tasks", tasksRoute);
 app.route("/refine", refineRoute);
+app.route("/database", databaseRoute);
 
 // ===== Error Handler =====
 app.onError(errorHandler);
