@@ -12,10 +12,25 @@ export const TechStackCategory = z.enum([
   "other",
 ]);
 
+// Database subcategories for enhanced categorization
+export const DatabaseSubcategory = z.enum([
+  "relational",
+  "nosql",
+  "vector",
+  "graph",
+  "edge",
+  "search",
+  "cache",
+  "serverless",
+]);
+
 export const TechStackItem = z.object({
   name: z.string().min(1),
   category: TechStackCategory,
+  subcategory: DatabaseSubcategory.optional(),
   version: z.string().optional(),
+  description: z.string().optional(),
+  features: z.array(z.string()).optional(),
 });
 
 // ===== Blueprint Request Schema =====
@@ -137,12 +152,128 @@ export const TECH_STACK_OPTIONS = {
     { name: "FastAPI", category: "backend" as const },
   ],
   database: [
-    { name: "PostgreSQL", category: "database" as const },
-    { name: "MySQL", category: "database" as const },
-    { name: "MongoDB", category: "database" as const },
-    { name: "Supabase", category: "database" as const },
-    { name: "Cloudflare D1", category: "database" as const },
-    { name: "PlanetScale", category: "database" as const },
+    // Relational Databases
+    {
+      name: "PostgreSQL",
+      category: "database" as const,
+      subcategory: "relational" as const,
+      description:
+        "Advanced open-source relational database with strong ACID compliance",
+    },
+    {
+      name: "MySQL",
+      category: "database" as const,
+      subcategory: "relational" as const,
+      description:
+        "Popular open-source relational database known for reliability",
+    },
+    {
+      name: "PlanetScale",
+      category: "database" as const,
+      subcategory: "serverless" as const,
+      description: "MySQL-compatible serverless database platform",
+    },
+
+    // NoSQL Databases
+    {
+      name: "MongoDB",
+      category: "database" as const,
+      subcategory: "nosql" as const,
+      description: "Document-oriented NoSQL database for modern applications",
+    },
+    {
+      name: "Redis",
+      category: "database" as const,
+      subcategory: "cache" as const,
+      description: "In-memory data structure store for caching and messaging",
+    },
+    {
+      name: "DynamoDB",
+      category: "database" as const,
+      subcategory: "nosql" as const,
+      description: "AWS fully managed NoSQL database service",
+    },
+    {
+      name: "Cassandra",
+      category: "database" as const,
+      subcategory: "nosql" as const,
+      description: "Distributed NoSQL database for high scalability",
+    },
+
+    // Vector Databases
+    {
+      name: "Pinecone",
+      category: "database" as const,
+      subcategory: "vector" as const,
+      description: "Managed vector database for AI/ML applications",
+    },
+    {
+      name: "Weaviate",
+      category: "database" as const,
+      subcategory: "vector" as const,
+      description: "Open-source vector database with GraphQL API",
+    },
+    {
+      name: "Chroma",
+      category: "database" as const,
+      subcategory: "vector" as const,
+      description: "Open-source vector database for AI applications",
+    },
+
+    // Graph Databases
+    {
+      name: "Neo4j",
+      category: "database" as const,
+      subcategory: "graph" as const,
+      description: "Leading graph database platform for connected data",
+    },
+    {
+      name: "Amazon Neptune",
+      category: "database" as const,
+      subcategory: "graph" as const,
+      description: "AWS managed graph database service",
+    },
+
+    // Edge and Serverless Databases
+    {
+      name: "FaunaDB",
+      category: "database" as const,
+      subcategory: "edge" as const,
+      description: "Global serverless database with strong consistency",
+    },
+    {
+      name: "Upstash",
+      category: "database" as const,
+      subcategory: "edge" as const,
+      description:
+        "Serverless Redis-compatible database with edge capabilities",
+    },
+    {
+      name: "Cloudflare D1",
+      category: "database" as const,
+      subcategory: "serverless" as const,
+      description: "SQLite-based serverless database at the edge",
+    },
+    {
+      name: "Supabase",
+      category: "database" as const,
+      subcategory: "serverless" as const,
+      description: "Open-source Firebase alternative with PostgreSQL backend",
+    },
+
+    // Search Databases
+    {
+      name: "Elasticsearch",
+      category: "database" as const,
+      subcategory: "search" as const,
+      description: "Distributed search and analytics engine",
+    },
+    {
+      name: "Algolia",
+      category: "database" as const,
+      subcategory: "search" as const,
+      description: "Managed search-as-a-service platform",
+    },
   ],
   hosting: [
     { name: "Cloudflare", category: "hosting" as const },
