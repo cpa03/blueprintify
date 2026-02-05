@@ -1,0 +1,30 @@
+# Bug Report
+
+> **Active bugs and errors found in the codebase**
+
+## Format
+
+- [ ] bug description
+- [/] bug in progress
+- [x] bug fixed
+
+## Bugs Found
+
+### Build/Dependency Issues
+
+[x] ESLint not found - npm run lint fails - Fixed: installed eslint and created eslint.config.js
+[x] Vitest not found - npm run test:api fails - Fixed: installed vitest
+[x] Missing dependencies: hono, zod, react, framer-motion, openai, @uiw/react-codemirror, @codemirror/lang-markdown, @codemirror/theme-one-dark, react-markdown, clsx, @radix-ui/react-tabs, @blueprint/shared - Fixed: npm install
+
+### TypeScript Configuration Issues
+
+[x] apps/web/tsconfig.json has '--jsx' flag issue - causing JSX errors - Fixed: added jsx to root tsconfig.json
+[x] Multiple implicit 'any' type errors across all frontend components - Fixed: dependencies installed
+[x] Property 'captureStackTrace' does not exist on type 'ErrorConstructor' - Fixed: not an actual issue after deps installed
+
+### Code Quality Issues
+
+[x] Error type mismatch in apps/api/src/middleware/errorHandler.ts:31 - Fixed: imported ErrorType enum
+[x] Hono Context typing issues with validatedData - Fixed: added proper type parameterization
+[x] Multiple linting warnings (unused vars, unreachable code, unnecessary escapes) - Fixed: cleaned up code
+[x] any type in retry.ts - Fixed: changed to unknown with type assertions

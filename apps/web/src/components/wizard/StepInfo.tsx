@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import { useWizardStore } from '../../store';
-import { FormEvent } from 'react';
+import { motion } from "framer-motion";
+import { useWizardStore } from "../../store";
+import { FormEvent } from "react";
 
 export function StepInfo() {
   const projectName = useWizardStore((s) => s.projectName);
@@ -14,7 +14,8 @@ export function StepInfo() {
   const nextStep = useWizardStore((s) => s.nextStep);
 
   const canProceed = projectName.length >= 1 && description.length >= 10;
-  const isDescriptionInvalid = description.length > 0 && description.length < 10;
+  const isDescriptionInvalid =
+    description.length > 0 && description.length < 10;
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -31,16 +32,33 @@ export function StepInfo() {
       className="space-y-6"
     >
       <div>
-        <h2 className="text-2xl font-bold text-white mb-2">Tell us about your project</h2>
-        <p className="text-dark-400">We'll use this information to generate a tailored architecture blueprint.</p>
+        <h2 className="text-2xl font-bold text-white mb-2">
+          Tell us about your project
+        </h2>
+        <p className="text-dark-400">
+          We&apos;ll use this information to generate a tailored architecture
+          blueprint.
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="glass-card p-6 space-y-5">
         {/* Project Name */}
         <div>
-          <label htmlFor="projectName" className="label">
-            Project Name <span className="text-accent-pink" aria-hidden="true">*</span>
-          </label>
+          <div className="flex justify-between items-center">
+            <label htmlFor="projectName" className="label">
+              Project Name{" "}
+              <span className="text-accent-pink" aria-hidden="true">
+                *
+              </span>
+            </label>
+            <span
+              className={`text-xs ${
+                projectName.length > 90 ? "text-accent-pink" : "text-dark-500"
+              }`}
+            >
+              {projectName.length}/100
+            </span>
+          </div>
           <input
             id="projectName"
             name="projectName"
@@ -52,14 +70,31 @@ export function StepInfo() {
             maxLength={100}
             required
             aria-required="true"
+            aria-describedby={
+              projectName.length > 90 ? "projectName-warning" : undefined
+            }
           />
+          {projectName.length > 90 && (
+            <p
+              id="projectName-warning"
+              role="status"
+              className="text-xs text-accent-pink mt-1"
+            >
+              Approaching character limit
+            </p>
+          )}
         </div>
 
         {/* Description */}
         <div>
           <label htmlFor="description" className="label">
-            Project Description <span className="text-accent-pink" aria-hidden="true">*</span>
-            <span className="text-dark-500 ml-2">({description.length}/2000)</span>
+            Project Description{" "}
+            <span className="text-accent-pink" aria-hidden="true">
+              *
+            </span>
+            <span className="text-dark-500 ml-2">
+              ({description.length}/2000)
+            </span>
           </label>
           <textarea
             id="description"
@@ -67,15 +102,21 @@ export function StepInfo() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Describe what your project does, its main purpose, and key functionality..."
-            className={`textarea-field h-32 ${isDescriptionInvalid ? 'border-accent-pink' : ''}`}
+            className={`textarea-field h-32 ${isDescriptionInvalid ? "border-accent-pink" : ""}`}
             maxLength={2000}
             required
             aria-required="true"
             aria-invalid={isDescriptionInvalid}
-            aria-describedby={isDescriptionInvalid ? "description-error" : undefined}
+            aria-describedby={
+              isDescriptionInvalid ? "description-error" : undefined
+            }
           />
           {isDescriptionInvalid && (
-            <p id="description-error" role="alert" className="text-xs text-accent-pink mt-1">
+            <p
+              id="description-error"
+              role="alert"
+              className="text-xs text-accent-pink mt-1"
+            >
               Description must be at least 10 characters
             </p>
           )}
@@ -100,7 +141,8 @@ export function StepInfo() {
         {/* Constraints (Optional) */}
         <div>
           <label htmlFor="constraints" className="label">
-            Constraints or Requirements <span className="text-dark-500">(optional)</span>
+            Constraints or Requirements{" "}
+            <span className="text-dark-500">(optional)</span>
           </label>
           <textarea
             id="constraints"
@@ -120,8 +162,19 @@ export function StepInfo() {
             className="btn-primary flex items-center gap-2"
           >
             Next: Choose Tech Stack
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
             </svg>
           </button>
         </div>
