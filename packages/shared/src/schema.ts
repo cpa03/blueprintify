@@ -12,9 +12,21 @@ export const TechStackCategory = z.enum([
   "other",
 ]);
 
+export const DatabaseSubcategory = z.enum([
+  "relational",
+  "nosql",
+  "vector",
+  "graph",
+  "edge",
+  "search",
+  "cache",
+  "serverless",
+]);
+
 export const TechStackItem = z.object({
   name: z.string().min(1),
   category: TechStackCategory,
+  subcategory: DatabaseSubcategory.optional(),
   version: z.string().optional(),
 });
 
@@ -137,12 +149,136 @@ export const TECH_STACK_OPTIONS = {
     { name: "FastAPI", category: "backend" as const },
   ],
   database: [
-    { name: "PostgreSQL", category: "database" as const },
-    { name: "MySQL", category: "database" as const },
-    { name: "MongoDB", category: "database" as const },
-    { name: "Supabase", category: "database" as const },
-    { name: "Cloudflare D1", category: "database" as const },
-    { name: "PlanetScale", category: "database" as const },
+    {
+      name: "PostgreSQL",
+      category: "database" as const,
+      subcategory: "relational" as const,
+    },
+    {
+      name: "MySQL",
+      category: "database" as const,
+      subcategory: "relational" as const,
+    },
+    {
+      name: "SQLite",
+      category: "database" as const,
+      subcategory: "relational" as const,
+    },
+    {
+      name: "MariaDB",
+      category: "database" as const,
+      subcategory: "relational" as const,
+    },
+    {
+      name: "MongoDB",
+      category: "database" as const,
+      subcategory: "nosql" as const,
+    },
+    {
+      name: "Cassandra",
+      category: "database" as const,
+      subcategory: "nosql" as const,
+    },
+    {
+      name: "Couchbase",
+      category: "database" as const,
+      subcategory: "nosql" as const,
+    },
+    {
+      name: "DynamoDB",
+      category: "database" as const,
+      subcategory: "nosql" as const,
+    },
+    {
+      name: "Pinecone",
+      category: "database" as const,
+      subcategory: "vector" as const,
+    },
+    {
+      name: "Weaviate",
+      category: "database" as const,
+      subcategory: "vector" as const,
+    },
+    {
+      name: "Chroma",
+      category: "database" as const,
+      subcategory: "vector" as const,
+    },
+    {
+      name: "Qdrant",
+      category: "database" as const,
+      subcategory: "vector" as const,
+    },
+    {
+      name: "Milvus",
+      category: "database" as const,
+      subcategory: "vector" as const,
+    },
+    {
+      name: "Neo4j",
+      category: "database" as const,
+      subcategory: "graph" as const,
+    },
+    {
+      name: "Amazon Neptune",
+      category: "database" as const,
+      subcategory: "graph" as const,
+    },
+    {
+      name: "ArangoDB",
+      category: "database" as const,
+      subcategory: "graph" as const,
+    },
+    {
+      name: "Supabase",
+      category: "database" as const,
+      subcategory: "serverless" as const,
+    },
+    {
+      name: "Cloudflare D1",
+      category: "database" as const,
+      subcategory: "edge" as const,
+    },
+    {
+      name: "PlanetScale",
+      category: "database" as const,
+      subcategory: "serverless" as const,
+    },
+    {
+      name: "FaunaDB",
+      category: "database" as const,
+      subcategory: "edge" as const,
+    },
+    {
+      name: "Upstash",
+      category: "database" as const,
+      subcategory: "edge" as const,
+    },
+    {
+      name: "Turso",
+      category: "database" as const,
+      subcategory: "edge" as const,
+    },
+    {
+      name: "Elasticsearch",
+      category: "database" as const,
+      subcategory: "search" as const,
+    },
+    {
+      name: "Redis",
+      category: "database" as const,
+      subcategory: "cache" as const,
+    },
+    {
+      name: "Meilisearch",
+      category: "database" as const,
+      subcategory: "search" as const,
+    },
+    {
+      name: "Algolia",
+      category: "database" as const,
+      subcategory: "search" as const,
+    },
   ],
   hosting: [
     { name: "Cloudflare", category: "hosting" as const },

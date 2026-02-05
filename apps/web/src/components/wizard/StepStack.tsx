@@ -1,7 +1,10 @@
-import { motion } from 'framer-motion';
-import { TECH_STACK_OPTIONS } from '@blueprint/shared';
-import { useWizardStore } from '../../store';
-import clsx from 'clsx';
+import { motion } from "framer-motion";
+import {
+  TECH_STACK_OPTIONS,
+  type DatabaseSubcategoryType,
+} from "@blueprint/shared";
+import { useWizardStore } from "../../store";
+import clsx from "clsx";
 
 export function StepStack() {
   const techStack = useWizardStore((s) => s.techStack);
@@ -12,18 +15,49 @@ export function StepStack() {
 
   const categories = Object.entries(TECH_STACK_OPTIONS) as [
     keyof typeof TECH_STACK_OPTIONS,
-    typeof TECH_STACK_OPTIONS[keyof typeof TECH_STACK_OPTIONS]
+    (typeof TECH_STACK_OPTIONS)[keyof typeof TECH_STACK_OPTIONS],
   ][];
+
+  const getDatabaseGroups = () => {
+    const databaseOptions = TECH_STACK_OPTIONS.database;
+    const groups: Record<string, (typeof databaseOptions)[number][]> = {};
+
+    databaseOptions.forEach((db) => {
+      if (db.subcategory) {
+        const group = groups[db.subcategory] || [];
+        group.push(db);
+        groups[db.subcategory] = group;
+      }
+    });
+
+    return groups;
+  };
 
   const canProceed = techStack.length >= 1;
 
   const isSelected = (name: string) => techStack.some((t) => t.name === name);
 
-  const toggleTech = (tech: { name: string; category: string }) => {
+  const toggleTech = (tech: {
+    name: string;
+    category: string;
+    subcategory?: string;
+  }) => {
     if (isSelected(tech.name)) {
       removeTechStack(tech.name);
     } else {
-      addTechStack({ name: tech.name, category: tech.category as 'frontend' | 'backend' | 'database' | 'hosting' | 'ai' | 'testing' | 'styling' | 'other' });
+      addTechStack({
+        name: tech.name,
+        category: tech.category as
+          | "frontend"
+          | "backend"
+          | "database"
+          | "hosting"
+          | "ai"
+          | "testing"
+          | "styling"
+          | "other",
+        subcategory: tech.subcategory as DatabaseSubcategoryType,
+      });
     }
   };
 
@@ -35,45 +69,128 @@ export function StepStack() {
       className="space-y-6"
     >
       <div>
-        <h2 className="text-2xl font-bold text-white mb-2">Choose your tech stack</h2>
-        <p className="text-dark-400">Select the technologies you plan to use. This helps generate accurate architecture.</p>
+        <h2 className="text-2xl font-bold text-white mb-2">
+          Choose your tech stack
+        </h2>
+        <p className="text-dark-400">
+          Select the technologies you plan to use. This helps generate accurate
+          architecture.
+        </p>
       </div>
 
-      <div className="glass-card p-6 space-y-6" role="group" aria-label="Tech Stack Selection">
-        {categories.map(([category, options]) => (
-          <div key={category}>
-            <h3 className="text-sm font-medium text-dark-300 uppercase tracking-wider mb-3 flex items-center gap-2" id={`category-${category}`}>
-              <span aria-hidden="true">
-                {category === 'frontend' && '🎨'}
-                {category === 'backend' && '⚙️'}
-                {category === 'database' && '🗄️'}
-                {category === 'hosting' && '☁️'}
-                {category === 'styling' && '🖌️'}
-              </span>
-              {category}
-            </h3>
-            <div className="flex flex-wrap gap-2" role="group" aria-labelledby={`category-${category}`}>
-              {options.map((tech) => (
-                <button
-                  key={tech.name}
-                  onClick={() => toggleTech(tech)}
-                  aria-pressed={isSelected(tech.name)}
-                  className={clsx(
-                    'tech-chip',
-                    isSelected(tech.name) && 'selected'
-                  )}
+      <div
+        className="glass-card p-6 space-y-6"
+        role="group"
+        aria-label="Tech Stack Selection"
+      >
+        {categories.map(([category, options]) => {
+          if (category === "database") {
+            const databaseGroups = getDatabaseGroups();
+            return (
+              <div key={category}>
+                <h3
+                  className="text-sm font-medium text-dark-300 uppercase tracking-wider mb-3 flex items-center gap-2"
+                  id={`category-${category}`}
                 >
-                  {isSelected(tech.name) && (
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
-                  {tech.name}
-                </button>
-              ))}
+                  <span aria-hidden="true">🗄️</span>
+                  {category}
+                </h3>
+                <div className="space-y-4">
+                  {Object.entries(databaseGroups).map(([subcategory, dbs]) => (
+                    <div key={subcategory}>
+                      <h4 className="text-xs font-medium text-dark-400 uppercase tracking-wider mb-2">
+                        {subcategory}
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {dbs.map((tech) => (
+                          <button
+                            key={tech.name}
+                            onClick={() => toggleTech(tech)}
+                            aria-pressed={isSelected(tech.name)}
+                            className={clsx(
+                              "tech-chip",
+                              isSelected(tech.name) && "selected",
+                            )}
+                          >
+                            {isSelected(tech.name) && (
+                              <svg
+                                className="w-4 h-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M5 13l4 4L19 7"
+                                />
+                              </svg>
+                            )}
+                            {tech.name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          }
+
+          return (
+            <div key={category}>
+              <h3
+                className="text-sm font-medium text-dark-300 uppercase tracking-wider mb-3 flex items-center gap-2"
+                id={`category-${category}`}
+              >
+                <span aria-hidden="true">
+                  {category === "frontend" && "🎨"}
+                  {category === "backend" && "⚙️"}
+                  {category === "hosting" && "☁️"}
+                  {category === "styling" && "🖌️"}
+                </span>
+                {category}
+              </h3>
+              <div
+                className="flex flex-wrap gap-2"
+                role="group"
+                aria-labelledby={`category-${category}`}
+              >
+                {options.map((tech) => (
+                  <button
+                    key={tech.name}
+                    onClick={() => toggleTech(tech)}
+                    aria-pressed={isSelected(tech.name)}
+                    className={clsx(
+                      "tech-chip",
+                      isSelected(tech.name) && "selected",
+                    )}
+                  >
+                    {isSelected(tech.name) && (
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    )}
+                    {tech.name}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {/* Selected summary */}
         {techStack.length > 0 && (
@@ -81,7 +198,10 @@ export function StepStack() {
             <p className="text-sm text-dark-400 mb-2" id="selected-tech-label">
               Selected ({techStack.length}):
             </p>
-            <ul className="flex flex-wrap gap-2" aria-labelledby="selected-tech-label">
+            <ul
+              className="flex flex-wrap gap-2"
+              aria-labelledby="selected-tech-label"
+            >
               {techStack.map((tech) => (
                 <li
                   key={tech.name}
@@ -93,8 +213,19 @@ export function StepStack() {
                     className="hover:text-accent-pink transition-colors"
                     aria-label={`Remove ${tech.name}`}
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
                     </svg>
                   </button>
                 </li>
@@ -106,8 +237,18 @@ export function StepStack() {
 
       <div className="flex justify-between">
         <button onClick={prevStep} className="btn-secondary">
-          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg
+            className="w-5 h-5 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
           Back
         </button>
@@ -117,8 +258,18 @@ export function StepStack() {
           className="btn-primary flex items-center gap-2"
         >
           Next: Add Features
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         </button>
       </div>

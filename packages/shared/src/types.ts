@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   TechStackCategory,
   TechStackItem,
+  DatabaseSubcategory,
   BlueprintRequestSchema,
   TaskGenerationRequestSchema,
   RefineRequestSchema,
@@ -16,6 +17,7 @@ import {
 // ===== Inferred Types from Zod Schemas =====
 export type TechStackCategoryType = z.infer<typeof TechStackCategory>;
 export type TechStackItemType = z.infer<typeof TechStackItem>;
+export type DatabaseSubcategoryType = z.infer<typeof DatabaseSubcategory>;
 export type BlueprintRequest = z.infer<typeof BlueprintRequestSchema>;
 export type TaskGenerationRequest = z.infer<typeof TaskGenerationRequestSchema>;
 export type RefineRequest = z.infer<typeof RefineRequestSchema>;

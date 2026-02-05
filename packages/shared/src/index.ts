@@ -2,19 +2,21 @@
 export {
   TechStackCategory,
   TechStackItem,
+  DatabaseSubcategory,
   BlueprintRequestSchema,
   TaskGenerationRequestSchema,
   RefineRequestSchema,
   TemplateSchema,
   StreamChunkSchema,
   GenerationResultSchema,
-  TECH_STACK_OPTIONS
-} from './schema';
+  TECH_STACK_OPTIONS,
+} from "./schema";
 
 // ===== TypeScript Types =====
 export type {
   TechStackCategoryType,
   TechStackItemType,
+  DatabaseSubcategoryType,
   BlueprintRequest,
   TaskGenerationRequest,
   RefineRequest,
@@ -26,8 +28,8 @@ export type {
   Session,
   StreamCallbacks,
   EditorTab,
-  EditorState
-} from './types';
+  EditorState,
+} from "./types";
 
 // ===== Templates =====
-export { STARTER_TEMPLATES } from './templates';
+export { STARTER_TEMPLATES } from "./templates";
