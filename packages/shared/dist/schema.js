@@ -29,6 +29,18 @@ export const TaskGenerationRequestSchema = z.object({
     blueprint: z.string().min(1, 'Blueprint content is required'),
     projectName: z.string().min(1)
 });
+// ===== Task Item Schema (Future Proofing) =====
+export const TaskStatusSchema = z.enum(['todo', 'in_progress', 'done']);
+export const TaskPrioritySchema = z.enum(['low', 'medium', 'high', 'critical']);
+export const TaskItemSchema = z.object({
+    id: z.string(),
+    title: z.string(),
+    status: TaskStatusSchema,
+    priority: TaskPrioritySchema.optional(),
+    description: z.string().optional(),
+    dependencies: z.array(z.string()).optional()
+});
+export const TaskListSchema = z.array(TaskItemSchema);
 // ===== Refinement Request Schema =====
 export const RefineRequestSchema = z.object({
     content: z.string().min(1, 'Content to refine is required'),
