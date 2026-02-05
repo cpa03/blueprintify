@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 import {
   TechStackCategory,
   TechStackItem,
@@ -10,8 +10,8 @@ import {
   GenerationResultSchema,
   TaskStatusSchema,
   TaskPrioritySchema,
-  TaskItemSchema
-} from './schema';
+  TaskItemSchema,
+} from "./schema";
 
 // ===== Inferred Types from Zod Schemas =====
 export type TechStackCategoryType = z.infer<typeof TechStackCategory>;
@@ -27,7 +27,12 @@ export type TaskPriority = z.infer<typeof TaskPrioritySchema>;
 export type TaskItem = z.infer<typeof TaskItemSchema>;
 
 // ===== Wizard Step Types =====
-export type WizardStep = 'info' | 'stack' | 'features' | 'review' | 'generating';
+export type WizardStep =
+  | "info"
+  | "stack"
+  | "features"
+  | "review"
+  | "generating";
 
 export interface WizardState {
   currentStep: WizardStep;
@@ -54,10 +59,11 @@ export interface StreamCallbacks {
   onChunk: (chunk: string) => void;
   onError: (error: string) => void;
   onDone: () => void;
+  onRetry?: (attempt: number, maxRetries: number) => void;
 }
 
 // ===== Editor Types =====
-export type EditorTab = 'blueprint' | 'tasks';
+export type EditorTab = "blueprint" | "tasks";
 
 export interface EditorState {
   activeTab: EditorTab;

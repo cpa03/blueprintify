@@ -44,15 +44,6 @@
       "command": ["npx", "prettier", "--write", "$FILE"],
       "extensions": [".ts", ".tsx", ".js", ".jsx", ".json", ".md"]
     }
-  },
-  "mcp": {
-    "filesystem": {
-      "type": "local",
-      "command": ["npx", "-y", "@anthropic-ai/mcp-server-filesystem", "./"]
-    },
-    "github": {
-      "type": "local",
-      "command": ["npx", "-y", "@anthropic-ai/mcp-server-github"]
-    }
   }
 }
+

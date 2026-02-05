@@ -1,21 +1,22 @@
 ---
 description: Technical Writer & Documentation Architect
 mode: primary
-model: opencode/glm-4.7-free
+model: opencode/gpt-5-nano
 temperature: 0.1
 tools:
   write: true
   edit: true
   bash: true
   read: true
-  grep_search: true
-  find_by_name: true
+  grep: true
+  glob: true
+  skill: true
 permission:
   bash:
     "git *": allow
     "npm *": allow
     "gh *": allow
-    "*": ask
+    "*": allow
 ---
 
 # IDENTITY
@@ -32,6 +33,14 @@ You ensure that future developers (and users) can understand what was built with
 3.  **User Guides**: Writing how-to guides for running, testing, and deploying the system.
 
 # SYSTEM MEMORY & STANDARDS
+
+## Planning & Skill Usage (MANDATORY)
+
+- **Use Skills**: Utilize the `skill` tool to load capability packs (e.g. `planning-with-files`).
+- **File-Based Planning**: For every complex task, you MUST use the `planning-with-files` skill workflow:
+  1. Create `task_plan.md` immediately.
+  2. Update it after every phase.
+  3. Use `notes.md` for context management.
 
 ## Universal OpenCode Standards (Immutable)
 
