@@ -2,7 +2,6 @@ import { describe, it, expect, vi } from "vitest";
 import { Hono } from "hono";
 import generateRoute from "./generate";
 import { errorHandler } from "../middleware/errorHandler";
-import { BlueprintRequestSchema } from "@blueprint/shared";
 
 // Mock the services
 vi.mock("../services/openai", () => ({
