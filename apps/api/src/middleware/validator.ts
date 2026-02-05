@@ -4,7 +4,7 @@
  */
 
 import { z } from "zod";
-import type { Context, MiddlewareHandler } from "hono";
+import type { MiddlewareHandler } from "hono";
 import { ErrorResponse, ErrorType } from "../errors";
 
 /**
@@ -12,8 +12,12 @@ import { ErrorResponse, ErrorType } from "../errors";
  */
 export const validateJson = <T extends z.ZodTypeAny>(
   schema: T,
-): MiddlewareHandler => {
-  return async (c: Context, next: () => Promise<void>) => {
+): MiddlewareHandler<{
+  Variables: {
+    validatedData: z.infer<T>;
+  };
+}> => {
+  return async (c, next) => {
     try {
       const body = await c.req.json();
       const result = schema.safeParse(body);
@@ -22,7 +26,7 @@ export const validateJson = <T extends z.ZodTypeAny>(
         const errorResponse: ErrorResponse = {
           success: false,
           error: {
-            type: "validation" as ErrorType,
+            type: ErrorType.VALIDATION,
             message: "Request validation failed",
             code: "VALIDATION_ERROR",
             details: {
@@ -41,12 +45,12 @@ export const validateJson = <T extends z.ZodTypeAny>(
       // Attach validated data to the context
       c.set("validatedData", result.data);
       await next();
-    } catch (error) {
+    } catch {
       // If JSON parsing fails, return a standard error
       const errorResponse: ErrorResponse = {
         success: false,
         error: {
-          type: "validation" as ErrorType,
+          type: ErrorType.VALIDATION,
           message: "Invalid JSON in request body",
           code: "VALIDATION_ERROR",
           timestamp: new Date().toISOString(),

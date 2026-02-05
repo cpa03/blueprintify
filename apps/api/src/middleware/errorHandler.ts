@@ -3,8 +3,8 @@
  * Centralized error handling for the Blueprint Generator API
  */
 
-import type { Context, Next } from "hono";
-import { createErrorResponse, isAPIError } from "../errors";
+import type { Context } from "hono";
+import { createErrorResponse, isAPIError, ErrorType } from "../errors";
 import type { ErrorResponse } from "../errors";
 
 /**
@@ -28,7 +28,7 @@ export const errorHandler = (err: unknown, c: Context) => {
     const errorResponse: ErrorResponse = {
       success: false,
       error: {
-        type: "validation",
+        type: ErrorType.VALIDATION,
         message: "Request validation failed",
         code: "VALIDATION_ERROR",
         details: {
@@ -57,7 +57,7 @@ export const errorHandler = (err: unknown, c: Context) => {
   const statusCode = isAPIError(err) ? err.statusCode : 500;
 
   // Return formatted error response
-  return c.json(errorResponse, statusCode);
+  return c.json(errorResponse, statusCode as 400 | 401 | 403 | 404 | 500 | 502);
 };
 
 /**
@@ -84,12 +84,7 @@ export const notFoundHandler = (c: Context) => {
  * Wraps async route handlers to catch and forward errors to the error handler
  */
 export const asyncHandler = <T = unknown>(fn: (c: Context) => Promise<T>) => {
-  return async (c: Context, next: Next): Promise<T | Response> => {
-    try {
-      return await fn(c);
-    } catch (error) {
-      // Let the global error handler handle it
-      throw error;
-    }
+  return (c: Context): Promise<T | Response> => {
+    return fn(c);
   };
 };

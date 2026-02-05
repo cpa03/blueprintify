@@ -65,7 +65,7 @@ function isRetryableError(error: unknown, response?: Response): boolean {
 /**
  * Parses SSE stream and calls appropriate handlers
  */
-async function handleSSEStream(
+async function _handleSSEStream(
   response: Response,
   handlers: StreamEventHandlers,
 ): Promise<void> {
@@ -124,7 +124,7 @@ async function handleSSEStream(
 async function handleSSEStreamWithRetry(
   response: Response,
   handlers: StreamEventHandlers,
-  retryOptions: RetryOptions = {},
+  _retryOptions: RetryOptions = {},
 ): Promise<void> {
   const reader = response.body?.getReader();
   if (!reader) {
