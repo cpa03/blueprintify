@@ -1,256 +1,252 @@
-# Task Tracking: Blueprint Generator
+# Task Tracking: Active Backlog
 
-**Status Legend**:
+> **Execution-focused task list** aligned with roadmap milestones and GitHub issues.
 
-- [ ] Todo
-- [/] In Progress
-- [x] Done
+## M1: Foundation & Core Loop (ACTIVE)
 
----
+### Critical Path Tasks
 
-## ✅ Phase 1: Foundation & Infrastructure (M1 - COMPLETE)
+#### TASK-006: Tech Stack Selection Form (Wizard Step 2)
 
-- [x] **System Setup**
-  - [x] Create Monorepo Structure (`apps/`, `packages/`)
-  - [x] Create `blueprint.md` (System Architecture)
-  - [x] **TASK-DOC-01**: Update Documentation for QA & CI
-  - [x] **TASK-INFRA-01**: Implement Autonomous GitHub Actions CI/CD Workflow
-    - [x] Create `.github/workflows/ai-on-push.yml` with Think/Plan/Execute stages
-    - [x] Implement Concurrency Locking
-    - [x] Configure Agent Specialists
-  - [x] **TASK-InFRA-02**: Configure Agent Prompts
-    - [x] Create `.agent/prompts/` directory
-    - [x] Create prompt files for all 12 specialists
-  - [x] **TASK-INFRA-03**: Configure OpenCode CLI (opencode-ai)
-    - [x] Update `ai-on-push.yml` with correct package name
-    - [x] Fix CLI command syntax
-  - [x] **TASK-SEC-01**: Implement API Security Headers (Hono `secureHeaders`)
-  - [x] **TASK-001**: Configure Shared Zod Schemas in `packages/shared` <!-- id: 1 -->
-  - [x] **TASK-002**: Setup Hono API basic routing in `apps/api` <!-- id: 2 -->
-  - [x] **TASK-000**: Setup React+Vite entry point in `apps/web` <!-- id: 0 -->
+- **Issue**: #28
+- **Assignee**: Unassigned
+- **Priority**: Critical
+- **Estimated**: 4-6 hours
+- **Dependencies**: STEP-001 complete
+- **Acceptance**:
+  - Multi-select interface for tech stack
+  - Integration with shared schemas
+  - Form validation with error handling
 
-- [x] **Core API Implementation (FEAT-02)**
-  - [x] **TASK-003**: Implement `POST /generate` endpoint <!-- id: 3 -->
-  - [x] **TASK-004**: Integrate OpenAI/AI Client Services <!-- id: 4 -->
-  - [x] **TASK-INT-01**: Implement OpenAI Retry Mechanism (Backoff)
-  - [x] **TASK-100**: Implement SSE Streaming logic <!-- id: 5 -->
-  - [x] **TASK-OPT-01**: Lazy Load Editor Component (Reduce Initial Bundle)
+#### TASK-007: Split-Pane View (Editor)
 
-- [x] **Code Quality & Refactoring**
-  - [x] **TASK-REF-01**: [REFACTOR] Split Global Store (`store.ts` -> `store/wizard.ts`, `store/editor.ts`)
-  - [x] **TASK-REF-02**: [REFACTOR] Extract Editor Header Component
-  - [x] **TASK-REF-03**: [REFACTOR] Accessibility Improvements for Step 2 & 3 (`StepStack`, `StepFeatures`)
-  - [x] **TASK-REF-04**: [REFACTOR] Rename `useGeneration.ts` to `useBlueprintStream.ts` to match Blueprint
-  - [ ] **TASK-REF-05**: [REFACTOR] Extract `EditorToolbar` from `Editor.tsx` (Reduce complexity) <!-- Issue #21 -->
-  - [ ] **TASK-REF-06**: [REFACTOR] Move API Route Logic to Controllers (Service Layer Pattern) <!-- Issue #22 -->
-  - [x] **TASK-REF-07**: [REFACTOR] Externalize API Base URL Configuration in `apps/web` (`import.meta.env`)
-  - [ ] **TASK-REF-08**: [REFACTOR] Standardize Error Response Handling in API (`apps/api`) <!-- Issue #23 -->
+- **Issue**: #31
+- **Assignee**: Unassigned
+- **Priority**: High
+- **Estimated**: 6-8 hours
+- **Dependencies**: STEP-001 complete
+- **Acceptance**:
+  - Resizable split-pane layout
+  - Code editor component integration
+  - Sync with markdown preview
 
-## ✅ Phase 2: Frontend Experience (M1/M2 - COMPLETE)
+#### TASK-008: Real-time Markdown Rendering
 
-- [x] **Wizard UI (FEAT-01)**
-  - [x] **TASK-005**: Implementation of Step 1: Project Details Form <!-- id: 6 -->
-  - [x] **TASK-006**: Implementation of Step 2: Tech Stack Selection <!-- id: 7 -->
-  - [x] **TASK-101**: Implementation of Step 3: Review & Generate <!-- id: 8 -->
-  - [x] **TASK-FEAT-01**: Implementation of Step 4: Features (Additional details)
-  - [x] **TASK-FEAT-02**: Implementation of Step 5: Generating (Progress state)
+- **Issue**: #30
+- **Assignee**: Unassigned
+- **Priority**: Critical
+- **Estimated**: 4-5 hours
+- **Dependencies**: STEP-001 complete
+- **Acceptance**:
+  - Parse markdown to HTML
+  - Syntax highlighting for code blocks
+  - Real-time updates during generation
 
-- [x] **Live Editor (FEAT-03)**
-  - [x] **TASK-007**: Implement Split-Pane View with CodeMirror/Monaco <!-- id: 9 -->
-  - [x] **TASK-008**: Markdown Rendering Component <!-- id: 10 -->
+#### TASK-101: Review & Generate Form (Wizard Step 3)
 
-## ✅ Phase 3: Integration & Polish (M3 - COMPLETE)
+- **Issue**: #29
+- **Assignee**: Unassigned
+- **Priority**: Critical
+- **Estimated**: 3-4 hours
+- **Dependencies**: TASK-006, TASK-008
+- **Acceptance**:
+  - Summary display of selections
+  - Generate button with loading state
+  - Connection to streaming endpoint
 
-- [x] **TASK-009**: "Download Zip" functionality (FEAT-04) <!-- id: 11 -->
-- [x] **TASK-010**: Implement LocalStorage Persistence (FEAT-05) <!-- id: 12 -->
-- [x] **TASK-011**: Connect Frontend to API Stream <!-- id: 13 -->
-- [x] **TASK-INT-02**: Implement `/refine` endpoint for AI refinement
-- [x] **TASK-UI-01**: Implement Template Grid for quick start
-- [x] **TASK-UI-02**: Implement Editor Header with view mode toggle
-- [x] **TASK-UI-03**: Implement Smart Copy & formatting utilities
+### Infrastructure Tasks
 
----
+#### TASK-REF-05: Extract EditorToolbar Component
 
-## 🎯 Phase 4: Production & Quality (M4 - ACTIVE)
+- **Issue**: #21
+- **Assignee**: Unassigned
+- **Priority**: High
+- **Estimated**: 2-3 hours
+- **Dependencies**: None
+- **Acceptance**:
+  - Separate EditorToolbar component
+  - Props interface defined
+  - Existing functionality preserved
 
-### Quality Assurance
+#### TASK-REF-06: Move API Route Logic to Controllers
 
-- [ ] **TASK-QA-01**: Unit Tests for Core Components
-  - [ ] Test Wizard state management
-  - [ ] Test Editor components
-  - [ ] Test API client utilities
-  - [ ] Test export functionality
+- **Issue**: #22
+- **Assignee**: Unassigned
+- **Priority**: High
+- **Estimated**: 4-6 hours
+- **Dependencies**: None
+- **Acceptance**:
+  - Service layer pattern implemented
+  - Route handlers simplified
+  - All tests passing
 
-- [ ] **TASK-QA-02**: Integration Tests for API
-  - [ ] Test `/generate` endpoint with streaming
-  - [ ] Test `/refine` endpoint
-  - [ ] Test `/tasks` endpoint
-  - [ ] Test error handling
+#### TASK-REF-08: Standardize Error Response Handling ✅ COMPLETED
 
-- [ ] **TASK-QA-03**: E2E Tests for Critical Flows
-  - [ ] Test complete "Idea to Blueprint" flow
-  - [ ] Test template selection and generation
-  - [ ] Test editor and refinement flow
-  - [ ] Test download/export flow
+- **Issue**: #23
+- **Assignee**: API Specialist
+- **Priority**: High
+- **Estimated**: 2-3 hours
+- **Status**: Complete
+- **Acceptance**:
+  - [x] Centralized error handler middleware
+  - [x] Standard error response shape
+  - [x] All routes use standard handling
+  - [x] Different error types handled
+  - [x] All tests passing
 
-- [ ] **TASK-QA-04**: Performance Benchmarking
-  - [ ] Measure bundle sizes
-  - [ ] Measure time-to-first-byte (TTFB)
-  - [ ] Measure generation latency
-  - [ ] Optimize for performance
+#### TASK-011: API Streaming Integration ✅ COMPLETED
 
-- [ ] **TASK-QA-05**: Accessibility Audit
-  - [ ] WCAG 2.1 AA compliance check
-  - [ ] Screen reader testing
-  - [ ] Keyboard navigation testing
-  - [ ] Color contrast validation
-
-### Documentation
-
-- [ ] **TASK-DOC-02**: API Documentation
-  - [ ] OpenAPI/Swagger specification
-  - [ ] Endpoint documentation
-  - [ ] Request/response examples
-  - [ ] Error codes reference
-
-- [ ] **TASK-DOC-03**: User Documentation
-  - [ ] Getting started guide
-  - [ ] Feature tutorials
-  - [ ] Troubleshooting guide
-  - [ ] FAQ section
-
-- [ ] **TASK-DOC-04**: Developer Documentation
-  - [ ] Architecture overview
-  - [ ] Component documentation
-  - [ ] API development guide
-  - [ ] Contributing guidelines
-
-- [ ] **TASK-DOC-05**: Deployment Documentation
-  - [ ] Cloudflare Workers deployment
-  - [ ] Environment configuration
-  - [ ] CI/CD pipeline documentation
-  - [ ] Production setup checklist
-
-### Code Quality
-
-- [ ] **TASK-CODE-01**: Complete Refactoring
-  - [ ] Address Issue #21: Extract EditorToolbar
-  - [ ] Address Issue #22: Move API logic to controllers
-  - [ ] Address Issue #23: Standardize error handling
-  - [ ] Review and close all open refactoring issues
-
-- [ ] **TASK-CODE-02**: Type Safety Audit
-  - [ ] Review all `any` types
-  - [ ] Add missing type definitions
-  - [ ] Ensure strict TypeScript compliance
-  - [ ] Fix any type errors
-
-- [ ] **TASK-CODE-03**: Bundle Optimization
-  - [ ] Analyze bundle composition
-  - [ ] Implement code splitting
-  - [ ] Optimize dependencies
-  - [ ] Remove unused code
-
-- [ ] **TASK-CODE-04**: Error Handling Review
-  - [ ] Standardize error responses
-  - [ ] Improve error messages
-  - [ ] Add error boundaries in React
-  - [ ] Implement retry logic for client
-
-### Security
-
-- [ ] **TASK-SEC-02**: Security Audit
-  - [ ] Dependency vulnerability scan
-  - [ ] Code security review
-  - [ ] Input sanitization audit
-  - [ ] Output encoding verification
-
-- [ ] **TASK-SEC-03**: Rate Limiting
-  - [ ] Implement API rate limiting
-  - [ ] Configure Cloudflare rate limits
-  - [ ] Add abuse detection
-  - [ ] Document rate limit policy
-
-- [ ] **TASK-SEC-04**: Input Validation
-  - [ ] Review Zod schemas
-  - [ ] Add validation for all inputs
-  - [ ] Sanitize user content
-  - [ ] Test injection attacks
-
-- [ ] **TASK-SEC-05**: CORS & Security Headers
-  - [ ] Review CORS policy
-  - [ ] Optimize security headers
-  - [ ] Add CSP headers
-  - [ ] Test security headers
-
-- [ ] **TASK-SEC-06**: Environment Variables
-  - [ ] Document required environment variables
-  - [ ] Validate environment variables at startup
-  - [ ] Add default values where safe
-  - [ ] Test environment variable handling
+- **Issue**: #32
+- **Assignee**: Integration Engineer
+- **Priority**: Critical
+- **Status**: Complete
+- **Acceptance**:
+  - [x] Server-Sent Events client
+  - [x] Real-time markdown display
+  - [x] Error handling for connection issues
 
 ---
 
-## 📋 Phase 5: Advanced Features (M5 - FUTURE)
+## M2: Refinement & Persistence (PLANNED)
 
-### Multi-Provider AI Support
+### Planned Tasks
 
-- [ ] **TASK-AI-01**: Claude Integration
-  - [ ] Add Anthropic API client
-  - [ ] Implement provider selection UI
-  - [ ] Test Claude generation quality
-  - [ ] Update documentation
+#### TASK-009: LocalStorage Implementation
 
-- [ ] **TASK-AI-02**: Gemini Integration
-  - [ ] Add Google AI client
-  - [ ] Implement provider selection UI
-  - [ ] Test Gemini generation quality
-  - [ ] Update documentation
+- **Issue**: Not created
+- **Priority**: High
+- **Estimated**: 6-8 hours
+- **Dependencies**: M1 complete
+- **Acceptance**:
+  - Blueprint auto-save to localStorage
+  - Load saved blueprints
+  - Storage quota management
+  - Migration strategy for schema changes
 
-- [ ] **TASK-AI-03**: Local LLM Support
-  - [ ] Support local Ollama instances
-  - [ ] Implement provider selection
-  - [ ] Test local generation
-  - [ ] Add performance monitoring
+#### Additional M2 Tasks
 
-### Collaboration Features
+- Manual editing integration with split-pane
+- Blueprint refinement workflow
+- Export/import functionality
+- Schema versioning for backwards compatibility
 
-- [ ] **TASK-COLLAB-01**: Project History
-  - [ ] Implement version control for projects
-  - [ ] Add project list view
-  - [ ] Implement project restore
-  - [ ] Add project deletion
+---
 
-- [ ] **TASK-COLLAB-02**: Sharing & Export
-  - [ ] Add share functionality
-  - [ ] Implement public project links
-  - [ ] Add export to GitHub
-  - [ ] Add import from GitHub
+## M3: Distribution & Collaboration (PLANNED)
 
-### Advanced Editing
+### Planned Tasks
 
-- [ ] **TASK-EDIT-01**: AI Code Suggestions
-  - [ ] Implement code suggestion API
-  - [ ] Add suggestion UI
-  - [ ] Test suggestion quality
-  - [ ] Add feedback mechanism
+#### TASK-010: ZIP Download Feature
 
-- [ ] **TASK-EDIT-02**: Collaborative Editing
-  - [ ] Add real-time collaboration
-  - [ ] Implement conflict resolution
-  - [ ] Add presence indicators
-  - [ ] Test multi-user scenarios
+- **Issue**: Not created
+- **Priority**: Medium
+- **Estimated**: 8-12 hours
+- **Dependencies**: M2 complete
+- **Acceptance**:
+  - Generate runnable project structure
+  - Package files into ZIP
+  - Download via browser
+  - Support for all tech stacks
 
-### Template Marketplace
+#### Additional M3 Tasks
 
-- [ ] **TASK-TMPL-01**: Template Management
-  - [ ] Add template CRUD operations
-  - [ ] Implement template rating
-  - [ ] Add template search
-  - [ ] Implement template categories
+- Share links functionality
+- Template library
+- Collaborative editing research
 
-- [ ] **TASK-TMPL-02**: Community Templates
-  - [ ] Add community template submission
-  - [ ] Implement template moderation
-  - [ ] Add template sharing
-  - [ ] Create template guidelines
+---
+
+## Code Quality & Performance
+
+### Performance Optimization
+
+#### PERF-001: Component Re-render Optimization
+
+- **Issue**: #40
+- **Assignee**: Unassigned
+- **Priority**: High
+- **Estimated**: 4-6 hours
+- **Dependencies**: None
+- **Acceptance**:
+  - Profile component re-renders
+  - Implement React.memo where needed
+  - Optimize state updates
+  - Measure performance improvements
+
+### Testing Coverage
+
+- Unit tests for all new components
+- Integration tests for API endpoints
+- E2E tests for critical user flows
+- Performance benchmarks
+
+---
+
+## Dependencies & Blockers
+
+### External Dependencies
+
+- **AI Services**: OpenAI API (quota management)
+- **Cloudflare Workers**: Platform limits and constraints
+- **Browser APIs**: LocalStorage, Server-Sent Events support
+
+### Internal Dependencies
+
+- **Shared Schemas**: Zod validation contracts
+- **Component Library**: Reusable UI components
+- **API Contracts**: Request/response schemas
+
+---
+
+## Resource Allocation
+
+### Frontend Engineer (Critical Path)
+
+- Primary focus: TASK-008, TASK-006, TASK-101
+- Secondary focus: TASK-007, TASK-REF-05, PERF-001
+- Estimated capacity: 40 hours/week
+
+### Integration Engineer
+
+- Primary focus: TASK-REF-06
+- Secondary focus: Backend streaming endpoint
+- Estimated capacity: 30 hours/week
+
+### Performance Engineer
+
+- Primary focus: PERF-001, code review
+- Secondary focus: Performance monitoring setup
+- Estimated capacity: 20 hours/week
+
+---
+
+## Milestone Criteria
+
+### M1 Completion Checklist
+
+- [ ] All critical path tasks complete
+- [ ] End-to-end user flow working
+- [ ] All tests passing
+- [ ] Performance benchmarks met
+- [ ] Documentation updated
+
+### M2 Completion Checklist
+
+- [ ] LocalStorage fully functional
+- [ ] Editing workflow complete
+- [ ] Export/import working
+- [ ] Migration strategy tested
+
+### M3 Completion Checklist
+
+- [ ] ZIP download working
+- [ ] Share functionality complete
+- [ ] All performance targets met
+- [ ] Production deployment ready
+
+---
+
+**Version**: 1.0.0  
+**Last Updated**: 2026-02-05  
+**Next Review**: Daily stand-up during M1  
+**Maintainer**: Software Architect (The Orchestrator)

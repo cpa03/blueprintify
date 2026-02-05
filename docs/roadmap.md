@@ -1,121 +1,156 @@
-# Strategic Roadmap
+# Roadmap: Strategic Phases
 
-**Status**: Active
-**Last Updated**: 2026-01-08
+> **Milestone-based development plan** for Blueprintify with clear phases and deliverables.
 
-## Vision
+## Current Status: M1 (Foundation & Core Loop)
 
-To provide a friction-less "Day 1" experience for autonomous software development, acting as the intelligent bridge between idea and execution.
+### M1: Foundation & Core Loop - **ACTIVE (67% Complete)**
 
-## Current Milestone: M4 - Production & Quality
+**Objective**: Establish the basic "Input → Generate → View" user flow
 
-**Goal**: Prepare for production deployment with comprehensive testing, documentation, and code quality improvements.
+#### Status Overview
 
-### M4 Objectives
+- **Monorepo Structure**: ✅ Complete (100%)
+- **Blueprint Definition**: ✅ Complete (100%)
+- **Shared Schemas (Zod)**: ✅ Complete (100%)
+- **API Streaming Endpoint**: ✅ Complete (100%)
+- **Basic Wizard UI**: ⚠️ Partial (33% - Step 1 only)
+- **Real-time Markdown Rendering**: ❌ Not Started (0%)
 
-- [ ] Comprehensive Test Coverage (Vitest)
-- [ ] API Documentation & OpenAPI Spec
-- [ ] Performance Optimization & Monitoring
-- [ ] Security Audit & Hardening
-- [ ] User Documentation & Tutorials
-- [ ] CI/CD Pipeline Enhancement
+#### Critical Path Issues
 
-### M4 Tasks
+1. **Issue #30**: [FRONTEND] Implement Real-time Markdown Rendering Component
+2. **Issue #28**: [FRONTEND] Implement Tech Stack Selection Form (Wizard Step 2)
+3. **Issue #29**: [FRONTEND] Implement Review & Generate Form (Wizard Step 3)
 
-**Quality Assurance**
+#### Parallel Work
 
-- [ ] Unit tests for all core components
-- [ ] Integration tests for API endpoints
-- [ ] E2E tests for critical user flows
-- [ ] Performance benchmarking
-- [ ] Accessibility audit (WCAG 2.1 AA)
+- **Issue #31**: [FRONTEND] Implement Split-Pane View (Editor)
 
-**Documentation**
+#### Code Quality (Deferred to post-M1)
 
-- [ ] API documentation (OpenAPI/Swagger)
-- [ ] User guide and tutorials
-- [ ] Developer documentation
-- [ ] Deployment guide
-- [ ] Troubleshooting guide
+- **Issue #21**: [REFACTOR] Extract EditorToolbar from Editor.tsx
+- **Issue #22**: [REFACTOR] Move API Route Logic to Controllers
+- **Issue #40**: [PERF] Optimize React Component Re-renders
 
-**Code Quality**
+---
 
-- [ ] Code review for all open issues
-- [ ] Refactor identified technical debt (Issues #21, #22, #23)
-- [ ] Type safety audit
-- [ ] Bundle size optimization
-- [ ] Error handling standardization
+### M2: Refinement & Persistence - **PLANNED (0% Complete)**
 
-**Security**
+**Objective**: Add editing capabilities and local storage
 
-- [ ] Security audit
-- [ ] Rate limiting implementation
-- [ ] Input sanitization review
-- [ ] CORS policy review
-- [ ] Environment variable validation
+#### Planned Features
 
-## Upcoming Milestones
+- **TASK-009**: Implement LocalStorage for blueprint persistence
+- Manual editing in split-pane view
+- Blueprint refinement workflow
+- Export/import functionality
 
-### M5 - Advanced Features (Future)
+#### Prerequisites
 
-**Goal**: Enhance with advanced AI capabilities and integrations.
+- M1 completion (Wizard + Streaming + Rendering)
+- Split-pane editor implementation
 
-- [ ] Multiple AI Provider Support (Claude, Gemini, Local)
-- [ ] Project History & Version Control
-- [ ] Collaborative Editing
-- [ ] AI-Powered Code Suggestions
-- [ ] Template Marketplace
+---
 
-## Completed Milestones
+### M3: Distribution & Collaboration - **PLANNED (0% Complete)**
 
-### ✅ M3 - Polish & Export (COMPLETE)
+**Objective**: Enable sharing and collaboration features
 
-**Goal**: Actionable "Eject" to local file system.
+#### Planned Features
 
-**Completed**:
+- **TASK-010**: Download generated projects as ZIP files
+- Share links to blueprints
+- Collaborative editing (future scope)
+- Template library
 
-- [x] Zip Download (JSZip integration)
-- [x] Template Library (TemplateGrid component)
-- [x] "Smart Copy" formatting (clipboard utilities)
-- [x] Download .docs folder functionality
-- [x] Project README generation
+#### Prerequisites
 
-### ✅ M2 - Refinement & Persistence (COMPLETE)
+- M2 completion (Persistence + Refinement)
+- Advanced export capabilities
 
-**Goal**: Allow users to tweak the result and save their progress.
+---
 
-**Completed**:
+## Timeline Estimates
 
-- [x] Split-Pane Editor (Wizard + Editor layout)
-- [x] LocalStorage Persistence (auto-save/restore)
-- [x] "Refine Selection" AI command (/refine endpoint)
-- [x] Editor with syntax highlighting
-- [x] View mode toggle (Preview/Edit)
+### Current Focus: M1 Completion
 
-### ✅ M1 - Foundation & Core Loop (COMPLETE)
+- **Remaining Work**: 2-3 days (dedicated Frontend Engineer)
+- **Blockers**: None identified
+- **Dependencies**: External AI services available
 
-**Goal**: Complete "Zero-to-One" flow: Input -> Generate -> View.
+### M2 Start: After M1 Complete
 
-**Completed**:
+- **Estimated Duration**: 3-5 days
+- **Focus**: LocalStorage integration + editing features
 
-- [x] Monorepo Structure (apps/, packages/)
-- [x] Blueprint Definition (blueprint.md)
-- [x] Shared Schemas (Zod validation)
-- [x] API Streaming Endpoint (SSE implementation)
-- [x] Basic Wizard UI (5-step wizard)
-  - [x] Step 1: Project Details (Info)
-  - [x] Step 2: Tech Stack Selection (Stack)
-  - [x] Step 3: Features (Features)
-  - [x] Step 4: Review (Review)
-  - [x] Step 5: Generation (Generating)
-- [x] Real-time Markdown Rendering (Editor component)
-- [x] Template Grid for quick start
+### M3 Start: After M2 Complete
 
-### ✅ M0 - Inception (COMPLETE)
+- **Estimated Duration**: 5-7 days
+- **Focus**: Distribution features + advanced export
 
-**Completed**:
+---
 
-- [x] Initial Planning & Architecture Design
-- [x] Technology Stack Selection
-- [x] Monorepo Setup
-- [x] CI/CD Configuration
+## Success Metrics
+
+### M1 Success Criteria
+
+- [ ] Users can complete full wizard workflow (3 steps)
+- [ ] Real-time generation visible in UI
+- [ ] Generated markdown renders correctly
+- [ ] Error handling works across all endpoints
+- [ ] All CI tests passing
+
+### M2 Success Criteria
+
+- [ ] Blueprints persist in localStorage
+- [ ] Users can edit generated content
+- [ ] Refinement workflow functional
+- [ ] Export/import working
+
+### M3 Success Criteria
+
+- [ ] ZIP download generates runnable projects
+- [ ] Share links work correctly
+- [ ] Performance meets standards
+
+---
+
+## Risk Assessment
+
+### Technical Risks
+
+- **Low**: Monorepo structure established
+- **Medium**: Streaming implementation complexity (completed)
+- **Low**: External AI API dependencies (well-documented)
+
+### Timeline Risks
+
+- **Medium**: Frontend resource availability (critical path heavy on frontend)
+- **Low**: Backend complexity (minimal API surface)
+- **Low**: Integration complexity (well-defined contracts)
+
+---
+
+## Strategic Decisions
+
+### Architecture Decisions Made
+
+- **Cloudflare Workers**: Serverless, scalable, cost-effective
+- **React + TypeScript**: Industry standard, strong ecosystem
+- **Hono**: Lightweight, fast Workers framework
+- **Zod**: Type-safe validation across boundaries
+
+### Technology Choices Justified
+
+- **Vite over Webpack**: Faster development, simpler config
+- **Tailwind CSS**: Rapid UI development, consistent design
+- **Vitest**: Unified testing across frontend and backend
+- **Conventional Commits**: Automated changelog, clear history
+
+---
+
+**Version**: 1.0.0  
+**Last Updated**: 2026-02-05  
+**Next Review**: After M1 Completion  
+**Maintainer**: Software Architect (The Orchestrator)
