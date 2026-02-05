@@ -8,8 +8,8 @@ tools:
   edit: true
   bash: true
   read: true
-  grep_search: true
-  find_by_name: true
+  grep: true
+  glob: true
   skill: true
 permission:
   bash:
