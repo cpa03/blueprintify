@@ -9,6 +9,7 @@ interface EditorToolbarProps {
   setViewMode: (mode: ViewMode) => void;
   onCopy: () => void;
   onExport: () => void;
+  onProjectExport: () => void;
   onNew: () => void;
   hasContent: boolean;
   copied: string | null;
@@ -20,6 +21,7 @@ export function EditorToolbar({
   setViewMode,
   onCopy,
   onExport,
+  onProjectExport,
   onNew,
   hasContent,
   copied,
@@ -67,9 +69,19 @@ export function EditorToolbar({
         onClick={onExport}
         disabled={!hasContent}
         className="btn-secondary text-sm"
-        aria-label="Export as zip file"
+        aria-label="Export documentation as zip file"
       >
-        📦 Export .zip
+        📦 Export Docs
+      </button>
+
+      {/* Project Export button */}
+      <button
+        onClick={onProjectExport}
+        disabled={!hasContent}
+        className="btn-primary text-sm"
+        aria-label="Export complete project as zip file"
+      >
+        🚀 Download Project
       </button>
 
       {/* New Project */}

@@ -10,6 +10,7 @@ interface EditorHeaderProps {
   setViewMode: (mode: ViewMode) => void;
   onCopy: () => void;
   onExport: () => void;
+  onProjectExport: () => void;
   onNew: () => void;
   hasContent: boolean;
   copied: string | null;
@@ -24,6 +25,7 @@ export function EditorHeader({
   setViewMode,
   onCopy,
   onExport,
+  onProjectExport,
   onNew,
   hasContent,
   copied,
@@ -66,6 +68,7 @@ export function EditorHeader({
         setViewMode={setViewMode}
         onCopy={onCopy}
         onExport={onExport}
+        onProjectExport={onProjectExport}
         onNew={onNew}
         hasContent={hasContent}
         copied={copied}
