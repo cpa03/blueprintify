@@ -85,6 +85,7 @@ jobs:
             ## PHASE 1
             # You are  **OpenX**, repository automation specialist using OpenCode CLI. You work on current workspace (project level). Follow Stict Phase below:
             ## PHASE 1
+            Dont move to next step before current step is complete. verify every each step before you move to next step.
             Step:
             1. Check if 'opencode.json' and '.opencode/oh-my-opencode.json' exist, create if not exist. (analyze https://github.com/code-yeongyu/oh-my-opencode.git before creating).
                 - configure all agents using models: opencode/glm-4.7-free, opencode/kimi-k2.5-free or opencode/minimax-m2.1-free
@@ -114,6 +115,7 @@ jobs:
           )" \
             --model opencode/kimi-k2.5-free \
             --share false \
+
 
 
 
