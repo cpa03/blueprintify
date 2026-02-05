@@ -15,16 +15,16 @@ Thank you for your interest in contributing to Blueprintify! This guide will hel
 
 1. **Fork and Clone**
 
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/blueprintify.git
-   cd blueprintify
-   ```
+````bash
+    git clone https://github.com/cpa03/blueprintify.git
+    cd blueprintify
+    ```
 
 2. **Install Dependencies**
 
    ```bash
    npm install
-   ```
+````
 
 3. **Environment Setup**
 
@@ -223,6 +223,80 @@ Before submitting a PR:
 - Help others learn and grow
 - Focus on what is best for the community
 - Show empathy towards other community members
+
+## 🔧 Troubleshooting
+
+### Common Development Issues
+
+**API Key Not Working**
+
+```bash
+# Verify API key format
+echo "OPENAI_API_KEY=sk-..." > apps/api/.dev.vars
+# Restart dev server after changing .dev.vars
+```
+
+**Port Already in Use**
+
+```bash
+# Kill processes on ports 3000 and 8787
+lsof -ti:3000 | xargs kill -9
+lsof -ti:8787 | xargs kill -9
+```
+
+**Dependencies Issues**
+
+```bash
+# Clear npm cache
+npm cache clean --force
+# Remove node_modules and reinstall
+rm -rf node_modules apps/*/node_modules
+npm install
+```
+
+**TypeScript Errors**
+
+```bash
+# Check TypeScript configuration
+npm run typecheck
+# Ensure all dependencies are installed
+npm install
+```
+
+**API Not Responding**
+
+- Check that `.dev.vars` file exists in `apps/api/`
+- Verify API key is valid
+- Check browser network tab for CORS errors
+- Ensure API server is running on port 8787
+
+**Frontend Build Issues**
+
+- Check Node.js version: `node --version` (should be 18+)
+- Clear build cache: `rm -rf apps/web/dist`
+- Check for TypeScript errors: `npm run typecheck`
+
+### Environment Variables
+
+Create `apps/api/.dev.vars`:
+
+```bash
+OPENAI_API_KEY=sk-your-openai-api-key-here
+OPENAI_BASE_URL=https://api.openai.com/v1  # Optional
+OPENAI_MODEL=gpt-4o-mini                   # Optional
+```
+
+### Debug Mode
+
+Enable verbose logging:
+
+```bash
+# API with debug logs
+DEBUG=* npm run dev:api
+
+# Frontend with debug logs
+VITE_DEBUG=true npm run dev
+```
 
 ## 📞 Getting Help
 
