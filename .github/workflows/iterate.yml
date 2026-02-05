@@ -39,30 +39,10 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        continue-on-error: true
-        with:
-          node-version: 20
-          cache: 'npm'
-
       - name: Configure Git
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
-      - name: Branch Management
-        run: |
-          git fetch --all
-          if git branch -r | grep "origin/agent-workspace"; then
-            git checkout agent-workspace
-            git pull origin agent-workspace
-          else
-            git checkout -b agent-workspace
-          fi
-          git merge origin/main --no-edit || echo "Merge conflict or already up to date"
-      - name: Install Dependencies
-        continue-on-error: true
-        run: npm ci
 
       - name: Install OpenCode CLI
         run: |
@@ -92,14 +72,7 @@ jobs:
               description="Implement responsive navbar with animations",
               run_in_background=true
             )
-            
-            ## Anti-Patterns (NEVER Do)
-            - ❌ Circular dependencies
-            - ❌ God classes
-            - ❌ Mix presentation with business logic
-            - ❌ Break existing functionality
-            - ❌ Over-engineer
-            
+                      
             Start from phase 0.
             ## PHASE 0. Git Branch Management (Start)
             Before starting any work:
@@ -232,5 +205,5 @@ jobs:
             4. Remember you are in working loop, back to PHASE 0.
           PROMPT
           )" \
-            --model opencode/kimi-k2.5-free \
+            --model opencode/big-pickle \
             --share false \
