@@ -31,6 +31,7 @@ jobs:
           same-branch-only: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
 
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -49,6 +50,9 @@ jobs:
           curl -fsSL https://opencode.ai/install | bash
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: iterate1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
           opencode run /ulw-loop "$(cat <<'PROMPT'
             # Role Autonomous agent
@@ -205,5 +209,5 @@ jobs:
             4. Remember you are in working loop, back to PHASE 0.
           PROMPT
           )" \
-            --model opencode/big-pickle \
+            --model iflowcn/glm-4.7 \
             --share false \
