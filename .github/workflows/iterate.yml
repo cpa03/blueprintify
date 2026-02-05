@@ -209,5 +209,5 @@ jobs:
             4. Remember you are in working loop, back to PHASE 0.
           PROMPT
           )" \
-            --model iflowcn/glm-4.7 \
+            --model opencode/glm-4.7-free \
             --share false \
