@@ -1,4 +1,4 @@
-# Blueprint Generator
+# Blueprintify
 
 > **AI-Powered Project Architecture Documentation**
 
@@ -19,12 +19,18 @@ Generate production-ready `blueprint.md` and `task.md` files for your projects i
 ## 🏗️ Architecture
 
 ```
-blueprint-generator/
+blueprintify/
+├── .opencode/           # AI agent system and skills
+│   ├── agent/           # Agent definitions (technical-writer, etc.)
+│   ├── skill/           # Reusable skills (docs-update, etc.)
+│   ├── command/         # Custom commands
+│   └── plugin/          # Plugins and hooks
 ├── packages/
 │   └── shared/          # Zod schemas & TypeScript types
 ├── apps/
 │   ├── api/             # Hono backend (Cloudflare Workers)
 │   └── web/             # React frontend (Vite + Tailwind)
+└── docs/                # Project documentation
 ```
 
 ## 🚀 Quick Start
@@ -39,15 +45,15 @@ blueprint-generator/
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/blueprint-generator.git
-cd blueprint-generator
+git clone https://github.com/cpa03/blueprintify.git
+cd blueprintify
 
 # Install dependencies
 npm install
 
 # Setup environment variables
-cp apps/api/.dev.vars.example apps/api/.dev.vars
-# Edit .dev.vars with your OpenAI API key
+# Create apps/api/.dev.vars with your OpenAI API key:
+# OPENAI_API_KEY=your_openai_api_key_here
 ```
 
 ### Development
@@ -84,6 +90,32 @@ npm run build
 npm run deploy --workspace=apps/api
 ```
 
+## 🤖 AI Agent System
+
+This project uses the OpenCode AI agent system with specialized roles for different development tasks.
+
+### Available Agent Roles
+
+- **Technical Writer** - Documentation maintenance and user guides
+- **Frontend Engineer** - React components and UI development
+- **Backend Engineer** - API development and database architecture
+- **Software Architect** - System design and architecture decisions
+- **Security Engineer** - Security audits and vulnerability assessments
+- **DevOps Engineer** - CI/CD pipelines and deployment automation
+- **Quality Assurance** - Testing and code review processes
+
+### Available Skills
+
+The system includes reusable skills for common tasks:
+
+- `docs-update` - Standard documentation updates
+- `react-component-create` - React component creation
+- `api-endpoint-create` - API endpoint development
+- `security-audit` - Security vulnerability analysis
+- `test-suite-create` - Comprehensive test creation
+- `dependency-audit` - Package dependency analysis
+- And many more specialized skills
+
 ## 🔧 Configuration
 
 ### API Environment Variables
@@ -111,6 +143,7 @@ npm run deploy --workspace=apps/api
 - **Cloudflare Workers** - Edge runtime
 - **Zod** - Schema validation
 - **OpenAI SDK** - AI completions
+- **Vitest** - Testing framework
 
 ### Frontend
 
@@ -118,9 +151,18 @@ npm run deploy --workspace=apps/api
 - **Vite** - Build tool
 - **Tailwind CSS** - Styling
 - **Zustand** - State management
-- **CodeMirror** - Code editor
+- **CodeMirror** - Code editor (via @uiw/react-codemirror)
 - **Framer Motion** - Animations
 - **Radix UI** - Accessible components
+- **React Markdown** - Markdown rendering
+- **JSZip** - File compression for exports
+
+### Development Tools
+
+- **TypeScript** - Type safety
+- **ESLint** - Code linting
+- **Concurrently** - Parallel script execution
+- **Wrangler** - Cloudflare Workers deployment
 
 ## 📝 License
 
