@@ -3,6 +3,7 @@
   "model": "opencode/glm-4.7-free",
   "theme": "opencode",
   "share": "disabled",
+  "plugin": ["oh-my-opencode"],
   "tools": {
     "bash": true,
     "write": true,
@@ -46,4 +47,3 @@
     }
   }
 }
-
