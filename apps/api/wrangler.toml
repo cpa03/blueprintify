@@ -5,6 +5,12 @@ compatibility_date = "2024-01-01"
 [vars]
 ENVIRONMENT = "development"
 
+# D1 Database configuration
+[[d1_databases]]
+binding = "DB"
+database_name = "blueprint-generator-db"
+database_id = "local-database"
+
 # Uncomment and add your OpenAI API key when deploying
 # [secrets]
 # OPENAI_API_KEY = ""
