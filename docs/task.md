@@ -113,7 +113,8 @@
 
 #### TASK-009: LocalStorage Implementation
 
-- **Issue**: Not created
+- **Issue**: #56
+- **Assignee**: Unassigned
 - **Priority**: High
 - **Estimated**: 6-8 hours
 - **Dependencies**: M1 complete
@@ -138,8 +139,9 @@
 
 #### TASK-010: ZIP Download Feature
 
-- **Issue**: Not created
-- **Priority**: Medium
+- **Issue**: #57
+- **Assignee**: Unassigned
+- **Priority**: Low
 - **Estimated**: 8-12 hours
 - **Dependencies**: M2 complete
 - **Acceptance**:
