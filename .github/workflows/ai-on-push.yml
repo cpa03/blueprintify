@@ -25,37 +25,66 @@ jobs:
   architect:
     name: "Architect: Strategy & Triage"
     runs-on: ubuntu-24.04-arm
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}    
     steps:
-      - uses: actions/checkout@v4
-
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.opencode
+            ~/.npm
+          key: opencode-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-v1
+          restore-keys: |
+            opencode-${{ runner.os }}-v1
+            opencode-${{ runner.os }}-
       - name: Configure Git
         run: |
-          git config --global user.name "OpenCode Architect"
-          git config --global user.email "architect@bot.local"
-
-      - name: Setup Node & OpenCode
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - run: npm install -g opencode-ai
-
+      - name: Install OpenCode CLI
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: Architect Intelligence Cycle
+        timeout-minutes: 15
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         run: |
-          # The Architect reads findings.md, updates roadmap, and creates/updates issues
-          opencode run --agent software-architect \
-            "Execute management cycle. Read 'docs/findings.md' and 'docs/roadmap.md'. Triage existing issues. Create new issues if roadmap requires it." \
-            --model opencode/glm-4.7-free \
-            --share false \
+          max_retries=2
+          retry_count=0
 
-      - name: Commit Strategic Updates
-        run: |
-          git add docs/
-          git diff --staged --quiet || git commit -m "chore(strategy): update roadmap and findings [skip ci]"
-          git push origin main || echo "Push failed, likely race condition but acceptable."
+          while [ $retry_count -lt $max_retries ]; do
+            echo "Attempt $((retry_count + 1)) of $max_retries"
 
+            if opencode run "Execute management cycle, Read 'docs/findings.md' and 'docs/roadmap.md', Triage existing issues, Create new issues if roadmap requires it." \
+              --agent software-architect \
+              --model opencode/glm-4.7-free \
+              --share false \; then
+              echo "OpenCode execution succeeded"
+              break
+            else
+              retry_count=$((retry_count + 1))
+              echo "OpenCode execution failed, retrying in 30 seconds..."
+              sleep 30
+              if [ $retry_count -eq $max_retries ]; then
+                echo "All retry attempts failed"
+                exit 1
+              fi
+            fi
+          done
+            
   # ------------------------------------------------------------------
   # STAGE 2: THE MUSCLE (Specialist Executors)
   # ------------------------------------------------------------------
@@ -92,35 +121,23 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - run: npm install -g opencode-ai
-
-      - name: Check for Assigned Issues
-        id: check_issues
+      - name: Install OpenCode CLI
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+      - name: Execute Work (Active or Proactive)
+        timeout-minutes: 20
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Simple logic: If there are open issues with label 'area:<role>', proceed.
-          # Mapping role to label logic can be handled by the agent or simple grep
-          COUNT=$(gh issue list --label "area:${{ matrix.role }}" --json number -q 'length')
-          if [ "$COUNT" -gt 0 ]; then
-             echo "Issues found matching this specialist."
-             echo "has_work=true" >> $GITHUB_OUTPUT
-          else
-             echo "No issues for me. Sleeping."
-             echo "has_work=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Execute Work (Ticket Taker)
-        if: steps.check_issues.outputs.has_work == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-        run: |
-          # Specialist will pick an issue, branch off, fix, and PR.
-          opencode run --agent ${{ matrix.role }} \
+          # Specialist runs unconditionally:
+          # 1. Finds Issue -> Fixes it
+          # 2. No Issue -> Proactive Scan -> findings.md
+          opencode run \
             "Check for OPEN issues with label 'area:${{ matrix.role }}' or assigned to you. Pick the highest priority ONE. Execute the fix in a new branch. Update 'docs/findings.md' with any notes." \
             --model opencode/glm-4.7-free \
-            --share false
+            --share false \
 
   # ------------------------------------------------------------------
   # STAGE 3: THE GATEKEEPER (Integrator)
@@ -141,14 +158,32 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - run: npm install -g opencode-ai
-
+      - name: Install OpenCode CLI
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: Process Pull Requests
+        timeout-minutes: 30
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         run: |
           opencode run --agent integrator \
             "Check all open PRs. For each: Attempt merge main -> Build/Test -> If green, Merge PR. If red, comment." \
             --model opencode/glm-4.7-free \
-            --share false
+            --share false \
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
