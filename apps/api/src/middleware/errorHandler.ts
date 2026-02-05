@@ -4,8 +4,9 @@
  */
 
 import type { Context, Next } from "hono";
-import { createErrorResponse, isAPIError } from "../errors";
+import { createErrorResponse, isAPIError, ErrorType } from "../errors";
 import type { ErrorResponse } from "../errors";
+import type { ContentfulStatusCode } from "hono/utils/http-status";
 
 /**
  * Global error handler middleware
@@ -28,7 +29,7 @@ export const errorHandler = (err: unknown, c: Context) => {
     const errorResponse: ErrorResponse = {
       success: false,
       error: {
-        type: "validation",
+        type: ErrorType.VALIDATION,
         message: "Request validation failed",
         code: "VALIDATION_ERROR",
         details: {
@@ -57,7 +58,7 @@ export const errorHandler = (err: unknown, c: Context) => {
   const statusCode = isAPIError(err) ? err.statusCode : 500;
 
   // Return formatted error response
-  return c.json(errorResponse, statusCode);
+  return c.json(errorResponse, statusCode as ContentfulStatusCode);
 };
 
 /**

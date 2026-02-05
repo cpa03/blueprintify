@@ -9,21 +9,23 @@ import { createSSEResponse, createStreamFromGenerator } from "../utils/stream";
 import { ConfigurationError } from "../errors";
 import { validateJson } from "../middleware/validator";
 import type { Env } from "../types";
+import type { BlueprintRequest } from "@blueprint/shared";
 
 const app = new Hono<{ Bindings: Env }>();
 
 app.post("/", validateJson(BlueprintRequestSchema), async (c) => {
-  const request = c.get("validatedData");
+  const request = c.get("validatedData") as BlueprintRequest;
+
+  const apiKey = c.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new ConfigurationError("OpenAI API key not configured");
+  }
 
   const config: AIConfig = {
-    apiKey: c.env.OPENAI_API_KEY,
+    apiKey,
     baseURL: c.env.OPENAI_BASE_URL,
     model: c.env.OPENAI_MODEL,
   };
-
-  if (!config.apiKey) {
-    throw new ConfigurationError("OpenAI API key not configured");
-  }
 
   const userPrompt = buildBlueprintPrompt(request);
 
