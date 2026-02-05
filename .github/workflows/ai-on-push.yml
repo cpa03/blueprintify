@@ -70,7 +70,7 @@ jobs:
 
             if opencode run "Execute management cycle, Read 'docs/findings.md' and 'docs/roadmap.md', Triage existing issues, Create new issues if roadmap requires it." \
               --agent software-architect \
-              --model opencode/glm-4.7-free \
+              --model opencode/big-pickle \
               --share false \; then
               echo "OpenCode execution succeeded"
               break
@@ -136,7 +136,7 @@ jobs:
           # 2. No Issue -> Proactive Scan -> findings.md
           opencode run \
             "Check for OPEN issues with label 'area:${{ matrix.role }}' or assigned to you. Pick the highest priority ONE. Execute the fix in a new branch. Update 'docs/findings.md' with any notes." \
-            --model opencode/glm-4.7-free \
+            --model opencode/big-pickle \
             --share false \
 
   # ------------------------------------------------------------------
@@ -170,20 +170,5 @@ jobs:
         run: |
           opencode run --agent integrator \
             "Check all open PRs. For each: Attempt merge main -> Build/Test -> If green, Merge PR. If red, comment." \
-            --model opencode/glm-4.7-free \
+            --model opencode/big-pickle \
             --share false \
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
