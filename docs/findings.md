@@ -96,3 +96,54 @@
 - Consider adding request ID tracking for distributed tracing
 - Add rate limiting error type (429) for API throttling
 - Consider implementing error telemetry/alerting for production environments
+
+## Security Engineer - CI/CD Pipeline Security Improvements (2026-02-05)
+
+### Critical Security Issues Fixed
+
+- **Hardcoded API Keys**: Removed hardcoded `OPENCODE_API_KEY` references in workflows
+- **Inconsistent Secrets Management**: Standardized all workflows to use `GITHUB_TOKEN`
+- **Missing Security Scanning**: Added comprehensive security checks to PR gatekeeper
+- **Unsafe Package Installation**: Replaced unsafe npm global install with curl-based installation
+- **Missing Production Security**: Created secure production deployment pipeline
+
+### Security Enhancements Implemented
+
+1. **Security Scanning in PR Pipeline**:
+   - Added `npm audit` for vulnerability detection
+   - Implemented secret detection in changed files
+   - Added hardcoded configuration value detection
+   - Security engineer agent engagement for comprehensive review
+
+2. **Production Deployment Security**:
+   - Created `.env.production.template` for secure environment configuration
+   - Added production deployment workflow with proper secrets management
+   - Implemented pre-deployment security audit requirements
+   - Added post-deployment health checks
+
+3. **Secrets Management Standardization**:
+   - All workflows now consistently use GitHub Secrets
+   - Removed hardcoded environment variables
+   - Added environment-specific protection rules
+   - Implemented proper token scoping for workflows
+
+### Positive Security Findings
+
+- Repository already follows principle of least privilege with scoped permissions
+- Agent system includes dedicated security-engineer role for ongoing security
+- Project uses modern, well-maintained dependencies
+- Existing security guidelines in AGENTS.md are comprehensive
+
+### Security Recommendations for Future
+
+- Implement dependency scanning with tools like Snyk or GitHub Dependabot
+- Add code signing for production deployments
+- Consider implementing security headers in Cloudflare Workers
+- Add regular security audit schedule to the AI agent workflow
+- Implement runtime security monitoring for production services
+
+### Files Modified
+
+- `.github/workflows/pr-gatekeeper.yml`: Enhanced with security scanning and proper secrets management
+- `.github/workflows/deploy-production.yml`: New secure production deployment pipeline
+- `.env.production.template`: New template for secure production environment configuration
