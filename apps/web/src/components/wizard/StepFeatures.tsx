@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useWizardStore } from '../../store';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { useWizardStore } from "../../store";
 
 const SUGGESTED_FEATURES = [
-  'User authentication',
-  'Admin dashboard',
-  'API documentation',
-  'Unit tests',
-  'CI/CD pipeline',
-  'Docker support',
-  'Rate limiting',
-  'Logging & monitoring',
-  'Email notifications',
-  'File uploads',
-  'Search functionality',
-  'Dark mode'
+  "User authentication",
+  "Admin dashboard",
+  "API documentation",
+  "Unit tests",
+  "CI/CD pipeline",
+  "Docker support",
+  "Rate limiting",
+  "Logging & monitoring",
+  "Email notifications",
+  "File uploads",
+  "Search functionality",
+  "Dark mode",
 ];
 
 export function StepFeatures() {
-  const [newFeature, setNewFeature] = useState('');
+  const [newFeature, setNewFeature] = useState("");
   const features = useWizardStore((s) => s.features);
   const addFeature = useWizardStore((s) => s.addFeature);
   const removeFeature = useWizardStore((s) => s.removeFeature);
@@ -28,21 +28,23 @@ export function StepFeatures() {
   const handleAddFeature = () => {
     if (newFeature.trim()) {
       addFeature(newFeature.trim());
-      setNewFeature('');
+      setNewFeature("");
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
       handleAddFeature();
     }
   };
 
-  const isInFeatures = (feature: string) => 
+  const isInFeatures = (feature: string) =>
     features.some((f) => f.toLowerCase() === feature.toLowerCase());
 
   const suggestedNotAdded = SUGGESTED_FEATURES.filter((f) => !isInFeatures(f));
+
+  const hasFeatures = features.length > 0;
 
   return (
     <motion.div
@@ -53,13 +55,18 @@ export function StepFeatures() {
     >
       <div>
         <h2 className="text-2xl font-bold text-white mb-2">Add key features</h2>
-        <p className="text-dark-400">List the main features your project should have. This helps prioritize tasks.</p>
+        <p className="text-dark-400">
+          List the main features your project should have. This helps prioritize
+          tasks.
+        </p>
       </div>
 
       <div className="glass-card p-6 space-y-5">
         {/* Add custom feature */}
         <div>
-          <label htmlFor="feature-input" className="label">Add a feature</label>
+          <label htmlFor="feature-input" className="label">
+            Add a feature
+          </label>
           <div className="flex gap-2">
             <input
               id="feature-input"
@@ -77,8 +84,19 @@ export function StepFeatures() {
               className="btn-primary px-4"
               aria-label="Add feature"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
               </svg>
             </button>
           </div>
@@ -87,8 +105,14 @@ export function StepFeatures() {
         {/* Added features */}
         {features.length > 0 && (
           <div>
-            <label className="label" id="added-features-label">Your features ({features.length})</label>
-            <div className="flex flex-wrap gap-2" role="list" aria-labelledby="added-features-label">
+            <label className="label" id="added-features-label">
+              Your features ({features.length})
+            </label>
+            <div
+              className="flex flex-wrap gap-2"
+              role="list"
+              aria-labelledby="added-features-label"
+            >
               {features.map((feature, index) => (
                 <motion.span
                   key={index}
@@ -97,15 +121,28 @@ export function StepFeatures() {
                   className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-500/20 border border-primary-500/30 rounded-lg text-sm text-primary-300"
                   role="listitem"
                 >
-                  <span className="text-accent-emerald" aria-hidden="true">✓</span>
+                  <span className="text-accent-emerald" aria-hidden="true">
+                    ✓
+                  </span>
                   {feature}
                   <button
                     onClick={() => removeFeature(index)}
                     className="hover:text-accent-pink transition-colors"
                     aria-label={`Remove ${feature}`}
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
                     </svg>
                   </button>
                 </motion.span>
@@ -117,8 +154,14 @@ export function StepFeatures() {
         {/* Suggestions */}
         {suggestedNotAdded.length > 0 && (
           <div>
-            <label className="label" id="suggestions-label">Quick add suggestions</label>
-            <div className="flex flex-wrap gap-2" role="group" aria-labelledby="suggestions-label">
+            <label className="label" id="suggestions-label">
+              Quick add suggestions
+            </label>
+            <div
+              className="flex flex-wrap gap-2"
+              role="group"
+              aria-labelledby="suggestions-label"
+            >
               {suggestedNotAdded.map((feature) => (
                 <button
                   key={feature}
@@ -126,8 +169,19 @@ export function StepFeatures() {
                   className="tech-chip hover:border-accent-emerald/50"
                   aria-label={`Add suggestion: ${feature}`}
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4v16m8-8H4"
+                    />
                   </svg>
                   {feature}
                 </button>
@@ -137,10 +191,49 @@ export function StepFeatures() {
         )}
       </div>
 
+      {!hasFeatures && (
+        <div className="bg-gradient-to-r from-accent-emerald/10 to-accent-cyan/10 border border-accent-emerald/20 rounded-xl p-4">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-full bg-accent-emerald/20 flex items-center justify-center flex-shrink-0">
+              <svg
+                className="w-4 h-4 text-accent-emerald"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h4 className="font-medium text-white">No features added yet</h4>
+              <p className="text-sm text-dark-300 mt-1">
+                Adding features helps create more detailed tasks. Try the quick
+                suggestions above or add your own custom features.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex justify-between">
         <button onClick={prevStep} className="btn-secondary">
-          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg
+            className="w-5 h-5 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
           Back
         </button>
@@ -149,8 +242,18 @@ export function StepFeatures() {
           className="btn-primary flex items-center gap-2"
         >
           Next: Review
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         </button>
       </div>
