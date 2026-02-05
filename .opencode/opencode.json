@@ -1,0 +1,94 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "opencode/glm-4.7-free",
+  "fallback_models": ["opencode/kimi-k2.5-free", "opencode/minimax-m2.1-free"],
+  "theme": "opencode",
+  "share": "disabled",
+  "plugin": ["oh-my-opencode"],
+  "agents": {
+    "cmz": {
+      "model": "opencode/glm-4.7-free",
+      "fallback_models": [
+        "opencode/kimi-k2.5-free",
+        "opencode/minimax-m2.1-free"
+      ],
+      "temperature": 0.3
+    },
+    "sisyphus": {
+      "model": "opencode/glm-4.7-free",
+      "fallback_models": ["opencode/kimi-k2.5-free"]
+    },
+    "oracle": {
+      "model": "opencode/glm-4.7-free"
+    },
+    "explore": {
+      "model": "opencode/kimi-k2.5-free"
+    },
+    "librarian": {
+      "model": "opencode/minimax-m2.1-free"
+    }
+  },
+  "tools": {
+    "bash": true,
+    "write": true,
+    "edit": true,
+    "read": true,
+    "glob": true,
+    "grep": true,
+    "webfetch": true,
+    "websearch": true,
+    "skill": true,
+    "todo": true,
+    "subagent": true
+  },
+  "permission": {
+    "bash": "allow",
+    "write": "allow",
+    "edit": "allow",
+    "read": "allow",
+    "webfetch": "allow",
+    "websearch": "allow",
+    "subagent": "allow"
+  },
+  "watcher": {
+    "ignore": [
+      "node_modules/**",
+      ".git/**",
+      "dist/**",
+      "build/**",
+      ".next/**",
+      "coverage/**",
+      "*.log",
+      ".env*",
+      ".opencode/memory/**"
+    ]
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true
+  },
+  "formatter": {
+    "prettier": {
+      "command": ["npx", "prettier", "--write", "$FILE"],
+      "extensions": [".ts", ".tsx", ".js", ".jsx", ".json", ".md"]
+    }
+  },
+  "oh-my-opencode": {
+    "enabled": true,
+    "google_auth": false,
+    "agents": {
+      "frontend-ui-ux-engineer": {
+        "model": "opencode/glm-4.7-free"
+      },
+      "backend-engineer": {
+        "model": "opencode/glm-4.7-free"
+      },
+      "api-specialist": {
+        "model": "opencode/kimi-k2.5-free"
+      },
+      "code-reviewer": {
+        "model": "opencode/minimax-m2.1-free"
+      }
+    }
+  }
+}
