@@ -1,16 +1,18 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import type { EditorTab } from '@blueprint/shared';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type { EditorTab } from "@blueprint/shared";
 
 // ===== Editor Store =====
 interface EditorStore {
   activeTab: EditorTab;
   blueprintContent: string;
   tasksContent: string;
+  blueprintChunks: string[];
+  tasksChunks: string[];
   isDirty: boolean;
   isGenerating: boolean;
   generationProgress: string;
-  
+
   // Actions
   setActiveTab: (tab: EditorTab) => void;
   setBlueprintContent: (content: string) => void;
@@ -26,51 +28,66 @@ interface EditorStore {
 export const useEditorStore = create<EditorStore>()(
   persist(
     (set) => ({
-      activeTab: 'blueprint',
-      blueprintContent: '',
-      tasksContent: '',
+      activeTab: "blueprint",
+      blueprintContent: "",
+      tasksContent: "",
+      blueprintChunks: [],
+      tasksChunks: [],
       isDirty: false,
       isGenerating: false,
-      generationProgress: '',
+      generationProgress: "",
 
       setActiveTab: (activeTab) => set({ activeTab }),
-      
-      setBlueprintContent: (blueprintContent) => set({ blueprintContent, isDirty: true }),
-      
-      appendBlueprintContent: (chunk) => 
-        set((state) => ({ 
-          blueprintContent: state.blueprintContent + chunk,
-          isDirty: true 
-        })),
-      
+
+      setBlueprintContent: (blueprintContent) =>
+        set({ blueprintContent, isDirty: true }),
+
+      appendBlueprintContent: (chunk) =>
+        set((state) => {
+          const newChunks = [...state.blueprintChunks, chunk];
+          return {
+            blueprintChunks: newChunks,
+            blueprintContent: newChunks.join(""),
+            isDirty: true,
+          };
+        }),
+
       setTasksContent: (tasksContent) => set({ tasksContent, isDirty: true }),
-      
+
       appendTasksContent: (chunk) =>
-        set((state) => ({
-          tasksContent: state.tasksContent + chunk,
-          isDirty: true
-        })),
-      
+        set((state) => {
+          const newChunks = [...state.tasksChunks, chunk];
+          return {
+            tasksChunks: newChunks,
+            tasksContent: newChunks.join(""),
+            isDirty: true,
+          };
+        }),
+
       setIsGenerating: (isGenerating) => set({ isGenerating }),
-      
-      setGenerationProgress: (generationProgress) => set({ generationProgress }),
-      
+
+      setGenerationProgress: (generationProgress) =>
+        set({ generationProgress }),
+
       markClean: () => set({ isDirty: false }),
-      
-      reset: () => set({
-        blueprintContent: '',
-        tasksContent: '',
-        isDirty: false,
-        isGenerating: false,
-        generationProgress: ''
-      })
+
+      reset: () =>
+        set({
+          blueprintContent: "",
+          tasksContent: "",
+          blueprintChunks: [],
+          tasksChunks: [],
+          isDirty: false,
+          isGenerating: false,
+          generationProgress: "",
+        }),
     }),
     {
-      name: 'blueprint-editor',
+      name: "blueprint-editor",
       partialize: (state) => ({
         blueprintContent: state.blueprintContent,
-        tasksContent: state.tasksContent
-      })
-    }
-  )
+        tasksContent: state.tasksContent,
+      }),
+    },
+  ),
 );

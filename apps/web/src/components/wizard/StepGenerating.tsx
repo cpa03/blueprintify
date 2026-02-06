@@ -1,13 +1,18 @@
-import { motion } from 'framer-motion';
-import { useEditorStore } from '../../store';
+import React from "react";
+import { motion } from "framer-motion";
+import { useMemo } from "react";
+import { useEditorStore } from "../../store";
 
-export function StepGenerating() {
+export const StepGenerating = React.memo(function StepGenerating() {
   const progress = useEditorStore((s) => s.generationProgress);
   const blueprintContent = useEditorStore((s) => s.blueprintContent);
   const tasksContent = useEditorStore((s) => s.tasksContent);
 
-  const blueprintLines = blueprintContent.split('\n').length;
-  const tasksLines = tasksContent.split('\n').length;
+  const stats = useMemo(() => {
+    const blueprintLines = blueprintContent.split("\n").length;
+    const tasksLines = tasksContent.split("\n").length;
+    return { blueprintLines, tasksLines };
+  }, [blueprintContent, tasksContent]);
 
   return (
     <motion.div
@@ -19,9 +24,9 @@ export function StepGenerating() {
       <div className="relative mb-8">
         <motion.div
           className="w-24 h-24 rounded-full border-4 border-dark-700"
-          style={{ borderTopColor: 'rgb(99 102 241)' }}
+          style={{ borderTopColor: "rgb(99 102 241)" }}
           animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.div
@@ -36,8 +41,10 @@ export function StepGenerating() {
       </div>
 
       {/* Progress text */}
-      <h2 className="text-xl font-bold text-white mb-2">Generating Your Blueprint</h2>
-      <p className="text-dark-400 mb-6">{progress || 'Starting...'}</p>
+      <h2 className="text-xl font-bold text-white mb-2">
+        Generating Your Blueprint
+      </h2>
+      <p className="text-dark-400 mb-6">{progress || "Starting..."}</p>
 
       {/* Live stats */}
       <div className="flex gap-8 text-center">
@@ -46,7 +53,9 @@ export function StepGenerating() {
           animate={{ opacity: 1, y: 0 }}
           className="glass-card px-6 py-4"
         >
-          <div className="text-2xl font-bold text-gradient">{blueprintLines}</div>
+          <div className="text-2xl font-bold text-gradient">
+            {stats.blueprintLines}
+          </div>
           <div className="text-sm text-dark-400">Blueprint Lines</div>
         </motion.div>
         <motion.div
@@ -55,7 +64,9 @@ export function StepGenerating() {
           transition={{ delay: 0.1 }}
           className="glass-card px-6 py-4"
         >
-          <div className="text-2xl font-bold text-gradient">{tasksLines}</div>
+          <div className="text-2xl font-bold text-gradient">
+            {stats.tasksLines}
+          </div>
           <div className="text-sm text-dark-400">Task Lines</div>
         </motion.div>
       </div>
@@ -71,4 +82,4 @@ export function StepGenerating() {
       </motion.p>
     </motion.div>
   );
-}
+});
