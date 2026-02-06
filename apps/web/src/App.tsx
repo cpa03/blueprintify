@@ -1,4 +1,11 @@
-import { useState, Suspense, lazy, useMemo } from "react";
+import {
+  useState,
+  Suspense,
+  lazy,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "./components/Header";
 import { TemplateGrid } from "./components/TemplateGrid";
@@ -19,6 +26,9 @@ function App() {
   const hasContent = useEditorStore(
     (s) => s.blueprintContent.length > 0 || s.tasksContent.length > 0,
   );
+  const isGenerating = useEditorStore((s) => s.isGenerating);
+  const setIsGenerating = useEditorStore((s) => s.setIsGenerating);
+  const setGenerationProgress = useEditorStore((s) => s.setGenerationProgress);
 
   // Memoize expensive calculations to prevent unnecessary re-renders
   const showTemplates = useMemo(
@@ -26,6 +36,28 @@ function App() {
     [currentStep, hasContent],
   );
 
+  // Keyboard shortcuts for improved UX
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      // Cmd/Ctrl + E to toggle editor
+      if ((e.metaKey || e.ctrlKey) && e.key === "e") {
+        e.preventDefault();
+        setShowEditor((prev) => !prev);
+      }
+      // Escape to cancel generation
+      if (e.key === "Escape" && isGenerating) {
+        e.preventDefault();
+        setIsGenerating(false);
+        setGenerationProgress("Generation cancelled by user");
+      }
+    },
+    [isGenerating, setIsGenerating, setGenerationProgress],
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
