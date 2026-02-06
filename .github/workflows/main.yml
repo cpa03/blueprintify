@@ -40,6 +40,7 @@ jobs:
              Update docs/task.md (OPEN / PRIORITY / ROLE / SCOPE).
              Jangan coding." \
             --agent architect \
+            --model iflowcn/glm-4.6 \
             --share false
 
 # ==================================================
@@ -89,6 +90,7 @@ jobs:
              Update task ke DONE.
              Dilarang nambah file / scope." \
             --agent ${{ matrix.role }} \
+            --model opencode/minimax-m2.1-free \
             --share false
 
 # ==================================================
@@ -110,6 +112,7 @@ jobs:
              Tambah test bila perlu.
              Update task: QA PASS / FAIL." \
             --agent qa-engineer \
+            --model iflowcn/glm-4.6 \
             --share false
 
 # ==================================================
@@ -131,6 +134,7 @@ jobs:
              Cocokkan dengan blueprint.md.
              Update task: SECURITY PASS / FAIL." \
             --agent security-engineer \
+            --model iflowcn/glm-4.6 \
             --share false
 
 # ==================================================
@@ -156,6 +160,7 @@ jobs:
              Rujuk docs/repo-rules.md.
              Comment jika reject." \
             --agent repo-guardian \
+            --model iflowcn/glm-4.6 \
             --share false
 
 # ==================================================
@@ -180,6 +185,7 @@ jobs:
              - Repo Guardian OK
              Jika gagal, comment." \
             --agent integrator \
+            --model iflowcn/glm-4.6 \
             --share false
 
 # ==================================================
@@ -201,6 +207,7 @@ jobs:
              Catat drift / rekomendasi ke docs/knowledge-review.md.
              Jangan coding." \
             --agent knowledge-steward \
+            --model iflowcn/glm-4.6 \
             --share false
 
 # ==================================================
@@ -222,4 +229,5 @@ jobs:
              Catat bug baru ke docs/bug.md.
              Jangan fix." \
             --agent reliability-engineer \
+            --model iflowcn/glm-4.6 \
             --share false
