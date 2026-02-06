@@ -42,17 +42,18 @@
   - Syntax highlighting for code blocks
   - Real-time updates during generation
 
-#### TASK-101: Review & Generate Form (Wizard Step 3)
+#### TASK-102: Complete Basic Wizard UI Implementation (All Steps)
 
-- **Issue**: #29
+- **Issue**: #97
 - **Assignee**: Unassigned
 - **Priority**: Critical
-- **Estimated**: 3-4 hours
+- **Estimated**: 8-10 hours
 - **Dependencies**: TASK-006, TASK-008
 - **Acceptance**:
-  - Summary display of selections
-  - Generate button with loading state
-  - Connection to streaming endpoint
+  - All 3 wizard steps functional
+  - Form validation working across all steps
+  - Navigation between steps preserved
+  - Integration with shared Zod schemas
 
 ### Infrastructure Tasks
 
@@ -113,7 +114,8 @@
 
 #### TASK-009: LocalStorage Implementation
 
-- **Issue**: Not created
+- **Issue**: #89
+- **Assignee**: Unassigned
 - **Priority**: High
 - **Estimated**: 6-8 hours
 - **Dependencies**: M1 complete
@@ -123,12 +125,49 @@
   - Storage quota management
   - Migration strategy for schema changes
 
+#### TASK-103: Manual Editing in Split-Pane View
+
+- **Issue**: #99
+- **Assignee**: Unassigned
+- **Priority**: High
+- **Estimated**: 4-6 hours
+- **Dependencies**: TASK-007, TASK-009
+- **Acceptance**:
+  - Code editor allows editing
+  - Changes sync with markdown preview
+  - Edit state preserved during session
+  - Save/restore via localStorage
+
+#### TASK-104: Blueprint Refinement Workflow
+
+- **Issue**: #100
+- **Assignee**: Unassigned
+- **Priority**: High
+- **Estimated**: 6-8 hours
+- **Dependencies**: TASK-103
+- **Acceptance**:
+  - Select specific sections for regeneration
+  - Maintain context during refinement
+  - Stream regeneration for selected sections
+  - Preserve manual edits during refinement
+
+#### TASK-105: Export/Import Functionality
+
+- **Issue**: #101
+- **Assignee**: Unassigned
+- **Priority**: High
+- **Estimated**: 4-5 hours
+- **Dependencies**: TASK-009
+- **Acceptance**:
+  - Export blueprint as JSON file
+  - Import blueprint from JSON file
+  - Validate imported blueprints
+  - Handle schema version migration
+
 #### Additional M2 Tasks
 
-- Manual editing integration with split-pane
-- Blueprint refinement workflow
-- Export/import functionality
 - Schema versioning for backwards compatibility
+- Performance optimization for large blueprints
 
 ---
 
@@ -138,8 +177,8 @@
 
 #### TASK-010: ZIP Download Feature
 
-- **Issue**: Not created
-- **Priority**: Medium
+- **Issue**: #106
+- **Priority**: High
 - **Estimated**: 8-12 hours
 - **Dependencies**: M2 complete
 - **Acceptance**:
