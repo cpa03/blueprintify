@@ -1,3 +1,5 @@
+import { RETRY_CONFIG } from "../config/constants";
+
 export interface RetryOptions {
   retries?: number;
   initialDelay?: number;
@@ -15,9 +17,9 @@ export async function withRetry<T>(
   options: RetryOptions = {},
 ): Promise<T> {
   const {
-    retries = 3,
-    initialDelay = 1000,
-    backoffFactor = 2,
+    retries = RETRY_CONFIG.DEFAULT_RETRIES,
+    initialDelay = RETRY_CONFIG.DEFAULT_INITIAL_DELAY,
+    backoffFactor = RETRY_CONFIG.DEFAULT_BACKOFF_FACTOR,
     onRetry,
   } = options;
 

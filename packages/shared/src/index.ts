@@ -8,8 +8,8 @@ export {
   TemplateSchema,
   StreamChunkSchema,
   GenerationResultSchema,
-  TECH_STACK_OPTIONS
-} from './schema';
+  TECH_STACK_OPTIONS,
+} from "./schema";
 
 // ===== TypeScript Types =====
 export type {
@@ -26,8 +26,13 @@ export type {
   Session,
   StreamCallbacks,
   EditorTab,
-  EditorState
-} from './types';
+  EditorState,
+} from "./types";
 
 // ===== Templates =====
-export { STARTER_TEMPLATES } from './templates';
+export { STARTER_TEMPLATES } from "./templates";
+
+// ===== Configuration =====
+export { RETRY_CONFIG } from "./config";
+
+export type { RetryOptions, RetryConfigValues } from "./config";

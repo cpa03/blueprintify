@@ -1,3 +1,5 @@
+export * from "./config";
+
 import { z } from "zod";
 
 // ===== Tech Stack Options =====
