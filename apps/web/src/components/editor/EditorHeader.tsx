@@ -1,6 +1,7 @@
 import * as Tabs from "@radix-ui/react-tabs";
 import type { EditorTab } from "@blueprint/shared";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
+import { type ZipGenerationProgress } from "../../lib/export";
 import clsx from "clsx";
 
 interface EditorHeaderProps {
@@ -13,6 +14,8 @@ interface EditorHeaderProps {
   onNew: () => void;
   hasContent: boolean;
   copied: string | null;
+  isExporting?: boolean;
+  exportProgress?: ZipGenerationProgress | null;
 }
 
 export type { ViewMode };
@@ -27,6 +30,8 @@ export function EditorHeader({
   onNew,
   hasContent,
   copied,
+  isExporting = false,
+  exportProgress = null,
 }: EditorHeaderProps) {
   return (
     <div className="flex items-center justify-between p-4 border-b border-dark-700">
@@ -69,6 +74,8 @@ export function EditorHeader({
         onNew={onNew}
         hasContent={hasContent}
         copied={copied}
+        isExporting={isExporting}
+        exportProgress={exportProgress}
       />
     </div>
   );

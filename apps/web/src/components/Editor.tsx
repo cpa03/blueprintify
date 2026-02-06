@@ -6,13 +6,21 @@ import { oneDark } from "@codemirror/theme-one-dark";
 import ReactMarkdown from "react-markdown";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
 import { useEditorStore, useWizardStore } from "../store";
-import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
+import {
+  exportAsZip,
+  copyToClipboard,
+  formatForIDE,
+  type ZipGenerationProgress,
+} from "../lib/export";
 import { TIMEOUTS } from "../config/constants";
 import clsx from "clsx";
 
 export function Editor() {
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [copied, setCopied] = useState<string | null>(null);
+  const [exportProgress, setExportProgress] =
+    useState<ZipGenerationProgress | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   const activeTab = useEditorStore((s) => s.activeTab);
   const setActiveTab = useEditorStore((s) => s.setActiveTab);
@@ -30,6 +38,8 @@ export function Editor() {
   const setCurrentContent =
     activeTab === "blueprint" ? setBlueprintContent : setTasksContent;
 
+  const wizardState = useWizardStore((s) => s);
+
   const handleCopy = async () => {
     const formatted = formatForIDE(currentContent);
     const success = await copyToClipboard(formatted);
@@ -40,11 +50,30 @@ export function Editor() {
   };
 
   const handleExport = async () => {
-    await exportAsZip({
-      blueprint: blueprintContent,
-      tasks: tasksContent,
-      projectName: projectName || "my-project",
-    });
+    setIsExporting(true);
+    setExportProgress(null);
+
+    try {
+      await exportAsZip(
+        {
+          blueprint: blueprintContent,
+          tasks: tasksContent,
+          projectName: projectName || "my-project",
+          techStack: wizardState.techStack,
+          description: wizardState.description,
+          targetAudience: wizardState.targetAudience,
+          features: wizardState.features,
+        },
+        (progress) => {
+          setExportProgress(progress);
+        },
+      );
+    } catch (error) {
+      console.error("Export failed:", error);
+    } finally {
+      setIsExporting(false);
+      setExportProgress(null);
+    }
   };
 
   const handleNewProject = () => {
@@ -67,6 +96,8 @@ export function Editor() {
         onNew={handleNewProject}
         hasContent={hasContent}
         copied={copied}
+        isExporting={isExporting}
+        exportProgress={exportProgress}
       />
 
       {/* Editor Content */}
