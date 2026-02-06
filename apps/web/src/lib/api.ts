@@ -4,6 +4,7 @@ import type {
   RefineRequest,
   StreamChunk,
 } from "@blueprint/shared";
+import { RETRY_CONFIG } from "@blueprint/shared";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "/api";
 
@@ -22,10 +23,10 @@ interface RetryOptions {
 }
 
 const DEFAULT_RETRY_OPTIONS: Required<RetryOptions> = {
-  maxRetries: 3,
-  initialDelay: 1000,
-  backoffFactor: 2,
-  maxDelay: 10000,
+  maxRetries: RETRY_CONFIG.DEFAULT_RETRIES,
+  initialDelay: RETRY_CONFIG.DEFAULT_INITIAL_DELAY,
+  backoffFactor: RETRY_CONFIG.DEFAULT_BACKOFF_FACTOR,
+  maxDelay: RETRY_CONFIG.DEFAULT_MAX_DELAY,
 };
 
 /**

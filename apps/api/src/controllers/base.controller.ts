@@ -1,7 +1,6 @@
-import { streamCompletion, type AIConfig } from "../services/openai";
+import type { AIConfig } from "../services/openai";
 import { createSSEResponse, createStreamFromGenerator } from "../utils/stream";
 import { ConfigurationError } from "../errors";
-import type { Env } from "../types";
 
 export abstract class BaseController {
   protected createAIConfig(c: any): AIConfig {

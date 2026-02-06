@@ -28,3 +28,9 @@
 [x] Hono Context typing issues with validatedData - Fixed: added proper type parameterization
 [x] Multiple linting warnings (unused vars, unreachable code, unnecessary escapes) - Fixed: cleaned up code
 [x] any type in retry.ts - Fixed: changed to unknown with type assertions
+
+### Architectural Issues (NEW - 2026-02-06)
+
+[x] **CRITICAL**: BaseController abstract class exists but NO controllers extend from it - apps/api/src/controllers/base.controller.ts created but GenerateController, RefineController, and TasksController all duplicate the createAIConfig method instead of extending BaseController - Fixed: Made all controllers extend BaseController, removed duplicate code, tests pass
+[x] ESLint not installed again - npm run lint fails with "eslint: not found" - Fixed: dependencies installed, eslint working
+[x] Dependencies need to be reinstalled after main merge - TypeScript cannot find modules (zod, hono, openai, react, etc.) - Fixed: npm install completed
