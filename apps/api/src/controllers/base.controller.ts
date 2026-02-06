@@ -2,6 +2,7 @@ import type { AIConfig } from "../services/openai";
 import { createSSEResponse, createStreamFromGenerator } from "../utils/stream";
 import { ConfigurationError } from "../errors";
 import type { Env } from "../types";
+import type { Context } from "hono";
 
 export abstract class BaseController {
   protected createAIConfig(c: { env: Env }): AIConfig {
