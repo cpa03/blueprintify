@@ -1,7 +1,18 @@
-import { motion } from 'framer-motion';
-import { TECH_STACK_OPTIONS } from '@blueprint/shared';
-import { useWizardStore } from '../../store';
-import clsx from 'clsx';
+import { motion } from "framer-motion";
+import { TECH_STACK_OPTIONS } from "@blueprint/shared";
+import { useWizardStore } from "../../store";
+import clsx from "clsx";
+
+const CATEGORY_ICONS: Record<string, string> = {
+  frontend: "🎨",
+  backend: "⚙️",
+  database: "🗄️",
+  hosting: "☁️",
+  styling: "🖌️",
+  ai: "🤖",
+  testing: "🧪",
+  other: "📦",
+};
 
 export function StepStack() {
   const techStack = useWizardStore((s) => s.techStack);
@@ -10,10 +21,7 @@ export function StepStack() {
   const nextStep = useWizardStore((s) => s.nextStep);
   const prevStep = useWizardStore((s) => s.prevStep);
 
-  const categories = Object.entries(TECH_STACK_OPTIONS) as [
-    keyof typeof TECH_STACK_OPTIONS,
-    typeof TECH_STACK_OPTIONS[keyof typeof TECH_STACK_OPTIONS]
-  ][];
+  const categories = Object.entries(TECH_STACK_OPTIONS);
 
   const canProceed = techStack.length >= 1;
 
@@ -23,7 +31,18 @@ export function StepStack() {
     if (isSelected(tech.name)) {
       removeTechStack(tech.name);
     } else {
-      addTechStack({ name: tech.name, category: tech.category as 'frontend' | 'backend' | 'database' | 'hosting' | 'ai' | 'testing' | 'styling' | 'other' });
+      addTechStack({
+        name: tech.name,
+        category: tech.category as
+          | "frontend"
+          | "backend"
+          | "database"
+          | "hosting"
+          | "ai"
+          | "testing"
+          | "styling"
+          | "other",
+      });
     }
   };
 
@@ -35,37 +54,58 @@ export function StepStack() {
       className="space-y-6"
     >
       <div>
-        <h2 className="text-2xl font-bold text-white mb-2">Choose your tech stack</h2>
-        <p className="text-dark-400">Select the technologies you plan to use. This helps generate accurate architecture.</p>
+        <h2 className="text-2xl font-bold text-white mb-2">
+          Choose your tech stack
+        </h2>
+        <p className="text-dark-400">
+          Select the technologies you plan to use. This helps generate accurate
+          architecture.
+        </p>
       </div>
 
-      <div className="glass-card p-6 space-y-6" role="group" aria-label="Tech Stack Selection">
+      <div
+        className="glass-card p-6 space-y-6"
+        role="group"
+        aria-label="Tech Stack Selection"
+      >
         {categories.map(([category, options]) => (
           <div key={category}>
-            <h3 className="text-sm font-medium text-dark-300 uppercase tracking-wider mb-3 flex items-center gap-2" id={`category-${category}`}>
-              <span aria-hidden="true">
-                {category === 'frontend' && '🎨'}
-                {category === 'backend' && '⚙️'}
-                {category === 'database' && '🗄️'}
-                {category === 'hosting' && '☁️'}
-                {category === 'styling' && '🖌️'}
-              </span>
+            <h3
+              className="text-sm font-medium text-dark-300 uppercase tracking-wider mb-3 flex items-center gap-2"
+              id={`category-${category}`}
+            >
+              <span aria-hidden="true">{CATEGORY_ICONS[category] || "🔧"}</span>
               {category}
             </h3>
-            <div className="flex flex-wrap gap-2" role="group" aria-labelledby={`category-${category}`}>
+            <div
+              className="flex flex-wrap gap-2"
+              role="group"
+              aria-labelledby={`category-${category}`}
+            >
               {options.map((tech) => (
                 <button
                   key={tech.name}
                   onClick={() => toggleTech(tech)}
                   aria-pressed={isSelected(tech.name)}
                   className={clsx(
-                    'tech-chip',
-                    isSelected(tech.name) && 'selected'
+                    "tech-chip",
+                    isSelected(tech.name) && "selected",
                   )}
                 >
                   {isSelected(tech.name) && (
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                   )}
                   {tech.name}
@@ -81,7 +121,10 @@ export function StepStack() {
             <p className="text-sm text-dark-400 mb-2" id="selected-tech-label">
               Selected ({techStack.length}):
             </p>
-            <ul className="flex flex-wrap gap-2" aria-labelledby="selected-tech-label">
+            <ul
+              className="flex flex-wrap gap-2"
+              aria-labelledby="selected-tech-label"
+            >
               {techStack.map((tech) => (
                 <li
                   key={tech.name}
@@ -93,8 +136,19 @@ export function StepStack() {
                     className="hover:text-accent-pink transition-colors"
                     aria-label={`Remove ${tech.name}`}
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
                     </svg>
                   </button>
                 </li>
@@ -106,8 +160,18 @@ export function StepStack() {
 
       <div className="flex justify-between">
         <button onClick={prevStep} className="btn-secondary">
-          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg
+            className="w-5 h-5 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
           Back
         </button>
@@ -117,8 +181,18 @@ export function StepStack() {
           className="btn-primary flex items-center gap-2"
         >
           Next: Add Features
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         </button>
       </div>

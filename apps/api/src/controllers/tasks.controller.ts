@@ -4,14 +4,11 @@ import {
   TASK_SPLITTER_SYSTEM_PROMPT,
   buildTaskPrompt,
 } from "../services/prompts";
-import type { z } from "zod";
-import type { TaskGenerationRequestSchema } from "@blueprint/shared";
+import type { TasksContext } from "../types";
 
 export class TasksController extends BaseController {
-  async generateTasks(c: any): Promise<Response> {
-    const { blueprint, projectName } = c.get("validatedData") as z.infer<
-      typeof TaskGenerationRequestSchema
-    >;
+  async generateTasks(c: TasksContext): Promise<Response> {
+    const { blueprint, projectName } = c.get("validatedData");
     const config = this.createAIConfig(c);
 
     const userPrompt = buildTaskPrompt(blueprint, projectName);

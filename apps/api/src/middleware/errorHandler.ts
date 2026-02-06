@@ -12,14 +12,19 @@ import type { ErrorResponse } from "../errors";
  * Catches all errors and formats them according to the standard error response shape
  */
 export const errorHandler = (err: unknown, c: Context) => {
-  // Log error for debugging (in production, use proper logging service)
-  console.error("[API Error]", {
+  // Error logging - in production, integrate with Cloudflare Workers logging
+  // or external service like Sentry/DataDog
+  const errorLog = {
     error: err instanceof Error ? err.message : err,
     stack: err instanceof Error ? err.stack : undefined,
     path: c.req.path,
     method: c.req.method,
     timestamp: new Date().toISOString(),
-  });
+  };
+
+  // In Cloudflare Workers, use console.error for basic logging
+  // This will appear in Cloudflare Dashboard logs
+  console.error("[API Error]", errorLog);
 
   // Handle Zod validation errors
   if (err && typeof err === "object" && "issues" in err) {

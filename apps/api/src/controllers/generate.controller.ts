@@ -4,14 +4,11 @@ import {
   ARCHITECT_SYSTEM_PROMPT,
   buildBlueprintPrompt,
 } from "../services/prompts";
-import type { z } from "zod";
-import type { BlueprintRequestSchema } from "@blueprint/shared";
+import type { BlueprintContext } from "../types";
 
 export class GenerateController extends BaseController {
-  async generateBlueprint(c: any): Promise<Response> {
-    const request = c.get("validatedData") as z.infer<
-      typeof BlueprintRequestSchema
-    >;
+  async generateBlueprint(c: BlueprintContext): Promise<Response> {
+    const request = c.get("validatedData");
     const config = this.createAIConfig(c);
 
     const userPrompt = buildBlueprintPrompt(request);
