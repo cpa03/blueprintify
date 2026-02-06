@@ -96,9 +96,10 @@
 
 ### M1 Success Criteria
 
-- [ ] Users can complete full wizard workflow (3 steps)
-- [ ] Real-time generation visible in UI
-- [ ] Generated markdown renders correctly
+- [x] Issue triage completed and duplicates resolved
+- [ ] Users can complete full wizard workflow (3 steps) - Issues #28, #85 open
+- [ ] Real-time generation visible in UI - Issue #30 open
+- [ ] Generated markdown renders correctly - Issue #30 open
 - [ ] Error handling works across all endpoints
 - [ ] All CI tests passing
 
@@ -152,6 +153,6 @@
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2026-02-05  
-**Next Review**: After M1 Completion  
+**Last Updated**: 2026-02-06  
+**Next Review**: Daily stand-up during M1  
 **Maintainer**: Software Architect (The Orchestrator)
