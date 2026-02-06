@@ -42,17 +42,18 @@
   - Syntax highlighting for code blocks
   - Real-time updates during generation
 
-#### TASK-101: Review & Generate Form (Wizard Step 3)
+#### TASK-102: Complete Basic Wizard UI Implementation (All Steps)
 
-- **Issue**: #29
+- **Issue**: #97
 - **Assignee**: Unassigned
 - **Priority**: Critical
-- **Estimated**: 3-4 hours
+- **Estimated**: 8-10 hours
 - **Dependencies**: TASK-006, TASK-008
 - **Acceptance**:
-  - Summary display of selections
-  - Generate button with loading state
-  - Connection to streaming endpoint
+  - All 3 wizard steps functional
+  - Form validation working across all steps
+  - Navigation between steps preserved
+  - Integration with shared Zod schemas
 
 ### Infrastructure Tasks
 
@@ -176,8 +177,8 @@
 
 #### TASK-010: ZIP Download Feature
 
-- **Issue**: Not created
-- **Priority**: Medium
+- **Issue**: #106
+- **Priority**: High
 - **Estimated**: 8-12 hours
 - **Dependencies**: M2 complete
 - **Acceptance**:
