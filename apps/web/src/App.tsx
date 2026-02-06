@@ -1,26 +1,56 @@
-import { useState, Suspense, lazy } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Header } from './components/Header';
-import { TemplateGrid } from './components/TemplateGrid';
-import { StepIndicator } from './components/StepIndicator';
-import { Wizard } from './components/Wizard';
-import { useWizardStore, useEditorStore } from './store';
+import { useState, Suspense, lazy, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Header } from "./components/Header";
+import { TemplateGrid } from "./components/TemplateGrid";
+import { StepIndicator } from "./components/StepIndicator";
+import { Wizard } from "./components/Wizard";
+import { useWizardStore, useEditorStore } from "./store";
 
 // Lazy load Editor to reduce initial bundle size
-const Editor = lazy(() => import('./components/Editor').then(module => ({ default: module.Editor })));
+const Editor = lazy(() =>
+  import("./components/Editor").then((module) => ({ default: module.Editor })),
+);
 
 function App() {
   const [showEditor, setShowEditor] = useState(true);
   const currentStep = useWizardStore((s) => s.currentStep);
-  const hasContent = useEditorStore((s) => s.blueprintContent.length > 0 || s.tasksContent.length > 0);
+  const hasContent = useEditorStore(
+    (s) => s.blueprintContent.length > 0 || s.tasksContent.length > 0,
+  );
+  const isGenerating = useEditorStore((s) => s.isGenerating);
+  const setIsGenerating = useEditorStore((s) => s.setIsGenerating);
+  const setGenerationProgress = useEditorStore((s) => s.setGenerationProgress);
 
   // Show templates only on first step with no content
-  const showTemplates = currentStep === 'info' && !hasContent;
+  const showTemplates = currentStep === "info" && !hasContent;
+
+  // Keyboard shortcuts for improved UX
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      // Cmd/Ctrl + E to toggle editor
+      if ((e.metaKey || e.ctrlKey) && e.key === "e") {
+        e.preventDefault();
+        setShowEditor((prev) => !prev);
+      }
+      // Escape to cancel generation
+      if (e.key === "Escape" && isGenerating) {
+        e.preventDefault();
+        setIsGenerating(false);
+        setGenerationProgress("Generation cancelled by user");
+      }
+    },
+    [isGenerating, setIsGenerating, setGenerationProgress],
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       {/* Main Content */}
       <main className="flex-1 pt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -32,11 +62,12 @@ function App() {
               className="text-center mb-12"
             >
               <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-                From <span className="text-gradient">Idea</span> to <span className="text-gradient">Blueprint</span> in Seconds
+                From <span className="text-gradient">Idea</span> to{" "}
+                <span className="text-gradient">Blueprint</span> in Seconds
               </h1>
               <p className="text-lg text-dark-400 max-w-2xl mx-auto">
-                Generate production-ready architectural documentation for your projects. 
-                Powered by AI, designed for autonomous development.
+                Generate production-ready architectural documentation for your
+                projects. Powered by AI, designed for autonomous development.
               </p>
             </motion.div>
           )}
@@ -66,7 +97,7 @@ function App() {
             <motion.div
               layout
               className={`glass-card overflow-hidden transition-all duration-300 ${
-                showEditor ? 'w-1/2' : 'w-full'
+                showEditor ? "w-1/2" : "w-full"
               }`}
             >
               <Wizard />
@@ -87,18 +118,30 @@ function App() {
                     className="absolute top-4 right-4 z-10 btn-ghost"
                     title="Hide editor"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
                     </svg>
                   </button>
-                  <Suspense fallback={
-                    <div className="h-full flex items-center justify-center text-dark-500">
-                      <div className="flex flex-col items-center gap-2">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
-                        <span>Loading Editor...</span>
+                  <Suspense
+                    fallback={
+                      <div className="h-full flex items-center justify-center text-dark-500">
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+                          <span>Loading Editor...</span>
+                        </div>
                       </div>
-                    </div>
-                  }>
+                    }
+                  >
                     <Editor />
                   </Suspense>
                 </motion.div>
@@ -114,8 +157,18 @@ function App() {
               onClick={() => setShowEditor(true)}
               className="fixed bottom-6 right-6 btn-primary shadow-2xl"
             >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                />
               </svg>
               Show Editor
             </motion.button>
