@@ -160,18 +160,47 @@
 
 ### Performance Optimization
 
-#### PERF-001: Component Re-render Optimization
+#### PERF-001: Component Re-render Optimization ✅ COMPLETED
 
-- **Issue**: #40
-- **Assignee**: Unassigned
+- **Issue**: #75 (Updated to Bundle Size Optimization)
+- **Assignee**: Performance Engineer
 - **Priority**: High
-- **Estimated**: 4-6 hours
+- **Status**: Complete
+- **Acceptance**:
+  - [x] Bundle size analysis completed
+  - [x] Lazy loading implemented for Editor
+  - [x] Performance baseline established
+  - [x] Recommendations documented
+
+### Testing Coverage
+
+#### TEST-001: Frontend Test Suite Implementation
+
+- **Issue**: #79
+- **Assignee**: Quality Assurance Engineer
+- **Priority**: Critical
+- **Estimated**: 2-3 days
 - **Dependencies**: None
 - **Acceptance**:
-  - Profile component re-renders
-  - Implement React.memo where needed
-  - Optimize state updates
-  - Measure performance improvements
+  - Add Vitest configuration for frontend testing
+  - Create component tests for: Wizard, Editor, Header, StepIndicator
+  - Add integration tests for: Complete user flow
+  - Set up test coverage thresholds in CI pipeline
+
+### TypeScript Quality
+
+#### TS-001: Controller Type Safety Improvements
+
+- **Issue**: #80
+- **Assignee**: API Specialist
+- **Priority**: High
+- **Estimated**: 2-4 hours
+- **Dependencies**: None
+- **Acceptance**:
+  - Define proper Hono Context types
+  - Update BaseController to use typed Context parameter
+  - Remove all `any` usages in controller layer
+  - Ensure type safety is maintained across all controllers
 
 ### Testing Coverage
 
