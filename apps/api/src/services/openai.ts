@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { withRetry } from "../utils/retry";
+import { withCircuitBreaker } from "../utils/circuitBreaker";
 import { AI_CONFIG } from "../config/constants";
 
 export interface AIConfig {
@@ -33,17 +34,22 @@ export async function* streamCompletion(
   const client = createAIClient(options.config);
   const model = options.config.model || AI_CONFIG.DEFAULT_MODEL;
 
-  const stream = await withRetry(() =>
-    client.chat.completions.create({
-      model,
-      messages: [
-        { role: "system", content: options.systemPrompt },
-        { role: "user", content: options.userPrompt },
-      ],
-      stream: true,
-      temperature: AI_CONFIG.DEFAULT_TEMPERATURE,
-      max_tokens: AI_CONFIG.DEFAULT_MAX_TOKENS,
-    }),
+  const stream = await withCircuitBreaker(
+    () =>
+      withRetry(() =>
+        client.chat.completions.create({
+          model,
+          messages: [
+            { role: "system", content: options.systemPrompt },
+            { role: "user", content: options.userPrompt },
+          ],
+          stream: true,
+          temperature: AI_CONFIG.DEFAULT_TEMPERATURE,
+          max_tokens: AI_CONFIG.DEFAULT_MAX_TOKENS,
+        }),
+      ),
+    "openai-stream",
+    { failureThreshold: 3, resetTimeout: 30000 },
   );
 
   for await (const chunk of stream) {
@@ -63,16 +69,21 @@ export async function generateCompletion(
   const client = createAIClient(options.config);
   const model = options.config.model || AI_CONFIG.DEFAULT_MODEL;
 
-  const response = await withRetry(() =>
-    client.chat.completions.create({
-      model,
-      messages: [
-        { role: "system", content: options.systemPrompt },
-        { role: "user", content: options.userPrompt },
-      ],
-      temperature: AI_CONFIG.DEFAULT_TEMPERATURE,
-      max_tokens: AI_CONFIG.DEFAULT_MAX_TOKENS,
-    }),
+  const response = await withCircuitBreaker(
+    () =>
+      withRetry(() =>
+        client.chat.completions.create({
+          model,
+          messages: [
+            { role: "system", content: options.systemPrompt },
+            { role: "user", content: options.userPrompt },
+          ],
+          temperature: AI_CONFIG.DEFAULT_TEMPERATURE,
+          max_tokens: AI_CONFIG.DEFAULT_MAX_TOKENS,
+        }),
+      ),
+    "openai-completion",
+    { failureThreshold: 3, resetTimeout: 30000 },
   );
 
   return response.choices[0]?.message?.content || "";
