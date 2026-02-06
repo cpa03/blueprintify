@@ -13,7 +13,7 @@ permissions:
 concurrency:
   group: ai-company-${{ github.ref }}
   cancel-in-progress: false
-
+  
 jobs:
 
 # ==================================================
@@ -32,7 +32,8 @@ jobs:
 
       - name: Create / Update Task Plan
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
           opencode run \
             "Baca docs/blueprint.md, docs/roadmap.md, docs/bug.md, docs/feature.md.
@@ -81,7 +82,8 @@ jobs:
 
       - name: Execute Assigned Task
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
           opencode run \
             "Ambil SATU task OPEN dengan Role=${{ matrix.role }} dari docs/task.md.
@@ -105,7 +107,8 @@ jobs:
 
       - name: QA Review
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
           opencode run \
             "Review PR berdasarkan task.md & blueprint.md.
@@ -127,7 +130,8 @@ jobs:
 
       - name: Security Audit
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
           opencode run \
             "Audit PR prioritas HIGH / CRITICAL.
@@ -149,7 +153,8 @@ jobs:
 
       - name: Repo Compliance Check
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
           opencode run \
             "Review semua PR.
@@ -175,7 +180,8 @@ jobs:
 
       - name: Merge Approved PRs
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
           opencode run \
             "Merge PR satu per satu jika:
@@ -200,7 +206,8 @@ jobs:
 
       - name: Knowledge Review
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
           opencode run \
             "Review konsistensi blueprint.md, roadmap.md, task.md dengan hasil merge.
@@ -222,7 +229,8 @@ jobs:
 
       - name: Scan & Report Bugs
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
           opencode run \
             "Scan log, PR, issue.
