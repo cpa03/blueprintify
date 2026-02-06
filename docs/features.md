@@ -5,8 +5,9 @@
 
 ## [FEAT-01] Project Initialization Wizard
 
-**Status**: Ready
+**Status**: In Progress
 **Priority**: P0 (Critical)
+**Progress**: 33% (Step 1 complete, Steps 2-3 in progress)
 
 ### User Story
 
@@ -31,8 +32,9 @@ As a user starting a new project, I want to input my project name, description, 
 
 ## [FEAT-02] Blueprint Generation & Streaming
 
-**Status**: Ready
+**Status**: Complete
 **Priority**: P0 (Critical)
+**Progress**: 100% (API streaming, SSE implementation complete)
 
 ### User Story
 
@@ -58,8 +60,9 @@ As a user, I want to click "Generate" and see a real-time stream of the `bluepri
 
 ## [FEAT-03] Live Split-Pane Editor
 
-**Status**: Draft
+**Status**: In Progress
 **Priority**: P1 (High)
+**Progress**: 0% (Issue #31 assigned and in progress)
 
 ### User Story
 
@@ -95,3 +98,69 @@ As a user, I want to download a `.zip` file of the artifacts, so that I can star
 ### Tasks
 
 - TASK-009
+
+---
+
+## Completed Features
+
+### [FEAT-02] Blueprint Generation & Streaming ✅ COMPLETED
+
+**Completion Date**: 2026-02-05  
+**Issues Resolved**: #32 (API Streaming Integration)
+
+**Delivered Functionality**:
+
+- ✅ Connects to OpenAI/LLM provider
+- ✅ Streams tokens via SSE (Server-Sent Events)
+- ✅ Backend Hono streaming implementation
+- ✅ Frontend EventSource integration
+- ✅ Real-time token streaming during generation
+- ✅ Error handling for connection issues
+- ✅ Generates blueprint.md and task.md
+
+**Technical Implementation**:
+
+- Backend: Hono Streaming with proper error handling
+- Frontend: EventSource API with reconnection logic
+- Type-safe streaming interfaces via Zod schemas
+- Comprehensive test coverage (2 test cases added)
+
+---
+
+## Recent Enhancements (2026-02-06)
+
+### Type Safety & Code Quality ✅ COMPLETED
+
+**Issues Resolved**: #80 (TS-001)
+
+**Improvements**:
+
+- ✅ Fixed all `any` types in controller layer
+- ✅ Added proper Hono Context types with Env bindings
+- ✅ Updated BaseController, GenerateController, RefineController, TasksController
+
+### Configuration Management ✅ COMPLETED
+
+**Enhancements**:
+
+- ✅ Created `apps/web/src/config/constants.ts`
+- ✅ Migrated hardcoded form limits, timeouts, animation durations
+- ✅ Updated StepInfo, StepIndicator, Editor components to use constants
+
+### User Experience Improvements ✅ COMPLETED
+
+**Enhancements**:
+
+- ✅ Added keyboard shortcuts (Ctrl/Cmd+E toggle editor, Escape cancel generation)
+- ✅ Enhanced StepIndicator with proper accessibility labels
+- ✅ Added missing tech stack category icons (ai, testing, other)
+
+### Testing & Error Handling ✅ COMPLETED
+
+**Improvements**:
+
+- ✅ Added tests for tasks route (2 tests)
+- ✅ Added tests for refine route (2 tests)
+- ✅ Total API test coverage: 8 tests across 3 files
+- ✅ Replaced production console.error with proper error handling
+- ✅ Added context-aware error logging for Cloudflare Workers
