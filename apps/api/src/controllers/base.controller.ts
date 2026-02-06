@@ -1,9 +1,10 @@
 import type { AIConfig } from "../services/openai";
 import { createSSEResponse, createStreamFromGenerator } from "../utils/stream";
 import { ConfigurationError } from "../errors";
+import type { Env } from "../types";
 
 export abstract class BaseController {
-  protected createAIConfig(c: any): AIConfig {
+  protected createAIConfig(c: { env: Env }): AIConfig {
     const config: AIConfig = {
       apiKey: c.env.OPENAI_API_KEY,
       baseURL: c.env.OPENAI_BASE_URL,

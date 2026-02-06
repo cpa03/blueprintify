@@ -1,19 +1,14 @@
 import { motion } from "framer-motion";
 import type { WizardStep } from "@blueprint/shared";
 import { useWizardStore } from "../store";
+import { WIZARD_STEPS } from "../config/constants";
 
 const STEPS: {
   key: WizardStep;
   label: string;
   icon: string;
   shortcut: string;
-}[] = [
-  { key: "info", label: "Project Info", icon: "📝", shortcut: "1" },
-  { key: "stack", label: "Tech Stack", icon: "⚙️", shortcut: "2" },
-  { key: "features", label: "Features", icon: "✨", shortcut: "3" },
-  { key: "review", label: "Review", icon: "👀", shortcut: "4" },
-  { key: "generating", label: "Generate", icon: "🚀", shortcut: "5" },
-];
+}[] = [...WIZARD_STEPS];
 
 export function StepIndicator() {
   const currentStep = useWizardStore((s) => s.currentStep);

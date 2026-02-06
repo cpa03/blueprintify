@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useWizardStore } from "../../store";
 import { FormEvent } from "react";
+import { FORM_LIMITS } from "../../config/constants";
 
 export function StepInfo() {
   const projectName = useWizardStore((s) => s.projectName);
@@ -13,9 +14,11 @@ export function StepInfo() {
   const setConstraints = useWizardStore((s) => s.setConstraints);
   const nextStep = useWizardStore((s) => s.nextStep);
 
-  const canProceed = projectName.length >= 1 && description.length >= 10;
+  const canProceed =
+    projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN &&
+    description.length >= FORM_LIMITS.DESCRIPTION.MIN;
   const isDescriptionInvalid =
-    description.length > 0 && description.length < 10;
+    description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN;
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -53,10 +56,12 @@ export function StepInfo() {
             </label>
             <span
               className={`text-xs ${
-                projectName.length > 90 ? "text-accent-pink" : "text-dark-500"
+                projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD
+                  ? "text-accent-pink"
+                  : "text-dark-500"
               }`}
             >
-              {projectName.length}/100
+              {projectName.length}/{FORM_LIMITS.PROJECT_NAME.MAX}
             </span>
           </div>
           <input
@@ -67,14 +72,16 @@ export function StepInfo() {
             onChange={(e) => setProjectName(e.target.value)}
             placeholder="my-awesome-project"
             className="input-field"
-            maxLength={100}
+            maxLength={FORM_LIMITS.PROJECT_NAME.MAX}
             required
             aria-required="true"
             aria-describedby={
-              projectName.length > 90 ? "projectName-warning" : undefined
+              projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD
+                ? "projectName-warning"
+                : undefined
             }
           />
-          {projectName.length > 90 && (
+          {projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD && (
             <p
               id="projectName-warning"
               role="status"
@@ -93,7 +100,7 @@ export function StepInfo() {
               *
             </span>
             <span className="text-dark-500 ml-2">
-              ({description.length}/2000)
+              ({description.length}/{FORM_LIMITS.DESCRIPTION.MAX})
             </span>
           </label>
           <textarea
@@ -103,7 +110,7 @@ export function StepInfo() {
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Describe what your project does, its main purpose, and key functionality..."
             className={`textarea-field h-32 ${isDescriptionInvalid ? "border-accent-pink" : ""}`}
-            maxLength={2000}
+            maxLength={FORM_LIMITS.DESCRIPTION.MAX}
             required
             aria-required="true"
             aria-invalid={isDescriptionInvalid}
