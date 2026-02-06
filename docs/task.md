@@ -44,7 +44,7 @@
 
 #### TASK-101: Review & Generate Form (Wizard Step 3)
 
-- **Issue**: #29
+- **Issue**: #85
 - **Assignee**: Unassigned
 - **Priority**: Critical
 - **Estimated**: 3-4 hours
@@ -113,7 +113,8 @@
 
 #### TASK-009: LocalStorage Implementation
 
-- **Issue**: Not created
+- **Issue**: #81
+- **Assignee**: Unassigned
 - **Priority**: High
 - **Estimated**: 6-8 hours
 - **Dependencies**: M1 complete
@@ -138,7 +139,8 @@
 
 #### TASK-010: ZIP Download Feature
 
-- **Issue**: Not created
+- **Issue**: #72
+- **Assignee**: Unassigned
 - **Priority**: Medium
 - **Estimated**: 8-12 hours
 - **Dependencies**: M2 complete

@@ -21,11 +21,12 @@
 
 1. **Issue #30**: [FRONTEND] Implement Real-time Markdown Rendering Component
 2. **Issue #28**: [FRONTEND] Implement Tech Stack Selection Form (Wizard Step 2)
-3. **Issue #29**: [FRONTEND] Implement Review & Generate Form (Wizard Step 3)
+3. **Issue #85**: [FRONTEND] Implement Review & Generate Form (Wizard Step 3)
 
 #### Parallel Work
 
 - **Issue #31**: [FRONTEND] Implement Split-Pane View (Editor)
+- **Issue #49**: [FRONTEND] Complete Basic Wizard UI Implementation
 
 #### Code Quality (Deferred to post-M1)
 
@@ -41,7 +42,7 @@
 
 #### Planned Features
 
-- **TASK-009**: Implement LocalStorage for blueprint persistence
+- **Issue #81**: [STORAGE] Implement LocalStorage for Blueprint Persistence
 - Manual editing in split-pane view
 - Blueprint refinement workflow
 - Export/import functionality
@@ -59,7 +60,7 @@
 
 #### Planned Features
 
-- **TASK-010**: Download generated projects as ZIP files
+- **Issue #72**: TASK-010: Implement ZIP Download Feature for Generated Projects
 - Share links to blueprints
 - Collaborative editing (future scope)
 - Template library
