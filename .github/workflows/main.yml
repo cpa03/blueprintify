@@ -1,0 +1,225 @@
+name: ai-software-company
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: ai-company-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+
+# ==================================================
+# 1. ARCHITECT — SINGLE SOURCE OF DECISION
+# ==================================================
+  architect:
+    name: Architect (Decision Maker)
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install OpenCode
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+
+      - name: Create / Update Task Plan
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          opencode run \
+            "Baca docs/blueprint.md, docs/roadmap.md, docs/bug.md, docs/feature.md.
+             Evaluasi prioritas.
+             Update docs/task.md (OPEN / PRIORITY / ROLE / SCOPE).
+             Jangan coding." \
+            --agent architect \
+            --share false
+
+# ==================================================
+# 2. DISPATCHER — TASK → ROLE MATRIX
+# ==================================================
+  dispatcher:
+    name: Dispatcher (Task Router)
+    needs: architect
+    runs-on: ubuntu-24.04-arm
+    outputs:
+      matrix: ${{ steps.dispatch.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - id: dispatch
+        run: |
+          roles=$(grep "^Role:" docs/task.md | awk '{print $2}' | sort -u | jq -R -s -c 'split("\n")[:-1]')
+          echo "matrix={\"role\":$roles}" >> $GITHUB_OUTPUT
+
+# ==================================================
+# 3. ENGINEERS — PARALLEL EXECUTION
+# ==================================================
+  engineers:
+    name: Engineer (${{ matrix.role }})
+    needs: dispatcher
+    runs-on: ubuntu-24.04-arm
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.dispatcher.outputs.matrix) }}
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install OpenCode
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+
+      - name: Execute Assigned Task
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          opencode run \
+            "Ambil SATU task OPEN dengan Role=${{ matrix.role }} dari docs/task.md.
+             Kerjakan sesuai scope.
+             Buat branch + PR.
+             Update task ke DONE.
+             Dilarang nambah file / scope." \
+            --agent ${{ matrix.role }} \
+            --share false
+
+# ==================================================
+# 4. QA — QUALITY GATE
+# ==================================================
+  qa:
+    name: QA Gate
+    needs: engineers
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: QA Review
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          opencode run \
+            "Review PR berdasarkan task.md & blueprint.md.
+             Tambah test bila perlu.
+             Update task: QA PASS / FAIL." \
+            --agent qa-engineer \
+            --share false
+
+# ==================================================
+# 5. SECURITY — QUALITY GATE
+# ==================================================
+  security:
+    name: Security Gate
+    needs: engineers
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Security Audit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          opencode run \
+            "Audit PR prioritas HIGH / CRITICAL.
+             Cocokkan dengan blueprint.md.
+             Update task: SECURITY PASS / FAIL." \
+            --agent security-engineer \
+            --share false
+
+# ==================================================
+# 6. REPO GUARDIAN — REPO GOVERNANCE
+# ==================================================
+  repo-guardian:
+    name: Repo Guardian
+    needs: [qa, security]
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Repo Compliance Check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          opencode run \
+            "Review semua PR.
+             Tolak jika:
+             - File di luar scope task
+             - Nambah file/folder tanpa task
+             - Nambah dokumen tanpa izin Architect
+             Rujuk docs/repo-rules.md.
+             Comment jika reject." \
+            --agent repo-guardian \
+            --share false
+
+# ==================================================
+# 7. INTEGRATOR — MERGE GATE (SINGLE)
+# ==================================================
+  integrator:
+    name: Integrator (Merge Gate)
+    needs: repo-guardian
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Merge Approved PRs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          opencode run \
+            "Merge PR satu per satu jika:
+             - Ada Task ID
+             - QA PASS
+             - SECURITY PASS (jika ada)
+             - Repo Guardian OK
+             Jika gagal, comment." \
+            --agent integrator \
+            --share false
+
+# ==================================================
+# 8. KNOWLEDGE STEWARD — DOCUMENT DRIFT CONTROL
+# ==================================================
+  knowledge-steward:
+    name: Knowledge Steward
+    needs: integrator
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Knowledge Review
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          opencode run \
+            "Review konsistensi blueprint.md, roadmap.md, task.md dengan hasil merge.
+             Catat drift / rekomendasi ke docs/knowledge-review.md.
+             Jangan coding." \
+            --agent knowledge-steward \
+            --share false
+
+# ==================================================
+# 9. RELIABILITY — OBSERVER ONLY
+# ==================================================
+  reliability:
+    name: Reliability Observer
+    needs: knowledge-steward
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Scan & Report Bugs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          opencode run \
+            "Scan log, PR, issue.
+             Catat bug baru ke docs/bug.md.
+             Jangan fix." \
+            --agent reliability-engineer \
+            --share false
