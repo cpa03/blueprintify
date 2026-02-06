@@ -164,6 +164,26 @@ The system includes reusable skills for common tasks:
 - **Concurrently** - Parallel script execution
 - **Wrangler** - Cloudflare Workers deployment
 
+## 📚 Documentation
+
+### Getting Started
+
+- **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute to the project
+- **[Development Workflow](./docs/development-workflow.md)** - Complete development process overview
+- **[Code Style Guidelines](./docs/code-style-guidelines.md)** - Coding standards and best practices
+
+### Development Resources
+
+- **[Testing Procedures](./docs/testing-procedures.md)** - Testing standards, tools, and guidelines
+- **[Release Process](./docs/release-process.md)** - Release and deployment procedures
+- **[AI Agent Usage Guide](./docs/ai-agent-usage-guide.md)** - Working with the AI agent system
+
+### Project Documentation
+
+- **[Technical Findings](./docs/findings.md)** - Technical feedback and improvement logs
+- **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
+- **[Task Management](./docs/task.md)** - Current development tasks and priorities
+
 ## 📝 License
 
 MIT © 2024
