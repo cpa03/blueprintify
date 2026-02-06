@@ -47,40 +47,38 @@ jobs:
 # ==================================================
 # 2. DISPATCHER — TASK → ROLE MATRIX
 # ==================================================
- dispatcher:
-  needs: architect
-  if: needs.architect.outputs.has_task == 'true'
-  runs-on: ubuntu-24.04
-  outputs:
-    matrix: ${{ steps.read.outputs.matrix }}
-  steps:
-    - uses: actions/checkout@v5
-
-    - name: Dispatch Tasks
-      run: |
-        opencode run \
-          "Baca docs/task.md.
-           Ambil task OPEN prioritas HIGH/MEDIUM.
-           Buat file docs/dispatch.json berisi role unik.
-           Jangan coding." \
-          --agent dispatcher \
-          --model iflowcn/glm-4.6 \
-          --share false
-
-    - name: Commit Dispatch Plan
-      run: |
-        if [[ -n "$(git status --porcelain)" ]]; then
-          git config user.name "dispatcher-ai"
-          git config user.email "dispatcher@bot.local"
-          git add docs/dispatch.json
-          git commit -m "dispatcher: build execution matrix"
-          git push
-        fi
-
-    - id: read
-      run: |
-        matrix=$(cat docs/dispatch.json)
-        echo "matrix=$matrix" >> $GITHUB_OUTPUT
+  dispatcher:
+    needs: architect
+    runs-on: ubuntu-24.04-arm
+    outputs:
+      matrix: ${{ steps.read.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v5  
+      - name: Dispatch Tasks
+        run: |
+          opencode run \
+            "Baca docs/task.md.
+             Ambil task OPEN prioritas HIGH/MEDIUM.
+             Buat file docs/dispatch.json berisi role unik.
+             Jangan coding." \
+            --agent dispatcher \
+            --model iflowcn/glm-4.6 \
+            --share false
+  
+      - name: Commit Dispatch Plan
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name "dispatcher-ai"
+            git config user.email "dispatcher@bot.local"
+            git add docs/dispatch.json
+            git commit -m "dispatcher: build execution matrix"
+            git push
+          fi
+  
+      - id: read
+        run: |
+          matrix=$(cat docs/dispatch.json)
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
 # ==================================================
 # 3. ENGINEERS — PARALLEL EXECUTION
