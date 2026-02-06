@@ -1,1 +1,93 @@
-{"dispatch": {"role": "Frontend Wizard Specialist", "version": "2.0.0", "timestamp": "2026-02-06T12:34:07Z", "dispatch_id": "dispatch-20250206-001"}, "selectedTask": {"id": "TASK-006", "title": "Tech Stack Selection Form (Wizard Step 2)", "priority": "Critical", "issue": "#28", "assignee": "Unassigned", "estimatedHours": "4-6", "dependencies": ["STEP-001"], "acceptance": ["Multi-select interface for tech stack", "Integration with shared schemas", "Form validation with error handling"], "milestone": "M1: Foundation & Core Loop"}, "roleCapabilities": {"specialization": "Wizard Interface Development", "technical_expertise": ["React functional components with hooks", "Complex form state management", "Multi-select UI patterns", "Search and filter implementations", "Form validation with error states", "Responsive wizard flows"], "preferred_tools": ["React Context/Zustand for state", "Tailwind CSS for styling", "Framer Motion for animations", "Zod for schema validation", "Radix UI for accessibility"]}, "taskContext": {"component_name": "TechStackSelection", "wizard_step": "Step 2 of 3", "integration_points": ["wizardStore (Zustand)", "shared schemas (packages/shared)", "StepIndicator component", "WizardContainer component"], "key_features": ["Tech stack categorization", "Multi-select with search", "Visual selection indicators", "Accessibility compliance"]}, "collaboration": {"with": ["Frontend Engineer", "Software Architect"], "frequency": "Daily standups, PR reviews", "escalation": "Issues with schema integration → Software Architect"}}
+{
+  "dispatch": {
+    "role": "Frontend UI Engineer",
+    "version": "3.0.0",
+    "timestamp": "2026-02-06T18:35:33Z",
+    "dispatch_id": "dispatch-20250206-002"
+  },
+  "selectedTask": {
+    "id": "TASK-008",
+    "title": "Real-time Markdown Rendering",
+    "priority": "Critical",
+    "issue": "#30",
+    "assignee": "Unassigned",
+    "estimatedHours": "4-5",
+    "dependencies": ["STEP-001"],
+    "acceptance": [
+      "Parse markdown to HTML",
+      "Syntax highlighting for code blocks",
+      "Real-time updates during generation"
+    ],
+    "milestone": "M1: Foundation & Core Loop"
+  },
+  "roleCapabilities": {
+    "specialization": "Real-time Rendering Systems",
+    "technical_expertise": [
+      "React markdown libraries",
+      "Syntax highlighting integration",
+      "SSE (Server-Sent Events) handling",
+      "Real-time UI updates",
+      "Performance optimization for live content",
+      "Code block highlighting"
+    ],
+    "preferred_tools": [
+      "React Markdown",
+      "Prism.js/Highlight.js",
+      "Zustand for streaming state",
+      "Framer Motion for content transitions",
+      "Custom React hooks for streaming"
+    ]
+  },
+  "taskContext": {
+    "component_name": "MarkdownRenderer",
+    "integration_points": [
+      "streaming API endpoint",
+      "CodeMirror editor sync",
+      "Split-pane layout",
+      "Wizard flow"
+    ],
+    "key_features": [
+      "Incremental rendering",
+      "Scroll position maintenance",
+      "Code syntax highlighting",
+      "Error handling for malformed markdown"
+    ]
+  },
+  "collaboration": {
+    "with": ["Backend Engineer", "Frontend Engineer"],
+    "frequency": "Pair programming sessions",
+    "escalation": "Streaming issues → Backend Engineer"
+  },
+  "priority_tasks": [
+    {
+      "id": "TASK-008",
+      "title": "Real-time Markdown Rendering",
+      "priority": "Critical",
+      "milestone": "M1"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Split-Pane View (Editor)",
+      "priority": "High",
+      "milestone": "M1"
+    },
+    {
+      "id": "TASK-103",
+      "title": "Manual Editing in Split-Pane View",
+      "priority": "High",
+      "milestone": "M2"
+    }
+  ],
+  "constraints": {
+    "must_not": [
+      "Break existing streaming implementation",
+      "Overcomplicate markdown processing",
+      "Neglect performance for large blueprints"
+    ],
+    "must_do": [
+      "Maintain scroll position during updates",
+      "Handle streaming errors gracefully",
+      "Ensure accessibility compliance"
+    ]
+  }
+}
