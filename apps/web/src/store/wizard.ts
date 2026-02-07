@@ -1,6 +1,11 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import type { WizardState, WizardStep, TechStackItemType } from '@blueprint/shared';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type {
+  WizardState,
+  WizardStep,
+  TechStackItemType,
+} from "@blueprint/shared";
+import { WIZARD_STEPS } from "../config/constants";
 
 // ===== Wizard Store =====
 interface WizardStore extends WizardState {
@@ -15,6 +20,7 @@ interface WizardStore extends WizardState {
   setTechStack: (items: TechStackItemType[]) => void;
   addFeature: (feature: string) => void;
   removeFeature: (index: number) => void;
+  clearFeatures: () => void;
   setTargetAudience: (audience: string) => void;
   setConstraints: (constraints: string) => void;
   reset: () => void;
@@ -26,16 +32,17 @@ interface WizardStore extends WizardState {
   }) => void;
 }
 
-const STEPS: WizardStep[] = ['info', 'stack', 'features', 'review', 'generating'];
+// Extract step keys from centralized WIZARD_STEPS configuration
+const STEPS: WizardStep[] = WIZARD_STEPS.map((s) => s.key);
 
 const initialState: WizardState = {
-  currentStep: 'info',
-  projectName: '',
-  description: '',
+  currentStep: "info",
+  projectName: "",
+  description: "",
   techStack: [],
   features: [],
-  targetAudience: '',
-  constraints: ''
+  targetAudience: "",
+  constraints: "",
 };
 
 export const useWizardStore = create<WizardStore>()(
@@ -87,6 +94,8 @@ export const useWizardStore = create<WizardStore>()(
         set({ features: get().features.filter((_, i) => i !== index) });
       },
 
+      clearFeatures: () => set({ features: [] }),
+
       setTargetAudience: (targetAudience) => set({ targetAudience }),
       setConstraints: (constraints) => set({ constraints }),
 
@@ -98,20 +107,20 @@ export const useWizardStore = create<WizardStore>()(
           description: template.defaultDescription,
           techStack: template.techStack,
           features: template.features,
-          currentStep: 'review'
+          currentStep: "review",
         });
-      }
+      },
     }),
     {
-      name: 'blueprint-wizard',
+      name: "blueprint-wizard",
       partialize: (state) => ({
         projectName: state.projectName,
         description: state.description,
         techStack: state.techStack,
         features: state.features,
         targetAudience: state.targetAudience,
-        constraints: state.constraints
-      })
-    }
-  )
+        constraints: state.constraints,
+      }),
+    },
+  ),
 );

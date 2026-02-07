@@ -32,6 +32,7 @@ export const ANIMATION = {
   NORMAL: 0.3,
   SLOW: 0.5,
   STAGGER: 0.1,
+  SPINNER_ROTATION: 1,
 } as const;
 
 // Timeouts (in milliseconds)
@@ -39,6 +40,7 @@ export const TIMEOUTS = {
   COPY_FEEDBACK: 2000,
   DEBOUNCE: 300,
   GENERATION_CHECK: 100,
+  TOAST_NOTIFICATION: 1500,
 } as const;
 
 // UI Configuration
@@ -84,3 +86,17 @@ export const EXPORT_CONFIG = {
   ZIP_COMPRESSION_LEVEL: 6,
   COPY_TEXTAREA_OFFSET: -9999,
 } as const;
+
+// Suggested features for quick add
+export const SUGGESTED_FEATURES = [
+  "User authentication",
+  "Database integration",
+  "API endpoints",
+  "Real-time updates",
+  "File uploads",
+  "Search functionality",
+  "Email notifications",
+  "Admin dashboard",
+  "Payment processing",
+  "Analytics tracking",
+] as const;
