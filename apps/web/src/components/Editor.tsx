@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import CodeMirror from "@uiw/react-codemirror";
 import { markdown } from "@codemirror/lang-markdown";
 import { oneDark } from "@codemirror/theme-one-dark";
-import ReactMarkdown from "react-markdown";
+import { MarkdownRenderer } from "./MarkdownRenderer";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
 import { useEditorStore, useWizardStore } from "../store";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
@@ -116,11 +116,11 @@ export function Editor() {
                   viewMode === "split" ? "w-1/2" : "w-full",
                 )}
               >
-                <div className="markdown-content">
-                  <ReactMarkdown>
-                    {currentContent || "*No content yet...*"}
-                  </ReactMarkdown>
-                </div>
+                <MarkdownRenderer
+                  content={currentContent}
+                  isStreaming={isGenerating}
+                  className="markdown-content"
+                />
               </motion.div>
             )}
           </div>
