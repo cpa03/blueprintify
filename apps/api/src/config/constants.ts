@@ -1,8 +1,3 @@
-/**
- * API configuration constants
- */
-
-// AI service configuration
 export const AI_CONFIG = {
   DEFAULT_MODEL: "gpt-4o-mini",
   DEFAULT_TIMEOUT: 60000,
