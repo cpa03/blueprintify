@@ -21,7 +21,8 @@
 
 1. **Issue #30**: [FRONTEND] Implement Real-time Markdown Rendering Component
 2. **Issue #28**: [FRONTEND] Implement Tech Stack Selection Form (Wizard Step 2)
-3. **Issue #97**: TASK-102: Complete Basic Wizard UI Implementation (All Steps)
+3. **Issue #119**: [FRONTEND] Implement Review & Generate Form (Wizard Step 3)
+4. **Issue #97**: TASK-102: Complete Basic Wizard UI Implementation (All Steps)
 
 #### Parallel Work
 

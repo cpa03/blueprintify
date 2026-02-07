@@ -42,6 +42,20 @@
   - Syntax highlighting for code blocks
   - Real-time updates during generation
 
+#### TASK-008-STEP3: Review & Generate Form (Wizard Step 3)
+
+- **Issue**: #119
+- **Assignee**: Unassigned
+- **Priority**: Critical
+- **Estimated**: 3-4 hours
+- **Dependencies**: TASK-006, TASK-008
+- **Acceptance**:
+  - Display project details and tech stack summary
+  - Generate button with loading state
+  - Integration with streaming endpoint
+  - Error handling and progress indication
+  - Transition to split-pane view after generation
+
 #### TASK-102: Complete Basic Wizard UI Implementation (All Steps)
 
 - **Issue**: #97
