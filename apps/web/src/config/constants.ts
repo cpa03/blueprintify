@@ -84,19 +84,3 @@ export const EXPORT_CONFIG = {
   ZIP_COMPRESSION_LEVEL: 6,
   COPY_TEXTAREA_OFFSET: -9999,
 } as const;
-
-// Suggested features for quick-add
-export const SUGGESTED_FEATURES = [
-  "User authentication",
-  "Admin dashboard",
-  "API documentation",
-  "Unit tests",
-  "CI/CD pipeline",
-  "Docker support",
-  "Rate limiting",
-  "Logging & monitoring",
-  "Email notifications",
-  "File uploads",
-  "Search functionality",
-  "Dark mode",
-] as const;

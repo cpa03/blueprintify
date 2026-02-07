@@ -1,81 +1,280 @@
 {
+  "version": "1.0.0",
+  "last_updated": "2026-02-07",
   "agents": [
     {
-      "id": "frontend-wizard-006",
-      "role": "Frontend React Components Specialist",
-      "focus": "Multi-step forms, React components, validation",
+      "id": "tech-stack-wizard-006",
+      "role": "Frontend UX Forms Architect",
+      "focus": "Multi-select interfaces, wizard form validation",
       "priority": "HIGH",
       "assignedTask": "TASK-006",
       "taskTitle": "Tech Stack Selection Form (Wizard Step 2)",
+      "issue": "#28",
+      "estimated": "4-6 hours",
       "skills": [
-        "React",
-        "Zod validation",
-        "Multi-select interfaces",
-        "Component patterns"
+        "React Multi-select Forms",
+        "Zod Schema Integration",
+        "UX Pattern Implementation",
+        "Component Composition"
       ]
     },
     {
-      "id": "splitpane-architect-007",
-      "role": "UI Layout Specialist",
-      "focus": "Split-pane layouts, editor integration, sync mechanisms",
+      "id": "splitpane-specialist-007",
+      "role": "Editor Interface Engineer",
+      "focus": "Resizable layouts, CodeMirror integration, preview synchronization",
       "priority": "HIGH",
       "assignedTask": "TASK-007",
       "taskTitle": "Split-Pane View (Editor)",
+      "issue": "#31",
+      "estimated": "6-8 hours",
       "skills": [
-        "Layout systems",
-        "Editor frameworks",
-        "Resizable layouts",
-        "State sync"
+        "Layout Management",
+        "Editor Frameworks",
+        "State Synchronization",
+        "Responsive Design"
       ]
     },
     {
-      "id": "markdown-renderer-008",
-      "role": "Markdown Processing Specialist",
-      "focus": "Real-time markdown rendering, syntax highlighting, parsing",
+      "id": "markdown-streaming-008",
+      "role": "Real-time Rendering Specialist",
+      "focus": "Markdown parsing, syntax highlighting, streaming updates",
       "priority": "HIGH",
       "assignedTask": "TASK-008",
       "taskTitle": "Real-time Markdown Rendering",
+      "issue": "#30",
+      "estimated": "4-5 hours",
       "skills": [
-        "Markdown parsing",
-        "Syntax highlighting",
-        "Real-time updates",
-        "Performance"
+        "Markdown Processing",
+        "Syntax Highlighting",
+        "Performance Optimization",
+        "Real-time Updates"
       ]
     },
     {
-      "id": "wizard-architect-102",
-      "role": "Complete Systems Integration Specialist",
-      "focus": "End-to-end wizard implementation, validation, navigation",
+      "id": "wizard-integration-102",
+      "role": "System Integration Architect",
+      "focus": "End-to-end wizard implementation, multi-step validation",
       "priority": "HIGH",
       "assignedTask": "TASK-102",
       "taskTitle": "Complete Basic Wizard UI Implementation (All Steps)",
+      "issue": "#97",
+      "estimated": "8-10 hours",
       "skills": [
-        "System integration",
-        "Form validation",
-        "Navigation",
-        "Zod schemas"
+        "System Architecture",
+        "Form Validation",
+        "Navigation Systems",
+        "Zod Integration"
+      ]
+    },
+    {
+      "id": "api-service-architect-REF-06",
+      "role": "Backend Service Layer Specialist",
+      "focus": "Service pattern implementation, controller architecture",
+      "priority": "HIGH",
+      "assignedTask": "TASK-REF-06",
+      "taskTitle": "Move API Route Logic to Controllers",
+      "issue": "#22",
+      "estimated": "4-6 hours",
+      "skills": [
+        "Hono Framework",
+        "Service Layer Patterns",
+        "Route Handler Architecture",
+        "Test Integration"
+      ]
+    },
+    {
+      "id": "storage-specialist-009",
+      "role": "Client-side Persistence Engineer",
+      "focus": "LocalStorage implementation, data serialization, quota management",
+      "priority": "HIGH",
+      "assignedTask": "TASK-009",
+      "taskTitle": "LocalStorage Implementation",
+      "issue": "#89",
+      "estimated": "6-8 hours",
+      "skills": [
+        "LocalStorage API",
+        "Data Serialization",
+        "Storage Quota Management",
+        "Migration Strategies"
+      ]
+    },
+    {
+      "id": "editor-coding-specialist-103",
+      "role": "Interactive Editor Engineer",
+      "focus": "CodeMirror editing, state sync, session persistence",
+      "priority": "HIGH",
+      "assignedTask": "TASK-103",
+      "taskTitle": "Manual Editing in Split-Pane View",
+      "issue": "#99",
+      "estimated": "4-6 hours",
+      "skills": [
+        "CodeMirror Customization",
+        "State Synchronization",
+        "Session Management",
+        "Local Storage Integration"
+      ]
+    },
+    {
+      "id": "refinement-architect-104",
+      "role": "Selective Regeneration Specialist",
+      "focus": "Context-aware refinement, streaming updates",
+      "priority": "HIGH",
+      "assignedTask": "TASK-104",
+      "taskTitle": "Blueprint Refinement Workflow",
+      "issue": "#100",
+      "estimated": "6-8 hours",
+      "skills": [
+        "Context Preservation",
+        "Selective Regeneration",
+        "Streaming Architecture",
+        "State Management"
+      ]
+    },
+    {
+      "id": "data-migration-105",
+      "role": "Import/Export Systems Engineer",
+      "focus": "File handling, validation, schema migration",
+      "priority": "HIGH",
+      "assignedTask": "TASK-105",
+      "taskTitle": "Export/Import Functionality",
+      "issue": "#101",
+      "estimated": "4-5 hours",
+      "skills": [
+        "File Operations",
+        "Schema Validation",
+        "Version Migration",
+        "JSON Processing"
+      ]
+    },
+    {
+      "id": "download-architect-010",
+      "role": "Project Packaging Specialist",
+      "focus": "File structure generation, ZIP packaging, browser downloads",
+      "priority": "HIGH",
+      "assignedTask": "TASK-010",
+      "taskTitle": "ZIP Download Feature",
+      "issue": "#106",
+      "estimated": "8-12 hours",
+      "skills": [
+        "Project Structure Generation",
+        "File Packaging (JSZip)",
+        "Browser Download APIs",
+        "Template Processing"
+      ]
+    },
+    {
+      "id": "frontend-test-architect-TEST-001",
+      "role": "Test Integration Specialist",
+      "focus": "Frontend test suite, component testing, CI integration",
+      "priority": "HIGH",
+      "assignedTask": "TEST-001",
+      "taskTitle": "Frontend Test Suite Implementation",
+      "issue": "#79",
+      "estimated": "2-3 days",
+      "skills": [
+        "Vitest Configuration",
+        "Component Testing",
+        "Integration Testing",
+        "CI Pipeline Setup"
+      ]
+    },
+    {
+      "id": "typescript-specialist-TS-001",
+      "role": "Type Safety Enhancement Engineer",
+      "focus": "Hono Context typing, generic type definitions",
+      "priority": "HIGH",
+      "assignedTask": "TS-001",
+      "taskTitle": "Controller Type Safety Improvements",
+      "issue": "#80",
+      "estimated": "2-4 hours",
+      "skills": [
+        "Hono Framework Typing",
+        "Generic Type Definitions",
+        "TypeScript Strict Mode",
+        "API Type Contracts"
       ]
     }
   ],
   "dispatch_rules": {
     "assignment": {
       "criteria": ["skill_match", "priority", "dependencies"],
-      "max_concurrent_tasks": 2,
-      "escalation": "wizard-architect-102"
+      "max_concurrent_tasks": 4,
+      "escalation": "system-architect"
     },
     "collaboration": {
       "required_for": ["TASK-102"],
-      "partners": ["frontend-wizard-006", "markdown-renderer-008"],
+      "partners": [
+        "tech-stack-wizard-006",
+        "markdown-streaming-008",
+        "splitpane-specialist-007"
+      ],
       "communication": "real-time-sync"
+    },
+    "dependencies": {
+      "TASK-102": ["TASK-006", "TASK-008"],
+      "TASK-103": ["TASK-007", "TASK-009"],
+      "TASK-104": ["TASK-103"],
+      "TASK-105": ["TASK-009"],
+      "TASK-010": ["All M2 tasks"]
     }
   },
   "project_context": {
-    "architecture": "React + TypeScript + Vite",
-    "libraries": ["Zod", "CodeMirror", "Markdown", "Framer Motion"],
+    "architecture": "React + Vite + TypeScript (Frontend) | Hono + Cloudflare Workers (Backend)",
+    "libraries": [
+      "Zod",
+      "CodeMirror",
+      "React Markdown",
+      "Framer Motion",
+      "Vitest",
+      "JSZip"
+    ],
     "constraints": [
-      "No breaking changes",
-      "Maintain performance",
-      "Use existing patterns"
-    ]
+      "Strict TypeScript mode",
+      "No breaking changes to public APIs",
+      "Maintain performance benchmarks",
+      "Follow established architectural patterns",
+      "Component-driven development approach"
+    ],
+    "completed_tasks": [
+      {
+        "id": "TASK-REF-05",
+        "title": "Extract EditorToolbar Component",
+        "completed_by": "UI Layout Specialist",
+        "completed_date": "2026-02-07"
+      },
+      {
+        "id": "TASK-REF-08",
+        "title": "Standardize Error Response Handling",
+        "completed_by": "Backend Service Layer Specialist",
+        "completed_date": "2026-02-07"
+      },
+      {
+        "id": "TASK-011",
+        "title": "API Streaming Integration",
+        "completed_by": "Real-time Rendering Specialist",
+        "completed_date": "2026-02-07"
+      },
+      {
+        "id": "PERF-001",
+        "title": "Component Re-render Optimization",
+        "completed_by": "Performance Optimization Engineer",
+        "completed_date": "2026-02-07"
+      }
+    ],
+    "milestones": {
+      "M1_Foundation": {
+        "status": "ACTIVE",
+        "completion": 30,
+        "critical_path": ["TASK-006", "TASK-008", "TASK-102"]
+      },
+      "M2_Refinement": {
+        "status": "PLANNED",
+        "critical_path": ["TASK-009", "TASK-103", "TASK-104", "TASK-105"]
+      },
+      "M3_Distribution": {
+        "status": "PLANNED",
+        "critical_path": ["TASK-010"]
+      }
+    }
   }
 }
