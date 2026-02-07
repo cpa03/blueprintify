@@ -1,20 +1,30 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
-import { SUGGESTED_FEATURES } from "../../config/constants";
+import {
+  SUGGESTED_FEATURES,
+  FORM_LIMITS,
+  TIMEOUTS,
+} from "../../config/constants";
 
 export function StepFeatures() {
   const [newFeature, setNewFeature] = useState("");
+  const [justAdded, setJustAdded] = useState<string | null>(null);
   const features = useWizardStore((s) => s.features);
   const addFeature = useWizardStore((s) => s.addFeature);
   const removeFeature = useWizardStore((s) => s.removeFeature);
+  const clearFeatures = useWizardStore((s) => s.clearFeatures);
   const nextStep = useWizardStore((s) => s.nextStep);
   const prevStep = useWizardStore((s) => s.prevStep);
 
   const handleAddFeature = () => {
     if (newFeature.trim()) {
-      addFeature(newFeature.trim());
+      const trimmed = newFeature.trim();
+      addFeature(trimmed);
       setNewFeature("");
+      // Show visual feedback
+      setJustAdded(trimmed);
+      setTimeout(() => setJustAdded(null), TIMEOUTS.TOAST_NOTIFICATION);
     }
   };
 
@@ -26,9 +36,11 @@ export function StepFeatures() {
   };
 
   const isInFeatures = (feature: string) =>
-    features.some((f) => f.toLowerCase() === feature.toLowerCase());
+    features.some((f: string) => f.toLowerCase() === feature.toLowerCase());
 
-  const suggestedNotAdded = SUGGESTED_FEATURES.filter((f) => !isInFeatures(f));
+  const suggestedNotAdded = SUGGESTED_FEATURES.filter(
+    (f: string) => !isInFeatures(f),
+  );
 
   return (
     <motion.div
@@ -62,23 +74,33 @@ export function StepFeatures() {
             <label htmlFor="feature-input" className="label mb-0">
               Add a feature
             </label>
-            <span className="text-xs text-dark-500 flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-dark-400 font-mono text-xs">
-                Enter
-              </kbd>
-              to add
-            </span>
+            <div className="flex items-center gap-3">
+              <span
+                className={`text-xs ${newFeature.length > FORM_LIMITS.FEATURE.MAX ? "text-accent-pink" : "text-dark-500"}`}
+              >
+                {newFeature.length}/{FORM_LIMITS.FEATURE.MAX}
+              </span>
+              <span className="text-xs text-dark-500 flex items-center gap-1">
+                <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-dark-400 font-mono text-xs">
+                  Enter
+                </kbd>
+                to add
+              </span>
+            </div>
           </div>
           <div className="flex gap-2">
             <input
               id="feature-input"
               type="text"
               value={newFeature}
-              onChange={(e) => setNewFeature(e.target.value)}
+              onChange={(e) =>
+                setNewFeature(e.target.value.slice(0, FORM_LIMITS.FEATURE.MAX))
+              }
               onKeyDown={handleKeyDown}
               placeholder="e.g., Real-time notifications"
-              className="input-field flex-1"
+              className={`input-field flex-1 ${newFeature.length >= FORM_LIMITS.FEATURE.MAX ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20" : ""}`}
               aria-label="New feature name"
+              maxLength={FORM_LIMITS.FEATURE.MAX}
             />
             <button
               onClick={handleAddFeature}
@@ -107,9 +129,31 @@ export function StepFeatures() {
         {/* Added features */}
         {features.length > 0 && (
           <div>
-            <label className="label" id="added-features-label">
-              Your features ({features.length})
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="label mb-0" id="added-features-label">
+                Your features ({features.length})
+              </label>
+              <button
+                onClick={clearFeatures}
+                className="text-xs text-accent-pink hover:text-accent-pink/80 transition-colors flex items-center gap-1"
+                aria-label="Clear all features"
+              >
+                <svg
+                  className="w-3 h-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+                Clear all
+              </button>
+            </div>
             <div
               className="flex flex-wrap gap-2"
               role="list"
@@ -192,6 +236,35 @@ export function StepFeatures() {
           </div>
         )}
       </div>
+
+      {/* Success toast notification */}
+      <AnimatePresence>
+        {justAdded && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.9 }}
+            className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50"
+          >
+            <div className="bg-accent-emerald/90 backdrop-blur-sm text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              <span className="text-sm">Added &ldquo;{justAdded}&rdquo;</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="flex justify-between">
         <button onClick={prevStep} className="btn-secondary">

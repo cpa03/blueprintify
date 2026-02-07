@@ -30,7 +30,11 @@ export function StepGenerating() {
           className="w-24 h-24 rounded-full border-4 border-dark-700"
           style={{ borderTopColor: "rgb(99 102 241)" }}
           animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          transition={{
+            duration: ANIMATION.SPINNER_ROTATION,
+            repeat: Infinity,
+            ease: "linear",
+          }}
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.div

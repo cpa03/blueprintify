@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useWizardStore } from "../../store";
 import { FormEvent, useEffect, useRef } from "react";
-import { FORM_LIMITS } from "../../config/constants";
+import { FORM_LIMITS, ANIMATION } from "../../config/constants";
 
 export function StepInfo() {
   const projectNameInputRef = useRef<HTMLInputElement>(null);
@@ -71,7 +71,7 @@ export function StepInfo() {
                 className="h-full bg-gradient-to-r from-primary-500 to-accent-emerald"
                 initial={{ width: 0 }}
                 animate={{ width: `${formProgress.percentage}%` }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+                transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
               />
             </div>
             <span className="text-dark-400 tabular-nums">
