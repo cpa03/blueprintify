@@ -56,3 +56,22 @@ export const WIZARD_STEPS = [
   { key: "review", label: "Review", icon: "👀", shortcut: "4" },
   { key: "generating", label: "Generate", icon: "🚀", shortcut: "5" },
 ] as const;
+
+// Tech stack category icons
+export const CATEGORY_ICONS: Record<string, string> = {
+  frontend: "🎨",
+  backend: "⚙️",
+  database: "🗄️",
+  hosting: "☁️",
+  styling: "🖌️",
+  ai: "🤖",
+  testing: "🧪",
+  other: "📦",
+} as const;
+
+// Minimum requirements
+export const MIN_REQUIREMENTS = {
+  TECH_STACK: 1,
+  PROJECT_NAME: 1,
+  DESCRIPTION: 10,
+} as const;

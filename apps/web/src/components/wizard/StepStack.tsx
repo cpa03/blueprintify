@@ -1,18 +1,8 @@
 import { motion } from "framer-motion";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
+import { CATEGORY_ICONS, MIN_REQUIREMENTS } from "../../config/constants";
 import clsx from "clsx";
-
-const CATEGORY_ICONS: Record<string, string> = {
-  frontend: "🎨",
-  backend: "⚙️",
-  database: "🗄️",
-  hosting: "☁️",
-  styling: "🖌️",
-  ai: "🤖",
-  testing: "🧪",
-  other: "📦",
-};
 
 export function StepStack() {
   const techStack = useWizardStore((s) => s.techStack);
@@ -23,7 +13,7 @@ export function StepStack() {
 
   const categories = Object.entries(TECH_STACK_OPTIONS);
 
-  const canProceed = techStack.length >= 1;
+  const canProceed = techStack.length >= MIN_REQUIREMENTS.TECH_STACK;
 
   const isSelected = (name: string) => techStack.some((t) => t.name === name);
 

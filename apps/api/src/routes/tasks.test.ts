@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { Hono } from "hono";
 import tasksRoute from "./tasks";
 import { errorHandler } from "../middleware/errorHandler";
+import { MOCK_ENV } from "../test-utils";
 
 // Mock the services
 vi.mock("../services/openai", () => ({
@@ -19,12 +20,6 @@ describe("POST /tasks", () => {
   const app = new Hono<{ Bindings: { OPENAI_API_KEY: string } }>();
   app.route("/", tasksRoute);
   app.onError(errorHandler);
-
-  const MOCK_ENV = {
-    OPENAI_API_KEY: "test-key",
-    OPENAI_BASE_URL: "https://api.openai.com/v1",
-    OPENAI_MODEL: "gpt-4",
-  };
 
   it("should return 400 for invalid input (missing blueprint)", async () => {
     const res = await app.request(
