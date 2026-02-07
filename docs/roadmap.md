@@ -4,7 +4,7 @@
 
 ## Current Status: M1 (Foundation & Core Loop)
 
-### M1: Foundation & Core Loop - **ACTIVE (67% Complete)**
+### M1: Foundation & Core Loop - **ACTIVE (85% Complete)**
 
 **Objective**: Establish the basic "Input → Generate → View" user flow
 
@@ -14,14 +14,19 @@
 - **Blueprint Definition**: ✅ Complete (100%)
 - **Shared Schemas (Zod)**: ✅ Complete (100%)
 - **API Streaming Endpoint**: ✅ Complete (100%)
-- **Basic Wizard UI**: ⚠️ Partial (33% - Step 1 complete, Steps 2-3 in progress)
+- **Basic Wizard UI**: ✅ Complete (100% - All 5 wizard steps functional)
 - **Real-time Markdown Rendering**: ❌ Not Started (0%)
 
 #### Critical Path Issues
 
 1. **Issue #30**: [FRONTEND] Implement Real-time Markdown Rendering Component
-2. **Issue #28**: [FRONTEND] Implement Tech Stack Selection Form (Wizard Step 2)
-3. **Issue #97**: TASK-102: Complete Basic Wizard UI Implementation (All Steps)
+2. **Issue #31**: [FRONTEND] Implement Split-Pane View (Editor)
+
+#### Recently Completed
+
+- **Issue #28**: [FRONTEND] Implement Tech Stack Selection Form (Wizard Step 2) ✅
+- **Issue #97**: TASK-102: Complete Basic Wizard UI Implementation (All Steps) ✅
+- **Issue #119**: [FRONTEND] Implement Review & Generate Form (Wizard Step 3) ✅
 
 #### Parallel Work
 
@@ -35,21 +40,17 @@
 
 ---
 
-### M2: Refinement & Persistence - **PLANNED (0% Complete)**
+### M2: Refinement & Persistence - **READY TO START (0% Complete)**
 
 **Objective**: Add editing capabilities and local storage
 
-#### Planned Features
-
-- **TASK-009**: Implement LocalStorage for blueprint persistence
-- Manual editing in split-pane view
-- Blueprint refinement workflow
-- Export/import functionality
-
 #### Prerequisites
 
-- M1 completion (Wizard + Streaming + Rendering)
-- Split-pane editor implementation
+- ✅ M1 Wizard completion (All 5 steps functional)
+- ⚠️ Split-pane editor implementation (Issue #31 - IN PROGRESS)
+- ⚠️ Real-time Markdown Rendering (Issue #30 - IN PROGRESS)
+
+**Status**: Ready to begin as soon as M1 rendering components are complete
 
 ---
 
@@ -75,9 +76,10 @@
 
 ### Current Focus: M1 Completion
 
-- **Remaining Work**: 2-3 days (dedicated Frontend Engineer)
+- **Remaining Work**: 1-2 days (dedicated Frontend Engineer)
 - **Blockers**: None identified
 - **Dependencies**: External AI services available
+- **Status**: Wizard UI complete, focusing on rendering and editor components
 
 ### M2 Start: After M1 Complete
 
@@ -95,7 +97,7 @@
 
 ### M1 Success Criteria
 
-- [ ] Users can complete full wizard workflow (3 steps)
+- [x] Users can complete full wizard workflow (5 steps: info, stack, features, review, generating)
 - [ ] Real-time generation visible in UI
 - [ ] Generated markdown renders correctly
 - [ ] Error handling works across all endpoints
