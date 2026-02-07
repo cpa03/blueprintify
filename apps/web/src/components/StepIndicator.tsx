@@ -58,6 +58,30 @@ export function StepIndicator() {
               `}
               whileHover={isClickable ? { scale: 1.02 } : undefined}
               whileTap={isClickable ? { scale: 0.98 } : undefined}
+              initial={
+                isActive
+                  ? { boxShadow: "0 0 0 0 rgba(99, 102, 241, 0.4)" }
+                  : false
+              }
+              animate={
+                isActive
+                  ? {
+                      boxShadow: [
+                        "0 0 0 0 rgba(99, 102, 241, 0.4)",
+                        "0 0 0 8px rgba(99, 102, 241, 0)",
+                      ],
+                    }
+                  : undefined
+              }
+              transition={
+                isActive
+                  ? {
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "easeOut",
+                    }
+                  : undefined
+              }
             >
               <span>{step.icon}</span>
               <span className="text-sm font-medium hidden sm:inline">

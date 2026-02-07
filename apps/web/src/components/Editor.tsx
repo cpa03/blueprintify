@@ -22,6 +22,7 @@ export function Editor() {
   const setBlueprintContent = useEditorStore((s) => s.setBlueprintContent);
   const setTasksContent = useEditorStore((s) => s.setTasksContent);
   const isGenerating = useEditorStore((s) => s.isGenerating);
+  const isDirty = useEditorStore((s) => s.isDirty);
   const projectName = useWizardStore((s) => s.projectName);
   const resetWizard = useWizardStore((s) => s.reset);
   const resetEditor = useEditorStore((s) => s.reset);
@@ -79,6 +80,7 @@ export function Editor() {
         onNew={handleNewProject}
         hasContent={hasContent}
         copied={copied}
+        isDirty={isDirty}
       />
 
       {/* Editor Content */}

@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { useWizardStore, useEditorStore } from "../store";
 import { generateBlueprint, generateTasks } from "../lib/api";
 import type { BlueprintRequest } from "@blueprint/shared";
+import { RETRY_CONFIG } from "@blueprint/shared";
 
 export function useBlueprintStream() {
   const wizard = useWizardStore();
@@ -65,7 +66,11 @@ export function useBlueprintStream() {
                 );
               },
             },
-            { maxRetries: 3, initialDelay: 1000, backoffFactor: 2 },
+            {
+              maxRetries: RETRY_CONFIG.DEFAULT_RETRIES,
+              initialDelay: RETRY_CONFIG.DEFAULT_INITIAL_DELAY,
+              backoffFactor: RETRY_CONFIG.DEFAULT_BACKOFF_FACTOR,
+            },
           );
         },
         onRetry: (attempt, maxRetries) => {
@@ -74,7 +79,11 @@ export function useBlueprintStream() {
           );
         },
       },
-      { maxRetries: 3, initialDelay: 1000, backoffFactor: 2 },
+      {
+        maxRetries: RETRY_CONFIG.DEFAULT_RETRIES,
+        initialDelay: RETRY_CONFIG.DEFAULT_INITIAL_DELAY,
+        backoffFactor: RETRY_CONFIG.DEFAULT_BACKOFF_FACTOR,
+      },
     );
   }, [wizard, editor]);
 

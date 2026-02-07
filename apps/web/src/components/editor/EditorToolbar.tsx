@@ -12,6 +12,7 @@ interface EditorToolbarProps {
   onNew: () => void;
   hasContent: boolean;
   copied: string | null;
+  isDirty?: boolean;
 }
 
 export function EditorToolbar({
@@ -23,7 +24,20 @@ export function EditorToolbar({
   onNew,
   hasContent,
   copied,
+  isDirty = false,
 }: EditorToolbarProps) {
+  const handleNew = () => {
+    if (isDirty) {
+      const confirmed = window.confirm(
+        "You have unsaved changes. Are you sure you want to start a new project?",
+      );
+      if (confirmed) {
+        onNew();
+      }
+    } else {
+      onNew();
+    }
+  };
   return (
     <div className="flex items-center gap-2">
       {/* View mode toggle */}
@@ -74,10 +88,16 @@ export function EditorToolbar({
 
       {/* New Project */}
       <button
-        onClick={onNew}
+        onClick={handleNew}
         className="btn-ghost text-sm"
-        title="Start new project"
-        aria-label="Start new project"
+        title={
+          isDirty ? "Start new project (unsaved changes)" : "Start new project"
+        }
+        aria-label={
+          isDirty
+            ? "Start new project - you have unsaved changes"
+            : "Start new project"
+        }
       >
         🔄 New
       </button>
