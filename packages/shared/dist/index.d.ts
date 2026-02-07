@@ -3,3 +3,4 @@ export type { TechStackCategoryType, TechStackItemType, BlueprintRequest, TaskGe
 export { STARTER_TEMPLATES } from "./templates";
 export { RETRY_CONFIG } from "./config";
 export type { RetryOptions, RetryConfigValues } from "./config";
+export { SUGGESTED_FEATURES } from "./features";

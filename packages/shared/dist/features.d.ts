@@ -1,0 +1,1 @@
+export declare const SUGGESTED_FEATURES: readonly ["User authentication", "Admin dashboard", "API documentation", "Unit tests", "CI/CD pipeline", "Docker support", "Rate limiting", "Logging & monitoring", "Email notifications", "File uploads", "Search functionality", "Dark mode"];

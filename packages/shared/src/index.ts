@@ -1,4 +1,3 @@
-// ===== Zod Schemas =====
 export {
   TechStackCategory,
   TechStackItem,
@@ -11,7 +10,6 @@ export {
   TECH_STACK_OPTIONS,
 } from "./schema";
 
-// ===== TypeScript Types =====
 export type {
   TechStackCategoryType,
   TechStackItemType,
@@ -29,10 +27,10 @@ export type {
   EditorState,
 } from "./types";
 
-// ===== Templates =====
 export { STARTER_TEMPLATES } from "./templates";
 
-// ===== Configuration =====
 export { RETRY_CONFIG } from "./config";
 
 export type { RetryOptions, RetryConfigValues } from "./config";
+
+export { SUGGESTED_FEATURES } from "./features";
