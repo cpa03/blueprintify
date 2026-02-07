@@ -75,3 +75,12 @@ export const MIN_REQUIREMENTS = {
   PROJECT_NAME: 1,
   DESCRIPTION: 10,
 } as const;
+
+// HTTP Status codes for retry logic
+export const RETRYABLE_STATUS_CODES = [408, 429, 500, 502, 503, 504] as const;
+
+// Export configuration
+export const EXPORT_CONFIG = {
+  ZIP_COMPRESSION_LEVEL: 6,
+  COPY_TEXTAREA_OFFSET: -9999,
+} as const;
