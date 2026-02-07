@@ -15,7 +15,11 @@
     "build:api": "npm run build --workspace=apps/api",
     "lint": "eslint . --ext .ts,.tsx",
     "test:api": "npm run test --workspace=apps/api",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:migrate": "node scripts/migrate.ts",
+    "db:init": "node scripts/migrate.ts init",
+    "db:status": "node scripts/migrate.ts status",
+    "db:rollback": "node scripts/migrate.ts rollback"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
