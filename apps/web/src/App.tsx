@@ -5,7 +5,9 @@ import { TemplateGrid } from "./components/TemplateGrid";
 import { StepIndicator } from "./components/StepIndicator";
 import { Wizard } from "./components/Wizard";
 import { ToastContainer } from "./components/Toast";
+import { SaveStatusIndicator } from "./components/SaveStatus";
 import { useWizardStore, useEditorStore } from "./store";
+import { useSaveStatus } from "./hooks/useSaveStatus";
 
 // Lazy load Editor to reduce initial bundle size
 const Editor = lazy(() =>
@@ -21,6 +23,7 @@ function App() {
   const isGenerating = useEditorStore((s) => s.isGenerating);
   const setIsGenerating = useEditorStore((s) => s.setIsGenerating);
   const setGenerationProgress = useEditorStore((s) => s.setGenerationProgress);
+  const { status: saveStatus } = useSaveStatus();
 
   // Show templates only on first step with no content
   const showTemplates = currentStep === "info" && !hasContent;
@@ -181,7 +184,10 @@ function App() {
       <footer className="border-t border-dark-800 py-6">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between text-sm text-dark-500">
           <p>Built with ⚡ Cloudflare Workers + React</p>
-          <p>© 2024 Blueprint Generator</p>
+          <div className="flex items-center gap-4">
+            <SaveStatusIndicator status={saveStatus} />
+            <p>© 2024 Blueprint Generator</p>
+          </div>
         </div>
       </footer>
 

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { TOAST } from "../config/constants";
 
 export type ToastType = "success" | "error" | "info" | "warning";
 
@@ -19,7 +20,7 @@ interface NotificationStore {
 export const useNotificationStore = create<NotificationStore>((set) => ({
   toasts: [],
 
-  addToast: (message, type = "info", duration = 3000) => {
+  addToast: (message, type = "info", duration = TOAST.DEFAULT_DURATION) => {
     const id = Math.random().toString(36).substring(2, 9);
     set((state) => ({
       toasts: [...state.toasts, { id, message, type, duration }],

@@ -1,9 +1,3 @@
-/**
- * Frontend configuration constants
- * Centralized location for all hardcoded values
- */
-
-// Form validation limits
 export const FORM_LIMITS = {
   PROJECT_NAME: {
     MIN: 1,
@@ -26,7 +20,6 @@ export const FORM_LIMITS = {
   },
 } as const;
 
-// Animation durations (in seconds)
 export const ANIMATION = {
   FAST: 0.2,
   NORMAL: 0.3,
@@ -34,21 +27,26 @@ export const ANIMATION = {
   STAGGER: 0.1,
 } as const;
 
-// Timeouts (in milliseconds)
 export const TIMEOUTS = {
   COPY_FEEDBACK: 2000,
   DEBOUNCE: 300,
   GENERATION_CHECK: 100,
+  SAVE_INDICATOR_DISPLAY: 2000,
+  SAVE_TRANSITION_DELAY: 300,
 } as const;
 
-// UI Configuration
+export const TOAST = {
+  DEFAULT_DURATION: 3000,
+  MIN_DURATION: 1000,
+  MAX_DURATION: 10000,
+} as const;
+
 export const UI = {
   MAX_TECH_STACK_SELECTION: 10,
   TOOLTIP_DELAY: 500,
   SCROLL_OFFSET: 100,
 } as const;
 
-// Step configuration
 export const WIZARD_STEPS = [
   { key: "info", label: "Project Info", icon: "📝", shortcut: "1" },
   { key: "stack", label: "Tech Stack", icon: "⚙️", shortcut: "2" },
