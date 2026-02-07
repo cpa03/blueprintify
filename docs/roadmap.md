@@ -4,7 +4,7 @@
 
 ## Current Status: M1 (Foundation & Core Loop)
 
-### M1: Foundation & Core Loop - **ACTIVE (85% Complete)**
+### M1: Foundation & Core Loop - **ACTIVE (90% Complete)**
 
 **Objective**: Establish the basic "Input → Generate → View" user flow
 
@@ -27,6 +27,7 @@
 - **Issue #28**: [FRONTEND] Implement Tech Stack Selection Form (Wizard Step 2) ✅
 - **Issue #97**: TASK-102: Complete Basic Wizard UI Implementation (All Steps) ✅
 - **Issue #119**: [FRONTEND] Implement Review & Generate Form (Wizard Step 3) ✅
+- **Issue #136**: Update M1 Progress - Wizard Step 3 Completed ✅
 
 #### Parallel Work
 

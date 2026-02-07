@@ -10,15 +10,7 @@
 
 ## Processed Findings
 
-The following completed work has been moved to `docs/features.md`:
-
-### ✅ M1 Wizard Implementation Complete
-
-- Issue #119: Wizard Step 3 (Review & Generate Form) - COMPLETED
-- Issue #97: Complete Wizard UI Implementation - COMPLETED
-- Issue #28: Tech Stack Selection Form - COMPLETED
-
-All wizard functionality is now production-ready and documented in the completed features section.
+All findings have been processed and moved to appropriate documentation files.
 
 ---
 
