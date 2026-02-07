@@ -4,7 +4,7 @@
 
 ## Current Status: M1 (Foundation & Core Loop)
 
-### M1: Foundation & Core Loop - **ACTIVE (90% Complete)**
+### M1: Foundation & Core Loop - **ACTIVE (85% Complete)**
 
 **Objective**: Establish the basic "Input → Generate → View" user flow
 
@@ -15,7 +15,7 @@
 - **Shared Schemas (Zod)**: ✅ Complete (100%)
 - **API Streaming Endpoint**: ✅ Complete (100%)
 - **Basic Wizard UI**: ✅ Complete (100% - All 5 wizard steps functional)
-- **Real-time Markdown Rendering**: ❌ Not Started (0%)
+- **Real-time Markdown Rendering**: ⚠️ In Progress (Issue #30)
 
 #### Critical Path Issues
 
@@ -31,7 +31,8 @@
 
 #### Parallel Work
 
-- **Issue #31**: [FRONTEND] Implement Split-Pane View (Editor)
+- **Issue #31**: [FRONTEND] Implement Split-Pane View (Editor) - IN PROGRESS
+- **Issue #30**: [FRONTEND] Implement Real-time Markdown Rendering - IN PROGRESS
 
 #### Code Quality (Deferred to post-M1)
 

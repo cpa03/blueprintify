@@ -89,10 +89,10 @@ As a user, I want to click "Generate" and see a real-time stream of the `bluepri
 
 ### Acceptance Criteria
 
-- [ ] Connects to OpenAI/LLM provider.
-- [ ] Streams tokens via SSE (Server-Sent Events).
-- [ ] Renders Markdown in real-time.
-- [ ] Generates `blueprint.md` and `task.md`.
+- [x] Connects to OpenAI/LLM provider.
+- [x] Streams tokens via SSE (Server-Sent Events).
+- [x] Renders Markdown in real-time.
+- [x] Generates `blueprint.md` and `task.md`.
 
 ### Technical Notes
 
@@ -211,3 +211,9 @@ As a user, I want to download a `.zip` file of the artifacts, so that I can star
 - ✅ Total API test coverage: 8 tests across 3 files
 - ✅ Replaced production console.error with proper error handling
 - ✅ Added context-aware error logging for Cloudflare Workers
+
+### CI Stability 🔴 IN PROGRESS
+
+**Issues Created**: #141 (TASK-M1-001: Ensure All CI Tests Passing for M1 Completion)
+
+**Status**: Investigation needed for intermittent CI workflow failures to meet M1 completion criteria.
