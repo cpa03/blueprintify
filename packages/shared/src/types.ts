@@ -11,6 +11,8 @@ import {
   TaskStatusSchema,
   TaskPrioritySchema,
   TaskItemSchema,
+  BlueprintExportSchema,
+  BlueprintImportSchema,
 } from "./schema";
 
 // ===== Inferred Types from Zod Schemas =====
@@ -25,6 +27,10 @@ export type GenerationResult = z.infer<typeof GenerationResultSchema>;
 export type TaskStatus = z.infer<typeof TaskStatusSchema>;
 export type TaskPriority = z.infer<typeof TaskPrioritySchema>;
 export type TaskItem = z.infer<typeof TaskItemSchema>;
+
+// ===== Export/Import Types =====
+export type BlueprintExport = z.infer<typeof BlueprintExportSchema>;
+export type BlueprintImport = z.infer<typeof BlueprintImportSchema>;
 
 // ===== Wizard Step Types =====
 export type WizardStep =

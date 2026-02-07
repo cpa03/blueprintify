@@ -135,6 +135,32 @@ export const SuccessResponseSchema = z.object({
   data: z.unknown(),
 });
 
+// ===== Export/Import Schemas =====
+export const BlueprintExportSchema = z.object({
+  version: z.string().default("1.0.0"),
+  exportedAt: z.string(),
+  wizardState: z.object({
+    projectName: z.string(),
+    description: z.string(),
+    techStack: z.array(TechStackItem),
+    features: z.array(z.string()),
+    targetAudience: z.string().optional(),
+    constraints: z.string().optional(),
+  }),
+  generatedContent: z.object({
+    blueprint: z.string().optional(),
+    tasks: z.string().optional(),
+  }),
+  metadata: z
+    .object({
+      exportedBy: z.string().optional(),
+      generatorVersion: z.string().optional(),
+    })
+    .optional(),
+});
+
+export const BlueprintImportSchema = BlueprintExportSchema;
+
 // ===== Predefined Tech Stack Options =====
 export const TECH_STACK_OPTIONS = {
   frontend: [

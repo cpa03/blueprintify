@@ -1,5 +1,12 @@
 import JSZip from "jszip";
 import { EXPORT_CONFIG } from "../config/constants";
+import type { BlueprintExport } from "@blueprint/shared";
+import {
+  BlueprintExportSchema,
+  BlueprintImportSchema,
+} from "@blueprint/shared";
+import { useWizardStore } from "../store/wizard";
+import { useEditorStore } from "../store/editor";
 
 interface ExportFiles {
   blueprint: string;
@@ -95,4 +102,144 @@ export async function copyToClipboard(text: string): Promise<boolean> {
  */
 export function formatForIDE(content: string): string {
   return content.replace(/\r\n/g, "\n").replace(/\r/g, "\n").trim();
+}
+
+// ===== Export/Import Functionality =====
+
+/**
+ * Export current blueprint state as JSON
+ */
+export async function exportBlueprintAsJSON(): Promise<void> {
+  const wizardState = useWizardStore.getState();
+  const editorState = useEditorStore.getState();
+
+  const exportData: BlueprintExport = {
+    version: "1.0.0",
+    exportedAt: new Date().toISOString(),
+    wizardState: {
+      projectName: wizardState.projectName,
+      description: wizardState.description,
+      techStack: wizardState.techStack,
+      features: wizardState.features,
+      targetAudience: wizardState.targetAudience,
+      constraints: wizardState.constraints,
+    },
+    generatedContent: {
+      blueprint: editorState.blueprintContent || undefined,
+      tasks: editorState.tasksContent || undefined,
+    },
+    metadata: {
+      generatorVersion: "1.0.0",
+    },
+  };
+
+  // Validate the export data
+  const validationResult = BlueprintExportSchema.safeParse(exportData);
+  if (!validationResult.success) {
+    throw new Error(`Invalid export data: ${validationResult.error.message}`);
+  }
+
+  // Create and download the JSON file
+  const jsonString = JSON.stringify(exportData, null, 2);
+  const blob = new Blob([jsonString], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${wizardState.projectName.toLowerCase().replace(/\s+/g, "-")}-blueprint.json`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * Import blueprint from JSON file
+ */
+export async function importBlueprintFromJSON(file: File): Promise<void> {
+  try {
+    // Read and parse the JSON file
+    const jsonString = await file.text();
+    const importData = JSON.parse(jsonString);
+
+    // Validate the import data
+    const validationResult = BlueprintImportSchema.safeParse(importData);
+    if (!validationResult.success) {
+      throw new Error(
+        `Invalid blueprint file: ${validationResult.error.message}`,
+      );
+    }
+
+    const validatedData = validationResult.data;
+
+    // Check for version compatibility and handle migration if needed
+    if (validatedData.version !== "1.0.0") {
+      console.warn(
+        `Importing blueprint from version ${validatedData.version}, current version is 1.0.0`,
+      );
+      // TODO: Add migration logic for different versions
+    }
+
+    // Import wizard state
+    const wizardStore = useWizardStore.getState();
+    wizardStore.setProjectName(validatedData.wizardState.projectName);
+    wizardStore.setDescription(validatedData.wizardState.description);
+    wizardStore.setTechStack(validatedData.wizardState.techStack);
+    wizardStore.setTargetAudience(
+      validatedData.wizardState.targetAudience || "",
+    );
+    wizardStore.setConstraints(validatedData.wizardState.constraints || "");
+
+    // Clear existing features and add imported ones
+    wizardStore.reset();
+    wizardStore.setProjectName(validatedData.wizardState.projectName);
+    wizardStore.setDescription(validatedData.wizardState.description);
+    wizardStore.setTechStack(validatedData.wizardState.techStack);
+    wizardStore.setTargetAudience(
+      validatedData.wizardState.targetAudience || "",
+    );
+    wizardStore.setConstraints(validatedData.wizardState.constraints || "");
+
+    // Add features
+    validatedData.wizardState.features.forEach((feature: string) => {
+      wizardStore.addFeature(feature);
+    });
+
+    // Import generated content
+    const editorStore = useEditorStore.getState();
+    if (validatedData.generatedContent.blueprint) {
+      editorStore.setBlueprintContent(validatedData.generatedContent.blueprint);
+    }
+    if (validatedData.generatedContent.tasks) {
+      editorStore.setTasksContent(validatedData.generatedContent.tasks);
+    }
+
+    // Mark as clean since this is imported content
+    editorStore.markClean();
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      throw new Error("Invalid JSON file format");
+    }
+    throw error;
+  }
+}
+
+/**
+ * Validate blueprint file without importing
+ */
+export function validateBlueprintFile(file: File): Promise<boolean> {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const jsonString = e.target?.result as string;
+        const importData = JSON.parse(jsonString);
+        const validationResult = BlueprintImportSchema.safeParse(importData);
+        resolve(validationResult.success);
+      } catch {
+        resolve(false);
+      }
+    };
+    reader.onerror = () => resolve(false);
+    reader.readAsText(file);
+  });
 }

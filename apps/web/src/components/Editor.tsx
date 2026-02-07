@@ -6,7 +6,13 @@ import { oneDark } from "@codemirror/theme-one-dark";
 import ReactMarkdown from "react-markdown";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
 import { useEditorStore, useWizardStore } from "../store";
-import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
+import {
+  exportAsZip,
+  copyToClipboard,
+  formatForIDE,
+  exportBlueprintAsJSON,
+  importBlueprintFromJSON,
+} from "../lib/export";
 import { TIMEOUTS } from "../config/constants";
 import clsx from "clsx";
 
@@ -52,6 +58,30 @@ export function Editor() {
     resetEditor();
   };
 
+  const handleExportJSON = async () => {
+    try {
+      await exportBlueprintAsJSON();
+      alert("Blueprint exported successfully!");
+    } catch (error) {
+      console.error("Failed to export blueprint:", error);
+      alert(
+        `Failed to export blueprint: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
+    }
+  };
+
+  const handleImportJSON = async (file: File) => {
+    try {
+      await importBlueprintFromJSON(file);
+      alert("Blueprint imported successfully!");
+    } catch (error) {
+      console.error("Failed to import blueprint:", error);
+      alert(
+        `Failed to import blueprint: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
+    }
+  };
+
   const hasContent = blueprintContent.length > 0 || tasksContent.length > 0;
 
   return (
@@ -64,6 +94,8 @@ export function Editor() {
         setViewMode={setViewMode}
         onCopy={handleCopy}
         onExport={handleExport}
+        onExportJSON={handleExportJSON}
+        onImportJSON={handleImportJSON}
         onNew={handleNewProject}
         hasContent={hasContent}
         copied={copied}

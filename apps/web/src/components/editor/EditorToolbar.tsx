@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import type { EditorTab } from "@blueprint/shared";
+import { useRef } from "react";
 
 export type ViewMode = "edit" | "preview" | "split";
 
@@ -9,6 +10,8 @@ interface EditorToolbarProps {
   setViewMode: (mode: ViewMode) => void;
   onCopy: () => void;
   onExport: () => void;
+  onExportJSON: () => void;
+  onImportJSON: (file: File) => void;
   onNew: () => void;
   hasContent: boolean;
   copied: string | null;
@@ -20,10 +23,25 @@ export function EditorToolbar({
   setViewMode,
   onCopy,
   onExport,
+  onExportJSON,
+  onImportJSON,
   onNew,
   hasContent,
   copied,
 }: EditorToolbarProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      onImportJSON(file);
+    }
+    // Reset the input value to allow selecting the same file again
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   return (
     <div className="flex items-center gap-2">
       {/* View mode toggle */}
@@ -71,6 +89,36 @@ export function EditorToolbar({
       >
         📦 Export .zip
       </button>
+
+      {/* JSON Export button */}
+      <button
+        onClick={onExportJSON}
+        className="btn-ghost text-sm"
+        title="Export blueprint as JSON"
+        aria-label="Export blueprint as JSON"
+      >
+        📄 Export .json
+      </button>
+
+      {/* JSON Import button */}
+      <button
+        onClick={() => fileInputRef.current?.click()}
+        className="btn-ghost text-sm"
+        title="Import blueprint from JSON"
+        aria-label="Import blueprint from JSON"
+      >
+        📂 Import .json
+      </button>
+
+      {/* Hidden file input for JSON import */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".json"
+        onChange={handleFileSelect}
+        className="hidden"
+        aria-label="Import blueprint file"
+      />
 
       {/* New Project */}
       <button
