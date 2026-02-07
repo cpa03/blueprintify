@@ -34,3 +34,13 @@
 [x] **CRITICAL**: BaseController abstract class exists but NO controllers extend from it - apps/api/src/controllers/base.controller.ts created but GenerateController, RefineController, and TasksController all duplicate the createAIConfig method instead of extending BaseController - Fixed: Made all controllers extend BaseController, removed duplicate code, tests pass
 [x] ESLint not installed again - npm run lint fails with "eslint: not found" - Fixed: dependencies installed, eslint working
 [x] Dependencies need to be reinstalled after main merge - TypeScript cannot find modules (zod, hono, openai, react, etc.) - Fixed: npm install completed
+
+### Console & Logging Issues (NEW - 2026-02-07)
+
+[x] **ISSUE**: console.error in production API code - apps/api/src/middleware/errorHandler.ts:27 - This is acceptable for Cloudflare Workers logging
+[x] **ISSUE**: console.error in frontend hook - apps/web/src/hooks/useBlueprintStream.ts:35 and :54 - Fixed: Removed console.error statements
+[x] **ISSUE**: Overly broad retry logic - apps/api/src/utils/retry.ts:79 - Fixed: Now only retries specific transient network errors (ECONNRESET, ETIMEDOUT, ENOTFOUND, EAI_AGAIN, ECONNREFUSED)
+
+### Browser Console Errors
+
+[ ] No browser console errors detected yet - need to run the app to verify

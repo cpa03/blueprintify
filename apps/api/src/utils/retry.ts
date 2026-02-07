@@ -74,7 +74,13 @@ function isRetryableError(error: unknown): boolean {
     return status === 429 || status >= 500;
   }
 
-  // Network errors often don't have a status but might have a code
-  // Retry connection errors
-  return true;
+  const errorCode = (error as { code?: string }).code;
+  const retryableCodes = [
+    "ECONNRESET",
+    "ETIMEDOUT",
+    "ENOTFOUND",
+    "EAI_AGAIN",
+    "ECONNREFUSED",
+  ];
+  return retryableCodes.includes(errorCode || "");
 }
