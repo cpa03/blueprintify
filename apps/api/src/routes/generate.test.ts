@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeAll, afterAll } from "vitest";
 import { Hono } from "hono";
 import generateRoute from "./generate";
 import { errorHandler } from "../middleware/errorHandler";
@@ -15,6 +15,15 @@ vi.mock("../utils/stream", () => ({
     .fn()
     .mockImplementation(() => new Response("mock-stream")),
 }));
+
+let originalConsoleError: typeof console.error;
+beforeAll(() => {
+  originalConsoleError = console.error;
+  console.error = vi.fn();
+});
+afterAll(() => {
+  console.error = originalConsoleError;
+});
 
 describe("POST /generate", () => {
   const app = new Hono<{ Bindings: { OPENAI_API_KEY: string } }>();
