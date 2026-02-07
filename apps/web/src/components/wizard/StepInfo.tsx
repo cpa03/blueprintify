@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { useWizardStore } from "../../store";
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useRef } from "react";
 import { FORM_LIMITS } from "../../config/constants";
 
 export function StepInfo() {
+  const projectNameInputRef = useRef<HTMLInputElement>(null);
   const projectName = useWizardStore((s) => s.projectName);
   const description = useWizardStore((s) => s.description);
   const targetAudience = useWizardStore((s) => s.targetAudience);
@@ -47,6 +48,10 @@ export function StepInfo() {
       nextStep();
     }
   };
+
+  useEffect(() => {
+    projectNameInputRef.current?.focus();
+  }, []);
 
   return (
     <motion.div
@@ -101,6 +106,7 @@ export function StepInfo() {
             </span>
           </div>
           <input
+            ref={projectNameInputRef}
             id="projectName"
             name="projectName"
             type="text"
