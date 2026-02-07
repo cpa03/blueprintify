@@ -5,6 +5,7 @@ import type {
   StreamChunk,
 } from "@blueprint/shared";
 import { RETRY_CONFIG } from "@blueprint/shared";
+import { RETRYABLE_STATUS_CODES } from "../config/constants";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "/api";
 
@@ -57,10 +58,9 @@ function isRetryableError(error: unknown, response?: Response): boolean {
     return true;
   }
 
-  // HTTP 429 (Too Many Requests), 5xx (Server Errors) are retryable
-  // 408 (Request Timeout) is retryable
-  const retryableStatuses = [408, 429, 500, 502, 503, 504];
-  return retryableStatuses.includes(response.status);
+  return (RETRYABLE_STATUS_CODES as readonly number[]).includes(
+    response.status,
+  );
 }
 
 /**

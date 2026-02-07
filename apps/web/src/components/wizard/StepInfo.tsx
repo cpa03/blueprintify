@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { useWizardStore } from "../../store";
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useRef } from "react";
 import { FORM_LIMITS } from "../../config/constants";
 
 export function StepInfo() {
+  const projectNameInputRef = useRef<HTMLInputElement>(null);
   const projectName = useWizardStore((s) => s.projectName);
   const description = useWizardStore((s) => s.description);
   const targetAudience = useWizardStore((s) => s.targetAudience);
@@ -20,12 +21,37 @@ export function StepInfo() {
   const isDescriptionInvalid =
     description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN;
 
+  const getFormProgress = () => {
+    const requiredFields = [
+      projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN,
+      description.length >= FORM_LIMITS.DESCRIPTION.MIN,
+    ];
+    const optionalFields = [targetAudience.length > 0, constraints.length > 0];
+
+    const completedRequired = requiredFields.filter(Boolean).length;
+    const completedOptional = optionalFields.filter(Boolean).length;
+    const totalFields = requiredFields.length + completedOptional;
+    const completedFields = completedRequired + completedOptional;
+
+    return {
+      completed: completedFields,
+      total: totalFields,
+      percentage: (completedFields / totalFields) * 100,
+    };
+  };
+
+  const formProgress = getFormProgress();
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (canProceed) {
       nextStep();
     }
   };
+
+  useEffect(() => {
+    projectNameInputRef.current?.focus();
+  }, []);
 
   return (
     <motion.div
@@ -35,9 +61,24 @@ export function StepInfo() {
       className="space-y-6"
     >
       <div>
-        <h2 className="text-2xl font-bold text-white mb-2">
-          Tell us about your project
-        </h2>
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-2xl font-bold text-white">
+            Tell us about your project
+          </h2>
+          <div className="flex items-center gap-2 text-sm">
+            <div className="w-24 h-2 bg-dark-700 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-gradient-to-r from-primary-500 to-accent-emerald"
+                initial={{ width: 0 }}
+                animate={{ width: `${formProgress.percentage}%` }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+              />
+            </div>
+            <span className="text-dark-400 tabular-nums">
+              {formProgress.completed}/{formProgress.total}
+            </span>
+          </div>
+        </div>
         <p className="text-dark-400">
           We&apos;ll use this information to generate a tailored architecture
           blueprint.
@@ -65,6 +106,7 @@ export function StepInfo() {
             </span>
           </div>
           <input
+            ref={projectNameInputRef}
             id="projectName"
             name="projectName"
             type="text"

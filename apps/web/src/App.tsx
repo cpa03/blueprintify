@@ -18,8 +18,7 @@ function App() {
     (s) => s.blueprintContent.length > 0 || s.tasksContent.length > 0,
   );
   const isGenerating = useEditorStore((s) => s.isGenerating);
-  const setIsGenerating = useEditorStore((s) => s.setIsGenerating);
-  const setGenerationProgress = useEditorStore((s) => s.setGenerationProgress);
+  const cancelGeneration = useEditorStore((s) => s.cancelGeneration);
 
   // Show templates only on first step with no content
   const showTemplates = currentStep === "info" && !hasContent;
@@ -35,11 +34,10 @@ function App() {
       // Escape to cancel generation
       if (e.key === "Escape" && isGenerating) {
         e.preventDefault();
-        setIsGenerating(false);
-        setGenerationProgress("Generation cancelled by user");
+        cancelGeneration();
       }
     },
-    [isGenerating, setIsGenerating, setGenerationProgress],
+    [isGenerating, cancelGeneration],
   );
 
   useEffect(() => {

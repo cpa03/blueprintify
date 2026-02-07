@@ -25,62 +25,52 @@ export function useBlueprintStream() {
     };
 
     // Generate blueprint
-    await generateBlueprint(
-      request,
-      {
-        onChunk: (chunk) => {
-          editor.appendBlueprintContent(chunk);
-        },
-        onError: (error) => {
-          editor.setGenerationProgress(`Error: ${error}`);
-          editor.setIsGenerating(false);
-        },
-        onDone: async () => {
-          editor.setGenerationProgress(
-            "Blueprint complete. Generating tasks...",
-          );
-
-          // Now generate tasks from the blueprint
-          const blueprint = useEditorStore.getState().blueprintContent;
-
-          await generateTasks(
-            { blueprint, projectName: wizard.projectName },
-            {
-              onChunk: (chunk) => {
-                editor.appendTasksContent(chunk);
-              },
-              onError: (error) => {
-                editor.setGenerationProgress(
-                  `Error generating tasks: ${error}`,
-                );
-                editor.setIsGenerating(false);
-              },
-              onDone: () => {
-                editor.setGenerationProgress("Complete!");
-                editor.setIsGenerating(false);
-              },
-              onRetry: (attempt, maxRetries) => {
-                editor.setGenerationProgress(
-                  `Connection issue, retrying (${attempt}/${maxRetries})...`,
-                );
-              },
-            },
-            { maxRetries: 3, initialDelay: 1000, backoffFactor: 2 },
-          );
-        },
-        onRetry: (attempt, maxRetries) => {
-          editor.setGenerationProgress(
-            `Connection issue, retrying (${attempt}/${maxRetries})...`,
-          );
-        },
+    await generateBlueprint(request, {
+      onChunk: (chunk) => {
+        editor.appendBlueprintContent(chunk);
       },
-      { maxRetries: 3, initialDelay: 1000, backoffFactor: 2 },
-    );
+      onError: (error) => {
+        editor.setGenerationProgress(`Error: ${error}`);
+        editor.setIsGenerating(false);
+      },
+      onDone: async () => {
+        editor.setGenerationProgress("Blueprint complete. Generating tasks...");
+
+        // Now generate tasks from the blueprint
+        const blueprint = useEditorStore.getState().blueprintContent;
+
+        await generateTasks(
+          { blueprint, projectName: wizard.projectName },
+          {
+            onChunk: (chunk) => {
+              editor.appendTasksContent(chunk);
+            },
+            onError: (error) => {
+              editor.setGenerationProgress(`Error generating tasks: ${error}`);
+              editor.setIsGenerating(false);
+            },
+            onDone: () => {
+              editor.setGenerationProgress("Complete!");
+              editor.setIsGenerating(false);
+            },
+            onRetry: (attempt, maxRetries) => {
+              editor.setGenerationProgress(
+                `Connection issue, retrying (${attempt}/${maxRetries})...`,
+              );
+            },
+          },
+        );
+      },
+      onRetry: (attempt, maxRetries) => {
+        editor.setGenerationProgress(
+          `Connection issue, retrying (${attempt}/${maxRetries})...`,
+        );
+      },
+    });
   }, [wizard, editor]);
 
   const cancelGeneration = useCallback(() => {
-    editor.setIsGenerating(false);
-    editor.setGenerationProgress("Generation cancelled");
+    editor.cancelGeneration();
   }, [editor]);
 
   return {
