@@ -32,7 +32,6 @@ export function useBlueprintStream() {
           editor.appendBlueprintContent(chunk);
         },
         onError: (error) => {
-          console.error("Blueprint generation error:", error);
           editor.setGenerationProgress(`Error: ${error}`);
           editor.setIsGenerating(false);
         },
@@ -51,7 +50,6 @@ export function useBlueprintStream() {
                 editor.appendTasksContent(chunk);
               },
               onError: (error) => {
-                console.error("Task generation error:", error);
                 editor.setGenerationProgress(
                   `Error generating tasks: ${error}`,
                 );

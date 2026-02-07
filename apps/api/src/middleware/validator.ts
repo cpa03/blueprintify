@@ -46,7 +46,6 @@ export const validateJson = <T extends z.ZodTypeAny>(
       c.set("validatedData", result.data);
       await next();
     } catch {
-      // If JSON parsing fails, return a standard error
       const errorResponse: ErrorResponse = {
         success: false,
         error: {
