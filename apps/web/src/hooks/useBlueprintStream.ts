@@ -70,8 +70,7 @@ export function useBlueprintStream() {
   }, [wizard, editor]);
 
   const cancelGeneration = useCallback(() => {
-    editor.setIsGenerating(false);
-    editor.setGenerationProgress("Generation cancelled");
+    editor.cancelGeneration();
   }, [editor]);
 
   return {
