@@ -1,4 +1,4 @@
-import { RETRY_CONFIG } from "../config/constants";
+import { RETRY_CONFIG } from "@blueprint/shared";
 
 export interface RetryOptions {
   retries?: number;

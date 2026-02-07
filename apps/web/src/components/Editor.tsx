@@ -5,7 +5,7 @@ import { markdown } from "@codemirror/lang-markdown";
 import { oneDark } from "@codemirror/theme-one-dark";
 import ReactMarkdown from "react-markdown";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
-import { useEditorStore, useWizardStore } from "../store";
+import { useEditorStore, useWizardStore, useNotificationStore } from "../store";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { TIMEOUTS } from "../config/constants";
 import clsx from "clsx";
@@ -13,6 +13,7 @@ import clsx from "clsx";
 export function Editor() {
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [copied, setCopied] = useState<string | null>(null);
+  const addToast = useNotificationStore((s) => s.addToast);
 
   const activeTab = useEditorStore((s) => s.activeTab);
   const setActiveTab = useEditorStore((s) => s.setActiveTab);
@@ -35,16 +36,27 @@ export function Editor() {
     const success = await copyToClipboard(formatted);
     if (success) {
       setCopied(activeTab);
+      addToast(
+        `${activeTab === "blueprint" ? "Blueprint" : "Tasks"} copied to clipboard!`,
+        "success",
+      );
       setTimeout(() => setCopied(null), TIMEOUTS.COPY_FEEDBACK);
+    } else {
+      addToast("Failed to copy to clipboard", "error");
     }
   };
 
   const handleExport = async () => {
-    await exportAsZip({
-      blueprint: blueprintContent,
-      tasks: tasksContent,
-      projectName: projectName || "my-project",
-    });
+    try {
+      await exportAsZip({
+        blueprint: blueprintContent,
+        tasks: tasksContent,
+        projectName: projectName || "my-project",
+      });
+      addToast("Project exported successfully!", "success");
+    } catch {
+      addToast("Failed to export project", "error");
+    }
   };
 
   const handleNewProject = () => {
