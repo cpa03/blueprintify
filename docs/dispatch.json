@@ -1,143 +1,81 @@
 {
-  "dispatch": {
-    "role": "Senior Frontend Architect",
-    "version": "4.0.0",
-    "timestamp": "2026-02-07T06:30:41Z",
-    "dispatch_id": "dispatch-20250207-001"
-  },
-  "selectedTask": {
-    "id": "TASK-102",
-    "title": "Complete Basic Wizard UI Implementation (All Steps)",
-    "priority": "Critical",
-    "issue": "#97",
-    "assignee": "Unassigned",
-    "estimatedHours": "8-10",
-    "dependencies": ["TASK-006", "TASK-008"],
-    "acceptance": [
-      "All 3 wizard steps functional",
-      "Form validation working across all steps",
-      "Navigation between steps preserved",
-      "Integration with shared Zod schemas"
-    ],
-    "milestone": "M1: Foundation & Core Loop"
-  },
-  "roleCapabilities": {
-    "specialization": "Complete UI Architecture & Component Systems",
-    "technical_expertise": [
-      "Multi-step wizard design patterns",
-      "Form validation with Zod schemas",
-      "Component composition architecture",
-      "Split-pane UI implementation",
-      "Markdown rendering optimization",
-      "LocalStorage state management",
-      "React testing frameworks"
-    ],
-    "preferred_tools": [
-      "React functional components with hooks",
-      "Zod for validation schemas",
-      "CodeMirror for code editing",
-      "React Markdown with syntax highlighting",
-      "Zustand for state management",
-      "Framer Motion for animations",
-      "Vitest for testing",
-      "Radix UI for accessible components"
-    ]
-  },
-  "taskContext": {
-    "component_name": "MarkdownRenderer",
-    "integration_points": [
-      "streaming API endpoint",
-      "CodeMirror editor sync",
-      "Split-pane layout",
-      "Wizard flow"
-    ],
-    "key_features": [
-      "Incremental rendering",
-      "Scroll position maintenance",
-      "Code syntax highlighting",
-      "Error handling for malformed markdown"
-    ]
-  },
-  "collaboration": {
-    "with": ["Backend Engineer", "Frontend Engineer"],
-    "frequency": "Pair programming sessions",
-    "escalation": "Streaming issues → Backend Engineer"
-  },
-  "priority_tasks": [
+  "agents": [
     {
-      "id": "TASK-102",
-      "title": "Complete Basic Wizard UI Implementation (All Steps)",
-      "priority": "Critical",
-      "estimated_hours": "8-10",
-      "milestone": "M1"
+      "id": "frontend-wizard-006",
+      "role": "Frontend React Components Specialist",
+      "focus": "Multi-step forms, React components, validation",
+      "priority": "HIGH",
+      "assignedTask": "TASK-006",
+      "taskTitle": "Tech Stack Selection Form (Wizard Step 2)",
+      "skills": [
+        "React",
+        "Zod validation",
+        "Multi-select interfaces",
+        "Component patterns"
+      ]
     },
     {
-      "id": "TASK-008",
-      "title": "Real-time Markdown Rendering",
-      "priority": "Critical",
-      "estimated_hours": "4-5",
-      "milestone": "M1"
+      "id": "splitpane-architect-007",
+      "role": "UI Layout Specialist",
+      "focus": "Split-pane layouts, editor integration, sync mechanisms",
+      "priority": "HIGH",
+      "assignedTask": "TASK-007",
+      "taskTitle": "Split-Pane View (Editor)",
+      "skills": [
+        "Layout systems",
+        "Editor frameworks",
+        "Resizable layouts",
+        "State sync"
+      ]
     },
     {
-      "id": "TASK-006",
-      "title": "Tech Stack Selection Form (Wizard Step 2)",
-      "priority": "Critical",
-      "estimated_hours": "4-6",
-      "milestone": "M1"
+      "id": "markdown-renderer-008",
+      "role": "Markdown Processing Specialist",
+      "focus": "Real-time markdown rendering, syntax highlighting, parsing",
+      "priority": "HIGH",
+      "assignedTask": "TASK-008",
+      "taskTitle": "Real-time Markdown Rendering",
+      "skills": [
+        "Markdown parsing",
+        "Syntax highlighting",
+        "Real-time updates",
+        "Performance"
+      ]
     },
     {
-      "id": "TEST-001",
-      "title": "Frontend Test Suite Implementation",
-      "priority": "Critical",
-      "estimated_hours": "2-3 days",
-      "milestone": "Code Quality"
-    },
-    {
-      "id": "TASK-007",
-      "title": "Split-Pane View (Editor)",
-      "priority": "High",
-      "estimated_hours": "6-8",
-      "milestone": "M1"
-    },
-    {
-      "id": "TASK-009",
-      "title": "LocalStorage Implementation",
-      "priority": "High",
-      "estimated_hours": "6-8",
-      "milestone": "M2"
-    },
-    {
-      "id": "TASK-103",
-      "title": "Manual Editing in Split-Pane View",
-      "priority": "High",
-      "estimated_hours": "4-6",
-      "milestone": "M2"
-    },
-    {
-      "id": "TASK-104",
-      "title": "Blueprint Refinement Workflow",
-      "priority": "High",
-      "estimated_hours": "6-8",
-      "milestone": "M2"
-    },
-    {
-      "id": "TASK-105",
-      "title": "Export/Import Functionality",
-      "priority": "High",
-      "estimated_hours": "4-5",
-      "milestone": "M2"
+      "id": "wizard-architect-102",
+      "role": "Complete Systems Integration Specialist",
+      "focus": "End-to-end wizard implementation, validation, navigation",
+      "priority": "HIGH",
+      "assignedTask": "TASK-102",
+      "taskTitle": "Complete Basic Wizard UI Implementation (All Steps)",
+      "skills": [
+        "System integration",
+        "Form validation",
+        "Navigation",
+        "Zod schemas"
+      ]
     }
   ],
-  "constraints": {
-    "must_not": [
-      "Break existing streaming implementation",
-      "Overcomplicate markdown processing",
-      "Neglect performance for large blueprints"
-    ],
-    "must_do": [
-      "Maintain scroll position during updates",
-      "Handle streaming errors gracefully",
-      "Ensure accessibility compliance"
+  "dispatch_rules": {
+    "assignment": {
+      "criteria": ["skill_match", "priority", "dependencies"],
+      "max_concurrent_tasks": 2,
+      "escalation": "wizard-architect-102"
+    },
+    "collaboration": {
+      "required_for": ["TASK-102"],
+      "partners": ["frontend-wizard-006", "markdown-renderer-008"],
+      "communication": "real-time-sync"
+    }
+  },
+  "project_context": {
+    "architecture": "React + TypeScript + Vite",
+    "libraries": ["Zod", "CodeMirror", "Markdown", "Framer Motion"],
+    "constraints": [
+      "No breaking changes",
+      "Maintain performance",
+      "Use existing patterns"
     ]
   }
 }
