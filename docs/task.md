@@ -42,7 +42,15 @@
   - Syntax highlighting for code blocks
   - Real-time updates during generation
 
+<<<<<<< HEAD
+
 #### TASK-008-STEP3: Review & Generate Form (Wizard Step 3)
+
+=======
+
+#### TASK-009: Review & Generate Form (Wizard Step 3)
+
+> > > > > > > a9057c8 (chore(orchestrator): align roadmap, issues, and system docs)
 
 - **Issue**: #119
 - **Assignee**: Unassigned
@@ -50,11 +58,11 @@
 - **Estimated**: 3-4 hours
 - **Dependencies**: TASK-006, TASK-008
 - **Acceptance**:
-  - Display project details and tech stack summary
-  - Generate button with loading state
-  - Integration with streaming endpoint
-  - Error handling and progress indication
-  - Transition to split-pane view after generation
+  - Review form displays all user inputs
+  - Form validation before generation
+  - Generate button triggers streaming
+  - Back navigation preserves state
+  - Loading states and error handling
 
 #### TASK-102: Complete Basic Wizard UI Implementation (All Steps)
 
@@ -62,7 +70,7 @@
 - **Assignee**: Unassigned
 - **Priority**: Critical
 - **Estimated**: 8-10 hours
-- **Dependencies**: TASK-006, TASK-008
+- **Dependencies**: TASK-006, TASK-008, Issue #119
 - **Acceptance**:
   - All 3 wizard steps functional
   - Form validation working across all steps
@@ -84,6 +92,21 @@
   - [x] Props interface defined
   - [x] Existing functionality preserved
   - [x] Component integrated into Editor
+
+### Infrastructure Tasks
+
+#### TASK-INF-01: Standardize GitHub Actions Versions
+
+- **Issue**: #107
+- **Assignee**: Unassigned
+- **Priority**: Critical
+- **Estimated**: 4-6 hours
+- **Dependencies**: None
+- **Acceptance**:
+  - All workflows use consistent action versions
+  - Remove unnecessary continue-on-error instances
+  - Implement OpenCode CLI caching
+  - Reduce CI execution time by 20%
 
 ---
 

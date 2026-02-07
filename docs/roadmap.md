@@ -28,8 +28,9 @@
 
 - **Issue #31**: [FRONTEND] Implement Split-Pane View (Editor)
 
-#### Code Quality (Deferred to post-M1)
+#### Infrastructure & Code Quality (Parallel Work)
 
+- **Issue #107**: [DEVOPS] Standardize GitHub Actions Versions (Critical Infrastructure)
 - **Issue #21**: [REFACTOR] Extract EditorToolbar from Editor.tsx
 - **Issue #22**: [REFACTOR] Move API Route Logic to Controllers
 - **Issue #40**: [PERF] Optimize React Component Re-renders
