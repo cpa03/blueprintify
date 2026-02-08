@@ -1,0 +1,145 @@
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { Editor } from "./Editor";
+import { useEditorStore, useWizardStore } from "../store";
+
+vi.mock("../store", () => ({
+  useEditorStore: vi.fn(),
+  useWizardStore: vi.fn(),
+  resetAllStores: vi.fn(),
+}));
+
+vi.mock("./editor/EditorHeader", () => ({
+  EditorHeader: vi.fn(() => (
+    <div data-testid="editor-header">
+      <div data-testid="copy-button">Copy</div>
+      <div data-testid="export-button">Export</div>
+      <div data-testid="new-button">New</div>
+    </div>
+  )),
+}));
+
+vi.mock("@uiw/react-codemirror", () => ({
+  default: vi.fn(({ value }) => (
+    <textarea data-testid="codemirror" value={value} readOnly />
+  )),
+}));
+
+vi.mock("react-markdown", () => ({
+  default: vi.fn(({ children }) => (
+    <div data-testid="markdown-preview">{children}</div>
+  )),
+}));
+
+vi.mock("../lib/export", () => ({
+  exportAsZip: vi.fn(),
+  copyToClipboard: vi.fn(),
+  formatForIDE: vi.fn((content) => content),
+}));
+
+vi.mock("../config/constants", () => ({
+  TIMEOUTS: {
+    COPY_FEEDBACK: 2000,
+  },
+  DEFAULT_PROJECT_NAME: "Test Project",
+}));
+
+const mockEditorStore = {
+  activeTab: "blueprint" as const,
+  blueprintContent: "",
+  tasksContent: "",
+  isDirty: false,
+  isGenerating: false,
+  generationProgress: "",
+  setActiveTab: vi.fn(),
+  setBlueprintContent: vi.fn(),
+  appendBlueprintContent: vi.fn(),
+  setTasksContent: vi.fn(),
+  appendTasksContent: vi.fn(),
+  setIsGenerating: vi.fn(),
+  setGenerationProgress: vi.fn(),
+  markClean: vi.fn(),
+  cancelGeneration: vi.fn(),
+  reset: vi.fn(),
+};
+
+const mockWizardStore = {
+  currentStep: "info",
+  projectName: "Test Project",
+  description: "",
+  techStack: [],
+  features: [],
+  targetAudience: "",
+  constraints: "",
+  setStep: vi.fn(),
+  nextStep: vi.fn(),
+  prevStep: vi.fn(),
+  setProjectName: vi.fn(),
+  setDescription: vi.fn(),
+  addTechStack: vi.fn(),
+  removeTechStack: vi.fn(),
+  setTechStack: vi.fn(),
+  addFeature: vi.fn(),
+  removeFeature: vi.fn(),
+  clearFeatures: vi.fn(),
+  setTargetAudience: vi.fn(),
+  setConstraints: vi.fn(),
+  reset: vi.fn(),
+  loadTemplate: vi.fn(),
+};
+
+describe("Editor", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    (useEditorStore as any).mockImplementation((selector: any) =>
+      selector(mockEditorStore),
+    );
+    (useWizardStore as any).mockImplementation((selector: any) =>
+      selector(mockWizardStore),
+    );
+  });
+
+  it("renders empty state when no content and not generating", () => {
+    render(<Editor />);
+    expect(
+      screen.getByText("Your generated content will appear here"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Complete the wizard to get started"),
+    ).toBeInTheDocument();
+    expect(screen.getByText("📝")).toBeInTheDocument();
+  });
+
+  it("renders editor header", () => {
+    render(<Editor />);
+    expect(screen.getByTestId("editor-header")).toBeInTheDocument();
+    expect(screen.getByTestId("copy-button")).toBeInTheDocument();
+    expect(screen.getByTestId("export-button")).toBeInTheDocument();
+    expect(screen.getByTestId("new-button")).toBeInTheDocument();
+  });
+
+  it("renders CodeMirror and preview when content exists", () => {
+    mockEditorStore.blueprintContent = "# Test Content";
+    render(<Editor />);
+
+    expect(screen.getByTestId("codemirror")).toBeInTheDocument();
+    expect(screen.getByTestId("markdown-preview")).toBeInTheDocument();
+    expect(screen.getByDisplayValue("# Test Content")).toBeInTheDocument();
+  });
+
+  it("displays tasks content when tasks tab is active", () => {
+    mockEditorStore.activeTab = "tasks" as any;
+    mockEditorStore.tasksContent = "# Tasks Content";
+    render(<Editor />);
+
+    expect(screen.getByDisplayValue("# Tasks Content")).toBeInTheDocument();
+  });
+
+  it("has proper styling classes", () => {
+    mockEditorStore.blueprintContent = "# Test Content";
+    const { container } = render(<Editor />);
+
+    const editorContainer = container.firstChild;
+    expect(editorContainer).toHaveClass("h-full", "flex", "flex-col");
+  });
+});
