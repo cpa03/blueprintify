@@ -1,0 +1,155 @@
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { Wizard } from "./Wizard";
+import { useWizardStore, useEditorStore } from "../store";
+
+vi.mock("../store", () => ({
+  useWizardStore: vi.fn(),
+  useEditorStore: vi.fn(),
+}));
+
+const mockUseDocumentTitle = vi.fn();
+vi.mock("./hooks/useDocumentTitle", () => ({
+  useDocumentTitle: mockUseDocumentTitle,
+}));
+
+vi.mock("./wizard/StepInfo", () => ({
+  StepInfo: () => <div data-testid="step-info">Step Info</div>,
+}));
+
+vi.mock("./wizard/StepStack", () => ({
+  StepStack: () => <div data-testid="step-stack">Step Stack</div>,
+}));
+
+vi.mock("./wizard/StepFeatures", () => ({
+  StepFeatures: () => <div data-testid="step-features">Step Features</div>,
+}));
+
+vi.mock("./wizard/StepReview", () => ({
+  StepReview: () => <div data-testid="step-review">Step Review</div>,
+}));
+
+vi.mock("./wizard/StepGenerating", () => ({
+  StepGenerating: () => (
+    <div data-testid="step-generating">Step Generating</div>
+  ),
+}));
+
+vi.mock("../../hooks/useDocumentTitle", () => ({
+  useDocumentTitle: vi.fn(),
+}));
+
+vi.mock("../wizard/StepInfo", () => ({
+  StepInfo: () => <div data-testid="step-info">Step Info</div>,
+}));
+
+vi.mock("../wizard/StepStack", () => ({
+  StepStack: () => <div data-testid="step-stack">Step Stack</div>,
+}));
+
+vi.mock("../wizard/StepFeatures", () => ({
+  StepFeatures: () => <div data-testid="step-features">Step Features</div>,
+}));
+
+vi.mock("../wizard/StepReview", () => ({
+  StepReview: () => <div data-testid="step-review">Step Review</div>,
+}));
+
+vi.mock("../wizard/StepGenerating", () => ({
+  StepGenerating: () => (
+    <div data-testid="step-generating">Step Generating</div>
+  ),
+}));
+
+const mockWizardStore = {
+  currentStep: "info",
+  setStep: vi.fn(),
+  nextStep: vi.fn(),
+  prevStep: vi.fn(),
+  setProjectName: vi.fn(),
+  setDescription: vi.fn(),
+  addTechStack: vi.fn(),
+  removeTechStack: vi.fn(),
+  setTechStack: vi.fn(),
+  addFeature: vi.fn(),
+  removeFeature: vi.fn(),
+  clearFeatures: vi.fn(),
+  setTargetAudience: vi.fn(),
+  setConstraints: vi.fn(),
+  reset: vi.fn(),
+  loadTemplate: vi.fn(),
+};
+
+const mockEditorStore = {
+  activeTab: "blueprint" as const,
+  blueprintContent: "",
+  tasksContent: "",
+  isDirty: false,
+  isGenerating: false,
+  generationProgress: "",
+  setActiveTab: vi.fn(),
+  setBlueprintContent: vi.fn(),
+  appendBlueprintContent: vi.fn(),
+  setTasksContent: vi.fn(),
+  appendTasksContent: vi.fn(),
+  setIsGenerating: vi.fn(),
+  setGenerationProgress: vi.fn(),
+  markClean: vi.fn(),
+  cancelGeneration: vi.fn(),
+  reset: vi.fn(),
+};
+
+describe("Wizard", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    (useWizardStore as any).mockImplementation((selector: any) =>
+      selector(mockWizardStore),
+    );
+    (useEditorStore as any).mockImplementation((selector: any) =>
+      selector(mockEditorStore),
+    );
+  });
+
+  it("renders StepInfo when currentStep is info", () => {
+    render(<Wizard />);
+    expect(screen.getByTestId("step-info")).toBeInTheDocument();
+    expect(screen.queryByTestId("step-stack")).not.toBeInTheDocument();
+  });
+
+  it("renders StepStack when currentStep is stack", () => {
+    mockWizardStore.currentStep = "stack";
+    render(<Wizard />);
+    expect(screen.getByTestId("step-stack")).toBeInTheDocument();
+    expect(screen.queryByTestId("step-info")).not.toBeInTheDocument();
+  });
+
+  it("renders StepFeatures when currentStep is features", () => {
+    mockWizardStore.currentStep = "features";
+    render(<Wizard />);
+    expect(screen.getByTestId("step-features")).toBeInTheDocument();
+  });
+
+  it("renders StepReview when currentStep is review", () => {
+    mockWizardStore.currentStep = "review";
+    render(<Wizard />);
+    expect(screen.getByTestId("step-review")).toBeInTheDocument();
+  });
+
+  it("renders StepGenerating when currentStep is generating", () => {
+    mockWizardStore.currentStep = "generating";
+    render(<Wizard />);
+    expect(screen.getByTestId("step-generating")).toBeInTheDocument();
+  });
+
+  it("renders StepInfo as default for unknown steps", () => {
+    mockWizardStore.currentStep = "unknown" as any;
+    render(<Wizard />);
+    expect(screen.getByTestId("step-info")).toBeInTheDocument();
+  });
+
+  it("has proper styling classes", () => {
+    const { container } = render(<Wizard />);
+    const wizardContainer = container.firstChild;
+    expect(wizardContainer).toHaveClass("flex-1", "overflow-y-auto", "p-6");
+  });
+});
