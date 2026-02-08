@@ -1,7 +1,9 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import type { Mock } from "vitest";
 import { StepIndicator } from "./StepIndicator";
 import { useWizardStore } from "../store";
+import type { WizardStore } from "../store/wizard";
 
 vi.mock("../store", () => ({
   useWizardStore: vi.fn(),
@@ -27,8 +29,8 @@ vi.mock("framer-motion", () => ({
   },
 }));
 
-const mockWizardStore = {
-  currentStep: "info",
+const mockWizardStore: WizardStore = {
+  currentStep: "info" as const,
   projectName: "",
   description: "",
   techStack: [],
@@ -55,8 +57,8 @@ const mockWizardStore = {
 describe("StepIndicator", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (useWizardStore as any).mockImplementation((selector: any) =>
-      selector(mockWizardStore),
+    (useWizardStore as unknown as Mock).mockImplementation(
+      (selector: (state: WizardStore) => unknown) => selector(mockWizardStore),
     );
   });
 
