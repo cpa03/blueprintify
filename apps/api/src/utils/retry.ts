@@ -1,4 +1,4 @@
-import { RETRY_CONFIG } from "../config/constants";
+import { RETRY_CONFIG, RETRYABLE_ERROR_CODES } from "../config/constants";
 
 export interface RetryOptions {
   retries?: number;
@@ -7,11 +7,6 @@ export interface RetryOptions {
   onRetry?: (error: unknown, attempt: number) => void;
 }
 
-/**
- * Retries an async operation with exponential backoff.
- * @param operation The async function to retry
- * @param options Configuration for retries
- */
 export async function withRetry<T>(
   operation: () => Promise<T>,
   options: RetryOptions = {},
@@ -32,14 +27,10 @@ export async function withRetry<T>(
     } catch (error) {
       lastError = error;
 
-      // If we've exhausted all retries, throw the last error
       if (attempt === retries) {
         break;
       }
 
-      // Check for specific error conditions appropriate for retry
-      // e.g., don't retry 400 Bad Request, but do retry 429 or 5xx
-      // For now, we retry generic network errors or 5xx/429 if the error object suggests it
       const shouldRetry = isRetryableError(error);
 
       if (!shouldRetry) {
@@ -50,7 +41,6 @@ export async function withRetry<T>(
         onRetry(error, attempt + 1);
       }
 
-      // Wait before next attempt
       await new Promise((resolve) => setTimeout(resolve, delay));
       delay *= backoffFactor;
     }
@@ -60,27 +50,19 @@ export async function withRetry<T>(
 }
 
 function isRetryableError(error: unknown): boolean {
-  // If no detailed error info, assume it's transient and retry
   if (!error) return true;
 
-  // OpenAI specific error structure often has 'status' or 'response.status'
   const status =
     (error as { status?: number; response?: { status?: number } }).status ||
     (error as { response?: { status?: number } }).response?.status;
 
   if (status) {
-    // 429: Too Many Requests
-    // 5xx: Server Errors
     return status === 429 || status >= 500;
   }
 
   const errorCode = (error as { code?: string }).code;
-  const retryableCodes = [
-    "ECONNRESET",
-    "ETIMEDOUT",
-    "ENOTFOUND",
-    "EAI_AGAIN",
-    "ECONNREFUSED",
-  ];
-  return retryableCodes.includes(errorCode || "");
+  return RETRYABLE_ERROR_CODES.includes(
+    (errorCode as (typeof RETRYABLE_ERROR_CODES)[number]) ||
+      ("" as (typeof RETRYABLE_ERROR_CODES)[number]),
+  );
 }
