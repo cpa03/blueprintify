@@ -166,23 +166,30 @@ The system includes reusable skills for common tasks:
 
 ## 📚 Documentation
 
-### Getting Started
+### 🚀 Getting Started
 
+- **[User Guide](./docs/user-guide.md)** - Complete guide for using the blueprint generation workflow
+- **[API Documentation](./docs/api-documentation.md)** - Comprehensive API reference and examples
 - **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute to the project
+
+### 🛠️ Development Resources
+
 - **[Development Workflow](./docs/development-workflow.md)** - Complete development process overview
 - **[Code Style Guidelines](./docs/code-style-guidelines.md)** - Coding standards and best practices
-
-### Development Resources
-
 - **[Testing Procedures](./docs/testing-procedures.md)** - Testing standards, tools, and guidelines
 - **[Release Process](./docs/release-process.md)** - Release and deployment procedures
-- **[AI Agent Usage Guide](./docs/ai-agent-usage-guide.md)** - Working with the AI agent system
 
-### Project Documentation
+### 🤖 AI Agent System
+
+- **[AI Agent Usage Guide](./docs/ai-agent-usage-guide.md)** - Working with the AI agent system
+- **[Technical Writer Agent](./.opencode/agent/technical-writer.md)** - Documentation agent configuration and workflow
+
+### 📋 Project Documentation
 
 - **[Technical Findings](./docs/findings.md)** - Technical feedback and improvement logs
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
 - **[Task Management](./docs/task.md)** - Current development tasks and priorities
+- **[Feature Specifications](./docs/features.md)** - Detailed feature documentation and status
 
 ## 📝 License
 
