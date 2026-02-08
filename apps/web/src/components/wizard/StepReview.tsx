@@ -156,9 +156,9 @@ export function StepReview() {
               </button>
             </div>
             <ul className="space-y-2">
-              {wizard.features.map((feature, index) => (
+              {wizard.features.map((feature) => (
                 <li
-                  key={index}
+                  key={feature}
                   className="flex items-center gap-2 text-dark-200"
                 >
                   <svg

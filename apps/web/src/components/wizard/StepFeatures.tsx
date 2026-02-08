@@ -159,9 +159,9 @@ export function StepFeatures() {
               role="list"
               aria-labelledby="added-features-label"
             >
-              {features.map((feature, index) => (
+              {features.map((feature) => (
                 <motion.span
-                  key={index}
+                  key={feature}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-500/20 border border-primary-500/30 rounded-lg text-sm text-primary-300"
@@ -172,7 +172,7 @@ export function StepFeatures() {
                   </span>
                   {feature}
                   <button
-                    onClick={() => removeFeature(index)}
+                    onClick={() => removeFeature(feature)}
                     className="hover:text-accent-pink transition-colors"
                     aria-label={`Remove ${feature}`}
                   >

@@ -5,7 +5,7 @@ import { markdown } from "@codemirror/lang-markdown";
 import { oneDark } from "@codemirror/theme-one-dark";
 import ReactMarkdown from "react-markdown";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
-import { useEditorStore, useWizardStore } from "../store";
+import { useEditorStore, useWizardStore, resetAllStores } from "../store";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { TIMEOUTS } from "../config/constants";
 import clsx from "clsx";
@@ -22,8 +22,6 @@ export function Editor() {
   const setTasksContent = useEditorStore((s) => s.setTasksContent);
   const isGenerating = useEditorStore((s) => s.isGenerating);
   const projectName = useWizardStore((s) => s.projectName);
-  const resetWizard = useWizardStore((s) => s.reset);
-  const resetEditor = useEditorStore((s) => s.reset);
 
   const currentContent =
     activeTab === "blueprint" ? blueprintContent : tasksContent;
@@ -48,8 +46,7 @@ export function Editor() {
   };
 
   const handleNewProject = () => {
-    resetWizard();
-    resetEditor();
+    resetAllStores();
   };
 
   const hasContent = blueprintContent.length > 0 || tasksContent.length > 0;
