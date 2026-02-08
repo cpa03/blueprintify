@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect, useCallback } from "react";
 import type { WizardStep } from "@blueprint/shared";
 import { useWizardStore } from "../store";
 import { WIZARD_STEPS } from "../config/constants";
@@ -16,11 +17,30 @@ export function StepIndicator() {
 
   const currentIndex = STEPS.findIndex((s) => s.key === currentStep);
 
-  const canNavigateTo = (stepKey: WizardStep): boolean => {
-    const targetIndex = STEPS.findIndex((s) => s.key === stepKey);
-    // Can go back, but not forward beyond current
-    return targetIndex <= currentIndex && stepKey !== "generating";
-  };
+  const canNavigateTo = useCallback(
+    (stepKey: WizardStep): boolean => {
+      const targetIndex = STEPS.findIndex((s) => s.key === stepKey);
+      return targetIndex <= currentIndex && stepKey !== "generating";
+    },
+    [currentIndex],
+  );
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.altKey && /^[1-5]$/.test(e.key)) {
+        e.preventDefault();
+        const stepIndex = parseInt(e.key, 10) - 1;
+        const targetStep = STEPS[stepIndex];
+
+        if (targetStep && canNavigateTo(targetStep.key)) {
+          setStep(targetStep.key);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [setStep, canNavigateTo]);
 
   return (
     <div className="flex items-center justify-center gap-2 mb-8">
