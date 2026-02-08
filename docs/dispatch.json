@@ -1,6 +1,7 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "last_updated": "2026-02-08",
+  "dispatch_type": "unique_roles_priority",
   "agents": [
     {
       "id": "tech-stack-wizard-006",
@@ -218,6 +219,73 @@
       "TASK-010": ["All M2 tasks"]
     }
   },
+  "unique_roles": [
+    {
+      "role_id": "wizard-orchestrator",
+      "specialization": "Multi-step Form Architecture",
+      "core_expertise": "State synchronization across wizard steps",
+      "primary_task": "TASK-102",
+      "supporting_tasks": ["TASK-006"],
+      "unique_skills": [
+        "Progressive disclosure patterns",
+        "Step validation orchestration",
+        "Form state persistence",
+        "Zod schema composition"
+      ]
+    },
+    {
+      "role_id": "markdown-reactor",
+      "specialization": "Streaming Content Processing",
+      "core_expertise": "Real-time markdown to HTML conversion",
+      "primary_task": "TASK-008",
+      "supporting_tasks": ["TASK-104"],
+      "unique_skills": [
+        "Markdown AST manipulation",
+        "Virtual rendering",
+        "Syntax highlighting injection",
+        "SSE consumer patterns"
+      ]
+    },
+    {
+      "role_id": "pane-alchemist",
+      "specialization": "Editor Layout Systems",
+      "core_expertise": "Bidirectional content synchronization",
+      "primary_task": "TASK-007",
+      "supporting_tasks": ["TASK-103"],
+      "unique_skills": [
+        "Resizable panel state",
+        "Content mirroring",
+        "Cursor synchronization",
+        "Performance throttling"
+      ]
+    },
+    {
+      "role_id": "controller-minimizer",
+      "specialization": "Service Layer Patterns",
+      "core_expertise": "Route logic extraction and consolidation",
+      "primary_task": "TASK-REF-06",
+      "supporting_tasks": ["TS-001", "TEST-001"],
+      "unique_skills": [
+        "Hono typing strategies",
+        "Middleware orchestration",
+        "Controller inheritance patterns",
+        "Mock service design"
+      ]
+    },
+    {
+      "role_id": "persistence-guardian",
+      "specialization": "Client-side Data Architecture",
+      "core_expertise": "LocalStorage with schema migration",
+      "primary_task": "TASK-009",
+      "supporting_tasks": ["TASK-105"],
+      "unique_skills": [
+        "Storage quota negotiation",
+        "Version diff strategies",
+        "Conflict resolution",
+        "Rollback mechanisms"
+      ]
+    }
+  ],
   "project_context": {
     "architecture": "React + Vite + TypeScript (Frontend) | Hono + Cloudflare Workers (Backend)",
     "libraries": [
@@ -235,6 +303,7 @@
       "Follow established architectural patterns",
       "Component-driven development approach"
     ],
+    "priority_dispatch_rationale": "High/Critical priority tasks selected based on M1 milestone completion requirements. Unique roles created with specialized expertise beyond generalist agents to ensure efficient task execution with minimal coordination overhead.",
     "completed_tasks": [
       {
         "id": "TASK-REF-05",
