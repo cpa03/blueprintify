@@ -7,7 +7,7 @@ import ReactMarkdown from "react-markdown";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
 import { useEditorStore, useWizardStore, resetAllStores } from "../store";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
-import { TIMEOUTS } from "../config/constants";
+import { TIMEOUTS, DEFAULT_PROJECT_NAME } from "../config/constants";
 import clsx from "clsx";
 
 export function Editor() {
@@ -41,7 +41,7 @@ export function Editor() {
     await exportAsZip({
       blueprint: blueprintContent,
       tasks: tasksContent,
-      projectName: projectName || "my-project",
+      projectName: projectName || DEFAULT_PROJECT_NAME,
     });
   };
 

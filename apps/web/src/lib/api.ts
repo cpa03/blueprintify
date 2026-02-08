@@ -5,7 +5,12 @@ import type {
   StreamChunk,
 } from "@blueprint/shared";
 import { RETRY_CONFIG } from "@blueprint/shared";
-import { RETRYABLE_STATUS_CODES } from "../config/constants";
+import {
+  RETRYABLE_STATUS_CODES,
+  API_ERROR_MESSAGES,
+  SSE_CONFIG,
+  API_ENDPOINTS,
+} from "../config/constants";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "/api";
 
@@ -72,7 +77,7 @@ async function _handleSSEStream(
 ): Promise<void> {
   const reader = response.body?.getReader();
   if (!reader) {
-    handlers.onError("No response body");
+    handlers.onError(API_ERROR_MESSAGES.NO_RESPONSE_BODY);
     return;
   }
 
@@ -85,22 +90,30 @@ async function _handleSSEStream(
       if (done) break;
 
       buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split("\n\n");
+      const lines = buffer.split(SSE_CONFIG.EVENT_SEPARATOR);
       buffer = lines.pop() || "";
 
       for (const eventBlock of lines) {
         if (!eventBlock.trim()) continue;
 
-        const dataMatch = eventBlock.match(/data: (.+)/);
+        const dataMatch = eventBlock.match(
+          new RegExp(`${SSE_CONFIG.DATA_PREFIX}(.+)`),
+        );
         if (dataMatch && dataMatch[1]) {
           try {
             const parsed: StreamChunk = JSON.parse(dataMatch[1]);
 
-            if (parsed.type === "content" && parsed.content) {
+            if (
+              parsed.type === SSE_CONFIG.EVENT_TYPES.CONTENT &&
+              parsed.content
+            ) {
               handlers.onChunk(parsed.content);
-            } else if (parsed.type === "error" && parsed.error) {
+            } else if (
+              parsed.type === SSE_CONFIG.EVENT_TYPES.ERROR &&
+              parsed.error
+            ) {
               handlers.onError(parsed.error);
-            } else if (parsed.type === "done") {
+            } else if (parsed.type === SSE_CONFIG.EVENT_TYPES.DONE) {
               handlers.onDone();
               return;
             }
@@ -112,7 +125,8 @@ async function _handleSSEStream(
     }
     handlers.onDone();
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Stream error";
+    const message =
+      error instanceof Error ? error.message : API_ERROR_MESSAGES.STREAM_ERROR;
     handlers.onError(message);
   } finally {
     reader.releaseLock();
@@ -129,7 +143,7 @@ async function handleSSEStreamWithRetry(
 ): Promise<void> {
   const reader = response.body?.getReader();
   if (!reader) {
-    handlers.onError("No response body");
+    handlers.onError(API_ERROR_MESSAGES.NO_RESPONSE_BODY);
     return;
   }
 
@@ -145,25 +159,32 @@ async function handleSSEStreamWithRetry(
         if (done) break;
 
         buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n\n");
+        const lines = buffer.split(SSE_CONFIG.EVENT_SEPARATOR);
         buffer = lines.pop() || "";
 
         for (const eventBlock of lines) {
           if (!eventBlock.trim()) continue;
 
-          const dataMatch = eventBlock.match(/data: (.+)/);
+          const dataMatch = eventBlock.match(
+            new RegExp(`${SSE_CONFIG.DATA_PREFIX}(.+)`),
+          );
           if (dataMatch && dataMatch[1]) {
             try {
               const parsed: StreamChunk = JSON.parse(dataMatch[1]);
 
-              if (parsed.type === "content" && parsed.content) {
+              if (
+                parsed.type === SSE_CONFIG.EVENT_TYPES.CONTENT &&
+                parsed.content
+              ) {
                 handlers.onChunk(parsed.content);
                 chunksReceived++;
-              } else if (parsed.type === "error" && parsed.error) {
-                // Server-side errors are not retryable
+              } else if (
+                parsed.type === SSE_CONFIG.EVENT_TYPES.ERROR &&
+                parsed.error
+              ) {
                 handlers.onError(parsed.error);
                 return;
-              } else if (parsed.type === "done") {
+              } else if (parsed.type === SSE_CONFIG.EVENT_TYPES.DONE) {
                 handlers.onDone();
                 return;
               }
@@ -176,21 +197,19 @@ async function handleSSEStreamWithRetry(
         lastError =
           readError instanceof Error
             ? readError
-            : new Error("Stream read error");
+            : new Error(API_ERROR_MESSAGES.STREAM_ERROR);
 
-        // If we've received content before the error, we don't retry
-        // to avoid duplicate data
         if (chunksReceived > 0) {
           throw lastError;
         }
 
-        // If no content received, this is a connection error - retryable
         throw lastError;
       }
     }
     handlers.onDone();
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Stream error";
+    const message =
+      error instanceof Error ? error.message : API_ERROR_MESSAGES.STREAM_ERROR;
     handlers.onError(message);
   } finally {
     reader.releaseLock();
@@ -268,54 +287,45 @@ export async function generateBlueprint(
   retryOptions: RetryOptions = {},
 ): Promise<void> {
   return apiCallWithRetry(
-    "/generate",
+    API_ENDPOINTS.GENERATE,
     request,
     handlers,
     retryOptions,
-    "Generation failed",
+    API_ERROR_MESSAGES.GENERATION_FAILED,
   );
 }
 
-/**
- * Generate tasks from a blueprint with retry logic
- */
 export async function generateTasks(
   request: TaskGenerationRequest,
   handlers: StreamEventHandlers,
   retryOptions: RetryOptions = {},
 ): Promise<void> {
   return apiCallWithRetry(
-    "/tasks",
+    API_ENDPOINTS.TASKS,
     request,
     handlers,
     retryOptions,
-    "Task generation failed",
+    API_ERROR_MESSAGES.TASK_GENERATION_FAILED,
   );
 }
 
-/**
- * Refine a section of content with retry logic
- */
 export async function refineContent(
   request: RefineRequest,
   handlers: StreamEventHandlers,
   retryOptions: RetryOptions = {},
 ): Promise<void> {
   return apiCallWithRetry(
-    "/refine",
+    API_ENDPOINTS.REFINE,
     request,
     handlers,
     retryOptions,
-    "Refinement failed",
+    API_ERROR_MESSAGES.REFINEMENT_FAILED,
   );
 }
 
-/**
- * Check API health
- */
 export async function checkHealth(): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE}/`);
+    const response = await fetch(`${API_BASE}${API_ENDPOINTS.HEALTH}`);
     return response.ok;
   } catch {
     return false;
