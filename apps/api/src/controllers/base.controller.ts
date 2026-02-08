@@ -1,11 +1,7 @@
 import type { AIConfig } from "../services/openai";
 import { createSSEResponse, createStreamFromGenerator } from "../utils/stream";
 import { ConfigurationError } from "../errors";
-import type {
-  BaseContext,
-  ValidatedContext,
-  ControllerContext,
-} from "../types";
+import type { ValidatedContext, ControllerContext } from "../types";
 import type { z } from "zod";
 
 export abstract class BaseController {
