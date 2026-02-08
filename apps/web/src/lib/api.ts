@@ -198,31 +198,32 @@ async function handleSSEStreamWithRetry(
 }
 
 /**
- * Generate a blueprint document with retry logic
+ * Shared retry wrapper for API calls with streaming
  */
-export async function generateBlueprint(
-  request: BlueprintRequest,
+async function apiCallWithRetry(
+  endpoint: string,
+  requestBody: unknown,
   handlers: StreamEventHandlers,
   retryOptions: RetryOptions = {},
+  errorMessageDefault: string,
 ): Promise<void> {
   const opts = { ...DEFAULT_RETRY_OPTIONS, ...retryOptions };
   let lastError: Error | null = null;
 
   for (let attempt = 0; attempt <= opts.maxRetries; attempt++) {
     try {
-      const response = await fetch(`${API_BASE}/generate`, {
+      const response = await fetch(`${API_BASE}${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(request),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
         const errorData = await response
           .json()
-          .catch(() => ({ error: "Generation failed" }));
-        const errorMessage = errorData.error || "Generation failed";
+          .catch(() => ({ error: errorMessageDefault }));
+        const errorMessage = errorData.error || errorMessageDefault;
 
-        // Check if error is retryable
         if (
           isRetryableError(errorMessage, response) &&
           attempt < opts.maxRetries
@@ -238,13 +239,11 @@ export async function generateBlueprint(
         return;
       }
 
-      // Handle stream with retry
       await handleSSEStreamWithRetry(response, handlers, retryOptions);
       return;
     } catch (error) {
       lastError = error instanceof Error ? error : new Error("Unknown error");
 
-      // Check if error is retryable
       if (isRetryableError(lastError) && attempt < opts.maxRetries) {
         handlers.onRetry?.(attempt + 1, opts.maxRetries);
         const delay = calculateRetryDelay(attempt, retryOptions);
@@ -256,9 +255,25 @@ export async function generateBlueprint(
     }
   }
 
-  // All retries exhausted
-  const message = lastError?.message || "Generation failed after retries";
+  const message = lastError?.message || `${errorMessageDefault} after retries`;
   handlers.onError(message);
+}
+
+/**
+ * Generate a blueprint document with retry logic
+ */
+export async function generateBlueprint(
+  request: BlueprintRequest,
+  handlers: StreamEventHandlers,
+  retryOptions: RetryOptions = {},
+): Promise<void> {
+  return apiCallWithRetry(
+    "/generate",
+    request,
+    handlers,
+    retryOptions,
+    "Generation failed",
+  );
 }
 
 /**
@@ -269,56 +284,13 @@ export async function generateTasks(
   handlers: StreamEventHandlers,
   retryOptions: RetryOptions = {},
 ): Promise<void> {
-  const opts = { ...DEFAULT_RETRY_OPTIONS, ...retryOptions };
-  let lastError: Error | null = null;
-
-  for (let attempt = 0; attempt <= opts.maxRetries; attempt++) {
-    try {
-      const response = await fetch(`${API_BASE}/tasks`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(request),
-      });
-
-      if (!response.ok) {
-        const errorData = await response
-          .json()
-          .catch(() => ({ error: "Task generation failed" }));
-        const errorMessage = errorData.error || "Task generation failed";
-
-        if (
-          isRetryableError(errorMessage, response) &&
-          attempt < opts.maxRetries
-        ) {
-          lastError = new Error(errorMessage);
-          handlers.onRetry?.(attempt + 1, opts.maxRetries);
-          const delay = calculateRetryDelay(attempt, retryOptions);
-          await sleep(delay);
-          continue;
-        }
-
-        handlers.onError(errorMessage);
-        return;
-      }
-
-      await handleSSEStreamWithRetry(response, handlers, retryOptions);
-      return;
-    } catch (error) {
-      lastError = error instanceof Error ? error : new Error("Unknown error");
-
-      if (isRetryableError(lastError) && attempt < opts.maxRetries) {
-        handlers.onRetry?.(attempt + 1, opts.maxRetries);
-        const delay = calculateRetryDelay(attempt, retryOptions);
-        await sleep(delay);
-        continue;
-      }
-
-      break;
-    }
-  }
-
-  const message = lastError?.message || "Task generation failed after retries";
-  handlers.onError(message);
+  return apiCallWithRetry(
+    "/tasks",
+    request,
+    handlers,
+    retryOptions,
+    "Task generation failed",
+  );
 }
 
 /**
@@ -329,56 +301,13 @@ export async function refineContent(
   handlers: StreamEventHandlers,
   retryOptions: RetryOptions = {},
 ): Promise<void> {
-  const opts = { ...DEFAULT_RETRY_OPTIONS, ...retryOptions };
-  let lastError: Error | null = null;
-
-  for (let attempt = 0; attempt <= opts.maxRetries; attempt++) {
-    try {
-      const response = await fetch(`${API_BASE}/refine`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(request),
-      });
-
-      if (!response.ok) {
-        const errorData = await response
-          .json()
-          .catch(() => ({ error: "Refinement failed" }));
-        const errorMessage = errorData.error || "Refinement failed";
-
-        if (
-          isRetryableError(errorMessage, response) &&
-          attempt < opts.maxRetries
-        ) {
-          lastError = new Error(errorMessage);
-          handlers.onRetry?.(attempt + 1, opts.maxRetries);
-          const delay = calculateRetryDelay(attempt, retryOptions);
-          await sleep(delay);
-          continue;
-        }
-
-        handlers.onError(errorMessage);
-        return;
-      }
-
-      await handleSSEStreamWithRetry(response, handlers, retryOptions);
-      return;
-    } catch (error) {
-      lastError = error instanceof Error ? error : new Error("Unknown error");
-
-      if (isRetryableError(lastError) && attempt < opts.maxRetries) {
-        handlers.onRetry?.(attempt + 1, opts.maxRetries);
-        const delay = calculateRetryDelay(attempt, retryOptions);
-        await sleep(delay);
-        continue;
-      }
-
-      break;
-    }
-  }
-
-  const message = lastError?.message || "Refinement failed after retries";
-  handlers.onError(message);
+  return apiCallWithRetry(
+    "/refine",
+    request,
+    handlers,
+    retryOptions,
+    "Refinement failed",
+  );
 }
 
 /**

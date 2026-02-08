@@ -100,3 +100,10 @@ export const SUGGESTED_FEATURES = [
   "Payment processing",
   "Analytics tracking",
 ] as const;
+
+// Generation timing estimates
+export const GENERATION_ESTIMATES = {
+  TYPICAL_DURATION_SECONDS: "30-60",
+  SHORT: "15-30",
+  LONG: "60-90",
+} as const;
