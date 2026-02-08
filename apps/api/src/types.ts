@@ -12,24 +12,23 @@ export interface Env {
   OPENAI_MODEL?: string;
 }
 
+// Base context type with environment bindings
+export type BaseContext = Context<{
+  Bindings: Env;
+}>;
+
+// Generic context type with validated data
+export type ValidatedContext<T extends z.ZodSchema> = Context<{
+  Bindings: Env;
+  Variables: {
+    validatedData: z.infer<T>;
+  };
+}>;
+
 // Context types with validated data from middleware
-export type BlueprintContext = Context<{
-  Bindings: Env;
-  Variables: {
-    validatedData: z.infer<typeof BlueprintRequestSchema>;
-  };
-}>;
+export type BlueprintContext = ValidatedContext<typeof BlueprintRequestSchema>;
+export type RefineContext = ValidatedContext<typeof RefineRequestSchema>;
+export type TasksContext = ValidatedContext<typeof TaskGenerationRequestSchema>;
 
-export type RefineContext = Context<{
-  Bindings: Env;
-  Variables: {
-    validatedData: z.infer<typeof RefineRequestSchema>;
-  };
-}>;
-
-export type TasksContext = Context<{
-  Bindings: Env;
-  Variables: {
-    validatedData: z.infer<typeof TaskGenerationRequestSchema>;
-  };
-}>;
+// Union type for all controller contexts
+export type ControllerContext = BlueprintContext | RefineContext | TasksContext;

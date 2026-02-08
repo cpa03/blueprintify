@@ -1,10 +1,15 @@
 import type { AIConfig } from "../services/openai";
 import { createSSEResponse, createStreamFromGenerator } from "../utils/stream";
 import { ConfigurationError } from "../errors";
-import type { Env } from "../types";
+import type {
+  BaseContext,
+  ValidatedContext,
+  ControllerContext,
+} from "../types";
+import type { z } from "zod";
 
 export abstract class BaseController {
-  protected createAIConfig(c: { env: Env }): AIConfig {
+  protected createAIConfig(c: ControllerContext): AIConfig {
     const config: AIConfig = {
       apiKey: c.env.OPENAI_API_KEY,
       baseURL: c.env.OPENAI_BASE_URL,
@@ -23,5 +28,21 @@ export abstract class BaseController {
   ): Promise<Response> {
     const stream = createStreamFromGenerator(generator);
     return createSSEResponse(stream);
+  }
+
+  protected getValidatedData<T extends z.ZodSchema>(
+    c: ValidatedContext<T>,
+  ): z.infer<T> {
+    const data = c.get("validatedData");
+    if (!data) {
+      throw new Error("Validated data not found in context");
+    }
+    return data;
+  }
+
+  protected validateEnvironment(c: ControllerContext): void {
+    if (!c.env.OPENAI_API_KEY) {
+      throw new ConfigurationError("OpenAI API key not configured");
+    }
   }
 }

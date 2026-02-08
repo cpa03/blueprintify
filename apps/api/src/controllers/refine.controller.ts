@@ -5,7 +5,8 @@ import type { RefineContext } from "../types";
 
 export class RefineController extends BaseController {
   async refineContent(c: RefineContext): Promise<Response> {
-    const request = c.get("validatedData");
+    this.validateEnvironment(c);
+    const request = this.getValidatedData(c);
     const config = this.createAIConfig(c);
 
     const userPrompt = buildRefinePrompt(request);
