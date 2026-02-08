@@ -59,7 +59,7 @@
 
 ### Infrastructure Tasks
 
-#### TASK-REF-05: Extract EditorToolbar Component
+#### TASK-REF-05: Extract EditorToolbar Component ✅ COMPLETED
 
 - **Issue**: #21
 - **Assignee**: Unassigned
@@ -284,6 +284,20 @@
 
 ### Performance Optimization
 
+#### PERF-M1: M1 Performance Validation & Benchmarks
+
+- **Issue**: #167
+- **Assignee**: Unassigned
+- **Priority**: High
+- **Estimated**: 4-6 hours
+- **Dependencies**: Issues #30 and #31 complete
+- **Acceptance**:
+  - Lighthouse performance score > 90
+  - Initial load time < 3 seconds on 3G
+  - Bundle size analysis and optimization
+  - Memory usage validation during generation
+  - Mobile performance benchmarks
+
 #### PERF-001: Component Re-render Optimization ✅ COMPLETED
 
 - **Issue**: #75 (Updated to Bundle Size Optimization)
@@ -418,6 +432,6 @@
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2026-02-05  
+**Last Updated**: 2026-02-08  
 **Next Review**: Daily stand-up during M1  
 **Maintainer**: Software Architect (The Orchestrator)
