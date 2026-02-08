@@ -18,6 +18,18 @@ export function TemplateGrid() {
     }, ANIMATION.FAST);
   };
 
+  const handleKeyDown = (
+    e: React.KeyboardEvent,
+    template: (typeof STARTER_TEMPLATES)[0],
+  ) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      if (selectedId === null) {
+        handleTemplateClick(template);
+      }
+    }
+  };
+
   return (
     <section className="mb-12">
       <h2 className="text-xl font-semibold text-white mb-2">
@@ -42,6 +54,7 @@ export function TemplateGrid() {
               }}
               transition={{ delay: index * ANIMATION.STAGGER }}
               onClick={() => handleTemplateClick(template)}
+              onKeyDown={(e) => handleKeyDown(e, template)}
               disabled={selectedId !== null}
               className={`
                 glass-card p-5 text-left transition-all duration-300 group relative
@@ -51,6 +64,7 @@ export function TemplateGrid() {
                     : "hover:border-primary-500/50"
                 }
                 ${selectedId !== null && !isSelected ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950
               `}
               whileHover={
                 selectedId === null ? { scale: 1.02, y: -2 } : undefined
