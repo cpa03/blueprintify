@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { STARTER_TEMPLATES } from "@blueprint/shared";
-import { useWizardStore } from "../store";
+import { useWizardStore, useToast } from "../store";
 import { ANIMATION } from "../config/constants";
 
 export function TemplateGrid() {
   const loadTemplate = useWizardStore((s) => s.loadTemplate);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const toast = useToast();
 
   const handleTemplateClick = (template: (typeof STARTER_TEMPLATES)[0]) => {
     setSelectedId(template.id);
 
     setTimeout(() => {
       loadTemplate(template);
+      toast.success(`${template.name} template loaded`);
     }, ANIMATION.FAST);
   };
 

@@ -22,6 +22,26 @@ export default defineConfig({
   build: {
     outDir: "dist",
     sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom"],
+          editor: [
+            "@uiw/react-codemirror",
+            "@codemirror/lang-markdown",
+            "@codemirror/theme-one-dark",
+          ],
+          ui: [
+            "framer-motion",
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-select",
+            "@radix-ui/react-tabs",
+            "@radix-ui/react-tooltip",
+          ],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
   },
   test: {
     globals: true,

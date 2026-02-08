@@ -4,6 +4,7 @@ import { Header } from "./components/Header";
 import { TemplateGrid } from "./components/TemplateGrid";
 import { StepIndicator } from "./components/StepIndicator";
 import { Wizard } from "./components/Wizard";
+import { ToastContainer } from "./components/Toast";
 import { useWizardStore, useEditorStore } from "./store";
 
 // Lazy load Editor to reduce initial bundle size
@@ -181,6 +182,8 @@ function App() {
           <p>© 2024 Blueprint Generator</p>
         </div>
       </footer>
+
+      <ToastContainer />
     </div>
   );
 }
