@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
 import { FormEvent, useEffect, useRef } from "react";
 import { FORM_LIMITS, ANIMATION } from "../../config/constants";
@@ -89,95 +89,235 @@ export function StepInfo() {
         {/* Project Name */}
         <div>
           <div className="flex justify-between items-center">
-            <label htmlFor="projectName" className="label">
+            <label
+              htmlFor="projectName"
+              className="label flex items-center gap-2"
+            >
               Project Name{" "}
               <span className="text-accent-pink" aria-hidden="true">
                 *
               </span>
+              <AnimatePresence>
+                {projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN && (
+                  <motion.span
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                    className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-accent-emerald/20 text-accent-emerald"
+                    aria-label="Project name is valid"
+                  >
+                    <svg
+                      className="w-3 h-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={3}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </label>
             <span
-              className={`text-xs ${
-                projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD
-                  ? "text-accent-pink"
-                  : "text-dark-500"
+              className={`text-xs tabular-nums transition-colors duration-200 ${
+                projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN
+                  ? "text-accent-emerald"
+                  : projectName.length >
+                      FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD
+                    ? "text-accent-pink"
+                    : "text-dark-500"
               }`}
             >
               {projectName.length}/{FORM_LIMITS.PROJECT_NAME.MAX}
             </span>
           </div>
-          <input
-            ref={projectNameInputRef}
-            id="projectName"
-            name="projectName"
-            type="text"
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-            placeholder="my-awesome-project"
-            className={`input-field transition-colors duration-200 ${
-              projectName.length >= FORM_LIMITS.PROJECT_NAME.MAX
-                ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20"
-                : projectName.length >
-                    FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD
-                  ? "border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20"
-                  : ""
-            }`}
-            maxLength={FORM_LIMITS.PROJECT_NAME.MAX}
-            required
-            aria-required="true"
-            aria-describedby={
-              projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD
-                ? "projectName-warning"
-                : undefined
-            }
-          />
-          {projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD && (
-            <p
-              id="projectName-warning"
-              role="status"
-              className="text-xs text-accent-pink mt-1"
-            >
-              Approaching character limit
-            </p>
-          )}
+          <div className="relative">
+            <input
+              ref={projectNameInputRef}
+              id="projectName"
+              name="projectName"
+              type="text"
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+              placeholder="my-awesome-project"
+              className={`input-field transition-colors duration-200 ${
+                projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN
+                  ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20"
+                  : projectName.length >= FORM_LIMITS.PROJECT_NAME.MAX
+                    ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20"
+                    : projectName.length >
+                        FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD
+                      ? "border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20"
+                      : ""
+              }`}
+              maxLength={FORM_LIMITS.PROJECT_NAME.MAX}
+              required
+              aria-required="true"
+              aria-describedby={
+                projectName.length >
+                  FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
+                projectName.length < FORM_LIMITS.PROJECT_NAME.MAX
+                  ? "projectName-warning"
+                  : undefined
+              }
+            />
+            <AnimatePresence>
+              {projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN && (
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0, opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
+                >
+                  <div className="w-6 h-6 rounded-full bg-accent-emerald/20 flex items-center justify-center">
+                    <svg
+                      className="w-4 h-4 text-accent-emerald"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+          {projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
+            projectName.length < FORM_LIMITS.PROJECT_NAME.MAX && (
+              <p
+                id="projectName-warning"
+                role="status"
+                className="text-xs text-accent-pink mt-1"
+              >
+                Approaching character limit
+              </p>
+            )}
         </div>
 
         {/* Description */}
         <div>
-          <label htmlFor="description" className="label">
-            Project Description{" "}
-            <span className="text-accent-pink" aria-hidden="true">
-              *
+          <div className="flex justify-between items-center">
+            <label
+              htmlFor="description"
+              className="label flex items-center gap-2"
+            >
+              Project Description{" "}
+              <span className="text-accent-pink" aria-hidden="true">
+                *
+              </span>
+              <AnimatePresence>
+                {description.length >= FORM_LIMITS.DESCRIPTION.MIN && (
+                  <motion.span
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                    className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-accent-emerald/20 text-accent-emerald"
+                    aria-label="Description is valid"
+                  >
+                    <svg
+                      className="w-3 h-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={3}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </label>
+            <span
+              className={`text-xs tabular-nums transition-colors duration-200 ${
+                description.length >= FORM_LIMITS.DESCRIPTION.MIN
+                  ? "text-accent-emerald"
+                  : description.length > 0
+                    ? "text-yellow-500"
+                    : "text-dark-500"
+              }`}
+            >
+              {description.length}/{FORM_LIMITS.DESCRIPTION.MAX}
             </span>
-            <span className="text-dark-500 ml-2">
-              ({description.length}/{FORM_LIMITS.DESCRIPTION.MAX})
-            </span>
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Describe what your project does, its main purpose, and key functionality..."
-            className={`textarea-field h-32 transition-colors duration-200 ${
-              isDescriptionInvalid
-                ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20"
-                : description.length >= FORM_LIMITS.DESCRIPTION.MIN &&
-                    description.length < FORM_LIMITS.DESCRIPTION.MIN + 10
-                  ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20"
-                  : ""
-            }`}
-            maxLength={FORM_LIMITS.DESCRIPTION.MAX}
-            required
-            aria-required="true"
-            aria-invalid={isDescriptionInvalid}
-            aria-describedby={
-              isDescriptionInvalid ? "description-error" : "description-hint"
-            }
-          />
+          </div>
+          <div className="relative">
+            <textarea
+              id="description"
+              name="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Describe what your project does, its main purpose, and key functionality..."
+              className={`textarea-field h-32 transition-colors duration-200 ${
+                description.length >= FORM_LIMITS.DESCRIPTION.MIN
+                  ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20 pr-12"
+                  : isDescriptionInvalid
+                    ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20"
+                    : description.length > 0
+                      ? "border-yellow-500/50 focus:border-yellow-500 focus:ring-yellow-500/20"
+                      : ""
+              }`}
+              maxLength={FORM_LIMITS.DESCRIPTION.MAX}
+              required
+              aria-required="true"
+              aria-invalid={isDescriptionInvalid}
+              aria-describedby={
+                isDescriptionInvalid
+                  ? "description-error"
+                  : description.length > 0 &&
+                      description.length < FORM_LIMITS.DESCRIPTION.MIN
+                    ? "description-hint"
+                    : undefined
+              }
+            />
+            <AnimatePresence>
+              {description.length >= FORM_LIMITS.DESCRIPTION.MIN && (
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0, opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                  className="absolute right-3 top-3 pointer-events-none"
+                >
+                  <div className="w-6 h-6 rounded-full bg-accent-emerald/20 flex items-center justify-center">
+                    <svg
+                      className="w-4 h-4 text-accent-emerald"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
           {!isDescriptionInvalid &&
             description.length > 0 &&
             description.length < FORM_LIMITS.DESCRIPTION.MIN && (
-              <p id="description-hint" className="text-xs text-dark-500 mt-1">
+              <p id="description-hint" className="text-xs text-yellow-500 mt-1">
                 {FORM_LIMITS.DESCRIPTION.MIN - description.length} more
                 characters needed
               </p>
