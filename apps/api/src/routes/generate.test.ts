@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import generateRoute from "./generate";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV, MOCK_ENV_NO_KEY } from "../test-utils";
+import type { ErrorResponse } from "../errors";
 
 // Mock the services
 vi.mock("../services/openai", () => ({
@@ -46,7 +47,7 @@ describe("POST /generate", () => {
     );
 
     expect(res.status).toBe(400);
-    const data = await res.json();
+    const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
     expect(data.error).toHaveProperty("type", "validation");
     expect(data.error).toHaveProperty("timestamp");
@@ -67,7 +68,7 @@ describe("POST /generate", () => {
       MOCK_ENV,
     );
     expect(res.status).toBe(400);
-    const data = await res.json();
+    const data = (await res.json()) as ErrorResponse;
     expect(data.error).toHaveProperty("type", "validation");
   });
 
@@ -109,7 +110,7 @@ describe("POST /generate", () => {
     );
 
     expect(res.status).toBe(500);
-    const data = await res.json();
+    const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
     expect(data.error).toHaveProperty("type", "configuration");
     expect(data.error).toHaveProperty(

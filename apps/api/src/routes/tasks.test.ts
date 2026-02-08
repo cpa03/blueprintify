@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import tasksRoute from "./tasks";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
+import type { ErrorResponse } from "../errors";
 
 // Mock the services
 vi.mock("../services/openai", () => ({
@@ -36,7 +37,7 @@ describe("POST /tasks", () => {
     );
 
     expect(res.status).toBe(400);
-    const data = await res.json();
+    const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
     expect(data.error).toHaveProperty("type", "validation");
   });
