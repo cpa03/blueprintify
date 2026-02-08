@@ -21,6 +21,7 @@
 
 1. **Issue #30**: [FRONTEND] Implement Real-time Markdown Rendering Component
 2. **Issue #31**: [FRONTEND] Implement Split-Pane View (Editor)
+3. **Issue #174**: TASK-M1-001: Complete M1 Foundation & Core Loop (NEW)
 
 #### Recently Completed
 
@@ -155,6 +156,6 @@
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2026-02-05  
+**Last Updated**: 2026-02-08  
 **Next Review**: After M1 Completion  
 **Maintainer**: Software Architect (The Orchestrator)

@@ -6,6 +6,21 @@
 
 ### Critical Path Tasks
 
+#### TASK-M1-001: Complete M1 Foundation & Core Loop
+
+- **Issue**: #174
+- **Assignee**: Frontend Engineer
+- **Priority**: Critical
+- **Estimated**: 2-3 days (including #30, #31)
+- **Dependencies**: TASK-007, TASK-008
+- **Status**: **ACTIVE** - M1 completion tracker
+- **Acceptance**:
+  - Issues #30 and #31 completed
+  - End-to-end user flow functional
+  - Real-time generation visible in UI
+  - Generated markdown renders correctly
+  - All M1 success criteria met
+
 #### TASK-006: Tech Stack Selection Form (Wizard Step 2)
 
 - **Issue**: #28
@@ -21,10 +36,11 @@
 #### TASK-007: Split-Pane View (Editor)
 
 - **Issue**: #31
-- **Assignee**: Unassigned
-- **Priority**: High
+- **Assignee**: Frontend Engineer
+- **Priority**: Critical
 - **Estimated**: 6-8 hours
 - **Dependencies**: STEP-001 complete
+- **Status**: **M1 BLOCKER** - Required for M1 completion
 - **Acceptance**:
   - Resizable split-pane layout
   - Code editor component integration
@@ -33,10 +49,11 @@
 #### TASK-008: Real-time Markdown Rendering
 
 - **Issue**: #30
-- **Assignee**: Unassigned
+- **Assignee**: Frontend Engineer
 - **Priority**: Critical
 - **Estimated**: 4-5 hours
 - **Dependencies**: STEP-001 complete
+- **Status**: **M1 BLOCKER** - Required for M1 completion
 - **Acceptance**:
   - Parse markdown to HTML
   - Syntax highlighting for code blocks
@@ -398,6 +415,6 @@
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2026-02-05  
+**Last Updated**: 2026-02-08  
 **Next Review**: Daily stand-up during M1  
 **Maintainer**: Software Architect (The Orchestrator)
