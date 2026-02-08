@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
 import {
@@ -9,6 +10,7 @@ import {
 import clsx from "clsx";
 
 export function StepStack() {
+  const [isShaking, setIsShaking] = useState(false);
   const techStack = useWizardStore((s) => s.techStack);
   const addTechStack = useWizardStore((s) => s.addTechStack);
   const removeTechStack = useWizardStore((s) => s.removeTechStack);
@@ -18,6 +20,15 @@ export function StepStack() {
   const categories = Object.entries(TECH_STACK_OPTIONS);
 
   const canProceed = techStack.length >= MIN_REQUIREMENTS.TECH_STACK;
+
+  const handleNextClick = () => {
+    if (canProceed) {
+      nextStep();
+    } else {
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 400);
+    }
+  };
 
   const isSelected = (name: string) => techStack.some((t) => t.name === name);
 
@@ -110,10 +121,17 @@ export function StepStack() {
                 <button
                   key={tech.name}
                   onClick={() => toggleTech(tech)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      toggleTech(tech);
+                    }
+                  }}
                   aria-pressed={isSelected(tech.name)}
                   className={clsx(
                     "tech-chip",
                     isSelected(tech.name) && "selected",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950",
                   )}
                 >
                   {isSelected(tech.name) && (
@@ -200,9 +218,9 @@ export function StepStack() {
           Back
         </button>
         <button
-          onClick={nextStep}
+          onClick={handleNextClick}
           disabled={!canProceed}
-          className="btn-primary flex items-center gap-2"
+          className={`btn-primary flex items-center gap-2 ${isShaking ? "shake-animation" : ""}`}
         >
           Next: Add Features
           <svg

@@ -1,11 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
-import { FormEvent, useEffect, useRef } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { FORM_LIMITS, ANIMATION } from "../../config/constants";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 
 export function StepInfo() {
   const projectNameInputRef = useRef<HTMLInputElement>(null);
+  const [isShaking, setIsShaking] = useState(false);
   const projectName = useWizardStore((s) => s.projectName);
   const description = useWizardStore((s) => s.description);
   const targetAudience = useWizardStore((s) => s.targetAudience);
@@ -53,6 +54,10 @@ export function StepInfo() {
     e.preventDefault();
     if (canProceed) {
       nextStep();
+    } else {
+      // Trigger shake animation for visual feedback
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 400);
     }
   };
 
@@ -377,7 +382,7 @@ export function StepInfo() {
           <button
             type="submit"
             disabled={!canProceed}
-            className="btn-primary flex items-center gap-2"
+            className={`btn-primary flex items-center gap-2 ${isShaking ? "shake-animation" : ""}`}
           >
             Next: Choose Tech Stack
             <svg
