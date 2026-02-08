@@ -28,6 +28,7 @@
 [x] Hono Context typing issues with validatedData - Fixed: added proper type parameterization
 [x] Multiple linting warnings (unused vars, unreachable code, unnecessary escapes) - Fixed: cleaned up code
 [x] any type in retry.ts - Fixed: changed to unknown with type assertions
+[x] Unused import `BaseContext` in base.controller.ts causing lint warning - Fixed: removed unused import from apps/api/src/controllers/base.controller.ts
 
 ### Architectural Issues (NEW - 2026-02-06)
 
