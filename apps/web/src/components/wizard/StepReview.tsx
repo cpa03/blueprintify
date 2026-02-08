@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 import { useWizardStore } from "../../store";
 import { useBlueprintStream } from "../../hooks/useBlueprintStream";
+import { GENERATION_ESTIMATES } from "../../config/constants";
 
 export function StepReview() {
   const wizard = useWizardStore();
   const setStep = useWizardStore((s) => s.setStep);
-  const { startGeneration, isGenerating } = useBlueprintStream();
+  const { startGeneration, isGenerating, progress } = useBlueprintStream();
 
   return (
     <motion.div
@@ -155,9 +156,9 @@ export function StepReview() {
               </button>
             </div>
             <ul className="space-y-2">
-              {wizard.features.map((feature, index) => (
+              {wizard.features.map((feature) => (
                 <li
-                  key={index}
+                  key={feature}
                   className="flex items-center gap-2 text-dark-200"
                 >
                   <svg
@@ -206,7 +207,8 @@ export function StepReview() {
               comprehensive{" "}
               <code className="text-primary-300">blueprint.md</code> and{" "}
               <code className="text-primary-300">task.md</code> for your
-              project. This usually takes 30-60 seconds.
+              project. This usually takes{" "}
+              {GENERATION_ESTIMATES.TYPICAL_DURATION_SECONDS} seconds.
             </p>
           </div>
         </div>
@@ -233,35 +235,49 @@ export function StepReview() {
           </svg>
           Back
         </button>
-        <button
-          onClick={startGeneration}
-          disabled={isGenerating || !wizard.projectName || !wizard.description}
-          className="btn-primary flex items-center gap-2 animate-glow disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isGenerating ? (
-            <>
-              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-              Generating...
-            </>
-          ) : (
-            <>
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-              Generate Blueprint
-            </>
+        <div className="flex flex-col items-end gap-2">
+          <button
+            onClick={startGeneration}
+            disabled={
+              isGenerating || !wizard.projectName || !wizard.description
+            }
+            className="btn-primary flex items-center gap-2 animate-glow disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isGenerating ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                Generating...
+              </>
+            ) : (
+              <>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg>
+                Generate Blueprint
+              </>
+            )}
+          </button>
+          {isGenerating && progress && (
+            <motion.span
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-xs text-primary-400 flex items-center gap-1.5"
+            >
+              <span className="w-1.5 h-1.5 bg-primary-400 rounded-full animate-pulse" />
+              {progress}
+            </motion.span>
           )}
-        </button>
+        </div>
       </div>
     </motion.div>
   );

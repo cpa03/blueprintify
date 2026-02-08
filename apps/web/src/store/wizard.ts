@@ -19,7 +19,7 @@ interface WizardStore extends WizardState {
   removeTechStack: (name: string) => void;
   setTechStack: (items: TechStackItemType[]) => void;
   addFeature: (feature: string) => void;
-  removeFeature: (index: number) => void;
+  removeFeature: (featureOrIndex: string | number) => void;
   clearFeatures: () => void;
   setTargetAudience: (audience: string) => void;
   setConstraints: (constraints: string) => void;
@@ -90,8 +90,14 @@ export const useWizardStore = create<WizardStore>()(
         }
       },
 
-      removeFeature: (index) => {
-        set({ features: get().features.filter((_, i) => i !== index) });
+      removeFeature: (featureOrIndex) => {
+        if (typeof featureOrIndex === "number") {
+          set({
+            features: get().features.filter((_, i) => i !== featureOrIndex),
+          });
+        } else {
+          set({ features: get().features.filter((f) => f !== featureOrIndex) });
+        }
       },
 
       clearFeatures: () => set({ features: [] }),

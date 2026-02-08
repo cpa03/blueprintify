@@ -1,7 +1,11 @@
 import { motion } from "framer-motion";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
-import { CATEGORY_ICONS, MIN_REQUIREMENTS } from "../../config/constants";
+import {
+  CATEGORY_ICONS,
+  MIN_REQUIREMENTS,
+  ANIMATION,
+} from "../../config/constants";
 import clsx from "clsx";
 
 export function StepStack() {
@@ -36,6 +40,12 @@ export function StepStack() {
     }
   };
 
+  const minRequired = MIN_REQUIREMENTS.TECH_STACK;
+  const progressPercentage = Math.min(
+    (techStack.length / minRequired) * 100,
+    100,
+  );
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -44,12 +54,36 @@ export function StepStack() {
       className="space-y-6"
     >
       <div>
-        <h2 className="text-2xl font-bold text-white mb-2">
-          Choose your tech stack
-        </h2>
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-2xl font-bold text-white">
+            Choose your tech stack
+          </h2>
+          <div className="flex items-center gap-2 text-sm">
+            <div className="w-24 h-2 bg-dark-700 rounded-full overflow-hidden">
+              <motion.div
+                className={`h-full transition-colors duration-300 ${
+                  canProceed
+                    ? "bg-gradient-to-r from-accent-emerald to-primary-500"
+                    : "bg-gradient-to-r from-primary-500 to-accent-purple"
+                }`}
+                initial={{ width: 0 }}
+                animate={{ width: `${progressPercentage}%` }}
+                transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
+              />
+            </div>
+            <span
+              className={`tabular-nums ${
+                canProceed ? "text-accent-emerald" : "text-dark-400"
+              }`}
+            >
+              {techStack.length}/{minRequired}
+            </span>
+          </div>
+        </div>
         <p className="text-dark-400">
-          Select the technologies you plan to use. This helps generate accurate
-          architecture.
+          Select at least {minRequired} technology
+          {minRequired !== 1 ? "ies" : "y"} to proceed. This helps generate
+          accurate architecture.
         </p>
       </div>
 
