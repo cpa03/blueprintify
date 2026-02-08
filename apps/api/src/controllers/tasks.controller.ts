@@ -8,7 +8,8 @@ import type { TasksContext } from "../types";
 
 export class TasksController extends BaseController {
   async generateTasks(c: TasksContext): Promise<Response> {
-    const { blueprint, projectName } = c.get("validatedData");
+    this.validateEnvironment(c);
+    const { blueprint, projectName } = this.getValidatedData(c);
     const config = this.createAIConfig(c);
 
     const userPrompt = buildTaskPrompt(blueprint, projectName);
