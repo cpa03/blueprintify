@@ -22,9 +22,10 @@
 
 - **Issue**: #31
 - **Assignee**: Unassigned
-- **Priority**: High
+- **Priority**: Critical (M1 Blocker)
 - **Estimated**: 6-8 hours
 - **Dependencies**: STEP-001 complete
+- **Status**: ACTIVE - IN PROGRESS
 - **Acceptance**:
   - Resizable split-pane layout
   - Code editor component integration
@@ -34,9 +35,10 @@
 
 - **Issue**: #30
 - **Assignee**: Unassigned
-- **Priority**: Critical
+- **Priority**: Critical (M1 Blocker)
 - **Estimated**: 4-5 hours
 - **Dependencies**: STEP-001 complete
+- **Status**: ACTIVE - IN PROGRESS
 - **Acceptance**:
   - Parse markdown to HTML
   - Syntax highlighting for code blocks
@@ -375,11 +377,13 @@
 
 ### M1 Completion Checklist
 
-- [ ] All critical path tasks complete
-- [ ] End-to-end user flow working
-- [ ] All tests passing
-- [ ] Performance benchmarks met
-- [ ] Documentation updated
+- [x] Wizard UI complete (100% - All 5 steps functional)
+- [ ] Real-time Markdown Rendering (Issue #30) - M1 Blocker
+- [ ] Split-Pane Editor View (Issue #31) - M1 Blocker
+- [x] All CI tests passing (Issue #141) - RESOLVED ✅
+- [ ] End-to-end user flow working (Dependent on #30, #31)
+- [x] Performance benchmarks met (Issue #75) - COMPLETED ✅
+- [x] Documentation updated (Issue #153) - COMPLETED ✅
 
 ### M2 Completion Checklist
 
