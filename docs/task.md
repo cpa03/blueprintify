@@ -296,6 +296,22 @@
   - [x] Performance baseline established
   - [x] Recommendations documented
 
+### Performance Validation
+
+#### PERF-M1: M1 Performance Validation & Benchmarks
+
+- **Issue**: #165
+- **Assignee**: Performance Engineer
+- **Priority**: High
+- **Estimated**: 4-6 hours
+- **Dependencies**: Issues #30, #31 complete
+- **Acceptance**:
+  - Measure and document current performance metrics
+  - Validate streaming API response times under load
+  - Test real-time markdown rendering performance
+  - Establish baseline metrics for M2 planning
+  - Document performance recommendations
+
 ### Testing Coverage
 
 #### TEST-001: Frontend Test Suite Implementation
