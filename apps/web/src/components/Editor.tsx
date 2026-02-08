@@ -5,7 +5,12 @@ import { markdown } from "@codemirror/lang-markdown";
 import { oneDark } from "@codemirror/theme-one-dark";
 import ReactMarkdown from "react-markdown";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
-import { useEditorStore, useWizardStore, resetAllStores } from "../store";
+import {
+  useEditorStore,
+  useWizardStore,
+  resetAllStores,
+  useToast,
+} from "../store";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { TIMEOUTS, DEFAULT_PROJECT_NAME } from "../config/constants";
 import clsx from "clsx";
@@ -13,6 +18,7 @@ import clsx from "clsx";
 export function Editor() {
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [copied, setCopied] = useState<string | null>(null);
+  const toast = useToast();
 
   const activeTab = useEditorStore((s) => s.activeTab);
   const setActiveTab = useEditorStore((s) => s.setActiveTab);
@@ -34,6 +40,7 @@ export function Editor() {
     if (success) {
       setCopied(activeTab);
       setTimeout(() => setCopied(null), TIMEOUTS.COPY_FEEDBACK);
+      toast.success("Copied to clipboard");
     }
   };
 
@@ -43,10 +50,12 @@ export function Editor() {
       tasks: tasksContent,
       projectName: projectName || DEFAULT_PROJECT_NAME,
     });
+    toast.success("Exported as ZIP");
   };
 
   const handleNewProject = () => {
     resetAllStores();
+    toast.info("Started new project");
   };
 
   const hasContent = blueprintContent.length > 0 || tasksContent.length > 0;
