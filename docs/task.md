@@ -75,6 +75,30 @@
 
 ## Completed Tasks Log
 
+### 2026-02-08 - Agent Work Session (ULTRAWORK MODE)
+
+**[CONNECT] Live Generation Progress Indicator**
+
+- Added real-time progress indicator to StepReview component
+- Shows live status updates during blueprint generation (e.g., "Generating blueprint...", "Blueprint complete. Generating tasks...")
+- Animated progress message with pulsing indicator for better UX
+- Users now have visibility into generation stages instead of static spinner
+- PR: #148
+
+**[CONSOLIDATE] Centralized Generation Time Estimate**
+
+- Moved hardcoded "30-60 seconds" text from StepReview to constants
+- Added `GENERATION_ESTIMATES` constant object with typical duration values
+- Improves maintainability and allows easy adjustment of time estimates
+
+**[CONSOLIDATE] Extracted Shared API Retry Wrapper**
+
+- Identified ~150 lines of duplicated retry logic across `generateBlueprint`, `generateTasks`, and `refineContent`
+- Created shared `apiCallWithRetry` wrapper function in `apps/web/src/lib/api.ts`
+- All three API functions now use the consolidated wrapper
+- Reduced code duplication and improved maintainability
+- All 8 API tests pass with consolidated implementation
+
 ### 2026-02-07 - Agent Work Session (ULTRAWORK MODE)
 
 **[CONNECT] Form Progress UX Enhancement**
