@@ -152,7 +152,7 @@
     @apply bg-accent-emerald;
   }
 
-  /* Markdown content */
+  /* Enhanced Markdown content */
   .markdown-content {
     @apply prose prose-invert prose-sm max-w-none;
   }
@@ -178,15 +178,64 @@
   }
 
   .markdown-content code {
-    @apply px-1.5 py-0.5 bg-dark-800 rounded text-primary-300 text-sm font-mono;
+    @apply px-1.5 py-0.5 bg-dark-800 rounded text-primary-400 text-sm font-mono;
   }
 
   .markdown-content pre {
-    @apply bg-dark-900 rounded-lg p-4 overflow-x-auto mb-4;
+    @apply bg-dark-900 rounded-lg overflow-x-auto mb-4 relative;
   }
 
   .markdown-content pre code {
     @apply bg-transparent p-0;
+  }
+
+  /* Syntax highlighter overrides */
+  .markdown-content .react-syntax-highlighter {
+    @apply !bg-transparent !rounded-lg;
+  }
+
+  .markdown-content .react-syntax-highlighter pre {
+    @apply !bg-transparent !p-0 !m-0;
+  }
+
+  .markdown-content .react-syntax-highlighter code {
+    @apply !bg-transparent !p-4 font-mono text-sm leading-relaxed;
+  }
+
+  .markdown-content .token.comment {
+    @apply text-dark-500 italic;
+  }
+
+  .markdown-content .token.string {
+    @apply text-emerald-400;
+  }
+
+  .markdown-content .token.number {
+    @apply text-purple-400;
+  }
+
+  .markdown-content .token.keyword {
+    @apply text-primary-400 font-semibold;
+  }
+
+  .markdown-content .token.function {
+    @apply text-yellow-400;
+  }
+
+  .markdown-content .token.variable {
+    @apply text-pink-400;
+  }
+
+  .markdown-content .token.operator {
+    @apply text-dark-300;
+  }
+
+  .markdown-content .token.class-name {
+    @apply text-cyan-400;
+  }
+
+  .markdown-content .linenumber {
+    @apply text-dark-600 pr-4 select-none;
   }
 }
 

@@ -91,12 +91,12 @@ function App() {
           <StepIndicator />
 
           {/* Split Pane Layout */}
-          <div className="flex gap-6 min-h-[600px]">
+          <div className="flex flex-col lg:flex-row gap-6 min-h-[600px]">
             {/* Wizard Panel */}
             <motion.div
               layout
               className={`glass-card overflow-hidden transition-all duration-300 ${
-                showEditor ? "w-1/2" : "w-full"
+                showEditor ? "w-full lg:w-1/2" : "w-full"
               }`}
             >
               <Wizard />
@@ -109,12 +109,11 @@ function App() {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
-                  className="w-1/2 glass-card overflow-hidden relative"
+                  className="w-full lg:w-1/2 glass-card overflow-hidden relative"
                 >
-                  {/* Toggle button */}
                   <button
                     onClick={() => setShowEditor(false)}
-                    className="absolute top-4 right-4 z-10 btn-ghost"
+                    className="hidden lg:flex absolute top-4 right-4 z-10 btn-ghost"
                     title="Hide editor"
                   >
                     <svg
@@ -131,6 +130,27 @@ function App() {
                       />
                     </svg>
                   </button>
+
+                  <button
+                    onClick={() => setShowEditor(false)}
+                    className="lg:hidden absolute top-4 right-4 z-10 btn-ghost bg-dark-800/90 backdrop-blur-sm"
+                    title="Hide editor"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+
                   <Suspense
                     fallback={
                       <div className="h-full flex items-center justify-center text-dark-500">

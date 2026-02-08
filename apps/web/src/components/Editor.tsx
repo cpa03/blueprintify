@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import CodeMirror from "@uiw/react-codemirror";
 import { markdown } from "@codemirror/lang-markdown";
 import { oneDark } from "@codemirror/theme-one-dark";
-import ReactMarkdown from "react-markdown";
+import { MarkdownRenderer } from "./MarkdownRenderer";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
 import {
   useEditorStore,
@@ -86,14 +86,14 @@ export function Editor() {
             </div>
           </div>
         ) : (
-          <div className="h-full flex">
+          <div className="h-full flex flex-col lg:flex-row">
             {/* Code Editor */}
             {(viewMode === "edit" || viewMode === "split") && (
               <div
                 className={clsx(
                   "h-full overflow-hidden",
                   viewMode === "split"
-                    ? "w-1/2 border-r border-dark-700"
+                    ? "w-full lg:w-1/2 lg:border-r lg:border-dark-700 border-b border-dark-700 lg:border-b-0"
                     : "w-full",
                 )}
               >
@@ -118,15 +118,13 @@ export function Editor() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className={clsx(
-                  "h-full overflow-y-auto p-6",
-                  viewMode === "split" ? "w-1/2" : "w-full",
+                  "h-full overflow-y-auto p-4 lg:p-6",
+                  viewMode === "split" ? "w-full lg:w-1/2" : "w-full",
                 )}
               >
-                <div className="markdown-content">
-                  <ReactMarkdown>
-                    {currentContent || "*No content yet...*"}
-                  </ReactMarkdown>
-                </div>
+                <MarkdownRenderer
+                  content={currentContent || "*No content yet...*"}
+                />
               </motion.div>
             )}
           </div>
