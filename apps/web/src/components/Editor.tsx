@@ -58,6 +58,11 @@ export function Editor() {
     toast.info("Started new project");
   };
 
+  const handleImportComplete = (result: any) => {
+    toast.success("Blueprint imported successfully");
+    setActiveTab("blueprint");
+  };
+
   const hasContent = blueprintContent.length > 0 || tasksContent.length > 0;
 
   return (
@@ -73,6 +78,7 @@ export function Editor() {
         onNew={handleNewProject}
         hasContent={hasContent}
         copied={copied}
+        onImportComplete={handleImportComplete}
       />
 
       {/* Editor Content */}

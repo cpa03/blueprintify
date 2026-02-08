@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import type { EditorTab } from "@blueprint/shared";
+import { ExportImportButtons } from "./ExportImportButtons";
 
 export type ViewMode = "edit" | "preview" | "split";
 
@@ -12,6 +13,7 @@ interface EditorToolbarProps {
   onNew: () => void;
   hasContent: boolean;
   copied: string | null;
+  onImportComplete?: (result: any) => void;
 }
 
 export function EditorToolbar({
@@ -23,6 +25,7 @@ export function EditorToolbar({
   onNew,
   hasContent,
   copied,
+  onImportComplete,
 }: EditorToolbarProps) {
   return (
     <div className="flex items-center gap-2">
@@ -71,6 +74,11 @@ export function EditorToolbar({
       >
         📦 Export .zip
       </button>
+
+      <ExportImportButtons
+        hasContent={hasContent}
+        onImportComplete={onImportComplete}
+      />
 
       {/* New Project */}
       <button

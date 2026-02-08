@@ -8,6 +8,9 @@ export {
   TemplateSchema,
   StreamChunkSchema,
   GenerationResultSchema,
+  BlueprintExportSchema,
+  BlueprintExportV090Schema,
+  CURRENT_SCHEMA_VERSION,
   TECH_STACK_OPTIONS,
 } from "./schema";
 
@@ -27,6 +30,8 @@ export type {
   StreamCallbacks,
   EditorTab,
   EditorState,
+  BlueprintExport,
+  BlueprintExportV090,
 } from "./types";
 
 // ===== Templates =====

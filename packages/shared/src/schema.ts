@@ -129,6 +129,43 @@ export const GenerationResultSchema = z.object({
   generatedAt: z.string(),
 });
 
+// ===== Blueprint Export/Import Schemas =====
+export const CURRENT_SCHEMA_VERSION = "1.0.0";
+
+export const BlueprintExportSchema = z.object({
+  version: z.string().min(1, "Schema version is required"),
+  exportedAt: z.string(),
+  projectName: z.string().min(1, "Project name is required"),
+  description: z.string().min(1, "Description is required"),
+  techStack: z
+    .array(TechStackItem)
+    .min(1, "At least one technology is required"),
+  features: z.array(z.string()).optional(),
+  targetAudience: z.string().optional(),
+  constraints: z.string().optional(),
+  blueprintContent: z.string().min(1, "Blueprint content is required"),
+  tasksContent: z.string().optional(),
+  metadata: z
+    .object({
+      generator: z.string().default("Blueprintify"),
+      platform: z.string().default("Web"),
+      userAgent: z.string().optional(),
+    })
+    .optional(),
+});
+
+// Legacy schema support for v0.9.0 (if needed in future)
+export const BlueprintExportV090Schema = BlueprintExportSchema.omit({
+  metadata: true,
+  version: true,
+}).extend({
+  version: z.literal("0.9.0").optional(),
+  exportedAt: z.string().optional(),
+});
+
+export type BlueprintExport = z.infer<typeof BlueprintExportSchema>;
+export type BlueprintExportV090 = z.infer<typeof BlueprintExportV090Schema>;
+
 // ===== Success Response Schema =====
 export const SuccessResponseSchema = z.object({
   success: z.literal(true),

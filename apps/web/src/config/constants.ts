@@ -85,6 +85,7 @@ export const RETRYABLE_STATUS_CODES = [408, 429, 500, 502, 503, 504] as const;
 export const EXPORT_CONFIG = {
   ZIP_COMPRESSION_LEVEL: 6,
   COPY_TEXTAREA_OFFSET: -9999,
+  MAX_IMPORT_FILE_SIZE: 10 * 1024 * 1024, // 10MB
 } as const;
 
 // Suggested features for quick add
