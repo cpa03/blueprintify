@@ -10,6 +10,7 @@ export default [
       "**/dist/**",
       "**/node_modules/**",
       ".opencode/**",
+      "scripts/**",
       "**/*.config.js",
       "**/*.config.ts",
     ],
