@@ -298,7 +298,7 @@
 
 #### TEST-001: Frontend Test Suite Implementation
 
-- **Issue**: #79
+- **Issue**: #156
 - **Assignee**: Quality Assurance Engineer
 - **Priority**: Critical
 - **Estimated**: 2-3 days

@@ -28,6 +28,11 @@
 - **Issue #97**: TASK-102: Complete Basic Wizard UI Implementation (All Steps) ✅
 - **Issue #119**: [FRONTEND] Implement Review & Generate Form (Wizard Step 3) ✅
 - **Issue #136**: Update M1 Progress - Wizard Step 3 Completed ✅
+- **Issue #141**: TASK-M1-001: Ensure All CI Tests Passing for M1 Completion ✅
+
+#### Quality Assurance
+
+- **Issue #156**: TEST-001: Frontend Test Suite Implementation - NEW
 
 #### Parallel Work
 
@@ -39,6 +44,10 @@
 - **Issue #21**: [REFACTOR] Extract EditorToolbar from Editor.tsx
 - **Issue #22**: [REFACTOR] Move API Route Logic to Controllers
 - **Issue #40**: [PERF] Optimize React Component Re-renders
+
+### Critical Completion Requirements
+
+- **Issue #156**: TEST-001: Frontend Test Suite Implementation - REQUIRED FOR M1
 
 ---
 
