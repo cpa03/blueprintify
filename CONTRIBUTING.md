@@ -15,16 +15,16 @@ Thank you for your interest in contributing to Blueprintify! This guide will hel
 
 1. **Fork and Clone**
 
-````bash
-    git clone https://github.com/cpa03/blueprintify.git
-    cd blueprintify
-    ```
+   ```bash
+   git clone https://github.com/cpa03/blueprintify.git
+   cd blueprintify
+   ```
 
 2. **Install Dependencies**
 
    ```bash
    npm install
-````
+   ```
 
 3. **Environment Setup**
 
