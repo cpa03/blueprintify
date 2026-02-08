@@ -1,7 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import type { Mock } from "vitest";
 import { Editor } from "./Editor";
 import { useEditorStore, useWizardStore } from "../store";
+import type { EditorStore } from "../store/editor";
+import type { WizardStore } from "../store/wizard";
 
 vi.mock("../store", () => ({
   useEditorStore: vi.fn(),
@@ -44,8 +47,8 @@ vi.mock("../config/constants", () => ({
   DEFAULT_PROJECT_NAME: "Test Project",
 }));
 
-const mockEditorStore = {
-  activeTab: "blueprint" as const,
+const mockEditorStore: EditorStore = {
+  activeTab: "blueprint",
   blueprintContent: "",
   tasksContent: "",
   isDirty: false,
@@ -63,8 +66,8 @@ const mockEditorStore = {
   reset: vi.fn(),
 };
 
-const mockWizardStore = {
-  currentStep: "info",
+const mockWizardStore: WizardStore = {
+  currentStep: "info" as const,
   projectName: "Test Project",
   description: "",
   techStack: [],
@@ -91,11 +94,11 @@ const mockWizardStore = {
 describe("Editor", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (useEditorStore as any).mockImplementation((selector: any) =>
-      selector(mockEditorStore),
+    (useEditorStore as unknown as Mock).mockImplementation(
+      (selector: (state: EditorStore) => unknown) => selector(mockEditorStore),
     );
-    (useWizardStore as any).mockImplementation((selector: any) =>
-      selector(mockWizardStore),
+    (useWizardStore as unknown as Mock).mockImplementation(
+      (selector: (state: WizardStore) => unknown) => selector(mockWizardStore),
     );
   });
 
@@ -128,7 +131,7 @@ describe("Editor", () => {
   });
 
   it("displays tasks content when tasks tab is active", () => {
-    mockEditorStore.activeTab = "tasks" as any;
+    mockEditorStore.activeTab = "tasks";
     mockEditorStore.tasksContent = "# Tasks Content";
     render(<Editor />);
 

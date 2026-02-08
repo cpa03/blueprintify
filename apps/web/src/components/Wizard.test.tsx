@@ -1,7 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import type { Mock } from "vitest";
 import { Wizard } from "./Wizard";
 import { useWizardStore, useEditorStore } from "../store";
+import type { WizardStore } from "../store/wizard";
+import type { EditorStore } from "../store/editor";
 
 vi.mock("../store", () => ({
   useWizardStore: vi.fn(),
@@ -61,8 +64,14 @@ vi.mock("../wizard/StepGenerating", () => ({
   ),
 }));
 
-const mockWizardStore = {
-  currentStep: "info",
+const mockWizardStore: WizardStore = {
+  currentStep: "info" as const,
+  projectName: "",
+  description: "",
+  techStack: [],
+  features: [],
+  targetAudience: "",
+  constraints: "",
   setStep: vi.fn(),
   nextStep: vi.fn(),
   prevStep: vi.fn(),
@@ -80,8 +89,8 @@ const mockWizardStore = {
   loadTemplate: vi.fn(),
 };
 
-const mockEditorStore = {
-  activeTab: "blueprint" as const,
+const mockEditorStore: EditorStore = {
+  activeTab: "blueprint",
   blueprintContent: "",
   tasksContent: "",
   isDirty: false,
@@ -102,11 +111,11 @@ const mockEditorStore = {
 describe("Wizard", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (useWizardStore as any).mockImplementation((selector: any) =>
-      selector(mockWizardStore),
+    (useWizardStore as unknown as Mock).mockImplementation(
+      (selector: (state: WizardStore) => unknown) => selector(mockWizardStore),
     );
-    (useEditorStore as any).mockImplementation((selector: any) =>
-      selector(mockEditorStore),
+    (useEditorStore as unknown as Mock).mockImplementation(
+      (selector: (state: EditorStore) => unknown) => selector(mockEditorStore),
     );
   });
 
@@ -142,7 +151,7 @@ describe("Wizard", () => {
   });
 
   it("renders StepInfo as default for unknown steps", () => {
-    mockWizardStore.currentStep = "unknown" as any;
+    mockWizardStore.currentStep = "unknown" as WizardStore["currentStep"];
     render(<Wizard />);
     expect(screen.getByTestId("step-info")).toBeInTheDocument();
   });

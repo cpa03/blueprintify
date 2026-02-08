@@ -8,7 +8,7 @@ import type {
 import { WIZARD_STEPS } from "../config/constants";
 
 // ===== Wizard Store =====
-interface WizardStore extends WizardState {
+export interface WizardStore extends WizardState {
   // Actions
   setStep: (step: WizardStep) => void;
   nextStep: () => void;

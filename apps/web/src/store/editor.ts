@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 import type { EditorTab } from "@blueprint/shared";
 
 // ===== Editor Store =====
-interface EditorStore {
+export interface EditorStore {
   activeTab: EditorTab;
   blueprintContent: string;
   tasksContent: string;
