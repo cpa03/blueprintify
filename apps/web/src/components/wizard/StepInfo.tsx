@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
 import { FormEvent, useEffect, useRef } from "react";
 import { FORM_LIMITS, ANIMATION } from "../../config/constants";
+import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 
 export function StepInfo() {
   const projectNameInputRef = useRef<HTMLInputElement>(null);
@@ -14,6 +15,12 @@ export function StepInfo() {
   const setTargetAudience = useWizardStore((s) => s.setTargetAudience);
   const setConstraints = useWizardStore((s) => s.setConstraints);
   const nextStep = useWizardStore((s) => s.nextStep);
+
+  useAutoSaveToast(
+    [projectName, description, targetAudience, constraints],
+    "Project info saved",
+    2000,
+  );
 
   const canProceed =
     projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN &&
