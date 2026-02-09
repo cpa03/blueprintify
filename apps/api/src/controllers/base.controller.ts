@@ -3,6 +3,7 @@ import { createSSEResponse, createStreamFromGenerator } from "../utils/stream";
 import { ConfigurationError } from "../errors";
 import type { ValidatedContext, ControllerContext } from "../types";
 import type { z } from "zod";
+import { CONFIG_MESSAGES } from "../config/constants";
 
 export abstract class BaseController {
   protected createAIConfig(c: ControllerContext): AIConfig {
@@ -13,7 +14,7 @@ export abstract class BaseController {
     };
 
     if (!config.apiKey) {
-      throw new ConfigurationError("OpenAI API key not configured");
+      throw new ConfigurationError(CONFIG_MESSAGES.OPENAI_API_KEY_MISSING);
     }
 
     return config;
@@ -31,7 +32,7 @@ export abstract class BaseController {
   ): z.infer<T> {
     const data = c.get("validatedData");
     if (!data) {
-      throw new Error("Validated data not found in context");
+      throw new Error(CONFIG_MESSAGES.VALIDATED_DATA_NOT_FOUND);
     }
     return data;
   }
