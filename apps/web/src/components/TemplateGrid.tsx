@@ -148,7 +148,7 @@ export function TemplateGrid() {
                       </span>
                     ))}
                     {template.techStack.length > 3 && (
-                      <span className="px-2 py-0.5 text-xs bg-dark-800 rounded text-dark-400">
+                      <span className="px-2 py-0.5 text-xs bg-dark-800 rounded text-dark-300">
                         +{template.techStack.length - 3}
                       </span>
                     )}

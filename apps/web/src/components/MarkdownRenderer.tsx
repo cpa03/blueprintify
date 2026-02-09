@@ -21,13 +21,22 @@ export function MarkdownRenderer({
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeHighlight]}
         components={{
-          code({ node, inline, className, children, ...props }: any) {
+          code({
+            inline,
+            className,
+            children,
+            ...props
+          }: {
+            inline?: boolean;
+            className?: string;
+            children?: React.ReactNode;
+          }) {
             const match = /language-(\w+)/.exec(className || "");
             const language = match ? match[1] : "";
 
             return !inline && match ? (
               <div className="relative my-4">
-                <div className="absolute top-0 right-0 px-3 py-1 text-xs text-dark-400 bg-dark-800 rounded-bl-md">
+                <div className="absolute top-0 right-0 px-3 py-1 text-xs text-dark-300 bg-dark-800 rounded-bl-md">
                   {language}
                 </div>
                 <SyntaxHighlighter

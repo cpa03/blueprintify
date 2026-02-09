@@ -33,7 +33,7 @@ export function EditorToolbar({
             key={mode}
             onClick={() => setViewMode(mode)}
             className={clsx(
-              "px-3 py-1.5 rounded text-xs font-medium transition-all",
+              "px-4 py-2 rounded text-xs font-medium transition-all min-w-[44px] min-h-[44px] flex items-center justify-center",
               viewMode === mode
                 ? "bg-dark-600 text-white"
                 : "text-dark-400 hover:text-white",
