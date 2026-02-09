@@ -172,6 +172,12 @@ The system includes reusable skills for common tasks:
 - **[API Documentation](./docs/api-documentation.md)** - Comprehensive API reference and examples
 - **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute to the project
 
+### 🆘 Support & Troubleshooting
+
+- **[FAQ](./docs/faq.md)** - Frequently asked questions and common solutions
+- **[Troubleshooting Guide](./docs/troubleshooting.md)** - Step-by-step solutions for common issues
+- **[Quick Reference](./docs/quick-reference.md)** - Essential commands and workflows for rapid development
+
 ### 🛠️ Development Resources
 
 - **[Development Workflow](./docs/development-workflow.md)** - Complete development process overview
