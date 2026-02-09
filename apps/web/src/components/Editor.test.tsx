@@ -9,6 +9,12 @@ import type { WizardStore } from "../store/wizard";
 vi.mock("../store", () => ({
   useEditorStore: vi.fn(),
   useWizardStore: vi.fn(),
+  useToast: vi.fn(() => ({
+    success: vi.fn(),
+    info: vi.fn(),
+    warning: vi.fn(),
+    error: vi.fn(),
+  })),
   resetAllStores: vi.fn(),
 }));
 
