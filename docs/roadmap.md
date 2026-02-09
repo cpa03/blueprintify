@@ -21,6 +21,8 @@
 
 1. **Issue #31**: [FRONTEND] Implement Split-Pane View (Editor) - IN PROGRESS
 2. **Issue #179**: [FRONTEND] Complete M1 Foundation - Split-Pane Integration & Validation - IN PROGRESS
+3. **Issue #198**: [FRONTEND] Validate M1 Completion Readiness - OPEN
+4. **Issue #206**: [ARCHITECT] M1 Foundation Completion Validation - OPEN
 
 #### Recently Completed
 
@@ -32,6 +34,11 @@
 - **Issue #148**: Live Generation Progress Indicator ✅
 - **Issue #167**: Performance Validation & Benchmarks ✅
 - **Issue #156**: Frontend Test Suite Implementation ✅
+
+#### Recently Created (2026-02-09)
+
+- **Issue #206**: TASK-M1-004: Validate M1 Foundation Completion Readiness ✅
+- **Issue #207**: TASK-M2-003: Design Refinement Workflow Architecture ✅
 
 #### Parallel Work
 

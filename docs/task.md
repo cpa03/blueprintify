@@ -215,6 +215,22 @@
   - [ ] Refinement workflow architecture planned
   - [ ] Export/import specifications complete
 
+#### TASK-M2-003: Design Refinement Workflow Architecture ✅ CREATED
+
+- **Issue**: #207
+- **Assignee**: API Specialist
+- **Priority**: High
+- **Status**: Open
+- **Estimated**: 1-2 days
+- **Dependencies**: M1 complete
+- **Acceptance**:
+  - [x] Issue created with comprehensive technical design
+  - [ ] Section-based regeneration workflow designed
+  - [ ] Context preservation architecture defined
+  - [ ] API extensions for refinement specified
+  - [ ] State management schema documented
+  - [ ] Integration points with existing components identified
+
 ### Planned Tasks
 
 #### TASK-009: LocalStorage Implementation
