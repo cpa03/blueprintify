@@ -13,6 +13,7 @@ interface EditorHeaderProps {
   onNew: () => void;
   hasContent: boolean;
   copied: string | null;
+  isExporting?: boolean;
 }
 
 export type { ViewMode };
@@ -27,6 +28,7 @@ export function EditorHeader({
   onNew,
   hasContent,
   copied,
+  isExporting = false,
 }: EditorHeaderProps) {
   return (
     <div className="flex items-center justify-between p-4 border-b border-dark-700">
@@ -72,6 +74,7 @@ export function EditorHeader({
         onNew={onNew}
         hasContent={hasContent}
         copied={copied}
+        isExporting={isExporting}
       />
     </div>
   );
