@@ -22,10 +22,11 @@
 #### TASK-007: Split-Pane View (Editor)
 
 - **Issue**: #31
-- **Assignee**: Unassigned
-- **Priority**: High
+- **Assignee**: Frontend Engineer
+- **Priority**: Critical
 - **Estimated**: 6-8 hours
-- **Dependencies**: STEP-001 complete
+- **Dependencies**: TASK-008 complete
+- **Status**: IN PROGRESS
 - **Acceptance**:
   - Resizable split-pane layout
   - Code editor component integration
