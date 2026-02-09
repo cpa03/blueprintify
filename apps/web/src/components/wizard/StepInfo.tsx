@@ -171,13 +171,11 @@ export function StepInfo() {
               maxLength={FORM_LIMITS.PROJECT_NAME.MAX}
               required
               aria-required="true"
-              aria-describedby={
-                projectName.length >
-                  FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
-                projectName.length < FORM_LIMITS.PROJECT_NAME.MAX
-                  ? "projectName-warning"
-                  : undefined
-              }
+              {...(projectName.length >
+                FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
+              projectName.length < FORM_LIMITS.PROJECT_NAME.MAX
+                ? { "aria-describedby": "projectName-warning" }
+                : {})}
             />
             <AnimatePresence>
               {projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN && (
@@ -289,14 +287,12 @@ export function StepInfo() {
               required
               aria-required="true"
               aria-invalid={isDescriptionInvalid}
-              aria-describedby={
-                isDescriptionInvalid
-                  ? "description-error"
-                  : description.length > 0 &&
-                      description.length < FORM_LIMITS.DESCRIPTION.MIN
-                    ? "description-hint"
-                    : undefined
-              }
+              {...(isDescriptionInvalid
+                ? { "aria-describedby": "description-error" }
+                : description.length > 0 &&
+                    description.length < FORM_LIMITS.DESCRIPTION.MIN
+                  ? { "aria-describedby": "description-hint" }
+                  : {})}
             />
             <AnimatePresence>
               {description.length >= FORM_LIMITS.DESCRIPTION.MIN && (

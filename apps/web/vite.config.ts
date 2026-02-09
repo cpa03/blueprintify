@@ -41,9 +41,19 @@ export default defineConfig({
             "@radix-ui/react-tooltip",
           ],
         },
+        assetFileNames: (assetInfo) => {
+          const name = assetInfo.name ?? "";
+          if (/\.(png|jpe?g|gif|svg|webp|ico)$/i.test(name)) {
+            return "assets/img/[name]-[hash][extname]";
+          }
+          return "assets/[name]-[hash][extname]";
+        },
+        chunkFileNames: "assets/[name]-[hash].js",
+        entryFileNames: "assets/[name]-[hash].js",
       },
     },
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 600,
+    cssCodeSplit: true,
   },
   test: {
     globals: true,
