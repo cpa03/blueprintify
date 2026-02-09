@@ -1,5 +1,5 @@
 {
-  "version": "1.0.3",
+  "version": "1.0.4",
   "last_updated": "2026-02-09",
   "dispatch_type": "unique_roles_priority",
   "agents": [
@@ -227,6 +227,23 @@
         "Selective Regeneration",
         "Delta Comparison Algorithms",
         "User Intent Detection"
+      ]
+    },
+    {
+      "id": "blueprint-orchestrator-20260209",
+      "role": "Blueprint Orchestrator",
+      "focus": "End-to-end workflow coordination across generation, persistence, and refinement",
+      "priority": "HIGH",
+      "assignedTask": "TASK-M2-001",
+      "taskTitle": "Prepare M2 Refinement & Persistence Phase",
+      "issue": "#194",
+      "estimated": "4-6 hours",
+      "skills": [
+        "Workflow Orchestration",
+        "Cross-system Integration",
+        "Architecture Planning",
+        "Persistence Strategy",
+        "Refinement Pipeline Design"
       ]
     }
   ],
@@ -459,6 +476,20 @@
         "Cross-phase compatibility",
         "Technical specification drafting",
         "Dependency mapping"
+      ]
+    },
+    {
+      "role_id": "blueprint-orchestrator",
+      "specialization": "End-to-End Workflow Coordination",
+      "core_expertise": "Blueprint generation, persistence, and refinement orchestration",
+      "primary_task": "TASK-M2-001",
+      "supporting_tasks": ["TASK-009", "TASK-104", "TASK-105"],
+      "unique_skills": [
+        "Cross-component workflow coordination",
+        "Persistence strategy architecture",
+        "Refinement pipeline design",
+        "Export/import system integration",
+        "Milestone transition management"
       ]
     }
   ],
