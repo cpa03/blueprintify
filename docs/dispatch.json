@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "last_updated": "2026-02-09",
   "dispatch_type": "unique_roles_priority",
   "agents": [
@@ -180,6 +180,23 @@
       ]
     },
     {
+      "id": "m2-planner-2026",
+      "role": "M2 Phase Architecture Planner",
+      "focus": "Refinement & Persistence phase preparation, localStorage schema design",
+      "priority": "HIGH",
+      "assignedTask": "TASK-M2-001",
+      "taskTitle": "Prepare M2 Refinement & Persistence Phase",
+      "issue": "#184",
+      "estimated": "4-6 hours",
+      "skills": [
+        "Technical Documentation",
+        "Schema Design",
+        "Architecture Planning",
+        "Specification Writing",
+        "Milestone Coordination"
+      ]
+    },
+    {
       "id": "typescript-specialist-TS-001",
       "role": "Type Safety Enhancement Engineer",
       "focus": "Hono Context typing, generic type definitions",
@@ -269,6 +286,21 @@
       ]
     },
     {
+      "task_id": "TASK-M2-001",
+      "title": "Prepare M2 Refinement & Persistence Phase",
+      "priority": "High",
+      "status": "OPEN",
+      "assigned_role": "m2-planner-2026",
+      "issue": "#184",
+      "estimated": "4-6 hours",
+      "acceptance_criteria": [
+        "M2 task list validated and prioritized",
+        "localStorage schema designed and documented",
+        "Refinement workflow architecture planned",
+        "Export/import specifications complete"
+      ]
+    },
+    {
       "task_id": "TEST-001",
       "title": "Frontend Test Suite Implementation",
       "priority": "Critical",
@@ -317,6 +349,7 @@
     },
     "dependencies": {
       "TASK-102": ["TASK-006", "TASK-008"],
+      "TASK-M2-001": ["M1 complete"],
       "TASK-103": ["TASK-007", "TASK-009"],
       "TASK-104": ["TASK-103"],
       "TASK-105": ["TASK-009"],
@@ -387,6 +420,20 @@
         "Version diff strategies",
         "Conflict resolution",
         "Rollback mechanisms"
+      ]
+    },
+    {
+      "role_id": "milestone-pioneer",
+      "specialization": "Phase Transition Architecture",
+      "core_expertise": "M2 Refinement & Persistence planning",
+      "primary_task": "TASK-M2-001",
+      "supporting_tasks": ["All M2 tasks"],
+      "unique_skills": [
+        "Milestone gap analysis",
+        "Schema versioning design",
+        "Cross-phase compatibility",
+        "Technical specification drafting",
+        "Dependency mapping"
       ]
     }
   ],
