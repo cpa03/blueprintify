@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { EditorTab } from "@blueprint/shared";
+import { STORAGE_KEYS, GENERATION_MESSAGES } from "../config/constants";
 
 // ===== Editor Store =====
 export interface EditorStore {
@@ -63,7 +64,7 @@ export const useEditorStore = create<EditorStore>()(
       cancelGeneration: () =>
         set({
           isGenerating: false,
-          generationProgress: "Generation cancelled",
+          generationProgress: GENERATION_MESSAGES.CANCELLED,
         }),
 
       reset: () =>
@@ -76,7 +77,7 @@ export const useEditorStore = create<EditorStore>()(
         }),
     }),
     {
-      name: "blueprint-editor",
+      name: STORAGE_KEYS.EDITOR,
       partialize: (state) => ({
         blueprintContent: state.blueprintContent,
         tasksContent: state.tasksContent,

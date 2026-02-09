@@ -1,18 +1,19 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useToastStore, type ToastType } from "../store/toast";
+import { TOAST_CONFIG } from "../config/constants";
 
 const toastIcons: Record<ToastType, string> = {
-  success: "✓",
-  error: "✕",
-  warning: "⚠",
-  info: "ℹ",
+  success: TOAST_CONFIG.ICONS.SUCCESS,
+  error: TOAST_CONFIG.ICONS.ERROR,
+  warning: TOAST_CONFIG.ICONS.WARNING,
+  info: TOAST_CONFIG.ICONS.INFO,
 };
 
 const toastStyles: Record<ToastType, string> = {
-  success: "bg-accent-emerald/10 border-accent-emerald/30 text-accent-emerald",
-  error: "bg-accent-pink/10 border-accent-pink/30 text-accent-pink",
-  warning: "bg-yellow-500/10 border-yellow-500/30 text-yellow-400",
-  info: "bg-primary-500/10 border-primary-500/30 text-primary-300",
+  success: TOAST_CONFIG.STYLES.SUCCESS,
+  error: TOAST_CONFIG.STYLES.ERROR,
+  warning: TOAST_CONFIG.STYLES.WARNING,
+  info: TOAST_CONFIG.STYLES.INFO,
 };
 
 export function ToastContainer() {

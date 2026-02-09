@@ -160,3 +160,54 @@ export const API_ENDPOINTS = {
   REFINE: "/refine",
   HEALTH: "/",
 } as const;
+
+// Toast configuration
+export const TOAST_CONFIG = {
+  DEFAULT_DURATION: 3000,
+  SUCCESS_DURATION: 2000,
+  AUTO_SAVE_DURATION: 2000,
+  ICONS: {
+    SUCCESS: "✓",
+    ERROR: "✕",
+    WARNING: "⚠",
+    INFO: "ℹ",
+  } as const,
+  STYLES: {
+    SUCCESS:
+      "bg-accent-emerald/10 border-accent-emerald/30 text-accent-emerald",
+    ERROR: "bg-accent-pink/10 border-accent-pink/30 text-accent-pink",
+    WARNING: "bg-yellow-500/10 border-yellow-500/30 text-yellow-400",
+    INFO: "bg-primary-500/10 border-primary-500/30 text-primary-300",
+  } as const,
+} as const;
+
+// Auto-save configuration
+export const AUTO_SAVE_CONFIG = {
+  DEFAULT_MESSAGE: "Changes saved",
+  DEFAULT_DELAY: 1000,
+} as const;
+
+// Document title configuration
+export const DOCUMENT_TITLE_CONFIG = {
+  APP_NAME: "Blueprintify",
+  SEPARATOR: " | ",
+  DEFAULT_TITLE: "Blueprintify",
+} as const;
+
+// LocalStorage keys
+export const STORAGE_KEYS = {
+  WIZARD: "blueprint-wizard",
+  EDITOR: "blueprint-editor",
+} as const;
+
+// Generation messages
+export const GENERATION_MESSAGES = {
+  CANCELLED: "Generation cancelled",
+  BLUEPRINT_START: "Generating blueprint...",
+  BLUEPRINT_COMPLETE: "Blueprint complete. Generating tasks...",
+  COMPLETE: "Complete!",
+  RETRY: (attempt: number, maxRetries: number) =>
+    `Connection issue, retrying (${attempt}/${maxRetries})...`,
+  ERROR: (error: string) => `Error: ${error}`,
+  ERROR_TASKS: (error: string) => `Error generating tasks: ${error}`,
+} as const;
