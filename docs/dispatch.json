@@ -1,6 +1,6 @@
 {
-  "version": "1.0.1",
-  "last_updated": "2026-02-08",
+  "version": "1.0.2",
+  "last_updated": "2026-02-09",
   "dispatch_type": "unique_roles_priority",
   "agents": [
     {
@@ -196,6 +196,110 @@
       ]
     }
   ],
+  "current_priority_tasks": [
+    {
+      "task_id": "TASK-006",
+      "title": "Tech Stack Selection Form (Wizard Step 2)",
+      "priority": "Critical",
+      "status": "OPEN",
+      "assigned_role": "tech-stack-wizard-006",
+      "issue": "#28",
+      "estimated": "4-6 hours",
+      "acceptance_criteria": [
+        "Multi-select interface for tech stack",
+        "Integration with shared schemas",
+        "Form validation with error handling"
+      ]
+    },
+    {
+      "task_id": "TASK-007",
+      "title": "Split-Pane View (Editor)",
+      "priority": "High",
+      "status": "OPEN",
+      "assigned_role": "splitpane-specialist-007",
+      "issue": "#31",
+      "estimated": "6-8 hours",
+      "acceptance_criteria": [
+        "Resizable split-pane layout",
+        "Code editor component integration",
+        "Sync with markdown preview"
+      ]
+    },
+    {
+      "task_id": "TASK-008",
+      "title": "Real-time Markdown Rendering",
+      "priority": "Critical",
+      "status": "OPEN",
+      "assigned_role": "markdown-streaming-008",
+      "issue": "#30",
+      "estimated": "4-5 hours",
+      "acceptance_criteria": [
+        "Parse markdown to HTML",
+        "Syntax highlighting for code blocks",
+        "Real-time updates during generation"
+      ]
+    },
+    {
+      "task_id": "TASK-102",
+      "title": "Complete Basic Wizard UI Implementation (All Steps)",
+      "priority": "Critical",
+      "status": "OPEN",
+      "assigned_role": "wizard-integration-102",
+      "issue": "#97",
+      "estimated": "8-10 hours",
+      "acceptance_criteria": [
+        "All 3 wizard steps functional",
+        "Form validation working across all steps",
+        "Navigation between steps preserved",
+        "Integration with shared Zod schemas"
+      ]
+    },
+    {
+      "task_id": "TASK-REF-06",
+      "title": "Move API Route Logic to Controllers",
+      "priority": "High",
+      "status": "OPEN",
+      "assigned_role": "api-service-architect-REF-06",
+      "issue": "#22",
+      "estimated": "4-6 hours",
+      "acceptance_criteria": [
+        "Service layer pattern implemented",
+        "Route handlers simplified",
+        "All tests passing"
+      ]
+    },
+    {
+      "task_id": "TEST-001",
+      "title": "Frontend Test Suite Implementation",
+      "priority": "Critical",
+      "status": "OPEN",
+      "assigned_role": "frontend-test-architect-TEST-001",
+      "issue": "#79",
+      "estimated": "2-3 days",
+      "acceptance_criteria": [
+        "Add Vitest configuration for frontend testing",
+        "Create component tests for: Wizard, Editor, Header, StepIndicator",
+        "Add integration tests for: Complete user flow",
+        "Set up test coverage thresholds in CI pipeline"
+      ]
+    },
+    {
+      "task_id": "TS-001",
+      "title": "Controller Type Safety Improvements",
+      "priority": "High",
+      "status": "OPEN",
+      "assigned_role": "typescript-specialist-TS-001",
+      "issue": "#80",
+      "estimated": "2-4 hours",
+      "acceptance_criteria": [
+        "Define proper Hono Context types",
+        "Update BaseController to use typed Context parameter",
+        "Remove all `any` usages in controller layer",
+        "Ensure type safety is maintained across all controllers"
+      ]
+    }
+  ],
+  ],
   "dispatch_rules": {
     "assignment": {
       "criteria": ["skill_match", "priority", "dependencies"],
@@ -304,6 +408,7 @@
       "Component-driven development approach"
     ],
     "priority_dispatch_rationale": "High/Critical priority tasks selected based on M1 milestone completion requirements. Unique roles created with specialized expertise beyond generalist agents to ensure efficient task execution with minimal coordination overhead.",
+    "last_priority_analysis": "2026-02-09",
     "completed_tasks": [
       {
         "id": "TASK-REF-05",
