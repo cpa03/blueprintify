@@ -18,6 +18,7 @@ import clsx from "clsx";
 export function Editor() {
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [copied, setCopied] = useState<string | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
   const toast = useToast();
 
   const activeTab = useEditorStore((s) => s.activeTab);
@@ -45,12 +46,24 @@ export function Editor() {
   };
 
   const handleExport = async () => {
-    await exportAsZip({
-      blueprint: blueprintContent,
-      tasks: tasksContent,
-      projectName: projectName || DEFAULT_PROJECT_NAME,
-    });
-    toast.success("Exported as ZIP");
+    setIsExporting(true);
+    try {
+      const wizardData = useWizardStore.getState();
+      await exportAsZip({
+        blueprint: blueprintContent,
+        tasks: tasksContent,
+        projectName: projectName || DEFAULT_PROJECT_NAME,
+        techStack: wizardData.techStack,
+        description: wizardData.description,
+        features: wizardData.features,
+      });
+      toast.success("Project exported successfully!");
+    } catch (error) {
+      toast.error("Failed to export project");
+      console.error("Export error:", error);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   const handleNewProject = () => {
@@ -73,6 +86,7 @@ export function Editor() {
         onNew={handleNewProject}
         hasContent={hasContent}
         copied={copied}
+        isExporting={isExporting}
       />
 
       {/* Editor Content */}

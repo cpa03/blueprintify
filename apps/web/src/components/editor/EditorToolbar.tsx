@@ -12,6 +12,7 @@ interface EditorToolbarProps {
   onNew: () => void;
   hasContent: boolean;
   copied: string | null;
+  isExporting?: boolean;
 }
 
 export function EditorToolbar({
@@ -23,6 +24,7 @@ export function EditorToolbar({
   onNew,
   hasContent,
   copied,
+  isExporting = false,
 }: EditorToolbarProps) {
   return (
     <div className="flex items-center gap-2">
@@ -65,11 +67,18 @@ export function EditorToolbar({
       {/* Export button */}
       <button
         onClick={onExport}
-        disabled={!hasContent}
-        className="btn-secondary text-sm"
+        disabled={!hasContent || isExporting}
+        className="btn-secondary text-sm relative"
         aria-label="📦 Export .zip"
       >
-        📦 Export .zip
+        {isExporting ? (
+          <>
+            <span className="animate-spin mr-2">⚙️</span>
+            Generating...
+          </>
+        ) : (
+          <>📦 Export .zip</>
+        )}
       </button>
 
       {/* New Project */}
