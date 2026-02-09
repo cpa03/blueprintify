@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import CodeMirror from "@uiw/react-codemirror";
 import { markdown } from "@codemirror/lang-markdown";
@@ -19,6 +19,8 @@ export function Editor() {
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [copied, setCopied] = useState<string | null>(null);
   const toast = useToast();
+  const editorRef = useRef<any>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
 
   const activeTab = useEditorStore((s) => s.activeTab);
   const setActiveTab = useEditorStore((s) => s.setActiveTab);
@@ -60,6 +62,59 @@ export function Editor() {
 
   const hasContent = blueprintContent.length > 0 || tasksContent.length > 0;
 
+  useEffect(() => {
+    if (viewMode !== "split" || !editorRef.current || !previewRef.current)
+      return;
+
+    const editorView = editorRef.current.view;
+    const previewElement = previewRef.current;
+
+    const handleEditorScroll = () => {
+      if (!editorView || !previewElement) return;
+
+      const editorScrollTop = editorView.scrollDOM.scrollTop;
+      const editorScrollHeight =
+        editorView.scrollDOM.scrollHeight - editorView.scrollDOM.clientHeight;
+      const scrollPercentage =
+        editorScrollHeight > 0 ? editorScrollTop / editorScrollHeight : 0;
+
+      const previewScrollHeight =
+        previewElement.scrollHeight - previewElement.clientHeight;
+      const previewScrollTop = scrollPercentage * previewScrollHeight;
+
+      previewElement.scrollTop = previewScrollTop;
+    };
+
+    const handlePreviewScroll = () => {
+      if (!editorView || !previewElement) return;
+
+      const previewScrollTop = previewElement.scrollTop;
+      const previewScrollHeight =
+        previewElement.scrollHeight - previewElement.clientHeight;
+      const scrollPercentage =
+        previewScrollHeight > 0 ? previewScrollTop / previewScrollHeight : 0;
+
+      const editorScrollHeight =
+        editorView.scrollDOM.scrollHeight - editorView.scrollDOM.clientHeight;
+      const editorScrollTop = scrollPercentage * editorScrollHeight;
+
+      editorView.scrollDOM.scrollTop = editorScrollTop;
+    };
+
+    const editorScrollDOM = editorView.scrollDOM;
+    editorScrollDOM.addEventListener("scroll", handleEditorScroll, {
+      passive: true,
+    });
+    previewElement.addEventListener("scroll", handlePreviewScroll, {
+      passive: true,
+    });
+
+    return () => {
+      editorScrollDOM.removeEventListener("scroll", handleEditorScroll);
+      previewElement.removeEventListener("scroll", handlePreviewScroll);
+    };
+  }, [viewMode, currentContent]);
+
   return (
     <div className="h-full flex flex-col">
       {/* Editor Header */}
@@ -98,6 +153,7 @@ export function Editor() {
                 )}
               >
                 <CodeMirror
+                  ref={editorRef}
                   value={currentContent}
                   onChange={setCurrentContent}
                   extensions={[markdown()]}
@@ -108,6 +164,7 @@ export function Editor() {
                     foldGutter: true,
                     highlightActiveLine: true,
                   }}
+                  height="100%"
                 />
               </div>
             )}
@@ -115,6 +172,7 @@ export function Editor() {
             {/* Preview */}
             {(viewMode === "preview" || viewMode === "split") && (
               <motion.div
+                ref={previewRef}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className={clsx(
