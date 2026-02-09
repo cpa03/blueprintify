@@ -211,6 +211,23 @@
         "TypeScript Strict Mode",
         "API Type Contracts"
       ]
+    },
+    {
+      "id": "blueprint-lifecycle-20260209",
+      "role": "Blueprint Lifecycle Architect",
+      "focus": "Content refinement, selective regeneration, context preservation",
+      "priority": "HIGH",
+      "assignedTask": "TASK-104",
+      "taskTitle": "Blueprint Refinement Workflow",
+      "issue": "#100",
+      "estimated": "6-8 hours",
+      "skills": [
+        "Content Refinement Systems",
+        "Context Preservation",
+        "Selective Regeneration",
+        "Delta Comparison Algorithms",
+        "User Intent Detection"
+      ]
     }
   ],
   "current_priority_tasks": [
@@ -316,7 +333,7 @@
       ]
     },
     {
-      "task_id": "TS-001",
+"task_id": "TS-001",
       "title": "Controller Type Safety Improvements",
       "priority": "High",
       "status": "OPEN",
@@ -329,32 +346,40 @@
         "Remove all `any` usages in controller layer",
         "Ensure type safety is maintained across all controllers"
       ]
+    },
+    {
+      "task_id": "TASK-104",
+      "title": "Blueprint Refinement Workflow",
+      "priority": "High",
+      "status": "OPEN",
+      "assigned_role": "blueprint-lifecycle-20260209",
+      "issue": "#100",
+      "estimated": "6-8 hours",
+      "acceptance_criteria": [
+        "Select specific sections for regeneration",
+        "Maintain context during refinement",
+        "Stream regeneration for selected sections",
+        "Preserve manual edits during refinement"
+      ]
     }
   ],
-  ],
-  "dispatch_rules": {
-    "assignment": {
-      "criteria": ["skill_match", "priority", "dependencies"],
-      "max_concurrent_tasks": 4,
-      "escalation": "system-architect"
-    },
-    "collaboration": {
-      "required_for": ["TASK-102"],
-      "partners": [
-        "tech-stack-wizard-006",
-        "markdown-streaming-008",
-        "splitpane-specialist-007"
-      ],
-      "communication": "real-time-sync"
-    },
-    "dependencies": {
-      "TASK-102": ["TASK-006", "TASK-008"],
-      "TASK-M2-001": ["M1 complete"],
-      "TASK-103": ["TASK-007", "TASK-009"],
-      "TASK-104": ["TASK-103"],
-      "TASK-105": ["TASK-009"],
-      "TASK-010": ["All M2 tasks"]
+  "unique_roles": [
+    {
+      "role_id": "blueprint-lifecycle-architect",
+      "specialization": "Blueprint Persistence System Architecture",
+      "core_expertise": "End-to-end blueprint lifecycle with refinement capabilities",
+      "primary_task": "TASK-104",
+      "supporting_tasks": ["TASK-009", "TASK-103"],
+      "unique_skills": [
+        "Selective content regeneration",
+        "Context preservation algorithms",
+        "Delta comparison systems",
+        "User intent detection",
+        "Merge conflict resolution"
+      ]
     }
+  ]
+}
   },
   "unique_roles": [
     {
