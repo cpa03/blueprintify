@@ -28,6 +28,10 @@
 - **Issue #97**: TASK-102: Complete Basic Wizard UI Implementation (All Steps) ✅
 - **Issue #119**: [FRONTEND] Implement Review & Generate Form (Wizard Step 3) ✅
 - **Issue #136**: Update M1 Progress - Wizard Step 3 Completed ✅
+- **Issue #30**: [FRONTEND] Implement Real-time Markdown Rendering ✅
+- **Issue #148**: Live Generation Progress Indicator ✅
+- **Issue #167**: Performance Validation & Benchmarks ✅
+- **Issue #156**: Frontend Test Suite Implementation ✅
 
 #### Parallel Work
 
@@ -100,10 +104,10 @@
 ### M1 Success Criteria
 
 - [x] Users can complete full wizard workflow (5 steps: info, stack, features, review, generating)
-- [ ] Real-time generation visible in UI
-- [ ] Generated markdown renders correctly
-- [ ] Error handling works across all endpoints
-- [ ] All CI tests passing
+- [x] Real-time generation visible in UI
+- [x] Generated markdown renders correctly
+- [x] Error handling works across all endpoints
+- [x] All CI tests passing
 
 ### M2 Success Criteria
 

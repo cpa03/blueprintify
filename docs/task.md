@@ -6,17 +6,18 @@
 
 ### Critical Path Tasks
 
-#### TASK-006: Tech Stack Selection Form (Wizard Step 2)
+#### TASK-006: Tech Stack Selection Form (Wizard Step 2) ✅ COMPLETED
 
 - **Issue**: #28
-- **Assignee**: Unassigned
+- **Assignee**: Frontend Engineer
 - **Priority**: Critical
-- **Estimated**: 4-6 hours
+- **Status**: Complete
+- **Estimated**: 4-6 hours (Completed: 2026-02-08)
 - **Dependencies**: STEP-001 complete
 - **Acceptance**:
-  - Multi-select interface for tech stack
-  - Integration with shared schemas
-  - Form validation with error handling
+  - [x] Multi-select interface for tech stack
+  - [x] Integration with shared schemas
+  - [x] Form validation with error handling
 
 #### TASK-007: Split-Pane View (Editor)
 
@@ -45,18 +46,19 @@
   - [x] GitHub Flavored Markdown support
   - [x] Responsive design implementation
 
-#### TASK-102: Complete Basic Wizard UI Implementation (All Steps)
+#### TASK-102: Complete Basic Wizard UI Implementation (All Steps) ✅ COMPLETED
 
 - **Issue**: #97
-- **Assignee**: Unassigned
+- **Assignee**: Frontend Engineer
 - **Priority**: Critical
-- **Estimated**: 8-10 hours
+- **Status**: Complete
+- **Estimated**: 8-10 hours (Completed: 2026-02-08)
 - **Dependencies**: TASK-006, TASK-008
 - **Acceptance**:
-  - All 3 wizard steps functional
-  - Form validation working across all steps
-  - Navigation between steps preserved
-  - Integration with shared Zod schemas
+  - [x] All 3 wizard steps functional
+  - [x] Form validation working across all steps
+  - [x] Navigation between steps preserved
+  - [x] Integration with shared Zod schemas
 
 ### Infrastructure Tasks
 
@@ -194,14 +196,30 @@
 
 ---
 
-## M2: Refinement & Persistence (PLANNED)
+## M2: Refinement & Persistence (READY TO START)
+
+### Preparation Tasks
+
+#### TASK-M2-001: Prepare M2 Refinement & Persistence Phase
+
+- **Issue**: #184
+- **Assignee**: Technical Writer
+- **Priority**: High
+- **Status**: Open
+- **Estimated**: 4-6 hours
+- **Dependencies**: M1 complete
+- **Acceptance**:
+  - [ ] M2 task list validated and prioritized
+  - [ ] localStorage schema designed and documented
+  - [ ] Refinement workflow architecture planned
+  - [ ] Export/import specifications complete
 
 ### Planned Tasks
 
 #### TASK-009: LocalStorage Implementation
 
-- **Issue**: #89
-- **Assignee**: Unassigned
+- **Issue**: #105
+- **Assignee**: Frontend Engineer
 - **Priority**: High
 - **Estimated**: 6-8 hours
 - **Dependencies**: M1 complete
