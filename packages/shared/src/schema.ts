@@ -100,6 +100,7 @@ export const ErrorTypeSchema = z.enum([
   "network",
   "ai_service",
   "internal",
+  "rate_limit",
 ]);
 
 export const ErrorDetailSchema = z.object({

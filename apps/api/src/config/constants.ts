@@ -63,6 +63,7 @@ export const ERROR_CODES = {
   INTERNAL_ERROR: "INTERNAL_ERROR",
   AUTHENTICATION_ERROR: "AUTHENTICATION_ERROR",
   AUTHORIZATION_ERROR: "AUTHORIZATION_ERROR",
+  RATE_LIMIT_ERROR: "RATE_LIMIT_ERROR",
 } as const;
 
 // Error messages
@@ -75,6 +76,7 @@ export const ERROR_MESSAGES = {
   INTERNAL: "Internal server error",
   AUTHENTICATION: "Authentication required",
   AUTHORIZATION: "Insufficient permissions",
+  RATE_LIMIT: "Rate limit exceeded",
 } as const;
 
 // System prompt configuration
@@ -142,10 +144,31 @@ Output ONLY the refined section, not the entire document.`,
 
 // CORS configuration
 export const CORS_CONFIG = {
-  ORIGIN: "*",
+  ORIGIN:
+    process.env.NODE_ENV === "production"
+      ? process.env.ALLOWED_ORIGINS?.split(",") || [
+          "https://blueprintify.vercel.app",
+        ]
+      : "*",
   ALLOW_METHODS: ["GET", "POST", "OPTIONS"] as string[],
-  ALLOW_HEADERS: ["Content-Type", "Authorization"] as string[],
+  ALLOW_HEADERS: [
+    "Content-Type",
+    "Authorization",
+    "X-Requested-With",
+    "Accept",
+    "Origin",
+  ] as string[],
+  CREDENTIALS: true,
+  MAX_AGE: 86400, // 24 hours
 };
+
+// Rate limiting configuration
+export const RATE_LIMIT_CONFIG = {
+  WINDOW_MS: 15 * 60 * 1000, // 15 minutes
+  MAX_REQUESTS: 100, // 100 requests per window
+  AUTH_WINDOW_MS: 15 * 60 * 1000, // 15 minutes for authenticated users
+  AUTH_MAX_REQUESTS: 1000, // 1000 requests per window for authenticated users
+} as const;
 
 // SSE Stream configuration
 export const SSE_CONFIG = {

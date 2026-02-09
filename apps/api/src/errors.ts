@@ -13,6 +13,7 @@ export enum ErrorType {
   NETWORK = "network",
   AI_SERVICE = "ai_service",
   INTERNAL = "internal",
+  RATE_LIMIT = "rate_limit",
 }
 
 // ===== Error Response Interface =====
@@ -131,6 +132,17 @@ export class AIServiceError extends APIError {
   ) {
     super(ErrorType.AI_SERVICE, message, 502, "AI_SERVICE_ERROR", details);
     this.name = "AIServiceError";
+  }
+}
+
+// ===== Rate Limit Error (429) =====
+export class RateLimitError extends APIError {
+  constructor(
+    message: string = "Rate limit exceeded",
+    details?: Record<string, unknown>,
+  ) {
+    super(ErrorType.RATE_LIMIT, message, 429, "RATE_LIMIT_ERROR", details);
+    this.name = "RateLimitError";
   }
 }
 
