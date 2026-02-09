@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { TOAST_CONFIG } from "../config/constants";
 
 export type ToastType = "success" | "info" | "warning" | "error";
 
@@ -19,12 +20,14 @@ interface ToastStore extends ToastState {
   clearAll: () => void;
 }
 
-const DEFAULT_DURATION = 3000;
-
 export const useToastStore = create<ToastStore>()((set, get) => ({
   toasts: [],
 
-  addToast: (message: string, type: ToastType, duration = DEFAULT_DURATION) => {
+  addToast: (
+    message: string,
+    type: ToastType,
+    duration = TOAST_CONFIG.DEFAULT_DURATION,
+  ) => {
     const id = `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const toast: Toast = { id, message, type, duration };
 

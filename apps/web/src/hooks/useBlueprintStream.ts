@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { useWizardStore, useEditorStore } from "../store";
 import { generateBlueprint, generateTasks } from "../lib/api";
 import type { BlueprintRequest } from "@blueprint/shared";
+import { GENERATION_MESSAGES } from "../config/constants";
 
 export function useBlueprintStream() {
   const wizard = useWizardStore();
@@ -11,7 +12,7 @@ export function useBlueprintStream() {
     // Reset editor state
     editor.reset();
     editor.setIsGenerating(true);
-    editor.setGenerationProgress("Generating blueprint...");
+    editor.setGenerationProgress(GENERATION_MESSAGES.BLUEPRINT_START);
     wizard.setStep("generating");
 
     // Prepare request
@@ -30,11 +31,11 @@ export function useBlueprintStream() {
         editor.appendBlueprintContent(chunk);
       },
       onError: (error) => {
-        editor.setGenerationProgress(`Error: ${error}`);
+        editor.setGenerationProgress(GENERATION_MESSAGES.ERROR(error));
         editor.setIsGenerating(false);
       },
       onDone: async () => {
-        editor.setGenerationProgress("Blueprint complete. Generating tasks...");
+        editor.setGenerationProgress(GENERATION_MESSAGES.BLUEPRINT_COMPLETE);
 
         // Now generate tasks from the blueprint
         const blueprint = useEditorStore.getState().blueprintContent;
@@ -46,16 +47,18 @@ export function useBlueprintStream() {
               editor.appendTasksContent(chunk);
             },
             onError: (error) => {
-              editor.setGenerationProgress(`Error generating tasks: ${error}`);
+              editor.setGenerationProgress(
+                GENERATION_MESSAGES.ERROR_TASKS(error),
+              );
               editor.setIsGenerating(false);
             },
             onDone: () => {
-              editor.setGenerationProgress("Complete!");
+              editor.setGenerationProgress(GENERATION_MESSAGES.COMPLETE);
               editor.setIsGenerating(false);
             },
             onRetry: (attempt, maxRetries) => {
               editor.setGenerationProgress(
-                `Connection issue, retrying (${attempt}/${maxRetries})...`,
+                GENERATION_MESSAGES.RETRY(attempt, maxRetries),
               );
             },
           },
@@ -63,7 +66,7 @@ export function useBlueprintStream() {
       },
       onRetry: (attempt, maxRetries) => {
         editor.setGenerationProgress(
-          `Connection issue, retrying (${attempt}/${maxRetries})...`,
+          GENERATION_MESSAGES.RETRY(attempt, maxRetries),
         );
       },
     });

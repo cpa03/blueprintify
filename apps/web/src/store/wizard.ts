@@ -5,7 +5,7 @@ import type {
   WizardStep,
   TechStackItemType,
 } from "@blueprint/shared";
-import { WIZARD_STEPS } from "../config/constants";
+import { WIZARD_STEPS, STORAGE_KEYS } from "../config/constants";
 
 // ===== Wizard Store =====
 export interface WizardStore extends WizardState {
@@ -118,7 +118,7 @@ export const useWizardStore = create<WizardStore>()(
       },
     }),
     {
-      name: "blueprint-wizard",
+      name: STORAGE_KEYS.WIZARD,
       partialize: (state) => ({
         projectName: state.projectName,
         description: state.description,

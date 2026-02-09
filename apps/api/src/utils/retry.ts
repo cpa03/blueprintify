@@ -1,4 +1,8 @@
-import { RETRY_CONFIG, RETRYABLE_ERROR_CODES } from "../config/constants";
+import {
+  RETRY_CONFIG,
+  RETRYABLE_ERROR_CODES,
+  RETRY_LOGIC,
+} from "../config/constants";
 
 export interface RetryOptions {
   retries?: number;
@@ -57,7 +61,10 @@ function isRetryableError(error: unknown): boolean {
     (error as { response?: { status?: number } }).response?.status;
 
   if (status) {
-    return status === 429 || status >= 500;
+    return (
+      status === RETRY_LOGIC.RATE_LIMIT_STATUS ||
+      status >= RETRY_LOGIC.SERVER_ERROR_THRESHOLD
+    );
   }
 
   const errorCode = (error as { code?: string }).code;
