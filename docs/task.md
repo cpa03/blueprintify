@@ -203,7 +203,7 @@
 
 #### TASK-M2-001: Prepare M2 Refinement & Persistence Phase
 
-- **Issue**: #184
+- **Issue**: #194
 - **Assignee**: Technical Writer
 - **Priority**: High
 - **Status**: Open
