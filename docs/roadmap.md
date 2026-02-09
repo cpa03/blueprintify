@@ -15,12 +15,12 @@
 - **Shared Schemas (Zod)**: ✅ Complete (100%)
 - **API Streaming Endpoint**: ✅ Complete (100%)
 - **Basic Wizard UI**: ✅ Complete (100% - All 5 wizard steps functional)
-- **Real-time Markdown Rendering**: ⚠️ In Progress (Issue #30)
+- **Real-time Markdown Rendering**: ✅ Complete (Issue #30)
 
 #### Critical Path Issues
 
-1. **Issue #30**: [FRONTEND] Implement Real-time Markdown Rendering Component
-2. **Issue #31**: [FRONTEND] Implement Split-Pane View (Editor)
+1. **Issue #31**: [FRONTEND] Implement Split-Pane View (Editor)
+2. **Issue #179**: [FRONTEND] Complete M1 Foundation - Split-Pane Integration & Validation
 
 #### Recently Completed
 
