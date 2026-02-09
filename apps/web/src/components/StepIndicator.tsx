@@ -54,11 +54,6 @@ export function StepIndicator() {
             <motion.button
               onClick={() => isClickable && setStep(step.key)}
               disabled={!isClickable}
-              aria-label={
-                isClickable
-                  ? `${step.label} - Press Alt+${step.shortcut}`
-                  : step.label
-              }
               title={
                 isClickable
                   ? `${step.label} (Alt+${step.shortcut})`

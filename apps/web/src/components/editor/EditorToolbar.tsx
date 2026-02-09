@@ -67,7 +67,7 @@ export function EditorToolbar({
         onClick={onExport}
         disabled={!hasContent}
         className="btn-secondary text-sm"
-        aria-label="Export as zip file"
+        aria-label="📦 Export .zip"
       >
         📦 Export .zip
       </button>

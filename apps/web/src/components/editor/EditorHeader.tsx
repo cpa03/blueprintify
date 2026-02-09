@@ -34,7 +34,10 @@ export function EditorHeader({
         value={activeTab}
         onValueChange={(v) => setActiveTab(v as EditorTab)}
       >
-        <Tabs.List className="flex gap-1 bg-dark-800 p-1 rounded-lg">
+        <Tabs.List
+          className="flex gap-1 bg-dark-800 p-1 rounded-lg"
+          aria-label="Document tabs"
+        >
           <Tabs.Trigger
             value="blueprint"
             className={clsx(
