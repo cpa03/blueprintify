@@ -1,14 +1,106 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
+import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
+import { copyToClipboard } from "../lib/export";
 
 interface MarkdownRendererProps {
   content: string;
   className?: string;
+}
+
+function CodeBlockHeader({
+  language,
+  code,
+}: {
+  language: string;
+  code: string;
+}) {
+  const [copied, setCopied] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleCopy = useCallback(async () => {
+    const success = await copyToClipboard(code);
+    if (success) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  }, [code]);
+
+  return (
+    <div
+      className="absolute top-0 right-0 left-0 flex items-center justify-between px-3 py-2 bg-dark-800/90 backdrop-blur-sm rounded-t-lg border-b border-dark-700/50"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <span className="text-xs text-dark-400 font-mono uppercase tracking-wide">
+        {language}
+      </span>
+      <motion.button
+        onClick={handleCopy}
+        className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500/50"
+        animate={{
+          backgroundColor: copied
+            ? "rgba(16, 185, 129, 0.2)"
+            : isHovered
+              ? "rgba(99, 102, 241, 0.2)"
+              : "rgba(55, 65, 81, 0.5)",
+          color: copied ? "rgb(16, 185, 129)" : "rgb(156, 163, 175)",
+        }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        aria-label={copied ? "Copied to clipboard" : "Copy code to clipboard"}
+        title={copied ? "Copied!" : "Copy code"}
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          {copied ? (
+            <motion.svg
+              key="check"
+              className="w-3.5 h-3.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2.5}
+                d="M5 13l4 4L19 7"
+              />
+            </motion.svg>
+          ) : (
+            <motion.svg
+              key="copy"
+              className="w-3.5 h-3.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+              />
+            </motion.svg>
+          )}
+        </AnimatePresence>
+        <span>{copied ? "Copied!" : "Copy"}</span>
+      </motion.button>
+    </div>
+  );
 }
 
 export function MarkdownRenderer({
@@ -32,23 +124,22 @@ export function MarkdownRenderer({
             children?: React.ReactNode;
           }) {
             const match = /language-(\w+)/.exec(className || "");
-            const language = match ? match[1] : "";
+            const language = match?.[1] ?? "";
+            const codeString = String(children).replace(/\n$/, "");
 
             return !inline && match ? (
-              <div className="relative my-4">
-                <div className="absolute top-0 right-0 px-3 py-1 text-xs text-dark-300 bg-dark-800 rounded-bl-md">
-                  {language}
-                </div>
+              <div className="relative my-4 group">
+                <CodeBlockHeader language={language} code={codeString} />
                 <SyntaxHighlighter
                   style={oneDark}
                   language={language}
                   PreTag="div"
-                  className="!mt-0 !rounded-lg overflow-x-auto"
+                  className="!mt-0 !rounded-t-none !rounded-lg overflow-x-auto pt-12"
                   showLineNumbers
                   wrapLines
                   {...props}
                 >
-                  {String(children).replace(/\n$/, "")}
+                  {codeString}
                 </SyntaxHighlighter>
               </div>
             ) : (
