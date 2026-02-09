@@ -40,8 +40,8 @@ export function EditorHeader({
             className={clsx(
               "px-4 py-2 rounded-md text-sm font-medium transition-all",
               activeTab === "blueprint"
-                ? "bg-primary-500 text-white"
-                : "text-dark-400 hover:text-white hover:bg-dark-700",
+                ? "bg-primary-600 text-white"
+                : "text-dark-200 hover:text-white hover:bg-dark-700",
             )}
           >
             📘 blueprint.md
@@ -51,8 +51,8 @@ export function EditorHeader({
             className={clsx(
               "px-4 py-2 rounded-md text-sm font-medium transition-all",
               activeTab === "tasks"
-                ? "bg-primary-500 text-white"
-                : "text-dark-400 hover:text-white hover:bg-dark-700",
+                ? "bg-primary-600 text-white"
+                : "text-dark-200 hover:text-white hover:bg-dark-700",
             )}
           >
             📋 task.md
