@@ -30,10 +30,10 @@
 
 ### Infrastructure Tasks
 
-#### TASK-REF-05: Extract EditorToolbar Component
+#### TASK-REF-05: Extract EditorToolbar Component ✅ COMPLETED
 
 - **Issue**: #21
-- **Assignee**: Unassigned
+- **Assignee**: Completed
 - **Priority**: High
 - **Estimated**: 2-3 hours
 - **Dependencies**: None
@@ -43,6 +43,21 @@
   - [x] Props interface defined
   - [x] Existing functionality preserved
   - [x] Component integrated into Editor
+
+#### CI/CD Infrastructure Fixes ✅ COMPLETED
+
+- **Issue**: #190 (CODE-REVIEW-002)
+- **Assignee**: DevOps Engineer
+- **Priority**: Critical
+- **Estimated**: 2-3 hours
+- **Dependencies**: None
+- **Status**: ✅ COMPLETED (2026-02-10)
+- **Acceptance**:
+  - [x] Renamed workflow file: 'on pull.yml' → 'on-pull.yml'
+  - [x] Updated action versions: v4 → v5 for security
+  - [x] Removed continue-on-error: true from critical steps
+  - [x] Added fail-fast error handling
+  - [x] CI/CD workflow now production-ready
 
 ---
 
@@ -200,7 +215,7 @@
 #### TASK-103: Manual Editing in Split-Pane View
 
 - **Issue**: #99
-- **Assignee**: Unassigned
+- **Assignee**: Frontend Engineer
 - **Priority**: High
 - **Estimated**: 4-6 hours
 - **Dependencies**: TASK-007, TASK-009
@@ -213,7 +228,7 @@
 #### TASK-104: Blueprint Refinement Workflow
 
 - **Issue**: #100
-- **Assignee**: Unassigned
+- **Assignee**: Frontend Engineer
 - **Priority**: High
 - **Estimated**: 6-8 hours
 - **Dependencies**: TASK-103
@@ -226,8 +241,8 @@
 #### TASK-105: Export/Import Functionality
 
 - **Issue**: #101
-- **Assignee**: Unassigned
-- **Priority**: High
+- **Assignee**: Frontend Engineer
+- **Priority**: Medium
 - **Estimated**: 4-5 hours
 - **Dependencies**: TASK-009
 - **Acceptance**:
