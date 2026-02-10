@@ -1,5 +1,5 @@
 {
-  "version": "1.0.6",
+  "version": "1.0.7",
   "last_updated": "2026-02-10",
   "dispatch_type": "unique_roles_priority",
   "agents": [
@@ -114,6 +114,57 @@
         "TypeScript Strict Mode",
         "API Type Contracts"
       ]
+    },
+    {
+      "id": "security-fortress-SEC-M2-001",
+      "role": "Input Security Sanitizer",
+      "focus": "XSS protection and input sanitization across all entry points",
+      "priority": "HIGH",
+      "assignedTask": "SEC-M2-001",
+      "taskTitle": "Input Sanitization Implementation",
+      "issue": "#228",
+      "estimated": "6-8 hours",
+      "skills": [
+        "XSS Prevention",
+        "Input Validation",
+        "Security Testing",
+        "Sanitization Libraries",
+        "Content Security Policy"
+      ]
+    },
+    {
+      "id": "performance-optimizer-PERF-M2-001",
+      "role": "LocalStorage Performance Engineer",
+      "focus": "Performance optimization for large blueprints and editing experience",
+      "priority": "HIGH",
+      "assignedTask": "PERF-M2-001",
+      "taskTitle": "LocalStorage Performance Optimization",
+      "issue": "#229",
+      "estimated": "8-10 hours",
+      "skills": [
+        "Performance Profiling",
+        "Lazy Loading Strategies",
+        "Data Fragmentation",
+        "Memory Management",
+        "Benchmarking"
+      ]
+    },
+    {
+      "id": "test-coverage-architect-TEST-M2-001",
+      "role": "M2 Quality Assurance Architect",
+      "focus": "Comprehensive test suite for M2 features with 90% coverage",
+      "priority": "HIGH",
+      "assignedTask": "TEST-M2-001",
+      "taskTitle": "Comprehensive Test Suite",
+      "issue": "#230",
+      "estimated": "12-16 hours",
+      "skills": [
+        "Test Architecture",
+        "Coverage Analysis",
+        "CI Integration",
+        "Test Data Generation",
+        "Performance Testing"
+      ]
     }
   ],
   "current_priority_tasks": [
@@ -220,6 +271,48 @@
         "Update BaseController to use typed Context parameter",
         "Remove all `any` usages in controller layer",
         "Ensure type safety is maintained across all controllers"
+      ]
+    },
+    {
+      "task_id": "SEC-M2-001",
+      "title": "Input Sanitization Implementation",
+      "priority": "High",
+      "status": "OPEN",
+      "assigned_role": "security-fortress-SEC-M2-001",
+      "issue": "#228",
+      "estimated": "6-8 hours",
+      "acceptance_criteria": [
+        "All user inputs sanitized before storage",
+        "XSS protection implemented across all entry points",
+        "Security tests added to CI pipeline"
+      ]
+    },
+    {
+      "task_id": "PERF-M2-001",
+      "title": "LocalStorage Performance Optimization",
+      "priority": "High",
+      "status": "OPEN",
+      "assigned_role": "performance-optimizer-PERF-M2-001",
+      "issue": "#229",
+      "estimated": "8-10 hours",
+      "acceptance_criteria": [
+        "Load time < 500ms for blueprints up to 1MB",
+        "Smooth editing experience without lag",
+        "Performance benchmarks implemented"
+      ]
+    },
+    {
+      "task_id": "TEST-M2-001",
+      "title": "Comprehensive Test Suite",
+      "priority": "High",
+      "status": "OPEN",
+      "assigned_role": "test-coverage-architect-TEST-M2-001",
+      "issue": "#230",
+      "estimated": "12-16 hours",
+      "acceptance_criteria": [
+        "Minimum 90% code coverage for M2 features",
+        "All critical user flows tested",
+        "CI pipeline passes all test suites"
       ]
     }
   ],
@@ -329,6 +422,51 @@
         "Developer experience optimization"
       ],
       "differentiator": "Builds type systems that prevent bugs at compile time while maintaining developer productivity"
+    },
+    {
+      "role_id": "security-warden",
+      "specialization": "Security Hardening & Sanitization",
+      "core_expertise": "Comprehensive input security with zero-trust approach",
+      "primary_task": "SEC-M2-001",
+      "supporting_tasks": ["All M2 tasks"],
+      "unique_skills": [
+        "XSS attack prevention",
+        "Content sanitization pipelines",
+        "Security testing automation",
+        "Vulnerability assessment",
+        "Security code reviews"
+      ],
+      "differentiator": "Creates robust security layers that protect against modern web vulnerabilities while maintaining usability"
+    },
+    {
+      "role_id": "performance-sculptor",
+      "specialization": "Frontend Performance Engineering",
+      "core_expertise": "Achieving sub-500ms load times for complex applications",
+      "primary_task": "PERF-M2-001",
+      "supporting_tasks": ["TASK-009", "TASK-103"],
+      "unique_skills": [
+        "Performance profiling",
+        "Lazy loading strategies",
+        "Memory optimization",
+        "Benchmark architecture",
+        "Performance monitoring"
+      ],
+      "differentiator": "Specializes in creating lightning-fast user experiences through systematic performance optimization"
+    },
+    {
+      "role_id": "test-orchestrator",
+      "specialization": "Comprehensive Test Architecture",
+      "core_expertise": "Building test suites that achieve 90%+ coverage with confidence",
+      "primary_task": "TEST-M2-001",
+      "supporting_tasks": ["All M2 tasks"],
+      "unique_skills": [
+        "Test strategy design",
+        "Coverage optimization",
+        "Test automation pipelines",
+        "Mock architecture",
+        "Quality gate enforcement"
+      ],
+      "differentiator": "Designs comprehensive testing ecosystems that evolve with the application while maintaining high coverage"
     }
   ],
   "project_context": {
@@ -348,7 +486,7 @@
       "Follow established architectural patterns",
       "Component-driven development approach"
     ],
-    "priority_dispatch_rationale": "High/Critical priority tasks selected from M2 Refinement & Persistence milestone. Each unique role engineered specifically for M2 challenges: persistence, editing, refinement, testing, and type safety. Focus on minimizing coordination overhead while maximizing expertise in each domain.",
+    "priority_dispatch_rationale": "High/Critical priority tasks selected from M2 Refinement & Persistence milestone. Each unique role engineered specifically for M2 challenges: persistence, editing, refinement, security, performance, testing, and type safety. Focus on minimizing coordination overhead while maximizing expertise in each domain.",
     "last_priority_analysis": "2026-02-10",
     "milestones": {
       "M1_Foundation": {
@@ -359,7 +497,15 @@
       "M2_Refinement": {
         "status": "ACTIVE",
         "completion": 0,
-        "critical_path": ["TASK-009", "TASK-103", "TASK-104", "TASK-105"]
+        "critical_path": [
+          "TASK-009",
+          "TASK-103",
+          "TASK-104",
+          "TASK-105",
+          "SEC-M2-001",
+          "PERF-M2-001",
+          "TEST-M2-001"
+        ]
       },
       "M3_Distribution": { "status": "PLANNED", "critical_path": ["TASK-010"] }
     }
