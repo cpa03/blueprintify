@@ -105,11 +105,12 @@ As a user, I want to click "Generate" and see a real-time stream of the `bluepri
 
 ---
 
-## [FEAT-03] Live Split-Pane Editor
+## [FEAT-03] Live Split-Pane Editor ✅ COMPLETED
 
-**Status**: In Progress
+**Status**: Complete
 **Priority**: P1 (High)
-**Progress**: 0% (Issue #31 assigned and in progress)
+**Progress**: 100% (Issue #31 completed)
+**Completion Date**: 2026-02-10
 
 ### User Story
 
@@ -117,9 +118,9 @@ As a user, I want to manually edit the generated result in a code editor side-by
 
 ### Acceptance Criteria
 
-- [ ] Split-pane layout (resizable).
-- [ ] Monaco Editor or CodeMirror instance on the right.
-- [ ] "Regenerate Selection" capability (Future).
+- [x] Split-pane layout (resizable).
+- [x] CodeMirror instance on the right.
+- [ ] "Regenerate Selection" capability (Future - Part of M2).
 
 ### Tasks
 
@@ -165,6 +166,58 @@ As a user, I want to download a `.zip` file of runnable project archives, so tha
 ### Tasks
 
 - ✅ TASK-010: Implement ZIP Download Feature
+
+---
+
+## [FEAT-05] M2 Refinement & Persistence - IN PROGRESS
+
+**Status**: In Progress
+**Priority**: P0 (Critical)
+**Progress**: 0% (Implementation tasks active)
+
+### User Story
+
+As a user, I want to edit, save, and refine my generated blueprints, so that I can iterate and improve the architecture documentation.
+
+### Feature Components
+
+#### LocalStorage Persistence
+
+- **Issue**: #105 (TASK-009)
+- **Status**: Open
+- Auto-save functionality for blueprints
+- Storage quota management
+- Schema versioning support
+
+#### Manual Editing
+
+- **Issue**: #99 (TASK-103)
+- **Status**: Open
+- CodeMirror integration
+- Real-time preview sync
+- Edit state preservation
+
+#### Refinement Workflow
+
+- **Issue**: #100 (TASK-104)
+- **Status**: Open
+- Section-based regeneration
+- Context preservation
+- Stream-based refinement
+
+#### Export/Import
+
+- **Issue**: #101 (TASK-105)
+- **Status**: Open
+- JSON export functionality
+- Import validation
+- Schema migration
+
+### Quality & Security Support
+
+- **Issue**: #228 (SEC-M2-001) - Input sanitization
+- **Issue**: #229 (PERF-M2-001) - Performance optimization
+- **Issue**: #230 (TEST-M2-001) - Comprehensive testing
 
 ---
 
