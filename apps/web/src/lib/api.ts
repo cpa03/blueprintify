@@ -10,9 +10,10 @@ import {
   API_ERROR_MESSAGES,
   SSE_CONFIG,
   API_ENDPOINTS,
+  UI_FALLBACKS,
 } from "../config/constants";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "/api";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || UI_FALLBACKS.API_BASE;
 
 interface StreamEventHandlers {
   onChunk: (content: string) => void;

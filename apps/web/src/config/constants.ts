@@ -272,3 +272,14 @@ export const CSS_CLASSES = {
   ANIMATED_SPINNER:
     "animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500",
 } as const;
+
+// External URLs used throughout the application
+export const EXTERNAL_URLS = {
+  GITHUB: "https://github.com",
+  PROJECT_HOMEPAGE: "https://blueprint-generator.pages.dev",
+} as const;
+
+// UI Fallback values for environment-dependent configs
+export const UI_FALLBACKS = {
+  API_BASE: "/api",
+} as const;

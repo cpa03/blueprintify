@@ -6,6 +6,7 @@ import { StepIndicator } from "./components/StepIndicator";
 import { Wizard } from "./components/Wizard";
 import { ToastContainer } from "./components/Toast";
 import { useWizardStore, useEditorStore } from "./store";
+import { UI_CONTENT } from "./config/constants";
 
 // Lazy load Editor to reduce initial bundle size
 const Editor = lazy(() =>
@@ -61,12 +62,18 @@ function App() {
               className="text-center mb-12"
             >
               <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-                From <span className="text-gradient">Idea</span> to{" "}
-                <span className="text-gradient">Blueprint</span> in Seconds
+                {UI_CONTENT.HERO.TITLE_1}
+                <span className="text-gradient">
+                  {UI_CONTENT.HERO.TITLE_HIGHLIGHT_1}
+                </span>
+                {UI_CONTENT.HERO.TITLE_2}
+                <span className="text-gradient">
+                  {UI_CONTENT.HERO.TITLE_HIGHLIGHT_2}
+                </span>
+                {UI_CONTENT.HERO.TITLE_3}
               </h1>
               <p className="text-lg text-dark-400 max-w-2xl mx-auto">
-                Generate production-ready architectural documentation for your
-                projects. Powered by AI, designed for autonomous development.
+                {UI_CONTENT.HERO.SUBTITLE}
               </p>
             </motion.div>
           )}
@@ -81,7 +88,7 @@ function App() {
               >
                 <TemplateGrid />
                 <div className="text-center text-dark-500 my-8">
-                  — or start from scratch —
+                  {UI_CONTENT.TEMPLATES_DIVIDER}
                 </div>
               </motion.div>
             )}
@@ -156,7 +163,7 @@ function App() {
                       <div className="h-full flex items-center justify-center text-dark-500">
                         <div className="flex flex-col items-center gap-2">
                           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
-                          <span>Loading Editor...</span>
+                          <span>{UI_CONTENT.EDITOR.LOADING}</span>
                         </div>
                       </div>
                     }
@@ -175,6 +182,7 @@ function App() {
               animate={{ opacity: 1, y: 0 }}
               onClick={() => setShowEditor(true)}
               className="fixed bottom-6 right-6 btn-primary shadow-2xl"
+              aria-label={UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON}
             >
               <svg
                 className="w-5 h-5 mr-2"
@@ -189,7 +197,7 @@ function App() {
                   d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                 />
               </svg>
-              Show Editor
+              {UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON}
             </motion.button>
           )}
         </div>
@@ -198,8 +206,8 @@ function App() {
       {/* Footer */}
       <footer className="border-t border-dark-800 py-6">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between text-sm text-dark-500">
-          <p>Built with ⚡ Cloudflare Workers + React</p>
-          <p>© 2024 Blueprint Generator</p>
+          <p>{UI_CONTENT.FOOTER.BUILT_WITH}</p>
+          <p>{UI_CONTENT.FOOTER.COPYRIGHT}</p>
         </div>
       </footer>
 
