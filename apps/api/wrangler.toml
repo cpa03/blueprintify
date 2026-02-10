@@ -1,10 +1,79 @@
 name = "blueprint-generator-api"
 main = "src/index.ts"
 compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
 
+# Environment-specific configurations
+[env.production]
+name = "blueprint-generator-api-prod"
+vars = { ENVIRONMENT = "production" }
+routes = [
+  { pattern = "api.blueprintify.dev/*", zone_name = "blueprintify.dev" }
+]
+
+[env.staging]
+name = "blueprint-generator-api-staging"
+vars = { ENVIRONMENT = "staging" }
+routes = [
+  { pattern = "api-staging.blueprintify.dev/*", zone_name = "blueprintify.dev" }
+]
+
+# Development configuration (default)
 [vars]
 ENVIRONMENT = "development"
+CORS_ORIGIN = "http://localhost:3000"
+RATE_LIMIT_REQUESTS = "100"
+RATE_LIMIT_WINDOW = "60"
 
-# Uncomment and add your OpenAI API key when deploying
-# [secrets]
+# Production secrets (set via wrangler secret put)
+# [env.production.secrets]
 # OPENAI_API_KEY = ""
+# DATABASE_URL = ""
+# SENTRY_DSN = ""
+
+# Staging secrets (set via wrangler secret put --env staging)  
+# [env.staging.secrets]
+# OPENAI_API_KEY = ""
+# DATABASE_URL = ""
+# SENTRY_DSN = ""
+
+# KV namespaces for caching
+[[kv_namespaces]]
+binding = "CACHE"
+id = "cache_kv_namespace_id"
+
+[[env.production.kv_namespaces]]
+binding = "CACHE"
+id = "production_cache_kv_id"
+
+[[env.staging.kv_namespaces]]
+binding = "CACHE"
+id = "staging_cache_kv_id"
+
+# D1 database bindings
+[[d1_databases]]
+binding = "DB"
+database_name = "blueprint-db"
+database_id = "local_database_id"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "blueprint-db-prod"
+database_id = "production_database_id"
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "blueprint-db-staging"
+database_id = "staging_database_id"
+
+# Queue for background processing
+[[queues.producers]]
+binding = "BACKGROUND_QUEUE"
+queue = "background-processing"
+
+[[queues.consumers]]
+queue = "background-processing"
+
+# Limits and configuration
+[limits]
+cpu_ms = 50000
