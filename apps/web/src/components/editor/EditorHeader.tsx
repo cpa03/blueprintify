@@ -35,6 +35,7 @@ export function EditorHeader({
       <Tabs.Root
         value={activeTab}
         onValueChange={(v) => setActiveTab(v as EditorTab)}
+        id="editor-tabs"
       >
         <Tabs.List
           className="flex gap-1 bg-dark-800 p-1 rounded-lg"
