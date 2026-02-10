@@ -2,9 +2,9 @@
 
 > **Milestone-based development plan** for Blueprintify with clear phases and deliverables.
 
-## Current Status: M1 (Foundation & Core Loop)
+## Current Status: M2 (Refinement & Persistence)
 
-### M1: Foundation & Core Loop - **ACTIVE (85% Complete)**
+### M1: Foundation & Core Loop - **COMPLETED (100% Complete)**
 
 **Objective**: Establish the basic "Input → Generate → View" user flow
 
@@ -16,11 +16,30 @@
 - **API Streaming Endpoint**: ✅ Complete (100%)
 - **Basic Wizard UI**: ✅ Complete (100% - All 5 wizard steps functional)
 - **Real-time Markdown Rendering**: ✅ Complete (Issue #30)
+- **Split-Pane Editor**: ✅ Complete (Issue #31)
+- **ZIP Download Feature**: ✅ Complete (Issue #106)
 
-#### Critical Path Issues
+#### Recently Completed
 
-1. **Issue #31**: [FRONTEND] Implement Split-Pane View (Editor) - IN PROGRESS
-2. **Issue #179**: [FRONTEND] Complete M1 Foundation - Split-Pane Integration & Validation - IN PROGRESS
+- **Issue #31**: [FRONTEND] Implement Split-Pane View (Editor) ✅
+- **Issue #30**: [FRONTEND] Implement Real-time Markdown Rendering ✅
+- **Issue #106**: TASK-010: Implement ZIP Download Feature ✅
+- **Issue #215**: TASK-M2-KICKSTART: Prepare M2 Refinement & Persistence Phase ✅
+
+---
+
+### M2: Refinement & Persistence - **ACTIVE (0% Complete)**
+
+**Objective**: Add editing capabilities and local storage
+
+#### Prerequisites
+
+- ✅ M1 Wizard completion (All 5 steps functional)
+- ✅ Split-pane editor implementation (Issue #31 - COMPLETED)
+- ✅ Real-time Markdown Rendering (Issue #30 - COMPLETED)
+- ✅ M2 Preparation completed (Issue #215 - COMPLETED)
+
+**Status**: Ready for implementation - All prerequisites met
 
 #### Recently Completed
 
