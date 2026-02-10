@@ -211,3 +211,64 @@ export const GENERATION_MESSAGES = {
   ERROR: (error: string) => `Error: ${error}`,
   ERROR_TASKS: (error: string) => `Error generating tasks: ${error}`,
 } as const;
+
+// UI Content - Text content for the application
+export const UI_CONTENT = {
+  APP: {
+    NAME: "Blueprint Generator",
+    TAGLINE: "AI-Powered Project Architecture",
+  },
+  HERO: {
+    TITLE_1: "From ",
+    TITLE_HIGHLIGHT_1: "Idea",
+    TITLE_2: " to ",
+    TITLE_HIGHLIGHT_2: "Blueprint",
+    TITLE_3: " in Seconds",
+    SUBTITLE:
+      "Generate production-ready architectural documentation for your projects. Powered by AI, designed for autonomous development.",
+  },
+  EDITOR: {
+    EMPTY_STATE: {
+      ICON: "📝",
+      TITLE: "Your generated content will appear here",
+      SUBTITLE: "Complete the wizard to get started",
+    },
+    LOADING: "Loading Editor...",
+    SHOW_EDITOR_BUTTON: "Show Editor",
+  },
+  FOOTER: {
+    BUILT_WITH: "Built with ⚡ Cloudflare Workers + React",
+    COPYRIGHT: "© 2024 Blueprint Generator",
+  },
+  BUTTONS: {
+    GITHUB: "GitHub",
+    HIDE_EDITOR: "Hide editor",
+    COPY: "Copy",
+    EXPORT: "Export",
+    NEW_PROJECT: "New Project",
+  },
+  TEMPLATES_DIVIDER: "— or start from scratch —",
+} as const;
+
+// Keyboard shortcuts
+export const KEYBOARD_SHORTCUTS = {
+  TOGGLE_EDITOR: {
+    KEY: "e",
+    MODIFIER: "ctrl/cmd",
+    DESCRIPTION: "Toggle editor visibility",
+  },
+  CANCEL_GENERATION: {
+    KEY: "Escape",
+    DESCRIPTION: "Cancel generation",
+  },
+} as const;
+
+// CSS Class combinations for common patterns
+export const CSS_CLASSES = {
+  GLASS_CARD: "glass-card",
+  BTN_PRIMARY: "btn-primary",
+  BTN_GHOST: "btn-ghost",
+  TEXT_GRADIENT: "text-gradient",
+  ANIMATED_SPINNER:
+    "animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500",
+} as const;
