@@ -186,7 +186,7 @@
       "priority": "HIGH",
       "assignedTask": "TASK-M2-001",
       "taskTitle": "Prepare M2 Refinement & Persistence Phase",
-      "issue": "#184",
+      "issue": "#194",
       "estimated": "4-6 hours",
       "skills": [
         "Technical Documentation",
@@ -230,21 +230,53 @@
       ]
     },
     {
-      "id": "blueprint-orchestrator-20260209",
-      "role": "Blueprint Orchestrator",
-      "focus": "End-to-end workflow coordination across generation, persistence, and refinement",
+      "id": },
+    {
+      "id": "technical-writer-M2-20260210",
+      "role": "Technical Writer - M2 Phase Specialist",
+      "focus": "Documentation architecture for M2 Refinement & Persistence phase",
       "priority": "HIGH",
       "assignedTask": "TASK-M2-001",
       "taskTitle": "Prepare M2 Refinement & Persistence Phase",
       "issue": "#194",
       "estimated": "4-6 hours",
       "skills": [
-        "Workflow Orchestration",
-        "Cross-system Integration",
-        "Architecture Planning",
-        "Persistence Strategy",
-        "Refinement Pipeline Design"
-      ]
+        "Technical Documentation",
+        "Specification Writing",
+        "Architecture Documentation",
+        "Schema Design Documentation",
+        "Milestone Documentation"
+      ],
+      "unique_attributes": {
+        "specialization": "Documentation Architecture",
+        "task_focus": "M2 phase preparation and documentation",
+        "workflow_type": "Planning & Design",
+        "deliverables": [
+          "Validated and prioritized M2 task list",
+          "localStorage schema design documentation",
+          "Refinement workflow architecture plan",
+          "Export/import specifications documentation"
+        ]
+      },
+      "task_context": {
+        "milestone": "M2: Refinement & Persistence",
+        "dependencies": "M1 complete",
+        "acceptance_criteria": [
+          "M2 task list validated and prioritized",
+          "localStorage schema designed and documented",
+          "Refinement workflow architecture planned",
+          "Export/import specifications complete"
+        ]
+      },
+      "collaboration_scope": {
+        "coordinates_with": ["Frontend Engineer", "API Specialist"],
+        "provides_input_to": ["TASK-009: LocalStorage Implementation", "TASK-104: Blueprint Refinement Workflow", "TASK-105: Export/Import Functionality"]
+      },
+      "agent_configuration": {
+        "preferred_skills": ["docs-update", "architecture-planning", "schema-design"],
+        "working_hours": "Flexible - documentation focused",
+        "communication_style": "Detailed specification documents"
+      }
     }
   ],
   "current_priority_tasks": [
@@ -325,7 +357,7 @@
       "priority": "High",
       "status": "OPEN",
       "assigned_role": "m2-planner-2026",
-      "issue": "#184",
+      "issue": "#194",
       "estimated": "4-6 hours",
       "acceptance_criteria": [
         "M2 task list validated and prioritized",
