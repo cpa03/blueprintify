@@ -39,7 +39,7 @@ export abstract class BaseController {
 
   protected validateEnvironment(c: ControllerContext): void {
     if (!c.env.OPENAI_API_KEY) {
-      throw new ConfigurationError("OpenAI API key not configured");
+      throw new ConfigurationError(CONFIG_MESSAGES.OPENAI_API_KEY_MISSING);
     }
   }
 }
