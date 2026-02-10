@@ -15,6 +15,17 @@ interface ExportFiles {
   features: string[];
 }
 
+interface PackageJson {
+  name: string;
+  version: string;
+  private?: boolean;
+  description?: string;
+  main?: string;
+  scripts: Record<string, string>;
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
+}
+
 export async function exportAsZip(files: ExportFiles): Promise<void> {
   const zip = new JSZip();
   const projectName = files.projectName || DEFAULT_PROJECT_NAME;
@@ -74,7 +85,7 @@ async function generateProjectStructure(
     techStackNames.includes("python") ||
     techStackNames.includes("django") ||
     techStackNames.includes("flask");
-  const isStatic = !isReact && !isNode && !isPython;
+  const _isStatic = !isReact && !isNode && !isPython;
 
   if (isReact) {
     await generateReactProject(
@@ -121,14 +132,15 @@ async function generateReactProject(
   const isNextJS = techStack.some(
     (item) => item.name.toLowerCase() === "next.js",
   );
-  const isTypeScript = techStack.some(
+  const _isTypeScript = techStack.some(
     (item) => item.name.toLowerCase() === "typescript",
   );
   const isTailwind = techStack.some(
     (item) => item.name.toLowerCase() === "tailwind css",
   );
+  void _isTypeScript;
 
-  const packageJson: Record<string, any> = {
+  const packageJson: PackageJson = {
     name: projectName,
     version: "0.1.0",
     private: true,
@@ -182,8 +194,9 @@ async function generateReactProject(
   };
 
   if (isTailwind && !isNextJS) {
+    const currentDevDeps = packageJson.devDependencies ?? {};
     packageJson.devDependencies = {
-      ...packageJson.devDependencies,
+      ...currentDevDeps,
       tailwindcss: "^3.3.0",
       autoprefixer: "^10.4.16",
       postcss: "^8.4.32",
@@ -354,7 +367,7 @@ async function generateNodeProject(
     (item) => item.name.toLowerCase() === "typescript",
   );
 
-  const packageJson: Record<string, any> = {
+  const packageJson: PackageJson = {
     name: projectName,
     version: "1.0.0",
     description: description,
@@ -373,7 +386,7 @@ async function generateNodeProject(
         ? {
             express: "^4.18.2",
           }
-        : {},
+        : undefined,
     devDependencies: isTypeScript
       ? {
           "@types/node": "^20.0.0",
@@ -499,8 +512,9 @@ async function generateStaticProject(
   projectName: string,
   description: string,
   features: string[],
-  techStack: TechStackItemType[],
+  _techStack: TechStackItemType[],
 ): Promise<void> {
+  void _techStack;
   zip.file(
     "index.html",
     generateStaticHTML(projectName, description, features),
@@ -600,7 +614,8 @@ function generateHeaderComponent(): string {
 }`;
 }
 
-function generateMainTSX(isTailwind: boolean): string {
+function generateMainTSX(_isTailwind: boolean): string {
+  void _isTailwind;
   return `import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
@@ -1032,7 +1047,8 @@ application = get_wsgi_application()
 `;
 }
 
-function generateDjangoModels(features: string[]): string {
+function generateDjangoModels(_features: string[]): string {
+  void _features;
   return `from django.db import models
 
 class Project(models.Model):
@@ -1055,7 +1071,8 @@ class Feature(models.Model):
 `;
 }
 
-function generateDjangoViews(features: string[]): string {
+function generateDjangoViews(_features: string[]): string {
+  void _features;
   return `from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -1118,7 +1135,8 @@ if __name__ == '__main__':
 `;
 }
 
-function generateFlaskModels(features: string[]): string {
+function generateFlaskModels(_features: string[]): string {
+  void _features;
   return `from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -1197,7 +1215,8 @@ if __name__ == "__main__":
 `;
 }
 
-function generateFastAPIModels(features: string[]): string {
+function generateFastAPIModels(_features: string[]): string {
+  void _features;
   return `from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
