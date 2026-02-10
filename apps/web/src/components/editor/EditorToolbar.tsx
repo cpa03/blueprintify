@@ -92,18 +92,6 @@ export function EditorToolbar({
         aria-label={isCopied ? "Copied to clipboard" : "Copy to clipboard"}
         aria-live="polite"
         whileTap={hasContent && activeTab ? { scale: 0.95 } : undefined}
-        animate={
-          isCopied
-            ? {
-                backgroundColor: "rgba(16, 185, 129, 0.2)",
-                borderColor: "rgba(16, 185, 129, 0.5)",
-              }
-            : {
-                backgroundColor: "transparent",
-                borderColor: "transparent",
-              }
-        }
-        transition={{ duration: 0.3 }}
       >
         <AnimatePresence mode="wait">
           {isCopied ? (
