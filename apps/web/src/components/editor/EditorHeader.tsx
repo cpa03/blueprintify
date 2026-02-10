@@ -42,6 +42,7 @@ export function EditorHeader({
         >
           <Tabs.Trigger
             value="blueprint"
+            id="tab-blueprint"
             className={clsx(
               "px-4 py-2 rounded-md text-sm font-medium transition-all",
               activeTab === "blueprint"
@@ -53,6 +54,7 @@ export function EditorHeader({
           </Tabs.Trigger>
           <Tabs.Trigger
             value="tasks"
+            id="tab-tasks"
             className={clsx(
               "px-4 py-2 rounded-md text-sm font-medium transition-all",
               activeTab === "tasks"
