@@ -2,64 +2,31 @@
 
 > **Execution-focused task list** aligned with roadmap milestones and GitHub issues.
 
-## M1: Foundation & Core Loop (ACTIVE)
+## M1: Foundation & Core Loop (COMPLETED)
 
-### Critical Path Tasks
+### Completed Critical Path Tasks
 
-#### TASK-006: Tech Stack Selection Form (Wizard Step 2) ✅ COMPLETED
-
-- **Issue**: #28
-- **Assignee**: Frontend Engineer
-- **Priority**: Critical
-- **Status**: Complete
-- **Estimated**: 4-6 hours (Completed: 2026-02-08)
-- **Dependencies**: STEP-001 complete
-- **Acceptance**:
-  - [x] Multi-select interface for tech stack
-  - [x] Integration with shared schemas
-  - [x] Form validation with error handling
-
-#### TASK-007: Split-Pane View (Editor)
+#### TASK-007: Split-Pane View (Editor) ✅ COMPLETED
 
 - **Issue**: #31
 - **Assignee**: Frontend Engineer
 - **Priority**: Critical
+- **Status**: Complete
+- **Completed**: 2026-02-10
 - **Estimated**: 6-8 hours
 - **Dependencies**: TASK-008 complete
-- **Status**: IN PROGRESS
 - **Acceptance**:
-  - Resizable split-pane layout
-  - Code editor component integration
-  - Sync with markdown preview
+  - [x] Resizable split-pane layout
+  - [x] Code editor component integration
+  - [x] Sync with markdown preview
 
-#### TASK-008: Real-time Markdown Rendering ✅ COMPLETED
+#### Additional Completed Tasks
 
-- **Issue**: #30
-- **Assignee**: UI/UX Engineer
-- **Priority**: Critical
-- **Status**: Complete
-- **Estimated**: 4-5 hours (Completed: 2026-02-08)
-- **Dependencies**: STEP-001 complete
-- **Acceptance**:
-  - [x] Parse markdown to HTML
-  - [x] Syntax highlighting for code blocks
-  - [x] Real-time updates during generation
-  - [x] GitHub Flavored Markdown support
-  - [x] Responsive design implementation
-
-#### TASK-102: Complete Basic Wizard UI Implementation (All Steps) ✅ COMPLETED
-
-- **Issue**: #97
-- **Assignee**: Frontend Engineer
-- **Priority**: Critical
-- **Status**: Complete
-- **Estimated**: 8-10 hours (Completed: 2026-02-08)
-- **Dependencies**: TASK-006, TASK-008
-- **Acceptance**:
-  - [x] All 3 wizard steps functional
-  - [x] Form validation working across all steps
-  - [x] Navigation between steps preserved
-  - [x] Integration with shared Zod schemas
+- **TASK-006**: Tech Stack Selection Form ✅ (#28)
+- **TASK-008**: Real-time Markdown Rendering ✅ (#30)
+- **TASK-102**: Complete Basic Wizard UI ✅ (#97)
+- **TASK-010**: ZIP Download Feature ✅ (#106)
+- **TASK-M2-KICKSTART**: M2 Preparation ✅ (#215)
 
 ### Infrastructure Tasks
 
@@ -197,25 +164,25 @@
 
 ---
 
-## M2: Refinement & Persistence (READY TO START)
+## M2: Refinement & Persistence (ACTIVE)
 
-### Preparation Tasks
+### M2 Execution Task
 
-#### TASK-M2-001: Prepare M2 Refinement & Persistence Phase
+#### TASK-M2-EXECUTION: Execute M2 Refinement & Persistence Phase
 
-- **Issue**: #194
-- **Assignee**: Technical Writer
-- **Priority**: High
-- **Status**: Open
-- **Estimated**: 4-6 hours
-- **Dependencies**: M1 complete
+- **Issue**: #222
+- **Assignee**: Frontend Engineer
+- **Priority**: Critical
+- **Status**: Active
+- **Estimated**: 3-5 days
+- **Dependencies**: M1 complete ✅
 - **Acceptance**:
-  - [ ] M2 task list validated and prioritized
-  - [ ] localStorage schema designed and documented
-  - [ ] Refinement workflow architecture planned
-  - [ ] Export/import specifications complete
+  - [ ] All M2 tasks completed
+  - [ ] End-to-end editing workflow functional
+  - [ ] Storage persistence working reliably
+  - [ ] Export/import functionality validated
 
-### Planned Tasks
+### Implementation Tasks
 
 #### TASK-009: LocalStorage Implementation
 
