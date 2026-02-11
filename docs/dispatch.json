@@ -1,8 +1,26 @@
 {
-  "version": "1.0.9",
+  "version": "1.0.10",
   "last_updated": "2026-02-11",
   "dispatch_type": "unique_roles_priority",
   "agents": [
+    {
+      "id": "api-transformation-architect-REF-006",
+      "role": "API Transformation Architect",
+      "focus": "Service layer pattern implementation, route-to-controller migration",
+      "priority": "HIGH",
+      "assignedTask": "TASK-REF-06",
+      "taskTitle": "Move API Route Logic to Controllers",
+      "issue": "#22",
+      "estimated": "4-6 hours",
+      "skills": [
+        "Service Layer Design",
+        "Dependency Injection Patterns",
+        "Controller Pattern Implementation",
+        "Route Handler Abstraction",
+        "API Architecture Refactoring",
+        "Hono Framework Advanced Patterns"
+      ]
+    },
     {
       "id": "storage-specialist-009",
       "role": "Client-side Persistence Engineer",
@@ -169,6 +187,20 @@
   ],
   "current_priority_tasks": [
     {
+      "task_id": "TASK-REF-06",
+      "title": "Move API Route Logic to Controllers",
+      "priority": "High",
+      "status": "OPEN",
+      "assigned_role": "api-transformation-architect-REF-006",
+      "issue": "#22",
+      "estimated": "4-6 hours",
+      "acceptance_criteria": [
+        "Service layer pattern implemented",
+        "Route handlers simplified",
+        "All tests passing"
+      ]
+    },
+    {
       "task_id": "TASK-009",
       "title": "LocalStorage Implementation",
       "priority": "High",
@@ -186,7 +218,7 @@
     {
       "task_id": "TASK-103",
       "title": "Manual Editing in Split-Pane View",
-      "priority": "High",
+      "priority": "Medium",
       "status": "OPEN",
       "assigned_role": "editor-coding-specialist-103",
       "issue": "#99",
@@ -317,6 +349,24 @@
     }
   ],
   "unique_roles": [
+    {
+      "role_id": "api-transformation-visionary",
+      "specialization": "Service Layer Architecture",
+      "core_expertise": "Hono framework controller pattern implementation",
+      "unique_focus": "Transforming monolithic route handlers into maintainable service layer architecture",
+      "primary_task": "TASK-REF-06",
+      "supporting_tasks": ["All API tasks"],
+      "unique_skills": [
+        "Service layer design patterns",
+        "Dependency injection architecture",
+        "Controller abstraction patterns",
+        "API route refactoring",
+        "Hono framework deep expertise",
+        "Test-driven architecture migration",
+        "Performance optimization in service layers"
+      ],
+      "differentiator": "Specializes in transforming monolithic API routes into clean, maintainable service layer architecture while preserving all existing functionality"
+    },
     {
       "role_id": "persistence-guardian",
       "specialization": "Client-side Data Architecture",
@@ -496,7 +546,7 @@
       "Follow established architectural patterns",
       "Component-driven development approach"
     ],
-    "priority_dispatch_rationale": "High/Critical priority tasks selected from M2 Refinement & Persistence milestone. Each unique role engineered specifically for M2 challenges: persistence, editing, refinement, security, performance, testing, and type safety. Focus on minimizing coordination overhead while maximizing expertise in each domain.",
+    "priority_dispatch_rationale": "High/Medium priority tasks selected from M2 Refinement & Persistence milestone. Added API Transformation Architect for TASK-REF-06 to address critical service layer refactoring needs. Each role engineered specifically for M2 challenges: API architecture, persistence, editing, refinement, and data migration.",
     "last_priority_analysis": "2026-02-11",
     "milestones": {
       "M1_Foundation": {
@@ -508,6 +558,7 @@
         "status": "ACTIVE",
         "completion": 0,
         "critical_path": [
+          "TASK-REF-06",
           "TASK-009",
           "TASK-103",
           "TASK-104",
