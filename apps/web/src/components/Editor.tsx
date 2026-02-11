@@ -113,7 +113,12 @@ export function Editor() {
             </div>
           </div>
         ) : (
-          <div className="h-full flex flex-col lg:flex-row">
+          <div
+            id={activeTab === "blueprint" ? "blueprint-panel" : "tasks-panel"}
+            role="tabpanel"
+            aria-labelledby={`tab-${activeTab}`}
+            className="h-full flex flex-col lg:flex-row"
+          >
             {/* Code Editor */}
             {(viewMode === "edit" || viewMode === "split") && (
               <div
