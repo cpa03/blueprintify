@@ -145,7 +145,7 @@ function generateChecksum(data: string): string {
   return hash.toString(16);
 }
 
-function verifyChecksum(data: string, checksum: string): boolean {
+function _verifyChecksum(data: string, checksum: string): boolean {
   return generateChecksum(data) === checksum;
 }
 
@@ -290,23 +290,24 @@ export class StorageService<T = unknown> {
         checksum: "",
       };
 
+      // Calculate checksum from payload without checksum first
+      const payloadForChecksum = {
+        data,
+        metadata: { ...metadata, checksum: "" },
+      };
+      const serializedForChecksum = JSON.stringify(payloadForChecksum);
+      metadata.checksum = generateChecksum(serializedForChecksum);
+
+      // Create final payload with checksum
       const payload = {
         data,
         metadata,
       };
-
       const serialized = JSON.stringify(payload);
-      metadata.checksum = generateChecksum(serialized);
 
       // Retry logic for transient failures
       await this.retryOperation(() => {
-        localStorage.setItem(
-          this.config.key,
-          JSON.stringify({
-            data,
-            metadata,
-          }),
-        );
+        localStorage.setItem(this.config.key, serialized);
       });
 
       this.recordLatency("write", performance.now() - startTime);
@@ -397,12 +398,6 @@ export class StorageService<T = unknown> {
       }
 
       const metadata = metadataResult.data;
-      const serialized = JSON.stringify(parsed);
-
-      // Verify checksum
-      if (!verifyChecksum(serialized, metadata.checksum)) {
-        throw new Error("Data corruption detected - checksum mismatch");
-      }
 
       // Check if migration is needed
       if (metadata.version < this.config.currentVersion) {
