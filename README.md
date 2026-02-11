@@ -52,8 +52,9 @@ cd blueprintify
 npm install
 
 # Setup environment variables
-# Create apps/api/.dev.vars with your OpenAI API key:
-# OPENAI_API_KEY=your_openai_api_key_here
+# Copy the example file and fill in your OpenAI API key:
+cp apps/api/.dev.vars.example apps/api/.dev.vars
+# Then edit apps/api/.dev.vars and replace 'your_openai_api_key_here' with your actual key
 ```
 
 ### Development

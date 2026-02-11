@@ -29,8 +29,9 @@ Thank you for your interest in contributing to Blueprintify! This guide will hel
 3. **Environment Setup**
 
    ```bash
-   # Create apps/api/.dev.vars with your OpenAI API key:
-   echo "OPENAI_API_KEY=your_openai_api_key_here" > apps/api/.dev.vars
+   # Copy the example environment file:
+   cp apps/api/.dev.vars.example apps/api/.dev.vars
+   # Then edit apps/api/.dev.vars and add your actual OpenAI API key
    ```
 
 4. **Start Development**
@@ -278,7 +279,14 @@ npm install
 
 ### Environment Variables
 
-Create `apps/api/.dev.vars`:
+Copy the example file and configure your settings:
+
+```bash
+cp apps/api/.dev.vars.example apps/api/.dev.vars
+# Edit apps/api/.dev.vars with your actual values
+```
+
+The `.dev.vars` file should contain:
 
 ```bash
 OPENAI_API_KEY=sk-your-openai-api-key-here

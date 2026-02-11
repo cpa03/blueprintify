@@ -340,6 +340,7 @@ DEBUG=* npm run dev:api
 1. **OpenAI API Key Issues**
    - Ensure the API key is valid and has sufficient credits
    - Check that the `.dev.vars` file exists in `apps/api/`
+   - Copy from the example file: `cp apps/api/.dev.vars.example apps/api/.dev.vars`
 
 2. **Streaming Issues**
    - SSE connections may be interrupted by proxies or firewalls
