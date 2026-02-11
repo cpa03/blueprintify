@@ -12,6 +12,7 @@ import {
   useToast,
 } from "../store";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
+import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
 import { TIMEOUTS, DEFAULT_PROJECT_NAME } from "../config/constants";
 import clsx from "clsx";
 
@@ -32,8 +33,20 @@ export function Editor() {
 
   const currentContent =
     activeTab === "blueprint" ? blueprintContent : tasksContent;
-  const setCurrentContent =
-    activeTab === "blueprint" ? setBlueprintContent : setTasksContent;
+  const setCurrentContent = (content: string) => {
+    try {
+      const sanitizedContent = sanitizeMarkdown(content);
+      if (activeTab === "blueprint") {
+        setBlueprintContent(sanitizedContent);
+      } else {
+        setTasksContent(sanitizedContent);
+      }
+    } catch (error) {
+      const securityError = handleSecurityError(error);
+      toast.error(`Security validation failed: ${securityError.message}`);
+      console.error("Security validation failed:", securityError);
+    }
+  };
 
   const handleCopy = async () => {
     const formatted = formatForIDE(currentContent);

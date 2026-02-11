@@ -1,0 +1,350 @@
+import DOMPurify from "dompurify";
+import { z } from "zod";
+
+export const SECURITY_CONFIG = {
+  DOMPURIFY_CONFIG: {
+    ALLOWED_TAGS: [
+      "p",
+      "br",
+      "strong",
+      "b",
+      "em",
+      "i",
+      "u",
+      "s",
+      "del",
+      "ins",
+      "h1",
+      "h2",
+      "h3",
+      "h4",
+      "h5",
+      "h6",
+      "ul",
+      "ol",
+      "li",
+      "dl",
+      "dt",
+      "dd",
+      "pre",
+      "code",
+      "blockquote",
+      "table",
+      "thead",
+      "tbody",
+      "tr",
+      "th",
+      "td",
+      "a",
+      "img",
+      "hr",
+    ] as string[],
+    ALLOWED_ATTR: ["href", "title", "alt", "src", "class"] as string[],
+    ALLOW_DATA_ATTR: false,
+    FORBID_TAGS: [
+      "script",
+      "iframe",
+      "object",
+      "embed",
+      "form",
+      "input",
+      "button",
+    ] as string[],
+    FORBID_ATTR: [
+      "onclick",
+      "onload",
+      "onerror",
+      "onmouseover",
+      "style",
+    ] as string[],
+    SANITIZE_DOM: true,
+    SANITIZE_NAMED_PROPS: true,
+    KEEP_CONTENT: true,
+  },
+
+  MAX_CONTENT_LENGTH: 1000000,
+  MAX_FILE_SIZE: 10 * 1024 * 1024,
+  ALLOWED_FILE_TYPES: [".json", ".md", ".txt"],
+
+  STORAGE_QUOTA: 5 * 1024 * 1024,
+} as const;
+export const ContentValidationSchema = z.object({
+  blueprintContent: z
+    .string()
+    .max(
+      SECURITY_CONFIG.MAX_CONTENT_LENGTH,
+      "Blueprint content exceeds maximum length",
+    )
+    .refine((content) => !containsXSSPatterns(content), {
+      message: "Blueprint content contains potentially dangerous patterns",
+    }),
+  tasksContent: z
+    .string()
+    .max(
+      SECURITY_CONFIG.MAX_CONTENT_LENGTH,
+      "Tasks content exceeds maximum length",
+    )
+    .refine((content) => !containsXSSPatterns(content), {
+      message: "Tasks content contains potentially dangerous patterns",
+    }),
+});
+
+export const FileValidationSchema = z.object({
+  name: z.string().min(1).max(255),
+  size: z.number().max(SECURITY_CONFIG.MAX_FILE_SIZE),
+  type: z.string(),
+  content: z.string().max(SECURITY_CONFIG.MAX_CONTENT_LENGTH),
+});
+const XSS_PATTERNS = [
+  /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+  /javascript:/gi,
+  /on\w+\s*=/gi,
+  /<iframe\b[^>]*>/gi,
+  /<object\b[^>]*>/gi,
+  /<embed\b[^>]*>/gi,
+  /<form\b[^>]*>/gi,
+  /<input\b[^>]*>/gi,
+  /<button\b[^>]*>/gi,
+  /eval\s*\(/gi,
+  /expression\s*\(/gi,
+  /@import/gi,
+  /vbscript:/gi,
+  /data:text\/html/gi,
+];
+
+export function containsXSSPatterns(content: string): boolean {
+  return XSS_PATTERNS.some((pattern) => pattern.test(content));
+}
+
+export function sanitizeHtml(html: string): string {
+  return DOMPurify.sanitize(html, SECURITY_CONFIG.DOMPURIFY_CONFIG);
+}
+
+export function sanitizeMarkdown(markdown: string): string {
+  if (containsXSSPatterns(markdown)) {
+    throw new Error("Content contains potentially dangerous patterns");
+  }
+
+  const htmlRegex = /<[^>]+>/g;
+  const matches = markdown.match(htmlRegex);
+
+  if (matches) {
+    let sanitized = markdown;
+    matches.forEach((match) => {
+      const sanitizedMatch = sanitizeHtml(match);
+      sanitized = sanitized.replace(match, sanitizedMatch);
+    });
+    return sanitized;
+  }
+
+  return markdown;
+}
+
+interface ContentInput {
+  blueprintContent?: string;
+  tasksContent?: string;
+}
+
+export function validateContent(content: unknown): {
+  isValid: boolean;
+  error?: string;
+  sanitizedContent?: {
+    blueprintContent: string;
+    tasksContent: string;
+  };
+} {
+  try {
+    const contentInput = content as ContentInput;
+    const validated = ContentValidationSchema.parse({
+      blueprintContent:
+        typeof content === "object" && content !== null
+          ? contentInput.blueprintContent || ""
+          : "",
+      tasksContent:
+        typeof content === "object" && content !== null
+          ? contentInput.tasksContent || ""
+          : "",
+    });
+
+    return {
+      isValid: true,
+      sanitizedContent: {
+        blueprintContent: sanitizeMarkdown(validated.blueprintContent),
+        tasksContent: sanitizeMarkdown(validated.tasksContent),
+      },
+    };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return {
+        isValid: false,
+        error: error.errors.map((e) => e.message).join(", "),
+      };
+    }
+    return {
+      isValid: false,
+      error: "Content validation failed",
+    };
+  }
+}
+
+// ===== File Validation =====
+export function validateFile(file: File): { isValid: boolean; error?: string } {
+  // Check file extension
+  const fileNameParts = file.name.split(".");
+  const extension =
+    fileNameParts.length > 1 ? "." + fileNameParts.pop()?.toLowerCase() : "";
+  if (
+    !SECURITY_CONFIG.ALLOWED_FILE_TYPES.includes(
+      extension as (typeof SECURITY_CONFIG.ALLOWED_FILE_TYPES)[number],
+    )
+  ) {
+    return {
+      isValid: false,
+      error: `File type ${extension} is not allowed. Allowed types: ${SECURITY_CONFIG.ALLOWED_FILE_TYPES.join(", ")}`,
+    };
+  }
+
+  if (file.size > SECURITY_CONFIG.MAX_FILE_SIZE) {
+    return {
+      isValid: false,
+      error: `File size exceeds maximum allowed size of ${SECURITY_CONFIG.MAX_FILE_SIZE / (1024 * 1024)}MB`,
+    };
+  }
+
+  return { isValid: true };
+}
+
+export async function validateAndSanitizeFileContent(file: File): Promise<{
+  isValid: boolean;
+  error?: string;
+  content?: string;
+}> {
+  // First validate file metadata
+  const metadataValidation = validateFile(file);
+  if (!metadataValidation.isValid) {
+    return metadataValidation;
+  }
+
+  try {
+    const content = await file.text();
+
+    // Validate content with schema
+    FileValidationSchema.parse({
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      content,
+    });
+
+    const sanitizedContent = sanitizeMarkdown(content);
+
+    return {
+      isValid: true,
+      content: sanitizedContent,
+    };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return {
+        isValid: false,
+        error: error.errors.map((e) => e.message).join(", "),
+      };
+    }
+    return {
+      isValid: false,
+      error: "File validation failed",
+    };
+  }
+}
+export function checkStorageQuota(): {
+  available: boolean;
+  used: number;
+  remaining: number;
+} {
+  const used = new Blob([JSON.stringify(localStorage)]).size;
+  const remaining = SECURITY_CONFIG.STORAGE_QUOTA - used;
+
+  return {
+    available: remaining > 0,
+    used,
+    remaining,
+  };
+}
+
+export function sanitizeForStorage(data: unknown): {
+  isValid: boolean;
+  error?: string;
+  sanitized?: unknown;
+} {
+  const quota = checkStorageQuota();
+  if (!quota.available) {
+    return {
+      isValid: false,
+      error: "Storage quota exceeded. Please clear some data.",
+    };
+  }
+
+  const validation = validateContent(data);
+  if (!validation.isValid) {
+    return validation;
+  }
+
+  return {
+    isValid: true,
+    sanitized: validation.sanitizedContent,
+  };
+}
+export function getContentSecurityHeaders(): Record<string, string> {
+  return {
+    "Content-Security-Policy": [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline'",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: https:",
+      "font-src 'self'",
+      "connect-src 'self'",
+      "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+    ].join("; "),
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "X-XSS-Protection": "1; mode=block",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+  };
+}
+export class SecurityError extends Error {
+  constructor(
+    message: string,
+    public readonly type: "XSS" | "VALIDATION" | "QUOTA" | "FILE",
+    public readonly details?: unknown,
+  ) {
+    super(message);
+    this.name = "SecurityError";
+  }
+}
+
+export function handleSecurityError(error: unknown): SecurityError {
+  if (error instanceof SecurityError) {
+    return error;
+  }
+
+  if (error instanceof z.ZodError) {
+    return new SecurityError(
+      error.errors.map((e) => e.message).join(", "),
+      "VALIDATION",
+      error.errors,
+    );
+  }
+
+  if (error instanceof Error) {
+    if (containsXSSPatterns(error.message)) {
+      return new SecurityError(
+        "Content contains potentially dangerous patterns",
+        "XSS",
+      );
+    }
+    return new SecurityError(error.message, "VALIDATION", error);
+  }
+
+  return new SecurityError("Unknown security error", "VALIDATION", error);
+}

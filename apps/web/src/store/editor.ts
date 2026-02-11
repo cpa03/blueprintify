@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { EditorTab } from "@blueprint/shared";
 import { STORAGE_KEYS, GENERATION_MESSAGES } from "../config/constants";
+import { sanitizeForStorage, handleSecurityError } from "../lib/security";
 
 // ===== Editor Store =====
 export interface EditorStore {
@@ -27,7 +28,7 @@ export interface EditorStore {
 
 export const useEditorStore = create<EditorStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       activeTab: "blueprint",
       blueprintContent: "",
       tasksContent: "",
@@ -37,22 +38,99 @@ export const useEditorStore = create<EditorStore>()(
 
       setActiveTab: (activeTab) => set({ activeTab }),
 
-      setBlueprintContent: (blueprintContent) =>
-        set({ blueprintContent, isDirty: true }),
+      setBlueprintContent: (blueprintContent) => {
+        try {
+          const security = sanitizeForStorage({
+            blueprintContent,
+            tasksContent: get().tasksContent,
+          });
+          if (!security.isValid) {
+            console.error("Content validation failed:", security.error);
+            throw new Error(security.error);
+          }
+          set({
+            blueprintContent:
+              (security.sanitized as { blueprintContent?: string })
+                ?.blueprintContent || blueprintContent,
+            isDirty: true,
+          });
+        } catch (error) {
+          const securityError = handleSecurityError(error);
+          console.error("Security validation failed:", securityError.message);
+          throw securityError;
+        }
+      },
 
-      appendBlueprintContent: (chunk) =>
-        set((state) => ({
-          blueprintContent: state.blueprintContent + chunk,
-          isDirty: true,
-        })),
+      appendBlueprintContent: (chunk) => {
+        try {
+          const newContent = get().blueprintContent + chunk;
+          const security = sanitizeForStorage({
+            blueprintContent: newContent,
+            tasksContent: get().tasksContent,
+          });
+          if (!security.isValid) {
+            console.error("Content validation failed:", security.error);
+            throw new Error(security.error);
+          }
+          set(() => ({
+            blueprintContent:
+              (security.sanitized as { blueprintContent?: string })
+                ?.blueprintContent || newContent,
+            isDirty: true,
+          }));
+        } catch (error) {
+          const securityError = handleSecurityError(error);
+          console.error("Security validation failed:", securityError.message);
+          throw securityError;
+        }
+      },
 
-      setTasksContent: (tasksContent) => set({ tasksContent, isDirty: true }),
+      setTasksContent: (tasksContent) => {
+        try {
+          const security = sanitizeForStorage({
+            blueprintContent: get().blueprintContent,
+            tasksContent,
+          });
+          if (!security.isValid) {
+            console.error("Content validation failed:", security.error);
+            throw new Error(security.error);
+          }
+          set({
+            tasksContent:
+              (security.sanitized as { tasksContent?: string })?.tasksContent ||
+              tasksContent,
+            isDirty: true,
+          });
+        } catch (error) {
+          const securityError = handleSecurityError(error);
+          console.error("Security validation failed:", securityError.message);
+          throw securityError;
+        }
+      },
 
-      appendTasksContent: (chunk) =>
-        set((state) => ({
-          tasksContent: state.tasksContent + chunk,
-          isDirty: true,
-        })),
+      appendTasksContent: (chunk) => {
+        try {
+          const newContent = get().tasksContent + chunk;
+          const security = sanitizeForStorage({
+            blueprintContent: get().blueprintContent,
+            tasksContent: newContent,
+          });
+          if (!security.isValid) {
+            console.error("Content validation failed:", security.error);
+            throw new Error(security.error);
+          }
+          set(() => ({
+            tasksContent:
+              (security.sanitized as { tasksContent?: string })?.tasksContent ||
+              newContent,
+            isDirty: true,
+          }));
+        } catch (error) {
+          const securityError = handleSecurityError(error);
+          console.error("Security validation failed:", securityError.message);
+          throw securityError;
+        }
+      },
 
       setIsGenerating: (isGenerating) => set({ isGenerating }),
 
