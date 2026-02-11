@@ -22,18 +22,32 @@ Currently, the API does not require authentication. However, all requests must i
 | `OPENAI_BASE_URL` | No       | `https://api.openai.com/v1` | Custom API base URL for compatible providers |
 | `OPENAI_MODEL`    | No       | `gpt-4o-mini`               | Model to use for generations                 |
 
+## API Metadata
+
+| Field   | Value                   | Description                  |
+| ------- | ----------------------- | ---------------------------- |
+| Name    | Blueprint Generator API | Service name                 |
+| Version | 1.0.0                   | Current API version          |
+| Status  | healthy                 | Health check response status |
+
 ## Endpoints
 
 ### GET /
 
-Health check endpoint to verify the API is running.
+Health check endpoint to verify the API is running and provide API metadata.
 
 #### Response
 
 ```json
 {
-  "status": "ok",
-  "timestamp": "2026-02-08T05:29:13.000Z"
+  "name": "Blueprint Generator API",
+  "version": "1.0.0",
+  "status": "healthy",
+  "endpoints": {
+    "generate": "POST /generate",
+    "tasks": "POST /tasks",
+    "refine": "POST /refine"
+  }
 }
 ```
 
@@ -46,13 +60,44 @@ Generate a project blueprint based on user input. This endpoint streams the resp
 ```typescript
 interface GenerateRequest {
   projectName: string; // Project name (1-100 chars)
-  description: string; // Project description (1-1000 chars)
-  techStack: string[]; // Array of selected technologies
-  features: string[]; // Array of desired features
-  targetAudience?: string; // Optional target audience (1-500 chars)
-  constraints?: string; // Optional project constraints (1-1000 chars)
+  description: string; // Project description (10-2000 chars)
+  techStack: TechStackItem[]; // Array of selected technologies with metadata
+  features?: string[]; // Array of desired features
+  targetAudience?: string; // Optional target audience
+  constraints?: string; // Optional project constraints
+}
+
+interface TechStackItem {
+  name: string;
+  category:
+    | "frontend"
+    | "backend"
+    | "database"
+    | "hosting"
+    | "ai"
+    | "testing"
+    | "styling"
+    | "other";
+  subcategory?:
+    | "relational"
+    | "nosql"
+    | "vector"
+    | "graph"
+    | "edge"
+    | "search"
+    | "cache"
+    | "serverless";
+  version?: string;
+  description?: string;
+  features?: string[];
 }
 ```
+
+#### Validation Rules
+
+- `projectName`: Required, 1-100 characters
+- `description`: Required, 10-2000 characters
+- `techStack`: Required, at least 1 item
 
 #### Response
 
@@ -76,11 +121,30 @@ curl -X POST http://localhost:8787/generate \
   -H "Content-Type: application/json" \
   -d '{
     "projectName": "My App",
-    "description": "A web application for task management",
-    "techStack": ["React", "Node.js", "MongoDB"],
-    "features": ["User authentication", "Task CRUD", "Real-time updates"],
+    "description": "A comprehensive web application for task management with real-time collaboration features",
+    "techStack": [
+      {
+        "name": "React",
+        "category": "frontend",
+        "version": "18.2.0",
+        "description": "UI library for building user interfaces"
+      },
+      {
+        "name": "Hono",
+        "category": "backend",
+        "version": "3.0.0",
+        "description": "Ultra-lightweight web framework for Cloudflare Workers"
+      },
+      {
+        "name": "PostgreSQL",
+        "category": "database",
+        "subcategory": "relational",
+        "description": "Advanced open-source relational database"
+      }
+    ],
+    "features": ["User authentication", "Task CRUD", "Real-time updates", "Team collaboration"],
     "targetAudience": "Individual users and small teams",
-    "constraints": "Must work offline"
+    "constraints": "Must work offline first, then sync when online"
   }'
 ```
 
@@ -131,19 +195,17 @@ Refine a specific section of generated content using AI assistance.
 
 ```typescript
 interface RefineRequest {
-  content: string; // Current content to refine
-  instruction: string; // Instruction for refinement
-  section?: string; // Optional section identifier
-  context?: RefineContext; // Optional context for better refinement
-}
-
-interface RefineContext {
-  projectName?: string; // Project name for context
-  techStack?: string[]; // Tech stack for context
-  features?: string[]; // Features for context
-  targetAudience?: string; // Target audience for context
+  content: string; // Content to refine (required, min 1 char)
+  instruction: string; // Refinement instruction (required, min 1 char)
+  context?: string; // Optional context for better refinement
 }
 ```
+
+#### Validation Rules
+
+- `content`: Required, minimum 1 character
+- `instruction`: Required, minimum 1 character
+- `context`: Optional string for additional context
 
 #### Response
 
@@ -156,160 +218,151 @@ curl -X POST http://localhost:8787/refine \
   -H "Content-Type: application/json" \
   -d '{
     "content": "## Authentication\n\nBasic login system",
-    "instruction": "Add detailed implementation notes for JWT authentication",
-    "section": "authentication",
-    "context": {
-      "projectName": "My App",
-      "techStack": ["React", "Node.js"],
-      "features": ["User authentication"]
-    }
+    "instruction": "Add detailed implementation notes for JWT authentication with refresh tokens",
+    "context": "This is for a React app with Hono backend, targeting enterprise users who need secure session management"
   }'
 ```
 
-### POST /export
+## Available Endpoints
 
-Export generated content as a ZIP file containing all project documentation.
+The API currently supports the following endpoints:
 
-#### Request Body
+| Method | Path        | Description                      |
+| ------ | ----------- | -------------------------------- |
+| GET    | `/`         | Health check and API metadata    |
+| POST   | `/generate` | Generate project blueprint (SSE) |
+| POST   | `/tasks`    | Generate project tasks (SSE)     |
+| POST   | `/refine`   | Refine content section (SSE)     |
 
-```typescript
-interface ExportRequest {
-  blueprint: string; // Generated blueprint.md content
-  tasks?: string; // Optional task.md content
-  projectName: string; // Project name for file naming
-  includeReadme?: boolean; // Include README.md (default: true)
-  format?: ExportFormat; // Export format (default: 'markdown')
-}
-
-enum ExportFormat {
-  MARKDOWN = "markdown",
-  HTML = "html",
-  PDF = "pdf",
-}
-```
-
-#### Response
-
-Returns a ZIP file containing the exported documentation.
-
-#### Example Request
-
-```bash
-curl -X POST http://localhost:8787/export \
-  -H "Content-Type: application/json" \
-  -d '{
-    "blueprint": "# Project: My App\n\n## Overview...",
-    "tasks": "# Implementation Tasks\n\n## Phase 1...",
-    "projectName": "My App",
-    "includeReadme": true,
-    "format": "markdown"
-  }' \
-  --output my-app-docs.zip
-```
-
-### POST /import
-
-Import previously exported project data for restoration or editing.
-
-#### Request Body
-
-```typescript
-interface ImportRequest {
-  file: File; // ZIP file containing exported project
-  validateOnly?: boolean; // Only validate file structure (default: false)
-}
-```
-
-#### Response
-
-```json
-{
-  "success": true,
-  "projectName": "My App",
-  "blueprint": "# Project: My App\n\n## Overview...",
-  "tasks": "# Implementation Tasks\n\n## Phase 1...",
-  "metadata": {
-    "exportDate": "2026-02-11T01:31:18.000Z",
-    "version": "1.2.0",
-    "format": "markdown"
-  }
-}
-```
-
-#### Example Request
-
-```bash
-curl -X POST http://localhost:8787/import \
-  -F "file=@my-app-docs.zip" \
-  -F "validateOnly=false"
-```
-
-### GET /storage/quota
-
-Check localStorage quota usage and availability.
-
-#### Response
-
-```json
-{
-  "totalQuota": 5242880, // Total quota in bytes (5MB)
-  "used": 1048576, // Used space in bytes
-  "available": 4194304, // Available space in bytes
-  "usagePercentage": 20, // Usage percentage
-  "projects": [
-    {
-      "name": "My App",
-      "size": 524288, // Size in bytes
-      "lastModified": "2026-02-11T01:31:18.000Z"
-    }
-  ]
-}
-```
-
-### DELETE /storage/clear
-
-Clear all stored data from localStorage.
-
-#### Request Body
-
-```typescript
-interface ClearStorageRequest {
-  projectId?: string; // Optional: clear only specific project
-  confirm: boolean; // Must be true to confirm deletion
-}
-```
-
-#### Response
-
-```json
-{
-  "success": true,
-  "clearedProjects": ["My App", "Another Project"],
-  "freedSpace": 1048576, // Freed space in bytes
-  "timestamp": "2026-02-11T01:31:18.000Z"
-}
-```
+**Note**: Export/import and storage management endpoints are planned for future releases but are not currently available.
 
 ## Error Handling
 
-All endpoints return consistent error responses:
+All endpoints return consistent error responses using structured JSON format:
 
 ```json
 {
-  "error": "Error description",
-  "details": {
-    "field": ["Validation error messages"]
+  "success": false,
+  "error": {
+    "type": "validation|authentication|authorization|not_found|configuration|network|ai_service|internal",
+    "message": "Error description",
+    "code": "ERROR_CODE",
+    "details": {
+      "field": ["Validation error messages"]
+    },
+    "timestamp": "2026-02-11T20:00:00.000Z",
+    "requestId": "req_123456789"
   }
 }
 ```
 
-### Common Error Codes
+### Error Types
 
-| Status Code | Description                                              |
-| ----------- | -------------------------------------------------------- |
-| 400         | Bad Request - Invalid input data                         |
-| 500         | Internal Server Error - API or LLM provider error        |
-| 503         | Service Unavailable - OpenAI API rate limits or downtime |
+| Type             | Description                                         | HTTP Status |
+| ---------------- | --------------------------------------------------- | ----------- |
+| `validation`     | Request validation failed                           | 400         |
+| `authentication` | Authentication required                             | 401         |
+| `authorization`  | Insufficient permissions                            | 403         |
+| `not_found`      | Resource not found                                  | 404         |
+| `configuration`  | Service configuration error (e.g., missing API key) | 500         |
+| `network`        | Network error occurred                              | 500         |
+| `ai_service`     | AI service error                                    | 503         |
+| `internal`       | Internal server error                               | 500         |
+
+### Common Error Scenarios
+
+#### Validation Errors (400)
+
+```json
+{
+  "success": false,
+  "error": {
+    "type": "validation",
+    "message": "Request validation failed",
+    "details": {
+      "projectName": ["Project name is required"],
+      "description": ["Description must be at least 10 characters"]
+    },
+    "timestamp": "2026-02-11T20:00:00.000Z"
+  }
+}
+```
+
+#### Configuration Errors (500)
+
+```json
+{
+  "success": false,
+  "error": {
+    "type": "configuration",
+    "message": "OpenAI API key not configured",
+    "code": "CONFIGURATION_ERROR",
+    "timestamp": "2026-02-11T20:00:00.000Z"
+  }
+}
+```
+
+#### AI Service Errors (503)
+
+```json
+{
+  "success": false,
+  "error": {
+    "type": "ai_service",
+    "message": "AI service error",
+    "code": "AI_SERVICE_ERROR",
+    "timestamp": "2026-02-11T20:00:00.000Z"
+  }
+}
+```
+
+## Tech Stack Categories
+
+The API supports detailed tech stack categorization for better project planning and technology selection.
+
+### Main Categories
+
+| Category   | Description                             | Example Technologies                               |
+| ---------- | --------------------------------------- | -------------------------------------------------- |
+| `frontend` | User interface libraries and frameworks | React, Vue.js, Next.js, Svelte, Angular, Astro     |
+| `backend`  | Server-side frameworks and runtimes     | Hono, Express, Fastify, NestJS, Django, FastAPI    |
+| `database` | Data storage solutions                  | PostgreSQL, MongoDB, Redis, Pinecone, Neo4j        |
+| `hosting`  | Deployment and hosting platforms        | Cloudflare, Vercel, Netlify, AWS, Railway, Fly.io  |
+| `ai`       | AI/ML services and libraries            | OpenAI, Anthropic, Hugging Face                    |
+| `testing`  | Testing frameworks and tools            | Jest, Cypress, Playwright, Vitest                  |
+| `styling`  | CSS and styling solutions               | Tailwind CSS, Styled Components, CSS Modules, Sass |
+| `other`    | Miscellaneous tools and utilities       | Git, Docker, CI/CD tools                           |
+
+### Database Subcategories
+
+| Subcategory  | Description                   | Example Technologies                 |
+| ------------ | ----------------------------- | ------------------------------------ |
+| `relational` | Traditional SQL databases     | PostgreSQL, MySQL, PlanetScale       |
+| `nosql`      | Document and key-value stores | MongoDB, Redis, DynamoDB, Cassandra  |
+| `vector`     | Vector databases for AI       | Pinecone, Weaviate, Chroma           |
+| `graph`      | Graph databases               | Neo4j, Amazon Neptune                |
+| `edge`       | Edge-optimized databases      | FaunaDB, Upstash, Cloudflare D1      |
+| `search`     | Search and analytics engines  | Elasticsearch, Algolia               |
+| `cache`      | In-memory caching             | Redis                                |
+| `serverless` | Serverless database platforms | PlanetScale, Cloudflare D1, Supabase |
+
+### Example Tech Stack Item
+
+```json
+{
+  "name": "PostgreSQL",
+  "category": "database",
+  "subcategory": "relational",
+  "version": "15.0",
+  "description": "Advanced open-source relational database with strong ACID compliance",
+  "features": [
+    "ACID compliance",
+    "JSON support",
+    "Full-text search",
+    "Window functions"
+  ]
+}
+```
 
 ## Rate Limiting
 
@@ -356,7 +409,9 @@ class BlueprintifyClient {
             if (data === "DONE") {
               return blueprint;
             }
-            blueprint += data + "\n";
+            if (data) {
+              blueprint += data + "\n";
+            }
           }
         }
       }
@@ -404,7 +459,8 @@ class BlueprintifyClient:
                     data = decoded[6:]
                     if data == 'DONE':
                         break
-                    blueprint += data + '\n'
+                    if data:
+                        blueprint += data + '\n'
 
         return blueprint
 
@@ -492,11 +548,48 @@ Currently, the API uses Server-Sent Events (SSE) for streaming. WebSocket suppor
 
 ## Version History
 
-| Version | Date       | Changes                                |
-| ------- | ---------- | -------------------------------------- |
-| 1.0.0   | 2026-02-05 | Initial API with generate endpoint     |
-| 1.1.0   | 2026-02-06 | Added tasks and refine endpoints       |
-| 1.2.0   | 2026-02-07 | Enhanced error handling and validation |
+| Version | Date       | Changes                                                |
+| ------- | ---------- | ------------------------------------------------------ |
+| 1.0.0   | 2026-02-11 | Current API with generate, tasks, and refine endpoints |
+|         |            | Enhanced error handling with structured responses      |
+|         |            | Comprehensive validation using Zod schemas             |
+|         |            | Tech stack metadata support with categorization        |
+|         |            | Server-Sent Events (SSE) for streaming responses       |
+
+## Planned Features
+
+The following features are planned for future releases:
+
+- **Export Endpoint** - Export projects as ZIP files with multiple formats
+- **Import Endpoint** - Import previously exported projects
+- **Storage Management** - Quota management and data persistence APIs
+- **WebSocket Support** - Bidirectional communication for real-time collaboration
+- **Rate Limiting** - API rate limiting and quota management
+- **Authentication** - Optional API key authentication for enterprise use
+
+## SSE Stream Format
+
+All streaming endpoints use Server-Sent Events with the following format:
+
+```
+data: [content line]
+data: [another content line]
+data: DONE
+```
+
+**Event Types:**
+
+- `content` - Streaming content data
+- `error` - Error information during streaming
+- `done` - Stream completion marker
+
+**Headers:**
+
+```
+Content-Type: text/event-stream
+Cache-Control: no-cache
+Connection: keep-alive
+```
 
 ---
 

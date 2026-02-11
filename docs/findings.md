@@ -110,3 +110,55 @@ The storage layer implementation is **exceptionally robust** and represents a be
 ---
 
 _Add new findings below this line._
+
+## Technical Writer Documentation Updates
+
+**Date**: 2026-02-11  
+**Agent**: Technical Writer  
+**Issue**: #276 - Update API Documentation for M2 Features  
+**Status**: ✅ COMPLETED
+
+### Updates Applied
+
+1. **API Response Format Correction**: Updated health check endpoint response to match actual implementation with `name`, `version`, `status`, and `endpoints` fields
+
+2. **Request Schema Enhancements**:
+   - Updated `GenerateRequest` to use `TechStackItem` interface instead of string arrays
+   - Added proper validation rules and constraints
+   - Documented all tech stack categories and database subcategories
+
+3. **Refine Endpoint Correction**:
+   - Updated request schema to match actual implementation
+   - Removed incorrect `section` and complex `context` fields
+   - Simplified to use string-based context
+
+4. **Error Handling Overhaul**:
+   - Added structured error response format with `success: false` pattern
+   - Documented all 8 error types (validation, authentication, authorization, etc.)
+   - Added comprehensive error examples for common scenarios
+   - Included error codes, timestamps, and request IDs
+
+5. **Endpoint Inventory Update**:
+   - Removed documentation for non-existent endpoints (`/export`, `/import`, `/storage/*`)
+   - Added "Available Endpoints" summary table
+   - Added "Planned Features" section for future endpoints
+
+6. **SSE Documentation**: Added proper Server-Sent Events format documentation with headers and event types
+
+7. **Version History Update**: Updated to reflect current v1.0.0 with actual implemented features
+
+8. **Client Examples**: Fixed TypeScript and Python examples to handle empty data lines correctly
+
+### Key Technical Improvements
+
+- **Schema Accuracy**: All request/response schemas now match actual Zod validation schemas
+- **Comprehensive Error Documentation**: Complete error type system with HTTP status mapping
+- **Tech Stack Taxonomy**: Full categorization system with 8 main categories and 8 database subcategories
+- **Real-World Examples**: Updated examples with actual tech stack items including metadata
+
+### Impact
+
+- Developer experience significantly improved with accurate documentation
+- Reduced integration friction with correct endpoint specifications
+- Better understanding of available tech stack options
+- Clear error handling for debugging API integrations
