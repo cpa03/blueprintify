@@ -1,0 +1,157 @@
+{
+  "timestamp": "2026-02-11T20:45:43.861Z",
+  "url": "http://localhost:3000",
+  "scores": {
+    "performance": 0,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 100
+  },
+  "audits": [
+    {
+      "id": "first-contentful-paint",
+      "title": "First Contentful Paint",
+      "description": "First Contentful Paint marks the time at which the first text or image is painted. [Learn more about the First Contentful Paint metric](https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/).",
+      "score": 0,
+      "scoreDisplayMode": "numeric"
+    },
+    {
+      "id": "speed-index",
+      "title": "Speed Index",
+      "description": "Speed Index shows how quickly the contents of a page are visibly populated. [Learn more about the Speed Index metric](https://developer.chrome.com/docs/lighthouse/performance/speed-index/).",
+      "score": 0.09,
+      "scoreDisplayMode": "numeric"
+    },
+    {
+      "id": "max-potential-fid",
+      "title": "Max Potential First Input Delay",
+      "description": "The maximum potential First Input Delay that your users could experience is the duration of the longest task. [Learn more about the Maximum Potential First Input Delay metric](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-max-potential-fid/).",
+      "score": 0.99,
+      "scoreDisplayMode": "numeric"
+    },
+    {
+      "id": "cumulative-layout-shift",
+      "title": "Cumulative Layout Shift",
+      "description": "Cumulative Layout Shift measures the movement of visible elements within the viewport. [Learn more about the Cumulative Layout Shift metric](https://web.dev/articles/cls).",
+      "score": 0.92,
+      "scoreDisplayMode": "numeric",
+      "details": {
+        "type": "debugdata",
+        "items": [
+          {
+            "cumulativeLayoutShiftMainFrame": 0.0888954509988671,
+            "newEngineResultDiffered": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "total-byte-weight",
+      "title": "Avoid enormous network payloads",
+      "description": "Large network payloads cost users real money and are highly correlated with long load times. [Learn how to reduce payload sizes](https://developer.chrome.com/docs/lighthouse/performance/total-byte-weight/).",
+      "score": 0.5,
+      "scoreDisplayMode": "metricSavings",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "url",
+            "valueType": "url",
+            "label": "URL"
+          },
+          {
+            "key": "totalBytes",
+            "valueType": "bytes",
+            "label": "Transfer Size"
+          }
+        ],
+        "items": [
+          {
+            "url": "http://localhost:3000/node_modules/.vite/deps/chunk-WH6IPWD4.js?v=e2779feb",
+            "totalBytes": 928455
+          },
+          {
+            "url": "http://localhost:3000/node_modules/.vite/deps/framer-motion.js?v=c8c531e8",
+            "totalBytes": 323746
+          },
+          {
+            "url": "http://localhost:3000/node_modules/.vite/deps/jszip.js?v=55c49a55",
+            "totalBytes": 151903
+          },
+          {
+            "url": "http://localhost:3000/@vite/client",
+            "totalBytes": 138191
+          },
+          {
+            "url": "http://localhost:3000/node_modules/.vite/deps/zod.js?v=aa93777e",
+            "totalBytes": 124363
+          },
+          {
+            "url": "http://localhost:3000/@react-refresh",
+            "totalBytes": 117841
+          },
+          {
+            "url": "http://localhost:3000/src/lib/export.ts",
+            "totalBytes": 107813
+          },
+          {
+            "url": "http://localhost:3000/src/components/wizard/StepInfo.tsx",
+            "totalBytes": 85227
+          },
+          {
+            "url": "http://localhost:3000/src/index.css",
+            "totalBytes": 80422
+          },
+          {
+            "url": "http://localhost:3000/node_modules/.vite/deps/chunk-3XHYXHM7.js?v=e2779feb",
+            "totalBytes": 78153
+          }
+        ],
+        "sortedBy": [
+          "totalBytes"
+        ]
+      }
+    },
+    {
+      "id": "bf-cache",
+      "title": "Page prevented back/forward cache restoration",
+      "description": "Many navigations are performed by going back to a previous page, or forwards again. The back/forward cache (bfcache) can speed up these return navigations. [Learn more about the bfcache](https://developer.chrome.com/docs/lighthouse/performance/bf-cache/)",
+      "score": 0,
+      "scoreDisplayMode": "binary",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "reason",
+            "valueType": "text",
+            "subItemsHeading": {
+              "key": "frameUrl",
+              "valueType": "url"
+            },
+            "label": "Failure reason"
+          },
+          {
+            "key": "failureType",
+            "valueType": "text",
+            "label": "Failure type"
+          }
+        ],
+        "items": [
+          {
+            "reason": "Pages with WebSocket cannot enter back/forward cache.",
+            "failureType": "Pending browser support",
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "frameUrl": "http://localhost:3000/"
+                }
+              ]
+            },
+            "protocolReason": "WebSocket"
+          }
+        ]
+      }
+    }
+  ]
+}
