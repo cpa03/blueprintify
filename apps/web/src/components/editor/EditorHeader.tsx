@@ -11,9 +11,12 @@ interface EditorHeaderProps {
   onCopy: () => void;
   onExport: () => void;
   onNew: () => void;
+  onSessionManager: () => void;
+  onRefinement: () => void;
   hasContent: boolean;
   copied: string | null;
   isExporting?: boolean;
+  currentSessionId?: string;
 }
 
 export type { ViewMode };
@@ -26,9 +29,11 @@ export function EditorHeader({
   onCopy,
   onExport,
   onNew,
+  onSessionManager,
   hasContent,
   copied,
   isExporting = false,
+  currentSessionId,
 }: EditorHeaderProps) {
   return (
     <div className="flex items-center justify-between p-4 border-b border-dark-700">
@@ -70,14 +75,16 @@ export function EditorHeader({
 
       <EditorToolbar
         activeTab={activeTab}
-        viewMode={viewMode}
         setViewMode={setViewMode}
         onCopy={onCopy}
         onExport={onExport}
         onNew={onNew}
+        onSessionManager={onSessionManager}
+        onRefinement={onRefinement}
         hasContent={hasContent}
         copied={copied}
         isExporting={isExporting}
+        currentSessionId={currentSessionId}
       />
     </div>
   );

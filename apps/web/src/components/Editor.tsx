@@ -5,13 +5,18 @@ import { markdown } from "@codemirror/lang-markdown";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { MarkdownRenderer } from "./MarkdownRenderer";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
+import { SessionManager } from "./session/SessionManager";
+import { RefinementPanel } from "./refinement/RefinementPanel";
+import type { StoredSession } from "../types/storage";
 import {
   useEditorStore,
   useWizardStore,
+  useSessionStore,
   resetAllStores,
   useToast,
 } from "../store";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
+import { useAutoSave } from "../hooks/useAutoSave";
 import { TIMEOUTS, DEFAULT_PROJECT_NAME } from "../config/constants";
 import clsx from "clsx";
 
@@ -19,8 +24,11 @@ export function Editor() {
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [copied, setCopied] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
+  const [isSessionManagerOpen, setIsSessionManagerOpen] = useState(false);
+  const [isRefinementOpen, setIsRefinementOpen] = useState(false);
   const toast = useToast();
 
+  const { currentSession, loadSessions } = useSessionStore();
   const activeTab = useEditorStore((s) => s.activeTab);
   const setActiveTab = useEditorStore((s) => s.setActiveTab);
   const blueprintContent = useEditorStore((s) => s.blueprintContent);
@@ -29,6 +37,14 @@ export function Editor() {
   const setTasksContent = useEditorStore((s) => s.setTasksContent);
   const isGenerating = useEditorStore((s) => s.isGenerating);
   const projectName = useWizardStore((s) => s.projectName);
+
+  useAutoSave({
+    enabled: Boolean(
+      currentSession || (projectName && (blueprintContent || tasksContent)),
+    ),
+    interval: 2000,
+    debounceMs: 1000,
+  });
 
   const currentContent =
     activeTab === "blueprint" ? blueprintContent : tasksContent;
@@ -71,6 +87,27 @@ export function Editor() {
     toast.info("Started new project");
   };
 
+  const handleSessionManagerOpen = () => {
+    setIsSessionManagerOpen(true);
+  };
+
+  const handleSessionSelect = (session: StoredSession) => {
+    loadSessions();
+    setBlueprintContent(session.generatedBlueprint);
+    setTasksContent(session.generatedTasks);
+    setIsSessionManagerOpen(false);
+
+    if (session.editorState) {
+      setActiveTab(session.editorState.activeTab);
+    }
+
+    toast.success(`Loaded session: ${session.title}`);
+  };
+
+  const handleRefinementToggle = () => {
+    setIsRefinementOpen(!isRefinementOpen);
+  };
+
   const hasContent = blueprintContent.length > 0 || tasksContent.length > 0;
 
   return (
@@ -84,9 +121,12 @@ export function Editor() {
         onCopy={handleCopy}
         onExport={handleExport}
         onNew={handleNewProject}
+        onSessionManager={handleSessionManagerOpen}
+        onRefinement={handleRefinementToggle}
         hasContent={hasContent}
         copied={copied}
         isExporting={isExporting}
+        currentSessionId={currentSession?.id}
       />
 
       {/* Editor Content */}
@@ -144,6 +184,20 @@ export function Editor() {
           </div>
         )}
       </div>
+
+      {/* Session Manager Modal */}
+      <SessionManager
+        isOpen={isSessionManagerOpen}
+        onClose={() => setIsSessionManagerOpen(false)}
+        onSessionSelect={handleSessionSelect}
+        currentSessionId={currentSession?.id}
+      />
+
+      {/* Refinement Panel */}
+      <RefinementPanel
+        isOpen={isRefinementOpen}
+        onClose={() => setIsRefinementOpen(false)}
+      />
     </div>
   );
 }

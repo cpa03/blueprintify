@@ -12,17 +12,17 @@ export declare const TechStackItem: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     name: string;
     category: "frontend" | "backend" | "database" | "hosting" | "ai" | "testing" | "styling" | "other";
-    description?: string | undefined;
-    subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
     version?: string | undefined;
+    description?: string | undefined;
     features?: string[] | undefined;
+    subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
 }, {
     name: string;
     category: "frontend" | "backend" | "database" | "hosting" | "ai" | "testing" | "styling" | "other";
-    description?: string | undefined;
-    subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
     version?: string | undefined;
+    description?: string | undefined;
     features?: string[] | undefined;
+    subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
 }>;
 export declare const BlueprintRequestSchema: z.ZodObject<{
     projectName: z.ZodString;
@@ -37,17 +37,17 @@ export declare const BlueprintRequestSchema: z.ZodObject<{
     }, "strip", z.ZodTypeAny, {
         name: string;
         category: "frontend" | "backend" | "database" | "hosting" | "ai" | "testing" | "styling" | "other";
-        description?: string | undefined;
-        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
         version?: string | undefined;
+        description?: string | undefined;
         features?: string[] | undefined;
+        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
     }, {
         name: string;
         category: "frontend" | "backend" | "database" | "hosting" | "ai" | "testing" | "styling" | "other";
-        description?: string | undefined;
-        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
         version?: string | undefined;
+        description?: string | undefined;
         features?: string[] | undefined;
+        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
     }>, "many">;
     features: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
     targetAudience: z.ZodOptional<z.ZodString>;
@@ -58,10 +58,10 @@ export declare const BlueprintRequestSchema: z.ZodObject<{
     techStack: {
         name: string;
         category: "frontend" | "backend" | "database" | "hosting" | "ai" | "testing" | "styling" | "other";
-        description?: string | undefined;
-        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
         version?: string | undefined;
+        description?: string | undefined;
         features?: string[] | undefined;
+        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
     }[];
     features?: string[] | undefined;
     targetAudience?: string | undefined;
@@ -72,10 +72,10 @@ export declare const BlueprintRequestSchema: z.ZodObject<{
     techStack: {
         name: string;
         category: "frontend" | "backend" | "database" | "hosting" | "ai" | "testing" | "styling" | "other";
-        description?: string | undefined;
-        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
         version?: string | undefined;
+        description?: string | undefined;
         features?: string[] | undefined;
+        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
     }[];
     features?: string[] | undefined;
     targetAudience?: string | undefined;
@@ -85,11 +85,11 @@ export declare const TaskGenerationRequestSchema: z.ZodObject<{
     blueprint: z.ZodString;
     projectName: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    projectName: string;
     blueprint: string;
+    projectName: string;
 }, {
-    projectName: string;
     blueprint: string;
+    projectName: string;
 }>;
 export declare const TaskStatusSchema: z.ZodEnum<["todo", "in_progress", "done"]>;
 export declare const TaskPrioritySchema: z.ZodEnum<["low", "medium", "high", "critical"]>;
@@ -101,15 +101,15 @@ export declare const TaskItemSchema: z.ZodObject<{
     description: z.ZodOptional<z.ZodString>;
     dependencies: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
 }, "strip", z.ZodTypeAny, {
-    id: string;
     status: "todo" | "in_progress" | "done";
+    id: string;
     title: string;
     description?: string | undefined;
     priority?: "low" | "medium" | "high" | "critical" | undefined;
     dependencies?: string[] | undefined;
 }, {
-    id: string;
     status: "todo" | "in_progress" | "done";
+    id: string;
     title: string;
     description?: string | undefined;
     priority?: "low" | "medium" | "high" | "critical" | undefined;
@@ -123,15 +123,15 @@ export declare const TaskListSchema: z.ZodArray<z.ZodObject<{
     description: z.ZodOptional<z.ZodString>;
     dependencies: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
 }, "strip", z.ZodTypeAny, {
-    id: string;
     status: "todo" | "in_progress" | "done";
+    id: string;
     title: string;
     description?: string | undefined;
     priority?: "low" | "medium" | "high" | "critical" | undefined;
     dependencies?: string[] | undefined;
 }, {
-    id: string;
     status: "todo" | "in_progress" | "done";
+    id: string;
     title: string;
     description?: string | undefined;
     priority?: "low" | "medium" | "high" | "critical" | undefined;
@@ -167,51 +167,51 @@ export declare const TemplateSchema: z.ZodObject<{
     }, "strip", z.ZodTypeAny, {
         name: string;
         category: "frontend" | "backend" | "database" | "hosting" | "ai" | "testing" | "styling" | "other";
-        description?: string | undefined;
-        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
         version?: string | undefined;
+        description?: string | undefined;
         features?: string[] | undefined;
+        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
     }, {
         name: string;
         category: "frontend" | "backend" | "database" | "hosting" | "ai" | "testing" | "styling" | "other";
-        description?: string | undefined;
-        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
         version?: string | undefined;
+        description?: string | undefined;
         features?: string[] | undefined;
+        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
     }>, "many">;
     features: z.ZodArray<z.ZodString, "many">;
 }, "strip", z.ZodTypeAny, {
     id: string;
-    name: string;
     description: string;
-    icon: string;
     projectName: string;
-    defaultDescription: string;
     techStack: {
         name: string;
         category: "frontend" | "backend" | "database" | "hosting" | "ai" | "testing" | "styling" | "other";
-        description?: string | undefined;
-        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
         version?: string | undefined;
+        description?: string | undefined;
         features?: string[] | undefined;
+        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
     }[];
     features: string[];
+    name: string;
+    icon: string;
+    defaultDescription: string;
 }, {
     id: string;
-    name: string;
     description: string;
-    icon: string;
     projectName: string;
-    defaultDescription: string;
     techStack: {
         name: string;
         category: "frontend" | "backend" | "database" | "hosting" | "ai" | "testing" | "styling" | "other";
-        description?: string | undefined;
-        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
         version?: string | undefined;
+        description?: string | undefined;
         features?: string[] | undefined;
+        subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless" | undefined;
     }[];
     features: string[];
+    name: string;
+    icon: string;
+    defaultDescription: string;
 }>;
 export declare const ErrorTypeSchema: z.ZodEnum<["validation", "authentication", "authorization", "not_found", "configuration", "network", "ai_service", "internal"]>;
 export declare const ErrorDetailSchema: z.ZodObject<{

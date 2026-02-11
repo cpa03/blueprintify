@@ -8,11 +8,11 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@blueprint/shared": ["../../packages/shared/src"],
+      "@blueprint/shared/*": ["../../packages/shared/src/*"]
     }
   },
   "include": ["src/**/*"],
-  "references": [
-    { "path": "../../packages/shared" }
-  ]
+  "references": [{ "path": "../../packages/shared" }]
 }

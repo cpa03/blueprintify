@@ -12,9 +12,12 @@ interface EditorToolbarProps {
   onCopy: () => void;
   onExport: () => void;
   onNew: () => void;
+  onSessionManager: () => void;
+  onRefinement: () => void;
   hasContent: boolean;
   copied: string | null;
   isExporting?: boolean;
+  currentSessionId?: string;
 }
 
 function AnimatedCheckmark() {
@@ -50,9 +53,12 @@ export function EditorToolbar({
   onCopy,
   onExport,
   onNew,
+  onSessionManager,
+  onRefinement,
   hasContent,
   copied,
   isExporting = false,
+  currentSessionId,
 }: EditorToolbarProps) {
   const isCopied = copied === activeTab;
 
@@ -231,6 +237,81 @@ export function EditorToolbar({
           aria-label="Start new project"
         >
           🔄 New
+        </button>
+      </Tooltip>
+
+      {/* Session Manager */}
+      <Tooltip
+        content={
+          <div className="flex items-center gap-2">
+            <span>Manage sessions</span>
+            <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-xs font-mono text-dark-300">
+              Ctrl+S
+            </kbd>
+          </div>
+        }
+        position="bottom"
+        delay={400}
+      >
+        <button
+          onClick={onSessionManager}
+          className="btn-ghost text-sm relative"
+          aria-label="Manage sessions"
+        >
+          {currentSessionId ? (
+            <div className="flex items-center gap-2">
+              <motion.span
+                initial={{ rotate: 0 }}
+                whileHover={{ rotate: [-5, 5, -5, 0] }}
+                transition={{ duration: 0.5 }}
+              >
+                📁
+              </motion.span>
+              <span>Sessions</span>
+              <div className="w-2 h-2 bg-accent-emerald rounded-full"></div>
+            </div>
+          ) : (
+            <>
+              <motion.span
+                initial={{ rotate: 0 }}
+                whileHover={{ rotate: [-5, 5, -5, 0] }}
+                transition={{ duration: 0.5 }}
+              >
+                📁
+              </motion.span>
+              <span>Sessions</span>
+            </>
+          )}
+        </button>
+      </Tooltip>
+
+      {/* Refinement */}
+      <Tooltip
+        content={
+          <div className="flex items-center gap-2">
+            <span>Refine content</span>
+            <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-xs font-mono text-dark-300">
+              Ctrl+R
+            </kbd>
+          </div>
+        }
+        position="bottom"
+        delay={400}
+      >
+        <button
+          onClick={onRefinement}
+          disabled={!hasContent}
+          className="btn-ghost text-sm relative"
+          aria-label="Refine content"
+        >
+          <motion.span
+            initial={{ rotate: 0 }}
+            whileHover={hasContent ? { rotate: [-5, 5, -5, 0] } : undefined}
+            transition={{ duration: 0.5 }}
+          >
+            ✨
+          </motion.span>
+          <span>Refine</span>
         </button>
       </Tooltip>
     </div>
