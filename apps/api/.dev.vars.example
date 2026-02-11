@@ -1,0 +1,12 @@
+# Cloudflare Workers Environment Variables
+# Copy this file to .dev.vars and fill in your actual values
+# DO NOT commit .dev.vars to version control
+
+# Required: Your OpenAI API key
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Optional: Custom OpenAI API base URL (for proxy services)
+# OPENAI_BASE_URL=https://api.openai.com/v1
+
+# Optional: Model to use (defaults to gpt-4o-mini)
+# OPENAI_MODEL=gpt-4o-mini
