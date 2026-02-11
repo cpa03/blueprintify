@@ -187,9 +187,65 @@ Monitor the blueprint generation in real-time.
 
 ---
 
+## Data Persistence and Storage
+
+### LocalStorage Features
+
+The application automatically saves your work to browser localStorage, ensuring you never lose progress.
+
+#### What Gets Stored
+
+- **Wizard Progress** - All form data from steps 1-3
+- **Generated Content** - blueprint.md and task.md files
+- **Editor Changes** - All modifications made in the split-pane editor
+- **Refinement History** - Track of AI-assisted improvements
+
+#### Storage Management
+
+- **Quota Limit** - 5MB total storage space
+- **Auto-cleanup** - Old content automatically removed when quota exceeded
+- **Usage Monitoring** - Real-time display of storage usage
+- **Manual Clear** - Option to clear all stored data
+
+#### Data Security
+
+- **Sanitization** - All content sanitized before storage
+- **Schema Validation** - Data structure validated for integrity
+- **XSS Protection** - Malicious scripts filtered out
+- **Privacy Protection** - No sensitive data logged or transmitted
+
+#### Export and Import
+
+- **Download All Data** - Export your complete project as a ZIP file
+- **Import Previous Work** - Restore from previously saved projects
+- **Format Compatibility** - Standard JSON and markdown formats
+- **Cross-browser Support** - Works on all modern browsers
+
+#### Troubleshooting Storage
+
+**Storage Quota Exceeded**
+
+- Clear old projects using the storage management tool
+- Export important projects before clearing
+- Contact support if quota issues persist
+
+**Data Not Loading**
+
+- Check browser localStorage is enabled
+- Try refreshing the page
+- Clear browser cache and retry
+
+**Corrupted Data**
+
+- Use the import function with a backup file
+- Clear all data and start fresh
+- Report the issue with browser details
+
+---
+
 ## Post-Generation Workflow
 
-### Split-Pane Editor (Coming Soon)
+### Split-Pane Editor
 
 After generation, you'll have access to a split-pane editor where you can:
 
@@ -197,6 +253,60 @@ After generation, you'll have access to a split-pane editor where you can:
 - **Edit Content** - Modify generated content using the code editor
 - **Live Preview** - See markdown rendering in real-time
 - **Refine Content** - Use AI assistance to improve specific sections
+
+#### Editor Features
+
+- **CodeMirror Integration** - Professional code editor with syntax highlighting
+- **Real-time Markdown Preview** - See formatted content as you type
+- **Tab Management** - Switch between blueprint.md and task.md files
+- **Auto-save** - Changes automatically saved to localStorage
+- **Keyboard Shortcuts** - Standard editor shortcuts (Ctrl+S, Ctrl+Z, etc.)
+
+#### Refinement Workflow
+
+1. **Select Section** - Click on any section header to target for refinement
+2. **Provide Instructions** - Enter specific instructions for AI improvement
+3. **Process Refinement** - Watch as AI updates the selected section
+4. **Review Changes** - Accept or reject the refined content
+
+#### Editor Security
+
+- **XSS Protection** - All content sanitized before rendering
+- **Safe Preview** - Markdown preview with security filtering
+- **Input Validation** - Real-time validation of user input
+- **Secure Storage** - Encrypted localStorage for sensitive content
+
+#### Refinement Workflow
+
+The refinement workflow allows you to selectively improve and enhance specific sections of your generated content.
+
+**How to Use Refinement**
+
+1. **Select Section** - Click on any section heading in the editor to target it
+2. **Choose Refinement Type** - Select from various refinement options:
+   - **Enhance** - Improve existing content with more detail
+   - **Expand** - Add comprehensive information and examples
+   - **Simplify** - Make content more concise and clear
+   - **Fix** - Correct errors or inconsistencies
+   - **Custom** - Provide your own refinement instructions
+3. **Add Instructions** - Enter specific guidance for the AI (optional)
+4. **Process** - Watch as the AI refines your content in real-time
+5. **Review** - Accept or refine further as needed
+
+**Refinement Features**
+
+- **Section Targeting** - Refine specific sections without affecting others
+- **Edit Preservation** - Your manual edits are preserved during refinement
+- **Real-time Streaming** - See improvements as they're generated
+- **Undo/Redo Support** - Revert changes if needed
+- **Context Awareness** - AI maintains project context for relevant improvements
+
+**Best Practices**
+
+- Be specific with refinement instructions
+- Use refinement to add technical details or examples
+- Preserve important manual edits
+- Review refined content for accuracy
 
 ### Export Options
 
@@ -221,6 +331,37 @@ After generation, you'll have access to a split-pane editor where you can:
 - Cloud storage integration planned
 - Version control and history tracking
 - Collaboration features
+
+#### Import/Export Functionality
+
+**Export Options**
+
+- **ZIP Download** - Complete project export with all documentation
+- **JSON Format** - Machine-readable format for programmatic use
+- **Markdown Files** - Individual files for easy editing
+- **Backup Creation** - Full backup with metadata and version info
+
+**Import Features**
+
+- **Format Support** - Import from ZIP, JSON, or markdown files
+- **Validation** - Automatic validation of imported content
+- **Conflict Resolution** - Handle duplicate or conflicting data
+- **Partial Import** - Select specific content to import
+- **Backup Protection** - Automatic backup before importing
+
+**Supported File Types**
+
+- `.zip` - Complete project archives with metadata
+- `.json` - Structured data format
+- `.md` - Individual markdown files
+- `.blueprint` - Native blueprint format
+
+**Best Practices**
+
+- Export regularly to backup your work
+- Validate imports before applying changes
+- Use ZIP format for complete project exports
+- Keep backup copies of important projects
 
 ## Best Practices
 
