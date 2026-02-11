@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { MarkdownRenderer } from "./MarkdownRenderer";
+import { LazyMarkdownRenderer } from "./LazyMarkdownRenderer";
 import { LazyCodeMirror } from "./LazyCodeMirror";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
 import {
@@ -145,7 +145,7 @@ export function Editor() {
                   viewMode === "split" ? "w-full lg:w-1/2" : "w-full",
                 )}
               >
-                <MarkdownRenderer
+                <LazyMarkdownRenderer
                   content={currentContent || "*No content yet...*"}
                 />
               </motion.div>

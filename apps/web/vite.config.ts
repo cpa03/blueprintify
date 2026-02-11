@@ -50,6 +50,7 @@ export default defineConfig({
             "@radix-ui/react-tabs",
             "@radix-ui/react-tooltip",
           ],
+          zustand: ["zustand"],
         },
         assetFileNames: (assetInfo) => {
           const name = assetInfo.name ?? "";
@@ -62,8 +63,16 @@ export default defineConfig({
         entryFileNames: "assets/[name]-[hash].js",
       },
     },
-    chunkSizeWarningLimit: 600,
+    chunkSizeWarningLimit: 700,
     cssCodeSplit: true,
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+    reportCompressedSize: true,
   },
   test: {
     globals: true,
