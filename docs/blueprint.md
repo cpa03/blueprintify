@@ -128,6 +128,22 @@ blueprintify/
 - `POST /refine` - Refine existing blueprint
 - `GET /tasks/{id}` - Get task status
 
+### Infrastructure Architecture
+
+#### Environments
+
+- **Development**: Local development with hot reload
+- **Staging**: Production replica for integration testing (api-staging.blueprintify.dev)
+- **Production**: High-availability deployment (api.blueprintify.dev)
+
+#### Deployment Infrastructure
+
+- **API**: Cloudflare Workers with automated CI/CD
+- **Frontend**: GitHub Pages with automated deployment
+- **Database**: Cloudflare D1 with environment isolation
+- **Caching**: Cloudflare KV namespaces
+- **Monitoring**: Health checks and error tracking ready
+
 ### Error Handling
 
 - Standardized error response format
