@@ -5,6 +5,11 @@ import {
   README_TEMPLATE,
   DEFAULT_PROJECT_NAME,
 } from "../config/constants";
+import {
+  sanitizeMarkdown,
+  validateAndSanitizeFileContent,
+  handleSecurityError,
+} from "./security";
 
 interface ExportFiles {
   blueprint: string;
@@ -13,6 +18,12 @@ interface ExportFiles {
   techStack: TechStackItemType[];
   description: string;
   features: string[];
+}
+
+interface ImportFile {
+  file: File;
+  onImport: (content: string) => void;
+  onError: (error: string) => void;
 }
 
 interface PackageJson {
@@ -30,19 +41,28 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
   const zip = new JSZip();
   const projectName = files.projectName || DEFAULT_PROJECT_NAME;
 
-  await generateProjectStructure(zip, files);
+  const sanitizedBlueprint = files.blueprint
+    ? sanitizeMarkdown(files.blueprint)
+    : "";
+  const sanitizedTasks = files.tasks ? sanitizeMarkdown(files.tasks) : "";
+
+  await generateProjectStructure(zip, {
+    ...files,
+    blueprint: sanitizedBlueprint,
+    tasks: sanitizedTasks,
+  });
 
   const docsFolder = zip.folder(".docs");
   if (!docsFolder) {
     throw new Error("Failed to create docs folder");
   }
 
-  if (files.blueprint) {
-    docsFolder.file("blueprint.md", files.blueprint);
+  if (sanitizedBlueprint) {
+    docsFolder.file("blueprint.md", sanitizedBlueprint);
   }
 
-  if (files.tasks) {
-    docsFolder.file("task.md", files.tasks);
+  if (sanitizedTasks) {
+    docsFolder.file("task.md", sanitizedTasks);
   }
 
   docsFolder.file("README.md", README_TEMPLATE(projectName));
@@ -61,6 +81,25 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
   link.click();
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
+}
+
+export async function importFile({
+  file,
+  onImport,
+  onError,
+}: ImportFile): Promise<void> {
+  try {
+    const validation = await validateAndSanitizeFileContent(file);
+    if (!validation.isValid) {
+      onError(validation.error || "File validation failed");
+      return;
+    }
+
+    onImport(validation.content || "");
+  } catch (error) {
+    const securityError = handleSecurityError(error);
+    onError(securityError.message);
+  }
 }
 
 async function generateProjectStructure(
