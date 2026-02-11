@@ -1,6 +1,6 @@
 {
-  "version": "1.0.7",
-  "last_updated": "2026-02-10",
+  "version": "1.0.8",
+  "last_updated": "2026-02-11",
   "dispatch_type": "unique_roles_priority",
   "agents": [
     {
@@ -321,6 +321,7 @@
       "role_id": "persistence-guardian",
       "specialization": "Client-side Data Architecture",
       "core_expertise": "LocalStorage with schema migration",
+      "unique_focus": "Complex client-side persistence patterns with automatic fallback strategies",
       "primary_task": "TASK-009",
       "supporting_tasks": ["TASK-105"],
       "unique_skills": [
@@ -337,6 +338,7 @@
       "role_id": "editor-orchestrator",
       "specialization": "Interactive Editing Systems",
       "core_expertise": "Bidirectional content synchronization with persistence",
+      "unique_focus": "Seamless editing experiences with intelligent state management",
       "primary_task": "TASK-103",
       "supporting_tasks": ["TASK-009", "TASK-104"],
       "unique_skills": [
@@ -352,6 +354,7 @@
       "role_id": "refinement-conductor",
       "specialization": "Selective Content Regeneration",
       "core_expertise": "Context-preserving refinement workflows",
+      "unique_focus": "Surgical content updates while maintaining document integrity and user edits",
       "primary_task": "TASK-104",
       "supporting_tasks": ["TASK-009", "TASK-103"],
       "unique_skills": [
@@ -367,6 +370,7 @@
       "role_id": "data-bridge-architect",
       "specialization": "Cross-System Data Migration",
       "core_expertise": "Schema versioning with forward/backward compatibility",
+      "unique_focus": "Building robust data bridges between system versions with zero-downtime migrations",
       "primary_task": "TASK-105",
       "supporting_tasks": ["TASK-009"],
       "unique_skills": [
@@ -382,6 +386,7 @@
       "role_id": "milestone-sorcerer",
       "specialization": "Phase Transition Management",
       "core_expertise": "End-to-end milestone execution with adaptive planning",
+      "unique_focus": "Transforming milestone plans into executable realities",
       "primary_task": "TASK-M2-EXECUTION",
       "supporting_tasks": ["All M2 tasks"],
       "unique_skills": [
@@ -397,6 +402,7 @@
       "role_id": "test-whisperer",
       "specialization": "Frontend Testing Architecture",
       "core_expertise": "Comprehensive test strategies for complex UI systems",
+      "unique_focus": "Creating testing ecosystems that evolve with the application architecture",
       "primary_task": "TEST-001",
       "supporting_tasks": ["All frontend tasks"],
       "unique_skills": [
@@ -412,6 +418,7 @@
       "role_id": "typescript-sentinel",
       "specialization": "Type Safety Enforcement",
       "core_expertise": "Zero-tolerance approach to type uncertainty",
+      "unique_focus": "Building type systems that prevent bugs at compile time while maintaining developer productivity",
       "primary_task": "TS-001",
       "supporting_tasks": ["All API tasks"],
       "unique_skills": [
@@ -427,6 +434,7 @@
       "role_id": "security-warden",
       "specialization": "Security Hardening & Sanitization",
       "core_expertise": "Comprehensive input security with zero-trust approach",
+      "unique_focus": "Creating robust security layers that protect against modern web vulnerabilities while maintaining usability",
       "primary_task": "SEC-M2-001",
       "supporting_tasks": ["All M2 tasks"],
       "unique_skills": [
@@ -442,6 +450,7 @@
       "role_id": "performance-sculptor",
       "specialization": "Frontend Performance Engineering",
       "core_expertise": "Achieving sub-500ms load times for complex applications",
+      "unique_focus": "Creating lightning-fast user experiences through systematic performance optimization",
       "primary_task": "PERF-M2-001",
       "supporting_tasks": ["TASK-009", "TASK-103"],
       "unique_skills": [
@@ -457,6 +466,7 @@
       "role_id": "test-orchestrator",
       "specialization": "Comprehensive Test Architecture",
       "core_expertise": "Building test suites that achieve 90%+ coverage with confidence",
+      "unique_focus": "Designing comprehensive testing ecosystems that evolve with the application while maintaining high coverage",
       "primary_task": "TEST-M2-001",
       "supporting_tasks": ["All M2 tasks"],
       "unique_skills": [
