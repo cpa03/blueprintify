@@ -71,7 +71,10 @@ blueprintify/
 
 - **Platform**: Cloudflare Workers
 - **Environment**: ARM64 (ubuntu-24.04-arm)
-- **CI/CD**: GitHub Actions
+- **CI/CD**: GitHub Actions with automated deployment
+- **Environments**: Development, Staging, Production
+- **Monitoring**: Health checks and error tracking
+- **Deployment**: Blue-green with rollback capability
 
 ## Design Principles
 
@@ -96,6 +99,10 @@ blueprintify/
 ### 4. Security
 
 - Input validation with Zod
+- DOMPurify-based XSS sanitization
+- Content Security Policy headers
+- File validation and sanitization
+- LocalStorage quota management
 - No secrets in code
 - Proper error handling without information leakage
 
