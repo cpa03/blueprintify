@@ -8,7 +8,12 @@ import tasksRoute from "./routes/tasks";
 import refineRoute from "./routes/refine";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 import type { Env } from "./types";
-import { API_METADATA, API_ENDPOINTS, CORS_CONFIG } from "./config/constants";
+import {
+  API_METADATA,
+  API_ENDPOINTS,
+  CORS_CONFIG,
+  ROUTE_PATHS,
+} from "./config/constants";
 
 // ===== App Initialization =====
 const app = new Hono<{ Bindings: Env }>();
@@ -40,9 +45,9 @@ app.get("/", (c) => {
 });
 
 // ===== Routes =====
-app.route("/generate", generateRoute);
-app.route("/tasks", tasksRoute);
-app.route("/refine", refineRoute);
+app.route(ROUTE_PATHS.GENERATE, generateRoute);
+app.route(ROUTE_PATHS.TASKS, tasksRoute);
+app.route(ROUTE_PATHS.REFINE, refineRoute);
 
 // ===== Error Handler =====
 app.onError(errorHandler);

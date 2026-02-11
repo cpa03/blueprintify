@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useEditorStore } from "../../store";
 import { useWizardStore } from "../../store";
 import { ANIMATION } from "../../config/constants";
+import { KeyboardShortcutTooltip } from "../Tooltip";
 
 export function StepGenerating() {
   const progress = useEditorStore((s) => s.generationProgress);
@@ -87,29 +88,40 @@ export function StepGenerating() {
         💡 Content streams in real-time. View the editor panel to see progress.
       </motion.p>
 
-      <motion.button
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: ANIMATION.SLOW * 2 }}
-        onClick={handleCancel}
-        className="mt-8 btn-ghost text-dark-400 hover:text-accent-pink flex items-center gap-2"
-        title="Cancel generation and return to review"
+        className="mt-8"
       >
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+        <KeyboardShortcutTooltip
+          shortcut="Esc"
+          description="Cancel generation"
+          position="top"
+          modifier="none"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-        Cancel Generation
-      </motion.button>
+          <button
+            onClick={handleCancel}
+            className="btn-ghost text-dark-400 hover:text-accent-pink flex items-center gap-2"
+            aria-label="Cancel generation (Esc)"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+            Cancel Generation
+          </button>
+        </KeyboardShortcutTooltip>
+      </motion.div>
     </motion.div>
   );
 }

@@ -1,7 +1,7 @@
 import type { Context } from "hono";
 import { createErrorResponse, isAPIError, ErrorType } from "../errors";
 import type { ErrorResponse } from "../errors";
-import { ERROR_CODES, ERROR_MESSAGES } from "../config/constants";
+import { ERROR_CODES, ERROR_MESSAGES, HTTP_STATUS } from "../config/constants";
 
 export const errorHandler = (err: unknown, c: Context) => {
   const errorLog = {
@@ -39,11 +39,13 @@ export const errorHandler = (err: unknown, c: Context) => {
       },
     };
 
-    return c.json(errorResponse, 400);
+    return c.json(errorResponse, HTTP_STATUS.BAD_REQUEST);
   }
 
   const errorResponse: ErrorResponse = createErrorResponse(err);
-  const statusCode = isAPIError(err) ? err.statusCode : 500;
+  const statusCode = isAPIError(err)
+    ? err.statusCode
+    : HTTP_STATUS.INTERNAL_ERROR;
 
   return c.json(errorResponse, statusCode as 400 | 401 | 403 | 404 | 500 | 502);
 };
@@ -59,7 +61,7 @@ export const notFoundHandler = (c: Context) => {
         timestamp: new Date().toISOString(),
       },
     },
-    404,
+    HTTP_STATUS.NOT_FOUND,
   );
 };
 

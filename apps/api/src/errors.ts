@@ -1,3 +1,5 @@
+import { DEFAULT_ERROR_MESSAGES } from "./config/constants";
+
 /**
  * API Error Types and Classes
  * Defines standardized error types for the Blueprint Generator API
@@ -72,7 +74,7 @@ export class APIError extends Error {
 // ===== Validation Error (400) =====
 export class ValidationError extends APIError {
   constructor(
-    message: string = "Invalid request data",
+    message: string = DEFAULT_ERROR_MESSAGES.VALIDATION,
     details?: Record<string, unknown>,
   ) {
     super(ErrorType.VALIDATION, message, 400, "VALIDATION_ERROR", details);
@@ -82,7 +84,7 @@ export class ValidationError extends APIError {
 
 // ===== Authentication Error (401) =====
 export class AuthenticationError extends APIError {
-  constructor(message: string = "Authentication required") {
+  constructor(message: string = DEFAULT_ERROR_MESSAGES.AUTHENTICATION) {
     super(ErrorType.AUTHENTICATION, message, 401, "AUTHENTICATION_ERROR");
     this.name = "AuthenticationError";
   }
@@ -90,7 +92,7 @@ export class AuthenticationError extends APIError {
 
 // ===== Authorization Error (403) =====
 export class AuthorizationError extends APIError {
-  constructor(message: string = "Insufficient permissions") {
+  constructor(message: string = DEFAULT_ERROR_MESSAGES.AUTHORIZATION) {
     super(ErrorType.AUTHORIZATION, message, 403, "AUTHORIZATION_ERROR");
     this.name = "AuthorizationError";
   }
@@ -98,7 +100,7 @@ export class AuthorizationError extends APIError {
 
 // ===== Not Found Error (404) =====
 export class NotFoundError extends APIError {
-  constructor(resource: string = "Resource not found") {
+  constructor(resource: string = DEFAULT_ERROR_MESSAGES.NOT_FOUND) {
     super(ErrorType.NOT_FOUND, resource, 404, "NOT_FOUND_ERROR");
     this.name = "NotFoundError";
   }
@@ -106,7 +108,7 @@ export class NotFoundError extends APIError {
 
 // ===== Configuration Error (500) =====
 export class ConfigurationError extends APIError {
-  constructor(message: string = "Service configuration error") {
+  constructor(message: string = DEFAULT_ERROR_MESSAGES.CONFIGURATION) {
     super(ErrorType.CONFIGURATION, message, 500, "CONFIGURATION_ERROR");
     this.name = "ConfigurationError";
   }
@@ -115,7 +117,7 @@ export class ConfigurationError extends APIError {
 // ===== Network Error (502) =====
 export class NetworkError extends APIError {
   constructor(
-    message: string = "Network error occurred",
+    message: string = DEFAULT_ERROR_MESSAGES.NETWORK,
     details?: Record<string, unknown>,
   ) {
     super(ErrorType.NETWORK, message, 502, "NETWORK_ERROR", details);
@@ -126,7 +128,7 @@ export class NetworkError extends APIError {
 // ===== AI Service Error (502) =====
 export class AIServiceError extends APIError {
   constructor(
-    message: string = "AI service error",
+    message: string = DEFAULT_ERROR_MESSAGES.AI_SERVICE,
     details?: Record<string, unknown>,
   ) {
     super(ErrorType.AI_SERVICE, message, 502, "AI_SERVICE_ERROR", details);
@@ -136,7 +138,7 @@ export class AIServiceError extends APIError {
 
 // ===== Internal Server Error (500) =====
 export class InternalServerError extends APIError {
-  constructor(message: string = "Internal server error") {
+  constructor(message: string = DEFAULT_ERROR_MESSAGES.INTERNAL) {
     super(ErrorType.INTERNAL, message, 500, "INTERNAL_ERROR");
     this.name = "InternalServerError";
   }

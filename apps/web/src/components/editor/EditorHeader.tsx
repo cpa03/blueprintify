@@ -1,4 +1,3 @@
-import * as Tabs from "@radix-ui/react-tabs";
 import type { EditorTab } from "@blueprint/shared";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import clsx from "clsx";
@@ -13,6 +12,39 @@ interface EditorHeaderProps {
   onNew: () => void;
   hasContent: boolean;
   copied: string | null;
+  isExporting?: boolean;
+}
+
+function TabButton({
+  id,
+  isActive,
+  onClick,
+  hasContent,
+  children,
+}: {
+  id: string;
+  isActive: boolean;
+  onClick: () => void;
+  hasContent: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      role="tab"
+      aria-selected={isActive}
+      aria-controls={hasContent ? `${id}-panel` : undefined}
+      id={`tab-${id}`}
+      onClick={onClick}
+      className={clsx(
+        "px-4 py-2 rounded-md text-sm font-medium transition-all",
+        isActive
+          ? "bg-primary-600 text-white"
+          : "text-dark-200 hover:text-white hover:bg-dark-700",
+      )}
+    >
+      {children}
+    </button>
+  );
 }
 
 export type { ViewMode };
@@ -27,41 +59,33 @@ export function EditorHeader({
   onNew,
   hasContent,
   copied,
+  isExporting = false,
 }: EditorHeaderProps) {
   return (
     <div className="flex items-center justify-between p-4 border-b border-dark-700">
-      <Tabs.Root
-        value={activeTab}
-        onValueChange={(v) => setActiveTab(v as EditorTab)}
+      <div
+        className="flex gap-1 bg-dark-800 p-1 rounded-lg"
+        role="tablist"
+        aria-label="Document tabs"
+        id="editor-tabs"
       >
-        <Tabs.List
-          className="flex gap-1 bg-dark-800 p-1 rounded-lg"
-          aria-label="Document tabs"
+        <TabButton
+          id="blueprint"
+          isActive={activeTab === "blueprint"}
+          onClick={() => setActiveTab("blueprint")}
+          hasContent={hasContent}
         >
-          <Tabs.Trigger
-            value="blueprint"
-            className={clsx(
-              "px-4 py-2 rounded-md text-sm font-medium transition-all",
-              activeTab === "blueprint"
-                ? "bg-primary-600 text-white"
-                : "text-dark-200 hover:text-white hover:bg-dark-700",
-            )}
-          >
-            📘 blueprint.md
-          </Tabs.Trigger>
-          <Tabs.Trigger
-            value="tasks"
-            className={clsx(
-              "px-4 py-2 rounded-md text-sm font-medium transition-all",
-              activeTab === "tasks"
-                ? "bg-primary-600 text-white"
-                : "text-dark-200 hover:text-white hover:bg-dark-700",
-            )}
-          >
-            📋 task.md
-          </Tabs.Trigger>
-        </Tabs.List>
-      </Tabs.Root>
+          📘 blueprint.md
+        </TabButton>
+        <TabButton
+          id="tasks"
+          isActive={activeTab === "tasks"}
+          onClick={() => setActiveTab("tasks")}
+          hasContent={hasContent}
+        >
+          📋 task.md
+        </TabButton>
+      </div>
 
       <EditorToolbar
         activeTab={activeTab}
@@ -72,6 +96,7 @@ export function EditorHeader({
         onNew={onNew}
         hasContent={hasContent}
         copied={copied}
+        isExporting={isExporting}
       />
     </div>
   );

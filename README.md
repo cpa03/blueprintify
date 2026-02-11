@@ -30,7 +30,44 @@ blueprintify/
 ├── apps/
 │   ├── api/             # Hono backend (Cloudflare Workers)
 │   └── web/             # React frontend (Vite + Tailwind)
-└── docs/                # Project documentation
+├── docs/                # Project documentation
+│   ├── user-guide.md    # Complete user documentation
+│   ├── api-documentation.md  # API reference
+│   ├── m2-technical-approach.md  # M2 implementation details
+│   ├── refinement-workflow.md  # Refinement system architecture
+│   ├── localstorage-schema.md  # Storage schema documentation
+│   └── export-import-specs.md  # Data portability specifications
+└── scripts/             # Build and deployment scripts
+```
+
+### M2 Architecture Enhancements
+
+The M2 release adds significant architectural improvements:
+
+**Frontend Enhancements**
+
+- **Split-Pane Editor**: CodeMirror integration with live markdown preview
+- **LocalStorage Persistence**: 5MB storage with intelligent quota management
+- **Refinement Engine**: Section-based AI content refinement
+- **Export/Import System**: Multi-format data portability (JSON, ZIP, Markdown)
+- **Security Layer**: DOMPurify-based XSS protection and input validation
+
+**Backend Extensions**
+
+- **Refinement Endpoint**: `/refine` for selective content enhancement
+- **Export Endpoint**: `/export` for multi-format file generation
+- **Import Endpoint**: `/import` with validation and conflict resolution
+- **Storage API**: Quota management and storage operations
+- **Enhanced Security**: Comprehensive input sanitization and validation
+
+**Data Flow**
+
+```
+Wizard Generation → Split-Pane Editor → Refinement Workflow → Export/Import
+       ↓                ↓                    ↓                ↓
+  Session State → LocalStorage → Refinement API → File Generation
+       ↓                ↓                    ↓                ↓
+  Auto-Save     ←   Quota Management  ←   Edit Preservation
 ```
 
 ## 🚀 Quick Start
@@ -128,12 +165,16 @@ The system includes reusable skills for common tasks:
 
 ## 📡 API Endpoints
 
-| Method | Endpoint    | Description                                |
-| ------ | ----------- | ------------------------------------------ |
-| GET    | `/`         | Health check                               |
-| POST   | `/generate` | Generate blueprint (SSE stream)            |
-| POST   | `/tasks`    | Generate tasks from blueprint (SSE stream) |
-| POST   | `/refine`   | Refine content section (SSE stream)        |
+| Method | Endpoint         | Description                                |
+| ------ | ---------------- | ------------------------------------------ |
+| GET    | `/`              | Health check                               |
+| POST   | `/generate`      | Generate blueprint (SSE stream)            |
+| POST   | `/tasks`         | Generate tasks from blueprint (SSE stream) |
+| POST   | `/refine`        | Refine content section (SSE stream)        |
+| POST   | `/export`        | Export project as ZIP/JSON/Markdown        |
+| POST   | `/import`        | Import project with validation             |
+| GET    | `/storage/quota` | Check localStorage usage                   |
+| DELETE | `/storage/clear` | Clear stored data                          |
 
 ## 🛠️ Tech Stack
 
@@ -190,6 +231,13 @@ The system includes reusable skills for common tasks:
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
 - **[Task Management](./docs/task.md)** - Current development tasks and priorities
 - **[Feature Specifications](./docs/features.md)** - Detailed feature documentation and status
+
+### 📚 M2 Documentation
+
+- **[M2 Technical Approach](./docs/m2-technical-approach.md)** - Complete M2 implementation strategy
+- **[Refinement Workflow](./docs/refinement-workflow.md)** - AI refinement system architecture
+- **[LocalStorage Schema](./docs/localstorage-schema.md)** - Storage persistence specifications
+- **[Export/Import Specs](./docs/export-import-specs.md)** - Data portability implementation details
 
 ## 📝 License
 

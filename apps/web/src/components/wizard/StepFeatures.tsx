@@ -89,19 +89,52 @@ export function StepFeatures() {
             </div>
           </div>
           <div className="flex gap-2">
-            <input
-              id="feature-input"
-              type="text"
-              value={newFeature}
-              onChange={(e) =>
-                setNewFeature(e.target.value.slice(0, FORM_LIMITS.FEATURE.MAX))
-              }
-              onKeyDown={handleKeyDown}
-              placeholder="e.g., Real-time notifications"
-              className={`input-field flex-1 ${newFeature.length >= FORM_LIMITS.FEATURE.MAX ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20" : ""}`}
-              aria-label="New feature name"
-              maxLength={FORM_LIMITS.FEATURE.MAX}
-            />
+            <div className="relative flex-1">
+              <input
+                id="feature-input"
+                type="text"
+                value={newFeature}
+                onChange={(e) =>
+                  setNewFeature(
+                    e.target.value.slice(0, FORM_LIMITS.FEATURE.MAX),
+                  )
+                }
+                onKeyDown={handleKeyDown}
+                placeholder="e.g., Real-time notifications"
+                className={`input-field w-full pr-10 ${newFeature.length >= FORM_LIMITS.FEATURE.MAX ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20" : ""}`}
+                aria-label="New feature name"
+                maxLength={FORM_LIMITS.FEATURE.MAX}
+              />
+              <AnimatePresence>
+                {newFeature && (
+                  <motion.button
+                    type="button"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.15 }}
+                    onClick={() => setNewFeature("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus:outline-none focus:text-white transition-colors p-1 rounded-md hover:bg-dark-700/50"
+                    aria-label="Clear feature input"
+                    title="Clear feature input"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </motion.button>
+                )}
+              </AnimatePresence>
+            </div>
             <button
               onClick={handleAddFeature}
               disabled={!newFeature.trim()}

@@ -1,86 +1,24 @@
 {
-  "version": "1.0.4",
-  "last_updated": "2026-02-09",
+  "version": "1.0.10",
+  "last_updated": "2026-02-11",
   "dispatch_type": "unique_roles_priority",
   "agents": [
     {
-      "id": "tech-stack-wizard-006",
-      "role": "Frontend UX Forms Architect",
-      "focus": "Multi-select interfaces, wizard form validation",
-      "priority": "HIGH",
-      "assignedTask": "TASK-006",
-      "taskTitle": "Tech Stack Selection Form (Wizard Step 2)",
-      "issue": "#28",
-      "estimated": "4-6 hours",
-      "skills": [
-        "React Multi-select Forms",
-        "Zod Schema Integration",
-        "UX Pattern Implementation",
-        "Component Composition"
-      ]
-    },
-    {
-      "id": "splitpane-specialist-007",
-      "role": "Editor Interface Engineer",
-      "focus": "Resizable layouts, CodeMirror integration, preview synchronization",
-      "priority": "HIGH",
-      "assignedTask": "TASK-007",
-      "taskTitle": "Split-Pane View (Editor)",
-      "issue": "#31",
-      "estimated": "6-8 hours",
-      "skills": [
-        "Layout Management",
-        "Editor Frameworks",
-        "State Synchronization",
-        "Responsive Design"
-      ]
-    },
-    {
-      "id": "markdown-streaming-008",
-      "role": "Real-time Rendering Specialist",
-      "focus": "Markdown parsing, syntax highlighting, streaming updates",
-      "priority": "HIGH",
-      "assignedTask": "TASK-008",
-      "taskTitle": "Real-time Markdown Rendering",
-      "issue": "#30",
-      "estimated": "4-5 hours",
-      "skills": [
-        "Markdown Processing",
-        "Syntax Highlighting",
-        "Performance Optimization",
-        "Real-time Updates"
-      ]
-    },
-    {
-      "id": "wizard-integration-102",
-      "role": "System Integration Architect",
-      "focus": "End-to-end wizard implementation, multi-step validation",
-      "priority": "HIGH",
-      "assignedTask": "TASK-102",
-      "taskTitle": "Complete Basic Wizard UI Implementation (All Steps)",
-      "issue": "#97",
-      "estimated": "8-10 hours",
-      "skills": [
-        "System Architecture",
-        "Form Validation",
-        "Navigation Systems",
-        "Zod Integration"
-      ]
-    },
-    {
-      "id": "api-service-architect-REF-06",
-      "role": "Backend Service Layer Specialist",
-      "focus": "Service pattern implementation, controller architecture",
+      "id": "api-transformation-architect-REF-006",
+      "role": "API Transformation Architect",
+      "focus": "Service layer pattern implementation, route-to-controller migration",
       "priority": "HIGH",
       "assignedTask": "TASK-REF-06",
       "taskTitle": "Move API Route Logic to Controllers",
       "issue": "#22",
       "estimated": "4-6 hours",
       "skills": [
-        "Hono Framework",
-        "Service Layer Patterns",
-        "Route Handler Architecture",
-        "Test Integration"
+        "Service Layer Design",
+        "Dependency Injection Patterns",
+        "Controller Pattern Implementation",
+        "Route Handler Abstraction",
+        "API Architecture Refactoring",
+        "Hono Framework Advanced Patterns"
       ]
     },
     {
@@ -90,7 +28,7 @@
       "priority": "HIGH",
       "assignedTask": "TASK-009",
       "taskTitle": "LocalStorage Implementation",
-      "issue": "#89",
+      "issue": "#105",
       "estimated": "6-8 hours",
       "skills": [
         "LocalStorage API",
@@ -148,58 +86,41 @@
       ]
     },
     {
-      "id": "download-architect-010",
-      "role": "Project Packaging Specialist",
-      "focus": "File structure generation, ZIP packaging, browser downloads",
+      "id": "m2-coordinator-2026",
+      "role": "M2 Phase Execution Coordinator",
+      "focus": "End-to-end M2 refinement & persistence workflow",
       "priority": "HIGH",
-      "assignedTask": "TASK-010",
-      "taskTitle": "ZIP Download Feature",
-      "issue": "#106",
-      "estimated": "8-12 hours",
+      "assignedTask": "TASK-M2-EXECUTION",
+      "taskTitle": "Execute M2 Refinement & Persistence Phase",
+      "issue": "#222",
+      "estimated": "3-5 days",
       "skills": [
-        "Project Structure Generation",
-        "File Packaging (JSZip)",
-        "Browser Download APIs",
-        "Template Processing"
+        "Milestone Coordination",
+        "End-to-End Workflow Management",
+        "Cross-Functional Integration",
+        "Storage Architecture Oversight"
       ]
     },
     {
-      "id": "frontend-test-architect-TEST-001",
-      "role": "Test Integration Specialist",
-      "focus": "Frontend test suite, component testing, CI integration",
+      "id": "test-maestro-TEST-001",
+      "role": "Frontend Test Suite Architect",
+      "focus": "Comprehensive frontend testing strategy",
       "priority": "HIGH",
       "assignedTask": "TEST-001",
       "taskTitle": "Frontend Test Suite Implementation",
       "issue": "#79",
       "estimated": "2-3 days",
       "skills": [
+        "Test Architecture Design",
         "Vitest Configuration",
-        "Component Testing",
-        "Integration Testing",
-        "CI Pipeline Setup"
+        "Component Testing Strategy",
+        "CI Pipeline Integration"
       ]
     },
     {
-      "id": "m2-planner-2026",
-      "role": "M2 Phase Architecture Planner",
-      "focus": "Refinement & Persistence phase preparation, localStorage schema design",
-      "priority": "HIGH",
-      "assignedTask": "TASK-M2-001",
-      "taskTitle": "Prepare M2 Refinement & Persistence Phase",
-      "issue": "#184",
-      "estimated": "4-6 hours",
-      "skills": [
-        "Technical Documentation",
-        "Schema Design",
-        "Architecture Planning",
-        "Specification Writing",
-        "Milestone Coordination"
-      ]
-    },
-    {
-      "id": "typescript-specialist-TS-001",
-      "role": "Type Safety Enhancement Engineer",
-      "focus": "Hono Context typing, generic type definitions",
+      "id": "typescript-guardian-TS-001",
+      "role": "Type Safety Enhancement Specialist",
+      "focus": "Strict TypeScript implementation across controllers",
       "priority": "HIGH",
       "assignedTask": "TS-001",
       "taskTitle": "Controller Type Safety Improvements",
@@ -213,104 +134,64 @@
       ]
     },
     {
-      "id": "blueprint-lifecycle-20260209",
-      "role": "Blueprint Lifecycle Architect",
-      "focus": "Content refinement, selective regeneration, context preservation",
+      "id": "security-fortress-SEC-M2-001",
+      "role": "Input Security Sanitizer",
+      "focus": "XSS protection and input sanitization across all entry points",
       "priority": "HIGH",
-      "assignedTask": "TASK-104",
-      "taskTitle": "Blueprint Refinement Workflow",
-      "issue": "#100",
+      "assignedTask": "SEC-M2-001",
+      "taskTitle": "Input Sanitization Implementation",
+      "issue": "#228",
       "estimated": "6-8 hours",
       "skills": [
-        "Content Refinement Systems",
-        "Context Preservation",
-        "Selective Regeneration",
-        "Delta Comparison Algorithms",
-        "User Intent Detection"
+        "XSS Prevention",
+        "Input Validation",
+        "Security Testing",
+        "Sanitization Libraries",
+        "Content Security Policy"
       ]
     },
     {
-      "id": "blueprint-orchestrator-20260209",
-      "role": "Blueprint Orchestrator",
-      "focus": "End-to-end workflow coordination across generation, persistence, and refinement",
+      "id": "performance-optimizer-PERF-M2-001",
+      "role": "LocalStorage Performance Engineer",
+      "focus": "Performance optimization for large blueprints and editing experience",
       "priority": "HIGH",
-      "assignedTask": "TASK-M2-001",
-      "taskTitle": "Prepare M2 Refinement & Persistence Phase",
-      "issue": "#194",
-      "estimated": "4-6 hours",
+      "assignedTask": "PERF-M2-001",
+      "taskTitle": "LocalStorage Performance Optimization",
+      "issue": "#229",
+      "estimated": "8-10 hours",
       "skills": [
-        "Workflow Orchestration",
-        "Cross-system Integration",
-        "Architecture Planning",
-        "Persistence Strategy",
-        "Refinement Pipeline Design"
+        "Performance Profiling",
+        "Lazy Loading Strategies",
+        "Data Fragmentation",
+        "Memory Management",
+        "Benchmarking"
+      ]
+    },
+    {
+      "id": "test-coverage-architect-TEST-M2-001",
+      "role": "M2 Quality Assurance Architect",
+      "focus": "Comprehensive test suite for M2 features with 90% coverage",
+      "priority": "HIGH",
+      "assignedTask": "TEST-M2-001",
+      "taskTitle": "Comprehensive Test Suite",
+      "issue": "#230",
+      "estimated": "12-16 hours",
+      "skills": [
+        "Test Architecture",
+        "Coverage Analysis",
+        "CI Integration",
+        "Test Data Generation",
+        "Performance Testing"
       ]
     }
   ],
   "current_priority_tasks": [
     {
-      "task_id": "TASK-006",
-      "title": "Tech Stack Selection Form (Wizard Step 2)",
-      "priority": "Critical",
-      "status": "OPEN",
-      "assigned_role": "tech-stack-wizard-006",
-      "issue": "#28",
-      "estimated": "4-6 hours",
-      "acceptance_criteria": [
-        "Multi-select interface for tech stack",
-        "Integration with shared schemas",
-        "Form validation with error handling"
-      ]
-    },
-    {
-      "task_id": "TASK-007",
-      "title": "Split-Pane View (Editor)",
-      "priority": "High",
-      "status": "OPEN",
-      "assigned_role": "splitpane-specialist-007",
-      "issue": "#31",
-      "estimated": "6-8 hours",
-      "acceptance_criteria": [
-        "Resizable split-pane layout",
-        "Code editor component integration",
-        "Sync with markdown preview"
-      ]
-    },
-    {
-      "task_id": "TASK-008",
-      "title": "Real-time Markdown Rendering",
-      "priority": "Critical",
-      "status": "OPEN",
-      "assigned_role": "markdown-streaming-008",
-      "issue": "#30",
-      "estimated": "4-5 hours",
-      "acceptance_criteria": [
-        "Parse markdown to HTML",
-        "Syntax highlighting for code blocks",
-        "Real-time updates during generation"
-      ]
-    },
-    {
-      "task_id": "TASK-102",
-      "title": "Complete Basic Wizard UI Implementation (All Steps)",
-      "priority": "Critical",
-      "status": "OPEN",
-      "assigned_role": "wizard-integration-102",
-      "issue": "#97",
-      "estimated": "8-10 hours",
-      "acceptance_criteria": [
-        "All 3 wizard steps functional",
-        "Form validation working across all steps",
-        "Navigation between steps preserved",
-        "Integration with shared Zod schemas"
-      ]
-    },
-    {
       "task_id": "TASK-REF-06",
       "title": "Move API Route Logic to Controllers",
       "priority": "High",
       "status": "OPEN",
-      "assigned_role": "api-service-architect-REF-06",
+      "assigned_role": "api-transformation-architect-REF-006",
       "issue": "#22",
       "estimated": "4-6 hours",
       "acceptance_criteria": [
@@ -320,18 +201,78 @@
       ]
     },
     {
-      "task_id": "TASK-M2-001",
-      "title": "Prepare M2 Refinement & Persistence Phase",
+      "task_id": "TASK-009",
+      "title": "LocalStorage Implementation",
       "priority": "High",
       "status": "OPEN",
-      "assigned_role": "m2-planner-2026",
-      "issue": "#184",
+      "assigned_role": "storage-specialist-009",
+      "issue": "#105",
+      "estimated": "6-8 hours",
+      "acceptance_criteria": [
+        "Blueprint auto-save to localStorage",
+        "Load saved blueprints",
+        "Storage quota management",
+        "Migration strategy for schema changes"
+      ]
+    },
+    {
+      "task_id": "TASK-103",
+      "title": "Manual Editing in Split-Pane View",
+      "priority": "Medium",
+      "status": "OPEN",
+      "assigned_role": "editor-coding-specialist-103",
+      "issue": "#99",
       "estimated": "4-6 hours",
       "acceptance_criteria": [
-        "M2 task list validated and prioritized",
-        "localStorage schema designed and documented",
-        "Refinement workflow architecture planned",
-        "Export/import specifications complete"
+        "Code editor allows editing",
+        "Changes sync with markdown preview",
+        "Edit state preserved during session",
+        "Save/restore via localStorage"
+      ]
+    },
+    {
+      "task_id": "TASK-104",
+      "title": "Blueprint Refinement Workflow",
+      "priority": "High",
+      "status": "OPEN",
+      "assigned_role": "refinement-architect-104",
+      "issue": "#100",
+      "estimated": "6-8 hours",
+      "acceptance_criteria": [
+        "Select specific sections for regeneration",
+        "Maintain context during refinement",
+        "Stream regeneration for selected sections",
+        "Preserve manual edits during refinement"
+      ]
+    },
+    {
+      "task_id": "TASK-105",
+      "title": "Export/Import Functionality",
+      "priority": "High",
+      "status": "OPEN",
+      "assigned_role": "data-migration-105",
+      "issue": "#101",
+      "estimated": "4-5 hours",
+      "acceptance_criteria": [
+        "Export blueprint as JSON file",
+        "Import blueprint from JSON file",
+        "Validate imported blueprints",
+        "Handle schema version migration"
+      ]
+    },
+    {
+      "task_id": "TASK-M2-EXECUTION",
+      "title": "Execute M2 Refinement & Persistence Phase",
+      "priority": "Critical",
+      "status": "OPEN",
+      "assigned_role": "m2-coordinator-2026",
+      "issue": "#222",
+      "estimated": "3-5 days",
+      "acceptance_criteria": [
+        "All M2 tasks completed",
+        "End-to-end editing workflow functional",
+        "Storage persistence working reliably",
+        "Export/import functionality validated"
       ]
     },
     {
@@ -339,7 +280,7 @@
       "title": "Frontend Test Suite Implementation",
       "priority": "Critical",
       "status": "OPEN",
-      "assigned_role": "frontend-test-architect-TEST-001",
+      "assigned_role": "test-maestro-TEST-001",
       "issue": "#79",
       "estimated": "2-3 days",
       "acceptance_criteria": [
@@ -350,11 +291,11 @@
       ]
     },
     {
-"task_id": "TS-001",
+      "task_id": "TS-001",
       "title": "Controller Type Safety Improvements",
       "priority": "High",
       "status": "OPEN",
-      "assigned_role": "typescript-specialist-TS-001",
+      "assigned_role": "typescript-guardian-TS-001",
       "issue": "#80",
       "estimated": "2-4 hours",
       "acceptance_criteria": [
@@ -365,132 +306,244 @@
       ]
     },
     {
-      "task_id": "TASK-104",
-      "title": "Blueprint Refinement Workflow",
+      "task_id": "SEC-M2-001",
+      "title": "Input Sanitization Implementation",
       "priority": "High",
       "status": "OPEN",
-      "assigned_role": "blueprint-lifecycle-20260209",
-      "issue": "#100",
+      "assigned_role": "security-fortress-SEC-M2-001",
+      "issue": "#228",
       "estimated": "6-8 hours",
       "acceptance_criteria": [
-        "Select specific sections for regeneration",
-        "Maintain context during refinement",
-        "Stream regeneration for selected sections",
-        "Preserve manual edits during refinement"
+        "All user inputs sanitized before storage",
+        "XSS protection implemented across all entry points",
+        "Security tests added to CI pipeline"
+      ]
+    },
+    {
+      "task_id": "PERF-M2-001",
+      "title": "LocalStorage Performance Optimization",
+      "priority": "High",
+      "status": "OPEN",
+      "assigned_role": "performance-optimizer-PERF-M2-001",
+      "issue": "#229",
+      "estimated": "8-10 hours",
+      "acceptance_criteria": [
+        "Load time < 500ms for blueprints up to 1MB",
+        "Smooth editing experience without lag",
+        "Performance benchmarks implemented"
+      ]
+    },
+    {
+      "task_id": "TEST-M2-001",
+      "title": "Comprehensive Test Suite",
+      "priority": "High",
+      "status": "OPEN",
+      "assigned_role": "test-coverage-architect-TEST-M2-001",
+      "issue": "#230",
+      "estimated": "12-16 hours",
+      "acceptance_criteria": [
+        "Minimum 90% code coverage for M2 features",
+        "All critical user flows tested",
+        "CI pipeline passes all test suites"
       ]
     }
   ],
   "unique_roles": [
     {
-      "role_id": "blueprint-lifecycle-architect",
-      "specialization": "Blueprint Persistence System Architecture",
-      "core_expertise": "End-to-end blueprint lifecycle with refinement capabilities",
-      "primary_task": "TASK-104",
-      "supporting_tasks": ["TASK-009", "TASK-103"],
+      "role_id": "security-storage-integrator",
+      "specialization": "Secure Persistence Architecture",
+      "core_expertise": "LocalStorage with comprehensive security integration",
+      "unique_focus": "Building secure storage systems that integrate input sanitization with persistence workflows",
+      "primary_task": "TASK-009",
+      "supporting_tasks": ["TASK-103", "TASK-104", "SEC-M2-001"],
       "unique_skills": [
-        "Selective content regeneration",
-        "Context preservation algorithms",
-        "Delta comparison systems",
-        "User intent detection",
-        "Merge conflict resolution"
-      ]
-    }
-  ]
-}
-  },
-  "unique_roles": [
-    {
-      "role_id": "wizard-orchestrator",
-      "specialization": "Multi-step Form Architecture",
-      "core_expertise": "State synchronization across wizard steps",
-      "primary_task": "TASK-102",
-      "supporting_tasks": ["TASK-006"],
-      "unique_skills": [
-        "Progressive disclosure patterns",
-        "Step validation orchestration",
-        "Form state persistence",
-        "Zod schema composition"
-      ]
+        "Secure data serialization",
+        "Input sanitization for storage",
+        "Storage quota management with security validation",
+        "Migration strategies with security preserved",
+        "Session state security management",
+        "Cross-tab synchronization with security"
+      ],
+      "differentiator": "Integrates security patterns directly into persistence layers to create storage systems that are both secure and performant"
     },
     {
-      "role_id": "markdown-reactor",
-      "specialization": "Streaming Content Processing",
-      "core_expertise": "Real-time markdown to HTML conversion",
-      "primary_task": "TASK-008",
-      "supporting_tasks": ["TASK-104"],
-      "unique_skills": [
-        "Markdown AST manipulation",
-        "Virtual rendering",
-        "Syntax highlighting injection",
-        "SSE consumer patterns"
-      ]
-    },
-    {
-      "role_id": "pane-alchemist",
-      "specialization": "Editor Layout Systems",
-      "core_expertise": "Bidirectional content synchronization",
-      "primary_task": "TASK-007",
-      "supporting_tasks": ["TASK-103"],
-      "unique_skills": [
-        "Resizable panel state",
-        "Content mirroring",
-        "Cursor synchronization",
-        "Performance throttling"
-      ]
-    },
-    {
-      "role_id": "controller-minimizer",
-      "specialization": "Service Layer Patterns",
-      "core_expertise": "Route logic extraction and consolidation",
+      "role_id": "api-transformation-visionary",
+      "specialization": "Service Layer Architecture",
+      "core_expertise": "Hono framework controller pattern implementation",
+      "unique_focus": "Transforming monolithic route handlers into maintainable service layer architecture",
       "primary_task": "TASK-REF-06",
-      "supporting_tasks": ["TS-001", "TEST-001"],
+      "supporting_tasks": ["All API tasks"],
       "unique_skills": [
-        "Hono typing strategies",
-        "Middleware orchestration",
-        "Controller inheritance patterns",
-        "Mock service design"
-      ]
+        "Service layer design patterns",
+        "Dependency injection architecture",
+        "Controller abstraction patterns",
+        "API route refactoring",
+        "Hono framework deep expertise",
+        "Test-driven architecture migration",
+        "Performance optimization in service layers"
+      ],
+      "differentiator": "Specializes in transforming monolithic API routes into clean, maintainable service layer architecture while preserving all existing functionality"
     },
     {
       "role_id": "persistence-guardian",
       "specialization": "Client-side Data Architecture",
       "core_expertise": "LocalStorage with schema migration",
+      "unique_focus": "Complex client-side persistence patterns with automatic fallback strategies",
       "primary_task": "TASK-009",
       "supporting_tasks": ["TASK-105"],
       "unique_skills": [
         "Storage quota negotiation",
         "Version diff strategies",
         "Conflict resolution",
-        "Rollback mechanisms"
-      ]
+        "Rollback mechanisms",
+        "Session state management",
+        "Cross-tab synchronization"
+      ],
+      "differentiator": "Specializes in complex client-side persistence patterns with automatic fallback strategies"
     },
     {
-      "role_id": "milestone-pioneer",
-      "specialization": "Phase Transition Architecture",
-      "core_expertise": "M2 Refinement & Persistence planning",
-      "primary_task": "TASK-M2-001",
+      "role_id": "editor-orchestrator",
+      "specialization": "Interactive Editing Systems",
+      "core_expertise": "Bidirectional content synchronization with persistence",
+      "unique_focus": "Seamless editing experiences with intelligent state management",
+      "primary_task": "TASK-103",
+      "supporting_tasks": ["TASK-009", "TASK-104"],
+      "unique_skills": [
+        "CodeMirror extension development",
+        "Real-time preview synchronization",
+        "Edit state persistence",
+        "Conflict-free editing patterns",
+        "Multi-cursor coordination"
+      ],
+      "differentiator": "Focuses on creating seamless editing experiences with intelligent state management"
+    },
+    {
+      "role_id": "refinement-conductor",
+      "specialization": "Selective Content Regeneration",
+      "core_expertise": "Context-preserving refinement workflows",
+      "unique_focus": "Surgical content updates while maintaining document integrity and user edits",
+      "primary_task": "TASK-104",
+      "supporting_tasks": ["TASK-009", "TASK-103"],
+      "unique_skills": [
+        "Semantic content analysis",
+        "Minimal diff regeneration",
+        "Context preservation algorithms",
+        "User intent detection",
+        "Merge conflict prevention"
+      ],
+      "differentiator": "Specializes in surgical content updates while maintaining document integrity and user edits"
+    },
+    {
+      "role_id": "data-bridge-architect",
+      "specialization": "Cross-System Data Migration",
+      "core_expertise": "Schema versioning with forward/backward compatibility",
+      "unique_focus": "Building robust data bridges between system versions with zero-downtime migrations",
+      "primary_task": "TASK-105",
+      "supporting_tasks": ["TASK-009"],
+      "unique_skills": [
+        "Schema evolution design",
+        "Data transformation pipelines",
+        "Validation middleware",
+        "Migration orchestration",
+        "Recovery mechanisms"
+      ],
+      "differentiator": "Expert in building robust data bridges between system versions with zero-downtime migrations"
+    },
+    {
+      "role_id": "milestone-sorcerer",
+      "specialization": "Phase Transition Management",
+      "core_expertise": "End-to-end milestone execution with adaptive planning",
+      "unique_focus": "Transforming milestone plans into executable realities",
+      "primary_task": "TASK-M2-EXECUTION",
       "supporting_tasks": ["All M2 tasks"],
       "unique_skills": [
-        "Milestone gap analysis",
-        "Schema versioning design",
-        "Cross-phase compatibility",
-        "Technical specification drafting",
-        "Dependency mapping"
-      ]
+        "Cross-functional coordination",
+        "Adaptive milestone planning",
+        "Risk mitigation strategies",
+        "Dependency resolution",
+        "Quality gate enforcement"
+      ],
+      "differentiator": "Master orchestrator who transforms milestone plans into executable realities"
     },
     {
-      "role_id": "blueprint-orchestrator",
-      "specialization": "End-to-End Workflow Coordination",
-      "core_expertise": "Blueprint generation, persistence, and refinement orchestration",
-      "primary_task": "TASK-M2-001",
-      "supporting_tasks": ["TASK-009", "TASK-104", "TASK-105"],
+      "role_id": "test-whisperer",
+      "specialization": "Frontend Testing Architecture",
+      "core_expertise": "Comprehensive test strategies for complex UI systems",
+      "unique_focus": "Creating testing ecosystems that evolve with the application architecture",
+      "primary_task": "TEST-001",
+      "supporting_tasks": ["All frontend tasks"],
       "unique_skills": [
-        "Cross-component workflow coordination",
-        "Persistence strategy architecture",
-        "Refinement pipeline design",
-        "Export/import system integration",
-        "Milestone transition management"
-      ]
+        "Test pyramid design",
+        "Mock strategy architecture",
+        "Coverage optimization",
+        "Visual regression systems",
+        "Test data generation"
+      ],
+      "differentiator": "Creates testing ecosystems that evolve with the application architecture"
+    },
+    {
+      "role_id": "typescript-sentinel",
+      "specialization": "Type Safety Enforcement",
+      "core_expertise": "Zero-tolerance approach to type uncertainty",
+      "unique_focus": "Building type systems that prevent bugs at compile time while maintaining developer productivity",
+      "primary_task": "TS-001",
+      "supporting_tasks": ["All API tasks"],
+      "unique_skills": [
+        "Generic type architecture",
+        "Type narrowing strategies",
+        "API contract enforcement",
+        "Build-time type validation",
+        "Developer experience optimization"
+      ],
+      "differentiator": "Builds type systems that prevent bugs at compile time while maintaining developer productivity"
+    },
+    {
+      "role_id": "security-warden",
+      "specialization": "Security Hardening & Sanitization",
+      "core_expertise": "Comprehensive input security with zero-trust approach",
+      "unique_focus": "Creating robust security layers that protect against modern web vulnerabilities while maintaining usability",
+      "primary_task": "SEC-M2-001",
+      "supporting_tasks": ["All M2 tasks"],
+      "unique_skills": [
+        "XSS attack prevention",
+        "Content sanitization pipelines",
+        "Security testing automation",
+        "Vulnerability assessment",
+        "Security code reviews"
+      ],
+      "differentiator": "Creates robust security layers that protect against modern web vulnerabilities while maintaining usability"
+    },
+    {
+      "role_id": "performance-sculptor",
+      "specialization": "Frontend Performance Engineering",
+      "core_expertise": "Achieving sub-500ms load times for complex applications",
+      "unique_focus": "Creating lightning-fast user experiences through systematic performance optimization",
+      "primary_task": "PERF-M2-001",
+      "supporting_tasks": ["TASK-009", "TASK-103"],
+      "unique_skills": [
+        "Performance profiling",
+        "Lazy loading strategies",
+        "Memory optimization",
+        "Benchmark architecture",
+        "Performance monitoring"
+      ],
+      "differentiator": "Specializes in creating lightning-fast user experiences through systematic performance optimization"
+    },
+    {
+      "role_id": "test-orchestrator",
+      "specialization": "Comprehensive Test Architecture",
+      "core_expertise": "Building test suites that achieve 90%+ coverage with confidence",
+      "unique_focus": "Designing comprehensive testing ecosystems that evolve with the application while maintaining high coverage",
+      "primary_task": "TEST-M2-001",
+      "supporting_tasks": ["All M2 tasks"],
+      "unique_skills": [
+        "Test strategy design",
+        "Coverage optimization",
+        "Test automation pipelines",
+        "Mock architecture",
+        "Quality gate enforcement"
+      ],
+      "differentiator": "Designs comprehensive testing ecosystems that evolve with the application while maintaining high coverage"
     }
   ],
   "project_context": {
@@ -510,48 +563,29 @@
       "Follow established architectural patterns",
       "Component-driven development approach"
     ],
-    "priority_dispatch_rationale": "High/Critical priority tasks selected based on M1 milestone completion requirements. Unique roles created with specialized expertise beyond generalist agents to ensure efficient task execution with minimal coordination overhead.",
-    "last_priority_analysis": "2026-02-09",
-    "completed_tasks": [
-      {
-        "id": "TASK-REF-05",
-        "title": "Extract EditorToolbar Component",
-        "completed_by": "UI Layout Specialist",
-        "completed_date": "2026-02-07"
-      },
-      {
-        "id": "TASK-REF-08",
-        "title": "Standardize Error Response Handling",
-        "completed_by": "Backend Service Layer Specialist",
-        "completed_date": "2026-02-07"
-      },
-      {
-        "id": "TASK-011",
-        "title": "API Streaming Integration",
-        "completed_by": "Real-time Rendering Specialist",
-        "completed_date": "2026-02-07"
-      },
-      {
-        "id": "PERF-001",
-        "title": "Component Re-render Optimization",
-        "completed_by": "Performance Optimization Engineer",
-        "completed_date": "2026-02-07"
-      }
-    ],
+    "priority_dispatch_rationale": "High/Medium priority tasks selected from M2 Refinement & Persistence milestone. Added API Transformation Architect for TASK-REF-06 to address critical service layer refactoring needs. Each role engineered specifically for M2 challenges: API architecture, persistence, editing, refinement, and data migration.",
+    "last_priority_analysis": "2026-02-11",
     "milestones": {
       "M1_Foundation": {
-        "status": "ACTIVE",
-        "completion": 30,
+        "status": "COMPLETED",
+        "completion": 100,
         "critical_path": ["TASK-006", "TASK-008", "TASK-102"]
       },
       "M2_Refinement": {
-        "status": "PLANNED",
-        "critical_path": ["TASK-009", "TASK-103", "TASK-104", "TASK-105"]
+        "status": "ACTIVE",
+        "completion": 0,
+        "critical_path": [
+          "TASK-REF-06",
+          "TASK-009",
+          "TASK-103",
+          "TASK-104",
+          "TASK-105",
+          "SEC-M2-001",
+          "PERF-M2-001",
+          "TEST-M2-001"
+        ]
       },
-      "M3_Distribution": {
-        "status": "PLANNED",
-        "critical_path": ["TASK-010"]
-      }
+      "M3_Distribution": { "status": "PLANNED", "critical_path": ["TASK-010"] }
     }
   }
 }

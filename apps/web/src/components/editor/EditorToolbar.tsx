@@ -1,5 +1,7 @@
 import clsx from "clsx";
+import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
+import { Tooltip } from "../Tooltip";
 
 export type ViewMode = "edit" | "preview" | "split";
 
@@ -12,6 +14,33 @@ interface EditorToolbarProps {
   onNew: () => void;
   hasContent: boolean;
   copied: string | null;
+  isExporting?: boolean;
+}
+
+function AnimatedCheckmark() {
+  return (
+    <motion.svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      exit={{ scale: 0, opacity: 0 }}
+      transition={{ type: "spring", stiffness: 500, damping: 25 }}
+    >
+      <motion.path
+        d="M3 8L6.5 11.5L13 5"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+      />
+    </motion.svg>
+  );
 }
 
 export function EditorToolbar({
@@ -23,64 +52,186 @@ export function EditorToolbar({
   onNew,
   hasContent,
   copied,
+  isExporting = false,
 }: EditorToolbarProps) {
+  const isCopied = copied === activeTab;
+
+  const viewModeShortcuts: Record<ViewMode, string> = {
+    edit: "Ctrl+1",
+    split: "Ctrl+2",
+    preview: "Ctrl+3",
+  };
+
+  const viewModeLabels: Record<ViewMode, string> = {
+    edit: "Edit",
+    split: "Split",
+    preview: "Preview",
+  };
+
   return (
     <div className="flex items-center gap-2">
       {/* View mode toggle */}
       <div className="flex bg-dark-800 p-1 rounded-lg">
         {(["edit", "split", "preview"] as const).map((mode) => (
-          <button
+          <Tooltip
             key={mode}
-            onClick={() => setViewMode(mode)}
-            className={clsx(
-              "px-4 py-2 rounded text-xs font-medium transition-all min-w-[44px] min-h-[44px] flex items-center justify-center",
-              viewMode === mode
-                ? "bg-dark-600 text-white"
-                : "text-dark-400 hover:text-white",
-            )}
-            aria-label={`Switch to ${mode} mode`}
+            content={
+              <div className="flex items-center gap-2">
+                <span>{viewModeLabels[mode]} view</span>
+                <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-xs font-mono text-dark-300">
+                  {viewModeShortcuts[mode]}
+                </kbd>
+              </div>
+            }
+            position="bottom"
+            delay={400}
           >
-            {mode === "edit" && "✏️"}
-            {mode === "split" && "⚡"}
-            {mode === "preview" && "👁️"}
-          </button>
+            <button
+              onClick={() => setViewMode(mode)}
+              className={clsx(
+                "px-4 py-2 rounded text-xs font-medium transition-all min-w-[44px] min-h-[44px] flex items-center justify-center",
+                viewMode === mode
+                  ? "bg-dark-600 text-white"
+                  : "text-dark-400 hover:text-white",
+              )}
+              aria-label={`Switch to ${mode} mode (${viewModeShortcuts[mode]})`}
+            >
+              {mode === "edit" && "✏️"}
+              {mode === "split" && "⚡"}
+              {mode === "preview" && "👁️"}
+            </button>
+          </Tooltip>
         ))}
       </div>
 
-      {/* Copy button */}
-      <button
-        onClick={onCopy}
-        disabled={!hasContent || !activeTab}
-        className="btn-ghost text-sm"
-        title="Copy to clipboard"
-        aria-label="Copy to clipboard"
+      <Tooltip
+        content={
+          <div className="flex items-center gap-2">
+            <span>Copy to clipboard</span>
+            <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-xs font-mono text-dark-300">
+              Ctrl+C
+            </kbd>
+          </div>
+        }
+        position="bottom"
+        delay={400}
       >
-        {copied === activeTab ? (
-          <span className="text-accent-emerald">✓ Copied!</span>
-        ) : (
-          <span>📋 Copy</span>
-        )}
-      </button>
+        <motion.button
+          onClick={onCopy}
+          disabled={!hasContent || !activeTab}
+          className={clsx(
+            "relative text-sm px-4 py-2 rounded-lg transition-all duration-300 overflow-hidden",
+            "focus:outline-none focus:ring-2 focus:ring-primary-500/50",
+            isCopied
+              ? "bg-accent-emerald/20 text-accent-emerald border border-accent-emerald/50"
+              : "btn-ghost text-dark-300 hover:text-white hover:bg-dark-800/50",
+          )}
+          aria-label={isCopied ? "Copied to clipboard" : "Copy to clipboard"}
+          aria-live="polite"
+          whileTap={hasContent && activeTab ? { scale: 0.95 } : undefined}
+        >
+          <AnimatePresence mode="wait">
+            {isCopied ? (
+              <motion.span
+                key="copied"
+                className="flex items-center gap-2"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                <AnimatedCheckmark />
+                <span className="font-medium">Copied!</span>
+              </motion.span>
+            ) : (
+              <motion.span
+                key="copy"
+                className="flex items-center gap-2"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                <motion.span
+                  initial={{ rotate: 0 }}
+                  whileHover={
+                    hasContent && activeTab
+                      ? { rotate: [-5, 5, -5, 0] }
+                      : undefined
+                  }
+                  transition={{ duration: 0.5 }}
+                >
+                  📋
+                </motion.span>
+                <span>Copy</span>
+              </motion.span>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {isCopied && (
+              <motion.div
+                className="absolute inset-0 rounded-lg border-2 border-accent-emerald"
+                initial={{ scale: 0.8, opacity: 1 }}
+                animate={{ scale: 1.2, opacity: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+              />
+            )}
+          </AnimatePresence>
+        </motion.button>
+      </Tooltip>
 
       {/* Export button */}
-      <button
-        onClick={onExport}
-        disabled={!hasContent}
-        className="btn-secondary text-sm"
-        aria-label="📦 Export .zip"
+      <Tooltip
+        content={
+          <div className="flex items-center gap-2">
+            <span>Export as ZIP</span>
+            <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-xs font-mono text-dark-300">
+              Ctrl+E
+            </kbd>
+          </div>
+        }
+        position="bottom"
+        delay={400}
       >
-        📦 Export .zip
-      </button>
+        <button
+          onClick={onExport}
+          disabled={!hasContent || isExporting}
+          className="btn-secondary text-sm relative"
+        >
+          {isExporting ? (
+            <>
+              <span className="animate-spin mr-2">⚙️</span>
+              Generating...
+            </>
+          ) : (
+            <>📦 Export .zip</>
+          )}
+        </button>
+      </Tooltip>
 
       {/* New Project */}
-      <button
-        onClick={onNew}
-        className="btn-ghost text-sm"
-        title="Start new project"
-        aria-label="Start new project"
+      <Tooltip
+        content={
+          <div className="flex items-center gap-2">
+            <span>Start new project</span>
+            <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-xs font-mono text-dark-300">
+              Ctrl+N
+            </kbd>
+          </div>
+        }
+        position="bottom"
+        delay={400}
       >
-        🔄 New
-      </button>
+        <button
+          onClick={onNew}
+          className="btn-ghost text-sm"
+          aria-label="Start new project"
+        >
+          🔄 New
+        </button>
+      </Tooltip>
     </div>
   );
 }

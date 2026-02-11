@@ -160,3 +160,126 @@ export const API_ENDPOINTS = {
   REFINE: "/refine",
   HEALTH: "/",
 } as const;
+
+// Toast configuration
+export const TOAST_CONFIG = {
+  DEFAULT_DURATION: 3000,
+  SUCCESS_DURATION: 2000,
+  AUTO_SAVE_DURATION: 2000,
+  ICONS: {
+    SUCCESS: "✓",
+    ERROR: "✕",
+    WARNING: "⚠",
+    INFO: "ℹ",
+  } as const,
+  STYLES: {
+    SUCCESS:
+      "bg-accent-emerald/10 border-accent-emerald/30 text-accent-emerald",
+    ERROR: "bg-accent-pink/10 border-accent-pink/30 text-accent-pink",
+    WARNING: "bg-yellow-500/10 border-yellow-500/30 text-yellow-400",
+    INFO: "bg-primary-500/10 border-primary-500/30 text-primary-300",
+  } as const,
+} as const;
+
+// Auto-save configuration
+export const AUTO_SAVE_CONFIG = {
+  DEFAULT_MESSAGE: "Changes saved",
+  DEFAULT_DELAY: 1000,
+} as const;
+
+// Document title configuration
+export const DOCUMENT_TITLE_CONFIG = {
+  APP_NAME: "Blueprintify",
+  SEPARATOR: " | ",
+  DEFAULT_TITLE: "Blueprintify",
+} as const;
+
+// LocalStorage keys
+export const STORAGE_KEYS = {
+  WIZARD: "blueprint-wizard",
+  EDITOR: "blueprint-editor",
+} as const;
+
+// Generation messages
+export const GENERATION_MESSAGES = {
+  CANCELLED: "Generation cancelled",
+  BLUEPRINT_START: "Generating blueprint...",
+  BLUEPRINT_COMPLETE: "Blueprint complete. Generating tasks...",
+  COMPLETE: "Complete!",
+  RETRY: (attempt: number, maxRetries: number) =>
+    `Connection issue, retrying (${attempt}/${maxRetries})...`,
+  ERROR: (error: string) => `Error: ${error}`,
+  ERROR_TASKS: (error: string) => `Error generating tasks: ${error}`,
+} as const;
+
+// UI Content - Text content for the application
+export const UI_CONTENT = {
+  APP: {
+    NAME: "Blueprint Generator",
+    TAGLINE: "AI-Powered Project Architecture",
+  },
+  HERO: {
+    TITLE_1: "From ",
+    TITLE_HIGHLIGHT_1: "Idea",
+    TITLE_2: " to ",
+    TITLE_HIGHLIGHT_2: "Blueprint",
+    TITLE_3: " in Seconds",
+    SUBTITLE:
+      "Generate production-ready architectural documentation for your projects. Powered by AI, designed for autonomous development.",
+  },
+  EDITOR: {
+    EMPTY_STATE: {
+      ICON: "📝",
+      TITLE: "Your generated content will appear here",
+      SUBTITLE: "Complete the wizard to get started",
+    },
+    LOADING: "Loading Editor...",
+    SHOW_EDITOR_BUTTON: "Show Editor",
+  },
+  FOOTER: {
+    BUILT_WITH: "Built with ⚡ Cloudflare Workers + React",
+    COPYRIGHT: "© 2024 Blueprint Generator",
+  },
+  BUTTONS: {
+    GITHUB: "GitHub",
+    HIDE_EDITOR: "Hide editor",
+    COPY: "Copy",
+    EXPORT: "Export",
+    NEW_PROJECT: "New Project",
+  },
+  TEMPLATES_DIVIDER: "— or start from scratch —",
+} as const;
+
+// Keyboard shortcuts
+export const KEYBOARD_SHORTCUTS = {
+  TOGGLE_EDITOR: {
+    KEY: "e",
+    MODIFIER: "ctrl/cmd",
+    DESCRIPTION: "Toggle editor visibility",
+  },
+  CANCEL_GENERATION: {
+    KEY: "Escape",
+    DESCRIPTION: "Cancel generation",
+  },
+} as const;
+
+// CSS Class combinations for common patterns
+export const CSS_CLASSES = {
+  GLASS_CARD: "glass-card",
+  BTN_PRIMARY: "btn-primary",
+  BTN_GHOST: "btn-ghost",
+  TEXT_GRADIENT: "text-gradient",
+  ANIMATED_SPINNER:
+    "animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500",
+} as const;
+
+// External URLs used throughout the application
+export const EXTERNAL_URLS = {
+  GITHUB: "https://github.com",
+  PROJECT_HOMEPAGE: "https://blueprint-generator.pages.dev",
+} as const;
+
+// UI Fallback values for environment-dependent configs
+export const UI_FALLBACKS = {
+  API_BASE: "/api",
+} as const;

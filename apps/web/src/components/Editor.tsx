@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import CodeMirror from "@uiw/react-codemirror";
-import { markdown } from "@codemirror/lang-markdown";
-import { oneDark } from "@codemirror/theme-one-dark";
-import { MarkdownRenderer } from "./MarkdownRenderer";
+import { LazyMarkdownRenderer } from "./LazyMarkdownRenderer";
+import { LazyCodeMirror } from "./LazyCodeMirror";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
 import {
   useEditorStore,
@@ -12,12 +10,14 @@ import {
   useToast,
 } from "../store";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
+import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
 import { TIMEOUTS, DEFAULT_PROJECT_NAME } from "../config/constants";
 import clsx from "clsx";
 
 export function Editor() {
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [copied, setCopied] = useState<string | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
   const toast = useToast();
 
   const activeTab = useEditorStore((s) => s.activeTab);
@@ -31,8 +31,20 @@ export function Editor() {
 
   const currentContent =
     activeTab === "blueprint" ? blueprintContent : tasksContent;
-  const setCurrentContent =
-    activeTab === "blueprint" ? setBlueprintContent : setTasksContent;
+  const setCurrentContent = (content: string) => {
+    try {
+      const sanitizedContent = sanitizeMarkdown(content);
+      if (activeTab === "blueprint") {
+        setBlueprintContent(sanitizedContent);
+      } else {
+        setTasksContent(sanitizedContent);
+      }
+    } catch (error) {
+      const securityError = handleSecurityError(error);
+      toast.error(`Security validation failed: ${securityError.message}`);
+      console.error("Security validation failed:", securityError);
+    }
+  };
 
   const handleCopy = async () => {
     const formatted = formatForIDE(currentContent);
@@ -45,12 +57,24 @@ export function Editor() {
   };
 
   const handleExport = async () => {
-    await exportAsZip({
-      blueprint: blueprintContent,
-      tasks: tasksContent,
-      projectName: projectName || DEFAULT_PROJECT_NAME,
-    });
-    toast.success("Exported as ZIP");
+    setIsExporting(true);
+    try {
+      const wizardData = useWizardStore.getState();
+      await exportAsZip({
+        blueprint: blueprintContent,
+        tasks: tasksContent,
+        projectName: projectName || DEFAULT_PROJECT_NAME,
+        techStack: wizardData.techStack,
+        description: wizardData.description,
+        features: wizardData.features,
+      });
+      toast.success("Project exported successfully!");
+    } catch (error) {
+      toast.error("Failed to export project");
+      console.error("Export error:", error);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   const handleNewProject = () => {
@@ -73,6 +97,7 @@ export function Editor() {
         onNew={handleNewProject}
         hasContent={hasContent}
         copied={copied}
+        isExporting={isExporting}
       />
 
       {/* Editor Content */}
@@ -86,7 +111,12 @@ export function Editor() {
             </div>
           </div>
         ) : (
-          <div className="h-full flex flex-col lg:flex-row">
+          <div
+            id={activeTab === "blueprint" ? "blueprint-panel" : "tasks-panel"}
+            role="tabpanel"
+            aria-labelledby={`tab-${activeTab}`}
+            className="h-full flex flex-col lg:flex-row"
+          >
             {/* Code Editor */}
             {(viewMode === "edit" || viewMode === "split") && (
               <div
@@ -97,17 +127,10 @@ export function Editor() {
                     : "w-full",
                 )}
               >
-                <CodeMirror
+                <LazyCodeMirror
                   value={currentContent}
                   onChange={setCurrentContent}
-                  extensions={[markdown()]}
-                  theme={oneDark}
                   className="h-full"
-                  basicSetup={{
-                    lineNumbers: true,
-                    foldGutter: true,
-                    highlightActiveLine: true,
-                  }}
                 />
               </div>
             )}
@@ -122,7 +145,7 @@ export function Editor() {
                   viewMode === "split" ? "w-full lg:w-1/2" : "w-full",
                 )}
               >
-                <MarkdownRenderer
+                <LazyMarkdownRenderer
                   content={currentContent || "*No content yet...*"}
                 />
               </motion.div>

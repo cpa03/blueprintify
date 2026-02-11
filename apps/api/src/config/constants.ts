@@ -77,6 +77,18 @@ export const ERROR_MESSAGES = {
   AUTHORIZATION: "Insufficient permissions",
 } as const;
 
+// Default error messages for error classes
+export const DEFAULT_ERROR_MESSAGES = {
+  VALIDATION: "Invalid request data",
+  AUTHENTICATION: "Authentication required",
+  AUTHORIZATION: "Insufficient permissions",
+  NOT_FOUND: "Resource not found",
+  CONFIGURATION: "Service configuration error",
+  NETWORK: "Network error occurred",
+  AI_SERVICE: "AI service error",
+  INTERNAL: "Internal server error",
+} as const;
+
 // System prompt configuration
 export const PROMPT_CONFIG = {
   // Architect system prompt
@@ -156,4 +168,51 @@ export const SSE_CONFIG = {
   },
   DATA_PREFIX: "data: ",
   EVENT_SEPARATOR: "\n\n",
+} as const;
+
+// SSE Response headers
+export const SSE_HEADERS = {
+  CONTENT_TYPE: "text/event-stream",
+  CACHE_CONTROL: "no-cache",
+  CONNECTION: "keep-alive",
+} as const;
+
+// HTTP Status codes
+export const HTTP_STATUS = {
+  OK: 200,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  INTERNAL_ERROR: 500,
+  BAD_GATEWAY: 502,
+  SERVICE_UNAVAILABLE: 503,
+  GATEWAY_TIMEOUT: 504,
+} as const;
+
+// Validation messages
+export const VALIDATION_MESSAGES = {
+  REQUEST_VALIDATION_FAILED: "Request validation failed",
+  INVALID_JSON_BODY: "Invalid JSON in request body",
+  VALIDATION_ERROR: "Validation error",
+} as const;
+
+// Configuration messages
+export const CONFIG_MESSAGES = {
+  OPENAI_API_KEY_MISSING: "OpenAI API key not configured",
+  VALIDATED_DATA_NOT_FOUND: "Validated data not found in context",
+} as const;
+
+// Retry logic configuration
+export const RETRY_LOGIC = {
+  RATE_LIMIT_STATUS: 429,
+  SERVER_ERROR_THRESHOLD: 500,
+} as const;
+
+// Route paths
+export const ROUTE_PATHS = {
+  ROOT: "/",
+  GENERATE: "/generate",
+  TASKS: "/tasks",
+  REFINE: "/refine",
 } as const;

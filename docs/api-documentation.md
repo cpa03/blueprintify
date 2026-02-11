@@ -134,6 +134,14 @@ interface RefineRequest {
   content: string; // Current content to refine
   instruction: string; // Instruction for refinement
   section?: string; // Optional section identifier
+  context?: RefineContext; // Optional context for better refinement
+}
+
+interface RefineContext {
+  projectName?: string; // Project name for context
+  techStack?: string[]; // Tech stack for context
+  features?: string[]; // Features for context
+  targetAudience?: string; // Target audience for context
 }
 ```
 
@@ -149,8 +157,137 @@ curl -X POST http://localhost:8787/refine \
   -d '{
     "content": "## Authentication\n\nBasic login system",
     "instruction": "Add detailed implementation notes for JWT authentication",
-    "section": "authentication"
+    "section": "authentication",
+    "context": {
+      "projectName": "My App",
+      "techStack": ["React", "Node.js"],
+      "features": ["User authentication"]
+    }
   }'
+```
+
+### POST /export
+
+Export generated content as a ZIP file containing all project documentation.
+
+#### Request Body
+
+```typescript
+interface ExportRequest {
+  blueprint: string; // Generated blueprint.md content
+  tasks?: string; // Optional task.md content
+  projectName: string; // Project name for file naming
+  includeReadme?: boolean; // Include README.md (default: true)
+  format?: ExportFormat; // Export format (default: 'markdown')
+}
+
+enum ExportFormat {
+  MARKDOWN = "markdown",
+  HTML = "html",
+  PDF = "pdf",
+}
+```
+
+#### Response
+
+Returns a ZIP file containing the exported documentation.
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost:8787/export \
+  -H "Content-Type: application/json" \
+  -d '{
+    "blueprint": "# Project: My App\n\n## Overview...",
+    "tasks": "# Implementation Tasks\n\n## Phase 1...",
+    "projectName": "My App",
+    "includeReadme": true,
+    "format": "markdown"
+  }' \
+  --output my-app-docs.zip
+```
+
+### POST /import
+
+Import previously exported project data for restoration or editing.
+
+#### Request Body
+
+```typescript
+interface ImportRequest {
+  file: File; // ZIP file containing exported project
+  validateOnly?: boolean; // Only validate file structure (default: false)
+}
+```
+
+#### Response
+
+```json
+{
+  "success": true,
+  "projectName": "My App",
+  "blueprint": "# Project: My App\n\n## Overview...",
+  "tasks": "# Implementation Tasks\n\n## Phase 1...",
+  "metadata": {
+    "exportDate": "2026-02-11T01:31:18.000Z",
+    "version": "1.2.0",
+    "format": "markdown"
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost:8787/import \
+  -F "file=@my-app-docs.zip" \
+  -F "validateOnly=false"
+```
+
+### GET /storage/quota
+
+Check localStorage quota usage and availability.
+
+#### Response
+
+```json
+{
+  "totalQuota": 5242880, // Total quota in bytes (5MB)
+  "used": 1048576, // Used space in bytes
+  "available": 4194304, // Available space in bytes
+  "usagePercentage": 20, // Usage percentage
+  "projects": [
+    {
+      "name": "My App",
+      "size": 524288, // Size in bytes
+      "lastModified": "2026-02-11T01:31:18.000Z"
+    }
+  ]
+}
+```
+
+### DELETE /storage/clear
+
+Clear all stored data from localStorage.
+
+#### Request Body
+
+```typescript
+interface ClearStorageRequest {
+  projectId?: string; // Optional: clear only specific project
+  confirm: boolean; // Must be true to confirm deletion
+}
+```
+
+#### Response
+
+```json
+{
+  "success": true,
+  "clearedProjects": ["My App", "Another Project"],
+  "freedSpace": 1048576, // Freed space in bytes
+  "timestamp": "2026-02-11T01:31:18.000Z"
+}
 ```
 
 ## Error Handling

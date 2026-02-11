@@ -6,6 +6,7 @@
 import { z } from "zod";
 import type { MiddlewareHandler } from "hono";
 import { ErrorResponse, ErrorType } from "../errors";
+import { HTTP_STATUS, VALIDATION_MESSAGES } from "../config/constants";
 
 /**
  * Custom Zod validator that returns standardized error responses
@@ -27,7 +28,7 @@ export const validateJson = <T extends z.ZodTypeAny>(
           success: false,
           error: {
             type: ErrorType.VALIDATION,
-            message: "Request validation failed",
+            message: VALIDATION_MESSAGES.REQUEST_VALIDATION_FAILED,
             code: "VALIDATION_ERROR",
             details: {
               issues: result.error.issues.map((issue) => ({
@@ -39,7 +40,7 @@ export const validateJson = <T extends z.ZodTypeAny>(
           },
         };
 
-        return c.json(errorResponse, 400);
+        return c.json(errorResponse, HTTP_STATUS.BAD_REQUEST);
       }
 
       // Attach validated data to the context
@@ -50,13 +51,13 @@ export const validateJson = <T extends z.ZodTypeAny>(
         success: false,
         error: {
           type: ErrorType.VALIDATION,
-          message: "Invalid JSON in request body",
+          message: VALIDATION_MESSAGES.INVALID_JSON_BODY,
           code: "VALIDATION_ERROR",
           timestamp: new Date().toISOString(),
         },
       };
 
-      return c.json(errorResponse, 400);
+      return c.json(errorResponse, HTTP_STATUS.BAD_REQUEST);
     }
   };
 };
