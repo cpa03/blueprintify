@@ -3,7 +3,7 @@ import {
   StorageService,
   StorageManager,
   StorageError,
-  storageManager,
+  storageManager as _storageManager,
   isStorageError,
   getStorageErrorMessage,
   withStorageRecovery,
@@ -280,17 +280,17 @@ describe("utility functions", () => {
 
   describe("withStorageRecovery", () => {
     it("should return operation result on success", async () => {
-      const result = await withStorageRecovery(async () => "success", "fallback");
+      const result = await withStorageRecovery(
+        async () => "success",
+        "fallback",
+      );
       expect(result).toBe("success");
     });
 
     it("should return fallback on failure", async () => {
-      const result = await withStorageRecovery(
-        async () => {
-          throw new Error("fail");
-        },
-        "fallback",
-      );
+      const result = await withStorageRecovery(async () => {
+        throw new Error("fail");
+      }, "fallback");
       expect(result).toBe("fallback");
     });
   });
