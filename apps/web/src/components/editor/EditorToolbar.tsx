@@ -199,7 +199,6 @@ export function EditorToolbar({
           onClick={onExport}
           disabled={!hasContent || isExporting}
           className="btn-secondary text-sm relative"
-          aria-label="Export as ZIP file"
         >
           {isExporting ? (
             <>
