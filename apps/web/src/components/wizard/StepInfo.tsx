@@ -346,23 +346,86 @@ export function StepInfo() {
           <label htmlFor="targetAudience" className="label">
             Target Audience <span className="text-dark-500">(optional)</span>
           </label>
-          <input
-            id="targetAudience"
-            name="targetAudience"
-            type="text"
-            value={targetAudience}
-            onChange={(e) => setTargetAudience(e.target.value)}
-            placeholder="e.g., Developers, Small businesses, Enterprise teams"
-            className="input-field"
-          />
+          <div className="relative">
+            <input
+              id="targetAudience"
+              name="targetAudience"
+              type="text"
+              value={targetAudience}
+              onChange={(e) => setTargetAudience(e.target.value)}
+              placeholder="e.g., Developers, Small businesses, Enterprise teams"
+              className="input-field pr-10"
+            />
+            <AnimatePresence>
+              {targetAudience && (
+                <motion.button
+                  type="button"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.15 }}
+                  onClick={() => setTargetAudience("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus:outline-none focus:text-white transition-colors p-1 rounded-md hover:bg-dark-700/50"
+                  aria-label="Clear target audience"
+                  title="Clear target audience"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </motion.button>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* Constraints (Optional) */}
         <div>
-          <label htmlFor="constraints" className="label">
-            Constraints or Requirements{" "}
-            <span className="text-dark-500">(optional)</span>
-          </label>
+          <div className="flex items-center justify-between mb-2">
+            <label htmlFor="constraints" className="label mb-0">
+              Constraints or Requirements{" "}
+              <span className="text-dark-500">(optional)</span>
+            </label>
+            <AnimatePresence>
+              {constraints && (
+                <motion.button
+                  type="button"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.15 }}
+                  onClick={() => setConstraints("")}
+                  className="text-xs text-dark-500 hover:text-dark-300 focus:outline-none focus:text-white transition-colors flex items-center gap-1 px-2 py-1 rounded-md hover:bg-dark-700/50"
+                  aria-label="Clear constraints"
+                  title="Clear constraints"
+                >
+                  <svg
+                    className="w-3 h-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                  Clear
+                </motion.button>
+              )}
+            </AnimatePresence>
+          </div>
           <textarea
             id="constraints"
             name="constraints"
