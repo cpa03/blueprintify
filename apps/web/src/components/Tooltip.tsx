@@ -84,6 +84,7 @@ interface KeyboardShortcutTooltipProps {
   shortcut: string;
   description?: string;
   position?: "top" | "bottom" | "left" | "right";
+  modifier?: "cmd" | "ctrl" | "none";
 }
 
 export function KeyboardShortcutTooltip({
@@ -91,10 +92,18 @@ export function KeyboardShortcutTooltip({
   shortcut,
   description,
   position = "top",
+  modifier = "cmd",
 }: KeyboardShortcutTooltipProps) {
   const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
-  const modifier = isMac ? "⌘" : "Ctrl";
-  const fullShortcut = `${modifier} + ${shortcut.toUpperCase()}`;
+
+  let fullShortcut: string;
+  if (modifier === "none") {
+    fullShortcut = shortcut;
+  } else if (modifier === "cmd") {
+    fullShortcut = `${isMac ? "⌘" : "Ctrl"} + ${shortcut.toUpperCase()}`;
+  } else {
+    fullShortcut = `Ctrl + ${shortcut.toUpperCase()}`;
+  }
 
   const content = (
     <div className="flex items-center gap-2">
