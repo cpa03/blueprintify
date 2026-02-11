@@ -9,7 +9,7 @@ import clsx from "clsx";
 import { copyToClipboard } from "../lib/export";
 import { sanitizeHtml } from "../lib/security";
 
-interface MarkdownRendererProps {
+export interface MarkdownRendererProps {
   content: string;
   className?: string;
 }
