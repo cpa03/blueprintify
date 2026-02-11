@@ -7,6 +7,11 @@ import { StepFeatures } from "./wizard/StepFeatures";
 import { StepReview } from "./wizard/StepReview";
 import { StepGenerating } from "./wizard/StepGenerating";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import {
+  useFocusOnStepChange,
+  useStepAnnouncer,
+} from "../hooks/useFocusOnStepChange";
+import { WIZARD_STEPS } from "../config/constants";
 
 const STEP_TITLES: Record<string, string> = {
   info: "Project Info",
@@ -20,6 +25,10 @@ export function Wizard() {
   const currentStep = useWizardStore((s) => s.currentStep);
   const isGenerating = useEditorStore((s) => s.isGenerating);
   const generationProgress = useEditorStore((s) => s.generationProgress);
+  const containerRef = useFocusOnStepChange(currentStep);
+  const currentStepLabel =
+    WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
+  useStepAnnouncer(currentStep, currentStepLabel);
 
   const documentTitle =
     isGenerating && generationProgress
@@ -45,7 +54,12 @@ export function Wizard() {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto p-6">
+    <div
+      ref={containerRef}
+      className="flex-1 overflow-y-auto p-6"
+      role="region"
+      aria-label={`Wizard step: ${currentStepLabel}`}
+    >
       <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
     </div>
   );
