@@ -26,10 +26,20 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ["react", "react-dom"],
-          editor: [
+          codemirror: [
             "@uiw/react-codemirror",
             "@codemirror/lang-markdown",
             "@codemirror/theme-one-dark",
+            "@codemirror/state",
+            "@codemirror/view",
+            "@codemirror/language",
+            "@codemirror/commands",
+            "@codemirror/search",
+            "@codemirror/autocomplete",
+            "@codemirror/lint",
+            "@lezer/common",
+            "@lezer/markdown",
+            "@lezer/highlight",
           ],
           syntaxHighlighter: ["react-syntax-highlighter"],
           markdown: ["react-markdown", "remark-gfm", "rehype-highlight"],
