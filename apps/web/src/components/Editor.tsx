@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import CodeMirror from "@uiw/react-codemirror";
-import { markdown } from "@codemirror/lang-markdown";
-import { oneDark } from "@codemirror/theme-one-dark";
 import { MarkdownRenderer } from "./MarkdownRenderer";
+import { LazyCodeMirror } from "./LazyCodeMirror";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
 import {
   useEditorStore,
@@ -129,17 +127,10 @@ export function Editor() {
                     : "w-full",
                 )}
               >
-                <CodeMirror
+                <LazyCodeMirror
                   value={currentContent}
                   onChange={setCurrentContent}
-                  extensions={[markdown()]}
-                  theme={oneDark}
                   className="h-full"
-                  basicSetup={{
-                    lineNumbers: true,
-                    foldGutter: true,
-                    highlightActiveLine: true,
-                  }}
                 />
               </div>
             )}
