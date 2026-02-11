@@ -189,16 +189,74 @@ Monitor the blueprint generation in real-time.
 
 ## Post-Generation Workflow
 
-### Split-Pane Editor (Coming Soon)
+### Session Persistence with LocalStorage ✅ AVAILABLE
+
+Blueprintify automatically saves your work to browser localStorage, ensuring you never lose your progress:
+
+#### Auto-Save Features
+
+- **Wizard State**: Your project configuration is saved after each step
+- **Generated Content**: Blueprints and tasks are automatically saved
+- **Editor State**: Your edits are preserved in real-time
+- **Session Management**: Access previous sessions from the session library
+
+#### Storage Capabilities
+
+- **Persistent Storage**: Work persists across browser sessions
+- **Multiple Sessions**: Store multiple blueprints with metadata
+- **Smart Cleanup**: Automatic storage quota management
+- **Import/Export**: Backup and restore your blueprints
+
+#### Session Organization
+
+- **Title & Description**: Organize sessions with custom titles
+- **Tagging System**: Tag sessions for easy categorization
+- **Archive Management**: Archive old sessions while keeping them accessible
+- **Sorting & Filtering**: Find sessions quickly with advanced search
+
+For detailed technical specifications, see the [LocalStorage Schema Documentation](./localstorage-schema.md).
+
+### Split-Pane Editor ✅ AVAILABLE
 
 After generation, you'll have access to a split-pane editor where you can:
 
-- **View Generated Content** - See your blueprint.md and task.md files
-- **Edit Content** - Modify generated content using the code editor
-- **Live Preview** - See markdown rendering in real-time
-- **Refine Content** - Use AI assistance to improve specific sections
+- **View Generated Content** - See your blueprint.md and task.md files side-by-side
+- **Edit Content** - Modify generated content using the CodeMirror code editor
+- **Live Preview** - See markdown rendering in real-time as you type
+- **AI Refinement** - Use AI assistance to improve specific sections (M2 feature)
 
-### Export Options
+### AI Refinement Workflow ✅ AVAILABLE (M2)
+
+Enhance your blueprints with AI-powered refinement capabilities:
+
+#### Refinement Types
+
+- **Regenerate**: Complete regeneration of selected sections
+- **Enhance**: Improve and expand existing content
+- **Expand**: Add more detail and examples
+- **Simplify**: Simplify complex content
+- **Fix**: Address specific issues or bugs
+- **Custom**: Custom refinement with your own prompts
+
+#### Key Features
+
+- **Section-Based Selection**: Select specific sections to refine
+- **Edit Preservation**: Protect your manual edits during regeneration
+- **Real-Time Streaming**: Watch refinements happen live
+- **Undo/Redo System**: Full change history with rollback capability
+- **Context Awareness**: Maintains project context throughout refinements
+
+#### Workflow Process
+
+1. **Select Sections** - Choose which sections to refine
+2. **Choose Refinement Type** - Pick the appropriate refinement strategy
+3. **Add Custom Instructions** (Optional) - Provide specific guidance
+4. **Execute Refinement** - AI processes while preserving manual edits
+5. **Review & Apply** - Review changes and apply or modify
+
+For detailed technical specifications, see the [Refinement Workflow Documentation](./refinement-workflow.md).
+
+### Export Options ✅ COMPREHENSIVE
 
 #### Download ZIP
 
@@ -215,6 +273,34 @@ After generation, you'll have access to a split-pane editor where you can:
 1. **Select Content** - Choose specific sections or entire documents
 2. **Copy** - Use the copy button to copy markdown to clipboard
 3. **Paste** - Paste into your preferred editor or documentation system
+
+#### Advanced Export & Import ✅ AVAILABLE
+
+Blueprintify supports comprehensive data portability with multiple export formats:
+
+##### Export Formats
+
+- **JSON Format** (.blueprint) - Complete data export with metadata
+- **ZIP Archive** (.zip) - Structured archive with all files and assets
+- **Markdown Files** (.md) - Human-readable markdown format
+- **Custom Templates** - Export with custom formatting
+
+##### Import Capabilities
+
+- **Format Detection** - Automatic format detection and validation
+- **Conflict Resolution** - Smart handling of duplicate sessions
+- **Schema Migration** - Automatic migration between schema versions
+- **Import Preview** - Preview changes before importing
+- **Backup Creation** - Automatic backup before imports
+
+##### Key Features
+
+- **Session Management** - Export/import multiple sessions
+- **Asset Handling** - Include images, documents, and custom assets
+- **Version Compatibility** - Backward and forward compatibility
+- **Security Validation** - Comprehensive data validation and sanitization
+
+For detailed technical specifications, see the [Export/Import Documentation](./export-import-specs.md).
 
 #### Save to Cloud (Future Feature)
 

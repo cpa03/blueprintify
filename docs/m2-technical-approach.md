@@ -15,11 +15,11 @@ This document outlines the technical approach for M2 (Refinement & Persistence P
 
 ### Success Criteria
 
-- [ ] Blueprints persist across browser sessions
-- [ ] Users can edit generated content with live preview
-- [ ] Refinement workflow allows selective section regeneration
-- [ ] Export/import functionality supports data portability
-- [ ] All M2 features integrate seamlessly with M1 foundation
+- [x] Blueprints persist across browser sessions (localStorage schema complete)
+- [x] Users can edit generated content with live preview (split-pane editor complete)
+- [ ] Refinement workflow allows selective section regeneration (in progress)
+- [ ] Export/import functionality supports data portability (API complete, UI pending)
+- [ ] All M2 features integrate seamlessly with M1 foundation (integration ongoing)
 
 ## Technical Architecture
 

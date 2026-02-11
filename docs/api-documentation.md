@@ -125,21 +125,55 @@ curl -X POST http://localhost:8787/tasks \
 
 ### POST /refine
 
-Refine a specific section of generated content using AI assistance.
+Refine specific sections of generated content using AI assistance with advanced context preservation.
 
 #### Request Body
 
 ```typescript
 interface RefineRequest {
+  sessionId?: string; // Session identifier for context preservation
   content: string; // Current content to refine
   instruction: string; // Instruction for refinement
   section?: string; // Optional section identifier
+  context?: RefinementContext; // Additional context for better refinement
+  options?: RefinementOptions; // Refinement options and preferences
+}
+
+interface RefinementContext {
+  fullBlueprint?: string; // Complete blueprint for context
+  wizardState?: WizardState; // Original project configuration
+  targetAudience?: string; // Target audience from original request
+  constraints?: string; // Project constraints from original request
+  relatedSections?: string[]; // Related blueprint sections
+}
+
+interface RefinementOptions {
+  preserveFormatting?: boolean; // Preserve original formatting (default: true)
+  maintainTone?: boolean; // Maintain original writing tone (default: true)
+  wordCountTarget?: number; // Target word count for refined content
+  includeCode?: boolean; // Include code examples (default: true)
+  streamResponse?: boolean; // Stream response (default: true)
 }
 ```
 
 #### Response
 
-Streams refined content line by line via SSE.
+Streams refined content line by line via SSE with metadata:
+
+**Event Stream Format:**
+
+```
+data: {"type": "start", "section": "authentication"}
+
+data: ## Authentication
+data:
+data: ### JWT Implementation
+data: [Detailed JWT authentication implementation...]
+
+data: {"type": "preserved_edits", "count": 2}
+
+data: {"type": "complete", "wordCount": 450}
+```
 
 #### Example Request
 
@@ -147,10 +181,98 @@ Streams refined content line by line via SSE.
 curl -X POST http://localhost:8787/refine \
   -H "Content-Type: application/json" \
   -d '{
+    "sessionId": "session_123",
     "content": "## Authentication\n\nBasic login system",
     "instruction": "Add detailed implementation notes for JWT authentication",
-    "section": "authentication"
+    "section": "authentication",
+    "context": {
+      "targetAudience": "Enterprise applications",
+      "constraints": "Must meet GDPR compliance"
+    },
+    "options": {
+      "preserveFormatting": true,
+      "includeCode": true,
+      "wordCountTarget": 400
+    }
   }'
+```
+
+### POST /export
+
+Export blueprint data in various formats for backup and sharing.
+
+#### Request Body
+
+```typescript
+interface ExportRequest {
+  sessionId?: string; // Optional: export specific session
+  format: ExportFormat; // Export format
+  options?: ExportOptions; // Export preferences
+}
+
+type ExportFormat = "json" | "zip" | "markdown" | "pdf";
+
+interface ExportOptions {
+  includeHistory?: boolean; // Include refinement history (default: false)
+  includeMetadata?: boolean; // Include session metadata (default: true)
+  compress?: boolean; // Compress large files (default: true)
+  template?: string; // Custom export template
+}
+```
+
+#### Response
+
+Returns file data with appropriate content-type headers.
+
+```json
+{
+  "data": "base64-encoded-file-content",
+  "filename": "blueprint-2026-02-11.zip",
+  "mimeType": "application/zip",
+  "size": 15420
+}
+```
+
+### POST /import
+
+Import previously exported blueprint data.
+
+#### Request Body
+
+```typescript
+interface ImportRequest {
+  data: string; // Base64-encoded file content or JSON data
+  format: ImportFormat; // Import format
+  options?: ImportOptions; // Import preferences
+}
+
+type ImportFormat = "json" | "zip" | "auto-detect";
+
+interface ImportOptions {
+  mergeStrategy?: MergeStrategy; // How to handle conflicts
+  preserveSessions?: boolean; // Preserve existing sessions
+  validateSchema?: boolean; // Validate schema (default: true)
+  skipDuplicates?: boolean; // Skip duplicate sessions (default: true)
+}
+
+type MergeStrategy = "replace" | "merge" | "skip" | "rename";
+```
+
+#### Response
+
+```json
+{
+  "imported": 3,
+  "skipped": 1,
+  "errors": [],
+  "sessions": [
+    {
+      "id": "imported_session_1",
+      "title": "E-commerce Platform",
+      "importedAt": "2026-02-11T10:30:00Z"
+    }
+  ]
+}
 ```
 
 ## Error Handling
