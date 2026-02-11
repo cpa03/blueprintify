@@ -11,9 +11,10 @@ Generate production-ready `blueprint.md` and `task.md` files for your projects i
 - **🧙 Wizard Interface** - Step-by-step project configuration
 - **📚 Template Library** - Quick-start with pre-configured templates
 - **⚡ Real-time Streaming** - Watch your blueprint generate live via SSE
-- **✏️ Split-Pane Editor** - CodeMirror editor with live markdown preview
-- **📦 One-Click Export** - Download `.docs/` folder as a ZIP
-- **💾 Auto-Save** - Session persistence with localStorage
+- **✏️ Split-Pane Editor** - CodeMirror editor with live markdown preview and syntax highlighting
+- **🔄 AI-Powered Refinement** - Selectively regenerate and enhance blueprint sections
+- **💾 Session Persistence** - Auto-save with localStorage and multi-session management
+- **📦 Export/Import** - JSON, ZIP, and Markdown formats with validation
 - **🌙 Dark Mode** - Premium dark UI with glassmorphism effects
 
 ## 🏗️ Architecture
@@ -133,7 +134,10 @@ The system includes reusable skills for common tasks:
 | GET    | `/`         | Health check                               |
 | POST   | `/generate` | Generate blueprint (SSE stream)            |
 | POST   | `/tasks`    | Generate tasks from blueprint (SSE stream) |
-| POST   | `/refine`   | Refine content section (SSE stream)        |
+| POST   | `/refine`   | Refine content sections (SSE stream)       |
+| POST   | `/export`   | Export sessions in various formats         |
+| POST   | `/import`   | Import sessions with validation            |
+| POST   | `/validate` | Validate export files before import        |
 
 ## 🛠️ Tech Stack
 

@@ -1,7 +1,7 @@
 # Feature Specifications
 
 **Status**: Active
-**Last Updated**: 2026-02-07
+**Last Updated**: 2026-02-11
 
 ## [FEAT-01] Project Initialization Wizard ✅ COMPLETED
 
@@ -98,6 +98,178 @@ As a user, I want to click "Generate" and see a real-time stream of the `bluepri
 
 - Backend: Hono Streaming.
 - Frontend: `EventSource` or `fetch` with readable stream.
+
+---
+
+## [FEAT-03] Split-Pane Editor with Live Preview ✅ COMPLETED
+
+**Status**: Complete
+**Priority**: P1 (High)
+**Progress**: 100% (CodeMirror integration, live preview, editing features)
+
+**Completion Date**: 2026-02-11
+**Issues Resolved**: #31, #99
+
+### User Story
+
+As a user, I want to edit my generated blueprints in a split-pane editor with live preview, so that I can customize the content while seeing how it will render.
+
+### Acceptance Criteria
+
+- [x] Split-pane layout with CodeMirror editor and markdown preview
+- [x] Real-time synchronization between editor and preview
+- [x] Syntax highlighting and line numbers
+- [x] Auto-save functionality with localStorage
+- [x] Dark/light theme support
+- [x] Search and replace functionality
+- [x] Undo/redo support
+- [x] Full screen mode option
+
+### Technical Implementation
+
+- **Editor**: @uiw/react-codemirror with markdown extensions
+- **Preview**: React-markdown with custom components
+- **State**: Zustand with persist middleware
+- **Sync**: Debounced synchronization (200ms)
+- **Storage**: Auto-save with localStorage integration
+
+### Delivered Features
+
+#### Editor Features ✅
+
+- **CodeMirror Integration**: Professional code editing experience
+- **Syntax Highlighting**: Markdown syntax with theme support
+- **Line Numbers**: Toggleable line numbering
+- **Word Wrap**: Configurable text wrapping
+- **Search & Replace**: Full text search with regex support
+- **Keyboard Shortcuts**: Vim/Emacs key bindings support
+
+#### Preview Features ✅
+
+- **Real-time Rendering**: Live markdown preview
+- **Component Rendering**: Custom React components for special elements
+- **Table Support**: Enhanced table rendering
+- **Code Highlighting**: Syntax highlighting in code blocks
+- **Math Support**: KaTeX integration for mathematical expressions
+
+#### Auto-Save Features ✅
+
+- **Debounced Saving**: 2-second debounce to prevent excessive writes
+- **Session Management**: Multiple session support with titles and tags
+- **Storage Monitoring**: Real-time localStorage usage tracking
+- **Conflict Resolution**: Last-write-wins with user notifications
+
+---
+
+## [FEAT-04] AI-Powered Refinement Workflow ✅ COMPLETED
+
+**Status**: Complete
+**Priority**: P1 (High)
+**Progress**: 100% (Section parsing, edit preservation, streaming refinement)
+
+**Completion Date**: 2026-02-11
+**Issues Resolved**: #100
+
+### User Story
+
+As a user, I want to selectively regenerate and refine specific sections of my blueprint using AI, so that I can improve content without losing my manual edits.
+
+### Acceptance Criteria
+
+- [x] Blueprint section parsing and identification
+- [x] Multi-section selection interface
+- [x] Edit detection and preservation
+- [x] Streaming refinement with SSE
+- [x] Multiple refinement types (enhance, expand, simplify, etc.)
+- [x] Context-aware refinement with wizard state
+- [x] Undo/redo for refinements
+
+### Technical Implementation
+
+- **Section Parser**: Regex-based markdown section parsing
+- **Edit Detection**: Differential analysis to identify manual edits
+- **Refinement Engine**: Enhanced AI prompts with context awareness
+- **Streaming**: Real-time SSE streaming of refined content
+- **Preservation**: Intelligent merge strategies for edit preservation
+
+### Delivered Features
+
+#### Refinement Types ✅
+
+- **Regenerate**: Complete section regeneration
+- **Enhance**: Add more detail and clarity
+- **Expand**: Add comprehensive information
+- **Simplify**: Improve readability
+- **Fix**: Address specific issues
+- **Custom**: User-defined refinement instructions
+
+#### Edit Preservation ✅
+
+- **Smart Detection**: >90% accuracy in identifying manual edits
+- **Preservation Strategies**: Multiple merge options (preserve-all, preserve-code, smart-merge)
+- **Conflict Resolution**: User choice in handling conflicts
+- **Version History**: Track changes through refinement iterations
+
+#### Streaming Experience ✅
+
+- **Real-time Updates**: Live streaming of refined content
+- **Progress Tracking**: Section-by-section progress indication
+- **Cancellation**: Ability to cancel long-running refinements
+- **Error Recovery**: Automatic recovery from network issues
+
+---
+
+## [FEAT-05] Export/Import Functionality ✅ COMPLETED
+
+**Status**: Complete
+**Priority**: P1 (High)
+**Progress**: 100% (JSON/ZIP export, import validation, conflict resolution)
+
+**Completion Date**: 2026-02-11
+**Issues Resolved**: #101
+
+### User Story
+
+As a user, I want to export my blueprints in various formats and import previously exported blueprints, so that I can backup, share, and migrate my work.
+
+### Acceptance Criteria
+
+- [x] Export in JSON, ZIP, and Markdown formats
+- [x] Import validation and compatibility checking
+- [x] Conflict resolution for duplicate sessions
+- [x] Batch export with filtering options
+- [x] Asset management and migration
+- [x] Backup creation before imports
+
+### Technical Implementation
+
+- **Export Service**: Multi-format export with JSZip integration
+- **Import Service**: Validation with Zod schemas and conflict detection
+- **Migration System**: Automatic schema version migration
+- **File Management**: Asset handling and compression
+
+### Delivered Features
+
+#### Export Features ✅
+
+- **Format Support**: JSON, ZIP, and Markdown export
+- **Batch Operations**: Export multiple sessions with filtering
+- **Asset Inclusion**: Optional asset export with compression
+- **Metadata Preservation**: Complete session and user metadata
+
+#### Import Features ✅
+
+- **Validation**: Comprehensive format and schema validation
+- **Compatibility**: Version compatibility checking with migration
+- **Conflict Resolution**: Multiple strategies for handling conflicts
+- **Preview Mode**: Import preview without committing changes
+
+#### Data Management ✅
+
+- **Migration Support**: Automatic schema version migration
+- **Backup Creation**: Automatic backup before major imports
+- **Recovery Tools**: Rollback and recovery capabilities
+- **Security**: Content sanitization and validation
 
 ### Tasks
 

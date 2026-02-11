@@ -189,7 +189,7 @@ Monitor the blueprint generation in real-time.
 
 ## Post-Generation Workflow
 
-### Split-Pane Editor (Coming Soon)
+### Split-Pane Editor
 
 After generation, you'll have access to a split-pane editor where you can:
 
@@ -197,6 +197,31 @@ After generation, you'll have access to a split-pane editor where you can:
 - **Edit Content** - Modify generated content using the code editor
 - **Live Preview** - See markdown rendering in real-time
 - **Refine Content** - Use AI assistance to improve specific sections
+- **Syntax Highlighting** - Enjoy markdown syntax highlighting in the editor
+- **Auto-Save** - Content is automatically saved to localStorage
+- **Undo/Redo** - Full undo/redo support for all editing actions
+
+#### Editor Features
+
+The split-pane editor includes:
+
+- **CodeMirror Integration** - Professional code editing experience
+- **Real-time Synchronization** - Editor and preview stay synchronized
+- **Dark/Light Themes** - Switch between themes based on your preference
+- **Line Numbers** - Toggle line numbers for easier navigation
+- **Search & Replace** - Find and replace text within your documents
+- **Word Wrap** - Toggle word wrapping for better readability
+- **Full Screen Mode** - Focus mode for distraction-free editing
+
+#### Keyboard Shortcuts in Editor
+
+- **Ctrl/Cmd + S** - Save current session
+- **Ctrl/Cmd + Z** - Undo last action
+- **Ctrl/Cmd + Shift + Z** - Redo last action
+- **Ctrl/Cmd + F** - Find text
+- **Ctrl/Cmd + H** - Replace text
+- **F11** - Toggle full screen mode
+- **Escape** - Exit full screen mode
 
 ### Export Options
 
@@ -221,6 +246,261 @@ After generation, you'll have access to a split-pane editor where you can:
 - Cloud storage integration planned
 - Version control and history tracking
 - Collaboration features
+
+## Session Persistence
+
+### Auto-Save Functionality
+
+Blueprintify automatically saves your work to browser localStorage, ensuring you never lose progress:
+
+- **Automatic Saving** - Content saves automatically as you work
+- **Session Management** - Each blueprint generation creates a new session
+- **Cross-Session Persistence** - Your work persists across browser sessions
+- **Multiple Sessions** - Save and manage multiple blueprint sessions
+- **Offline Access** - Access your saved blueprints even when offline
+
+#### Session Organization
+
+- **Session Titles** - Give your sessions descriptive names for easy identification
+- **Tags** - Organize sessions with custom tags
+- **Search** - Find sessions quickly using the search functionality
+- **Archive** - Archive old sessions to keep your workspace organized
+- **Sort & Filter** - Sort sessions by date, title, or tags
+
+#### Storage Management
+
+- **Storage Monitoring** - Monitor your localStorage usage
+- **Cleanup Tools** - Automatic cleanup of old/archived sessions
+- **Export Backups** - Export sessions as JSON for external backup
+- **Import Sessions** - Import previously exported sessions
+- **Storage Limits** - Intelligent management to stay within browser limits
+
+#### Session Features
+
+Each saved session includes:
+
+- **Wizard Configuration** - All project settings and selections
+- **Generated Content** - Your blueprint.md and task.md files
+- **Edit History** - Track changes made during editing
+- **Export Count** - Number of times exported
+- **Last Accessed** - Timestamp for sorting and identification
+
+## AI-Powered Refinement Workflow
+
+### Selective Content Refinement
+
+The refinement workflow allows you to improve specific sections of your blueprint using AI assistance while preserving your manual edits:
+
+#### Refinement Options
+
+- **Regenerate** - Completely regenerate selected sections with fresh AI output
+- **Enhance** - Enhance existing content with more detail and clarity
+- **Expand** - Add more comprehensive information to sections
+- **Simplify** - Simplify complex content for better readability
+- **Fix Issues** - Address specific problems or inconsistencies
+- **Custom Instructions** - Provide your own refinement instructions
+
+#### Section Selection
+
+1. **Browse Sections** - View all blueprint sections in an organized tree
+2. **Multi-Select** - Select multiple sections for batch refinement
+3. **Preview Context** - See related sections for context awareness
+4. **Manual Edit Detection** - AI automatically detects and preserves your manual edits
+5. **Dependency Analysis** - Understand how sections relate to each other
+
+#### Edit Preservation
+
+- **Smart Detection** - AI identifies your manual edits and modifications
+- **Preserve Strategies** - Choose how to handle edits during regeneration
+- **Conflict Resolution** - Handle conflicts between AI suggestions and your edits
+- **Merge Options** - Intelligent merging of AI content with your modifications
+- **Version History** - Track changes through multiple refinement iterations
+
+#### Refinement Process
+
+1. **Select Sections** - Choose which sections to refine
+2. **Set Refinement Type** - Select the type of refinement needed
+3. **Provide Instructions** - Give specific instructions for the AI
+4. **Monitor Progress** - Watch real-time streaming of refined content
+5. **Review Changes** - Compare before and after versions
+6. **Apply or Discard** - Accept or reject refinement suggestions
+
+#### Streaming Experience
+
+- **Real-time Updates** - See refined content appear as it's generated
+- **Progress Indicators** - Track refinement progress for each section
+- **Cancellation** - Cancel long-running refinements if needed
+- **Error Recovery** - Automatic recovery from network or server issues
+- **Partial Results** - Use partial results if refinement is interrupted
+
+#### Advanced Features
+
+- **Batch Refinement** - Refine multiple sections simultaneously
+- **Context Awareness** - AI considers your project context and constraints
+- **Tone Matching** - Maintains consistent writing style and tone
+- **Technical Accuracy** - Ensures technical details remain accurate
+- **Best Practices** - Incorporates industry best practices and standards
+
+## Export and Import Functionality
+
+### Exporting Your Blueprints
+
+Blueprintify provides flexible export options to backup and share your work:
+
+#### Supported Export Formats
+
+**JSON Format (.blueprint)**
+
+- Primary format for complete data export
+- Includes all session metadata and content
+- Machine-readable and version-controlled
+- Ideal for backups and data migration
+
+**ZIP Archive (.zip)**
+
+- Contains both blueprint and task files
+- Includes supporting assets and metadata
+- Perfect for distribution and sharing
+- Structured folder organization
+
+**Markdown Files (.md)**
+
+- Individual markdown files for blueprints and tasks
+- Human-readable format
+- Compatible with any markdown editor
+- Great for documentation integration
+
+#### Export Options
+
+**Single Session Export**
+
+- Export one specific session
+- Choose format based on your needs
+- Include or exclude assets
+- Add custom metadata
+
+**Bulk Export**
+
+- Export multiple sessions at once
+- Filter by date range, tags, or status
+- Include archived sessions if needed
+- Create comprehensive backups
+
+**Filtered Export**
+
+- Export sessions matching specific criteria
+- Date range filtering
+- Tag-based selection
+- Word count thresholds
+- Archive status filtering
+
+#### Export Process
+
+1. **Select Export Type** - Choose single, bulk, or filtered export
+2. **Choose Format** - Select JSON, ZIP, or Markdown format
+3. **Configure Options** - Set export preferences and filters
+4. **Preview Export** - Review what will be exported
+5. **Download File** - Receive your export file
+6. **Verify Export** - Check exported content for completeness
+
+### Importing Blueprints
+
+Import previously exported blueprints with comprehensive validation and conflict resolution:
+
+#### Import Validation
+
+Before importing, the system validates your export file:
+
+- **Format Validation** - Checks file format and structure
+- **Schema Compatibility** - Ensures compatibility with current version
+- **Data Integrity** - Verifies data completeness and consistency
+- **Security Scanning** - Checks for malicious content
+- **Size Validation** - Ensures file is within acceptable limits
+
+#### Import Options
+
+**Conflict Resolution**
+
+- **Skip** - Skip sessions with conflicts
+- **Overwrite** - Replace existing sessions
+- **Rename** - Create renamed copies
+- **Merge** - Merge with existing sessions
+- **Duplicate** - Create duplicates
+
+**Import Settings**
+
+- **Preserve IDs** - Keep original session IDs
+- **Import Assets** - Include associated assets
+- **Create Backup** - Backup before importing
+- **Migration Strategy** - Handle version differences
+
+#### Import Process
+
+1. **Select File** - Choose your export file (JSON or ZIP)
+2. **Validation** - Automatic validation and compatibility check
+3. **Preview** - Review what will be imported
+4. **Conflict Resolution** - Handle any conflicts found
+5. **Import Execution** - Process the import
+6. **Verification** - Verify imported content
+
+### Advanced Features
+
+#### Migration Support
+
+- **Automatic Migration** - Handles schema version differences
+- **Compatibility Matrix** - Shows what features are compatible
+- **Migration Path** - Provides upgrade/downgrade options
+- **Legacy Support** - Supports older export formats
+
+#### Backup and Recovery
+
+- **Automatic Backups** - Creates backup before major imports
+- **Rollback Capability** - Undo import operations
+- **Version History** - Track import/export history
+- **Recovery Tools** - Recover from corrupted imports
+
+#### Data Management
+
+- **Deduplication** - Detect and handle duplicate sessions
+- **Asset Management** - Organize and validate imported assets
+- **Tag Preservation** - Maintain existing tag structures
+- **Metadata Transfer** - Preserve session metadata
+
+### Best Practices
+
+#### Export Best Practices
+
+- **Regular Backups** - Export frequently to prevent data loss
+- **Multiple Formats** - Keep backups in different formats
+- **Version Control** - Store exports in version control
+- **Offsite Storage** - Keep copies in cloud storage
+- **Test Restores** - Verify exported files can be imported
+
+#### Import Best Practices
+
+- **Validate First** - Always use validate endpoint before import
+- **Review Conflicts** - Carefully review conflict resolution options
+- **Test Imports** - Test imports in a safe environment first
+- **Keep Backups** - Never import without a backup
+- **Verify Results** - Check imported content after import
+
+#### Troubleshooting
+
+**Common Import Issues**
+
+- **File Corrupted** - Check file integrity and try re-exporting
+- **Version Incompatible** - Use migration options or update format
+- **Size Limits** - Split large exports into smaller files
+- **Permission Denied** - Check file permissions and access rights
+- **Network Issues** - Ensure stable connection during import
+
+**Common Export Issues**
+
+- **Export Fails** - Check available storage space
+- **Missing Content** - Verify all sessions are selected
+- **Format Errors** - Ensure correct format is chosen
+- **Asset Problems** - Check asset file sizes and types
+- **Timeout Issues** - Export in smaller batches if needed
 
 ## Best Practices
 

@@ -125,7 +125,7 @@ curl -X POST http://localhost:8787/tasks \
 
 ### POST /refine
 
-Refine a specific section of generated content using AI assistance.
+Refine specific sections of generated content using AI assistance while preserving manual edits.
 
 #### Request Body
 
@@ -134,12 +134,45 @@ interface RefineRequest {
   content: string; // Current content to refine
   instruction: string; // Instruction for refinement
   section?: string; // Optional section identifier
+  refinementType?:
+    | "regenerate"
+    | "enhance"
+    | "expand"
+    | "simplify"
+    | "fix"
+    | "custom"; // Type of refinement
+  preserveEdits?: boolean; // Whether to preserve manual edits (default: true)
+  context?: {
+    wizardState?: object; // Original wizard configuration
+    fullBlueprint?: string; // Complete blueprint for context
+    targetAudience?: string; // Target audience
+    constraints?: string; // Project constraints
+  };
+  options?: {
+    streamResponse?: boolean; // Stream response (default: true)
+    preserveFormatting?: boolean; // Preserve formatting (default: true)
+    maintainTone?: boolean; // Maintain writing tone (default: true)
+    wordCountTarget?: number; // Target word count
+    includeCode?: boolean; // Include code examples (default: true)
+  };
 }
 ```
 
 #### Response
 
-Streams refined content line by line via SSE.
+Streams refined content line by line via SSE with metadata about preserved edits.
+
+**Event Stream Format:**
+
+```
+data: {"type": "section", "id": "authentication", "content": "## Authentication\n\n..."}
+
+data: {"type": "preserved_edit", "section": "authentication", "content": "Custom note: Use OAuth2 provider"}
+
+data: {"type": "complete", "sections": ["authentication"], "preservedEdits": 3}
+
+data: DONE
+```
 
 #### Example Request
 
@@ -150,6 +183,194 @@ curl -X POST http://localhost:8787/refine \
     "content": "## Authentication\n\nBasic login system",
     "instruction": "Add detailed implementation notes for JWT authentication",
     "section": "authentication"
+  }'
+```
+
+### POST /export
+
+Export blueprints and sessions in various formats including JSON, ZIP, and Markdown.
+
+#### Request Body
+
+```typescript
+interface ExportRequest {
+  sessionIds?: string[]; // Specific session IDs to export (optional)
+  format: "json" | "zip" | "markdown"; // Export format
+  options?: {
+    includeAssets?: boolean; // Include assets (default: true)
+    compress?: boolean; // Compress output (default: true for ZIP)
+    includeMetadata?: boolean; // Include metadata (default: true)
+    template?: string; // Template to use
+    filter?: ExportFilter; // Content filter
+  };
+}
+
+interface ExportFilter {
+  dateRange?: {
+    from: string; // ISO date string
+    to: string; // ISO date string
+  };
+  tags?: string[]; // Filter by tags
+  isArchived?: boolean; // Include/exclude archived sessions
+  minWordCount?: number; // Minimum word count filter
+}
+```
+
+#### Response
+
+Returns downloadable file in the requested format.
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost:8787/export \
+  -H "Content-Type: application/json" \
+  -d '{
+    "sessionIds": ["session-001", "session-002"],
+    "format": "zip",
+    "options": {
+      "includeAssets": true,
+      "compress": true,
+      "includeMetadata": true
+    }
+  }' \
+  --output blueprint-export.zip
+```
+
+### POST /import
+
+Import previously exported blueprints and sessions with validation and conflict resolution.
+
+#### Request Body (multipart/form-data)
+
+```typescript
+// Form fields:
+interface ImportRequest {
+  file: File; // Export file (JSON, ZIP)
+  format?: "auto-detect" | "json" | "zip"; // Format (default: auto-detect)
+  options?: {
+    resolveConflicts?: boolean; // Auto-resolve conflicts (default: false)
+    preserveIds?: boolean; // Preserve original IDs (default: false)
+    importAssets?: boolean; // Import assets (default: true)
+    overwriteExisting?: boolean; // Overwrite existing sessions (default: false)
+    createBackup?: boolean; // Create backup before import (default: true)
+    validateOnly?: boolean; // Validation only mode (default: false)
+    migrationStrategy?: "strict" | "best-effort" | "skip-incompatible";
+  };
+}
+```
+
+#### Response
+
+```json
+{
+  "validation": {
+    "isValid": true,
+    "errors": [],
+    "warnings": [
+      {
+        "code": "DEPRECATED_FEATURE",
+        "message": "Found deprecated feature 'legacy-export-format'",
+        "action": "Will be automatically migrated"
+      }
+    ],
+    "compatibility": {
+      "isCompatible": true,
+      "supportedVersion": true,
+      "migrationRequired": true,
+      "migrationPath": ["1.0.0" → "1.1.0"],
+      "deprecatedFeatures": ["legacy-export-format"]
+    }
+  },
+  "preview": {
+    "sessions": [
+      {
+        "source": {...},
+        "status": "approved",
+        "conflicts": []
+      }
+    ],
+    "assets": [...],
+    "conflicts": [],
+    "warnings": [...],
+    "recommendations": [
+      "Review migrated sessions for accuracy",
+      "Update deprecated field references"
+    ]
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost:8787/import \
+  -F "file=@blueprint-export.zip" \
+  -F "format=auto-detect" \
+  -F 'options={
+    "createBackup": true,
+    "validateOnly": false,
+    "migrationStrategy": "best-effort"
+  }'
+```
+
+### POST /validate
+
+Validate export files before import without actually importing data.
+
+#### Request Body
+
+Same as `/import` endpoint but with `"validateOnly": true` enforced.
+
+#### Response
+
+```json
+{
+  "isValid": true,
+  "errors": [],
+  "warnings": [...],
+  "recommendations": [...],
+  "compatibility": {...},
+  "summary": {
+    "totalSessions": 5,
+    "compatibleSessions": 4,
+    "incompatibleSessions": 1,
+    "totalAssets": 12,
+    "estimatedImportTime": "2.5 seconds"
+  }
+}
+```
+
+#### Advanced Examples
+
+**Batch Refinement:**
+
+```bash
+curl -X POST http://localhost:8787/refine \
+  -H "Content-Type: application/json" \
+  -d '{
+    "content": "# My Project\n\n## Architecture\nSimple architecture.\n\n## Database\nBasic database setup.",
+    "instruction": "Enhance architecture and database sections with enterprise-level details",
+    "refinementType": "enhance",
+    "options": {
+      "preserveFormatting": true,
+      "wordCountTarget": 500
+    }
+  }'
+```
+
+**Custom Refinement:**
+
+```bash
+curl -X POST http://localhost:8787/refine \
+  -H "Content-Type: application/json" \
+  -d '{
+    "content": "## Testing\n\nBasic tests needed",
+    "instruction": "Create comprehensive testing strategy including unit, integration, and E2E tests. Include Jest, Cypress, and testing best practices.",
+    "refinementType": "custom",
+    "options": {
+      "includeCode": true
+    }
   }'
 ```
 
