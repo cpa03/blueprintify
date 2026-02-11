@@ -10,6 +10,7 @@ import {
   handleSecurityError,
   containsXSSPatterns,
   checkStorageQuota,
+  validateJSONSecurity,
 } from "../lib/security";
 
 describe("Security Utilities", () => {
@@ -229,6 +230,100 @@ describe("Security Utilities", () => {
       const result = handleSecurityError(unknownError);
       expect(result).toBeInstanceOf(SecurityError);
       expect(result.type).toBe("VALIDATION");
+    });
+  });
+
+  describe("validateJSONSecurity", () => {
+    it("should validate safe JSON", () => {
+      const safeJson = JSON.stringify({
+        name: "test",
+        description: "safe content",
+        features: ["feature1", "feature2"],
+      });
+      const result = validateJSONSecurity(safeJson);
+      expect(result.isValid).toBe(true);
+    });
+
+    it("should reject JSON with prototype pollution", () => {
+      const maliciousJson = JSON.stringify({
+        __proto__: { admin: true },
+        name: "test",
+      });
+      const result = validateJSONSecurity(maliciousJson);
+      expect(result.isValid).toBe(false);
+      expect(result.error).toContain("prototype pollution");
+    });
+
+    it("should reject JSON with constructor pollution", () => {
+      const maliciousJson = JSON.stringify({
+        constructor: { prototype: { admin: true } },
+        name: "test",
+      });
+      const result = validateJSONSecurity(maliciousJson);
+      expect(result.isValid).toBe(false);
+      expect(result.error).toContain("prototype pollution");
+    });
+
+    it("should reject deeply nested JSON", () => {
+      const deepObject: Record<string, unknown> = {};
+      let current = deepObject;
+      for (let i = 0; i < 25; i++) {
+        current.nested = {};
+        current = current.nested as Record<string, unknown>;
+      }
+
+      const deepJson = JSON.stringify(deepObject);
+      const result = validateJSONSecurity(deepJson);
+      expect(result.isValid).toBe(false);
+      expect(result.error).toContain("depth exceeds maximum");
+    });
+
+    it("should reject JSON with suspicious keys", () => {
+      const suspiciousJson = JSON.stringify({
+        eval: "malicious()",
+        script: "<script>alert('xss')</script>",
+        name: "test",
+      });
+      const result = validateJSONSecurity(suspiciousJson);
+      expect(result.isValid).toBe(false);
+      expect(result.error).toContain("suspicious keys");
+    });
+
+    it("should reject invalid JSON format", () => {
+      const invalidJson = "{ invalid json }";
+      const result = validateJSONSecurity(invalidJson);
+      expect(result.isValid).toBe(false);
+      expect(result.error).toContain("Invalid JSON format");
+    });
+  });
+
+  describe("CodeMirror Security Enhancement Tests", () => {
+    it("should detect data:text/html patterns in markdown", () => {
+      const maliciousMarkdown =
+        'content with data:text/html,<script>alert("xss")</script>';
+      expect(() => sanitizeMarkdown(maliciousMarkdown)).toThrow();
+    });
+
+    it("should detect vbscript patterns in markdown", () => {
+      const maliciousMarkdown = 'content with vbscript:msgbox("xss")';
+      expect(() => sanitizeMarkdown(maliciousMarkdown)).toThrow();
+    });
+
+    it("should detect @import url patterns in markdown", () => {
+      const maliciousMarkdown =
+        'content with @import url("javascript:alert()")';
+      expect(() => sanitizeMarkdown(maliciousMarkdown)).toThrow();
+    });
+
+    it("should detect expression patterns in markdown", () => {
+      const maliciousMarkdown = 'content with expression(alert("xss"))';
+      expect(() => sanitizeMarkdown(maliciousMarkdown)).toThrow();
+    });
+
+    it("should detect behavior patterns in markdown", () => {
+      const maliciousMarkdown =
+        'content with behavior:url(javascript:alert("xss"))';
+      expect(() => sanitizeMarkdown(maliciousMarkdown)).toThrow();
     });
   });
 });

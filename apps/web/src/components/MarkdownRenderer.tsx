@@ -7,6 +7,7 @@ import rehypeHighlight from "rehype-highlight";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { copyToClipboard } from "../lib/export";
+import { sanitizeHtml } from "../lib/security";
 
 interface MarkdownRendererProps {
   content: string;
@@ -107,6 +108,8 @@ export function MarkdownRenderer({
   content,
   className,
 }: MarkdownRendererProps) {
+  const sanitizedContent = sanitizeHtml(content);
+
   return (
     <div className={clsx("markdown-content", className)}>
       <ReactMarkdown
@@ -285,7 +288,7 @@ export function MarkdownRenderer({
           },
         }}
       >
-        {content}
+        {sanitizedContent}
       </ReactMarkdown>
     </div>
   );

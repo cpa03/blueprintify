@@ -125,6 +125,21 @@ export function sanitizeMarkdown(markdown: string): string {
     throw new Error("Content contains potentially dangerous patterns");
   }
 
+  // Additional CodeMirror-specific security patterns
+  const CODEMIRROR_PATTERNS = [
+    /data:text\/html/gi,
+    /vbscript:/gi,
+    /@import\s+url/gi,
+    /expression\s*\(/gi,
+    /behavior\s*:/gi,
+    /binding\s*:/gi,
+    /include-source\s*:/gi,
+  ];
+
+  if (CODEMIRROR_PATTERNS.some((pattern) => pattern.test(markdown))) {
+    throw new Error("Content contains CodeMirror-specific dangerous patterns");
+  }
+
   const htmlRegex = /<[^>]+>/g;
   const matches = markdown.match(htmlRegex);
 
@@ -228,6 +243,14 @@ export async function validateAndSanitizeFileContent(file: File): Promise<{
   try {
     const content = await file.text();
 
+    // Additional security checks for JSON files
+    if (file.name.endsWith(".json")) {
+      const jsonValidation = validateJSONSecurity(content);
+      if (!jsonValidation.isValid) {
+        return jsonValidation;
+      }
+    }
+
     // Validate content with schema
     FileValidationSchema.parse({
       name: file.name,
@@ -254,6 +277,131 @@ export async function validateAndSanitizeFileContent(file: File): Promise<{
       error: "File validation failed",
     };
   }
+}
+
+export function validateJSONSecurity(content: string): {
+  isValid: boolean;
+  error?: string;
+} {
+  try {
+    const parsed = JSON.parse(content);
+
+    // Check for prototype pollution patterns
+    if (hasPrototypePollution(parsed)) {
+      return {
+        isValid: false,
+        error: "JSON contains potential prototype pollution vulnerabilities",
+      };
+    }
+
+    // Check for deeply nested objects (DoS protection)
+    const depth = getObjectDepth(parsed);
+    if (depth > 20) {
+      return {
+        isValid: false,
+        error: "JSON object depth exceeds maximum allowed limit (20)",
+      };
+    }
+
+    // Check for suspicious key names
+    const suspiciousKeys = [
+      "__proto__",
+      "constructor",
+      "prototype",
+      "eval",
+      "function",
+      "script",
+    ];
+    const foundSuspiciousKeys = findSuspiciousKeys(parsed, suspiciousKeys);
+    if (foundSuspiciousKeys.length > 0) {
+      return {
+        isValid: false,
+        error: `JSON contains suspicious keys: ${foundSuspiciousKeys.join(", ")}`,
+      };
+    }
+
+    return { isValid: true };
+  } catch {
+    return {
+      isValid: false,
+      error: "Invalid JSON format",
+    };
+  }
+}
+
+function hasPrototypePollution(obj: unknown, visited = new WeakSet()): boolean {
+  if (visited.has(obj as object)) return false;
+  visited.add(obj as object);
+
+  if (obj && typeof obj === "object") {
+    const objAsRecord = obj as Record<string, unknown>;
+    // Check for dangerous prototype properties
+    if (
+      Object.prototype.hasOwnProperty.call(objAsRecord, "__proto__") ||
+      Object.prototype.hasOwnProperty.call(objAsRecord, "constructor") ||
+      Object.prototype.hasOwnProperty.call(objAsRecord, "prototype")
+    ) {
+      return true;
+    }
+
+    // Recursively check all properties
+    for (const key in objAsRecord) {
+      if (Object.prototype.hasOwnProperty.call(objAsRecord, key)) {
+        if (hasPrototypePollution(objAsRecord[key], visited)) {
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
+function getObjectDepth(obj: unknown, currentDepth = 0): number {
+  if (currentDepth > 20) return currentDepth; // Early exit to prevent stack overflow
+  if (obj === null || typeof obj !== "object") return currentDepth;
+
+  let maxDepth = currentDepth;
+  const objAsRecord = obj as Record<string, unknown>;
+  for (const key in objAsRecord) {
+    if (Object.prototype.hasOwnProperty.call(objAsRecord, key)) {
+      const depth = getObjectDepth(objAsRecord[key], currentDepth + 1);
+      maxDepth = Math.max(maxDepth, depth);
+    }
+  }
+
+  return maxDepth;
+}
+
+function findSuspiciousKeys(
+  obj: unknown,
+  suspiciousKeys: string[],
+  path = "",
+): string[] {
+  const found: string[] = [];
+
+  if (obj && typeof obj === "object") {
+    const objAsRecord = obj as Record<string, unknown>;
+    for (const key in objAsRecord) {
+      if (Object.prototype.hasOwnProperty.call(objAsRecord, key)) {
+        const currentPath = path ? `${path}.${key}` : key;
+
+        if (
+          suspiciousKeys.some((suspicious) =>
+            key.toLowerCase().includes(suspicious.toLowerCase()),
+          )
+        ) {
+          found.push(currentPath);
+        }
+
+        found.push(
+          ...findSuspiciousKeys(objAsRecord[key], suspiciousKeys, currentPath),
+        );
+      }
+    }
+  }
+
+  return found;
 }
 export function checkStorageQuota(): {
   available: boolean;
