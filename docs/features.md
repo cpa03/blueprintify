@@ -1,7 +1,7 @@
 # Feature Specifications
 
 **Status**: Active
-**Last Updated**: 2026-02-07
+**Last Updated**: 2026-02-11
 
 ## [FEAT-01] Project Initialization Wizard ✅ COMPLETED
 
@@ -216,7 +216,7 @@ As a user, I want to edit, save, and refine my generated blueprints, so that I c
 ### Quality & Security Support
 
 - **Issue**: #228 (SEC-M2-001) - Input sanitization
-- **Issue**: #229 (PERF-M2-001) - Performance optimization
+- **Issue**: #252 (PERF-M2-001) - Performance optimization
 - **Issue**: #230 (TEST-M2-001) - Comprehensive testing
 
 ---
