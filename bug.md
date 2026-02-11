@@ -1,6 +1,9 @@
 # Bug Report
 
-> **Active bugs and errors found in the codebase**
+> **Automated BugFixer Agent Verification Log**
+>
+> **Note**: This file contains automated verification logs from the BugFixer agent.
+> For the formal project bug tracker, see [`docs/bugs.md`](./docs/bugs.md).
 
 ## Format
 
@@ -8,7 +11,7 @@
 - [/] bug in progress
 - [x] bug fixed
 
-## Bugs Found
+## Verification History
 
 ### Build/Dependency Issues
 
