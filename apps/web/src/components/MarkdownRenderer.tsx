@@ -7,7 +7,6 @@ import rehypeHighlight from "rehype-highlight";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { copyToClipboard } from "../lib/export";
-import { sanitizeHtml } from "../lib/security";
 
 interface MarkdownRendererProps {
   content: string;

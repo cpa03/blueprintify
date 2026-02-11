@@ -2,11 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { EditorTab } from "@blueprint/shared";
 import { STORAGE_KEYS, GENERATION_MESSAGES } from "../config/constants";
-import {
-  sanitizeForStorage,
-  handleSecurityError,
-  type SecurityError,
-} from "../lib/security";
+import { sanitizeForStorage, handleSecurityError } from "../lib/security";
 
 // ===== Editor Store =====
 export interface EditorStore {
@@ -54,7 +50,8 @@ export const useEditorStore = create<EditorStore>()(
           }
           set({
             blueprintContent:
-              (security.sanitized as any)?.blueprintContent || blueprintContent,
+              (security.sanitized as { blueprintContent?: string })
+                ?.blueprintContent || blueprintContent,
             isDirty: true,
           });
         } catch (error) {
@@ -75,9 +72,10 @@ export const useEditorStore = create<EditorStore>()(
             console.error("Content validation failed:", security.error);
             throw new Error(security.error);
           }
-          set((state) => ({
+          set(() => ({
             blueprintContent:
-              (security.sanitized as any)?.blueprintContent || newContent,
+              (security.sanitized as { blueprintContent?: string })
+                ?.blueprintContent || newContent,
             isDirty: true,
           }));
         } catch (error) {
@@ -99,7 +97,8 @@ export const useEditorStore = create<EditorStore>()(
           }
           set({
             tasksContent:
-              (security.sanitized as any)?.tasksContent || tasksContent,
+              (security.sanitized as { tasksContent?: string })?.tasksContent ||
+              tasksContent,
             isDirty: true,
           });
         } catch (error) {
@@ -120,9 +119,10 @@ export const useEditorStore = create<EditorStore>()(
             console.error("Content validation failed:", security.error);
             throw new Error(security.error);
           }
-          set((state) => ({
+          set(() => ({
             tasksContent:
-              (security.sanitized as any)?.tasksContent || newContent,
+              (security.sanitized as { tasksContent?: string })?.tasksContent ||
+              newContent,
             isDirty: true,
           }));
         } catch (error) {

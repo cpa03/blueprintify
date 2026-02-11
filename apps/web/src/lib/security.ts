@@ -140,6 +140,11 @@ export function sanitizeMarkdown(markdown: string): string {
   return markdown;
 }
 
+interface ContentInput {
+  blueprintContent?: string;
+  tasksContent?: string;
+}
+
 export function validateContent(content: unknown): {
   isValid: boolean;
   error?: string;
@@ -149,14 +154,15 @@ export function validateContent(content: unknown): {
   };
 } {
   try {
+    const contentInput = content as ContentInput;
     const validated = ContentValidationSchema.parse({
       blueprintContent:
         typeof content === "object" && content !== null
-          ? (content as any).blueprintContent || ""
+          ? contentInput.blueprintContent || ""
           : "",
       tasksContent:
         typeof content === "object" && content !== null
-          ? (content as any).tasksContent || ""
+          ? contentInput.tasksContent || ""
           : "",
     });
 
@@ -187,7 +193,11 @@ export function validateFile(file: File): { isValid: boolean; error?: string } {
   const fileNameParts = file.name.split(".");
   const extension =
     fileNameParts.length > 1 ? "." + fileNameParts.pop()?.toLowerCase() : "";
-  if (!SECURITY_CONFIG.ALLOWED_FILE_TYPES.includes(extension as any)) {
+  if (
+    !SECURITY_CONFIG.ALLOWED_FILE_TYPES.includes(
+      extension as (typeof SECURITY_CONFIG.ALLOWED_FILE_TYPES)[number],
+    )
+  ) {
     return {
       isValid: false,
       error: `File type ${extension} is not allowed. Allowed types: ${SECURITY_CONFIG.ALLOWED_FILE_TYPES.join(", ")}`,
@@ -219,7 +229,7 @@ export async function validateAndSanitizeFileContent(file: File): Promise<{
     const content = await file.text();
 
     // Validate content with schema
-    const fileValidation = FileValidationSchema.parse({
+    FileValidationSchema.parse({
       name: file.name,
       size: file.size,
       type: file.type,

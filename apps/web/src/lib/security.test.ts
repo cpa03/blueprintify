@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import {
   sanitizeHtml,
   sanitizeMarkdown,
@@ -209,7 +209,9 @@ describe("Security Utilities", () => {
 
     it("should handle ZodError", () => {
       const zodError = new Error("Validation failed");
-      (zodError as any).errors = [{ message: "Field required" }];
+      (zodError as unknown as { errors: Array<{ message: string }> }).errors = [
+        { message: "Field required" },
+      ];
       const result = handleSecurityError(zodError);
       expect(result).toBeInstanceOf(SecurityError);
       expect(result.type).toBe("VALIDATION");
