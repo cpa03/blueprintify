@@ -5,7 +5,7 @@ import * as chromeLauncher from "chrome-launcher";
 import fs from "fs";
 import path from "path";
 
-const APP_URL = "http://localhost:3001";
+const APP_URL = "http://localhost:3000";
 const REPORT_DIR = "./audit-reports";
 
 interface ConsoleMessage {
