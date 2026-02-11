@@ -102,3 +102,6 @@ temp/
 *.sqlite
 *.sqlite3
 *.db
+
+# Sisyphus/Ultrawork temporary state
+.sisyphus/
