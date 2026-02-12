@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { STARTER_TEMPLATES } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { ANIMATION } from "../config/constants";
 
-export function TemplateGrid() {
+function TemplateGridComponent() {
   const loadTemplate = useWizardStore((s) => s.loadTemplate);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const toast = useToast();
@@ -162,3 +162,5 @@ export function TemplateGrid() {
     </section>
   );
 }
+
+export const TemplateGrid = memo(TemplateGridComponent);
