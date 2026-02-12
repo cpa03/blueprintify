@@ -1,5 +1,5 @@
 {
-  "version": "1.0.11",
+  "version": "1.0.12",
   "last_updated": "2026-02-12",
   "dispatch_type": "unique_roles_priority",
   "agents": [
@@ -253,20 +253,20 @@
       ]
     },
     {
-      "id": "documentation-specialist-017",
-      "role": "Component Library Documentation Engineer",
-      "focus": "Comprehensive documentation for component library",
+      "id": "zip-download-architect-010",
+      "role": "Project Packaging Engineer",
+      "focus": "ZIP generation for project templates and blueprints",
       "priority": "MEDIUM",
-      "assignedTask": "TASK-017",
-      "taskTitle": "Component Library Documentation",
-      "issue": "#222",
-      "estimated": "6-8 hours",
+      "assignedTask": "TASK-010",
+      "taskTitle": "ZIP Download Feature",
+      "issue": "#106",
+      "estimated": "8-12 hours",
       "skills": [
-        "Technical Documentation",
-        "API Reference Generation",
-        "Interactive Examples Creation",
-        "Documentation Architecture",
-        "Developer Experience Optimization"
+        "ZIP File Generation",
+        "Project Structure Packaging",
+        "Cross-platform Compatibility",
+        "Asset Management",
+        "Binary Data Handling"
       ]
     }
   ],
@@ -419,17 +419,18 @@
       ]
     },
     {
-      "task_id": "TEST-M2-001",
-      "title": "Comprehensive Test Suite",
-      "priority": "High",
+      "task_id": "TASK-010",
+      "title": "ZIP Download Feature",
+      "priority": "Medium",
       "status": "OPEN",
-      "assigned_role": "test-coverage-architect-TEST-M2-001",
-      "issue": "#230",
-      "estimated": "12-16 hours",
+      "assigned_role": "zip-download-architect-010",
+      "issue": "#106",
+      "estimated": "8-12 hours",
       "acceptance_criteria": [
-        "Minimum 90% code coverage for M2 features",
-        "All critical user flows tested",
-        "CI pipeline passes all test suites"
+        "Generate runnable project structure",
+        "Package files into ZIP",
+        "Download via browser",
+        "Support for all tech stacks"
       ]
     }
   ],
@@ -583,52 +584,21 @@
       "differentiator": "Builds type systems that prevent bugs at compile time while maintaining developer productivity"
     },
     {
-      "role_id": "security-warden",
-      "specialization": "Security Hardening & Sanitization",
-      "core_expertise": "Comprehensive input security with zero-trust approach",
-      "unique_focus": "Creating robust security layers that protect against modern web vulnerabilities while maintaining usability",
-      "primary_task": "SEC-M2-001",
-      "supporting_tasks": ["All M2 tasks"],
+      "role_id": "packaging-alchemist",
+      "specialization": "Project Structure Generation",
+      "core_expertise": "Dynamic ZIP generation with multi-format support",
+      "unique_focus": "Transforming blueprints into runnable project packages with intelligent file organization",
+      "primary_task": "TASK-010",
+      "supporting_tasks": ["TASK-105"],
       "unique_skills": [
-        "XSS attack prevention",
-        "Content sanitization pipelines",
-        "Security testing automation",
-        "Vulnerability assessment",
-        "Security code reviews"
+        "Dynamic file generation",
+        "Template engine integration",
+        "Binary data handling",
+        "Cross-platform path resolution",
+        "Custom asset packaging",
+        "Project bootstrapping code generation"
       ],
-      "differentiator": "Creates robust security layers that protect against modern web vulnerabilities while maintaining usability"
-    },
-    {
-      "role_id": "performance-sculptor",
-      "specialization": "Frontend Performance Engineering",
-      "core_expertise": "Achieving sub-500ms load times for complex applications",
-      "unique_focus": "Creating lightning-fast user experiences through systematic performance optimization",
-      "primary_task": "PERF-M2-001",
-      "supporting_tasks": ["TASK-009", "TASK-103"],
-      "unique_skills": [
-        "Performance profiling",
-        "Lazy loading strategies",
-        "Memory optimization",
-        "Benchmark architecture",
-        "Performance monitoring"
-      ],
-      "differentiator": "Specializes in creating lightning-fast user experiences through systematic performance optimization"
-    },
-    {
-      "role_id": "test-orchestrator",
-      "specialization": "Comprehensive Test Architecture",
-      "core_expertise": "Building test suites that achieve 90%+ coverage with confidence",
-      "unique_focus": "Designing comprehensive testing ecosystems that evolve with the application while maintaining high coverage",
-      "primary_task": "TEST-M2-001",
-      "supporting_tasks": ["All M2 tasks"],
-      "unique_skills": [
-        "Test strategy design",
-        "Coverage optimization",
-        "Test automation pipelines",
-        "Mock architecture",
-        "Quality gate enforcement"
-      ],
-      "differentiator": "Designs comprehensive testing ecosystems that evolve with the application while maintaining high coverage"
+      "differentiator": "Transforms blueprints into runnable project packages with intelligent file organization and cross-platform compatibility"
     }
   ],
   "project_context": {
@@ -648,7 +618,7 @@
       "Follow established architectural patterns",
       "Component-driven development approach"
     ],
-    "priority_dispatch_rationale": "High/Medium priority tasks selected from current OPEN tasks. Added specialists for M3/M4 challenges: Template Library Architect (TASK-018), Mobile Responsive Engineer (TASK-014), Share Link Engineer (TASK-019), Animation Specialist (TASK-016), and Documentation Specialist (TASK-017). Each role engineered specifically for extending platform capabilities with unique focus areas.",
+    "priority_dispatch_rationale": "High/Medium priority tasks selected from current OPEN tasks. Added ZIP Download Architect (TASK-010) to handle project packaging requirements. Each role engineered specifically for extending platform capabilities with unique focus areas.",
     "last_priority_analysis": "2026-02-12",
     "milestones": {
       "M1_Foundation": {
@@ -672,7 +642,7 @@
       },
       "M3_Distribution": {
         "status": "PLANNED",
-        "critical_path": ["TASK-010", "TASK-018", "TASK-014", "TASK-019"]
+        "critical_path": ["TASK-010"]
       },
       "M4_Enhancement": {
         "status": "PLANNED",
