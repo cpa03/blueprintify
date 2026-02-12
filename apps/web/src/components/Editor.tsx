@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { LazyMarkdownRenderer } from "./LazyMarkdownRenderer";
 import { LazyCodeMirror } from "./LazyCodeMirror";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
+import { EditorEmptyState } from "./EditorEmptyState";
 import {
   useEditorStore,
   useWizardStore,
@@ -103,13 +104,7 @@ export function Editor() {
       {/* Editor Content */}
       <div className="flex-1 overflow-hidden">
         {!hasContent && !isGenerating ? (
-          <div className="h-full flex items-center justify-center text-dark-500">
-            <div className="text-center">
-              <div className="text-4xl mb-4">📝</div>
-              <p>Your generated content will appear here</p>
-              <p className="text-sm mt-2">Complete the wizard to get started</p>
-            </div>
-          </div>
+          <EditorEmptyState />
         ) : (
           <div
             id={activeTab === "blueprint" ? "blueprint-panel" : "tasks-panel"}
