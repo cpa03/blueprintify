@@ -216,7 +216,7 @@
 
 ---
 
-## M2: Refinement & Persistence (ACTIVE)
+## M2: Refinement & Persistence (BLOCKED - Security Remediation Required)
 
 ### M2 Execution Task
 
@@ -225,14 +225,44 @@
 - **Issue**: #222
 - **Assignee**: Frontend Engineer
 - **Priority**: Critical
-- **Status**: Active
-- **Estimated**: 3-5 days
-- **Dependencies**: M1 complete ✅
+- **Status**: BLOCKED - Security vulnerabilities must be resolved
+- **Estimated**: 3-5 days (+2-3 days security remediation)
+- **Dependencies**: M1 complete ✅, Security issues resolved ❌
 - **Acceptance**:
   - [ ] All M2 tasks completed
   - [ ] End-to-end editing workflow functional
   - [ ] Storage persistence working reliably
   - [ ] Export/import functionality validated
+
+### 🚫 BLOCKERS - CRITICAL SECURITY ISSUES
+
+#### SEC-CRITICAL-001: Security Vulnerabilities Remediation
+
+- **Issue**: #298
+- **Assignee**: Security Engineer, DevOps Engineer
+- **Priority**: CRITICAL
+- **Status**: Open
+- **Timeline**: 24-48 hours
+- **Impact**: Blocks all M2 finalization activities
+- **Acceptance**:
+  - [ ] All critical vulnerabilities patched (Hono, devalue, lodash)
+  - [ ] Security audit passes with no high/critical findings
+  - [ ] Full regression testing completed
+  - [ ] Production deployment security validated
+
+#### DEVOPS-002: Dependency Conflicts Resolution
+
+- **Issue**: #299
+- **Assignee**: DevOps Engineer
+- **Priority**: High
+- **Status**: Open
+- **Timeline**: 24-48 hours
+- **Impact**: Blocks security package updates
+- **Acceptance**:
+  - [ ] Workspace dependency conflicts resolved
+  - [ ] All npm audit fixes applicable
+  - [ ] CI/CD pipeline stable with updated dependencies
+  - [ ] No breaking changes to public APIs
 
 ### Implementation Tasks
 
