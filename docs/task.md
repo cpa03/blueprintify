@@ -348,6 +348,21 @@
   - [x] Smooth editing experience without lag
   - [x] Performance benchmarks implemented
 
+##### SEC-M2-002: Apply Critical Security Patches
+
+- **Issue**: #314
+- **Assignee**: API Specialist
+- **Priority**: Critical
+- **Status**: New (2026-02-12)
+- **Estimated**: 4-6 hours
+- **Dependencies**: Workspace conflicts resolved (#299) ✅
+- **Acceptance**:
+  - All vulnerable packages updated to secure versions
+  - Authentication flows verified working correctly
+  - API regression tests pass (all 8 tests)
+  - Security audit passes with zero high/critical vulnerabilities
+  - CI/CD pipeline passes with updated dependencies
+
 ##### TEST-M2-001: Comprehensive Test Suite
 
 - **Issue**: #230

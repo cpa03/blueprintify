@@ -62,13 +62,7 @@
 
 **Coordinated by Issue #285: ORCHESTRATOR: M2 Finalization**
 
-**CRITICAL PATH - Must Complete First:**
-
-- **Issue #298**: Security Vulnerabilities - Authentication Bypass, DoS, Prototype Pollution (Priority: Critical) - Open
-- **Issue #299**: Dependency Conflicts - Blocking security updates (Priority: High) - Open
-
-**EXISTING FINALIZATION TASKS (Security-Dependent):**
-
+- **Issue #314**: SEC-M2-002: Apply Critical Security Patches (API Specialist) - **NEW - CRITICAL BLOCKER**
 - **Issue #277**: Integration Testing for M2 Features (Integration Engineer) - Open
 - **Issue #230**: Comprehensive Test Suite for M2 Features (Quality Assurance) - Open
 - **Issue #270**: Standardize OpenCode Model Configuration (DevOps Engineer) - Open
