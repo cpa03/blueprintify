@@ -1,9 +1,85 @@
+import React, { useState } from "react";
 import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { Tooltip } from "../Tooltip";
 
 export type ViewMode = "edit" | "preview" | "split";
+
+interface Particle {
+  id: number;
+  x: number;
+  y: number;
+  angle: number;
+  scale: number;
+  emoji: string;
+  distance: number;
+}
+
+function CopyParticles({ isActive }: { isActive: boolean }) {
+  const [particles, setParticles] = useState<Particle[]>([]);
+  const [key, setKey] = useState(0);
+
+  React.useEffect(() => {
+    if (isActive) {
+      const newParticles: Particle[] = Array.from({ length: 8 }, (_, i) => ({
+        id: i,
+        x: 0,
+        y: 0,
+        angle: (i / 8) * 360 + (Math.random() * 30 - 15),
+        scale: 0.5 + Math.random() * 0.5,
+        emoji: Math.random() > 0.5 ? "✨" : "✓",
+        distance: 40 + Math.random() * 20,
+      }));
+      setParticles(newParticles);
+      setKey((prev) => prev + 1);
+    }
+  }, [isActive]);
+
+  return (
+    <AnimatePresence>
+      {particles.map((particle) => {
+        const radians = (particle.angle * Math.PI) / 180;
+        const endX = Math.cos(radians) * particle.distance;
+        const endY = Math.sin(radians) * particle.distance;
+
+        return (
+          <motion.span
+            key={`${key}-${particle.id}`}
+            initial={{
+              x: 0,
+              y: 0,
+              scale: 0,
+              opacity: 1,
+            }}
+            animate={{
+              x: endX,
+              y: endY,
+              scale: particle.scale,
+              opacity: [1, 1, 0],
+            }}
+            exit={{ opacity: 0 }}
+            transition={{
+              duration: 0.6,
+              ease: [0.25, 0.46, 0.45, 0.94],
+              opacity: { duration: 0.6, times: [0, 0.7, 1] },
+            }}
+            className="absolute pointer-events-none text-xs"
+            style={{
+              left: "50%",
+              top: "50%",
+              marginLeft: "-6px",
+              marginTop: "-6px",
+              color: particle.emoji === "✓" ? "#10b981" : "#fbbf24",
+            }}
+          >
+            {particle.emoji}
+          </motion.span>
+        );
+      })}
+    </AnimatePresence>
+  );
+}
 
 interface EditorToolbarProps {
   activeTab: EditorTab;
@@ -128,7 +204,9 @@ export function EditorToolbar({
           )}
           aria-label={isCopied ? "Copied to clipboard" : "Copy to clipboard"}
           aria-live="polite"
-          whileTap={hasContent && activeTab ? { scale: 0.95 } : undefined}
+          whileTap={hasContent && activeTab ? { scale: 0.92 } : undefined}
+          animate={isCopied ? { scale: [1, 1.08, 1] } : {}}
+          transition={{ duration: 0.3 }}
         >
           <AnimatePresence mode="wait">
             {isCopied ? (
@@ -179,6 +257,8 @@ export function EditorToolbar({
               />
             )}
           </AnimatePresence>
+
+          <CopyParticles isActive={isCopied} />
         </motion.button>
       </Tooltip>
 
