@@ -1,4 +1,4 @@
-import { useState, memo } from "react";
+import { useState, memo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { STARTER_TEMPLATES } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
@@ -7,16 +7,24 @@ import { ANIMATION } from "../config/constants";
 function TemplateGridComponent() {
   const loadTemplate = useWizardStore((s) => s.loadTemplate);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
-  const handleTemplateClick = (template: (typeof STARTER_TEMPLATES)[0]) => {
-    setSelectedId(template.id);
+  const handleTemplateClick = useCallback(
+    (template: (typeof STARTER_TEMPLATES)[0]) => {
+      if (selectedId !== null) return;
 
-    setTimeout(() => {
-      loadTemplate(template);
-      toast.success(`${template.name} template loaded`);
-    }, ANIMATION.FAST);
-  };
+      setSelectedId(template.id);
+      setIsLoading(true);
+
+      setTimeout(() => {
+        loadTemplate(template);
+        toast.success(`${template.name} template loaded`);
+        setIsLoading(false);
+      }, ANIMATION.FAST);
+    },
+    [selectedId, loadTemplate, toast],
+  );
 
   const handleKeyDown = (
     e: React.KeyboardEvent,
@@ -56,6 +64,8 @@ function TemplateGridComponent() {
               onClick={() => handleTemplateClick(template)}
               onKeyDown={(e) => handleKeyDown(e, template)}
               disabled={selectedId !== null}
+              aria-busy={isSelected && isLoading}
+              aria-label={`${template.name} template${isSelected ? " - selected" : ""}`}
               className={`
                 glass-card p-5 text-left transition-all duration-300 group relative card-glow-hover
                 ${
@@ -97,6 +107,27 @@ function TemplateGridComponent() {
               </AnimatePresence>
 
               <AnimatePresence>
+                {isSelected && isLoading && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute inset-0 flex items-center justify-center bg-dark-950/30 backdrop-blur-[1px] rounded-lg z-20"
+                  >
+                    <motion.div
+                      className="w-8 h-8 border-2 border-accent-emerald/30 border-t-accent-emerald rounded-full"
+                      animate={{ rotate: 360 }}
+                      transition={{
+                        duration: 0.8,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <AnimatePresence>
                 {isSelected && (
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -133,19 +164,25 @@ function TemplateGridComponent() {
                   </p>
                   <div className="flex flex-wrap gap-1.5 mt-3">
                     {template.techStack.slice(0, 3).map((tech) => (
-                      <span
+                      <motion.span
                         key={tech.name}
+                        whileHover={{ scale: 1.05 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 17,
+                        }}
                         className={`
-                          px-2 py-0.5 text-xs rounded
+                          px-2 py-0.5 text-xs rounded transition-shadow duration-200
                           ${
                             isSelected
                               ? "bg-accent-emerald/20 text-accent-emerald"
-                              : "bg-dark-800 text-dark-300"
+                              : "bg-dark-800 text-dark-300 group-hover:shadow-[0_0_8px_rgba(99,102,241,0.3)]"
                           }
                         `}
                       >
                         {tech.name}
-                      </span>
+                      </motion.span>
                     ))}
                     {template.techStack.length > 3 && (
                       <span className="px-2 py-0.5 text-xs bg-dark-800 rounded text-dark-300">
