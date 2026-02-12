@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, memo } from "react";
 import ReactMarkdown from "react-markdown";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
@@ -8,13 +8,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { copyToClipboard } from "../lib/export";
 import { sanitizeHtml } from "../lib/security";
+import { TIMEOUTS } from "../config/constants";
 
-interface MarkdownRendererProps {
+export interface MarkdownRendererProps {
   content: string;
   className?: string;
 }
 
-function CodeBlockHeader({
+const CodeBlockHeader = memo(function CodeBlockHeader({
   language,
   code,
 }: {
@@ -28,7 +29,7 @@ function CodeBlockHeader({
     const success = await copyToClipboard(code);
     if (success) {
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => setCopied(false), TIMEOUTS.COPY_FEEDBACK);
     }
   }, [code]);
 
@@ -102,9 +103,9 @@ function CodeBlockHeader({
       </motion.button>
     </div>
   );
-}
+});
 
-export function MarkdownRenderer({
+function MarkdownRendererComponent({
   content,
   className,
 }: MarkdownRendererProps) {
@@ -293,3 +294,5 @@ export function MarkdownRenderer({
     </div>
   );
 }
+
+export const MarkdownRenderer = memo(MarkdownRendererComponent);

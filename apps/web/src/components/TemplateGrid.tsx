@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { STARTER_TEMPLATES } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { ANIMATION } from "../config/constants";
 
-export function TemplateGrid() {
+function TemplateGridComponent() {
   const loadTemplate = useWizardStore((s) => s.loadTemplate);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const toast = useToast();
@@ -57,7 +57,7 @@ export function TemplateGrid() {
               onKeyDown={(e) => handleKeyDown(e, template)}
               disabled={selectedId !== null}
               className={`
-                glass-card p-5 text-left transition-all duration-300 group relative
+                glass-card p-5 text-left transition-all duration-300 group relative card-glow-hover
                 ${
                   isSelected
                     ? "border-accent-emerald/70 bg-accent-emerald/10"
@@ -162,3 +162,5 @@ export function TemplateGrid() {
     </section>
   );
 }
+
+export const TemplateGrid = memo(TemplateGridComponent);

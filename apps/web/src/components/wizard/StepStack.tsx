@@ -6,6 +6,8 @@ import {
   CATEGORY_ICONS,
   MIN_REQUIREMENTS,
   ANIMATION,
+  TIMEOUTS,
+  UI_CONTENT,
 } from "../../config/constants";
 import clsx from "clsx";
 
@@ -26,7 +28,7 @@ export function StepStack() {
       nextStep();
     } else {
       setIsShaking(true);
-      setTimeout(() => setIsShaking(false), 400);
+      setTimeout(() => setIsShaking(false), TIMEOUTS.SHAKE_ANIMATION);
     }
   };
 
@@ -67,7 +69,7 @@ export function StepStack() {
       <div>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">
-            Choose your tech stack
+            {UI_CONTENT.WIZARD.STEP_STACK.TITLE}
           </h2>
           <div className="flex items-center gap-2 text-sm">
             <div className="w-24 h-2 bg-dark-700 rounded-full overflow-hidden">
@@ -91,11 +93,7 @@ export function StepStack() {
             </span>
           </div>
         </div>
-        <p className="text-dark-400">
-          Select at least {minRequired} technology
-          {minRequired !== 1 ? "ies" : "y"} to proceed. This helps generate
-          accurate architecture.
-        </p>
+        <p className="text-dark-400">{UI_CONTENT.WIZARD.STEP_STACK.SUBTITLE}</p>
       </div>
 
       <div
@@ -161,7 +159,7 @@ export function StepStack() {
         {techStack.length > 0 && (
           <div className="pt-4 border-t border-dark-700">
             <p className="text-sm text-dark-400 mb-2" id="selected-tech-label">
-              Selected ({techStack.length}):
+              {UI_CONTENT.WIZARD.STEP_STACK.SELECTED_LABEL(techStack.length)}:
             </p>
             <ul
               className="flex flex-wrap gap-2"
@@ -215,14 +213,14 @@ export function StepStack() {
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          Back
+          {UI_CONTENT.BUTTONS.BACK}
         </button>
         <button
           onClick={handleNextClick}
           disabled={!canProceed}
           className={`btn-primary flex items-center gap-2 ${isShaking ? "shake-animation" : ""}`}
         >
-          Next: Add Features
+          {UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON}
           <svg
             className="w-5 h-5"
             fill="none"

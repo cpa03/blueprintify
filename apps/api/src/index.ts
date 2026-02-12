@@ -7,6 +7,9 @@ import generateRoute from "./routes/generate";
 import tasksRoute from "./routes/tasks";
 import refineRoute from "./routes/refine";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
+import { rateLimit, rateLimitConfigs } from "./middleware/rateLimit";
+import { apiKeyAuth } from "./middleware/auth";
+import { requestLogger } from "./middleware/logger";
 import type { Env } from "./types";
 import {
   API_METADATA,
@@ -15,22 +18,24 @@ import {
   ROUTE_PATHS,
 } from "./config/constants";
 
-// ===== App Initialization =====
 const app = new Hono<{ Bindings: Env }>();
 
-// ===== Middleware =====
 app.use("*", secureHeaders());
 app.use(
   "*",
   cors({
     origin: CORS_CONFIG.ORIGIN,
     allowMethods: CORS_CONFIG.ALLOW_METHODS,
-    allowHeaders: CORS_CONFIG.ALLOW_HEADERS,
+    allowHeaders: [...CORS_CONFIG.ALLOW_HEADERS, "x-api-key", "x-request-id"],
+    credentials: true,
+    maxAge: 86400,
   }),
 );
 app.use("*", prettyJSON());
+app.use("*", requestLogger({ excludePaths: ["/"] }));
+app.use("*", apiKeyAuth({ excludePaths: ["/"] }));
+app.use("*", rateLimit(rateLimitConfigs.standard));
 
-// ===== Health Check =====
 app.get("/", (c) => {
   return c.json({
     name: API_METADATA.NAME,
@@ -44,15 +49,11 @@ app.get("/", (c) => {
   });
 });
 
-// ===== Routes =====
 app.route(ROUTE_PATHS.GENERATE, generateRoute);
 app.route(ROUTE_PATHS.TASKS, tasksRoute);
 app.route(ROUTE_PATHS.REFINE, refineRoute);
 
-// ===== Error Handler =====
 app.onError(errorHandler);
-
-// ===== 404 Handler =====
 app.notFound(notFoundHandler);
 
 export default app;

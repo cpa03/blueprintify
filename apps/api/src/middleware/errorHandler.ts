@@ -1,6 +1,7 @@
 import type { Context } from "hono";
 import { createErrorResponse, isAPIError, ErrorType } from "../errors";
 import type { ErrorResponse } from "../errors";
+import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import { ERROR_CODES, ERROR_MESSAGES, HTTP_STATUS } from "../config/constants";
 
 export const errorHandler = (err: unknown, c: Context) => {
@@ -13,6 +14,21 @@ export const errorHandler = (err: unknown, c: Context) => {
   };
 
   console.error("[API Error]", errorLog);
+
+  if (err instanceof CircuitBreakerOpenError) {
+    return c.json(
+      {
+        success: false,
+        error: {
+          type: ErrorType.SERVICE_UNAVAILABLE,
+          message: ERROR_MESSAGES.CIRCUIT_BREAKER_OPEN,
+          code: ERROR_CODES.CIRCUIT_BREAKER_OPEN,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      HTTP_STATUS.SERVICE_UNAVAILABLE,
+    );
+  }
 
   if (err && typeof err === "object" && "issues" in err) {
     const issues = (err as { issues: unknown[] }).issues;

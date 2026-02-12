@@ -63,6 +63,8 @@ export const ERROR_CODES = {
   INTERNAL_ERROR: "INTERNAL_ERROR",
   AUTHENTICATION_ERROR: "AUTHENTICATION_ERROR",
   AUTHORIZATION_ERROR: "AUTHORIZATION_ERROR",
+  RATE_LIMIT_ERROR: "RATE_LIMIT_ERROR",
+  CIRCUIT_BREAKER_OPEN: "CIRCUIT_BREAKER_OPEN",
 } as const;
 
 // Error messages
@@ -75,6 +77,9 @@ export const ERROR_MESSAGES = {
   INTERNAL: "Internal server error",
   AUTHENTICATION: "Authentication required",
   AUTHORIZATION: "Insufficient permissions",
+  RATE_LIMIT: "Too many requests, please try again later",
+  CIRCUIT_BREAKER_OPEN:
+    "Service temporarily unavailable, please try again later",
 } as const;
 
 // Default error messages for error classes
@@ -184,6 +189,7 @@ export const HTTP_STATUS = {
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
   NOT_FOUND: 404,
+  TOO_MANY_REQUESTS: 429,
   INTERNAL_ERROR: 500,
   BAD_GATEWAY: 502,
   SERVICE_UNAVAILABLE: 503,

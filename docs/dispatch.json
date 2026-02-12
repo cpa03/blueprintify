@@ -1,8 +1,26 @@
 {
-  "version": "1.0.9",
-  "last_updated": "2026-02-11",
+  "version": "1.0.12",
+  "last_updated": "2026-02-12",
   "dispatch_type": "unique_roles_priority",
   "agents": [
+    {
+      "id": "api-transformation-architect-REF-006",
+      "role": "API Transformation Architect",
+      "focus": "Service layer pattern implementation, route-to-controller migration",
+      "priority": "HIGH",
+      "assignedTask": "TASK-REF-06",
+      "taskTitle": "Move API Route Logic to Controllers",
+      "issue": "#22",
+      "estimated": "4-6 hours",
+      "skills": [
+        "Service Layer Design",
+        "Dependency Injection Patterns",
+        "Controller Pattern Implementation",
+        "Route Handler Abstraction",
+        "API Architecture Refactoring",
+        "Hono Framework Advanced Patterns"
+      ]
+    },
     {
       "id": "storage-specialist-009",
       "role": "Client-side Persistence Engineer",
@@ -165,9 +183,108 @@
         "Test Data Generation",
         "Performance Testing"
       ]
+    },
+    {
+      "id": "template-library-architect-018",
+      "role": "Blueprint Template Library Engineer",
+      "focus": "Template library creation and management system",
+      "priority": "HIGH",
+      "assignedTask": "TASK-018",
+      "taskTitle": "Blueprint Template Library",
+      "issue": "#224",
+      "estimated": "6-10 hours",
+      "skills": [
+        "Template System Design",
+        "Component Reusability",
+        "Template Storage Architecture",
+        "User Interface for Templates",
+        "Template Versioning"
+      ]
+    },
+    {
+      "id": "mobile-responsive-engineer-014",
+      "role": "Mobile Responsive Design Specialist",
+      "focus": "Mobile breakpoint implementation and responsive design",
+      "priority": "HIGH",
+      "assignedTask": "TASK-014",
+      "taskTitle": "Mobile Responsive Breakpoints",
+      "issue": "#215",
+      "estimated": "3-5 hours",
+      "skills": [
+        "Responsive Design Patterns",
+        "Mobile-First Development",
+        "Breakpoint Strategy",
+        "Touch Interface Optimization",
+        "Cross-Device Testing"
+      ]
+    },
+    {
+      "id": "share-link-engineer-019",
+      "role": "Share Link Systems Architect",
+      "focus": "Share link generation and collaborative features",
+      "priority": "HIGH",
+      "assignedTask": "TASK-019",
+      "taskTitle": "Share Link Generation",
+      "issue": "#225",
+      "estimated": "8-12 hours",
+      "skills": [
+        "URL Shortening Systems",
+        "Access Control Implementation",
+        "Collaborative Editing Architecture",
+        "Real-time Synchronization",
+        "Sharing Analytics"
+      ]
+    },
+    {
+      "id": "animation-specialist-016",
+      "role": "Advanced Component Animation Engineer",
+      "focus": "Sophisticated animation systems and micro-interactions",
+      "priority": "MEDIUM",
+      "assignedTask": "TASK-016",
+      "taskTitle": "Advanced Component Animations",
+      "issue": "#221",
+      "estimated": "4-6 hours",
+      "skills": [
+        "Framer Motion Advanced Patterns",
+        "Animation Choreography",
+        "Performance-Optimized Animations",
+        "Gesture Recognition",
+        "Animation State Management"
+      ]
+    },
+    {
+      "id": "zip-download-architect-010",
+      "role": "Project Packaging Engineer",
+      "focus": "ZIP generation for project templates and blueprints",
+      "priority": "MEDIUM",
+      "assignedTask": "TASK-010",
+      "taskTitle": "ZIP Download Feature",
+      "issue": "#106",
+      "estimated": "8-12 hours",
+      "skills": [
+        "ZIP File Generation",
+        "Project Structure Packaging",
+        "Cross-platform Compatibility",
+        "Asset Management",
+        "Binary Data Handling"
+      ]
     }
   ],
   "current_priority_tasks": [
+    {
+      "task_id": "TASK-REF-06",
+      "title": "Move API Route Logic to Controllers",
+      "priority": "High",
+      "status": "OPEN",
+      "assigned_role": "api-transformation-architect-REF-006",
+      "issue": "#22",
+      "estimated": "4-6 hours",
+      "acceptance_criteria": [
+        "Service layer pattern implemented",
+        "Route handlers simplified",
+        "All tests passing"
+      ]
+    },
     {
       "task_id": "TASK-009",
       "title": "LocalStorage Implementation",
@@ -186,7 +303,7 @@
     {
       "task_id": "TASK-103",
       "title": "Manual Editing in Split-Pane View",
-      "priority": "High",
+      "priority": "Medium",
       "status": "OPEN",
       "assigned_role": "editor-coding-specialist-103",
       "issue": "#99",
@@ -302,21 +419,57 @@
       ]
     },
     {
-      "task_id": "TEST-M2-001",
-      "title": "Comprehensive Test Suite",
-      "priority": "High",
+      "task_id": "TASK-010",
+      "title": "ZIP Download Feature",
+      "priority": "Medium",
       "status": "OPEN",
-      "assigned_role": "test-coverage-architect-TEST-M2-001",
-      "issue": "#230",
-      "estimated": "12-16 hours",
+      "assigned_role": "zip-download-architect-010",
+      "issue": "#106",
+      "estimated": "8-12 hours",
       "acceptance_criteria": [
-        "Minimum 90% code coverage for M2 features",
-        "All critical user flows tested",
-        "CI pipeline passes all test suites"
+        "Generate runnable project structure",
+        "Package files into ZIP",
+        "Download via browser",
+        "Support for all tech stacks"
       ]
     }
   ],
   "unique_roles": [
+    {
+      "role_id": "security-storage-integrator",
+      "specialization": "Secure Persistence Architecture",
+      "core_expertise": "LocalStorage with comprehensive security integration",
+      "unique_focus": "Building secure storage systems that integrate input sanitization with persistence workflows",
+      "primary_task": "TASK-009",
+      "supporting_tasks": ["TASK-103", "TASK-104", "SEC-M2-001"],
+      "unique_skills": [
+        "Secure data serialization",
+        "Input sanitization for storage",
+        "Storage quota management with security validation",
+        "Migration strategies with security preserved",
+        "Session state security management",
+        "Cross-tab synchronization with security"
+      ],
+      "differentiator": "Integrates security patterns directly into persistence layers to create storage systems that are both secure and performant"
+    },
+    {
+      "role_id": "api-transformation-visionary",
+      "specialization": "Service Layer Architecture",
+      "core_expertise": "Hono framework controller pattern implementation",
+      "unique_focus": "Transforming monolithic route handlers into maintainable service layer architecture",
+      "primary_task": "TASK-REF-06",
+      "supporting_tasks": ["All API tasks"],
+      "unique_skills": [
+        "Service layer design patterns",
+        "Dependency injection architecture",
+        "Controller abstraction patterns",
+        "API route refactoring",
+        "Hono framework deep expertise",
+        "Test-driven architecture migration",
+        "Performance optimization in service layers"
+      ],
+      "differentiator": "Specializes in transforming monolithic API routes into clean, maintainable service layer architecture while preserving all existing functionality"
+    },
     {
       "role_id": "persistence-guardian",
       "specialization": "Client-side Data Architecture",
@@ -431,52 +584,21 @@
       "differentiator": "Builds type systems that prevent bugs at compile time while maintaining developer productivity"
     },
     {
-      "role_id": "security-warden",
-      "specialization": "Security Hardening & Sanitization",
-      "core_expertise": "Comprehensive input security with zero-trust approach",
-      "unique_focus": "Creating robust security layers that protect against modern web vulnerabilities while maintaining usability",
-      "primary_task": "SEC-M2-001",
-      "supporting_tasks": ["All M2 tasks"],
+      "role_id": "packaging-alchemist",
+      "specialization": "Project Structure Generation",
+      "core_expertise": "Dynamic ZIP generation with multi-format support",
+      "unique_focus": "Transforming blueprints into runnable project packages with intelligent file organization",
+      "primary_task": "TASK-010",
+      "supporting_tasks": ["TASK-105"],
       "unique_skills": [
-        "XSS attack prevention",
-        "Content sanitization pipelines",
-        "Security testing automation",
-        "Vulnerability assessment",
-        "Security code reviews"
+        "Dynamic file generation",
+        "Template engine integration",
+        "Binary data handling",
+        "Cross-platform path resolution",
+        "Custom asset packaging",
+        "Project bootstrapping code generation"
       ],
-      "differentiator": "Creates robust security layers that protect against modern web vulnerabilities while maintaining usability"
-    },
-    {
-      "role_id": "performance-sculptor",
-      "specialization": "Frontend Performance Engineering",
-      "core_expertise": "Achieving sub-500ms load times for complex applications",
-      "unique_focus": "Creating lightning-fast user experiences through systematic performance optimization",
-      "primary_task": "PERF-M2-001",
-      "supporting_tasks": ["TASK-009", "TASK-103"],
-      "unique_skills": [
-        "Performance profiling",
-        "Lazy loading strategies",
-        "Memory optimization",
-        "Benchmark architecture",
-        "Performance monitoring"
-      ],
-      "differentiator": "Specializes in creating lightning-fast user experiences through systematic performance optimization"
-    },
-    {
-      "role_id": "test-orchestrator",
-      "specialization": "Comprehensive Test Architecture",
-      "core_expertise": "Building test suites that achieve 90%+ coverage with confidence",
-      "unique_focus": "Designing comprehensive testing ecosystems that evolve with the application while maintaining high coverage",
-      "primary_task": "TEST-M2-001",
-      "supporting_tasks": ["All M2 tasks"],
-      "unique_skills": [
-        "Test strategy design",
-        "Coverage optimization",
-        "Test automation pipelines",
-        "Mock architecture",
-        "Quality gate enforcement"
-      ],
-      "differentiator": "Designs comprehensive testing ecosystems that evolve with the application while maintaining high coverage"
+      "differentiator": "Transforms blueprints into runnable project packages with intelligent file organization and cross-platform compatibility"
     }
   ],
   "project_context": {
@@ -496,8 +618,8 @@
       "Follow established architectural patterns",
       "Component-driven development approach"
     ],
-    "priority_dispatch_rationale": "High/Critical priority tasks selected from M2 Refinement & Persistence milestone. Each unique role engineered specifically for M2 challenges: persistence, editing, refinement, security, performance, testing, and type safety. Focus on minimizing coordination overhead while maximizing expertise in each domain.",
-    "last_priority_analysis": "2026-02-11",
+    "priority_dispatch_rationale": "High/Medium priority tasks selected from current OPEN tasks. Added ZIP Download Architect (TASK-010) to handle project packaging requirements. Each role engineered specifically for extending platform capabilities with unique focus areas.",
+    "last_priority_analysis": "2026-02-12",
     "milestones": {
       "M1_Foundation": {
         "status": "COMPLETED",
@@ -508,6 +630,7 @@
         "status": "ACTIVE",
         "completion": 0,
         "critical_path": [
+          "TASK-REF-06",
           "TASK-009",
           "TASK-103",
           "TASK-104",
@@ -517,7 +640,14 @@
           "TEST-M2-001"
         ]
       },
-      "M3_Distribution": { "status": "PLANNED", "critical_path": ["TASK-010"] }
+      "M3_Distribution": {
+        "status": "PLANNED",
+        "critical_path": ["TASK-010"]
+      },
+      "M4_Enhancement": {
+        "status": "PLANNED",
+        "critical_path": ["TASK-016", "TASK-017"]
+      }
     }
   }
 }

@@ -21,25 +21,36 @@ export default defineConfig({
   },
   build: {
     outDir: "dist",
-    sourcemap: true,
+    sourcemap: false,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ["react", "react-dom"],
-          editor: [
+          codemirror: [
             "@uiw/react-codemirror",
             "@codemirror/lang-markdown",
             "@codemirror/theme-one-dark",
+            "@codemirror/state",
+            "@codemirror/view",
+            "@codemirror/language",
+            "@codemirror/commands",
+            "@codemirror/search",
+            "@codemirror/autocomplete",
+            "@codemirror/lint",
+            "@lezer/common",
+            "@lezer/markdown",
+            "@lezer/highlight",
           ],
           syntaxHighlighter: ["react-syntax-highlighter"],
           markdown: ["react-markdown", "remark-gfm", "rehype-highlight"],
           ui: [
-            "framer-motion",
             "@radix-ui/react-dialog",
             "@radix-ui/react-select",
             "@radix-ui/react-tabs",
             "@radix-ui/react-tooltip",
           ],
+          animation: ["framer-motion"],
+          zustand: ["zustand"],
         },
         assetFileNames: (assetInfo) => {
           const name = assetInfo.name ?? "";
@@ -52,8 +63,16 @@ export default defineConfig({
         entryFileNames: "assets/[name]-[hash].js",
       },
     },
-    chunkSizeWarningLimit: 600,
+    chunkSizeWarningLimit: 700,
     cssCodeSplit: true,
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+    reportCompressedSize: true,
   },
   test: {
     globals: true,

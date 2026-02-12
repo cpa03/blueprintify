@@ -5,6 +5,7 @@ import {
   SUGGESTED_FEATURES,
   FORM_LIMITS,
   TIMEOUTS,
+  UI_CONTENT,
 } from "../../config/constants";
 
 export function StepFeatures() {
@@ -51,19 +52,22 @@ export function StepFeatures() {
     >
       <div>
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-2xl font-bold text-white">Add key features</h2>
+          <h2 className="text-2xl font-bold text-white">
+            {UI_CONTENT.WIZARD.STEP_FEATURES.TITLE}
+          </h2>
           <div className="flex items-center gap-2 text-sm">
             <span
               className={`tabular-nums ${features.length === 0 ? "text-accent-pink" : "text-dark-400"}`}
             >
               {features.length}
             </span>
-            <span className="text-dark-500">features</span>
+            <span className="text-dark-500">
+              {UI_CONTENT.WIZARD.STEP_FEATURES.FEATURES_COUNT(features.length)}
+            </span>
           </div>
         </div>
         <p className="text-dark-400">
-          List the main features your project should have. This helps prioritize
-          tasks.
+          {UI_CONTENT.WIZARD.STEP_FEATURES.SUBTITLE}
         </p>
       </div>
 
@@ -72,7 +76,7 @@ export function StepFeatures() {
         <div>
           <div className="flex items-center justify-between mb-2">
             <label htmlFor="feature-input" className="label mb-0">
-              Add a feature
+              {UI_CONTENT.WIZARD.STEP_FEATURES.ADD_FEATURE_LABEL}
             </label>
             <div className="flex items-center gap-3">
               <span
@@ -89,19 +93,54 @@ export function StepFeatures() {
             </div>
           </div>
           <div className="flex gap-2">
-            <input
-              id="feature-input"
-              type="text"
-              value={newFeature}
-              onChange={(e) =>
-                setNewFeature(e.target.value.slice(0, FORM_LIMITS.FEATURE.MAX))
-              }
-              onKeyDown={handleKeyDown}
-              placeholder="e.g., Real-time notifications"
-              className={`input-field flex-1 ${newFeature.length >= FORM_LIMITS.FEATURE.MAX ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20" : ""}`}
-              aria-label="New feature name"
-              maxLength={FORM_LIMITS.FEATURE.MAX}
-            />
+            <div className="relative flex-1">
+              <input
+                id="feature-input"
+                type="text"
+                value={newFeature}
+                onChange={(e) =>
+                  setNewFeature(
+                    e.target.value.slice(0, FORM_LIMITS.FEATURE.MAX),
+                  )
+                }
+                onKeyDown={handleKeyDown}
+                placeholder={
+                  UI_CONTENT.WIZARD.STEP_FEATURES.ADD_FEATURE_PLACEHOLDER
+                }
+                className={`input-field w-full pr-10 ${newFeature.length >= FORM_LIMITS.FEATURE.MAX ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20" : ""}`}
+                aria-label="New feature name"
+                maxLength={FORM_LIMITS.FEATURE.MAX}
+              />
+              <AnimatePresence>
+                {newFeature && (
+                  <motion.button
+                    type="button"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.15 }}
+                    onClick={() => setNewFeature("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus:outline-none focus:text-white transition-colors p-1 rounded-md hover:bg-dark-700/50"
+                    aria-label="Clear feature input"
+                    title="Clear feature input"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </motion.button>
+                )}
+              </AnimatePresence>
+            </div>
             <button
               onClick={handleAddFeature}
               disabled={!newFeature.trim()}
@@ -131,7 +170,8 @@ export function StepFeatures() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="label mb-0" id="added-features-label">
-                Your features ({features.length})
+                {UI_CONTENT.WIZARD.STEP_FEATURES.YOUR_FEATURES_LABEL} (
+                {features.length})
               </label>
               <button
                 onClick={clearFeatures}
@@ -151,7 +191,7 @@ export function StepFeatures() {
                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                   />
                 </svg>
-                Clear all
+                {UI_CONTENT.BUTTONS.CLEAR_ALL}
               </button>
             </div>
             <div
@@ -201,7 +241,7 @@ export function StepFeatures() {
         {suggestedNotAdded.length > 0 && (
           <div>
             <label className="label" id="suggestions-label">
-              Quick add suggestions
+              {UI_CONTENT.WIZARD.STEP_FEATURES.QUICK_ADD_LABEL}
             </label>
             <div
               className="flex flex-wrap gap-2"
@@ -260,7 +300,9 @@ export function StepFeatures() {
                   d="M5 13l4 4L19 7"
                 />
               </svg>
-              <span className="text-sm">Added &ldquo;{justAdded}&rdquo;</span>
+              <span className="text-sm">
+                {UI_CONTENT.WIZARD.STEP_FEATURES.ADDED_MESSAGE(justAdded)}
+              </span>
             </div>
           </motion.div>
         )}
@@ -281,13 +323,13 @@ export function StepFeatures() {
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          Back
+          {UI_CONTENT.BUTTONS.BACK}
         </button>
         <button
           onClick={nextStep}
           className="btn-primary flex items-center gap-2"
         >
-          Next: Review
+          {UI_CONTENT.WIZARD.STEP_FEATURES.NEXT_BUTTON}
           <svg
             className="w-5 h-5"
             fill="none"

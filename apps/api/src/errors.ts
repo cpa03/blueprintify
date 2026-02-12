@@ -15,6 +15,7 @@ export enum ErrorType {
   NETWORK = "network",
   AI_SERVICE = "ai_service",
   INTERNAL = "internal",
+  SERVICE_UNAVAILABLE = "service_unavailable",
 }
 
 // ===== Error Response Interface =====

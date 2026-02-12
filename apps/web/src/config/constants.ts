@@ -41,6 +41,7 @@ export const TIMEOUTS = {
   DEBOUNCE: 300,
   GENERATION_CHECK: 100,
   TOAST_NOTIFICATION: 1500,
+  SHAKE_ANIMATION: 400,
 } as const;
 
 // UI Configuration
@@ -246,8 +247,65 @@ export const UI_CONTENT = {
     COPY: "Copy",
     EXPORT: "Export",
     NEW_PROJECT: "New Project",
+    BACK: "Back",
+    NEXT: "Next",
+    CLEAR_ALL: "Clear all",
   },
   TEMPLATES_DIVIDER: "— or start from scratch —",
+  WIZARD: {
+    STEP_INFO: {
+      TITLE: "Tell us about your project",
+      SUBTITLE:
+        "We'll use this information to generate a tailored architecture blueprint.",
+      PROJECT_NAME_LABEL: "Project Name",
+      PROJECT_NAME_PLACEHOLDER: "my-awesome-project",
+      DESCRIPTION_LABEL: "Project Description",
+      DESCRIPTION_PLACEHOLDER:
+        "Describe what your project does, its main purpose, and key functionality...",
+      TARGET_AUDIENCE_LABEL: "Target Audience",
+      TARGET_AUDIENCE_PLACEHOLDER:
+        "e.g., Developers, Small businesses, Enterprise teams",
+      CONSTRAINTS_LABEL: "Constraints or Requirements",
+      CONSTRAINTS_PLACEHOLDER:
+        "e.g., Must be serverless, needs to support 10k concurrent users, budget limitations...",
+      NEXT_BUTTON: "Next: Choose Tech Stack",
+    },
+    STEP_STACK: {
+      TITLE: "Choose your tech stack",
+      SUBTITLE:
+        "Select at least 1 technology to proceed. This helps generate accurate architecture.",
+      SEARCH_PLACEHOLDER: "Search technologies...",
+      SELECTED_COUNT: (count: number) => `${count} selected`,
+      SELECTED_LABEL: (count: number) => `Selected (${count}):`,
+      NEXT_BUTTON: "Next: Add Features",
+    },
+    STEP_FEATURES: {
+      TITLE: "Add key features",
+      SUBTITLE:
+        "List the main features your project should have. This helps prioritize tasks.",
+      ADD_FEATURE_LABEL: "Add a feature",
+      ADD_FEATURE_PLACEHOLDER: "e.g., Real-time notifications",
+      FEATURES_COUNT: (count: number) => `${count} features`,
+      YOUR_FEATURES_LABEL: "Your features",
+      QUICK_ADD_LABEL: "Quick add suggestions",
+      ADDED_MESSAGE: (feature: string) => `Added "${feature}"`,
+      NEXT_BUTTON: "Next: Review",
+      CLEAR_ALL_FEATURES: "Clear all features",
+    },
+    STEP_REVIEW: {
+      TITLE: "Review your configuration",
+      SUBTITLE: "Double-check everything before generating your blueprint.",
+      GENERATE_BUTTON: "Generate Blueprint",
+    },
+  },
+} as const;
+
+// Validation messages
+export const VALIDATION_MESSAGES = {
+  DESCRIPTION_MIN_LENGTH: (min: number) =>
+    `Description must be at least ${min} characters`,
+  APPROACHING_CHARACTER_LIMIT: "Approaching character limit",
+  CHARACTERS_NEEDED: (count: number) => `${count} more characters needed`,
 } as const;
 
 // Keyboard shortcuts

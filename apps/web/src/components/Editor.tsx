@@ -1,10 +1,9 @@
-import { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import CodeMirror from "@uiw/react-codemirror";
-import { markdown } from "@codemirror/lang-markdown";
-import { oneDark } from "@codemirror/theme-one-dark";
-import { MarkdownRenderer } from "./MarkdownRenderer";
+import { LazyMarkdownRenderer } from "./LazyMarkdownRenderer";
+import { LazyCodeMirror } from "./LazyCodeMirror";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
+import { EditorEmptyState } from "./EditorEmptyState";
 import {
   useEditorStore,
   useWizardStore,
@@ -16,7 +15,7 @@ import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
 import { TIMEOUTS, DEFAULT_PROJECT_NAME } from "../config/constants";
 import clsx from "clsx";
 
-export function Editor() {
+function EditorComponent() {
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [copied, setCopied] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
@@ -33,22 +32,25 @@ export function Editor() {
 
   const currentContent =
     activeTab === "blueprint" ? blueprintContent : tasksContent;
-  const setCurrentContent = (content: string) => {
-    try {
-      const sanitizedContent = sanitizeMarkdown(content);
-      if (activeTab === "blueprint") {
-        setBlueprintContent(sanitizedContent);
-      } else {
-        setTasksContent(sanitizedContent);
+  const setCurrentContent = useCallback(
+    (content: string) => {
+      try {
+        const sanitizedContent = sanitizeMarkdown(content);
+        if (activeTab === "blueprint") {
+          setBlueprintContent(sanitizedContent);
+        } else {
+          setTasksContent(sanitizedContent);
+        }
+      } catch (error) {
+        const securityError = handleSecurityError(error);
+        toast.error(`Security validation failed: ${securityError.message}`);
+        console.error("Security validation failed:", securityError);
       }
-    } catch (error) {
-      const securityError = handleSecurityError(error);
-      toast.error(`Security validation failed: ${securityError.message}`);
-      console.error("Security validation failed:", securityError);
-    }
-  };
+    },
+    [activeTab, setBlueprintContent, setTasksContent, toast],
+  );
 
-  const handleCopy = async () => {
+  const handleCopy = useCallback(async () => {
     const formatted = formatForIDE(currentContent);
     const success = await copyToClipboard(formatted);
     if (success) {
@@ -56,9 +58,9 @@ export function Editor() {
       setTimeout(() => setCopied(null), TIMEOUTS.COPY_FEEDBACK);
       toast.success("Copied to clipboard");
     }
-  };
+  }, [currentContent, activeTab, toast]);
 
-  const handleExport = async () => {
+  const handleExport = useCallback(async () => {
     setIsExporting(true);
     try {
       const wizardData = useWizardStore.getState();
@@ -77,12 +79,12 @@ export function Editor() {
     } finally {
       setIsExporting(false);
     }
-  };
+  }, [blueprintContent, tasksContent, projectName, toast]);
 
-  const handleNewProject = () => {
+  const handleNewProject = useCallback(() => {
     resetAllStores();
     toast.info("Started new project");
-  };
+  }, [toast]);
 
   const hasContent = blueprintContent.length > 0 || tasksContent.length > 0;
 
@@ -105,13 +107,7 @@ export function Editor() {
       {/* Editor Content */}
       <div className="flex-1 overflow-hidden">
         {!hasContent && !isGenerating ? (
-          <div className="h-full flex items-center justify-center text-dark-500">
-            <div className="text-center">
-              <div className="text-4xl mb-4">📝</div>
-              <p>Your generated content will appear here</p>
-              <p className="text-sm mt-2">Complete the wizard to get started</p>
-            </div>
-          </div>
+          <EditorEmptyState />
         ) : (
           <div
             id={activeTab === "blueprint" ? "blueprint-panel" : "tasks-panel"}
@@ -129,17 +125,10 @@ export function Editor() {
                     : "w-full",
                 )}
               >
-                <CodeMirror
+                <LazyCodeMirror
                   value={currentContent}
                   onChange={setCurrentContent}
-                  extensions={[markdown()]}
-                  theme={oneDark}
                   className="h-full"
-                  basicSetup={{
-                    lineNumbers: true,
-                    foldGutter: true,
-                    highlightActiveLine: true,
-                  }}
                 />
               </div>
             )}
@@ -154,7 +143,7 @@ export function Editor() {
                   viewMode === "split" ? "w-full lg:w-1/2" : "w-full",
                 )}
               >
-                <MarkdownRenderer
+                <LazyMarkdownRenderer
                   content={currentContent || "*No content yet...*"}
                 />
               </motion.div>
@@ -165,3 +154,5 @@ export function Editor() {
     </div>
   );
 }
+
+export const Editor = React.memo(EditorComponent);

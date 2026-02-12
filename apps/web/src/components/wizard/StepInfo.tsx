@@ -1,7 +1,13 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { FORM_LIMITS, ANIMATION } from "../../config/constants";
+import {
+  FORM_LIMITS,
+  ANIMATION,
+  TIMEOUTS,
+  UI_CONTENT,
+  VALIDATION_MESSAGES,
+} from "../../config/constants";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 
 export function StepInfo() {
@@ -20,7 +26,7 @@ export function StepInfo() {
   useAutoSaveToast(
     [projectName, description, targetAudience, constraints],
     "Project info saved",
-    2000,
+    TIMEOUTS.COPY_FEEDBACK,
   );
 
   const canProceed =
@@ -57,7 +63,7 @@ export function StepInfo() {
     } else {
       // Trigger shake animation for visual feedback
       setIsShaking(true);
-      setTimeout(() => setIsShaking(false), 400);
+      setTimeout(() => setIsShaking(false), TIMEOUTS.SHAKE_ANIMATION);
     }
   };
 
@@ -75,7 +81,7 @@ export function StepInfo() {
       <div>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">
-            Tell us about your project
+            {UI_CONTENT.WIZARD.STEP_INFO.TITLE}
           </h2>
           <div className="flex items-center gap-2 text-sm">
             <div className="w-24 h-2 bg-dark-700 rounded-full overflow-hidden">
@@ -91,10 +97,7 @@ export function StepInfo() {
             </span>
           </div>
         </div>
-        <p className="text-dark-400">
-          We&apos;ll use this information to generate a tailored architecture
-          blueprint.
-        </p>
+        <p className="text-dark-400">{UI_CONTENT.WIZARD.STEP_INFO.SUBTITLE}</p>
       </div>
 
       <form onSubmit={handleSubmit} className="glass-card p-6 space-y-5">
@@ -105,7 +108,7 @@ export function StepInfo() {
               htmlFor="projectName"
               className="label flex items-center gap-2"
             >
-              Project Name{" "}
+              {UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL}{" "}
               <span className="text-accent-pink" aria-hidden="true">
                 *
               </span>
@@ -157,7 +160,7 @@ export function StepInfo() {
               type="text"
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
-              placeholder="my-awesome-project"
+              placeholder={UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_PLACEHOLDER}
               className={`input-field transition-colors duration-200 ${
                 projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN
                   ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20"
@@ -212,7 +215,7 @@ export function StepInfo() {
                 role="status"
                 className="text-xs text-accent-pink mt-1"
               >
-                Approaching character limit
+                {VALIDATION_MESSAGES.APPROACHING_CHARACTER_LIMIT}
               </p>
             )}
         </div>
@@ -224,7 +227,7 @@ export function StepInfo() {
               htmlFor="description"
               className="label flex items-center gap-2"
             >
-              Project Description{" "}
+              {UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_LABEL}{" "}
               <span className="text-accent-pink" aria-hidden="true">
                 *
               </span>
@@ -273,7 +276,7 @@ export function StepInfo() {
               name="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe what your project does, its main purpose, and key functionality..."
+              placeholder={UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_PLACEHOLDER}
               className={`textarea-field h-32 transition-colors duration-200 ${
                 description.length >= FORM_LIMITS.DESCRIPTION.MIN
                   ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20 pr-12"
@@ -326,8 +329,9 @@ export function StepInfo() {
             description.length > 0 &&
             description.length < FORM_LIMITS.DESCRIPTION.MIN && (
               <p id="description-hint" className="text-xs text-yellow-500 mt-1">
-                {FORM_LIMITS.DESCRIPTION.MIN - description.length} more
-                characters needed
+                {VALIDATION_MESSAGES.CHARACTERS_NEEDED(
+                  FORM_LIMITS.DESCRIPTION.MIN - description.length,
+                )}
               </p>
             )}
           {isDescriptionInvalid && (
@@ -336,7 +340,9 @@ export function StepInfo() {
               role="alert"
               className="text-xs text-accent-pink mt-1"
             >
-              Description must be at least 10 characters
+              {VALIDATION_MESSAGES.DESCRIPTION_MIN_LENGTH(
+                FORM_LIMITS.DESCRIPTION.MIN,
+              )}
             </p>
           )}
         </div>
@@ -344,31 +350,97 @@ export function StepInfo() {
         {/* Target Audience (Optional) */}
         <div>
           <label htmlFor="targetAudience" className="label">
-            Target Audience <span className="text-dark-500">(optional)</span>
+            {UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL}{" "}
+            <span className="text-dark-500">(optional)</span>
           </label>
-          <input
-            id="targetAudience"
-            name="targetAudience"
-            type="text"
-            value={targetAudience}
-            onChange={(e) => setTargetAudience(e.target.value)}
-            placeholder="e.g., Developers, Small businesses, Enterprise teams"
-            className="input-field"
-          />
+          <div className="relative">
+            <input
+              id="targetAudience"
+              name="targetAudience"
+              type="text"
+              value={targetAudience}
+              onChange={(e) => setTargetAudience(e.target.value)}
+              placeholder={
+                UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_PLACEHOLDER
+              }
+              className="input-field pr-10"
+            />
+            <AnimatePresence>
+              {targetAudience && (
+                <motion.button
+                  type="button"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.15 }}
+                  onClick={() => setTargetAudience("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus:outline-none focus:text-white transition-colors p-1 rounded-md hover:bg-dark-700/50"
+                  aria-label="Clear target audience"
+                  title="Clear target audience"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </motion.button>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* Constraints (Optional) */}
         <div>
-          <label htmlFor="constraints" className="label">
-            Constraints or Requirements{" "}
-            <span className="text-dark-500">(optional)</span>
-          </label>
+          <div className="flex items-center justify-between mb-2">
+            <label htmlFor="constraints" className="label mb-0">
+              {UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_LABEL}{" "}
+              <span className="text-dark-500">(optional)</span>
+            </label>
+            <AnimatePresence>
+              {constraints && (
+                <motion.button
+                  type="button"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.15 }}
+                  onClick={() => setConstraints("")}
+                  className="text-xs text-dark-500 hover:text-dark-300 focus:outline-none focus:text-white transition-colors flex items-center gap-1 px-2 py-1 rounded-md hover:bg-dark-700/50"
+                  aria-label="Clear constraints"
+                  title="Clear constraints"
+                >
+                  <svg
+                    className="w-3 h-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                  Clear
+                </motion.button>
+              )}
+            </AnimatePresence>
+          </div>
           <textarea
             id="constraints"
             name="constraints"
             value={constraints}
             onChange={(e) => setConstraints(e.target.value)}
-            placeholder="e.g., Must be serverless, needs to support 10k concurrent users, budget limitations..."
+            placeholder={UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_PLACEHOLDER}
             className="textarea-field h-24"
           />
         </div>
@@ -380,7 +452,7 @@ export function StepInfo() {
             disabled={!canProceed}
             className={`btn-primary flex items-center gap-2 ${isShaking ? "shake-animation" : ""}`}
           >
-            Next: Choose Tech Stack
+            {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
             <svg
               className="w-5 h-5"
               fill="none"
