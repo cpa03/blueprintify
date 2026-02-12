@@ -4,6 +4,88 @@
 
 ## Active Bugs
 
+### BUG-008: Critical Security Vulnerabilities - Authentication Bypass Risk 🔴
+
+**Status**: Active  
+**Priority**: Critical  
+**Area**: Security Engineering  
+**First Reported**: 2026-02-12 (Security Engineer Assessment)  
+**Issue Reference**: #307
+
+#### Description
+
+Multiple high-severity vulnerabilities in core dependencies allowing authentication bypass, XSS, and system compromise.
+
+#### Critical Vulnerabilities
+
+1. **Hono Framework (<=4.11.6)** - Authentication bypass via JWT confusion
+   - CVEs: GHSA-3vhc-576x-3qv4, GHSA-f67f-6cw9-2mq4
+   - Impact: Unauthorized access to API endpoints
+   - Fix: Update to hono@^4.11.7
+
+2. **devalue Package (5.1.0-5.6.1)** - DoS vulnerability
+   - CVEs: GHSA-g2pg-6438-jwpf, GHSA-vw5p-8cq8-m7mv
+   - Impact: Memory/CPU exhaustion attacks
+   - Fix: Update to devalue@^5.7.0
+
+3. **Lodash (4.0.0-4.17.21)** - Prototype pollution
+   - CVE: GHSA-xxjr-mmjv-4gpg
+   - Impact: Object prototype manipulation attacks
+   - Fix: Update to lodash@^4.17.21+
+
+#### Blockers
+
+- **Workspace Dependency Conflicts**: Issue #308 preventing automatic security updates
+- **Vitest Version Conflicts**: Blocking package resolution
+
+#### Required Actions
+
+- [ ] Resolve workspace dependency conflicts (Issue #308)
+- [ ] Update all vulnerable packages
+- [ ] Comprehensive regression testing
+- [ ] Production deployment with monitoring
+
+**Timeline**: 24-48 hours (critical)  
+**Risk**: HIGH - System compromise possible
+
+---
+
+### BUG-009: Workspace Dependency Conflicts Blocking Security Updates 🔴
+
+**Status**: Active  
+**Priority**: High  
+**Area**: DevOps Engineering  
+**First Reported**: 2026-02-12 (Security Assessment Blocker)  
+**Issue Reference**: #308
+
+#### Description
+
+Vitest workspace version conflicts prevent application of critical security patches.
+
+#### Root Cause
+
+- Vitest version mismatch across monorepo workspaces
+- Conflicting peer dependencies
+- Workspace resolution failing on security update attempts
+
+#### Impact
+
+- Blocks Issue #307 (Critical Security Vulnerabilities)
+- Prevents automatic npm audit fixes
+- Blocks hono, devalue, and lodash security updates
+
+#### Required Actions
+
+- [ ] Standardize vitest versions across workspaces
+- [ ] Resolve peer dependency conflicts
+- [ ] Enable security patch application
+- [ ] Validate all workspaces build successfully
+
+**Timeline**: 2-4 hours  
+**Risk**: HIGH - Critical blocker
+
+---
+
 ### BUG-005: Missing Tech Stack Category Icons ✅ RESOLVED
 
 **Status**: Resolved  
