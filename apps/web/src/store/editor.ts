@@ -22,9 +22,13 @@ export interface EditorStore {
   markClean: () => void;
   cancelGeneration: () => void;
   reset: () => void;
+  cleanup: () => void;
 }
 
 export const useEditorStore = create<EditorStore>()((set, get) => {
+  let saveTimeout: NodeJS.Timeout | null = null;
+  let isGenerating = false;
+
   const loadState = async (): Promise<void> => {
     try {
       const stored = await editorStorage.get();
@@ -48,6 +52,28 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
     } catch {
       console.warn("Failed to save editor state to storage");
     }
+  };
+
+  const debouncedSaveState = (delay: number = 1000): void => {
+    // Skip debounced saves during generation to avoid performance issues
+    if (isGenerating) return;
+
+    if (saveTimeout) {
+      clearTimeout(saveTimeout);
+    }
+
+    saveTimeout = setTimeout(() => {
+      void saveState();
+      saveTimeout = null;
+    }, delay);
+  };
+
+  const immediateSaveState = (): void => {
+    if (saveTimeout) {
+      clearTimeout(saveTimeout);
+      saveTimeout = null;
+    }
+    void saveState();
   };
 
   void loadState();
@@ -78,7 +104,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
               ?.blueprintContent || blueprintContent,
           isDirty: true,
         });
-        void saveState();
+        debouncedSaveState();
       } catch (error) {
         const securityError = handleSecurityError(error);
         console.error("Security validation failed:", securityError.message);
@@ -103,7 +129,10 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
               ?.blueprintContent || newContent,
           isDirty: true,
         }));
-        void saveState();
+        // Skip saving during streaming for performance
+        if (!isGenerating) {
+          debouncedSaveState(2000); // Longer debounce for streaming
+        }
       } catch (error) {
         const securityError = handleSecurityError(error);
         console.error("Security validation failed:", securityError.message);
@@ -127,7 +156,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
             tasksContent,
           isDirty: true,
         });
-        void saveState();
+        debouncedSaveState();
       } catch (error) {
         const securityError = handleSecurityError(error);
         console.error("Security validation failed:", securityError.message);
@@ -152,7 +181,10 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
             newContent,
           isDirty: true,
         }));
-        void saveState();
+        // Skip saving during streaming for performance
+        if (!isGenerating) {
+          debouncedSaveState(2000); // Longer debounce for streaming
+        }
       } catch (error) {
         const securityError = handleSecurityError(error);
         console.error("Security validation failed:", securityError.message);
@@ -160,19 +192,33 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
       }
     },
 
-    setIsGenerating: (isGenerating) => set({ isGenerating }),
+    setIsGenerating: (generating) => {
+      isGenerating = generating;
+      set({ isGenerating: generating });
+      // Save immediately when generation stops to capture final state
+      if (!generating) {
+        immediateSaveState();
+      }
+    },
 
     setGenerationProgress: (generationProgress) => set({ generationProgress }),
 
-    markClean: () => set({ isDirty: false }),
+    markClean: () => {
+      set({ isDirty: false });
+      immediateSaveState();
+    },
 
-    cancelGeneration: () =>
+    cancelGeneration: () => {
+      isGenerating = false;
       set({
         isGenerating: false,
         generationProgress: GENERATION_MESSAGES.CANCELLED,
-      }),
+      });
+      immediateSaveState();
+    },
 
     reset: () => {
+      isGenerating = false;
       set({
         blueprintContent: "",
         tasksContent: "",
@@ -180,7 +226,20 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
         isGenerating: false,
         generationProgress: "",
       });
+      if (saveTimeout) {
+        clearTimeout(saveTimeout);
+        saveTimeout = null;
+      }
       void editorStorage.remove();
+    },
+
+    // Cleanup function to be called when unmounting
+    cleanup: () => {
+      if (saveTimeout) {
+        clearTimeout(saveTimeout);
+        saveTimeout = null;
+      }
+      immediateSaveState();
     },
   };
 });
