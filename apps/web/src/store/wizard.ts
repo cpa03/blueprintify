@@ -7,6 +7,41 @@ import type {
 import { WIZARD_STEPS } from "../config/constants";
 import { wizardStorage } from "../lib/storage";
 
+// Debounce utility for performance optimization
+function createDebouncedSaver<T extends (...args: unknown[]) => void>(
+  fn: T,
+  delay: number,
+): { debounced: T; flush: () => void; cancel: () => void } {
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+  const debounced = ((...args: unknown[]) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      fn(...args);
+      timeoutId = null;
+    }, delay);
+  }) as T;
+
+  const flush = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      fn();
+      timeoutId = null;
+    }
+  };
+
+  const cancel = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+  };
+
+  return { debounced, flush, cancel };
+}
+
 export interface WizardStore extends WizardState {
   setStep: (step: WizardStep) => void;
   nextStep: () => void;
@@ -72,6 +107,12 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
     }
   };
 
+  // Create debounced save function for consistency with editor store
+  const { debounced: debouncedSave, cancel: cancelSave } = createDebouncedSaver(
+    saveState,
+    300, // 300ms delay for wizard - slightly faster as changes are less frequent
+  );
+
   void loadState();
 
   return {
@@ -79,7 +120,7 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
 
     setStep: (step) => {
       set({ currentStep: step });
-      void saveState();
+      debouncedSave();
     },
 
     nextStep: () => {
@@ -87,7 +128,7 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
       const currentIndex = STEPS.indexOf(current);
       if (currentIndex < STEPS.length - 1) {
         set({ currentStep: STEPS[currentIndex + 1] });
-        void saveState();
+        debouncedSave();
       }
     },
 
@@ -96,42 +137,42 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
       const currentIndex = STEPS.indexOf(current);
       if (currentIndex > 0) {
         set({ currentStep: STEPS[currentIndex - 1] });
-        void saveState();
+        debouncedSave();
       }
     },
 
     setProjectName: (projectName) => {
       set({ projectName });
-      void saveState();
+      debouncedSave();
     },
 
     setDescription: (description) => {
       set({ description });
-      void saveState();
+      debouncedSave();
     },
 
     addTechStack: (item) => {
       const existing = get().techStack;
       if (!existing.some((t) => t.name === item.name)) {
         set({ techStack: [...existing, item] });
-        void saveState();
+        debouncedSave();
       }
     },
 
     removeTechStack: (name) => {
       set({ techStack: get().techStack.filter((t) => t.name !== name) });
-      void saveState();
+      debouncedSave();
     },
 
     setTechStack: (techStack) => {
       set({ techStack });
-      void saveState();
+      debouncedSave();
     },
 
     addFeature: (feature) => {
       if (feature.trim()) {
         set({ features: [...get().features, feature.trim()] });
-        void saveState();
+        debouncedSave();
       }
     },
 
@@ -143,25 +184,26 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
       } else {
         set({ features: get().features.filter((f) => f !== featureOrIndex) });
       }
-      void saveState();
+      debouncedSave();
     },
 
     clearFeatures: () => {
       set({ features: [] });
-      void saveState();
+      debouncedSave();
     },
 
     setTargetAudience: (targetAudience) => {
       set({ targetAudience });
-      void saveState();
+      debouncedSave();
     },
 
     setConstraints: (constraints) => {
       set({ constraints });
-      void saveState();
+      debouncedSave();
     },
 
     reset: () => {
+      cancelSave();
       set(initialState);
       void wizardStorage.remove();
     },

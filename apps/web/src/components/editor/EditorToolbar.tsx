@@ -1,3 +1,4 @@
+import React from "react";
 import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
@@ -17,7 +18,7 @@ interface EditorToolbarProps {
   isExporting?: boolean;
 }
 
-function AnimatedCheckmark() {
+const AnimatedCheckmark = React.memo(function AnimatedCheckmark() {
   return (
     <motion.svg
       width="16"
@@ -41,9 +42,9 @@ function AnimatedCheckmark() {
       />
     </motion.svg>
   );
-}
+});
 
-export function EditorToolbar({
+function EditorToolbarComponent({
   activeTab,
   viewMode,
   setViewMode,
@@ -235,3 +236,5 @@ export function EditorToolbar({
     </div>
   );
 }
+
+export const EditorToolbar = React.memo(EditorToolbarComponent);

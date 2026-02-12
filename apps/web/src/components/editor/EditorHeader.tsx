@@ -1,3 +1,4 @@
+import React from "react";
 import type { EditorTab } from "@blueprint/shared";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import clsx from "clsx";
@@ -15,7 +16,7 @@ interface EditorHeaderProps {
   isExporting?: boolean;
 }
 
-function TabButton({
+const TabButton = React.memo(function TabButton({
   id,
   isActive,
   onClick,
@@ -45,11 +46,11 @@ function TabButton({
       {children}
     </button>
   );
-}
+});
 
 export type { ViewMode };
 
-export function EditorHeader({
+function EditorHeaderComponent({
   activeTab,
   setActiveTab,
   viewMode,
@@ -101,3 +102,5 @@ export function EditorHeader({
     </div>
   );
 }
+
+export const EditorHeader = React.memo(EditorHeaderComponent);

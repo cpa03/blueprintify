@@ -4,6 +4,41 @@ import { GENERATION_MESSAGES } from "../config/constants";
 import { sanitizeForStorage, handleSecurityError } from "../lib/security";
 import { editorStorage } from "../lib/storage";
 
+// Debounce utility for performance optimization
+function createDebouncedSaver<T extends (...args: unknown[]) => void>(
+  fn: T,
+  delay: number,
+): { debounced: T; flush: () => void; cancel: () => void } {
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+  const debounced = ((...args: unknown[]) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      fn(...args);
+      timeoutId = null;
+    }, delay);
+  }) as T;
+
+  const flush = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      fn();
+      timeoutId = null;
+    }
+  };
+
+  const cancel = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+  };
+
+  return { debounced, flush, cancel };
+}
+
 export interface EditorStore {
   activeTab: EditorTab;
   blueprintContent: string;
@@ -22,6 +57,7 @@ export interface EditorStore {
   markClean: () => void;
   cancelGeneration: () => void;
   reset: () => void;
+  flushStorage: () => void; // Flush pending storage writes
 }
 
 export const useEditorStore = create<EditorStore>()((set, get) => {
@@ -49,6 +85,16 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
       console.warn("Failed to save editor state to storage");
     }
   };
+
+  // Create debounced save function to prevent excessive localStorage writes
+  const {
+    debounced: debouncedSave,
+    flush: flushSave,
+    cancel: cancelSave,
+  } = createDebouncedSaver(
+    saveState,
+    500, // 500ms delay - balances performance with data safety
+  );
 
   void loadState();
 
@@ -78,7 +124,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
               ?.blueprintContent || blueprintContent,
           isDirty: true,
         });
-        void saveState();
+        debouncedSave();
       } catch (error) {
         const securityError = handleSecurityError(error);
         console.error("Security validation failed:", securityError.message);
@@ -103,7 +149,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
               ?.blueprintContent || newContent,
           isDirty: true,
         }));
-        void saveState();
+        debouncedSave();
       } catch (error) {
         const securityError = handleSecurityError(error);
         console.error("Security validation failed:", securityError.message);
@@ -127,7 +173,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
             tasksContent,
           isDirty: true,
         });
-        void saveState();
+        debouncedSave();
       } catch (error) {
         const securityError = handleSecurityError(error);
         console.error("Security validation failed:", securityError.message);
@@ -152,7 +198,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
             newContent,
           isDirty: true,
         }));
-        void saveState();
+        debouncedSave();
       } catch (error) {
         const securityError = handleSecurityError(error);
         console.error("Security validation failed:", securityError.message);
@@ -173,6 +219,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
       }),
 
     reset: () => {
+      cancelSave();
       set({
         blueprintContent: "",
         tasksContent: "",
@@ -181,6 +228,10 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
         generationProgress: "",
       });
       void editorStorage.remove();
+    },
+
+    flushStorage: () => {
+      flushSave();
     },
   };
 });

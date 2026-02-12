@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { LazyMarkdownRenderer } from "./LazyMarkdownRenderer";
 import { LazyCodeMirror } from "./LazyCodeMirror";
@@ -15,7 +15,7 @@ import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
 import { TIMEOUTS, DEFAULT_PROJECT_NAME } from "../config/constants";
 import clsx from "clsx";
 
-export function Editor() {
+function EditorComponent() {
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [copied, setCopied] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
@@ -32,22 +32,25 @@ export function Editor() {
 
   const currentContent =
     activeTab === "blueprint" ? blueprintContent : tasksContent;
-  const setCurrentContent = (content: string) => {
-    try {
-      const sanitizedContent = sanitizeMarkdown(content);
-      if (activeTab === "blueprint") {
-        setBlueprintContent(sanitizedContent);
-      } else {
-        setTasksContent(sanitizedContent);
+  const setCurrentContent = useCallback(
+    (content: string) => {
+      try {
+        const sanitizedContent = sanitizeMarkdown(content);
+        if (activeTab === "blueprint") {
+          setBlueprintContent(sanitizedContent);
+        } else {
+          setTasksContent(sanitizedContent);
+        }
+      } catch (error) {
+        const securityError = handleSecurityError(error);
+        toast.error(`Security validation failed: ${securityError.message}`);
+        console.error("Security validation failed:", securityError);
       }
-    } catch (error) {
-      const securityError = handleSecurityError(error);
-      toast.error(`Security validation failed: ${securityError.message}`);
-      console.error("Security validation failed:", securityError);
-    }
-  };
+    },
+    [activeTab, setBlueprintContent, setTasksContent, toast],
+  );
 
-  const handleCopy = async () => {
+  const handleCopy = useCallback(async () => {
     const formatted = formatForIDE(currentContent);
     const success = await copyToClipboard(formatted);
     if (success) {
@@ -55,9 +58,9 @@ export function Editor() {
       setTimeout(() => setCopied(null), TIMEOUTS.COPY_FEEDBACK);
       toast.success("Copied to clipboard");
     }
-  };
+  }, [currentContent, activeTab, toast]);
 
-  const handleExport = async () => {
+  const handleExport = useCallback(async () => {
     setIsExporting(true);
     try {
       const wizardData = useWizardStore.getState();
@@ -76,12 +79,12 @@ export function Editor() {
     } finally {
       setIsExporting(false);
     }
-  };
+  }, [blueprintContent, tasksContent, projectName, toast]);
 
-  const handleNewProject = () => {
+  const handleNewProject = useCallback(() => {
     resetAllStores();
     toast.info("Started new project");
-  };
+  }, [toast]);
 
   const hasContent = blueprintContent.length > 0 || tasksContent.length > 0;
 
@@ -151,3 +154,5 @@ export function Editor() {
     </div>
   );
 }
+
+export const Editor = React.memo(EditorComponent);

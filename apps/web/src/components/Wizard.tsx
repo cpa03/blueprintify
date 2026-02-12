@@ -1,3 +1,4 @@
+import React from "react";
 import { AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../store";
 import { useEditorStore } from "../store";
@@ -21,7 +22,7 @@ const STEP_TITLES: Record<string, string> = {
   generating: "Generating...",
 };
 
-export function Wizard() {
+function WizardComponent() {
   const currentStep = useWizardStore((s) => s.currentStep);
   const isGenerating = useEditorStore((s) => s.isGenerating);
   const generationProgress = useEditorStore((s) => s.generationProgress);
@@ -64,3 +65,5 @@ export function Wizard() {
     </div>
   );
 }
+
+export const Wizard = React.memo(WizardComponent);
