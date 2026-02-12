@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, forwardRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
 import { TOAST_CONFIG } from "../config/constants";
@@ -22,7 +22,10 @@ interface ToastItemProps {
   onRemove: (id: string) => void;
 }
 
-function ToastItem({ toast, onRemove }: ToastItemProps) {
+const ToastItem = forwardRef<HTMLDivElement, ToastItemProps>(function ToastItem(
+  { toast, onRemove },
+  ref,
+) {
   const [isHovered, setIsHovered] = useState(false);
   const [progress, setProgress] = useState(100);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -102,6 +105,7 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
 
   return (
     <motion.div
+      ref={ref}
       layout
       initial={{ opacity: 0, y: 20, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -162,7 +166,7 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
       </button>
     </motion.div>
   );
-}
+});
 
 export function ToastContainer() {
   const toasts = useToastStore((state) => state.toasts);
