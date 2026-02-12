@@ -3,7 +3,7 @@ import lighthouse from 'lighthouse';
 import * as chromeLauncher from 'chrome-launcher';
 import fs from 'fs';
 
-const TARGET_URL = process.env.TARGET_URL || 'http://localhost:3456';
+const TARGET_URL = process.env.TARGET_URL || 'http://localhost:3000';
 const CHROME_PATH = process.env.CHROME_PATH || '/home/runner/.cache/ms-playwright/chromium-1208/chrome-linux/chrome';
 
 async function checkConsoleErrors() {
