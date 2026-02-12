@@ -1,6 +1,7 @@
 export * from "./config";
 
 import { z } from "zod";
+import { VALIDATION_LIMITS } from "./config";
 
 // ===== Tech Stack Options =====
 export const TechStackCategory = z.enum([
@@ -37,14 +38,23 @@ export const TechStackItem = z.object({
 
 // ===== Blueprint Request Schema =====
 export const BlueprintRequestSchema = z.object({
-  projectName: z.string().min(1, "Project name is required").max(100),
+  projectName: z
+    .string()
+    .min(VALIDATION_LIMITS.PROJECT_NAME.MIN, "Project name is required")
+    .max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
   description: z
     .string()
-    .min(10, "Description must be at least 10 characters")
-    .max(2000),
+    .min(
+      VALIDATION_LIMITS.DESCRIPTION.MIN,
+      `Description must be at least ${VALIDATION_LIMITS.DESCRIPTION.MIN} characters`,
+    )
+    .max(VALIDATION_LIMITS.DESCRIPTION.MAX),
   techStack: z
     .array(TechStackItem)
-    .min(1, "At least one technology is required"),
+    .min(
+      VALIDATION_LIMITS.TECH_STACK.MIN,
+      "At least one technology is required",
+    ),
   features: z.array(z.string().min(1)).optional(),
   targetAudience: z.string().optional(),
   constraints: z.string().optional(),
@@ -290,5 +300,12 @@ export const TECH_STACK_OPTIONS = {
     { name: "Styled Components", category: "styling" as const },
     { name: "CSS Modules", category: "styling" as const },
     { name: "Sass/SCSS", category: "styling" as const },
+  ],
+  ai: [
+    { name: "OpenAI", category: "ai" as const },
+    { name: "Anthropic", category: "ai" as const },
+    { name: "Cohere", category: "ai" as const },
+    { name: "Hugging Face", category: "ai" as const },
+    { name: "LangChain", category: "ai" as const },
   ],
 } as const;

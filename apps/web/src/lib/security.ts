@@ -1,5 +1,6 @@
 import DOMPurify from "dompurify";
 import { z } from "zod";
+import { STORAGE_CONFIG } from "@blueprint/shared";
 
 export const SECURITY_CONFIG = {
   DOMPURIFY_CONFIG: {
@@ -66,7 +67,7 @@ export const SECURITY_CONFIG = {
   MAX_FILE_SIZE: 10 * 1024 * 1024,
   ALLOWED_FILE_TYPES: [".json", ".md", ".txt"],
 
-  STORAGE_QUOTA: 5 * 1024 * 1024,
+  STORAGE_QUOTA: STORAGE_CONFIG.QUOTA_BYTES,
 } as const;
 export const ContentValidationSchema = z.object({
   blueprintContent: z

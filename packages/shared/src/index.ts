@@ -33,6 +33,11 @@ export type {
 export { STARTER_TEMPLATES } from "./templates";
 
 // ===== Configuration =====
-export { RETRY_CONFIG } from "./config";
+export {
+  RETRY_CONFIG,
+  VALIDATION_LIMITS,
+  STORAGE_CONFIG,
+  DEBOUNCE_CONFIG,
+} from "./config";
 
 export type { RetryOptions, RetryConfigValues } from "./config";

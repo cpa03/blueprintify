@@ -9,6 +9,7 @@
  */
 
 import { z } from "zod";
+import { STORAGE_CONFIG } from "@blueprint/shared";
 import { STORAGE_KEYS } from "../config/constants";
 
 // ============================================================================
@@ -163,8 +164,7 @@ export interface QuotaInfo {
 function getStorageQuota(): QuotaInfo {
   try {
     const used = new Blob([JSON.stringify(localStorage)]).size;
-    // Estimate 5MB quota (typical browser limit)
-    const total = 5 * 1024 * 1024;
+    const total = STORAGE_CONFIG.QUOTA_BYTES;
     const remaining = Math.max(0, total - used);
     const percentage = (used / total) * 100;
 
