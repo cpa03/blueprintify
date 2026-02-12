@@ -103,7 +103,14 @@ The AI agent system is configured through the `.opencode/` directory:
 
 ### 3. Environment Variables
 
-Create `apps/api/.dev.vars` with your AI configuration:
+Copy the example file and configure your AI settings:
+
+```bash
+cp apps/api/.dev.vars.example apps/api/.dev.vars
+# Edit apps/api/.dev.vars with your actual values
+```
+
+The `.dev.vars` file should contain:
 
 ```bash
 # Required
