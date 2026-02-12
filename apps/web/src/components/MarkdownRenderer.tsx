@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, memo } from "react";
 import ReactMarkdown from "react-markdown";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
@@ -15,7 +15,7 @@ export interface MarkdownRendererProps {
   className?: string;
 }
 
-function CodeBlockHeader({
+const CodeBlockHeader = memo(function CodeBlockHeader({
   language,
   code,
 }: {
@@ -103,9 +103,9 @@ function CodeBlockHeader({
       </motion.button>
     </div>
   );
-}
+});
 
-export function MarkdownRenderer({
+function MarkdownRendererComponent({
   content,
   className,
 }: MarkdownRendererProps) {
@@ -294,3 +294,5 @@ export function MarkdownRenderer({
     </div>
   );
 }
+
+export const MarkdownRenderer = memo(MarkdownRendererComponent);
