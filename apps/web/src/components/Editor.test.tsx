@@ -64,6 +64,7 @@ const mockEditorStore: EditorStore = {
   markClean: vi.fn(),
   cancelGeneration: vi.fn(),
   reset: vi.fn(),
+  flushStorage: vi.fn(),
 };
 
 const mockWizardStore: WizardStore = {
