@@ -44,12 +44,12 @@ export default defineConfig({
           syntaxHighlighter: ["react-syntax-highlighter"],
           markdown: ["react-markdown", "remark-gfm", "rehype-highlight"],
           ui: [
-            "framer-motion",
             "@radix-ui/react-dialog",
             "@radix-ui/react-select",
             "@radix-ui/react-tabs",
             "@radix-ui/react-tooltip",
           ],
+          animation: ["framer-motion"],
           zustand: ["zustand"],
         },
         assetFileNames: (assetInfo) => {
