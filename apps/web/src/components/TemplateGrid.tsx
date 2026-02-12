@@ -57,7 +57,7 @@ function TemplateGridComponent() {
               onKeyDown={(e) => handleKeyDown(e, template)}
               disabled={selectedId !== null}
               className={`
-                glass-card p-5 text-left transition-all duration-300 group relative
+                glass-card p-5 text-left transition-all duration-300 group relative card-glow-hover
                 ${
                   isSelected
                     ? "border-accent-emerald/70 bg-accent-emerald/10"
