@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { copyToClipboard } from "../lib/export";
 import { sanitizeHtml } from "../lib/security";
+import { TIMEOUTS } from "../config/constants";
 
 export interface MarkdownRendererProps {
   content: string;
@@ -28,7 +29,7 @@ function CodeBlockHeader({
     const success = await copyToClipboard(code);
     if (success) {
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => setCopied(false), TIMEOUTS.COPY_FEEDBACK);
     }
   }, [code]);
 

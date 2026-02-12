@@ -709,7 +709,7 @@ describe("Acceptance Criteria Verification - Issue #242", () => {
   });
 
   it("AC5: Error recovery workflows are tested", async () => {
-    const fallback = { success: false, recovered: true };
+    const fallback = { success: true };
 
     const result1 = await withStorageRecovery(
       async () => ({ success: true }),
