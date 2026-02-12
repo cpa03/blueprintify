@@ -10,6 +10,8 @@ export interface Env {
   OPENAI_API_KEY: string;
   OPENAI_BASE_URL?: string;
   OPENAI_MODEL?: string;
+  API_KEY?: string;
+  ENVIRONMENT?: "development" | "production" | "test";
 }
 
 // Base context type with environment bindings
