@@ -91,6 +91,7 @@ jspm_packages/
 # Temporary folders
 tmp/
 temp/
+.sisyphus/
 
 # Large files that should be handled by Git LFS
 *.zip
