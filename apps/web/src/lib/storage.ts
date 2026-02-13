@@ -9,7 +9,7 @@
  */
 
 import { z } from "zod";
-import { STORAGE_KEYS } from "../config/constants";
+import { STORAGE_KEYS, STORAGE_CONFIG } from "../config/constants";
 
 // ============================================================================
 // Storage Error Types
@@ -112,8 +112,8 @@ export interface StorageConfig {
 }
 
 const DEFAULT_CONFIG: Partial<StorageConfig> = {
-  maxRetries: 3,
-  retryDelay: 100,
+  maxRetries: STORAGE_CONFIG.DEFAULT_MAX_RETRIES,
+  retryDelay: STORAGE_CONFIG.DEFAULT_RETRY_DELAY_MS,
   enableBackup: true,
   compressionEnabled: false,
 };
@@ -129,7 +129,7 @@ interface BackupEntry {
 }
 
 const BACKUP_KEY_PREFIX = "__backup__";
-const MAX_BACKUP_ENTRIES = 5;
+const MAX_BACKUP_ENTRIES = STORAGE_CONFIG.MAX_BACKUP_ENTRIES;
 
 // ============================================================================
 // Checksum Utilities
@@ -163,8 +163,7 @@ export interface QuotaInfo {
 function getStorageQuota(): QuotaInfo {
   try {
     const used = new Blob([JSON.stringify(localStorage)]).size;
-    // Estimate 5MB quota (typical browser limit)
-    const total = 5 * 1024 * 1024;
+    const total = STORAGE_CONFIG.QUOTA_MB * 1024 * 1024;
     const remaining = Math.max(0, total - used);
     const percentage = (used / total) * 100;
 
@@ -588,8 +587,7 @@ export class StorageService<T = unknown> {
 
   private checkQuota(): void {
     const quota = getStorageQuota();
-    if (quota.remaining < 1024) {
-      // Less than 1KB remaining
+    if (quota.remaining < STORAGE_CONFIG.QUOTA_WARNING_THRESHOLD_KB * 1024) {
       throw this.createStorageError(
         "Storage quota exceeded",
         "QUOTA_EXCEEDED",
@@ -641,8 +639,7 @@ export class StorageService<T = unknown> {
       type === "read" ? this.metrics.readLatency : this.metrics.writeLatency;
     latencies.push(latency);
 
-    // Keep only recent measurements (last 100)
-    if (latencies.length > 100) {
+    if (latencies.length > STORAGE_CONFIG.MAX_LATENCY_MEASUREMENTS) {
       latencies.shift();
     }
   }

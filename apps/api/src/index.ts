@@ -28,7 +28,7 @@ app.use(
     allowMethods: CORS_CONFIG.ALLOW_METHODS,
     allowHeaders: [...CORS_CONFIG.ALLOW_HEADERS, "x-api-key", "x-request-id"],
     credentials: true,
-    maxAge: 86400,
+    maxAge: CORS_CONFIG.MAX_AGE,
   }),
 );
 app.use("*", prettyJSON());

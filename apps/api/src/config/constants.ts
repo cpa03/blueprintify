@@ -162,6 +162,14 @@ export const CORS_CONFIG = {
   ORIGIN: "*",
   ALLOW_METHODS: ["GET", "POST", "OPTIONS"] as string[],
   ALLOW_HEADERS: ["Content-Type", "Authorization"] as string[],
+  MAX_AGE: 86400, // 24 hours in seconds
+};
+
+// Circuit breaker configuration
+export const CIRCUIT_BREAKER_CONFIG = {
+  DEFAULT_FAILURE_THRESHOLD: 5,
+  DEFAULT_RESET_TIMEOUT_MS: 60000, // 1 minute
+  DEFAULT_HALF_OPEN_MAX_CALLS: 3,
 };
 
 // SSE Stream configuration
