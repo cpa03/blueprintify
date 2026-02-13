@@ -1,9 +1,10 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import { LazyMarkdownRenderer } from "./LazyMarkdownRenderer";
 import { LazyCodeMirror } from "./LazyCodeMirror";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
 import { EditorEmptyState } from "./EditorEmptyState";
+import { ScrollToTop } from "./ScrollToTop";
 import {
   useEditorStore,
   useWizardStore,
@@ -20,6 +21,7 @@ function EditorComponent() {
   const [copied, setCopied] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
   const toast = useToast();
+  const previewRef = useRef<HTMLDivElement>(null);
 
   const activeTab = useEditorStore((s) => s.activeTab);
   const setActiveTab = useEditorStore((s) => s.setActiveTab);
@@ -135,18 +137,24 @@ function EditorComponent() {
 
             {/* Preview */}
             {(viewMode === "preview" || viewMode === "split") && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+              <div
+                ref={previewRef}
                 className={clsx(
-                  "h-full overflow-y-auto p-4 lg:p-6",
+                  "h-full overflow-y-auto p-4 lg:p-6 relative",
                   viewMode === "split" ? "w-full lg:w-1/2" : "w-full",
                 )}
               >
-                <LazyMarkdownRenderer
-                  content={currentContent || "*No content yet...*"}
-                />
-              </motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="min-h-full"
+                >
+                  <LazyMarkdownRenderer
+                    content={currentContent || "*No content yet...*"}
+                  />
+                </motion.div>
+                <ScrollToTop scrollContainerRef={previewRef} showAfter={600} />
+              </div>
             )}
           </div>
         )}
