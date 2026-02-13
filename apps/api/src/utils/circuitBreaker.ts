@@ -1,4 +1,4 @@
-import { HTTP_STATUS } from "../config/constants";
+import { HTTP_STATUS, CIRCUIT_BREAKER_CONFIG } from "../config/constants";
 
 interface CircuitBreakerConfig {
   failureThreshold: number;
@@ -30,9 +30,15 @@ class CircuitBreaker {
 
   constructor(config: Partial<CircuitBreakerConfig> = {}) {
     this.config = {
-      failureThreshold: config.failureThreshold || 5,
-      resetTimeoutMs: config.resetTimeoutMs || 60000,
-      halfOpenMaxCalls: config.halfOpenMaxCalls || 3,
+      failureThreshold:
+        config.failureThreshold ??
+        CIRCUIT_BREAKER_CONFIG.DEFAULT_FAILURE_THRESHOLD,
+      resetTimeoutMs:
+        config.resetTimeoutMs ??
+        CIRCUIT_BREAKER_CONFIG.DEFAULT_RESET_TIMEOUT_MS,
+      halfOpenMaxCalls:
+        config.halfOpenMaxCalls ??
+        CIRCUIT_BREAKER_CONFIG.DEFAULT_HALF_OPEN_MAX_CALLS,
     };
   }
 

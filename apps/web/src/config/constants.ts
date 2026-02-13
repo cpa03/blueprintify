@@ -44,6 +44,21 @@ export const TIMEOUTS = {
   SHAKE_ANIMATION: 400,
 } as const;
 
+// Debounce configuration for state persistence
+export const DEBOUNCE_CONFIG = {
+  WIZARD: 300,
+  EDITOR: 500,
+} as const;
+
+export const STORAGE_CONFIG = {
+  MAX_BACKUP_ENTRIES: 5,
+  QUOTA_MB: 5,
+  QUOTA_WARNING_THRESHOLD_KB: 1,
+  MAX_LATENCY_MEASUREMENTS: 100,
+  DEFAULT_MAX_RETRIES: 3,
+  DEFAULT_RETRY_DELAY_MS: 100,
+} as const;
+
 // UI Configuration
 export const UI = {
   MAX_TECH_STACK_SELECTION: 10,

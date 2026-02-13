@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { EditorTab } from "@blueprint/shared";
-import { GENERATION_MESSAGES } from "../config/constants";
+import { GENERATION_MESSAGES, DEBOUNCE_CONFIG } from "../config/constants";
 import { sanitizeForStorage, handleSecurityError } from "../lib/security";
 import { editorStorage } from "../lib/storage";
 
@@ -91,10 +91,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
     debounced: debouncedSave,
     flush: flushSave,
     cancel: cancelSave,
-  } = createDebouncedSaver(
-    saveState,
-    500, // 500ms delay - balances performance with data safety
-  );
+  } = createDebouncedSaver(saveState, DEBOUNCE_CONFIG.EDITOR);
 
   void loadState();
 

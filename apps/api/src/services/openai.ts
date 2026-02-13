@@ -5,7 +5,7 @@ import {
   CircuitBreaker,
   CircuitBreakerOpenError,
 } from "../utils/circuitBreaker";
-import { AI_CONFIG } from "../config/constants";
+import { AI_CONFIG, CIRCUIT_BREAKER_CONFIG } from "../config/constants";
 
 export interface AIConfig {
   apiKey: string;
@@ -24,9 +24,9 @@ let circuitBreaker: CircuitBreaker | null = null;
 function getCircuitBreaker(): CircuitBreaker {
   if (!circuitBreaker) {
     circuitBreaker = createCircuitBreaker({
-      failureThreshold: 5,
-      resetTimeoutMs: 60000,
-      halfOpenMaxCalls: 3,
+      failureThreshold: CIRCUIT_BREAKER_CONFIG.DEFAULT_FAILURE_THRESHOLD,
+      resetTimeoutMs: CIRCUIT_BREAKER_CONFIG.DEFAULT_RESET_TIMEOUT_MS,
+      halfOpenMaxCalls: CIRCUIT_BREAKER_CONFIG.DEFAULT_HALF_OPEN_MAX_CALLS,
     });
   }
   return circuitBreaker;

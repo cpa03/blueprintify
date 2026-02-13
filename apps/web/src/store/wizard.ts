@@ -4,7 +4,7 @@ import type {
   WizardStep,
   TechStackItemType,
 } from "@blueprint/shared";
-import { WIZARD_STEPS } from "../config/constants";
+import { WIZARD_STEPS, DEBOUNCE_CONFIG } from "../config/constants";
 import { wizardStorage } from "../lib/storage";
 
 // Debounce utility for performance optimization
@@ -110,7 +110,7 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
   // Create debounced save function for consistency with editor store
   const { debounced: debouncedSave, cancel: cancelSave } = createDebouncedSaver(
     saveState,
-    300, // 300ms delay for wizard - slightly faster as changes are less frequent
+    DEBOUNCE_CONFIG.WIZARD,
   );
 
   void loadState();
