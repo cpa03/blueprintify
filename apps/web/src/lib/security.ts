@@ -284,15 +284,22 @@ export function validateJSONSecurity(content: string): {
   error?: string;
 } {
   try {
-    const parsed = JSON.parse(content);
-
-    // Check for prototype pollution patterns
-    if (hasPrototypePollution(parsed)) {
+    // Check for prototype pollution patterns in raw string BEFORE parsing
+    // This is necessary because JSON.stringify ignores __proto__
+    const prototypePollutionPattern = /["']__proto__["']\s*:/;
+    const constructorPattern =
+      /["']constructor["']\s*:\s*\{[^}]*["']prototype["']/;
+    if (
+      prototypePollutionPattern.test(content) ||
+      constructorPattern.test(content)
+    ) {
       return {
         isValid: false,
         error: "JSON contains potential prototype pollution vulnerabilities",
       };
     }
+
+    const parsed = JSON.parse(content);
 
     // Check for deeply nested objects (DoS protection)
     const depth = getObjectDepth(parsed);
@@ -329,34 +336,6 @@ export function validateJSONSecurity(content: string): {
   }
 }
 
-function hasPrototypePollution(obj: unknown, visited = new WeakSet()): boolean {
-  if (visited.has(obj as object)) return false;
-  visited.add(obj as object);
-
-  if (obj && typeof obj === "object") {
-    const objAsRecord = obj as Record<string, unknown>;
-    // Check for dangerous prototype properties
-    if (
-      Object.prototype.hasOwnProperty.call(objAsRecord, "__proto__") ||
-      Object.prototype.hasOwnProperty.call(objAsRecord, "constructor") ||
-      Object.prototype.hasOwnProperty.call(objAsRecord, "prototype")
-    ) {
-      return true;
-    }
-
-    // Recursively check all properties
-    for (const key in objAsRecord) {
-      if (Object.prototype.hasOwnProperty.call(objAsRecord, key)) {
-        if (hasPrototypePollution(objAsRecord[key], visited)) {
-          return true;
-        }
-      }
-    }
-  }
-
-  return false;
-}
-
 function getObjectDepth(obj: unknown, currentDepth = 0): number {
   if (currentDepth > 20) return currentDepth; // Early exit to prevent stack overflow
   if (obj === null || typeof obj !== "object") return currentDepth;
@@ -386,9 +365,10 @@ function findSuspiciousKeys(
       if (Object.prototype.hasOwnProperty.call(objAsRecord, key)) {
         const currentPath = path ? `${path}.${key}` : key;
 
+        // Check for exact match against suspicious keys (not substring)
         if (
-          suspiciousKeys.some((suspicious) =>
-            key.toLowerCase().includes(suspicious.toLowerCase()),
+          suspiciousKeys.some(
+            (suspicious) => key.toLowerCase() === suspicious.toLowerCase(),
           )
         ) {
           found.push(currentPath);

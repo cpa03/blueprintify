@@ -2,7 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
-import { Tooltip } from "../Tooltip";
+import { SmartTooltip as Tooltip } from "../SmartTooltip";
 
 export type ViewMode = "edit" | "preview" | "split";
 

@@ -82,7 +82,7 @@ async function runLighthouse() {
   let chrome;
   try {
     chrome = await chromeLauncher.launch({ 
-      chromeFlags: ['--headless', '--no-sandbox', '--disable-gpu'],
+      chromeFlags: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1920,1080'],
       chromePath: CHROME_PATH
     });
     
@@ -91,6 +91,7 @@ async function runLighthouse() {
       output: 'json',
       onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'],
       port: chrome.port,
+      preset: 'desktop'
     };
     
     const runnerResult = await lighthouse(TARGET_URL, options);

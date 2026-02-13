@@ -123,12 +123,12 @@ describe("StepIndicator", () => {
     expect(reviewButton).toHaveClass(
       "bg-dark-800/50",
       "border-dark-700",
-      "text-dark-400",
+      "text-dark-300",
     );
     expect(generatingButton).toHaveClass(
       "bg-dark-800/50",
       "border-dark-700",
-      "text-dark-400",
+      "text-dark-300",
     );
   });
 

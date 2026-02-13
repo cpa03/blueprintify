@@ -245,10 +245,8 @@ describe("Security Utilities", () => {
     });
 
     it("should reject JSON with prototype pollution", () => {
-      const maliciousJson = JSON.stringify({
-        __proto__: { admin: true },
-        name: "test",
-      });
+      // Manually construct JSON with __proto__ since JSON.stringify ignores it
+      const maliciousJson = '{"__proto__":{"admin":true},"name":"test"}';
       const result = validateJSONSecurity(maliciousJson);
       expect(result.isValid).toBe(false);
       expect(result.error).toContain("prototype pollution");

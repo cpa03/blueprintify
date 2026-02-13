@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useEditorStore } from "../../store";
 import { useWizardStore } from "../../store";
 import { ANIMATION } from "../../config/constants";
-import { KeyboardShortcutTooltip } from "../Tooltip";
+import { KeyboardShortcutTooltip } from "../SmartTooltip";
 
 export function StepGenerating() {
   const progress = useEditorStore((s) => s.generationProgress);
