@@ -102,3 +102,9 @@ temp/
 *.sqlite
 *.sqlite3
 *.db
+
+# Generated audit reports
+audit-reports/
+
+# Sisyphus session files
+.sisyphus/
