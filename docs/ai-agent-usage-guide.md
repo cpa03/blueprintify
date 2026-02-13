@@ -29,7 +29,7 @@ GitHub Actions Workflow
 
 **Responsibilities**:
 
-- Evaluates project documentation (`docs/blueprint.md`, `docs/roadmap.md`, `docs/bug.md`, `docs/feature.md`)
+- Evaluates project documentation (`docs/blueprint.md`, `docs/roadmap.md`, `docs/bugs.md`, `docs/features.md`)
 - Sets task priorities (HIGH, MEDIUM, LOW)
 - Creates and updates `docs/task.md` with role assignments
 - Ensures tasks are properly scoped
@@ -127,7 +127,6 @@ GitHub Actions Workflow
 
 - Reviews all PRs for compliance
 - Blocks PRs that violate rules
-- References `docs/repo-rules.md`
 - Provides feedback on violations
 
 **Rejection Criteria**:

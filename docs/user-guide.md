@@ -533,4 +533,4 @@ A: Yes! Use the current state of your project as input to get recommendations fo
 
 ---
 
-For additional help or questions, please visit our [support page](./support.md) or create an issue in the GitHub repository.
+For additional help or questions, please create an issue in the GitHub repository.

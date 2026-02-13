@@ -212,7 +212,6 @@ The system includes reusable skills for common tasks:
 
 - **[User Guide](./docs/user-guide.md)** - Complete guide for using the blueprint generation workflow
 - **[API Documentation](./docs/api-documentation.md)** - Comprehensive API reference and examples
-- **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute to the project
 
 ### 🛠️ Development Resources
 
