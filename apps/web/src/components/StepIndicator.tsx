@@ -67,7 +67,7 @@ export function StepIndicator() {
           <div key={step.key} className="flex items-center">
             <motion.button
               onClick={() => handleStepClick(step.key)}
-              disabled={false}
+              disabled={!isClickable}
               title={
                 isClickable
                   ? `${step.label} (Alt+${step.shortcut})`

@@ -28,15 +28,15 @@ vi.mock("./editor/EditorHeader", () => ({
   )),
 }));
 
-vi.mock("@uiw/react-codemirror", () => ({
-  default: vi.fn(({ value }) => (
+vi.mock("./LazyCodeMirror", () => ({
+  LazyCodeMirror: vi.fn(({ value }) => (
     <textarea data-testid="codemirror" value={value} readOnly />
   )),
 }));
 
-vi.mock("react-markdown", () => ({
-  default: vi.fn(({ children }) => (
-    <div data-testid="markdown-preview">{children}</div>
+vi.mock("./LazyMarkdownRenderer", () => ({
+  LazyMarkdownRenderer: vi.fn(({ content }) => (
+    <div data-testid="markdown-preview">{content}</div>
   )),
 }));
 
@@ -119,12 +119,13 @@ describe("Editor", () => {
   it("renders empty state when no content and not generating", () => {
     render(<Editor />);
     expect(
-      screen.getByText("Your generated content will appear here"),
+      screen.getByText("Your blueprint is waiting to be created"),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Complete the wizard to get started"),
+      screen.getByText(
+        "Complete the wizard steps to generate your project documentation",
+      ),
     ).toBeInTheDocument();
-    expect(screen.getByText("📝")).toBeInTheDocument();
   });
 
   it("renders editor header", () => {
