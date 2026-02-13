@@ -75,7 +75,6 @@ The Blueprintify project follows an AI-driven development workflow that combines
     - Files outside task scope
     - Added files/folders without task
     - Documentation added without Architect permission
-  - References `docs/repo-rules.md`
   - Comments on rejections
 
 ### 4. Integration & Deployment
