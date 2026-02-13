@@ -10,6 +10,12 @@ vi.mock("../store", () => ({
   useEditorStore: vi.fn(),
   useWizardStore: vi.fn(),
   resetAllStores: vi.fn(),
+  useToast: vi.fn(() => ({
+    success: vi.fn(),
+    info: vi.fn(),
+    warning: vi.fn(),
+    error: vi.fn(),
+  })),
 }));
 
 vi.mock("./editor/EditorHeader", () => ({
@@ -45,6 +51,13 @@ vi.mock("../config/constants", () => ({
     COPY_FEEDBACK: 2000,
   },
   DEFAULT_PROJECT_NAME: "Test Project",
+  WIZARD_STEPS: [
+    { key: "info", label: "Project Info", icon: "📝", shortcut: "1" },
+    { key: "stack", label: "Tech Stack", icon: "⚙️", shortcut: "2" },
+    { key: "features", label: "Features", icon: "✨", shortcut: "3" },
+    { key: "review", label: "Review", icon: "👀", shortcut: "4" },
+    { key: "generating", label: "Generate", icon: "🚀", shortcut: "5" },
+  ],
 }));
 
 const mockEditorStore: EditorStore = {
