@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import type { WizardStep } from "@blueprint/shared";
 import { useWizardStore } from "../store";
 import { WIZARD_STEPS } from "../config/constants";
@@ -14,6 +14,7 @@ const STEPS: {
 export function StepIndicator() {
   const currentStep = useWizardStore((s) => s.currentStep);
   const setStep = useWizardStore((s) => s.setStep);
+  const [shakingStep, setShakingStep] = useState<string | null>(null);
 
   const currentIndex = STEPS.findIndex((s) => s.key === currentStep);
 
@@ -23,6 +24,18 @@ export function StepIndicator() {
       return targetIndex <= currentIndex && stepKey !== "generating";
     },
     [currentIndex],
+  );
+
+  const handleStepClick = useCallback(
+    (stepKey: WizardStep) => {
+      if (canNavigateTo(stepKey)) {
+        setStep(stepKey);
+      } else {
+        setShakingStep(stepKey);
+        setTimeout(() => setShakingStep(null), 400);
+      }
+    },
+    [canNavigateTo, setStep],
   );
 
   useEffect(() => {
@@ -48,12 +61,13 @@ export function StepIndicator() {
         const isActive = step.key === currentStep;
         const isCompleted = index < currentIndex;
         const isClickable = canNavigateTo(step.key);
+        const isShaking = shakingStep === step.key;
 
         return (
           <div key={step.key} className="flex items-center">
             <motion.button
-              onClick={() => isClickable && setStep(step.key)}
-              disabled={!isClickable}
+              onClick={() => handleStepClick(step.key)}
+              disabled={false}
               title={
                 isClickable
                   ? `${step.label} (Alt+${step.shortcut})`
@@ -71,6 +85,7 @@ export function StepIndicator() {
                       : "bg-dark-800/50 border border-dark-700 text-dark-300 focus-visible:ring-2 focus-visible:ring-dark-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                 }
                 ${isClickable ? "cursor-pointer hover:bg-dark-700" : "cursor-default"}
+                ${isShaking ? "shake-animation" : ""}
               `}
               whileHover={isClickable ? { scale: 1.02 } : undefined}
               whileTap={isClickable ? { scale: 0.98 } : undefined}
