@@ -4,6 +4,10 @@ import type {
   BlueprintRequestSchema,
   RefineRequestSchema,
   TaskGenerationRequestSchema,
+  ExportRequestSchema,
+  ImportRequestSchema,
+  StorageQuotaSchema,
+  StorageClearRequestSchema,
 } from "@blueprint/shared";
 
 export interface Env {
@@ -31,6 +35,19 @@ export type ValidatedContext<T extends z.ZodSchema> = Context<{
 export type BlueprintContext = ValidatedContext<typeof BlueprintRequestSchema>;
 export type RefineContext = ValidatedContext<typeof RefineRequestSchema>;
 export type TasksContext = ValidatedContext<typeof TaskGenerationRequestSchema>;
+export type ExportContext = ValidatedContext<typeof ExportRequestSchema>;
+export type ImportContext = ValidatedContext<typeof ImportRequestSchema>;
+export type StorageQuotaContext = ValidatedContext<typeof StorageQuotaSchema>;
+export type StorageClearContext = ValidatedContext<
+  typeof StorageClearRequestSchema
+>;
 
 // Union type for all controller contexts
-export type ControllerContext = BlueprintContext | RefineContext | TasksContext;
+export type ControllerContext =
+  | BlueprintContext
+  | RefineContext
+  | TasksContext
+  | ExportContext
+  | ImportContext
+  | StorageQuotaContext
+  | StorageClearContext;

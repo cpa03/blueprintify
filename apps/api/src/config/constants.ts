@@ -39,6 +39,26 @@ export const API_ENDPOINTS = {
     method: "POST",
     description: "Refine content",
   },
+  EXPORT: {
+    path: "/export",
+    method: "POST",
+    description: "Export project",
+  },
+  IMPORT: {
+    path: "/import",
+    method: "POST",
+    description: "Import project",
+  },
+  STORAGE_QUOTA: {
+    path: "/storage/quota",
+    method: "GET",
+    description: "Get storage quota",
+  },
+  STORAGE_CLEAR: {
+    path: "/storage/clear",
+    method: "DELETE",
+    description: "Clear storage",
+  },
 } as const;
 
 // HTTP Status codes for retry logic
@@ -229,4 +249,7 @@ export const ROUTE_PATHS = {
   GENERATE: "/generate",
   TASKS: "/tasks",
   REFINE: "/refine",
+  EXPORT: "/export",
+  IMPORT: "/import",
+  STORAGE: "/storage",
 } as const;
