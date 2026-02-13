@@ -6,7 +6,6 @@ import {
   AuthenticationError,
   NotFoundError,
   ConfigurationError,
-  InternalServerError,
 } from "../errors";
 import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import type { ErrorResponse } from "../errors";
