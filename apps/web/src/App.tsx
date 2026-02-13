@@ -7,7 +7,7 @@ import { Wizard } from "./components/Wizard";
 import { ToastContainer } from "./components/Toast";
 import { useWizardStore, useEditorStore } from "./store";
 import { UI_CONTENT } from "./config/constants";
-import { KeyboardShortcutTooltip } from "./components/Tooltip";
+import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 
 // Lazy load Editor to reduce initial bundle size
 const Editor = lazy(() =>
