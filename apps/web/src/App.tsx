@@ -55,13 +55,9 @@ function App() {
       {/* Main Content */}
       <main className="flex-1 pt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-          {/* Hero section (only on first view) */}
+          {/* Hero section (only on first view) - Critical LCP element, no opacity animation */}
           {showTemplates && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center mb-12"
-            >
+            <div className="text-center mb-12">
               <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
                 {UI_CONTENT.HERO.TITLE_1}
                 <span className="text-gradient">
@@ -76,16 +72,17 @@ function App() {
               <p className="text-lg text-dark-400 max-w-2xl mx-auto">
                 {UI_CONTENT.HERO.SUBTITLE}
               </p>
-            </motion.div>
+            </div>
           )}
 
           {/* Templates */}
           <AnimatePresence>
             {showTemplates && (
               <motion.div
-                initial={{ opacity: 0 }}
+                initial={{ opacity: 0.95 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
               >
                 <TemplateGrid />
                 <div className="text-center text-dark-500 my-8">
@@ -101,22 +98,22 @@ function App() {
           {/* Split Pane Layout */}
           <div className="flex flex-col lg:flex-row gap-6 min-h-[600px]">
             {/* Wizard Panel */}
-            <motion.div
-              layout
+            <div
               className={`glass-card overflow-hidden transition-all duration-300 ${
                 showEditor ? "w-full lg:w-1/2" : "w-full"
               }`}
             >
               <Wizard />
-            </motion.div>
+            </div>
 
             {/* Editor Panel */}
             <AnimatePresence>
               {showEditor && (
                 <motion.div
-                  initial={{ opacity: 0, x: 20 }}
+                  initial={{ opacity: 0.95, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.2 }}
                   className="w-full lg:w-1/2 glass-card overflow-hidden relative"
                 >
                   <button
@@ -161,7 +158,7 @@ function App() {
 
                   <Suspense
                     fallback={
-                      <div className="h-full flex items-center justify-center text-dark-500">
+                      <div className="h-full min-h-[400px] flex items-center justify-center text-dark-500">
                         <div className="flex flex-col items-center gap-2">
                           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
                           <span>{UI_CONTENT.EDITOR.LOADING}</span>
