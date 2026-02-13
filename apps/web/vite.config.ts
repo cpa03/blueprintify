@@ -1,9 +1,17 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { compression } from "vite-plugin-compression2";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    compression({
+      algorithms: ["gzip", "brotliCompress"],
+      exclude: [/\.(br)$/, /\.(gz)$/],
+      threshold: 1024,
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -70,9 +78,15 @@ export default defineConfig({
       compress: {
         drop_console: true,
         drop_debugger: true,
+        pure_funcs: ["console.log", "console.info", "console.debug"],
+        passes: 2,
+      },
+      format: {
+        comments: false,
       },
     },
     reportCompressedSize: true,
+    emptyOutDir: true,
   },
   test: {
     globals: true,
