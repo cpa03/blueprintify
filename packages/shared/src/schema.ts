@@ -135,6 +135,45 @@ export const SuccessResponseSchema = z.object({
   data: z.unknown(),
 });
 
+// ===== Export/Import Schemas (M2) =====
+export const ExportFormatSchema = z.enum(["json", "zip", "markdown"]);
+
+export const ExportRequestSchema = z.object({
+  projectName: z.string().min(1, "Project name is required"),
+  blueprint: z.string().min(1, "Blueprint content is required"),
+  tasks: z.string().optional(),
+  format: ExportFormatSchema.default("markdown"),
+  includeMetadata: z.boolean().default(true),
+});
+
+export const ImportRequestSchema = z.object({
+  data: z.string().min(1, "Import data is required"),
+  format: ExportFormatSchema.default("json"),
+  overwrite: z.boolean().default(false),
+});
+
+export const ImportResultSchema = z.object({
+  projectName: z.string(),
+  blueprint: z.string(),
+  tasks: z.string().optional(),
+  importedAt: z.string(),
+  warnings: z.array(z.string()).optional(),
+});
+
+// ===== Storage Schemas (M2) =====
+export const StorageQuotaSchema = z.object({
+  used: z.number().int().min(0),
+  total: z.number().int().min(0),
+  percentage: z.number().min(0).max(100),
+  projects: z.number().int().min(0),
+});
+
+export const StorageClearRequestSchema = z.object({
+  confirm: z.boolean().refine((val) => val === true, {
+    message: "Must confirm deletion",
+  }),
+});
+
 // ===== Predefined Tech Stack Options =====
 export const TECH_STACK_OPTIONS = {
   frontend: [

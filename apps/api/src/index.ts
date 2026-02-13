@@ -6,6 +6,9 @@ import { prettyJSON } from "hono/pretty-json";
 import generateRoute from "./routes/generate";
 import tasksRoute from "./routes/tasks";
 import refineRoute from "./routes/refine";
+import exportRoute from "./routes/export";
+import importRoute from "./routes/import";
+import storageRoute from "./routes/storage";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 import { rateLimit, rateLimitConfigs } from "./middleware/rateLimit";
 import { apiKeyAuth } from "./middleware/auth";
@@ -45,6 +48,10 @@ app.get("/", (c) => {
       generate: `${API_ENDPOINTS.GENERATE.method} ${API_ENDPOINTS.GENERATE.path}`,
       tasks: `${API_ENDPOINTS.TASKS.method} ${API_ENDPOINTS.TASKS.path}`,
       refine: `${API_ENDPOINTS.REFINE.method} ${API_ENDPOINTS.REFINE.path}`,
+      export: `${API_ENDPOINTS.EXPORT.method} ${API_ENDPOINTS.EXPORT.path}`,
+      import: `${API_ENDPOINTS.IMPORT.method} ${API_ENDPOINTS.IMPORT.path}`,
+      storageQuota: `${API_ENDPOINTS.STORAGE_QUOTA.method} ${API_ENDPOINTS.STORAGE_QUOTA.path}`,
+      storageClear: `${API_ENDPOINTS.STORAGE_CLEAR.method} ${API_ENDPOINTS.STORAGE_CLEAR.path}`,
     },
   });
 });
@@ -52,6 +59,9 @@ app.get("/", (c) => {
 app.route(ROUTE_PATHS.GENERATE, generateRoute);
 app.route(ROUTE_PATHS.TASKS, tasksRoute);
 app.route(ROUTE_PATHS.REFINE, refineRoute);
+app.route(ROUTE_PATHS.EXPORT, exportRoute);
+app.route(ROUTE_PATHS.IMPORT, importRoute);
+app.route(ROUTE_PATHS.STORAGE, storageRoute);
 
 app.onError(errorHandler);
 app.notFound(notFoundHandler);

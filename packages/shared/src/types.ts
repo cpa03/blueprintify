@@ -11,6 +11,12 @@ import {
   TaskStatusSchema,
   TaskPrioritySchema,
   TaskItemSchema,
+  ExportFormatSchema,
+  ExportRequestSchema,
+  ImportRequestSchema,
+  ImportResultSchema,
+  StorageQuotaSchema,
+  StorageClearRequestSchema,
 } from "./schema";
 
 // ===== Inferred Types from Zod Schemas =====
@@ -25,6 +31,14 @@ export type GenerationResult = z.infer<typeof GenerationResultSchema>;
 export type TaskStatus = z.infer<typeof TaskStatusSchema>;
 export type TaskPriority = z.infer<typeof TaskPrioritySchema>;
 export type TaskItem = z.infer<typeof TaskItemSchema>;
+
+// ===== Export/Import Types (M2) =====
+export type ExportFormat = z.infer<typeof ExportFormatSchema>;
+export type ExportRequest = z.infer<typeof ExportRequestSchema>;
+export type ImportRequest = z.infer<typeof ImportRequestSchema>;
+export type ImportResult = z.infer<typeof ImportResultSchema>;
+export type StorageQuota = z.infer<typeof StorageQuotaSchema>;
+export type StorageClearRequest = z.infer<typeof StorageClearRequestSchema>;
 
 // ===== Wizard Step Types =====
 export type WizardStep =
