@@ -21,11 +21,20 @@ vi.mock("../config/constants", () => ({
 
 vi.mock("framer-motion", () => ({
   motion: {
-    button: vi.fn(({ children, onClick, disabled, ...props }) => (
-      <button {...props} onClick={onClick} disabled={disabled}>
-        {children}
-      </button>
-    )),
+    button: vi.fn(
+      ({
+        children,
+        onClick,
+        disabled,
+        whileHover: _whileHover,
+        whileTap: _whileTap,
+        ...props
+      }) => (
+        <button {...props} onClick={onClick} disabled={disabled}>
+          {children}
+        </button>
+      ),
+    ),
   },
 }));
 
