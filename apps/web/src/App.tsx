@@ -8,6 +8,7 @@ import { ToastContainer } from "./components/Toast";
 import { useWizardStore, useEditorStore } from "./store";
 import { UI_CONTENT } from "./config/constants";
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
+import { RippleButton } from "./components/RippleButton";
 
 // Lazy load Editor to reduce initial bundle size
 const Editor = lazy(() =>
@@ -180,28 +181,33 @@ function App() {
               description="Toggle editor"
               position="left"
             >
-              <motion.button
+              <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                onClick={() => setShowEditor(true)}
-                className="fixed bottom-6 right-6 btn-primary shadow-2xl"
-                aria-label={`${UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON} (Cmd/Ctrl + E)`}
               >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                <RippleButton
+                  onClick={() => setShowEditor(true)}
+                  className="fixed bottom-6 right-6 btn-primary shadow-2xl"
+                  ariaLabel={`${UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON} (Cmd/Ctrl + E)`}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                  />
-                </svg>
-                {UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON}
-              </motion.button>
+                  <span className="flex items-center">
+                    <svg
+                      className="w-5 h-5 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                    {UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON}
+                  </span>
+                </RippleButton>
+              </motion.div>
             </KeyboardShortcutTooltip>
           )}
         </div>
