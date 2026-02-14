@@ -107,6 +107,3 @@ temp/
 # Generated audit reports
 audit-reports/
 lighthouse-report.json
-
-# Sisyphus session files
-.sisyphus/
