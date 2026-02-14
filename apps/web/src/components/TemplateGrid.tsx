@@ -65,7 +65,6 @@ function TemplateGridComponent() {
               onKeyDown={(e) => handleKeyDown(e, template)}
               disabled={selectedId !== null}
               aria-busy={isSelected && isLoading}
-              aria-label={`${template.name} template${isSelected ? " - selected" : ""}`}
               className={`
                 glass-card p-5 text-left transition-all duration-300 group relative card-glow-hover
                 ${
