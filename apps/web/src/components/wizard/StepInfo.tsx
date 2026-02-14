@@ -9,6 +9,7 @@ import {
   VALIDATION_MESSAGES,
 } from "../../config/constants";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
+import { RippleButton } from "../RippleButton";
 
 export function StepInfo() {
   const projectNameInputRef = useRef<HTMLInputElement>(null);
@@ -447,7 +448,7 @@ export function StepInfo() {
 
         {/* Action Buttons */}
         <div className="flex justify-end pt-4">
-          <button
+          <RippleButton
             type="submit"
             disabled={!canProceed}
             className={`btn-primary flex items-center gap-2 ${isShaking ? "shake-animation" : ""}`}
@@ -467,7 +468,7 @@ export function StepInfo() {
                 d="M9 5l7 7-7 7"
               />
             </svg>
-          </button>
+          </RippleButton>
         </div>
       </form>
     </motion.div>
