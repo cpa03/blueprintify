@@ -1,4 +1,11 @@
-import { useState, Suspense, lazy, useEffect, useCallback } from "react";
+import {
+  useState,
+  Suspense,
+  lazy,
+  useEffect,
+  useCallback,
+  useRef,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "./components/Header";
 import { TemplateGrid } from "./components/TemplateGrid";
@@ -16,13 +23,16 @@ const Editor = lazy(() =>
 );
 
 function App() {
-  const [showEditor, setShowEditor] = useState(true);
   const currentStep = useWizardStore((s) => s.currentStep);
   const hasContent = useEditorStore(
     (s) => s.blueprintContent.length > 0 || s.tasksContent.length > 0,
   );
   const isGenerating = useEditorStore((s) => s.isGenerating);
   const cancelGeneration = useEditorStore((s) => s.cancelGeneration);
+
+  const [showEditor, setShowEditor] = useState(hasContent || isGenerating);
+  const previousHasContentRef = useRef(hasContent);
+  const previousIsGeneratingRef = useRef(isGenerating);
 
   // Show templates only on first step with no content
   const showTemplates = currentStep === "info" && !hasContent;
@@ -48,6 +58,24 @@ function App() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
+
+  useEffect(() => {
+    const hasContentChanged = hasContent !== previousHasContentRef.current;
+    const isGeneratingChanged =
+      isGenerating !== previousIsGeneratingRef.current;
+
+    if (
+      (hasContentChanged || isGeneratingChanged) &&
+      (hasContent || isGenerating) &&
+      !showEditor
+    ) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShowEditor(true);
+    }
+
+    previousHasContentRef.current = hasContent;
+    previousIsGeneratingRef.current = isGenerating;
+  }, [hasContent, isGenerating, showEditor]);
 
   return (
     <div className="min-h-screen flex flex-col">
