@@ -17,6 +17,58 @@ const toastStyles: Record<ToastType, string> = {
   info: TOAST_CONFIG.STYLES.INFO,
 };
 
+// Circular progress ring component
+interface ProgressRingProps {
+  progress: number;
+  size?: number;
+  strokeWidth?: number;
+  color?: string;
+}
+
+function ProgressRing({
+  progress,
+  size = 28,
+  strokeWidth = 2,
+  color = "currentColor",
+}: ProgressRingProps) {
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const strokeDashoffset = circumference - (progress / 100) * circumference;
+
+  return (
+    <svg
+      width={size}
+      height={size}
+      className="absolute pointer-events-none"
+      style={{ transform: "rotate(-90deg)" }}
+    >
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
+        fill="none"
+        stroke={color}
+        strokeWidth={strokeWidth}
+        strokeOpacity={0.15}
+      />
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
+        fill="none"
+        stroke={color}
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        strokeDasharray={circumference}
+        strokeDashoffset={strokeDashoffset}
+        style={{
+          transition: "stroke-dashoffset 0.1s linear",
+        }}
+      />
+    </svg>
+  );
+}
+
 interface ToastItemProps {
   toast: Toast;
   onRemove: (id: string) => void;
@@ -141,8 +193,11 @@ const ToastItem = forwardRef<HTMLDivElement, ToastItemProps>(function ToastItem(
         )}
       </AnimatePresence>
 
-      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-current/20 flex items-center justify-center font-bold text-sm">
-        {toastIcons[toast.type]}
+      <span className="relative flex-shrink-0 w-7 h-7 flex items-center justify-center">
+        <ProgressRing progress={progress} size={28} strokeWidth={2} />
+        <span className="w-6 h-6 rounded-full bg-current/20 flex items-center justify-center font-bold text-sm relative z-10">
+          {toastIcons[toast.type]}
+        </span>
       </span>
       <p className="text-sm font-medium flex-1">{toast.message}</p>
       <button
