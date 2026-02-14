@@ -1,7 +1,7 @@
 import React, { useState, useCallback, memo } from "react";
 import ReactMarkdown from "react-markdown";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import { motion, AnimatePresence } from "framer-motion";

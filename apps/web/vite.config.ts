@@ -30,7 +30,9 @@ export default defineConfig({
   build: {
     outDir: "dist",
     sourcemap: false,
-    modulePreload: false,
+    modulePreload: {
+      polyfill: true,
+    },
     rollupOptions: {
       output: {
         manualChunks: {
@@ -81,11 +83,14 @@ export default defineConfig({
         drop_debugger: true,
         pure_funcs: ["console.log", "console.info", "console.debug"],
         passes: 2,
+        dead_code: true,
+        unused: true,
       },
       format: {
         comments: false,
       },
     },
+    cssMinify: true,
     reportCompressedSize: true,
     emptyOutDir: true,
   },
