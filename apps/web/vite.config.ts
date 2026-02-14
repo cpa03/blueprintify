@@ -34,6 +34,11 @@ export default defineConfig({
       polyfill: true,
     },
     rollupOptions: {
+      treeshake: {
+        moduleSideEffects: false,
+        propertyReadSideEffects: false,
+        tryCatchDeoptimization: false,
+      },
       output: {
         manualChunks: {
           vendor: ["react", "react-dom"],
@@ -54,12 +59,6 @@ export default defineConfig({
           ],
           syntaxHighlighter: ["react-syntax-highlighter"],
           markdown: ["react-markdown", "remark-gfm", "rehype-highlight"],
-          ui: [
-            "@radix-ui/react-dialog",
-            "@radix-ui/react-select",
-            "@radix-ui/react-tabs",
-            "@radix-ui/react-tooltip",
-          ],
           animation: ["framer-motion"],
           zustand: ["zustand"],
         },
@@ -85,14 +84,26 @@ export default defineConfig({
         passes: 2,
         dead_code: true,
         unused: true,
+        hoist_funs: true,
+        hoist_vars: true,
+        if_return: true,
+        join_vars: true,
+        typeofs: true,
       },
       format: {
         comments: false,
+      },
+      mangle: {
+        safari10: true,
       },
     },
     cssMinify: true,
     reportCompressedSize: true,
     emptyOutDir: true,
+    target: "es2020",
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
   },
   test: {
     globals: true,
