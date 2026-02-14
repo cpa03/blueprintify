@@ -6,7 +6,9 @@ vi.mock("framer-motion", () => ({
   motion: {
     div: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
     nav: vi.fn(({ children, ...props }) => <nav {...props}>{children}</nav>),
+    span: vi.fn(({ children, ...props }) => <span {...props}>{children}</span>),
   },
+  AnimatePresence: vi.fn(({ children }) => <>{children}</>),
 }));
 
 describe("Header", () => {
@@ -39,14 +41,14 @@ describe("Header", () => {
     expect(logoIcon).toHaveAttribute("viewBox", "0 0 24 24");
   });
 
-  it("renders the GitHub link", () => {
+  it("renders the GitHub button", () => {
     render(<Header />);
 
-    const githubLink = screen.getByRole("link", { name: /github/i });
-    expect(githubLink).toBeInTheDocument();
-    expect(githubLink).toHaveAttribute("href", "https://github.com");
-    expect(githubLink).toHaveAttribute("target", "_blank");
-    expect(githubLink).toHaveAttribute("rel", "noopener noreferrer");
+    const githubButton = screen.getByRole("button", {
+      name: /view on github/i,
+    });
+    expect(githubButton).toBeInTheDocument();
+    expect(githubButton).toHaveAttribute("aria-label", "View on GitHub");
   });
 
   it("renders GitHub icon", () => {
