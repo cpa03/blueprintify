@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useCallback, useState } from "react";
 import type { WizardStep } from "@blueprint/shared";
-import { useWizardStore } from "../store";
+import { useWizardStore, useToast } from "../store";
 import { WIZARD_STEPS } from "../config/constants";
 
 const STEPS: {
@@ -15,6 +15,7 @@ export function StepIndicator() {
   const currentStep = useWizardStore((s) => s.currentStep);
   const setStep = useWizardStore((s) => s.setStep);
   const [shakingStep, setShakingStep] = useState<string | null>(null);
+  const toast = useToast();
 
   const currentIndex = STEPS.findIndex((s) => s.key === currentStep);
 
@@ -27,15 +28,17 @@ export function StepIndicator() {
   );
 
   const handleStepClick = useCallback(
-    (stepKey: WizardStep) => {
+    (stepKey: WizardStep, stepLabel: string) => {
       if (canNavigateTo(stepKey)) {
         setStep(stepKey);
       } else {
         setShakingStep(stepKey);
         setTimeout(() => setShakingStep(null), 400);
+        // Provide helpful feedback for locked steps
+        toast.info(`Complete previous steps to unlock "${stepLabel}"`);
       }
     },
-    [canNavigateTo, setStep],
+    [canNavigateTo, setStep, toast],
   );
 
   useEffect(() => {
@@ -66,7 +69,7 @@ export function StepIndicator() {
         return (
           <div key={step.key} className="flex items-center">
             <motion.button
-              onClick={() => handleStepClick(step.key)}
+              onClick={() => handleStepClick(step.key, step.label)}
               disabled={!isClickable}
               title={
                 isClickable
