@@ -239,9 +239,9 @@ async function apiCallWithRetry(
       });
 
       if (!response.ok) {
-        const errorData = await response
+        const errorData = (await response
           .json()
-          .catch(() => ({ error: errorMessageDefault }));
+          .catch(() => ({ error: errorMessageDefault }))) as { error: string };
         const errorMessage = errorData.error || errorMessageDefault;
 
         if (

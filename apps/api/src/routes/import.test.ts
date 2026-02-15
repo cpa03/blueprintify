@@ -102,7 +102,16 @@ describe("POST /import", () => {
     );
 
     expect(res.status).toBe(200);
-    const data = await res.json();
+    const data = (await res.json()) as {
+      success: boolean;
+      data: {
+        projectName: string;
+        blueprint: string;
+        tasks: string;
+        importedAt: string;
+        overwrite: boolean;
+      };
+    };
     expect(data).toHaveProperty("success", true);
     expect(data.data).toHaveProperty("projectName", "Test Project");
     expect(data.data).toHaveProperty("blueprint", "# Test Blueprint");
@@ -132,7 +141,11 @@ describe("POST /import", () => {
     );
 
     expect(res.status).toBe(200);
-    const data = await res.json();
+    const data = (await res.json()) as {
+      data: {
+        warnings: string[];
+      };
+    };
     expect(data.data).toHaveProperty("warnings");
     expect(data.data.warnings[0]).toContain("Version mismatch");
   });
@@ -168,7 +181,14 @@ Details here
     );
 
     expect(res.status).toBe(200);
-    const data = await res.json();
+    const data = (await res.json()) as {
+      success: boolean;
+      data: {
+        projectName: string;
+        blueprint: string;
+        tasks: string;
+      };
+    };
     expect(data).toHaveProperty("success", true);
     expect(data.data).toHaveProperty("projectName", "My Project");
     expect(data.data.blueprint).toContain("# Architecture");
@@ -220,7 +240,11 @@ Architecture details here
     );
 
     expect(res.status).toBe(200);
-    const data = await res.json();
+    const data = (await res.json()) as {
+      data: {
+        projectName: string;
+      };
+    };
     expect(data.data).toHaveProperty("projectName", "Imported Project");
   });
 });

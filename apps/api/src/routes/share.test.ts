@@ -79,7 +79,11 @@ describe("POST /share", () => {
     );
 
     expect(res.status).toBe(200);
-    const data = await res.json();
+    const data = (await res.json()) as {
+      id: string;
+      url: string;
+      expiresAt: string;
+    };
     expect(data).toHaveProperty("id");
     expect(data).toHaveProperty("url");
     expect(data).toHaveProperty("expiresAt");
@@ -124,7 +128,9 @@ describe("POST /share", () => {
     );
 
     expect(res.status).toBe(200);
-    const data = await res.json();
+    const data = (await res.json()) as {
+      id: string;
+    };
     expect(data).toHaveProperty("id");
     expect(data.id).toHaveLength(12);
   });
@@ -140,7 +146,10 @@ describe("GET /share/:id", () => {
     const res = await app.request("/invalid-id", {}, env);
 
     expect(res.status).toBe(400);
-    const data = await res.json();
+    const data = (await res.json()) as {
+      error: string;
+      message: string;
+    };
     expect(data).toHaveProperty("error");
     expect(data).toHaveProperty("message");
     expect(data.message).toContain("Invalid share ID format");
