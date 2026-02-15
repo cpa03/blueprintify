@@ -5,8 +5,41 @@
 # Required: Your OpenAI API key
 OPENAI_API_KEY=your_openai_api_key_here
 
-# Optional: Custom OpenAI API base URL (for proxy services)
+# AI Service Configuration
 # OPENAI_BASE_URL=https://api.openai.com/v1
-
-# Optional: Model to use (defaults to gpt-4o-mini)
 # OPENAI_MODEL=gpt-4o-mini
+# OPENAI_TIMEOUT_MS=60000
+# OPENAI_MAX_TOKENS=4000
+# OPENAI_TEMPERATURE=0.7
+
+# API Configuration
+# API_VERSION=1.0.0
+# CORS_ORIGIN=*
+# CORS_MAX_AGE=86400
+
+# Rate Limiting
+# RATE_LIMIT_WINDOW_MS=60000
+# RATE_LIMIT_STRICT_MAX=10
+# RATE_LIMIT_STANDARD_MAX=60
+# RATE_LIMIT_LENIENT_MAX=120
+
+# Storage Configuration
+# STORAGE_QUOTA_MB=5
+
+# Circuit Breaker
+# CIRCUIT_BREAKER_FAILURE_THRESHOLD=5
+# CIRCUIT_BREAKER_RESET_TIMEOUT_MS=60000
+# CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS=3
+
+# Retry Configuration
+# RETRY_MAX_RETRIES=3
+# RETRY_INITIAL_DELAY_MS=1000
+# RETRY_BACKOFF_FACTOR=2
+# RETRY_MAX_DELAY_MS=10000
+
+# External URLs
+# PROJECT_HOMEPAGE_URL=https://blueprint-generator.pages.dev
+# GITHUB_URL=https://github.com
+
+# Security
+# API_KEY=your_api_key_here
