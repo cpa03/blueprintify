@@ -1,3 +1,5 @@
+/// <reference types="@cloudflare/workers-types" />
+
 import type { Context } from "hono";
 import type { z } from "zod";
 import type {
@@ -16,6 +18,10 @@ export interface Env {
   OPENAI_MODEL?: string;
   API_KEY?: string;
   ENVIRONMENT?: "development" | "production" | "test";
+  DB: D1Database;
+  CORS_ORIGIN?: string;
+  CACHE: KVNamespace;
+  BACKGROUND_QUEUE: Queue;
 }
 
 // Base context type with environment bindings

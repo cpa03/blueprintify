@@ -59,6 +59,21 @@ export const API_ENDPOINTS = {
     method: "DELETE",
     description: "Clear storage",
   },
+  SHARE_CREATE: {
+    path: "/share",
+    method: "POST",
+    description: "Create shareable blueprint link",
+  },
+  SHARE_GET: {
+    path: "/share/:id",
+    method: "GET",
+    description: "Get shared blueprint by ID",
+  },
+  SHARE_DELETE: {
+    path: "/share/:id",
+    method: "DELETE",
+    description: "Delete shared blueprint",
+  },
 } as const;
 
 // HTTP Status codes for retry logic
@@ -252,4 +267,5 @@ export const ROUTE_PATHS = {
   EXPORT: "/export",
   IMPORT: "/import",
   STORAGE: "/storage",
+  SHARE: "/share",
 } as const;

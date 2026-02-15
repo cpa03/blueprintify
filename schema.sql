@@ -100,6 +100,15 @@ CREATE TABLE IF NOT EXISTS analytics (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
+CREATE TABLE IF NOT EXISTS blueprint_shares (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    blueprint TEXT NOT NULL,
+    metadata TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    expires_at DATETIME
+);
+
 -- Indexes for performance optimization
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_projects_user_id ON projects(user_id);
@@ -113,6 +122,7 @@ CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions(expires_at);
 CREATE INDEX IF NOT EXISTS idx_analytics_user_id ON analytics(user_id);
 CREATE INDEX IF NOT EXISTS idx_analytics_event_type ON analytics(event_type);
 CREATE INDEX IF NOT EXISTS idx_analytics_created_at ON analytics(created_at);
+CREATE INDEX IF NOT EXISTS idx_blueprint_shares_expires_at ON blueprint_shares(expires_at);
 
 -- Triggers for automatic timestamp updates
 CREATE TRIGGER IF NOT EXISTS update_users_timestamp 
