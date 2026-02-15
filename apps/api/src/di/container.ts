@@ -11,10 +11,11 @@ export interface AIService {
 }
 
 export interface StreamUtils {
-  createStreamFromGenerator: <T>(
-    generator: AsyncGenerator<T, void, unknown>,
-  ) => ReadableStream<T>;
-  createSSEResponse: (stream: ReadableStream) => Response;
+  createStreamFromGenerator: (
+    generator: AsyncGenerator<string, void, unknown>,
+    onComplete?: () => void,
+  ) => ReadableStream<Uint8Array>;
+  createSSEResponse: (stream: ReadableStream<Uint8Array>) => Response;
 }
 
 export interface Container {
@@ -38,7 +39,7 @@ export function getContainer(): Container {
 }
 
 export function createMockContainer(overrides?: Partial<Container>): Container {
-  const mockStream = new ReadableStream({
+  const mockStream = new ReadableStream<Uint8Array>({
     start(controller) {
       controller.enqueue(new TextEncoder().encode("mock data"));
       controller.close();
@@ -54,7 +55,7 @@ export function createMockContainer(overrides?: Partial<Container>): Container {
       },
     },
     streamUtils: {
-      createStreamFromGenerator: <T>() => mockStream as ReadableStream<T>,
+      createStreamFromGenerator: () => mockStream,
       createSSEResponse: () =>
         new Response(mockStream, {
           headers: {

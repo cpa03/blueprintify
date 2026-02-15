@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { Hono } from "hono";
 import refineRoute from "./refine";
 import { errorHandler } from "../middleware/errorHandler";
