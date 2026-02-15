@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { StorageManager, StorageService, StorageError } from "../lib/storage";
-import { createTestBlueprint, mockStorageData } from "./factories";
+import { StorageManager, StorageError } from "../lib/storage";
+import { createTestBlueprint } from "./factories";
 
 describe("Integration: Cross-Browser Storage Operations", () => {
   let manager: StorageManager;

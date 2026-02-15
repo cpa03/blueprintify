@@ -1,13 +1,27 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { renderHook, waitFor } from "@testing-library/react";
-import { StorageManager, StorageService } from "../lib/storage";
+import { StorageManager } from "../lib/storage";
 import {
   createTestBlueprint,
   createTestProjectData,
   mockStorageData,
-  setupFetchMock,
   createMockResponse,
 } from "./factories";
+
+interface ApiResponse {
+  success: boolean;
+  data?: Record<string, unknown>;
+  error?: string;
+  metadata?: Record<string, unknown>;
+  validation?: {
+    isValid: boolean;
+    errors?: string[];
+  };
+}
+
+interface QuotaResponse {
+  used: number;
+  total: number;
+}
 
 describe("Integration: Frontend-Backend API Flow", () => {
   let fetchMock: ReturnType<typeof vi.fn>;
@@ -147,9 +161,9 @@ describe("Integration: Frontend-Backend API Flow", () => {
         }),
       });
 
-      const data = await response.json();
+      const data = (await response.json()) as ApiResponse;
       expect(data.success).toBe(true);
-      expect(data.metadata).toBeDefined();
+      expect(data.data?.metadata).toBeDefined();
     });
   });
 
@@ -210,9 +224,9 @@ describe("Integration: Frontend-Backend API Flow", () => {
         }),
       });
 
-      const result = await response.json();
+      const result = (await response.json()) as ApiResponse;
       expect(result.success).toBe(true);
-      expect(result.validation.isValid).toBe(true);
+      expect(result.validation?.isValid).toBe(true);
     });
 
     it("should reject invalid import data", async () => {
@@ -240,7 +254,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
       });
 
       expect(response.status).toBe(400);
-      const result = await response.json();
+      const result = (await response.json()) as ApiResponse;
       expect(result.success).toBe(false);
     });
   });
@@ -285,7 +299,9 @@ describe("Integration: Frontend-Backend API Flow", () => {
       expect(syncResponse.status).toBe(200);
 
       const quotaResponse = await fetch("/api/storage/quota");
-      const quotaData = await quotaResponse.json();
+      const quotaData = (await quotaResponse.json()) as {
+        quota: QuotaResponse;
+      };
       expect(quotaData.quota).toBeDefined();
     });
   });
@@ -331,7 +347,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
       });
 
       expect(response.status).toBe(500);
-      const data = await response.json();
+      const data = (await response.json()) as ApiResponse;
       expect(data.success).toBe(false);
     });
   });

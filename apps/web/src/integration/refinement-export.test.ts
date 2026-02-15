@@ -6,6 +6,20 @@ import {
   createMockResponse,
 } from "./factories";
 
+interface ApiResponse {
+  success: boolean;
+  refinedContent?: string;
+  format?: string;
+  url?: string;
+  content?: string;
+  data?: Record<string, unknown> & { validation?: { isValid: boolean } };
+  files?: Array<{ name: string; content: string }>;
+  validation?: {
+    isValid: boolean;
+    errors?: string[];
+  };
+}
+
 describe("Integration: Refinement Workflow", () => {
   let fetchMock: ReturnType<typeof vi.fn>;
 
@@ -20,7 +34,7 @@ describe("Integration: Refinement Workflow", () => {
 
   describe("End-to-End Refinement Process", () => {
     it("should refine blueprint section and preserve context", async () => {
-      const testData = createTestBlueprint();
+      const _testData = createTestBlueprint();
       const sectionContent = "## Overview\nThis is a test blueprint.";
 
       fetchMock.mockResolvedValueOnce(
@@ -64,7 +78,7 @@ describe("Integration: Refinement Workflow", () => {
           }),
         });
 
-        const result = await response.json();
+        const result = (await response.json()) as ApiResponse;
         expect(result.success).toBe(true);
       }
 
@@ -93,7 +107,7 @@ describe("Integration: Refinement Workflow", () => {
       });
 
       expect(response.status).toBe(500);
-      const result = await response.json();
+      const result = (await response.json()) as ApiResponse;
       expect(result.success).toBe(false);
     });
 
@@ -121,11 +135,17 @@ describe("Integration: Refinement Workflow", () => {
       const requests = [
         fetch("/api/refine", {
           method: "POST",
-          body: JSON.stringify({ content: "Section 1", instruction: "Improve" }),
+          body: JSON.stringify({
+            content: "Section 1",
+            instruction: "Improve",
+          }),
         }),
         fetch("/api/refine", {
           method: "POST",
-          body: JSON.stringify({ content: "Section 2", instruction: "Improve" }),
+          body: JSON.stringify({
+            content: "Section 2",
+            instruction: "Improve",
+          }),
         }),
       ];
 
@@ -172,7 +192,7 @@ describe("Integration: Export/Import Workflow", () => {
         }),
       });
 
-      const result = await response.json();
+      const result = (await response.json()) as ApiResponse;
       expect(result.success).toBe(true);
       expect(result.files).toHaveLength(2);
     });
@@ -197,7 +217,7 @@ describe("Integration: Export/Import Workflow", () => {
         }),
       });
 
-      const result = await response.json();
+      const result = (await response.json()) as ApiResponse;
       expect(result.success).toBe(true);
     });
 
@@ -244,7 +264,7 @@ describe("Integration: Export/Import Workflow", () => {
         }),
       });
 
-      const result = await response.json();
+      const result = (await response.json()) as ApiResponse;
       expect(result.success).toBe(true);
     });
   });
@@ -273,9 +293,9 @@ describe("Integration: Export/Import Workflow", () => {
         }),
       });
 
-      const result = await response.json();
+      const result = (await response.json()) as ApiResponse;
       expect(result.success).toBe(true);
-      expect(result.validation.isValid).toBe(true);
+      expect(result.data?.validation?.isValid).toBe(true);
     });
 
     it("should validate imported data structure", async () => {
@@ -302,8 +322,8 @@ describe("Integration: Export/Import Workflow", () => {
       });
 
       expect(response.status).toBe(400);
-      const result = await response.json();
-      expect(result.validation.errors.length).toBeGreaterThan(0);
+      const result = (await response.json()) as ApiResponse;
+      expect(result.validation?.errors?.length).toBeGreaterThan(0);
     });
   });
 
@@ -336,7 +356,7 @@ describe("Integration: Export/Import Workflow", () => {
         }),
       });
 
-      const exportData = await exportRes.json();
+      const exportData = (await exportRes.json()) as ApiResponse;
       expect(exportData.success).toBe(true);
 
       const importRes = await fetch("/api/import", {
@@ -347,7 +367,7 @@ describe("Integration: Export/Import Workflow", () => {
         }),
       });
 
-      const importData = await importRes.json();
+      const importData = (await importRes.json()) as ApiResponse;
       expect(importData.success).toBe(true);
     });
   });
