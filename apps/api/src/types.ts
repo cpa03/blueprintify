@@ -13,13 +13,47 @@ import type {
 } from "@blueprint/shared";
 
 export interface Env {
+  // AI Service Configuration
   OPENAI_API_KEY: string;
   OPENAI_BASE_URL?: string;
   OPENAI_MODEL?: string;
+  OPENAI_TIMEOUT_MS?: string;
+  OPENAI_MAX_TOKENS?: string;
+  OPENAI_TEMPERATURE?: string;
+
+  // API Configuration
   API_KEY?: string;
   ENVIRONMENT?: "development" | "production" | "test";
-  DB: D1Database;
+  API_VERSION?: string;
   CORS_ORIGIN?: string;
+  CORS_MAX_AGE?: string;
+
+  // Rate Limiting
+  RATE_LIMIT_WINDOW_MS?: string;
+  RATE_LIMIT_STRICT_MAX?: string;
+  RATE_LIMIT_STANDARD_MAX?: string;
+  RATE_LIMIT_LENIENT_MAX?: string;
+
+  // Storage
+  STORAGE_QUOTA_MB?: string;
+
+  // Circuit Breaker
+  CIRCUIT_BREAKER_FAILURE_THRESHOLD?: string;
+  CIRCUIT_BREAKER_RESET_TIMEOUT_MS?: string;
+  CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS?: string;
+
+  // Retry Configuration
+  RETRY_MAX_RETRIES?: string;
+  RETRY_INITIAL_DELAY_MS?: string;
+  RETRY_BACKOFF_FACTOR?: string;
+  RETRY_MAX_DELAY_MS?: string;
+
+  // External URLs
+  PROJECT_HOMEPAGE_URL?: string;
+  GITHUB_URL?: string;
+
+  // Cloudflare Bindings
+  DB: D1Database;
   CACHE: KVNamespace;
   BACKGROUND_QUEUE: Queue;
 }

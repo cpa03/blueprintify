@@ -15,11 +15,13 @@ import { rateLimit, rateLimitConfigs } from "./middleware/rateLimit";
 import { apiKeyAuth } from "./middleware/auth";
 import { requestLogger } from "./middleware/logger";
 import type { Env } from "./types";
+import { loadConfig } from "./config/env";
 import {
   API_METADATA,
   API_ENDPOINTS,
   CORS_CONFIG,
   ROUTE_PATHS,
+  setEnvConfig,
 } from "./config/constants";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -28,7 +30,11 @@ app.use("*", secureHeaders());
 app.use(
   "*",
   cors({
-    origin: CORS_CONFIG.ORIGIN,
+    origin: (origin) => {
+      const allowedOrigin = CORS_CONFIG.ORIGIN;
+      if (allowedOrigin === "*") return origin || "*";
+      return allowedOrigin;
+    },
     allowMethods: CORS_CONFIG.ALLOW_METHODS,
     allowHeaders: [...CORS_CONFIG.ALLOW_HEADERS, "x-api-key", "x-request-id"],
     credentials: true,
@@ -71,4 +77,16 @@ app.route(ROUTE_PATHS.SHARE, shareRoute);
 app.onError(errorHandler);
 app.notFound(notFoundHandler);
 
-export default app;
+export default {
+  async fetch(
+    request: Request,
+    env: Env,
+    ctx: ExecutionContext,
+  ): Promise<Response> {
+    const config = loadConfig(
+      env as unknown as Record<string, string | undefined>,
+    );
+    setEnvConfig(config);
+    return app.fetch(request, env, ctx);
+  },
+};

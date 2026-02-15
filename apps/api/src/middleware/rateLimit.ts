@@ -1,4 +1,5 @@
 import type { Context, MiddlewareHandler } from "hono";
+import { RATE_LIMIT_CONFIG } from "../config/constants";
 
 interface RateLimitConfig {
   windowMs: number;
@@ -86,16 +87,22 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
 };
 
 export const rateLimitConfigs = {
-  strict: {
-    windowMs: 60 * 1000,
-    maxRequests: 10,
+  get strict() {
+    return {
+      windowMs: RATE_LIMIT_CONFIG.WINDOW_MS,
+      maxRequests: RATE_LIMIT_CONFIG.STRICT_MAX,
+    };
   },
-  standard: {
-    windowMs: 60 * 1000,
-    maxRequests: 60,
+  get standard() {
+    return {
+      windowMs: RATE_LIMIT_CONFIG.WINDOW_MS,
+      maxRequests: RATE_LIMIT_CONFIG.STANDARD_MAX,
+    };
   },
-  lenient: {
-    windowMs: 60 * 1000,
-    maxRequests: 120,
+  get lenient() {
+    return {
+      windowMs: RATE_LIMIT_CONFIG.WINDOW_MS,
+      maxRequests: RATE_LIMIT_CONFIG.LENIENT_MAX,
+    };
   },
-} as const;
+};
