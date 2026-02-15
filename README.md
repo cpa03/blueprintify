@@ -134,25 +134,68 @@ This project uses the OpenCode AI agent system with specialized roles for differ
 
 ### Available Agent Roles
 
-- **Technical Writer** - Documentation maintenance and user guides
-- **Frontend Engineer** - React components and UI development
+- **API Specialist** - API design, implementation, and optimization
 - **Backend Engineer** - API development and database architecture
-- **Software Architect** - System design and architecture decisions
-- **Security Engineer** - Security audits and vulnerability assessments
+- **CMZ** - Code modularization and refactoring specialist
+- **Code Reviewer** - Code quality assessment and review
+- **Coder** - General coding and implementation tasks
+- **Database Architect** - Database design and schema architecture
+- **Debugger** - Debugging and troubleshooting specialist
 - **DevOps Engineer** - CI/CD pipelines and deployment automation
+- **Frontend Engineer** - React components and UI development
+- **Integration Engineer** - System integration and API connectivity
+- **Integrator** - Cross-system integration specialist
+- **Janitor** - Code cleanup and repository maintenance
+- **Performance Engineer** - Performance optimization and analysis
+- **Planner** - Project planning and task organization
+- **Product Strategist** - Product vision and strategy planning
 - **Quality Assurance** - Testing and code review processes
+- **Reliability Engineer** - System reliability and stability
+- **Researcher** - Technical research and analysis
+- **Security Engineer** - Security audits and vulnerability assessments
+- **Software Architect** - System design and architecture decisions
+- **Synthesizer** - Code synthesis and pattern recognition
+- **System Improver** - System-wide improvements and optimization
+- **Technical Writer** - Documentation maintenance and user guides
+- **UI/UX Engineer** - User interface and experience design
 
 ### Available Skills
 
-The system includes reusable skills for common tasks:
+The system includes 25+ reusable skills for common tasks:
+
+**Core Development Skills:**
+
+- `api-endpoint-create` - API endpoint development
+- `react-component-create` - React component creation
+- `database-migration-create` - Database migration scripts
+- `typescript-refactor` - TypeScript code refactoring
+- `pattern-extraction` - Extract and document code patterns
+
+**Quality & Testing Skills:**
+
+- `test-suite-create` - Comprehensive test creation
+- `security-audit` - Security vulnerability analysis
+- `dependency-audit` - Package dependency analysis
+- `code-review-checklist` - Systematic code review process
+- `resilience-check` - System resilience validation
+
+**Documentation & Planning Skills:**
 
 - `docs-update` - Standard documentation updates
-- `react-component-create` - React component creation
-- `api-endpoint-create` - API endpoint development
-- `security-audit` - Security vulnerability analysis
-- `test-suite-create` - Comprehensive test creation
-- `dependency-audit` - Package dependency analysis
-- And many more specialized skills
+- `planning-with-files` - File-based planning workflow
+- `git-commit-standard` - Standardized commit message formatting
+- `ci-pipeline-update` - CI/CD pipeline modifications
+
+**Advanced Skills:**
+
+- Systematic debugging strategies
+- Test-driven development workflows
+- Git worktree management
+- Context engineering and memory systems
+- Brainstorming and idea generation
+- Agentic QE skill building
+
+_See `.opencode/skill/` directory for complete skill definitions._
 
 ## 🔧 Configuration
 
