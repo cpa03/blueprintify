@@ -8,39 +8,11 @@ import exportRoute from "../routes/export";
 import importRoute from "../routes/import";
 import storageRoute from "../routes/storage";
 import tasksRoute from "../routes/tasks";
-
-// Mocks must be at module level for Vitest hoisting
-vi.mock("../services/openai", () => ({
-  streamCompletion: vi.fn().mockImplementation(async function* () {
-    yield "# Test Blueprint\n\n";
-    yield "## Overview\n";
-    yield "This is a test blueprint.\n";
-  }),
-}));
-
-vi.mock("../utils/stream", () => ({
-  createStreamFromGenerator: vi
-    .fn()
-    .mockImplementation((generator: AsyncGenerator<string>) => {
-      return new ReadableStream({
-        async start(controller) {
-          for await (const chunk of generator) {
-            controller.enqueue(new TextEncoder().encode(chunk));
-          }
-          controller.close();
-        },
-      });
-    }),
-  createSSEResponse: vi.fn().mockImplementation((stream: ReadableStream) => {
-    return new Response(stream, {
-      headers: {
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-      },
-    });
-  }),
-}));
+import {
+  setDefaultContainer,
+  resetContainer,
+  createMockContainer,
+} from "../di/container";
 
 interface ApiResponse {
   success: boolean;
@@ -57,14 +29,14 @@ interface QuotaResponse {
   total: number;
 }
 
-// SKIPPED: Requires dependency injection refactor to mock services before validation.
-// Re-enable after implementing factory pattern for route dependencies.
-// Context: github.com/cpa03/blueprintify/issues/277
-describe.skip("Integration: End-to-End M2 Workflows", () => {
+describe("Integration: End-to-End M2 Workflows", () => {
   let app: Hono<{ Bindings: typeof MOCK_ENV }>;
 
   beforeEach(() => {
     vi.clearAllMocks();
+
+    const mockContainer = createMockContainer();
+    setDefaultContainer(mockContainer);
 
     app = new Hono<{ Bindings: typeof MOCK_ENV }>();
     app.route("/generate", generateRoute);
@@ -78,6 +50,7 @@ describe.skip("Integration: End-to-End M2 Workflows", () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+    resetContainer();
   });
 
   describe("Workflow 1: Complete Blueprint Generation Flow", () => {

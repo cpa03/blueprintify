@@ -23,6 +23,9 @@ import {
   ROUTE_PATHS,
   setEnvConfig,
 } from "./config/constants";
+import { initializeContainer } from "./di";
+
+initializeContainer();
 
 const app = new Hono<{ Bindings: Env }>();
 

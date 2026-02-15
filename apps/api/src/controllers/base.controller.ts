@@ -1,5 +1,5 @@
 import type { AIConfig } from "../services/openai";
-import { createSSEResponse, createStreamFromGenerator } from "../utils/stream";
+import { getContainer } from "../di/container";
 import { ConfigurationError } from "../errors";
 import type { ValidatedContext, ControllerContext } from "../types";
 import type { z } from "zod";
@@ -23,8 +23,9 @@ export abstract class BaseController {
   protected async handleStreamingResponse(
     generator: AsyncGenerator<string, void, unknown>,
   ): Promise<Response> {
-    const stream = createStreamFromGenerator(generator);
-    return createSSEResponse(stream);
+    const container = getContainer();
+    const stream = container.streamUtils.createStreamFromGenerator(generator);
+    return container.streamUtils.createSSEResponse(stream);
   }
 
   protected getValidatedData<T extends z.ZodSchema>(
