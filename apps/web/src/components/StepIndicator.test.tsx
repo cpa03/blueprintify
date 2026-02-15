@@ -7,6 +7,12 @@ import type { WizardStore } from "../store/wizard";
 
 vi.mock("../store", () => ({
   useWizardStore: vi.fn(),
+  useToast: () => ({
+    success: vi.fn(),
+    info: vi.fn(),
+    warning: vi.fn(),
+    error: vi.fn(),
+  }),
 }));
 
 vi.mock("../config/constants", () => ({
