@@ -1,30 +1,37 @@
 import { ENV } from "./env";
+import {
+  VALIDATION_LIMITS,
+  DEBOUNCE_CONFIG as SHARED_DEBOUNCE_CONFIG,
+  STORAGE_CONFIG as SHARED_STORAGE_CONFIG,
+} from "@blueprint/shared";
 
 /**
  * Frontend configuration constants
  * Centralized location for all hardcoded values
  */
 
-// Form validation limits
+export { VALIDATION_LIMITS } from "@blueprint/shared";
+
+// Form validation limits derived from shared config
 export const FORM_LIMITS = {
   PROJECT_NAME: {
-    MIN: 1,
-    MAX: 100,
+    MIN: VALIDATION_LIMITS.PROJECT_NAME.MIN,
+    MAX: VALIDATION_LIMITS.PROJECT_NAME.MAX,
     WARNING_THRESHOLD: 90,
   },
   DESCRIPTION: {
-    MIN: 10,
-    MAX: 2000,
+    MIN: VALIDATION_LIMITS.DESCRIPTION.MIN,
+    MAX: VALIDATION_LIMITS.DESCRIPTION.MAX,
   },
   TARGET_AUDIENCE: {
-    MAX: 200,
+    MAX: VALIDATION_LIMITS.TARGET_AUDIENCE.MAX,
   },
   CONSTRAINTS: {
-    MAX: 1000,
+    MAX: VALIDATION_LIMITS.CONSTRAINTS.MAX,
   },
   FEATURE: {
-    MAX: 100,
-    MAX_COUNT: 20,
+    MAX: VALIDATION_LIMITS.FEATURE.MAX,
+    MAX_COUNT: VALIDATION_LIMITS.FEATURE.MAX_COUNT,
   },
 } as const;
 
@@ -46,10 +53,10 @@ export const TIMEOUTS = {
   SHAKE_ANIMATION: 400,
 } as const;
 
-// Debounce configuration for state persistence
+// Debounce configuration for state persistence (uses shared config)
 export const DEBOUNCE_CONFIG = {
-  WIZARD: 300,
-  EDITOR: 500,
+  WIZARD: SHARED_DEBOUNCE_CONFIG.WIZARD_SAVE,
+  EDITOR: SHARED_DEBOUNCE_CONFIG.EDITOR_SAVE,
 } as const;
 
 export const STORAGE_CONFIG = {
@@ -58,7 +65,7 @@ export const STORAGE_CONFIG = {
     return ENV.STORAGE_QUOTA_MB;
   },
   get QUOTA_BYTES(): number {
-    return ENV.STORAGE_QUOTA_MB * 1024 * 1024;
+    return SHARED_STORAGE_CONFIG.QUOTA_BYTES;
   },
   QUOTA_WARNING_THRESHOLD_KB: 1,
   MAX_LATENCY_MEASUREMENTS: 100,
@@ -68,7 +75,7 @@ export const STORAGE_CONFIG = {
 
 // UI Configuration
 export const UI = {
-  MAX_TECH_STACK_SELECTION: 10,
+  MAX_TECH_STACK_SELECTION: VALIDATION_LIMITS.TECH_STACK.MAX,
   TOOLTIP_DELAY: 500,
   SCROLL_OFFSET: 100,
 } as const;
