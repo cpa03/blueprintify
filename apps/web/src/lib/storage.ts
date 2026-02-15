@@ -309,6 +309,10 @@ export class StorageService<T = unknown> {
         localStorage.setItem(this.config.key, serialized);
       });
 
+      if (this.config.enableBackup) {
+        await this.createBackup();
+      }
+
       this.recordLatency("write", performance.now() - startTime);
       this.health.operations.successful++;
     } catch (error) {

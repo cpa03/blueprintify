@@ -163,7 +163,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
       const data = (await response.json()) as ApiResponse;
       expect(data.success).toBe(true);
-      expect(data.data?.metadata).toBeDefined();
+      expect(data.metadata).toBeDefined();
     });
   });
 
