@@ -27,7 +27,7 @@ describe("Header", () => {
   it("renders the application title and subtitle", () => {
     render(<Header />);
 
-    expect(screen.getByText("Blueprint Generator")).toBeInTheDocument();
+    expect(screen.getByText("Blueprintify")).toBeInTheDocument();
     expect(
       screen.getByText("AI-Powered Project Architecture"),
     ).toBeInTheDocument();
