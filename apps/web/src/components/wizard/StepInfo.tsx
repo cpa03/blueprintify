@@ -10,6 +10,7 @@ import {
 } from "../../config/constants";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { RippleButton } from "../RippleButton";
+import { CharacterCounter } from "../CharacterCounter";
 
 export function StepInfo() {
   const projectNameInputRef = useRef<HTMLInputElement>(null);
@@ -140,18 +141,12 @@ export function StepInfo() {
                 )}
               </AnimatePresence>
             </label>
-            <span
-              className={`text-xs tabular-nums transition-colors duration-200 ${
-                projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN
-                  ? "text-accent-emerald"
-                  : projectName.length >
-                      FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD
-                    ? "text-accent-pink"
-                    : "text-dark-500"
-              }`}
-            >
-              {projectName.length}/{FORM_LIMITS.PROJECT_NAME.MAX}
-            </span>
+            <CharacterCounter
+              current={projectName.length}
+              max={FORM_LIMITS.PROJECT_NAME.MAX}
+              min={FORM_LIMITS.PROJECT_NAME.MIN}
+              warningThreshold={FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD}
+            />
           </div>
           <div className="relative">
             <input
@@ -259,17 +254,11 @@ export function StepInfo() {
                 )}
               </AnimatePresence>
             </label>
-            <span
-              className={`text-xs tabular-nums transition-colors duration-200 ${
-                description.length >= FORM_LIMITS.DESCRIPTION.MIN
-                  ? "text-accent-emerald"
-                  : description.length > 0
-                    ? "text-yellow-500"
-                    : "text-dark-500"
-              }`}
-            >
-              {description.length}/{FORM_LIMITS.DESCRIPTION.MAX}
-            </span>
+            <CharacterCounter
+              current={description.length}
+              max={FORM_LIMITS.DESCRIPTION.MAX}
+              min={FORM_LIMITS.DESCRIPTION.MIN}
+            />
           </div>
           <div className="relative">
             <textarea
