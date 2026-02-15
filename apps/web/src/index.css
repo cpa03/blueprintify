@@ -308,6 +308,15 @@
     animation: glow-pulse 2s ease-in-out infinite;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .glow-pulse,
+    .animated-bg,
+    .focus-glow,
+    .shake-animation {
+      animation: none !important;
+    }
+  }
+
   .card-glow-hover {
     position: relative;
   }

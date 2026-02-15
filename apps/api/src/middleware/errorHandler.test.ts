@@ -11,15 +11,14 @@ import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import type { ErrorResponse } from "../errors";
 
 describe("errorHandler", () => {
-  let originalConsoleError: typeof console.error;
+  let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
 
   beforeAll(() => {
-    originalConsoleError = console.error;
-    console.error = vi.fn();
+    consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
   });
 
   afterAll(() => {
-    console.error = originalConsoleError;
+    consoleErrorSpy.mockRestore();
   });
 
   it("should handle ValidationError with 400 status", async () => {
@@ -138,9 +137,8 @@ describe("errorHandler", () => {
 
     await app.request("/");
 
-    expect(console.error).toHaveBeenCalled();
-    const mockFn = console.error as unknown as ReturnType<typeof vi.fn>;
-    const logCall = mockFn.mock.calls[0];
+    expect(consoleErrorSpy).toHaveBeenCalled();
+    const logCall = consoleErrorSpy.mock.calls[0];
     expect(logCall).toBeDefined();
     expect(logCall![0]).toContain("API Error");
   });

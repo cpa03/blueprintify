@@ -1,26 +1,54 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { RETRY_CONFIG as SHARED_RETRY_CONFIG } from "@blueprint/shared";
+import type { EnvConfig } from "./env";
 
-/**
- * API configuration constants
- * Centralized location for all hardcoded values
- */
+let envConfig: EnvConfig | null = null;
+
+export function setEnvConfig(config: EnvConfig): void {
+  envConfig = config;
+}
+
+export function getEnvConfig(): EnvConfig {
+  if (!envConfig) {
+    throw new Error("Environment config not set. Call setEnvConfig() first.");
+  }
+  return envConfig;
+}
+
+function loadPromptTemplate(filename: string): string {
+  try {
+    const templatePath = resolve(__dirname, "../templates", filename);
+    return readFileSync(templatePath, "utf-8");
+  } catch {
+    return "";
+  }
+}
 
 export const RETRY_CONFIG = SHARED_RETRY_CONFIG;
 
-// AI service configuration
 export const AI_CONFIG = {
-  DEFAULT_MODEL: "gpt-4o-mini",
-  DEFAULT_TIMEOUT: 60000,
-  DEFAULT_MAX_TOKENS: 4000,
-  DEFAULT_TEMPERATURE: 0.7,
-} as const;
+  get DEFAULT_MODEL(): string {
+    return getEnvConfig().OPENAI_MODEL;
+  },
+  get DEFAULT_TIMEOUT(): number {
+    return getEnvConfig().OPENAI_TIMEOUT_MS;
+  },
+  get DEFAULT_MAX_TOKENS(): number {
+    return getEnvConfig().OPENAI_MAX_TOKENS;
+  },
+  get DEFAULT_TEMPERATURE(): number {
+    return getEnvConfig().OPENAI_TEMPERATURE;
+  },
+};
 
-// API Metadata
 export const API_METADATA = {
   NAME: "Blueprint Generator API",
-  VERSION: "1.0.0",
+  get VERSION(): string {
+    return getEnvConfig().API_VERSION;
+  },
   STATUS: "healthy",
-} as const;
+};
 
 // API Endpoints configuration
 export const API_ENDPOINTS = {
@@ -58,6 +86,21 @@ export const API_ENDPOINTS = {
     path: "/storage/clear",
     method: "DELETE",
     description: "Clear storage",
+  },
+  SHARE_CREATE: {
+    path: "/share",
+    method: "POST",
+    description: "Create shareable blueprint link",
+  },
+  SHARE_GET: {
+    path: "/share/:id",
+    method: "GET",
+    description: "Get shared blueprint by ID",
+  },
+  SHARE_DELETE: {
+    path: "/share/:id",
+    method: "DELETE",
+    description: "Delete shared blueprint",
   },
 } as const;
 
@@ -114,82 +157,39 @@ export const DEFAULT_ERROR_MESSAGES = {
   INTERNAL: "Internal server error",
 } as const;
 
-// System prompt configuration
 export const PROMPT_CONFIG = {
-  // Architect system prompt
-  ARCHITECT_SYSTEM: `You are Agent 00, a Principal Software Architect with 20+ years of experience designing scalable, maintainable systems. Your role is to create comprehensive architectural documentation that enables autonomous development agents to build the project from scratch.
-
-## Your Expertise
-- System design and architecture patterns
-- Technology stack selection and trade-offs
-- Project structure and organization
-- Security and performance considerations
-- Developer experience and maintainability
-
-## Output Requirements
-1. Generate ONLY valid Markdown
-2. Use proper heading hierarchy (# ## ### ####)
-3. Include code blocks with appropriate syntax highlighting
-4. Create clear, actionable sections
-5. Be specific and technical, not vague
-
-## Documentation Structure
-Your blueprint.md must include:
-1. **Project Overview** - Name, description, and core purpose
-2. **Architecture** - High-level system design with diagrams (Mermaid)
-3. **Tech Stack** - Technologies with justification for each choice
-4. **Project Structure** - Directory layout with file descriptions
-5. **Core Components** - Key modules and their responsibilities
-6. **Data Models** - Schema definitions if applicable
-7. **API Design** - Endpoints and contracts if applicable
-8. **Development Guidelines** - Coding standards and conventions
-9. **Deployment** - Build and deployment instructions`,
-
-  // Task splitter system prompt
-  TASK_SPLITTER_SYSTEM: `You are a Technical Project Manager specializing in breaking down architectural plans into actionable development tasks. You excel at:
-
-- Identifying dependencies between tasks
-- Prioritizing work for maximum velocity
-- Creating clear, atomic work items
-- Estimating complexity accurately
-
-## Output Requirements
-1. Generate ONLY valid Markdown
-2. Use checkbox format: - [ ] Task description
-3. Group tasks by priority (P0, P1, P2)
-4. Include estimates in story points or time
-5. Mark dependencies clearly
-
-## Task Structure
-Your task.md must include:
-- **P0 (Critical Path)** - Must be done first, blocks everything
-- **P1 (Core Features)** - Essential for MVP
-- **P2 (Enhancements)** - Nice-to-have improvements`,
-
-  // Refiner system prompt
-  REFINER_SYSTEM: `You are an expert technical editor. Your job is to improve specific sections of documentation based on user feedback. You:
-
-- Maintain consistency with surrounding content
-- Add more detail where needed
-- Fix technical inaccuracies
-- Improve clarity and readability
-
-Output ONLY the refined section, not the entire document.`,
-} as const;
-
-// CORS configuration
-export const CORS_CONFIG = {
-  ORIGIN: "*",
-  ALLOW_METHODS: ["GET", "POST", "OPTIONS"] as string[],
-  ALLOW_HEADERS: ["Content-Type", "Authorization"] as string[],
-  MAX_AGE: 86400, // 24 hours in seconds
+  get ARCHITECT_SYSTEM(): string {
+    return loadPromptTemplate("architect-system.txt");
+  },
+  get TASK_SPLITTER_SYSTEM(): string {
+    return loadPromptTemplate("task-splitter-system.txt");
+  },
+  get REFINER_SYSTEM(): string {
+    return loadPromptTemplate("refiner-system.txt");
+  },
 };
 
-// Circuit breaker configuration
+export const CORS_CONFIG = {
+  get ORIGIN(): string {
+    return getEnvConfig().CORS_ORIGIN;
+  },
+  ALLOW_METHODS: ["GET", "POST", "OPTIONS"] as string[],
+  ALLOW_HEADERS: ["Content-Type", "Authorization"] as string[],
+  get MAX_AGE(): number {
+    return getEnvConfig().CORS_MAX_AGE;
+  },
+};
+
 export const CIRCUIT_BREAKER_CONFIG = {
-  DEFAULT_FAILURE_THRESHOLD: 5,
-  DEFAULT_RESET_TIMEOUT_MS: 60000, // 1 minute
-  DEFAULT_HALF_OPEN_MAX_CALLS: 3,
+  get DEFAULT_FAILURE_THRESHOLD(): number {
+    return getEnvConfig().CIRCUIT_BREAKER_FAILURE_THRESHOLD;
+  },
+  get DEFAULT_RESET_TIMEOUT_MS(): number {
+    return getEnvConfig().CIRCUIT_BREAKER_RESET_TIMEOUT_MS;
+  },
+  get DEFAULT_HALF_OPEN_MAX_CALLS(): number {
+    return getEnvConfig().CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS;
+  },
 };
 
 // SSE Stream configuration
@@ -243,7 +243,6 @@ export const RETRY_LOGIC = {
   SERVER_ERROR_THRESHOLD: 500,
 } as const;
 
-// Route paths
 export const ROUTE_PATHS = {
   ROOT: "/",
   GENERATE: "/generate",
@@ -252,4 +251,38 @@ export const ROUTE_PATHS = {
   EXPORT: "/export",
   IMPORT: "/import",
   STORAGE: "/storage",
+  SHARE: "/share",
 } as const;
+
+export const RATE_LIMIT_CONFIG = {
+  get WINDOW_MS(): number {
+    return getEnvConfig().RATE_LIMIT_WINDOW_MS;
+  },
+  get STRICT_MAX(): number {
+    return getEnvConfig().RATE_LIMIT_STRICT_MAX;
+  },
+  get STANDARD_MAX(): number {
+    return getEnvConfig().RATE_LIMIT_STANDARD_MAX;
+  },
+  get LENIENT_MAX(): number {
+    return getEnvConfig().RATE_LIMIT_LENIENT_MAX;
+  },
+};
+
+export const STORAGE_CONFIG = {
+  get QUOTA_MB(): number {
+    return getEnvConfig().STORAGE_QUOTA_MB;
+  },
+  get QUOTA_BYTES(): number {
+    return getEnvConfig().STORAGE_QUOTA_MB * 1024 * 1024;
+  },
+};
+
+export const EXTERNAL_URLS = {
+  get GITHUB(): string {
+    return getEnvConfig().GITHUB_URL;
+  },
+  get PROJECT_HOMEPAGE(): string {
+    return getEnvConfig().PROJECT_HOMEPAGE_URL;
+  },
+};

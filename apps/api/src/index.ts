@@ -9,16 +9,19 @@ import refineRoute from "./routes/refine";
 import exportRoute from "./routes/export";
 import importRoute from "./routes/import";
 import storageRoute from "./routes/storage";
+import shareRoute from "./routes/share";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 import { rateLimit, rateLimitConfigs } from "./middleware/rateLimit";
 import { apiKeyAuth } from "./middleware/auth";
 import { requestLogger } from "./middleware/logger";
 import type { Env } from "./types";
+import { loadConfig } from "./config/env";
 import {
   API_METADATA,
   API_ENDPOINTS,
   CORS_CONFIG,
   ROUTE_PATHS,
+  setEnvConfig,
 } from "./config/constants";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -27,7 +30,11 @@ app.use("*", secureHeaders());
 app.use(
   "*",
   cors({
-    origin: CORS_CONFIG.ORIGIN,
+    origin: (origin) => {
+      const allowedOrigin = CORS_CONFIG.ORIGIN;
+      if (allowedOrigin === "*") return origin || "*";
+      return allowedOrigin;
+    },
     allowMethods: CORS_CONFIG.ALLOW_METHODS,
     allowHeaders: [...CORS_CONFIG.ALLOW_HEADERS, "x-api-key", "x-request-id"],
     credentials: true,
@@ -52,6 +59,9 @@ app.get("/", (c) => {
       import: `${API_ENDPOINTS.IMPORT.method} ${API_ENDPOINTS.IMPORT.path}`,
       storageQuota: `${API_ENDPOINTS.STORAGE_QUOTA.method} ${API_ENDPOINTS.STORAGE_QUOTA.path}`,
       storageClear: `${API_ENDPOINTS.STORAGE_CLEAR.method} ${API_ENDPOINTS.STORAGE_CLEAR.path}`,
+      shareCreate: `${API_ENDPOINTS.SHARE_CREATE.method} ${API_ENDPOINTS.SHARE_CREATE.path}`,
+      shareGet: `${API_ENDPOINTS.SHARE_GET.method} ${API_ENDPOINTS.SHARE_GET.path}`,
+      shareDelete: `${API_ENDPOINTS.SHARE_DELETE.method} ${API_ENDPOINTS.SHARE_DELETE.path}`,
     },
   });
 });
@@ -62,8 +72,21 @@ app.route(ROUTE_PATHS.REFINE, refineRoute);
 app.route(ROUTE_PATHS.EXPORT, exportRoute);
 app.route(ROUTE_PATHS.IMPORT, importRoute);
 app.route(ROUTE_PATHS.STORAGE, storageRoute);
+app.route(ROUTE_PATHS.SHARE, shareRoute);
 
 app.onError(errorHandler);
 app.notFound(notFoundHandler);
 
-export default app;
+export default {
+  async fetch(
+    request: Request,
+    env: Env,
+    ctx: ExecutionContext,
+  ): Promise<Response> {
+    const config = loadConfig(
+      env as unknown as Record<string, string | undefined>,
+    );
+    setEnvConfig(config);
+    return app.fetch(request, env, ctx);
+  },
+};

@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { StorageClearRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
+import { STORAGE_CONFIG } from "../config/constants";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -12,13 +13,11 @@ const app = new Hono<{ Bindings: Env }>();
  */
 app.get("/quota", rateLimit(rateLimitConfigs.standard), async (c) => {
   try {
-    // Return mock storage quota info (client-side storage is handled by frontend)
-    // This endpoint provides consistency and future server-side storage support
     return c.json({
       success: true,
       data: {
         used: 0,
-        total: 5 * 1024 * 1024, // 5MB default localStorage limit
+        total: STORAGE_CONFIG.QUOTA_BYTES,
         percentage: 0,
         projects: 0,
         note: "Server-side storage tracking. Client-side storage quota available via localStorage API.",
