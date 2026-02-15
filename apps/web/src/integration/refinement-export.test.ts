@@ -295,7 +295,7 @@ describe("Integration: Export/Import Workflow", () => {
 
       const result = (await response.json()) as ApiResponse;
       expect(result.success).toBe(true);
-      expect(result.data?.validation?.isValid).toBe(true);
+      expect(result.validation?.isValid).toBe(true);
     });
 
     it("should validate imported data structure", async () => {
