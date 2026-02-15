@@ -27,9 +27,9 @@ export function Header() {
             </svg>
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">
+            <div className="text-xl font-bold text-white">
               {UI_CONTENT.APP.NAME}
-            </h1>
+            </div>
             <p className="text-xs text-dark-400">{UI_CONTENT.APP.TAGLINE}</p>
           </div>
         </motion.div>
