@@ -77,7 +77,18 @@ describe("POST /export", () => {
     );
 
     expect(res.status).toBe(200);
-    const data = await res.json();
+    const data = (await res.json()) as {
+      success: boolean;
+      data: {
+        projectName: string;
+        blueprint: string;
+        tasks: string;
+        exportedAt: string;
+        version: string;
+        format: string;
+      };
+      filename: string;
+    };
     expect(data).toHaveProperty("success", true);
     expect(data.data).toHaveProperty("projectName", "Test Project");
     expect(data.data).toHaveProperty("blueprint", "# Test Blueprint");
@@ -105,7 +116,13 @@ describe("POST /export", () => {
     );
 
     expect(res.status).toBe(200);
-    const data = await res.json();
+    const data = (await res.json()) as {
+      success: boolean;
+      data: {
+        content: string;
+        filename: string;
+      };
+    };
     expect(data).toHaveProperty("success", true);
     expect(data.data).toHaveProperty("content");
     expect(data.data.content).toContain("# My Project");
@@ -130,7 +147,14 @@ describe("POST /export", () => {
     );
 
     expect(res.status).toBe(200);
-    const data = await res.json();
+    const data = (await res.json()) as {
+      success: boolean;
+      data: {
+        manifest: unknown;
+        filename: string;
+        note: string;
+      };
+    };
     expect(data).toHaveProperty("success", true);
     expect(data.data).toHaveProperty("manifest");
     expect(data.data).toHaveProperty("filename", "Zip_Project.zip");
@@ -153,7 +177,9 @@ describe("POST /export", () => {
     );
 
     expect(res.status).toBe(200);
-    const data = await res.json();
+    const data = (await res.json()) as {
+      filename: string;
+    };
     expect(data.filename).toBe("My_Special_Project_export.json");
   });
 });

@@ -23,7 +23,16 @@ describe("GET /storage/quota", () => {
     const res = await app.request("/quota", {}, MOCK_ENV);
 
     expect(res.status).toBe(200);
-    const data = await res.json();
+    const data = (await res.json()) as {
+      success: boolean;
+      data: {
+        used: number;
+        total: number;
+        percentage: number;
+        projects: number;
+        note: string;
+      };
+    };
     expect(data).toHaveProperty("success", true);
     expect(data.data).toHaveProperty("used", 0);
     expect(data.data).toHaveProperty("total", 5 * 1024 * 1024);
@@ -85,7 +94,14 @@ describe("DELETE /storage/clear", () => {
     );
 
     expect(res.status).toBe(200);
-    const data = await res.json();
+    const data = (await res.json()) as {
+      success: boolean;
+      data: {
+        cleared: boolean;
+        timestamp: string;
+        message: string;
+      };
+    };
     expect(data).toHaveProperty("success", true);
     expect(data.data).toHaveProperty("cleared", true);
     expect(data.data).toHaveProperty("timestamp");
