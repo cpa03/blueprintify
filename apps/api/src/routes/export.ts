@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { ExportRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
+import { API_METADATA } from "../config/constants";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -24,7 +25,7 @@ app.post(
         blueprint,
         tasks,
         exportedAt: timestamp,
-        version: "1.0.0",
+        version: API_METADATA.VERSION,
         format,
       };
 
