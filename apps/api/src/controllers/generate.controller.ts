@@ -1,5 +1,5 @@
-import { streamCompletion } from "../services/openai";
 import { BaseController } from "./base.controller";
+import { getContainer } from "../di/container";
 import {
   ARCHITECT_SYSTEM_PROMPT,
   buildBlueprintPrompt,
@@ -14,7 +14,8 @@ export class GenerateController extends BaseController {
 
     const userPrompt = buildBlueprintPrompt(request);
 
-    const generator = streamCompletion({
+    const container = getContainer();
+    const generator = container.aiService.streamCompletion({
       systemPrompt: ARCHITECT_SYSTEM_PROMPT,
       userPrompt,
       config,

@@ -1,5 +1,5 @@
-import { streamCompletion } from "../services/openai";
 import { BaseController } from "./base.controller";
+import { getContainer } from "../di/container";
 import {
   TASK_SPLITTER_SYSTEM_PROMPT,
   buildTaskPrompt,
@@ -14,7 +14,8 @@ export class TasksController extends BaseController {
 
     const userPrompt = buildTaskPrompt(blueprint, projectName);
 
-    const generator = streamCompletion({
+    const container = getContainer();
+    const generator = container.aiService.streamCompletion({
       systemPrompt: TASK_SPLITTER_SYSTEM_PROMPT,
       userPrompt,
       config,

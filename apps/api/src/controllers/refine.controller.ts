@@ -1,5 +1,5 @@
-import { streamCompletion } from "../services/openai";
 import { BaseController } from "./base.controller";
+import { getContainer } from "../di/container";
 import { REFINER_SYSTEM_PROMPT, buildRefinePrompt } from "../services/prompts";
 import type { RefineContext } from "../types";
 
@@ -11,7 +11,8 @@ export class RefineController extends BaseController {
 
     const userPrompt = buildRefinePrompt(request);
 
-    const generator = streamCompletion({
+    const container = getContainer();
+    const generator = container.aiService.streamCompletion({
       systemPrompt: REFINER_SYSTEM_PROMPT,
       userPrompt,
       config,

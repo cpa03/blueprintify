@@ -1,21 +1,23 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { Hono } from "hono";
 import refineRoute from "./refine";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
+import {
+  setDefaultContainer,
+  resetContainer,
+  createMockContainer,
+} from "../di/container";
 
-// Mock the services
-vi.mock("../services/openai", () => ({
-  streamCompletion: vi.fn(),
-}));
+beforeEach(() => {
+  const mockContainer = createMockContainer();
+  setDefaultContainer(mockContainer);
+});
 
-vi.mock("../utils/stream", () => ({
-  createStreamFromGenerator: vi.fn(),
-  createSSEResponse: vi
-    .fn()
-    .mockImplementation(() => new Response("mock-refine-stream")),
-}));
+afterEach(() => {
+  resetContainer();
+});
 
 describe("POST /refine", () => {
   const app = new Hono<{ Bindings: { OPENAI_API_KEY: string } }>();
@@ -58,6 +60,6 @@ describe("POST /refine", () => {
 
     expect(res.status).toBe(200);
     const text = await res.text();
-    expect(text).toBe("mock-refine-stream");
+    expect(text).toBe("mock data");
   });
 });

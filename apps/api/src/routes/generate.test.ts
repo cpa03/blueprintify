@@ -1,21 +1,23 @@
-import { describe, it, expect, vi, beforeAll, afterAll } from "vitest";
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeAll,
+  afterAll,
+  beforeEach,
+  afterEach,
+} from "vitest";
 import { Hono } from "hono";
 import generateRoute from "./generate";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV, MOCK_ENV_NO_KEY } from "../test-utils";
 import type { ErrorResponse } from "../errors";
-
-// Mock the services
-vi.mock("../services/openai", () => ({
-  streamCompletion: vi.fn(),
-}));
-
-vi.mock("../utils/stream", () => ({
-  createStreamFromGenerator: vi.fn(),
-  createSSEResponse: vi
-    .fn()
-    .mockImplementation(() => new Response("mock-stream")),
-}));
+import {
+  setDefaultContainer,
+  resetContainer,
+  createMockContainer,
+} from "../di/container";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -24,6 +26,15 @@ beforeAll(() => {
 });
 afterAll(() => {
   console.error = originalConsoleError;
+});
+
+beforeEach(() => {
+  const mockContainer = createMockContainer();
+  setDefaultContainer(mockContainer);
+});
+
+afterEach(() => {
+  resetContainer();
 });
 
 describe("POST /generate", () => {
@@ -90,7 +101,7 @@ describe("POST /generate", () => {
 
     expect(res.status).toBe(200);
     const text = await res.text();
-    expect(text).toBe("mock-stream");
+    expect(text).toBe("mock data");
   });
 
   it("should return 500 for missing API key with standard error format", async () => {
