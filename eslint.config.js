@@ -13,6 +13,10 @@ export default [
       "scripts/**",
       "**/*.config.js",
       "**/*.config.ts",
+      // Ignore compiled JavaScript files in source directories
+      "apps/api/src/**/*.js",
+      "apps/web/src/**/*.js",
+      "packages/shared/src/**/*.js",
     ],
   },
   js.configs.recommended,
