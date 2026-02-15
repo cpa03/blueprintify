@@ -14,16 +14,38 @@ if (!rootElement) {
   throw new Error("Root element not found");
 }
 
-ReactDOM.createRoot(rootElement).render(
+const fadeOutAndRemoveSkeletonLoader = () => {
+  const skeleton = document.getElementById("skeleton-loader");
+  if (skeleton) {
+    skeleton.style.opacity = "0";
+    setTimeout(() => {
+      skeleton.remove();
+    }, 300);
+  }
+};
+
+const root = ReactDOM.createRoot(rootElement);
+
+root.render(
   <React.StrictMode>
     <ReducedMotionProvider>
-      <ReducedMotionConfig />
+      <ReducedMotionConfig onMount={fadeOutAndRemoveSkeletonLoader} />
     </ReducedMotionProvider>
   </React.StrictMode>,
 );
 
-function ReducedMotionConfig(): JSX.Element {
+interface ReducedMotionConfigProps {
+  onMount?: () => void;
+}
+
+function ReducedMotionConfig({
+  onMount,
+}: ReducedMotionConfigProps): JSX.Element {
   const { prefersReducedMotion } = useReducedMotionContext();
+
+  React.useEffect(() => {
+    onMount?.();
+  }, [onMount]);
 
   return (
     <MotionConfig reducedMotion={prefersReducedMotion ? "always" : "never"}>
