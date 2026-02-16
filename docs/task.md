@@ -216,7 +216,7 @@
 
 ---
 
-## M2: Refinement & Persistence (ACTIVE)
+## M2: Refinement & Persistence (COMPLETED)
 
 ### M2 Execution Task
 
@@ -225,14 +225,14 @@
 - **Issue**: #222
 - **Assignee**: Frontend Engineer
 - **Priority**: Critical
-- **Status**: Active
+- **Status**: Complete (2026-02-11)
 - **Estimated**: 3-5 days
 - **Dependencies**: M1 complete ✅
 - **Acceptance**:
-  - [ ] All M2 tasks completed
-  - [ ] End-to-end editing workflow functional
-  - [ ] Storage persistence working reliably
-  - [ ] Export/import functionality validated
+  - [x] All M2 tasks completed
+  - [x] End-to-end editing workflow functional
+  - [x] Storage persistence working reliably
+  - [x] Export/import functionality validated
 
 ### Implementation Tasks
 
@@ -318,17 +318,18 @@
   - [x] Smooth editing experience without lag
   - [x] Performance benchmarks implemented
 
-##### TEST-M2-001: Comprehensive Test Suite
+##### TEST-M2-001: Comprehensive Test Suite ✅ COMPLETED
 
 - **Issue**: #230
 - **Assignee**: Quality Assurance
 - **Priority**: High
 - **Estimated**: 12-16 hours
+- **Status**: Complete (2026-02-12)
 - **Dependencies**: All M2 implementation tasks
 - **Acceptance**:
-  - Minimum 90% code coverage for M2 features
-  - All critical user flows tested
-  - CI pipeline passes all test suites
+  - [x] Minimum 90% code coverage for M2 features
+  - [x] All critical user flows tested
+  - [x] CI pipeline passes all test suites (74 tests passing)
 
 #### Additional M2 Tasks
 
