@@ -229,7 +229,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
       );
 
       expect(clearRes.status).toBe(200);
-      const clearData = await clearRes.json();
+      const clearData = (await clearRes.json()) as { success: boolean };
       expect(clearData.success).toBe(true);
     });
   });
@@ -347,8 +347,10 @@ describe("Integration: End-to-End M2 Workflows", () => {
         expect(res.status).toBe(200);
       });
 
-      const data = await Promise.all(results.map((r) => r.json()));
-      const firstQuota = data[0].data.total;
+      const data = (await Promise.all(results.map((r) => r.json()))) as Array<{
+        data: { total: number };
+      }>;
+      const firstQuota = data[0]!.data.total;
       data.forEach((d) => {
         expect(d.data.total).toBe(firstQuota);
       });
