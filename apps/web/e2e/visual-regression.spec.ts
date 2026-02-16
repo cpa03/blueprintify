@@ -215,7 +215,6 @@ This is a test blueprint.
       await page.waitForSelector('[data-testid="split-pane-editor"]');
 
       await page.evaluate(() => {
-        const error = new Error("Test error");
         window.dispatchEvent(
           new CustomEvent("app-error", {
             detail: { message: "Something went wrong" },

@@ -5,11 +5,6 @@ import {
   createMockResponse,
 } from "./factories";
 
-interface TimingResult {
-  duration: number;
-  success: boolean;
-}
-
 async function measureAsync<T>(
   fn: () => Promise<T>,
 ): Promise<{ result: T; duration: number }> {

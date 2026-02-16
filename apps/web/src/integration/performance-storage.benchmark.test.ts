@@ -2,11 +2,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { StorageManager } from "../lib/storage";
 import { createTestBlueprint, createLargeBlueprint } from "./factories";
 
-interface TimingResult {
-  duration: number;
-  operation: string;
-}
-
 async function measureAsync<T>(
   operation: string,
   fn: () => Promise<T>,
