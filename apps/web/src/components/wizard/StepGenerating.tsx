@@ -3,6 +3,7 @@ import { useEditorStore } from "../../store";
 import { useWizardStore } from "../../store";
 import { ANIMATION } from "../../config/constants";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
+import { AnimatedNumber } from "../AnimatedNumber";
 
 export function StepGenerating() {
   const progress = useEditorStore((s) => s.generationProgress);
@@ -63,7 +64,11 @@ export function StepGenerating() {
           className="glass-card px-6 py-4"
         >
           <div className="text-2xl font-bold text-gradient">
-            {blueprintLines}
+            <AnimatedNumber
+              value={blueprintLines}
+              duration={0.6}
+              className="text-gradient"
+            />
           </div>
           <div className="text-sm text-dark-400">Blueprint Lines</div>
         </motion.div>
@@ -73,7 +78,13 @@ export function StepGenerating() {
           transition={{ delay: ANIMATION.STAGGER }}
           className="glass-card px-6 py-4"
         >
-          <div className="text-2xl font-bold text-gradient">{tasksLines}</div>
+          <div className="text-2xl font-bold text-gradient">
+            <AnimatedNumber
+              value={tasksLines}
+              duration={0.6}
+              className="text-gradient"
+            />
+          </div>
           <div className="text-sm text-dark-400">Task Lines</div>
         </motion.div>
       </div>
