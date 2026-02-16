@@ -11,6 +11,7 @@ import {
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { RippleButton } from "../RippleButton";
 import { CharacterCounter } from "../CharacterCounter";
+import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
 
 export function StepInfo() {
   const projectNameInputRef = useRef<HTMLInputElement>(null);
@@ -30,6 +31,23 @@ export function StepInfo() {
     "Project info saved",
     TIMEOUTS.COPY_FEEDBACK,
   );
+
+  const projectNameTyping = useTypingIndicator({
+    delay: 600,
+    minInputLength: 1,
+  });
+  const descriptionTyping = useTypingIndicator({
+    delay: 600,
+    minInputLength: 1,
+  });
+  const targetAudienceTyping = useTypingIndicator({
+    delay: 600,
+    minInputLength: 1,
+  });
+  const constraintsTyping = useTypingIndicator({
+    delay: 600,
+    minInputLength: 1,
+  });
 
   const canProceed =
     projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN &&
@@ -140,6 +158,7 @@ export function StepInfo() {
                   </motion.span>
                 )}
               </AnimatePresence>
+              <TypeIndicator isTyping={projectNameTyping.isTyping} />
             </label>
             <CharacterCounter
               current={projectName.length}
@@ -149,15 +168,19 @@ export function StepInfo() {
             />
           </div>
           <div className="relative">
-            <input
+            <motion.input
               ref={projectNameInputRef}
               id="projectName"
               name="projectName"
               type="text"
               value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
+              onChange={(e) => {
+                projectNameTyping.handleTyping(e.target.value);
+                setProjectName(e.target.value);
+              }}
+              onBlur={projectNameTyping.handleBlur}
               placeholder={UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_PLACEHOLDER}
-              className={`input-field transition-colors duration-200 ${
+              className={`input-field transition-all duration-200 ${
                 projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN
                   ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20"
                   : projectName.length >= FORM_LIMITS.PROJECT_NAME.MAX
@@ -170,6 +193,10 @@ export function StepInfo() {
               maxLength={FORM_LIMITS.PROJECT_NAME.MAX}
               required
               aria-required="true"
+              animate={
+                projectNameTyping.isTyping ? { scale: 1.002 } : { scale: 1 }
+              }
+              transition={{ duration: 0.15 }}
               {...(projectName.length >
                 FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
               projectName.length < FORM_LIMITS.PROJECT_NAME.MAX
@@ -253,6 +280,7 @@ export function StepInfo() {
                   </motion.span>
                 )}
               </AnimatePresence>
+              <TypeIndicator isTyping={descriptionTyping.isTyping} />
             </label>
             <CharacterCounter
               current={description.length}
@@ -261,13 +289,17 @@ export function StepInfo() {
             />
           </div>
           <div className="relative">
-            <textarea
+            <motion.textarea
               id="description"
               name="description"
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(e) => {
+                descriptionTyping.handleTyping(e.target.value);
+                setDescription(e.target.value);
+              }}
+              onBlur={descriptionTyping.handleBlur}
               placeholder={UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_PLACEHOLDER}
-              className={`textarea-field h-32 transition-colors duration-200 ${
+              className={`textarea-field h-32 transition-all duration-200 ${
                 description.length >= FORM_LIMITS.DESCRIPTION.MIN
                   ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20 pr-12"
                   : isDescriptionInvalid
@@ -280,6 +312,10 @@ export function StepInfo() {
               required
               aria-required="true"
               aria-invalid={isDescriptionInvalid}
+              animate={
+                descriptionTyping.isTyping ? { scale: 1.002 } : { scale: 1 }
+              }
+              transition={{ duration: 0.15 }}
               {...(isDescriptionInvalid
                 ? { "aria-describedby": "description-error" }
                 : description.length > 0 &&
@@ -339,21 +375,33 @@ export function StepInfo() {
 
         {/* Target Audience (Optional) */}
         <div>
-          <label htmlFor="targetAudience" className="label">
+          <label
+            htmlFor="targetAudience"
+            className="label flex items-center gap-2"
+          >
             {UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL}{" "}
             <span className="text-dark-500">(optional)</span>
+            <TypeIndicator isTyping={targetAudienceTyping.isTyping} />
           </label>
           <div className="relative">
-            <input
+            <motion.input
               id="targetAudience"
               name="targetAudience"
               type="text"
               value={targetAudience}
-              onChange={(e) => setTargetAudience(e.target.value)}
+              onChange={(e) => {
+                targetAudienceTyping.handleTyping(e.target.value);
+                setTargetAudience(e.target.value);
+              }}
+              onBlur={targetAudienceTyping.handleBlur}
               placeholder={
                 UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_PLACEHOLDER
               }
               className="input-field pr-10"
+              animate={
+                targetAudienceTyping.isTyping ? { scale: 1.002 } : { scale: 1 }
+              }
+              transition={{ duration: 0.15 }}
             />
             <AnimatePresence>
               {targetAudience && (
@@ -390,9 +438,13 @@ export function StepInfo() {
         {/* Constraints (Optional) */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label htmlFor="constraints" className="label mb-0">
+            <label
+              htmlFor="constraints"
+              className="label mb-0 flex items-center gap-2"
+            >
               {UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_LABEL}{" "}
               <span className="text-dark-500">(optional)</span>
+              <TypeIndicator isTyping={constraintsTyping.isTyping} />
             </label>
             <AnimatePresence>
               {constraints && (
@@ -425,13 +477,21 @@ export function StepInfo() {
               )}
             </AnimatePresence>
           </div>
-          <textarea
+          <motion.textarea
             id="constraints"
             name="constraints"
             value={constraints}
-            onChange={(e) => setConstraints(e.target.value)}
+            onChange={(e) => {
+              constraintsTyping.handleTyping(e.target.value);
+              setConstraints(e.target.value);
+            }}
+            onBlur={constraintsTyping.handleBlur}
             placeholder={UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_PLACEHOLDER}
             className="textarea-field h-24"
+            animate={
+              constraintsTyping.isTyping ? { scale: 1.002 } : { scale: 1 }
+            }
+            transition={{ duration: 0.15 }}
           />
         </div>
 
