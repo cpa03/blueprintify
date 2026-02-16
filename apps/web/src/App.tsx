@@ -12,6 +12,7 @@ import { TemplateGrid } from "./components/TemplateGrid";
 import { StepIndicator } from "./components/StepIndicator";
 import { Wizard } from "./components/Wizard";
 import { ToastContainer } from "./components/Toast";
+import { KeyboardShortcutsModal } from "./components/KeyboardShortcutsModal";
 import { useWizardStore, useEditorStore } from "./store";
 import { UI_CONTENT } from "./config/constants";
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
@@ -31,27 +32,39 @@ function App() {
   const cancelGeneration = useEditorStore((s) => s.cancelGeneration);
 
   const [showEditor, setShowEditor] = useState(hasContent || isGenerating);
+  const [showShortcutsModal, setShowShortcutsModal] = useState(false);
   const previousHasContentRef = useRef(hasContent);
   const previousIsGeneratingRef = useRef(isGenerating);
 
   // Show templates only on first step with no content
   const showTemplates = currentStep === "info" && !hasContent;
 
-  // Keyboard shortcuts for improved UX
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      // Cmd/Ctrl + E to toggle editor
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        showShortcutsModal
+      ) {
+        return;
+      }
+
+      if (e.key === "?" && !e.metaKey && !e.ctrlKey) {
+        e.preventDefault();
+        setShowShortcutsModal(true);
+      }
+
       if ((e.metaKey || e.ctrlKey) && e.key === "e") {
         e.preventDefault();
         setShowEditor((prev) => !prev);
       }
-      // Escape to cancel generation
+
       if (e.key === "Escape" && isGenerating) {
         e.preventDefault();
         cancelGeneration();
       }
     },
-    [isGenerating, cancelGeneration],
+    [isGenerating, cancelGeneration, showShortcutsModal],
   );
 
   useEffect(() => {
@@ -79,7 +92,7 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
+      <Header onShowShortcuts={() => setShowShortcutsModal(true)} />
 
       {/* Main Content */}
       <main className="flex-1 pt-20">
@@ -250,6 +263,11 @@ function App() {
       </footer>
 
       <ToastContainer />
+
+      <KeyboardShortcutsModal
+        isOpen={showShortcutsModal}
+        onClose={() => setShowShortcutsModal(false)}
+      />
     </div>
   );
 }
