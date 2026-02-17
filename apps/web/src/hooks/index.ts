@@ -14,3 +14,5 @@ export {
   useReducedMotionContext,
   ReducedMotionContext,
 } from "../context/ReducedMotionContext";
+export { useLastSaved } from "./useLastSaved";
+export type { UseLastSavedReturn } from "./useLastSaved";
