@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { LazyMarkdownRenderer } from "./LazyMarkdownRenderer";
 import { LazyCodeMirror } from "./LazyCodeMirror";
@@ -14,6 +14,7 @@ import {
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
 import { TIMEOUTS, DEFAULT_PROJECT_NAME } from "../config/constants";
+import { useLastSaved } from "../hooks/useLastSaved";
 import clsx from "clsx";
 
 function EditorComponent() {
@@ -32,6 +33,8 @@ function EditorComponent() {
   const isGenerating = useEditorStore((s) => s.isGenerating);
   const projectName = useWizardStore((s) => s.projectName);
 
+  const { lastSavedText, markSaved } = useLastSaved();
+
   const currentContent =
     activeTab === "blueprint" ? blueprintContent : tasksContent;
   const setCurrentContent = useCallback(
@@ -43,14 +46,23 @@ function EditorComponent() {
         } else {
           setTasksContent(sanitizedContent);
         }
+        markSaved();
       } catch (error) {
         const securityError = handleSecurityError(error);
         toast.error(`Security validation failed: ${securityError.message}`);
         console.error("Security validation failed:", securityError);
       }
     },
-    [activeTab, setBlueprintContent, setTasksContent, toast],
+    [activeTab, setBlueprintContent, setTasksContent, markSaved, toast],
   );
+
+  const hasInitialized = useRef(false);
+  useEffect(() => {
+    if (!hasInitialized.current && (blueprintContent || tasksContent)) {
+      hasInitialized.current = true;
+      markSaved();
+    }
+  }, [blueprintContent, tasksContent, markSaved]);
 
   const handleCopy = useCallback(async () => {
     const formatted = formatForIDE(currentContent);
@@ -104,6 +116,7 @@ function EditorComponent() {
         hasContent={hasContent}
         copied={copied}
         isExporting={isExporting}
+        lastSavedText={lastSavedText}
       />
 
       {/* Editor Content */}

@@ -1,6 +1,7 @@
 import React from "react";
 import type { EditorTab } from "@blueprint/shared";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
+import { LastSavedIndicator } from "../LastSavedIndicator";
 import clsx from "clsx";
 
 interface EditorHeaderProps {
@@ -14,6 +15,7 @@ interface EditorHeaderProps {
   hasContent: boolean;
   copied: string | null;
   isExporting?: boolean;
+  lastSavedText?: string;
 }
 
 const TabButton = React.memo(function TabButton({
@@ -61,31 +63,38 @@ function EditorHeaderComponent({
   hasContent,
   copied,
   isExporting = false,
+  lastSavedText = "",
 }: EditorHeaderProps) {
   return (
     <div className="flex items-center justify-between p-4 border-b border-dark-700">
-      <div
-        className="flex gap-1 bg-dark-800 p-1 rounded-lg"
-        role="tablist"
-        aria-label="Document tabs"
-        id="editor-tabs"
-      >
-        <TabButton
-          id="blueprint"
-          isActive={activeTab === "blueprint"}
-          onClick={() => setActiveTab("blueprint")}
-          hasContent={hasContent}
+      <div className="flex items-center gap-4">
+        <div
+          className="flex gap-1 bg-dark-800 p-1 rounded-lg"
+          role="tablist"
+          aria-label="Document tabs"
+          id="editor-tabs"
         >
-          📘 blueprint.md
-        </TabButton>
-        <TabButton
-          id="tasks"
-          isActive={activeTab === "tasks"}
-          onClick={() => setActiveTab("tasks")}
-          hasContent={hasContent}
-        >
-          📋 task.md
-        </TabButton>
+          <TabButton
+            id="blueprint"
+            isActive={activeTab === "blueprint"}
+            onClick={() => setActiveTab("blueprint")}
+            hasContent={hasContent}
+          >
+            📘 blueprint.md
+          </TabButton>
+          <TabButton
+            id="tasks"
+            isActive={activeTab === "tasks"}
+            onClick={() => setActiveTab("tasks")}
+            hasContent={hasContent}
+          >
+            📋 task.md
+          </TabButton>
+        </div>
+        <LastSavedIndicator
+          text={lastSavedText}
+          isVisible={hasContent && !!lastSavedText}
+        />
       </div>
 
       <EditorToolbar
