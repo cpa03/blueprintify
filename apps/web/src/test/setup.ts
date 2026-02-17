@@ -59,6 +59,15 @@ Object.defineProperty(window, "localStorage", {
   writable: true,
 });
 
+// Also define localStorage as a global for module-level function access
+global.localStorage = localStorageMock as unknown as Storage;
+
+// Define on globalThis for code that uses globalThis.localStorage
+globalThis.localStorage = localStorageMock as unknown as Storage;
+
+// Use vi.stubGlobal to ensure localStorage is available in test files
+vi.stubGlobal("localStorage", localStorageMock);
+
 // Reset store before each test
 beforeEach(() => {
   Object.keys(localStorageStore).forEach(
