@@ -17,6 +17,7 @@ import { useWizardStore, useEditorStore } from "./store";
 import { UI_CONTENT } from "./config/constants";
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 import { RippleButton } from "./components/RippleButton";
+import { GenerationCelebration } from "./components/GenerationCelebration";
 
 // Lazy load Editor to reduce initial bundle size
 const Editor = lazy(() =>
@@ -33,6 +34,7 @@ function App() {
 
   const [showEditor, setShowEditor] = useState(hasContent || isGenerating);
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
   const previousHasContentRef = useRef(hasContent);
   const previousIsGeneratingRef = useRef(isGenerating);
 
@@ -76,6 +78,7 @@ function App() {
     const hasContentChanged = hasContent !== previousHasContentRef.current;
     const isGeneratingChanged =
       isGenerating !== previousIsGeneratingRef.current;
+    const wasGenerating = previousIsGeneratingRef.current;
 
     if (
       (hasContentChanged || isGeneratingChanged) &&
@@ -84,6 +87,11 @@ function App() {
     ) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowEditor(true);
+    }
+
+    if (wasGenerating && !isGenerating && hasContent) {
+       
+      setShowCelebration(true);
     }
 
     previousHasContentRef.current = hasContent;
@@ -267,6 +275,11 @@ function App() {
       <KeyboardShortcutsModal
         isOpen={showShortcutsModal}
         onClose={() => setShowShortcutsModal(false)}
+      />
+
+      <GenerationCelebration
+        isComplete={showCelebration}
+        onComplete={() => setShowCelebration(false)}
       />
     </div>
   );
