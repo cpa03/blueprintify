@@ -37,11 +37,25 @@ export const FORM_LIMITS = {
 
 // Animation durations (in seconds)
 export const ANIMATION = {
-  FAST: 0.2,
-  NORMAL: 0.3,
+  FAST: 0.15,
+  NORMAL: 0.2,
+  MEDIUM: 0.3,
   SLOW: 0.5,
   STAGGER: 0.1,
   SPINNER_ROTATION: 1,
+  TYPING_INDICATOR_DELAY_S: 0.6,
+} as const;
+
+// Animation durations (in milliseconds)
+export const ANIMATION_MS = {
+  TYPING_INDICATOR_DELAY: 600,
+  TYPING_INDICATOR_TIMEOUT: 800,
+} as const;
+
+// Spring configurations for animations
+export const SPRING_CONFIG = {
+  DEFAULT: { stiffness: 400, damping: 25, mass: 0.8 },
+  REDUCED_MOTION: { stiffness: 1000, damping: 100, mass: 0.1 },
 } as const;
 
 // Timeouts (in milliseconds)
@@ -51,6 +65,8 @@ export const TIMEOUTS = {
   GENERATION_CHECK: 100,
   TOAST_NOTIFICATION: 1500,
   SHAKE_ANIMATION: 400,
+  FOCUS_DELAY: 100,
+  LIVE_REGION_CLEAR: 1000,
 } as const;
 
 // Debounce configuration for state persistence (uses shared config)

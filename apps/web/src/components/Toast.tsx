@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect, forwardRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
-import { TOAST_CONFIG } from "../config/constants";
+import { TOAST_CONFIG, SPRING_CONFIG } from "../config/constants";
 
 const toastIcons: Record<ToastType, string> = {
   success: TOAST_CONFIG.ICONS.SUCCESS,
@@ -162,7 +162,7 @@ const ToastItem = forwardRef<HTMLDivElement, ToastItemProps>(function ToastItem(
       initial={{ opacity: 0, y: 20, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -20, scale: 0.9 }}
-      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+      transition={{ type: "spring", ...SPRING_CONFIG.DEFAULT }}
       className={`pointer-events-auto px-4 py-3 rounded-xl border backdrop-blur-sm shadow-lg flex items-center gap-3 min-w-[280px] max-w-md relative overflow-hidden group ${toastStyles[toast.type]}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

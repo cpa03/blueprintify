@@ -1,4 +1,5 @@
 import { useRef, useEffect, useCallback } from "react";
+import { TIMEOUTS } from "../config/constants";
 
 const FOCUSABLE_SELECTORS = [
   'input:not([type="hidden"]):not([disabled])',
@@ -18,7 +19,7 @@ export function useFocusOnStepChange(
   stepId: string,
   options: UseFocusOnStepChangeOptions = {},
 ) {
-  const { delay = 100, skipInitialMount = true } = options;
+  const { delay = TIMEOUTS.FOCUS_DELAY, skipInitialMount = true } = options;
   const containerRef = useRef<HTMLDivElement>(null);
   const previousStepRef = useRef<string | null>(null);
   const isInitialMount = useRef(true);
@@ -95,7 +96,7 @@ export function useStepAnnouncer(stepId: string, stepLabel: string) {
         if (liveRegionRef.current) {
           liveRegionRef.current.textContent = "";
         }
-      }, 1000);
+      }, TIMEOUTS.LIVE_REGION_CLEAR);
 
       return () => clearTimeout(timeout);
     }

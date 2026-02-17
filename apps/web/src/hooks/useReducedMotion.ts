@@ -1,4 +1,5 @@
 import { useSyncExternalStore, useMemo } from "react";
+import { SPRING_CONFIG } from "../config/constants";
 
 function subscribeToReducedMotion(callback: () => void): () => void {
   const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -81,17 +82,13 @@ export function getSpringConfig(
   } = {},
 ): { stiffness: number; damping: number; mass: number } {
   if (shouldReduceMotion) {
-    return {
-      stiffness: 1000,
-      damping: 100,
-      mass: 0.1,
-    };
+    return SPRING_CONFIG.REDUCED_MOTION;
   }
 
   return {
-    stiffness: springConfig.stiffness ?? 400,
-    damping: springConfig.damping ?? 25,
-    mass: springConfig.mass ?? 0.8,
+    stiffness: springConfig.stiffness ?? SPRING_CONFIG.DEFAULT.stiffness,
+    damping: springConfig.damping ?? SPRING_CONFIG.DEFAULT.damping,
+    mass: springConfig.mass ?? SPRING_CONFIG.DEFAULT.mass,
   };
 }
 
