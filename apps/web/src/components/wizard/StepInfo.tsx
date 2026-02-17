@@ -4,10 +4,12 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import {
   FORM_LIMITS,
   ANIMATION,
+  ANIMATION_MS,
   TIMEOUTS,
   UI_CONTENT,
   VALIDATION_MESSAGES,
 } from "../../config/constants";
+import { ANIMATION_TIMING } from "../../config/theme";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { RippleButton } from "../RippleButton";
 import { CharacterCounter } from "../CharacterCounter";
@@ -33,19 +35,19 @@ export function StepInfo() {
   );
 
   const projectNameTyping = useTypingIndicator({
-    delay: 600,
+    delay: ANIMATION_MS.TYPING_INDICATOR_DELAY,
     minInputLength: 1,
   });
   const descriptionTyping = useTypingIndicator({
-    delay: 600,
+    delay: ANIMATION_MS.TYPING_INDICATOR_DELAY,
     minInputLength: 1,
   });
   const targetAudienceTyping = useTypingIndicator({
-    delay: 600,
+    delay: ANIMATION_MS.TYPING_INDICATOR_DELAY,
     minInputLength: 1,
   });
   const constraintsTyping = useTypingIndicator({
-    delay: 600,
+    delay: ANIMATION_MS.TYPING_INDICATOR_DELAY,
     minInputLength: 1,
   });
 
@@ -138,7 +140,10 @@ export function StepInfo() {
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0, opacity: 0 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                    transition={{
+                      type: "spring",
+                      ...ANIMATION_TIMING.easing.spring,
+                    }}
                     className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-accent-emerald/20 text-accent-emerald"
                     aria-label="Project name is valid"
                   >
@@ -196,7 +201,7 @@ export function StepInfo() {
               animate={
                 projectNameTyping.isTyping ? { scale: 1.002 } : { scale: 1 }
               }
-              transition={{ duration: 0.15 }}
+              transition={{ duration: ANIMATION.FAST }}
               {...(projectName.length >
                 FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
               projectName.length < FORM_LIMITS.PROJECT_NAME.MAX
@@ -260,7 +265,10 @@ export function StepInfo() {
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0, opacity: 0 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                    transition={{
+                      type: "spring",
+                      ...ANIMATION_TIMING.easing.spring,
+                    }}
                     className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-accent-emerald/20 text-accent-emerald"
                     aria-label="Description is valid"
                   >
@@ -315,7 +323,7 @@ export function StepInfo() {
               animate={
                 descriptionTyping.isTyping ? { scale: 1.002 } : { scale: 1 }
               }
-              transition={{ duration: 0.15 }}
+              transition={{ duration: ANIMATION.FAST }}
               {...(isDescriptionInvalid
                 ? { "aria-describedby": "description-error" }
                 : description.length > 0 &&
@@ -401,7 +409,7 @@ export function StepInfo() {
               animate={
                 targetAudienceTyping.isTyping ? { scale: 1.002 } : { scale: 1 }
               }
-              transition={{ duration: 0.15 }}
+              transition={{ duration: ANIMATION.FAST }}
             />
             <AnimatePresence>
               {targetAudience && (
@@ -410,7 +418,7 @@ export function StepInfo() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.15 }}
+                  transition={{ duration: ANIMATION.FAST }}
                   onClick={() => setTargetAudience("")}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus:outline-none focus:text-white transition-colors p-1 rounded-md hover:bg-dark-700/50"
                   aria-label="Clear target audience"
@@ -453,7 +461,7 @@ export function StepInfo() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.15 }}
+                  transition={{ duration: ANIMATION.FAST }}
                   onClick={() => setConstraints("")}
                   className="text-xs text-dark-500 hover:text-dark-300 focus:outline-none focus:text-white transition-colors flex items-center gap-1 px-2 py-1 rounded-md hover:bg-dark-700/50"
                   aria-label="Clear constraints"

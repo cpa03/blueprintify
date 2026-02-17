@@ -1,5 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ANIMATION, ANIMATION_MS } from "../config/constants";
+import { ANIMATION_TIMING } from "../config/theme";
 
 interface TypeIndicatorProps {
   isTyping: boolean;
@@ -19,7 +21,10 @@ export function TypeIndicator({
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
+          transition={{
+            duration: ANIMATION.NORMAL,
+            ease: ANIMATION_TIMING.easing.easeOut,
+          }}
           className={`inline-flex items-center gap-1 ${
             position === "left" ? "mr-2" : "ml-2"
           } ${className}`}
@@ -36,10 +41,10 @@ export function TypeIndicator({
                 opacity: [0.4, 1, 0.4],
               }}
               transition={{
-                duration: 0.5,
+                duration: ANIMATION.SLOW,
                 repeat: Infinity,
-                delay: index * 0.15,
-                ease: "easeInOut",
+                delay: index * ANIMATION.STAGGER,
+                ease: ANIMATION_TIMING.easing.easeInOut,
               }}
             />
           ))}
@@ -55,7 +60,8 @@ interface UseTypingIndicatorOptions {
 }
 
 export function useTypingIndicator(options: UseTypingIndicatorOptions = {}) {
-  const { delay = 800, minInputLength = 0 } = options;
+  const { delay = ANIMATION_MS.TYPING_INDICATOR_TIMEOUT, minInputLength = 0 } =
+    options;
   const [isTyping, setIsTyping] = useState(false);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastValueRef = useRef<string>("");
