@@ -270,10 +270,10 @@ _See `.opencode/skill/` directory for complete skill definitions._
 
 ### 📋 Project Documentation
 
-- **[Technical Findings](./docs/findings.md)** - Technical feedback and improvement logs
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
 - **[Task Management](./docs/task.md)** - Current development tasks and priorities
 - **[Feature Specifications](./docs/features.md)** - Detailed feature documentation and status
+- **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 
 ### 📚 M2 Documentation
 
