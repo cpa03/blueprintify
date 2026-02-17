@@ -1,5 +1,6 @@
 import React from "react";
 import clsx from "clsx";
+import { motion } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { AnimatedCopyButton } from "../AnimatedCopyButton";
@@ -45,8 +46,7 @@ function EditorToolbarComponent({
 
   return (
     <div className="flex items-center gap-2">
-      {/* View mode toggle */}
-      <div className="flex bg-dark-800 p-1 rounded-lg">
+      <div className="flex bg-dark-800 p-1 rounded-lg relative">
         {(["edit", "split", "preview"] as const).map((mode) => (
           <Tooltip
             key={mode}
@@ -64,19 +64,63 @@ function EditorToolbarComponent({
             <button
               onClick={() => setViewMode(mode)}
               className={clsx(
-                "px-4 py-2 rounded text-xs font-medium transition-all min-w-[44px] min-h-[44px] flex items-center justify-center",
+                "px-4 py-2 rounded text-xs font-medium transition-colors duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center relative z-10",
                 viewMode === mode
-                  ? "bg-dark-600 text-white"
+                  ? "text-white"
                   : "text-dark-400 hover:text-white",
               )}
               aria-label={`Switch to ${mode} mode (${viewModeShortcuts[mode]})`}
+              aria-pressed={viewMode === mode}
             >
-              {mode === "edit" && "✏️"}
-              {mode === "split" && "⚡"}
-              {mode === "preview" && "👁️"}
+              <span className="flex items-center gap-1.5">
+                {mode === "edit" && (
+                  <>
+                    <span>✏️</span>
+                    <span className="hidden sm:inline">Edit</span>
+                  </>
+                )}
+                {mode === "split" && (
+                  <>
+                    <span>⚡</span>
+                    <span className="hidden sm:inline">Split</span>
+                  </>
+                )}
+                {mode === "preview" && (
+                  <>
+                    <span>👁️</span>
+                    <span className="hidden sm:inline">Preview</span>
+                  </>
+                )}
+              </span>
             </button>
           </Tooltip>
         ))}
+        <motion.div
+          className="absolute top-1 bottom-1 bg-gradient-to-r from-primary-600 to-primary-500 rounded-md shadow-lg shadow-primary-500/20"
+          layoutId="viewModeIndicator"
+          initial={false}
+          animate={{
+            left:
+              viewMode === "edit"
+                ? "4px"
+                : viewMode === "split"
+                  ? "calc(33.33% + 2px)"
+                  : "calc(66.67% - 0px)",
+            width:
+              viewMode === "split"
+                ? "calc(33.33% - 2px)"
+                : "calc(33.33% - 4px)",
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 400,
+            damping: 30,
+            mass: 0.8,
+          }}
+          style={{
+            zIndex: 0,
+          }}
+        />
       </div>
 
       <Tooltip
