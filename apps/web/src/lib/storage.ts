@@ -180,8 +180,13 @@ function getStorageQuota(): QuotaInfo {
 function isLocalStorageSupported(): boolean {
   try {
     const test = "__storage_test__";
-    localStorage.setItem(test, test);
-    localStorage.removeItem(test);
+    // Use window.localStorage for browser compatibility (including jsdom in tests)
+    (
+      globalThis as typeof globalThis & { localStorage: Storage }
+    ).localStorage.setItem(test, test);
+    (
+      globalThis as typeof globalThis & { localStorage: Storage }
+    ).localStorage.removeItem(test);
     return true;
   } catch {
     return false;
@@ -191,8 +196,13 @@ function isLocalStorageSupported(): boolean {
 function isPrivacyMode(): boolean {
   try {
     const test = "__privacy_test__";
-    localStorage.setItem(test, test);
-    localStorage.removeItem(test);
+    // Use window.localStorage for browser compatibility (including jsdom in tests)
+    (
+      globalThis as typeof globalThis & { localStorage: Storage }
+    ).localStorage.setItem(test, test);
+    (
+      globalThis as typeof globalThis & { localStorage: Storage }
+    ).localStorage.removeItem(test);
     return false;
   } catch (e) {
     return (
