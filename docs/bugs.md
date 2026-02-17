@@ -96,6 +96,45 @@ Replaced all 'any' types with proper Hono Context<{ Bindings: Env }> types:
 
 ---
 
+### BUG-008: ajv Package Security Vulnerabilities
+
+**Status**: Open  
+**Priority**: Medium  
+**Area**: Security Engineering  
+**First Reported**: 2026-02-17 (GitHub Security Advisory)  
+**Issue Reference**: #418
+
+#### Description
+
+9 moderate severity vulnerabilities detected in the ajv package (upstream dependency). These are related to prototype pollution and improper input validation in the JSON schema validation library.
+
+#### Impact
+
+- Potential prototype pollution attacks
+- Improper handling of certain JSON schema patterns
+- Affects validation logic in the application
+
+#### Workarounds
+
+- Monitor for security patches in ajv
+- Consider upgrading to patched version when available
+- Review usage of ajv in the codebase
+
+#### Fix Status
+
+- [ ] Assess vulnerability impact on application
+- [ ] Monitor for patched version release
+- [ ] Apply security update when available
+- [ ] Verify no regressions after update
+
+#### Target Resolution
+
+- **Timeline**: When patched version available
+- **Priority**: Medium (requires monitoring, not critical)
+- **Area**: Security Engineering
+
+---
+
 ### BUG-001: Frontend Bundle Size Performance Issue
 
 **Status**: In Progress  
