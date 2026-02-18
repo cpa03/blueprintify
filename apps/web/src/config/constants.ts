@@ -67,6 +67,7 @@ export const TIMEOUTS = {
   SHAKE_ANIMATION: 400,
   FOCUS_DELAY: 100,
   LIVE_REGION_CLEAR: 1000,
+  API_HEALTH_CHECK: 5000,
 } as const;
 
 // Debounce configuration for state persistence (uses shared config)
