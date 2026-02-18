@@ -30,37 +30,92 @@ export default defineConfig({
   build: {
     outDir: "dist",
     sourcemap: false,
-    modulePreload: {
-      polyfill: true,
-    },
+    modulePreload: false,
     rollupOptions: {
       treeshake: {
         moduleSideEffects: false,
         propertyReadSideEffects: false,
         tryCatchDeoptimization: false,
+        unknownGlobalSideEffects: false,
       },
       output: {
-        manualChunks: {
-          vendor: ["react", "react-dom"],
-          codemirror: [
-            "@uiw/react-codemirror",
-            "@codemirror/lang-markdown",
-            "@codemirror/theme-one-dark",
-            "@codemirror/state",
-            "@codemirror/view",
-            "@codemirror/language",
-            "@codemirror/commands",
-            "@codemirror/search",
-            "@codemirror/autocomplete",
-            "@codemirror/lint",
-            "@lezer/common",
-            "@lezer/markdown",
-            "@lezer/highlight",
-          ],
-          syntaxHighlighter: ["react-syntax-highlighter"],
-          markdown: ["react-markdown", "remark-gfm", "rehype-highlight"],
-          animation: ["framer-motion"],
-          zustand: ["zustand"],
+        manualChunks: (id) => {
+          // React core - always needed
+          if (
+            id.includes("node_modules/react/") ||
+            id.includes("node_modules/react-dom/") ||
+            id.includes("node_modules/react/jsx")
+          ) {
+            return "vendor";
+          }
+
+          // CodeMirror - editor only
+          if (
+            id.includes("node_modules/@codemirror/") ||
+            id.includes("node_modules/@lezer/") ||
+            id.includes("node_modules/@uiw/react-codemirror")
+          ) {
+            return "codemirror";
+          }
+
+          // Syntax highlighter - markdown rendering only
+          if (
+            id.includes("node_modules/react-syntax-highlighter") ||
+            id.includes("node_modules/prismjs")
+          ) {
+            return "syntax-highlighter";
+          }
+
+          // Markdown - only needed for preview
+          if (
+            id.includes("node_modules/react-markdown") ||
+            id.includes("node_modules/remark-") ||
+            id.includes("node_modules/rehype-") ||
+            id.includes("node_modules/mdast-") ||
+            id.includes("node_modules/micromark") ||
+            id.includes("node_modules/unist-") ||
+            id.includes("node_modules/vfile") ||
+            id.includes("node_modules/trim-lines") ||
+            id.includes("node_modules/escape-string-regexp") ||
+            id.includes("node_modules/stringify-entities") ||
+            id.includes("node_modules/character-entities") ||
+            id.includes("node_modules/property-information") ||
+            id.includes("node_modules/space-separated-tokens") ||
+            id.includes("node_modules/comma-separated-tokens") ||
+            id.includes("node_modules/hast-") ||
+            id.includes("node_modules/ccount") ||
+            id.includes("node_modules/parse-entities") ||
+            id.includes("node_modules/decode-named-character-reference") ||
+            id.includes("node_modules/devlop") ||
+            id.includes("node_modules/markdown-table") ||
+            id.includes("node_modules/gfm-")
+          ) {
+            return "markdown";
+          }
+
+          // Animation library
+          if (id.includes("node_modules/framer-motion")) {
+            return "animation";
+          }
+
+          // State management
+          if (id.includes("node_modules/zustand")) {
+            return "zustand";
+          }
+
+          // Radix UI components
+          if (id.includes("node_modules/@radix-ui/")) {
+            return "radix-ui";
+          }
+
+          // Utility libraries
+          if (
+            id.includes("node_modules/clsx") ||
+            id.includes("node_modules/dompurify") ||
+            id.includes("node_modules/jszip")
+          ) {
+            return "utils";
+          }
         },
         assetFileNames: (assetInfo) => {
           const name = assetInfo.name ?? "";
@@ -69,8 +124,15 @@ export default defineConfig({
           }
           return "assets/[name]-[hash][extname]";
         },
-        chunkFileNames: "assets/[name]-[hash].js",
+        chunkFileNames: (chunkInfo) => {
+          // Keep chunk names readable for debugging
+          const name = chunkInfo.name || "chunk";
+          return `assets/${name}-[hash].js`;
+        },
         entryFileNames: "assets/[name]-[hash].js",
+        // Optimize chunk loading
+        inlineDynamicImports: false,
+        hoistTransitiveImports: true,
       },
     },
     chunkSizeWarningLimit: 700,
