@@ -28,6 +28,8 @@ export interface UseLastSavedReturn {
   markSaved: () => void;
   setLastSaved: (timestamp: number) => void;
   lastSavedTimestamp: number | null;
+  hasChanges: boolean;
+  markAsChanged: () => void;
 }
 
 export function useLastSaved(
@@ -37,6 +39,7 @@ export function useLastSaved(
   const [lastSavedTimestamp, setLastSavedTimestamp] = useState<number | null>(
     initialTimestamp,
   );
+  const [hasChanges, setHasChanges] = useState(false);
   const [, forceUpdate] = useState({});
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -69,10 +72,16 @@ export function useLastSaved(
 
   const markSaved = useCallback(() => {
     setLastSavedTimestamp(Date.now());
+    setHasChanges(false);
   }, []);
 
   const setLastSaved = useCallback((timestamp: number) => {
     setLastSavedTimestamp(timestamp);
+    setHasChanges(false);
+  }, []);
+
+  const markAsChanged = useCallback(() => {
+    setHasChanges(true);
   }, []);
 
   return {
@@ -80,5 +89,7 @@ export function useLastSaved(
     markSaved,
     setLastSaved,
     lastSavedTimestamp,
+    hasChanges,
+    markAsChanged,
   };
 }

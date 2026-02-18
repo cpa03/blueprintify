@@ -34,7 +34,8 @@ function EditorComponent() {
   const isGenerating = useEditorStore((s) => s.isGenerating);
   const projectName = useWizardStore((s) => s.projectName);
 
-  const { lastSavedText, markSaved } = useLastSaved();
+  const { lastSavedText, markSaved, hasChanges, markAsChanged } =
+    useLastSaved();
 
   const currentContent =
     activeTab === "blueprint" ? blueprintContent : tasksContent;
@@ -56,6 +57,14 @@ function EditorComponent() {
     },
     [activeTab, setBlueprintContent, setTasksContent, markSaved, toast],
   );
+
+  const previousContentRef = useRef(currentContent);
+  useEffect(() => {
+    if (currentContent !== previousContentRef.current) {
+      markAsChanged();
+      previousContentRef.current = currentContent;
+    }
+  }, [currentContent, markAsChanged]);
 
   const hasInitialized = useRef(false);
   useEffect(() => {
@@ -118,6 +127,7 @@ function EditorComponent() {
         copied={copied}
         isExporting={isExporting}
         lastSavedText={lastSavedText}
+        hasChanges={hasChanges}
       />
 
       {/* Editor Content */}
