@@ -174,6 +174,7 @@ function App() {
                   <button
                     onClick={() => setShowEditor(false)}
                     className="hidden lg:flex absolute top-4 right-4 z-10 btn-ghost"
+                    aria-label="Hide editor panel"
                     title="Hide editor"
                   >
                     <svg
@@ -194,6 +195,7 @@ function App() {
                   <button
                     onClick={() => setShowEditor(false)}
                     className="lg:hidden absolute top-4 right-4 z-10 btn-ghost bg-dark-800/90 backdrop-blur-sm"
+                    aria-label="Hide editor panel"
                     title="Hide editor"
                   >
                     <svg
