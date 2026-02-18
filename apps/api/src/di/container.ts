@@ -1,3 +1,5 @@
+import { SSE_HEADERS } from "../config/constants";
+
 export interface AIService {
   streamCompletion: (options: {
     systemPrompt: string;
@@ -59,9 +61,9 @@ export function createMockContainer(overrides?: Partial<Container>): Container {
       createSSEResponse: () =>
         new Response(mockStream, {
           headers: {
-            "Content-Type": "text/event-stream",
-            "Cache-Control": "no-cache",
-            Connection: "keep-alive",
+            "Content-Type": SSE_HEADERS.CONTENT_TYPE,
+            "Cache-Control": SSE_HEADERS.CACHE_CONTROL,
+            Connection: SSE_HEADERS.CONNECTION,
           },
         }),
     },

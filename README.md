@@ -4,7 +4,7 @@
 
 Generate production-ready `blueprint.md` and `task.md` files for your projects in seconds. Built with Cloudflare Workers + React.
 
-![Blueprint Generator Demo](https://via.placeholder.com/800x400?text=Blueprint+Generator)
+<!-- Blueprint Generator Demo - Screenshot placeholder for actual demo image -->
 
 ## ✨ Features
 
@@ -284,4 +284,4 @@ _See `.opencode/skill/` directory for complete skill definitions._
 
 ## 📝 License
 
-MIT © 2024
+MIT © 2026

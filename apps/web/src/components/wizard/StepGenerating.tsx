@@ -12,8 +12,8 @@ export function StepGenerating() {
   const cancelGeneration = useEditorStore((s) => s.cancelGeneration);
   const setStep = useWizardStore((s) => s.setStep);
 
-  const blueprintLines = blueprintContent.split("\n").length;
-  const tasksLines = tasksContent.split("\n").length;
+  const blueprintLines = blueprintContent?.split("\n").length ?? 0;
+  const tasksLines = tasksContent?.split("\n").length ?? 0;
 
   const handleCancel = () => {
     cancelGeneration();

@@ -124,42 +124,7 @@ CREATE INDEX IF NOT EXISTS idx_analytics_event_type ON analytics(event_type);
 CREATE INDEX IF NOT EXISTS idx_analytics_created_at ON analytics(created_at);
 CREATE INDEX IF NOT EXISTS idx_blueprint_shares_expires_at ON blueprint_shares(expires_at);
 
--- Triggers for automatic timestamp updates
-CREATE TRIGGER IF NOT EXISTS update_users_timestamp 
-    AFTER UPDATE ON users
-    BEGIN
-        UPDATE users SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
-    END;
-
-CREATE TRIGGER IF NOT EXISTS update_projects_timestamp 
-    AFTER UPDATE ON projects
-    BEGIN
-        UPDATE projects SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
-    END;
-
-CREATE TRIGGER IF NOT EXISTS update_blueprints_timestamp 
-    AFTER UPDATE ON blueprints
-    BEGIN
-        UPDATE blueprints SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
-    END;
-
-CREATE TRIGGER IF NOT EXISTS update_tasks_timestamp 
-    AFTER UPDATE ON tasks
-    BEGIN
-        UPDATE tasks SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
-    END;
-
-CREATE TRIGGER IF NOT EXISTS update_templates_timestamp 
-    AFTER UPDATE ON templates
-    BEGIN
-        UPDATE templates SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
-    END;
-
-CREATE TRIGGER IF NOT EXISTS update_sessions_timestamp 
-    AFTER UPDATE ON sessions
-    BEGIN
-        UPDATE sessions SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
-    END;
+-- Timestamp updates handled at application layer (SQLite triggers cause recursion on self-UPDATE)
 
 -- Insert default templates
 INSERT OR IGNORE INTO templates (

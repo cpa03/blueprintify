@@ -113,11 +113,12 @@ jobs:
           - technical-writer
           - reliability-engineer
           - integration-engineer
-          - product-manager
+          - vercel
           - user-story-engineer
           - modularity-engineer
           - hardcoded-eliminator
-          - cloudflare-expert
+          - cloudflare
+          - repository manager
     steps:
       - uses: actions/checkout@v5
 
@@ -146,7 +147,7 @@ jobs:
           echo "Starting specialist work for ${{ matrix.role }}"
           
           if opencode run /ulw-loop \
-            "You are ${{ matrix.role }} specialist. Always do ${{ matrix.role }} best practice. you read documentations (*.md), check all open pr and open issues. your goal is to make small improvement within ${{ matrix.role }}. confirm: build/lint/test success without warnings/errors. create/update pull request after your task done with label ${{ matrix.role }}, ensure up to date with default branch before create/update pr to minimaze conflicts." \
+            "You are ${{ matrix.role }} specialist. Always do ${{ matrix.role }} best practice. you read documentations (*.md), check all open pr and open issues. your goal is to make small improvement within ${{ matrix.role }} without regression. confirm: build/lint/test success without warnings/errors. create/update pull request after your task done with label ${{ matrix.role }}, ensure up to date with default branch before create/update pr to minimaze conflicts." \
             --model opencode/glm-5-free \
             --share false; then
             echo "✅ Specialist work completed successfully for ${{ matrix.role }}"

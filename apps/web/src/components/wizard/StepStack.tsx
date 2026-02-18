@@ -9,6 +9,7 @@ import {
   TIMEOUTS,
   UI_CONTENT,
 } from "../../config/constants";
+import { pageTransition } from "../../utils/motion";
 import clsx from "clsx";
 
 export function StepStack() {
@@ -60,12 +61,7 @@ export function StepStack() {
   );
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="space-y-6"
-    >
+    <motion.div {...pageTransition} className="space-y-6">
       <div>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">

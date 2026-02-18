@@ -5,6 +5,7 @@ import { LazyCodeMirror } from "./LazyCodeMirror";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
 import { EditorEmptyState } from "./EditorEmptyState";
 import { ScrollToTop } from "./ScrollToTop";
+import { ScrollProgress } from "./ScrollProgress";
 import {
   useEditorStore,
   useWizardStore,
@@ -157,6 +158,7 @@ function EditorComponent() {
                   viewMode === "split" ? "w-full lg:w-1/2" : "w-full",
                 )}
               >
+                <ScrollProgress scrollContainerRef={previewRef} />
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}

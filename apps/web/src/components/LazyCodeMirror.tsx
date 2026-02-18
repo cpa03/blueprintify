@@ -25,9 +25,15 @@ export function LazyCodeMirror({
       try {
         const [{ default: CodeMirror }, { markdown }, { oneDark }] =
           await Promise.all([
-            import("@uiw/react-codemirror"),
-            import("@codemirror/lang-markdown"),
-            import("@codemirror/theme-one-dark"),
+            import(
+              /* webpackChunkName: "codemirror-main" */ "@uiw/react-codemirror"
+            ),
+            import(
+              /* webpackChunkName: "codemirror-markdown" */ "@codemirror/lang-markdown"
+            ),
+            import(
+              /* webpackChunkName: "codemirror-theme" */ "@codemirror/theme-one-dark"
+            ),
           ]);
 
         if (isMounted) {
@@ -49,7 +55,12 @@ export function LazyCodeMirror({
 
   if (!CodeMirrorComponent) {
     return (
-      <div className={`flex items-center justify-center ${className || ""}`}>
+      <div
+        role="status"
+        aria-live="polite"
+        aria-label="Loading code editor"
+        className={`flex items-center justify-center ${className || ""}`}
+      >
         <div className="flex flex-col items-center gap-2 text-dark-500">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
           <span className="text-sm">Loading editor...</span>

@@ -13,6 +13,7 @@ import { StepIndicator } from "./components/StepIndicator";
 import { Wizard } from "./components/Wizard";
 import { ToastContainer } from "./components/Toast";
 import { KeyboardShortcutsModal } from "./components/KeyboardShortcutsModal";
+import { SkipLink } from "./components/SkipLink";
 import { useWizardStore, useEditorStore } from "./store";
 import { UI_CONTENT } from "./config/constants";
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
@@ -21,7 +22,11 @@ import { GenerationCelebration } from "./components/GenerationCelebration";
 
 // Lazy load Editor to reduce initial bundle size
 const Editor = lazy(() =>
-  import("./components/Editor").then((module) => ({ default: module.Editor })),
+  import(
+    /* webpackChunkName: "editor" */
+    /* webpackPrefetch: false */
+    "./components/Editor"
+  ).then((module) => ({ default: module.Editor })),
 );
 
 function App() {
@@ -90,7 +95,6 @@ function App() {
     }
 
     if (wasGenerating && !isGenerating && hasContent) {
-       
       setShowCelebration(true);
     }
 
@@ -100,10 +104,11 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SkipLink />
       <Header onShowShortcuts={() => setShowShortcutsModal(true)} />
 
       {/* Main Content */}
-      <main className="flex-1 pt-20">
+      <main id="main-content" className="flex-1 pt-20" tabIndex={-1}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           {/* Hero section (only on first view) - Critical LCP element, no opacity animation */}
           {showTemplates && (
