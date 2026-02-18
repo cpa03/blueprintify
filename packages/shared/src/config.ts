@@ -64,6 +64,17 @@ export const DEBOUNCE_CONFIG = {
 } as const;
 
 /**
+ * Security Configuration
+ * Centralized security limits for content validation
+ */
+export const SECURITY_LIMITS = {
+  MAX_CONTENT_LENGTH: 1000000,
+  MAX_FILE_SIZE_BYTES: 10 * 1024 * 1024,
+  MAX_JSON_DEPTH: 20,
+  ALLOWED_FILE_TYPES: [".json", ".md", ".txt"] as const,
+} as const;
+
+/**
  * Type for retry options
  */
 export interface RetryOptions {

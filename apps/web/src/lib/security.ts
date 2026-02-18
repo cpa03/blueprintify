@@ -1,6 +1,6 @@
 import DOMPurify from "dompurify";
 import { z } from "zod";
-import { STORAGE_CONFIG } from "@blueprint/shared";
+import { STORAGE_CONFIG, SECURITY_LIMITS } from "@blueprint/shared";
 
 export const SECURITY_CONFIG = {
   DOMPURIFY_CONFIG: {
@@ -63,9 +63,9 @@ export const SECURITY_CONFIG = {
     KEEP_CONTENT: true,
   },
 
-  MAX_CONTENT_LENGTH: 1000000,
-  MAX_FILE_SIZE: 10 * 1024 * 1024,
-  ALLOWED_FILE_TYPES: [".json", ".md", ".txt"],
+  MAX_CONTENT_LENGTH: SECURITY_LIMITS.MAX_CONTENT_LENGTH,
+  MAX_FILE_SIZE: SECURITY_LIMITS.MAX_FILE_SIZE_BYTES,
+  ALLOWED_FILE_TYPES: [...SECURITY_LIMITS.ALLOWED_FILE_TYPES],
 
   STORAGE_QUOTA: STORAGE_CONFIG.QUOTA_BYTES,
 } as const;
@@ -304,10 +304,10 @@ export function validateJSONSecurity(content: string): {
 
     // Check for deeply nested objects (DoS protection)
     const depth = getObjectDepth(parsed);
-    if (depth > 20) {
+    if (depth > SECURITY_LIMITS.MAX_JSON_DEPTH) {
       return {
         isValid: false,
-        error: "JSON object depth exceeds maximum allowed limit (20)",
+        error: `JSON object depth exceeds maximum allowed limit (${SECURITY_LIMITS.MAX_JSON_DEPTH})`,
       };
     }
 
@@ -338,7 +338,7 @@ export function validateJSONSecurity(content: string): {
 }
 
 function getObjectDepth(obj: unknown, currentDepth = 0): number {
-  if (currentDepth > 20) return currentDepth; // Early exit to prevent stack overflow
+  if (currentDepth > SECURITY_LIMITS.MAX_JSON_DEPTH) return currentDepth;
   if (obj === null || typeof obj !== "object") return currentDepth;
 
   let maxDepth = currentDepth;

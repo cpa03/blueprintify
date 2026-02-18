@@ -325,3 +325,12 @@ export const EXTERNAL_URLS = {
     return getEnvConfig().PROJECT_HOMEPAGE_URL;
   },
 };
+
+export const SHARE_CONFIG = {
+  ID_LENGTH: 12,
+  ALPHANUMERIC_CHARS:
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+  EXPIRATION_DAYS: 30,
+  TITLE_MAX_LENGTH: 200,
+  BLUEPRINT_MAX_LENGTH: 50000,
+} as const;
