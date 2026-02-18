@@ -2,7 +2,7 @@
 -- Blueprintify Database Schema
 -- ============================================================================
 -- Cloudflare D1 (SQLite) Database Schema
--- Version: 1.2.0
+-- Version: 1.3.0
 -- Last Updated: 2026-02-18
 -- 
 -- Schema Conventions:
@@ -190,6 +190,9 @@ CREATE INDEX IF NOT EXISTS idx_blueprint_shares_expires_at ON blueprint_shares(e
 -- User's active projects (most common dashboard query)
 CREATE INDEX IF NOT EXISTS idx_projects_user_id_status ON projects(user_id, status);
 
+-- Latest blueprint version for project (version history lookup)
+CREATE INDEX IF NOT EXISTS idx_blueprints_project_id_version ON blueprints(project_id, version DESC);
+
 -- User-specific analytics (dashboard stats)
 CREATE INDEX IF NOT EXISTS idx_analytics_user_id_event_type ON analytics(user_id, event_type);
 
@@ -204,6 +207,9 @@ CREATE INDEX IF NOT EXISTS idx_templates_created_by ON templates(created_by);
 
 -- Popular templates (sorted by usage)
 CREATE INDEX IF NOT EXISTS idx_templates_usage_count ON templates(usage_count DESC);
+
+-- Active sessions for user (session validation)
+CREATE INDEX IF NOT EXISTS idx_sessions_user_id_expires_at ON sessions(user_id, expires_at);
 
 -- Blueprint shares cleanup (expired shares)
 CREATE INDEX IF NOT EXISTS idx_blueprint_shares_created_at ON blueprint_shares(created_at);

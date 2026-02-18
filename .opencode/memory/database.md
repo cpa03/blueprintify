@@ -2,7 +2,7 @@
 
 ## Schema Version
 
-- Current Version: 1.2.0
+- Current Version: 1.3.0
 - Last Updated: 2026-02-18
 - Schema File: `schema.sql`
 
@@ -69,16 +69,18 @@
 - Always index foreign key columns for join performance
 - Example: `idx_projects_user_id`
 
-### Composite Indexes (v1.2.0)
+### Composite Indexes (v1.3.0)
 
 Use composite indexes for common multi-column query patterns:
 
-| Index                                 | Query Pattern                       |
-| ------------------------------------- | ----------------------------------- |
-| `idx_projects_user_id_status`         | User's active projects (dashboard)  |
-| `idx_analytics_user_id_event_type`    | User-specific analytics             |
-| `idx_templates_category_is_public`    | Public templates by category        |
-| `idx_analytics_event_type_created_at` | Time-based analytics (event trends) |
+| Index                                 | Query Pattern                                                 |
+| ------------------------------------- | ------------------------------------------------------------- |
+| `idx_projects_user_id_status`         | User's active projects (dashboard)                            |
+| `idx_blueprints_project_id_version`   | Latest blueprint version for project (version history lookup) |
+| `idx_analytics_user_id_event_type`    | User-specific analytics                                       |
+| `idx_templates_category_is_public`    | Public templates by category                                  |
+| `idx_analytics_event_type_created_at` | Time-based analytics (event trends)                           |
+| `idx_sessions_user_id_expires_at`     | Active sessions for user (session validation)                 |
 
 ### Query Optimization
 
