@@ -52,7 +52,9 @@ function EditorComponent() {
       } catch (error) {
         const securityError = handleSecurityError(error);
         toast.error(`Security validation failed: ${securityError.message}`);
-        console.error("Security validation failed:", securityError);
+        if (import.meta.env.DEV) {
+          console.error("Security validation failed:", securityError);
+        }
       }
     },
     [activeTab, setBlueprintContent, setTasksContent, markSaved, toast],
@@ -99,7 +101,9 @@ function EditorComponent() {
       toast.success("Project exported successfully!");
     } catch (error) {
       toast.error("Failed to export project");
-      console.error("Export error:", error);
+      if (import.meta.env.DEV) {
+        console.error("Export error:", error);
+      }
     } finally {
       setIsExporting(false);
     }
