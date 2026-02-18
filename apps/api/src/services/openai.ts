@@ -11,6 +11,7 @@ export interface AIConfig {
   apiKey: string;
   baseURL?: string;
   model?: string;
+  timeout?: number;
 }
 
 export interface StreamOptions {
@@ -36,6 +37,7 @@ export function createAIClient(config: AIConfig): OpenAI {
   return new OpenAI({
     apiKey: config.apiKey,
     baseURL: config.baseURL,
+    timeout: config.timeout,
   });
 }
 
