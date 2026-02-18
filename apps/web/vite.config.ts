@@ -79,6 +79,11 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ["react", "react-dom"],
+          codemirror: [
+            "@uiw/react-codemirror",
+            "@codemirror/lang-markdown",
+            "@codemirror/theme-one-dark",
+          ],
           syntaxHighlighter: ["react-syntax-highlighter"],
           animation: ["framer-motion"],
           zustand: ["zustand"],
