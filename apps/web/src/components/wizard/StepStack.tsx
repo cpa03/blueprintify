@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useCallback } from "react";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
 import {
@@ -12,8 +12,128 @@ import {
 import { pageTransition } from "../../utils/motion";
 import clsx from "clsx";
 
+interface TechChipProps {
+  tech: { name: string; category: string };
+  isSelected: boolean;
+  onToggle: (tech: { name: string; category: string }) => void;
+  justSelected: string | null;
+}
+
+function TechChip({ tech, isSelected, onToggle, justSelected }: TechChipProps) {
+  const isJustSelected = justSelected === tech.name;
+
+  return (
+    <motion.button
+      key={tech.name}
+      onClick={() => onToggle(tech)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onToggle(tech);
+        }
+      }}
+      aria-pressed={isSelected}
+      className={clsx(
+        "tech-chip relative overflow-hidden",
+        isSelected && "selected",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950",
+      )}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      animate={
+        isJustSelected
+          ? {
+              scale: [1, 1.15, 1],
+              transition: { duration: 0.3, ease: "easeOut" },
+            }
+          : {}
+      }
+      transition={{
+        type: "spring",
+        stiffness: 400,
+        damping: 17,
+      }}
+    >
+      <AnimatePresence>
+        {isJustSelected && (
+          <motion.div
+            initial={{ scale: 0, opacity: 0.8 }}
+            animate={{ scale: 2.5, opacity: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="absolute inset-0 rounded-full bg-accent-emerald/30 pointer-events-none"
+            style={{ transformOrigin: "center" }}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isJustSelected && (
+          <motion.div
+            initial={{ scale: 0.8, opacity: 1 }}
+            animate={{ scale: 1.5, opacity: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="absolute inset-0 rounded-full border-2 border-accent-emerald pointer-events-none"
+          />
+        )}
+      </AnimatePresence>
+
+      <span className="relative z-10 flex items-center gap-1.5">
+        <AnimatePresence mode="wait">
+          {isSelected ? (
+            <motion.svg
+              key="checkmark"
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0, rotate: 180 }}
+              transition={{
+                type: "spring",
+                stiffness: 500,
+                damping: 15,
+              }}
+            >
+              <motion.path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.2, delay: 0.1 }}
+              />
+            </motion.svg>
+          ) : (
+            <motion.span
+              key="plus"
+              className="w-4 h-4 flex items-center justify-center text-dark-500"
+              initial={{ scale: 0, rotate: 180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0, rotate: -180 }}
+              transition={{
+                type: "spring",
+                stiffness: 500,
+                damping: 15,
+              }}
+            >
+              +
+            </motion.span>
+          )}
+        </AnimatePresence>
+        <span>{tech.name}</span>
+      </span>
+    </motion.button>
+  );
+}
+
 export function StepStack() {
   const [isShaking, setIsShaking] = useState(false);
+  const [justSelected, setJustSelected] = useState<string | null>(null);
   const techStack = useWizardStore((s) => s.techStack);
   const addTechStack = useWizardStore((s) => s.addTechStack);
   const removeTechStack = useWizardStore((s) => s.removeTechStack);
@@ -33,26 +153,35 @@ export function StepStack() {
     }
   };
 
-  const isSelected = (name: string) => techStack.some((t) => t.name === name);
+  const isSelected = useCallback(
+    (name: string) => techStack.some((t) => t.name === name),
+    [techStack],
+  );
 
-  const toggleTech = (tech: { name: string; category: string }) => {
-    if (isSelected(tech.name)) {
-      removeTechStack(tech.name);
-    } else {
-      addTechStack({
-        name: tech.name,
-        category: tech.category as
-          | "frontend"
-          | "backend"
-          | "database"
-          | "hosting"
-          | "ai"
-          | "testing"
-          | "styling"
-          | "other",
-      });
-    }
-  };
+  const toggleTech = useCallback(
+    (tech: { name: string; category: string }) => {
+      if (isSelected(tech.name)) {
+        removeTechStack(tech.name);
+        setJustSelected(null);
+      } else {
+        addTechStack({
+          name: tech.name,
+          category: tech.category as
+            | "frontend"
+            | "backend"
+            | "database"
+            | "hosting"
+            | "ai"
+            | "testing"
+            | "styling"
+            | "other",
+        });
+        setJustSelected(tech.name);
+        setTimeout(() => setJustSelected(null), 600);
+      }
+    },
+    [isSelected, addTechStack, removeTechStack],
+  );
 
   const minRequired = MIN_REQUIREMENTS.TECH_STACK;
   const progressPercentage = Math.min(
@@ -112,40 +241,13 @@ export function StepStack() {
               aria-labelledby={`category-${category}`}
             >
               {options.map((tech) => (
-                <button
+                <TechChip
                   key={tech.name}
-                  onClick={() => toggleTech(tech)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      toggleTech(tech);
-                    }
-                  }}
-                  aria-pressed={isSelected(tech.name)}
-                  className={clsx(
-                    "tech-chip",
-                    isSelected(tech.name) && "selected",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950",
-                  )}
-                >
-                  {isSelected(tech.name) && (
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  )}
-                  {tech.name}
-                </button>
+                  tech={tech}
+                  isSelected={isSelected(tech.name)}
+                  onToggle={toggleTech}
+                  justSelected={justSelected}
+                />
               ))}
             </div>
           </div>
