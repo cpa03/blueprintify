@@ -1,4 +1,8 @@
-import { RETRY_CONFIG as SHARED_RETRY_CONFIG } from "@blueprint/shared";
+import {
+  RETRY_CONFIG as SHARED_RETRY_CONFIG,
+  RETRYABLE_STATUS_CODES,
+  SSE_CONFIG as SHARED_SSE_CONFIG,
+} from "@blueprint/shared";
 import type { EnvConfig } from "./env";
 
 let envConfig: EnvConfig | null = null;
@@ -157,10 +161,8 @@ export const API_ENDPOINTS = {
   },
 } as const;
 
-// HTTP Status codes for retry logic
-export const RETRYABLE_STATUS_CODES = [408, 429, 500, 502, 503, 504] as const;
+export { RETRYABLE_STATUS_CODES };
 
-// Retryable error codes for network operations
 export const RETRYABLE_ERROR_CODES = [
   "ECONNRESET",
   "ETIMEDOUT",
@@ -239,18 +241,8 @@ export const CIRCUIT_BREAKER_CONFIG = {
   },
 };
 
-// SSE Stream configuration
-export const SSE_CONFIG = {
-  EVENT_TYPE: {
-    CONTENT: "content",
-    ERROR: "error",
-    DONE: "done",
-  },
-  DATA_PREFIX: "data: ",
-  EVENT_SEPARATOR: "\n\n",
-} as const;
+export { SHARED_SSE_CONFIG as SSE_CONFIG };
 
-// SSE Response headers
 export const SSE_HEADERS = {
   CONTENT_TYPE: "text/event-stream",
   CACHE_CONTROL: "no-cache",
