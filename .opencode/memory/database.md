@@ -1,5 +1,11 @@
 # Database Memory and Conventions
 
+## Schema Version
+
+- Current Version: 1.1.0
+- Last Updated: 2026-02-18
+- Schema File: `schema.sql`
+
 ## Naming Conventions
 
 ### Tables
@@ -18,12 +24,13 @@
 
 - Use descriptive prefix: `idx_{table}_{column(s)}` (e.g., `idx_users_email`)
 - For composite indexes: `idx_{table}_{column1}_{column2}` (e.g., `idx_projects_user_id_status`)
+- Document the query pattern each index optimizes
 
 ### Constraints
 
 - Foreign keys: `fk_{table}_{column}` (e.g., `fk_projects_user_id`)
 - Unique constraints: `uk_{table}_{column}` (e.g., `uk_users_email`)
-- Check constraints: `ck_{table}_{condition}` (e.g., `ck_users_email_format`)
+- Check constraints: `ck_{table}_{condition}` (e.g., `ck_projects_status`)
 
 ## Data Types
 
@@ -36,7 +43,7 @@
 
 - Always include `created_at` and `updated_at` columns
 - Use `DATETIME DEFAULT CURRENT_TIMESTAMP`
-- Create triggers for automatic `updated_at` updates
+- Timestamp updates handled at application layer (SQLite triggers cause recursion on self-UPDATE)
 
 ### JSON Data
 
@@ -55,17 +62,55 @@
 - Always index foreign key columns for join performance
 - Example: `idx_projects_user_id`
 
+### Composite Indexes (v1.1.0)
+
+Use composite indexes for common multi-column query patterns:
+
+| Index                              | Query Pattern                      |
+| ---------------------------------- | ---------------------------------- |
+| `idx_projects_user_id_status`      | User's active projects (dashboard) |
+| `idx_analytics_user_id_event_type` | User-specific analytics            |
+| `idx_templates_category_is_public` | Public templates by category       |
+
 ### Query Optimization
 
 - Index columns frequently used in WHERE clauses
 - Index columns used in ORDER BY clauses
-- Consider composite indexes for multi-column queries
+- Use composite indexes for multi-column queries
+- Document the purpose of each index
 
 ### Performance Considerations
 
 - Limit indexes to what's necessary for performance
 - Monitor query performance and add indexes as needed
 - Use `EXPLAIN QUERY PLAN` to analyze slow queries
+
+## Data Integrity
+
+### CHECK Constraints (v1.1.0)
+
+Use CHECK constraints to enforce valid values at the database level:
+
+```sql
+-- Projects status must be one of these values
+CONSTRAINT ck_projects_status CHECK (status IN ('active', 'archived', 'deleted'))
+
+-- Templates category must be one of these values
+CONSTRAINT ck_templates_category CHECK (category IN ('frontend', 'backend', 'fullstack', 'general'))
+```
+
+### Foreign Keys
+
+- Enable foreign key constraints: `PRAGMA foreign_keys = ON`
+- Use `ON DELETE CASCADE` for dependent data
+- Use `ON DELETE SET NULL` for optional relationships
+- Define explicit constraint names for documentation
+
+### Constraints
+
+- Add NOT NULL constraints where appropriate
+- Use UNIQUE constraints for natural keys
+- Include CHECK constraints for data validation
 
 ## Migration Strategy
 
@@ -86,26 +131,6 @@
 - Never use `DROP` without proper safeguards
 - Always test migrations on staging first
 - Include data validation in migrations
-
-## Data Integrity
-
-### Foreign Keys
-
-- Enable foreign key constraints: `PRAGMA foreign_keys = ON`
-- Use `ON DELETE CASCADE` for dependent data
-- Use `ON DELETE SET NULL` for optional relationships
-
-### Constraints
-
-- Add NOT NULL constraints where appropriate
-- Use UNIQUE constraints for natural keys
-- Include CHECK constraints for data validation
-
-### Triggers
-
-- Create triggers for automatic timestamp updates
-- Use triggers for complex data validation
-- Document trigger behavior clearly
 
 ## Security Considerations
 
