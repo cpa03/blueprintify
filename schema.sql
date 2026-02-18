@@ -1,64 +1,104 @@
+-- ============================================================================
 -- Blueprintify Database Schema
+-- ============================================================================
 -- Cloudflare D1 (SQLite) Database Schema
--- Version: 1.0.0
+-- Version: 1.1.0
+-- Last Updated: 2026-02-18
+-- 
+-- Schema Conventions:
+-- - Table names: snake_case, plural form (e.g., users, project_blueprints)
+-- - Column names: snake_case (e.g., created_at, user_id)
+-- - Foreign keys: fk_{table}_{column} (e.g., fk_projects_user_id)
+-- - Unique constraints: uk_{table}_{column} (e.g., uk_users_email)
+-- - Check constraints: ck_{table}_{condition} (e.g., ck_projects_status)
+-- - Indexes: idx_{table}_{column(s)} (e.g., idx_users_email)
+-- ============================================================================
 
--- Enable foreign key constraints
+-- Enable foreign key constraints (required for referential integrity)
 PRAGMA foreign_keys = ON;
 
--- Users table for user accounts and preferences
+-- ============================================================================
+-- USERS TABLE
+-- ============================================================================
+-- Stores user accounts and preferences for the application.
+-- Primary key uses TEXT for UUID-based identifiers.
+-- Format: user_{timestamp}_{random}
 CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
     email TEXT UNIQUE NOT NULL,
     name TEXT NOT NULL,
     avatar_url TEXT,
-    preferences TEXT, -- JSON string for user preferences
+    preferences TEXT, -- JSON string for user preferences (schema: UserPreferences)
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uk_users_email UNIQUE (email)
 );
 
--- Projects table for project configurations
+-- ============================================================================
+-- PROJECTS TABLE
+-- ============================================================================
+-- Stores project configurations and metadata.
+-- Status values: 'active', 'archived', 'deleted'
+-- tech_stack and features stored as JSON arrays for flexibility.
 CREATE TABLE IF NOT EXISTS projects (
     id TEXT PRIMARY KEY,
     user_id TEXT NOT NULL,
     name TEXT NOT NULL,
     description TEXT,
-    tech_stack TEXT, -- JSON array of tech stack items
-    features TEXT, -- JSON array of features
+    tech_stack TEXT, -- JSON array of TechStackItem objects
+    features TEXT, -- JSON array of feature strings
     target_audience TEXT,
     constraints TEXT,
-    status TEXT DEFAULT 'active', -- active, archived, deleted
+    status TEXT DEFAULT 'active',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_projects_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT ck_projects_status CHECK (status IN ('active', 'archived', 'deleted'))
 );
 
--- Blueprints table for generated blueprint content
+-- ============================================================================
+-- BLUEPRINTS TABLE
+-- ============================================================================
+-- Stores generated blueprint content for projects.
+-- Version field enables content versioning and history tracking.
 CREATE TABLE IF NOT EXISTS blueprints (
     id TEXT PRIMARY KEY,
     project_id TEXT NOT NULL,
     title TEXT NOT NULL,
     content TEXT NOT NULL, -- Generated blueprint markdown content
-    metadata TEXT, -- JSON string for generation metadata
+    metadata TEXT, -- JSON object with generation metadata (model, tokens, etc.)
     version INTEGER DEFAULT 1,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
+    CONSTRAINT fk_blueprints_project_id FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 );
 
--- Tasks table for generated task lists
+-- ============================================================================
+-- TASKS TABLE
+-- ============================================================================
+-- Stores generated task lists derived from blueprints.
+-- Version field enables task list versioning.
 CREATE TABLE IF NOT EXISTS tasks (
     id TEXT PRIMARY KEY,
     blueprint_id TEXT NOT NULL,
     title TEXT NOT NULL,
-    content TEXT NOT NULL, -- Generated task list content
-    metadata TEXT, -- JSON string for generation metadata
+    content TEXT NOT NULL, -- Generated task list markdown content
+    metadata TEXT, -- JSON object with generation metadata
     version INTEGER DEFAULT 1,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (blueprint_id) REFERENCES blueprints(id) ON DELETE CASCADE
+    FOREIGN KEY (blueprint_id) REFERENCES blueprints(id) ON DELETE CASCADE,
+    CONSTRAINT fk_tasks_blueprint_id FOREIGN KEY (blueprint_id) REFERENCES blueprints(id) ON DELETE CASCADE
 );
 
--- Templates table for template definitions
+-- ============================================================================
+-- TEMPLATES TABLE
+-- ============================================================================
+-- Stores template definitions for quick project setup.
+-- Categories: 'frontend', 'backend', 'fullstack', 'general'
+-- is_public: 1 = public template, 0 = private (user-created)
 CREATE TABLE IF NOT EXISTS templates (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
@@ -66,50 +106,71 @@ CREATE TABLE IF NOT EXISTS templates (
     icon TEXT NOT NULL,
     project_name TEXT NOT NULL,
     default_description TEXT NOT NULL,
-    tech_stack TEXT, -- JSON array of tech stack items
-    features TEXT, -- JSON array of features
+    tech_stack TEXT, -- JSON array of TechStackItem objects
+    features TEXT, -- JSON array of feature strings
     category TEXT DEFAULT 'general',
     is_public BOOLEAN DEFAULT 1,
     usage_count INTEGER DEFAULT 0,
-    created_by TEXT, -- User ID who created the template
+    created_by TEXT, -- User ID who created the template (NULL for system templates)
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL,
+    CONSTRAINT fk_templates_created_by FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL,
+    CONSTRAINT ck_templates_category CHECK (category IN ('frontend', 'backend', 'fullstack', 'general'))
 );
 
--- Sessions table for user session management
+-- ============================================================================
+-- SESSIONS TABLE
+-- ============================================================================
+-- Stores user session data for authentication.
+-- expires_at: Session expiration timestamp for cleanup.
 CREATE TABLE IF NOT EXISTS sessions (
     id TEXT PRIMARY KEY,
     user_id TEXT NOT NULL,
-    session_data TEXT, -- JSON string for session data
+    session_data TEXT, -- JSON object with session data
     expires_at DATETIME NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_sessions_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Analytics table for usage tracking
+-- ============================================================================
+-- ANALYTICS TABLE
+-- ============================================================================
+-- Stores usage tracking events for analytics.
+-- Event types: 'blueprint_generated', 'task_generated', 'template_used', etc.
+-- Note: user_id can be NULL for anonymous events.
 CREATE TABLE IF NOT EXISTS analytics (
     id TEXT PRIMARY KEY,
     user_id TEXT,
-    event_type TEXT NOT NULL, -- blueprint_generated, task_generated, template_used, etc.
-    event_data TEXT, -- JSON string for event data
+    event_type TEXT NOT NULL,
+    event_data TEXT, -- JSON object with event-specific data
     ip_address TEXT,
     user_agent TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+    CONSTRAINT fk_analytics_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
+-- ============================================================================
+-- BLUEPRINT_SHARES TABLE
+-- ============================================================================
+-- Stores shared blueprints for public/private sharing.
+-- expires_at: Optional expiration for share links.
 CREATE TABLE IF NOT EXISTS blueprint_shares (
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
-    blueprint TEXT NOT NULL,
-    metadata TEXT,
+    blueprint TEXT NOT NULL, -- Full blueprint content
+    metadata TEXT, -- JSON object with share metadata
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     expires_at DATETIME
 );
 
--- Indexes for performance optimization
+-- ============================================================================
+-- INDEXES
+-- ============================================================================
+-- Single-column indexes for primary lookups
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_projects_user_id ON projects(user_id);
 CREATE INDEX IF NOT EXISTS idx_projects_status ON projects(status);
@@ -123,6 +184,25 @@ CREATE INDEX IF NOT EXISTS idx_analytics_user_id ON analytics(user_id);
 CREATE INDEX IF NOT EXISTS idx_analytics_event_type ON analytics(event_type);
 CREATE INDEX IF NOT EXISTS idx_analytics_created_at ON analytics(created_at);
 CREATE INDEX IF NOT EXISTS idx_blueprint_shares_expires_at ON blueprint_shares(expires_at);
+
+-- Composite indexes for common query patterns
+-- User's active projects (most common dashboard query)
+CREATE INDEX IF NOT EXISTS idx_projects_user_id_status ON projects(user_id, status);
+
+-- User-specific analytics (dashboard stats)
+CREATE INDEX IF NOT EXISTS idx_analytics_user_id_event_type ON analytics(user_id, event_type);
+
+-- Public templates by category (template browser)
+CREATE INDEX IF NOT EXISTS idx_templates_category_is_public ON templates(category, is_public);
+
+-- User's templates (my templates page)
+CREATE INDEX IF NOT EXISTS idx_templates_created_by ON templates(created_by);
+
+-- Popular templates (sorted by usage)
+CREATE INDEX IF NOT EXISTS idx_templates_usage_count ON templates(usage_count DESC);
+
+-- Blueprint shares cleanup (expired shares)
+CREATE INDEX IF NOT EXISTS idx_blueprint_shares_created_at ON blueprint_shares(created_at);
 
 -- Timestamp updates handled at application layer (SQLite triggers cause recursion on self-UPDATE)
 
