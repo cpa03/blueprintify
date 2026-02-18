@@ -46,6 +46,22 @@ function App() {
   // Show templates only on first step with no content
   const showTemplates = currentStep === "info" && !hasContent;
 
+  // Memoized handlers for stable references to child components
+  const handleHideEditor = useCallback(() => setShowEditor(false), []);
+  const handleShowEditor = useCallback(() => setShowEditor(true), []);
+  const handleShowShortcuts = useCallback(
+    () => setShowShortcutsModal(true),
+    [],
+  );
+  const handleHideShortcuts = useCallback(
+    () => setShowShortcutsModal(false),
+    [],
+  );
+  const handleCelebrationComplete = useCallback(
+    () => setShowCelebration(false),
+    [],
+  );
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (
@@ -105,7 +121,7 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <SkipLink />
-      <Header onShowShortcuts={() => setShowShortcutsModal(true)} />
+      <Header onShowShortcuts={handleShowShortcuts} />
 
       {/* Main Content */}
       <main id="main-content" className="flex-1 pt-20" tabIndex={-1}>
@@ -172,7 +188,7 @@ function App() {
                   className="w-full lg:w-1/2 glass-card overflow-hidden relative"
                 >
                   <button
-                    onClick={() => setShowEditor(false)}
+                    onClick={handleHideEditor}
                     className="hidden lg:flex absolute top-4 right-4 z-10 btn-ghost"
                     aria-label="Hide editor panel"
                     title="Hide editor"
@@ -193,7 +209,7 @@ function App() {
                   </button>
 
                   <button
-                    onClick={() => setShowEditor(false)}
+                    onClick={handleHideEditor}
                     className="lg:hidden absolute top-4 right-4 z-10 btn-ghost bg-dark-800/90 backdrop-blur-sm"
                     aria-label="Hide editor panel"
                     title="Hide editor"
@@ -242,7 +258,7 @@ function App() {
                 animate={{ opacity: 1, y: 0 }}
               >
                 <RippleButton
-                  onClick={() => setShowEditor(true)}
+                  onClick={handleShowEditor}
                   className="fixed bottom-6 right-6 btn-primary shadow-2xl"
                   ariaLabel={`${UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON} (Cmd/Ctrl + E)`}
                 >
@@ -281,12 +297,12 @@ function App() {
 
       <KeyboardShortcutsModal
         isOpen={showShortcutsModal}
-        onClose={() => setShowShortcutsModal(false)}
+        onClose={handleHideShortcuts}
       />
 
       <GenerationCelebration
         isComplete={showCelebration}
-        onComplete={() => setShowCelebration(false)}
+        onComplete={handleCelebrationComplete}
       />
     </div>
   );
