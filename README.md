@@ -219,6 +219,9 @@ _See `.opencode/skill/` directory for complete skill definitions._
 | POST   | `/import`        | Import project with validation             |
 | GET    | `/storage/quota` | Check localStorage usage                   |
 | DELETE | `/storage/clear` | Clear stored data                          |
+| POST   | `/share`         | Create shareable blueprint link            |
+| GET    | `/share/:id`     | Retrieve shared blueprint                  |
+| DELETE | `/share/:id`     | Delete shared blueprint                    |
 
 ## 🛠️ Tech Stack
 
