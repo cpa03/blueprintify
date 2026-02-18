@@ -78,31 +78,11 @@
 - **Issue #167**: Performance Validation & Benchmarks ✅
 - **Issue #156**: Frontend Test Suite Implementation ✅
 
-#### Parallel Work
-
-- **Issue #31**: [FRONTEND] Implement Split-Pane View (Editor) - IN PROGRESS
-- **Issue #30**: [FRONTEND] Implement Real-time Markdown Rendering - IN PROGRESS
-
 #### Code Quality (Deferred to post-M1)
 
 - **Issue #21**: [REFACTOR] Extract EditorToolbar from Editor.tsx
 - **Issue #22**: [REFACTOR] Move API Route Logic to Controllers
 - **Issue #40**: [PERF] Optimize React Component Re-renders
-
----
-
-### M2: Refinement & Persistence - **FINALIZATION COMPLETE**
-
-**Objective**: Add editing capabilities and local storage
-
-**Status**: Complete (100%) - Finalization phase ongoing
-
-**Objective**: Enable sharing and collaboration features
-
-#### Prerequisites
-
-- ✅ M2 completion (Persistence + Refinement) - COMPLETE (2026-02-12)
-- ⏳ Advanced export capabilities - Complete, M3 deferred
 
 ---
 
