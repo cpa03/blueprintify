@@ -10,6 +10,21 @@ import {
 import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import type { ErrorResponse } from "../errors";
 
+const TEST_REQUEST_ID = "test-request-id-12345";
+
+type Variables = {
+  requestId: string;
+};
+
+const withRequestId = (): Hono<{ Variables: Variables }> => {
+  const app = new Hono<{ Variables: Variables }>();
+  app.use("*", async (c, next) => {
+    c.set("requestId", TEST_REQUEST_ID);
+    await next();
+  });
+  return app;
+};
+
 describe("errorHandler", () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
 
@@ -142,6 +157,60 @@ describe("errorHandler", () => {
     expect(logCall).toBeDefined();
     expect(logCall![0]).toContain("API Error");
   });
+
+  it("should include requestId in error response when available", async () => {
+    const app = withRequestId();
+    app.get("/", () => {
+      throw new Error("Test error with requestId");
+    });
+    app.onError(errorHandler);
+
+    const res = await app.request("/");
+    const data = (await res.json()) as ErrorResponse;
+
+    expect(data.error.requestId).toBe(TEST_REQUEST_ID);
+  });
+
+  it("should include requestId in CircuitBreakerOpenError response", async () => {
+    const app = withRequestId();
+    app.get("/", () => {
+      throw new CircuitBreakerOpenError("Service unavailable");
+    });
+    app.onError(errorHandler);
+
+    const res = await app.request("/");
+    const data = (await res.json()) as ErrorResponse;
+
+    expect(data.error.requestId).toBe(TEST_REQUEST_ID);
+  });
+
+  it("should include requestId in ValidationError response", async () => {
+    const app = withRequestId();
+    app.get("/", () => {
+      throw new ValidationError("Invalid input");
+    });
+    app.onError(errorHandler);
+
+    const res = await app.request("/");
+    const data = (await res.json()) as ErrorResponse;
+
+    expect(data.error.requestId).toBe(TEST_REQUEST_ID);
+  });
+
+  it("should not fail when requestId is not set in context", async () => {
+    const app = new Hono();
+    app.get("/", () => {
+      throw new Error("Test error without requestId");
+    });
+    app.onError(errorHandler);
+
+    const res = await app.request("/");
+    const data = (await res.json()) as ErrorResponse;
+
+    expect(res.status).toBe(500);
+    expect(data.success).toBe(false);
+    expect(data.error.requestId).toBeUndefined();
+  });
 });
 
 describe("notFoundHandler", () => {
@@ -178,5 +247,19 @@ describe("notFoundHandler", () => {
     const data = (await res.json()) as ErrorResponse;
 
     expect(data.error.timestamp).toBeDefined();
+  });
+
+  it("should include requestId in 404 response when available", async () => {
+    const app = new Hono<{ Variables: Variables }>();
+    app.use("*", async (c, next) => {
+      c.set("requestId", TEST_REQUEST_ID);
+      await next();
+    });
+    app.notFound(notFoundHandler);
+
+    const res = await app.request("/not-found");
+    const data = (await res.json()) as ErrorResponse;
+
+    expect(data.error.requestId).toBe(TEST_REQUEST_ID);
   });
 });

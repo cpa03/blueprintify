@@ -14,7 +14,7 @@ import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 import { rateLimit, rateLimitConfigs } from "./middleware/rateLimit";
 import { apiKeyAuth } from "./middleware/auth";
 import { requestLogger } from "./middleware/logger";
-import type { Env } from "./types";
+import type { Env, AppVariables } from "./types";
 import { loadConfig } from "./config/env";
 import {
   API_METADATA,
@@ -27,7 +27,7 @@ import { initializeContainer } from "./di";
 
 initializeContainer();
 
-const app = new Hono<{ Bindings: Env }>();
+const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
 
 app.use("*", secureHeaders());
 app.use(
