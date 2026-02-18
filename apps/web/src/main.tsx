@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { MotionConfig } from "framer-motion";
 import App from "./App";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import {
   ReducedMotionProvider,
   useReducedMotionContext,
@@ -28,9 +29,11 @@ const root = ReactDOM.createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
-    <ReducedMotionProvider>
-      <ReducedMotionConfig onMount={fadeOutAndRemoveSkeletonLoader} />
-    </ReducedMotionProvider>
+    <ErrorBoundary>
+      <ReducedMotionProvider>
+        <ReducedMotionConfig onMount={fadeOutAndRemoveSkeletonLoader} />
+      </ReducedMotionProvider>
+    </ErrorBoundary>
   </React.StrictMode>,
 );
 
