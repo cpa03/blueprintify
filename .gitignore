@@ -20,7 +20,9 @@ build/
 .env.production.local
 
 # IDE
-.vscode/
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
 .idea/
 *.swp
 *.swo
