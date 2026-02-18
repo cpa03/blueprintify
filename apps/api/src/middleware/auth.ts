@@ -5,6 +5,25 @@ interface AuthConfig {
   excludePaths?: string[];
 }
 
+/**
+ * Constant-time string comparison to prevent timing attacks.
+ * Uses XOR to compare each character and returns false if any differ.
+ * This prevents attackers from measuring response time to guess the key.
+ */
+function constantTimeCompare(a: string, b: string): boolean {
+  // Early return for length mismatch - but use constant time for the comparison
+  if (a.length !== b.length) {
+    // Still perform a comparison to maintain constant time
+    return constantTimeCompare(a, a) && false;
+  }
+
+  let result = 0;
+  for (let i = 0; i < a.length; i++) {
+    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return result === 0;
+}
+
 export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
   const { apiKeyHeader = "x-api-key", excludePaths = ["/"] } = config;
 
@@ -24,7 +43,8 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
       return;
     }
 
-    if (!providedKey || providedKey !== validKey) {
+    // Use constant-time comparison to prevent timing attacks
+    if (!providedKey || !constantTimeCompare(providedKey, validKey)) {
       return c.json(
         {
           success: false,
