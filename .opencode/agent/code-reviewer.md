@@ -9,6 +9,7 @@ tools:
   bash: true
   read: true
   grep: true
+  glob: true
   skill: true
 permission:
   bash:
