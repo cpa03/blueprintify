@@ -133,7 +133,7 @@ Each agent is defined in `.opencode/agent/[role-name].md`:
 ---
 description: Agent Role Description
 mode: primary
-model: opencode/gpt-5-nano
+model: opencode/glm-4.7-free
 temperature: 0.1
 tools:
   write: true
@@ -183,7 +183,7 @@ permission:
    ---
    description: Custom Agent for Specific Task
    mode: primary
-   model: opencode/gpt-5-nano
+   model: opencode/glm-4.7-free
    temperature: 0.1
    tools:
      write: true
@@ -379,11 +379,7 @@ Create custom workflows by combining agents and skills:
 
 ```typescript
 // Example: Documentation update workflow
-const workflow = [
-  agent("technical-writer", (task = "Update README")),
-  agent("quality-assurance", (task = "Review docs")),
-  agent("integrator", (task = "Merge changes")),
-];
+const workflow = [agent("technical-writer", (task = "Update README")), agent("quality-assurance", (task = "Review docs")), agent("integrator", (task = "Merge changes"))];
 ```
 
 ## Development Workflow
