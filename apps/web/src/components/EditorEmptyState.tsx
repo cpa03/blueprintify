@@ -1,48 +1,12 @@
 import { motion } from "framer-motion";
 import { useWizardStore } from "../store";
 import { WIZARD_STEPS } from "../config/constants";
-
-const floatingAnimation = {
-  y: [-8, 8, -8],
-  transition: {
-    duration: 3,
-    repeat: Infinity,
-    ease: "easeInOut",
-  },
-};
-
-const pulseAnimation = {
-  scale: [1, 1.05, 1],
-  opacity: [0.5, 0.8, 0.5],
-  transition: {
-    duration: 2,
-    repeat: Infinity,
-    ease: "easeInOut",
-  },
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut",
-    },
-  },
-};
+import {
+  staggerContainer,
+  fadeInUp,
+  floatingAnimation,
+  pulseAnimation,
+} from "../utils/motion";
 
 export function EditorEmptyState() {
   const currentStep = useWizardStore((s) => s.currentStep);
