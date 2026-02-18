@@ -2,7 +2,7 @@
 
 ## Schema Version
 
-- Current Version: 1.3.0
+- Current Version: 1.3.1
 - Last Updated: 2026-02-18
 - Schema File: `schema.sql`
 
@@ -107,6 +107,9 @@ CONSTRAINT ck_projects_status CHECK (status IN ('active', 'archived', 'deleted')
 
 -- Templates category must be one of these values
 CONSTRAINT ck_templates_category CHECK (category IN ('frontend', 'backend', 'fullstack', 'general'))
+
+-- Templates is_public must be a valid boolean (0 or 1)
+CONSTRAINT ck_templates_is_public CHECK (is_public IN (0, 1))
 
 -- Analytics event_type must be one of these values
 CONSTRAINT ck_analytics_event_type CHECK (event_type IN ('blueprint_generated', 'task_generated', 'template_used', 'export', 'import', 'refine', 'session_start', 'session_end'))

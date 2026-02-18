@@ -2,7 +2,7 @@
 -- Blueprintify Database Schema
 -- ============================================================================
 -- Cloudflare D1 (SQLite) Database Schema
--- Version: 1.3.0
+-- Version: 1.3.1
 -- Last Updated: 2026-02-18
 -- 
 -- Schema Conventions:
@@ -109,14 +109,15 @@ CREATE TABLE IF NOT EXISTS templates (
     tech_stack TEXT, -- JSON array of TechStackItem objects
     features TEXT, -- JSON array of feature strings
     category TEXT DEFAULT 'general',
-    is_public BOOLEAN DEFAULT 1,
+    is_public INTEGER NOT NULL DEFAULT 1,
     usage_count INTEGER DEFAULT 0,
     created_by TEXT, -- User ID who created the template (NULL for system templates)
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL,
     CONSTRAINT fk_templates_created_by FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL,
-    CONSTRAINT ck_templates_category CHECK (category IN ('frontend', 'backend', 'fullstack', 'general'))
+    CONSTRAINT ck_templates_category CHECK (category IN ('frontend', 'backend', 'fullstack', 'general')),
+    CONSTRAINT ck_templates_is_public CHECK (is_public IN (0, 1))
 );
 
 -- ============================================================================
