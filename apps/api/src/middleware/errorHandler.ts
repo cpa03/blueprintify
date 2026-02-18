@@ -5,11 +5,15 @@ import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import { ERROR_CODES, ERROR_MESSAGES, HTTP_STATUS } from "../config/constants";
 
 export const errorHandler = (err: unknown, c: Context): Response => {
+  // Extract requestId from context (set by requestLogger middleware)
+  const requestId = c.get("requestId") as string | undefined;
+
   const errorLog = {
     error: err instanceof Error ? err.message : err,
     stack: err instanceof Error ? err.stack : undefined,
     path: c.req.path,
     method: c.req.method,
+    requestId,
     timestamp: new Date().toISOString(),
   };
 
@@ -24,6 +28,7 @@ export const errorHandler = (err: unknown, c: Context): Response => {
           message: ERROR_MESSAGES.CIRCUIT_BREAKER_OPEN,
           code: ERROR_CODES.CIRCUIT_BREAKER_OPEN,
           timestamp: new Date().toISOString(),
+          ...(requestId && { requestId }),
         },
       },
       HTTP_STATUS.SERVICE_UNAVAILABLE,
@@ -52,6 +57,7 @@ export const errorHandler = (err: unknown, c: Context): Response => {
           }),
         },
         timestamp: new Date().toISOString(),
+        ...(requestId && { requestId }),
       },
     };
 
@@ -63,10 +69,16 @@ export const errorHandler = (err: unknown, c: Context): Response => {
     ? err.statusCode
     : HTTP_STATUS.INTERNAL_ERROR;
 
+  if (requestId && !errorResponse.error.requestId) {
+    errorResponse.error.requestId = requestId;
+  }
+
   return c.json(errorResponse, statusCode as 400 | 401 | 403 | 404 | 500 | 502);
 };
 
 export const notFoundHandler = (c: Context): Response => {
+  const requestId = c.get("requestId") as string | undefined;
+
   return c.json(
     {
       success: false,
@@ -75,6 +87,7 @@ export const notFoundHandler = (c: Context): Response => {
         message: ERROR_MESSAGES.NOT_FOUND(`${c.req.method} ${c.req.path}`),
         code: ERROR_CODES.NOT_FOUND_ERROR,
         timestamp: new Date().toISOString(),
+        ...(requestId && { requestId }),
       },
     },
     HTTP_STATUS.NOT_FOUND,

@@ -63,9 +63,20 @@ export interface Env {
   LENIENT_RATE_LIMITER: RateLimit;
 }
 
+export interface AppVariables {
+  requestId?: string;
+  validatedData?: unknown;
+}
+
+export type AppContext = Context<{
+  Bindings: Env;
+  Variables: AppVariables;
+}>;
+
 // Base context type with environment bindings
 export type BaseContext = Context<{
   Bindings: Env;
+  Variables: AppVariables;
 }>;
 
 // Generic context type with validated data
