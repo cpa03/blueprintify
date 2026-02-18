@@ -11,6 +11,7 @@ import {
   SSE_CONFIG,
   API_ENDPOINTS,
   UI_FALLBACKS,
+  TIMEOUTS,
 } from "../config/constants";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || UI_FALLBACKS.API_BASE;
@@ -325,10 +326,20 @@ export async function refineContent(
 }
 
 export async function checkHealth(): Promise<boolean> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(
+    () => controller.abort(),
+    TIMEOUTS.API_HEALTH_CHECK,
+  );
+
   try {
-    const response = await fetch(`${API_BASE}${API_ENDPOINTS.HEALTH}`);
+    const response = await fetch(`${API_BASE}${API_ENDPOINTS.HEALTH}`, {
+      signal: controller.signal,
+    });
     return response.ok;
   } catch {
     return false;
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
