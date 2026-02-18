@@ -10,7 +10,11 @@ import {
  * Centralized location for all hardcoded values
  */
 
-export { VALIDATION_LIMITS } from "@blueprint/shared";
+export {
+  VALIDATION_LIMITS,
+  RETRYABLE_STATUS_CODES,
+  SSE_CONFIG,
+} from "@blueprint/shared";
 
 // Form validation limits derived from shared config
 export const FORM_LIMITS = {
@@ -124,9 +128,6 @@ export const MIN_REQUIREMENTS = {
   DESCRIPTION: 10,
 } as const;
 
-// HTTP Status codes for retry logic
-export const RETRYABLE_STATUS_CODES = [408, 429, 500, 502, 503, 504] as const;
-
 // Export configuration
 export const EXPORT_CONFIG = {
   ZIP_COMPRESSION_LEVEL: 6,
@@ -161,17 +162,6 @@ export const API_ERROR_MESSAGES = {
   REFINEMENT_FAILED: "Refinement failed",
   NO_RESPONSE_BODY: "No response body",
   STREAM_ERROR: "Stream error",
-} as const;
-
-// SSE Stream configuration
-export const SSE_CONFIG = {
-  DATA_PREFIX: "data: ",
-  EVENT_SEPARATOR: "\n\n",
-  EVENT_TYPES: {
-    CONTENT: "content",
-    ERROR: "error",
-    DONE: "done",
-  },
 } as const;
 
 // Export README template

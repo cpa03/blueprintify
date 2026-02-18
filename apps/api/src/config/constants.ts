@@ -1,6 +1,9 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { RETRY_CONFIG as SHARED_RETRY_CONFIG } from "@blueprint/shared";
+import {
+  RETRY_CONFIG as SHARED_RETRY_CONFIG,
+  RETRYABLE_STATUS_CODES as SHARED_RETRYABLE_STATUS_CODES,
+} from "@blueprint/shared";
 import type { EnvConfig } from "./env";
 
 let envConfig: EnvConfig | null = null;
@@ -26,6 +29,8 @@ function loadPromptTemplate(filename: string): string {
 }
 
 export const RETRY_CONFIG = SHARED_RETRY_CONFIG;
+
+export const RETRYABLE_STATUS_CODES = SHARED_RETRYABLE_STATUS_CODES;
 
 export const AI_CONFIG = {
   get DEFAULT_MODEL(): string {
@@ -103,9 +108,6 @@ export const API_ENDPOINTS = {
     description: "Delete shared blueprint",
   },
 } as const;
-
-// HTTP Status codes for retry logic
-export const RETRYABLE_STATUS_CODES = [408, 429, 500, 502, 503, 504] as const;
 
 // Retryable error codes for network operations
 export const RETRYABLE_ERROR_CODES = [

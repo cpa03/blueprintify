@@ -77,3 +77,23 @@ export interface RetryOptions {
  * Type guards for config values
  */
 export type RetryConfigValues = typeof RETRY_CONFIG;
+
+/**
+ * HTTP Status codes that are retryable
+ * Shared between frontend API client and backend services
+ */
+export const RETRYABLE_STATUS_CODES = [408, 429, 500, 502, 503, 504] as const;
+
+/**
+ * SSE (Server-Sent Events) Configuration
+ * Shared between frontend stream handling and backend stream generation
+ */
+export const SSE_CONFIG = {
+  DATA_PREFIX: "data: " as const,
+  EVENT_SEPARATOR: "\n\n" as const,
+  EVENT_TYPES: {
+    CONTENT: "content" as const,
+    ERROR: "error" as const,
+    DONE: "done" as const,
+  },
+} as const;
