@@ -22,7 +22,11 @@ import { GenerationCelebration } from "./components/GenerationCelebration";
 
 // Lazy load Editor to reduce initial bundle size
 const Editor = lazy(() =>
-  import("./components/Editor").then((module) => ({ default: module.Editor })),
+  import(
+    /* webpackChunkName: "editor" */
+    /* webpackPrefetch: false */
+    "./components/Editor"
+  ).then((module) => ({ default: module.Editor })),
 );
 
 function App() {

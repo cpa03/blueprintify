@@ -25,9 +25,15 @@ export function LazyCodeMirror({
       try {
         const [{ default: CodeMirror }, { markdown }, { oneDark }] =
           await Promise.all([
-            import("@uiw/react-codemirror"),
-            import("@codemirror/lang-markdown"),
-            import("@codemirror/theme-one-dark"),
+            import(
+              /* webpackChunkName: "codemirror-main" */ "@uiw/react-codemirror"
+            ),
+            import(
+              /* webpackChunkName: "codemirror-markdown" */ "@codemirror/lang-markdown"
+            ),
+            import(
+              /* webpackChunkName: "codemirror-theme" */ "@codemirror/theme-one-dark"
+            ),
           ]);
 
         if (isMounted) {
