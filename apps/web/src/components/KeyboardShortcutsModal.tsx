@@ -1,6 +1,7 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { KEYBOARD_SHORTCUTS, WIZARD_STEPS } from "../config/constants";
+import { useFocusTrap } from "../hooks";
 
 interface KeyboardShortcutsModalProps {
   isOpen: boolean;
@@ -61,6 +62,13 @@ export function KeyboardShortcutsModal({
   isOpen,
   onClose,
 }: KeyboardShortcutsModalProps) {
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const { containerRef } = useFocusTrap({
+    isActive: isOpen,
+    returnFocusTo: closeButtonRef,
+    autoFocus: true,
+  });
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -123,6 +131,7 @@ export function KeyboardShortcutsModal({
             aria-labelledby="keyboard-shortcuts-title"
           >
             <div
+              ref={containerRef as React.RefObject<HTMLDivElement>}
               className="glass-card w-full max-w-2xl max-h-[85vh] overflow-hidden pointer-events-auto shadow-2xl shadow-dark-950/50"
               onClick={(e) => e.stopPropagation()}
             >
@@ -148,6 +157,7 @@ export function KeyboardShortcutsModal({
                   </div>
                 </div>
                 <button
+                  ref={closeButtonRef}
                   onClick={onClose}
                   className="p-2 text-dark-400 hover:text-white hover:bg-dark-700/50 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/50"
                   aria-label="Close keyboard shortcuts"
