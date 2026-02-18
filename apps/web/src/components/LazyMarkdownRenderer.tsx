@@ -19,7 +19,12 @@ export function LazyMarkdownRenderer({
 
     const loadMarkdownRenderer = async () => {
       try {
-        const { MarkdownRenderer } = await import("./MarkdownRenderer");
+        const { MarkdownRenderer } = await import(
+          /* webpackChunkName: "markdown-renderer" */
+          /* webpackPrefetch: false */
+          /* webpackPreload: false */
+          "./MarkdownRenderer"
+        );
         if (isMounted) {
           setMarkdownComponent(() => MarkdownRenderer);
           setIsLoading(false);
