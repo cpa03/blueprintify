@@ -56,6 +56,11 @@ export interface Env {
   DB: D1Database;
   CACHE: KVNamespace;
   BACKGROUND_QUEUE: Queue;
+
+  // Cloudflare Native Rate Limiters
+  STRICT_RATE_LIMITER: RateLimit;
+  STANDARD_RATE_LIMITER: RateLimit;
+  LENIENT_RATE_LIMITER: RateLimit;
 }
 
 // Base context type with environment bindings

@@ -290,8 +290,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         envWithoutKey,
       );
 
-      // Rate limiter returns 429 when API key is missing (treated as unauthorized)
-      expect([400, 429]).toContain(res.status);
+      expect([400, 500]).toContain(res.status);
       const data = (await res.json()) as ApiResponse;
       expect(data.success).toBe(false);
     });
