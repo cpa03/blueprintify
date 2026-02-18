@@ -3,7 +3,7 @@ import { getContainer } from "../di/container";
 import { ConfigurationError } from "../errors";
 import type { ValidatedContext, ControllerContext } from "../types";
 import type { z } from "zod";
-import { CONFIG_MESSAGES } from "../config/constants";
+import { CONFIG_MESSAGES, AI_CONFIG } from "../config/constants";
 
 export abstract class BaseController {
   protected createAIConfig(c: ControllerContext): AIConfig {
@@ -11,6 +11,7 @@ export abstract class BaseController {
       apiKey: c.env.OPENAI_API_KEY,
       baseURL: c.env.OPENAI_BASE_URL,
       model: c.env.OPENAI_MODEL,
+      timeout: AI_CONFIG.DEFAULT_TIMEOUT,
     };
 
     if (!config.apiKey) {
