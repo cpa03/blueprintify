@@ -1,4 +1,4 @@
-name: Autonomous AI Ecosystem
+name: parallel
 
 on:
   push:
@@ -49,16 +49,18 @@ jobs:
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
       - name: Install Node.js
+        continue-on-error: true
         uses: actions/setup-node@v4
         with:
           node-version: "20"
       - name: Install Dependencies
+        continue-on-error: true
         run: npm ci
       - name: Install OpenCode CLI
         run: |
           curl -fsSL https://opencode.ai/install | bash
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
-      - name: Architect Intelligence Cycle
+      - name: arsitek
         timeout-minutes: 20
         continue-on-error: true
         env:
@@ -66,15 +68,12 @@ jobs:
         run: |
           max_retries=2
           retry_count=0
-
           echo "🏗️ Starting Architect Intelligence Cycle"
-
           while [ $retry_count -lt $max_retries ]; do
             echo "Attempt $((retry_count + 1)) of $max_retries"
-
-            if opencode run "Execute management cycle, Read 'docs/findings.md' and 'docs/roadmap.md', Triage existing issues, Create new issues if roadmap requires it." \
-              --agent software-architect \
-              --model opencode/big-pickle \
+            if opencode run /ulw-loop "Anda adalah RepoKeeper. Tugas anda adalah menjaga repositori tetap efisien, teratur dan terorganisir, bersih dari file/folder redundant, sementara dan tidak digunakan lagi. Jaga dokumentasi tetap up to date dan sesuai dengan code. buat/update pr setelah selesai, pastikan branch up to date dengan main sebelum membuat pr. ketika build/lint, jika ada errors atau warnings (pre, existing atau potensial) walaupun hanya 1, maka anda gagal besar." \
+              --agent RepoKeeper \
+              --model opencode/kimi-k2.5-free \
               --share false; then
               echo "✅ Architect work completed successfully"
               break
@@ -94,6 +93,7 @@ jobs:
   # ------------------------------------------------------------------
   specialists:
     name: "Specialist: ${{ matrix.role }}"
+    continue-on-error: true
     needs: architect
     runs-on: ubuntu-24.04-arm
     strategy:
@@ -102,8 +102,8 @@ jobs:
         role:
           - frontend-engineer
           - backend-engineer
-          - api-specialist
-          - code-reviewer
+          - ai-agent-engineer
+          - DX-engineer
           - security-engineer
           - quality-assurance
           - performance-engineer
@@ -113,20 +113,23 @@ jobs:
           - technical-writer
           - reliability-engineer
           - integration-engineer
+          - product-manager
+          - user-story-engineer
+          - modularity-engineer
+          - hardcoded-eliminator
+          - cloudflare-expert
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Configure Git
         run: |
-          git config --global user.name "AI Specialist"
-          git config --global user.email "specialist@bot.local"
-
+          git config --global user.name "${{ matrix.role }}"
+          git config --global user.email "${{ matrix.role }}@bank-sampah.sulhi.workers.dev"
       - name: Setup Node & OpenCode
-        uses: actions/setup-node@v4
+        continue-on-error: true
+        uses: actions/setup-node@v5
         with:
           node-version: "20"
-      - name: Install Dependencies
-        run: npm ci
       - name: Install OpenCode CLI
         run: |
           curl -fsSL https://opencode.ai/install | bash
@@ -142,9 +145,9 @@ jobs:
           # 2. No Issue -> Proactive Scan -> findings.md
           echo "Starting specialist work for ${{ matrix.role }}"
           
-          if opencode run \
-            "Check for OPEN issues with label 'area:${{ matrix.role }}' or assigned to you. Pick the highest priority ONE. Execute the fix in a new branch. Update 'docs/findings.md' with any notes." \
-            --model opencode/big-pickle \
+          if opencode run /ulw-loop \
+            "You are ${{ matrix.role }} specialist. Always do ${{ matrix.role }} best practice. you read documentations (*.md), check all open pr and open issues. your goal is to make small improvement within ${{ matrix.role }}. confirm: build/lint/test success without warnings/errors. create/update pull request after your task done with label ${{ matrix.role }}, ensure up to date with default branch before create/update pr to minimaze conflicts." \
+            --model opencode/glm-5-free \
             --share false; then
             echo "✅ Specialist work completed successfully for ${{ matrix.role }}"
           else
@@ -152,39 +155,70 @@ jobs:
             echo "This may be expected if no issues were found or work took longer than timeout"
             exit 0  # Don't fail the workflow, just log the issue
           fi
-
   # ------------------------------------------------------------------
-  # STAGE 3: THE GATEKEEPER (Integrator)
+  # STAGE 3: ISSUE MANAGER
   # ------------------------------------------------------------------
-  integrator:
-    name: "Integrator: PR Merge & Validate"
+  PR-Handler:
+    name: "PR-Handler"
     needs: specialists
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Configure Git
         run: |
-          git config --global user.name "Integrator Bot"
-          git config --global user.email "integrator@bot.local"
+          git config --global user.name "PR-Handler"
+          git config --global user.email "PR-Handler@bank-sampah.sulhi.workers.dev"
+      - name: Setup Node & OpenCode
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install OpenCode CLI
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+      - name: Process Pull Requests
+        timeout-minutes: 60
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          opencode run /ulw-loop \
+            "You are **PR-Handler**, github PR manager work on this repository. **PR-Handler** love to manage PR, he work from latest open pr. **PR-Handler** Goal: manage ALL open pr begun from latest, merge without conflict, warnings, errors. If conflicts, close pr. confirm: build/lint/test/check success without warnings, up to date with default branch. remember, no errors or warnings." \
+            --model opencode/glm-5-free \
+            --share false
+  # ------------------------------------------------------------------
+  # STAGE 4: THE GATEKEEPER (Integrator)
+  # ------------------------------------------------------------------
+  integrator:
+    name: "Fixer"
+    needs: PR-Handler
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v5
 
+      - name: Configure Git
+        run: |
+          git config --global user.name "Fixer"
+          git config --global user.email "fixer@bank-sampah.sulhi.workers.dev"
       - name: Setup Node & OpenCode
         uses: actions/setup-node@v4
         with:
           node-version: "20"
       - name: Install Dependencies
+        continue-on-error: true
         run: npm ci
       - name: Install OpenCode CLI
         run: |
           curl -fsSL https://opencode.ai/install | bash
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
       - name: Process Pull Requests
-        timeout-minutes: 40
+        timeout-minutes: 60
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          opencode run --agent integrator \
-            "Check all open PRs. For each: Attempt merge main -> Build/Test -> If green, Merge PR. If red, comment." \
-            --model opencode/big-pickle \
+          opencode run /ulw-loop \
+            "Check all open pr, Select based created time, for each open pr: fix - verify- ensure build/lint success without errors/warnings - create/update pr linked to issues, ensure up to date with main before create/update pr - monitor comments and check status on pr - if all green, merge. if red, fix until green. merge only if build/lint success without error/warning. if any error/warning while build/lint, its big failure." \
+            --model opencode/glm-5-free \
             --share false
