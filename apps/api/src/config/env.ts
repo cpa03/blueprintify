@@ -46,8 +46,9 @@ export interface EnvConfig {
 /**
  * Default configuration values
  * These are used when environment variables are not set
+ * Exported for use in test utilities to avoid duplication
  */
-const DEFAULTS: Omit<EnvConfig, "OPENAI_API_KEY"> = {
+export const DEFAULTS: Omit<EnvConfig, "OPENAI_API_KEY"> = {
   // AI Service
   OPENAI_BASE_URL: "https://api.openai.com/v1",
   OPENAI_MODEL: "gpt-4o-mini",
