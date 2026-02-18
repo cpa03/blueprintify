@@ -48,3 +48,32 @@
 2. Sync with main branch before and after fixes to minimize conflicts
 3. All warnings must be fixed - warnings are not acceptable in CI
 4. Use `--run` flag for CI tests (no watch mode)
+
+### 2026-02-18 QA Audit Findings
+
+**CI/CD Workflow Issues (Requires Workflow Permissions)**
+
+The following issues were identified in `.github/workflows/` but require workflow permissions to fix:
+
+1. **Filename with space**: `on pull.yml` should be renamed to `on-pull.yml`
+   - Problematic for shell commands and CI systems
+   - Location: `.github/workflows/on pull.yml`
+
+2. **Line ending inconsistency**: Workflow files have CRLF instead of LF
+   - `.gitattributes` specifies `*.yml text eol=lf`
+   - Files affected: `on pull.yml`, `pr-gatekeeper.yml`
+
+3. **Outdated runner version**: `on pull.yml` uses `ubuntu-22.04-arm`
+   - Should be updated to `ubuntu-24.04-arm` per AGENTS.md
+
+4. **Invalid action versions**: `on pull.yml` uses non-existent versions
+   - `actions/checkout@v6` → should be `@v4`
+   - `actions/setup-node@v6` → should be `@v4`
+
+**Test Status (2026-02-18)**
+
+- All 293 tests pass (218 web + 75 API)
+- TypeScript: No errors
+- ESLint: No errors
+- No skipped tests found
+- No TODO/FIXME comments related to QA in source code
