@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState, memo } from "react";
 import type { WizardStep } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { WIZARD_STEPS } from "../config/constants";
@@ -13,7 +13,7 @@ const STEPS: {
   shortcut: string;
 }[] = [...WIZARD_STEPS];
 
-export function StepIndicator() {
+function StepIndicatorComponent() {
   const currentStep = useWizardStore((s) => s.currentStep);
   const setStep = useWizardStore((s) => s.setStep);
   const [shakingStep, setShakingStep] = useState<string | null>(null);
@@ -169,3 +169,5 @@ export function StepIndicator() {
     </div>
   );
 }
+
+export const StepIndicator = memo(StepIndicatorComponent);

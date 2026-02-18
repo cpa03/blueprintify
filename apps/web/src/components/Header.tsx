@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { UI_CONTENT, EXTERNAL_URLS } from "../config/constants";
 import { RippleButton } from "./RippleButton";
@@ -6,7 +7,7 @@ interface HeaderProps {
   onShowShortcuts?: () => void;
 }
 
-export function Header({ onShowShortcuts }: HeaderProps): JSX.Element {
+function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-dark-700/50 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -84,3 +85,5 @@ export function Header({ onShowShortcuts }: HeaderProps): JSX.Element {
     </header>
   );
 }
+
+export const Header = memo(HeaderComponent);
