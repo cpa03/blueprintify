@@ -72,8 +72,17 @@ The following issues were identified in `.github/workflows/` but require workflo
 
 **Test Status (2026-02-18)**
 
-- All 298 tests pass (218 web + 80 API)
+- All 299 tests pass (218 web + 81 API)
 - TypeScript: No errors
 - ESLint: No errors
-- No skipped tests found
+- 1 skipped test in security.test.ts (expected)
+- Build: Successful (14.80s)
 - No TODO/FIXME comments related to QA in source code
+
+**QA Verification Checklist**
+
+- [x] TypeScript typecheck passes
+- [x] ESLint passes with no warnings
+- [x] All tests pass
+- [x] Build succeeds
+- [ ] Workflow fixes require `workflows` permission (see issue #483)
