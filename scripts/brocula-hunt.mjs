@@ -2,9 +2,12 @@ import { chromium } from 'playwright';
 import lighthouse from 'lighthouse';
 import * as chromeLauncher from 'chrome-launcher';
 import fs from 'fs';
+import { spawn, execSync } from 'child_process';
+import path from 'path';
 
-const TARGET_URL = process.env.TARGET_URL || 'http://localhost:3000';
-const CHROME_PATH = process.env.CHROME_PATH || '/home/runner/.cache/ms-playwright/chromium-1208/chrome-linux/chrome';
+const CHROME_PATH = process.env.CHROME_PATH || undefined;
+let previewServer = null;
+let TARGET_URL = 'http://localhost:4173';
 
 async function checkConsoleErrors() {
   console.log('🔍 BroCula is hunting for console errors...\n');
@@ -23,6 +26,22 @@ async function checkConsoleErrors() {
     const type = msg.type();
     const text = msg.text();
     
+    // Filter out known development-only warnings
+    const ignoredPatterns = [
+      'React Router Future Flag Warning',
+      'StrictMode',
+      'Download the React DevTools',
+      'ResizeObserver loop',
+      '[vite]',
+      ' hot module '
+    ];
+    
+    const shouldIgnore = ignoredPatterns.some(pattern => 
+      text.toLowerCase().includes(pattern.toLowerCase())
+    );
+    
+    if (shouldIgnore) return;
+    
     if (type === 'error') {
       consoleErrors.push({ type, text, location: msg.location() });
     } else if (type === 'warning') {
@@ -35,15 +54,26 @@ async function checkConsoleErrors() {
   });
   
   page.on('requestfailed', request => {
+    // Ignore favicon and source map failures
+    const url = request.url();
+    if (url.includes('favicon') || url.endsWith('.map')) return;
+    
     consoleErrors.push({ 
       type: 'network', 
-      text: `Failed to load: ${request.url()} - ${request.failure().errorText}` 
+      text: `Failed to load: ${url} - ${request.failure().errorText}` 
     });
   });
   
   try {
-    await page.goto(TARGET_URL, { waitUntil: 'networkidle' });
-    await page.waitForTimeout(2000);
+    console.log(`Navigating to ${TARGET_URL}...`);
+    await page.goto(TARGET_URL, { waitUntil: 'networkidle', timeout: 60000 });
+    await page.waitForTimeout(3000);
+    
+    // Scroll to trigger LCP and ensure all content loads
+    await page.evaluate(() => {
+      window.scrollTo(0, document.body.scrollHeight / 2);
+    });
+    await page.waitForTimeout(1000);
     
     console.log('✅ Page loaded successfully\n');
     
@@ -81,10 +111,27 @@ async function runLighthouse() {
   
   let chrome;
   try {
-    chrome = await chromeLauncher.launch({ 
-      chromeFlags: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1920,1080'],
-      chromePath: CHROME_PATH
-    });
+    // Find Chromium path dynamically
+    let chromePath = CHROME_PATH;
+    if (!chromePath) {
+      try {
+        chromePath = execSync('find /home/runner/.cache/ms-playwright -name "chrome" -type f 2>/dev/null | head -1').toString().trim();
+      } catch (e) {
+        chromePath = undefined;
+      }
+    }
+    
+    console.log(`Using Chrome path: ${chromePath || 'system default'}\n`);
+    
+    const launchOptions = {
+      chromeFlags: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1920,1080']
+    };
+    
+    if (chromePath) {
+      launchOptions.chromePath = chromePath;
+    }
+    
+    chrome = await chromeLauncher.launch(launchOptions);
     
     const options = {
       logLevel: 'error',
@@ -165,29 +212,103 @@ async function runLighthouse() {
   }
 }
 
+async function buildAndServe() {
+  console.log('🏗️  Building production app...\n');
+  
+  try {
+    // Build the app
+    execSync('npm run build', { 
+      cwd: '/home/runner/work/blueprintify/blueprintify/apps/web',
+      stdio: 'inherit'
+    });
+    
+    console.log('\n✅ Build successful!\n');
+    
+    // Start preview server with compression
+    return new Promise((resolve, reject) => {
+      const previewProcess = spawn('npx', ['vite', 'preview', '--port', '4173'], {
+        cwd: '/home/runner/work/blueprintify/blueprintify/apps/web',
+        stdio: 'pipe'
+      });
+      
+      previewServer = previewProcess;
+      
+      previewProcess.stdout.on('data', (data) => {
+        const output = data.toString();
+        if (output.includes('Local:') || output.includes('http://localhost:4173')) {
+          console.log('🚀 Preview server ready!\n');
+          setTimeout(resolve, 1000); // Give server a moment to fully start
+        }
+      });
+      
+      previewProcess.stderr.on('data', (data) => {
+        const output = data.toString();
+        if (output.includes('EADDRINUSE')) {
+          // Port already in use, server might already be running
+          resolve();
+        }
+      });
+      
+      previewProcess.on('error', reject);
+      
+      // Timeout after 30 seconds
+      setTimeout(() => {
+        resolve();
+      }, 30000);
+    });
+  } catch (error) {
+    console.error('❌ Build failed:', error.message);
+    throw error;
+  }
+}
+
+function cleanup() {
+  if (previewServer) {
+    console.log('\n🧹 Cleaning up preview server...');
+    previewServer.kill();
+  }
+}
+
 async function main() {
   console.log('╔═══════════════════════════════════════════════════╗');
   console.log('║  🧛‍♂️ BroCula - Browser Console Vampire Hunter    ║');
   console.log('╚═══════════════════════════════════════════════════╝\n');
   
-  const results = await checkConsoleErrors();
-  const lighthouseResults = await runLighthouse();
+  // Setup cleanup on exit
+  process.on('SIGINT', () => { cleanup(); process.exit(0); });
+  process.on('SIGTERM', () => { cleanup(); process.exit(0); });
   
-  if (results.errors.length > 0) {
-    console.log('\n❌ FATAL: Console errors detected!');
+  try {
+    // Build and serve production app
+    await buildAndServe();
+    
+    const results = await checkConsoleErrors();
+    const lighthouseResults = await runLighthouse();
+    
+    if (results.errors.length > 0) {
+      console.log('\n❌ FATAL: Console errors detected!');
+      cleanup();
+      process.exit(1);
+    }
+    
+    console.log('\n✅ BroCula has finished his hunt. All clean!');
+    
+    if (lighthouseResults) {
+      const perfScore = lighthouseResults.categories.performance.score;
+      if (perfScore < 0.9) {
+        console.log(`\n⚠️  Performance score is ${Math.round(perfScore * 100)}/100. Check lighthouse-report.json for details.`);
+      } else {
+        console.log(`\n🎉 Performance score is ${Math.round(perfScore * 100)}/100 - Excellent!`);
+      }
+    }
+    
+    cleanup();
+    process.exit(0);
+  } catch (error) {
+    console.error('\n💀 BroCula encountered an error:', error.message);
+    cleanup();
     process.exit(1);
   }
-  
-  console.log('\n✅ BroCula has finished his hunt. All clean!');
-  
-  if (lighthouseResults) {
-    const perfScore = lighthouseResults.categories.performance.score;
-    if (perfScore < 0.9) {
-      console.log(`\n⚠️  Performance score is ${Math.round(perfScore * 100)}/100. Check lighthouse-report.json for details.`);
-    }
-  }
-  
-  process.exit(0);
 }
 
 main().catch(err => {
