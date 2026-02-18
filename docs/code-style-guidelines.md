@@ -113,13 +113,7 @@ function processValue(value: any): string {
 ```typescript
 // ✅ Good
 function isUser(obj: unknown): obj is User {
-  return (
-    typeof obj === "object" &&
-    obj !== null &&
-    "id" in obj &&
-    "name" in obj &&
-    "email" in obj
-  );
+  return typeof obj === "object" && obj !== null && "id" in obj && "name" in obj && "email" in obj;
 }
 
 // ❌ Bad
@@ -447,10 +441,7 @@ function add(a: number, b: number): number {
  * });
  * ```
  */
-async function generateBlueprint(
-  config: ProjectConfig,
-  options: GenerationOptions = {},
-): Promise<BlueprintData> {
+async function generateBlueprint(config: ProjectConfig, options: GenerationOptions = {}): Promise<BlueprintData> {
   // Implementation
 }
 ````
@@ -629,4 +620,4 @@ app.use(
 
 ---
 
-_These guidelines are continuously evolving. Last updated: 2026-02-06_
+_These guidelines are continuously evolving. Last updated: 2026-02-18_
