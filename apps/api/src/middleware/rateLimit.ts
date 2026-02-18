@@ -47,6 +47,9 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
     const limit = getLimiterLimits()[limiter];
 
     c.header("X-RateLimit-Limit", String(limit));
+    if ("remaining" in result && typeof result.remaining === "number") {
+      c.header("X-RateLimit-Remaining", String(result.remaining));
+    }
 
     if (!result.success) {
       return c.json(
