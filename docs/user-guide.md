@@ -262,13 +262,6 @@ After generation, you'll have access to a split-pane editor where you can:
 - **Auto-save** - Changes automatically saved to localStorage
 - **Keyboard Shortcuts** - Standard editor shortcuts (Ctrl+S, Ctrl+Z, etc.)
 
-#### Refinement Workflow
-
-1. **Select Section** - Click on any section header to target for refinement
-2. **Provide Instructions** - Enter specific instructions for AI improvement
-3. **Process Refinement** - Watch as AI updates the selected section
-4. **Review Changes** - Accept or reject the refined content
-
 #### Editor Security
 
 - **XSS Protection** - All content sanitized before rendering
