@@ -1,6 +1,5 @@
 import type { Context, MiddlewareHandler } from "hono";
 import type { Env } from "../types";
-import { getConfig } from "../config/env";
 
 type RateLimiterName =
   | "STRICT_RATE_LIMITER"
@@ -13,16 +12,41 @@ interface RateLimitConfig {
 }
 
 /**
- * Get rate limit values from environment configuration
- * Flexy: No hardcoded values - everything configurable!
+ * Default rate limit values (used when env vars not set)
+ * Cloudflare best practice: defaults aligned with wrangler.toml
  */
-function getLimiterLimits(): Record<RateLimiterName, number> {
-  const env = getConfig();
-  return {
-    STRICT_RATE_LIMITER: env.RATE_LIMIT_STRICT_MAX,
-    STANDARD_RATE_LIMITER: env.RATE_LIMIT_STANDARD_MAX,
-    LENIENT_RATE_LIMITER: env.RATE_LIMIT_LENIENT_MAX,
-  };
+const DEFAULT_LIMITS: Record<RateLimiterName, number> = {
+  STRICT_RATE_LIMITER: 10,
+  STANDARD_RATE_LIMITER: 60,
+  LENIENT_RATE_LIMITER: 120,
+};
+
+const DEFAULT_WINDOW_MS = 60000;
+
+/**
+ * Get rate limit value from context environment
+ * Cloudflare best practice: read config from bindings/env, not singleton
+ */
+function getLimitFromEnv(env: Env, limiter: RateLimiterName): number {
+  const envKey = `${limiter.replace("_RATE_LIMITER", "_MAX")}` as keyof Env;
+  const envValue = env[envKey];
+  if (typeof envValue === "string") {
+    const parsed = parseInt(envValue, 10);
+    if (!isNaN(parsed)) return parsed;
+  }
+  return DEFAULT_LIMITS[limiter];
+}
+
+/**
+ * Get rate limit window from context environment
+ */
+function getWindowFromEnv(env: Env): number {
+  const envValue = env.RATE_LIMIT_WINDOW_MS;
+  if (typeof envValue === "string") {
+    const parsed = parseInt(envValue, 10);
+    if (!isNaN(parsed)) return parsed;
+  }
+  return DEFAULT_WINDOW_MS;
 }
 
 export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
@@ -44,7 +68,7 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
     }
 
     const result = await rateLimiter.limit({ key });
-    const limit = getLimiterLimits()[limiter];
+    const limit = getLimitFromEnv(env, limiter);
 
     c.header("X-RateLimit-Limit", String(limit));
 
@@ -58,7 +82,7 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
             code: "RATE_LIMIT_ERROR",
             details: {
               limit,
-              retryAfter: getConfig().RATE_LIMIT_WINDOW_MS / 1000,
+              retryAfter: getWindowFromEnv(env) / 1000,
             },
             timestamp: new Date().toISOString(),
           },

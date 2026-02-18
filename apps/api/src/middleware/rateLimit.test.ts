@@ -1,7 +1,8 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { Hono } from "hono";
 import { rateLimit, rateLimitConfigs } from "./rateLimit";
 import type { ErrorResponse } from "../errors";
+import type { Env } from "../types";
 
 function createMockRateLimit(shouldSucceed: boolean[] = []) {
   let callCount = 0;
@@ -14,21 +15,31 @@ function createMockRateLimit(shouldSucceed: boolean[] = []) {
   };
 }
 
-describe("rateLimit middleware", () => {
-  beforeEach(() => {
-    vi.resetModules();
-  });
+function createMockEnv(
+  limiterName: keyof Pick<
+    Env,
+    "STANDARD_RATE_LIMITER" | "STRICT_RATE_LIMITER" | "LENIENT_RATE_LIMITER"
+  >,
+  mockLimiter: ReturnType<typeof createMockRateLimit>,
+): Partial<Env> {
+  return {
+    [limiterName]: mockLimiter,
+    RATE_LIMIT_STRICT_MAX: "10",
+    RATE_LIMIT_STANDARD_MAX: "60",
+    RATE_LIMIT_LENIENT_MAX: "120",
+    RATE_LIMIT_WINDOW_MS: "60000",
+  } as Partial<Env>;
+}
 
+describe("rateLimit middleware", () => {
   describe("basic rate limiting", () => {
     it("should allow requests when rate limiter succeeds", async () => {
       const mockLimiter = createMockRateLimit([true, true, true]);
-      const app = new Hono<{
-        Bindings: { STANDARD_RATE_LIMITER: RateLimit };
-      }>();
+      const app = new Hono<{ Bindings: Env }>();
+      const mockEnv = createMockEnv("STANDARD_RATE_LIMITER", mockLimiter);
+
       app.use("*", async (c, next) => {
-        c.env = { STANDARD_RATE_LIMITER: mockLimiter } as unknown as {
-          STANDARD_RATE_LIMITER: RateLimit;
-        };
+        c.env = mockEnv as Env;
         await next();
       });
       app.use("/", rateLimit({ limiter: "STANDARD_RATE_LIMITER" }));
@@ -45,14 +56,11 @@ describe("rateLimit middleware", () => {
 
     it("should block requests when rate limiter fails", async () => {
       const mockLimiter = createMockRateLimit([true, true, false]);
-      const app = new Hono<{
-        Bindings: { STANDARD_RATE_LIMITER: RateLimit };
-      }>();
+      const app = new Hono<{ Bindings: Env }>();
+      const mockEnv = createMockEnv("STANDARD_RATE_LIMITER", mockLimiter);
 
       app.use("*", async (c, next) => {
-        c.env = { STANDARD_RATE_LIMITER: mockLimiter } as unknown as {
-          STANDARD_RATE_LIMITER: RateLimit;
-        };
+        c.env = mockEnv as Env;
         await next();
       });
       app.use("/", rateLimit({ limiter: "STANDARD_RATE_LIMITER" }));
@@ -78,13 +86,11 @@ describe("rateLimit middleware", () => {
 
     it("should fallback to x-forwarded-for header", async () => {
       const mockLimiter = createMockRateLimit([true]);
-      const app = new Hono<{
-        Bindings: { STANDARD_RATE_LIMITER: RateLimit };
-      }>();
+      const app = new Hono<{ Bindings: Env }>();
+      const mockEnv = createMockEnv("STANDARD_RATE_LIMITER", mockLimiter);
+
       app.use("*", async (c, next) => {
-        c.env = {
-          STANDARD_RATE_LIMITER: mockLimiter,
-        } as unknown as { STANDARD_RATE_LIMITER: RateLimit };
+        c.env = mockEnv as Env;
         await next();
       });
       app.use("/", rateLimit({ limiter: "STANDARD_RATE_LIMITER" }));
@@ -98,13 +104,11 @@ describe("rateLimit middleware", () => {
 
     it("should handle anonymous requests without IP", async () => {
       const mockLimiter = createMockRateLimit([true, true, false]);
-      const app = new Hono<{
-        Bindings: { STANDARD_RATE_LIMITER: RateLimit };
-      }>();
+      const app = new Hono<{ Bindings: Env }>();
+      const mockEnv = createMockEnv("STANDARD_RATE_LIMITER", mockLimiter);
+
       app.use("*", async (c, next) => {
-        c.env = { STANDARD_RATE_LIMITER: mockLimiter } as unknown as {
-          STANDARD_RATE_LIMITER: RateLimit;
-        };
+        c.env = mockEnv as Env;
         await next();
       });
       app.use("/", rateLimit({ limiter: "STANDARD_RATE_LIMITER" }));
@@ -124,13 +128,11 @@ describe("rateLimit middleware", () => {
   describe("custom key generator", () => {
     it("should use custom key generator when provided", async () => {
       const mockLimiter = createMockRateLimit([true, true, false, true]);
-      const app = new Hono<{
-        Bindings: { STANDARD_RATE_LIMITER: RateLimit };
-      }>();
+      const app = new Hono<{ Bindings: Env }>();
+      const mockEnv = createMockEnv("STANDARD_RATE_LIMITER", mockLimiter);
+
       app.use("*", async (c, next) => {
-        c.env = { STANDARD_RATE_LIMITER: mockLimiter } as unknown as {
-          STANDARD_RATE_LIMITER: RateLimit;
-        };
+        c.env = mockEnv as Env;
         await next();
       });
       app.use(
@@ -175,11 +177,14 @@ describe("rateLimit middleware", () => {
 
   describe("missing rate limiter binding", () => {
     it("should allow requests when rate limiter is not configured", async () => {
-      const app = new Hono<{
-        Bindings: { STANDARD_RATE_LIMITER?: RateLimit };
-      }>();
+      const app = new Hono<{ Bindings: Env }>();
       app.use("*", async (c, next) => {
-        c.env = {} as { STANDARD_RATE_LIMITER?: RateLimit };
+        c.env = {
+          RATE_LIMIT_STRICT_MAX: "10",
+          RATE_LIMIT_STANDARD_MAX: "60",
+          RATE_LIMIT_LENIENT_MAX: "120",
+          RATE_LIMIT_WINDOW_MS: "60000",
+        } as Env;
         await next();
       });
       app.use("/", rateLimit({ limiter: "STANDARD_RATE_LIMITER" }));
@@ -195,13 +200,11 @@ describe("rateLimit middleware", () => {
   describe("response headers", () => {
     it("should include rate limit headers on success", async () => {
       const mockLimiter = createMockRateLimit([true]);
-      const app = new Hono<{
-        Bindings: { STANDARD_RATE_LIMITER: RateLimit };
-      }>();
+      const app = new Hono<{ Bindings: Env }>();
+      const mockEnv = createMockEnv("STANDARD_RATE_LIMITER", mockLimiter);
+
       app.use("*", async (c, next) => {
-        c.env = { STANDARD_RATE_LIMITER: mockLimiter } as unknown as {
-          STANDARD_RATE_LIMITER: RateLimit;
-        };
+        c.env = mockEnv as Env;
         await next();
       });
       app.use("/", rateLimit({ limiter: "STANDARD_RATE_LIMITER" }));
@@ -217,13 +220,11 @@ describe("rateLimit middleware", () => {
 
     it("should include rate limit headers on blocked request", async () => {
       const mockLimiter = createMockRateLimit([true, false]);
-      const app = new Hono<{
-        Bindings: { STANDARD_RATE_LIMITER: RateLimit };
-      }>();
+      const app = new Hono<{ Bindings: Env }>();
+      const mockEnv = createMockEnv("STANDARD_RATE_LIMITER", mockLimiter);
+
       app.use("*", async (c, next) => {
-        c.env = { STANDARD_RATE_LIMITER: mockLimiter } as unknown as {
-          STANDARD_RATE_LIMITER: RateLimit;
-        };
+        c.env = mockEnv as Env;
         await next();
       });
       app.use("/", rateLimit({ limiter: "STANDARD_RATE_LIMITER" }));
@@ -245,13 +246,11 @@ describe("rateLimit middleware", () => {
   describe("different limiter configurations", () => {
     it("should use correct limit for STRICT_RATE_LIMITER", async () => {
       const mockLimiter = createMockRateLimit([true]);
-      const app = new Hono<{
-        Bindings: { STRICT_RATE_LIMITER: RateLimit };
-      }>();
+      const app = new Hono<{ Bindings: Env }>();
+      const mockEnv = createMockEnv("STRICT_RATE_LIMITER", mockLimiter);
+
       app.use("*", async (c, next) => {
-        c.env = { STRICT_RATE_LIMITER: mockLimiter } as unknown as {
-          STRICT_RATE_LIMITER: RateLimit;
-        };
+        c.env = mockEnv as Env;
         await next();
       });
       app.use("/", rateLimit({ limiter: "STRICT_RATE_LIMITER" }));
@@ -267,13 +266,11 @@ describe("rateLimit middleware", () => {
 
     it("should use correct limit for LENIENT_RATE_LIMITER", async () => {
       const mockLimiter = createMockRateLimit([true]);
-      const app = new Hono<{
-        Bindings: { LENIENT_RATE_LIMITER: RateLimit };
-      }>();
+      const app = new Hono<{ Bindings: Env }>();
+      const mockEnv = createMockEnv("LENIENT_RATE_LIMITER", mockLimiter);
+
       app.use("*", async (c, next) => {
-        c.env = { LENIENT_RATE_LIMITER: mockLimiter } as unknown as {
-          LENIENT_RATE_LIMITER: RateLimit;
-        };
+        c.env = mockEnv as Env;
         await next();
       });
       app.use("/", rateLimit({ limiter: "LENIENT_RATE_LIMITER" }));
