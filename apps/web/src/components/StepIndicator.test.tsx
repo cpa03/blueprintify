@@ -25,23 +25,36 @@ vi.mock("../config/constants", () => ({
   ],
 }));
 
-vi.mock("framer-motion", () => ({
-  motion: {
-    button: vi.fn(
-      ({
-        children,
-        onClick,
-        disabled,
-        whileHover: _whileHover,
-        whileTap: _whileTap,
-        ...props
-      }) => (
-        <button {...props} onClick={onClick} disabled={disabled}>
-          {children}
-        </button>
-      ),
+const createMotionElementMock = (tagName: string) => {
+  const Tag = tagName;
+  return vi.fn(
+    ({
+      children,
+      onClick,
+      disabled,
+      whileHover: _whileHover,
+      whileTap: _whileTap,
+      initial: _initial,
+      animate: _animate,
+      exit: _exit,
+      transition: _transition,
+      ...props
+    }) => (
+      <Tag {...props} onClick={onClick} disabled={disabled}>
+        {children}
+      </Tag>
     ),
-  },
+  );
+};
+
+vi.mock("framer-motion", () => ({
+  motion: new Proxy(
+    {},
+    {
+      get: (_target, prop: string) => createMotionElementMock(prop),
+    },
+  ),
+  AnimatePresence: vi.fn(({ children }) => <>{children}</>),
 }));
 
 const mockWizardStore: WizardStore = {
@@ -215,7 +228,7 @@ describe("StepIndicator", () => {
       "flex",
       "items-center",
       "justify-center",
-      "gap-2",
+      "gap-3",
       "mb-8",
     );
   });
