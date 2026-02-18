@@ -1,4 +1,8 @@
-# Repository Quality Assessment
+# Repository Quality Assessment [ARCHIVED]
+
+> **⚠️ ARCHIVED DOCUMENT**
+> This assessment from 2026-02-13 has been archived.
+> For the current quality assessment, see: [Brocula Audit 2026-02-17](../brocula-audit-2026-02-17.md)
 
 **Assessment Date:** 2026-02-13  
 **Repository:** cpa03/blueprintify  
