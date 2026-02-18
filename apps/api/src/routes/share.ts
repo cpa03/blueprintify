@@ -11,6 +11,97 @@ import {
 
 const app = new Hono<{ Bindings: Env }>();
 
+// Cache configuration for share lookups
+const CACHE_CONFIG = {
+  // Cache TTL in seconds (5 minutes for share lookups)
+  TTL_SECONDS: 300,
+  // Cache key prefix for namespacing
+  KEY_PREFIX: "share:",
+} as const;
+
+/**
+ * Generate cache key for a share ID
+ */
+function getCacheKey(shareId: string): string {
+  return `${CACHE_CONFIG.KEY_PREFIX}${shareId}`;
+}
+
+/**
+ * Try to get share from KV cache
+ */
+async function getFromCache(
+  cache: KVNamespace | undefined,
+  shareId: string,
+): Promise<{
+  id: string;
+  title: string;
+  blueprint: string;
+  metadata: unknown;
+  created_at: string;
+  expires_at: string;
+} | null> {
+  if (!cache) return null;
+
+  try {
+    const cached = await cache.get(getCacheKey(shareId), "json");
+    if (cached && typeof cached === "object") {
+      return cached as {
+        id: string;
+        title: string;
+        blueprint: string;
+        metadata: unknown;
+        created_at: string;
+        expires_at: string;
+      };
+    }
+  } catch {
+    // Cache miss or parse error, continue to database
+  }
+  return null;
+}
+
+/**
+ * Store share in KV cache
+ */
+async function setInCache(
+  cache: KVNamespace | undefined,
+  shareId: string,
+  data: {
+    id: string;
+    title: string;
+    blueprint: string;
+    metadata: unknown;
+    created_at: string;
+    expires_at: string;
+  },
+): Promise<void> {
+  if (!cache) return;
+
+  try {
+    await cache.put(getCacheKey(shareId), JSON.stringify(data), {
+      expirationTtl: CACHE_CONFIG.TTL_SECONDS,
+    });
+  } catch {
+    // Cache write failure is non-critical, continue silently
+  }
+}
+
+/**
+ * Invalidate share from KV cache
+ */
+async function invalidateCache(
+  cache: KVNamespace | undefined,
+  shareId: string,
+): Promise<void> {
+  if (!cache) return;
+
+  try {
+    await cache.delete(getCacheKey(shareId));
+  } catch {
+    // Cache delete failure is non-critical, continue silently
+  }
+}
+
 const createShareSchema = z.object({
   title: z.string().min(1).max(SHARE_CONFIG.TITLE_MAX_LENGTH),
   blueprint: z.string().min(1).max(SHARE_CONFIG.BLUEPRINT_MAX_LENGTH),
@@ -119,6 +210,37 @@ app.get("/:id", async (c) => {
       );
     }
 
+    // Try KV cache first
+    const cachedResult = await getFromCache(c.env.CACHE, shareId);
+    if (cachedResult) {
+      const expirationDate = cachedResult.expires_at
+        ? new Date(cachedResult.expires_at)
+        : null;
+      if (expirationDate && expirationDate < new Date()) {
+        await invalidateCache(c.env.CACHE, shareId);
+        return c.json(
+          {
+            error: ERROR_CODES.NOT_FOUND_ERROR,
+            message: "Shared blueprint has expired",
+          },
+          HTTP_STATUS.NOT_FOUND,
+        );
+      }
+
+      c.header("X-Cache-Status", "HIT");
+      return c.json(
+        {
+          id: cachedResult.id,
+          title: cachedResult.title,
+          blueprint: cachedResult.blueprint,
+          metadata: cachedResult.metadata,
+          createdAt: cachedResult.created_at,
+          expiresAt: cachedResult.expires_at,
+        },
+        HTTP_STATUS.OK,
+      );
+    }
+
     if (!c.env.DB) {
       return c.json(
         {
@@ -160,6 +282,18 @@ app.get("/:id", async (c) => {
       );
     }
 
+    // Store in cache for future requests
+    const cacheData = {
+      id: result.id as string,
+      title: result.title as string,
+      blueprint: result.blueprint as string,
+      metadata: result.metadata ? JSON.parse(result.metadata as string) : null,
+      created_at: result.created_at as string,
+      expires_at: result.expires_at as string,
+    };
+    await setInCache(c.env.CACHE, shareId, cacheData);
+
+    c.header("X-Cache-Status", "MISS");
     return c.json(
       {
         id: result.id,
@@ -212,6 +346,8 @@ app.delete("/:id", async (c) => {
     await c.env.DB.prepare("DELETE FROM blueprint_shares WHERE id = ?")
       .bind(shareId)
       .run();
+
+    await invalidateCache(c.env.CACHE, shareId);
 
     return c.json(
       {
