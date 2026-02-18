@@ -76,24 +76,8 @@ interface GenerateRequest {
 
 interface TechStackItem {
   name: string;
-  category:
-    | "frontend"
-    | "backend"
-    | "database"
-    | "hosting"
-    | "ai"
-    | "testing"
-    | "styling"
-    | "other";
-  subcategory?:
-    | "relational"
-    | "nosql"
-    | "vector"
-    | "graph"
-    | "edge"
-    | "search"
-    | "cache"
-    | "serverless";
+  category: "frontend" | "backend" | "database" | "hosting" | "ai" | "testing" | "styling" | "other";
+  subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless";
   version?: string;
   description?: string;
   features?: string[];
@@ -501,10 +485,12 @@ All endpoints return consistent error responses using structured JSON format:
       "field": ["Validation error messages"]
     },
     "timestamp": "2026-02-11T20:00:00.000Z",
-    "requestId": "req_123456789"
+    "requestId": "req_abc123def456"
   }
 }
 ```
+
+The `requestId` field provides a unique identifier for each request, enabling efficient debugging and log correlation across distributed systems.
 
 ### Error Types
 
@@ -605,12 +591,7 @@ The API supports detailed tech stack categorization for better project planning 
   "subcategory": "relational",
   "version": "15.0",
   "description": "Advanced open-source relational database with strong ACID compliance",
-  "features": [
-    "ACID compliance",
-    "JSON support",
-    "Full-text search",
-    "Window functions"
-  ]
+  "features": ["ACID compliance", "JSON support", "Full-text search", "Window functions"]
 }
 ```
 
@@ -799,14 +780,15 @@ Currently, the API uses Server-Sent Events (SSE) for streaming. WebSocket suppor
 
 ## Version History
 
-| Version | Date       | Changes                                            |
-| ------- | ---------- | -------------------------------------------------- |
-| 1.0.0   | 2026-02-18 | Added export, import, storage, and share endpoints |
-|         |            | Enhanced error handling with structured responses  |
-|         |            | Comprehensive validation using Zod schemas         |
-|         |            | Tech stack metadata support with categorization    |
-|         |            | Server-Sent Events (SSE) for streaming responses   |
-|         |            | Share functionality with 30-day expiration         |
+| Version | Date       | Changes                                             |
+| ------- | ---------- | --------------------------------------------------- |
+| 1.1.0   | 2026-02-18 | Added requestId to error responses for traceability |
+| 1.0.0   | 2026-02-18 | Added export, import, storage, and share endpoints  |
+|         |            | Enhanced error handling with structured responses   |
+|         |            | Comprehensive validation using Zod schemas          |
+|         |            | Tech stack metadata support with categorization     |
+|         |            | Server-Sent Events (SSE) for streaming responses    |
+|         |            | Share functionality with 30-day expiration          |
 
 ## Planned Features
 

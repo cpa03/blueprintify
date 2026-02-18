@@ -182,9 +182,10 @@ const ToastItem = forwardRef<HTMLDivElement, ToastItemProps>(function ToastItem(
       <AnimatePresence>
         {isHovered && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.5, y: 5 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, y: 5 }}
+            transition={{ type: "spring", stiffness: 500, damping: 25 }}
             className="absolute -top-1 -right-1 w-4 h-4 bg-current/20 rounded-full flex items-center justify-center"
             aria-hidden="true"
           >

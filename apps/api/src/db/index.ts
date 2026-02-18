@@ -71,12 +71,43 @@ export const TemplateSchema = z.object({
   updated_at: z.string(),
 });
 
+export const SessionSchema = z.object({
+  id: z.string(),
+  user_id: z.string(),
+  session_data: z.string().optional(), // JSON string
+  expires_at: z.string(),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+export const AnalyticsSchema = z.object({
+  id: z.string(),
+  user_id: z.string().optional(),
+  event_type: z.string(),
+  event_data: z.string().optional(), // JSON string
+  ip_address: z.string().optional(),
+  user_agent: z.string().optional(),
+  created_at: z.string(),
+});
+
+export const BlueprintShareSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  blueprint: z.string(),
+  metadata: z.string().optional(), // JSON string
+  created_at: z.string(),
+  expires_at: z.string().optional(),
+});
+
 // Type exports
 export type User = z.infer<typeof UserSchema>;
 export type Project = z.infer<typeof ProjectSchema>;
 export type Blueprint = z.infer<typeof BlueprintSchema>;
 export type Task = z.infer<typeof TaskSchema>;
 export type Template = z.infer<typeof TemplateSchema>;
+export type Session = z.infer<typeof SessionSchema>;
+export type Analytics = z.infer<typeof AnalyticsSchema>;
+export type BlueprintShare = z.infer<typeof BlueprintShareSchema>;
 
 export interface DatabaseService {
   // User operations
@@ -134,6 +165,25 @@ export interface DatabaseService {
     ip_address?: string;
     user_agent?: string;
   }): Promise<void>;
+  getAnalyticsByUserId(userId: string): Promise<Analytics[]>;
+  getAnalyticsByEventType(eventType: string): Promise<Analytics[]>;
+
+  // Session operations
+  createSession(
+    session: Omit<Session, "id" | "created_at" | "updated_at">,
+  ): Promise<Session>;
+  getSessionById(id: string): Promise<Session | null>;
+  getSessionsByUserId(userId: string): Promise<Session[]>;
+  deleteSession(id: string): Promise<void>;
+  deleteExpiredSessions(): Promise<number>;
+
+  // BlueprintShare operations
+  createBlueprintShare(
+    share: Omit<BlueprintShare, "created_at">,
+  ): Promise<BlueprintShare>;
+  getBlueprintShareById(id: string): Promise<BlueprintShare | null>;
+  deleteBlueprintShare(id: string): Promise<void>;
+  deleteExpiredBlueprintShares(): Promise<number>;
 
   // Health check
   healthCheck(): Promise<boolean>;
@@ -146,6 +196,9 @@ export class MockDatabaseService implements DatabaseService {
   private blueprints: Map<string, Blueprint> = new Map();
   private tasks: Map<string, Task> = new Map();
   private templates: Map<string, Template> = new Map();
+  private sessions: Map<string, Session> = new Map();
+  private analytics: Map<string, Analytics> = new Map();
+  private blueprintShares: Map<string, BlueprintShare> = new Map();
 
   async createUser(
     user: Omit<User, "id" | "created_at" | "updated_at">,
@@ -371,7 +424,102 @@ export class MockDatabaseService implements DatabaseService {
     ip_address?: string;
     user_agent?: string;
   }): Promise<void> {
-    console.log("Tracking event:", event);
+    const id = `analytics_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const newEvent: Analytics = {
+      id,
+      ...event,
+      created_at: new Date().toISOString(),
+    };
+    this.analytics.set(id, newEvent);
+  }
+
+  async getAnalyticsByUserId(userId: string): Promise<Analytics[]> {
+    return Array.from(this.analytics.values()).filter(
+      (a) => a.user_id === userId,
+    );
+  }
+
+  async getAnalyticsByEventType(eventType: string): Promise<Analytics[]> {
+    return Array.from(this.analytics.values()).filter(
+      (a) => a.event_type === eventType,
+    );
+  }
+
+  async createSession(
+    session: Omit<Session, "id" | "created_at" | "updated_at">,
+  ): Promise<Session> {
+    const id = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const now = new Date().toISOString();
+    const newSession: Session = {
+      ...session,
+      id,
+      created_at: now,
+      updated_at: now,
+    };
+    this.sessions.set(id, newSession);
+    return newSession;
+  }
+
+  async getSessionById(id: string): Promise<Session | null> {
+    return this.sessions.get(id) || null;
+  }
+
+  async getSessionsByUserId(userId: string): Promise<Session[]> {
+    return Array.from(this.sessions.values()).filter(
+      (s) => s.user_id === userId,
+    );
+  }
+
+  async deleteSession(id: string): Promise<void> {
+    this.sessions.delete(id);
+  }
+
+  async deleteExpiredSessions(): Promise<number> {
+    const now = new Date();
+    let deleted = 0;
+    for (const [id, session] of this.sessions.entries()) {
+      if (new Date(session.expires_at) < now) {
+        this.sessions.delete(id);
+        deleted++;
+      }
+    }
+    return deleted;
+  }
+
+  async createBlueprintShare(
+    share: Omit<BlueprintShare, "created_at">,
+  ): Promise<BlueprintShare> {
+    const newShare: BlueprintShare = {
+      ...share,
+      created_at: new Date().toISOString(),
+    };
+    this.blueprintShares.set(share.id, newShare);
+    return newShare;
+  }
+
+  async getBlueprintShareById(id: string): Promise<BlueprintShare | null> {
+    const share = this.blueprintShares.get(id);
+    if (!share) return null;
+    if (share.expires_at && new Date(share.expires_at) < new Date()) {
+      return null;
+    }
+    return share;
+  }
+
+  async deleteBlueprintShare(id: string): Promise<void> {
+    this.blueprintShares.delete(id);
+  }
+
+  async deleteExpiredBlueprintShares(): Promise<number> {
+    const now = new Date();
+    let deleted = 0;
+    for (const [id, share] of this.blueprintShares.entries()) {
+      if (share.expires_at && new Date(share.expires_at) < now) {
+        this.blueprintShares.delete(id);
+        deleted++;
+      }
+    }
+    return deleted;
   }
 
   async healthCheck(): Promise<boolean> {
@@ -391,12 +539,6 @@ export function serializeJSON(data: unknown): string {
   return JSON.stringify(data);
 }
 
-/**
- * Safely parses JSON string with error handling
- * @param json - The JSON string to parse
- * @returns The parsed object or throws DatabaseError on failure
- * @throws DatabaseError if JSON parsing fails
- */
 export function deserializeJSON<T>(json: string): T {
   try {
     return JSON.parse(json) as T;

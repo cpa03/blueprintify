@@ -6,6 +6,13 @@
 - Last Updated: 2026-02-18
 - Schema File: `schema.sql`
 
+## Database Service Layer
+
+- Location: `apps/api/src/db/index.ts`
+- Mock Implementation: `MockDatabaseService` for development
+- Production: D1 bindings configured in `apps/api/src/types.ts`
+- All tables have corresponding Zod schemas and TypeScript types
+
 ## Naming Conventions
 
 ### Tables
