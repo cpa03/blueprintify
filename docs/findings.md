@@ -61,3 +61,42 @@ Wrapped `JSON.parse` in try/catch and throw typed `DatabaseError` with cause cha
 - Consider implementing `D1DatabaseService` for production when database persistence needed
 
 ---
+
+## [DevOps] 2026-02-18 - CI/CD Runner Version Inconsistency
+
+### Observation
+
+The `.github/workflows/on pull.yml` workflow uses `ubuntu-22.04-arm` while all other workflows (`main.yml`, `ai-on-push.yml`, `iterate.yml`, `pr-gatekeeper.yml`) consistently use `ubuntu-24.04-arm`.
+
+This violates the project standard defined in `AGENTS.md`:
+
+> **CI Runner**: GitHub Actions MUST use `ubuntu-24.04-arm`
+
+### Impact
+
+1. **Inconsistency**: Different runner versions across workflows may lead to unpredictable behavior
+2. **Compliance**: Violates documented project standards
+3. **Maintenance**: `ubuntu-22.04-arm` may receive fewer updates and security patches
+
+### Recommended Action
+
+Update `.github/workflows/on pull.yml` line 23:
+
+```yaml
+# Change from:
+runs-on: ubuntu-22.04-arm
+# To:
+runs-on: ubuntu-24.04-arm
+```
+
+### Verification
+
+- [ ] Update runner version in workflow file
+- [ ] Run workflow to verify compatibility
+- [ ] Confirm no breaking changes in CI pipeline
+
+### Note
+
+This change requires `workflows` permission on GitHub App. Currently blocked by permission restrictions.
+
+---
