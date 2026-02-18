@@ -189,7 +189,7 @@ app.delete("/:id", async (c) => {
   try {
     const shareId = c.req.param("id");
 
-    if (!shareId || shareId.length !== 12) {
+    if (!shareId || shareId.length !== SHARE_CONFIG.ID_LENGTH) {
       return c.json(
         {
           error: ERROR_CODES.VALIDATION_ERROR,
