@@ -3,7 +3,7 @@ import type { EnvConfig } from "./env";
 
 let envConfig: EnvConfig | null = null;
 
-export function setEnvConfig(config: EnvConfig): void {
+export function setEnvConfig(config: EnvConfig | null): void {
   envConfig = config;
 }
 

@@ -229,18 +229,15 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
   };
 }
 
-// Singleton config instance
-let configInstance: EnvConfig | null = null;
+// Singleton config instance - delegates to constants.ts for unified state
+import { getEnvConfig, setEnvConfig as setConstantsConfig } from "./constants";
 
 /**
  * Get the loaded configuration
- * Must call loadConfig() first
+ * Must call loadConfig() or setEnvConfig() first
  */
 export function getConfig(): EnvConfig {
-  if (!configInstance) {
-    throw new Error("Configuration not loaded. Call loadConfig() first.");
-  }
-  return configInstance;
+  return getEnvConfig();
 }
 
 /**
@@ -249,12 +246,13 @@ export function getConfig(): EnvConfig {
 export function initializeConfig(
   env: Record<string, string | undefined>,
 ): void {
-  configInstance = loadConfig(env);
+  const config = loadConfig(env);
+  setConstantsConfig(config);
 }
 
 /**
  * Reset configuration (mainly for testing)
  */
 export function resetConfig(): void {
-  configInstance = null;
+  setConstantsConfig(null as unknown as EnvConfig);
 }
