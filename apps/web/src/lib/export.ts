@@ -1,4 +1,4 @@
-import JSZip from "jszip";
+import type JSZip from "jszip";
 import type { TechStackItemType } from "@blueprint/shared";
 import {
   EXPORT_CONFIG,
@@ -38,6 +38,8 @@ interface PackageJson {
 }
 
 export async function exportAsZip(files: ExportFiles): Promise<void> {
+  // Lazy load JSZip to reduce initial bundle size
+  const { default: JSZip } = await import("jszip");
   const zip = new JSZip();
   const projectName = files.projectName || DEFAULT_PROJECT_NAME;
 

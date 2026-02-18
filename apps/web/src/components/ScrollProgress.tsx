@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { motion, useSpring, useTransform } from "framer-motion";
 import { ANIMATION } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -36,7 +36,7 @@ interface ScrollProgressProps {
  * <ScrollProgress scrollContainerRef={previewRef} />
  * ```
  */
-export function ScrollProgress({
+export const ScrollProgress = memo(function ScrollProgress({
   scrollContainerRef,
   showAfter = 50,
   height = 3,
@@ -136,7 +136,7 @@ export function ScrollProgress({
       />
     </motion.div>
   );
-}
+});
 
 /**
  * ScrollProgressCompact - A minimal version with percentage display
@@ -150,7 +150,7 @@ interface ScrollProgressCompactProps extends ScrollProgressProps {
   showPercentage?: boolean;
 }
 
-export function ScrollProgressCompact({
+export const ScrollProgressCompact = memo(function ScrollProgressCompact({
   scrollContainerRef,
   showAfter = 50,
   height = 2,
@@ -246,4 +246,4 @@ export function ScrollProgressCompact({
       )}
     </motion.div>
   );
-}
+});
