@@ -3,6 +3,8 @@ import { useEffect, useCallback, useState } from "react";
 import type { WizardStep } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { WIZARD_STEPS } from "../config/constants";
+import { CircularProgress } from "./CircularProgress";
+import { SmartTooltip } from "./SmartTooltip";
 
 const STEPS: {
   key: WizardStep;
@@ -18,6 +20,7 @@ export function StepIndicator() {
   const toast = useToast();
 
   const currentIndex = STEPS.findIndex((s) => s.key === currentStep);
+  const progressPercentage = (currentIndex / (STEPS.length - 1)) * 100;
 
   const canNavigateTo = useCallback(
     (stepKey: WizardStep): boolean => {
@@ -59,7 +62,39 @@ export function StepIndicator() {
   }, [setStep, canNavigateTo]);
 
   return (
-    <div className="flex items-center justify-center gap-2 mb-8">
+    <div className="flex items-center justify-center gap-3 mb-8">
+      <SmartTooltip
+        content={`${Math.round(progressPercentage)}% complete - ${STEPS.length - 1 - currentIndex} steps remaining`}
+        position="left"
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          className="relative group"
+        >
+          <CircularProgress
+            value={progressPercentage}
+            size={36}
+            strokeWidth={3}
+            color={
+              currentIndex >= STEPS.length - 1
+                ? "rgb(16, 185, 129)"
+                : "rgb(99, 102, 241)"
+            }
+          />
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center"
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          >
+            <span className="text-xs font-semibold">
+              {currentIndex >= STEPS.length - 1 ? "🎉" : `${currentIndex + 1}`}
+            </span>
+          </motion.div>
+        </motion.div>
+      </SmartTooltip>
+
       {STEPS.map((step, index) => {
         const isActive = step.key === currentStep;
         const isCompleted = index < currentIndex;
