@@ -1,7 +1,7 @@
 ---
 description: Frontend Engineer (React/Tailwind/UX)
 mode: primary
-model: opencode/grok-code
+model: opencode/glm-4.7-free
 temperature: 0.1
 tools:
   write: true

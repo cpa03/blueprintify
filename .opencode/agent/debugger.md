@@ -1,7 +1,7 @@
 ---
 description: Autonomous Debugger & Bug Patcher
 mode: primary
-model: opencode/grok-code
+model: opencode/glm-4.7-free
 temperature: 0.0
 tools:
   write: true

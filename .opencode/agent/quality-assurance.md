@@ -1,7 +1,7 @@
 ---
 description: Quality Assurance Engineer & Test Analyst
 mode: primary
-model: opencode/minimax-m2.1-free
+model: opencode/glm-4.7-free
 temperature: 0.1
 tools:
   write: true
