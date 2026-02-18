@@ -1,7 +1,7 @@
 ---
 description: Backend Engineer (API/DB/Logic)
 mode: primary
-model: opencode/grok-code
+model: opencode/glm-4.7-free
 temperature: 0.1
 tools:
   write: true
