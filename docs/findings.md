@@ -101,6 +101,66 @@ This change requires `workflows` permission on GitHub App. Currently blocked by 
 
 ---
 
+## [Security] 2026-02-18 - CI Runner Version Standardization
+
+### Observation
+
+The `.github/workflows/on pull.yml` workflow used `ubuntu-22.04-arm` while all other workflows consistently use `ubuntu-24.04-arm`, violating the project standard defined in `AGENTS.md`.
+
+### Status
+
+⚠️ **BLOCKED** - Requires `workflows` permission on GitHub App. Issue tracked in #483.
+
+### Recommended Action
+
+Update `.github/workflows/on pull.yml` line 23:
+
+- Change from: `runs-on: ubuntu-22.04-arm`
+- Change to: `runs-on: ubuntu-24.04-arm`
+
+---
+
+## [Security] 2026-02-18 - Workflow Line Ending Normalization
+
+### Observation
+
+GitHub Actions workflow files had CRLF line terminators, violating `.gitattributes` and `.editorconfig` standards that specify LF line endings for YAML files.
+
+### Status
+
+⚠️ **BLOCKED** - Requires `workflows` permission on GitHub App. Issue tracked in #483.
+
+### Recommended Action
+
+Normalize line endings in workflow files:
+
+```bash
+sed -i 's/\r$//' .github/workflows/on\ pull.yml .github/workflows/pr-gatekeeper.yml
+```
+
+---
+
+## [Security] 2026-02-18 - Share Endpoint Validation Consistency
+
+### Observation
+
+The `DELETE /share/:id` endpoint in `apps/api/src/routes/share.ts` used a hardcoded value `12` for share ID length validation, while the `GET /share/:id` endpoint correctly used `SHARE_CONFIG.ID_LENGTH`. This inconsistency could lead to validation bypass if the ID length configuration changes.
+
+### Action Taken
+
+Updated line 192 in `apps/api/src/routes/share.ts`:
+
+- Changed from: `if (!shareId || shareId.length !== 12)`
+- Changed to: `if (!shareId || shareId.length !== SHARE_CONFIG.ID_LENGTH)`
+
+### Impact
+
+- Ensures consistent validation across all share endpoints
+- Prevents potential validation bypass
+- Maintains single source of truth for ID length configuration
+
+---
+
 ## [Integration] 2026-02-18 - Workflow File Line Ending Inconsistency
 
 ### Observation
