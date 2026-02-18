@@ -18,8 +18,9 @@ function createMockRateLimit(shouldSucceed: boolean[] = []) {
 describe("rateLimit middleware", () => {
   beforeEach(() => {
     vi.resetModules();
-    // Initialize config for rate limit middleware
-    initializeConfig({ OPENAI_API_KEY: "test-key" });
+    initializeConfig({
+      OPENAI_API_KEY: "test-api-key",
+    });
   });
 
   afterEach(() => {
