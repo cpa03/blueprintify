@@ -3,9 +3,16 @@ main = "src/index.ts"
 compatibility_date = "2024-01-01"
 compatibility_flags = ["nodejs_compat"]
 
+# Smart Placement - optimizes worker placement based on traffic patterns
+# Takes up to 15 minutes to analyze after deployment
+[placement]
+mode = "smart"
+
 # Environment-specific configurations
 [env.production]
 name = "blueprint-generator-api-prod"
+workers_dev = false
+logpush = true
 vars = { ENVIRONMENT = "production" }
 routes = [
   { pattern = "api.blueprintify.dev/*", zone_name = "blueprintify.dev" }
@@ -13,6 +20,8 @@ routes = [
 
 [env.staging]
 name = "blueprint-generator-api-staging"
+workers_dev = false
+logpush = true
 vars = { ENVIRONMENT = "staging" }
 routes = [
   { pattern = "api-staging.blueprintify.dev/*", zone_name = "blueprintify.dev" }
@@ -73,6 +82,10 @@ queue = "background-processing"
 
 [[queues.consumers]]
 queue = "background-processing"
+max_batch_size = 10
+max_batch_timeout = 30
+max_retries = 5
+retry_delay = 60
 
 # Limits and configuration
 [limits]
