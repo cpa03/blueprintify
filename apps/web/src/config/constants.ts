@@ -377,6 +377,34 @@ export const CSS_CLASSES = {
     "animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500",
 } as const;
 
+// Focusable element selectors for accessibility
+// Used by focus trap and focus management hooks
+export const FOCUSABLE_SELECTORS = [
+  'button:not([disabled]):not([aria-hidden="true"])',
+  'a[href]:not([aria-hidden="true"])',
+  'input:not([disabled]):not([type="hidden"]):not([aria-hidden="true"])',
+  'select:not([disabled]):not([aria-hidden="true"])',
+  'textarea:not([disabled]):not([aria-hidden="true"])',
+  '[tabindex]:not([tabindex="-1"]):not([disabled]):not([aria-hidden="true"])',
+  '[contenteditable]:not([aria-hidden="true"])',
+] as const;
+
+// Combined selector string for querySelector usage
+export const FOCUSABLE_SELECTOR_STRING = FOCUSABLE_SELECTORS.join(", ");
+
+// Celebration colors for particle animations
+// Used by celebration and copy button animations
+export const CELEBRATION_COLORS = [
+  "#10b981", // emerald-500
+  "#34d399", // emerald-400
+  "#6ee7b7", // emerald-300
+  "#6366f1", // indigo-500
+  "#818cf8", // indigo-400
+  "#a78bfa", // violet-400
+  "#f472b6", // pink-400
+  "#fbbf24", // amber-400
+] as const;
+
 // External URLs used throughout the application
 export const EXTERNAL_URLS = {
   GITHUB: ENV.GITHUB_URL,

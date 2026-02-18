@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback, type RefObject } from "react";
+import { FOCUSABLE_SELECTOR_STRING } from "../config/constants";
 
 interface UseFocusTrapOptions {
   isActive: boolean;
@@ -12,16 +13,6 @@ interface UseFocusTrapReturn {
   focusLast: () => void;
 }
 
-const FOCUSABLE_SELECTORS = [
-  'button:not([disabled]):not([aria-hidden="true"])',
-  'a[href]:not([aria-hidden="true"])',
-  'input:not([disabled]):not([type="hidden"]):not([aria-hidden="true"])',
-  'select:not([disabled]):not([aria-hidden="true"])',
-  'textarea:not([disabled]):not([aria-hidden="true"])',
-  '[tabindex]:not([tabindex="-1"]):not([disabled]):not([aria-hidden="true"])',
-  '[contenteditable]:not([aria-hidden="true"])',
-].join(", ");
-
 export function useFocusTrap(options: UseFocusTrapOptions): UseFocusTrapReturn {
   const { isActive, returnFocusTo, autoFocus = true } = options;
   const containerRef = useRef<HTMLElement | null>(null);
@@ -30,7 +21,9 @@ export function useFocusTrap(options: UseFocusTrapOptions): UseFocusTrapReturn {
   const getFocusableElements = useCallback((): HTMLElement[] => {
     if (!containerRef.current) return [];
     return Array.from(
-      containerRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS),
+      containerRef.current.querySelectorAll<HTMLElement>(
+        FOCUSABLE_SELECTOR_STRING,
+      ),
     ).filter(
       (element) =>
         element.tabIndex >= 0 &&

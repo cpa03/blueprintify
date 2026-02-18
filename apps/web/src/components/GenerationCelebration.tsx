@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { CELEBRATION_COLORS } from "../config/constants";
 
 interface Particle {
   id: number;
@@ -18,17 +19,6 @@ interface GenerationCelebrationProps {
   isComplete: boolean;
   onComplete?: () => void;
 }
-
-const CELEBRATION_COLORS: string[] = [
-  "#10b981",
-  "#34d399",
-  "#6ee7b7",
-  "#6366f1",
-  "#818cf8",
-  "#a78bfa",
-  "#f472b6",
-  "#fbbf24",
-];
 
 const SHAPES: Particle["shape"][] = ["circle", "square", "star"];
 

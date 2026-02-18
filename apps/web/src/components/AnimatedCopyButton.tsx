@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
+import { CELEBRATION_COLORS } from "../config/constants";
 
 interface Particle {
   id: number;
@@ -19,15 +20,6 @@ interface AnimatedCopyButtonProps {
   hasContent: boolean;
   className?: string;
 }
-
-const COLORS: string[] = [
-  "#10b981",
-  "#34d399",
-  "#6ee7b7",
-  "#059669",
-  "#6366f1",
-  "#818cf8",
-];
 
 export function AnimatedCopyButton({
   onCopy,
@@ -53,7 +45,9 @@ export function AnimatedCopyButton({
       const angle = (i / particleCount) * Math.PI * 2;
       const distance = 30 + Math.random() * 20;
       const color: string =
-        COLORS[Math.floor(Math.random() * COLORS.length)] ?? "#10b981";
+        CELEBRATION_COLORS[
+          Math.floor(Math.random() * CELEBRATION_COLORS.length)
+        ] ?? "#10b981";
       const size = 3 + Math.random() * 3;
       const duration = 400 + Math.random() * 200;
 
