@@ -55,6 +55,21 @@ export const STORAGE_CONFIG = {
 } as const;
 
 /**
+ * Security Limits Configuration
+ * Centralized security constraints for validation
+ */
+export const SECURITY_LIMITS = {
+  // Maximum content length in characters (1MB)
+  MAX_CONTENT_LENGTH: 1000000,
+  // Maximum file size in bytes (10MB)
+  MAX_FILE_SIZE: 10 * 1024 * 1024,
+  // Maximum JSON object depth for DoS protection
+  JSON_DEPTH_MAX: 20,
+  // Maximum file name length
+  MAX_FILE_NAME_LENGTH: 255,
+} as const;
+
+/**
  * Debounce Configuration
  * Centralized debounce delays for store operations
  */

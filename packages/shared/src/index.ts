@@ -44,6 +44,7 @@ export {
   VALIDATION_LIMITS,
   STORAGE_CONFIG,
   DEBOUNCE_CONFIG,
+  SECURITY_LIMITS,
 } from "./config";
 
 export type { RetryOptions, RetryConfigValues } from "./config";
