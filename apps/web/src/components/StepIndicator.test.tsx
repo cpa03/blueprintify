@@ -48,6 +48,8 @@ vi.mock("framer-motion", () => {
         animate: _animate,
         exit: _exit,
         transition: _transition,
+        whileHover: _whileHover,
+        whileTap: _whileTap,
         ...props
       }) => <div {...props}>{children}</div>,
     ),
