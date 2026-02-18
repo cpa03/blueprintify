@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ANIMATION, ANIMATION_MS } from "../config/constants";
 import { ANIMATION_TIMING } from "../config/theme";
@@ -9,7 +9,7 @@ interface TypeIndicatorProps {
   className?: string;
 }
 
-export function TypeIndicator({
+export const TypeIndicator = memo(function TypeIndicator({
   isTyping,
   position = "right",
   className = "",
@@ -52,7 +52,7 @@ export function TypeIndicator({
       )}
     </AnimatePresence>
   );
-}
+});
 
 interface UseTypingIndicatorOptions {
   delay?: number;
