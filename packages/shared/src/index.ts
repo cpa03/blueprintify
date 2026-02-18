@@ -47,6 +47,7 @@ export {
   RETRYABLE_STATUS_CODES,
   SSE_CONFIG,
   SECURITY_LIMITS,
+  HTTP_STATUS,
 } from "./config";
 
 export type { RetryOptions, RetryConfigValues } from "./config";

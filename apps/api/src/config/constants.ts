@@ -2,6 +2,7 @@ import {
   RETRY_CONFIG as SHARED_RETRY_CONFIG,
   RETRYABLE_STATUS_CODES,
   SSE_CONFIG as SHARED_SSE_CONFIG,
+  HTTP_STATUS as SHARED_HTTP_STATUS,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./env";
 
@@ -243,24 +244,12 @@ export const CIRCUIT_BREAKER_CONFIG = {
 
 export { SHARED_SSE_CONFIG as SSE_CONFIG };
 
+export { SHARED_HTTP_STATUS as HTTP_STATUS };
+
 export const SSE_HEADERS = {
   CONTENT_TYPE: "text/event-stream",
   CACHE_CONTROL: "no-cache",
   CONNECTION: "keep-alive",
-} as const;
-
-// HTTP Status codes
-export const HTTP_STATUS = {
-  OK: 200,
-  BAD_REQUEST: 400,
-  UNAUTHORIZED: 401,
-  FORBIDDEN: 403,
-  NOT_FOUND: 404,
-  TOO_MANY_REQUESTS: 429,
-  INTERNAL_ERROR: 500,
-  BAD_GATEWAY: 502,
-  SERVICE_UNAVAILABLE: 503,
-  GATEWAY_TIMEOUT: 504,
 } as const;
 
 // Validation messages
