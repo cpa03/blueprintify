@@ -1,14 +1,5 @@
 import { useRef, useEffect, useCallback } from "react";
-import { TIMEOUTS } from "../config/constants";
-
-const FOCUSABLE_SELECTORS = [
-  'input:not([type="hidden"]):not([disabled])',
-  "textarea:not([disabled])",
-  "select:not([disabled])",
-  "button:not([disabled])",
-  '[tabindex]:not([tabindex="-1"])',
-  "a[href]",
-].join(", ");
+import { TIMEOUTS, FOCUSABLE_SELECTOR_STRING } from "../config/constants";
 
 interface UseFocusOnStepChangeOptions {
   delay?: number;
@@ -27,8 +18,9 @@ export function useFocusOnStepChange(
   const focusFirstElement = useCallback(() => {
     if (!containerRef.current) return;
 
-    const focusableElements =
-      containerRef.current.querySelectorAll(FOCUSABLE_SELECTORS);
+    const focusableElements = containerRef.current.querySelectorAll(
+      FOCUSABLE_SELECTOR_STRING,
+    );
 
     if (focusableElements.length === 0) return;
 
