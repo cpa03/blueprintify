@@ -110,7 +110,11 @@ export function StepInfo() {
                 transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
               />
             </div>
-            <span className="text-dark-400 tabular-nums">
+            <span
+              className="text-dark-400 tabular-nums"
+              aria-live="polite"
+              aria-label={`${formProgress.completed} of ${formProgress.total} fields completed`}
+            >
               {formProgress.completed}/{formProgress.total}
             </span>
           </div>
