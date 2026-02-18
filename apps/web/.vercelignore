@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Build outputs (handled by build command)
+dist/
+
+# Development files
+*.log
+.env
+.env.*
+.dev.vars
+
+# IDE
+.vscode/
+.idea/
+
+# Test files
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+src/test/
+coverage/
+e2e/
+
+# Documentation
+*.md
+!README.md
+
+# OpenCode AI system
+.opencode/
+
+# Misc
+.DS_Store
+*.swp
+*.swo
+*~
