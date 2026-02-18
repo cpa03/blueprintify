@@ -125,13 +125,13 @@ export const AnimatedInput = forwardRef<HTMLInputElement, AnimatedInputProps>(
           animate={
             isFocused
               ? {
-                  scale: 1.002,
+                  scale: 1.005,
                 }
               : {
                   scale: 1,
                 }
           }
-          transition={{ duration: 0.2, ease: "easeOut" }}
+          transition={{ type: "spring", stiffness: 500, damping: 25 }}
         >
           <input
             ref={combinedRef}
@@ -267,13 +267,13 @@ export const AnimatedTextarea = forwardRef<
         animate={
           isFocused
             ? {
-                scale: 1.002,
+                scale: 1.005,
               }
             : {
                 scale: 1,
               }
         }
-        transition={{ duration: 0.2, ease: "easeOut" }}
+        transition={{ type: "spring", stiffness: 500, damping: 25 }}
       >
         <textarea
           ref={combinedRef}
