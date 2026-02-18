@@ -2,7 +2,7 @@
 -- Blueprintify Database Schema
 -- ============================================================================
 -- Cloudflare D1 (SQLite) Database Schema
--- Version: 1.1.0
+-- Version: 1.2.0
 -- Last Updated: 2026-02-18
 -- 
 -- Schema Conventions:
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS sessions (
 -- ANALYTICS TABLE
 -- ============================================================================
 -- Stores usage tracking events for analytics.
--- Event types: 'blueprint_generated', 'task_generated', 'template_used', etc.
+-- Event types: 'blueprint_generated', 'task_generated', 'template_used', 'export', 'import', 'refine'
 -- Note: user_id can be NULL for anonymous events.
 CREATE TABLE IF NOT EXISTS analytics (
     id TEXT PRIMARY KEY,
@@ -150,7 +150,8 @@ CREATE TABLE IF NOT EXISTS analytics (
     user_agent TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
-    CONSTRAINT fk_analytics_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+    CONSTRAINT fk_analytics_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+    CONSTRAINT ck_analytics_event_type CHECK (event_type IN ('blueprint_generated', 'task_generated', 'template_used', 'export', 'import', 'refine', 'session_start', 'session_end'))
 );
 
 -- ============================================================================
@@ -191,6 +192,9 @@ CREATE INDEX IF NOT EXISTS idx_projects_user_id_status ON projects(user_id, stat
 
 -- User-specific analytics (dashboard stats)
 CREATE INDEX IF NOT EXISTS idx_analytics_user_id_event_type ON analytics(user_id, event_type);
+
+-- Time-based analytics queries (event trends over time)
+CREATE INDEX IF NOT EXISTS idx_analytics_event_type_created_at ON analytics(event_type, created_at);
 
 -- Public templates by category (template browser)
 CREATE INDEX IF NOT EXISTS idx_templates_category_is_public ON templates(category, is_public);

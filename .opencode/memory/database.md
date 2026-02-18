@@ -2,7 +2,7 @@
 
 ## Schema Version
 
-- Current Version: 1.1.0
+- Current Version: 1.2.0
 - Last Updated: 2026-02-18
 - Schema File: `schema.sql`
 
@@ -62,15 +62,16 @@
 - Always index foreign key columns for join performance
 - Example: `idx_projects_user_id`
 
-### Composite Indexes (v1.1.0)
+### Composite Indexes (v1.2.0)
 
 Use composite indexes for common multi-column query patterns:
 
-| Index                              | Query Pattern                      |
-| ---------------------------------- | ---------------------------------- |
-| `idx_projects_user_id_status`      | User's active projects (dashboard) |
-| `idx_analytics_user_id_event_type` | User-specific analytics            |
-| `idx_templates_category_is_public` | Public templates by category       |
+| Index                                 | Query Pattern                       |
+| ------------------------------------- | ----------------------------------- |
+| `idx_projects_user_id_status`         | User's active projects (dashboard)  |
+| `idx_analytics_user_id_event_type`    | User-specific analytics             |
+| `idx_templates_category_is_public`    | Public templates by category        |
+| `idx_analytics_event_type_created_at` | Time-based analytics (event trends) |
 
 ### Query Optimization
 
@@ -87,7 +88,7 @@ Use composite indexes for common multi-column query patterns:
 
 ## Data Integrity
 
-### CHECK Constraints (v1.1.0)
+### CHECK Constraints (v1.2.0)
 
 Use CHECK constraints to enforce valid values at the database level:
 
@@ -97,6 +98,9 @@ CONSTRAINT ck_projects_status CHECK (status IN ('active', 'archived', 'deleted')
 
 -- Templates category must be one of these values
 CONSTRAINT ck_templates_category CHECK (category IN ('frontend', 'backend', 'fullstack', 'general'))
+
+-- Analytics event_type must be one of these values
+CONSTRAINT ck_analytics_event_type CHECK (event_type IN ('blueprint_generated', 'task_generated', 'template_used', 'export', 'import', 'refine', 'session_start', 'session_end'))
 ```
 
 ### Foreign Keys
