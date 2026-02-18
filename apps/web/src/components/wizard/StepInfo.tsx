@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState, useMemo } from "react";
 import {
   FORM_LIMITS,
   ANIMATION,
@@ -58,7 +58,8 @@ export function StepInfo() {
   const isDescriptionInvalid =
     description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN;
 
-  const getFormProgress = () => {
+  // Memoize form progress calculation to avoid recomputation on every render
+  const formProgress = useMemo(() => {
     const requiredFields = [
       projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN,
       description.length >= FORM_LIMITS.DESCRIPTION.MIN,
@@ -75,9 +76,12 @@ export function StepInfo() {
       total: totalFields,
       percentage: (completedFields / totalFields) * 100,
     };
-  };
-
-  const formProgress = getFormProgress();
+  }, [
+    projectName.length,
+    description.length,
+    targetAudience.length,
+    constraints.length,
+  ]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();

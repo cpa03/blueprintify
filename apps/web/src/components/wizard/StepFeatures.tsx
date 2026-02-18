@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
 import {
@@ -37,11 +37,15 @@ export function StepFeatures() {
     }
   };
 
-  const isInFeatures = (feature: string) =>
-    features.some((f: string) => f.toLowerCase() === feature.toLowerCase());
+  const isInFeatures = useCallback(
+    (feature: string) =>
+      features.some((f: string) => f.toLowerCase() === feature.toLowerCase()),
+    [features],
+  );
 
-  const suggestedNotAdded = SUGGESTED_FEATURES.filter(
-    (f: string) => !isInFeatures(f),
+  const suggestedNotAdded = useMemo(
+    () => SUGGESTED_FEATURES.filter((f: string) => !isInFeatures(f)),
+    [isInFeatures],
   );
 
   return (

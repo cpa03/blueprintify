@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useCallback } from "react";
+import { useState, useCallback, memo } from "react";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
 import {
@@ -19,7 +19,12 @@ interface TechChipProps {
   justSelected: string | null;
 }
 
-function TechChip({ tech, isSelected, onToggle, justSelected }: TechChipProps) {
+const TechChip = memo(function TechChip({
+  tech,
+  isSelected,
+  onToggle,
+  justSelected,
+}: TechChipProps) {
   const isJustSelected = justSelected === tech.name;
 
   return (
@@ -129,7 +134,7 @@ function TechChip({ tech, isSelected, onToggle, justSelected }: TechChipProps) {
       </span>
     </motion.button>
   );
-}
+});
 
 export function StepStack() {
   const [isShaking, setIsShaking] = useState(false);
