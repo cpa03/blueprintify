@@ -1,4 +1,4 @@
-import { useState, useCallback, ReactNode } from "react";
+import React, { useState, useCallback, ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface TooltipProps {
@@ -8,7 +8,7 @@ interface TooltipProps {
   delay?: number;
 }
 
-export function Tooltip({
+function TooltipComponent({
   children,
   content,
   position = "top",
@@ -79,6 +79,8 @@ export function Tooltip({
   );
 }
 
+export const Tooltip = React.memo(TooltipComponent);
+
 interface KeyboardShortcutTooltipProps {
   children: ReactNode;
   shortcut: string;
@@ -96,14 +98,15 @@ export function KeyboardShortcutTooltip({
 }: KeyboardShortcutTooltipProps) {
   const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
 
-  let fullShortcut: string;
-  if (modifier === "none") {
-    fullShortcut = shortcut;
-  } else if (modifier === "cmd") {
-    fullShortcut = `${isMac ? "⌘" : "Ctrl"} + ${shortcut.toUpperCase()}`;
-  } else {
-    fullShortcut = `Ctrl + ${shortcut.toUpperCase()}`;
-  }
+  const fullShortcut = React.useMemo(() => {
+    if (modifier === "none") {
+      return shortcut;
+    } else if (modifier === "cmd") {
+      return `${isMac ? "⌘" : "Ctrl"} + ${shortcut.toUpperCase()}`;
+    } else {
+      return `Ctrl + ${shortcut.toUpperCase()}`;
+    }
+  }, [modifier, shortcut, isMac]);
 
   const content = (
     <div className="flex items-center gap-2">
