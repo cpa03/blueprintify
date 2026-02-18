@@ -172,10 +172,23 @@ describe("DELETE /share/:id", () => {
 
   it("should delete a shared blueprint", async () => {
     const env = createMockEnv();
-    const res = await app.request("/test-share-id", { method: "DELETE" }, env);
+    const res = await app.request("/testshare123", { method: "DELETE" }, env);
 
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(data).toHaveProperty("message", "Share deleted successfully");
+  });
+
+  it("should return 400 for invalid share ID format on delete", async () => {
+    const env = createMockEnv();
+    const res = await app.request("/invalid-id", { method: "DELETE" }, env);
+
+    expect(res.status).toBe(400);
+    const data = (await res.json()) as {
+      error: string;
+      message: string;
+    };
+    expect(data).toHaveProperty("error");
+    expect(data.message).toContain("Invalid share ID format");
   });
 });

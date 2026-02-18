@@ -189,6 +189,16 @@ app.delete("/:id", async (c) => {
   try {
     const shareId = c.req.param("id");
 
+    if (!shareId || shareId.length !== 12) {
+      return c.json(
+        {
+          error: ERROR_CODES.VALIDATION_ERROR,
+          message: "Invalid share ID format",
+        },
+        HTTP_STATUS.BAD_REQUEST,
+      );
+    }
+
     if (!c.env.DB) {
       return c.json(
         {
