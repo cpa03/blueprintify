@@ -46,7 +46,14 @@ Health check endpoint to verify the API is running and provide API metadata.
   "endpoints": {
     "generate": "POST /generate",
     "tasks": "POST /tasks",
-    "refine": "POST /refine"
+    "refine": "POST /refine",
+    "export": "POST /export",
+    "import": "POST /import",
+    "storageQuota": "GET /storage/quota",
+    "storageClear": "DELETE /storage/clear",
+    "shareCreate": "POST /share",
+    "shareGet": "GET /share/:id",
+    "shareDelete": "DELETE /share/:id"
   }
 }
 ```
@@ -223,18 +230,261 @@ curl -X POST http://localhost:8787/refine \
   }'
 ```
 
-## Available Endpoints
+### POST /export
 
-The API currently supports the following endpoints:
+Export project data in various formats (JSON, ZIP, Markdown).
 
-| Method | Path        | Description                      |
-| ------ | ----------- | -------------------------------- |
-| GET    | `/`         | Health check and API metadata    |
-| POST   | `/generate` | Generate project blueprint (SSE) |
-| POST   | `/tasks`    | Generate project tasks (SSE)     |
-| POST   | `/refine`   | Refine content section (SSE)     |
+#### Request Body
 
-**Note**: Export/import and storage management endpoints are planned for future releases but are not currently available.
+```typescript
+interface ExportRequest {
+  projectName: string; // Project name for filename
+  blueprint: string; // Blueprint content to export
+  tasks?: string; // Optional tasks content
+  format: "json" | "zip" | "markdown"; // Export format
+}
+```
+
+#### Response
+
+Returns exported data in the requested format.
+
+**JSON Format Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "projectName": "My Project",
+    "blueprint": "# Project: My App...",
+    "tasks": "## Tasks...",
+    "exportedAt": "2026-02-18T10:00:00.000Z",
+    "version": "1.0.0",
+    "format": "json"
+  },
+  "filename": "My_Project_export.json"
+}
+```
+
+**Markdown Format Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "content": "# My Project\n\nExported: 2026-02-18T10:00:00.000Z\n\n## Blueprint\n\n...",
+    "filename": "My_Project.md"
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost:8787/export \
+  -H "Content-Type: application/json" \
+  -d '{
+    "projectName": "My App",
+    "blueprint": "# Project: My App\n\n## Overview\n...",
+    "tasks": "## Tasks\n\n- [ ] Setup project",
+    "format": "json"
+  }'
+```
+
+### POST /import
+
+Import project data from various formats (JSON, Markdown).
+
+#### Request Body
+
+```typescript
+interface ImportRequest {
+  data: string; // Raw data to import (JSON string or markdown)
+  format: "json" | "markdown"; // Import format
+  overwrite?: boolean; // Whether to overwrite existing data
+}
+```
+
+#### Response
+
+Returns parsed and validated import data.
+
+```json
+{
+  "success": true,
+  "data": {
+    "projectName": "My Project",
+    "blueprint": "# Project: My App...",
+    "tasks": "## Tasks...",
+    "importedAt": "2026-02-18T10:00:00.000Z",
+    "overwrite": false,
+    "warnings": ["Version mismatch: expected 1.0.0, got 0.9.0"]
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost:8787/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": "{\"projectName\":\"My App\",\"blueprint\":\"# Project: My App\",\"version\":\"1.0.0\"}",
+    "format": "json",
+    "overwrite": false
+  }'
+```
+
+### GET /storage/quota
+
+Get storage quota information.
+
+#### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "used": 0,
+    "total": 5242880,
+    "percentage": 0,
+    "projects": 0,
+    "note": "Server-side storage tracking. Client-side storage quota available via localStorage API."
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl http://localhost:8787/storage/quota
+```
+
+### DELETE /storage/clear
+
+Clear all stored data. Requires confirmation.
+
+#### Request Body
+
+```typescript
+interface StorageClearRequest {
+  confirm: boolean; // Must be true to confirm deletion
+}
+```
+
+#### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "cleared": true,
+    "message": "Server-side storage cleared. Client-side storage must be cleared via localStorage API.",
+    "timestamp": "2026-02-18T10:00:00.000Z"
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X DELETE http://localhost:8787/storage/clear \
+  -H "Content-Type: application/json" \
+  -d '{"confirm": true}'
+```
+
+### POST /share
+
+Create a shareable blueprint link. Shares expire after 30 days.
+
+#### Request Body
+
+```typescript
+interface ShareCreateRequest {
+  title: string; // Share title (1-200 chars)
+  blueprint: string; // Blueprint content (1-50000 chars)
+  metadata?: {
+    projectName?: string;
+    techStack?: string[];
+    author?: string;
+  };
+}
+```
+
+#### Response
+
+```json
+{
+  "id": "abc123def456",
+  "url": "https://your-domain.com/share/abc123def456",
+  "expiresAt": "2026-03-20T10:00:00.000Z"
+}
+```
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost:8787/share \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "My Project Blueprint",
+    "blueprint": "# Project: My App\n\n## Overview\n...",
+    "metadata": {
+      "projectName": "My App",
+      "techStack": ["React", "TypeScript"],
+      "author": "Developer"
+    }
+  }'
+```
+
+### GET /share/:id
+
+Retrieve a shared blueprint by ID.
+
+#### Response
+
+```json
+{
+  "id": "abc123def456",
+  "title": "My Project Blueprint",
+  "blueprint": "# Project: My App\n\n## Overview\n...",
+  "metadata": {
+    "projectName": "My App",
+    "techStack": ["React", "TypeScript"],
+    "author": "Developer"
+  },
+  "createdAt": "2026-02-18T10:00:00.000Z",
+  "expiresAt": "2026-03-20T10:00:00.000Z"
+}
+```
+
+#### Error Responses
+
+- **404 Not Found**: Share not found or has expired
+
+#### Example Request
+
+```bash
+curl http://localhost:8787/share/abc123def456
+```
+
+### DELETE /share/:id
+
+Delete a shared blueprint.
+
+#### Response
+
+```json
+{
+  "message": "Share deleted successfully"
+}
+```
+
+#### Example Request
+
+```bash
+curl -X DELETE http://localhost:8787/share/abc123def456
+```
 
 ## Error Handling
 
@@ -549,24 +799,23 @@ Currently, the API uses Server-Sent Events (SSE) for streaming. WebSocket suppor
 
 ## Version History
 
-| Version | Date       | Changes                                                |
-| ------- | ---------- | ------------------------------------------------------ |
-| 1.0.0   | 2026-02-11 | Current API with generate, tasks, and refine endpoints |
-|         |            | Enhanced error handling with structured responses      |
-|         |            | Comprehensive validation using Zod schemas             |
-|         |            | Tech stack metadata support with categorization        |
-|         |            | Server-Sent Events (SSE) for streaming responses       |
+| Version | Date       | Changes                                            |
+| ------- | ---------- | -------------------------------------------------- |
+| 1.0.0   | 2026-02-18 | Added export, import, storage, and share endpoints |
+|         |            | Enhanced error handling with structured responses  |
+|         |            | Comprehensive validation using Zod schemas         |
+|         |            | Tech stack metadata support with categorization    |
+|         |            | Server-Sent Events (SSE) for streaming responses   |
+|         |            | Share functionality with 30-day expiration         |
 
 ## Planned Features
 
 The following features are planned for future releases:
 
-- **Export Endpoint** - Export projects as ZIP files with multiple formats
-- **Import Endpoint** - Import previously exported projects
-- **Storage Management** - Quota management and data persistence APIs
 - **WebSocket Support** - Bidirectional communication for real-time collaboration
-- **Rate Limiting** - API rate limiting and quota management
+- **Rate Limiting Enhancements** - Advanced rate limiting with user quotas
 - **Authentication** - Optional API key authentication for enterprise use
+- **Versioning** - API versioning support for backward compatibility
 
 ## SSE Stream Format
 
