@@ -1,5 +1,6 @@
 import type { Context, MiddlewareHandler } from "hono";
 import type { Env } from "../types";
+import { getConfig } from "../config/env";
 
 type RateLimiterName =
   | "STRICT_RATE_LIMITER"
@@ -11,11 +12,18 @@ interface RateLimitConfig {
   keyGenerator?: (c: Context) => string;
 }
 
-const LIMITER_LIMITS: Record<RateLimiterName, number> = {
-  STRICT_RATE_LIMITER: 10,
-  STANDARD_RATE_LIMITER: 60,
-  LENIENT_RATE_LIMITER: 120,
-};
+/**
+ * Get rate limit values from environment configuration
+ * Flexy: No hardcoded values - everything configurable!
+ */
+function getLimiterLimits(): Record<RateLimiterName, number> {
+  const env = getConfig();
+  return {
+    STRICT_RATE_LIMITER: env.RATE_LIMIT_STRICT_MAX,
+    STANDARD_RATE_LIMITER: env.RATE_LIMIT_STANDARD_MAX,
+    LENIENT_RATE_LIMITER: env.RATE_LIMIT_LENIENT_MAX,
+  };
+}
 
 export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
   const { limiter, keyGenerator } = config;
@@ -36,7 +44,7 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
     }
 
     const result = await rateLimiter.limit({ key });
-    const limit = LIMITER_LIMITS[limiter];
+    const limit = getLimiterLimits()[limiter];
 
     c.header("X-RateLimit-Limit", String(limit));
 
@@ -50,7 +58,7 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
             code: "RATE_LIMIT_ERROR",
             details: {
               limit,
-              retryAfter: 60,
+              retryAfter: getConfig().RATE_LIMIT_WINDOW_MS / 1000,
             },
             timestamp: new Date().toISOString(),
           },
