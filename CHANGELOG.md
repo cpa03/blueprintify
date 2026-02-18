@@ -13,6 +13,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - OpenCode integration for automated development workflows
 - Comprehensive documentation structure
 
+### Changed
+
+- Improved error handling with structured error responses and requestId tracking
+- Enhanced API documentation with comprehensive examples and error scenarios
+
+### Fixed
+
+- Resolved recursive trigger bug in database schema (timestamp update triggers)
+- Added safety wrapper for JSON parsing in deserializeJSON utility
+
 ## [1.0.0] - 2026-02-18
 
 ### Added

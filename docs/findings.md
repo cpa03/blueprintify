@@ -95,9 +95,16 @@ runs-on: ubuntu-24.04-arm
 - [ ] Run workflow to verify compatibility
 - [ ] Confirm no breaking changes in CI pipeline
 
-### Note
+### Status
 
-This change requires `workflows` permission on GitHub App. Currently blocked by permission restrictions.
+**BLOCKED** - Requires `workflows` permission on GitHub App. Tracked in issue #483.
+
+### Resolution Path
+
+1. Obtain `workflows` permission for GitHub App
+2. Update `.github/workflows/on pull.yml` line 23
+3. Verify CI pipeline passes with new runner version
+4. Close issue #483 after verification
 
 ---
 
@@ -127,8 +134,16 @@ sed -i 's/\r$//' .github/workflows/on\ pull.yml .github/workflows/pr-gatekeeper.
 - [ ] Commit changes
 - [ ] Verify no Git warnings on checkout
 
-### Note
+### Status
 
-This change requires `workflows` permission on GitHub App. Currently blocked by permission restrictions. Issue tracked in #483.
+**BLOCKED** - Requires `workflows` permission on GitHub App. Tracked in issue #483.
+
+### Resolution Path
+
+1. Obtain `workflows` permission for GitHub App
+2. Run: `sed -i 's/\r$//' .github/workflows/on\ pull.yml .github/workflows/pr-gatekeeper.yml`
+3. Commit and push changes
+4. Verify no Git warnings on checkout
+5. Close issue #483 after verification
 
 ---
