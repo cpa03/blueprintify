@@ -25,7 +25,7 @@ export function RippleButton({
   type = "button",
   ariaLabel,
   title,
-}: RippleButtonProps) {
+}: RippleButtonProps): JSX.Element {
   const [ripples, setRipples] = useState<Ripple[]>([]);
 
   const createRipple = useCallback((event: MouseEvent<HTMLButtonElement>) => {
@@ -103,7 +103,11 @@ export function RippleButton({
   );
 }
 
-export function useRipple() {
+export function useRipple(): {
+  createRipple: (event: MouseEvent<HTMLElement>) => void;
+  RippleOverlay: () => JSX.Element;
+  ripples: Ripple[];
+} {
   const [ripples, setRipples] = useState<Ripple[]>([]);
 
   const createRipple = useCallback((event: MouseEvent<HTMLElement>) => {

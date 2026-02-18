@@ -50,6 +50,15 @@ vi.mock("../config/constants", () => ({
   TIMEOUTS: {
     COPY_FEEDBACK: 2000,
   },
+  ANIMATION: {
+    FAST: 0.15,
+    NORMAL: 0.2,
+    MEDIUM: 0.3,
+    SLOW: 0.5,
+    STAGGER: 0.1,
+    SPINNER_ROTATION: 1,
+    TYPING_INDICATOR_DELAY_S: 0.6,
+  },
   DEFAULT_PROJECT_NAME: "Test Project",
   WIZARD_STEPS: [
     { key: "info", label: "Project Info", icon: "📝", shortcut: "1" },
