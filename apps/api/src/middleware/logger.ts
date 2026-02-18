@@ -95,6 +95,9 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
     const duration = Date.now() - startTime;
     const status = c.res.status;
 
+    c.header("X-Request-ID", requestId);
+    c.header("X-Response-Time", `${duration}ms`);
+
     const responseLog: ResponseLog = {
       requestId,
       status,
