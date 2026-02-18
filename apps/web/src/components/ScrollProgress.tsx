@@ -112,9 +112,21 @@ export const ScrollProgress = memo(function ScrollProgress({
           initial={{ opacity: 0.8 }}
           animate={{
             opacity: isVisible ? [0.8, 1, 0.8] : 0.8,
+            boxShadow: isVisible
+              ? [
+                  "0 0 8px rgba(99, 102, 241, 0.3)",
+                  "0 0 16px rgba(139, 92, 246, 0.4)",
+                  "0 0 8px rgba(99, 102, 241, 0.3)",
+                ]
+              : "0 0 0px rgba(99, 102, 241, 0)",
           }}
           transition={{
             opacity: {
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+            boxShadow: {
               duration: 2,
               repeat: Infinity,
               ease: "easeInOut",
