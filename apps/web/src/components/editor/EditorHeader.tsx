@@ -16,6 +16,7 @@ interface EditorHeaderProps {
   copied: string | null;
   isExporting?: boolean;
   lastSavedText?: string;
+  hasChanges?: boolean;
 }
 
 const TabButton = React.memo(function TabButton({
@@ -64,6 +65,7 @@ function EditorHeaderComponent({
   copied,
   isExporting = false,
   lastSavedText = "",
+  hasChanges = false,
 }: EditorHeaderProps) {
   return (
     <div className="flex items-center justify-between p-4 border-b border-dark-700">
@@ -93,7 +95,8 @@ function EditorHeaderComponent({
         </div>
         <LastSavedIndicator
           text={lastSavedText}
-          isVisible={hasContent && !!lastSavedText}
+          isVisible={hasContent && (!!lastSavedText || hasChanges)}
+          hasChanges={hasChanges}
         />
       </div>
 
