@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 
 interface CircularProgressProps {
@@ -11,7 +12,7 @@ interface CircularProgressProps {
   trackColor?: string;
 }
 
-export function CircularProgress({
+function CircularProgressComponent({
   value,
   size = 40,
   strokeWidth = 3,
@@ -88,6 +89,8 @@ export function CircularProgress({
     </div>
   );
 }
+
+export const CircularProgress = memo(CircularProgressComponent);
 
 export function CircularProgressCompact({
   value,
