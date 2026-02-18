@@ -1,11 +1,38 @@
-import { defineConfig } from "vite";
+import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { compression } from "vite-plugin-compression2";
 
+/**
+ * Vite plugin to make CSS load asynchronously
+ * This prevents render-blocking by using the media="print" trick
+ */
+const asyncCssPlugin = (): Plugin => ({
+  name: "async-css",
+  transformIndexHtml(html) {
+    // Find CSS link tags and make them async
+    // Using media="print" with onload to prevent render-blocking
+    return html.replace(
+      /<link rel="stylesheet"([^>]*)>/g,
+      (match, attributes) => {
+        // Skip if already has media or is preloaded
+        if (
+          attributes.includes("media=") ||
+          attributes.includes('rel="preload"')
+        ) {
+          return match;
+        }
+        // Add async loading pattern
+        return `<link rel="stylesheet"${attributes} media="print" onload="this.media='all'; this.onload=null;">`;
+      },
+    );
+  },
+});
+
 export default defineConfig({
   plugins: [
     react(),
+    asyncCssPlugin(),
     compression({
       algorithms: ["gzip", "brotliCompress"],
       exclude: [/\.(br)$/, /\.(gz)$/],
