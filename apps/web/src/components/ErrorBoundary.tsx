@@ -93,8 +93,16 @@ export class ErrorBoundary extends React.Component<
                 <summary className="text-sm text-dark-500 cursor-pointer hover:text-dark-400 transition-colors">
                   View error details
                 </summary>
-                <pre className="mt-2 p-3 bg-dark-800 rounded-lg text-xs text-dark-400 overflow-auto max-h-32">
+                <pre className="mt-2 p-3 bg-dark-800 rounded-lg text-xs text-dark-400 overflow-auto max-h-48">
                   {this.state.error.message}
+                  {import.meta.env.DEV && this.state.error.stack && (
+                    <>
+                      {"\n\n"}
+                      <span className="text-dark-500">Stack trace:</span>
+                      {"\n"}
+                      {this.state.error.stack}
+                    </>
+                  )}
                 </pre>
               </details>
             )}
