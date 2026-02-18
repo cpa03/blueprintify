@@ -135,6 +135,44 @@ Replaced all 'any' types with proper Hono Context<{ Bindings: Env }> types:
 
 ---
 
+### BUG-009: CI/CD Workflow Configuration Issues
+
+**Status**: Open  
+**Priority**: High  
+**Area**: DevOps Engineering  
+**First Reported**: 2026-02-18 (QA Audit)  
+**Issue Reference**: #483
+
+#### Description
+
+Multiple workflow configuration issues identified:
+
+1. Filename with space: `on pull.yml` should be `on-pull.yml`
+2. Line ending inconsistency: CRLF instead of LF
+3. Outdated runner version: `ubuntu-22.04-arm` instead of `ubuntu-24.04-arm`
+4. Invalid action versions: `checkout@v6` and `setup-node@v6` (should be `@v4`)
+
+#### Impact
+
+- Shell commands may fail with space in filename
+- Line ending issues cause git warnings
+- Runner version doesn't match AGENTS.md specification
+- Invalid action versions may cause CI failures
+
+#### Fix Status
+
+- [x] Fix prepared on `repository-manager` branch
+- [ ] Requires workflow permissions to push
+- [ ] All verification checks passed (typecheck, lint, build, tests)
+
+#### Target Resolution
+
+- **Timeline**: Requires user with workflow permissions
+- **Priority**: High (CI/CD reliability)
+- **Area**: DevOps Engineering
+
+---
+
 ### BUG-001: Frontend Bundle Size Performance Issue
 
 **Status**: In Progress  
@@ -283,6 +321,6 @@ Magic numbers and hardcoded values scattered across API layer, affecting maintai
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2026-02-14  
+**Last Updated**: 2026-02-18  
 **Next Review**: Weekly during M2 development  
 **Maintainer**: RepoKeeper (Autonomous Maintenance System)
