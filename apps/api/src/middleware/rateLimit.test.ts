@@ -1,7 +1,8 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { Hono } from "hono";
 import { rateLimit, rateLimitConfigs } from "./rateLimit";
 import type { ErrorResponse } from "../errors";
+import { initializeConfig, resetConfig } from "../config/env";
 
 function createMockRateLimit(shouldSucceed: boolean[] = []) {
   let callCount = 0;
@@ -17,6 +18,12 @@ function createMockRateLimit(shouldSucceed: boolean[] = []) {
 describe("rateLimit middleware", () => {
   beforeEach(() => {
     vi.resetModules();
+    // Initialize config for rate limit middleware
+    initializeConfig({ OPENAI_API_KEY: "test-key" });
+  });
+
+  afterEach(() => {
+    resetConfig();
   });
 
   describe("basic rate limiting", () => {
