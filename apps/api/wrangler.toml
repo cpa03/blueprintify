@@ -90,3 +90,26 @@ retry_delay = 60
 # Limits and configuration
 [limits]
 cpu_ms = 50000
+
+# Cloudflare Native Rate Limiting
+# https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit
+[[ratelimits]]
+name = "STRICT_RATE_LIMITER"
+namespace_id = "1001"
+[ratelimits.simple]
+limit = 10
+period = 60
+
+[[ratelimits]]
+name = "STANDARD_RATE_LIMITER"
+namespace_id = "1002"
+[ratelimits.simple]
+limit = 60
+period = 60
+
+[[ratelimits]]
+name = "LENIENT_RATE_LIMITER"
+namespace_id = "1003"
+[ratelimits.simple]
+limit = 120
+period = 60
