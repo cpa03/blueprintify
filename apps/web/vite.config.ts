@@ -13,21 +13,35 @@ const isAnalyze = process.env.ANALYZE === "true";
 const asyncCssPlugin = (): Plugin => ({
   name: "async-css",
   transformIndexHtml(html) {
-    // Find CSS link tags and make them async
-    // Using media="print" with onload to prevent render-blocking
     return html.replace(
       /<link rel="stylesheet"([^>]*)>/g,
       (match, attributes) => {
-        // Skip if already has media or is preloaded
         if (
           attributes.includes("media=") ||
           attributes.includes('rel="preload"')
         ) {
           return match;
         }
-        // Add async loading pattern
         return `<link rel="stylesheet"${attributes} media="print" onload="this.media='all'; this.onload=null;">`;
       },
+    );
+  },
+});
+
+/**
+ * Vite plugin to remove modulepreload for lazy-loaded chunks
+ * Prevents eager loading of CodeMirror and other lazy components
+ */
+const removeLazyPreloadPlugin = (): Plugin => ({
+  name: "remove-lazy-preload",
+  transformIndexHtml(html) {
+    const lazyChunks = ["codemirror", "syntaxHighlighter"];
+    return html.replace(
+      new RegExp(
+        `<link rel="modulepreload"[^>]*href="[^"]*(?:${lazyChunks.join("|")})-[^"]*\.js"[^>]*>`,
+        "g",
+      ),
+      "",
     );
   },
 });
@@ -36,6 +50,7 @@ export default defineConfig({
   plugins: [
     react(),
     asyncCssPlugin(),
+    removeLazyPreloadPlugin(),
     compression({
       algorithms: ["gzip", "brotliCompress"],
       exclude: [/\.(br)$/, /\.(gz)$/],
