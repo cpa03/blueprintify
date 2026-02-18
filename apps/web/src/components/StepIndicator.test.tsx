@@ -25,8 +25,8 @@ vi.mock("../config/constants", () => ({
   ],
 }));
 
-vi.mock("framer-motion", () => ({
-  motion: {
+vi.mock("framer-motion", () => {
+  const motion = {
     button: vi.fn(
       ({
         children,
@@ -41,8 +41,39 @@ vi.mock("framer-motion", () => ({
         </button>
       ),
     ),
-  },
-}));
+    div: vi.fn(
+      ({
+        children,
+        initial: _initial,
+        animate: _animate,
+        exit: _exit,
+        transition: _transition,
+        ...props
+      }) => <div {...props}>{children}</div>,
+    ),
+    circle: vi.fn(
+      ({
+        initial: _initial,
+        animate: _animate,
+        transition: _transition,
+        ...props
+      }) => <circle {...props} />,
+    ),
+    span: vi.fn(
+      ({
+        children,
+        initial: _initial,
+        animate: _animate,
+        transition: _transition,
+        ...props
+      }) => <span {...props}>{children}</span>,
+    ),
+  };
+  return {
+    motion,
+    AnimatePresence: vi.fn(({ children }) => <>{children}</>),
+  };
+});
 
 const mockWizardStore: WizardStore = {
   currentStep: "info" as const,
@@ -215,7 +246,7 @@ describe("StepIndicator", () => {
       "flex",
       "items-center",
       "justify-center",
-      "gap-2",
+      "gap-3",
       "mb-8",
     );
   });
