@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { LastSavedIndicator } from "../LastSavedIndicator";
@@ -40,13 +41,24 @@ const TabButton = React.memo(function TabButton({
       id={`tab-${id}`}
       onClick={onClick}
       className={clsx(
-        "px-4 py-2 rounded-md text-sm font-medium transition-all",
-        isActive
-          ? "bg-primary-600 text-white"
-          : "text-dark-200 hover:text-white hover:bg-dark-700",
+        "relative px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200",
+        isActive ? "text-white" : "text-dark-200 hover:text-white",
       )}
     >
-      {children}
+      {isActive && (
+        <motion.div
+          layoutId="activeTabIndicator"
+          className="absolute inset-0 bg-primary-600 rounded-md"
+          initial={false}
+          transition={{
+            type: "spring",
+            stiffness: 500,
+            damping: 30,
+          }}
+          style={{ zIndex: -1 }}
+        />
+      )}
+      <span className="relative z-10">{children}</span>
     </button>
   );
 });
