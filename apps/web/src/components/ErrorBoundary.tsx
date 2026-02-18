@@ -38,8 +38,10 @@ export class ErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
-    console.error("ErrorBoundary caught an error:", error);
-    console.error("Component stack:", errorInfo.componentStack);
+    if (import.meta.env.DEV) {
+      console.error("ErrorBoundary caught an error:", error);
+      console.error("Component stack:", errorInfo.componentStack);
+    }
     this.props.onError?.(error, errorInfo);
   }
 
