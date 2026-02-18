@@ -44,6 +44,8 @@ export {
   VALIDATION_LIMITS,
   STORAGE_CONFIG,
   DEBOUNCE_CONFIG,
+  RETRYABLE_STATUS_CODES,
+  SSE_CONFIG,
 } from "./config";
 
 export type { RetryOptions, RetryConfigValues } from "./config";
