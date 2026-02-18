@@ -22,7 +22,7 @@ Added an `ErrorBoundary` component (`apps/web/src/components/ErrorBoundary.tsx`)
 
 ### Remaining Gaps Identified
 
-1. **Fetch Timeout**: API calls in `apps/web/src/lib/api.ts` don't use AbortController with timeout. Consider adding per-request timeout control.
+1. ~~**Fetch Timeout**: API calls in `apps/web/src/lib/api.ts` don't use AbortController with timeout. Consider adding per-request timeout control.~~ **RESOLVED**: AbortController with timeout is now implemented in `apiCallWithRetry()` function with `TIMEOUTS.API_CONNECTION` (30s) and `TIMEOUTS.API_HEALTH_CHECK` (5s).
 
 ## [Reliability] 2026-02-18 - deserializeJSON Safety Fix
 
@@ -98,5 +98,37 @@ runs-on: ubuntu-24.04-arm
 ### Note
 
 This change requires `workflows` permission on GitHub App. Currently blocked by permission restrictions.
+
+---
+
+## [Integration] 2026-02-18 - Workflow File Line Ending Inconsistency
+
+### Observation
+
+The GitHub Actions workflow files (`.github/workflows/on pull.yml` and `.github/workflows/pr-gatekeeper.yml`) have CRLF line terminators, which violates the project's `.gitattributes` and `.editorconfig` standards that specify LF line endings for YAML files.
+
+### Impact
+
+1. **Git Warnings**: Git warns about CRLF line endings on every checkout
+2. **Cross-platform Issues**: May cause issues when contributors work on different operating systems
+3. **Standards Violation**: Violates `.gitattributes` (`*.yml text eol=lf`) and `.editorconfig` (`end_of_line = lf`)
+
+### Recommended Action
+
+Normalize line endings in workflow files:
+
+```bash
+sed -i 's/\r$//' .github/workflows/on\ pull.yml .github/workflows/pr-gatekeeper.yml
+```
+
+### Verification
+
+- [ ] Convert CRLF to LF in workflow files
+- [ ] Commit changes
+- [ ] Verify no Git warnings on checkout
+
+### Note
+
+This change requires `workflows` permission on GitHub App. Currently blocked by permission restrictions. Issue tracked in #483.
 
 ---
