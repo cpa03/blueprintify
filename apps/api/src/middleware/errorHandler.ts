@@ -4,7 +4,7 @@ import type { ErrorResponse } from "../errors";
 import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import { ERROR_CODES, ERROR_MESSAGES, HTTP_STATUS } from "../config/constants";
 
-export const errorHandler = (err: unknown, c: Context) => {
+export const errorHandler = (err: unknown, c: Context): Response => {
   const errorLog = {
     error: err instanceof Error ? err.message : err,
     stack: err instanceof Error ? err.stack : undefined,
@@ -66,7 +66,7 @@ export const errorHandler = (err: unknown, c: Context) => {
   return c.json(errorResponse, statusCode as 400 | 401 | 403 | 404 | 500 | 502);
 };
 
-export const notFoundHandler = (c: Context) => {
+export const notFoundHandler = (c: Context): Response => {
   return c.json(
     {
       success: false,
