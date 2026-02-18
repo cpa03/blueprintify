@@ -391,8 +391,21 @@ export function serializeJSON(data: unknown): string {
   return JSON.stringify(data);
 }
 
+/**
+ * Safely parses JSON string with error handling
+ * @param json - The JSON string to parse
+ * @returns The parsed object or throws DatabaseError on failure
+ * @throws DatabaseError if JSON parsing fails
+ */
 export function deserializeJSON<T>(json: string): T {
-  return JSON.parse(json);
+  try {
+    return JSON.parse(json) as T;
+  } catch (error) {
+    throw new DatabaseError(
+      `Failed to parse JSON: ${error instanceof Error ? error.message : "Unknown error"}`,
+      error instanceof Error ? error : undefined,
+    );
+  }
 }
 
 // Error handling
