@@ -12,6 +12,7 @@
 
 - [Workflow] Do not use `ask` permission in CI environments (causes timeouts).
 - [Workflow] Do not rely on `cat` for reading prompts; use `--agent` flag.
+- [Agent] Do not use inconsistent model references in agent definitions. All agents MUST use `opencode/glm-4.7-free` per AGENTS.md mandate.
 
 ## 🏗️ Architectural Decisions
 

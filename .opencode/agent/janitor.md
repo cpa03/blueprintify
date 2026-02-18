@@ -1,7 +1,7 @@
 ---
 description: Codebase Janitor & Cleanup Specialist
 mode: primary
-model: opencode/gpt-5-nano
+model: opencode/glm-4.7-free
 temperature: 0.1
 tools:
   write: true
