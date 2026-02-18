@@ -1,4 +1,4 @@
-import { useState, useCallback, ReactNode } from "react";
+import { useState, useCallback, ReactNode, useId } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface TooltipProps {
@@ -16,6 +16,7 @@ export function Tooltip({
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const tooltipId = useId();
 
   const handleMouseEnter = useCallback(() => {
     const id = setTimeout(() => {
@@ -55,6 +56,7 @@ export function Tooltip({
       onMouseLeave={handleMouseLeave}
       onFocus={handleMouseEnter}
       onBlur={handleMouseLeave}
+      aria-describedby={isVisible ? tooltipId : undefined}
     >
       {children}
       <AnimatePresence>
@@ -65,12 +67,15 @@ export function Tooltip({
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
             className={`absolute ${positionClasses[position]} z-50 pointer-events-none`}
+            role="tooltip"
+            id={tooltipId}
           >
             <div className="glass-card px-3 py-2 text-sm whitespace-nowrap shadow-xl border-dark-600">
               {content}
             </div>
             <div
               className={`absolute w-2 h-2 border-4 border-dark-800 ${arrowClasses[position]}`}
+              aria-hidden="true"
             />
           </motion.div>
         )}
