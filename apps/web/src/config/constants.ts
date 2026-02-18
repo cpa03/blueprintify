@@ -67,6 +67,8 @@ export const TIMEOUTS = {
   GENERATION_CHECK: 100,
   TOAST_NOTIFICATION: 1500,
   SHAKE_ANIMATION: 400,
+  /** Duration for chip selection visual feedback animation */
+  CHIP_SELECTION_FEEDBACK: 600,
   FOCUS_DELAY: 100,
   LIVE_REGION_CLEAR: 1000,
   API_HEALTH_CHECK: 5000,

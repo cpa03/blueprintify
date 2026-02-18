@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useCallback, useState, memo } from "react";
 import type { WizardStep } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
-import { WIZARD_STEPS } from "../config/constants";
+import { WIZARD_STEPS, TIMEOUTS } from "../config/constants";
 import { CircularProgress } from "./CircularProgress";
 import { SmartTooltip } from "./SmartTooltip";
 
@@ -36,7 +36,7 @@ function StepIndicatorComponent() {
         setStep(stepKey);
       } else {
         setShakingStep(stepKey);
-        setTimeout(() => setShakingStep(null), 400);
+        setTimeout(() => setShakingStep(null), TIMEOUTS.SHAKE_ANIMATION);
         // Provide helpful feedback for locked steps
         toast.info(`Complete previous steps to unlock "${stepLabel}"`);
       }

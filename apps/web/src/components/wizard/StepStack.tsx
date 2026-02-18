@@ -177,7 +177,10 @@ export function StepStack() {
             | "other",
         });
         setJustSelected(tech.name);
-        setTimeout(() => setJustSelected(null), 600);
+        setTimeout(
+          () => setJustSelected(null),
+          TIMEOUTS.CHIP_SELECTION_FEEDBACK,
+        );
       }
     },
     [isSelected, addTechStack, removeTechStack],
