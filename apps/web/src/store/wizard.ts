@@ -4,43 +4,9 @@ import type {
   WizardStep,
   TechStackItemType,
 } from "@blueprint/shared";
+import { createDebouncedSaver } from "@blueprint/shared";
 import { WIZARD_STEPS, DEBOUNCE_CONFIG } from "../config/constants";
 import { wizardStorage } from "../lib/storage";
-
-// Debounce utility for performance optimization
-function createDebouncedSaver<T extends (...args: unknown[]) => void>(
-  fn: T,
-  delay: number,
-): { debounced: T; flush: () => void; cancel: () => void } {
-  let timeoutId: ReturnType<typeof setTimeout> | null = null;
-
-  const debounced = ((...args: unknown[]) => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    timeoutId = setTimeout(() => {
-      fn(...args);
-      timeoutId = null;
-    }, delay);
-  }) as T;
-
-  const flush = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-      fn();
-      timeoutId = null;
-    }
-  };
-
-  const cancel = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-      timeoutId = null;
-    }
-  };
-
-  return { debounced, flush, cancel };
-}
 
 export interface WizardStore extends WizardState {
   setStep: (step: WizardStep) => void;
