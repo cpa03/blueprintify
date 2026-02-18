@@ -54,10 +54,24 @@ export function StepGenerating() {
       <h2 className="text-xl font-bold text-white mb-2">
         Generating Your Blueprint
       </h2>
-      <p className="text-dark-400 mb-6">{progress || "Starting..."}</p>
+      <p
+        className="text-dark-400 mb-6"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {progress || "Starting..."}
+      </p>
+      <p className="sr-only" role="status" aria-live="polite">
+        Generated {blueprintLines} blueprint lines and {tasksLines} task lines
+      </p>
 
       {/* Live stats */}
-      <div className="flex gap-8 text-center">
+      <div
+        className="flex gap-8 text-center"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
