@@ -55,6 +55,7 @@ export function createSSEResponse(
       "Content-Type": SSE_HEADERS.CONTENT_TYPE,
       "Cache-Control": SSE_HEADERS.CACHE_CONTROL,
       Connection: SSE_HEADERS.CONNECTION,
+      "X-Accel-Buffering": "no",
       "Access-Control-Allow-Origin": CORS_CONFIG.ORIGIN,
       "Access-Control-Allow-Methods": CORS_CONFIG.ALLOW_METHODS.join(", "),
       "Access-Control-Allow-Headers": CORS_CONFIG.ALLOW_HEADERS.join(", "),
