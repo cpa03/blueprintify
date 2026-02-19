@@ -13,6 +13,7 @@ import {
   resetContainer,
   createMockContainer,
 } from "../di/container";
+import { SSE_HEADERS } from "../config/constants";
 
 interface ApiResponse {
   success: boolean;
@@ -71,7 +72,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
 
       expect(generateRes.status).toBe(200);
       expect(generateRes.headers.get("Content-Type")).toContain(
-        "text/event-stream",
+        SSE_HEADERS.CONTENT_TYPE,
       );
 
       const exportRes = await app.request(
