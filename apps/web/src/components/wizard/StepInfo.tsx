@@ -9,12 +9,12 @@ import {
   UI_CONTENT,
   VALIDATION_MESSAGES,
 } from "../../config/constants";
-import { ANIMATION_TIMING } from "../../config/theme";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { RippleButton } from "../RippleButton";
 import { CharacterCounter } from "../CharacterCounter";
 import { pageTransition } from "../../utils/motion";
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
+import { ValidationCheckmark } from "../ValidationCheckmark";
 
 export function StepInfo() {
   const projectNameInputRef = useRef<HTMLInputElement>(null);
@@ -134,35 +134,10 @@ export function StepInfo() {
               <span className="text-accent-pink" aria-hidden="true">
                 *
               </span>
-              <AnimatePresence>
-                {projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN && (
-                  <motion.span
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0, opacity: 0 }}
-                    transition={{
-                      type: "spring",
-                      ...ANIMATION_TIMING.easing.spring,
-                    }}
-                    className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-accent-emerald/20 text-accent-emerald"
-                    aria-label="Project name is valid"
-                  >
-                    <svg
-                      className="w-3 h-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={3}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </motion.span>
-                )}
-              </AnimatePresence>
+              <ValidationCheckmark
+                isValid={projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN}
+                ariaLabel="Project name is valid"
+              />
               <TypeIndicator isTyping={projectNameTyping.isTyping} />
             </label>
             <CharacterCounter
@@ -208,33 +183,15 @@ export function StepInfo() {
                 ? { "aria-describedby": "projectName-warning" }
                 : {})}
             />
-            <AnimatePresence>
-              {projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN && (
-                <motion.div
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0, opacity: 0 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 25 }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
-                >
-                  <div className="w-6 h-6 rounded-full bg-accent-emerald/20 flex items-center justify-center">
-                    <svg
-                      className="w-4 h-4 text-accent-emerald"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN && (
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                <ValidationCheckmark
+                  isValid={true}
+                  size="input"
+                  ariaLabel="Project name is valid"
+                />
+              </div>
+            )}
           </div>
           {projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
             projectName.length < FORM_LIMITS.PROJECT_NAME.MAX && (
@@ -259,35 +216,10 @@ export function StepInfo() {
               <span className="text-accent-pink" aria-hidden="true">
                 *
               </span>
-              <AnimatePresence>
-                {description.length >= FORM_LIMITS.DESCRIPTION.MIN && (
-                  <motion.span
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0, opacity: 0 }}
-                    transition={{
-                      type: "spring",
-                      ...ANIMATION_TIMING.easing.spring,
-                    }}
-                    className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-accent-emerald/20 text-accent-emerald"
-                    aria-label="Description is valid"
-                  >
-                    <svg
-                      className="w-3 h-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={3}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </motion.span>
-                )}
-              </AnimatePresence>
+              <ValidationCheckmark
+                isValid={description.length >= FORM_LIMITS.DESCRIPTION.MIN}
+                ariaLabel="Description is valid"
+              />
               <TypeIndicator isTyping={descriptionTyping.isTyping} />
             </label>
             <CharacterCounter
@@ -331,33 +263,15 @@ export function StepInfo() {
                   ? { "aria-describedby": "description-hint" }
                   : {})}
             />
-            <AnimatePresence>
-              {description.length >= FORM_LIMITS.DESCRIPTION.MIN && (
-                <motion.div
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0, opacity: 0 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 25 }}
-                  className="absolute right-3 top-3 pointer-events-none"
-                >
-                  <div className="w-6 h-6 rounded-full bg-accent-emerald/20 flex items-center justify-center">
-                    <svg
-                      className="w-4 h-4 text-accent-emerald"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {description.length >= FORM_LIMITS.DESCRIPTION.MIN && (
+              <div className="absolute right-3 top-3 pointer-events-none">
+                <ValidationCheckmark
+                  isValid={true}
+                  size="input"
+                  ariaLabel="Description is valid"
+                />
+              </div>
+            )}
           </div>
           {!isDescriptionInvalid &&
             description.length > 0 &&
