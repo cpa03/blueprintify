@@ -27,7 +27,7 @@ Currently, the API does not require authentication. However, all requests must i
 | Field   | Value                   | Description                  |
 | ------- | ----------------------- | ---------------------------- |
 | Name    | Blueprint Generator API | Service name                 |
-| Version | 1.1.0                   | Current API version          |
+| Version | 1.0.0                   | Current API version          |
 | Status  | healthy                 | Health check response status |
 
 ## Endpoints
@@ -780,15 +780,16 @@ Currently, the API uses Server-Sent Events (SSE) for streaming. WebSocket suppor
 
 ## Version History
 
-| Version | Date       | Changes                                             |
-| ------- | ---------- | --------------------------------------------------- |
-| 1.1.0   | 2026-02-18 | Added requestId to error responses for traceability |
-| 1.0.0   | 2026-02-18 | Added export, import, storage, and share endpoints  |
-|         |            | Enhanced error handling with structured responses   |
-|         |            | Comprehensive validation using Zod schemas          |
-|         |            | Tech stack metadata support with categorization     |
-|         |            | Server-Sent Events (SSE) for streaming responses    |
-|         |            | Share functionality with 30-day expiration          |
+| Version | Date       | Changes                                            |
+| ------- | ---------- | -------------------------------------------------- |
+| 1.0.0   | 2026-02-18 | Initial release with core features                 |
+|         |            | Added export, import, storage, and share endpoints |
+|         |            | Enhanced error handling with structured responses  |
+|         |            | RequestId in error responses for traceability      |
+|         |            | Comprehensive validation using Zod schemas         |
+|         |            | Tech stack metadata support with categorization    |
+|         |            | Server-Sent Events (SSE) for streaming responses   |
+|         |            | Share functionality with 30-day expiration         |
 
 ## Planned Features
 
