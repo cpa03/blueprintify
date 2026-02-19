@@ -7,6 +7,8 @@
 
 - [Init] Use `opencode/glm-4.7-free` for all agent models.
 - [Init] Use `ubuntu-24.04-arm` for CI runners.
+- [Docs] Keep documentation synchronized with agent model standard (`opencode/glm-4.7-free`).
+- [Docs] Update example configurations in guides when standards change.
 
 ## ⚠️ Anti-Patterns (Do Not Repeat)
 

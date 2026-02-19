@@ -17,7 +17,7 @@ import { pageTransition } from "../../utils/motion";
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
 import { ValidationCheckmark } from "../ValidationCheckmark";
 
-export function StepInfo() {
+export function StepInfo(): JSX.Element {
   const projectNameInputRef = useRef<HTMLInputElement>(null);
   const [isShaking, setIsShaking] = useState(false);
   const { textareaRef: descriptionRef } = useAutoResizeTextarea({

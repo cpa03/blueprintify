@@ -40,7 +40,7 @@ export const SECURITY_CONFIG = {
       "img",
       "hr",
     ] as string[],
-    ALLOWED_ATTR: ["href", "title", "alt", "src", "class"] as string[],
+    ALLOWED_ATTR: ["href", "title", "alt", "src", "class", "rel"] as string[],
     ALLOW_DATA_ATTR: false,
     FORBID_TAGS: [
       "script",
@@ -57,6 +57,7 @@ export const SECURITY_CONFIG = {
       "onerror",
       "onmouseover",
       "style",
+      "formaction",
     ] as string[],
     SANITIZE_DOM: true,
     SANITIZE_NAMED_PROPS: true,
@@ -439,6 +440,17 @@ export function getContentSecurityHeaders(): Record<string, string> {
     "X-Frame-Options": "DENY",
     "X-XSS-Protection": "1; mode=block",
     "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+    "Permissions-Policy": [
+      "accelerometer=()",
+      "camera=()",
+      "geolocation=()",
+      "gyroscope=()",
+      "magnetometer=()",
+      "microphone=()",
+      "payment=()",
+      "usb=()",
+    ].join(", "),
   };
 }
 export class SecurityError extends Error {

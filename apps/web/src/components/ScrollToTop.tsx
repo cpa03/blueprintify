@@ -10,7 +10,7 @@ interface ScrollToTopProps {
 export function ScrollToTop({
   scrollContainerRef,
   showAfter = 400,
-}: ScrollToTopProps) {
+}: ScrollToTopProps): JSX.Element {
   const [isVisible, setIsVisible] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
 
