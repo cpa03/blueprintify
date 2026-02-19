@@ -14,7 +14,7 @@ import {
 } from "../store";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
-import { TIMEOUTS, DEFAULT_PROJECT_NAME } from "../config/constants";
+import { TIMEOUTS, DEFAULT_PROJECT_NAME, UI } from "../config/constants";
 import { useLastSaved } from "../hooks/useLastSaved";
 import clsx from "clsx";
 
@@ -182,7 +182,10 @@ function EditorComponent() {
                     content={currentContent || "*No content yet...*"}
                   />
                 </motion.div>
-                <ScrollToTop scrollContainerRef={previewRef} showAfter={600} />
+                <ScrollToTop
+                  scrollContainerRef={previewRef}
+                  showAfter={UI.SCROLL_TO_TOP_THRESHOLD}
+                />
               </div>
             )}
           </div>
