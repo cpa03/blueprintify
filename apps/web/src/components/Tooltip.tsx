@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, ReactNode } from "react";
+import { useState, useCallback, useRef, ReactNode, useId } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface TooltipProps {
@@ -6,6 +6,7 @@ interface TooltipProps {
   content: ReactNode;
   position?: "top" | "bottom" | "left" | "right";
   delay?: number;
+  id?: string;
 }
 
 export function Tooltip({
@@ -13,9 +14,12 @@ export function Tooltip({
   content,
   position = "top",
   delay = 500,
+  id,
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const generatedId = useId();
+  const tooltipId = id || `tooltip-${generatedId}`;
 
   const handleMouseEnter = useCallback(() => {
     timeoutRef.current = setTimeout(() => {
@@ -54,11 +58,14 @@ export function Tooltip({
       onMouseLeave={handleMouseLeave}
       onFocus={handleMouseEnter}
       onBlur={handleMouseLeave}
+      aria-describedby={isVisible ? tooltipId : undefined}
     >
       {children}
       <AnimatePresence>
         {isVisible && (
           <motion.div
+            id={tooltipId}
+            role="tooltip"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
@@ -70,6 +77,7 @@ export function Tooltip({
             </div>
             <div
               className={`absolute w-2 h-2 border-4 border-dark-700/50 ${arrowClasses[position]}`}
+              aria-hidden="true"
             />
           </motion.div>
         )}
