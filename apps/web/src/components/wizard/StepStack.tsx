@@ -7,6 +7,7 @@ import {
   MIN_REQUIREMENTS,
   ANIMATION,
   TIMEOUTS,
+  ANIMATION_MS,
   UI_CONTENT,
 } from "../../config/constants";
 import { pageTransition } from "../../utils/motion";
@@ -177,7 +178,10 @@ export function StepStack() {
             | "other",
         });
         setJustSelected(tech.name);
-        setTimeout(() => setJustSelected(null), 600);
+        setTimeout(
+          () => setJustSelected(null),
+          ANIMATION_MS.CHIP_SELECT_FEEDBACK,
+        );
       }
     },
     [isSelected, addTechStack, removeTechStack],

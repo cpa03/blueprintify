@@ -52,6 +52,7 @@ export const ANIMATION = {
 export const ANIMATION_MS = {
   TYPING_INDICATOR_DELAY: 600,
   TYPING_INDICATOR_TIMEOUT: 800,
+  CHIP_SELECT_FEEDBACK: 600,
 } as const;
 
 // Spring configurations for animations
