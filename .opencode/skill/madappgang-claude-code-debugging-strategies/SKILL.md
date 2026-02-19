@@ -1,3 +1,8 @@
+---
+name: madappgang-claude-code-debugging-strategies
+description: Universal debugging strategies and techniques applicable across all technology stacks. Use when approaching unknown bugs or need language-agnostic debugging methodology.
+---
+
 # Universal Debugging Strategies
 
 **Skill**: debugging-strategies
@@ -47,14 +52,14 @@ Error: Cannot read property 'name' of undefined
 
 ### Error Categories
 
-| Category | Examples | Common Causes |
-|----------|----------|---------------|
+| Category           | Examples                                | Common Causes              |
+| ------------------ | --------------------------------------- | -------------------------- |
 | **Null/Undefined** | `Cannot read property 'x' of undefined` | Missing data, async timing |
-| **Type Errors** | `x is not a function` | Wrong type, typo |
-| **Logic Errors** | Wrong output, no error | Incorrect conditions |
-| **Runtime Errors** | Out of bounds, division by zero | Invalid input |
-| **Async Errors** | Unhandled promise rejection | Missing error handler |
-| **Network Errors** | Timeout, connection refused | API down, wrong URL |
+| **Type Errors**    | `x is not a function`                   | Wrong type, typo           |
+| **Logic Errors**   | Wrong output, no error                  | Incorrect conditions       |
+| **Runtime Errors** | Out of bounds, division by zero         | Invalid input              |
+| **Async Errors**   | Unhandled promise rejection             | Missing error handler      |
+| **Network Errors** | Timeout, connection refused             | API down, wrong URL        |
 
 ## Debugging Techniques
 
@@ -71,6 +76,7 @@ When the bug is somewhere in a large codebase:
 ```
 
 **Git bisect**:
+
 ```bash
 git bisect start
 git bisect bad                    # Current commit is broken
@@ -106,6 +112,7 @@ Explain the code line by line (to a rubber duck, colleague, or yourself):
 ### Change One Thing at a Time
 
 When experimenting:
+
 - Make ONE change
 - Test
 - Observe result
@@ -144,21 +151,21 @@ Start at input, trace forward:
 
 ```typescript
 function processOrder(order) {
-  console.log('processOrder START', { orderId: order.id });
+  console.log("processOrder START", { orderId: order.id });
 
   try {
     const validated = validateOrder(order);
-    console.log('Validation passed', { orderId: order.id });
+    console.log("Validation passed", { orderId: order.id });
 
     const result = saveOrder(validated);
-    console.log('processOrder SUCCESS', { orderId: order.id, result });
+    console.log("processOrder SUCCESS", { orderId: order.id, result });
 
     return result;
   } catch (error) {
-    console.error('processOrder FAILED', {
+    console.error("processOrder FAILED", {
       orderId: order.id,
       error: error.message,
-      stack: error.stack
+      stack: error.stack,
     });
     throw error;
   }
@@ -167,26 +174,26 @@ function processOrder(order) {
 
 ### Log Levels
 
-| Level | Use For | Example |
-|-------|---------|---------|
+| Level     | Use For                      | Example                                    |
+| --------- | ---------------------------- | ------------------------------------------ |
 | **ERROR** | Failures requiring attention | `Failed to save order: DB connection lost` |
-| **WARN** | Potential issues | `Retry 2/3 for API call` |
-| **INFO** | Significant events | `User logged in: user123` |
-| **DEBUG** | Detailed diagnostics | `Validating email: test@example.com` |
-| **TRACE** | Very verbose | `Entering function processOrder` |
+| **WARN**  | Potential issues             | `Retry 2/3 for API call`                   |
+| **INFO**  | Significant events           | `User logged in: user123`                  |
+| **DEBUG** | Detailed diagnostics         | `Validating email: test@example.com`       |
+| **TRACE** | Very verbose                 | `Entering function processOrder`           |
 
 ### Structured Logging
 
 ```typescript
 // BAD: Unstructured
-console.log('User ' + userId + ' ordered ' + items.length + ' items');
+console.log("User " + userId + " ordered " + items.length + " items");
 
 // GOOD: Structured
-logger.info('Order placed', {
+logger.info("Order placed", {
   userId,
   itemCount: items.length,
   total: order.total,
-  timestamp: new Date().toISOString()
+  timestamp: new Date().toISOString(),
 });
 ```
 
@@ -194,13 +201,13 @@ logger.info('Order placed', {
 
 ### Types of Breakpoints
 
-| Type | Use Case |
-|------|----------|
-| **Line** | Stop at specific line |
-| **Conditional** | Stop only when condition is true |
-| **Logpoint** | Log without stopping |
-| **Exception** | Stop on thrown exception |
-| **DOM** | Stop on DOM modification (browser) |
+| Type            | Use Case                           |
+| --------------- | ---------------------------------- |
+| **Line**        | Stop at specific line              |
+| **Conditional** | Stop only when condition is true   |
+| **Logpoint**    | Log without stopping               |
+| **Exception**   | Stop on thrown exception           |
+| **DOM**         | Stop on DOM modification (browser) |
 
 ### Effective Breakpoint Placement
 
@@ -230,7 +237,9 @@ for (let i = 0; i < array.length; i++) {
 ```typescript
 // BUG: Race condition
 async function getData() {
-  fetchData().then(data => { this.data = data; });
+  fetchData().then((data) => {
+    this.data = data;
+  });
   processData(this.data); // May run before fetch completes!
 }
 
@@ -268,7 +277,7 @@ function addTax(price) {
 function addTax(price) {
   return {
     ...price,
-    total: price.amount * 1.2
+    total: price.amount * 1.2,
   };
 }
 ```
@@ -335,8 +344,8 @@ When stuck, verify:
 ```typescript
 function processUser(user) {
   // Guard clauses
-  if (!user) throw new Error('User is required');
-  if (!user.email) throw new Error('User email is required');
+  if (!user) throw new Error("User is required");
+  if (!user.email) throw new Error("User email is required");
 
   // Type assertions (TypeScript)
   const email = user.email as string;
@@ -351,7 +360,7 @@ function processUser(user) {
 ```typescript
 // Development-time checks
 function divide(a, b) {
-  console.assert(b !== 0, 'Division by zero');
+  console.assert(b !== 0, "Division by zero");
   return a / b;
 }
 ```
@@ -363,17 +372,17 @@ try {
   riskyOperation();
 } catch (error) {
   // Log with context
-  logger.error('Operation failed', {
+  logger.error("Operation failed", {
     error: error.message,
     stack: error.stack,
-    context: { userId, operation: 'riskyOperation' }
+    context: { userId, operation: "riskyOperation" },
   });
 
   // Recover or rethrow
-  throw new OperationError('Failed to complete operation', { cause: error });
+  throw new OperationError("Failed to complete operation", { cause: error });
 }
 ```
 
 ---
 
-*Debugging strategies applicable to all technology stacks*
+_Debugging strategies applicable to all technology stacks_

@@ -1,3 +1,8 @@
+---
+name: muratcankoylan-agent-skills-for-context-engineering-memory-systems
+description: Context management and persistent memory systems for AI agents. Use when optimizing context windows or building agent memory systems.
+---
+
 # Context Engineering & Memory Systems
 
 ## Purpose
@@ -7,6 +12,7 @@ Optimize AI agent context management and build persistent memory systems.
 ## Context Engineering
 
 ### Principles
+
 1. **Relevance**: Include only contextually relevant information
 2. **Hierarchy**: Organize context by importance
 3. **Freshness**: Prioritize recent information
@@ -15,12 +21,14 @@ Optimize AI agent context management and build persistent memory systems.
 ### Techniques
 
 #### Context Window Management
+
 - Sliding window for conversations
 - Summarization for long documents
 - Chunking for large codebases
 - Priority scoring for relevance
 
 #### Context Injection
+
 - System prompts
 - Few-shot examples
 - Retrieved documents
@@ -29,11 +37,13 @@ Optimize AI agent context management and build persistent memory systems.
 ## Memory Systems
 
 ### Short-Term Memory
+
 - Current conversation context
 - Active task information
 - Recent actions and results
 
 ### Long-Term Memory
+
 - Persistent knowledge storage
 - Learned patterns and solutions
 - Historical decisions
@@ -41,6 +51,7 @@ Optimize AI agent context management and build persistent memory systems.
 ### Implementation
 
 #### File-Based Memory
+
 ```
 .opencode/memory/
 ├── cmz-knowledge.md      # Solutions and patterns
@@ -49,6 +60,7 @@ Optimize AI agent context management and build persistent memory systems.
 ```
 
 #### Vector Memory (Future)
+
 - Embeddings for semantic search
 - Similarity matching
 - Automatic retrieval
@@ -56,15 +68,19 @@ Optimize AI agent context management and build persistent memory systems.
 ## Context Engineering Patterns
 
 ### Pattern 1: Progressive Disclosure
+
 Start with minimal context, expand as needed.
 
 ### Pattern 2: Selective Retrieval
+
 Retrieve only relevant information from memory.
 
 ### Pattern 3: Hierarchical Summarization
+
 Maintain summaries at different levels of detail.
 
 ### Pattern 4: Temporal Weighting
+
 Weight recent information more heavily.
 
 ## Best Practices
@@ -81,6 +97,7 @@ Works with CMZ self-learning protocol for continuous improvement.
 ## Usage
 
 Apply when:
+
 - Managing large codebases
 - Long-running conversations
 - Building agent memory

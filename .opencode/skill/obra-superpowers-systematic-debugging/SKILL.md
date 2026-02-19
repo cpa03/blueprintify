@@ -1,3 +1,8 @@
+---
+name: obra-superpowers-systematic-debugging
+description: Systematic debugging approach with 4-phase root cause analysis. Use when troubleshooting complex bugs, identifying root causes, or following structured debugging methodology.
+---
+
 # Systematic Debugging Skill
 
 ## Overview
