@@ -7,6 +7,25 @@ import {
 } from "../utils/circuitBreaker";
 import { AI_CONFIG, CIRCUIT_BREAKER_CONFIG } from "../config/constants";
 
+interface ExternalApiCallLog {
+  type: "external_api_call";
+  service: string;
+  operation: string;
+  status: "started" | "success" | "error";
+  durationMs?: number;
+  model?: string;
+  error?: string;
+  timestamp: string;
+}
+
+function logExternalApiCall(
+  entry: Omit<ExternalApiCallLog, "timestamp">,
+): void {
+  console.log(
+    JSON.stringify({ ...entry, timestamp: new Date().toISOString() }),
+  );
+}
+
 export interface AIConfig {
   apiKey: string;
   baseURL?: string;
@@ -50,9 +69,19 @@ export async function* streamCompletion(
     throw new CircuitBreakerOpenError("AI service temporarily unavailable");
   }
 
+  const model = options.config.model || AI_CONFIG.DEFAULT_MODEL;
+  const startTime = Date.now();
+
+  logExternalApiCall({
+    type: "external_api_call",
+    service: "openai",
+    operation: "stream_completion",
+    status: "started",
+    model,
+  });
+
   try {
     const client = createAIClient(options.config);
-    const model = options.config.model || AI_CONFIG.DEFAULT_MODEL;
 
     const stream = await cb.execute(() =>
       withRetry(() =>
@@ -75,7 +104,26 @@ export async function* streamCompletion(
         yield content;
       }
     }
+
+    logExternalApiCall({
+      type: "external_api_call",
+      service: "openai",
+      operation: "stream_completion",
+      status: "success",
+      durationMs: Date.now() - startTime,
+      model,
+    });
   } catch (error) {
+    logExternalApiCall({
+      type: "external_api_call",
+      service: "openai",
+      operation: "stream_completion",
+      status: "error",
+      durationMs: Date.now() - startTime,
+      model,
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+
     if (error instanceof CircuitBreakerOpenError) {
       throw error;
     }
@@ -94,9 +142,19 @@ export async function generateCompletion(
     throw new CircuitBreakerOpenError("AI service temporarily unavailable");
   }
 
+  const model = options.config.model || AI_CONFIG.DEFAULT_MODEL;
+  const startTime = Date.now();
+
+  logExternalApiCall({
+    type: "external_api_call",
+    service: "openai",
+    operation: "generate_completion",
+    status: "started",
+    model,
+  });
+
   try {
     const client = createAIClient(options.config);
-    const model = options.config.model || AI_CONFIG.DEFAULT_MODEL;
 
     const response = await cb.execute(() =>
       withRetry(() =>
@@ -112,8 +170,27 @@ export async function generateCompletion(
       ),
     );
 
+    logExternalApiCall({
+      type: "external_api_call",
+      service: "openai",
+      operation: "generate_completion",
+      status: "success",
+      durationMs: Date.now() - startTime,
+      model,
+    });
+
     return response.choices[0]?.message?.content || "";
   } catch (error) {
+    logExternalApiCall({
+      type: "external_api_call",
+      service: "openai",
+      operation: "generate_completion",
+      status: "error",
+      durationMs: Date.now() - startTime,
+      model,
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+
     if (error instanceof CircuitBreakerOpenError) {
       throw error;
     }
