@@ -65,11 +65,11 @@ export function Tooltip({
             transition={{ duration: 0.15, ease: "easeOut" }}
             className={`absolute ${positionClasses[position]} z-50 pointer-events-none`}
           >
-            <div className="glass-card px-3 py-2 text-sm whitespace-nowrap shadow-xl border-dark-600">
+            <div className="glass-card px-3 py-2 text-sm whitespace-nowrap shadow-xl">
               {content}
             </div>
             <div
-              className={`absolute w-2 h-2 border-4 border-dark-800 ${arrowClasses[position]}`}
+              className={`absolute w-2 h-2 border-4 border-dark-700/50 ${arrowClasses[position]}`}
             />
           </motion.div>
         )}
