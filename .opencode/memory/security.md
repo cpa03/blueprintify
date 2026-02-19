@@ -31,6 +31,20 @@
 - **Fix**: Implemented `constantTimeCompare()` using XOR-based comparison
 - **Lesson**: All secret/token comparisons must use constant-time algorithms to prevent timing side-channel attacks
 
+### 2026-02-19: Security Headers Enhancement
+
+- **Finding**: Missing modern security headers (Permissions-Policy, HSTS)
+- **Root Cause**: Headers function was created before these became standard
+- **Fix**: Added `Permissions-Policy` header to disable unnecessary browser features and `Strict-Transport-Security` for HTTPS enforcement
+- **Lesson**: Security headers should be reviewed regularly as web standards evolve
+
+### 2026-02-19: DOMPurify Configuration Hardening
+
+- **Finding**: Missing `rel` attribute in ALLOWED_ATTR and `formaction` in FORBID_ATTR
+- **Root Cause**: Configuration wasn't covering all attack vectors for links and forms
+- **Fix**: Added `rel` to ALLOWED_ATTR (for safe external links with noopener/noreferrer) and `formaction` to FORBID_ATTR (prevents form-based XSS)
+- **Lesson**: HTML sanitization configs should be reviewed against latest XSS vectors
+
 ## Security Checklist
 
 - [x] No hardcoded secrets in codebase
@@ -42,4 +56,7 @@
 - [x] Constant-time comparison for auth tokens
 - [x] Circuit breaker for external dependencies
 - [x] Cryptographically secure random ID generation
+- [x] Permissions-Policy header (browser features disabled)
+- [x] HSTS header (HTTPS enforcement)
+- [x] DOMPurify with formaction forbidden
 - [ ] Consider distributed rate limiting for production scale
