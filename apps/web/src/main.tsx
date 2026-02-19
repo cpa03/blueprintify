@@ -1,13 +1,14 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
-import { MotionConfig } from "framer-motion";
-import App from "./App";
 import { ErrorBoundary } from "./components/ErrorBoundary";
-import {
-  ReducedMotionProvider,
-  useReducedMotionContext,
-} from "./context/ReducedMotionContext";
+import { ReducedMotionProvider } from "./context/ReducedMotionContext";
 import "./index.css";
+
+// Lazy load App and MotionConfig to reduce initial bundle size and improve LCP
+const App = lazy(() => import("./App"));
+const MotionConfigWrapper = lazy(
+  () => import("./components/MotionConfigWrapper"),
+);
 
 const rootElement = document.getElementById("root");
 
@@ -31,28 +32,12 @@ root.render(
   <React.StrictMode>
     <ErrorBoundary>
       <ReducedMotionProvider>
-        <ReducedMotionConfig onMount={fadeOutAndRemoveSkeletonLoader} />
+        <Suspense fallback={null}>
+          <MotionConfigWrapper onMount={fadeOutAndRemoveSkeletonLoader}>
+            <App />
+          </MotionConfigWrapper>
+        </Suspense>
       </ReducedMotionProvider>
     </ErrorBoundary>
   </React.StrictMode>,
 );
-
-interface ReducedMotionConfigProps {
-  onMount?: () => void;
-}
-
-function ReducedMotionConfig({
-  onMount,
-}: ReducedMotionConfigProps): JSX.Element {
-  const { prefersReducedMotion } = useReducedMotionContext();
-
-  React.useEffect(() => {
-    onMount?.();
-  }, [onMount]);
-
-  return (
-    <MotionConfig reducedMotion={prefersReducedMotion ? "always" : "never"}>
-      <App />
-    </MotionConfig>
-  );
-}
