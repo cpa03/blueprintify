@@ -6,21 +6,27 @@
 
 ### Workflows
 
-| Workflow            | Purpose                           | Runner                         | Trigger                     |
-| ------------------- | --------------------------------- | ------------------------------ | --------------------------- |
-| `main.yml`          | AI Software Company orchestration | `ubuntu-24.04-arm`             | Schedule (every 6h), Manual |
-| `ai-on-push.yml`    | AI agent on push                  | `ubuntu-24.04-arm`             | Push to main                |
-| `iterate.yml`       | Iteration workflow                | `ubuntu-24.04-arm`             | Manual                      |
-| `pr-gatekeeper.yml` | PR validation and auto-fix        | `ubuntu-24.04-arm`             | PR events                   |
-| `on pull.yml`       | Pull request handler              | `ubuntu-24.04-arm` (should be) | PR, Schedule, Manual        |
+| Workflow            | Purpose                           | Runner             | Trigger                     |
+| ------------------- | --------------------------------- | ------------------ | --------------------------- |
+| `main.yml`          | AI Software Company orchestration | `ubuntu-24.04-arm` | Schedule (every 6h), Manual |
+| `ai-on-push.yml`    | AI agent on push                  | `ubuntu-24.04-arm` | Push to main                |
+| `iterate.yml`       | Iteration workflow                | `ubuntu-24.04-arm` | Manual                      |
+| `pr-gatekeeper.yml` | PR validation and auto-fix        | `ubuntu-24.04-arm` | PR events                   |
+| `on-pull.yml`       | Pull request handler              | `ubuntu-24.04-arm` | PR, Schedule, Manual        |
 
 ### Known Issues
 
 #### Issue #483 - Workflow Configuration Issues
 
-**Status**: BLOCKED (requires manual intervention)
+**Status**: READY TO PUSH (requires manual intervention or admin token)
 
-The GitHub App token lacks `workflows` permission. The following changes must be applied manually:
+**Changes Prepared** (2026-02-19):
+
+- Branch: `agent/devops-engineer`
+- Commit: `58123d4` - "ci: fix workflow configuration issues"
+- All fixes applied and verified locally (typecheck, lint, build, test pass)
+
+The GitHub App token lacks `workflows` permission. The following changes have been prepared and are ready to be pushed manually:
 
 1. **Rename workflow file** (remove space in filename):
 
