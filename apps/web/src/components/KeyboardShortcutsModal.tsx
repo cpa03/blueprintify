@@ -159,7 +159,7 @@ export function KeyboardShortcutsModal({
                 <button
                   ref={closeButtonRef}
                   onClick={onClose}
-                  className="p-2 text-dark-400 hover:text-white hover:bg-dark-700/50 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500/50"
+                  className="p-2 text-dark-400 hover:text-white hover:bg-dark-700/50 rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50"
                   aria-label="Close keyboard shortcuts"
                 >
                   <svg
