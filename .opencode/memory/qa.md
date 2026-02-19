@@ -70,10 +70,20 @@ The following issues were identified in `.github/workflows/` but require workflo
    - `actions/checkout@v6` → should be `@v4`
    - `actions/setup-node@v6` → should be `@v4`
 
-**Test Status (2026-02-19)**
+**Test Status (2026-02-19 17:50 UTC)**
 
 - All 342 tests pass (218 web + 124 API)
 - TypeScript: No errors
-- ESLint: 8 warnings (unused type imports in db/index.test.ts - addressed by PRs #577, #575)
-- 1 skipped test (in security.test.ts)
+- ESLint: No errors or warnings (clean)
+- Build: Successful
+- 1 skipped test (in security.test.ts - `validateAndSanitizeFileContent`)
 - No TODO/FIXME comments related to QA in source code
+
+**Workflow Permission Note (2026-02-19)**
+
+The CI/CD workflow issues documented above cannot be fixed by GitHub App tokens without explicit `workflows` permission. This requires:
+
+1. Manual intervention by a repository admin with workflow permissions, OR
+2. Updating the GitHub App token scopes to include `workflows`
+
+Reference: Issue #483
