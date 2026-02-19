@@ -1,5 +1,9 @@
 import { SSE_HEADERS } from "../config/constants";
 
+/**
+ * Interface for AI service implementations.
+ * Defines the contract for streaming AI completions.
+ */
 export interface AIService {
   streamCompletion: (options: {
     systemPrompt: string;
@@ -12,6 +16,10 @@ export interface AIService {
   }) => AsyncGenerator<string, void, unknown>;
 }
 
+/**
+ * Interface for stream utility implementations.
+ * Provides methods for creating SSE streams and responses.
+ */
 export interface StreamUtils {
   createStreamFromGenerator: (
     generator: AsyncGenerator<string, void, unknown>,
@@ -20,6 +28,10 @@ export interface StreamUtils {
   createSSEResponse: (stream: ReadableStream<Uint8Array>) => Response;
 }
 
+/**
+ * Dependency injection container interface.
+ * Holds service instances for the application.
+ */
 export interface Container {
   aiService: AIService;
   streamUtils: StreamUtils;
@@ -27,10 +39,19 @@ export interface Container {
 
 let defaultContainer: Container | null = null;
 
+/**
+ * Sets the default container instance for the application.
+ * @param container - The container instance to use globally
+ */
 export function setDefaultContainer(container: Container): void {
   defaultContainer = container;
 }
 
+/**
+ * Retrieves the default container instance.
+ * @returns The configured container instance
+ * @throws {Error} When container has not been initialized
+ */
 export function getContainer(): Container {
   if (!defaultContainer) {
     throw new Error(
@@ -40,6 +61,11 @@ export function getContainer(): Container {
   return defaultContainer;
 }
 
+/**
+ * Creates a mock container for testing purposes.
+ * @param overrides - Optional partial container to override default mocks
+ * @returns A container with mock service implementations
+ */
 export function createMockContainer(overrides?: Partial<Container>): Container {
   const mockStream = new ReadableStream<Uint8Array>({
     start(controller) {
@@ -71,6 +97,10 @@ export function createMockContainer(overrides?: Partial<Container>): Container {
   };
 }
 
+/**
+ * Resets the default container to null.
+ * Useful for cleanup between tests.
+ */
 export function resetContainer(): void {
   defaultContainer = null;
 }

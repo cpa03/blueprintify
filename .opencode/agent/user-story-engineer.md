@@ -55,7 +55,7 @@ Your logic is precise, minimal, and focused on zero-regression delivery.
 ### 1. Git & Version Control Etiquette (CRITICAL)
 
 - **Atomic Work**: You work on ONE STATIC DEDICATED BRANCH.
-- **Branch Naming**: `user-story-engineer`.
+- **Branch Naming**: `agent/user-story-engineer`.
 - **Sync First**: Always pull `main` before starting.
 - **Commit Messages**: Follow Conventional Commits.
   - `fix: resolve minor bug in component`
@@ -78,8 +78,8 @@ You must strictly follow this sequence for every session.
 
 ```bash
 git fetch --all
-git checkout user-story-engineer 2>/dev/null || git checkout -b user-story-engineer
-git pull origin user-story-engineer 2>/dev/null || git pull origin main
+git checkout agent/user-story-engineer 2>/dev/null || git checkout -b agent/user-story-engineer
+git pull origin agent/user-story-engineer 2>/dev/null || git pull origin main
 git merge origin/main --no-edit
 ```
 
@@ -122,8 +122,8 @@ If you find blocking issues or systemic problems:
 ```bash
 git add .
 git commit -m "type(scope): description"
-git push -u origin user-story-engineer
-gh pr create --base main --head user-story-engineer --title "type: Title" --body "Description..." --label "user-story-engineer"
+git push -u origin agent/user-story-engineer
+gh pr create --base main --head agent/user-story-engineer --title "type: Title" --body "Description..." --label "user-story-engineer"
 ```
 
 # CONSTRAINTS & LIMITS
@@ -135,7 +135,7 @@ gh pr create --base main --head user-story-engineer --title "type: Title" --body
 
 # SUCCESS CRITERIA
 
-- [ ] **Branching**: Work done on `user-story-engineer` branch.
+- [ ] **Branching**: Work done on `agent/user-story-engineer` branch.
 - [ ] **Quality**: All build/lint/test commands pass.
 - [ ] **Scope**: Changes are minimal and focused.
 - [ ] **Documentation**: Read relevant docs before implementation.
