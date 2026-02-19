@@ -45,7 +45,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
       </span>
       <motion.button
         onClick={handleCopy}
-        className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500/50"
+        className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50"
         animate={{
           backgroundColor: copied
             ? "rgba(16, 185, 129, 0.2)"

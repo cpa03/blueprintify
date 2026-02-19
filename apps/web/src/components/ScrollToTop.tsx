@@ -101,7 +101,7 @@ export function ScrollToTop({
                          flex items-center justify-center
                          text-primary-400 hover:text-white
                          hover:bg-primary-500/20 hover:border-primary-500/50
-                         focus:outline-none focus:ring-2 focus:ring-primary-500/50
+                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
                          shadow-lg shadow-primary-500/10
                          transition-colors duration-200"
               aria-label="Scroll to top (Home key)"

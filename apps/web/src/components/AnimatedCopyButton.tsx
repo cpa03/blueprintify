@@ -93,7 +93,7 @@ export function AnimatedCopyButton({
       disabled={!hasContent}
       className={clsx(
         "relative text-sm px-4 py-2 rounded-lg transition-all duration-300 overflow-hidden",
-        "focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus-visible:ring-2 focus-visible:ring-primary-500/50",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50",
         isCopied
           ? "bg-accent-emerald/20 text-accent-emerald border border-accent-emerald/50"
           : "btn-ghost text-dark-300 hover:text-white hover:bg-dark-800/50",
