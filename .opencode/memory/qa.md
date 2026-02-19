@@ -70,10 +70,10 @@ The following issues were identified in `.github/workflows/` but require workflo
    - `actions/checkout@v6` → should be `@v4`
    - `actions/setup-node@v6` → should be `@v4`
 
-**Test Status (2026-02-18)**
+**Test Status (2026-02-19)**
 
-- All 298 tests pass (218 web + 80 API)
+- All 299 tests pass (218 web + 81 API)
 - TypeScript: No errors
 - ESLint: No errors
-- No skipped tests found
+- 1 skipped test (in security.test.ts)
 - No TODO/FIXME comments related to QA in source code
