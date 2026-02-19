@@ -8,7 +8,7 @@ import {
   pulseAnimation,
 } from "../utils/motion";
 
-export function EditorEmptyState() {
+export function EditorEmptyState(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
   const currentIndex = WIZARD_STEPS.findIndex((s) => s.key === currentStep);
   const progress = ((currentIndex + 1) / WIZARD_STEPS.length) * 100;

@@ -15,7 +15,7 @@ import { motion } from "framer-motion";
  *
  * @see https://www.w3.org/WAI/WCAG21/Understanding/bypass-blocks.html
  */
-export function SkipLink() {
+export function SkipLink(): JSX.Element {
   return (
     <motion.a
       href="#main-content"

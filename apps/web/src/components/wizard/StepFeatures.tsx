@@ -9,7 +9,7 @@ import {
 } from "../../config/constants";
 import { pageTransition } from "../../utils/motion";
 
-export function StepFeatures() {
+export function StepFeatures(): JSX.Element {
   const [newFeature, setNewFeature] = useState("");
   const [justAdded, setJustAdded] = useState<string | null>(null);
   const features = useWizardStore((s) => s.features);

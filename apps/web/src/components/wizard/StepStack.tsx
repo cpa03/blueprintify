@@ -132,7 +132,7 @@ function TechChip({ tech, isSelected, onToggle, justSelected }: TechChipProps) {
   );
 }
 
-export function StepStack() {
+export function StepStack(): JSX.Element {
   const [isShaking, setIsShaking] = useState(false);
   const [justSelected, setJustSelected] = useState<string | null>(null);
   const techStack = useWizardStore((s) => s.techStack);

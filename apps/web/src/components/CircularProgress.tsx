@@ -20,7 +20,7 @@ export function CircularProgress({
   showPercentage = false,
   color = "rgb(99, 102, 241)",
   trackColor = "rgba(255, 255, 255, 0.1)",
-}: CircularProgressProps) {
+}: CircularProgressProps): JSX.Element {
   const clampedValue = Math.max(0, Math.min(100, value));
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
@@ -95,7 +95,10 @@ export function CircularProgressCompact({
   strokeWidth = 2,
   color = "rgb(99, 102, 241)",
   className = "",
-}: Omit<CircularProgressProps, "showPercentage" | "animationDuration">) {
+}: Omit<
+  CircularProgressProps,
+  "showPercentage" | "animationDuration"
+>): JSX.Element {
   return (
     <CircularProgress
       value={value}
