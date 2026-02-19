@@ -35,7 +35,10 @@ export const ENV = {
   },
 
   get GITHUB_URL(): string {
-    return getEnvVar("VITE_GITHUB_URL", "https://github.com");
+    return getEnvVar(
+      "VITE_GITHUB_URL",
+      "https://github.com/cpa03/blueprintify",
+    );
   },
 
   // Storage Configuration
