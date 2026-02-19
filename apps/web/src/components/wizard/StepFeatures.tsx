@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
 import {
@@ -19,7 +19,7 @@ export function StepFeatures(): JSX.Element {
   const nextStep = useWizardStore((s) => s.nextStep);
   const prevStep = useWizardStore((s) => s.prevStep);
 
-  const handleAddFeature = () => {
+  const handleAddFeature = useCallback(() => {
     if (newFeature.trim()) {
       const trimmed = newFeature.trim();
       addFeature(trimmed);
@@ -28,20 +28,27 @@ export function StepFeatures(): JSX.Element {
       setJustAdded(trimmed);
       setTimeout(() => setJustAdded(null), TIMEOUTS.TOAST_NOTIFICATION);
     }
-  };
+  }, [newFeature, addFeature]);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleAddFeature();
-    }
-  };
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleAddFeature();
+      }
+    },
+    [handleAddFeature],
+  );
 
-  const isInFeatures = (feature: string) =>
-    features.some((f: string) => f.toLowerCase() === feature.toLowerCase());
+  const isInFeatures = useCallback(
+    (feature: string) =>
+      features.some((f: string) => f.toLowerCase() === feature.toLowerCase()),
+    [features],
+  );
 
-  const suggestedNotAdded = SUGGESTED_FEATURES.filter(
-    (f: string) => !isInFeatures(f),
+  const suggestedNotAdded = useMemo(
+    () => SUGGESTED_FEATURES.filter((f: string) => !isInFeatures(f)),
+    [isInFeatures],
   );
 
   return (
