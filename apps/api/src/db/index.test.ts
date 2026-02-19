@@ -6,14 +6,6 @@ import {
   DatabaseError,
   ValidationError,
   NotFoundError,
-  type User,
-  type Project,
-  type Blueprint,
-  type Task,
-  type Template,
-  type Session,
-  type Analytics,
-  type BlueprintShare,
 } from "./index";
 
 describe("MockDatabaseService", () => {
