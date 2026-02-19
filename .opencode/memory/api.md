@@ -76,4 +76,4 @@ The global error handler in `apps/api/src/middleware/errorHandler.ts` will autom
 
 ## Lessons Learned
 
-- (Empty initially)
+- **2026-02-19**: Added JSDoc documentation to `utils/circuitBreaker.ts` utility module. Circuit breaker is a core resilience pattern used by the OpenAI service, so proper documentation with `@param`, `@returns`, `@throws`, and `@example` annotations is essential for maintainability. Follows the same pattern established in `utils/retry.ts` and `services/openai.ts`.
