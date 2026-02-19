@@ -1,17 +1,50 @@
+/**
+ * Circuit Breaker Utility Module
+ *
+ * Implements the Circuit Breaker pattern for resilient API interactions.
+ * Prevents cascading failures by temporarily blocking requests to failing services.
+ *
+ * @module utils/circuitBreaker
+ * @see https://martinfowler.com/bliki/CircuitBreaker.html
+ */
+
 import { HTTP_STATUS, CIRCUIT_BREAKER_CONFIG } from "../config/constants";
 
+/**
+ * Configuration options for circuit breaker initialization.
+ *
+ * @property failureThreshold - Number of consecutive failures before opening the circuit
+ * @property resetTimeoutMs - Time in milliseconds before attempting to close the circuit
+ * @property halfOpenMaxCalls - Maximum number of test calls allowed in half-open state
+ */
 interface CircuitBreakerConfig {
   failureThreshold: number;
   resetTimeoutMs: number;
   halfOpenMaxCalls: number;
 }
 
+/**
+ * Possible states of a circuit breaker.
+ *
+ * - CLOSED: Normal operation, requests pass through
+ * - OPEN: Circuit is tripped, requests are blocked
+ * - HALF_OPEN: Testing if service has recovered
+ */
 enum CircuitState {
   CLOSED = "CLOSED",
   OPEN = "OPEN",
   HALF_OPEN = "HALF_OPEN",
 }
 
+/**
+ * Metrics snapshot of circuit breaker state.
+ *
+ * @property state - Current circuit state (CLOSED, OPEN, HALF_OPEN)
+ * @property failures - Current consecutive failure count
+ * @property successes - Current consecutive success count (in half-open state)
+ * @property lastFailureTime - Timestamp of last failure, or null if none
+ * @property nextAttempt - Timestamp when next attempt will be allowed (in OPEN state)
+ */
 interface CircuitBreakerMetrics {
   state: CircuitState;
   failures: number;
@@ -20,6 +53,31 @@ interface CircuitBreakerMetrics {
   nextAttempt: number;
 }
 
+/**
+ * Circuit Breaker implementation for protecting against cascading failures.
+ *
+ * The circuit breaker monitors for failures and "trips" (opens) when the failure
+ * threshold is exceeded, preventing further requests to the failing service.
+ * After a reset timeout, it enters a "half-open" state to test if the service
+ * has recovered.
+ *
+ * @example
+ * ```typescript
+ * const breaker = createCircuitBreaker({
+ *   failureThreshold: 5,
+ *   resetTimeoutMs: 30000,
+ *   halfOpenMaxCalls: 3
+ * });
+ *
+ * try {
+ *   const result = await breaker.execute(() => fetchExternalAPI());
+ * } catch (error) {
+ *   if (error instanceof CircuitBreakerOpenError) {
+ *     // Service is temporarily unavailable
+ *   }
+ * }
+ * ```
+ */
 class CircuitBreaker {
   private state: CircuitState = CircuitState.CLOSED;
   private failures = 0;
@@ -28,6 +86,11 @@ class CircuitBreaker {
   private halfOpenCalls = 0;
   private readonly config: CircuitBreakerConfig;
 
+  /**
+   * Creates a new CircuitBreaker instance.
+   *
+   * @param config - Optional configuration overrides for default settings
+   */
   constructor(config: Partial<CircuitBreakerConfig> = {}) {
     this.config = {
       failureThreshold:
@@ -42,6 +105,11 @@ class CircuitBreaker {
     };
   }
 
+  /**
+   * Returns the current state and metrics of the circuit breaker.
+   *
+   * @returns A snapshot of the circuit breaker's current state
+   */
   getState(): CircuitBreakerMetrics {
     return {
       state: this.state,
@@ -55,6 +123,18 @@ class CircuitBreaker {
     };
   }
 
+  /**
+   * Executes a function with circuit breaker protection.
+   *
+   * If the circuit is OPEN, throws immediately without executing the function.
+   * If the circuit is HALF_OPEN, allows limited test calls.
+   * Tracks success/failure and updates circuit state accordingly.
+   *
+   * @param fn - The async function to execute
+   * @returns The result of the executed function
+   * @throws {CircuitBreakerOpenError} When the circuit is OPEN or HALF_OPEN max calls exceeded
+   * @throws {Error} Re-throws any error from the executed function
+   */
   async execute<T>(fn: () => Promise<T>): Promise<T> {
     if (this.state === CircuitState.OPEN) {
       if (
@@ -115,6 +195,15 @@ class CircuitBreaker {
   }
 }
 
+/**
+ * Error thrown when the circuit breaker is open and rejects a request.
+ *
+ * This error indicates that the protected service is temporarily unavailable
+ * due to repeated failures. Clients should handle this gracefully, typically
+ * by showing a user-friendly message or falling back to cached data.
+ *
+ * @extends Error
+ */
 export class CircuitBreakerOpenError extends Error {
   readonly statusCode = HTTP_STATUS.SERVICE_UNAVAILABLE;
 
@@ -124,6 +213,20 @@ export class CircuitBreakerOpenError extends Error {
   }
 }
 
+/**
+ * Factory function to create a new CircuitBreaker instance.
+ *
+ * @param config - Optional configuration overrides for default settings
+ * @returns A new CircuitBreaker instance
+ *
+ * @example
+ * ```typescript
+ * const breaker = createCircuitBreaker({
+ *   failureThreshold: 5,
+ *   resetTimeoutMs: 30000,
+ * });
+ * ```
+ */
 export const createCircuitBreaker = (
   config?: Partial<CircuitBreakerConfig>,
 ): CircuitBreaker => {
