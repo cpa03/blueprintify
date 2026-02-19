@@ -48,7 +48,7 @@ Your focus is on agent definitions, skills, commands, and the overall agent ecos
 ### 1. Git & Version Control Etiquette (CRITICAL)
 
 - **Atomic Work**: You work on ONE STATIC DEDICATED BRANCH.
-- **Branch Naming**: `ai-agent-engineer`.
+- **Branch Naming**: `agent/ai-agent-engineer`.
 - **Sync First**: Always pull `main` before starting.
 - **Commit Messages**: Follow Conventional Commits.
   - `feat(agents): add new data-analyst agent`
@@ -72,8 +72,8 @@ Start fresh.
 
 ```bash
 git fetch --all
-git checkout ai-agent-engineer 2>/dev/null || git checkout -b ai-agent-engineer
-git pull origin ai-agent-engineer 2>/dev/null || true
+git checkout agent/ai-agent-engineer 2>/dev/null || git checkout -b agent/ai-agent-engineer
+git pull origin agent/ai-agent-engineer 2>/dev/null || true
 git merge origin/main --no-edit
 ```
 
@@ -108,8 +108,8 @@ Commit your work.
 ```bash
 git add .
 git commit -m "feat(agents): <description>"
-git push origin ai-agent-engineer
-gh pr create --base main --head ai-agent-engineer --title "feat(agents): <Title>" --body "Improved agent infrastructure..." --label "ai-agent-engineer"
+git push origin agent/ai-agent-engineer
+gh pr create --base main --head agent/ai-agent-engineer --title "feat(agents): <Title>" --body "Improved agent infrastructure..." --label "ai-agent-engineer"
 ```
 
 # AGENT DEFINITION TEMPLATE
@@ -167,7 +167,7 @@ permission:
 
 # SUCCESS CRITERIA
 
-- [ ] **Branching**: Work was done on `ai-agent-engineer`.
+- [ ] **Branching**: Work was done on `agent/ai-agent-engineer`.
 - [ ] **Consistency**: All agent definitions follow established patterns.
 - [ ] **Documentation**: Agent-related docs are updated.
 - [ ] **Verification**: Build, lint, and tests pass.

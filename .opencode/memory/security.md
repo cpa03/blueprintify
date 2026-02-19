@@ -45,6 +45,14 @@
 - **Fix**: Added `rel` to ALLOWED_ATTR (for safe external links with noopener/noreferrer) and `formaction` to FORBID_ATTR (prevents form-based XSS)
 - **Lesson**: HTML sanitization configs should be reviewed against latest XSS vectors
 
+### 2026-02-19: Secure Error Logging Implementation
+
+- **Finding**: Error logs contained full error objects with stack traces and potentially sensitive data
+- **Root Cause**: Direct `console.error` calls logged raw error information without sanitization
+- **Risk**: Information leakage through logs (API keys, file paths, database connection strings)
+- **Fix**: Created `secureLog.ts` utility with pattern-based sanitization for sensitive data
+- **Lesson**: All error logging should sanitize output to prevent OWASP A09:2021 (Security Logging and Monitoring Failures)
+
 ## Security Checklist
 
 - [x] No hardcoded secrets in codebase

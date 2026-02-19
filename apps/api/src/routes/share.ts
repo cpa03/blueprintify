@@ -9,6 +9,7 @@ import {
   SHARE_CONFIG,
   SHARE_ERROR_MESSAGES,
 } from "../config/constants";
+import { secureLogError } from "../utils/secureLog";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -107,7 +108,7 @@ app.post(
         HTTP_STATUS.OK,
       );
     } catch (error) {
-      console.error("Share creation error:", error);
+      secureLogError("Share creation error", error);
       return c.json(
         {
           error: ERROR_CODES.INTERNAL_ERROR,
@@ -183,8 +184,7 @@ app.get("/:id", async (c) => {
           unknown
         >;
       } catch (parseError) {
-        console.error("Failed to parse share metadata:", parseError);
-        // Continue without metadata rather than failing the request
+        secureLogError("Failed to parse share metadata", parseError);
         parsedMetadata = undefined;
       }
     }
@@ -201,7 +201,7 @@ app.get("/:id", async (c) => {
       HTTP_STATUS.OK,
     );
   } catch (error) {
-    console.error("Share retrieval error:", error);
+    secureLogError("Share retrieval error", error);
     return c.json(
       {
         error: ERROR_CODES.INTERNAL_ERROR,
@@ -247,7 +247,7 @@ app.delete("/:id", async (c) => {
       HTTP_STATUS.OK,
     );
   } catch (error) {
-    console.error("Share deletion error:", error);
+    secureLogError("Share deletion error", error);
     return c.json(
       {
         error: ERROR_CODES.INTERNAL_ERROR,
