@@ -67,6 +67,9 @@ vi.mock("../config/constants", () => ({
     { key: "review", label: "Review", icon: "👀", shortcut: "4" },
     { key: "generating", label: "Generate", icon: "🚀", shortcut: "5" },
   ],
+  UI: {
+    SCROLL_TO_TOP_THRESHOLD: 600,
+  },
 }));
 
 const mockEditorStore: EditorStore = {
