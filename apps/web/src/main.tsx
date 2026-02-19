@@ -1,5 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
+import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ReducedMotionProvider } from "./context/ReducedMotionContext";
 import "./index.css";
@@ -38,6 +40,8 @@ root.render(
           </MotionConfigWrapper>
         </Suspense>
       </ReducedMotionProvider>
+      <SpeedInsights />
+      <Analytics />
     </ErrorBoundary>
   </React.StrictMode>,
 );

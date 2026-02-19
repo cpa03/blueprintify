@@ -7,8 +7,10 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "skewProtection": true,
-  "regions": ["iad1", "sfo1", "fra1", "hnd1", "syd1"],
+  "fluid": true,
+  "regions": ["iad1", "sfo1", "fra1"],
   "outputFileTracing": true,
+  "ignoreCommand": "git diff --quiet $VERCEL_GIT_PREVIOUS_SHA $VERCEL_GIT_COMMIT_SHA -- . ':!.github/' ':!docs/' ':!*.md' ':!.opencode/'",
   "images": {
     "remotePatterns": [
       {
