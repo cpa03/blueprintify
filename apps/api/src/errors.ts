@@ -77,8 +77,11 @@ export class APIError extends Error {
     this.code = code;
     this.details = details;
 
-    // Maintains proper stack trace for where our error was thrown
-    Error.captureStackTrace(this, this.constructor);
+    // Maintains proper stack trace for where our error was thrown (V8 environments only)
+    // Cloudflare Workers may not support captureStackTrace
+    if (typeof Error.captureStackTrace === "function") {
+      Error.captureStackTrace(this, this.constructor);
+    }
   }
 
   /**
