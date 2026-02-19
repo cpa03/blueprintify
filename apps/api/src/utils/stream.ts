@@ -1,11 +1,28 @@
+/**
+ * SSE Stream Utilities
+ * Provides Server-Sent Events formatting and streaming response creation
+ * for real-time content delivery.
+ */
+
 import { SSE_HEADERS, CORS_CONFIG, SSE_CONFIG } from "../config/constants";
 
+/**
+ * Server-Sent Event message structure
+ */
 export interface SSEMessage {
+  /** Optional event type name */
   event?: string;
+  /** Event data payload */
   data: string;
+  /** Optional event ID for replay tracking */
   id?: string;
 }
 
+/**
+ * Formats a message into SSE protocol format
+ * @param message - SSE message containing event, data, and optional id
+ * @returns Formatted SSE string ready for transmission
+ */
 export function formatSSE(message: SSEMessage): string {
   let result = "";
 
@@ -25,6 +42,11 @@ export function formatSSE(message: SSEMessage): string {
   return result;
 }
 
+/**
+ * Creates an HTTP Response with SSE streaming headers
+ * @param stream - ReadableStream containing SSE formatted data
+ * @returns Response object configured for SSE streaming
+ */
 export function createSSEResponse(
   stream: ReadableStream<Uint8Array>,
 ): Response {
@@ -40,6 +62,12 @@ export function createSSEResponse(
   });
 }
 
+/**
+ * Creates a ReadableStream from an async generator with SSE formatting
+ * @param generator - Async generator yielding content chunks
+ * @param onComplete - Optional callback invoked when stream completes successfully
+ * @returns ReadableStream formatted for SSE transmission
+ */
 export function createStreamFromGenerator(
   generator: AsyncGenerator<string, void, unknown>,
   onComplete?: () => void,

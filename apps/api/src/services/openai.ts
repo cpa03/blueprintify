@@ -1,3 +1,9 @@
+/**
+ * OpenAI Service Module
+ * Provides AI completion functionality with circuit breaker and retry support
+ * for resilient API interactions.
+ */
+
 import OpenAI from "openai";
 import { withRetry } from "../utils/retry";
 import {
@@ -7,16 +13,29 @@ import {
 } from "../utils/circuitBreaker";
 import { AI_CONFIG, CIRCUIT_BREAKER_CONFIG } from "../config/constants";
 
+/**
+ * Configuration options for AI client initialization
+ */
 export interface AIConfig {
+  /** OpenAI API key (required) */
   apiKey: string;
+  /** Custom API base URL for compatible providers */
   baseURL?: string;
+  /** Model identifier to use for completions */
   model?: string;
+  /** Request timeout in milliseconds */
   timeout?: number;
 }
 
+/**
+ * Options for streaming and non-streaming completions
+ */
 export interface StreamOptions {
+  /** System prompt to set AI behavior */
   systemPrompt: string;
+  /** User prompt for the specific request */
   userPrompt: string;
+  /** AI client configuration */
   config: AIConfig;
 }
 
@@ -33,6 +52,11 @@ function getCircuitBreaker(): CircuitBreaker {
   return circuitBreaker;
 }
 
+/**
+ * Creates an OpenAI client instance with the provided configuration
+ * @param config - AI client configuration options
+ * @returns Configured OpenAI client instance
+ */
 export function createAIClient(config: AIConfig): OpenAI {
   return new OpenAI({
     apiKey: config.apiKey,
@@ -41,6 +65,13 @@ export function createAIClient(config: AIConfig): OpenAI {
   });
 }
 
+/**
+ * Streams AI completion chunks with circuit breaker protection and retry logic
+ * @param options - Stream options containing prompts and configuration
+ * @yields Content chunks as they are generated
+ * @throws {CircuitBreakerOpenError} When circuit breaker is open
+ * @throws {Error} When AI service encounters an error
+ */
 export async function* streamCompletion(
   options: StreamOptions,
 ): AsyncGenerator<string, void, unknown> {
@@ -85,6 +116,13 @@ export async function* streamCompletion(
   }
 }
 
+/**
+ * Generates a complete AI response with circuit breaker protection and retry logic
+ * @param options - Stream options containing prompts and configuration
+ * @returns Promise resolving to the complete generated text
+ * @throws {CircuitBreakerOpenError} When circuit breaker is open
+ * @throws {Error} When AI service encounters an error
+ */
 export async function generateCompletion(
   options: StreamOptions,
 ): Promise<string> {
