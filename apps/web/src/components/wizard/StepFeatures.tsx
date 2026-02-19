@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
 import {
@@ -9,7 +9,7 @@ import {
 } from "../../config/constants";
 import { pageTransition } from "../../utils/motion";
 
-export function StepFeatures(): JSX.Element {
+export const StepFeatures = memo(function StepFeatures(): JSX.Element {
   const [newFeature, setNewFeature] = useState("");
   const [justAdded, setJustAdded] = useState<string | null>(null);
   const features = useWizardStore((s) => s.features);
@@ -350,4 +350,4 @@ export function StepFeatures(): JSX.Element {
       </div>
     </motion.div>
   );
-}
+});
