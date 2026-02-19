@@ -4,6 +4,42 @@
 
 ---
 
+## [Database-Architect] 2026-02-19 - Database Service Test Coverage & Default Values Fix
+
+### Observation
+
+The database service layer (`apps/api/src/db/index.ts`) lacked test coverage. Additionally, the `MockDatabaseService` did not apply default values defined in Zod schemas:
+
+- `BlueprintSchema.version` default: `1`
+- `TaskSchema.version` default: `1`
+- `TemplateSchema.usage_count` default: `0`
+
+### Action Taken
+
+1. **Added comprehensive test coverage** (`apps/api/src/db/index.test.ts`):
+   - 43 tests covering all CRUD operations for 8 entity types
+   - Tests for utility functions (`serializeJSON`, `deserializeJSON`)
+   - Tests for error classes (`DatabaseError`, `NotFoundError`, `ValidationError`)
+   - Tests for edge cases (expired sessions/shares, non-existent records)
+
+2. **Fixed default value handling** in `MockDatabaseService`:
+   - `createBlueprint`: Now applies `version: blueprint.version ?? 1`
+   - `createTask`: Now applies `version: task.version ?? 1`
+   - `createTemplate`: Now applies `usage_count: template.usage_count ?? 0`
+
+3. **Updated interface signatures** to accept optional default fields:
+   - `createBlueprint`: `Omit<Blueprint, "id" | "created_at" | "updated_at" | "version"> & { version?: number }`
+   - `createTask`: `Omit<Task, "id" | "created_at" | "updated_at" | "version"> & { version?: number }`
+   - `createTemplate`: `Omit<Template, "id" | "created_at" | "updated_at" | "usage_count"> & { usage_count?: number }`
+
+### Impact
+
+- Ensures database service behaves consistently with Zod schema expectations
+- Provides regression protection for all database operations
+- Catches potential issues early in development
+
+---
+
 ## [Reliability] 2026-02-18 - ErrorBoundary Implementation
 
 ### Observation

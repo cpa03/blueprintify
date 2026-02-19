@@ -3,7 +3,7 @@
 ## Schema Version
 
 - Current Version: 1.3.0
-- Last Updated: 2026-02-18
+- Last Updated: 2026-02-19
 - Schema File: `schema.sql`
 
 ## Database Service Layer
@@ -12,6 +12,19 @@
 - Mock Implementation: `MockDatabaseService` for development
 - Production: D1 bindings configured in `apps/api/src/types.ts`
 - All tables have corresponding Zod schemas and TypeScript types
+- **Test Coverage**: `apps/api/src/db/index.test.ts` - 43 comprehensive tests covering all CRUD operations
+
+## Default Values (v1.3.1)
+
+The MockDatabaseService applies default values matching Zod schema defaults:
+
+| Entity    | Field         | Default |
+| --------- | ------------- | ------- |
+| Blueprint | `version`     | `1`     |
+| Task      | `version`     | `1`     |
+| Template  | `usage_count` | `0`     |
+
+Create method signatures accept optional version/usage_count to allow caller override.
 
 ## Naming Conventions
 
