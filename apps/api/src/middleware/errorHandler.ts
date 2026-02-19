@@ -3,21 +3,16 @@ import { createErrorResponse, isAPIError, ErrorType } from "../errors";
 import type { ErrorResponse } from "../errors";
 import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import { ERROR_CODES, ERROR_MESSAGES, HTTP_STATUS } from "../config/constants";
+import { secureLogError } from "../utils/secureLog";
 
 export const errorHandler = (err: unknown, c: Context): Response => {
-  // Extract requestId from context (set by requestLogger middleware)
   const requestId = c.get("requestId") as string | undefined;
 
-  const errorLog = {
-    error: err instanceof Error ? err.message : err,
-    stack: err instanceof Error ? err.stack : undefined,
+  secureLogError("API Error", err, {
     path: c.req.path,
     method: c.req.method,
     requestId,
-    timestamp: new Date().toISOString(),
-  };
-
-  console.error("[API Error]", errorLog);
+  });
 
   if (err instanceof CircuitBreakerOpenError) {
     return c.json(
