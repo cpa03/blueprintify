@@ -2,6 +2,7 @@ import {
   RETRY_CONFIG as SHARED_RETRY_CONFIG,
   RETRYABLE_STATUS_CODES,
   SSE_CONFIG as SHARED_SSE_CONFIG,
+  SSE_HEADERS as SHARED_SSE_HEADERS,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./env";
 
@@ -241,13 +242,7 @@ export const CIRCUIT_BREAKER_CONFIG = {
   },
 };
 
-export { SHARED_SSE_CONFIG as SSE_CONFIG };
-
-export const SSE_HEADERS = {
-  CONTENT_TYPE: "text/event-stream",
-  CACHE_CONTROL: "no-cache",
-  CONNECTION: "keep-alive",
-} as const;
+export { SHARED_SSE_CONFIG as SSE_CONFIG, SHARED_SSE_HEADERS as SSE_HEADERS };
 
 // HTTP Status codes
 export const HTTP_STATUS = {
