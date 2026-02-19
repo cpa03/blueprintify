@@ -108,3 +108,14 @@ export const SSE_CONFIG = {
     DONE: "done",
   },
 } as const;
+
+/**
+ * SSE Headers configuration
+ * Standard headers for Server-Sent Events responses
+ * Used by both API and frontend tests for consistent SSE handling
+ */
+export const SSE_HEADERS = {
+  CONTENT_TYPE: "text/event-stream",
+  CACHE_CONTROL: "no-cache",
+  CONNECTION: "keep-alive",
+} as const;
