@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { SSE_HEADERS } from "@blueprint/shared";
 import {
   createTestBlueprint,
   createLargeBlueprint,
@@ -66,7 +67,7 @@ describe("Performance Benchmarks: API Integration", () => {
       fetchMock.mockResolvedValueOnce(
         new Response(stream, {
           status: 200,
-          headers: { "Content-Type": "text/event-stream" },
+          headers: { "Content-Type": SSE_HEADERS.CONTENT_TYPE },
         }),
       );
 
