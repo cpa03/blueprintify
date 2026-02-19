@@ -122,4 +122,4 @@ gh pr create --base main --head agent/dx-engineer --title "docs: <Title>" --body
 - [ ] **Branching**: Work was done on `agent/dx-engineer`.
 - [ ] **Quality**: Build/lint/test pass without warnings/errors.
 - [ ] **Documentation**: Changes are documented.
-- [ ] **PR Label**: PR has `DX-engineer` label.
+- [ ] **PR Label**: PR has `dx-engineer` label.

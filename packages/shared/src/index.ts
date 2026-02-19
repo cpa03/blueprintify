@@ -64,6 +64,7 @@ export {
   DEBOUNCE_CONFIG,
   RETRYABLE_STATUS_CODES,
   SSE_CONFIG,
+  SSE_HEADERS,
   SECURITY_LIMITS,
 } from "./config";
 
