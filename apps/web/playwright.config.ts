@@ -1,9 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
-/**
- * Playwright configuration for visual regression testing
- * @see https://playwright.dev/docs/test-configuration
- */
+const TEST_SERVER_URL =
+  process.env.PLAYWRIGHT_TEST_URL || "http://localhost:3000";
+
 export default defineConfig({
   testDir: "./e2e",
   snapshotDir: "./e2e/snapshots",
@@ -17,7 +16,7 @@ export default defineConfig({
   reporter: [["html", { outputFolder: "./e2e/report" }], ["list"]],
 
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL: TEST_SERVER_URL,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "on-first-retry",
@@ -52,7 +51,7 @@ export default defineConfig({
 
   webServer: {
     command: "npm run dev",
-    url: "http://localhost:3000",
+    url: TEST_SERVER_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
   },
