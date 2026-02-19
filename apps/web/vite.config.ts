@@ -35,7 +35,7 @@ const asyncCssPlugin = (): Plugin => ({
 const removeLazyPreloadPlugin = (): Plugin => ({
   name: "remove-lazy-preload",
   transformIndexHtml(html) {
-    const lazyChunks = ["codemirror", "syntaxHighlighter"];
+    const lazyChunks = ["codemirror", "markdown", "syntaxHighlighter"];
     return html.replace(
       new RegExp(
         `<link rel="modulepreload"[^>]*href="[^"]*(?:${lazyChunks.join("|")})-[^"]*\.js"[^>]*>`,
@@ -99,6 +99,7 @@ export default defineConfig({
             "@codemirror/lang-markdown",
             "@codemirror/theme-one-dark",
           ],
+          markdown: ["react-markdown", "remark-gfm", "rehype-highlight"],
           syntaxHighlighter: ["react-syntax-highlighter"],
           animation: ["framer-motion"],
           zustand: ["zustand"],
