@@ -41,6 +41,11 @@ function generateShareId(): string {
   return result;
 }
 
+/**
+ * Calculates the expiration date for a shared blueprint.
+ * Uses the configured expiration period (default: 30 days).
+ * @returns Date object representing when the share will expire
+ */
 function getExpirationDate(): Date {
   const expiresAt = new Date();
   expiresAt.setDate(expiresAt.getDate() + SHARE_CONFIG.EXPIRATION_DAYS);
