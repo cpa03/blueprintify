@@ -23,11 +23,19 @@ const createShareSchema = z.object({
     .optional(),
 });
 
+/**
+ * Generate a cryptographically secure random share ID.
+ * Uses crypto.getRandomValues() instead of Math.random() to prevent
+ * ID prediction attacks that could allow unauthorized access to shared blueprints.
+ */
 function generateShareId(): string {
+  const randomValues = new Uint32Array(SHARE_CONFIG.ID_LENGTH);
+  crypto.getRandomValues(randomValues);
+
   let result = "";
   for (let i = 0; i < SHARE_CONFIG.ID_LENGTH; i++) {
     result += SHARE_CONFIG.ALPHANUMERIC_CHARS.charAt(
-      Math.floor(Math.random() * SHARE_CONFIG.ALPHANUMERIC_CHARS.length),
+      (randomValues[i] ?? 0) % SHARE_CONFIG.ALPHANUMERIC_CHARS.length,
     );
   }
   return result;
