@@ -3,6 +3,7 @@ import {
   useRef,
   useEffect,
   useCallback,
+  memo,
   ReactNode,
   useId,
 } from "react";
@@ -60,7 +61,7 @@ const positionClasses: Record<Position, PositionStyles> = {
  * - Click-outside dismissal
  * - Proper focus/blur handling
  */
-export function SmartTooltip({
+const SmartTooltipComponent = memo(function SmartTooltip({
   children,
   content,
   position = "top",
@@ -281,7 +282,9 @@ export function SmartTooltip({
       </AnimatePresence>
     </div>
   );
-}
+});
+
+export const SmartTooltip = SmartTooltipComponent;
 
 interface KeyboardShortcutTooltipProps {
   children: ReactNode;
@@ -295,7 +298,7 @@ interface KeyboardShortcutTooltipProps {
  * KeyboardShortcutTooltip - Specialized tooltip for keyboard shortcuts
  * Automatically detects Mac/Windows and shows appropriate modifier key
  */
-export function KeyboardShortcutTooltip({
+export const KeyboardShortcutTooltip = memo(function KeyboardShortcutTooltip({
   children,
   shortcut,
   description,
@@ -334,7 +337,7 @@ export function KeyboardShortcutTooltip({
       {children}
     </SmartTooltip>
   );
-}
+});
 
 interface InfoTooltipProps {
   children: ReactNode;
@@ -347,7 +350,7 @@ interface InfoTooltipProps {
  * InfoTooltip - Tooltip with an info icon indicator
  * Useful for help text and explanations
  */
-export function InfoTooltip({
+export const InfoTooltip = memo(function InfoTooltip({
   children,
   content,
   position = "top",
@@ -381,7 +384,7 @@ export function InfoTooltip({
       </span>
     </SmartTooltip>
   );
-}
+});
 
 export type { SmartTooltipProps, Position };
 export { SmartTooltip as Tooltip };

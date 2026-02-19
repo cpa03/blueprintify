@@ -1,4 +1,10 @@
-import { useState, useCallback, type ReactNode, type MouseEvent } from "react";
+import {
+  useState,
+  useCallback,
+  memo,
+  type ReactNode,
+  type MouseEvent,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Ripple {
@@ -17,7 +23,7 @@ interface RippleButtonProps {
   title?: string;
 }
 
-export function RippleButton({
+function RippleButtonComponent({
   children,
   onClick,
   className = "",
@@ -102,6 +108,8 @@ export function RippleButton({
     </button>
   );
 }
+
+export const RippleButton = memo(RippleButtonComponent);
 
 export function useRipple(): {
   createRipple: (event: MouseEvent<HTMLElement>) => void;

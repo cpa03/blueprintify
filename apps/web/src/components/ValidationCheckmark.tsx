@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ANIMATION_TIMING } from "../config/theme";
 
@@ -16,7 +17,7 @@ interface ValidationCheckmarkProps {
  * <ValidationCheckmark isValid={projectName.length >= MIN} ariaLabel="Project name is valid" />
  * <ValidationCheckmark isValid={description.length >= MIN} size="input" ariaLabel="Description is valid" />
  */
-export function ValidationCheckmark({
+export const ValidationCheckmark = memo(function ValidationCheckmark({
   isValid,
   size = "inline",
   ariaLabel = "Field is valid",
@@ -66,4 +67,4 @@ export function ValidationCheckmark({
       )}
     </AnimatePresence>
   );
-}
+});
