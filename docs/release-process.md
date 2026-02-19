@@ -141,12 +141,7 @@ import { writeFileSync } from "fs";
 
 function generateChangelog(fromTag: string, toTag: string): string {
   const commitRange = `${fromTag}..${toTag}`;
-  const commits = execSync(
-    `git log ${commitRange} --pretty=format:"%s|%h|%an|%ad" --date=short`,
-  )
-    .toString()
-    .split("\n")
-    .filter(Boolean);
+  const commits = execSync(`git log ${commitRange} --pretty=format:"%s|%h|%an|%ad" --date=short`).toString().split("\n").filter(Boolean);
 
   const changes = commits.map((line) => {
     const [message, hash, author, date] = line.split("|");
@@ -459,11 +454,7 @@ interface UXMetric {
 }
 
 class UXMonitor {
-  trackBlueprintGeneration(
-    userId: string,
-    duration: number,
-    success: boolean,
-  ): void {
+  trackBlueprintGeneration(userId: string, duration: number, success: boolean): void {
     const metric: UXMetric = {
       timestamp: Date.now(),
       userId,
@@ -485,8 +476,7 @@ class UXMonitor {
     const successful = metrics.filter((m) => m.success);
 
     return {
-      avgDuration:
-        successful.reduce((sum, m) => sum + m.duration, 0) / successful.length,
+      avgDuration: successful.reduce((sum, m) => sum + m.duration, 0) / successful.length,
       successRate: successful.length / metrics.length,
       totalAttempts: metrics.length,
     };
@@ -530,9 +520,7 @@ class RollbackManager {
 
   private async rollbackAPI(): Promise<void> {
     const previousVersion = await this.getPreviousAPIVersion();
-    execSync(
-      `wrangler deploy --compatibility-date 2023-05-18 --version ${previousVersion}`,
-    );
+    execSync(`wrangler deploy --compatibility-date 2023-05-18 --version ${previousVersion}`);
   }
 
   private async rollbackFrontend(): Promise<void> {
@@ -758,4 +746,4 @@ class VulnerabilityHandler {
 
 ---
 
-_Release processes are continuously evolving. Last updated: 2026-02-06_
+_Release processes are continuously evolving. Last updated: 2026-02-19_
