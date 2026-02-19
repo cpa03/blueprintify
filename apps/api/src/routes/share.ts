@@ -160,14 +160,27 @@ app.get("/:id", async (c) => {
       );
     }
 
+    // Safely parse metadata JSON with error handling
+    let parsedMetadata: Record<string, unknown> | undefined;
+    if (result.metadata) {
+      try {
+        parsedMetadata = JSON.parse(result.metadata as string) as Record<
+          string,
+          unknown
+        >;
+      } catch (parseError) {
+        console.error("Failed to parse share metadata:", parseError);
+        // Continue without metadata rather than failing the request
+        parsedMetadata = undefined;
+      }
+    }
+
     return c.json(
       {
         id: result.id,
         title: result.title,
         blueprint: result.blueprint,
-        metadata: result.metadata
-          ? JSON.parse(result.metadata as string)
-          : undefined,
+        metadata: parsedMetadata,
         createdAt: result.created_at,
         expiresAt: result.expires_at,
       },
