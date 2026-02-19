@@ -334,3 +334,12 @@ export const SHARE_CONFIG = {
   TITLE_MAX_LENGTH: 200,
   BLUEPRINT_MAX_LENGTH: 50000,
 } as const;
+
+// Share route error messages
+export const SHARE_ERROR_MESSAGES = {
+  DATABASE_NOT_CONFIGURED: "Database not configured",
+  INVALID_SHARE_ID_FORMAT: "Invalid share ID format",
+  SHARE_NOT_FOUND_OR_EXPIRED: "Shared blueprint not found or expired",
+  SHARE_EXPIRED: "Shared blueprint has expired",
+  SHARE_DELETED_SUCCESSFULLY: "Share deleted successfully",
+} as const;
