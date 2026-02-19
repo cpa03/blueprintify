@@ -111,6 +111,8 @@ export function EditorEmptyState(): JSX.Element {
       <motion.div
         className="flex items-center gap-3 glass-card px-6 py-3 rounded-full"
         variants={fadeInUp}
+        aria-live="polite"
+        aria-atomic="true"
       >
         <div className="flex items-center gap-1">
           {WIZARD_STEPS.map((step, index) => {

@@ -60,7 +60,7 @@ export function RippleButton({
       type={type}
       onClick={handleClick}
       disabled={disabled}
-      className={`relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 ${className}`}
+      className={`relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`}
       aria-label={ariaLabel}
       title={title}
       style={{ position: "relative" }}
