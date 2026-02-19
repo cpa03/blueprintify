@@ -71,7 +71,7 @@ export function SmartTooltip({
   dismissOnEscape = true,
   id,
   className = "",
-}: SmartTooltipProps) {
+}: SmartTooltipProps): JSX.Element {
   const [isVisible, setIsVisible] = useState(false);
   const [computedPosition, setComputedPosition] = useState<Position>(position);
   const [isPositioned, setIsPositioned] = useState(false);
@@ -301,7 +301,7 @@ export function KeyboardShortcutTooltip({
   description,
   position = "top",
   modifier = "cmd",
-}: KeyboardShortcutTooltipProps) {
+}: KeyboardShortcutTooltipProps): JSX.Element {
   const isMac =
     typeof navigator !== "undefined" &&
     navigator.platform.toUpperCase().indexOf("MAC") >= 0;
@@ -352,7 +352,7 @@ export function InfoTooltip({
   content,
   position = "top",
   showInfoIcon = true,
-}: InfoTooltipProps) {
+}: InfoTooltipProps): JSX.Element {
   return (
     <SmartTooltip
       content={content}

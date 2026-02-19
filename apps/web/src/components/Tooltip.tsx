@@ -13,7 +13,7 @@ export function Tooltip({
   content,
   position = "top",
   delay = 500,
-}: TooltipProps) {
+}: TooltipProps): JSX.Element {
   const [isVisible, setIsVisible] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -92,7 +92,7 @@ export function KeyboardShortcutTooltip({
   description,
   position = "top",
   modifier = "cmd",
-}: KeyboardShortcutTooltipProps) {
+}: KeyboardShortcutTooltipProps): JSX.Element {
   const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
 
   let fullShortcut: string;

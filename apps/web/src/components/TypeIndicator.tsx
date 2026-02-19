@@ -59,7 +59,11 @@ interface UseTypingIndicatorOptions {
   minInputLength?: number;
 }
 
-export function useTypingIndicator(options: UseTypingIndicatorOptions = {}) {
+export function useTypingIndicator(options: UseTypingIndicatorOptions = {}): {
+  isTyping: boolean;
+  handleTyping: (value: string) => void;
+  handleBlur: () => void;
+} {
   const { delay = ANIMATION_MS.TYPING_INDICATOR_TIMEOUT, minInputLength = 0 } =
     options;
   const [isTyping, setIsTyping] = useState(false);

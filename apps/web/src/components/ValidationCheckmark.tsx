@@ -21,7 +21,7 @@ export function ValidationCheckmark({
   size = "inline",
   ariaLabel = "Field is valid",
   className = "",
-}: ValidationCheckmarkProps) {
+}: ValidationCheckmarkProps): JSX.Element | null {
   const isInline = size === "inline";
 
   const sizeClasses = isInline
