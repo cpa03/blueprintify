@@ -2,7 +2,7 @@
 
 ## Schema Version
 
-- Current Version: 1.3.0
+- Current Version: 1.3.1
 - Last Updated: 2026-02-19
 - Schema File: `schema.sql`
 
