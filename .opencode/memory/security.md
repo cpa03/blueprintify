@@ -5,8 +5,40 @@
 - OWASP Top 10 mitigation.
 - Zero Trust Architecture.
 - Constant-time comparison for all secret/token validation.
+- CI/CD security: Standardized runner versions (`ubuntu-24.04-arm`) and action versions across all workflows.
+- Regular security audits (monthly recommended).
+
+## Current Security Status (2026-02-19)
+
+| Control             | Status                        |
+| ------------------- | ----------------------------- |
+| Hardcoded Secrets   | ✅ None found                 |
+| XSS Vectors         | ✅ No dangerouslySetInnerHTML |
+| Code Injection      | ✅ No eval/innerHTML          |
+| Input Validation    | ✅ Zod schemas                |
+| Auth Timing Attacks | ✅ Constant-time compare      |
+| Secure Random       | ✅ crypto.getRandomValues()   |
+| Security Headers    | ✅ Hono secureHeaders()       |
+| Secure Logging      | ✅ Sensitive data redaction   |
+| HTML Sanitization   | ✅ DOMPurify configured       |
 
 ## Lessons Learned
+
+### 2026-02-19: Security Audit - Excellent Posture Confirmed
+
+- **Finding**: Full security audit completed - all major controls passing
+- **Observation**: Codebase has excellent security posture with recent hardening (timing attacks, crypto IDs, secure logging, DOMPurify)
+- **Blocker**: CI workflow standardization requires GitHub App `workflows` permission (tracked in #483)
+- **npm audit**: 18 vulnerabilities in dev-only dependencies - risk accepted
+- **Lesson**: Regular audits confirm security controls remain effective
+
+### 2026-02-19: CI Workflow Security Standardization
+
+- **Finding**: `on pull.yml` workflow used outdated runner (`ubuntu-22.04-arm`) and invalid action versions (`@v6`)
+- **Root Cause**: Workflow not kept in sync with project standards defined in AGENTS.md
+- **Risk**: Inconsistent CI environments, potential workflow failures from non-existent action versions
+- **Fix**: Requires GitHub App `workflows` permission - tracked in #483
+- **Lesson**: CI workflow configurations should be audited regularly for version consistency and security compliance
 
 ### 2026-02-19: Insecure Random ID Generation in Share Endpoint
 
