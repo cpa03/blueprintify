@@ -1,7 +1,20 @@
 import { useEffect } from "react";
 import { DOCUMENT_TITLE_CONFIG } from "../config/constants";
 
-export function useDocumentTitle(title: string) {
+/**
+ * Hook for managing the document title
+ *
+ * Sets the document title with the app name appended. Restores the original
+ * title when the component unmounts.
+ *
+ * @param title - The title to set (appended with app name)
+ *
+ * @example
+ * ```tsx
+ * useDocumentTitle("My Project"); // Sets "My Project | Blueprint Generator"
+ * ```
+ */
+export function useDocumentTitle(title: string): void {
   useEffect(() => {
     const originalTitle = document.title;
     document.title = title

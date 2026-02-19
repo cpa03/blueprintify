@@ -2,6 +2,22 @@ import { useEffect, useRef } from "react";
 import { useToast } from "../store";
 import { AUTO_SAVE_CONFIG, TOAST_CONFIG } from "../config/constants";
 
+/**
+ * Hook for displaying auto-save toast notifications
+ *
+ * Shows a success toast when dependencies change, with debouncing to prevent
+ * excessive notifications during rapid saves. Skips the initial render to avoid
+ * showing a toast on component mount.
+ *
+ * @param deps - Dependency array that triggers the toast when changed
+ * @param message - Toast message to display (default: "Changes saved")
+ * @param delay - Delay in ms before showing toast (default: 1000ms)
+ *
+ * @example
+ * ```tsx
+ * useAutoSaveToast([content], "Auto-saved", 500);
+ * ```
+ */
 export function useAutoSaveToast(
   deps: unknown[],
   message: string = AUTO_SAVE_CONFIG.DEFAULT_MESSAGE,

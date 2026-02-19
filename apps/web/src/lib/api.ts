@@ -307,6 +307,15 @@ export async function generateBlueprint(
   );
 }
 
+/**
+ * Generate task breakdown from blueprint content
+ *
+ * Streams task generation via SSE with automatic retry on transient failures.
+ *
+ * @param request - Task generation request with blueprint content
+ * @param handlers - Stream event handlers for chunk, error, and done events
+ * @param retryOptions - Optional retry configuration
+ */
 export async function generateTasks(
   request: TaskGenerationRequest,
   handlers: StreamEventHandlers,
@@ -321,6 +330,15 @@ export async function generateTasks(
   );
 }
 
+/**
+ * Refine blueprint content via AI
+ *
+ * Streams content refinement via SSE with automatic retry on transient failures.
+ *
+ * @param request - Refinement request with content and refinement instructions
+ * @param handlers - Stream event handlers for chunk, error, and done events
+ * @param retryOptions - Optional retry configuration
+ */
 export async function refineContent(
   request: RefineRequest,
   handlers: StreamEventHandlers,
@@ -335,6 +353,13 @@ export async function refineContent(
   );
 }
 
+/**
+ * Check API health status
+ *
+ * Performs a health check against the API endpoint with a timeout.
+ *
+ * @returns True if API is healthy, false otherwise
+ */
 export async function checkHealth(): Promise<boolean> {
   const controller = new AbortController();
   const timeoutId = setTimeout(
