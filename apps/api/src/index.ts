@@ -50,10 +50,15 @@ app.use("*", apiKeyAuth({ excludePaths: ["/"] }));
 app.use("*", rateLimit(rateLimitConfigs.standard));
 
 app.get("/", (c) => {
+  c.header("Cache-Control", "public, max-age=60, stale-while-revalidate=30");
   return c.json({
     name: API_METADATA.NAME,
     version: API_METADATA.VERSION,
     status: API_METADATA.STATUS,
+    runtime: {
+      platform: "cloudflare-workers",
+      region: c.req.header("cf-ipcountry") || "unknown",
+    },
     endpoints: {
       generate: `${API_ENDPOINTS.GENERATE.method} ${API_ENDPOINTS.GENERATE.path}`,
       tasks: `${API_ENDPOINTS.TASKS.method} ${API_ENDPOINTS.TASKS.path}`,

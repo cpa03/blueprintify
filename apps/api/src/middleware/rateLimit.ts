@@ -52,6 +52,10 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
     }
 
     if (!result.success) {
+      const retryAfterSeconds = Math.ceil(
+        getConfig().RATE_LIMIT_WINDOW_MS / 1000,
+      );
+      c.header("Retry-After", String(retryAfterSeconds));
       return c.json(
         {
           success: false,
@@ -61,7 +65,7 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
             code: "RATE_LIMIT_ERROR",
             details: {
               limit,
-              retryAfter: getConfig().RATE_LIMIT_WINDOW_MS / 1000,
+              retryAfter: retryAfterSeconds,
             },
             timestamp: new Date().toISOString(),
           },
