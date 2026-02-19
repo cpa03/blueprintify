@@ -12,6 +12,10 @@ build/
 *.js
 !scripts/*.js
 
+# Package build outputs (monorepo)
+packages/*/dist/
+packages/*/*.tsbuildinfo
+
 # Environment variables
 .env
 .env.local
