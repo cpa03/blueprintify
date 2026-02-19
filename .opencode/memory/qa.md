@@ -72,8 +72,8 @@ The following issues were identified in `.github/workflows/` but require workflo
 
 **Test Status (2026-02-19)**
 
-- All 299 tests pass (218 web + 81 API)
+- All 342 tests pass (218 web + 124 API)
 - TypeScript: No errors
-- ESLint: No errors
+- ESLint: 8 warnings (unused type imports in db/index.test.ts - addressed by PRs #577, #575)
 - 1 skipped test (in security.test.ts)
 - No TODO/FIXME comments related to QA in source code

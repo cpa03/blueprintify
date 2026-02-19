@@ -112,6 +112,7 @@ export const UI = {
   MAX_TECH_STACK_SELECTION: VALIDATION_LIMITS.TECH_STACK.MAX,
   TOOLTIP_DELAY: 500,
   SCROLL_OFFSET: 100,
+  SCROLL_TO_TOP_THRESHOLD: 600,
 } as const;
 
 // Step configuration
@@ -247,11 +248,8 @@ export const DOCUMENT_TITLE_CONFIG = {
   DEFAULT_TITLE: ENV.APP_NAME,
 };
 
-// LocalStorage keys
-export const STORAGE_KEYS = {
-  WIZARD: "blueprint-wizard",
-  EDITOR: "blueprint-editor",
-} as const;
+// Re-export storage keys from keys.ts for backward compatibility
+export { STORAGE_KEYS } from "./keys";
 
 // Generation messages
 export const GENERATION_MESSAGES = {

@@ -27,7 +27,7 @@ Currently, the API does not require authentication. However, all requests must i
 | Field   | Value                   | Description                  |
 | ------- | ----------------------- | ---------------------------- |
 | Name    | Blueprint Generator API | Service name                 |
-| Version | 1.0.0                   | Current API version          |
+| Version | 1.1.0                   | Current API version          |
 | Status  | healthy                 | Health check response status |
 
 ## Endpoints

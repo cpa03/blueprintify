@@ -41,7 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `/import` - Import project with validation
   - `/storage/quota` - Check localStorage usage
   - `/storage/clear` - Clear stored data
-  - `/share` - Create shareable blueprint link
+  - `/share` - Create shareable blueprint link (POST)
+  - `/share/:id` - Retrieve shared blueprint (GET)
+  - `/share/:id` - Delete shared blueprint (DELETE)
 
 - **Tech Stack**
   - Backend: Hono, Cloudflare Workers, Zod, OpenAI SDK, Vitest

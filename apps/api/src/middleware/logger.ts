@@ -37,7 +37,12 @@ interface ResponseLog {
 }
 
 const generateRequestId = (): string => {
-  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  const randomValues = new Uint32Array(2);
+  crypto.getRandomValues(randomValues);
+  const timestamp = Date.now();
+  const random = (randomValues[0] ?? 0).toString(36);
+  const random2 = (randomValues[1] ?? 0).toString(36).slice(0, 4);
+  return `${timestamp}-${random}${random2}`;
 };
 
 const extractCloudflareMetadata = (c: Context): CloudflareRequestMetadata => {
