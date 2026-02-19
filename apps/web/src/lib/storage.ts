@@ -10,6 +10,7 @@
 
 import { z } from "zod";
 import { STORAGE_KEYS, STORAGE_CONFIG } from "../config/constants";
+import { BACKUP_KEY_PREFIX, TEST_KEYS } from "../config/keys";
 
 // ============================================================================
 // Storage Error Types
@@ -128,7 +129,6 @@ interface BackupEntry {
   metadata: StorageMetadata;
 }
 
-const BACKUP_KEY_PREFIX = "__backup__";
 const MAX_BACKUP_ENTRIES = STORAGE_CONFIG.MAX_BACKUP_ENTRIES;
 
 // ============================================================================
@@ -179,7 +179,7 @@ function getStorageQuota(): QuotaInfo {
 
 function isLocalStorageSupported(): boolean {
   try {
-    const test = "__storage_test__";
+    const test = TEST_KEYS.STORAGE_TEST;
     // Use window.localStorage for browser compatibility (including jsdom in tests)
     (
       globalThis as typeof globalThis & { localStorage: Storage }
@@ -195,7 +195,7 @@ function isLocalStorageSupported(): boolean {
 
 function isPrivacyMode(): boolean {
   try {
-    const test = "__privacy_test__";
+    const test = TEST_KEYS.PRIVACY_TEST;
     // Use window.localStorage for browser compatibility (including jsdom in tests)
     (
       globalThis as typeof globalThis & { localStorage: Storage }

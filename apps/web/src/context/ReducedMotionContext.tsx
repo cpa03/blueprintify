@@ -6,6 +6,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
+import { STORAGE_KEYS } from "../config/keys";
 
 interface ReducedMotionContextType {
   prefersReducedMotion: boolean;
@@ -28,7 +29,7 @@ interface ReducedMotionProviderProps {
 
 function getInitialOverride(): boolean | null {
   if (typeof window === "undefined") return null;
-  const stored = localStorage.getItem("blueprint-reduced-motion");
+  const stored = localStorage.getItem(STORAGE_KEYS.REDUCED_MOTION);
   return stored !== null ? stored === "true" : null;
 }
 
@@ -73,16 +74,16 @@ export function ReducedMotionProvider({
   const setUserOverride = useCallback((value: boolean | null): void => {
     setUserOverrideState(value);
     if (value !== null && typeof window !== "undefined") {
-      localStorage.setItem("blueprint-reduced-motion", String(value));
+      localStorage.setItem(STORAGE_KEYS.REDUCED_MOTION, String(value));
     } else if (value === null && typeof window !== "undefined") {
-      localStorage.removeItem("blueprint-reduced-motion");
+      localStorage.removeItem(STORAGE_KEYS.REDUCED_MOTION);
     }
   }, []);
 
   const resetToSystemPreference = useCallback((): void => {
     setUserOverrideState(null);
     if (typeof window !== "undefined") {
-      localStorage.removeItem("blueprint-reduced-motion");
+      localStorage.removeItem(STORAGE_KEYS.REDUCED_MOTION);
     }
   }, []);
 
