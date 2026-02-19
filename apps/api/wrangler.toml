@@ -2,6 +2,7 @@ name = "blueprint-generator-api"
 main = "src/index.ts"
 compatibility_date = "2025-01-01"
 compatibility_flags = ["nodejs_compat"]
+tsconfig = "./tsconfig.json"
 
 # Smart Placement - optimizes worker placement based on traffic patterns
 # Takes up to 15 minutes to analyze after deployment

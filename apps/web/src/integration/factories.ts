@@ -1,4 +1,5 @@
 import { vi } from "vitest";
+import { SSE_HEADERS } from "@blueprint/shared";
 
 export interface TestBlueprint {
   projectName: string;
@@ -118,8 +119,8 @@ export function createMockStreamResponse(chunks: string[]) {
   return new Response(stream, {
     status: 200,
     headers: {
-      "Content-Type": "text/event-stream",
-      "Cache-Control": "no-cache",
+      "Content-Type": SSE_HEADERS.CONTENT_TYPE,
+      "Cache-Control": SSE_HEADERS.CACHE_CONTROL,
     },
   });
 }

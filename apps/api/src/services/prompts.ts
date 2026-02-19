@@ -12,6 +12,11 @@ export const REFINER_SYSTEM_PROMPT = PROMPT_CONFIG.REFINER_SYSTEM;
 
 // ===== Prompt Builders =====
 
+/**
+ * Builds a user prompt for blueprint generation from the request data.
+ * @param request - The blueprint request containing project details
+ * @returns Formatted prompt string for AI processing
+ */
 export function buildBlueprintPrompt(request: BlueprintRequest): string {
   const techStackList = request.techStack
     .map((t) => `- ${t.name} (${t.category})`)
@@ -45,6 +50,12 @@ ${constraintsSection}
 Create a production-ready architectural blueprint that an autonomous development agent can use to build this project from scratch. Be thorough and specific.`;
 }
 
+/**
+ * Builds a user prompt for task generation from a blueprint.
+ * @param blueprint - The blueprint content to generate tasks from
+ * @param projectName - The name of the project
+ * @returns Formatted prompt string for AI processing
+ */
 export function buildTaskPrompt(
   blueprint: string,
   projectName: string,
@@ -62,6 +73,11 @@ Create prioritized tasks (P0, P1, P2) for building "${projectName}" from scratch
 - Note dependencies on other tasks`;
 }
 
+/**
+ * Builds a user prompt for content refinement.
+ * @param request - The refine request containing content and instructions
+ * @returns Formatted prompt string for AI processing
+ */
 export function buildRefinePrompt(request: RefineRequest): string {
   const contextSection = request.context
     ? `\n\nSurrounding Context:\n${request.context}`

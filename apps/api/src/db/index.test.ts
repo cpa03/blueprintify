@@ -136,6 +136,52 @@ describe("MockDatabaseService", () => {
       expect(projects).toHaveLength(2);
     });
 
+    it("should get projects by user id and status", async () => {
+      await db.createProject({
+        user_id: userId,
+        name: "Active Project",
+        status: "active",
+      });
+      await db.createProject({
+        user_id: userId,
+        name: "Archived Project",
+        status: "archived",
+      });
+      await db.createProject({
+        user_id: userId,
+        name: "Another Active",
+        status: "active",
+      });
+
+      const activeProjects = await db.getProjectsByUserIdAndStatus(
+        userId,
+        "active",
+      );
+      expect(activeProjects).toHaveLength(2);
+      expect(activeProjects.every((p) => p.status === "active")).toBe(true);
+
+      const archivedProjects = await db.getProjectsByUserIdAndStatus(
+        userId,
+        "archived",
+      );
+      expect(archivedProjects).toHaveLength(1);
+      expect(archivedProjects[0]!.name).toBe("Archived Project");
+    });
+
+    it("should return empty array when no projects match status", async () => {
+      await db.createProject({
+        user_id: userId,
+        name: "Active Project",
+        status: "active",
+      });
+
+      const deletedProjects = await db.getProjectsByUserIdAndStatus(
+        userId,
+        "deleted",
+      );
+      expect(deletedProjects).toHaveLength(0);
+    });
+
     it("should update a project", async () => {
       const created = await db.createProject({
         user_id: userId,
@@ -207,6 +253,37 @@ describe("MockDatabaseService", () => {
 
       const blueprints = await db.getBlueprintsByProjectId(projectId);
       expect(blueprints).toHaveLength(2);
+    });
+
+    it("should get latest blueprint by project id", async () => {
+      await db.createBlueprint({
+        project_id: projectId,
+        title: "Blueprint v1",
+        content: "Content v1",
+        version: 1,
+      });
+      await db.createBlueprint({
+        project_id: projectId,
+        title: "Blueprint v3",
+        content: "Content v3",
+        version: 3,
+      });
+      await db.createBlueprint({
+        project_id: projectId,
+        title: "Blueprint v2",
+        content: "Content v2",
+        version: 2,
+      });
+
+      const latest = await db.getLatestBlueprintByProjectId(projectId);
+      expect(latest).toBeDefined();
+      expect(latest?.version).toBe(3);
+      expect(latest?.title).toBe("Blueprint v3");
+    });
+
+    it("should return null when no blueprints exist for project", async () => {
+      const latest = await db.getLatestBlueprintByProjectId(projectId);
+      expect(latest).toBeNull();
     });
 
     it("should update a blueprint", async () => {
