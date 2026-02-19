@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
+import { memo } from "react";
 import { useEditorStore } from "../../store";
 import { useWizardStore } from "../../store";
 import { ANIMATION } from "../../config/constants";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { AnimatedNumber } from "../AnimatedNumber";
 
-export function StepGenerating(): JSX.Element {
+export const StepGenerating = memo(function StepGenerating(): JSX.Element {
   const progress = useEditorStore((s) => s.generationProgress);
   const blueprintContent = useEditorStore((s) => s.blueprintContent);
   const tasksContent = useEditorStore((s) => s.tasksContent);
@@ -149,4 +150,4 @@ export function StepGenerating(): JSX.Element {
       </motion.div>
     </motion.div>
   );
-}
+});

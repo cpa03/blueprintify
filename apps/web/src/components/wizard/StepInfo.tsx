@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState, memo, useMemo } from "react";
 import {
   FORM_LIMITS,
   ANIMATION,
@@ -17,7 +17,7 @@ import { pageTransition } from "../../utils/motion";
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
 import { ValidationCheckmark } from "../ValidationCheckmark";
 
-export function StepInfo(): JSX.Element {
+export const StepInfo = memo(function StepInfo(): JSX.Element {
   const projectNameInputRef = useRef<HTMLInputElement>(null);
   const [isShaking, setIsShaking] = useState(false);
   const { textareaRef: descriptionRef } = useAutoResizeTextarea({
@@ -63,7 +63,7 @@ export function StepInfo(): JSX.Element {
   const isDescriptionInvalid =
     description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN;
 
-  const getFormProgress = () => {
+  const formProgress = useMemo(() => {
     const requiredFields = [
       projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN,
       description.length >= FORM_LIMITS.DESCRIPTION.MIN,
@@ -80,9 +80,12 @@ export function StepInfo(): JSX.Element {
       total: totalFields,
       percentage: (completedFields / totalFields) * 100,
     };
-  };
-
-  const formProgress = getFormProgress();
+  }, [
+    projectName.length,
+    description.length,
+    targetAudience.length,
+    constraints.length,
+  ]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -450,4 +453,4 @@ export function StepInfo(): JSX.Element {
       </form>
     </motion.div>
   );
-}
+});

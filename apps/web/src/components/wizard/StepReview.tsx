@@ -1,11 +1,18 @@
 import { motion } from "framer-motion";
+import { memo } from "react";
 import { useWizardStore } from "../../store";
 import { useBlueprintStream } from "../../hooks/useBlueprintStream";
 import { GENERATION_ESTIMATES } from "../../config/constants";
 import { pageTransition } from "../../utils/motion";
 
-export function StepReview(): JSX.Element {
-  const wizard = useWizardStore();
+export const StepReview = memo(function StepReview(): JSX.Element {
+  // Use specific selectors to avoid re-rendering on unrelated state changes
+  const projectName = useWizardStore((s) => s.projectName);
+  const description = useWizardStore((s) => s.description);
+  const targetAudience = useWizardStore((s) => s.targetAudience);
+  const constraints = useWizardStore((s) => s.constraints);
+  const techStack = useWizardStore((s) => s.techStack);
+  const features = useWizardStore((s) => s.features);
   const setStep = useWizardStore((s) => s.setStep);
   const { startGeneration, isGenerating, progress } = useBlueprintStream();
 
@@ -54,22 +61,22 @@ export function StepReview(): JSX.Element {
           <div className="bg-dark-800/50 rounded-xl p-4 space-y-3">
             <div>
               <span className="text-sm text-dark-400">Name:</span>
-              <p className="text-white font-medium">{wizard.projectName}</p>
+              <p className="text-white font-medium">{projectName}</p>
             </div>
             <div>
               <span className="text-sm text-dark-400">Description:</span>
-              <p className="text-dark-200">{wizard.description}</p>
+              <p className="text-dark-200">{description}</p>
             </div>
-            {wizard.targetAudience && (
+            {targetAudience && (
               <div>
                 <span className="text-sm text-dark-400">Target Audience:</span>
-                <p className="text-dark-200">{wizard.targetAudience}</p>
+                <p className="text-dark-200">{targetAudience}</p>
               </div>
             )}
-            {wizard.constraints && (
+            {constraints && (
               <div>
                 <span className="text-sm text-dark-400">Constraints:</span>
-                <p className="text-dark-200">{wizard.constraints}</p>
+                <p className="text-dark-200">{constraints}</p>
               </div>
             )}
           </div>
@@ -82,7 +89,7 @@ export function StepReview(): JSX.Element {
               <span className="w-8 h-8 rounded-lg bg-accent-cyan/20 flex items-center justify-center text-accent-cyan">
                 ⚙️
               </span>
-              Tech Stack ({wizard.techStack.length})
+              Tech Stack ({techStack.length})
             </h3>
             <button
               onClick={() => setStep("stack")}
@@ -106,7 +113,7 @@ export function StepReview(): JSX.Element {
             </button>
           </div>
           <div className="flex flex-wrap gap-2">
-            {wizard.techStack.map((tech) => (
+            {techStack.map((tech) => (
               <span
                 key={tech.name}
                 className="px-3 py-1.5 bg-dark-800 border border-dark-600 rounded-lg text-sm text-dark-200"
@@ -121,14 +128,14 @@ export function StepReview(): JSX.Element {
         </div>
 
         {/* Features */}
-        {wizard.features.length > 0 && (
+        {features.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                 <span className="w-8 h-8 rounded-lg bg-accent-emerald/20 flex items-center justify-center text-accent-emerald">
                   ✨
                 </span>
-                Features ({wizard.features.length})
+                Features ({features.length})
               </h3>
               <button
                 onClick={() => setStep("features")}
@@ -152,7 +159,7 @@ export function StepReview(): JSX.Element {
               </button>
             </div>
             <ul className="space-y-2">
-              {wizard.features.map((feature) => (
+              {features.map((feature) => (
                 <li
                   key={feature}
                   className="flex items-center gap-2 text-dark-200"
@@ -234,9 +241,7 @@ export function StepReview(): JSX.Element {
         <div className="flex flex-col items-end gap-2">
           <button
             onClick={startGeneration}
-            disabled={
-              isGenerating || !wizard.projectName || !wizard.description
-            }
+            disabled={isGenerating || !projectName || !description}
             className="btn-primary flex items-center gap-2 animate-glow disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isGenerating ? (
@@ -277,4 +282,4 @@ export function StepReview(): JSX.Element {
       </div>
     </motion.div>
   );
-}
+});
