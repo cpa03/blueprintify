@@ -286,10 +286,14 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-dark-800 py-6">
+      <footer className="border-t border-dark-800 py-6 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between text-sm text-dark-500">
-          <p>{UI_CONTENT.FOOTER.BUILT_WITH}</p>
-          <p>{UI_CONTENT.FOOTER.COPYRIGHT}</p>
+          <p className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded px-1">
+            {UI_CONTENT.FOOTER.BUILT_WITH}
+          </p>
+          <p className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded px-1">
+            {UI_CONTENT.FOOTER.COPYRIGHT}
+          </p>
         </div>
       </footer>
 

@@ -55,6 +55,11 @@
   /* Glass card effect */
   .glass-card {
     @apply bg-dark-900/60 backdrop-blur-xl border border-dark-700/50 rounded-2xl;
+    transition: border-color 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+
+  .glass-card:hover {
+    @apply border-dark-600/60;
   }
 
   /* Gradient border */
