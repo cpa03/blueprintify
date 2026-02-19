@@ -66,14 +66,14 @@ npm install
 
 - [x] Created DX-engineer agent definition
 - [x] Created DX memory file
+- [x] Add editorconfig for consistent coding style (`.editorconfig` exists)
 
 ### Pending
 
-- [ ] Add editorconfig for consistent coding style
 - [ ] Improve error messages in development
 - [ ] Add more inline code comments
 - [ ] Create troubleshooting guide
-- [ ] Fix CI workflow configuration issues (Issue #483)
+- [ ] Fix CI workflow configuration issues (Issue #483) - **BLOCKED** by GitHub App permission restrictions
 
 ## Workflow Configuration Notes
 
@@ -106,8 +106,51 @@ npm run build      # Production build
 ## Known Limitations
 
 1. **Workflow Permissions**: GitHub App cannot create/update workflow files without `workflows` permission
+   - Issue #483 (CI workflow fixes) is blocked until permission is granted or manual fix is applied
+   - Required fixes: rename `on pull.yml` to `on-pull.yml`, normalize CRLF→LF, update runner to `ubuntu-24.04-arm`, fix action versions from `@v6` to `@v4`
 2. **Security Vulnerabilities**: ajv package has known vulnerabilities (upstream fix required)
 3. **Lint Warnings**: 8 unused type imports in db test file (PR #575 addresses this)
+
+## Troubleshooting Guide
+
+### Common Issues
+
+#### 1. npm install fails with permission errors
+
+```bash
+# Clear npm cache and reinstall
+npm cache clean --force
+rm -rf node_modules apps/*/node_modules packages/*/node_modules
+npm install
+```
+
+#### 2. TypeScript errors about missing modules
+
+```bash
+# Ensure dependencies are installed
+npm install
+# Check TypeScript
+npm run typecheck
+```
+
+#### 3. Tests fail with timeout errors
+
+- Check if API is running (for integration tests)
+- Ensure ports 3000 and 8787 are available
+- Run tests with increased timeout: `npm run test:all -- --testTimeout=30000`
+
+#### 4. Build fails with out-of-memory
+
+```bash
+# Increase Node memory limit
+export NODE_OPTIONS="--max-old-space-size=4096"
+npm run build
+```
+
+#### 5. Lint errors about unreachable code
+
+- Check for unreachable `return` statements after early returns
+- Run `npm run lint` to see specific files and lines
 
 ---
 
