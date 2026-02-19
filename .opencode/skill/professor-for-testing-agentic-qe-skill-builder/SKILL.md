@@ -1,8 +1,14 @@
+---
+name: professor-for-testing-agentic-qe-skill-builder
+description: Build comprehensive testing skills with TDD, quality engineering, and automated test generation. Use when creating test suites or improving testing practices.
+---
+
 # Professor for Testing & Agentic QE Skill Builder
 
 ## Purpose
 
 Build comprehensive testing skills for AI agents with a focus on:
+
 - Test-driven development (TDD)
 - Quality engineering (QE)
 - Automated test generation
@@ -18,21 +24,25 @@ Build comprehensive testing skills for AI agents with a focus on:
 ## Workflow
 
 ### Step 1: Requirements Analysis
+
 - Understand the feature requirements
 - Identify edge cases and boundary conditions
 - Define acceptance criteria
 
 ### Step 2: Test Design
+
 - Write failing tests (Red phase)
 - Cover happy path and edge cases
 - Include negative test cases
 
 ### Step 3: Implementation
+
 - Write minimal code to pass tests (Green phase)
 - Refactor for clarity and maintainability
 - Ensure all tests pass
 
 ### Step 4: Quality Assurance
+
 - Run full test suite
 - Check code coverage
 - Perform static analysis
@@ -41,16 +51,19 @@ Build comprehensive testing skills for AI agents with a focus on:
 ## Test Types
 
 ### Unit Tests
+
 - Test individual functions/components
 - Mock external dependencies
 - Fast execution (< 100ms per test)
 
 ### Integration Tests
+
 - Test component interactions
 - Verify data flow
 - Check API contracts
 
 ### E2E Tests
+
 - Test complete user workflows
 - Verify system behavior
 - Cross-browser testing (if applicable)
@@ -65,6 +78,7 @@ Build comprehensive testing skills for AI agents with a focus on:
 ## Usage
 
 Activate this skill when:
+
 - Writing new features
 - Refactoring existing code
 - Setting up CI/CD pipelines

@@ -1,3 +1,8 @@
+---
+name: maxritter-claude-codepro-backend-models-standards
+description: Backend development standards and best practices for API design, database, security, and performance. Use when designing or reviewing backend systems.
+---
+
 # Claude CodePro Backend Models & Standards
 
 ## Overview
@@ -7,18 +12,21 @@ Standards and best practices for backend development with AI agents.
 ## Model Standards
 
 ### API Design
+
 - RESTful principles
 - GraphQL when appropriate
 - Consistent naming conventions
 - Versioning strategy
 
 ### Database
+
 - Use parameterized queries
 - Implement proper indexing
 - Follow normalization rules
 - Plan for migrations
 
 ### Security
+
 - Input validation
 - Output sanitization
 - Authentication/Authorization
@@ -26,6 +34,7 @@ Standards and best practices for backend development with AI agents.
 - Secret management
 
 ### Performance
+
 - Query optimization
 - Caching strategies
 - Async processing
@@ -34,18 +43,21 @@ Standards and best practices for backend development with AI agents.
 ## Code Standards
 
 ### TypeScript
+
 - Strict mode enabled
 - Explicit return types
 - No `any` types
 - Interface over type
 
 ### Error Handling
+
 - Structured error responses
 - Proper HTTP status codes
 - Error logging
 - User-friendly messages
 
 ### Testing
+
 - Unit tests for business logic
 - Integration tests for APIs
 - Load testing for performance
@@ -61,6 +73,7 @@ Standards and best practices for backend development with AI agents.
 ## Usage
 
 Apply these standards when:
+
 - Designing backend architectures
 - Writing API endpoints
 - Implementing database schemas
