@@ -28,11 +28,28 @@ export const FORM_LIMITS = {
 
 // Animation durations (in seconds)
 export const ANIMATION = {
-  FAST: 0.2,
-  NORMAL: 0.3,
+  FAST: 0.15,
+  NORMAL: 0.2,
+  MEDIUM: 0.3,
   SLOW: 0.5,
   STAGGER: 0.1,
   SPINNER_ROTATION: 1,
+  TYPING_INDICATOR_DELAY_S: 0.6,
+} as const;
+
+// Animation durations (in milliseconds)
+export const ANIMATION_MS = {
+  TYPING_INDICATOR_DELAY: 600,
+  TYPING_INDICATOR_TIMEOUT: 800,
+  CHIP_SELECT_FEEDBACK: 600,
+} as const;
+
+// Spring configurations for animations
+export const SPRING_CONFIG = {
+  DEFAULT: { stiffness: 400, damping: 25, mass: 0.8 },
+  BOUNCY: { stiffness: 500, damping: 10, mass: 0.8 },
+  SMOOTH: { stiffness: 500, damping: 25, mass: 0.8 },
+  REDUCED_MOTION: { stiffness: 1000, damping: 100, mass: 0.1 },
 } as const;
 
 // Timeouts (in milliseconds)
@@ -42,13 +59,27 @@ export const TIMEOUTS = {
   GENERATION_CHECK: 100,
   TOAST_NOTIFICATION: 1500,
   SHAKE_ANIMATION: 400,
+  FOCUS_DELAY: 100,
+  LIVE_REGION_CLEAR: 1000,
+  API_HEALTH_CHECK: 5000,
+  API_CONNECTION: 30000,
+  RIPPLE_EFFECT: 600,
+  COPY_BUTTON_RESET: 700,
+  RANDOM_DURATION_BASE: 400,
+  RANDOM_DURATION_VARIANCE: 200,
 } as const;
 
 // UI Configuration
 export const UI = {
   MAX_TECH_STACK_SELECTION: 10,
   TOOLTIP_DELAY: 500,
+  TOOLTIP_DELAY_SHORT: 300,
+  TOOLTIP_DELAY_LONG: 400,
+  SMART_TOOLTIP_DELAY: 400,
   SCROLL_OFFSET: 100,
+  SCROLL_SHOW_AFTER: 400,
+  SCROLL_SHOW_AFTER_LONG: 600,
+  EDITOR_SHOW_AFTER: 600,
 } as const;
 
 // Step configuration
@@ -321,6 +352,32 @@ export const KEYBOARD_SHORTCUTS = {
   },
 } as const;
 
+// Animation delays for staggered effects (in seconds)
+export const ANIMATION_DELAYS = {
+  STAGGER_FAST: 0.1,
+  STAGGER_DEFAULT: 0.2,
+  STAGGER_SLOW: 0.4,
+  STAGGER_SLOWER: 0.6,
+  STAGGER_SLOWEST: 0.8,
+} as const;
+
+// Animation durations for specific effects (in seconds)
+export const ANIMATION_DURATIONS = {
+  FLOATING_ANIMATION: 3,
+  PROGRESS_BAR: 2,
+  CELEBRATION_DURATION: 2.5,
+  DOCUMENT_FLOAT: 2.2,
+  DOCUMENT_FLOAT_2: 1.8,
+  PULSE_ANIMATION: 1,
+  PULSE_ANIMATION_SLOW: 1.5,
+  TOOLBAR_INDICATOR: 0.3,
+  TOOLBAR_INDICATOR_DELAY: 0.1,
+  TOOLBAR_FADE: 0.2,
+  TOOLBAR_EXPAND: 0.5,
+  TOOLBAR_SLIDE: 0.4,
+  STEP_FADE: 0.15,
+} as const;
+
 // CSS Class combinations for common patterns
 export const CSS_CLASSES = {
   GLASS_CARD: "glass-card",
@@ -329,6 +386,37 @@ export const CSS_CLASSES = {
   TEXT_GRADIENT: "text-gradient",
   ANIMATED_SPINNER:
     "animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500",
+} as const;
+
+// Focusable element selectors for accessibility
+export const FOCUSABLE_SELECTORS = [
+  'button:not([disabled]):not([aria-hidden="true"])',
+  'a[href]:not([aria-hidden="true"])',
+  'input:not([disabled]):not([type="hidden"]):not([aria-hidden="true"])',
+  'select:not([disabled]):not([aria-hidden="true"])',
+  'textarea:not([disabled]):not([aria-hidden="true"])',
+  '[tabindex]:not([tabindex="-1"]):not([disabled]):not([aria-hidden="true"])',
+  '[contenteditable]:not([aria-hidden="true"])',
+] as const;
+
+export const FOCUSABLE_SELECTOR_STRING = FOCUSABLE_SELECTORS.join(", ");
+
+// Celebration colors for particle animations
+export const CELEBRATION_COLORS = [
+  "#10b981", // emerald-500
+  "#34d399", // emerald-400
+  "#6ee7b7", // emerald-300
+  "#6366f1", // indigo-500
+  "#818cf8", // indigo-400
+  "#a78bfa", // violet-400
+  "#f472b6", // pink-400
+  "#fbbf24", // amber-400
+] as const;
+
+// Animation colors for value change indicators
+export const ANIMATION_COLORS = {
+  POSITIVE: "#10b981",
+  NEGATIVE: "#f43f5e",
 } as const;
 
 // External URLs used throughout the application

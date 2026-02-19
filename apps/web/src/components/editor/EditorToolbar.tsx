@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { Tooltip } from "../Tooltip";
+import { SPRING_CONFIG, UI, ANIMATION_DURATIONS } from "../../config/constants";
 
 export type ViewMode = "edit" | "preview" | "split";
 
@@ -28,7 +29,7 @@ const AnimatedCheckmark = React.memo(function AnimatedCheckmark() {
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       exit={{ scale: 0, opacity: 0 }}
-      transition={{ type: "spring", stiffness: 500, damping: 25 }}
+      transition={{ type: "spring", ...SPRING_CONFIG.SMOOTH }}
     >
       <motion.path
         d="M3 8L6.5 11.5L13 5"
@@ -38,7 +39,10 @@ const AnimatedCheckmark = React.memo(function AnimatedCheckmark() {
         strokeLinejoin="round"
         initial={{ pathLength: 0 }}
         animate={{ pathLength: 1 }}
-        transition={{ duration: 0.3, delay: 0.1 }}
+        transition={{
+          duration: ANIMATION_DURATIONS.TOOLBAR_INDICATOR,
+          delay: ANIMATION_DURATIONS.TOOLBAR_INDICATOR_DELAY,
+        }}
       />
     </motion.svg>
   );
@@ -85,7 +89,7 @@ function EditorToolbarComponent({
               </div>
             }
             position="bottom"
-            delay={400}
+            delay={UI.SMART_TOOLTIP_DELAY}
           >
             <button
               onClick={() => setViewMode(mode)}
@@ -115,7 +119,7 @@ function EditorToolbarComponent({
           </div>
         }
         position="bottom"
-        delay={400}
+        delay={UI.SMART_TOOLTIP_DELAY}
       >
         <motion.button
           onClick={onCopy}
@@ -139,7 +143,7 @@ function EditorToolbarComponent({
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: ANIMATION_DURATIONS.TOOLBAR_FADE }}
               >
                 <AnimatedCheckmark />
                 <span className="font-medium">Copied!</span>
@@ -151,7 +155,7 @@ function EditorToolbarComponent({
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: ANIMATION_DURATIONS.TOOLBAR_FADE }}
               >
                 <motion.span
                   initial={{ rotate: 0 }}
@@ -160,7 +164,7 @@ function EditorToolbarComponent({
                       ? { rotate: [-5, 5, -5, 0] }
                       : undefined
                   }
-                  transition={{ duration: 0.5 }}
+                  transition={{ duration: ANIMATION_DURATIONS.TOOLBAR_EXPAND }}
                 >
                   📋
                 </motion.span>
@@ -176,7 +180,7 @@ function EditorToolbarComponent({
                 initial={{ scale: 0.8, opacity: 1 }}
                 animate={{ scale: 1.2, opacity: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
+                transition={{ duration: ANIMATION_DURATIONS.TOOLBAR_SLIDE }}
               />
             )}
           </AnimatePresence>
@@ -194,7 +198,7 @@ function EditorToolbarComponent({
           </div>
         }
         position="bottom"
-        delay={400}
+        delay={UI.SMART_TOOLTIP_DELAY}
       >
         <button
           onClick={onExport}
@@ -223,7 +227,7 @@ function EditorToolbarComponent({
           </div>
         }
         position="bottom"
-        delay={400}
+        delay={UI.SMART_TOOLTIP_DELAY}
       >
         <button
           onClick={onNew}

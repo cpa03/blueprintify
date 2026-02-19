@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { copyToClipboard } from "../lib/export";
 import { sanitizeHtml } from "../lib/security";
-import { TIMEOUTS } from "../config/constants";
+import { TIMEOUTS, ANIMATION } from "../config/constants";
 
 export interface MarkdownRendererProps {
   content: string;
@@ -69,7 +69,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              transition={{ duration: 0.15 }}
+              transition={{ duration: ANIMATION.FAST }}
             >
               <path
                 strokeLinecap="round"
@@ -88,7 +88,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              transition={{ duration: 0.15 }}
+              transition={{ duration: ANIMATION.FAST }}
             >
               <path
                 strokeLinecap="round"

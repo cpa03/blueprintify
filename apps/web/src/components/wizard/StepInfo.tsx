@@ -7,6 +7,8 @@ import {
   TIMEOUTS,
   UI_CONTENT,
   VALIDATION_MESSAGES,
+  SPRING_CONFIG,
+  ANIMATION_DURATIONS,
 } from "../../config/constants";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 
@@ -118,7 +120,7 @@ export function StepInfo() {
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0, opacity: 0 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                    transition={{ type: "spring", ...SPRING_CONFIG.SMOOTH }}
                     className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-accent-emerald/20 text-accent-emerald"
                     aria-label="Project name is valid"
                   >
@@ -237,7 +239,7 @@ export function StepInfo() {
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0, opacity: 0 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                    transition={{ type: "spring", ...SPRING_CONFIG.SMOOTH }}
                     className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-accent-emerald/20 text-accent-emerald"
                     aria-label="Description is valid"
                   >
@@ -372,7 +374,7 @@ export function StepInfo() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.15 }}
+                  transition={{ duration: ANIMATION_DURATIONS.STEP_FADE }}
                   onClick={() => setTargetAudience("")}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus:outline-none focus:text-white transition-colors p-1 rounded-md hover:bg-dark-700/50"
                   aria-label="Clear target audience"
@@ -411,7 +413,7 @@ export function StepInfo() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.15 }}
+                  transition={{ duration: ANIMATION_DURATIONS.STEP_FADE }}
                   onClick={() => setConstraints("")}
                   className="text-xs text-dark-500 hover:text-dark-300 focus:outline-none focus:text-white transition-colors flex items-center gap-1 px-2 py-1 rounded-md hover:bg-dark-700/50"
                   aria-label="Clear constraints"

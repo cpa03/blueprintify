@@ -1,5 +1,6 @@
 import { useState, ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { UI, ANIMATION } from "../config/constants";
 
 interface TooltipProps {
   children: ReactNode;
@@ -12,7 +13,7 @@ export function Tooltip({
   children,
   content,
   position = "top",
-  delay = 500,
+  delay = UI.TOOLTIP_DELAY,
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
@@ -63,7 +64,7 @@ export function Tooltip({
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.15, ease: "easeOut" }}
+            transition={{ duration: ANIMATION.FAST, ease: "easeOut" }}
             className={`absolute ${positionClasses[position]} z-50 pointer-events-none`}
           >
             <div className="glass-card px-3 py-2 text-sm whitespace-nowrap shadow-xl border-dark-600">
@@ -115,7 +116,11 @@ export function KeyboardShortcutTooltip({
   );
 
   return (
-    <Tooltip content={content} position={position} delay={300}>
+    <Tooltip
+      content={content}
+      position={position}
+      delay={UI.TOOLTIP_DELAY_SHORT}
+    >
       {children}
     </Tooltip>
   );

@@ -2,7 +2,11 @@ import { useState, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { STARTER_TEMPLATES } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
-import { ANIMATION } from "../config/constants";
+import {
+  ANIMATION,
+  SPRING_CONFIG,
+  ANIMATION_DURATIONS,
+} from "../config/constants";
 
 function TemplateGridComponent() {
   const loadTemplate = useWizardStore((s) => s.loadTemplate);
@@ -104,8 +108,7 @@ function TemplateGridComponent() {
                     exit={{ opacity: 0 }}
                     className="absolute inset-0 rounded-lg border-2 border-accent-emerald/50"
                     style={{
-                      animation:
-                        "pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                      animation: `pulse ${ANIMATION_DURATIONS.PULSE_ANIMATION_SLOW}s cubic-bezier(0.4, 0, 0.6, 1) infinite`,
                     }}
                   />
                 )}
@@ -115,7 +118,7 @@ function TemplateGridComponent() {
                 <motion.div
                   className="text-3xl"
                   animate={isSelected ? { scale: 1.1 } : { scale: 1 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  transition={{ type: "spring", ...SPRING_CONFIG.BOUNCY }}
                 >
                   {template.icon}
                 </motion.div>

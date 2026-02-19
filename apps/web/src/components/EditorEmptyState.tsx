@@ -1,11 +1,16 @@
 import { motion } from "framer-motion";
 import { useWizardStore } from "../store";
-import { WIZARD_STEPS } from "../config/constants";
+import {
+  WIZARD_STEPS,
+  ANIMATION,
+  ANIMATION_DURATIONS,
+  ANIMATION_DELAYS,
+} from "../config/constants";
 
 const floatingAnimation = {
   y: [-8, 8, -8],
   transition: {
-    duration: 3,
+    duration: ANIMATION_DURATIONS.FLOATING_ANIMATION,
     repeat: Infinity,
     ease: "easeInOut",
   },
@@ -15,7 +20,7 @@ const pulseAnimation = {
   scale: [1, 1.05, 1],
   opacity: [0.5, 0.8, 0.5],
   transition: {
-    duration: 2,
+    duration: ANIMATION_DURATIONS.PROGRESS_BAR,
     repeat: Infinity,
     ease: "easeInOut",
   },
@@ -26,8 +31,8 @@ const staggerContainer = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
+      staggerChildren: ANIMATION_DELAYS.STAGGER_FAST,
+      delayChildren: ANIMATION_DELAYS.STAGGER_DEFAULT,
     },
   },
 };
@@ -38,7 +43,7 @@ const fadeInUp = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
+      duration: ANIMATION.SLOW,
       ease: "easeOut",
     },
   },
@@ -70,7 +75,10 @@ export function EditorEmptyState() {
               ...floatingAnimation,
               y: [-6, 6, -6],
             }}
-            transition={{ ...floatingAnimation.transition, delay: 0.2 }}
+            transition={{
+              ...floatingAnimation.transition,
+              delay: ANIMATION_DELAYS.STAGGER_DEFAULT,
+            }}
           >
             <span className="text-2xl opacity-50">📄</span>
           </motion.div>
@@ -81,7 +89,10 @@ export function EditorEmptyState() {
               ...floatingAnimation,
               y: [-4, 8, -4],
             }}
-            transition={{ ...floatingAnimation.transition, delay: 0.1 }}
+            transition={{
+              ...floatingAnimation.transition,
+              delay: ANIMATION_DELAYS.STAGGER_FAST,
+            }}
           >
             <span className="text-2xl opacity-70">📝</span>
           </motion.div>
@@ -94,17 +105,21 @@ export function EditorEmptyState() {
               className="w-full h-1.5 bg-dark-600 rounded mb-2"
               initial={{ width: "30%" }}
               animate={{ width: ["30%", "80%", "30%"] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              transition={{
+                duration: ANIMATION_DURATIONS.PROGRESS_BAR,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             />
             <motion.div
               className="w-full h-1 bg-dark-700 rounded mb-1.5"
               initial={{ width: "60%" }}
               animate={{ width: ["60%", "40%", "60%"] }}
               transition={{
-                duration: 2.5,
+                duration: ANIMATION_DURATIONS.CELEBRATION_DURATION,
                 repeat: Infinity,
                 ease: "easeInOut",
-                delay: 0.2,
+                delay: ANIMATION_DELAYS.STAGGER_DEFAULT,
               }}
             />
             <motion.div
@@ -112,10 +127,10 @@ export function EditorEmptyState() {
               initial={{ width: "80%" }}
               animate={{ width: ["80%", "50%", "80%"] }}
               transition={{
-                duration: 2.2,
+                duration: ANIMATION_DURATIONS.DOCUMENT_FLOAT,
                 repeat: Infinity,
                 ease: "easeInOut",
-                delay: 0.4,
+                delay: ANIMATION_DELAYS.STAGGER_SLOW,
               }}
             />
             <motion.div
@@ -123,10 +138,10 @@ export function EditorEmptyState() {
               initial={{ width: "40%" }}
               animate={{ width: ["40%", "70%", "40%"] }}
               transition={{
-                duration: 1.8,
+                duration: ANIMATION_DURATIONS.DOCUMENT_FLOAT_2,
                 repeat: Infinity,
                 ease: "easeInOut",
-                delay: 0.6,
+                delay: ANIMATION_DELAYS.STAGGER_SLOWER,
               }}
             />
           </motion.div>
@@ -164,7 +179,10 @@ export function EditorEmptyState() {
                       : "bg-dark-600"
                 }`}
                 animate={isCurrent ? { scale: [1, 1.3, 1] } : {}}
-                transition={{ duration: 1, repeat: Infinity }}
+                transition={{
+                  duration: ANIMATION_DURATIONS.PULSE_ANIMATION,
+                  repeat: Infinity,
+                }}
               />
             );
           })}
@@ -182,11 +200,14 @@ export function EditorEmptyState() {
         variants={fadeInUp}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.8 }}
+        transition={{ delay: ANIMATION_DELAYS.STAGGER_SLOWEST }}
       >
         <motion.span
           animate={{ x: [0, 4, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
+          transition={{
+            duration: ANIMATION_DURATIONS.PULSE_ANIMATION_SLOW,
+            repeat: Infinity,
+          }}
         >
           →
         </motion.span>

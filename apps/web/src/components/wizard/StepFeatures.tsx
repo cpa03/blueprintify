@@ -6,6 +6,7 @@ import {
   FORM_LIMITS,
   TIMEOUTS,
   UI_CONTENT,
+  ANIMATION_DURATIONS,
 } from "../../config/constants";
 
 export function StepFeatures() {
@@ -118,7 +119,7 @@ export function StepFeatures() {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.15 }}
+                    transition={{ duration: ANIMATION_DURATIONS.STEP_FADE }}
                     onClick={() => setNewFeature("")}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus:outline-none focus:text-white transition-colors p-1 rounded-md hover:bg-dark-700/50"
                     aria-label="Clear feature input"
