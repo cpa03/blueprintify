@@ -18,3 +18,8 @@ export { useLastSaved } from "./useLastSaved";
 export type { UseLastSavedReturn } from "./useLastSaved";
 export { useFocusTrap } from "./useFocusTrap";
 export type { UseFocusTrapOptions, UseFocusTrapReturn } from "./useFocusTrap";
+export { useAutoResizeTextarea } from "./useAutoResizeTextarea";
+export type {
+  UseAutoResizeTextareaOptions,
+  UseAutoResizeTextareaReturn,
+} from "./useAutoResizeTextarea";
