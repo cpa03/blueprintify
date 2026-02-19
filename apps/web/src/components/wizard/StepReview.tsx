@@ -4,7 +4,7 @@ import { useBlueprintStream } from "../../hooks/useBlueprintStream";
 import { GENERATION_ESTIMATES } from "../../config/constants";
 import { pageTransition } from "../../utils/motion";
 
-export function StepReview() {
+export function StepReview(): JSX.Element {
   const wizard = useWizardStore();
   const setStep = useWizardStore((s) => s.setStep);
   const { startGeneration, isGenerating, progress } = useBlueprintStream();

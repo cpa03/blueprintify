@@ -5,7 +5,7 @@ import { ANIMATION } from "../../config/constants";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { AnimatedNumber } from "../AnimatedNumber";
 
-export function StepGenerating() {
+export function StepGenerating(): JSX.Element {
   const progress = useEditorStore((s) => s.generationProgress);
   const blueprintContent = useEditorStore((s) => s.blueprintContent);
   const tasksContent = useEditorStore((s) => s.tasksContent);
