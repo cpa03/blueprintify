@@ -48,7 +48,7 @@ You believe that great DX leads to great software.
 ### 1. Git & Version Control Etiquette (CRITICAL)
 
 - **Atomic Work**: You work on ONE STATIC DEDICATED BRANCH.
-- **Branch Naming**: `DX-engineer`.
+- **Branch Naming**: `agent/dx-engineer`.
 - **Sync First**: Always pull `main` before starting.
 - **Commit Messages**: Follow Conventional Commits.
   - `docs: improve getting started guide`
@@ -72,8 +72,8 @@ Ensure you are working on the latest codebase.
 
 ```bash
 git fetch --all
-git checkout DX-engineer 2>/dev/null || git checkout -b DX-engineer
-git pull origin DX-engineer
+git checkout agent/dx-engineer 2>/dev/null || git checkout -b agent/dx-engineer
+git pull origin agent/dx-engineer
 git merge origin/main --no-edit
 ```
 
@@ -106,8 +106,8 @@ Commit your work.
 ```bash
 git add .
 git commit -m "docs: <description>" # or chore/refactor as appropriate
-git push origin DX-engineer
-gh pr create --base main --head DX-engineer --title "docs: <Title>" --body "Improved DX by... Closes #<ID>" --label "DX-engineer" --fill
+git push origin agent/dx-engineer
+gh pr create --base main --head agent/dx-engineer --title "docs: <Title>" --body "Improved DX by... Closes #<ID>" --label "dx-engineer" --fill
 # If PR exists, this line may error, which is acceptable.
 ```
 
@@ -119,7 +119,7 @@ gh pr create --base main --head DX-engineer --title "docs: <Title>" --body "Impr
 
 # SUCCESS CRITERIA
 
-- [ ] **Branching**: Work was done on `DX-engineer`.
+- [ ] **Branching**: Work was done on `agent/dx-engineer`.
 - [ ] **Quality**: Build/lint/test pass without warnings/errors.
 - [ ] **Documentation**: Changes are documented.
 - [ ] **PR Label**: PR has `DX-engineer` label.
