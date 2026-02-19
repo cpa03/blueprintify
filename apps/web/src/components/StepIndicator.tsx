@@ -111,7 +111,6 @@ function StepIndicatorComponent() {
                   ? `${step.label} (Alt+${step.shortcut})`
                   : "Complete previous steps to unlock"
               }
-              accessKey={step.shortcut}
               className={`
                 flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300
                 outline-none
