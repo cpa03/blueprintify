@@ -10,6 +10,7 @@ import {
   VALIDATION_MESSAGES,
 } from "../../config/constants";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
+import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
 import { RippleButton } from "../RippleButton";
 import { CharacterCounter } from "../CharacterCounter";
 import { pageTransition } from "../../utils/motion";
@@ -19,6 +20,10 @@ import { ValidationCheckmark } from "../ValidationCheckmark";
 export function StepInfo() {
   const projectNameInputRef = useRef<HTMLInputElement>(null);
   const [isShaking, setIsShaking] = useState(false);
+  const { textareaRef: descriptionRef } = useAutoResizeTextarea({
+    minHeight: 128,
+    maxHeight: 400,
+  });
   const projectName = useWizardStore((s) => s.projectName);
   const description = useWizardStore((s) => s.description);
   const targetAudience = useWizardStore((s) => s.targetAudience);
@@ -230,6 +235,7 @@ export function StepInfo() {
           </div>
           <div className="relative">
             <motion.textarea
+              ref={descriptionRef}
               id="description"
               name="description"
               value={description}
@@ -239,7 +245,7 @@ export function StepInfo() {
               }}
               onBlur={descriptionTyping.handleBlur}
               placeholder={UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_PLACEHOLDER}
-              className={`textarea-field h-32 transition-all duration-200 ${
+              className={`textarea-field transition-all duration-200 ${
                 description.length >= FORM_LIMITS.DESCRIPTION.MIN
                   ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20 pr-12"
                   : isDescriptionInvalid
