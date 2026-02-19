@@ -2,8 +2,8 @@
 -- Blueprintify Database Schema
 -- ============================================================================
 -- Cloudflare D1 (SQLite) Database Schema
--- Version: 1.3.0
--- Last Updated: 2026-02-18
+-- Version: 1.3.1
+-- Last Updated: 2026-02-19
 -- 
 -- Schema Conventions:
 -- - Table names: snake_case, plural form (e.g., users, project_blueprints)
@@ -52,7 +52,6 @@ CREATE TABLE IF NOT EXISTS projects (
     status TEXT DEFAULT 'active',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_projects_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT ck_projects_status CHECK (status IN ('active', 'archived', 'deleted'))
 );
@@ -71,7 +70,6 @@ CREATE TABLE IF NOT EXISTS blueprints (
     version INTEGER DEFAULT 1,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
     CONSTRAINT fk_blueprints_project_id FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 );
 
@@ -89,7 +87,6 @@ CREATE TABLE IF NOT EXISTS tasks (
     version INTEGER DEFAULT 1,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (blueprint_id) REFERENCES blueprints(id) ON DELETE CASCADE,
     CONSTRAINT fk_tasks_blueprint_id FOREIGN KEY (blueprint_id) REFERENCES blueprints(id) ON DELETE CASCADE
 );
 
@@ -114,7 +111,6 @@ CREATE TABLE IF NOT EXISTS templates (
     created_by TEXT, -- User ID who created the template (NULL for system templates)
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL,
     CONSTRAINT fk_templates_created_by FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL,
     CONSTRAINT ck_templates_category CHECK (category IN ('frontend', 'backend', 'fullstack', 'general'))
 );
@@ -131,7 +127,6 @@ CREATE TABLE IF NOT EXISTS sessions (
     expires_at DATETIME NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_sessions_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -149,7 +144,6 @@ CREATE TABLE IF NOT EXISTS analytics (
     ip_address TEXT,
     user_agent TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
     CONSTRAINT fk_analytics_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
     CONSTRAINT ck_analytics_event_type CHECK (event_type IN ('blueprint_generated', 'task_generated', 'template_used', 'export', 'import', 'refine', 'session_start', 'session_end'))
 );
