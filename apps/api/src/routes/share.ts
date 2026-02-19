@@ -7,6 +7,7 @@ import {
   ERROR_CODES,
   ERROR_MESSAGES,
   SHARE_CONFIG,
+  SHARE_ERROR_MESSAGES,
 } from "../config/constants";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -72,7 +73,7 @@ app.post(
         return c.json(
           {
             error: ERROR_CODES.CONFIGURATION_ERROR,
-            message: "Database not configured",
+            message: SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
           },
           HTTP_STATUS.INTERNAL_ERROR,
         );
@@ -121,7 +122,7 @@ app.get("/:id", async (c) => {
       return c.json(
         {
           error: ERROR_CODES.VALIDATION_ERROR,
-          message: "Invalid share ID format",
+          message: SHARE_ERROR_MESSAGES.INVALID_SHARE_ID_FORMAT,
         },
         HTTP_STATUS.BAD_REQUEST,
       );
@@ -131,7 +132,7 @@ app.get("/:id", async (c) => {
       return c.json(
         {
           error: ERROR_CODES.CONFIGURATION_ERROR,
-          message: "Database not configured",
+          message: SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
         },
         HTTP_STATUS.INTERNAL_ERROR,
       );
@@ -149,7 +150,7 @@ app.get("/:id", async (c) => {
       return c.json(
         {
           error: ERROR_CODES.NOT_FOUND_ERROR,
-          message: "Shared blueprint not found or expired",
+          message: SHARE_ERROR_MESSAGES.SHARE_NOT_FOUND_OR_EXPIRED,
         },
         HTTP_STATUS.NOT_FOUND,
       );
@@ -162,7 +163,7 @@ app.get("/:id", async (c) => {
       return c.json(
         {
           error: ERROR_CODES.NOT_FOUND_ERROR,
-          message: "Shared blueprint has expired",
+          message: SHARE_ERROR_MESSAGES.SHARE_EXPIRED,
         },
         HTTP_STATUS.NOT_FOUND,
       );
@@ -214,7 +215,7 @@ app.delete("/:id", async (c) => {
       return c.json(
         {
           error: ERROR_CODES.VALIDATION_ERROR,
-          message: "Invalid share ID format",
+          message: SHARE_ERROR_MESSAGES.INVALID_SHARE_ID_FORMAT,
         },
         HTTP_STATUS.BAD_REQUEST,
       );
@@ -224,7 +225,7 @@ app.delete("/:id", async (c) => {
       return c.json(
         {
           error: ERROR_CODES.CONFIGURATION_ERROR,
-          message: "Database not configured",
+          message: SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
         },
         HTTP_STATUS.INTERNAL_ERROR,
       );
@@ -236,7 +237,7 @@ app.delete("/:id", async (c) => {
 
     return c.json(
       {
-        message: "Share deleted successfully",
+        message: SHARE_ERROR_MESSAGES.SHARE_DELETED_SUCCESSFULLY,
       },
       HTTP_STATUS.OK,
     );
