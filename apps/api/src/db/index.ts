@@ -130,7 +130,10 @@ export interface DatabaseService {
 
   // Blueprint operations
   createBlueprint(
-    blueprint: Omit<Blueprint, "id" | "created_at" | "updated_at">,
+    blueprint: Omit<
+      Blueprint,
+      "id" | "created_at" | "updated_at" | "version"
+    > & { version?: number },
   ): Promise<Blueprint>;
   getBlueprintById(id: string): Promise<Blueprint | null>;
   getBlueprintsByProjectId(projectId: string): Promise<Blueprint[]>;
@@ -139,7 +142,9 @@ export interface DatabaseService {
 
   // Task operations
   createTask(
-    task: Omit<Task, "id" | "created_at" | "updated_at">,
+    task: Omit<Task, "id" | "created_at" | "updated_at" | "version"> & {
+      version?: number;
+    },
   ): Promise<Task>;
   getTaskById(id: string): Promise<Task | null>;
   getTasksByBlueprintId(blueprintId: string): Promise<Task[]>;
@@ -148,7 +153,10 @@ export interface DatabaseService {
 
   // Template operations
   createTemplate(
-    template: Omit<Template, "id" | "created_at" | "updated_at">,
+    template: Omit<
+      Template,
+      "id" | "created_at" | "updated_at" | "usage_count"
+    > & { usage_count?: number },
   ): Promise<Template>;
   getTemplateById(id: string): Promise<Template | null>;
   getPublicTemplates(): Promise<Template[]>;
@@ -279,12 +287,16 @@ export class MockDatabaseService implements DatabaseService {
   }
 
   async createBlueprint(
-    blueprint: Omit<Blueprint, "id" | "created_at" | "updated_at">,
+    blueprint: Omit<
+      Blueprint,
+      "id" | "created_at" | "updated_at" | "version"
+    > & { version?: number },
   ): Promise<Blueprint> {
     const id = `blueprint_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const now = new Date().toISOString();
     const newBlueprint: Blueprint = {
       ...blueprint,
+      version: blueprint.version ?? 1,
       id,
       created_at: now,
       updated_at: now,
@@ -323,11 +335,19 @@ export class MockDatabaseService implements DatabaseService {
   }
 
   async createTask(
-    task: Omit<Task, "id" | "created_at" | "updated_at">,
+    task: Omit<Task, "id" | "created_at" | "updated_at" | "version"> & {
+      version?: number;
+    },
   ): Promise<Task> {
     const id = `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const now = new Date().toISOString();
-    const newTask: Task = { ...task, id, created_at: now, updated_at: now };
+    const newTask: Task = {
+      ...task,
+      version: task.version ?? 1,
+      id,
+      created_at: now,
+      updated_at: now,
+    };
     this.tasks.set(id, newTask);
     return newTask;
   }
@@ -359,12 +379,16 @@ export class MockDatabaseService implements DatabaseService {
   }
 
   async createTemplate(
-    template: Omit<Template, "id" | "created_at" | "updated_at">,
+    template: Omit<
+      Template,
+      "id" | "created_at" | "updated_at" | "usage_count"
+    > & { usage_count?: number },
   ): Promise<Template> {
     const id = `template_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const now = new Date().toISOString();
     const newTemplate: Template = {
       ...template,
+      usage_count: template.usage_count ?? 0,
       id,
       created_at: now,
       updated_at: now,
