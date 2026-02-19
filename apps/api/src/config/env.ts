@@ -83,7 +83,7 @@ export const DEFAULTS: Omit<EnvConfig, "OPENAI_API_KEY"> = {
 
   // External URLs
   PROJECT_HOMEPAGE_URL: "https://blueprint-generator.pages.dev",
-  GITHUB_URL: "https://github.com",
+  GITHUB_URL: "https://github.com/cpa03/blueprintify",
 };
 
 /**
