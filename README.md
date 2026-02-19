@@ -113,14 +113,13 @@ npm run dev:api    # API only (port 8787)
 ### Quality Assurance
 
 ```bash
-# Type check TypeScript
+# Run all quality checks (typecheck + lint + test)
+npm run check
+
+# Or run individually:
 npm run typecheck
-
-# Lint Code
 npm run lint
-
-# Run API Tests
-npm run test:api
+npm run test:all
 ```
 
 ### Build

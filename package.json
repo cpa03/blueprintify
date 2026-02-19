@@ -19,6 +19,7 @@
     "test:api": "npm run test --workspace=apps/api",
     "test:all": "npm run test --workspace=apps/web -- --run && npm run test --workspace=apps/api",
     "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm run lint && npm run test:all",
     "db:migrate": "node scripts/migrate.ts",
     "db:init": "node scripts/migrate.ts init",
     "db:status": "node scripts/migrate.ts status",
