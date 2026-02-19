@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { SSE_HEADERS } from "@blueprint/shared";
 import { StorageManager } from "../lib/storage";
 import {
   createTestBlueprint,
@@ -88,7 +89,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
       fetchMock.mockResolvedValueOnce(
         new Response(stream, {
           status: 200,
-          headers: { "Content-Type": "text/event-stream" },
+          headers: { "Content-Type": SSE_HEADERS.CONTENT_TYPE },
         }),
       );
 
@@ -99,7 +100,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
       expect(response.status).toBe(200);
       expect(response.headers.get("Content-Type")).toContain(
-        "text/event-stream",
+        SSE_HEADERS.CONTENT_TYPE,
       );
     });
   });

@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { SSE_HEADERS } from "@blueprint/shared";
 import { StorageManager, StorageError } from "../lib/storage";
 import {
   createTestBlueprint,
@@ -263,7 +264,7 @@ describe("Integration: Error Propagation", () => {
       fetchMock.mockResolvedValueOnce(
         new Response(errorStream, {
           status: 200,
-          headers: { "Content-Type": "text/event-stream" },
+          headers: { "Content-Type": SSE_HEADERS.CONTENT_TYPE },
         }),
       );
 
