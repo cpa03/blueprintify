@@ -224,7 +224,7 @@ const ToastItem = forwardRef<HTMLDivElement, ToastItemProps>(function ToastItem(
   );
 });
 
-export function ToastContainer() {
+export function ToastContainer(): JSX.Element {
   const toasts = useToastStore((state) => state.toasts);
   const removeToast = useToastStore((state) => state.removeToast);
 

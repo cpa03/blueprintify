@@ -186,7 +186,7 @@ Agent definitions are stored in `.opencode/agent/` directory:
 ---
 agent: technical-writer
 category: writing
-model: opencode/minimax-m2.1-free
+model: opencode/glm-4.7-free
 ---
 
 # Technical Writer Agent Configuration
