@@ -6,6 +6,14 @@ interface LoggerConfig {
   logResponseBody?: boolean;
 }
 
+interface CloudflareRequestMetadata {
+  rayId?: string;
+  country?: string;
+  connectingIp?: string;
+  city?: string;
+  datacenter?: string;
+}
+
 interface RequestLog {
   requestId: string;
   method: string;
@@ -16,6 +24,7 @@ interface RequestLog {
   timestamp: string;
   ip?: string;
   userAgent?: string;
+  cloudflare?: CloudflareRequestMetadata;
 }
 
 interface ResponseLog {
@@ -24,10 +33,27 @@ interface ResponseLog {
   duration: number;
   timestamp: string;
   body?: unknown;
+  cfRay?: string;
 }
 
 const generateRequestId = (): string => {
   return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+};
+
+const extractCloudflareMetadata = (c: Context): CloudflareRequestMetadata => {
+  return {
+    rayId: c.req.header("cf-ray"),
+    country: c.req.header("cf-ipcountry"),
+    connectingIp: c.req.header("cf-connecting-ip"),
+    city: c.req.header("cf-ipcity"),
+    datacenter: c.req.header("cf-worker-dc"),
+  };
+};
+
+const hasCloudflareMetadata = (
+  metadata: CloudflareRequestMetadata,
+): boolean => {
+  return Object.values(metadata).some((v) => v !== undefined);
 };
 
 export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
@@ -47,6 +73,7 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
 
     const requestId = generateRequestId();
     const startTime = Date.now();
+    const cfMetadata = extractCloudflareMetadata(c);
 
     c.set("requestId", requestId);
 
@@ -70,9 +97,13 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
       query,
       headers,
       timestamp: new Date().toISOString(),
-      ip: c.req.header("cf-connecting-ip") || c.req.header("x-forwarded-for"),
+      ip: cfMetadata.connectingIp || c.req.header("x-forwarded-for"),
       userAgent: c.req.header("user-agent"),
     };
+
+    if (hasCloudflareMetadata(cfMetadata)) {
+      requestLog.cloudflare = cfMetadata;
+    }
 
     if (logRequestBody && c.req.method !== "GET") {
       try {
@@ -98,12 +129,20 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
     c.header("X-Request-ID", requestId);
     c.header("X-Response-Time", `${duration}ms`);
 
+    if (cfMetadata.rayId) {
+      c.header("X-CF-Ray", cfMetadata.rayId);
+    }
+
     const responseLog: ResponseLog = {
       requestId,
       status,
       duration,
       timestamp: new Date().toISOString(),
     };
+
+    if (cfMetadata.rayId) {
+      responseLog.cfRay = cfMetadata.rayId;
+    }
 
     if (logResponseBody) {
       try {
