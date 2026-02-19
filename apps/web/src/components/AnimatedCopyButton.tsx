@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
-import { CELEBRATION_COLORS } from "../config/constants";
+import { CELEBRATION_COLORS, ANIMATION_COLORS } from "../config/constants";
 
 interface Particle {
   id: number;
@@ -47,7 +47,7 @@ export function AnimatedCopyButton({
       const color: string =
         CELEBRATION_COLORS[
           Math.floor(Math.random() * CELEBRATION_COLORS.length)
-        ] ?? "#10b981";
+        ] ?? ANIMATION_COLORS.POSITIVE;
       const size = 3 + Math.random() * 3;
       const duration = 400 + Math.random() * 200;
 

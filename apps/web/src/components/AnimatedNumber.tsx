@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, useSpring, MotionValue } from "framer-motion";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
+import { ANIMATION_COLORS } from "../config/constants";
 
 interface AnimatedNumberProps {
   value: number;
@@ -95,8 +96,8 @@ export function AnimatedNumber({
               scale: [1, 1.1, 1],
               color:
                 directionRef.current === "up"
-                  ? ["inherit", "#10b981", "inherit"]
-                  : ["inherit", "#f43f5e", "inherit"],
+                  ? ["inherit", ANIMATION_COLORS.POSITIVE, "inherit"]
+                  : ["inherit", ANIMATION_COLORS.NEGATIVE, "inherit"],
             }
           : {}
       }
