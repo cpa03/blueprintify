@@ -23,11 +23,18 @@ const createShareSchema = z.object({
     .optional(),
 });
 
+/**
+ * Generates a cryptographically secure random share ID
+ * Uses crypto.getRandomValues() for secure random generation in Cloudflare Workers
+ */
 function generateShareId(): string {
+  const bytes = new Uint8Array(SHARE_CONFIG.ID_LENGTH);
+  crypto.getRandomValues(bytes);
+
   let result = "";
   for (let i = 0; i < SHARE_CONFIG.ID_LENGTH; i++) {
     result += SHARE_CONFIG.ALPHANUMERIC_CHARS.charAt(
-      Math.floor(Math.random() * SHARE_CONFIG.ALPHANUMERIC_CHARS.length),
+      bytes[i]! % SHARE_CONFIG.ALPHANUMERIC_CHARS.length,
     );
   }
   return result;
