@@ -267,13 +267,13 @@ export function SmartTooltip({
             style={{ maxWidth }}
           >
             <div
-              className="glass-card px-3 py-2 text-sm shadow-xl border-dark-600 backdrop-blur-xl"
+              className="glass-card px-3 py-2 text-sm shadow-xl backdrop-blur-xl"
               style={{ maxWidth }}
             >
               {content}
             </div>
             <div
-              className={`absolute w-2 h-2 border-4 border-dark-800 ${positionStyle.arrow}`}
+              className={`absolute w-2 h-2 border-4 border-dark-700/50 ${positionStyle.arrow}`}
               aria-hidden="true"
             />
           </motion.div>
