@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
 import { FormEvent, useEffect, useRef, useState } from "react";
@@ -17,7 +18,7 @@ import { pageTransition } from "../../utils/motion";
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
 import { ValidationCheckmark } from "../ValidationCheckmark";
 
-export function StepInfo() {
+function StepInfoComponent() {
   const projectNameInputRef = useRef<HTMLInputElement>(null);
   const [isShaking, setIsShaking] = useState(false);
   const { textareaRef: descriptionRef } = useAutoResizeTextarea({
@@ -451,3 +452,5 @@ export function StepInfo() {
     </motion.div>
   );
 }
+
+export const StepInfo = memo(StepInfoComponent);

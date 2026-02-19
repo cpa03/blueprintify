@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useCallback } from "react";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared";
@@ -20,7 +21,12 @@ interface TechChipProps {
   justSelected: string | null;
 }
 
-function TechChip({ tech, isSelected, onToggle, justSelected }: TechChipProps) {
+const TechChip = memo(function TechChip({
+  tech,
+  isSelected,
+  onToggle,
+  justSelected,
+}: TechChipProps) {
   const isJustSelected = justSelected === tech.name;
 
   return (
@@ -130,9 +136,9 @@ function TechChip({ tech, isSelected, onToggle, justSelected }: TechChipProps) {
       </span>
     </motion.button>
   );
-}
+});
 
-export function StepStack() {
+function StepStackComponent() {
   const [isShaking, setIsShaking] = useState(false);
   const [justSelected, setJustSelected] = useState<string | null>(null);
   const techStack = useWizardStore((s) => s.techStack);
@@ -341,3 +347,5 @@ export function StepStack() {
     </motion.div>
   );
 }
+
+export const StepStack = memo(StepStackComponent);
