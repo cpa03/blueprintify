@@ -55,6 +55,16 @@ export const ANIMATION_MS = {
   CHIP_SELECT_FEEDBACK: 600,
 } as const;
 
+// Celebration animation timing (in milliseconds)
+export const CELEBRATION_TIMING = {
+  /** Duration for reduced motion checkmark display */
+  REDUCED_MOTION_DISPLAY: 1500,
+  /** Duration before particles fade out */
+  PARTICLE_FADEOUT: 2000,
+  /** Duration before completion callback is called */
+  COMPLETION_DELAY: 2500,
+} as const;
+
 // Spring configurations for animations
 export const SPRING_CONFIG = {
   DEFAULT: { stiffness: 400, damping: 25, mass: 0.8 },
@@ -73,6 +83,8 @@ export const TIMEOUTS = {
   API_HEALTH_CHECK: 5000,
   /** Timeout for establishing initial API connection (not streaming duration) */
   API_CONNECTION: 30000,
+  /** Default interval for "last saved" display refresh */
+  LAST_SAVED_REFRESH: 30000,
 } as const;
 
 // Debounce configuration for state persistence (uses shared config)

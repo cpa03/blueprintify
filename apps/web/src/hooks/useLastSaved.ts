@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { TIMEOUTS } from "../config/constants";
 
 function formatRelativeTime(timestamp: number): string {
   const now = Date.now();
@@ -34,7 +35,7 @@ export interface UseLastSavedReturn {
 
 export function useLastSaved(
   initialTimestamp: number | null = null,
-  updateInterval: number = 30000,
+  updateInterval: number = TIMEOUTS.LAST_SAVED_REFRESH,
 ): UseLastSavedReturn {
   const [lastSavedTimestamp, setLastSavedTimestamp] = useState<number | null>(
     initialTimestamp,

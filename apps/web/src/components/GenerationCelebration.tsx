@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { CELEBRATION_COLORS } from "../config/constants";
+import { CELEBRATION_COLORS, CELEBRATION_TIMING } from "../config/constants";
 
 interface Particle {
   id: number;
@@ -118,7 +118,7 @@ export function GenerationCelebration({
       const timer = setTimeout(() => {
         setShowCheckmark(false);
         onComplete?.();
-      }, 1500);
+      }, CELEBRATION_TIMING.REDUCED_MOTION_DISPLAY);
       return () => clearTimeout(timer);
     }
 
@@ -131,12 +131,12 @@ export function GenerationCelebration({
 
     const particleTimer = setTimeout(() => {
       setParticles([]);
-    }, 2000);
+    }, CELEBRATION_TIMING.PARTICLE_FADEOUT);
 
     const completionTimer = setTimeout(() => {
       setShowCheckmark(false);
       onComplete?.();
-    }, 2500);
+    }, CELEBRATION_TIMING.COMPLETION_DELAY);
 
     return () => {
       clearTimeout(particleTimer);
