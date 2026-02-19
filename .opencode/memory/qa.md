@@ -75,5 +75,5 @@ The following issues were identified in `.github/workflows/` but require workflo
 - All 299 tests pass (218 web + 81 API)
 - TypeScript: No errors
 - ESLint: No errors
-- No skipped tests found
+- 1 skipped test (in security.test.ts)
 - No TODO/FIXME comments related to QA in source code
