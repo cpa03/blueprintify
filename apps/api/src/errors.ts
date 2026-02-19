@@ -32,13 +32,37 @@ export interface ErrorResponse {
 }
 
 // ===== Base API Error Class =====
+
+/**
+ * Base class for all API errors.
+ * Provides standardized error handling with type information, HTTP status codes,
+ * and optional details for debugging.
+ *
+ * @example
+ * ```typescript
+ * throw new APIError(ErrorType.VALIDATION, "Invalid input", 400, "VALIDATION_ERROR", { field: "email" });
+ * ```
+ */
 export class APIError extends Error {
+  /** The error type classification */
   public readonly type: ErrorType;
+  /** HTTP status code for the error response */
   public readonly statusCode: number;
+  /** Optional error code for client-side handling */
   public readonly code?: string;
+  /** Optional additional details about the error */
   public readonly details?: Record<string, unknown>;
+  /** Optional request ID for traceability */
   public readonly requestId?: string;
 
+  /**
+   * Creates a new APIError instance.
+   * @param type - The error type classification
+   * @param message - Human-readable error message
+   * @param statusCode - HTTP status code for the response
+   * @param code - Optional error code for client-side handling
+   * @param details - Optional additional error details
+   */
   constructor(
     type: ErrorType,
     message: string,
@@ -57,6 +81,10 @@ export class APIError extends Error {
     Error.captureStackTrace(this, this.constructor);
   }
 
+  /**
+   * Converts the error to a JSON response format.
+   * @returns Standardized error response object
+   */
   toJSON(): ErrorResponse {
     return {
       success: false,
@@ -73,7 +101,22 @@ export class APIError extends Error {
 }
 
 // ===== Validation Error (400) =====
+
+/**
+ * Error for request validation failures (HTTP 400).
+ * Used when request data fails schema validation or business rule checks.
+ *
+ * @example
+ * ```typescript
+ * throw new ValidationError("Invalid email format", { field: "email", value: "not-an-email" });
+ * ```
+ */
 export class ValidationError extends APIError {
+  /**
+   * Creates a new ValidationError instance.
+   * @param message - Human-readable validation error message
+   * @param details - Optional object containing validation failure details
+   */
   constructor(
     message: string = DEFAULT_ERROR_MESSAGES.VALIDATION,
     details?: Record<string, unknown>,
@@ -84,7 +127,16 @@ export class ValidationError extends APIError {
 }
 
 // ===== Authentication Error (401) =====
+
+/**
+ * Error for authentication failures (HTTP 401).
+ * Used when a request lacks valid authentication credentials.
+ */
 export class AuthenticationError extends APIError {
+  /**
+   * Creates a new AuthenticationError instance.
+   * @param message - Human-readable authentication error message
+   */
   constructor(message: string = DEFAULT_ERROR_MESSAGES.AUTHENTICATION) {
     super(ErrorType.AUTHENTICATION, message, 401, "AUTHENTICATION_ERROR");
     this.name = "AuthenticationError";
@@ -92,7 +144,16 @@ export class AuthenticationError extends APIError {
 }
 
 // ===== Authorization Error (403) =====
+
+/**
+ * Error for authorization failures (HTTP 403).
+ * Used when authenticated user lacks permission for the requested resource.
+ */
 export class AuthorizationError extends APIError {
+  /**
+   * Creates a new AuthorizationError instance.
+   * @param message - Human-readable authorization error message
+   */
   constructor(message: string = DEFAULT_ERROR_MESSAGES.AUTHORIZATION) {
     super(ErrorType.AUTHORIZATION, message, 403, "AUTHORIZATION_ERROR");
     this.name = "AuthorizationError";
@@ -100,7 +161,16 @@ export class AuthorizationError extends APIError {
 }
 
 // ===== Not Found Error (404) =====
+
+/**
+ * Error for resource not found (HTTP 404).
+ * Used when a requested resource does not exist.
+ */
 export class NotFoundError extends APIError {
+  /**
+   * Creates a new NotFoundError instance.
+   * @param resource - Description of the resource that was not found
+   */
   constructor(resource: string = DEFAULT_ERROR_MESSAGES.NOT_FOUND) {
     super(ErrorType.NOT_FOUND, resource, 404, "NOT_FOUND_ERROR");
     this.name = "NotFoundError";
@@ -108,7 +178,16 @@ export class NotFoundError extends APIError {
 }
 
 // ===== Configuration Error (500) =====
+
+/**
+ * Error for server configuration issues (HTTP 500).
+ * Used when required server configuration is missing or invalid.
+ */
 export class ConfigurationError extends APIError {
+  /**
+   * Creates a new ConfigurationError instance.
+   * @param message - Human-readable configuration error message
+   */
   constructor(message: string = DEFAULT_ERROR_MESSAGES.CONFIGURATION) {
     super(ErrorType.CONFIGURATION, message, 500, "CONFIGURATION_ERROR");
     this.name = "ConfigurationError";
@@ -116,7 +195,17 @@ export class ConfigurationError extends APIError {
 }
 
 // ===== Network Error (502) =====
+
+/**
+ * Error for network-related failures (HTTP 502).
+ * Used when external service communication fails.
+ */
 export class NetworkError extends APIError {
+  /**
+   * Creates a new NetworkError instance.
+   * @param message - Human-readable network error message
+   * @param details - Optional details about the network failure
+   */
   constructor(
     message: string = DEFAULT_ERROR_MESSAGES.NETWORK,
     details?: Record<string, unknown>,
@@ -127,7 +216,17 @@ export class NetworkError extends APIError {
 }
 
 // ===== AI Service Error (502) =====
+
+/**
+ * Error for AI service failures (HTTP 502).
+ * Used when the AI provider returns an error or is unavailable.
+ */
 export class AIServiceError extends APIError {
+  /**
+   * Creates a new AIServiceError instance.
+   * @param message - Human-readable AI service error message
+   * @param details - Optional details about the AI service failure
+   */
   constructor(
     message: string = DEFAULT_ERROR_MESSAGES.AI_SERVICE,
     details?: Record<string, unknown>,
@@ -138,7 +237,16 @@ export class AIServiceError extends APIError {
 }
 
 // ===== Internal Server Error (500) =====
+
+/**
+ * Error for unexpected internal failures (HTTP 500).
+ * Used as a catch-all for unhandled errors.
+ */
 export class InternalServerError extends APIError {
+  /**
+   * Creates a new InternalServerError instance.
+   * @param message - Human-readable internal error message
+   */
   constructor(message: string = DEFAULT_ERROR_MESSAGES.INTERNAL) {
     super(ErrorType.INTERNAL, message, 500, "INTERNAL_ERROR");
     this.name = "InternalServerError";
@@ -146,11 +254,24 @@ export class InternalServerError extends APIError {
 }
 
 // ===== Error Type Guard =====
+
+/**
+ * Type guard to check if an error is an APIError instance.
+ * @param error - Unknown error to check
+ * @returns True if the error is an APIError
+ */
 export function isAPIError(error: unknown): error is APIError {
   return error instanceof APIError;
 }
 
 // ===== Error Factory =====
+
+/**
+ * Creates a standardized error response from any error type.
+ * Handles APIError instances, Zod validation errors, and generic errors.
+ * @param error - The error to convert
+ * @returns Standardized error response object
+ */
 export function createErrorResponse(error: unknown): ErrorResponse {
   if (isAPIError(error)) {
     return error.toJSON();
