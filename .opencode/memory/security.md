@@ -8,6 +8,14 @@
 
 ## Lessons Learned
 
+### 2026-02-19: Insecure Random ID Generation in Share Endpoint
+
+- **Finding**: `generateShareId()` used `Math.random()` which is not cryptographically secure
+- **Root Cause**: `Math.random()` is predictable and can be reverse-engineered by attackers
+- **Risk**: ID prediction attacks could allow unauthorized access to shared blueprints
+- **Fix**: Replaced with `crypto.getRandomValues()` for cryptographically secure random generation
+- **Lesson**: All security-sensitive random values (IDs, tokens, nonces) must use `crypto.getRandomValues()` or equivalent CSPRNG
+
 ### 2026-02-18: AJV Dependency Vulnerability (Issue #418)
 
 - **Finding**: 9 moderate vulnerabilities in `ajv` package (ReDoS via `$data` option)
@@ -33,4 +41,5 @@
 - [x] CORS properly configured
 - [x] Constant-time comparison for auth tokens
 - [x] Circuit breaker for external dependencies
+- [x] Cryptographically secure random ID generation
 - [ ] Consider distributed rate limiting for production scale
