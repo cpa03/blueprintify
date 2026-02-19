@@ -398,6 +398,15 @@ export const CELEBRATION_COLORS = [
   "#fbbf24", // amber-400
 ] as const;
 
+// Animation colors for value change indicators
+// Matches Tailwind theme tokens: accent.emerald and accent.pink
+export const ANIMATION_COLORS = {
+  /** Positive value change (green) - matches accent.emerald */
+  POSITIVE: "#10b981",
+  /** Negative value change (rose) - matches rose-500 */
+  NEGATIVE: "#f43f5e",
+} as const;
+
 // External URLs used throughout the application
 export const EXTERNAL_URLS = {
   GITHUB: ENV.GITHUB_URL,
