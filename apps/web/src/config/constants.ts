@@ -65,10 +65,32 @@ export const CELEBRATION_TIMING = {
   COMPLETION_DELAY: 2500,
 } as const;
 
-// Spring configurations for animations
+/**
+ * Spring configurations for Framer Motion animations
+ *
+ * Usage:
+ * - DEFAULT: Standard spring for most UI elements
+ * - REDUCED_MOTION: Fast, minimal motion for accessibility
+ * - SNAPPY: Quick response for interactive elements
+ * - GENTLE: Slower, more relaxed animations
+ * - BOUNCY: Playful bounce effect
+ * - SUBTLE_BOUNCE: Light bounce for chip/tag selection
+ */
 export const SPRING_CONFIG = {
+  /** Standard spring - balanced response for most UI elements */
   DEFAULT: { stiffness: 400, damping: 25, mass: 0.8 },
+  /** Minimal motion - fast settle for accessibility */
   REDUCED_MOTION: { stiffness: 1000, damping: 100, mass: 0.1 },
+  /** Quick response - for buttons, toggles, interactive elements */
+  SNAPPY: { stiffness: 500, damping: 25, mass: 0.8 },
+  /** Relaxed motion - for modals, panels, large elements */
+  GENTLE: { stiffness: 400, damping: 30, mass: 0.8 },
+  /** Playful bounce - for celebrations, success states */
+  BOUNCY: { stiffness: 400, damping: 10, mass: 0.8 },
+  /** Light bounce - for chip selection, item add animations */
+  SUBTLE_BOUNCE: { stiffness: 400, damping: 17, mass: 0.8 },
+  /** Very gentle - for progress indicators, smooth transitions */
+  SLOW: { stiffness: 100, damping: 20, mass: 0.8 },
 } as const;
 
 // Timeouts (in milliseconds)

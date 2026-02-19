@@ -46,31 +46,35 @@ vi.mock("../lib/export", () => ({
   formatForIDE: vi.fn((content) => content),
 }));
 
-vi.mock("../config/constants", () => ({
-  TIMEOUTS: {
-    COPY_FEEDBACK: 2000,
-  },
-  ANIMATION: {
-    FAST: 0.15,
-    NORMAL: 0.2,
-    MEDIUM: 0.3,
-    SLOW: 0.5,
-    STAGGER: 0.1,
-    SPINNER_ROTATION: 1,
-    TYPING_INDICATOR_DELAY_S: 0.6,
-  },
-  DEFAULT_PROJECT_NAME: "Test Project",
-  WIZARD_STEPS: [
-    { key: "info", label: "Project Info", icon: "📝", shortcut: "1" },
-    { key: "stack", label: "Tech Stack", icon: "⚙️", shortcut: "2" },
-    { key: "features", label: "Features", icon: "✨", shortcut: "3" },
-    { key: "review", label: "Review", icon: "👀", shortcut: "4" },
-    { key: "generating", label: "Generate", icon: "🚀", shortcut: "5" },
-  ],
-  UI: {
-    SCROLL_TO_TOP_THRESHOLD: 600,
-  },
-}));
+vi.mock("../config/constants", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../config/constants")>();
+  return {
+    ...actual,
+    TIMEOUTS: {
+      COPY_FEEDBACK: 2000,
+    },
+    ANIMATION: {
+      FAST: 0.15,
+      NORMAL: 0.2,
+      MEDIUM: 0.3,
+      SLOW: 0.5,
+      STAGGER: 0.1,
+      SPINNER_ROTATION: 1,
+      TYPING_INDICATOR_DELAY_S: 0.6,
+    },
+    DEFAULT_PROJECT_NAME: "Test Project",
+    WIZARD_STEPS: [
+      { key: "info", label: "Project Info", icon: "📝", shortcut: "1" },
+      { key: "stack", label: "Tech Stack", icon: "⚙️", shortcut: "2" },
+      { key: "features", label: "Features", icon: "✨", shortcut: "3" },
+      { key: "review", label: "Review", icon: "👀", shortcut: "4" },
+      { key: "generating", label: "Generate", icon: "🚀", shortcut: "5" },
+    ],
+    UI: {
+      SCROLL_TO_TOP_THRESHOLD: 600,
+    },
+  };
+});
 
 const mockEditorStore: EditorStore = {
   activeTab: "blueprint",

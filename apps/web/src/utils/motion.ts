@@ -6,15 +6,21 @@
  */
 
 import type { Variants, Transition } from "framer-motion";
+import { SPRING_CONFIG } from "../config/constants";
 
 /**
  * Common transition configurations
+ * Uses centralized SPRING_CONFIG for spring animations
  */
 export const transitions = {
   fast: { duration: 0.15, ease: "easeOut" } as Transition,
   normal: { duration: 0.3, ease: "easeOut" } as Transition,
   slow: { duration: 0.5, ease: "easeOut" } as Transition,
-  spring: { type: "spring" as const, stiffness: 500, damping: 25 },
+  spring: {
+    type: "spring" as const,
+    stiffness: SPRING_CONFIG.SNAPPY.stiffness,
+    damping: SPRING_CONFIG.SNAPPY.damping,
+  },
 } as const;
 
 /**
