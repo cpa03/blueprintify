@@ -125,6 +125,10 @@ export interface DatabaseService {
   ): Promise<Project>;
   getProjectById(id: string): Promise<Project | null>;
   getProjectsByUserId(userId: string): Promise<Project[]>;
+  getProjectsByUserIdAndStatus(
+    userId: string,
+    status: Project["status"],
+  ): Promise<Project[]>;
   updateProject(id: string, updates: Partial<Project>): Promise<Project>;
   deleteProject(id: string): Promise<void>;
 
@@ -137,6 +141,7 @@ export interface DatabaseService {
   ): Promise<Blueprint>;
   getBlueprintById(id: string): Promise<Blueprint | null>;
   getBlueprintsByProjectId(projectId: string): Promise<Blueprint[]>;
+  getLatestBlueprintByProjectId(projectId: string): Promise<Blueprint | null>;
   updateBlueprint(id: string, updates: Partial<Blueprint>): Promise<Blueprint>;
   deleteBlueprint(id: string): Promise<void>;
 
@@ -270,6 +275,15 @@ export class MockDatabaseService implements DatabaseService {
     );
   }
 
+  async getProjectsByUserIdAndStatus(
+    userId: string,
+    status: string,
+  ): Promise<Project[]> {
+    return Array.from(this.projects.values()).filter(
+      (p) => p.user_id === userId && p.status === status,
+    );
+  }
+
   async updateProject(id: string, updates: Partial<Project>): Promise<Project> {
     const project = this.projects.get(id);
     if (!project) throw new Error("Project not found");
@@ -313,6 +327,15 @@ export class MockDatabaseService implements DatabaseService {
     return Array.from(this.blueprints.values()).filter(
       (b) => b.project_id === projectId,
     );
+  }
+
+  async getLatestBlueprintByProjectId(
+    projectId: string,
+  ): Promise<Blueprint | null> {
+    const blueprints = Array.from(this.blueprints.values())
+      .filter((b) => b.project_id === projectId)
+      .sort((a, b) => b.version - a.version);
+    return blueprints[0] || null;
   }
 
   async updateBlueprint(
