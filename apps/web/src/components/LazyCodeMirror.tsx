@@ -1,4 +1,9 @@
 import { useState, useEffect } from "react";
+import type { Extension } from "@codemirror/state";
+import type {
+  ReactCodeMirrorProps,
+  ReactCodeMirrorRef,
+} from "@uiw/react-codemirror";
 
 interface LazyCodeMirrorProps {
   value: string;
@@ -6,17 +11,19 @@ interface LazyCodeMirrorProps {
   className?: string;
 }
 
+type CodeMirrorComponent = React.ForwardRefExoticComponent<
+  ReactCodeMirrorProps & React.RefAttributes<ReactCodeMirrorRef>
+> | null;
+
 export function LazyCodeMirror({
   value,
   onChange,
   className,
 }: LazyCodeMirrorProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [CodeMirrorComponent, setCodeMirrorComponent] = useState<any>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [extensions, setExtensions] = useState<any[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [theme, setTheme] = useState<any>(null);
+  const [CodeMirrorComponent, setCodeMirrorComponent] =
+    useState<CodeMirrorComponent>(null);
+  const [extensions, setExtensions] = useState<Extension[]>([]);
+  const [theme, setTheme] = useState<Extension | undefined>(undefined);
 
   useEffect(() => {
     let isMounted = true;

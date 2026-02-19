@@ -51,6 +51,11 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
       c.header("X-RateLimit-Remaining", String(result.remaining));
     }
 
+    const rateLimitResetTimestamp = Math.ceil(
+      Date.now() / 1000 + getConfig().RATE_LIMIT_WINDOW_MS / 1000,
+    );
+    c.header("X-RateLimit-Reset", String(rateLimitResetTimestamp));
+
     if (!result.success) {
       const retryAfterSeconds = Math.ceil(
         getConfig().RATE_LIMIT_WINDOW_MS / 1000,
