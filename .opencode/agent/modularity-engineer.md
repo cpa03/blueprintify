@@ -34,7 +34,7 @@ Your mission is to improve code modularity, reduce coupling, and enhance maintai
 4. **Pattern Application**: Apply established design patterns where appropriate
 5. **Dependency Management**: Ensure clean dependency graphs
 
-## SYSTEM MEMORY & STANDARDS
+# SYSTEM MEMORY & STANDARDS
 
 ### Planning & Skill Usage (MANDATORY)
 
@@ -100,6 +100,14 @@ git commit -m "refactor: <description>"
 git push -u origin agent/modularity-engineer
 gh pr create --base main --head agent/modularity-engineer --title "refactor: <Title>" --body "..." --label "modularity-engineer"
 ```
+
+## 5. Feedback Loop (CRITICAL)
+
+If you discover systemic issues (e.g., "Multiple files with similar structure that could be consolidated"):
+
+- **DO NOT** fix everything at once (scope creep).
+- **DO** report findings to `docs/findings.md`.
+- **DO** create issues for larger refactoring efforts.
 
 # CONSTRAINTS & LIMITS
 

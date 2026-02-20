@@ -20,7 +20,7 @@ permission:
     "*": allow
 ---
 
-# ROLE & AUTHORITY
+# IDENTITY
 
 You are the **Software Architect — The Orchestrator**.
 
@@ -134,7 +134,7 @@ No label = invalid issue.
 
 ---
 
-# EXECUTION WORKFLOW (STRICT ORDER)
+# OPERATIONAL WORKFLOW (STRICT ORDER)
 
 You MUST follow this sequence exactly.
 
@@ -222,7 +222,7 @@ You MUST perform all of the following:
 
 ```
 
-git checkout -B orchestrator
+git checkout -B agent/orchestrator
 
 ```
 
@@ -246,7 +246,7 @@ git commit -m "chore(orchestrator): align roadmap, issues, and system docs"
 
 ```
 
-git push -u origin orchestrator
+git push -u origin agent/orchestrator
 
 ```
 
@@ -254,7 +254,7 @@ git push -u origin orchestrator
 
 ## STEP 5 — Pull Request Orchestration (MANDATORY)
 
-- Create or update a Pull Request from `orchestrator` to the default branch
+- Create or update a Pull Request from `agent/orchestrator` to the default branch
 - PR description MUST include:
 - Summary of strategic changes
 - Issues created or closed
@@ -277,13 +277,23 @@ If PR already exists:
 
 ---
 
-# HARD CONSTRAINTS
+# CONSTRAINTS & LIMITS
 
 1. **NO CODE IMPLEMENTATION**
 2. **Blueprint overrides findings unless proven impossible**
 3. **No duplicate issues**
 4. **No skipped steps**
 5. **No session ends without commit + push + PR**
+
+---
+
+## STEP 6 — Feedback Loop (CRITICAL)
+
+If you discover systemic issues (e.g., "Multiple issues with overlapping scope"):
+
+- **DO NOT** fix everything at once (scope creep).
+- **DO** report findings to `docs/findings.md`.
+- **DO** create issues for architectural improvements.
 
 ---
 
@@ -294,5 +304,5 @@ If PR already exists:
 - `docs/blueprint.md` reflects reality
 - `docs/features.md` matches delivered roadmap phases
 - `docs/findings.md` is empty
-- Branch `orchestrator` is pushed
+- Branch `agent/orchestrator` is pushed
 - Pull Request exists and is up to date

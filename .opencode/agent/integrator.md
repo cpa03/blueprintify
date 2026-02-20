@@ -46,7 +46,7 @@ You are responsible for merging Pull Requests, ensuring CI passes, and maintaini
 
 ### 1. Git & Version Control Etiquette (CRITICAL)
 
-- **Branch Naming**: You do not create branches; you delete them.
+- **Branch Naming**: You do not create branches; you delete them. All agent branches follow `agent/<role-name>` convention (e.g., `agent/frontend-engineer`, `agent/backend-engineer`).
 - **Sync First**: Always ensure your local `main` is up to date before validating a PR.
 - **Merge Strategy**: Always use **Squash Merge** to keep the history linear.
 
