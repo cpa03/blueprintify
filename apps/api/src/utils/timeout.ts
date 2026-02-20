@@ -69,24 +69,28 @@ export async function withTimeout<T>(
   const { signal } = controller;
 
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  let settled = false;
 
   const timeoutPromise = new Promise<never>((_, reject) => {
     timeoutId = setTimeout(() => {
-      controller.abort();
-      reject(new TimeoutError(timeoutMs, errorMessage));
+      if (!settled) {
+        controller.abort();
+        reject(new TimeoutError(timeoutMs, errorMessage));
+      }
     }, timeoutMs);
   });
 
   try {
     const result = await Promise.race([operation(signal), timeoutPromise]);
+    settled = true;
     if (timeoutId !== undefined) clearTimeout(timeoutId);
     return result;
   } catch (error) {
+    settled = true;
     if (timeoutId !== undefined) clearTimeout(timeoutId);
     if (error instanceof TimeoutError) {
       throw error;
     }
-    // Re-throw operation errors (including AbortError from fetch)
     throw error;
   }
 }

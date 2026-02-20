@@ -1,4 +1,13 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeEach,
+  afterEach,
+  beforeAll,
+  afterAll,
+} from "vitest";
 import { Hono } from "hono";
 import { MOCK_ENV } from "../test-utils";
 import { errorHandler } from "../middleware/errorHandler";
@@ -29,6 +38,16 @@ interface QuotaResponse {
   used: number;
   total: number;
 }
+
+let originalConsoleError: typeof console.error;
+beforeAll(() => {
+  originalConsoleError = console.error;
+  console.error = vi.fn();
+});
+
+afterAll(() => {
+  console.error = originalConsoleError;
+});
 
 describe("Integration: End-to-End M2 Workflows", () => {
   let app: Hono<{ Bindings: typeof MOCK_ENV }>;
