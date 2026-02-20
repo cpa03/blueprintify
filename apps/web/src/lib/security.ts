@@ -338,6 +338,14 @@ export function validateJSONSecurity(content: string): {
   }
 }
 
+/**
+ * Recursively calculates the maximum depth of a nested object.
+ * Used for DoS protection by limiting JSON object nesting levels.
+ *
+ * @param obj - The object to measure depth for
+ * @param currentDepth - Current recursion depth (default: 0)
+ * @returns The maximum depth of nested objects
+ */
 function getObjectDepth(obj: unknown, currentDepth = 0): number {
   if (currentDepth > SECURITY_LIMITS.MAX_JSON_DEPTH) return currentDepth;
   if (obj === null || typeof obj !== "object") return currentDepth;
@@ -354,6 +362,15 @@ function getObjectDepth(obj: unknown, currentDepth = 0): number {
   return maxDepth;
 }
 
+/**
+ * Recursively searches an object for keys that match suspicious patterns.
+ * Used for security validation to detect potential injection attacks.
+ *
+ * @param obj - The object to search for suspicious keys
+ * @param suspiciousKeys - Array of key names to look for
+ * @param path - Current object path for error reporting (default: "")
+ * @returns Array of paths where suspicious keys were found
+ */
 function findSuspiciousKeys(
   obj: unknown,
   suspiciousKeys: string[],
