@@ -8,7 +8,7 @@
 - CI/CD security: Standardized runner versions (`ubuntu-24.04-arm`) and action versions across all workflows.
 - Regular security audits (monthly recommended).
 
-## Current Security Status (2026-02-20 09:35 UTC)
+## Current Security Status (2026-02-20 13:24 UTC)
 
 | Control             | Status                                |
 | ------------------- | ------------------------------------- |
@@ -22,9 +22,19 @@
 | Secure Logging      | ✅ Sensitive data redaction           |
 | HTML Sanitization   | ✅ DOMPurify configured               |
 | Rate Limiting       | ✅ Cloudflare rate limiter            |
-| npm audit           | ⚠️ 19 vulnerabilities (dev deps only) |
+| CI Runner           | ✅ ubuntu-24.04-arm standardized      |
+| CI Actions          | ✅ Valid versions (@v4)               |
+| npm audit           | ⚠️ 18 vulnerabilities (dev deps only) |
 
 ## Lessons Learned
+
+### 2026-02-20 13:24 UTC: CI Workflow Security Standardization Fixed
+
+- **Finding**: `on pull.yml` workflow used outdated runner (`ubuntu-22.04-arm`) and invalid action versions (`@v6`)
+- **Root Cause**: Workflow not kept in sync with project standards defined in AGENTS.md
+- **Risk**: Outdated CI runners may contain unpatched vulnerabilities; invalid action versions could fail or execute unintended code
+- **Fix**: Updated runner to `ubuntu-24.04-arm`, actions/checkout and actions/setup-node to `@v4`
+- **Lesson**: CI workflows should be audited regularly for version consistency and security compliance per AGENTS.md standards
 
 ### 2026-02-20 09:35 UTC: Security Engineer Audit - Secure Logging Gap Fixed
 
