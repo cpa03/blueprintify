@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import type { Extension } from "@codemirror/state";
 import type {
   ReactCodeMirrorProps,
@@ -15,7 +15,7 @@ type CodeMirrorComponent = React.ForwardRefExoticComponent<
   ReactCodeMirrorProps & React.RefAttributes<ReactCodeMirrorRef>
 > | null;
 
-export function LazyCodeMirror({
+function LazyCodeMirrorComponent({
   value,
   onChange,
   className,
@@ -91,3 +91,5 @@ export function LazyCodeMirror({
     />
   );
 }
+
+export const LazyCodeMirror = memo(LazyCodeMirrorComponent);

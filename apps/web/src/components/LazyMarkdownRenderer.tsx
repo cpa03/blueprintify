@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import type { MarkdownRendererProps } from "./MarkdownRenderer";
 
 interface LazyMarkdownRendererProps extends MarkdownRendererProps {
   fallback?: React.ReactNode;
 }
 
-export function LazyMarkdownRenderer({
+function LazyMarkdownRendererComponent({
   content,
   className,
   fallback,
@@ -59,3 +59,5 @@ export function LazyMarkdownRenderer({
 
   return <MarkdownComponent content={content} className={className} />;
 }
+
+export const LazyMarkdownRenderer = memo(LazyMarkdownRendererComponent);
