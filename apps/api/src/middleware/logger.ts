@@ -89,7 +89,8 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
     Object.entries(allHeaders).forEach(([key, value]) => {
       if (
         !key.toLowerCase().includes("authorization") &&
-        !key.toLowerCase().includes("cookie")
+        !key.toLowerCase().includes("cookie") &&
+        value !== undefined
       ) {
         headers[key] = value;
       }
