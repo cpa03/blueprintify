@@ -67,12 +67,12 @@ npm install
 - [x] Created DX-engineer agent definition
 - [x] Created DX memory file
 - [x] Add editorconfig for consistent coding style (`.editorconfig` exists)
+- [x] Create troubleshooting guide (`docs/troubleshooting.md`)
 
 ### Pending
 
 - [ ] Improve error messages in development
 - [ ] Add more inline code comments
-- [ ] Create troubleshooting guide
 - [ ] Fix CI workflow configuration issues (Issue #483) - **BLOCKED** by GitHub App permission restrictions
 
 ## Workflow Configuration Notes
@@ -154,4 +154,6 @@ npm run build
 
 ---
 
-_Last updated: 2026-02-19_
+_Last updated: 2026-02-20_
+
+> **Note**: For comprehensive troubleshooting, see [docs/troubleshooting.md](../docs/troubleshooting.md)

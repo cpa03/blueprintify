@@ -269,6 +269,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Code Style Guidelines](./docs/code-style-guidelines.md)** - Coding standards and best practices
 - **[Testing Procedures](./docs/testing-procedures.md)** - Testing standards, tools, and guidelines
 - **[Release Process](./docs/release-process.md)** - Release and deployment procedures
+- **[Troubleshooting Guide](./docs/troubleshooting.md)** - Common issues and solutions
 
 ### 🤖 AI Agent System
 
