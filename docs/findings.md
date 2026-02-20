@@ -4,6 +4,43 @@
 
 ---
 
+## [Database-Architect] 2026-02-20 - Add getTemplatesByCreator Method
+
+### Observation
+
+The `templates` table has an index `idx_templates_created_by` for efficient lookup of templates by their creator, but the `DatabaseService` interface lacked a corresponding method to utilize this index. This meant the index was defined but not accessible through the data access layer.
+
+### Action Taken
+
+1. **Added `getTemplatesByCreator(userId: string)` method** to `DatabaseService` interface:
+   - Returns all templates created by a specific user
+   - Enables efficient use of `idx_templates_created_by` index
+
+2. **Implemented method in `MockDatabaseService`**:
+   - Filters templates by `created_by` field
+   - Returns empty array for users with no templates
+
+3. **Added comprehensive tests**:
+   - Test for retrieving templates by creator
+   - Test for empty result when user has no templates
+   - Total database tests increased from 43 to 45
+
+### Impact
+
+- Provides API for "My Templates" feature in user dashboard
+- Leverages existing index for optimal query performance
+- Non-breaking change (additive only)
+
+### Verification
+
+```bash
+npm run typecheck  # ✅ PASS
+npm run lint       # ✅ PASS
+npm run test:all   # ✅ PASS (363 tests: 219 web + 144 API)
+```
+
+---
+
 ## [AI-Agent-Engineer] 2026-02-20 - CMZ Agent Standardization
 
 ### Observation
