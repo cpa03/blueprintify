@@ -74,10 +74,15 @@ npm install
   - Storage errors include key names and recovery suggestions
   - Security errors explain what patterns were detected
   - Config errors include setup instructions
+- [x] Add JSDoc documentation to wizard.ts store (2026-02-20)
+  - Module-level documentation with feature overview
+  - Interface documentation for 15+ public methods
+  - Persistence layer documentation explaining schema migration
+  - Performance optimization comments for debounced saves
 
 ### Pending
 
-- [ ] Add more inline code comments
+- [ ] Continue adding inline code comments to other core files (editor.ts, hooks/)
 - [ ] Fix CI workflow configuration issues (Issue #483) - **BLOCKED** by GitHub App permission restrictions
 
 ## Workflow Configuration Notes

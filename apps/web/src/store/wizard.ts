@@ -1,3 +1,19 @@
+/**
+ * Wizard State Management Store
+ *
+ * Manages the multi-step wizard flow for project configuration.
+ * Provides persistent state via localStorage with debounced auto-save.
+ *
+ * Features:
+ * - Step navigation (info → stack → features → review → generating)
+ * - Project configuration (name, description, tech stack, features)
+ * - Template loading for quick-start
+ * - Automatic state persistence with backup/recovery
+ *
+ * @see docs/user-guide.md - Wizard usage documentation
+ * @see apps/web/src/lib/storage.ts - Persistence layer
+ */
+
 import { create } from "zustand";
 import type {
   WizardState,
@@ -8,6 +24,26 @@ import { createDebouncedSaver } from "@blueprint/shared";
 import { WIZARD_STEPS, DEBOUNCE_CONFIG } from "../config/constants";
 import { wizardStorage } from "../lib/storage";
 
+/**
+ * Extended wizard store interface with actions for state manipulation.
+ *
+ * @extends WizardState - Base state from shared types
+ * @property setStep - Navigate to a specific wizard step
+ * @property nextStep - Advance to the next step in sequence
+ * @property prevStep - Return to the previous step
+ * @property setProjectName - Update project name field
+ * @property setDescription - Update project description field
+ * @property addTechStack - Add a technology to the selected stack
+ * @property removeTechStack - Remove a technology from the stack
+ * @property setTechStack - Replace entire tech stack selection
+ * @property addFeature - Add a feature to the feature list
+ * @property removeFeature - Remove a feature by name or index
+ * @property clearFeatures - Clear all features
+ * @property setTargetAudience - Update target audience field
+ * @property setConstraints - Update constraints field
+ * @property reset - Reset store to initial state and clear storage
+ * @property loadTemplate - Load a pre-configured template
+ */
 export interface WizardStore extends WizardState {
   setStep: (step: WizardStep) => void;
   nextStep: () => void;
@@ -44,6 +80,10 @@ const initialState: WizardState = {
 };
 
 export const useWizardStore = create<WizardStore>()((set, get) => {
+  /**
+   * Loads persisted state from localStorage on store initialization.
+   * Merges stored state with initial state to handle schema migrations.
+   */
   const loadState = async (): Promise<void> => {
     try {
       const stored = await wizardStorage.get();
@@ -73,7 +113,7 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
     }
   };
 
-  // Create debounced save function for consistency with editor store
+  /** Debounced save prevents excessive localStorage writes on rapid updates */
   const { debounced: debouncedSave, cancel: cancelSave } = createDebouncedSaver(
     saveState,
     DEBOUNCE_CONFIG.WIZARD,
