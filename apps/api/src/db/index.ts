@@ -166,6 +166,7 @@ export interface DatabaseService {
   getTemplateById(id: string): Promise<Template | null>;
   getPublicTemplates(): Promise<Template[]>;
   getTemplatesByCategory(category: string): Promise<Template[]>;
+  getTemplatesByCreator(userId: string): Promise<Template[]>;
   updateTemplate(id: string, updates: Partial<Template>): Promise<Template>;
   deleteTemplate(id: string): Promise<void>;
   incrementTemplateUsage(id: string): Promise<void>;
@@ -431,6 +432,12 @@ export class MockDatabaseService implements DatabaseService {
   async getTemplatesByCategory(category: string): Promise<Template[]> {
     return Array.from(this.templates.values()).filter(
       (t) => t.category === category,
+    );
+  }
+
+  async getTemplatesByCreator(userId: string): Promise<Template[]> {
+    return Array.from(this.templates.values()).filter(
+      (t) => t.created_by === userId,
     );
   }
 

@@ -422,6 +422,57 @@ describe("MockDatabaseService", () => {
       expect(templates[0]!.category).toBe("frontend");
     });
 
+    it("should get templates by creator", async () => {
+      const user = await db.createUser({
+        email: "creator@example.com",
+        name: "Template Creator",
+      });
+
+      await db.createTemplate({
+        name: "User Template 1",
+        description: "Description",
+        icon: "📄",
+        project_name: "Project",
+        default_description: "Default",
+        category: "frontend",
+        is_public: false,
+        created_by: user.id,
+      });
+      await db.createTemplate({
+        name: "User Template 2",
+        description: "Description",
+        icon: "📄",
+        project_name: "Project",
+        default_description: "Default",
+        category: "backend",
+        is_public: false,
+        created_by: user.id,
+      });
+      await db.createTemplate({
+        name: "System Template",
+        description: "Description",
+        icon: "📄",
+        project_name: "Project",
+        default_description: "Default",
+        category: "general",
+        is_public: true,
+      });
+
+      const userTemplates = await db.getTemplatesByCreator(user.id);
+      expect(userTemplates).toHaveLength(2);
+      expect(userTemplates.every((t) => t.created_by === user.id)).toBe(true);
+    });
+
+    it("should return empty array when user has no templates", async () => {
+      const user = await db.createUser({
+        email: "nouser@example.com",
+        name: "No Templates User",
+      });
+
+      const templates = await db.getTemplatesByCreator(user.id);
+      expect(templates).toHaveLength(0);
+    });
+
     it("should increment template usage count", async () => {
       const template = await db.createTemplate({
         name: "Template",

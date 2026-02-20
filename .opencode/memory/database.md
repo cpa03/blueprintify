@@ -2,8 +2,8 @@
 
 ## Schema Version
 
-- Current Version: 1.3.1
-- Last Updated: 2026-02-19
+- Current Version: 1.3.2
+- Last Updated: 2026-02-20
 - Schema File: `schema.sql`
 
 ## Database Service Layer
@@ -12,7 +12,20 @@
 - Mock Implementation: `MockDatabaseService` for development
 - Production: D1 bindings configured in `apps/api/src/types.ts`
 - All tables have corresponding Zod schemas and TypeScript types
-- **Test Coverage**: `apps/api/src/db/index.test.ts` - 43 comprehensive tests covering all CRUD operations
+- **Test Coverage**: `apps/api/src/db/index.test.ts` - 49 comprehensive tests covering all CRUD operations
+
+## Available Methods
+
+### Template Operations
+
+- `createTemplate(template)` - Create a new template
+- `getTemplateById(id)` - Get template by ID
+- `getPublicTemplates()` - Get all public templates
+- `getTemplatesByCategory(category)` - Get templates by category
+- `getTemplatesByCreator(userId)` - Get templates created by a specific user (v1.3.2)
+- `updateTemplate(id, updates)` - Update template
+- `deleteTemplate(id)` - Delete template
+- `incrementTemplateUsage(id)` - Increment usage count
 
 ## Default Values (v1.3.1)
 
