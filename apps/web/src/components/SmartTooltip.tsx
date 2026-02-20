@@ -3,6 +3,7 @@ import {
   useRef,
   useEffect,
   useCallback,
+  memo,
   ReactNode,
   useId,
 } from "react";
@@ -60,7 +61,7 @@ const positionClasses: Record<Position, PositionStyles> = {
  * - Click-outside dismissal
  * - Proper focus/blur handling
  */
-export function SmartTooltip({
+function SmartTooltipComponent({
   children,
   content,
   position = "top",
@@ -283,6 +284,8 @@ export function SmartTooltip({
   );
 }
 
+const SmartTooltip = memo(SmartTooltipComponent);
+
 interface KeyboardShortcutTooltipProps {
   children: ReactNode;
   shortcut: string;
@@ -295,7 +298,7 @@ interface KeyboardShortcutTooltipProps {
  * KeyboardShortcutTooltip - Specialized tooltip for keyboard shortcuts
  * Automatically detects Mac/Windows and shows appropriate modifier key
  */
-export function KeyboardShortcutTooltip({
+function KeyboardShortcutTooltipComponent({
   children,
   shortcut,
   description,
@@ -336,6 +339,8 @@ export function KeyboardShortcutTooltip({
   );
 }
 
+const KeyboardShortcutTooltip = memo(KeyboardShortcutTooltipComponent);
+
 interface InfoTooltipProps {
   children: ReactNode;
   content: ReactNode;
@@ -347,7 +352,7 @@ interface InfoTooltipProps {
  * InfoTooltip - Tooltip with an info icon indicator
  * Useful for help text and explanations
  */
-export function InfoTooltip({
+function InfoTooltipComponent({
   children,
   content,
   position = "top",
@@ -383,6 +388,13 @@ export function InfoTooltip({
   );
 }
 
+const InfoTooltip = memo(InfoTooltipComponent);
+
 export type { SmartTooltipProps, Position };
-export { SmartTooltip as Tooltip };
+export {
+  SmartTooltip,
+  SmartTooltip as Tooltip,
+  KeyboardShortcutTooltip,
+  InfoTooltip,
+};
 export default SmartTooltip;

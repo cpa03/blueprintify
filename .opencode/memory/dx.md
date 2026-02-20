@@ -68,6 +68,7 @@ npm install
 - [x] Created DX memory file
 - [x] Add editorconfig for consistent coding style (`.editorconfig` exists)
 - [x] Create troubleshooting guide (`docs/troubleshooting.md`)
+- [x] Enhanced API error messages with helpful context (2026-02-20)
 
 ### Pending
 

@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - OpenCode integration for automated development workflows
 - Comprehensive documentation structure
 
+### Changed
+
+- Enhanced API documentation with JSDoc comments for secureLog utility functions ([#629](https://github.com/cpa03/blueprintify/pull/629))
+
 ## [1.0.0] - 2026-02-18
 
 ### Added

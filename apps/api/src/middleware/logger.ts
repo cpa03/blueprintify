@@ -1,11 +1,37 @@
+/**
+ * Request Logger Middleware
+ *
+ * Provides structured logging for HTTP requests and responses with Cloudflare-specific metadata.
+ * Generates unique request IDs for traceability and logs request/response details in JSON format.
+ *
+ * @module middleware/logger
+ */
+
 import type { Context, MiddlewareHandler, Next } from "hono";
 
+/**
+ * Configuration options for the request logger middleware.
+ *
+ * @property excludePaths - Array of paths to exclude from logging (e.g., health checks)
+ * @property logRequestBody - Whether to log request body content (default: false)
+ * @property logResponseBody - Whether to log response body content (default: false)
+ */
 interface LoggerConfig {
   excludePaths?: string[];
   logRequestBody?: boolean;
   logResponseBody?: boolean;
 }
 
+/**
+ * Cloudflare-specific request metadata extracted from headers.
+ * Used for enhanced logging in Cloudflare Workers environment.
+ *
+ * @property rayId - Cloudflare Ray ID for request tracing
+ * @property country - Client country code from CF-IPCountry header
+ * @property connectingIp - Client IP address from CF-Connecting-IP header
+ * @property city - Client city from CF-IPCity header
+ * @property datacenter - Cloudflare datacenter handling the request
+ */
 interface CloudflareRequestMetadata {
   rayId?: string;
   country?: string;
@@ -14,6 +40,20 @@ interface CloudflareRequestMetadata {
   datacenter?: string;
 }
 
+/**
+ * Structured log entry for incoming HTTP requests.
+ *
+ * @property requestId - Unique identifier for request tracing
+ * @property method - HTTP method (GET, POST, etc.)
+ * @property path - Request path without query string
+ * @property query - Parsed query parameters
+ * @property headers - Sanitized request headers (excludes auth/cookies)
+ * @property body - Optional request body (when logRequestBody is enabled)
+ * @property timestamp - ISO 8601 timestamp of request receipt
+ * @property ip - Client IP address
+ * @property userAgent - Client User-Agent string
+ * @property cloudflare - Optional Cloudflare-specific metadata
+ */
 interface RequestLog {
   requestId: string;
   method: string;
@@ -27,6 +67,16 @@ interface RequestLog {
   cloudflare?: CloudflareRequestMetadata;
 }
 
+/**
+ * Structured log entry for HTTP responses.
+ *
+ * @property requestId - Unique identifier matching the request
+ * @property status - HTTP response status code
+ * @property duration - Request processing time in milliseconds
+ * @property timestamp - ISO 8601 timestamp of response sent
+ * @property body - Optional response body (when logResponseBody is enabled)
+ * @property cfRay - Cloudflare Ray ID for response tracing
+ */
 interface ResponseLog {
   requestId: string;
   status: number;
@@ -36,6 +86,11 @@ interface ResponseLog {
   cfRay?: string;
 }
 
+/**
+ * Generates a unique request ID using timestamp and cryptographically random values.
+ *
+ * @returns A unique request ID in format `{timestamp}-{random}{random4}`
+ */
 const generateRequestId = (): string => {
   const randomValues = new Uint32Array(2);
   crypto.getRandomValues(randomValues);
@@ -45,6 +100,12 @@ const generateRequestId = (): string => {
   return `${timestamp}-${random}${random2}`;
 };
 
+/**
+ * Extracts Cloudflare-specific metadata from request headers.
+ *
+ * @param c - Hono context containing the request
+ * @returns Cloudflare metadata object with available headers
+ */
 const extractCloudflareMetadata = (c: Context): CloudflareRequestMetadata => {
   return {
     rayId: c.req.header("cf-ray"),
@@ -55,12 +116,36 @@ const extractCloudflareMetadata = (c: Context): CloudflareRequestMetadata => {
   };
 };
 
+/**
+ * Checks if any Cloudflare metadata is present.
+ *
+ * @param metadata - Cloudflare metadata object to check
+ * @returns True if any metadata field has a value
+ */
 const hasCloudflareMetadata = (
   metadata: CloudflareRequestMetadata,
 ): boolean => {
   return Object.values(metadata).some((v) => v !== undefined);
 };
 
+/**
+ * Creates a request logging middleware for Hono applications.
+ *
+ * Logs structured JSON entries for incoming requests and outgoing responses,
+ * including timing, Cloudflare metadata, and optional body content.
+ * Generates unique request IDs for distributed tracing.
+ *
+ * @param config - Logger configuration options
+ * @returns Hono middleware handler
+ *
+ * @example
+ * ```typescript
+ * app.use('*', requestLogger({
+ *   excludePaths: ['/', '/health'],
+ *   logRequestBody: true,
+ * }));
+ * ```
+ */
 export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
   const {
     excludePaths = ["/"],
