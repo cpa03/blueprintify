@@ -105,6 +105,7 @@ Use composite indexes for common multi-column query patterns:
 | `idx_blueprints_project_id_version`   | Latest blueprint version for project (version history lookup) |
 | `idx_analytics_user_id_event_type`    | User-specific analytics                                       |
 | `idx_templates_category_is_public`    | Public templates by category                                  |
+| `idx_templates_created_by_category`   | User's templates by category (filtered my templates page)     |
 | `idx_analytics_event_type_created_at` | Time-based analytics (event trends)                           |
 | `idx_sessions_user_id_expires_at`     | Active sessions for user (session validation)                 |
 
