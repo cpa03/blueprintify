@@ -51,6 +51,7 @@ app.use("*", rateLimit(rateLimitConfigs.standard));
 
 app.get("/", (c) => {
   c.header("Cache-Control", "public, max-age=60, stale-while-revalidate=30");
+  c.header("Server-Timing", 'app;desc="API Response";dur=0');
   return c.json({
     name: API_METADATA.NAME,
     version: API_METADATA.VERSION,
