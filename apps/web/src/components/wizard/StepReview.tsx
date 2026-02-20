@@ -40,6 +40,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
             <button
               onClick={() => setStep("info")}
               className="btn-ghost btn-sm flex items-center gap-1 text-primary-400 hover:text-primary-300"
+              aria-label="Edit project information"
               title="Edit project information"
             >
               <svg
@@ -94,6 +95,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
             <button
               onClick={() => setStep("stack")}
               className="btn-ghost btn-sm flex items-center gap-1 text-accent-cyan hover:text-accent-cyan/80"
+              aria-label="Edit tech stack"
               title="Edit tech stack"
             >
               <svg
@@ -140,6 +142,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
               <button
                 onClick={() => setStep("features")}
                 className="btn-ghost btn-sm flex items-center gap-1 text-accent-emerald hover:text-accent-emerald/80"
+                aria-label="Edit features"
                 title="Edit features"
               >
                 <svg
