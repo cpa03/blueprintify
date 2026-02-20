@@ -2,6 +2,7 @@ import type { Context } from "hono";
 import { createErrorResponse, isAPIError, ErrorType } from "../errors";
 import type { ErrorResponse } from "../errors";
 import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
+import { TimeoutError } from "../utils/timeout";
 import { ERROR_CODES, ERROR_MESSAGES, HTTP_STATUS } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
 
@@ -13,6 +14,25 @@ export const errorHandler = (err: unknown, c: Context): Response => {
     method: c.req.method,
     requestId,
   });
+
+  if (err instanceof TimeoutError) {
+    return c.json(
+      {
+        success: false,
+        error: {
+          type: ErrorType.SERVICE_UNAVAILABLE,
+          message: err.message,
+          code: ERROR_CODES.TIMEOUT_ERROR,
+          details: {
+            timeoutMs: err.timeoutMs,
+          },
+          timestamp: new Date().toISOString(),
+          ...(requestId && { requestId }),
+        },
+      },
+      HTTP_STATUS.GATEWAY_TIMEOUT,
+    );
+  }
 
   if (err instanceof CircuitBreakerOpenError) {
     return c.json(
