@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { CELEBRATION_COLORS, CELEBRATION_TIMING } from "../config/constants";
+import {
+  CELEBRATION_COLORS,
+  CELEBRATION_TIMING,
+  SPRING_CONFIG,
+} from "../config/constants";
 
 interface Particle {
   id: number;
@@ -203,8 +207,7 @@ export function GenerationCelebration({
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{
               type: "spring",
-              stiffness: 400,
-              damping: 25,
+              ...SPRING_CONFIG.DEFAULT,
             }}
           >
             <motion.div

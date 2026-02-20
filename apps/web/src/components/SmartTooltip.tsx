@@ -8,6 +8,7 @@ import {
   useId,
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { SPRING_CONFIG } from "../config/constants";
 
 type Position = "top" | "bottom" | "left" | "right";
 
@@ -260,9 +261,7 @@ function SmartTooltipComponent({
             }}
             transition={{
               type: "spring",
-              stiffness: 400,
-              damping: 25,
-              mass: 0.8,
+              ...SPRING_CONFIG.DEFAULT,
             }}
             className={`absolute ${positionStyle.container} z-50 pointer-events-none ${className}`}
             style={{ maxWidth }}

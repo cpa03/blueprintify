@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { SPRING_CONFIG } from "../config/constants";
 
 /**
  * SkipLink - Accessibility component for keyboard navigation
@@ -30,9 +31,7 @@ export function SkipLink(): JSX.Element {
       whileFocus={{ opacity: 1, y: 0, scale: 1 }}
       transition={{
         type: "spring",
-        stiffness: 400,
-        damping: 25,
-        mass: 0.8,
+        ...SPRING_CONFIG.DEFAULT,
       }}
       whileHover={{ scale: 1.02 }}
     >
