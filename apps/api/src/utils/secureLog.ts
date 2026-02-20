@@ -54,7 +54,20 @@ const SENSITIVE_PATTERNS = [
 ];
 
 /**
- * Sanitizes a string by removing sensitive information patterns
+ * Sanitizes a string by removing sensitive information patterns.
+ *
+ * Applies a series of regex replacements to remove or redact sensitive data
+ * such as API keys, tokens, database connection strings, file paths, IP addresses,
+ * email addresses, and UUIDs.
+ *
+ * @param input - The string to sanitize
+ * @returns The sanitized string with sensitive patterns replaced by [REDACTED] markers
+ *
+ * @example
+ * ```typescript
+ * const sanitized = sanitizeString('api_key=sk-12345');
+ * // Returns: 'api_key=[REDACTED]'
+ * ```
  */
 export function sanitizeString(input: string): string {
   let result = input;
@@ -65,8 +78,24 @@ export function sanitizeString(input: string): string {
 }
 
 /**
- * Sanitizes an error object for safe logging
- * Returns a sanitized version that can be safely logged
+ * Sanitizes an error object for safe logging.
+ *
+ * Converts any error type into a sanitized object that can be safely logged
+ * without exposing sensitive information. Handles Error instances, strings,
+ * and unknown error types.
+ *
+ * @param error - The error to sanitize (can be any type)
+ * @returns A sanitized error object with message, name, and optional stack trace
+ *
+ * @example
+ * ```typescript
+ * try {
+ *   await riskyOperation();
+ * } catch (error) {
+ *   const sanitized = sanitizeError(error);
+ *   console.log(sanitized.message); // Safe to log
+ * }
+ * ```
  */
 export function sanitizeError(error: unknown): {
   message: string;
@@ -95,7 +124,21 @@ export function sanitizeError(error: unknown): {
 }
 
 /**
- * Creates a sanitized log entry for error logging
+ * Creates a sanitized log entry for error logging.
+ *
+ * Combines context, sanitized error, and additional information into a
+ * structured log entry suitable for JSON logging.
+ *
+ * @param context - A string describing the context where the error occurred
+ * @param error - The error to log (will be sanitized)
+ * @param additionalInfo - Optional additional information to include in the log
+ * @returns A structured log entry object ready for JSON serialization
+ *
+ * @example
+ * ```typescript
+ * const logEntry = createSecureLogEntry('API Error', error, { path: '/generate' });
+ * console.log(JSON.stringify(logEntry));
+ * ```
  */
 export function createSecureLogEntry(
   context: string,
@@ -113,8 +156,23 @@ export function createSecureLogEntry(
 }
 
 /**
- * Secure console.error wrapper that sanitizes output
- * Use this instead of console.error for any error logging
+ * Secure console.error wrapper that sanitizes output.
+ *
+ * Use this instead of console.error for any error logging to ensure
+ * sensitive information is never leaked in logs.
+ *
+ * @param context - A string describing the context where the error occurred
+ * @param error - The error to log (will be sanitized)
+ * @param additionalInfo - Optional additional information to include in the log
+ *
+ * @example
+ * ```typescript
+ * try {
+ *   await fetchData();
+ * } catch (error) {
+ *   secureLogError('DataFetch', error, { url: '/api/data' });
+ * }
+ * ```
  */
 export function secureLogError(
   context: string,
@@ -126,7 +184,19 @@ export function secureLogError(
 }
 
 /**
- * Secure console.warn wrapper that sanitizes output
+ * Secure console.warn wrapper that sanitizes output.
+ *
+ * Use this instead of console.warn for any warning logging to ensure
+ * sensitive information is never leaked in logs.
+ *
+ * @param context - A string describing the context where the warning occurred
+ * @param message - The warning message (will be sanitized)
+ * @param additionalInfo - Optional additional information to include in the log
+ *
+ * @example
+ * ```typescript
+ * secureLogWarn('RateLimit', 'Rate limit approaching', { remaining: 5 });
+ * ```
  */
 export function secureLogWarn(
   context: string,
