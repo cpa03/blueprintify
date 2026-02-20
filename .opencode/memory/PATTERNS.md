@@ -8,6 +8,7 @@
 ### Agent Definition Standards
 
 - [Agent] All agents MUST use `opencode/glm-4.7-free` model per AGENTS.md mandate.
+- [Agent] No `fallback_models` allowed - AGENTS.md mandates exclusive use of `opencode/glm-4.7-free`.
 - [Agent] All agents MUST include these standard sections: IDENTITY, SYSTEM MEMORY & STANDARDS, OPERATIONAL WORKFLOW, CONSTRAINTS & LIMITS, SUCCESS CRITERIA.
 - [Agent] All agents MUST use the `agent/` prefix for branch naming (e.g., `agent/coder`, `agent/backend-engineer`).
 - [Agent] All agents MUST include the "Planning & Skill Usage (MANDATORY)" subsection under SYSTEM MEMORY & STANDARDS.

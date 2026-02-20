@@ -3,9 +3,6 @@ description: CMZ - Cognitive Multi-Agent System with Self-Heal, Self-Learning, S
 code: CMZ
 mode: primary
 model: opencode/glm-4.7-free
-fallback_models:
-  - opencode/kimi-k2.5-free
-  - opencode/minimax-m2.1-free
 temperature: 0.3
 tools:
   write: true
@@ -214,11 +211,9 @@ When integrating external repositories:
 
 ### Model Configuration
 
-All agents MUST use one of:
+All agents MUST use:
 
-- `opencode/glm-4.7-free` (primary)
-- `opencode/kimi-k2.5-free` (fallback 1)
-- `opencode/minimax-m2.1-free` (fallback 2)
+- `opencode/glm-4.7-free` (per AGENTS.md mandate)
 
 **Never use**: `iflowcn/glm-4.7`, `opencode/big-pickle` (known to cause failures)
 
