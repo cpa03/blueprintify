@@ -119,3 +119,31 @@ export const SSE_HEADERS = {
   CACHE_CONTROL: "no-cache",
   CONNECTION: "keep-alive",
 } as const;
+
+/**
+ * ID Generation Configuration
+ * Centralized settings for generating unique identifiers
+ */
+export const ID_GENERATION_CONFIG = {
+  /** Start index for random string extraction from base-36 conversion */
+  RANDOM_STRING_START_INDEX: 2,
+  /** Length of random string portion in generated IDs */
+  RANDOM_STRING_LENGTH: 9,
+  /** Radix for Math.random().toString() to produce alphanumeric characters */
+  ALPHANUMERIC_RADIX: 36,
+} as const;
+
+/**
+ * Time Units Constants
+ * Centralized time conversion values to avoid magic numbers
+ */
+export const TIME_UNITS = {
+  /** Milliseconds per second */
+  MS_PER_SECOND: 1000,
+  /** Seconds per minute */
+  SECONDS_PER_MINUTE: 60,
+  /** Seconds per hour */
+  SECONDS_PER_HOUR: 3600,
+  /** Seconds per day */
+  SECONDS_PER_DAY: 86400,
+} as const;

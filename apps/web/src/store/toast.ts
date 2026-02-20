@@ -1,5 +1,10 @@
 import { create } from "zustand";
 import { TOAST_CONFIG } from "../config/constants";
+import { ID_GENERATION_CONFIG } from "@blueprint/shared";
+
+const { RANDOM_STRING_START_INDEX, RANDOM_STRING_LENGTH, ALPHANUMERIC_RADIX } =
+  ID_GENERATION_CONFIG;
+const END_INDEX = RANDOM_STRING_START_INDEX + RANDOM_STRING_LENGTH;
 
 export type ToastType = "success" | "info" | "warning" | "error";
 
@@ -28,7 +33,7 @@ export const useToastStore = create<ToastStore>()((set, get) => ({
     type: ToastType,
     duration = TOAST_CONFIG.DEFAULT_DURATION,
   ) => {
-    const id = `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const id = `toast-${Date.now()}-${Math.random().toString(ALPHANUMERIC_RADIX).substring(RANDOM_STRING_START_INDEX, END_INDEX)}`;
     const toast: Toast = { id, message, type, duration };
 
     set((state) => ({
