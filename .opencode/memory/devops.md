@@ -29,7 +29,7 @@
 - `on pull.yml` still uses `actions/setup-node@v6` (should be `v4`)
 - File still has space in name: `on pull.yml` (not renamed)
 
-**Fixes Prepared** (2026-02-20):
+**Fixes Required** (2026-02-20):
 
 1. ⏳ **Runner version** (line 23):
    - `ubuntu-22.04-arm` → `ubuntu-24.04-arm` (per AGENTS.md requirement)
@@ -38,18 +38,20 @@
    - `actions/checkout@v6` → `actions/checkout@v4`
    - `actions/setup-node@v6` → `actions/setup-node@v4`
 
-3. ⏳ **Line endings**: Normalized to LF
+3. ⏳ **Line endings**: Normalize to LF (per `.gitattributes`)
 
-**Verification Results** (2026-02-20):
+4. ⏳ **Filename rename**: `on pull.yml` → `on-pull.yml` (space in filename is problematic)
+
+**Latest Verification Results** (2026-02-20 20:59 UTC):
 
 ```
 ✓ typecheck: passed
 ✓ lint: passed
-✓ build: passed (19.14s)
-✓ tests: 343 passed (219 web + 124 api)
+✓ build: passed (14.39s)
+✓ tests: 396 passed (236 web + 160 api)
 ```
 
-**Action Required**: Someone with repository admin access must manually apply these fixes to the workflow files.
+**Action Required**: Someone with repository admin access must manually apply these fixes to the workflow files, or grant the GitHub App `workflows` permission.
 
 ## Deployment Configuration
 
