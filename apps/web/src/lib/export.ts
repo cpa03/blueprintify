@@ -1325,7 +1325,7 @@ function generateStaticHTML(
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 ${projectName}. All rights reserved.</p>
+            <p>&copy; ${new Date().getFullYear()} ${projectName}. All rights reserved.</p>
         </div>
     </footer>
 

@@ -328,7 +328,9 @@ export const UI_CONTENT = {
   },
   FOOTER: {
     BUILT_WITH: "Built with ⚡ Cloudflare Workers + React",
-    COPYRIGHT: "© 2024 Blueprint Generator",
+    get COPYRIGHT(): string {
+      return `© ${new Date().getFullYear()} Blueprint Generator`;
+    },
   },
   BUTTONS: {
     GITHUB: "GitHub",
