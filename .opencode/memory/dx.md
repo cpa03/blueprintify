@@ -69,10 +69,14 @@ npm install
 - [x] Add editorconfig for consistent coding style (`.editorconfig` exists)
 - [x] Create troubleshooting guide (`docs/troubleshooting.md`)
 - [x] Enhanced API error messages with helpful context (2026-02-20)
+- [x] Improved error messages with contextual information (2026-02-20)
+  - Database errors now include entity IDs for easier debugging
+  - Storage errors include key names and recovery suggestions
+  - Security errors explain what patterns were detected
+  - Config errors include setup instructions
 
 ### Pending
 
-- [ ] Improve error messages in development
 - [ ] Add more inline code comments
 - [ ] Fix CI workflow configuration issues (Issue #483) - **BLOCKED** by GitHub App permission restrictions
 

@@ -56,7 +56,9 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
 
   const docsFolder = zip.folder(".docs");
   if (!docsFolder) {
-    throw new Error("Failed to create docs folder");
+    throw new Error(
+      "Failed to create .docs folder in ZIP archive. This may indicate a memory issue or ZIP library error. Try reducing the content size or refreshing the page.",
+    );
   }
 
   if (sanitizedBlueprint) {

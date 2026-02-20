@@ -51,7 +51,7 @@ describe("Security Utilities", () => {
     it("should detect XSS patterns in markdown", () => {
       const maliciousMarkdown = 'Hello <script>alert("xss")</script>';
       expect(() => sanitizeMarkdown(maliciousMarkdown)).toThrow(
-        "Content contains potentially dangerous patterns",
+        "Content contains potentially dangerous XSS patterns",
       );
     });
 

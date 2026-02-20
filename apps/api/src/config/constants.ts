@@ -35,7 +35,9 @@ export function setEnvConfig(config: EnvConfig | null): void {
  */
 export function getEnvConfig(): EnvConfig {
   if (!envConfig) {
-    throw new Error("Environment config not set. Call setEnvConfig() first.");
+    throw new Error(
+      "Environment config not set. Call setEnvConfig() first during application initialization. This typically happens automatically in the main entry point (index.ts).",
+    );
   }
   return envConfig;
 }

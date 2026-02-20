@@ -124,7 +124,9 @@ export function sanitizeHtml(html: string): string {
 
 export function sanitizeMarkdown(markdown: string): string {
   if (containsXSSPatterns(markdown)) {
-    throw new Error("Content contains potentially dangerous patterns");
+    throw new Error(
+      "Content contains potentially dangerous XSS patterns. This may include script tags, event handlers, or javascript: URLs. Please remove any embedded scripts or suspicious HTML.",
+    );
   }
 
   // Additional CodeMirror-specific security patterns
@@ -139,7 +141,9 @@ export function sanitizeMarkdown(markdown: string): string {
   ];
 
   if (CODEMIRROR_PATTERNS.some((pattern) => pattern.test(markdown))) {
-    throw new Error("Content contains CodeMirror-specific dangerous patterns");
+    throw new Error(
+      "Content contains CodeMirror-specific dangerous patterns (data: URLs, vbscript, CSS expressions, or IE-specific behaviors). These are blocked for security reasons.",
+    );
   }
 
   const htmlRegex = /<[^>]+>/g;
