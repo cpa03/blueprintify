@@ -285,3 +285,39 @@ sed -i 's/\r$//' .github/workflows/on\ pull.yml .github/workflows/pr-gatekeeper.
 This change requires `workflows` permission on GitHub App. Currently blocked by permission restrictions. Issue tracked in #483.
 
 ---
+
+## [Reliability] 2026-02-20 - Logger Middleware Undefined Header Value Fix
+
+### Observation
+
+The request logger middleware (`apps/api/src/middleware/logger.ts`) was assigning potentially undefined header values to the headers object. The `c.req.header()` method returns `Record<string, string | undefined>`, but the code was not filtering out undefined values before assignment.
+
+### Action Taken
+
+Added `value !== undefined` check to the header filtering logic:
+
+```typescript
+// Before
+if (!key.toLowerCase().includes("authorization") && !key.toLowerCase().includes("cookie")) {
+  headers[key] = value; // value could be undefined
+}
+
+// After
+if (!key.toLowerCase().includes("authorization") && !key.toLowerCase().includes("cookie") && value !== undefined) {
+  headers[key] = value;
+}
+```
+
+### Impact
+
+- Prevents undefined values from being logged in request headers
+- Ensures type safety for the `headers` Record<string, string>
+- No runtime behavior change (undefined values were already not useful in logs)
+
+### Verification
+
+- ✅ TypeScript: No errors
+- ✅ ESLint: No errors
+- ✅ Tests: 360 passed (218 web + 142 API)
+
+---
