@@ -137,14 +137,17 @@ describe("Security Utilities", () => {
   });
 
   describe("validateAndSanitizeFileContent", () => {
-    it.skip("should validate and sanitize safe file content", async () => {
-      const mockFile = new File(["# Safe content"], "test.md", {
+    it("should validate and sanitize safe file content", async () => {
+      const mockContent = "# Safe content";
+      const mockFile = new File([mockContent], "test.md", {
         type: "text/plain",
       });
-      Object.defineProperty(mockFile, "size", { value: 13 });
+      Object.defineProperty(mockFile, "size", { value: mockContent.length });
+      // jsdom File doesn't implement text() method, so we mock it
+      mockFile.text = async () => mockContent;
       const result = await validateAndSanitizeFileContent(mockFile);
       expect(result.isValid).toBe(true);
-      expect(result.content).toBe("# Safe content");
+      expect(result.content).toBe(mockContent);
     });
 
     it("should reject file with malicious content", async () => {
