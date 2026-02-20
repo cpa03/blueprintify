@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 
 interface CharacterCounterProps {
@@ -17,7 +18,7 @@ interface CharacterCounterProps {
  * - Smooth transitions between states
  * - Accessible with aria-live region
  */
-export function CharacterCounter({
+function CharacterCounterComponent({
   current,
   max,
   min,
@@ -78,10 +79,12 @@ export function CharacterCounter({
   );
 }
 
+export const CharacterCounter = memo(CharacterCounterComponent);
+
 /**
  * Compact version for tight spaces
  */
-export function CharacterCounterCompact({
+function CharacterCounterCompactComponent({
   current,
   max,
   className = "",
@@ -116,5 +119,7 @@ export function CharacterCounterCompact({
     </div>
   );
 }
+
+export const CharacterCounterCompact = memo(CharacterCounterCompactComponent);
 
 export default CharacterCounter;
