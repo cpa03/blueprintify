@@ -8,25 +8,33 @@
 - CI/CD security: Standardized runner versions (`ubuntu-24.04-arm`) and action versions across all workflows.
 - Regular security audits (monthly recommended).
 
-## Current Security Status (2026-02-20 13:24 UTC)
+## Current Security Status (2026-02-20 16:55 UTC)
 
-| Control             | Status                                |
-| ------------------- | ------------------------------------- |
-| Hardcoded Secrets   | ✅ None found                         |
-| XSS Vectors         | ✅ No dangerouslySetInnerHTML         |
-| Code Injection      | ✅ No eval/innerHTML                  |
-| Input Validation    | ✅ Zod schemas                        |
-| Auth Timing Attacks | ✅ Constant-time compare              |
-| Secure Random       | ✅ crypto.getRandomValues()           |
-| Security Headers    | ✅ Hono secureHeaders()               |
-| Secure Logging      | ✅ Sensitive data redaction           |
-| HTML Sanitization   | ✅ DOMPurify configured               |
-| Rate Limiting       | ✅ Cloudflare rate limiter            |
-| CI Runner           | ✅ ubuntu-24.04-arm standardized      |
-| CI Actions          | ✅ Valid versions (@v4)               |
-| npm audit           | ⚠️ 18 vulnerabilities (dev deps only) |
+| Control             | Status                                     |
+| ------------------- | ------------------------------------------ |
+| Hardcoded Secrets   | ✅ None found                              |
+| XSS Vectors         | ✅ No dangerouslySetInnerHTML              |
+| Code Injection      | ✅ No eval/innerHTML                       |
+| Input Validation    | ✅ Zod schemas                             |
+| Auth Timing Attacks | ✅ Constant-time compare                   |
+| Secure Random       | ✅ crypto.getRandomValues()                |
+| Security Headers    | ✅ Hono secureHeaders()                    |
+| Secure Logging      | ✅ Sensitive data redaction                |
+| HTML Sanitization   | ✅ DOMPurify configured (SVG/math blocked) |
+| Rate Limiting       | ✅ Cloudflare rate limiter                 |
+| CI Runner           | ✅ ubuntu-24.04-arm standardized           |
+| CI Actions          | ✅ Valid versions (@v4)                    |
+| npm audit           | ⚠️ 18 vulnerabilities (dev deps only)      |
 
 ## Lessons Learned
+
+### 2026-02-20 16:55 UTC: XSS Pattern Library Enhancement
+
+- **Finding**: XSS pattern library was missing modern attack vectors (SVG-based, mutation XSS, DOM clobbering)
+- **Root Cause**: Original patterns focused on traditional XSS vectors; newer attack techniques emerged
+- **Risk**: SVG elements can contain embedded scripts; mutation XSS exploits browser parsing quirks; DOM clobbering can override global variables
+- **Fix**: Added FORBID_TAGS for `svg`, `math`, `base`, `link`, `meta`; added XSS_PATTERNS for SVG animate/set/use, data/base64/blob protocols, DOM clobbering IDs, noscript/template elements
+- **Lesson**: XSS defense must evolve with attack techniques; regular pattern library audits are essential for defense-in-depth
 
 ### 2026-02-20 13:24 UTC: CI Workflow Security Standardization Fixed
 
@@ -138,4 +146,5 @@
 - [x] Permissions-Policy header (browser features disabled)
 - [x] HSTS header (HTTPS enforcement)
 - [x] DOMPurify with formaction forbidden
+- [x] XSS pattern library includes SVG/math/mutation XSS vectors
 - [ ] Consider distributed rate limiting for production scale
