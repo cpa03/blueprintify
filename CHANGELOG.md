@@ -9,13 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- AI Agent System with 25+ specialized roles
+- AI Agent System with 27+ specialized roles
 - OpenCode integration for automated development workflows
 - Comprehensive documentation structure
+- `getTemplatesByCreator` method to DatabaseService for "My Templates" feature support
+- ErrorBoundary component for graceful error handling in React frontend
+- Comprehensive database service test coverage (49 tests)
 
 ### Changed
 
 - Enhanced API documentation with JSDoc comments for secureLog utility functions ([#629](https://github.com/cpa03/blueprintify/pull/629))
+- Standardized CMZ agent definition with mandatory planning section
+- Fixed default value handling in MockDatabaseService (version, usage_count)
+- Improved request logger middleware to handle undefined header values
+
+### Fixed
+
+- Recursive trigger bug in schema.sql that caused infinite loops
+- `deserializeJSON` safety with proper error handling
+- Share endpoint validation consistency using SHARE_CONFIG.ID_LENGTH constant
 
 ## [1.0.0] - 2026-02-18
 
