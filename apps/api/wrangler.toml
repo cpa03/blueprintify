@@ -4,6 +4,10 @@ compatibility_date = "2026-02-19"
 compatibility_flags = ["nodejs_compat"]
 tsconfig = "./tsconfig.json"
 
+# Production debugging: Upload source maps for readable stack traces
+# https://developers.cloudflare.com/workers/observability/source-maps
+upload_source_maps = true
+
 # Smart Placement - optimizes worker placement based on traffic patterns
 # Takes up to 15 minutes to analyze after deployment
 [placement]
@@ -91,6 +95,19 @@ retry_delay = 60
 # Limits and configuration
 [limits]
 cpu_ms = 50000
+
+# Observability: Traces and Logs for production monitoring
+# https://developers.cloudflare.com/workers/observability/traces
+[observability]
+enabled = true
+
+[observability.traces]
+enabled = true
+head_sampling_rate = 0.1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 0.5
 
 # Cloudflare Native Rate Limiting
 # https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit
