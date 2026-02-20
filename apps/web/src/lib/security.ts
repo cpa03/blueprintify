@@ -50,6 +50,11 @@ export const SECURITY_CONFIG = {
       "form",
       "input",
       "button",
+      "svg",
+      "math",
+      "base",
+      "link",
+      "meta",
     ] as string[],
     FORBID_ATTR: [
       "onclick",
@@ -112,6 +117,21 @@ const XSS_PATTERNS = [
   /@import/gi,
   /vbscript:/gi,
   /data:text\/html/gi,
+  // SVG-based XSS vectors
+  /<svg\b[^>]*>/gi,
+  /<math\b[^>]*>/gi,
+  /<animate\b[^>]*>/gi,
+  /<set\b[^>]*>/gi,
+  /<use\b[^>]*>/gi,
+  // Protocol handlers
+  /data:\s*[^,]*;base64/gi,
+  /blob:/gi,
+  // DOM clobbering patterns
+  /id\s*=\s*["']?__proto__["']?/gi,
+  /id\s*=\s*["']?constructor["']?/gi,
+  // Mutation XSS patterns
+  /<noscript\b[^>]*>/gi,
+  /<template\b[^>]*>/gi,
 ];
 
 export function containsXSSPatterns(content: string): boolean {
