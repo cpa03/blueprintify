@@ -189,6 +189,14 @@ app.get("/:id", async (c) => {
       }
     }
 
+    // Set cache headers for CDN caching - shared blueprints are immutable until expiration
+    // Cache for 5 minutes, stale-while-revalidate for 1 hour
+    c.header(
+      "Cache-Control",
+      "public, max-age=300, stale-while-revalidate=3600",
+    );
+    c.header("CDN-Cache-Control", "public, max-age=300");
+
     return c.json(
       {
         id: result.id,
