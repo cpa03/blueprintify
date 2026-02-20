@@ -101,6 +101,21 @@ Reference: Issue #483
   - Error: `result.isValid` returns `false` instead of `true`
   - Likely related to file validation logic in `validateFile()`
 
+### 2026-02-20 QA Fix (02:48 UTC)
+
+**Fixed Skipped Test:**
+
+- ✅ Fixed `validateAndSanitizeFileContent` test in `security.test.ts`
+- **Root Cause**: jsdom's File implementation doesn't include the `.text()` method (browser standard)
+- **Fix**: Added mock for `file.text()` method in the test
+- **Result**: All 360 tests pass (218 web + 142 API), 0 skipped
+
+**Verification Results:**
+
+- ✅ TypeScript: No errors
+- ✅ ESLint: No errors or warnings
+- ✅ Tests: 360 passed (218 web + 142 API), 0 skipped
+
 **Dependency Audit:**
 
 - 19 vulnerabilities detected (1 low, 1 moderate, 17 high)
