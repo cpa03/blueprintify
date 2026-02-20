@@ -17,6 +17,7 @@
 
 ## Lessons Learned
 
+- **2026-02-20**: Added JSDoc documentation to `db/index.ts` utility functions and error classes. The `generateId`, `serializeJSON`, `deserializeJSON`, and `getDatabaseService` functions now have proper documentation with `@param`, `@returns`, and `@throws` annotations. Error classes (`DatabaseError`, `ValidationError`, `NotFoundError`) are documented with `@extends` and constructor parameter documentation.
 - **2026-02-20**: Added JSDoc documentation to `types.ts`. This module defines all TypeScript types and interfaces for the API including environment bindings, context types, and validated request contexts. Proper documentation is essential for developers to understand the type system and how to use context types correctly.
 - **2026-02-20**: Added JSDoc documentation to `middleware/logger.ts` and `middleware/auth.ts`. These middleware modules handle request logging and API key authentication respectively, and require proper documentation for maintainability and security awareness.
 - **2026-02-20**: Added JSDoc documentation to `config/constants.ts`. This module provides centralized configuration constants and requires documentation for the exported getter functions.

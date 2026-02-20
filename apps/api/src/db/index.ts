@@ -13,6 +13,19 @@ const { RANDOM_STRING_START_INDEX, RANDOM_STRING_LENGTH, ALPHANUMERIC_RADIX } =
 
 const END_INDEX = RANDOM_STRING_START_INDEX + RANDOM_STRING_LENGTH;
 
+/**
+ * Generates a unique identifier with a given prefix.
+ * Combines timestamp and random string for uniqueness.
+ *
+ * @param prefix - The prefix for the ID (e.g., "user", "project", "blueprint")
+ * @returns A unique ID in format `{prefix}_{timestamp}_{random}`
+ *
+ * @example
+ * ```typescript
+ * const userId = generateId("user"); // "user_1739123456789_abc123de"
+ * const projectId = generateId("project"); // "project_1739123456789_xyz789fg"
+ * ```
+ */
 function generateId(prefix: string): string {
   return `${prefix}_${Date.now()}_${Math.random().toString(ALPHANUMERIC_RADIX).substring(RANDOM_STRING_START_INDEX, END_INDEX)}`;
 }
@@ -591,18 +604,36 @@ export class MockDatabaseService implements DatabaseService {
   }
 }
 
-// Factory function to get the appropriate database service
+/**
+ * Factory function to get the appropriate database service.
+ * Currently returns MockDatabaseService for development.
+ * In production, this would return a Cloudflare D1 implementation.
+ *
+ * @returns A DatabaseService instance
+ */
 export function getDatabaseService(): DatabaseService {
-  // In production, this would return a Cloudflare D1 implementation
-  // For now, return the mock implementation
   return new MockDatabaseService();
 }
 
-// Utility functions for JSON serialization
+/**
+ * Serializes data to a JSON string.
+ *
+ * @param data - The data to serialize
+ * @returns A JSON string representation of the data
+ */
 export function serializeJSON(data: unknown): string {
   return JSON.stringify(data);
 }
 
+/**
+ * Deserializes a JSON string to a typed object.
+ * Throws DatabaseError on parse failure.
+ *
+ * @template T - The expected type of the parsed data
+ * @param json - The JSON string to parse
+ * @returns The parsed data of type T
+ * @throws {DatabaseError} If the JSON string cannot be parsed
+ */
 export function deserializeJSON<T>(json: string): T {
   try {
     return JSON.parse(json) as T;
@@ -614,8 +645,19 @@ export function deserializeJSON<T>(json: string): T {
   }
 }
 
-// Error handling
+/**
+ * Base error class for database operations.
+ * Provides structured error handling with cause chain support.
+ *
+ * @extends Error
+ */
 export class DatabaseError extends Error {
+  /**
+   * Creates a new DatabaseError.
+   *
+   * @param message - Error description
+   * @param cause - Optional underlying error that caused this error
+   */
   constructor(
     message: string,
     public cause?: Error,
@@ -625,14 +667,36 @@ export class DatabaseError extends Error {
   }
 }
 
+/**
+ * Error thrown when data validation fails during database operations.
+ *
+ * @extends DatabaseError
+ */
 export class ValidationError extends DatabaseError {
+  /**
+   * Creates a new ValidationError.
+   *
+   * @param message - Validation error description
+   * @param cause - Optional underlying error
+   */
   constructor(message: string, cause?: Error) {
     super(message, cause);
     this.name = "ValidationError";
   }
 }
 
+/**
+ * Error thrown when a requested resource is not found in the database.
+ *
+ * @extends DatabaseError
+ */
 export class NotFoundError extends DatabaseError {
+  /**
+   * Creates a new NotFoundError.
+   *
+   * @param message - Description of what was not found
+   * @param cause - Optional underlying error
+   */
   constructor(message: string, cause?: Error) {
     super(message, cause);
     this.name = "NotFoundError";
