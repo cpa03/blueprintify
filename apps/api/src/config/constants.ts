@@ -1,3 +1,12 @@
+/**
+ * API Configuration Constants
+ *
+ * Centralized configuration constants for the Blueprint Generator API.
+ * Values are dynamically loaded from environment configuration via getters.
+ *
+ * @module config/constants
+ */
+
 import {
   RETRY_CONFIG as SHARED_RETRY_CONFIG,
   RETRYABLE_STATUS_CODES,
@@ -8,10 +17,22 @@ import type { EnvConfig } from "./env";
 
 let envConfig: EnvConfig | null = null;
 
+/**
+ * Sets the environment configuration for use by constant getters.
+ * Must be called during application initialization.
+ *
+ * @param config - Environment configuration object or null to reset
+ */
 export function setEnvConfig(config: EnvConfig | null): void {
   envConfig = config;
 }
 
+/**
+ * Gets the current environment configuration.
+ *
+ * @returns The environment configuration object
+ * @throws Error if configuration has not been set
+ */
 export function getEnvConfig(): EnvConfig {
   if (!envConfig) {
     throw new Error("Environment config not set. Call setEnvConfig() first.");
