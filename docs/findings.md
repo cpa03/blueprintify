@@ -202,6 +202,8 @@ The `.github/workflows/on pull.yml` workflow used `ubuntu-22.04-arm` while all o
 
 ⚠️ **BLOCKED** - Requires `workflows` permission on GitHub App. Issue tracked in #483.
 
+**Attempted Fix (2026-02-20)**: Changes prepared on branch `repository-manager-ci-fix` but push rejected due to GitHub App lacking workflow permissions.
+
 ### Recommended Action
 
 Update `.github/workflows/on pull.yml` line 23:
