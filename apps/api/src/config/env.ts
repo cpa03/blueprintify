@@ -132,7 +132,9 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
   // Validate required variables
   const openaiApiKey = getEnvVar("OPENAI_API_KEY", env);
   if (!openaiApiKey) {
-    throw new Error("OPENAI_API_KEY is required but not set in environment");
+    throw new Error(
+      "OPENAI_API_KEY is required but not set in environment. Please set the OPENAI_API_KEY environment variable in your .dev.vars file (for local development) or in your Cloudflare Workers secrets (for production).",
+    );
   }
 
   return {

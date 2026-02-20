@@ -398,7 +398,9 @@ export class StorageService<T = unknown> {
 
   private async validateAndMigrate(parsed: unknown): Promise<T> {
     if (!parsed || typeof parsed !== "object") {
-      throw new Error("Invalid storage data structure");
+      throw new Error(
+        `Invalid storage data structure for key "${this.config.key}": expected an object, got ${parsed === null ? "null" : typeof parsed}. The storage data may be corrupted. Try clearing localStorage and refreshing.`,
+      );
     }
 
     const obj = parsed as Record<string, unknown>;
@@ -407,7 +409,9 @@ export class StorageService<T = unknown> {
     if ("data" in obj && "metadata" in obj) {
       const metadataResult = StorageMetadataSchema.safeParse(obj.metadata);
       if (!metadataResult.success) {
-        throw new Error("Invalid metadata structure");
+        throw new Error(
+          `Invalid metadata structure for key "${this.config.key}": ${metadataResult.error.errors.map((e) => e.message).join(", ")}. The storage metadata may be corrupted.`,
+        );
       }
 
       const metadata = metadataResult.data;
