@@ -247,7 +247,7 @@ export class MockDatabaseService implements DatabaseService {
 
   async updateUser(id: string, updates: Partial<User>): Promise<User> {
     const user = this.users.get(id);
-    if (!user) throw new Error(`User not found: ${id}`);
+    if (!user) throw new NotFoundError(`User not found: ${id}`);
     const updatedUser = {
       ...user,
       ...updates,
@@ -297,7 +297,7 @@ export class MockDatabaseService implements DatabaseService {
 
   async updateProject(id: string, updates: Partial<Project>): Promise<Project> {
     const project = this.projects.get(id);
-    if (!project) throw new Error(`Project not found: ${id}`);
+    if (!project) throw new NotFoundError(`Project not found: ${id}`);
     const updatedProject = {
       ...project,
       ...updates,
@@ -354,7 +354,7 @@ export class MockDatabaseService implements DatabaseService {
     updates: Partial<Blueprint>,
   ): Promise<Blueprint> {
     const blueprint = this.blueprints.get(id);
-    if (!blueprint) throw new Error(`Blueprint not found: ${id}`);
+    if (!blueprint) throw new NotFoundError(`Blueprint not found: ${id}`);
     const updatedBlueprint = {
       ...blueprint,
       ...updates,
@@ -398,7 +398,7 @@ export class MockDatabaseService implements DatabaseService {
 
   async updateTask(id: string, updates: Partial<Task>): Promise<Task> {
     const task = this.tasks.get(id);
-    if (!task) throw new Error(`Task not found: ${id}`);
+    if (!task) throw new NotFoundError(`Task not found: ${id}`);
     const updatedTask = {
       ...task,
       ...updates,
@@ -456,7 +456,7 @@ export class MockDatabaseService implements DatabaseService {
     updates: Partial<Template>,
   ): Promise<Template> {
     const template = this.templates.get(id);
-    if (!template) throw new Error(`Template not found: ${id}`);
+    if (!template) throw new NotFoundError(`Template not found: ${id}`);
     const updatedTemplate = {
       ...template,
       ...updates,
@@ -472,7 +472,7 @@ export class MockDatabaseService implements DatabaseService {
 
   async incrementTemplateUsage(id: string): Promise<void> {
     const template = this.templates.get(id);
-    if (!template) throw new Error(`Template not found: ${id}`);
+    if (!template) throw new NotFoundError(`Template not found: ${id}`);
     const updatedTemplate = {
       ...template,
       usage_count: template.usage_count + 1,
