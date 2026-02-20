@@ -233,7 +233,7 @@ const ToastItem = memo(
   }),
 );
 
-export function ToastContainer(): JSX.Element {
+function ToastContainerComponent(): JSX.Element {
   const toasts = useToastStore((state) => state.toasts);
   const removeToast = useToastStore((state) => state.removeToast);
 
@@ -247,3 +247,5 @@ export function ToastContainer(): JSX.Element {
     </div>
   );
 }
+
+export const ToastContainer = memo(ToastContainerComponent);

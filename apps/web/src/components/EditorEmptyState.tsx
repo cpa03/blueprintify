@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { useWizardStore } from "../store";
 import { WIZARD_STEPS } from "../config/constants";
@@ -8,7 +9,7 @@ import {
   pulseAnimation,
 } from "../utils/motion";
 
-export function EditorEmptyState(): JSX.Element {
+function EditorEmptyStateComponent(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
   const currentIndex = WIZARD_STEPS.findIndex((s) => s.key === currentStep);
   const progress = ((currentIndex + 1) / WIZARD_STEPS.length) * 100;
@@ -164,3 +165,5 @@ export function EditorEmptyState(): JSX.Element {
     </motion.div>
   );
 }
+
+export const EditorEmptyState = memo(EditorEmptyStateComponent);

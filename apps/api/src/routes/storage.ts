@@ -12,9 +12,14 @@ const app = new Hono<{ Bindings: Env }>();
  * GET /storage/quota
  */
 app.get("/quota", rateLimit(rateLimitConfigs.standard), async (c) => {
+  const startTime = Date.now();
   try {
     // Cache quota response for 60 seconds - this data rarely changes
     c.header("Cache-Control", "public, max-age=60, stale-while-revalidate=30");
+    c.header(
+      "Server-Timing",
+      `storage;desc="Quota Check";dur=${Date.now() - startTime}`,
+    );
     return c.json({
       success: true,
       data: {

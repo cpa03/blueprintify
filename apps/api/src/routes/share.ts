@@ -121,6 +121,7 @@ app.post(
 );
 
 app.get("/:id", async (c) => {
+  const startTime = Date.now();
   try {
     const shareId = c.req.param("id");
 
@@ -144,6 +145,7 @@ app.get("/:id", async (c) => {
       );
     }
 
+    const dbStartTime = Date.now();
     const result = await c.env.DB.prepare(
       `SELECT id, title, blueprint, metadata, created_at, expires_at
        FROM blueprint_shares
@@ -151,6 +153,7 @@ app.get("/:id", async (c) => {
     )
       .bind(shareId)
       .first();
+    const dbDuration = Date.now() - dbStartTime;
 
     if (!result) {
       return c.json(
@@ -196,6 +199,10 @@ app.get("/:id", async (c) => {
       "public, max-age=300, stale-while-revalidate=3600",
     );
     c.header("CDN-Cache-Control", "public, max-age=300");
+    c.header(
+      "Server-Timing",
+      `db;desc="Database Query";dur=${dbDuration}, total;desc="Total Request";dur=${Date.now() - startTime}`,
+    );
 
     return c.json(
       {
