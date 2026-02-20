@@ -107,11 +107,19 @@
            transition-all duration-200 ease-out;
   }
 
+  .btn-secondary:not(:disabled):hover {
+    transform: scale(1.02);
+  }
+
   .btn-ghost {
     @apply px-4 py-2 text-dark-300 hover:text-white
            hover:bg-dark-800/50 rounded-lg
            focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/30
            transition-all duration-200 ease-out;
+  }
+
+  .btn-ghost:not(:disabled):hover {
+    transform: scale(1.02);
   }
 
   /* Input styles */
@@ -325,7 +333,9 @@
     }
 
     /* Disable hover transforms for reduced motion */
-    .glass-card:hover {
+    .glass-card:hover,
+    .btn-secondary:not(:disabled):hover,
+    .btn-ghost:not(:disabled):hover {
       transform: none !important;
     }
   }
