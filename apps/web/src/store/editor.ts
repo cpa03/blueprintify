@@ -5,6 +5,30 @@ import { GENERATION_MESSAGES, DEBOUNCE_CONFIG } from "../config/constants";
 import { sanitizeForStorage, handleSecurityError } from "../lib/security";
 import { editorStorage } from "../lib/storage";
 
+/**
+ * Validates and sanitizes editor content for storage.
+ * Extracts common validation logic to reduce duplication.
+ *
+ * @param blueprintContent - The blueprint content to validate
+ * @param tasksContent - The tasks content to validate
+ * @returns Sanitized content object with blueprint and tasks content
+ * @throws SecurityError if validation fails
+ */
+function validateEditorContent(
+  blueprintContent: string,
+  tasksContent: string,
+): { blueprintContent: string; tasksContent: string } {
+  const security = sanitizeForStorage({ blueprintContent, tasksContent });
+  if (!security.isValid) {
+    console.error("Content validation failed:", security.error);
+    throw new Error(security.error);
+  }
+  return security.sanitized as {
+    blueprintContent: string;
+    tasksContent: string;
+  };
+}
+
 export interface EditorStore {
   activeTab: EditorTab;
   blueprintContent: string;
@@ -73,20 +97,11 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
 
     setBlueprintContent: (blueprintContent) => {
       try {
-        const security = sanitizeForStorage({
+        const sanitized = validateEditorContent(
           blueprintContent,
-          tasksContent: get().tasksContent,
-        });
-        if (!security.isValid) {
-          console.error("Content validation failed:", security.error);
-          throw new Error(security.error);
-        }
-        set({
-          blueprintContent:
-            (security.sanitized as { blueprintContent?: string })
-              ?.blueprintContent || blueprintContent,
-          isDirty: true,
-        });
+          get().tasksContent,
+        );
+        set({ blueprintContent: sanitized.blueprintContent, isDirty: true });
         debouncedSave();
       } catch (error) {
         const securityError = handleSecurityError(error);
@@ -98,18 +113,9 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
     appendBlueprintContent: (chunk) => {
       try {
         const newContent = get().blueprintContent + chunk;
-        const security = sanitizeForStorage({
-          blueprintContent: newContent,
-          tasksContent: get().tasksContent,
-        });
-        if (!security.isValid) {
-          console.error("Content validation failed:", security.error);
-          throw new Error(security.error);
-        }
+        const sanitized = validateEditorContent(newContent, get().tasksContent);
         set(() => ({
-          blueprintContent:
-            (security.sanitized as { blueprintContent?: string })
-              ?.blueprintContent || newContent,
+          blueprintContent: sanitized.blueprintContent,
           isDirty: true,
         }));
         debouncedSave();
@@ -122,20 +128,11 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
 
     setTasksContent: (tasksContent) => {
       try {
-        const security = sanitizeForStorage({
-          blueprintContent: get().blueprintContent,
+        const sanitized = validateEditorContent(
+          get().blueprintContent,
           tasksContent,
-        });
-        if (!security.isValid) {
-          console.error("Content validation failed:", security.error);
-          throw new Error(security.error);
-        }
-        set({
-          tasksContent:
-            (security.sanitized as { tasksContent?: string })?.tasksContent ||
-            tasksContent,
-          isDirty: true,
-        });
+        );
+        set({ tasksContent: sanitized.tasksContent, isDirty: true });
         debouncedSave();
       } catch (error) {
         const securityError = handleSecurityError(error);
@@ -147,20 +144,11 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
     appendTasksContent: (chunk) => {
       try {
         const newContent = get().tasksContent + chunk;
-        const security = sanitizeForStorage({
-          blueprintContent: get().blueprintContent,
-          tasksContent: newContent,
-        });
-        if (!security.isValid) {
-          console.error("Content validation failed:", security.error);
-          throw new Error(security.error);
-        }
-        set(() => ({
-          tasksContent:
-            (security.sanitized as { tasksContent?: string })?.tasksContent ||
-            newContent,
-          isDirty: true,
-        }));
+        const sanitized = validateEditorContent(
+          get().blueprintContent,
+          newContent,
+        );
+        set(() => ({ tasksContent: sanitized.tasksContent, isDirty: true }));
         debouncedSave();
       } catch (error) {
         const securityError = handleSecurityError(error);
