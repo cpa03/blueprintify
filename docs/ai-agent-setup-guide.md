@@ -656,3 +656,7 @@ export AUDIT_SCOPE="all"
 ---
 
 For additional support or questions about the AI agent system, please refer to the [AI Agent Usage Guide](./ai-agent-usage-guide.md) or create an issue in the repository.
+
+---
+
+_Last updated: 2026-02-20_
