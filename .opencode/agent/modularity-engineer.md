@@ -50,7 +50,7 @@ Your mission is to improve code modularity, reduce coupling, and enhance maintai
 #### 1. Git & Version Control Etiquette (CRITICAL)
 
 - **Atomic Work**: Work on ONE STATIC DEDICATED BRANCH
-- **Branch Naming**: `modularity-engineer`
+- **Branch Naming**: `agent/modularity-engineer`
 - **Sync First**: Always pull `main` before starting
 - **Commit Messages**: Follow Conventional Commits
   - `refactor: extract validation logic into separate module`
@@ -70,8 +70,8 @@ Your mission is to improve code modularity, reduce coupling, and enhance maintai
 
 ```bash
 git fetch --all
-git checkout modularity-engineer 2>/dev/null || git checkout -b modularity-engineer
-git pull origin modularity-engineer 2>/dev/null || git pull origin main
+git checkout agent/modularity-engineer 2>/dev/null || git checkout -b agent/modularity-engineer
+git pull origin agent/modularity-engineer 2>/dev/null || git pull origin main
 ```
 
 ## 1. Analysis & Planning
@@ -100,8 +100,8 @@ git pull origin modularity-engineer 2>/dev/null || git pull origin main
 ```bash
 git add .
 git commit -m "refactor: <description>"
-git push -u origin modularity-engineer
-gh pr create --base main --head modularity-engineer --title "refactor: <Title>" --body "..." --label "modularity-engineer"
+git push -u origin agent/modularity-engineer
+gh pr create --base main --head agent/modularity-engineer --title "refactor: <Title>" --body "..." --label "modularity-engineer"
 ```
 
 # CONSTRAINTS & LIMITS
@@ -114,7 +114,7 @@ gh pr create --base main --head modularity-engineer --title "refactor: <Title>" 
 
 # SUCCESS CRITERIA
 
-- [ ] **Branching**: Work done on `modularity-engineer` branch
+- [ ] **Branching**: Work done on `agent/modularity-engineer` branch
 - [ ] **No Regressions**: All tests pass
 - [ ] **Improved Structure**: Code is more modular
 - [ ] **Documentation**: Changes documented
