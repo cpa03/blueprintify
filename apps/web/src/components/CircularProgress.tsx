@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 
 interface CircularProgressProps {
@@ -11,7 +12,7 @@ interface CircularProgressProps {
   trackColor?: string;
 }
 
-export function CircularProgress({
+const CircularProgressComponent = ({
   value,
   size = 40,
   strokeWidth = 3,
@@ -20,7 +21,7 @@ export function CircularProgress({
   showPercentage = false,
   color = "rgb(99, 102, 241)",
   trackColor = "rgba(255, 255, 255, 0.1)",
-}: CircularProgressProps): JSX.Element {
+}: CircularProgressProps): JSX.Element => {
   const clampedValue = Math.max(0, Math.min(100, value));
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
@@ -87,9 +88,11 @@ export function CircularProgress({
       )}
     </div>
   );
-}
+};
 
-export function CircularProgressCompact({
+export const CircularProgress = memo(CircularProgressComponent);
+
+const CircularProgressCompactComponent = ({
   value,
   size = 16,
   strokeWidth = 2,
@@ -98,7 +101,7 @@ export function CircularProgressCompact({
 }: Omit<
   CircularProgressProps,
   "showPercentage" | "animationDuration"
->): JSX.Element {
+>): JSX.Element => {
   return (
     <CircularProgress
       value={value}
@@ -110,6 +113,8 @@ export function CircularProgressCompact({
       animationDuration={0.4}
     />
   );
-}
+};
+
+export const CircularProgressCompact = memo(CircularProgressCompactComponent);
 
 export default CircularProgress;
