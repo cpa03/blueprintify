@@ -138,6 +138,7 @@ This project uses the OpenCode AI agent system with specialized roles for differ
 
 ### Available Agent Roles
 
+- **AI Agent Engineer** - AI agent infrastructure maintenance and improvement
 - **API Specialist** - API design, implementation, and optimization
 - **Backend Engineer** - API development and database architecture
 - **CMZ** - Code modularization and refactoring specialist
@@ -146,10 +147,12 @@ This project uses the OpenCode AI agent system with specialized roles for differ
 - **Database Architect** - Database design and schema architecture
 - **Debugger** - Debugging and troubleshooting specialist
 - **DevOps Engineer** - CI/CD pipelines and deployment automation
+- **DX Engineer** - Developer experience and tooling improvements
 - **Frontend Engineer** - React components and UI development
 - **Integration Engineer** - System integration and API connectivity
 - **Integrator** - Cross-system integration specialist
 - **Janitor** - Code cleanup and repository maintenance
+- **Modularity Engineer** - Code structure and architecture improvement
 - **Performance Engineer** - Performance optimization and analysis
 - **Planner** - Project planning and task organization
 - **Product Strategist** - Product vision and strategy planning
@@ -162,6 +165,7 @@ This project uses the OpenCode AI agent system with specialized roles for differ
 - **System Improver** - System-wide improvements and optimization
 - **Technical Writer** - Documentation maintenance and user guides
 - **UI/UX Engineer** - User interface and experience design
+- **User Story Engineer** - Small, incremental improvements from issues
 
 ### Available Skills
 
