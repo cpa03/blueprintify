@@ -8,6 +8,7 @@
   "trailingSlash": false,
   "skewProtection": true,
   "fluid": true,
+  "cacheMaxDuration": 31536000,
   "images": {
     "sizes": [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     "localPatterns": [
@@ -318,6 +319,23 @@
         {
           "key": "CDN-Cache-Control",
           "value": "public, max-age=31536000, immutable, stale-if-error=86400"
+        }
+      ]
+    },
+    {
+      "source": "/.well-known/security.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=3600, stale-if-error=3600"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "public, max-age=86400, stale-if-error=3600"
         }
       ]
     }
