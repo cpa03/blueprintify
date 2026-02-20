@@ -488,6 +488,101 @@ describe("MockDatabaseService", () => {
       const templates = await db.getTemplatesByCreator(user.id);
       expect(templates).toHaveLength(0);
     });
+
+    it("should get popular templates sorted by usage count", async () => {
+      await db.createTemplate({
+        name: "Popular Template",
+        description: "Description",
+        icon: "🔥",
+        project_name: "Project",
+        default_description: "Default",
+        category: "frontend",
+        is_public: true,
+        usage_count: 100,
+      });
+      await db.createTemplate({
+        name: "Medium Template",
+        description: "Description",
+        icon: "📄",
+        project_name: "Project",
+        default_description: "Default",
+        category: "frontend",
+        is_public: true,
+        usage_count: 50,
+      });
+      await db.createTemplate({
+        name: "Less Popular",
+        description: "Description",
+        icon: "📝",
+        project_name: "Project",
+        default_description: "Default",
+        category: "frontend",
+        is_public: true,
+        usage_count: 10,
+      });
+      await db.createTemplate({
+        name: "Private Template",
+        description: "Description",
+        icon: "🔒",
+        project_name: "Project",
+        default_description: "Default",
+        category: "frontend",
+        is_public: false,
+        usage_count: 200,
+      });
+
+      const popular = await db.getPopularTemplates(3);
+      expect(popular).toHaveLength(3);
+      expect(popular[0]!.name).toBe("Popular Template");
+      expect(popular[0]!.usage_count).toBe(100);
+      expect(popular[1]!.name).toBe("Medium Template");
+      expect(popular[2]!.name).toBe("Less Popular");
+    });
+
+    it("should respect limit parameter in getPopularTemplates", async () => {
+      for (let i = 0; i < 15; i++) {
+        await db.createTemplate({
+          name: `Template ${i}`,
+          description: "Description",
+          icon: "📄",
+          project_name: "Project",
+          default_description: "Default",
+          category: "frontend",
+          is_public: true,
+          usage_count: i,
+        });
+      }
+
+      const popular = await db.getPopularTemplates(5);
+      expect(popular).toHaveLength(5);
+    });
+
+    it("should only return public templates in getPopularTemplates", async () => {
+      await db.createTemplate({
+        name: "Public Template",
+        description: "Description",
+        icon: "📄",
+        project_name: "Project",
+        default_description: "Default",
+        category: "frontend",
+        is_public: true,
+        usage_count: 10,
+      });
+      await db.createTemplate({
+        name: "Private Template",
+        description: "Description",
+        icon: "🔒",
+        project_name: "Project",
+        default_description: "Default",
+        category: "frontend",
+        is_public: false,
+        usage_count: 100,
+      });
+
+      const popular = await db.getPopularTemplates();
+      expect(popular).toHaveLength(1);
+      expect(popular[0]!.name).toBe("Public Template");
+    });
   });
 
   describe("Session Operations", () => {
@@ -547,6 +642,48 @@ describe("MockDatabaseService", () => {
       const remaining = await db.getSessionsByUserId(userId);
       expect(remaining).toHaveLength(1);
     });
+
+    it("should get active sessions for user", async () => {
+      const pastDate = new Date(Date.now() - 1000).toISOString();
+      const futureDate = new Date(Date.now() + 3600000).toISOString();
+
+      await db.createSession({
+        user_id: userId,
+        session_data: JSON.stringify({ token: "expired" }),
+        expires_at: pastDate,
+      });
+      await db.createSession({
+        user_id: userId,
+        session_data: JSON.stringify({ token: "active1" }),
+        expires_at: futureDate,
+      });
+      await db.createSession({
+        user_id: userId,
+        session_data: JSON.stringify({ token: "active2" }),
+        expires_at: futureDate,
+      });
+
+      const activeSessions = await db.getActiveSessionsForUser(userId);
+      expect(activeSessions).toHaveLength(2);
+      expect(
+        activeSessions.every(
+          (s) => new Date(s.expires_at) > new Date(Date.now()),
+        ),
+      ).toBe(true);
+    });
+
+    it("should return empty array when no active sessions", async () => {
+      const pastDate = new Date(Date.now() - 1000).toISOString();
+
+      await db.createSession({
+        user_id: userId,
+        session_data: "{}",
+        expires_at: pastDate,
+      });
+
+      const activeSessions = await db.getActiveSessionsForUser(userId);
+      expect(activeSessions).toHaveLength(0);
+    });
   });
 
   describe("Analytics Operations", () => {
@@ -574,6 +711,49 @@ describe("MockDatabaseService", () => {
 
       const events = await db.getAnalyticsByUserId(user.id);
       expect(events).toHaveLength(1);
+    });
+
+    it("should get analytics by date range", async () => {
+      const now = new Date();
+      const oneHourAgo = new Date(now.getTime() - 3600000);
+
+      await db.trackEvent({
+        event_type: "blueprint_generated",
+        event_data: JSON.stringify({ time: "recent" }),
+      });
+
+      const events = await db.getAnalyticsByDateRange(
+        oneHourAgo.toISOString(),
+        now.toISOString(),
+      );
+      expect(events.length).toBeGreaterThanOrEqual(1);
+      expect(events.every((e) => e.event_type === "blueprint_generated")).toBe(
+        true,
+      );
+    });
+
+    it("should get analytics by event type and date range", async () => {
+      const now = new Date();
+      const oneHourAgo = new Date(now.getTime() - 3600000);
+
+      await db.trackEvent({
+        event_type: "blueprint_generated",
+        event_data: JSON.stringify({ test: "data" }),
+      });
+      await db.trackEvent({
+        event_type: "task_generated",
+        event_data: JSON.stringify({ test: "data" }),
+      });
+
+      const events = await db.getAnalyticsByEventTypeAndDateRange(
+        "blueprint_generated",
+        oneHourAgo.toISOString(),
+        now.toISOString(),
+      );
+      expect(events.length).toBeGreaterThanOrEqual(1);
+      expect(events.every((e) => e.event_type === "blueprint_generated")).toBe(
+        true,
+      );
     });
   });
 
@@ -634,6 +814,33 @@ describe("MockDatabaseService", () => {
 
       const deleted = await db.deleteExpiredBlueprintShares();
       expect(deleted).toBe(1);
+    });
+
+    it("should cleanup all expired data at once", async () => {
+      const userId = (
+        await db.createUser({
+          email: "cleanup@example.com",
+          name: "Cleanup User",
+        })
+      ).id;
+
+      const pastDate = new Date(Date.now() - 1000).toISOString();
+
+      await db.createSession({
+        user_id: userId,
+        session_data: "{}",
+        expires_at: pastDate,
+      });
+      await db.createBlueprintShare({
+        id: "share_expired_cleanup",
+        title: "Expired",
+        blueprint: "# Content",
+        expires_at: pastDate,
+      });
+
+      const result = await db.cleanupExpiredData();
+      expect(result.sessions).toBe(1);
+      expect(result.shares).toBe(1);
     });
   });
 
