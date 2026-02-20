@@ -7,6 +7,8 @@
  * @module utils/timeout
  */
 
+import { RETRY_CONFIG } from "../config/constants";
+
 /**
  * Configuration options for timeout behavior
  */
@@ -133,7 +135,12 @@ export async function withTimeoutAndRetry<T>(
   operation: (signal?: AbortSignal) => Promise<T>,
   options: TimeoutRetryOptions,
 ): Promise<T> {
-  const { timeoutMs, errorMessage, retries = 0, retryDelayMs = 1000 } = options;
+  const {
+    timeoutMs,
+    errorMessage,
+    retries = 0,
+    retryDelayMs = RETRY_CONFIG.DEFAULT_INITIAL_DELAY,
+  } = options;
 
   let lastError: unknown;
 
