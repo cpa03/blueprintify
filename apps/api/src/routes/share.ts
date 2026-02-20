@@ -3,6 +3,7 @@ import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import type { Env } from "../types";
 import { HTTP_STATUS, ERROR_CODES, ERROR_MESSAGES } from "../config/constants";
+import { logDatabaseOperation } from "../utils/logging";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -91,7 +92,13 @@ app.post(
         HTTP_STATUS.OK,
       );
     } catch (error) {
-      console.error("Share creation error:", error);
+      logDatabaseOperation({
+        type: "database_operation",
+        operation: "insert_share",
+        table: "blueprint_shares",
+        status: "error",
+        error: error instanceof Error ? error.message : "Unknown error",
+      });
       return c.json(
         {
           error: ERROR_CODES.INTERNAL_ERROR,
@@ -172,7 +179,13 @@ app.get("/:id", async (c) => {
       HTTP_STATUS.OK,
     );
   } catch (error) {
-    console.error("Share retrieval error:", error);
+    logDatabaseOperation({
+      type: "database_operation",
+      operation: "select_share",
+      table: "blueprint_shares",
+      status: "error",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
     return c.json(
       {
         error: ERROR_CODES.INTERNAL_ERROR,
@@ -208,7 +221,13 @@ app.delete("/:id", async (c) => {
       HTTP_STATUS.OK,
     );
   } catch (error) {
-    console.error("Share deletion error:", error);
+    logDatabaseOperation({
+      type: "database_operation",
+      operation: "delete_share",
+      table: "blueprint_shares",
+      status: "error",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
     return c.json(
       {
         error: ERROR_CODES.INTERNAL_ERROR,

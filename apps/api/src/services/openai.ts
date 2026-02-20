@@ -6,25 +6,7 @@ import {
   CircuitBreakerOpenError,
 } from "../utils/circuitBreaker";
 import { AI_CONFIG, CIRCUIT_BREAKER_CONFIG } from "../config/constants";
-
-interface ExternalApiCallLog {
-  type: "external_api_call";
-  service: string;
-  operation: string;
-  status: "started" | "success" | "error";
-  durationMs?: number;
-  model?: string;
-  error?: string;
-  timestamp: string;
-}
-
-function logExternalApiCall(
-  entry: Omit<ExternalApiCallLog, "timestamp">,
-): void {
-  console.log(
-    JSON.stringify({ ...entry, timestamp: new Date().toISOString() }),
-  );
-}
+import { logExternalApiCall } from "../utils/logging";
 
 export interface AIConfig {
   apiKey: string;
