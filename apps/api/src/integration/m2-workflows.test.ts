@@ -1,4 +1,13 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeEach,
+  afterEach,
+  beforeAll,
+  afterAll,
+} from "vitest";
 import { Hono } from "hono";
 import { MOCK_ENV } from "../test-utils";
 import { errorHandler } from "../middleware/errorHandler";
@@ -8,11 +17,13 @@ import exportRoute from "../routes/export";
 import importRoute from "../routes/import";
 import storageRoute from "../routes/storage";
 import tasksRoute from "../routes/tasks";
+import shareRoute from "../routes/share";
 import {
   setDefaultContainer,
   resetContainer,
   createMockContainer,
 } from "../di/container";
+import { SSE_HEADERS, SHARE_CONFIG } from "../config/constants";
 
 interface ApiResponse {
   success: boolean;
@@ -28,6 +39,16 @@ interface QuotaResponse {
   used: number;
   total: number;
 }
+
+let originalConsoleError: typeof console.error;
+beforeAll(() => {
+  originalConsoleError = console.error;
+  console.error = vi.fn();
+});
+
+afterAll(() => {
+  console.error = originalConsoleError;
+});
 
 describe("Integration: End-to-End M2 Workflows", () => {
   let app: Hono<{ Bindings: typeof MOCK_ENV }>;
@@ -45,6 +66,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
     app.route("/import", importRoute);
     app.route("/storage", storageRoute);
     app.route("/tasks", tasksRoute);
+    app.route("/share", shareRoute);
     app.onError(errorHandler);
   });
 
@@ -71,7 +93,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
 
       expect(generateRes.status).toBe(200);
       expect(generateRes.headers.get("Content-Type")).toContain(
-        "text/event-stream",
+        SSE_HEADERS.CONTENT_TYPE,
       );
 
       const exportRes = await app.request(
@@ -353,6 +375,153 @@ describe("Integration: End-to-End M2 Workflows", () => {
       data.forEach((d) => {
         expect(d.data.total).toBe(firstQuota);
       });
+    });
+  });
+
+  describe("Workflow 7: Share Blueprint Flow", () => {
+    function createMockShareDB() {
+      const storedData = new Map<string, Record<string, unknown>>();
+
+      return {
+        prepare: vi.fn((query: string) => ({
+          bind: vi.fn((...params: unknown[]) => ({
+            run: vi.fn(async () => {
+              if (query.includes("INSERT")) {
+                const id = params[0] as string;
+                storedData.set(id, {
+                  id,
+                  title: params[1],
+                  blueprint: params[2],
+                  metadata: params[3],
+                  created_at: params[4],
+                  expires_at: params[5],
+                });
+                return { success: true };
+              }
+              if (query.includes("DELETE")) {
+                const id = params[0] as string;
+                storedData.delete(id);
+                return { success: true };
+              }
+              return { success: true };
+            }),
+            first: vi.fn(async () => {
+              if (query.includes("SELECT") && params[0]) {
+                return storedData.get(params[0] as string) || null;
+              }
+              return null;
+            }),
+          })),
+        })),
+      };
+    }
+
+    function createMockEnvWithDB() {
+      return {
+        ...MOCK_ENV,
+        DB: createMockShareDB(),
+      };
+    }
+
+    it("should create, retrieve, and delete a shared blueprint", async () => {
+      const envWithDB = createMockEnvWithDB();
+
+      const createRes = await app.request(
+        "/share",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: "Integration Test Blueprint",
+            blueprint: "# Test\n\nIntegration test content",
+            metadata: {
+              projectName: "Integration Test",
+              techStack: ["React", "TypeScript"],
+            },
+          }),
+        },
+        envWithDB,
+      );
+
+      expect(createRes.status).toBe(200);
+      const createData = (await createRes.json()) as {
+        id: string;
+        url: string;
+        expiresAt: string;
+      };
+      expect(createData.id).toHaveLength(SHARE_CONFIG.ID_LENGTH);
+      expect(createData.url).toContain("/share/");
+
+      const getRes = await app.request(
+        `/share/${createData.id}`,
+        { method: "GET" },
+        envWithDB,
+      );
+
+      expect(getRes.status).toBe(200);
+      const getData = (await getRes.json()) as {
+        id: string;
+        title: string;
+        blueprint: string;
+      };
+      expect(getData.id).toBe(createData.id);
+      expect(getData.title).toBe("Integration Test Blueprint");
+
+      const deleteRes = await app.request(
+        `/share/${createData.id}`,
+        { method: "DELETE" },
+        envWithDB,
+      );
+
+      expect(deleteRes.status).toBe(200);
+    });
+
+    it("should handle share workflow error cases", async () => {
+      const envWithDB = createMockEnvWithDB();
+
+      const invalidIdRes = await app.request(
+        "/share/invalid",
+        { method: "GET" },
+        envWithDB,
+      );
+      expect(invalidIdRes.status).toBe(400);
+
+      const notFoundRes = await app.request(
+        `/share/${"A".repeat(SHARE_CONFIG.ID_LENGTH)}`,
+        { method: "GET" },
+        envWithDB,
+      );
+      expect(notFoundRes.status).toBe(404);
+
+      const validationRes = await app.request(
+        "/share",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: "" }),
+        },
+        envWithDB,
+      );
+      expect(validationRes.status).toBe(400);
+    });
+
+    it("should handle database not configured gracefully", async () => {
+      const res = await app.request(
+        "/share",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: "Test",
+            blueprint: "# Test",
+          }),
+        },
+        MOCK_ENV,
+      );
+
+      expect(res.status).toBe(500);
+      const data = (await res.json()) as { error: string };
+      expect(data.error).toBeDefined();
     });
   });
 });
