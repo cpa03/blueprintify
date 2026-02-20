@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, ReactNode, useId } from "react";
+import { useState, useCallback, useRef, ReactNode, useId, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface TooltipProps {
@@ -9,13 +9,13 @@ interface TooltipProps {
   id?: string;
 }
 
-export function Tooltip({
+const TooltipComponent = ({
   children,
   content,
   position = "top",
   delay = 500,
   id,
-}: TooltipProps) {
+}: TooltipProps): JSX.Element => {
   const [isVisible, setIsVisible] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const generatedId = useId();
@@ -84,7 +84,9 @@ export function Tooltip({
       </AnimatePresence>
     </div>
   );
-}
+};
+
+export const Tooltip = memo(TooltipComponent);
 
 interface KeyboardShortcutTooltipProps {
   children: ReactNode;
@@ -94,13 +96,13 @@ interface KeyboardShortcutTooltipProps {
   modifier?: "cmd" | "ctrl" | "none";
 }
 
-export function KeyboardShortcutTooltip({
+function KeyboardShortcutTooltipComponent({
   children,
   shortcut,
   description,
   position = "top",
   modifier = "cmd",
-}: KeyboardShortcutTooltipProps) {
+}: KeyboardShortcutTooltipProps): JSX.Element {
   const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
 
   let fullShortcut: string;
@@ -127,3 +129,5 @@ export function KeyboardShortcutTooltip({
     </Tooltip>
   );
 }
+
+export const KeyboardShortcutTooltip = memo(KeyboardShortcutTooltipComponent);
