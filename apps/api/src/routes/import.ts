@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { ImportRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
+import { secureLogError } from "../utils/secureLog";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -127,6 +128,7 @@ app.post(
         400,
       );
     } catch (error) {
+      secureLogError("Import error", error, { format, overwrite });
       return c.json(
         {
           success: false,

@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { ExportRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
+import { secureLogError } from "../utils/secureLog";
 import { API_METADATA } from "../config/constants";
 import type { Env } from "../types";
 
@@ -78,6 +79,7 @@ app.post(
         400,
       );
     } catch (error) {
+      secureLogError("Export error", error, { projectName, format });
       return c.json(
         {
           success: false,
