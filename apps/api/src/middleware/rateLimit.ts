@@ -1,6 +1,7 @@
 import type { Context, MiddlewareHandler } from "hono";
 import type { Env } from "../types";
 import { getConfig } from "../config/env";
+import { HTTP_STATUS } from "../config/constants";
 
 type RateLimiterName =
   | "STRICT_RATE_LIMITER"
@@ -75,7 +76,7 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
             timestamp: new Date().toISOString(),
           },
         },
-        429,
+        HTTP_STATUS.TOO_MANY_REQUESTS,
       );
     }
 
