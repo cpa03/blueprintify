@@ -4,6 +4,39 @@
 
 ---
 
+## [Reliability] 2026-02-20 - Typed Error Classes in MockDatabaseService
+
+### Observation
+
+The `MockDatabaseService` in `apps/api/src/db/index.ts` was throwing generic `Error` objects for "not found" conditions instead of using the typed `NotFoundError` class already defined in the same file. This inconsistency made error handling less robust and prevented callers from distinguishing error types programmatically.
+
+### Action Taken
+
+Replaced all 6 instances of generic `Error` throws with typed `NotFoundError`:
+
+1. `updateUser` - Line 250
+2. `updateProject` - Line 300
+3. `updateBlueprint` - Line 357
+4. `updateTask` - Line 401
+5. `updateTemplate` - Line 459
+6. `incrementTemplateUsage` - Line 475
+
+### Impact
+
+- Enables callers to use `instanceof NotFoundError` for proper error type discrimination
+- Maintains consistency with the existing `DatabaseError` and `NotFoundError` class hierarchy
+- No breaking changes - `NotFoundError` extends `DatabaseError` which extends `Error`
+
+### Verification
+
+```bash
+npm run typecheck  # ✅ PASS
+npm run lint       # ✅ PASS
+npm run test:all   # ✅ PASS (363 tests: 219 web + 144 API)
+```
+
+---
+
 ## [Database-Architect] 2026-02-20 - Add getTemplatesByCreator Method
 
 ### Observation
