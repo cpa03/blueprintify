@@ -6,6 +6,7 @@ import {
   type MouseEvent,
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 interface Ripple {
   id: number;
@@ -33,25 +34,31 @@ function RippleButtonComponent({
   title,
 }: RippleButtonProps): JSX.Element {
   const [ripples, setRipples] = useState<Ripple[]>([]);
+  const shouldReduceMotion = useReducedMotion();
 
-  const createRipple = useCallback((event: MouseEvent<HTMLButtonElement>) => {
-    const button = event.currentTarget;
-    const rect = button.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+  const createRipple = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      if (shouldReduceMotion) return;
 
-    const newRipple: Ripple = {
-      id: Date.now(),
-      x,
-      y,
-    };
+      const button = event.currentTarget;
+      const rect = button.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
 
-    setRipples((prev) => [...prev, newRipple]);
+      const newRipple: Ripple = {
+        id: Date.now(),
+        x,
+        y,
+      };
 
-    setTimeout(() => {
-      setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
-    }, 600);
-  }, []);
+      setRipples((prev) => [...prev, newRipple]);
+
+      setTimeout(() => {
+        setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
+      }, 600);
+    },
+    [shouldReduceMotion],
+  );
 
   const handleClick = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
@@ -117,25 +124,31 @@ export function useRipple(): {
   ripples: Ripple[];
 } {
   const [ripples, setRipples] = useState<Ripple[]>([]);
+  const shouldReduceMotion = useReducedMotion();
 
-  const createRipple = useCallback((event: MouseEvent<HTMLElement>) => {
-    const element = event.currentTarget;
-    const rect = element.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+  const createRipple = useCallback(
+    (event: MouseEvent<HTMLElement>) => {
+      if (shouldReduceMotion) return;
 
-    const newRipple: Ripple = {
-      id: Date.now(),
-      x,
-      y,
-    };
+      const element = event.currentTarget;
+      const rect = element.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
 
-    setRipples((prev) => [...prev, newRipple]);
+      const newRipple: Ripple = {
+        id: Date.now(),
+        x,
+        y,
+      };
 
-    setTimeout(() => {
-      setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
-    }, 600);
-  }, []);
+      setRipples((prev) => [...prev, newRipple]);
+
+      setTimeout(() => {
+        setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
+      }, 600);
+    },
+    [shouldReduceMotion],
+  );
 
   const RippleOverlay = useCallback(
     () => (
