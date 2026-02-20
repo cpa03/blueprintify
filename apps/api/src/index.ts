@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { secureHeaders } from "hono/secure-headers";
 import { prettyJSON } from "hono/pretty-json";
+import { etag } from "hono/etag";
 
 import generateRoute from "./routes/generate";
 import tasksRoute from "./routes/tasks";
@@ -14,6 +15,7 @@ import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 import { rateLimit, rateLimitConfigs } from "./middleware/rateLimit";
 import { apiKeyAuth } from "./middleware/auth";
 import { requestLogger } from "./middleware/logger";
+import { bodyLimit, bodyLimitConfigs } from "./middleware/bodyLimit";
 import type { Env, AppVariables } from "./types";
 import { loadConfig } from "./config/env";
 import {
@@ -30,6 +32,7 @@ initializeContainer();
 const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
 
 app.use("*", secureHeaders());
+app.use("*", etag());
 app.use(
   "*",
   cors({
@@ -45,6 +48,7 @@ app.use(
   }),
 );
 app.use("*", prettyJSON());
+app.use("*", bodyLimit(bodyLimitConfigs.standard));
 app.use("*", requestLogger({ excludePaths: ["/"] }));
 app.use("*", apiKeyAuth({ excludePaths: ["/"] }));
 app.use("*", rateLimit(rateLimitConfigs.standard));

@@ -8,8 +8,11 @@ import type { MiddlewareHandler } from "hono";
 import { ErrorResponse, ErrorType } from "../errors";
 import { HTTP_STATUS, VALIDATION_MESSAGES } from "../config/constants";
 
+const CONTENT_TYPE_JSON = "application/json";
+
 /**
  * Custom Zod validator that returns standardized error responses
+ * Includes content-type validation for JSON requests
  */
 export const validateJson = <T extends z.ZodTypeAny>(
   schema: T,
@@ -19,6 +22,25 @@ export const validateJson = <T extends z.ZodTypeAny>(
   };
 }> => {
   return async (c, next) => {
+    const contentType = c.req.header("content-type");
+    if (!contentType?.includes(CONTENT_TYPE_JSON)) {
+      const errorResponse: ErrorResponse = {
+        success: false,
+        error: {
+          type: ErrorType.VALIDATION,
+          message: "Content-Type must be application/json",
+          code: "VALIDATION_ERROR",
+          details: {
+            expected: CONTENT_TYPE_JSON,
+            received: contentType || "none",
+          },
+          timestamp: new Date().toISOString(),
+        },
+      };
+
+      return c.json(errorResponse, HTTP_STATUS.BAD_REQUEST);
+    }
+
     try {
       const body = await c.req.json();
       const result = schema.safeParse(body);
