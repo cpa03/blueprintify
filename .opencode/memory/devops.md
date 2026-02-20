@@ -6,47 +6,50 @@
 
 ### Workflows
 
-| Workflow            | Purpose                           | Runner             | Trigger                     |
-| ------------------- | --------------------------------- | ------------------ | --------------------------- |
-| `main.yml`          | AI Software Company orchestration | `ubuntu-24.04-arm` | Schedule (every 6h), Manual |
-| `ai-on-push.yml`    | AI agent on push                  | `ubuntu-24.04-arm` | Push to main                |
-| `iterate.yml`       | Iteration workflow                | `ubuntu-24.04-arm` | Manual                      |
-| `pr-gatekeeper.yml` | PR validation and auto-fix        | `ubuntu-24.04-arm` | PR events                   |
-| `on-pull.yml`       | Pull request handler              | `ubuntu-24.04-arm` | PR, Schedule, Manual        |
+| Workflow            | Purpose                           | Runner (Current)   | Runner (Required)  | Trigger                     |
+| ------------------- | --------------------------------- | ------------------ | ------------------ | --------------------------- |
+| `main.yml`          | AI Software Company orchestration | `ubuntu-24.04-arm` | `ubuntu-24.04-arm` | Schedule (every 6h), Manual |
+| `ai-on-push.yml`    | AI agent on push                  | `ubuntu-24.04-arm` | `ubuntu-24.04-arm` | Push to main                |
+| `iterate.yml`       | Iteration workflow                | `ubuntu-24.04-arm` | `ubuntu-24.04-arm` | Manual                      |
+| `pr-gatekeeper.yml` | PR validation and auto-fix        | `ubuntu-24.04-arm` | `ubuntu-24.04-arm` | PR events                   |
+| `on pull.yml`       | Pull request handler              | `ubuntu-22.04-arm` | `ubuntu-24.04-arm` | PR, Schedule, Manual        |
 
 ### Known Issues
 
 #### Issue #483 - Workflow Configuration Issues
 
-**Status**: ✅ FIXED (2026-02-19)
+**Status**: ⚠️ BLOCKED - Requires Manual Intervention
 
-**Changes Applied** (2026-02-19):
+**Problem**: GitHub App token lacks `workflows` permission to push workflow file changes.
 
-- Branch: `devops-engineer`
-- All fixes applied and verified locally (typecheck, lint, build, test pass)
+**Current State on `main`** (as of 2026-02-20):
 
-**Fixes Applied:**
+- `on pull.yml` still uses `ubuntu-22.04-arm` (should be `ubuntu-24.04-arm`)
+- `on pull.yml` still uses `actions/checkout@v6` (should be `v4`)
+- `on pull.yml` still uses `actions/setup-node@v6` (should be `v4`)
+- File still has space in name: `on pull.yml` (not renamed)
 
-1. ✅ **Renamed workflow file** (removed space in filename):
-   - `.github/workflows/on pull.yml` → `.github/workflows/on-pull.yml`
+**Fixes Prepared** (2026-02-20):
 
-2. ✅ **Normalized line endings to LF** in both workflow files
-
-3. ✅ **Updated runner version** (line 23 in on-pull.yml):
+1. ⏳ **Runner version** (line 23):
    - `ubuntu-22.04-arm` → `ubuntu-24.04-arm` (per AGENTS.md requirement)
 
-4. ✅ **Fixed action versions** (in on-pull.yml):
+2. ⏳ **Action versions**:
    - `actions/checkout@v6` → `actions/checkout@v4`
    - `actions/setup-node@v6` → `actions/setup-node@v4`
 
-**Verification Results** (2026-02-19):
+3. ⏳ **Line endings**: Normalized to LF
+
+**Verification Results** (2026-02-20):
 
 ```
 ✓ typecheck: passed
 ✓ lint: passed
-✓ build: passed (15.75s)
-✓ tests: 342 passed (218 web + 124 api)
+✓ build: passed (19.14s)
+✓ tests: 343 passed (219 web + 124 api)
 ```
+
+**Action Required**: Someone with repository admin access must manually apply these fixes to the workflow files.
 
 ## Deployment Configuration
 
