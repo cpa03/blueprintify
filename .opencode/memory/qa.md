@@ -157,3 +157,37 @@ Reference: Issue #483
 - ✅ ESLint: No errors or warnings
 - ✅ Build: Successful (14.96s)
 - ✅ Tests: 361 passed (219 web + 142 API), 0 errors
+
+### 2026-02-20 QA Security Fix (09:13 UTC)
+
+**Fixed Hono Timing Comparison Vulnerability:**
+
+- ✅ Updated Hono to 4.11.10+ to fix GHSA-gq3j-xvxp-8hrf
+- **Vulnerability**: Timing comparison hardening in basicAuth and bearerAuth
+- **Fix**: `npm audit fix` updated Hono dependency
+- **Result**: Vulnerabilities reduced from 19 to 18
+
+**Verification Results:**
+
+- ✅ TypeScript: No errors
+- ✅ ESLint: No errors or warnings
+- ✅ Tests: 361 passed (219 web + 142 API)
+- ✅ Build: Successful
+
+**PR Created:** #660
+
+**Remaining Vulnerabilities:**
+
+- 18 vulnerabilities remain (1 moderate, 17 high)
+- All in upstream dependencies (ajv, minimatch) requiring breaking changes
+- Tracked in issue #418
+
+**Workflow Permission Blocker:**
+
+- Issue #483 (CI workflow configuration) cannot be fixed by GitHub App
+- Requires manual intervention by repository admin with workflow permissions
+- Changes prepared but cannot be pushed:
+  - Rename `on pull.yml` → `on-pull.yml`
+  - Update runner: `ubuntu-22.04-arm` → `ubuntu-24.04-arm`
+  - Fix action versions: `checkout@v6` → `@v4`, `setup-node@v6` → `@v4`
+  - Normalize line endings: CRLF → LF
