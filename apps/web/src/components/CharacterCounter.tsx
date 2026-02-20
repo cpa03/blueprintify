@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { motion } from "framer-motion";
 
 interface CharacterCounterProps {
@@ -9,15 +9,6 @@ interface CharacterCounterProps {
   className?: string;
 }
 
-/**
- * CharacterCounter - A delightful character counter with visual feedback
- *
- * Features:
- * - Color-coded states (default, warning, danger, success)
- * - Gentle pulse animation when approaching limits
- * - Smooth transitions between states
- * - Accessible with aria-live region
- */
 function CharacterCounterComponent({
   current,
   max,
@@ -29,19 +20,18 @@ function CharacterCounterComponent({
   const isWarning = current >= warningThreshold && current < max;
   const isValid = min !== undefined && current >= min;
   const isEmpty = current === 0;
+  const shouldPulse = isWarning && !isAtLimit;
 
-  const getColorClass = () => {
+  const colorClass = useMemo(() => {
     if (isAtLimit) return "text-accent-pink";
     if (isWarning) return "text-yellow-500";
     if (isValid && !isEmpty) return "text-accent-emerald";
     return "text-dark-500";
-  };
-
-  const shouldPulse = isWarning && !isAtLimit;
+  }, [isAtLimit, isWarning, isValid, isEmpty]);
 
   return (
     <motion.span
-      className={`text-xs tabular-nums transition-colors duration-200 ${getColorClass()} ${className}`}
+      className={`text-xs tabular-nums transition-colors duration-200 ${colorClass} ${className}`}
       animate={
         shouldPulse
           ? {

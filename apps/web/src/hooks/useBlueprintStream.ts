@@ -5,59 +5,74 @@ import type { BlueprintRequest } from "@blueprint/shared";
 import { GENERATION_MESSAGES } from "../config/constants";
 
 export function useBlueprintStream() {
-  const wizard = useWizardStore();
-  const editor = useEditorStore();
+  // Use specific selectors to avoid re-rendering on unrelated state changes
+  const projectName = useWizardStore((s) => s.projectName);
+  const description = useWizardStore((s) => s.description);
+  const techStack = useWizardStore((s) => s.techStack);
+  const features = useWizardStore((s) => s.features);
+  const targetAudience = useWizardStore((s) => s.targetAudience);
+  const constraints = useWizardStore((s) => s.constraints);
+  const setStep = useWizardStore((s) => s.setStep);
+
+  const reset = useEditorStore((s) => s.reset);
+  const setIsGenerating = useEditorStore((s) => s.setIsGenerating);
+  const setGenerationProgress = useEditorStore((s) => s.setGenerationProgress);
+  const appendBlueprintContent = useEditorStore(
+    (s) => s.appendBlueprintContent,
+  );
+  const appendTasksContent = useEditorStore((s) => s.appendTasksContent);
+  const cancelGeneration = useEditorStore((s) => s.cancelGeneration);
+  const isGenerating = useEditorStore((s) => s.isGenerating);
+  const generationProgress = useEditorStore((s) => s.generationProgress);
 
   const startGeneration = useCallback(async () => {
     // Reset editor state
-    editor.reset();
-    editor.setIsGenerating(true);
-    editor.setGenerationProgress(GENERATION_MESSAGES.BLUEPRINT_START);
-    wizard.setStep("generating");
+    reset();
+    setIsGenerating(true);
+    setGenerationProgress(GENERATION_MESSAGES.BLUEPRINT_START);
+    setStep("generating");
 
     // Prepare request
     const request: BlueprintRequest = {
-      projectName: wizard.projectName,
-      description: wizard.description,
-      techStack: wizard.techStack,
-      features: wizard.features.length > 0 ? wizard.features : undefined,
-      targetAudience: wizard.targetAudience || undefined,
-      constraints: wizard.constraints || undefined,
+      projectName,
+      description,
+      techStack,
+      features: features.length > 0 ? features : undefined,
+      targetAudience: targetAudience || undefined,
+      constraints: constraints || undefined,
     };
 
     // Generate blueprint
     await generateBlueprint(request, {
       onChunk: (chunk) => {
-        editor.appendBlueprintContent(chunk);
+        appendBlueprintContent(chunk);
       },
       onError: (error) => {
-        editor.setGenerationProgress(GENERATION_MESSAGES.ERROR(error));
-        editor.setIsGenerating(false);
+        setGenerationProgress(GENERATION_MESSAGES.ERROR(error));
+        setIsGenerating(false);
       },
       onDone: async () => {
-        editor.setGenerationProgress(GENERATION_MESSAGES.BLUEPRINT_COMPLETE);
+        setGenerationProgress(GENERATION_MESSAGES.BLUEPRINT_COMPLETE);
 
         // Now generate tasks from the blueprint
         const blueprint = useEditorStore.getState().blueprintContent;
 
         await generateTasks(
-          { blueprint, projectName: wizard.projectName },
+          { blueprint, projectName },
           {
             onChunk: (chunk) => {
-              editor.appendTasksContent(chunk);
+              appendTasksContent(chunk);
             },
             onError: (error) => {
-              editor.setGenerationProgress(
-                GENERATION_MESSAGES.ERROR_TASKS(error),
-              );
-              editor.setIsGenerating(false);
+              setGenerationProgress(GENERATION_MESSAGES.ERROR_TASKS(error));
+              setIsGenerating(false);
             },
             onDone: () => {
-              editor.setGenerationProgress(GENERATION_MESSAGES.COMPLETE);
-              editor.setIsGenerating(false);
+              setGenerationProgress(GENERATION_MESSAGES.COMPLETE);
+              setIsGenerating(false);
             },
             onRetry: (attempt, maxRetries) => {
-              editor.setGenerationProgress(
+              setGenerationProgress(
                 GENERATION_MESSAGES.RETRY(attempt, maxRetries),
               );
             },
@@ -65,21 +80,32 @@ export function useBlueprintStream() {
         );
       },
       onRetry: (attempt, maxRetries) => {
-        editor.setGenerationProgress(
-          GENERATION_MESSAGES.RETRY(attempt, maxRetries),
-        );
+        setGenerationProgress(GENERATION_MESSAGES.RETRY(attempt, maxRetries));
       },
     });
-  }, [wizard, editor]);
+  }, [
+    projectName,
+    description,
+    techStack,
+    features,
+    targetAudience,
+    constraints,
+    setStep,
+    reset,
+    setIsGenerating,
+    setGenerationProgress,
+    appendBlueprintContent,
+    appendTasksContent,
+  ]);
 
-  const cancelGeneration = useCallback(() => {
-    editor.cancelGeneration();
-  }, [editor]);
+  const handleCancelGeneration = useCallback(() => {
+    cancelGeneration();
+  }, [cancelGeneration]);
 
   return {
     startGeneration,
-    cancelGeneration,
-    isGenerating: editor.isGenerating,
-    progress: editor.generationProgress,
+    cancelGeneration: handleCancelGeneration,
+    isGenerating,
+    progress: generationProgress,
   };
 }
