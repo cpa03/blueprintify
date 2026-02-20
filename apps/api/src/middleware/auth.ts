@@ -1,5 +1,20 @@
+/**
+ * API Key Authentication Middleware
+ *
+ * Provides API key validation for protected routes with constant-time comparison
+ * to prevent timing attacks. Supports configurable header name and path exclusions.
+ *
+ * @module middleware/auth
+ */
+
 import type { MiddlewareHandler } from "hono";
 
+/**
+ * Configuration options for API key authentication middleware.
+ *
+ * @property apiKeyHeader - Header name for API key (default: "x-api-key")
+ * @property excludePaths - Array of paths to exclude from authentication
+ */
 interface AuthConfig {
   apiKeyHeader?: string;
   excludePaths?: string[];
@@ -9,6 +24,10 @@ interface AuthConfig {
  * Constant-time string comparison to prevent timing attacks.
  * Uses XOR to compare each character and returns false if any differ.
  * This prevents attackers from measuring response time to guess the key.
+ *
+ * @param a - First string to compare
+ * @param b - Second string to compare
+ * @returns True if strings are equal, false otherwise
  */
 function constantTimeCompare(a: string, b: string): boolean {
   // Early return for length mismatch - but use constant time for the comparison
@@ -24,6 +43,24 @@ function constantTimeCompare(a: string, b: string): boolean {
   return result === 0;
 }
 
+/**
+ * Creates an API key authentication middleware for Hono applications.
+ *
+ * Validates API keys from request headers using constant-time comparison.
+ * If no API_KEY environment variable is set, authentication is bypassed.
+ * Excluded paths (like health checks) skip authentication entirely.
+ *
+ * @param config - Authentication configuration options
+ * @returns Hono middleware handler
+ *
+ * @example
+ * ```typescript
+ * app.use('*', apiKeyAuth({
+ *   apiKeyHeader: 'x-api-key',
+ *   excludePaths: ['/', '/health'],
+ * }));
+ * ```
+ */
 export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
   const { apiKeyHeader = "x-api-key", excludePaths = ["/"] } = config;
 
