@@ -26,17 +26,17 @@ function TemplateGridComponent() {
     [selectedId, loadTemplate, toast],
   );
 
-  const handleKeyDown = (
-    e: React.KeyboardEvent,
-    template: (typeof STARTER_TEMPLATES)[0],
-  ) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      if (selectedId === null) {
-        handleTemplateClick(template);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent, template: (typeof STARTER_TEMPLATES)[0]) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        if (selectedId === null) {
+          handleTemplateClick(template);
+        }
       }
-    }
-  };
+    },
+    [selectedId, handleTemplateClick],
+  );
 
   return (
     <section className="mb-12">
