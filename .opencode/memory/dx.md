@@ -113,8 +113,13 @@ npm run build      # Production build
 1. **Workflow Permissions**: GitHub App cannot create/update workflow files without `workflows` permission
    - Issue #483 (CI workflow fixes) is blocked until permission is granted or manual fix is applied
    - Required fixes: rename `on pull.yml` to `on-pull.yml`, normalize CRLF→LF, update runner to `ubuntu-24.04-arm`, fix action versions from `@v6` to `@v4`
-2. **Security Vulnerabilities**: ajv package has known vulnerabilities (upstream fix required)
-3. **Lint Warnings**: 8 unused type imports in db test file (PR #575 addresses this)
+   - Workaround: Manual PR from human contributor with workflow permissions, or repo admin must grant `workflows` permission to GitHub App
+2. **CRLF Line Endings**: Some files in the repo (particularly `.github/workflows/*.yml`) were committed with CRLF
+   - `.gitattributes` with `* text=auto` will auto-convert to LF on checkout
+   - This causes "modified" status even after `git reset --hard` due to working directory normalization
+   - Fix: The files need to be re-committed with LF line endings (requires workflow permission for .yml files)
+3. **Security Vulnerabilities**: ajv package has known vulnerabilities (upstream fix required)
+4. **Lint Warnings**: 8 unused type imports in db test file (PR #575 addresses this)
 
 ## Troubleshooting Guide
 
