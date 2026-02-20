@@ -8,6 +8,7 @@ import {
 } from "react";
 import { motion } from "framer-motion";
 import { TypeIndicator, useTypingIndicator } from "./TypeIndicator";
+import { SPRING_CONFIG } from "../config/constants";
 
 interface AnimatedInputBaseProps {
   label?: string;
@@ -131,7 +132,7 @@ export const AnimatedInput = forwardRef<HTMLInputElement, AnimatedInputProps>(
                   scale: 1,
                 }
           }
-          transition={{ type: "spring", stiffness: 500, damping: 25 }}
+          transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
         >
           <input
             ref={combinedRef}
@@ -273,7 +274,7 @@ export const AnimatedTextarea = forwardRef<
                 scale: 1,
               }
         }
-        transition={{ type: "spring", stiffness: 500, damping: 25 }}
+        transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
       >
         <textarea
           ref={combinedRef}

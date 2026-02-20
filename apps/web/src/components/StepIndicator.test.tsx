@@ -23,6 +23,13 @@ vi.mock("../config/constants", () => ({
     { key: "review", label: "Review", icon: "👀", shortcut: "4" },
     { key: "generating", label: "Generating", icon: "⚡", shortcut: "5" },
   ],
+  TIMEOUTS: {
+    SHAKE_ANIMATION: 400,
+  },
+  SPRING_CONFIG: {
+    DEFAULT: { stiffness: 400, damping: 25, mass: 0.8 },
+    SUBTLE_BOUNCE: { stiffness: 400, damping: 17, mass: 0.8 },
+  },
 }));
 
 vi.mock("framer-motion", () => {
