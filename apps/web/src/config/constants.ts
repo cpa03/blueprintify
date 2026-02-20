@@ -194,13 +194,30 @@ export const GENERATION_ESTIMATES = {
   LONG: "60-90",
 } as const;
 
-// API Error messages
+/**
+ * API Error Messages
+ *
+ * These messages are displayed to users when API calls fail.
+ * Messages are designed to be user-friendly while providing enough
+ * context for developers to debug issues.
+ *
+ * @see apps/api/src/errors.ts - Corresponding server-side error definitions
+ */
 export const API_ERROR_MESSAGES = {
-  GENERATION_FAILED: "Generation failed",
-  TASK_GENERATION_FAILED: "Task generation failed",
-  REFINEMENT_FAILED: "Refinement failed",
-  NO_RESPONSE_BODY: "No response body",
-  STREAM_ERROR: "Stream error",
+  /** Blueprint generation failed - typically AI service or validation issue */
+  GENERATION_FAILED:
+    "Generation failed. Please check your input and try again.",
+  /** Task generation failed - usually missing blueprint content or AI error */
+  TASK_GENERATION_FAILED:
+    "Task generation failed. Ensure blueprint content is valid.",
+  /** Content refinement failed - AI service or validation issue */
+  REFINEMENT_FAILED:
+    "Refinement failed. Please check your refinement instructions.",
+  /** Server returned empty response - indicates server or network issue */
+  NO_RESPONSE_BODY:
+    "Server returned empty response. Check if API server is running.",
+  /** SSE stream interrupted - network or server timeout issue */
+  STREAM_ERROR: "Connection interrupted. Check your network and try again.",
 } as const;
 
 // Export README template
