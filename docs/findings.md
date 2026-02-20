@@ -4,6 +4,34 @@
 
 ---
 
+## [AI-Agent-Engineer] 2026-02-20 - CMZ Agent Standardization
+
+### Observation
+
+The CMZ agent definition in `.opencode/agent/cmz.md` was missing the "Planning & Skill Usage (MANDATORY)" section required by the project standards documented in `.opencode/memory/PATTERNS.md`:
+
+> [Agent] All agents MUST include the "Planning & Skill Usage (MANDATORY)" subsection under SYSTEM MEMORY & STANDARDS.
+
+### Action Taken
+
+Added the required "Planning & Skill Usage (MANDATORY)" section to the CMZ agent definition, ensuring consistency with other agent definitions and project standards.
+
+### Impact
+
+- CMZ agent now follows the mandatory planning workflow
+- All 27 agent definitions now include the required planning section
+- No functional changes - documentation/standards alignment only
+
+### Verification
+
+```bash
+npm run typecheck  # ✅ PASS
+npm run lint       # ✅ PASS
+npm run test:all   # ✅ PASS (360 tests: 218 web + 142 API)
+```
+
+---
+
 ## [Security-Engineer] 2026-02-19 - Security Audit Report
 
 ### Executive Summary
