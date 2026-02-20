@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useCallback, useState, memo } from "react";
 import type { WizardStep } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
-import { WIZARD_STEPS, TIMEOUTS } from "../config/constants";
+import { WIZARD_STEPS, TIMEOUTS, SPRING_CONFIG } from "../config/constants";
 import { CircularProgress } from "./CircularProgress";
 import { SmartTooltip } from "./SmartTooltip";
 
@@ -70,7 +70,7 @@ function StepIndicatorComponent() {
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          transition={{ type: "spring", ...SPRING_CONFIG.DEFAULT }}
           className="relative group"
         >
           <CircularProgress
@@ -86,7 +86,7 @@ function StepIndicatorComponent() {
           <motion.div
             className="absolute inset-0 flex items-center justify-center"
             whileHover={{ scale: 1.1 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            transition={{ type: "spring", ...SPRING_CONFIG.SUBTLE_BOUNCE }}
           >
             <span className="text-xs font-semibold">
               {currentIndex >= STEPS.length - 1 ? "🎉" : `${currentIndex + 1}`}

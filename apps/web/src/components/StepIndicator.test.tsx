@@ -23,6 +23,18 @@ vi.mock("../config/constants", () => ({
     { key: "review", label: "Review", icon: "👀", shortcut: "4" },
     { key: "generating", label: "Generating", icon: "⚡", shortcut: "5" },
   ],
+  SPRING_CONFIG: {
+    DEFAULT: { stiffness: 400, damping: 25, mass: 0.8 },
+    REDUCED_MOTION: { stiffness: 1000, damping: 100, mass: 0.1 },
+    SNAPPY: { stiffness: 500, damping: 25, mass: 0.8 },
+    GENTLE: { stiffness: 400, damping: 30, mass: 0.8 },
+    BOUNCY: { stiffness: 400, damping: 10, mass: 0.8 },
+    SUBTLE_BOUNCE: { stiffness: 400, damping: 17, mass: 0.8 },
+    SLOW: { stiffness: 100, damping: 20, mass: 0.8 },
+  },
+  TIMEOUTS: {
+    SHAKE_ANIMATION: 400,
+  },
 }));
 
 vi.mock("framer-motion", () => {

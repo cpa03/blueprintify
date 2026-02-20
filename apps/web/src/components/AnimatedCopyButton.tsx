@@ -1,7 +1,11 @@
 import React, { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
-import { CELEBRATION_COLORS, ANIMATION_COLORS } from "../config/constants";
+import {
+  CELEBRATION_COLORS,
+  ANIMATION_COLORS,
+  SPRING_CONFIG,
+} from "../config/constants";
 
 interface Particle {
   id: number;
@@ -106,8 +110,7 @@ export function AnimatedCopyButton({
       }}
       transition={{
         type: "spring",
-        stiffness: 400,
-        damping: 25,
+        ...SPRING_CONFIG.DEFAULT,
       }}
       whileHover={
         hasContent
@@ -194,8 +197,7 @@ export function AnimatedCopyButton({
               exit={{ opacity: 0, y: -8, scale: 0.9 }}
               transition={{
                 type: "spring",
-                stiffness: 500,
-                damping: 25,
+                ...SPRING_CONFIG.SNAPPY,
               }}
             >
               <motion.svg
