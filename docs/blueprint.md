@@ -80,7 +80,7 @@ blueprintify/
 
 ### 1. AI Agent System
 
-- 24 specialized agents with distinct roles
+- 28 specialized agents with distinct roles
 - Skills-based workflow system
 - Branch-based agent operations (`agent/<role>`)
 
