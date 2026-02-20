@@ -26,6 +26,32 @@ function getLimiterLimits(): Record<RateLimiterName, number> {
   };
 }
 
+/**
+ * Rate limiting middleware for Cloudflare Workers.
+ *
+ * Implements IP-based rate limiting using Cloudflare's built-in rate limiter.
+ * Protects against DoS attacks and API abuse by limiting requests per time window.
+ *
+ * @param config - Rate limit configuration
+ * @param config.limiter - Name of the rate limiter (STRICT, STANDARD, or LENIENT)
+ * @param config.keyGenerator - Optional custom key generator for rate limiting
+ * @returns Hono middleware handler
+ *
+ * @example
+ * ```typescript
+ * // Apply standard rate limiting
+ * app.use("*", rateLimit(rateLimitConfigs.standard));
+ *
+ * // Apply strict rate limiting for sensitive endpoints
+ * app.use("/auth/*", rateLimit(rateLimitConfigs.strict));
+ * ```
+ *
+ * @security
+ * - Uses Cloudflare's rate limiter for distributed rate limiting
+ * - Falls back to IP-based identification via CF headers
+ * - Returns standard rate limit headers (X-RateLimit-*)
+ * - Includes Retry-After header when limit exceeded
+ */
 export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
   const { limiter, keyGenerator } = config;
 
