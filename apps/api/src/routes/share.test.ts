@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import shareRoute from "./share";
 import { errorHandler } from "../middleware/errorHandler";
 import type { ErrorResponse } from "../errors";
+import { MOCK_ENV } from "../test-utils";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -13,6 +14,10 @@ afterAll(() => {
   console.error = originalConsoleError;
 });
 
+/**
+ * Creates a mock D1 database for testing share routes
+ * Uses in-memory Map for test isolation
+ */
 function createMockDB() {
   const storedData = new Map<string, Record<string, unknown>>();
 
@@ -45,21 +50,24 @@ function createMockDB() {
   };
 }
 
-function createMockEnv() {
+/**
+ * Creates mock environment with DB support for share route tests
+ * Extends MOCK_ENV from test-utils with DB mock
+ */
+function createMockEnvWithDB() {
   return {
-    OPENAI_API_KEY: "test-key",
+    ...MOCK_ENV,
     DB: createMockDB(),
-    CORS_ORIGIN: "http://localhost:3000",
   };
 }
 
 describe("POST /share", () => {
-  const app = new Hono<{ Bindings: ReturnType<typeof createMockEnv> }>();
+  const app = new Hono<{ Bindings: ReturnType<typeof createMockEnvWithDB> }>();
   app.route("/", shareRoute);
   app.onError(errorHandler);
 
   it("should create a shareable blueprint link", async () => {
-    const env = createMockEnv();
+    const env = createMockEnvWithDB();
     const res = await app.request(
       "/",
       {
@@ -92,7 +100,7 @@ describe("POST /share", () => {
   });
 
   it("should return 400 for invalid request body", async () => {
-    const env = createMockEnv();
+    const env = createMockEnvWithDB();
     const res = await app.request(
       "/",
       {
@@ -113,7 +121,7 @@ describe("POST /share", () => {
   });
 
   it("should create share without optional metadata", async () => {
-    const env = createMockEnv();
+    const env = createMockEnvWithDB();
     const res = await app.request(
       "/",
       {
@@ -137,12 +145,12 @@ describe("POST /share", () => {
 });
 
 describe("GET /share/:id", () => {
-  const app = new Hono<{ Bindings: ReturnType<typeof createMockEnv> }>();
+  const app = new Hono<{ Bindings: ReturnType<typeof createMockEnvWithDB> }>();
   app.route("/", shareRoute);
   app.onError(errorHandler);
 
   it("should return 400 for invalid share ID format", async () => {
-    const env = createMockEnv();
+    const env = createMockEnvWithDB();
     const res = await app.request("/invalid-id", {}, env);
 
     expect(res.status).toBe(400);
@@ -156,7 +164,7 @@ describe("GET /share/:id", () => {
   });
 
   it("should return 404 for non-existent share", async () => {
-    const env = createMockEnv();
+    const env = createMockEnvWithDB();
     const res = await app.request("/ABC123def456", {}, env);
 
     expect(res.status).toBe(404);
@@ -166,12 +174,12 @@ describe("GET /share/:id", () => {
 });
 
 describe("DELETE /share/:id", () => {
-  const app = new Hono<{ Bindings: ReturnType<typeof createMockEnv> }>();
+  const app = new Hono<{ Bindings: ReturnType<typeof createMockEnvWithDB> }>();
   app.route("/", shareRoute);
   app.onError(errorHandler);
 
   it("should delete a shared blueprint", async () => {
-    const env = createMockEnv();
+    const env = createMockEnvWithDB();
     const res = await app.request("/testshare123", { method: "DELETE" }, env);
 
     expect(res.status).toBe(200);
@@ -180,7 +188,7 @@ describe("DELETE /share/:id", () => {
   });
 
   it("should return 400 for invalid share ID format on delete", async () => {
-    const env = createMockEnv();
+    const env = createMockEnvWithDB();
     const res = await app.request("/invalid-id", { method: "DELETE" }, env);
 
     expect(res.status).toBe(400);
