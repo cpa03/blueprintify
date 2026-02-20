@@ -2,6 +2,7 @@ import type { Context, MiddlewareHandler } from "hono";
 import type { Env } from "../types";
 import { getConfig } from "../config/env";
 import { HTTP_STATUS } from "../config/constants";
+import { TIME_UNITS } from "@blueprint/shared";
 
 type RateLimiterName =
   | "STRICT_RATE_LIMITER"
@@ -79,13 +80,14 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
     }
 
     const rateLimitResetTimestamp = Math.ceil(
-      Date.now() / 1000 + getConfig().RATE_LIMIT_WINDOW_MS / 1000,
+      Date.now() / TIME_UNITS.MS_PER_SECOND +
+        getConfig().RATE_LIMIT_WINDOW_MS / TIME_UNITS.MS_PER_SECOND,
     );
     c.header("X-RateLimit-Reset", String(rateLimitResetTimestamp));
 
     if (!result.success) {
       const retryAfterSeconds = Math.ceil(
-        getConfig().RATE_LIMIT_WINDOW_MS / 1000,
+        getConfig().RATE_LIMIT_WINDOW_MS / TIME_UNITS.MS_PER_SECOND,
       );
       c.header("Retry-After", String(retryAfterSeconds));
       return c.json(

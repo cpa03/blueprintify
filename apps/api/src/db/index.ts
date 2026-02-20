@@ -6,6 +6,16 @@
  */
 
 import { z } from "zod";
+import { ID_GENERATION_CONFIG } from "@blueprint/shared";
+
+const { RANDOM_STRING_START_INDEX, RANDOM_STRING_LENGTH, ALPHANUMERIC_RADIX } =
+  ID_GENERATION_CONFIG;
+
+const END_INDEX = RANDOM_STRING_START_INDEX + RANDOM_STRING_LENGTH;
+
+function generateId(prefix: string): string {
+  return `${prefix}_${Date.now()}_${Math.random().toString(ALPHANUMERIC_RADIX).substring(RANDOM_STRING_START_INDEX, END_INDEX)}`;
+}
 
 // Database schemas for type safety
 export const UserSchema = z.object({
@@ -216,7 +226,7 @@ export class MockDatabaseService implements DatabaseService {
   async createUser(
     user: Omit<User, "id" | "created_at" | "updated_at">,
   ): Promise<User> {
-    const id = `user_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+    const id = generateId("user");
     const now = new Date().toISOString();
     const newUser: User = { ...user, id, created_at: now, updated_at: now };
     this.users.set(id, newUser);
@@ -253,7 +263,7 @@ export class MockDatabaseService implements DatabaseService {
   async createProject(
     project: Omit<Project, "id" | "created_at" | "updated_at">,
   ): Promise<Project> {
-    const id = `project_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+    const id = generateId("project");
     const now = new Date().toISOString();
     const newProject: Project = {
       ...project,
@@ -306,7 +316,7 @@ export class MockDatabaseService implements DatabaseService {
       "id" | "created_at" | "updated_at" | "version"
     > & { version?: number },
   ): Promise<Blueprint> {
-    const id = `blueprint_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+    const id = generateId("blueprint");
     const now = new Date().toISOString();
     const newBlueprint: Blueprint = {
       ...blueprint,
@@ -362,7 +372,7 @@ export class MockDatabaseService implements DatabaseService {
       version?: number;
     },
   ): Promise<Task> {
-    const id = `task_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+    const id = generateId("task");
     const now = new Date().toISOString();
     const newTask: Task = {
       ...task,
@@ -407,7 +417,7 @@ export class MockDatabaseService implements DatabaseService {
       "id" | "created_at" | "updated_at" | "usage_count"
     > & { usage_count?: number },
   ): Promise<Template> {
-    const id = `template_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+    const id = generateId("template");
     const now = new Date().toISOString();
     const newTemplate: Template = {
       ...template,
@@ -471,7 +481,7 @@ export class MockDatabaseService implements DatabaseService {
     ip_address?: string;
     user_agent?: string;
   }): Promise<void> {
-    const id = `analytics_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+    const id = generateId("analytics");
     const newEvent: Analytics = {
       id,
       ...event,
@@ -495,7 +505,7 @@ export class MockDatabaseService implements DatabaseService {
   async createSession(
     session: Omit<Session, "id" | "created_at" | "updated_at">,
   ): Promise<Session> {
-    const id = `session_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+    const id = generateId("session");
     const now = new Date().toISOString();
     const newSession: Session = {
       ...session,
