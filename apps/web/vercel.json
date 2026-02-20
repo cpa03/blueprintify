@@ -61,7 +61,7 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=()"
+          "value": "accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(), gamepad=(), geolocation=(), gyroscope=(), layout-animations=(), legacy-image-formats=(), magnetometer=(), microphone=(), midi=(), oversized-images=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), sync-xhr=(), unoptimized-images=(), unsized-media=(), usb=(), wake-lock=(), xr-spatial-tracking=()"
         },
         {
           "key": "Strict-Transport-Security",
@@ -86,6 +86,10 @@
         {
           "key": "X-DNS-Prefetch-Control",
           "value": "on"
+        },
+        {
+          "key": "Vary",
+          "value": "Accept-Encoding, Accept-Language"
         }
       ]
     },
@@ -94,11 +98,15 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400"
+          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400, stale-if-error=86400"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=31536000, immutable, stale-if-error=86400"
+        },
+        {
+          "key": "Vary",
+          "value": "Accept-Encoding"
         }
       ]
     },
@@ -107,11 +115,15 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400"
+          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400, stale-if-error=86400"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=31536000, immutable, stale-if-error=86400"
+        },
+        {
+          "key": "Vary",
+          "value": "Accept-Encoding"
         }
       ]
     },
@@ -120,11 +132,15 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400"
+          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400, stale-if-error=86400"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=31536000, immutable, stale-if-error=86400"
+        },
+        {
+          "key": "Vary",
+          "value": "Accept-Encoding"
         }
       ]
     },
@@ -133,11 +149,15 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate, stale-while-revalidate=60"
+          "value": "public, max-age=0, must-revalidate, stale-while-revalidate=60, stale-if-error=60"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
+          "value": "public, max-age=0, must-revalidate, stale-if-error=60"
+        },
+        {
+          "key": "Vary",
+          "value": "Accept-Encoding"
         }
       ]
     },
@@ -146,11 +166,11 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400"
+          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400, stale-if-error=86400"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=31536000, immutable, stale-if-error=86400"
         }
       ]
     },
@@ -159,11 +179,11 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400"
+          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400, stale-if-error=86400"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=31536000, immutable, stale-if-error=86400"
         }
       ]
     },
@@ -172,11 +192,11 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=86400, stale-while-revalidate=3600"
+          "value": "public, max-age=86400, stale-while-revalidate=3600, stale-if-error=3600"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, max-age=86400"
+          "value": "public, max-age=86400, stale-if-error=3600"
         }
       ]
     },
@@ -185,11 +205,11 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=86400, stale-while-revalidate=3600"
+          "value": "public, max-age=86400, stale-while-revalidate=3600, stale-if-error=3600"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, max-age=86400"
+          "value": "public, max-age=86400, stale-if-error=3600"
         },
         {
           "key": "Content-Type",
@@ -202,11 +222,11 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400"
+          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400, stale-if-error=86400"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=31536000, immutable, stale-if-error=86400"
         },
         {
           "key": "Access-Control-Allow-Origin",
@@ -219,11 +239,11 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400"
+          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400, stale-if-error=86400"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=31536000, immutable, stale-if-error=86400"
         },
         {
           "key": "Access-Control-Allow-Origin",
@@ -236,11 +256,11 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400"
+          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400, stale-if-error=86400"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=31536000, immutable, stale-if-error=86400"
         }
       ]
     },
@@ -249,11 +269,11 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400"
+          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400, stale-if-error=86400"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=31536000, immutable, stale-if-error=86400"
         }
       ]
     },
@@ -262,11 +282,11 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400"
+          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400, stale-if-error=86400"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=31536000, immutable, stale-if-error=86400"
         }
       ]
     },
@@ -275,11 +295,11 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400"
+          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400, stale-if-error=86400"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=31536000, immutable, stale-if-error=86400"
         }
       ]
     },
@@ -288,11 +308,11 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400"
+          "value": "public, max-age=31536000, immutable, stale-while-revalidate=86400, stale-if-error=86400"
         },
         {
           "key": "CDN-Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=31536000, immutable, stale-if-error=86400"
         }
       ]
     }
