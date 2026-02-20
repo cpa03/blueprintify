@@ -42,6 +42,7 @@ const TabButton = React.memo(function TabButton({
       onClick={onClick}
       className={clsx(
         "relative px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-900",
         isActive ? "text-white" : "text-dark-200 hover:text-white",
       )}
     >
