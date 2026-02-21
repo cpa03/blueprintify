@@ -8,6 +8,7 @@
  */
 
 import type { MiddlewareHandler } from "hono";
+import { HTTP_STATUS } from "../config/constants";
 
 /**
  * Configuration options for API key authentication middleware.
@@ -92,7 +93,7 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
             timestamp: new Date().toISOString(),
           },
         },
-        401,
+        HTTP_STATUS.UNAUTHORIZED,
       );
     }
 
