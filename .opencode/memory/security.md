@@ -8,7 +8,7 @@
 - CI/CD security: Standardized runner versions (`ubuntu-24.04-arm`) and action versions across all workflows.
 - Regular security audits (monthly recommended).
 
-## Current Security Status (2026-02-21 17:05 UTC)
+## Current Security Status (2026-02-21 21:16 UTC)
 
 | Control             | Status                                                |
 | ------------------- | ----------------------------------------------------- |
@@ -20,6 +20,7 @@
 | Secure Random       | ✅ crypto.getRandomValues()                           |
 | Security Headers    | ✅ Hono secureHeaders()                               |
 | Secure Logging      | ✅ Sensitive data redaction                           |
+| CSP object-src      | ✅ Added 'none' for plugin attack prevention          |
 | HTML Sanitization   | ✅ DOMPurify configured (SVG/math blocked)            |
 | Rate Limiting       | ✅ Cloudflare rate limiter                            |
 | CI Runner           | ✅ All workflows use ubuntu-24.04-arm                 |
@@ -27,6 +28,15 @@
 | npm audit           | ⚠️ 17 vulnerabilities (dev deps only) - risk accepted |
 
 ## Lessons Learned
+
+### 2026-02-21 21:16 UTC: CSP object-src Hardening
+
+ **Finding**: CSP was missing `object-src 'none'` directive for defense-in-depth against plugin-based attacks (Flash, Java, PDF)
+ **Root Cause**: Original CSP configuration did not include this recommended directive
+ **Risk**: Without `object-src 'none'`, browsers could potentially load malicious plugins if other attack vectors succeeded
+ **Fix**: Added `object-src 'none'` to CSP in `/apps/web/src/lib/security.ts`
+ **Verification**: All 236 web tests pass, lint clean
+ **Lesson**: CSP should always include `object-src 'none'` as a defense-in-depth measure against plugin-based attacks
 
 ### 2026-02-21 17:05 UTC: Security Engineer Audit - main.yml Invalid Action Version
 
