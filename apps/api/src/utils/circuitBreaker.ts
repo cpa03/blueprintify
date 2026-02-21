@@ -1,17 +1,41 @@
+/**
+ * Circuit Breaker Implementation
+ * Provides resilience pattern for external API calls by preventing cascading failures.
+ * Automatically opens after threshold failures and allows retry after timeout.
+ *
+ * @module utils/circuitBreaker
+ */
+
 import { HTTP_STATUS, CIRCUIT_BREAKER_CONFIG } from "../config/constants";
 
+/**
+ * Configuration options for circuit breaker behavior.
+ *
+ * @property failureThreshold - Number of failures before opening the circuit
+ * @property resetTimeoutMs - Time in milliseconds before attempting to close
+ * @property halfOpenMaxCalls - Max calls allowed in half-open state
+ */
 interface CircuitBreakerConfig {
   failureThreshold: number;
   resetTimeoutMs: number;
   halfOpenMaxCalls: number;
 }
 
+/**
+ * Circuit breaker states
+ * - CLOSED: Normal operation, requests pass through
+ * - OPEN: Failing state, requests are blocked
+ * - HALF_OPEN: Testing state, limited requests allowed
+ */
 enum CircuitState {
   CLOSED = "CLOSED",
   OPEN = "OPEN",
   HALF_OPEN = "HALF_OPEN",
 }
 
+/**
+ * Metrics snapshot for monitoring circuit breaker health
+ */
 interface CircuitBreakerMetrics {
   state: CircuitState;
   failures: number;
@@ -20,6 +44,10 @@ interface CircuitBreakerMetrics {
   nextAttempt: number;
 }
 
+/**
+ * Circuit Breaker implementation for resilient API calls.
+ * Prevents cascading failures by opening after threshold failures.
+ */
 class CircuitBreaker {
   private state: CircuitState = CircuitState.CLOSED;
   private failures = 0;
