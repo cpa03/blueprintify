@@ -107,7 +107,7 @@ const ParticleShape = memo(function ParticleShape({
   );
 });
 
-export function GenerationCelebration({
+function GenerationCelebrationComponent({
   isComplete,
   onComplete,
 }: GenerationCelebrationProps): JSX.Element | null {
@@ -281,4 +281,4 @@ export function GenerationCelebration({
   );
 }
 
-export default GenerationCelebration;
+export const GenerationCelebration = memo(GenerationCelebrationComponent);
