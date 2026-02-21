@@ -2,14 +2,19 @@ import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import type { Env } from "../types";
-import { HTTP_STATUS, ERROR_CODES, ERROR_MESSAGES } from "../config/constants";
+import {
+  HTTP_STATUS,
+  ERROR_CODES,
+  ERROR_MESSAGES,
+  SHARE_CONFIG,
+} from "../config/constants";
 import { logDatabaseOperation } from "../utils/logging";
 
 const app = new Hono<{ Bindings: Env }>();
 
 const createShareSchema = z.object({
-  title: z.string().min(1).max(200),
-  blueprint: z.string().min(1).max(50000),
+  title: z.string().min(1).max(SHARE_CONFIG.MAX_TITLE_LENGTH),
+  blueprint: z.string().min(1).max(SHARE_CONFIG.MAX_BLUEPRINT_SIZE),
   metadata: z
     .object({
       projectName: z.string().optional(),
@@ -22,11 +27,18 @@ const createShareSchema = z.object({
 const ALPHANUMERIC_CHARS =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+/**
+ * Generates a cryptographically secure random share ID
+ * Uses crypto.getRandomValues for Cloudflare Workers compatibility
+ */
 function generateShareId(): string {
+  const bytes = new Uint8Array(SHARE_CONFIG.ID_LENGTH);
+  crypto.getRandomValues(bytes);
+
   let result = "";
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < SHARE_CONFIG.ID_LENGTH; i++) {
     result += ALPHANUMERIC_CHARS.charAt(
-      Math.floor(Math.random() * ALPHANUMERIC_CHARS.length),
+      (bytes[i] ?? 0) % ALPHANUMERIC_CHARS.length,
     );
   }
   return result;
@@ -34,7 +46,7 @@ function generateShareId(): string {
 
 function getExpirationDate(): Date {
   const expiresAt = new Date();
-  expiresAt.setDate(expiresAt.getDate() + 30);
+  expiresAt.setDate(expiresAt.getDate() + SHARE_CONFIG.EXPIRATION_DAYS);
   return expiresAt;
 }
 
@@ -114,7 +126,7 @@ app.get("/:id", async (c) => {
   try {
     const shareId = c.req.param("id");
 
-    if (!shareId || shareId.length !== 12) {
+    if (!shareId || shareId.length !== SHARE_CONFIG.ID_LENGTH) {
       return c.json(
         {
           error: ERROR_CODES.VALIDATION_ERROR,
