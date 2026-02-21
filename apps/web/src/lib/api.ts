@@ -4,7 +4,7 @@ import type {
   RefineRequest,
   StreamChunk,
 } from "@blueprint/shared";
-import { RETRY_CONFIG } from "@blueprint/shared";
+import { RETRY_CONFIG, HTTP_HEADERS } from "@blueprint/shared";
 import {
   RETRYABLE_STATUS_CODES,
   API_ERROR_MESSAGES,
@@ -241,7 +241,7 @@ async function apiCallWithRetry(
     try {
       const response = await fetch(`${API_BASE}${endpoint}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify(requestBody),
         signal: controller.signal,
       });
