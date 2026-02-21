@@ -340,16 +340,19 @@
 ## M2.5: Consolidation & Strengthening (StorX) ✅ COMPLETED
 
 ### [STRENGTHEN] ZIP Export Metadata
+
 - **Status**: ✅ COMPLETED (2026-02-21)
 - **Description**: Added `metadata.json` to ZIP export containing project details, tech stack, and features.
 - **Impact**: Improved interoperability and traceability of generated projects.
 
 ### [STRENGTHEN] API Modularization
+
 - **Status**: ✅ COMPLETED (2026-02-21)
 - **Description**: Moved hardcoded cache-control values to centralized constants.
 - **Impact**: Better maintainability and consistency across environments.
 
 ### [CONNECT] Real-time Content Statistics
+
 - **Status**: ✅ COMPLETED (2026-02-21)
 - **Description**: Integrated real-time word and character counts in the Editor header.
 - **Impact**: Enhanced user feedback during manual editing and refinement.
@@ -373,18 +376,6 @@
   - All M2 success criteria met
 
 ### Planned Tasks
-
-#### TASK-010: ZIP Download Feature
-
-- **Issue**: #106
-- **Priority**: High
-- **Estimated**: 8-12 hours
-- **Dependencies**: M2 complete
-- **Acceptance**:
-  - Generate runnable project structure
-  - Package files into ZIP
-  - Download via browser
-  - Support for all tech stacks
 
 #### Additional M3 Tasks
 

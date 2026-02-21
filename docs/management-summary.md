@@ -1,5 +1,7 @@
 # Management Summary: 2026-01-09
 
+> **Historical Document** - This summary reflects project status as of 2026-01-09. For current status, see `docs/roadmap.md` and `docs/task.md`.
+
 **Date**: 2026-01-09
 **Agent**: Software Architect (The Orchestrator)
 **Cycle**: Management Cycle Execution - Issue Triage & Label Standardization
