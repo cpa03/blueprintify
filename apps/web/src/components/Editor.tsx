@@ -18,7 +18,7 @@ import { TIMEOUTS, DEFAULT_PROJECT_NAME, UI } from "../config/constants";
 import { useLastSaved } from "../hooks/useLastSaved";
 import clsx from "clsx";
 
-function EditorComponent() {
+function EditorComponent(): JSX.Element {
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [copied, setCopied] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
