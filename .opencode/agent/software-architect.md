@@ -214,6 +214,18 @@ System must remain minimal, clean, and intentional.
 
 ---
 
+## STEP 3.5 — Feedback Loop (CRITICAL)
+
+If you discover architectural issues that require broader discussion:
+
+- **DO NOT** make unilateral decisions on major architectural changes.
+- **DO** report it to `docs/findings.md`.
+  ```markdown
+  - [Software-Architect] Architectural concern: [description]. Recommend [action].
+  ```
+
+---
+
 ## STEP 4 — Git Operations (MANDATORY)
 
 You MUST perform all of the following:

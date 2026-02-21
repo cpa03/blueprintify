@@ -85,14 +85,24 @@ git pull origin agent/modularity-engineer 2>/dev/null || git pull origin main
 - **Document**: Update comments and documentation
 - **Verify**: Ensure no regressions
 
-## 3. Verification
+## 3. Feedback Loop (CRITICAL)
+
+If you discover structural issues that are too risky to refactor now:
+
+- **DO NOT** break existing functionality.
+- **DO** report it to `docs/findings.md`.
+  ```markdown
+  - [Modularity-Engineer] Found tight coupling in [module]. Recommend [action].
+  ```
+
+## 4. Verification
 
 - **Build**: `npm run build` must pass
 - **TypeCheck**: `npm run typecheck` must pass
 - **Lint**: `npm run lint` must pass
 - **Tests**: `npm run test:all` must pass
 
-## 4. Finalization (Delivery)
+## 5. Finalization (Delivery)
 
 ```bash
 git add .
