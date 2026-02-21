@@ -94,9 +94,7 @@ describe("generateBlueprint", () => {
     it("should throw ValidationError for missing name", async () => {
       const invalidConfig = { ...validConfig, name: "" };
 
-      await expect(generateBlueprint(invalidConfig)).rejects.toThrow(
-        "Project name is required",
-      );
+      await expect(generateBlueprint(invalidConfig)).rejects.toThrow("Project name is required");
     });
 
     it("should throw ValidationError for invalid features", async () => {
@@ -105,9 +103,7 @@ describe("generateBlueprint", () => {
         features: ["invalid-feature"] as any,
       };
 
-      await expect(generateBlueprint(invalidConfig)).rejects.toThrow(
-        "Invalid feature: invalid-feature",
-      );
+      await expect(generateBlueprint(invalidConfig)).rejects.toThrow("Invalid feature: invalid-feature");
     });
   });
 });
@@ -234,10 +230,7 @@ test.describe("Blueprint Generation Workflow", () => {
 
     // Fill project information
     await page.fill('[data-testid="project-name"]', "E2E Test Project");
-    await page.fill(
-      '[data-testid="project-description"]',
-      "End-to-end test project",
-    );
+    await page.fill('[data-testid="project-description"]', "End-to-end test project");
 
     // Select features
     await page.click('[data-testid="feature-auth"]');
@@ -247,9 +240,7 @@ test.describe("Blueprint Generation Workflow", () => {
     await page.click('[data-testid="generate-button"]');
 
     // Wait for generation to complete
-    await expect(
-      page.locator('[data-testid="generation-complete"]'),
-    ).toBeVisible();
+    await expect(page.locator('[data-testid="generation-complete"]')).toBeVisible();
 
     // Download blueprint
     const downloadPromise = page.waitForEvent("download");
@@ -284,13 +275,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],
-      exclude: [
-        "node_modules/",
-        "src/test/",
-        "**/*.d.ts",
-        "**/*.config.*",
-        "**/dist/**",
-      ],
+      exclude: ["node_modules/", "src/test/", "**/*.d.ts", "**/*.config.*", "**/dist/**"],
       thresholds: {
         global: {
           branches: 80,
@@ -445,30 +430,24 @@ describe("UserService", () => {
 ### Development Testing
 
 ```bash
-# Run all tests in watch mode
+# Run frontend tests
 npm run test
 
+# Run API tests
+npm run test:api
+
+# Run all tests (frontend + API)
+npm run test:all
+
 # Run tests for specific file
-npm run test UserService.test.ts
-
-# Run tests with coverage
-npm run test:coverage
-
-# Run only unit tests
-npm run test:unit
-
-# Run only integration tests
-npm run test:integration
-
-# Run E2E tests
-npm run test:e2e
+npm run test -- path/to/test.ts
 ```
 
 ### CI/CD Testing
 
 ```bash
-# Full test suite with coverage
-npm run test:ci
+# Full test suite
+npm run test:all
 
 # Type checking
 npm run typecheck
@@ -476,8 +455,8 @@ npm run typecheck
 # Linting
 npm run lint
 
-# All quality checks
-npm run quality
+# All quality checks (typecheck + lint + test)
+npm run check
 ```
 
 ## 🔍 Test Best Practices

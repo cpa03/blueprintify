@@ -397,21 +397,21 @@ When developing or modifying agents:
 1. **Test in Isolation**
 
    ```bash
-   # Test specific agent
-   npm run agent:technical-writer
+    # Run all tests to verify changes
+    npm run test:all
    ```
 
 2. **Validate Configuration**
 
    ```bash
-   # Check agent configuration
-   npm run validate:agents
+   # Check TypeScript configuration
+   npm run typecheck
    ```
 
-3. **Monitor Performance**
+3. **Monitor Quality**
    ```bash
-   # Monitor agent execution
-   npm run monitor:agents
+   # Run linting
+   npm run lint
    ```
 
 ### 2. Skill Development
@@ -421,7 +421,8 @@ When creating new skills:
 1. **Create Skill Structure**
 
    ```bash
-   npm run create:skill my-new-skill
+   # Create skill directory
+   mkdir -p .opencode/skill/my-new-skill
    ```
 
 2. **Implement Skill Logic**
@@ -433,7 +434,8 @@ When creating new skills:
 
 3. **Test Skill**
    ```bash
-   npm run test:skill my-new-skill
+   # Run tests to verify skill integration
+   npm run test:all
    ```
 
 ### 3. Integration Testing
@@ -441,11 +443,14 @@ When creating new skills:
 Test the complete system:
 
 ```bash
-# Run full integration test
-npm run test:integration
+# Run all tests (frontend + API)
+npm run test:all
 
-# Test specific workflow
-npm run test:workflow documentation-update
+# Run type checking
+npm run typecheck
+
+# Run linting
+npm run lint
 ```
 
 ## Monitoring and Debugging
@@ -455,14 +460,11 @@ npm run test:workflow documentation-update
 Monitor agent activities:
 
 ```bash
-# View agent logs
-tail -f .opencode/logs/agents.log
+# View git log for recent changes
+git log --oneline -10
 
-# View skill usage
-tail -f .opencode/logs/skills.log
-
-# View system events
-tail -f .opencode/logs/system.log
+# Check branch status
+git status
 ```
 
 ### Performance Monitoring
@@ -470,14 +472,11 @@ tail -f .opencode/logs/system.log
 Track system performance:
 
 ```bash
-# Monitor agent performance
-npm run monitor:performance
+# Run all quality checks
+npm run check
 
-# Check system health
-npm run health:check
-
-# Analyze bottlenecks
-npm run analyze:bottlenecks
+# Build the project
+npm run build
 ```
 
 ### Debug Mode
@@ -485,14 +484,11 @@ npm run analyze:bottlenecks
 Enable detailed debugging:
 
 ```bash
-# Enable debug mode
-export DEBUG=true
+# Enable debug mode for API
+DEBUG=* npm run dev:api
 
-# Run with verbose output
-npm run dev -- --verbose
-
-# Debug specific agent
-npm run agent:frontend-engineer -- --debug
+# Run frontend with debug logs
+VITE_DEBUG=true npm run dev
 ```
 
 ## Best Practices
