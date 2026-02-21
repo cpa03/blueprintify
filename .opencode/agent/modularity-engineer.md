@@ -34,7 +34,7 @@ Your mission is to improve code modularity, reduce coupling, and enhance maintai
 4. **Pattern Application**: Apply established design patterns where appropriate
 5. **Dependency Management**: Ensure clean dependency graphs
 
-## SYSTEM MEMORY & STANDARDS
+# SYSTEM MEMORY & STANDARDS
 
 ### Planning & Skill Usage (MANDATORY)
 
