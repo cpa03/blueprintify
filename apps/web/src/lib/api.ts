@@ -232,12 +232,23 @@ async function apiCallWithRetry(
   let lastError: Error | null = null;
 
   for (let attempt = 0; attempt <= opts.maxRetries; attempt++) {
+    // Set up request timeout using AbortController
+    const controller = new AbortController();
+    const timeoutId = setTimeout(
+      () => controller.abort(),
+      TIMEOUTS.API_REQUEST,
+    );
+
     try {
       const response = await fetch(`${API_BASE}${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
+        signal: controller.signal,
       });
+
+      // Clear timeout after successful response
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         const errorData = (await response
@@ -263,7 +274,15 @@ async function apiCallWithRetry(
       await handleSSEStreamWithRetry(response, handlers, retryOptions);
       return;
     } catch (error) {
-      lastError = error instanceof Error ? error : new Error("Unknown error");
+      // Clear timeout on error
+      clearTimeout(timeoutId);
+
+      // Check if error is due to timeout (abort)
+      if (error instanceof Error && error.name === "AbortError") {
+        lastError = new Error("Request timed out");
+      } else {
+        lastError = error instanceof Error ? error : new Error("Unknown error");
+      }
 
       if (isRetryableError(lastError) && attempt < opts.maxRetries) {
         handlers.onRetry?.(attempt + 1, opts.maxRetries);

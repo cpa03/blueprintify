@@ -68,6 +68,7 @@ export const TIMEOUTS = {
   FOCUS_DELAY: 100,
   LIVE_REGION_CLEAR: 1000,
   API_HEALTH_CHECK: 5000,
+  API_REQUEST: 30000, // 30 seconds for streaming API calls
 } as const;
 
 // Debounce configuration for state persistence (uses shared config)
