@@ -422,6 +422,61 @@ describe("MockDatabaseService", () => {
       expect(templates[0]!.category).toBe("frontend");
     });
 
+    it("should get public templates by category", async () => {
+      await db.createTemplate({
+        name: "Public Frontend",
+        description: "Description",
+        icon: "🎨",
+        project_name: "Project",
+        default_description: "Default",
+        category: "frontend",
+        is_public: true,
+      });
+      await db.createTemplate({
+        name: "Private Frontend",
+        description: "Description",
+        icon: "🔒",
+        project_name: "Project",
+        default_description: "Default",
+        category: "frontend",
+        is_public: false,
+      });
+      await db.createTemplate({
+        name: "Public Backend",
+        description: "Description",
+        icon: "⚙️",
+        project_name: "Project",
+        default_description: "Default",
+        category: "backend",
+        is_public: true,
+      });
+
+      const frontendTemplates =
+        await db.getPublicTemplatesByCategory("frontend");
+      expect(frontendTemplates).toHaveLength(1);
+      expect(frontendTemplates[0]!.name).toBe("Public Frontend");
+      expect(frontendTemplates[0]!.is_public).toBe(true);
+
+      const backendTemplates = await db.getPublicTemplatesByCategory("backend");
+      expect(backendTemplates).toHaveLength(1);
+      expect(backendTemplates[0]!.category).toBe("backend");
+    });
+
+    it("should return empty array when no public templates in category", async () => {
+      await db.createTemplate({
+        name: "Private Only",
+        description: "Description",
+        icon: "🔒",
+        project_name: "Project",
+        default_description: "Default",
+        category: "fullstack",
+        is_public: false,
+      });
+
+      const templates = await db.getPublicTemplatesByCategory("fullstack");
+      expect(templates).toHaveLength(0);
+    });
+
     it("should increment template usage count", async () => {
       const template = await db.createTemplate({
         name: "Template",

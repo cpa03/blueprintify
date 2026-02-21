@@ -378,6 +378,14 @@ export interface DatabaseService {
   getTemplatesByCategory(category: string): Promise<Template[]>;
 
   /**
+   * Retrieves public templates filtered by category.
+   * Uses idx_templates_category_is_public for optimal query performance.
+   * @param category - Template category ('frontend', 'backend', 'fullstack', 'general')
+   * @returns Array of public templates in the category
+   */
+  getPublicTemplatesByCategory(category: string): Promise<Template[]>;
+
+  /**
    * Retrieves templates created by a specific user.
    * @param userId - Creator's unique identifier
    * @returns Array of templates created by the user
@@ -861,6 +869,12 @@ export class MockDatabaseService implements DatabaseService {
   async getTemplatesByCategory(category: string): Promise<Template[]> {
     return Array.from(this.templates.values()).filter(
       (t) => t.category === category,
+    );
+  }
+
+  async getPublicTemplatesByCategory(category: string): Promise<Template[]> {
+    return Array.from(this.templates.values()).filter(
+      (t) => t.category === category && t.is_public,
     );
   }
 

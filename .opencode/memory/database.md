@@ -2,7 +2,7 @@
 
 ## Schema Version
 
-- Current Version: 1.3.3
+- Current Version: 1.3.4
 - Last Updated: 2026-02-21
 - Schema File: `schema.sql`
 
@@ -12,7 +12,7 @@
 - Mock Implementation: `MockDatabaseService` for development
 - Production: D1 bindings configured in `apps/api/src/types.ts`
 - All tables have corresponding Zod schemas and TypeScript types
-- **Test Coverage**: `apps/api/src/db/index.test.ts` - 57 comprehensive tests covering all CRUD operations
+- **Test Coverage**: `apps/api/src/db/index.test.ts` - 74 comprehensive tests covering all CRUD operations
 
 ## Count Operations (v1.3.3)
 
@@ -39,6 +39,7 @@ Efficient counting methods for dashboard stats and pagination without fetching f
 - `getTemplateById(id)` - Get template by ID
 - `getPublicTemplates()` - Get all public templates
 - `getTemplatesByCategory(category)` - Get templates by category
+- `getPublicTemplatesByCategory(category)` - Get public templates by category (v1.3.4)
 - `getTemplatesByCreator(userId)` - Get templates created by a specific user (v1.3.2)
 - `getPopularTemplates(limit?)` - Get popular templates sorted by usage count (v1.3.3)
 - `updateTemplate(id, updates)` - Update template
@@ -146,6 +147,7 @@ Use composite indexes for common multi-column query patterns:
 | `idx_blueprints_project_id_version`   | Latest blueprint version for project (version history lookup) |
 | `idx_analytics_user_id_event_type`    | User-specific analytics                                       |
 | `idx_templates_category_is_public`    | Public templates by category                                  |
+| `idx_templates_is_public_usage_count` | Popular public templates (v1.3.4)                             |
 | `idx_templates_created_by_category`   | User's templates by category (filtered my templates page)     |
 | `idx_analytics_event_type_created_at` | Time-based analytics (event trends)                           |
 | `idx_sessions_user_id_expires_at`     | Active sessions for user (session validation)                 |

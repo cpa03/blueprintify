@@ -4,6 +4,8 @@
 
 ## Table of Contents
 
+- [2026-02-21: Database-Architect - Query Optimization & New Method](#database-architect-2026-02-21---query-optimization--new-method)
+- [2026-02-21: Database-Architect - Query Optimization & New Method](#database-architect-2026-02-21---query-optimization--new-method)
 - [2026-02-21: Comprehensive Reliability Audit](#reliability-2026-02-21---comprehensive-reliability-audit)
 - [2026-02-20: Rate Limiter Observability Improvement](#reliability-2026-02-20---rate-limiter-observability-improvement)
 - [2026-02-20: Typed Error Classes in MockDatabaseService](#reliability-2026-02-20---typed-error-classes-in-mockdatabaseservice)
@@ -20,6 +22,51 @@
 - [2026-02-18: Share Endpoint Validation Consistency](#security-2026-02-18---share-endpoint-validation-consistency)
 - [2026-02-18: Integration Workflow File Line Ending](#integration-2026-02-18---workflow-file-line-ending-inconsistency)
 - [2026-02-20: Logger Middleware Undefined Header Fix](#reliability-2026-02-20---logger-middleware-undefined-header-value-fix)
+
+---
+
+## [Database-Architect] 2026-02-21 - Query Optimization & New Method
+
+### Observation
+
+Two database optimization opportunities identified:
+
+1. **Missing Composite Index**: The `getPopularTemplates` method filters by `is_public` and sorts by `usage_count DESC`. While individual indexes existed, a composite index `(is_public, usage_count DESC)` would be more efficient for this common query pattern.
+
+2. **Unused Index**: The composite index `idx_templates_category_is_public` existed but lacked a corresponding method in the `DatabaseService` interface to leverage it efficiently.
+
+### Action Taken
+
+1. **Added composite index** `idx_templates_is_public_usage_count` for popular templates query optimization:
+   - Optimizes `getPopularTemplates` method
+   - Reduces query time for template browser feature
+
+2. **Added `getPublicTemplatesByCategory(category)` method**:
+   - Added to `DatabaseService` interface
+   - Implemented in `MockDatabaseService`
+   - Leverages existing `idx_templates_category_is_public` index
+   - Returns only public templates filtered by category
+
+3. **Added comprehensive tests**:
+   - Test for retrieving public templates by category
+   - Test for empty result when no public templates in category
+   - Total database tests increased from 57 to 74
+
+4. **Updated schema version** to 1.3.4
+
+### Impact
+
+- Provides optimized query for template browser feature
+- Leverages existing index for optimal query performance
+- Non-breaking change (additive only)
+
+### Verification
+
+```bash
+npm run typecheck  # ✅ PASS
+npm run lint       # ✅ PASS
+npm run test:all   # ✅ PASS (219 tests: 74 database + 145 other)
+```
 
 ---
 
