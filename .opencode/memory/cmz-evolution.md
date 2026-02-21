@@ -8,8 +8,10 @@
 **Changes**:
 
 - Created CMZ agent with self-heal, self-learning, self-evolve capabilities
-- Configured fallback models (glm-4.7-free, kimi-k2.5-free, minimax-m2.1-free)
+- Configured model: `opencode/glm-4.7-free` (per AGENTS.md mandate)
 - Integrated with existing agent ecosystem
+
+> **Note**: Fallback models were initially configured but later removed per AGENTS.md mandate requiring exclusive use of `opencode/glm-4.7-free`.
 
 **Rationale**: Maximize system potential through autonomous management
 
@@ -49,8 +51,7 @@
 
 **After**:
 
-- All agents use opencode/glm-4.7-free
-- Fallback models configured for reliability
+- All agents use `opencode/glm-4.7-free` exclusively per AGENTS.md mandate
 - CI pipeline stabilized
 
 **Rationale**: Prevent CI failures through proper model configuration
