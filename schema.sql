@@ -2,8 +2,8 @@
 -- Blueprintify Database Schema
 -- ============================================================================
 -- Cloudflare D1 (SQLite) Database Schema
--- Version: 1.3.2
--- Last Updated: 2026-02-20
+-- Version: 1.3.3
+-- Last Updated: 2026-02-21
 -- 
 -- Schema Conventions:
 -- - Table names: snake_case, plural form (e.g., users, project_blueprints)
