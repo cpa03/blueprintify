@@ -8,6 +8,7 @@
  */
 
 import type { Context, MiddlewareHandler, Next } from "hono";
+import { LOGGER_CONFIG } from "../config/constants";
 
 /**
  * Configuration options for the request logger middleware.
@@ -17,7 +18,7 @@ import type { Context, MiddlewareHandler, Next } from "hono";
  * @property logResponseBody - Whether to log response body content (default: false)
  */
 interface LoggerConfig {
-  excludePaths?: string[];
+  excludePaths?: readonly string[];
   logRequestBody?: boolean;
   logResponseBody?: boolean;
 }
@@ -96,7 +97,9 @@ const generateRequestId = (): string => {
   crypto.getRandomValues(randomValues);
   const timestamp = Date.now();
   const random = (randomValues[0] ?? 0).toString(36);
-  const random2 = (randomValues[1] ?? 0).toString(36).slice(0, 4);
+  const random2 = (randomValues[1] ?? 0)
+    .toString(36)
+    .slice(0, LOGGER_CONFIG.REQUEST_ID_SUFFIX_LENGTH);
   return `${timestamp}-${random}${random2}`;
 };
 
@@ -148,7 +151,7 @@ const hasCloudflareMetadata = (
  */
 export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
   const {
-    excludePaths = ["/"],
+    excludePaths = LOGGER_CONFIG.DEFAULT_EXCLUDE_PATHS,
     logRequestBody = false,
     logResponseBody = false,
   } = config;
