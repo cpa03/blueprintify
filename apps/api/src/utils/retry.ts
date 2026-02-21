@@ -1,9 +1,25 @@
+/**
+ * Retry Utilities
+ * Provides exponential backoff retry logic for resilient API operations.
+ * Automatically retries on transient failures like rate limits and server errors.
+ *
+ * @module utils/retry
+ */
+
 import {
   RETRY_CONFIG,
   RETRYABLE_ERROR_CODES,
   RETRY_LOGIC,
 } from "../config/constants";
 
+/**
+ * Configuration options for retry behavior.
+ *
+ * @property retries - Maximum number of retry attempts (default from RETRY_CONFIG)
+ * @property initialDelay - Initial delay in milliseconds before first retry
+ * @property backoffFactor - Multiplier for exponential backoff between retries
+ * @property onRetry - Optional callback invoked on each retry attempt
+ */
 export interface RetryOptions {
   retries?: number;
   initialDelay?: number;
@@ -11,6 +27,23 @@ export interface RetryOptions {
   onRetry?: (error: unknown, attempt: number) => void;
 }
 
+/**
+ * Executes an operation with automatic retry on transient failures.
+ * Uses exponential backoff to avoid overwhelming failing services.
+ *
+ * @param operation - Async function to execute with retry support
+ * @param options - Optional retry configuration overrides
+ * @returns Promise resolving to the operation result
+ * @throws The last error if all retry attempts fail or error is non-retryable
+ *
+ * @example
+ * ```typescript
+ * const result = await withRetry(
+ *   () => fetchExternalAPI(),
+ *   { retries: 3, initialDelay: 1000, backoffFactor: 2 }
+ * );
+ * ```
+ */
 export async function withRetry<T>(
   operation: () => Promise<T>,
   options: RetryOptions = {},
@@ -53,6 +86,17 @@ export async function withRetry<T>(
   throw lastError;
 }
 
+/**
+ * Determines if an error is retryable based on status code or error code.
+ *
+ * Retryable conditions:
+ * - HTTP 429 (rate limit)
+ * - HTTP 5xx (server errors)
+ * - Network error codes (ECONNRESET, ETIMEDOUT, etc.)
+ *
+ * @param error - The error to check
+ * @returns True if the error is retryable, false otherwise
+ */
 function isRetryableError(error: unknown): boolean {
   if (!error) return true;
 
