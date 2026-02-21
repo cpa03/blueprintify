@@ -124,7 +124,7 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
                     exit={{ opacity: 0, scale: 0.8 }}
                     transition={{ duration: 0.15 }}
                     onClick={() => setNewFeature("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus:outline-none focus:text-white transition-colors p-1 rounded-md hover:bg-dark-700/50"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors p-1 rounded-md hover:bg-dark-700/50"
                     aria-label="Clear feature input"
                     title="Clear feature input"
                   >
@@ -179,7 +179,7 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
               </label>
               <button
                 onClick={clearFeatures}
-                className="text-xs text-accent-pink hover:text-accent-pink/80 transition-colors flex items-center gap-1"
+                className="text-xs text-accent-pink hover:text-accent-pink/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded px-1 transition-colors flex items-center gap-1"
                 aria-label="Clear all features"
               >
                 <svg
@@ -217,7 +217,7 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
                   {feature}
                   <button
                     onClick={() => removeFeature(feature)}
-                    className="hover:text-accent-pink transition-colors"
+                    className="hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors"
                     aria-label={`Remove ${feature}`}
                   >
                     <svg

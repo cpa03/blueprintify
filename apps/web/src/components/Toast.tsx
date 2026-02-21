@@ -211,7 +211,7 @@ const ToastItem = memo(
         <p className="text-sm font-medium flex-1">{toast.message}</p>
         <button
           onClick={() => onRemove(toast.id)}
-          className="flex-shrink-0 opacity-60 hover:opacity-100 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1"
+          className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-all"
           aria-label="Dismiss notification"
         >
           <svg
