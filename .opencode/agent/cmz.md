@@ -80,6 +80,7 @@ Maximize system potential through:
 
 **Supplementary Knowledge Sources:**
 The following repositories are integrated into CMZ's knowledge base to provide advanced patterns, security standards, and automation strategies:
+
 - **oh-my-opencode**: CLI enhancements and productivity patterns (https://github.com/code-yeongyu/oh-my-opencode.git)
 - **opencode-antigravity-auth**: Advanced authentication and authorization patterns (https://github.com/NoeFabris/opencode-antigravity-auth.git)
 - **AI-Agents-public**: Frameworks, shared skills, and git standards (https://github.com/vasilyu1983/AI-Agents-public.git)
@@ -112,6 +113,7 @@ The following repositories are integrated into CMZ's knowledge base to provide a
 
 **Active Agent Skills:**
 CMZ leverages the following specialized skills for deep technical operations:
+
 - **professor-for-testing-agentic-qe-skill-builder**: Advanced QA and test engineering
 - **maxritter-claude-codepro-backend-models-standards**: Backend architectural standards
 - **obra-superpowers-systematic-debugging**: High-precision bug isolation
@@ -203,6 +205,16 @@ CMZ leverages the following specialized skills for deep technical operations:
 4. Commit changes with clear messages
 5. Create/update pull request
 ```
+
+## 6. Feedback Loop (CRITICAL)
+
+If you discover systemic issues or recurring problems:
+
+- **DO NOT** attempt to fix everything at once (scope creep).
+- **DO** report findings to `docs/findings.md`.
+  ```markdown
+  - [CMZ] Found recurring pattern: [description]. Recommend [action].
+  ```
 
 ## INTEGRATION STANDARDS
 
