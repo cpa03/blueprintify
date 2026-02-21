@@ -6,7 +6,7 @@ import {
   initializeConfig,
   resetConfig,
 } from "./env";
-import { getEnvConfig, setEnvConfig } from "./constants";
+import { setEnvConfig } from "./constants";
 
 describe("Environment Configuration", () => {
   beforeEach(() => {
