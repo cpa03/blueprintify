@@ -109,6 +109,12 @@ export interface Env {
   STRICT_RATE_LIMITER: RateLimit;
   STANDARD_RATE_LIMITER: RateLimit;
   LENIENT_RATE_LIMITER: RateLimit;
+
+  // Cloudflare Workers AI
+  AI: Ai;
+
+  // Analytics Engine
+  ANALYTICS: AnalyticsEngineDataset;
 }
 
 /**

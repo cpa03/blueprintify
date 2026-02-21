@@ -17,6 +17,24 @@ upload_source_maps = true
 [placement]
 mode = "smart"
 
+# TypeScript module rules for optimal bundling
+# https://developers.cloudflare.com/workers/wrangler/configuration/#rules
+[[rules]]
+type = "ESModule"
+globs = ["**/*.ts", "**/*.tsx"]
+fallthrough = true
+
+# Cloudflare Workers AI binding for future AI features
+# https://developers.cloudflare.com/workers-ai/
+[ai]
+binding = "AI"
+
+# Vectorize binding for semantic search (future feature)
+# https://developers.cloudflare.com/vectorize/
+# [[vectorize]]
+# binding = "VECTORIZE_INDEX"
+# index_name = "blueprint-embeddings"
+
 # Environment-specific configurations
 [env.production]
 name = "blueprint-generator-api-prod"
@@ -99,8 +117,19 @@ max_retries = 5
 retry_delay = 60
 
 # Limits and configuration
+# https://developers.cloudflare.com/workers/platform/limits/
 [limits]
 cpu_ms = 50000
+
+# Analytics Engine for production metrics
+# https://developers.cloudflare.com/analytics/analytics-engine/
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+
+# Tail consumers for real-time log streaming
+# https://developers.cloudflare.com/workers/observability/tail-workers/
+# [[tail_consumers]]
+# service = "log-processor"
 
 # Observability: Traces and Logs for production monitoring
 # https://developers.cloudflare.com/workers/observability/traces

@@ -69,6 +69,11 @@ app.get("/", (c) => {
     `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE}`,
   );
   c.header("Server-Timing", 'app;desc="API Response";dur=0');
+  c.header("CDN-Cache-Control", `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}`);
+  c.header(
+    "Cloudflare-CDN-Cache-Control",
+    `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}`,
+  );
   return c.json({
     name: API_METADATA.NAME,
     version: API_METADATA.VERSION,
@@ -113,6 +118,17 @@ export default {
       env as unknown as Record<string, string | undefined>,
     );
     setEnvConfig(config);
+
+    if (env.ANALYTICS) {
+      ctx.waitUntil(
+        Promise.resolve(
+          env.ANALYTICS.writeDataPoint({
+            blobs: [request.url, request.method, new Date().toISOString()],
+          }),
+        ),
+      );
+    }
+
     return app.fetch(request, env, ctx);
   },
 };
