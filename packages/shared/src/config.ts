@@ -121,6 +121,15 @@ export const SSE_HEADERS = {
 } as const;
 
 /**
+ * HTTP Headers configuration
+ * Standard HTTP header values used across frontend and backend
+ */
+export const HTTP_HEADERS = {
+  /** Content-Type header for JSON requests/responses */
+  CONTENT_TYPE_JSON: "application/json",
+} as const;
+
+/**
  * ID Generation Configuration
  * Centralized settings for generating unique identifiers
  */
