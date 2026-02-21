@@ -301,6 +301,11 @@ export const RETRY_LOGIC = {
   SERVER_ERROR_THRESHOLD: 500,
 } as const;
 
+export const CACHE_CONFIG = {
+  ROOT_MAX_AGE: 60,
+  ROOT_STALE_WHILE_REVALIDATE: 30,
+} as const;
+
 export const ROUTE_PATHS = {
   ROOT: "/",
   GENERATE: "/generate",

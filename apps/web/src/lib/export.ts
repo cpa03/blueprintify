@@ -69,6 +69,20 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
     docsFolder.file("task.md", sanitizedTasks);
   }
 
+  // Include project metadata for better connectivity between systems
+  const metadata = {
+    projectName: files.projectName,
+    description: files.description,
+    techStack: files.techStack.map((item) => ({
+      name: item.name,
+      category: item.category,
+    })),
+    features: files.features,
+    generatedAt: new Date().toISOString(),
+    version: "1.0.0",
+  };
+  docsFolder.file("metadata.json", JSON.stringify(metadata, null, 2));
+
   docsFolder.file("README.md", README_TEMPLATE(projectName));
 
   const blob = await zip.generateAsync({

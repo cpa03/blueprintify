@@ -21,6 +21,7 @@ import {
   API_ENDPOINTS,
   CORS_CONFIG,
   ROUTE_PATHS,
+  CACHE_CONFIG,
   setEnvConfig,
 } from "./config/constants";
 import { initializeContainer } from "./di";
@@ -50,7 +51,10 @@ app.use("*", apiKeyAuth({ excludePaths: ["/"] }));
 app.use("*", rateLimit(rateLimitConfigs.standard));
 
 app.get("/", (c) => {
-  c.header("Cache-Control", "public, max-age=60, stale-while-revalidate=30");
+  c.header(
+    "Cache-Control",
+    `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE}`,
+  );
   c.header("Server-Timing", 'app;desc="API Response";dur=0');
   return c.json({
     name: API_METADATA.NAME,
