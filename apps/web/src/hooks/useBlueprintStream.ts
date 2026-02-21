@@ -59,7 +59,12 @@ import { GENERATION_MESSAGES } from "../config/constants";
  * }
  * ```
  */
-export function useBlueprintStream() {
+export function useBlueprintStream(): {
+  startGeneration: () => Promise<void>;
+  cancelGeneration: () => void;
+  isGenerating: boolean;
+  progress: string;
+} {
   // Use specific selectors to avoid re-rendering on unrelated state changes
   const projectName = useWizardStore((s) => s.projectName);
   const description = useWizardStore((s) => s.description);

@@ -52,18 +52,18 @@ export const MOCK_ENV_NO_KEY: Record<string, string> = {
   ...DEFAULTS_ENV_STRINGS,
 };
 
-export function setupTestConfig(env: Record<string, string> = MOCK_ENV) {
+export function setupTestConfig(env: Record<string, string> = MOCK_ENV): void {
   const config = loadConfig(env);
   setEnvConfig(config);
 }
 
-export function setupCommonMocks() {
+export function setupCommonMocks(): void {
   vi.mock("../services/openai", () => ({
     streamCompletion: vi.fn(),
   }));
 }
 
-export function setupStreamMocks(mockResponse = "mock-stream") {
+export function setupStreamMocks(mockResponse = "mock-stream"): void {
   vi.mock("../utils/stream", () => ({
     createStreamFromGenerator: vi.fn(),
     createSSEResponse: vi
