@@ -14,7 +14,11 @@
 - [Agent] All agents MUST include the "Planning & Skill Usage (MANDATORY)" subsection under SYSTEM MEMORY & STANDARDS.
 - [Agent] All agents MUST include the "Git & Version Control Etiquette (CRITICAL)" subsection under SYSTEM MEMORY & STANDARDS.
 - [Agent] All agents MUST include a Feedback Loop section in OPERATIONAL WORKFLOW for reporting issues to `docs/findings.md`.
-- [Agent] Temperature should be `0.1` for balanced responses, `0.0` for precision-critical agents (coder, debugger).
+- [Agent] Temperature guidelines:
+  - `0.0` for precision-critical agents (coder, debugger) - deterministic, no creativity
+  - `0.1` for balanced agents (most agents) - slight flexibility, consistent output
+  - `0.2` for research/analysis agents (modularity-engineer, researcher) - more exploration
+  - `0.5` for strategic agents (software-architect) - creative problem-solving, brainstorming
 - [Agent] Permissions should use nested structure: `permission: bash: "git *": allow` rather than flat structure.
 
 ### CI/CD Standards
