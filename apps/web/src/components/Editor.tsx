@@ -132,6 +132,7 @@ function EditorComponent() {
         isExporting={isExporting}
         lastSavedText={lastSavedText}
         hasChanges={hasChanges}
+        content={currentContent}
       />
 
       {/* Editor Content */}

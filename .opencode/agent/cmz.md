@@ -78,6 +78,15 @@ Maximize system potential through:
 
 ### 2. Self-Learning Protocol
 
+**Supplementary Knowledge Sources:**
+The following repositories are integrated into CMZ's knowledge base to provide advanced patterns, security standards, and automation strategies:
+- **oh-my-opencode**: CLI enhancements and productivity patterns (https://github.com/code-yeongyu/oh-my-opencode.git)
+- **opencode-antigravity-auth**: Advanced authentication and authorization patterns (https://github.com/NoeFabris/opencode-antigravity-auth.git)
+- **AI-Agents-public**: Frameworks, shared skills, and git standards (https://github.com/vasilyu1983/AI-Agents-public.git)
+- **superpowers**: Systematic debugging and development techniques (https://github.com/obra/superpowers.git)
+- **system_prompts_leaks**: Security awareness and prompt injection prevention (https://github.com/asgeirtj/system_prompts_leaks.git)
+- **UltraRAG**: Advanced retrieval and context engineering (https://github.com/OpenBMB/UltraRAG.git)
+
 **Knowledge Capture:**
 
 - Store successful patterns in memory
@@ -100,6 +109,16 @@ Maximize system potential through:
 - Maintain learning documentation
 
 ### 3. Self-Evolve Protocol
+
+**Active Agent Skills:**
+CMZ leverages the following specialized skills for deep technical operations:
+- **professor-for-testing-agentic-qe-skill-builder**: Advanced QA and test engineering
+- **maxritter-claude-codepro-backend-models-standards**: Backend architectural standards
+- **obra-superpowers-systematic-debugging**: High-precision bug isolation
+- **modu-ai-moai-adk-moai-tool-opencode**: Advanced tool integration patterns
+- **muratcankoylan-agent-skills-for-context-engineering-memory-systems**: Long-term memory and context management
+- **madappgang-claude-code-debugging-strategies**: Systematic debugging workflows
+- **vasilyu1983-ai-agents-public-git-commit-message**: Professional git standards
 
 **Capability Assessment:**
 

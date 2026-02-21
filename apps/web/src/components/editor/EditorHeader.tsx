@@ -18,6 +18,7 @@ interface EditorHeaderProps {
   isExporting?: boolean;
   lastSavedText?: string;
   hasChanges?: boolean;
+  content?: string;
 }
 
 const TabButton = React.memo(function TabButton({
@@ -65,6 +66,25 @@ const TabButton = React.memo(function TabButton({
 
 export type { ViewMode };
 
+function ContentStats({ content }: { content: string }) {
+  if (!content) return null;
+  const charCount = content.length;
+  const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
+  return (
+    <div className="hidden md:flex items-center gap-3 text-[10px] uppercase tracking-wider font-bold text-dark-400 bg-dark-800/50 px-2 py-1 rounded-md border border-dark-700/50">
+      <div className="flex items-center gap-1">
+        <span className="text-dark-500">Chars</span>
+        <span className="text-primary-400">{charCount.toLocaleString()}</span>
+      </div>
+      <div className="w-px h-2 bg-dark-700" />
+      <div className="flex items-center gap-1">
+        <span className="text-dark-500">Words</span>
+        <span className="text-secondary-400">{wordCount.toLocaleString()}</span>
+      </div>
+    </div>
+  );
+}
+
 function EditorHeaderComponent({
   activeTab,
   setActiveTab,
@@ -78,10 +98,11 @@ function EditorHeaderComponent({
   isExporting = false,
   lastSavedText = "",
   hasChanges = false,
+  content = "",
 }: EditorHeaderProps) {
   return (
     <div className="flex items-center justify-between p-4 border-b border-dark-700">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-6">
         <div
           className="flex gap-1 bg-dark-800 p-1 rounded-lg"
           role="tablist"
@@ -105,11 +126,14 @@ function EditorHeaderComponent({
             📋 task.md
           </TabButton>
         </div>
-        <LastSavedIndicator
-          text={lastSavedText}
-          isVisible={hasContent && (!!lastSavedText || hasChanges)}
-          hasChanges={hasChanges}
-        />
+        <div className="flex items-center gap-3">
+          <LastSavedIndicator
+            text={lastSavedText}
+            isVisible={hasContent && (!!lastSavedText || hasChanges)}
+            hasChanges={hasChanges}
+          />
+          {hasContent && <ContentStats content={content} />}
+        </div>
       </div>
 
       <EditorToolbar
