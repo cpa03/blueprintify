@@ -60,6 +60,7 @@ const TooltipComponent = ({
       onFocus={handleMouseEnter}
       onBlur={handleMouseLeave}
       aria-describedby={isVisible ? tooltipId : undefined}
+      tabIndex={0}
     >
       {children}
       <AnimatePresence>
