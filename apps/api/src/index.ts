@@ -1,3 +1,12 @@
+/**
+ * Blueprint Generator API
+ *
+ * Main entry point for the Cloudflare Workers API.
+ * Configures Hono app with middleware, routes, and error handling.
+ *
+ * @module index
+ */
+
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { secureHeaders } from "hono/secure-headers";
