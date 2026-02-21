@@ -9,6 +9,7 @@ import {
 } from "react";
 import { motion } from "framer-motion";
 import { TypeIndicator, useTypingIndicator } from "./TypeIndicator";
+import { SPRING_CONFIG, ANIMATION_MS } from "../config/constants";
 
 interface AnimatedInputBaseProps {
   label?: string;
@@ -48,7 +49,7 @@ export const AnimatedInput = memo(
     {
       label,
       showTypingIndicator = true,
-      typingDelay = 800,
+      typingDelay = ANIMATION_MS.INPUT_TYPING_DELAY,
       error,
       hint,
       validationState = "default",
@@ -132,7 +133,7 @@ export const AnimatedInput = memo(
                   scale: 1,
                 }
           }
-          transition={{ type: "spring", stiffness: 500, damping: 25 }}
+          transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
         >
           <input
             ref={combinedRef}
@@ -187,7 +188,7 @@ export const AnimatedTextarea = memo(
       {
         label,
         showTypingIndicator = true,
-        typingDelay = 800,
+        typingDelay = ANIMATION_MS.INPUT_TYPING_DELAY,
         error,
         hint,
         validationState = "default",
@@ -274,7 +275,7 @@ export const AnimatedTextarea = memo(
                     scale: 1,
                   }
             }
-            transition={{ type: "spring", stiffness: 500, damping: 25 }}
+            transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
           >
             <textarea
               ref={combinedRef}
