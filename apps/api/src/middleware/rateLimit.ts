@@ -3,6 +3,7 @@ import type { Env } from "../types";
 import { getConfig } from "../config/env";
 import { HTTP_STATUS } from "../config/constants";
 import { TIME_UNITS } from "@blueprint/shared";
+import { secureLogWarn } from "../utils/secureLog";
 
 type RateLimiterName =
   | "STRICT_RATE_LIMITER"
@@ -67,6 +68,15 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
         "anonymous";
 
     if (!rateLimiter) {
+      // Log warning for observability - rate limiting is disabled for this endpoint
+      secureLogWarn(
+        "RateLimiter",
+        `Rate limiter '${limiter}' not configured - rate limiting disabled`,
+        {
+          endpoint: c.req.path,
+          method: c.req.method,
+        },
+      );
       await next();
       return;
     }
