@@ -1,6 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
   "installCommand": "npm install",
   "outputDirectory": "dist",
   "framework": "vite",
@@ -40,6 +41,11 @@
     {
       "source": "/app",
       "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/favicon.ico",
+      "destination": "/favicon.svg",
       "permanent": true
     }
   ],
@@ -222,6 +228,23 @@
         {
           "key": "Content-Type",
           "value": "application/xml"
+        }
+      ]
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=3600, stale-if-error=3600"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "public, max-age=86400, stale-if-error=3600"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/manifest+json"
         }
       ]
     },
