@@ -333,3 +333,10 @@ export const EXTERNAL_URLS = {
     return getEnvConfig().PROJECT_HOMEPAGE_URL;
   },
 };
+
+export const SHARE_CONFIG = {
+  ID_LENGTH: 12,
+  EXPIRATION_DAYS: 30,
+  MAX_BLUEPRINT_SIZE: 50000,
+  MAX_TITLE_LENGTH: 200,
+} as const;
