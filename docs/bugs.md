@@ -138,37 +138,38 @@ Replaced all 'any' types with proper Hono Context<{ Bindings: Env }> types:
 ### BUG-009: CI/CD Workflow Configuration Issues
 
 **Status**: Open  
-**Priority**: High  
+**Priority**: High (P0)  
 **Area**: DevOps Engineering  
 **First Reported**: 2026-02-18 (QA Audit)  
-**Issue Reference**: #483
+**Issue Reference**: #743 (originally #483)
 
 #### Description
 
 Multiple workflow configuration issues identified:
 
-1. Filename with space: `on pull.yml` should be `on-pull.yml`
-2. Line ending inconsistency: CRLF instead of LF
-3. Outdated runner version: `ubuntu-22.04-arm` instead of `ubuntu-24.04-arm`
-4. Invalid action versions: `checkout@v6` and `setup-node@v6` (should be `@v4`)
+1. **Invalid action versions**: `actions/checkout@v5`, `actions/cache@v5`, `actions/setup-node@v5` (should be `@v4`) - **CRITICAL: All CI workflows will fail**
+2. Filename with space: `on pull.yml` should be `on-pull.yml`
+3. Line ending inconsistency: CRLF instead of LF
+4. Outdated runner version: `ubuntu-22.04-arm` instead of `ubuntu-24.04-arm`
 
 #### Impact
 
+- **CRITICAL**: All CI/CD workflows fail because `@v5` versions do not exist
 - Shell commands may fail with space in filename
 - Line ending issues cause git warnings
 - Runner version doesn't match AGENTS.md specification
-- Invalid action versions may cause CI failures
 
 #### Fix Status
 
-- [x] Fix prepared on `repository-manager` branch
+- [x] Fix prepared on `repository-manager` branch (2026-02-21)
+- [x] Fix prepared on `devops-engineer` branch (2026-02-21)
 - [ ] Requires workflow permissions to push
-- [ ] All verification checks passed (typecheck, lint, build, tests)
+- [x] All verification checks passed (typecheck, lint, build, tests: 217 passed)
 
 #### Target Resolution
 
 - **Timeline**: Requires user with workflow permissions
-- **Priority**: High (CI/CD reliability)
+- **Priority**: P0 (CI is broken)
 - **Area**: DevOps Engineering
 
 ---

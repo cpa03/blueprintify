@@ -4,6 +4,7 @@
 
 ## Table of Contents
 
+- [2026-02-21: Repository Manager - CI Workflow Fix Attempt](#repository-manager-2026-02-21---ci-workflow-fix-attempt)
 - [2026-02-21: Comprehensive Reliability Audit](#reliability-2026-02-21---comprehensive-reliability-audit)
 - [2026-02-20: Rate Limiter Observability Improvement](#reliability-2026-02-20---rate-limiter-observability-improvement)
 - [2026-02-20: Typed Error Classes in MockDatabaseService](#reliability-2026-02-20---typed-error-classes-in-mockdatabaseservice)
@@ -20,6 +21,62 @@
 - [2026-02-18: Share Endpoint Validation Consistency](#security-2026-02-18---share-endpoint-validation-consistency)
 - [2026-02-18: Integration Workflow File Line Ending](#integration-2026-02-18---workflow-file-line-ending-inconsistency)
 - [2026-02-20: Logger Middleware Undefined Header Fix](#reliability-2026-02-20---logger-middleware-undefined-header-value-fix)
+
+---
+
+## [Repository Manager] 2026-02-21 - CI Workflow Fix Attempt
+
+### Observation
+
+Critical P0 issue identified: All GitHub Actions workflows use invalid action versions (`@v5` instead of `@v4`), causing all CI/CD workflows to fail.
+
+### Action Taken
+
+Attempted to fix the workflow issues on `repository-manager` branch:
+
+1. **Replaced all invalid action versions**:
+   - `actions/checkout@v5` → `@v4` (25 occurrences across 3 files)
+   - `actions/cache@v5` → `@v4` (10 occurrences)
+   - `actions/setup-node@v5` → `@v4` (1 occurrence)
+
+2. **Files modified**:
+   - `.github/workflows/main.yml`
+   - `.github/workflows/ai-on-push.yml`
+   - `.github/workflows/iterate.yml`
+
+### Verification
+
+```bash
+npm run typecheck  # ✅ PASS
+npm run lint       # ✅ PASS
+npm run test:all   # ✅ PASS (217 tests)
+npm run build      # ✅ PASS (18.16s)
+```
+
+### Blocker
+
+Push rejected due to GitHub App lacking `workflows` permission:
+
+```
+! [remote rejected] repository-manager -> repository-manager (refusing to allow a GitHub App to create or update workflow `.github/workflows/ai-on-push.yml` without `workflows` permission)
+```
+
+### Status
+
+⚠️ **BLOCKED** - Requires admin intervention to push workflow changes.
+
+### Action Required
+
+Repository admin must either:
+
+1. Grant workflow write permission to the GitHub App token
+2. Manually apply the fixes from the `repository-manager` branch
+3. Manually update all `@v5` → `@v4` in the workflow files
+
+### Related Issues
+
+- Issue #743: CI: Fix invalid GitHub Actions versions @v5 → @v4
+- Issue #483: Original CI/CD workflow configuration issues
 
 ---
 
