@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { SPRING_CONFIG } from "../config/constants";
@@ -8,7 +8,7 @@ interface ScrollToTopProps {
   showAfter?: number;
 }
 
-export function ScrollToTop({
+export const ScrollToTop = memo(function ScrollToTop({
   scrollContainerRef,
   showAfter = 400,
 }: ScrollToTopProps): JSX.Element {
@@ -133,4 +133,4 @@ export function ScrollToTop({
       )}
     </AnimatePresence>
   );
-}
+});
