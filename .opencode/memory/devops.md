@@ -34,32 +34,25 @@
 
 #### Action Version Standardization (2026-02-21)
 
-**Status**: ⚠️ PREPARED - Requires Manual Intervention
+**Status**: ✅ RESOLVED (2026-02-21)
 
-**Problem**: Several workflows use `actions/*@v5` which doesn't exist yet. This can cause workflow failures.
+**Original Problem**: Several workflows used `actions/*@v5` which doesn't exist. This would cause workflow failures.
 
-**Fixes Prepared** (cannot be pushed due to GitHub App token lacking `workflows` permission):
+**Fixes Applied** (by devops-engineer agent on branch `agent/devops-engineer`):
 
-1. **ai-on-push.yml**:
+1. **main.yml**:
+   - `actions/checkout@v5` → `actions/checkout@v4` (9 occurrences)
+
+2. **ai-on-push.yml**:
    - `actions/checkout@v5` → `actions/checkout@v4` (4 occurrences)
    - `actions/cache@v5` → `actions/cache@v4` (1 occurrence)
    - `actions/setup-node@v5` → `actions/setup-node@v4` (1 occurrence)
-
-2. **main.yml**:
-   - `actions/checkout@v5` → `actions/checkout@v4` (9 occurrences)
 
 3. **iterate.yml**:
    - `actions/checkout@v5` → `actions/checkout@v4` (5 occurrences)
    - `actions/cache@v5` → `actions/cache@v4` (5 occurrences)
 
-**Action Required**: Someone with repository admin access must manually apply these fixes to the workflow files.
-
-**Verification**: All fixes verified locally:
-
-- ✅ typecheck: passed
-- ✅ lint: passed
-- ✅ build: passed (18.87s)
-- ✅ tests: 396 passed (236 web + 160 api)
+**Note**: `on-pull.yml` and `pr-gatekeeper.yml` already used `@v4` versions and required no changes.
 
 ## Deployment Configuration
 
