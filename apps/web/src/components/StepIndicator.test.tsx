@@ -35,6 +35,10 @@ vi.mock("../config/constants", () => ({
   TIMEOUTS: {
     SHAKE_ANIMATION: 400,
   },
+  PROGRESS_COLORS: {
+    COMPLETED: "#10b981",
+    ACTIVE: "#6366f1",
+  },
 }));
 
 vi.mock("framer-motion", () => {

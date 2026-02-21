@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import {
@@ -26,7 +26,7 @@ interface AnimatedCopyButtonProps {
   className?: string;
 }
 
-export function AnimatedCopyButton({
+function AnimatedCopyButtonComponent({
   onCopy,
   isCopied,
   hasContent,
@@ -278,3 +278,5 @@ export function AnimatedCopyButton({
     </motion.button>
   );
 }
+
+export const AnimatedCopyButton = memo(AnimatedCopyButtonComponent);
