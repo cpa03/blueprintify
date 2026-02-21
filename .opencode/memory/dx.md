@@ -91,8 +91,7 @@ npm install
 
 ### Pending
 
-- [ ] Continue adding inline code comments to other core files (editor.ts, hooks/)
-- [ ] Fix CI workflow configuration issues (Issue #483) - **BLOCKED** by GitHub App permission restrictions
+- [ ] Fix CI workflow configuration issues (Issue #743) - **BLOCKED** by GitHub App permission restrictions
 
 ## Workflow Configuration Notes
 
@@ -178,6 +177,6 @@ npm run build
 
 ---
 
-_Last updated: 2026-02-20_
+_Last updated: 2026-02-21_
 
 > **Note**: For comprehensive troubleshooting, see [docs/troubleshooting.md](../docs/troubleshooting.md)
