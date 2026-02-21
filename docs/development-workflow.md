@@ -15,7 +15,7 @@ The Blueprintify project follows an AI-driven development workflow that combines
 - **Trigger**: Scheduled GitHub Actions workflow
 - **Agent**: Architect
 - **Process**:
-  - Reviews `docs/blueprint.md`, `docs/roadmap.md`, `docs/bug.md`, `docs/feature.md`
+  - Reviews `docs/blueprint.md`, `docs/roadmap.md`, `docs/bugs.md`, `docs/features.md`
   - Evaluates task priorities
   - Updates `docs/task.md` with OPEN/PRIORITY/ROLE/SCOPE
   - Creates/updates task assignments
@@ -108,7 +108,7 @@ The Blueprintify project follows an AI-driven development workflow that combines
 - **Agent**: Reliability Engineer
 - **Process**:
   - Scans logs, PRs, issues
-  - Documents new bugs in `docs/bug.md`
+  - Documents new bugs in `docs/bugs.md`
   - Does not fix bugs (only documents)
 
 ## 🔧 Branch Strategy
@@ -231,7 +231,7 @@ test(api): add unit tests for validation middleware
 2. **Revert**: Create revert commit
 3. **Test**: Validate fix
 4. **Deploy**: Hotfix deployment
-5. **Post-mortem**: Document in `docs/bug.md`
+5. **Post-mortem**: Document in `docs/bugs.md`
 
 ## 📊 Workflow Metrics
 
