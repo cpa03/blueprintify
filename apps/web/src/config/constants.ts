@@ -53,6 +53,7 @@ export const ANIMATION_MS = {
   TYPING_INDICATOR_DELAY: 600,
   TYPING_INDICATOR_TIMEOUT: 800,
   CHIP_SELECT_FEEDBACK: 600,
+  INPUT_TYPING_DELAY: 800,
 } as const;
 
 // Celebration animation timing (in milliseconds)
