@@ -1,4 +1,4 @@
-import { DEFAULT_ERROR_MESSAGES } from "./config/constants";
+import { DEFAULT_ERROR_MESSAGES, HTTP_STATUS } from "./config/constants";
 
 /**
  * API Error Types and Classes
@@ -124,7 +124,7 @@ export class ValidationError extends APIError {
     message: string = DEFAULT_ERROR_MESSAGES.VALIDATION,
     details?: Record<string, unknown>,
   ) {
-    super(ErrorType.VALIDATION, message, 400, "VALIDATION_ERROR", details);
+    super(ErrorType.VALIDATION, message, HTTP_STATUS.BAD_REQUEST, "VALIDATION_ERROR", details);
     this.name = "ValidationError";
   }
 }
@@ -141,7 +141,7 @@ export class AuthenticationError extends APIError {
    * @param message - Human-readable authentication error message
    */
   constructor(message: string = DEFAULT_ERROR_MESSAGES.AUTHENTICATION) {
-    super(ErrorType.AUTHENTICATION, message, 401, "AUTHENTICATION_ERROR");
+    super(ErrorType.AUTHENTICATION, message, HTTP_STATUS.UNAUTHORIZED, "AUTHENTICATION_ERROR");
     this.name = "AuthenticationError";
   }
 }
@@ -158,7 +158,7 @@ export class AuthorizationError extends APIError {
    * @param message - Human-readable authorization error message
    */
   constructor(message: string = DEFAULT_ERROR_MESSAGES.AUTHORIZATION) {
-    super(ErrorType.AUTHORIZATION, message, 403, "AUTHORIZATION_ERROR");
+    super(ErrorType.AUTHORIZATION, message, HTTP_STATUS.FORBIDDEN, "AUTHORIZATION_ERROR");
     this.name = "AuthorizationError";
   }
 }
@@ -175,7 +175,7 @@ export class NotFoundError extends APIError {
    * @param resource - Description of the resource that was not found
    */
   constructor(resource: string = DEFAULT_ERROR_MESSAGES.NOT_FOUND) {
-    super(ErrorType.NOT_FOUND, resource, 404, "NOT_FOUND_ERROR");
+    super(ErrorType.NOT_FOUND, resource, HTTP_STATUS.NOT_FOUND, "NOT_FOUND_ERROR");
     this.name = "NotFoundError";
   }
 }
@@ -192,7 +192,7 @@ export class ConfigurationError extends APIError {
    * @param message - Human-readable configuration error message
    */
   constructor(message: string = DEFAULT_ERROR_MESSAGES.CONFIGURATION) {
-    super(ErrorType.CONFIGURATION, message, 500, "CONFIGURATION_ERROR");
+    super(ErrorType.CONFIGURATION, message, HTTP_STATUS.INTERNAL_ERROR, "CONFIGURATION_ERROR");
     this.name = "ConfigurationError";
   }
 }
@@ -213,7 +213,7 @@ export class NetworkError extends APIError {
     message: string = DEFAULT_ERROR_MESSAGES.NETWORK,
     details?: Record<string, unknown>,
   ) {
-    super(ErrorType.NETWORK, message, 502, "NETWORK_ERROR", details);
+    super(ErrorType.NETWORK, message, HTTP_STATUS.BAD_GATEWAY, "NETWORK_ERROR", details);
     this.name = "NetworkError";
   }
 }
@@ -234,7 +234,7 @@ export class AIServiceError extends APIError {
     message: string = DEFAULT_ERROR_MESSAGES.AI_SERVICE,
     details?: Record<string, unknown>,
   ) {
-    super(ErrorType.AI_SERVICE, message, 502, "AI_SERVICE_ERROR", details);
+    super(ErrorType.AI_SERVICE, message, HTTP_STATUS.BAD_GATEWAY, "AI_SERVICE_ERROR", details);
     this.name = "AIServiceError";
   }
 }
@@ -251,7 +251,7 @@ export class InternalServerError extends APIError {
    * @param message - Human-readable internal error message
    */
   constructor(message: string = DEFAULT_ERROR_MESSAGES.INTERNAL) {
-    super(ErrorType.INTERNAL, message, 500, "INTERNAL_ERROR");
+    super(ErrorType.INTERNAL, message, HTTP_STATUS.INTERNAL_ERROR, "INTERNAL_ERROR");
     this.name = "InternalServerError";
   }
 }
