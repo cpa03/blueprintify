@@ -32,13 +32,13 @@
 - ✅ Runner updated to `ubuntu-24.04-arm`
 - ✅ Action versions updated to `@v4`
 
-#### Action Version Standardization (2026-02-21)
+#### Action Version Standardization (Issue #743)
 
-**Status**: ✅ RESOLVED (2026-02-21)
+**Status**: ⏳ BLOCKED - Fix prepared, awaiting admin workflow permission
 
 **Original Problem**: Several workflows used `actions/*@v5` which doesn't exist. This would cause workflow failures.
 
-**Fixes Applied** (by devops-engineer agent on branch `agent/devops-engineer`):
+**Fixes Prepared** (by devops-engineer agent on branch `devops-engineer`):
 
 1. **main.yml**:
    - `actions/checkout@v5` → `actions/checkout@v4` (9 occurrences)
@@ -53,6 +53,8 @@
    - `actions/cache@v5` → `actions/cache@v4` (5 occurrences)
 
 **Note**: `on-pull.yml` and `pr-gatekeeper.yml` already used `@v4` versions and required no changes.
+
+**Blocker**: GitHub App token lacks `workflows` permission. Requires admin intervention to push changes.
 
 ## Deployment Configuration
 
