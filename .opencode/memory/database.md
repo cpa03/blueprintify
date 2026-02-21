@@ -3,7 +3,7 @@
 ## Schema Version
 
 - Current Version: 1.3.3
-- Last Updated: 2026-02-20
+- Last Updated: 2026-02-21
 - Schema File: `schema.sql`
 
 ## Database Service Layer
@@ -13,6 +13,23 @@
 - Production: D1 bindings configured in `apps/api/src/types.ts`
 - All tables have corresponding Zod schemas and TypeScript types
 - **Test Coverage**: `apps/api/src/db/index.test.ts` - 57 comprehensive tests covering all CRUD operations
+
+## Count Operations (v1.3.3)
+
+Efficient counting methods for dashboard stats and pagination without fetching full records:
+
+| Method                                                         | Description                                  |
+| -------------------------------------------------------------- | -------------------------------------------- |
+| `countProjectsByUserId(userId)`                                | Count all projects for a user                |
+| `countProjectsByUserIdAndStatus(userId, status)`               | Count projects by user and status            |
+| `countBlueprintsByProjectId(projectId)`                        | Count blueprints for a project               |
+| `countTasksByBlueprintId(blueprintId)`                         | Count tasks for a blueprint                  |
+| `countTemplatesByCreator(userId)`                              | Count templates created by user              |
+| `countPublicTemplates()`                                       | Count all public templates                   |
+| `countTemplatesByCategory(category)`                           | Count templates by category                  |
+| `countAnalyticsByEventType(eventType)`                         | Count analytics events by type               |
+| `countAnalyticsByEventTypeAndDateRange(eventType, start, end)` | Count events by type and date range          |
+| `countActiveSessionsForUser(userId)`                           | Count active (non-expired) sessions for user |
 
 ## Available Methods
 

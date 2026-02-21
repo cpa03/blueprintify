@@ -850,6 +850,277 @@ describe("MockDatabaseService", () => {
       expect(healthy).toBe(true);
     });
   });
+
+  describe("Count Operations", () => {
+    let userId: string;
+    let projectId: string;
+    let blueprintId: string;
+
+    beforeEach(async () => {
+      const user = await db.createUser({
+        email: "test@example.com",
+        name: "Test User",
+      });
+      userId = user.id;
+      const project = await db.createProject({
+        user_id: userId,
+        name: "Test Project",
+        status: "active",
+      });
+      projectId = project.id;
+      const blueprint = await db.createBlueprint({
+        project_id: projectId,
+        title: "Test Blueprint",
+        content: "Content",
+      });
+      blueprintId = blueprint.id;
+    });
+
+    describe("countProjectsByUserId", () => {
+      it("should count projects by user id", async () => {
+        await db.createProject({
+          user_id: userId,
+          name: "Project 2",
+          status: "active",
+        });
+        const count = await db.countProjectsByUserId(userId);
+        expect(count).toBe(2);
+      });
+
+      it("should return 0 for user with no projects", async () => {
+        const newUser = await db.createUser({
+          email: "newuser@example.com",
+          name: "New User",
+        });
+        const count = await db.countProjectsByUserId(newUser.id);
+        expect(count).toBe(0);
+      });
+    });
+
+    describe("countProjectsByUserIdAndStatus", () => {
+      it("should count projects by user id and status", async () => {
+        await db.createProject({
+          user_id: userId,
+          name: "Project 2",
+          status: "active",
+        });
+        await db.createProject({
+          user_id: userId,
+          name: "Project 3",
+          status: "archived",
+        });
+
+        const activeCount = await db.countProjectsByUserIdAndStatus(
+          userId,
+          "active",
+        );
+        expect(activeCount).toBe(2);
+
+        const archivedCount = await db.countProjectsByUserIdAndStatus(
+          userId,
+          "archived",
+        );
+        expect(archivedCount).toBe(1);
+      });
+    });
+
+    describe("countBlueprintsByProjectId", () => {
+      it("should count blueprints by project id", async () => {
+        await db.createBlueprint({
+          project_id: projectId,
+          title: "Blueprint 2",
+          content: "Content 2",
+        });
+        const count = await db.countBlueprintsByProjectId(projectId);
+        expect(count).toBe(2);
+      });
+
+      it("should return 0 for project with no blueprints", async () => {
+        const newProject = await db.createProject({
+          user_id: userId,
+          name: "New Project",
+          status: "active",
+        });
+        const count = await db.countBlueprintsByProjectId(newProject.id);
+        expect(count).toBe(0);
+      });
+    });
+
+    describe("countTasksByBlueprintId", () => {
+      it("should count tasks by blueprint id", async () => {
+        await db.createTask({
+          blueprint_id: blueprintId,
+          title: "Task 1",
+          content: "Content 1",
+        });
+        await db.createTask({
+          blueprint_id: blueprintId,
+          title: "Task 2",
+          content: "Content 2",
+        });
+        const count = await db.countTasksByBlueprintId(blueprintId);
+        expect(count).toBe(2);
+      });
+
+      it("should return 0 for blueprint with no tasks", async () => {
+        const newBlueprint = await db.createBlueprint({
+          project_id: projectId,
+          title: "New Blueprint",
+          content: "Content",
+        });
+        const count = await db.countTasksByBlueprintId(newBlueprint.id);
+        expect(count).toBe(0);
+      });
+    });
+
+    describe("countTemplatesByCreator", () => {
+      it("should count templates by creator", async () => {
+        await db.createTemplate({
+          name: "Template 1",
+          description: "Desc",
+          icon: "📄",
+          project_name: "Project",
+          default_description: "Default",
+          category: "frontend",
+          is_public: true,
+          created_by: userId,
+        });
+        await db.createTemplate({
+          name: "Template 2",
+          description: "Desc",
+          icon: "📄",
+          project_name: "Project",
+          default_description: "Default",
+          category: "backend",
+          is_public: false,
+          created_by: userId,
+        });
+        const count = await db.countTemplatesByCreator(userId);
+        expect(count).toBe(2);
+      });
+
+      it("should return 0 for user with no templates", async () => {
+        const newUser = await db.createUser({
+          email: "notemplates@example.com",
+          name: "No Templates",
+        });
+        const count = await db.countTemplatesByCreator(newUser.id);
+        expect(count).toBe(0);
+      });
+    });
+
+    describe("countPublicTemplates", () => {
+      it("should count public templates only", async () => {
+        await db.createTemplate({
+          name: "Public 1",
+          description: "Desc",
+          icon: "📄",
+          project_name: "Project",
+          default_description: "Default",
+          category: "frontend",
+          is_public: true,
+        });
+        await db.createTemplate({
+          name: "Private 1",
+          description: "Desc",
+          icon: "📄",
+          project_name: "Project",
+          default_description: "Default",
+          category: "frontend",
+          is_public: false,
+        });
+        const count = await db.countPublicTemplates();
+        expect(count).toBe(1);
+      });
+    });
+
+    describe("countTemplatesByCategory", () => {
+      it("should count templates by category", async () => {
+        await db.createTemplate({
+          name: "Frontend 1",
+          description: "Desc",
+          icon: "📄",
+          project_name: "Project",
+          default_description: "Default",
+          category: "frontend",
+          is_public: true,
+        });
+        await db.createTemplate({
+          name: "Backend 1",
+          description: "Desc",
+          icon: "📄",
+          project_name: "Project",
+          default_description: "Default",
+          category: "backend",
+          is_public: true,
+        });
+        const frontendCount = await db.countTemplatesByCategory("frontend");
+        expect(frontendCount).toBe(1);
+        const backendCount = await db.countTemplatesByCategory("backend");
+        expect(backendCount).toBe(1);
+      });
+    });
+
+    describe("countAnalyticsByEventType", () => {
+      it("should count analytics by event type", async () => {
+        await db.trackEvent({ event_type: "blueprint_generated" });
+        await db.trackEvent({ event_type: "blueprint_generated" });
+        await db.trackEvent({ event_type: "task_generated" });
+        const count = await db.countAnalyticsByEventType("blueprint_generated");
+        expect(count).toBe(2);
+      });
+    });
+
+    describe("countAnalyticsByEventTypeAndDateRange", () => {
+      it("should count analytics by event type and date range", async () => {
+        const now = new Date();
+        const oneHourAgo = new Date(now.getTime() - 3600000);
+
+        await db.trackEvent({ event_type: "blueprint_generated" });
+        await db.trackEvent({ event_type: "blueprint_generated" });
+        await db.trackEvent({ event_type: "task_generated" });
+
+        const count = await db.countAnalyticsByEventTypeAndDateRange(
+          "blueprint_generated",
+          oneHourAgo.toISOString(),
+          now.toISOString(),
+        );
+        expect(count).toBe(2);
+      });
+    });
+
+    describe("countActiveSessionsForUser", () => {
+      it("should count active sessions for user", async () => {
+        const futureDate = new Date(Date.now() + 3600000).toISOString();
+        const pastDate = new Date(Date.now() - 1000).toISOString();
+
+        await db.createSession({
+          user_id: userId,
+          session_data: "{}",
+          expires_at: futureDate,
+        });
+        await db.createSession({
+          user_id: userId,
+          session_data: "{}",
+          expires_at: pastDate,
+        });
+
+        const count = await db.countActiveSessionsForUser(userId);
+        expect(count).toBe(1);
+      });
+
+      it("should return 0 when no active sessions", async () => {
+        const pastDate = new Date(Date.now() - 1000).toISOString();
+        await db.createSession({
+          user_id: userId,
+          session_data: "{}",
+          expires_at: pastDate,
+        });
+        const count = await db.countActiveSessionsForUser(userId);
+        expect(count).toBe(0);
+      });
+    });
+  });
 });
 
 describe("Utility Functions", () => {
