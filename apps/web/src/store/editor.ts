@@ -1,3 +1,22 @@
+/**
+ * @fileoverview Editor state management store
+ *
+ * Manages the split-pane editor state for blueprint and task content.
+ * Provides persistent state via localStorage with debounced auto-save
+ * and security validation for stored content.
+ *
+ * Features:
+ * - Tab switching between blueprint and tasks
+ * - Real-time content streaming during AI generation
+ * - Dirty state tracking for unsaved changes
+ * - Generation progress tracking
+ * - Content sanitization for XSS prevention
+ *
+ * @module store/editor
+ * @see {@link useBlueprintStream} for generation workflow
+ * @see {@link editorStorage} for persistence layer
+ */
+
 import { create } from "zustand";
 import type { EditorTab } from "@blueprint/shared";
 import { createDebouncedSaver } from "@blueprint/shared";
@@ -29,6 +48,28 @@ function validateEditorContent(
   };
 }
 
+/**
+ * Editor store interface for managing split-pane editor state
+ *
+ * @property activeTab - Currently active tab ("blueprint" | "tasks")
+ * @property blueprintContent - Generated blueprint markdown content
+ * @property tasksContent - Generated tasks markdown content
+ * @property isDirty - Whether there are unsaved changes
+ * @property isGenerating - Whether AI generation is in progress
+ * @property generationProgress - Human-readable progress message
+ *
+ * @property setActiveTab - Switch between blueprint and tasks tabs
+ * @property setBlueprintContent - Replace entire blueprint content
+ * @property appendBlueprintContent - Append chunk during streaming
+ * @property setTasksContent - Replace entire tasks content
+ * @property appendTasksContent - Append chunk during streaming
+ * @property setIsGenerating - Control generation state
+ * @property setGenerationProgress - Update progress message
+ * @property markClean - Clear dirty flag after save
+ * @property cancelGeneration - Abort ongoing generation
+ * @property reset - Clear all content and state
+ * @property flushStorage - Force pending storage writes
+ */
 export interface EditorStore {
   activeTab: EditorTab;
   blueprintContent: string;

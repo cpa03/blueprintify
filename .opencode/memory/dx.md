@@ -84,6 +84,10 @@ npm install
   - `useFocusTrap.ts` - Accessible focus trap for modal dialogs
   - `useFocusOnStepChange.ts` - Focus management for wizard navigation
   - `useStepAnnouncer` - Screen reader announcements for step changes
+- [x] Add JSDoc documentation to store/ directory (2026-02-21)
+  - `toast.ts` - Toast notification system with module-level docs
+  - `editor.ts` - Editor state management with interface documentation
+  - `index.ts` - Store exports and resetAllStores utility
 
 ### Pending
 
