@@ -281,7 +281,7 @@ export const StepStack = memo(function StepStack(): JSX.Element {
                   {tech.name}
                   <button
                     onClick={() => removeTechStack(tech.name)}
-                    className="hover:text-accent-pink transition-colors"
+                    className="hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors"
                     aria-label={`Remove ${tech.name}`}
                   >
                     <svg
