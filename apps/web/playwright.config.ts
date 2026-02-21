@@ -3,6 +3,13 @@ import { defineConfig, devices } from "@playwright/test";
 const TEST_SERVER_URL =
   process.env.PLAYWRIGHT_TEST_URL || "http://localhost:3000";
 
+const PLAYWRIGHT_CONFIG = {
+  WEB_SERVER_TIMEOUT_MS: 120000,
+  EXPECT_TIMEOUT_MS: 10000,
+  SCREENSHOT_MAX_DIFF_PIXELS: 100,
+  SNAPSHOT_THRESHOLD: 0.2,
+} as const;
+
 export default defineConfig({
   testDir: "./e2e",
   snapshotDir: "./e2e/snapshots",
@@ -53,17 +60,17 @@ export default defineConfig({
     command: "npm run dev",
     url: TEST_SERVER_URL,
     reuseExistingServer: !process.env.CI,
-    timeout: 120000,
+    timeout: PLAYWRIGHT_CONFIG.WEB_SERVER_TIMEOUT_MS,
   },
 
   expect: {
-    timeout: 10000,
+    timeout: PLAYWRIGHT_CONFIG.EXPECT_TIMEOUT_MS,
     toHaveScreenshot: {
-      maxDiffPixels: 100,
-      threshold: 0.2,
+      maxDiffPixels: PLAYWRIGHT_CONFIG.SCREENSHOT_MAX_DIFF_PIXELS,
+      threshold: PLAYWRIGHT_CONFIG.SNAPSHOT_THRESHOLD,
     },
     toMatchSnapshot: {
-      threshold: 0.2,
+      threshold: PLAYWRIGHT_CONFIG.SNAPSHOT_THRESHOLD,
     },
   },
 });

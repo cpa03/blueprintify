@@ -372,3 +372,19 @@ export const SHARE_ERROR_MESSAGES = {
   SHARE_EXPIRED: "Shared blueprint has expired",
   SHARE_DELETED_SUCCESSFULLY: "Share deleted successfully",
 } as const;
+
+// Import route configuration
+export const IMPORT_CONFIG = {
+  /** Default project name when no name can be extracted from imported content */
+  DEFAULT_PROJECT_NAME: "Imported Project",
+  /** Expected import data version */
+  EXPECTED_VERSION: "1.0.0",
+} as const;
+
+// Logger middleware configuration
+export const LOGGER_CONFIG = {
+  /** Length of random suffix in request ID (e.g., timestamp-abc1234 -> 4 chars) */
+  REQUEST_ID_SUFFIX_LENGTH: 4,
+  /** Default paths excluded from request logging */
+  DEFAULT_EXCLUDE_PATHS: ["/"] as const,
+} as const;

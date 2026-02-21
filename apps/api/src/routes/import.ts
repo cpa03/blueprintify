@@ -3,6 +3,7 @@ import { ImportRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { secureLogError } from "../utils/secureLog";
+import { IMPORT_CONFIG } from "../config/constants";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -40,9 +41,12 @@ app.post(
             );
           }
 
-          if (parsed.version && parsed.version !== "1.0.0") {
+          if (
+            parsed.version &&
+            parsed.version !== IMPORT_CONFIG.EXPECTED_VERSION
+          ) {
             warnings.push(
-              `Version mismatch: expected 1.0.0, got ${parsed.version}`,
+              `Version mismatch: expected ${IMPORT_CONFIG.EXPECTED_VERSION}, got ${parsed.version}`,
             );
           }
 
@@ -78,7 +82,8 @@ app.post(
         // Parse markdown format - look for title at start of document
         // Match only if # is at the start of the document (not ## or later in the doc)
         const projectNameMatch = data.match(/^#[^#](.+)$/m);
-        const projectName = projectNameMatch?.[1]?.trim() ?? "Imported Project";
+        const projectName =
+          projectNameMatch?.[1]?.trim() ?? IMPORT_CONFIG.DEFAULT_PROJECT_NAME;
 
         const blueprintMatch = data.match(
           /## Blueprint\s*\n\n?([\s\S]*?)(?=\n## |$)/,
