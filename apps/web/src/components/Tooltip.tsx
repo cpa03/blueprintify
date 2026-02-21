@@ -52,6 +52,18 @@ const TooltipComponent = ({
     setIsVisible(false);
   }, []);
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        setIsVisible((prev) => !prev);
+      } else if (e.key === "Escape" && isVisible) {
+        setIsVisible(false);
+      }
+    },
+    [isVisible],
+  );
+
   return (
     <div
       className="relative inline-flex"
@@ -59,6 +71,7 @@ const TooltipComponent = ({
       onMouseLeave={handleMouseLeave}
       onFocus={handleMouseEnter}
       onBlur={handleMouseLeave}
+      onKeyDown={handleKeyDown}
       aria-describedby={isVisible ? tooltipId : undefined}
       tabIndex={0}
     >
