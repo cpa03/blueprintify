@@ -212,3 +212,37 @@ Reference: Issue #483
 - #483: CI workflow configuration (blocked by workflow permissions)
 - #418: Security vulnerabilities in ajv package (upstream dependency)
 - #285: M2 Finalization (all sub-issues closed, only #483 remains)
+
+### 2026-02-21 QA Verification (02:37 UTC)
+
+**Verification Results:**
+
+- ✅ TypeScript: No errors
+- ✅ ESLint: No errors or warnings
+- ✅ Tests: 396 passed (236 web + 160 API), 0 errors
+- ✅ Build: Successful (15.12s)
+
+**Issue #483 Resolution:**
+
+The workflow configuration issues have been **RESOLVED**. The fixes were applied in commit 08d1f02 (PR #709):
+
+| Issue             | Before             | After              | Status   |
+| ----------------- | ------------------ | ------------------ | -------- |
+| Filename          | `on pull.yml`      | `on-pull.yml`      | ✅ Fixed |
+| Line endings      | CRLF               | LF                 | ✅ Fixed |
+| Runner            | `ubuntu-22.04-arm` | `ubuntu-24.04-arm` | ✅ Fixed |
+| checkout action   | `@v6`              | `@v4`              | ✅ Fixed |
+| setup-node action | `@v6`              | `@v4`              | ✅ Fixed |
+
+**Open Issues Status:**
+
+- #483: **RESOLVED** - workflow fixes applied in PR #709
+- #418: Security vulnerabilities in ajv package (upstream dependency - needs breaking changes)
+- #285: M2 Finalization (can be closed once #483 is marked resolved)
+
+**Dependency Audit:**
+
+- 18 vulnerabilities detected (1 moderate, 17 high)
+- All in upstream dependencies (minimatch via eslint ecosystem)
+- Cannot be fixed without breaking changes to eslint plugins
+- Not blocking CI
