@@ -65,6 +65,7 @@ function EditorToolbarComponent({
               onClick={() => setViewMode(mode)}
               className={clsx(
                 "px-4 py-2 rounded text-xs font-medium transition-colors duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center relative z-10",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950",
                 viewMode === mode
                   ? "text-white"
                   : "text-dark-400 hover:text-white",
