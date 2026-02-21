@@ -147,7 +147,7 @@ blueprintify/
 
 ### Component Structure
 
-- Wizard-based workflow (3 steps)
+- Wizard-based workflow (5 steps: Project Details, Tech Stack, Features, Review, Generate)
 - Split-pane editor view
 - Real-time markdown rendering
 - Responsive design with Tailwind
