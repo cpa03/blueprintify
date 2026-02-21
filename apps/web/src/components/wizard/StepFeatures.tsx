@@ -40,10 +40,15 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
     [handleAddFeature],
   );
 
-  const isInFeatures = useCallback(
-    (feature: string) =>
-      features.some((f: string) => f.toLowerCase() === feature.toLowerCase()),
+  // Use a Set for O(1) lookup instead of O(n) .some() for each feature
+  const featureNamesLower = useMemo(
+    () => new Set(features.map((f: string) => f.toLowerCase())),
     [features],
+  );
+
+  const isInFeatures = useCallback(
+    (feature: string) => featureNamesLower.has(feature.toLowerCase()),
+    [featureNamesLower],
   );
 
   const suggestedNotAdded = useMemo(

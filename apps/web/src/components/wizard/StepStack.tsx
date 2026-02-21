@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useCallback, memo } from "react";
+import { useState, useCallback, useMemo, memo } from "react";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
 import {
@@ -150,6 +150,12 @@ export const StepStack = memo(function StepStack(): JSX.Element {
 
   const canProceed = techStack.length >= MIN_REQUIREMENTS.TECH_STACK;
 
+  // Use a Set for O(1) lookup instead of O(n) .some() for each item
+  const selectedNames = useMemo(
+    () => new Set(techStack.map((t) => t.name)),
+    [techStack],
+  );
+
   const handleNextClick = () => {
     if (canProceed) {
       nextStep();
@@ -160,8 +166,8 @@ export const StepStack = memo(function StepStack(): JSX.Element {
   };
 
   const isSelected = useCallback(
-    (name: string) => techStack.some((t) => t.name === name),
-    [techStack],
+    (name: string) => selectedNames.has(name),
+    [selectedNames],
   );
 
   const toggleTech = useCallback(
