@@ -4,6 +4,38 @@
 
 ---
 
+## [Reliability] 2026-02-21 - Reliability Memory File Creation
+
+### Observation
+
+The reliability-engineer agent definition references `.opencode/memory/reliability.md` for context, but this file did not exist. This meant each reliability-engineer session had to rediscover patterns and conventions.
+
+### Action Taken
+
+Created `.opencode/memory/reliability.md` with comprehensive documentation of:
+
+1. **Reliability Patterns Implemented**: Error handling, timeout handling, circuit breaker, retry logic, rate limiting, input validation, storage recovery
+2. **Lessons Learned**: Historical context from previous reliability improvements
+3. **Reliability Checklist**: Quick reference for code reviews
+4. **Key Files**: Reference table of reliability-critical files
+5. **Anti-Patterns to Avoid**: Common mistakes to prevent
+
+### Impact
+
+- Future reliability-engineer sessions will have immediate context
+- Consistent approach to reliability improvements across sessions
+- Reduced token usage from not re-exploring known patterns
+
+### Verification
+
+```bash
+npm run typecheck  # ✅ PASS
+npm run lint       # ✅ PASS
+npm run test:all   # ✅ PASS (396 tests: 236 web + 160 API)
+```
+
+---
+
 ## [Reliability] 2026-02-21 - Comprehensive Reliability Audit
 
 ### Observation
