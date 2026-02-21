@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Standardized CMZ agent definition with mandatory planning section
 - Fixed default value handling in MockDatabaseService (version, usage_count)
 - Improved request logger middleware to handle undefined header values
+- Replaced generic `Error` throws with typed `NotFoundError` in MockDatabaseService for better error discrimination
 
 ### Fixed
 

@@ -172,7 +172,7 @@ GitHub Actions Workflow
 **Responsibilities**:
 
 - Scans logs, PRs, issues
-- Documents new bugs in `docs/bug.md`
+- Documents new bugs in `docs/bugs.md`
 - Identifies patterns and trends
 - Does not fix bugs (only documents)
 
