@@ -2,7 +2,7 @@
 -- Blueprintify Database Schema
 -- ============================================================================
 -- Cloudflare D1 (SQLite) Database Schema
--- Version: 1.3.3
+-- Version: 1.3.4
 -- Last Updated: 2026-02-21
 -- 
 -- Schema Conventions:
