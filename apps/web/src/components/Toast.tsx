@@ -197,7 +197,10 @@ const ToastItem = memo(
               className="absolute -top-1 -right-1 w-4 h-4 bg-current/20 rounded-full flex items-center justify-center"
               aria-hidden="true"
             >
-              <span className="text-[10px]">⏸</span>
+              <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="6" y="4" width="4" height="16" rx="1" />
+                <rect x="14" y="4" width="4" height="16" rx="1" />
+              </svg>
             </motion.div>
           )}
         </AnimatePresence>
@@ -212,7 +215,7 @@ const ToastItem = memo(
         <button
           onClick={() => onRemove(toast.id)}
           className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-all"
-          aria-label="Dismiss notification"
+          aria-label={`Dismiss ${toast.type} notification`}
         >
           <svg
             className="w-4 h-4"

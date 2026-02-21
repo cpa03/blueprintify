@@ -21,6 +21,8 @@ function StepIndicatorComponent(): JSX.Element {
 
   const currentIndex = STEPS.findIndex((s) => s.key === currentStep);
   const progressPercentage = (currentIndex / (STEPS.length - 1)) * 100;
+  const currentStepLabel =
+    WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
 
   const canNavigateTo = useCallback(
     (stepKey: WizardStep): boolean => {
@@ -82,6 +84,7 @@ function StepIndicatorComponent(): JSX.Element {
                 ? "rgb(16, 185, 129)"
                 : "rgb(99, 102, 241)"
             }
+            ariaLabel={`Step ${currentIndex + 1} of ${STEPS.length}: ${currentStepLabel}`}
           />
           <motion.div
             className="absolute inset-0 flex items-center justify-center"

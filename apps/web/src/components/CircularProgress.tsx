@@ -9,6 +9,7 @@ interface CircularProgressProps {
   showPercentage?: boolean;
   color?: string;
   trackColor?: string;
+  ariaLabel?: string;
 }
 
 export function CircularProgress({
@@ -20,6 +21,7 @@ export function CircularProgress({
   showPercentage = false,
   color = "rgb(99, 102, 241)",
   trackColor = "rgba(255, 255, 255, 0.1)",
+  ariaLabel,
 }: CircularProgressProps): JSX.Element {
   const clampedValue = Math.max(0, Math.min(100, value));
   const radius = (size - strokeWidth) / 2;
@@ -35,7 +37,7 @@ export function CircularProgress({
       aria-valuenow={Math.round(clampedValue)}
       aria-valuemin={0}
       aria-valuemax={100}
-      aria-label={`${Math.round(clampedValue)}% complete`}
+      aria-label={ariaLabel ?? `${Math.round(clampedValue)}% complete`}
     >
       <svg
         width={size}
@@ -97,7 +99,7 @@ export function CircularProgressCompact({
   className = "",
 }: Omit<
   CircularProgressProps,
-  "showPercentage" | "animationDuration"
+  "showPercentage" | "animationDuration" | "ariaLabel"
 >): JSX.Element {
   return (
     <CircularProgress
