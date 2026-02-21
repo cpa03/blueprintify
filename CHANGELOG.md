@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `getTemplatesByCreator` method to DatabaseService for "My Templates" feature support
 - ErrorBoundary component for graceful error handling in React frontend
 - Comprehensive database service test coverage (49 tests)
+- Warning log when rate limiter is not configured for improved observability
 
 ### Changed
 
