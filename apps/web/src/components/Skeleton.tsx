@@ -1,6 +1,7 @@
 import { memo, forwardRef } from "react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 interface SkeletonBaseProps {
   width?: number | string;
@@ -93,8 +94,11 @@ const SkeletonElement = memo(
     { width, height, className = "", animation = "shimmer", borderRadius },
     ref,
   ) {
+    const prefersReducedMotion = useReducedMotion();
+    const effectiveAnimation = prefersReducedMotion ? "none" : animation;
+
     const animationVariants =
-      animation === "shimmer" ? shimmerVariants : pulseVariants;
+      effectiveAnimation === "shimmer" ? shimmerVariants : pulseVariants;
 
     const style: React.CSSProperties = {
       width: typeof width === "number" ? `${width}px` : width,
@@ -108,13 +112,13 @@ const SkeletonElement = memo(
         ref={ref}
         className={clsx(
           "skeleton-base",
-          animation === "none" ? "skeleton-static" : "",
+          effectiveAnimation === "none" ? "skeleton-static" : "",
           className,
         )}
         style={style}
-        initial={animation === "none" ? undefined : "initial"}
-        animate={animation === "none" ? undefined : "animate"}
-        variants={animation === "none" ? undefined : animationVariants}
+        initial={effectiveAnimation === "none" ? undefined : "initial"}
+        animate={effectiveAnimation === "none" ? undefined : "animate"}
+        variants={effectiveAnimation === "none" ? undefined : animationVariants}
         aria-hidden="true"
       />
     );
