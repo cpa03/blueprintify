@@ -8,13 +8,29 @@
 import { z } from "zod";
 import { ID_GENERATION_CONFIG } from "@blueprint/shared";
 
-const { RANDOM_STRING_START_INDEX, RANDOM_STRING_LENGTH, ALPHANUMERIC_RADIX } =
-  ID_GENERATION_CONFIG;
+const { RANDOM_STRING_LENGTH } = ID_GENERATION_CONFIG;
 
-const END_INDEX = RANDOM_STRING_START_INDEX + RANDOM_STRING_LENGTH;
+const ID_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+/**
+ * Generate a cryptographically secure random string.
+ * Uses crypto.getRandomValues() instead of Math.random() to prevent
+ * ID prediction attacks. This is a Cloudflare Workers best practice.
+ */
+function generateSecureRandomString(length: number): string {
+  const randomValues = new Uint32Array(length);
+  crypto.getRandomValues(randomValues);
+
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += ID_CHARS.charAt((randomValues[i] ?? 0) % ID_CHARS.length);
+  }
+  return result;
+}
 
 function generateId(prefix: string): string {
-  return `${prefix}_${Date.now()}_${Math.random().toString(ALPHANUMERIC_RADIX).substring(RANDOM_STRING_START_INDEX, END_INDEX)}`;
+  const randomPart = generateSecureRandomString(RANDOM_STRING_LENGTH);
+  return `${prefix}_${Date.now()}_${randomPart}`;
 }
 
 // Database schemas for type safety
