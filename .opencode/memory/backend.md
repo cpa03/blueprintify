@@ -17,6 +17,7 @@
 
 ## Lessons Learned
 
+- **2026-02-21**: Added JSDoc module documentation to `controllers/index.ts`, `routes/storage.ts`, and `routes/share.ts`. These route modules were missing module-level documentation. Following the established pattern in the codebase (see `errors.ts`, `circuitBreaker.ts`, `stream.ts`, `logger.ts`), all route and controller modules should have module-level JSDoc for maintainability.
 - **2026-02-21**: Added comprehensive test suite for `config/env.ts` module. Tests cover: loadConfig validation, default values, numeric/float parsing, config initialization, and DEFAULTS validation. This improves test coverage for the environment configuration module.
 - **2026-02-21**: Added JSDoc documentation to `di/index.ts` and main `index.ts`. The `initializeContainer` function is a public API that configures the dependency injection container, and the main entry point module documentation explains the API structure. This follows the established pattern in the codebase.
 - **2026-02-20**: Added JSDoc documentation to `types.ts`. This module defines all TypeScript types and interfaces for the API including environment bindings, context types, and validated request contexts. Proper documentation is essential for developers to understand the type system and how to use context types correctly.
