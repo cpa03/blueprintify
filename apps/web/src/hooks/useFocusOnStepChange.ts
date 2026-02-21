@@ -1,11 +1,47 @@
+/**
+ * @fileoverview Hooks for managing focus during wizard step navigation
+ *
+ * Provides accessibility-focused hooks for multi-step forms/wizards:
+ * - Automatic focus management when steps change
+ * - Screen reader announcements for step changes
+ *
+ * @module useFocusOnStepChange
+ */
+
 import { useRef, useEffect, useCallback } from "react";
 import { TIMEOUTS, FOCUSABLE_SELECTOR_STRING } from "../config/constants";
 
+/** Configuration options for step change focus behavior */
 interface UseFocusOnStepChangeOptions {
+  /** Delay before focusing element (default: TIMEOUTS.FOCUS_DELAY) */
   delay?: number;
+  /** Skip focusing on initial mount (default: true) */
   skipInitialMount?: boolean;
 }
 
+/**
+ * Hook for automatically focusing the first element when a wizard step changes
+ *
+ * Improves accessibility by ensuring keyboard users land on the first interactive
+ * element of each step. Also scrolls the element into view smoothly.
+ *
+ * @param stepId - Unique identifier for the current step (triggers focus when changed)
+ * @param options - Configuration options for focus behavior
+ * @returns Ref to attach to the step container element
+ *
+ * @example
+ * ```tsx
+ * function WizardStep({ stepId }) {
+ *   const containerRef = useFocusOnStepChange(stepId);
+ *
+ *   return (
+ *     <div ref={containerRef}>
+ *       <input type="text" placeholder="First focusable element" />
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
 export function useFocusOnStepChange(
   stepId: string,
   options: UseFocusOnStepChangeOptions = {},
@@ -57,6 +93,23 @@ export function useFocusOnStepChange(
   return containerRef;
 }
 
+/**
+ * Hook for announcing step changes to screen readers
+ *
+ * Creates a live region that announces step transitions to screen reader users.
+ * The announcement is automatically cleared after a timeout to prevent stale content.
+ *
+ * @param stepId - Unique identifier for the current step
+ * @param stepLabel - Human-readable label for the step (e.g., "Project Details")
+ *
+ * @example
+ * ```tsx
+ * function Wizard({ currentStep }) {
+ *   useStepAnnouncer(currentStep.id, currentStep.label);
+ *   // Screen reader will announce: "Now on Project Details step"
+ * }
+ * ```
+ */
 export function useStepAnnouncer(stepId: string, stepLabel: string) {
   const previousStepRef = useRef<string | null>(null);
   const liveRegionRef = useRef<HTMLDivElement | null>(null);

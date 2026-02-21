@@ -79,6 +79,11 @@ npm install
   - Interface documentation for 15+ public methods
   - Persistence layer documentation explaining schema migration
   - Performance optimization comments for debounced saves
+- [x] Add JSDoc documentation to hooks/ directory (2026-02-21)
+  - `useLastSaved.ts` - Save state tracking with relative time display
+  - `useFocusTrap.ts` - Accessible focus trap for modal dialogs
+  - `useFocusOnStepChange.ts` - Focus management for wizard navigation
+  - `useStepAnnouncer` - Screen reader announcements for step changes
 
 ### Pending
 
