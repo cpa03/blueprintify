@@ -460,6 +460,15 @@ export const ANIMATION_COLORS = {
   NEGATIVE: "#f43f5e",
 } as const;
 
+// Progress indicator colors
+// Used by CircularProgress component in StepIndicator
+export const PROGRESS_COLORS = {
+  /** Completed state - matches accent.emerald (emerald-500) */
+  COMPLETED: "#10b981",
+  /** Active/in-progress state - matches primary-500 (indigo-500) */
+  ACTIVE: "#6366f1",
+} as const;
+
 // External URLs used throughout the application
 export const EXTERNAL_URLS = {
   GITHUB: ENV.GITHUB_URL,

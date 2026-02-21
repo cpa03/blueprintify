@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useCallback, useState, memo } from "react";
 import type { WizardStep } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
-import { WIZARD_STEPS, TIMEOUTS, SPRING_CONFIG } from "../config/constants";
+import { WIZARD_STEPS, TIMEOUTS, SPRING_CONFIG, PROGRESS_COLORS } from "../config/constants";
 import { CircularProgress } from "./CircularProgress";
 import { SmartTooltip } from "./SmartTooltip";
 
@@ -81,8 +81,8 @@ function StepIndicatorComponent(): JSX.Element {
             strokeWidth={3}
             color={
               currentIndex >= STEPS.length - 1
-                ? "rgb(16, 185, 129)"
-                : "rgb(99, 102, 241)"
+                ? PROGRESS_COLORS.COMPLETED
+                : PROGRESS_COLORS.ACTIVE
             }
             ariaLabel={`Step ${currentIndex + 1} of ${STEPS.length}: ${currentStepLabel}`}
           />

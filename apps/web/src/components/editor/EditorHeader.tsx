@@ -67,7 +67,7 @@ const TabButton = React.memo(function TabButton({
 
 export type { ViewMode };
 
-function ContentStats({ content }: { content: string }) {
+const ContentStats = React.memo(function ContentStats({ content }: { content: string }) {
   if (!content) return null;
   const charCount = content.length;
   const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
@@ -84,7 +84,7 @@ function ContentStats({ content }: { content: string }) {
       </div>
     </div>
   );
-}
+});
 
 function EditorHeaderComponent({
   activeTab,
