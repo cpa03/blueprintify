@@ -469,3 +469,54 @@ export const EXTERNAL_URLS = {
 export const UI_FALLBACKS = {
   API_BASE: ENV.API_BASE_URL,
 };
+
+/**
+ * Ripple animation configuration
+ * Used by RippleButton component for click feedback animations
+ */
+export const RIPPLE_CONFIG = {
+  /** Duration in ms before ripple is removed from DOM */
+  REMOVAL_DELAY_MS: 600,
+  /** Transition duration in seconds for ripple animation */
+  TRANSITION_DURATION_S: 0.6,
+  /** Ripple element size in pixels */
+  SIZE_PX: 20,
+  /** Negative margin offset (half of size) for centering */
+  MARGIN_OFFSET_PX: -10,
+  /** Initial opacity for ripple */
+  INITIAL_OPACITY: 0.5,
+  /** Final scale value for ripple animation */
+  FINAL_SCALE: 4,
+} as const;
+
+/**
+ * Particle animation configuration
+ * Used by AnimatedCopyButton for celebration particles
+ */
+export const PARTICLE_CONFIG = {
+  /** Number of particles to create on copy */
+  COUNT: 12,
+  /** Base distance for particle movement in pixels */
+  BASE_DISTANCE_PX: 30,
+  /** Random distance variation in pixels */
+  RANDOM_DISTANCE_PX: 20,
+  /** Base particle duration in ms */
+  BASE_DURATION_MS: 400,
+  /** Random duration variation in ms */
+  RANDOM_DURATION_MS: 200,
+  /** Cleanup timeout in ms after particles are created */
+  CLEANUP_DELAY_MS: 700,
+  /** Base particle size in pixels */
+  BASE_SIZE_PX: 3,
+  /** Random size variation in pixels */
+  RANDOM_SIZE_PX: 3,
+} as const;
+
+/**
+ * Skeleton loader configuration
+ * Used during initial app load for smooth transition
+ */
+export const SKELETON_CONFIG = {
+  /** Fade out transition duration in ms */
+  FADEOUT_MS: 300,
+} as const;

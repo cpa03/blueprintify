@@ -5,6 +5,7 @@ import {
   CELEBRATION_COLORS,
   ANIMATION_COLORS,
   SPRING_CONFIG,
+  PARTICLE_CONFIG,
 } from "../config/constants";
 
 interface Particle {
@@ -42,18 +43,23 @@ export function AnimatedCopyButton({
     const rect = buttonRef.current.getBoundingClientRect();
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const particleCount = 12;
     const newParticles: Particle[] = [];
 
-    for (let i = 0; i < particleCount; i++) {
-      const angle = (i / particleCount) * Math.PI * 2;
-      const distance = 30 + Math.random() * 20;
+    for (let i = 0; i < PARTICLE_CONFIG.COUNT; i++) {
+      const angle = (i / PARTICLE_CONFIG.COUNT) * Math.PI * 2;
+      const distance =
+        PARTICLE_CONFIG.BASE_DISTANCE_PX +
+        Math.random() * PARTICLE_CONFIG.RANDOM_DISTANCE_PX;
       const color: string =
         CELEBRATION_COLORS[
           Math.floor(Math.random() * CELEBRATION_COLORS.length)
         ] ?? ANIMATION_COLORS.POSITIVE;
-      const size = 3 + Math.random() * 3;
-      const duration = 400 + Math.random() * 200;
+      const size =
+        PARTICLE_CONFIG.BASE_SIZE_PX +
+        Math.random() * PARTICLE_CONFIG.RANDOM_SIZE_PX;
+      const duration =
+        PARTICLE_CONFIG.BASE_DURATION_MS +
+        Math.random() * PARTICLE_CONFIG.RANDOM_DURATION_MS;
 
       newParticles.push({
         id: particleIdRef.current++,
@@ -71,7 +77,7 @@ export function AnimatedCopyButton({
 
     setTimeout(() => {
       setParticles([]);
-    }, 700);
+    }, PARTICLE_CONFIG.CLEANUP_DELAY_MS);
   }, []);
 
   const handleClick = useCallback(
