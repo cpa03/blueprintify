@@ -4,6 +4,10 @@ compatibility_date = "2026-02-19"
 compatibility_flags = ["nodejs_compat"]
 tsconfig = "./tsconfig.json"
 
+# Preserve environment variables during deployments
+# https://developers.cloudflare.com/workers/configuration/migrating-to-module-workers/#settings-inheritance
+keep_vars = true
+
 # Production debugging: Upload source maps for readable stack traces
 # https://developers.cloudflare.com/workers/observability/source-maps
 upload_source_maps = true
@@ -18,6 +22,7 @@ mode = "smart"
 name = "blueprint-generator-api-prod"
 workers_dev = false
 logpush = true
+minify = true
 vars = { ENVIRONMENT = "production" }
 routes = [
   { pattern = "api.blueprintify.dev/*", zone_name = "blueprintify.dev" }
@@ -27,6 +32,7 @@ routes = [
 name = "blueprint-generator-api-staging"
 workers_dev = false
 logpush = true
+minify = true
 vars = { ENVIRONMENT = "staging" }
 routes = [
   { pattern = "api-staging.blueprintify.dev/*", zone_name = "blueprintify.dev" }
