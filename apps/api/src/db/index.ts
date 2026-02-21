@@ -251,6 +251,10 @@ export interface DatabaseService {
   countPublicTemplates(): Promise<number>;
   countTemplatesByCategory(category: string): Promise<number>;
   countAnalyticsByEventType(eventType: string): Promise<number>;
+  countAnalyticsByDateRange(
+    startDate: string,
+    endDate: string,
+  ): Promise<number>;
   countAnalyticsByEventTypeAndDateRange(
     eventType: string,
     startDate: string,
@@ -734,6 +738,18 @@ export class MockDatabaseService implements DatabaseService {
     return Array.from(this.analytics.values()).filter(
       (a) => a.event_type === eventType,
     ).length;
+  }
+
+  async countAnalyticsByDateRange(
+    startDate: string,
+    endDate: string,
+  ): Promise<number> {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    return Array.from(this.analytics.values()).filter((a) => {
+      const createdAt = new Date(a.created_at);
+      return createdAt >= start && createdAt <= end;
+    }).length;
   }
 
   async countAnalyticsByEventTypeAndDateRange(
