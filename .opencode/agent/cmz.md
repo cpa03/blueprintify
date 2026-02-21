@@ -259,7 +259,7 @@ All agents MUST use:
 7. **Always maintain backward compatibility**
 8. **Always document changes**
 
-## SUCCESS CRITERIA
+# SUCCESS CRITERIA
 
 - All CI/CD pipelines passing
 - No configuration conflicts
