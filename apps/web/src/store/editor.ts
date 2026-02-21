@@ -1,3 +1,24 @@
+/**
+ * @fileoverview Editor State Management Store
+ *
+ * This store manages the editor state for the blueprint and tasks content.
+ * It provides a complete interface for content manipulation, generation tracking,
+ * and persistence through localStorage.
+ *
+ * Features:
+ * - Tab management (blueprint/tasks switching)
+ * - Content management with streaming support for AI generation
+ * - Dirty state tracking for unsaved changes
+ * - Generation progress tracking with cancellation support
+ * - Automatic persistence with debounced saves
+ * - Security validation for all content changes
+ *
+ * @module store/editor
+ * @see {@link module:store/wizard} for wizard state management
+ * @see {@link module:lib/security} for content sanitization
+ * @see {@link module:lib/storage} for persistence layer
+ */
+
 import { create } from "zustand";
 import type { EditorTab } from "@blueprint/shared";
 import { createDebouncedSaver } from "@blueprint/shared";

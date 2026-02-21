@@ -84,10 +84,17 @@ npm install
   - `useFocusTrap.ts` - Accessible focus trap for modal dialogs
   - `useFocusOnStepChange.ts` - Focus management for wizard navigation
   - `useStepAnnouncer` - Screen reader announcements for step changes
+- [x] Add JSDoc documentation to editor.ts store (2026-02-21)
+  - Module-level documentation with feature overview
+  - Documented EditorStore interface with all actions
+  - Added @see references to related modules
+- [x] Add JSDoc documentation to store/index.ts (2026-02-21)
+  - Module-level documentation for store exports
+  - Documented resetAllStores utility function with examples
 
 ### Pending
 
-- [ ] Continue adding inline code comments to other core files (editor.ts, hooks/)
+ [ ] Continue adding inline code comments to other core files (components/Editor.tsx, components/MarkdownRenderer.tsx)
 - [ ] Fix CI workflow configuration issues (Issue #483) - **BLOCKED** by GitHub App permission restrictions
 
 ## Workflow Configuration Notes
@@ -174,6 +181,6 @@ npm run build
 
 ---
 
-_Last updated: 2026-02-20_
+_Last updated: 2026-02-21_
 
 > **Note**: For comprehensive troubleshooting, see [docs/troubleshooting.md](../docs/troubleshooting.md)
