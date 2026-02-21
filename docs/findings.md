@@ -2,6 +2,25 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
+## Table of Contents
+
+- [2026-02-21: Comprehensive Reliability Audit](#reliability-2026-02-21---comprehensive-reliability-audit)
+- [2026-02-20: Rate Limiter Observability Improvement](#reliability-2026-02-20---rate-limiter-observability-improvement)
+- [2026-02-20: Typed Error Classes in MockDatabaseService](#reliability-2026-02-20---typed-error-classes-in-mockdatabaseservice)
+- [2026-02-20: Database-Architect - getTemplatesByCreator Method](#database-architect-2026-02-20---add-gettemplatesbycreator-method)
+- [2026-02-20: AI-Agent-Engineer - CMZ Agent Standardization](#ai-agent-engineer-2026-02-20---cmz-agent-standardization)
+- [2026-02-19: Security Audit Report](#security-engineer-2026-02-19---security-audit-report)
+- [2026-02-19: Database Service Test Coverage](#database-architect-2026-02-19---database-service-test-coverage--default-values-fix)
+- [2026-02-18: ErrorBoundary Implementation](#reliability-2026-02-18---errorboundary-implementation)
+- [2026-02-18: deserializeJSON Safety Fix](#reliability-2026-02-18---deserializejson-safety-fix)
+- [2026-02-18: Database-Architect Observations](#database-architect-observations-2026-02-18)
+- [2026-02-18: DevOps CI/CD Runner Version Inconsistency](#devops-2026-02-18---cicd-runner-version-inconsistency)
+- [2026-02-18: Security CI Runner Version Standardization](#security-2026-02-18---ci-runner-version-standardization)
+- [2026-02-18: Workflow Line Ending Normalization](#security-2026-02-18---workflow-line-ending-normalization)
+- [2026-02-18: Share Endpoint Validation Consistency](#security-2026-02-18---share-endpoint-validation-consistency)
+- [2026-02-18: Integration Workflow File Line Ending](#integration-2026-02-18---workflow-file-line-ending-inconsistency)
+- [2026-02-20: Logger Middleware Undefined Header Fix](#reliability-2026-02-20---logger-middleware-undefined-header-value-fix)
+
 ---
 
 ## [Reliability] 2026-02-21 - Comprehensive Reliability Audit
