@@ -22,7 +22,7 @@ const STEP_TITLES: Record<string, string> = {
   generating: "Generating...",
 };
 
-function WizardComponent() {
+function WizardComponent(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
   const isGenerating = useEditorStore((s) => s.isGenerating);
   const generationProgress = useEditorStore((s) => s.generationProgress);

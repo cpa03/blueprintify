@@ -29,7 +29,7 @@ const Editor = lazy(() =>
   ).then((module) => ({ default: module.Editor })),
 );
 
-function App() {
+function App(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
   const hasContent = useEditorStore(
     (s) => s.blueprintContent.length > 0 || s.tasksContent.length > 0,

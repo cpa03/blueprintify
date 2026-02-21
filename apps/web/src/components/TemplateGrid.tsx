@@ -4,7 +4,7 @@ import { STARTER_TEMPLATES } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { ANIMATION } from "../config/constants";
 
-function TemplateGridComponent() {
+function TemplateGridComponent(): JSX.Element {
   const loadTemplate = useWizardStore((s) => s.loadTemplate);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);

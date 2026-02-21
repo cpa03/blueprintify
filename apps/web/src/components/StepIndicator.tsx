@@ -13,7 +13,7 @@ const STEPS: {
   shortcut: string;
 }[] = [...WIZARD_STEPS];
 
-function StepIndicatorComponent() {
+function StepIndicatorComponent(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
   const setStep = useWizardStore((s) => s.setStep);
   const [shakingStep, setShakingStep] = useState<string | null>(null);
