@@ -13,7 +13,7 @@ import {
   SSE_CONFIG as SHARED_SSE_CONFIG,
   SSE_HEADERS as SHARED_SSE_HEADERS,
 } from "@blueprint/shared";
-import type { EnvConfig } from "./env";
+import type { EnvConfig } from "./types";
 
 let envConfig: EnvConfig | null = null;
 
