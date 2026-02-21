@@ -1,3 +1,13 @@
+/**
+ * Import Routes
+ *
+ * API endpoints for importing project data from various formats.
+ * Supports JSON and Markdown imports with validation and
+ * conflict resolution for data portability.
+ *
+ * @module routes/import
+ */
+
 import { Hono } from "hono";
 import { ImportRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
