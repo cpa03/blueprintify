@@ -99,6 +99,7 @@ export async function withTimeout<T>(
  * Creates a timeout wrapper with pre-configured options.
  * Useful for creating consistent timeout behavior across multiple operations.
  *
+ * @typeParam T - The return type of the wrapped operation
  * @param defaultOptions - Default timeout options to use
  * @returns A function that wraps operations with the configured timeout
  *
@@ -106,18 +107,14 @@ export async function withTimeout<T>(
  * ```typescript
  * const withApiTimeout = createTimeoutWrapper({ timeoutMs: 5000 });
  *
- * // All operations will use 5s timeout
- * const result = await withApiTimeout(() => fetchData());
+ * // All operations will use 5s timeout with preserved type inference
+ * const result = await withApiTimeout(() => fetchData()); // result is typed
  * ```
  */
-export function createTimeoutWrapper(
+export function createTimeoutWrapper<T = unknown>(
   defaultOptions: Omit<TimeoutOptions, "timeoutMs"> & { timeoutMs: number },
-): (operation: (signal?: AbortSignal) => Promise<unknown>) => Promise<unknown> {
-  return (operation) =>
-    withTimeout(
-      operation as (signal?: AbortSignal) => Promise<unknown>,
-      defaultOptions,
-    );
+): (operation: (signal?: AbortSignal) => Promise<T>) => Promise<T> {
+  return (operation) => withTimeout(operation, defaultOptions);
 }
 
 /**
