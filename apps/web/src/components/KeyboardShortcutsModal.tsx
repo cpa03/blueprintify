@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect, useCallback, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { KEYBOARD_SHORTCUTS, WIZARD_STEPS } from "../config/constants";
 import { useFocusTrap } from "../hooks";
@@ -58,7 +58,7 @@ const categoryIcons: Record<string, string> = {
   generation: "⚡",
 };
 
-export function KeyboardShortcutsModal({
+function KeyboardShortcutsModalComponent({
   isOpen,
   onClose,
 }: KeyboardShortcutsModalProps) {
@@ -259,5 +259,7 @@ export function KeyboardShortcutsModal({
     </AnimatePresence>
   );
 }
+
+export const KeyboardShortcutsModal = memo(KeyboardShortcutsModalComponent);
 
 export default KeyboardShortcutsModal;
