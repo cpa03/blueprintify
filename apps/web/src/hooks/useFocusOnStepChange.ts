@@ -110,7 +110,7 @@ export function useFocusOnStepChange(
  * }
  * ```
  */
-export function useStepAnnouncer(stepId: string, stepLabel: string) {
+export function useStepAnnouncer(stepId: string, stepLabel: string): void {
   const previousStepRef = useRef<string | null>(null);
   const liveRegionRef = useRef<HTMLDivElement | null>(null);
 
