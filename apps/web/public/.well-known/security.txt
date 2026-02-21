@@ -1,0 +1,21 @@
+# Security Policy for Blueprintify
+# https://securitytxt.org/
+# RFC 9116 compliant
+
+# Contact: Preferred contact method for security issues
+Contact: security@blueprintify.dev
+
+# Expires: Date when this file should be considered stale
+Expires: 2027-02-20T23:59:00.000Z
+
+# Preferred-Languages: Languages for security reports
+Preferred-Languages: en
+
+# Canonical: Canonical URI for this file
+Canonical: https://blueprintify.dev/.well-known/security.txt
+
+# Policy: Link to security policy
+Policy: https://github.com/cpa03/blueprintify/blob/main/SECURITY.md
+
+# Hiring: Link to security-related job positions (if any)
+# Hiring: https://blueprintify.dev/careers
