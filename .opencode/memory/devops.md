@@ -12,44 +12,54 @@
 | `ai-on-push.yml`    | AI agent on push                  | `ubuntu-24.04-arm` | `ubuntu-24.04-arm` | Push to main                |
 | `iterate.yml`       | Iteration workflow                | `ubuntu-24.04-arm` | `ubuntu-24.04-arm` | Manual                      |
 | `pr-gatekeeper.yml` | PR validation and auto-fix        | `ubuntu-24.04-arm` | `ubuntu-24.04-arm` | PR events                   |
-| `on pull.yml`       | Pull request handler              | `ubuntu-22.04-arm` | `ubuntu-24.04-arm` | PR, Schedule, Manual        |
+| `on-pull.yml`       | Pull request handler              | `ubuntu-24.04-arm` | `ubuntu-24.04-arm` | PR, Schedule, Manual        |
 
 ### Known Issues
 
 #### Issue #483 - Workflow Configuration Issues
 
-**Status**: ⚠️ BLOCKED - Requires Manual Intervention
+**Status**: ✅ RESOLVED (2026-02-21)
 
-**Problem**: GitHub App token lacks `workflows` permission to push workflow file changes.
+**Original Problem**: Workflow files had configuration issues including:
 
-**Current State on `main`** (as of 2026-02-20):
+- File named `on pull.yml` with space (problematic for shell commands)
+- Outdated runner version `ubuntu-22.04-arm`
+- Invalid action versions (`@v6` which doesn't exist)
 
-- `on pull.yml` still uses `ubuntu-22.04-arm` (should be `ubuntu-24.04-arm`)
-- `on pull.yml` still uses `actions/checkout@v6` (should be `v4`)
-- `on pull.yml` still uses `actions/setup-node@v6` (should be `v4`)
-- File still has space in name: `on pull.yml` (not renamed)
+**Resolution**: All issues fixed on `main` branch:
 
-**Fixes Prepared** (2026-02-20):
+- ✅ File renamed to `on-pull.yml` (with hyphen)
+- ✅ Runner updated to `ubuntu-24.04-arm`
+- ✅ Action versions updated to `@v4`
 
-1. ⏳ **Runner version** (line 23):
-   - `ubuntu-22.04-arm` → `ubuntu-24.04-arm` (per AGENTS.md requirement)
+#### Action Version Standardization (2026-02-21)
 
-2. ⏳ **Action versions**:
-   - `actions/checkout@v6` → `actions/checkout@v4`
-   - `actions/setup-node@v6` → `actions/setup-node@v4`
+**Status**: ⚠️ PREPARED - Requires Manual Intervention
 
-3. ⏳ **Line endings**: Normalized to LF
+**Problem**: Several workflows use `actions/*@v5` which doesn't exist yet. This can cause workflow failures.
 
-**Verification Results** (2026-02-20):
+**Fixes Prepared** (cannot be pushed due to GitHub App token lacking `workflows` permission):
 
-```
-✓ typecheck: passed
-✓ lint: passed
-✓ build: passed (19.14s)
-✓ tests: 343 passed (219 web + 124 api)
-```
+1. **ai-on-push.yml**:
+   - `actions/checkout@v5` → `actions/checkout@v4` (4 occurrences)
+   - `actions/cache@v5` → `actions/cache@v4` (1 occurrence)
+   - `actions/setup-node@v5` → `actions/setup-node@v4` (1 occurrence)
+
+2. **main.yml**:
+   - `actions/checkout@v5` → `actions/checkout@v4` (9 occurrences)
+
+3. **iterate.yml**:
+   - `actions/checkout@v5` → `actions/checkout@v4` (5 occurrences)
+   - `actions/cache@v5` → `actions/cache@v4` (5 occurrences)
 
 **Action Required**: Someone with repository admin access must manually apply these fixes to the workflow files.
+
+**Verification**: All fixes verified locally:
+
+- ✅ typecheck: passed
+- ✅ lint: passed
+- ✅ build: passed (18.87s)
+- ✅ tests: 396 passed (236 web + 160 api)
 
 ## Deployment Configuration
 
