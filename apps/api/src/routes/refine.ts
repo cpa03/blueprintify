@@ -1,3 +1,13 @@
+/**
+ * Refine Routes
+ *
+ * API endpoint for refining specific sections of generated content.
+ * Delegates to RefineController for AI-assisted content enhancement
+ * with SSE streaming for incremental response delivery.
+ *
+ * @module routes/refine
+ */
+
 import { Hono } from "hono";
 import { RefineRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
