@@ -1,3 +1,13 @@
+/**
+ * Share Routes
+ *
+ * API endpoints for sharing blueprints via unique links with expiration.
+ * Supports creating, retrieving, and deleting shared blueprints with
+ * cryptographic ID generation and database persistence.
+ *
+ * @module routes/share
+ */
+
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";

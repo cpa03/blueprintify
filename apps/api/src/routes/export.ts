@@ -1,3 +1,13 @@
+/**
+ * Export Routes
+ *
+ * API endpoints for exporting project data in various formats.
+ * Supports JSON, Markdown, and ZIP manifest exports with
+ * structured response formats for client-side processing.
+ *
+ * @module routes/export
+ */
+
 import { Hono } from "hono";
 import { ExportRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";

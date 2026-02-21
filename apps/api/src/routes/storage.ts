@@ -1,3 +1,12 @@
+/**
+ * Storage Routes
+ *
+ * API endpoints for storage quota management and data clearing operations.
+ * Provides server-side storage tracking and coordination for client-side localStorage.
+ *
+ * @module routes/storage
+ */
+
 import { Hono } from "hono";
 import { StorageClearRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
