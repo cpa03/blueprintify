@@ -1071,6 +1071,34 @@ describe("MockDatabaseService", () => {
       });
     });
 
+    describe("countAnalyticsByDateRange", () => {
+      it("should count analytics by date range", async () => {
+        const now = new Date();
+        const oneHourAgo = new Date(now.getTime() - 3600000);
+
+        await db.trackEvent({ event_type: "blueprint_generated" });
+        await db.trackEvent({ event_type: "task_generated" });
+        await db.trackEvent({ event_type: "export" });
+
+        const count = await db.countAnalyticsByDateRange(
+          oneHourAgo.toISOString(),
+          now.toISOString(),
+        );
+        expect(count).toBe(3);
+      });
+
+      it("should return 0 for date range with no events", async () => {
+        const pastDate = new Date(Date.now() - 86400000);
+        const olderDate = new Date(Date.now() - 172800000);
+
+        const count = await db.countAnalyticsByDateRange(
+          olderDate.toISOString(),
+          pastDate.toISOString(),
+        );
+        expect(count).toBe(0);
+      });
+    });
+
     describe("countAnalyticsByEventTypeAndDateRange", () => {
       it("should count analytics by event type and date range", async () => {
         const now = new Date();

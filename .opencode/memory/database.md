@@ -2,7 +2,7 @@
 
 ## Schema Version
 
-- Current Version: 1.3.3
+- Current Version: 1.3.4
 - Last Updated: 2026-02-21
 - Schema File: `schema.sql`
 
@@ -28,6 +28,7 @@ Efficient counting methods for dashboard stats and pagination without fetching f
 | `countPublicTemplates()`                                       | Count all public templates                   |
 | `countTemplatesByCategory(category)`                           | Count templates by category                  |
 | `countAnalyticsByEventType(eventType)`                         | Count analytics events by type               |
+| `countAnalyticsByDateRange(startDate, endDate)`                | Count all events within date range           |
 | `countAnalyticsByEventTypeAndDateRange(eventType, start, end)` | Count events by type and date range          |
 | `countActiveSessionsForUser(userId)`                           | Count active (non-expired) sessions for user |
 
