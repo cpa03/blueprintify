@@ -177,6 +177,7 @@ export interface DatabaseService {
   getPublicTemplates(): Promise<Template[]>;
   getTemplatesByCategory(category: string): Promise<Template[]>;
   getTemplatesByCreator(userId: string): Promise<Template[]>;
+  getPopularTemplates(limit?: number): Promise<Template[]>;
   updateTemplate(id: string, updates: Partial<Template>): Promise<Template>;
   deleteTemplate(id: string): Promise<void>;
   incrementTemplateUsage(id: string): Promise<void>;
@@ -191,6 +192,15 @@ export interface DatabaseService {
   }): Promise<void>;
   getAnalyticsByUserId(userId: string): Promise<Analytics[]>;
   getAnalyticsByEventType(eventType: string): Promise<Analytics[]>;
+  getAnalyticsByDateRange(
+    startDate: string,
+    endDate: string,
+  ): Promise<Analytics[]>;
+  getAnalyticsByEventTypeAndDateRange(
+    eventType: string,
+    startDate: string,
+    endDate: string,
+  ): Promise<Analytics[]>;
 
   // Session operations
   createSession(
@@ -198,6 +208,7 @@ export interface DatabaseService {
   ): Promise<Session>;
   getSessionById(id: string): Promise<Session | null>;
   getSessionsByUserId(userId: string): Promise<Session[]>;
+  getActiveSessionsForUser(userId: string): Promise<Session[]>;
   deleteSession(id: string): Promise<void>;
   deleteExpiredSessions(): Promise<number>;
 
@@ -208,6 +219,28 @@ export interface DatabaseService {
   getBlueprintShareById(id: string): Promise<BlueprintShare | null>;
   deleteBlueprintShare(id: string): Promise<void>;
   deleteExpiredBlueprintShares(): Promise<number>;
+
+  // Cleanup operations
+  cleanupExpiredData(): Promise<{ sessions: number; shares: number }>;
+
+  // Count operations (v1.3.3 - efficient counting without fetching records)
+  countProjectsByUserId(userId: string): Promise<number>;
+  countProjectsByUserIdAndStatus(
+    userId: string,
+    status: Project["status"],
+  ): Promise<number>;
+  countBlueprintsByProjectId(projectId: string): Promise<number>;
+  countTasksByBlueprintId(blueprintId: string): Promise<number>;
+  countTemplatesByCreator(userId: string): Promise<number>;
+  countPublicTemplates(): Promise<number>;
+  countTemplatesByCategory(category: string): Promise<number>;
+  countAnalyticsByEventType(eventType: string): Promise<number>;
+  countAnalyticsByEventTypeAndDateRange(
+    eventType: string,
+    startDate: string,
+    endDate: string,
+  ): Promise<number>;
+  countActiveSessionsForUser(userId: string): Promise<number>;
 
   // Health check
   healthCheck(): Promise<boolean>;
@@ -451,6 +484,13 @@ export class MockDatabaseService implements DatabaseService {
     );
   }
 
+  async getPopularTemplates(limit: number = 10): Promise<Template[]> {
+    return Array.from(this.templates.values())
+      .filter((t) => t.is_public)
+      .sort((a, b) => b.usage_count - a.usage_count)
+      .slice(0, limit);
+  }
+
   async updateTemplate(
     id: string,
     updates: Partial<Template>,
@@ -509,6 +549,33 @@ export class MockDatabaseService implements DatabaseService {
     );
   }
 
+  async getAnalyticsByDateRange(
+    startDate: string,
+    endDate: string,
+  ): Promise<Analytics[]> {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    return Array.from(this.analytics.values()).filter((a) => {
+      const createdAt = new Date(a.created_at);
+      return createdAt >= start && createdAt <= end;
+    });
+  }
+
+  async getAnalyticsByEventTypeAndDateRange(
+    eventType: string,
+    startDate: string,
+    endDate: string,
+  ): Promise<Analytics[]> {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    return Array.from(this.analytics.values()).filter((a) => {
+      const createdAt = new Date(a.created_at);
+      return (
+        a.event_type === eventType && createdAt >= start && createdAt <= end
+      );
+    });
+  }
+
   async createSession(
     session: Omit<Session, "id" | "created_at" | "updated_at">,
   ): Promise<Session> {
@@ -531,6 +598,13 @@ export class MockDatabaseService implements DatabaseService {
   async getSessionsByUserId(userId: string): Promise<Session[]> {
     return Array.from(this.sessions.values()).filter(
       (s) => s.user_id === userId,
+    );
+  }
+
+  async getActiveSessionsForUser(userId: string): Promise<Session[]> {
+    const now = new Date();
+    return Array.from(this.sessions.values()).filter(
+      (s) => s.user_id === userId && new Date(s.expires_at) > now,
     );
   }
 
@@ -586,8 +660,86 @@ export class MockDatabaseService implements DatabaseService {
     return deleted;
   }
 
+  async cleanupExpiredData(): Promise<{ sessions: number; shares: number }> {
+    const sessions = await this.deleteExpiredSessions();
+    const shares = await this.deleteExpiredBlueprintShares();
+    return { sessions, shares };
+  }
+
   async healthCheck(): Promise<boolean> {
     return true;
+  }
+
+  async countProjectsByUserId(userId: string): Promise<number> {
+    return Array.from(this.projects.values()).filter(
+      (p) => p.user_id === userId,
+    ).length;
+  }
+
+  async countProjectsByUserIdAndStatus(
+    userId: string,
+    status: string,
+  ): Promise<number> {
+    return Array.from(this.projects.values()).filter(
+      (p) => p.user_id === userId && p.status === status,
+    ).length;
+  }
+
+  async countBlueprintsByProjectId(projectId: string): Promise<number> {
+    return Array.from(this.blueprints.values()).filter(
+      (b) => b.project_id === projectId,
+    ).length;
+  }
+
+  async countTasksByBlueprintId(blueprintId: string): Promise<number> {
+    return Array.from(this.tasks.values()).filter(
+      (t) => t.blueprint_id === blueprintId,
+    ).length;
+  }
+
+  async countTemplatesByCreator(userId: string): Promise<number> {
+    return Array.from(this.templates.values()).filter(
+      (t) => t.created_by === userId,
+    ).length;
+  }
+
+  async countPublicTemplates(): Promise<number> {
+    return Array.from(this.templates.values()).filter((t) => t.is_public)
+      .length;
+  }
+
+  async countTemplatesByCategory(category: string): Promise<number> {
+    return Array.from(this.templates.values()).filter(
+      (t) => t.category === category,
+    ).length;
+  }
+
+  async countAnalyticsByEventType(eventType: string): Promise<number> {
+    return Array.from(this.analytics.values()).filter(
+      (a) => a.event_type === eventType,
+    ).length;
+  }
+
+  async countAnalyticsByEventTypeAndDateRange(
+    eventType: string,
+    startDate: string,
+    endDate: string,
+  ): Promise<number> {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    return Array.from(this.analytics.values()).filter((a) => {
+      const createdAt = new Date(a.created_at);
+      return (
+        a.event_type === eventType && createdAt >= start && createdAt <= end
+      );
+    }).length;
+  }
+
+  async countActiveSessionsForUser(userId: string): Promise<number> {
+    const now = new Date();
+    return Array.from(this.sessions.values()).filter(
+      (s) => s.user_id === userId && new Date(s.expires_at) > now,
+    ).length;
   }
 }
 

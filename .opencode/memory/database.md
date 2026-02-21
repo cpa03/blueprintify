@@ -2,8 +2,8 @@
 
 ## Schema Version
 
-- Current Version: 1.3.2
-- Last Updated: 2026-02-20
+- Current Version: 1.3.3
+- Last Updated: 2026-02-21
 - Schema File: `schema.sql`
 
 ## Database Service Layer
@@ -12,7 +12,24 @@
 - Mock Implementation: `MockDatabaseService` for development
 - Production: D1 bindings configured in `apps/api/src/types.ts`
 - All tables have corresponding Zod schemas and TypeScript types
-- **Test Coverage**: `apps/api/src/db/index.test.ts` - 45 comprehensive tests covering all CRUD operations
+- **Test Coverage**: `apps/api/src/db/index.test.ts` - 57 comprehensive tests covering all CRUD operations
+
+## Count Operations (v1.3.3)
+
+Efficient counting methods for dashboard stats and pagination without fetching full records:
+
+| Method                                                         | Description                                  |
+| -------------------------------------------------------------- | -------------------------------------------- |
+| `countProjectsByUserId(userId)`                                | Count all projects for a user                |
+| `countProjectsByUserIdAndStatus(userId, status)`               | Count projects by user and status            |
+| `countBlueprintsByProjectId(projectId)`                        | Count blueprints for a project               |
+| `countTasksByBlueprintId(blueprintId)`                         | Count tasks for a blueprint                  |
+| `countTemplatesByCreator(userId)`                              | Count templates created by user              |
+| `countPublicTemplates()`                                       | Count all public templates                   |
+| `countTemplatesByCategory(category)`                           | Count templates by category                  |
+| `countAnalyticsByEventType(eventType)`                         | Count analytics events by type               |
+| `countAnalyticsByEventTypeAndDateRange(eventType, start, end)` | Count events by type and date range          |
+| `countActiveSessionsForUser(userId)`                           | Count active (non-expired) sessions for user |
 
 ## Available Methods
 
@@ -23,9 +40,33 @@
 - `getPublicTemplates()` - Get all public templates
 - `getTemplatesByCategory(category)` - Get templates by category
 - `getTemplatesByCreator(userId)` - Get templates created by a specific user (v1.3.2)
+- `getPopularTemplates(limit?)` - Get popular templates sorted by usage count (v1.3.3)
 - `updateTemplate(id, updates)` - Update template
 - `deleteTemplate(id)` - Delete template
 - `incrementTemplateUsage(id)` - Increment usage count
+
+### Session Operations
+
+- `createSession(session)` - Create a new session
+- `getSessionById(id)` - Get session by ID
+- `getSessionsByUserId(userId)` - Get all sessions for a user
+- `getActiveSessionsForUser(userId)` - Get active (non-expired) sessions for a user (v1.3.3)
+- `deleteSession(id)` - Delete session
+- `deleteExpiredSessions()` - Delete all expired sessions
+
+### Analytics Operations
+
+- `trackEvent(event)` - Track an analytics event
+- `getAnalyticsByUserId(userId)` - Get analytics by user ID
+- `getAnalyticsByEventType(eventType)` - Get analytics by event type
+- `getAnalyticsByDateRange(startDate, endDate)` - Get analytics within date range (v1.3.3)
+- `getAnalyticsByEventTypeAndDateRange(eventType, startDate, endDate)` - Get analytics by event type and date range (v1.3.3)
+
+### Cleanup Operations
+
+- `deleteExpiredSessions()` - Delete expired sessions
+- `deleteExpiredBlueprintShares()` - Delete expired blueprint shares
+- `cleanupExpiredData()` - Convenience method to cleanup all expired data (v1.3.3)
 
 ## Default Values (v1.3.1)
 
