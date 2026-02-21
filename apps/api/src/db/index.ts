@@ -1,8 +1,36 @@
 /**
- * Database Service for Cloudflare D1
+ * @fileoverview Database Service for Cloudflare D1
  *
  * Provides data access layer for the Blueprintify application.
  * Handles all database operations with proper error handling and type safety.
+ *
+ * @module db
+ * @description Core database service module providing:
+ * - User management (CRUD operations)
+ * - Project management with status tracking
+ * - Blueprint versioning and content storage
+ * - Task generation and management
+ * - Template system with usage tracking
+ * - Session management with expiration
+ * - Analytics event tracking
+ * - Blueprint sharing with expiration
+ *
+ * @example
+ * // Get database service instance
+ * const db = getDatabaseService();
+ *
+ * // Create a user
+ * const user = await db.createUser({
+ *   email: 'user@example.com',
+ *   name: 'John Doe'
+ * });
+ *
+ * // Create a project
+ * const project = await db.createProject({
+ *   user_id: user.id,
+ *   name: 'My Project',
+ *   status: 'active'
+ * });
  */
 
 import { z } from "zod";
@@ -135,70 +163,260 @@ export type Session = z.infer<typeof SessionSchema>;
 export type Analytics = z.infer<typeof AnalyticsSchema>;
 export type BlueprintShare = z.infer<typeof BlueprintShareSchema>;
 
+/**
+ * Database service interface defining all data access operations.
+ *
+ * Provides type-safe CRUD operations for all entities in the Blueprintify application.
+ * Implementations must handle proper error handling and maintain data integrity.
+ */
 export interface DatabaseService {
-  // User operations
+  /**
+   * Creates a new user with auto-generated ID and timestamps.
+   * @param user - User data without id, created_at, and updated_at
+   * @returns Created user with generated ID and timestamps
+   */
   createUser(
     user: Omit<User, "id" | "created_at" | "updated_at">,
   ): Promise<User>;
+
+  /**
+   * Retrieves a user by their unique identifier.
+   * @param id - User's unique identifier
+   * @returns User object or null if not found
+   */
   getUserById(id: string): Promise<User | null>;
+
+  /**
+   * Retrieves a user by their email address.
+   * @param email - User's email address
+   * @returns User object or null if not found
+   */
   getUserByEmail(email: string): Promise<User | null>;
+
+  /**
+   * Updates an existing user's data.
+   * @param id - User's unique identifier
+   * @param updates - Partial user data to update
+   * @returns Updated user object
+   * @throws {NotFoundError} When user does not exist
+   */
   updateUser(id: string, updates: Partial<User>): Promise<User>;
+
+  /**
+   * Deletes a user by their unique identifier.
+   * @param id - User's unique identifier
+   */
   deleteUser(id: string): Promise<void>;
 
-  // Project operations
+  /**
+   * Creates a new project with auto-generated ID and timestamps.
+   * @param project - Project data without id, created_at, and updated_at
+   * @returns Created project with generated ID and timestamps
+   */
   createProject(
     project: Omit<Project, "id" | "created_at" | "updated_at">,
   ): Promise<Project>;
+
+  /**
+   * Retrieves a project by its unique identifier.
+   * @param id - Project's unique identifier
+   * @returns Project object or null if not found
+   */
   getProjectById(id: string): Promise<Project | null>;
+
+  /**
+   * Retrieves all projects for a specific user.
+   * @param userId - User's unique identifier
+   * @returns Array of projects belonging to the user
+   */
   getProjectsByUserId(userId: string): Promise<Project[]>;
+
+  /**
+   * Retrieves projects for a user filtered by status.
+   * @param userId - User's unique identifier
+   * @param status - Project status to filter by ('active', 'archived', 'deleted')
+   * @returns Array of projects matching the status
+   */
   getProjectsByUserIdAndStatus(
     userId: string,
     status: Project["status"],
   ): Promise<Project[]>;
+
+  /**
+   * Updates an existing project's data.
+   * @param id - Project's unique identifier
+   * @param updates - Partial project data to update
+   * @returns Updated project object
+   * @throws {NotFoundError} When project does not exist
+   */
   updateProject(id: string, updates: Partial<Project>): Promise<Project>;
+
+  /**
+   * Deletes a project by its unique identifier.
+   * @param id - Project's unique identifier
+   */
   deleteProject(id: string): Promise<void>;
 
-  // Blueprint operations
+  /**
+   * Creates a new blueprint with auto-generated ID and timestamps.
+   * @param blueprint - Blueprint data with optional version (defaults to 1)
+   * @returns Created blueprint with generated ID and timestamps
+   */
   createBlueprint(
     blueprint: Omit<
       Blueprint,
       "id" | "created_at" | "updated_at" | "version"
     > & { version?: number },
   ): Promise<Blueprint>;
+
+  /**
+   * Retrieves a blueprint by its unique identifier.
+   * @param id - Blueprint's unique identifier
+   * @returns Blueprint object or null if not found
+   */
   getBlueprintById(id: string): Promise<Blueprint | null>;
+
+  /**
+   * Retrieves all blueprints for a specific project.
+   * @param projectId - Project's unique identifier
+   * @returns Array of blueprints belonging to the project
+   */
   getBlueprintsByProjectId(projectId: string): Promise<Blueprint[]>;
+
+  /**
+   * Retrieves the latest blueprint version for a project.
+   * @param projectId - Project's unique identifier
+   * @returns Latest blueprint or null if no blueprints exist
+   */
   getLatestBlueprintByProjectId(projectId: string): Promise<Blueprint | null>;
+
+  /**
+   * Updates an existing blueprint's data.
+   * @param id - Blueprint's unique identifier
+   * @param updates - Partial blueprint data to update
+   * @returns Updated blueprint object
+   * @throws {NotFoundError} When blueprint does not exist
+   */
   updateBlueprint(id: string, updates: Partial<Blueprint>): Promise<Blueprint>;
+
+  /**
+   * Deletes a blueprint by its unique identifier.
+   * @param id - Blueprint's unique identifier
+   */
   deleteBlueprint(id: string): Promise<void>;
 
-  // Task operations
+  /**
+   * Creates a new task with auto-generated ID and timestamps.
+   * @param task - Task data with optional version (defaults to 1)
+   * @returns Created task with generated ID and timestamps
+   */
   createTask(
     task: Omit<Task, "id" | "created_at" | "updated_at" | "version"> & {
       version?: number;
     },
   ): Promise<Task>;
+
+  /**
+   * Retrieves a task by its unique identifier.
+   * @param id - Task's unique identifier
+   * @returns Task object or null if not found
+   */
   getTaskById(id: string): Promise<Task | null>;
+
+  /**
+   * Retrieves all tasks for a specific blueprint.
+   * @param blueprintId - Blueprint's unique identifier
+   * @returns Array of tasks belonging to the blueprint
+   */
   getTasksByBlueprintId(blueprintId: string): Promise<Task[]>;
+
+  /**
+   * Updates an existing task's data.
+   * @param id - Task's unique identifier
+   * @param updates - Partial task data to update
+   * @returns Updated task object
+   * @throws {NotFoundError} When task does not exist
+   */
   updateTask(id: string, updates: Partial<Task>): Promise<Task>;
+
+  /**
+   * Deletes a task by its unique identifier.
+   * @param id - Task's unique identifier
+   */
   deleteTask(id: string): Promise<void>;
 
-  // Template operations
+  /**
+   * Creates a new template with auto-generated ID and timestamps.
+   * @param template - Template data with optional usage_count (defaults to 0)
+   * @returns Created template with generated ID and timestamps
+   */
   createTemplate(
     template: Omit<
       Template,
       "id" | "created_at" | "updated_at" | "usage_count"
     > & { usage_count?: number },
   ): Promise<Template>;
+
+  /**
+   * Retrieves a template by its unique identifier.
+   * @param id - Template's unique identifier
+   * @returns Template object or null if not found
+   */
   getTemplateById(id: string): Promise<Template | null>;
+
+  /**
+   * Retrieves all public templates.
+   * @returns Array of public templates
+   */
   getPublicTemplates(): Promise<Template[]>;
+
+  /**
+   * Retrieves templates filtered by category.
+   * @param category - Template category ('frontend', 'backend', 'fullstack', 'general')
+   * @returns Array of templates in the category
+   */
   getTemplatesByCategory(category: string): Promise<Template[]>;
+
+  /**
+   * Retrieves templates created by a specific user.
+   * @param userId - Creator's unique identifier
+   * @returns Array of templates created by the user
+   */
   getTemplatesByCreator(userId: string): Promise<Template[]>;
+
+  /**
+   * Retrieves popular public templates sorted by usage count.
+   * @param limit - Maximum number of templates to return (default: 10)
+   * @returns Array of popular templates sorted by usage count descending
+   */
   getPopularTemplates(limit?: number): Promise<Template[]>;
+
+  /**
+   * Updates an existing template's data.
+   * @param id - Template's unique identifier
+   * @param updates - Partial template data to update
+   * @returns Updated template object
+   * @throws {NotFoundError} When template does not exist
+   */
   updateTemplate(id: string, updates: Partial<Template>): Promise<Template>;
+
+  /**
+   * Deletes a template by its unique identifier.
+   * @param id - Template's unique identifier
+   */
   deleteTemplate(id: string): Promise<void>;
+
+  /**
+   * Increments the usage count for a template.
+   * @param id - Template's unique identifier
+   * @throws {NotFoundError} When template does not exist
+   */
   incrementTemplateUsage(id: string): Promise<void>;
 
-  // Analytics operations
+  /**
+   * Tracks an analytics event.
+   * @param event - Event data including type, optional user_id, and metadata
+   */
   trackEvent(event: {
     user_id?: string;
     event_type: string;
@@ -206,63 +424,215 @@ export interface DatabaseService {
     ip_address?: string;
     user_agent?: string;
   }): Promise<void>;
+
+  /**
+   * Retrieves analytics events for a specific user.
+   * @param userId - User's unique identifier
+   * @returns Array of analytics events for the user
+   */
   getAnalyticsByUserId(userId: string): Promise<Analytics[]>;
+
+  /**
+   * Retrieves analytics events filtered by event type.
+   * @param eventType - Event type to filter by
+   * @returns Array of analytics events matching the type
+   */
   getAnalyticsByEventType(eventType: string): Promise<Analytics[]>;
+
+  /**
+   * Retrieves analytics events within a date range.
+   * @param startDate - Start of date range (ISO string)
+   * @param endDate - End of date range (ISO string)
+   * @returns Array of analytics events within the date range
+   */
   getAnalyticsByDateRange(
     startDate: string,
     endDate: string,
   ): Promise<Analytics[]>;
+
+  /**
+   * Retrieves analytics events filtered by type and date range.
+   * @param eventType - Event type to filter by
+   * @param startDate - Start of date range (ISO string)
+   * @param endDate - End of date range (ISO string)
+   * @returns Array of analytics events matching criteria
+   */
   getAnalyticsByEventTypeAndDateRange(
     eventType: string,
     startDate: string,
     endDate: string,
   ): Promise<Analytics[]>;
 
-  // Session operations
+  /**
+   * Creates a new session with auto-generated ID and timestamps.
+   * @param session - Session data including user_id and expiration
+   * @returns Created session with generated ID and timestamps
+   */
   createSession(
     session: Omit<Session, "id" | "created_at" | "updated_at">,
   ): Promise<Session>;
+
+  /**
+   * Retrieves a session by its unique identifier.
+   * @param id - Session's unique identifier
+   * @returns Session object or null if not found
+   */
   getSessionById(id: string): Promise<Session | null>;
+
+  /**
+   * Retrieves all sessions for a specific user.
+   * @param userId - User's unique identifier
+   * @returns Array of sessions belonging to the user
+   */
   getSessionsByUserId(userId: string): Promise<Session[]>;
+
+  /**
+   * Retrieves active (non-expired) sessions for a user.
+   * @param userId - User's unique identifier
+   * @returns Array of active sessions
+   */
   getActiveSessionsForUser(userId: string): Promise<Session[]>;
+
+  /**
+   * Deletes a session by its unique identifier.
+   * @param id - Session's unique identifier
+   */
   deleteSession(id: string): Promise<void>;
+
+  /**
+   * Deletes all expired sessions.
+   * @returns Number of sessions deleted
+   */
   deleteExpiredSessions(): Promise<number>;
 
-  // BlueprintShare operations
+  /**
+   * Creates a new blueprint share.
+   * @param share - Share data including blueprint content and optional expiration
+   * @returns Created share with generated timestamp
+   */
   createBlueprintShare(
     share: Omit<BlueprintShare, "created_at">,
   ): Promise<BlueprintShare>;
+
+  /**
+   * Retrieves a blueprint share by its unique identifier.
+   * @param id - Share's unique identifier
+   * @returns Share object or null if not found or expired
+   */
   getBlueprintShareById(id: string): Promise<BlueprintShare | null>;
+
+  /**
+   * Deletes a blueprint share by its unique identifier.
+   * @param id - Share's unique identifier
+   */
   deleteBlueprintShare(id: string): Promise<void>;
+
+  /**
+   * Deletes all expired blueprint shares.
+   * @returns Number of shares deleted
+   */
   deleteExpiredBlueprintShares(): Promise<number>;
 
-  // Cleanup operations
+  /**
+   * Cleans up all expired data (sessions and shares).
+   * @returns Object containing counts of deleted items
+   */
   cleanupExpiredData(): Promise<{ sessions: number; shares: number }>;
 
-  // Count operations (v1.3.3 - efficient counting without fetching records)
+  /**
+   * Counts projects for a user without fetching records.
+   * @param userId - User's unique identifier
+   * @returns Number of projects
+   */
   countProjectsByUserId(userId: string): Promise<number>;
+
+  /**
+   * Counts projects for a user filtered by status.
+   * @param userId - User's unique identifier
+   * @param status - Project status to filter by
+   * @returns Number of projects matching the status
+   */
   countProjectsByUserIdAndStatus(
     userId: string,
     status: Project["status"],
   ): Promise<number>;
+
+  /**
+   * Counts blueprints for a project.
+   * @param projectId - Project's unique identifier
+   * @returns Number of blueprints
+   */
   countBlueprintsByProjectId(projectId: string): Promise<number>;
+
+  /**
+   * Counts tasks for a blueprint.
+   * @param blueprintId - Blueprint's unique identifier
+   * @returns Number of tasks
+   */
   countTasksByBlueprintId(blueprintId: string): Promise<number>;
+
+  /**
+   * Counts templates created by a user.
+   * @param userId - Creator's unique identifier
+   * @returns Number of templates
+   */
   countTemplatesByCreator(userId: string): Promise<number>;
+
+  /**
+   * Counts all public templates.
+   * @returns Number of public templates
+   */
   countPublicTemplates(): Promise<number>;
+
+  /**
+   * Counts templates in a category.
+   * @param category - Template category to filter by
+   * @returns Number of templates in the category
+   */
   countTemplatesByCategory(category: string): Promise<number>;
+
+  /**
+   * Counts analytics events by type.
+   * @param eventType - Event type to filter by
+   * @returns Number of events
+   */
   countAnalyticsByEventType(eventType: string): Promise<number>;
+
+  /**
+   * Counts analytics events by type within a date range.
+   * @param eventType - Event type to filter by
+   * @param startDate - Start of date range (ISO string)
+   * @param endDate - End of date range (ISO string)
+   * @returns Number of events matching criteria
+   */
   countAnalyticsByEventTypeAndDateRange(
     eventType: string,
     startDate: string,
     endDate: string,
   ): Promise<number>;
+
+  /**
+   * Counts active sessions for a user.
+   * @param userId - User's unique identifier
+   * @returns Number of active sessions
+   */
   countActiveSessionsForUser(userId: string): Promise<number>;
 
-  // Health check
+  /**
+   * Checks database health status.
+   * @returns True if database is healthy
+   */
   healthCheck(): Promise<boolean>;
 }
 
-// Mock implementation for development
+/**
+ * Mock implementation of DatabaseService for development and testing.
+ *
+ * Uses in-memory Maps to simulate database operations without requiring
+ * an actual database connection. Suitable for local development and unit tests.
+ *
+ * @implements {DatabaseService}
+ */
 export class MockDatabaseService implements DatabaseService {
   private users: Map<string, User> = new Map();
   private projects: Map<string, Project> = new Map();
@@ -759,18 +1129,35 @@ export class MockDatabaseService implements DatabaseService {
   }
 }
 
-// Factory function to get the appropriate database service
+/**
+ * Factory function to get the appropriate database service instance.
+ *
+ * Returns a MockDatabaseService for development. In production, this would
+ * return a Cloudflare D1 implementation.
+ *
+ * @returns DatabaseService instance
+ */
 export function getDatabaseService(): DatabaseService {
-  // In production, this would return a Cloudflare D1 implementation
-  // For now, return the mock implementation
   return new MockDatabaseService();
 }
 
-// Utility functions for JSON serialization
+/**
+ * Serializes data to a JSON string.
+ *
+ * @param data - Data to serialize
+ * @returns JSON string representation
+ */
 export function serializeJSON(data: unknown): string {
   return JSON.stringify(data);
 }
 
+/**
+ * Deserializes a JSON string to the specified type.
+ *
+ * @param json - JSON string to deserialize
+ * @returns Parsed data of type T
+ * @throws {DatabaseError} When JSON parsing fails
+ */
 export function deserializeJSON<T>(json: string): T {
   try {
     return JSON.parse(json) as T;
@@ -782,7 +1169,11 @@ export function deserializeJSON<T>(json: string): T {
   }
 }
 
-// Error handling
+/**
+ * Base error class for database operations.
+ *
+ * Provides structured error handling with optional cause chaining.
+ */
 export class DatabaseError extends Error {
   constructor(
     message: string,
@@ -793,6 +1184,11 @@ export class DatabaseError extends Error {
   }
 }
 
+/**
+ * Error thrown when data validation fails.
+ *
+ * Indicates that input data does not conform to expected schema.
+ */
 export class ValidationError extends DatabaseError {
   constructor(message: string, cause?: Error) {
     super(message, cause);
@@ -800,6 +1196,11 @@ export class ValidationError extends DatabaseError {
   }
 }
 
+/**
+ * Error thrown when a requested resource is not found.
+ *
+ * Indicates that the specified entity does not exist in the database.
+ */
 export class NotFoundError extends DatabaseError {
   constructor(message: string, cause?: Error) {
     super(message, cause);
