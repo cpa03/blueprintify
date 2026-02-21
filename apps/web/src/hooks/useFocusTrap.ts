@@ -1,18 +1,61 @@
 import { useEffect, useRef, useCallback, type RefObject } from "react";
 import { FOCUSABLE_SELECTOR_STRING } from "../config/constants";
 
+/**
+ * @fileoverview Hook for trapping focus within a container element
+ *
+ * Implements a focus trap pattern for modal dialogs, drawers, and other
+ * overlay components. Ensures keyboard users can't tab outside the container.
+ *
+ * @module useFocusTrap
+ */
+
+/** Configuration options for the focus trap */
 interface UseFocusTrapOptions {
+  /** Whether the trap is currently active */
   isActive: boolean;
+  /** Element to return focus to when trap deactivates */
   returnFocusTo?: RefObject<HTMLElement | null> | (() => HTMLElement | null);
+  /** Whether to auto-focus the first element when activated (default: true) */
   autoFocus?: boolean;
 }
 
+/** Return value from the focus trap hook */
 interface UseFocusTrapReturn {
+  /** Ref to attach to the container element */
   containerRef: RefObject<HTMLElement | null>;
+  /** Programmatically focus the first focusable element */
   focusFirst: () => void;
+  /** Programmatically focus the last focusable element */
   focusLast: () => void;
 }
 
+/**
+ * Hook for trapping focus within a container element
+ *
+ * Creates an accessible focus trap that confines Tab/Shift+Tab navigation
+ * to elements within the container. Automatically handles:
+ * - Focus on activation (autoFocus)
+ * - Focus return on deactivation
+ * - Tab key wrapping (last element → first, first → last with Shift)
+ *
+ * @param options - Configuration options for the focus trap
+ * @returns Object with containerRef and focus control methods
+ *
+ * @example
+ * ```tsx
+ * function Modal({ isOpen, onClose }) {
+ *   const { containerRef } = useFocusTrap({ isActive: isOpen });
+ *
+ *   return isOpen ? (
+ *     <div ref={containerRef} role="dialog" aria-modal="true">
+ *       <button onClick={onClose}>Close</button>
+ *       {/* Other focusable elements *\/}
+ *     </div>
+ *   ) : null;
+ * }
+ * ```
+ */
 export function useFocusTrap(options: UseFocusTrapOptions): UseFocusTrapReturn {
   const { isActive, returnFocusTo, autoFocus = true } = options;
   const containerRef = useRef<HTMLElement | null>(null);

@@ -1,6 +1,30 @@
+/**
+ * @fileoverview Hook for tracking and displaying "last saved" timestamps
+ *
+ * This module provides a React hook that manages save state tracking with
+ * relative time display (e.g., "Saved 2m ago"). It supports change detection
+ * for unsaved changes indicators and automatic display refresh.
+ *
+ * @module useLastSaved
+ * @see {@link https://blueprintify.dev/docs/hooks | Hook Documentation}
+ */
+
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { TIMEOUTS } from "../config/constants";
 
+/**
+ * Formats a timestamp as a human-readable relative time string
+ *
+ * @param timestamp - Unix timestamp in milliseconds
+ * @returns Human-readable string like "Saved 2m ago" or "Saved just now"
+ *
+ * @example
+ * ```ts
+ * formatRelativeTime(Date.now() - 5000)  // "Saved 5s ago"
+ * formatRelativeTime(Date.now() - 120000) // "Saved 2m ago"
+ * ```
+ * @internal
+ */
 function formatRelativeTime(timestamp: number): string {
   const now = Date.now();
   const diff = now - timestamp;
@@ -33,6 +57,36 @@ export interface UseLastSavedReturn {
   markAsChanged: () => void;
 }
 
+/**
+ * Hook for tracking and displaying "last saved" timestamps
+ *
+ * Manages save state tracking with relative time display and change detection.
+ * Useful for auto-save UI indicators and unsaved changes warnings.
+ *
+ * Features:
+ * - Relative time display ("Saved 2m ago")
+ * - Automatic display refresh at configurable intervals
+ * - Change tracking for unsaved changes indicators
+ * - Manual timestamp control via `setLastSaved`
+ *
+ * @param initialTimestamp - Initial save timestamp (default: null)
+ * @param updateInterval - How often to refresh the display text (default: TIMEOUTS.LAST_SAVED_REFRESH)
+ * @returns Object with save state and control methods
+ *
+ * @example
+ * ```tsx
+ * const { lastSavedText, markSaved, hasChanges, markAsChanged } = useLastSaved();
+ *
+ * // After saving
+ * markSaved(); // Sets timestamp to now, clears hasChanges
+ *
+ * // Display
+ * <span>{lastSavedText}</span> // "Saved 2m ago"
+ *
+ * // Change tracking
+ * if (hasChanges) showUnsavedWarning();
+ * ```
+ */
 export function useLastSaved(
   initialTimestamp: number | null = null,
   updateInterval: number = TIMEOUTS.LAST_SAVED_REFRESH,
