@@ -1,3 +1,18 @@
+/**
+ * Security Utilities Module
+ *
+ * Provides comprehensive security measures for the frontend application including:
+ * - XSS prevention via DOMPurify sanitization
+ * - Content validation with pattern detection
+ * - File validation and sanitization
+ * - JSON security validation (prototype pollution protection)
+ * - Storage quota management
+ * - Content Security Policy headers
+ *
+ * @module lib/security
+ * @see https://owasp.org/www-community/xss-filter-evasion-cheatsheet
+ */
+
 import DOMPurify from "dompurify";
 import { z } from "zod";
 import { STORAGE_CONFIG, SECURITY_LIMITS } from "@blueprint/shared";
@@ -102,6 +117,15 @@ export const FileValidationSchema = z.object({
   type: z.string(),
   content: z.string().max(SECURITY_CONFIG.MAX_CONTENT_LENGTH),
 });
+/**
+ * XSS attack pattern detection library.
+ * Covers traditional vectors and modern attack techniques including:
+ * - Script injection, event handlers, javascript: URLs
+ * - SVG/math elements with embedded scripts
+ * - DOM clobbering and mutation XSS
+ * - CSS-based attacks (expression, behavior, binding)
+ * @see https://owasp.org/www-community/xss-filter-evasion-cheatsheet
+ */
 const XSS_PATTERNS = [
   /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
   /javascript:/gi,
