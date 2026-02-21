@@ -8,6 +8,7 @@ import {
   UI_CONTENT,
 } from "../../config/constants";
 import { pageTransition } from "../../utils/motion";
+import { RippleButton } from "../RippleButton";
 
 export const StepFeatures = memo(function StepFeatures(): JSX.Element {
   const [newFeature, setNewFeature] = useState("");
@@ -312,7 +313,7 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
       </AnimatePresence>
 
       <div className="flex justify-between">
-        <button onClick={prevStep} className="btn-secondary">
+        <RippleButton onClick={prevStep} className="btn-secondary">
           <svg
             className="w-5 h-5 mr-2"
             fill="none"
@@ -327,8 +328,8 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
             />
           </svg>
           {UI_CONTENT.BUTTONS.BACK}
-        </button>
-        <button
+        </RippleButton>
+        <RippleButton
           onClick={nextStep}
           className="btn-primary flex items-center gap-2"
         >
@@ -346,7 +347,7 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
               d="M9 5l7 7-7 7"
             />
           </svg>
-        </button>
+        </RippleButton>
       </div>
     </motion.div>
   );

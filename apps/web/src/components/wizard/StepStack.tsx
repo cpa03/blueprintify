@@ -11,6 +11,7 @@ import {
   UI_CONTENT,
 } from "../../config/constants";
 import { pageTransition } from "../../utils/motion";
+import { RippleButton } from "../RippleButton";
 import clsx from "clsx";
 
 interface TechChipProps {
@@ -306,7 +307,7 @@ export const StepStack = memo(function StepStack(): JSX.Element {
       </div>
 
       <div className="flex justify-between">
-        <button onClick={prevStep} className="btn-secondary">
+        <RippleButton onClick={prevStep} className="btn-secondary">
           <svg
             className="w-5 h-5 mr-2"
             fill="none"
@@ -321,8 +322,8 @@ export const StepStack = memo(function StepStack(): JSX.Element {
             />
           </svg>
           {UI_CONTENT.BUTTONS.BACK}
-        </button>
-        <button
+        </RippleButton>
+        <RippleButton
           onClick={handleNextClick}
           disabled={!canProceed}
           className={`btn-primary flex items-center gap-2 ${isShaking ? "shake-animation" : ""}`}
@@ -341,7 +342,7 @@ export const StepStack = memo(function StepStack(): JSX.Element {
               d="M9 5l7 7-7 7"
             />
           </svg>
-        </button>
+        </RippleButton>
       </div>
     </motion.div>
   );

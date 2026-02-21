@@ -5,6 +5,7 @@ import { useWizardStore } from "../../store";
 import { ANIMATION } from "../../config/constants";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { AnimatedNumber } from "../AnimatedNumber";
+import { RippleButton } from "../RippleButton";
 
 export const StepGenerating = memo(function StepGenerating(): JSX.Element {
   const progress = useEditorStore((s) => s.generationProgress);
@@ -126,10 +127,10 @@ export const StepGenerating = memo(function StepGenerating(): JSX.Element {
           position="top"
           modifier="none"
         >
-          <button
+          <RippleButton
             onClick={handleCancel}
             className="btn-ghost text-dark-400 hover:text-accent-pink flex items-center gap-2"
-            aria-label="Cancel generation (Esc)"
+            ariaLabel="Cancel generation (Esc)"
           >
             <svg
               className="w-4 h-4"
@@ -145,7 +146,7 @@ export const StepGenerating = memo(function StepGenerating(): JSX.Element {
               />
             </svg>
             Cancel Generation
-          </button>
+          </RippleButton>
         </KeyboardShortcutTooltip>
       </motion.div>
     </motion.div>
