@@ -1,13 +1,58 @@
+/**
+ * ScrollToTop - Floating scroll-to-top button with keyboard shortcut
+ *
+ * A floating action button that appears when the user scrolls down,
+ * allowing them to quickly return to the top of the page. Supports
+ * both mouse/touch interaction and keyboard shortcuts.
+ *
+ * Features:
+ * - Appears after configurable scroll threshold
+ * - Smooth scroll animation
+ * - Keyboard shortcut support (Home key)
+ * - Glassmorphism design with spring animations
+ * - Tooltip showing keyboard shortcut
+ * - Works with both window scroll and custom scroll containers
+ *
+ * @see ScrollProgress - For displaying reading progress indicator
+ * @see SmartTooltip - For keyboard shortcut tooltip display
+ */
+
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { SPRING_CONFIG } from "../config/constants";
 
+/**
+ * Props for the ScrollToTop component
+ */
 interface ScrollToTopProps {
+  /**
+   * Reference to a custom scroll container.
+   * If not provided, uses window scroll.
+   */
   scrollContainerRef?: React.RefObject<HTMLElement>;
+  /**
+   * Scroll position (in pixels) after which the button appears.
+   * @default 400
+   */
   showAfter?: number;
 }
 
+/**
+ * Floating scroll-to-top button with keyboard shortcut support.
+ *
+ * @param props - Component props
+ * @returns JSX element or null when not visible
+ *
+ * @example
+ * ```tsx
+ * // With window scroll
+ * <ScrollToTop />
+ *
+ * // With custom scroll container
+ * <ScrollToTop scrollContainerRef={containerRef} showAfter={200} />
+ * ```
+ */
 export function ScrollToTop({
   scrollContainerRef,
   showAfter = 400,
