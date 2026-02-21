@@ -1,3 +1,13 @@
+/**
+ * Tasks Routes
+ *
+ * API endpoint for generating project tasks from a blueprint.
+ * Delegates to TasksController for AI-assisted task breakdown
+ * with SSE streaming for incremental response delivery.
+ *
+ * @module routes/tasks
+ */
+
 import { Hono } from "hono";
 import { TaskGenerationRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";

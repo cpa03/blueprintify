@@ -1,3 +1,13 @@
+/**
+ * Generate Routes
+ *
+ * API endpoint for generating project blueprints from user input.
+ * Delegates to GenerateController for blueprint creation with AI assistance.
+ * Uses SSE streaming to return generated content incrementally.
+ *
+ * @module routes/generate
+ */
+
 import { Hono } from "hono";
 import { BlueprintRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
