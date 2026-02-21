@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import shareRoute from "./share";
 import { errorHandler } from "../middleware/errorHandler";
 import type { ErrorResponse } from "../errors";
+import { DEFAULTS } from "../config/env";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -49,7 +50,7 @@ function createMockEnv() {
   return {
     OPENAI_API_KEY: "test-key",
     DB: createMockDB(),
-    CORS_ORIGIN: "http://localhost:3000",
+    CORS_ORIGIN: DEFAULTS.CORS_ORIGIN,
   };
 }
 

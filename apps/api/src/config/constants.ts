@@ -304,6 +304,10 @@ export const RETRY_LOGIC = {
 export const CACHE_CONFIG = {
   ROOT_MAX_AGE: 60,
   ROOT_STALE_WHILE_REVALIDATE: 30,
+  /** Share route cache: 5 minutes */
+  SHARE_MAX_AGE: 300,
+  /** Share route stale-while-revalidate: 1 hour */
+  SHARE_STALE_WHILE_REVALIDATE: 3600,
 } as const;
 
 export const ROUTE_PATHS = {

@@ -8,6 +8,7 @@ import {
   ERROR_MESSAGES,
   SHARE_CONFIG,
   SHARE_ERROR_MESSAGES,
+  CACHE_CONFIG,
 } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
 
@@ -190,12 +191,14 @@ app.get("/:id", async (c) => {
     }
 
     // Set cache headers for CDN caching - shared blueprints are immutable until expiration
-    // Cache for 5 minutes, stale-while-revalidate for 1 hour
     c.header(
       "Cache-Control",
-      "public, max-age=300, stale-while-revalidate=3600",
+      `public, max-age=${CACHE_CONFIG.SHARE_MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.SHARE_STALE_WHILE_REVALIDATE}`,
     );
-    c.header("CDN-Cache-Control", "public, max-age=300");
+    c.header(
+      "CDN-Cache-Control",
+      `public, max-age=${CACHE_CONFIG.SHARE_MAX_AGE}`,
+    );
 
     return c.json(
       {
