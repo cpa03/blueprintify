@@ -11,7 +11,7 @@ import { Hono } from "hono";
 import { StorageClearRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
-import { STORAGE_CONFIG, CACHE_CONFIG } from "../config/constants";
+import { STORAGE_CONFIG, CACHE_CONFIG, HTTP_STATUS } from "../config/constants";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -50,7 +50,7 @@ app.get("/quota", rateLimit(rateLimitConfigs.standard), async (c) => {
           timestamp: new Date().toISOString(),
         },
       },
-      500,
+      HTTP_STATUS.INTERNAL_ERROR,
     );
   }
 });
@@ -76,7 +76,7 @@ app.delete(
             timestamp: new Date().toISOString(),
           },
         },
-        400,
+        HTTP_STATUS.BAD_REQUEST,
       );
     }
 
@@ -103,7 +103,7 @@ app.delete(
             timestamp: new Date().toISOString(),
           },
         },
-        500,
+        HTTP_STATUS.INTERNAL_ERROR,
       );
     }
   },

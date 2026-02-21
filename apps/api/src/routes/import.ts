@@ -13,7 +13,7 @@ import { ImportRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { secureLogError } from "../utils/secureLog";
-import { IMPORT_CONFIG } from "../config/constants";
+import { IMPORT_CONFIG, HTTP_STATUS } from "../config/constants";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -47,7 +47,7 @@ app.post(
                   timestamp: new Date().toISOString(),
                 },
               },
-              400,
+              HTTP_STATUS.BAD_REQUEST,
             );
           }
 
@@ -83,7 +83,7 @@ app.post(
                 timestamp: new Date().toISOString(),
               },
             },
-            400,
+            HTTP_STATUS.BAD_REQUEST,
           );
         }
       }
@@ -114,7 +114,7 @@ app.post(
                 timestamp: new Date().toISOString(),
               },
             },
-            400,
+            HTTP_STATUS.BAD_REQUEST,
           );
         }
 
@@ -140,7 +140,7 @@ app.post(
             timestamp: new Date().toISOString(),
           },
         },
-        400,
+          HTTP_STATUS.BAD_REQUEST,
       );
     } catch (error) {
       secureLogError("Import error", error, { format, overwrite });
@@ -153,7 +153,7 @@ app.post(
             timestamp: new Date().toISOString(),
           },
         },
-        500,
+        HTTP_STATUS.INTERNAL_ERROR,
       );
     }
   },
