@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, memo } from "react";
 import { motion, useSpring, MotionValue } from "framer-motion";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
 import { ANIMATION_COLORS } from "../config/constants";
@@ -24,7 +24,7 @@ interface AnimatedNumberProps {
  * - Reduced motion users see instant updates
  * - Tabular nums prevent layout shift during animation
  */
-export function AnimatedNumber({
+function AnimatedNumberComponent({
   value,
   className = "",
   duration = 0.8,
@@ -113,6 +113,8 @@ export function AnimatedNumber({
   );
 }
 
+export const AnimatedNumber = memo(AnimatedNumberComponent);
+
 interface AnimatedCounterProps {
   value: number;
   label?: string;
@@ -130,7 +132,7 @@ interface AnimatedCounterProps {
  * Perfect for stats, progress indicators, and live metrics.
  * Includes a subtle pulse animation when values change.
  */
-export function AnimatedCounter({
+function AnimatedCounterComponent({
   value,
   label,
   className = "",
@@ -205,6 +207,8 @@ export function AnimatedCounter({
     </motion.div>
   );
 }
+
+export const AnimatedCounter = memo(AnimatedCounterComponent);
 
 /**
  * useAnimatedValue - Hook for tracking animated values
