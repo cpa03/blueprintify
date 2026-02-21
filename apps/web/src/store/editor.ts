@@ -1,3 +1,22 @@
+/**
+ * Editor State Management Store
+ *
+ * Manages the split-pane editor state for blueprint and task content.
+ * Provides persistent state via localStorage with debounced auto-save
+ * and security validation for all content operations.
+ *
+ * Features:
+ * - Tab switching (blueprint ↔ tasks)
+ * - Content management with streaming append support
+ * - Security validation via DOMPurify sanitization
+ * - Generation state tracking with progress messages
+ * - Automatic state persistence with debounced saves
+ *
+ * @see apps/web/src/components/Editor.tsx - Editor UI component
+ * @see apps/web/src/lib/storage.ts - Persistence layer
+ * @see apps/web/src/lib/security.ts - Content sanitization
+ */
+
 import { create } from "zustand";
 import type { EditorTab } from "@blueprint/shared";
 import { createDebouncedSaver } from "@blueprint/shared";
