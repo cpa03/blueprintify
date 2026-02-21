@@ -14,40 +14,45 @@ export const REFINER_SYSTEM_PROMPT = PROMPT_CONFIG.REFINER_SYSTEM;
 
 /**
  * Builds a user prompt for blueprint generation from the request data.
+ * Uses array joining for efficient string concatenation.
  * @param request - The blueprint request containing project details
  * @returns Formatted prompt string for AI processing
  */
 export function buildBlueprintPrompt(request: BlueprintRequest): string {
-  const techStackList = request.techStack
-    .map((t) => `- ${t.name} (${t.category})`)
-    .join("\n");
+  const sections: string[] = [
+    "Generate a comprehensive blueprint.md for the following project:",
+    "",
+    `# Project: ${request.projectName}`,
+    "",
+    "## Description",
+    request.description,
+    "",
+    "## Tech Stack",
+    request.techStack.map((t) => `- ${t.name} (${t.category})`).join("\n"),
+  ];
 
-  const featuresSection = request.features?.length
-    ? `\n## Requested Features\n${request.features.map((f) => `- ${f}`).join("\n")}`
-    : "";
+  if (request.features?.length) {
+    sections.push(
+      "",
+      "## Requested Features",
+      request.features.map((f) => `- ${f}`).join("\n"),
+    );
+  }
 
-  const audienceSection = request.targetAudience
-    ? `\n## Target Audience\n${request.targetAudience}`
-    : "";
+  if (request.targetAudience) {
+    sections.push("", "## Target Audience", request.targetAudience);
+  }
 
-  const constraintsSection = request.constraints
-    ? `\n## Constraints\n${request.constraints}`
-    : "";
+  if (request.constraints) {
+    sections.push("", "## Constraints", request.constraints);
+  }
 
-  return `Generate a comprehensive blueprint.md for the following project:
+  sections.push(
+    "",
+    "Create a production-ready architectural blueprint that an autonomous development agent can use to build this project from scratch. Be thorough and specific.",
+  );
 
-# Project: ${request.projectName}
-
-## Description
-${request.description}
-
-## Tech Stack
-${techStackList}
-${featuresSection}
-${audienceSection}
-${constraintsSection}
-
-Create a production-ready architectural blueprint that an autonomous development agent can use to build this project from scratch. Be thorough and specific.`;
+  return sections.join("\n");
 }
 
 /**
