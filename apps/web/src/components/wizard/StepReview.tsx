@@ -4,6 +4,7 @@ import { useWizardStore } from "../../store";
 import { useBlueprintStream } from "../../hooks/useBlueprintStream";
 import { GENERATION_ESTIMATES } from "../../config/constants";
 import { pageTransition } from "../../utils/motion";
+import { RippleButton } from "../RippleButton";
 
 export const StepReview = memo(function StepReview(): JSX.Element {
   // Use specific selectors to avoid re-rendering on unrelated state changes
@@ -221,7 +222,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
       </div>
 
       <div className="flex justify-between">
-        <button
+        <RippleButton
           onClick={() => setStep("features")}
           className="btn-secondary"
           disabled={isGenerating}
@@ -240,9 +241,9 @@ export const StepReview = memo(function StepReview(): JSX.Element {
             />
           </svg>
           Back
-        </button>
+        </RippleButton>
         <div className="flex flex-col items-end gap-2">
-          <button
+          <RippleButton
             onClick={startGeneration}
             disabled={isGenerating || !projectName || !description}
             className="btn-primary flex items-center gap-2 animate-glow disabled:opacity-50 disabled:cursor-not-allowed"
@@ -270,7 +271,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
                 Generate Blueprint
               </>
             )}
-          </button>
+          </RippleButton>
           {isGenerating && progress && (
             <motion.span
               initial={{ opacity: 0, y: -5 }}
