@@ -497,6 +497,7 @@ export function getContentSecurityHeaders(): Record<string, string> {
       "img-src 'self' data: https:",
       "font-src 'self'",
       "connect-src 'self'",
+      "object-src 'none'",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
@@ -518,6 +519,7 @@ export function getContentSecurityHeaders(): Record<string, string> {
     ].join(", "),
   };
 }
+
 export class SecurityError extends Error {
   constructor(
     message: string,
