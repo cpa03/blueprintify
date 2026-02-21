@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { useWizardStore } from "../../store";
 import { useBlueprintStream } from "../../hooks/useBlueprintStream";
 import { GENERATION_ESTIMATES } from "../../config/constants";
@@ -16,6 +16,10 @@ export const StepReview = memo(function StepReview(): JSX.Element {
   const features = useWizardStore((s) => s.features);
   const setStep = useWizardStore((s) => s.setStep);
   const { startGeneration, isGenerating, progress } = useBlueprintStream();
+
+  const handleEditInfo = useCallback(() => setStep("info"), [setStep]);
+  const handleEditStack = useCallback(() => setStep("stack"), [setStep]);
+  const handleEditFeatures = useCallback(() => setStep("features"), [setStep]);
 
   return (
     <motion.div {...pageTransition} className="space-y-6">
@@ -39,7 +43,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
               Project Information
             </h3>
             <button
-              onClick={() => setStep("info")}
+              onClick={handleEditInfo}
               className="btn-ghost btn-sm flex items-center gap-1 text-primary-400 hover:text-primary-300"
               aria-label="Edit project information"
               title="Edit project information"
@@ -94,7 +98,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
               Tech Stack ({techStack.length})
             </h3>
             <button
-              onClick={() => setStep("stack")}
+              onClick={handleEditStack}
               className="btn-ghost btn-sm flex items-center gap-1 text-accent-cyan hover:text-accent-cyan/80"
               aria-label="Edit tech stack"
               title="Edit tech stack"
@@ -141,7 +145,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
                 Features ({features.length})
               </h3>
               <button
-                onClick={() => setStep("features")}
+                onClick={handleEditFeatures}
                 className="btn-ghost btn-sm flex items-center gap-1 text-accent-emerald hover:text-accent-emerald/80"
                 aria-label="Edit features"
                 title="Edit features"
@@ -223,7 +227,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
 
       <div className="flex justify-between">
         <RippleButton
-          onClick={() => setStep("features")}
+          onClick={handleEditFeatures}
           className="btn-secondary"
           disabled={isGenerating}
         >

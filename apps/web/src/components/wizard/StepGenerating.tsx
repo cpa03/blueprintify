@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { useEditorStore } from "../../store";
 import { useWizardStore } from "../../store";
 import { ANIMATION } from "../../config/constants";
@@ -17,10 +17,10 @@ export const StepGenerating = memo(function StepGenerating(): JSX.Element {
   const blueprintLines = blueprintContent?.split("\n").length ?? 0;
   const tasksLines = tasksContent?.split("\n").length ?? 0;
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     cancelGeneration();
     setStep("review");
-  };
+  }, [cancelGeneration, setStep]);
 
   return (
     <motion.div
