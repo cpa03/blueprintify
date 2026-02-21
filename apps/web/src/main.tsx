@@ -4,6 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ReducedMotionProvider } from "./context/ReducedMotionContext";
+import { SKELETON_CONFIG } from "./config/constants";
 import "./index.css";
 
 // Lazy load App and MotionConfig to reduce initial bundle size and improve LCP
@@ -24,7 +25,7 @@ const fadeOutAndRemoveSkeletonLoader = () => {
     skeleton.style.opacity = "0";
     setTimeout(() => {
       skeleton.remove();
-    }, 300);
+    }, SKELETON_CONFIG.FADEOUT_MS);
   }
 };
 

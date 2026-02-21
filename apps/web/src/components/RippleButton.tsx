@@ -7,6 +7,7 @@ import {
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { RIPPLE_CONFIG } from "../config/constants";
 
 interface Ripple {
   id: number;
@@ -55,7 +56,7 @@ function RippleButtonComponent({
 
       setTimeout(() => {
         setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
-      }, 600);
+      }, RIPPLE_CONFIG.REMOVAL_DELAY_MS);
     },
     [shouldReduceMotion],
   );
@@ -85,27 +86,27 @@ function RippleButtonComponent({
             key={ripple.id}
             initial={{
               scale: 0,
-              opacity: 0.5,
+              opacity: RIPPLE_CONFIG.INITIAL_OPACITY,
               x: ripple.x,
               y: ripple.y,
             }}
             animate={{
-              scale: 4,
+              scale: RIPPLE_CONFIG.FINAL_SCALE,
               opacity: 0,
               x: ripple.x,
               y: ripple.y,
             }}
             exit={{ opacity: 0 }}
             transition={{
-              duration: 0.6,
+              duration: RIPPLE_CONFIG.TRANSITION_DURATION_S,
               ease: "easeOut",
             }}
             className="absolute pointer-events-none bg-white/30 rounded-full"
             style={{
-              width: 20,
-              height: 20,
-              marginLeft: -10,
-              marginTop: -10,
+              width: RIPPLE_CONFIG.SIZE_PX,
+              height: RIPPLE_CONFIG.SIZE_PX,
+              marginLeft: RIPPLE_CONFIG.MARGIN_OFFSET_PX,
+              marginTop: RIPPLE_CONFIG.MARGIN_OFFSET_PX,
               left: ripple.x,
               top: ripple.y,
             }}
@@ -145,7 +146,7 @@ export function useRipple(): {
 
       setTimeout(() => {
         setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
-      }, 600);
+      }, RIPPLE_CONFIG.REMOVAL_DELAY_MS);
     },
     [shouldReduceMotion],
   );
@@ -156,16 +157,19 @@ export function useRipple(): {
         {ripples.map((ripple) => (
           <motion.span
             key={ripple.id}
-            initial={{ scale: 0, opacity: 0.5 }}
-            animate={{ scale: 4, opacity: 0 }}
+            initial={{ scale: 0, opacity: RIPPLE_CONFIG.INITIAL_OPACITY }}
+            animate={{ scale: RIPPLE_CONFIG.FINAL_SCALE, opacity: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            transition={{
+              duration: RIPPLE_CONFIG.TRANSITION_DURATION_S,
+              ease: "easeOut",
+            }}
             className="absolute pointer-events-none bg-white/30 rounded-full"
             style={{
-              width: 20,
-              height: 20,
-              marginLeft: -10,
-              marginTop: -10,
+              width: RIPPLE_CONFIG.SIZE_PX,
+              height: RIPPLE_CONFIG.SIZE_PX,
+              marginLeft: RIPPLE_CONFIG.MARGIN_OFFSET_PX,
+              marginTop: RIPPLE_CONFIG.MARGIN_OFFSET_PX,
               left: ripple.x,
               top: ripple.y,
             }}
