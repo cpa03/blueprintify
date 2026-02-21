@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { StorageClearRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
-import { STORAGE_CONFIG } from "../config/constants";
+import { STORAGE_CONFIG, CACHE_CONFIG } from "../config/constants";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -13,8 +13,11 @@ const app = new Hono<{ Bindings: Env }>();
  */
 app.get("/quota", rateLimit(rateLimitConfigs.standard), async (c) => {
   try {
-    // Cache quota response for 60 seconds - this data rarely changes
-    c.header("Cache-Control", "public, max-age=60, stale-while-revalidate=30");
+    // Cache quota response - this data rarely changes
+    c.header(
+      "Cache-Control",
+      `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE}`,
+    );
     return c.json({
       success: true,
       data: {
