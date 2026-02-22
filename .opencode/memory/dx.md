@@ -91,10 +91,7 @@ npm install
 - [x] Add JSDoc documentation to store/index.ts (2026-02-21)
   - Module-level documentation for store exports
   - Documented resetAllStores utility function with examples
-
-### Pending
-
- - [x] Add JSDoc documentation to Editor.tsx (2026-02-22)
+- [x] Add JSDoc documentation to Editor.tsx (2026-02-22)
   - Module-level documentation with feature overview
   - Component documentation with @returns and @example
   - Handler function documentation (setCurrentContent, handleCopy, handleExport, handleNewProject)
@@ -105,7 +102,20 @@ npm install
   - CodeBlockHeader component documentation
   - Main component documentation with @param and @returns
   - Export documentation for memoized component
-- [ ] Fix CI workflow configuration issues (Issue #483) - **BLOCKED** by GitHub App permission restrictions
+- [x] Add JSDoc documentation to Wizard.tsx (2026-02-22)
+  - Module-level documentation with 5-step wizard flow explanation
+  - Component documentation with accessibility features
+  - STEP_TITLES constant documentation
+  - Export documentation for memoized component
+- [x] Add JSDoc documentation to Header.tsx (2026-02-22)
+  - Module-level documentation with component overview
+  - Props interface documentation
+  - Component documentation with @param, @returns, @example
+  - Export documentation for memoized component
+
+### Pending
+
+- [ ] Fix CI workflow configuration issues (Issue #743) - **BLOCKED** by GitHub App permission restrictions
 
 ## Workflow Configuration Notes
 
@@ -138,7 +148,7 @@ npm run build      # Production build
 ## Known Limitations
 
 1. **Workflow Permissions**: GitHub App cannot create/update workflow files without `workflows` permission
-   - Issue #483 (CI workflow fixes) is blocked until permission is granted or manual fix is applied
+   - Issue #743 (CI workflow fixes) is blocked until permission is granted or manual fix is applied
    - Required fixes: rename `on pull.yml` to `on-pull.yml`, normalize CRLF→LF, update runner to `ubuntu-24.04-arm`, fix action versions from `@v6` to `@v4`
    - Workaround: Manual PR from human contributor with workflow permissions, or repo admin must grant `workflows` permission to GitHub App
 2. **CRLF Line Endings**: Some files in the repo (particularly `.github/workflows/*.yml`) were committed with CRLF
@@ -191,6 +201,6 @@ npm run build
 
 ---
 
-_Last updated: 2026-02-21_
+_Last updated: 2026-02-22_
 
 > **Note**: For comprehensive troubleshooting, see [docs/troubleshooting.md](../docs/troubleshooting.md)
