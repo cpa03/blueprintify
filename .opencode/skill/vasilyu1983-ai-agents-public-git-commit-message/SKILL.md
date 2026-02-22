@@ -346,7 +346,7 @@ This skill integrates with the AI-Agents repository standards:
 
 ## Commit Message Template
 
-**[templates/template-commit-message.md](templates/template-commit-message.md)** — Copy-paste template and good/bad examples.
+**Commit Message Template** — Use `type(scope): summary` format for automation-friendly history.
 
 Use it to standardize `type(scope): summary` messages and keep history automation-friendly.
 
@@ -354,7 +354,7 @@ Use it to standardize `type(scope): summary` messages and keep history automatio
 
 ## Security-Sensitive Commits
 
-**[templates/template-security-commits.md](templates/template-security-commits.md)** — Guide for handling security-sensitive changes.
+**Security-Sensitive Commits** — Follow security commit guidelines for handling sensitive changes.
 
 ### Key Sections
 
@@ -414,5 +414,5 @@ Use it to standardize `type(scope): summary` messages and keep history automatio
 
 **Version**: 2.1.0
 **Last Updated**: 2025-12-17
-**Repository**: AI-Agents (documentation repository)
+**Repository**: Blueprintify (AI-powered project architecture documentation)
 **Conventional Commits Spec**: <https://www.conventionalcommits.org/>
