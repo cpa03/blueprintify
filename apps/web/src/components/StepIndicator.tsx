@@ -1,3 +1,26 @@
+/**
+ * StepIndicator Component
+ *
+ * Displays the wizard navigation with visual progress indication and step navigation.
+ * Shows the current step, completed steps, and allows navigation to previous steps.
+ *
+ * Features:
+ * - Visual progress ring showing completion percentage
+ * - Step buttons with active/completed/locked states
+ * - Keyboard shortcuts (Alt+1-5) for quick navigation
+ * - Animated transitions for step changes
+ * - Accessibility support with ARIA attributes
+ *
+ * @see apps/web/src/store/wizard.ts - Wizard state management
+ * @see apps/web/src/config/constants.ts - WIZARD_STEPS configuration
+ *
+ * @example
+ * ```tsx
+ * // Render within the wizard layout
+ * <StepIndicator />
+ * ```
+ */
+
 import { motion } from "framer-motion";
 import { useEffect, useCallback, useState, memo } from "react";
 import type { WizardStep } from "@blueprint/shared";

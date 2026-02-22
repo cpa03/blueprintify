@@ -1,3 +1,32 @@
+/**
+ * Toast Notification Component
+ *
+ * Displays toast notifications with auto-dismiss functionality and visual progress
+ * indicators. Supports multiple toast types (success, error, warning, info) with
+ * distinct styling and icons.
+ *
+ * Features:
+ * - Auto-dismiss with configurable duration
+ * - Visual progress ring showing remaining time
+ * - Pause on hover for extended reading time
+ * - Smooth enter/exit animations via Framer Motion
+ * - Accessible with ARIA live regions for screen readers
+ *
+ * @see apps/web/src/store/toast.ts - Toast state management store
+ * @see apps/web/src/config/constants.ts - TOAST_CONFIG for styling and icons
+ *
+ * @example
+ * ```tsx
+ * // ToastContainer is typically rendered at the app root
+ * <ToastContainer />
+ *
+ * // Display toasts using the useToast hook
+ * const toast = useToast();
+ * toast.success("Operation completed!");
+ * toast.error("Something went wrong");
+ * ```
+ */
+
 import {
   useState,
   useRef,
