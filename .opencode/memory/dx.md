@@ -112,6 +112,19 @@ npm install
   - Props interface documentation
   - Component documentation with @param, @returns, @example
   - Export documentation for memoized component
+- [x] Add JSDoc documentation to Toast.tsx (2026-02-22)
+  - Module-level documentation with feature overview
+  - Auto-dismiss, progress ring, pause-on-hover features documented
+  - Accessibility features (ARIA live regions) documented
+  - @see references to toast store and config constants
+- [x] Add JSDoc documentation to StepIndicator.tsx (2026-02-22)
+  - Module-level documentation with wizard navigation overview
+  - Progress ring, keyboard shortcuts, accessibility documented
+  - @see references to wizard store and config constants
+- [x] Add JSDoc documentation to api.ts (2026-02-22)
+  - Module-level documentation with API client overview
+  - SSE streaming, retry logic, timeouts documented
+  - @see references to backend API and shared types
 
 ### Pending
 

@@ -1,3 +1,30 @@
+/**
+ * API Client Library
+ *
+ * Provides functions for communicating with the Blueprintify backend API.
+ * Handles Server-Sent Events (SSE) streaming for real-time content generation
+ * with automatic retry logic for transient failures.
+ *
+ * Features:
+ * - SSE streaming for blueprint, task, and refinement generation
+ * - Automatic retry with exponential backoff
+ * - Configurable timeouts for API connections
+ * - Health check endpoint for monitoring
+ *
+ * @see apps/api/src/index.ts - Backend API implementation
+ * @see packages/shared/src/index.ts - Shared types and retry configuration
+ *
+ * @example
+ * ```typescript
+ * // Generate a blueprint with streaming
+ * await generateBlueprint(request, {
+ *   onChunk: (content) => console.log(content),
+ *   onError: (error) => console.error(error),
+ *   onDone: () => console.log('Complete!'),
+ * });
+ * ```
+ */
+
 import type {
   BlueprintRequest,
   TaskGenerationRequest,
