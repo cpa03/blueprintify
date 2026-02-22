@@ -4,7 +4,8 @@
 
 ## Table of Contents
 
- [2026-02-21: Reliability Verification Audit (Session 2)](#reliability-2026-02-21---reliability-verification-audit-session-2)
+- [2026-02-22: Retry Utility Overall Timeout](#reliability-2026-02-22---retry-utility-overall-timeout)
+- [2026-02-21: Reliability Verification Audit (Session 2)](#reliability-2026-02-21---reliability-verification-audit-session-2)
 - [2026-02-21: Comprehensive Reliability Audit](#reliability-2026-02-21---comprehensive-reliability-audit)
 - [2026-02-20: Rate Limiter Observability Improvement](#reliability-2026-02-20---rate-limiter-observability-improvement)
 - [2026-02-20: Typed Error Classes in MockDatabaseService](#reliability-2026-02-20---typed-error-classes-in-mockdatabaseservice)
@@ -21,6 +22,62 @@
 - [2026-02-18: Share Endpoint Validation Consistency](#security-2026-02-18---share-endpoint-validation-consistency)
 - [2026-02-18: Integration Workflow File Line Ending](#integration-2026-02-18---workflow-file-line-ending-inconsistency)
 - [2026-02-20: Logger Middleware Undefined Header Fix](#reliability-2026-02-20---logger-middleware-undefined-header-value-fix)
+
+---
+
+## [Reliability] 2026-02-22 - Retry Utility Overall Timeout
+
+### Observation
+
+The `withRetry()` utility in `apps/api/src/utils/retry.ts` lacked an overall timeout option. With default configuration (3 retries, 1s initial delay, 2x backoff), retry operations could extend up to 15+ seconds beyond the expected operation time, potentially causing cascading failures in time-sensitive contexts.
+
+### Action Taken
+
+Added optional `timeout` parameter to `RetryOptions` interface and `withRetry()` function:
+
+1. **New `timeout` option**: Optional overall timeout in milliseconds for the entire retry operation
+2. **Timeout enforcement**: Checks elapsed time before each attempt AND before waiting for retry delay
+3. **TimeoutError thrown**: Uses existing `TimeoutError` class from `./timeout.ts` for consistency
+
+### Implementation Details
+
+```typescript
+export interface RetryOptions {
+  // ... existing options ...
+  /**
+   * Optional overall timeout in milliseconds for the entire retry operation.
+   * If the total elapsed time (including retries and delays) exceeds this value,
+   * a TimeoutError is thrown.
+   */
+  timeout?: number;
+}
+```
+
+### Impact
+
+- **Backward Compatible**: Optional parameter with no default - existing callers unchanged
+- **Prevents Indefinite Retries**: Operations can now have a hard deadline
+- **Consistent Error Handling**: Uses existing `TimeoutError` class
+- **No Breaking Changes**: All existing tests pass
+
+### Verification
+
+```bash
+npm run typecheck  # ✅ PASS
+npm run lint       # ✅ PASS
+npm run build      # ✅ PASS (15.18s)
+npm run test:all   # ✅ PASS (236 web tests)
+```
+
+### Example Usage
+
+```typescript
+// With overall timeout - max 30s for all attempts combined
+const result = await withRetry(
+  () => fetchExternalAPI(),
+  { retries: 3, timeout: 30000 }
+);
+```
 
 ---
 
