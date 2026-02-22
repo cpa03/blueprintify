@@ -77,14 +77,15 @@ export async function clearAllStorage(): Promise<{
   error?: string;
 }> {
   try {
-    await withStorageRecovery(async () => {
-      await wizardStorage.remove();
-    }, undefined);
-
-    await withStorageRecovery(async () => {
-      await editorStorage.remove();
-    }, undefined);
-
+    // Parallelize independent storage removal operations for better performance
+    await Promise.all([
+      withStorageRecovery(async () => {
+        await wizardStorage.remove();
+      }, undefined),
+      withStorageRecovery(async () => {
+        await editorStorage.remove();
+      }, undefined),
+    ]);
     return { success: true };
   } catch (error) {
     return {
