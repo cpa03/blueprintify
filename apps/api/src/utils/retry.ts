@@ -127,6 +127,23 @@ export async function withRetry<T>(
   throw lastError;
 }
 
+/**
+ * Determines if an error is retryable based on its properties.
+ *
+ * Checks for retryable conditions:
+ * - HTTP status codes indicating rate limiting (429) or server errors (5xx)
+ * - Network error codes indicating transient failures (ECONNRESET, ETIMEDOUT, etc.)
+ *
+ * @param error - The error to evaluate (can be any type)
+ * @returns True if the error indicates a transient failure that should be retried
+ *
+ * @example
+ * ```typescript
+ * if (isRetryableError(error)) {
+ *   // Wait and retry the operation
+ * }
+ * ```
+ */
 function isRetryableError(error: unknown): boolean {
   if (!error) return true;
 

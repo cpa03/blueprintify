@@ -79,11 +79,17 @@ interface CircuitBreakerMetrics {
  * ```
  */
 class CircuitBreaker {
+  /** Current state of the circuit (CLOSED, OPEN, HALF_OPEN) */
   private state: CircuitState = CircuitState.CLOSED;
+  /** Counter for consecutive failures in CLOSED state */
   private failures = 0;
+  /** Counter for consecutive successes in HALF_OPEN state */
   private successes = 0;
+  /** Timestamp of the last recorded failure, used for reset timeout calculation */
   private lastFailureTime: number | null = null;
+  /** Number of test calls made in the current HALF_OPEN state */
   private halfOpenCalls = 0;
+  /** Configuration settings for the circuit breaker */
   private readonly config: CircuitBreakerConfig;
 
   /**
