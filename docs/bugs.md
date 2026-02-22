@@ -135,41 +135,41 @@ Replaced all 'any' types with proper Hono Context<{ Bindings: Env }> types:
 
 ---
 
-### BUG-009: CI/CD Workflow Configuration Issues
+### BUG-009: CI/CD Workflow Actions Cache Version Issue
 
-**Status**: Open  
+**Status**: Fix Pending Review  
 **Priority**: High  
-**Area**: DevOps Engineering  
+**Area**: DevOps / Repository Management  
 **First Reported**: 2026-02-18 (QA Audit)  
-**Issue Reference**: #483
+**Issue Reference**: #743
 
 #### Description
 
-Multiple workflow configuration issues identified:
+Invalid GitHub Actions version causing workflow failures:
 
-1. Filename with space: `on pull.yml` should be `on-pull.yml`
-2. Line ending inconsistency: CRLF instead of LF
-3. Outdated runner version: `ubuntu-22.04-arm` instead of `ubuntu-24.04-arm`
-4. Invalid action versions: `checkout@v6` and `setup-node@v6` (should be `@v4`)
+1. `actions/cache@v5` does not exist (only v3/v4 available) - 6 occurrences in iterate.yml and ai-on-push.yml
+2. Note: `actions/checkout@v5` and `actions/setup-node@v5` are valid versions
+
+
 
 #### Impact
 
-- Shell commands may fail with space in filename
-- Line ending issues cause git warnings
-- Runner version doesn't match AGENTS.md specification
-- Invalid action versions may cause CI failures
+ iterate.yml workflow will fail at cache setup (5 jobs affected)
+ ai-on-push.yml workflow will fail at cache setup (1 job affected)
+ CI/CD reliability compromised for scheduled runs
+
 
 #### Fix Status
 
-- [x] Fix prepared on `repository-manager` branch
-- [ ] Requires workflow permissions to push
-- [ ] All verification checks passed (typecheck, lint, build, tests)
+ [x] Fix prepared on `repository-manager` branch (2026-02-22)
+ [x] Changed all `actions/cache@v5` to `actions/cache@v4` (6 occurrences)
+ [ ] Cannot push: GitHub App lacks workflow write permission (requires admin)
 
 #### Target Resolution
 
-- **Timeline**: Requires user with workflow permissions
+ **Timeline**: Requires admin workflow permission to push
 - **Priority**: High (CI/CD reliability)
-- **Area**: DevOps Engineering
+ **Area**: Repository Management
 
 ---
 
