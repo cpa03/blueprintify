@@ -10,6 +10,7 @@ import {
   RETRY_LOGIC,
 } from "../config/constants";
 import { getConfig } from "../config/env";
+import { TimeoutError } from "./timeout";
 
 /**
  * Configuration options for retry behavior
@@ -25,6 +26,13 @@ export interface RetryOptions {
   maxDelay?: number;
   /** Optional callback invoked on each retry attempt */
   onRetry?: (error: unknown, attempt: number) => void;
+  /**
+   * Optional overall timeout in milliseconds for the entire retry operation.
+   * If the total elapsed time (including retries and delays) exceeds this value,
+   * a TimeoutError is thrown. This prevents retry loops from extending indefinitely.
+   * @since 2026-02-22
+   */
+  timeout?: number;
 }
 
 /**
@@ -34,13 +42,21 @@ export interface RetryOptions {
  * @param operation - Async function to execute with retry support
  * @param options - Optional retry configuration overrides
  * @returns Promise resolving to the operation result
+ * @throws {TimeoutError} When the overall timeout is exceeded
  * @throws The last error if all retry attempts fail
  *
  * @example
  * ```typescript
+ * // Basic usage
  * const result = await withRetry(
  *   () => fetchExternalAPI(),
  *   { retries: 3, initialDelay: 1000, backoffFactor: 2 }
+ * );
+ *
+ * // With overall timeout
+ * const result = await withRetry(
+ *   () => fetchExternalAPI(),
+ *   { retries: 3, timeout: 30000 } // Max 30s for all attempts
  * );
  * ```
  */
@@ -54,12 +70,25 @@ export async function withRetry<T>(
     backoffFactor = RETRY_CONFIG.DEFAULT_BACKOFF_FACTOR,
     maxDelay = getConfig().RETRY_MAX_DELAY_MS,
     onRetry,
+    timeout,
   } = options;
 
   let lastError: unknown;
   let delay = initialDelay;
+  const startTime = timeout !== undefined ? Date.now() : 0;
 
   for (let attempt = 0; attempt <= retries; attempt++) {
+    // Check overall timeout before each attempt
+    if (timeout !== undefined) {
+      const elapsed = Date.now() - startTime;
+      if (elapsed >= timeout) {
+        throw new TimeoutError(
+          timeout,
+          `Retry operation timed out after ${elapsed}ms (timeout: ${timeout}ms)`,
+        );
+      }
+    }
+
     try {
       return await operation();
     } catch (error) {
@@ -77,6 +106,17 @@ export async function withRetry<T>(
 
       if (onRetry) {
         onRetry(error, attempt + 1);
+      }
+
+      // Check if delay would exceed timeout
+      if (timeout !== undefined) {
+        const elapsed = Date.now() - startTime;
+        if (elapsed + delay >= timeout) {
+          throw new TimeoutError(
+            timeout,
+            `Retry operation timed out after ${elapsed}ms (timeout: ${timeout}ms)`,
+          );
+        }
       }
 
       await new Promise((resolve) => setTimeout(resolve, delay));
