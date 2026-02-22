@@ -135,41 +135,73 @@ Replaced all 'any' types with proper Hono Context<{ Bindings: Env }> types:
 
 ---
 
-### BUG-009: CI/CD Workflow Actions Cache Version Issue
+### BUG-009: CI/CD Workflow Configuration Issues ✅ RESOLVED
 
-**Status**: Fix Pending Review  
+**Status**: Resolved  
 **Priority**: High  
-**Area**: DevOps / Repository Management  
+**Area**: DevOps Engineering  
 **First Reported**: 2026-02-18 (QA Audit)  
+**Resolved**: 2026-02-21 (PR #709)
+**Issue Reference**: #483
+
+#### Description
+
+Multiple workflow configuration issues identified:
+
+1. Filename with space: `on pull.yml` should be `on-pull.yml`
+2. Line ending inconsistency: CRLF instead of LF
+3. Outdated runner version: `ubuntu-22.04-arm` instead of `ubuntu-24.04-arm`
+4. Invalid action versions: `checkout@v6` and `setup-node@v6` (should be `@v4`)
+
+#### Solution
+
+All issues were fixed in PR #709:
+
+- Renamed `on pull.yml` → `on-pull.yml`
+- Normalized line endings: CRLF → LF
+- Updated runner: `ubuntu-22.04-arm` → `ubuntu-24.04-arm`
+- Fixed action versions: `checkout@v6` → `@v4`, `setup-node@v6` → `@v4`
+
+#### Fix Status
+
+- [x] All workflow configuration issues resolved
+- [x] All verification checks passed (typecheck, lint, build, tests)
+
+---
+
+### BUG-010: GitHub Actions Invalid Versions @v5 → @v4
+
+**Status**: Open  
+**Priority**: Critical (P0)  
+**Area**: DevOps Engineering  
+**First Reported**: 2026-02-21 (DevOps Engineer)  
 **Issue Reference**: #743
 
 #### Description
 
-Invalid GitHub Actions version causing workflow failures:
+Three workflow files use non-existent GitHub Actions versions (`@v5` instead of `@v4`):
 
-1. `actions/cache@v5` does not exist (only v3/v4 available) - 6 occurrences in iterate.yml and ai-on-push.yml
-2. Note: `actions/checkout@v5` and `actions/setup-node@v5` are valid versions
-
-
+| File | Invalid References |
+|------|-------------------|
+| `main.yml` | `actions/checkout@v5` (9x) |
+| `ai-on-push.yml` | `actions/checkout@v5` (4x), `actions/cache@v5` (1x), `actions/setup-node@v5` (1x) |
+| `iterate.yml` | `actions/checkout@v5` (5x), `actions/cache@v5` (5x) |
 
 #### Impact
 
- iterate.yml workflow will fail at cache setup (5 jobs affected)
- ai-on-push.yml workflow will fail at cache setup (1 job affected)
- CI/CD reliability compromised for scheduled runs
-
+**All CI/CD workflows will fail** when triggered because `@v5` does not exist.
 
 #### Fix Status
 
- [x] Fix prepared on `repository-manager` branch (2026-02-22)
- [x] Changed all `actions/cache@v5` to `actions/cache@v4` (6 occurrences)
- [ ] Cannot push: GitHub App lacks workflow write permission (requires admin)
+- [x] Fix prepared on `agent/devops-engineer` branch
+- [ ] Requires admin workflow permission to push
+- [x] All verification checks passed (typecheck, lint, build, tests)
 
 #### Target Resolution
 
- **Timeline**: Requires admin workflow permission to push
-- **Priority**: High (CI/CD reliability)
- **Area**: Repository Management
+- **Timeline**: Requires repository admin with workflow permissions
+- **Priority**: Critical (CI is broken)
+- **Area**: DevOps Engineering
 
 ---
 
