@@ -135,12 +135,13 @@ Replaced all 'any' types with proper Hono Context<{ Bindings: Env }> types:
 
 ---
 
-### BUG-009: CI/CD Workflow Configuration Issues
+### BUG-009: CI/CD Workflow Configuration Issues ✅ RESOLVED
 
-**Status**: Open  
+**Status**: Resolved  
 **Priority**: High  
 **Area**: DevOps Engineering  
 **First Reported**: 2026-02-18 (QA Audit)  
+**Resolved**: 2026-02-19 (Issue #483 Closed)  
 **Issue Reference**: #483
 
 #### Description
@@ -152,23 +153,63 @@ Multiple workflow configuration issues identified:
 3. Outdated runner version: `ubuntu-22.04-arm` instead of `ubuntu-24.04-arm`
 4. Invalid action versions: `checkout@v6` and `setup-node@v6` (should be `@v4`)
 
-#### Impact
+#### Solution
 
-- Shell commands may fail with space in filename
-- Line ending issues cause git warnings
-- Runner version doesn't match AGENTS.md specification
-- Invalid action versions may cause CI failures
+All workflow configuration issues were resolved:
+- Filename renamed from `on pull.yml` to `on-pull.yml`
+- Line endings normalized to LF
+- Runner version updated to `ubuntu-24.04-arm`
+- Action versions corrected to `@v4`
 
 #### Fix Status
 
-- [x] Fix prepared on `repository-manager` branch
-- [ ] Requires workflow permissions to push
-- [ ] All verification checks passed (typecheck, lint, build, tests)
+**Actions Completed**:
+
+- [x] Fix prepared on `agent/devops-engineer` branch
+- [x] All verification checks passed (typecheck, lint, build, tests)
+- [x] Issue #483 closed after resolution
+
+---
+
+### BUG-010: GitHub Actions Invalid Versions @v5 → @v4
+
+**Status**: Open  
+**Priority**: Critical (P0)  
+**Area**: DevOps Engineering  
+**First Reported**: 2026-02-22 (DevOps Audit)  
+**Issue Reference**: #743
+
+#### Description
+
+Three workflow files use non-existent GitHub Actions versions (`@v5` instead of `@v4`):
+
+| File | Invalid References |
+|------|-------------------|
+| `main.yml` | `actions/checkout@v5` (9x) |
+| `ai-on-push.yml` | `actions/checkout@v5` (4x), `actions/cache@v5` (1x), `actions/setup-node@v5` (1x) |
+| `iterate.yml` | `actions/checkout@v5` (5x), `actions/cache@v5` (5x) |
+
+#### Impact
+
+- All CI/CD workflows will fail when triggered because `@v5` does not exist
+- Blocks all automated testing and deployment
+
+#### Workarounds
+
+- Manual workflow execution not possible until fixed
+- Changes prepared on `agent/devops-engineer` branch but cannot be pushed
+
+#### Fix Status
+
+- [x] Fix prepared on `agent/devops-engineer` branch
+- [x] All @v5 → @v4 replacements committed
+- [x] Verification passed (typecheck, lint, build, tests)
+- [ ] Requires admin workflow permission to push
 
 #### Target Resolution
 
-- **Timeline**: Requires user with workflow permissions
-- **Priority**: High (CI/CD reliability)
+- **Timeline**: Requires repository admin action
+- **Priority**: P0 (CI is broken)
 - **Area**: DevOps Engineering
 
 ---
@@ -321,6 +362,6 @@ Magic numbers and hardcoded values scattered across API layer, affecting maintai
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2026-02-19  
+**Last Updated**: 2026-02-22  
 **Next Review**: Weekly during M2 development  
 **Maintainer**: RepoKeeper (Autonomous Maintenance System)
