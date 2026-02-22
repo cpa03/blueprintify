@@ -11,7 +11,7 @@ import { Hono } from "hono";
 import { StorageClearRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
-import { STORAGE_CONFIG, CACHE_CONFIG, HTTP_STATUS } from "../config/constants";
+import { STORAGE_CONFIG, CACHE_CONFIG, HTTP_STATUS, STORAGE_MESSAGES } from "../config/constants";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -34,7 +34,7 @@ app.get("/quota", rateLimit(rateLimitConfigs.standard), async (c) => {
         total: STORAGE_CONFIG.QUOTA_BYTES,
         percentage: 0,
         projects: 0,
-        note: "Server-side storage tracking. Client-side storage quota available via localStorage API.",
+        note: STORAGE_MESSAGES.QUOTA_NOTE,
       },
     });
   } catch (error) {
@@ -72,7 +72,7 @@ app.delete(
           success: false,
           error: {
             type: "validation" as const,
-            message: "Confirmation required to clear storage",
+            message: STORAGE_MESSAGES.CONFIRMATION_REQUIRED,
             timestamp: new Date().toISOString(),
           },
         },
@@ -85,8 +85,7 @@ app.delete(
         success: true,
         data: {
           cleared: true,
-          message:
-            "Server-side storage cleared. Client-side storage must be cleared via localStorage API.",
+          message: STORAGE_MESSAGES.CLEAR_SUCCESS,
           timestamp: new Date().toISOString(),
         },
       });

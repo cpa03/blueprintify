@@ -372,6 +372,17 @@ export const SHARE_ERROR_MESSAGES = {
   SHARE_EXPIRED: "Shared blueprint has expired",
   SHARE_DELETED_SUCCESSFULLY: "Share deleted successfully",
 } as const;
+// Storage route messages
+export const STORAGE_MESSAGES = {
+  /** Note displayed in quota response */
+  QUOTA_NOTE:
+    "Server-side storage tracking. Client-side storage quota available via localStorage API.",
+  /** Error when confirmation is not provided for clear operation */
+  CONFIRMATION_REQUIRED: "Confirmation required to clear storage",
+  /** Success message after clearing storage */
+  CLEAR_SUCCESS:
+    "Server-side storage cleared. Client-side storage must be cleared via localStorage API.",
+} as const;
 
 // Import route configuration
 export const IMPORT_CONFIG = {
