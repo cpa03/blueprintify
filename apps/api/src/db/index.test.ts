@@ -1116,6 +1116,56 @@ describe("MockDatabaseService", () => {
       });
     });
 
+    describe("countPublicTemplatesByCategory", () => {
+      it("should count public templates by category only", async () => {
+        await db.createTemplate({
+          name: "Public Frontend",
+          description: "Desc",
+          icon: "📄",
+          project_name: "Project",
+          default_description: "Default",
+          category: "frontend",
+          is_public: true,
+        });
+        await db.createTemplate({
+          name: "Private Frontend",
+          description: "Desc",
+          icon: "📄",
+          project_name: "Project",
+          default_description: "Default",
+          category: "frontend",
+          is_public: false,
+        });
+        await db.createTemplate({
+          name: "Public Backend",
+          description: "Desc",
+          icon: "📄",
+          project_name: "Project",
+          default_description: "Default",
+          category: "backend",
+          is_public: true,
+        });
+        const frontendCount = await db.countPublicTemplatesByCategory("frontend");
+        expect(frontendCount).toBe(1);
+        const backendCount = await db.countPublicTemplatesByCategory("backend");
+        expect(backendCount).toBe(1);
+      });
+
+      it("should return 0 for category with no public templates", async () => {
+        await db.createTemplate({
+          name: "Private Fullstack",
+          description: "Desc",
+          icon: "📄",
+          project_name: "Project",
+          default_description: "Default",
+          category: "fullstack",
+          is_public: false,
+        });
+        const count = await db.countPublicTemplatesByCategory("fullstack");
+        expect(count).toBe(0);
+      });
+    });
+
     describe("countAnalyticsByEventType", () => {
       it("should count analytics by event type", async () => {
         await db.trackEvent({ event_type: "blueprint_generated" });
@@ -1130,6 +1180,7 @@ describe("MockDatabaseService", () => {
       it("should count analytics by event type and date range", async () => {
         const now = new Date();
         const oneHourAgo = new Date(now.getTime() - 3600000);
+        const oneHourAhead = new Date(now.getTime() + 3600000);
 
         await db.trackEvent({ event_type: "blueprint_generated" });
         await db.trackEvent({ event_type: "blueprint_generated" });
@@ -1138,7 +1189,7 @@ describe("MockDatabaseService", () => {
         const count = await db.countAnalyticsByEventTypeAndDateRange(
           "blueprint_generated",
           oneHourAgo.toISOString(),
-          now.toISOString(),
+          oneHourAhead.toISOString(),
         );
         expect(count).toBe(2);
       });

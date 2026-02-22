@@ -600,6 +600,14 @@ export interface DatabaseService {
   countTemplatesByCategory(category: string): Promise<number>;
 
   /**
+   * Counts public templates in a specific category.
+   * Uses idx_templates_category_is_public for optimal query performance.
+   * @param category - Template category to filter by
+   * @returns Number of public templates in the category
+   */
+  countPublicTemplatesByCategory(category: string): Promise<number>;
+
+  /**
    * Counts analytics events by type.
    * @param eventType - Event type to filter by
    * @returns Number of events
@@ -1111,6 +1119,12 @@ export class MockDatabaseService implements DatabaseService {
   async countTemplatesByCategory(category: string): Promise<number> {
     return Array.from(this.templates.values()).filter(
       (t) => t.category === category,
+    ).length;
+  }
+
+  async countPublicTemplatesByCategory(category: string): Promise<number> {
+    return Array.from(this.templates.values()).filter(
+      (t) => t.category === category && t.is_public,
     ).length;
   }
 

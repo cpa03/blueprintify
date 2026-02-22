@@ -12,7 +12,7 @@
 - Mock Implementation: `MockDatabaseService` for development
 - Production: D1 bindings configured in `apps/api/src/types.ts`
 - All tables have corresponding Zod schemas and TypeScript types
-- **Test Coverage**: `apps/api/src/db/index.test.ts` - 74 comprehensive tests covering all CRUD operations
+- **Test Coverage**: `apps/api/src/db/index.test.ts` - 76 comprehensive tests covering all CRUD operations
 
 ## Count Operations (v1.3.3)
 
@@ -27,6 +27,7 @@ Efficient counting methods for dashboard stats and pagination without fetching f
 | `countTemplatesByCreator(userId)`                              | Count templates created by user              |
 | `countPublicTemplates()`                                       | Count all public templates                   |
 | `countTemplatesByCategory(category)`                           | Count templates by category                  |
+| `countPublicTemplatesByCategory(category)`                    | Count public templates by category (v1.3.5)  |
 | `countAnalyticsByEventType(eventType)`                         | Count analytics events by type               |
 | `countAnalyticsByEventTypeAndDateRange(eventType, start, end)` | Count events by type and date range          |
 | `countActiveSessionsForUser(userId)`                           | Count active (non-expired) sessions for user |
