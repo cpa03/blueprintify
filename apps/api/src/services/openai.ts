@@ -39,8 +39,20 @@ export interface StreamOptions {
   config: AIConfig;
 }
 
+/**
+ * Singleton circuit breaker instance for AI service resilience.
+ * Lazily initialized on first use via getCircuitBreaker().
+ */
 let circuitBreaker: CircuitBreaker | null = null;
 
+/**
+ * Returns the singleton circuit breaker instance for AI API calls.
+ *
+ * Creates a new circuit breaker with default configuration on first call,
+ * then returns the cached instance for subsequent calls.
+ *
+ * @returns The shared CircuitBreaker instance
+ */
 function getCircuitBreaker(): CircuitBreaker {
   if (!circuitBreaker) {
     circuitBreaker = createCircuitBreaker({
