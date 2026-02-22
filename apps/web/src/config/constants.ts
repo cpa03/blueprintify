@@ -159,6 +159,17 @@ export const CATEGORY_ICONS: Record<string, string> = {
   other: "📦",
 } as const;
 
+// UI emoji constants - centralized for consistency
+// Used across components for consistent emoji rendering
+export const UI_EMOJIS = {
+  /** Document/editing icon */
+  DOCUMENT: "📝",
+  /** Blank document icon */
+  DOCUMENT_BLANK: "📄",
+  /** Settings/gear icon */
+  SETTINGS: "⚙️",
+} as const;
+
 // Minimum requirements
 export const MIN_REQUIREMENTS = {
   TECH_STACK: 1,
