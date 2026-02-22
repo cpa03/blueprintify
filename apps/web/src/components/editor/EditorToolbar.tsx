@@ -160,6 +160,7 @@ function EditorToolbarComponent({
           onClick={onExport}
           disabled={!hasContent || isExporting}
           className="btn-secondary text-sm relative"
+          aria-label="Export as ZIP"
         >
           {isExporting ? (
             <>
