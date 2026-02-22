@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useWizardStore } from "../store";
-import { WIZARD_STEPS } from "../config/constants";
+import { WIZARD_STEPS, UI_EMOJIS } from "../config/constants";
 import {
   staggerContainer,
   fadeInUp,
@@ -36,7 +36,7 @@ export function EditorEmptyState(): JSX.Element {
             }}
             transition={{ ...floatingAnimation.transition, delay: 0.2 }}
           >
-            <span className="text-2xl opacity-50">📄</span>
+            <span className="text-2xl opacity-50">{UI_EMOJIS.DOCUMENT_BLANK}</span>
           </motion.div>
 
           <motion.div
@@ -47,7 +47,7 @@ export function EditorEmptyState(): JSX.Element {
             }}
             transition={{ ...floatingAnimation.transition, delay: 0.1 }}
           >
-            <span className="text-2xl opacity-70">📝</span>
+            <span className="text-2xl opacity-70">{UI_EMOJIS.DOCUMENT}</span>
           </motion.div>
 
           <motion.div
