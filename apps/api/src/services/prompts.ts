@@ -1,13 +1,25 @@
+/**
+ * Prompt Service Module
+ *
+ * Provides system prompts and prompt builders for AI generation operations.
+ * System prompts are re-exported from configuration for backward compatibility.
+ *
+ * @module services/prompts
+ */
+
 import type { BlueprintRequest, RefineRequest } from "@blueprint/shared";
 import { PROMPT_CONFIG } from "../config/constants";
 
 // ===== System Prompts =====
 // Re-export from config for backward compatibility
 
+/** System prompt for the Architect AI persona (Principal Software Architect) */
 export const ARCHITECT_SYSTEM_PROMPT = PROMPT_CONFIG.ARCHITECT_SYSTEM;
 
+/** System prompt for the Task Splitter AI persona (Technical Project Manager) */
 export const TASK_SPLITTER_SYSTEM_PROMPT = PROMPT_CONFIG.TASK_SPLITTER_SYSTEM;
 
+/** System prompt for the Refiner AI persona (Technical Editor) */
 export const REFINER_SYSTEM_PROMPT = PROMPT_CONFIG.REFINER_SYSTEM;
 
 // ===== Prompt Builders =====
