@@ -94,7 +94,17 @@ npm install
 
 ### Pending
 
- [ ] Continue adding inline code comments to other core files (components/Editor.tsx, components/MarkdownRenderer.tsx)
+ - [x] Add JSDoc documentation to Editor.tsx (2026-02-22)
+  - Module-level documentation with feature overview
+  - Component documentation with @returns and @example
+  - Handler function documentation (setCurrentContent, handleCopy, handleExport, handleNewProject)
+  - Export documentation for memoized component
+- [x] Add JSDoc documentation to MarkdownRenderer.tsx (2026-02-22)
+  - Module-level documentation with feature overview
+  - Interface documentation with property descriptions
+  - CodeBlockHeader component documentation
+  - Main component documentation with @param and @returns
+  - Export documentation for memoized component
 - [ ] Fix CI workflow configuration issues (Issue #483) - **BLOCKED** by GitHub App permission restrictions
 
 ## Workflow Configuration Notes

@@ -1,3 +1,20 @@
+/**
+ * @fileoverview Markdown rendering component with syntax highlighting and security sanitization.
+ *
+ * This component provides:
+ * - ReactMarkdown-based rendering with custom styling
+ * - Syntax highlighting for code blocks using PrismLight
+ * - Copy-to-clipboard functionality for code blocks
+ * - XSS protection via DOMPurify sanitization
+ * - GFM (GitHub Flavored Markdown) support
+ *
+ * Custom renderers are provided for all common markdown elements including:
+ * headings, paragraphs, lists, tables, blockquotes, code blocks, links, and images.
+ *
+ * @module components/MarkdownRenderer
+ * @see {@link sanitizeHtml} for XSS protection
+ * @see {@link copyToClipboard} for clipboard functionality
+ */
 import React, { useState, useCallback, memo, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -11,11 +28,24 @@ import { sanitizeHtml } from "../lib/security";
 import { TIMEOUTS } from "../config/constants";
 import type { Components } from "react-markdown";
 
+/**
+ * Props for the MarkdownRenderer component.
+ */
 export interface MarkdownRendererProps {
+  /** The markdown content to render */
   content: string;
+  /** Optional CSS class name to apply to the container */
   className?: string;
 }
 
+/**
+ * Header component for code blocks with language label and copy button.
+ * Displays the programming language and provides one-click copy functionality.
+ *
+ * @param props - Component props
+ * @param props.language - The programming language for syntax highlighting
+ * @param props.code - The code content to copy
+ */
 const CodeBlockHeader = memo(function CodeBlockHeader({
   language,
   code,
@@ -106,10 +136,24 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
   );
 });
 
+/**
+ * Main markdown renderer component with custom styling and syntax highlighting.
+ *
+ * Features:
+ * - Sanitizes HTML content for XSS protection
+ * - Memoizes sanitized content and components for performance
+ * - Provides custom renderers for all markdown elements
+ *
+ * @param props - Component props
+ * @param props.content - The markdown content to render
+ * @param props.className - Optional CSS class name
+ * @returns The rendered markdown content
+ */
 function MarkdownRendererComponent({
   content,
   className,
 }: MarkdownRendererProps) {
+
   // Memoize sanitized content to avoid unnecessary DOMPurify calls
   const sanitizedContent = useMemo(() => sanitizeHtml(content), [content]);
 
@@ -299,4 +343,8 @@ function MarkdownRendererComponent({
   );
 }
 
+/**
+ * Memoized MarkdownRenderer component for optimal re-render performance.
+ * Exported as the default MarkdownRenderer component.
+ */
 export const MarkdownRenderer = memo(MarkdownRendererComponent);
