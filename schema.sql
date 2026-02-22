@@ -2,8 +2,8 @@
 -- Blueprintify Database Schema
 -- ============================================================================
 -- Cloudflare D1 (SQLite) Database Schema
--- Version: 1.3.4
--- Last Updated: 2026-02-21
+-- Version: 1.3.5
+-- Last Updated: 2026-02-22
 -- 
 -- Schema Conventions:
 -- - Table names: snake_case, plural form (e.g., users, project_blueprints)
@@ -204,6 +204,12 @@ CREATE INDEX IF NOT EXISTS idx_templates_created_by_category ON templates(create
 
 -- Popular templates (sorted by usage)
 CREATE INDEX IF NOT EXISTS idx_templates_usage_count ON templates(usage_count DESC);
+
+-- Popular public templates (optimized for getPopularTemplates query)
+CREATE INDEX IF NOT EXISTS idx_templates_is_public_usage_count ON templates(is_public, usage_count DESC);
+
+-- User analytics over time (user activity timeline)
+CREATE INDEX IF NOT EXISTS idx_analytics_user_id_created_at ON analytics(user_id, created_at);
 
 -- Active sessions for user (session validation)
 CREATE INDEX IF NOT EXISTS idx_sessions_user_id_expires_at ON sessions(user_id, expires_at);

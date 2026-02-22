@@ -2,8 +2,8 @@
 
 ## Schema Version
 
-- Current Version: 1.3.4
-- Last Updated: 2026-02-21
+- Current Version: 1.3.5
+- Last Updated: 2026-02-22
 - Schema File: `schema.sql`
 
 ## Database Service Layer
@@ -141,15 +141,17 @@ Create method signatures accept optional version/usage_count to allow caller ove
 
 Use composite indexes for common multi-column query patterns:
 
-| Index                                 | Query Pattern                                                 |
-| ------------------------------------- | ------------------------------------------------------------- |
-| `idx_projects_user_id_status`         | User's active projects (dashboard)                            |
-| `idx_blueprints_project_id_version`   | Latest blueprint version for project (version history lookup) |
-| `idx_analytics_user_id_event_type`    | User-specific analytics                                       |
-| `idx_templates_category_is_public`    | Public templates by category                                  |
-| `idx_templates_created_by_category`   | User's templates by category (filtered my templates page)     |
-| `idx_analytics_event_type_created_at` | Time-based analytics (event trends)                           |
-| `idx_sessions_user_id_expires_at`     | Active sessions for user (session validation)                 |
+| Index                                        | Query Pattern                                                 |
+| -------------------------------------------- | ------------------------------------------------------------- |
+| `idx_projects_user_id_status`                | User's active projects (dashboard)                            |
+| `idx_blueprints_project_id_version`          | Latest blueprint version for project (version history lookup) |
+| `idx_analytics_user_id_event_type`           | User-specific analytics                                       |
+| `idx_templates_category_is_public`           | Public templates by category                                  |
+| `idx_templates_created_by_category`          | User's templates by category (filtered my templates page)     |
+| `idx_analytics_event_type_created_at`        | Time-based analytics (event trends)                           |
+| `idx_sessions_user_id_expires_at`            | Active sessions for user (session validation)                 |
+| `idx_templates_is_public_usage_count` (v1.3.5) | Popular public templates (getPopularTemplates query)        |
+| `idx_analytics_user_id_created_at` (v1.3.5)    | User analytics over time (activity timeline)                 |
 
 ### Query Optimization
 
