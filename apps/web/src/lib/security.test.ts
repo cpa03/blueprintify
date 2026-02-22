@@ -181,6 +181,73 @@ describe("Security Utilities", () => {
     it("should pass safe content", () => {
       expect(containsXSSPatterns("<p>Safe content</p>")).toBe(false);
     });
+
+    it("should detect SVG-based XSS vectors", () => {
+      expect(containsXSSPatterns('<svg onload="alert(\'xss\')">')).toBe(true);
+      expect(containsXSSPatterns('<svg><script>alert("xss")</script></svg>')).toBe(true);
+    });
+
+    it("should detect math-based XSS vectors", () => {
+      expect(containsXSSPatterns('<math><mtext><script>alert("xss")</script></mtext></math>')).toBe(true);
+    });
+
+    it("should detect SVG animate/set elements", () => {
+      expect(containsXSSPatterns('<animate onbegin="alert(\'xss\')"/>')).toBe(true);
+      expect(containsXSSPatterns('<set attributeName="onmouseover" to="alert(\'xss\')"/>')).toBe(true);
+    });
+
+    it("should detect SVG use element for external references", () => {
+      expect(containsXSSPatterns('<use href="data:image/svg+xml,<svg onload=alert(1)>"></use>')).toBe(true);
+    });
+
+    it("should detect data: URL with base64", () => {
+      expect(containsXSSPatterns('data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==')).toBe(true);
+    });
+
+    it("should detect blob: URLs", () => {
+      expect(containsXSSPatterns('blob:https://example.com/uuid')).toBe(true);
+    });
+
+    it("should detect DOM clobbering patterns", () => {
+      expect(containsXSSPatterns('<img id="__proto__" src="x">')).toBe(true);
+      expect(containsXSSPatterns('<img id="constructor" src="x">')).toBe(true);
+    });
+
+    it("should detect mutation XSS patterns", () => {
+      expect(containsXSSPatterns('<noscript><img src=x onerror=alert(1)></noscript>')).toBe(true);
+      expect(containsXSSPatterns('<template><script>alert("xss")</script></template>')).toBe(true);
+    });
+
+    it("should detect iframe injection", () => {
+      expect(containsXSSPatterns('<iframe src="javascript:alert(\'xss\')">')).toBe(true);
+    });
+
+    it("should detect object/embed tags", () => {
+      expect(containsXSSPatterns('<object data="javascript:alert(\'xss\')">')).toBe(true);
+      expect(containsXSSPatterns('<embed src="javascript:alert(\'xss\')">')).toBe(true);
+    });
+
+    it("should detect form injection", () => {
+      expect(containsXSSPatterns('<form action="javascript:alert(\'xss\')">')).toBe(true);
+      expect(containsXSSPatterns('<input onfocus="alert(\'xss\')" autofocus>')).toBe(true);
+      expect(containsXSSPatterns('<button onclick="alert(\'xss\')">Click</button>')).toBe(true);
+    });
+
+    it("should detect eval() calls", () => {
+      expect(containsXSSPatterns('eval("alert(\'xss\')")')).toBe(true);
+    });
+
+    it("should detect CSS expression attacks", () => {
+      expect(containsXSSPatterns('expression(alert("xss"))')).toBe(true);
+    });
+
+    it("should detect vbscript: URLs", () => {
+      expect(containsXSSPatterns('vbscript:msgbox("xss")')).toBe(true);
+    });
+
+    it("should detect @import CSS injection", () => {
+      expect(containsXSSPatterns('@import url("javascript:alert(\'xss\')")')).toBe(true);
+    });
   });
 
   describe("checkStorageQuota", () => {

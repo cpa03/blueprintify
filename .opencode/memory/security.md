@@ -8,7 +8,7 @@
 - CI/CD security: Standardized runner versions (`ubuntu-24.04-arm`) and action versions across all workflows.
 - Regular security audits (monthly recommended).
 
-## Current Security Status (2026-02-22 06:15 UTC)
+## Current Security Status (2026-02-22 21:05 UTC)
 
 | Control             | Status                                                |
 | ------------------- | ----------------------------------------------------- |
@@ -24,8 +24,8 @@
 | HTML Sanitization   | ✅ DOMPurify configured (SVG/math blocked)            |
 | Rate Limiting       | ✅ Cloudflare rate limiter                            |
 | CI Runner           | ✅ All workflows use ubuntu-24.04-arm                 |
-| CI Actions          | ⚠️ main.yml uses invalid @v5 (blocked by #483)        |
-| npm audit           | ⚠️ 17 vulnerabilities (dev deps only) - risk accepted |
+| CI Actions          | ⚠️ main.yml uses invalid @v5 (blocked by #743)        |
+| npm audit           | ⚠️ 16 vulnerabilities (dev deps only) - risk accepted |
 | .dev.vars gitignore  | ✅ Added to prevent credential commits               |
 
 ## Lessons Learned
