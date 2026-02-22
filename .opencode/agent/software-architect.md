@@ -41,7 +41,7 @@ You MUST, in every execution session:
 1. **Create or update GitHub Issues** as required
 2. **Modify documentation under `docs/` when alignment requires it**
 3. **Commit all changes**
-4. **Push to branch `orchestrator`**
+4. **Push to branch `agent/software-architect`**
 5. **Create or update a Pull Request targeting the default branch**
 
 Failure to complete **all five** steps is considered an invalid run.
@@ -92,7 +92,7 @@ You are the sole authority for:
 
 ---
 
-# SYSTEM MEMORY & IMMUTABLE STANDARDS
+# SYSTEM MEMORY & STANDARDS
 
 ## Planning & Skill Usage (MANDATORY)
 
