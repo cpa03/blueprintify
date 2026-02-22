@@ -8,6 +8,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "skewProtection": true,
+  "regions": ["iad1", "sfo1", "fra1"],
   "fluid": true,
   "cacheMaxDuration": 31536000,
   "images": {
