@@ -6,6 +6,10 @@ import { DEFAULT_ERROR_MESSAGES, HTTP_STATUS } from "./config/constants";
  */
 
 // ===== Error Types =====
+/**
+ * Enumeration of error type classifications used throughout the API.
+ * Each type maps to a specific HTTP status code and error category.
+ */
 export enum ErrorType {
   VALIDATION = "validation",
   AUTHENTICATION = "authentication",
@@ -19,6 +23,10 @@ export enum ErrorType {
 }
 
 // ===== Error Response Interface =====
+/**
+ * Standard error response format returned by all API endpoints.
+ * Provides consistent error structure for client-side handling.
+ */
 export interface ErrorResponse {
   success: false;
   error: {
