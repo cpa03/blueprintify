@@ -95,7 +95,7 @@ export function useLastSaved(
     initialTimestamp,
   );
   const [hasChanges, setHasChanges] = useState(false);
-  const [, forceUpdate] = useState({});
+  const [tick, setTick] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const lastSavedText = useMemo(() => {
@@ -103,11 +103,7 @@ export function useLastSaved(
       return formatRelativeTime(lastSavedTimestamp);
     }
     return "";
-  }, [lastSavedTimestamp]);
-
-  const refreshDisplay = useCallback(() => {
-    forceUpdate({});
-  }, []);
+  }, [lastSavedTimestamp, tick]);
 
   useEffect(() => {
     if (intervalRef.current) {
@@ -115,7 +111,7 @@ export function useLastSaved(
     }
 
     intervalRef.current = setInterval(() => {
-      refreshDisplay();
+      setTick((t) => t + 1);
     }, updateInterval);
 
     return () => {
@@ -123,7 +119,7 @@ export function useLastSaved(
         clearInterval(intervalRef.current);
       }
     };
-  }, [updateInterval, refreshDisplay]);
+  }, [updateInterval]);
 
   const markSaved = useCallback(() => {
     setLastSavedTimestamp(Date.now());
