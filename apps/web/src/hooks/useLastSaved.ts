@@ -98,11 +98,15 @@ export function useLastSaved(
   const [tick, setTick] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  // tick is intentionally used to trigger re-computation of relative time
+  // every updateInterval milliseconds. Without it, "Saved 2m ago" would never
+  // update to "Saved 3m ago" etc.
   const lastSavedText = useMemo(() => {
     if (lastSavedTimestamp) {
       return formatRelativeTime(lastSavedTimestamp);
     }
     return "";
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastSavedTimestamp, tick]);
 
   useEffect(() => {
