@@ -132,6 +132,13 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
   };
 };
 
+/**
+ * Pre-configured rate limit configurations for common use cases.
+ *
+ * - `strict`: For sensitive endpoints (auth, password reset)
+ * - `standard`: For general API endpoints
+ * - `lenient`: For high-volume endpoints (health checks, metrics)
+ */
 export const rateLimitConfigs = {
   get strict() {
     return { limiter: "STRICT_RATE_LIMITER" as RateLimiterName };

@@ -6,6 +6,23 @@ import { TimeoutError } from "../utils/timeout";
 import { ERROR_CODES, ERROR_MESSAGES, HTTP_STATUS } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
 
+/**
+ * Global error handler middleware for the API.
+ *
+ * Catches all errors thrown in route handlers and returns appropriate
+ * JSON error responses with consistent structure.
+ *
+ * Handles the following error types:
+ * - TimeoutError: Returns 504 Gateway Timeout
+ * - CircuitBreakerOpenError: Returns 503 Service Unavailable
+ * - Zod validation errors: Returns 400 Bad Request with issue details
+ * - APIError: Returns the error's status code
+ * - Unknown errors: Returns 500 Internal Server Error
+ *
+ * @param err - The error that was thrown
+ * @param c - Hono context object
+ * @returns JSON response with error details
+ */
 export const errorHandler = (err: unknown, c: Context): Response => {
   const requestId = c.get("requestId") as string | undefined;
 
@@ -91,6 +108,15 @@ export const errorHandler = (err: unknown, c: Context): Response => {
   return c.json(errorResponse, statusCode as 400 | 401 | 403 | 404 | 500 | 502);
 };
 
+/**
+ * Not found handler for unmatched routes.
+ *
+ * Returns a 404 Not Found response for any route that doesn't
+ * match defined endpoints. Includes request path and method in error.
+ *
+ * @param c - Hono context object
+ * @returns JSON response with 404 error details
+ */
 export const notFoundHandler = (c: Context): Response => {
   const requestId = c.get("requestId") as string | undefined;
 
