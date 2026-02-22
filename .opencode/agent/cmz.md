@@ -3,7 +3,7 @@ description: CMZ - Cognitive Multi-Agent System with Self-Heal, Self-Learning, S
 code: CMZ
 mode: primary
 model: opencode/glm-4.7-free
-temperature: 0.3
+temperature: 0.1
 tools:
   write: true
   edit: true

@@ -2,7 +2,7 @@
 description: Automated Product Strategist. Updates project plans.
 mode: primary
 model: opencode/glm-4.7-free
-temperature: 0.3
+temperature: 0.5
 tools:
   write: true
   edit: true

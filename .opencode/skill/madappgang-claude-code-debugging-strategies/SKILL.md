@@ -5,9 +5,7 @@ description: Universal debugging strategies and techniques applicable across all
 
 # Universal Debugging Strategies
 
-**Skill**: debugging-strategies
-**Plugin**: dev
-**Version**: 1.0.0
+
 
 ## Overview
 
