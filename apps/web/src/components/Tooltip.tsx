@@ -1,5 +1,7 @@
 import { useState, useCallback, useRef, ReactNode, useId, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { TOOLTIP_CONFIG } from "../config/constants";
+
 
 interface TooltipProps {
   children: ReactNode;
@@ -30,7 +32,7 @@ const TooltipComponent = ({
   children,
   content,
   position = "top",
-  delay = 500,
+  delay = TOOLTIP_CONFIG.DEFAULT_DELAY,
   id,
 }: TooltipProps): JSX.Element => {
   const [isVisible, setIsVisible] = useState(false);
@@ -139,7 +141,7 @@ function KeyboardShortcutTooltipComponent({
   );
 
   return (
-    <Tooltip content={content} position={position} delay={300}>
+    <Tooltip content={content} position={position} delay={TOOLTIP_CONFIG.KEYBOARD_SHORTCUT_DELAY}>
       {children}
     </Tooltip>
   );

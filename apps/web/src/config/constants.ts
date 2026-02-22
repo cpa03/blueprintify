@@ -138,6 +138,28 @@ export const UI = {
   SCROLL_TO_TOP_THRESHOLD: 600,
 } as const;
 
+// Tooltip configuration
+export const TOOLTIP_CONFIG = {
+  /** Default delay before tooltip appears (ms) */
+  DEFAULT_DELAY: 500,
+  /** Delay for keyboard shortcut tooltips (ms) */
+  KEYBOARD_SHORTCUT_DELAY: 300,
+  /** Delay for info tooltips (ms) */
+  INFO_DELAY: 200,
+  /** Default hide delay for smart tooltips (ms) */
+  DEFAULT_HIDE_DELAY: 100,
+  /** Default show delay for smart tooltips (ms) */
+  DEFAULT_SHOW_DELAY: 400,
+  /** Default max width for tooltips (px) */
+  DEFAULT_MAX_WIDTH: 320,
+  /** Max width for info tooltips (px) */
+  INFO_MAX_WIDTH: 280,
+  /** Estimated tooltip height for position calculation (px) */
+  ESTIMATED_HEIGHT: 60,
+  /** Viewport padding for tooltip positioning (px) */
+  VIEWPORT_PADDING: 16,
+} as const;
+
 // Step configuration
 export const WIZARD_STEPS = [
   { key: "info", label: "Project Info", icon: "📝", shortcut: "1" },

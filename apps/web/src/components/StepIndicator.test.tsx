@@ -39,6 +39,17 @@ vi.mock("../config/constants", () => ({
     COMPLETED: "#10b981",
     ACTIVE: "#6366f1",
   },
+  TOOLTIP_CONFIG: {
+    DEFAULT_DELAY: 500,
+    KEYBOARD_SHORTCUT_DELAY: 300,
+    INFO_DELAY: 200,
+    DEFAULT_HIDE_DELAY: 100,
+    DEFAULT_SHOW_DELAY: 400,
+    DEFAULT_MAX_WIDTH: 320,
+    INFO_MAX_WIDTH: 280,
+    ESTIMATED_HEIGHT: 60,
+    VIEWPORT_PADDING: 16,
+  },
 }));
 
 vi.mock("framer-motion", () => {
