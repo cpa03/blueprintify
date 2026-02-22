@@ -256,6 +256,12 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
                 <button
                   key={feature}
                   onClick={() => addFeature(feature)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      addFeature(feature);
+                    }
+                  }}
                   className="tech-chip hover:border-accent-emerald/50"
                   aria-label={`Add suggestion: ${feature}`}
                 >
