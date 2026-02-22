@@ -1,46 +1,15 @@
 /**
  * SSE Stream Utilities
- * Provides Server-Sent Events formatting and streaming response creation
+ * Provides Server-Sent Events streaming response creation
  * for real-time content delivery.
  */
 
+import { formatSSE } from "@blueprint/shared";
 import { SSE_HEADERS, CORS_CONFIG, SSE_CONFIG } from "../config/constants";
 
-/**
- * Server-Sent Event message structure
- */
-export interface SSEMessage {
-  /** Optional event type name */
-  event?: string;
-  /** Event data payload */
-  data: string;
-  /** Optional event ID for replay tracking */
-  id?: string;
-}
-
-/**
- * Formats a message into SSE protocol format
- * @param message - SSE message containing event, data, and optional id
- * @returns Formatted SSE string ready for transmission
- */
-export function formatSSE(message: SSEMessage): string {
-  let result = "";
-
-  if (message.event) {
-    result += `event: ${message.event}\n`;
-  }
-  if (message.id) {
-    result += `id: ${message.id}\n`;
-  }
-
-  const lines = message.data.split("\n");
-  for (const line of lines) {
-    result += `data: ${line}\n`;
-  }
-
-  result += "\n";
-  return result;
-}
+// Re-export for backward compatibility
+export { formatSSE } from "@blueprint/shared";
+export type { SSEMessage } from "@blueprint/shared";
 
 /**
  * Creates an HTTP Response with SSE streaming headers

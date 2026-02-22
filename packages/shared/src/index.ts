@@ -73,4 +73,6 @@ export {
 export type { RetryOptions, RetryConfigValues } from "./config";
 
 // ===== Utilities =====
-export { createDebouncedSaver } from "./utils";
+export { createDebouncedSaver, formatSSE } from "./utils";
+
+export type { SSEMessage } from "./utils";
