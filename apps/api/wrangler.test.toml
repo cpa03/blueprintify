@@ -1,0 +1,20 @@
+# Test configuration for Cloudflare Workers
+# This file is optimized for local testing without requiring authentication
+# Used by vitest-pool-workers for CI/CD pipelines
+
+name = "blueprint-generator-api-test"
+main = "src/index.ts"
+compatibility_date = "2026-02-19"
+compatibility_flags = ["nodejs_compat"]
+tsconfig = "./tsconfig.json"
+
+# Test environment variables
+[vars]
+ENVIRONMENT = "test"
+CORS_ORIGIN = "*"
+RATE_LIMIT_REQUESTS = "1000"
+RATE_LIMIT_WINDOW = "60"
+
+# Minimal limits for tests
+[limits]
+cpu_ms = 10000
