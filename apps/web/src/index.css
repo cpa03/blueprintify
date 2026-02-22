@@ -356,7 +356,8 @@
     .glow-pulse,
     .animated-bg,
     .focus-glow,
-    .shake-animation {
+    .shake-animation,
+    .skeleton-group {
       animation: none !important;
     }
 
@@ -365,6 +366,12 @@
     .btn-secondary:not(:disabled):hover,
     .btn-ghost:not(:disabled):hover {
       transform: none !important;
+    }
+
+    /* Static skeleton for reduced motion - use solid color instead of animated gradient */
+    .skeleton-base {
+      animation: none !important;
+      background: rgba(255, 255, 255, 0.04);
     }
   }
 
