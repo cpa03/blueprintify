@@ -1,3 +1,24 @@
+/**
+ * @fileoverview Wizard component for the project configuration workflow.
+ *
+ * This component manages the 5-step wizard flow for creating new project blueprints:
+ * 1. Info - Basic project information (name, description)
+ * 2. Stack - Technology stack selection
+ * 3. Features - Feature selection for the project
+ * 4. Review - Review and confirm all selections
+ * 5. Generating - AI generation with progress display
+ *
+ * The wizard integrates with Zustand stores for state persistence and uses
+ * Framer Motion for step transitions. Accessibility features include:
+ * - Focus management on step changes
+ * - Screen reader announcements for navigation
+ * - Dynamic document titles showing progress
+ *
+ * @module components/Wizard
+ * @see {@link useWizardStore} - Wizard state management
+ * @see {@link useEditorStore} - Generation state tracking
+ */
+
 import React from "react";
 import { AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../store";
@@ -14,6 +35,10 @@ import {
 } from "../hooks/useFocusOnStepChange";
 import { WIZARD_STEPS } from "../config/constants";
 
+/**
+ * Human-readable titles for each wizard step.
+ * Used for document title and accessibility announcements.
+ */
 const STEP_TITLES: Record<string, string> = {
   info: "Project Info",
   stack: "Tech Stack",
@@ -22,6 +47,20 @@ const STEP_TITLES: Record<string, string> = {
   generating: "Generating...",
 };
 
+/**
+ * Main wizard component that renders the current step content.
+ *
+ * This component handles:
+ * - Step rendering based on current wizard state
+ * - Focus management for accessibility when steps change
+ * - Screen reader announcements for navigation
+ * - Dynamic document title updates (shows progress during generation)
+ *
+ * @returns The rendered wizard step component wrapped in AnimatePresence
+ * @example
+ * // In App.tsx or layout
+ * <Wizard />
+ */
 function WizardComponent(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
   const isGenerating = useEditorStore((s) => s.isGenerating);
@@ -66,4 +105,8 @@ function WizardComponent(): JSX.Element {
   );
 }
 
+/**
+ * Memoized wizard component export.
+ * Re-renders only when wizard step or generation state changes.
+ */
 export const Wizard = React.memo(WizardComponent);

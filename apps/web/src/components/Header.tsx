@@ -1,12 +1,44 @@
+/**
+ * @fileoverview Application header component with branding and navigation.
+ *
+ * This component provides:
+ * - App logo and branding with gradient icon
+ * - Keyboard shortcuts button (optional)
+ * - GitHub repository link
+ *
+ * The header uses glass morphism styling with backdrop blur and
+ * Framer Motion for entrance animations. It's fixed at the top of
+ * the viewport with proper z-index layering.
+ *
+ * @module components/Header
+ */
+
 import { memo } from "react";
 import { motion } from "framer-motion";
 import { UI_CONTENT, EXTERNAL_URLS } from "../config/constants";
 import { RippleButton } from "./RippleButton";
 
+/**
+ * Props for the Header component.
+ */
 interface HeaderProps {
+  /** Callback fired when keyboard shortcuts button is clicked. */
   onShowShortcuts?: () => void;
 }
 
+/**
+ * Application header component with branding and navigation.
+ *
+ * @param props - Component props
+ * @param props.onShowShortcuts - Optional callback for keyboard shortcuts modal
+ * @returns The rendered header element
+ * @example
+ * // Basic usage
+ * <Header />
+ * @example
+ * // With shortcuts button
+ * <Header onShowShortcuts={() => setShowShortcuts(true)} />
+ */
 function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-dark-700/50 backdrop-blur-xl">
@@ -86,4 +118,8 @@ function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
   );
 }
 
+/**
+ * Memoized header component export.
+ * Re-renders only when onShowShortcuts prop changes.
+ */
 export const Header = memo(HeaderComponent);
