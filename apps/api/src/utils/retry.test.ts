@@ -253,6 +253,60 @@ describe("Retry Utilities", () => {
       await expect(resultPromise).rejects.toEqual(serverError);
     });
 
+    it("should cap delay at maxDelay option", async () => {
+      const serverError = { status: 503 };
+      const operation = vi.fn().mockRejectedValue(serverError);
+
+      const resultPromise = withRetry(operation, {
+        retries: 5,
+        initialDelay: 1000,
+        backoffFactor: 2,
+        maxDelay: 3000,
+      });
+
+      // First retry after 1000ms (initialDelay)
+      await vi.advanceTimersByTimeAsync(1000);
+      expect(operation).toHaveBeenCalledTimes(2);
+
+      // Second retry after 2000ms (1000 * 2, capped at 3000)
+      await vi.advanceTimersByTimeAsync(2000);
+      expect(operation).toHaveBeenCalledTimes(3);
+
+      // Third retry after 3000ms (would be 4000, but capped at 3000)
+      await vi.advanceTimersByTimeAsync(3000);
+      expect(operation).toHaveBeenCalledTimes(4);
+
+      // Fourth retry after 3000ms (still capped)
+      await vi.advanceTimersByTimeAsync(3000);
+      expect(operation).toHaveBeenCalledTimes(5);
+
+      // Fifth retry after 3000ms (still capped)
+      await vi.advanceTimersByTimeAsync(3000);
+      expect(operation).toHaveBeenCalledTimes(6);
+
+      await expect(resultPromise).rejects.toEqual(serverError);
+    });
+
+    it("should use default maxDelay from config when not specified", async () => {
+      vi.useRealTimers();
+
+      const serverError = { status: 503 };
+      const operation = vi.fn().mockRejectedValue(serverError);
+
+      // With default maxDelay of 10000ms, delay should cap at 10000
+      // Using high backoff factor to exceed default max quickly
+      const resultPromise = withRetry(operation, {
+        retries: 3,
+        initialDelay: 5000,
+        backoffFactor: 10, // 5000 -> 50000, but capped at 10000
+      });
+
+      await expect(resultPromise).rejects.toEqual(serverError);
+      expect(operation).toHaveBeenCalledTimes(4); // Initial + 3 retries
+
+      vi.useFakeTimers();
+    });
+
     it("should handle all retryable error codes", async () => {
       const retryableCodes = [
         "ECONNRESET",

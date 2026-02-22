@@ -9,6 +9,7 @@ import {
   RETRYABLE_ERROR_CODES,
   RETRY_LOGIC,
 } from "../config/constants";
+import { getConfig } from "../config/env";
 
 /**
  * Configuration options for retry behavior
@@ -20,6 +21,8 @@ export interface RetryOptions {
   initialDelay?: number;
   /** Multiplier for exponential backoff between retries */
   backoffFactor?: number;
+  /** Maximum delay cap in milliseconds (prevents unbounded growth) */
+  maxDelay?: number;
   /** Optional callback invoked on each retry attempt */
   onRetry?: (error: unknown, attempt: number) => void;
 }
@@ -49,6 +52,7 @@ export async function withRetry<T>(
     retries = RETRY_CONFIG.DEFAULT_RETRIES,
     initialDelay = RETRY_CONFIG.DEFAULT_INITIAL_DELAY,
     backoffFactor = RETRY_CONFIG.DEFAULT_BACKOFF_FACTOR,
+    maxDelay = getConfig().RETRY_MAX_DELAY_MS,
     onRetry,
   } = options;
 
@@ -76,7 +80,7 @@ export async function withRetry<T>(
       }
 
       await new Promise((resolve) => setTimeout(resolve, delay));
-      delay *= backoffFactor;
+      delay = Math.min(delay * backoffFactor, maxDelay);
     }
   }
 
