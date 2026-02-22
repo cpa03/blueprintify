@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ErrorBoundary component for graceful error handling in React frontend
 - Comprehensive database service test coverage (49 tests)
 - Warning log when rate limiter is not configured for improved observability
+- `countPublicTemplatesByCategory` method to DatabaseService for template analytics
 
 ### Changed
 
@@ -24,16 +25,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed default value handling in MockDatabaseService (version, usage_count)
 - Improved request logger middleware to handle undefined header values
 - Replaced generic `Error` throws with typed `NotFoundError` in MockDatabaseService for better error discrimination
+- JSDoc documentation added to Wizard.tsx and Header.tsx components ([#816](https://github.com/cpa03/blueprintify/pull/816))
+- Improved StepIndicator accessibility for mobile screen readers ([#818](https://github.com/cpa03/blueprintify/pull/818))
 
 ### Security
 
 - Comprehensive reliability audit verified all patterns implemented correctly (Error Boundaries, JSON Safety, Timeout Handling, Circuit Breaker, Rate Limiting, Input Validation, Storage Recovery, XSS Protection, Error Classes, Retry Logic)
+- Added `.dev.vars` to `.gitignore` to prevent credential commits ([#819](https://github.com/cpa03/blueprintify/pull/819))
 
 ### Fixed
 
 - Recursive trigger bug in schema.sql that caused infinite loops
 - `deserializeJSON` safety with proper error handling
 - Share endpoint validation consistency using SHARE_CONFIG.ID_LENGTH constant
+- Updated bugs.md - marked BUG-009 resolved, added BUG-010 for issue #743 ([#815](https://github.com/cpa03/blueprintify/pull/815))
 
 ## [1.0.0] - 2026-02-18
 

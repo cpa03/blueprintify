@@ -366,7 +366,7 @@
 - **Assignee**: Technical Writer
 - **Priority**: Medium
 - **Status**: Deferred (2026-02-13)
-- **Reason**: M2 is 95% complete with finalization phase ongoing. Premature to start M3 preparation.
+- **Reason**: M2 is 100% complete. Premature to start M3 preparation.
 - **Dependencies**: M2 completion required
 - **Acceptance**:
   - M2 finalization complete

@@ -62,9 +62,9 @@
 
 **Coordinated by Issue #285: ORCHESTRATOR: M2 Finalization**
 
-- **Issue #277**: Integration Testing for M2 Features (Integration Engineer) - Open
+- **Issue #277**: Integration Testing for M2 Features (Integration Engineer) - ✅ CLOSED
 - ~~**Issue #230**: Comprehensive Test Suite for M2 Features (Quality Assurance)~~ - ✅ CLOSED
-- **Issue #270**: Standardize OpenCode Model Configuration (DevOps Engineer) - Open
+- **Issue #270**: Standardize OpenCode Model Configuration (DevOps Engineer) - ✅ CLOSED
 
 #### General Improvements
 
