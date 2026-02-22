@@ -3,7 +3,7 @@ import type { Env } from "../types";
 import { getConfig } from "../config/env";
 import { HTTP_STATUS } from "../config/constants";
 import { TIME_UNITS } from "@blueprint/shared";
-import { secureLogWarn } from "../utils/secureLog";
+import { secureLogWarn, secureLogError } from "../utils/secureLog";
 
 type RateLimiterName =
   | "STRICT_RATE_LIMITER"
@@ -100,6 +100,16 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
         getConfig().RATE_LIMIT_WINDOW_MS / TIME_UNITS.MS_PER_SECOND,
       );
       c.header("Retry-After", String(retryAfterSeconds));
+
+      // Log rate limit block for security monitoring
+      secureLogError("RateLimit", "Request blocked by rate limiter", {
+        endpoint: c.req.path,
+        method: c.req.method,
+        clientKey: key,
+        limit,
+        retryAfter: retryAfterSeconds,
+      });
+
       return c.json(
         {
           success: false,
