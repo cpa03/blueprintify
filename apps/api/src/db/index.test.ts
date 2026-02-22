@@ -4,8 +4,8 @@ import {
   serializeJSON,
   deserializeJSON,
   DatabaseError,
-  ValidationError,
-  NotFoundError,
+  DatabaseValidationError,
+  DatabaseNotFoundError,
 } from "./index";
 
 describe("MockDatabaseService", () => {
@@ -1220,20 +1220,20 @@ describe("Error Classes", () => {
     });
   });
 
-  describe("ValidationError", () => {
+  describe("DatabaseValidationError", () => {
     it("should create validation error", () => {
-      const error = new ValidationError("Invalid data");
+      const error = new DatabaseValidationError("Invalid data");
       expect(error.message).toBe("Invalid data");
-      expect(error.name).toBe("ValidationError");
+      expect(error.name).toBe("DatabaseValidationError");
       expect(error).toBeInstanceOf(DatabaseError);
     });
   });
 
-  describe("NotFoundError", () => {
+  describe("DatabaseNotFoundError", () => {
     it("should create not found error", () => {
-      const error = new NotFoundError("Resource not found");
+      const error = new DatabaseNotFoundError("Resource not found");
       expect(error.message).toBe("Resource not found");
-      expect(error.name).toBe("NotFoundError");
+      expect(error.name).toBe("DatabaseNotFoundError");
       expect(error).toBeInstanceOf(DatabaseError);
     });
   });
