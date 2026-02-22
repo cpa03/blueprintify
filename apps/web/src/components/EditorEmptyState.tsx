@@ -36,7 +36,7 @@ export function EditorEmptyState(): JSX.Element {
             }}
             transition={{ ...floatingAnimation.transition, delay: 0.2 }}
           >
-            <span className="text-2xl opacity-50">{UI_EMOJIS.DOCUMENT_BLANK}</span>
+            <span className="text-2xl opacity-50" role="img" aria-label="Blank document">{UI_EMOJIS.DOCUMENT_BLANK}</span>
           </motion.div>
 
           <motion.div
@@ -47,7 +47,7 @@ export function EditorEmptyState(): JSX.Element {
             }}
             transition={{ ...floatingAnimation.transition, delay: 0.1 }}
           >
-            <span className="text-2xl opacity-70">{UI_EMOJIS.DOCUMENT}</span>
+            <span className="text-2xl opacity-70" role="img" aria-label="Document">{UI_EMOJIS.DOCUMENT}</span>
           </motion.div>
 
           <motion.div

@@ -4,6 +4,22 @@
 
 /* ===== Base Styles ===== */
 @layer base {
+  /* CSS Custom Properties for theme consistency */
+  :root {
+    /* Primary colors - matches Tailwind primary-* */
+    --color-primary-500: #6366f1;
+    --color-primary-400: #818cf8;
+    
+    /* Accent colors - matches Tailwind accent-* */
+    --color-accent-purple: #8b5cf6;
+    --color-accent-pink: #ec4899;
+    --color-accent-emerald: #10b981;
+    
+    /* Gradient colors for reusable gradients */
+    --gradient-primary: linear-gradient(135deg, var(--color-primary-500), var(--color-accent-purple), var(--color-accent-pink));
+    --gradient-glow: linear-gradient(135deg, rgba(99, 102, 241, 0.5), rgba(139, 92, 246, 0.3));
+  }
+
   * {
     @apply box-border;
   }
@@ -80,7 +96,7 @@
     inset: 0;
     padding: 1px;
     border-radius: inherit;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+    background: var(--gradient-primary);
     -webkit-mask: linear-gradient(#fff 0 0) content-box,
       linear-gradient(#fff 0 0);
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -384,7 +400,7 @@
     position: absolute;
     inset: -2px;
     border-radius: inherit;
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.5), rgba(139, 92, 246, 0.3));
+    background: var(--gradient-glow);
     opacity: 0;
     z-index: -1;
     filter: blur(8px);
