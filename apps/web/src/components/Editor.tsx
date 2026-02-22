@@ -1,3 +1,24 @@
+/**
+ * @fileoverview Main Editor component for the Blueprintify application.
+ *
+ * This component provides a split-pane editor interface with:
+ * - CodeMirror-based markdown editing
+ * - Real-time markdown preview
+ * - Tab switching between blueprint and tasks content
+ * - Export functionality (ZIP download)
+ * - Copy to clipboard functionality
+ * - Auto-save state tracking
+ *
+ * The editor supports three view modes:
+ * - "edit": Full-width code editor
+ * - "preview": Full-width markdown preview
+ * - "split": Side-by-side editor and preview
+ *
+ * @module components/Editor
+ * @see {@link useEditorStore} for content state management
+ * @see {@link useWizardStore} for project metadata
+ * @see {@link useLastSaved} for save state tracking
+ */
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { LazyMarkdownRenderer } from "./LazyMarkdownRenderer";
@@ -18,6 +39,16 @@ import { TIMEOUTS, DEFAULT_PROJECT_NAME, UI } from "../config/constants";
 import { useLastSaved } from "../hooks/useLastSaved";
 import clsx from "clsx";
 
+/**
+ * Main editor component providing split-pane editing with live preview.
+ *
+ * @returns The rendered editor interface
+ *
+ * @example
+ * ```tsx
+ * <Editor />
+ * ```
+ */
 function EditorComponent(): JSX.Element {
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [copied, setCopied] = useState<string | null>(null);
@@ -39,6 +70,12 @@ function EditorComponent(): JSX.Element {
 
   const currentContent =
     activeTab === "blueprint" ? blueprintContent : tasksContent;
+  /**
+   * Updates the current content (blueprint or tasks) with sanitization.
+   * Handles security validation and error reporting.
+   *
+   * @param content - The new markdown content to set
+   */
   const setCurrentContent = useCallback(
     (content: string) => {
       try {
@@ -76,6 +113,10 @@ function EditorComponent(): JSX.Element {
     }
   }, [blueprintContent, tasksContent, markSaved]);
 
+  /**
+   * Copies the current content to clipboard in IDE-friendly format.
+   * Shows success toast and temporary "copied" state feedback.
+   */
   const handleCopy = useCallback(async () => {
     const formatted = formatForIDE(currentContent);
     const success = await copyToClipboard(formatted);
@@ -86,6 +127,10 @@ function EditorComponent(): JSX.Element {
     }
   }, [currentContent, activeTab, toast]);
 
+  /**
+   * Exports the current project as a ZIP file containing blueprint.md and tasks.md.
+   * Includes project metadata from the wizard store.
+   */
   const handleExport = useCallback(async () => {
     setIsExporting(true);
     try {
@@ -109,6 +154,10 @@ function EditorComponent(): JSX.Element {
     }
   }, [blueprintContent, tasksContent, projectName, toast]);
 
+  /**
+   * Resets all stores to start a new project.
+   * Clears blueprint, tasks, and wizard state.
+   */
   const handleNewProject = useCallback(() => {
     resetAllStores();
     toast.info("Started new project");
@@ -196,4 +245,8 @@ function EditorComponent(): JSX.Element {
   );
 }
 
+/**
+ * Memoized Editor component for optimal re-render performance.
+ * Exported as the default Editor component.
+ */
 export const Editor = React.memo(EditorComponent);
