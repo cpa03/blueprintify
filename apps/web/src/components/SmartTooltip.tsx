@@ -8,7 +8,7 @@ import {
   useId,
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SPRING_CONFIG } from "../config/constants";
+import { SPRING_CONFIG, TOOLTIP_CONFIG } from "../config/constants";
 
 type Position = "top" | "bottom" | "left" | "right";
 
@@ -66,9 +66,9 @@ function SmartTooltipComponent({
   children,
   content,
   position = "top",
-  delay = 400,
-  hideDelay = 100,
-  maxWidth = 320,
+  delay = TOOLTIP_CONFIG.DEFAULT_SHOW_DELAY,
+  hideDelay = TOOLTIP_CONFIG.DEFAULT_HIDE_DELAY,
+  maxWidth = TOOLTIP_CONFIG.DEFAULT_MAX_WIDTH,
   dismissOnClickOutside = true,
   dismissOnEscape = true,
   id,
@@ -100,9 +100,9 @@ function SmartTooltipComponent({
     if (!triggerRef.current) return position;
 
     const triggerRect = triggerRef.current.getBoundingClientRect();
-    const tooltipWidth = Math.min(maxWidth, 320);
-    const tooltipHeight = 60;
-    const padding = 16;
+    const tooltipWidth = Math.min(maxWidth, TOOLTIP_CONFIG.DEFAULT_MAX_WIDTH);
+    const tooltipHeight = TOOLTIP_CONFIG.ESTIMATED_HEIGHT;
+    const padding = TOOLTIP_CONFIG.VIEWPORT_PADDING;
 
     const viewport = {
       width: window.innerWidth,
@@ -330,7 +330,7 @@ function KeyboardShortcutTooltipComponent({
     <SmartTooltip
       content={content}
       position={position}
-      delay={300}
+      delay={TOOLTIP_CONFIG.KEYBOARD_SHORTCUT_DELAY}
       dismissOnEscape={true}
     >
       {children}
@@ -361,8 +361,8 @@ function InfoTooltipComponent({
     <SmartTooltip
       content={content}
       position={position}
-      delay={200}
-      maxWidth={280}
+      delay={TOOLTIP_CONFIG.INFO_DELAY}
+      maxWidth={TOOLTIP_CONFIG.INFO_MAX_WIDTH}
     >
       <span className="inline-flex items-center gap-1 cursor-help">
         {children}
