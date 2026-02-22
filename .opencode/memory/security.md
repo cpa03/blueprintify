@@ -8,7 +8,7 @@
 - CI/CD security: Standardized runner versions (`ubuntu-24.04-arm`) and action versions across all workflows.
 - Regular security audits (monthly recommended).
 
-## Current Security Status (2026-02-21 21:16 UTC)
+## Current Security Status (2026-02-22 06:15 UTC)
 
 | Control             | Status                                                |
 | ------------------- | ----------------------------------------------------- |
@@ -26,8 +26,18 @@
 | CI Runner           | ✅ All workflows use ubuntu-24.04-arm                 |
 | CI Actions          | ⚠️ main.yml uses invalid @v5 (blocked by #483)        |
 | npm audit           | ⚠️ 17 vulnerabilities (dev deps only) - risk accepted |
+| .dev.vars gitignore  | ✅ Added to prevent credential commits               |
 
 ## Lessons Learned
+
+### 2026-02-22 06:15 UTC: Cloudflare Workers Environment File in .gitignore
+
+- **Finding**: `.dev.vars` (Cloudflare Workers environment file) was not in `.gitignore`
+- **Root Cause**: `.gitignore` included `.env*` patterns but missed Cloudflare's equivalent `.dev.vars`
+- **Risk**: Developers could accidentally commit API keys and secrets to version control
+- **Fix**: Added `.dev.vars` to `.gitignore` under the Environment variables section
+- **Verification**: TypeScript clean, ESLint clean, 236 web tests pass
+- **Lesson**: All environment file patterns (including cloud-specific ones like `.dev.vars`) should be in `.gitignore` to prevent credential leakage
 
 ### 2026-02-21 21:16 UTC: CSP object-src Hardening
 
