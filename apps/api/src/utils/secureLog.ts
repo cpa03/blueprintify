@@ -211,3 +211,70 @@ export function secureLogWarn(
   };
   console.warn(JSON.stringify(logEntry));
 }
+
+
+/**
+ * Secure console.info wrapper that sanitizes output.
+ *
+ * Use this instead of console.log for any informational logging to ensure
+ * sensitive information is never leaked in logs.
+ *
+ * @param context - A string describing the context where the info log occurred
+ * @param message - The info message (will be sanitized)
+ * @param additionalInfo - Optional additional information to include in the log
+ *
+ * @example
+ * ```typescript
+ * secureLogInfo('RequestLogger', 'Incoming request', { path: '/api/generate' });
+ * ```
+ */
+export function secureLogInfo(
+  context: string,
+  message: string,
+  additionalInfo?: Record<string, unknown>,
+): void {
+  const logEntry = {
+    context,
+    message: sanitizeString(message),
+    timestamp: new Date().toISOString(),
+    ...additionalInfo,
+  };
+  console.log(JSON.stringify(logEntry));
+}
+
+/**
+ * Secure structured log wrapper for complex objects.
+ *
+ * Use this for logging structured data (like request/response logs) that
+ * may contain sensitive information in nested fields.
+ *
+ * @param context - A string describing the context where the log occurred
+ * @param data - The data object to log (will be JSON stringified and sanitized)
+ *
+ * @example
+ * ```typescript
+ * secureLogData('RequestLog', { type: 'request', method: 'POST', path: '/api/generate' });
+ * ```
+ */
+export function secureLogData(
+  context: string,
+  data: Record<string, unknown>,
+): void {
+  const sanitizedData: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(data)) {
+    if (typeof value === "string") {
+      sanitizedData[key] = sanitizeString(value);
+    } else if (typeof value === "object" && value !== null) {
+      sanitizedData[key] = JSON.parse(sanitizeString(JSON.stringify(value)));
+    } else {
+      sanitizedData[key] = value;
+    }
+  }
+  console.log(
+    JSON.stringify({
+      context,
+      ...sanitizedData,
+      timestamp: new Date().toISOString(),
+    }),
+  );
+}

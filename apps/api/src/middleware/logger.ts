@@ -8,6 +8,7 @@
  */
 
 import type { Context, MiddlewareHandler, Next } from "hono";
+import { secureLogData } from "../utils/secureLog";
 import { LOGGER_CONFIG } from "../config/constants";
 
 /**
@@ -208,12 +209,10 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
       }
     }
 
-    console.log(
-      JSON.stringify({
-        type: "request",
-        ...requestLog,
-      }),
-    );
+    secureLogData("RequestLogger", {
+      type: "request",
+      ...requestLog,
+    });
 
     await next();
 
@@ -247,11 +246,9 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
       }
     }
 
-    console.log(
-      JSON.stringify({
-        type: "response",
-        ...responseLog,
-      }),
-    );
+    secureLogData("ResponseLogger", {
+      type: "response",
+      ...responseLog,
+    });
   };
 };
