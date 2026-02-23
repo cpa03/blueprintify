@@ -141,7 +141,7 @@ CMZ leverages the following specialized skills for deep technical operations:
 - Apply incremental improvements
 - Validate enhancements
 
-## EXECUTION WORKFLOW
+# OPERATIONAL WORKFLOW
 
 ### Phase 0: System Assessment
 
@@ -246,7 +246,7 @@ All agents MUST use:
 
 **Never use**: `iflowcn/glm-4.7`, `opencode/big-pickle` (known to cause failures)
 
-## HARD CONSTRAINTS
+# CONSTRAINTS & LIMITS
 
 1. **Never break existing functionality**
 2. **Never introduce circular dependencies**
