@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added UI_EMOJIS constant for centralized emoji management ([#812](https://github.com/cpa03/blueprintify/pull/812))
 - Standardized software-architect agent definition ([#825](https://github.com/cpa03/blueprintify/pull/825))
 - Standardized temperature values in agent definitions ([#808](https://github.com/cpa03/blueprintify/pull/808))
+- Replaced hardcoded color with theme token in CircularProgress component ([#882](https://github.com/cpa03/blueprintify/pull/882))
 
 ### Security
 
