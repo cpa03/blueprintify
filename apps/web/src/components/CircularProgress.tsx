@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
+import { PROGRESS_COLORS } from "../config/constants";
 
 interface CircularProgressProps {
   value: number;
@@ -20,7 +21,7 @@ function CircularProgressComponent({
   animationDuration = 0.8,
   className = "",
   showPercentage = false,
-  color = "rgb(99, 102, 241)",
+  color = PROGRESS_COLORS.ACTIVE,
   trackColor = "rgba(255, 255, 255, 0.1)",
   ariaLabel,
 }: CircularProgressProps): JSX.Element {
@@ -98,7 +99,7 @@ function CircularProgressCompactComponent({
   value,
   size = 16,
   strokeWidth = 2,
-  color = "rgb(99, 102, 241)",
+  color = PROGRESS_COLORS.ACTIVE,
   className = "",
 }: Omit<
   CircularProgressProps,
