@@ -203,17 +203,20 @@ describe("Circuit Breaker Utilities", () => {
         expect(state.state).toBe(CircuitState.OPEN);
       });
 
-      it("should reject calls when HALF_OPEN max calls exceeded", async () => {
+      it("should close circuit after halfOpenMaxCalls successes in HALF_OPEN", async () => {
         const operation = vi.fn().mockResolvedValue("success");
 
         // Make 2 calls (halfOpenMaxCalls = 2)
         await breaker.execute(operation);
         await breaker.execute(operation);
 
-        // Third call should be rejected
-        await expect(breaker.execute(operation)).rejects.toThrow(
-          CircuitBreakerOpenError,
-        );
+        // Circuit should be CLOSED after successful calls
+        const state = breaker.getState();
+        expect(state.state).toBe(CircuitState.CLOSED);
+
+        // Third call should succeed (circuit is closed)
+        await breaker.execute(operation);
+        expect(operation).toHaveBeenCalledTimes(3);
       });
     });
 
@@ -318,7 +321,8 @@ describe("Circuit Breaker Utilities", () => {
         vi.advanceTimersByTime(2);
         const successOp = vi.fn().mockResolvedValue("success");
         await customBreaker.execute(successOp);
-        expect(customBreaker.getState().state).toBe(CircuitState.HALF_OPEN);
+        // With halfOpenMaxCalls: 1, one successful call closes the circuit
+        expect(customBreaker.getState().state).toBe(CircuitState.CLOSED);
       });
 
       it("should respect custom halfOpenMaxCalls", async () => {
