@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive database service test coverage (49 tests)
 - Warning log when rate limiter is not configured for improved observability
 - `countPublicTemplatesByCategory` method to DatabaseService for template analytics
+- Cloudflare best practices for testing ([#845](https://github.com/cpa03/blueprintify/pull/845))
+- Composite indexes for query optimization in database schema ([#832](https://github.com/cpa03/blueprintify/pull/832))
+- Regions configuration for Vercel edge deployment optimization ([#831](https://github.com/cpa03/blueprintify/pull/831))
+- SECURITY.md for vulnerability reporting and security policy ([#836](https://github.com/cpa03/blueprintify/pull/836))
 
 ### Changed
 
@@ -27,11 +31,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced generic `Error` throws with typed `NotFoundError` in MockDatabaseService for better error discrimination
 - JSDoc documentation added to Wizard.tsx and Header.tsx components ([#816](https://github.com/cpa03/blueprintify/pull/816))
 - Improved StepIndicator accessibility for mobile screen readers ([#818](https://github.com/cpa03/blueprintify/pull/818))
+- JSDoc documentation added to Toast, StepIndicator, and api.ts ([#833](https://github.com/cpa03/blueprintify/pull/833))
+- JSDoc documentation added to middleware handlers ([#839](https://github.com/cpa03/blueprintify/pull/839))
+- JSDoc documentation added to integration utilities ([#835](https://github.com/cpa03/blueprintify/pull/835))
+- Centralized storage route messages for consistency ([#838](https://github.com/cpa03/blueprintify/pull/838))
+- React.memo added to KeyboardShortcutsModal component for performance ([#841](https://github.com/cpa03/blueprintify/pull/841))
+- Extracted tooltip hardcoded values to TOOLTIP_CONFIG constant ([#824](https://github.com/cpa03/blueprintify/pull/824))
+- Added UI_EMOJIS constant for centralized emoji management ([#812](https://github.com/cpa03/blueprintify/pull/812))
+- Standardized software-architect agent definition ([#825](https://github.com/cpa03/blueprintify/pull/825))
+- Standardized temperature values in agent definitions ([#808](https://github.com/cpa03/blueprintify/pull/808))
 
 ### Security
 
 - Comprehensive reliability audit verified all patterns implemented correctly (Error Boundaries, JSON Safety, Timeout Handling, Circuit Breaker, Rate Limiting, Input Validation, Storage Recovery, XSS Protection, Error Classes, Retry Logic)
 - Added `.dev.vars` to `.gitignore` to prevent credential commits ([#819](https://github.com/cpa03/blueprintify/pull/819))
+- Updated security memory with comprehensive XSS pattern tests ([#844](https://github.com/cpa03/blueprintify/pull/844))
+- Added security monitoring for rate-limited requests ([#811](https://github.com/cpa03/blueprintify/pull/811))
 
 ### Fixed
 
@@ -39,6 +54,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `deserializeJSON` safety with proper error handling
 - Share endpoint validation consistency using SHARE_CONFIG.ID_LENGTH constant
 - Updated bugs.md - marked BUG-009 resolved, added BUG-010 for issue #743 ([#815](https://github.com/cpa03/blueprintify/pull/815))
+- Overall timeout option added to withRetry utility ([#820](https://github.com/cpa03/blueprintify/pull/820))
+- Renamed database error classes to avoid naming conflicts ([#830](https://github.com/cpa03/blueprintify/pull/830))
+- Keyboard navigation and aria-label added to interactive elements ([#827](https://github.com/cpa03/blueprintify/pull/827))
+- Removed deprecated Vercel images.domains property ([#814](https://github.com/cpa03/blueprintify/pull/814))
+
+### Tests
+
+- Comprehensive circuit breaker tests added ([#828](https://github.com/cpa03/blueprintify/pull/828))
+- XSS pattern security tests added ([#844](https://github.com/cpa03/blueprintify/pull/844))
 
 ## [1.0.0] - 2026-02-18
 
