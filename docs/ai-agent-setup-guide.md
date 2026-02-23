@@ -180,33 +180,31 @@ permission:
 2. **Define Agent Properties**
 
    ```markdown
+   ---
+   description: Custom Agent for Specific Task
+   mode: primary
+   model: opencode/glm-4.7-free
+   temperature: 0.1
+   tools:
+     write: true
+     edit: true
+     bash: true
+     read: true
+   ---
 
+   # AGENT IDENTITY
+
+   [Agent description and responsibilities]
    ```
 
----
-
-description: Custom Agent for Specific Task
-mode: primary
-model: opencode/glm-4.7-free
-temperature: 0.1
-tools:
-write: true
-edit: true
-bash: true
-read: true
-
----
-
-````
-
 3. **Configure Permissions**
-```yaml
-permission:
-  bash:
-    "git *": allow
-    "npm *": allow
-    "*": deny
-````
+   ```yaml
+   permission:
+     bash:
+       "git *": allow
+       "npm *": allow
+       "*": deny
+   ```
 
 ## Skill System
 
