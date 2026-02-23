@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Composite indexes for query optimization in database schema ([#832](https://github.com/cpa03/blueprintify/pull/832))
 - Regions configuration for Vercel edge deployment optimization ([#831](https://github.com/cpa03/blueprintify/pull/831))
 - SECURITY.md for vulnerability reporting and security policy ([#836](https://github.com/cpa03/blueprintify/pull/836))
+- `useShallow` export for Zustand selector patterns ([#883](https://github.com/cpa03/blueprintify/pull/883))
+- Documentation for CI workflow action version supply chain vulnerability
 
 ### Changed
 
@@ -41,6 +43,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Standardized software-architect agent definition ([#825](https://github.com/cpa03/blueprintify/pull/825))
 - Standardized temperature values in agent definitions ([#808](https://github.com/cpa03/blueprintify/pull/808))
 - Replaced hardcoded color with theme token in CircularProgress component ([#882](https://github.com/cpa03/blueprintify/pull/882))
+- Standardized section headings in software-architect and cmz agent definitions
+- Standardized focus-visible ring opacity to /50 for consistent styling
+- Removed Framer Motion from SkipLink component for improved accessibility
+- Removed unused asyncHandler middleware from API layer
 
 ### Security
 
@@ -59,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed database error classes to avoid naming conflicts ([#830](https://github.com/cpa03/blueprintify/pull/830))
 - Keyboard navigation and aria-label added to interactive elements ([#827](https://github.com/cpa03/blueprintify/pull/827))
 - Removed deprecated Vercel images.domains property ([#814](https://github.com/cpa03/blueprintify/pull/814))
+- Corrected circuit breaker and retry test expectations
 
 ### Tests
 
