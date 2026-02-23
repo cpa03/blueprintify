@@ -32,7 +32,7 @@ export const StepGenerating = memo(function StepGenerating(): JSX.Element {
       <div className="relative mb-8">
         <motion.div
           className="w-24 h-24 rounded-full border-4 border-dark-700"
-          style={{ borderTopColor: "rgb(99 102 241)" }}
+          style={{ borderTopColor: "var(--color-primary-500)" }}
           animate={{ rotate: 360 }}
           transition={{
             duration: ANIMATION.SPINNER_ROTATION,

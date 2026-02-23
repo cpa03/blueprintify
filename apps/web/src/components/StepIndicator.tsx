@@ -25,7 +25,12 @@ import { motion } from "framer-motion";
 import { useEffect, useCallback, useState, memo } from "react";
 import type { WizardStep } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
-import { WIZARD_STEPS, TIMEOUTS, SPRING_CONFIG, PROGRESS_COLORS } from "../config/constants";
+import {
+  WIZARD_STEPS,
+  TIMEOUTS,
+  SPRING_CONFIG,
+  PROGRESS_COLORS,
+} from "../config/constants";
 import { CircularProgress } from "./CircularProgress";
 import { SmartTooltip } from "./SmartTooltip";
 
@@ -162,8 +167,8 @@ function StepIndicatorComponent(): JSX.Element {
                 isActive
                   ? {
                       boxShadow: [
-                        "0 0 0 0 rgba(99, 102, 241, 0.4)",
-                        "0 0 0 8px rgba(99, 102, 241, 0)",
+                        "0 0 0 0 var(--color-primary-500-40)",
+                        "0 0 0 8px var(--color-primary-500-0)",
                       ],
                     }
                   : undefined
