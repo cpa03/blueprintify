@@ -14,13 +14,17 @@ import { z } from "zod";
 import type { Env } from "../types";
 import {
   HTTP_STATUS,
-  ERROR_CODES,
-  ERROR_MESSAGES,
   SHARE_CONFIG,
   SHARE_ERROR_MESSAGES,
   CACHE_CONFIG,
 } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
+import {
+  ValidationError,
+  NotFoundError,
+  ConfigurationError,
+  InternalServerError,
+} from "../errors";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -67,16 +71,11 @@ function getExpirationDate(): Date {
 
 app.post(
   "/",
-  zValidator("json", createShareSchema, (result, c) => {
+  zValidator("json", createShareSchema, (result, _c) => {
     if (!result.success) {
-      return c.json(
-        {
-          error: ERROR_CODES.VALIDATION_ERROR,
-          message: ERROR_MESSAGES.VALIDATION,
-          details: result.error.issues,
-        },
-        HTTP_STATUS.BAD_REQUEST,
-      );
+      throw new ValidationError("Request validation failed", {
+        issues: result.error.issues,
+      });
     }
   }),
   async (c) => {
@@ -87,12 +86,8 @@ app.post(
       const expiresAt = getExpirationDate();
 
       if (!c.env.DB) {
-        return c.json(
-          {
-            error: ERROR_CODES.CONFIGURATION_ERROR,
-            message: SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
-          },
-          HTTP_STATUS.INTERNAL_ERROR,
+        throw new ConfigurationError(
+          SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
         );
       }
 
@@ -120,13 +115,11 @@ app.post(
       );
     } catch (error) {
       secureLogError("Share creation error", error);
-      return c.json(
-        {
-          error: ERROR_CODES.INTERNAL_ERROR,
-          message: ERROR_MESSAGES.INTERNAL,
-        },
-        HTTP_STATUS.INTERNAL_ERROR,
-      );
+      // Re-throw APIError instances to be handled by error handler
+      if (error instanceof ConfigurationError) {
+        throw error;
+      }
+      throw new InternalServerError("Failed to create share");
     }
   },
 );
@@ -136,22 +129,12 @@ app.get("/:id", async (c) => {
     const shareId = c.req.param("id");
 
     if (!shareId || shareId.length !== SHARE_CONFIG.ID_LENGTH) {
-      return c.json(
-        {
-          error: ERROR_CODES.VALIDATION_ERROR,
-          message: SHARE_ERROR_MESSAGES.INVALID_SHARE_ID_FORMAT,
-        },
-        HTTP_STATUS.BAD_REQUEST,
-      );
+      throw new ValidationError(SHARE_ERROR_MESSAGES.INVALID_SHARE_ID_FORMAT);
     }
 
     if (!c.env.DB) {
-      return c.json(
-        {
-          error: ERROR_CODES.CONFIGURATION_ERROR,
-          message: SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
-        },
-        HTTP_STATUS.INTERNAL_ERROR,
+      throw new ConfigurationError(
+        SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
       );
     }
 
@@ -164,26 +147,14 @@ app.get("/:id", async (c) => {
       .first();
 
     if (!result) {
-      return c.json(
-        {
-          error: ERROR_CODES.NOT_FOUND_ERROR,
-          message: SHARE_ERROR_MESSAGES.SHARE_NOT_FOUND_OR_EXPIRED,
-        },
-        HTTP_STATUS.NOT_FOUND,
-      );
+      throw new NotFoundError(SHARE_ERROR_MESSAGES.SHARE_NOT_FOUND_OR_EXPIRED);
     }
 
     const expirationDate = result.expires_at
       ? new Date(result.expires_at as string)
       : null;
     if (expirationDate && expirationDate < new Date()) {
-      return c.json(
-        {
-          error: ERROR_CODES.NOT_FOUND_ERROR,
-          message: SHARE_ERROR_MESSAGES.SHARE_EXPIRED,
-        },
-        HTTP_STATUS.NOT_FOUND,
-      );
+      throw new NotFoundError(SHARE_ERROR_MESSAGES.SHARE_EXPIRED);
     }
 
     // Safely parse metadata JSON with error handling
@@ -223,13 +194,15 @@ app.get("/:id", async (c) => {
     );
   } catch (error) {
     secureLogError("Share retrieval error", error);
-    return c.json(
-      {
-        error: ERROR_CODES.INTERNAL_ERROR,
-        message: ERROR_MESSAGES.INTERNAL,
-      },
-      HTTP_STATUS.INTERNAL_ERROR,
-    );
+    // Re-throw APIError instances to be handled by error handler
+    if (
+      error instanceof ValidationError ||
+      error instanceof NotFoundError ||
+      error instanceof ConfigurationError
+    ) {
+      throw error;
+    }
+    throw new InternalServerError("Failed to retrieve share");
   }
 });
 
@@ -238,22 +211,12 @@ app.delete("/:id", async (c) => {
     const shareId = c.req.param("id");
 
     if (!shareId || shareId.length !== SHARE_CONFIG.ID_LENGTH) {
-      return c.json(
-        {
-          error: ERROR_CODES.VALIDATION_ERROR,
-          message: SHARE_ERROR_MESSAGES.INVALID_SHARE_ID_FORMAT,
-        },
-        HTTP_STATUS.BAD_REQUEST,
-      );
+      throw new ValidationError(SHARE_ERROR_MESSAGES.INVALID_SHARE_ID_FORMAT);
     }
 
     if (!c.env.DB) {
-      return c.json(
-        {
-          error: ERROR_CODES.CONFIGURATION_ERROR,
-          message: SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
-        },
-        HTTP_STATUS.INTERNAL_ERROR,
+      throw new ConfigurationError(
+        SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
       );
     }
 
@@ -269,13 +232,14 @@ app.delete("/:id", async (c) => {
     );
   } catch (error) {
     secureLogError("Share deletion error", error);
-    return c.json(
-      {
-        error: ERROR_CODES.INTERNAL_ERROR,
-        message: ERROR_MESSAGES.INTERNAL,
-      },
-      HTTP_STATUS.INTERNAL_ERROR,
-    );
+    // Re-throw APIError instances to be handled by error handler
+    if (
+      error instanceof ValidationError ||
+      error instanceof ConfigurationError
+    ) {
+      throw error;
+    }
+    throw new InternalServerError("Failed to delete share");
   }
 });
 

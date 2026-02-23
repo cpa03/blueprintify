@@ -92,7 +92,7 @@ describe("POST /share", () => {
     expect(data.url).toContain("/share/");
   });
 
-  it("should return 400 for invalid request body", async () => {
+  it("should return 400 with standard error format for invalid request body", async () => {
     const env = createMockEnv();
     const res = await app.request(
       "/",
@@ -108,9 +108,15 @@ describe("POST /share", () => {
     );
 
     expect(res.status).toBe(400);
-    const data = await res.json();
+    const data = (await res.json()) as ErrorResponse;
+    expect(data).toHaveProperty("success", false);
     expect(data).toHaveProperty("error");
-    expect(data).toHaveProperty("message");
+    expect(data.error).toHaveProperty("type");
+    expect(data.error).toHaveProperty("message");
+    expect(data.error).toHaveProperty("code");
+    expect(data.error).toHaveProperty("timestamp");
+    expect(data.error.type).toBe("validation");
+    expect(data.error.code).toBe("VALIDATION_ERROR");
   });
 
   it("should create share without optional metadata", async () => {
@@ -142,27 +148,37 @@ describe("GET /share/:id", () => {
   app.route("/", shareRoute);
   app.onError(errorHandler);
 
-  it("should return 400 for invalid share ID format", async () => {
+  it("should return 400 with standard error format for invalid share ID format", async () => {
     const env = createMockEnv();
     const res = await app.request("/invalid-id", {}, env);
 
     expect(res.status).toBe(400);
-    const data = (await res.json()) as {
-      error: string;
-      message: string;
-    };
+    const data = (await res.json()) as ErrorResponse;
+    expect(data).toHaveProperty("success", false);
     expect(data).toHaveProperty("error");
-    expect(data).toHaveProperty("message");
-    expect(data.message).toContain("Invalid share ID format");
+    expect(data.error).toHaveProperty("type");
+    expect(data.error).toHaveProperty("message");
+    expect(data.error).toHaveProperty("code");
+    expect(data.error).toHaveProperty("timestamp");
+    expect(data.error.type).toBe("validation");
+    expect(data.error.code).toBe("VALIDATION_ERROR");
+    expect(data.error.message).toContain("Invalid share ID format");
   });
 
-  it("should return 404 for non-existent share", async () => {
+  it("should return 404 with standard error format for non-existent share", async () => {
     const env = createMockEnv();
     const res = await app.request("/ABC123def456", {}, env);
 
     expect(res.status).toBe(404);
     const data = (await res.json()) as ErrorResponse;
-    expect(data.error).toBe("NOT_FOUND_ERROR");
+    expect(data).toHaveProperty("success", false);
+    expect(data).toHaveProperty("error");
+    expect(data.error).toHaveProperty("type");
+    expect(data.error).toHaveProperty("message");
+    expect(data.error).toHaveProperty("code");
+    expect(data.error).toHaveProperty("timestamp");
+    expect(data.error.type).toBe("not_found");
+    expect(data.error.code).toBe("NOT_FOUND_ERROR");
   });
 });
 
@@ -180,16 +196,20 @@ describe("DELETE /share/:id", () => {
     expect(data).toHaveProperty("message", "Share deleted successfully");
   });
 
-  it("should return 400 for invalid share ID format on delete", async () => {
+  it("should return 400 with standard error format for invalid share ID format on delete", async () => {
     const env = createMockEnv();
     const res = await app.request("/invalid-id", { method: "DELETE" }, env);
 
     expect(res.status).toBe(400);
-    const data = (await res.json()) as {
-      error: string;
-      message: string;
-    };
+    const data = (await res.json()) as ErrorResponse;
+    expect(data).toHaveProperty("success", false);
     expect(data).toHaveProperty("error");
-    expect(data.message).toContain("Invalid share ID format");
+    expect(data.error).toHaveProperty("type");
+    expect(data.error).toHaveProperty("message");
+    expect(data.error).toHaveProperty("code");
+    expect(data.error).toHaveProperty("timestamp");
+    expect(data.error.type).toBe("validation");
+    expect(data.error.code).toBe("VALIDATION_ERROR");
+    expect(data.error.message).toContain("Invalid share ID format");
   });
 });
