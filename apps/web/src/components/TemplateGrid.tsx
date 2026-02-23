@@ -74,7 +74,7 @@ function TemplateGridComponent(): JSX.Element {
                     : "hover:border-primary-500/50"
                 }
                 ${selectedId !== null && !isSelected ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950
               `}
               whileHover={
                 selectedId === null ? { scale: 1.02, y: -2 } : undefined

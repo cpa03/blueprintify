@@ -43,7 +43,7 @@ const TechChip = memo(function TechChip({
       className={clsx(
         "tech-chip relative overflow-hidden",
         isSelected && "selected",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950",
       )}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
