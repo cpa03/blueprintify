@@ -27,7 +27,7 @@ Currently, the API does not require authentication. However, all requests must i
 | Field   | Value                   | Description                  |
 | ------- | ----------------------- | ---------------------------- |
 | Name    | Blueprint Generator API | Service name                 |
-| Version | 1.0.0                   | Current API version          |
+| Version | 1.1.0                   | Current API version          |
 | Status  | healthy                 | Health check response status |
 
 ## Endpoints
@@ -41,7 +41,7 @@ Health check endpoint to verify the API is running and provide API metadata.
 ```json
 {
   "name": "Blueprint Generator API",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "status": "healthy",
   "endpoints": {
     "generate": "POST /generate",
@@ -243,7 +243,7 @@ Returns exported data in the requested format.
     "blueprint": "# Project: My App...",
     "tasks": "## Tasks...",
     "exportedAt": "2026-02-18T10:00:00.000Z",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "format": "json"
   },
   "filename": "My_Project_export.json"
@@ -780,16 +780,22 @@ Currently, the API uses Server-Sent Events (SSE) for streaming. WebSocket suppor
 
 ## Version History
 
-| Version | Date       | Changes                                            |
-| ------- | ---------- | -------------------------------------------------- |
-| 1.0.0   | 2026-02-18 | Initial release with core features                 |
-|         |            | Added export, import, storage, and share endpoints |
-|         |            | Enhanced error handling with structured responses  |
-|         |            | RequestId in error responses for traceability      |
-|         |            | Comprehensive validation using Zod schemas         |
-|         |            | Tech stack metadata support with categorization    |
-|         |            | Server-Sent Events (SSE) for streaming responses   |
-|         |            | Share functionality with 30-day expiration         |
+| Version | Date       | Changes                                                                                                                               |
+| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.1.0   | 2026-02-23 | AI Agent System with 27+ specialized roles and OpenCode integration                                                                   |
+|         |            | Enhanced JSDoc documentation across API utilities, middleware, and components                                                         |
+|         |            | Security hardening: XSS protection, rate limiting observability, comprehensive security tests                                         |
+|         |            | Database optimizations: composite indexes, `getTemplatesByCreator` and `countPublicTemplatesByCategory` methods                       |
+|         |            | Reliability improvements: retry utility with overall timeout, typed error classes, circuit breaker tests                               |
+|         |            | Accessibility improvements: keyboard navigation, aria-labels, mobile screen reader support                                            |
+| 1.0.0   | 2026-02-18 | Initial release with core features                                                                                                    |
+|         |            | Added export, import, storage, and share endpoints                                                                                    |
+|         |            | Enhanced error handling with structured responses                                                                                     |
+|         |            | RequestId in error responses for traceability                                                                                         |
+|         |            | Comprehensive validation using Zod schemas                                                                                            |
+|         |            | Tech stack metadata support with categorization                                                                                       |
+|         |            | Server-Sent Events (SSE) for streaming responses                                                                                      |
+|         |            | Share functionality with 30-day expiration                                                                                            |
 
 ## Planned Features
 
