@@ -288,8 +288,7 @@ describe("Retry Utilities", () => {
     });
 
     it("should use default maxDelay from config when not specified", async () => {
-      vi.useRealTimers();
-
+      // Using fake timers to avoid timeout
       const serverError = { status: 503 };
       const operation = vi.fn().mockRejectedValue(serverError);
 
@@ -301,11 +300,21 @@ describe("Retry Utilities", () => {
         backoffFactor: 10, // 5000 -> 50000, but capped at 10000
       });
 
-      await expect(resultPromise).rejects.toEqual(serverError);
-      expect(operation).toHaveBeenCalledTimes(4); // Initial + 3 retries
+      // First retry after 5000ms (initialDelay, capped at 10000)
+      await vi.advanceTimersByTimeAsync(5000);
+      expect(operation).toHaveBeenCalledTimes(2);
 
-      vi.useFakeTimers();
+      // Second retry after 10000ms (capped at default maxDelay)
+      await vi.advanceTimersByTimeAsync(10000);
+      expect(operation).toHaveBeenCalledTimes(3);
+
+      // Third retry after 10000ms (still capped at default maxDelay)
+      await vi.advanceTimersByTimeAsync(10000);
+      expect(operation).toHaveBeenCalledTimes(4);
+
+      await expect(resultPromise).rejects.toEqual(serverError);
     });
+
 
     it("should handle all retryable error codes", async () => {
       const retryableCodes = [
@@ -330,6 +339,7 @@ describe("Retry Utilities", () => {
           retries: 1,
           initialDelay: 10,
         });
+
 
         await vi.advanceTimersByTimeAsync(10);
 
