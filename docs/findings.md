@@ -4,7 +4,7 @@
 
 ## Table of Contents
 
-- [2026-02-22: Retry Utility Overall Timeout](#reliability-2026-02-22---retry-utility-overall-timeout)
+ [2026-02-23: JSDoc Documentation Coverage Gap](#technical-writer-2026-02-23---jsdoc-documentation-coverage-gap)
 - [2026-02-21: Reliability Verification Audit (Session 2)](#reliability-2026-02-21---reliability-verification-audit-session-2)
 - [2026-02-21: Comprehensive Reliability Audit](#reliability-2026-02-21---comprehensive-reliability-audit)
 - [2026-02-20: Rate Limiter Observability Improvement](#reliability-2026-02-20---rate-limiter-observability-improvement)
@@ -25,6 +25,48 @@
 
 ---
 
+## [Technical-Writer] 2026-02-23 - JSDoc Documentation Coverage Gap
+
+### Observation
+
+A comprehensive scan of the codebase revealed significant gaps in JSDoc documentation coverage:
+
+| Area | Files with Exports | Files with JSDoc | Coverage |
+| ---- | ------------------ | ---------------- | -------- |
+| Frontend (apps/web/src) | 61 | 7 | 11.5% |
+| Backend (apps/api/src) | 24 | 9 | 37.5% |
+
+### Impact
+
+- **Developer Experience**: New contributors may struggle to understand function/component purposes
+- **IDE Support**: Reduced autocomplete and type hints in development
+- **Documentation Generation**: Unable to auto-generate API docs from code comments
+
+### Recommendations
+
+1. **Priority Files for JSDoc Addition**:
+   - `apps/web/src/lib/api.ts` - Core API client
+   - `apps/web/src/store/*.ts` - State management stores
+   - `apps/api/src/controllers/*.ts` - API controllers
+   - `apps/api/src/middleware/*.ts` - Middleware handlers
+
+2. **JSDoc Standards**:
+   - All exported functions should have `@param` and `@returns` tags
+   - React components should have `@component` and `@example` tags
+   - Complex types should have `@see` references
+
+3. **Incremental Approach**:
+   - Add JSDoc to new files as they are created
+   - Prioritize frequently-used utilities and components
+   - Include in code review checklist
+
+### Status
+
+- **Priority**: Medium (improves DX but not blocking)
+- **Area**: Technical Writer
+- **Action**: Documented for future improvement
+
+---
 ## [Reliability] 2026-02-22 - Retry Utility Overall Timeout
 
 ### Observation
