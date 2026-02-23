@@ -8,27 +8,36 @@
 - CI/CD security: Standardized runner versions (`ubuntu-24.04-arm`) and action versions across all workflows.
 - Regular security audits (monthly recommended).
 
-## Current Security Status (2026-02-22 21:05 UTC)
+## Current Security Status (2026-02-23 00:00 UTC)
 
-| Control             | Status                                                |
-| ------------------- | ----------------------------------------------------- |
-| Hardcoded Secrets   | ✅ None found                                         |
-| XSS Vectors         | ✅ No dangerouslySetInnerHTML                         |
-| Code Injection      | ✅ No eval/innerHTML                                  |
-| Input Validation    | ✅ Zod schemas                                        |
-| Auth Timing Attacks | ✅ Constant-time compare                              |
-| Secure Random       | ✅ crypto.getRandomValues()                           |
-| Security Headers    | ✅ Hono secureHeaders()                               |
-| Secure Logging      | ✅ Sensitive data redaction                           |
-| CSP object-src      | ✅ Added 'none' for plugin attack prevention          |
-| HTML Sanitization   | ✅ DOMPurify configured (SVG/math blocked)            |
-| Rate Limiting       | ✅ Cloudflare rate limiter                            |
-| CI Runner           | ✅ All workflows use ubuntu-24.04-arm                 |
-| CI Actions          | ⚠️ main.yml uses invalid @v5 (blocked by #743)        |
-| npm audit           | ⚠️ 16 vulnerabilities (dev deps only) - risk accepted |
-| .dev.vars gitignore  | ✅ Added to prevent credential commits               |
+| Control             | Status                                                    |
+| ------------------- | --------------------------------------------------------- |
+| Hardcoded Secrets   | ✅ None found                                             |
+| XSS Vectors         | ✅ No dangerouslySetInnerHTML                             |
+| Code Injection      | ✅ No eval/innerHTML                                      |
+| Input Validation    | ✅ Zod schemas                                            |
+| Auth Timing Attacks | ✅ Constant-time compare                                  |
+| Secure Random       | ✅ crypto.getRandomValues()                               |
+| Security Headers    | ✅ Hono secureHeaders()                                   |
+| Secure Logging      | ✅ Sensitive data redaction                               |
+| CSP object-src      | ✅ Added 'none' for plugin attack prevention              |
+| HTML Sanitization   | ✅ DOMPurify configured (SVG/math blocked)                |
+| Rate Limiting       | ✅ Cloudflare rate limiter                                |
+| CI Runner           | ✅ All workflows use ubuntu-24.04-arm                     |
+| CI Actions          | ⚠️ main.yml/iterate.yml use invalid @v5 (blocked by #483) |
+| npm audit           | ⚠️ 16 vulnerabilities (dev deps only) - risk accepted     |
+| .dev.vars gitignore | ✅ Added to prevent credential commits                    |
 
 ## Lessons Learned
+
+### 2026-02-23 00:00 UTC: CI Workflow Action Version Supply Chain Vulnerability
+
+- **Finding**: `main.yml` and `iterate.yml` workflows use invalid `actions/checkout@v5` and `actions/cache@v5` (v5 doesn't exist)
+- **Root Cause**: Workflow files not kept in sync with project standards defined in AGENTS.md
+- **Risk**: Supply chain attack vector - if a malicious actor creates a `v5` tag on these actions, the workflow would execute their code
+- **Fix Required**: Update all occurrences (9 in main.yml, 10 in iterate.yml) from `@v5` to `@v4`
+- **Status**: Blocked by issue #483 - requires repository admin to grant `workflows` permission
+- **Lesson**: CI workflow action versions must be validated against actual available versions; non-existent versions are a critical supply chain security risk
 
 ### 2026-02-22 06:15 UTC: Cloudflare Workers Environment File in .gitignore
 
@@ -41,12 +50,12 @@
 
 ### 2026-02-21 21:16 UTC: CSP object-src Hardening
 
- **Finding**: CSP was missing `object-src 'none'` directive for defense-in-depth against plugin-based attacks (Flash, Java, PDF)
- **Root Cause**: Original CSP configuration did not include this recommended directive
- **Risk**: Without `object-src 'none'`, browsers could potentially load malicious plugins if other attack vectors succeeded
- **Fix**: Added `object-src 'none'` to CSP in `/apps/web/src/lib/security.ts`
- **Verification**: All 236 web tests pass, lint clean
- **Lesson**: CSP should always include `object-src 'none'` as a defense-in-depth measure against plugin-based attacks
+**Finding**: CSP was missing `object-src 'none'` directive for defense-in-depth against plugin-based attacks (Flash, Java, PDF)
+**Root Cause**: Original CSP configuration did not include this recommended directive
+**Risk**: Without `object-src 'none'`, browsers could potentially load malicious plugins if other attack vectors succeeded
+**Fix**: Added `object-src 'none'` to CSP in `/apps/web/src/lib/security.ts`
+**Verification**: All 236 web tests pass, lint clean
+**Lesson**: CSP should always include `object-src 'none'` as a defense-in-depth measure against plugin-based attacks
 
 ### 2026-02-21 17:05 UTC: Security Engineer Audit - main.yml Invalid Action Version
 
