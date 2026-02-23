@@ -22,6 +22,7 @@
 - [2026-02-18: Share Endpoint Validation Consistency](#security-2026-02-18---share-endpoint-validation-consistency)
 - [2026-02-18: Integration Workflow File Line Ending](#integration-2026-02-18---workflow-file-line-ending-inconsistency)
 - [2026-02-20: Logger Middleware Undefined Header Fix](#reliability-2026-02-20---logger-middleware-undefined-header-value-fix)
+ [2026-02-23: Zustand Selector Pattern Audit](#frontend-engineer-2026-02-23---zustand-selector-pattern-audit)
 
 ---
 
