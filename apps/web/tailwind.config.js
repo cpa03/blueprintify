@@ -50,6 +50,8 @@ export default {
         "slide-down": "slide-down 0.3s ease-out",
         "fade-in": "fade-in 0.2s ease-out",
         "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "pulse-x": "pulse-x 1.2s ease-in-out infinite",
+        "glow-opacity": "glow-opacity 2s ease-in-out infinite",
       },
       keyframes: {
         glow: {
@@ -67,6 +69,14 @@ export default {
         "fade-in": {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
+        },
+        "pulse-x": {
+          "0%, 100%": { transform: "translateX(0)" },
+          "50%": { transform: "translateX(3px)" },
+        },
+        "glow-opacity": {
+          "0%, 100%": { opacity: "0.3" },
+          "50%": { opacity: "0.6" },
         },
       },
       backgroundImage: {

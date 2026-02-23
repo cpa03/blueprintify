@@ -1,6 +1,3 @@
-import { motion } from "framer-motion";
-import { SPRING_CONFIG } from "../config/constants";
-
 /**
  * SkipLink - Accessibility component for keyboard navigation
  *
@@ -10,15 +7,15 @@ import { SPRING_CONFIG } from "../config/constants";
  *
  * Features:
  * - Glassmorphism design for premium visual appearance
- * - Subtle glow animation for enhanced feedback
- * - Spring physics for smooth transitions
+ * - CSS transitions for smooth, accessible animations
+ * - Immediate focus behavior for screen reader compatibility
  * - Icon for improved visual recognition
  *
  * @see https://www.w3.org/WAI/WCAG21/Understanding/bypass-blocks.html
  */
 export function SkipLink(): JSX.Element {
   return (
-    <motion.a
+    <a
       href="#main-content"
       className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] 
                  focus:px-4 focus:py-2.5 focus:rounded-xl focus:font-medium
@@ -26,28 +23,16 @@ export function SkipLink(): JSX.Element {
                  group
                  bg-gradient-to-r from-primary-600 to-primary-500
                  text-white shadow-lg shadow-primary-500/25
-                 backdrop-blur-sm"
-      initial={{ opacity: 0, y: -20, scale: 0.9 }}
-      whileFocus={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{
-        type: "spring",
-        ...SPRING_CONFIG.DEFAULT,
-      }}
-      whileHover={{ scale: 1.02 }}
+                 backdrop-blur-sm
+                 transition-all duration-200 ease-out
+                 hover:scale-[1.02]"
     >
       <span className="flex items-center gap-2">
-        <motion.svg
-          className="w-4 h-4"
+        <svg
+          className="w-4 h-4 animate-pulse-x"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
-          initial={{ x: 0 }}
-          animate={{ x: [0, 3, 0] }}
-          transition={{
-            duration: 1.2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
         >
           <path
             strokeLinecap="round"
@@ -55,19 +40,10 @@ export function SkipLink(): JSX.Element {
             strokeWidth={2.5}
             d="M13 7l5 5m0 0l-5 5m5-5H6"
           />
-        </motion.svg>
+        </svg>
         <span>Skip to main content</span>
       </span>
-      <motion.span
-        className="absolute inset-0 rounded-xl bg-primary-400/20 blur-md -z-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0.3, 0.6, 0.3] }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-    </motion.a>
+      <span className="absolute inset-0 rounded-xl bg-primary-400/20 blur-md -z-10 animate-glow-opacity" />
+    </a>
   );
 }
