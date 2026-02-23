@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeAll, afterAll } from "vitest";
 import { Hono } from "hono";
 import shareRoute from "./share";
 import { errorHandler } from "../middleware/errorHandler";
-import type { ErrorResponse } from "../errors";
 import { DEFAULTS } from "../config/env";
 
 let originalConsoleError: typeof console.error;
@@ -30,7 +29,13 @@ function createMockDB() {
               metadata: params[3],
               created_at: params[4],
               expires_at: params[5],
+              created_by: params[6] || "anonymous",
             });
+            return { success: true };
+          }
+          if (query.includes("DELETE")) {
+            const id = params[0] as string;
+            storedData.delete(id);
             return { success: true };
           }
           return { success: true };
@@ -81,15 +86,19 @@ describe("POST /share", () => {
 
     expect(res.status).toBe(200);
     const data = (await res.json()) as {
-      id: string;
-      url: string;
-      expiresAt: string;
+      success: boolean;
+      data: {
+        id: string;
+        url: string;
+        expiresAt: string;
+      };
     };
-    expect(data).toHaveProperty("id");
-    expect(data).toHaveProperty("url");
-    expect(data).toHaveProperty("expiresAt");
-    expect(data.id).toHaveLength(12);
-    expect(data.url).toContain("/share/");
+    expect(data.success).toBe(true);
+    expect(data.data).toHaveProperty("id");
+    expect(data.data).toHaveProperty("url");
+    expect(data.data).toHaveProperty("expiresAt");
+    expect(data.data.id).toHaveLength(12);
+    expect(data.data.url).toContain("/share/");
   });
 
   it("should return 400 for invalid request body", async () => {
@@ -108,9 +117,20 @@ describe("POST /share", () => {
     );
 
     expect(res.status).toBe(400);
-    const data = await res.json();
-    expect(data).toHaveProperty("error");
-    expect(data).toHaveProperty("message");
+    const data = (await res.json()) as {
+      success: boolean;
+      error: {
+        type: string;
+        message: string;
+        code: string;
+        timestamp: string;
+      };
+    };
+    expect(data.success).toBe(false);
+    expect(data.error).toHaveProperty("type");
+    expect(data.error).toHaveProperty("message");
+    expect(data.error).toHaveProperty("code");
+    expect(data.error).toHaveProperty("timestamp");
   });
 
   it("should create share without optional metadata", async () => {
@@ -130,10 +150,14 @@ describe("POST /share", () => {
 
     expect(res.status).toBe(200);
     const data = (await res.json()) as {
-      id: string;
+      success: boolean;
+      data: {
+        id: string;
+      };
     };
-    expect(data).toHaveProperty("id");
-    expect(data.id).toHaveLength(12);
+    expect(data.success).toBe(true);
+    expect(data.data).toHaveProperty("id");
+    expect(data.data.id).toHaveLength(12);
   });
 });
 
@@ -148,12 +172,18 @@ describe("GET /share/:id", () => {
 
     expect(res.status).toBe(400);
     const data = (await res.json()) as {
-      error: string;
-      message: string;
+      success: boolean;
+      error: {
+        type: string;
+        message: string;
+        code: string;
+        timestamp: string;
+      };
     };
-    expect(data).toHaveProperty("error");
-    expect(data).toHaveProperty("message");
-    expect(data.message).toContain("Invalid share ID format");
+    expect(data.success).toBe(false);
+    expect(data.error).toHaveProperty("type");
+    expect(data.error).toHaveProperty("message");
+    expect(data.error.message).toContain("Invalid share ID format");
   });
 
   it("should return 404 for non-existent share", async () => {
@@ -161,8 +191,17 @@ describe("GET /share/:id", () => {
     const res = await app.request("/ABC123def456", {}, env);
 
     expect(res.status).toBe(404);
-    const data = (await res.json()) as ErrorResponse;
-    expect(data.error).toBe("NOT_FOUND_ERROR");
+    const data = (await res.json()) as {
+      success: boolean;
+      error: {
+        type: string;
+        message: string;
+        code: string;
+        timestamp: string;
+      };
+    };
+    expect(data.success).toBe(false);
+    expect(data.error.code).toBe("NOT_FOUND_ERROR");
   });
 });
 
@@ -173,11 +212,36 @@ describe("DELETE /share/:id", () => {
 
   it("should delete a shared blueprint", async () => {
     const env = createMockEnv();
-    const res = await app.request("/testshare123", { method: "DELETE" }, env);
+    const mockDB = env.DB;
+
+    const createRes = await app.request(
+      "/",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: "Test Blueprint",
+          blueprint: "# Test",
+        }),
+      },
+      env,
+    );
+
+    const createData = (await createRes.json()) as {
+      success: boolean;
+      data: { id: string };
+    };
+    const shareId = createData.data.id;
+
+    const res = await app.request(`/${shareId}`, { method: "DELETE" }, env);
 
     expect(res.status).toBe(200);
-    const data = await res.json();
-    expect(data).toHaveProperty("message", "Share deleted successfully");
+    const data = (await res.json()) as {
+      success: boolean;
+      message: string;
+    };
+    expect(data.success).toBe(true);
+    expect(data.message).toBe("Share deleted successfully");
   });
 
   it("should return 400 for invalid share ID format on delete", async () => {
@@ -186,10 +250,33 @@ describe("DELETE /share/:id", () => {
 
     expect(res.status).toBe(400);
     const data = (await res.json()) as {
-      error: string;
-      message: string;
+      success: boolean;
+      error: {
+        type: string;
+        message: string;
+        code: string;
+        timestamp: string;
+      };
     };
-    expect(data).toHaveProperty("error");
-    expect(data.message).toContain("Invalid share ID format");
+    expect(data.success).toBe(false);
+    expect(data.error).toHaveProperty("type");
+    expect(data.error.message).toContain("Invalid share ID format");
+  });
+
+  it("should return 404 for non-existent share on delete", async () => {
+    const env = createMockEnv();
+    const res = await app.request("/ABC123def456", { method: "DELETE" }, env);
+
+    expect(res.status).toBe(404);
+    const data = (await res.json()) as {
+      success: boolean;
+      error: {
+        type: string;
+        message: string;
+        code: string;
+      };
+    };
+    expect(data.success).toBe(false);
+    expect(data.error.code).toBe("NOT_FOUND_ERROR");
   });
 });

@@ -357,6 +357,8 @@ export const EXTERNAL_URLS = {
 
 export const SHARE_CONFIG = {
   ID_LENGTH: 12,
+  /** Regex pattern for validating share IDs - alphanumeric and URL-safe characters */
+  ID_PATTERN: /^[a-zA-Z0-9_-]{12}$/,
   ALPHANUMERIC_CHARS:
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
   EXPIRATION_DAYS: 30,

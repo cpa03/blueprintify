@@ -8,7 +8,7 @@ tsconfig = "./tsconfig.json"
 # https://developers.cloudflare.com/workers/configuration/migrating-to-module-workers/#settings-inheritance
 keep_vars = true
 
-# Production debugging: Upload source maps for readable stack traces
+# Development: Upload source maps for readable stack traces
 # https://developers.cloudflare.com/workers/observability/source-maps
 upload_source_maps = true
 
@@ -41,6 +41,7 @@ name = "blueprint-generator-api-prod"
 workers_dev = false
 logpush = true
 minify = true
+upload_source_maps = false
 vars = { ENVIRONMENT = "production" }
 routes = [
   { pattern = "api.blueprintify.dev/*", zone_name = "blueprintify.dev" }

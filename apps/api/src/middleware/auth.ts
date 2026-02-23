@@ -31,9 +31,7 @@ interface AuthConfig {
  * @returns True if strings are equal, false otherwise
  */
 function constantTimeCompare(a: string, b: string): boolean {
-  // Early return for length mismatch - but use constant time for the comparison
   if (a.length !== b.length) {
-    // Still perform a comparison to maintain constant time
     return constantTimeCompare(a, a) && false;
   }
 
@@ -48,7 +46,8 @@ function constantTimeCompare(a: string, b: string): boolean {
  * Creates an API key authentication middleware for Hono applications.
  *
  * Validates API keys from request headers using constant-time comparison.
- * If no API_KEY environment variable is set, authentication is bypassed.
+ * In production, requests are rejected if API_KEY is not configured.
+ * In development, authentication is bypassed with a warning if API_KEY is not set.
  * Excluded paths (like health checks) skip authentication entirely.
  *
  * @param config - Authentication configuration options
@@ -75,13 +74,31 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
 
     const providedKey = c.req.header(apiKeyHeader);
     const validKey = c.env.API_KEY;
+    const environment = c.env.ENVIRONMENT;
 
     if (!validKey) {
+      if (environment === "production") {
+        return c.json(
+          {
+            success: false,
+            error: {
+              type: "configuration",
+              message: "API_KEY not configured in production",
+              code: "CONFIGURATION_ERROR",
+              timestamp: new Date().toISOString(),
+            },
+          },
+          HTTP_STATUS.INTERNAL_ERROR,
+        );
+      }
+
+      console.warn(
+        "WARNING: API_KEY not set - authentication bypassed. This should only happen in development.",
+      );
       await next();
       return;
     }
 
-    // Use constant-time comparison to prevent timing attacks
     if (!providedKey || !constantTimeCompare(providedKey, validKey)) {
       return c.json(
         {

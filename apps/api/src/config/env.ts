@@ -58,7 +58,7 @@ export const DEFAULTS: Omit<EnvConfig, "OPENAI_API_KEY"> = {
 
   // API
   API_VERSION: "1.0.0",
-  CORS_ORIGIN: "*",
+  CORS_ORIGIN: "http://localhost:3000",
   CORS_MAX_AGE: 86400,
 
   // Rate Limiting
@@ -137,6 +137,15 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
     );
   }
 
+  const corsOrigin = getEnvVar("CORS_ORIGIN", env) ?? DEFAULTS.CORS_ORIGIN;
+  const environment = env.ENVIRONMENT;
+
+  if (corsOrigin === "*" && environment === "production") {
+    console.error(
+      "SECURITY WARNING: CORS wildcard (*) configured in production! This allows any origin to access the API.",
+    );
+  }
+
   return {
     OPENAI_API_KEY: openaiApiKey,
     OPENAI_BASE_URL:
@@ -159,7 +168,7 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
     ),
 
     API_VERSION: getEnvVar("API_VERSION", env) ?? DEFAULTS.API_VERSION,
-    CORS_ORIGIN: getEnvVar("CORS_ORIGIN", env) ?? DEFAULTS.CORS_ORIGIN,
+    CORS_ORIGIN: corsOrigin,
     CORS_MAX_AGE: getNumericEnvVar("CORS_MAX_AGE", env, DEFAULTS.CORS_MAX_AGE),
 
     RATE_LIMIT_WINDOW_MS: getNumericEnvVar(
