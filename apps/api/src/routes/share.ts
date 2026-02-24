@@ -78,16 +78,18 @@ function isValidShareId(id: string | undefined): id is string {
 
 /**
  * Creates a standardized error response object.
- * SECURITY FIX #907: Includes timestamp for debugging and tracing.
+ * SECURITY FIX #907: Includes timestamp and requestId for debugging and tracing.
  * @param type - Error type
  * @param message - Error message
  * @param code - Error code
+ * @param requestId - Optional request ID for tracing
  * @returns Standardized error response object
  */
 function createErrorResponse(
   type: string,
   message: string,
   code: string,
+  requestId?: string,
 ): {
   success: false;
   error: {
@@ -95,6 +97,7 @@ function createErrorResponse(
     message: string;
     code: string;
     timestamp: string;
+    requestId?: string;
   };
 } {
   return {
@@ -104,6 +107,7 @@ function createErrorResponse(
       message,
       code,
       timestamp: new Date().toISOString(),
+      ...(requestId && { requestId }),
     },
   };
 }
@@ -123,6 +127,7 @@ app.post(
     }
   }),
   async (c) => {
+    const requestId = c.get("requestId") as string | undefined;
     try {
       const { title, blueprint, metadata } = c.req.valid("json");
       const shareId = generateShareId();
@@ -140,6 +145,7 @@ app.post(
             "configuration",
             SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
             ERROR_CODES.CONFIGURATION_ERROR,
+            requestId,
           ),
           HTTP_STATUS.INTERNAL_ERROR,
         );
@@ -178,6 +184,7 @@ app.post(
           "internal",
           ERROR_MESSAGES.INTERNAL,
           ERROR_CODES.INTERNAL_ERROR,
+          requestId,
         ),
         HTTP_STATUS.INTERNAL_ERROR,
       );
@@ -186,6 +193,7 @@ app.post(
 );
 
 app.get("/:id", async (c) => {
+  const requestId = c.get("requestId") as string | undefined;
   try {
     const shareId = c.req.param("id");
 
@@ -196,6 +204,7 @@ app.get("/:id", async (c) => {
           "validation",
           SHARE_ERROR_MESSAGES.INVALID_SHARE_ID_FORMAT,
           ERROR_CODES.VALIDATION_ERROR,
+          requestId,
         ),
         HTTP_STATUS.BAD_REQUEST,
       );
@@ -207,6 +216,7 @@ app.get("/:id", async (c) => {
           "configuration",
           SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
           ERROR_CODES.CONFIGURATION_ERROR,
+          requestId,
         ),
         HTTP_STATUS.INTERNAL_ERROR,
       );
@@ -226,6 +236,7 @@ app.get("/:id", async (c) => {
           "not_found",
           SHARE_ERROR_MESSAGES.SHARE_NOT_FOUND_OR_EXPIRED,
           ERROR_CODES.NOT_FOUND_ERROR,
+          requestId,
         ),
         HTTP_STATUS.NOT_FOUND,
       );
@@ -240,6 +251,7 @@ app.get("/:id", async (c) => {
           "not_found",
           SHARE_ERROR_MESSAGES.SHARE_EXPIRED,
           ERROR_CODES.NOT_FOUND_ERROR,
+          requestId,
         ),
         HTTP_STATUS.NOT_FOUND,
       );
@@ -290,6 +302,7 @@ app.get("/:id", async (c) => {
         "internal",
         ERROR_MESSAGES.INTERNAL,
         ERROR_CODES.INTERNAL_ERROR,
+        requestId,
       ),
       HTTP_STATUS.INTERNAL_ERROR,
     );
@@ -297,6 +310,7 @@ app.get("/:id", async (c) => {
 });
 
 app.delete("/:id", async (c) => {
+  const requestId = c.get("requestId") as string | undefined;
   try {
     const shareId = c.req.param("id");
 
@@ -307,6 +321,7 @@ app.delete("/:id", async (c) => {
           "validation",
           SHARE_ERROR_MESSAGES.INVALID_SHARE_ID_FORMAT,
           ERROR_CODES.VALIDATION_ERROR,
+          requestId,
         ),
         HTTP_STATUS.BAD_REQUEST,
       );
@@ -318,6 +333,7 @@ app.delete("/:id", async (c) => {
           "configuration",
           SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
           ERROR_CODES.CONFIGURATION_ERROR,
+          requestId,
         ),
         HTTP_STATUS.INTERNAL_ERROR,
       );
@@ -337,6 +353,7 @@ app.delete("/:id", async (c) => {
           "not_found",
           SHARE_ERROR_MESSAGES.SHARE_NOT_FOUND_OR_EXPIRED,
           ERROR_CODES.NOT_FOUND_ERROR,
+          requestId,
         ),
         HTTP_STATUS.NOT_FOUND,
       );
@@ -362,6 +379,7 @@ app.delete("/:id", async (c) => {
           "authorization",
           "Not authorized to delete this share",
           ERROR_CODES.AUTHORIZATION_ERROR,
+          requestId,
         ),
         HTTP_STATUS.FORBIDDEN,
       );
@@ -385,6 +403,7 @@ app.delete("/:id", async (c) => {
         "internal",
         ERROR_MESSAGES.INTERNAL,
         ERROR_CODES.INTERNAL_ERROR,
+        requestId,
       ),
       HTTP_STATUS.INTERNAL_ERROR,
     );
