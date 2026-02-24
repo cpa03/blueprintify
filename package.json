@@ -24,7 +24,9 @@
     "db:init": "node scripts/migrate.ts init",
     "db:status": "node scripts/migrate.ts status",
     "db:rollback": "node scripts/migrate.ts rollback",
-    "brocula": "node scripts/brocula-hunt.mjs"
+    "brocula": "node scripts/brocula-hunt.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
@@ -43,6 +45,7 @@
     "lighthouse": "^12.8.2",
     "playwright-lighthouse": "^4.0.0",
     "puppeteer-core": "^24.37.2",
+    "prettier": "^3.2.0",
     "typescript": "^5.3.0",
     "typescript-eslint": "^8.54.0",
     "vite-plugin-compression2": "^2.4.0",

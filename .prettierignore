@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+.wrangler/
+
+# Generated files
+*.min.js
+
+# Scripts
+scripts/
+
+# OpenCode
+.opencode/
+
+# Lock files
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
