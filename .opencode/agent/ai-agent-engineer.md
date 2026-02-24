@@ -142,22 +142,6 @@ permission:
 
 [Who you are and what you do]
 
-# SYSTEM MEMORY & STANDARDS
-
-[Patterns, conventions, and standards]
-
-# OPERATIONAL WORKFLOW
-
-[Step-by-step process]
-
-# CONSTRAINTS & LIMITS
-
-[What you cannot do]
-
-# SUCCESS CRITERIA
-
-[How to measure success]
-```
 
 # CONSTRAINTS & LIMITS
 
