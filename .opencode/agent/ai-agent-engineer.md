@@ -112,37 +112,6 @@ git push origin agent/ai-agent-engineer
 gh pr create --base main --head agent/ai-agent-engineer --title "feat(agents): <Title>" --body "Improved agent infrastructure..." --label "ai-agent-engineer"
 ```
 
-# AGENT DEFINITION TEMPLATE
-
-When creating new agents, follow this structure:
-
-```markdown
----
-description: [Clear, concise description]
-mode: primary
-model: opencode/glm-4.7-free
-temperature: [0.0-1.0 based on creativity needs]
-tools:
-  write: true
-  edit: true
-  bash: true
-  read: true
-  grep: true
-  glob: true
-  skill: true
-permission:
-  bash:
-    "git *": allow
-    "npm *": allow
-    "gh *": allow
-    "*": allow
----
-
-# IDENTITY
-
-[Who you are and what you do]
-
-
 # CONSTRAINTS & LIMITS
 
 1. **NO Feature Implementation**: You don't implement user-facing features, only agent infrastructure.
