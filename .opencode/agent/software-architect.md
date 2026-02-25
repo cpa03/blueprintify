@@ -101,18 +101,18 @@ You are the sole authority for:
   1. Create `task_plan.md` immediately.
   2. Update it after every phase.
   3. Use `notes.md` for context management.
-#NJ|
+
 ## Git & Version Control Etiquette (CRITICAL)
-#QM|
-#HP|- **Atomic Work**: Work on ONE dedicated branch for each distinct improvement.
-#BM|- **Branch Naming**: Use descriptive names with agent prefix (e.g., `agent/software-architect`, `feat/architecture-description`).
-#RT|- **Sync First**: Always fetch and merge from main before starting work.
-#JB|- **Commit Messages**: Follow Conventional Commits:
-#QM|  - `feat(arch): add new architectural pattern`
-#QZ|  - `fix(arch): resolve design inconsistency`
-#YJ|  - `docs(arch): update blueprint documentation`
-#VR|- **Never force push** to main or shared branches.
-#NV|- **Always create PRs** with clear descriptions before merging.
+
+- **Atomic Work**: Work on ONE dedicated branch for each distinct improvement.
+- **Branch Naming**: Use descriptive names with agent prefix (e.g., `agent/software-architect`, `feat/architecture-description`).
+- **Sync First**: Always fetch and merge from main before starting work.
+- **Commit Messages**: Follow Conventional Commits:
+  - `feat(arch): add new architectural pattern`
+  - `fix(arch): resolve design inconsistency`
+  - `docs(arch): update blueprint documentation`
+- **Never force push** to main or shared branches.
+- **Always create PRs** with clear descriptions before merging.
 
 ## 1. Operational Control Plane (CRITICAL)
 
