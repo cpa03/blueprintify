@@ -17,8 +17,15 @@ UI/UX Engineering - Design system, accessibility, user flow, micro-interactions
 
 ## Active PR
 
-- **#901**: style: standardize focus-visible ring opacity across components
+- **#90X**: style: add aria-hidden to decorative SVG icons
   - Status: OPEN
+  - Changes: Added `aria-hidden="true"` to decorative SVG icons for accessibility
+  - Files: `Header.tsx`, `TemplateGrid.tsx`, `Toast.tsx`, `KeyboardShortcutsModal.tsx`, `StepInfo.tsx`, `StepFeatures.tsx`, `StepStack.tsx`, `StepGenerating.tsx`
+
+## Previous PR
+
+- **#901**: style: standardize focus-visible ring opacity across components
+  - Status: CLOSED
   - Changes: Standardized focus-visible ring opacity from `/60` to `/50`
   - Files: `TemplateGrid.tsx`, `StepStack.tsx`
 
@@ -34,14 +41,21 @@ UI/UX Engineering - Design system, accessibility, user flow, micro-interactions
 - Use CSS custom properties for inline styles in Framer Motion
 - Pattern: `var(--color-primary-500)` instead of hardcoded hex values
 
+### SVG Accessibility
+
+- Add `aria-hidden="true"` to decorative SVG icons
+- Decorative icons are those that don't convey meaning on their own
+- Icons inside buttons with aria-label should have aria-hidden
+- Pattern: `<svg ... aria-hidden="true">`
+
 ## QA Checklist
 
-- [ ] Build passes
-- [ ] TypeScript compiles without errors
-- [ ] Tests pass (251 tests)
-- [ ] No lint errors
-- [ ] Focus indicators meet WCAG AA
-- [ ] Consistent color usage via theme tokens
+- [x] Build passes
+- [x] TypeScript compiles without errors
+- [x] Tests pass (251 tests)
+- [x] No lint errors
+- [x] Focus indicators meet WCAG AA
+- [x] Consistent color usage via theme tokens
 
 ## Workflow
 

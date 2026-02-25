@@ -77,6 +77,7 @@ const ProgressRing = memo(function ProgressRing({
       height={size}
       className="absolute pointer-events-none"
       style={{ transform: "rotate(-90deg)" }}
+      aria-hidden="true"
     >
       <circle
         cx={size / 2}
@@ -251,6 +252,7 @@ const ToastItem = memo(
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
