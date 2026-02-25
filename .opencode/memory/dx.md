@@ -125,6 +125,14 @@ npm install
   - Module-level documentation with API client overview
   - SSE streaming, retry logic, timeouts documented
   - @see references to backend API and shared types
+### Completed
+
+- [x] Fix TypeScript syntax errors in circuitBreaker.test.ts (2026-02-25)
+  - Removed incorrect closing brace prematurely closing createCircuitBreaker
+  - Added missing closing brace for HALF_OPEN state describe block
+  - Added missing closing brace for createCircuitBreaker
+  - Fixed vi.setSystemTime() calls to use new Date(0)
+  - Typecheck now passes
 
 ### Pending
 
