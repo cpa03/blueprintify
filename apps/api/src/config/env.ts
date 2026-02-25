@@ -58,7 +58,7 @@ export const DEFAULTS: Omit<EnvConfig, "OPENAI_API_KEY"> = {
 
   // API
   API_VERSION: "1.0.0",
-  CORS_ORIGIN: "*",
+  CORS_ORIGIN: "http://localhost:3000",
   CORS_MAX_AGE: 86400,
 
   // Rate Limiting
@@ -137,7 +137,9 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
     );
   }
 
-  return {
+  // Build configuration object
+  const config: EnvConfig = {
+
     OPENAI_API_KEY: openaiApiKey,
     OPENAI_BASE_URL:
       getEnvVar("OPENAI_BASE_URL", env) ?? DEFAULTS.OPENAI_BASE_URL,
@@ -230,6 +232,24 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
       getEnvVar("PROJECT_HOMEPAGE_URL", env) ?? DEFAULTS.PROJECT_HOMEPAGE_URL,
     GITHUB_URL: getEnvVar("GITHUB_URL", env) ?? DEFAULTS.GITHUB_URL,
   };
+
+  // Security warning for CORS wildcard in production
+  const corsOrigin = config.CORS_ORIGIN;
+  if (corsOrigin === "*") {
+    console.warn(
+      "SECURITY WARNING: CORS origin is set to wildcard ('*'). " +
+        "This allows any origin to access the API. " +
+        "For production, set CORS_ORIGIN to a specific domain.",
+    );
+  } else if (corsOrigin === "http://localhost:3000") {
+    console.warn(
+      "SECURITY NOTICE: CORS origin is set to localhost. " +
+        "This is appropriate for development only. " +
+        "For production, set CORS_ORIGIN to your production domain.",
+    );
+  }
+
+  return config;
 }
 
 // Singleton config instance - delegates to constants.ts for unified state
