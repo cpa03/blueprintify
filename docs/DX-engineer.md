@@ -60,3 +60,26 @@ When implementing DX improvements:
 - TypeScript typecheck requires `npm install` to run first
 - ESLint requires dependencies to be installed
 - Some tests may fail in clean environment without build artifacts
+
+## ESLint Configuration
+
+When adding ESLint rules, follow these patterns:
+
+### Console Statements
+
+Use the `no-console` rule to prevent console statements in production:
+
+```javascript
+"no-console": [
+  "warn",
+  {
+    "allow": ["error", "warn", "log"]
+  }
+]
+```
+
+This warns against `console.log` and `console.info` but allows `console.error`, `console.warn`, and `console.log` (for legitimate logging utilities like HTTP request loggers). Combined with Vite's production build configuration (which strips console.log/info/debug), this provides defense in depth.
+
+- TypeScript typecheck requires `npm install` to run first
+- ESLint requires dependencies to be installed
+- Some tests may fail in clean environment without build artifacts

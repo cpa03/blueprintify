@@ -541,7 +541,7 @@ export class StorageService<T = unknown> {
           // Restore the recovered data
           localStorage.setItem(this.config.key, backup.data);
 
-          console.info(
+          console.warn(
             `Successfully recovered from backup created at ${new Date(backup.timestamp)}`,
           );
           return recovered;
