@@ -115,3 +115,36 @@ Avoid:
 - Prettier integrates well with existing ESLint config
 - Code style matches existing patterns (double quotes, semicolons, 2-space indent)
 - Format command successfully formatted multiple files across the codebase
+
+
+### 2026-02-25: Second Iteration - PR Template
+
+**Issue**: #952 - DX: Add PR template to repository
+
+**Changes Made**:
+
+1. Created `.github/PULL_REQUEST_TEMPLATE.md` with structured sections:
+   - Summary
+   - Type of Change (Feature, Bug Fix, Refactor, Documentation, Performance, Security)
+   - Related Issue
+   - Testing (Unit tests, Manual testing, No testing needed)
+   - Checklist (Code guidelines, Self-review, Documentation, Console statements, Build/Lint/TypeScript)
+   - Additional Notes
+
+2. Created `Product-Arhcite` label for PRs
+
+**Verification**:
+
+- Branch created from main: `feat/product-architect/pr-template`
+- PR created: #960
+- Label applied: Product-Arhcite
+- Issue linked: Closes #952
+- Merged with latest main (no conflicts)
+
+**Learnings**:
+
+- PR template guides contributors to include necessary information
+- Template structure based on industry best practices
+- Simple markdown files don't affect build/lint/typecheck
+- Pre-existing type errors in project are unrelated to DX changes
+- GitHub CLI makes label creation and PR management straightforward
