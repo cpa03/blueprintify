@@ -151,7 +151,12 @@ export function createSecureLogEntry(
     context,
     error: sanitizedError,
     timestamp: new Date().toISOString(),
-    ...additionalInfo,
+    ...Object.fromEntries(
+      Object.entries(additionalInfo ?? {}).map(([key, value]) => [
+        key,
+        typeof value === "string" ? sanitizeString(value) : value,
+      ])
+    ),
   };
 }
 
