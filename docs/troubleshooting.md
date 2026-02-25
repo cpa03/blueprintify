@@ -67,6 +67,31 @@ fuser -k 3000/tcp 2>/dev/null || true
 fuser -k 8787/tcp 2>/dev/null || true
 ```
 
+### API returns 503 configuration error
+
+**Symptoms:**
+
+- API returns 503 status code
+- Error message: "API_KEY is not configured. Server authentication is unavailable."
+- All API requests fail with configuration error
+
+**Solution:**
+
+The API now requires `OPENAI_API_KEY` to be configured for security reasons. This is a security fix (issue #945) that prevents auth bypass vulnerabilities.
+
+```bash
+# Check if .dev.vars exists and contains API key
+cat apps/api/.dev.vars
+
+# If missing or empty, add your API key:
+echo "OPENAI_API_KEY=your_openai_api_key_here" >> apps/api/.dev.vars
+
+# For production, set the environment variable:
+export OPENAI_API_KEY=your_openai_api_key_here
+```
+
+**Note:** In production, ensure `OPENAI_API_KEY` environment variable is set before deploying.
+
 ### API server won't start
 
 **Symptoms:**
