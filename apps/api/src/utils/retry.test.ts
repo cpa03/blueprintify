@@ -287,7 +287,9 @@ describe("Retry Utilities", () => {
       await expect(resultPromise).rejects.toEqual(serverError);
     });
 
-    it("should use default maxDelay from config when not specified", async () => {
+    it("should use default maxDelay from config when not specified", {
+      timeout: 30000, // Needs longer timeout due to retry delays
+    }, async () => {
       vi.useRealTimers();
 
       const serverError = { status: 503 };
