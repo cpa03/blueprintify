@@ -20,7 +20,8 @@ When adding new NPM scripts, follow these patterns:
 ```json
 {
   "scripts": {
-    "clean": "npm run clean --workspaces --if-present",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "clean:dist": "rm -rf apps/*/dist packages/*/dist",
     "reset": "npm run clean && rm -rf node_modules apps/*/node_modules packages/*/node_modules"
   }
@@ -43,7 +44,7 @@ Each workspace (apps/_, packages/_) should have a local clean script:
 
 1. **Build Scripts**: Add `clean` and `reset` scripts for cleanup
 2. **Dev Scripts**: Add `dev:all` for running all apps in parallel
-3. **Quality Scripts**: Ensure `typecheck`, `lint`, `test` are available
+3. **Quality Scripts**: Ensure `typecheck`, `lint`, `lint:fix`, `test` are available
 4. **Documentation**: Keep scripts documented in README
 
 ## Verification Checklist
