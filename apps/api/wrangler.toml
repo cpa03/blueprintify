@@ -8,9 +8,9 @@ tsconfig = "./tsconfig.json"
 # https://developers.cloudflare.com/workers/configuration/migrating-to-module-workers/#settings-inheritance
 keep_vars = true
 
-# Production debugging: Upload source maps for readable stack traces
+# Source maps: disabled for production (security), enabled for staging only
 # https://developers.cloudflare.com/workers/observability/source-maps
-upload_source_maps = true
+upload_source_maps = false
 
 # Smart Placement - optimizes worker placement based on traffic patterns
 # Takes up to 15 minutes to analyze after deployment
@@ -52,6 +52,7 @@ workers_dev = false
 logpush = true
 minify = true
 vars = { ENVIRONMENT = "staging" }
+upload_source_maps = true
 routes = [
   { pattern = "api-staging.blueprintify.dev/*", zone_name = "blueprintify.dev" }
 ]
@@ -123,8 +124,8 @@ cpu_ms = 50000
 
 # Analytics Engine for production metrics
 # https://developers.cloudflare.com/analytics/analytics-engine/
-[[analytics_engine_datasets]]
-binding = "ANALYTICS"
+# [[analytics_engine_datasets]]
+# binding = "ANALYTICS"
 
 # Tail consumers for real-time log streaming
 # https://developers.cloudflare.com/workers/observability/tail-workers/
