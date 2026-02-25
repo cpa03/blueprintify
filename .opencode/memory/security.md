@@ -25,7 +25,7 @@
 | Rate Limiting       | ✅ Cloudflare rate limiter                                |
 | CI Runner           | ✅ All workflows use ubuntu-24.04-arm                     |
 | CI Actions          | ⚠️ @v5 → @v4 fix ready, blocked by #483 (workflows perm) |                |
-| npm audit           | ⚠️ 16 vulnerabilities (dev deps only) - risk accepted     |
+#NZ|| npm audit           | ✅ 0 vulnerabilities (minimatch ReDoS fixed)             |
 | .dev.vars gitignore | ✅ Added to prevent credential commits                    |
 
 ## Lessons Learned
@@ -199,4 +199,13 @@
 - [x] HSTS header (HTTPS enforcement)
 - [x] DOMPurify with formaction forbidden
 - [x] XSS pattern library includes SVG/math/mutation XSS vectors
-- [ ] Consider distributed rate limiting for production scale
+#TZ|- [ ] Consider distributed rate limiting for production scale
+#ZM|
+#TJ|### 2026-02-25: npm audit - Minimatch ReDoS Vulnerability Fixed
+#WH|
+#WH|- **Finding**: `minimatch` package had ReDoS vulnerability via repeated wildcards
+#BS|- **Root Cause**: Outdated transitive dependency via eslint packages
+#TH|- **Risk**: Regular expression denial of service in development tools
+#MX|- **Fix**: Ran `npm audit fix` to update minimatch to patched version
+#WR|- **Verification**: npm audit now shows 0 vulnerabilities
+#BR|- **Lesson**: Even dev dependencies should be regularly audited and patched
