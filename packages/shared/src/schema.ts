@@ -4,6 +4,11 @@ import { z } from "zod";
 import { VALIDATION_LIMITS } from "./config";
 
 // ===== Tech Stack Options =====
+
+/**
+ * Technology stack category enumeration.
+ * Used to categorize technologies in the wizard (e.g., "frontend", "backend", "database").
+ */
 export const TechStackCategory = z.enum([
   "frontend",
   "backend",
@@ -15,7 +20,10 @@ export const TechStackCategory = z.enum([
   "other",
 ]);
 
-// Database subcategories for enhanced categorization
+/**
+ * Database subcategory for fine-grained categorization.
+ * Values: relational, nosql, vector, graph, edge, search, cache, serverless
+ */
 export const DatabaseSubcategory = z.enum([
   "relational",
   "nosql",
@@ -27,6 +35,10 @@ export const DatabaseSubcategory = z.enum([
   "serverless",
 ]);
 
+/**
+ * Individual technology item schema.
+ * Represents a single technology choice with name, category, and optional version.
+ */
 export const TechStackItem = z.object({
   name: z.string().min(1),
   category: TechStackCategory,
@@ -37,6 +49,11 @@ export const TechStackItem = z.object({
 });
 
 // ===== Blueprint Request Schema =====
+
+/**
+ * Request payload for blueprint generation.
+ * Contains project configuration including name, description, tech stack, and features.
+ */
 export const BlueprintRequestSchema = z.object({
   projectName: z
     .string()
@@ -46,30 +63,45 @@ export const BlueprintRequestSchema = z.object({
     .string()
     .min(
       VALIDATION_LIMITS.DESCRIPTION.MIN,
-      `Description must be at least ${VALIDATION_LIMITS.DESCRIPTION.MIN} characters`,
+      `Description must be at least ${VALIDATION_LIMITS.DESCRIPTION.MIN} characters`
     )
     .max(VALIDATION_LIMITS.DESCRIPTION.MAX),
   techStack: z
     .array(TechStackItem)
-    .min(
-      VALIDATION_LIMITS.TECH_STACK.MIN,
-      "At least one technology is required",
-    ),
+    .min(VALIDATION_LIMITS.TECH_STACK.MIN, "At least one technology is required"),
   features: z.array(z.string().min(1)).optional(),
   targetAudience: z.string().optional(),
   constraints: z.string().optional(),
 });
 
 // ===== Task Generation Schema =====
+
+/**
+ * Request payload for task generation from blueprint content.
+ */
 export const TaskGenerationRequestSchema = z.object({
   blueprint: z.string().min(1, "Blueprint content is required"),
   projectName: z.string().min(1),
 });
 
 // ===== Task Item Schema (Future Proofing) =====
+
+/**
+ * Task status enumeration.
+ * Values: todo, in_progress, done
+ */
 export const TaskStatusSchema = z.enum(["todo", "in_progress", "done"]);
+
+/**
+ * Task priority enumeration.
+ * Values: low, medium, high, critical
+ */
 export const TaskPrioritySchema = z.enum(["low", "medium", "high", "critical"]);
 
+/**
+ * Individual task item schema.
+ * Represents a single actionable item in the generated task list.
+ */
 export const TaskItemSchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -79,9 +111,17 @@ export const TaskItemSchema = z.object({
   dependencies: z.array(z.string()).optional(),
 });
 
+/**
+ * Array of task items.
+ */
 export const TaskListSchema = z.array(TaskItemSchema);
 
 // ===== Refinement Request Schema =====
+
+/**
+ * Request payload for refining specific content sections.
+ * Used for AI-powered content enhancement in the editor.
+ */
 export const RefineRequestSchema = z.object({
   content: z.string().min(1, "Content to refine is required"),
   instruction: z.string().min(1, "Refinement instruction is required"),
@@ -89,6 +129,11 @@ export const RefineRequestSchema = z.object({
 });
 
 // ===== Template Schema =====
+
+/**
+ * Predefined project template schema.
+ * Provides default values for common project types.
+ */
 export const TemplateSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -101,6 +146,11 @@ export const TemplateSchema = z.object({
 });
 
 // ===== Error Response Schemas =====
+
+/**
+ * Error type enumeration.
+ * Values: validation, authentication, authorization, not_found, configuration, network, ai_service, internal
+ */
 export const ErrorTypeSchema = z.enum([
   "validation",
   "authentication",
@@ -112,6 +162,10 @@ export const ErrorTypeSchema = z.enum([
   "internal",
 ]);
 
+/**
+ * Detailed error information schema.
+ * Contains error type, message, optional code, details, timestamp, and request ID.
+ */
 export const ErrorDetailSchema = z.object({
   type: ErrorTypeSchema,
   message: z.string(),
@@ -121,18 +175,30 @@ export const ErrorDetailSchema = z.object({
   requestId: z.string().optional(),
 });
 
+/**
+ * Error response schema for failed API requests.
+ */
 export const ErrorResponseSchema = z.object({
   success: z.literal(false),
   error: ErrorDetailSchema,
 });
 
 // ===== API Response Schemas =====
+
+/**
+ * Single chunk of streaming response from AI generation.
+ * Contains incremental content delivered via Server-Sent Events (SSE).
+ */
 export const StreamChunkSchema = z.object({
   type: z.enum(["content", "error", "done"]),
   content: z.string().optional(),
   error: z.string().optional(),
 });
 
+/**
+ * Complete result of blueprint or task generation.
+ * Contains the full generated content and metadata.
+ */
 export const GenerationResultSchema = z.object({
   blueprint: z.string(),
   tasks: z.string().optional(),
@@ -140,14 +206,27 @@ export const GenerationResultSchema = z.object({
 });
 
 // ===== Success Response Schema =====
+
+/**
+ * Generic success response schema.
+ */
 export const SuccessResponseSchema = z.object({
   success: z.literal(true),
   data: z.unknown(),
 });
 
 // ===== Export/Import Schemas (M2) =====
+
+/**
+ * Supported export format enumeration.
+ * Values: json, zip, markdown
+ */
 export const ExportFormatSchema = z.enum(["json", "zip", "markdown"]);
 
+/**
+ * Request payload for exporting project data.
+ * Specifies the format and content to export.
+ */
 export const ExportRequestSchema = z.object({
   projectName: z.string().min(1, "Project name is required"),
   blueprint: z.string().min(1, "Blueprint content is required"),
@@ -156,12 +235,20 @@ export const ExportRequestSchema = z.object({
   includeMetadata: z.boolean().default(true),
 });
 
+/**
+ * Request payload for importing project data.
+ * Contains the data to import and optional conflict resolution strategy.
+ */
 export const ImportRequestSchema = z.object({
   data: z.string().min(1, "Import data is required"),
   format: ExportFormatSchema.default("json"),
   overwrite: z.boolean().default(false),
 });
 
+/**
+ * Result of an import operation.
+ * Contains success status, imported data, and any warnings.
+ */
 export const ImportResultSchema = z.object({
   projectName: z.string(),
   blueprint: z.string(),
@@ -171,6 +258,11 @@ export const ImportResultSchema = z.object({
 });
 
 // ===== Storage Schemas (M2) =====
+
+/**
+ * Storage quota information schema.
+ * Shows used/available space and project count.
+ */
 export const StorageQuotaSchema = z.object({
   used: z.number().int().min(0),
   total: z.number().int().min(0),
@@ -178,6 +270,10 @@ export const StorageQuotaSchema = z.object({
   projects: z.number().int().min(0),
 });
 
+/**
+ * Request payload for clearing stored data.
+ * Requires confirmation set to true.
+ */
 export const StorageClearRequestSchema = z.object({
   confirm: z.boolean().refine((val) => val === true, {
     message: "Must confirm deletion",
@@ -185,6 +281,11 @@ export const StorageClearRequestSchema = z.object({
 });
 
 // ===== Predefined Tech Stack Options =====
+
+/**
+ * Predefined technology stack options for the wizard.
+ * Contains categorized lists of popular technologies across different categories.
+ */
 export const TECH_STACK_OPTIONS = {
   frontend: [
     { name: "React", category: "frontend" as const },
@@ -208,15 +309,13 @@ export const TECH_STACK_OPTIONS = {
       name: "PostgreSQL",
       category: "database" as const,
       subcategory: "relational" as const,
-      description:
-        "Advanced open-source relational database with strong ACID compliance",
+      description: "Advanced open-source relational database with strong ACID compliance",
     },
     {
       name: "MySQL",
       category: "database" as const,
       subcategory: "relational" as const,
-      description:
-        "Popular open-source relational database known for reliability",
+      description: "Popular open-source relational database known for reliability",
     },
     {
       name: "PlanetScale",
@@ -296,8 +395,7 @@ export const TECH_STACK_OPTIONS = {
       name: "Upstash",
       category: "database" as const,
       subcategory: "edge" as const,
-      description:
-        "Serverless Redis-compatible database with edge capabilities",
+      description: "Serverless Redis-compatible database with edge capabilities",
     },
     {
       name: "Cloudflare D1",
