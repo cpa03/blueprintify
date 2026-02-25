@@ -120,13 +120,7 @@ npm run check
 npm run typecheck
 npm run lint
 npm run test:all
-
-# Also run format check:
-npm run format:check
-# Format code:
-npm run format
 ```
-
 ### Build
 
 ```bash
@@ -262,7 +256,6 @@ _See `.opencode/skill/` directory for complete skill definitions._
 
 - **TypeScript** - Type safety
 - **ESLint** - Code linting
-- **Prettier** - Code formatting
 - **Concurrently** - Parallel script execution
 - **Wrangler** - Cloudflare Workers deployment
 

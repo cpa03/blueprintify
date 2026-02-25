@@ -49,6 +49,7 @@ RESEARCH → PLAN → IMPLEMENT → VERIFY → SELF-REVIEW → DELIVER
 - PR #976: Security fix - reject requests when API_KEY not configured
 - CHANGELOG updated with security fix for issue #945
 - API docs updated with 503 error handling documentation
+#NM|- README.md: Removed incorrect Prettier and format script references (not available as npm scripts)
 
 ### Known Issues
 
