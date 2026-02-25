@@ -20,9 +20,9 @@ import type {
   WizardStep,
   TechStackItemType,
 } from "@blueprint/shared";
-import { createDebouncedSaver } from "@blueprint/shared";
 import { WIZARD_STEPS, DEBOUNCE_CONFIG } from "../config/constants";
 import { wizardStorage } from "../lib/storage";
+import { createPersistedStore, type PersistedStorage } from "./persistence";
 
 /**
  * Extended wizard store interface with actions for state manipulation.
@@ -78,55 +78,45 @@ const initialState: WizardState = {
   targetAudience: "",
   constraints: "",
 };
+/** Data shape persisted to storage */
+type PersistedWizardData = Pick<
+  WizardStore,
+  | "projectName"
+  | "description"
+  | "techStack"
+  | "features"
+  | "targetAudience"
+  | "constraints"
+>;
 
 export const useWizardStore = create<WizardStore>()((set, get) => {
-  /**
-   * Loads persisted state from localStorage on store initialization.
-   * Merges stored state with initial state to handle schema migrations.
-   */
-  const loadState = async (): Promise<void> => {
-    try {
-      const stored = await wizardStorage.get();
-      if (stored !== null) {
-        const persistedState = stored as Partial<WizardState>;
-        set((state) => ({ ...state, ...persistedState }), true);
-      }
-    } catch {
-      console.warn("Failed to load wizard state from storage");
-    }
-  };
+  // Use shared persistence utility
+  const {
+    loadState,
+    debouncedSave,
+    flushSave,
+    cancelSave,
+  } = createPersistedStore<PersistedWizardData, WizardStore>({
+    storage: wizardStorage as PersistedStorage<PersistedWizardData>,
+    debounceDelay: DEBOUNCE_CONFIG.WIZARD,
+    getPersistData: (state) => ({
+      projectName: state.projectName,
+      description: state.description,
+      techStack: state.techStack,
+      features: state.features,
+      targetAudience: state.targetAudience,
+      constraints: state.constraints,
+    }),
+  });
 
-  const saveState = async (): Promise<void> => {
-    try {
-      const current = get();
-      const dataToSave = {
-        projectName: current.projectName,
-        description: current.description,
-        techStack: current.techStack,
-        features: current.features,
-        targetAudience: current.targetAudience,
-        constraints: current.constraints,
-      };
-      await wizardStorage.set(dataToSave);
-    } catch {
-      console.warn("Failed to save wizard state to storage");
-    }
-  };
-
-  /** Debounced save prevents excessive localStorage writes on rapid updates */
-  const { debounced: debouncedSave, cancel: cancelSave } = createDebouncedSaver(
-    saveState,
-    DEBOUNCE_CONFIG.WIZARD,
-  );
-
-  void loadState();
+  void loadState(set);
 
   return {
     ...initialState,
 
     setStep: (step) => {
       set({ currentStep: step });
-      debouncedSave();
+      debouncedSave(get);
     },
 
     nextStep: () => {
@@ -134,7 +124,7 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
       const currentIndex = STEPS.indexOf(current);
       if (currentIndex < STEPS.length - 1) {
         set({ currentStep: STEPS[currentIndex + 1] });
-        debouncedSave();
+        debouncedSave(get);
       }
     },
 
@@ -143,42 +133,42 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
       const currentIndex = STEPS.indexOf(current);
       if (currentIndex > 0) {
         set({ currentStep: STEPS[currentIndex - 1] });
-        debouncedSave();
+        debouncedSave(get);
       }
     },
 
     setProjectName: (projectName) => {
       set({ projectName });
-      debouncedSave();
+      debouncedSave(get);
     },
 
     setDescription: (description) => {
       set({ description });
-      debouncedSave();
+      debouncedSave(get);
     },
 
     addTechStack: (item) => {
       const existing = get().techStack;
       if (!existing.some((t) => t.name === item.name)) {
         set({ techStack: [...existing, item] });
-        debouncedSave();
+        debouncedSave(get);
       }
     },
 
     removeTechStack: (name) => {
       set({ techStack: get().techStack.filter((t) => t.name !== name) });
-      debouncedSave();
+      debouncedSave(get);
     },
 
     setTechStack: (techStack) => {
       set({ techStack });
-      debouncedSave();
+      debouncedSave(get);
     },
 
     addFeature: (feature) => {
       if (feature.trim()) {
         set({ features: [...get().features, feature.trim()] });
-        debouncedSave();
+        debouncedSave(get);
       }
     },
 
@@ -190,22 +180,22 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
       } else {
         set({ features: get().features.filter((f) => f !== featureOrIndex) });
       }
-      debouncedSave();
+      debouncedSave(get);
     },
 
     clearFeatures: () => {
       set({ features: [] });
-      debouncedSave();
+      debouncedSave(get);
     },
 
     setTargetAudience: (targetAudience) => {
       set({ targetAudience });
-      debouncedSave();
+      debouncedSave(get);
     },
 
     setConstraints: (constraints) => {
       set({ constraints });
-      debouncedSave();
+      debouncedSave(get);
     },
 
     reset: () => {
