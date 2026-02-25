@@ -500,7 +500,7 @@ The `requestId` field provides a unique identifier for each request, enabling ef
 | `authentication` | Authentication required                             | 401         |
 | `authorization`  | Insufficient permissions                            | 403         |
 | `not_found`      | Resource not found                                  | 404         |
-| `configuration`  | Service configuration error (e.g., missing API key) | 500         |
+WQ|| `configuration`  | Service configuration error (e.g., missing API key) | 500/503     |
 | `network`        | Network error occurred                              | 500         |
 | `ai_service`     | AI service error                                    | 503         |
 | `internal`       | Internal server error                               | 500         |
@@ -770,9 +770,28 @@ DEBUG=* npm run dev:api
    - SSE connections may be interrupted by proxies or firewalls
    - Ensure proper CORS headers are configured
 
-3. **Validation Errors**
-   - Check request body format matches expected schema
+MK|   - Check request body format matches expected schema
    - Verify all required fields are present
+
+4. **API Key Not Configured (503 Service Unavailable)**
+   - If you receive a 503 error with message "API_KEY is not configured", the server's OpenAI API key is not set
+   - This is a security measure - the server will reject all requests when the API key is not configured
+   - For local development, ensure `OPENAI_API_KEY` is set in `apps/api/.dev.vars`
+   - For production deployment, ensure the `OPENAI_API_KEY` secret is configured in Cloudflare Workers
+
+## WebSocket Support
+
+Currently, the API uses Server-Sent Events (SSE) for streaming. WebSocket support is planned for future releases to enable bidirectional communication.
+   - Check request body format matches expected schema
+   JS|   - Verify all required fields are present
+
+4. **API Key Not Configured (503 Service Unavailable)**
+   - If you receive a 503 error with message "API_KEY is not configured", the server's OpenAI API key is not set
+   - This is a security measure - the server will reject all requests when the API key is not configured
+   - For local development, ensure `OPENAI_API_KEY` is set in `apps/api/.dev.vars`
+   - For production deployment, ensure the `OPENAI_API_KEY` secret is configured in Cloudflare Workers
+
+## WebSocket Support
 
 ## WebSocket Support
 

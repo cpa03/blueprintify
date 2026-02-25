@@ -39,16 +39,16 @@ RESEARCH → PLAN → IMPLEMENT → VERIFY → SELF-REVIEW → DELIVER
 
 ### Recent Activity
 
-- **PR #884**: "docs: update CHANGELOG with recent PR entries"
-  - Status: CLOSED (2026-02-23)
-  - Branch: `agent/technical-writer`
-  - Contains: CHANGELOG v1.1.0 release, API docs updates, findings documentation
+- **PR #976**: "fix(security): reject requests when API_KEY is not configured"
+  - Status: MERGED to main (2026-02-25)
+  - Contains: Security fix for issue #945 - returns 503 when API_KEY not configured
+  - This prevents auth bypass vulnerability when server is misconfigured
 
 ### Recent Documentation Updates
 
-- PR #943: Added platform-engineer long-term memory
-- PR #944: Added Prettier code formatter
-- README updated: Added Prettier to Development Tools and format scripts to QA section
+- PR #976: Security fix - reject requests when API_KEY not configured
+- CHANGELOG updated with security fix for issue #945
+- API docs updated with 503 error handling documentation
 
 ### Known Issues
 

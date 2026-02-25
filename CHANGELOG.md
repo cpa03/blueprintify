@@ -74,6 +74,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- Reject requests with 503 Service Unavailable when API_KEY is not configured, preventing auth bypass vulnerability ([#976](https://github.com/cpa03/blueprintify/pull/976), [#945](https://github.com/cpa03/blueprintify/issues/945))
+
 ### Added
 
 - None
