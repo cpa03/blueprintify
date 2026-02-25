@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, memo } from "react";
 import { motion, useSpring, useTransform } from "framer-motion";
 import { ANIMATION } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import clsx from "clsx";
 
 interface ScrollProgressProps {
   scrollContainerRef: React.RefObject<HTMLElement>;
@@ -241,17 +242,20 @@ export const ScrollProgressCompact = memo(function ScrollProgressCompact({
 
       {showPercentage && (
         <motion.span
-          className="text-xs text-dark-400 tabular-nums min-w-[2.5rem] text-right"
+          className={clsx(
+            "text-xs tabular-nums min-w-[2.5rem] text-right",
+            scrollProgress > 75 && "text-accent-emerald",
+            scrollProgress > 50 && scrollProgress <= 75 && "text-accent-purple",
+            scrollProgress <= 50 && "text-dark-400"
+          )}
           initial={false}
           animate={{
-            color:
-              scrollProgress > 75
-                ? "rgb(16, 185, 129)"
-                : scrollProgress > 50
-                  ? "rgb(139, 92, 246)"
-                  : "rgb(156, 163, 175)",
+            scale: [1, 1.05, 1],
           }}
-          transition={{ duration: ANIMATION.FAST }}
+          transition={{
+            duration: 0.3,
+            repeat: 0,
+          }}
         >
           {Math.round(scrollProgress)}%
         </motion.span>

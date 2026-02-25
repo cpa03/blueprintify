@@ -75,14 +75,16 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
       </span>
       <motion.button
         onClick={handleCopy}
-        className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50"
-        animate={{
-          backgroundColor: copied
-            ? "rgba(16, 185, 129, 0.2)"
+        className={clsx(
+          "flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50",
+          copied
+            ? "bg-accent-emerald/20 text-accent-emerald"
             : isHovered
-              ? "rgba(99, 102, 241, 0.2)"
-              : "rgba(55, 65, 81, 0.5)",
-          color: copied ? "rgb(16, 185, 129)" : "rgb(156, 163, 175)",
+              ? "bg-primary-500/20 text-dark-300"
+              : "bg-dark-700/50 text-dark-400"
+        )}
+        animate={{
+          scale: 1,
         }}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
