@@ -22,7 +22,7 @@ function CircularProgressComponent({
   className = "",
   showPercentage = false,
   color = PROGRESS_COLORS.ACTIVE,
-  trackColor = "rgba(255, 255, 255, 0.1)",
+  trackColor = "rgb(255_255_255/0.1)",
   ariaLabel,
 }: CircularProgressProps): JSX.Element {
   const clampedValue = Math.max(0, Math.min(100, value));

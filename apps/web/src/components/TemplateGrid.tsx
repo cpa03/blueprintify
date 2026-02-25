@@ -177,7 +177,7 @@ function TemplateGridComponent(): JSX.Element {
                           ${
                             isSelected
                               ? "bg-accent-emerald/20 text-accent-emerald"
-                              : "bg-dark-800 text-dark-300 group-hover:shadow-[0_0_8px_rgba(99,102,241,0.3)]"
+                              : "bg-dark-800 text-dark-300 group-hover:shadow-[0_0_8px_rgb(99_102_241/0.3)]"
                           }
                         `}
                       >
