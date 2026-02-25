@@ -138,7 +138,7 @@ export const AnimatedInput = memo(
           <input
             ref={combinedRef}
             className={`w-full px-4 py-3 bg-dark-800/50 rounded-xl text-white placeholder-dark-500
-              focus:outline-none focus:ring-2 transition-all duration-200
+              focus-visible:outline-none focus-visible:ring-2 transition-all duration-200
               ${getValidationStyles(validationState)}
               ${className}`}
             onChange={handleChange}
@@ -281,7 +281,7 @@ export const AnimatedTextarea = memo(
               ref={combinedRef}
               rows={rows}
               className={`w-full px-4 py-3 bg-dark-800/50 rounded-xl text-white placeholder-dark-500 resize-none
-              focus:outline-none focus:ring-2 transition-all duration-200
+              focus-visible:outline-none focus-visible:ring-2 transition-all duration-200
               ${getValidationStyles(validationState)}
               ${className}`}
               onChange={handleChange}
