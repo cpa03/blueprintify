@@ -222,8 +222,9 @@ describe("Circuit Breaker Utilities", () => {
           CircuitBreakerOpenError,
         );
 
-        vi.setSystemTime(); // Reset system time
+
       });
+    });
 
     describe("getState", () => {
       it("should return current metrics", () => {
@@ -328,7 +329,7 @@ describe("Circuit Breaker Utilities", () => {
         await customBreaker.execute(successOp);
         expect(customBreaker.getState().state).toBe(CircuitState.HALF_OPEN);
 
-        vi.setSystemTime(); // Reset system time
+
       });
 
       it("should respect custom halfOpenMaxCalls", async () => {
