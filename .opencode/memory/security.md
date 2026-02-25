@@ -8,7 +8,7 @@
 - CI/CD security: Standardized runner versions (`ubuntu-24.04-arm`) and action versions across all workflows.
 - Regular security audits (monthly recommended).
 
-## Current Security Status (2026-02-22 21:05 UTC)
+## Current Security Status (2026-02-25 20:50 UTC)
 
 | Control             | Status                                                |
 | ------------------- | ----------------------------------------------------- |
@@ -25,8 +25,23 @@
 | Rate Limiting       | ✅ Cloudflare rate limiter                            |
 | CI Runner           | ✅ All workflows use ubuntu-24.04-arm                 |
 | CI Actions          | ⚠️ main.yml uses invalid @v5 (blocked by #743)        |
-| npm audit           | ⚠️ 16 vulnerabilities (dev deps only) - risk accepted |
+#NP|| npm audit           | ✅ 0 vulnerabilities (fixed: hono HIGH, was 1 HIGH)           |
 | .dev.vars gitignore  | ✅ Added to prevent credential commits               |
+### 2026-02-25 20:50 UTC: Hono HIGH Vulnerability and Source Maps Production Fix
+
+- **Finding 1**: hono@4.12.0 had HIGH severity vulnerability (GHSA-xh87-mx6m-69f3 - Authentication Bypass by IP Spoofing in AWS Lambda ALB)
+- **Root Cause**: Outdated dependency version in package.json
+- **Risk**: Attackers could spoof IP addresses in AWS Lambda ALB environments to bypass authentication
+- **Fix**: Updated hono from ^4.11.7 to ^4.12.2
+- **Verification**: npm audit shows 0 vulnerabilities
+
+- **Finding 2**: wrangler.toml had `upload_source_maps = true` at root level (issue #864)
+- **Root Cause**: Source maps enabled for all environments including production
+- **Risk**: Production source maps expose implementation details and can reveal sensitive code
+- **Fix**: Set default to `upload_source_maps = false`, enable only for staging environment
+- **Lesson**: Environment-specific security settings should be explicitly configured; production should have secure defaults
+
+### 2026-02-25 UTC: CORS Wildcard Default Replaced
 #ZM|
 #VB|### 2026-02-25 UTC: CORS Wildcard Default Replaced
 #WV|
