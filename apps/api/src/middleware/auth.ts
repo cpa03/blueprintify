@@ -11,6 +11,11 @@ import type { MiddlewareHandler } from "hono";
 import { HTTP_STATUS } from "../config/constants";
 
 /**
+ * Error code for authentication configuration errors.
+ */
+export const AUTH_CONFIG_ERROR = "AUTH_CONFIG_ERROR" as const;
+
+/**
  * Configuration options for API key authentication middleware.
  *
  * @property apiKeyHeader - Header name for API key (default: "x-api-key")
@@ -48,7 +53,7 @@ function constantTimeCompare(a: string, b: string): boolean {
  * Creates an API key authentication middleware for Hono applications.
  *
  * Validates API keys from request headers using constant-time comparison.
- * If no API_KEY environment variable is set, authentication is bypassed.
+ * If no API_KEY environment variable is set, requests are rejected with 503.
  * Excluded paths (like health checks) skip authentication entirely.
  *
  * @param config - Authentication configuration options
@@ -76,9 +81,21 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
     const providedKey = c.req.header(apiKeyHeader);
     const validKey = c.env.API_KEY;
 
+    // SECURITY FIX: Reject requests when API_KEY is not configured instead of bypassing auth
+    // This prevents unauthenticated access when the server is misconfigured
     if (!validKey) {
-      await next();
-      return;
+      return c.json(
+        {
+          success: false,
+          error: {
+            type: "server_configuration",
+            message: "API_KEY is not configured. Server authentication is unavailable.",
+            code: AUTH_CONFIG_ERROR,
+            timestamp: new Date().toISOString(),
+          },
+        },
+        HTTP_STATUS.SERVICE_UNAVAILABLE
+      );
     }
 
     // Use constant-time comparison to prevent timing attacks
@@ -93,7 +110,7 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
             timestamp: new Date().toISOString(),
           },
         },
-        HTTP_STATUS.UNAUTHORIZED,
+        HTTP_STATUS.UNAUTHORIZED
       );
     }
 
