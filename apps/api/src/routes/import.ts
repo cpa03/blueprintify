@@ -10,6 +10,7 @@
 
 import { Hono } from "hono";
 import { ImportRequestSchema } from "@blueprint/shared";
+import { ErrorType } from "../errors";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { secureLogError } from "../utils/secureLog";
@@ -41,7 +42,7 @@ app.post(
               {
                 success: false,
                 error: {
-                  type: "validation" as const,
+                  type: ErrorType.VALIDATION,
                   message:
                     "Invalid import data: missing required fields (projectName, blueprint)",
                   timestamp: new Date().toISOString(),
@@ -76,7 +77,7 @@ app.post(
             {
               success: false,
               error: {
-                type: "validation" as const,
+                type: ErrorType.VALIDATION,
                 message: "Invalid JSON format",
                 details:
                   parseError instanceof Error ? parseError.message : undefined,
@@ -108,7 +109,7 @@ app.post(
             {
               success: false,
               error: {
-                type: "validation" as const,
+                type: ErrorType.VALIDATION,
                 message:
                   "Invalid markdown format: could not extract blueprint content",
                 timestamp: new Date().toISOString(),
@@ -135,7 +136,7 @@ app.post(
         {
           success: false,
           error: {
-            type: "validation" as const,
+            type: ErrorType.VALIDATION,
             message: `Unsupported import format: ${format}`,
             timestamp: new Date().toISOString(),
           },
@@ -148,7 +149,7 @@ app.post(
         {
           success: false,
           error: {
-            type: "internal" as const,
+            type: ErrorType.INTERNAL,
             message: error instanceof Error ? error.message : "Import failed",
             timestamp: new Date().toISOString(),
           },
