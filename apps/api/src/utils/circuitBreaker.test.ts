@@ -222,7 +222,7 @@ describe("Circuit Breaker Utilities", () => {
           CircuitBreakerOpenError,
         );
 
-        vi.setSystemTime(); // Reset system time
+        vi.setSystemTime(0); // Reset system time
       });
 
     describe("getState", () => {
@@ -328,7 +328,7 @@ describe("Circuit Breaker Utilities", () => {
         await customBreaker.execute(successOp);
         expect(customBreaker.getState().state).toBe(CircuitState.HALF_OPEN);
 
-        vi.setSystemTime(); // Reset system time
+        vi.setSystemTime(0); // Reset system time
       });
 
       it("should respect custom halfOpenMaxCalls", async () => {
@@ -366,4 +366,5 @@ describe("Circuit Breaker Utilities", () => {
       expect(CircuitState.HALF_OPEN).toBe("HALF_OPEN");
     });
   });
+});
 });
