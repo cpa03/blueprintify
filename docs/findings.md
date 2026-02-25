@@ -22,7 +22,8 @@
 - [2026-02-18: Share Endpoint Validation Consistency](#security-2026-02-18---share-endpoint-validation-consistency)
 - [2026-02-18: Integration Workflow File Line Ending](#integration-2026-02-18---workflow-file-line-ending-inconsistency)
 - [2026-02-20: Logger Middleware Undefined Header Fix](#reliability-2026-02-20---logger-middleware-undefined-header-value-fix)
- [2026-02-23: Zustand Selector Pattern Audit](#frontend-engineer-2026-02-23---zustand-selector-pattern-audit)
+ SW| [2026-02-23: Zustand Selector Pattern Audit](#frontend-engineer-2026-02-23---zustand-selector-pattern-audit)
+#XR|[2026-02-25: Custom React Hooks Test Coverage](#frontend-engineer-2026-02-25---custom-react-hooks-test-coverage)
 
 ---
 
@@ -733,6 +734,52 @@ npm run test       # ✅ PASS (251 tests)
 
 ### Resolves
 
-#898
-
+MH|#898
+#ZB|QP|---
+QP|---
 ---
+QP|---
+## [Frontend Engineer] 2026-02-25 - Custom React Hooks Test Coverage
+
+### Observation
+
+Issue #941 reported that custom React hooks had zero test coverage. The codebase had tests for stores and components but lacked tests for custom hooks.
+
+### Action Taken
+
+Created comprehensive unit tests for custom React hooks:
+
+| Hook | Tests | Coverage |
+|------|-------|----------|
+| `useLastSaved` | 16 | Relative time formatting, state management, markSaved, setLastSaved, markAsChanged |
+| `useDocumentTitle` | 4 | Title management, cleanup on unmount, prop updates |
+| `useReducedMotion` | 2 | Default behavior, media query detection |
+| `getAnimationDuration` | 2 | Reduced motion handling |
+| `getSpringConfig` | 5 | Configuration merging, custom values |
+| **Total** | **28** | Full coverage |
+
+### Implementation Details
+
+- Created `apps/web/src/hooks/hooks.test.ts` with 28 tests
+- Used @testing-library/react for rendering hooks
+- Used fake timers for time-based tests
+- Mocked matchMedia for reduced motion tests
+
+### Impact
+
+- Test coverage increased from 0 to 28 tests for custom hooks
+- All 339 tests now pass (28 new + 311 existing)
+- Typecheck and build pass
+
+### Verification
+
+```bash
+npm run typecheck  # ✅ PASS
+npm run lint       # ✅ PASS
+npm run build      # ✅ PASS (14.26s)
+npm run test       # ✅ PASS (339 tests)
+```
+
+### Resolves
+
+#941
