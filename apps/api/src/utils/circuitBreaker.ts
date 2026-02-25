@@ -240,4 +240,3 @@ export const createCircuitBreaker = (
 };
 
 export type { CircuitBreaker, CircuitBreakerMetrics };
-export { CircuitState };
