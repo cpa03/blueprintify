@@ -94,8 +94,6 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
   const {
     loadState,
     debouncedSave,
-
-    debouncedSave,
     cancelSave,
   } = createPersistedStore<PersistedWizardData, WizardStore>({
     storage: wizardStorage as PersistedStorage<PersistedWizardData>,
