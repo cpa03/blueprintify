@@ -43,6 +43,7 @@ describe("Circuit Breaker Utilities", () => {
       const state = breaker.getState();
       expect(state.state).toBe(CircuitState.CLOSED);
     });
+  });
 
   describe("CircuitBreaker", () => {
     let breaker: CircuitBreaker;
@@ -221,10 +222,10 @@ describe("Circuit Breaker Utilities", () => {
           CircuitBreakerOpenError,
         );
 
-        vi.useRealTimers(); // Reset system time
-      });
 
+      });
     });
+
     describe("getState", () => {
       it("should return current metrics", () => {
         const state = breaker.getState();
@@ -328,7 +329,7 @@ describe("Circuit Breaker Utilities", () => {
         await customBreaker.execute(successOp);
         expect(customBreaker.getState().state).toBe(CircuitState.HALF_OPEN);
 
-        vi.setSystemTime(new Date(0)); // Reset system time
+
       });
 
       it("should respect custom halfOpenMaxCalls", async () => {
@@ -357,7 +358,6 @@ describe("Circuit Breaker Utilities", () => {
         expect(customBreaker.getState().state).toBe(CircuitState.CLOSED);
       });
     });
-  });
   });
 
   describe("CircuitState enum", () => {
