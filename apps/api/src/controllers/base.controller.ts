@@ -17,7 +17,7 @@ export abstract class BaseController {
    * @returns AIConfig object with API key, base URL, model, and timeout
    * @throws {ConfigurationError} When OPENAI_API_KEY is not configured
    */
-  protected createAIConfig(c: ControllerContext): AIConfig {
+  public createAIConfig(c: ControllerContext): AIConfig {
     const config: AIConfig = {
       apiKey: c.env.OPENAI_API_KEY,
       baseURL: c.env.OPENAI_BASE_URL,
@@ -37,7 +37,7 @@ export abstract class BaseController {
    * @param generator - Async generator yielding content chunks
    * @returns Response object configured for SSE streaming
    */
-  protected async handleStreamingResponse(
+  public async handleStreamingResponse(
     generator: AsyncGenerator<string, void, unknown>,
   ): Promise<Response> {
     const container = getContainer();
@@ -51,7 +51,7 @@ export abstract class BaseController {
    * @returns The validated and typed request data
    * @throws {Error} When validated data is not found in context
    */
-  protected getValidatedData<T extends z.ZodSchema>(
+  public getValidatedData<T extends z.ZodSchema>(
     c: ValidatedContext<T>,
   ): z.infer<T> {
     const data = c.get("validatedData");
@@ -66,7 +66,7 @@ export abstract class BaseController {
    * @param c - The Hono context containing environment bindings
    * @throws {ConfigurationError} When OPENAI_API_KEY is not configured
    */
-  protected validateEnvironment(c: ControllerContext): void {
+  public validateEnvironment(c: ControllerContext): void {
     if (!c.env.OPENAI_API_KEY) {
       throw new ConfigurationError(CONFIG_MESSAGES.OPENAI_API_KEY_MISSING);
     }
