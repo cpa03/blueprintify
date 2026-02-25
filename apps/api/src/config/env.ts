@@ -58,7 +58,7 @@ export const DEFAULTS: Omit<EnvConfig, "OPENAI_API_KEY"> = {
 
   // API
   API_VERSION: "1.0.0",
-  CORS_ORIGIN: "*",
+  CORS_ORIGIN: "",
   CORS_MAX_AGE: 86400,
 
   // Rate Limiting

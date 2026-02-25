@@ -182,7 +182,7 @@ describe("rateLimit middleware", () => {
   });
 
   describe("missing rate limiter binding", () => {
-    it("should allow requests when rate limiter is not configured", async () => {
+    it("should reject requests with 503 when rate limiter is not configured", async () => {
       const app = new Hono<{
         Bindings: { STANDARD_RATE_LIMITER?: RateLimit };
       }>();
@@ -196,7 +196,11 @@ describe("rateLimit middleware", () => {
       const res = await app.request("/", {
         headers: { "cf-connecting-ip": "1.2.3.9" },
       });
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(503);
+
+      const data = (await res.json()) as ErrorResponse;
+      expect(data.success).toBe(false);
+      expect(data.error.code).toBe("RATE_LIMITER_NOT_CONFIGURED");
     });
   });
 

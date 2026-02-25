@@ -18,6 +18,28 @@ This document serves as the long-term memory for the backend-engineer agent, tra
 
 ## Lessons Learned
 
+### 2026-02-25 (Session 2)
+
+- **Issue #932 & #930 Fix**: Fixed rate limiter security issue and CORS default
+  - rateLimit.ts: Changed to return 503 when rate limiter not configured
+  - rateLimit.test.ts: Updated test expectations to expect 503
+  - env.ts: Changed CORS_ORIGIN default from "*" to ""
+  - .dev.vars.example: Added proper localhost CORS origin
+- **Verification**: All 13 rate limit tests pass
+
+- **Edit Tool Issues**: The edit tool was causing issues with file structure
+  - Solution: Use write tool to completely rewrite files when making significant changes
+  - Always backup/restore from git when edit causes corruption
+
+### 2026-02-25 (Session 1)
+
+TW|- **Issue #959 Analysis**: The issue incorrectly mentioned `export.ts` as the file needing changes. The actual magic strings were in:
+XV|  - `import.ts` (5 instances)
+JP|  - `storage.ts` (1 instance)
+TB|  - `bodyLimit.ts` (1 instance)
+JS|- **Fix Applied**: Fixed `import.ts` first - replaced 5 magic strings with ErrorType enum
+RH|- **Verification**: TypeScript compilation passes, 8/8 tests pass
+
 ### 2026-02-25
 
 - **Issue #959 Analysis**: The issue incorrectly mentioned `export.ts` as the file needing changes. The actual magic strings were in:
