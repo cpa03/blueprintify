@@ -21,7 +21,6 @@ import {
 } from "./useReducedMotion";
 import {
   DOCUMENT_TITLE_CONFIG,
-  TIMEOUTS,
   SPRING_CONFIG,
 } from "../config/constants";
 

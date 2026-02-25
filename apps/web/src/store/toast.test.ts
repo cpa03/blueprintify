@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { useToastStore, useToast } from "./toast";
+import { useToastStore } from "./toast";
 
 describe("toast store", () => {
   beforeEach(() => {
@@ -78,7 +78,9 @@ describe("toast store", () => {
       addToast("To remove", "success");
       const { toasts } = useToastStore.getState();
       const toastId = toasts[0]?.id;
-      removeToast(toastId!);
+      if (toastId) {
+        removeToast(toastId);
+      }
       expect(useToastStore.getState().toasts).toHaveLength(0);
     });
 
@@ -87,7 +89,10 @@ describe("toast store", () => {
       addToast("First", "success");
       addToast("Second", "error");
       const { toasts } = useToastStore.getState();
-      removeToast(toasts[0]?.id!);
+      const toastId = toasts[0]?.id;
+      if (toastId) {
+        removeToast(toastId);
+      }
       const state = useToastStore.getState();
       expect(state.toasts).toHaveLength(1);
       expect(state.toasts[0]?.message).toBe("Second");
