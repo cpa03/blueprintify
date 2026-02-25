@@ -13,7 +13,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "test": "vitest --run",
+    "test:ui": "vitest"
   },
   "dependencies": {
     "zod": "^3.22.4"
