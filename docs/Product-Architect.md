@@ -191,3 +191,28 @@ Avoid:
 #VK|- Simple markdown files don't affect build/lint/typecheck
 #XV|- Pre-existing test failures can be verified as unrelated by checking diff
 #BQ|- TypeScript/ESLint checks are more relevant for code changes
+
+
+### 2026-02-25: Fourth Iteration - TypeScript Version Consistency
+
+**Issue**: #1029 - TypeScript version mismatch across workspaces
+
+**Changes Made**:
+
+1. Removed `"typescript": "^5.3.3"` from `apps/web/package.json` devDependencies
+2. Now all workspaces use root TypeScript (`^5.3.0`) for consistency
+
+**Verification**:
+
+- npm install succeeded
+- npm run build passes
+- npm run lint passes (15 warnings - pre-existing)
+- npm run test:all: Web tests pass (312 tests)
+- API tests have 4 pre-existing failures (rate limiter not configured) - unrelated to this change
+
+**Learnings**:
+
+- Workspace TypeScript version mismatches can cause subtle type-checking differences
+- Removing duplicate dependencies is a simple DX fix
+- Pre-existing test failures should be verified as unrelated by checking if they existed before changes
+- Package.json deduplication improves maintainability
