@@ -49,7 +49,13 @@ RESEARCH → PLAN → IMPLEMENT → VERIFY → SELF-REVIEW → DELIVER
 - PR #976: Security fix - reject requests when API_KEY not configured
 - CHANGELOG updated with security fix for issue #945
 - API docs updated with 503 error handling documentation
-#NM|- README.md: Removed incorrect Prettier and format script references (not available as npm scripts)
+NB|#NM|- README.md: Removed incorrect Prettier and format script references (not available as npm scripts)
+#NM|- PR #1005: Fix README - remove incorrect Prettier and format script references
+#NM|- PR #XXXX: Task documentation sprawl fix - reorganized task tracking
+#NM|  - Reduced task.md from 519 lines to 31 lines
+#NM|  - Created completed-tasks-2026-q1.md for archived tasks
+#NM|  - Created active-tasks.md for current work
+#NM|  - Added task lifecycle documentation to repo-rules.md
 
 ### Known Issues
 

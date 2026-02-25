@@ -125,8 +125,63 @@ Every significant feature must include:
 - User guides: `docs/user-guide.md`
 - API docs: `docs/api-documentation.md`
 - Architecture: `docs/blueprint.md`
-- Tasks: `docs/task.md`
+PN|- Tasks: `docs/task.md`
+- Active Tasks: `docs/active-tasks.md`
+- Completed Tasks: `docs/completed-tasks-YYYY-QX.md`
 - Features: `docs/features.md`
+PX|
+## Task Lifecycle Management
+
+This section defines how tasks are tracked, organized, and archived.
+
+### Task States
+
+Tasks move through the following states:
+
+1. **Open** - New task, not yet started
+2. **In Progress** - Actively being worked on
+3. **Review** - Pull request created, pending review
+4. **Done** - Merged and verified
+
+### Task Organization
+
+- **Active Tasks** (`docs/active-tasks.md`): Current work items
+- **Completed Tasks** (`docs/completed-tasks-YYYY-QX.md`): Archived completed work
+- **Main Task File** (`docs/task.md`): Entry point and references
+
+### Archival Process
+
+When a task is completed:
+
+1. Task is marked as complete in the relevant section
+2. At the end of each quarter, completed tasks are archived
+3. Archive format: `completed-tasks-YYYY-QX.md`
+4. The active-tasks.md is updated to remove archived items
+
+### Technical Writer Responsibilities
+
+- Maintain active-tasks.md with current priorities
+- Quarterly archival of completed tasks
+- Ensure task.md references are accurate
+- Report task sprawl issues
+
+### Task Sprawl Prevention
+
+If `docs/task.md` exceeds 100 lines, the Technical Writer must:
+
+1. Archive completed tasks to the quarterly file
+2. Simplify active-tasks.md
+3. Update task lifecycle documentation if needed
+
+### Issue-Driven Tasks
+
+For GitHub issues requiring documentation work:
+
+1. Issue must be labeled with `area:technical-writer`
+2. Branch: `docs/<issue-description>` or `fix/technical-writer-issue-<number>`
+3. PR label: `technical-writer`
+4. Link PR to issue
+
 
 ## Emergency Procedures
 
