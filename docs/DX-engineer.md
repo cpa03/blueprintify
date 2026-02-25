@@ -60,7 +60,54 @@ When implementing DX improvements:
 - TypeScript typecheck requires `npm install` to run first
 - ESLint requires dependencies to be installed
 - Some tests may fail in clean environment without build artifacts
+## VS Code Recommended Extensions
 
+When updating `.vscode/extensions.json`, include extensions organized by category:
+
+### Current Recommendations (Updated Feb 2026)
+
+```json
+{
+  "recommendations": [
+    // TypeScript/JavaScript
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-next",
+    "yoavbls.pretty-ts-errors",
+    // React
+    "dsznajder.es7-react-js-snippets",
+    "formulahendry.auto-rename-tag",
+    // Tailwind CSS
+    "bradlc.vscode-tailwindcss",
+    // Cloudflare Workers
+    "cloudflare.cloudflare-workers",
+    // Testing
+    "vitest.explorer",
+    // Markdown
+    "yzhang.markdown-all-in-one",
+    // Git
+    "eamodio.gitlens",
+    // Editor
+    "editorconfig.editorconfig"
+  ]
+}
+```
+
+### Extension Categories
+
+| Category | Extensions | Purpose |
+|----------|-----------|----------|
+| TypeScript/JS | eslint, prettier, typescript-next, pretty-ts-errors | Code quality |
+| React | ES7 snippets, auto-rename-tag | Development speed |
+| Tailwind | tailwindcss-intellisense | Styling support |
+| Cloudflare | cloudflare-workers | Workers-specific dev |
+| Testing | vitest-explorer | Test running |
+| Markdown | markdown-all-in-one | Docs editing |
+| Git | gitlens | Version control |
+| Editor | editorconfig | Consistency |
+
+
+## ESLint Configuration
 ## ESLint Configuration
 
 When adding ESLint rules, follow these patterns:
