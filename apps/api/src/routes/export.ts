@@ -10,6 +10,7 @@
 
 import { Hono } from "hono";
 import { ExportRequestSchema } from "@blueprint/shared";
+import { ErrorType } from "../errors";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { secureLogError } from "../utils/secureLog";
@@ -81,7 +82,7 @@ app.post(
         {
           success: false,
           error: {
-            type: "validation" as const,
+            type: ErrorType.VALIDATION,
             message: `Unsupported export format: ${format}`,
             timestamp: new Date().toISOString(),
           },
@@ -94,7 +95,7 @@ app.post(
         {
           success: false,
           error: {
-            type: "internal" as const,
+            type: ErrorType.INTERNAL,
             message: error instanceof Error ? error.message : "Export failed",
             timestamp: new Date().toISOString(),
           },
