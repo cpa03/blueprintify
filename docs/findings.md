@@ -22,6 +22,7 @@
 - [2026-02-18: Share Endpoint Validation Consistency](#security-2026-02-18---share-endpoint-validation-consistency)
 - [2026-02-18: Integration Workflow File Line Ending](#integration-2026-02-18---workflow-file-line-ending-inconsistency)
 - [2026-02-20: Logger Middleware Undefined Header Fix](#reliability-2026-02-20---logger-middleware-undefined-header-value-fix)
+ [2026-02-23: Zustand Selector Pattern Audit](#frontend-engineer-2026-02-23---zustand-selector-pattern-audit)
 
 ---
 
@@ -674,5 +675,64 @@ if (!key.toLowerCase().includes("authorization") && !key.toLowerCase().includes(
 - ✅ TypeScript: No errors
 - ✅ ESLint: No errors
 - ✅ Tests: 360 passed (218 web + 142 API)
+
+---
+
+
+## [Frontend-Engineer] 2026-02-23 - Zustand Selector Pattern Audit
+
+### Observation
+
+The project needed clear documentation for Zustand selector patterns to prevent introduction of performance anti-patterns. Additionally, `useShallow` from Zustand was not conveniently accessible from the store index.
+
+### Action Taken
+
+1. **Added `useShallow` re-export** to `apps/web/src/store/index.ts` for convenient access
+2. **Added comprehensive documentation** explaining Zustand selector pattern guidelines
+3. **Conducted full audit** of all Zustand usage in the codebase
+
+### Audit Results
+
+**Key Finding**: The codebase **already follows optimal Zustand patterns**. All components use individual primitive selectors:
+
+```typescript
+// Current pattern (ALREADY OPTIMAL):
+const projectName = useWizardStore((s) => s.projectName);
+const description = useWizardStore((s) => s.description);
+```
+
+**NO object selectors were found** that would require `useShallow` optimization.
+
+| File | Selector Pattern | Status |
+| ---- | ---------------- | ------ |
+| `Wizard.tsx` | Individual primitives | ✅ Optimal |
+| `Editor.tsx` | Individual primitives | ✅ Optimal |
+| `StepInfo.tsx` | Individual primitives | ✅ Optimal |
+| `StepStack.tsx` | Individual primitives | ✅ Optimal |
+| `StepFeatures.tsx` | Individual primitives | ✅ Optimal |
+| `StepReview.tsx` | Individual primitives | ✅ Optimal |
+| `StepGenerating.tsx` | Individual primitives | ✅ Optimal |
+| `App.tsx` | Individual + computed boolean | ✅ Optimal |
+| `useBlueprintStream.ts` | Individual primitives | ✅ Optimal |
+| `Toast.tsx` | Individual primitives | ✅ Optimal |
+
+### Impact
+
+- Codebase confirmed to already follow optimal Zustand patterns
+- `useShallow` available for future use when object selectors are needed
+- Documentation added to prevent introduction of anti-patterns
+
+### Verification
+
+```bash
+npm run typecheck  # ✅ PASS
+npm run lint       # ✅ PASS
+npm run build      # ✅ PASS (15.80s)
+npm run test       # ✅ PASS (251 tests)
+```
+
+### Resolves
+
+#898
 
 ---

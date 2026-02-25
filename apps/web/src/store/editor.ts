@@ -21,10 +21,10 @@
 
 import { create } from "zustand";
 import type { EditorTab } from "@blueprint/shared";
-import { createDebouncedSaver } from "@blueprint/shared";
 import { GENERATION_MESSAGES, DEBOUNCE_CONFIG } from "../config/constants";
 import { sanitizeForStorage, handleSecurityError } from "../lib/security";
 import { editorStorage } from "../lib/storage";
+import { createPersistedStore, type PersistedStorage } from "./persistence";
 
 /**
  * Validates and sanitizes editor content for storage.
@@ -70,41 +70,26 @@ export interface EditorStore {
   reset: () => void;
   flushStorage: () => void; // Flush pending storage writes
 }
+/** Data shape persisted to storage */
+type PersistedEditorData = Pick<EditorStore, "blueprintContent" | "tasksContent">;
 
 export const useEditorStore = create<EditorStore>()((set, get) => {
-  const loadState = async (): Promise<void> => {
-    try {
-      const stored = await editorStorage.get();
-      if (stored !== null) {
-        const persistedState = stored as Partial<EditorStore>;
-        set((state) => ({ ...state, ...persistedState }), true);
-      }
-    } catch {
-      console.warn("Failed to load editor state from storage");
-    }
-  };
-
-  const saveState = async (): Promise<void> => {
-    try {
-      const current = get();
-      const dataToSave = {
-        blueprintContent: current.blueprintContent,
-        tasksContent: current.tasksContent,
-      };
-      await editorStorage.set(dataToSave);
-    } catch {
-      console.warn("Failed to save editor state to storage");
-    }
-  };
-
-  // Create debounced save function to prevent excessive localStorage writes
+  // Use shared persistence utility
   const {
-    debounced: debouncedSave,
-    flush: flushSave,
-    cancel: cancelSave,
-  } = createDebouncedSaver(saveState, DEBOUNCE_CONFIG.EDITOR);
+    loadState,
+    debouncedSave,
+    flushSave,
+    cancelSave,
+  } = createPersistedStore<PersistedEditorData, EditorStore>({
+    storage: editorStorage as PersistedStorage<PersistedEditorData>,
+    debounceDelay: DEBOUNCE_CONFIG.EDITOR,
+    getPersistData: (state) => ({
+      blueprintContent: state.blueprintContent,
+      tasksContent: state.tasksContent,
+    }),
+  });
 
-  void loadState();
+  void loadState(set);
 
   return {
     activeTab: "blueprint",
@@ -123,7 +108,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
           get().tasksContent,
         );
         set({ blueprintContent: sanitized.blueprintContent, isDirty: true });
-        debouncedSave();
+        debouncedSave(get);
       } catch (error) {
         const securityError = handleSecurityError(error);
         console.error("Security validation failed:", securityError.message);
@@ -139,7 +124,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
           blueprintContent: sanitized.blueprintContent,
           isDirty: true,
         }));
-        debouncedSave();
+        debouncedSave(get);
       } catch (error) {
         const securityError = handleSecurityError(error);
         console.error("Security validation failed:", securityError.message);
@@ -154,7 +139,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
           tasksContent,
         );
         set({ tasksContent: sanitized.tasksContent, isDirty: true });
-        debouncedSave();
+        debouncedSave(get);
       } catch (error) {
         const securityError = handleSecurityError(error);
         console.error("Security validation failed:", securityError.message);
@@ -170,7 +155,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
           newContent,
         );
         set(() => ({ tasksContent: sanitized.tasksContent, isDirty: true }));
-        debouncedSave();
+        debouncedSave(get);
       } catch (error) {
         const securityError = handleSecurityError(error);
         console.error("Security validation failed:", securityError.message);
