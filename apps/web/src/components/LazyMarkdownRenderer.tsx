@@ -30,7 +30,7 @@ function LazyMarkdownRendererComponent({
           setIsLoading(false);
         }
       } catch (error) {
-        console.error("Failed to load MarkdownRenderer:", error);
+        if (import.meta.env.DEV) { console.error("Failed to load MarkdownRenderer:", error); }
         if (isMounted) {
           setIsLoading(false);
         }
