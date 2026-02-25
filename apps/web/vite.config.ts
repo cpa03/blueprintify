@@ -122,7 +122,7 @@ export default defineConfig({
         entryFileNames: "assets/[name]-[hash].js",
       },
     },
-    chunkSizeWarningLimit: 700,
+    chunkSizeWarningLimit: 500,
     cssCodeSplit: true,
     minify: "terser",
     terserOptions: {
