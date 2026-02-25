@@ -204,6 +204,13 @@ describe("Circuit Breaker Utilities", () => {
       });
 
       it("should reject calls when HALF_OPEN max calls exceeded", async () => {
+        // The beforeEach opens the circuit and advances fake timers, but Date.now()
+        // doesn't respond to fake timers. We need to mock system time to trigger
+        // the transition to HALF_OPEN state.
+        vi.setSystemTime(Date.now() + 1001);
+        const setupOp = vi.fn().mockResolvedValue("success");
+        await breaker.execute(setupOp); // This transitions to HALF_OPEN
+
         const operation = vi.fn().mockResolvedValue("success");
 
         // Make 2 calls (halfOpenMaxCalls = 2)
@@ -214,8 +221,9 @@ describe("Circuit Breaker Utilities", () => {
         await expect(breaker.execute(operation)).rejects.toThrow(
           CircuitBreakerOpenError,
         );
+
+        vi.setSystemTime(); // Reset system time
       });
-    });
 
     describe("getState", () => {
       it("should return current metrics", () => {
@@ -308,17 +316,19 @@ describe("Circuit Breaker Utilities", () => {
         // Open the circuit
         await expect(customBreaker.execute(operation)).rejects.toThrow("fail");
 
-        // Should still be OPEN after 4999ms
-        vi.advanceTimersByTime(4999);
+        // Should still be OPEN after 4999ms (using system time mock)
+        vi.setSystemTime(Date.now() + 4999);
         await expect(customBreaker.execute(operation)).rejects.toThrow(
           CircuitBreakerOpenError,
         );
 
         // Should transition to HALF_OPEN after 5000ms
-        vi.advanceTimersByTime(2);
+        vi.setSystemTime(Date.now() + 5001);
         const successOp = vi.fn().mockResolvedValue("success");
         await customBreaker.execute(successOp);
         expect(customBreaker.getState().state).toBe(CircuitState.HALF_OPEN);
+
+        vi.setSystemTime(); // Reset system time
       });
 
       it("should respect custom halfOpenMaxCalls", async () => {
