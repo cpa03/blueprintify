@@ -71,23 +71,22 @@ export interface EditorStore {
   flushStorage: () => void; // Flush pending storage writes
 }
 /** Data shape persisted to storage */
-type PersistedEditorData = Pick<EditorStore, "blueprintContent" | "tasksContent">;
+type PersistedEditorData = Pick<
+  EditorStore,
+  "blueprintContent" | "tasksContent"
+>;
 
 export const useEditorStore = create<EditorStore>()((set, get) => {
   // Use shared persistence utility
-  const {
-    loadState,
-    debouncedSave,
-    flushSave,
-    cancelSave,
-  } = createPersistedStore<PersistedEditorData, EditorStore>({
-    storage: editorStorage as PersistedStorage<PersistedEditorData>,
-    debounceDelay: DEBOUNCE_CONFIG.EDITOR,
-    getPersistData: (state) => ({
-      blueprintContent: state.blueprintContent,
-      tasksContent: state.tasksContent,
-    }),
-  });
+  const { loadState, debouncedSave, flushSave, cancelSave } =
+    createPersistedStore<PersistedEditorData, EditorStore>({
+      storage: editorStorage as PersistedStorage<PersistedEditorData>,
+      debounceDelay: DEBOUNCE_CONFIG.EDITOR,
+      getPersistData: (state) => ({
+        blueprintContent: state.blueprintContent,
+        tasksContent: state.tasksContent,
+      }),
+    });
 
   void loadState(set);
 
@@ -178,6 +177,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
     reset: () => {
       cancelSave();
       set({
+        activeTab: "blueprint",
         blueprintContent: "",
         tasksContent: "",
         isDirty: false,
