@@ -162,8 +162,8 @@ function StepIndicatorComponent(): JSX.Element {
                 isActive
                   ? {
                       boxShadow: [
-                        "0 0 0 0 rgba(99, 102, 241, 0.4)",
-                        "0 0 0 8px rgba(99, 102, 241, 0)",
+                        "0 0 0 0 rgb(99 102 241 / 0.4)",
+                        "0 0 0 8px rgb(99 102 241 / 0)",
                       ],
                     }
                   : undefined

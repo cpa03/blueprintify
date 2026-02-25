@@ -171,9 +171,9 @@ function AnimatedCounterComponent({
         shouldAnimate && pulseKey > 0
           ? {
               boxShadow: [
-                "0 0 0 0 rgba(99, 102, 241, 0)",
-                "0 0 20px 4px rgba(99, 102, 241, 0.3)",
-                "0 0 0 0 rgba(99, 102, 241, 0)",
+                "0 0 0 0 rgb(99 102 241 / 0)",
+                "0 0 20px 4px rgb(99 102 241 / 0.3)",
+                "0 0 0 0 rgb(99 102 241 / 0)",
               ],
             }
           : {}
