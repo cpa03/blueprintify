@@ -21,6 +21,7 @@ import {
   CACHE_CONFIG,
 } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
+import { sanitizeBlueprintContent } from "../utils/sanitize";
 import { ErrorType } from "../errors";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -129,6 +130,9 @@ app.post(
       const now = new Date().toISOString();
       const expiresAt = getExpirationDate();
 
+      // Sanitize blueprint content to prevent stored XSS attacks
+      const sanitizedBlueprint = sanitizeBlueprintContent(blueprint);
+
       if (!c.env.DB) {
         return c.json(
           createErrorResponse(
@@ -148,7 +152,7 @@ app.post(
         .bind(
           shareId,
           title,
-          blueprint,
+          sanitizedBlueprint,
           metadata ? JSON.stringify(metadata) : null,
           now,
           expiresAt.toISOString()
