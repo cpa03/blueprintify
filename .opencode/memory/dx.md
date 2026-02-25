@@ -220,7 +220,35 @@ npm run build
 - Check for unreachable `return` statements after early returns
 - Run `npm run lint` to see specific files and lines
 
+NP|---
+
+## Vitest Fake Timer Issues
+
+### Issue: Tests using Date.now() with fake timers fail
+
+**Problem**: Tests using `vi.setSystemTime(Date.now() + X)` or `vi.advanceTimersByTime()` fail because `Date.now()` returns real time, not fake time.
+
+**Root Cause**: In vitest with `vi.useFakeTimers()`:
+- `vi.advanceTimersByTime(X)` advances fake time for timers but NOT for `Date.now()`
+- `vi.setSystemTime(Date.now() + X)` uses real `Date.now()` value, not fake time
+
+**Solution**:
+1. Use absolute values with `vi.setSystemTime(absolute_time)` instead of offsets
+2. Ensure `vi.useFakeTimers()` is called before setting system time
+3. For tests that need `Date.now()` to respond to fake timers, use `vi.setSystemTime()` with absolute values
+
+**Example**:
+```typescript
+// BAD - Date.now() returns real time
+vi.setSystemTime(Date.now() + 1000);
+
+// GOOD - Use absolute value
+vi.setSystemTime(1000);
+```
+
 ---
+
+_Last updated: 2026-02-25_
 
 _Last updated: 2026-02-22_
 
