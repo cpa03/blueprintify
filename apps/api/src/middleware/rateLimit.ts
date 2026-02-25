@@ -5,10 +5,7 @@ import { HTTP_STATUS } from "../config/constants";
 import { TIME_UNITS } from "@blueprint/shared";
 import { secureLogWarn, secureLogError } from "../utils/secureLog";
 
-type RateLimiterName =
-  | "STRICT_RATE_LIMITER"
-  | "STANDARD_RATE_LIMITER"
-  | "LENIENT_RATE_LIMITER";
+type RateLimiterName = "STRICT_RATE_LIMITER" | "STANDARD_RATE_LIMITER" | "LENIENT_RATE_LIMITER";
 
 interface RateLimitConfig {
   limiter: RateLimiterName;
@@ -53,6 +50,7 @@ function getLimiterLimits(): Record<RateLimiterName, number> {
  * - Falls back to IP-based identification via CF headers
  * - Returns standard rate limit headers (X-RateLimit-*)
  * - Includes Retry-After header when limit exceeded
+ * - Rejects requests when rate limiter is not configured (secure default)
  */
 export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
   const { limiter, keyGenerator } = config;
@@ -63,22 +61,35 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
 
     const key = keyGenerator
       ? keyGenerator(c)
-      : c.req.header("cf-connecting-ip") ||
-        c.req.header("x-forwarded-for") ||
-        "anonymous";
+      : c.req.header("cf-connecting-ip") || c.req.header("x-forwarded-for") || "anonymous";
 
     if (!rateLimiter) {
-      // Log warning for observability - rate limiting is disabled for this endpoint
+      // Security fix: Reject requests when rate limiter is not configured
+      // Previously this silently allowed requests through, which is a security vulnerability
       secureLogWarn(
         "RateLimiter",
-        `Rate limiter '${limiter}' not configured - rate limiting disabled`,
+        `Rate limiter '${limiter}' not configured - rejecting request for security`,
         {
           endpoint: c.req.path,
           method: c.req.method,
-        },
+        }
       );
-      await next();
-      return;
+
+      return c.json(
+        {
+          success: false,
+          error: {
+            type: "rate_limit",
+            message: "Rate limiting not configured, request rejected for security",
+            code: "RATE_LIMITER_NOT_CONFIGURED",
+            details: {
+              limiter,
+            },
+            timestamp: new Date().toISOString(),
+          },
+        },
+        HTTP_STATUS.SERVICE_UNAVAILABLE
+      );
     }
 
     const result = await rateLimiter.limit({ key });
@@ -91,13 +102,13 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
 
     const rateLimitResetTimestamp = Math.ceil(
       Date.now() / TIME_UNITS.MS_PER_SECOND +
-        getConfig().RATE_LIMIT_WINDOW_MS / TIME_UNITS.MS_PER_SECOND,
+        getConfig().RATE_LIMIT_WINDOW_MS / TIME_UNITS.MS_PER_SECOND
     );
     c.header("X-RateLimit-Reset", String(rateLimitResetTimestamp));
 
     if (!result.success) {
       const retryAfterSeconds = Math.ceil(
-        getConfig().RATE_LIMIT_WINDOW_MS / TIME_UNITS.MS_PER_SECOND,
+        getConfig().RATE_LIMIT_WINDOW_MS / TIME_UNITS.MS_PER_SECOND
       );
       c.header("Retry-After", String(retryAfterSeconds));
 
@@ -124,7 +135,7 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
             timestamp: new Date().toISOString(),
           },
         },
-        HTTP_STATUS.TOO_MANY_REQUESTS,
+        HTTP_STATUS.TOO_MANY_REQUESTS
       );
     }
 

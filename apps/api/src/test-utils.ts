@@ -24,15 +24,9 @@ const createDefaultsEnvStrings = (): Record<string, string> => ({
   RATE_LIMIT_STANDARD_MAX: String(DEFAULTS.RATE_LIMIT_STANDARD_MAX),
   RATE_LIMIT_LENIENT_MAX: String(DEFAULTS.RATE_LIMIT_LENIENT_MAX),
   STORAGE_QUOTA_MB: String(DEFAULTS.STORAGE_QUOTA_MB),
-  CIRCUIT_BREAKER_FAILURE_THRESHOLD: String(
-    DEFAULTS.CIRCUIT_BREAKER_FAILURE_THRESHOLD,
-  ),
-  CIRCUIT_BREAKER_RESET_TIMEOUT_MS: String(
-    DEFAULTS.CIRCUIT_BREAKER_RESET_TIMEOUT_MS,
-  ),
-  CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS: String(
-    DEFAULTS.CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS,
-  ),
+  CIRCUIT_BREAKER_FAILURE_THRESHOLD: String(DEFAULTS.CIRCUIT_BREAKER_FAILURE_THRESHOLD),
+  CIRCUIT_BREAKER_RESET_TIMEOUT_MS: String(DEFAULTS.CIRCUIT_BREAKER_RESET_TIMEOUT_MS),
+  CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS: String(DEFAULTS.CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS),
   RETRY_MAX_RETRIES: String(DEFAULTS.RETRY_MAX_RETRIES),
   RETRY_INITIAL_DELAY_MS: String(DEFAULTS.RETRY_INITIAL_DELAY_MS),
   RETRY_BACKOFF_FACTOR: String(DEFAULTS.RETRY_BACKOFF_FACTOR),
@@ -43,14 +37,47 @@ const createDefaultsEnvStrings = (): Record<string, string> => ({
 
 const DEFAULTS_ENV_STRINGS = createDefaultsEnvStrings();
 
-export const MOCK_ENV: Record<string, string> = {
+/**
+ * Create a mock rate limiter that always allows requests
+ * Used for tests that need to bypass rate limiting
+ */
+function createMockRateLimiter() {
+  return {
+    limit: vi.fn(async () => ({ success: true, remaining: 60 })),
+  };
+}
+
+/**
+ * Mock rate limiter bindings for tests
+ * These mimic the Cloudflare RateLimit binding structure
+ */
+const MOCK_RATE_LIMITERS = {
+  STRICT_RATE_LIMITER: createMockRateLimiter(),
+  STANDARD_RATE_LIMITER: createMockRateLimiter(),
+  LENIENT_RATE_LIMITER: createMockRateLimiter(),
+};
+
+/**
+ * Base string config for tests
+ */
+const BASE_MOCK_ENV: Record<string, string> = {
   OPENAI_API_KEY: "test-key",
   ...DEFAULTS_ENV_STRINGS,
 };
 
+/**
+ * MOCK_ENV with rate limiter bindings included
+ * Use this for route tests that have rate limiting middleware
+ */
+export const MOCK_ENV = {
+  ...BASE_MOCK_ENV,
+  ...MOCK_RATE_LIMITERS,
+} as unknown as Record<string, string>;
+
 export const MOCK_ENV_NO_KEY: Record<string, string> = {
   ...DEFAULTS_ENV_STRINGS,
-};
+  ...MOCK_RATE_LIMITERS,
+} as unknown as Record<string, string>;
 
 export function setupTestConfig(env: Record<string, string> = MOCK_ENV): void {
   const config = loadConfig(env);
@@ -66,8 +93,6 @@ export function setupCommonMocks(): void {
 export function setupStreamMocks(mockResponse = "mock-stream"): void {
   vi.mock("../utils/stream", () => ({
     createStreamFromGenerator: vi.fn(),
-    createSSEResponse: vi
-      .fn()
-      .mockImplementation(() => new Response(mockResponse)),
+    createSSEResponse: vi.fn().mockImplementation(() => new Response(mockResponse)),
   }));
 }

@@ -12,7 +12,10 @@ OPENAI_API_KEY=your_openai_api_key_here
 # OPENAI_MAX_TOKENS=4000
 # OPENAI_TEMPERATURE=0.7
 
-# API Configuration
+#VS|# API Configuration
+#TZ|# API_VERSION=1.0.0
+#TP|# CORS_ORIGIN=http://localhost:3000
+#WB|# CORS_MAX_AGE=86400
 # API_VERSION=1.0.0
 # CORS_ORIGIN=*
 # CORS_MAX_AGE=86400
