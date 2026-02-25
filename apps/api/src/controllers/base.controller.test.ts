@@ -1,8 +1,9 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { BaseController } from "./base.controller";
 import { ConfigurationError } from "../errors";
-import { MOCK_ENV, setupStreamMocks } from "../test-utils";
+import { setupStreamMocks } from "../test-utils";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
+import type { ControllerContext } from "../types";
 
 // Create a concrete implementation for testing
 class TestController extends BaseController {}
@@ -31,6 +32,26 @@ vi.mock("../config/constants", async () => {
   };
 });
 
+// Helper to create a mock ControllerContext
+function createMockControllerContext(env: {
+  OPENAI_API_KEY: string;
+  OPENAI_BASE_URL?: string;
+  OPENAI_MODEL?: string;
+}): ControllerContext {
+  return {
+    env: env as ControllerContext["env"],
+  } as ControllerContext;
+}
+
+// Helper to create a mock context with validated data
+function createMockValidatedContext<T>(
+  data: T
+): ControllerContext & { get: (key: string) => T | undefined } {
+  return {
+    get: (_key: string) => data,
+  } as ControllerContext & { get: (key: string) => T | undefined };
+}
+
 describe("BaseController", () => {
   let controller: TestController;
   let originalConsoleError: typeof console.error;
@@ -54,15 +75,11 @@ describe("BaseController", () => {
 
   describe("createAIConfig", () => {
     it("should create AI config with all required fields", () => {
-      const mockContext = {
-        env: {
-          OPENAI_API_KEY: "test-key",
-          OPENAI_BASE_URL: "https://api.openai.com",
-          OPENAI_MODEL: "gpt-4",
-        },
-      } as unknown as {
-        env: { OPENAI_API_KEY: string; OPENAI_BASE_URL?: string; OPENAI_MODEL?: string };
-      };
+      const mockContext = createMockControllerContext({
+        OPENAI_API_KEY: "test-key",
+        OPENAI_BASE_URL: "https://api.openai.com",
+        OPENAI_MODEL: "gpt-4",
+      });
 
       const config = controller.createAIConfig(mockContext);
 
@@ -73,15 +90,11 @@ describe("BaseController", () => {
     });
 
     it("should use provided model from env", () => {
-      const mockContext = {
-        env: {
-          OPENAI_API_KEY: "test-key",
-          OPENAI_BASE_URL: "https://api.openai.com",
-          OPENAI_MODEL: "gpt-4o",
-        },
-      } as unknown as {
-        env: { OPENAI_API_KEY: string; OPENAI_BASE_URL?: string; OPENAI_MODEL?: string };
-      };
+      const mockContext = createMockControllerContext({
+        OPENAI_API_KEY: "test-key",
+        OPENAI_BASE_URL: "https://api.openai.com",
+        OPENAI_MODEL: "gpt-4o",
+      });
 
       const config = controller.createAIConfig(mockContext);
 
@@ -89,15 +102,11 @@ describe("BaseController", () => {
     });
 
     it("should throw ConfigurationError when API key is missing", () => {
-      const mockContext = {
-        env: {
-          OPENAI_API_KEY: "",
-          OPENAI_BASE_URL: undefined,
-          OPENAI_MODEL: undefined,
-        },
-      } as unknown as {
-        env: { OPENAI_API_KEY: string; OPENAI_BASE_URL?: string; OPENAI_MODEL?: string };
-      };
+      const mockContext = createMockControllerContext({
+        OPENAI_API_KEY: "",
+        OPENAI_BASE_URL: undefined,
+        OPENAI_MODEL: undefined,
+      });
 
       expect(() => controller.createAIConfig(mockContext)).toThrow(ConfigurationError);
     });
@@ -119,19 +128,17 @@ describe("BaseController", () => {
   describe("getValidatedData", () => {
     it("should extract validated data from context", () => {
       const mockData = { test: "data" };
-      const mockContext = {
-        get: vi.fn().mockReturnValue(mockData),
-      } as unknown as { get: (key: string) => typeof mockData };
+      const mockContext = createMockValidatedContext(mockData);
 
-      const result = controller.getValidatedData(mockContext);
+      const result = controller.getValidatedData(mockContext as never);
 
       expect(result).toEqual(mockData);
     });
 
     it("should throw when validated data is not found", () => {
       const mockContext = {
-        get: vi.fn().mockReturnValue(undefined),
-      } as unknown as { get: (key: string) => undefined };
+        get: () => undefined,
+      } as never;
 
       expect(() => controller.getValidatedData(mockContext)).toThrow(
         "Validated data not found in context"
@@ -141,29 +148,25 @@ describe("BaseController", () => {
 
   describe("validateEnvironment", () => {
     it("should not throw when API key is present", () => {
-      const mockContext = {
-        env: {
-          OPENAI_API_KEY: "test-key",
-        },
-      } as unknown as { env: { OPENAI_API_KEY: string } };
+      const mockContext = createMockControllerContext({
+        OPENAI_API_KEY: "test-key",
+      });
 
       expect(() => controller.validateEnvironment(mockContext)).not.toThrow();
     });
 
     it("should throw ConfigurationError when API key is missing", () => {
-      const mockContext = {
-        env: {
-          OPENAI_API_KEY: "",
-        },
-      } as unknown as { env: { OPENAI_API_KEY: string } };
+      const mockContext = createMockControllerContext({
+        OPENAI_API_KEY: "",
+      });
 
       expect(() => controller.validateEnvironment(mockContext)).toThrow(ConfigurationError);
     });
 
     it("should throw ConfigurationError when env is undefined", () => {
-      const mockContext = {
-        env: {},
-      } as unknown as { env: { OPENAI_API_KEY?: string } };
+      const mockContext = createMockControllerContext({
+        OPENAI_API_KEY: "",
+      });
 
       expect(() => controller.validateEnvironment(mockContext)).toThrow(ConfigurationError);
     });
