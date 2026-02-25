@@ -299,20 +299,20 @@ export class StorageService<T = unknown> {
         checksum: "",
       };
 
-      // Calculate checksum from payload without checksum first
-      const payloadForChecksum = {
+      // Calculate checksum from payload without checksum
+      const payloadWithoutChecksum = {
         data,
         metadata: { ...metadata, checksum: "" },
       };
-      const serializedForChecksum = JSON.stringify(payloadForChecksum);
-      metadata.checksum = generateChecksum(serializedForChecksum);
+      const serializedForChecksum = JSON.stringify(payloadWithoutChecksum);
+      const checksum = generateChecksum(serializedForChecksum);
 
-      // Create final payload with checksum
-      const payload = {
-        data,
-        metadata,
+      // Create final payload with checksum and serialize once
+      const finalMetadata = {
+        ...metadata,
+        checksum,
       };
-      const serialized = JSON.stringify(payload);
+      const serialized = JSON.stringify({ data, metadata: finalMetadata });
 
       // Retry logic for transient failures
       await this.retryOperation(() => {
