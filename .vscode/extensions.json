@@ -2,10 +2,15 @@
   "recommendations": [
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "editorconfig.editorconfig",
-    "bradlc.vscode-tailwindcss",
     "ms-vscode.vscode-typescript-next",
+    "yoavbls.pretty-ts-errors",
+    "dsznajder.es7-react-js-snippets",
+    "formulahendry.auto-rename-tag",
+    "bradlc.vscode-tailwindcss",
+    "cloudflare.cloudflare-workers",
     "vitest.explorer",
-    "yoavbls.pretty-ts-errors"
+    "yzhang.markdown-all-in-one",
+    "eamodio.gitlens",
+    "editorconfig.editorconfig"
   ]
 }
