@@ -500,7 +500,7 @@ The `requestId` field provides a unique identifier for each request, enabling ef
 | `authentication` | Authentication required                             | 401         |
 | `authorization`  | Insufficient permissions                            | 403         |
 | `not_found`      | Resource not found                                  | 404         |
-| `configuration`  | Service configuration error (e.g., missing API key) | 500         |
+| `configuration`  | Service configuration error (e.g., missing API key) | 503         |
 | `network`        | Network error occurred                              | 500         |
 | `ai_service`     | AI service error                                    | 503         |
 | `internal`       | Internal server error                               | 500         |
@@ -524,7 +524,7 @@ The `requestId` field provides a unique identifier for each request, enabling ef
 }
 ```
 
-#### Configuration Errors (500)
+#### Configuration Errors (503)
 
 ```json
 {
