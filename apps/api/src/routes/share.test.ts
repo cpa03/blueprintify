@@ -76,7 +76,7 @@ describe("POST /share", () => {
           },
         }),
       },
-      env,
+      env
     );
 
     expect(res.status).toBe(200);
@@ -104,13 +104,15 @@ describe("POST /share", () => {
           blueprint: "",
         }),
       },
-      env,
+      env
     );
 
     expect(res.status).toBe(400);
-    const data = await res.json();
-    expect(data).toHaveProperty("error");
-    expect(data).toHaveProperty("message");
+    const data = (await res.json()) as ErrorResponse;
+    expect(data.success).toBe(false);
+    expect(data.error.type).toBe("validation");
+    expect(data.error.code).toBe("VALIDATION_ERROR");
+    expect(data.error.timestamp).toBeDefined();
   });
 
   it("should create share without optional metadata", async () => {
@@ -125,7 +127,7 @@ describe("POST /share", () => {
           blueprint: "# Simple",
         }),
       },
-      env,
+      env
     );
 
     expect(res.status).toBe(200);
@@ -147,13 +149,11 @@ describe("GET /share/:id", () => {
     const res = await app.request("/invalid-id", {}, env);
 
     expect(res.status).toBe(400);
-    const data = (await res.json()) as {
-      error: string;
-      message: string;
-    };
-    expect(data).toHaveProperty("error");
-    expect(data).toHaveProperty("message");
-    expect(data.message).toContain("Invalid share ID format");
+    const data = (await res.json()) as ErrorResponse;
+    expect(data.success).toBe(false);
+    expect(data.error.type).toBe("validation");
+    expect(data.error.code).toBe("VALIDATION_ERROR");
+    expect(data.error.message).toContain("Invalid share ID format");
   });
 
   it("should return 404 for non-existent share", async () => {
@@ -162,7 +162,9 @@ describe("GET /share/:id", () => {
 
     expect(res.status).toBe(404);
     const data = (await res.json()) as ErrorResponse;
-    expect(data.error).toBe("NOT_FOUND_ERROR");
+    expect(data.success).toBe(false);
+    expect(data.error.type).toBe("not_found");
+    expect(data.error.code).toBe("NOT_FOUND_ERROR");
   });
 });
 
@@ -185,11 +187,10 @@ describe("DELETE /share/:id", () => {
     const res = await app.request("/invalid-id", { method: "DELETE" }, env);
 
     expect(res.status).toBe(400);
-    const data = (await res.json()) as {
-      error: string;
-      message: string;
-    };
-    expect(data).toHaveProperty("error");
-    expect(data.message).toContain("Invalid share ID format");
+    const data = (await res.json()) as ErrorResponse;
+    expect(data.success).toBe(false);
+    expect(data.error.type).toBe("validation");
+    expect(data.error.code).toBe("VALIDATION_ERROR");
+    expect(data.error.message).toContain("Invalid share ID format");
   });
 });
