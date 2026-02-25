@@ -30,7 +30,7 @@ interface CircuitBreakerConfig {
  * - OPEN: Circuit is tripped, requests are blocked
  * - HALF_OPEN: Testing if service has recovered
  */
-enum CircuitState {
+export enum CircuitState {
   CLOSED = "CLOSED",
   OPEN = "OPEN",
   HALF_OPEN = "HALF_OPEN",
