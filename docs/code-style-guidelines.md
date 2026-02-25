@@ -448,30 +448,112 @@ async function generateBlueprint(config: ProjectConfig, options: GenerationOptio
 
 ## ESLint Configuration
 
-Our ESLint configuration enforces these standards automatically:
+Our ESLint configuration uses the [flat config format](https://eslint.org/docs/latest/use/configure/configuration-files-new) (`eslint.config.js`) and enforces these standards automatically:
 
-```typescript
-// .eslintrc.js equivalent
-export default {
-  rules: {
-    // TypeScript
-    "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/explicit-function-return-type": "warn",
-    "@typescript-eslint/no-non-null-assertion": "error",
+### Configuration File
 
-    // React
-    "react/prop-types": "off", // Using TypeScript for prop validation
-    "react/react-in-jsx-scope": "off", // Not needed with React 17+
-    "react-hooks/exhaustive-deps": "warn",
+```javascript
+// eslint.config.js
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
+import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
+import jsxA11y from "eslint-plugin-jsx-a11y";
 
-    // General
-    "no-console": "warn",
-    "no-debugger": "error",
-    "prefer-const": "error",
-    "no-var": "error",
+export default [
+  {
+    ignores: [
+      "**/dist/**",
+      "**/node_modules/**",
+      ".opencode/**",
+      "scripts/**",
+      "**/*.config.js",
+      "**/*.config.ts",
+    ],
   },
-};
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    plugins: {
+      react,
+      "react-hooks": reactHooks,
+      "jsx-a11y": jsxA11y,
+    },
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        ecmaVersion: 2022,
+        sourceType: "module",
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    rules: {
+      ...react.configs.flat.recommended.rules,
+      ...reactHooks.configs.flat.recommended.rules,
+      "react/react-in-jsx-scope": "off",
+      "react/jsx-uses-react": "off",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          "argsIgnorePattern": "^_",
+          "varsIgnorePattern": "^_",
+        },
+      ],
+      "no-console": [
+        "warn",
+        {
+          "allow": ["error", "warn", "log"],
+        },
+      ],
+    },
+    settings: {
+      react: {
+        version: "18",
+      },
+    },
+  },
+];
+```
+
+### Covered Source Paths
+
+The configuration automatically covers all TypeScript source files in:
+
+- `apps/api/` - Cloudflare Workers backend
+- `apps/web/` - React frontend
+- `packages/shared/` - Shared types and utilities
+
+### Enabled Plugins
+
+| Plugin | Purpose |
+|--------|---------|
+| `@eslint/js` | Base JavaScript recommendations |
+| `typescript-eslint` | TypeScript linting and type-aware rules |
+| `eslint-plugin-react` | React-specific rules |
+| `eslint-plugin-react-hooks` | React Hooks rules |
+| `eslint-plugin-jsx-a11y` | Accessibility rules |
+
+### Key Rules
+
+| Rule | Level | Description |
+|------|-------|-------------|
+| `@typescript-eslint/no-explicit-any` | warn | Warns against using `any` type |
+| `@typescript-eslint/no-unused-vars` | warn | Warns about unused variables (ignores `_` prefix) |
+| `no-console` | warn | Warns about console statements (allows `error`, `warn`, `log`) |
+| `react-hooks/exhaustive-deps` | from plugin | Warns about missing dependencies in hooks |
+| `jsx-a11y/*` | from plugin | Enforces accessibility best practices |
+
+### Running Lint
+
+```bash
+# Run lint on all TypeScript/TSX files
+npm run lint
+
+# Fix auto-fixable issues
+npm run lint -- --fix
 ```
 
 ## File Organization
