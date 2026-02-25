@@ -31,4 +31,9 @@
  **2026-02-19**: Added JSDoc documentation to controllers (`base.controller.ts`, `generate.controller.ts`, `refine.controller.ts`, `tasks.controller.ts`), `services/prompts.ts`, and `di/container.ts`. Controllers are the entry point for API routes and need clear documentation for maintainability.
  **2026-02-22**: Added JSDoc documentation to `ErrorType` enum and `ErrorResponse` interface in `errors.ts`. These are core types used throughout the API and were missing documentation despite being in a well-documented file.
  **2026-02-22**: Added module-level JSDoc and documented exported system prompt constants in `services/prompts.ts`. The `ARCHITECT_SYSTEM_PROMPT`, `TASK_SPLITTER_SYSTEM_PROMPT`, and `REFINER_SYSTEM_PROMPT` constants are public APIs consumed by controllers.
-- **2026-02-22**: Renamed `ValidationError` and `NotFoundError` classes in `db/index.ts` to `DatabaseValidationError` and `DatabaseNotFoundError` to avoid naming conflicts with the error classes in `errors.ts`. This prevents type confusion and ensures proper error handling throughout the API. When creating error classes in domain-specific modules, prefix them with the domain name to avoid conflicts with generic error classes.
+VW|- **2026-02-22**: Renamed `ValidationError` and `NotFoundError` classes in `db/index.ts` to `DatabaseValidationError` and `DatabaseNotFoundError` to avoid naming conflicts with the error classes in `errors.ts`. This prevents type confusion and ensures proper error handling throughout the API. When creating error classes in domain-specific modules, prefix them with the domain name to avoid conflicts with generic error classes.
+HT|- **2026-02-25**: Fixed security issues in rate limiter and CORS configuration:
+  - Rate limiter now rejects requests with 503 when binding is not configured (was silently allowing requests)
+  - CORS default changed from wildcard "*" to empty string (requires explicit configuration)
+  - Updated .dev.vars.example to show proper localhost CORS origin
+  - Added mock rate limiters to test-utils for route tests
