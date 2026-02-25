@@ -27,7 +27,15 @@
 | CI Actions          | ⚠️ main.yml uses invalid @v5 (blocked by #743)        |
 | npm audit           | ⚠️ 16 vulnerabilities (dev deps only) - risk accepted |
 | .dev.vars gitignore  | ✅ Added to prevent credential commits               |
-
+#ZM|
+#VB|### 2026-02-25 UTC: CORS Wildcard Default Replaced
+#WV|
+#WQ|- **Finding**: CORS_ORIGIN default was set to wildcard (`*`) which allows any origin to access the API
+#PT|- **Root Cause**: Legacy configuration with permissive default for ease of development
+#RJ|- **Risk**: In production, this allows any website to make cross-origin requests to the API, potential CSRF attacks
+#KM|- **Fix**: Changed default from `*` to `http://localhost:3000`, added startup warnings for wildcard and localhost
+#TW|- **Verification**: TypeScript clean, ESLint clean, build passes, tests pass
+#SB|- **Lesson**: API defaults should be secure-by-default, with explicit configuration needed for production
 ## Lessons Learned
 
 ### 2026-02-22 06:15 UTC: Cloudflare Workers Environment File in .gitignore
