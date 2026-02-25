@@ -135,12 +135,4 @@ export const notFoundHandler = (c: Context): Response => {
   );
 };
 
-/**
- * Async handler wrapper
- * Wraps async route handlers to catch and forward errors to the error handler
- */
-export const asyncHandler = <T = unknown>(fn: (c: Context) => Promise<T>) => {
-  return (c: Context): Promise<T | Response> => {
-    return fn(c);
-  };
-};
+
