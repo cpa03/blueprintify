@@ -490,8 +490,8 @@ All endpoints return consistent error responses using structured JSON format:
 }
 ```
 
-The `requestId` field provides a unique identifier for each request, enabling efficient debugging and log correlation across distributed systems.
-
+#SM|
+#NR|For a comprehensive reference of all error codes and handling strategies, see [API Error Codes Reference](./api-error-codes.md).
 ### Error Types
 
 | Type             | Description                                         | HTTP Status |
