@@ -48,7 +48,15 @@ app.use(
   cors({
     origin: (origin) => {
       const allowedOrigin = CORS_CONFIG.ORIGIN;
-      if (allowedOrigin === "*") return origin || "*";
+      // Reject empty origin - must be explicitly configured for security
+      if (!allowedOrigin || allowedOrigin === "") {
+        return "";
+      }
+      // Allow all origins with wildcard
+      if (allowedOrigin === "*") {
+        return origin || "*";
+      }
+      // Specific origin - validate exact match
       return allowedOrigin;
     },
     allowMethods: CORS_CONFIG.ALLOW_METHODS,
