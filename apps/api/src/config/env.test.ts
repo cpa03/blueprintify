@@ -1,11 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import {
-  loadConfig,
-  DEFAULTS,
-  getConfig,
-  initializeConfig,
-  resetConfig,
-} from "./env";
+import { loadConfig, DEFAULTS, getConfig, initializeConfig, resetConfig } from "./env";
 import { setEnvConfig } from "./constants";
 
 describe("Environment Configuration", () => {
@@ -22,21 +16,39 @@ describe("Environment Configuration", () => {
       expect(() => loadConfig({})).toThrow("OPENAI_API_KEY is required");
     });
 
-    it("should load config with required API key", () => {
-      const config = loadConfig({ OPENAI_API_KEY: "test-key" });
-      expect(config.OPENAI_API_KEY).toBe("test-key");
+    it("should throw error when CORS_ORIGIN is empty", () => {
+      expect(() => loadConfig({ OPENAI_API_KEY: "test-key", CORS_ORIGIN: "" })).toThrow(
+        "CORS_ORIGIN is required and cannot be empty"
+      );
     });
 
-    it("should use default values when env vars not set", () => {
-      const config = loadConfig({ OPENAI_API_KEY: "test-key" });
+    it("should load config with required fields", () => {
+      const config = loadConfig({
+        OPENAI_API_KEY: "test-key",
+        CORS_ORIGIN: "http://localhost:3000",
+      });
+      expect(config.OPENAI_API_KEY).toBe("test-key");
+      expect(config.CORS_ORIGIN).toBe("http://localhost:3000");
+    });
+
+    it("should use provided CORS_ORIGIN when set", () => {
+      const config = loadConfig({ OPENAI_API_KEY: "test-key", CORS_ORIGIN: "https://example.com" });
+      expect(config.CORS_ORIGIN).toBe("https://example.com");
+    });
+
+    it("should use default values when env vars not set (except CORS_ORIGIN)", () => {
+      const config = loadConfig({
+        OPENAI_API_KEY: "test-key",
+        CORS_ORIGIN: "http://localhost:3000",
+      });
       expect(config.OPENAI_MODEL).toBe(DEFAULTS.OPENAI_MODEL);
       expect(config.API_VERSION).toBe(DEFAULTS.API_VERSION);
-      expect(config.CORS_ORIGIN).toBe(DEFAULTS.CORS_ORIGIN);
     });
 
     it("should override defaults with env vars", () => {
       const config = loadConfig({
         OPENAI_API_KEY: "test-key",
+        CORS_ORIGIN: "http://localhost:3000",
         OPENAI_MODEL: "gpt-4",
         API_VERSION: "2.0.0",
       });
@@ -47,6 +59,7 @@ describe("Environment Configuration", () => {
     it("should parse numeric env vars correctly", () => {
       const config = loadConfig({
         OPENAI_API_KEY: "test-key",
+        CORS_ORIGIN: "http://localhost:3000",
         OPENAI_TIMEOUT_MS: "30000",
         OPENAI_MAX_TOKENS: "2000",
       });
@@ -57,6 +70,7 @@ describe("Environment Configuration", () => {
     it("should use default for invalid numeric env vars", () => {
       const config = loadConfig({
         OPENAI_API_KEY: "test-key",
+        CORS_ORIGIN: "http://localhost:3000",
         OPENAI_TIMEOUT_MS: "invalid",
       });
       expect(config.OPENAI_TIMEOUT_MS).toBe(DEFAULTS.OPENAI_TIMEOUT_MS);
@@ -65,6 +79,7 @@ describe("Environment Configuration", () => {
     it("should parse float env vars correctly", () => {
       const config = loadConfig({
         OPENAI_API_KEY: "test-key",
+        CORS_ORIGIN: "http://localhost:3000",
         OPENAI_TEMPERATURE: "0.5",
       });
       expect(config.OPENAI_TEMPERATURE).toBe(0.5);
@@ -73,6 +88,7 @@ describe("Environment Configuration", () => {
     it("should use default for invalid float env vars", () => {
       const config = loadConfig({
         OPENAI_API_KEY: "test-key",
+        CORS_ORIGIN: "http://localhost:3000",
         OPENAI_TEMPERATURE: "invalid",
       });
       expect(config.OPENAI_TEMPERATURE).toBe(DEFAULTS.OPENAI_TEMPERATURE);
@@ -81,6 +97,7 @@ describe("Environment Configuration", () => {
     it("should load all rate limit config values", () => {
       const config = loadConfig({
         OPENAI_API_KEY: "test-key",
+        CORS_ORIGIN: "http://localhost:3000",
         RATE_LIMIT_WINDOW_MS: "120000",
         RATE_LIMIT_STRICT_MAX: "5",
         RATE_LIMIT_STANDARD_MAX: "30",
@@ -95,6 +112,7 @@ describe("Environment Configuration", () => {
     it("should load all circuit breaker config values", () => {
       const config = loadConfig({
         OPENAI_API_KEY: "test-key",
+        CORS_ORIGIN: "http://localhost:3000",
         CIRCUIT_BREAKER_FAILURE_THRESHOLD: "10",
         CIRCUIT_BREAKER_RESET_TIMEOUT_MS: "120000",
         CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS: "5",
@@ -107,6 +125,7 @@ describe("Environment Configuration", () => {
     it("should load all retry config values", () => {
       const config = loadConfig({
         OPENAI_API_KEY: "test-key",
+        CORS_ORIGIN: "http://localhost:3000",
         RETRY_MAX_RETRIES: "5",
         RETRY_INITIAL_DELAY_MS: "2000",
         RETRY_BACKOFF_FACTOR: "3",
@@ -121,6 +140,7 @@ describe("Environment Configuration", () => {
     it("should load external URLs", () => {
       const config = loadConfig({
         OPENAI_API_KEY: "test-key",
+        CORS_ORIGIN: "http://localhost:3000",
         PROJECT_HOMEPAGE_URL: "https://custom.example.com",
         GITHUB_URL: "https://github.com/custom/repo",
       });
@@ -131,7 +151,7 @@ describe("Environment Configuration", () => {
 
   describe("initializeConfig", () => {
     it("should initialize and set config", () => {
-      initializeConfig({ OPENAI_API_KEY: "init-key" });
+      initializeConfig({ OPENAI_API_KEY: "init-key", CORS_ORIGIN: "http://localhost:3000" });
       const config = getConfig();
       expect(config.OPENAI_API_KEY).toBe("init-key");
     });
@@ -143,7 +163,10 @@ describe("Environment Configuration", () => {
     });
 
     it("should return config when set", () => {
-      const config = loadConfig({ OPENAI_API_KEY: "test-key" });
+      const config = loadConfig({
+        OPENAI_API_KEY: "test-key",
+        CORS_ORIGIN: "http://localhost:3000",
+      });
       setEnvConfig(config);
       expect(getConfig().OPENAI_API_KEY).toBe("test-key");
     });
@@ -151,7 +174,7 @@ describe("Environment Configuration", () => {
 
   describe("resetConfig", () => {
     it("should clear the config", () => {
-      initializeConfig({ OPENAI_API_KEY: "test-key" });
+      initializeConfig({ OPENAI_API_KEY: "test-key", CORS_ORIGIN: "http://localhost:3000" });
       expect(getConfig().OPENAI_API_KEY).toBe("test-key");
       resetConfig();
       expect(() => getConfig()).toThrow();
@@ -163,17 +186,14 @@ describe("Environment Configuration", () => {
       expect(DEFAULTS.OPENAI_BASE_URL).toBe("https://api.openai.com/v1");
       expect(DEFAULTS.OPENAI_MODEL).toBe("gpt-4o-mini");
       expect(DEFAULTS.API_VERSION).toBe("1.0.0");
-      expect(DEFAULTS.CORS_ORIGIN).toBe("*");
+      // CORS_ORIGIN default is empty string - validation happens at loadConfig time
+      expect(DEFAULTS.CORS_ORIGIN).toBe("");
     });
 
     it("should have sensible rate limit defaults", () => {
       expect(DEFAULTS.RATE_LIMIT_WINDOW_MS).toBe(60000);
-      expect(DEFAULTS.RATE_LIMIT_STRICT_MAX).toBeLessThan(
-        DEFAULTS.RATE_LIMIT_STANDARD_MAX,
-      );
-      expect(DEFAULTS.RATE_LIMIT_STANDARD_MAX).toBeLessThan(
-        DEFAULTS.RATE_LIMIT_LENIENT_MAX,
-      );
+      expect(DEFAULTS.RATE_LIMIT_STRICT_MAX).toBeLessThan(DEFAULTS.RATE_LIMIT_STANDARD_MAX);
+      expect(DEFAULTS.RATE_LIMIT_STANDARD_MAX).toBeLessThan(DEFAULTS.RATE_LIMIT_LENIENT_MAX);
     });
 
     it("should have sensible circuit breaker defaults", () => {

@@ -137,6 +137,20 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
     );
   }
 
+  // Validate CORS_ORIGIN is not empty - empty string allows any origin which is a security risk
+  const corsOrigin = getEnvVar("CORS_ORIGIN", env) ?? DEFAULTS.CORS_ORIGIN;
+  if (!corsOrigin || corsOrigin.trim() === "") {
+    throw new Error(
+      "CORS_ORIGIN is required and cannot be empty. Please set a valid origin (e.g., 'https://yourdomain.com') in your .dev.vars file (for local development) or in your Cloudflare Workers secrets (for production). Do not use '*' in production.",
+    );
+  }
+
+  if (corsOrigin === "*" && env.NODE_ENV === "production") {
+    console.warn(
+      "WARNING: CORS_ORIGIN is set to '*' (allow all). This is a security risk in production. Please set a specific origin."
+    );
+  }
+
   return {
     OPENAI_API_KEY: openaiApiKey,
     OPENAI_BASE_URL:
@@ -159,7 +173,8 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
     ),
 
     API_VERSION: getEnvVar("API_VERSION", env) ?? DEFAULTS.API_VERSION,
-    CORS_ORIGIN: getEnvVar("CORS_ORIGIN", env) ?? DEFAULTS.CORS_ORIGIN,
+
+    CORS_ORIGIN: corsOrigin,
     CORS_MAX_AGE: getNumericEnvVar("CORS_MAX_AGE", env, DEFAULTS.CORS_MAX_AGE),
 
     RATE_LIMIT_WINDOW_MS: getNumericEnvVar(
