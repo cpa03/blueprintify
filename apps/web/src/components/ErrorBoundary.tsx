@@ -12,10 +12,15 @@ interface ErrorBoundaryState {
 }
 
 /**
- * ErrorBoundary - Catches JavaScript errors in child components
+ * ErrorBoundary - Catches JavaScript errors in child components.
  *
  * This component prevents the entire app from crashing when an error occurs.
  * It logs errors and displays a user-friendly fallback UI with recovery options.
+ *
+ * Note: React requires class components for error boundary functionality.
+ * This is a fundamental React limitation as of React 18 - functional components
+ * cannot implement error boundaries. The component is kept up-to-date with
+ * React best practices while maintaining the required class-based implementation.
  *
  * @example
  * ```tsx
@@ -24,10 +29,7 @@ interface ErrorBoundaryState {
  * </ErrorBoundary>
  * ```
  */
-export class ErrorBoundary extends React.Component<
-  ErrorBoundaryProps,
-  ErrorBoundaryState
-> {
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -79,13 +81,11 @@ export class ErrorBoundary extends React.Component<
               </svg>
             </div>
 
-            <h1 className="text-2xl font-bold text-white mb-2">
-              Something went wrong
-            </h1>
+            <h1 className="text-2xl font-bold text-white mb-2">Something went wrong</h1>
 
             <p className="text-dark-400 mb-6">
-              An unexpected error occurred. Your data is safely stored locally.
-              You can try again or reload the page.
+              An unexpected error occurred. Your data is safely stored locally. You can try again or
+              reload the page.
             </p>
 
             {this.state.error && (
