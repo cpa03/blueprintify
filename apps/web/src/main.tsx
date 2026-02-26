@@ -4,14 +4,13 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ReducedMotionProvider } from "./context/ReducedMotionContext";
+import { ExportProvider } from "./context/ExportContext";
 import { SKELETON_CONFIG } from "./config/constants";
 import "./index.css";
 
 // Lazy load App and MotionConfig to reduce initial bundle size and improve LCP
 const App = lazy(() => import("./App"));
-const MotionConfigWrapper = lazy(
-  () => import("./components/MotionConfigWrapper"),
-);
+const MotionConfigWrapper = lazy(() => import("./components/MotionConfigWrapper"));
 
 const rootElement = document.getElementById("root");
 
@@ -35,14 +34,16 @@ root.render(
   <React.StrictMode>
     <ErrorBoundary>
       <ReducedMotionProvider>
-        <Suspense fallback={null}>
-          <MotionConfigWrapper onMount={fadeOutAndRemoveSkeletonLoader}>
-            <App />
-          </MotionConfigWrapper>
-        </Suspense>
+        <ExportProvider>
+          <Suspense fallback={null}>
+            <MotionConfigWrapper onMount={fadeOutAndRemoveSkeletonLoader}>
+              <App />
+            </MotionConfigWrapper>
+          </Suspense>
+        </ExportProvider>
       </ReducedMotionProvider>
       <SpeedInsights />
       <Analytics />
     </ErrorBoundary>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

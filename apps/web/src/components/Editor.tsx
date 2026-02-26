@@ -16,7 +16,7 @@
  *
  * @module components/Editor
  * @see {@link useEditorStore} for content state management
- * @see {@link useWizardStore} for project metadata
+ * @see {@link useExportContext} for project metadata
  * @see {@link useLastSaved} for save state tracking
  */
 import React, { useState, useCallback, useRef, useEffect } from "react";
@@ -27,15 +27,11 @@ import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
 import { EditorEmptyState } from "./EditorEmptyState";
 import { ScrollToTop } from "./ScrollToTop";
 import { ScrollProgress } from "./ScrollProgress";
-import {
-  useEditorStore,
-  useWizardStore,
-  resetAllStores,
-  useToast,
-} from "../store";
+import { useEditorStore, resetAllStores, useToast } from "../store";
+import { useExportContext } from "../context/ExportContext";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
-import { TIMEOUTS, DEFAULT_PROJECT_NAME, UI } from "../config/constants";
+import { TIMEOUTS, UI } from "../config/constants";
 import { useLastSaved } from "../hooks/useLastSaved";
 import clsx from "clsx";
 
@@ -63,13 +59,11 @@ function EditorComponent(): JSX.Element {
   const setBlueprintContent = useEditorStore((s) => s.setBlueprintContent);
   const setTasksContent = useEditorStore((s) => s.setTasksContent);
   const isGenerating = useEditorStore((s) => s.isGenerating);
-  const projectName = useWizardStore((s) => s.projectName);
+  const { getExportMetadata } = useExportContext();
 
-  const { lastSavedText, markSaved, hasChanges, markAsChanged } =
-    useLastSaved();
+  const { lastSavedText, markSaved, hasChanges, markAsChanged } = useLastSaved();
 
-  const currentContent =
-    activeTab === "blueprint" ? blueprintContent : tasksContent;
+  const currentContent = activeTab === "blueprint" ? blueprintContent : tasksContent;
   /**
    * Updates the current content (blueprint or tasks) with sanitization.
    * Handles security validation and error reporting.
@@ -94,7 +88,7 @@ function EditorComponent(): JSX.Element {
         }
       }
     },
-    [activeTab, setBlueprintContent, setTasksContent, markSaved, toast],
+    [activeTab, setBlueprintContent, setTasksContent, markSaved, toast]
   );
 
   const previousContentRef = useRef(currentContent);
@@ -129,19 +123,19 @@ function EditorComponent(): JSX.Element {
 
   /**
    * Exports the current project as a ZIP file containing blueprint.md and tasks.md.
-   * Includes project metadata from the wizard store.
+   * Includes project metadata from the export context.
    */
   const handleExport = useCallback(async () => {
     setIsExporting(true);
     try {
-      const wizardData = useWizardStore.getState();
+      const exportData = getExportMetadata();
       await exportAsZip({
         blueprint: blueprintContent,
         tasks: tasksContent,
-        projectName: projectName || DEFAULT_PROJECT_NAME,
-        techStack: wizardData.techStack,
-        description: wizardData.description,
-        features: wizardData.features,
+        projectName: exportData.projectName,
+        techStack: exportData.techStack,
+        description: exportData.description,
+        features: exportData.features,
       });
       toast.success("Project exported successfully!");
     } catch (error) {
@@ -152,7 +146,7 @@ function EditorComponent(): JSX.Element {
     } finally {
       setIsExporting(false);
     }
-  }, [blueprintContent, tasksContent, projectName, toast]);
+  }, [blueprintContent, tasksContent, getExportMetadata, toast]);
 
   /**
    * Resets all stores to start a new project.
@@ -202,7 +196,7 @@ function EditorComponent(): JSX.Element {
                   "h-full overflow-hidden",
                   viewMode === "split"
                     ? "w-full lg:w-1/2 lg:border-r lg:border-dark-700 border-b border-dark-700 lg:border-b-0"
-                    : "w-full",
+                    : "w-full"
                 )}
               >
                 <LazyCodeMirror
@@ -219,7 +213,7 @@ function EditorComponent(): JSX.Element {
                 ref={previewRef}
                 className={clsx(
                   "h-full overflow-y-auto p-4 lg:p-6 relative",
-                  viewMode === "split" ? "w-full lg:w-1/2" : "w-full",
+                  viewMode === "split" ? "w-full lg:w-1/2" : "w-full"
                 )}
               >
                 <ScrollProgress scrollContainerRef={previewRef} />
@@ -228,9 +222,7 @@ function EditorComponent(): JSX.Element {
                   animate={{ opacity: 1 }}
                   className="min-h-full"
                 >
-                  <LazyMarkdownRenderer
-                    content={currentContent || "*No content yet...*"}
-                  />
+                  <LazyMarkdownRenderer content={currentContent || "*No content yet...*"} />
                 </motion.div>
                 <ScrollToTop
                   scrollContainerRef={previewRef}
