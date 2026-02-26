@@ -9,7 +9,7 @@
  */
 
 import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
+import { validateJson } from "../middleware/validator";
 import { z } from "zod";
 import type { Env } from "../types";
 import {
@@ -108,23 +108,10 @@ function getExpirationDate(): Date {
 
 app.post(
   "/",
-  zValidator("json", createShareSchema, (result, c) => {
-    if (!result.success) {
-      return c.json(
-        createErrorResponse(
-          c,
-          ErrorType.VALIDATION,
-          ERROR_MESSAGES.VALIDATION,
-          ERROR_CODES.VALIDATION_ERROR,
-          { issues: result.error.issues }
-        ),
-        HTTP_STATUS.BAD_REQUEST
-      );
-    }
-  }),
+  validateJson(createShareSchema),
   async (c) => {
     try {
-      const { title, blueprint, metadata } = c.req.valid("json");
+      const { title, blueprint, metadata } = c.get("validatedData");
       const shareId = generateShareId();
       const now = new Date().toISOString();
       const expiresAt = getExpirationDate();
