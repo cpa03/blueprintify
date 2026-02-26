@@ -41,6 +41,23 @@ All agents must include:
 - CONSTRAINTS & LIMITS section
 - SUCCESS CRITERIA section
 
+### 2026-02-26 - Section Heading Standardization
+
+**Issue**: Agent definitions had inconsistent section headings:
+
+| File               | Issue                                    | Corrected To              |
+| ------------------ | ---------------------------------------- | ------------------------ |
+| software-architect.md | `# HARD CONSTRAINTS` (non-standard)    | `# CONSTRAINTS & LIMITS` |
+| cmz.md             | `#RH|# SYSTEM MEMORY & STANDARDS` (prefix) | `# SYSTEM MEMORY & STANDARDS` |
+| cmz.md             | `#RQ|# CONSTRAINTS & LIMITS` (prefix)   | `# CONSTRAINTS & LIMITS` |
+
+**Action Taken**: Removed non-standard prefixes and fixed heading names to match PATTERNS.md.
+
+**Verification**:
+
+- All 28 agents now have consistent `# CONSTRAINTS & LIMITS`
+- All 28 agents now have consistent `# SYSTEM MEMORY & STANDARDS`
+- Pattern: Agents must use exact heading names per PATTERNS.md (no custom prefixes)
 ## Historical Findings
 
 ### 2026-02-25 - Workflow Model Standardization
@@ -137,4 +154,4 @@ When reviewing workflow files, verify:
 
 ---
 
-Last updated: 2026-02-25
+Last updated: 2026-02-26

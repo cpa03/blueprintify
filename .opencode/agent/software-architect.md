@@ -289,7 +289,7 @@ If PR already exists:
 
 ---
 
-# HARD CONSTRAINTS
+# CONSTRAINTS & LIMITS
 
 1. **NO CODE IMPLEMENTATION**
 2. **Blueprint overrides findings unless proven impossible**
