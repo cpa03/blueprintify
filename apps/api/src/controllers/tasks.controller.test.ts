@@ -20,6 +20,13 @@ vi.mock("../errors", () => ({
   },
 }));
 
+/** Creates a mock Hono context with get method for validated data */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const createMockContext = (env: Record<string, string>, validatedData?: unknown): any => ({
+  env,
+  get: (key: string) => (key === "validatedData" ? validatedData : undefined),
+});
+
 describe("TasksController", () => {
   let controller: TasksController;
   let originalConsoleError: typeof console.error;
@@ -56,10 +63,7 @@ describe("TasksController", () => {
     });
 
     it("should call buildTaskPrompt with blueprint and projectName", async () => {
-      const mockContext = {
-        env: MOCK_ENV,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any;
+      const mockContext = createMockContext(MOCK_ENV, mockTaskRequest);
 
       const { buildTaskPrompt } = await import("../services/prompts");
 
@@ -72,10 +76,7 @@ describe("TasksController", () => {
     });
 
     it("should return a streaming Response", async () => {
-      const mockContext = {
-        env: MOCK_ENV,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any;
+      const mockContext = createMockContext(MOCK_ENV, mockTaskRequest);
 
       const response = await controller.generateTasks(mockContext);
 

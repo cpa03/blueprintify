@@ -50,6 +50,31 @@ Some integration tests fail with 503 errors (likely network-related in CI):
 
 - Route tests (generate, tasks, refine, import, export, storage)
 - These appear to be environment-specific, not code bugs
+- The rate limiter is rejecting requests in the test environment
+
+### circuitBreaker Tests
+
+Two tests failing in circuitBreaker.test.ts that may need investigation:
+
+- HALF_OPEN state test
+- Custom resetTimeoutMs configuration test
+
+### Controller Test Fixes (2026-02-26)
+
+Fixed failing controller tests that were missing proper Hono context mocking:
+
+- `generate.controller.test.ts` - Added createMockContext helper
+- `refine.controller.test.ts` - Added createMockContext helper
+- `tasks.controller.test.ts` - Added createMockContext helper
+- Fixed test data to match schema (instruction vs instructions/section)
+- Result: 12 previously failing controller tests now pass
+
+### Existing Test Failures
+
+Some integration tests fail with 503 errors (likely network-related in CI):
+
+- Route tests (generate, tasks, refine, import, export, storage)
+- These appear to be environment-specific, not code bugs
 
 ### circuitBreaker Tests
 

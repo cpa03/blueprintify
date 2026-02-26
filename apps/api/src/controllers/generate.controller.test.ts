@@ -20,6 +20,13 @@ vi.mock("../errors", () => ({
   },
 }));
 
+/** Creates a mock Hono context with get method for validated data */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const createMockContext = (env: Record<string, string>, validatedData?: unknown): any => ({
+  env,
+  get: (key: string) => (key === "validatedData" ? validatedData : undefined),
+});
+
 describe("GenerateController", () => {
   let controller: GenerateController;
   let originalConsoleError: typeof console.error;
@@ -60,10 +67,7 @@ describe("GenerateController", () => {
     });
 
     it("should call buildBlueprintPrompt with request data", async () => {
-      const mockContext = {
-        env: MOCK_ENV,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any;
+      const mockContext = createMockContext(MOCK_ENV, mockBlueprintRequest);
 
       const { buildBlueprintPrompt } = await import("../services/prompts");
 
@@ -73,10 +77,7 @@ describe("GenerateController", () => {
     });
 
     it("should return a streaming Response", async () => {
-      const mockContext = {
-        env: MOCK_ENV,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any;
+      const mockContext = createMockContext(MOCK_ENV, mockBlueprintRequest);
 
       const response = await controller.generateBlueprint(mockContext);
 
