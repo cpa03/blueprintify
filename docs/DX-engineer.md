@@ -78,7 +78,105 @@ Note: The `test:all` script should include ALL workspaces (apps/web, apps/api, p
 - TypeScript typecheck requires `npm install` to run first
 - ESLint requires dependencies to be installed
 - Some tests may fail in clean environment without build artifacts
+## VS Code Debugging Configuration
+
+VS Code debugging is configured via `.vscode/launch.json` and `.vscode/tasks.json`:
+
+### Launch Configurations
+
+```json
+{
+  "configurations": [
+    {
+      "name": "Debug Frontend (Vite)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000"
+    },
+    {
+      "name": "Debug API (Wrangler)",
+      "type": "node",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["wrangler", "dev", "--inspect-brk"]
+    },
+    {
+      "name": "Debug Tests (Vitest)",
+      "type": "node",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vitest", "run", "--inspect-brk"]
+    }
+  ]
+}
+```
+
+### Debug Settings
+
+Add these settings to `.vscode/settings.json` for better debugging experience:
+
+```json
+{
+  "debug.openDebug": "openOnDebugBreak",
+  "debug.inlineValues": true,
+  "errorLens.enabled": true
+}
+```
+
 ## VS Code Recommended Extensions
+
+When updating `.vscode/extensions.json`, include extensions organized by category:
+
+### Current Recommendations (Updated Feb 2026)
+
+```json
+{
+  "recommendations": [
+    // TypeScript/JavaScript
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-next",
+    "yoavbls.pretty-ts-errors",
+    // React
+    "dsznajder.es7-react-js-snippets",
+    "formulahendry.auto-rename-tag",
+    // Debugging
+    "ms-vscode.debugger-for-chrome",
+    "ms-vscode.vscode-react-native",
+    "PhilJesse.react-style-tag",
+    // Error Handling
+    "usernamehw.errorlens",
+    // REST API
+    "humao.rest-client",
+    // Tailwind CSS
+    "bradlc.vscode-tailwindcss",
+    // Cloudflare Workers
+    "cloudflare.cloudflare-workers",
+    // Testing
+    "vitest.explorer",
+    // Markdown
+    "yzhang.markdown-all-in-one",
+    // Git
+    "eamodio.gitlens",
+    // Editor
+    "editorconfig.editorconfig"
+  ]
+}
+```
+
+### Extension Categories
+
+| Category | Extensions | Purpose |
+|----------|-----------|----------|
+| TypeScript/JS | eslint, prettier, typescript-next, pretty-ts-errors | Code quality |
+| React | ES7 snippets, auto-rename-tag | Development speed |
+| Debugging | debugger-for-chrome, vscode-react-native, react-style-tag | Browser/React debugging |
+| Error Handling | errorlens | Inline error display |
+| REST API | rest-client | API testing |
+| Tailwind | tailwindcss-intellisense | Styling support |
+| Cloudflare | cloudflare-workers | Workers-specific dev |
+| Testing | vitest-explorer | Test running |
+| Markdown | markdown-all-in-one | Docs editing |
+| Git | gitlens | Version control |
+| Editor | editorconfig | Consistency |
 
 When updating `.vscode/extensions.json`, include extensions organized by category:
 
