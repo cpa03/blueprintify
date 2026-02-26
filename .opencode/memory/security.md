@@ -1,3 +1,19 @@
+### 2026-02-26 UTC: npm audit fix - basic-ftp and rollup vulnerabilities
+
+- **Finding 1**: basic-ftp <5.2.0 has Path Traversal Vulnerability in downloadToDir() (GHSA-5rq4-664w-9x2c)
+- **Root Cause**: Transitive dependency via puppeteer-core (dev dependency for testing)
+- **Risk**: CRITICAL - Path traversal allows writing files outside intended directory
+- **Fix**: Updated via npm audit fix - basic-ftp@5.1.0 → basic-ftp@5.2.0
+- **Verification**: npm audit shows 0 vulnerabilities
+
+- **Finding 2**: rollup 4.0.0-4.58.0 has Arbitrary File Write via Path Traversal (GHSA-mw96-cpmx-2vgc)
+- **Root Cause**: Transitive dependency via rollup-plugin-visualizer and vite
+- **Risk**: HIGH - Path traversal during bundle creation could write malicious files
+- **Fix**: Updated via npm audit fix - rollup@4.57.1 → rollup@4.59.0
+- **Verification**: npm audit shows 0 vulnerabilities, build passes, 251 tests pass
+
+- **Lesson**: Regular npm audit scans are essential; both vulnerabilities were in transitive dependencies
+
 # Security Patterns & Conventions
 
 ## Policies
