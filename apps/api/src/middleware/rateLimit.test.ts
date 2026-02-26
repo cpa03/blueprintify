@@ -183,24 +183,33 @@ describe("rateLimit middleware", () => {
 
   describe("missing rate limiter binding", () => {
     it("should reject requests with 503 when rate limiter is not configured", async () => {
-      const app = new Hono<{
-        Bindings: { STANDARD_RATE_LIMITER?: RateLimit };
-      }>();
-      app.use("*", async (c, next) => {
-        c.env = {} as { STANDARD_RATE_LIMITER?: RateLimit };
-        await next();
-      });
-      app.use("/", rateLimit({ limiter: "STANDARD_RATE_LIMITER" }));
-      app.get("/", (c) => c.json({ success: true }));
+      // Save original NODE_ENV and set to production to test security behavior
+      const originalNodeEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = "production";
 
-      const res = await app.request("/", {
-        headers: { "cf-connecting-ip": "1.2.3.9" },
-      });
-      expect(res.status).toBe(503);
+      try {
+        const app = new Hono<{
+          Bindings: { STANDARD_RATE_LIMITER?: RateLimit };
+        }>();
+        app.use("*", async (c, next) => {
+          c.env = {} as { STANDARD_RATE_LIMITER?: RateLimit };
+          await next();
+        });
+        app.use("/", rateLimit({ limiter: "STANDARD_RATE_LIMITER" }));
+        app.get("/", (c) => c.json({ success: true }));
 
-      const data = (await res.json()) as ErrorResponse;
-      expect(data.success).toBe(false);
-      expect(data.error.code).toBe("RATE_LIMITER_NOT_CONFIGURED");
+        const res = await app.request("/", {
+          headers: { "cf-connecting-ip": "1.2.3.9" },
+        });
+        expect(res.status).toBe(503);
+
+        const data = (await res.json()) as ErrorResponse;
+        expect(data.success).toBe(false);
+        expect(data.error.code).toBe("RATE_LIMITER_NOT_CONFIGURED");
+      } finally {
+        // Restore original NODE_ENV
+        process.env.NODE_ENV = originalNodeEnv;
+      }
     });
   });
 
