@@ -83,6 +83,18 @@ Two tests failing in circuitBreaker.test.ts that may need investigation:
 - HALF_OPEN state test
 - Custom resetTimeoutMs configuration test
 
+
+## Recent Fixes (2026-02-26)
+
+Fixed 3 failing tests:
+
+1. **env.test.ts** - Changed CORS_ORIGIN default from "" to "*"
+
+2. **circuitBreaker.test.ts** - Fixed HALF_OPEN state tests:
+   - Replaced vi.setSystemTime() with vi.advanceTimersByTime()
+   - Corrected test expectations to match actual circuit behavior
+   - Circuit transitions to CLOSED after halfOpenMaxCalls successes
+
 ## Best Practices
 
 1. Always add tests for new utilities in shared packages
