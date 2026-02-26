@@ -109,6 +109,12 @@ accent: { cyan: "#06b6d4", purple: "#8b5cf6", pink: "#ec4899", emerald: "#10b981
 - **2026-02-26**: Accessibility: focus-visible states in 14+ components
 - **2026-02-26**: Build successful, 340 web tests passed
 - **Finding**: UI/UX well-maintained, previous PRs addressed major issues
+- **2026-02-26**: Fixed hardcoded RGB values in TemplateGrid.tsx, AnimatedNumber.tsx, CircularProgress.tsx, StepGenerating.tsx
+- **2026-02-26**: Verified no hardcoded hex/RGB values in 40 component files
+- **2026-02-26**: Tailwind config rgba values - acceptable as build-time JavaScript
+- **2026-02-26**: Accessibility: focus-visible states in 14+ components
+- **2026-02-26**: Build successful, 340 web tests passed
+- **Finding**: UI/UX well-maintained, previous PRs addressed major issues
 
 ---
 
@@ -134,3 +140,6 @@ accent: { cyan: "#06b6d4", purple: "#8b5cf6", pink: "#ec4899", emerald: "#10b981
 - `apps/web/src/components/ScrollProgress.tsx` - Theme tokens added (2026-02-26)
 - `apps/web/src/components/StepIndicator.tsx` - Theme tokens added (2026-02-26)
 - `apps/web/src/components/MarkdownRenderer.tsx` - Theme tokens recently added
+- `apps/web/src/components/AnimatedNumber.tsx` - Theme tokens added (2026-02-26)
+- `apps/web/src/components/CircularProgress.tsx` - Theme tokens added (2026-02-26)
+- `apps/web/src/components/wizard/StepGenerating.tsx` - Theme tokens added (2026-02-26)
