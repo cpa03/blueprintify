@@ -769,11 +769,10 @@ DEBUG=* npm run dev:api
 2. **Streaming Issues**
    - SSE connections may be interrupted by proxies or firewalls
    - Ensure proper CORS headers are configured
-
-MK|   - Check request body format matches expected schema
+   - Check request body format matches expected schema
    - Verify all required fields are present
 
-4. **API Key Not Configured (503 Service Unavailable)**
+3. **API Key Not Configured (503 Service Unavailable)**
    - If you receive a 503 error with message "API_KEY is not configured", the server's OpenAI API key is not set
    - This is a security measure - the server will reject all requests when the API key is not configured
    - For local development, ensure `OPENAI_API_KEY` is set in `apps/api/.dev.vars`
@@ -782,21 +781,6 @@ MK|   - Check request body format matches expected schema
 ## WebSocket Support
 
 Currently, the API uses Server-Sent Events (SSE) for streaming. WebSocket support is planned for future releases to enable bidirectional communication.
-   - Check request body format matches expected schema
-   JS|   - Verify all required fields are present
-
-4. **API Key Not Configured (503 Service Unavailable)**
-   - If you receive a 503 error with message "API_KEY is not configured", the server's OpenAI API key is not set
-   - This is a security measure - the server will reject all requests when the API key is not configured
-   - For local development, ensure `OPENAI_API_KEY` is set in `apps/api/.dev.vars`
-   - For production deployment, ensure the `OPENAI_API_KEY` secret is configured in Cloudflare Workers
-
-## WebSocket Support
-
-## WebSocket Support
-
-Currently, the API uses Server-Sent Events (SSE) for streaming. WebSocket support is planned for future releases to enable bidirectional communication.
-
 ## Version History
 
 | Version | Date       | Changes                                                                                                                               |
