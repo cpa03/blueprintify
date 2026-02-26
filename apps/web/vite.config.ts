@@ -149,7 +149,7 @@ export default defineConfig({
     cssMinify: true,
     reportCompressedSize: true,
     emptyOutDir: true,
-    target: "es2020",
+    target: "ES2022",
     commonjsOptions: {
       transformMixedEsModules: true,
     },
