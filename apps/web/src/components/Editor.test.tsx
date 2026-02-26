@@ -3,8 +3,10 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";
 import { Editor } from "./Editor";
 import { useEditorStore, useWizardStore } from "../store";
+import { ExportProvider } from "../context/ExportContext";
 import type { EditorStore } from "../store/editor";
 import type { WizardStore } from "../store/wizard";
+import type { TechStackItemType } from "@blueprint/shared";
 
 vi.mock("../store", () => ({
   useEditorStore: vi.fn(),
@@ -29,13 +31,13 @@ vi.mock("./editor/EditorHeader", () => ({
 }));
 
 vi.mock("./LazyCodeMirror", () => ({
-  LazyCodeMirror: vi.fn(({ value }) => (
+  LazyCodeMirror: vi.fn(({ value }: { value: string }) => (
     <textarea data-testid="codemirror" value={value} readOnly />
   )),
 }));
 
 vi.mock("./LazyMarkdownRenderer", () => ({
-  LazyMarkdownRenderer: vi.fn(({ content }) => (
+  LazyMarkdownRenderer: vi.fn(({ content }: { content: string }) => (
     <div data-testid="markdown-preview">{content}</div>
   )),
 }));
@@ -43,7 +45,19 @@ vi.mock("./LazyMarkdownRenderer", () => ({
 vi.mock("../lib/export", () => ({
   exportAsZip: vi.fn(),
   copyToClipboard: vi.fn(),
-  formatForIDE: vi.fn((content) => content),
+  formatForIDE: vi.fn((content: string) => content),
+}));
+
+vi.mock("../context/ExportContext", () => ({
+  useExportContext: vi.fn(() => ({
+    getExportMetadata: vi.fn(() => ({
+      projectName: "Test Project",
+      description: "",
+      techStack: [] as TechStackItemType[],
+      features: [],
+    })),
+  })),
+  ExportProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 vi.mock("../config/constants", async (importOriginal) => {
@@ -125,27 +139,31 @@ describe("Editor", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (useEditorStore as unknown as Mock).mockImplementation(
-      (selector: (state: EditorStore) => unknown) => selector(mockEditorStore),
+      (selector: (state: EditorStore) => unknown) => selector(mockEditorStore)
     );
     (useWizardStore as unknown as Mock).mockImplementation(
-      (selector: (state: WizardStore) => unknown) => selector(mockWizardStore),
+      (selector: (state: WizardStore) => unknown) => selector(mockWizardStore)
     );
   });
 
   it("renders empty state when no content and not generating", () => {
-    render(<Editor />);
+    render(
+      <ExportProvider>
+        <Editor />
+      </ExportProvider>
+    );
+    expect(screen.getByText("Your blueprint is waiting to be created")).toBeInTheDocument();
     expect(
-      screen.getByText("Your blueprint is waiting to be created"),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "Complete the wizard steps to generate your project documentation",
-      ),
+      screen.getByText("Complete the wizard steps to generate your project documentation")
     ).toBeInTheDocument();
   });
 
   it("renders editor header", () => {
-    render(<Editor />);
+    render(
+      <ExportProvider>
+        <Editor />
+      </ExportProvider>
+    );
     expect(screen.getByTestId("editor-header")).toBeInTheDocument();
     expect(screen.getByTestId("copy-button")).toBeInTheDocument();
     expect(screen.getByTestId("export-button")).toBeInTheDocument();
@@ -154,7 +172,11 @@ describe("Editor", () => {
 
   it("renders CodeMirror and preview when content exists", () => {
     mockEditorStore.blueprintContent = "# Test Content";
-    render(<Editor />);
+    render(
+      <ExportProvider>
+        <Editor />
+      </ExportProvider>
+    );
 
     expect(screen.getByTestId("codemirror")).toBeInTheDocument();
     expect(screen.getByTestId("markdown-preview")).toBeInTheDocument();
@@ -164,14 +186,22 @@ describe("Editor", () => {
   it("displays tasks content when tasks tab is active", () => {
     mockEditorStore.activeTab = "tasks";
     mockEditorStore.tasksContent = "# Tasks Content";
-    render(<Editor />);
+    render(
+      <ExportProvider>
+        <Editor />
+      </ExportProvider>
+    );
 
     expect(screen.getByDisplayValue("# Tasks Content")).toBeInTheDocument();
   });
 
   it("has proper styling classes", () => {
     mockEditorStore.blueprintContent = "# Test Content";
-    const { container } = render(<Editor />);
+    const { container } = render(
+      <ExportProvider>
+        <Editor />
+      </ExportProvider>
+    );
 
     const editorContainer = container.firstChild;
     expect(editorContainer).toHaveClass("h-full", "flex", "flex-col");
