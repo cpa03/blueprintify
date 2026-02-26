@@ -44,15 +44,14 @@ function StepIndicatorComponent(): JSX.Element {
 
   const currentIndex = STEPS.findIndex((s) => s.key === currentStep);
   const progressPercentage = (currentIndex / (STEPS.length - 1)) * 100;
-  const currentStepLabel =
-    WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
+  const currentStepLabel = WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
 
   const canNavigateTo = useCallback(
     (stepKey: WizardStep): boolean => {
       const targetIndex = STEPS.findIndex((s) => s.key === stepKey);
       return targetIndex <= currentIndex && stepKey !== "generating";
     },
-    [currentIndex],
+    [currentIndex]
   );
 
   const handleStepClick = useCallback(
@@ -66,7 +65,7 @@ function StepIndicatorComponent(): JSX.Element {
         toast.info(`Complete previous steps to unlock "${stepLabel}"`);
       }
     },
-    [canNavigateTo, setStep, toast],
+    [canNavigateTo, setStep, toast]
   );
 
   useEffect(() => {
@@ -103,9 +102,7 @@ function StepIndicatorComponent(): JSX.Element {
             size={36}
             strokeWidth={3}
             color={
-              currentIndex >= STEPS.length - 1
-                ? PROGRESS_COLORS.COMPLETED
-                : PROGRESS_COLORS.ACTIVE
+              currentIndex >= STEPS.length - 1 ? PROGRESS_COLORS.COMPLETED : PROGRESS_COLORS.ACTIVE
             }
             ariaLabel={`Step ${currentIndex + 1} of ${STEPS.length}: ${currentStepLabel}`}
           />
@@ -162,8 +159,8 @@ function StepIndicatorComponent(): JSX.Element {
                 isActive
                   ? {
                       boxShadow: [
-                        "0 0 0 0 rgb(99 102 241 / 0.4)",
-                        "0 0 0 8px rgb(99 102 241 / 0)",
+                        "0 0 0 0 rgb(from var(--color-primary-500) r g b / 0.4)",
+                        "0 0 0 8px rgb(from var(--color-primary-500) r g b / 0)",
                       ],
                     }
                   : undefined
@@ -179,13 +176,9 @@ function StepIndicatorComponent(): JSX.Element {
               }
             >
               <span>{step.icon}</span>
-              <span className="text-sm font-medium hidden sm:inline">
-                {step.label}
-              </span>
+              <span className="text-sm font-medium hidden sm:inline">{step.label}</span>
               {isClickable && (
-                <span className="text-xs opacity-50 font-mono">
-                  Alt+{step.shortcut}
-                </span>
+                <span className="text-xs opacity-50 font-mono">Alt+{step.shortcut}</span>
               )}
             </motion.button>
 

@@ -103,10 +103,7 @@ export const ScrollProgress = memo(function ScrollProgress({
       transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
       aria-hidden="true"
     >
-      <div
-        className="w-full bg-dark-800/50 backdrop-blur-sm"
-        style={{ height }}
-      >
+      <div className="w-full bg-dark-800/50 backdrop-blur-sm" style={{ height }}>
         <motion.div
           className="h-full bg-gradient-to-r from-primary-500 via-accent-purple to-accent-pink"
           style={{ width }}
@@ -115,11 +112,11 @@ export const ScrollProgress = memo(function ScrollProgress({
             opacity: isVisible ? [0.8, 1, 0.8] : 0.8,
             boxShadow: isVisible
               ? [
-                  "0 0 8px rgb(99 102 241 / 0.3)",
-                  "0 0 16px rgb(139 92 246 / 0.4)",
-                  "0 0 8px rgb(99 102 241 / 0.3)",
+                  "0 0 8px rgb(from var(--color-primary-500) r g b / 0.3)",
+                  "0 0 16px rgb(from var(--color-accent-purple) r g b / 0.4)",
+                  "0 0 8px rgb(from var(--color-primary-500) r g b / 0.3)",
                 ]
-              : "0 0 0px rgb(99 102 241 / 0)",
+              : "0 0 0px rgb(from var(--color-primary-500) r g b / 0)",
           }}
           transition={{
             opacity: {
@@ -141,7 +138,7 @@ export const ScrollProgress = memo(function ScrollProgress({
         style={{
           right: `calc(${100 - scrollProgress}% - 16px)`,
           background:
-            "linear-gradient(90deg, transparent, rgb(139 92 246 / 0.3), transparent)",
+            "linear-gradient(90deg, transparent, rgb(from var(--color-accent-purple) r g b / 0.3), transparent)",
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: isVisible ? 1 : 0 }}
