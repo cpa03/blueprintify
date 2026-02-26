@@ -62,22 +62,21 @@ export default defineConfig({
       algorithms: ["gzip", "brotliCompress"],
       exclude: [/\.(br)$/, /\.(gz)$/],
       threshold: 1024,
-    }),
-    isAnalyze &&
-      visualizer({
-        filename: "dist/stats.html",
-        open: false,
-        gzipSize: true,
-        brotliSize: true,
       }),
   ].filter(Boolean),
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
+  optimizeDeps: {
+    include: ["react", "react-dom", "zustand"],
+    esbuildOptions: {
+      target: "es2022",
     },
   },
   server: {
     port: DEV_SERVER_PORT,
+    host: true,
+    hmr: {
+      clientPort: DEV_SERVER_PORT,
+      overlay: true,
+    },
     proxy: {
       "/api": {
         target: API_PROXY_TARGET,
