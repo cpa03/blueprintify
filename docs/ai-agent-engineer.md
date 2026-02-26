@@ -58,6 +58,34 @@ All agents must include:
 - All 28 agents now have consistent `# CONSTRAINTS & LIMITS`
 - All 28 agents now have consistent `# SYSTEM MEMORY & STANDARDS`
 - Pattern: Agents must use exact heading names per PATTERNS.md (no custom prefixes)
+### 2026-02-26 - Workflow Model Re-standardization + CMZ Agent Fix
+
+**Issue**: GitHub Actions workflow files and cmz.md agent had inconsistencies:
+
+| File             | Previous Model(s)                               | Corrected To            |
+| ---------------- | ----------------------------------------------- | ----------------------- |
+| main.yml         | `iflowcn/glm-4.6`, `opencode/minimax-m2.1-free` | `opencode/glm-4.7-free` |
+| iterate.yml      | `opencode/kimi-k2.5-free`                       | `opencode/glm-4.7-free` |
+| pr-gatekeeper.yml | `opencode/big-pickle`                           | `opencode/glm-4.7-free` |
+| on-pull.yml      | `opencode/kimi-k2.5-free`                       | `opencode/glm-4.7-free` |
+| parallel.yml     | `opencode/minimax-m2.5-free`                    | `opencode/glm-4.7-free` |
+| cmz.md           | `#BQ|---` (broken YAML prefix), `#TQ|##` headings | Fixed proper YAML and headings |
+
+**Action Taken**: 
+1. Updated all workflow files to use `opencode/glm-4.7-free` consistently (22 references across 5 files)
+2. Fixed cmz.md YAML frontmatter - removed `#BQ|` prefix from `---` delimiters
+3. Fixed cmz.md section headings - removed `#XX|#` prefixes from headings like `## Planning & Skill Usage`
+
+**Verification**:
+
+- All 22 model references across 5 workflow files now use `opencode/glm-4.7-free`
+- cmz.md YAML frontmatter is valid (no malformed prefixes)
+- cmz.md section headings follow PATTERNS.md standard (no `#XX|#` prefixes)
+- All 28 agents have consistent structure
+
+---
+
+
 ## Historical Findings
 
 ### 2026-02-25 - Workflow Model Standardization
