@@ -13,6 +13,10 @@
     "strictNullChecks": true,
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "incremental": true
+    "incremental": true,
+    "paths": {
+      "@blueprint/shared": ["./packages/shared/src/index.ts"],
+      "@blueprint/shared/*": ["./packages/shared/src/*"]
+    }
   }
 }
