@@ -40,12 +40,12 @@ export const DatabaseSubcategory = z.enum([
  * Represents a single technology choice with name, category, and optional version.
  */
 export const TechStackItem = z.object({
-  name: z.string().min(1),
+  name: z.string().min(1).max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
   category: TechStackCategory,
   subcategory: DatabaseSubcategory.optional(),
   version: z.string().optional(),
-  description: z.string().optional(),
-  features: z.array(z.string()).optional(),
+  description: z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX).optional(),
+  features: z.array(z.string()).min(1).max(VALIDATION_LIMITS.FEATURE.MAX).optional(),
 });
 
 // ===== Blueprint Request Schema =====
@@ -69,9 +69,9 @@ export const BlueprintRequestSchema = z.object({
   techStack: z
     .array(TechStackItem)
     .min(VALIDATION_LIMITS.TECH_STACK.MIN, "At least one technology is required"),
-  features: z.array(z.string().min(1)).optional(),
-  targetAudience: z.string().optional(),
-  constraints: z.string().optional(),
+  features: z.array(z.string().min(1)).max(VALIDATION_LIMITS.FEATURE.MAX).optional(),
+  targetAudience: z.string().max(VALIDATION_LIMITS.TARGET_AUDIENCE.MAX).optional(),
+  constraints: z.string().max(VALIDATION_LIMITS.CONSTRAINTS.MAX).optional(),
 });
 
 // ===== Task Generation Schema =====
@@ -80,8 +80,16 @@ export const BlueprintRequestSchema = z.object({
  * Request payload for task generation from blueprint content.
  */
 export const TaskGenerationRequestSchema = z.object({
-  blueprint: z.string().min(1, "Blueprint content is required"),
-  projectName: z.string().min(1),
+  blueprint: z
+    .string()
+    .min(1, "Blueprint content is required")
+    .max(VALIDATION_LIMITS.DESCRIPTION.MAX,
+      `Blueprint must not exceed ${VALIDATION_LIMITS.DESCRIPTION.MAX} characters`
+    ),
+  projectName: z
+    .string()
+    .min(VALIDATION_LIMITS.PROJECT_NAME.MIN, "Project name is required")
+    .max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
 });
 
 // ===== Task Item Schema (Future Proofing) =====
@@ -104,10 +112,10 @@ export const TaskPrioritySchema = z.enum(["low", "medium", "high", "critical"]);
  */
 export const TaskItemSchema = z.object({
   id: z.string(),
-  title: z.string(),
+  title: z.string().min(1).max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
   status: TaskStatusSchema,
   priority: TaskPrioritySchema.optional(),
-  description: z.string().optional(),
+  description: z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX).optional(),
   dependencies: z.array(z.string()).optional(),
 });
 
@@ -123,8 +131,18 @@ export const TaskListSchema = z.array(TaskItemSchema);
  * Used for AI-powered content enhancement in the editor.
  */
 export const RefineRequestSchema = z.object({
-  content: z.string().min(1, "Content to refine is required"),
-  instruction: z.string().min(1, "Refinement instruction is required"),
+  content: z
+    .string()
+    .min(1, "Content to refine is required")
+    .max(VALIDATION_LIMITS.DESCRIPTION.MAX,
+      `Content must not exceed ${VALIDATION_LIMITS.DESCRIPTION.MAX} characters`
+    ),
+  instruction: z
+    .string()
+    .min(1, "Refinement instruction is required")
+    .max(VALIDATION_LIMITS.CONSTRAINTS.MAX,
+      `Instruction must not exceed ${VALIDATION_LIMITS.CONSTRAINTS.MAX} characters`
+    ),
   context: z.string().optional(),
 });
 
@@ -135,14 +153,18 @@ export const RefineRequestSchema = z.object({
  * Provides default values for common project types.
  */
 export const TemplateSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.string(),
-  icon: z.string(),
-  projectName: z.string(),
-  defaultDescription: z.string(),
+  id: z.string().min(1).max(50),
+  name: z.string().min(1).max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
+  description: z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX),
+  icon: z.string().max(50),
+  projectName: z.string()
+    .min(VALIDATION_LIMITS.PROJECT_NAME.MIN)
+    .max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
+  defaultDescription: z.string()
+    .min(VALIDATION_LIMITS.DESCRIPTION.MIN)
+    .max(VALIDATION_LIMITS.DESCRIPTION.MAX),
   techStack: z.array(TechStackItem),
-  features: z.array(z.string()),
+  features: z.array(z.string().min(1).max(VALIDATION_LIMITS.FEATURE.MAX)),
 });
 
 // ===== Error Response Schemas =====
