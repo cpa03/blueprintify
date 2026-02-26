@@ -274,6 +274,11 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Release Process](./docs/release-process.md)** - Release and deployment procedures
 - **[Troubleshooting Guide](./docs/troubleshooting.md)** - Common issues and solutions
 
+
+### 🛡️ Security Documentation
+
+- **[Security Implementation](./docs/security-implementation.md)** - Comprehensive security infrastructure overview
+- **[Security Audit Reports](./docs/security/)** - Security vulnerability assessments and remediation
 ### 🤖 AI Agent System
 
 - **[AI Agent Usage Guide](./docs/ai-agent-usage-guide.md)** - Working with the AI agent system
