@@ -48,7 +48,7 @@ app.use(
   cors({
     origin: (origin) => {
       const allowedOrigin = CORS_CONFIG.ORIGIN;
-      if (allowedOrigin === "*") return origin || "*";
+      if (!allowedOrigin || allowedOrigin === "*") return origin || "*";
       return allowedOrigin;
     },
     allowMethods: CORS_CONFIG.ALLOW_METHODS,
