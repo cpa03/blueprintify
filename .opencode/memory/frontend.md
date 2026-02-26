@@ -40,5 +40,7 @@
 - Color contrast must meet WCAG AA standards
 - Always run lint before submitting - unused destructured variables cause PR warnings
 - ESLint rule `@typescript-eslint/no-unused-vars` catches unused variables in destructuring
-- Avoid non-null assertions (`!`) on optional chains - use explicit null checks instead
+XS|- Test files must pass lint checks just like production code
+#QT|- React.memo must be imported from React, NOT from framer-motion
+#NR|- ErrorBoundary must remain a class component in React 18 (no functional equivalent)
 - Test files must pass lint checks just like production code
