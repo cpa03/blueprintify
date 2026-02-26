@@ -274,6 +274,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Testing Procedures](./docs/testing-procedures.md)** - Testing standards, tools, and guidelines
 - **[Release Process](./docs/release-process.md)** - Release and deployment procedures
 - **[Troubleshooting Guide](./docs/troubleshooting.md)** - Common issues and solutions
+- **[Environment Variables](./docs/environment-variables.md)** - Configuration reference for API, frontend, and Cloudflare
 
 ### 🤖 AI Agent System
 
