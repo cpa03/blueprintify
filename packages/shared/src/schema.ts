@@ -171,7 +171,7 @@ export const TemplateSchema = z.object({
 
 /**
  * Error type enumeration.
- * Values: validation, authentication, authorization, not_found, configuration, network, ai_service, internal
+ * Values: validation, authentication, authorization, not_found, configuration, network, ai_service, internal, server_configuration
  */
 export const ErrorTypeSchema = z.enum([
   "validation",
@@ -182,6 +182,7 @@ export const ErrorTypeSchema = z.enum([
   "network",
   "ai_service",
   "internal",
+  "server_configuration",
 ]);
 
 /**
