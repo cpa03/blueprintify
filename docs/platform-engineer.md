@@ -18,6 +18,16 @@ This document tracks platform-engineer domain work for the blueprintify project.
 ## History
 
 - 2026-02-24: Initial setup - Issue #885 identified (standardize checkout actions to v5)
+- 2026-02-26: Changes implemented locally (commit 47ba9c7) - ready for PR
+
+## Status
+
+**BLOCKED**: Push rejected due to GitHub App workflow permission restrictions.
+The github-actions[bot] token lacks `workflows` permission needed to push workflow files.
+
+Changes committed locally in branch `platform/standardize-checkout-v5`:
+- 6 occurrences of `actions/checkout@v4` → `v5` updated
+- 3 workflow files modified: pr-gatekeeper.yml, parallel.yml, on-pull.yml
 
 ## Workflow Files Status
 
