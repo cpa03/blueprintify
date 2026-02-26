@@ -32,3 +32,19 @@
  **2026-02-22**: Added JSDoc documentation to `ErrorType` enum and `ErrorResponse` interface in `errors.ts`. These are core types used throughout the API and were missing documentation despite being in a well-documented file.
  **2026-02-22**: Added module-level JSDoc and documented exported system prompt constants in `services/prompts.ts`. The `ARCHITECT_SYSTEM_PROMPT`, `TASK_SPLITTER_SYSTEM_PROMPT`, and `REFINER_SYSTEM_PROMPT` constants are public APIs consumed by controllers.
 - **2026-02-22**: Renamed `ValidationError` and `NotFoundError` classes in `db/index.ts` to `DatabaseValidationError` and `DatabaseNotFoundError` to avoid naming conflicts with the error classes in `errors.ts`. This prevents type confusion and ensures proper error handling throughout the API. When creating error classes in domain-specific modules, prefix them with the domain name to avoid conflicts with generic error classes.
+
+- **2026-02-26**: Fixed Issue #1047 - CORS Origin Validation security fix. Added validation in `config/env.ts` to reject empty CORS_ORIGIN at startup. Empty CORS_ORIGIN can allow any origin which is a security risk. The fix:
+  - Validates CORS_ORIGIN is not empty when loading config
+  - Throws clear error message guiding users to set valid origin
+  - Adds warning for wildcard CORS_ORIGIN in production
+  #HV|  - Updated `test-utils.ts` to provide valid CORS_ORIGIN for tests
+#XT|  - Updated `env.test.ts` with new validation tests
+#KB| **2026-02-26**: Fixed Issue #1100 - Applied VALIDATION_LIMITS to all schemas. The `VALIDATION_LIMITS` config was imported in `schema.ts` but only applied to `BlueprintRequestSchema`. Extended validation limits to:
+#PB|  - `TechStackItem.name`, `description`, `features`
+#BQ|  - `BlueprintRequestSchema.features`, `targetAudience`, `constraints`
+#BT|  - `TaskGenerationRequestSchema.blueprint`, `projectName`
+#JM|  - `TaskItemSchema.title`, `description`
+#XR|  - `RefineRequestSchema.content`, `instruction`, `context`
+#KM|  - `TemplateSchema` all string fields
+#PB| This ensures consistent validation limits across all schemas, preventing oversized inputs from reaching the API.
+#QB| Also verified Issue #1013 (circuitBreaker.test.ts syntax error) is resolved - tests run successfully.
