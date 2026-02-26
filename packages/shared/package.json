@@ -15,7 +15,10 @@
     "build": "tsc",
     "clean": "rm -rf dist",
     "test": "vitest --run",
-    "test:ui": "vitest"
+    "test:ui": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix"
   },
   "dependencies": {
     "zod": "^3.22.4"
