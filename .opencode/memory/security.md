@@ -51,6 +51,15 @@
 #KM|- **Fix**: Changed default from `*` to `http://localhost:3000`, added startup warnings for wildcard and localhost
 #TW|- **Verification**: TypeScript clean, ESLint clean, build passes, tests pass
 #SB|- **Lesson**: API defaults should be secure-by-default, with explicit configuration needed for production
+### 2026-02-26 UTC: Share Route ID Pattern Validation
+
+- **Finding**: Share route ID validation only checked length but not character pattern
+- **Root Cause**: Weak validation could allow potential injection via malformed IDs
+- **Risk**: Potential injection or DoS via malformed IDs
+- **Fix**: Added `SHARE_ID_PATTERN: /^[a-zA-Z0-9]{10,}$/` to constants, updated GET and DELETE routes
+- **Verification**: TypeScript clean, ESLint clean, build passes
+- **Lesson**: Input validation should validate both length AND character pattern to prevent injection attacks
+
 ## Lessons Learned
 
 ### 2026-02-22 06:15 UTC: Cloudflare Workers Environment File in .gitignore
