@@ -105,7 +105,7 @@ export const errorHandler = (err: unknown, c: Context): Response => {
     errorResponse.error.requestId = requestId;
   }
 
-  return c.json(errorResponse, statusCode as 400 | 401 | 403 | 404 | 500 | 502);
+  return c.json(errorResponse, statusCode as 400 | 401 | 403 | 404 | 413 | 429 | 500 | 502 | 503 | 504);
 };
 
 /**
