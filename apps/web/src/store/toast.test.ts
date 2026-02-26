@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { useToastStore, useToast, type Toast, type ToastType } from "./toast";
+import { useToastStore, useToast } from "./toast";
 
 // Mock constants
 vi.mock("../config/constants", () => ({
@@ -17,34 +17,14 @@ vi.mock("@blueprint/shared", () => ({
   },
 }));
 
-// Mock setTimeout and clearTimeout globally
-const originalSetTimeout = global.setTimeout;
-const originalClearTimeout = global.clearTimeout;
-
 describe("toast store", () => {
-  let timers: ReturnType<typeof setTimeout>[] = [];
-
   beforeEach(() => {
     // Clear all toasts before each test
     useToastStore.getState().clearAll();
-    timers = [];
-
-    // Mock setTimeout to track timers without actually executing them
-    vi.spyOn(global, "setTimeout").mockImplementation((callback: TimerHandler, delay?: number) => {
-      const timer = originalSetTimeout(callback, delay);
-      timers.push(timer);
-      return timer;
-    });
-
-    vi.spyOn(global, "clearTimeout").mockImplementation((timer: TimerHandler) => {
-      originalClearTimeout(timer as NodeJS.Timeout);
-    });
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
-    // Clear all timers after each test
-    timers.forEach((timer) => clearTimeout(timer));
-    timers = [];
     vi.restoreAllMocks();
   });
 
@@ -63,8 +43,8 @@ describe("toast store", () => {
 
       const state = useToastStore.getState();
       expect(state.toasts).toHaveLength(1);
-      expect(state.toasts[0].message).toBe("Operation successful");
-      expect(state.toasts[0].type).toBe("success");
+      expect(state.toasts[0]?.message).toBe("Operation successful");
+      expect(state.toasts[0]?.type).toBe("success");
     });
 
     it("should add an error toast", () => {
@@ -74,7 +54,7 @@ describe("toast store", () => {
 
       const state = useToastStore.getState();
       expect(state.toasts).toHaveLength(1);
-      expect(state.toasts[0].type).toBe("error");
+      expect(state.toasts[0]?.type).toBe("error");
     });
 
     it("should add a warning toast", () => {
@@ -83,7 +63,7 @@ describe("toast store", () => {
       addToast("Warning message", "warning");
 
       const state = useToastStore.getState();
-      expect(state.toasts[0].type).toBe("warning");
+      expect(state.toasts[0]?.type).toBe("warning");
     });
 
     it("should add an info toast", () => {
@@ -92,7 +72,7 @@ describe("toast store", () => {
       addToast("Info message", "info");
 
       const state = useToastStore.getState();
-      expect(state.toasts[0].type).toBe("info");
+      expect(state.toasts[0]?.type).toBe("info");
     });
 
     it("should accept custom duration", () => {
@@ -101,7 +81,7 @@ describe("toast store", () => {
       addToast("Custom duration", "success", 10000);
 
       const state = useToastStore.getState();
-      expect(state.toasts[0].duration).toBe(10000);
+      expect(state.toasts[0]?.duration).toBe(10000);
     });
 
     it("should use default duration when not provided", () => {
@@ -110,7 +90,7 @@ describe("toast store", () => {
       addToast("Default duration", "success");
 
       const state = useToastStore.getState();
-      expect(state.toasts[0].duration).toBe(5000); // TOAST_CONFIG.DEFAULT_DURATION
+      expect(state.toasts[0]?.duration).toBe(5000); // TOAST_CONFIG.DEFAULT_DURATION
     });
 
     it("should generate unique IDs for each toast", () => {
@@ -120,7 +100,7 @@ describe("toast store", () => {
       addToast("Second toast", "error");
 
       const state = useToastStore.getState();
-      expect(state.toasts[0].id).not.toBe(state.toasts[1].id);
+      expect(state.toasts[0]?.id).not.toBe(state.toasts[1]?.id);
     });
 
     it("should add multiple toasts", () => {
@@ -140,8 +120,9 @@ describe("toast store", () => {
       const { addToast, removeToast } = useToastStore.getState();
 
       addToast("Toast to remove", "success");
-      const toastId = useToastStore.getState().toasts[0].id;
-      removeToast(toastId);
+      const toastId = useToastStore.getState().toasts[0]?.id;
+      expect(toastId).toBeDefined();
+      if (toastId) removeToast(toastId);
 
       const state = useToastStore.getState();
       expect(state.toasts).toHaveLength(0);
@@ -152,12 +133,13 @@ describe("toast store", () => {
 
       addToast("First", "success");
       addToast("Second", "error");
-      const firstId = useToastStore.getState().toasts[0].id;
-      removeToast(firstId);
+      const firstId = useToastStore.getState().toasts[0]?.id;
+      expect(firstId).toBeDefined();
+      if (firstId) removeToast(firstId);
 
       const state = useToastStore.getState();
       expect(state.toasts).toHaveLength(1);
-      expect(state.toasts[0].message).toBe("Second");
+      expect(state.toasts[0]?.message).toBe("Second");
     });
 
     it("should handle removing non-existent toast gracefully", () => {
@@ -195,26 +177,12 @@ describe("useToast hook exports", () => {
   // The useToast() hook internally uses Zustand which requires React context.
   // These tests verify the hook is properly exported and the underlying store works.
 
-  let timers: ReturnType<typeof setTimeout>[] = [];
-
   beforeEach(() => {
     useToastStore.getState().clearAll();
-    timers = [];
-
-    vi.spyOn(global, "setTimeout").mockImplementation((callback: TimerHandler, delay?: number) => {
-      const timer = originalSetTimeout(callback, delay);
-      timers.push(timer);
-      return timer;
-    });
-
-    vi.spyOn(global, "clearTimeout").mockImplementation((timer: TimerHandler) => {
-      originalClearTimeout(timer as NodeJS.Timeout);
-    });
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
-    timers.forEach((timer) => clearTimeout(timer));
-    timers = [];
     vi.restoreAllMocks();
   });
 
@@ -227,8 +195,8 @@ describe("useToast hook exports", () => {
     addToast("Success message", "success");
 
     const state = useToastStore.getState();
-    expect(state.toasts[0].type).toBe("success");
-    expect(state.toasts[0].message).toBe("Success message");
+    expect(state.toasts[0]?.type).toBe("success");
+    expect(state.toasts[0]?.message).toBe("Success message");
   });
 
   it("store addToast should work for error type (used by hook)", () => {
@@ -236,7 +204,7 @@ describe("useToast hook exports", () => {
     addToast("Error message", "error");
 
     const state = useToastStore.getState();
-    expect(state.toasts[0].type).toBe("error");
+    expect(state.toasts[0]?.type).toBe("error");
   });
 
   it("store addToast should work for warning type (used by hook)", () => {
@@ -244,7 +212,7 @@ describe("useToast hook exports", () => {
     addToast("Warning message", "warning");
 
     const state = useToastStore.getState();
-    expect(state.toasts[0].type).toBe("warning");
+    expect(state.toasts[0]?.type).toBe("warning");
   });
 
   it("store addToast should work for info type (used by hook)", () => {
@@ -252,7 +220,7 @@ describe("useToast hook exports", () => {
     addToast("Info message", "info");
 
     const state = useToastStore.getState();
-    expect(state.toasts[0].type).toBe("info");
+    expect(state.toasts[0]?.message).toBe("Info message");
   });
 
   it("store addToast should support custom duration (used by hook)", () => {
@@ -260,6 +228,6 @@ describe("useToast hook exports", () => {
     addToast("Custom duration", "success", 2000);
 
     const state = useToastStore.getState();
-    expect(state.toasts[0].duration).toBe(2000);
+    expect(state.toasts[0]?.duration).toBe(2000);
   });
 });

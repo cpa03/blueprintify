@@ -53,8 +53,8 @@ describe("GenerateController", () => {
     it("should throw ConfigurationError when API key is missing", async () => {
       const mockContext = {
         env: {},
-        get: vi.fn().mockReturnValue(mockBlueprintRequest),
-      } as unknown as any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
 
       await expect(controller.generateBlueprint(mockContext)).rejects.toThrow(ConfigurationError);
     });
@@ -62,8 +62,8 @@ describe("GenerateController", () => {
     it("should call buildBlueprintPrompt with request data", async () => {
       const mockContext = {
         env: MOCK_ENV,
-        get: vi.fn().mockReturnValue(mockBlueprintRequest),
-      } as unknown as any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
 
       const { buildBlueprintPrompt } = await import("../services/prompts");
 
@@ -75,8 +75,8 @@ describe("GenerateController", () => {
     it("should return a streaming Response", async () => {
       const mockContext = {
         env: MOCK_ENV,
-        get: vi.fn().mockReturnValue(mockBlueprintRequest),
-      } as unknown as any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
 
       const response = await controller.generateBlueprint(mockContext);
 
@@ -86,8 +86,8 @@ describe("GenerateController", () => {
     it("should validate environment before generating", async () => {
       const mockContext = {
         env: {},
-        get: vi.fn().mockReturnValue(mockBlueprintRequest),
-      } as unknown as any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
 
       await expect(controller.generateBlueprint(mockContext)).rejects.toThrow();
     });

@@ -52,8 +52,8 @@ describe("RefineController", () => {
     it("should throw ConfigurationError when API key is missing", async () => {
       const mockContext = {
         env: {},
-        get: vi.fn().mockReturnValue(mockRefineRequest),
-      } as unknown as any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
 
       await expect(controller.refineContent(mockContext)).rejects.toThrow(ConfigurationError);
     });
@@ -61,8 +61,8 @@ describe("RefineController", () => {
     it("should call buildRefinePrompt with request data", async () => {
       const mockContext = {
         env: MOCK_ENV,
-        get: vi.fn().mockReturnValue(mockRefineRequest),
-      } as unknown as any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
 
       const { buildRefinePrompt } = await import("../services/prompts");
 
@@ -74,8 +74,8 @@ describe("RefineController", () => {
     it("should return a streaming Response", async () => {
       const mockContext = {
         env: MOCK_ENV,
-        get: vi.fn().mockReturnValue(mockRefineRequest),
-      } as unknown as any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
 
       const response = await controller.refineContent(mockContext);
 
@@ -85,8 +85,8 @@ describe("RefineController", () => {
     it("should validate environment before refining", async () => {
       const mockContext = {
         env: {},
-        get: vi.fn().mockReturnValue(mockRefineRequest),
-      } as unknown as any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
 
       await expect(controller.refineContent(mockContext)).rejects.toThrow();
     });
