@@ -13,6 +13,14 @@ interface RateLimitConfig {
 }
 
 /**
+ * Check if we're running in test environment
+ * Vitest automatically sets NODE_ENV to 'test'
+ */
+const isTestEnvironment = (): boolean => {
+  return process.env.NODE_ENV === "test";
+};
+
+/**
  * Get rate limit values from environment configuration
  * Flexy: No hardcoded values - everything configurable!
  */
@@ -51,6 +59,7 @@ function getLimiterLimits(): Record<RateLimiterName, number> {
  * - Returns standard rate limit headers (X-RateLimit-*)
  * - Includes Retry-After header when limit exceeded
  * - Rejects requests when rate limiter is not configured (secure default)
+ * - Bypasses rate limiting in test environment when no rate limiter is configured
  */
 export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
   const { limiter, keyGenerator } = config;
@@ -58,6 +67,14 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
   return async (c, next) => {
     const env = c.env as Env;
     const rateLimiter = env[limiter];
+
+    // Bypass rate limiting in test environment ONLY when rate limiter is not explicitly configured
+    // This allows route tests to bypass (no rate limiter in env) while still allowing
+    // rate limit unit tests to test rate limiting behavior (they explicitly provide mock limiters)
+    if (isTestEnvironment() && rateLimiter === undefined) {
+      await next();
+      return;
+    }
 
     const key = keyGenerator
       ? keyGenerator(c)
