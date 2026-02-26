@@ -52,7 +52,7 @@ export default defineConfig({
       algorithms: ["gzip", "brotliCompress"],
       exclude: [/\.(br)$/, /\.(gz)$/],
       threshold: 1024,
-      }),
+    }),
   ].filter(Boolean),
   optimizeDeps: {
     include: ["react", "react-dom", "zustand", "clsx"],
@@ -63,16 +63,10 @@ export default defineConfig({
   server: {
     port: DEV_SERVER_PORT,
     host: true,
+    strictPort: true,
     hmr: {
       clientPort: DEV_SERVER_PORT,
       overlay: true,
-    },
-    warmup: {
-      urls: ["/", "/index.html"],
-      includeVariant: () => true,
-    },
-    fs: {
-      allow: [".", ".."],
     },
     proxy: {
       "/api": {
