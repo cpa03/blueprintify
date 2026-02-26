@@ -362,6 +362,8 @@ export const SHARE_CONFIG = {
   EXPIRATION_DAYS: 30,
   TITLE_MAX_LENGTH: 200,
   BLUEPRINT_MAX_LENGTH: 50000,
+  /** Pattern for validating share IDs - alphanumeric only, 10+ chars */
+  ID_PATTERN: /^[a-zA-Z0-9]{10,}$/,
 } as const;
 
 // Share route error messages

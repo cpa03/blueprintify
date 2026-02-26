@@ -186,7 +186,7 @@ app.get("/:id", async (c) => {
   try {
     const shareId = c.req.param("id");
 
-    if (!shareId || shareId.length !== SHARE_CONFIG.ID_LENGTH) {
+    if (!shareId || !SHARE_CONFIG.ID_PATTERN.test(shareId)) {
       return c.json(
         createErrorResponse(
           c,
@@ -290,7 +290,7 @@ app.delete("/:id", async (c) => {
   try {
     const shareId = c.req.param("id");
 
-    if (!shareId || shareId.length !== SHARE_CONFIG.ID_LENGTH) {
+    if (!shareId || !SHARE_CONFIG.ID_PATTERN.test(shareId)) {
       return c.json(
         createErrorResponse(
           c,
