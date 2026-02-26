@@ -17,7 +17,7 @@
  * @see SmartTooltip - For keyboard shortcut tooltip display
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { SPRING_CONFIG } from "../config/constants";
@@ -53,7 +53,7 @@ interface ScrollToTopProps {
  * <ScrollToTop scrollContainerRef={containerRef} showAfter={200} />
  * ```
  */
-export function ScrollToTop({
+function ScrollToTopComponent({
   scrollContainerRef,
   showAfter = 400,
 }: ScrollToTopProps): JSX.Element {
@@ -179,3 +179,5 @@ export function ScrollToTop({
     </AnimatePresence>
   );
 }
+
+export const ScrollToTop = memo(ScrollToTopComponent);

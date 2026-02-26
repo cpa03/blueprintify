@@ -1,13 +1,13 @@
 import { MotionConfig } from "framer-motion";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
-import { useEffect, ReactNode } from "react";
+import { useEffect, ReactNode, memo } from "react";
 
 interface MotionConfigWrapperProps {
   children: ReactNode;
   onMount?: () => void;
 }
 
-export default function MotionConfigWrapper({
+function MotionConfigWrapperComponent({
   children,
   onMount,
 }: MotionConfigWrapperProps): JSX.Element {
@@ -23,3 +23,5 @@ export default function MotionConfigWrapper({
     </MotionConfig>
   );
 }
+
+export default memo(MotionConfigWrapperComponent);
