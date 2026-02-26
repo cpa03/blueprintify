@@ -247,8 +247,47 @@ test(api): add unit tests for validation middleware
 - Daily workflow execution reports
 - Weekly performance metrics
 - Monthly process optimization reviews
+## 🛠️ Local Development
 
-## 🔄 Continuous Improvement
+### Recommended VS Code Extensions
+
+Install the recommended extensions for the best development experience:
+
+```bash
+code --install-extension dbaeumer.vscode-eslint
+code --install-extension esbenp.prettier-vscode
+code --install-extension ms-vscode.vscode-typescript-next
+code --install-extension yoavbls.pretty-ts-errors
+code --install-extension dsznajder.es7-react-js-snippets
+code --install-extension formulahendry.auto-rename-tag
+code --install-extension bradlc.vscode-tailwindcss
+code --install-extension cloudflare.cloudflare-workers
+code --install-extension vitest.explorer
+code --install-extension yzhang.markdown-all-in-one
+code --install-extension eamodio.gitlens
+code --install-extension editorconfig.editorconfig
+```
+
+### Debugging Tips
+
+1. **Hot Module Replacement (HMR)**: The dev server is configured for fast HMR (<500ms). Edit any React component and see changes instantly.
+
+2. **Error Overlay**: Runtime errors display as an overlay in the browser. Check the console for full stack traces.
+
+3. **VS Code Debugging**:
+   - Use the "Debug Console" in VS Code to see console output
+   - Set breakpoints in `.tsx`/`.ts` files for live debugging
+   - Use Chrome debugger extension for React DevTools
+
+4. **API Debugging**:
+   - Run `npm run dev:api` separately to see API server logs
+   - API runs on port 8787 by default
+
+### Performance
+
+- Dev server startup is optimized with dependency pre-bundling
+- Use `npm run dev:all` to run frontend and API simultaneously
+
 
 ### Workflow Updates
 
