@@ -52,9 +52,9 @@ export default defineConfig({
       algorithms: ["gzip", "brotliCompress"],
       exclude: [/\.(br)$/, /\.(gz)$/],
       threshold: 1024,
-      }),
+    }),
   ].filter(Boolean),
-optimizeDeps: {
+  optimizeDeps: {
     include: ["react", "react-dom", "zustand", "clsx"],
     esbuildOptions: {
       target: "es2022",
@@ -64,7 +64,7 @@ optimizeDeps: {
     port: DEV_SERVER_PORT,
     host: true,
     strictPort: true,
-hmr: {
+    hmr: {
       clientPort: DEV_SERVER_PORT,
       overlay: true,
     },

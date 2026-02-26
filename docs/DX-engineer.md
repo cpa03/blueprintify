@@ -72,9 +72,6 @@ When updating test scripts, ensure ALL workspaces are covered:
 Note: The `test:all` script should include ALL workspaces (apps/web, apps/api, packages/shared)
 
 ## Known Issues
-
-## Known Issues
-
 - TypeScript typecheck requires `npm install` to run first
 - ESLint requires dependencies to be installed
 - Some tests may fail in clean environment without build artifacts
@@ -123,11 +120,7 @@ When updating `.vscode/extensions.json`, include extensions organized by categor
 | Markdown | markdown-all-in-one | Docs editing |
 | Git | gitlens | Version control |
 | Editor | editorconfig | Consistency |
-
-
 ## ESLint Configuration
-## ESLint Configuration
-
 When adding ESLint rules, follow these patterns:
 
 ### Console Statements
