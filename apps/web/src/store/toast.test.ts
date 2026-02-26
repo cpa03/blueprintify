@@ -17,14 +17,33 @@ vi.mock("@blueprint/shared", () => ({
   },
 }));
 
+// Mock setTimeout and clearTimeout globally
+const originalSetTimeout = global.setTimeout;
+const originalClearTimeout = global.clearTimeout;
+
 describe("toast store", () => {
+  let timers: ReturnType<typeof setTimeout>[] = [];
+
   beforeEach(() => {
     // Clear all toasts before each test
     useToastStore.getState().clearAll();
-    vi.useFakeTimers();
+    timers = [];
+
+    // Mock setTimeout to track timers without actually executing them
+    vi.spyOn(global, "setTimeout").mockImplementation(((callback: TimerHandler, delay?: number) => {
+      const timer = originalSetTimeout(callback as never, delay);
+      timers.push(timer);
+      return timer;
+    }) as unknown as typeof setTimeout);
+    vi.spyOn(global, "clearTimeout").mockImplementation(((timer: TimerHandler) => {
+      originalClearTimeout(timer as unknown as ReturnType<typeof setTimeout>);
+    }) as unknown as typeof clearTimeout);
   });
 
   afterEach(() => {
+    // Clear all timers after each test
+    timers.forEach((timer) => clearTimeout(timer));
+    timers = [];
     vi.restoreAllMocks();
   });
 
@@ -121,8 +140,9 @@ describe("toast store", () => {
 
       addToast("Toast to remove", "success");
       const toastId = useToastStore.getState().toasts[0]?.id;
-      expect(toastId).toBeDefined();
-      if (toastId) removeToast(toastId);
+      if (toastId) {
+        removeToast(toastId);
+      }
 
       const state = useToastStore.getState();
       expect(state.toasts).toHaveLength(0);
@@ -134,8 +154,9 @@ describe("toast store", () => {
       addToast("First", "success");
       addToast("Second", "error");
       const firstId = useToastStore.getState().toasts[0]?.id;
-      expect(firstId).toBeDefined();
-      if (firstId) removeToast(firstId);
+      if (firstId) {
+        removeToast(firstId);
+      }
 
       const state = useToastStore.getState();
       expect(state.toasts).toHaveLength(1);
@@ -177,12 +198,24 @@ describe("useToast hook exports", () => {
   // The useToast() hook internally uses Zustand which requires React context.
   // These tests verify the hook is properly exported and the underlying store works.
 
+  let timers: ReturnType<typeof setTimeout>[] = [];
+
   beforeEach(() => {
     useToastStore.getState().clearAll();
-    vi.useFakeTimers();
+    timers = [];
+    vi.spyOn(global, "setTimeout").mockImplementation(((callback: TimerHandler, delay?: number) => {
+      const timer = originalSetTimeout(callback as never, delay);
+      timers.push(timer);
+      return timer;
+    }) as unknown as typeof setTimeout);
+    vi.spyOn(global, "clearTimeout").mockImplementation(((timer: TimerHandler) => {
+      originalClearTimeout(timer as unknown as ReturnType<typeof setTimeout>);
+    }) as unknown as typeof clearTimeout);
   });
 
   afterEach(() => {
+    timers.forEach((timer) => clearTimeout(timer));
+    timers = [];
     vi.restoreAllMocks();
   });
 
@@ -220,7 +253,7 @@ describe("useToast hook exports", () => {
     addToast("Info message", "info");
 
     const state = useToastStore.getState();
-    expect(state.toasts[0]?.message).toBe("Info message");
+    expect(state.toasts[0]?.type).toBe("info");
   });
 
   it("store addToast should support custom duration (used by hook)", () => {

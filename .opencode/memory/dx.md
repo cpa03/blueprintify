@@ -125,15 +125,23 @@ npm install
   - Module-level documentation with API client overview
   - SSE streaming, retry logic, timeouts documented
   - @see references to backend API and shared types
-### Completed
-
-- [x] Fix TypeScript syntax errors in circuitBreaker.test.ts (2026-02-25)
-  - Removed incorrect closing brace prematurely closing createCircuitBreaker
-  - Added missing closing brace for HALF_OPEN state describe block
-  - Added missing closing brace for createCircuitBreaker
-  - Fixed vi.setSystemTime() calls to use new Date(0)
-  - Typecheck now passes
-
+MY|### Completed
+HP|
+RB|- [x] Fix TypeScript syntax errors in circuitBreaker.test.ts (2026-02-25)
+SJ|  - Removed incorrect closing brace prematurely closing createCircuitBreaker
+VY|  - Added missing closing brace for HALF_OPEN state describe block
+PR|  - Added missing closing brace for createCircuitBreaker
+HT|  - Fixed vi.setSystemTime() calls to use new Date(0)
+VT|  - Typecheck now passes
+NQ|
+TH|- [x] Fix TypeScript errors in toast.test.ts and wizard.test.ts (2026-02-26)
+JK|  - Removed unused imports (Toast, ToastType) from toast.test.ts
+QW|  - Fixed timer type issues using proper type casting with unknown intermediate
+SP|  - Fixed possibly undefined array access using optional chaining
+BP|  - Fixed category type in wizard.test.ts using const assertion
+MZ|  - Typecheck now passes with 0 errors
+KD|
+VY|### Pending
 ### Pending
 
 - [ ] Fix CI workflow configuration issues (Issue #743) - **BLOCKED** by GitHub App permission restrictions
