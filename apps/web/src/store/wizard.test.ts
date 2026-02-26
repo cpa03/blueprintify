@@ -302,8 +302,8 @@ describe("wizard store", () => {
         projectName: "E-commerce Platform",
         defaultDescription: "A full-featured e-commerce platform",
         techStack: [
-          { name: "React", category: "frontend" },
-          { name: "Node.js", category: "backend" },
+          { name: "React", category: "frontend" as const },
+          { name: "Node.js", category: "backend" as const },
         ],
         features: ["Shopping Cart", "User Auth", "Payment Processing"],
       };

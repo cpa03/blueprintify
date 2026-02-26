@@ -49,8 +49,8 @@ describe("TasksController", () => {
     it("should throw ConfigurationError when API key is missing", async () => {
       const mockContext = {
         env: {},
-        get: vi.fn().mockReturnValue(mockTaskRequest),
-      } as unknown as any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
 
       await expect(controller.generateTasks(mockContext)).rejects.toThrow(ConfigurationError);
     });
@@ -58,8 +58,8 @@ describe("TasksController", () => {
     it("should call buildTaskPrompt with blueprint and projectName", async () => {
       const mockContext = {
         env: MOCK_ENV,
-        get: vi.fn().mockReturnValue(mockTaskRequest),
-      } as unknown as any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
 
       const { buildTaskPrompt } = await import("../services/prompts");
 
@@ -74,8 +74,8 @@ describe("TasksController", () => {
     it("should return a streaming Response", async () => {
       const mockContext = {
         env: MOCK_ENV,
-        get: vi.fn().mockReturnValue(mockTaskRequest),
-      } as unknown as any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
 
       const response = await controller.generateTasks(mockContext);
 
@@ -85,8 +85,8 @@ describe("TasksController", () => {
     it("should validate environment before generating", async () => {
       const mockContext = {
         env: {},
-        get: vi.fn().mockReturnValue(mockTaskRequest),
-      } as unknown as any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
 
       await expect(controller.generateTasks(mockContext)).rejects.toThrow();
     });

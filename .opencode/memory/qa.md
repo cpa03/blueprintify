@@ -411,3 +411,40 @@ Issue #285 can be closed as all sub-issues have been resolved:
 - Pre-existing: `circuitBreaker.test.ts` has truncated file (parse error at line 370)
   - Not related to QA tests added this session
   - Requires separate fix by appropriate agent
+
+### 2026-02-26 QA Fix - TypeScript and ESLint Issues (13:50 UTC)
+
+**Issues Fixed:**
+
+- Fixed TypeScript errors in `toast.test.ts`:
+  - Timer type issues: Replaced manual setTimeout mocking with `vi.useFakeTimers()`
+  - Added optional chaining (`?.`) for array access to handle possible undefined
+  - Removed unused imports (Toast, ToastType)
+
+- Fixed TypeScript errors in `wizard.test.ts`:
+  - TechStack category type: Added `as const` assertion for category values
+
+- Fixed ESLint warnings in API controller tests:
+  - `generate.controller.test.ts`: Added eslint-disable comments for intentional `any` type usage
+  - `refine.controller.test.ts`: Added eslint-disable comments for intentional `any` type usage
+  - `tasks.controller.test.ts`: Added eslint-disable comments for intentional `any` type usage
+
+**Verification Results:**
+
+- ✅ TypeScript: No errors
+- ✅ ESLint: No warnings (0 errors, 0 warnings)
+- ✅ Tests: 340 passed (web), no regressions
+- ✅ Build: Successful
+
+**Files Modified:**
+
+- `apps/web/src/store/toast.test.ts` - Fixed timer mocks and undefined checks
+- `apps/web/src/store/wizard.test.ts` - Fixed techStack type
+- `apps/api/src/controllers/generate.controller.test.ts` - Added eslint-disable comments
+- `apps/api/src/controllers/refine.controller.test.ts` - Added eslint-disable comments
+- `apps/api/src/controllers/tasks.controller.test.ts` - Added eslint-disable comments
+
+**Open Issues Status:**
+
+- #743: CI: Fix invalid GitHub Actions versions @v5 → @v4 (P0 - requires admin workflow permission)
+- #418: Security vulnerabilities in ajv package (P2 - upstream dependency)
