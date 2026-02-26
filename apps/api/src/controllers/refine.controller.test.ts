@@ -8,7 +8,7 @@ import { setDefaultContainer, resetContainer, createMockContainer } from "../di/
 vi.mock("../services/prompts", () => ({
   REFINER_SYSTEM_PROMPT: "You are a refiner",
   buildRefinePrompt: vi.fn(
-    (request) => `Refine section ${request.section} with instructions: ${request.instructions}`
+    (request) => `Refine section ${request.content} with instructions: ${request.instruction}`
   ),
 }));
 
@@ -21,6 +21,13 @@ vi.mock("../errors", () => ({
     }
   },
 }));
+
+/** Creates a mock Hono context with get method for validated data */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const createMockContext = (env: Record<string, string>, validatedData?: unknown): any => ({
+  env,
+  get: (key: string) => (key === "validatedData" ? validatedData : undefined),
+});
 
 describe("RefineController", () => {
   let controller: RefineController;
@@ -45,8 +52,7 @@ describe("RefineController", () => {
   describe("refineContent", () => {
     const mockRefineRequest = {
       content: "# Existing Content\n\nSome content here",
-      section: "Introduction",
-      instructions: "Make it more detailed",
+      instruction: "Make it more detailed",
     };
 
     it("should throw ConfigurationError when API key is missing", async () => {
@@ -59,10 +65,7 @@ describe("RefineController", () => {
     });
 
     it("should call buildRefinePrompt with request data", async () => {
-      const mockContext = {
-        env: MOCK_ENV,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any;
+      const mockContext = createMockContext(MOCK_ENV, mockRefineRequest);
 
       const { buildRefinePrompt } = await import("../services/prompts");
 
@@ -72,10 +75,7 @@ describe("RefineController", () => {
     });
 
     it("should return a streaming Response", async () => {
-      const mockContext = {
-        env: MOCK_ENV,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any;
+      const mockContext = createMockContext(MOCK_ENV, mockRefineRequest);
 
       const response = await controller.refineContent(mockContext);
 
