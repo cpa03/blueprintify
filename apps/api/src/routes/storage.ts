@@ -12,6 +12,7 @@ import { StorageClearRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { STORAGE_CONFIG, CACHE_CONFIG, HTTP_STATUS, STORAGE_MESSAGES } from "../config/constants";
+import { ErrorType } from "../errors";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -42,7 +43,7 @@ app.get("/quota", rateLimit(rateLimitConfigs.standard), async (c) => {
       {
         success: false,
         error: {
-          type: "internal" as const,
+          type: ErrorType.INTERNAL,
           message:
             error instanceof Error
               ? error.message
@@ -71,7 +72,7 @@ app.delete(
         {
           success: false,
           error: {
-            type: "validation" as const,
+            type: ErrorType.VALIDATION,
             message: STORAGE_MESSAGES.CONFIRMATION_REQUIRED,
             timestamp: new Date().toISOString(),
           },
@@ -94,7 +95,7 @@ app.delete(
         {
           success: false,
           error: {
-            type: "internal" as const,
+            type: ErrorType.INTERNAL,
             message:
               error instanceof Error
                 ? error.message
