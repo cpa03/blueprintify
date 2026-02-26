@@ -35,7 +35,7 @@ const removeLazyPreloadPlugin = (): Plugin => ({
     const lazyChunks = ["codemirror", "markdown", "syntaxHighlighter"];
     return html.replace(
       new RegExp(
-        `<link rel="modulepreload"[^>]*href="[^"]*(?:${lazyChunks.join("|")})-[^"]*\.js"[^>]*>`,
+        `<link rel="modulepreload"[^>]*href="[^"]*(?:${lazyChunks.join("|")})-[^"]*\\.js"[^>]*>`,
         "g"
       ),
       ""
