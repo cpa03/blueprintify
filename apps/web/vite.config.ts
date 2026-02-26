@@ -6,12 +6,8 @@ import { visualizer } from "rollup-plugin-visualizer";
 
 const isAnalyze = process.env.ANALYZE === "true";
 
-const DEV_SERVER_PORT = parseInt(
-  process.env.VITE_DEV_SERVER_PORT || "3000",
-  10,
-);
-const API_PROXY_TARGET =
-  process.env.VITE_API_PROXY_TARGET || "http://localhost:8787";
+const DEV_SERVER_PORT = parseInt(process.env.VITE_DEV_SERVER_PORT || "3000", 10);
+const API_PROXY_TARGET = process.env.VITE_API_PROXY_TARGET || "http://localhost:8787";
 
 /**
  * Vite plugin to make CSS load asynchronously
@@ -20,18 +16,12 @@ const API_PROXY_TARGET =
 const asyncCssPlugin = (): Plugin => ({
   name: "async-css",
   transformIndexHtml(html) {
-    return html.replace(
-      /<link rel="stylesheet"([^>]*)>/g,
-      (match, attributes) => {
-        if (
-          attributes.includes("media=") ||
-          attributes.includes('rel="preload"')
-        ) {
-          return match;
-        }
-        return `<link rel="stylesheet"${attributes} media="print" onload="this.media='all'; this.onload=null;">`;
-      },
-    );
+    return html.replace(/<link rel="stylesheet"([^>]*)>/g, (match, attributes) => {
+      if (attributes.includes("media=") || attributes.includes('rel="preload"')) {
+        return match;
+      }
+      return `<link rel="stylesheet"${attributes} media="print" onload="this.media='all'; this.onload=null;">`;
+    });
   },
 });
 
@@ -46,9 +36,9 @@ const removeLazyPreloadPlugin = (): Plugin => ({
     return html.replace(
       new RegExp(
         `<link rel="modulepreload"[^>]*href="[^"]*(?:${lazyChunks.join("|")})-[^"]*\.js"[^>]*>`,
-        "g",
+        "g"
       ),
-      "",
+      ""
     );
   },
 });
@@ -70,11 +60,23 @@ export default defineConfig({
       target: "es2022",
     },
   },
+  optimizeDeps: {
+    include: ["react", "react-dom", "zustand", "clsx"],
+  },
   server: {
     port: DEV_SERVER_PORT,
     host: true,
+    strictPort: true,
     hmr: {
       clientPort: DEV_SERVER_PORT,
+      overlay: true,
+    },
+    hmr: {
+      clientPort: DEV_SERVER_PORT,
+=======
+    strictPort: true,
+    hmr: {
+>>>>>>> c901443 (feat(dx): improve local development experience with Vite HMR optimizations)
       overlay: true,
     },
     proxy: {
@@ -161,13 +163,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],
-      exclude: [
-        "node_modules/",
-        "src/test/",
-        "**/*.d.ts",
-        "**/*.config.*",
-        "dist/",
-      ],
+      exclude: ["node_modules/", "src/test/", "**/*.d.ts", "**/*.config.*", "dist/"],
       thresholds: {
         global: {
           branches: 80,
