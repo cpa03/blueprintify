@@ -27,5 +27,16 @@
     "**/node_modules": true,
     "**/dist": true,
     "**/.git": true
-  }
+  },
+  // Debugging Settings
+  "debug.openDebug": "openOnDebugBreak",
+  "debug.inlineValues": true,
+  "debug.console.fontSize": 13,
+  "debug.showInlineBreakpointPreview": true,
+  // Error Lens for better error messages
+  "errorLens.enabled": true,
+  "errorLens.fontSize": 12,
+  "errorLens.messageBackgroundMode": "line",
+  // Vite specific
+  "vite.configDebug": true
 }

@@ -1,16 +1,32 @@
 {
   "recommendations": [
+    // TypeScript/JavaScript
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "ms-vscode.vscode-typescript-next",
     "yoavbls.pretty-ts-errors",
+    // React
     "dsznajder.es7-react-js-snippets",
     "formulahendry.auto-rename-tag",
+    // Debugging
+    "ms-vscode.debugger-for-chrome",
+    "ms-vscode.vscode-react-native",
+    "PhilJesse.react-style-tag",
+    // Error Handling
+    "usernamehw.errorlens",
+    // REST API
+    "humao.rest-client",
+    // Tailwind CSS
     "bradlc.vscode-tailwindcss",
+    // Cloudflare Workers
     "cloudflare.cloudflare-workers",
+    // Testing
     "vitest.explorer",
+    // Markdown
     "yzhang.markdown-all-in-one",
+    // Git
     "eamodio.gitlens",
+    // Editor
     "editorconfig.editorconfig"
   ]
 }
