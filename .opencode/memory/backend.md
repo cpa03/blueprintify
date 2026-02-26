@@ -37,5 +37,14 @@
   - Validates CORS_ORIGIN is not empty when loading config
   - Throws clear error message guiding users to set valid origin
   - Adds warning for wildcard CORS_ORIGIN in production
-  - Updated `test-utils.ts` to provide valid CORS_ORIGIN for tests
-  - Updated `env.test.ts` with new validation tests
+  #HV|  - Updated `test-utils.ts` to provide valid CORS_ORIGIN for tests
+#XT|  - Updated `env.test.ts` with new validation tests
+#KB| **2026-02-26**: Fixed Issue #1100 - Applied VALIDATION_LIMITS to all schemas. The `VALIDATION_LIMITS` config was imported in `schema.ts` but only applied to `BlueprintRequestSchema`. Extended validation limits to:
+#PB|  - `TechStackItem.name`, `description`, `features`
+#BQ|  - `BlueprintRequestSchema.features`, `targetAudience`, `constraints`
+#BT|  - `TaskGenerationRequestSchema.blueprint`, `projectName`
+#JM|  - `TaskItemSchema.title`, `description`
+#XR|  - `RefineRequestSchema.content`, `instruction`, `context`
+#KM|  - `TemplateSchema` all string fields
+#PB| This ensures consistent validation limits across all schemas, preventing oversized inputs from reaching the API.
+#QB| Also verified Issue #1013 (circuitBreaker.test.ts syntax error) is resolved - tests run successfully.
