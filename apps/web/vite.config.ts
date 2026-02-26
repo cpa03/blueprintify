@@ -54,29 +54,18 @@ export default defineConfig({
       threshold: 1024,
       }),
   ].filter(Boolean),
-  optimizeDeps: {
-    include: ["react", "react-dom", "zustand"],
+optimizeDeps: {
+    include: ["react", "react-dom", "zustand", "clsx"],
     esbuildOptions: {
       target: "es2022",
     },
-  },
-  optimizeDeps: {
-    include: ["react", "react-dom", "zustand", "clsx"],
   },
   server: {
     port: DEV_SERVER_PORT,
     host: true,
     strictPort: true,
-    hmr: {
+hmr: {
       clientPort: DEV_SERVER_PORT,
-      overlay: true,
-    },
-    hmr: {
-      clientPort: DEV_SERVER_PORT,
-=======
-    strictPort: true,
-    hmr: {
->>>>>>> c901443 (feat(dx): improve local development experience with Vite HMR optimizations)
       overlay: true,
     },
     proxy: {
