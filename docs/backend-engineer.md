@@ -18,6 +18,16 @@ This document serves as the long-term memory for the backend-engineer agent, tra
 
 ## Lessons Learned
 
+### 2026-02-26
+
+- **Issue #959 Complete**: Fixed all remaining magic strings in:
+  - `storage.ts`: Replaced 3 magic strings with ErrorType.INTERNAL/VALIDATION
+  - `bodyLimit.ts`: Replaced 1 magic string with ErrorType.VALIDATION
+- **Verification**: Lint passes with no errors, only pre-existing warnings
+- **Testing**: Pre-existing test failures remain (rate limiter security fix from #932)
+
+### 2026-02-25 (Session 2)
+
 ### 2026-02-25 (Session 2)
 
 - **Issue #932 & #930 Fix**: Fixed rate limiter security issue and CORS default
@@ -63,6 +73,10 @@ RH|- **Verification**: TypeScript compilation passes, 8/8 tests pass
 
 ## Future Work (Related Issues)
 
+- ~~Issue #959~~: **COMPLETE** - All magic strings replaced with ErrorType enum
+
+### 2026-02-25 (Session 3)
+
 - Issue #959: Still needs fixes in `storage.ts` and `bodyLimit.ts`
 - The refactor is partially complete - import.ts is done
 
@@ -78,6 +92,8 @@ RH|- **Verification**: TypeScript compilation passes, 8/8 tests pass
   - These failures are unrelated to my changes
 - **PR**: Created PR #1035 with backend-engineer label
 ## Future Work (Related Issues)
+
+- ~~Issue #959~~: **COMPLETE** - All magic strings replaced with ErrorType enum
 
 - Issue #959: Still needs fixes in `storage.ts` and `bodyLimit.ts`
 - The refactor is partially complete - import.ts is done
