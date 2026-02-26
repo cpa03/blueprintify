@@ -130,4 +130,16 @@ When making changes to React components:
 - Continue adding React.memo to remaining components
 - Consider lazy loading for large dependencies
 - Add more integration tests for critical user flows
-- Document component prop patterns
+
+### 2026-02-26 (Continued)
+
+- **Issue #912**: Implemented useMemo optimization in Wizard component
+- **Changes**: Memoized step component selection to avoid recreating components on each render
+- **Files Modified**: 
+  - `apps/web/src/components/Wizard.tsx` - Added useMemo
+  - `apps/web/vite.config.ts` - Fixed merge conflict (duplicate optimizeDeps, unresolved markers)
+- **Verification**: 
+  - Build passes
+  - All 340 tests pass
+  - Lint passes
+- **PR Created**: #1135

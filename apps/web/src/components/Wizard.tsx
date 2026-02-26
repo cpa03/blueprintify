@@ -19,7 +19,7 @@
  * @see {@link useEditorStore} - Generation state tracking
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../store";
 import { useEditorStore } from "../store";
@@ -29,10 +29,7 @@ import { StepFeatures } from "./wizard/StepFeatures";
 import { StepReview } from "./wizard/StepReview";
 import { StepGenerating } from "./wizard/StepGenerating";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
-import {
-  useFocusOnStepChange,
-  useStepAnnouncer,
-} from "../hooks/useFocusOnStepChange";
+import { useFocusOnStepChange, useStepAnnouncer } from "../hooks/useFocusOnStepChange";
 import { WIZARD_STEPS } from "../config/constants";
 
 /**
@@ -66,8 +63,7 @@ function WizardComponent(): JSX.Element {
   const isGenerating = useEditorStore((s) => s.isGenerating);
   const generationProgress = useEditorStore((s) => s.generationProgress);
   const containerRef = useFocusOnStepChange(currentStep);
-  const currentStepLabel =
-    WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
+  const currentStepLabel = WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
   useStepAnnouncer(currentStep, currentStepLabel);
 
   const documentTitle =
@@ -76,7 +72,8 @@ function WizardComponent(): JSX.Element {
       : STEP_TITLES[currentStep] || "Project Wizard";
   useDocumentTitle(documentTitle);
 
-  const renderStep = () => {
+  // Memoize step component selection to avoid recreating components on each render
+  const currentStepComponent = useMemo(() => {
     switch (currentStep) {
       case "info":
         return <StepInfo key="info" />;
@@ -91,7 +88,11 @@ function WizardComponent(): JSX.Element {
       default:
         return <StepInfo key="default" />;
     }
-  };
+  }, [currentStep]);
+
+  // renderStep function kept for AnimatePresence compatibility
+  // AnimatePresence requires a function child to properly animate enter/exit
+  const renderStep = (): JSX.Element => currentStepComponent;
 
   return (
     <div
