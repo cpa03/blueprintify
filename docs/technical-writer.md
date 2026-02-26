@@ -39,6 +39,23 @@ RESEARCH → PLAN → IMPLEMENT → VERIFY → SELF-REVIEW → DELIVER
 
 ### Recent Activity
 
+- **PR #1103**: Fix duplicate content in API documentation
+  - Removed duplicate WebSocket Support section (appeared 3 times)
+  - Fixed Common Issues numbering (was 1, 2, 4 → 1, 2, 3)
+  - Removed garbled markdown fragments in Common Issues section
+  - Status: OPEN
+
+- **PR #1091**: Add API error codes reference
+  - Addressed issue #923: Add API error codes reference
+  - Created docs/api-error-codes.md (396 lines)
+  - Added reference link in api-documentation.md
+  - Documented all error types, codes, and handling strategies
+  - Status: OPEN
+
+- **PR #976**: "fix(security): reject requests when API_KEY is not configured"
+  - Status: MERGED to main (2026-02-25)
+  - Contains: Security fix for issue #945 - returns 503 when API_KEY not configured
+
 - **PR #1091**: Add API error codes reference
   - Addressed issue #923: Add API error codes reference
   - Created docs/api-error-codes.md (396 lines)
