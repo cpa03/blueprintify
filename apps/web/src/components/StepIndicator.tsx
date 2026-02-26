@@ -86,7 +86,7 @@ function StepIndicatorComponent(): JSX.Element {
   }, [setStep, canNavigateTo]);
 
   return (
-    <div className="flex items-center justify-center gap-3 mb-8">
+    <nav className="flex items-center justify-center gap-3 mb-8" aria-label="Wizard steps">
       <SmartTooltip
         content={`${Math.round(progressPercentage)}% complete - ${STEPS.length - 1 - currentIndex} steps remaining`}
         position="left"
@@ -190,7 +190,7 @@ function StepIndicatorComponent(): JSX.Element {
           </div>
         );
       })}
-    </div>
+    #YH|    </nav>
   );
 }
 
