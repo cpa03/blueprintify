@@ -171,9 +171,9 @@ function AnimatedCounterComponent({
         shouldAnimate && pulseKey > 0
           ? {
               boxShadow: [
-                "0 0 0 0 rgb(99 102 241 / 0)",
-                "0 0 20px 4px rgb(99 102 241 / 0.3)",
-                "0 0 0 0 rgb(99 102 241 / 0)",
+                "0 0 0 0 rgb(from var(--color-primary-500) r g b / 0)",
+                "0 0 20px 4px rgb(from var(--color-primary-500) r g b / 0.3)",
+                "0 0 0 0 rgb(from var(--color-primary-500) r g b / 0)",
               ],
             }
           : {}
@@ -184,9 +184,7 @@ function AnimatedCounterComponent({
         {icon && (
           <motion.div
             animate={
-              shouldAnimate && pulseKey > 0
-                ? { scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }
-                : {}
+              shouldAnimate && pulseKey > 0 ? { scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] } : {}
             }
             transition={{ duration: 0.4 }}
           >
@@ -197,11 +195,7 @@ function AnimatedCounterComponent({
           <div className={`text-2xl font-bold text-gradient ${valueClassName}`}>
             <AnimatedNumber value={value} format={format} duration={duration} />
           </div>
-          {label && (
-            <div className={`text-sm text-dark-400 ${labelClassName}`}>
-              {label}
-            </div>
-          )}
+          {label && <div className={`text-sm text-dark-400 ${labelClassName}`}>{label}</div>}
         </div>
       </div>
     </motion.div>
@@ -218,7 +212,7 @@ export const AnimatedCounter = memo(AnimatedCounterComponent);
  */
 export function useAnimatedValue(
   value: number,
-  options: { duration?: number; bounce?: number } = {},
+  options: { duration?: number; bounce?: number } = {}
 ): MotionValue<number> {
   const { getDuration } = useReducedMotionContext();
   const springValue = useSpring(value, {
