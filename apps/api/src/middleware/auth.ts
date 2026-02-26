@@ -88,7 +88,7 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
         {
           success: false,
           error: {
-            type: "server_configuration",
+            type: "configuration",
             message: "API_KEY is not configured. Server authentication is unavailable.",
             code: AUTH_CONFIG_ERROR,
             timestamp: new Date().toISOString(),
