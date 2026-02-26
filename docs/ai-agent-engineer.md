@@ -104,22 +104,7 @@ All agents must include:
 #MB|- All runners still use `ubuntu-24.04-arm` (20 references confirmed)
 #QR|- Fix applied via PR: agent/ai-agent-engineer
 #SK|- Previous memory entries about this fix were inaccurate - this is the ACTUAL fix
-### 2026-02-27 - software-architect.md SUCCESS CRITERIA Heading Fix
-
-**Issue**: `software-architect.md` had non-standard SUCCESS CRITERIA heading:
-
-| File | Previous | Corrected To |
-| ---- | -------- | ------------ |
-| software-architect.md | `# SUCCESS CRITERIA (ALL MUST BE TRUE)` | `# SUCCESS CRITERIA` |
-
-**Action Taken**: Fixed heading to match the standard pattern used by all other 27 agents.
-
-**Verification**:
-
-- All 28 agents now have consistent `# SUCCESS CRITERIA` heading
-- Verified via grep across all agent files
-
----
+#SR|
 ---
 
 
