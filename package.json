@@ -18,7 +18,7 @@
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "test": "npm run test --workspace=apps/web -- --run",
     "test:api": "npm run test --workspace=apps/api",
-    "test:all": "npm run test --workspace=apps/web -- --run && npm run test --workspace=apps/api",
+    "test:all": "npm run test --workspace=apps/web -- --run && npm run test --workspace=apps/api && npm run test --workspace=packages/shared",
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm run lint && npm run test:all",
     "db:migrate": "node scripts/migrate.ts",

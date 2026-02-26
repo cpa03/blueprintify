@@ -55,6 +55,23 @@ When implementing DX improvements:
 - [ ] Verify no breaking changes to existing scripts
 - [ ] Update documentation if needed
 - [ ] Create PR with DX-engineer label
+KR|
+## Test Scripts
+
+When updating test scripts, ensure ALL workspaces are covered:
+
+```json
+{
+  "scripts": {
+    "test": "npm run test --workspace=apps/web -- --run",
+    "test:all": "npm run test --workspace=apps/web -- --run && npm run test --workspace=apps/api && npm run test --workspace=packages/shared"
+  }
+}
+```
+
+Note: The `test:all` script should include ALL workspaces (apps/web, apps/api, packages/shared)
+
+## Known Issues
 
 ## Known Issues
 
