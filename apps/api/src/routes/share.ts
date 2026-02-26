@@ -24,6 +24,21 @@ import { secureLogError } from "../utils/secureLog";
 import { sanitizeBlueprintContent } from "../utils/sanitize";
 import { ErrorType } from "../errors";
 
+/**
+ * Hashes an API key using SHA-256 for secure ownership tracking.
+ * Used to identify share ownership without storing the actual API key.
+ *
+ * @param apiKey - The API key to hash
+ * @returns SHA-256 hash of the API key as a hex string
+ */
+async function hashApiKey(apiKey: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(apiKey);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
 const app = new Hono<{ Bindings: Env }>();
 
 /**
@@ -145,9 +160,13 @@ app.post(
         );
       }
 
+      // Get API key hash for ownership tracking
+      const apiKey = c.env.API_KEY;
+      const ownerHash = apiKey ? await hashApiKey(apiKey) : null;
+
       await c.env.DB.prepare(
-        `INSERT INTO blueprint_shares (id, title, blueprint, metadata, created_at, expires_at)
-         VALUES (?, ?, ?, ?, ?, ?)`
+        `INSERT INTO blueprint_shares (id, title, blueprint, metadata, created_at, expires_at, created_by)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`
       )
         .bind(
           shareId,
@@ -155,7 +174,8 @@ app.post(
           sanitizedBlueprint,
           metadata ? JSON.stringify(metadata) : null,
           now,
-          expiresAt.toISOString()
+          expiresAt.toISOString(),
+          ownerHash
         )
         .run();
 
@@ -211,7 +231,7 @@ app.get("/:id", async (c) => {
     }
 
     const result = await c.env.DB.prepare(
-      `SELECT id, title, blueprint, metadata, created_at, expires_at
+      `SELECT id, title, blueprint, metadata, created_at, expires_at, created_by
        FROM blueprint_shares
        WHERE id = ?`
     )
@@ -312,6 +332,44 @@ app.delete("/:id", async (c) => {
         ),
         HTTP_STATUS.INTERNAL_ERROR
       );
+    }
+
+    // First, get the share to check ownership
+    const share = await c.env.DB.prepare("SELECT id, created_by FROM blueprint_shares WHERE id = ?")
+      .bind(shareId)
+      .first();
+
+    if (!share) {
+      // Return 404 for non-existent shares (not 403 - avoid enumeration)
+      return c.json(
+        createErrorResponse(
+          c,
+          ErrorType.NOT_FOUND,
+          SHARE_ERROR_MESSAGES.SHARE_NOT_FOUND_OR_EXPIRED,
+          ERROR_CODES.NOT_FOUND_ERROR
+        ),
+        HTTP_STATUS.NOT_FOUND
+      );
+    }
+
+    // Check ownership - allow deletion if no owner (backward compatibility)
+    // or if the current user is the owner
+    if (share.created_by) {
+      const apiKey = c.env.API_KEY;
+      if (apiKey) {
+        const currentOwnerHash = await hashApiKey(apiKey);
+        if (currentOwnerHash !== share.created_by) {
+          return c.json(
+            createErrorResponse(
+              c,
+              ErrorType.AUTHORIZATION,
+              SHARE_ERROR_MESSAGES.NOT_AUTHORIZED_TO_DELETE,
+              ERROR_CODES.AUTHORIZATION_ERROR
+            ),
+            HTTP_STATUS.FORBIDDEN
+          );
+        }
+      }
     }
 
     await c.env.DB.prepare("DELETE FROM blueprint_shares WHERE id = ?").bind(shareId).run();

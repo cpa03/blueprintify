@@ -373,6 +373,7 @@ export const SHARE_ERROR_MESSAGES = {
   SHARE_NOT_FOUND_OR_EXPIRED: "Shared blueprint not found or expired",
   SHARE_EXPIRED: "Shared blueprint has expired",
   SHARE_DELETED_SUCCESSFULLY: "Share deleted successfully",
+  NOT_AUTHORIZED_TO_DELETE: "Not authorized to delete this share",
 } as const;
 // Storage route messages
 export const STORAGE_MESSAGES = {
