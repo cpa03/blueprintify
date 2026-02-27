@@ -14,7 +14,46 @@
 #SZ|| packages/shared | 4         | 107   |
 #YQ|| **Total**     | **51**     | **818** |
 #RB|
-#QT|#YZ|## Test Files Added (2026-02-27)
+## Test Files Added (2026-02-27)
+
+1. **apps/web/src/utils/motion.test.ts** - Tests for Framer Motion animation variants
+   - transitions: fast, normal, slow, spring transitions
+   - fadeInUp, staggerContainer, fadeIn, scaleIn variants
+   - slideInRight, slideInLeft variants
+   - floatingAnimation, pulseAnimation, pageTransition
+   - createStaggerContainer, createFadeInUp factory functions
+   - 28 tests total
+
+2. **apps/web/src/config/theme.test.ts** - Tests for design tokens
+   - COLORS: primary, dark, accent, semantic, gradients
+   - ANIMATION_TIMING: durations, easing, stagger
+   - SPACING: scale, container, radius
+   - TYPOGRAPHY: font family, sizes, weights, line heights
+   - SHADOWS: glow, box shadows
+   - OPACITY: numeric and semantic values
+   - Z_INDEX, BREAKPOINTS
+   - tailwindTheme export
+   - Type exports verification
+   - 36 tests total
+
+3. **apps/web/src/components/ErrorBoundary.test.tsx** - Tests for error boundary component
+   - Renders children when no error occurs
+   - Accepts onError callback prop
+   - Passes error and errorInfo to callback
+   - Accepts custom fallback prop
+   - Renders default fallback UI
+   - Handles nested component errors
+   - Handles non-Error thrown values
+   - 9 tests total
+
+4. **apps/web/src/store/persistence.test.ts** - Tests for persistence utilities
+   - loadState: loads from storage, handles null, handles errors
+   - saveState: saves data using getPersistData, handles errors
+   - debouncedSave: delay mechanism, clears previous timeout
+   - flushSave: cancels pending saves
+   - cancelSave: clears pending saves
+   - Full integration load-save cycle
+   - 11 tests total
 #YQ|
 #SM|1. **apps/web/src/utils/motion.test.ts** - Tests for Framer Motion animation variants
 #MK|   - transitions: fast, normal, slow, spring transitions
