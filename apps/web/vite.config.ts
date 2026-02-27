@@ -89,15 +89,11 @@ export default defineConfig({
         tryCatchDeoptimization: false,
       },
       output: {
+        // Note: CodeMirror, markdown, and syntaxHighlighter are intentionally NOT manually chunked
+        // to allow dynamic imports in LazyCodeMirror/LazyMarkdownRenderer to create
+        // natural separate chunks for better lazy loading and smaller initial bundles
         manualChunks: {
           vendor: ["react", "react-dom"],
-          codemirror: [
-            "@uiw/react-codemirror",
-            "@codemirror/lang-markdown",
-            "@codemirror/theme-one-dark",
-          ],
-          markdown: ["react-markdown", "remark-gfm", "rehype-highlight"],
-          syntaxHighlighter: ["react-syntax-highlighter"],
           animation: ["framer-motion"],
           zustand: ["zustand"],
         },
@@ -112,7 +108,7 @@ export default defineConfig({
         entryFileNames: "assets/[name]-[hash].js",
       },
     },
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 600,
     cssCodeSplit: true,
     minify: "terser",
     terserOptions: {
