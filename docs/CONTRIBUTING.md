@@ -4,7 +4,7 @@
 
 ## Prerequisites
 
-- Node.js 18+
+- Node.js 20+ (use `.nvmrc` or `nvm use`)
 - npm 8+
 - Git
 
