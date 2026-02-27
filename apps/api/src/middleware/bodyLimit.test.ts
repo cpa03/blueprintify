@@ -24,8 +24,8 @@ describe("bodyLimit middleware", () => {
       });
 
       expect(res.status).toBe(200);
-      const json = await res.json();
-      expect(json.success).toBe(true);
+      const r1 = (await res.json()) as { success: boolean };
+      expect(r1.success).toBe(true);
     });
 
     it("should block requests when body size exceeds limit", async () => {
@@ -49,11 +49,14 @@ describe("bodyLimit middleware", () => {
       });
 
       expect(res.status).toBe(413);
-      const json = await res.json();
-      expect(json.success).toBe(false);
-      expect(json.error.code).toBe("PAYLOAD_TOO_LARGE");
-      expect(json.error.details.maxSize).toBe(10);
-      expect(json.error.details.actualSize).toBe(100);
+      const r2 = (await res.json()) as {
+        success: boolean;
+        error: { code: string; details: { maxSize: number; actualSize: number } };
+      };
+      expect(r2.success).toBe(false);
+      expect(r2.error.code).toBe("PAYLOAD_TOO_LARGE");
+      expect(r2.error.details.maxSize).toBe(10);
+      expect(r2.error.details.actualSize).toBe(100);
     });
 
     it("should allow requests when no content-length header is present", async () => {
@@ -295,18 +298,27 @@ describe("bodyLimit middleware", () => {
       });
 
       expect(res.status).toBe(413);
-      const json = await res.json();
+      const r3 = (await res.json()) as {
+        success: boolean;
+        error: {
+          type: string;
+          message: string;
+          code: string;
+          details: { maxSize: number; actualSize: number };
+          timestamp: string;
+        };
+      };
 
       // Verify error structure
-      expect(json).toHaveProperty("success", false);
-      expect(json).toHaveProperty("error");
-      expect(json.error).toHaveProperty("type", "validation");
-      expect(json.error).toHaveProperty("message");
-      expect(json.error).toHaveProperty("code", "PAYLOAD_TOO_LARGE");
-      expect(json.error).toHaveProperty("details");
-      expect(json.error.details).toHaveProperty("maxSize", 100);
-      expect(json.error.details).toHaveProperty("actualSize", 500);
-      expect(json.error).toHaveProperty("timestamp");
+      expect(r3).toHaveProperty("success", false);
+      expect(r3).toHaveProperty("error");
+      expect(r3.error).toHaveProperty("type", "validation");
+      expect(r3.error).toHaveProperty("message");
+      expect(r3.error).toHaveProperty("code", "PAYLOAD_TOO_LARGE");
+      expect(r3.error).toHaveProperty("details");
+      expect(r3.error.details).toHaveProperty("maxSize", 100);
+      expect(r3.error.details).toHaveProperty("actualSize", 500);
+      expect(r3.error).toHaveProperty("timestamp");
     });
   });
 
