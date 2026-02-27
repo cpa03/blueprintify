@@ -60,6 +60,31 @@ Deliver small, safe, measurable improvements strictly inside the domain of this 
 
 ### 2026-02-27
 
+**Issue**: #1164 - Add frontend unhandled rejection handler
+
+**Changes**:
+
+- Cleaned up duplicate `unhandledrejection` event listeners in main.tsx
+- Consolidated two handlers into one with environment-aware logging
+- Added DEV vs prod conditional logging
+- Preserved Sentry integration comments for future use
+- Added `preventDefault()` to suppress cryptic browser errors
+
+**Files Modified**:
+
+- `apps/web/src/main.tsx` (-8 lines, +6 lines)
+
+**Verification**:
+
+- Typecheck: PASS
+- Lint: PASS
+- Tests: 432 passed (frontend)
+
+**Status**: PR created (#1182)
+
+
+### 2026-02-27
+
 **Issue**: #1111 - CI/CD Workflow Invalid GitHub Actions Versions @v5
 
 **Changes**:
