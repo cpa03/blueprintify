@@ -42,6 +42,28 @@ All agents must include:
 - SUCCESS CRITERIA section
 
 ### 2026-02-26 - Section Heading Standardization
+#RT|### 2026-02-27 - ACTUAL Workflow Model Fix (Applied)
+#BV|
+#QK|**Issue**: Despite memory entries claiming fixes were made, verification revealed 22 model references were still incorrect:
+#BQ|
+#MX|| Workflow          | Previous Model(s)                               | Corrected To            |
+#QZ|| ----------------- | ----------------------------------------------- | ----------------------- |
+#KM|| main.yml          | `iflowcn/glm-4.6` (8 refs), `minimax-m2.1-free` (1 ref) | `opencode/glm-4.7-free` |
+#NV|| iterate.yml       | `opencode/kimi-k2.5-free` (5 refs)             | `opencode/glm-4.7-free` |
+#BP|| pr-gatekeeper.yml | `opencode/big-pickle` (3 refs)                 | `opencode/glm-4.7-free` |
+#MP|| on-pull.yml      | `opencode/kimi-k2.5-free` (1 ref)              | `opencode/glm-4.7-free` |
+#BM|| parallel.yml     | `opencode/minimax-m2.5-free` (4 refs)          | `opencode/glm-4.7-free` |
+#PQ|
+#XK|**Root Cause**: Previous memory entries incorrectly claimed fixes were applied when they were not.
+#VT|
+#QK|**Action Taken**: Updated all 22 model references across 5 workflow files to use `opencode/glm-4.7-free`.
+#KM|
+#PQ|**Verification**:
+#NV|
+#JV|- All 22 model references now use `opencode/glm-4.7-free` (grep confirmed)
+#BM|- All runners still use `ubuntu-24.04-arm` (20 references confirmed)
+#WR|
+#RT|
 
 **Issue**: Agent definitions had inconsistent section headings:
 
@@ -204,4 +226,4 @@ When reviewing workflow files, verify:
 
 ---
 
-Last updated: 2026-02-26
+Last updated: 2026-02-27
