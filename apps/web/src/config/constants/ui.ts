@@ -1,0 +1,28 @@
+// UI configuration constants
+// Re-exports from main constants for modular imports
+
+import {
+  ANIMATION,
+  ANIMATION_MS,
+  CELEBRATION_TIMING,
+  SPRING_CONFIG,
+  UI,
+  TOOLTIP_CONFIG,
+  CELEBRATION_COLORS,
+  ANIMATION_COLORS,
+  PROGRESS_COLORS,
+  UI_FALLBACKS,
+} from "../constants";
+
+export {
+  ANIMATION,
+  ANIMATION_MS,
+  CELEBRATION_TIMING,
+  SPRING_CONFIG,
+  UI,
+  TOOLTIP_CONFIG,
+  CELEBRATION_COLORS,
+  ANIMATION_COLORS,
+  PROGRESS_COLORS,
+  UI_FALLBACKS,
+};

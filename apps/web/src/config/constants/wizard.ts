@@ -1,0 +1,24 @@
+// Wizard configuration constants
+// Re-exports from main constants for modular imports
+
+import {
+  WIZARD_STEPS,
+  CATEGORY_ICONS,
+  UI_EMOJIS,
+  MIN_REQUIREMENTS,
+  SUGGESTED_FEATURES,
+  EXPORT_CONFIG,
+  README_TEMPLATE,
+  DEFAULT_PROJECT_NAME,
+} from "../constants";
+
+export {
+  WIZARD_STEPS,
+  CATEGORY_ICONS,
+  UI_EMOJIS,
+  MIN_REQUIREMENTS,
+  SUGGESTED_FEATURES,
+  EXPORT_CONFIG,
+  README_TEMPLATE,
+  DEFAULT_PROJECT_NAME,
+};
