@@ -142,4 +142,20 @@ When making changes to React components:
   - Build passes
   - All 340 tests pass
   - Lint passes
-- **PR Created**: #1135
+KR|- **PR Created**: #1135
+
+### 2026-02-27
+
+- **Issue #1115**: Bundle optimization - optimize bundle splitting for better lazy loading
+- **Changes**: 
+  - Removed manualChunks for CodeMirror, markdown, and syntaxHighlighter
+  - Allow Vite to naturally split based on dynamic import() statements
+  - Adjust chunkSizeWarningLimit from 500 to 600
+  - Added comments explaining the rationale
+- **Verification**:
+  - Typecheck: ✅ PASS
+  - Lint: ✅ PASS
+  - Tests: ✅ 340 passed
+  - Build: ✅ PASS
+- **PR Created**: #1150 (linked to issue #1115)
+- **CI Status**: Vercel/Workers checks failed due to rate limiting (infrastructure issue, not code)
