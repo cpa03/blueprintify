@@ -312,8 +312,6 @@ Avoid:
 - Web tests are a good indicator of frontend DX health
 - Pre-existing test failures should be identified and documented to avoid confusion
 
-
-
 ### 2026-02-27: Eighth Iteration - DX-001 Known Issues Documentation
 
 **Issue**: #1142 - DX-001: Developer Experience Enhancement Opportunities
@@ -340,3 +338,35 @@ Avoid:
 - Issue #1142 was largely already addressed - proactive verification saves redundant work
 - Documentation-only changes are lightweight but high value for DX
 - BUG-010 is a known issue that affects contributor experience when CI fails
+
+### 2026-02-27: Ninth Iteration - Pre-commit Hooks with Husky
+
+**Issue**: #861 - [DX] Add pre-commit hooks with husky and lint-staged
+
+**Changes Made**:
+
+1. Installed husky v9 and lint-staged dependencies
+2. Created `.husky/pre-commit` hook that runs lint-staged
+3. Added lint-staged configuration to package.json:
+   - `*.{ts,tsx}` → runs `eslint --fix` and `prettier --write`
+   - `*.{json,md,yml,yaml}` → runs `prettier --write`
+4. Added `prepare` script to package.json for auto-install
+
+**Verification**:
+
+- npm install succeeded
+- npm run prepare works (husky install)
+- lint-staged tested with staged files - runs correctly
+- npm run typecheck passes
+- npm run lint passes
+- npm run build passes
+- PR created: #1187
+
+**Learnings**:
+
+- Husky v9 deprecated the install command (now uses prepare script)
+- lint-staged automatically backs up and restores git state
+- Pre-commit hooks catch issues before they're committed, improving DX
+- Husky v10 will require different setup - can be updated later
+- Git hooks run on the developer's machine, not in CI
+- The hook only runs when `git commit` is used, not in all git operations
