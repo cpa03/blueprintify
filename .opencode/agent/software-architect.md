@@ -299,7 +299,7 @@ If PR already exists:
 
 ---
 
-# SUCCESS CRITERIA (ALL MUST BE TRUE)
+# SUCCESS CRITERIA
 
 - Active issues fully represent current roadmap phase
 - All issues are uniquely scoped and correctly labeled

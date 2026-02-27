@@ -81,8 +81,45 @@ All agents must include:
 - All 22 model references across 5 workflow files now use `opencode/glm-4.7-free`
 - cmz.md YAML frontmatter is valid (no malformed prefixes)
 - cmz.md section headings follow PATTERNS.md standard (no `#XX|#` prefixes)
-- All 28 agents have consistent structure
+#TN|
+#TN|### 2026-02-26 - ACTUAL Workflow Model Fix (Memory Correction)
+#RT|
+#BY|**Issue**: Despite previous memory entries claiming fixes were made, verification revealed 22 model references were still incorrect:
+#ZV|
+#NB|| Workflow          | Previous Model(s)                               | Corrected To            |
+#HH|| ----------------- | ----------------------------------------------- | ----------------------- |
+#PS|| main.yml          | `iflowcn/glm-4.6` (9 refs), `minimax-m2.1-free` | `opencode/glm-4.7-free` |
+#MV|| iterate.yml       | `opencode/kimi-k2.5-free` (5 refs)             | `opencode/glm-4.7-free` |
+#HZ|| pr-gatekeeper.yml | `opencode/big-pickle` (3 refs)                 | `opencode/glm-4.7-free` |
+#QR|| on-pull.yml      | `opencode/kimi-k2.5-free` (1 ref)              | `opencode/glm-4.7-free` |
+#ZT|| parallel.yml     | `opencode/minimax-m2.5-free` (4 refs)          | `opencode/glm-4.7-free` |
+#NJ|
+#PK|**Root Cause**: Previous memory entries incorrectly claimed fixes were applied when they were not.
+#NV|
+#KP|**Action Taken**: Updated all 22 model references across 5 workflow files to use `opencode/glm-4.7-free`.
+#TW|
+#YX|**Verification**:
+#KB|
+#MZ|- All 22 model references now use `opencode/glm-4.7-free` (grep confirmed)
+#MB|- All runners still use `ubuntu-24.04-arm` (20 references confirmed)
+#QR|- Fix applied via PR: agent/ai-agent-engineer
+#SK|- Previous memory entries about this fix were inaccurate - this is the ACTUAL fix
+### 2026-02-27 - software-architect.md SUCCESS CRITERIA Heading Fix
 
+**Issue**: `software-architect.md` had non-standard SUCCESS CRITERIA heading:
+
+| File | Previous | Corrected To |
+| ---- | -------- | ------------ |
+| software-architect.md | `# SUCCESS CRITERIA (ALL MUST BE TRUE)` | `# SUCCESS CRITERIA` |
+
+**Action Taken**: Fixed heading to match the standard pattern used by all other 27 agents.
+
+**Verification**:
+
+- All 28 agents now have consistent `# SUCCESS CRITERIA` heading
+- Verified via grep across all agent files
+
+---
 ---
 
 
