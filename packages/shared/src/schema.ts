@@ -83,7 +83,8 @@ export const TaskGenerationRequestSchema = z.object({
   blueprint: z
     .string()
     .min(1, "Blueprint content is required")
-    .max(VALIDATION_LIMITS.DESCRIPTION.MAX,
+    .max(
+      VALIDATION_LIMITS.DESCRIPTION.MAX,
       `Blueprint must not exceed ${VALIDATION_LIMITS.DESCRIPTION.MAX} characters`
     ),
   projectName: z
@@ -134,13 +135,15 @@ export const RefineRequestSchema = z.object({
   content: z
     .string()
     .min(1, "Content to refine is required")
-    .max(VALIDATION_LIMITS.DESCRIPTION.MAX,
+    .max(
+      VALIDATION_LIMITS.DESCRIPTION.MAX,
       `Content must not exceed ${VALIDATION_LIMITS.DESCRIPTION.MAX} characters`
     ),
   instruction: z
     .string()
     .min(1, "Refinement instruction is required")
-    .max(VALIDATION_LIMITS.CONSTRAINTS.MAX,
+    .max(
+      VALIDATION_LIMITS.CONSTRAINTS.MAX,
       `Instruction must not exceed ${VALIDATION_LIMITS.CONSTRAINTS.MAX} characters`
     ),
   context: z.string().optional(),
@@ -157,10 +160,12 @@ export const TemplateSchema = z.object({
   name: z.string().min(1).max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
   description: z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX),
   icon: z.string().max(50),
-  projectName: z.string()
+  projectName: z
+    .string()
     .min(VALIDATION_LIMITS.PROJECT_NAME.MIN)
     .max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
-  defaultDescription: z.string()
+  defaultDescription: z
+    .string()
     .min(VALIDATION_LIMITS.DESCRIPTION.MIN)
     .max(VALIDATION_LIMITS.DESCRIPTION.MAX),
   techStack: z.array(TechStackItem),
@@ -171,7 +176,7 @@ export const TemplateSchema = z.object({
 
 /**
  * Error type enumeration.
- * Values: validation, authentication, authorization, not_found, configuration, network, ai_service, internal, server_configuration
+ * Values: validation, authentication, authorization, not_found, configuration, network, ai_service, internal, server_configuration, service_unavailable
  */
 export const ErrorTypeSchema = z.enum([
   "validation",
@@ -183,6 +188,7 @@ export const ErrorTypeSchema = z.enum([
   "ai_service",
   "internal",
   "server_configuration",
+  "service_unavailable",
 ]);
 
 /**
