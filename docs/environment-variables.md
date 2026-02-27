@@ -25,7 +25,7 @@ The API is built on Cloudflare Workers and uses `.dev.vars` for local developmen
 | `OPENAI_TEMPERATURE` | No       | `0.7`                       | Sampling temperature (0-2)                                   |
 | `CORS_ORIGIN`        | No       | `*`                         | Allowed CORS origins (comma-separated)                       |
 | `CORS_MAX_AGE`       | No       | `86400`                     | CORS preflight cache duration in seconds                     |
-| `API_KEY`            | Yes      | -                           | API authentication key for protected endpoints               |
+| `API_KEY`            | Recommended | -                           | API authentication key. If not set, protected endpoints return 503 
 | `ENVIRONMENT`        | No       | `development`               | Runtime environment (`development`, `staging`, `production`) |
 
 ### Rate Limiting
