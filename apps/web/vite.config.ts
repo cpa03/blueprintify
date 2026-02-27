@@ -55,7 +55,16 @@ export default defineConfig({
     }),
   ].filter(Boolean),
   optimizeDeps: {
-    include: ["react", "react-dom", "zustand", "clsx"],
+    include: [
+      "react",
+      "react-dom",
+      "zustand",
+      "clsx",
+      "framer-motion",
+      "react-markdown",
+      "remark-gfm",
+      "rehype-highlight",
+    ],
     esbuildOptions: {
       target: "es2022",
     },

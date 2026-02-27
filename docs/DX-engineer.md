@@ -239,3 +239,33 @@ This warns against `console.log` and `console.info` but allows `console.error`, 
 - TypeScript typecheck requires `npm install` to run first
 - ESLint requires dependencies to be installed
 - Some tests may fail in clean environment without build artifacts
+## Vite optimizeDeps Configuration
+
+For faster hot reload during development, add commonly used heavy dependencies to Vite's `optimizeDeps.include`:
+
+```typescript
+// apps/web/vite.config.ts
+optimizeDeps: {
+  include: [
+    "react",
+    "react-dom",
+    "zustand",
+    "clsx",
+    "framer-motion",
+    "react-markdown",
+    "remark-gfm",
+    "rehype-highlight",
+  ],
+  esbuildOptions: {
+    target: "es2022",
+  },
+},
+```
+
+This pre-bundles these dependencies so they don't need to be re-bundled on every HMR update, significantly improving hot reload speed.
+
+## Known Issues
+
+- TypeScript typecheck requires `npm install` to run first
+- ESLint requires dependencies to be installed
+- Some tests may fail in clean environment without build artifacts
