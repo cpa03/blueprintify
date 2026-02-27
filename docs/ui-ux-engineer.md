@@ -128,7 +128,31 @@ accent: { cyan: "#06b6d4", purple: "#8b5cf6", pink: "#ec4899", emerald: "#10b981
 
 ---
 
+## Session 2026-02-27 (Morning)
+
+- **2026-02-27**: Fixed label-input association in AnimatedInput.tsx - added htmlFor/id for WCAG 1.3.1 compliance
+- **2026-02-27**: Build successful, 340 web tests passed
+- **Finding**: AnimatedInput and AnimatedTextarea were missing proper label-input associations. Fixed by adding auto-generated IDs.
+
+---
+
 ## Verified Files
+
+- `apps/web/tailwind.config.js` - Theme tokens defined properly
+- `apps/web/src/index.css` - Component classes defined, reduced-motion support
+- `apps/web/src/components/Header.tsx` - Accessibility good
+- `apps/web/src/components/SkipLink.tsx` - WCAG compliant
+- `apps/web/src/components/Editor.tsx` - Proper accessibility
+- `apps/web/src/components/editor/EditorToolbar.tsx` - Proper ARIA labels
+- `apps/web/src/components/Toast.tsx` - Progress ring, accessibility good
+- `apps/web/src/components/TemplateGrid.tsx` - Keyboard navigation, aria-busy
+- `apps/web/src/components/AnimatedInput.tsx` - **FIXED**: htmlFor/id association added
+- `apps/web/src/components/ScrollProgress.tsx` - Theme tokens recently added
+- `apps/web/src/components/StepIndicator.tsx` - Theme tokens + nav role added
+- `apps/web/src/components/MarkdownRenderer.tsx` - Theme tokens recently added
+- `apps/web/src/components/AnimatedNumber.tsx` - Theme tokens added
+- `apps/web/src/components/CircularProgress.tsx` - Theme tokens added
+- `apps/web/src/components/wizard/StepGenerating.tsx` - Theme tokens added
 
 - `apps/web/tailwind.config.js` - Theme tokens defined properly
 - `apps/web/src/index.css` - Component classes defined, reduced-motion support
