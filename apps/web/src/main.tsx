@@ -12,6 +12,17 @@ import "./index.css";
 const App = lazy(() => import("./App"));
 const MotionConfigWrapper = lazy(() => import("./components/MotionConfigWrapper"));
 
+// Global error handlers for uncaught errors and unhandled Promise rejections
+window.addEventListener("unhandledrejection", (event) => {
+  console.error("Unhandled Promise rejection:", event.reason);
+  // Optionally report to Sentry: Sentry.captureException(event.reason);
+});
+
+window.addEventListener("error", (event) => {
+  console.error("Uncaught error:", event.error);
+  // Optionally report to Sentry: Sentry.captureException(event.error);
+});
+
 const rootElement = document.getElementById("root");
 
 if (!rootElement) {
