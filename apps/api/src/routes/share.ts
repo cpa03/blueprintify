@@ -10,6 +10,7 @@
 
 import { Hono } from "hono";
 import { validateJson } from "../middleware/validator";
+import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { z } from "zod";
 import type { Env } from "../types";
 import {
@@ -106,66 +107,62 @@ function getExpirationDate(): Date {
   return expiresAt;
 }
 
-app.post(
-  "/",
-  validateJson(createShareSchema),
-  async (c) => {
-    try {
-      const { title, blueprint, metadata } = c.get("validatedData");
-      const shareId = generateShareId();
-      const now = new Date().toISOString();
-      const expiresAt = getExpirationDate();
+app.post("/", rateLimit(rateLimitConfigs.standard), validateJson(createShareSchema), async (c) => {
+  try {
+    const { title, blueprint, metadata } = c.get("validatedData");
+    const shareId = generateShareId();
+    const now = new Date().toISOString();
+    const expiresAt = getExpirationDate();
 
-      if (!c.env.DB) {
-        return c.json(
-          createErrorResponse(
-            c,
-            ErrorType.CONFIGURATION,
-            SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
-            ERROR_CODES.CONFIGURATION_ERROR
-          ),
-          HTTP_STATUS.INTERNAL_ERROR
-        );
-      }
-
-      await c.env.DB.prepare(
-        `INSERT INTO blueprint_shares (id, title, blueprint, metadata, created_at, expires_at)
-         VALUES (?, ?, ?, ?, ?, ?)`
-      )
-        .bind(
-          shareId,
-          title,
-          blueprint,
-          metadata ? JSON.stringify(metadata) : null,
-          now,
-          expiresAt.toISOString()
-        )
-        .run();
-
-      return c.json(
-        {
-          id: shareId,
-          url: `${c.env.CORS_ORIGIN || ""}/share/${shareId}`,
-          expiresAt: expiresAt.toISOString(),
-        },
-        HTTP_STATUS.OK
-      );
-    } catch (error) {
-      secureLogError("Share creation error", error);
+    if (!c.env.DB) {
       return c.json(
         createErrorResponse(
           c,
-          ErrorType.INTERNAL,
-          ERROR_MESSAGES.INTERNAL,
-          ERROR_CODES.INTERNAL_ERROR
+          ErrorType.CONFIGURATION,
+          SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
+          ERROR_CODES.CONFIGURATION_ERROR
         ),
         HTTP_STATUS.INTERNAL_ERROR
       );
     }
-  }
-);
 
-app.get("/:id", async (c) => {
+    await c.env.DB.prepare(
+      `INSERT INTO blueprint_shares (id, title, blueprint, metadata, created_at, expires_at)
+         VALUES (?, ?, ?, ?, ?, ?)`
+    )
+      .bind(
+        shareId,
+        title,
+        blueprint,
+        metadata ? JSON.stringify(metadata) : null,
+        now,
+        expiresAt.toISOString()
+      )
+      .run();
+
+    return c.json(
+      {
+        id: shareId,
+        url: `${c.env.CORS_ORIGIN || ""}/share/${shareId}`,
+        expiresAt: expiresAt.toISOString(),
+      },
+      HTTP_STATUS.OK
+    );
+  } catch (error) {
+    secureLogError("Share creation error", error);
+    return c.json(
+      createErrorResponse(
+        c,
+        ErrorType.INTERNAL,
+        ERROR_MESSAGES.INTERNAL,
+        ERROR_CODES.INTERNAL_ERROR
+      ),
+      HTTP_STATUS.INTERNAL_ERROR
+    );
+  }
+});
+
+app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
   try {
     const shareId = c.req.param("id");
 
@@ -195,8 +192,8 @@ app.get("/:id", async (c) => {
 
     const result = await c.env.DB.prepare(
       `SELECT id, title, blueprint, metadata, created_at, expires_at
-       FROM blueprint_shares
-       WHERE id = ?`
+         FROM blueprint_shares
+         WHERE id = ?`
     )
       .bind(shareId)
       .first();
@@ -269,7 +266,7 @@ app.get("/:id", async (c) => {
   }
 });
 
-app.delete("/:id", async (c) => {
+app.delete("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
   try {
     const shareId = c.req.param("id");
 
