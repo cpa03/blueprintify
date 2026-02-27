@@ -45,7 +45,7 @@ export const TechStackItem = z.object({
   subcategory: DatabaseSubcategory.optional(),
   version: z.string().optional(),
   description: z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX).optional(),
-  features: z.array(z.string()).min(1).max(VALIDATION_LIMITS.FEATURE.MAX).optional(),
+  features: z.array(z.string().min(1).max(VALIDATION_LIMITS.FEATURE.MAX)).optional(),
 });
 
 // ===== Blueprint Request Schema =====
@@ -69,7 +69,7 @@ export const BlueprintRequestSchema = z.object({
   techStack: z
     .array(TechStackItem)
     .min(VALIDATION_LIMITS.TECH_STACK.MIN, "At least one technology is required"),
-  features: z.array(z.string().min(1)).max(VALIDATION_LIMITS.FEATURE.MAX).optional(),
+  features: z.array(z.string().min(1).max(VALIDATION_LIMITS.FEATURE.MAX)).max(VALIDATION_LIMITS.FEATURE.MAX).optional(),
   targetAudience: z.string().max(VALIDATION_LIMITS.TARGET_AUDIENCE.MAX).optional(),
   constraints: z.string().max(VALIDATION_LIMITS.CONSTRAINTS.MAX).optional(),
 });
@@ -156,10 +156,10 @@ export const RefineRequestSchema = z.object({
  * Provides default values for common project types.
  */
 export const TemplateSchema = z.object({
-  id: z.string().min(1).max(50),
+  id: z.string().min(1).max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
   name: z.string().min(1).max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
   description: z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX),
-  icon: z.string().max(50),
+  icon: z.string().max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
   projectName: z
     .string()
     .min(VALIDATION_LIMITS.PROJECT_NAME.MIN)
@@ -257,8 +257,8 @@ export const ExportFormatSchema = z.enum(["json", "zip", "markdown"]);
  * Specifies the format and content to export.
  */
 export const ExportRequestSchema = z.object({
-  projectName: z.string().min(1, "Project name is required"),
-  blueprint: z.string().min(1, "Blueprint content is required"),
+  projectName: z.string().min(1).max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
+  blueprint: z.string().min(1).max(VALIDATION_LIMITS.DESCRIPTION.MAX * 10),
   tasks: z.string().optional(),
   format: ExportFormatSchema.default("markdown"),
   includeMetadata: z.boolean().default(true),
