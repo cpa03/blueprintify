@@ -23,6 +23,15 @@ export interface EnvConfig {
   RATE_LIMIT_STRICT_MAX: number;
   RATE_LIMIT_STANDARD_MAX: number;
   RATE_LIMIT_LENIENT_MAX: number;
+  /**
+   * Enable rate limit bypass for testing.
+   * WARNING: Should NEVER be enabled in production.
+   */
+  RATE_LIMIT_BYPASS?: boolean;
+  RATE_LIMIT_WINDOW_MS: number;
+  RATE_LIMIT_STRICT_MAX: number;
+  RATE_LIMIT_STANDARD_MAX: number;
+  RATE_LIMIT_LENIENT_MAX: number;
 
   // Storage Configuration
   STORAGE_QUOTA_MB: number;

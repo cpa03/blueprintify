@@ -492,7 +492,10 @@ export function getContentSecurityHeaders(): Record<string, string> {
   return {
     "Content-Security-Policy": [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      // SECURITY: Removed 'unsafe-inline' from script-src - no inline scripts in React app
+      "script-src 'self'",
+      // NOTE: 'unsafe-inline' required for style-src (Tailwind/React inline styles)
+      "style-src 'self' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https:",
       "font-src 'self'",

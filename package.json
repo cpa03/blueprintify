@@ -16,7 +16,7 @@
     "build:api": "npm run build --workspace=apps/api",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "npm run test --workspace=apps/web -- --run",
-    "test:api": "npm run test --workspace=apps/api",
+    "test:api": "RATE_LIMIT_BYPASS=true npm run test --workspace=apps/api",
     "test:all": "npm run test --workspace=apps/web -- --run && npm run test --workspace=apps/api",
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm run lint && npm run test:all",
