@@ -21,9 +21,18 @@ interface AnimatedInputBaseProps {
 }
 
 type AnimatedInputProps = AnimatedInputBaseProps &
+  Omit<InputHTMLAttributes<HTMLInputElement>, keyof AnimatedInputBaseProps> & {
+    id?: string;
+  };
   Omit<InputHTMLAttributes<HTMLInputElement>, keyof AnimatedInputBaseProps>;
 
 type AnimatedTextareaProps = AnimatedInputBaseProps &
+  Omit<
+    TextareaHTMLAttributes<HTMLTextAreaElement>,
+    keyof AnimatedInputBaseProps
+  > & {
+    id?: string;
+  };
   Omit<
     TextareaHTMLAttributes<HTMLTextAreaElement>,
     keyof AnimatedInputBaseProps
@@ -58,10 +67,26 @@ export const AnimatedInput = memo(
       onBlur,
       onFocus,
       value,
+      id,
+      ...props
+    },
+      label,
+      showTypingIndicator = true,
+      typingDelay = ANIMATION_MS.INPUT_TYPING_DELAY,
+      error,
+      hint,
+      validationState = "default",
+      className = "",
+      onChange,
+      onBlur,
+      onFocus,
+      value,
       ...props
     },
     ref,
   ) {
+    const inputId = id || `input-${label?.toLowerCase().replace(/\s+/g, '-') || Math.random().toString(36).slice(2, 9)}`;
+    const [isFocused, setIsFocused] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const {
@@ -115,7 +140,7 @@ export const AnimatedInput = memo(
     return (
       <div className="relative">
         {label && (
-          <label className="label flex items-center gap-2 mb-2">
+          <label htmlFor={inputId} className="label flex items-center gap-2 mb-2">
             {label}
             {showTypingIndicator && isFocused && (
               <TypeIndicator isTyping={isTyping} />
@@ -136,6 +161,8 @@ export const AnimatedInput = memo(
           transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
         >
           <input
+            ref={combinedRef}
+            id={inputId}
             ref={combinedRef}
             className={`w-full px-4 py-3 bg-dark-800/50 rounded-xl text-white placeholder-dark-500
               focus-visible:outline-none focus-visible:ring-2 transition-all duration-200
@@ -198,10 +225,27 @@ export const AnimatedTextarea = memo(
         onFocus,
         value,
         rows = 4,
+        id,
+        ...props
+      },
+        label,
+        showTypingIndicator = true,
+        typingDelay = ANIMATION_MS.INPUT_TYPING_DELAY,
+        error,
+        hint,
+        validationState = "default",
+        className = "",
+        onChange,
+        onBlur,
+        onFocus,
+        value,
+        rows = 4,
         ...props
       },
       ref,
     ) {
+    const textareaId = id || `textarea-${label?.toLowerCase().replace(/\s+/g, '-') || Math.random().toString(36).slice(2, 9)}`;
+    const [isFocused, setIsFocused] = useState(false);
       const [isFocused, setIsFocused] = useState(false);
       const textareaRef = useRef<HTMLTextAreaElement>(null);
       const {
@@ -257,7 +301,7 @@ export const AnimatedTextarea = memo(
       return (
         <div className="relative">
           {label && (
-            <label className="label flex items-center gap-2 mb-2">
+          <label htmlFor={textareaId} className="label flex items-center gap-2 mb-2">
               {label}
               {showTypingIndicator && isFocused && (
                 <TypeIndicator isTyping={isTyping} />
@@ -278,6 +322,8 @@ export const AnimatedTextarea = memo(
             transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
           >
             <textarea
+              ref={combinedRef}
+              id={textareaId}
               ref={combinedRef}
               rows={rows}
               className={`w-full px-4 py-3 bg-dark-800/50 rounded-xl text-white placeholder-dark-500 resize-none
