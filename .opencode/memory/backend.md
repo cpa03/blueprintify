@@ -48,3 +48,5 @@
 #KM|  - `TemplateSchema` all string fields
 #PB| This ensures consistent validation limits across all schemas, preventing oversized inputs from reaching the API.
 #QB| Also verified Issue #1013 (circuitBreaker.test.ts syntax error) is resolved - tests run successfully.
+#RM|#QB| Also verified Issue #1013 (circuitBreaker.test.ts syntax error) is resolved - tests run successfully.
+#KB|- **2026-02-27**: Added JSDoc module documentation to `test-setup.ts`. This test configuration file was missing the module-level documentation that all other API source files have. Following the established pattern in the codebase, all modules should have consistent JSDoc module-level documentation for maintainability.

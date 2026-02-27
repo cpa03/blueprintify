@@ -1,3 +1,12 @@
+/**
+ * Test Setup Configuration
+ *
+ * Initializes the test environment for API tests.
+ * Sets up mock environment configuration and handles expected unhandled rejections
+ * that occur during error handling tests.
+ *
+ * @module test-setup
+ */
 import { setupTestConfig, MOCK_ENV } from "./test-utils";
 
 // Initialize environment config before all tests
