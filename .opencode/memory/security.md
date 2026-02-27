@@ -1,3 +1,16 @@
+### 2026-02-27 UTC: Input Sanitization for Import Route (Issue #928)
+
+- **Finding**: Import route did not sanitize user-imported content before returning to client
+- **Root Cause**: Missing server-side sanitization for blueprint and tasks content
+- **Risk**: XSS attacks via imported malicious content
+- **Fix**: Added `sanitizeBlueprintContent` to import route for both JSON and Markdown formats
+- **Implementation**:
+  - Import `sanitizeBlueprintContent` from `../utils/sanitize`
+  - Sanitize blueprint and tasks content before returning in JSON format handler
+  - Sanitize blueprint and tasks content before returning in Markdown format handler
+- **Verification**: TypeScript clean, ESLint clean
+- **Lesson**: All content that could be rendered by clients should be sanitized on the server
+
 ### 2026-02-26 UTC: Security Audit - All Controls Passing
 
 - **Finding**: Comprehensive security audit confirms all controls are effective
