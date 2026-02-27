@@ -12,6 +12,17 @@ import "./index.css";
 const App = lazy(() => import("./App"));
 const MotionConfigWrapper = lazy(() => import("./components/MotionConfigWrapper"));
 
+// Global error handlers for uncaught errors and unhandled promise rejections
+window.addEventListener("unhandledrejection", (event) => {
+  console.error("[Blueprintify] Unhandled Promise rejection:", event.reason);
+  // Future: Report to Sentry with Sentry.captureException(event.reason);
+});
+
+window.onerror = (message, source, lineno, colno, error) => {
+  console.error("[Blueprintify] Uncaught error:", { message, source, lineno, colno, error });
+  // Future: Report to Sentry with Sentry.captureException(error);
+  return false; // Let default error handling also run
+};
 const rootElement = document.getElementById("root");
 
 if (!rootElement) {
