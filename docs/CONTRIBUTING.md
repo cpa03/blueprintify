@@ -139,3 +139,11 @@ npm run dev
 
 - Open an issue: https://github.com/cpa03/blueprintify/issues
 - Check existing issues before creating new ones
+
+## Known Issues
+
+### BUG-010: CI Workflow Version Mismatch
+
+The GitHub Actions workflows contain invalid version references (`@v5` instead of `@v4`) that cause CI failures.
+
+**Workaround**: This is a known issue that requires repository admin permissions to fix. If your PR CI fails with version errors, this is likely BUG-010 and not related to your changes. Check the [bugs documentation](./bugs.md#bug-010-github-actions-invalid-versions-v5-→-v4) for details.
