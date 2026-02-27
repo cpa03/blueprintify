@@ -24,6 +24,7 @@ export {
   ImportResultSchema,
   StorageQuotaSchema,
   StorageClearRequestSchema,
+  StorageReportRequestSchema,
 } from "./schema";
 
 // ===== TypeScript Types =====
@@ -51,6 +52,7 @@ export type {
   ImportResult,
   StorageQuota,
   StorageClearRequest,
+  StorageReportRequest,
 } from "./types";
 
 // ===== Templates =====

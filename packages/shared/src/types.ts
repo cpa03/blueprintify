@@ -17,6 +17,7 @@ import {
   ImportResultSchema,
   StorageQuotaSchema,
   StorageClearRequestSchema,
+  StorageReportRequestSchema,
 } from "./schema";
 
 // ===== Inferred Types from Zod Schemas =====
@@ -120,6 +121,11 @@ export type StorageQuota = z.infer<typeof StorageQuotaSchema>;
  * Request payload for clearing stored data.
  */
 export type StorageClearRequest = z.infer<typeof StorageClearRequestSchema>;
+
+/**
+ * Request payload for reporting client storage usage.
+ */
+export type StorageReportRequest = z.infer<typeof StorageReportRequestSchema>;
 
 // ===== Wizard Step Types =====
 

@@ -309,6 +309,16 @@ export const StorageClearRequestSchema = z.object({
   }),
 });
 
+/**
+ * Request payload for reporting client storage usage.
+ * Clients report their localStorage usage to the server for quota tracking.
+ */
+export const StorageReportRequestSchema = z.object({
+  used: z.number().int().min(0).describe("Used storage in bytes"),
+  total: z.number().int().min(0).describe("Total storage quota in bytes"),
+  projects: z.number().int().min(0).describe("Number of projects stored"),
+});
+
 // ===== Predefined Tech Stack Options =====
 
 /**
