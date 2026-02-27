@@ -30,6 +30,7 @@ import {
   useCallback,
   forwardRef,
   memo,
+  useId,
   type InputHTMLAttributes,
   type TextareaHTMLAttributes,
 } from "react";
@@ -50,14 +51,9 @@ type AnimatedInputProps = AnimatedInputBaseProps &
   Omit<InputHTMLAttributes<HTMLInputElement>, keyof AnimatedInputBaseProps>;
 
 type AnimatedTextareaProps = AnimatedInputBaseProps &
-  Omit<
-    TextareaHTMLAttributes<HTMLTextAreaElement>,
-    keyof AnimatedInputBaseProps
-  >;
+  Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, keyof AnimatedInputBaseProps>;
 
-const getValidationStyles = (
-  state: AnimatedInputBaseProps["validationState"],
-) => {
+const getValidationStyles = (state: AnimatedInputBaseProps["validationState"]) => {
   switch (state) {
     case "valid":
       return "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20";
@@ -86,10 +82,11 @@ export const AnimatedInput = memo(
       value,
       ...props
     },
-    ref,
+    ref
   ) {
     const [isFocused, setIsFocused] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+    const inputId = useId();
     const {
       isTyping,
       handleTyping,
@@ -104,7 +101,7 @@ export const AnimatedInput = memo(
         handleTyping(e.target.value);
         onChange?.(e);
       },
-      [handleTyping, onChange],
+      [handleTyping, onChange]
     );
 
     const handleFocusEvent = useCallback(
@@ -112,7 +109,7 @@ export const AnimatedInput = memo(
         setIsFocused(true);
         onFocus?.(e);
       },
-      [onFocus],
+      [onFocus]
     );
 
     const handleBlurEvent = useCallback(
@@ -121,31 +118,27 @@ export const AnimatedInput = memo(
         handleTypingBlur();
         onBlur?.(e);
       },
-      [handleTypingBlur, onBlur],
+      [handleTypingBlur, onBlur]
     );
 
     const combinedRef = useCallback(
       (node: HTMLInputElement | null) => {
-        (inputRef as React.MutableRefObject<HTMLInputElement | null>).current =
-          node;
+        (inputRef as React.MutableRefObject<HTMLInputElement | null>).current = node;
         if (typeof ref === "function") {
           ref(node);
         } else if (ref) {
-          (ref as React.MutableRefObject<HTMLInputElement | null>).current =
-            node;
+          (ref as React.MutableRefObject<HTMLInputElement | null>).current = node;
         }
       },
-      [ref],
+      [ref]
     );
 
     return (
       <div className="relative">
         {label && (
-          <label className="label flex items-center gap-2 mb-2">
+          <label htmlFor={props.id || inputId} className="label flex items-center gap-2 mb-2">
             {label}
-            {showTypingIndicator && isFocused && (
-              <TypeIndicator isTyping={isTyping} />
-            )}
+            {showTypingIndicator && isFocused && <TypeIndicator isTyping={isTyping} />}
           </label>
         )}
         <motion.div
@@ -163,6 +156,7 @@ export const AnimatedInput = memo(
         >
           <input
             ref={combinedRef}
+            id={props.id || inputId}
             className={`w-full px-4 py-3 bg-dark-800/50 rounded-xl text-white placeholder-dark-500
               focus-visible:outline-none focus-visible:ring-2 transition-all duration-200
               ${getValidationStyles(validationState)}
@@ -205,153 +199,145 @@ export const AnimatedInput = memo(
         {hint && !error && <p className="text-xs text-dark-500 mt-1">{hint}</p>}
       </div>
     );
-  }),
+  })
 );
 
 export const AnimatedTextarea = memo(
-  forwardRef<HTMLTextAreaElement, AnimatedTextareaProps>(
-    function AnimatedTextarea(
-      {
-        label,
-        showTypingIndicator = true,
-        typingDelay = ANIMATION_MS.INPUT_TYPING_DELAY,
-        error,
-        hint,
-        validationState = "default",
-        className = "",
-        onChange,
-        onBlur,
-        onFocus,
-        value,
-        rows = 4,
-        ...props
+  forwardRef<HTMLTextAreaElement, AnimatedTextareaProps>(function AnimatedTextarea(
+    {
+      label,
+      showTypingIndicator = true,
+      typingDelay = ANIMATION_MS.INPUT_TYPING_DELAY,
+      error,
+      hint,
+      validationState = "default",
+      className = "",
+      onChange,
+      onBlur,
+      onFocus,
+      value,
+      rows = 4,
+      ...props
+    },
+    ref
+  ) {
+    const [isFocused, setIsFocused] = useState(false);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const textareaId = useId();
+    const {
+      isTyping,
+      handleTyping,
+      handleBlur: handleTypingBlur,
+    } = useTypingIndicator({
+      delay: typingDelay,
+      minInputLength: 1,
+    });
+
+    const handleChange = useCallback(
+      (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        handleTyping(e.target.value);
+        onChange?.(e);
       },
-      ref,
-    ) {
-      const [isFocused, setIsFocused] = useState(false);
-      const textareaRef = useRef<HTMLTextAreaElement>(null);
-      const {
-        isTyping,
-        handleTyping,
-        handleBlur: handleTypingBlur,
-      } = useTypingIndicator({
-        delay: typingDelay,
-        minInputLength: 1,
-      });
+      [handleTyping, onChange]
+    );
 
-      const handleChange = useCallback(
-        (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-          handleTyping(e.target.value);
-          onChange?.(e);
-        },
-        [handleTyping, onChange],
-      );
+    const handleFocusEvent = useCallback(
+      (e: React.FocusEvent<HTMLTextAreaElement>) => {
+        setIsFocused(true);
+        onFocus?.(e);
+      },
+      [onFocus]
+    );
 
-      const handleFocusEvent = useCallback(
-        (e: React.FocusEvent<HTMLTextAreaElement>) => {
-          setIsFocused(true);
-          onFocus?.(e);
-        },
-        [onFocus],
-      );
+    const handleBlurEvent = useCallback(
+      (e: React.FocusEvent<HTMLTextAreaElement>) => {
+        setIsFocused(false);
+        handleTypingBlur();
+        onBlur?.(e);
+      },
+      [handleTypingBlur, onBlur]
+    );
 
-      const handleBlurEvent = useCallback(
-        (e: React.FocusEvent<HTMLTextAreaElement>) => {
-          setIsFocused(false);
-          handleTypingBlur();
-          onBlur?.(e);
-        },
-        [handleTypingBlur, onBlur],
-      );
+    const combinedRef = useCallback(
+      (node: HTMLTextAreaElement | null) => {
+        (textareaRef as React.MutableRefObject<HTMLTextAreaElement | null>).current = node;
+        if (typeof ref === "function") {
+          ref(node);
+        } else if (ref) {
+          (ref as React.MutableRefObject<HTMLTextAreaElement | null>).current = node;
+        }
+      },
+      [ref]
+    );
 
-      const combinedRef = useCallback(
-        (node: HTMLTextAreaElement | null) => {
-          (
-            textareaRef as React.MutableRefObject<HTMLTextAreaElement | null>
-          ).current = node;
-          if (typeof ref === "function") {
-            ref(node);
-          } else if (ref) {
-            (
-              ref as React.MutableRefObject<HTMLTextAreaElement | null>
-            ).current = node;
+    return (
+      <div className="relative">
+        {label && (
+          <label htmlFor={props.id || textareaId} className="label flex items-center gap-2 mb-2">
+            {label}
+            {showTypingIndicator && isFocused && <TypeIndicator isTyping={isTyping} />}
+          </label>
+        )}
+        <motion.div
+          className="relative"
+          animate={
+            isFocused
+              ? {
+                  scale: 1.005,
+                }
+              : {
+                  scale: 1,
+                }
           }
-        },
-        [ref],
-      );
-
-      return (
-        <div className="relative">
-          {label && (
-            <label className="label flex items-center gap-2 mb-2">
-              {label}
-              {showTypingIndicator && isFocused && (
-                <TypeIndicator isTyping={isTyping} />
-              )}
-            </label>
-          )}
-          <motion.div
-            className="relative"
-            animate={
-              isFocused
-                ? {
-                    scale: 1.005,
-                  }
-                : {
-                    scale: 1,
-                  }
-            }
-            transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
-          >
-            <textarea
-              ref={combinedRef}
-              rows={rows}
-              className={`w-full px-4 py-3 bg-dark-800/50 rounded-xl text-white placeholder-dark-500 resize-none
+          transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
+        >
+          <textarea
+            ref={combinedRef}
+            id={props.id || textareaId}
+            rows={rows}
+            className={`w-full px-4 py-3 bg-dark-800/50 rounded-xl text-white placeholder-dark-500 resize-none
               focus-visible:outline-none focus-visible:ring-2 transition-all duration-200
               ${getValidationStyles(validationState)}
               ${className}`}
-              onChange={handleChange}
-              onFocus={handleFocusEvent}
-              onBlur={handleBlurEvent}
-              value={value}
-              {...props}
-            />
-            {validationState === "valid" && !isFocused && (
-              <motion.div
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="absolute right-3 top-3 pointer-events-none"
-              >
-                <div className="w-6 h-6 rounded-full bg-accent-emerald/20 flex items-center justify-center">
-                  <svg
-                    className="w-4 h-4 text-accent-emerald"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-              </motion.div>
-            )}
-          </motion.div>
-          {error && (
-            <p role="alert" className="text-xs text-accent-pink mt-1">
-              {error}
-            </p>
+            onChange={handleChange}
+            onFocus={handleFocusEvent}
+            onBlur={handleBlurEvent}
+            value={value}
+            {...props}
+          />
+          {validationState === "valid" && !isFocused && (
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="absolute right-3 top-3 pointer-events-none"
+            >
+              <div className="w-6 h-6 rounded-full bg-accent-emerald/20 flex items-center justify-center">
+                <svg
+                  className="w-4 h-4 text-accent-emerald"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+            </motion.div>
           )}
-          {hint && !error && (
-            <p className="text-xs text-dark-500 mt-1">{hint}</p>
-          )}
-        </div>
-      );
-    },
-  ),
+        </motion.div>
+        {error && (
+          <p role="alert" className="text-xs text-accent-pink mt-1">
+            {error}
+          </p>
+        )}
+        {hint && !error && <p className="text-xs text-dark-500 mt-1">{hint}</p>}
+      </div>
+    );
+  })
 );
 
 export default AnimatedInput;
