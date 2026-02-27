@@ -1,7 +1,34 @@
+/**
+ * Animated Input Component
+ *
+ * Provides animated input fields with typing indicators, validation states,
+ * and label support. Supports both single-line input and textarea variants.
+ *
+ * @module components/AnimatedInput
+ * @see {@link TypeIndicator} - Typing indicator component
+ * @see {@link SPRING_CONFIG} - Animation spring configuration
+ *
+ * @example
+ * ```tsx
+ * <AnimatedInput
+ *   label="Project Name"
+ *   placeholder="Enter project name"
+ *   validationState="valid"
+ * />
+ *
+ * <AnimatedTextarea
+ *   label="Description"
+ *   placeholder="Enter description"
+ *   showTypingIndicator
+ * />
+ * ```
+ */
+
 import {
   useState,
   useRef,
   useCallback,
+  useId,
   forwardRef,
   memo,
   type InputHTMLAttributes,
@@ -21,18 +48,9 @@ interface AnimatedInputBaseProps {
 }
 
 type AnimatedInputProps = AnimatedInputBaseProps &
-  Omit<InputHTMLAttributes<HTMLInputElement>, keyof AnimatedInputBaseProps> & {
-    id?: string;
-  };
   Omit<InputHTMLAttributes<HTMLInputElement>, keyof AnimatedInputBaseProps>;
 
 type AnimatedTextareaProps = AnimatedInputBaseProps &
-  Omit<
-    TextareaHTMLAttributes<HTMLTextAreaElement>,
-    keyof AnimatedInputBaseProps
-  > & {
-    id?: string;
-  };
   Omit<
     TextareaHTMLAttributes<HTMLTextAreaElement>,
     keyof AnimatedInputBaseProps
@@ -70,23 +88,10 @@ export const AnimatedInput = memo(
       id,
       ...props
     },
-      label,
-      showTypingIndicator = true,
-      typingDelay = ANIMATION_MS.INPUT_TYPING_DELAY,
-      error,
-      hint,
-      validationState = "default",
-      className = "",
-      onChange,
-      onBlur,
-      onFocus,
-      value,
-      ...props
-    },
     ref,
   ) {
-    const inputId = id || `input-${label?.toLowerCase().replace(/\s+/g, '-') || Math.random().toString(36).slice(2, 9)}`;
-    const [isFocused, setIsFocused] = useState(false);
+    const generatedId = useId();
+    const inputId = id || generatedId;
     const [isFocused, setIsFocused] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const {
@@ -161,7 +166,6 @@ export const AnimatedInput = memo(
           transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
         >
           <input
-            ref={combinedRef}
             id={inputId}
             ref={combinedRef}
             className={`w-full px-4 py-3 bg-dark-800/50 rounded-xl text-white placeholder-dark-500
@@ -225,27 +229,10 @@ export const AnimatedTextarea = memo(
         onFocus,
         value,
         rows = 4,
-        id,
-        ...props
-      },
-        label,
-        showTypingIndicator = true,
-        typingDelay = ANIMATION_MS.INPUT_TYPING_DELAY,
-        error,
-        hint,
-        validationState = "default",
-        className = "",
-        onChange,
-        onBlur,
-        onFocus,
-        value,
-        rows = 4,
         ...props
       },
       ref,
     ) {
-    const textareaId = id || `textarea-${label?.toLowerCase().replace(/\s+/g, '-') || Math.random().toString(36).slice(2, 9)}`;
-    const [isFocused, setIsFocused] = useState(false);
       const [isFocused, setIsFocused] = useState(false);
       const textareaRef = useRef<HTMLTextAreaElement>(null);
       const {
@@ -301,7 +288,7 @@ export const AnimatedTextarea = memo(
       return (
         <div className="relative">
           {label && (
-          <label htmlFor={textareaId} className="label flex items-center gap-2 mb-2">
+            <label className="label flex items-center gap-2 mb-2">
               {label}
               {showTypingIndicator && isFocused && (
                 <TypeIndicator isTyping={isTyping} />
@@ -322,8 +309,6 @@ export const AnimatedTextarea = memo(
             transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
           >
             <textarea
-              ref={combinedRef}
-              id={textareaId}
               ref={combinedRef}
               rows={rows}
               className={`w-full px-4 py-3 bg-dark-800/50 rounded-xl text-white placeholder-dark-500 resize-none
