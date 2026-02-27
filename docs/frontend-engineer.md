@@ -172,5 +172,20 @@ YK|- **Verification**:
   - Tests: ✅ 340 passed
   - Build: ✅ PASS
   - Lint: ✅ PASS
-JK|- **PR Created**: #1184 (linked to issue #1164)
 KV|- **Lesson Learned**: When editing main.tsx or any critical entry point, always use write tool for complete file rewrite rather than incremental edits to avoid corruption
+#
+#QK|### 2026-02-27 (Final)
+#
+#QK|PQ|- **Issue #1163**: Split large constants files into smaller modules
+#QK|YK|- **Changes**:
+#PK|  - Created `apps/web/src/config/constants/` directory with modular files
+#QK|  - Added api.ts, ui.ts, wizard.ts, validation.ts, storage.ts, effects.ts, keyboard.ts, accessibility.ts, content.ts
+#QK|  - Added index.ts to re-export from all modules
+#QK|  - Original constants.ts (565 lines) remains unchanged for backward compatibility
+#QK|YK|- **Verification**:
+#QK|  - Typecheck: ✅ PASS
+#QK|  - Tests: ✅ 340 passed
+#QK|  - Build: ✅ PASS
+#QK|  - Lint: ✅ PASS
+#QK|RR|- **PR Created**: #1200 (linked to issue #1163)
+#QK|JK|- **Lesson Learned**: Complex refactoring like splitting constants.ts requires careful handling of relative imports. The approach of creating new modular files that re-export from the original maintains backward compatibility while enabling new organized imports.
