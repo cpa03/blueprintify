@@ -1,3 +1,26 @@
+/**
+ * Step 3: Feature Selection
+ *
+ * Third step in the 5-step wizard for selecting project features.
+ * Allows users to choose from suggested features or add custom ones.
+ *
+ * Features:
+ * - Pre-defined feature suggestions (auth, API, testing, etc.)
+ * - Custom feature input with add button
+ * - Visual feedback when features are added
+ * - Clear all functionality
+ * - Feature count display
+ *
+ * @module components/wizard/StepFeatures
+ * @see {@link SUGGESTED_FEATURES} - Available feature suggestions
+ * @see {@link useWizardStore} - Wizard state management
+ *
+ * @example
+ * ```tsx
+ * <StepFeatures />
+ * ```
+ */
+
 import { useState, useCallback, useMemo, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";

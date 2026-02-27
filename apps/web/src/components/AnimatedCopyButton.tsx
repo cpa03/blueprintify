@@ -1,3 +1,16 @@
+/**
+ * @fileoverview Animated copy button component with particle celebration effects.
+ *
+ * This component provides a copy-to-clipboard button with:
+ * - Particle explosion animation on click
+ * - Visual feedback for copy success/failure
+ * - Accessibility support with proper ARIA labels
+ * - Reduced motion support
+ *
+ * @module components/AnimatedCopyButton
+ */
+
+
 import React, { useState, useCallback, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
@@ -19,12 +32,35 @@ interface Particle {
   duration: number;
 }
 
+/**
+ * Props for the AnimatedCopyButton component.
+ */
+
 interface AnimatedCopyButtonProps {
   onCopy: () => void;
   isCopied: boolean;
   hasContent: boolean;
   className?: string;
 }
+
+/**
+ * Animated copy button with particle celebration effects.
+ *
+ * @param props - Component props
+ * @param props.onCopy - Callback fired when copy button is clicked
+ * @param props.isCopied - Whether content has been copied (shows checkmark)
+ * @param props.hasContent - Whether there is content to copy (disables button if false)
+ * @param props.className - Additional CSS classes
+ * @returns The rendered copy button with particle effects
+ *
+ * @example
+ * // Basic usage
+ * <AnimatedCopyButton onCopy={() => copyToClipboard()} isCopied={false} hasContent={true} />
+ *
+ * @example
+ * // With custom styling
+ * <AnimatedCopyButton onCopy={handleCopy} isCopied={copied} hasContent={hasContent} className="ml-2" />
+ */
 
 function AnimatedCopyButtonComponent({
   onCopy,

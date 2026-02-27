@@ -1,3 +1,25 @@
+/**
+ * @fileoverview Skeleton loading components for placeholder content.
+ *
+ * This module provides various skeleton (placeholder) components for loading states:
+ * - Text skeleton with configurable lines
+ * - Circular skeleton for avatars/images
+ * - Rectangular skeleton for generic content
+ * - Card skeleton with header and content
+ * - Avatar skeleton with size presets
+ * - Button skeleton with size presets
+ * - SkeletonGroup for grouping multiple skeletons
+ * - SkeletonPatterns for decorative patterns
+ *
+ * Each variant supports:
+ * - Shimmer and pulse animations
+ * - Reduced motion preference
+ * - Custom dimensions and styling
+ * - Accessibility attributes
+ *
+ * @module components/Skeleton
+ */
+
 import { memo, forwardRef } from "react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
@@ -41,6 +63,10 @@ interface ButtonSkeletonProps extends SkeletonBaseProps {
   variant: "button";
   size?: "sm" | "md" | "lg";
 }
+
+/**
+ * Union type for all Skeleton component variants.
+ */
 
 type SkeletonProps =
   | TextSkeletonProps
@@ -287,6 +313,30 @@ function ButtonSkeleton({
     />
   );
 }
+
+/**
+ * Main Skeleton component that renders different skeleton variants based on props.
+ * Supports text, circular, rectangular, card, avatar, and button variants.
+ *
+ * @param props - Component props (variant determines which props are used)
+ * @returns The rendered skeleton placeholder component
+ *
+ * @example
+ * // Text skeleton with 3 lines
+ * <Skeleton variant="text" lines={3} />
+ *
+ * @example
+ * // Circular skeleton for avatar
+ * <Skeleton variant="circular" width={48} height={48} />
+ *
+ * @example
+ * // Card skeleton
+ * <Skeleton variant="card" showHeader={true} contentLines={4} />
+ *
+ * @example
+ * // Button skeleton
+ * <Skeleton variant="button" size="lg" />
+ */
 
 function SkeletonComponent(props: SkeletonProps): JSX.Element {
   const variant = "variant" in props ? props.variant : "text";

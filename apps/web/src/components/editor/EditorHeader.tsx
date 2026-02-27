@@ -1,3 +1,31 @@
+/**
+ * Editor Header Component
+ *
+ * Header component for the split-pane editor that contains:
+ * tab switching (blueprint/tasks), toolbar actions, and save status.
+ *
+ * @module components/editor/EditorHeader
+ * @see {@link EditorTab} - Tab types
+ * @see {@link ViewMode} - View mode types
+ * @see {@link EditorToolbar} - Toolbar component
+ *
+ * @example
+ * ```tsx
+ * <EditorHeader
+ *   activeTab="blueprint"
+ *   setActiveTab={(tab) => {}}
+ *   viewMode="split"
+ *   setViewMode={(mode) => {}}
+ *   onCopy={() => {}}
+ *   onExport={() => {}}
+ *   onNew={() => {}}
+ *   hasContent={true}
+ *   copied={null}
+ *   lastSavedText="Saved 2 min ago"
+ * />
+ * ```
+ */
+
 import React from "react";
 import { motion } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";

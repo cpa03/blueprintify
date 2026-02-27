@@ -1,3 +1,29 @@
+/**
+ * Step 1: Project Information
+ *
+ * First step in the 5-step wizard for configuring project details.
+ * Collects basic project metadata including name, description,
+ * target audience, and any technical constraints.
+ *
+ * Features:
+ * - Project name input with validation (required, max length)
+ * - Description textarea with auto-resize and character counter
+ * - Target audience selection (developer, manager, mixed)
+ * - Technical constraints text field
+ * - Typing indicators for better UX
+ * - Shake animation on validation error
+ * - Auto-save functionality
+ *
+ * @module components/wizard/StepInfo
+ * @see {@link useWizardStore} - Wizard state management
+ * @see {@link FORM_LIMITS} - Input validation limits
+ *
+ * @example
+ * ```tsx
+ * <StepInfo />
+ * ```
+ */
+
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
 import { FormEvent, useEffect, useRef, useState, memo, useMemo } from "react";

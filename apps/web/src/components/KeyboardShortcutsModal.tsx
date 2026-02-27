@@ -1,7 +1,24 @@
+/**
+ * @fileoverview Modal dialog displaying available keyboard shortcuts.
+ *
+ * This component provides:
+ * - Modal overlay with keyboard shortcut reference
+ * - Platform-aware shortcut display (Mac vs Windows/Linux)
+ * - Category-based organization (general, editor, navigation, generation)
+ * - Focus trap for accessibility
+ * - Escape key to close
+ *
+ * @module components/KeyboardShortcutsModal
+ */
+
 import { useEffect, useCallback, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { KEYBOARD_SHORTCUTS, WIZARD_STEPS } from "../config/constants";
 import { useFocusTrap } from "../hooks";
+
+/**
+ * Props for the KeyboardShortcutsModal component.
+ */
 
 interface KeyboardShortcutsModalProps {
   isOpen: boolean;
@@ -57,6 +74,20 @@ const categoryIcons: Record<string, string> = {
   navigation: "🧭",
   generation: "⚡",
 };
+
+/**
+ * Modal dialog displaying available keyboard shortcuts.
+ * Shows all application keyboard shortcuts organized by category.
+ *
+ * @param props - Component props
+ * @param props.isOpen - Whether the modal is visible
+ * @param props.onClose - Callback fired when modal should close
+ * @returns The rendered keyboard shortcuts modal
+ *
+ * @example
+ * // Basic usage
+ * <KeyboardShortcutsModal isOpen={showModal} onClose={() => setShowModal(false)} />
+ */
 
 function KeyboardShortcutsModalComponent({
   isOpen,

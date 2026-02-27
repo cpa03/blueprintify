@@ -1,3 +1,26 @@
+/**
+ * Step 4: Review Configuration
+ *
+ * Fourth step in the 5-step wizard for reviewing all selections
+ * before generating the blueprint. Displays summary of project info,
+ * tech stack, and features with edit buttons for each section.
+ *
+ * Features:
+ * - Summary display of all wizard selections
+ * - Edit buttons to jump back to any step
+ * - Generation estimate display
+ * - Start generation button
+ *
+ * @module components/wizard/StepReview
+ * @see {@link useWizardStore} - Wizard state management
+ * @see {@link useBlueprintStream} - Blueprint generation hook
+ *
+ * @example
+ * ```tsx
+ * <StepReview />
+ * ```
+ */
+
 import { motion } from "framer-motion";
 import { memo, useCallback } from "react";
 import { useWizardStore } from "../../store";

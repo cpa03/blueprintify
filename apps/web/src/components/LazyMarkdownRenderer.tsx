@@ -1,3 +1,28 @@
+/**
+ * Lazy Markdown Renderer Component
+ *
+ * Lazy-loads the MarkdownRenderer component for better performance.
+ * Displays a fallback while loading and renders markdown content with
+ * syntax highlighting and GFM support.
+ *
+ * @module components/LazyMarkdownRenderer
+ * @see {@link MarkdownRenderer} - Full markdown renderer
+ *
+ * @param {LazyMarkdownRendererProps} props - Component props
+ * @param {string} props.content - Markdown content to render
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {ReactNode} [props.fallback] - Fallback content while loading
+ * @returns {JSX.Element} Lazy-loaded markdown renderer
+ *
+ * @example
+ * ```tsx
+ * <LazyMarkdownRenderer
+ *   content="# Hello World\n\nThis is **bold** text"
+ *   className="prose dark:prose-invert"
+ * />
+ * ```
+ */
+
 import React, { useState, useEffect, memo } from "react";
 import type { MarkdownRendererProps } from "./MarkdownRenderer";
 

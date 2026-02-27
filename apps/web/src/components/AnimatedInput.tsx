@@ -1,3 +1,29 @@
+/**
+ * Animated Input Component
+ *
+ * Provides animated input fields with typing indicators, validation states,
+ * and label support. Supports both single-line input and textarea variants.
+ *
+ * @module components/AnimatedInput
+ * @see {@link TypeIndicator} - Typing indicator component
+ * @see {@link SPRING_CONFIG} - Animation spring configuration
+ *
+ * @example
+ * ```tsx
+ * <AnimatedInput
+ *   label="Project Name"
+ *   placeholder="Enter project name"
+ *   validationState="valid"
+ * />
+ *
+ * <AnimatedTextarea
+ *   label="Description"
+ *   placeholder="Enter description"
+ *   showTypingIndicator
+ * />
+ * ```
+ */
+
 import {
   useState,
   useRef,

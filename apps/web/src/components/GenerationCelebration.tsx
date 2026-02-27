@@ -1,3 +1,15 @@
+/**
+ * @fileoverview Celebration animation component displayed when blueprint generation completes.
+ *
+ * This component provides a celebratory animation with:
+ * - Particle explosion effect (circles, squares, stars)
+ * - Checkmark animation indicating completion
+ * - Accessibility support with ARIA labels
+ * - Reduced motion support for users who prefer less animation
+ *
+ * @module components/GenerationCelebration
+ */
+
 import { useEffect, useState, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -18,6 +30,10 @@ interface Particle {
   rotation: number;
   shape: "circle" | "square" | "star";
 }
+
+/**
+ * Props for the GenerationCelebration component.
+ */
 
 interface GenerationCelebrationProps {
   isComplete: boolean;
@@ -106,6 +122,24 @@ const ParticleShape = memo(function ParticleShape({
     </svg>
   );
 });
+
+/**
+ * Celebration animation displayed when blueprint generation is complete.
+ * Shows particle explosions and a checkmark to indicate successful completion.
+ *
+ * @param props - Component props
+ * @param props.isComplete - Whether generation has completed (triggers celebration)
+ * @param props.onComplete - Optional callback fired when celebration animation finishes
+ * @returns The rendered celebration animation or null if not complete
+ *
+ * @example
+ * // Basic usage
+ * <GenerationCelebration isComplete={true} />
+ *
+ * @example
+ * // With completion callback
+ * <GenerationCelebration isComplete={isGenerating} onComplete={() => setIsGenerating(false)} />
+ */
 
 function GenerationCelebrationComponent({
   isComplete,
