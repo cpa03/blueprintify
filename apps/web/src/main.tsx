@@ -21,11 +21,6 @@ window.addEventListener("unhandledrejection", (event) => {
   event.preventDefault();
 });
 
-window.addEventListener("error", (event) => {
-  console.error("Uncaught error:", event.error);
-  // Optionally report to Sentry: Sentry.captureException(event.error);
-});
-
 const rootElement = document.getElementById("root");
 if (!rootElement) {
   throw new Error("Root element not found");
