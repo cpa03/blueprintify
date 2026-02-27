@@ -186,8 +186,8 @@ describe("Environment Configuration", () => {
       expect(DEFAULTS.OPENAI_BASE_URL).toBe("https://api.openai.com/v1");
       expect(DEFAULTS.OPENAI_MODEL).toBe("gpt-4o-mini");
       expect(DEFAULTS.API_VERSION).toBe("1.0.0");
-      // CORS_ORIGIN default is empty string - validation happens at loadConfig time
-      expect(DEFAULTS.CORS_ORIGIN).toBe("");
+      // CORS_ORIGIN default is wildcard
+      expect(DEFAULTS.CORS_ORIGIN).toBe("*");
     });
 
     it("should have sensible rate limit defaults", () => {
