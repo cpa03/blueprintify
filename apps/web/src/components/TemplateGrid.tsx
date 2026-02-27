@@ -1,3 +1,27 @@
+/**
+ * Template Grid Component
+ *
+ * Displays a grid of starter templates that users can select
+ * to pre-populate the wizard with predefined project configurations.
+ * Templates include various tech stacks and feature combinations.
+ *
+ * Features:
+ * - Grid display of available templates
+ * - Template preview on hover/focus
+ * - Keyboard navigation support
+ * - Loading state with animation
+ * - Toast notification on template selection
+ *
+ * @module components/TemplateGrid
+ * @see {@link STARTER_TEMPLATES} - Available template definitions
+ * @see {@link useWizardStore} - Wizard state management
+ *
+ * @example
+ * ```tsx
+ * <TemplateGrid />
+ * ```
+ */
+
 import { useState, memo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { STARTER_TEMPLATES } from "@blueprint/shared";

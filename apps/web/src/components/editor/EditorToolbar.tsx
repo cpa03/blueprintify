@@ -1,3 +1,29 @@
+/**
+ * Editor Toolbar Component
+ *
+ * Provides toolbar actions for the split-pane editor including:
+ * view mode switching (edit/preview/split), copy to clipboard,
+ * export as ZIP, and new project creation.
+ *
+ * @module components/editor/EditorToolbar
+ * @see {@link EditorTab} - Tab types (blueprint/tasks)
+ * @see {@link ViewMode} - View mode types
+ *
+ * @example
+ * ```tsx
+ * <EditorToolbar
+ *   activeTab="blueprint"
+ *   viewMode="split"
+ *   setViewMode={(mode) => {}}
+ *   onCopy={() => {}}
+ *   onExport={() => {}}
+ *   onNew={() => {}}
+ *   hasContent={true}
+ *   copied={null}
+ * />
+ * ```
+ */
+
 import React from "react";
 import clsx from "clsx";
 import { motion } from "framer-motion";

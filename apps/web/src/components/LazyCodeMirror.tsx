@@ -1,3 +1,28 @@
+/**
+ * Lazy CodeMirror Component
+ *
+ * Lazy-loads the CodeMirror editor for better initial page load performance.
+ * Provides syntax-highlighted markdown editing with real-time content updates.
+ *
+ * @module components/LazyCodeMirror
+ * @see {@link ReactCodeMirrorProps} - CodeMirror props interface
+ *
+ * @param {LazyCodeMirrorProps} props - Component props
+ * @param {string} props.value - Editor content
+ * @param {(value: string) => void} props.onChange - Content change callback
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Lazy-loaded CodeMirror editor
+ *
+ * @example
+ * ```tsx
+ * <LazyCodeMirror
+ *   value="# My Blueprint\n\n## Tasks"
+ *   onChange={(content) => console.log(content)}
+ *   className="h-96"
+ * />
+ * ```
+ */
+
 import { useState, useEffect, memo } from "react";
 import type { Extension } from "@codemirror/state";
 import type {
