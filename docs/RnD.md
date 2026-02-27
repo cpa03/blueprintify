@@ -58,6 +58,48 @@ Deliver small, safe, measurable improvements strictly inside the domain of this 
 
 ## Past Improvements
 
+### 2026-02-27
+
+**Issue**: #1111 - CI/CD Workflow Invalid GitHub Actions Versions @v5
+
+**Changes**:
+
+- Replaced all `actions/checkout@v5` with `@v4` (main.yml: 9x, iterate.yml: 5x)
+- Replaced all `actions/cache@v5` with `@v4` (iterate.yml: 5x)
+- Total: 19 @v5 references replaced with @v4
+
+**Files Modified**:
+
+- `.github/workflows/main.yml`
+- `.github/workflows/iterate.yml`
+
+**Verification**:
+
+- YAML syntax: PASS (validated with Python yaml parser)
+- Note: Could not push workflow changes due to GitHub App permission limitation
+
+**Status**: PR created (#1151) - requires manual workflow file update due to GitHub App limitations
+
+### 2026-02-26
+
+**Issue**: #1088 - No Secrets Detection in CI
+
+**Changes**:
+
+- Added gitleaks-action to pr-gatekeeper workflow
+- Added STAGE 2: SECRETS DETECTION before security engineer stage
+- Updated subsequent stage numbers (3→4, 4→5)
+
+**Files Modified**:
+
+- `.github/workflows/pr-gatekeeper.yml`
+
+**Verification**:
+
+- Typecheck: PASS
+- Lint: PASS
+- YAML validation: PASS
+
 ### 2026-02-26
 
 **Issue**: #1088 - No Secrets Detection in CI
