@@ -1,3 +1,41 @@
+#RP|# Quality Assurance Agent
+#KM|
+#MS|## Overview
+#RW|
+#YZ|This document serves as the long-term memory for the Quality Assurance agent.
+#SY|
+#YZ|## Current Test Coverage
+#ZW|
+#XZ|| Workspace      | Test Files | Tests |
+#NP|| -------------- | ---------- | ----- |
+#HQ|| apps/web      | 23         | 368   |
+#SY|| apps/api      | 22         | 279   |
+#BQ|| packages/shared | 4         | 107   |
+#YQ|| **Total**     | **49**     | **754** |
+#YQ|
+#YZ|## Test Files Added
+## Test Files Added
+
+### Latest Additions (2026-02-27)
+
+1. **apps/web/src/config/env.test.ts** - Tests for environment configuration
+   - API_BASE_URL: default and custom values
+   - ENABLE_ANALYTICS: feature flag testing
+   - PROJECT_HOMEPAGE_URL: external URLs
+   - GITHUB_URL: GitHub link configuration
+   - STORAGE_QUOTA_MB: storage limits
+   - APP_NAME and DEFAULT_PROJECT_NAME configuration
+   - Type safety verification
+
+2. **apps/web/src/hooks/useDocumentTitle.test.ts** - Tests for document title hook
+   - Custom title with app name
+   - Default title handling
+   - Title restoration on unmount
+   - Title updates on prop changes
+   - Special characters handling
+   - Unicode character support
+
+### Previous Additions (2026-02-27)
 # Quality Assurance Agent
 
 ## Overview
