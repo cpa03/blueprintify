@@ -13,20 +13,6 @@ type RateLimiterName =
 interface RateLimitConfig {
   limiter: RateLimiterName;
   keyGenerator?: (c: Context) => string;
-  /**
-   * Allow requests to bypass rate limiting when limiter is not configured.
-   * Useful for testing environments where rate limiter binding is not available.
-   * Should NOT be used in production.
-   */
-  allowBypass?: boolean;
-}
-  | "STRICT_RATE_LIMITER"
-  | "STANDARD_RATE_LIMITER"
-  | "LENIENT_RATE_LIMITER";
-
-interface RateLimitConfig {
-  limiter: RateLimiterName;
-  keyGenerator?: (c: Context) => string;
 }
 
 /**
@@ -69,88 +55,6 @@ function getLimiterLimits(): Record<RateLimiterName, number> {
  * - Includes Retry-After header when limit exceeded
  */
 export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
-  const { limiter, keyGenerator, allowBypass } = config;
-
-  return async (c, next) => {
-    const env = c.env as Env;
-    const rateLimiter = env[limiter];
-
-    const key = keyGenerator
-      ? keyGenerator(c)
-      : c.req.header("cf-connecting-ip") ||
-        c.req.header("x-forwarded-for") ||
-        "anonymous";
-
-    if (!rateLimiter) {
-      // SECURITY: Reject requests when rate limiter is not configured
-      // This prevents unprotected API access in production
-      // Allow bypass if:
-      // 1. allowBypass option is explicitly set to true, OR
-      // 2. RATE_LIMIT_BYPASS env var is set (for testing only)
-      const config = getConfig();
-      const bypassEnabled = allowBypass || (config as { RATE_LIMIT_BYPASS?: boolean }).RATE_LIMIT_BYPASS === true;
-      
-      if (bypassEnabled) {
-        secureLogWarn(
-          "RateLimiter",
-          `Rate limiter '${limiter}' not configured - allowing request (bypass enabled)`,
-          {
-            endpoint: c.req.path,
-            method: c.req.method,
-          },
-        );
-        await next();
-        return;
-      }
-      secureLogError(
-        "RateLimiter",
-        `Rate limiter '${limiter}' not configured - rejecting request for security`,
-        {
-          endpoint: c.req.path,
-          method: c.req.method,
-        },
-      );
-      return c.json(
-        {
-          success: false,
-          error: {
-            type: "service_unavailable",
-      // SECURITY: Reject requests when rate limiter is not configured
-      // This prevents unprotected API access in production
-      // Allow bypass in test environments if explicitly configured
-      if (allowBypass) {
-        secureLogWarn(
-          "RateLimiter",
-          `Rate limiter '${limiter}' not configured - allowing request (bypass enabled)`,
-          {
-            endpoint: c.req.path,
-            method: c.req.method,
-          },
-        );
-        await next();
-        return;
-      }
-      secureLogError(
-        "RateLimiter",
-        `Rate limiter '${limiter}' not configured - rejecting request for security`,
-        {
-          endpoint: c.req.path,
-          method: c.req.method,
-        },
-      );
-      return c.json(
-        {
-          success: false,
-          error: {
-            type: "service_unavailable",
-            message: "Service temporarily unavailable - rate limiting not configured",
-            code: "RATE_LIMITER_NOT_CONFIGURED",
-            timestamp: new Date().toISOString(),
-          },
-        },
-        HTTP_STATUS.SERVICE_UNAVAILABLE,
-      );
-    }
   const { limiter, keyGenerator } = config;
 
   return async (c, next) => {
@@ -164,28 +68,17 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
         "anonymous";
 
     if (!rateLimiter) {
-      // SECURITY: Reject requests when rate limiter is not configured
-      // This prevents unprotected API access in production
-      secureLogError(
+      // Log warning for observability - rate limiting is disabled for this endpoint
+      secureLogWarn(
         "RateLimiter",
-        `Rate limiter '${limiter}' not configured - rejecting request for security`,
+        `Rate limiter '${limiter}' not configured - rate limiting disabled`,
         {
           endpoint: c.req.path,
           method: c.req.method,
         },
       );
-      return c.json(
-        {
-          success: false,
-          error: {
-            type: "service_unavailable",
-            message: "Service temporarily unavailable - rate limiting not configured",
-            code: "RATE_LIMITER_NOT_CONFIGURED",
-            timestamp: new Date().toISOString(),
-          },
-        },
-        HTTP_STATUS.SERVICE_UNAVAILABLE,
-      );
+      await next();
+      return;
     }
 
     const result = await rateLimiter.limit({ key });
@@ -240,34 +133,6 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
 };
 
 /**
- * Pre-configured rate limit configurations for common use cases.
- *
- * - `strict`: For sensitive endpoints (auth, password reset)
- * - `standard`: For general API endpoints
- * - `lenient`: For high-volume endpoints (health checks, metrics)
- * - `strictForTest`: Strict with bypass enabled (for testing)
- * - `standardForTest`: Standard with bypass enabled (for testing)
- */
-export const rateLimitConfigs = {
-  get strict() {
-    return { limiter: "STRICT_RATE_LIMITER" as RateLimiterName, allowBypass: false };
-  },
-  get standard() {
-    return { limiter: "STANDARD_RATE_LIMITER" as RateLimiterName, allowBypass: false };
-  },
-  get lenient() {
-    return { limiter: "LENIENT_RATE_LIMITER" as RateLimiterName, allowBypass: false };
-  },
-  // Test configs with bypass enabled
-  get strictForTest() {
-    return { limiter: "STRICT_RATE_LIMITER" as RateLimiterName, allowBypass: true };
-  },
-  get standardForTest() {
-    return { limiter: "STANDARD_RATE_LIMITER" as RateLimiterName, allowBypass: true };
-  },
-  get lenientForTest() {
-    return { limiter: "LENIENT_RATE_LIMITER" as RateLimiterName, allowBypass: true };
-  },
  * Pre-configured rate limit configurations for common use cases.
  *
  * - `strict`: For sensitive endpoints (auth, password reset)

@@ -14,6 +14,7 @@ import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { secureLogError } from "../utils/secureLog";
 import { IMPORT_CONFIG, HTTP_STATUS } from "../config/constants";
+import { sanitizeBlueprintContent } from "../utils/sanitize";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -60,12 +61,18 @@ app.post(
             );
           }
 
+          // Sanitize imported content to prevent XSS attacks
+          const sanitizedBlueprint = sanitizeBlueprintContent(parsed.blueprint || "");
+          const sanitizedTasks = parsed.tasks
+            ? sanitizeBlueprintContent(parsed.tasks)
+            : undefined;
+
           return c.json({
             success: true,
             data: {
               projectName: parsed.projectName,
-              blueprint: parsed.blueprint,
-              tasks: parsed.tasks,
+              blueprint: sanitizedBlueprint,
+              tasks: sanitizedTasks,
               importedAt: new Date().toISOString(),
               overwrite,
               warnings: warnings.length > 0 ? warnings : undefined,
@@ -118,12 +125,16 @@ app.post(
           );
         }
 
+        // Sanitize imported content to prevent XSS attacks
+        const sanitizedBlueprint = sanitizeBlueprintContent(blueprint);
+        const sanitizedTasks = tasks ? sanitizeBlueprintContent(tasks) : undefined;
+
         return c.json({
           success: true,
           data: {
             projectName,
-            blueprint,
-            tasks,
+            blueprint: sanitizedBlueprint,
+            tasks: sanitizedTasks,
             importedAt: new Date().toISOString(),
             overwrite,
             warnings: warnings.length > 0 ? warnings : undefined,
