@@ -157,5 +157,20 @@ KR|- **PR Created**: #1135
   - Lint: ✅ PASS
   - Tests: ✅ 340 passed
   - Build: ✅ PASS
-- **PR Created**: #1150 (linked to issue #1115)
-- **CI Status**: Vercel/Workers checks failed due to rate limiting (infrastructure issue, not code)
+NT|- **CI Status**: Vercel/Workers checks failed due to rate limiting (infrastructure issue, not code)
+
+### 2026-02-27 (Continued)
+
+PQ|- **Issue #1164**: Add frontend unhandled rejection handler
+YK|- **Changes**:
+  - Added `unhandledrejection` event handler to catch Promise rejections
+  - Added `error` event handler to catch uncaught JavaScript errors
+  - DEV-mode only logging to reduce production noise
+  - Added `event.preventDefault()` to prevent cryptic browser errors
+YK|- **Verification**:
+  - Typecheck: ✅ PASS
+  - Tests: ✅ 340 passed
+  - Build: ✅ PASS
+  - Lint: ✅ PASS
+JK|- **PR Created**: #1184 (linked to issue #1164)
+KV|- **Lesson Learned**: When editing main.tsx or any critical entry point, always use write tool for complete file rewrite rather than incremental edits to avoid corruption
