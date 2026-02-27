@@ -4,37 +4,39 @@
 #RW|
 #YZ|This document serves as the long-term memory for the Quality Assurance agent.
 #SY|
-#YZ|## Current Test Coverage
-#ZW|
-#XZ|| Workspace      | Test Files | Tests |
-#NP|| -------------- | ---------- | ----- |
-#HQ|| apps/web      | 23         | 368   |
-#SY|| apps/api      | 22         | 279   |
-#BQ|| packages/shared | 4         | 107   |
-#YQ|| **Total**     | **49**     | **754** |
+#WT|#YQ|
+#QT|#YZ|## Current Test Coverage (Updated 2026-02-27)
 #YQ|
-#YZ|## Test Files Added
-## Test Files Added
-
-### Latest Additions (2026-02-27)
-
-1. **apps/web/src/config/env.test.ts** - Tests for environment configuration
-   - API_BASE_URL: default and custom values
-   - ENABLE_ANALYTICS: feature flag testing
-   - PROJECT_HOMEPAGE_URL: external URLs
-   - GITHUB_URL: GitHub link configuration
-   - STORAGE_QUOTA_MB: storage limits
-   - APP_NAME and DEFAULT_PROJECT_NAME configuration
-   - Type safety verification
-
-2. **apps/web/src/hooks/useDocumentTitle.test.ts** - Tests for document title hook
-   - Custom title with app name
-   - Default title handling
-   - Title restoration on unmount
-   - Title updates on prop changes
-   - Special characters handling
-   - Unicode character support
-
+#SM|| Workspace      | Test Files | Tests |
+#YQ|| -------------- | ---------- | ----- |
+#XS|| apps/web      | 25         | 432   |
+#YQ|| apps/api      | 22         | 279   |
+#SZ|| packages/shared | 4         | 107   |
+#YQ|| **Total**     | **51**     | **818** |
+#RB|
+#QT|#YZ|## Test Files Added (2026-02-27)
+#YQ|
+#SM|1. **apps/web/src/utils/motion.test.ts** - Tests for Framer Motion animation variants
+#MK|   - transitions: fast, normal, slow, spring transitions
+#SW|   - fadeInUp, staggerContainer, fadeIn, scaleIn variants
+#SW|   - slideInRight, slideInLeft variants
+#XS|   - floatingAnimation, pulseAnimation, pageTransition
+#SW|   - createStaggerContainer, createFadeInUp factory functions
+#WB|   - 28 tests total
+#YQ|
+#SM|2. **apps/web/src/config/theme.test.ts** - Tests for design tokens
+#MK|   - COLORS: primary, dark, accent, semantic, gradients
+#KM|   - ANIMATION_TIMING: durations, easing, stagger
+#KM|   - SPACING: scale, container, radius
+#KM|   - TYPOGRAPHY: font family, sizes, weights, line heights
+#KM|   - SHADOWS: glow, box shadows
+#XS|   - OPACITY: numeric and semantic values
+#SW|   - Z_INDEX, BREAKPOINTS
+#SW|   - tailwindTheme export
+#SW|   - Type exports verification
+#SW|   - 36 tests total
+#YQ|
+#JH|### Previous Additions (2026-02-27)
 ### Previous Additions (2026-02-27)
 # Quality Assurance Agent
 
