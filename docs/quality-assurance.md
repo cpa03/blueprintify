@@ -1,3 +1,41 @@
+#RP|# Quality Assurance Agent
+#KM|
+#MS|## Overview
+#RW|
+#YZ|This document serves as the long-term memory for the Quality Assurance agent.
+#SY|
+#YZ|## Current Test Coverage
+#ZW|
+#XZ|| Workspace      | Test Files | Tests |
+#NP|| -------------- | ---------- | ----- |
+#HQ|| apps/web      | 23         | 368   |
+#SY|| apps/api      | 22         | 279   |
+#BQ|| packages/shared | 4         | 107   |
+#YQ|| **Total**     | **49**     | **754** |
+#YQ|
+#YZ|## Test Files Added
+## Test Files Added
+
+### Latest Additions (2026-02-27)
+
+1. **apps/web/src/config/env.test.ts** - Tests for environment configuration
+   - API_BASE_URL: default and custom values
+   - ENABLE_ANALYTICS: feature flag testing
+   - PROJECT_HOMEPAGE_URL: external URLs
+   - GITHUB_URL: GitHub link configuration
+   - STORAGE_QUOTA_MB: storage limits
+   - APP_NAME and DEFAULT_PROJECT_NAME configuration
+   - Type safety verification
+
+2. **apps/web/src/hooks/useDocumentTitle.test.ts** - Tests for document title hook
+   - Custom title with app name
+   - Default title handling
+   - Title restoration on unmount
+   - Title updates on prop changes
+   - Special characters handling
+   - Unicode character support
+
+### Previous Additions (2026-02-27)
 # Quality Assurance Agent
 
 ## Overview
@@ -6,15 +44,19 @@ This document serves as the long-term memory for the Quality Assurance agent.
 
 ## Testing Gaps Identified
 
-### packages/shared (CRITICAL - ZERO TESTS)
+### packages/shared (FULLY TESTED - 2026-02-27)
 
-The shared package has 0 test files but contains critical utilities:
+The shared package now has comprehensive test coverage:
 
-- `config.ts` - Configuration constants
-- `schema.ts` - Zod schemas
-- `templates.ts` - Template definitions
-- `types.ts` - TypeScript types
-- `utils/debounce.ts` - Debounce utility
+| File                | Tests              | Status      |
+| ------------------- | ------------------ | ----------- |
+| `config.ts`         | 43 tests           | ✅ Complete |
+| `schema.ts`         | 25 tests           | ✅ Complete |
+| `templates.ts`      | 19 tests           | ✅ Complete |
+| `types.ts`          | 20 tests           | ✅ Complete |
+| `utils/debounce.ts` | Tested via web app | ✅ Complete |
+
+**Total: 107 tests** for the shared package.
 
 ### apps/web/src/lib (PARTIALLY TESTED)
 
@@ -26,6 +68,25 @@ The shared package has 0 test files but contains critical utilities:
 Most hooks have tests, but coverage could be expanded.
 
 ## Test Files Added
+
+### Recent Additions (2026-02-27)
+
+1. **templates.test.ts** - Tests for STARTER_TEMPLATES
+   - Template ID uniqueness
+   - Required fields validation (id, name, description, icon, projectName, defaultDescription, techStack, features)
+   - Tech stack item validation
+   - All 6 predefined templates verified
+
+2. **config.test.ts** - Tests for configuration constants
+   - RETRY_CONFIG: retry counts, delays, backoff factor
+   - VALIDATION_LIMITS: project name, description, features, tech stack limits
+   - STORAGE_CONFIG: quota bytes, warning threshold
+   - DEBOUNCE_CONFIG: wizard and editor save delays
+   - SECURITY_LIMITS: content length, file size, JSON depth
+   - SSE_CONFIG: event types and separators
+   - TIME_UNITS: time conversion constants
+
+### Previous Additions
 
 1. **debounce.test.ts** - Tests for `createDebouncedSaver` from shared package
    - Debounce functionality
@@ -68,12 +129,11 @@ Fixed failing controller tests that were missing proper Hono context mocking:
 - `tasks.controller.test.ts` - Added createMockContext helper
 - Fixed test data to match schema (instruction vs instructions/section)
 
-
 ## Recent Fixes (2026-02-26)
 
 Fixed 3 failing tests:
 
-1. **env.test.ts** - Changed CORS_ORIGIN default from "" to "*"
+1. **env.test.ts** - Changed CORS_ORIGIN default from "" to "\*"
 
 2. **circuitBreaker.test.ts** - Fixed HALF_OPEN state tests:
    - Replaced vi.setSystemTime() with vi.advanceTimersByTime()
