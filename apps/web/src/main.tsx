@@ -14,8 +14,11 @@ const MotionConfigWrapper = lazy(() => import("./components/MotionConfigWrapper"
 
 // Global error handlers for uncaught errors and unhandled Promise rejections
 window.addEventListener("unhandledrejection", (event) => {
-  console.error("Unhandled Promise rejection:", event.reason);
-  // Optionally report to Sentry: Sentry.captureException(event.reason);
+  if (import.meta.env.DEV) {
+    console.error("[Unhandled Rejection] Promise rejected:", event.reason);
+  }
+  // Prevent the default browser behavior (which shows a cryptic error in console)
+  event.preventDefault();
 });
 
 window.addEventListener("error", (event) => {
@@ -24,16 +27,6 @@ window.addEventListener("error", (event) => {
 });
 
 const rootElement = document.getElementById("root");
-
-// Handle unhandled promise rejections to prevent silent crashes
-window.addEventListener("unhandledrejection", (event) => {
-  if (import.meta.env.DEV) {
-    console.error("[Unhandled Rejection] Promise rejected:", event.reason);
-  }
-  // Prevent the default browser behavior (which shows a cryptic error in console)
-  event.preventDefault();
-});
-
 if (!rootElement) {
   throw new Error("Root element not found");
 }
