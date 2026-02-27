@@ -1,6 +1,22 @@
+/**
+ * @fileoverview Circular progress indicator component with animated stroke.
+ *
+ * This component provides a circular progress indicator with:
+ * - Animated SVG stroke showing progress
+ * - Optional percentage display
+ * - Customizable colors and sizes
+ * - Accessibility support with ARIA attributes
+ *
+ * @module components/CircularProgress
+ */
+
 import { memo } from "react";
 import { motion } from "framer-motion";
 import { PROGRESS_COLORS } from "../config/constants";
+
+/**
+ * Props for the CircularProgress component.
+ */
 
 interface CircularProgressProps {
   value: number;
@@ -13,6 +29,34 @@ interface CircularProgressProps {
   trackColor?: string;
   ariaLabel?: string;
 }
+
+/**
+ * Circular progress indicator with animated SVG stroke.
+ *
+ * @param props - Component props
+ * @param props.value - Progress value (0-100)
+ * @param props.size - Diameter of the circle in pixels (default: 40)
+ * @param props.strokeWidth - Width of the progress stroke (default: 3)
+ * @param props.animationDuration - Animation duration in seconds (default: 0.8)
+ * @param props.className - Additional CSS classes
+ * @param props.showPercentage - Whether to show percentage text (default: false)
+ * @param props.color - Progress stroke color (default: primary active color)
+ * @param props.trackColor - Background track color (default: transparent white)
+ * @param props.ariaLabel - Custom accessibility label
+ * @returns The rendered circular progress indicator
+ *
+ * @example
+ * // Basic usage
+ * <CircularProgress value={50} />
+ *
+ * @example
+ * // With percentage display
+ * <CircularProgress value={75} showPercentage={true} size={60} />
+ *
+ * @example
+ * // Custom colors
+ * <CircularProgress value={100} color="#10B981" trackColor="#1F2937" />
+ */
 
 function CircularProgressComponent({
   value,

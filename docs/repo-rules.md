@@ -130,13 +130,7 @@ Every significant feature must include:
 - Completed Tasks: `docs/completed-tasks-YYYY-QX.md`
 - Features: `docs/features.md`
 
-## Task Lifecycle Management
 
-- User guides: `docs/user-guide.md`
-- API docs: `docs/api-documentation.md`
-- Architecture: `docs/blueprint.md`
-- Features: `docs/features.md`
-PX|
 ## Task Lifecycle Management
 
 This section defines how tasks are tracked, organized, and archived.

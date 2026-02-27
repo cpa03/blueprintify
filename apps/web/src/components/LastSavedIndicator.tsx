@@ -1,11 +1,46 @@
+/**
+ * @fileoverview Last saved indicator component showing save status.
+ *
+ * This component displays:
+ * - Saved status with checkmark icon
+ * - Unsaved changes indicator with pulsing dot
+ * - Animated transitions between states
+ * - Accessibility support with aria-live
+ *
+ * @module components/LastSavedIndicator
+ */
+
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+
+/**
+ * Props for the LastSavedIndicator component.
+ */
 
 interface LastSavedIndicatorProps {
   text: string;
   isVisible: boolean;
   hasChanges?: boolean;
 }
+
+/**
+ * Indicator showing the last saved timestamp or unsaved changes status.
+ * Displays a checkmark with the saved text or a pulsing dot for unsaved changes.
+ *
+ * @param props - Component props
+ * @param props.text - Text to display when content is saved (e.g., "Last saved: 2:30 PM")
+ * @param props.isVisible - Whether the indicator should be visible
+ * @param props.hasChanges - Whether there are unsaved changes (default: false)
+ * @returns The rendered save status indicator
+ *
+ * @example
+ * // Saved state
+ * <LastSavedIndicator text="Last saved: 2:30 PM" isVisible={true} hasChanges={false} />
+ *
+ * @example
+ * // Unsaved changes state
+ * <LastSavedIndicator text="Last saved: 2:30 PM" isVisible={true} hasChanges={true} />
+ */
 
 export const LastSavedIndicator = React.memo(function LastSavedIndicator({
   text,

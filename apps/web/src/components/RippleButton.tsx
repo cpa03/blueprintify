@@ -1,3 +1,31 @@
+/**
+ * Ripple Button Component
+ *
+ * A button component with ripple effect animation on click.
+ * Provides accessible button functionality with motion preferences support.
+ *
+ * @module components/RippleButton
+ * @see {@link RIPPLE_CONFIG} - Ripple animation configuration
+ * @see {@link useReducedMotion} - Reduced motion preference hook
+ *
+ * @param {RippleButtonProps} props - Component props
+ * @param {ReactNode} props.children - Button content
+ * @param {(e: MouseEvent) => void} [props.onClick] - Click handler
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {boolean} [props.disabled] - Disabled state
+ * @param {"button"|"submit"|"reset"} [props.type] - Button type
+ * @param {string} [props.ariaLabel] - ARIA label for accessibility
+ * @param {string} [props.title] - Tooltip title
+ * @returns {JSX.Element} Button with ripple effect
+ *
+ * @example
+ * ```tsx
+ * <RippleButton onClick={() => console.log('clicked')}>
+ *   Click Me
+ * </RippleButton>
+ * ```
+ */
+
 import {
   useState,
   useCallback,

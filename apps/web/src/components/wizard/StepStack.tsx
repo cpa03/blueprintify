@@ -1,3 +1,26 @@
+/**
+ * Step 2: Technology Stack Selection
+ *
+ * Second step in the 5-step wizard for selecting the technology stack.
+ * Allows users to choose frontend frameworks, backend languages, databases,
+ * and development tools for their project.
+ *
+ * Features:
+ * - Category-based chip selection (Frontend, Backend, Database, Tools)
+ * - Minimum selection requirements per category
+ * - Visual feedback for selections with animations
+ * - Grouped display by category with icons
+ *
+ * @module components/wizard/StepStack
+ * @see {@link TECH_STACK_OPTIONS} - Available tech stack options
+ * @see {@link useWizardStore} - Wizard state management
+ *
+ * @example
+ * ```tsx
+ * <StepStack />
+ * ```
+ */
+
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useCallback, memo } from "react";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared";

@@ -1,7 +1,24 @@
+/**
+ * @fileoverview Tooltip component with accessible hover and focus interactions.
+ *
+ * This component provides:
+ * - Hover and keyboard-triggered tooltip display
+ * - Configurable position (top, bottom, left, right)
+ * - Configurable show delay
+ * - Accessibility support with ARIA attributes
+ * - Platform-aware keyboard shortcut tooltips
+ *
+ * @module components/Tooltip
+ */
+
 import { useState, useCallback, useRef, ReactNode, useId, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TOOLTIP_CONFIG } from "../config/constants";
 
+
+/**
+ * Props for the Tooltip component.
+ */
 
 interface TooltipProps {
   children: ReactNode;
@@ -27,6 +44,31 @@ const arrowClasses = {
   right:
     "right-full top-1/2 -translate-y-1/2 -mr-1 border-t-transparent border-b-transparent border-l-transparent",
 } as const;
+
+/**
+ * Tooltip component that displays additional information on hover or focus.
+ * Shows content in a positioned bubble with arrow pointer.
+ *
+ * @param props - Component props
+ * @param props.children - Trigger element that shows tooltip on hover/focus
+ * @param props.content - Content to display in the tooltip
+ * @param props.position - Tooltip position relative to children (default: "top")
+ * @param props.delay - Delay before showing tooltip in ms (default: from config)
+ * @param props.id - Custom ID for the tooltip element
+ * @returns The rendered tooltip with trigger element
+ *
+ * @example
+ * // Basic usage
+ * <Tooltip content="Helpful information">
+ *   <Button>Hover me</Button>
+ * </Tooltip>
+ *
+ * @example
+ * // Positioned tooltip
+ * <Tooltip content="Tooltip on the right" position="right">
+ *   <IconButton icon={<Info />} />
+ * </Tooltip>
+ */
 
 const TooltipComponent = ({
   children,
@@ -105,6 +147,10 @@ const TooltipComponent = ({
 
 export const Tooltip = memo(TooltipComponent);
 
+/**
+ * Props for the KeyboardShortcutTooltip component.
+ */
+
 interface KeyboardShortcutTooltipProps {
   children: ReactNode;
   shortcut: string;
@@ -112,6 +158,31 @@ interface KeyboardShortcutTooltipProps {
   position?: "top" | "bottom" | "left" | "right";
   modifier?: "cmd" | "ctrl" | "none";
 }
+
+/**
+ * Tooltip component specifically for displaying keyboard shortcuts.
+ * Automatically shows platform-appropriate modifier keys (Cmd on Mac, Ctrl on Windows/Linux).
+ *
+ * @param props - Component props
+ * @param props.children - Trigger element
+ * @param props.shortcut - Keyboard shortcut key (e.g., "E", "Enter")
+ * @param props.description - Optional description text
+ * @param props.position - Tooltip position (default: "top")
+ * @param props.modifier - Modifier key type: "cmd" (auto-detect), "ctrl" (always show Ctrl), "none" (no modifier)
+ * @returns The rendered keyboard shortcut tooltip
+ *
+ * @example
+ * // Basic usage
+ * <KeyboardShortcutTooltip shortcut="E">
+ *   <Button>Toggle Editor</Button>
+ * </KeyboardShortcutTooltip>
+ *
+ * @example
+ * // With description
+ * <KeyboardShortcutTooltip shortcut="S" description="Save document">
+ *   <Button>Save</Button>
+ * </KeyboardShortcutTooltip>
+ */
 
 function KeyboardShortcutTooltipComponent({
   children,

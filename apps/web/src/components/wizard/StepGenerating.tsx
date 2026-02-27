@@ -1,3 +1,27 @@
+/**
+ * Step 5: Generation Progress
+ *
+ * Final step in the 5-step wizard that displays AI generation progress.
+ * Shows real-time streaming of blueprint and task content with progress
+ * indicators and line counts.
+ *
+ * Features:
+ * - Real-time progress percentage display
+ * - Animated line count counters
+ * - Live content preview (truncated)
+ * - Cancel generation button
+ * - Success celebration animation on completion
+ *
+ * @module components/wizard/StepGenerating
+ * @see {@link useEditorStore} - Editor state management
+ * @see {@link useWizardStore} - Wizard state management
+ *
+ * @example
+ * ```tsx
+ * <StepGenerating />
+ * ```
+ */
+
 import { motion } from "framer-motion";
 import { memo, useCallback } from "react";
 import { useEditorStore } from "../../store";

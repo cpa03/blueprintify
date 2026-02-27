@@ -1,3 +1,15 @@
+/**
+ * @fileoverview Empty state display for the editor before content is generated.
+ *
+ * This component displays:
+ * - Animated floating document icons representing the wizard flow
+ * - Progress indicator showing current wizard step
+ * - Call-to-action message encouraging users to complete the wizard
+ * - Current step information
+ *
+ * @module components/EditorEmptyState
+ */
+
 import { motion } from "framer-motion";
 import { useWizardStore } from "../store";
 import { WIZARD_STEPS, UI_EMOJIS } from "../config/constants";
@@ -7,6 +19,16 @@ import {
   floatingAnimation,
   pulseAnimation,
 } from "../utils/motion";
+
+/**
+ * Empty state display shown in the editor when no content has been generated.
+ * Displays animated documents and wizard progress to encourage users to complete the wizard flow.
+ *
+ * @returns The rendered empty state with animated elements and progress indicator
+ *
+ * @example
+ * <EditorEmptyState />
+ */
 
 export function EditorEmptyState(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
