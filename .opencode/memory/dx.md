@@ -172,20 +172,24 @@ npm run typecheck  # TypeScript check
 npm run lint       # ESLint check
 npm run test:all   # All tests
 npm run build      # Production build
-```
-
 ## Known Limitations
 
 1. **Workflow Permissions**: GitHub App cannot create/update workflow files without `workflows` permission
    - Issue #743 (CI workflow fixes) is blocked until permission is granted or manual fix is applied
-   - Required fixes: rename `on pull.yml` to `on-pull.yml`, normalize CRLF→LF, update runner to `ubuntu-24.04-arm`, fix action versions from `@v6` to `@v4`
+   - Required fixes: rename `on pull.yml` to `on-pull.yml`, normalize CRLF→LF, update runner to `ubuntu-24.04-arm`, fix action versions from `@v5` to `@v4`
    - Workaround: Manual PR from human contributor with workflow permissions, or repo admin must grant `workflows` permission to GitHub App
+
 2. **CRLF Line Endings**: Some files in the repo (particularly `.github/workflows/*.yml`) were committed with CRLF
    - `.gitattributes` with `* text=auto` will auto-convert to LF on checkout
    - This causes "modified" status even after `git reset --hard` due to working directory normalization
-   - Fix: The files need to be re-committed with LF line endings (requires workflow permission for .yml files)
 3. **Security Vulnerabilities**: ajv package has known vulnerabilities (upstream fix required)
 4. **Lint Warnings**: 8 unused type imports in db test file (PR #575 addresses this)
+## Recently Completed (2026-02-27)
+
+- [x] Documented GitHub Actions Invalid Versions issue (#1180)
+  - Required fix: Update `main.yml` and `iterate.yml` to use `@v4` instead of `@v5`
+  - Cannot apply fix directly - GitHub App lacks `workflows` permission
+  - Needs human intervention or permission grant to merge fix
 
 ## Troubleshooting Guide
 
