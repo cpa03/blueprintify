@@ -25,6 +25,15 @@ window.addEventListener("error", (event) => {
 
 const rootElement = document.getElementById("root");
 
+// Handle unhandled promise rejections to prevent silent crashes
+window.addEventListener("unhandledrejection", (event) => {
+  if (import.meta.env.DEV) {
+    console.error("[Unhandled Rejection] Promise rejected:", event.reason);
+  }
+  // Prevent the default browser behavior (which shows a cryptic error in console)
+  event.preventDefault();
+});
+
 if (!rootElement) {
   throw new Error("Root element not found");
 }
