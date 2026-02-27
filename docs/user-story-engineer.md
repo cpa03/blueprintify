@@ -1,5 +1,45 @@
 # User Story Engineer - Long-term Memory
 
+## Session 2026-02-27 (Sixth Task)
+
+### Task Completed
+
+- Issue #1100: VALIDATION_LIMITS Imported But Not Applied to Schemas
+- PR: https://github.com/cpa03/blueprintify/pull/1194
+
+### Approach
+
+1. Checked for existing user-story-engineer PRs - none open with label
+2. Reviewed open issues to find small, well-scoped improvements
+3. Selected Issue #1100 (VALIDATION_LIMITS not applied to schemas)
+4. Applied VALIDATION_LIMITS to:
+   - TechStackItem.features - added per-item max (100 chars)
+   - BlueprintRequestSchema.features - added per-item max (100 chars)
+   - TemplateSchema.id - changed from hardcoded 50 to VALIDATION_LIMITS.PROJECT_NAME.MAX
+   - TemplateSchema.icon - changed from hardcoded 50 to VALIDATION_LIMITS.PROJECT_NAME.MAX
+   - ExportRequestSchema.projectName - added max validation (100 chars)
+   - ExportRequestSchema.blueprint - added max validation (20000 chars)
+5. Verified with lint, build, and tests (840 total)
+6. Created PR with user-story-engineer label
+
+### Lessons Learned
+
+- VALIDATION_LIMITS config is centralized in packages/shared/src/config.ts
+- Features arrays needed per-item max validation (not just array length)
+- Hardcoded values like 50 should be replaced with config constants
+- Blueprint content can be longer than descriptions - used DESCRIPTION_MAX * 10 for blueprint
+
+### Success Criteria
+
+- [x] Branch: agent/user-story-engineer
+- [x] Quality: All checks pass (lint ✅, build ✅, 840 tests ✅)
+- [x] Scope: Minimal change (6 lines modified in schema.ts)
+- [x] PR: Created with label
+
+---
+
+# User Story Engineer - Long-term Memory
+
 ## Session 2026-02-27 (Fifth Task)
 
 ### Task Completed
