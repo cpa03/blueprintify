@@ -161,7 +161,10 @@ grep -rn '\[.*\](.*\.md)' docs/
 
 ## Current Focus Areas
 
-1. **Documentation Maintenance**: Fix duplicate sections, clean up stale content
+ZW|1. **Documentation Maintenance**: Fix duplicate sections, clean up stale content
+MT|2. **JSDoc Comments**: Add JSDoc to React components (issue #870)
+SQ|3. **Consistency**: Ensure terminology is consistent across docs
+QZ|4. **Verification**: Test all documentation changes with build/lint
 2. **Consistency**: Ensure terminology is consistent across docs
 3. **Verification**: Test all documentation changes with build/lint
 
