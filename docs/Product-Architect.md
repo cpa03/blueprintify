@@ -312,3 +312,31 @@ Avoid:
 - Web tests are a good indicator of frontend DX health
 - Pre-existing test failures should be identified and documented to avoid confusion
 
+
+
+### 2026-02-27: Eighth Iteration - DX-001 Known Issues Documentation
+
+**Issue**: #1142 - DX-001: Developer Experience Enhancement Opportunities
+
+**Changes Made**:
+
+1. Identified that most acceptance criteria were ALREADY addressed:
+   - `dev:api` script already exists in package.json (line 13)
+   - `docs/CONTRIBUTING.md` already exists with comprehensive content
+
+2. Remaining task: Document BUG-010 workaround in CONTRIBUTING.md
+   - Added "Known Issues" section to docs/CONTRIBUTING.md
+   - Documents BUG-010 (CI workflow version mismatch @v5 → @v4)
+   - Explains workaround for contributors (requires admin permission)
+
+**Verification**:
+
+- npm install succeeded
+- npx prettier --check docs/CONTRIBUTING.md passes
+- ESLint passes (markdown files ignored by default)
+
+**Learnings**:
+
+- Issue #1142 was largely already addressed - proactive verification saves redundant work
+- Documentation-only changes are lightweight but high value for DX
+- BUG-010 is a known issue that affects contributor experience when CI fails
