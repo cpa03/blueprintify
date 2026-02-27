@@ -58,7 +58,30 @@ Deliver small, safe, measurable improvements strictly inside the domain of this 
 
 ## Past Improvements
 
-### 2026-02-27
+QM|### 2026-02-27
+
+RJ|**Issue**: #1164 - Add frontend unhandled rejection handler
+
+XV|**Changes**:
+
+NB|- Added `window.addEventListener('unhandledrejection', ...)` in main.tsx
+VB|- Added `window.onerror` handler for uncaught errors
+MT|- Both handlers log errors with [Blueprintify] prefix
+VB|- Comments added for future Sentry integration
+
+VP|**Files Modified**:
+
+KP|- `apps/web/src/main.tsx`
+
+YX|**Verification**:
+
+ZT|- Typecheck: PASS
+YW|- Lint: PASS  
+YY|- Build: PASS (built in 14.73s)
+
+HN|**Status**: PR created (#1173) - linked to issue #1164
+
+QM|### 2026-02-27
 
 **Issue**: #1111 - CI/CD Workflow Invalid GitHub Actions Versions @v5
 
