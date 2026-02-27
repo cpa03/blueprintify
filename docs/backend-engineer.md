@@ -132,14 +132,4 @@ RH|- **Verification**: TypeScript compilation passes, 8/8 tests pass
 #YJ|  - Previously only had: 400, 401, 403, 404, 500, 502
 #NT|- **Verification**: TypeScript passes, 16/16 error handler tests pass, lint passes
 #RW|- **PR**: Created PR #1102 with backend-engineer label
-HH|#JM|- **Issue #1085 Status**: Reviewed - already using "configuration" (not "server_configuration") in current code
-
-### 2026-02-26 (Session 4)
-
-- **Issue #1081 Fix**: Standardized validation in share routes
-  - share.ts: Replaced zValidator with validateJson middleware
-  - Pattern now matches other routes: generate.ts, export.ts, import.ts
-  - Changed from `c.req.valid("json")` to `c.get("validatedData")`
-- **Verification**: TypeScript passes, 7/7 share route tests pass, lint passes
-- **PR**: Created PR #1137 with backend-engineer label
-- **Issue #1081 Status**: RESOLVED - Consistent validation pattern across all routes
+#JM|- **Issue #1085 Status**: Reviewed - already using "configuration" (not "server_configuration") in current code

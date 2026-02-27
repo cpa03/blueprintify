@@ -8,7 +8,7 @@
  */
 
 import { Hono } from "hono";
-import { StorageClearRequestSchema } from "@blueprint/shared";
+import { StorageClearRequestSchema, StorageReportRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { STORAGE_CONFIG, CACHE_CONFIG, HTTP_STATUS, STORAGE_MESSAGES } from "../config/constants";
@@ -17,24 +17,62 @@ import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
 
+// KV key for storing storage quota data
+const STORAGE_QUOTA_KEY = "storage:quota";
+
+/**
+ * Parse stored quota data from KV
+ */
+async function getStoredQuota(c: { env: Env }): Promise<{
+  used: number;
+  total: number;
+  projects: number;
+  updatedAt: string;
+} | null> {
+  try {
+    const stored = await c.env.CACHE?.get(STORAGE_QUOTA_KEY, "json");
+    if (stored) {
+      return stored as {
+        used: number;
+        total: number;
+        projects: number;
+        updatedAt: string;
+      };
+    }
+  } catch {
+    // If KV read fails, return null to use defaults
+  }
+  return null;
+}
+
 /**
  * Get storage quota information
  * GET /storage/quota
  */
 app.get("/quota", rateLimit(rateLimitConfigs.standard), async (c) => {
   try {
+    // Try to get stored quota from KV
+    const storedQuota = await getStoredQuota(c);
+
+    // Calculate values - use stored or defaults
+    const used = storedQuota?.used ?? 0;
+    const total = storedQuota?.total ?? STORAGE_CONFIG.QUOTA_BYTES;
+    const projects = storedQuota?.projects ?? 0;
+    const percentage = total > 0 ? Math.round((used / total) * 100) : 0;
+
     // Cache quota response - this data rarely changes
     c.header(
       "Cache-Control",
-      `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE}`,
+      `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE}`
     );
+
     return c.json({
       success: true,
       data: {
-        used: 0,
-        total: STORAGE_CONFIG.QUOTA_BYTES,
-        percentage: 0,
-        projects: 0,
+        used,
+        total,
+        percentage,
+        projects,
         note: STORAGE_MESSAGES.QUOTA_NOTE,
       },
     });
@@ -44,17 +82,64 @@ app.get("/quota", rateLimit(rateLimitConfigs.standard), async (c) => {
         success: false,
         error: {
           type: ErrorType.INTERNAL,
-          message:
-            error instanceof Error
-              ? error.message
-              : "Failed to get storage quota",
+          message: error instanceof Error ? error.message : "Failed to get storage quota",
           timestamp: new Date().toISOString(),
         },
       },
-      HTTP_STATUS.INTERNAL_ERROR,
+      HTTP_STATUS.INTERNAL_ERROR
     );
   }
 });
+
+/**
+ * Report client storage usage
+ * POST /storage/report
+ *
+ * Clients report their localStorage usage to the server for quota tracking.
+ * This allows the server to provide accurate quota information.
+ */
+app.post(
+  "/report",
+  rateLimit(rateLimitConfigs.standard),
+  validateJson(StorageReportRequestSchema),
+  async (c) => {
+    const { used, total, projects } = c.get("validatedData");
+
+    try {
+      // Store the reported quota data in KV
+      await c.env.CACHE?.put(
+        STORAGE_QUOTA_KEY,
+        JSON.stringify({
+          used,
+          total,
+          projects,
+          updatedAt: new Date().toISOString(),
+        }),
+        { expirationTtl: 86400 * 30 } // Store for 30 days
+      );
+
+      return c.json({
+        success: true,
+        data: {
+          stored: true,
+          timestamp: new Date().toISOString(),
+        },
+      });
+    } catch (error) {
+      return c.json(
+        {
+          success: false,
+          error: {
+            type: ErrorType.INTERNAL,
+            message: error instanceof Error ? error.message : "Failed to report storage usage",
+            timestamp: new Date().toISOString(),
+          },
+        },
+        HTTP_STATUS.INTERNAL_ERROR
+      );
+    }
+  }
+);
 
 /**
  * Clear all stored data
@@ -77,11 +162,14 @@ app.delete(
             timestamp: new Date().toISOString(),
           },
         },
-        HTTP_STATUS.BAD_REQUEST,
+        HTTP_STATUS.BAD_REQUEST
       );
     }
 
     try {
+      // Clear stored quota data
+      await c.env.CACHE?.delete(STORAGE_QUOTA_KEY);
+
       return c.json({
         success: true,
         data: {
@@ -96,17 +184,14 @@ app.delete(
           success: false,
           error: {
             type: ErrorType.INTERNAL,
-            message:
-              error instanceof Error
-                ? error.message
-                : "Failed to clear storage",
+            message: error instanceof Error ? error.message : "Failed to clear storage",
             timestamp: new Date().toISOString(),
           },
         },
-        HTTP_STATUS.INTERNAL_ERROR,
+        HTTP_STATUS.INTERNAL_ERROR
       );
     }
-  },
+  }
 );
 
 export default app;
