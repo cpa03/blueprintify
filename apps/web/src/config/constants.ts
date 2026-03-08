@@ -5,6 +5,7 @@ import {
   STORAGE_CONFIG as SHARED_STORAGE_CONFIG,
   RETRYABLE_STATUS_CODES,
   SSE_CONFIG,
+  HTTP_STATUS,
 } from "@blueprint/shared";
 
 /**
@@ -199,7 +200,7 @@ export const MIN_REQUIREMENTS = {
   DESCRIPTION: 10,
 } as const;
 
-export { RETRYABLE_STATUS_CODES, SSE_CONFIG };
+export { RETRYABLE_STATUS_CODES, SSE_CONFIG, HTTP_STATUS };
 
 // Export configuration
 export const EXPORT_CONFIG = {

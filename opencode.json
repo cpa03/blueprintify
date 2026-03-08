@@ -37,8 +37,7 @@
     ]
   },
   "compaction": {
-    "auto": true,
-    "prune": true
+    "auto": true
   },
   "formatter": {
     "prettier": {

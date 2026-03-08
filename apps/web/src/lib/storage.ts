@@ -38,7 +38,7 @@ export class StorageError extends Error {
   constructor(
     message: string,
     public readonly type: StorageErrorType,
-    public readonly details: StorageErrorDetails,
+    public readonly details: StorageErrorDetails
   ) {
     super(message);
     this.name = "StorageError";
@@ -145,10 +145,6 @@ function generateChecksum(data: string): string {
   return hash.toString(16);
 }
 
-function _verifyChecksum(data: string, checksum: string): boolean {
-  return generateChecksum(data) === checksum;
-}
-
 // ============================================================================
 // Storage Quota Management
 // ============================================================================
@@ -181,12 +177,8 @@ function isLocalStorageSupported(): boolean {
   try {
     const test = TEST_KEYS.STORAGE_TEST;
     // Use window.localStorage for browser compatibility (including jsdom in tests)
-    (
-      globalThis as typeof globalThis & { localStorage: Storage }
-    ).localStorage.setItem(test, test);
-    (
-      globalThis as typeof globalThis & { localStorage: Storage }
-    ).localStorage.removeItem(test);
+    (globalThis as typeof globalThis & { localStorage: Storage }).localStorage.setItem(test, test);
+    (globalThis as typeof globalThis & { localStorage: Storage }).localStorage.removeItem(test);
     return true;
   } catch {
     return false;
@@ -197,12 +189,8 @@ function isPrivacyMode(): boolean {
   try {
     const test = TEST_KEYS.PRIVACY_TEST;
     // Use window.localStorage for browser compatibility (including jsdom in tests)
-    (
-      globalThis as typeof globalThis & { localStorage: Storage }
-    ).localStorage.setItem(test, test);
-    (
-      globalThis as typeof globalThis & { localStorage: Storage }
-    ).localStorage.removeItem(test);
+    (globalThis as typeof globalThis & { localStorage: Storage }).localStorage.setItem(test, test);
+    (globalThis as typeof globalThis & { localStorage: Storage }).localStorage.removeItem(test);
     return false;
   } catch (e) {
     return (
@@ -269,11 +257,11 @@ export class StorageService<T = unknown> {
         return recovered;
       }
 
-      throw this.createStorageError(
-        "Failed to read from storage",
-        "CORRUPTED_DATA",
-        { key: this.config.key, operation: "read", originalError: error },
-      );
+      throw this.createStorageError("Failed to read from storage", "CORRUPTED_DATA", {
+        key: this.config.key,
+        operation: "read",
+        originalError: error,
+      });
     } finally {
       this.health.operations.total++;
     }
@@ -327,16 +315,12 @@ export class StorageService<T = unknown> {
       this.health.operations.successful++;
     } catch (error) {
       this.handleError("write", error);
-      throw this.createStorageError(
-        "Failed to write to storage",
-        "SERIALIZATION_ERROR",
-        {
-          key: this.config.key,
-          operation: "write",
-          originalError: error,
-          data,
-        },
-      );
+      throw this.createStorageError("Failed to write to storage", "SERIALIZATION_ERROR", {
+        key: this.config.key,
+        operation: "write",
+        originalError: error,
+        data,
+      });
     } finally {
       this.health.operations.total++;
     }
@@ -357,11 +341,11 @@ export class StorageService<T = unknown> {
       this.health.operations.successful++;
     } catch (error) {
       this.handleError("delete", error);
-      throw this.createStorageError(
-        "Failed to remove from storage",
-        "BROWSER_UNSUPPORTED",
-        { key: this.config.key, operation: "delete", originalError: error },
-      );
+      throw this.createStorageError("Failed to remove from storage", "BROWSER_UNSUPPORTED", {
+        key: this.config.key,
+        operation: "delete",
+        originalError: error,
+      });
     } finally {
       this.health.operations.total++;
     }
@@ -382,11 +366,11 @@ export class StorageService<T = unknown> {
       this.health.operations.successful++;
     } catch (error) {
       this.handleError("clear", error);
-      throw this.createStorageError(
-        "Failed to clear storage",
-        "BROWSER_UNSUPPORTED",
-        { key: "*", operation: "clear", originalError: error },
-      );
+      throw this.createStorageError("Failed to clear storage", "BROWSER_UNSUPPORTED", {
+        key: "*",
+        operation: "clear",
+        originalError: error,
+      });
     } finally {
       this.health.operations.total++;
     }
@@ -399,7 +383,7 @@ export class StorageService<T = unknown> {
   private async validateAndMigrate(parsed: unknown): Promise<T> {
     if (!parsed || typeof parsed !== "object") {
       throw new Error(
-        `Invalid storage data structure for key "${this.config.key}": expected an object, got ${parsed === null ? "null" : typeof parsed}. The storage data may be corrupted. Try clearing localStorage and refreshing.`,
+        `Invalid storage data structure for key "${this.config.key}": expected an object, got ${parsed === null ? "null" : typeof parsed}. The storage data may be corrupted. Try clearing localStorage and refreshing.`
       );
     }
 
@@ -410,7 +394,7 @@ export class StorageService<T = unknown> {
       const metadataResult = StorageMetadataSchema.safeParse(obj.metadata);
       if (!metadataResult.success) {
         throw new Error(
-          `Invalid metadata structure for key "${this.config.key}": ${metadataResult.error.errors.map((e) => e.message).join(", ")}. The storage metadata may be corrupted.`,
+          `Invalid metadata structure for key "${this.config.key}": ${metadataResult.error.errors.map((e) => e.message).join(", ")}. The storage metadata may be corrupted.`
         );
       }
 
@@ -432,11 +416,7 @@ export class StorageService<T = unknown> {
     if (!this.config.migrations) return data;
 
     const applicableMigrations = this.config.migrations
-      .filter(
-        (m) =>
-          m.fromVersion >= fromVersion &&
-          m.toVersion <= this.config.currentVersion,
-      )
+      .filter((m) => m.fromVersion >= fromVersion && m.toVersion <= this.config.currentVersion)
       .sort((a, b) => a.fromVersion - b.fromVersion);
 
     let migratedData: unknown = data;
@@ -453,7 +433,7 @@ export class StorageService<T = unknown> {
             operation: "migrate",
             originalError: error,
             data: migratedData,
-          },
+          }
         );
       }
     }
@@ -503,10 +483,7 @@ export class StorageService<T = unknown> {
         backups.shift();
       }
 
-      localStorage.setItem(
-        `${BACKUP_KEY_PREFIX}${this.config.key}`,
-        JSON.stringify(backups),
-      );
+      localStorage.setItem(`${BACKUP_KEY_PREFIX}${this.config.key}`, JSON.stringify(backups));
     } catch (error) {
       // Backup failures shouldn't stop the main operation
       console.warn("Failed to create backup:", error);
@@ -515,9 +492,7 @@ export class StorageService<T = unknown> {
 
   private getBackups(): BackupEntry[] {
     try {
-      const raw = localStorage.getItem(
-        `${BACKUP_KEY_PREFIX}${this.config.key}`,
-      );
+      const raw = localStorage.getItem(`${BACKUP_KEY_PREFIX}${this.config.key}`);
       if (!raw) return [];
       return JSON.parse(raw) as BackupEntry[];
     } catch {
@@ -542,7 +517,7 @@ export class StorageService<T = unknown> {
           localStorage.setItem(this.config.key, backup.data);
 
           console.warn(
-            `Successfully recovered from backup created at ${new Date(backup.timestamp)}`,
+            `Successfully recovered from backup created at ${new Date(backup.timestamp)}`
           );
           return recovered;
         } catch {
@@ -565,9 +540,7 @@ export class StorageService<T = unknown> {
   checkHealth(): StorageHealth {
     this.health.quota = getStorageQuota();
     this.health.isHealthy =
-      isLocalStorageSupported() &&
-      !isPrivacyMode() &&
-      this.health.quota.percentage < 90;
+      isLocalStorageSupported() && !isPrivacyMode() && this.health.quota.percentage < 90;
     this.health.lastCheck = new Date();
 
     return this.health;
@@ -590,7 +563,7 @@ export class StorageService<T = unknown> {
       throw this.createStorageError(
         "localStorage is not supported in this browser",
         "BROWSER_UNSUPPORTED",
-        { key: this.config.key, operation: "read" },
+        { key: this.config.key, operation: "read" }
       );
     }
 
@@ -598,7 +571,7 @@ export class StorageService<T = unknown> {
       throw this.createStorageError(
         "Storage is unavailable in private browsing mode",
         "PRIVACY_MODE",
-        { key: this.config.key, operation: "read" },
+        { key: this.config.key, operation: "read" }
       );
     }
   }
@@ -606,11 +579,11 @@ export class StorageService<T = unknown> {
   private checkQuota(): void {
     const quota = getStorageQuota();
     if (quota.remaining < STORAGE_CONFIG.QUOTA_WARNING_THRESHOLD_KB * 1024) {
-      throw this.createStorageError(
-        "Storage quota exceeded",
-        "QUOTA_EXCEEDED",
-        { key: this.config.key, operation: "write", data: quota },
-      );
+      throw this.createStorageError("Storage quota exceeded", "QUOTA_EXCEEDED", {
+        key: this.config.key,
+        operation: "write",
+        data: quota,
+      });
     }
   }
 
@@ -629,10 +602,7 @@ export class StorageService<T = unknown> {
     }
   }
 
-  private handleError(
-    operation: "read" | "write" | "delete" | "clear",
-    error: unknown,
-  ): void {
+  private handleError(operation: "read" | "write" | "delete" | "clear", error: unknown): void {
     this.metrics.errorCount++;
     this.health.operations.failed++;
 
@@ -647,14 +617,13 @@ export class StorageService<T = unknown> {
   private createStorageError(
     message: string,
     type: StorageErrorType,
-    details: StorageErrorDetails,
+    details: StorageErrorDetails
   ): StorageError {
     return new StorageError(message, type, details);
   }
 
   private recordLatency(type: "read" | "write", latency: number): void {
-    const latencies =
-      type === "read" ? this.metrics.readLatency : this.metrics.writeLatency;
+    const latencies = type === "read" ? this.metrics.readLatency : this.metrics.writeLatency;
     latencies.push(latency);
 
     if (latencies.length > STORAGE_CONFIG.MAX_LATENCY_MEASUREMENTS) {
@@ -755,10 +724,7 @@ export function getStorageErrorMessage(error: unknown): string {
   return "An unexpected storage error occurred.";
 }
 
-export async function withStorageRecovery<T>(
-  operation: () => Promise<T>,
-  fallback: T,
-): Promise<T> {
+export async function withStorageRecovery<T>(operation: () => Promise<T>, fallback: T): Promise<T> {
   try {
     return await operation();
   } catch (error) {
