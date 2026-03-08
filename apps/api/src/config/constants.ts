@@ -12,6 +12,7 @@ import {
   RETRYABLE_STATUS_CODES,
   SSE_CONFIG as SHARED_SSE_CONFIG,
   SSE_HEADERS as SHARED_SSE_HEADERS,
+  HTTP_STATUS as SHARED_HTTP_STATUS,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./env";
 
@@ -269,19 +270,7 @@ export const CIRCUIT_BREAKER_CONFIG = {
 export { SHARED_SSE_CONFIG as SSE_CONFIG, SHARED_SSE_HEADERS as SSE_HEADERS };
 
 // HTTP Status codes
-export const HTTP_STATUS = {
-  OK: 200,
-  BAD_REQUEST: 400,
-  UNAUTHORIZED: 401,
-  FORBIDDEN: 403,
-  NOT_FOUND: 404,
-  PAYLOAD_TOO_LARGE: 413,
-  TOO_MANY_REQUESTS: 429,
-  INTERNAL_ERROR: 500,
-  BAD_GATEWAY: 502,
-  SERVICE_UNAVAILABLE: 503,
-  GATEWAY_TIMEOUT: 504,
-} as const;
+export const HTTP_STATUS = SHARED_HTTP_STATUS;
 
 // Validation messages
 export const VALIDATION_MESSAGES = {
@@ -372,6 +361,7 @@ export const SHARE_ERROR_MESSAGES = {
   SHARE_EXPIRED: "Shared blueprint has expired",
   SHARE_DELETED_SUCCESSFULLY: "Share deleted successfully",
 } as const;
+
 // Storage route messages
 export const STORAGE_MESSAGES = {
   /** Note displayed in quota response */
@@ -390,6 +380,20 @@ export const IMPORT_CONFIG = {
   DEFAULT_PROJECT_NAME: "Imported Project",
   /** Expected import data version */
   EXPECTED_VERSION: "1.0.0",
+} as const;
+
+export const IMPORT_ERROR_MESSAGES = {
+  MISSING_REQUIRED_FIELDS:
+    "Invalid import data: missing required fields (projectName, blueprint)",
+  INVALID_JSON_FORMAT: "Invalid JSON format",
+  MISSING_BLUEPRINT_CONTENT:
+    "Invalid markdown format: could not extract blueprint content",
+  UNSUPPORTED_FORMAT: (format: string) => `Unsupported import format: ${format}`,
+} as const;
+
+export const EXPORT_ERROR_MESSAGES = {
+  UNSUPPORTED_FORMAT: (format: string) => `Unsupported export format: ${format}`,
+  EXPORT_FAILED: "Export failed",
 } as const;
 
 // Logger middleware configuration

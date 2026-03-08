@@ -136,8 +136,6 @@ describe("Retry Utilities", () => {
     });
 
     it("should call onRetry callback on each retry", async () => {
-      vi.useRealTimers();
-
       const serverError = { status: 503 };
       const operation = vi
         .fn()
@@ -146,19 +144,21 @@ describe("Retry Utilities", () => {
         .mockResolvedValueOnce("success");
 
       const onRetry = vi.fn();
-      const result = await withRetry(operation, {
+      const resultPromise = withRetry(operation, {
         retries: 2,
         initialDelay: 1,
         backoffFactor: 1,
         onRetry,
       });
 
+      await vi.advanceTimersByTimeAsync(1);
+      await vi.advanceTimersByTimeAsync(1);
+
+      const result = await resultPromise;
       expect(result).toBe("success");
       expect(onRetry).toHaveBeenCalledTimes(2);
       expect(onRetry).toHaveBeenNthCalledWith(1, serverError, 1);
       expect(onRetry).toHaveBeenNthCalledWith(2, serverError, 2);
-
-      vi.useFakeTimers();
     });
 
     it("should handle error with response.status property", async () => {
@@ -287,11 +287,7 @@ describe("Retry Utilities", () => {
       await expect(resultPromise).rejects.toEqual(serverError);
     });
 
-    it("should use default maxDelay from config when not specified", {
-      timeout: 30000, // Needs longer timeout due to retry delays
-    }, async () => {
-      vi.useRealTimers();
-
+    it("should use default maxDelay from config when not specified", async () => {
       const serverError = { status: 503 };
       const operation = vi.fn().mockRejectedValue(serverError);
 
@@ -303,10 +299,12 @@ describe("Retry Utilities", () => {
         backoffFactor: 10, // 5000 -> 50000, but capped at 10000
       });
 
+      await vi.advanceTimersByTimeAsync(5000); // 1st retry
+      await vi.advanceTimersByTimeAsync(10000); // 2nd retry (capped)
+      await vi.advanceTimersByTimeAsync(10000); // 3rd retry (capped)
+
       await expect(resultPromise).rejects.toEqual(serverError);
       expect(operation).toHaveBeenCalledTimes(4); // Initial + 3 retries
-
-      vi.useFakeTimers();
     });
 
     it("should handle all retryable error codes", async () => {
@@ -319,9 +317,6 @@ describe("Retry Utilities", () => {
       ];
 
       for (const code of retryableCodes) {
-        vi.useRealTimers();
-        vi.useFakeTimers();
-
         const error = { code };
         const operation = vi
           .fn()

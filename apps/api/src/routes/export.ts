@@ -14,7 +14,7 @@ import { ErrorType } from "../errors";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { secureLogError } from "../utils/secureLog";
-import { API_METADATA, HTTP_STATUS } from "../config/constants";
+import { API_METADATA, HTTP_STATUS, EXPORT_ERROR_MESSAGES } from "../config/constants";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -83,7 +83,7 @@ app.post(
           success: false,
           error: {
             type: ErrorType.VALIDATION,
-            message: `Unsupported export format: ${format}`,
+            message: EXPORT_ERROR_MESSAGES.UNSUPPORTED_FORMAT(format),
             timestamp: new Date().toISOString(),
           },
         },
@@ -96,7 +96,7 @@ app.post(
           success: false,
           error: {
             type: ErrorType.INTERNAL,
-            message: error instanceof Error ? error.message : "Export failed",
+            message: error instanceof Error ? error.message : EXPORT_ERROR_MESSAGES.EXPORT_FAILED,
             timestamp: new Date().toISOString(),
           },
         },

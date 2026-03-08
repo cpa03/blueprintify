@@ -66,12 +66,12 @@ export {
   DEBOUNCE_CONFIG,
   RETRYABLE_STATUS_CODES,
   SSE_CONFIG,
-
   HTTP_HEADERS,
   SSE_HEADERS,
   SECURITY_LIMITS,
   ID_GENERATION_CONFIG,
   TIME_UNITS,
+  HTTP_STATUS,
 } from "./config";
 
 export type { RetryOptions, RetryConfigValues } from "./config";

@@ -20,7 +20,7 @@
  * @see {@link useLastSaved} for save state tracking
  */
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { LazyMarkdownRenderer } from "./LazyMarkdownRenderer";
 import { LazyCodeMirror } from "./LazyCodeMirror";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
@@ -183,54 +183,61 @@ function EditorComponent(): JSX.Element {
         {!hasContent && !isGenerating ? (
           <EditorEmptyState />
         ) : (
-          <div
-            id={activeTab === "blueprint" ? "blueprint-panel" : "tasks-panel"}
-            role="tabpanel"
-            aria-labelledby={`tab-${activeTab}`}
-            className="h-full flex flex-col lg:flex-row"
-          >
-            {/* Code Editor */}
-            {(viewMode === "edit" || viewMode === "split") && (
-              <div
-                className={clsx(
-                  "h-full overflow-hidden",
-                  viewMode === "split"
-                    ? "w-full lg:w-1/2 lg:border-r lg:border-dark-700 border-b border-dark-700 lg:border-b-0"
-                    : "w-full"
-                )}
-              >
-                <LazyCodeMirror
-                  value={currentContent}
-                  onChange={setCurrentContent}
-                  className="h-full"
-                />
-              </div>
-            )}
-
-            {/* Preview */}
-            {(viewMode === "preview" || viewMode === "split") && (
-              <div
-                ref={previewRef}
-                className={clsx(
-                  "h-full overflow-y-auto p-4 lg:p-6 relative",
-                  viewMode === "split" ? "w-full lg:w-1/2" : "w-full"
-                )}
-              >
-                <ScrollProgress scrollContainerRef={previewRef} />
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="min-h-full"
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              id={activeTab === "blueprint" ? "blueprint-panel" : "tasks-panel"}
+              role="tabpanel"
+              aria-labelledby={`tab-${activeTab}`}
+              className="h-full flex flex-col lg:flex-row"
+            >
+              {/* Code Editor */}
+              {(viewMode === "edit" || viewMode === "split") && (
+                <div
+                  className={clsx(
+                    "h-full overflow-hidden",
+                    viewMode === "split"
+                      ? "w-full lg:w-1/2 lg:border-r lg:border-dark-700 border-b border-dark-700 lg:border-b-0"
+                      : "w-full"
+                  )}
                 >
-                  <LazyMarkdownRenderer content={currentContent || "*No content yet...*"} />
-                </motion.div>
-                <ScrollToTop
-                  scrollContainerRef={previewRef}
-                  showAfter={UI.SCROLL_TO_TOP_THRESHOLD}
-                />
-              </div>
-            )}
-          </div>
+                  <LazyCodeMirror
+                    value={currentContent}
+                    onChange={setCurrentContent}
+                    className="h-full"
+                  />
+                </div>
+              )}
+
+              {/* Preview */}
+              {(viewMode === "preview" || viewMode === "split") && (
+                <div
+                  ref={previewRef}
+                  className={clsx(
+                    "h-full overflow-y-auto p-4 lg:p-6 relative",
+                    viewMode === "split" ? "w-full lg:w-1/2" : "w-full"
+                  )}
+                >
+                  <ScrollProgress scrollContainerRef={previewRef} />
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="min-h-full"
+                  >
+                    <LazyMarkdownRenderer content={currentContent || "*No content yet...*"} />
+                  </motion.div>
+                  <ScrollToTop
+                    scrollContainerRef={previewRef}
+                    showAfter={UI.SCROLL_TO_TOP_THRESHOLD}
+                  />
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
         )}
       </div>
     </div>
