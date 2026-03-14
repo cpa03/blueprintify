@@ -1,9 +1,14 @@
 import type { AIConfig } from "../services/openai";
 import { getContainer } from "../di/container";
 import { ConfigurationError } from "../errors";
-import type { ValidatedContext, ControllerContext } from "../types";
+import type {
+  ValidatedContext,
+  ControllerContext,
+  AppContext,
+} from "../types";
 import type { z } from "zod";
 import { CONFIG_MESSAGES, AI_CONFIG } from "../config/constants";
+import { secureLogError } from "../utils/secureLog";
 
 /**
  * Base controller providing common functionality for API endpoint handlers.
@@ -70,5 +75,28 @@ export abstract class BaseController {
     if (!c.env.OPENAI_API_KEY) {
       throw new ConfigurationError(CONFIG_MESSAGES.OPENAI_API_KEY_MISSING);
     }
+  }
+
+  /**
+   * Securely logs an error with request context.
+   * Ensures sensitive information is redacted before logging.
+   *
+   * @param c - The Hono context for request metadata
+   * @param context - The logical context of the error (e.g., 'GenerateController')
+   * @param error - The error object to log
+   * @param additionalInfo - Optional extra metadata for the log entry
+   */
+  protected logError(
+    c: ControllerContext,
+    context: string,
+    error: unknown,
+    additionalInfo?: Record<string, unknown>,
+  ): void {
+    secureLogError(context, error, {
+      path: c.req.path,
+      method: c.req.method,
+      requestId: (c as AppContext).get("requestId"),
+      ...additionalInfo,
+    });
   }
 }

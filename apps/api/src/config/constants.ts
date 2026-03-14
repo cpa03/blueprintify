@@ -312,6 +312,7 @@ export const ROUTE_PATHS = {
 } as const;
 
 export const RATE_LIMIT_CONFIG = {
+  DEFAULT_CLIENT_KEY: "anonymous",
   get WINDOW_MS(): number {
     return getEnvConfig().RATE_LIMIT_WINDOW_MS;
   },

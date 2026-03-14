@@ -67,8 +67,16 @@ export const StepGenerating = memo(function StepGenerating(): JSX.Element {
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: ANIMATION.FAST }}
+            animate={{
+              scale: [1, 1.2, 1],
+              rotate: [0, 5, -5, 0],
+              opacity: 1,
+            }}
+            transition={{
+              scale: { duration: 2, repeat: Infinity },
+              rotate: { duration: 1.5, repeat: Infinity },
+              opacity: { delay: ANIMATION.FAST },
+            }}
             className="text-3xl"
           >
             🚀

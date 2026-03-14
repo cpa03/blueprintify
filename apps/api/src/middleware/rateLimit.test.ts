@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, afterAll, vi } from "vitest";
 import { Hono } from "hono";
 import { rateLimit, rateLimitConfigs } from "./rateLimit";
 import type { ErrorResponse } from "../errors";
@@ -307,5 +307,11 @@ describe("rateLimit middleware", () => {
       expect(res.status).toBe(200);
       expect(res.headers.get("X-RateLimit-Limit")).toBe("120");
     });
+  });
+
+  afterAll(async () => {
+    // Small delay to allow any pending promises in workerd to settle
+    // and avoid "Exception while logging unhandled rejection"
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 });
