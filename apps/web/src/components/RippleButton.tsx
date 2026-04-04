@@ -1,3 +1,13 @@
+import {
+  useState,
+  useCallback,
+  memo,
+  type ReactNode,
+  type MouseEvent,
+} from "react";
+import * as React from "react";
+import { motion, AnimatePresence, type HTMLMotionProps } from "framer-motion";
+
 /**
  * Ripple Button Component
  *
@@ -25,15 +35,6 @@
  * </RippleButton>
  * ```
  */
-
-import {
-  useState,
-  useCallback,
-  memo,
-  type ReactNode,
-  type MouseEvent,
-} from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { RIPPLE_CONFIG } from "../config/constants";
 
@@ -51,6 +52,8 @@ interface RippleButtonProps {
   type?: "button" | "submit" | "reset";
   ariaLabel?: string;
   title?: string;
+  whileHover?: HTMLMotionProps<"button">["whileHover"];
+  whileTap?: HTMLMotionProps<"button">["whileTap"];
 }
 
 function RippleButtonComponent({
@@ -61,6 +64,8 @@ function RippleButtonComponent({
   type = "button",
   ariaLabel,
   title,
+  whileHover,
+  whileTap,
 }: RippleButtonProps): JSX.Element {
   const [ripples, setRipples] = useState<Ripple[]>([]);
   const shouldReduceMotion = useReducedMotion();
@@ -98,7 +103,9 @@ function RippleButtonComponent({
   );
 
   return (
-    <button
+    <motion.button
+      whileHover={!disabled ? whileHover : undefined}
+      whileTap={!disabled ? whileTap : undefined}
       type={type}
       onClick={handleClick}
       disabled={disabled}
@@ -141,7 +148,7 @@ function RippleButtonComponent({
           />
         ))}
       </AnimatePresence>
-    </button>
+    </motion.button>
   );
 }
 

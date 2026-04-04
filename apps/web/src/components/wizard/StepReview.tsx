@@ -273,6 +273,8 @@ export const StepReview = memo(function StepReview(): JSX.Element {
           <RippleButton
             onClick={startGeneration}
             disabled={isGenerating || !projectName || !description}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             className="btn-primary flex items-center gap-2 animate-glow disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isGenerating ? (

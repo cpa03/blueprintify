@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach, afterAll } from "vitest";
 import { withRetry } from "./retry";
 
 describe("Retry Utilities", () => {
@@ -8,6 +8,11 @@ describe("Retry Utilities", () => {
 
   afterEach(() => {
     vi.useRealTimers();
+  });
+
+  afterAll(async () => {
+    // Allow asynchronous tasks to settle to prevent "Exception while logging unhandled rejection"
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   describe("withRetry", () => {

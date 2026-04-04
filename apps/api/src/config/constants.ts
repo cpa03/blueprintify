@@ -300,6 +300,10 @@ export const CACHE_CONFIG = {
   SHARE_STALE_WHILE_REVALIDATE: 3600,
 } as const;
 
+export const APP_CONSTANTS = {
+  ANONYMOUS_USER: "anonymous",
+} as const;
+
 export const ROUTE_PATHS = {
   ROOT: "/",
   GENERATE: "/generate",

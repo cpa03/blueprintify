@@ -4,9 +4,20 @@ import { Header } from "./Header";
 
 vi.mock("framer-motion", () => ({
   motion: {
-    div: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
-    nav: vi.fn(({ children, ...props }) => <nav {...props}>{children}</nav>),
-    span: vi.fn(({ children, ...props }) => <span {...props}>{children}</span>),
+    div: vi.fn(({ children, whileHover: _whileHover, whileTap: _whileTap, ...props }) => (
+      <div {...props}>{children}</div>
+    )),
+    nav: vi.fn(({ children, whileHover: _whileHover, whileTap: _whileTap, ...props }) => (
+      <nav {...props}>{children}</nav>
+    )),
+    span: vi.fn(({ children, whileHover: _whileHover, whileTap: _whileTap, ...props }) => (
+      <span {...props}>{children}</span>
+    )),
+    button: vi.fn(
+      ({ children, whileHover: _whileHover, whileTap: _whileTap, ...props }) => (
+        <button {...props}>{children}</button>
+      ),
+    ),
   },
   AnimatePresence: vi.fn(({ children }) => <>{children}</>),
 }));
