@@ -1,4 +1,4 @@
-name = "blueprint-generator-api"
+name = "blueprintify"
 main = "src/index.ts"
 compatibility_date = "2026-02-19"
 compatibility_flags = ["nodejs_compat"]
@@ -33,7 +33,7 @@ binding = "AI"
 
 # Environment-specific configurations
 [env.production]
-name = "blueprint-generator-api-prod"
+name = "blueprintify"
 workers_dev = false
 logpush = true
 minify = true
@@ -44,7 +44,7 @@ routes = [
 ]
 
 [env.staging]
-name = "blueprint-generator-api-staging"
+name = "blueprintify-staging"
 workers_dev = false
 logpush = true
 minify = true
