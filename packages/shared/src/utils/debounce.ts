@@ -20,15 +20,17 @@ export function createDebouncedSaver<T extends (...args: any[]) => any>(
     }, delay);
   }) as T;
 
-  const flush = (): void => {
+  const flush = (): any => {
     if (timeoutId) {
       clearTimeout(timeoutId);
+      let result;
       if (lastArgs) {
-        fn(...lastArgs);
+        result = fn(...lastArgs);
       } else {
-        fn();
+        result = fn();
       }
       timeoutId = null;
+      return result;
     }
   };
 

@@ -194,7 +194,7 @@ describe("createPersistedStore", () => {
       vi.restoreAllMocks();
     });
 
-    it("clears pending debounced save", () => {
+    it("executes pending debounced save immediately", async () => {
       const { storage, setFn } = createMockStorage();
 
       const options = createTestOptions(storage);
@@ -209,11 +209,10 @@ describe("createPersistedStore", () => {
       debouncedSave(mockGet);
       expect(setFn).not.toHaveBeenCalled();
 
-      flushSave();
+      // flushSave returns the promise from saveState
+      await flushSave();
 
-      vi.advanceTimersByTime(200);
-
-      expect(setFn).not.toHaveBeenCalled();
+      expect(setFn).toHaveBeenCalledWith({ name: "Flush Test", count: 99 });
     });
   });
 
