@@ -5,31 +5,18 @@ compatibility_flags = ["nodejs_compat"]
 tsconfig = "./tsconfig.json"
 
 # Preserve environment variables during deployments
-# https://developers.cloudflare.com/workers/configuration/migrating-to-module-workers/#settings-inheritance
 keep_vars = true
 
-# Smart Placement - optimizes worker placement based on traffic patterns
-# Takes up to 15 minutes to analyze after deployment
 [placement]
 mode = "smart"
 
-# TypeScript module rules for optimal bundling
-# https://developers.cloudflare.com/workers/wrangler/configuration/#rules
 [[rules]]
 type = "ESModule"
 globs = ["**/*.ts", "**/*.tsx"]
 fallthrough = true
 
-# Cloudflare Workers AI binding for future AI features
-# https://developers.cloudflare.com/workers-ai/
 [ai]
 binding = "AI"
-
-# Vectorize binding for semantic search (future feature)
-# https://developers.cloudflare.com/vectorize/
-# [[vectorize]]
-# binding = "VECTORIZE_INDEX"
-# index_name = "blueprint-embeddings"
 
 # Environment-specific configurations
 [env.production]
@@ -38,20 +25,110 @@ workers_dev = false
 logpush = true
 minify = true
 upload_source_maps = false
-vars = { ENVIRONMENT = "production" }
 routes = [
   { pattern = "api.blueprintify.dev/*", zone_name = "blueprintify.dev" }
 ]
+
+[env.production.vars]
+ENVIRONMENT = "production"
+CORS_ORIGIN = "https://blueprintify.dev"
+RATE_LIMIT_REQUESTS = "100"
+RATE_LIMIT_WINDOW = "60"
+
+[env.production.ai]
+binding = "AI"
+
+[[env.production.analytics_engine_datasets]]
+binding = "ANALYTICS"
+
+[[env.production.kv_namespaces]]
+binding = "CACHE"
+id = "production_cache_kv_id"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "blueprint-db-prod"
+database_id = "production_database_id"
+
+[[env.production.queues.producers]]
+binding = "BACKGROUND_QUEUE"
+queue = "background-processing"
+
+[[env.production.ratelimits]]
+name = "STRICT_RATE_LIMITER"
+namespace_id = "1001"
+[env.production.ratelimits.simple]
+limit = 10
+period = 60
+
+[[env.production.ratelimits]]
+name = "STANDARD_RATE_LIMITER"
+namespace_id = "1002"
+[env.production.ratelimits.simple]
+limit = 60
+period = 60
+
+[[env.production.ratelimits]]
+name = "LENIENT_RATE_LIMITER"
+namespace_id = "1003"
+[env.production.ratelimits.simple]
+limit = 120
+period = 60
 
 [env.staging]
 name = "blueprintify-staging"
 workers_dev = false
 logpush = true
 minify = true
-vars = { ENVIRONMENT = "staging" }
 routes = [
   { pattern = "api-staging.blueprintify.dev/*", zone_name = "blueprintify.dev" }
 ]
+
+[env.staging.vars]
+ENVIRONMENT = "staging"
+CORS_ORIGIN = "https://staging.blueprintify.dev"
+RATE_LIMIT_REQUESTS = "100"
+RATE_LIMIT_WINDOW = "60"
+
+[env.staging.ai]
+binding = "AI"
+
+[[env.staging.analytics_engine_datasets]]
+binding = "ANALYTICS"
+
+[[env.staging.kv_namespaces]]
+binding = "CACHE"
+id = "staging_cache_kv_id"
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "blueprint-db-staging"
+database_id = "staging_database_id"
+
+[[env.staging.queues.producers]]
+binding = "BACKGROUND_QUEUE"
+queue = "background-processing"
+
+[[env.staging.ratelimits]]
+name = "STRICT_RATE_LIMITER"
+namespace_id = "1001"
+[env.staging.ratelimits.simple]
+limit = 10
+period = 60
+
+[[env.staging.ratelimits]]
+name = "STANDARD_RATE_LIMITER"
+namespace_id = "1002"
+[env.staging.ratelimits.simple]
+limit = 60
+period = 60
+
+[[env.staging.ratelimits]]
+name = "LENIENT_RATE_LIMITER"
+namespace_id = "1003"
+[env.staging.ratelimits.simple]
+limit = 120
+period = 60
 
 # Development configuration (default)
 [vars]
@@ -60,48 +137,15 @@ CORS_ORIGIN = "http://localhost:3000"
 RATE_LIMIT_REQUESTS = "100"
 RATE_LIMIT_WINDOW = "60"
 
-# Production secrets (set via wrangler secret put)
-# [env.production.secrets]
-# OPENAI_API_KEY = ""
-# DATABASE_URL = ""
-# SENTRY_DSN = ""
-
-# Staging secrets (set via wrangler secret put --env staging)  
-# [env.staging.secrets]
-# OPENAI_API_KEY = ""
-# DATABASE_URL = ""
-# SENTRY_DSN = ""
-
-# KV namespaces for caching
 [[kv_namespaces]]
 binding = "CACHE"
 id = "cache_kv_namespace_id"
 
-[[env.production.kv_namespaces]]
-binding = "CACHE"
-id = "production_cache_kv_id"
-
-[[env.staging.kv_namespaces]]
-binding = "CACHE"
-id = "staging_cache_kv_id"
-
-# D1 database bindings
 [[d1_databases]]
 binding = "DB"
 database_name = "blueprint-db"
 database_id = "local_database_id"
 
-[[env.production.d1_databases]]
-binding = "DB"
-database_name = "blueprint-db-prod"
-database_id = "production_database_id"
-
-[[env.staging.d1_databases]]
-binding = "DB"
-database_name = "blueprint-db-staging"
-database_id = "staging_database_id"
-
-# Queue for background processing
 [[queues.producers]]
 binding = "BACKGROUND_QUEUE"
 queue = "background-processing"
@@ -113,23 +157,12 @@ max_batch_timeout = 30
 max_retries = 5
 retry_delay = 60
 
-# Limits and configuration
-# https://developers.cloudflare.com/workers/platform/limits/
 [limits]
 cpu_ms = 50000
 
-# Analytics Engine for production metrics
-# https://developers.cloudflare.com/analytics/analytics-engine/
 [[analytics_engine_datasets]]
 binding = "ANALYTICS"
 
-# Tail consumers for real-time log streaming
-# https://developers.cloudflare.com/workers/observability/tail-workers/
-# [[tail_consumers]]
-# service = "log-processor"
-
-# Observability: Traces and Logs for production monitoring
-# https://developers.cloudflare.com/workers/observability/traces
 [observability]
 enabled = true
 
@@ -141,8 +174,6 @@ head_sampling_rate = 0.1
 enabled = true
 head_sampling_rate = 0.5
 
-# Cloudflare Native Rate Limiting
-# https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit
 [[ratelimits]]
 name = "STRICT_RATE_LIMITER"
 namespace_id = "1001"
