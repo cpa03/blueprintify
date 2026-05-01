@@ -22,28 +22,6 @@ function getReducedMotionServerSnapshot(): boolean {
   return false;
 }
 
-/**
- * useReducedMotion - Hook to detect user's reduced motion preference
- *
- * This hook detects the `prefers-reduced-motion` media query and provides
- * a boolean indicating whether the user prefers reduced motion animations.
- *
- * Features:
- * - Respects system-level accessibility settings
- * - Updates automatically when user changes preferences
- * - SSR-safe (defaults to false on server)
- * - Provides helper functions for conditional animations
- *
- * @example
- * ```tsx
- * const shouldReduceMotion = useReducedMotion();
- *
- * <motion.div
- *   animate={shouldReduceMotion ? {} : { opacity: 1 }}
- *   transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.3 }}
- * />
- * ```
- */
 export function useReducedMotion(): boolean {
   return useSyncExternalStore(
     subscribeToReducedMotion,
@@ -52,13 +30,6 @@ export function useReducedMotion(): boolean {
   );
 }
 
-/**
- * Get animation configuration based on reduced motion preference
- *
- * @param shouldReduceMotion - Whether to reduce motion
- * @param duration - Normal animation duration
- * @returns Animation duration (0 if reduced motion, otherwise original duration)
- */
 export function getAnimationDuration(
   shouldReduceMotion: boolean,
   duration: number,
@@ -66,13 +37,6 @@ export function getAnimationDuration(
   return shouldReduceMotion ? 0 : duration;
 }
 
-/**
- * Get spring configuration based on reduced motion preference
- *
- * @param shouldReduceMotion - Whether to reduce motion
- * @param springConfig - Normal spring configuration
- * @returns Spring configuration (stiff spring if reduced motion)
- */
 export function getSpringConfig(
   shouldReduceMotion: boolean,
   springConfig: {
@@ -92,13 +56,6 @@ export function getSpringConfig(
   };
 }
 
-/**
- * Hook for creating animation props that respect reduced motion
- *
- * @param animationProps - Normal animation properties
- * @param reducedMotionProps - Animation properties when reduced motion is preferred
- * @returns Animation properties based on user's preference
- */
 export function useAccessibleAnimation<T extends Record<string, unknown>>(
   animationProps: T,
   reducedMotionProps?: Partial<T>,
@@ -134,12 +91,6 @@ function getHighContrastServerSnapshot(): boolean {
   return false;
 }
 
-/**
- * Check if the user has enabled any accessibility settings that might
- * affect animations (including reduced motion, high contrast, etc.)
- *
- * @returns Object with various accessibility preferences
- */
 export function useAccessibilityPreferences(): {
   prefersReducedMotion: boolean;
   prefersHighContrast: boolean;
@@ -164,5 +115,3 @@ export function useAccessibilityPreferences(): {
     [prefersReducedMotion, prefersHighContrast],
   );
 }
-
-export default useReducedMotion;

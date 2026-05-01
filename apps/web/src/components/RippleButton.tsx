@@ -17,13 +17,6 @@
  * @param {string} [props.ariaLabel] - ARIA label for accessibility
  * @param {string} [props.title] - Tooltip title
  * @returns {JSX.Element} Button with ripple effect
- *
- * @example
- * ```tsx
- * <RippleButton onClick={() => console.log('clicked')}>
- *   Click Me
- * </RippleButton>
- * ```
  */
 
 import {
@@ -33,11 +26,9 @@ import {
   type ReactNode,
   type MouseEvent,
 } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type HTMLMotionProps } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { RIPPLE_CONFIG } from "../config/constants";
-
-import type { HTMLMotionProps } from "framer-motion";
 
 interface Ripple {
   id: number;
