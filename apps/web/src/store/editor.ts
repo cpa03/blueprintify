@@ -41,7 +41,6 @@ function validateEditorContent(
 ): { blueprintContent: string; tasksContent: string } {
   const security = sanitizeForStorage({ blueprintContent, tasksContent });
   if (!security.isValid) {
-    console.error("Content validation failed:", security.error);
     throw new Error(security.error);
   }
   return security.sanitized as {
@@ -110,9 +109,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
         set({ blueprintContent: sanitized.blueprintContent, isDirty: true });
         debouncedSave(get);
       } catch (error) {
-        const securityError = handleSecurityError(error);
-        console.error("Security validation failed:", securityError.message);
-        throw securityError;
+        throw handleSecurityError(error);
       }
     },
 
@@ -126,9 +123,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
         }));
         debouncedSave(get);
       } catch (error) {
-        const securityError = handleSecurityError(error);
-        console.error("Security validation failed:", securityError.message);
-        throw securityError;
+        throw handleSecurityError(error);
       }
     },
 
@@ -141,9 +136,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
         set({ tasksContent: sanitized.tasksContent, isDirty: true });
         debouncedSave(get);
       } catch (error) {
-        const securityError = handleSecurityError(error);
-        console.error("Security validation failed:", securityError.message);
-        throw securityError;
+        throw handleSecurityError(error);
       }
     },
 
@@ -157,9 +150,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
         set(() => ({ tasksContent: sanitized.tasksContent, isDirty: true }));
         debouncedSave(get);
       } catch (error) {
-        const securityError = handleSecurityError(error);
-        console.error("Security validation failed:", securityError.message);
-        throw securityError;
+        throw handleSecurityError(error);
       }
     },
 

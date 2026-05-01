@@ -111,7 +111,6 @@ export function createPersistedStore<T>(config: PersistedStoreConfig<T>): Persis
         zustandSet((state: T) => ({ ...state, ...persistedState }), true);
       }
     } catch (error) {
-      console.warn("Failed to load state from storage:", error);
       onLoadError?.(error);
     }
   };
@@ -126,12 +125,11 @@ export function createPersistedStore<T>(config: PersistedStoreConfig<T>): Persis
         const dataToSave = getPersistedDataFn(current);
         await storage.set(dataToSave as T);
       } catch (error) {
-        console.warn("Failed to save state to storage:", error);
         onSaveError?.(error);
       }
     };
 
-    const { debounced, cancel, flush } = createDebouncedSaver(saveState, debounceMs);
+    const { debounced, cancel, flush } = createDebouncedSaver(saveState as any, debounceMs);
     cancelFn = cancel;
     flushFn = flush;
 
@@ -154,8 +152,8 @@ export function createPersistedStore<T>(config: PersistedStoreConfig<T>): Persis
     cancelSave();
     try {
       await storage.remove();
-    } catch (error) {
-      console.warn("Failed to clear storage:", error);
+    } catch {
+      // ignore
     }
   };
 

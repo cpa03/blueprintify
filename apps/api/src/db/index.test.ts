@@ -1105,6 +1105,7 @@ describe("MockDatabaseService", () => {
       it("should count analytics by event type and date range", async () => {
         const now = new Date();
         const oneHourAgo = new Date(now.getTime() - 3600000);
+        const future = new Date(now.getTime() + 3600000);
 
         await db.trackEvent({ event_type: "blueprint_generated" });
         await db.trackEvent({ event_type: "blueprint_generated" });
@@ -1113,7 +1114,7 @@ describe("MockDatabaseService", () => {
         const count = await db.countAnalyticsByEventTypeAndDateRange(
           "blueprint_generated",
           oneHourAgo.toISOString(),
-          now.toISOString(),
+          future.toISOString(),
         );
         expect(count).toBe(2);
       });

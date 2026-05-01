@@ -83,9 +83,6 @@ function EditorComponent(): JSX.Element {
       } catch (error) {
         const securityError = handleSecurityError(error);
         toast.error(`Security validation failed: ${securityError.message}`);
-        if (import.meta.env.DEV) {
-          console.error("Security validation failed:", securityError);
-        }
       }
     },
     [activeTab, setBlueprintContent, setTasksContent, markSaved, toast]
@@ -138,11 +135,8 @@ function EditorComponent(): JSX.Element {
         features: exportData.features,
       });
       toast.success("Project exported successfully!");
-    } catch (error) {
+    } catch {
       toast.error("Failed to export project");
-      if (import.meta.env.DEV) {
-        console.error("Export error:", error);
-      }
     } finally {
       setIsExporting(false);
     }

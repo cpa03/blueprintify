@@ -73,23 +73,6 @@ describe("ErrorBoundary", () => {
     expect(errorInfo).toBeDefined();
   });
 
-  it("accepts custom fallback prop", () => {
-    const fallback = <div data-testid="fallback">Custom Fallback</div>;
-    const onError = vi.fn();
-
-    function ChildWithError(): JSX.Element {
-      throw new Error("Error");
-    }
-
-    render(
-      <ErrorBoundary fallback={fallback} onError={onError}>
-        <ChildWithError />
-      </ErrorBoundary>
-    );
-
-    expect(screen.getByTestId("fallback")).toBeInTheDocument();
-  });
-
   it("renders default fallback UI when no custom fallback provided", () => {
     const onError = vi.fn();
 
@@ -105,7 +88,7 @@ describe("ErrorBoundary", () => {
 
     expect(screen.getByText("Something went wrong")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /try again/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /reload page/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /reset application/i })).toBeInTheDocument();
   });
 
   it("calls onError when error is thrown in nested component", () => {

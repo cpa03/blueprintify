@@ -383,7 +383,7 @@ export class StorageService<T = unknown> {
   private async validateAndMigrate(parsed: unknown): Promise<T> {
     if (!parsed || typeof parsed !== "object") {
       throw new Error(
-        `Invalid storage data structure for key "${this.config.key}": expected an object, got ${parsed === null ? "null" : typeof parsed}. The storage data may be corrupted. Try clearing localStorage and refreshing.`
+        `Invalid storage data structure for key "${this.config.key}": expected an object, got ${parsed === null ? "null" : typeof parsed}.`
       );
     }
 
@@ -394,7 +394,7 @@ export class StorageService<T = unknown> {
       const metadataResult = StorageMetadataSchema.safeParse(obj.metadata);
       if (!metadataResult.success) {
         throw new Error(
-          `Invalid metadata structure for key "${this.config.key}": ${metadataResult.error.errors.map((e) => e.message).join(", ")}. The storage metadata may be corrupted.`
+          `Invalid metadata structure for key "${this.config.key}": ${metadataResult.error.errors.map((e) => e.message).join(", ")}.`
         );
       }
 
@@ -484,9 +484,8 @@ export class StorageService<T = unknown> {
       }
 
       localStorage.setItem(`${BACKUP_KEY_PREFIX}${this.config.key}`, JSON.stringify(backups));
-    } catch (error) {
+    } catch {
       // Backup failures shouldn't stop the main operation
-      console.warn("Failed to create backup:", error);
     }
   }
 
@@ -516,9 +515,6 @@ export class StorageService<T = unknown> {
           // Restore the recovered data
           localStorage.setItem(this.config.key, backup.data);
 
-          console.warn(
-            `Successfully recovered from backup created at ${new Date(backup.timestamp)}`
-          );
           return recovered;
         } catch {
           // Try next backup
@@ -527,8 +523,7 @@ export class StorageService<T = unknown> {
       }
 
       return null;
-    } catch (error) {
-      console.error("Recovery failed:", error);
+    } catch {
       return null;
     }
   }
@@ -610,8 +605,6 @@ export class StorageService<T = unknown> {
       this.metrics.lastError = error;
       this.health.operations.lastError = error;
     }
-
-    console.error(`Storage ${operation} failed:`, error);
   }
 
   private createStorageError(
@@ -727,8 +720,7 @@ export function getStorageErrorMessage(error: unknown): string {
 export async function withStorageRecovery<T>(operation: () => Promise<T>, fallback: T): Promise<T> {
   try {
     return await operation();
-  } catch (error) {
-    console.error("Storage operation failed:", error);
+  } catch {
     return fallback;
   }
 }

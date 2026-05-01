@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import {
   createPersistedStore,
   type PersistedStorage,
-  type CreatePersistedStoreOptions,
 } from "./persistence";
 
 // Test type definitions
@@ -22,21 +21,24 @@ function createMockStorage(): {
   storage: PersistedStorage<TestPersistData>;
   getFn: ReturnType<typeof vi.fn>;
   setFn: ReturnType<typeof vi.fn>;
+  removeFn: ReturnType<typeof vi.fn>;
 } {
   const getFn = vi.fn();
   const setFn = vi.fn();
+  const removeFn = vi.fn();
 
   const storage: PersistedStorage<TestPersistData> = {
     get: getFn,
     set: setFn,
+    remove: removeFn,
   };
 
-  return { storage, getFn, setFn };
+  return { storage, getFn, setFn, removeFn };
 }
 
 // Create test options
 function createTestOptions(storage: PersistedStorage<TestPersistData>) {
-  const options: CreatePersistedStoreOptions<TestPersistData, TestStoreState> = {
+  return {
     storage,
     debounceDelay: 100,
     getPersistData: (state: TestStoreState) => ({
@@ -44,7 +46,6 @@ function createTestOptions(storage: PersistedStorage<TestPersistData>) {
       count: state.count,
     }),
   };
-  return options;
 }
 
 describe("createPersistedStore", () => {
