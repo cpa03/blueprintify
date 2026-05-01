@@ -20,6 +20,7 @@ import exportRoute from "./routes/export";
 import importRoute from "./routes/import";
 import storageRoute from "./routes/storage";
 import shareRoute from "./routes/share";
+import analyticsRoute from "./routes/analytics";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 import { rateLimit, rateLimitConfigs } from "./middleware/rateLimit";
 import { apiKeyAuth } from "./middleware/auth";
@@ -104,6 +105,7 @@ app.route(ROUTE_PATHS.EXPORT, exportRoute);
 app.route(ROUTE_PATHS.IMPORT, importRoute);
 app.route(ROUTE_PATHS.STORAGE, storageRoute);
 app.route(ROUTE_PATHS.SHARE, shareRoute);
+app.route(ROUTE_PATHS.ANALYTICS, analyticsRoute);
 
 app.onError(errorHandler);
 app.notFound(notFoundHandler);

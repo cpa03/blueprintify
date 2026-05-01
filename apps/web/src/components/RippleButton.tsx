@@ -37,6 +37,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { RIPPLE_CONFIG } from "../config/constants";
 
+import type { HTMLMotionProps } from "framer-motion";
+
 interface Ripple {
   id: number;
   x: number;
@@ -51,6 +53,8 @@ interface RippleButtonProps {
   type?: "button" | "submit" | "reset";
   ariaLabel?: string;
   title?: string;
+  whileHover?: HTMLMotionProps<"button">["whileHover"];
+  whileTap?: HTMLMotionProps<"button">["whileTap"];
 }
 
 function RippleButtonComponent({
@@ -61,6 +65,8 @@ function RippleButtonComponent({
   type = "button",
   ariaLabel,
   title,
+  whileHover = { scale: 1.02, y: -2 },
+  whileTap = { scale: 0.98 },
 }: RippleButtonProps): JSX.Element {
   const [ripples, setRipples] = useState<Ripple[]>([]);
   const shouldReduceMotion = useReducedMotion();
@@ -98,10 +104,12 @@ function RippleButtonComponent({
   );
 
   return (
-    <button
+    <motion.button
       type={type}
       onClick={handleClick}
       disabled={disabled}
+      whileHover={disabled ? undefined : whileHover}
+      whileTap={disabled ? undefined : whileTap}
       className={`relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`}
       aria-label={ariaLabel}
       title={title}
@@ -141,7 +149,7 @@ function RippleButtonComponent({
           />
         ))}
       </AnimatePresence>
-    </button>
+    </motion.button>
   );
 }
 

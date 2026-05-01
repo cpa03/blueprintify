@@ -309,6 +309,7 @@ export const ROUTE_PATHS = {
   IMPORT: "/import",
   STORAGE: "/storage",
   SHARE: "/share",
+  ANALYTICS: "/analytics",
 } as const;
 
 export const RATE_LIMIT_CONFIG = {
@@ -402,4 +403,9 @@ export const LOGGER_CONFIG = {
   REQUEST_ID_SUFFIX_LENGTH: 4,
   /** Default paths excluded from request logging */
   DEFAULT_EXCLUDE_PATHS: ["/"] as const,
+} as const;
+
+export const RATE_LIMIT_CONSTANTS = {
+  CLIENT_ID_FALLBACK: "anonymous",
+  DEFAULT_LIMITER_NAME: "STANDARD_RATE_LIMITER",
 } as const;

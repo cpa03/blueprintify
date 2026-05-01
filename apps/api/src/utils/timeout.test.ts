@@ -32,30 +32,34 @@ describe("Timeout Utilities", () => {
     });
 
     it("should throw TimeoutError when operation exceeds timeout", async () => {
+      vi.useFakeTimers();
       const operation = vi
         .fn()
         .mockImplementation(
           () => new Promise((resolve) => setTimeout(resolve, 10000)),
         );
 
-      await expect(withTimeout(operation, { timeoutMs: 50 })).rejects.toThrow(
-        TimeoutError,
-      );
+      const promise = withTimeout(operation, { timeoutMs: 50 });
+      vi.advanceTimersByTime(50);
+      await expect(promise).rejects.toThrow(TimeoutError);
+      vi.useRealTimers();
     });
 
     it("should throw TimeoutError with custom message", async () => {
+      vi.useFakeTimers();
       const operation = vi
         .fn()
         .mockImplementation(
           () => new Promise((resolve) => setTimeout(resolve, 10000)),
         );
 
-      await expect(
-        withTimeout(operation, {
-          timeoutMs: 50,
-          errorMessage: "API call timed out",
-        }),
-      ).rejects.toThrow("API call timed out");
+      const promise = withTimeout(operation, {
+        timeoutMs: 50,
+        errorMessage: "API call timed out",
+      });
+      vi.advanceTimersByTime(50);
+      await expect(promise).rejects.toThrow("API call timed out");
+      vi.useRealTimers();
     });
 
     it("should re-throw operation errors", async () => {
@@ -96,6 +100,7 @@ describe("Timeout Utilities", () => {
     });
 
     it("should use default error message", async () => {
+      vi.useFakeTimers();
       const wrapper = createTimeoutWrapper({
         timeoutMs: 50,
         errorMessage: "Wrapper timeout",
@@ -106,7 +111,10 @@ describe("Timeout Utilities", () => {
           () => new Promise((resolve) => setTimeout(resolve, 5000)),
         );
 
-      await expect(wrapper(operation)).rejects.toThrow("Wrapper timeout");
+      const promise = wrapper(operation);
+      vi.advanceTimersByTime(50);
+      await expect(promise).rejects.toThrow("Wrapper timeout");
+      vi.useRealTimers();
     });
   });
 
@@ -152,18 +160,20 @@ describe("Timeout Utilities", () => {
     });
 
     it("should throw TimeoutError when operation times out", async () => {
+      vi.useFakeTimers();
       const operation = vi
         .fn()
         .mockImplementation(
           () => new Promise((resolve) => setTimeout(resolve, 10000)),
         );
 
-      await expect(
-        withTimeoutAndRetry(operation, {
-          timeoutMs: 50,
-          retries: 0,
-        }),
-      ).rejects.toThrow(TimeoutError);
+      const promise = withTimeoutAndRetry(operation, {
+        timeoutMs: 50,
+        retries: 0,
+      });
+      vi.advanceTimersByTime(50);
+      await expect(promise).rejects.toThrow(TimeoutError);
+      vi.useRealTimers();
     });
   });
 });

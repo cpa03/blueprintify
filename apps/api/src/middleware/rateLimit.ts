@@ -1,7 +1,7 @@
 import type { Context, MiddlewareHandler } from "hono";
 import type { Env } from "../types";
 import { getConfig } from "../config/env";
-import { HTTP_STATUS } from "../config/constants";
+import { HTTP_STATUS, RATE_LIMIT_CONSTANTS } from "../config/constants";
 import { TIME_UNITS } from "@blueprint/shared";
 import { secureLogWarn, secureLogError } from "../utils/secureLog";
 
@@ -78,7 +78,9 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
 
     const key = keyGenerator
       ? keyGenerator(c)
-      : c.req.header("cf-connecting-ip") || c.req.header("x-forwarded-for") || "anonymous";
+      : c.req.header("cf-connecting-ip") ||
+        c.req.header("x-forwarded-for") ||
+        RATE_LIMIT_CONSTANTS.CLIENT_ID_FALLBACK;
 
     if (!rateLimiter) {
       // Security: Reject requests when rate limiter is not configured
@@ -167,7 +169,7 @@ export const rateLimitConfigs = {
     return { limiter: "STRICT_RATE_LIMITER" as RateLimiterName };
   },
   get standard() {
-    return { limiter: "STANDARD_RATE_LIMITER" as RateLimiterName };
+    return { limiter: RATE_LIMIT_CONSTANTS.DEFAULT_LIMITER_NAME as RateLimiterName };
   },
   get lenient() {
     return { limiter: "LENIENT_RATE_LIMITER" as RateLimiterName };
