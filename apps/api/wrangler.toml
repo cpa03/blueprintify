@@ -3,8 +3,6 @@ main = "src/index.ts"
 compatibility_date = "2026-02-19"
 compatibility_flags = ["nodejs_compat"]
 tsconfig = "./tsconfig.json"
-
-# Preserve environment variables during deployments
 keep_vars = true
 
 [placement]
@@ -17,125 +15,6 @@ fallthrough = true
 
 [ai]
 binding = "AI"
-
-# Environment-specific configurations
-[env.production]
-name = "blueprintify"
-workers_dev = false
-logpush = true
-minify = true
-upload_source_maps = false
-routes = [
-  { pattern = "api.blueprintify.dev/*", zone_name = "blueprintify.dev" }
-]
-
-[env.production.vars]
-ENVIRONMENT = "production"
-CORS_ORIGIN = "https://blueprintify.dev"
-RATE_LIMIT_REQUESTS = "100"
-RATE_LIMIT_WINDOW = "60"
-
-[env.production.ai]
-binding = "AI"
-
-[[env.production.analytics_engine_datasets]]
-binding = "ANALYTICS"
-
-[[env.production.kv_namespaces]]
-binding = "CACHE"
-id = "production_cache_kv_id"
-
-[[env.production.d1_databases]]
-binding = "DB"
-database_name = "blueprint-db-prod"
-database_id = "production_database_id"
-
-[[env.production.queues.producers]]
-binding = "BACKGROUND_QUEUE"
-queue = "background-processing"
-
-[[env.production.ratelimits]]
-name = "STRICT_RATE_LIMITER"
-namespace_id = "1001"
-[env.production.ratelimits.simple]
-limit = 10
-period = 60
-
-[[env.production.ratelimits]]
-name = "STANDARD_RATE_LIMITER"
-namespace_id = "1002"
-[env.production.ratelimits.simple]
-limit = 60
-period = 60
-
-[[env.production.ratelimits]]
-name = "LENIENT_RATE_LIMITER"
-namespace_id = "1003"
-[env.production.ratelimits.simple]
-limit = 120
-period = 60
-
-[env.staging]
-name = "blueprintify-staging"
-workers_dev = false
-logpush = true
-minify = true
-routes = [
-  { pattern = "api-staging.blueprintify.dev/*", zone_name = "blueprintify.dev" }
-]
-
-[env.staging.vars]
-ENVIRONMENT = "staging"
-CORS_ORIGIN = "https://staging.blueprintify.dev"
-RATE_LIMIT_REQUESTS = "100"
-RATE_LIMIT_WINDOW = "60"
-
-[env.staging.ai]
-binding = "AI"
-
-[[env.staging.analytics_engine_datasets]]
-binding = "ANALYTICS"
-
-[[env.staging.kv_namespaces]]
-binding = "CACHE"
-id = "staging_cache_kv_id"
-
-[[env.staging.d1_databases]]
-binding = "DB"
-database_name = "blueprint-db-staging"
-database_id = "staging_database_id"
-
-[[env.staging.queues.producers]]
-binding = "BACKGROUND_QUEUE"
-queue = "background-processing"
-
-[[env.staging.ratelimits]]
-name = "STRICT_RATE_LIMITER"
-namespace_id = "1001"
-[env.staging.ratelimits.simple]
-limit = 10
-period = 60
-
-[[env.staging.ratelimits]]
-name = "STANDARD_RATE_LIMITER"
-namespace_id = "1002"
-[env.staging.ratelimits.simple]
-limit = 60
-period = 60
-
-[[env.staging.ratelimits]]
-name = "LENIENT_RATE_LIMITER"
-namespace_id = "1003"
-[env.staging.ratelimits.simple]
-limit = 120
-period = 60
-
-# Development configuration (default)
-[vars]
-ENVIRONMENT = "development"
-CORS_ORIGIN = "http://localhost:3000"
-RATE_LIMIT_REQUESTS = "100"
-RATE_LIMIT_WINDOW = "60"
 
 [[kv_namespaces]]
 binding = "CACHE"
@@ -165,11 +44,9 @@ binding = "ANALYTICS"
 
 [observability]
 enabled = true
-
 [observability.traces]
 enabled = true
 head_sampling_rate = 0.1
-
 [observability.logs]
 enabled = true
 head_sampling_rate = 0.5
@@ -192,5 +69,63 @@ period = 60
 name = "LENIENT_RATE_LIMITER"
 namespace_id = "1003"
 [ratelimits.simple]
+limit = 120
+period = 60
+
+[vars]
+ENVIRONMENT = "development"
+CORS_ORIGIN = "http://localhost:3000"
+RATE_LIMIT_REQUESTS = "100"
+RATE_LIMIT_WINDOW = "60"
+
+[env.production]
+name = "blueprintify"
+workers_dev = false
+logpush = true
+minify = true
+
+[env.production.vars]
+ENVIRONMENT = "production"
+CORS_ORIGIN = "https://blueprintify.dev"
+RATE_LIMIT_REQUESTS = "100"
+RATE_LIMIT_WINDOW = "60"
+
+[[env.production.kv_namespaces]]
+binding = "CACHE"
+id = "production_cache_kv_id"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "blueprint-db-prod"
+database_id = "production_database_id"
+
+[env.production.ai]
+binding = "AI"
+
+[[env.production.analytics_engine_datasets]]
+binding = "ANALYTICS"
+
+[[env.production.queues.producers]]
+binding = "BACKGROUND_QUEUE"
+queue = "background-processing"
+
+[[env.production.ratelimits]]
+name = "STRICT_RATE_LIMITER"
+namespace_id = "1001"
+[env.production.ratelimits.simple]
+limit = 10
+period = 60
+
+[[env.production.ratelimits]]
+name = "STANDARD_RATE_LIMITER"
+namespace_id = "1002"
+[env.production.ratelimits.simple]
+limit = 60
+period = 60
+
+[[env.production.ratelimits]]
+name = "LENIENT_RATE_LIMITER"
+namespace_id = "1003"
+[env.production.ratelimits.simple]
 limit = 120
 period = 60
