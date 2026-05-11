@@ -33,25 +33,109 @@ binding = "AI"
 
 # Environment-specific configurations
 [env.production]
-name = "blueprint-generator-api-prod"
+name = "blueprintify"
 workers_dev = false
 logpush = true
 minify = true
 upload_source_maps = false
-vars = { ENVIRONMENT = "production" }
+vars = { ENVIRONMENT = "production", CORS_ORIGIN = "https://blueprintify.dev", RATE_LIMIT_REQUESTS = "60", RATE_LIMIT_WINDOW = "60" }
 routes = [
   { pattern = "api.blueprintify.dev/*", zone_name = "blueprintify.dev" }
 ]
 
+# Cloudflare Workers AI binding
+[env.production.ai]
+binding = "AI"
+
+# Analytics Engine for production metrics
+[[env.production.analytics_engine_datasets]]
+binding = "ANALYTICS"
+
+# Queue for background processing
+[[env.production.queues.producers]]
+binding = "BACKGROUND_QUEUE"
+queue = "background-processing"
+
+[[env.production.queues.consumers]]
+queue = "background-processing"
+max_batch_size = 10
+max_batch_timeout = 30
+max_retries = 5
+retry_delay = 60
+
+# Cloudflare Native Rate Limiting
+[[env.production.ratelimits]]
+name = "STRICT_RATE_LIMITER"
+namespace_id = "2001"
+[env.production.ratelimits.simple]
+limit = 10
+period = 60
+
+[[env.production.ratelimits]]
+name = "STANDARD_RATE_LIMITER"
+namespace_id = "2002"
+[env.production.ratelimits.simple]
+limit = 60
+period = 60
+
+[[env.production.ratelimits]]
+name = "LENIENT_RATE_LIMITER"
+namespace_id = "2003"
+[env.production.ratelimits.simple]
+limit = 120
+period = 60
+
 [env.staging]
-name = "blueprint-generator-api-staging"
+name = "blueprintify-staging"
 workers_dev = false
 logpush = true
 minify = true
-vars = { ENVIRONMENT = "staging" }
+vars = { ENVIRONMENT = "staging", CORS_ORIGIN = "https://staging.blueprintify.dev", RATE_LIMIT_REQUESTS = "100", RATE_LIMIT_WINDOW = "60" }
 routes = [
   { pattern = "api-staging.blueprintify.dev/*", zone_name = "blueprintify.dev" }
 ]
+
+# Cloudflare Workers AI binding
+[env.staging.ai]
+binding = "AI"
+
+# Analytics Engine for metrics
+[[env.staging.analytics_engine_datasets]]
+binding = "ANALYTICS"
+
+# Queue for background processing
+[[env.staging.queues.producers]]
+binding = "BACKGROUND_QUEUE"
+queue = "background-processing-staging"
+
+[[env.staging.queues.consumers]]
+queue = "background-processing-staging"
+max_batch_size = 10
+max_batch_timeout = 30
+max_retries = 5
+retry_delay = 60
+
+# Cloudflare Native Rate Limiting
+[[env.staging.ratelimits]]
+name = "STRICT_RATE_LIMITER"
+namespace_id = "3001"
+[env.staging.ratelimits.simple]
+limit = 10
+period = 60
+
+[[env.staging.ratelimits]]
+name = "STANDARD_RATE_LIMITER"
+namespace_id = "3002"
+[env.staging.ratelimits.simple]
+limit = 60
+period = 60
+
+[[env.staging.ratelimits]]
+name = "LENIENT_RATE_LIMITER"
+namespace_id = "3003"
+[env.staging.ratelimits.simple]
+limit = 120
+period = 60
 
 # Development configuration (default)
 [vars]
