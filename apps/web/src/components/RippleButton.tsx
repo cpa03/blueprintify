@@ -26,14 +26,8 @@
  * ```
  */
 
-import {
-  useState,
-  useCallback,
-  memo,
-  type ReactNode,
-  type MouseEvent,
-} from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useCallback, memo, type ReactNode, type MouseEvent } from "react";
+import { motion, AnimatePresence, type HTMLMotionProps } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { RIPPLE_CONFIG } from "../config/constants";
 
@@ -51,6 +45,8 @@ interface RippleButtonProps {
   type?: "button" | "submit" | "reset";
   ariaLabel?: string;
   title?: string;
+  whileHover?: HTMLMotionProps<"button">["whileHover"];
+  whileTap?: HTMLMotionProps<"button">["whileTap"];
 }
 
 function RippleButtonComponent({
@@ -61,6 +57,8 @@ function RippleButtonComponent({
   type = "button",
   ariaLabel,
   title,
+  whileHover,
+  whileTap,
 }: RippleButtonProps): JSX.Element {
   const [ripples, setRipples] = useState<Ripple[]>([]);
   const shouldReduceMotion = useReducedMotion();
@@ -86,7 +84,7 @@ function RippleButtonComponent({
         setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
       }, RIPPLE_CONFIG.REMOVAL_DELAY_MS);
     },
-    [shouldReduceMotion],
+    [shouldReduceMotion]
   );
 
   const handleClick = useCallback(
@@ -94,16 +92,16 @@ function RippleButtonComponent({
       createRipple(e);
       onClick?.(e);
     },
-    [createRipple, onClick],
+    [createRipple, onClick]
   );
 
   return (
     <motion.button
-      whileHover={!disabled ? { scale: 1.02 } : undefined}
-      whileTap={!disabled ? { scale: 0.98 } : undefined}
       type={type}
       onClick={handleClick}
       disabled={disabled}
+      whileHover={!disabled ? whileHover : undefined}
+      whileTap={!disabled ? whileTap : undefined}
       className={`relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`}
       aria-label={ariaLabel}
       title={title}
@@ -178,7 +176,7 @@ export function useRipple(): {
         setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
       }, RIPPLE_CONFIG.REMOVAL_DELAY_MS);
     },
-    [shouldReduceMotion],
+    [shouldReduceMotion]
   );
 
   const RippleOverlay = useCallback(
@@ -207,7 +205,7 @@ export function useRipple(): {
         ))}
       </AnimatePresence>
     ),
-    [ripples],
+    [ripples]
   );
 
   return { createRipple, RippleOverlay, ripples };

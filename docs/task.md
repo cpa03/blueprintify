@@ -26,7 +26,20 @@ All tasks follow the lifecycle defined in [repo-rules.md](./repo-rules.md):
 
 ---
 
-_Last Updated: 2026-02-25_
+## Phase 5 StorX Tasks
+
+- [x] [CONSOLIDATE] Direct import of `HTTP_STATUS` from `@blueprint/shared` in `apps/api/src/errors.ts` to prevent circular dependencies or initialization issues.
+
+---
+
+## Phase 1 BugLover Findings
+
+- [x] bug: Flaky analytics test in `apps/api/src/db/index.test.ts`
+- [x] error: Unhandled rejection warnings in `apps/api/src/middleware/rateLimit.test.ts`
+
+---
+
+_Last Updated: 2026-05-11_
 _For task lifecycle rules, see repo-rules.md_
 
 ## CMZ Phase 1 Findings

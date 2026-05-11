@@ -277,6 +277,50 @@ Upon inspection, the `display=swap` parameter was already present in `apps/web/i
 
 ---
 
+### BUG-011: Flaky Analytics Date Range Test
+
+**Status**: Resolved
+**Priority**: Medium
+**Area**: API Layer / Database
+**First Reported**: 2026-05-11 (Current Session)
+
+#### Description
+
+`MockDatabaseService > Analytics Operations > should get analytics by event type and date range` fails intermittently. The test creates an event with the current timestamp and then queries for events within a range ending at the current timestamp. If the query execution is slightly delayed, it might miss the event.
+
+#### Solution
+
+Set the end-of-range timestamp to a future value (e.g., Date.now() + 1 hour) to prevent race conditions.
+
+#### Fix Status
+
+- [x] Adjust date range in `apps/api/src/db/index.test.ts`
+- [x] Verify fix with multiple test runs
+
+---
+
+### BUG-012: Unhandled Rejection Warnings in Rate Limit Tests
+
+**Status**: Resolved
+**Priority**: Low
+**Area**: API Layer / Testing
+**First Reported**: 2026-05-11 (Current Session)
+
+#### Description
+
+`apps/api/src/middleware/rateLimit.test.ts` produces `Exception while logging unhandled rejection` warnings in the vitest-pool-workers environment.
+
+#### Solution
+
+Include an `afterAll` block with a delay (e.g., `await new Promise(r => setTimeout(r, 100))`) to allow asynchronous tasks to settle.
+
+#### Fix Status
+
+- [x] Add `afterAll` delay in `apps/api/src/middleware/rateLimit.test.ts`
+- [x] Verify fix by checking test output for warnings
+
+---
+
 ## Resolved Bugs
 
 ### BUG-003: Duplicate Retry Configuration ✅ RESOLVED

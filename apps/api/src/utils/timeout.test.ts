@@ -1,12 +1,16 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import {
-  withTimeout,
-  TimeoutError,
-  createTimeoutWrapper,
-  withTimeoutAndRetry,
-} from "./timeout";
+import { withTimeout, TimeoutError, createTimeoutWrapper, withTimeoutAndRetry } from "./timeout";
 
 describe("Timeout Utilities", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.useRealTimers();
+  });
+
   describe("TimeoutError", () => {
     it("should create error with default message", () => {
       const error = new TimeoutError(5000);
@@ -42,15 +46,14 @@ describe("Timeout Utilities", () => {
     });
 
     it("should throw TimeoutError when operation exceeds timeout", async () => {
-      const operation = vi.fn().mockImplementation(
-        () =>
-          new Promise((resolve) => {
-            setTimeout(resolve, 10000);
-          }),
-      );
+      const operation = vi
+        .fn()
+        .mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 10000)));
 
       const promise = withTimeout(operation, { timeoutMs: 50 });
-      vi.advanceTimersByTime(100);
+
+      vi.advanceTimersByTime(51);
+
       await expect(promise).rejects.toThrow(TimeoutError);
     });
 
@@ -59,14 +62,15 @@ describe("Timeout Utilities", () => {
         () =>
           new Promise((resolve) => {
             setTimeout(resolve, 10000);
-          }),
+          })
       );
 
       const promise = withTimeout(operation, {
         timeoutMs: 50,
         errorMessage: "API call timed out",
       });
-      vi.advanceTimersByTime(100);
+      vi.advanceTimersByTime(51);
+
       await expect(promise).rejects.toThrow("API call timed out");
     });
 
@@ -74,9 +78,7 @@ describe("Timeout Utilities", () => {
       const operationError = new Error("Operation failed");
       const operation = vi.fn().mockRejectedValue(operationError);
 
-      await expect(withTimeout(operation, { timeoutMs: 5000 })).rejects.toThrow(
-        "Operation failed",
-      );
+      await expect(withTimeout(operation, { timeoutMs: 5000 })).rejects.toThrow("Operation failed");
     });
 
     it("should clear timeout on successful completion", async () => {
@@ -126,11 +128,12 @@ describe("Timeout Utilities", () => {
         () =>
           new Promise((resolve) => {
             setTimeout(resolve, 5000);
-          }),
+          })
       );
 
       const promise = wrapper(operation);
-      vi.advanceTimersByTime(100);
+      vi.advanceTimersByTime(51);
+
       await expect(promise).rejects.toThrow("Wrapper timeout");
     });
   });
@@ -170,6 +173,7 @@ describe("Timeout Utilities", () => {
       });
 
       await vi.runAllTimersAsync();
+
       const result = await promise;
 
       expect(result).toBe("success");
@@ -195,7 +199,7 @@ describe("Timeout Utilities", () => {
         () =>
           new Promise((resolve) => {
             setTimeout(resolve, 10000);
-          }),
+          })
       );
 
       const promise = withTimeoutAndRetry(operation, {
@@ -203,7 +207,8 @@ describe("Timeout Utilities", () => {
         retries: 0,
       });
 
-      await vi.runAllTimersAsync();
+      vi.advanceTimersByTime(51);
+
       await expect(promise).rejects.toThrow(TimeoutError);
     });
   });

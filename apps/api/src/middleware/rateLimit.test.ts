@@ -16,6 +16,12 @@ function createMockRateLimit(shouldSucceed: boolean[] = []) {
 }
 
 describe("rateLimit middleware", () => {
+  afterAll(async () => {
+    // Small delay to allow workerd asynchronous tasks to settle
+    // and prevent "Exception while logging unhandled rejection" warnings
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  });
+
   beforeEach(() => {
     vi.resetModules();
     initializeConfig({
@@ -152,7 +158,7 @@ describe("rateLimit middleware", () => {
         rateLimit({
           limiter: "STANDARD_RATE_LIMITER",
           keyGenerator: (c) => c.req.header("x-api-key") || "default",
-        }),
+        })
       );
       app.get("/", (c) => c.json({ success: true }));
 
