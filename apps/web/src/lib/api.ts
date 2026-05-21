@@ -39,6 +39,7 @@ import {
   API_ENDPOINTS,
   UI_FALLBACKS,
   TIMEOUTS,
+  FRONTEND_ERROR_MESSAGES,
 } from "../config/constants";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || UI_FALLBACKS.API_BASE;
@@ -213,7 +214,7 @@ async function apiCallWithRetry(
       return;
     } catch (error) {
       clearTimeout(timeoutId);
-      lastError = error instanceof Error ? error : new Error("Unknown error");
+      lastError = error instanceof Error ? error : new Error(FRONTEND_ERROR_MESSAGES.UNKNOWN_ERROR);
 
       if (isRetryableError(lastError) && attempt < opts.maxRetries) {
         handlers.onRetry?.(attempt + 1, opts.maxRetries);

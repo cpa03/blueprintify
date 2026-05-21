@@ -16,6 +16,7 @@
 import DOMPurify from "dompurify";
 import { z } from "zod";
 import { STORAGE_CONFIG, SECURITY_LIMITS } from "@blueprint/shared";
+import { SECURITY_ERROR_MESSAGES } from "../config/constants";
 
 export const SECURITY_CONFIG = {
   DOMPURIFY_CONFIG: {
@@ -155,9 +156,7 @@ export function sanitizeHtml(html: string): string {
 
 export function sanitizeMarkdown(markdown: string): string {
   if (containsXSSPatterns(markdown)) {
-    throw new Error(
-      "Content contains potentially dangerous XSS patterns. This may include script tags, event handlers, or javascript: URLs. Please remove any embedded scripts or suspicious HTML."
-    );
+    throw new Error(SECURITY_ERROR_MESSAGES.XSS_PATTERNS_DETECTED);
   }
 
   // Additional CodeMirror-specific security patterns
@@ -172,9 +171,7 @@ export function sanitizeMarkdown(markdown: string): string {
   ];
 
   if (CODEMIRROR_PATTERNS.some((pattern) => pattern.test(markdown))) {
-    throw new Error(
-      "Content contains CodeMirror-specific dangerous patterns (data: URLs, vbscript, CSS expressions, or IE-specific behaviors). These are blocked for security reasons."
-    );
+    throw new Error(SECURITY_ERROR_MESSAGES.CODEMIRROR_DANGEROUS_PATTERNS);
   }
 
   const htmlRegex = /<[^>]+>/g;
@@ -230,7 +227,7 @@ export function validateContent(content: unknown): {
     }
     return {
       isValid: false,
-      error: "Content validation failed",
+      error: SECURITY_ERROR_MESSAGES.CONTENT_VALIDATION_FAILED,
     };
   }
 }
@@ -247,14 +244,19 @@ export function validateFile(file: File): { isValid: boolean; error?: string } {
   ) {
     return {
       isValid: false,
-      error: `File type ${extension} is not allowed. Allowed types: ${SECURITY_CONFIG.ALLOWED_FILE_TYPES.join(", ")}`,
+      error: SECURITY_ERROR_MESSAGES.FILE_TYPE_NOT_ALLOWED(
+        extension,
+        SECURITY_CONFIG.ALLOWED_FILE_TYPES.join(", ")
+      ),
     };
   }
 
   if (file.size > SECURITY_CONFIG.MAX_FILE_SIZE) {
     return {
       isValid: false,
-      error: `File size exceeds maximum allowed size of ${SECURITY_CONFIG.MAX_FILE_SIZE / (1024 * 1024)}MB`,
+      error: SECURITY_ERROR_MESSAGES.FILE_SIZE_EXCEEDED(
+        SECURITY_CONFIG.MAX_FILE_SIZE / (1024 * 1024)
+      ),
     };
   }
 
@@ -306,7 +308,7 @@ export async function validateAndSanitizeFileContent(file: File): Promise<{
     }
     return {
       isValid: false,
-      error: "File validation failed",
+      error: SECURITY_ERROR_MESSAGES.FILE_VALIDATION_FAILED,
     };
   }
 }
@@ -323,7 +325,7 @@ export function validateJSONSecurity(content: string): {
     if (prototypePollutionPattern.test(content) || constructorPattern.test(content)) {
       return {
         isValid: false,
-        error: "JSON contains potential prototype pollution vulnerabilities",
+        error: SECURITY_ERROR_MESSAGES.PROTOTYPE_POLLUTION_DETECTED,
       };
     }
 
@@ -334,7 +336,7 @@ export function validateJSONSecurity(content: string): {
     if (depth > SECURITY_LIMITS.MAX_JSON_DEPTH) {
       return {
         isValid: false,
-        error: `JSON object depth exceeds maximum allowed limit (${SECURITY_LIMITS.MAX_JSON_DEPTH})`,
+        error: SECURITY_ERROR_MESSAGES.JSON_DEPTH_EXCEEDED(SECURITY_LIMITS.MAX_JSON_DEPTH),
       };
     }
 
@@ -344,7 +346,7 @@ export function validateJSONSecurity(content: string): {
     if (foundSuspiciousKeys.length > 0) {
       return {
         isValid: false,
-        error: `JSON contains suspicious keys: ${foundSuspiciousKeys.join(", ")}`,
+        error: SECURITY_ERROR_MESSAGES.JSON_SUSPICIOUS_KEYS(foundSuspiciousKeys.join(", ")),
       };
     }
 
@@ -352,7 +354,7 @@ export function validateJSONSecurity(content: string): {
   } catch {
     return {
       isValid: false,
-      error: "Invalid JSON format",
+      error: SECURITY_ERROR_MESSAGES.INVALID_JSON_FORMAT,
     };
   }
 }
@@ -435,7 +437,7 @@ export function sanitizeForStorage(data: unknown): {
   if (!quota.available) {
     return {
       isValid: false,
-      error: "Storage quota exceeded. Please clear some data.",
+      error: SECURITY_ERROR_MESSAGES.STORAGE_QUOTA_EXCEEDED,
     };
   }
 
@@ -507,10 +509,10 @@ export function handleSecurityError(error: unknown): SecurityError {
 
   if (error instanceof Error) {
     if (containsXSSPatterns(error.message)) {
-      return new SecurityError("Content contains potentially dangerous patterns", "XSS");
+      return new SecurityError(SECURITY_ERROR_MESSAGES.XSS_DANGEROUS_PATTERNS, "XSS");
     }
     return new SecurityError(error.message, "VALIDATION", error);
   }
 
-  return new SecurityError("Unknown security error", "VALIDATION", error);
+  return new SecurityError(SECURITY_ERROR_MESSAGES.UNKNOWN_SECURITY_ERROR, "VALIDATION", error);
 }

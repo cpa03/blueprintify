@@ -209,6 +209,7 @@ export const ERROR_CODES = {
   RATE_LIMIT_ERROR: "RATE_LIMIT_ERROR",
   CIRCUIT_BREAKER_OPEN: "CIRCUIT_BREAKER_OPEN",
   TIMEOUT_ERROR: "TIMEOUT_ERROR",
+  PAYLOAD_TOO_LARGE: "PAYLOAD_TOO_LARGE",
 } as const;
 
 // Error messages
@@ -218,23 +219,39 @@ export const ERROR_MESSAGES = {
   CONFIGURATION: "OpenAI API key not configured",
   NETWORK: "Network error occurred",
   AI_SERVICE: "AI service error",
+  AI_SERVICE_UNAVAILABLE: "AI service temporarily unavailable",
+  AI_SERVICE_FAILURE: (detail: string) => `AI service error: ${detail}`,
   INTERNAL: "Internal server error",
+  INTERNAL_FALLBACK: "Unknown error occurred",
   AUTHENTICATION: "Authentication required",
+  AUTHENTICATION_INVALID_KEY: "Invalid or missing API key",
+  AUTHENTICATION_MISSING_CONFIG: "API_KEY is not configured. Server authentication is unavailable.",
   AUTHORIZATION: "Insufficient permissions",
   RATE_LIMIT: "Too many requests, please try again later",
+  RATE_LIMITER_NOT_CONFIGURED: "Rate limiter not configured",
   CIRCUIT_BREAKER_OPEN: "Service temporarily unavailable, please try again later",
+  CONTAINER_NOT_INITIALIZED:
+    "DI Container not initialized. Call setDefaultContainer() before using services.",
+  JSON_PARSE_FAILURE: (detail: string) => `Failed to parse JSON: ${detail}`,
+  PLATFORM_UNKNOWN: "unknown",
+  PLATFORM_RUNTIME: "cloudflare-workers",
+  SSE_UNKNOWN_ERROR: "Unknown error",
+  TIMEOUT_MESSAGE: (elapsed: number, timeout: number) =>
+    `Retry operation timed out after ${elapsed}ms (timeout: ${timeout}ms)`,
+  UNKNOWN_ERROR: "Unknown error",
 } as const;
 
 // Default error messages for error classes
+// Flexy says: Reference ERROR_MESSAGES where identical to eliminate duplication
 export const DEFAULT_ERROR_MESSAGES = {
   VALIDATION: "Invalid request data",
-  AUTHENTICATION: "Authentication required",
-  AUTHORIZATION: "Insufficient permissions",
+  AUTHENTICATION: ERROR_MESSAGES.AUTHENTICATION,
+  AUTHORIZATION: ERROR_MESSAGES.AUTHORIZATION,
   NOT_FOUND: "Resource not found",
   CONFIGURATION: "Service configuration error",
-  NETWORK: "Network error occurred",
-  AI_SERVICE: "AI service error",
-  INTERNAL: "Internal server error",
+  NETWORK: ERROR_MESSAGES.NETWORK,
+  AI_SERVICE: ERROR_MESSAGES.AI_SERVICE,
+  INTERNAL: ERROR_MESSAGES.INTERNAL,
 } as const;
 
 export const PROMPT_CONFIG = {

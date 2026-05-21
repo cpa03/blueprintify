@@ -11,7 +11,7 @@ import {
   CircuitBreaker,
   CircuitBreakerOpenError,
 } from "../utils/circuitBreaker";
-import { AI_CONFIG, CIRCUIT_BREAKER_CONFIG } from "../config/constants";
+import { AI_CONFIG, CIRCUIT_BREAKER_CONFIG, ERROR_MESSAGES } from "../config/constants";
 
 /**
  * Configuration options for AI client initialization
@@ -90,7 +90,7 @@ export async function* streamCompletion(
   const cb = getCircuitBreaker();
 
   if (cb.getState().state === "OPEN") {
-    throw new CircuitBreakerOpenError("AI service temporarily unavailable");
+    throw new CircuitBreakerOpenError(ERROR_MESSAGES.AI_SERVICE_UNAVAILABLE);
   }
 
   try {
@@ -123,7 +123,9 @@ export async function* streamCompletion(
       throw error;
     }
     throw new Error(
-      `AI service error: ${error instanceof Error ? error.message : "Unknown error"}`
+      ERROR_MESSAGES.AI_SERVICE_FAILURE(
+        error instanceof Error ? error.message : ERROR_MESSAGES.UNKNOWN_ERROR
+      )
     );
   }
 }
@@ -139,7 +141,7 @@ export async function generateCompletion(options: StreamOptions): Promise<string
   const cb = getCircuitBreaker();
 
   if (cb.getState().state === "OPEN") {
-    throw new CircuitBreakerOpenError("AI service temporarily unavailable");
+    throw new CircuitBreakerOpenError(ERROR_MESSAGES.AI_SERVICE_UNAVAILABLE);
   }
 
   try {
@@ -166,7 +168,9 @@ export async function generateCompletion(options: StreamOptions): Promise<string
       throw error;
     }
     throw new Error(
-      `AI service error: ${error instanceof Error ? error.message : "Unknown error"}`
+      ERROR_MESSAGES.AI_SERVICE_FAILURE(
+        error instanceof Error ? error.message : ERROR_MESSAGES.UNKNOWN_ERROR
+      )
     );
   }
 }

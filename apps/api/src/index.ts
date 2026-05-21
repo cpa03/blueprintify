@@ -33,6 +33,7 @@ import {
   CORS_CONFIG,
   ROUTE_PATHS,
   CACHE_CONFIG,
+  ERROR_MESSAGES,
   setEnvConfig,
 } from "./config/constants";
 import { initializeContainer } from "./di";
@@ -68,7 +69,7 @@ app.get("/", (c) => {
     "Cache-Control",
     `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE}`
   );
-  c.header("Server-Timing", 'app;desc="API Response";dur=0');
+  c.header("Server-Timing", `app;desc="${API_METADATA.NAME}";dur=0`);
   c.header("CDN-Cache-Control", `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}`);
   c.header("Cloudflare-CDN-Cache-Control", `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}`);
   return c.json({
@@ -76,8 +77,8 @@ app.get("/", (c) => {
     version: API_METADATA.VERSION,
     status: API_METADATA.STATUS,
     runtime: {
-      platform: "cloudflare-workers",
-      region: c.req.header("cf-ipcountry") || "unknown",
+      platform: ERROR_MESSAGES.PLATFORM_RUNTIME,
+      region: c.req.header("cf-ipcountry") || ERROR_MESSAGES.PLATFORM_UNKNOWN,
     },
     endpoints: {
       generate: `${API_ENDPOINTS.GENERATE.method} ${API_ENDPOINTS.GENERATE.path}`,

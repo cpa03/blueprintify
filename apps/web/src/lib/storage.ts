@@ -9,7 +9,7 @@
  */
 
 import { z } from "zod";
-import { STORAGE_KEYS, STORAGE_CONFIG } from "../config/constants";
+import { STORAGE_KEYS, STORAGE_CONFIG, STORAGE_ERROR_MESSAGES } from "../config/constants";
 import { BACKUP_KEY_PREFIX, TEST_KEYS } from "../config/keys";
 
 // ============================================================================
@@ -257,7 +257,7 @@ export class StorageService<T = unknown> {
         return recovered;
       }
 
-      throw this.createStorageError("Failed to read from storage", "CORRUPTED_DATA", {
+      throw this.createStorageError(STORAGE_ERROR_MESSAGES.READ_FAILED, "CORRUPTED_DATA", {
         key: this.config.key,
         operation: "read",
         originalError: error,
@@ -315,7 +315,7 @@ export class StorageService<T = unknown> {
       this.health.operations.successful++;
     } catch (error) {
       this.handleError("write", error);
-      throw this.createStorageError("Failed to write to storage", "SERIALIZATION_ERROR", {
+      throw this.createStorageError(STORAGE_ERROR_MESSAGES.WRITE_FAILED, "SERIALIZATION_ERROR", {
         key: this.config.key,
         operation: "write",
         originalError: error,
@@ -341,7 +341,7 @@ export class StorageService<T = unknown> {
       this.health.operations.successful++;
     } catch (error) {
       this.handleError("delete", error);
-      throw this.createStorageError("Failed to remove from storage", "BROWSER_UNSUPPORTED", {
+      throw this.createStorageError(STORAGE_ERROR_MESSAGES.REMOVE_FAILED, "BROWSER_UNSUPPORTED", {
         key: this.config.key,
         operation: "delete",
         originalError: error,
@@ -366,11 +366,15 @@ export class StorageService<T = unknown> {
       this.health.operations.successful++;
     } catch (error) {
       this.handleError("clear", error);
-      throw this.createStorageError("Failed to clear storage", "BROWSER_UNSUPPORTED", {
-        key: "*",
-        operation: "clear",
-        originalError: error,
-      });
+      throw this.createStorageError(
+        STORAGE_ERROR_MESSAGES.CLEAR_STORAGE_FAILED,
+        "BROWSER_UNSUPPORTED",
+        {
+          key: "*",
+          operation: "clear",
+          originalError: error,
+        }
+      );
     } finally {
       this.health.operations.total++;
     }
@@ -486,7 +490,7 @@ export class StorageService<T = unknown> {
       localStorage.setItem(`${BACKUP_KEY_PREFIX}${this.config.key}`, JSON.stringify(backups));
     } catch (error) {
       // Backup failures shouldn't stop the main operation
-      console.warn("Failed to create backup:", error);
+      console.warn(STORAGE_ERROR_MESSAGES.BACKUP_FAILED, error);
     }
   }
 
@@ -516,9 +520,7 @@ export class StorageService<T = unknown> {
           // Restore the recovered data
           localStorage.setItem(this.config.key, backup.data);
 
-          console.warn(
-            `Successfully recovered from backup created at ${new Date(backup.timestamp)}`
-          );
+          console.warn(STORAGE_ERROR_MESSAGES.RECOVERY_SUCCESS(backup.timestamp));
           return recovered;
         } catch {
           // Try next backup
@@ -528,7 +530,7 @@ export class StorageService<T = unknown> {
 
       return null;
     } catch (error) {
-      console.error("Recovery failed:", error);
+      console.error(STORAGE_ERROR_MESSAGES.RECOVERY_FAILED, error);
       return null;
     }
   }
@@ -561,25 +563,24 @@ export class StorageService<T = unknown> {
   private checkBrowserSupport(): void {
     if (!isLocalStorageSupported()) {
       throw this.createStorageError(
-        "localStorage is not supported in this browser",
+        STORAGE_ERROR_MESSAGES.STORAGE_UNSUPPORTED,
         "BROWSER_UNSUPPORTED",
         { key: this.config.key, operation: "read" }
       );
     }
 
     if (isPrivacyMode()) {
-      throw this.createStorageError(
-        "Storage is unavailable in private browsing mode",
-        "PRIVACY_MODE",
-        { key: this.config.key, operation: "read" }
-      );
+      throw this.createStorageError(STORAGE_ERROR_MESSAGES.PRIVACY_MODE, "PRIVACY_MODE", {
+        key: this.config.key,
+        operation: "read",
+      });
     }
   }
 
   private checkQuota(): void {
     const quota = getStorageQuota();
     if (quota.remaining < STORAGE_CONFIG.QUOTA_WARNING_THRESHOLD_KB * 1024) {
-      throw this.createStorageError("Storage quota exceeded", "QUOTA_EXCEEDED", {
+      throw this.createStorageError(STORAGE_ERROR_MESSAGES.QUOTA_EXCEEDED, "QUOTA_EXCEEDED", {
         key: this.config.key,
         operation: "write",
         data: quota,
@@ -611,7 +612,7 @@ export class StorageService<T = unknown> {
       this.health.operations.lastError = error;
     }
 
-    console.error(`Storage ${operation} failed:`, error);
+    console.error(STORAGE_ERROR_MESSAGES.OPERATION_FAILED(operation), error);
   }
 
   private createStorageError(
@@ -641,7 +642,7 @@ export class StorageManager {
 
   create<T>(config: StorageConfig): StorageService<T> {
     if (this.services.has(config.key)) {
-      throw new Error(`Storage service for key "${config.key}" already exists`);
+      throw new Error(STORAGE_ERROR_MESSAGES.SERVICE_EXISTS(config.key));
     }
 
     const service = new StorageService<T>(config);
@@ -706,29 +707,29 @@ export function getStorageErrorMessage(error: unknown): string {
   if (isStorageError(error)) {
     switch (error.type) {
       case "QUOTA_EXCEEDED":
-        return "Storage is full. Please clear some data and try again.";
+        return STORAGE_ERROR_MESSAGES.STORAGE_FULL;
       case "CORRUPTED_DATA":
-        return "Stored data appears to be corrupted. Attempting recovery...";
+        return STORAGE_ERROR_MESSAGES.DATA_CORRUPTED;
       case "BROWSER_UNSUPPORTED":
-        return "Your browser does not support local storage.";
+        return STORAGE_ERROR_MESSAGES.BROWSER_UNSUPPORTED;
       case "PRIVACY_MODE":
-        return "Storage is unavailable in private browsing mode.";
+        return STORAGE_ERROR_MESSAGES.PRIVACY_MODE_MSG;
       case "VALIDATION_ERROR":
-        return "Data validation failed.";
+        return STORAGE_ERROR_MESSAGES.VALIDATION_FAILED;
       case "MIGRATION_ERROR":
-        return "Data migration failed. Please clear storage and try again.";
+        return STORAGE_ERROR_MESSAGES.MIGRATION_FAILED;
       default:
         return error.message;
     }
   }
-  return "An unexpected storage error occurred.";
+  return STORAGE_ERROR_MESSAGES.UNEXPECTED_ERROR;
 }
 
 export async function withStorageRecovery<T>(operation: () => Promise<T>, fallback: T): Promise<T> {
   try {
     return await operation();
   } catch (error) {
-    console.error("Storage operation failed:", error);
+    console.error(STORAGE_ERROR_MESSAGES.OPERATION_FAILED("operation"), error);
     return fallback;
   }
 }

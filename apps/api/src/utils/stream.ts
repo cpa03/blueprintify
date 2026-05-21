@@ -4,7 +4,7 @@
  * for real-time content delivery.
  */
 
-import { SSE_HEADERS, CORS_CONFIG, SSE_CONFIG } from "../config/constants";
+import { SSE_HEADERS, CORS_CONFIG, SSE_CONFIG, ERROR_MESSAGES } from "../config/constants";
 
 /**
  * Server-Sent Event message structure
@@ -93,7 +93,8 @@ export function createStreamFromGenerator(
 
         onComplete?.();
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        const errorMessage =
+          error instanceof Error ? error.message : ERROR_MESSAGES.SSE_UNKNOWN_ERROR;
         const errSSE = formatSSE({
           data: JSON.stringify({
             type: SSE_CONFIG.EVENT_TYPES.ERROR,

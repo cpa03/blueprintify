@@ -95,7 +95,7 @@ describe("storageAdapter", () => {
         await adapter.getItem("test-key");
 
         expect(consoleErrorSpy).toHaveBeenCalledWith(
-          "Storage getItem failed:",
+          "Storage getItem failed",
           "Error: Storage error"
         );
         consoleErrorSpy.mockRestore();
