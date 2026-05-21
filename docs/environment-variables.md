@@ -15,18 +15,18 @@ This document describes all environment variables and configuration options for 
 
 The API is built on Cloudflare Workers and uses `.dev.vars` for local development.
 
-| Variable             | Required | Default                     | Description                                                  |
-| -------------------- | -------- | --------------------------- | ------------------------------------------------------------ |
-| `OPENAI_API_KEY`     | Yes      | -                           | Your OpenAI API key for AI completions                       |
-| `OPENAI_BASE_URL`    | No       | `https://api.openai.com/v1` | Custom API base URL for OpenAI-compatible endpoints          |
-| `OPENAI_MODEL`       | No       | `gpt-4o-mini`               | Model to use for completions                                 |
-| `OPENAI_TIMEOUT_MS`  | No       | `60000`                     | Request timeout in milliseconds                              |
-| `OPENAI_MAX_TOKENS`  | No       | `4000`                      | Maximum tokens per request                                   |
-| `OPENAI_TEMPERATURE` | No       | `0.7`                       | Sampling temperature (0-2)                                   |
-| `CORS_ORIGIN`        | No       | `*`                         | Allowed CORS origins (comma-separated)                       |
-| `CORS_MAX_AGE`       | No       | `86400`                     | CORS preflight cache duration in seconds                     |
-| `API_KEY`            | Yes      | -                           | API authentication key for protected endpoints               |
-| `ENVIRONMENT`        | No       | `development`               | Runtime environment (`development`, `staging`, `production`) |
+| Variable             | Required    | Default                     | Description                                                        |
+| -------------------- | ----------- | --------------------------- | ------------------------------------------------------------------ |
+| `OPENAI_API_KEY`     | Yes         | -                           | Your OpenAI API key for AI completions                             |
+| `OPENAI_BASE_URL`    | No          | `https://api.openai.com/v1` | Custom API base URL for OpenAI-compatible endpoints                |
+| `OPENAI_MODEL`       | No          | `gpt-4o-mini`               | Model to use for completions                                       |
+| `OPENAI_TIMEOUT_MS`  | No          | `60000`                     | Request timeout in milliseconds                                    |
+| `OPENAI_MAX_TOKENS`  | No          | `4000`                      | Maximum tokens per request                                         |
+| `OPENAI_TEMPERATURE` | No          | `0.7`                       | Sampling temperature (0-2)                                         |
+| `CORS_ORIGIN`        | No          | `*`                         | Allowed CORS origins (comma-separated)                             |
+| `CORS_MAX_AGE`       | No          | `86400`                     | CORS preflight cache duration in seconds                           |
+| `API_KEY`            | Recommended | -                           | API authentication key. If not set, protected endpoints return 503 |
+| `ENVIRONMENT`        | No          | `development`               | Runtime environment (`development`, `staging`, `production`)       |
 
 ### Rate Limiting
 
