@@ -23,7 +23,7 @@
  */
 
 import { useState, memo, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { STARTER_TEMPLATES } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { ANIMATION } from "../config/constants";
@@ -88,6 +88,7 @@ function TemplateGridComponent(): JSX.Element {
               aria-label={`${template.name}: ${template.description}`}
               className={`
                 glass-card p-5 text-left transition-all duration-300 group relative card-glow-hover
+                will-change-transform
                 ${
                   isSelected
                     ? "border-accent-emerald/70 bg-accent-emerald/10"
@@ -99,13 +100,14 @@ function TemplateGridComponent(): JSX.Element {
               whileHover={selectedId === null ? { scale: 1.02, y: -2 } : undefined}
               whileTap={selectedId === null ? { scale: 0.98 } : undefined}
             >
-              <AnimatePresence>
-                {isSelected && (
+              {/* Selected state overlay elements animated via conditional mount */}
+              {isSelected && (
+                <>
+                  {/* Checkmark badge */}
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0, opacity: 0 }}
-                    className="absolute top-3 right-3 w-6 h-6 bg-accent-emerald rounded-full flex items-center justify-center"
+                    className="absolute top-3 right-3 w-6 h-6 bg-accent-emerald rounded-full flex items-center justify-center z-10"
                   >
                     <svg
                       className="w-4 h-4 text-white"
@@ -121,47 +123,44 @@ function TemplateGridComponent(): JSX.Element {
                       />
                     </svg>
                   </motion.div>
-                )}
-              </AnimatePresence>
 
-              <AnimatePresence>
-                {isSelected && isLoading && (
+                  {/* Pulsing border using opacity animation (composited, no forced reflow) */}
                   <motion.div
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute inset-0 flex items-center justify-center bg-dark-950/30 backdrop-blur-[1px] rounded-lg z-20"
-                  >
-                    <motion.div
-                      className="w-8 h-8 border-2 border-accent-emerald/30 border-t-accent-emerald rounded-full"
-                      animate={{ rotate: 360 }}
-                      transition={{
-                        duration: 0.8,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    animate={{ opacity: [0.4, 1, 0.4] }}
+                    transition={{
+                      duration: 1.5,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                    }}
+                    className="absolute inset-0 rounded-lg border-2 border-accent-emerald/50 pointer-events-none"
+                  />
+                </>
+              )}
 
-              <AnimatePresence>
-                {isSelected && (
+              {/* Loading overlay - separate from selected state for animation control */}
+              {isSelected && isLoading && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="absolute inset-0 flex items-center justify-center bg-dark-950/30 backdrop-blur-[1px] rounded-lg z-20"
+                >
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute inset-0 rounded-lg border-2 border-accent-emerald/50"
-                    style={{
-                      animation: "pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                    className="w-8 h-8 border-2 border-accent-emerald/30 border-t-accent-emerald rounded-full"
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 0.8,
+                      repeat: Infinity,
+                      ease: "linear",
                     }}
                   />
-                )}
-              </AnimatePresence>
+                </motion.div>
+              )}
 
               <div className="flex items-start gap-4 relative z-10">
                 <motion.div
                   className="text-3xl"
+                  aria-hidden="true"
                   animate={isSelected ? { scale: 1.1 } : { scale: 1 }}
                   transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 >
