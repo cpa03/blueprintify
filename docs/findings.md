@@ -22,7 +22,7 @@
 - [2026-02-18: Share Endpoint Validation Consistency](#security-2026-02-18---share-endpoint-validation-consistency)
 - [2026-02-18: Integration Workflow File Line Ending](#integration-2026-02-18---workflow-file-line-ending-inconsistency)
 - [2026-02-20: Logger Middleware Undefined Header Fix](#reliability-2026-02-20---logger-middleware-undefined-header-value-fix)
- [2026-02-23: Zustand Selector Pattern Audit](#frontend-engineer-2026-02-23---zustand-selector-pattern-audit)
+  [2026-02-23: Zustand Selector Pattern Audit](#frontend-engineer-2026-02-23---zustand-selector-pattern-audit)
 
 ---
 
@@ -74,10 +74,7 @@ npm run test:all   # ✅ PASS (236 web tests)
 
 ```typescript
 // With overall timeout - max 30s for all attempts combined
-const result = await withRetry(
-  () => fetchExternalAPI(),
-  { retries: 3, timeout: 30000 }
-);
+const result = await withRetry(() => fetchExternalAPI(), { retries: 3, timeout: 30000 });
 ```
 
 ---
@@ -90,18 +87,18 @@ Full reliability verification completed on branch `reliability-engineer`. The co
 
 ### Verification Results
 
-| Check | Status | Details |
+| Check              | Status  | Details                                       |
 | ------------------ | ------- | --------------------------------------------- |
-| Empty catch blocks | ✅ PASS | No empty catch blocks found |
-| `any` type usage | ✅ PASS | No `any` types in production code |
-| `@ts-ignore` usage | ✅ PASS | No `@ts-ignore` or `@ts-expect-error` found |
-| JSON.parse safety | ✅ PASS | All JSON.parse calls wrapped in try/catch |
-| Fetch timeout | ✅ PASS | AbortController with configurable timeouts |
-| Error boundaries | ✅ PASS | ErrorBoundary component wraps entire app |
-| Circuit breaker | ✅ PASS | Proper CLOSED/OPEN/HALF_OPEN state management |
-| Retry logic | ✅ PASS | Exponential backoff with max retries |
-| Typed errors | ✅ PASS | APIError hierarchy with HTTP status codes |
-| Console logging | ✅ PASS | Appropriate use in Cloudflare Workers context |
+| Empty catch blocks | ✅ PASS | No empty catch blocks found                   |
+| `any` type usage   | ✅ PASS | No `any` types in production code             |
+| `@ts-ignore` usage | ✅ PASS | No `@ts-ignore` or `@ts-expect-error` found   |
+| JSON.parse safety  | ✅ PASS | All JSON.parse calls wrapped in try/catch     |
+| Fetch timeout      | ✅ PASS | AbortController with configurable timeouts    |
+| Error boundaries   | ✅ PASS | ErrorBoundary component wraps entire app      |
+| Circuit breaker    | ✅ PASS | Proper CLOSED/OPEN/HALF_OPEN state management |
+| Retry logic        | ✅ PASS | Exponential backoff with max retries          |
+| Typed errors       | ✅ PASS | APIError hierarchy with HTTP status codes     |
+| Console logging    | ✅ PASS | Appropriate use in Cloudflare Workers context |
 
 ### Test Results
 
@@ -114,10 +111,10 @@ Full reliability verification completed on branch `reliability-engineer`. The co
 
 ### Open Issues Reviewed
 
-| Issue | Priority | Status | Notes |
-| ----- | -------- | ------ | ----- |
-| #743 | P0 | BLOCKED | CI workflow fix requires admin permission |
-| #418 | P2 | ACCEPTED | AJV vulnerabilities - upstream dependency, low risk |
+| Issue | Priority | Status   | Notes                                               |
+| ----- | -------- | -------- | --------------------------------------------------- |
+| #743  | P0       | BLOCKED  | CI workflow fix requires admin permission           |
+| #418  | P2       | ACCEPTED | AJV vulnerabilities - upstream dependency, low risk |
 
 ### Recommendations
 
@@ -659,7 +656,11 @@ if (!key.toLowerCase().includes("authorization") && !key.toLowerCase().includes(
 }
 
 // After
-if (!key.toLowerCase().includes("authorization") && !key.toLowerCase().includes("cookie") && value !== undefined) {
+if (
+  !key.toLowerCase().includes("authorization") &&
+  !key.toLowerCase().includes("cookie") &&
+  value !== undefined
+) {
   headers[key] = value;
 }
 ```
@@ -677,7 +678,6 @@ if (!key.toLowerCase().includes("authorization") && !key.toLowerCase().includes(
 - ✅ Tests: 360 passed (218 web + 142 API)
 
 ---
-
 
 ## [Frontend-Engineer] 2026-02-23 - Zustand Selector Pattern Audit
 
@@ -703,18 +703,18 @@ const description = useWizardStore((s) => s.description);
 
 **NO object selectors were found** that would require `useShallow` optimization.
 
-| File | Selector Pattern | Status |
-| ---- | ---------------- | ------ |
-| `Wizard.tsx` | Individual primitives | ✅ Optimal |
-| `Editor.tsx` | Individual primitives | ✅ Optimal |
-| `StepInfo.tsx` | Individual primitives | ✅ Optimal |
-| `StepStack.tsx` | Individual primitives | ✅ Optimal |
-| `StepFeatures.tsx` | Individual primitives | ✅ Optimal |
-| `StepReview.tsx` | Individual primitives | ✅ Optimal |
-| `StepGenerating.tsx` | Individual primitives | ✅ Optimal |
-| `App.tsx` | Individual + computed boolean | ✅ Optimal |
-| `useBlueprintStream.ts` | Individual primitives | ✅ Optimal |
-| `Toast.tsx` | Individual primitives | ✅ Optimal |
+| File                    | Selector Pattern              | Status     |
+| ----------------------- | ----------------------------- | ---------- |
+| `Wizard.tsx`            | Individual primitives         | ✅ Optimal |
+| `Editor.tsx`            | Individual primitives         | ✅ Optimal |
+| `StepInfo.tsx`          | Individual primitives         | ✅ Optimal |
+| `StepStack.tsx`         | Individual primitives         | ✅ Optimal |
+| `StepFeatures.tsx`      | Individual primitives         | ✅ Optimal |
+| `StepReview.tsx`        | Individual primitives         | ✅ Optimal |
+| `StepGenerating.tsx`    | Individual primitives         | ✅ Optimal |
+| `App.tsx`               | Individual + computed boolean | ✅ Optimal |
+| `useBlueprintStream.ts` | Individual primitives         | ✅ Optimal |
+| `Toast.tsx`             | Individual primitives         | ✅ Optimal |
 
 ### Impact
 
@@ -734,5 +734,79 @@ npm run test       # ✅ PASS (251 tests)
 ### Resolves
 
 #898
+
+---
+
+## [Security-Engineer] 2026-05-21 - PR Security Audit
+
+### Executive Summary
+
+Comprehensive security audit of the PR diff (changed files vs `origin/main`). **3 vulnerabilities found and fixed**, **0 remaining in changed code**, **npm audit: 0 vulnerabilities**.
+
+### Vulnerabilities Found & Fixed
+
+#### 🔴 VULN-1: Information Leakage via Unsanitized Error Logging (HIGH)
+
+**File**: `apps/api/src/controllers/base.controller.ts` (new `logError` method)
+**Root Cause**: The `createSecureLogEntry` function spreads `additionalInfo` AFTER the sanitized error. The `logError` method placed the error object inside `additionalInfo` (as `additionalInfo.error`), which **overrode** the sanitized error and bypassed log sanitization. Raw error objects with stack traces and internal state could leak into logs.
+
+**Fix** (2 files):
+
+1. `base.controller.ts`: Restructured to pass the error as the second parameter of `secureLogError` where it goes through `sanitizeError()`
+2. `secureLog.ts`: Reordered spread so sanitized `error` field always wins, and added sanitization for all `additionalInfo` string/Error values
+
+**Verification**:
+
+```bash
+npm run typecheck  # ✅ PASS
+npm run test:api   # ✅ PASS (305 tests)
+```
+
+---
+
+#### 🟡 VULN-2: Transitive Dependency Vulnerabilities (HIGH/MODERATE)
+
+**Issue**: `npm audit` reported 13+ vulnerabilities in dependencies including:
+
+- `hono` (moderate): Cache leakage, prototype pollution, JWT bypass
+- `dompurify` (moderate): XSS bypasses → **directly affects XSS protection**
+- `undici` (high): CRLF injection, DoS, smuggling
+- `vite` (high): Path traversal, arbitrary file read
+- `flatted` (high): Prototype pollution, recursive DoS
+
+**Fix**:
+
+1. Ran `npm audit fix` — resolved non-breaking vulnerabilities
+2. Added `overrides` in root `package.json` for `undici` (>=7.24.0) and `ws` (>=8.20.1) to address Cloudflare tooling transitive deps
+
+**Result**: `npm audit` → **0 vulnerabilities**
+
+---
+
+#### 🟢 VULN-3: React DOM Warning — Framer Motion Props Leaked (LOW)
+
+**File**: `apps/web/src/components/Header.test.tsx`
+
+**Issue**: The framer-motion mock for `motion.button` passed `whileHover`, `whileTap` (Framer-Motion-only props) to the native `<button>` DOM element, causing React warnings about unrecognized DOM attributes.
+
+**Fix**: Filtered out Framer-Motion-only animation props from the button mock.
+
+---
+
+### Security Improvements in PR (already in diff)
+
+| File           | Change                                                                | Impact                 |
+| -------------- | --------------------------------------------------------------------- | ---------------------- |
+| `rateLimit.ts` | Hardcoded `"anonymous"` → `RATE_LIMIT_CONSTANTS.ANONYMOUS_CLIENT_KEY` | DRY, prevents typos    |
+| `rateLimit.ts` | Hardcoded binding strings → `LIMITER_BINDINGS` constants              | Centralized, testable  |
+| `constants.ts` | Added `RATE_LIMIT_CONSTANTS` export                                   | Single source of truth |
+
+### Verification
+
+```bash
+npm run typecheck          # ✅ PASS
+npm run test:all           # ✅ PASS (756 tests: 451 web + 305 API)
+npm audit                  # ✅ 0 vulnerabilities
+```
 
 ---

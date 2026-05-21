@@ -39,7 +39,7 @@ export abstract class BaseController {
    * @returns Response object configured for SSE streaming
    */
   public async handleStreamingResponse(
-    generator: AsyncGenerator<string, void, unknown>,
+    generator: AsyncGenerator<string, void, unknown>
   ): Promise<Response> {
     const container = getContainer();
     const stream = container.streamUtils.createStreamFromGenerator(generator);
@@ -52,9 +52,7 @@ export abstract class BaseController {
    * @returns The validated and typed request data
    * @throws {Error} When validated data is not found in context
    */
-  public getValidatedData<T extends z.ZodSchema>(
-    c: ValidatedContext<T>,
-  ): z.infer<T> {
+  public getValidatedData<T extends z.ZodSchema>(c: ValidatedContext<T>): z.infer<T> {
     const data = c.get("validatedData");
     if (!data) {
       throw new Error(CONFIG_MESSAGES.VALIDATED_DATA_NOT_FOUND);
@@ -77,8 +75,8 @@ export abstract class BaseController {
    * Logs an error with request context using secureLogError.
    * @param c - Controller context
    * @param context - Error context/category
-   * @param message - Error message
-   * @param error - The error object
+   * @param message - Error message (will be sanitized)
+   * @param error - The error object (will be sanitized via the second parameter)
    * @param details - Additional structured details
    */
   public logError(
@@ -86,14 +84,22 @@ export abstract class BaseController {
     context: string,
     message: string,
     error?: unknown,
-    details?: Record<string, unknown>,
+    details?: Record<string, unknown>
   ): void {
-    secureLogError(context, message, {
-      ...details,
-      error,
+    // Pass the error as the second param to secureLogError so it goes through
+    // createSecureLogEntry's sanitizeError(). Avoids passing raw error objects
+    // inside additionalInfo where they could bypass sanitization.
+    const requestContext = {
       requestId: (c as AppContext).get("requestId"),
       path: c.req.path,
       method: c.req.method,
-    });
+      ...details,
+    };
+
+    if (error) {
+      secureLogError(context, error, requestContext);
+    } else {
+      secureLogError(context, message, requestContext);
+    }
   }
 }

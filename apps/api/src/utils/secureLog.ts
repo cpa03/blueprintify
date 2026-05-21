@@ -16,8 +16,7 @@
 const SENSITIVE_PATTERNS = [
   // API keys and tokens
   {
-    pattern:
-      /(api[_-]?key|apikey|token|secret|password|auth)[=:]\s*['"]?[\w-]+['"]?/gi,
+    pattern: /(api[_-]?key|apikey|token|secret|password|auth)[=:]\s*['"]?[\w-]+['"]?/gi,
     replacement: "$1=[REDACTED]",
   },
   { pattern: /bearer\s+[\w-]+/gi, replacement: "bearer [REDACTED]" },
@@ -143,15 +142,31 @@ export function sanitizeError(error: unknown): {
 export function createSecureLogEntry(
   context: string,
   error: unknown,
-  additionalInfo?: Record<string, unknown>,
+  additionalInfo?: Record<string, unknown>
 ): Record<string, unknown> {
   const sanitizedError = sanitizeError(error);
 
+  // Sanitize additionalInfo values to prevent sensitive data bypassing sanitization.
+  // Spread additionalInfo FIRST so that the explicit `error` field always wins,
+  // ensuring the sanitized error is never overridden by unsanitized data.
+  const sanitizedAdditional = additionalInfo
+    ? Object.fromEntries(
+        Object.entries(additionalInfo).map(([key, value]) => [
+          key,
+          typeof value === "string"
+            ? sanitizeString(value)
+            : value instanceof Error
+              ? sanitizeError(value)
+              : value,
+        ])
+      )
+    : undefined;
+
   return {
     context,
-    error: sanitizedError,
     timestamp: new Date().toISOString(),
-    ...additionalInfo,
+    ...sanitizedAdditional,
+    error: sanitizedError,
   };
 }
 
@@ -177,7 +192,7 @@ export function createSecureLogEntry(
 export function secureLogError(
   context: string,
   error: unknown,
-  additionalInfo?: Record<string, unknown>,
+  additionalInfo?: Record<string, unknown>
 ): void {
   const logEntry = createSecureLogEntry(context, error, additionalInfo);
   console.error(JSON.stringify(logEntry));
@@ -201,7 +216,7 @@ export function secureLogError(
 export function secureLogWarn(
   context: string,
   message: string,
-  additionalInfo?: Record<string, unknown>,
+  additionalInfo?: Record<string, unknown>
 ): void {
   const logEntry = {
     context,
