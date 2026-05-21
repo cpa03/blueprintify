@@ -39,7 +39,7 @@ export abstract class BaseController {
    * @returns Response object configured for SSE streaming
    */
   public async handleStreamingResponse(
-    generator: AsyncGenerator<string, void, unknown>,
+    generator: AsyncGenerator<string, void, unknown>
   ): Promise<Response> {
     const container = getContainer();
     const stream = container.streamUtils.createStreamFromGenerator(generator);
@@ -52,9 +52,7 @@ export abstract class BaseController {
    * @returns The validated and typed request data
    * @throws {Error} When validated data is not found in context
    */
-  public getValidatedData<T extends z.ZodSchema>(
-    c: ValidatedContext<T>,
-  ): z.infer<T> {
+  public getValidatedData<T extends z.ZodSchema>(c: ValidatedContext<T>): z.infer<T> {
     const data = c.get("validatedData");
     if (!data) {
       throw new Error(CONFIG_MESSAGES.VALIDATED_DATA_NOT_FOUND);
@@ -86,11 +84,13 @@ export abstract class BaseController {
     context: string,
     message: string,
     error?: unknown,
-    details?: Record<string, unknown>,
+    details?: Record<string, unknown>
   ): void {
-    secureLogError(context, message, {
+    // Pass actual error object as second arg so secureLogError sanitizes it properly.
+    // The message string is included in additionalInfo to preserve the original intent.
+    secureLogError(context, error ?? message, {
       ...details,
-      error,
+      logMessage: message,
       requestId: (c as AppContext).get("requestId"),
       path: c.req.path,
       method: c.req.method,

@@ -4,6 +4,8 @@
 
 ## Table of Contents
 
+- [2026-05-21: Security Audit - PR Changed Files](#security-engineer-2026-05-21---security-audit-pr-changed-files)
+
 - [2026-02-22: Retry Utility Overall Timeout](#reliability-2026-02-22---retry-utility-overall-timeout)
 - [2026-02-21: Reliability Verification Audit (Session 2)](#reliability-2026-02-21---reliability-verification-audit-session-2)
 - [2026-02-21: Comprehensive Reliability Audit](#reliability-2026-02-21---comprehensive-reliability-audit)
@@ -22,7 +24,118 @@
 - [2026-02-18: Share Endpoint Validation Consistency](#security-2026-02-18---share-endpoint-validation-consistency)
 - [2026-02-18: Integration Workflow File Line Ending](#integration-2026-02-18---workflow-file-line-ending-inconsistency)
 - [2026-02-20: Logger Middleware Undefined Header Fix](#reliability-2026-02-20---logger-middleware-undefined-header-value-fix)
- [2026-02-23: Zustand Selector Pattern Audit](#frontend-engineer-2026-02-23---zustand-selector-pattern-audit)
+  [2026-02-23: Zustand Selector Pattern Audit](#frontend-engineer-2026-02-23---zustand-selector-pattern-audit)
+
+---
+
+---
+
+# [Security-Engineer] 2026-05-21 - Security Audit: PR Changed Files
+
+## Executive Summary
+
+Comprehensive security audit completed on PR changes (branch `agent/security-engineer`). Multiple vulnerabilities were identified and fixed in the changed files.
+
+## Changes Analyzed
+
+| Area                                          | Files                                     | Issues Found          |
+| --------------------------------------------- | ----------------------------------------- | --------------------- |
+| `apps/api/src/utils/secureLog.ts`             | IP redaction, additionalInfo sanitization | 2 HIGH                |
+| `apps/api/src/controllers/base.controller.ts` | Unsanitized error in logError             | 1 HIGH                |
+| `install_opencode.sh`                         | Predictable temp directory                | 1 MEDIUM              |
+| Dependencies                                  | npm audit                                 | 12 FIXED / 5 UPSTREAM |
+
+## Critical Findings
+
+### [HIGH] C01 - Error Object Leaked Unsanitized in logError
+
+**File**: `apps/api/src/controllers/base.controller.ts` (new `logError` method)
+
+**Observation**: The `logError` method passed the actual `error` object inside `additionalInfo` where it was NOT sanitized by `createSecureLogEntry`. Only the second parameter to `secureLogError` gets sanitized, but the raw `error` was duplicated inside `additionalInfo`.
+
+**Impact**: Error stack traces containing file paths, internal system details, or user data could leak into logs.
+
+**Fix**: Changed to pass the error object as the second argument (which gets sanitized) and include the message string as `logMessage` in additionalInfo.
+
+### [HIGH] C02 - createSecureLogEntry Does Not Sanitize additionalInfo Values
+
+**File**: `apps/api/src/utils/secureLog.ts`
+
+**Observation**: The `createSecureLogEntry` function spreads `additionalInfo` directly into the log entry without sanitizing its values. Any caller passing sensitive data in additionalInfo could leak it.
+
+**Impact**: All callers of `secureLogError` and `secureLogWarn` that pass sensitive values in `additionalInfo` could expose unsanitized data.
+
+**Fix**: Added sanitization loop that sanitizes all string values and Error objects in `additionalInfo` before inclusion.
+
+### [HIGH] C03 - IP Addresses Not Fully Redacted
+
+**File**: `apps/api/src/utils/secureLog.ts`
+
+**Observation**: The IP redaction pattern only matched `IP:port` format (e.g., `192.168.1.1:8080`) but NOT bare IP addresses (e.g., `192.168.1.1`). User IP addresses from `cf-connecting-ip` or `x-forwarded-for` headers could be logged in plain text.
+
+**Impact**: PII/IP address leakage in logs. Particularly affects rate limit logging where `clientKey` (which may be an IP) is logged.
+
+**Fix**: Updated regex from `/\b(?:\d{1,3}\.){3}\d{1,3}:\d+\b/g` to `/\b(?:\d{1,3}\.){3}\d{1,3}(?::\d+)?\b/g` to match bare IPs as well.
+
+### [MEDIUM] C04 - Predictable Temporary Directory in Installer
+
+**File**: `install_opencode.sh`
+
+**Observation**: Two locations used `$$` (process PID) for temporary directory/file names instead of `mktemp`. PIDs are predictable, enabling potential symlink attacks.
+
+**Impact**: Low risk for a single-user install script, but violates secure temp file best practices.
+
+**Fix**: Replaced with `mktemp -d` for secure random temporary directories.
+
+## Dependency Vulnerabilities
+
+### npm Audit Results
+
+**Before**: 17 vulnerabilities (9 moderate, 8 high)
+
+**After `npm audit fix`**: 5 vulnerabilities (3 moderate, 2 high)
+
+**Fixed (12 vulnerabilities)**:
+
+- `basic-ftp` (high): CRLF injection, DoS
+- `brace-expansion` (moderate): ReDoS
+- `dompurify` (moderate): XSS bypass
+- `flatted` (high): Prototype pollution, DoS
+- `hono` (moderate): Multiple vulns (prototype pollution, path traversal, etc.)
+- `ip-address` (moderate): XSS
+- `lodash` / `lodash-es` (high): Code injection, prototype pollution
+- `picomatch` (high): ReDoS, method injection
+- `postcss` (moderate): XSS
+- `vite` (high): Path traversal, arbitrary file read
+- `yaml` (moderate): Stack overflow
+
+**Remaining (5 - upstream dependencies)**:
+| Package | Severity | Issue | Status |
+| ------- | -------- | ----- | ------ |
+| undici 7.18.2 | HIGH | CRLF injection, DoS, smuggling | BLOCKED by miniflare |
+| ws 8.18.0 | MODERATE | Memory disclosure | BLOCKED by miniflare |
+| miniflare 4.x | - | Depends on vulnerable undici/ws | Requires Cloudflare patch |
+
+**Note**: These 5 remaining vulnerabilities are transitive dependencies of `miniflare` (Cloudflare Workers dev tooling). They cannot be fixed without breaking changes to the Cloudflare Workers testing infrastructure.
+
+## CI Workflow Changes
+
+The workflow files had model references updated from various older models (e.g., `iflowcn/glm-4.6`, `opencode/kimi-k2.5-free`, `opencode/big-pickle`) to `opencode/deepseek-v4-flash-free` per project mandate. Two workflows also had `git push` changed to `git push origin HEAD` for safer explicit branch targeting.
+
+**Status**: ✅ No security issues in workflow changes.
+
+## Verification
+
+```bash
+npx tsc --noEmit --project apps/api/tsconfig.json  # ✅ PASS
+npm audit --audit-level=moderate                     # ✅ 12 fixed, 5 upstream
+```
+
+## Recommendations
+
+1. **Monitor** for miniflare/wrangler releases that update undici and ws dependencies
+2. **Review** all existing `secureLogError` callers for sensitive data in `additionalInfo`
+3. **Consider** adding `mktemp` prerequisite check to `install_opencode.sh`
 
 ---
 
@@ -74,10 +187,7 @@ npm run test:all   # ✅ PASS (236 web tests)
 
 ```typescript
 // With overall timeout - max 30s for all attempts combined
-const result = await withRetry(
-  () => fetchExternalAPI(),
-  { retries: 3, timeout: 30000 }
-);
+const result = await withRetry(() => fetchExternalAPI(), { retries: 3, timeout: 30000 });
 ```
 
 ---
@@ -90,18 +200,18 @@ Full reliability verification completed on branch `reliability-engineer`. The co
 
 ### Verification Results
 
-| Check | Status | Details |
+| Check              | Status  | Details                                       |
 | ------------------ | ------- | --------------------------------------------- |
-| Empty catch blocks | ✅ PASS | No empty catch blocks found |
-| `any` type usage | ✅ PASS | No `any` types in production code |
-| `@ts-ignore` usage | ✅ PASS | No `@ts-ignore` or `@ts-expect-error` found |
-| JSON.parse safety | ✅ PASS | All JSON.parse calls wrapped in try/catch |
-| Fetch timeout | ✅ PASS | AbortController with configurable timeouts |
-| Error boundaries | ✅ PASS | ErrorBoundary component wraps entire app |
-| Circuit breaker | ✅ PASS | Proper CLOSED/OPEN/HALF_OPEN state management |
-| Retry logic | ✅ PASS | Exponential backoff with max retries |
-| Typed errors | ✅ PASS | APIError hierarchy with HTTP status codes |
-| Console logging | ✅ PASS | Appropriate use in Cloudflare Workers context |
+| Empty catch blocks | ✅ PASS | No empty catch blocks found                   |
+| `any` type usage   | ✅ PASS | No `any` types in production code             |
+| `@ts-ignore` usage | ✅ PASS | No `@ts-ignore` or `@ts-expect-error` found   |
+| JSON.parse safety  | ✅ PASS | All JSON.parse calls wrapped in try/catch     |
+| Fetch timeout      | ✅ PASS | AbortController with configurable timeouts    |
+| Error boundaries   | ✅ PASS | ErrorBoundary component wraps entire app      |
+| Circuit breaker    | ✅ PASS | Proper CLOSED/OPEN/HALF_OPEN state management |
+| Retry logic        | ✅ PASS | Exponential backoff with max retries          |
+| Typed errors       | ✅ PASS | APIError hierarchy with HTTP status codes     |
+| Console logging    | ✅ PASS | Appropriate use in Cloudflare Workers context |
 
 ### Test Results
 
@@ -114,10 +224,10 @@ Full reliability verification completed on branch `reliability-engineer`. The co
 
 ### Open Issues Reviewed
 
-| Issue | Priority | Status | Notes |
-| ----- | -------- | ------ | ----- |
-| #743 | P0 | BLOCKED | CI workflow fix requires admin permission |
-| #418 | P2 | ACCEPTED | AJV vulnerabilities - upstream dependency, low risk |
+| Issue | Priority | Status   | Notes                                               |
+| ----- | -------- | -------- | --------------------------------------------------- |
+| #743  | P0       | BLOCKED  | CI workflow fix requires admin permission           |
+| #418  | P2       | ACCEPTED | AJV vulnerabilities - upstream dependency, low risk |
 
 ### Recommendations
 
@@ -659,7 +769,11 @@ if (!key.toLowerCase().includes("authorization") && !key.toLowerCase().includes(
 }
 
 // After
-if (!key.toLowerCase().includes("authorization") && !key.toLowerCase().includes("cookie") && value !== undefined) {
+if (
+  !key.toLowerCase().includes("authorization") &&
+  !key.toLowerCase().includes("cookie") &&
+  value !== undefined
+) {
   headers[key] = value;
 }
 ```
@@ -677,7 +791,6 @@ if (!key.toLowerCase().includes("authorization") && !key.toLowerCase().includes(
 - ✅ Tests: 360 passed (218 web + 142 API)
 
 ---
-
 
 ## [Frontend-Engineer] 2026-02-23 - Zustand Selector Pattern Audit
 
@@ -703,18 +816,18 @@ const description = useWizardStore((s) => s.description);
 
 **NO object selectors were found** that would require `useShallow` optimization.
 
-| File | Selector Pattern | Status |
-| ---- | ---------------- | ------ |
-| `Wizard.tsx` | Individual primitives | ✅ Optimal |
-| `Editor.tsx` | Individual primitives | ✅ Optimal |
-| `StepInfo.tsx` | Individual primitives | ✅ Optimal |
-| `StepStack.tsx` | Individual primitives | ✅ Optimal |
-| `StepFeatures.tsx` | Individual primitives | ✅ Optimal |
-| `StepReview.tsx` | Individual primitives | ✅ Optimal |
-| `StepGenerating.tsx` | Individual primitives | ✅ Optimal |
-| `App.tsx` | Individual + computed boolean | ✅ Optimal |
-| `useBlueprintStream.ts` | Individual primitives | ✅ Optimal |
-| `Toast.tsx` | Individual primitives | ✅ Optimal |
+| File                    | Selector Pattern              | Status     |
+| ----------------------- | ----------------------------- | ---------- |
+| `Wizard.tsx`            | Individual primitives         | ✅ Optimal |
+| `Editor.tsx`            | Individual primitives         | ✅ Optimal |
+| `StepInfo.tsx`          | Individual primitives         | ✅ Optimal |
+| `StepStack.tsx`         | Individual primitives         | ✅ Optimal |
+| `StepFeatures.tsx`      | Individual primitives         | ✅ Optimal |
+| `StepReview.tsx`        | Individual primitives         | ✅ Optimal |
+| `StepGenerating.tsx`    | Individual primitives         | ✅ Optimal |
+| `App.tsx`               | Individual + computed boolean | ✅ Optimal |
+| `useBlueprintStream.ts` | Individual primitives         | ✅ Optimal |
+| `Toast.tsx`             | Individual primitives         | ✅ Optimal |
 
 ### Impact
 

@@ -274,17 +274,16 @@ download_with_progress() {
         exec 4>/dev/null
     fi
 
-    local tmp_dir=${TMPDIR:-/tmp}
-    local basename="${tmp_dir}/opencode_install_$$"
-    local tracefile="${basename}.trace"
+    local tmp_dir
+    tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/opencode_install.XXXXXX")
+    local tracefile="${tmp_dir}/trace"
 
-    rm -f "$tracefile"
     mkfifo "$tracefile"
 
     # Hide cursor
     printf "\033[?25l" >&4
 
-    trap "trap - RETURN; rm -f \"$tracefile\"; printf '\033[?25h' >&4; exec 4>&-" RETURN
+    trap "trap - RETURN; rm -rf \"$tmp_dir\"; printf '\033[?25h' >&4; exec 4>&-" RETURN
 
     (
         curl --trace-ascii "$tracefile" -s -L -o "$output" "$url"
@@ -326,7 +325,8 @@ download_with_progress() {
 
 download_and_install() {
     print_message info "\n${MUTED}Installing ${NC}opencode ${MUTED}version: ${NC}$specific_version"
-    local tmp_dir="${TMPDIR:-/tmp}/opencode_install_$$"
+    local tmp_dir
+    tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/opencode_install.XXXXXX")
     mkdir -p "$tmp_dir"
 
     if [[ "$os" == "windows" ]] || ! [ -t 2 ] || ! download_with_progress "$url" "$tmp_dir/$filename"; then
