@@ -39,6 +39,13 @@ All tasks follow the lifecycle defined in [repo-rules.md](./repo-rules.md):
 
 ---
 
+## Security Audit Tasks
+
+- [x] Scan PR changed files for introduced vulnerabilities, secrets, and deprecated functions
+- [x] Run npm audit and document findings
+
+---
+
 _Last Updated: 2026-05-11_
 _For task lifecycle rules, see repo-rules.md_
 

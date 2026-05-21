@@ -26,6 +26,60 @@
 - [2026-02-20: Logger Middleware Undefined Header Fix](#reliability-2026-02-20---logger-middleware-undefined-header-value-fix)
   [2026-02-23: Zustand Selector Pattern Audit](#frontend-engineer-2026-02-23---zustand-selector-pattern-audit)
 
+- [2026-05-11: Security Audit - PR Changed Files Scan](#security-engineer-2026-05-11---security-audit-pr-changed-files-scan)
+
+---
+
+## [Security] 2026-05-11 - Security Audit: PR Changed Files Scan
+
+### Observation
+
+Scanned all 11 files changed in the PR (diff from `origin/main`) for introduced vulnerabilities, hardcoded secrets, deprecated function usage, and OWASP Top 10 injection vectors.
+
+### Files Scanned
+
+| File                                            | Change Type |
+| ----------------------------------------------- | ----------- |
+| `.opencode/oh-my-opencode.json`                 | Deleted     |
+| `apps/api/src/errors.ts`                        | Modified    |
+| `apps/api/src/db/index.test.ts`                 | Modified    |
+| `apps/api/src/middleware/rateLimit.test.ts`     | Modified    |
+| `apps/api/src/utils/timeout.test.ts`            | Modified    |
+| `apps/web/src/components/Header.test.tsx`       | Modified    |
+| `apps/web/src/components/RippleButton.tsx`      | Modified    |
+| `apps/web/src/components/wizard/StepInfo.tsx`   | Modified    |
+| `apps/web/src/components/wizard/StepReview.tsx` | Modified    |
+| `docs/bugs.md`                                  | Modified    |
+| `docs/task.md`                                  | Modified    |
+
+### Checks Performed
+
+| Check                                              | Result                           |
+| -------------------------------------------------- | -------------------------------- |
+| Hardcoded secrets (API keys, tokens, passwords)    | ✅ None introduced               |
+| XSS vectors (`dangerouslySetInnerHTML`, `eval`)    | ✅ None introduced               |
+| Code injection (`eval`, `Function()`, `innerHTML`) | ✅ None introduced               |
+| Deprecated function usage                          | ✅ None introduced               |
+| `console.*` statements in production code          | ✅ None added                    |
+| User input in inline styles                        | ✅ None introduced               |
+| SQL injection vectors                              | ✅ Not applicable (in-memory DB) |
+| Sensitive env exposure                             | ✅ None added                    |
+
+### npm Audit
+
+- **Previous status**: 16 vulnerabilities (dev deps only) - risk accepted
+- **Current**: 4 high severity vulnerabilities remaining (dev deps: `@cloudflare/vitest-pool-workers`, `miniflare`, `undici`, `wrangler`)
+- Fix requires breaking version upgrades (`--force`). Risk accepted per previous assessment.
+
+### Verdict
+
+**No vulnerabilities, secrets, or deprecated function usage were introduced by this PR.** All code changes are clean:
+
+- **Circular dependency fix** (`errors.ts` importing `HTTP_STATUS` from `@blueprint/shared`)
+- **Flaky test fixes** (analytics date range offset, fake timer cleanup, unhandled rejection suppression)
+- **Animation enhancements** (`RippleButton` `whileHover`/`whileTap` motion props)
+- **Documentation updates** (bugs.md, task.md)
+
 ---
 
 ---
