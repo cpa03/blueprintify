@@ -1,8 +1,9 @@
 import type { Context, MiddlewareHandler } from "hono";
 import type { Env } from "../types";
 import { getConfig } from "../config/env";
-import { HTTP_STATUS, RATE_LIMIT_CONSTANTS } from "../config/constants";
+import { HTTP_STATUS, ERROR_CODES, RATE_LIMIT_CONSTANTS } from "../config/constants";
 import { TIME_UNITS } from "@blueprint/shared";
+import { ErrorType } from "../errors";
 import { secureLogWarn, secureLogError } from "../utils/secureLog";
 
 type RateLimiterName = "STRICT_RATE_LIMITER" | "STANDARD_RATE_LIMITER" | "LENIENT_RATE_LIMITER";
@@ -93,9 +94,9 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
         {
           success: false,
           error: {
-            type: "rate_limit",
+            type: ErrorType.CONFIGURATION,
             message: "Rate limiter not configured",
-            code: "RATE_LIMITER_NOT_CONFIGURED",
+            code: ERROR_CODES.CONFIGURATION_ERROR,
             details: {
               limiter,
             },
@@ -139,9 +140,9 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
         {
           success: false,
           error: {
-            type: "rate_limit",
+            type: ErrorType.VALIDATION,
             message: "Too many requests, please try again later",
-            code: "RATE_LIMIT_ERROR",
+            code: ERROR_CODES.RATE_LIMIT_ERROR,
             details: {
               limit,
               retryAfter: retryAfterSeconds,

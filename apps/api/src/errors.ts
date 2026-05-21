@@ -1,5 +1,5 @@
 import { HTTP_STATUS } from "@blueprint/shared";
-import { DEFAULT_ERROR_MESSAGES } from "./config/constants";
+import { DEFAULT_ERROR_MESSAGES, ERROR_MESSAGES } from "./config/constants";
 
 /**
  * API Error Types and Classes
@@ -288,7 +288,7 @@ export function createErrorResponse(error: unknown): ErrorResponse {
 
   // Handle Zod validation errors
   if (error && typeof error === "object" && "issues" in error) {
-    const validationError = new ValidationError("Request validation failed", {
+    const validationError = new ValidationError(ERROR_MESSAGES.VALIDATION, {
       issues: (error as { issues: unknown[] }).issues,
     });
     return validationError.toJSON();
