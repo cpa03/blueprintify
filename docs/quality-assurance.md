@@ -1,23 +1,32 @@
-#RP|# Quality Assurance Agent
-#KM|
-#MS|## Overview
-#RW|
-#YZ|This document serves as the long-term memory for the Quality Assurance agent.
-#SY|
-#WT|#YQ|
-#QT|#YZ|## Current Test Coverage (Updated 2026-02-27)
-#YQ|
-#SM|| Workspace | Test Files | Tests |
-#YQ|| -------------- | ---------- | ----- |
-#XS|| apps/web | 25 | 432 |
-#YQ|| apps/api | 22 | 279 |
-#SZ|| packages/shared | 4 | 107 |
-#YQ|| **Total** | **51** | **818** |
-#RB|
+# Quality Assurance Agent
+
+## Overview
+
+This document serves as the long-term memory for the Quality Assurance agent.
+
+## Current Test Coverage (Updated 2026-02-27)
+
+| Workspace       | Test Files | Tests   |
+| --------------- | ---------- | ------- |
+| apps/web        | 28         | 471     |
+| apps/api        | 22         | 279     |
+| packages/shared | 4          | 107     |
+| **Total**       | **54**     | **857** |
 
 ## Test Files Added (2026-02-27)
 
-1. **apps/web/src/utils/motion.test.ts** - Tests for Framer Motion animation variants
+1. **apps/web/src/components/MarkdownRenderer.test.tsx** - Tests for markdown rendering component
+   - Basic rendering: content, paragraphs, className
+   - Heading elements: h1 through h6
+   - Text formatting: inline code
+   - Links and images: proper attributes, lazy loading
+   - Tables: rendering with headers and cells
+   - Blockquotes: rendering
+   - Security: XSS protection (malicious content handling)
+   - Memoization: re-render behavior
+   - 20 tests total
+
+2. **apps/web/src/utils/motion.test.ts** - Tests for Framer Motion animation variants
    - transitions: fast, normal, slow, spring transitions
    - fadeInUp, staggerContainer, fadeIn, scaleIn variants
    - slideInRight, slideInLeft variants
@@ -25,7 +34,7 @@
    - createStaggerContainer, createFadeInUp factory functions
    - 28 tests total
 
-2. **apps/web/src/config/theme.test.ts** - Tests for design tokens
+3. **apps/web/src/config/theme.test.ts** - Tests for design tokens
    - COLORS: primary, dark, accent, semantic, gradients
    - ANIMATION_TIMING: durations, easing, stagger
    - SPACING: scale, container, radius
@@ -37,7 +46,7 @@
    - Type exports verification
    - 36 tests total
 
-3. **apps/web/src/components/ErrorBoundary.test.tsx** - Tests for error boundary component
+4. **apps/web/src/components/ErrorBoundary.test.tsx** - Tests for error boundary component
    - Renders children when no error occurs
    - Accepts onError callback prop
    - Passes error and errorInfo to callback
@@ -47,44 +56,15 @@
    - Handles non-Error thrown values
    - 9 tests total
 
-4. **apps/web/src/store/persistence.test.ts** - Tests for persistence utilities
+5. **apps/web/src/store/persistence.test.ts** - Tests for persistence utilities
    - loadState: loads from storage, handles null, handles errors
    - saveState: saves data using getPersistData, handles errors
    - debouncedSave: delay mechanism, clears previous timeout
    - flushSave: cancels pending saves
    - cancelSave: clears pending saves
    - Full integration load-save cycle
-   - 11 tests total
-     #YQ|
-     #SM|1. **apps/web/src/utils/motion.test.ts** - Tests for Framer Motion animation variants
-     #MK| - transitions: fast, normal, slow, spring transitions
-     #SW| - fadeInUp, staggerContainer, fadeIn, scaleIn variants
-     #SW| - slideInRight, slideInLeft variants
-     #XS| - floatingAnimation, pulseAnimation, pageTransition
-     #SW| - createStaggerContainer, createFadeInUp factory functions
-     #WB| - 28 tests total
-     #YQ|
-     #SM|2. **apps/web/src/config/theme.test.ts** - Tests for design tokens
-     #MK| - COLORS: primary, dark, accent, semantic, gradients
-     #KM| - ANIMATION_TIMING: durations, easing, stagger
-     #KM| - SPACING: scale, container, radius
-     #KM| - TYPOGRAPHY: font family, sizes, weights, line heights
-     #KM| - SHADOWS: glow, box shadows
-     #XS| - OPACITY: numeric and semantic values
-     #SW| - Z_INDEX, BREAKPOINTS
-     #SW| - tailwindTheme export
-     #SW| - Type exports verification
-     #SW| - 36 tests total
-     #YQ|
-     #JH|### Previous Additions (2026-02-27)
 
-### Previous Additions (2026-02-27)
-
-# Quality Assurance Agent
-
-## Overview
-
-This document serves as the long-term memory for the Quality Assurance agent.
+- 11 tests total
 
 ## Testing Gaps Identified
 
@@ -104,85 +84,45 @@ The shared package now has comprehensive test coverage:
 
 ### apps/web/src/lib (PARTIALLY TESTED)
 
-- `api.ts` - NO TESTS (now added)
-- `clipboard.ts` - NO TESTS (now added)
+- `api.ts` - TESTED
+- `clipboard.ts` - TESTED
+- `security.ts` - TESTED
+- `export.ts` - TESTED
+- `storage.ts` - TESTED
+- `storageAdapter.ts` - TESTED
+
+### apps/web/src/components (PARTIALLY TESTED)
+
+Components with tests:
+
+- Editor.test.tsx
+- ErrorBoundary.test.tsx
+- Wizard.test.tsx
+- StepIndicator.test.tsx
+- Header.test.tsx
+- MarkdownRenderer.test.tsx (NEW)
+
+Components without tests (opportunity for expansion):
+
+- AnimatedInput.tsx
+- Toast.tsx
+- TemplateGrid.tsx
+- ScrollProgress.tsx
+- And more...
 
 ### apps/web/src/hooks
 
 Most hooks have tests, but coverage could be expanded.
 
-## Test Files Added
-
-### Recent Additions (2026-02-27)
-
-1. **templates.test.ts** - Tests for STARTER_TEMPLATES
-   - Template ID uniqueness
-   - Required fields validation (id, name, description, icon, projectName, defaultDescription, techStack, features)
-   - Tech stack item validation
-   - All 6 predefined templates verified
-
-2. **config.test.ts** - Tests for configuration constants
-   - RETRY_CONFIG: retry counts, delays, backoff factor
-   - VALIDATION_LIMITS: project name, description, features, tech stack limits
-   - STORAGE_CONFIG: quota bytes, warning threshold
-   - DEBOUNCE_CONFIG: wizard and editor save delays
-   - SECURITY_LIMITS: content length, file size, JSON depth
-   - SSE_CONFIG: event types and separators
-   - TIME_UNITS: time conversion constants
-
-### Previous Additions
-
-1. **debounce.test.ts** - Tests for `createDebouncedSaver` from shared package
-   - Debounce functionality
-   - Delay execution
-   - Argument passing
-   - Flush and cancel methods
-
-2. **clipboard.test.ts** - Tests for clipboard utilities
-   - Modern clipboard API
-   - Fallback method
-   - Error handling
-   - formatForIDE utility
-
-3. **api.test.ts** - Tests for API client
-   - checkHealth function
-
 ## Known Issues
 
 ### Existing Test Failures
 
-Some integration tests fail with 503 errors (likely network-related in CI):
+All tests currently passing (2026-02-27):
 
-- Route tests (generate, tasks, refine, import, export, storage)
-- These appear to be environment-specific, not code bugs
-- The rate limiter is rejecting requests in the test environment
-
-### circuitBreaker Tests
-
-Two tests failing in circuitBreaker.test.ts that may need investigation:
-
-- HALF_OPEN state test
-- Custom resetTimeoutMs configuration test
-
-### Controller Test Fixes (2026-02-26)
-
-Fixed failing controller tests that were missing proper Hono context mocking:
-
-- `generate.controller.test.ts` - Added createMockContext helper
-- `refine.controller.test.ts` - Added createMockContext helper
-- `tasks.controller.test.ts` - Added createMockContext helper
-- Fixed test data to match schema (instruction vs instructions/section)
-
-## Recent Fixes (2026-02-26)
-
-Fixed 3 failing tests:
-
-1. **env.test.ts** - Changed CORS_ORIGIN default from "" to "\*"
-
-2. **circuitBreaker.test.ts** - Fixed HALF_OPEN state tests:
-   - Replaced vi.setSystemTime() with vi.advanceTimersByTime()
-   - Corrected test expectations to match actual circuit behavior
-   - Circuit transitions to CLOSED after halfOpenMaxCalls successes
+- web: 471 tests ✅
+- api: 279 tests ✅
+- shared: 107 tests ✅
 
 ## Best Practices
 
@@ -190,3 +130,4 @@ Fixed 3 failing tests:
 2. Use vitest with fake timers for debounce/throttle utilities
 3. Mock browser APIs (clipboard, fetch) when testing browser-specific code
 4. Tests should be deterministic and not depend on external services
+5. Add tests for critical UI components that handle user input
