@@ -403,3 +403,12 @@ export const LOGGER_CONFIG = {
   /** Default paths excluded from request logging */
   DEFAULT_EXCLUDE_PATHS: ["/"] as const,
 } as const;
+
+export const RATE_LIMIT_CONSTANTS = {
+  ANONYMOUS_CLIENT_KEY: "anonymous",
+  LIMITER_BINDINGS: {
+    STRICT: "STRICT_RATE_LIMITER",
+    STANDARD: "STANDARD_RATE_LIMITER",
+    LENIENT: "LENIENT_RATE_LIMITER",
+  },
+} as const;

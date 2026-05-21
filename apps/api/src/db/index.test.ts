@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, afterAll } from "vitest";
 import {
   MockDatabaseService,
   serializeJSON,
@@ -716,6 +716,7 @@ describe("MockDatabaseService", () => {
     it("should get analytics by date range", async () => {
       const now = new Date();
       const oneHourAgo = new Date(now.getTime() - 3600000);
+      const future = new Date(now.getTime() + 3600000);
 
       await db.trackEvent({
         event_type: "blueprint_generated",
@@ -724,7 +725,7 @@ describe("MockDatabaseService", () => {
 
       const events = await db.getAnalyticsByDateRange(
         oneHourAgo.toISOString(),
-        now.toISOString(),
+        future.toISOString(),
       );
       expect(events.length).toBeGreaterThanOrEqual(1);
       expect(events.every((e) => e.event_type === "blueprint_generated")).toBe(
@@ -735,6 +736,7 @@ describe("MockDatabaseService", () => {
     it("should get analytics by event type and date range", async () => {
       const now = new Date();
       const oneHourAgo = new Date(now.getTime() - 3600000);
+      const future = new Date(now.getTime() + 3600000);
 
       await db.trackEvent({
         event_type: "blueprint_generated",
@@ -748,7 +750,7 @@ describe("MockDatabaseService", () => {
       const events = await db.getAnalyticsByEventTypeAndDateRange(
         "blueprint_generated",
         oneHourAgo.toISOString(),
-        now.toISOString(),
+        future.toISOString(),
       );
       expect(events.length).toBeGreaterThanOrEqual(1);
       expect(events.every((e) => e.event_type === "blueprint_generated")).toBe(
@@ -849,6 +851,11 @@ describe("MockDatabaseService", () => {
       const healthy = await db.healthCheck();
       expect(healthy).toBe(true);
     });
+  });
+
+  afterAll(async () => {
+    // Add delay to allow async tasks to settle and prevent unhandled rejection warnings
+    await new Promise((resolve) => setTimeout(resolve, 100));
   });
 
   describe("Count Operations", () => {
@@ -1075,6 +1082,7 @@ describe("MockDatabaseService", () => {
       it("should count analytics by date range", async () => {
         const now = new Date();
         const oneHourAgo = new Date(now.getTime() - 3600000);
+        const future = new Date(now.getTime() + 3600000);
 
         await db.trackEvent({ event_type: "blueprint_generated" });
         await db.trackEvent({ event_type: "task_generated" });
@@ -1082,7 +1090,7 @@ describe("MockDatabaseService", () => {
 
         const count = await db.countAnalyticsByDateRange(
           oneHourAgo.toISOString(),
-          now.toISOString(),
+          future.toISOString(),
         );
         expect(count).toBeGreaterThanOrEqual(2);
       });
@@ -1103,6 +1111,7 @@ describe("MockDatabaseService", () => {
       it("should count analytics by event type and date range", async () => {
         const now = new Date();
         const oneHourAgo = new Date(now.getTime() - 3600000);
+        const future = new Date(now.getTime() + 3600000);
 
         await db.trackEvent({ event_type: "blueprint_generated" });
         await db.trackEvent({ event_type: "blueprint_generated" });
@@ -1111,7 +1120,7 @@ describe("MockDatabaseService", () => {
         const count = await db.countAnalyticsByEventTypeAndDateRange(
           "blueprint_generated",
           oneHourAgo.toISOString(),
-          now.toISOString(),
+          future.toISOString(),
         );
         expect(count).toBe(2);
       });

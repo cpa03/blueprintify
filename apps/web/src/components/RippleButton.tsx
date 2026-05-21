@@ -98,7 +98,9 @@ function RippleButtonComponent({
   );
 
   return (
-    <button
+    <motion.button
+      whileHover={!disabled ? { scale: 1.02 } : undefined}
+      whileTap={!disabled ? { scale: 0.98 } : undefined}
       type={type}
       onClick={handleClick}
       disabled={disabled}
@@ -141,7 +143,7 @@ function RippleButtonComponent({
           />
         ))}
       </AnimatePresence>
-    </button>
+    </motion.button>
   );
 }
 
