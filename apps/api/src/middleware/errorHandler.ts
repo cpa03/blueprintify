@@ -3,7 +3,7 @@ import { createErrorResponse, isAPIError, ErrorType } from "../errors";
 import type { ErrorResponse } from "../errors";
 import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import { TimeoutError } from "../utils/timeout";
-import { ERROR_CODES, ERROR_MESSAGES, HTTP_STATUS } from "../config/constants";
+import { ERROR_CODES, ERROR_MESSAGES, HTTP_STATUS, VALIDATION_MESSAGES } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
 
 /**
@@ -82,10 +82,10 @@ export const errorHandler = (err: unknown, c: Context): Response => {
               const i = issue as { path?: string[]; message?: string };
               return {
                 path: i.path || [],
-                message: i.message || "Validation error",
+                message: i.message || VALIDATION_MESSAGES.VALIDATION_ERROR,
               };
             }
-            return { message: String(issue) };
+            return { message: VALIDATION_MESSAGES.VALIDATION_ERROR };
           }),
         },
         timestamp: new Date().toISOString(),
@@ -125,7 +125,7 @@ export const notFoundHandler = (c: Context): Response => {
     {
       success: false,
       error: {
-        type: "not_found",
+        type: ErrorType.NOT_FOUND,
         message: ERROR_MESSAGES.NOT_FOUND(`${c.req.method} ${c.req.path}`),
         code: ERROR_CODES.NOT_FOUND_ERROR,
         timestamp: new Date().toISOString(),

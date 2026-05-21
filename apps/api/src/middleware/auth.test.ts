@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { Hono } from "hono";
-import { apiKeyAuth, AUTH_CONFIG_ERROR } from "./auth";
+import { apiKeyAuth } from "./auth";
+import { ERROR_CODES } from "../config/constants";
 import type { ErrorResponse } from "../errors";
 
 describe("auth middleware", () => {
@@ -79,7 +80,7 @@ describe("auth middleware", () => {
       expect(res.status).toBe(503);
       const data = (await res.json()) as ErrorResponse;
       expect(data.success).toBe(false);
-      expect(data.error.code).toBe(AUTH_CONFIG_ERROR);
+      expect(data.error.code).toBe(ERROR_CODES.CONFIGURATION_ERROR);
       expect(data.error.message).toContain("API_KEY is not configured");
     });
 

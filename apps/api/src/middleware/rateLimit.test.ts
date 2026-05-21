@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach, afterAll, vi } from "vitest";
 import { Hono } from "hono";
 import { rateLimit, rateLimitConfigs } from "./rateLimit";
+import { ErrorType } from "../errors";
+import { ERROR_CODES } from "../config/constants";
 import type { ErrorResponse } from "../errors";
 import { initializeConfig, resetConfig } from "../config/env";
 
@@ -92,8 +94,8 @@ describe("rateLimit middleware", () => {
 
       const data = (await blockedRes.json()) as ErrorResponse;
       expect(data.success).toBe(false);
-      expect(data.error.type).toBe("rate_limit");
-      expect(data.error.code).toBe("RATE_LIMIT_ERROR");
+      expect(data.error.type).toBe(ErrorType.VALIDATION);
+      expect(data.error.code).toBe(ERROR_CODES.RATE_LIMIT_ERROR);
     });
 
     it("should fallback to x-forwarded-for header", async () => {
@@ -217,7 +219,7 @@ describe("rateLimit middleware", () => {
 
         const data = (await res.json()) as ErrorResponse;
         expect(data.success).toBe(false);
-        expect(data.error.code).toBe("RATE_LIMITER_NOT_CONFIGURED");
+        expect(data.error.code).toBe(ERROR_CODES.CONFIGURATION_ERROR);
       } finally {
         // Restore original NODE_ENV
         process.env.NODE_ENV = originalNodeEnv;
