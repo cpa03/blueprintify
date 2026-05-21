@@ -7,7 +7,7 @@ vi.mock("framer-motion", () => ({
     div: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
     nav: vi.fn(({ children, ...props }) => <nav {...props}>{children}</nav>),
     span: vi.fn(({ children, ...props }) => <span {...props}>{children}</span>),
-    button: vi.fn(({ children, ...props }) => (
+    button: vi.fn(({ children, whileHover: _whileHover, whileTap: _whileTap, ...props }) => (
       <button {...props}>{children}</button>
     )),
   },
@@ -31,9 +31,7 @@ describe("Header", () => {
     render(<Header />);
 
     expect(screen.getByText("Blueprintify")).toBeInTheDocument();
-    expect(
-      screen.getByText("AI-Powered Project Architecture"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("AI-Powered Project Architecture")).toBeInTheDocument();
   });
 
   it("renders the logo icon", () => {
@@ -66,12 +64,7 @@ describe("Header", () => {
     const { container } = render(<Header />);
 
     const header = container.querySelector("header");
-    expect(header).toHaveClass(
-      "glass-card",
-      "border-b",
-      "border-dark-700/50",
-      "backdrop-blur-xl",
-    );
+    expect(header).toHaveClass("glass-card", "border-b", "border-dark-700/50", "backdrop-blur-xl");
   });
 
   it("has responsive layout classes", () => {
@@ -84,7 +77,7 @@ describe("Header", () => {
       "py-4",
       "flex",
       "items-center",
-      "justify-between",
+      "justify-between"
     );
   });
 

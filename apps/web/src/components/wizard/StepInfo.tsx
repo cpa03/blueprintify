@@ -457,6 +457,8 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
           <RippleButton
             type="submit"
             disabled={!canProceed}
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98, y: 0 }}
             className={`btn-primary flex items-center gap-2 ${isShaking ? "shake-animation" : ""}`}
           >
             {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}

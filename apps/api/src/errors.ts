@@ -1,4 +1,5 @@
-import { DEFAULT_ERROR_MESSAGES, HTTP_STATUS } from "./config/constants";
+import { HTTP_STATUS } from "@blueprint/shared";
+import { DEFAULT_ERROR_MESSAGES } from "./config/constants";
 
 /**
  * API Error Types and Classes
