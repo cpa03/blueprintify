@@ -4,7 +4,7 @@ import { ConfigurationError } from "../errors";
 import type { ValidatedContext, ControllerContext, AppContext } from "../types";
 import type { z } from "zod";
 import { CONFIG_MESSAGES, AI_CONFIG } from "../config/constants";
-import { secureLogError } from "../utils/secureLog";
+import { secureLogError, sanitizeError } from "../utils/secureLog";
 
 /**
  * Base controller providing common functionality for API endpoint handlers.
@@ -39,7 +39,7 @@ export abstract class BaseController {
    * @returns Response object configured for SSE streaming
    */
   public async handleStreamingResponse(
-    generator: AsyncGenerator<string, void, unknown>,
+    generator: AsyncGenerator<string, void, unknown>
   ): Promise<Response> {
     const container = getContainer();
     const stream = container.streamUtils.createStreamFromGenerator(generator);
@@ -52,9 +52,7 @@ export abstract class BaseController {
    * @returns The validated and typed request data
    * @throws {Error} When validated data is not found in context
    */
-  public getValidatedData<T extends z.ZodSchema>(
-    c: ValidatedContext<T>,
-  ): z.infer<T> {
+  public getValidatedData<T extends z.ZodSchema>(c: ValidatedContext<T>): z.infer<T> {
     const data = c.get("validatedData");
     if (!data) {
       throw new Error(CONFIG_MESSAGES.VALIDATED_DATA_NOT_FOUND);
@@ -86,11 +84,12 @@ export abstract class BaseController {
     context: string,
     message: string,
     error?: unknown,
-    details?: Record<string, unknown>,
+    details?: Record<string, unknown>
   ): void {
     secureLogError(context, message, {
       ...details,
-      error,
+      // Sanitize the error object to prevent sensitive data leakage in logs
+      error: error ? sanitizeError(error) : undefined,
       requestId: (c as AppContext).get("requestId"),
       path: c.req.path,
       method: c.req.method,
