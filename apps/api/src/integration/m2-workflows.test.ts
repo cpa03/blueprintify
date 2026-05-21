@@ -1,13 +1,4 @@
-import {
-  describe,
-  it,
-  expect,
-  vi,
-  beforeEach,
-  afterEach,
-  beforeAll,
-  afterAll,
-} from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import { Hono } from "hono";
 import { MOCK_ENV } from "../test-utils";
 import { errorHandler } from "../middleware/errorHandler";
@@ -17,11 +8,7 @@ import exportRoute from "../routes/export";
 import importRoute from "../routes/import";
 import storageRoute from "../routes/storage";
 import tasksRoute from "../routes/tasks";
-import {
-  setDefaultContainer,
-  resetContainer,
-  createMockContainer,
-} from "../di/container";
+import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 import { SSE_HEADERS } from "../config/constants";
 
 interface ApiResponse {
@@ -86,13 +73,11 @@ describe("Integration: End-to-End M2 Workflows", () => {
             techStack: [{ name: "React", category: "frontend" }],
           }),
         },
-        MOCK_ENV,
+        MOCK_ENV
       );
 
       expect(generateRes.status).toBe(200);
-      expect(generateRes.headers.get("Content-Type")).toContain(
-        SSE_HEADERS.CONTENT_TYPE,
-      );
+      expect(generateRes.headers.get("Content-Type")).toContain(SSE_HEADERS.CONTENT_TYPE);
 
       const exportRes = await app.request(
         "/export",
@@ -102,12 +87,11 @@ describe("Integration: End-to-End M2 Workflows", () => {
           body: JSON.stringify({
             projectName: "Test Project",
             format: "markdown",
-            blueprint:
-              "# Test Blueprint\n\n## Overview\nThis is a test blueprint.\n",
+            blueprint: "# Test Blueprint\n\n## Overview\nThis is a test blueprint.\n",
             tasks: "## Tasks\n- [ ] Task 1\n",
           }),
         },
-        MOCK_ENV,
+        MOCK_ENV
       );
 
       expect(exportRes.status).toBe(200);
@@ -128,7 +112,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
             techStack: [{ name: "React", category: "frontend" }],
           }),
         },
-        MOCK_ENV,
+        MOCK_ENV
       );
 
       expect(generateRes.status).toBe(200);
@@ -139,12 +123,11 @@ describe("Integration: End-to-End M2 Workflows", () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            content:
-              "# Test Blueprint\n\n## Overview\nThis is a test blueprint.\n",
+            content: "# Test Blueprint\n\n## Overview\nThis is a test blueprint.\n",
             instruction: "Add more details to the overview section",
           }),
         },
-        MOCK_ENV,
+        MOCK_ENV
       );
 
       expect(refineRes.status).toBe(200);
@@ -162,7 +145,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
             tasks: "## Tasks\n- [ ] Task 1\n- [ ] Task 2\n",
           }),
         },
-        MOCK_ENV,
+        MOCK_ENV
       );
 
       expect(exportRes.status).toBe(200);
@@ -194,7 +177,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
             format: "json",
           }),
         },
-        MOCK_ENV,
+        MOCK_ENV
       );
 
       expect(importRes.status).toBe(200);
@@ -215,7 +198,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
             metadata: projectData.metadata,
           }),
         },
-        MOCK_ENV,
+        MOCK_ENV
       );
 
       expect(exportRes.status).toBe(200);
@@ -227,11 +210,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
   describe("Workflow 3: Storage Operations Flow", () => {
     it("should get storage quota and clear storage", async () => {
       // Storage is client-side (localStorage), server only provides quota info
-      const quotaRes = await app.request(
-        "/storage/quota",
-        { method: "GET" },
-        MOCK_ENV,
-      );
+      const quotaRes = await app.request("/storage/quota", { method: "GET" }, MOCK_ENV);
 
       expect(quotaRes.status).toBe(200);
       const quotaData = (await quotaRes.json()) as { data: QuotaResponse };
@@ -245,7 +224,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ confirm: true }),
         },
-        MOCK_ENV,
+        MOCK_ENV
       );
 
       expect(clearRes.status).toBe(200);
@@ -265,7 +244,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
             description: "Missing project name",
           }),
         },
-        MOCK_ENV,
+        MOCK_ENV
       );
 
       expect(res.status).toBe(400);
@@ -285,7 +264,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
             format: "json",
           }),
         },
-        MOCK_ENV,
+        MOCK_ENV
       );
 
       expect(res.status).toBe(400);
@@ -307,7 +286,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
             techStack: [{ name: "React", category: "frontend" }],
           }),
         },
-        envWithoutKey,
+        envWithoutKey
       );
 
       expect([400, 500]).toContain(res.status);
@@ -319,7 +298,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
   describe("Workflow 5: Concurrent Operations", () => {
     it("should handle concurrent quota requests", async () => {
       const promises = Array.from({ length: 5 }, () =>
-        app.request("/storage/quota", { method: "GET" }, MOCK_ENV),
+        app.request("/storage/quota", { method: "GET" }, MOCK_ENV)
       );
 
       const results = await Promise.all(promises);
@@ -342,8 +321,8 @@ describe("Integration: End-to-End M2 Workflows", () => {
               techStack: [{ name: "React", category: "frontend" }],
             }),
           },
-          MOCK_ENV,
-        ),
+          MOCK_ENV
+        )
       );
 
       const results = await Promise.all(requests);

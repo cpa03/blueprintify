@@ -29,7 +29,7 @@ describe("POST /import", () => {
           format: "json",
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(400);
@@ -50,7 +50,7 @@ describe("POST /import", () => {
           format: "json",
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(400);
@@ -70,7 +70,7 @@ describe("POST /import", () => {
           format: "json",
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(400);
@@ -98,7 +98,7 @@ describe("POST /import", () => {
           overwrite: false,
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(200);
@@ -137,7 +137,7 @@ describe("POST /import", () => {
           format: "json",
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(200);
@@ -177,7 +177,7 @@ Details here
           format: "markdown",
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(200);
@@ -206,7 +206,7 @@ Details here
           format: "markdown",
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(400);
@@ -236,7 +236,7 @@ Architecture details here
           format: "markdown",
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(200);

@@ -4,7 +4,7 @@
 
 export function createDebouncedSaver<T extends (...args: unknown[]) => void>(
   fn: T,
-  delay: number,
+  delay: number
 ): { debounced: T; flush: () => void; cancel: () => void } {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
 

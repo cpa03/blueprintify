@@ -10,7 +10,6 @@
  * @module components/AnimatedCopyButton
  */
 
-
 import React, { useState, useCallback, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
@@ -84,18 +83,13 @@ function AnimatedCopyButtonComponent({
     for (let i = 0; i < PARTICLE_CONFIG.COUNT; i++) {
       const angle = (i / PARTICLE_CONFIG.COUNT) * Math.PI * 2;
       const distance =
-        PARTICLE_CONFIG.BASE_DISTANCE_PX +
-        Math.random() * PARTICLE_CONFIG.RANDOM_DISTANCE_PX;
+        PARTICLE_CONFIG.BASE_DISTANCE_PX + Math.random() * PARTICLE_CONFIG.RANDOM_DISTANCE_PX;
       const color: string =
-        CELEBRATION_COLORS[
-          Math.floor(Math.random() * CELEBRATION_COLORS.length)
-        ] ?? ANIMATION_COLORS.POSITIVE;
-      const size =
-        PARTICLE_CONFIG.BASE_SIZE_PX +
-        Math.random() * PARTICLE_CONFIG.RANDOM_SIZE_PX;
+        CELEBRATION_COLORS[Math.floor(Math.random() * CELEBRATION_COLORS.length)] ??
+        ANIMATION_COLORS.POSITIVE;
+      const size = PARTICLE_CONFIG.BASE_SIZE_PX + Math.random() * PARTICLE_CONFIG.RANDOM_SIZE_PX;
       const duration =
-        PARTICLE_CONFIG.BASE_DURATION_MS +
-        Math.random() * PARTICLE_CONFIG.RANDOM_DURATION_MS;
+        PARTICLE_CONFIG.BASE_DURATION_MS + Math.random() * PARTICLE_CONFIG.RANDOM_DURATION_MS;
 
       newParticles.push({
         id: particleIdRef.current++,
@@ -122,7 +116,7 @@ function AnimatedCopyButtonComponent({
       createParticles();
       onCopy();
     },
-    [hasContent, onCopy, createParticles],
+    [hasContent, onCopy, createParticles]
   );
 
   const handleMouseDown = () => setIsPressed(true);
@@ -143,7 +137,7 @@ function AnimatedCopyButtonComponent({
         isCopied
           ? "bg-accent-emerald/20 text-accent-emerald border border-accent-emerald/50"
           : "btn-ghost text-dark-300 hover:text-white hover:bg-dark-800/50",
-        className,
+        className
       )}
       aria-label={isCopied ? "Copied to clipboard" : "Copy to clipboard"}
       aria-live="polite"
@@ -164,10 +158,8 @@ function AnimatedCopyButtonComponent({
     >
       <AnimatePresence>
         {particles.map((particle) => {
-          const endX =
-            particle.x + Math.cos(particle.angle) * particle.distance;
-          const endY =
-            particle.y + Math.sin(particle.angle) * particle.distance;
+          const endX = particle.x + Math.cos(particle.angle) * particle.distance;
+          const endY = particle.y + Math.sin(particle.angle) * particle.distance;
 
           return (
             <motion.span

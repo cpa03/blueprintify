@@ -13,12 +13,7 @@
 import { motion } from "framer-motion";
 import { useWizardStore } from "../store";
 import { WIZARD_STEPS, UI_EMOJIS } from "../config/constants";
-import {
-  staggerContainer,
-  fadeInUp,
-  floatingAnimation,
-  pulseAnimation,
-} from "../utils/motion";
+import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from "../utils/motion";
 
 /**
  * Empty state display shown in the editor when no content has been generated.
@@ -119,10 +114,7 @@ export function EditorEmptyState(): JSX.Element {
         </div>
       </motion.div>
 
-      <motion.h3
-        className="text-xl font-semibold text-white mb-2"
-        variants={fadeInUp}
-      >
+      <motion.h3 className="text-xl font-semibold text-white mb-2" variants={fadeInUp}>
         Your blueprint is waiting to be created
       </motion.h3>
 
@@ -145,11 +137,7 @@ export function EditorEmptyState(): JSX.Element {
               <motion.div
                 key={step.key}
                 className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                  isCompleted
-                    ? "bg-accent-emerald"
-                    : isCurrent
-                      ? "bg-primary-500"
-                      : "bg-dark-600"
+                  isCompleted ? "bg-accent-emerald" : isCurrent ? "bg-primary-500" : "bg-dark-600"
                 }`}
                 animate={isCurrent ? { scale: [1, 1.3, 1] } : {}}
                 transition={{ duration: 1, repeat: Infinity }}
@@ -160,9 +148,7 @@ export function EditorEmptyState(): JSX.Element {
         <span className="text-sm text-dark-300">
           Step {currentIndex + 1} of {WIZARD_STEPS.length}
         </span>
-        <span className="text-xs text-dark-500 tabular-nums">
-          {Math.round(progress)}%
-        </span>
+        <span className="text-xs text-dark-500 tabular-nums">{Math.round(progress)}%</span>
       </motion.div>
 
       <motion.p
@@ -172,10 +158,7 @@ export function EditorEmptyState(): JSX.Element {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
       >
-        <motion.span
-          animate={{ x: [0, 4, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        >
+        <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
           →
         </motion.span>
         Currently on:{" "}

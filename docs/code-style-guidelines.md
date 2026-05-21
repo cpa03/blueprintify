@@ -275,7 +275,7 @@ app.post("/users", zValidator("json", createUserSchema), async (c) => {
         status: "success",
         message: "User created successfully",
       },
-      201,
+      201
     );
   } catch (error) {
     console.error("Error creating user:", error);
@@ -284,7 +284,7 @@ app.post("/users", zValidator("json", createUserSchema), async (c) => {
         status: "error",
         message: "Internal server error",
       },
-      500,
+      500
     );
   }
 });
@@ -298,7 +298,7 @@ class ApiError extends Error {
   constructor(
     public statusCode: number,
     public message: string,
-    public code?: string,
+    public code?: string
   ) {
     super(message);
     this.name = "ApiError";
@@ -313,7 +313,7 @@ const errorHandler = (error: Error, c: Context) => {
         message: error.message,
         code: error.code,
       },
-      error.statusCode,
+      error.statusCode
     );
   }
 
@@ -323,7 +323,7 @@ const errorHandler = (error: Error, c: Context) => {
       status: "error",
       message: "Internal server error",
     },
-    500,
+    500
   );
 };
 
@@ -441,7 +441,10 @@ function add(a: number, b: number): number {
  * });
  * ```
  */
-async function generateBlueprint(config: ProjectConfig, options: GenerationOptions = {}): Promise<BlueprintData> {
+async function generateBlueprint(
+  config: ProjectConfig,
+  options: GenerationOptions = {}
+): Promise<BlueprintData> {
   // Implementation
 }
 ````
@@ -614,7 +617,7 @@ app.use(
   rateLimiter({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // limit each IP to 100 requests per windowMs
-  }),
+  })
 );
 ```
 

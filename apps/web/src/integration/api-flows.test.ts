@@ -41,14 +41,12 @@ describe("Integration: Frontend-Backend API Flow", () => {
       const testData = createTestBlueprint();
 
       fetchMock
-        .mockResolvedValueOnce(
-          createMockResponse({ success: true, sessionId: "test-session" }),
-        )
+        .mockResolvedValueOnce(createMockResponse({ success: true, sessionId: "test-session" }))
         .mockResolvedValueOnce(
           createMockResponse({
             blueprint: testData.blueprint,
             tasks: testData.tasks,
-          }),
+          })
         );
 
       const response = await fetch("/api/generate", {
@@ -66,7 +64,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
         expect.objectContaining({
           method: "POST",
           headers: { "Content-Type": "application/json" },
-        }),
+        })
       );
     });
 
@@ -90,7 +88,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
         new Response(stream, {
           status: 200,
           headers: { "Content-Type": SSE_HEADERS.CONTENT_TYPE },
-        }),
+        })
       );
 
       const response = await fetch("/api/generate", {
@@ -99,9 +97,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
       });
 
       expect(response.status).toBe(200);
-      expect(response.headers.get("Content-Type")).toContain(
-        SSE_HEADERS.CONTENT_TYPE,
-      );
+      expect(response.headers.get("Content-Type")).toContain(SSE_HEADERS.CONTENT_TYPE);
     });
   });
 
@@ -113,7 +109,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
         createMockResponse({
           success: true,
           refinedContent: testData.blueprint + "\n\n## Additional Section\n",
-        }),
+        })
       );
 
       const response = await fetch("/api/refine", {
@@ -131,7 +127,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
         expect.objectContaining({
           method: "POST",
           body: expect.stringContaining("Add more details"),
-        }),
+        })
       );
     });
 
@@ -146,7 +142,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
             originalLength: testData.blueprint.length,
             refinedLength: testData.blueprint.length,
           },
-        }),
+        })
       );
 
       const response = await fetch("/api/refine", {
@@ -178,12 +174,9 @@ describe("Integration: Frontend-Backend API Flow", () => {
           createMockResponse({
             success: true,
             format,
-            files:
-              format === "zip"
-                ? [{ name: "blueprint.md" }, { name: "tasks.md" }]
-                : undefined,
+            files: format === "zip" ? [{ name: "blueprint.md" }, { name: "tasks.md" }] : undefined,
             content: format !== "zip" ? testData.blueprint : undefined,
-          }),
+          })
         );
 
         const response = await fetch("/api/export", {
@@ -213,7 +206,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
             isValid: true,
             errors: [],
           },
-        }),
+        })
       );
 
       const response = await fetch("/api/import", {
@@ -241,8 +234,8 @@ describe("Integration: Frontend-Backend API Flow", () => {
               errors: ["Missing required field: projectName"],
             },
           },
-          400,
-        ),
+          400
+        )
       );
 
       const response = await fetch("/api/import", {
@@ -267,7 +260,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
           createMockResponse({
             success: true,
             data: mockStorageData.session,
-          }),
+          })
         )
         .mockResolvedValueOnce(
           createMockResponse({
@@ -277,7 +270,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
               total: 5242880,
               remaining: 5241856,
             },
-          }),
+          })
         );
 
       const storageManager = new StorageManager();
@@ -315,7 +308,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
         fetch("/api/generate", {
           method: "POST",
           body: JSON.stringify({ projectName: "Test" }),
-        }),
+        })
       ).rejects.toThrow("Network error");
     });
 
@@ -326,7 +319,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
         fetch("/api/generate", {
           method: "POST",
           body: JSON.stringify({ projectName: "Test" }),
-        }),
+        })
       ).rejects.toThrow("Request timeout");
     });
 
@@ -338,8 +331,8 @@ describe("Integration: Frontend-Backend API Flow", () => {
             error: "Internal server error",
             type: "server_error",
           },
-          500,
-        ),
+          500
+        )
       );
 
       const response = await fetch("/api/generate", {

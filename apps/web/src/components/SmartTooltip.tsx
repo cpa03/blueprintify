@@ -1,12 +1,4 @@
-import {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  memo,
-  ReactNode,
-  useId,
-} from "react";
+import { useState, useRef, useEffect, useCallback, memo, ReactNode, useId } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SPRING_CONFIG, TOOLTIP_CONFIG } from "../config/constants";
 
@@ -164,7 +156,7 @@ function SmartTooltipComponent({
         hideTooltip();
       }
     },
-    [hideTooltip],
+    [hideTooltip]
   );
 
   useEffect(() => {
@@ -229,35 +221,15 @@ function SmartTooltipComponent({
             initial={{
               opacity: 0,
               scale: 0.85,
-              y:
-                computedPosition === "top"
-                  ? 8
-                  : computedPosition === "bottom"
-                    ? -8
-                    : 0,
-              x:
-                computedPosition === "left"
-                  ? 8
-                  : computedPosition === "right"
-                    ? -8
-                    : 0,
+              y: computedPosition === "top" ? 8 : computedPosition === "bottom" ? -8 : 0,
+              x: computedPosition === "left" ? 8 : computedPosition === "right" ? -8 : 0,
             }}
             animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
             exit={{
               opacity: 0,
               scale: 0.9,
-              y:
-                computedPosition === "top"
-                  ? 4
-                  : computedPosition === "bottom"
-                    ? -4
-                    : 0,
-              x:
-                computedPosition === "left"
-                  ? 4
-                  : computedPosition === "right"
-                    ? -4
-                    : 0,
+              y: computedPosition === "top" ? 4 : computedPosition === "bottom" ? -4 : 0,
+              x: computedPosition === "left" ? 4 : computedPosition === "right" ? -4 : 0,
             }}
             transition={{
               type: "spring",
@@ -305,8 +277,7 @@ function KeyboardShortcutTooltipComponent({
   modifier = "cmd",
 }: KeyboardShortcutTooltipProps) {
   const isMac =
-    typeof navigator !== "undefined" &&
-    navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+    typeof navigator !== "undefined" && navigator.platform.toUpperCase().indexOf("MAC") >= 0;
 
   let fullShortcut: string;
   if (modifier === "none") {
@@ -390,10 +361,5 @@ function InfoTooltipComponent({
 const InfoTooltip = memo(InfoTooltipComponent);
 
 export type { SmartTooltipProps, Position };
-export {
-  SmartTooltip,
-  SmartTooltip as Tooltip,
-  KeyboardShortcutTooltip,
-  InfoTooltip,
-};
+export { SmartTooltip, SmartTooltip as Tooltip, KeyboardShortcutTooltip, InfoTooltip };
 export default SmartTooltip;

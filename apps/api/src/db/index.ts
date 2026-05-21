@@ -137,33 +137,25 @@ export type BlueprintShare = z.infer<typeof BlueprintShareSchema>;
 
 export interface DatabaseService {
   // User operations
-  createUser(
-    user: Omit<User, "id" | "created_at" | "updated_at">,
-  ): Promise<User>;
+  createUser(user: Omit<User, "id" | "created_at" | "updated_at">): Promise<User>;
   getUserById(id: string): Promise<User | null>;
   getUserByEmail(email: string): Promise<User | null>;
   updateUser(id: string, updates: Partial<User>): Promise<User>;
   deleteUser(id: string): Promise<void>;
 
   // Project operations
-  createProject(
-    project: Omit<Project, "id" | "created_at" | "updated_at">,
-  ): Promise<Project>;
+  createProject(project: Omit<Project, "id" | "created_at" | "updated_at">): Promise<Project>;
   getProjectById(id: string): Promise<Project | null>;
   getProjectsByUserId(userId: string): Promise<Project[]>;
-  getProjectsByUserIdAndStatus(
-    userId: string,
-    status: Project["status"],
-  ): Promise<Project[]>;
+  getProjectsByUserIdAndStatus(userId: string, status: Project["status"]): Promise<Project[]>;
   updateProject(id: string, updates: Partial<Project>): Promise<Project>;
   deleteProject(id: string): Promise<void>;
 
   // Blueprint operations
   createBlueprint(
-    blueprint: Omit<
-      Blueprint,
-      "id" | "created_at" | "updated_at" | "version"
-    > & { version?: number },
+    blueprint: Omit<Blueprint, "id" | "created_at" | "updated_at" | "version"> & {
+      version?: number;
+    }
   ): Promise<Blueprint>;
   getBlueprintById(id: string): Promise<Blueprint | null>;
   getBlueprintsByProjectId(projectId: string): Promise<Blueprint[]>;
@@ -175,7 +167,7 @@ export interface DatabaseService {
   createTask(
     task: Omit<Task, "id" | "created_at" | "updated_at" | "version"> & {
       version?: number;
-    },
+    }
   ): Promise<Task>;
   getTaskById(id: string): Promise<Task | null>;
   getTasksByBlueprintId(blueprintId: string): Promise<Task[]>;
@@ -184,10 +176,9 @@ export interface DatabaseService {
 
   // Template operations
   createTemplate(
-    template: Omit<
-      Template,
-      "id" | "created_at" | "updated_at" | "usage_count"
-    > & { usage_count?: number },
+    template: Omit<Template, "id" | "created_at" | "updated_at" | "usage_count"> & {
+      usage_count?: number;
+    }
   ): Promise<Template>;
   getTemplateById(id: string): Promise<Template | null>;
   getPublicTemplates(): Promise<Template[]>;
@@ -208,20 +199,15 @@ export interface DatabaseService {
   }): Promise<void>;
   getAnalyticsByUserId(userId: string): Promise<Analytics[]>;
   getAnalyticsByEventType(eventType: string): Promise<Analytics[]>;
-  getAnalyticsByDateRange(
-    startDate: string,
-    endDate: string,
-  ): Promise<Analytics[]>;
+  getAnalyticsByDateRange(startDate: string, endDate: string): Promise<Analytics[]>;
   getAnalyticsByEventTypeAndDateRange(
     eventType: string,
     startDate: string,
-    endDate: string,
+    endDate: string
   ): Promise<Analytics[]>;
 
   // Session operations
-  createSession(
-    session: Omit<Session, "id" | "created_at" | "updated_at">,
-  ): Promise<Session>;
+  createSession(session: Omit<Session, "id" | "created_at" | "updated_at">): Promise<Session>;
   getSessionById(id: string): Promise<Session | null>;
   getSessionsByUserId(userId: string): Promise<Session[]>;
   getActiveSessionsForUser(userId: string): Promise<Session[]>;
@@ -229,9 +215,7 @@ export interface DatabaseService {
   deleteExpiredSessions(): Promise<number>;
 
   // BlueprintShare operations
-  createBlueprintShare(
-    share: Omit<BlueprintShare, "created_at">,
-  ): Promise<BlueprintShare>;
+  createBlueprintShare(share: Omit<BlueprintShare, "created_at">): Promise<BlueprintShare>;
   getBlueprintShareById(id: string): Promise<BlueprintShare | null>;
   deleteBlueprintShare(id: string): Promise<void>;
   deleteExpiredBlueprintShares(): Promise<number>;
@@ -241,24 +225,18 @@ export interface DatabaseService {
 
   // Count operations (v1.3.3 - efficient counting without fetching records)
   countProjectsByUserId(userId: string): Promise<number>;
-  countProjectsByUserIdAndStatus(
-    userId: string,
-    status: Project["status"],
-  ): Promise<number>;
+  countProjectsByUserIdAndStatus(userId: string, status: Project["status"]): Promise<number>;
   countBlueprintsByProjectId(projectId: string): Promise<number>;
   countTasksByBlueprintId(blueprintId: string): Promise<number>;
   countTemplatesByCreator(userId: string): Promise<number>;
   countPublicTemplates(): Promise<number>;
   countTemplatesByCategory(category: string): Promise<number>;
   countAnalyticsByEventType(eventType: string): Promise<number>;
-  countAnalyticsByDateRange(
-    startDate: string,
-    endDate: string,
-  ): Promise<number>;
+  countAnalyticsByDateRange(startDate: string, endDate: string): Promise<number>;
   countAnalyticsByEventTypeAndDateRange(
     eventType: string,
     startDate: string,
-    endDate: string,
+    endDate: string
   ): Promise<number>;
   countActiveSessionsForUser(userId: string): Promise<number>;
 
@@ -277,9 +255,7 @@ export class MockDatabaseService implements DatabaseService {
   private analytics: Map<string, Analytics> = new Map();
   private blueprintShares: Map<string, BlueprintShare> = new Map();
 
-  async createUser(
-    user: Omit<User, "id" | "created_at" | "updated_at">,
-  ): Promise<User> {
+  async createUser(user: Omit<User, "id" | "created_at" | "updated_at">): Promise<User> {
     const id = generateId("user");
     const now = new Date().toISOString();
     const newUser: User = { ...user, id, created_at: now, updated_at: now };
@@ -315,7 +291,7 @@ export class MockDatabaseService implements DatabaseService {
   }
 
   async createProject(
-    project: Omit<Project, "id" | "created_at" | "updated_at">,
+    project: Omit<Project, "id" | "created_at" | "updated_at">
   ): Promise<Project> {
     const id = generateId("project");
     const now = new Date().toISOString();
@@ -334,17 +310,12 @@ export class MockDatabaseService implements DatabaseService {
   }
 
   async getProjectsByUserId(userId: string): Promise<Project[]> {
-    return Array.from(this.projects.values()).filter(
-      (p) => p.user_id === userId,
-    );
+    return Array.from(this.projects.values()).filter((p) => p.user_id === userId);
   }
 
-  async getProjectsByUserIdAndStatus(
-    userId: string,
-    status: string,
-  ): Promise<Project[]> {
+  async getProjectsByUserIdAndStatus(userId: string, status: string): Promise<Project[]> {
     return Array.from(this.projects.values()).filter(
-      (p) => p.user_id === userId && p.status === status,
+      (p) => p.user_id === userId && p.status === status
     );
   }
 
@@ -365,10 +336,9 @@ export class MockDatabaseService implements DatabaseService {
   }
 
   async createBlueprint(
-    blueprint: Omit<
-      Blueprint,
-      "id" | "created_at" | "updated_at" | "version"
-    > & { version?: number },
+    blueprint: Omit<Blueprint, "id" | "created_at" | "updated_at" | "version"> & {
+      version?: number;
+    }
   ): Promise<Blueprint> {
     const id = generateId("blueprint");
     const now = new Date().toISOString();
@@ -388,24 +358,17 @@ export class MockDatabaseService implements DatabaseService {
   }
 
   async getBlueprintsByProjectId(projectId: string): Promise<Blueprint[]> {
-    return Array.from(this.blueprints.values()).filter(
-      (b) => b.project_id === projectId,
-    );
+    return Array.from(this.blueprints.values()).filter((b) => b.project_id === projectId);
   }
 
-  async getLatestBlueprintByProjectId(
-    projectId: string,
-  ): Promise<Blueprint | null> {
+  async getLatestBlueprintByProjectId(projectId: string): Promise<Blueprint | null> {
     const blueprints = Array.from(this.blueprints.values())
       .filter((b) => b.project_id === projectId)
       .sort((a, b) => b.version - a.version);
     return blueprints[0] || null;
   }
 
-  async updateBlueprint(
-    id: string,
-    updates: Partial<Blueprint>,
-  ): Promise<Blueprint> {
+  async updateBlueprint(id: string, updates: Partial<Blueprint>): Promise<Blueprint> {
     const blueprint = this.blueprints.get(id);
     if (!blueprint) throw new DatabaseNotFoundError(`Blueprint not found: ${id}`);
     const updatedBlueprint = {
@@ -424,7 +387,7 @@ export class MockDatabaseService implements DatabaseService {
   async createTask(
     task: Omit<Task, "id" | "created_at" | "updated_at" | "version"> & {
       version?: number;
-    },
+    }
   ): Promise<Task> {
     const id = generateId("task");
     const now = new Date().toISOString();
@@ -444,9 +407,7 @@ export class MockDatabaseService implements DatabaseService {
   }
 
   async getTasksByBlueprintId(blueprintId: string): Promise<Task[]> {
-    return Array.from(this.tasks.values()).filter(
-      (t) => t.blueprint_id === blueprintId,
-    );
+    return Array.from(this.tasks.values()).filter((t) => t.blueprint_id === blueprintId);
   }
 
   async updateTask(id: string, updates: Partial<Task>): Promise<Task> {
@@ -466,10 +427,9 @@ export class MockDatabaseService implements DatabaseService {
   }
 
   async createTemplate(
-    template: Omit<
-      Template,
-      "id" | "created_at" | "updated_at" | "usage_count"
-    > & { usage_count?: number },
+    template: Omit<Template, "id" | "created_at" | "updated_at" | "usage_count"> & {
+      usage_count?: number;
+    }
   ): Promise<Template> {
     const id = generateId("template");
     const now = new Date().toISOString();
@@ -493,15 +453,11 @@ export class MockDatabaseService implements DatabaseService {
   }
 
   async getTemplatesByCategory(category: string): Promise<Template[]> {
-    return Array.from(this.templates.values()).filter(
-      (t) => t.category === category,
-    );
+    return Array.from(this.templates.values()).filter((t) => t.category === category);
   }
 
   async getTemplatesByCreator(userId: string): Promise<Template[]> {
-    return Array.from(this.templates.values()).filter(
-      (t) => t.created_by === userId,
-    );
+    return Array.from(this.templates.values()).filter((t) => t.created_by === userId);
   }
 
   async getPopularTemplates(limit: number = 10): Promise<Template[]> {
@@ -511,10 +467,7 @@ export class MockDatabaseService implements DatabaseService {
       .slice(0, limit);
   }
 
-  async updateTemplate(
-    id: string,
-    updates: Partial<Template>,
-  ): Promise<Template> {
+  async updateTemplate(id: string, updates: Partial<Template>): Promise<Template> {
     const template = this.templates.get(id);
     if (!template) throw new DatabaseNotFoundError(`Template not found: ${id}`);
     const updatedTemplate = {
@@ -558,21 +511,14 @@ export class MockDatabaseService implements DatabaseService {
   }
 
   async getAnalyticsByUserId(userId: string): Promise<Analytics[]> {
-    return Array.from(this.analytics.values()).filter(
-      (a) => a.user_id === userId,
-    );
+    return Array.from(this.analytics.values()).filter((a) => a.user_id === userId);
   }
 
   async getAnalyticsByEventType(eventType: string): Promise<Analytics[]> {
-    return Array.from(this.analytics.values()).filter(
-      (a) => a.event_type === eventType,
-    );
+    return Array.from(this.analytics.values()).filter((a) => a.event_type === eventType);
   }
 
-  async getAnalyticsByDateRange(
-    startDate: string,
-    endDate: string,
-  ): Promise<Analytics[]> {
+  async getAnalyticsByDateRange(startDate: string, endDate: string): Promise<Analytics[]> {
     const start = new Date(startDate);
     const end = new Date(endDate);
     return Array.from(this.analytics.values()).filter((a) => {
@@ -584,20 +530,18 @@ export class MockDatabaseService implements DatabaseService {
   async getAnalyticsByEventTypeAndDateRange(
     eventType: string,
     startDate: string,
-    endDate: string,
+    endDate: string
   ): Promise<Analytics[]> {
     const start = new Date(startDate);
     const end = new Date(endDate);
     return Array.from(this.analytics.values()).filter((a) => {
       const createdAt = new Date(a.created_at);
-      return (
-        a.event_type === eventType && createdAt >= start && createdAt <= end
-      );
+      return a.event_type === eventType && createdAt >= start && createdAt <= end;
     });
   }
 
   async createSession(
-    session: Omit<Session, "id" | "created_at" | "updated_at">,
+    session: Omit<Session, "id" | "created_at" | "updated_at">
   ): Promise<Session> {
     const id = generateId("session");
     const now = new Date().toISOString();
@@ -616,15 +560,13 @@ export class MockDatabaseService implements DatabaseService {
   }
 
   async getSessionsByUserId(userId: string): Promise<Session[]> {
-    return Array.from(this.sessions.values()).filter(
-      (s) => s.user_id === userId,
-    );
+    return Array.from(this.sessions.values()).filter((s) => s.user_id === userId);
   }
 
   async getActiveSessionsForUser(userId: string): Promise<Session[]> {
     const now = new Date();
     return Array.from(this.sessions.values()).filter(
-      (s) => s.user_id === userId && new Date(s.expires_at) > now,
+      (s) => s.user_id === userId && new Date(s.expires_at) > now
     );
   }
 
@@ -644,9 +586,7 @@ export class MockDatabaseService implements DatabaseService {
     return deleted;
   }
 
-  async createBlueprintShare(
-    share: Omit<BlueprintShare, "created_at">,
-  ): Promise<BlueprintShare> {
+  async createBlueprintShare(share: Omit<BlueprintShare, "created_at">): Promise<BlueprintShare> {
     const newShare: BlueprintShare = {
       ...share,
       created_at: new Date().toISOString(),
@@ -691,59 +631,40 @@ export class MockDatabaseService implements DatabaseService {
   }
 
   async countProjectsByUserId(userId: string): Promise<number> {
-    return Array.from(this.projects.values()).filter(
-      (p) => p.user_id === userId,
-    ).length;
+    return Array.from(this.projects.values()).filter((p) => p.user_id === userId).length;
   }
 
-  async countProjectsByUserIdAndStatus(
-    userId: string,
-    status: string,
-  ): Promise<number> {
+  async countProjectsByUserIdAndStatus(userId: string, status: string): Promise<number> {
     return Array.from(this.projects.values()).filter(
-      (p) => p.user_id === userId && p.status === status,
+      (p) => p.user_id === userId && p.status === status
     ).length;
   }
 
   async countBlueprintsByProjectId(projectId: string): Promise<number> {
-    return Array.from(this.blueprints.values()).filter(
-      (b) => b.project_id === projectId,
-    ).length;
+    return Array.from(this.blueprints.values()).filter((b) => b.project_id === projectId).length;
   }
 
   async countTasksByBlueprintId(blueprintId: string): Promise<number> {
-    return Array.from(this.tasks.values()).filter(
-      (t) => t.blueprint_id === blueprintId,
-    ).length;
+    return Array.from(this.tasks.values()).filter((t) => t.blueprint_id === blueprintId).length;
   }
 
   async countTemplatesByCreator(userId: string): Promise<number> {
-    return Array.from(this.templates.values()).filter(
-      (t) => t.created_by === userId,
-    ).length;
+    return Array.from(this.templates.values()).filter((t) => t.created_by === userId).length;
   }
 
   async countPublicTemplates(): Promise<number> {
-    return Array.from(this.templates.values()).filter((t) => t.is_public)
-      .length;
+    return Array.from(this.templates.values()).filter((t) => t.is_public).length;
   }
 
   async countTemplatesByCategory(category: string): Promise<number> {
-    return Array.from(this.templates.values()).filter(
-      (t) => t.category === category,
-    ).length;
+    return Array.from(this.templates.values()).filter((t) => t.category === category).length;
   }
 
   async countAnalyticsByEventType(eventType: string): Promise<number> {
-    return Array.from(this.analytics.values()).filter(
-      (a) => a.event_type === eventType,
-    ).length;
+    return Array.from(this.analytics.values()).filter((a) => a.event_type === eventType).length;
   }
 
-  async countAnalyticsByDateRange(
-    startDate: string,
-    endDate: string,
-  ): Promise<number> {
+  async countAnalyticsByDateRange(startDate: string, endDate: string): Promise<number> {
     const start = new Date(startDate);
     const end = new Date(endDate);
     return Array.from(this.analytics.values()).filter((a) => {
@@ -755,22 +676,20 @@ export class MockDatabaseService implements DatabaseService {
   async countAnalyticsByEventTypeAndDateRange(
     eventType: string,
     startDate: string,
-    endDate: string,
+    endDate: string
   ): Promise<number> {
     const start = new Date(startDate);
     const end = new Date(endDate);
     return Array.from(this.analytics.values()).filter((a) => {
       const createdAt = new Date(a.created_at);
-      return (
-        a.event_type === eventType && createdAt >= start && createdAt <= end
-      );
+      return a.event_type === eventType && createdAt >= start && createdAt <= end;
     }).length;
   }
 
   async countActiveSessionsForUser(userId: string): Promise<number> {
     const now = new Date();
     return Array.from(this.sessions.values()).filter(
-      (s) => s.user_id === userId && new Date(s.expires_at) > now,
+      (s) => s.user_id === userId && new Date(s.expires_at) > now
     ).length;
   }
 }
@@ -793,7 +712,7 @@ export function deserializeJSON<T>(json: string): T {
   } catch (error) {
     throw new DatabaseError(
       `Failed to parse JSON: ${error instanceof Error ? error.message : "Unknown error"}`,
-      error instanceof Error ? error : undefined,
+      error instanceof Error ? error : undefined
     );
   }
 }
@@ -802,7 +721,7 @@ export function deserializeJSON<T>(json: string): T {
 export class DatabaseError extends Error {
   constructor(
     message: string,
-    public cause?: Error,
+    public cause?: Error
   ) {
     super(message);
     this.name = "DatabaseError";

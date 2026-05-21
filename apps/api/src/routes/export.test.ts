@@ -30,7 +30,7 @@ describe("POST /export", () => {
           format: "json",
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(400);
@@ -51,7 +51,7 @@ describe("POST /export", () => {
           format: "json",
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(400);
@@ -73,7 +73,7 @@ describe("POST /export", () => {
           includeMetadata: true,
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(200);
@@ -112,7 +112,7 @@ describe("POST /export", () => {
           format: "markdown",
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(200);
@@ -143,7 +143,7 @@ describe("POST /export", () => {
           format: "zip",
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(200);
@@ -173,7 +173,7 @@ describe("POST /export", () => {
           format: "json",
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(200);

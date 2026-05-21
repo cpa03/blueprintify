@@ -76,8 +76,24 @@ interface GenerateRequest {
 
 interface TechStackItem {
   name: string;
-  category: "frontend" | "backend" | "database" | "hosting" | "ai" | "testing" | "styling" | "other";
-  subcategory?: "relational" | "nosql" | "vector" | "graph" | "edge" | "search" | "cache" | "serverless";
+  category:
+    | "frontend"
+    | "backend"
+    | "database"
+    | "hosting"
+    | "ai"
+    | "testing"
+    | "styling"
+    | "other";
+  subcategory?:
+    | "relational"
+    | "nosql"
+    | "vector"
+    | "graph"
+    | "edge"
+    | "search"
+    | "cache"
+    | "serverless";
   version?: string;
   description?: string;
   features?: string[];

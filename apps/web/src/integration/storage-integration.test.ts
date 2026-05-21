@@ -10,9 +10,7 @@ describe("Integration: Cross-Browser Storage Operations", () => {
     vi.clearAllMocks();
     manager = new StorageManager();
 
-    Object.keys(localStorageStore).forEach(
-      (key) => delete localStorageStore[key],
-    );
+    Object.keys(localStorageStore).forEach((key) => delete localStorageStore[key]);
 
     const mockLocalStorage = {
       getItem: vi.fn((key: string) => localStorageStore[key] || null),
@@ -23,9 +21,7 @@ describe("Integration: Cross-Browser Storage Operations", () => {
         delete localStorageStore[key];
       }),
       clear: vi.fn(() => {
-        Object.keys(localStorageStore).forEach(
-          (key) => delete localStorageStore[key],
-        );
+        Object.keys(localStorageStore).forEach((key) => delete localStorageStore[key]);
       }),
     };
 
@@ -37,9 +33,7 @@ describe("Integration: Cross-Browser Storage Operations", () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
-    Object.keys(localStorageStore).forEach(
-      (key) => delete localStorageStore[key],
-    );
+    Object.keys(localStorageStore).forEach((key) => delete localStorageStore[key]);
   });
 
   describe("Data Persistence Across Operations", () => {
@@ -135,9 +129,7 @@ describe("Integration: Cross-Browser Storage Operations", () => {
         writable: true,
       });
 
-      await expect(storage.set({ data: "test" })).rejects.toBeInstanceOf(
-        StorageError,
-      );
+      await expect(storage.set({ data: "test" })).rejects.toBeInstanceOf(StorageError);
     });
   });
 
@@ -305,9 +297,7 @@ describe("Integration: Cross-Browser Storage Operations", () => {
         currentVersion: 1,
       });
 
-      await expect(storage.set({ data: "test" })).rejects.toBeInstanceOf(
-        StorageError,
-      );
+      await expect(storage.set({ data: "test" })).rejects.toBeInstanceOf(StorageError);
     });
 
     it("should handle private browsing mode", async () => {
@@ -332,9 +322,7 @@ describe("Integration: Cross-Browser Storage Operations", () => {
         currentVersion: 1,
       });
 
-      await expect(storage.set({ data: "test" })).rejects.toBeInstanceOf(
-        StorageError,
-      );
+      await expect(storage.set({ data: "test" })).rejects.toBeInstanceOf(StorageError);
     });
   });
 

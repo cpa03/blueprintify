@@ -1,9 +1,6 @@
 import { BaseController } from "./base.controller";
 import { getContainer } from "../di/container";
-import {
-  ARCHITECT_SYSTEM_PROMPT,
-  buildBlueprintPrompt,
-} from "../services/prompts";
+import { ARCHITECT_SYSTEM_PROMPT, buildBlueprintPrompt } from "../services/prompts";
 import type { BlueprintContext } from "../types";
 
 /**

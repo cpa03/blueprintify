@@ -99,15 +99,10 @@ class CircuitBreaker {
    */
   constructor(config: Partial<CircuitBreakerConfig> = {}) {
     this.config = {
-      failureThreshold:
-        config.failureThreshold ??
-        CIRCUIT_BREAKER_CONFIG.DEFAULT_FAILURE_THRESHOLD,
-      resetTimeoutMs:
-        config.resetTimeoutMs ??
-        CIRCUIT_BREAKER_CONFIG.DEFAULT_RESET_TIMEOUT_MS,
+      failureThreshold: config.failureThreshold ?? CIRCUIT_BREAKER_CONFIG.DEFAULT_FAILURE_THRESHOLD,
+      resetTimeoutMs: config.resetTimeoutMs ?? CIRCUIT_BREAKER_CONFIG.DEFAULT_RESET_TIMEOUT_MS,
       halfOpenMaxCalls:
-        config.halfOpenMaxCalls ??
-        CIRCUIT_BREAKER_CONFIG.DEFAULT_HALF_OPEN_MAX_CALLS,
+        config.halfOpenMaxCalls ?? CIRCUIT_BREAKER_CONFIG.DEFAULT_HALF_OPEN_MAX_CALLS,
     };
   }
 
@@ -143,10 +138,7 @@ class CircuitBreaker {
    */
   async execute<T>(fn: () => Promise<T>): Promise<T> {
     if (this.state === CircuitState.OPEN) {
-      if (
-        Date.now() - (this.lastFailureTime || 0) >
-        this.config.resetTimeoutMs
-      ) {
+      if (Date.now() - (this.lastFailureTime || 0) > this.config.resetTimeoutMs) {
         this.state = CircuitState.HALF_OPEN;
         this.halfOpenCalls = 0;
       } else {
@@ -156,9 +148,7 @@ class CircuitBreaker {
 
     if (this.state === CircuitState.HALF_OPEN) {
       if (this.halfOpenCalls >= this.config.halfOpenMaxCalls) {
-        throw new CircuitBreakerOpenError(
-          "Circuit breaker is HALF_OPEN - max calls reached",
-        );
+        throw new CircuitBreakerOpenError("Circuit breaker is HALF_OPEN - max calls reached");
       }
       this.halfOpenCalls++;
     }
@@ -191,10 +181,7 @@ class CircuitBreaker {
     this.lastFailureTime = Date.now();
     this.successes = 0;
 
-    if (
-      this.state === CircuitState.HALF_OPEN ||
-      this.failures >= this.config.failureThreshold
-    ) {
+    if (this.state === CircuitState.HALF_OPEN || this.failures >= this.config.failureThreshold) {
       this.state = CircuitState.OPEN;
       this.halfOpenCalls = 0;
     }
@@ -233,9 +220,7 @@ export class CircuitBreakerOpenError extends Error {
  * });
  * ```
  */
-export const createCircuitBreaker = (
-  config?: Partial<CircuitBreakerConfig>,
-): CircuitBreaker => {
+export const createCircuitBreaker = (config?: Partial<CircuitBreakerConfig>): CircuitBreaker => {
   return new CircuitBreaker(config);
 };
 

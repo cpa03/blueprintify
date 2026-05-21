@@ -63,7 +63,7 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
   useAutoSaveToast(
     [projectName, description, targetAudience, constraints],
     "Project info saved",
-    TIMEOUTS.COPY_FEEDBACK,
+    TIMEOUTS.COPY_FEEDBACK
   );
 
   const projectNameTyping = useTypingIndicator({
@@ -106,12 +106,7 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
       total: totalFields,
       percentage: (completedFields / totalFields) * 100,
     };
-  }, [
-    projectName.length,
-    description.length,
-    targetAudience.length,
-    constraints.length,
-  ]);
+  }, [projectName.length, description.length, targetAudience.length, constraints.length]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -132,9 +127,7 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
     <motion.div {...pageTransition} className="space-y-6">
       <div>
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-2xl font-bold text-white">
-            {UI_CONTENT.WIZARD.STEP_INFO.TITLE}
-          </h2>
+          <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_INFO.TITLE}</h2>
           <div className="flex items-center gap-2 text-sm">
             <div className="w-24 h-2 bg-dark-700 rounded-full overflow-hidden">
               <motion.div
@@ -160,10 +153,7 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
         {/* Project Name */}
         <div>
           <div className="flex justify-between items-center">
-            <label
-              htmlFor="projectName"
-              className="label flex items-center gap-2"
-            >
+            <label htmlFor="projectName" className="label flex items-center gap-2">
               {UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL}{" "}
               <span className="text-accent-pink" aria-hidden="true">
                 *
@@ -199,20 +189,16 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
                   ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20"
                   : projectName.length >= FORM_LIMITS.PROJECT_NAME.MAX
                     ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20"
-                    : projectName.length >
-                        FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD
+                    : projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD
                       ? "border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20"
                       : ""
               }`}
               maxLength={FORM_LIMITS.PROJECT_NAME.MAX}
               required
               aria-required="true"
-              animate={
-                projectNameTyping.isTyping ? { scale: 1.002 } : { scale: 1 }
-              }
+              animate={projectNameTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
               transition={{ duration: ANIMATION.FAST }}
-              {...(projectName.length >
-                FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
+              {...(projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
               projectName.length < FORM_LIMITS.PROJECT_NAME.MAX
                 ? { "aria-describedby": "projectName-warning" }
                 : {})}
@@ -229,11 +215,7 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
           </div>
           {projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
             projectName.length < FORM_LIMITS.PROJECT_NAME.MAX && (
-              <p
-                id="projectName-warning"
-                role="status"
-                className="text-xs text-accent-pink mt-1"
-              >
+              <p id="projectName-warning" role="status" className="text-xs text-accent-pink mt-1">
                 {VALIDATION_MESSAGES.APPROACHING_CHARACTER_LIMIT}
               </p>
             )}
@@ -242,10 +224,7 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
         {/* Description */}
         <div>
           <div className="flex justify-between items-center">
-            <label
-              htmlFor="description"
-              className="label flex items-center gap-2"
-            >
+            <label htmlFor="description" className="label flex items-center gap-2">
               {UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_LABEL}{" "}
               <span className="text-accent-pink" aria-hidden="true">
                 *
@@ -287,24 +266,17 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
               required
               aria-required="true"
               aria-invalid={isDescriptionInvalid}
-              animate={
-                descriptionTyping.isTyping ? { scale: 1.002 } : { scale: 1 }
-              }
+              animate={descriptionTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
               transition={{ duration: ANIMATION.FAST }}
               {...(isDescriptionInvalid
                 ? { "aria-describedby": "description-error" }
-                : description.length > 0 &&
-                    description.length < FORM_LIMITS.DESCRIPTION.MIN
+                : description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN
                   ? { "aria-describedby": "description-hint" }
                   : {})}
             />
             {description.length >= FORM_LIMITS.DESCRIPTION.MIN && (
               <div className="absolute right-3 top-3 pointer-events-none">
-                <ValidationCheckmark
-                  isValid={true}
-                  size="input"
-                  ariaLabel="Description is valid"
-                />
+                <ValidationCheckmark isValid={true} size="input" ariaLabel="Description is valid" />
               </div>
             )}
           </div>
@@ -313,29 +285,20 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
             description.length < FORM_LIMITS.DESCRIPTION.MIN && (
               <p id="description-hint" className="text-xs text-yellow-500 mt-1">
                 {VALIDATION_MESSAGES.CHARACTERS_NEEDED(
-                  FORM_LIMITS.DESCRIPTION.MIN - description.length,
+                  FORM_LIMITS.DESCRIPTION.MIN - description.length
                 )}
               </p>
             )}
           {isDescriptionInvalid && (
-            <p
-              id="description-error"
-              role="alert"
-              className="text-xs text-accent-pink mt-1"
-            >
-              {VALIDATION_MESSAGES.DESCRIPTION_MIN_LENGTH(
-                FORM_LIMITS.DESCRIPTION.MIN,
-              )}
+            <p id="description-error" role="alert" className="text-xs text-accent-pink mt-1">
+              {VALIDATION_MESSAGES.DESCRIPTION_MIN_LENGTH(FORM_LIMITS.DESCRIPTION.MIN)}
             </p>
           )}
         </div>
 
         {/* Target Audience (Optional) */}
         <div>
-          <label
-            htmlFor="targetAudience"
-            className="label flex items-center gap-2"
-          >
+          <label htmlFor="targetAudience" className="label flex items-center gap-2">
             {UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL}{" "}
             <span className="text-dark-500">(optional)</span>
             <TypeIndicator isTyping={targetAudienceTyping.isTyping} />
@@ -351,13 +314,9 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
                 setTargetAudience(e.target.value);
               }}
               onBlur={targetAudienceTyping.handleBlur}
-              placeholder={
-                UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_PLACEHOLDER
-              }
+              placeholder={UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_PLACEHOLDER}
               className="input-field pr-10"
-              animate={
-                targetAudienceTyping.isTyping ? { scale: 1.002 } : { scale: 1 }
-              }
+              animate={targetAudienceTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
               transition={{ duration: ANIMATION.FAST }}
             />
             <AnimatePresence>
@@ -373,12 +332,7 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
                   aria-label="Clear target audience"
                   title="Clear target audience"
                 >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -395,10 +349,7 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
         {/* Constraints (Optional) */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label
-              htmlFor="constraints"
-              className="label mb-0 flex items-center gap-2"
-            >
+            <label htmlFor="constraints" className="label mb-0 flex items-center gap-2">
               {UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_LABEL}{" "}
               <span className="text-dark-500">(optional)</span>
               <TypeIndicator isTyping={constraintsTyping.isTyping} />
@@ -416,12 +367,7 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
                   aria-label="Clear constraints"
                   title="Clear constraints"
                 >
-                  <svg
-                    className="w-3 h-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -445,9 +391,7 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
             onBlur={constraintsTyping.handleBlur}
             placeholder={UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_PLACEHOLDER}
             className="textarea-field h-24"
-            animate={
-              constraintsTyping.isTyping ? { scale: 1.002 } : { scale: 1 }
-            }
+            animate={constraintsTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
             transition={{ duration: 0.15 }}
           />
         </div>
@@ -469,12 +413,7 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
               viewBox="0 0 24 24"
               aria-hidden="true"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </RippleButton>
         </div>

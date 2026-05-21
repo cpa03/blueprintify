@@ -85,7 +85,7 @@ export function createAIClient(config: AIConfig): OpenAI {
  * @throws {Error} When AI service encounters an error
  */
 export async function* streamCompletion(
-  options: StreamOptions,
+  options: StreamOptions
 ): AsyncGenerator<string, void, unknown> {
   const cb = getCircuitBreaker();
 
@@ -108,8 +108,8 @@ export async function* streamCompletion(
           stream: true,
           temperature: AI_CONFIG.DEFAULT_TEMPERATURE,
           max_tokens: AI_CONFIG.DEFAULT_MAX_TOKENS,
-        }),
-      ),
+        })
+      )
     );
 
     for await (const chunk of stream) {
@@ -123,7 +123,7 @@ export async function* streamCompletion(
       throw error;
     }
     throw new Error(
-      `AI service error: ${error instanceof Error ? error.message : "Unknown error"}`,
+      `AI service error: ${error instanceof Error ? error.message : "Unknown error"}`
     );
   }
 }
@@ -135,9 +135,7 @@ export async function* streamCompletion(
  * @throws {CircuitBreakerOpenError} When circuit breaker is open
  * @throws {Error} When AI service encounters an error
  */
-export async function generateCompletion(
-  options: StreamOptions,
-): Promise<string> {
+export async function generateCompletion(options: StreamOptions): Promise<string> {
   const cb = getCircuitBreaker();
 
   if (cb.getState().state === "OPEN") {
@@ -158,8 +156,8 @@ export async function generateCompletion(
           ],
           temperature: AI_CONFIG.DEFAULT_TEMPERATURE,
           max_tokens: AI_CONFIG.DEFAULT_MAX_TOKENS,
-        }),
-      ),
+        })
+      )
     );
 
     return response.choices[0]?.message?.content || "";
@@ -168,7 +166,7 @@ export async function generateCompletion(
       throw error;
     }
     throw new Error(
-      `AI service error: ${error instanceof Error ? error.message : "Unknown error"}`,
+      `AI service error: ${error instanceof Error ? error.message : "Unknown error"}`
     );
   }
 }

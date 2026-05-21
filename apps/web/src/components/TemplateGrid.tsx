@@ -47,7 +47,7 @@ function TemplateGridComponent(): JSX.Element {
         setIsLoading(false);
       }, ANIMATION.FAST);
     },
-    [selectedId, loadTemplate, toast],
+    [selectedId, loadTemplate, toast]
   );
 
   const handleKeyDown = useCallback(
@@ -59,17 +59,13 @@ function TemplateGridComponent(): JSX.Element {
         }
       }
     },
-    [selectedId, handleTemplateClick],
+    [selectedId, handleTemplateClick]
   );
 
   return (
     <section className="mb-12">
-      <h2 className="text-xl font-semibold text-white mb-2">
-        Quick Start Templates
-      </h2>
-      <p className="text-dark-400 mb-6">
-        Choose a template to pre-fill your project configuration
-      </p>
+      <h2 className="text-xl font-semibold text-white mb-2">Quick Start Templates</h2>
+      <p className="text-dark-400 mb-6">Choose a template to pre-fill your project configuration</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {STARTER_TEMPLATES.map((template, index) => {
@@ -100,9 +96,7 @@ function TemplateGridComponent(): JSX.Element {
                 ${selectedId !== null && !isSelected ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950
               `}
-              whileHover={
-                selectedId === null ? { scale: 1.02, y: -2 } : undefined
-              }
+              whileHover={selectedId === null ? { scale: 1.02, y: -2 } : undefined}
               whileTap={selectedId === null ? { scale: 0.98 } : undefined}
             >
               <AnimatePresence>
@@ -159,8 +153,7 @@ function TemplateGridComponent(): JSX.Element {
                     exit={{ opacity: 0 }}
                     className="absolute inset-0 rounded-lg border-2 border-accent-emerald/50"
                     style={{
-                      animation:
-                        "pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                      animation: "pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
                     }}
                   />
                 )}
@@ -183,9 +176,7 @@ function TemplateGridComponent(): JSX.Element {
                   >
                     {template.name}
                   </h3>
-                  <p className="text-sm text-dark-400 mt-1 line-clamp-2">
-                    {template.description}
-                  </p>
+                  <p className="text-sm text-dark-400 mt-1 line-clamp-2">{template.description}</p>
                   <div className="flex flex-wrap gap-1.5 mt-3">
                     {template.techStack.slice(0, 3).map((tech) => (
                       <motion.span

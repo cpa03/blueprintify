@@ -13,13 +13,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "html", "lcov"],
-      exclude: [
-        "node_modules/",
-        "src/test/",
-        "e2e/",
-        "**/*.d.ts",
-        "**/*.config.*",
-      ],
+      exclude: ["node_modules/", "src/test/", "e2e/", "**/*.d.ts", "**/*.config.*"],
     },
   },
   resolve: {

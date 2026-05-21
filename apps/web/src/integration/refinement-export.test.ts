@@ -41,7 +41,7 @@ describe("Integration: Refinement Workflow", () => {
         createMockResponse({
           success: true,
           refinedContent: sectionContent + " Enhanced.",
-        }),
+        })
       );
 
       const response = await fetch("/api/refine", {
@@ -67,7 +67,7 @@ describe("Integration: Refinement Workflow", () => {
           createMockResponse({
             success: true,
             refinedContent: `Content ${iteration.addition}`,
-          }),
+          })
         );
 
         const response = await fetch("/api/refine", {
@@ -94,8 +94,8 @@ describe("Integration: Refinement Workflow", () => {
             success: false,
             error: "OpenAI API error",
           },
-          500,
-        ),
+          500
+        )
       );
 
       const response = await fetch("/api/refine", {
@@ -121,7 +121,7 @@ describe("Integration: Refinement Workflow", () => {
             content: "Test content",
             instruction: "Improve this",
           }),
-        }),
+        })
       ).rejects.toThrow("Request timeout");
     });
   });
@@ -179,7 +179,7 @@ describe("Integration: Export/Import Workflow", () => {
             { name: "blueprint.md", content: testData.blueprint },
             { name: "tasks.md", content: testData.tasks },
           ],
-        }),
+        })
       );
 
       const response = await fetch("/api/export", {
@@ -205,7 +205,7 @@ describe("Integration: Export/Import Workflow", () => {
           success: true,
           format: "json",
           data: testData,
-        }),
+        })
       );
 
       const response = await fetch("/api/export", {
@@ -229,7 +229,7 @@ describe("Integration: Export/Import Workflow", () => {
         new Response(mockBlob, {
           status: 200,
           headers: { "Content-Type": "application/zip" },
-        }),
+        })
       );
 
       const response = await fetch("/api/export", {
@@ -253,7 +253,7 @@ describe("Integration: Export/Import Workflow", () => {
           success: true,
           format: "json",
           data: largeData,
-        }),
+        })
       );
 
       const response = await fetch("/api/export", {
@@ -281,7 +281,7 @@ describe("Integration: Export/Import Workflow", () => {
             isValid: true,
             errors: [],
           },
-        }),
+        })
       );
 
       const response = await fetch("/api/import", {
@@ -309,8 +309,8 @@ describe("Integration: Export/Import Workflow", () => {
               errors: ["Missing required field: projectName"],
             },
           },
-          400,
-        ),
+          400
+        )
       );
 
       const response = await fetch("/api/import", {
@@ -337,14 +337,14 @@ describe("Integration: Export/Import Workflow", () => {
             success: true,
             format: "json",
             data: testData,
-          }),
+          })
         )
         .mockResolvedValueOnce(
           createMockResponse({
             success: true,
             data: testData,
             validation: { isValid: true },
-          }),
+          })
         );
 
       const exportRes = await fetch("/api/export", {

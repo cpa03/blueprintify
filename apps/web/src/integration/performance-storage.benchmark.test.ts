@@ -4,7 +4,7 @@ import { createTestBlueprint, createLargeBlueprint } from "./factories";
 
 async function measureAsync<T>(
   operation: string,
-  fn: () => Promise<T>,
+  fn: () => Promise<T>
 ): Promise<{ result: T; duration: number }> {
   const start = performance.now();
   const result = await fn();
@@ -20,9 +20,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
     vi.clearAllMocks();
     manager = new StorageManager();
 
-    Object.keys(localStorageStore).forEach(
-      (key) => delete localStorageStore[key],
-    );
+    Object.keys(localStorageStore).forEach((key) => delete localStorageStore[key]);
 
     const mockLocalStorage = {
       getItem: vi.fn((key: string) => localStorageStore[key] || null),
@@ -33,9 +31,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
         delete localStorageStore[key];
       }),
       clear: vi.fn(() => {
-        Object.keys(localStorageStore).forEach(
-          (key) => delete localStorageStore[key],
-        );
+        Object.keys(localStorageStore).forEach((key) => delete localStorageStore[key]);
       }),
     };
 
@@ -47,9 +43,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
-    Object.keys(localStorageStore).forEach(
-      (key) => delete localStorageStore[key],
-    );
+    Object.keys(localStorageStore).forEach((key) => delete localStorageStore[key]);
   });
 
   describe("Read Operations", () => {
@@ -103,9 +97,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
         currentVersion: 1,
       });
 
-      const { duration } = await measureAsync("write", () =>
-        storage.set({ value: "test" }),
-      );
+      const { duration } = await measureAsync("write", () => storage.set({ value: "test" }));
 
       expect(duration).toBeLessThan(10);
     });
@@ -117,9 +109,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
       });
 
       const testData = createTestBlueprint();
-      const { duration } = await measureAsync("write", () =>
-        storage.set(testData),
-      );
+      const { duration } = await measureAsync("write", () => storage.set(testData));
 
       expect(duration).toBeLessThan(30);
     });
@@ -131,9 +121,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
       });
 
       const largeData = createLargeBlueprint(100);
-      const { duration } = await measureAsync("write", () =>
-        storage.set(largeData),
-      );
+      const { duration } = await measureAsync("write", () => storage.set(largeData));
 
       expect(duration).toBeLessThan(100);
     });
@@ -150,7 +138,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
       await storage.set(initialData);
 
       const { duration } = await measureAsync("update", () =>
-        storage.set({ ...initialData, projectName: "Updated" }),
+        storage.set({ ...initialData, projectName: "Updated" })
       );
 
       expect(duration).toBeLessThan(20);
@@ -186,7 +174,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
       await storage.set(createTestBlueprint());
 
       const { duration } = await measureAsync("quota", () =>
-        Promise.resolve(storage.checkHealth()),
+        Promise.resolve(storage.checkHealth())
       );
 
       expect(duration).toBeLessThan(5);
@@ -201,7 +189,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
       await storage.set(createLargeBlueprint(500));
 
       const { duration } = await measureAsync("quota", () =>
-        Promise.resolve(storage.checkHealth()),
+        Promise.resolve(storage.checkHealth())
       );
 
       expect(duration).toBeLessThan(10);
@@ -285,9 +273,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
       });
 
       const testData = createTestBlueprint();
-      const { duration } = await measureAsync("backup", () =>
-        storage.set(testData),
-      );
+      const { duration } = await measureAsync("backup", () => storage.set(testData));
 
       expect(duration).toBeLessThan(30);
     });
@@ -305,9 +291,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
 
       localStorageStore[key] = "{corrupted";
 
-      const { duration } = await measureAsync("recovery", () =>
-        storage.get().catch(() => null),
-      );
+      const { duration } = await measureAsync("recovery", () => storage.get().catch(() => null));
 
       expect(duration).toBeLessThan(40);
     });

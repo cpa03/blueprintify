@@ -149,8 +149,7 @@ describe("prompts service", () => {
 
   describe("buildTaskPrompt", () => {
     it("should generate task prompt with blueprint and project name", () => {
-      const blueprint =
-        "# My Blueprint\n\n## Overview\nThis is a test blueprint.";
+      const blueprint = "# My Blueprint\n\n## Overview\nThis is a test blueprint.";
       const projectName = "My Project";
 
       const prompt = buildTaskPrompt(blueprint, projectName);

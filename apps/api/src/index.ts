@@ -55,7 +55,7 @@ app.use(
     allowHeaders: [...CORS_CONFIG.ALLOW_HEADERS, "x-api-key", "x-request-id"],
     credentials: true,
     maxAge: CORS_CONFIG.MAX_AGE,
-  }),
+  })
 );
 app.use("*", prettyJSON());
 app.use("*", bodyLimit(bodyLimitConfigs.standard));
@@ -66,14 +66,11 @@ app.use("*", rateLimit(rateLimitConfigs.standard));
 app.get("/", (c) => {
   c.header(
     "Cache-Control",
-    `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE}`,
+    `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE}`
   );
   c.header("Server-Timing", 'app;desc="API Response";dur=0');
   c.header("CDN-Cache-Control", `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}`);
-  c.header(
-    "Cloudflare-CDN-Cache-Control",
-    `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}`,
-  );
+  c.header("Cloudflare-CDN-Cache-Control", `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}`);
   return c.json({
     name: API_METADATA.NAME,
     version: API_METADATA.VERSION,
@@ -109,14 +106,8 @@ app.onError(errorHandler);
 app.notFound(notFoundHandler);
 
 export default {
-  async fetch(
-    request: Request,
-    env: Env,
-    ctx: ExecutionContext,
-  ): Promise<Response> {
-    const config = loadConfig(
-      env as unknown as Record<string, string | undefined>,
-    );
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    const config = loadConfig(env as unknown as Record<string, string | undefined>);
     setEnvConfig(config);
 
     if (env.ANALYTICS) {
@@ -124,8 +115,8 @@ export default {
         Promise.resolve(
           env.ANALYTICS.writeDataPoint({
             blobs: [request.url, request.method, new Date().toISOString()],
-          }),
-        ),
+          })
+        )
       );
     }
 

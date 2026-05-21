@@ -24,7 +24,7 @@ app.post(
   validateJson(BlueprintRequestSchema),
   async (c) => {
     return generateController.generateBlueprint(c);
-  },
+  }
 );
 
 export default app;

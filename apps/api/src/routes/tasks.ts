@@ -24,7 +24,7 @@ app.post(
   validateJson(TaskGenerationRequestSchema),
   async (c) => {
     return tasksController.generateTasks(c);
-  },
+  }
 );
 
 export default app;

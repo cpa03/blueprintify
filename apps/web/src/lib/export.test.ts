@@ -138,9 +138,7 @@ describe("Export functionality", () => {
         generateAsync: vi.fn().mockResolvedValue(new Blob()),
       };
 
-      (JSZip as unknown as ReturnType<typeof vi.fn>).mockImplementation(
-        () => mockZip,
-      );
+      (JSZip as unknown as ReturnType<typeof vi.fn>).mockImplementation(() => mockZip);
 
       await exportAsZip(mockFiles);
 
@@ -189,9 +187,7 @@ describe("Export functionality", () => {
       const text = "Test text to copy";
       const mockError = new Error("Clipboard API not available");
 
-      (
-        navigator.clipboard.writeText as ReturnType<typeof vi.fn>
-      ).mockRejectedValueOnce(mockError);
+      (navigator.clipboard.writeText as ReturnType<typeof vi.fn>).mockRejectedValueOnce(mockError);
 
       // Mock execCommand
       Object.defineProperty(global, "document", {
@@ -219,9 +215,7 @@ describe("Export functionality", () => {
       const text = "Test text to copy";
       const mockError = new Error("Clipboard API not available");
 
-      (
-        navigator.clipboard.writeText as ReturnType<typeof vi.fn>
-      ).mockRejectedValueOnce(mockError);
+      (navigator.clipboard.writeText as ReturnType<typeof vi.fn>).mockRejectedValueOnce(mockError);
 
       // Mock execCommand failure
       Object.defineProperty(global, "document", {

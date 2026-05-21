@@ -86,9 +86,7 @@ describe("storageAdapter", () => {
       });
 
       it("should log error when storage fails", async () => {
-        const consoleErrorSpy = vi
-          .spyOn(console, "error")
-          .mockImplementation(() => {});
+        const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
         const mockStorageService = {
           get: vi.fn().mockRejectedValue(new Error("Storage error")),
         } as unknown as StorageService<unknown>;
@@ -98,7 +96,7 @@ describe("storageAdapter", () => {
 
         expect(consoleErrorSpy).toHaveBeenCalledWith(
           "Storage getItem failed:",
-          "Error: Storage error",
+          "Error: Storage error"
         );
         consoleErrorSpy.mockRestore();
       });
@@ -126,9 +124,7 @@ describe("storageAdapter", () => {
 
         const adapter = createTypedStorage(mockStorageService);
 
-        await expect(adapter.setItem("test-key", testData)).rejects.toThrow(
-          "Quota exceeded",
-        );
+        await expect(adapter.setItem("test-key", testData)).rejects.toThrow("Quota exceeded");
       });
     });
 
@@ -152,9 +148,7 @@ describe("storageAdapter", () => {
 
         const adapter = createTypedStorage(mockStorageService);
 
-        await expect(adapter.removeItem("test-key")).rejects.toThrow(
-          "Remove failed",
-        );
+        await expect(adapter.removeItem("test-key")).rejects.toThrow("Remove failed");
       });
     });
   });
@@ -281,9 +275,7 @@ describe("storageAdapter", () => {
     });
 
     it("should return error when wizard storage clear fails", async () => {
-      vi.mocked(wizardStorage.remove).mockRejectedValue(
-        new Error("Wizard clear failed"),
-      );
+      vi.mocked(wizardStorage.remove).mockRejectedValue(new Error("Wizard clear failed"));
       vi.mocked(editorStorage.remove).mockResolvedValue(undefined);
       vi.mocked(getStorageErrorMessage).mockReturnValue("Wizard clear failed");
 
@@ -295,9 +287,7 @@ describe("storageAdapter", () => {
 
     it("should return error when editor storage clear fails", async () => {
       vi.mocked(wizardStorage.remove).mockResolvedValue(undefined);
-      vi.mocked(editorStorage.remove).mockRejectedValue(
-        new Error("Editor clear failed"),
-      );
+      vi.mocked(editorStorage.remove).mockRejectedValue(new Error("Editor clear failed"));
       vi.mocked(getStorageErrorMessage).mockReturnValue("Editor clear failed");
 
       const result = await clearAllStorage();

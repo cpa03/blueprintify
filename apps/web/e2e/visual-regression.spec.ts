@@ -13,9 +13,7 @@ test.describe("Visual Regression: M2 UI Workflows", () => {
       });
     });
 
-    test("should match landing page snapshot in dark mode", async ({
-      page,
-    }) => {
+    test("should match landing page snapshot in dark mode", async ({ page }) => {
       await page.emulateMedia({ colorScheme: "dark" });
       await page.reload();
       await page.waitForLoadState("networkidle");
@@ -41,10 +39,7 @@ test.describe("Visual Regression: M2 UI Workflows", () => {
       await page.waitForSelector('[data-testid="wizard-step-1"]');
 
       await page.fill('input[name="projectName"]', "Test Project");
-      await page.fill(
-        'textarea[name="description"]',
-        "A test project for visual regression",
-      );
+      await page.fill('textarea[name="description"]', "A test project for visual regression");
 
       await page.click('button:has-text("Next")');
       await page.waitForSelector('[data-testid="wizard-step-2"]', {
@@ -59,10 +54,7 @@ test.describe("Visual Regression: M2 UI Workflows", () => {
       await page.waitForSelector('[data-testid="wizard-step-1"]');
 
       await page.fill('input[name="projectName"]', "Test Project");
-      await page.fill(
-        'textarea[name="description"]',
-        "A test project for visual regression",
-      );
+      await page.fill('textarea[name="description"]', "A test project for visual regression");
 
       await page.click('button:has-text("Next")');
       await page.waitForSelector('[data-testid="wizard-step-2"]');
@@ -119,19 +111,14 @@ This is a test blueprint.
       await expect(page).toHaveScreenshot("refinement-panel.png");
     });
 
-    test("should match refinement with instruction snapshot", async ({
-      page,
-    }) => {
+    test("should match refinement with instruction snapshot", async ({ page }) => {
       await page.goto("/editor");
       await page.waitForSelector('[data-testid="split-pane-editor"]');
 
       await page.click('[data-testid="refine-button"]');
       await page.waitForSelector('[data-testid="refinement-panel"]');
 
-      await page.fill(
-        '[data-testid="refinement-input"]',
-        "Add more technical details",
-      );
+      await page.fill('[data-testid="refinement-input"]', "Add more technical details");
 
       await expect(page).toHaveScreenshot("refinement-with-input.png");
     });
@@ -150,9 +137,7 @@ This is a test blueprint.
       await expect(page).toHaveScreenshot("export-dialog.png");
     });
 
-    test("should match export with format selected snapshot", async ({
-      page,
-    }) => {
+    test("should match export with format selected snapshot", async ({ page }) => {
       await page.goto("/editor");
       await page.waitForSelector('[data-testid="split-pane-editor"]');
 
@@ -178,9 +163,7 @@ This is a test blueprint.
       await expect(page).toHaveScreenshot("storage-panel.png");
     });
 
-    test("should match storage with saved projects snapshot", async ({
-      page,
-    }) => {
+    test("should match storage with saved projects snapshot", async ({ page }) => {
       await page.goto("/editor");
       await page.waitForSelector('[data-testid="split-pane-editor"]');
 
@@ -198,7 +181,7 @@ This is a test blueprint.
               name: "Project 2",
               lastModified: new Date().toISOString(),
             },
-          ]),
+          ])
         );
       });
 
@@ -218,7 +201,7 @@ This is a test blueprint.
         window.dispatchEvent(
           new CustomEvent("app-error", {
             detail: { message: "Something went wrong" },
-          }),
+          })
         );
       });
 

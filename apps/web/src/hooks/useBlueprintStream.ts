@@ -77,9 +77,7 @@ export function useBlueprintStream(): {
   const reset = useEditorStore((s) => s.reset);
   const setIsGenerating = useEditorStore((s) => s.setIsGenerating);
   const setGenerationProgress = useEditorStore((s) => s.setGenerationProgress);
-  const appendBlueprintContent = useEditorStore(
-    (s) => s.appendBlueprintContent,
-  );
+  const appendBlueprintContent = useEditorStore((s) => s.appendBlueprintContent);
   const appendTasksContent = useEditorStore((s) => s.appendTasksContent);
   const cancelGeneration = useEditorStore((s) => s.cancelGeneration);
   const isGenerating = useEditorStore((s) => s.isGenerating);
@@ -132,11 +130,9 @@ export function useBlueprintStream(): {
               setIsGenerating(false);
             },
             onRetry: (attempt, maxRetries) => {
-              setGenerationProgress(
-                GENERATION_MESSAGES.RETRY(attempt, maxRetries),
-              );
+              setGenerationProgress(GENERATION_MESSAGES.RETRY(attempt, maxRetries));
             },
-          },
+          }
         );
       },
       onRetry: (attempt, maxRetries) => {

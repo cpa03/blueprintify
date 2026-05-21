@@ -77,9 +77,9 @@ describe("MockDatabaseService", () => {
     });
 
     it("should throw error when updating non-existent user", async () => {
-      await expect(
-        db.updateUser("non-existent-id", { name: "New Name" }),
-      ).rejects.toThrow("User not found");
+      await expect(db.updateUser("non-existent-id", { name: "New Name" })).rejects.toThrow(
+        "User not found"
+      );
     });
 
     it("should delete a user", async () => {
@@ -153,17 +153,11 @@ describe("MockDatabaseService", () => {
         status: "active",
       });
 
-      const activeProjects = await db.getProjectsByUserIdAndStatus(
-        userId,
-        "active",
-      );
+      const activeProjects = await db.getProjectsByUserIdAndStatus(userId, "active");
       expect(activeProjects).toHaveLength(2);
       expect(activeProjects.every((p) => p.status === "active")).toBe(true);
 
-      const archivedProjects = await db.getProjectsByUserIdAndStatus(
-        userId,
-        "archived",
-      );
+      const archivedProjects = await db.getProjectsByUserIdAndStatus(userId, "archived");
       expect(archivedProjects).toHaveLength(1);
       expect(archivedProjects[0]!.name).toBe("Archived Project");
     });
@@ -175,10 +169,7 @@ describe("MockDatabaseService", () => {
         status: "active",
       });
 
-      const deletedProjects = await db.getProjectsByUserIdAndStatus(
-        userId,
-        "deleted",
-      );
+      const deletedProjects = await db.getProjectsByUserIdAndStatus(userId, "deleted");
       expect(deletedProjects).toHaveLength(0);
     });
 
@@ -665,11 +656,7 @@ describe("MockDatabaseService", () => {
 
       const activeSessions = await db.getActiveSessionsForUser(userId);
       expect(activeSessions).toHaveLength(2);
-      expect(
-        activeSessions.every(
-          (s) => new Date(s.expires_at) > new Date(Date.now()),
-        ),
-      ).toBe(true);
+      expect(activeSessions.every((s) => new Date(s.expires_at) > new Date(Date.now()))).toBe(true);
     });
 
     it("should return empty array when no active sessions", async () => {
@@ -725,12 +712,10 @@ describe("MockDatabaseService", () => {
 
       const events = await db.getAnalyticsByDateRange(
         oneHourAgo.toISOString(),
-        future.toISOString(),
+        future.toISOString()
       );
       expect(events.length).toBeGreaterThanOrEqual(1);
-      expect(events.every((e) => e.event_type === "blueprint_generated")).toBe(
-        true,
-      );
+      expect(events.every((e) => e.event_type === "blueprint_generated")).toBe(true);
     });
 
     it("should get analytics by event type and date range", async () => {
@@ -750,12 +735,10 @@ describe("MockDatabaseService", () => {
       const events = await db.getAnalyticsByEventTypeAndDateRange(
         "blueprint_generated",
         oneHourAgo.toISOString(),
-        future.toISOString(),
+        future.toISOString()
       );
       expect(events.length).toBeGreaterThanOrEqual(1);
-      expect(events.every((e) => e.event_type === "blueprint_generated")).toBe(
-        true,
-      );
+      expect(events.every((e) => e.event_type === "blueprint_generated")).toBe(true);
     });
   });
 
@@ -917,16 +900,10 @@ describe("MockDatabaseService", () => {
           status: "archived",
         });
 
-        const activeCount = await db.countProjectsByUserIdAndStatus(
-          userId,
-          "active",
-        );
+        const activeCount = await db.countProjectsByUserIdAndStatus(userId, "active");
         expect(activeCount).toBe(2);
 
-        const archivedCount = await db.countProjectsByUserIdAndStatus(
-          userId,
-          "archived",
-        );
+        const archivedCount = await db.countProjectsByUserIdAndStatus(userId, "archived");
         expect(archivedCount).toBe(1);
       });
     });
@@ -1090,7 +1067,7 @@ describe("MockDatabaseService", () => {
 
         const count = await db.countAnalyticsByDateRange(
           oneHourAgo.toISOString(),
-          future.toISOString(),
+          future.toISOString()
         );
         expect(count).toBeGreaterThanOrEqual(2);
       });
@@ -1101,7 +1078,7 @@ describe("MockDatabaseService", () => {
 
         const count = await db.countAnalyticsByDateRange(
           olderDate.toISOString(),
-          pastDate.toISOString(),
+          pastDate.toISOString()
         );
         expect(count).toBe(0);
       });
@@ -1120,7 +1097,7 @@ describe("MockDatabaseService", () => {
         const count = await db.countAnalyticsByEventTypeAndDateRange(
           "blueprint_generated",
           oneHourAgo.toISOString(),
-          future.toISOString(),
+          future.toISOString()
         );
         expect(count).toBe(2);
       });
@@ -1188,7 +1165,7 @@ describe("Utility Functions", () => {
   describe("deserializeJSON", () => {
     it("should deserialize JSON string to object", () => {
       const result = deserializeJSON<{ name: string; value: number }>(
-        '{"name":"test","value":123}',
+        '{"name":"test","value":123}'
       );
       expect(result).toEqual({ name: "test", value: 123 });
     });

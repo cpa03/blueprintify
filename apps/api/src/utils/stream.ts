@@ -47,9 +47,7 @@ export function formatSSE(message: SSEMessage): string {
  * @param stream - ReadableStream containing SSE formatted data
  * @returns Response object configured for SSE streaming
  */
-export function createSSEResponse(
-  stream: ReadableStream<Uint8Array>,
-): Response {
+export function createSSEResponse(stream: ReadableStream<Uint8Array>): Response {
   return new Response(stream, {
     headers: {
       "Content-Type": SSE_HEADERS.CONTENT_TYPE,
@@ -71,7 +69,7 @@ export function createSSEResponse(
  */
 export function createStreamFromGenerator(
   generator: AsyncGenerator<string, void, unknown>,
-  onComplete?: () => void,
+  onComplete?: () => void
 ): ReadableStream<Uint8Array> {
   const encoder = new TextEncoder();
 
@@ -95,8 +93,7 @@ export function createStreamFromGenerator(
 
         onComplete?.();
       } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : "Unknown error";
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
         const errSSE = formatSSE({
           data: JSON.stringify({
             type: SSE_CONFIG.EVENT_TYPES.ERROR,

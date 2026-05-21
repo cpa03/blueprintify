@@ -310,8 +310,7 @@ export const tailwindTheme = {
   },
   backgroundImage: {
     "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-    "gradient-conic":
-      "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+    "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
     "mesh-gradient": `linear-gradient(135deg, ${COLORS.gradients.primary.start} 0%, ${COLORS.gradients.primary.middle} 50%, ${COLORS.gradients.primary.end} 100%)`,
   },
   backdropBlur: {

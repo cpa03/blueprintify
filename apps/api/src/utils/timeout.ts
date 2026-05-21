@@ -62,7 +62,7 @@ export class TimeoutError extends Error {
  */
 export async function withTimeout<T>(
   operation: (signal?: AbortSignal) => Promise<T>,
-  options: TimeoutOptions,
+  options: TimeoutOptions
 ): Promise<T> {
   const { timeoutMs, errorMessage } = options;
   const controller = new AbortController();
@@ -112,7 +112,7 @@ export async function withTimeout<T>(
  * ```
  */
 export function createTimeoutWrapper<T = unknown>(
-  defaultOptions: Omit<TimeoutOptions, "timeoutMs"> & { timeoutMs: number },
+  defaultOptions: Omit<TimeoutOptions, "timeoutMs"> & { timeoutMs: number }
 ): (operation: (signal?: AbortSignal) => Promise<T>) => Promise<T> {
   return (operation) => withTimeout(operation, defaultOptions);
 }
@@ -134,7 +134,7 @@ export interface TimeoutRetryOptions extends TimeoutOptions {
 
 export async function withTimeoutAndRetry<T>(
   operation: (signal?: AbortSignal) => Promise<T>,
-  options: TimeoutRetryOptions,
+  options: TimeoutRetryOptions
 ): Promise<T> {
   const {
     timeoutMs,

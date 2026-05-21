@@ -47,7 +47,7 @@ export const errorHandler = (err: unknown, c: Context): Response => {
           ...(requestId && { requestId }),
         },
       },
-      HTTP_STATUS.GATEWAY_TIMEOUT,
+      HTTP_STATUS.GATEWAY_TIMEOUT
     );
   }
 
@@ -63,7 +63,7 @@ export const errorHandler = (err: unknown, c: Context): Response => {
           ...(requestId && { requestId }),
         },
       },
-      HTTP_STATUS.SERVICE_UNAVAILABLE,
+      HTTP_STATUS.SERVICE_UNAVAILABLE
     );
   }
 
@@ -97,15 +97,16 @@ export const errorHandler = (err: unknown, c: Context): Response => {
   }
 
   const errorResponse: ErrorResponse = createErrorResponse(err);
-  const statusCode = isAPIError(err)
-    ? err.statusCode
-    : HTTP_STATUS.INTERNAL_ERROR;
+  const statusCode = isAPIError(err) ? err.statusCode : HTTP_STATUS.INTERNAL_ERROR;
 
   if (requestId && !errorResponse.error.requestId) {
     errorResponse.error.requestId = requestId;
   }
 
-  return c.json(errorResponse, statusCode as 400 | 401 | 403 | 404 | 413 | 429 | 500 | 502 | 503 | 504);
+  return c.json(
+    errorResponse,
+    statusCode as 400 | 401 | 403 | 404 | 413 | 429 | 500 | 502 | 503 | 504
+  );
 };
 
 /**
@@ -131,7 +132,6 @@ export const notFoundHandler = (c: Context): Response => {
         ...(requestId && { requestId }),
       },
     },
-    HTTP_STATUS.NOT_FOUND,
+    HTTP_STATUS.NOT_FOUND
   );
 };
-

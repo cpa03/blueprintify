@@ -125,9 +125,7 @@ const extractCloudflareMetadata = (c: Context): CloudflareRequestMetadata => {
  * @param metadata - Cloudflare metadata object to check
  * @returns True if any metadata field has a value
  */
-const hasCloudflareMetadata = (
-  metadata: CloudflareRequestMetadata,
-): boolean => {
+const hasCloudflareMetadata = (metadata: CloudflareRequestMetadata): boolean => {
   return Object.values(metadata).some((v) => v !== undefined);
 };
 
@@ -212,7 +210,7 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
       JSON.stringify({
         type: "request",
         ...requestLog,
-      }),
+      })
     );
 
     await next();
@@ -251,7 +249,7 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
       JSON.stringify({
         type: "response",
         ...responseLog,
-      }),
+      })
     );
   };
 };

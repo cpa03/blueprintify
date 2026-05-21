@@ -1,14 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { SSE_HEADERS } from "@blueprint/shared";
-import {
-  createTestBlueprint,
-  createLargeBlueprint,
-  createMockResponse,
-} from "./factories";
+import { createTestBlueprint, createLargeBlueprint, createMockResponse } from "./factories";
 
-async function measureAsync<T>(
-  fn: () => Promise<T>,
-): Promise<{ result: T; duration: number }> {
+async function measureAsync<T>(fn: () => Promise<T>): Promise<{ result: T; duration: number }> {
   const start = performance.now();
   const result = await fn();
   const duration = performance.now() - start;
@@ -35,7 +29,7 @@ describe("Performance Benchmarks: API Integration", () => {
         createMockResponse({
           success: true,
           blueprint: testData.blueprint,
-        }),
+        })
       );
 
       const { duration } = await measureAsync(() =>
@@ -46,7 +40,7 @@ describe("Performance Benchmarks: API Integration", () => {
             projectName: testData.projectName,
             description: testData.description,
           }),
-        }),
+        })
       );
 
       expect(duration).toBeLessThan(500);
@@ -56,9 +50,7 @@ describe("Performance Benchmarks: API Integration", () => {
       const stream = new ReadableStream({
         start(controller) {
           controller.enqueue(
-            new TextEncoder().encode(
-              'data: {"type":"chunk","content":"Test"}\n\n',
-            ),
+            new TextEncoder().encode('data: {"type":"chunk","content":"Test"}\n\n')
           );
           controller.close();
         },
@@ -68,14 +60,14 @@ describe("Performance Benchmarks: API Integration", () => {
         new Response(stream, {
           status: 200,
           headers: { "Content-Type": SSE_HEADERS.CONTENT_TYPE },
-        }),
+        })
       );
 
       const { duration } = await measureAsync(() =>
         fetch("/api/generate", {
           method: "POST",
           body: JSON.stringify({ projectName: "Test", description: "Test" }),
-        }),
+        })
       );
 
       expect(duration).toBeLessThan(100);
@@ -88,7 +80,7 @@ describe("Performance Benchmarks: API Integration", () => {
         createMockResponse({
           success: true,
           blueprint: largeData.blueprint,
-        }),
+        })
       );
 
       const { duration } = await measureAsync(() =>
@@ -98,7 +90,7 @@ describe("Performance Benchmarks: API Integration", () => {
             projectName: largeData.projectName,
             description: largeData.description,
           }),
-        }),
+        })
       );
 
       expect(duration).toBeLessThan(1000);
@@ -111,7 +103,7 @@ describe("Performance Benchmarks: API Integration", () => {
         createMockResponse({
           success: true,
           refinedContent: "Refined content",
-        }),
+        })
       );
 
       const { duration } = await measureAsync(() =>
@@ -122,7 +114,7 @@ describe("Performance Benchmarks: API Integration", () => {
             content: "Test content",
             instruction: "Improve",
           }),
-        }),
+        })
       );
 
       expect(duration).toBeLessThan(300);
@@ -137,7 +129,7 @@ describe("Performance Benchmarks: API Integration", () => {
         fetch("/api/refine", {
           method: "POST",
           body: JSON.stringify({ content: "Test", instruction: "Improve" }),
-        }),
+        })
       );
 
       await Promise.all(requests);
@@ -158,7 +150,7 @@ describe("Performance Benchmarks: API Integration", () => {
           success: true,
           format: "json",
           data: testData,
-        }),
+        })
       );
 
       const { duration } = await measureAsync(() =>
@@ -170,7 +162,7 @@ describe("Performance Benchmarks: API Integration", () => {
             blueprint: testData.blueprint,
             tasks: testData.tasks,
           }),
-        }),
+        })
       );
 
       expect(duration).toBeLessThan(200);
@@ -184,7 +176,7 @@ describe("Performance Benchmarks: API Integration", () => {
           success: true,
           format: "json",
           data: largeData,
-        }),
+        })
       );
 
       const { duration } = await measureAsync(() =>
@@ -194,7 +186,7 @@ describe("Performance Benchmarks: API Integration", () => {
             format: "json",
             blueprint: largeData.blueprint,
           }),
-        }),
+        })
       );
 
       expect(duration).toBeLessThan(1000);
@@ -208,7 +200,7 @@ describe("Performance Benchmarks: API Integration", () => {
           success: true,
           data: testData,
           validation: { isValid: true },
-        }),
+        })
       );
 
       const { duration } = await measureAsync(() =>
@@ -219,7 +211,7 @@ describe("Performance Benchmarks: API Integration", () => {
             format: "json",
             data: testData,
           }),
-        }),
+        })
       );
 
       expect(duration).toBeLessThan(300);
@@ -231,12 +223,10 @@ describe("Performance Benchmarks: API Integration", () => {
       fetchMock.mockResolvedValueOnce(
         createMockResponse({
           quota: { used: 1024, total: 5242880 },
-        }),
+        })
       );
 
-      const { duration } = await measureAsync(() =>
-        fetch("/api/storage/quota"),
-      );
+      const { duration } = await measureAsync(() => fetch("/api/storage/quota"));
 
       expect(duration).toBeLessThan(100);
     });
@@ -252,7 +242,7 @@ describe("Performance Benchmarks: API Integration", () => {
             key: "test-session",
             data: { step: 1 },
           }),
-        }),
+        })
       );
 
       expect(duration).toBeLessThan(200);
@@ -264,12 +254,8 @@ describe("Performance Benchmarks: API Integration", () => {
       const testData = createTestBlueprint();
 
       fetchMock
-        .mockResolvedValueOnce(
-          createMockResponse({ blueprint: testData.blueprint }),
-        )
-        .mockResolvedValueOnce(
-          createMockResponse({ refinedContent: testData.blueprint }),
-        )
+        .mockResolvedValueOnce(createMockResponse({ blueprint: testData.blueprint }))
+        .mockResolvedValueOnce(createMockResponse({ refinedContent: testData.blueprint }))
         .mockResolvedValueOnce(createMockResponse({ success: true }));
 
       const startTime = performance.now();

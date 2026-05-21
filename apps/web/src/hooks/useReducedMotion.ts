@@ -48,7 +48,7 @@ export function useReducedMotion(): boolean {
   return useSyncExternalStore(
     subscribeToReducedMotion,
     getReducedMotionSnapshot,
-    getReducedMotionServerSnapshot,
+    getReducedMotionServerSnapshot
   );
 }
 
@@ -59,10 +59,7 @@ export function useReducedMotion(): boolean {
  * @param duration - Normal animation duration
  * @returns Animation duration (0 if reduced motion, otherwise original duration)
  */
-export function getAnimationDuration(
-  shouldReduceMotion: boolean,
-  duration: number,
-): number {
+export function getAnimationDuration(shouldReduceMotion: boolean, duration: number): number {
   return shouldReduceMotion ? 0 : duration;
 }
 
@@ -79,7 +76,7 @@ export function getSpringConfig(
     stiffness?: number;
     damping?: number;
     mass?: number;
-  } = {},
+  } = {}
 ): { stiffness: number; damping: number; mass: number } {
   if (shouldReduceMotion) {
     return SPRING_CONFIG.REDUCED_MOTION;
@@ -101,7 +98,7 @@ export function getSpringConfig(
  */
 export function useAccessibleAnimation<T extends Record<string, unknown>>(
   animationProps: T,
-  reducedMotionProps?: Partial<T>,
+  reducedMotionProps?: Partial<T>
 ): T | Partial<T> {
   const shouldReduceMotion = useReducedMotion();
 
@@ -147,13 +144,13 @@ export function useAccessibilityPreferences(): {
   const prefersReducedMotion = useSyncExternalStore(
     subscribeToReducedMotion,
     getReducedMotionSnapshot,
-    getReducedMotionServerSnapshot,
+    getReducedMotionServerSnapshot
   );
 
   const prefersHighContrast = useSyncExternalStore(
     subscribeToHighContrast,
     getHighContrastSnapshot,
-    getHighContrastServerSnapshot,
+    getHighContrastServerSnapshot
   );
 
   return useMemo(
@@ -161,7 +158,7 @@ export function useAccessibilityPreferences(): {
       prefersReducedMotion,
       prefersHighContrast,
     }),
-    [prefersReducedMotion, prefersHighContrast],
+    [prefersReducedMotion, prefersHighContrast]
   );
 }
 

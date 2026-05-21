@@ -141,7 +141,10 @@ import { writeFileSync } from "fs";
 
 function generateChangelog(fromTag: string, toTag: string): string {
   const commitRange = `${fromTag}..${toTag}`;
-  const commits = execSync(`git log ${commitRange} --pretty=format:"%s|%h|%an|%ad" --date=short`).toString().split("\n").filter(Boolean);
+  const commits = execSync(`git log ${commitRange} --pretty=format:"%s|%h|%an|%ad" --date=short`)
+    .toString()
+    .split("\n")
+    .filter(Boolean);
 
   const changes = commits.map((line) => {
     const [message, hash, author, date] = line.split("|");

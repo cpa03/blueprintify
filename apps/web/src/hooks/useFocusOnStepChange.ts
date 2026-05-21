@@ -42,10 +42,7 @@ interface UseFocusOnStepChangeOptions {
  * }
  * ```
  */
-export function useFocusOnStepChange(
-  stepId: string,
-  options: UseFocusOnStepChangeOptions = {},
-) {
+export function useFocusOnStepChange(stepId: string, options: UseFocusOnStepChangeOptions = {}) {
   const { delay = TIMEOUTS.FOCUS_DELAY, skipInitialMount = true } = options;
   const containerRef = useRef<HTMLDivElement>(null);
   const previousStepRef = useRef<string | null>(null);
@@ -54,9 +51,7 @@ export function useFocusOnStepChange(
   const focusFirstElement = useCallback(() => {
     if (!containerRef.current) return;
 
-    const focusableElements = containerRef.current.querySelectorAll(
-      FOCUSABLE_SELECTOR_STRING,
-    );
+    const focusableElements = containerRef.current.querySelectorAll(FOCUSABLE_SELECTOR_STRING);
 
     if (focusableElements.length === 0) return;
 
@@ -68,8 +63,7 @@ export function useFocusOnStepChange(
 
       const inputElement = firstElement as HTMLInputElement;
       if (
-        (firstElement.tagName === "INPUT" ||
-          firstElement.tagName === "TEXTAREA") &&
+        (firstElement.tagName === "INPUT" || firstElement.tagName === "TEXTAREA") &&
         inputElement.value.length > 0
       ) {
         inputElement.select();

@@ -240,17 +240,13 @@ export const GENERATION_ESTIMATES = {
  */
 export const API_ERROR_MESSAGES = {
   /** Blueprint generation failed - typically AI service or validation issue */
-  GENERATION_FAILED:
-    "Generation failed. Please check your input and try again.",
+  GENERATION_FAILED: "Generation failed. Please check your input and try again.",
   /** Task generation failed - usually missing blueprint content or AI error */
-  TASK_GENERATION_FAILED:
-    "Task generation failed. Ensure blueprint content is valid.",
+  TASK_GENERATION_FAILED: "Task generation failed. Ensure blueprint content is valid.",
   /** Content refinement failed - AI service or validation issue */
-  REFINEMENT_FAILED:
-    "Refinement failed. Please check your refinement instructions.",
+  REFINEMENT_FAILED: "Refinement failed. Please check your refinement instructions.",
   /** Server returned empty response - indicates server or network issue */
-  NO_RESPONSE_BODY:
-    "Server returned empty response. Check if API server is running.",
+  NO_RESPONSE_BODY: "Server returned empty response. Check if API server is running.",
   /** SSE stream interrupted - network or server timeout issue */
   STREAM_ERROR: "Connection interrupted. Check your network and try again.",
 } as const;
@@ -301,8 +297,7 @@ export const TOAST_CONFIG = {
     INFO: "ℹ",
   } as const,
   STYLES: {
-    SUCCESS:
-      "bg-accent-emerald/10 border-accent-emerald/30 text-accent-emerald",
+    SUCCESS: "bg-accent-emerald/10 border-accent-emerald/30 text-accent-emerald",
     ERROR: "bg-accent-pink/10 border-accent-pink/30 text-accent-pink",
     WARNING: "bg-yellow-500/10 border-yellow-500/30 text-yellow-400",
     INFO: "bg-primary-500/10 border-primary-500/30 text-primary-300",
@@ -381,16 +376,14 @@ export const UI_CONTENT = {
   WIZARD: {
     STEP_INFO: {
       TITLE: "Tell us about your project",
-      SUBTITLE:
-        "We'll use this information to generate a tailored architecture blueprint.",
+      SUBTITLE: "We'll use this information to generate a tailored architecture blueprint.",
       PROJECT_NAME_LABEL: "Project Name",
       PROJECT_NAME_PLACEHOLDER: "my-awesome-project",
       DESCRIPTION_LABEL: "Project Description",
       DESCRIPTION_PLACEHOLDER:
         "Describe what your project does, its main purpose, and key functionality...",
       TARGET_AUDIENCE_LABEL: "Target Audience",
-      TARGET_AUDIENCE_PLACEHOLDER:
-        "e.g., Developers, Small businesses, Enterprise teams",
+      TARGET_AUDIENCE_PLACEHOLDER: "e.g., Developers, Small businesses, Enterprise teams",
       CONSTRAINTS_LABEL: "Constraints or Requirements",
       CONSTRAINTS_PLACEHOLDER:
         "e.g., Must be serverless, needs to support 10k concurrent users, budget limitations...",
@@ -407,8 +400,7 @@ export const UI_CONTENT = {
     },
     STEP_FEATURES: {
       TITLE: "Add key features",
-      SUBTITLE:
-        "List the main features your project should have. This helps prioritize tasks.",
+      SUBTITLE: "List the main features your project should have. This helps prioritize tasks.",
       ADD_FEATURE_LABEL: "Add a feature",
       ADD_FEATURE_PLACEHOLDER: "e.g., Real-time notifications",
       FEATURES_COUNT: (count: number) => `${count} features`,
@@ -428,8 +420,7 @@ export const UI_CONTENT = {
 
 // Validation messages
 export const VALIDATION_MESSAGES = {
-  DESCRIPTION_MIN_LENGTH: (min: number) =>
-    `Description must be at least ${min} characters`,
+  DESCRIPTION_MIN_LENGTH: (min: number) => `Description must be at least ${min} characters`,
   APPROACHING_CHARACTER_LIMIT: "Approaching character limit",
   CHARACTERS_NEEDED: (count: number) => `${count} more characters needed`,
 } as const;
@@ -453,8 +444,7 @@ export const CSS_CLASSES = {
   BTN_PRIMARY: "btn-primary",
   BTN_GHOST: "btn-ghost",
   TEXT_GRADIENT: "text-gradient",
-  ANIMATED_SPINNER:
-    "animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500",
+  ANIMATED_SPINNER: "animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500",
 } as const;
 
 // Focusable element selectors for accessibility

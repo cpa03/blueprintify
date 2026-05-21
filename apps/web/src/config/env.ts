@@ -28,17 +28,11 @@ export const ENV = {
 
   // External URLs
   get PROJECT_HOMEPAGE_URL(): string {
-    return getEnvVar(
-      "VITE_PROJECT_HOMEPAGE_URL",
-      "https://blueprint-generator.pages.dev",
-    );
+    return getEnvVar("VITE_PROJECT_HOMEPAGE_URL", "https://blueprint-generator.pages.dev");
   },
 
   get GITHUB_URL(): string {
-    return getEnvVar(
-      "VITE_GITHUB_URL",
-      "https://github.com/cpa03/blueprintify",
-    );
+    return getEnvVar("VITE_GITHUB_URL", "https://github.com/cpa03/blueprintify");
   },
 
   // Storage Configuration

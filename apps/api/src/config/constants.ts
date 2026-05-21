@@ -37,7 +37,7 @@ export function setEnvConfig(config: EnvConfig | null): void {
 export function getEnvConfig(): EnvConfig {
   if (!envConfig) {
     throw new Error(
-      "Environment config not set. Call setEnvConfig() first during application initialization. This typically happens automatically in the main entry point (index.ts).",
+      "Environment config not set. Call setEnvConfig() first during application initialization. This typically happens automatically in the main entry point (index.ts)."
     );
   }
   return envConfig;
@@ -222,8 +222,7 @@ export const ERROR_MESSAGES = {
   AUTHENTICATION: "Authentication required",
   AUTHORIZATION: "Insufficient permissions",
   RATE_LIMIT: "Too many requests, please try again later",
-  CIRCUIT_BREAKER_OPEN:
-    "Service temporarily unavailable, please try again later",
+  CIRCUIT_BREAKER_OPEN: "Service temporarily unavailable, please try again later",
 } as const;
 
 // Default error messages for error classes
@@ -346,8 +345,7 @@ export const EXTERNAL_URLS = {
 
 export const SHARE_CONFIG = {
   ID_LENGTH: 12,
-  ALPHANUMERIC_CHARS:
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+  ALPHANUMERIC_CHARS: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
   EXPIRATION_DAYS: 30,
   TITLE_MAX_LENGTH: 200,
   BLUEPRINT_MAX_LENGTH: 50000,
@@ -383,11 +381,9 @@ export const IMPORT_CONFIG = {
 } as const;
 
 export const IMPORT_ERROR_MESSAGES = {
-  MISSING_REQUIRED_FIELDS:
-    "Invalid import data: missing required fields (projectName, blueprint)",
+  MISSING_REQUIRED_FIELDS: "Invalid import data: missing required fields (projectName, blueprint)",
   INVALID_JSON_FORMAT: "Invalid JSON format",
-  MISSING_BLUEPRINT_CONTENT:
-    "Invalid markdown format: could not extract blueprint content",
+  MISSING_BLUEPRINT_CONTENT: "Invalid markdown format: could not extract blueprint content",
   UNSUPPORTED_FORMAT: (format: string) => `Unsupported import format: ${format}`,
 } as const;
 

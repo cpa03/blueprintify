@@ -181,11 +181,11 @@ All issues were fixed in PR #709:
 
 Three workflow files use non-existent GitHub Actions versions (`@v5` instead of `@v4`):
 
-| File | Invalid References |
-|------|-------------------|
-| `main.yml` | `actions/checkout@v5` (9x) |
+| File             | Invalid References                                                                |
+| ---------------- | --------------------------------------------------------------------------------- |
+| `main.yml`       | `actions/checkout@v5` (9x)                                                        |
 | `ai-on-push.yml` | `actions/checkout@v5` (4x), `actions/cache@v5` (1x), `actions/setup-node@v5` (1x) |
-| `iterate.yml` | `actions/checkout@v5` (5x), `actions/cache@v5` (5x) |
+| `iterate.yml`    | `actions/checkout@v5` (5x), `actions/cache@v5` (5x)                               |
 
 #### Impact
 

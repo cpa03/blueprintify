@@ -14,7 +14,7 @@ import { HTTP_STATUS, VALIDATION_MESSAGES } from "../config/constants";
  * Includes content-type validation for JSON requests
  */
 export const validateJson = <T extends z.ZodTypeAny>(
-  schema: T,
+  schema: T
 ): MiddlewareHandler<{
   Variables: {
     validatedData: z.infer<T>;

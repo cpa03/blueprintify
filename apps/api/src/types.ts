@@ -239,9 +239,7 @@ export type StorageQuotaContext = ValidatedContext<typeof StorageQuotaSchema>;
  * Provides typed access to validated storage clear parameters
  * including the confirmation flag.
  */
-export type StorageClearContext = ValidatedContext<
-  typeof StorageClearRequestSchema
->;
+export type StorageClearContext = ValidatedContext<typeof StorageClearRequestSchema>;
 
 /**
  * Union type for all controller context types.

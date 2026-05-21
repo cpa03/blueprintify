@@ -88,11 +88,7 @@ function CharacterCounterCompactComponent({
       <div className="w-12 h-1.5 bg-dark-700 rounded-full overflow-hidden">
         <motion.div
           className={`h-full rounded-full ${
-            isDanger
-              ? "bg-accent-pink"
-              : isWarning
-                ? "bg-yellow-500"
-                : "bg-dark-500"
+            isDanger ? "bg-accent-pink" : isWarning ? "bg-yellow-500" : "bg-dark-500"
           }`}
           initial={{ width: 0 }}
           animate={{ width: `${Math.min(percentage, 100)}%` }}

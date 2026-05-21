@@ -144,10 +144,7 @@ export const pageTransition = {
  * @param staggerChildren - Delay between each child animation
  * @param delayChildren - Initial delay before children start animating
  */
-export function createStaggerContainer(
-  staggerChildren = 0.1,
-  delayChildren = 0.2,
-): Variants {
+export function createStaggerContainer(staggerChildren = 0.1, delayChildren = 0.2): Variants {
   return {
     hidden: { opacity: 0 },
     visible: {

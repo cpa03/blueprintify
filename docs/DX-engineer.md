@@ -55,7 +55,8 @@ When implementing DX improvements:
 - [ ] Verify no breaking changes to existing scripts
 - [ ] Update documentation if needed
 - [ ] Create PR with DX-engineer label
-KR|
+      KR|
+
 ## Test Scripts
 
 When updating test scripts, ensure ALL workspaces are covered:
@@ -72,9 +73,11 @@ When updating test scripts, ensure ALL workspaces are covered:
 Note: The `test:all` script should include ALL workspaces (apps/web, apps/api, packages/shared)
 
 ## Known Issues
+
 - TypeScript typecheck requires `npm install` to run first
 - ESLint requires dependencies to be installed
 - Some tests may fail in clean environment without build artifacts
+
 ## VS Code Debugging Configuration
 
 VS Code debugging is configured via `.vscode/launch.json` and `.vscode/tasks.json`:
@@ -161,19 +164,19 @@ When updating `.vscode/extensions.json`, include extensions organized by categor
 
 ### Extension Categories
 
-| Category | Extensions | Purpose |
-|----------|-----------|----------|
-| TypeScript/JS | eslint, prettier, typescript-next, pretty-ts-errors | Code quality |
-| React | ES7 snippets, auto-rename-tag | Development speed |
-| Debugging | debugger-for-chrome, vscode-react-native, react-style-tag | Browser/React debugging |
-| Error Handling | errorlens | Inline error display |
-| REST API | rest-client | API testing |
-| Tailwind | tailwindcss-intellisense | Styling support |
-| Cloudflare | cloudflare-workers | Workers-specific dev |
-| Testing | vitest-explorer | Test running |
-| Markdown | markdown-all-in-one | Docs editing |
-| Git | gitlens | Version control |
-| Editor | editorconfig | Consistency |
+| Category       | Extensions                                                | Purpose                 |
+| -------------- | --------------------------------------------------------- | ----------------------- |
+| TypeScript/JS  | eslint, prettier, typescript-next, pretty-ts-errors       | Code quality            |
+| React          | ES7 snippets, auto-rename-tag                             | Development speed       |
+| Debugging      | debugger-for-chrome, vscode-react-native, react-style-tag | Browser/React debugging |
+| Error Handling | errorlens                                                 | Inline error display    |
+| REST API       | rest-client                                               | API testing             |
+| Tailwind       | tailwindcss-intellisense                                  | Styling support         |
+| Cloudflare     | cloudflare-workers                                        | Workers-specific dev    |
+| Testing        | vitest-explorer                                           | Test running            |
+| Markdown       | markdown-all-in-one                                       | Docs editing            |
+| Git            | gitlens                                                   | Version control         |
+| Editor         | editorconfig                                              | Consistency             |
 
 When updating `.vscode/extensions.json`, include extensions organized by category:
 
@@ -208,17 +211,19 @@ When updating `.vscode/extensions.json`, include extensions organized by categor
 
 ### Extension Categories
 
-| Category | Extensions | Purpose |
-|----------|-----------|----------|
-| TypeScript/JS | eslint, prettier, typescript-next, pretty-ts-errors | Code quality |
-| React | ES7 snippets, auto-rename-tag | Development speed |
-| Tailwind | tailwindcss-intellisense | Styling support |
-| Cloudflare | cloudflare-workers | Workers-specific dev |
-| Testing | vitest-explorer | Test running |
-| Markdown | markdown-all-in-one | Docs editing |
-| Git | gitlens | Version control |
-| Editor | editorconfig | Consistency |
+| Category      | Extensions                                          | Purpose              |
+| ------------- | --------------------------------------------------- | -------------------- |
+| TypeScript/JS | eslint, prettier, typescript-next, pretty-ts-errors | Code quality         |
+| React         | ES7 snippets, auto-rename-tag                       | Development speed    |
+| Tailwind      | tailwindcss-intellisense                            | Styling support      |
+| Cloudflare    | cloudflare-workers                                  | Workers-specific dev |
+| Testing       | vitest-explorer                                     | Test running         |
+| Markdown      | markdown-all-in-one                                 | Docs editing         |
+| Git           | gitlens                                             | Version control      |
+| Editor        | editorconfig                                        | Consistency          |
+
 ## ESLint Configuration
+
 When adding ESLint rules, follow these patterns:
 
 ### Console Statements
@@ -239,6 +244,7 @@ This warns against `console.log` and `console.info` but allows `console.error`, 
 - TypeScript typecheck requires `npm install` to run first
 - ESLint requires dependencies to be installed
 - Some tests may fail in clean environment without build artifacts
+
 ## Vite optimizeDeps Configuration
 
 For faster hot reload during development, add commonly used heavy dependencies to Vite's `optimizeDeps.include`:

@@ -33,9 +33,7 @@ vi.mock("./wizard/StepReview", () => ({
 }));
 
 vi.mock("./wizard/StepGenerating", () => ({
-  StepGenerating: () => (
-    <div data-testid="step-generating">Step Generating</div>
-  ),
+  StepGenerating: () => <div data-testid="step-generating">Step Generating</div>,
 }));
 
 vi.mock("../../hooks/useDocumentTitle", () => ({
@@ -59,9 +57,7 @@ vi.mock("../wizard/StepReview", () => ({
 }));
 
 vi.mock("../wizard/StepGenerating", () => ({
-  StepGenerating: () => (
-    <div data-testid="step-generating">Step Generating</div>
-  ),
+  StepGenerating: () => <div data-testid="step-generating">Step Generating</div>,
 }));
 
 const mockWizardStore: WizardStore = {
@@ -113,10 +109,10 @@ describe("Wizard", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (useWizardStore as unknown as Mock).mockImplementation(
-      (selector: (state: WizardStore) => unknown) => selector(mockWizardStore),
+      (selector: (state: WizardStore) => unknown) => selector(mockWizardStore)
     );
     (useEditorStore as unknown as Mock).mockImplementation(
-      (selector: (state: EditorStore) => unknown) => selector(mockEditorStore),
+      (selector: (state: EditorStore) => unknown) => selector(mockEditorStore)
     );
   });
 

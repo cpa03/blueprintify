@@ -36,8 +36,7 @@ export const TEST_KEYS = {
 
 export const BACKUP_KEY_PREFIX = "__backup__";
 
-export const createBackupKey = (key: string): string =>
-  `${BACKUP_KEY_PREFIX}${key}`;
+export const createBackupKey = (key: string): string => `${BACKUP_KEY_PREFIX}${key}`;
 
 export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];
 export type SessionKey = (typeof SESSION_KEYS)[keyof typeof SESSION_KEYS];
@@ -45,5 +44,4 @@ export type CookieKey = (typeof COOKIE_KEYS)[keyof typeof COOKIE_KEYS];
 
 export const getAllStorageKeys = (): string[] => Object.values(STORAGE_KEYS);
 export const getAllSessionKeys = (): string[] => Object.values(SESSION_KEYS);
-export const isAppStorageKey = (key: string): boolean =>
-  key.startsWith(NAMESPACE);
+export const isAppStorageKey = (key: string): boolean => key.startsWith(NAMESPACE);

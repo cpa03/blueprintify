@@ -21,7 +21,7 @@ import { AUTO_SAVE_CONFIG, TOAST_CONFIG } from "../config/constants";
 export function useAutoSaveToast(
   deps: unknown[],
   message: string = AUTO_SAVE_CONFIG.DEFAULT_MESSAGE,
-  delay: number = AUTO_SAVE_CONFIG.DEFAULT_DELAY,
+  delay: number = AUTO_SAVE_CONFIG.DEFAULT_DELAY
 ): void {
   const toast = useToast();
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);

@@ -66,7 +66,7 @@ const TechChip = memo(function TechChip({
       className={clsx(
         "tech-chip relative overflow-hidden",
         isSelected && "selected",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
       )}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
@@ -185,7 +185,7 @@ export const StepStack = memo(function StepStack(): JSX.Element {
 
   const isSelected = useCallback(
     (name: string) => techStack.some((t) => t.name === name),
-    [techStack],
+    [techStack]
   );
 
   const toggleTech = useCallback(
@@ -207,28 +207,20 @@ export const StepStack = memo(function StepStack(): JSX.Element {
             | "other",
         });
         setJustSelected(tech.name);
-        setTimeout(
-          () => setJustSelected(null),
-          ANIMATION_MS.CHIP_SELECT_FEEDBACK,
-        );
+        setTimeout(() => setJustSelected(null), ANIMATION_MS.CHIP_SELECT_FEEDBACK);
       }
     },
-    [isSelected, addTechStack, removeTechStack],
+    [isSelected, addTechStack, removeTechStack]
   );
 
   const minRequired = MIN_REQUIREMENTS.TECH_STACK;
-  const progressPercentage = Math.min(
-    (techStack.length / minRequired) * 100,
-    100,
-  );
+  const progressPercentage = Math.min((techStack.length / minRequired) * 100, 100);
 
   return (
     <motion.div {...pageTransition} className="space-y-6">
       <div>
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-2xl font-bold text-white">
-            {UI_CONTENT.WIZARD.STEP_STACK.TITLE}
-          </h2>
+          <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_STACK.TITLE}</h2>
           <div className="flex items-center gap-2 text-sm">
             <div className="w-24 h-2 bg-dark-700 rounded-full overflow-hidden">
               <motion.div
@@ -243,9 +235,7 @@ export const StepStack = memo(function StepStack(): JSX.Element {
               />
             </div>
             <span
-              className={`tabular-nums ${
-                canProceed ? "text-accent-emerald" : "text-dark-400"
-              }`}
+              className={`tabular-nums ${canProceed ? "text-accent-emerald" : "text-dark-400"}`}
             >
               {techStack.length}/{minRequired}
             </span>
@@ -254,11 +244,7 @@ export const StepStack = memo(function StepStack(): JSX.Element {
         <p className="text-dark-400">{UI_CONTENT.WIZARD.STEP_STACK.SUBTITLE}</p>
       </div>
 
-      <div
-        className="glass-card p-6 space-y-6"
-        role="group"
-        aria-label="Tech Stack Selection"
-      >
+      <div className="glass-card p-6 space-y-6" role="group" aria-label="Tech Stack Selection">
         {categories.map(([category, options]) => (
           <div key={category}>
             <h3
@@ -292,10 +278,7 @@ export const StepStack = memo(function StepStack(): JSX.Element {
             <p className="text-sm text-dark-400 mb-2" id="selected-tech-label">
               {UI_CONTENT.WIZARD.STEP_STACK.SELECTED_LABEL(techStack.length)}:
             </p>
-            <ul
-              className="flex flex-wrap gap-2"
-              aria-labelledby="selected-tech-label"
-            >
+            <ul className="flex flex-wrap gap-2" aria-labelledby="selected-tech-label">
               {techStack.map((tech) => (
                 <li
                   key={tech.name}
@@ -331,12 +314,7 @@ export const StepStack = memo(function StepStack(): JSX.Element {
 
       <div className="flex justify-between">
         <RippleButton onClick={prevStep} className="btn-secondary">
-          <svg
-            className="w-5 h-5 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -352,18 +330,8 @@ export const StepStack = memo(function StepStack(): JSX.Element {
           className={`btn-primary flex items-center gap-2 ${isShaking ? "shake-animation" : ""}`}
         >
           {UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON}
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </RippleButton>
       </div>

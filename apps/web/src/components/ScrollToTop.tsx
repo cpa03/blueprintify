@@ -106,8 +106,7 @@ export function ScrollToTop({
       if (e.key === "Home" && !e.ctrlKey && !e.metaKey && !e.altKey) {
         const activeElement = document.activeElement;
         const isInputFocused =
-          activeElement?.tagName === "INPUT" ||
-          activeElement?.tagName === "TEXTAREA";
+          activeElement?.tagName === "INPUT" || activeElement?.tagName === "TEXTAREA";
 
         if (!isInputFocused && hasScrolled) {
           e.preventDefault();

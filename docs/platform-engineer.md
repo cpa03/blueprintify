@@ -26,6 +26,7 @@ This document tracks platform-engineer domain work for the blueprintify project.
 The github-actions[bot] token lacks `workflows` permission needed to push workflow files.
 
 Changes committed locally in branch `platform/standardize-checkout-v5`:
+
 - 6 occurrences of `actions/checkout@v4` → `v5` updated
 - 3 workflow files modified: pr-gatekeeper.yml, parallel.yml, on-pull.yml
 

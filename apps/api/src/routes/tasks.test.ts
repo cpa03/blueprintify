@@ -4,11 +4,7 @@ import tasksRoute from "./tasks";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
-import {
-  setDefaultContainer,
-  resetContainer,
-  createMockContainer,
-} from "../di/container";
+import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 
 beforeEach(() => {
   const mockContainer = createMockContainer();
@@ -35,7 +31,7 @@ describe("POST /tasks", () => {
           // blueprint is missing
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(400);
@@ -55,7 +51,7 @@ describe("POST /tasks", () => {
           blueprint: "# Test Blueprint\n\nThis is a test blueprint content.",
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(200);

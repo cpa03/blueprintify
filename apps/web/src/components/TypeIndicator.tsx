@@ -113,8 +113,7 @@ interface UseTypingIndicatorOptions {
  */
 
 export function useTypingIndicator(options: UseTypingIndicatorOptions = {}) {
-  const { delay = ANIMATION_MS.TYPING_INDICATOR_TIMEOUT, minInputLength = 0 } =
-    options;
+  const { delay = ANIMATION_MS.TYPING_INDICATOR_TIMEOUT, minInputLength = 0 } = options;
   const [isTyping, setIsTyping] = useState(false);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastValueRef = useRef<string>("");
@@ -134,7 +133,7 @@ export function useTypingIndicator(options: UseTypingIndicatorOptions = {}) {
         }, delay);
       }
     },
-    [delay, minInputLength],
+    [delay, minInputLength]
   );
 
   const handleBlur = useCallback(() => {

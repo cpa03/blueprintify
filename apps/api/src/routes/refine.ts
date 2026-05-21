@@ -18,13 +18,8 @@ import type { Env } from "../types";
 const app = new Hono<{ Bindings: Env }>();
 const refineController = new RefineController();
 
-app.post(
-  "/",
-  rateLimit(rateLimitConfigs.strict),
-  validateJson(RefineRequestSchema),
-  async (c) => {
-    return refineController.refineContent(c);
-  },
-);
+app.post("/", rateLimit(rateLimitConfigs.strict), validateJson(RefineRequestSchema), async (c) => {
+  return refineController.refineContent(c);
+});
 
 export default app;
