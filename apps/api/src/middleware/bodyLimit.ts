@@ -9,7 +9,7 @@
  */
 
 import type { MiddlewareHandler } from "hono";
-import { HTTP_STATUS, ERROR_CODES } from "../config/constants";
+import { HTTP_STATUS, ERROR_CODES, BODY_SIZE_MAX } from "../config/constants";
 import { ErrorType } from "../errors";
 
 /**
@@ -23,30 +23,7 @@ interface BodyLimitConfig {
   excludePaths?: string[];
 }
 
-/**
- * Body size limit constants
- * Centralized for consistency and maintainability
- */
-const BODY_SIZE_LIMITS = {
-  /** Default maximum body size: 1MB - reasonable for JSON API requests */
-  DEFAULT_MB: 1,
-  /** Strict limit: 100KB - for text-only endpoints */
-  STRICT_KB: 100,
-  /** Lenient limit: 10MB - for file upload endpoints */
-  LENIENT_MB: 10,
-} as const;
-
-/** Bytes per kilobyte */
-const KB = 1024;
-/** Bytes per megabyte */
-const MB = 1024 * KB;
-
-/** Default maximum body size: 1MB */
-const DEFAULT_MAX_SIZE = BODY_SIZE_LIMITS.DEFAULT_MB * MB;
-/** Strict limit for text-only endpoints: 100KB */
-const STRICT_MAX_SIZE = BODY_SIZE_LIMITS.STRICT_KB * KB;
-/** Lenient limit for file uploads: 10MB */
-const LENIENT_MAX_SIZE = BODY_SIZE_LIMITS.LENIENT_MB * MB;
+const DEFAULT_MAX_SIZE = BODY_SIZE_MAX.DEFAULT;
 
 /**
  * Creates a body size limit middleware for Hono applications.
@@ -116,7 +93,7 @@ export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
  * Predefined body limit configurations for different use cases.
  */
 export const bodyLimitConfigs = {
-  standard: { maxSize: DEFAULT_MAX_SIZE },
-  strict: { maxSize: STRICT_MAX_SIZE },
-  lenient: { maxSize: LENIENT_MAX_SIZE },
+  standard: { maxSize: BODY_SIZE_MAX.DEFAULT },
+  strict: { maxSize: BODY_SIZE_MAX.STRICT },
+  lenient: { maxSize: BODY_SIZE_MAX.LENIENT },
 };

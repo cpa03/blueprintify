@@ -11,14 +11,20 @@ import { Hono } from "hono";
 import { StorageClearRequestSchema, StorageReportRequestSchema } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
-import { STORAGE_CONFIG, CACHE_CONFIG, HTTP_STATUS, STORAGE_MESSAGES } from "../config/constants";
+import {
+  STORAGE_CONFIG,
+  CACHE_CONFIG,
+  HTTP_STATUS,
+  STORAGE_MESSAGES,
+  STORAGE_KV_CONFIG,
+} from "../config/constants";
 import { ErrorType } from "../errors";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
 
 // KV key for storing storage quota data
-const STORAGE_QUOTA_KEY = "storage:quota";
+const STORAGE_QUOTA_KEY = STORAGE_KV_CONFIG.QUOTA_KEY;
 
 /**
  * Parse stored quota data from KV
@@ -115,7 +121,7 @@ app.post(
           projects,
           updatedAt: new Date().toISOString(),
         }),
-        { expirationTtl: 86400 * 30 } // Store for 30 days
+        { expirationTtl: STORAGE_KV_CONFIG.REPORT_TTL_SECONDS }
       );
 
       return c.json({
