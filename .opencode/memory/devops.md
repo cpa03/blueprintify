@@ -88,7 +88,7 @@ npm run deploy --workspace=apps/api -- --env production
 ## Project Standards (from AGENTS.md)
 
 - **CI Runner**: MUST use `ubuntu-24.04-arm`
-- **Model**: MUST use `opencode/glm-4.7-free`
+- **Model**: MUST use `opencode/deepseek-v4-flash-free`
 - **Secrets**: NEVER expose in logs or commits
 
 ## CI/CD Best Practices

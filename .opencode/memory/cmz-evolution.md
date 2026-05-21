@@ -8,10 +8,10 @@
 **Changes**:
 
 - Created CMZ agent with self-heal, self-learning, self-evolve capabilities
-- Configured model: `opencode/glm-4.7-free` (per AGENTS.md mandate)
+- Configured model: `opencode/deepseek-v4-flash-free` (per AGENTS.md mandate)
 - Integrated with existing agent ecosystem
 
-> **Note**: Fallback models were initially configured but later removed per AGENTS.md mandate requiring exclusive use of `opencode/glm-4.7-free`.
+> **Note**: Fallback models were initially configured but later removed per AGENTS.md mandate requiring exclusive use of `opencode/deepseek-v4-flash-free`.
 
 **Rationale**: Maximize system potential through autonomous management
 
@@ -51,7 +51,7 @@
 
 **After**:
 
-- All agents use `opencode/glm-4.7-free` exclusively per AGENTS.md mandate
+- All agents use `opencode/deepseek-v4-flash-free` exclusively per AGENTS.md mandate
 - CI pipeline stabilized
 
 **Rationale**: Prevent CI failures through proper model configuration

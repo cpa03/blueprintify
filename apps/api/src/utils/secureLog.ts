@@ -16,8 +16,7 @@
 const SENSITIVE_PATTERNS = [
   // API keys and tokens
   {
-    pattern:
-      /(api[_-]?key|apikey|token|secret|password|auth)[=:]\s*['"]?[\w-]+['"]?/gi,
+    pattern: /(api[_-]?key|apikey|token|secret|password|auth)[=:]\s*['"]?[\w-]+['"]?/gi,
     replacement: "$1=[REDACTED]",
   },
   { pattern: /bearer\s+[\w-]+/gi, replacement: "bearer [REDACTED]" },
@@ -40,8 +39,8 @@ const SENSITIVE_PATTERNS = [
   },
   { pattern: /[A-Z]:\\[^\s]+/gi, replacement: "[PATH_REDACTED]" },
 
-  // IP addresses (in some contexts)
-  { pattern: /\b(?:\d{1,3}\.){3}\d{1,3}:\d+\b/g, replacement: "[IP_REDACTED]" },
+  // IP addresses (with or without port)
+  { pattern: /\b(?:\d{1,3}\.){3}\d{1,3}(?::\d+)?\b/g, replacement: "[IP_REDACTED]" },
 
   // Email addresses
   { pattern: /[\w.-]+@[\w.-]+\.\w+/gi, replacement: "[EMAIL_REDACTED]" },
@@ -143,15 +142,29 @@ export function sanitizeError(error: unknown): {
 export function createSecureLogEntry(
   context: string,
   error: unknown,
-  additionalInfo?: Record<string, unknown>,
+  additionalInfo?: Record<string, unknown>
 ): Record<string, unknown> {
   const sanitizedError = sanitizeError(error);
+
+  // Sanitize additionalInfo values to prevent sensitive data leakage
+  const sanitizedAdditional: Record<string, unknown> = {};
+  if (additionalInfo) {
+    for (const [key, value] of Object.entries(additionalInfo)) {
+      if (typeof value === "string") {
+        sanitizedAdditional[key] = sanitizeString(value);
+      } else if (value instanceof Error) {
+        sanitizedAdditional[key] = sanitizeError(value);
+      } else {
+        sanitizedAdditional[key] = value;
+      }
+    }
+  }
 
   return {
     context,
     error: sanitizedError,
     timestamp: new Date().toISOString(),
-    ...additionalInfo,
+    ...sanitizedAdditional,
   };
 }
 
@@ -177,7 +190,7 @@ export function createSecureLogEntry(
 export function secureLogError(
   context: string,
   error: unknown,
-  additionalInfo?: Record<string, unknown>,
+  additionalInfo?: Record<string, unknown>
 ): void {
   const logEntry = createSecureLogEntry(context, error, additionalInfo);
   console.error(JSON.stringify(logEntry));
@@ -201,7 +214,7 @@ export function secureLogError(
 export function secureLogWarn(
   context: string,
   message: string,
-  additionalInfo?: Record<string, unknown>,
+  additionalInfo?: Record<string, unknown>
 ): void {
   const logEntry = {
     context,

@@ -133,7 +133,7 @@ Each agent is defined in `.opencode/agent/[role-name].md`:
 ---
 description: Agent Role Description
 mode: primary
-model: opencode/glm-4.7-free
+model: opencode/deepseek-v4-flash-free
 temperature: 0.1
 tools:
   write: true
@@ -187,7 +187,7 @@ permission:
 
 description: Custom Agent for Specific Task
 mode: primary
-model: opencode/glm-4.7-free
+model: opencode/deepseek-v4-flash-free
 temperature: 0.1
 tools:
 write: true

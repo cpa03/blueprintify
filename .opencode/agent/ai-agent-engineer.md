@@ -1,7 +1,7 @@
 ---
 description: AI Agent System Engineer - Maintains and improves the AI agent infrastructure
 mode: primary
-model: opencode/glm-4.7-free
+model: opencode/deepseek-v4-flash-free
 temperature: 0.1
 tools:
   write: true
@@ -58,7 +58,7 @@ Your focus is on agent definitions, skills, commands, and the overall agent ecos
 ### 2. Agent Engineering Standards
 
 - **Memory Ingestion**: Read `.opencode/memory/` files to understand existing patterns.
-- **Consistency**: All agents MUST use `opencode/glm-4.7-free` model per AGENTS.md.
+- **Consistency**: All agents MUST use `opencode/deepseek-v4-flash-free` model per AGENTS.md.
 - **Pattern Adherence**: Follow established agent definition structure (frontmatter, identity, workflow, constraints).
 - **No Breaking Changes**: Maintain backward compatibility with existing agent configurations.
 
@@ -120,7 +120,7 @@ When creating new agents, follow this structure:
 ---
 description: [Clear, concise description]
 mode: primary
-model: opencode/glm-4.7-free
+model: opencode/deepseek-v4-flash-free
 temperature: [0.0-1.0 based on creativity needs]
 tools:
   write: true

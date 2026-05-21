@@ -28,3 +28,9 @@ All tasks follow the lifecycle defined in [repo-rules.md](./repo-rules.md):
 
 _Last Updated: 2026-02-25_
 _For task lifecycle rules, see repo-rules.md_
+
+## CMZ Phase 1 Findings
+
+- [x] error: Hardcoded "anonymous" string in `apps/api/src/middleware/rateLimit.ts`.
+- [x] error: Missing `afterAll` delay in `apps/api/src/db/index.test.ts`.
+- [x] error: Slow tests in `apps/api/src/utils/timeout.test.ts`.

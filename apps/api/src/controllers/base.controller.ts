@@ -1,9 +1,10 @@
 import type { AIConfig } from "../services/openai";
 import { getContainer } from "../di/container";
 import { ConfigurationError } from "../errors";
-import type { ValidatedContext, ControllerContext } from "../types";
+import type { ValidatedContext, ControllerContext, AppContext } from "../types";
 import type { z } from "zod";
 import { CONFIG_MESSAGES, AI_CONFIG } from "../config/constants";
+import { secureLogError } from "../utils/secureLog";
 
 /**
  * Base controller providing common functionality for API endpoint handlers.
@@ -38,7 +39,7 @@ export abstract class BaseController {
    * @returns Response object configured for SSE streaming
    */
   public async handleStreamingResponse(
-    generator: AsyncGenerator<string, void, unknown>,
+    generator: AsyncGenerator<string, void, unknown>
   ): Promise<Response> {
     const container = getContainer();
     const stream = container.streamUtils.createStreamFromGenerator(generator);
@@ -51,9 +52,7 @@ export abstract class BaseController {
    * @returns The validated and typed request data
    * @throws {Error} When validated data is not found in context
    */
-  public getValidatedData<T extends z.ZodSchema>(
-    c: ValidatedContext<T>,
-  ): z.infer<T> {
+  public getValidatedData<T extends z.ZodSchema>(c: ValidatedContext<T>): z.infer<T> {
     const data = c.get("validatedData");
     if (!data) {
       throw new Error(CONFIG_MESSAGES.VALIDATED_DATA_NOT_FOUND);
@@ -70,5 +69,31 @@ export abstract class BaseController {
     if (!c.env.OPENAI_API_KEY) {
       throw new ConfigurationError(CONFIG_MESSAGES.OPENAI_API_KEY_MISSING);
     }
+  }
+
+  /**
+   * Logs an error with request context using secureLogError.
+   * @param c - Controller context
+   * @param context - Error context/category
+   * @param message - Error message
+   * @param error - The error object
+   * @param details - Additional structured details
+   */
+  public logError(
+    c: ControllerContext,
+    context: string,
+    message: string,
+    error?: unknown,
+    details?: Record<string, unknown>
+  ): void {
+    // Pass actual error object as second arg so secureLogError sanitizes it properly.
+    // The message string is included in additionalInfo to preserve the original intent.
+    secureLogError(context, error ?? message, {
+      ...details,
+      logMessage: message,
+      requestId: (c as AppContext).get("requestId"),
+      path: c.req.path,
+      method: c.req.method,
+    });
   }
 }

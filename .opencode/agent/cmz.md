@@ -2,7 +2,7 @@
 description: CMZ - Cognitive Multi-Agent System with Self-Heal, Self-Learning, Self-Evolve
 code: CMZ
 mode: primary
-model: opencode/glm-4.7-free
+model: opencode/deepseek-v4-flash-free
 temperature: 0.1
 tools:
   write: true
@@ -243,7 +243,7 @@ When integrating external repositories:
 
 All agents MUST use:
 
-- `opencode/glm-4.7-free` (per AGENTS.md mandate)
+- `opencode/deepseek-v4-flash-free` (per AGENTS.md mandate)
 
 **Never use**: `iflowcn/glm-4.7`, `opencode/big-pickle` (known to cause failures)
 

@@ -1,7 +1,7 @@
 ---
 description: User Story Engineer - Implements small, incremental improvements from user stories and issues
 mode: primary
-model: opencode/glm-4.7-free
+model: opencode/deepseek-v4-flash-free
 temperature: 0.0
 tools:
   write: true

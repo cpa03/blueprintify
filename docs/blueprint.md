@@ -111,7 +111,7 @@ blueprintify/
 
 ### Technical Constraints
 
-- **Model**: Use `opencode/glm-4.7-free` exclusively for all AI agents
+- **Model**: Use `opencode/deepseek-v4-flash-free` exclusively for all AI agents
 - **Platform**: Must deploy to Cloudflare Workers
 - **Environment**: CI runners must use `ubuntu-24.04-arm`
 

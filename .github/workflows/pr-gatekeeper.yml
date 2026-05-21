@@ -79,7 +79,7 @@ jobs:
 
           opencode run --agent debugger \
              "The active PR failed validation checks. Analyze the logs in validation_errors.log and FIX the code errors to make the build pass. Focus ONLY on fixing errors." \
-             --model opencode/big-pickle \
+             --model opencode/deepseek-v4-flash-free \
              --share disabled
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
@@ -91,7 +91,7 @@ jobs:
         run: |
           opencode run --agent security-engineer \
              "Scan the changed files in this PR (git diff --name-only origin/${{ github.base_ref }}). Remove any introduced vulnerabilities, secrets, or usage of deprecated functions." \
-             --model opencode/big-pickle \
+             --model opencode/deepseek-v4-flash-free \
              --share disabled
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
@@ -103,7 +103,7 @@ jobs:
         run: |
           opencode run --agent janitor \
              "Scan the codebase for redundant file, unused exports, and commented-out dead code. Remove them to clean up before merge." \
-             --model opencode/big-pickle \
+             --model opencode/deepseek-v4-flash-free \
              --share disabled
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
@@ -119,7 +119,7 @@ jobs:
             echo "No fixes needed. Code is clean."
           else
             git commit -m "chore(gatekeeper): auto-fixed build errors and cleaned up code"
-            git push
+            git push origin HEAD
           fi
 
       # --- STAGE 4: VERIFICATION & MERGE ---
