@@ -1,23 +1,10 @@
-import {
-  describe,
-  it,
-  expect,
-  vi,
-  beforeAll,
-  afterAll,
-  beforeEach,
-  afterEach,
-} from "vitest";
+import { describe, it, expect, vi, beforeAll, afterAll, beforeEach, afterEach } from "vitest";
 import { Hono } from "hono";
 import generateRoute from "./generate";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV, MOCK_ENV_NO_KEY } from "../test-utils";
 import type { ErrorResponse } from "../errors";
-import {
-  setDefaultContainer,
-  resetContainer,
-  createMockContainer,
-} from "../di/container";
+import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -54,7 +41,7 @@ describe("POST /generate", () => {
           // techStack is missing
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(400);
@@ -76,7 +63,7 @@ describe("POST /generate", () => {
           techStack: [{ name: "React", category: "frontend" }],
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
     expect(res.status).toBe(400);
     const data = (await res.json()) as ErrorResponse;
@@ -91,12 +78,11 @@ describe("POST /generate", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           projectName: "Test Project",
-          description:
-            "A valid description longer than 10 chars for testing purposes.",
+          description: "A valid description longer than 10 chars for testing purposes.",
           techStack: [{ name: "React", category: "frontend" }],
         }),
       },
-      MOCK_ENV,
+      MOCK_ENV
     );
 
     expect(res.status).toBe(200);
@@ -112,22 +98,18 @@ describe("POST /generate", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           projectName: "Test Project",
-          description:
-            "A valid description longer than 10 chars for testing purposes.",
+          description: "A valid description longer than 10 chars for testing purposes.",
           techStack: [{ name: "React", category: "frontend" }],
         }),
       },
-      MOCK_ENV_NO_KEY,
+      MOCK_ENV_NO_KEY
     );
 
     expect(res.status).toBe(500);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
     expect(data.error).toHaveProperty("type", "configuration");
-    expect(data.error).toHaveProperty(
-      "message",
-      "OpenAI API key not configured",
-    );
+    expect(data.error).toHaveProperty("message", "OpenAI API key not configured");
     expect(data.error).toHaveProperty("code", "CONFIGURATION_ERROR");
     expect(data.error).toHaveProperty("timestamp");
   });

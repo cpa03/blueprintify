@@ -27,14 +27,7 @@
  * ```
  */
 
-import {
-  useState,
-  useRef,
-  useCallback,
-  useEffect,
-  forwardRef,
-  memo,
-} from "react";
+import { useState, useRef, useCallback, useEffect, forwardRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
 import { TOAST_CONFIG, SPRING_CONFIG } from "../config/constants";
@@ -111,20 +104,13 @@ interface ToastItemProps {
 }
 
 const ToastItem = memo(
-  forwardRef<HTMLDivElement, ToastItemProps>(function ToastItem(
-    { toast, onRemove },
-    ref,
-  ) {
+  forwardRef<HTMLDivElement, ToastItemProps>(function ToastItem({ toast, onRemove }, ref) {
     const [isHovered, setIsHovered] = useState(false);
     const [progress, setProgress] = useState(100);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const remainingTimeRef = useRef<number>(
-      toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION,
-    );
+    const remainingTimeRef = useRef<number>(toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION);
     const startTimeRef = useRef<number>(0);
-    const durationRef = useRef<number>(
-      toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION,
-    );
+    const durationRef = useRef<number>(toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION);
     const rafRef = useRef<number | null>(null);
 
     const clearToastTimeout = useCallback(() => {
@@ -161,7 +147,7 @@ const ToastItem = memo(
           onRemove(toast.id);
         }, remaining);
       },
-      [toast.id, onRemove, isHovered, clearToastTimeout],
+      [toast.id, onRemove, isHovered, clearToastTimeout]
     );
 
     useEffect(() => {
@@ -226,7 +212,12 @@ const ToastItem = memo(
               className="absolute -top-1 -right-1 w-4 h-4 bg-current/20 rounded-full flex items-center justify-center"
               aria-hidden="true"
             >
-              <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg
+                className="w-2.5 h-2.5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
                 <rect x="6" y="4" width="4" height="16" rx="1" />
                 <rect x="14" y="4" width="4" height="16" rx="1" />
               </svg>
@@ -246,12 +237,7 @@ const ToastItem = memo(
           className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-all"
           aria-label={`Dismiss ${toast.type} notification`}
         >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -262,7 +248,7 @@ const ToastItem = memo(
         </button>
       </motion.div>
     );
-  }),
+  })
 );
 
 function ToastContainerComponent(): JSX.Element {

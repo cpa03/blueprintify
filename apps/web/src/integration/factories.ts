@@ -24,9 +24,7 @@ export interface TestProjectData {
   };
 }
 
-export function createTestBlueprint(
-  overrides?: Partial<TestBlueprint>,
-): TestBlueprint {
+export function createTestBlueprint(overrides?: Partial<TestBlueprint>): TestBlueprint {
   const now = new Date().toISOString();
   return {
     projectName: "Test Project",
@@ -42,14 +40,11 @@ export function createTestBlueprint(
   };
 }
 
-export function createTestProjectData(
-  overrides?: Partial<TestProjectData>,
-): TestProjectData {
+export function createTestProjectData(overrides?: Partial<TestProjectData>): TestProjectData {
   return {
     projectName: "Integration Test Project",
     description: "Testing import/export functionality",
-    blueprint:
-      "# Integration Test\n\n## Purpose\nTest data for integration testing.\n",
+    blueprint: "# Integration Test\n\n## Purpose\nTest data for integration testing.\n",
     tasks: "## Tasks\n- [ ] Test import\n- [ ] Test export\n",
     metadata: {
       version: "1.0.0",
@@ -128,8 +123,7 @@ export function createMockStreamResponse(chunks: string[]) {
 export const testScenarios = {
   validGeneration: {
     projectName: "E-commerce Platform",
-    description:
-      "A full-stack e-commerce platform with React frontend and Node.js backend",
+    description: "A full-stack e-commerce platform with React frontend and Node.js backend",
   },
   emptyProjectName: {
     projectName: "",

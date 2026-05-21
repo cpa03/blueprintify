@@ -247,6 +247,7 @@ test(api): add unit tests for validation middleware
 - Daily workflow execution reports
 - Weekly performance metrics
 - Monthly process optimization reviews
+
 ## 🛠️ Local Development
 
 ### Recommended VS Code Extensions
@@ -287,7 +288,6 @@ code --install-extension editorconfig.editorconfig
 
 - Dev server startup is optimized with dependency pre-bundling
 - Use `npm run dev:all` to run frontend and API simultaneously
-
 
 ### Workflow Updates
 

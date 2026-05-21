@@ -118,19 +118,17 @@ const pulseVariants = {
 const SkeletonElement = memo(
   forwardRef<HTMLDivElement, SkeletonBaseProps>(function SkeletonElement(
     { width, height, className = "", animation = "shimmer", borderRadius },
-    ref,
+    ref
   ) {
     const prefersReducedMotion = useReducedMotion();
     const effectiveAnimation = prefersReducedMotion ? "none" : animation;
 
-    const animationVariants =
-      effectiveAnimation === "shimmer" ? shimmerVariants : pulseVariants;
+    const animationVariants = effectiveAnimation === "shimmer" ? shimmerVariants : pulseVariants;
 
     const style: React.CSSProperties = {
       width: typeof width === "number" ? `${width}px` : width,
       height: typeof height === "number" ? `${height}px` : height,
-      borderRadius:
-        typeof borderRadius === "number" ? `${borderRadius}px` : borderRadius,
+      borderRadius: typeof borderRadius === "number" ? `${borderRadius}px` : borderRadius,
     };
 
     return (
@@ -139,7 +137,7 @@ const SkeletonElement = memo(
         className={clsx(
           "skeleton-base",
           effectiveAnimation === "none" ? "skeleton-static" : "",
-          className,
+          className
         )}
         style={style}
         initial={effectiveAnimation === "none" ? undefined : "initial"}
@@ -148,7 +146,7 @@ const SkeletonElement = memo(
         aria-hidden="true"
       />
     );
-  }),
+  })
 );
 
 function TextSkeleton({
@@ -242,26 +240,11 @@ function CardSkeleton({
       {showHeader && (
         <div className="flex items-center gap-3">
           {showAvatar && (
-            <SkeletonElement
-              width={40}
-              height={40}
-              animation={animation}
-              borderRadius="50%"
-            />
+            <SkeletonElement width={40} height={40} animation={animation} borderRadius="50%" />
           )}
           <div className="flex-1 space-y-2">
-            <SkeletonElement
-              width="60%"
-              height={14}
-              animation={animation}
-              borderRadius={4}
-            />
-            <SkeletonElement
-              width="40%"
-              height={12}
-              animation={animation}
-              borderRadius={4}
-            />
+            <SkeletonElement width="60%" height={14} animation={animation} borderRadius={4} />
+            <SkeletonElement width="40%" height={12} animation={animation} borderRadius={4} />
           </div>
         </div>
       )}
@@ -390,23 +373,14 @@ export const SkeletonPatterns = {
         {showAvatar && <Skeleton variant="avatar" size="md" />}
         <div className="flex-1 space-y-2">
           {Array.from({ length: lines }).map((_, i) => (
-            <Skeleton
-              key={i}
-              variant="text"
-              width={i === lines - 1 ? "60%" : "100%"}
-              height={12}
-            />
+            <Skeleton key={i} variant="text" width={i === lines - 1 ? "60%" : "100%"} height={12} />
           ))}
         </div>
       </div>
     );
   }),
 
-  FormField: memo(function FormFieldSkeleton({
-    showLabel = true,
-  }: {
-    showLabel?: boolean;
-  }) {
+  FormField: memo(function FormFieldSkeleton({ showLabel = true }: { showLabel?: boolean }) {
     return (
       <div className="space-y-2">
         {showLabel && <Skeleton variant="text" width={80} height={12} />}
@@ -415,21 +389,12 @@ export const SkeletonPatterns = {
     );
   }),
 
-  CodeBlock: memo(function CodeBlockSkeleton({
-    lines = 8,
-  }: {
-    lines?: number;
-  }) {
+  CodeBlock: memo(function CodeBlockSkeleton({ lines = 8 }: { lines?: number }) {
     const widths = [75, 85, 65, 90, 70, 80, 60, 95];
     return (
       <div className="glass-card p-4 space-y-2 font-mono">
         {Array.from({ length: lines }).map((_, i) => (
-          <Skeleton
-            key={i}
-            variant="text"
-            width={`${widths[i % widths.length]}%`}
-            height={14}
-          />
+          <Skeleton key={i} variant="text" width={`${widths[i % widths.length]}%`} height={14} />
         ))}
       </div>
     );

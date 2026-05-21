@@ -1,9 +1,6 @@
 import { BaseController } from "./base.controller";
 import { getContainer } from "../di/container";
-import {
-  TASK_SPLITTER_SYSTEM_PROMPT,
-  buildTaskPrompt,
-} from "../services/prompts";
+import { TASK_SPLITTER_SYSTEM_PROMPT, buildTaskPrompt } from "../services/prompts";
 import type { TasksContext } from "../types";
 
 /**

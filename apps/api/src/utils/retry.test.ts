@@ -50,10 +50,7 @@ describe("Retry Utilities", () => {
 
     it("should retry on server error (5xx)", async () => {
       const serverError = { status: 503 };
-      const operation = vi
-        .fn()
-        .mockRejectedValueOnce(serverError)
-        .mockResolvedValueOnce("success");
+      const operation = vi.fn().mockRejectedValueOnce(serverError).mockResolvedValueOnce("success");
 
       const resultPromise = withRetry(operation, {
         retries: 1,
@@ -90,9 +87,7 @@ describe("Retry Utilities", () => {
       const clientError = { status: 400 };
       const operation = vi.fn().mockRejectedValue(clientError);
 
-      await expect(withRetry(operation, { retries: 3 })).rejects.toEqual(
-        clientError,
-      );
+      await expect(withRetry(operation, { retries: 3 })).rejects.toEqual(clientError);
       expect(operation).toHaveBeenCalledTimes(1);
     });
 
@@ -163,10 +158,7 @@ describe("Retry Utilities", () => {
 
     it("should handle error with response.status property", async () => {
       const error = { response: { status: 502 } };
-      const operation = vi
-        .fn()
-        .mockRejectedValueOnce(error)
-        .mockResolvedValueOnce("success");
+      const operation = vi.fn().mockRejectedValueOnce(error).mockResolvedValueOnce("success");
 
       const resultPromise = withRetry(operation, {
         retries: 1,
@@ -181,10 +173,7 @@ describe("Retry Utilities", () => {
     });
 
     it("should retry on null/undefined error", async () => {
-      const operation = vi
-        .fn()
-        .mockRejectedValueOnce(null)
-        .mockResolvedValueOnce("success");
+      const operation = vi.fn().mockRejectedValueOnce(null).mockResolvedValueOnce("success");
 
       const resultPromise = withRetry(operation, {
         retries: 1,
@@ -202,18 +191,13 @@ describe("Retry Utilities", () => {
       const serverError = { status: 503 };
       const operation = vi.fn().mockRejectedValue(serverError);
 
-      await expect(withRetry(operation, { retries: 0 })).rejects.toEqual(
-        serverError,
-      );
+      await expect(withRetry(operation, { retries: 0 })).rejects.toEqual(serverError);
       expect(operation).toHaveBeenCalledTimes(1);
     });
 
     it("should use custom initial delay", async () => {
       const serverError = { status: 503 };
-      const operation = vi
-        .fn()
-        .mockRejectedValueOnce(serverError)
-        .mockResolvedValueOnce("success");
+      const operation = vi.fn().mockRejectedValueOnce(serverError).mockResolvedValueOnce("success");
 
       const resultPromise = withRetry(operation, {
         retries: 1,
@@ -308,20 +292,11 @@ describe("Retry Utilities", () => {
     });
 
     it("should handle all retryable error codes", async () => {
-      const retryableCodes = [
-        "ECONNRESET",
-        "ETIMEDOUT",
-        "ENOTFOUND",
-        "EAI_AGAIN",
-        "ECONNREFUSED",
-      ];
+      const retryableCodes = ["ECONNRESET", "ETIMEDOUT", "ENOTFOUND", "EAI_AGAIN", "ECONNREFUSED"];
 
       for (const code of retryableCodes) {
         const error = { code };
-        const operation = vi
-          .fn()
-          .mockRejectedValueOnce(error)
-          .mockResolvedValueOnce("success");
+        const operation = vi.fn().mockRejectedValueOnce(error).mockResolvedValueOnce("success");
 
         const resultPromise = withRetry(operation, {
           retries: 1,

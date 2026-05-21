@@ -4,11 +4,7 @@
  * Automatically retries on transient failures like rate limits and server errors.
  */
 
-import {
-  RETRY_CONFIG,
-  RETRYABLE_ERROR_CODES,
-  RETRY_LOGIC,
-} from "../config/constants";
+import { RETRY_CONFIG, RETRYABLE_ERROR_CODES, RETRY_LOGIC } from "../config/constants";
 import { getConfig } from "../config/env";
 import { TimeoutError } from "./timeout";
 
@@ -62,7 +58,7 @@ export interface RetryOptions {
  */
 export async function withRetry<T>(
   operation: () => Promise<T>,
-  options: RetryOptions = {},
+  options: RetryOptions = {}
 ): Promise<T> {
   const {
     retries = RETRY_CONFIG.DEFAULT_RETRIES,
@@ -84,7 +80,7 @@ export async function withRetry<T>(
       if (elapsed >= timeout) {
         throw new TimeoutError(
           timeout,
-          `Retry operation timed out after ${elapsed}ms (timeout: ${timeout}ms)`,
+          `Retry operation timed out after ${elapsed}ms (timeout: ${timeout}ms)`
         );
       }
     }
@@ -114,7 +110,7 @@ export async function withRetry<T>(
         if (elapsed + delay >= timeout) {
           throw new TimeoutError(
             timeout,
-            `Retry operation timed out after ${elapsed}ms (timeout: ${timeout}ms)`,
+            `Retry operation timed out after ${elapsed}ms (timeout: ${timeout}ms)`
           );
         }
       }
@@ -152,15 +148,12 @@ function isRetryableError(error: unknown): boolean {
     (error as { response?: { status?: number } }).response?.status;
 
   if (status) {
-    return (
-      status === RETRY_LOGIC.RATE_LIMIT_STATUS ||
-      status >= RETRY_LOGIC.SERVER_ERROR_THRESHOLD
-    );
+    return status === RETRY_LOGIC.RATE_LIMIT_STATUS || status >= RETRY_LOGIC.SERVER_ERROR_THRESHOLD;
   }
 
   const errorCode = (error as { code?: string }).code;
   return RETRYABLE_ERROR_CODES.includes(
     (errorCode as (typeof RETRYABLE_ERROR_CODES)[number]) ||
-      ("" as (typeof RETRYABLE_ERROR_CODES)[number]),
+      ("" as (typeof RETRYABLE_ERROR_CODES)[number])
   );
 }

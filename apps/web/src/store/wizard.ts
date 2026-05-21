@@ -15,11 +15,7 @@
  */
 
 import { create } from "zustand";
-import type {
-  WizardState,
-  WizardStep,
-  TechStackItemType,
-} from "@blueprint/shared";
+import type { WizardState, WizardStep, TechStackItemType } from "@blueprint/shared";
 import { WIZARD_STEPS, DEBOUNCE_CONFIG } from "../config/constants";
 import { wizardStorage } from "../lib/storage";
 import { createPersistedStore, type PersistedStorage } from "./persistence";
@@ -81,21 +77,15 @@ const initialState: WizardState = {
 /** Data shape persisted to storage */
 type PersistedWizardData = Pick<
   WizardStore,
-  | "projectName"
-  | "description"
-  | "techStack"
-  | "features"
-  | "targetAudience"
-  | "constraints"
+  "projectName" | "description" | "techStack" | "features" | "targetAudience" | "constraints"
 >;
 
 export const useWizardStore = create<WizardStore>()((set, get) => {
   // Use shared persistence utility
-  const {
-    loadState,
-    debouncedSave,
-    cancelSave,
-  } = createPersistedStore<PersistedWizardData, WizardStore>({
+  const { loadState, debouncedSave, cancelSave } = createPersistedStore<
+    PersistedWizardData,
+    WizardStore
+  >({
     storage: wizardStorage as PersistedStorage<PersistedWizardData>,
     debounceDelay: DEBOUNCE_CONFIG.WIZARD,
     getPersistData: (state) => ({

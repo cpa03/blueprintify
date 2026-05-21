@@ -87,7 +87,7 @@ app.post(
             timestamp: new Date().toISOString(),
           },
         },
-        HTTP_STATUS.BAD_REQUEST,
+        HTTP_STATUS.BAD_REQUEST
       );
     } catch (error) {
       secureLogError("Export error", error, { projectName, format });
@@ -100,10 +100,10 @@ app.post(
             timestamp: new Date().toISOString(),
           },
         },
-        HTTP_STATUS.INTERNAL_ERROR,
+        HTTP_STATUS.INTERNAL_ERROR
       );
     }
-  },
+  }
 );
 
 export default app;

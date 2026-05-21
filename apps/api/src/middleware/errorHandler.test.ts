@@ -1,12 +1,7 @@
 import { describe, it, expect, vi, beforeAll, afterAll } from "vitest";
 import { Hono } from "hono";
 import { errorHandler, notFoundHandler } from "./errorHandler";
-import {
-  ValidationError,
-  AuthenticationError,
-  NotFoundError,
-  ConfigurationError,
-} from "../errors";
+import { ValidationError, AuthenticationError, NotFoundError, ConfigurationError } from "../errors";
 import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import type { ErrorResponse } from "../errors";
 

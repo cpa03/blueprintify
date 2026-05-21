@@ -13,11 +13,7 @@
 import { useEffect, useState, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import {
-  CELEBRATION_COLORS,
-  CELEBRATION_TIMING,
-  SPRING_CONFIG,
-} from "../config/constants";
+import { CELEBRATION_COLORS, CELEBRATION_TIMING, SPRING_CONFIG } from "../config/constants";
 
 interface Particle {
   id: number;
@@ -224,11 +220,7 @@ function GenerationCelebrationComponent({
                 ease: [0.23, 1, 0.32, 1],
               }}
             >
-              <ParticleShape
-                shape={particle.shape}
-                size={particle.size}
-                color={particle.color}
-              />
+              <ParticleShape shape={particle.shape} size={particle.size} color={particle.color} />
             </motion.div>
           );
         })}

@@ -89,11 +89,9 @@ export interface UseLastSavedReturn {
  */
 export function useLastSaved(
   initialTimestamp: number | null = null,
-  updateInterval: number = TIMEOUTS.LAST_SAVED_REFRESH,
+  updateInterval: number = TIMEOUTS.LAST_SAVED_REFRESH
 ): UseLastSavedReturn {
-  const [lastSavedTimestamp, setLastSavedTimestamp] = useState<number | null>(
-    initialTimestamp,
-  );
+  const [lastSavedTimestamp, setLastSavedTimestamp] = useState<number | null>(initialTimestamp);
   const [hasChanges, setHasChanges] = useState(false);
   const [tick, setTick] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);

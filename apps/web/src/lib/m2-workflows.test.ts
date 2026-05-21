@@ -90,7 +90,7 @@ describe("M2 Integration Workflows", () => {
           ep.m2Feature === "refinement" ||
           ep.m2Feature === "export" ||
           ep.m2Feature === "import" ||
-          ep.m2Feature === "storage",
+          ep.m2Feature === "storage"
       );
 
       expect(m2Endpoints.length).toBeGreaterThan(0);

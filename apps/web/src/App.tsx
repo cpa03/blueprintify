@@ -1,11 +1,4 @@
-import {
-  useState,
-  Suspense,
-  lazy,
-  useEffect,
-  useCallback,
-  useRef,
-} from "react";
+import { useState, Suspense, lazy, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "./components/Header";
 import { TemplateGrid } from "./components/TemplateGrid";
@@ -26,13 +19,13 @@ const Editor = lazy(() =>
     /* webpackChunkName: "editor" */
     /* webpackPrefetch: false */
     "./components/Editor"
-  ).then((module) => ({ default: module.Editor })),
+  ).then((module) => ({ default: module.Editor }))
 );
 
 function App(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
   const hasContent = useEditorStore(
-    (s) => s.blueprintContent.length > 0 || s.tasksContent.length > 0,
+    (s) => s.blueprintContent.length > 0 || s.tasksContent.length > 0
   );
   const isGenerating = useEditorStore((s) => s.isGenerating);
   const cancelGeneration = useEditorStore((s) => s.cancelGeneration);
@@ -49,18 +42,9 @@ function App(): JSX.Element {
   // Memoized handlers for stable references to child components
   const handleHideEditor = useCallback(() => setShowEditor(false), []);
   const handleShowEditor = useCallback(() => setShowEditor(true), []);
-  const handleShowShortcuts = useCallback(
-    () => setShowShortcutsModal(true),
-    [],
-  );
-  const handleHideShortcuts = useCallback(
-    () => setShowShortcutsModal(false),
-    [],
-  );
-  const handleCelebrationComplete = useCallback(
-    () => setShowCelebration(false),
-    [],
-  );
+  const handleShowShortcuts = useCallback(() => setShowShortcutsModal(true), []);
+  const handleHideShortcuts = useCallback(() => setShowShortcutsModal(false), []);
+  const handleCelebrationComplete = useCallback(() => setShowCelebration(false), []);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -87,7 +71,7 @@ function App(): JSX.Element {
         cancelGeneration();
       }
     },
-    [isGenerating, cancelGeneration, showShortcutsModal],
+    [isGenerating, cancelGeneration, showShortcutsModal]
   );
 
   useEffect(() => {
@@ -97,15 +81,10 @@ function App(): JSX.Element {
 
   useEffect(() => {
     const hasContentChanged = hasContent !== previousHasContentRef.current;
-    const isGeneratingChanged =
-      isGenerating !== previousIsGeneratingRef.current;
+    const isGeneratingChanged = isGenerating !== previousIsGeneratingRef.current;
     const wasGenerating = previousIsGeneratingRef.current;
 
-    if (
-      (hasContentChanged || isGeneratingChanged) &&
-      (hasContent || isGenerating) &&
-      !showEditor
-    ) {
+    if ((hasContentChanged || isGeneratingChanged) && (hasContent || isGenerating) && !showEditor) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowEditor(true);
     }
@@ -131,18 +110,12 @@ function App(): JSX.Element {
             <div className="text-center mb-12">
               <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
                 {UI_CONTENT.HERO.TITLE_1}
-                <span className="text-gradient">
-                  {UI_CONTENT.HERO.TITLE_HIGHLIGHT_1}
-                </span>
+                <span className="text-gradient">{UI_CONTENT.HERO.TITLE_HIGHLIGHT_1}</span>
                 {UI_CONTENT.HERO.TITLE_2}
-                <span className="text-gradient">
-                  {UI_CONTENT.HERO.TITLE_HIGHLIGHT_2}
-                </span>
+                <span className="text-gradient">{UI_CONTENT.HERO.TITLE_HIGHLIGHT_2}</span>
                 {UI_CONTENT.HERO.TITLE_3}
               </h1>
-              <p className="text-lg text-dark-400 max-w-2xl mx-auto">
-                {UI_CONTENT.HERO.SUBTITLE}
-              </p>
+              <p className="text-lg text-dark-400 max-w-2xl mx-auto">{UI_CONTENT.HERO.SUBTITLE}</p>
             </div>
           )}
 
@@ -156,9 +129,7 @@ function App(): JSX.Element {
                 transition={{ duration: 0.2 }}
               >
                 <TemplateGrid />
-                <div className="text-center text-dark-500 my-8">
-                  {UI_CONTENT.TEMPLATES_DIVIDER}
-                </div>
+                <div className="text-center text-dark-500 my-8">{UI_CONTENT.TEMPLATES_DIVIDER}</div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -193,12 +164,7 @@ function App(): JSX.Element {
                     aria-label="Hide editor panel"
                     title="Hide editor"
                   >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -214,12 +180,7 @@ function App(): JSX.Element {
                     aria-label="Hide editor panel"
                     title="Hide editor"
                   >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -248,15 +209,8 @@ function App(): JSX.Element {
 
           {/* Show editor button when hidden */}
           {!showEditor && (
-            <KeyboardShortcutTooltip
-              shortcut="e"
-              description="Toggle editor"
-              position="left"
-            >
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
+            <KeyboardShortcutTooltip shortcut="e" description="Toggle editor" position="left">
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
                 <RippleButton
                   onClick={handleShowEditor}
                   className="fixed bottom-6 right-6 btn-primary shadow-2xl"
@@ -299,15 +253,9 @@ function App(): JSX.Element {
 
       <ToastContainer />
 
-      <KeyboardShortcutsModal
-        isOpen={showShortcutsModal}
-        onClose={handleHideShortcuts}
-      />
+      <KeyboardShortcutsModal isOpen={showShortcutsModal} onClose={handleHideShortcuts} />
 
-      <GenerationCelebration
-        isComplete={showCelebration}
-        onComplete={handleCelebrationComplete}
-      />
+      <GenerationCelebration isComplete={showCelebration} onComplete={handleCelebrationComplete} />
     </div>
   );
 }

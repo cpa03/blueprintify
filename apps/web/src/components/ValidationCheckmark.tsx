@@ -50,12 +50,7 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
           className={`${containerClasses} ${className}`}
           aria-label={ariaLabel}
         >
-          <svg
-            className={iconSize}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className={iconSize} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"

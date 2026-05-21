@@ -15,7 +15,6 @@ import { useState, useCallback, useRef, ReactNode, useId, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TOOLTIP_CONFIG } from "../config/constants";
 
-
 /**
  * Props for the Tooltip component.
  */
@@ -105,7 +104,7 @@ const TooltipComponent = ({
         setIsVisible(false);
       }
     },
-    [isVisible],
+    [isVisible]
   );
 
   return (

@@ -145,10 +145,7 @@ function CircularProgressCompactComponent({
   strokeWidth = 2,
   color = PROGRESS_COLORS.ACTIVE,
   className = "",
-}: Omit<
-  CircularProgressProps,
-  "showPercentage" | "animationDuration" | "ariaLabel"
->): JSX.Element {
+}: Omit<CircularProgressProps, "showPercentage" | "animationDuration" | "ariaLabel">): JSX.Element {
   return (
     <CircularProgress
       value={value}

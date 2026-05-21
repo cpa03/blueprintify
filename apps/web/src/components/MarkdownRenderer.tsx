@@ -70,9 +70,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <span className="text-xs text-dark-400 font-mono uppercase tracking-wide">
-        {language}
-      </span>
+      <span className="text-xs text-dark-400 font-mono uppercase tracking-wide">{language}</span>
       <motion.button
         onClick={handleCopy}
         className={clsx(
@@ -151,11 +149,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
  * @param props.className - Optional CSS class name
  * @returns The rendered markdown content
  */
-function MarkdownRendererComponent({
-  content,
-  className,
-}: MarkdownRendererProps) {
-
+function MarkdownRendererComponent({ content, className }: MarkdownRendererProps) {
   // Memoize sanitized content to avoid unnecessary DOMPurify calls
   const sanitizedContent = useMemo(() => sanitizeHtml(content), [content]);
 
@@ -195,7 +189,7 @@ function MarkdownRendererComponent({
           <code
             className={clsx(
               "bg-dark-800 px-1.5 py-0.5 rounded text-sm font-mono text-primary-400",
-              className,
+              className
             )}
             {...props}
           >
@@ -230,16 +224,10 @@ function MarkdownRendererComponent({
         );
       },
       td({ children }) {
-        return (
-          <td className="border border-dark-700 px-4 py-3 text-dark-300">
-            {children}
-          </td>
-        );
+        return <td className="border border-dark-700 px-4 py-3 text-dark-300">{children}</td>;
       },
       tr({ children }) {
-        return (
-          <tr className="hover:bg-dark-800/50 transition-colors">{children}</tr>
-        );
+        return <tr className="hover:bg-dark-800/50 transition-colors">{children}</tr>;
       },
       h1({ children }) {
         return (
@@ -249,55 +237,29 @@ function MarkdownRendererComponent({
         );
       },
       h2({ children }) {
-        return (
-          <h2 className="text-2xl font-bold text-white mb-3 mt-6">
-            {children}
-          </h2>
-        );
+        return <h2 className="text-2xl font-bold text-white mb-3 mt-6">{children}</h2>;
       },
       h3({ children }) {
-        return (
-          <h3 className="text-xl font-semibold text-white mb-2 mt-5">
-            {children}
-          </h3>
-        );
+        return <h3 className="text-xl font-semibold text-white mb-2 mt-5">{children}</h3>;
       },
       h4({ children }) {
-        return (
-          <h4 className="text-lg font-semibold text-white mb-2 mt-4">
-            {children}
-          </h4>
-        );
+        return <h4 className="text-lg font-semibold text-white mb-2 mt-4">{children}</h4>;
       },
       h5({ children }) {
-        return (
-          <h5 className="text-base font-semibold text-white mb-2 mt-4">
-            {children}
-          </h5>
-        );
+        return <h5 className="text-base font-semibold text-white mb-2 mt-4">{children}</h5>;
       },
       h6({ children }) {
-        return (
-          <h6 className="text-sm font-semibold text-white mb-2 mt-4">
-            {children}
-          </h6>
-        );
+        return <h6 className="text-sm font-semibold text-white mb-2 mt-4">{children}</h6>;
       },
       p({ children }) {
         return <p className="text-dark-300 mb-4 leading-relaxed">{children}</p>;
       },
       ul({ children }) {
-        return (
-          <ul className="list-disc list-inside mb-4 text-dark-300 space-y-2">
-            {children}
-          </ul>
-        );
+        return <ul className="list-disc list-inside mb-4 text-dark-300 space-y-2">{children}</ul>;
       },
       ol({ children }) {
         return (
-          <ol className="list-decimal list-inside mb-4 text-dark-300 space-y-2">
-            {children}
-          </ol>
+          <ol className="list-decimal list-inside mb-4 text-dark-300 space-y-2">{children}</ol>
         );
       },
       li({ children }) {
@@ -329,7 +291,7 @@ function MarkdownRendererComponent({
         return <hr className="border-t border-dark-700 my-8" />;
       },
     }),
-    [],
+    []
   );
 
   return (

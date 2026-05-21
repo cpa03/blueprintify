@@ -159,7 +159,7 @@ describe("validateJson middleware", () => {
     expect(data.error.details!.issues).toHaveLength(3);
 
     const paths = (data.error.details!.issues as Array<{ path: string[] }>).map(
-      (issue) => issue.path,
+      (issue) => issue.path
     );
     expect(paths).toContainEqual(["name"]);
     expect(paths).toContainEqual(["age"]);

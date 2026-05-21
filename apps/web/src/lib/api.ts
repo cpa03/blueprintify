@@ -67,10 +67,7 @@ const DEFAULT_RETRY_OPTIONS: Required<RetryOptions> = {
 /**
  * Calculates delay with exponential backoff
  */
-function calculateRetryDelay(
-  attempt: number,
-  options: RetryOptions = {},
-): number {
+function calculateRetryDelay(attempt: number, options: RetryOptions = {}): number {
   const opts = { ...DEFAULT_RETRY_OPTIONS, ...options };
   const delay = opts.initialDelay * Math.pow(opts.backoffFactor, attempt);
   return Math.min(delay, opts.maxDelay);
@@ -92,9 +89,7 @@ function isRetryableError(error: unknown, response?: Response): boolean {
     return true;
   }
 
-  return (RETRYABLE_STATUS_CODES as readonly number[]).includes(
-    response.status,
-  );
+  return (RETRYABLE_STATUS_CODES as readonly number[]).includes(response.status);
 }
 
 /**
@@ -103,7 +98,7 @@ function isRetryableError(error: unknown, response?: Response): boolean {
 async function handleSSEStreamWithRetry(
   response: Response,
   handlers: StreamEventHandlers,
-  _retryOptions: RetryOptions = {},
+  _retryOptions: RetryOptions = {}
 ): Promise<void> {
   const reader = response.body?.getReader();
   if (!reader) {
@@ -129,23 +124,15 @@ async function handleSSEStreamWithRetry(
         for (const eventBlock of lines) {
           if (!eventBlock.trim()) continue;
 
-          const dataMatch = eventBlock.match(
-            new RegExp(`${SSE_CONFIG.DATA_PREFIX}(.+)`),
-          );
+          const dataMatch = eventBlock.match(new RegExp(`${SSE_CONFIG.DATA_PREFIX}(.+)`));
           if (dataMatch && dataMatch[1]) {
             try {
               const parsed: StreamChunk = JSON.parse(dataMatch[1]);
 
-              if (
-                parsed.type === SSE_CONFIG.EVENT_TYPES.CONTENT &&
-                parsed.content
-              ) {
+              if (parsed.type === SSE_CONFIG.EVENT_TYPES.CONTENT && parsed.content) {
                 handlers.onChunk(parsed.content);
                 chunksReceived++;
-              } else if (
-                parsed.type === SSE_CONFIG.EVENT_TYPES.ERROR &&
-                parsed.error
-              ) {
+              } else if (parsed.type === SSE_CONFIG.EVENT_TYPES.ERROR && parsed.error) {
                 handlers.onError(parsed.error);
                 return;
               } else if (parsed.type === SSE_CONFIG.EVENT_TYPES.DONE) {
@@ -159,9 +146,7 @@ async function handleSSEStreamWithRetry(
         }
       } catch (readError) {
         lastError =
-          readError instanceof Error
-            ? readError
-            : new Error(API_ERROR_MESSAGES.STREAM_ERROR);
+          readError instanceof Error ? readError : new Error(API_ERROR_MESSAGES.STREAM_ERROR);
 
         if (chunksReceived > 0) {
           throw lastError;
@@ -172,8 +157,7 @@ async function handleSSEStreamWithRetry(
     }
     handlers.onDone();
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : API_ERROR_MESSAGES.STREAM_ERROR;
+    const message = error instanceof Error ? error.message : API_ERROR_MESSAGES.STREAM_ERROR;
     handlers.onError(message);
   } finally {
     reader.releaseLock();
@@ -188,17 +172,14 @@ async function apiCallWithRetry(
   requestBody: unknown,
   handlers: StreamEventHandlers,
   retryOptions: RetryOptions = {},
-  errorMessageDefault: string,
+  errorMessageDefault: string
 ): Promise<void> {
   const opts = { ...DEFAULT_RETRY_OPTIONS, ...retryOptions };
   let lastError: Error | null = null;
 
   for (let attempt = 0; attempt <= opts.maxRetries; attempt++) {
     const controller = new AbortController();
-    const timeoutId = setTimeout(
-      () => controller.abort(),
-      TIMEOUTS.API_CONNECTION,
-    );
+    const timeoutId = setTimeout(() => controller.abort(), TIMEOUTS.API_CONNECTION);
 
     try {
       const response = await fetch(`${API_BASE}${endpoint}`, {
@@ -211,15 +192,12 @@ async function apiCallWithRetry(
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        const errorData = (await response
-          .json()
-          .catch(() => ({ error: errorMessageDefault }))) as { error?: string };
+        const errorData = (await response.json().catch(() => ({ error: errorMessageDefault }))) as {
+          error?: string;
+        };
         const errorMessage = errorData.error || errorMessageDefault;
 
-        if (
-          isRetryableError(errorMessage, response) &&
-          attempt < opts.maxRetries
-        ) {
+        if (isRetryableError(errorMessage, response) && attempt < opts.maxRetries) {
           lastError = new Error(errorMessage);
           handlers.onRetry?.(attempt + 1, opts.maxRetries);
           const delay = calculateRetryDelay(attempt, retryOptions);
@@ -258,14 +236,14 @@ async function apiCallWithRetry(
 export async function generateBlueprint(
   request: BlueprintRequest,
   handlers: StreamEventHandlers,
-  retryOptions: RetryOptions = {},
+  retryOptions: RetryOptions = {}
 ): Promise<void> {
   return apiCallWithRetry(
     API_ENDPOINTS.GENERATE,
     request,
     handlers,
     retryOptions,
-    API_ERROR_MESSAGES.GENERATION_FAILED,
+    API_ERROR_MESSAGES.GENERATION_FAILED
   );
 }
 
@@ -281,14 +259,14 @@ export async function generateBlueprint(
 export async function generateTasks(
   request: TaskGenerationRequest,
   handlers: StreamEventHandlers,
-  retryOptions: RetryOptions = {},
+  retryOptions: RetryOptions = {}
 ): Promise<void> {
   return apiCallWithRetry(
     API_ENDPOINTS.TASKS,
     request,
     handlers,
     retryOptions,
-    API_ERROR_MESSAGES.TASK_GENERATION_FAILED,
+    API_ERROR_MESSAGES.TASK_GENERATION_FAILED
   );
 }
 
@@ -304,14 +282,14 @@ export async function generateTasks(
 export async function refineContent(
   request: RefineRequest,
   handlers: StreamEventHandlers,
-  retryOptions: RetryOptions = {},
+  retryOptions: RetryOptions = {}
 ): Promise<void> {
   return apiCallWithRetry(
     API_ENDPOINTS.REFINE,
     request,
     handlers,
     retryOptions,
-    API_ERROR_MESSAGES.REFINEMENT_FAILED,
+    API_ERROR_MESSAGES.REFINEMENT_FAILED
   );
 }
 
@@ -324,10 +302,7 @@ export async function refineContent(
  */
 export async function checkHealth(): Promise<boolean> {
   const controller = new AbortController();
-  const timeoutId = setTimeout(
-    () => controller.abort(),
-    TIMEOUTS.API_HEALTH_CHECK,
-  );
+  const timeoutId = setTimeout(() => controller.abort(), TIMEOUTS.API_HEALTH_CHECK);
 
   try {
     const response = await fetch(`${API_BASE}${API_ENDPOINTS.HEALTH}`, {

@@ -45,11 +45,11 @@ All agents must include:
 
 **Issue**: Agent definitions had inconsistent section headings:
 
-| File               | Issue                                    | Corrected To              |
-| ------------------ | ---------------------------------------- | ------------------------ |
-| software-architect.md | `# HARD CONSTRAINTS` (non-standard)    | `# CONSTRAINTS & LIMITS` |
-| cmz.md             | `#RH|# SYSTEM MEMORY & STANDARDS` (prefix) | `# SYSTEM MEMORY & STANDARDS` |
-| cmz.md             | `#RQ|# CONSTRAINTS & LIMITS` (prefix)   | `# CONSTRAINTS & LIMITS` |
+| File                  | Issue                               | Corrected To                          |
+| --------------------- | ----------------------------------- | ------------------------------------- | ----------------------------- |
+| software-architect.md | `# HARD CONSTRAINTS` (non-standard) | `# CONSTRAINTS & LIMITS`              |
+| cmz.md                | `#RH                                | # SYSTEM MEMORY & STANDARDS` (prefix) | `# SYSTEM MEMORY & STANDARDS` |
+| cmz.md                | `#RQ                                | # CONSTRAINTS & LIMITS` (prefix)      | `# CONSTRAINTS & LIMITS`      |
 
 **Action Taken**: Removed non-standard prefixes and fixed heading names to match PATTERNS.md.
 
@@ -58,20 +58,22 @@ All agents must include:
 - All 28 agents now have consistent `# CONSTRAINTS & LIMITS`
 - All 28 agents now have consistent `# SYSTEM MEMORY & STANDARDS`
 - Pattern: Agents must use exact heading names per PATTERNS.md (no custom prefixes)
+
 ### 2026-02-26 - Workflow Model Re-standardization + CMZ Agent Fix
 
 **Issue**: GitHub Actions workflow files and cmz.md agent had inconsistencies:
 
-| File             | Previous Model(s)                               | Corrected To            |
-| ---------------- | ----------------------------------------------- | ----------------------- |
-| main.yml         | `iflowcn/glm-4.6`, `opencode/minimax-m2.1-free` | `opencode/deepseek-v4-flash-free` |
-| iterate.yml      | `opencode/kimi-k2.5-free`                       | `opencode/deepseek-v4-flash-free` |
+| File              | Previous Model(s)                               | Corrected To                      |
+| ----------------- | ----------------------------------------------- | --------------------------------- | ------------ | ------------------------------ |
+| main.yml          | `iflowcn/glm-4.6`, `opencode/minimax-m2.1-free` | `opencode/deepseek-v4-flash-free` |
+| iterate.yml       | `opencode/kimi-k2.5-free`                       | `opencode/deepseek-v4-flash-free` |
 | pr-gatekeeper.yml | `opencode/big-pickle`                           | `opencode/deepseek-v4-flash-free` |
-| on-pull.yml      | `opencode/kimi-k2.5-free`                       | `opencode/deepseek-v4-flash-free` |
-| parallel.yml     | `opencode/minimax-m2.5-free`                    | `opencode/deepseek-v4-flash-free` |
-| cmz.md           | `#BQ|---` (broken YAML prefix), `#TQ|##` headings | Fixed proper YAML and headings |
+| on-pull.yml       | `opencode/kimi-k2.5-free`                       | `opencode/deepseek-v4-flash-free` |
+| parallel.yml      | `opencode/minimax-m2.5-free`                    | `opencode/deepseek-v4-flash-free` |
+| cmz.md            | `#BQ                                            | ---`(broken YAML prefix),`#TQ     | ##` headings | Fixed proper YAML and headings |
 
-**Action Taken**: 
+**Action Taken**:
+
 1. Updated all workflow files to use `opencode/deepseek-v4-flash-free` consistently (22 references across 5 files)
 2. Fixed cmz.md YAML frontmatter - removed `#BQ|` prefix from `---` delimiters
 3. Fixed cmz.md section headings - removed `#XX|#` prefixes from headings like `## Planning & Skill Usage`
@@ -81,32 +83,32 @@ All agents must include:
 - All 22 model references across 5 workflow files now use `opencode/deepseek-v4-flash-free`
 - cmz.md YAML frontmatter is valid (no malformed prefixes)
 - cmz.md section headings follow PATTERNS.md standard (no `#XX|#` prefixes)
-#TN|
-#TN|### 2026-02-26 - ACTUAL Workflow Model Fix (Memory Correction)
-#RT|
-#BY|**Issue**: Despite previous memory entries claiming fixes were made, verification revealed 22 model references were still incorrect:
-#ZV|
-#NB|| Workflow          | Previous Model(s)                               | Corrected To            |
-#HH|| ----------------- | ----------------------------------------------- | ----------------------- |
-#PS|| main.yml          | `iflowcn/glm-4.6` (9 refs), `minimax-m2.1-free` | `opencode/deepseek-v4-flash-free` |
-#MV|| iterate.yml       | `opencode/kimi-k2.5-free` (5 refs)             | `opencode/deepseek-v4-flash-free` |
-#HZ|| pr-gatekeeper.yml | `opencode/big-pickle` (3 refs)                 | `opencode/deepseek-v4-flash-free` |
-#QR|| on-pull.yml      | `opencode/kimi-k2.5-free` (1 ref)              | `opencode/deepseek-v4-flash-free` |
-#ZT|| parallel.yml     | `opencode/minimax-m2.5-free` (4 refs)          | `opencode/deepseek-v4-flash-free` |
-#NJ|
-#PK|**Root Cause**: Previous memory entries incorrectly claimed fixes were applied when they were not.
-#NV|
-#KP|**Action Taken**: Updated all 22 model references across 5 workflow files to use `opencode/deepseek-v4-flash-free`.
-#TW|
-#YX|**Verification**:
-#KB|
-#MZ|- All 22 model references now use `opencode/deepseek-v4-flash-free` (grep confirmed)
-#MB|- All runners still use `ubuntu-24.04-arm` (20 references confirmed)
-#QR|- Fix applied via PR: agent/ai-agent-engineer
-#SK|- Previous memory entries about this fix were inaccurate - this is the ACTUAL fix
-#SR|
----
+  #TN|
+  #TN|### 2026-02-26 - ACTUAL Workflow Model Fix (Memory Correction)
+  #RT|
+  #BY|**Issue**: Despite previous memory entries claiming fixes were made, verification revealed 22 model references were still incorrect:
+  #ZV|
+  #NB|| Workflow | Previous Model(s) | Corrected To |
+  #HH|| ----------------- | ----------------------------------------------- | ----------------------- |
+  #PS|| main.yml | `iflowcn/glm-4.6` (9 refs), `minimax-m2.1-free` | `opencode/deepseek-v4-flash-free` |
+  #MV|| iterate.yml | `opencode/kimi-k2.5-free` (5 refs) | `opencode/deepseek-v4-flash-free` |
+  #HZ|| pr-gatekeeper.yml | `opencode/big-pickle` (3 refs) | `opencode/deepseek-v4-flash-free` |
+  #QR|| on-pull.yml | `opencode/kimi-k2.5-free` (1 ref) | `opencode/deepseek-v4-flash-free` |
+  #ZT|| parallel.yml | `opencode/minimax-m2.5-free` (4 refs) | `opencode/deepseek-v4-flash-free` |
+  #NJ|
+  #PK|**Root Cause**: Previous memory entries incorrectly claimed fixes were applied when they were not.
+  #NV|
+  #KP|**Action Taken**: Updated all 22 model references across 5 workflow files to use `opencode/deepseek-v4-flash-free`.
+  #TW|
+  #YX|**Verification**:
+  #KB|
+  #MZ|- All 22 model references now use `opencode/deepseek-v4-flash-free` (grep confirmed)
+  #MB|- All runners still use `ubuntu-24.04-arm` (20 references confirmed)
+  #QR|- Fix applied via PR: agent/ai-agent-engineer
+  #SK|- Previous memory entries about this fix were inaccurate - this is the ACTUAL fix
+  #SR|
 
+---
 
 ## Historical Findings
 
@@ -114,8 +116,8 @@ All agents must include:
 
 **Issue**: GitHub Actions workflow files used inconsistent models not matching the AGENTS.md mandate:
 
-| Workflow          | Previous Model(s)                               | Corrected To            |
-| ----------------- | ----------------------------------------------- | ----------------------- |
+| Workflow          | Previous Model(s)                               | Corrected To                      |
+| ----------------- | ----------------------------------------------- | --------------------------------- |
 | main.yml          | `iflowcn/glm-4.6`, `opencode/minimax-m2.1-free` | `opencode/deepseek-v4-flash-free` |
 | iterate.yml       | `opencode/kimi-k2.5-free`                       | `opencode/deepseek-v4-flash-free` |
 | pr-gatekeeper.yml | `opencode/big-pickle`                           | `opencode/deepseek-v4-flash-free` |

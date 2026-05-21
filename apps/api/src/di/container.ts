@@ -23,7 +23,7 @@ export interface AIService {
 export interface StreamUtils {
   createStreamFromGenerator: (
     generator: AsyncGenerator<string, void, unknown>,
-    onComplete?: () => void,
+    onComplete?: () => void
   ) => ReadableStream<Uint8Array>;
   createSSEResponse: (stream: ReadableStream<Uint8Array>) => Response;
 }
@@ -55,7 +55,7 @@ export function setDefaultContainer(container: Container): void {
 export function getContainer(): Container {
   if (!defaultContainer) {
     throw new Error(
-      "DI Container not initialized. Call setDefaultContainer() before using services.",
+      "DI Container not initialized. Call setDefaultContainer() before using services."
     );
   }
   return defaultContainer;

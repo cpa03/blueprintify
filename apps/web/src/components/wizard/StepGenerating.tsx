@@ -77,15 +77,8 @@ export const StepGenerating = memo(function StepGenerating(): JSX.Element {
       </div>
 
       {/* Progress text */}
-      <h2 className="text-xl font-bold text-white mb-2">
-        Generating Your Blueprint
-      </h2>
-      <p
-        className="text-dark-400 mb-6"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      >
+      <h2 className="text-xl font-bold text-white mb-2">Generating Your Blueprint</h2>
+      <p className="text-dark-400 mb-6" role="status" aria-live="polite" aria-atomic="true">
         {progress || "Starting..."}
       </p>
       <p className="sr-only" role="status" aria-live="polite">
@@ -93,22 +86,14 @@ export const StepGenerating = memo(function StepGenerating(): JSX.Element {
       </p>
 
       {/* Live stats */}
-      <div
-        className="flex gap-8 text-center"
-        aria-live="polite"
-        aria-atomic="true"
-      >
+      <div className="flex gap-8 text-center" aria-live="polite" aria-atomic="true">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className="glass-card px-6 py-4"
         >
           <div className="text-2xl font-bold text-gradient">
-            <AnimatedNumber
-              value={blueprintLines}
-              duration={0.6}
-              className="text-gradient"
-            />
+            <AnimatedNumber value={blueprintLines} duration={0.6} className="text-gradient" />
           </div>
           <div className="text-sm text-dark-400">Blueprint Lines</div>
         </motion.div>
@@ -119,11 +104,7 @@ export const StepGenerating = memo(function StepGenerating(): JSX.Element {
           className="glass-card px-6 py-4"
         >
           <div className="text-2xl font-bold text-gradient">
-            <AnimatedNumber
-              value={tasksLines}
-              duration={0.6}
-              className="text-gradient"
-            />
+            <AnimatedNumber value={tasksLines} duration={0.6} className="text-gradient" />
           </div>
           <div className="text-sm text-dark-400">Task Lines</div>
         </motion.div>
@@ -156,12 +137,7 @@ export const StepGenerating = memo(function StepGenerating(): JSX.Element {
             className="btn-ghost text-dark-400 hover:text-accent-pink flex items-center gap-2"
             ariaLabel="Cancel generation (Esc)"
           >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"

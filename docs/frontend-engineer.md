@@ -135,19 +135,19 @@ When making changes to React components:
 
 - **Issue #912**: Implemented useMemo optimization in Wizard component
 - **Changes**: Memoized step component selection to avoid recreating components on each render
-- **Files Modified**: 
+- **Files Modified**:
   - `apps/web/src/components/Wizard.tsx` - Added useMemo
   - `apps/web/vite.config.ts` - Fixed merge conflict (duplicate optimizeDeps, unresolved markers)
-- **Verification**: 
+- **Verification**:
   - Build passes
   - All 340 tests pass
   - Lint passes
-KR|- **PR Created**: #1135
+    KR|- **PR Created**: #1135
 
 ### 2026-02-27
 
 - **Issue #1115**: Bundle optimization - optimize bundle splitting for better lazy loading
-- **Changes**: 
+- **Changes**:
   - Removed manualChunks for CodeMirror, markdown, and syntaxHighlighter
   - Allow Vite to naturally split based on dynamic import() statements
   - Adjust chunkSizeWarningLimit from 500 to 600

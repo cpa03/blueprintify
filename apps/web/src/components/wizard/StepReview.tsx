@@ -47,9 +47,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
   return (
     <motion.div {...pageTransition} className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white mb-2">
-          Review your project
-        </h2>
+        <h2 className="text-2xl font-bold text-white mb-2">Review your project</h2>
         <p className="text-dark-400">
           Make sure everything looks good before generating your blueprint.
         </p>
@@ -71,12 +69,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
               aria-label="Edit project information"
               title="Edit project information"
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -126,12 +119,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
               aria-label="Edit tech stack"
               title="Edit tech stack"
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -149,9 +137,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
                 className="px-3 py-1.5 bg-dark-800 border border-dark-600 rounded-lg text-sm text-dark-200"
               >
                 {tech.name}
-                <span className="text-dark-500 ml-1.5 text-xs">
-                  ({tech.category})
-                </span>
+                <span className="text-dark-500 ml-1.5 text-xs">({tech.category})</span>
               </span>
             ))}
           </div>
@@ -173,12 +159,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
                 aria-label="Edit features"
                 title="Edit features"
               >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -191,10 +172,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
             </div>
             <ul className="space-y-2">
               {features.map((feature) => (
-                <li
-                  key={feature}
-                  className="flex items-center gap-2 text-dark-200"
-                >
+                <li key={feature} className="flex items-center gap-2 text-dark-200">
                   <svg
                     className="w-4 h-4 text-accent-emerald"
                     fill="none"
@@ -237,11 +215,9 @@ export const StepReview = memo(function StepReview(): JSX.Element {
           <div>
             <h4 className="font-medium text-white">What happens next?</h4>
             <p className="text-sm text-dark-300 mt-1">
-              Clicking &quot;Generate Blueprint&quot; will use AI to create a
-              comprehensive{" "}
+              Clicking &quot;Generate Blueprint&quot; will use AI to create a comprehensive{" "}
               <code className="text-primary-300">blueprint.md</code> and{" "}
-              <code className="text-primary-300">task.md</code> for your
-              project. This usually takes{" "}
+              <code className="text-primary-300">task.md</code> for your project. This usually takes{" "}
               {GENERATION_ESTIMATES.TYPICAL_DURATION_SECONDS} seconds.
             </p>
           </div>
@@ -254,12 +230,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
           className="btn-secondary"
           disabled={isGenerating}
         >
-          <svg
-            className="w-5 h-5 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -284,12 +255,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
               </>
             ) : (
               <>
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

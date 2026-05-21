@@ -91,7 +91,7 @@ export const DEFAULTS: Omit<EnvConfig, "OPENAI_API_KEY"> = {
  */
 function getEnvVar(
   key: keyof EnvConfig,
-  env: Record<string, string | undefined>,
+  env: Record<string, string | undefined>
 ): string | undefined {
   return env[key] ?? undefined;
 }
@@ -102,7 +102,7 @@ function getEnvVar(
 function getNumericEnvVar(
   key: keyof EnvConfig,
   env: Record<string, string | undefined>,
-  defaultValue: number,
+  defaultValue: number
 ): number {
   const value = env[key];
   if (value === undefined) return defaultValue;
@@ -116,7 +116,7 @@ function getNumericEnvVar(
 function getFloatEnvVar(
   key: keyof EnvConfig,
   env: Record<string, string | undefined>,
-  defaultValue: number,
+  defaultValue: number
 ): number {
   const value = env[key];
   if (value === undefined) return defaultValue;
@@ -133,7 +133,7 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
   const openaiApiKey = getEnvVar("OPENAI_API_KEY", env);
   if (!openaiApiKey) {
     throw new Error(
-      "OPENAI_API_KEY is required but not set in environment. Please set the OPENAI_API_KEY environment variable in your .dev.vars file (for local development) or in your Cloudflare Workers secrets (for production).",
+      "OPENAI_API_KEY is required but not set in environment. Please set the OPENAI_API_KEY environment variable in your .dev.vars file (for local development) or in your Cloudflare Workers secrets (for production)."
     );
   }
 
@@ -141,7 +141,7 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
   const corsOrigin = getEnvVar("CORS_ORIGIN", env) ?? DEFAULTS.CORS_ORIGIN;
   if (!corsOrigin || corsOrigin.trim() === "") {
     throw new Error(
-      "CORS_ORIGIN is required and cannot be empty. Please set a valid origin (e.g., 'https://yourdomain.com') in your .dev.vars file (for local development) or in your Cloudflare Workers secrets (for production). Do not use '*' in production.",
+      "CORS_ORIGIN is required and cannot be empty. Please set a valid origin (e.g., 'https://yourdomain.com') in your .dev.vars file (for local development) or in your Cloudflare Workers secrets (for production). Do not use '*' in production."
     );
   }
 
@@ -153,24 +153,11 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
 
   return {
     OPENAI_API_KEY: openaiApiKey,
-    OPENAI_BASE_URL:
-      getEnvVar("OPENAI_BASE_URL", env) ?? DEFAULTS.OPENAI_BASE_URL,
+    OPENAI_BASE_URL: getEnvVar("OPENAI_BASE_URL", env) ?? DEFAULTS.OPENAI_BASE_URL,
     OPENAI_MODEL: getEnvVar("OPENAI_MODEL", env) ?? DEFAULTS.OPENAI_MODEL,
-    OPENAI_TIMEOUT_MS: getNumericEnvVar(
-      "OPENAI_TIMEOUT_MS",
-      env,
-      DEFAULTS.OPENAI_TIMEOUT_MS,
-    ),
-    OPENAI_MAX_TOKENS: getNumericEnvVar(
-      "OPENAI_MAX_TOKENS",
-      env,
-      DEFAULTS.OPENAI_MAX_TOKENS,
-    ),
-    OPENAI_TEMPERATURE: getFloatEnvVar(
-      "OPENAI_TEMPERATURE",
-      env,
-      DEFAULTS.OPENAI_TEMPERATURE,
-    ),
+    OPENAI_TIMEOUT_MS: getNumericEnvVar("OPENAI_TIMEOUT_MS", env, DEFAULTS.OPENAI_TIMEOUT_MS),
+    OPENAI_MAX_TOKENS: getNumericEnvVar("OPENAI_MAX_TOKENS", env, DEFAULTS.OPENAI_MAX_TOKENS),
+    OPENAI_TEMPERATURE: getFloatEnvVar("OPENAI_TEMPERATURE", env, DEFAULTS.OPENAI_TEMPERATURE),
 
     API_VERSION: getEnvVar("API_VERSION", env) ?? DEFAULTS.API_VERSION,
 
@@ -180,69 +167,56 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
     RATE_LIMIT_WINDOW_MS: getNumericEnvVar(
       "RATE_LIMIT_WINDOW_MS",
       env,
-      DEFAULTS.RATE_LIMIT_WINDOW_MS,
+      DEFAULTS.RATE_LIMIT_WINDOW_MS
     ),
     RATE_LIMIT_STRICT_MAX: getNumericEnvVar(
       "RATE_LIMIT_STRICT_MAX",
       env,
-      DEFAULTS.RATE_LIMIT_STRICT_MAX,
+      DEFAULTS.RATE_LIMIT_STRICT_MAX
     ),
     RATE_LIMIT_STANDARD_MAX: getNumericEnvVar(
       "RATE_LIMIT_STANDARD_MAX",
       env,
-      DEFAULTS.RATE_LIMIT_STANDARD_MAX,
+      DEFAULTS.RATE_LIMIT_STANDARD_MAX
     ),
     RATE_LIMIT_LENIENT_MAX: getNumericEnvVar(
       "RATE_LIMIT_LENIENT_MAX",
       env,
-      DEFAULTS.RATE_LIMIT_LENIENT_MAX,
+      DEFAULTS.RATE_LIMIT_LENIENT_MAX
     ),
 
-    STORAGE_QUOTA_MB: getNumericEnvVar(
-      "STORAGE_QUOTA_MB",
-      env,
-      DEFAULTS.STORAGE_QUOTA_MB,
-    ),
+    STORAGE_QUOTA_MB: getNumericEnvVar("STORAGE_QUOTA_MB", env, DEFAULTS.STORAGE_QUOTA_MB),
 
     CIRCUIT_BREAKER_FAILURE_THRESHOLD: getNumericEnvVar(
       "CIRCUIT_BREAKER_FAILURE_THRESHOLD",
       env,
-      DEFAULTS.CIRCUIT_BREAKER_FAILURE_THRESHOLD,
+      DEFAULTS.CIRCUIT_BREAKER_FAILURE_THRESHOLD
     ),
     CIRCUIT_BREAKER_RESET_TIMEOUT_MS: getNumericEnvVar(
       "CIRCUIT_BREAKER_RESET_TIMEOUT_MS",
       env,
-      DEFAULTS.CIRCUIT_BREAKER_RESET_TIMEOUT_MS,
+      DEFAULTS.CIRCUIT_BREAKER_RESET_TIMEOUT_MS
     ),
     CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS: getNumericEnvVar(
       "CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS",
       env,
-      DEFAULTS.CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS,
+      DEFAULTS.CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS
     ),
 
-    RETRY_MAX_RETRIES: getNumericEnvVar(
-      "RETRY_MAX_RETRIES",
-      env,
-      DEFAULTS.RETRY_MAX_RETRIES,
-    ),
+    RETRY_MAX_RETRIES: getNumericEnvVar("RETRY_MAX_RETRIES", env, DEFAULTS.RETRY_MAX_RETRIES),
     RETRY_INITIAL_DELAY_MS: getNumericEnvVar(
       "RETRY_INITIAL_DELAY_MS",
       env,
-      DEFAULTS.RETRY_INITIAL_DELAY_MS,
+      DEFAULTS.RETRY_INITIAL_DELAY_MS
     ),
     RETRY_BACKOFF_FACTOR: getNumericEnvVar(
       "RETRY_BACKOFF_FACTOR",
       env,
-      DEFAULTS.RETRY_BACKOFF_FACTOR,
+      DEFAULTS.RETRY_BACKOFF_FACTOR
     ),
-    RETRY_MAX_DELAY_MS: getNumericEnvVar(
-      "RETRY_MAX_DELAY_MS",
-      env,
-      DEFAULTS.RETRY_MAX_DELAY_MS,
-    ),
+    RETRY_MAX_DELAY_MS: getNumericEnvVar("RETRY_MAX_DELAY_MS", env, DEFAULTS.RETRY_MAX_DELAY_MS),
 
-    PROJECT_HOMEPAGE_URL:
-      getEnvVar("PROJECT_HOMEPAGE_URL", env) ?? DEFAULTS.PROJECT_HOMEPAGE_URL,
+    PROJECT_HOMEPAGE_URL: getEnvVar("PROJECT_HOMEPAGE_URL", env) ?? DEFAULTS.PROJECT_HOMEPAGE_URL,
     GITHUB_URL: getEnvVar("GITHUB_URL", env) ?? DEFAULTS.GITHUB_URL,
   };
 }
@@ -261,9 +235,7 @@ export function getConfig(): EnvConfig {
 /**
  * Initialize configuration (for use in tests or manual initialization)
  */
-export function initializeConfig(
-  env: Record<string, string | undefined>,
-): void {
+export function initializeConfig(env: Record<string, string | undefined>): void {
   const config = loadConfig(env);
   setConstantsConfig(config);
 }

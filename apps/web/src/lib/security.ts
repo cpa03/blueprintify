@@ -71,14 +71,7 @@ export const SECURITY_CONFIG = {
       "link",
       "meta",
     ] as string[],
-    FORBID_ATTR: [
-      "onclick",
-      "onload",
-      "onerror",
-      "onmouseover",
-      "style",
-      "formaction",
-    ] as string[],
+    FORBID_ATTR: ["onclick", "onload", "onerror", "onmouseover", "style", "formaction"] as string[],
     SANITIZE_DOM: true,
     SANITIZE_NAMED_PROPS: true,
     KEEP_CONTENT: true,
@@ -93,19 +86,13 @@ export const SECURITY_CONFIG = {
 export const ContentValidationSchema = z.object({
   blueprintContent: z
     .string()
-    .max(
-      SECURITY_CONFIG.MAX_CONTENT_LENGTH,
-      "Blueprint content exceeds maximum length",
-    )
+    .max(SECURITY_CONFIG.MAX_CONTENT_LENGTH, "Blueprint content exceeds maximum length")
     .refine((content) => !containsXSSPatterns(content), {
       message: "Blueprint content contains potentially dangerous patterns",
     }),
   tasksContent: z
     .string()
-    .max(
-      SECURITY_CONFIG.MAX_CONTENT_LENGTH,
-      "Tasks content exceeds maximum length",
-    )
+    .max(SECURITY_CONFIG.MAX_CONTENT_LENGTH, "Tasks content exceeds maximum length")
     .refine((content) => !containsXSSPatterns(content), {
       message: "Tasks content contains potentially dangerous patterns",
     }),
@@ -169,7 +156,7 @@ export function sanitizeHtml(html: string): string {
 export function sanitizeMarkdown(markdown: string): string {
   if (containsXSSPatterns(markdown)) {
     throw new Error(
-      "Content contains potentially dangerous XSS patterns. This may include script tags, event handlers, or javascript: URLs. Please remove any embedded scripts or suspicious HTML.",
+      "Content contains potentially dangerous XSS patterns. This may include script tags, event handlers, or javascript: URLs. Please remove any embedded scripts or suspicious HTML."
     );
   }
 
@@ -186,7 +173,7 @@ export function sanitizeMarkdown(markdown: string): string {
 
   if (CODEMIRROR_PATTERNS.some((pattern) => pattern.test(markdown))) {
     throw new Error(
-      "Content contains CodeMirror-specific dangerous patterns (data: URLs, vbscript, CSS expressions, or IE-specific behaviors). These are blocked for security reasons.",
+      "Content contains CodeMirror-specific dangerous patterns (data: URLs, vbscript, CSS expressions, or IE-specific behaviors). These are blocked for security reasons."
     );
   }
 
@@ -222,13 +209,9 @@ export function validateContent(content: unknown): {
     const contentInput = content as ContentInput;
     const validated = ContentValidationSchema.parse({
       blueprintContent:
-        typeof content === "object" && content !== null
-          ? contentInput.blueprintContent || ""
-          : "",
+        typeof content === "object" && content !== null ? contentInput.blueprintContent || "" : "",
       tasksContent:
-        typeof content === "object" && content !== null
-          ? contentInput.tasksContent || ""
-          : "",
+        typeof content === "object" && content !== null ? contentInput.tasksContent || "" : "",
     });
 
     return {
@@ -256,11 +239,10 @@ export function validateContent(content: unknown): {
 export function validateFile(file: File): { isValid: boolean; error?: string } {
   // Check file extension
   const fileNameParts = file.name.split(".");
-  const extension =
-    fileNameParts.length > 1 ? "." + fileNameParts.pop()?.toLowerCase() : "";
+  const extension = fileNameParts.length > 1 ? "." + fileNameParts.pop()?.toLowerCase() : "";
   if (
     !SECURITY_CONFIG.ALLOWED_FILE_TYPES.includes(
-      extension as (typeof SECURITY_CONFIG.ALLOWED_FILE_TYPES)[number],
+      extension as (typeof SECURITY_CONFIG.ALLOWED_FILE_TYPES)[number]
     )
   ) {
     return {
@@ -337,12 +319,8 @@ export function validateJSONSecurity(content: string): {
     // Check for prototype pollution patterns in raw string BEFORE parsing
     // This is necessary because JSON.stringify ignores __proto__
     const prototypePollutionPattern = /["']__proto__["']\s*:/;
-    const constructorPattern =
-      /["']constructor["']\s*:\s*\{[^}]*["']prototype["']/;
-    if (
-      prototypePollutionPattern.test(content) ||
-      constructorPattern.test(content)
-    ) {
+    const constructorPattern = /["']constructor["']\s*:\s*\{[^}]*["']prototype["']/;
+    if (prototypePollutionPattern.test(content) || constructorPattern.test(content)) {
       return {
         isValid: false,
         error: "JSON contains potential prototype pollution vulnerabilities",
@@ -361,14 +339,7 @@ export function validateJSONSecurity(content: string): {
     }
 
     // Check for suspicious key names
-    const suspiciousKeys = [
-      "__proto__",
-      "constructor",
-      "prototype",
-      "eval",
-      "function",
-      "script",
-    ];
+    const suspiciousKeys = ["__proto__", "constructor", "prototype", "eval", "function", "script"];
     const foundSuspiciousKeys = findSuspiciousKeys(parsed, suspiciousKeys);
     if (foundSuspiciousKeys.length > 0) {
       return {
@@ -419,11 +390,7 @@ function getObjectDepth(obj: unknown, currentDepth = 0): number {
  * @param path - Current object path for error reporting (default: "")
  * @returns Array of paths where suspicious keys were found
  */
-function findSuspiciousKeys(
-  obj: unknown,
-  suspiciousKeys: string[],
-  path = "",
-): string[] {
+function findSuspiciousKeys(obj: unknown, suspiciousKeys: string[], path = ""): string[] {
   const found: string[] = [];
 
   if (obj && typeof obj === "object") {
@@ -433,17 +400,11 @@ function findSuspiciousKeys(
         const currentPath = path ? `${path}.${key}` : key;
 
         // Check for exact match against suspicious keys (not substring)
-        if (
-          suspiciousKeys.some(
-            (suspicious) => key.toLowerCase() === suspicious.toLowerCase(),
-          )
-        ) {
+        if (suspiciousKeys.some((suspicious) => key.toLowerCase() === suspicious.toLowerCase())) {
           found.push(currentPath);
         }
 
-        found.push(
-          ...findSuspiciousKeys(objAsRecord[key], suspiciousKeys, currentPath),
-        );
+        found.push(...findSuspiciousKeys(objAsRecord[key], suspiciousKeys, currentPath));
       }
     }
   }
@@ -524,7 +485,7 @@ export class SecurityError extends Error {
   constructor(
     message: string,
     public readonly type: "XSS" | "VALIDATION" | "QUOTA" | "FILE",
-    public readonly details?: unknown,
+    public readonly details?: unknown
   ) {
     super(message);
     this.name = "SecurityError";
@@ -540,16 +501,13 @@ export function handleSecurityError(error: unknown): SecurityError {
     return new SecurityError(
       error.errors.map((e) => e.message).join(", "),
       "VALIDATION",
-      error.errors,
+      error.errors
     );
   }
 
   if (error instanceof Error) {
     if (containsXSSPatterns(error.message)) {
-      return new SecurityError(
-        "Content contains potentially dangerous patterns",
-        "XSS",
-      );
+      return new SecurityError("Content contains potentially dangerous patterns", "XSS");
     }
     return new SecurityError(error.message, "VALIDATION", error);
   }

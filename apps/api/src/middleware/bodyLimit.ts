@@ -103,7 +103,7 @@ export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
               timestamp: new Date().toISOString(),
             },
           },
-          HTTP_STATUS.PAYLOAD_TOO_LARGE,
+          HTTP_STATUS.PAYLOAD_TOO_LARGE
         );
       }
     }

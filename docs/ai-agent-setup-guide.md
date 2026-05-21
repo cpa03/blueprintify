@@ -385,7 +385,11 @@ Create custom workflows by combining agents and skills:
 
 ```typescript
 // Example: Documentation update workflow
-const workflow = [agent("technical-writer", (task = "Update README")), agent("quality-assurance", (task = "Review docs")), agent("integrator", (task = "Merge changes"))];
+const workflow = [
+  agent("technical-writer", (task = "Update README")),
+  agent("quality-assurance", (task = "Review docs")),
+  agent("integrator", (task = "Merge changes")),
+];
 ```
 
 ## Development Workflow

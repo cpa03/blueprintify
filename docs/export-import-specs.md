@@ -309,17 +309,14 @@ interface ExportService {
   exportSession(
     sessionId: string,
     format: ExportFormat,
-    options: ExportOptions,
+    options: ExportOptions
   ): Promise<ExportResult>;
   exportMultipleSessions(
     sessionIds: string[],
     format: ExportFormat,
-    options: ExportOptions,
+    options: ExportOptions
   ): Promise<ExportResult>;
-  exportAllSessions(
-    format: ExportFormat,
-    options: ExportOptions,
-  ): Promise<ExportResult>;
+  exportAllSessions(format: ExportFormat, options: ExportOptions): Promise<ExportResult>;
   createBackup(options: BackupOptions): Promise<BackupResult>;
 }
 
@@ -359,22 +356,16 @@ interface ExportResultMetadata {
 
 ```typescript
 interface ImportService {
-  validateImport(
-    data: string | File,
-    format: ImportFormat,
-  ): Promise<ImportValidation>;
-  previewImport(
-    data: string | File,
-    format: ImportFormat,
-  ): Promise<ImportPreview>;
+  validateImport(data: string | File, format: ImportFormat): Promise<ImportValidation>;
+  previewImport(data: string | File, format: ImportFormat): Promise<ImportPreview>;
   importData(
     data: string | File,
     format: ImportFormat,
-    options: ImportOptions,
+    options: ImportOptions
   ): Promise<ImportResult>;
   resolveConflicts(
     conflicts: ImportConflict[],
-    resolutions: ConflictResolution[],
+    resolutions: ConflictResolution[]
   ): Promise<boolean>;
 }
 

@@ -47,16 +47,13 @@ app.post(
                   timestamp: new Date().toISOString(),
                 },
               },
-              HTTP_STATUS.BAD_REQUEST,
+              HTTP_STATUS.BAD_REQUEST
             );
           }
 
-          if (
-            parsed.version &&
-            parsed.version !== IMPORT_CONFIG.EXPECTED_VERSION
-          ) {
+          if (parsed.version && parsed.version !== IMPORT_CONFIG.EXPECTED_VERSION) {
             warnings.push(
-              `Version mismatch: expected ${IMPORT_CONFIG.EXPECTED_VERSION}, got ${parsed.version}`,
+              `Version mismatch: expected ${IMPORT_CONFIG.EXPECTED_VERSION}, got ${parsed.version}`
             );
           }
 
@@ -78,12 +75,11 @@ app.post(
               error: {
                 type: ErrorType.VALIDATION,
                 message: IMPORT_ERROR_MESSAGES.INVALID_JSON_FORMAT,
-                details:
-                  parseError instanceof Error ? parseError.message : undefined,
+                details: parseError instanceof Error ? parseError.message : undefined,
                 timestamp: new Date().toISOString(),
               },
             },
-            HTTP_STATUS.BAD_REQUEST,
+            HTTP_STATUS.BAD_REQUEST
           );
         }
       }
@@ -92,12 +88,9 @@ app.post(
         // Parse markdown format - look for title at start of document
         // Match only if # is at the start of the document (not ## or later in the doc)
         const projectNameMatch = data.match(/^#[^#](.+)$/m);
-        const projectName =
-          projectNameMatch?.[1]?.trim() ?? IMPORT_CONFIG.DEFAULT_PROJECT_NAME;
+        const projectName = projectNameMatch?.[1]?.trim() ?? IMPORT_CONFIG.DEFAULT_PROJECT_NAME;
 
-        const blueprintMatch = data.match(
-          /## Blueprint\s*\n\n?([\s\S]*?)(?=\n## |$)/,
-        );
+        const blueprintMatch = data.match(/## Blueprint\s*\n\n?([\s\S]*?)(?=\n## |$)/);
         const blueprint = blueprintMatch?.[1]?.trim() ?? "";
 
         const tasksMatch = data.match(/## Tasks\s*\n\n?([\s\S]*?)(?=\n## |$)/);
@@ -113,7 +106,7 @@ app.post(
                 timestamp: new Date().toISOString(),
               },
             },
-            HTTP_STATUS.BAD_REQUEST,
+            HTTP_STATUS.BAD_REQUEST
           );
         }
 
@@ -139,7 +132,7 @@ app.post(
             timestamp: new Date().toISOString(),
           },
         },
-          HTTP_STATUS.BAD_REQUEST,
+        HTTP_STATUS.BAD_REQUEST
       );
     } catch (error) {
       secureLogError("Import error", error, { format, overwrite });
@@ -152,10 +145,10 @@ app.post(
             timestamp: new Date().toISOString(),
           },
         },
-        HTTP_STATUS.INTERNAL_ERROR,
+        HTTP_STATUS.INTERNAL_ERROR
       );
     }
-  },
+  }
 );
 
 export default app;

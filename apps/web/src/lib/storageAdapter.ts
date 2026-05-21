@@ -34,10 +34,7 @@ export function createTypedStorage<T>(storageService: StorageService<T>): {
       try {
         await storageService.remove();
       } catch (error) {
-        console.error(
-          "Storage removeItem failed:",
-          getStorageErrorMessage(error),
-        );
+        console.error("Storage removeItem failed:", getStorageErrorMessage(error));
         throw error;
       }
     },

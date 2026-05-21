@@ -1,11 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { SSE_HEADERS } from "@blueprint/shared";
 import { StorageManager, StorageError } from "../lib/storage";
-import {
-  createTestBlueprint,
-  createMockResponse,
-  createMockStreamResponse,
-} from "./factories";
+import { createTestBlueprint, createMockResponse, createMockStreamResponse } from "./factories";
 
 describe("Integration: Concurrent Operations", () => {
   let manager: StorageManager;
@@ -15,9 +11,7 @@ describe("Integration: Concurrent Operations", () => {
     vi.clearAllMocks();
     manager = new StorageManager();
 
-    Object.keys(localStorageStore).forEach(
-      (key) => delete localStorageStore[key],
-    );
+    Object.keys(localStorageStore).forEach((key) => delete localStorageStore[key]);
 
     const mockLocalStorage = {
       getItem: vi.fn((key: string) => localStorageStore[key] || null),
@@ -28,9 +22,7 @@ describe("Integration: Concurrent Operations", () => {
         delete localStorageStore[key];
       }),
       clear: vi.fn(() => {
-        Object.keys(localStorageStore).forEach(
-          (key) => delete localStorageStore[key],
-        );
+        Object.keys(localStorageStore).forEach((key) => delete localStorageStore[key]);
       }),
     };
 
@@ -50,15 +42,9 @@ describe("Integration: Concurrent Operations", () => {
       global.fetch = fetchMock;
 
       fetchMock
-        .mockResolvedValueOnce(
-          createMockResponse({ success: true, refinedContent: "Refined 1" }),
-        )
-        .mockResolvedValueOnce(
-          createMockResponse({ success: true, refinedContent: "Refined 2" }),
-        )
-        .mockResolvedValueOnce(
-          createMockResponse({ success: true, refinedContent: "Refined 3" }),
-        );
+        .mockResolvedValueOnce(createMockResponse({ success: true, refinedContent: "Refined 1" }))
+        .mockResolvedValueOnce(createMockResponse({ success: true, refinedContent: "Refined 2" }))
+        .mockResolvedValueOnce(createMockResponse({ success: true, refinedContent: "Refined 3" }));
 
       const requests = [
         fetch("/api/refine", {
@@ -162,7 +148,7 @@ describe("Integration: Concurrent Operations", () => {
       });
 
       const saves = Array.from({ length: 5 }, () =>
-        storage.set(largeData).catch((e: unknown) => e),
+        storage.set(largeData).catch((e: unknown) => e)
       );
 
       const results = await Promise.all(saves);
@@ -197,8 +183,8 @@ describe("Integration: Error Propagation", () => {
               errors: ["Missing required field: projectName"],
             },
           },
-          400,
-        ),
+          400
+        )
       );
 
       const response = await fetch("/api/generate", {
@@ -213,9 +199,7 @@ describe("Integration: Error Propagation", () => {
 
       expect(response.status).toBe(400);
       expect(data.error).toBe("Invalid blueprint format");
-      expect(data.validation.errors).toContain(
-        "Missing required field: projectName",
-      );
+      expect(data.validation.errors).toContain("Missing required field: projectName");
     });
 
     it("should handle network timeouts gracefully", async () => {
@@ -225,7 +209,7 @@ describe("Integration: Error Propagation", () => {
         fetch("/api/generate", {
           method: "POST",
           body: JSON.stringify({ projectName: "Test" }),
-        }),
+        })
       ).rejects.toThrow("Network timeout");
     });
 
@@ -236,8 +220,8 @@ describe("Integration: Error Propagation", () => {
             success: false,
             error: "Internal server error",
           },
-          500,
-        ),
+          500
+        )
       );
 
       const response = await fetch("/api/refine", {
@@ -254,9 +238,7 @@ describe("Integration: Error Propagation", () => {
     it("should handle streaming errors mid-response", async () => {
       const errorStream = new ReadableStream({
         start(controller) {
-          controller.enqueue(
-            new TextEncoder().encode('data: {"chunk": 1}\n\n'),
-          );
+          controller.enqueue(new TextEncoder().encode('data: {"chunk": 1}\n\n'));
           controller.error(new Error("Stream interrupted"));
         },
       });
@@ -265,7 +247,7 @@ describe("Integration: Error Propagation", () => {
         new Response(errorStream, {
           status: 200,
           headers: { "Content-Type": SSE_HEADERS.CONTENT_TYPE },
-        }),
+        })
       );
 
       const response = await fetch("/api/generate", {
@@ -319,9 +301,7 @@ describe("Integration: Error Propagation", () => {
 
       const recovered = await storage.get();
       expect(recovered).toBeDefined();
-      expect((recovered as { projectName: string }).projectName).toBe(
-        testData.projectName,
-      );
+      expect((recovered as { projectName: string }).projectName).toBe(testData.projectName);
     });
 
     it("should handle partial save failures", async () => {
@@ -367,9 +347,7 @@ describe("Integration: End-to-End Workflows", () => {
     global.fetch = fetchMock;
     manager = new StorageManager();
 
-    Object.keys(localStorageStore).forEach(
-      (key) => delete localStorageStore[key],
-    );
+    Object.keys(localStorageStore).forEach((key) => delete localStorageStore[key]);
 
     const mockLocalStorage = {
       getItem: vi.fn((key: string) => localStorageStore[key] || null),
@@ -380,9 +358,7 @@ describe("Integration: End-to-End Workflows", () => {
         delete localStorageStore[key];
       }),
       clear: vi.fn(() => {
-        Object.keys(localStorageStore).forEach(
-          (k) => delete localStorageStore[k],
-        );
+        Object.keys(localStorageStore).forEach((k) => delete localStorageStore[k]);
       }),
     };
 
@@ -410,13 +386,13 @@ describe("Integration: End-to-End Workflows", () => {
           createMockStreamResponse([
             'data: {"type":"content","content":"# Generated Blueprint"}\n\n',
             'data: {"type":"complete"}\n\n',
-          ]),
+          ])
         )
         .mockResolvedValueOnce(
           createMockResponse({
             success: true,
             refinedContent: "# Enhanced Blueprint",
-          }),
+          })
         )
         .mockResolvedValueOnce(
           createMockResponse({
@@ -425,7 +401,7 @@ describe("Integration: End-to-End Workflows", () => {
               { name: "blueprint.md", content: "# Enhanced Blueprint" },
               { name: "tasks.md", content: "## Tasks" },
             ],
-          }),
+          })
         );
 
       const generateResponse = await fetch("/api/generate", {
@@ -469,7 +445,7 @@ describe("Integration: End-to-End Workflows", () => {
           success: true,
           data: createTestBlueprint(),
           validation: { isValid: true },
-        }),
+        })
       );
 
       const importResponse = await fetch("/api/import", {
@@ -501,14 +477,12 @@ describe("Integration: End-to-End Workflows", () => {
         currentVersion: 1,
       });
 
-      fetchMock
-        .mockRejectedValueOnce(new Error("Network error"))
-        .mockResolvedValueOnce(
-          createMockResponse({
-            success: true,
-            blueprint: "# Success",
-          }),
-        );
+      fetchMock.mockRejectedValueOnce(new Error("Network error")).mockResolvedValueOnce(
+        createMockResponse({
+          success: true,
+          blueprint: "# Success",
+        })
+      );
 
       let attempts = 0;
       let success = false;
@@ -549,7 +523,7 @@ describe("Integration: End-to-End Workflows", () => {
       await storage.set(initialData);
 
       fetchMock.mockResolvedValueOnce(
-        createMockResponse({ success: false, error: "Refinement failed" }, 500),
+        createMockResponse({ success: false, error: "Refinement failed" }, 500)
       );
 
       const response = await fetch("/api/refine", {
@@ -570,9 +544,7 @@ describe("Integration: Multi-Manager Scenarios", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    Object.keys(localStorageStore).forEach(
-      (key) => delete localStorageStore[key],
-    );
+    Object.keys(localStorageStore).forEach((key) => delete localStorageStore[key]);
 
     const mockLocalStorage = {
       getItem: vi.fn((key: string) => localStorageStore[key] || null),
@@ -583,9 +555,7 @@ describe("Integration: Multi-Manager Scenarios", () => {
         delete localStorageStore[key];
       }),
       clear: vi.fn(() => {
-        Object.keys(localStorageStore).forEach(
-          (k) => delete localStorageStore[k],
-        );
+        Object.keys(localStorageStore).forEach((k) => delete localStorageStore[k]);
       }),
     };
 

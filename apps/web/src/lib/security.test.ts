@@ -51,13 +51,12 @@ describe("Security Utilities", () => {
     it("should detect XSS patterns in markdown", () => {
       const maliciousMarkdown = 'Hello <script>alert("xss")</script>';
       expect(() => sanitizeMarkdown(maliciousMarkdown)).toThrow(
-        "Content contains potentially dangerous XSS patterns",
+        "Content contains potentially dangerous XSS patterns"
       );
     });
 
     it("should sanitize HTML within markdown", () => {
-      const markdownWithHtml =
-        'Text <p>paragraph</p> and <script>alert("xss")</script>';
+      const markdownWithHtml = 'Text <p>paragraph</p> and <script>alert("xss")</script>';
       const result = sanitizeMarkdown(markdownWithHtml);
       expect(result).toContain("<p>paragraph</p>");
       expect(result).not.toContain("<script>");
@@ -98,11 +97,7 @@ describe("Security Utilities", () => {
   });
 
   describe("validateFile", () => {
-    const createMockFile = (
-      name: string,
-      size: number,
-      type: string = "text/plain",
-    ): File => {
+    const createMockFile = (name: string, size: number, type: string = "text/plain"): File => {
       const mockFile = new File(["content"], name, { type });
       Object.defineProperty(mockFile, "size", { value: size });
       return mockFile;
@@ -115,21 +110,14 @@ describe("Security Utilities", () => {
     });
 
     it("should reject invalid file types", () => {
-      const invalidFile = createMockFile(
-        "test.exe",
-        1024,
-        "application/x-executable",
-      );
+      const invalidFile = createMockFile("test.exe", 1024, "application/x-executable");
       const result = validateFile(invalidFile);
       expect(result.isValid).toBe(false);
       expect(result.error).toContain("not allowed");
     });
 
     it("should reject files that are too large", () => {
-      const largeFile = createMockFile(
-        "test.md",
-        SECURITY_CONFIG.MAX_FILE_SIZE + 1,
-      );
+      const largeFile = createMockFile("test.md", SECURITY_CONFIG.MAX_FILE_SIZE + 1);
       const result = validateFile(largeFile);
       expect(result.isValid).toBe(false);
       expect(result.error).toContain("exceeds maximum allowed size");
@@ -151,10 +139,7 @@ describe("Security Utilities", () => {
     });
 
     it("should reject file with malicious content", async () => {
-      const maliciousFile = new File(
-        ['<script>alert("xss")</script>'],
-        "test.md",
-      );
+      const maliciousFile = new File(['<script>alert("xss")</script>'], "test.md");
       Object.defineProperty(maliciousFile, "size", { value: 31 });
       const result = await validateAndSanitizeFileContent(maliciousFile);
       expect(result.isValid).toBe(false);
@@ -167,15 +152,11 @@ describe("Security Utilities", () => {
     });
 
     it("should detect javascript: URLs", () => {
-      expect(
-        containsXSSPatterns("<a href=\"javascript:alert('xss')\">link</a>"),
-      ).toBe(true);
+      expect(containsXSSPatterns("<a href=\"javascript:alert('xss')\">link</a>")).toBe(true);
     });
 
     it("should detect event handlers", () => {
-      expect(
-        containsXSSPatterns("<div onclick=\"alert('xss')\">div</div>"),
-      ).toBe(true);
+      expect(containsXSSPatterns("<div onclick=\"alert('xss')\">div</div>")).toBe(true);
     });
 
     it("should pass safe content", () => {
@@ -183,29 +164,37 @@ describe("Security Utilities", () => {
     });
 
     it("should detect SVG-based XSS vectors", () => {
-      expect(containsXSSPatterns('<svg onload="alert(\'xss\')">')).toBe(true);
+      expect(containsXSSPatterns("<svg onload=\"alert('xss')\">")).toBe(true);
       expect(containsXSSPatterns('<svg><script>alert("xss")</script></svg>')).toBe(true);
     });
 
     it("should detect math-based XSS vectors", () => {
-      expect(containsXSSPatterns('<math><mtext><script>alert("xss")</script></mtext></math>')).toBe(true);
+      expect(containsXSSPatterns('<math><mtext><script>alert("xss")</script></mtext></math>')).toBe(
+        true
+      );
     });
 
     it("should detect SVG animate/set elements", () => {
-      expect(containsXSSPatterns('<animate onbegin="alert(\'xss\')"/>')).toBe(true);
-      expect(containsXSSPatterns('<set attributeName="onmouseover" to="alert(\'xss\')"/>')).toBe(true);
+      expect(containsXSSPatterns("<animate onbegin=\"alert('xss')\"/>")).toBe(true);
+      expect(containsXSSPatterns('<set attributeName="onmouseover" to="alert(\'xss\')"/>')).toBe(
+        true
+      );
     });
 
     it("should detect SVG use element for external references", () => {
-      expect(containsXSSPatterns('<use href="data:image/svg+xml,<svg onload=alert(1)>"></use>')).toBe(true);
+      expect(
+        containsXSSPatterns('<use href="data:image/svg+xml,<svg onload=alert(1)>"></use>')
+      ).toBe(true);
     });
 
     it("should detect data: URL with base64", () => {
-      expect(containsXSSPatterns('data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==')).toBe(true);
+      expect(
+        containsXSSPatterns("data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==")
+      ).toBe(true);
     });
 
     it("should detect blob: URLs", () => {
-      expect(containsXSSPatterns('blob:https://example.com/uuid')).toBe(true);
+      expect(containsXSSPatterns("blob:https://example.com/uuid")).toBe(true);
     });
 
     it("should detect DOM clobbering patterns", () => {
@@ -214,27 +203,27 @@ describe("Security Utilities", () => {
     });
 
     it("should detect mutation XSS patterns", () => {
-      expect(containsXSSPatterns('<noscript><img src=x onerror=alert(1)></noscript>')).toBe(true);
+      expect(containsXSSPatterns("<noscript><img src=x onerror=alert(1)></noscript>")).toBe(true);
       expect(containsXSSPatterns('<template><script>alert("xss")</script></template>')).toBe(true);
     });
 
     it("should detect iframe injection", () => {
-      expect(containsXSSPatterns('<iframe src="javascript:alert(\'xss\')">')).toBe(true);
+      expect(containsXSSPatterns("<iframe src=\"javascript:alert('xss')\">")).toBe(true);
     });
 
     it("should detect object/embed tags", () => {
-      expect(containsXSSPatterns('<object data="javascript:alert(\'xss\')">')).toBe(true);
-      expect(containsXSSPatterns('<embed src="javascript:alert(\'xss\')">')).toBe(true);
+      expect(containsXSSPatterns("<object data=\"javascript:alert('xss')\">")).toBe(true);
+      expect(containsXSSPatterns("<embed src=\"javascript:alert('xss')\">")).toBe(true);
     });
 
     it("should detect form injection", () => {
-      expect(containsXSSPatterns('<form action="javascript:alert(\'xss\')">')).toBe(true);
-      expect(containsXSSPatterns('<input onfocus="alert(\'xss\')" autofocus>')).toBe(true);
-      expect(containsXSSPatterns('<button onclick="alert(\'xss\')">Click</button>')).toBe(true);
+      expect(containsXSSPatterns("<form action=\"javascript:alert('xss')\">")).toBe(true);
+      expect(containsXSSPatterns("<input onfocus=\"alert('xss')\" autofocus>")).toBe(true);
+      expect(containsXSSPatterns("<button onclick=\"alert('xss')\">Click</button>")).toBe(true);
     });
 
     it("should detect eval() calls", () => {
-      expect(containsXSSPatterns('eval("alert(\'xss\')")')).toBe(true);
+      expect(containsXSSPatterns("eval(\"alert('xss')\")")).toBe(true);
     });
 
     it("should detect CSS expression attacks", () => {
@@ -246,7 +235,7 @@ describe("Security Utilities", () => {
     });
 
     it("should detect @import CSS injection", () => {
-      expect(containsXSSPatterns('@import url("javascript:alert(\'xss\')")')).toBe(true);
+      expect(containsXSSPatterns("@import url(\"javascript:alert('xss')\")")).toBe(true);
     });
   });
 
@@ -367,8 +356,7 @@ describe("Security Utilities", () => {
 
   describe("CodeMirror Security Enhancement Tests", () => {
     it("should detect data:text/html patterns in markdown", () => {
-      const maliciousMarkdown =
-        'content with data:text/html,<script>alert("xss")</script>';
+      const maliciousMarkdown = 'content with data:text/html,<script>alert("xss")</script>';
       expect(() => sanitizeMarkdown(maliciousMarkdown)).toThrow();
     });
 
@@ -378,8 +366,7 @@ describe("Security Utilities", () => {
     });
 
     it("should detect @import url patterns in markdown", () => {
-      const maliciousMarkdown =
-        'content with @import url("javascript:alert()")';
+      const maliciousMarkdown = 'content with @import url("javascript:alert()")';
       expect(() => sanitizeMarkdown(maliciousMarkdown)).toThrow();
     });
 
@@ -389,8 +376,7 @@ describe("Security Utilities", () => {
     });
 
     it("should detect behavior patterns in markdown", () => {
-      const maliciousMarkdown =
-        'content with behavior:url(javascript:alert("xss"))';
+      const maliciousMarkdown = 'content with behavior:url(javascript:alert("xss"))';
       expect(() => sanitizeMarkdown(maliciousMarkdown)).toThrow();
     });
   });

@@ -64,15 +64,13 @@ export function useFocusTrap(options: UseFocusTrapOptions): UseFocusTrapReturn {
   const getFocusableElements = useCallback((): HTMLElement[] => {
     if (!containerRef.current) return [];
     return Array.from(
-      containerRef.current.querySelectorAll<HTMLElement>(
-        FOCUSABLE_SELECTOR_STRING,
-      ),
+      containerRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR_STRING)
     ).filter(
       (element) =>
         element.tabIndex >= 0 &&
         element.offsetParent !== null &&
         element.offsetWidth > 0 &&
-        element.offsetHeight > 0,
+        element.offsetHeight > 0
     );
   }, []);
 
@@ -107,9 +105,7 @@ export function useFocusTrap(options: UseFocusTrapOptions): UseFocusTrapReturn {
 
   useEffect(() => {
     const returnFocusElement =
-      returnFocusTo && typeof returnFocusTo !== "function"
-        ? returnFocusTo.current
-        : null;
+      returnFocusTo && typeof returnFocusTo !== "function" ? returnFocusTo.current : null;
 
     return () => {
       if (!isActive && previousFocusRef.current) {
@@ -148,10 +144,7 @@ export function useFocusTrap(options: UseFocusTrapOptions): UseFocusTrapReturn {
       const activeElement = document.activeElement;
 
       if (e.shiftKey) {
-        if (
-          activeElement === firstElement ||
-          !containerRef.current.contains(activeElement)
-        ) {
+        if (activeElement === firstElement || !containerRef.current.contains(activeElement)) {
           e.preventDefault();
           lastElement?.focus();
         }

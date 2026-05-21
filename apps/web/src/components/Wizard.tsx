@@ -29,10 +29,7 @@ import { StepFeatures } from "./wizard/StepFeatures";
 import { StepReview } from "./wizard/StepReview";
 import { StepGenerating } from "./wizard/StepGenerating";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
-import {
-  useFocusOnStepChange,
-  useStepAnnouncer,
-} from "../hooks/useFocusOnStepChange";
+import { useFocusOnStepChange, useStepAnnouncer } from "../hooks/useFocusOnStepChange";
 import { WIZARD_STEPS } from "../config/constants";
 
 /**
@@ -66,8 +63,7 @@ function WizardComponent(): JSX.Element {
   const isGenerating = useEditorStore((s) => s.isGenerating);
   const generationProgress = useEditorStore((s) => s.generationProgress);
   const containerRef = useFocusOnStepChange(currentStep);
-  const currentStepLabel =
-    WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
+  const currentStepLabel = WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
   useStepAnnouncer(currentStep, currentStepLabel);
 
   const documentTitle =

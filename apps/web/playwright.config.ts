@@ -1,7 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const TEST_SERVER_URL =
-  process.env.PLAYWRIGHT_TEST_URL || "http://localhost:3000";
+const TEST_SERVER_URL = process.env.PLAYWRIGHT_TEST_URL || "http://localhost:3000";
 
 const PLAYWRIGHT_CONFIG = {
   WEB_SERVER_TIMEOUT_MS: 120000,

@@ -103,7 +103,9 @@ describe("generateBlueprint", () => {
         features: ["invalid-feature"] as any,
       };
 
-      await expect(generateBlueprint(invalidConfig)).rejects.toThrow("Invalid feature: invalid-feature");
+      await expect(generateBlueprint(invalidConfig)).rejects.toThrow(
+        "Invalid feature: invalid-feature"
+      );
     });
   });
 });
@@ -326,7 +328,7 @@ export const server = setupServer(
           name: "Test Blueprint",
           description: "A test blueprint",
         },
-      }),
+      })
     );
   }),
 
@@ -338,9 +340,9 @@ export const server = setupServer(
           id: "new-blueprint-id",
           ...req.body,
         },
-      }),
+      })
     );
-  }),
+  })
 );
 ```
 

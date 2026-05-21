@@ -75,13 +75,10 @@ export interface CreatePersistedStoreOptions<T, S> {
  * ```
  */
 export function createPersistedStore<T, S>(
-  options: CreatePersistedStoreOptions<T, S>,
+  options: CreatePersistedStoreOptions<T, S>
 ): {
   loadState: (
-    set: (
-      partial: Partial<S> | ((state: S) => Partial<S>) | S,
-      replace?: boolean,
-    ) => void,
+    set: (partial: Partial<S> | ((state: S) => Partial<S>) | S, replace?: boolean) => void
   ) => Promise<void>;
   saveState: (get: () => S) => Promise<void>;
   debouncedSave: (get: () => S) => void;
@@ -91,10 +88,7 @@ export function createPersistedStore<T, S>(
   const { storage, debounceDelay, getPersistData } = options;
 
   const loadState = async (
-    set: (
-      partial: Partial<S> | ((state: S) => Partial<S>) | S,
-      replace?: boolean,
-    ) => void,
+    set: (partial: Partial<S> | ((state: S) => Partial<S>) | S, replace?: boolean) => void
   ): Promise<void> => {
     try {
       const stored = await storage.get();

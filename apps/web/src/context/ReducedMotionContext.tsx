@@ -18,9 +18,7 @@ interface ReducedMotionContextType {
   shouldAnimate: boolean;
 }
 
-const ReducedMotionContext = createContext<
-  ReducedMotionContextType | undefined
->(undefined);
+const ReducedMotionContext = createContext<ReducedMotionContextType | undefined>(undefined);
 
 interface ReducedMotionProviderProps {
   children: ReactNode;
@@ -58,18 +56,13 @@ export function ReducedMotionProvider({
   children,
   defaultReducedMotion = false,
 }: ReducedMotionProviderProps): JSX.Element {
-  const [userOverride, setUserOverrideState] = useState<boolean | null>(() =>
-    getInitialOverride(),
+  const [userOverride, setUserOverrideState] = useState<boolean | null>(() => getInitialOverride());
+
+  const systemPreference = useSyncExternalStore(subscribeToMediaQuery, getMediaQuerySnapshot, () =>
+    getServerSnapshot(defaultReducedMotion)
   );
 
-  const systemPreference = useSyncExternalStore(
-    subscribeToMediaQuery,
-    getMediaQuerySnapshot,
-    () => getServerSnapshot(defaultReducedMotion),
-  );
-
-  const prefersReducedMotion =
-    userOverride !== null ? userOverride : systemPreference;
+  const prefersReducedMotion = userOverride !== null ? userOverride : systemPreference;
 
   const setUserOverride = useCallback((value: boolean | null): void => {
     setUserOverrideState(value);
@@ -91,7 +84,7 @@ export function ReducedMotionProvider({
     (normalDuration: number): number => {
       return prefersReducedMotion ? 0 : normalDuration;
     },
-    [prefersReducedMotion],
+    [prefersReducedMotion]
   );
 
   const shouldAnimate = !prefersReducedMotion;
@@ -106,20 +99,14 @@ export function ReducedMotionProvider({
     shouldAnimate,
   };
 
-  return (
-    <ReducedMotionContext.Provider value={value}>
-      {children}
-    </ReducedMotionContext.Provider>
-  );
+  return <ReducedMotionContext.Provider value={value}>{children}</ReducedMotionContext.Provider>;
 }
 
 export function useReducedMotionContext(): ReducedMotionContextType {
   const context = useContext(ReducedMotionContext);
 
   if (context === undefined) {
-    throw new Error(
-      "useReducedMotionContext must be used within a ReducedMotionProvider",
-    );
+    throw new Error("useReducedMotionContext must be used within a ReducedMotionProvider");
   }
 
   return context;

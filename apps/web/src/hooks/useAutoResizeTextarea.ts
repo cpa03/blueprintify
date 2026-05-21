@@ -26,14 +26,9 @@ interface UseAutoResizeTextareaReturn {
  * - Accessible - maintains focus and cursor position
  */
 export function useAutoResizeTextarea(
-  options: UseAutoResizeTextareaOptions = {},
+  options: UseAutoResizeTextareaOptions = {}
 ): UseAutoResizeTextareaReturn {
-  const {
-    minHeight = 80,
-    maxHeight = 300,
-    animate = true,
-    extraPadding = 2,
-  } = options;
+  const { minHeight = 80, maxHeight = 300, animate = true, extraPadding = 2 } = options;
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [height, setHeight] = useState(minHeight);
@@ -67,7 +62,7 @@ export function useAutoResizeTextarea(
 
       return newHeight;
     },
-    [minHeight, maxHeight, extraPadding, animate, prefersReducedMotion],
+    [minHeight, maxHeight, extraPadding, animate, prefersReducedMotion]
   );
 
   const resize = useCallback(() => {

@@ -48,9 +48,7 @@ const localStorageMock = {
     delete localStorageStore[key];
   }),
   clear: vi.fn(() => {
-    Object.keys(localStorageStore).forEach(
-      (key) => delete localStorageStore[key],
-    );
+    Object.keys(localStorageStore).forEach((key) => delete localStorageStore[key]);
   }),
 };
 
@@ -70,7 +68,5 @@ vi.stubGlobal("localStorage", localStorageMock);
 
 // Reset store before each test
 beforeEach(() => {
-  Object.keys(localStorageStore).forEach(
-    (key) => delete localStorageStore[key],
-  );
+  Object.keys(localStorageStore).forEach((key) => delete localStorageStore[key]);
 });

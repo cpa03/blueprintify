@@ -63,17 +63,17 @@ describe("StorageService", () => {
       const circularData: Record<string, unknown> = { test: "value" };
       circularData.self = circularData;
 
-      await expect(
-        storage.set(circularData as { test: string }),
-      ).rejects.toBeInstanceOf(StorageError);
+      await expect(storage.set(circularData as { test: string })).rejects.toBeInstanceOf(
+        StorageError
+      );
     });
 
     it("AC: should handle serialization errors gracefully", async () => {
       const bigIntData = { test: "value", big: BigInt(9007199254740991) };
 
-      await expect(
-        storage.set(bigIntData as unknown as { test: string }),
-      ).rejects.toBeInstanceOf(StorageError);
+      await expect(storage.set(bigIntData as unknown as { test: string })).rejects.toBeInstanceOf(
+        StorageError
+      );
     });
   });
 
@@ -214,10 +214,7 @@ describe("StorageService", () => {
         data: JSON.stringify(initialData),
         metadata: initialData.metadata,
       };
-      localStorage.setItem(
-        `__backup__${recoveryKey}`,
-        JSON.stringify([backupEntry]),
-      );
+      localStorage.setItem(`__backup__${recoveryKey}`, JSON.stringify([backupEntry]));
 
       const recoveryStorage = new StorageService<{ data: string }>({
         key: recoveryKey,
@@ -367,9 +364,7 @@ describe("StorageService", () => {
 
       for (const { type, expected } of errorTypes) {
         const messageText =
-          type === "SERIALIZATION_ERROR"
-            ? "Failed to write to storage"
-            : "test message";
+          type === "SERIALIZATION_ERROR" ? "Failed to write to storage" : "test message";
         const error = new StorageError(messageText, type, {
           key: "test",
           operation: "write",
@@ -579,10 +574,7 @@ describe("utility functions", () => {
 
   describe("withStorageRecovery", () => {
     it("should return operation result on success", async () => {
-      const result = await withStorageRecovery(
-        async () => "success",
-        "fallback",
-      );
+      const result = await withStorageRecovery(async () => "success", "fallback");
       expect(result).toBe("success");
     });
 
@@ -656,10 +648,7 @@ describe("Acceptance Criteria Verification - Issue #242", () => {
       data: JSON.stringify(payload),
       metadata: payload.metadata,
     };
-    localStorage.setItem(
-      `__backup__${recoveryKey}`,
-      JSON.stringify([backupEntry]),
-    );
+    localStorage.setItem(`__backup__${recoveryKey}`, JSON.stringify([backupEntry]));
 
     const recoveryStorage = new StorageService<{ critical: string }>({
       key: recoveryKey,
@@ -711,10 +700,7 @@ describe("Acceptance Criteria Verification - Issue #242", () => {
   it("AC5: Error recovery workflows are tested", async () => {
     const fallback = { success: true };
 
-    const result1 = await withStorageRecovery(
-      async () => ({ success: true }),
-      fallback,
-    );
+    const result1 = await withStorageRecovery(async () => ({ success: true }), fallback);
     expect(result1).toEqual({ success: true });
 
     const result2 = await withStorageRecovery(async () => {

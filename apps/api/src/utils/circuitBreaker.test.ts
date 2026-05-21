@@ -130,9 +130,7 @@ describe("Circuit Breaker Utilities", () => {
       it("should reject requests immediately in OPEN state", async () => {
         const operation = vi.fn().mockResolvedValue("success");
 
-        await expect(breaker.execute(operation)).rejects.toThrow(
-          CircuitBreakerOpenError,
-        );
+        await expect(breaker.execute(operation)).rejects.toThrow(CircuitBreakerOpenError);
         expect(operation).not.toHaveBeenCalled();
       });
 
@@ -311,17 +309,15 @@ describe("Circuit Breaker Utilities", () => {
 
         // Should still be OPEN after 4999ms (using timer advance)
         vi.advanceTimersByTime(4999);
-        await expect(customBreaker.execute(operation)).rejects.toThrow(
-          CircuitBreakerOpenError,
-        );
+        await expect(customBreaker.execute(operation)).rejects.toThrow(CircuitBreakerOpenError);
 
         // Should transition to HALF_OPEN after 5000ms total
         vi.advanceTimersByTime(2); // 4999 + 2 = 5001ms > 5000ms resetTimeout
-        
+
         // First call in HALF_OPEN - with halfOpenMaxCalls: 1, this should close the circuit
         const successOp = vi.fn().mockResolvedValue("success");
         await customBreaker.execute(successOp);
-        
+
         // After one success in HALF_OPEN (halfOpenMaxCalls: 1), circuit should be CLOSED
         expect(customBreaker.getState().state).toBe(CircuitState.CLOSED);
       });

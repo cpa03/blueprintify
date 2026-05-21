@@ -1,15 +1,7 @@
 import type JSZip from "jszip";
 import type { TechStackItemType } from "@blueprint/shared";
-import {
-  EXPORT_CONFIG,
-  README_TEMPLATE,
-  DEFAULT_PROJECT_NAME,
-} from "../config/constants";
-import {
-  sanitizeMarkdown,
-  validateAndSanitizeFileContent,
-  handleSecurityError,
-} from "./security";
+import { EXPORT_CONFIG, README_TEMPLATE, DEFAULT_PROJECT_NAME } from "../config/constants";
+import { sanitizeMarkdown, validateAndSanitizeFileContent, handleSecurityError } from "./security";
 
 interface ExportFiles {
   blueprint: string;
@@ -43,9 +35,7 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
   const zip = new JSZip();
   const projectName = files.projectName || DEFAULT_PROJECT_NAME;
 
-  const sanitizedBlueprint = files.blueprint
-    ? sanitizeMarkdown(files.blueprint)
-    : "";
+  const sanitizedBlueprint = files.blueprint ? sanitizeMarkdown(files.blueprint) : "";
   const sanitizedTasks = files.tasks ? sanitizeMarkdown(files.tasks) : "";
 
   await generateProjectStructure(zip, {
@@ -57,7 +47,7 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
   const docsFolder = zip.folder(".docs");
   if (!docsFolder) {
     throw new Error(
-      "Failed to create .docs folder in ZIP archive. This may indicate a memory issue or ZIP library error. Try reducing the content size or refreshing the page.",
+      "Failed to create .docs folder in ZIP archive. This may indicate a memory issue or ZIP library error. Try reducing the content size or refreshing the page."
     );
   }
 
@@ -101,11 +91,7 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
   URL.revokeObjectURL(url);
 }
 
-export async function importFile({
-  file,
-  onImport,
-  onError,
-}: ImportFile): Promise<void> {
+export async function importFile({ file, onImport, onError }: ImportFile): Promise<void> {
   try {
     const validation = await validateAndSanitizeFileContent(file);
     if (!validation.isValid) {
@@ -120,10 +106,7 @@ export async function importFile({
   }
 }
 
-async function generateProjectStructure(
-  zip: JSZip,
-  files: ExportFiles,
-): Promise<void> {
+async function generateProjectStructure(zip: JSZip, files: ExportFiles): Promise<void> {
   const { techStack, projectName, description, features } = files;
   const normalizedProjectName = (projectName || DEFAULT_PROJECT_NAME)
     .toLowerCase()
@@ -132,8 +115,7 @@ async function generateProjectStructure(
 
   const techStackNames = techStack.map((item) => item.name.toLowerCase());
 
-  const isReact =
-    techStackNames.includes("react") || techStackNames.includes("next.js");
+  const isReact = techStackNames.includes("react") || techStackNames.includes("next.js");
   const isNode =
     techStackNames.includes("node.js") ||
     techStackNames.includes("express") ||
@@ -145,37 +127,13 @@ async function generateProjectStructure(
   const _isStatic = !isReact && !isNode && !isPython;
 
   if (isReact) {
-    await generateReactProject(
-      zip,
-      normalizedProjectName,
-      description,
-      features,
-      techStack,
-    );
+    await generateReactProject(zip, normalizedProjectName, description, features, techStack);
   } else if (isNode) {
-    await generateNodeProject(
-      zip,
-      normalizedProjectName,
-      description,
-      features,
-      techStack,
-    );
+    await generateNodeProject(zip, normalizedProjectName, description, features, techStack);
   } else if (isPython) {
-    await generatePythonProject(
-      zip,
-      normalizedProjectName,
-      description,
-      features,
-      techStack,
-    );
+    await generatePythonProject(zip, normalizedProjectName, description, features, techStack);
   } else {
-    await generateStaticProject(
-      zip,
-      normalizedProjectName,
-      description,
-      features,
-      techStack,
-    );
+    await generateStaticProject(zip, normalizedProjectName, description, features, techStack);
   }
 }
 
@@ -184,17 +142,11 @@ async function generateReactProject(
   projectName: string,
   description: string,
   features: string[],
-  techStack: TechStackItemType[],
+  techStack: TechStackItemType[]
 ): Promise<void> {
-  const isNextJS = techStack.some(
-    (item) => item.name.toLowerCase() === "next.js",
-  );
-  const _isTypeScript = techStack.some(
-    (item) => item.name.toLowerCase() === "typescript",
-  );
-  const isTailwind = techStack.some(
-    (item) => item.name.toLowerCase() === "tailwind css",
-  );
+  const isNextJS = techStack.some((item) => item.name.toLowerCase() === "next.js");
+  const _isTypeScript = techStack.some((item) => item.name.toLowerCase() === "typescript");
+  const isTailwind = techStack.some((item) => item.name.toLowerCase() === "tailwind css");
   void _isTypeScript;
 
   const packageJson: PackageJson = {
@@ -268,7 +220,7 @@ async function generateReactProject(
       `/** @type {import('next').NextConfig} */
 const nextConfig = {};
 
-module.exports = nextConfig;`,
+module.exports = nextConfig;`
     );
 
     zip.file(
@@ -284,7 +236,7 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-};`,
+};`
     );
 
     zip.file(
@@ -294,15 +246,12 @@ module.exports = {
     tailwindcss: {},
     autoprefixer: {},
   },
-};`,
+};`
     );
 
     const appFolder = zip.folder("app");
     if (appFolder) {
-      appFolder.file(
-        "layout.tsx",
-        generateNextLayout(projectName, description),
-      );
+      appFolder.file("layout.tsx", generateNextLayout(projectName, description));
       appFolder.file("page.tsx", generateNextPage(features));
       appFolder.file("globals.css", generateGlobalCSS());
     }
@@ -319,7 +268,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-})`,
+})`
     );
 
     zip.file(
@@ -344,7 +293,7 @@ export default defineConfig({
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
-}`,
+}`
     );
 
     zip.file(
@@ -358,7 +307,7 @@ export default defineConfig({
     "allowSyntheticDefaultImports": true
   },
   "include": ["vite.config.ts"]
-}`,
+}`
     );
 
     if (isTailwind) {
@@ -374,7 +323,7 @@ export default {
     extend: {},
   },
   plugins: [],
-};`,
+};`
       );
 
       zip.file(
@@ -384,7 +333,7 @@ export default {
     tailwindcss: {},
     autoprefixer: {},
   },
-};`,
+};`
       );
     }
 
@@ -403,10 +352,7 @@ export default {
     }
   }
 
-  zip.file(
-    "README.md",
-    generateProjectReadme(projectName, description, features, "React"),
-  );
+  zip.file("README.md", generateProjectReadme(projectName, description, features, "React"));
 }
 
 async function generateNodeProject(
@@ -414,15 +360,11 @@ async function generateNodeProject(
   projectName: string,
   description: string,
   features: string[],
-  techStack: TechStackItemType[],
+  techStack: TechStackItemType[]
 ): Promise<void> {
   const isHono = techStack.some((item) => item.name.toLowerCase() === "hono");
-  const isExpress = techStack.some(
-    (item) => item.name.toLowerCase() === "express",
-  );
-  const isTypeScript = techStack.some(
-    (item) => item.name.toLowerCase() === "typescript",
-  );
+  const isExpress = techStack.some((item) => item.name.toLowerCase() === "express");
+  const isTypeScript = techStack.some((item) => item.name.toLowerCase() === "typescript");
 
   const packageJson: PackageJson = {
     name: projectName,
@@ -480,7 +422,7 @@ async function generateNodeProject(
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
-}`,
+}`
     );
   }
 
@@ -500,10 +442,7 @@ async function generateNodeProject(
     testsFolder.file("api.test.js", generateAPITests());
   }
 
-  zip.file(
-    "README.md",
-    generateProjectReadme(projectName, description, features, "Node.js"),
-  );
+  zip.file("README.md", generateProjectReadme(projectName, description, features, "Node.js"));
 }
 
 async function generatePythonProject(
@@ -511,11 +450,9 @@ async function generatePythonProject(
   projectName: string,
   description: string,
   features: string[],
-  techStack: TechStackItemType[],
+  techStack: TechStackItemType[]
 ): Promise<void> {
-  const isDjango = techStack.some(
-    (item) => item.name.toLowerCase() === "django",
-  );
+  const isDjango = techStack.some((item) => item.name.toLowerCase() === "django");
   const isFlask = techStack.some((item) => item.name.toLowerCase() === "flask");
 
   const requirements = isDjango
@@ -558,10 +495,7 @@ async function generatePythonProject(
     }
   }
 
-  zip.file(
-    "README.md",
-    generateProjectReadme(projectName, description, features, "Python"),
-  );
+  zip.file("README.md", generateProjectReadme(projectName, description, features, "Python"));
 }
 
 async function generateStaticProject(
@@ -569,20 +503,14 @@ async function generateStaticProject(
   projectName: string,
   description: string,
   features: string[],
-  _techStack: TechStackItemType[],
+  _techStack: TechStackItemType[]
 ): Promise<void> {
   void _techStack;
-  zip.file(
-    "index.html",
-    generateStaticHTML(projectName, description, features),
-  );
+  zip.file("index.html", generateStaticHTML(projectName, description, features));
   zip.file("style.css", generateStaticCSS());
   zip.file("script.js", generateStaticJS(features));
 
-  zip.file(
-    "README.md",
-    generateProjectReadme(projectName, description, features, "Static Site"),
-  );
+  zip.file("README.md", generateProjectReadme(projectName, description, features, "Static Site"));
 }
 
 export { copyToClipboard, formatForIDE } from "./clipboard";
@@ -789,7 +717,7 @@ function generateProjectReadme(
   projectName: string,
   description: string,
   features: string[],
-  techStack: string,
+  techStack: string
 ): string {
   return `# ${projectName}
 
@@ -900,10 +828,7 @@ app.listen(PORT, () => {
 export default app`;
 }
 
-function generateBasicNodeIndex(
-  projectName: string,
-  features: string[],
-): string {
+function generateBasicNodeIndex(projectName: string, features: string[]): string {
   return `const http = require('http')
 
 const PORT = process.env.PORT || 3000
@@ -1292,11 +1217,7 @@ class Project(ProjectBase):
 `;
 }
 
-function generateStaticHTML(
-  projectName: string,
-  description: string,
-  features: string[],
-): string {
+function generateStaticHTML(projectName: string, description: string, features: string[]): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1331,7 +1252,7 @@ function generateStaticHTML(
                         (feature) => `<div class="feature-card">
                         <h4>${feature}</h4>
                         <p>Implementation of ${feature} functionality.</p>
-                    </div>`,
+                    </div>`
                       )
                       .join("")}
                 </div>

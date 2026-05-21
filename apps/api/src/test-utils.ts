@@ -24,15 +24,9 @@ const createDefaultsEnvStrings = (): Record<string, string> => ({
   RATE_LIMIT_STANDARD_MAX: String(DEFAULTS.RATE_LIMIT_STANDARD_MAX),
   RATE_LIMIT_LENIENT_MAX: String(DEFAULTS.RATE_LIMIT_LENIENT_MAX),
   STORAGE_QUOTA_MB: String(DEFAULTS.STORAGE_QUOTA_MB),
-  CIRCUIT_BREAKER_FAILURE_THRESHOLD: String(
-    DEFAULTS.CIRCUIT_BREAKER_FAILURE_THRESHOLD,
-  ),
-  CIRCUIT_BREAKER_RESET_TIMEOUT_MS: String(
-    DEFAULTS.CIRCUIT_BREAKER_RESET_TIMEOUT_MS,
-  ),
-  CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS: String(
-    DEFAULTS.CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS,
-  ),
+  CIRCUIT_BREAKER_FAILURE_THRESHOLD: String(DEFAULTS.CIRCUIT_BREAKER_FAILURE_THRESHOLD),
+  CIRCUIT_BREAKER_RESET_TIMEOUT_MS: String(DEFAULTS.CIRCUIT_BREAKER_RESET_TIMEOUT_MS),
+  CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS: String(DEFAULTS.CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS),
   RETRY_MAX_RETRIES: String(DEFAULTS.RETRY_MAX_RETRIES),
   RETRY_INITIAL_DELAY_MS: String(DEFAULTS.RETRY_INITIAL_DELAY_MS),
   RETRY_BACKOFF_FACTOR: String(DEFAULTS.RETRY_BACKOFF_FACTOR),
@@ -66,8 +60,6 @@ export function setupCommonMocks(): void {
 export function setupStreamMocks(mockResponse = "mock-stream"): void {
   vi.mock("../utils/stream", () => ({
     createStreamFromGenerator: vi.fn(),
-    createSSEResponse: vi
-      .fn()
-      .mockImplementation(() => new Response(mockResponse)),
+    createSSEResponse: vi.fn().mockImplementation(() => new Response(mockResponse)),
   }));
 }

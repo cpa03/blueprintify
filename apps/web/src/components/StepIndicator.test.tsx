@@ -55,18 +55,11 @@ vi.mock("../config/constants", () => ({
 vi.mock("framer-motion", () => {
   const motion = {
     button: vi.fn(
-      ({
-        children,
-        onClick,
-        disabled,
-        whileHover: _whileHover,
-        whileTap: _whileTap,
-        ...props
-      }) => (
+      ({ children, onClick, disabled, whileHover: _whileHover, whileTap: _whileTap, ...props }) => (
         <button {...props} onClick={onClick} disabled={disabled}>
           {children}
         </button>
-      ),
+      )
     ),
     div: vi.fn(
       ({
@@ -78,24 +71,15 @@ vi.mock("framer-motion", () => {
         whileHover: _whileHover,
         whileTap: _whileTap,
         ...props
-      }) => <div {...props}>{children}</div>,
+      }) => <div {...props}>{children}</div>
     ),
-    circle: vi.fn(
-      ({
-        initial: _initial,
-        animate: _animate,
-        transition: _transition,
-        ...props
-      }) => <circle {...props} />,
-    ),
+    circle: vi.fn(({ initial: _initial, animate: _animate, transition: _transition, ...props }) => (
+      <circle {...props} />
+    )),
     span: vi.fn(
-      ({
-        children,
-        initial: _initial,
-        animate: _animate,
-        transition: _transition,
-        ...props
-      }) => <span {...props}>{children}</span>,
+      ({ children, initial: _initial, animate: _animate, transition: _transition, ...props }) => (
+        <span {...props}>{children}</span>
+      )
     ),
   };
   return {
@@ -133,7 +117,7 @@ describe("StepIndicator", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (useWizardStore as unknown as Mock).mockImplementation(
-      (selector: (state: WizardStore) => unknown) => selector(mockWizardStore),
+      (selector: (state: WizardStore) => unknown) => selector(mockWizardStore)
     );
   });
 
@@ -165,7 +149,7 @@ describe("StepIndicator", () => {
     expect(stackButton).toHaveClass(
       "bg-primary-500/20",
       "border-primary-500/50",
-      "text-primary-300",
+      "text-primary-300"
     );
   });
 
@@ -179,12 +163,12 @@ describe("StepIndicator", () => {
     expect(infoButton).toHaveClass(
       "bg-accent-emerald/20",
       "border-accent-emerald/50",
-      "text-accent-emerald",
+      "text-accent-emerald"
     );
     expect(stackButton).toHaveClass(
       "bg-accent-emerald/20",
       "border-accent-emerald/50",
-      "text-accent-emerald",
+      "text-accent-emerald"
     );
   });
 
@@ -195,16 +179,8 @@ describe("StepIndicator", () => {
     const reviewButton = screen.getByText("Review").closest("button");
     const generatingButton = screen.getByText("Generating").closest("button");
 
-    expect(reviewButton).toHaveClass(
-      "bg-dark-800/50",
-      "border-dark-700",
-      "text-dark-300",
-    );
-    expect(generatingButton).toHaveClass(
-      "bg-dark-800/50",
-      "border-dark-700",
-      "text-dark-300",
-    );
+    expect(reviewButton).toHaveClass("bg-dark-800/50", "border-dark-700", "text-dark-300");
+    expect(generatingButton).toHaveClass("bg-dark-800/50", "border-dark-700", "text-dark-300");
   });
 
   it("allows navigation to completed and current steps", () => {
@@ -271,21 +247,13 @@ describe("StepIndicator", () => {
     const { container } = render(<StepIndicator />);
 
     const stepIndicator = container.firstChild;
-    expect(stepIndicator).toHaveClass(
-      "flex",
-      "items-center",
-      "justify-center",
-      "gap-3",
-      "mb-8",
-    );
+    expect(stepIndicator).toHaveClass("flex", "items-center", "justify-center", "gap-3", "mb-8");
   });
 
   it("renders connector lines between steps", () => {
     const { container } = render(<StepIndicator />);
 
-    const connectors = container.querySelectorAll(
-      ".bg-accent-emerald, .bg-dark-700",
-    );
+    const connectors = container.querySelectorAll(".bg-accent-emerald, .bg-dark-700");
     expect(connectors.length).toBeGreaterThan(0);
   });
 });

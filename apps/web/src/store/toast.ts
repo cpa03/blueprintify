@@ -80,11 +80,7 @@ export const useToastStore = create<ToastStore>()((set, get) => ({
    * @param type - The toast type (success, info, warning, error)
    * @param duration - Optional duration in milliseconds (defaults to TOAST_CONFIG.DEFAULT_DURATION)
    */
-  addToast: (
-    message: string,
-    type: ToastType,
-    duration = TOAST_CONFIG.DEFAULT_DURATION,
-  ) => {
+  addToast: (message: string, type: ToastType, duration = TOAST_CONFIG.DEFAULT_DURATION) => {
     const id = `toast-${Date.now()}-${Math.random().toString(ALPHANUMERIC_RADIX).substring(RANDOM_STRING_START_INDEX, END_INDEX)}`;
     const toast: Toast = { id, message, type, duration };
 
@@ -128,13 +124,9 @@ export const useToast = () => {
   const addToast = useToastStore((state) => state.addToast);
 
   return {
-    success: (message: string, duration?: number) =>
-      addToast(message, "success", duration),
-    info: (message: string, duration?: number) =>
-      addToast(message, "info", duration),
-    warning: (message: string, duration?: number) =>
-      addToast(message, "warning", duration),
-    error: (message: string, duration?: number) =>
-      addToast(message, "error", duration),
+    success: (message: string, duration?: number) => addToast(message, "success", duration),
+    info: (message: string, duration?: number) => addToast(message, "info", duration),
+    warning: (message: string, duration?: number) => addToast(message, "warning", duration),
+    error: (message: string, duration?: number) => addToast(message, "error", duration),
   };
 };

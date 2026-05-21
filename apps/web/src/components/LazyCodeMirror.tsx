@@ -25,10 +25,7 @@
 
 import { useState, useEffect, memo } from "react";
 import type { Extension } from "@codemirror/state";
-import type {
-  ReactCodeMirrorProps,
-  ReactCodeMirrorRef,
-} from "@uiw/react-codemirror";
+import type { ReactCodeMirrorProps, ReactCodeMirrorRef } from "@uiw/react-codemirror";
 
 interface LazyCodeMirrorProps {
   value: string;
@@ -40,13 +37,8 @@ type CodeMirrorComponent = React.ForwardRefExoticComponent<
   ReactCodeMirrorProps & React.RefAttributes<ReactCodeMirrorRef>
 > | null;
 
-function LazyCodeMirrorComponent({
-  value,
-  onChange,
-  className,
-}: LazyCodeMirrorProps) {
-  const [CodeMirrorComponent, setCodeMirrorComponent] =
-    useState<CodeMirrorComponent>(null);
+function LazyCodeMirrorComponent({ value, onChange, className }: LazyCodeMirrorProps) {
+  const [CodeMirrorComponent, setCodeMirrorComponent] = useState<CodeMirrorComponent>(null);
   const [extensions, setExtensions] = useState<Extension[]>([]);
   const [theme, setTheme] = useState<Extension | undefined>(undefined);
 
@@ -55,18 +47,11 @@ function LazyCodeMirrorComponent({
 
     const loadCodeMirror = async () => {
       try {
-        const [{ default: CodeMirror }, { markdown }, { oneDark }] =
-          await Promise.all([
-            import(
-              /* webpackChunkName: "codemirror-main" */ "@uiw/react-codemirror"
-            ),
-            import(
-              /* webpackChunkName: "codemirror-markdown" */ "@codemirror/lang-markdown"
-            ),
-            import(
-              /* webpackChunkName: "codemirror-theme" */ "@codemirror/theme-one-dark"
-            ),
-          ]);
+        const [{ default: CodeMirror }, { markdown }, { oneDark }] = await Promise.all([
+          import(/* webpackChunkName: "codemirror-main" */ "@uiw/react-codemirror"),
+          import(/* webpackChunkName: "codemirror-markdown" */ "@codemirror/lang-markdown"),
+          import(/* webpackChunkName: "codemirror-theme" */ "@codemirror/theme-one-dark"),
+        ]);
 
         if (isMounted) {
           setCodeMirrorComponent(() => CodeMirror);
@@ -74,7 +59,9 @@ function LazyCodeMirrorComponent({
           setTheme(oneDark);
         }
       } catch (error) {
-        if (import.meta.env.DEV) { console.error("Failed to load CodeMirror:", error); }
+        if (import.meta.env.DEV) {
+          console.error("Failed to load CodeMirror:", error);
+        }
       }
     };
 

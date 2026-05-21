@@ -77,7 +77,7 @@ export class APIError extends Error {
     message: string,
     statusCode: number,
     code?: string,
-    details?: Record<string, unknown>,
+    details?: Record<string, unknown>
   ) {
     super(message);
     this.name = "APIError";
@@ -131,7 +131,7 @@ export class ValidationError extends APIError {
    */
   constructor(
     message: string = DEFAULT_ERROR_MESSAGES.VALIDATION,
-    details?: Record<string, unknown>,
+    details?: Record<string, unknown>
   ) {
     super(ErrorType.VALIDATION, message, HTTP_STATUS.BAD_REQUEST, "VALIDATION_ERROR", details);
     this.name = "ValidationError";
@@ -218,10 +218,7 @@ export class NetworkError extends APIError {
    * @param message - Human-readable network error message
    * @param details - Optional details about the network failure
    */
-  constructor(
-    message: string = DEFAULT_ERROR_MESSAGES.NETWORK,
-    details?: Record<string, unknown>,
-  ) {
+  constructor(message: string = DEFAULT_ERROR_MESSAGES.NETWORK, details?: Record<string, unknown>) {
     super(ErrorType.NETWORK, message, HTTP_STATUS.BAD_GATEWAY, "NETWORK_ERROR", details);
     this.name = "NetworkError";
   }
@@ -241,7 +238,7 @@ export class AIServiceError extends APIError {
    */
   constructor(
     message: string = DEFAULT_ERROR_MESSAGES.AI_SERVICE,
-    details?: Record<string, unknown>,
+    details?: Record<string, unknown>
   ) {
     super(ErrorType.AI_SERVICE, message, HTTP_STATUS.BAD_GATEWAY, "AI_SERVICE_ERROR", details);
     this.name = "AIServiceError";
@@ -299,7 +296,7 @@ export function createErrorResponse(error: unknown): ErrorResponse {
 
   // Handle generic errors
   const internalError = new InternalServerError(
-    error instanceof Error ? error.message : "Unknown error occurred",
+    error instanceof Error ? error.message : "Unknown error occurred"
   );
   return internalError.toJSON();
 }

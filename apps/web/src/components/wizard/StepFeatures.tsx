@@ -24,12 +24,7 @@
 import { useState, useCallback, useMemo, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
-import {
-  SUGGESTED_FEATURES,
-  FORM_LIMITS,
-  TIMEOUTS,
-  UI_CONTENT,
-} from "../../config/constants";
+import { SUGGESTED_FEATURES, FORM_LIMITS, TIMEOUTS, UI_CONTENT } from "../../config/constants";
 import { pageTransition } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 
@@ -61,27 +56,24 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
         handleAddFeature();
       }
     },
-    [handleAddFeature],
+    [handleAddFeature]
   );
 
   const isInFeatures = useCallback(
-    (feature: string) =>
-      features.some((f: string) => f.toLowerCase() === feature.toLowerCase()),
-    [features],
+    (feature: string) => features.some((f: string) => f.toLowerCase() === feature.toLowerCase()),
+    [features]
   );
 
   const suggestedNotAdded = useMemo(
     () => SUGGESTED_FEATURES.filter((f: string) => !isInFeatures(f)),
-    [isInFeatures],
+    [isInFeatures]
   );
 
   return (
     <motion.div {...pageTransition} className="space-y-6">
       <div>
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-2xl font-bold text-white">
-            {UI_CONTENT.WIZARD.STEP_FEATURES.TITLE}
-          </h2>
+          <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_FEATURES.TITLE}</h2>
           <div className="flex items-center gap-2 text-sm">
             <span
               className={`tabular-nums ${features.length === 0 ? "text-accent-pink" : "text-dark-400"}`}
@@ -93,9 +85,7 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
             </span>
           </div>
         </div>
-        <p className="text-dark-400">
-          {UI_CONTENT.WIZARD.STEP_FEATURES.SUBTITLE}
-        </p>
+        <p className="text-dark-400">{UI_CONTENT.WIZARD.STEP_FEATURES.SUBTITLE}</p>
       </div>
 
       <div className="glass-card p-6 space-y-5">
@@ -125,15 +115,9 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
                 id="feature-input"
                 type="text"
                 value={newFeature}
-                onChange={(e) =>
-                  setNewFeature(
-                    e.target.value.slice(0, FORM_LIMITS.FEATURE.MAX),
-                  )
-                }
+                onChange={(e) => setNewFeature(e.target.value.slice(0, FORM_LIMITS.FEATURE.MAX))}
                 onKeyDown={handleKeyDown}
-                placeholder={
-                  UI_CONTENT.WIZARD.STEP_FEATURES.ADD_FEATURE_PLACEHOLDER
-                }
+                placeholder={UI_CONTENT.WIZARD.STEP_FEATURES.ADD_FEATURE_PLACEHOLDER}
                 className={`input-field w-full pr-10 ${newFeature.length >= FORM_LIMITS.FEATURE.MAX ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20" : ""}`}
                 aria-label="New feature name"
                 maxLength={FORM_LIMITS.FEATURE.MAX}
@@ -151,12 +135,7 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
                     aria-label="Clear feature input"
                     title="Clear feature input"
                   >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -197,20 +176,14 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="label mb-0" id="added-features-label">
-                {UI_CONTENT.WIZARD.STEP_FEATURES.YOUR_FEATURES_LABEL} (
-                {features.length})
+                {UI_CONTENT.WIZARD.STEP_FEATURES.YOUR_FEATURES_LABEL} ({features.length})
               </label>
               <button
                 onClick={clearFeatures}
                 className="text-xs text-accent-pink hover:text-accent-pink/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded px-1 transition-colors flex items-center gap-1"
                 aria-label="Clear all features"
               >
-                <svg
-                  className="w-3 h-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -270,11 +243,7 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
             <label className="label" id="suggestions-label">
               {UI_CONTENT.WIZARD.STEP_FEATURES.QUICK_ADD_LABEL}
             </label>
-            <div
-              className="flex flex-wrap gap-2"
-              role="group"
-              aria-labelledby="suggestions-label"
-            >
+            <div className="flex flex-wrap gap-2" role="group" aria-labelledby="suggestions-label">
               {suggestedNotAdded.map((feature) => (
                 <button
                   key={feature}
@@ -320,12 +289,7 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
             className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50"
           >
             <div className="bg-accent-emerald/90 backdrop-blur-sm text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -343,12 +307,7 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
 
       <div className="flex justify-between">
         <RippleButton onClick={prevStep} className="btn-secondary">
-          <svg
-            className="w-5 h-5 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -358,23 +317,10 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
           </svg>
           {UI_CONTENT.BUTTONS.BACK}
         </RippleButton>
-        <RippleButton
-          onClick={nextStep}
-          className="btn-primary flex items-center gap-2"
-        >
+        <RippleButton onClick={nextStep} className="btn-primary flex items-center gap-2">
           {UI_CONTENT.WIZARD.STEP_FEATURES.NEXT_BUTTON}
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </RippleButton>
       </div>

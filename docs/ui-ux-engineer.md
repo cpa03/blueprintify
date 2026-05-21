@@ -117,11 +117,6 @@ NH|✅ Build: Successful
 ---
 
 ## Observations
-```
-
----
-
-## Observations
 
 1. **Accessibility**: Excellent coverage with SkipLink, focus-visible states, ARIA labels throughout
 2. **Styling**: Consistent use of Tailwind theme tokens, recent fixes for hardcoded RGB values
@@ -172,3 +167,9 @@ NH|✅ Build: Successful
 - `apps/web/src/components/ScrollProgress.tsx` - Theme tokens added (2026-02-26)
 - `apps/web/src/components/StepIndicator.tsx` - Theme tokens added (2026-02-26)
 - `apps/web/src/components/MarkdownRenderer.tsx` - Theme tokens recently added
+
+```
+
+```
+
+```

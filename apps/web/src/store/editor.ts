@@ -37,7 +37,7 @@ import { createPersistedStore, type PersistedStorage } from "./persistence";
  */
 function validateEditorContent(
   blueprintContent: string,
-  tasksContent: string,
+  tasksContent: string
 ): { blueprintContent: string; tasksContent: string } {
   const security = sanitizeForStorage({ blueprintContent, tasksContent });
   if (!security.isValid) {
@@ -75,12 +75,10 @@ type PersistedEditorData = Pick<EditorStore, "blueprintContent" | "tasksContent"
 
 export const useEditorStore = create<EditorStore>()((set, get) => {
   // Use shared persistence utility
-  const {
-    loadState,
-    debouncedSave,
-    flushSave,
-    cancelSave,
-  } = createPersistedStore<PersistedEditorData, EditorStore>({
+  const { loadState, debouncedSave, flushSave, cancelSave } = createPersistedStore<
+    PersistedEditorData,
+    EditorStore
+  >({
     storage: editorStorage as PersistedStorage<PersistedEditorData>,
     debounceDelay: DEBOUNCE_CONFIG.EDITOR,
     getPersistData: (state) => ({
@@ -103,10 +101,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
 
     setBlueprintContent: (blueprintContent) => {
       try {
-        const sanitized = validateEditorContent(
-          blueprintContent,
-          get().tasksContent,
-        );
+        const sanitized = validateEditorContent(blueprintContent, get().tasksContent);
         set({ blueprintContent: sanitized.blueprintContent, isDirty: true });
         debouncedSave(get);
       } catch (error) {
@@ -134,10 +129,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
 
     setTasksContent: (tasksContent) => {
       try {
-        const sanitized = validateEditorContent(
-          get().blueprintContent,
-          tasksContent,
-        );
+        const sanitized = validateEditorContent(get().blueprintContent, tasksContent);
         set({ tasksContent: sanitized.tasksContent, isDirty: true });
         debouncedSave(get);
       } catch (error) {
@@ -150,10 +142,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
     appendTasksContent: (chunk) => {
       try {
         const newContent = get().tasksContent + chunk;
-        const sanitized = validateEditorContent(
-          get().blueprintContent,
-          newContent,
-        );
+        const sanitized = validateEditorContent(get().blueprintContent, newContent);
         set(() => ({ tasksContent: sanitized.tasksContent, isDirty: true }));
         debouncedSave(get);
       } catch (error) {
