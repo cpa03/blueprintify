@@ -4,7 +4,7 @@
 
 ## Core Constraints
 
-1. **Model Mandate**: All agents MUST use `opencode/glm-4.7-free` exclusively
+1. **Model Mandate**: All agents MUST use `opencode/deepseek-v4-flash-free` exclusively
 2. **CI Runner**: GitHub Actions MUST use `ubuntu-24.04-arm`
 3. **Never expose secrets**: API keys, tokens, and `.env` contents must never be logged or committed
 

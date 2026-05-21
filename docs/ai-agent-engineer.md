@@ -18,7 +18,7 @@ I am the **AI Agent System Engineer** responsible for maintaining and improving 
 
 ### Model Mandate (CRITICAL)
 
-- **ALL** agents MUST use `opencode/glm-4.7-free` exclusively
+- **ALL** agents MUST use `opencode/deepseek-v4-flash-free` exclusively
 - This applies to:
   - Agent definitions (`.opencode/agent/*.md`)
   - GitHub Actions workflows (`.github/workflows/*.yml`)
@@ -64,21 +64,21 @@ All agents must include:
 
 | File             | Previous Model(s)                               | Corrected To            |
 | ---------------- | ----------------------------------------------- | ----------------------- |
-| main.yml         | `iflowcn/glm-4.6`, `opencode/minimax-m2.1-free` | `opencode/glm-4.7-free` |
-| iterate.yml      | `opencode/kimi-k2.5-free`                       | `opencode/glm-4.7-free` |
-| pr-gatekeeper.yml | `opencode/big-pickle`                           | `opencode/glm-4.7-free` |
-| on-pull.yml      | `opencode/kimi-k2.5-free`                       | `opencode/glm-4.7-free` |
-| parallel.yml     | `opencode/minimax-m2.5-free`                    | `opencode/glm-4.7-free` |
+| main.yml         | `iflowcn/glm-4.6`, `opencode/minimax-m2.1-free` | `opencode/deepseek-v4-flash-free` |
+| iterate.yml      | `opencode/kimi-k2.5-free`                       | `opencode/deepseek-v4-flash-free` |
+| pr-gatekeeper.yml | `opencode/big-pickle`                           | `opencode/deepseek-v4-flash-free` |
+| on-pull.yml      | `opencode/kimi-k2.5-free`                       | `opencode/deepseek-v4-flash-free` |
+| parallel.yml     | `opencode/minimax-m2.5-free`                    | `opencode/deepseek-v4-flash-free` |
 | cmz.md           | `#BQ|---` (broken YAML prefix), `#TQ|##` headings | Fixed proper YAML and headings |
 
 **Action Taken**: 
-1. Updated all workflow files to use `opencode/glm-4.7-free` consistently (22 references across 5 files)
+1. Updated all workflow files to use `opencode/deepseek-v4-flash-free` consistently (22 references across 5 files)
 2. Fixed cmz.md YAML frontmatter - removed `#BQ|` prefix from `---` delimiters
 3. Fixed cmz.md section headings - removed `#XX|#` prefixes from headings like `## Planning & Skill Usage`
 
 **Verification**:
 
-- All 22 model references across 5 workflow files now use `opencode/glm-4.7-free`
+- All 22 model references across 5 workflow files now use `opencode/deepseek-v4-flash-free`
 - cmz.md YAML frontmatter is valid (no malformed prefixes)
 - cmz.md section headings follow PATTERNS.md standard (no `#XX|#` prefixes)
 #TN|
@@ -88,19 +88,19 @@ All agents must include:
 #ZV|
 #NB|| Workflow          | Previous Model(s)                               | Corrected To            |
 #HH|| ----------------- | ----------------------------------------------- | ----------------------- |
-#PS|| main.yml          | `iflowcn/glm-4.6` (9 refs), `minimax-m2.1-free` | `opencode/glm-4.7-free` |
-#MV|| iterate.yml       | `opencode/kimi-k2.5-free` (5 refs)             | `opencode/glm-4.7-free` |
-#HZ|| pr-gatekeeper.yml | `opencode/big-pickle` (3 refs)                 | `opencode/glm-4.7-free` |
-#QR|| on-pull.yml      | `opencode/kimi-k2.5-free` (1 ref)              | `opencode/glm-4.7-free` |
-#ZT|| parallel.yml     | `opencode/minimax-m2.5-free` (4 refs)          | `opencode/glm-4.7-free` |
+#PS|| main.yml          | `iflowcn/glm-4.6` (9 refs), `minimax-m2.1-free` | `opencode/deepseek-v4-flash-free` |
+#MV|| iterate.yml       | `opencode/kimi-k2.5-free` (5 refs)             | `opencode/deepseek-v4-flash-free` |
+#HZ|| pr-gatekeeper.yml | `opencode/big-pickle` (3 refs)                 | `opencode/deepseek-v4-flash-free` |
+#QR|| on-pull.yml      | `opencode/kimi-k2.5-free` (1 ref)              | `opencode/deepseek-v4-flash-free` |
+#ZT|| parallel.yml     | `opencode/minimax-m2.5-free` (4 refs)          | `opencode/deepseek-v4-flash-free` |
 #NJ|
 #PK|**Root Cause**: Previous memory entries incorrectly claimed fixes were applied when they were not.
 #NV|
-#KP|**Action Taken**: Updated all 22 model references across 5 workflow files to use `opencode/glm-4.7-free`.
+#KP|**Action Taken**: Updated all 22 model references across 5 workflow files to use `opencode/deepseek-v4-flash-free`.
 #TW|
 #YX|**Verification**:
 #KB|
-#MZ|- All 22 model references now use `opencode/glm-4.7-free` (grep confirmed)
+#MZ|- All 22 model references now use `opencode/deepseek-v4-flash-free` (grep confirmed)
 #MB|- All runners still use `ubuntu-24.04-arm` (20 references confirmed)
 #QR|- Fix applied via PR: agent/ai-agent-engineer
 #SK|- Previous memory entries about this fix were inaccurate - this is the ACTUAL fix
@@ -116,17 +116,17 @@ All agents must include:
 
 | Workflow          | Previous Model(s)                               | Corrected To            |
 | ----------------- | ----------------------------------------------- | ----------------------- |
-| main.yml          | `iflowcn/glm-4.6`, `opencode/minimax-m2.1-free` | `opencode/glm-4.7-free` |
-| iterate.yml       | `opencode/kimi-k2.5-free`                       | `opencode/glm-4.7-free` |
-| pr-gatekeeper.yml | `opencode/big-pickle`                           | `opencode/glm-4.7-free` |
-| on-pull.yml       | `opencode/kimi-k2.5-free`                       | `opencode/glm-4.7-free` |
-| parallel.yml      | `opencode/minimax-m2.5-free`                    | `opencode/glm-4.7-free` |
+| main.yml          | `iflowcn/glm-4.6`, `opencode/minimax-m2.1-free` | `opencode/deepseek-v4-flash-free` |
+| iterate.yml       | `opencode/kimi-k2.5-free`                       | `opencode/deepseek-v4-flash-free` |
+| pr-gatekeeper.yml | `opencode/big-pickle`                           | `opencode/deepseek-v4-flash-free` |
+| on-pull.yml       | `opencode/kimi-k2.5-free`                       | `opencode/deepseek-v4-flash-free` |
+| parallel.yml      | `opencode/minimax-m2.5-free`                    | `opencode/deepseek-v4-flash-free` |
 
-**Action Taken**: Updated all workflow files to use `opencode/glm-4.7-free` consistently.
+**Action Taken**: Updated all workflow files to use `opencode/deepseek-v4-flash-free` consistently.
 
 **Verification**:
 
-- All 22 model references across 5 workflow files now use `opencode/glm-4.7-free`
+- All 22 model references across 5 workflow files now use `opencode/deepseek-v4-flash-free`
 
 ### 2026-02-20 - CMZ Agent Standardization
 
@@ -138,7 +138,7 @@ All agents must include:
 
 Total agents: **28**
 
-All agents verified to use `opencode/glm-4.7-free` model:
+All agents verified to use `opencode/deepseek-v4-flash-free` model:
 
 1. ai-agent-engineer (self)
 2. api-specialist
@@ -173,7 +173,7 @@ All agents verified to use `opencode/glm-4.7-free` model:
 
 When reviewing agent definitions, verify:
 
-- [ ] Model is `opencode/glm-4.7-free`
+- [ ] Model is `opencode/deepseek-v4-flash-free`
 - [ ] Temperature is in range 0.0-1.0
 - [ ] Has "Planning & Skill Usage (MANDATORY)" section
 - [ ] Has IDENTITY section
@@ -184,7 +184,7 @@ When reviewing agent definitions, verify:
 
 When reviewing workflow files, verify:
 
-- [ ] All `--model` flags use `opencode/glm-4.7-free`
+- [ ] All `--model` flags use `opencode/deepseek-v4-flash-free`
 - [ ] Runner is `ubuntu-24.04-arm`
 - [ ] Uses actions/checkout@v5
 

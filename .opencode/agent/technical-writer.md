@@ -1,7 +1,7 @@
 ---
 description: Technical Writer & Documentation Architect
 mode: primary
-model: opencode/glm-4.7-free
+model: opencode/deepseek-v4-flash-free
 temperature: 0.1
 tools:
   write: true

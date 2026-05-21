@@ -1,7 +1,7 @@
 ---
 description: Automated Researcher. Synthesizes info into reports.
 mode: primary
-model: opencode/glm-4.7-free
+model: opencode/deepseek-v4-flash-free
 temperature: 0.2
 tools:
   write: true

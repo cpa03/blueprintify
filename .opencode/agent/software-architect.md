@@ -1,7 +1,7 @@
 ---
 description: Software Architect & System Orchestrator
 mode: primary
-model: opencode/glm-4.7-free
+model: opencode/deepseek-v4-flash-free
 temperature: 0.5
 tools:
   write: true

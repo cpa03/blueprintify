@@ -9,7 +9,7 @@
 **Root Cause**: Using unsupported provider/model combination
 **Solution**: Use only approved model:
 
-- `opencode/glm-4.7-free` (exclusive per AGENTS.md mandate)
+- `opencode/deepseek-v4-flash-free` (exclusive per AGENTS.md mandate)
   **Prevention**: Validate model names in all agent configs
 
 ### Issue: Context Hooks Error (big-pickle)
@@ -27,7 +27,7 @@
 **Pattern**: Model configuration errors
 **Solution**:
 
-1. Standardize on `opencode/glm-4.7-free` exclusively
+1. Standardize on `opencode/deepseek-v4-flash-free` exclusively
 2. Validate configuration before runs
    **Status**: Fixed via agent configuration updates
 
@@ -38,7 +38,7 @@
 **When to use**: All agent configurations
 **Implementation**:
 
-- **Mandatory**: Use `opencode/glm-4.7-free` exclusively per AGENTS.md mandate
+- **Mandatory**: Use `opencode/deepseek-v4-flash-free` exclusively per AGENTS.md mandate
 - **NO fallback models** - AGENTS.md mandates exclusive use of single model
 - Validate all agent configurations use the correct model
   **Result**: Consistent behavior, reduced CI failures, compliance with project standards
@@ -73,8 +73,8 @@
 
 ### Agent Models
 
-- Always use `opencode/glm-4.7-free` exclusively per AGENTS.md mandate
-- **NO fallback models allowed** - AGENTS.md mandates exclusive use of `opencode/glm-4.7-free`
+- Always use `opencode/deepseek-v4-flash-free` exclusively per AGENTS.md mandate
+- **NO fallback models allowed** - AGENTS.md mandates exclusive use of `opencode/deepseek-v4-flash-free`
 - Test in CI before production deployment
 
 ### Skill Installation

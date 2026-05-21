@@ -22,7 +22,7 @@
 - [2026-02-18: Share Endpoint Validation Consistency](#security-2026-02-18---share-endpoint-validation-consistency)
 - [2026-02-18: Integration Workflow File Line Ending](#integration-2026-02-18---workflow-file-line-ending-inconsistency)
 - [2026-02-20: Logger Middleware Undefined Header Fix](#reliability-2026-02-20---logger-middleware-undefined-header-value-fix)
-  [2026-02-23: Zustand Selector Pattern Audit](#frontend-engineer-2026-02-23---zustand-selector-pattern-audit)
+ [2026-02-23: Zustand Selector Pattern Audit](#frontend-engineer-2026-02-23---zustand-selector-pattern-audit)
 
 ---
 
@@ -74,7 +74,10 @@ npm run test:all   # ✅ PASS (236 web tests)
 
 ```typescript
 // With overall timeout - max 30s for all attempts combined
-const result = await withRetry(() => fetchExternalAPI(), { retries: 3, timeout: 30000 });
+const result = await withRetry(
+  () => fetchExternalAPI(),
+  { retries: 3, timeout: 30000 }
+);
 ```
 
 ---
@@ -87,18 +90,18 @@ Full reliability verification completed on branch `reliability-engineer`. The co
 
 ### Verification Results
 
-| Check              | Status  | Details                                       |
+| Check | Status | Details |
 | ------------------ | ------- | --------------------------------------------- |
-| Empty catch blocks | ✅ PASS | No empty catch blocks found                   |
-| `any` type usage   | ✅ PASS | No `any` types in production code             |
-| `@ts-ignore` usage | ✅ PASS | No `@ts-ignore` or `@ts-expect-error` found   |
-| JSON.parse safety  | ✅ PASS | All JSON.parse calls wrapped in try/catch     |
-| Fetch timeout      | ✅ PASS | AbortController with configurable timeouts    |
-| Error boundaries   | ✅ PASS | ErrorBoundary component wraps entire app      |
-| Circuit breaker    | ✅ PASS | Proper CLOSED/OPEN/HALF_OPEN state management |
-| Retry logic        | ✅ PASS | Exponential backoff with max retries          |
-| Typed errors       | ✅ PASS | APIError hierarchy with HTTP status codes     |
-| Console logging    | ✅ PASS | Appropriate use in Cloudflare Workers context |
+| Empty catch blocks | ✅ PASS | No empty catch blocks found |
+| `any` type usage | ✅ PASS | No `any` types in production code |
+| `@ts-ignore` usage | ✅ PASS | No `@ts-ignore` or `@ts-expect-error` found |
+| JSON.parse safety | ✅ PASS | All JSON.parse calls wrapped in try/catch |
+| Fetch timeout | ✅ PASS | AbortController with configurable timeouts |
+| Error boundaries | ✅ PASS | ErrorBoundary component wraps entire app |
+| Circuit breaker | ✅ PASS | Proper CLOSED/OPEN/HALF_OPEN state management |
+| Retry logic | ✅ PASS | Exponential backoff with max retries |
+| Typed errors | ✅ PASS | APIError hierarchy with HTTP status codes |
+| Console logging | ✅ PASS | Appropriate use in Cloudflare Workers context |
 
 ### Test Results
 
@@ -111,10 +114,10 @@ Full reliability verification completed on branch `reliability-engineer`. The co
 
 ### Open Issues Reviewed
 
-| Issue | Priority | Status   | Notes                                               |
-| ----- | -------- | -------- | --------------------------------------------------- |
-| #743  | P0       | BLOCKED  | CI workflow fix requires admin permission           |
-| #418  | P2       | ACCEPTED | AJV vulnerabilities - upstream dependency, low risk |
+| Issue | Priority | Status | Notes |
+| ----- | -------- | ------ | ----- |
+| #743 | P0 | BLOCKED | CI workflow fix requires admin permission |
+| #418 | P2 | ACCEPTED | AJV vulnerabilities - upstream dependency, low risk |
 
 ### Recommendations
 
@@ -656,11 +659,7 @@ if (!key.toLowerCase().includes("authorization") && !key.toLowerCase().includes(
 }
 
 // After
-if (
-  !key.toLowerCase().includes("authorization") &&
-  !key.toLowerCase().includes("cookie") &&
-  value !== undefined
-) {
+if (!key.toLowerCase().includes("authorization") && !key.toLowerCase().includes("cookie") && value !== undefined) {
   headers[key] = value;
 }
 ```
@@ -678,6 +677,7 @@ if (
 - ✅ Tests: 360 passed (218 web + 142 API)
 
 ---
+
 
 ## [Frontend-Engineer] 2026-02-23 - Zustand Selector Pattern Audit
 
@@ -703,18 +703,18 @@ const description = useWizardStore((s) => s.description);
 
 **NO object selectors were found** that would require `useShallow` optimization.
 
-| File                    | Selector Pattern              | Status     |
-| ----------------------- | ----------------------------- | ---------- |
-| `Wizard.tsx`            | Individual primitives         | ✅ Optimal |
-| `Editor.tsx`            | Individual primitives         | ✅ Optimal |
-| `StepInfo.tsx`          | Individual primitives         | ✅ Optimal |
-| `StepStack.tsx`         | Individual primitives         | ✅ Optimal |
-| `StepFeatures.tsx`      | Individual primitives         | ✅ Optimal |
-| `StepReview.tsx`        | Individual primitives         | ✅ Optimal |
-| `StepGenerating.tsx`    | Individual primitives         | ✅ Optimal |
-| `App.tsx`               | Individual + computed boolean | ✅ Optimal |
-| `useBlueprintStream.ts` | Individual primitives         | ✅ Optimal |
-| `Toast.tsx`             | Individual primitives         | ✅ Optimal |
+| File | Selector Pattern | Status |
+| ---- | ---------------- | ------ |
+| `Wizard.tsx` | Individual primitives | ✅ Optimal |
+| `Editor.tsx` | Individual primitives | ✅ Optimal |
+| `StepInfo.tsx` | Individual primitives | ✅ Optimal |
+| `StepStack.tsx` | Individual primitives | ✅ Optimal |
+| `StepFeatures.tsx` | Individual primitives | ✅ Optimal |
+| `StepReview.tsx` | Individual primitives | ✅ Optimal |
+| `StepGenerating.tsx` | Individual primitives | ✅ Optimal |
+| `App.tsx` | Individual + computed boolean | ✅ Optimal |
+| `useBlueprintStream.ts` | Individual primitives | ✅ Optimal |
+| `Toast.tsx` | Individual primitives | ✅ Optimal |
 
 ### Impact
 
@@ -734,76 +734,5 @@ npm run test       # ✅ PASS (251 tests)
 ### Resolves
 
 #898
-
----
-
-## [Security-Engineer] 2026-05-21 - PR Changed File Security Audit
-
-### Executive Summary
-
-Security audit of changed files in PR (comparison with `origin/main`). One introduced vulnerability found and fixed. All other changes are test improvements, refactoring (magic string centralization), and model version updates.
-
-### Vulnerability Fixed
-
-#### Critical: Unsanitized Error Object in Log Output
-
-**File**: `apps/api/src/controllers/base.controller.ts`
-
-**Issue**: The newly introduced `logError` method passed the raw `error` object embedded inside `additionalInfo` to `secureLogError`. However, `createSecureLogEntry` only sanitizes its second parameter (`error`) via `sanitizeError()`, while spreading `additionalInfo` directly into the log entry **without sanitization**.
-
-This created a pathway for sensitive data leakage (OWASP A09:2021 - Security Logging and Monitoring Failures):
-
-- API keys in error messages
-- Database connection strings in stack traces
-- Internal IP addresses in error context
-
-**Root Cause**: `secureLogError(context, message, { ...details, error, ... })` passes the `message` string as the sanitized parameter, but the raw `error` object is included in `additionalInfo` which bypasses sanitization.
-
-```typescript
-// BEFORE (vulnerable):
-secureLogError(context, message, {
-  ...details,
-  error, // ⚠️ RAW - bypasses sanitizeError()
-  requestId,
-  path,
-  method,
-});
-```
-
-**Fix**: Applied `sanitizeError(error)` to sanitize the error object before including it:
-
-```typescript
-// AFTER (fixed):
-secureLogError(context, message, {
-  ...details,
-  error: error ? sanitizeError(error) : undefined, // ✅ Sanitized
-  requestId,
-  path,
-  method,
-});
-```
-
-### Positive Security Observations
-
-| Change                                                                | Status  | Notes                                |
-| --------------------------------------------------------------------- | ------- | ------------------------------------ |
-| Hardcoded `"anonymous"` → `RATE_LIMIT_CONSTANTS.ANONYMOUS_CLIENT_KEY` | ✅ Good | Magic string elimination (hardening) |
-| Hardcoded limiter names → `RATE_LIMIT_CONSTANTS.LIMITER_BINDINGS.*`   | ✅ Good | Centralized constants                |
-| `secureLogError`/`secureLogWarn` usage in rate limit logging          | ✅ Good | Proper sanitized logging             |
-| `vi.useFakeTimers()` for timeout tests                                | ✅ Good | Eliminates real async delays         |
-| No `eval()`, `innerHTML`, or `dangerouslySetInnerHTML` introduced     | ✅ Good | No XSS vectors                       |
-| No hardcoded secrets or credentials in diffs                          | ✅ Good | Secrets hygiene maintained           |
-
-### npm Dependency Audit
-
-Ran `npm audit fix` - resolved all auto-fixable vulnerabilities. Remaining issues are in Cloudflare Workers dev dependencies (`undici`, `ws`, `miniflare`) that require `--force` upgrade and may cause breaking changes.
-
-### Verification
-
-```bash
-npm run typecheck        # ✅ PASS
-npm run lint             # ✅ PASS
-npm run test:all         # ✅ PASS
-```
 
 ---
