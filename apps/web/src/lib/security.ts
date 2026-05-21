@@ -455,7 +455,7 @@ export function getContentSecurityHeaders(): Record<string, string> {
   return {
     "Content-Security-Policy": [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      "script-src 'self' 'unsafe-hashes' 'sha256-87uI7LZJ8azkq44HKb4qqF/0VgaCUXD27d5/XHXT3yQ='",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https:",
       "font-src 'self'",
