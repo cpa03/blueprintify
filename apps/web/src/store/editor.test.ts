@@ -39,6 +39,10 @@ vi.mock("../config/constants", () => ({
     WIZARD: 300,
     EDITOR: 300,
   },
+  EDITOR_TABS: {
+    BLUEPRINT: "blueprint",
+    TASKS: "tasks",
+  },
 }));
 
 describe("editor store", () => {
