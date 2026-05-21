@@ -251,6 +251,12 @@ export const API_ERROR_MESSAGES = {
   STREAM_ERROR: "Connection interrupted. Check your network and try again.",
 } as const;
 
+// Editor tab constants
+export const EDITOR_TABS = {
+  BLUEPRINT: "blueprint",
+  TASKS: "tasks",
+} as const;
+
 // Export README template
 export const README_TEMPLATE = (projectName: string): string => {
   const homepageUrl = ENV.PROJECT_HOMEPAGE_URL;

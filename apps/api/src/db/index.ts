@@ -6,12 +6,13 @@
  */
 
 import { z } from "zod";
-import { ID_GENERATION_CONFIG } from "@blueprint/shared";
-import { ERROR_MESSAGES } from "../config/constants";
+import { DB_ID_CONFIG, ERROR_MESSAGES } from "../config/constants";
 
-const { RANDOM_STRING_LENGTH } = ID_GENERATION_CONFIG;
-
-const ID_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
+const {
+  ID_CHARS,
+  RANDOM_STRING_LENGTH,
+  ID_PREFIXES: { USER, PROJECT, BLUEPRINT, TASK, TEMPLATE, ANALYTICS, SESSION },
+} = DB_ID_CONFIG;
 
 /**
  * Generate a cryptographically secure random string.
@@ -257,7 +258,7 @@ export class MockDatabaseService implements DatabaseService {
   private blueprintShares: Map<string, BlueprintShare> = new Map();
 
   async createUser(user: Omit<User, "id" | "created_at" | "updated_at">): Promise<User> {
-    const id = generateId("user");
+    const id = generateId(USER);
     const now = new Date().toISOString();
     const newUser: User = { ...user, id, created_at: now, updated_at: now };
     this.users.set(id, newUser);
@@ -294,7 +295,7 @@ export class MockDatabaseService implements DatabaseService {
   async createProject(
     project: Omit<Project, "id" | "created_at" | "updated_at">
   ): Promise<Project> {
-    const id = generateId("project");
+    const id = generateId(PROJECT);
     const now = new Date().toISOString();
     const newProject: Project = {
       ...project,
@@ -341,7 +342,7 @@ export class MockDatabaseService implements DatabaseService {
       version?: number;
     }
   ): Promise<Blueprint> {
-    const id = generateId("blueprint");
+    const id = generateId(BLUEPRINT);
     const now = new Date().toISOString();
     const newBlueprint: Blueprint = {
       ...blueprint,
@@ -390,7 +391,7 @@ export class MockDatabaseService implements DatabaseService {
       version?: number;
     }
   ): Promise<Task> {
-    const id = generateId("task");
+    const id = generateId(TASK);
     const now = new Date().toISOString();
     const newTask: Task = {
       ...task,
@@ -432,7 +433,7 @@ export class MockDatabaseService implements DatabaseService {
       usage_count?: number;
     }
   ): Promise<Template> {
-    const id = generateId("template");
+    const id = generateId(TEMPLATE);
     const now = new Date().toISOString();
     const newTemplate: Template = {
       ...template,
@@ -461,7 +462,9 @@ export class MockDatabaseService implements DatabaseService {
     return Array.from(this.templates.values()).filter((t) => t.created_by === userId);
   }
 
-  async getPopularTemplates(limit: number = 10): Promise<Template[]> {
+  async getPopularTemplates(
+    limit: number = DB_ID_CONFIG.DEFAULT_POPULAR_LIMIT
+  ): Promise<Template[]> {
     return Array.from(this.templates.values())
       .filter((t) => t.is_public)
       .sort((a, b) => b.usage_count - a.usage_count)
@@ -502,7 +505,7 @@ export class MockDatabaseService implements DatabaseService {
     ip_address?: string;
     user_agent?: string;
   }): Promise<void> {
-    const id = generateId("analytics");
+    const id = generateId(ANALYTICS);
     const newEvent: Analytics = {
       id,
       ...event,
@@ -544,7 +547,7 @@ export class MockDatabaseService implements DatabaseService {
   async createSession(
     session: Omit<Session, "id" | "created_at" | "updated_at">
   ): Promise<Session> {
-    const id = generateId("session");
+    const id = generateId(SESSION);
     const now = new Date().toISOString();
     const newSession: Session = {
       ...session,
