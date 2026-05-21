@@ -185,11 +185,71 @@ function EditorToolbarComponent({
         >
           {isExporting ? (
             <>
-              <span className="animate-spin mr-2">⚙️</span>
-              Generating...
+              <motion.svg
+                className="w-4 h-4 mr-2 flex-shrink-0"
+                viewBox="0 0 24 24"
+                fill="none"
+                animate={{ rotate: 360 }}
+                transition={{
+                  duration: 1,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+                aria-hidden="true"
+              >
+                <defs>
+                  <linearGradient id="toolbar-export-spinner-grad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#6366f1" />
+                    <stop offset="100%" stopColor="#a855f7" />
+                  </linearGradient>
+                </defs>
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeOpacity={0.15}
+                  fill="none"
+                />
+                <motion.circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="url(#toolbar-export-spinner-grad)"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  fill="none"
+                  strokeDasharray={2 * Math.PI * 10}
+                  strokeDashoffset={2 * Math.PI * 10 * 0.75}
+                />
+              </motion.svg>
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                Generating...
+              </motion.span>
             </>
           ) : (
-            <>📦 Export .zip</>
+            <>
+              <svg
+                className="w-4 h-4 mr-1.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              Export .zip
+            </>
           )}
         </button>
       </Tooltip>
