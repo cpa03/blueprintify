@@ -81,12 +81,16 @@ function App(): JSX.Element {
     const wasGenerating = previousIsGeneratingRef.current;
 
     if ((hasContentChanged || isGeneratingChanged) && (hasContent || isGenerating) && !showEditor) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setShowEditor(true);
+      // Defer state update to avoid cascading renders per React docs
+      queueMicrotask(() => {
+        setShowEditor(true);
+      });
     }
 
     if (wasGenerating && !isGenerating && hasContent) {
-      setShowCelebration(true);
+      queueMicrotask(() => {
+        setShowCelebration(true);
+      });
     }
 
     previousHasContentRef.current = hasContent;

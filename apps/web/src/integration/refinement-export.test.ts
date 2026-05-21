@@ -224,9 +224,9 @@ describe("Integration: Export/Import Workflow", () => {
     it("should export project as ZIP", async () => {
       const testData = createTestBlueprint();
 
-      const mockBlob = new Blob(["zip-content"], { type: "application/zip" });
+      const mockBuffer = new ArrayBuffer(10);
       fetchMock.mockResolvedValueOnce(
-        new Response(mockBlob, {
+        new Response(mockBuffer, {
           status: 200,
           headers: { "Content-Type": "application/zip" },
         })

@@ -34,14 +34,14 @@ function AnimatedNumberComponent({
   const [displayValue, setDisplayValue] = useState(value);
   const displayValueRef = useRef(value);
   const previousValueRef = useRef(value);
-  const directionRef = useRef<"up" | "down" | null>(null);
+  const [direction, setDirection] = useState<"up" | "down" | null>(null);
 
-  // Calculate animation direction
+  // Calculate animation direction - stored in state to allow render-time access
   useEffect(() => {
     if (value > previousValueRef.current) {
-      directionRef.current = "up";
+      setDirection("up");
     } else if (value < previousValueRef.current) {
-      directionRef.current = "down";
+      setDirection("down");
     }
     previousValueRef.current = value;
   }, [value]);
@@ -49,9 +49,12 @@ function AnimatedNumberComponent({
   // For users who prefer reduced motion, update instantly
   useEffect(() => {
     if (!shouldAnimate) {
-      setDisplayValue(value);
       displayValueRef.current = value;
-      return;
+      // Defer state update to avoid cascading renders per React docs
+      const rafId = requestAnimationFrame(() => {
+        setDisplayValue(value);
+      });
+      return () => cancelAnimationFrame(rafId);
     }
 
     // Simple interpolation for animated version
@@ -61,9 +64,11 @@ function AnimatedNumberComponent({
     const adjustedDuration = getDuration(duration * 1000);
 
     if (adjustedDuration === 0) {
-      setDisplayValue(endValue);
       displayValueRef.current = endValue;
-      return;
+      const rafId = requestAnimationFrame(() => {
+        setDisplayValue(endValue);
+      });
+      return () => cancelAnimationFrame(rafId);
     }
 
     const animate = (currentTime: number) => {
@@ -91,11 +96,11 @@ function AnimatedNumberComponent({
       className={`tabular-nums ${className}`}
       initial={false}
       animate={
-        shouldAnimate && directionRef.current
+        shouldAnimate && direction
           ? {
               scale: [1, 1.1, 1],
               color:
-                directionRef.current === "up"
+                direction === "up"
                   ? ["inherit", ANIMATION_COLORS.POSITIVE, "inherit"]
                   : ["inherit", ANIMATION_COLORS.NEGATIVE, "inherit"],
             }
