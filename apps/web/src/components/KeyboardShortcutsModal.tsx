@@ -35,6 +35,7 @@ const getShortcutItems = (): ShortcutItem[] => {
   const isMac =
     typeof navigator !== "undefined" && navigator.platform.toUpperCase().indexOf("MAC") >= 0;
   const modifier = isMac ? "⌘" : "Ctrl";
+  const altKey = isMac ? "⌥" : "Alt";
 
   return [
     {
@@ -53,7 +54,7 @@ const getShortcutItems = (): ShortcutItem[] => {
       category: "generation",
     },
     ...WIZARD_STEPS.map((step) => ({
-      keys: [modifier, step.shortcut],
+      keys: [altKey, step.shortcut],
       description: `Go to ${step.label}`,
       category: "navigation" as const,
     })),
