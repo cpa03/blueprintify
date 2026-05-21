@@ -1,13 +1,4 @@
-/**
- * @fileoverview Reusable persistence utilities for Zustand stores
- *
- * This module provides a factory function that creates the common pattern of:
- * - Loading persisted state from storage on initialization
- * - Saving state to storage with debouncing
- * - Providing flush/cancel actions for pending saves
- *
- * @module store/persistence
- */
+import { STORAGE_ERROR_MESSAGES } from "../config/constants";
 
 /**
  * Generic storage interface that the persistence utilities expect.
@@ -96,7 +87,7 @@ export function createPersistedStore<T, S>(
         set(stored as Partial<S>, true);
       }
     } catch {
-      console.warn("Failed to load state from storage");
+      console.warn(STORAGE_ERROR_MESSAGES.LOAD_FAILED);
     }
   };
 
@@ -105,7 +96,7 @@ export function createPersistedStore<T, S>(
       const dataToSave = getPersistData(get());
       await storage.set(dataToSave);
     } catch {
-      console.warn("Failed to save state to storage");
+      console.warn(STORAGE_ERROR_MESSAGES.SAVE_FAILED);
     }
   };
 

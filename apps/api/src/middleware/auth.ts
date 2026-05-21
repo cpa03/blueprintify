@@ -8,7 +8,7 @@
  */
 
 import type { MiddlewareHandler } from "hono";
-import { HTTP_STATUS, ERROR_CODES } from "../config/constants";
+import { HTTP_STATUS, ERROR_CODES, ERROR_MESSAGES } from "../config/constants";
 import { ErrorType } from "../errors";
 
 /**
@@ -85,7 +85,7 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
           success: false,
           error: {
             type: ErrorType.CONFIGURATION,
-            message: "API_KEY is not configured. Server authentication is unavailable.",
+            message: ERROR_MESSAGES.AUTHENTICATION_MISSING_CONFIG,
             code: ERROR_CODES.CONFIGURATION_ERROR,
             timestamp: new Date().toISOString(),
           },
@@ -101,7 +101,7 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
           success: false,
           error: {
             type: ErrorType.AUTHENTICATION,
-            message: "Invalid or missing API key",
+            message: ERROR_MESSAGES.AUTHENTICATION_INVALID_KEY,
             code: ERROR_CODES.AUTHENTICATION_ERROR,
             timestamp: new Date().toISOString(),
           },

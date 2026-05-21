@@ -9,7 +9,7 @@
  */
 
 import type { MiddlewareHandler } from "hono";
-import { HTTP_STATUS } from "../config/constants";
+import { HTTP_STATUS, ERROR_CODES } from "../config/constants";
 import { ErrorType } from "../errors";
 
 /**
@@ -95,7 +95,7 @@ export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
             error: {
               type: ErrorType.VALIDATION,
               message: `Request body too large. Maximum allowed size is ${maxSize} bytes.`,
-              code: "PAYLOAD_TOO_LARGE",
+              code: ERROR_CODES.PAYLOAD_TOO_LARGE,
               details: {
                 maxSize,
                 actualSize: size,

@@ -1,4 +1,4 @@
-import { SSE_HEADERS } from "../config/constants";
+import { SSE_HEADERS, ERROR_MESSAGES } from "../config/constants";
 
 /**
  * Interface for AI service implementations.
@@ -54,9 +54,7 @@ export function setDefaultContainer(container: Container): void {
  */
 export function getContainer(): Container {
   if (!defaultContainer) {
-    throw new Error(
-      "DI Container not initialized. Call setDefaultContainer() before using services."
-    );
+    throw new Error(ERROR_MESSAGES.CONTAINER_NOT_INITIALIZED);
   }
   return defaultContainer;
 }

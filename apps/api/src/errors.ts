@@ -296,7 +296,7 @@ export function createErrorResponse(error: unknown): ErrorResponse {
 
   // Handle generic errors
   const internalError = new InternalServerError(
-    error instanceof Error ? error.message : "Unknown error occurred"
+    error instanceof Error ? error.message : ERROR_MESSAGES.INTERNAL_FALLBACK
   );
   return internalError.toJSON();
 }

@@ -554,3 +554,88 @@ export const SKELETON_CONFIG = {
   /** Fade out transition duration in ms */
   FADEOUT_MS: 300,
 } as const;
+
+// ============================================================================
+// Security Error Messages
+// ============================================================================
+
+/**
+ * Security validation error messages
+ * Centralized messages for XSS, file, and content validation errors
+ * Flexy says: No hardcoded strings - everything configurable!
+ */
+export const SECURITY_ERROR_MESSAGES = {
+  /** Generic content validation failure */
+  CONTENT_VALIDATION_FAILED: "Content validation failed",
+  /** XSS patterns detected in content */
+  XSS_PATTERNS_DETECTED:
+    "Content contains potentially dangerous XSS patterns. This may include script tags, event handlers, or javascript: URLs. Please remove any embedded scripts or suspicious HTML.",
+  /** Other content dangerous patterns */
+  XSS_DANGEROUS_PATTERNS: "Content contains potentially dangerous patterns",
+  /** CodeMirror-specific dangerous patterns */
+  CODEMIRROR_DANGEROUS_PATTERNS:
+    "Content contains CodeMirror-specific dangerous patterns (data: URLs, vbscript, CSS expressions, or IE-specific behaviors). These are blocked for security reasons.",
+  /** File type not allowed */
+  FILE_TYPE_NOT_ALLOWED: (extension: string, allowedTypes: string) =>
+    `File type ${extension} is not allowed. Allowed types: ${allowedTypes}`,
+  /** File size exceeds limit */
+  FILE_SIZE_EXCEEDED: (maxSizeMB: number) =>
+    `File size exceeds maximum allowed size of ${maxSizeMB}MB`,
+  /** File validation fallback */
+  FILE_VALIDATION_FAILED: "File validation failed",
+  /** Prototype pollution detected */
+  PROTOTYPE_POLLUTION_DETECTED: "JSON contains potential prototype pollution vulnerabilities",
+  /** JSON depth exceeded */
+  JSON_DEPTH_EXCEEDED: (maxDepth: number) =>
+    `JSON object depth exceeds maximum allowed limit (${maxDepth})`,
+  /** Suspicious keys found in JSON */
+  JSON_SUSPICIOUS_KEYS: (keys: string) => `JSON contains suspicious keys: ${keys}`,
+  /** Invalid JSON format */
+  INVALID_JSON_FORMAT: "Invalid JSON format",
+  /** Storage quota exceeded */
+  STORAGE_QUOTA_EXCEEDED: "Storage quota exceeded. Please clear some data.",
+  /** Unknown security error */
+  UNKNOWN_SECURITY_ERROR: "Unknown security error",
+} as const;
+
+// ============================================================================
+// Storage Error Messages
+// ============================================================================
+
+/**
+ * Storage operation error messages
+ * Centralized messages for localStorage operations
+ */
+export const STORAGE_ERROR_MESSAGES = {
+  LOAD_FAILED: "Failed to load state from storage",
+  SAVE_FAILED: "Failed to save state to storage",
+  CLEAR_FAILED: "Failed to clear storage",
+  READ_FAILED: "Failed to read from storage",
+  WRITE_FAILED: "Failed to write to storage",
+  REMOVE_FAILED: "Failed to remove from storage",
+  CLEAR_STORAGE_FAILED: "Failed to clear storage",
+  BACKUP_FAILED: "Failed to create backup",
+  RECOVERY_FAILED: "Recovery failed",
+  RECOVERY_SUCCESS: (timestamp: number) =>
+    `Successfully recovered from backup created at ${new Date(timestamp)}`,
+  OPERATION_FAILED: (operation: string) => `Storage ${operation} failed`,
+  STORAGE_UNSUPPORTED: "localStorage is not supported in this browser",
+  PRIVACY_MODE: "Storage is unavailable in private browsing mode",
+  QUOTA_EXCEEDED: "Storage quota exceeded",
+  DATA_CORRUPTED: "Stored data appears to be corrupted. Attempting recovery...",
+  BROWSER_UNSUPPORTED: "Your browser does not support local storage.",
+  PRIVACY_MODE_MSG: "Storage is unavailable in private browsing mode.",
+  VALIDATION_FAILED: "Data validation failed.",
+  MIGRATION_FAILED: "Data migration failed. Please clear storage and try again.",
+  UNEXPECTED_ERROR: "An unexpected storage error occurred.",
+  STORAGE_FULL: "Storage is full. Please clear some data and try again.",
+  SERVICE_EXISTS: (key: string) => `Storage service for key "${key}" already exists`,
+} as const;
+
+// ============================================================================
+// API Error Messages (supplemental - frontend specific)
+// ============================================================================
+
+export const FRONTEND_ERROR_MESSAGES = {
+  UNKNOWN_ERROR: "Unknown error",
+} as const;

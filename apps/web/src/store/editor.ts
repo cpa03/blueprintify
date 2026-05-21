@@ -21,7 +21,7 @@
 
 import { create } from "zustand";
 import type { EditorTab } from "@blueprint/shared";
-import { GENERATION_MESSAGES, DEBOUNCE_CONFIG } from "../config/constants";
+import { GENERATION_MESSAGES, DEBOUNCE_CONFIG, STORAGE_ERROR_MESSAGES } from "../config/constants";
 import { sanitizeForStorage, handleSecurityError } from "../lib/security";
 import { editorStorage } from "../lib/storage";
 import { createPersistedStore, type PersistedStorage } from "./persistence";
@@ -41,7 +41,7 @@ function validateEditorContent(
 ): { blueprintContent: string; tasksContent: string } {
   const security = sanitizeForStorage({ blueprintContent, tasksContent });
   if (!security.isValid) {
-    console.error("Content validation failed:", security.error);
+    console.error(STORAGE_ERROR_MESSAGES.LOAD_FAILED, security.error);
     throw new Error(security.error);
   }
   return security.sanitized as {
@@ -106,7 +106,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
         debouncedSave(get);
       } catch (error) {
         const securityError = handleSecurityError(error);
-        console.error("Security validation failed:", securityError.message);
+        console.error(STORAGE_ERROR_MESSAGES.SAVE_FAILED, securityError.message);
         throw securityError;
       }
     },
@@ -122,7 +122,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
         debouncedSave(get);
       } catch (error) {
         const securityError = handleSecurityError(error);
-        console.error("Security validation failed:", securityError.message);
+        console.error(STORAGE_ERROR_MESSAGES.SAVE_FAILED, securityError.message);
         throw securityError;
       }
     },
@@ -134,7 +134,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
         debouncedSave(get);
       } catch (error) {
         const securityError = handleSecurityError(error);
-        console.error("Security validation failed:", securityError.message);
+        console.error(STORAGE_ERROR_MESSAGES.SAVE_FAILED, securityError.message);
         throw securityError;
       }
     },
@@ -147,7 +147,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
         debouncedSave(get);
       } catch (error) {
         const securityError = handleSecurityError(error);
-        console.error("Security validation failed:", securityError.message);
+        console.error(STORAGE_ERROR_MESSAGES.SAVE_FAILED, securityError.message);
         throw securityError;
       }
     },

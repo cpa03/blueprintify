@@ -5,6 +5,7 @@ import {
   getStorageErrorMessage,
   withStorageRecovery,
 } from "./storage";
+import { STORAGE_ERROR_MESSAGES } from "../config/constants";
 
 export function createTypedStorage<T>(storageService: StorageService<T>): {
   getItem: (name: string) => Promise<T | null> | T | null;
@@ -16,7 +17,10 @@ export function createTypedStorage<T>(storageService: StorageService<T>): {
       try {
         return await storageService.get();
       } catch (error) {
-        console.error("Storage getItem failed:", getStorageErrorMessage(error));
+        console.error(
+          STORAGE_ERROR_MESSAGES.OPERATION_FAILED("getItem"),
+          getStorageErrorMessage(error)
+        );
         return null;
       }
     },
@@ -25,7 +29,10 @@ export function createTypedStorage<T>(storageService: StorageService<T>): {
       try {
         await storageService.set(value);
       } catch (error) {
-        console.error("Storage setItem failed:", getStorageErrorMessage(error));
+        console.error(
+          STORAGE_ERROR_MESSAGES.OPERATION_FAILED("setItem"),
+          getStorageErrorMessage(error)
+        );
         throw error;
       }
     },
@@ -34,7 +41,10 @@ export function createTypedStorage<T>(storageService: StorageService<T>): {
       try {
         await storageService.remove();
       } catch (error) {
-        console.error("Storage removeItem failed:", getStorageErrorMessage(error));
+        console.error(
+          STORAGE_ERROR_MESSAGES.OPERATION_FAILED("removeItem"),
+          getStorageErrorMessage(error)
+        );
         throw error;
       }
     },

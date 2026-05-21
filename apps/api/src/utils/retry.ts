@@ -4,7 +4,12 @@
  * Automatically retries on transient failures like rate limits and server errors.
  */
 
-import { RETRY_CONFIG, RETRYABLE_ERROR_CODES, RETRY_LOGIC } from "../config/constants";
+import {
+  RETRY_CONFIG,
+  RETRYABLE_ERROR_CODES,
+  RETRY_LOGIC,
+  ERROR_MESSAGES,
+} from "../config/constants";
 import { getConfig } from "../config/env";
 import { TimeoutError } from "./timeout";
 
@@ -78,10 +83,7 @@ export async function withRetry<T>(
     if (timeout !== undefined) {
       const elapsed = Date.now() - startTime;
       if (elapsed >= timeout) {
-        throw new TimeoutError(
-          timeout,
-          `Retry operation timed out after ${elapsed}ms (timeout: ${timeout}ms)`
-        );
+        throw new TimeoutError(timeout, ERROR_MESSAGES.TIMEOUT_MESSAGE(elapsed, timeout));
       }
     }
 
@@ -108,10 +110,7 @@ export async function withRetry<T>(
       if (timeout !== undefined) {
         const elapsed = Date.now() - startTime;
         if (elapsed + delay >= timeout) {
-          throw new TimeoutError(
-            timeout,
-            `Retry operation timed out after ${elapsed}ms (timeout: ${timeout}ms)`
-          );
+          throw new TimeoutError(timeout, ERROR_MESSAGES.TIMEOUT_MESSAGE(elapsed, timeout));
         }
       }
 

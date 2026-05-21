@@ -15,6 +15,7 @@
 
 import { createDebouncedSaver } from "@blueprint/shared";
 import type { StorageService } from "../lib/storage";
+import { STORAGE_ERROR_MESSAGES } from "../config/constants";
 
 export interface PersistedStoreConfig<T> {
   /** Storage service instance for persistence */
@@ -111,7 +112,7 @@ export function createPersistedStore<T>(config: PersistedStoreConfig<T>): Persis
         zustandSet((state: T) => ({ ...state, ...persistedState }), true);
       }
     } catch (error) {
-      console.warn("Failed to load state from storage:", error);
+      console.warn(STORAGE_ERROR_MESSAGES.LOAD_FAILED, error);
       onLoadError?.(error);
     }
   };
@@ -126,7 +127,7 @@ export function createPersistedStore<T>(config: PersistedStoreConfig<T>): Persis
         const dataToSave = getPersistedDataFn(current);
         await storage.set(dataToSave as T);
       } catch (error) {
-        console.warn("Failed to save state to storage:", error);
+        console.warn(STORAGE_ERROR_MESSAGES.SAVE_FAILED, error);
         onSaveError?.(error);
       }
     };
@@ -155,7 +156,7 @@ export function createPersistedStore<T>(config: PersistedStoreConfig<T>): Persis
     try {
       await storage.remove();
     } catch (error) {
-      console.warn("Failed to clear storage:", error);
+      console.warn(STORAGE_ERROR_MESSAGES.CLEAR_FAILED, error);
     }
   };
 

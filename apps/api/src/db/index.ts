@@ -7,6 +7,7 @@
 
 import { z } from "zod";
 import { ID_GENERATION_CONFIG } from "@blueprint/shared";
+import { ERROR_MESSAGES } from "../config/constants";
 
 const { RANDOM_STRING_LENGTH } = ID_GENERATION_CONFIG;
 
@@ -711,7 +712,9 @@ export function deserializeJSON<T>(json: string): T {
     return JSON.parse(json) as T;
   } catch (error) {
     throw new DatabaseError(
-      `Failed to parse JSON: ${error instanceof Error ? error.message : "Unknown error"}`,
+      ERROR_MESSAGES.JSON_PARSE_FAILURE(
+        error instanceof Error ? error.message : ERROR_MESSAGES.UNKNOWN_ERROR
+      ),
       error instanceof Error ? error : undefined
     );
   }
