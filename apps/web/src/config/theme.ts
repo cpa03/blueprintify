@@ -89,9 +89,9 @@ export const ANIMATION_TIMING = {
 
   // Easing functions
   easing: {
-    easeOut: "ease-out",
-    easeIn: "ease-in",
-    easeInOut: "ease-in-out",
+    easeOut: [0, 0, 0.58, 1] as const,
+    easeIn: [0.42, 0, 1, 1] as const,
+    easeInOut: [0.42, 0, 0.58, 1] as const,
     spring: {
       stiffness: SPRING_CONFIG.SNAPPY.stiffness,
       damping: SPRING_CONFIG.SNAPPY.damping,
@@ -284,10 +284,10 @@ export const tailwindTheme = {
     mono: TYPOGRAPHY.fontFamily.mono,
   },
   animation: {
-    glow: `glow ${ANIMATION_TIMING.duration.glow}s ${ANIMATION_TIMING.easing.easeInOut} infinite alternate`,
-    "slide-up": `slide-up ${ANIMATION_TIMING.duration.medium}s ${ANIMATION_TIMING.easing.easeOut}`,
-    "slide-down": `slide-down ${ANIMATION_TIMING.duration.medium}s ${ANIMATION_TIMING.easing.easeOut}`,
-    "fade-in": `fade-in ${ANIMATION_TIMING.duration.normal}s ${ANIMATION_TIMING.easing.easeOut}`,
+    glow: `glow ${ANIMATION_TIMING.duration.glow}s cubic-bezier(${ANIMATION_TIMING.easing.easeInOut.join(",")}) infinite alternate`,
+    "slide-up": `slide-up ${ANIMATION_TIMING.duration.medium}s cubic-bezier(${ANIMATION_TIMING.easing.easeOut.join(",")})`,
+    "slide-down": `slide-down ${ANIMATION_TIMING.duration.medium}s cubic-bezier(${ANIMATION_TIMING.easing.easeOut.join(",")})`,
+    "fade-in": `fade-in ${ANIMATION_TIMING.duration.normal}s cubic-bezier(${ANIMATION_TIMING.easing.easeOut.join(",")})`,
     "pulse-slow": `pulse ${ANIMATION_TIMING.duration.pulse}s ${ANIMATION_TIMING.easing.cubic.default} infinite`,
   },
   keyframes: {
