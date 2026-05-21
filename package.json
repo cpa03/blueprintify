@@ -59,6 +59,9 @@
     "vite-plugin-compression2": "^2.4.0",
     "vitest": "^3.2.4"
   },
+  "overrides": {
+    "ws": "8.20.1"
+  },
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --fix",
