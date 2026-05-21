@@ -31,7 +31,6 @@
     "format:check": "prettier --check .",
     "doctor": "node -e \"console.log('Node:', process.version); const fs=require('fs'); try{console.log('.nvmrc:',fs.readFileSync('.nvmrc','utf8').trim())}catch(e){}\"",
     "clean": "npm run clean --workspaces --if-present",
-    "clean": "npm run clean --workspaces --if-present",
     "clean:dist": "rm -rf apps/*/dist packages/*/dist",
     "reset": "npm run clean && rm -rf node_modules apps/*/node_modules packages/*/node_modules"
   },
