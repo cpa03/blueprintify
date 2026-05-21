@@ -1,6 +1,6 @@
 # Active Tasks
 
-> Current active work items and priorities. See [completed-tasks-2026-q1.md](./completed-tasks-2026-q1.md) for archived completed work.
+> Current active work items and priorities. See [completed-tasks-2026-q1.md](./completed-tasks-2026-Q1.md) for archived completed work.
 
 ## M3: Distribution & Collaboration (DEFERRED)
 

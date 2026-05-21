@@ -7,7 +7,7 @@
 This file has been reorganized to improve navigability:
 
 - **[Active Tasks](./active-tasks.md)** - Current work items and priorities
-- **[Completed Tasks 2026 Q1](./completed-tasks-2026-q1.md)** - Archived completed work from Q1 2026
+- **[Completed Tasks 2026 Q1](./completed-tasks-2026-Q1.md)** - Archived completed work from Q1 2026
 
 ## Task Lifecycle
 
