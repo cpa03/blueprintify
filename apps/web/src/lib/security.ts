@@ -115,35 +115,35 @@ export const FileValidationSchema = z.object({
  * @see https://owasp.org/www-community/xss-filter-evasion-cheatsheet
  */
 const XSS_PATTERNS = [
-  /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-  /javascript:/gi,
-  /on\w+\s*=/gi,
-  /<iframe\b[^>]*>/gi,
-  /<object\b[^>]*>/gi,
-  /<embed\b[^>]*>/gi,
-  /<form\b[^>]*>/gi,
-  /<input\b[^>]*>/gi,
-  /<button\b[^>]*>/gi,
-  /eval\s*\(/gi,
-  /expression\s*\(/gi,
-  /@import/gi,
-  /vbscript:/gi,
-  /data:text\/html/gi,
+  /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/i,
+  /javascript:/i,
+  /on\w+\s*=/i,
+  /<iframe\b[^>]*>/i,
+  /<object\b[^>]*>/i,
+  /<embed\b[^>]*>/i,
+  /<form\b[^>]*>/i,
+  /<input\b[^>]*>/i,
+  /<button\b[^>]*>/i,
+  /eval\s*\(/i,
+  /expression\s*\(/i,
+  /@import/i,
+  /vbscript:/i,
+  /data:text\/html/i,
   // SVG-based XSS vectors
-  /<svg\b[^>]*>/gi,
-  /<math\b[^>]*>/gi,
-  /<animate\b[^>]*>/gi,
-  /<set\b[^>]*>/gi,
-  /<use\b[^>]*>/gi,
+  /<svg\b[^>]*>/i,
+  /<math\b[^>]*>/i,
+  /<animate\b[^>]*>/i,
+  /<set\b[^>]*>/i,
+  /<use\b[^>]*>/i,
   // Protocol handlers
-  /data:\s*[^,]*;base64/gi,
-  /blob:/gi,
+  /data:\s*[^,]*;base64/i,
+  /blob:/i,
   // DOM clobbering patterns
-  /id\s*=\s*["']?__proto__["']?/gi,
-  /id\s*=\s*["']?constructor["']?/gi,
+  /id\s*=\s*["']?__proto__["']?/i,
+  /id\s*=\s*["']?constructor["']?/i,
   // Mutation XSS patterns
-  /<noscript\b[^>]*>/gi,
-  /<template\b[^>]*>/gi,
+  /<noscript\b[^>]*>/i,
+  /<template\b[^>]*>/i,
 ];
 
 export function containsXSSPatterns(content: string): boolean {
@@ -161,13 +161,13 @@ export function sanitizeMarkdown(markdown: string): string {
 
   // Additional CodeMirror-specific security patterns
   const CODEMIRROR_PATTERNS = [
-    /data:text\/html/gi,
-    /vbscript:/gi,
-    /@import\s+url/gi,
-    /expression\s*\(/gi,
-    /behavior\s*:/gi,
-    /binding\s*:/gi,
-    /include-source\s*:/gi,
+    /data:text\/html/i,
+    /vbscript:/i,
+    /@import\s+url/i,
+    /expression\s*\(/i,
+    /behavior\s*:/i,
+    /binding\s*:/i,
+    /include-source\s*:/i,
   ];
 
   if (CODEMIRROR_PATTERNS.some((pattern) => pattern.test(markdown))) {

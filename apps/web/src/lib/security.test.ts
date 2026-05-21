@@ -55,11 +55,11 @@ describe("Security Utilities", () => {
       );
     });
 
-    it("should sanitize HTML within markdown", () => {
+    it("should reject markdown containing XSS patterns even in mixed content", () => {
       const markdownWithHtml = 'Text <p>paragraph</p> and <script>alert("xss")</script>';
-      const result = sanitizeMarkdown(markdownWithHtml);
-      expect(result).toContain("<p>paragraph</p>");
-      expect(result).not.toContain("<script>");
+      expect(() => sanitizeMarkdown(markdownWithHtml)).toThrow(
+        "Content contains potentially dangerous XSS patterns"
+      );
     });
   });
 
