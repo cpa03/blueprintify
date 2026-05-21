@@ -102,6 +102,7 @@ jspm_packages/
 tmp/
 temp/
 .sisyphus/
+.omo/
 
 # Large files that should be handled by Git LFS
 *.zip

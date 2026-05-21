@@ -223,7 +223,7 @@ grep -rn '\[.*\](.*\.md)' docs/
 
 ## Related Documentation
 
-- [Main README](../../README.md)
-- [API Documentation](../api-documentation.md)
-- [User Guide](../user-guide.md)
-- [Development Workflow](../development-workflow.md)
+- [Main README](../README.md)
+- [API Documentation](./api-documentation.md)
+- [User Guide](./user-guide.md)
+- [Development Workflow](./development-workflow.md)
