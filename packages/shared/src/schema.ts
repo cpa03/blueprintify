@@ -45,7 +45,11 @@ export const TechStackItem = z.object({
   subcategory: DatabaseSubcategory.optional(),
   version: z.string().optional(),
   description: z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX).optional(),
-  features: z.array(z.string()).min(1).max(VALIDATION_LIMITS.FEATURE.MAX).optional(),
+  features: z
+    .array(z.string().max(VALIDATION_LIMITS.FEATURE.MAX))
+    .min(1)
+    .max(VALIDATION_LIMITS.FEATURE.MAX_COUNT)
+    .optional(),
 });
 
 // ===== Blueprint Request Schema =====
@@ -69,7 +73,10 @@ export const BlueprintRequestSchema = z.object({
   techStack: z
     .array(TechStackItem)
     .min(VALIDATION_LIMITS.TECH_STACK.MIN, "At least one technology is required"),
-  features: z.array(z.string().min(1)).max(VALIDATION_LIMITS.FEATURE.MAX).optional(),
+  features: z
+    .array(z.string().min(1).max(VALIDATION_LIMITS.FEATURE.MAX))
+    .max(VALIDATION_LIMITS.FEATURE.MAX_COUNT)
+    .optional(),
   targetAudience: z.string().max(VALIDATION_LIMITS.TARGET_AUDIENCE.MAX).optional(),
   constraints: z.string().max(VALIDATION_LIMITS.CONSTRAINTS.MAX).optional(),
 });
@@ -169,7 +176,9 @@ export const TemplateSchema = z.object({
     .min(VALIDATION_LIMITS.DESCRIPTION.MIN)
     .max(VALIDATION_LIMITS.DESCRIPTION.MAX),
   techStack: z.array(TechStackItem),
-  features: z.array(z.string().min(1).max(VALIDATION_LIMITS.FEATURE.MAX)),
+  features: z
+    .array(z.string().min(1).max(VALIDATION_LIMITS.FEATURE.MAX))
+    .max(VALIDATION_LIMITS.FEATURE.MAX_COUNT),
 });
 
 // ===== Error Response Schemas =====
