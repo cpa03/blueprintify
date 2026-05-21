@@ -227,9 +227,20 @@ const ToastItem = memo(
 
         <span className="relative flex-shrink-0 w-7 h-7 flex items-center justify-center">
           <ProgressRing progress={progress} size={28} strokeWidth={2} />
-          <span className="w-6 h-6 rounded-full bg-current/20 flex items-center justify-center font-bold text-sm relative z-10">
+          <motion.span
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 500,
+              damping: 16,
+              mass: 0.5,
+              delay: 0.12,
+            }}
+            className="w-6 h-6 rounded-full bg-current/20 flex items-center justify-center font-bold text-sm relative z-10"
+          >
             {toastIcons[toast.type]}
-          </span>
+          </motion.span>
         </span>
         <p className="text-sm font-medium flex-1">{toast.message}</p>
         <button
