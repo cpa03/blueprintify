@@ -27,10 +27,11 @@
  */
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { LastSavedIndicator } from "../LastSavedIndicator";
+import { SPRING_CONFIG } from "../../config/constants";
 import clsx from "clsx";
 
 interface EditorHeaderProps {
@@ -96,21 +97,34 @@ const TabButton = React.memo(function TabButton({
 export type { ViewMode };
 
 const ContentStats = React.memo(function ContentStats({ content }: { content: string }) {
-  if (!content) return null;
   const charCount = content.length;
   const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
   return (
-    <div className="hidden md:flex items-center gap-3 text-[10px] uppercase tracking-wider font-bold text-dark-400 bg-dark-800/50 px-2 py-1 rounded-md border border-dark-700/50">
-      <div className="flex items-center gap-1">
-        <span className="text-dark-500">Chars</span>
-        <span className="text-primary-400">{charCount.toLocaleString()}</span>
-      </div>
-      <div className="w-px h-2 bg-dark-700" />
-      <div className="flex items-center gap-1">
-        <span className="text-dark-500">Words</span>
-        <span className="text-secondary-400">{wordCount.toLocaleString()}</span>
-      </div>
-    </div>
+    <AnimatePresence>
+      {content && (
+        <motion.div
+          key="content-stats"
+          initial={{ opacity: 0, y: -8, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -8, scale: 0.95 }}
+          transition={{
+            type: "spring",
+            ...SPRING_CONFIG.SNAPPY,
+          }}
+          className="hidden md:flex items-center gap-3 text-[10px] uppercase tracking-wider font-bold text-dark-400 bg-dark-800/50 px-2 py-1 rounded-md border border-dark-700/50"
+        >
+          <div className="flex items-center gap-1">
+            <span className="text-dark-500">Chars</span>
+            <span className="text-primary-400">{charCount.toLocaleString()}</span>
+          </div>
+          <div className="w-px h-2 bg-dark-700" />
+          <div className="flex items-center gap-1">
+            <span className="text-dark-500">Words</span>
+            <span className="text-secondary-400">{wordCount.toLocaleString()}</span>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 });
 
