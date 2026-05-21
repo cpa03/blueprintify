@@ -1,145 +1,65 @@
 # Active Tasks
 
-> Current active work items and priorities. See [completed-tasks-2026-q1.md](./completed-tasks-2026-Q1.md) for archived completed work.
+> Current active work items and priorities. See [completed-tasks-2026-Q1.md](./completed-tasks-2026-Q1.md) for archived completed work.
 
-## M3: Distribution & Collaboration (DEFERRED)
+## Current Focus: Repository Maintenance
 
-### Task Status: Deferred
+### Task: RepoKeeper Cleanup Cycle (2026-05-21)
 
-The M3 phase was deferred on 2026-02-13. M2 is 100% complete and it was deemed premature to start M3 preparation.
-
-#### TASK-M3-KICKSTART: Prepare M3 Distribution & Collaboration Phase
-
-- **Issue**: #300
-- **Assignee**: Technical Writer
-- **Priority**: Medium
-- **Status**: Deferred (2026-02-13)
-- **Reason**: M2 is 100% complete. Premature to start M3 preparation.
-- **Dependencies**: M2 completion required
-- **Acceptance**:
-  - [ ] M2 finalization complete
-  - [ ] All M2 success criteria met
-
-### Planned M3 Tasks (Not Started)
-
-#### TASK-010: ZIP Download Feature
-
-- **Issue**: #106
 - **Priority**: High
-- **Estimated**: 8-12 hours
-- **Dependencies**: M2 complete
-- **Acceptance**:
-  - [ ] Generate runnable project structure
-  - [ ] Package files into ZIP
-  - [ ] Download via browser
-  - [ ] Support for all tech stacks
-
-#### Additional M3 Tasks (Planned)
-
-- [ ] Share links functionality
-- [ ] Template library
-- [ ] Collaborative editing research
+- **Status**: In Progress
+- **Objective**: Remove redundant files, update documentation, fix dependency vulnerabilities, clean stale branches
+- **Actions**:
+  - [ ] Remove duplicate CONTRIBUTING.md from docs/
+  - [ ] Clean accumulated agent findings from docs/findings.md
+  - [ ] Consolidate docs/bugs.md - keep only active bugs
+  - [ ] Fix dependency vulnerabilities (undici, ws)
+  - [ ] Ensure docs match codebase reality
 
 ---
 
-## Current Milestone Status
+## Milestone Status
 
-### M1 Completion Checklist ✅ COMPLETE
+### M1 Foundation & Core Loop ✅ COMPLETE
 
-- [x] All critical path tasks complete
-- [x] End-to-end user flow working
-- [x] All tests passing
-- [x] Performance benchmarks met
-- [x] Documentation updated
+- All critical path tasks complete
+- End-to-end user flow working
+- All tests passing
+- Documentation updated
 
-### M2 Completion Checklist ✅ COMPLETE
+### M2 Feature Release ✅ COMPLETE
 
-- [x] LocalStorage fully functional
-- [x] Editing workflow complete
-- [x] Export/import working
-- [x] Migration strategy tested
+- LocalStorage persistence
+- Split-pane editor workflow
+- Export/import system
+- Refinement engine
+- Migration strategy
 
-### M3 Completion Checklist
+### M3 Distribution & Collaboration ⏸️ DEFERRED
 
-- [ ] ZIP download working
-- [ ] Share functionality complete
-- [ ] All performance targets met
-- [ ] Production deployment ready
+ZIP download, share functionality, and template library features are deferred until future planning determines priority.
 
 ---
 
-## Code Quality & Performance
+## Active Bug Tracking
 
-### Testing Coverage
+See [bugs.md](./bugs.md) for detailed bug information.
 
-#### TEST-001: Frontend Test Suite Implementation
-
-- **Issue**: #79
-- **Assignee**: Quality Assurance Engineer
-- **Priority**: Critical
-- **Estimated**: 2-3 days
-- **Dependencies**: None
-- **Acceptance**:
-  - [ ] Add Vitest configuration for frontend testing
-  - [ ] Create component tests for: Wizard, Editor, Header, StepIndicator
-  - [ ] Add integration tests for: Complete user flow
-  - [ ] Set up test coverage thresholds in CI pipeline
-
-### TypeScript Quality
-
-#### TS-001: Controller Type Safety Improvements
-
-- **Issue**: #80
-- **Assignee**: API Specialist
-- **Priority**: High
-- **Estimated**: 2-4 hours
-- **Dependencies**: None
-- **Acceptance**:
-  - [ ] Define proper Hono Context types
-  - [ ] Update BaseController to use typed Context parameter
-  - [ ] Remove all `any` usages in controller layer
-  - [ ] Ensure type safety is maintained across all controllers
+- **BUG-001**: Frontend Bundle Size Performance Issue (In Progress)
+- **BUG-008**: ajv Package Security Vulnerabilities (Open)
+- **BUG-010**: GitHub Actions Invalid Versions @v5 → @v4 (Open)
 
 ---
 
-## Dependencies & Blockers
+## Testing Coverage
 
-### External Dependencies
-
-- **AI Services**: OpenAI API (quota management)
-- **Cloudflare Workers**: Platform limits and constraints
-- **Browser APIs**: LocalStorage, Server-Sent Events support
-
-### Internal Dependencies
-
-- **Shared Schemas**: Zod validation contracts
-- **Component Library**: Reusable UI components
-- **API Contracts**: Request/response schemas
+- **Frontend**: Co-located Vitest tests with component and store tests
+- **API**: Comprehensive route, middleware, service, and utility tests
+- **Shared**: Zod schema, type, and config tests
+- **Total**: 420+ tests, all passing
+- **TypeScript**: Strict mode, no unchecked `any` types
 
 ---
 
-## Resource Allocation
-
-### Frontend Engineer (Critical Path)
-
-- Primary focus: TASK-008, TASK-006, TASK-101
-- Secondary focus: TASK-007, TASK-REF-05, PERF-001
-- Estimated capacity: 40 hours/week
-
-### Integration Engineer
-
-- Primary focus: TASK-REF-06
-- Secondary focus: Backend streaming endpoint
-- Estimated capacity: 30 hours/week
-
-### Performance Engineer
-
-- Primary focus: PERF-001, code review
-- Secondary focus: Performance monitoring setup
-- Estimated capacity: 20 hours/week
-
----
-
-**Last Updated**: 2026-02-25
-**Next Review**: Weekly stand-up
-**Maintainer**: Technical Writer
+**Last Updated**: 2026-05-21  
+**Maintainer**: RepoKeeper
