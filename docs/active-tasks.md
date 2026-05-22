@@ -15,6 +15,9 @@
   - [x] Move BUG-010 to resolved (no @v5 refs remain in CI)
   - [x] Add BUG-013 for upstream wrangler/miniflare vulns
   - [x] Clean findings.md (already clean)
+  - [x] Update docs (active-tasks.md, bugs.md, findings.md) for current cycle
+  - [x] Verify all docs references exist — all README.md linked files present
+  - [x] Verify build/lint/test pass — 891 tests all passing (471 web + 313 api + 107 shared)
   - [ ] No duplicate CONTRIBUTING.md found in docs/ — verified
   - [ ] Upstream undici/ws vulns blocked on Cloudflare SDK (Node 22+)
 
@@ -58,7 +61,7 @@ See [bugs.md](./bugs.md) for detailed bug information.
 - **Frontend**: Co-located Vitest tests with component and store tests
 - **API**: Comprehensive route, middleware, service, and utility tests
 - **Shared**: Zod schema, type, and config tests
-- **Total**: 471 tests (470 passing, 1 known-flaky benchmark threshold)
+- **Total**: 471 tests (all passing)
 - **TypeScript**: Strict mode, no unchecked `any` types
 
 ---
