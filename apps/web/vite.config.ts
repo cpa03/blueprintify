@@ -7,7 +7,7 @@ const API_PROXY_TARGET = process.env.VITE_API_PROXY_TARGET || "http://localhost:
 
 /**
  * Vite plugin to make CSS load asynchronously
- * This prevents render-blocking by using the media="print" trick
+ * Prevents render-blocking by using media="print" trick
  */
 const asyncCssPlugin = (): Plugin => ({
   name: "async-css",
