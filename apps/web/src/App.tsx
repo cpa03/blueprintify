@@ -221,7 +221,7 @@ function App(): JSX.Element {
                 <RippleButton
                   onClick={handleShowEditor}
                   className={BUTTON.SHOW_EDITOR_FAB}
-                  ariaLabel={`${UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON} (${modifierKey} + E)`}
+                  ariaLabel={`${UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON} ${modifierKey}+E`}
                 >
                   <span className="flex items-center">
                     <svg
