@@ -104,7 +104,7 @@ export function validateContent(content: unknown): {
     if (error instanceof z.ZodError) {
       return {
         isValid: false,
-        error: error.errors.map((e) => e.message).join(", "),
+        error: error.issues.map((e) => e.message).join(", "),
       };
     }
     return {
@@ -185,7 +185,7 @@ export async function validateAndSanitizeFileContent(file: File): Promise<{
     if (error instanceof z.ZodError) {
       return {
         isValid: false,
-        error: error.errors.map((e) => e.message).join(", "),
+        error: error.issues.map((e) => e.message).join(", "),
       };
     }
     return {
@@ -357,9 +357,9 @@ export function handleSecurityError(error: unknown): SecurityError {
 
   if (error instanceof z.ZodError) {
     return new SecurityError(
-      error.errors.map((e) => e.message).join(", "),
+      error.issues.map((e) => e.message).join(", "),
       "VALIDATION",
-      error.errors
+      error.issues
     );
   }
 
