@@ -1,145 +1,73 @@
 # Active Tasks
 
-> Current active work items and priorities. See [completed-tasks-2026-q1.md](./completed-tasks-2026-Q1.md) for archived completed work.
+> Current active work items and priorities. See [completed-tasks-2026-Q1.md](./completed-tasks-2026-Q1.md) for archived completed work.
 
-## M3: Distribution & Collaboration (DEFERRED)
+## Current Focus: Repository Maintenance
 
-### Task Status: Deferred
+### Task: RepoKeeper Cleanup Cycle (2026-05-22)
 
-The M3 phase was deferred on 2026-02-13. M2 is 100% complete and it was deemed premature to start M3 preparation.
-
-#### TASK-M3-KICKSTART: Prepare M3 Distribution & Collaboration Phase
-
-- **Issue**: #300
-- **Assignee**: Technical Writer
-- **Priority**: Medium
-- **Status**: Deferred (2026-02-13)
-- **Reason**: M2 is 100% complete. Premature to start M3 preparation.
-- **Dependencies**: M2 completion required
-- **Acceptance**:
-  - [ ] M2 finalization complete
-  - [ ] All M2 success criteria met
-
-### Planned M3 Tasks (Not Started)
-
-#### TASK-010: ZIP Download Feature
-
-- **Issue**: #106
 - **Priority**: High
-- **Estimated**: 8-12 hours
-- **Dependencies**: M2 complete
-- **Acceptance**:
-  - [ ] Generate runnable project structure
-  - [ ] Package files into ZIP
-  - [ ] Download via browser
-  - [ ] Support for all tech stacks
-
-#### Additional M3 Tasks (Planned)
-
-- [ ] Share links functionality
-- [ ] Template library
-- [ ] Collaborative editing research
-
----
-
-## Current Milestone Status
-
-### M1 Completion Checklist ✅ COMPLETE
-
-- [x] All critical path tasks complete
-- [x] End-to-end user flow working
-- [x] All tests passing
-- [x] Performance benchmarks met
-- [x] Documentation updated
-
-### M2 Completion Checklist ✅ COMPLETE
-
-- [x] LocalStorage fully functional
-- [x] Editing workflow complete
-- [x] Export/import working
-- [x] Migration strategy tested
-
-### M3 Completion Checklist
-
-- [ ] ZIP download working
-- [ ] Share functionality complete
-- [ ] All performance targets met
-- [ ] Production deployment ready
+- **Status**: Active
+- **Objective**: Remove redundant files, update documentation, fix dependency vulnerabilities, clean stale branches
+- **Actions**:
+  - [x] Align `.node-version` with `.nvmrc` (both → 20)
+  - [x] Fix flaky benchmark threshold in `performance-storage.benchmark.test.ts` (30ms → 50ms)
+  - [x] Move BUG-010 to resolved (no @v5 refs remain in CI)
+  - [x] Add BUG-013 for upstream wrangler/miniflare vulns
+  - [x] Clean findings.md (already clean)
+  - [x] Update docs (active-tasks.md, bugs.md, findings.md) for current cycle
+  - [x] Verify all docs references exist — all README.md linked files present
+  - [x] Verify build/lint/test pass — 891 tests all passing (471 web + 313 api + 107 shared)
+  - [x] No duplicate CONTRIBUTING.md found in docs/ — verified
+  - [x] Remove stale `ralph-loop.local.md` working file from `.omo/`
+  - [x] Fix test count discrepancy in Testing Coverage section (471→891)
+  - [x] Update roadmap.md — mark Finalization complete, update current focus, bump last-updated date
+  - [ ] Upstream undici/ws vulns blocked on Cloudflare SDK (Node 22+) — unchanged
 
 ---
 
-## Code Quality & Performance
+## Milestone Status
 
-### Testing Coverage
+### M1 Foundation & Core Loop ✅ COMPLETE
 
-#### TEST-001: Frontend Test Suite Implementation
+- All critical path tasks complete
+- End-to-end user flow working
+- All tests passing
+- Documentation updated
 
-- **Issue**: #79
-- **Assignee**: Quality Assurance Engineer
-- **Priority**: Critical
-- **Estimated**: 2-3 days
-- **Dependencies**: None
-- **Acceptance**:
-  - [ ] Add Vitest configuration for frontend testing
-  - [ ] Create component tests for: Wizard, Editor, Header, StepIndicator
-  - [ ] Add integration tests for: Complete user flow
-  - [ ] Set up test coverage thresholds in CI pipeline
+### M2 Feature Release ✅ COMPLETE
 
-### TypeScript Quality
+- LocalStorage persistence
+- Split-pane editor workflow
+- Export/import system
+- Refinement engine
+- Migration strategy
 
-#### TS-001: Controller Type Safety Improvements
+### M3 Distribution & Collaboration ⏸️ DEFERRED
 
-- **Issue**: #80
-- **Assignee**: API Specialist
-- **Priority**: High
-- **Estimated**: 2-4 hours
-- **Dependencies**: None
-- **Acceptance**:
-  - [ ] Define proper Hono Context types
-  - [ ] Update BaseController to use typed Context parameter
-  - [ ] Remove all `any` usages in controller layer
-  - [ ] Ensure type safety is maintained across all controllers
+ZIP download, share functionality, and template library features are deferred until future planning determines priority.
 
 ---
 
-## Dependencies & Blockers
+## Active Bug Tracking
 
-### External Dependencies
+See [bugs.md](./bugs.md) for detailed bug information.
 
-- **AI Services**: OpenAI API (quota management)
-- **Cloudflare Workers**: Platform limits and constraints
-- **Browser APIs**: LocalStorage, Server-Sent Events support
-
-### Internal Dependencies
-
-- **Shared Schemas**: Zod validation contracts
-- **Component Library**: Reusable UI components
-- **API Contracts**: Request/response schemas
+- **BUG-001**: Frontend Bundle Size Performance Issue (In Progress)
+- **BUG-008**: ajv Package Security Vulnerabilities (Open)
+- **BUG-013**: Upstream npm Vulns (undici/ws via wrangler) (Blocked - Node 22+)
 
 ---
 
-## Resource Allocation
+## Testing Coverage
 
-### Frontend Engineer (Critical Path)
-
-- Primary focus: TASK-008, TASK-006, TASK-101
-- Secondary focus: TASK-007, TASK-REF-05, PERF-001
-- Estimated capacity: 40 hours/week
-
-### Integration Engineer
-
-- Primary focus: TASK-REF-06
-- Secondary focus: Backend streaming endpoint
-- Estimated capacity: 30 hours/week
-
-### Performance Engineer
-
-- Primary focus: PERF-001, code review
-- Secondary focus: Performance monitoring setup
-- Estimated capacity: 20 hours/week
+- **Frontend**: Co-located Vitest tests with component and store tests
+- **API**: Comprehensive route, middleware, service, and utility tests
+- **Shared**: Zod schema, type, and config tests
+- **Total**: 891 tests (all passing)
+- **TypeScript**: Strict mode, no unchecked `any` types
 
 ---
 
-**Last Updated**: 2026-02-25
-**Next Review**: Weekly stand-up
-**Maintainer**: Technical Writer
+**Last Updated**: 2026-05-22  
+**Maintainer**: RepoKeeper

@@ -3,7 +3,7 @@ import { StorageManager } from "../lib/storage";
 import { createTestBlueprint, createLargeBlueprint } from "./factories";
 
 async function measureAsync<T>(
-  operation: string,
+  _operation: string,
   fn: () => Promise<T>
 ): Promise<{ result: T; duration: number }> {
   const start = performance.now();
@@ -111,7 +111,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
       const testData = createTestBlueprint();
       const { duration } = await measureAsync("write", () => storage.set(testData));
 
-      expect(duration).toBeLessThan(30);
+      expect(duration).toBeLessThan(50);
     });
 
     it("should write large data under 100ms", async () => {

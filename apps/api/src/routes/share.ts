@@ -24,6 +24,23 @@ import {
 import { secureLogError } from "../utils/secureLog";
 import { ErrorType } from "../errors";
 
+/**
+ * Derives a deterministic creator identifier from the API key.
+ * Uses SHA-256 hashing to avoid storing the raw API key.
+ * Returns undefined if no API key is configured (allows backward compatibility).
+ */
+async function getCreatorId(apiKey: string | undefined): Promise<string | undefined> {
+  if (!apiKey) return undefined;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(apiKey);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("")
+    .slice(0, 16);
+}
+
 const app = new Hono<{ Bindings: Env }>();
 
 /**
@@ -113,6 +130,7 @@ app.post("/", rateLimit(rateLimitConfigs.standard), validateJson(createShareSche
     const shareId = generateShareId();
     const now = new Date().toISOString();
     const expiresAt = getExpirationDate();
+    const creatorId = await getCreatorId(c.env.API_KEY);
 
     if (!c.env.DB) {
       return c.json(
@@ -126,25 +144,29 @@ app.post("/", rateLimit(rateLimitConfigs.standard), validateJson(createShareSche
       );
     }
 
+    // Store creator info in metadata for ownership validation on delete
+    const enrichedMetadata = {
+      ...(metadata || {}),
+      ...(creatorId ? { createdBy: creatorId } : {}),
+    };
+    const metadataJson =
+      Object.keys(enrichedMetadata).length > 0 ? JSON.stringify(enrichedMetadata) : null;
+
     await c.env.DB.prepare(
       `INSERT INTO blueprint_shares (id, title, blueprint, metadata, created_at, expires_at)
          VALUES (?, ?, ?, ?, ?, ?)`
     )
-      .bind(
-        shareId,
-        title,
-        blueprint,
-        metadata ? JSON.stringify(metadata) : null,
-        now,
-        expiresAt.toISOString()
-      )
+      .bind(shareId, title, blueprint, metadataJson, now, expiresAt.toISOString())
       .run();
 
     return c.json(
       {
-        id: shareId,
-        url: `${c.env.CORS_ORIGIN || ""}/share/${shareId}`,
-        expiresAt: expiresAt.toISOString(),
+        success: true,
+        data: {
+          id: shareId,
+          url: `${c.env.CORS_ORIGIN || ""}/share/${shareId}`,
+          expiresAt: expiresAt.toISOString(),
+        },
       },
       HTTP_STATUS.OK
     );
@@ -243,12 +265,15 @@ app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
 
     return c.json(
       {
-        id: result.id,
-        title: result.title,
-        blueprint: result.blueprint,
-        metadata: parsedMetadata,
-        createdAt: result.created_at,
-        expiresAt: result.expires_at,
+        success: true,
+        data: {
+          id: result.id,
+          title: result.title,
+          blueprint: result.blueprint,
+          metadata: parsedMetadata,
+          createdAt: result.created_at,
+          expiresAt: result.expires_at,
+        },
       },
       HTTP_STATUS.OK
     );
@@ -294,11 +319,58 @@ app.delete("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
       );
     }
 
+    // Fetch share to verify ownership before deletion
+    const existing = await c.env.DB.prepare(
+      `SELECT id, metadata FROM blueprint_shares WHERE id = ?`
+    )
+      .bind(shareId)
+      .first<{ id: string; metadata: string | null }>();
+
+    if (!existing) {
+      // Share doesn't exist — treat as success to avoid leaking existence info
+      return c.json(
+        {
+          success: true,
+          data: {
+            message: SHARE_ERROR_MESSAGES.SHARE_DELETED_SUCCESSFULLY,
+          },
+        },
+        HTTP_STATUS.OK
+      );
+    }
+
+    // Validate ownership: if the share has a creatorId, the request must match
+    const creatorId = await getCreatorId(c.env.API_KEY);
+    if (creatorId && existing.metadata) {
+      let parsedMetadata: Record<string, unknown> = {};
+      try {
+        parsedMetadata = JSON.parse(existing.metadata) as Record<string, unknown>;
+      } catch {
+        // If metadata can't be parsed, proceed with deletion
+        // rather than locking the resource due to data corruption
+      }
+      const shareCreatorId = parsedMetadata.createdBy as string | undefined;
+      if (shareCreatorId && shareCreatorId !== creatorId) {
+        return c.json(
+          createErrorResponse(
+            c,
+            ErrorType.AUTHORIZATION,
+            ERROR_MESSAGES.AUTHORIZATION,
+            ERROR_CODES.AUTHORIZATION_ERROR
+          ),
+          HTTP_STATUS.FORBIDDEN
+        );
+      }
+    }
+
     await c.env.DB.prepare("DELETE FROM blueprint_shares WHERE id = ?").bind(shareId).run();
 
     return c.json(
       {
-        message: SHARE_ERROR_MESSAGES.SHARE_DELETED_SUCCESSFULLY,
+        success: true,
+        data: {
+          message: SHARE_ERROR_MESSAGES.SHARE_DELETED_SUCCESSFULLY,
+        },
       },
       HTTP_STATUS.OK
     );

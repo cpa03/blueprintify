@@ -8,7 +8,7 @@
  */
 
 import type { BlueprintRequest, RefineRequest } from "@blueprint/shared";
-import { PROMPT_CONFIG } from "../config/constants";
+import { PROMPT_CONFIG, PROMPT_INPUT_CONFIG } from "../config/constants";
 
 // ===== System Prompts =====
 // Re-export from config for backward compatibility
@@ -25,7 +25,7 @@ export const REFINER_SYSTEM_PROMPT = PROMPT_CONFIG.REFINER_SYSTEM;
 // ===== Input Sanitization =====
 
 /** Maximum length for any single user input field */
-const MAX_INPUT_LENGTH = 5000;
+const MAX_INPUT_LENGTH = PROMPT_INPUT_CONFIG.MAX_LENGTH;
 
 /** Patterns that indicate prompt injection attempts (case-insensitive) */
 const INJECTION_PATTERNS: RegExp[] = [
@@ -73,7 +73,7 @@ export function sanitizePromptInput(input: string): string {
  * it from system instructions, reducing prompt injection risk.
  */
 function withUserDelimiters(content: string): string {
-  return `<user_input>\n${content}\n</user_input>`;
+  return `${PROMPT_INPUT_CONFIG.USER_DELIMITER_START}\n${content}\n${PROMPT_INPUT_CONFIG.USER_DELIMITER_END}`;
 }
 
 // ===== Prompt Builders =====
@@ -84,7 +84,9 @@ function withUserDelimiters(content: string): string {
  * @returns Formatted prompt string for AI processing
  */
 export function buildBlueprintPrompt(request: BlueprintRequest): string {
-  const techStackList = request.techStack.map((t) => `- ${t.name} (${t.category})`).join("\n");
+  const techStackList = request.techStack
+    .map((t) => `- ${sanitizePromptInput(t.name)} (${sanitizePromptInput(t.category)})`)
+    .join("\n");
 
   const sanitizedFeatures = request.features?.map((f) => sanitizePromptInput(f)) ?? [];
   const featuresSection = sanitizedFeatures.length

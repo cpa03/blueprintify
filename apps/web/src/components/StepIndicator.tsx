@@ -136,8 +136,8 @@ function StepIndicatorComponent(): JSX.Element {
               }
               aria-label={
                 isClickable
-                  ? `${step.label} - Step ${index + 1} of ${STEPS.length}${isActive ? " (current)" : isCompleted ? " (completed)" : ""}`
-                  : `${step.label} - Locked. Complete previous steps to unlock`
+                  ? `${step.icon} ${step.label} Alt+${step.shortcut} - Step ${index + 1} of ${STEPS.length}${isActive ? " (current)" : isCompleted ? " (completed)" : ""}`
+                  : `${step.icon} ${step.label} - Locked. Complete previous steps to unlock`
               }
               aria-current={isActive ? "step" : undefined}
               className={`
@@ -183,8 +183,13 @@ function StepIndicatorComponent(): JSX.Element {
             </motion.button>
 
             {index < STEPS.length - 1 && (
-              <div
-                className={`w-8 h-0.5 mx-2 ${isCompleted ? "bg-accent-emerald" : "bg-dark-700"}`}
+              <motion.div
+                layout="position"
+                className={`w-8 h-0.5 mx-2 rounded-full transition-all duration-500 ease-in-out ${
+                  isCompleted
+                    ? "bg-accent-emerald shadow-[0_0_6px_rgba(16,185,129,0.4)]"
+                    : "bg-dark-700"
+                }`}
               />
             )}
           </div>

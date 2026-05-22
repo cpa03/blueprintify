@@ -6,7 +6,7 @@ import {
   ERROR_CODES,
   RATE_LIMIT_CONSTANTS,
   ERROR_MESSAGES,
-  HEADER_NAMES,
+  API_HEADERS,
 } from "../config/constants";
 import { TIME_UNITS } from "@blueprint/shared";
 import { ErrorType } from "../errors";
@@ -85,8 +85,8 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
 
     const key = keyGenerator
       ? keyGenerator(c)
-      : c.req.header(HEADER_NAMES.CF_CONNECTING_IP) ||
-        c.req.header(HEADER_NAMES.X_FORWARDED_FOR) ||
+      : c.req.header(API_HEADERS.CF_PROPERTIES.CONNECTING_IP) ||
+        c.req.header(API_HEADERS.REQUEST.FORWARDED_FOR) ||
         RATE_LIMIT_CONSTANTS.ANONYMOUS_CLIENT_KEY;
 
     if (!rateLimiter) {
@@ -116,22 +116,22 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
     const result = await rateLimiter.limit({ key });
     const limit = getLimiterLimits()[limiter];
 
-    c.header(HEADER_NAMES.X_RATE_LIMIT_LIMIT, String(limit));
+    c.header(API_HEADERS.RATE_LIMIT.LIMIT, String(limit));
     if ("remaining" in result && typeof result.remaining === "number") {
-      c.header(HEADER_NAMES.X_RATE_LIMIT_REMAINING, String(result.remaining));
+      c.header(API_HEADERS.RATE_LIMIT.REMAINING, String(result.remaining));
     }
 
     const rateLimitResetTimestamp = Math.ceil(
       Date.now() / TIME_UNITS.MS_PER_SECOND +
         getConfig().RATE_LIMIT_WINDOW_MS / TIME_UNITS.MS_PER_SECOND
     );
-    c.header(HEADER_NAMES.X_RATE_LIMIT_RESET, String(rateLimitResetTimestamp));
+    c.header(API_HEADERS.RATE_LIMIT.RESET, String(rateLimitResetTimestamp));
 
     if (!result.success) {
       const retryAfterSeconds = Math.ceil(
         getConfig().RATE_LIMIT_WINDOW_MS / TIME_UNITS.MS_PER_SECOND
       );
-      c.header(HEADER_NAMES.RETRY_AFTER, String(retryAfterSeconds));
+      c.header(API_HEADERS.RATE_LIMIT.RETRY_AFTER, String(retryAfterSeconds));
 
       // Log rate limit block for security monitoring
       secureLogError("RateLimit", "Request blocked by rate limiter", {

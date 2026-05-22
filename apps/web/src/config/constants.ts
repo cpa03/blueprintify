@@ -163,6 +163,8 @@ export const TOOLTIP_CONFIG = {
   ESTIMATED_HEIGHT: 60,
   /** Viewport padding for tooltip positioning (px) */
   VIEWPORT_PADDING: 16,
+  /** Auto-hide delay for touch devices (ms) */
+  TOUCH_AUTO_HIDE_DELAY: 3000,
 } as const;
 
 // Step configuration
@@ -253,6 +255,12 @@ export const API_ERROR_MESSAGES = {
   NO_RESPONSE_BODY: "Server returned empty response. Check if API server is running.",
   /** SSE stream interrupted - network or server timeout issue */
   STREAM_ERROR: "Connection interrupted. Check your network and try again.",
+} as const;
+
+// Editor tab constants
+export const EDITOR_TABS = {
+  BLUEPRINT: "blueprint",
+  TASKS: "tasks",
 } as const;
 
 // Export README template
@@ -600,185 +608,6 @@ export const SECURITY_ERROR_MESSAGES = {
   STORAGE_QUOTA_EXCEEDED: "Storage quota exceeded. Please clear some data.",
   /** Unknown security error */
   UNKNOWN_SECURITY_ERROR: "Unknown security error",
-} as const;
-
-// ============================================================================
-// XSS Detection Patterns
-// ============================================================================
-
-/**
- * XSS attack pattern detection library.
- * Covers traditional vectors and modern attack techniques.
- * Centralized so patterns are defined once and reused across validation functions.
- */
-export const XSS_DETECTION_PATTERNS = [
-  /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-  /javascript:/gi,
-  /on\w+\s*=/gi,
-  /<iframe\b[^>]*>/gi,
-  /<object\b[^>]*>/gi,
-  /<embed\b[^>]*>/gi,
-  /<form\b[^>]*>/gi,
-  /<input\b[^>]*>/gi,
-  /<button\b[^>]*>/gi,
-  /eval\s*\(/gi,
-  /expression\s*\(/gi,
-  /@import/gi,
-  /vbscript:/gi,
-  /data:text\/html/gi,
-  // SVG-based XSS vectors
-  /<svg\b[^>]*>/gi,
-  /<math\b[^>]*>/gi,
-  /<animate\b[^>]*>/gi,
-  /<set\b[^>]*>/gi,
-  /<use\b[^>]*>/gi,
-  // Protocol handlers
-  /data:\s*[^,]*;base64/gi,
-  /blob:/gi,
-  // DOM clobbering patterns
-  /id\s*=\s*["']?__proto__["']?/gi,
-  /id\s*=\s*["']?constructor["']?/gi,
-  // Mutation XSS patterns
-  /<noscript\b[^>]*>/gi,
-  /<template\b[^>]*>/gi,
-] as const;
-
-/**
- * CodeMirror-specific dangerous patterns.
- * Additional patterns for the editor context.
- */
-export const CODEMIRROR_DANGEROUS_PATTERNS = [
-  /data:text\/html/gi,
-  /vbscript:/gi,
-  /@import\s+url/gi,
-  /expression\s*\(/gi,
-  /behavior\s*:/gi,
-  /binding\s*:/gi,
-  /include-source\s*:/gi,
-] as const;
-
-/**
- * Suspicious JSON keys for prototype pollution detection.
- */
-export const SUSPICIOUS_JSON_KEYS = [
-  "__proto__",
-  "constructor",
-  "prototype",
-  "eval",
-  "function",
-  "script",
-] as const;
-
-/**
- * Content Security Policy directives.
- * Centralized for consistent application across the frontend.
- */
-export const CSP_DIRECTIVES = {
-  DEFAULT_SRC: ["'self'"],
-  SCRIPT_SRC: ["'self'", "'unsafe-inline'"],
-  STYLE_SRC: ["'self'", "'unsafe-inline'"],
-  IMG_SRC: ["'self'", "data:", "https:"],
-  FONT_SRC: ["'self'"],
-  CONNECT_SRC: ["'self'"],
-  OBJECT_SRC: ["'none'"],
-  FRAME_ANCESTORS: ["'none'"],
-  BASE_URI: ["'self'"],
-  FORM_ACTION: ["'self'"],
-} as const;
-
-/**
- * Security response header values.
- * Following OWASP recommended security headers.
- */
-export const SECURITY_HEADERS = {
-  "Content-Security-Policy": Object.entries(CSP_DIRECTIVES)
-    .map(([key, values]) => `${key.replace(/_/g, "-").toLowerCase()} ${values.join(" ")}`)
-    .join("; "),
-  "X-Content-Type-Options": "nosniff",
-  "X-Frame-Options": "DENY",
-  "X-XSS-Protection": "1; mode=block",
-  "Referrer-Policy": "strict-origin-when-cross-origin",
-  "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-  "Permissions-Policy": [
-    "accelerometer=()",
-    "camera=()",
-    "geolocation=()",
-    "gyroscope=()",
-    "magnetometer=()",
-    "microphone=()",
-    "payment=()",
-    "usb=()",
-  ].join(", "),
-} as const;
-
-/**
- * DOMPurify configuration for HTML sanitization.
- * Tailored for markdown content rendering.
- */
-export const DOMPURIFY_CONFIG = {
-  ALLOWED_TAGS: [
-    "p",
-    "br",
-    "strong",
-    "b",
-    "em",
-    "i",
-    "u",
-    "s",
-    "del",
-    "ins",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "ul",
-    "ol",
-    "li",
-    "dl",
-    "dt",
-    "dd",
-    "pre",
-    "code",
-    "blockquote",
-    "table",
-    "thead",
-    "tbody",
-    "tr",
-    "th",
-    "td",
-    "a",
-    "img",
-    "hr",
-  ] as readonly string[],
-  ALLOWED_ATTR: ["href", "title", "alt", "src", "class", "rel"] as readonly string[],
-  ALLOW_DATA_ATTR: false,
-  FORBID_TAGS: [
-    "script",
-    "iframe",
-    "object",
-    "embed",
-    "form",
-    "input",
-    "button",
-    "svg",
-    "math",
-    "base",
-    "link",
-    "meta",
-  ] as readonly string[],
-  FORBID_ATTR: [
-    "onclick",
-    "onload",
-    "onerror",
-    "onmouseover",
-    "style",
-    "formaction",
-  ] as readonly string[],
-  SANITIZE_DOM: true,
-  SANITIZE_NAMED_PROPS: true,
-  KEEP_CONTENT: true,
 } as const;
 
 // ============================================================================

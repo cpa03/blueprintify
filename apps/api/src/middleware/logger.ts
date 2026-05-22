@@ -8,7 +8,7 @@
  */
 
 import type { Context, MiddlewareHandler, Next } from "hono";
-import { LOGGER_CONFIG, HEADER_NAMES } from "../config/constants";
+import { LOGGER_CONFIG, API_HEADERS, HEADER_NAMES } from "../config/constants";
 
 /**
  * Configuration options for the request logger middleware.
@@ -111,11 +111,11 @@ const generateRequestId = (): string => {
  */
 const extractCloudflareMetadata = (c: Context): CloudflareRequestMetadata => {
   return {
-    rayId: c.req.header(HEADER_NAMES.CF_RAY),
-    country: c.req.header(HEADER_NAMES.CF_IPCOUNTRY),
-    connectingIp: c.req.header(HEADER_NAMES.CF_CONNECTING_IP),
-    city: c.req.header(HEADER_NAMES.CF_IPCITY),
-    datacenter: c.req.header(HEADER_NAMES.CF_WORKER_DC),
+    rayId: c.req.header(API_HEADERS.CF_PROPERTIES.RAY_ID),
+    country: c.req.header(API_HEADERS.CF_PROPERTIES.IP_COUNTRY),
+    connectingIp: c.req.header(API_HEADERS.CF_PROPERTIES.CONNECTING_IP),
+    city: c.req.header(API_HEADERS.CF_PROPERTIES.CITY),
+    datacenter: c.req.header(API_HEADERS.CF_PROPERTIES.DATACENTER),
   };
 };
 
@@ -189,8 +189,8 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
       query,
       headers,
       timestamp: new Date().toISOString(),
-      ip: cfMetadata.connectingIp || c.req.header(HEADER_NAMES.X_FORWARDED_FOR),
-      userAgent: c.req.header(HEADER_NAMES.USER_AGENT),
+      ip: cfMetadata.connectingIp || c.req.header(API_HEADERS.REQUEST.FORWARDED_FOR),
+      userAgent: c.req.header(API_HEADERS.REQUEST.USER_AGENT),
     };
 
     if (hasCloudflareMetadata(cfMetadata)) {
@@ -218,11 +218,11 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
     const duration = Date.now() - startTime;
     const status = c.res.status;
 
-    c.header(HEADER_NAMES.X_REQUEST_ID, requestId);
-    c.header(HEADER_NAMES.X_RESPONSE_TIME, `${duration}ms`);
+    c.header(API_HEADERS.RESPONSE.REQUEST_ID, requestId);
+    c.header(API_HEADERS.RESPONSE.RESPONSE_TIME, `${duration}ms`);
 
     if (cfMetadata.rayId) {
-      c.header(HEADER_NAMES.X_CF_RAY, cfMetadata.rayId);
+      c.header(API_HEADERS.RESPONSE.CF_RAY, cfMetadata.rayId);
     }
 
     const responseLog: ResponseLog = {

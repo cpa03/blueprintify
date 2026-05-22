@@ -25,6 +25,7 @@ import { LazyMarkdownRenderer } from "./LazyMarkdownRenderer";
 import { LazyCodeMirror } from "./LazyCodeMirror";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
 import { EditorEmptyState } from "./EditorEmptyState";
+import { PreviewEmptyState } from "./PreviewEmptyState";
 import { ScrollToTop } from "./ScrollToTop";
 import { ScrollProgress } from "./ScrollProgress";
 import { useEditorStore, resetAllStores, useToast } from "../store";
@@ -228,7 +229,19 @@ function EditorComponent(): JSX.Element {
                     animate={{ opacity: 1 }}
                     className="min-h-full"
                   >
-                    <LazyMarkdownRenderer content={currentContent || "*No content yet...*"} />
+                    {currentContent ? (
+                      <LazyMarkdownRenderer content={currentContent} />
+                    ) : (
+                      <PreviewEmptyState
+                        tab={activeTab}
+                        isGenerating={isGenerating}
+                        siblingTabHasContent={
+                          activeTab === "blueprint"
+                            ? tasksContent.length > 0
+                            : blueprintContent.length > 0
+                        }
+                      />
+                    )}
                   </motion.div>
                   <ScrollToTop
                     scrollContainerRef={previewRef}

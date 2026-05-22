@@ -27,15 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced generic `Error` throws with typed `NotFoundError` in MockDatabaseService for better error discrimination
 - JSDoc documentation added to Wizard.tsx and Header.tsx components ([#816](https://github.com/cpa03/blueprintify/pull/816))
 - Improved StepIndicator accessibility for mobile screen readers ([#818](https://github.com/cpa03/blueprintify/pull/818))
-
-### Security
-
-- Fixed auth bypass vulnerability when API_KEY is not configured - requests are now rejected with 503 instead of bypassing authentication ([#945](https://github.com/cpa03/blueprintify/issues/945), [#976](https://github.com/cpa03/blueprintify/pull/976))
-- Comprehensive reliability audit verified all patterns implemented correctly (Error Boundaries, JSON Safety, Timeout Handling, Circuit Breaker, Rate Limiting, Input Validation, Storage Recovery, XSS Protection, Error Classes, Retry Logic)
-- Added `.dev.vars` to `.gitignore` to prevent credential commits ([#819](https://github.com/cpa03/blueprintify/pull/819))
-
-- Comprehensive reliability audit verified all patterns implemented correctly (Error Boundaries, JSON Safety, Timeout Handling, Circuit Breaker, Rate Limiting, Input Validation, Storage Recovery, XSS Protection, Error Classes, Retry Logic)
-- Added `.dev.vars` to `.gitignore` to prevent credential commits ([#819](https://github.com/cpa03/blueprintify/pull/819))
+- Removed unused `rollup-plugin-visualizer` dependency from root package.json ([#1256](https://github.com/cpa03/blueprintify/pull/1256))
+- BroCula audit: improved a11y, preconnect hints, and LCP optimization for faster page loads ([#1259](https://github.com/cpa03/blueprintify/pull/1259))
 
 ### Fixed
 
@@ -43,6 +36,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `deserializeJSON` safety with proper error handling
 - Share endpoint validation consistency using SHARE_CONFIG.ID_LENGTH constant
 - Updated bugs.md - marked BUG-009 resolved, added BUG-010 for issue #743 ([#815](https://github.com/cpa03/blueprintify/pull/815))
+- Resolved ZodError deprecation warnings and npm audit vulnerabilities in dependency tree ([#1258](https://github.com/cpa03/blueprintify/pull/1258))
+- Standardized share route success response format for consistent API responses ([#1257](https://github.com/cpa03/blueprintify/pull/1257))
+- Expanded HTTP status type assertion in error handler for complete status code coverage
+
+### Security
+
+- Fixed auth bypass vulnerability when API_KEY is not configured - requests are now rejected with 503 instead of bypassing authentication ([#945](https://github.com/cpa03/blueprintify/issues/945), [#976](https://github.com/cpa03/blueprintify/pull/976))
+- Comprehensive reliability audit verified all patterns implemented correctly (Error Boundaries, JSON Safety, Timeout Handling, Circuit Breaker, Rate Limiting, Input Validation, Storage Recovery, XSS Protection, Error Classes, Retry Logic)
+- Added `.dev.vars` to `.gitignore` to prevent credential commits ([#819](https://github.com/cpa03/blueprintify/pull/819))
 
 ## [1.0.0] - 2026-02-18
 

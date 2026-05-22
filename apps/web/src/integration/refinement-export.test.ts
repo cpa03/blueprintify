@@ -34,7 +34,6 @@ describe("Integration: Refinement Workflow", () => {
 
   describe("End-to-End Refinement Process", () => {
     it("should refine blueprint section and preserve context", async () => {
-      const _testData = createTestBlueprint();
       const sectionContent = "## Overview\nThis is a test blueprint.";
 
       fetchMock.mockResolvedValueOnce(
@@ -224,9 +223,9 @@ describe("Integration: Export/Import Workflow", () => {
     it("should export project as ZIP", async () => {
       const testData = createTestBlueprint();
 
-      const mockBlob = new Blob(["zip-content"], { type: "application/zip" });
+      const mockBuffer = new ArrayBuffer(10);
       fetchMock.mockResolvedValueOnce(
-        new Response(mockBlob, {
+        new Response(mockBuffer, {
           status: 200,
           headers: { "Content-Type": "application/zip" },
         })

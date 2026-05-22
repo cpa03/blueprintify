@@ -83,10 +83,10 @@ describe("Theme Configuration", () => {
       expect(ANIMATION_TIMING.duration.pulse).toBe(3);
     });
 
-    it("should have easing functions", () => {
-      expect(ANIMATION_TIMING.easing.easeOut).toBe("ease-out");
-      expect(ANIMATION_TIMING.easing.easeIn).toBe("ease-in");
-      expect(ANIMATION_TIMING.easing.easeInOut).toBe("ease-in-out");
+    it("should have easing functions as cubic bezier arrays (framer-motion compatible)", () => {
+      expect(ANIMATION_TIMING.easing.easeOut).toEqual([0, 0, 0.58, 1]);
+      expect(ANIMATION_TIMING.easing.easeIn).toEqual([0.42, 0, 1, 1]);
+      expect(ANIMATION_TIMING.easing.easeInOut).toEqual([0.42, 0, 0.58, 1]);
     });
 
     it("should have spring easing with stiffness and damping", () => {

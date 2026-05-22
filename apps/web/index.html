@@ -24,12 +24,6 @@
     <link rel="canonical" href="https://blueprintify.dev" />
     <title>Blueprint Generator - AI-Powered Project Architecture</title>
 
-    <!-- DNS Prefetch and Preconnect for Performance -->
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
     <!-- Critical CSS for LCP -->
     <style>
       /* Critical CSS - Above the fold content */
@@ -63,20 +57,22 @@
       }
     </style>
 
-    <!-- Preconnect to Google Fonts for faster loading -->
+    <!-- Preconnect to third-party origins for faster loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <!-- Async font loading to prevent render-blocking -->
     <link
+      id="font-preload"
       rel="preload"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
       as="style"
-      onload="
-        this.onload = null;
-        this.rel = 'stylesheet';
-      "
     />
+    <script>
+      document.getElementById("font-preload").addEventListener("load", function () {
+        this.rel = "stylesheet";
+      });
+    </script>
     <noscript>
       <link
         rel="stylesheet"
@@ -129,7 +125,7 @@
             </div>
           </div>
         </header>
-        <main style="padding-top: 5rem; flex: 1">
+        <main style="padding-top: 5rem; flex: 1; content-visibility: auto">
           <div style="max-width: 80rem; margin: 0 auto; padding: 2rem 1rem">
             <!-- LCP Critical Element - Large text for measurement -->
             <div style="text-align: center; margin-bottom: 3rem; min-height: 200px">
@@ -182,6 +178,6 @@
         </main>
       </div>
     </div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="/src/main.tsx" fetchpriority="high"></script>
   </body>
 </html>

@@ -15,22 +15,9 @@
 
 import DOMPurify from "dompurify";
 import { z } from "zod";
-import { STORAGE_CONFIG, SECURITY_LIMITS } from "@blueprint/shared";
-import {
-  SECURITY_ERROR_MESSAGES,
-  XSS_DETECTION_PATTERNS,
-  CODEMIRROR_DANGEROUS_PATTERNS as CODEMIRROR_PATTERNS,
-  SUSPICIOUS_JSON_KEYS,
-  DOMPURIFY_CONFIG,
-} from "../config/constants";
-
-export const SECURITY_CONFIG = {
-  DOMPURIFY_CONFIG,
-  MAX_CONTENT_LENGTH: SECURITY_LIMITS.MAX_CONTENT_LENGTH,
-  MAX_FILE_SIZE: SECURITY_LIMITS.MAX_FILE_SIZE_BYTES,
-  ALLOWED_FILE_TYPES: [...SECURITY_LIMITS.ALLOWED_FILE_TYPES],
-  STORAGE_QUOTA: STORAGE_CONFIG.QUOTA_BYTES,
-} as const;
+import { SECURITY_LIMITS } from "@blueprint/shared";
+import { SECURITY_CONFIG } from "../config/security";
+import { SECURITY_ERROR_MESSAGES } from "../config/constants";
 export const ContentValidationSchema = z.object({
   blueprintContent: z
     .string()
@@ -53,7 +40,7 @@ export const FileValidationSchema = z.object({
   content: z.string().max(SECURITY_CONFIG.MAX_CONTENT_LENGTH),
 });
 export function containsXSSPatterns(content: string): boolean {
-  return XSS_DETECTION_PATTERNS.some((pattern) => pattern.test(content));
+  return SECURITY_CONFIG.XSS_PATTERNS.some((pattern) => pattern.test(content));
 }
 
 export function sanitizeHtml(html: string): string {
@@ -65,7 +52,7 @@ export function sanitizeMarkdown(markdown: string): string {
     throw new Error(SECURITY_ERROR_MESSAGES.XSS_PATTERNS_DETECTED);
   }
 
-  if (CODEMIRROR_PATTERNS.some((pattern) => pattern.test(markdown))) {
+  if (SECURITY_CONFIG.CODEMIRROR_XSS_PATTERNS.some((pattern) => pattern.test(markdown))) {
     throw new Error(SECURITY_ERROR_MESSAGES.CODEMIRROR_DANGEROUS_PATTERNS);
   }
 
@@ -117,7 +104,7 @@ export function validateContent(content: unknown): {
     if (error instanceof z.ZodError) {
       return {
         isValid: false,
-        error: error.errors.map((e) => e.message).join(", "),
+        error: error.issues.map((e) => e.message).join(", "),
       };
     }
     return {
@@ -198,7 +185,7 @@ export async function validateAndSanitizeFileContent(file: File): Promise<{
     if (error instanceof z.ZodError) {
       return {
         isValid: false,
-        error: error.errors.map((e) => e.message).join(", "),
+        error: error.issues.map((e) => e.message).join(", "),
       };
     }
     return {
@@ -236,7 +223,10 @@ export function validateJSONSecurity(content: string): {
     }
 
     // Check for suspicious key names
-    const foundSuspiciousKeys = findSuspiciousKeys(parsed, [...SUSPICIOUS_JSON_KEYS]);
+    const foundSuspiciousKeys = findSuspiciousKeys(
+      parsed,
+      SECURITY_CONFIG.SUSPICIOUS_JSON_KEYS as unknown as string[]
+    );
     if (foundSuspiciousKeys.length > 0) {
       return {
         isValid: false,
@@ -346,7 +336,7 @@ export function sanitizeForStorage(data: unknown): {
   };
 }
 export function getContentSecurityHeaders(): Record<string, string> {
-  return { ...SECURITY_HEADERS };
+  return { ...SECURITY_CONFIG.SECURITY_HEADERS };
 }
 
 export class SecurityError extends Error {
@@ -367,9 +357,9 @@ export function handleSecurityError(error: unknown): SecurityError {
 
   if (error instanceof z.ZodError) {
     return new SecurityError(
-      error.errors.map((e) => e.message).join(", "),
+      error.issues.map((e) => e.message).join(", "),
       "VALIDATION",
-      error.errors
+      error.issues
     );
   }
 
@@ -382,3 +372,7 @@ export function handleSecurityError(error: unknown): SecurityError {
 
   return new SecurityError(SECURITY_ERROR_MESSAGES.UNKNOWN_SECURITY_ERROR, "VALIDATION", error);
 }
+
+// Re-export SECURITY_CONFIG for backward compatibility
+// Canonical source is now config/security.ts
+export { SECURITY_CONFIG } from "../config/security";

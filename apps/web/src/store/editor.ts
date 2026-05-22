@@ -21,7 +21,12 @@
 
 import { create } from "zustand";
 import type { EditorTab } from "@blueprint/shared";
-import { GENERATION_MESSAGES, DEBOUNCE_CONFIG, STORAGE_ERROR_MESSAGES } from "../config/constants";
+import {
+  GENERATION_MESSAGES,
+  DEBOUNCE_CONFIG,
+  STORAGE_ERROR_MESSAGES,
+  EDITOR_TABS,
+} from "../config/constants";
 import { sanitizeForStorage, handleSecurityError } from "../lib/security";
 import { editorStorage } from "../lib/storage";
 import { createPersistedStore, type PersistedStorage } from "./persistence";
@@ -90,7 +95,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
   void loadState(set);
 
   return {
-    activeTab: "blueprint",
+    activeTab: EDITOR_TABS.BLUEPRINT,
     blueprintContent: "",
     tasksContent: "",
     isDirty: false,

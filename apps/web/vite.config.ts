@@ -1,17 +1,13 @@
 import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react";
-import path from "path";
 import { compression } from "vite-plugin-compression2";
-import { visualizer } from "rollup-plugin-visualizer";
-
-const isAnalyze = process.env.ANALYZE === "true";
 
 const DEV_SERVER_PORT = parseInt(process.env.VITE_DEV_SERVER_PORT || "3000", 10);
 const API_PROXY_TARGET = process.env.VITE_API_PROXY_TARGET || "http://localhost:8787";
 
 /**
  * Vite plugin to make CSS load asynchronously
- * This prevents render-blocking by using the media="print" trick
+ * Prevents render-blocking by using media="print" trick
  */
 const asyncCssPlugin = (): Plugin => ({
   name: "async-css",
@@ -43,11 +39,22 @@ const removeLazyPreloadPlugin = (): Plugin => ({
   },
 });
 
+const fetchPriorityPlugin = (): Plugin => ({
+  name: "fetch-priority",
+  transformIndexHtml(html) {
+    return html.replace(
+      /(<script[^>]*type="module"[^>]*crossorigin[^>]*)(><\/script>)/,
+      '$1 fetchpriority="high"$2'
+    );
+  },
+});
+
 export default defineConfig({
   plugins: [
     react(),
     asyncCssPlugin(),
     removeLazyPreloadPlugin(),
+    fetchPriorityPlugin(),
     compression({
       algorithms: ["gzip", "brotliCompress"],
       exclude: [/\.(br)$/, /\.(gz)$/],

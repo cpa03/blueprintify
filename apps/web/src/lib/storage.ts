@@ -397,7 +397,7 @@ export class StorageService<T = unknown> {
       const metadataResult = StorageMetadataSchema.safeParse(obj.metadata);
       if (!metadataResult.success) {
         throw new Error(
-          `Invalid metadata structure for key "${this.config.key}": ${metadataResult.error.errors.map((e) => e.message).join(", ")}. The storage metadata may be corrupted.`
+          `Invalid metadata structure for key "${this.config.key}": ${metadataResult.error.issues.map((e) => e.message).join(", ")}. The storage metadata may be corrupted.`
         );
       }
 

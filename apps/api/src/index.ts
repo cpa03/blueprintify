@@ -30,6 +30,7 @@ import { loadConfig } from "./config/env";
 import {
   API_METADATA,
   API_ENDPOINTS,
+  API_HEADERS,
   CORS_CONFIG,
   ROUTE_PATHS,
   CACHE_CONFIG,
@@ -37,7 +38,6 @@ import {
   setEnvConfig,
 } from "./config/constants";
 import { initializeContainer } from "./di";
-import { HEADER_NAMES } from "./config/constants";
 
 initializeContainer();
 
@@ -45,6 +45,11 @@ const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
 
 app.use("*", secureHeaders());
 app.use("*", etag());
+app.use("*", async (c, next) => {
+  await next();
+  c.res.headers.set("Cross-Origin-Opener-Policy", "same-origin");
+  c.res.headers.set("Cross-Origin-Resource-Policy", "same-origin");
+});
 app.use(
   "*",
   cors({
@@ -54,7 +59,11 @@ app.use(
       return allowedOrigin;
     },
     allowMethods: CORS_CONFIG.ALLOW_METHODS,
-    allowHeaders: [...CORS_CONFIG.ALLOW_HEADERS, HEADER_NAMES.API_KEY, HEADER_NAMES.REQUEST_ID],
+    allowHeaders: [
+      ...CORS_CONFIG.ALLOW_HEADERS,
+      API_HEADERS.CUSTOM.API_KEY,
+      API_HEADERS.CUSTOM.REQUEST_ID,
+    ],
     credentials: true,
     maxAge: CORS_CONFIG.MAX_AGE,
   })
@@ -67,17 +76,20 @@ app.use("*", rateLimit(rateLimitConfigs.standard));
 
 app.get("/", (c) => {
   c.header(
-    HEADER_NAMES.CACHE_CONTROL,
-    `${HEADER_VALUES.CACHE_PUBLIC}, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE}`
-  );
-  c.header(HEADER_NAMES.SERVER_TIMING, `app;desc="${API_METADATA.NAME}";dur=0`);
-  c.header(
-    HEADER_NAMES.CDN_CACHE_CONTROL,
-    `${HEADER_VALUES.CACHE_PUBLIC}, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}`
+    "Cache-Control",
+    API_HEADERS.CACHE_CONTROL.PUBLIC_WITH_REVALIDATE(
+      CACHE_CONFIG.ROOT_MAX_AGE,
+      CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE
+    )
   );
   c.header(
-    HEADER_NAMES.CF_CDN_CACHE_CONTROL,
-    `${HEADER_VALUES.CACHE_PUBLIC}, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}`
+    API_HEADERS.SERVER_TIMING.HEADER,
+    API_HEADERS.SERVER_TIMING.ENTRY("app", API_METADATA.NAME, 0)
+  );
+  c.header(API_HEADERS.CDN.CDN_CACHE_CONTROL, `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}`);
+  c.header(
+    API_HEADERS.CDN.CLOUDFLARE_CACHE_CONTROL,
+    `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}`
   );
   return c.json({
     name: API_METADATA.NAME,
@@ -85,7 +97,7 @@ app.get("/", (c) => {
     status: API_METADATA.STATUS,
     runtime: {
       platform: ERROR_MESSAGES.PLATFORM_RUNTIME,
-      region: c.req.header("cf-ipcountry") || ERROR_MESSAGES.PLATFORM_UNKNOWN,
+      region: c.req.header(API_HEADERS.CF_PROPERTIES.IP_COUNTRY) || ERROR_MESSAGES.PLATFORM_UNKNOWN,
     },
     endpoints: {
       generate: `${API_ENDPOINTS.GENERATE.method} ${API_ENDPOINTS.GENERATE.path}`,

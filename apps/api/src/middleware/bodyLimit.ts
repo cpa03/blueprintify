@@ -9,9 +9,8 @@
  */
 
 import type { MiddlewareHandler } from "hono";
-import { HTTP_STATUS, ERROR_CODES, HEADER_NAMES } from "../config/constants";
+import { HTTP_STATUS, ERROR_CODES, API_HEADERS, BODY_SIZE_MAX } from "../config/constants";
 import { ErrorType } from "../errors";
-import { BODY_SIZE_LIMITS } from "@blueprint/shared";
 
 /**
  * Configuration options for body size limit middleware.
@@ -47,19 +46,17 @@ interface BodyLimitConfig {
  * - Returns standard 413 error for oversized payloads
  */
 export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
-  const { maxSize = BODY_SIZE_LIMITS.DEFAULT_BYTES, excludePaths = [] } = config;
+  const { maxSize = BODY_SIZE_MAX.DEFAULT, excludePaths = [] } = config;
 
   return async (c, next) => {
     const path = c.req.path;
 
-    // Skip body size check for excluded paths
     if (excludePaths.includes(path)) {
       await next();
       return;
     }
 
-    // Check Content-Length header
-    const contentLength = c.req.header(HEADER_NAMES.CONTENT_LENGTH);
+    const contentLength = c.req.header(API_HEADERS.REQUEST.CONTENT_LENGTH);
 
     if (contentLength) {
       const size = parseInt(contentLength, 10);
@@ -88,11 +85,8 @@ export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
   };
 };
 
-/**
- * Predefined body limit configurations for different use cases.
- */
 export const bodyLimitConfigs = {
-  standard: { maxSize: BODY_SIZE_LIMITS.DEFAULT_BYTES },
-  strict: { maxSize: BODY_SIZE_LIMITS.STRICT_BYTES },
-  lenient: { maxSize: BODY_SIZE_LIMITS.LENIENT_BYTES },
+  standard: { maxSize: BODY_SIZE_MAX.DEFAULT },
+  strict: { maxSize: BODY_SIZE_MAX.STRICT },
+  lenient: { maxSize: BODY_SIZE_MAX.LENIENT },
 };

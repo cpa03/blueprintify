@@ -39,7 +39,7 @@ All tasks follow the lifecycle defined in [repo-rules.md](./repo-rules.md):
 
 ---
 
-_Last Updated: 2026-05-11_
+_Last Updated: 2026-05-22_
 _For task lifecycle rules, see repo-rules.md_
 
 ## CMZ Phase 1 Findings
