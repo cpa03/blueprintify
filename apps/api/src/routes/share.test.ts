@@ -81,16 +81,16 @@ describe("POST /share", () => {
     );
 
     expect(res.status).toBe(200);
-    const data = (await res.json()) as {
-      id: string;
-      url: string;
-      expiresAt: string;
+    const body = (await res.json()) as {
+      success: true;
+      data: { id: string; url: string; expiresAt: string };
     };
-    expect(data).toHaveProperty("id");
-    expect(data).toHaveProperty("url");
-    expect(data).toHaveProperty("expiresAt");
-    expect(data.id).toHaveLength(12);
-    expect(data.url).toContain("/share/");
+    expect(body.success).toBe(true);
+    expect(body.data).toHaveProperty("id");
+    expect(body.data).toHaveProperty("url");
+    expect(body.data).toHaveProperty("expiresAt");
+    expect(body.data.id).toHaveLength(12);
+    expect(body.data.url).toContain("/share/");
   });
 
   it("should return 400 for invalid request body", async () => {
@@ -132,11 +132,13 @@ describe("POST /share", () => {
     );
 
     expect(res.status).toBe(200);
-    const data = (await res.json()) as {
-      id: string;
+    const body = (await res.json()) as {
+      success: true;
+      data: { id: string };
     };
-    expect(data).toHaveProperty("id");
-    expect(data.id).toHaveLength(12);
+    expect(body.success).toBe(true);
+    expect(body.data).toHaveProperty("id");
+    expect(body.data.id).toHaveLength(12);
   });
 });
 
@@ -179,8 +181,9 @@ describe("DELETE /share/:id", () => {
     const res = await app.request("/testshare123", { method: "DELETE" }, env);
 
     expect(res.status).toBe(200);
-    const data = await res.json();
-    expect(data).toHaveProperty("message", "Share deleted successfully");
+    const body = (await res.json()) as { success: true; data: { message: string } };
+    expect(body.success).toBe(true);
+    expect(body.data).toHaveProperty("message", "Share deleted successfully");
   });
 
   it("should return 400 for invalid share ID format on delete", async () => {
@@ -209,11 +212,13 @@ describe("DELETE /share/:id", () => {
       },
       env
     );
-    const { id } = (await postRes.json()) as { id: string };
+    const postBody = (await postRes.json()) as { success: true; data: { id: string } };
+    const { id } = postBody.data;
     const delRes = await app.request(`/${id}`, { method: "DELETE" }, env);
     expect(delRes.status).toBe(200);
-    const data = (await delRes.json()) as { message: string };
-    expect(data.message).toBe("Share deleted successfully");
+    const delBody = (await delRes.json()) as { success: true; data: { message: string } };
+    expect(delBody.success).toBe(true);
+    expect(delBody.data.message).toBe("Share deleted successfully");
   });
 
   it("should reject deletion with mismatched API key", async () => {
@@ -242,7 +247,8 @@ describe("DELETE /share/:id", () => {
       },
       creatorEnv
     );
-    const { id } = (await postRes.json()) as { id: string };
+    const postBody = (await postRes.json()) as { success: true; data: { id: string } };
+    const { id } = postBody.data;
     const delRes = await app.request(`/${id}`, { method: "DELETE" }, attackerEnv);
     expect(delRes.status).toBe(403);
     const data = (await delRes.json()) as ErrorResponse;
@@ -265,10 +271,12 @@ describe("DELETE /share/:id", () => {
       },
       env
     );
-    const { id } = (await postRes.json()) as { id: string };
+    const postBody = (await postRes.json()) as { success: true; data: { id: string } };
+    const { id } = postBody.data;
     const delRes = await app.request(`/${id}`, { method: "DELETE" }, env);
     expect(delRes.status).toBe(200);
-    const data = (await delRes.json()) as { message: string };
-    expect(data.message).toBe("Share deleted successfully");
+    const delBody = (await delRes.json()) as { success: true; data: { message: string } };
+    expect(delBody.success).toBe(true);
+    expect(delBody.data.message).toBe("Share deleted successfully");
   });
 });

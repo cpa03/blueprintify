@@ -161,9 +161,12 @@ app.post("/", rateLimit(rateLimitConfigs.standard), validateJson(createShareSche
 
     return c.json(
       {
-        id: shareId,
-        url: `${c.env.CORS_ORIGIN || ""}/share/${shareId}`,
-        expiresAt: expiresAt.toISOString(),
+        success: true,
+        data: {
+          id: shareId,
+          url: `${c.env.CORS_ORIGIN || ""}/share/${shareId}`,
+          expiresAt: expiresAt.toISOString(),
+        },
       },
       HTTP_STATUS.OK
     );
@@ -262,12 +265,15 @@ app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
 
     return c.json(
       {
-        id: result.id,
-        title: result.title,
-        blueprint: result.blueprint,
-        metadata: parsedMetadata,
-        createdAt: result.created_at,
-        expiresAt: result.expires_at,
+        success: true,
+        data: {
+          id: result.id,
+          title: result.title,
+          blueprint: result.blueprint,
+          metadata: parsedMetadata,
+          createdAt: result.created_at,
+          expiresAt: result.expires_at,
+        },
       },
       HTTP_STATUS.OK
     );
@@ -324,7 +330,10 @@ app.delete("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
       // Share doesn't exist — treat as success to avoid leaking existence info
       return c.json(
         {
-          message: SHARE_ERROR_MESSAGES.SHARE_DELETED_SUCCESSFULLY,
+          success: true,
+          data: {
+            message: SHARE_ERROR_MESSAGES.SHARE_DELETED_SUCCESSFULLY,
+          },
         },
         HTTP_STATUS.OK
       );
@@ -358,7 +367,10 @@ app.delete("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
 
     return c.json(
       {
-        message: SHARE_ERROR_MESSAGES.SHARE_DELETED_SUCCESSFULLY,
+        success: true,
+        data: {
+          message: SHARE_ERROR_MESSAGES.SHARE_DELETED_SUCCESSFULLY,
+        },
       },
       HTTP_STATUS.OK
     );
