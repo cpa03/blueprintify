@@ -37,6 +37,7 @@ import {
   setEnvConfig,
 } from "./config/constants";
 import { initializeContainer } from "./di";
+import { HEADER_NAMES } from "./config/constants";
 
 initializeContainer();
 
@@ -53,7 +54,7 @@ app.use(
       return allowedOrigin;
     },
     allowMethods: CORS_CONFIG.ALLOW_METHODS,
-    allowHeaders: [...CORS_CONFIG.ALLOW_HEADERS, "x-api-key", "x-request-id"],
+    allowHeaders: [...CORS_CONFIG.ALLOW_HEADERS, HEADER_NAMES.API_KEY, HEADER_NAMES.REQUEST_ID],
     credentials: true,
     maxAge: CORS_CONFIG.MAX_AGE,
   })
@@ -66,12 +67,18 @@ app.use("*", rateLimit(rateLimitConfigs.standard));
 
 app.get("/", (c) => {
   c.header(
-    "Cache-Control",
-    `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE}`
+    HEADER_NAMES.CACHE_CONTROL,
+    `${HEADER_VALUES.CACHE_PUBLIC}, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE}`
   );
-  c.header("Server-Timing", `app;desc="${API_METADATA.NAME}";dur=0`);
-  c.header("CDN-Cache-Control", `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}`);
-  c.header("Cloudflare-CDN-Cache-Control", `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}`);
+  c.header(HEADER_NAMES.SERVER_TIMING, `app;desc="${API_METADATA.NAME}";dur=0`);
+  c.header(
+    HEADER_NAMES.CDN_CACHE_CONTROL,
+    `${HEADER_VALUES.CACHE_PUBLIC}, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}`
+  );
+  c.header(
+    HEADER_NAMES.CF_CDN_CACHE_CONTROL,
+    `${HEADER_VALUES.CACHE_PUBLIC}, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}`
+  );
   return c.json({
     name: API_METADATA.NAME,
     version: API_METADATA.VERSION,

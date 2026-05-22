@@ -195,8 +195,7 @@ function isPrivacyMode(): boolean {
   } catch (e) {
     return (
       e instanceof DOMException &&
-      (e.code === 22 || // Chrome
-        e.code === 1014 || // Firefox
+      ((STORAGE_CONFIG.PRIVACY_MODE_ERROR_CODES as readonly number[]).includes(e.code) ||
         e.name === "QuotaExceededError" ||
         e.name === "NS_ERROR_DOM_QUOTA_REACHED")
     );
@@ -542,7 +541,9 @@ export class StorageService<T = unknown> {
   checkHealth(): StorageHealth {
     this.health.quota = getStorageQuota();
     this.health.isHealthy =
-      isLocalStorageSupported() && !isPrivacyMode() && this.health.quota.percentage < 90;
+      isLocalStorageSupported() &&
+      !isPrivacyMode() &&
+      this.health.quota.percentage < STORAGE_CONFIG.HEALTH_THRESHOLD_PERCENT;
     this.health.lastCheck = new Date();
 
     return this.health;

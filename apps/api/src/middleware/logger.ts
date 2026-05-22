@@ -8,7 +8,7 @@
  */
 
 import type { Context, MiddlewareHandler, Next } from "hono";
-import { LOGGER_CONFIG } from "../config/constants";
+import { LOGGER_CONFIG, HEADER_NAMES } from "../config/constants";
 
 /**
  * Configuration options for the request logger middleware.
@@ -111,11 +111,11 @@ const generateRequestId = (): string => {
  */
 const extractCloudflareMetadata = (c: Context): CloudflareRequestMetadata => {
   return {
-    rayId: c.req.header("cf-ray"),
-    country: c.req.header("cf-ipcountry"),
-    connectingIp: c.req.header("cf-connecting-ip"),
-    city: c.req.header("cf-ipcity"),
-    datacenter: c.req.header("cf-worker-dc"),
+    rayId: c.req.header(HEADER_NAMES.CF_RAY),
+    country: c.req.header(HEADER_NAMES.CF_IPCOUNTRY),
+    connectingIp: c.req.header(HEADER_NAMES.CF_CONNECTING_IP),
+    city: c.req.header(HEADER_NAMES.CF_IPCITY),
+    datacenter: c.req.header(HEADER_NAMES.CF_WORKER_DC),
   };
 };
 
@@ -174,8 +174,8 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
     const allHeaders = c.req.header();
     Object.entries(allHeaders).forEach(([key, value]) => {
       if (
-        !key.toLowerCase().includes("authorization") &&
-        !key.toLowerCase().includes("cookie") &&
+        !key.toLowerCase().includes(HEADER_NAMES.AUTHORIZATION) &&
+        !key.toLowerCase().includes(HEADER_NAMES.COOKIE) &&
         value !== undefined
       ) {
         headers[key] = value;
@@ -189,8 +189,8 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
       query,
       headers,
       timestamp: new Date().toISOString(),
-      ip: cfMetadata.connectingIp || c.req.header("x-forwarded-for"),
-      userAgent: c.req.header("user-agent"),
+      ip: cfMetadata.connectingIp || c.req.header(HEADER_NAMES.X_FORWARDED_FOR),
+      userAgent: c.req.header(HEADER_NAMES.USER_AGENT),
     };
 
     if (hasCloudflareMetadata(cfMetadata)) {
@@ -218,11 +218,11 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
     const duration = Date.now() - startTime;
     const status = c.res.status;
 
-    c.header("X-Request-ID", requestId);
-    c.header("X-Response-Time", `${duration}ms`);
+    c.header(HEADER_NAMES.X_REQUEST_ID, requestId);
+    c.header(HEADER_NAMES.X_RESPONSE_TIME, `${duration}ms`);
 
     if (cfMetadata.rayId) {
-      c.header("X-CF-Ray", cfMetadata.rayId);
+      c.header(HEADER_NAMES.X_CF_RAY, cfMetadata.rayId);
     }
 
     const responseLog: ResponseLog = {

@@ -158,6 +158,30 @@ export const TIME_UNITS = {
 } as const;
 
 /**
+ * Byte Size Constants
+ * Centralized byte conversion values to eliminate magic numbers
+ */
+export const BYTE_UNITS = {
+  /** Bytes per kilobyte */
+  KB: 1024,
+  /** Bytes per megabyte (1024 * 1024) */
+  MB: 1024 * 1024,
+} as const;
+
+/**
+ * Body Size Limits Configuration
+ * Centralized request body size limits for API endpoints
+ */
+export const BODY_SIZE_LIMITS = {
+  /** Default maximum body size: 1MB - reasonable for JSON API requests */
+  DEFAULT_BYTES: 1 * 1024 * 1024,
+  /** Strict limit: 100KB - for text-only endpoints */
+  STRICT_BYTES: 100 * 1024,
+  /** Lenient limit: 10MB - for file upload endpoints */
+  LENIENT_BYTES: 10 * 1024 * 1024,
+} as const;
+
+/**
  * HTTP Status codes
  * Shared between frontend and backend for consistent status handling
  */

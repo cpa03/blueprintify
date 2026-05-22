@@ -9,8 +9,9 @@
  */
 
 import type { MiddlewareHandler } from "hono";
-import { HTTP_STATUS, ERROR_CODES } from "../config/constants";
+import { HTTP_STATUS, ERROR_CODES, HEADER_NAMES } from "../config/constants";
 import { ErrorType } from "../errors";
+import { BODY_SIZE_LIMITS } from "@blueprint/shared";
 
 /**
  * Configuration options for body size limit middleware.
@@ -22,31 +23,6 @@ interface BodyLimitConfig {
   maxSize?: number;
   excludePaths?: string[];
 }
-
-/**
- * Body size limit constants
- * Centralized for consistency and maintainability
- */
-const BODY_SIZE_LIMITS = {
-  /** Default maximum body size: 1MB - reasonable for JSON API requests */
-  DEFAULT_MB: 1,
-  /** Strict limit: 100KB - for text-only endpoints */
-  STRICT_KB: 100,
-  /** Lenient limit: 10MB - for file upload endpoints */
-  LENIENT_MB: 10,
-} as const;
-
-/** Bytes per kilobyte */
-const KB = 1024;
-/** Bytes per megabyte */
-const MB = 1024 * KB;
-
-/** Default maximum body size: 1MB */
-const DEFAULT_MAX_SIZE = BODY_SIZE_LIMITS.DEFAULT_MB * MB;
-/** Strict limit for text-only endpoints: 100KB */
-const STRICT_MAX_SIZE = BODY_SIZE_LIMITS.STRICT_KB * KB;
-/** Lenient limit for file uploads: 10MB */
-const LENIENT_MAX_SIZE = BODY_SIZE_LIMITS.LENIENT_MB * MB;
 
 /**
  * Creates a body size limit middleware for Hono applications.
@@ -71,7 +47,7 @@ const LENIENT_MAX_SIZE = BODY_SIZE_LIMITS.LENIENT_MB * MB;
  * - Returns standard 413 error for oversized payloads
  */
 export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
-  const { maxSize = DEFAULT_MAX_SIZE, excludePaths = [] } = config;
+  const { maxSize = BODY_SIZE_LIMITS.DEFAULT_BYTES, excludePaths = [] } = config;
 
   return async (c, next) => {
     const path = c.req.path;
@@ -83,7 +59,7 @@ export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
     }
 
     // Check Content-Length header
-    const contentLength = c.req.header("content-length");
+    const contentLength = c.req.header(HEADER_NAMES.CONTENT_LENGTH);
 
     if (contentLength) {
       const size = parseInt(contentLength, 10);
@@ -116,7 +92,7 @@ export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
  * Predefined body limit configurations for different use cases.
  */
 export const bodyLimitConfigs = {
-  standard: { maxSize: DEFAULT_MAX_SIZE },
-  strict: { maxSize: STRICT_MAX_SIZE },
-  lenient: { maxSize: LENIENT_MAX_SIZE },
+  standard: { maxSize: BODY_SIZE_LIMITS.DEFAULT_BYTES },
+  strict: { maxSize: BODY_SIZE_LIMITS.STRICT_BYTES },
+  lenient: { maxSize: BODY_SIZE_LIMITS.LENIENT_BYTES },
 };

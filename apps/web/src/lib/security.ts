@@ -16,72 +16,19 @@
 import DOMPurify from "dompurify";
 import { z } from "zod";
 import { STORAGE_CONFIG, SECURITY_LIMITS } from "@blueprint/shared";
-import { SECURITY_ERROR_MESSAGES } from "../config/constants";
+import {
+  SECURITY_ERROR_MESSAGES,
+  XSS_DETECTION_PATTERNS,
+  CODEMIRROR_DANGEROUS_PATTERNS as CODEMIRROR_PATTERNS,
+  SUSPICIOUS_JSON_KEYS,
+  DOMPURIFY_CONFIG,
+} from "../config/constants";
 
 export const SECURITY_CONFIG = {
-  DOMPURIFY_CONFIG: {
-    ALLOWED_TAGS: [
-      "p",
-      "br",
-      "strong",
-      "b",
-      "em",
-      "i",
-      "u",
-      "s",
-      "del",
-      "ins",
-      "h1",
-      "h2",
-      "h3",
-      "h4",
-      "h5",
-      "h6",
-      "ul",
-      "ol",
-      "li",
-      "dl",
-      "dt",
-      "dd",
-      "pre",
-      "code",
-      "blockquote",
-      "table",
-      "thead",
-      "tbody",
-      "tr",
-      "th",
-      "td",
-      "a",
-      "img",
-      "hr",
-    ] as string[],
-    ALLOWED_ATTR: ["href", "title", "alt", "src", "class", "rel"] as string[],
-    ALLOW_DATA_ATTR: false,
-    FORBID_TAGS: [
-      "script",
-      "iframe",
-      "object",
-      "embed",
-      "form",
-      "input",
-      "button",
-      "svg",
-      "math",
-      "base",
-      "link",
-      "meta",
-    ] as string[],
-    FORBID_ATTR: ["onclick", "onload", "onerror", "onmouseover", "style", "formaction"] as string[],
-    SANITIZE_DOM: true,
-    SANITIZE_NAMED_PROPS: true,
-    KEEP_CONTENT: true,
-  },
-
+  DOMPURIFY_CONFIG,
   MAX_CONTENT_LENGTH: SECURITY_LIMITS.MAX_CONTENT_LENGTH,
   MAX_FILE_SIZE: SECURITY_LIMITS.MAX_FILE_SIZE_BYTES,
   ALLOWED_FILE_TYPES: [...SECURITY_LIMITS.ALLOWED_FILE_TYPES],
-
   STORAGE_QUOTA: STORAGE_CONFIG.QUOTA_BYTES,
 } as const;
 export const ContentValidationSchema = z.object({
@@ -105,49 +52,8 @@ export const FileValidationSchema = z.object({
   type: z.string(),
   content: z.string().max(SECURITY_CONFIG.MAX_CONTENT_LENGTH),
 });
-/**
- * XSS attack pattern detection library.
- * Covers traditional vectors and modern attack techniques including:
- * - Script injection, event handlers, javascript: URLs
- * - SVG/math elements with embedded scripts
- * - DOM clobbering and mutation XSS
- * - CSS-based attacks (expression, behavior, binding)
- * @see https://owasp.org/www-community/xss-filter-evasion-cheatsheet
- */
-const XSS_PATTERNS = [
-  /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-  /javascript:/gi,
-  /on\w+\s*=/gi,
-  /<iframe\b[^>]*>/gi,
-  /<object\b[^>]*>/gi,
-  /<embed\b[^>]*>/gi,
-  /<form\b[^>]*>/gi,
-  /<input\b[^>]*>/gi,
-  /<button\b[^>]*>/gi,
-  /eval\s*\(/gi,
-  /expression\s*\(/gi,
-  /@import/gi,
-  /vbscript:/gi,
-  /data:text\/html/gi,
-  // SVG-based XSS vectors
-  /<svg\b[^>]*>/gi,
-  /<math\b[^>]*>/gi,
-  /<animate\b[^>]*>/gi,
-  /<set\b[^>]*>/gi,
-  /<use\b[^>]*>/gi,
-  // Protocol handlers
-  /data:\s*[^,]*;base64/gi,
-  /blob:/gi,
-  // DOM clobbering patterns
-  /id\s*=\s*["']?__proto__["']?/gi,
-  /id\s*=\s*["']?constructor["']?/gi,
-  // Mutation XSS patterns
-  /<noscript\b[^>]*>/gi,
-  /<template\b[^>]*>/gi,
-];
-
 export function containsXSSPatterns(content: string): boolean {
-  return XSS_PATTERNS.some((pattern) => pattern.test(content));
+  return XSS_DETECTION_PATTERNS.some((pattern) => pattern.test(content));
 }
 
 export function sanitizeHtml(html: string): string {
@@ -158,17 +64,6 @@ export function sanitizeMarkdown(markdown: string): string {
   if (containsXSSPatterns(markdown)) {
     throw new Error(SECURITY_ERROR_MESSAGES.XSS_PATTERNS_DETECTED);
   }
-
-  // Additional CodeMirror-specific security patterns
-  const CODEMIRROR_PATTERNS = [
-    /data:text\/html/gi,
-    /vbscript:/gi,
-    /@import\s+url/gi,
-    /expression\s*\(/gi,
-    /behavior\s*:/gi,
-    /binding\s*:/gi,
-    /include-source\s*:/gi,
-  ];
 
   if (CODEMIRROR_PATTERNS.some((pattern) => pattern.test(markdown))) {
     throw new Error(SECURITY_ERROR_MESSAGES.CODEMIRROR_DANGEROUS_PATTERNS);
@@ -341,8 +236,7 @@ export function validateJSONSecurity(content: string): {
     }
 
     // Check for suspicious key names
-    const suspiciousKeys = ["__proto__", "constructor", "prototype", "eval", "function", "script"];
-    const foundSuspiciousKeys = findSuspiciousKeys(parsed, suspiciousKeys);
+    const foundSuspiciousKeys = findSuspiciousKeys(parsed, [...SUSPICIOUS_JSON_KEYS]);
     if (foundSuspiciousKeys.length > 0) {
       return {
         isValid: false,
@@ -452,35 +346,7 @@ export function sanitizeForStorage(data: unknown): {
   };
 }
 export function getContentSecurityHeaders(): Record<string, string> {
-  return {
-    "Content-Security-Policy": [
-      "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
-      "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: https:",
-      "font-src 'self'",
-      "connect-src 'self'",
-      "object-src 'none'",
-      "frame-ancestors 'none'",
-      "base-uri 'self'",
-      "form-action 'self'",
-    ].join("; "),
-    "X-Content-Type-Options": "nosniff",
-    "X-Frame-Options": "DENY",
-    "X-XSS-Protection": "1; mode=block",
-    "Referrer-Policy": "strict-origin-when-cross-origin",
-    "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-    "Permissions-Policy": [
-      "accelerometer=()",
-      "camera=()",
-      "geolocation=()",
-      "gyroscope=()",
-      "magnetometer=()",
-      "microphone=()",
-      "payment=()",
-      "usb=()",
-    ].join(", "),
-  };
+  return { ...SECURITY_HEADERS };
 }
 
 export class SecurityError extends Error {

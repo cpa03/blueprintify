@@ -4,7 +4,13 @@
  * for real-time content delivery.
  */
 
-import { SSE_HEADERS, CORS_CONFIG, SSE_CONFIG, ERROR_MESSAGES } from "../config/constants";
+import {
+  SSE_HEADERS,
+  CORS_CONFIG,
+  SSE_CONFIG,
+  ERROR_MESSAGES,
+  HEADER_NAMES,
+} from "../config/constants";
 
 /**
  * Server-Sent Event message structure
@@ -53,10 +59,10 @@ export function createSSEResponse(stream: ReadableStream<Uint8Array>): Response 
       "Content-Type": SSE_HEADERS.CONTENT_TYPE,
       "Cache-Control": SSE_HEADERS.CACHE_CONTROL,
       Connection: SSE_HEADERS.CONNECTION,
-      "X-Accel-Buffering": "no",
-      "Access-Control-Allow-Origin": CORS_CONFIG.ORIGIN,
-      "Access-Control-Allow-Methods": CORS_CONFIG.ALLOW_METHODS.join(", "),
-      "Access-Control-Allow-Headers": CORS_CONFIG.ALLOW_HEADERS.join(", "),
+      [HEADER_NAMES.X_ACCEL_BUFFERING]: "no",
+      [HEADER_NAMES.ACCESS_CONTROL_ALLOW_ORIGIN]: CORS_CONFIG.ORIGIN,
+      [HEADER_NAMES.ACCESS_CONTROL_ALLOW_METHODS]: CORS_CONFIG.ALLOW_METHODS.join(", "),
+      [HEADER_NAMES.ACCESS_CONTROL_ALLOW_HEADERS]: CORS_CONFIG.ALLOW_HEADERS.join(", "),
     },
   });
 }

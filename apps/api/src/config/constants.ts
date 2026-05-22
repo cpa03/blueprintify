@@ -425,3 +425,40 @@ export const RATE_LIMIT_CONSTANTS = {
     LENIENT: "LENIENT_RATE_LIMITER",
   },
 } as const;
+
+// HTTP Header names used across the API
+export const HEADER_NAMES = {
+  API_KEY: "x-api-key",
+  REQUEST_ID: "x-request-id",
+  CONTENT_TYPE: "content-type",
+  CONTENT_LENGTH: "content-length",
+  CF_CONNECTING_IP: "cf-connecting-ip",
+  CF_RAY: "cf-ray",
+  CF_IPCOUNTRY: "cf-ipcountry",
+  CF_IPCITY: "cf-ipcity",
+  CF_WORKER_DC: "cf-worker-dc",
+  X_FORWARDED_FOR: "x-forwarded-for",
+  USER_AGENT: "user-agent",
+  AUTHORIZATION: "authorization",
+  COOKIE: "cookie",
+  CACHE_CONTROL: "Cache-Control",
+  SERVER_TIMING: "Server-Timing",
+  CDN_CACHE_CONTROL: "CDN-Cache-Control",
+  CF_CDN_CACHE_CONTROL: "Cloudflare-CDN-Cache-Control",
+  X_RATE_LIMIT_LIMIT: "X-RateLimit-Limit",
+  X_RATE_LIMIT_REMAINING: "X-RateLimit-Remaining",
+  X_RATE_LIMIT_RESET: "X-RateLimit-Reset",
+  RETRY_AFTER: "Retry-After",
+  X_REQUEST_ID: "X-Request-ID",
+  X_RESPONSE_TIME: "X-Response-Time",
+  X_CF_RAY: "X-CF-Ray",
+  X_ACCEL_BUFFERING: "X-Accel-Buffering",
+  ACCESS_CONTROL_ALLOW_ORIGIN: "Access-Control-Allow-Origin",
+  ACCESS_CONTROL_ALLOW_METHODS: "Access-Control-Allow-Methods",
+  ACCESS_CONTROL_ALLOW_HEADERS: "Access-Control-Allow-Headers",
+} as const;
+
+// Header values
+export const HEADER_VALUES = {
+  CACHE_PUBLIC: "public",
+} as const;
