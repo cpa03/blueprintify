@@ -7,7 +7,7 @@ import { setDefaultContainer, resetContainer, createMockContainer } from "../di/
 // Mock the prompts module
 vi.mock("../services/prompts", () => ({
   TASK_SPLITTER_SYSTEM_PROMPT: "You are a task splitter",
-  buildTaskPrompt: vi.fn((blueprint, projectName) => `Generate tasks for ${projectName}`),
+  buildTaskPrompt: vi.fn((_blueprint, projectName) => `Generate tasks for ${projectName}`),
 }));
 
 // Mock the errors module

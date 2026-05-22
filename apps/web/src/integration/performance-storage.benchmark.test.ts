@@ -3,7 +3,7 @@ import { StorageManager } from "../lib/storage";
 import { createTestBlueprint, createLargeBlueprint } from "./factories";
 
 async function measureAsync<T>(
-  operation: string,
+  _operation: string,
   fn: () => Promise<T>
 ): Promise<{ result: T; duration: number }> {
   const start = performance.now();
