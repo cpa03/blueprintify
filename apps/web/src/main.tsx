@@ -1,15 +1,15 @@
-import React, { Suspense, lazy } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { VercelAnalytics } from "./components/VercelAnalytics";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ReducedMotionProvider } from "./context/ReducedMotionContext";
 import { ExportProvider } from "./context/ExportContext";
+import { MotionConfigWrapper } from "./components/MotionConfigWrapper";
 import { SKELETON_CONFIG } from "./config/constants";
 import "./index.css";
 
-// Lazy load App and MotionConfig to reduce initial bundle size and improve LCP
-const App = lazy(() => import("./App"));
-const MotionConfigWrapper = lazy(() => import("./components/MotionConfigWrapper"));
+// Static import App to avoid an extra network round-trip that delays hydration and LCP
+import App from "./App";
 
 // Global error handlers for uncaught errors and unhandled Promise rejections
 window.addEventListener("unhandledrejection", (event) => {
@@ -42,11 +42,9 @@ root.render(
     <ErrorBoundary>
       <ReducedMotionProvider>
         <ExportProvider>
-          <Suspense fallback={null}>
-            <MotionConfigWrapper onMount={fadeOutAndRemoveSkeletonLoader}>
-              <App />
-            </MotionConfigWrapper>
-          </Suspense>
+          <MotionConfigWrapper onMount={fadeOutAndRemoveSkeletonLoader}>
+            <App />
+          </MotionConfigWrapper>
         </ExportProvider>
       </ReducedMotionProvider>
       <VercelAnalytics />
