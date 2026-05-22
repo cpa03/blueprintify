@@ -269,7 +269,7 @@ describe("Security Utilities", () => {
 
     it("should handle ZodError", () => {
       const zodError = new Error("Validation failed");
-      (zodError as unknown as { errors: Array<{ message: string }> }).errors = [
+      (zodError as unknown as { issues: Array<{ message: string }> }).issues = [
         { message: "Field required" },
       ];
       const result = handleSecurityError(zodError);
