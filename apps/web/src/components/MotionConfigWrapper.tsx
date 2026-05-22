@@ -44,10 +44,7 @@ interface MotionConfigWrapperProps {
  * </MotionConfigWrapper>
  */
 
-export default function MotionConfigWrapper({
-  children,
-  onMount,
-}: MotionConfigWrapperProps): JSX.Element {
+export function MotionConfigWrapper({ children, onMount }: MotionConfigWrapperProps): JSX.Element {
   const { prefersReducedMotion } = useReducedMotionContext();
 
   useEffect(() => {

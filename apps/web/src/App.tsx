@@ -221,7 +221,7 @@ function App(): JSX.Element {
                 <RippleButton
                   onClick={handleShowEditor}
                   className={BUTTON.SHOW_EDITOR_FAB}
-                  ariaLabel={`${UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON} ${modifierKey}+E`}
+                  ariaLabel={UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON}
                 >
                   <span className="flex items-center">
                     <svg
@@ -229,6 +229,7 @@ function App(): JSX.Element {
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
+                      aria-hidden="true"
                     >
                       <path
                         strokeLinecap="round"
@@ -238,7 +239,10 @@ function App(): JSX.Element {
                       />
                     </svg>
                     {UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON}
-                    <kbd className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none">
+                    <kbd
+                      className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                      aria-hidden="true"
+                    >
                       {modifierKey}+E
                     </kbd>
                   </span>
