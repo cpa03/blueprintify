@@ -184,7 +184,7 @@ function StepIndicatorComponent(): JSX.Element {
 
             {index < STEPS.length - 1 && (
               <motion.div
-                layout
+                layout="position"
                 className={`w-8 h-0.5 mx-2 rounded-full transition-all duration-500 ease-in-out ${
                   isCompleted
                     ? "bg-accent-emerald shadow-[0_0_6px_rgba(16,185,129,0.4)]"
