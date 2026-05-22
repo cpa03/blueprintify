@@ -41,7 +41,7 @@
     "@types/react-syntax-highlighter": "^15.5.13",
     "@typescript-eslint/eslint-plugin": "^8.59.4",
     "@typescript-eslint/parser": "^8.59.4",
-    "@vitest/ui": "^3.2.4",
+    "@vitest/ui": "^4.1.7",
     "chrome-launcher": "^1.1.2",
     "concurrently": "^8.2.2",
     "eslint": "^9.39.4",
