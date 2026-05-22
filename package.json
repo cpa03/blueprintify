@@ -35,7 +35,7 @@
     "reset": "npm run clean && rm -rf node_modules apps/*/node_modules packages/*/node_modules"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.60.0",
     "@types/node": "^20.19.41",
     "@types/react-syntax-highlighter": "^15.5.13",
