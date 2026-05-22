@@ -23,7 +23,7 @@ jobs:
     name: Architect (Decision Maker)
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install OpenCode
         run: |
@@ -53,7 +53,7 @@ jobs:
     outputs:
       matrix: ${{ steps.read.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install OpenCode
         run: |
           curl -fsSL https://opencode.ai/install | bash
@@ -99,7 +99,7 @@ jobs:
       matrix: ${{ fromJson(needs.dispatcher.outputs.matrix) }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install OpenCode
         run: |
@@ -129,7 +129,7 @@ jobs:
     needs: engineers
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: QA Review
         env:
@@ -152,7 +152,7 @@ jobs:
     needs: engineers
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Security Audit
         env:
@@ -175,7 +175,7 @@ jobs:
     needs: [qa, security]
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Repo Compliance Check
         env:
@@ -202,7 +202,7 @@ jobs:
     needs: repo-guardian
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Merge Approved PRs
         env:
@@ -228,7 +228,7 @@ jobs:
     needs: integrator
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Knowledge Review
         env:
@@ -251,7 +251,7 @@ jobs:
     needs: knowledge-steward
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Scan & Report Bugs
         env:
