@@ -2,7 +2,22 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-22 - RepoKeeper Cleanup)
+## Current Cycle (2026-05-22 - Security Audit - @vitejs/plugin-react Bump)
+
+### Findings
+
+- **[CRITICAL - Fixed] Build-breaking dependency**: Dependabot PR attempted to bump `@vitejs/plugin-react` from `^4.4.1` to `^6.0.2`, but v6 requires `vite ^8.0.0` while project uses `vite ^7.3.1`. This would break the build. Fixed by downgrading to `^5.2.0`, which supports vite 4.x through 8.x.
+
+### Actions Taken
+
+- Changed `apps/web/package.json`: `@vitejs/plugin-react` from `^6.0.2` → `^5.2.0`
+- Regenerated `package-lock.json` via `npm install`
+- Verified typecheck passes (`tsc --noEmit` clean)
+- npm audit: 4 moderate vulnerabilities in `ws` (miniflare/wrangler) — pre-existing, not introduced by this PR
+
+---
+
+## Previous Cycle (2026-05-22 - RepoKeeper Cleanup)
 
 ### Observations
 
