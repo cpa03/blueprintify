@@ -68,7 +68,8 @@ export const BlueprintRequestSchema = z.object({
     .max(VALIDATION_LIMITS.DESCRIPTION.MAX),
   techStack: z
     .array(TechStackItem)
-    .min(VALIDATION_LIMITS.TECH_STACK.MIN, "At least one technology is required"),
+    .min(VALIDATION_LIMITS.TECH_STACK.MIN, "At least one technology is required")
+    .max(VALIDATION_LIMITS.TECH_STACK.MAX, "Too many technologies selected"),
   features: z
     .array(z.string().min(1).max(VALIDATION_LIMITS.FEATURE.MAX))
     .max(VALIDATION_LIMITS.FEATURE.MAX)
@@ -260,7 +261,10 @@ export const ExportFormatSchema = z.enum(["json", "zip", "markdown"]);
  * Specifies the format and content to export.
  */
 export const ExportRequestSchema = z.object({
-  projectName: z.string().min(1).max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
+  projectName: z
+    .string()
+    .min(VALIDATION_LIMITS.PROJECT_NAME.MIN, "Project name is required")
+    .max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
   blueprint: z
     .string()
     .min(1)
@@ -275,7 +279,10 @@ export const ExportRequestSchema = z.object({
  * Contains the data to import and optional conflict resolution strategy.
  */
 export const ImportRequestSchema = z.object({
-  data: z.string().min(1, "Import data is required"),
+  data: z
+    .string()
+    .min(1, "Import data is required")
+    .max(VALIDATION_LIMITS.DESCRIPTION.MAX * 10, "Import data must not exceed 20000 characters"),
   format: ExportFormatSchema.default("json"),
   overwrite: z.boolean().default(false),
 });
