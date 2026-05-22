@@ -31,67 +31,22 @@ import type {
   RefineRequest,
   StreamChunk,
 } from "@blueprint/shared";
-import { RETRY_CONFIG, HTTP_HEADERS } from "@blueprint/shared";
 import {
-  RETRYABLE_STATUS_CODES,
   API_ERROR_MESSAGES,
   SSE_CONFIG,
   API_ENDPOINTS,
-  UI_FALLBACKS,
   TIMEOUTS,
   FRONTEND_ERROR_MESSAGES,
 } from "../config/constants";
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL || UI_FALLBACKS.API_BASE;
-
-interface StreamEventHandlers {
-  onChunk: (content: string) => void;
-  onError: (error: string) => void;
-  onDone: () => void;
-  onRetry?: (attempt: number, maxRetries: number) => void;
-}
-
-interface RetryOptions {
-  maxRetries?: number;
-  initialDelay?: number;
-  backoffFactor?: number;
-  maxDelay?: number;
-}
-
-const DEFAULT_RETRY_OPTIONS: Required<RetryOptions> = {
-  maxRetries: RETRY_CONFIG.DEFAULT_RETRIES,
-  initialDelay: RETRY_CONFIG.DEFAULT_INITIAL_DELAY,
-  backoffFactor: RETRY_CONFIG.DEFAULT_BACKOFF_FACTOR,
-  maxDelay: RETRY_CONFIG.DEFAULT_MAX_DELAY,
-};
-
-/**
- * Calculates delay with exponential backoff
- */
-function calculateRetryDelay(attempt: number, options: RetryOptions = {}): number {
-  const opts = { ...DEFAULT_RETRY_OPTIONS, ...options };
-  const delay = opts.initialDelay * Math.pow(opts.backoffFactor, attempt);
-  return Math.min(delay, opts.maxDelay);
-}
-
-/**
- * Sleep utility for retry delays
- */
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-/**
- * Determines if an error is retryable
- */
-function isRetryableError(error: unknown, response?: Response): boolean {
-  // Network errors (no response) are retryable
-  if (!response) {
-    return true;
-  }
-
-  return (RETRYABLE_STATUS_CODES as readonly number[]).includes(response.status);
-}
+import {
+  API_BASE,
+  API_CALL_CONFIG,
+  DEFAULT_RETRY_OPTIONS,
+  calculateRetryDelay,
+  sleep,
+  isRetryableError,
+} from "../config/api-client";
+import type { StreamEventHandlers, RetryOptions } from "../config/api-client";
 
 /**
  * Parses SSE stream with retry logic for connection failures
@@ -185,7 +140,7 @@ async function apiCallWithRetry(
     try {
       const response = await fetch(`${API_BASE}${endpoint}`, {
         method: "POST",
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { "Content-Type": API_CALL_CONFIG.CONTENT_TYPE },
         body: JSON.stringify(requestBody),
         signal: controller.signal,
       });
