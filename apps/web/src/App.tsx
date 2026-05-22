@@ -9,6 +9,7 @@ import { KeyboardShortcutsModal } from "./components/KeyboardShortcutsModal";
 import { SkipLink } from "./components/SkipLink";
 import { useWizardStore, useEditorStore } from "./store";
 import { UI_CONTENT } from "./config/constants";
+import { LAYOUT, FOCUS_VISIBLE_RING, BUTTON, ICON, SPINNER } from "./config/styles";
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 import { RippleButton } from "./components/RippleButton";
 import { GenerationCelebration } from "./components/GenerationCelebration";
@@ -98,24 +99,24 @@ function App(): JSX.Element {
   }, [hasContent, isGenerating, showEditor]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className={LAYOUT.PAGE_WRAPPER}>
       <SkipLink />
       <Header onShowShortcuts={handleShowShortcuts} />
 
       {/* Main Content */}
-      <main id="main-content" className="flex-1 pt-20" tabIndex={-1}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <main id="main-content" className={LAYOUT.MAIN_CONTENT} tabIndex={-1}>
+        <div className={LAYOUT.CONTENT_CONTAINER}>
           {/* Hero section (only on first view) - Critical LCP element, no opacity animation */}
           {showTemplates && (
-            <div className="text-center mb-12">
-              <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+            <div className={LAYOUT.HERO_SECTION}>
+              <h1 className={LAYOUT.HERO_TITLE}>
                 {UI_CONTENT.HERO.TITLE_1}
                 <span className="text-gradient">{UI_CONTENT.HERO.TITLE_HIGHLIGHT_1}</span>
                 {UI_CONTENT.HERO.TITLE_2}
                 <span className="text-gradient">{UI_CONTENT.HERO.TITLE_HIGHLIGHT_2}</span>
                 {UI_CONTENT.HERO.TITLE_3}
               </h1>
-              <p className="text-lg text-dark-400 max-w-2xl mx-auto">{UI_CONTENT.HERO.SUBTITLE}</p>
+              <p className={LAYOUT.HERO_SUBTITLE}>{UI_CONTENT.HERO.SUBTITLE}</p>
             </div>
           )}
 
@@ -129,7 +130,7 @@ function App(): JSX.Element {
                 transition={{ duration: 0.2 }}
               >
                 <TemplateGrid />
-                <div className="text-center text-dark-500 my-8">{UI_CONTENT.TEMPLATES_DIVIDER}</div>
+                <div className={LAYOUT.TEMPLATES_DIVIDER}>{UI_CONTENT.TEMPLATES_DIVIDER}</div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -138,11 +139,11 @@ function App(): JSX.Element {
           <StepIndicator />
 
           {/* Split Pane Layout */}
-          <div className="flex flex-col lg:flex-row gap-6 min-h-[600px]">
+          <div className={LAYOUT.SPLIT_PANE}>
             {/* Wizard Panel */}
             <div
-              className={`glass-card overflow-hidden transition-all duration-300 ${
-                showEditor ? "w-full lg:w-1/2" : "w-full"
+              className={`${LAYOUT.GLASS_CARD_FLEX} ${
+                showEditor ? LAYOUT.HALF_WIDTH : LAYOUT.FULL_WIDTH
               }`}
             >
               <Wizard />
@@ -156,15 +157,15 @@ function App(): JSX.Element {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
                   transition={{ duration: 0.2 }}
-                  className="w-full lg:w-1/2 glass-card overflow-hidden relative"
+                  className={`${LAYOUT.HALF_WIDTH} ${LAYOUT.GLASS_CARD}`}
                 >
                   <button
                     onClick={handleHideEditor}
-                    className="hidden lg:flex absolute top-4 right-4 z-10 btn-ghost"
+                    className={BUTTON.HIDE_EDITOR_DESKTOP}
                     aria-label="Hide editor panel"
                     title="Hide editor"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={ICON.LG} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -176,11 +177,11 @@ function App(): JSX.Element {
 
                   <button
                     onClick={handleHideEditor}
-                    className="lg:hidden absolute top-4 right-4 z-10 btn-ghost bg-dark-800/90 backdrop-blur-sm"
+                    className={BUTTON.HIDE_EDITOR_MOBILE}
                     aria-label="Hide editor panel"
                     title="Hide editor"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={ICON.LG} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -194,7 +195,7 @@ function App(): JSX.Element {
                     fallback={
                       <div className="h-full min-h-[400px] flex items-center justify-center text-dark-500">
                         <div className="flex flex-col items-center gap-2">
-                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+                          <div className={SPINNER.DEFAULT}></div>
                           <span>{UI_CONTENT.EDITOR.LOADING}</span>
                         </div>
                       </div>
@@ -213,12 +214,12 @@ function App(): JSX.Element {
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
                 <RippleButton
                   onClick={handleShowEditor}
-                  className="fixed bottom-6 right-6 btn-primary shadow-2xl"
+                  className={BUTTON.SHOW_EDITOR_FAB}
                   ariaLabel={`${UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON} (Cmd/Ctrl + E)`}
                 >
                   <span className="flex items-center">
                     <svg
-                      className="w-5 h-5 mr-2"
+                      className={`${ICON.LG} mr-2`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -240,14 +241,10 @@ function App(): JSX.Element {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-dark-800 py-6 transition-colors duration-200">
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between text-sm text-dark-500">
-          <p className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded px-1">
-            {UI_CONTENT.FOOTER.BUILT_WITH}
-          </p>
-          <p className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded px-1">
-            {UI_CONTENT.FOOTER.COPYRIGHT}
-          </p>
+      <footer className={LAYOUT.FOOTER}>
+        <div className={LAYOUT.FOOTER_CONTAINER}>
+          <p className={FOCUS_VISIBLE_RING}>{UI_CONTENT.FOOTER.BUILT_WITH}</p>
+          <p className={FOCUS_VISIBLE_RING}>{UI_CONTENT.FOOTER.COPYRIGHT}</p>
         </div>
       </footer>
 

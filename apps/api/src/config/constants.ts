@@ -272,6 +272,45 @@ export const CORS_CONFIG = {
   },
 };
 
+/**
+ * API Headers Configuration
+ * Flexy says: No hardcoded header strings - everything in config!
+ */
+export const API_HEADERS = {
+  /** Custom headers for API identification and tracing */
+  CUSTOM: {
+    /** API key authentication header */
+    API_KEY: "x-api-key",
+    /** Request tracing identifier */
+    REQUEST_ID: "x-request-id",
+  },
+  /** Standard cache-control directives */
+  CACHE_CONTROL: {
+    /** Public cache directive with max-age and stale-while-revalidate */
+    PUBLIC_WITH_REVALIDATE: (maxAge: number, staleWhileRevalidate: number): string =>
+      `public, max-age=${maxAge}, stale-while-revalidate=${staleWhileRevalidate}`,
+  },
+  /** CDN-specific cache headers */
+  CDN: {
+    /** Cloudflare CDN cache control header name */
+    CLOUDFLARE_CACHE_CONTROL: "Cloudflare-CDN-Cache-Control",
+    /** Standard CDN cache control header name */
+    CDN_CACHE_CONTROL: "CDN-Cache-Control",
+  },
+  /** Server timing header */
+  SERVER_TIMING: {
+    HEADER: "Server-Timing",
+    /** Format a server-timing entry */
+    ENTRY: (name: string, description: string, duration: number): string =>
+      `${name};desc="${description}";dur=${duration}`,
+  },
+  /** CF properties from request headers */
+  CF_PROPERTIES: {
+    /** Cloudflare request country header */
+    IP_COUNTRY: "cf-ipcountry",
+  },
+} as const;
+
 export const CIRCUIT_BREAKER_CONFIG = {
   get DEFAULT_FAILURE_THRESHOLD(): number {
     return getEnvConfig().CIRCUIT_BREAKER_FAILURE_THRESHOLD;

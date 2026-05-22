@@ -26,6 +26,7 @@ import clsx from "clsx";
 import { copyToClipboard } from "../lib/export";
 import { sanitizeHtml } from "../lib/security";
 import { TIMEOUTS } from "../config/constants";
+import { MARKDOWN, ICON } from "../config/styles";
 import type { Components } from "react-markdown";
 
 /**
@@ -66,20 +67,20 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
 
   return (
     <div
-      className="absolute top-0 right-0 left-0 flex items-center justify-between px-3 py-2 bg-dark-800/90 backdrop-blur-sm rounded-t-lg border-b border-dark-700/50"
+      className={MARKDOWN.CODE_HEADER}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <span className="text-xs text-dark-400 font-mono uppercase tracking-wide">{language}</span>
+      <span className={MARKDOWN.CODE_LANGUAGE}>{language}</span>
       <motion.button
         onClick={handleCopy}
         className={clsx(
-          "flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50",
+          MARKDOWN.COPY_BUTTON_BASE,
           copied
-            ? "bg-accent-emerald/20 text-accent-emerald"
+            ? MARKDOWN.COPY_BUTTON_COPIED
             : isHovered
-              ? "bg-primary-500/20 text-dark-300"
-              : "bg-dark-700/50 text-dark-400"
+              ? MARKDOWN.COPY_BUTTON_HOVER
+              : MARKDOWN.COPY_BUTTON_IDLE
         )}
         animate={{
           scale: 1,
@@ -93,7 +94,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
           {copied ? (
             <motion.svg
               key="check"
-              className="w-3.5 h-3.5"
+              className={ICON.SM}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -112,7 +113,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
           ) : (
             <motion.svg
               key="copy"
-              className="w-3.5 h-3.5"
+              className={ICON.SM}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -171,13 +172,13 @@ function MarkdownRendererComponent({ content, className }: MarkdownRendererProps
         const codeString = String(children).replace(/\n$/, "");
 
         return !inline && match ? (
-          <div className="relative my-4 group">
+          <div className={MARKDOWN.CODE_WRAPPER}>
             <CodeBlockHeader language={language} code={codeString} />
             <SyntaxHighlighter
               style={oneDark}
               language={language}
               PreTag="div"
-              className="!mt-0 !rounded-t-none !rounded-lg overflow-x-auto pt-12"
+              className={MARKDOWN.SYNTAX_HIGHLIGHTER}
               showLineNumbers
               wrapLines
               {...props}
@@ -186,116 +187,82 @@ function MarkdownRendererComponent({ content, className }: MarkdownRendererProps
             </SyntaxHighlighter>
           </div>
         ) : (
-          <code
-            className={clsx(
-              "bg-dark-800 px-1.5 py-0.5 rounded text-sm font-mono text-primary-400",
-              className
-            )}
-            {...props}
-          >
+          <code className={clsx(MARKDOWN.INLINE_CODE, className)} {...props}>
             {children}
           </code>
         );
       },
       blockquote({ children }) {
-        return (
-          <blockquote className="border-l-4 border-purple-500 pl-4 py-2 my-4 bg-dark-800/50 rounded-r-md italic text-dark-300">
-            {children}
-          </blockquote>
-        );
+        return <blockquote className={MARKDOWN.BLOCKQUOTE}>{children}</blockquote>;
       },
       table({ children }) {
         return (
-          <div className="overflow-x-auto my-4">
-            <table className="min-w-full border-collapse border border-dark-700 rounded-lg overflow-hidden">
-              {children}
-            </table>
+          <div className={MARKDOWN.TABLE_CONTAINER}>
+            <table className={MARKDOWN.TABLE}>{children}</table>
           </div>
         );
       },
       thead({ children }) {
-        return <thead className="bg-dark-800">{children}</thead>;
+        return <thead className={MARKDOWN.TABLE_HEAD}>{children}</thead>;
       },
       th({ children }) {
-        return (
-          <th className="border border-dark-700 px-4 py-3 text-left font-semibold text-white">
-            {children}
-          </th>
-        );
+        return <th className={MARKDOWN.TABLE_TH}>{children}</th>;
       },
       td({ children }) {
-        return <td className="border border-dark-700 px-4 py-3 text-dark-300">{children}</td>;
+        return <td className={MARKDOWN.TABLE_TD}>{children}</td>;
       },
       tr({ children }) {
-        return <tr className="hover:bg-dark-800/50 transition-colors">{children}</tr>;
+        return <tr className={MARKDOWN.TABLE_TR}>{children}</tr>;
       },
       h1({ children }) {
-        return (
-          <h1 className="text-3xl font-bold text-white mb-4 mt-6 pb-2 border-b border-dark-700">
-            {children}
-          </h1>
-        );
+        return <h1 className={MARKDOWN.H1}>{children}</h1>;
       },
       h2({ children }) {
-        return <h2 className="text-2xl font-bold text-white mb-3 mt-6">{children}</h2>;
+        return <h2 className={MARKDOWN.H2}>{children}</h2>;
       },
       h3({ children }) {
-        return <h3 className="text-xl font-semibold text-white mb-2 mt-5">{children}</h3>;
+        return <h3 className={MARKDOWN.H3}>{children}</h3>;
       },
       h4({ children }) {
-        return <h4 className="text-lg font-semibold text-white mb-2 mt-4">{children}</h4>;
+        return <h4 className={MARKDOWN.H4}>{children}</h4>;
       },
       h5({ children }) {
-        return <h5 className="text-base font-semibold text-white mb-2 mt-4">{children}</h5>;
+        return <h5 className={MARKDOWN.H5}>{children}</h5>;
       },
       h6({ children }) {
-        return <h6 className="text-sm font-semibold text-white mb-2 mt-4">{children}</h6>;
+        return <h6 className={MARKDOWN.H6}>{children}</h6>;
       },
       p({ children }) {
-        return <p className="text-dark-300 mb-4 leading-relaxed">{children}</p>;
+        return <p className={MARKDOWN.PARAGRAPH}>{children}</p>;
       },
       ul({ children }) {
-        return <ul className="list-disc list-inside mb-4 text-dark-300 space-y-2">{children}</ul>;
+        return <ul className={MARKDOWN.UL}>{children}</ul>;
       },
       ol({ children }) {
-        return (
-          <ol className="list-decimal list-inside mb-4 text-dark-300 space-y-2">{children}</ol>
-        );
+        return <ol className={MARKDOWN.OL}>{children}</ol>;
       },
       li({ children }) {
-        return <li className="leading-relaxed">{children}</li>;
+        return <li className={MARKDOWN.LI}>{children}</li>;
       },
       a({ children, href }) {
         return (
-          <a
-            href={href}
-            className="text-primary-400 hover:text-purple-400 transition-colors underline decoration-2 underline-offset-2"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href={href} className={MARKDOWN.LINK} target="_blank" rel="noopener noreferrer">
             {children}
           </a>
         );
       },
       img({ src, alt }) {
-        return (
-          <img
-            src={src}
-            alt={alt}
-            className="max-w-full h-auto rounded-lg shadow-lg my-4"
-            loading="lazy"
-          />
-        );
+        return <img src={src} alt={alt} className={MARKDOWN.IMAGE} loading="lazy" />;
       },
       hr() {
-        return <hr className="border-t border-dark-700 my-8" />;
+        return <hr className={MARKDOWN.HR} />;
       },
     }),
     []
   );
 
   return (
-    <div className={clsx("markdown-content", className)}>
+    <div className={clsx(MARKDOWN.CONTENT_WRAPPER, className)}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeHighlight]}
