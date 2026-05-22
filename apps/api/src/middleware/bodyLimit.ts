@@ -9,7 +9,7 @@
  */
 
 import type { MiddlewareHandler } from "hono";
-import { HTTP_STATUS, ERROR_CODES, BODY_SIZE_MAX } from "../config/constants";
+import { HTTP_STATUS, ERROR_CODES, BODY_SIZE_MAX, API_HEADERS } from "../config/constants";
 import { ErrorType } from "../errors";
 
 /**
@@ -60,7 +60,7 @@ export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
     }
 
     // Check Content-Length header
-    const contentLength = c.req.header("content-length");
+    const contentLength = c.req.header(API_HEADERS.REQUEST.CONTENT_LENGTH);
 
     if (contentLength) {
       const size = parseInt(contentLength, 10);

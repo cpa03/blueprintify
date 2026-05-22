@@ -8,7 +8,7 @@
  */
 
 import type { MiddlewareHandler } from "hono";
-import { HTTP_STATUS, ERROR_CODES, ERROR_MESSAGES } from "../config/constants";
+import { HTTP_STATUS, ERROR_CODES, ERROR_MESSAGES, API_HEADERS } from "../config/constants";
 import { ErrorType } from "../errors";
 
 /**
@@ -64,7 +64,7 @@ function constantTimeCompare(a: string, b: string): boolean {
  * ```
  */
 export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
-  const { apiKeyHeader = "x-api-key", excludePaths = ["/"] } = config;
+  const { apiKeyHeader = API_HEADERS.CUSTOM.API_KEY, excludePaths = ["/"] } = config;
 
   return async (c, next) => {
     const path = c.req.path;

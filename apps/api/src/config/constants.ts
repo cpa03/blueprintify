@@ -308,6 +308,43 @@ export const API_HEADERS = {
   CF_PROPERTIES: {
     /** Cloudflare request country header */
     IP_COUNTRY: "cf-ipcountry",
+    /** Cloudflare Ray ID for request tracing */
+    RAY_ID: "cf-ray",
+    /** Cloudflare connecting IP */
+    CONNECTING_IP: "cf-connecting-ip",
+    /** Cloudflare client city */
+    CITY: "cf-ipcity",
+    /** Cloudflare worker datacenter */
+    DATACENTER: "cf-worker-dc",
+  },
+  /** Standard HTTP request headers used by middleware */
+  REQUEST: {
+    /** Forwarded-for IP header */
+    FORWARDED_FOR: "x-forwarded-for",
+    /** User agent header */
+    USER_AGENT: "user-agent",
+    /** Content length header */
+    CONTENT_LENGTH: "content-length",
+  },
+  /** Standard HTTP response headers set by middleware */
+  RESPONSE: {
+    /** Request ID for distributed tracing */
+    REQUEST_ID: "X-Request-ID",
+    /** Response time in milliseconds */
+    RESPONSE_TIME: "X-Response-Time",
+    /** Cloudflare Ray ID response header */
+    CF_RAY: "X-CF-Ray",
+  },
+  /** Rate limiting response headers */
+  RATE_LIMIT: {
+    /** Maximum requests allowed in window */
+    LIMIT: "X-RateLimit-Limit",
+    /** Remaining requests in current window */
+    REMAINING: "X-RateLimit-Remaining",
+    /** Timestamp when rate limit resets */
+    RESET: "X-RateLimit-Reset",
+    /** Seconds until client can retry */
+    RETRY_AFTER: "Retry-After",
   },
 } as const;
 
