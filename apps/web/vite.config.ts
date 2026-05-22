@@ -43,11 +43,22 @@ const removeLazyPreloadPlugin = (): Plugin => ({
   },
 });
 
+const fetchPriorityPlugin = (): Plugin => ({
+  name: "fetch-priority",
+  transformIndexHtml(html) {
+    return html.replace(
+      /(<script[^>]*type="module"[^>]*crossorigin[^>]*)(><\/script>)/,
+      '$1 fetchpriority="high"$2'
+    );
+  },
+});
+
 export default defineConfig({
   plugins: [
     react(),
     asyncCssPlugin(),
     removeLazyPreloadPlugin(),
+    fetchPriorityPlugin(),
     compression({
       algorithms: ["gzip", "brotliCompress"],
       exclude: [/\.(br)$/, /\.(gz)$/],
