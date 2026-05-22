@@ -159,7 +159,7 @@ export const CSP_DIRECTIVES = {
     "'unsafe-hashes'",
     "'sha256-87uI7LZJ8azkq44HKb4qqF/0VgaCUXD27d5/XHXT3yQ='",
   ],
-  STYLE_SRC: ["'self'", "'unsafe-inline'"],
+  STYLE_SRC: ["'self'"],
   IMG_SRC: ["'self'", "data:", "https:"],
   FONT_SRC: ["'self'"],
   CONNECT_SRC: ["'self'"],
