@@ -1,4 +1,4 @@
-import { useState, Suspense, lazy, useEffect, useCallback, useRef } from "react";
+import { useState, Suspense, lazy, useEffect, useCallback, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "./components/Header";
 import { TemplateGrid } from "./components/TemplateGrid";
@@ -42,6 +42,12 @@ function App(): JSX.Element {
   const handleShowShortcuts = useCallback(() => setShowShortcutsModal(true), []);
   const handleHideShortcuts = useCallback(() => setShowShortcutsModal(false), []);
   const handleCelebrationComplete = useCallback(() => setShowCelebration(false), []);
+
+  const modifierKey = useMemo(() => {
+    const isMac =
+      typeof navigator !== "undefined" && navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+    return isMac ? "\u2318" : "Ctrl";
+  }, []);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -215,7 +221,7 @@ function App(): JSX.Element {
                 <RippleButton
                   onClick={handleShowEditor}
                   className={BUTTON.SHOW_EDITOR_FAB}
-                  ariaLabel={`${UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON} (Cmd/Ctrl + E)`}
+                  ariaLabel={`${UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON} (${modifierKey} + E)`}
                 >
                   <span className="flex items-center">
                     <svg
@@ -232,6 +238,9 @@ function App(): JSX.Element {
                       />
                     </svg>
                     {UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON}
+                    <kbd className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none">
+                      {modifierKey}+E
+                    </kbd>
                   </span>
                 </RippleButton>
               </motion.div>
