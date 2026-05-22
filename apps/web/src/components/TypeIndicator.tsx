@@ -12,6 +12,7 @@ import { useState, useCallback, useRef, useEffect, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ANIMATION, ANIMATION_MS } from "../config/constants";
 import { ANIMATION_TIMING } from "../config/theme";
+import { TYPING } from "../config/styles";
 
 /**
  * Props for the TypeIndicator component.
@@ -64,11 +65,11 @@ export const TypeIndicator = memo(function TypeIndicator({
           aria-live="polite"
           aria-atomic="true"
         >
-          <span className="sr-only">Typing</span>
+          <span className={TYPING.SR_ONLY}>Typing</span>
           {[0, 1, 2].map((index) => (
             <motion.span
               key={index}
-              className="w-1.5 h-1.5 rounded-full bg-primary-400"
+              className={TYPING.DOT}
               animate={{
                 y: [0, -4, 0],
                 opacity: [0.4, 1, 0.4],
