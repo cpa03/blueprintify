@@ -71,11 +71,13 @@ function SmartTooltipComponent({
   const [isPositioned, setIsPositioned] = useState(false);
   const showTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const touchAutoHideRef = useRef<NodeJS.Timeout | null>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const generatedId = useId();
   const tooltipId = id || `tooltip-${generatedId}`;
 
+  const isTouchDevice = typeof window !== "undefined" && "ontouchstart" in window;
   // Clear all timeouts
   const clearTimeouts = useCallback(() => {
     if (showTimeoutRef.current) {
@@ -116,6 +118,14 @@ function SmartTooltipComponent({
     return fittingPosition || "top";
   }, [position, maxWidth]);
 
+  const showTooltipImmediate = useCallback(() => {
+    clearTimeouts();
+    const optimalPosition = calculateOptimalPosition();
+    setComputedPosition(optimalPosition);
+    setIsPositioned(true);
+    setIsVisible(true);
+  }, [clearTimeouts, calculateOptimalPosition]);
+
   const showTooltip = useCallback(() => {
     clearTimeouts();
 
@@ -129,6 +139,10 @@ function SmartTooltipComponent({
 
   const hideTooltip = useCallback(() => {
     clearTimeouts();
+    if (touchAutoHideRef.current) {
+      clearTimeout(touchAutoHideRef.current);
+      touchAutoHideRef.current = null;
+    }
 
     hideTimeoutRef.current = setTimeout(() => {
       setIsVisible(false);
@@ -136,27 +150,50 @@ function SmartTooltipComponent({
     }, hideDelay);
   }, [clearTimeouts, hideDelay]);
 
+  const handleTriggerClick = useCallback(() => {
+    if (!isTouchDevice) return;
+
+    if (isVisible) {
+      setIsVisible(false);
+      setIsPositioned(false);
+      if (touchAutoHideRef.current) {
+        clearTimeout(touchAutoHideRef.current);
+        touchAutoHideRef.current = null;
+      }
+    } else {
+      showTooltipImmediate();
+      touchAutoHideRef.current = setTimeout(() => {
+        setIsVisible(false);
+        setIsPositioned(false);
+      }, TOOLTIP_CONFIG.TOUCH_AUTO_HIDE_DELAY);
+    }
+  }, [isTouchDevice, isVisible, showTooltipImmediate]);
+
   const handleMouseEnter = useCallback(() => {
+    if (isTouchDevice) return;
     hideTooltip();
     showTooltip();
-  }, [hideTooltip, showTooltip]);
+  }, [hideTooltip, showTooltip, isTouchDevice]);
 
   const handleMouseLeave = useCallback(() => {
+    if (isTouchDevice) return;
     clearTimeouts();
     hideTooltip();
-  }, [clearTimeouts, hideTooltip]);
+  }, [clearTimeouts, hideTooltip, isTouchDevice]);
 
   const handleFocus = useCallback(() => {
+    if (isTouchDevice) return;
     showTooltip();
-  }, [showTooltip]);
+  }, [showTooltip, isTouchDevice]);
 
   const handleBlur = useCallback(
     (e: React.FocusEvent) => {
+      if (isTouchDevice) return;
       if (!triggerRef.current?.contains(e.relatedTarget as Node)) {
         hideTooltip();
       }
     },
-    [hideTooltip]
+    [hideTooltip, isTouchDevice]
   );
 
   useEffect(() => {
@@ -195,6 +232,9 @@ function SmartTooltipComponent({
   useEffect(() => {
     return () => {
       clearTimeouts();
+      if (touchAutoHideRef.current) {
+        clearTimeout(touchAutoHideRef.current);
+      }
     };
   }, [clearTimeouts]);
 
@@ -208,6 +248,7 @@ function SmartTooltipComponent({
       onMouseLeave={handleMouseLeave}
       onFocus={handleFocus}
       onBlur={handleBlur}
+      onClick={handleTriggerClick}
       aria-describedby={isVisible ? tooltipId : undefined}
     >
       {children}

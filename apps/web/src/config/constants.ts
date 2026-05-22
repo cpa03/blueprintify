@@ -159,6 +159,8 @@ export const TOOLTIP_CONFIG = {
   ESTIMATED_HEIGHT: 60,
   /** Viewport padding for tooltip positioning (px) */
   VIEWPORT_PADDING: 16,
+  /** Auto-hide delay for touch devices (ms) */
+  TOUCH_AUTO_HIDE_DELAY: 3000,
 } as const;
 
 // Step configuration
