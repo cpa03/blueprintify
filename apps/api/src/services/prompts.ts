@@ -84,7 +84,9 @@ function withUserDelimiters(content: string): string {
  * @returns Formatted prompt string for AI processing
  */
 export function buildBlueprintPrompt(request: BlueprintRequest): string {
-  const techStackList = request.techStack.map((t) => `- ${t.name} (${t.category})`).join("\n");
+  const techStackList = request.techStack
+    .map((t) => `- ${sanitizePromptInput(t.name)} (${sanitizePromptInput(t.category)})`)
+    .join("\n");
 
   const sanitizedFeatures = request.features?.map((f) => sanitizePromptInput(f)) ?? [];
   const featuresSection = sanitizedFeatures.length
