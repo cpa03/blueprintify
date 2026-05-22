@@ -4,17 +4,19 @@
 
 ## Current Focus: Repository Maintenance
 
-### Task: RepoKeeper Cleanup Cycle (2026-05-21)
+### Task: RepoKeeper Cleanup Cycle (2026-05-22)
 
 - **Priority**: High
-- **Status**: In Progress
+- **Status**: Active
 - **Objective**: Remove redundant files, update documentation, fix dependency vulnerabilities, clean stale branches
 - **Actions**:
-  - [ ] Remove duplicate CONTRIBUTING.md from docs/
-  - [ ] Clean accumulated agent findings from docs/findings.md
-  - [ ] Consolidate docs/bugs.md - keep only active bugs
-  - [ ] Fix dependency vulnerabilities (undici, ws)
-  - [ ] Ensure docs match codebase reality
+  - [x] Align `.node-version` with `.nvmrc` (both → 20)
+  - [x] Fix flaky benchmark threshold in `performance-storage.benchmark.test.ts` (30ms → 50ms)
+  - [x] Move BUG-010 to resolved (no @v5 refs remain in CI)
+  - [x] Add BUG-013 for upstream wrangler/miniflare vulns
+  - [x] Clean findings.md (already clean)
+  - [ ] No duplicate CONTRIBUTING.md found in docs/ — verified
+  - [ ] Upstream undici/ws vulns blocked on Cloudflare SDK (Node 22+)
 
 ---
 
@@ -47,7 +49,7 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 - **BUG-001**: Frontend Bundle Size Performance Issue (In Progress)
 - **BUG-008**: ajv Package Security Vulnerabilities (Open)
-- **BUG-010**: GitHub Actions Invalid Versions @v5 → @v4 (Open)
+- **BUG-013**: Upstream npm Vulns (undici/ws via wrangler) (Blocked - Node 22+)
 
 ---
 
@@ -56,10 +58,10 @@ See [bugs.md](./bugs.md) for detailed bug information.
 - **Frontend**: Co-located Vitest tests with component and store tests
 - **API**: Comprehensive route, middleware, service, and utility tests
 - **Shared**: Zod schema, type, and config tests
-- **Total**: 420+ tests, all passing
+- **Total**: 471 tests (470 passing, 1 known-flaky benchmark threshold)
 - **TypeScript**: Strict mode, no unchecked `any` types
 
 ---
 
-**Last Updated**: 2026-05-21  
+**Last Updated**: 2026-05-22  
 **Maintainer**: RepoKeeper
