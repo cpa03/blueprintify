@@ -46,9 +46,10 @@ function createMockDB() {
   };
 }
 
-function createMockEnv() {
+function createMockEnv(apiKey?: string) {
   return {
     OPENAI_API_KEY: "test-key",
+    API_KEY: apiKey,
     DB: createMockDB(),
     CORS_ORIGIN: DEFAULTS.CORS_ORIGIN,
   };
@@ -192,5 +193,82 @@ describe("DELETE /share/:id", () => {
     expect(data.error.type).toBe("validation");
     expect(data.error.code).toBe("VALIDATION_ERROR");
     expect(data.error.message).toContain("Invalid share ID format");
+  });
+
+  it("should allow deletion with matching API key", async () => {
+    const env = createMockEnv("shared-key-123");
+    const postRes = await app.request(
+      "/",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: "Owned Blueprint",
+          blueprint: "# Owned",
+        }),
+      },
+      env
+    );
+    const { id } = (await postRes.json()) as { id: string };
+    const delRes = await app.request(`/${id}`, { method: "DELETE" }, env);
+    expect(delRes.status).toBe(200);
+    const data = (await delRes.json()) as { message: string };
+    expect(data.message).toBe("Share deleted successfully");
+  });
+
+  it("should reject deletion with mismatched API key", async () => {
+    const sharedDb = createMockDB();
+    const creatorEnv = {
+      OPENAI_API_KEY: "test-key",
+      API_KEY: "creator-key-456",
+      DB: sharedDb,
+      CORS_ORIGIN: DEFAULTS.CORS_ORIGIN,
+    };
+    const attackerEnv = {
+      OPENAI_API_KEY: "test-key",
+      API_KEY: "attacker-key-789",
+      DB: sharedDb,
+      CORS_ORIGIN: DEFAULTS.CORS_ORIGIN,
+    };
+    const postRes = await app.request(
+      "/",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: "Protected Blueprint",
+          blueprint: "# Protected",
+        }),
+      },
+      creatorEnv
+    );
+    const { id } = (await postRes.json()) as { id: string };
+    const delRes = await app.request(`/${id}`, { method: "DELETE" }, attackerEnv);
+    expect(delRes.status).toBe(403);
+    const data = (await delRes.json()) as ErrorResponse;
+    expect(data.success).toBe(false);
+    expect(data.error.type).toBe("authorization");
+    expect(data.error.code).toBe("AUTHORIZATION_ERROR");
+  });
+
+  it("should allow deletion without API key (backward compatibility)", async () => {
+    const env = createMockEnv();
+    const postRes = await app.request(
+      "/",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: "Legacy Blueprint",
+          blueprint: "# Legacy",
+        }),
+      },
+      env
+    );
+    const { id } = (await postRes.json()) as { id: string };
+    const delRes = await app.request(`/${id}`, { method: "DELETE" }, env);
+    expect(delRes.status).toBe(200);
+    const data = (await delRes.json()) as { message: string };
+    expect(data.message).toBe("Share deleted successfully");
   });
 });
