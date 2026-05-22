@@ -105,8 +105,6 @@ async function generateProjectStructure(zip: JSZip, files: ExportFiles): Promise
     techStackNames.includes("python") ||
     techStackNames.includes("django") ||
     techStackNames.includes("flask");
-  const _isStatic = !isReact && !isNode && !isPython;
-
   if (isReact) {
     await generateReactProject(zip, normalizedProjectName, description, features, techStack);
   } else if (isNode) {

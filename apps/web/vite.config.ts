@@ -1,10 +1,6 @@
 import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react";
-import path from "path";
 import { compression } from "vite-plugin-compression2";
-import { visualizer } from "rollup-plugin-visualizer";
-
-const isAnalyze = process.env.ANALYZE === "true";
 
 const DEV_SERVER_PORT = parseInt(process.env.VITE_DEV_SERVER_PORT || "3000", 10);
 const API_PROXY_TARGET = process.env.VITE_API_PROXY_TARGET || "http://localhost:8787";

@@ -34,7 +34,6 @@ describe("Integration: Refinement Workflow", () => {
 
   describe("End-to-End Refinement Process", () => {
     it("should refine blueprint section and preserve context", async () => {
-      const _testData = createTestBlueprint();
       const sectionContent = "## Overview\nThis is a test blueprint.";
 
       fetchMock.mockResolvedValueOnce(
