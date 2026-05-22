@@ -45,6 +45,11 @@ const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
 
 app.use("*", secureHeaders());
 app.use("*", etag());
+app.use("*", async (c, next) => {
+  await next();
+  c.res.headers.set("Cross-Origin-Opener-Policy", "same-origin");
+  c.res.headers.set("Cross-Origin-Resource-Policy", "same-origin");
+});
 app.use(
   "*",
   cors({
