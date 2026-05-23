@@ -28,6 +28,7 @@ import { EditorEmptyState } from "./EditorEmptyState";
 import { PreviewEmptyState } from "./PreviewEmptyState";
 import { ScrollToTop } from "./ScrollToTop";
 import { ScrollProgress } from "./ScrollProgress";
+import { ConfirmDialog } from "./ConfirmDialog";
 import { useEditorStore, resetAllStores, useToast } from "../store";
 import { useExportContext } from "../context/ExportContext";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
@@ -50,6 +51,7 @@ function EditorComponent(): JSX.Element {
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [copied, setCopied] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
+  const [showNewProjectConfirm, setShowNewProjectConfirm] = useState(false);
   const toast = useToast();
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -65,6 +67,8 @@ function EditorComponent(): JSX.Element {
   const { lastSavedText, markSaved, hasChanges, markAsChanged } = useLastSaved();
 
   const currentContent = activeTab === "blueprint" ? blueprintContent : tasksContent;
+  const hasContent = blueprintContent.length > 0 || tasksContent.length > 0;
+
   /**
    * Updates the current content (blueprint or tasks) with sanitization.
    * Handles security validation and error reporting.
@@ -154,106 +158,139 @@ function EditorComponent(): JSX.Element {
    * Clears blueprint, tasks, and wizard state.
    */
   const handleNewProject = useCallback(() => {
+    if (hasContent) {
+      setShowNewProjectConfirm(true);
+    } else {
+      resetAllStores();
+      toast.info("Started new project");
+    }
+  }, [hasContent, toast]);
+
+  const handleConfirmNewProject = useCallback(() => {
     resetAllStores();
     toast.info("Started new project");
   }, [toast]);
 
-  const hasContent = blueprintContent.length > 0 || tasksContent.length > 0;
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "n") {
+        e.preventDefault();
+        handleNewProject();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleNewProject]);
 
   return (
-    <div className="h-full flex flex-col">
-      {/* Editor Header */}
-      <EditorHeader
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        viewMode={viewMode}
-        setViewMode={setViewMode}
-        onCopy={handleCopy}
-        onExport={handleExport}
-        onNew={handleNewProject}
-        hasContent={hasContent}
-        copied={copied}
-        isExporting={isExporting}
-        lastSavedText={lastSavedText}
-        hasChanges={hasChanges}
-        content={currentContent}
-      />
+    <>
+      <div className="h-full flex flex-col">
+        {/* Editor Header */}
+        <EditorHeader
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          viewMode={viewMode}
+          setViewMode={setViewMode}
+          onCopy={handleCopy}
+          onExport={handleExport}
+          onNew={handleNewProject}
+          hasContent={hasContent}
+          copied={copied}
+          isExporting={isExporting}
+          lastSavedText={lastSavedText}
+          hasChanges={hasChanges}
+          content={currentContent}
+        />
 
-      {/* Editor Content */}
-      <div className="flex-1 overflow-hidden">
-        {!hasContent && !isGenerating ? (
-          <EditorEmptyState />
-        ) : (
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, x: 10 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -10 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              id={activeTab === "blueprint" ? "blueprint-panel" : "tasks-panel"}
-              role="tabpanel"
-              aria-labelledby={`tab-${activeTab}`}
-              className="h-full flex flex-col lg:flex-row"
-            >
-              {/* Code Editor */}
-              {(viewMode === "edit" || viewMode === "split") && (
-                <div
-                  className={clsx(
-                    "h-full overflow-hidden",
-                    viewMode === "split"
-                      ? "w-full lg:w-1/2 lg:border-r lg:border-dark-700 border-b border-dark-700 lg:border-b-0"
-                      : "w-full"
-                  )}
-                >
-                  <LazyCodeMirror
-                    value={currentContent}
-                    onChange={setCurrentContent}
-                    className="h-full"
-                  />
-                </div>
-              )}
-
-              {/* Preview */}
-              {(viewMode === "preview" || viewMode === "split") && (
-                <div
-                  ref={previewRef}
-                  className={clsx(
-                    "h-full overflow-y-auto p-4 lg:p-6 relative",
-                    viewMode === "split" ? "w-full lg:w-1/2" : "w-full"
-                  )}
-                >
-                  <ScrollProgress scrollContainerRef={previewRef} />
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="min-h-full"
-                  >
-                    {currentContent ? (
-                      <LazyMarkdownRenderer content={currentContent} />
-                    ) : (
-                      <PreviewEmptyState
-                        tab={activeTab}
-                        isGenerating={isGenerating}
-                        siblingTabHasContent={
-                          activeTab === "blueprint"
-                            ? tasksContent.length > 0
-                            : blueprintContent.length > 0
-                        }
-                      />
+        {/* Editor Content */}
+        <div className="flex-1 overflow-hidden">
+          {!hasContent && !isGenerating ? (
+            <EditorEmptyState />
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                id={activeTab === "blueprint" ? "blueprint-panel" : "tasks-panel"}
+                role="tabpanel"
+                aria-labelledby={`tab-${activeTab}`}
+                className="h-full flex flex-col lg:flex-row"
+              >
+                {/* Code Editor */}
+                {(viewMode === "edit" || viewMode === "split") && (
+                  <div
+                    className={clsx(
+                      "h-full overflow-hidden",
+                      viewMode === "split"
+                        ? "w-full lg:w-1/2 lg:border-r lg:border-dark-700 border-b border-dark-700 lg:border-b-0"
+                        : "w-full"
                     )}
-                  </motion.div>
-                  <ScrollToTop
-                    scrollContainerRef={previewRef}
-                    showAfter={UI.SCROLL_TO_TOP_THRESHOLD}
-                  />
-                </div>
-              )}
-            </motion.div>
-          </AnimatePresence>
-        )}
+                  >
+                    <LazyCodeMirror
+                      value={currentContent}
+                      onChange={setCurrentContent}
+                      className="h-full"
+                    />
+                  </div>
+                )}
+
+                {/* Preview */}
+                {(viewMode === "preview" || viewMode === "split") && (
+                  <div
+                    ref={previewRef}
+                    className={clsx(
+                      "h-full overflow-y-auto p-4 lg:p-6 relative",
+                      viewMode === "split" ? "w-full lg:w-1/2" : "w-full"
+                    )}
+                  >
+                    <ScrollProgress scrollContainerRef={previewRef} />
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="min-h-full"
+                    >
+                      {currentContent ? (
+                        <LazyMarkdownRenderer content={currentContent} />
+                      ) : (
+                        <PreviewEmptyState
+                          tab={activeTab}
+                          isGenerating={isGenerating}
+                          siblingTabHasContent={
+                            activeTab === "blueprint"
+                              ? tasksContent.length > 0
+                              : blueprintContent.length > 0
+                          }
+                        />
+                      )}
+                    </motion.div>
+                    <ScrollToTop
+                      scrollContainerRef={previewRef}
+                      showAfter={UI.SCROLL_TO_TOP_THRESHOLD}
+                    />
+                  </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          )}
+        </div>
       </div>
-    </div>
+
+      {/* New Project Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={showNewProjectConfirm}
+        onClose={() => setShowNewProjectConfirm(false)}
+        onConfirm={handleConfirmNewProject}
+        title="Start New Project?"
+        description="This will clear all your current blueprint and tasks content. This action cannot be undone."
+        confirmLabel="Start New"
+        cancelLabel="Cancel"
+        icon="🔄"
+      />
+    </>
   );
 }
 
