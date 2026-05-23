@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Removed `engine-strict=true` from `.npmrc` to allow `npm install` on node 20 without `--force` (project targets node 20 but some deps require >=22)
+- Updated `prepare` script from `husky install` (deprecated) to `husky` in package.json for compatibility with husky v9
 - Enhanced API documentation with JSDoc comments for secureLog utility functions ([#629](https://github.com/cpa03/blueprintify/pull/629))
 - Standardized CMZ agent definition with mandatory planning section
 - Fixed default value handling in MockDatabaseService (version, usage_count)
