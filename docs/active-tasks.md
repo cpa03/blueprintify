@@ -27,7 +27,7 @@
 ### Task: RepoKeeper Cleanup Cycle (2026-05-23)
 
 - **Priority**: High
-- **Status**: Active
+- **Status**: Completed
 - **Objective**: Fix formatting, verify code quality, update cycle docs
 - **Actions**:
   - [x] Fix Prettier formatting in 5 files (workflow YAML files, index.html)
@@ -37,7 +37,20 @@
   - [x] Audit docs/ for stale/unreferenced files — all present
   - [x] Check .opencode/ package files — properly gitignored
   - [x] Update docs (active-tasks.md, findings.md) for current cycle
-  - [ ] Upstream undici/ws vulns blocked on Cloudflare SDK (Node 22+) — unchanged
+  - [x] Upstream undici/ws vulns blocked on Cloudflare SDK (Node 22+) — unchanged
+
+### Task: RepoKeeper Cleanup Cycle 2 (2026-05-23)
+
+- **Priority**: High
+- **Status**: Active
+- **Objective**: Fix CI workflow doc references, update stale bug descriptions, verify build
+- **Actions**:
+  - [x] Fix `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+  - [x] Update `docs/bugs.md` BUG-001 — correct lazy-loading status, update progress
+  - [x] Update `docs/findings.md` — record CI bug discovery, BUG-001 staleness
+  - [x] Update `docs/active-tasks.md` — this record
+  - [ ] Verify build/lint/typecheck pass
+  - [ ] Create PR with all fixes
 
 ---
 

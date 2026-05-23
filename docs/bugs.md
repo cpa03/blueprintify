@@ -14,24 +14,19 @@
 
 #### Description
 
-Editor component bundle is 822K, significantly larger than main bundle (336K). This impacts initial load time and user experience.
+Editor component bundle is 822K, significantly larger than main bundle (336K). This impacts initial load time and user experience. CodeMirror is the primary contributor to the editor bundle size.
 
 #### Symptoms
 
 - Large bundle size affects page load performance
 - Editor component includes CodeMirror which is heavy but necessary
-- No lazy loading implemented for optimal performance
+- Lighthouse performance score impacted during M1/M2 development
 
 #### Root Cause
 
 - CodeMirror dependency is large but required for editing functionality
-- Limited code splitting implemented
-- Editor component not optimized for bundle size
-
-#### Workarounds
-
-- Current lazy loading in App.tsx helps but insufficient
-- Performance impact noticeable on slower connections
+- CodeMirror extensions not fully tree-shaken
+- Editor bundle can be further optimized
 
 #### Fix Status
 
@@ -40,16 +35,24 @@ Editor component bundle is 822K, significantly larger than main bundle (336K). T
 **Progress**:
 
 - [x] M1 Completed: Basic lazy loading implemented
+- [x] M2 Completed: `React.lazy()` + `Suspense` implemented for Editor, TemplateGrid, KeyboardShortcutsModal, GenerationCelebration
+- [x] App.tsx: Editor loaded via `React.lazy(() => import("./components/Editor"))`
 - [ ] Implement more aggressive code splitting
 - [ ] Consider tree-shaking for CodeMirror extensions
-- [ ] Add lazy loading for non-critical components
 - [ ] Optimize bundle splitting strategy
+
+#### Current State (2026-05-23)
+
+- Editor is lazy-loaded with `React.lazy()` + `Suspense` in App.tsx
+- TemplateGrid, KeyboardShortcutsModal, GenerationCelebration also lazy-loaded
+- Remaining optimization: tree-shake CodeMirror extensions, explore dynamic imports for markdown renderers
+- Priority reduced as lazy loading is now in place
 
 #### Target Resolution
 
-- **Timeline**: M2 completion (Active Development)
+- **Timeline**: Future optimization pass
 - **Impact**: Improved Lighthouse performance score
-- **Priority**: High (user experience)
+- **Priority**: Medium (partially mitigated)
 
 ---
 

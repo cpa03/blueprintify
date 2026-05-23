@@ -2,21 +2,22 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-23 - RepoKeeper Formatting & Audit)
+## Current Cycle (2026-05-23 - RepoKeeper Cleanup Cycle 2)
 
 ### Findings
 
-- **Formatting**: 5 files had Prettier formatting issues — workflow YAML files and `index.html`. All fixed.
+- **BUG in CI**: `.github/workflows/main.yml` references `docs/bug.md` and `docs/feature.md` — these files do not exist. Actual files are `docs/bugs.md` and `docs/features.md`. This would cause architect step to fail.
 - **Build/Lint/Typecheck**: All passing clean. No warnings or errors.
 - **npm audit**: 0 vulnerabilities — clean.
-- **Dependencies**: No outdated or unused dependencies found across workspaces.
 - **Docs audit**: All `docs/` references in README.md verified present. No stale doc files.
+- **BUG-001 outdated**: Description claimed "No lazy loading" but `React.lazy()` is already implemented for Editor, TemplateGrid, KeyboardShortcutsModal, GenerationCelebration.
+- **Package freshness**: 24 packages have newer versions available (mostly major bumps: React 18→19, Vite 7→8, Tailwind 3→4, etc.) — not urgent, tracked for awareness.
 
 ### Actions Taken
 
-- Ran `prettier --write` on `.github/workflows/iterate.yml`, `main.yml`, `on-pull.yml`, `parallel.yml`, and `apps/web/index.html`
-- Verified typecheck, lint, npm audit all clean
-- Updated `active-tasks.md` with 2026-05-23 cycle
+- Fixed `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+- Updated `docs/bugs.md` — BUG-001 description and progress corrected to reflect current lazy-loading state
+- Updated `active-tasks.md` with 2026-05-23 cycle 2
 - Updated `findings.md` — this record
 
 ---
