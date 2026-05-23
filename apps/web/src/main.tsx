@@ -13,11 +13,17 @@ import App from "./App";
 
 // Global error handlers for uncaught errors and unhandled Promise rejections
 window.addEventListener("unhandledrejection", (event) => {
-  if (import.meta.env.DEV) {
-    console.error("[Unhandled Rejection] Promise rejected:", event.reason);
-  }
+  console.error("[Unhandled Rejection] Promise rejected:", event.reason);
   // Prevent the default browser behavior (which shows a cryptic error in console)
   event.preventDefault();
+});
+
+window.addEventListener("error", (event) => {
+  console.error("[Uncaught Error]", event.message, event.error?.stack ?? "");
+  // Prevent the default browser behavior for non-critical errors
+  if (!event.isTrusted) {
+    event.preventDefault();
+  }
 });
 
 const rootElement = document.getElementById("root");
