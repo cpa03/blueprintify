@@ -205,77 +205,97 @@ function EditorComponent(): JSX.Element {
 
         {/* Editor Content */}
         <div className="flex-1 overflow-hidden">
-          {!hasContent && !isGenerating ? (
-            <EditorEmptyState />
-          ) : (
-            <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait">
+            {!hasContent && !isGenerating ? (
               <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
+                key="empty-state"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                id={activeTab === "blueprint" ? "blueprint-panel" : "tasks-panel"}
-                role="tabpanel"
-                aria-labelledby={`tab-${activeTab}`}
-                className="h-full flex flex-col lg:flex-row"
+                className="h-full"
               >
-                {/* Code Editor */}
-                {(viewMode === "edit" || viewMode === "split") && (
-                  <div
-                    className={clsx(
-                      "h-full overflow-hidden",
-                      viewMode === "split"
-                        ? "w-full lg:w-1/2 lg:border-r lg:border-dark-700 border-b border-dark-700 lg:border-b-0"
-                        : "w-full"
-                    )}
-                  >
-                    <LazyCodeMirror
-                      value={currentContent}
-                      onChange={setCurrentContent}
-                      className="h-full"
-                    />
-                  </div>
-                )}
-
-                {/* Preview */}
-                {(viewMode === "preview" || viewMode === "split") && (
-                  <div
-                    ref={previewRef}
-                    className={clsx(
-                      "h-full overflow-y-auto p-4 lg:p-6 relative",
-                      viewMode === "split" ? "w-full lg:w-1/2" : "w-full"
-                    )}
-                  >
-                    <ScrollProgress scrollContainerRef={previewRef} />
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="min-h-full"
-                    >
-                      {currentContent ? (
-                        <LazyMarkdownRenderer content={currentContent} />
-                      ) : (
-                        <PreviewEmptyState
-                          tab={activeTab}
-                          isGenerating={isGenerating}
-                          siblingTabHasContent={
-                            activeTab === "blueprint"
-                              ? tasksContent.length > 0
-                              : blueprintContent.length > 0
-                          }
-                        />
-                      )}
-                    </motion.div>
-                    <ScrollToTop
-                      scrollContainerRef={previewRef}
-                      showAfter={UI.SCROLL_TO_TOP_THRESHOLD}
-                    />
-                  </div>
-                )}
+                <EditorEmptyState />
               </motion.div>
-            </AnimatePresence>
-          )}
+            ) : (
+              <motion.div
+                key="content-state"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="h-full"
+              >
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    id={activeTab === "blueprint" ? "blueprint-panel" : "tasks-panel"}
+                    role="tabpanel"
+                    aria-labelledby={`tab-${activeTab}`}
+                    className="h-full flex flex-col lg:flex-row"
+                  >
+                    {/* Code Editor */}
+                    {(viewMode === "edit" || viewMode === "split") && (
+                      <div
+                        className={clsx(
+                          "h-full overflow-hidden",
+                          viewMode === "split"
+                            ? "w-full lg:w-1/2 lg:border-r lg:border-dark-700 border-b border-dark-700 lg:border-b-0"
+                            : "w-full"
+                        )}
+                      >
+                        <LazyCodeMirror
+                          value={currentContent}
+                          onChange={setCurrentContent}
+                          className="h-full"
+                        />
+                      </div>
+                    )}
+
+                    {/* Preview */}
+                    {(viewMode === "preview" || viewMode === "split") && (
+                      <div
+                        ref={previewRef}
+                        className={clsx(
+                          "h-full overflow-y-auto p-4 lg:p-6 relative",
+                          viewMode === "split" ? "w-full lg:w-1/2" : "w-full"
+                        )}
+                      >
+                        <ScrollProgress scrollContainerRef={previewRef} />
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="min-h-full"
+                        >
+                          {currentContent ? (
+                            <LazyMarkdownRenderer content={currentContent} />
+                          ) : (
+                            <PreviewEmptyState
+                              tab={activeTab}
+                              isGenerating={isGenerating}
+                              siblingTabHasContent={
+                                activeTab === "blueprint"
+                                  ? tasksContent.length > 0
+                                  : blueprintContent.length > 0
+                              }
+                            />
+                          )}
+                        </motion.div>
+                        <ScrollToTop
+                          scrollContainerRef={previewRef}
+                          showAfter={UI.SCROLL_TO_TOP_THRESHOLD}
+                        />
+                      </div>
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
