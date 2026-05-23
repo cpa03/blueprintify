@@ -19,7 +19,7 @@
  * @see {@link useEditorStore} - Generation state tracking
  */
 
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useState, useEffect, useRef } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../store";
 import { useEditorStore } from "../store";
@@ -27,6 +27,7 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useFocusOnStepChange, useStepAnnouncer } from "../hooks/useFocusOnStepChange";
 import { WIZARD_STEPS } from "../config/constants";
 import { SPINNER } from "../config/styles";
+import type { AnimationDirection } from "../utils/motion";
 
 // Lazy load step components — only one renders at a time, so eager imports waste bandwidth
 const StepInfo = lazy(() => import("./wizard/StepInfo").then((m) => ({ default: m.StepInfo })));
@@ -75,27 +76,41 @@ function WizardComponent(): JSX.Element {
   const currentStepLabel = WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
   useStepAnnouncer(currentStep, currentStepLabel);
 
+  // Derive animation direction from step index changes
+  const [direction, setDirection] = useState<AnimationDirection>("forward");
+  const prevStepRef = useRef(currentStep);
+
+  useEffect(() => {
+    const prevIdx = WIZARD_STEPS.findIndex((s) => s.key === prevStepRef.current);
+    const currIdx = WIZARD_STEPS.findIndex((s) => s.key === currentStep);
+
+    if (currIdx !== prevIdx) {
+      setDirection(currIdx > prevIdx ? "forward" : "backward");
+      prevStepRef.current = currentStep;
+    }
+  }, [currentStep]);
+
   const documentTitle =
     isGenerating && generationProgress
       ? `⏳ ${generationProgress}`
       : STEP_TITLES[currentStep] || "Project Wizard";
   useDocumentTitle(documentTitle);
 
-  const renderStep = () => {
+  const renderStep = (): JSX.Element => {
     const stepElement = (() => {
       switch (currentStep) {
         case "info":
-          return <StepInfo key="info" />;
+          return <StepInfo key="info" direction={direction} />;
         case "stack":
-          return <StepStack key="stack" />;
+          return <StepStack key="stack" direction={direction} />;
         case "features":
-          return <StepFeatures key="features" />;
+          return <StepFeatures key="features" direction={direction} />;
         case "review":
-          return <StepReview key="review" />;
+          return <StepReview key="review" direction={direction} />;
         case "generating":
-          return <StepGenerating key="generating" />;
+          return <StepGenerating key="generating" direction={direction} />;
         default:
-          return <StepInfo key="default" />;
+          return <StepInfo key="default" direction={direction} />;
       }
     })();
 

@@ -31,8 +31,15 @@ import { ANIMATION, GENERATION_MESSAGES } from "../../config/constants";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { AnimatedNumber } from "../AnimatedNumber";
 import { RippleButton } from "../RippleButton";
+import type { AnimationDirection } from "../../utils/motion";
 
-export const StepGenerating = memo(function StepGenerating(): JSX.Element {
+interface StepGeneratingProps {
+  direction?: AnimationDirection;
+}
+
+export const StepGenerating = memo(function StepGenerating({
+  direction: _direction,
+}: StepGeneratingProps): JSX.Element {
   const progress = useEditorStore((s) => s.generationProgress);
   const isGenerating = useEditorStore((s) => s.isGenerating);
   const blueprintContent = useEditorStore((s) => s.blueprintContent);

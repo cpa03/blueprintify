@@ -25,10 +25,16 @@ import { useState, useCallback, useMemo, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
 import { SUGGESTED_FEATURES, FORM_LIMITS, TIMEOUTS, UI_CONTENT } from "../../config/constants";
-import { pageTransition } from "../../utils/motion";
+import { pageTransition, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 
-export const StepFeatures = memo(function StepFeatures(): JSX.Element {
+interface StepFeaturesProps {
+  direction?: AnimationDirection;
+}
+
+export const StepFeatures = memo(function StepFeatures({
+  direction = "forward",
+}: StepFeaturesProps): JSX.Element {
   const [newFeature, setNewFeature] = useState("");
   const [justAdded, setJustAdded] = useState<string | null>(null);
   const features = useWizardStore((s) => s.features);
@@ -70,7 +76,7 @@ export const StepFeatures = memo(function StepFeatures(): JSX.Element {
   );
 
   return (
-    <motion.div {...pageTransition} className="space-y-6">
+    <motion.div {...pageTransition(direction)} className="space-y-6">
       <div>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_FEATURES.TITLE}</h2>

@@ -39,11 +39,17 @@ import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
 import { RippleButton } from "../RippleButton";
 import { CharacterCounter } from "../CharacterCounter";
-import { pageTransition } from "../../utils/motion";
+import { pageTransition, type AnimationDirection } from "../../utils/motion";
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
 import { ValidationCheckmark } from "../ValidationCheckmark";
 
-export const StepInfo = memo(function StepInfo(): JSX.Element {
+interface StepInfoProps {
+  direction?: AnimationDirection;
+}
+
+export const StepInfo = memo(function StepInfo({
+  direction = "forward",
+}: StepInfoProps): JSX.Element {
   const projectNameInputRef = useRef<HTMLInputElement>(null);
   const [isShaking, setIsShaking] = useState(false);
   const { textareaRef: descriptionRef } = useAutoResizeTextarea({
@@ -124,7 +130,7 @@ export const StepInfo = memo(function StepInfo(): JSX.Element {
   }, []);
 
   return (
-    <motion.div {...pageTransition} className="space-y-6">
+    <motion.div {...pageTransition(direction)} className="space-y-6">
       <div>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_INFO.TITLE}</h2>

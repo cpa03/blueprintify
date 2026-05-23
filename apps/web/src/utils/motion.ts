@@ -129,15 +129,32 @@ export const pulseAnimation = {
   },
 };
 
+/** Direction for animated page/step transitions */
+export type AnimationDirection = "forward" | "backward";
+
 /**
- * Page/step transition animation props
- * Use for full-page or wizard step transitions
+ * Direction-aware page/step transition animation props
+ *
+ * - "forward": content enters from below, exits upward (natural forward motion)
+ * - "backward": content enters from above, exits downward (natural backward motion)
+ *
+ * Defaults to "forward" for backward compatibility with existing usage.
+ *
+ * @example
+ * // Forward navigation (next step)
+ * <motion.div {...pageTransition("forward")}>
+ *
+ * @example
+ * // Backward navigation (previous step)
+ * <motion.div {...pageTransition("backward")}>
  */
-export const pageTransition = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -20 },
-};
+export function pageTransition(direction: "forward" | "backward" = "forward") {
+  return {
+    initial: { opacity: 0, y: direction === "forward" ? 20 : -20 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: direction === "forward" ? -20 : 20 },
+  };
+}
 
 /**
  * Creates a staggered container with custom timing
