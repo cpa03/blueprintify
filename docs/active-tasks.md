@@ -49,8 +49,9 @@
   - [x] Update `docs/bugs.md` BUG-001 — correct lazy-loading status, update progress
   - [x] Update `docs/findings.md` — record CI bug discovery, BUG-001 staleness
   - [x] Update `docs/active-tasks.md` — this record
-  - [ ] Verify build/lint/typecheck pass
-  - [ ] Create PR with all fixes
+  - [x] Verify build/lint/typecheck pass — clean
+  - [x] Create PR #1292 with docs fixes
+  - [x] Create issue #1293 for CI workflow bug (can't push workflow changes due to token permissions)
 
 ---
 
