@@ -126,7 +126,6 @@ function WizardComponent(): JSX.Element {
       </Suspense>
     );
   };
-  };
 
   return (
     <div
