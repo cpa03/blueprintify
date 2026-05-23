@@ -15,9 +15,11 @@
 
 ### Actions Taken
 
-- Fixed `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+- Detected CI workflow bug (non-existent doc references) — created issue #1293 (fix blocked on GitHub App `workflows` permission)
 - Updated `docs/bugs.md` — BUG-001 description and progress corrected to reflect current lazy-loading state
 - Updated `active-tasks.md` with 2026-05-23 cycle 2
+- Created PR #1292 with all doc fixes
+- Created issue #1293 for CI workflow fix (requires maintainer with `workflows` permission)
 - Updated `findings.md` — this record
 
 ---
