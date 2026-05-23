@@ -275,6 +275,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Release Process](./docs/release-process.md)** - Release and deployment procedures
 - **[Troubleshooting Guide](./docs/troubleshooting.md)** - Common issues and solutions
 - **[Environment Variables](./docs/environment-variables.md)** - Configuration reference for API, frontend, and Cloudflare
+- **[Repository Rules](./docs/repo-rules.md)** - Repository governance and contribution rules
 
 ### 🤖 AI Agent System
 
@@ -286,6 +287,8 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
 - **[Task Management](./docs/task.md)** - Current development tasks and priorities
 - **[Feature Specifications](./docs/features.md)** - Detailed feature documentation and status
+- **[Known Bugs](./docs/bugs.md)** - Active bug tracking and known defects
+- **[Active Tasks](./docs/active-tasks.md)** - Current development tasks and priorities
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 
 ### 📚 M2 Documentation
