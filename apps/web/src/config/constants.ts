@@ -208,6 +208,13 @@ export { RETRYABLE_STATUS_CODES, SSE_CONFIG, HTTP_STATUS };
 export const EXPORT_CONFIG = {
   ZIP_COMPRESSION_LEVEL: 6,
   COPY_TEXTAREA_OFFSET: -9999,
+  README_FILENAME: "README.md",
+  METADATA_FILENAME: "metadata.json",
+  BLUEPRINT_FILENAME: "blueprint.md",
+  TASK_FILENAME: "task.md",
+  METADATA_VERSION: "1.0.0",
+  DOCS_FOLDER: ".docs",
+  ZIP_FILENAME_SUFFIX: ".zip",
 } as const;
 
 // Suggested features for quick add

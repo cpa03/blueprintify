@@ -47,8 +47,14 @@ app.use("*", secureHeaders());
 app.use("*", etag());
 app.use("*", async (c, next) => {
   await next();
-  c.res.headers.set("Cross-Origin-Opener-Policy", "same-origin");
-  c.res.headers.set("Cross-Origin-Resource-Policy", "same-origin");
+  c.res.headers.set(
+    API_HEADERS.SECURITY.CROSS_ORIGIN_OPENER_POLICY,
+    API_HEADERS.SECURITY.SAME_ORIGIN
+  );
+  c.res.headers.set(
+    API_HEADERS.SECURITY.CROSS_ORIGIN_RESOURCE_POLICY,
+    API_HEADERS.SECURITY.SAME_ORIGIN
+  );
 });
 app.use(
   "*",

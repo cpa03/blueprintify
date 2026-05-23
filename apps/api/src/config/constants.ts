@@ -227,6 +227,8 @@ export const API_HEADERS = {
   },
   /** Standard cache-control directives */
   CACHE_CONTROL: {
+    /** Public cache directive with only max-age */
+    PUBLIC_MAX_AGE: (maxAge: number): string => `public, max-age=${maxAge}`,
     /** Public cache directive with max-age and stale-while-revalidate */
     PUBLIC_WITH_REVALIDATE: (maxAge: number, staleWhileRevalidate: number): string =>
       `public, max-age=${maxAge}, stale-while-revalidate=${staleWhileRevalidate}`,
@@ -245,6 +247,24 @@ export const API_HEADERS = {
     ENTRY: (name: string, description: string, duration: number): string =>
       `${name};desc="${description}";dur=${duration}`,
   },
+  /** SSE-specific headers for streaming responses */
+  SSE: {
+    /** Nginx buffering disable header */
+    X_ACCEL_BUFFERING: "X-Accel-Buffering",
+    /** Value to disable Nginx buffering */
+    X_ACCEL_BUFFERING_NO: "no",
+  },
+
+  /** Security-related HTTP headers */
+  SECURITY: {
+    /** Cross-Origin-Opener-Policy header name */
+    CROSS_ORIGIN_OPENER_POLICY: "Cross-Origin-Opener-Policy",
+    /** Cross-Origin-Resource-Policy header name */
+    CROSS_ORIGIN_RESOURCE_POLICY: "Cross-Origin-Resource-Policy",
+    /** Same-origin policy value */
+    SAME_ORIGIN: "same-origin",
+  },
+
   /** CF properties from request headers */
   CF_PROPERTIES: {
     /** Cloudflare request country header */
@@ -481,6 +501,12 @@ export const IMPORT_CONFIG = {
   DEFAULT_PROJECT_NAME: "Imported Project",
   /** Expected import data version */
   EXPECTED_VERSION: "1.0.0",
+} as const;
+
+export const IMPORT_REGEX = {
+  PROJECT_NAME: /^#[^#](.+)$/m,
+  BLUEPRINT_SECTION: /## Blueprint\s*\n\n?([\s\S]*?)(?=\n## |$)/,
+  TASKS_SECTION: /## Tasks\s*\n\n?([\s\S]*?)(?=\n## |$)/,
 } as const;
 
 export const IMPORT_ERROR_MESSAGES = {
