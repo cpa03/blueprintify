@@ -2,25 +2,26 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-23 - RepoKeeper Cleanup Cycle 2)
+## Current Cycle (2026-05-23 - RepoKeeper Cleanup Cycle 3)
 
 ### Findings
 
-- **BUG in CI**: `.github/workflows/main.yml` references `docs/bug.md` and `docs/feature.md` — these files do not exist. Actual files are `docs/bugs.md` and `docs/features.md`. This would cause architect step to fail.
+- **Prettier formatting**: 4 workflow YAML files (.github/workflows/) had formatting issues — fixed.
+- **Test count discrepancy**: `active-tasks.md` claimed 891 tests but actual count is 841 (473 web + 261 api + 107 shared) — corrected.
 - **Build/Lint/Typecheck**: All passing clean. No warnings or errors.
 - **npm audit**: 0 vulnerabilities — clean.
-- **Docs audit**: All `docs/` references in README.md verified present. No stale doc files.
-- **BUG-001 outdated**: Description claimed "No lazy loading" but `React.lazy()` is already implemented for Editor, TemplateGrid, KeyboardShortcutsModal, GenerationCelebration.
-- **Package freshness**: 24 packages have newer versions available (mostly major bumps: React 18→19, Vite 7→8, Tailwind 3→4, etc.) — not urgent, tracked for awareness.
+- **Docs audit**: All README.md doc references verified present. 23 doc files on disk, 16 referenced in README — remaining 7 are internal maintenance docs (active-tasks, bugs, findings, completed-tasks, repo-rules, security/, etc.) and correctly excluded.
+- **Remote stale branches**: ~95+ remote branches from Jan–May 2026. Cannot delete without workflow permission. PR branches already merged to main.
+- **Package freshness**: 24 packages have newer versions available — same as previous cycle, not urgent.
 
 ### Actions Taken
 
-- Detected CI workflow bug (non-existent doc references) — created issue #1293 (fix blocked on GitHub App `workflows` permission)
-- Updated `docs/bugs.md` — BUG-001 description and progress corrected to reflect current lazy-loading state
-- Updated `active-tasks.md` with 2026-05-23 cycle 2
-- Created PR #1292 with all doc fixes
-- Created issue #1293 for CI workflow fix (requires maintainer with `workflows` permission)
-- Updated `findings.md` — this record
+- Fixed Prettier formatting in 4 workflow files: iterate.yml, main.yml, on-pull.yml, parallel.yml
+- Corrected test count in active-tasks.md: 891 → 841
+- Updated bugs.md: bumped last-updated to 2026-05-23
+- Updated findings.md — this record
+- Verified build/lint/typecheck all pass clean
+- All 841 tests pass (473 web + 261 api + 107 shared)
 
 ---
 
