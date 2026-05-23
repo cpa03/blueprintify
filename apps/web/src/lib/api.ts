@@ -65,7 +65,7 @@ async function handleSSEStreamWithRetry(
   const decoder = new TextDecoder();
   let buffer = "";
   let chunksReceived = 0;
-  let lastError: Error | null = null;
+  let lastError: Error | null;
 
   try {
     while (true) {

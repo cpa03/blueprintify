@@ -125,7 +125,8 @@ export async function* streamCompletion(
     throw new Error(
       ERROR_MESSAGES.AI_SERVICE_FAILURE(
         error instanceof Error ? error.message : ERROR_MESSAGES.UNKNOWN_ERROR
-      )
+      ),
+      { cause: error }
     );
   }
 }
@@ -170,7 +171,8 @@ export async function generateCompletion(options: StreamOptions): Promise<string
     throw new Error(
       ERROR_MESSAGES.AI_SERVICE_FAILURE(
         error instanceof Error ? error.message : ERROR_MESSAGES.UNKNOWN_ERROR
-      )
+      ),
+      { cause: error }
     );
   }
 }
