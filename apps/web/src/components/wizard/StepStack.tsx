@@ -33,7 +33,7 @@ import {
   ANIMATION_MS,
   UI_CONTENT,
 } from "../../config/constants";
-import { pageTransition } from "../../utils/motion";
+import { pageTransition, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 import clsx from "clsx";
 
@@ -161,7 +161,13 @@ const TechChip = memo(function TechChip({
   );
 });
 
-export const StepStack = memo(function StepStack(): JSX.Element {
+interface StepStackProps {
+  direction?: AnimationDirection;
+}
+
+export const StepStack = memo(function StepStack({
+  direction = "forward",
+}: StepStackProps): JSX.Element {
   const [isShaking, setIsShaking] = useState(false);
   const [justSelected, setJustSelected] = useState<string | null>(null);
   const techStack = useWizardStore((s) => s.techStack);
@@ -217,7 +223,7 @@ export const StepStack = memo(function StepStack(): JSX.Element {
   const progressPercentage = Math.min((techStack.length / minRequired) * 100, 100);
 
   return (
-    <motion.div {...pageTransition} className="space-y-6">
+    <motion.div {...pageTransition(direction)} className="space-y-6">
       <div>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_STACK.TITLE}</h2>

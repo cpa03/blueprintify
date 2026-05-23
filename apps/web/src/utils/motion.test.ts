@@ -143,15 +143,38 @@ describe("Motion Utilities", () => {
   });
 
   describe("pageTransition", () => {
-    it("should export pageTransition", () => {
+    it("should export pageTransition as a function", () => {
       expect(pageTransition).toBeDefined();
-      expect(typeof pageTransition).toBe("object");
+      expect(typeof pageTransition).toBe("function");
     });
 
-    it("should have initial, animate, and exit states", () => {
-      expect(pageTransition.initial).toBeDefined();
-      expect(pageTransition.animate).toBeDefined();
-      expect(pageTransition.exit).toBeDefined();
+    it("should default to forward direction", () => {
+      const transition = pageTransition();
+      expect(transition.initial).toBeDefined();
+      expect(transition.animate).toBeDefined();
+      expect(transition.exit).toBeDefined();
+      // forward: enters from below (y:20), exits upward (y:-20)
+      expect(transition.initial).toEqual({ opacity: 0, y: 20 });
+      expect(transition.animate).toEqual({ opacity: 1, y: 0 });
+      expect(transition.exit).toEqual({ opacity: 0, y: -20 });
+    });
+
+    it("should return backward variant when direction is backward", () => {
+      const transition = pageTransition("backward");
+      expect(transition.initial).toBeDefined();
+      expect(transition.animate).toBeDefined();
+      expect(transition.exit).toBeDefined();
+      // backward: enters from above (y:-20), exits downward (y:20)
+      expect(transition.initial).toEqual({ opacity: 0, y: -20 });
+      expect(transition.animate).toEqual({ opacity: 1, y: 0 });
+      expect(transition.exit).toEqual({ opacity: 0, y: 20 });
+    });
+
+    it("should return forward variant when direction is forward", () => {
+      const transition = pageTransition("forward");
+      expect(transition.initial).toEqual({ opacity: 0, y: 20 });
+      expect(transition.animate).toEqual({ opacity: 1, y: 0 });
+      expect(transition.exit).toEqual({ opacity: 0, y: -20 });
     });
   });
 

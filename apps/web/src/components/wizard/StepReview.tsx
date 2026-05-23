@@ -26,10 +26,16 @@ import { memo, useCallback } from "react";
 import { useWizardStore } from "../../store";
 import { useBlueprintStream } from "../../hooks/useBlueprintStream";
 import { GENERATION_ESTIMATES } from "../../config/constants";
-import { pageTransition } from "../../utils/motion";
+import { pageTransition, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 
-export const StepReview = memo(function StepReview(): JSX.Element {
+interface StepReviewProps {
+  direction?: AnimationDirection;
+}
+
+export const StepReview = memo(function StepReview({
+  direction = "forward",
+}: StepReviewProps): JSX.Element {
   // Use specific selectors to avoid re-rendering on unrelated state changes
   const projectName = useWizardStore((s) => s.projectName);
   const description = useWizardStore((s) => s.description);
@@ -45,7 +51,7 @@ export const StepReview = memo(function StepReview(): JSX.Element {
   const handleEditFeatures = useCallback(() => setStep("features"), [setStep]);
 
   return (
-    <motion.div {...pageTransition} className="space-y-6">
+    <motion.div {...pageTransition(direction)} className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-white mb-2">Review your project</h2>
         <p className="text-dark-400">
