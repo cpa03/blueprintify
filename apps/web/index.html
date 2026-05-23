@@ -173,7 +173,10 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
       media="print"
-      onload="this.media='all'; this.onload=null;"
+      onload="
+        this.media = 'all';
+        this.onload = null;
+      "
     />
     <noscript>
       <link
@@ -189,418 +192,289 @@
   <body>
     <div id="root">
       <!-- Critical LCP Skeleton - Must be visible for Lighthouse to measure -->
-        <div
-          id="skeleton-loader"
+      <div
+        id="skeleton-loader"
+        style="
+          min-height: 100vh;
+          background-color: #020617;
+          color: #f8fafc;
+          font-family:
+            system-ui,
+            -apple-system,
+            sans-serif;
+          opacity: 1;
+          transition: opacity 0.3s ease-out;
+        "
+      >
+        <header
           style="
-            min-height: 100vh;
-            background-color: #020617;
-            color: #f8fafc;
-            font-family:
-              system-ui,
-              -apple-system,
-              sans-serif;
-            opacity: 1;
-            transition: opacity 0.3s ease-out;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            border-bottom: 1px solid #1e293b;
+            background-color: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(12px);
           "
         >
-          <header
+          <div
             style="
-              position: fixed;
-              top: 0;
-              left: 0;
-              right: 0;
-              z-index: 50;
-              border-bottom: 1px solid #1e293b;
-              background-color: rgba(2, 6, 23, 0.8);
-              backdrop-filter: blur(12px);
+              max-width: 80rem;
+              margin: 0 auto;
+              padding: 1rem 1.5rem;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              min-height: 48px;
             "
           >
-            <div
-              style="
-                max-width: 80rem;
-                margin: 0 auto;
-                padding: 1rem 1.5rem;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                min-height: 48px;
-              "
-            >
-              <div style="display: flex; align-items: center; gap: 0.75rem">
-                <div
-                  style="
-                    width: 2.5rem;
-                    height: 2.5rem;
-                    border-radius: 0.75rem;
-                    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                  "
+            <div style="display: flex; align-items: center; gap: 0.75rem">
+              <div
+                style="
+                  width: 2.5rem;
+                  height: 2.5rem;
+                  border-radius: 0.75rem;
+                  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  stroke-width="2"
                 >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                </div>
-                <div>
-                  <div style="font-weight: 700; font-size: 1.25rem; color: #ffffff">Blueprint Generator</div>
-                  <div style="font-size: 0.75rem; color: #b8c0cc; margin-top: 1px">AI-Powered Project Architecture</div>
-                </div>
+                  <path
+                    d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
               </div>
-              <div style="display: flex; align-items: center; gap: 0.5rem">
-                <div
-                  style="
-                    width: 2.5rem;
-                    height: 2.5rem;
-                    border-radius: 0.5rem;
-                    background: rgba(67, 67, 72, 0.5);
-                  "
-                ></div>
-                <div
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    padding: 0.5rem 0.75rem;
-                    border-radius: 0.5rem;
-                    background: rgba(67, 67, 72, 0.5);
-                  "
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#b8c0cc">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                  </svg>
-                  <span style="color: #b8c0cc; font-size: 0.875rem">GitHub</span>
+              <div>
+                <div style="font-weight: 700; font-size: 1.25rem; color: #ffffff">
+                  Blueprint Generator
+                </div>
+                <div style="font-size: 0.75rem; color: #b8c0cc; margin-top: 1px">
+                  AI-Powered Project Architecture
                 </div>
               </div>
             </div>
-          </header>
-          <main style="padding-top: 5rem; flex: 1; content-visibility: auto">
-            <div style="max-width: 80rem; margin: 0 auto; padding: 2rem 1rem">
-              <!-- LCP Critical Element - Large text for measurement -->
-              <div style="text-align: center; margin-bottom: 3rem; min-height: 200px">
-                <h1
-                  style="
-                    font-size: 2.25rem;
-                    font-weight: 700;
-                    color: #ffffff;
-                    margin-bottom: 1rem;
-                    line-height: 1.2;
-                    contain: layout;
-                  "
-                >
-                  From
-                  <span
-                    style="
-                      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-                      -webkit-background-clip: text;
-                      -webkit-text-fill-color: transparent;
-                      background-clip: text;
-                    "
-                    >Idea</span
-                  >
-                  to
-                  <span
-                    style="
-                      background: linear-gradient(135deg, #6366f1, #ec4899);
-                      -webkit-background-clip: text;
-                      -webkit-text-fill-color: transparent;
-                      background-clip: text;
-                    "
-                    >Blueprint</span
-                  >
-                  in Seconds
-                </h1>
-                <p
-                  style="
-                    font-size: 1.125rem;
-                    color: #94a3b8;
-                    max-width: 42rem;
-                    margin: 0 auto;
-                    line-height: 1.75;
-                  "
-                >
-                  Generate production-ready architectural documentation for your projects. Powered by
-                  AI, designed for autonomous development.
-                </p>
-              </div>
-
-              <!-- StepIndicator placeholder - matches actual StepIndicator height -->
+            <div style="display: flex; align-items: center; gap: 0.5rem">
+              <div
+                style="
+                  width: 2.5rem;
+                  height: 2.5rem;
+                  border-radius: 0.5rem;
+                  background: rgba(67, 67, 72, 0.5);
+                "
+              ></div>
               <div
                 style="
                   display: flex;
                   align-items: center;
-                  justify-content: center;
-                  gap: 0.75rem;
-                  margin-bottom: 2rem;
-                  min-height: 56px;
+                  gap: 0.5rem;
+                  padding: 0.5rem 0.75rem;
+                  border-radius: 0.5rem;
+                  background: rgba(67, 67, 72, 0.5);
                 "
               >
-                <div
-                  style="
-                    width: 36px;
-                    height: 36px;
-                    border-radius: 50%;
-                    background: rgba(67, 67, 72, 0.5);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                  "
-                >
-                  <span style="font-size: 0.75rem; font-weight: 600; color: #b8c0cc">1</span>
-                </div>
-                <div
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    padding: 0.5rem 1rem;
-                    border-radius: 9999px;
-                    background: rgba(99, 102, 241, 0.2);
-                    border: 1px solid rgba(99, 102, 241, 0.5);
-                  "
-                >
-                  <span>📝</span>
-                  <span style="font-size: 0.875rem; color: #a5b4fc">Project Info</span>
-                  <span style="font-size: 0.75rem; opacity: 0.5; color: #a5b4fc">Alt+1</span>
-                </div>
-                <div
-                  style="
-                    width: 2rem;
-                    height: 0.125rem;
-                    border-radius: 9999px;
-                    background: rgba(67, 67, 72, 0.7);
-                  "
-                ></div>
-                <div
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    padding: 0.5rem 1rem;
-                    border-radius: 9999px;
-                    background: rgba(67, 67, 72, 0.5);
-                    border: 1px solid rgba(67, 67, 72, 0.7);
-                  "
-                >
-                  <span>⚙️</span>
-                  <span style="font-size: 0.875rem; color: #b8c0cc">Tech Stack</span>
-                </div>
-                <div
-                  style="
-                    width: 2rem;
-                    height: 0.125rem;
-                    border-radius: 9999px;
-                    background: rgba(67, 67, 72, 0.7);
-                  "
-                ></div>
-                <div
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    padding: 0.5rem 1rem;
-                    border-radius: 9999px;
-                    background: rgba(67, 67, 72, 0.5);
-                    border: 1px solid rgba(67, 67, 72, 0.7);
-                  "
-                >
-                  <span>✨</span>
-                  <span style="font-size: 0.875rem; color: #b8c0cc">Features</span>
-                </div>
-                <div
-                  style="
-                    width: 2rem;
-                    height: 0.125rem;
-                    border-radius: 9999px;
-                    background: rgba(67, 67, 72, 0.7);
-                  "
-                ></div>
-                <div
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    padding: 0.5rem 1rem;
-                    border-radius: 9999px;
-                    background: rgba(67, 67, 72, 0.5);
-                    border: 1px solid rgba(67, 67, 72, 0.7);
-                  "
-                >
-                  <span>👀</span>
-                  <span style="font-size: 0.875rem; color: #b8c0cc">Review</span>
-                </div>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#b8c0cc">
+                  <path
+                    d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
+                  />
+                </svg>
+                <span style="color: #b8c0cc; font-size: 0.875rem">GitHub</span>
               </div>
+            </div>
+          </div>
+        </header>
+        <main style="padding-top: 5rem; flex: 1; content-visibility: auto">
+          <div style="max-width: 80rem; margin: 0 auto; padding: 2rem 1rem">
+            <!-- LCP Critical Element - Large text for measurement -->
+            <div style="text-align: center; margin-bottom: 3rem; min-height: 200px">
+              <h1
+                style="
+                  font-size: 2.25rem;
+                  font-weight: 700;
+                  color: #ffffff;
+                  margin-bottom: 1rem;
+                  line-height: 1.2;
+                  contain: layout;
+                "
+              >
+                From
+                <span
+                  style="
+                    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                  "
+                  >Idea</span
+                >
+                to
+                <span
+                  style="
+                    background: linear-gradient(135deg, #6366f1, #ec4899);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                  "
+                  >Blueprint</span
+                >
+                in Seconds
+              </h1>
+              <p
+                style="
+                  font-size: 1.125rem;
+                  color: #94a3b8;
+                  max-width: 42rem;
+                  margin: 0 auto;
+                  line-height: 1.75;
+                "
+              >
+                Generate production-ready architectural documentation for your projects. Powered by
+                AI, designed for autonomous development.
+              </p>
+            </div>
 
-              <!-- Wizard form placeholder - matches StepInfo form dimensions -->
+            <!-- StepIndicator placeholder - matches actual StepIndicator height -->
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.75rem;
+                margin-bottom: 2rem;
+                min-height: 56px;
+              "
+            >
               <div
                 style="
-                  background: rgba(26, 26, 30, 0.6);
-                  border: 1px solid rgba(77, 77, 83, 0.5);
-                  border-radius: 1rem;
-                  overflow: hidden;
-                  padding: 1.5rem;
-                  min-height: 400px;
+                  width: 36px;
+                  height: 36px;
+                  border-radius: 50%;
+                  background: rgba(67, 67, 72, 0.5);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
                 "
               >
-                <div
-                  style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    margin-bottom: 1rem;
-                  "
-                >
-                  <div>
-                    <div
-                      style="
-                        height: 1.75rem;
-                        width: 16rem;
-                        background: rgba(67, 67, 72, 0.4);
-                        border-radius: 0.25rem;
-                        margin-bottom: 0.5rem;
-                      "
-                    ></div>
-                    <div
-                      style="
-                        height: 0.875rem;
-                        width: 22rem;
-                        background: rgba(67, 67, 72, 0.3);
-                        border-radius: 0.25rem;
-                      "
-                    ></div>
-                  </div>
-                  <div style="display: flex; align-items: center; gap: 0.5rem">
-                    <div
-                      style="
-                        width: 6rem;
-                        height: 0.5rem;
-                        background: rgba(67, 67, 72, 0.4);
-                        border-radius: 9999px;
-                      "
-                    ></div>
-                    <div
-                      style="
-                        height: 0.875rem;
-                        width: 1.5rem;
-                        background: rgba(67, 67, 72, 0.3);
-                        border-radius: 0.25rem;
-                      "
-                    ></div>
-                  </div>
-                </div>
+                <span style="font-size: 0.75rem; font-weight: 600; color: #b8c0cc">1</span>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  padding: 0.5rem 1rem;
+                  border-radius: 9999px;
+                  background: rgba(99, 102, 241, 0.2);
+                  border: 1px solid rgba(99, 102, 241, 0.5);
+                "
+              >
+                <span>📝</span>
+                <span style="font-size: 0.875rem; color: #a5b4fc">Project Info</span>
+                <span style="font-size: 0.75rem; opacity: 0.5; color: #a5b4fc">Alt+1</span>
+              </div>
+              <div
+                style="
+                  width: 2rem;
+                  height: 0.125rem;
+                  border-radius: 9999px;
+                  background: rgba(67, 67, 72, 0.7);
+                "
+              ></div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  padding: 0.5rem 1rem;
+                  border-radius: 9999px;
+                  background: rgba(67, 67, 72, 0.5);
+                  border: 1px solid rgba(67, 67, 72, 0.7);
+                "
+              >
+                <span>⚙️</span>
+                <span style="font-size: 0.875rem; color: #b8c0cc">Tech Stack</span>
+              </div>
+              <div
+                style="
+                  width: 2rem;
+                  height: 0.125rem;
+                  border-radius: 9999px;
+                  background: rgba(67, 67, 72, 0.7);
+                "
+              ></div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  padding: 0.5rem 1rem;
+                  border-radius: 9999px;
+                  background: rgba(67, 67, 72, 0.5);
+                  border: 1px solid rgba(67, 67, 72, 0.7);
+                "
+              >
+                <span>✨</span>
+                <span style="font-size: 0.875rem; color: #b8c0cc">Features</span>
+              </div>
+              <div
+                style="
+                  width: 2rem;
+                  height: 0.125rem;
+                  border-radius: 9999px;
+                  background: rgba(67, 67, 72, 0.7);
+                "
+              ></div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  padding: 0.5rem 1rem;
+                  border-radius: 9999px;
+                  background: rgba(67, 67, 72, 0.5);
+                  border: 1px solid rgba(67, 67, 72, 0.7);
+                "
+              >
+                <span>👀</span>
+                <span style="font-size: 0.875rem; color: #b8c0cc">Review</span>
+              </div>
+            </div>
 
-                <!-- Form field: Project Name -->
-                <div style="margin-bottom: 1.25rem">
-                  <div
-                    style="
-                      display: flex;
-                      justify-content: space-between;
-                      align-items: center;
-                      margin-bottom: 0.5rem;
-                    "
-                  >
-                    <div
-                      style="
-                        height: 0.875rem;
-                        width: 6rem;
-                        background: rgba(67, 67, 72, 0.4);
-                        border-radius: 0.25rem;
-                      "
-                    ></div>
-                    <div
-                      style="
-                        height: 0.75rem;
-                        width: 3rem;
-                        background: rgba(67, 67, 72, 0.3);
-                        border-radius: 0.25rem;
-                      "
-                    ></div>
-                  </div>
-                  <div
-                    style="
-                      height: 2.75rem;
-                      width: 100%;
-                      background: rgba(67, 67, 72, 0.5);
-                      border: 1px solid rgba(77, 77, 83, 1);
-                      border-radius: 0.75rem;
-                    "
-                  ></div>
-                </div>
-
-                <!-- Form field: Description -->
-                <div style="margin-bottom: 1.25rem">
-                  <div
-                    style="
-                      display: flex;
-                      justify-content: space-between;
-                      align-items: center;
-                      margin-bottom: 0.5rem;
-                    "
-                  >
-                    <div
-                      style="
-                        height: 0.875rem;
-                        width: 6rem;
-                        background: rgba(67, 67, 72, 0.4);
-                        border-radius: 0.25rem;
-                      "
-                    ></div>
-                    <div
-                      style="
-                        height: 0.75rem;
-                        width: 3rem;
-                        background: rgba(67, 67, 72, 0.3);
-                        border-radius: 0.25rem;
-                      "
-                    ></div>
-                  </div>
-                  <div
-                    style="
-                      height: 5rem;
-                      width: 100%;
-                      background: rgba(67, 67, 72, 0.5);
-                      border: 1px solid rgba(77, 77, 83, 1);
-                      border-radius: 0.75rem;
-                    "
-                  ></div>
-                </div>
-
-                <!-- Form field: Target Audience -->
-                <div style="margin-bottom: 1.25rem">
-                  <div
-                    style="
-                      display: flex;
-                      justify-content: space-between;
-                      align-items: center;
-                      margin-bottom: 0.5rem;
-                    "
-                  >
-                    <div
-                      style="
-                        height: 0.875rem;
-                        width: 8rem;
-                        background: rgba(67, 67, 72, 0.4);
-                        border-radius: 0.25rem;
-                      "
-                    ></div>
-                  </div>
-                  <div
-                    style="
-                      height: 2.75rem;
-                      width: 100%;
-                      background: rgba(67, 67, 72, 0.5);
-                      border: 1px solid rgba(77, 77, 83, 1);
-                      border-radius: 0.75rem;
-                    "
-                  ></div>
-                </div>
-
-                <!-- Form field: Constraints -->
+            <!-- Wizard form placeholder - matches StepInfo form dimensions -->
+            <div
+              style="
+                background: rgba(26, 26, 30, 0.6);
+                border: 1px solid rgba(77, 77, 83, 0.5);
+                border-radius: 1rem;
+                overflow: hidden;
+                padding: 1.5rem;
+                min-height: 400px;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  margin-bottom: 1rem;
+                "
+              >
                 <div>
                   <div
                     style="
-                      height: 0.875rem;
-                      width: 10rem;
+                      height: 1.75rem;
+                      width: 16rem;
                       background: rgba(67, 67, 72, 0.4);
                       border-radius: 0.25rem;
                       margin-bottom: 0.5rem;
@@ -608,66 +482,207 @@
                   ></div>
                   <div
                     style="
-                      height: 4rem;
-                      width: 100%;
-                      background: rgba(67, 67, 72, 0.5);
-                      border: 1px solid rgba(77, 77, 83, 1);
-                      border-radius: 0.75rem;
+                      height: 0.875rem;
+                      width: 22rem;
+                      background: rgba(67, 67, 72, 0.3);
+                      border-radius: 0.25rem;
                     "
                   ></div>
                 </div>
-
-                <!-- Submit button -->
-                <div style="display: flex; justify-content: flex-end; padding-top: 1.5rem">
+                <div style="display: flex; align-items: center; gap: 0.5rem">
                   <div
                     style="
-                      height: 2.75rem;
-                      width: 14rem;
-                      background: linear-gradient(135deg, #4f46e5, #6366f1);
-                      border-radius: 0.75rem;
+                      width: 6rem;
+                      height: 0.5rem;
+                      background: rgba(67, 67, 72, 0.4);
+                      border-radius: 9999px;
+                    "
+                  ></div>
+                  <div
+                    style="
+                      height: 0.875rem;
+                      width: 1.5rem;
+                      background: rgba(67, 67, 72, 0.3);
+                      border-radius: 0.25rem;
                     "
                   ></div>
                 </div>
               </div>
-            </div>
-          </main>
 
-          <!-- Footer placeholder -->
-          <footer
+              <!-- Form field: Project Name -->
+              <div style="margin-bottom: 1.25rem">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  <div
+                    style="
+                      height: 0.875rem;
+                      width: 6rem;
+                      background: rgba(67, 67, 72, 0.4);
+                      border-radius: 0.25rem;
+                    "
+                  ></div>
+                  <div
+                    style="
+                      height: 0.75rem;
+                      width: 3rem;
+                      background: rgba(67, 67, 72, 0.3);
+                      border-radius: 0.25rem;
+                    "
+                  ></div>
+                </div>
+                <div
+                  style="
+                    height: 2.75rem;
+                    width: 100%;
+                    background: rgba(67, 67, 72, 0.5);
+                    border: 1px solid rgba(77, 77, 83, 1);
+                    border-radius: 0.75rem;
+                  "
+                ></div>
+              </div>
+
+              <!-- Form field: Description -->
+              <div style="margin-bottom: 1.25rem">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  <div
+                    style="
+                      height: 0.875rem;
+                      width: 6rem;
+                      background: rgba(67, 67, 72, 0.4);
+                      border-radius: 0.25rem;
+                    "
+                  ></div>
+                  <div
+                    style="
+                      height: 0.75rem;
+                      width: 3rem;
+                      background: rgba(67, 67, 72, 0.3);
+                      border-radius: 0.25rem;
+                    "
+                  ></div>
+                </div>
+                <div
+                  style="
+                    height: 5rem;
+                    width: 100%;
+                    background: rgba(67, 67, 72, 0.5);
+                    border: 1px solid rgba(77, 77, 83, 1);
+                    border-radius: 0.75rem;
+                  "
+                ></div>
+              </div>
+
+              <!-- Form field: Target Audience -->
+              <div style="margin-bottom: 1.25rem">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  <div
+                    style="
+                      height: 0.875rem;
+                      width: 8rem;
+                      background: rgba(67, 67, 72, 0.4);
+                      border-radius: 0.25rem;
+                    "
+                  ></div>
+                </div>
+                <div
+                  style="
+                    height: 2.75rem;
+                    width: 100%;
+                    background: rgba(67, 67, 72, 0.5);
+                    border: 1px solid rgba(77, 77, 83, 1);
+                    border-radius: 0.75rem;
+                  "
+                ></div>
+              </div>
+
+              <!-- Form field: Constraints -->
+              <div>
+                <div
+                  style="
+                    height: 0.875rem;
+                    width: 10rem;
+                    background: rgba(67, 67, 72, 0.4);
+                    border-radius: 0.25rem;
+                    margin-bottom: 0.5rem;
+                  "
+                ></div>
+                <div
+                  style="
+                    height: 4rem;
+                    width: 100%;
+                    background: rgba(67, 67, 72, 0.5);
+                    border: 1px solid rgba(77, 77, 83, 1);
+                    border-radius: 0.75rem;
+                  "
+                ></div>
+              </div>
+
+              <!-- Submit button -->
+              <div style="display: flex; justify-content: flex-end; padding-top: 1.5rem">
+                <div
+                  style="
+                    height: 2.75rem;
+                    width: 14rem;
+                    background: linear-gradient(135deg, #4f46e5, #6366f1);
+                    border-radius: 0.75rem;
+                  "
+                ></div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <!-- Footer placeholder -->
+        <footer style="border-top: 1px solid rgba(30, 41, 59, 1); padding: 1.5rem 0">
+          <div
             style="
-              border-top: 1px solid rgba(30, 41, 59, 1);
-              padding: 1.5rem 0;
+              max-width: 80rem;
+              margin: 0 auto;
+              padding: 0 1.5rem;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
             "
           >
             <div
               style="
-                max-width: 80rem;
-                margin: 0 auto;
-                padding: 0 1.5rem;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
+                height: 0.875rem;
+                width: 12rem;
+                background: rgba(67, 67, 72, 0.3);
+                border-radius: 0.25rem;
               "
-            >
-              <div
-                style="
-                  height: 0.875rem;
-                  width: 12rem;
-                  background: rgba(67, 67, 72, 0.3);
-                  border-radius: 0.25rem;
-                "
-              ></div>
-              <div
-                style="
-                  height: 0.875rem;
-                  width: 10rem;
-                  background: rgba(67, 67, 72, 0.3);
-                  border-radius: 0.25rem;
-                "
-              ></div>
-            </div>
-          </footer>
-        </div>
+            ></div>
+            <div
+              style="
+                height: 0.875rem;
+                width: 10rem;
+                background: rgba(67, 67, 72, 0.3);
+                border-radius: 0.25rem;
+              "
+            ></div>
+          </div>
+        </footer>
+      </div>
     </div>
     <script type="module" src="/src/main.tsx" fetchpriority="high"></script>
   </body>
