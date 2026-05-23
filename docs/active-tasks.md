@@ -7,7 +7,7 @@
 ### Task: RepoKeeper Cleanup Cycle (2026-05-22)
 
 - **Priority**: High
-- **Status**: Active
+- **Status**: Completed
 - **Objective**: Remove redundant files, update documentation, fix dependency vulnerabilities, clean stale branches
 - **Actions**:
   - [x] Align `.node-version` with `.nvmrc` (both → 20)
@@ -22,6 +22,21 @@
   - [x] Remove stale `ralph-loop.local.md` working file from `.omo/`
   - [x] Fix test count discrepancy in Testing Coverage section (471→891)
   - [x] Update roadmap.md — mark Finalization complete, update current focus, bump last-updated date
+  - [x] Upstream undici/ws vulns blocked on Cloudflare SDK (Node 22+) — unchanged
+
+### Task: RepoKeeper Cleanup Cycle (2026-05-23)
+
+- **Priority**: High
+- **Status**: Active
+- **Objective**: Fix formatting, verify code quality, update cycle docs
+- **Actions**:
+  - [x] Fix Prettier formatting in 5 files (workflow YAML files, index.html)
+  - [x] Verify typecheck, lint, and audit all pass — clean
+  - [x] Verify npm audit — 0 vulnerabilities
+  - [x] Shared package tests — 107/107 passing
+  - [x] Audit docs/ for stale/unreferenced files — all present
+  - [x] Check .opencode/ package files — properly gitignored
+  - [x] Update docs (active-tasks.md, findings.md) for current cycle
   - [ ] Upstream undici/ws vulns blocked on Cloudflare SDK (Node 22+) — unchanged
 
 ---
@@ -69,5 +84,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-05-22  
+**Last Updated**: 2026-05-23  
 **Maintainer**: RepoKeeper
