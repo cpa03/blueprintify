@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "postinstall": "npm run build --workspace=@blueprint/shared",
-    "prepare": "husky install",
+    "prepare": "husky",
     "dev": "npm run dev --workspace=apps/web",
     "dev:api": "npm run dev --workspace=apps/api",
     "dev:all": "concurrently \"npm run dev:api\" \"npm run dev\"",
