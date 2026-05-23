@@ -141,7 +141,7 @@ function App(): JSX.Element {
               >
                 <Suspense
                   fallback={
-                    <div className="flex items-center justify-center py-12">
+                    <div className="flex items-center justify-center min-h-[300px] py-12">
                       <div className={SPINNER.DEFAULT}></div>
                     </div>
                   }
