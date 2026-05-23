@@ -19,18 +19,27 @@
  * @see {@link useEditorStore} - Generation state tracking
  */
 
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../store";
 import { useEditorStore } from "../store";
-import { StepInfo } from "./wizard/StepInfo";
-import { StepStack } from "./wizard/StepStack";
-import { StepFeatures } from "./wizard/StepFeatures";
-import { StepReview } from "./wizard/StepReview";
-import { StepGenerating } from "./wizard/StepGenerating";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useFocusOnStepChange, useStepAnnouncer } from "../hooks/useFocusOnStepChange";
 import { WIZARD_STEPS } from "../config/constants";
+import { SPINNER } from "../config/styles";
+
+// Lazy load step components — only one renders at a time, so eager imports waste bandwidth
+const StepInfo = lazy(() => import("./wizard/StepInfo").then((m) => ({ default: m.StepInfo })));
+const StepStack = lazy(() => import("./wizard/StepStack").then((m) => ({ default: m.StepStack })));
+const StepFeatures = lazy(() =>
+  import("./wizard/StepFeatures").then((m) => ({ default: m.StepFeatures }))
+);
+const StepReview = lazy(() =>
+  import("./wizard/StepReview").then((m) => ({ default: m.StepReview }))
+);
+const StepGenerating = lazy(() =>
+  import("./wizard/StepGenerating").then((m) => ({ default: m.StepGenerating }))
+);
 
 /**
  * Human-readable titles for each wizard step.
@@ -73,20 +82,34 @@ function WizardComponent(): JSX.Element {
   useDocumentTitle(documentTitle);
 
   const renderStep = () => {
-    switch (currentStep) {
-      case "info":
-        return <StepInfo key="info" />;
-      case "stack":
-        return <StepStack key="stack" />;
-      case "features":
-        return <StepFeatures key="features" />;
-      case "review":
-        return <StepReview key="review" />;
-      case "generating":
-        return <StepGenerating key="generating" />;
-      default:
-        return <StepInfo key="default" />;
-    }
+    const stepElement = (() => {
+      switch (currentStep) {
+        case "info":
+          return <StepInfo key="info" />;
+        case "stack":
+          return <StepStack key="stack" />;
+        case "features":
+          return <StepFeatures key="features" />;
+        case "review":
+          return <StepReview key="review" />;
+        case "generating":
+          return <StepGenerating key="generating" />;
+        default:
+          return <StepInfo key="default" />;
+      }
+    })();
+
+    return (
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center py-16">
+            <div className={SPINNER.DEFAULT}></div>
+          </div>
+        }
+      >
+        {stepElement}
+      </Suspense>
+    );
   };
 
   return (
