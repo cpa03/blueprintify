@@ -1,8 +1,13 @@
-import { useState, Suspense, lazy, useEffect, useCallback, useRef, useMemo } from "react";
+import { useState, Suspense, lazy, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "./components/Header";
-import { StepIndicator } from "./components/StepIndicator";
-import { Wizard } from "./components/Wizard";
+const StepIndicator = lazy(() =>
+  import("./components/StepIndicator").then((m) => ({ default: m.StepIndicator }))
+);
+const Wizard = lazy(() => import("./components/Wizard").then((m) => ({ default: m.Wizard })));
+const ShowEditorButton = lazy(() =>
+  import("./components/ShowEditorButton").then((m) => ({ default: m.ShowEditorButton }))
+);
 import { ToastContainer } from "./components/Toast";
 const KeyboardShortcutsModal = lazy(() => import("./components/KeyboardShortcutsModal"));
 const TemplateGrid = lazy(() =>
@@ -12,8 +17,6 @@ import { SkipLink } from "./components/SkipLink";
 import { useWizardStore, useEditorStore } from "./store";
 import { UI_CONTENT } from "./config/constants";
 import { LAYOUT, FOCUS_VISIBLE_RING, BUTTON, ICON, SPINNER } from "./config/styles";
-import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
-import { RippleButton } from "./components/RippleButton";
 const GenerationCelebration = lazy(() =>
   import("./components/GenerationCelebration").then((m) => ({ default: m.GenerationCelebration }))
 );
@@ -46,12 +49,6 @@ function App(): JSX.Element {
   const handleShowShortcuts = useCallback(() => setShowShortcutsModal(true), []);
   const handleHideShortcuts = useCallback(() => setShowShortcutsModal(false), []);
   const handleCelebrationComplete = useCallback(() => setShowCelebration(false), []);
-
-  const modifierKey = useMemo(() => {
-    const isMac =
-      typeof navigator !== "undefined" && navigator.platform.toUpperCase().indexOf("MAC") >= 0;
-    return isMac ? "\u2318" : "Ctrl";
-  }, []);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -154,7 +151,9 @@ function App(): JSX.Element {
           </AnimatePresence>
 
           {/* Step Indicator */}
-          <StepIndicator />
+          <Suspense fallback={<div className="h-12" />}>
+            <StepIndicator />
+          </Suspense>
 
           {/* Split Pane Layout */}
           <div className={LAYOUT.SPLIT_PANE}>
@@ -164,7 +163,15 @@ function App(): JSX.Element {
                 showEditor ? LAYOUT.HALF_WIDTH : LAYOUT.FULL_WIDTH
               }`}
             >
-              <Wizard />
+              <Suspense
+                fallback={
+                  <div className="flex items-center justify-center min-h-[400px] py-12">
+                    <div className="w-8 h-8 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin"></div>
+                  </div>
+                }
+              >
+                <Wizard />
+              </Suspense>
             </div>
 
             {/* Editor Panel */}
@@ -228,39 +235,9 @@ function App(): JSX.Element {
 
           {/* Show editor button when hidden */}
           {!showEditor && (
-            <KeyboardShortcutTooltip shortcut="e" description="Toggle editor" position="left">
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-                <RippleButton
-                  onClick={handleShowEditor}
-                  className={BUTTON.SHOW_EDITOR_FAB}
-                  ariaLabel={UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON}
-                >
-                  <span className="flex items-center">
-                    <svg
-                      className={`${ICON.LG} mr-2`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                      />
-                    </svg>
-                    {UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON}
-                    <kbd
-                      className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
-                      aria-hidden="true"
-                    >
-                      {modifierKey}+E
-                    </kbd>
-                  </span>
-                </RippleButton>
-              </motion.div>
-            </KeyboardShortcutTooltip>
+            <Suspense fallback={null}>
+              <ShowEditorButton onClick={handleShowEditor} />
+            </Suspense>
           )}
         </div>
       </main>
