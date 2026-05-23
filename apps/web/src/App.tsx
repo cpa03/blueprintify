@@ -5,14 +5,16 @@ import { TemplateGrid } from "./components/TemplateGrid";
 import { StepIndicator } from "./components/StepIndicator";
 import { Wizard } from "./components/Wizard";
 import { ToastContainer } from "./components/Toast";
-import { KeyboardShortcutsModal } from "./components/KeyboardShortcutsModal";
+const KeyboardShortcutsModal = lazy(() => import("./components/KeyboardShortcutsModal"));
 import { SkipLink } from "./components/SkipLink";
 import { useWizardStore, useEditorStore } from "./store";
 import { UI_CONTENT } from "./config/constants";
 import { LAYOUT, FOCUS_VISIBLE_RING, BUTTON, ICON, SPINNER } from "./config/styles";
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 import { RippleButton } from "./components/RippleButton";
-import { GenerationCelebration } from "./components/GenerationCelebration";
+const GenerationCelebration = lazy(() =>
+  import("./components/GenerationCelebration").then((m) => ({ default: m.GenerationCelebration }))
+);
 
 // Lazy load Editor to reduce initial bundle size
 const Editor = lazy(() =>
@@ -263,9 +265,16 @@ function App(): JSX.Element {
 
       <ToastContainer />
 
-      <KeyboardShortcutsModal isOpen={showShortcutsModal} onClose={handleHideShortcuts} />
+      <Suspense fallback={null}>
+        <KeyboardShortcutsModal isOpen={showShortcutsModal} onClose={handleHideShortcuts} />
+      </Suspense>
 
-      <GenerationCelebration isComplete={showCelebration} onComplete={handleCelebrationComplete} />
+      <Suspense fallback={null}>
+        <GenerationCelebration
+          isComplete={showCelebration}
+          onComplete={handleCelebrationComplete}
+        />
+      </Suspense>
     </div>
   );
 }
