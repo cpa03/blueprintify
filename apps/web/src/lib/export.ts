@@ -25,7 +25,7 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
     tasks: sanitizedTasks,
   });
 
-  const docsFolder = zip.folder(".docs");
+  const docsFolder = zip.folder(EXPORT_CONFIG.DOCS_FOLDER);
   if (!docsFolder) {
     throw new Error(
       "Failed to create .docs folder in ZIP archive. This may indicate a memory issue or ZIP library error. Try reducing the content size or refreshing the page."
@@ -33,11 +33,11 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
   }
 
   if (sanitizedBlueprint) {
-    docsFolder.file("blueprint.md", sanitizedBlueprint);
+    docsFolder.file(EXPORT_CONFIG.BLUEPRINT_FILENAME, sanitizedBlueprint);
   }
 
   if (sanitizedTasks) {
-    docsFolder.file("task.md", sanitizedTasks);
+    docsFolder.file(EXPORT_CONFIG.TASK_FILENAME, sanitizedTasks);
   }
 
   // Include project metadata for better connectivity between systems
@@ -50,11 +50,11 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
     })),
     features: files.features,
     generatedAt: new Date().toISOString(),
-    version: "1.0.0",
+    version: EXPORT_CONFIG.METADATA_VERSION,
   };
-  docsFolder.file("metadata.json", JSON.stringify(metadata, null, 2));
+  docsFolder.file(EXPORT_CONFIG.METADATA_FILENAME, JSON.stringify(metadata, null, 2));
 
-  docsFolder.file("README.md", README_TEMPLATE(projectName));
+  docsFolder.file(EXPORT_CONFIG.README_FILENAME, README_TEMPLATE(projectName));
 
   const blob = await zip.generateAsync({
     type: "blob",
@@ -65,7 +65,7 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `${projectName.toLowerCase().replace(/\s+/g, "-")}-${new Date().toISOString().split("T")[0]}.zip`;
+  link.download = `${projectName.toLowerCase().replace(/\s+/g, "-")}-${new Date().toISOString().split("T")[0]}${EXPORT_CONFIG.ZIP_FILENAME_SUFFIX}`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

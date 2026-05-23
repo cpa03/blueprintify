@@ -13,6 +13,10 @@ import { STORAGE_KEYS, STORAGE_CONFIG, STORAGE_ERROR_MESSAGES } from "../config/
 import { BACKUP_KEY_PREFIX, TEST_KEYS } from "../config/keys";
 import { STORAGE_CONFIG as SHARED_STORAGE_CONFIG } from "@blueprint/shared";
 
+// Browser-specific localStorage quota exceeded error codes
+const CHROME_QUOTA_EXCEEDED_CODE = 22;
+const FIREFOX_QUOTA_EXCEEDED_CODE = 1014;
+
 // ============================================================================
 // Storage Error Types
 // ============================================================================
@@ -160,7 +164,7 @@ export interface QuotaInfo {
 function getStorageQuota(): QuotaInfo {
   try {
     const used = new Blob([JSON.stringify(localStorage)]).size;
-    const total = STORAGE_CONFIG.QUOTA_MB * 1024 * 1024;
+    const total = SHARED_STORAGE_CONFIG.QUOTA_BYTES;
     const remaining = Math.max(0, total - used);
     const percentage = (used / total) * 100;
 
@@ -196,8 +200,8 @@ function isPrivacyMode(): boolean {
   } catch (e) {
     return (
       e instanceof DOMException &&
-      (e.code === 22 || // Chrome
-        e.code === 1014 || // Firefox
+      (e.code === CHROME_QUOTA_EXCEEDED_CODE ||
+        e.code === FIREFOX_QUOTA_EXCEEDED_CODE ||
         e.name === "QuotaExceededError" ||
         e.name === "NS_ERROR_DOM_QUOTA_REACHED")
     );

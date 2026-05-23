@@ -14,6 +14,7 @@ import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { z } from "zod";
 import type { Env } from "../types";
 import {
+  API_HEADERS,
   HTTP_STATUS,
   ERROR_CODES,
   ERROR_MESSAGES,
@@ -259,9 +260,15 @@ app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
     // Set cache headers for CDN caching - shared blueprints are immutable until expiration
     c.header(
       "Cache-Control",
-      `public, max-age=${CACHE_CONFIG.SHARE_MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.SHARE_STALE_WHILE_REVALIDATE}`
+      API_HEADERS.CACHE_CONTROL.PUBLIC_WITH_REVALIDATE(
+        CACHE_CONFIG.SHARE_MAX_AGE,
+        CACHE_CONFIG.SHARE_STALE_WHILE_REVALIDATE
+      )
     );
-    c.header("CDN-Cache-Control", `public, max-age=${CACHE_CONFIG.SHARE_MAX_AGE}`);
+    c.header(
+      API_HEADERS.CDN.CDN_CACHE_CONTROL,
+      API_HEADERS.CACHE_CONTROL.PUBLIC_MAX_AGE(CACHE_CONFIG.SHARE_MAX_AGE)
+    );
 
     return c.json(
       {

@@ -12,6 +12,7 @@ import { StorageClearRequestSchema, StorageReportRequestSchema } from "@blueprin
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import {
+  API_HEADERS,
   STORAGE_CONFIG,
   CACHE_CONFIG,
   HTTP_STATUS,
@@ -69,7 +70,10 @@ app.get("/quota", rateLimit(rateLimitConfigs.standard), async (c) => {
     // Cache quota response - this data rarely changes
     c.header(
       "Cache-Control",
-      `public, max-age=${CACHE_CONFIG.ROOT_MAX_AGE}, stale-while-revalidate=${CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE}`
+      API_HEADERS.CACHE_CONTROL.PUBLIC_WITH_REVALIDATE(
+        CACHE_CONFIG.ROOT_MAX_AGE,
+        CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE
+      )
     );
 
     return c.json({

@@ -14,7 +14,12 @@ import { ErrorType } from "../errors";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { secureLogError } from "../utils/secureLog";
-import { IMPORT_CONFIG, HTTP_STATUS, IMPORT_ERROR_MESSAGES } from "../config/constants";
+import {
+  IMPORT_CONFIG,
+  IMPORT_REGEX,
+  HTTP_STATUS,
+  IMPORT_ERROR_MESSAGES,
+} from "../config/constants";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -87,13 +92,13 @@ app.post(
       if (format === "markdown") {
         // Parse markdown format - look for title at start of document
         // Match only if # is at the start of the document (not ## or later in the doc)
-        const projectNameMatch = data.match(/^#[^#](.+)$/m);
+        const projectNameMatch = data.match(IMPORT_REGEX.PROJECT_NAME);
         const projectName = projectNameMatch?.[1]?.trim() ?? IMPORT_CONFIG.DEFAULT_PROJECT_NAME;
 
-        const blueprintMatch = data.match(/## Blueprint\s*\n\n?([\s\S]*?)(?=\n## |$)/);
+        const blueprintMatch = data.match(IMPORT_REGEX.BLUEPRINT_SECTION);
         const blueprint = blueprintMatch?.[1]?.trim() ?? "";
 
-        const tasksMatch = data.match(/## Tasks\s*\n\n?([\s\S]*?)(?=\n## |$)/);
+        const tasksMatch = data.match(IMPORT_REGEX.TASKS_SECTION);
         const tasks = tasksMatch?.[1]?.trim();
 
         if (!blueprint) {
