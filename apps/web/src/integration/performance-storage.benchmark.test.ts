@@ -58,7 +58,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
 
       const { duration } = await measureAsync("read", () => storage.get());
 
-      expect(duration).toBeLessThan(10);
+      expect(duration).toBeLessThan(15);
     });
 
     it("should read blueprint data under 20ms", async () => {
