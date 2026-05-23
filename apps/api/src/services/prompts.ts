@@ -9,6 +9,11 @@
 
 import type { BlueprintRequest, RefineRequest } from "@blueprint/shared";
 import { PROMPT_CONFIG, PROMPT_INPUT_CONFIG } from "../config/constants";
+import {
+  INJECTION_PATTERNS,
+  MAX_INPUT_LENGTH,
+  CONTROL_CHAR_FILTER,
+} from "../config/prompt-security";
 
 // ===== System Prompts =====
 // Re-export from config for backward compatibility
@@ -23,21 +28,6 @@ export const TASK_SPLITTER_SYSTEM_PROMPT = PROMPT_CONFIG.TASK_SPLITTER_SYSTEM;
 export const REFINER_SYSTEM_PROMPT = PROMPT_CONFIG.REFINER_SYSTEM;
 
 // ===== Input Sanitization =====
-
-/** Maximum length for any single user input field */
-const MAX_INPUT_LENGTH = PROMPT_INPUT_CONFIG.MAX_LENGTH;
-
-/** Patterns that indicate prompt injection attempts (case-insensitive) */
-const INJECTION_PATTERNS: RegExp[] = [
-  /ignore\s+(all\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/gi,
-  /forget\s+(all\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/gi,
-  /disregard\s+(all\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/gi,
-  /system\s+prompts?:/gi,
-  /you\s+(are\s+)?(now|will\s+now)\s+(an?\s+)?/gi,
-  /act\s+as\s+(an?\s+)?/gi,
-  /new\s+(instructions|prompts?|directives?):/gi,
-  /over[-\s]?ride\s+(instructions|prompts?|directives?)/gi,
-];
 
 /**
  * Sanitizes user input to prevent prompt injection attacks.
@@ -57,7 +47,10 @@ export function sanitizePromptInput(input: string): string {
   sanitized = Array.from(sanitized)
     .filter((c) => {
       const code = c.charCodeAt(0);
-      return !(code < 32 && code !== 9 && code !== 10 && code !== 13);
+      return !(
+        code < CONTROL_CHAR_FILTER.MAX_ALLOWED_CODEPOINT &&
+        !CONTROL_CHAR_FILTER.ALLOWED_CODEPOINTS.includes(code as number)
+      );
     })
     .join("");
 
