@@ -243,10 +243,13 @@ const ToastItem = memo(
           </motion.span>
         </span>
         <p className="text-sm font-medium flex-1">{toast.message}</p>
-        <button
+        <motion.button
           onClick={() => onRemove(toast.id)}
-          className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-all"
+          className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
           aria-label={`Dismiss ${toast.type} notification`}
+          whileHover={{ scale: 1.15, rotate: 90 }}
+          whileTap={{ scale: 0.9 }}
+          transition={{ type: "spring", stiffness: 400, damping: 20 }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -256,7 +259,7 @@ const ToastItem = memo(
               d="M6 18L18 6M6 6l12 12"
             />
           </svg>
-        </button>
+        </motion.button>
       </motion.div>
     );
   })
