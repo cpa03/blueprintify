@@ -2,22 +2,26 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-22 - Security Audit - @vitejs/plugin-react Bump)
+## Current Cycle (2026-05-23 - RepoKeeper Formatting & Audit)
 
 ### Findings
 
-- **[CRITICAL - Fixed] Build-breaking dependency**: Dependabot PR attempted to bump `@vitejs/plugin-react` from `^4.4.1` to `^6.0.2`, but v6 requires `vite ^8.0.0` while project uses `vite ^7.3.1`. This would break the build. Fixed by downgrading to `^5.2.0`, which supports vite 4.x through 8.x.
+- **Formatting**: 5 files had Prettier formatting issues — workflow YAML files and `index.html`. All fixed.
+- **Build/Lint/Typecheck**: All passing clean. No warnings or errors.
+- **npm audit**: 0 vulnerabilities — clean.
+- **Dependencies**: No outdated or unused dependencies found across workspaces.
+- **Docs audit**: All `docs/` references in README.md verified present. No stale doc files.
 
 ### Actions Taken
 
-- Changed `apps/web/package.json`: `@vitejs/plugin-react` from `^6.0.2` → `^5.2.0`
-- Regenerated `package-lock.json` via `npm install`
-- Verified typecheck passes (`tsc --noEmit` clean)
-- npm audit: 4 moderate vulnerabilities in `ws` (miniflare/wrangler) — pre-existing, not introduced by this PR
+- Ran `prettier --write` on `.github/workflows/iterate.yml`, `main.yml`, `on-pull.yml`, `parallel.yml`, and `apps/web/index.html`
+- Verified typecheck, lint, npm audit all clean
+- Updated `active-tasks.md` with 2026-05-23 cycle
+- Updated `findings.md` — this record
 
 ---
 
-## Previous Cycle (2026-05-22 - RepoKeeper Cleanup)
+## Previous Cycle (2026-05-22 - RepoKeeper Cleanup & Security Audit)
 
 ### Observations
 
@@ -37,5 +41,5 @@
 
 ---
 
-**Last Cleared**: 2026-05-22  
+**Last Cleared**: 2026-05-23  
 **Maintainer**: RepoKeeper
