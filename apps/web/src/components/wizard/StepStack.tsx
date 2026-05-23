@@ -31,6 +31,7 @@ import {
   ANIMATION,
   TIMEOUTS,
   ANIMATION_MS,
+  SPRING_CONFIG,
   UI_CONTENT,
 } from "../../config/constants";
 import { pageTransition, type AnimationDirection } from "../../utils/motion";
@@ -78,11 +79,7 @@ const TechChip = memo(function TechChip({
             }
           : {}
       }
-      transition={{
-        type: "spring",
-        stiffness: 400,
-        damping: 17,
-      }}
+      transition={{ type: "spring", ...SPRING_CONFIG.SUBTLE_BOUNCE }}
     >
       <AnimatePresence>
         {isJustSelected && (
@@ -122,11 +119,7 @@ const TechChip = memo(function TechChip({
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
               exit={{ scale: 0, rotate: 180 }}
-              transition={{
-                type: "spring",
-                stiffness: 500,
-                damping: 15,
-              }}
+              transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK }}
             >
               <motion.path
                 strokeLinecap="round"
@@ -145,11 +138,7 @@ const TechChip = memo(function TechChip({
               initial={{ scale: 0, rotate: 180 }}
               animate={{ scale: 1, rotate: 0 }}
               exit={{ scale: 0, rotate: -180 }}
-              transition={{
-                type: "spring",
-                stiffness: 500,
-                damping: 15,
-              }}
+              transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK }}
             >
               +
             </motion.span>

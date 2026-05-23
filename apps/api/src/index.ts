@@ -76,11 +76,11 @@ app.use(
 );
 app.use("*", prettyJSON());
 app.use("*", bodyLimit(bodyLimitConfigs.standard));
-app.use("*", requestLogger({ excludePaths: ["/"] }));
-app.use("*", apiKeyAuth({ excludePaths: ["/"] }));
+app.use("*", requestLogger({ excludePaths: [ROUTE_PATHS.ROOT] }));
+app.use("*", apiKeyAuth({ excludePaths: [ROUTE_PATHS.ROOT] }));
 app.use("*", rateLimit(rateLimitConfigs.standard));
 
-app.get("/", (c) => {
+app.get(ROUTE_PATHS.ROOT, (c) => {
   c.header(
     "Cache-Control",
     API_HEADERS.CACHE_CONTROL.PUBLIC_WITH_REVALIDATE(

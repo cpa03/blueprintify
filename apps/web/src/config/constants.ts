@@ -91,6 +91,8 @@ export const SPRING_CONFIG = {
   BOUNCY: { stiffness: 400, damping: 10, mass: 0.8 },
   /** Light bounce - for chip selection, item add animations */
   SUBTLE_BOUNCE: { stiffness: 400, damping: 17, mass: 0.8 },
+  /** Checkmark/icon spring - for animated icon path reveals */
+  CHECKMARK: { stiffness: 500, damping: 15, mass: 0.8 },
   /** Very gentle - for progress indicators, smooth transitions */
   SLOW: { stiffness: 100, damping: 20, mass: 0.8 },
 } as const;

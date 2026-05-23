@@ -39,7 +39,7 @@ import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
 import { RippleButton } from "../RippleButton";
 import { CharacterCounter } from "../CharacterCounter";
-import { pageTransition, type AnimationDirection } from "../../utils/motion";
+import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
 import { ValidationCheckmark } from "../ValidationCheckmark";
 
@@ -398,7 +398,7 @@ export const StepInfo = memo(function StepInfo({
             placeholder={UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_PLACEHOLDER}
             className="textarea-field h-24"
             animate={constraintsTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
-            transition={{ duration: 0.15 }}
+            transition={transitions.fast}
           />
         </div>
 

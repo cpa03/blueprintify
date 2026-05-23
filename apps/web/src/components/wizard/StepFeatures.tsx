@@ -25,7 +25,7 @@ import { useState, useCallback, useMemo, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
 import { SUGGESTED_FEATURES, FORM_LIMITS, TIMEOUTS, UI_CONTENT } from "../../config/constants";
-import { pageTransition, type AnimationDirection } from "../../utils/motion";
+import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 
 interface StepFeaturesProps {
@@ -135,7 +135,7 @@ export const StepFeatures = memo(function StepFeatures({
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.15 }}
+                    transition={transitions.fast}
                     onClick={() => setNewFeature("")}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors p-1 rounded-md hover:bg-dark-700/50"
                     aria-label="Clear feature input"
