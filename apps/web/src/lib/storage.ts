@@ -11,6 +11,7 @@
 import { z } from "zod";
 import { STORAGE_KEYS, STORAGE_CONFIG, STORAGE_ERROR_MESSAGES } from "../config/constants";
 import { BACKUP_KEY_PREFIX, TEST_KEYS } from "../config/keys";
+import { STORAGE_CONFIG as SHARED_STORAGE_CONFIG } from "@blueprint/shared";
 
 // ============================================================================
 // Storage Error Types
@@ -542,7 +543,9 @@ export class StorageService<T = unknown> {
   checkHealth(): StorageHealth {
     this.health.quota = getStorageQuota();
     this.health.isHealthy =
-      isLocalStorageSupported() && !isPrivacyMode() && this.health.quota.percentage < 90;
+      isLocalStorageSupported() &&
+      !isPrivacyMode() &&
+      this.health.quota.percentage < SHARED_STORAGE_CONFIG.WARNING_THRESHOLD_PERCENT;
     this.health.lastCheck = new Date();
 
     return this.health;
@@ -589,8 +592,8 @@ export class StorageService<T = unknown> {
   }
 
   private async retryOperation(operation: () => void): Promise<void> {
-    const maxRetries = this.config.maxRetries || 3;
-    const delay = this.config.retryDelay || 100;
+    const maxRetries = this.config.maxRetries || STORAGE_CONFIG.DEFAULT_MAX_RETRIES;
+    const delay = this.config.retryDelay || STORAGE_CONFIG.DEFAULT_RETRY_DELAY_MS;
 
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
