@@ -54,7 +54,7 @@
 ### Task: RepoKeeper Cleanup Cycle 2 (2026-05-23)
 
 - **Priority**: High
-- **Status**: Active
+- **Status**: Completed
 - **Objective**: Fix CI workflow doc references, update stale bug descriptions, verify build
 - **Actions**:
   - [x] Fix `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
@@ -64,6 +64,21 @@
   - [x] Verify build/lint/typecheck pass — clean
   - [x] Create PR #1292 with docs fixes
   - [x] Create issue #1293 for CI workflow bug (can't push workflow changes due to token permissions)
+
+### Task: RepoKeeper Cleanup Cycle 3 (2026-05-23)
+
+- **Priority**: High
+- **Status**: Active
+- **Objective**: Clean backup files, update gitignore, fix CI workflow doc refs on main, update docs/README alignment, clean stale branches
+- **Actions**:
+  - [x] Remove untracked backup file `.opencode/oh-my-openagent.json.bak.*`
+  - [x] Add `*.bak` to `.gitignore` to prevent future backup tracking
+  - [x] Stage pending `.opencode/oh-my-openagent.json` config changes (temperature format, LSP section)
+  - [x] Fix CI workflow doc references in `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`
+  - [x] Update README.md — add missing docs links (bugs.md, repo-rules.md, active-tasks.md)
+  - [x] Update docs (active-tasks.md, findings.md) for current cycle
+  - [x] Verify build/lint/typecheck/test pass — 841 tests all passing
+  - [ ] Create PR with all cleanup changes
 
 ---
 
@@ -110,5 +125,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-05-23 (Cycle 3)  
+**Last Updated**: 2026-05-23 (Cycle 4)  
 **Maintainer**: RepoKeeper

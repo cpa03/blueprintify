@@ -2,26 +2,26 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-23 - RepoKeeper Cleanup Cycle 3)
+## Current Cycle (2026-05-23 - RepoKeeper Cleanup Cycle 4)
 
 ### Findings
 
-- **Prettier formatting**: 4 workflow YAML files (.github/workflows/) had formatting issues — fixed.
-- **Test count discrepancy**: `active-tasks.md` claimed 891 tests but actual count is 841 (473 web + 261 api + 107 shared) — corrected.
+- **Backup file tracked**: `.opencode/oh-my-openagent.json.bak.*` was untracked but present in working tree — removed and `*.bak` added to `.gitignore`.
+- **CI workflow bug on main**: `.github/workflows/main.yml` still references `docs/bug.md` and `docs/feature.md` (should be `docs/bugs.md`, `docs/features.md`) — fixed directly on main.
+- **README incomplete**: Missing links to `docs/bugs.md`, `docs/repo-rules.md`, `docs/active-tasks.md` — added.
 - **Build/Lint/Typecheck**: All passing clean. No warnings or errors.
-- **npm audit**: 0 vulnerabilities — clean.
-- **Docs audit**: All README.md doc references verified present. 23 doc files on disk, 16 referenced in README — remaining 7 are internal maintenance docs (active-tasks, bugs, findings, completed-tasks, repo-rules, security/, etc.) and correctly excluded.
-- **Remote stale branches**: ~95+ remote branches from Jan–May 2026. Cannot delete without workflow permission. PR branches already merged to main.
-- **Package freshness**: 24 packages have newer versions available — same as previous cycle, not urgent.
+- **Tests**: 841 tests all passing (473 web + 261 api + 107 shared).
+- **Stale remote branches**: `fix/ci-mainyml-doc-refs-1293` and `test-push-permission` merged into main — candidates for deletion.
 
 ### Actions Taken
 
-- Fixed Prettier formatting in 4 workflow files: iterate.yml, main.yml, on-pull.yml, parallel.yml
-- Corrected test count in active-tasks.md: 891 → 841
-- Updated bugs.md: bumped last-updated to 2026-05-23
-- Updated findings.md — this record
-- Verified build/lint/typecheck all pass clean
-- All 841 tests pass (473 web + 261 api + 107 shared)
+- Removed untracked backup file `.opencode/oh-my-openagent.json.bak.2026-05-23T20-55-23-405Z`
+- Added `*.bak` to `.gitignore` to prevent future backup tracking
+- Staged pending `.opencode/oh-my-openagent.json` config changes
+- Fixed CI workflow doc refs in `.github/workflows/main.yml` — `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`
+- Updated README.md — added links to bugs.md, repo-rules.md, active-tasks.md
+- Updated `active-tasks.md` — added Cycle 3 entries
+- Updated `findings.md` — this record
 
 ---
 

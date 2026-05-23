@@ -3,32 +3,32 @@
   "agents": {
     "sisyphus": {
       "model": "opencode/glm-4.7-free",
-      "temperature": 0.0,
+      "temperature": 0,
       "description": "Main orchestrator agent - persistent task execution until completion"
     },
     "oracle": {
       "model": "opencode/kimi-k2.5-free",
-      "temperature": 0.0,
+      "temperature": 0,
       "description": "Design and debugging specialist"
     },
     "librarian": {
       "model": "opencode/glm-4.7-free",
-      "temperature": 0.0,
+      "temperature": 0,
       "description": "Official docs and codebase exploration"
     },
     "explore": {
       "model": "opencode/minimax-m2.1-free",
-      "temperature": 0.0,
+      "temperature": 0,
       "description": "Fast codebase exploration"
     },
     "frontend": {
       "model": "opencode/kimi-k2.5-free",
-      "temperature": 0.0,
+      "temperature": 0,
       "description": "Frontend development specialist"
     },
     "hephaestus": {
       "model": "opencode/glm-4.7-free",
-      "temperature": 0.0,
+      "temperature": 0,
       "description": "Autonomous deep worker - goal-oriented execution"
     }
   },
@@ -42,11 +42,11 @@
   },
   "mcps": {
     "enabled": true,
-    "providers": ["exa", "context7", "grep_app"]
-  },
-  "lsp": {
-    "enabled": true,
-    "refactor_tools": true
+    "providers": [
+      "exa",
+      "context7",
+      "grep_app"
+    ]
   },
   "productivity": {
     "todo_enforcer": true,
@@ -56,6 +56,10 @@
   },
   "skills": {
     "auto_load": true,
-    "priority": ["project", "personal", "superpowers"]
+    "priority": [
+      "project",
+      "personal",
+      "superpowers"
+    ]
   }
 }
