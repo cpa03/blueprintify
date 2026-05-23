@@ -99,28 +99,94 @@
           Roboto,
           sans-serif;
       }
+      /* Additional hero section critical styles */
+      .glass-card {
+        background: rgba(26, 26, 30, 0.6);
+        -webkit-backdrop-filter: blur(24px);
+        backdrop-filter: blur(24px);
+        border: 1px solid rgba(77, 77, 83, 0.5);
+        border-radius: 1rem;
+      }
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
+        color: #fff;
+        font-weight: 500;
+        border-radius: 0.75rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease-out;
+      }
+      .btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .input-field {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background: rgba(67, 67, 72, 0.5);
+        border: 1px solid rgba(77, 77, 83, 1);
+        border-radius: 0.75rem;
+        color: #fff;
+        transition: all 0.2s;
+      }
+      .input-field::placeholder {
+        color: #5a5a62;
+      }
+      .text-dark-400 {
+        color: #b8c0cc;
+      }
+      .text-dark-500 {
+        color: #9ca3af;
+      }
+      .text-gradient {
+        background: linear-gradient(135deg, #818cf8, #8b5cf6, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
     </style>
 
-    <!-- Preconnect to third-party origins for faster loading -->
+    <!-- Preconnect to Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Async font loading to prevent render-blocking -->
+    <!-- Async Inter font (body text) - font-display:swap for best LCP -->
     <link
-      id="font-preload"
+      id="font-inter"
       rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       as="style"
     />
     <script>
-      document.getElementById("font-preload").addEventListener("load", function () {
+      document.getElementById("font-inter").addEventListener("load", function () {
+        this.rel = "stylesheet";
+      });
+    </script>
+
+    <!-- JetBrains Mono - font-display:optional to prevent CLS on swap -->
+    <link
+      id="font-mono"
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=optional"
+      as="style"
+    />
+    <script>
+      document.getElementById("font-mono").addEventListener("load", function () {
         this.rel = "stylesheet";
       });
     </script>
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=optional"
       />
     </noscript>
   </head>
