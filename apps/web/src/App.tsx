@@ -1,11 +1,13 @@
 import { useState, Suspense, lazy, useEffect, useCallback, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "./components/Header";
-import { TemplateGrid } from "./components/TemplateGrid";
 import { StepIndicator } from "./components/StepIndicator";
 import { Wizard } from "./components/Wizard";
 import { ToastContainer } from "./components/Toast";
 const KeyboardShortcutsModal = lazy(() => import("./components/KeyboardShortcutsModal"));
+const TemplateGrid = lazy(() =>
+  import("./components/TemplateGrid").then((m) => ({ default: m.TemplateGrid }))
+);
 import { SkipLink } from "./components/SkipLink";
 import { useWizardStore, useEditorStore } from "./store";
 import { UI_CONTENT } from "./config/constants";
@@ -137,7 +139,15 @@ function App(): JSX.Element {
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <TemplateGrid />
+                <Suspense
+                  fallback={
+                    <div className="flex items-center justify-center py-12">
+                      <div className={SPINNER.DEFAULT}></div>
+                    </div>
+                  }
+                >
+                  <TemplateGrid />
+                </Suspense>
                 <div className={LAYOUT.TEMPLATES_DIVIDER}>{UI_CONTENT.TEMPLATES_DIVIDER}</div>
               </motion.div>
             )}

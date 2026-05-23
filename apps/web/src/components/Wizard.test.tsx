@@ -116,41 +116,41 @@ describe("Wizard", () => {
     );
   });
 
-  it("renders StepInfo when currentStep is info", () => {
+  it("renders StepInfo when currentStep is info", async () => {
     render(<Wizard />);
-    expect(screen.getByTestId("step-info")).toBeInTheDocument();
+    expect(await screen.findByTestId("step-info")).toBeInTheDocument();
     expect(screen.queryByTestId("step-stack")).not.toBeInTheDocument();
   });
 
-  it("renders StepStack when currentStep is stack", () => {
+  it("renders StepStack when currentStep is stack", async () => {
     mockWizardStore.currentStep = "stack";
     render(<Wizard />);
-    expect(screen.getByTestId("step-stack")).toBeInTheDocument();
+    expect(await screen.findByTestId("step-stack")).toBeInTheDocument();
     expect(screen.queryByTestId("step-info")).not.toBeInTheDocument();
   });
 
-  it("renders StepFeatures when currentStep is features", () => {
+  it("renders StepFeatures when currentStep is features", async () => {
     mockWizardStore.currentStep = "features";
     render(<Wizard />);
-    expect(screen.getByTestId("step-features")).toBeInTheDocument();
+    expect(await screen.findByTestId("step-features")).toBeInTheDocument();
   });
 
-  it("renders StepReview when currentStep is review", () => {
+  it("renders StepReview when currentStep is review", async () => {
     mockWizardStore.currentStep = "review";
     render(<Wizard />);
-    expect(screen.getByTestId("step-review")).toBeInTheDocument();
+    expect(await screen.findByTestId("step-review")).toBeInTheDocument();
   });
 
-  it("renders StepGenerating when currentStep is generating", () => {
+  it("renders StepGenerating when currentStep is generating", async () => {
     mockWizardStore.currentStep = "generating";
     render(<Wizard />);
-    expect(screen.getByTestId("step-generating")).toBeInTheDocument();
+    expect(await screen.findByTestId("step-generating")).toBeInTheDocument();
   });
 
-  it("renders StepInfo as default for unknown steps", () => {
+  it("renders StepInfo as default for unknown steps", async () => {
     mockWizardStore.currentStep = "unknown" as WizardStore["currentStep"];
     render(<Wizard />);
-    expect(screen.getByTestId("step-info")).toBeInTheDocument();
+    expect(await screen.findByTestId("step-info")).toBeInTheDocument();
   });
 
   it("has proper styling classes", () => {
