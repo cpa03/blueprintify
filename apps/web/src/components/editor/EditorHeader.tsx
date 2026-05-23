@@ -115,12 +115,28 @@ const ContentStats = React.memo(function ContentStats({ content }: { content: st
         >
           <div className="flex items-center gap-1">
             <span className="text-dark-500">Chars</span>
-            <span className="text-primary-400">{charCount.toLocaleString()}</span>
+            <motion.span
+              key={charCount}
+              className="tabular-nums text-primary-400"
+              initial={{ opacity: 0.6, y: -3 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.1, ease: "easeOut" }}
+            >
+              {charCount.toLocaleString()}
+            </motion.span>
           </div>
           <div className="w-px h-2 bg-dark-700" />
           <div className="flex items-center gap-1">
             <span className="text-dark-500">Words</span>
-            <span className="text-secondary-400">{wordCount.toLocaleString()}</span>
+            <motion.span
+              key={wordCount}
+              className="tabular-nums text-secondary-400"
+              initial={{ opacity: 0.6, y: -3 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.1, ease: "easeOut" }}
+            >
+              {wordCount.toLocaleString()}
+            </motion.span>
           </div>
         </motion.div>
       )}
