@@ -48,6 +48,10 @@
       "grep_app"
     ]
   },
+  "lsp": {
+    "enabled": true,
+    "refactor_tools": true
+  },
   "productivity": {
     "todo_enforcer": true,
     "comment_checker": true,
