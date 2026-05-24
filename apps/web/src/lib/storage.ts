@@ -151,7 +151,7 @@ function generateChecksum(data: string): string {
 }
 
 // ============================================================================
-// Storage Quota Management
+// Storage Quota Management (with TTL caching)
 // ============================================================================
 
 export interface QuotaInfo {
@@ -161,17 +161,48 @@ export interface QuotaInfo {
   percentage: number;
 }
 
+/** TTL for cached quota values to avoid serializing all localStorage on every call (issue #946) */
+const QUOTA_CACHE_TTL_MS = 5000;
+
+let cachedQuota: QuotaInfo | null = null;
+let lastQuotaCalculation: number = 0;
+
 function getStorageQuota(): QuotaInfo {
+  const now = Date.now();
+
+  // Return cached value if still fresh — avoids O(n) serialization on every call
+  if (cachedQuota && now - lastQuotaCalculation < QUOTA_CACHE_TTL_MS) {
+    return cachedQuota;
+  }
+
+  // Full recalculation (happens at most once per QUOTA_CACHE_TTL_MS)
   try {
     const used = new Blob([JSON.stringify(localStorage)]).size;
     const total = SHARED_STORAGE_CONFIG.QUOTA_BYTES;
     const remaining = Math.max(0, total - used);
-    const percentage = (used / total) * 100;
+    const percentage = total > 0 ? (used / total) * 100 : 0;
 
-    return { used, total, remaining, percentage };
+    cachedQuota = { used, total, remaining, percentage };
+    lastQuotaCalculation = now;
+
+    return cachedQuota;
   } catch {
     return { used: 0, total: 0, remaining: 0, percentage: 0 };
   }
+}
+
+/** Invalidate quota cache so next call recalculates from scratch */
+function invalidateQuotaCache(): void {
+  cachedQuota = null;
+  lastQuotaCalculation = 0;
+}
+
+// Cross-tab cache invalidation: when another tab writes to localStorage,
+// our cached quota becomes stale
+if (typeof window !== "undefined" && typeof window.addEventListener === "function") {
+  window.addEventListener("storage", () => {
+    invalidateQuotaCache();
+  });
 }
 
 // ============================================================================
@@ -316,6 +347,9 @@ export class StorageService<T = unknown> {
         await this.createBackup();
       }
 
+      // Invalidate quota cache since localStorage changed
+      invalidateQuotaCache();
+
       this.recordLatency("write", performance.now() - startTime);
       this.health.operations.successful++;
     } catch (error) {
@@ -343,6 +377,10 @@ export class StorageService<T = unknown> {
       }
 
       localStorage.removeItem(this.config.key);
+
+      // Invalidate quota cache since localStorage changed
+      invalidateQuotaCache();
+
       this.health.operations.successful++;
     } catch (error) {
       this.handleError("delete", error);
@@ -368,6 +406,10 @@ export class StorageService<T = unknown> {
       }
 
       localStorage.clear();
+
+      // Invalidate quota cache since localStorage changed
+      invalidateQuotaCache();
+
       this.health.operations.successful++;
     } catch (error) {
       this.handleError("clear", error);
