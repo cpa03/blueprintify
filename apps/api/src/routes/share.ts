@@ -259,7 +259,7 @@ app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
 
     // Set cache headers for CDN caching - shared blueprints are immutable until expiration
     c.header(
-      "Cache-Control",
+      API_HEADERS.CACHE_CONTROL.HEADER_NAME,
       API_HEADERS.CACHE_CONTROL.PUBLIC_WITH_REVALIDATE(
         CACHE_CONFIG.SHARE_MAX_AGE,
         CACHE_CONFIG.SHARE_STALE_WHILE_REVALIDATE

@@ -7,7 +7,7 @@ import { z } from "zod";
 import type { MiddlewareHandler } from "hono";
 import { HTTP_HEADERS } from "@blueprint/shared";
 import { ErrorResponse, ErrorType } from "../errors";
-import { HTTP_STATUS, VALIDATION_MESSAGES, ERROR_CODES } from "../config/constants";
+import { API_HEADERS, HTTP_STATUS, VALIDATION_MESSAGES, ERROR_CODES } from "../config/constants";
 
 /**
  * Custom Zod validator that returns standardized error responses
@@ -21,7 +21,7 @@ export const validateJson = <T extends z.ZodTypeAny>(
   };
 }> => {
   return async (c, next) => {
-    const contentType = c.req.header("content-type");
+    const contentType = c.req.header(API_HEADERS.REQUEST.CONTENT_TYPE);
     if (!contentType?.includes(HTTP_HEADERS.CONTENT_TYPE_JSON)) {
       const errorResponse: ErrorResponse = {
         success: false,

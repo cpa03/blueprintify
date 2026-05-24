@@ -13,10 +13,6 @@ import { STORAGE_KEYS, STORAGE_CONFIG, STORAGE_ERROR_MESSAGES } from "../config/
 import { BACKUP_KEY_PREFIX, TEST_KEYS } from "../config/keys";
 import { STORAGE_CONFIG as SHARED_STORAGE_CONFIG } from "@blueprint/shared";
 
-// Browser-specific localStorage quota exceeded error codes
-const CHROME_QUOTA_EXCEEDED_CODE = 22;
-const FIREFOX_QUOTA_EXCEEDED_CODE = 1014;
-
 // ============================================================================
 // Storage Error Types
 // ============================================================================
@@ -161,9 +157,6 @@ export interface QuotaInfo {
   percentage: number;
 }
 
-/** TTL for cached quota values to avoid serializing all localStorage on every call (issue #946) */
-const QUOTA_CACHE_TTL_MS = 5000;
-
 let cachedQuota: QuotaInfo | null = null;
 let lastQuotaCalculation: number = 0;
 
@@ -171,11 +164,11 @@ function getStorageQuota(): QuotaInfo {
   const now = Date.now();
 
   // Return cached value if still fresh — avoids O(n) serialization on every call
-  if (cachedQuota && now - lastQuotaCalculation < QUOTA_CACHE_TTL_MS) {
+  if (cachedQuota && now - lastQuotaCalculation < STORAGE_CONFIG.QUOTA_CACHE_TTL_MS) {
     return cachedQuota;
   }
 
-  // Full recalculation (happens at most once per QUOTA_CACHE_TTL_MS)
+  // Full recalculation (happens at most once per STORAGE_CONFIG.QUOTA_CACHE_TTL_MS)
   try {
     const used = new Blob([JSON.stringify(localStorage)]).size;
     const total = SHARED_STORAGE_CONFIG.QUOTA_BYTES;
@@ -231,8 +224,8 @@ function isPrivacyMode(): boolean {
   } catch (e) {
     return (
       e instanceof DOMException &&
-      (e.code === CHROME_QUOTA_EXCEEDED_CODE ||
-        e.code === FIREFOX_QUOTA_EXCEEDED_CODE ||
+      (e.code === STORAGE_CONFIG.BROWSER_QUOTA_ERROR_CODES.CHROME ||
+        e.code === STORAGE_CONFIG.BROWSER_QUOTA_ERROR_CODES.FIREFOX ||
         e.name === "QuotaExceededError" ||
         e.name === "NS_ERROR_DOM_QUOTA_REACHED")
     );

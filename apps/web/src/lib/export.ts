@@ -65,7 +65,7 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `${projectName.toLowerCase().replace(/\s+/g, "-")}-${new Date().toISOString().split("T")[0]}${EXPORT_CONFIG.ZIP_FILENAME_SUFFIX}`;
+  link.download = `${projectName.toLowerCase().replace(/\s+/g, "-")}-${new Date().toISOString().split(EXPORT_CONFIG.DATE_FORMAT_SEPARATOR)[0]}${EXPORT_CONFIG.ZIP_FILENAME_SUFFIX}`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
