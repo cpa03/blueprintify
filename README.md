@@ -289,6 +289,8 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Feature Specifications](./docs/features.md)** - Detailed feature documentation and status
 - **[Known Bugs](./docs/bugs.md)** - Active bug tracking and known defects
 - **[Active Tasks](./docs/active-tasks.md)** - Current development tasks and priorities
+- **[Completed Tasks (Q1 2026)](./docs/completed-tasks-2026-Q1.md)** - Archived completed work from Q1 2026
+- **[Findings](./docs/findings.md)** - RepoKeeper observation and cleanup log
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 
 ### 📚 M2 Documentation

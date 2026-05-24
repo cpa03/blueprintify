@@ -2,25 +2,24 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-23 - RepoKeeper Cleanup Cycle 4)
+## Current Cycle (2026-05-24 - RepoKeeper Cleanup Cycle 5)
 
 ### Findings
 
-- **Backup file tracked**: `.opencode/oh-my-openagent.json.bak.*` was untracked but present in working tree — removed and `*.bak` added to `.gitignore`.
-- **CI workflow bug on main**: `.github/workflows/main.yml` still references `docs/bug.md` and `docs/feature.md` (should be `docs/bugs.md`, `docs/features.md`) — fixed directly on main.
-- **README incomplete**: Missing links to `docs/bugs.md`, `docs/repo-rules.md`, `docs/active-tasks.md` — added.
+- **Backup file reappeared**: `.opencode/oh-my-openagent.json.bak.*` untracked again — removed and `*.bak.*` added to `.gitignore` to also catch `.bak.timestamp` format.
+- **API README stale**: Project structure listed `errors/` directory but actual file is `errors.ts` — fixed.
+- **README incomplete**: Missing links to `docs/completed-tasks-2026-Q1.md` and `docs/findings.md` — added.
 - **Build/Lint/Typecheck**: All passing clean. No warnings or errors.
-- **Tests**: 841 tests all passing (473 web + 261 api + 107 shared).
-- **Stale remote branches**: `fix/ci-mainyml-doc-refs-1293` and `test-push-permission` merged into main — candidates for deletion.
+- **`.opencode/oh-my-openagent.json`**: `lsp` section removed by tool — change is intentional (managed by oh-my-opencode plugin), no re-restore needed.
+- **Branch**: On `main` — will create feature branch for PR.
 
 ### Actions Taken
 
-- Removed untracked backup file `.opencode/oh-my-openagent.json.bak.2026-05-23T20-55-23-405Z`
-- Added `*.bak` to `.gitignore` to prevent future backup tracking
+- Removed untracked backup file `.opencode/oh-my-openagent.json.bak.2026-05-24T03-46-48-664Z`
+- Added `*.bak.*` to `.gitignore` to catch timestamped backups
+- Fixed `apps/api/README.md` — `errors/` → `errors.ts`
+- Updated `README.md` — added links to `completed-tasks-2026-Q1.md`, `findings.md`
 - Staged pending `.opencode/oh-my-openagent.json` config changes
-- Fixed CI workflow doc refs in `.github/workflows/main.yml` — `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`
-- Updated README.md — added links to bugs.md, repo-rules.md, active-tasks.md
-- Updated `active-tasks.md` — added Cycle 3 entries
 - Updated `findings.md` — this record
 
 ---
