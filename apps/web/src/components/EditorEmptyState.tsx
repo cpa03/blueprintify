@@ -12,7 +12,7 @@
 
 import { motion } from "framer-motion";
 import { useWizardStore } from "../store";
-import { WIZARD_STEPS, UI_EMOJIS } from "../config/constants";
+import { WIZARD_STEPS, UI_EMOJIS, EMPTY_STATE_CONFIG } from "../config/constants";
 import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from "../utils/motion";
 
 /**
@@ -41,7 +41,12 @@ export function EditorEmptyState(): JSX.Element {
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-primary-500/20 via-accent-purple/20 to-accent-pink/20 blur-3xl"
           animate={pulseAnimation}
-          style={{ width: 200, height: 200, marginLeft: -100, marginTop: -50 }}
+          style={{
+            width: EMPTY_STATE_CONFIG.EDITOR_GLOW.WIDTH_PX,
+            height: EMPTY_STATE_CONFIG.EDITOR_GLOW.HEIGHT_PX,
+            marginLeft: EMPTY_STATE_CONFIG.EDITOR_GLOW.MARGIN_LEFT_PX,
+            marginTop: EMPTY_STATE_CONFIG.EDITOR_GLOW.MARGIN_TOP_PX,
+          }}
         />
 
         <div className="relative">

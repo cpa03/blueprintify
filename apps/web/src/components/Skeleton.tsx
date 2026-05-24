@@ -24,6 +24,7 @@ import { memo, forwardRef } from "react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { SKELETON_PRESETS } from "../config/constants";
 
 interface SkeletonBaseProps {
   width?: number | string;
@@ -78,15 +79,15 @@ type SkeletonProps =
 
 const sizePresets = {
   avatar: {
-    sm: 32,
-    md: 40,
-    lg: 48,
-    xl: 64,
+    sm: SKELETON_PRESETS.AVATAR.SM,
+    md: SKELETON_PRESETS.AVATAR.MD,
+    lg: SKELETON_PRESETS.AVATAR.LG,
+    xl: SKELETON_PRESETS.AVATAR.XL,
   },
   button: {
-    sm: { height: 32, width: 80 },
-    md: { height: 40, width: 120 },
-    lg: { height: 48, width: 160 },
+    sm: { height: SKELETON_PRESETS.BUTTON.SM.HEIGHT, width: SKELETON_PRESETS.BUTTON.SM.WIDTH },
+    md: { height: SKELETON_PRESETS.BUTTON.MD.HEIGHT, width: SKELETON_PRESETS.BUTTON.MD.WIDTH },
+    lg: { height: SKELETON_PRESETS.BUTTON.LG.HEIGHT, width: SKELETON_PRESETS.BUTTON.LG.WIDTH },
   },
 } as const;
 
@@ -95,7 +96,7 @@ const shimmerVariants = {
   animate: {
     backgroundPosition: "-200% 0",
     transition: {
-      duration: 1.5,
+      duration: SKELETON_PRESETS.SHIMMER_DURATION_S,
       repeat: Infinity,
       ease: "linear",
     },
@@ -105,9 +106,9 @@ const shimmerVariants = {
 const pulseVariants = {
   initial: { opacity: 1 },
   animate: {
-    opacity: 0.5,
+    opacity: SKELETON_PRESETS.PULSE_OPACITY,
     transition: {
-      duration: 1,
+      duration: SKELETON_PRESETS.PULSE_DURATION_S,
       repeat: Infinity,
       repeatType: "reverse" as const,
       ease: "easeInOut",
@@ -151,9 +152,9 @@ const SkeletonElement = memo(
 
 function TextSkeleton({
   width = "100%",
-  height = 14,
+  height = SKELETON_PRESETS.TEXT.DEFAULT_HEIGHT,
   lines = 1,
-  lineSpacing = 8,
+  lineSpacing = SKELETON_PRESETS.TEXT.DEFAULT_LINE_SPACING,
   className = "",
   animation = "shimmer",
 }: TextSkeletonProps) {
@@ -164,7 +165,7 @@ function TextSkeleton({
         height={height}
         className={className}
         animation={animation}
-        borderRadius={4}
+        borderRadius={SKELETON_PRESETS.TEXT.BORDER_RADIUS}
       />
     );
   }
@@ -174,10 +175,10 @@ function TextSkeleton({
       {Array.from({ length: lines }).map((_, index) => (
         <SkeletonElement
           key={index}
-          width={index === lines - 1 ? "70%" : width}
+          width={index === lines - 1 ? SKELETON_PRESETS.LAST_LINE_WIDTH_PCT : width}
           height={height}
           animation={animation}
-          borderRadius={4}
+          borderRadius={SKELETON_PRESETS.TEXT.BORDER_RADIUS}
           className={index > 0 ? `mt-[${lineSpacing}px]` : ""}
         />
       ))}
@@ -186,12 +187,12 @@ function TextSkeleton({
 }
 
 function CircularSkeleton({
-  width = 40,
+  width = SKELETON_PRESETS.CIRCULAR.DEFAULT_SIZE,
   height,
   className = "",
   animation = "shimmer",
 }: CircularSkeletonProps) {
-  const size = typeof width === "number" ? width : 40;
+  const size = typeof width === "number" ? width : SKELETON_PRESETS.CIRCULAR.DEFAULT_SIZE;
   return (
     <SkeletonElement
       width={size}
@@ -205,10 +206,10 @@ function CircularSkeleton({
 
 function RectangularSkeleton({
   width = "100%",
-  height = 100,
+  height = SKELETON_PRESETS.RECTANGULAR.DEFAULT_HEIGHT,
   className = "",
   animation = "shimmer",
-  borderRadius = 8,
+  borderRadius = SKELETON_PRESETS.RECTANGULAR.DEFAULT_BORDER_RADIUS,
 }: RectangularSkeletonProps) {
   return (
     <SkeletonElement
@@ -240,11 +241,26 @@ function CardSkeleton({
       {showHeader && (
         <div className="flex items-center gap-3">
           {showAvatar && (
-            <SkeletonElement width={40} height={40} animation={animation} borderRadius="50%" />
+            <SkeletonElement
+              width={SKELETON_PRESETS.CARD.AVATAR_SIZE}
+              height={SKELETON_PRESETS.CARD.AVATAR_SIZE}
+              animation={animation}
+              borderRadius="50%"
+            />
           )}
           <div className="flex-1 space-y-2">
-            <SkeletonElement width="60%" height={14} animation={animation} borderRadius={4} />
-            <SkeletonElement width="40%" height={12} animation={animation} borderRadius={4} />
+            <SkeletonElement
+              width="60%"
+              height={SKELETON_PRESETS.CARD.TITLE_HEIGHT}
+              animation={animation}
+              borderRadius={SKELETON_PRESETS.TEXT.BORDER_RADIUS}
+            />
+            <SkeletonElement
+              width="40%"
+              height={SKELETON_PRESETS.CARD.SUBTITLE_HEIGHT}
+              animation={animation}
+              borderRadius={SKELETON_PRESETS.TEXT.BORDER_RADIUS}
+            />
           </div>
         </div>
       )}
@@ -252,10 +268,10 @@ function CardSkeleton({
         {Array.from({ length: contentLines }).map((_, index) => (
           <SkeletonElement
             key={index}
-            width={index === contentLines - 1 ? "75%" : "100%"}
-            height={12}
+            width={index === contentLines - 1 ? SKELETON_PRESETS.CARD_LAST_LINE_WIDTH_PCT : "100%"}
+            height={SKELETON_PRESETS.CARD.LINE_HEIGHT}
             animation={animation}
-            borderRadius={4}
+            borderRadius={SKELETON_PRESETS.TEXT.BORDER_RADIUS}
           />
         ))}
       </div>
@@ -390,7 +406,7 @@ export const SkeletonPatterns = {
   }),
 
   CodeBlock: memo(function CodeBlockSkeleton({ lines = 8 }: { lines?: number }) {
-    const widths = [75, 85, 65, 90, 70, 80, 60, 95];
+    const widths = SKELETON_PRESETS.CODE_BLOCK_WIDTHS;
     return (
       <div className="glass-card p-4 space-y-2 font-mono">
         {Array.from({ length: lines }).map((_, i) => (

@@ -549,6 +549,10 @@ export const EXTERNAL_URLS = {
 export const SCROLL_THRESHOLDS = {
   /** Header shadow trigger (px) */
   HEADER_SHADOW: 20,
+  /** Scroll-to-top button visibility threshold (px from top) */
+  SCROLL_TO_TOP: 400,
+  /** "Has scrolled" detection threshold (px) */
+  HAS_SCROLLED: 50,
 } as const;
 
 /**
@@ -763,4 +767,154 @@ export const STORAGE_ERROR_MESSAGES = {
 
 export const FRONTEND_ERROR_MESSAGES = {
   UNKNOWN_ERROR: "Unknown error",
+} as const;
+
+// ============================================================================
+// Skeleton Loading Presets
+// ============================================================================
+
+/**
+ * Skeleton component size presets and defaults
+ * Flexy says: No hardcoded skeleton sizes - everything configurable!
+ */
+export const SKELETON_PRESETS = {
+  /** Avatar skeleton size presets used by AvatarSkeleton */
+  AVATAR: {
+    SM: 32,
+    MD: 40,
+    LG: 48,
+    XL: 64,
+  } as const,
+  /** Button skeleton size presets used by ButtonSkeleton */
+  BUTTON: {
+    SM: { HEIGHT: 32, WIDTH: 80 } as const,
+    MD: { HEIGHT: 40, WIDTH: 120 } as const,
+    LG: { HEIGHT: 48, WIDTH: 160 } as const,
+  } as const,
+  /** Default dimensions for text skeleton */
+  TEXT: {
+    DEFAULT_HEIGHT: 14,
+    DEFAULT_LINE_SPACING: 8,
+    BORDER_RADIUS: 4,
+  } as const,
+  /** Default dimensions for circular skeleton */
+  CIRCULAR: {
+    DEFAULT_SIZE: 40,
+  } as const,
+  /** Default dimensions for rectangular skeleton */
+  RECTANGULAR: {
+    DEFAULT_HEIGHT: 100,
+    DEFAULT_BORDER_RADIUS: 8,
+  } as const,
+  /** Shimmer animation duration in seconds */
+  SHIMMER_DURATION_S: 1.5,
+  /** Pulse animation duration in seconds */
+  PULSE_DURATION_S: 1,
+  /** Pulse animation target opacity */
+  PULSE_OPACITY: 0.5,
+  /** Card skeleton defaults */
+  CARD: {
+    AVATAR_SIZE: 40,
+    TITLE_HEIGHT: 14,
+    SUBTITLE_HEIGHT: 12,
+    LINE_HEIGHT: 12,
+  } as const,
+  /** Code block skeleton line width percentages */
+  CODE_BLOCK_WIDTHS: [75, 85, 65, 90, 70, 80, 60, 95] as const,
+  /** Last line width percentage for text skeleton */
+  LAST_LINE_WIDTH_PCT: "70%",
+  /** Last content line width percentage for card */
+  CARD_LAST_LINE_WIDTH_PCT: "75%",
+} as const;
+
+// ============================================================================
+// Textarea Configuration
+// ============================================================================
+
+/**
+ * Textarea resize configuration
+ * Flexy says: No hardcoded textarea dimensions - everything configurable!
+ */
+export const TEXTAREA_CONFIG = {
+  /** Default min height in pixels for auto-resize textareas */
+  DEFAULT_MIN_HEIGHT_PX: 80,
+  /** Default max height in pixels for auto-resize textareas */
+  DEFAULT_MAX_HEIGHT_PX: 300,
+  /** Default extra padding in pixels for scroll height calculation */
+  DEFAULT_EXTRA_PADDING_PX: 2,
+  /** StepInfo description textarea min height in pixels */
+  STEP_INFO_MIN_HEIGHT_PX: 128,
+  /** StepInfo description textarea max height in pixels */
+  STEP_INFO_MAX_HEIGHT_PX: 400,
+} as const;
+
+// ============================================================================
+// Empty State Component Dimensions
+// ============================================================================
+
+/**
+ * Empty state component dimensions for EditorEmptyState and PreviewEmptyState
+ * Flexy says: No hardcoded empty state dimensions - everything configurable!
+ */
+export const EMPTY_STATE_CONFIG = {
+  /** Editor empty state glow dimensions */
+  EDITOR_GLOW: {
+    WIDTH_PX: 200,
+    HEIGHT_PX: 200,
+    /** Negative margin to center (half of width/height) */
+    MARGIN_LEFT_PX: -100,
+    MARGIN_TOP_PX: -50,
+  } as const,
+  /** Preview empty state glow dimensions */
+  PREVIEW_GLOW: {
+    WIDTH_PX: 160,
+    HEIGHT_PX: 160,
+    /** Negative margin to center (half of width/height) */
+    MARGIN_LEFT_PX: -80,
+    MARGIN_TOP_PX: -40,
+  } as const,
+} as const;
+
+// ============================================================================
+// Last Saved Display Messages
+// ============================================================================
+
+/**
+ * Relative time message templates for last saved display
+ * Flexy says: No hardcoded time strings - everything configurable!
+ */
+export const LAST_SAVED_MESSAGES = {
+  /** Displayed when saved less than 10 seconds ago */
+  JUST_NOW: "Saved just now",
+  /** Template for seconds ago display (receives seconds count) */
+  SECONDS_AGO: (seconds: number) => `Saved ${seconds}s ago`,
+  /** Template for minutes ago display (receives minutes count) */
+  MINUTES_AGO: (minutes: number) => `Saved ${minutes}m ago`,
+  /** Template for hours ago display (receives hours count) */
+  HOURS_AGO: (hours: number) => `Saved ${hours}h ago`,
+  /** Template for days ago display (receives days count) */
+  DAYS_AGO: (days: number) => `Saved ${days}d ago`,
+  /** Displayed when saved more than 30 days ago */
+  LONG_AGO: "Saved a while ago",
+  /** Threshold in seconds for "just now" display */
+  JUST_NOW_THRESHOLD_S: 10,
+  /** Seconds per minute for time calculations */
+  SECONDS_PER_MINUTE: 60,
+  /** Minutes per hour for time calculations */
+  MINUTES_PER_HOUR: 60,
+  /** Hours per day for time calculations */
+  HOURS_PER_DAY: 24,
+  /** Days threshold for "a while ago" display */
+  DAYS_LONG_AGO_THRESHOLD: 30,
+} as const;
+
+/**
+ * Focus announcer templates for screen reader step announcements
+ * Flexy says: No hardcoded announcer text - everything configurable!
+ */
+export const FOCUS_ANNOUNCER = {
+  /** Template for step change announcement (receives step label) */
+  STEP_CHANGE: (stepLabel: string) => `Now on ${stepLabel} step`,
+  /** CSS class for the live region element */
+  LIVE_REGION_CLASS: "sr-only",
 } as const;
