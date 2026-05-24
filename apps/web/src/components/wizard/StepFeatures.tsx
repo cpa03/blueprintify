@@ -24,7 +24,13 @@
 import { useState, useCallback, useMemo, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
-import { SUGGESTED_FEATURES, FORM_LIMITS, TIMEOUTS, UI_CONTENT } from "../../config/constants";
+import {
+  SUGGESTED_FEATURES,
+  FORM_LIMITS,
+  TIMEOUTS,
+  SPRING_CONFIG,
+  UI_CONTENT,
+} from "../../config/constants";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 
@@ -251,7 +257,7 @@ export const StepFeatures = memo(function StepFeatures({
             </label>
             <div className="flex flex-wrap gap-2" role="group" aria-labelledby="suggestions-label">
               {suggestedNotAdded.map((feature) => (
-                <button
+                <motion.button
                   key={feature}
                   onClick={() => addFeature(feature)}
                   onKeyDown={(e) => {
@@ -260,6 +266,10 @@ export const StepFeatures = memo(function StepFeatures({
                       addFeature(feature);
                     }
                   }}
+                  layout
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", ...SPRING_CONFIG.SUBTLE_BOUNCE }}
                   className="tech-chip hover:border-accent-emerald/50"
                   aria-label={`Add suggestion: ${feature}`}
                 >
@@ -278,7 +288,7 @@ export const StepFeatures = memo(function StepFeatures({
                     />
                   </svg>
                   {feature}
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
