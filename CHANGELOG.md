@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive database service test coverage (49 tests)
 - Warning log when rate limiter is not configured for improved observability
 - `countPublicTemplatesByCategory` method to DatabaseService for template analytics
+- Success animation on export button for visual completion feedback
+- Spring dismiss animation on toast notification button
+- Smooth cross-fade transition between editor empty and content states ([#1297](https://github.com/cpa03/blueprintify/pull/1297))
+- Confirmation dialog before New Project to prevent accidental data loss
 
 ### Changed
 
@@ -31,6 +35,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved StepIndicator accessibility for mobile screen readers ([#818](https://github.com/cpa03/blueprintify/pull/818))
 - Removed unused `rollup-plugin-visualizer` dependency from root package.json ([#1256](https://github.com/cpa03/blueprintify/pull/1256))
 - BroCula audit: improved a11y, preconnect hints, and LCP optimization for faster page loads ([#1259](https://github.com/cpa03/blueprintify/pull/1259))
+- Modularized hardcoded configuration values into constants across API and web apps ([#1289](https://github.com/cpa03/blueprintify/pull/1289))
+- Extracted route handler factory to eliminate handler duplication across routes ([#1288](https://github.com/cpa03/blueprintify/pull/1288))
+- Removed unused `MockDatabaseService` per cleanup task ([#1042](https://github.com/cpa03/blueprintify/pull/1042))
+- Added `engines` field to root `package.json` for Node version specification
 
 ### Fixed
 
@@ -41,6 +49,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Resolved ZodError deprecation warnings and npm audit vulnerabilities in dependency tree ([#1258](https://github.com/cpa03/blueprintify/pull/1258))
 - Standardized share route success response format for consistent API responses ([#1257](https://github.com/cpa03/blueprintify/pull/1257))
 - Expanded HTTP status type assertion in error handler for complete status code coverage
+- Global unhandled rejection and error handlers in frontend for improved resilience ([#1164](https://github.com/cpa03/blueprintify/pull/1164))
+- Pinned wrangler to v4.86.0 for Node.js v20 compatibility ([#1299](https://github.com/cpa03/blueprintify/pull/1299))
+- Restored accidentally removed `lsp` config section in `oh-my-openagent.json`
+- Corrected Prettier formatting across multiple files (workflows, index.html)
+
+### Performance
+
+- Reduced CLS from 0.891 to 0.153, improving Lighthouse performance score to 93
+- Reduced CLS from 0.903 to 0.162 via skeleton layout match ([#1300](https://github.com/cpa03/blueprintify/pull/1300))
+- Cached localStorage quota calculation to avoid blocking main thread ([#1307](https://github.com/cpa03/blueprintify/pull/1307))
+- Lazy-loaded Wizard, StepIndicator, ShowEditorButton - Lighthouse score 74→98
+- Optimized font loading and critical CSS rendering for Lighthouse performance
+- Fixed CLS by giving lazy-loaded TemplateGrid a min-height fallback ([#1290](https://github.com/cpa03/blueprintify/pull/1290))
 
 ### Security
 

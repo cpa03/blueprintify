@@ -4,6 +4,20 @@
 
 ## Current Focus: Repository Maintenance
 
+### Task: RepoKeeper Cleanup Cycle 6 (2026-05-24)
+
+- **Priority**: High
+- **Status**: Completed
+- **Objective**: Repository cleanup: update CHANGELOG, docs/features, findings, active-tasks; verify build/lint/test
+- **Actions**:
+  - [x] Update `CHANGELOG.md` — add recent commits to [Unreleased] (animation, perf, refactor, fix)
+  - [x] Update `docs/features.md` — add missing UI features (toast animation, success animation, cross-fade, confirmation dialog)
+  - [x] Update `docs/findings.md` — record cycle 6 observations
+  - [x] Update `docs/active-tasks.md` — this record
+  - [x] Verify build/lint/typecheck/test all pass — 841 tests passing (473 web + 261 api + 107 shared)
+  - [x] Create branch `chore/repokeeper-cleanup-cycle-6` from main
+  - [ ] Create PR with all cleanup changes
+
 ### Task: RepoKeeper Cleanup Cycle 3 (2026-05-23)
 
 - **Priority**: High
