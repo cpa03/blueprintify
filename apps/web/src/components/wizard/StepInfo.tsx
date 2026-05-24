@@ -119,6 +119,11 @@ export const StepInfo = memo(function StepInfo({
     if (canProceed) {
       nextStep();
     } else {
+      if (projectName.length < FORM_LIMITS.PROJECT_NAME.MIN) {
+        projectNameInputRef.current?.focus();
+      } else if (description.length < FORM_LIMITS.DESCRIPTION.MIN) {
+        descriptionRef.current?.focus();
+      }
       // Trigger shake animation for visual feedback
       setIsShaking(true);
       setTimeout(() => setIsShaking(false), TIMEOUTS.SHAKE_ANIMATION);
