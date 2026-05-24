@@ -181,7 +181,7 @@
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=optional"
       />
       <link
         rel="stylesheet"
@@ -190,12 +190,14 @@
     </noscript>
   </head>
   <body>
-    <div id="root">
+    <div id="root" style="position: relative;">
       <!-- Critical LCP Skeleton - Must be visible for Lighthouse to measure -->
       <div
         id="skeleton-loader"
         style="
-          min-height: 100vh;
+          position: absolute;
+          inset: 0;
+          z-index: 9999;
           background-color: #020617;
           color: #f8fafc;
           font-family:
@@ -204,6 +206,7 @@
             sans-serif;
           opacity: 1;
           transition: opacity 0.3s ease-out;
+          pointer-events: none;
         "
       >
         <header
