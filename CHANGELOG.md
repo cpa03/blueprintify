@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Enhanced ShowEditorButton with spring pop-in entrance animation for visual delight
 - Comprehensive body limit middleware tests for API request validation
 - Focus first invalid field on StepInfo form submit for better UX
 - Scroll-triggered shadow on header for depth feedback ([#1314](https://github.com/cpa03/blueprintify/pull/1314))
@@ -62,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Performance
 
+- Replaced O(n) localStorage quota serialization with incremental estimate for non-blocking performance ([#1329](https://github.com/cpa03/blueprintify/pull/1329))
 - Reduced CLS from 0.995 to 0.077, improving Lighthouse Performance to 95/100
 - Lazy-loaded TemplateGrid and VercelAnalytics to reduce initial bundle ([#1317](https://github.com/cpa03/blueprintify/pull/1317))
 - Reduced CLS from 0.891 to 0.153, improving Lighthouse performance score to 93
