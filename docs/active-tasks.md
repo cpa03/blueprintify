@@ -4,10 +4,24 @@
 
 ## Current Focus: Repository Maintenance
 
-### Task: RepoKeeper Cleanup Cycle 8 (2026-05-24)
+### Task: RepoKeeper Cleanup Cycle 9 (2026-05-24)
 
 - **Priority**: High
 - **Status**: Active
+- **Objective**: Repository cleanup: fix Prettier formatting, fix stale doc refs in main.yml, update CHANGELOG/docs/findings/active-tasks; verify build/lint/test
+- **Actions**:
+  - [x] Fix Prettier formatting in 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml)
+  - [x] Fix stale doc references in `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+  - [x] Update `CHANGELOG.md` — add ShowEditorButton spring pop-in animation feat, localStorage quota serialization perf improvement
+  - [x] Update `docs/findings.md` — record cycle 9 observations
+  - [x] Update `docs/active-tasks.md` — this record
+  - [x] Verify build/lint/typecheck/test all pass — 851 tests passing (473 web + 271 api + 107 shared)
+  - [ ] Create PR with all cleanup changes
+
+### Task: RepoKeeper Cleanup Cycle 8 (2026-05-24)
+
+- **Priority**: High
+- **Status**: Completed
 - **Objective**: Repository cleanup: fix Prettier formatting, update CHANGELOG/docs/findings/active-tasks; verify build/lint/test
 - **Actions**:
   - [x] Fix Prettier formatting in 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml)
@@ -16,7 +30,7 @@
   - [x] Update `docs/active-tasks.md` — this record
   - [x] Update `docs/bugs.md` — bump test count to 851, update date
   - [x] Verify build/lint/typecheck/test all pass — 851 tests passing (473 web + 271 api + 107 shared)
-  - [ ] Create PR with all cleanup changes
+  - [x] Create PR with all cleanup changes
 
 ### Task: RepoKeeper Cleanup Cycle 7 (2026-05-24)
 
@@ -167,5 +181,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-05-24 (Cycle 8)  
+**Last Updated**: 2026-05-24 (Cycle 9)  
 **Maintainer**: RepoKeeper
