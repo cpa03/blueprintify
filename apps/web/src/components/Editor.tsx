@@ -33,7 +33,7 @@ import { useEditorStore, resetAllStores, useToast } from "../store";
 import { useExportContext } from "../context/ExportContext";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
-import { TIMEOUTS, UI } from "../config/constants";
+import { TIMEOUTS, UI, CONFIRM_DIALOG } from "../config/constants";
 import { useLastSaved } from "../hooks/useLastSaved";
 import clsx from "clsx";
 
@@ -308,11 +308,11 @@ function EditorComponent(): JSX.Element {
         isOpen={showNewProjectConfirm}
         onClose={() => setShowNewProjectConfirm(false)}
         onConfirm={handleConfirmNewProject}
-        title="Start New Project?"
-        description="This will clear all your current blueprint and tasks content. This action cannot be undone."
-        confirmLabel="Start New"
-        cancelLabel="Cancel"
-        icon="🔄"
+        title={CONFIRM_DIALOG.NEW_PROJECT.TITLE}
+        description={CONFIRM_DIALOG.NEW_PROJECT.DESCRIPTION}
+        confirmLabel={CONFIRM_DIALOG.NEW_PROJECT.CONFIRM_LABEL}
+        cancelLabel={CONFIRM_DIALOG.NEW_PROJECT.CANCEL_LABEL}
+        icon={CONFIRM_DIALOG.NEW_PROJECT.ICON}
       />
     </>
   );

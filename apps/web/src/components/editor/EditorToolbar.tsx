@@ -30,8 +30,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { AnimatedCopyButton } from "../AnimatedCopyButton";
-import { SPRING_CONFIG } from "../../config/constants";
-import { COLORS } from "../../config/theme";
+import { SPRING_CONFIG, EDITOR_LABELS } from "../../config/constants";
+import { COLORS, EDITOR_ANIMATION } from "../../config/theme";
 
 export type ViewMode = "edit" | "preview" | "split";
 
@@ -63,15 +63,15 @@ function EditorToolbarComponent({
   const isCopied = copied === activeTab;
 
   const viewModeShortcuts: Record<ViewMode, string> = {
-    edit: "Ctrl+1",
-    split: "Ctrl+2",
-    preview: "Ctrl+3",
+    edit: EDITOR_LABELS.VIEW_MODE_SHORTCUTS.EDIT,
+    split: EDITOR_LABELS.VIEW_MODE_SHORTCUTS.SPLIT,
+    preview: EDITOR_LABELS.VIEW_MODE_SHORTCUTS.PREVIEW,
   };
 
   const viewModeLabels: Record<ViewMode, string> = {
-    edit: "Edit",
-    split: "Split",
-    preview: "Preview",
+    edit: EDITOR_LABELS.VIEW_MODES.EDIT,
+    split: EDITOR_LABELS.VIEW_MODES.SPLIT,
+    preview: EDITOR_LABELS.VIEW_MODES.PREVIEW,
   };
 
   return (
@@ -139,9 +139,7 @@ function EditorToolbarComponent({
           }}
           transition={{
             type: "spring",
-            stiffness: 400,
-            damping: 30,
-            mass: 0.8,
+            ...EDITOR_ANIMATION.VIEW_MODE_INDICATOR,
           }}
           style={{
             zIndex: 0,
@@ -185,7 +183,11 @@ function EditorToolbarComponent({
           onClick={onExport}
           disabled={!hasContent || isExporting}
           className="btn-secondary text-sm relative overflow-hidden"
-          aria-label={exportSuccess ? "Export successful" : "Export as ZIP"}
+          aria-label={
+            exportSuccess
+              ? EDITOR_LABELS.BUTTONS.EXPORT_SUCCESS_ARIA
+              : EDITOR_LABELS.BUTTONS.EXPORT_ARIA_LABEL
+          }
         >
           <AnimatePresence mode="wait">
             {isExporting ? (
@@ -240,7 +242,7 @@ function EditorToolbarComponent({
                   animate={{ opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  Generating...
+                  {EDITOR_LABELS.VIEW_MODES.GENERATING}
                 </motion.span>
               </motion.span>
             ) : exportSuccess ? (
@@ -277,7 +279,7 @@ function EditorToolbarComponent({
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.1 }}
                 >
-                  Exported!
+                  {EDITOR_LABELS.VIEW_MODES.EXPORTED}
                 </motion.span>
               </motion.span>
             ) : (
@@ -302,7 +304,7 @@ function EditorToolbarComponent({
                     d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                   />
                 </svg>
-                Export .zip
+                {EDITOR_LABELS.BUTTONS.EXPORT_ZIP}
               </motion.span>
             )}
           </AnimatePresence>

@@ -14,7 +14,12 @@ import { ErrorType } from "../errors";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { secureLogError } from "../utils/secureLog";
-import { API_METADATA, HTTP_STATUS, EXPORT_ERROR_MESSAGES } from "../config/constants";
+import {
+  API_METADATA,
+  HTTP_STATUS,
+  EXPORT_ERROR_MESSAGES,
+  EXPORT_TEMPLATES,
+} from "../config/constants";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -50,11 +55,11 @@ app.post(
       }
 
       if (format === "markdown") {
-        let markdown = `# ${projectName}\n\n`;
-        markdown += `Exported: ${timestamp}\n\n`;
-        markdown += `## Blueprint\n\n${blueprint}\n\n`;
+        let markdown = EXPORT_TEMPLATES.MARKDOWN.HEADER(projectName);
+        markdown += EXPORT_TEMPLATES.MARKDOWN.EXPORTED_LINE(timestamp);
+        markdown += EXPORT_TEMPLATES.MARKDOWN.BLUEPRINT_SECTION(blueprint);
         if (tasks) {
-          markdown += `## Tasks\n\n${tasks}\n\n`;
+          markdown += EXPORT_TEMPLATES.MARKDOWN.TASKS_SECTION(tasks);
         }
 
         return c.json({

@@ -320,6 +320,73 @@ export const tailwindTheme = {
 } as const;
 
 // ============================================================================
+// Toast Component Animation Springs (extracted from Toast.tsx)
+// Flexy says: No hardcoded animation values - everything in config!
+// ============================================================================
+
+export const TOAST_SPRING = {
+  /** Spring for warning icon animation in toast */
+  WARNING_ICON: { stiffness: 500, damping: 25 } as const,
+  /** Spring for checkmark reveal animation in toast */
+  CHECKMARK: { stiffness: 500, damping: 16, mass: 0.5 } as const,
+  /** Spring for dismiss button hover animation */
+  DISMISS_BUTTON: { stiffness: 400, damping: 20 } as const,
+  /** Progress ring transition duration */
+  PROGRESS_RING_TRANSITION: "stroke-dashoffset 0.1s linear",
+  /** Progress ring default dimensions */
+  PROGRESS_RING: {
+    SIZE_PX: 28,
+    STROKE_WIDTH: 2,
+  } as const,
+  /** Toast container layout */
+  CONTAINER_CLASSES:
+    "fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none" as const,
+} as const;
+
+// ============================================================================
+// Celebration Component Animation Springs (extracted from GenerationCelebration.tsx)
+// Flexy says: No hardcoded animation values - everything in config!
+// ============================================================================
+
+export const CELEBRATION_ANIMATION = {
+  /** Ripple ring animation durations */
+  RIPPLE: {
+    DURATION_S: 1,
+    EASE: "easeOut",
+  } as const,
+  /** Checkmark container spring */
+  CHECKMARK_CONTAINER: { stiffness: 500, damping: 30 } as const,
+  /** Checkmark spring delay (seconds) */
+  CHECKMARK_DELAY_S: 0.1,
+  /** Circle path reveal duration */
+  CIRCLE_REVEAL_DURATION_S: 0.4,
+  /** Checkmark path delay */
+  CHECKMARK_PATH_DELAY_S: 0.4,
+  /** Text fade-in delay */
+  TEXT_DELAY_S: 0.5,
+  /** Particle animation easing */
+  PARTICLE_EASE: [0.23, 1, 0.32, 1] as const,
+} as const;
+
+// ============================================================================
+// Editor Animation Springs (extracted from editor components)
+// Flexy says: No hardcoded animation values - everything in config!
+// ============================================================================
+
+export const EDITOR_ANIMATION = {
+  /** Spring for active tab indicator */
+  TAB_INDICATOR: { stiffness: 500, damping: 30 } as const,
+  /** Spring for view mode indicator */
+  VIEW_MODE_INDICATOR: { stiffness: 400, damping: 30, mass: 0.8 } as const,
+  /** Spring for content stats animation */
+  CONTENT_STATS: { stiffness: 500, damping: 30 } as const,
+  /** Spring for tooltip spring */
+  TOOLTIP_DEFAULT: { stiffness: 500, damping: 25 } as const,
+  /** Transition duration for stat number changes */
+  STAT_NUMBER_DURATION_S: 0.1,
+} as const;
+
+// ============================================================================
 // Utility Types
 // ============================================================================
 

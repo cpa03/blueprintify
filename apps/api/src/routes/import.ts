@@ -146,7 +146,7 @@ app.post(
           success: false,
           error: {
             type: ErrorType.INTERNAL,
-            message: error instanceof Error ? error.message : "Import failed",
+            message: error instanceof Error ? error.message : IMPORT_ERROR_MESSAGES.IMPORT_FAILED,
             timestamp: new Date().toISOString(),
           },
         },

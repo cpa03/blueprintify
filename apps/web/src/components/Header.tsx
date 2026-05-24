@@ -18,7 +18,7 @@
 
 import { memo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { UI_CONTENT, EXTERNAL_URLS } from "../config/constants";
+import { UI_CONTENT, EXTERNAL_URLS, SCROLL_THRESHOLDS } from "../config/constants";
 import { RippleButton } from "./RippleButton";
 
 /**
@@ -47,7 +47,7 @@ function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > SCROLL_THRESHOLDS.HEADER_SHADOW);
     };
 
     handleScroll();

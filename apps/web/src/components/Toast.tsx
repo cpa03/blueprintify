@@ -31,6 +31,7 @@ import { useState, useRef, useCallback, useEffect, forwardRef, memo } from "reac
 import { motion, AnimatePresence } from "framer-motion";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
 import { TOAST_CONFIG, SPRING_CONFIG } from "../config/constants";
+import { TOAST_SPRING } from "../config/theme";
 
 const toastIcons: Record<ToastType, string> = {
   success: TOAST_CONFIG.ICONS.SUCCESS,
@@ -56,8 +57,8 @@ interface ProgressRingProps {
 
 const ProgressRing = memo(function ProgressRing({
   progress,
-  size = 28,
-  strokeWidth = 2,
+  size = TOAST_SPRING.PROGRESS_RING.SIZE_PX,
+  strokeWidth = TOAST_SPRING.PROGRESS_RING.STROKE_WIDTH,
   color = "currentColor",
 }: ProgressRingProps) {
   const radius = (size - strokeWidth) / 2;
@@ -91,7 +92,7 @@ const ProgressRing = memo(function ProgressRing({
         strokeDasharray={circumference}
         strokeDashoffset={strokeDashoffset}
         style={{
-          transition: "stroke-dashoffset 0.1s linear",
+          transition: TOAST_SPRING.PROGRESS_RING_TRANSITION,
         }}
       />
     </svg>
@@ -208,7 +209,7 @@ const ToastItem = memo(
               initial={{ opacity: 0, scale: 0.5, y: 5 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.5, y: 5 }}
-              transition={{ type: "spring", stiffness: 500, damping: 25 }}
+              transition={{ type: "spring", ...TOAST_SPRING.WARNING_ICON }}
               className="absolute -top-1 -right-1 w-4 h-4 bg-current/20 rounded-full flex items-center justify-center"
               aria-hidden="true"
             >
@@ -232,9 +233,7 @@ const ToastItem = memo(
             animate={{ scale: 1 }}
             transition={{
               type: "spring",
-              stiffness: 500,
-              damping: 16,
-              mass: 0.5,
+              ...TOAST_SPRING.CHECKMARK,
               delay: 0.12,
             }}
             className="w-6 h-6 rounded-full bg-current/20 flex items-center justify-center font-bold text-sm relative z-10"
@@ -249,7 +248,7 @@ const ToastItem = memo(
           aria-label={`Dismiss ${toast.type} notification`}
           whileHover={{ scale: 1.15, rotate: 90 }}
           whileTap={{ scale: 0.9 }}
-          transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          transition={{ type: "spring", ...TOAST_SPRING.DISMISS_BUTTON }}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -270,7 +269,7 @@ function ToastContainerComponent(): JSX.Element {
   const removeToast = useToastStore((state) => state.removeToast);
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none">
+    <div className={TOAST_SPRING.CONTAINER_CLASSES}>
       <AnimatePresence mode="popLayout">
         {toasts.map((toast) => (
           <ToastItem key={toast.id} toast={toast} onRemove={removeToast} />
