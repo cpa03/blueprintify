@@ -437,6 +437,7 @@ export const ROUTE_PATHS = {
   IMPORT: "/import",
   STORAGE: "/storage",
   SHARE: "/share",
+  WARMUP: "/warmup",
 } as const;
 
 export const RATE_LIMIT_CONFIG = {
