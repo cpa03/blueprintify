@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeAll } from "vitest";
 import {
   sanitizeHtml,
   sanitizeMarkdown,
@@ -11,10 +11,16 @@ import {
   containsXSSPatterns,
   checkStorageQuota,
   validateJSONSecurity,
+  ensureDOMPurifyLoaded,
 } from "../lib/security";
 
 describe("Security Utilities", () => {
   describe("sanitizeHtml", () => {
+    // DOMPurify is lazy-loaded for perf - ensure it's resolved before testing
+    beforeAll(async () => {
+      await ensureDOMPurifyLoaded();
+    });
+
     it("should allow safe HTML tags", () => {
       const safeHtml = "<p>Hello <strong>world</strong></p>";
       const result = sanitizeHtml(safeHtml);

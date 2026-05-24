@@ -13,11 +13,51 @@
  * @see https://owasp.org/www-community/xss-filter-evasion-cheatsheet
  */
 
-import DOMPurify from "dompurify";
 import { z } from "zod";
 import { SECURITY_LIMITS } from "@blueprint/shared";
 import { SECURITY_CONFIG } from "../config/security";
 import { SECURITY_ERROR_MESSAGES } from "../config/constants";
+
+/**
+ * Lazy DOMPurify - ~40KB kept out of main bundle; only used on user save/render.
+ * Starts background import immediately; basic escape fallback before it resolves.
+ * Fallback is safe because sanitizeHtml runs after user interaction (generation done,
+ * content saved) by which time DOMPurify has loaded.
+ */
+import type { Config as DOMPurifyConfig } from "dompurify";
+
+let _DOMPurify: ((html: string, config?: DOMPurifyConfig) => string) | null = null;
+let _dompurifyPromise: Promise<void> | null = null;
+
+/** Start loading DOMPurify in background immediately; don't block initial render. */
+function _initDOMPurify(): Promise<void> {
+  if (!_dompurifyPromise) {
+    _dompurifyPromise = import("dompurify").then((mod) => {
+      _DOMPurify = (html: string, config?: DOMPurifyConfig) => mod.default.sanitize(html, config);
+    });
+  }
+  return _dompurifyPromise;
+}
+
+void _initDOMPurify();
+
+/**
+ * Ensure DOMPurify has loaded. Resolves immediately if already loaded.
+ * Useful in tests and SSR contexts where timing guarantees are needed.
+ */
+export function ensureDOMPurifyLoaded(): Promise<void> {
+  return _initDOMPurify();
+}
+
+/** Basic HTML escaping fallback before DOMPurify finishes loading. */
+function basicEscapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
+}
 export const ContentValidationSchema = z.object({
   blueprintContent: z
     .string()
@@ -44,7 +84,10 @@ export function containsXSSPatterns(content: string): boolean {
 }
 
 export function sanitizeHtml(html: string): string {
-  return DOMPurify.sanitize(html, SECURITY_CONFIG.DOMPURIFY_CONFIG);
+  if (_DOMPurify) {
+    return _DOMPurify(html, SECURITY_CONFIG.DOMPURIFY_CONFIG);
+  }
+  return basicEscapeHtml(html);
 }
 
 export function sanitizeMarkdown(markdown: string): string {
