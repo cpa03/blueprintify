@@ -68,6 +68,27 @@ export const CELEBRATION_TIMING = {
 } as const;
 
 /**
+ * Celebration particle configuration
+ * Controls the number, size, and spread of particles during the completion animation
+ */
+export const CELEBRATION_PARTICLE = {
+  /** Number of particles to generate */
+  COUNT: 24,
+  /** Minimum distance particles travel from center (px) */
+  BASE_DISTANCE_PX: 80,
+  /** Random additional distance range (px) - added to BASE_DISTANCE */
+  RANDOM_DISTANCE_PX: 120,
+  /** Minimum particle size (px) */
+  BASE_SIZE_PX: 6,
+  /** Random additional size range (px) - added to BASE_SIZE */
+  RANDOM_SIZE_PX: 8,
+  /** Particle shapes used for variety */
+  SHAPES: ["circle", "square", "star"] as const,
+  /** Animation duration in seconds */
+  ANIMATION_DURATION_S: 1.2,
+} as const;
+
+/**
  * Spring configurations for Framer Motion animations
  *
  * Usage:

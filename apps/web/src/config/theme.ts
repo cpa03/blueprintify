@@ -48,6 +48,7 @@ export const COLORS = {
     pink: "#ec4899",
     emerald: "#10b981",
     yellow: "#eab308",
+    violet: "#a855f7",
   },
 
   // Semantic colors

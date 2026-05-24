@@ -13,7 +13,12 @@
 import { useEffect, useState, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { CELEBRATION_COLORS, CELEBRATION_TIMING, SPRING_CONFIG } from "../config/constants";
+import {
+  CELEBRATION_COLORS,
+  CELEBRATION_TIMING,
+  CELEBRATION_PARTICLE,
+  SPRING_CONFIG,
+} from "../config/constants";
 
 interface Particle {
   id: number;
@@ -36,19 +41,20 @@ interface GenerationCelebrationProps {
   onComplete?: () => void;
 }
 
-const SHAPES: Particle["shape"][] = ["circle", "square", "star"];
-
 function generateParticles(centerX: number, centerY: number): Particle[] {
-  const particleCount = 24;
+  const particleShapes: Particle["shape"][] = [...CELEBRATION_PARTICLE.SHAPES];
   const particles: Particle[] = [];
 
-  for (let i = 0; i < particleCount; i++) {
-    const angle = (i / particleCount) * Math.PI * 2 + Math.random() * 0.5;
-    const distance = 80 + Math.random() * 120;
+  for (let i = 0; i < CELEBRATION_PARTICLE.COUNT; i++) {
+    const angle = (i / CELEBRATION_PARTICLE.COUNT) * Math.PI * 2 + Math.random() * 0.5;
+    const distance =
+      CELEBRATION_PARTICLE.BASE_DISTANCE_PX +
+      Math.random() * CELEBRATION_PARTICLE.RANDOM_DISTANCE_PX;
     const color = CELEBRATION_COLORS[i % CELEBRATION_COLORS.length]!;
-    const size = 6 + Math.random() * 8;
+    const size =
+      CELEBRATION_PARTICLE.BASE_SIZE_PX + Math.random() * CELEBRATION_PARTICLE.RANDOM_SIZE_PX;
     const rotation = Math.random() * 360;
-    const shape = SHAPES[i % SHAPES.length]!;
+    const shape = particleShapes[i % particleShapes.length]!;
 
     particles.push({
       id: i,
@@ -216,7 +222,7 @@ function GenerationCelebrationComponent({
               }}
               exit={{ opacity: 0 }}
               transition={{
-                duration: 1.2,
+                duration: CELEBRATION_PARTICLE.ANIMATION_DURATION_S,
                 ease: [0.23, 1, 0.32, 1],
               }}
             >

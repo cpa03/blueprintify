@@ -55,6 +55,7 @@ describe("Theme Configuration", () => {
       expect(COLORS.accent.pink).toBe("#ec4899");
       expect(COLORS.accent.emerald).toBe("#10b981");
       expect(COLORS.accent.yellow).toBe("#eab308");
+      expect(COLORS.accent.violet).toBe("#a855f7");
     });
 
     it("should have semantic colors defined", () => {
