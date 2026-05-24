@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { SPRING_CONFIG } from "../config/constants";
 
@@ -16,7 +17,7 @@ import { SPRING_CONFIG } from "../config/constants";
  *
  * @see https://www.w3.org/WAI/WCAG21/Understanding/bypass-blocks.html
  */
-export function SkipLink(): JSX.Element {
+export const SkipLink = memo(function SkipLink(): JSX.Element {
   return (
     <motion.a
       href="#main-content"
@@ -70,4 +71,4 @@ export function SkipLink(): JSX.Element {
       />
     </motion.a>
   );
-}
+});

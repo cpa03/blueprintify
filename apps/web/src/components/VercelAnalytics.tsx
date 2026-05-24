@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import { memo, type ReactElement } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -7,7 +7,7 @@ import { Analytics } from "@vercel/analytics/react";
  * Vercel deployments. Suppresses 404 console errors from /_vercel/ endpoints
  * that do not exist in local dev/preview mode.
  */
-export function VercelAnalytics(): ReactElement | null {
+export const VercelAnalytics = memo(function VercelAnalytics(): ReactElement | null {
   if (
     typeof window === "undefined" ||
     window.location.hostname === "localhost" ||
@@ -22,4 +22,4 @@ export function VercelAnalytics(): ReactElement | null {
       <Analytics />
     </>
   );
-}
+});
