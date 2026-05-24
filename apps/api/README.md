@@ -114,7 +114,7 @@ apps/api/
 │   ├── di/             # Dependency injection container
 │   │   ├── container.ts
 │   │   └── index.ts
-│   ├── errors/         # Custom error classes
+│   ├── errors.ts       # Custom error classes
 │   ├── middleware/     # Hono middleware
 │   │   ├── auth.ts         # API key authentication
 │   │   ├── bodyLimit.ts    # Request body size limits

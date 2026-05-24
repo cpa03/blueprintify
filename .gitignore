@@ -33,6 +33,7 @@ packages/*/*.tsbuildinfo
 *.swo
 *~
 *.bak
+*.bak.*
 
 # OS
 .DS_Store
