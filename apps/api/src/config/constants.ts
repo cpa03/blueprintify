@@ -403,6 +403,8 @@ export const VALIDATION_MESSAGES = {
   REQUEST_VALIDATION_FAILED: "Request validation failed",
   INVALID_JSON_BODY: "Invalid JSON in request body",
   VALIDATION_ERROR: "Validation error",
+  BODY_TOO_LARGE: (maxSize: number) =>
+    `Request body too large. Maximum allowed size is ${maxSize} bytes.`,
 } as const;
 
 // Configuration messages

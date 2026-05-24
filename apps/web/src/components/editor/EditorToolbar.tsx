@@ -31,6 +31,7 @@ import type { EditorTab } from "@blueprint/shared";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { AnimatedCopyButton } from "../AnimatedCopyButton";
 import { SPRING_CONFIG } from "../../config/constants";
+import { COLORS } from "../../config/theme";
 
 export type ViewMode = "edit" | "preview" | "split";
 
@@ -209,8 +210,8 @@ function EditorToolbarComponent({
                 >
                   <defs>
                     <linearGradient id="toolbar-export-spinner-grad" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="#6366f1" />
-                      <stop offset="100%" stopColor="#a855f7" />
+                      <stop offset="0%" stopColor={COLORS.primary[500]} />
+                      <stop offset="100%" stopColor={COLORS.accent.violet} />
                     </linearGradient>
                   </defs>
                   <circle
