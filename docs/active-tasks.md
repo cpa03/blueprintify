@@ -4,10 +4,23 @@
 
 ## Current Focus: Repository Maintenance
 
-### Task: RepoKeeper Cleanup Cycle 7 (2026-05-24)
+### Task: RepoKeeper Cleanup Cycle 8 (2026-05-24)
 
 - **Priority**: High
 - **Status**: Active
+- **Objective**: Repository cleanup: fix Prettier formatting, update CHANGELOG/docs/findings/active-tasks; verify build/lint/test
+- **Actions**:
+  - [x] Fix Prettier formatting in 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml)
+  - [x] Update `CHANGELOG.md` — add recent commits to [Unreleased] (feat: focus first invalid field, scroll-triggered shadow; perf: CLS 0.077, lazy load TemplateGrid; fix: warmup endpoint, index.html formatting; refactor: config constants; test: body limit middleware)
+  - [x] Update `docs/findings.md` — record cycle 8 observations
+  - [x] Update `docs/active-tasks.md` — this record
+  - [x] Verify build/lint/typecheck/test all pass — 841 tests passing (473 web + 261 api + 107 shared)
+  - [ ] Create PR with all cleanup changes
+
+### Task: RepoKeeper Cleanup Cycle 7 (2026-05-24)
+
+- **Priority**: High
+- **Status**: Completed
 - **Objective**: Repository cleanup: fix Prettier formatting, update docs, clean merged branches; verify build/lint/test
 - **Actions**:
   - [x] Fix Prettier formatting in 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml)
@@ -153,5 +166,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-05-24 (Cycle 7)  
+**Last Updated**: 2026-05-24 (Cycle 8)  
 **Maintainer**: RepoKeeper

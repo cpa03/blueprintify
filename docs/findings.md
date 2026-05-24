@@ -2,25 +2,26 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-24 - RepoKeeper Cleanup Cycle 7)
+## Current Cycle (2026-05-24 - RepoKeeper Cleanup Cycle 8)
 
 ### Findings
 
 - **Build/Lint/Typecheck/Test**: All passing clean. 841 tests (473 web + 261 api + 107 shared).
 - **Formatting**: 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml) had Prettier formatting issues — fixed.
-- **`docs/active-tasks.md`**: Last updated 2026-05-23 (Cycle 4), stale "Last Updated" date — added Cycle 7 entry, bumped date.
+- **`CHANGELOG.md`**: [Unreleased] section was missing recent commits (feat, perf, fix, refactor, test) from May 23-24 — updated.
+- **`docs/active-tasks.md`**: Cycle 7 had one unchecked subtask (Create PR) — marked Cycle 7 Complete, added Cycle 8 entry.
 - **Redundant/temp files**: None found. `.gitignore` is comprehensive and no stray files detected.
-- **Stale remote branches**: 90+ branches > 90 days old noted — no cleanup action taken (requires explicit owner approval). Two merged branches identified: `origin/fix/ci-mainyml-doc-refs-1293` and `origin/test-push-permission` — cleaned.
+- **Stale remote branches**: 90+ stale remote branches noted — no cleanup action taken (requires explicit owner approval).
+- **`.omo/ralph-loop.local.md`**: Active session file from current ulw-loop — preserved (cycle file, not stale).
 - **Dependencies**: No unused or mismatched dependencies detected. All internal workspace packages properly referenced.
 
 ### Actions Taken
 
 - Fixed Prettier formatting in `.github/workflows/` — iterate.yml, main.yml, on-pull.yml, parallel.yml
-- Updated `docs/active-tasks.md` — added cycle 7 entry, bumped Last Updated date
+- Updated `CHANGELOG.md` [Unreleased] — added items for feat (focus first invalid field, scroll-triggered shadow), perf (CLS 0.077, lazy load TemplateGrid), fix (warmup endpoint, index.html formatting), refactor (config constants), test (body limit middleware)
+- Updated `docs/active-tasks.md` — added cycle 8 entry
 - Updated `docs/findings.md` — this record
-- Cleaned merged stale branches: `fix/ci-mainyml-doc-refs-1293` and `test-push-permission`
 - Verified build/lint/typecheck/test all pass — 841 tests
-- Created branch `chore/repokeeper-cleanup-cycle-7` from main
 
 ---
 
@@ -44,5 +45,5 @@
 
 ---
 
-**Last Cleared**: 2026-05-23  
+**Last Cleared**: 2026-05-24  
 **Maintainer**: RepoKeeper
