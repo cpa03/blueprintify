@@ -126,7 +126,7 @@ export const StepInfo = memo(function StepInfo({
   };
 
   useEffect(() => {
-    projectNameInputRef.current?.focus();
+    projectNameInputRef.current?.focus({ preventScroll: true });
   }, []);
 
   return (

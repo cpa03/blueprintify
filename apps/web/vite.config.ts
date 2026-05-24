@@ -6,17 +6,23 @@ const DEV_SERVER_PORT = parseInt(process.env.VITE_DEV_SERVER_PORT || "3000", 10)
 const API_PROXY_TARGET = process.env.VITE_API_PROXY_TARGET || "http://localhost:8787";
 
 /**
- * Vite plugin to make CSS load asynchronously
- * Prevents render-blocking by using media="print" trick
+ * Vite plugin to preload CSS for early fetch while keeping it render-blocking.
+ * The preload ensures the CSS download starts as early as possible.
+ * Keeping the stylesheet sync prevents CLS from unstyled content during React hydration.
  */
-const asyncCssPlugin = (): Plugin => ({
-  name: "async-css",
+const preloadCssPlugin = (): Plugin => ({
+  name: "preload-css",
   transformIndexHtml(html) {
     return html.replace(/<link rel="stylesheet"([^>]*)>/g, (match, attributes) => {
       if (attributes.includes("media=") || attributes.includes('rel="preload"')) {
         return match;
       }
-      return `<link rel="stylesheet"${attributes} media="print" onload="this.media='all'; this.onload=null;">`;
+      const hrefMatch = attributes.match(/href="([^"]+)"/);
+      if (!hrefMatch) return match;
+      const href = hrefMatch[1];
+      const crossorigin = attributes.includes("crossorigin") ? " crossorigin" : "";
+      // Preload for early fetch + keep stylesheet sync to prevent CLS
+      return `<link rel="preload" as="style"${crossorigin} href="${href}">\n    <link rel="stylesheet"${attributes}>`;
     });
   },
 });
@@ -52,7 +58,7 @@ const fetchPriorityPlugin = (): Plugin => ({
 export default defineConfig({
   plugins: [
     react(),
-    asyncCssPlugin(),
+    preloadCssPlugin(),
     removeLazyPreloadPlugin(),
     fetchPriorityPlugin(),
     compression({
