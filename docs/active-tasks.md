@@ -14,7 +14,8 @@
   - [x] Update `CHANGELOG.md` — add recent commits to [Unreleased] (feat: focus first invalid field, scroll-triggered shadow; perf: CLS 0.077, lazy load TemplateGrid; fix: warmup endpoint, index.html formatting; refactor: config constants; test: body limit middleware)
   - [x] Update `docs/findings.md` — record cycle 8 observations
   - [x] Update `docs/active-tasks.md` — this record
-  - [x] Verify build/lint/typecheck/test all pass — 841 tests passing (473 web + 261 api + 107 shared)
+  - [x] Update `docs/bugs.md` — bump test count to 851, update date
+  - [x] Verify build/lint/typecheck/test all pass — 851 tests passing (473 web + 271 api + 107 shared)
   - [ ] Create PR with all cleanup changes
 
 ### Task: RepoKeeper Cleanup Cycle 7 (2026-05-24)
@@ -29,7 +30,7 @@
   - [x] Verify build/lint/typecheck/test all pass — 841 tests passing (473 web + 261 api + 107 shared)
   - [x] Clean merged stale branches (`fix/ci-mainyml-doc-refs-1293`, `test-push-permission`)
   - [x] Create branch `chore/repokeeper-cleanup-cycle-7` from main
-  - [ ] Create PR with all cleanup changes
+  - [x] Create PR with all cleanup changes
 
 ### Task: RepoKeeper Cleanup Cycle 6 (2026-05-24)
 
@@ -159,9 +160,9 @@ See [bugs.md](./bugs.md) for detailed bug information.
 ## Testing Coverage
 
 - **Frontend**: Co-located Vitest tests with component and store tests — 473 passing
-- **API**: Comprehensive route, middleware, service, and utility tests — 261 passing
+- **API**: Comprehensive route, middleware, service, and utility tests — 271 passing
 - **Shared**: Zod schema, type, and config tests — 107 passing
-- **Total**: 841 tests (all passing) [473 web + 261 api + 107 shared]
+- **Total**: 851 tests (all passing) [473 web + 271 api + 107 shared]
 - **TypeScript**: Strict mode, no unchecked `any` types
 
 ---
