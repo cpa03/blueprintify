@@ -145,6 +145,31 @@ export const SUSPICIOUS_JSON_KEYS = [
 ] as const;
 
 // ============================================================================
+// Security Error Messages
+// ============================================================================
+
+export const SECURITY_ERROR_MESSAGES = {
+  CONTENT_VALIDATION_FAILED: "Content validation failed",
+  XSS_PATTERNS_DETECTED:
+    "Content contains potentially dangerous XSS patterns. This may include script tags, event handlers, or javascript: URLs. Please remove any embedded scripts or suspicious HTML.",
+  XSS_DANGEROUS_PATTERNS: "Content contains potentially dangerous patterns",
+  CODEMIRROR_DANGEROUS_PATTERNS:
+    "Content contains CodeMirror-specific dangerous patterns (data: URLs, vbscript, CSS expressions, or IE-specific behaviors). These are blocked for security reasons.",
+  FILE_TYPE_NOT_ALLOWED: (extension: string, allowedTypes: string) =>
+    `File type ${extension} is not allowed. Allowed types: ${allowedTypes}`,
+  FILE_SIZE_EXCEEDED: (maxSizeMB: number) =>
+    `File size exceeds maximum allowed size of ${maxSizeMB}MB`,
+  FILE_VALIDATION_FAILED: "File validation failed",
+  PROTOTYPE_POLLUTION_DETECTED: "JSON contains potential prototype pollution vulnerabilities",
+  JSON_DEPTH_EXCEEDED: (maxDepth: number) =>
+    `JSON object depth exceeds maximum allowed limit (${maxDepth})`,
+  JSON_SUSPICIOUS_KEYS: (keys: string) => `JSON contains suspicious keys: ${keys}`,
+  INVALID_JSON_FORMAT: "Invalid JSON format",
+  STORAGE_QUOTA_EXCEEDED: "Storage quota exceeded. Please clear some data.",
+  UNKNOWN_SECURITY_ERROR: "An unknown security error occurred",
+} as const;
+
+// ============================================================================
 // Security Headers Configuration
 // ============================================================================
 

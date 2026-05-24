@@ -1,6 +1,17 @@
-// Keyboard configuration constants
-// Re-exports from main constants for modular imports
+/**
+ * Keyboard Shortcut Configuration Constants
+ * Source of truth for keyboard shortcut definitions
+ */
 
-import { KEYBOARD_SHORTCUTS } from "../constants";
-
-export { KEYBOARD_SHORTCUTS };
+// Keyboard shortcuts
+export const KEYBOARD_SHORTCUTS = {
+  TOGGLE_EDITOR: {
+    KEY: "e",
+    MODIFIER: "ctrl/cmd",
+    DESCRIPTION: "Toggle editor visibility",
+  },
+  CANCEL_GENERATION: {
+    KEY: "Escape",
+    DESCRIPTION: "Cancel generation",
+  },
+} as const;
