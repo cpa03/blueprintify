@@ -3,9 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
 import { Wizard } from "./components/Wizard";
-import { ToastContainer } from "./components/Toast";
 const ShowEditorButton = lazy(() =>
   import("./components/ShowEditorButton").then((m) => ({ default: m.ShowEditorButton }))
+);
+const ToastContainer = lazy(() =>
+  import("./components/Toast").then((m) => ({ default: m.ToastContainer }))
 );
 const TemplateGrid = lazy(() =>
   import("./components/TemplateGrid").then((m) => ({ default: m.TemplateGrid }))
@@ -261,7 +263,9 @@ function App(): JSX.Element {
         </div>
       </footer>
 
-      <ToastContainer />
+      <Suspense fallback={null}>
+        <ToastContainer />
+      </Suspense>
 
       <Suspense fallback={null}>
         <KeyboardShortcutsModal isOpen={showShortcutsModal} onClose={handleHideShortcuts} />
