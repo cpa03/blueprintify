@@ -4,6 +4,20 @@
 
 ## Current Focus: Repository Maintenance
 
+### Task: RepoKeeper Cleanup Cycle 7 (2026-05-24)
+
+- **Priority**: High
+- **Status**: Active
+- **Objective**: Repository cleanup: fix Prettier formatting, update docs, clean merged branches; verify build/lint/test
+- **Actions**:
+  - [x] Fix Prettier formatting in 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml)
+  - [x] Update `docs/findings.md` — record cycle 7 observations
+  - [x] Update `docs/active-tasks.md` — this record
+  - [x] Verify build/lint/typecheck/test all pass — 841 tests passing (473 web + 261 api + 107 shared)
+  - [x] Clean merged stale branches (`fix/ci-mainyml-doc-refs-1293`, `test-push-permission`)
+  - [x] Create branch `chore/repokeeper-cleanup-cycle-7` from main
+  - [ ] Create PR with all cleanup changes
+
 ### Task: RepoKeeper Cleanup Cycle 6 (2026-05-24)
 
 - **Priority**: High
@@ -16,7 +30,7 @@
   - [x] Update `docs/active-tasks.md` — this record
   - [x] Verify build/lint/typecheck/test all pass — 841 tests passing (473 web + 261 api + 107 shared)
   - [x] Create branch `chore/repokeeper-cleanup-cycle-6` from main
-  - [ ] Create PR with all cleanup changes
+  - [x] Create PR with all cleanup changes
 
 ### Task: RepoKeeper Cleanup Cycle 3 (2026-05-23)
 
@@ -139,5 +153,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-05-23 (Cycle 4)  
+**Last Updated**: 2026-05-24 (Cycle 7)  
 **Maintainer**: RepoKeeper
