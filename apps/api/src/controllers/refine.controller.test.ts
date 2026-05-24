@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { RefineController } from "./refine.controller";
+import type { RefineContext } from "../types";
 import { ConfigurationError } from "../errors";
 import { MOCK_ENV, setupStreamMocks } from "../test-utils";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
@@ -23,11 +24,11 @@ vi.mock("../errors", () => ({
 }));
 
 /** Creates a mock Hono context with get method for validated data */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const createMockContext = (env: Record<string, string>, validatedData?: unknown): any => ({
-  env,
-  get: (key: string) => (key === "validatedData" ? validatedData : undefined),
-});
+const createMockContext = (env: Record<string, string>, validatedData?: unknown): RefineContext =>
+  ({
+    env,
+    get: (key: string) => (key === "validatedData" ? validatedData : undefined),
+  }) as unknown as RefineContext;
 
 describe("RefineController", () => {
   let controller: RefineController;
@@ -58,8 +59,7 @@ describe("RefineController", () => {
     it("should throw ConfigurationError when API key is missing", async () => {
       const mockContext = {
         env: {},
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any;
+      } as unknown as RefineContext;
 
       await expect(controller.refineContent(mockContext)).rejects.toThrow(ConfigurationError);
     });
@@ -85,8 +85,7 @@ describe("RefineController", () => {
     it("should validate environment before refining", async () => {
       const mockContext = {
         env: {},
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any;
+      } as unknown as RefineContext;
 
       await expect(controller.refineContent(mockContext)).rejects.toThrow();
     });
