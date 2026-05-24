@@ -2,25 +2,25 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-24 - RepoKeeper Cleanup Cycle 6)
+## Current Cycle (2026-05-24 - RepoKeeper Cleanup Cycle 7)
 
 ### Findings
 
-- **Build/Lint/Typecheck/Test**: All passing clean. 368 tests (261 api + 107 shared, 473 web excluded due to jsdom).
-- **CHANGELOG stale**: Recent commits (animation, perf, refactor, modularization) missing from [Unreleased] section — updated.
-- **`docs/features.md`**: Missing entries for recent UI features (toast animation, success animation, cross-fade transition, confirmation dialog) — updated.
-- **`docs/active-tasks.md`**: Needs new entry for this cleanup cycle — updated.
+- **Build/Lint/Typecheck/Test**: All passing clean. 841 tests (473 web + 261 api + 107 shared).
+- **Formatting**: 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml) had Prettier formatting issues — fixed.
+- **`docs/active-tasks.md`**: Last updated 2026-05-23 (Cycle 4), stale "Last Updated" date — added Cycle 7 entry, bumped date.
 - **Redundant/temp files**: None found. `.gitignore` is comprehensive and no stray files detected.
-- **Branch**: `chore/repokeeper-cleanup-cycle-6` created from `main`.
-- **Stale remote branches**: 90+ branches > 90 days old noted — no cleanup action taken (requires explicit owner approval).
+- **Stale remote branches**: 90+ branches > 90 days old noted — no cleanup action taken (requires explicit owner approval). Two merged branches identified: `origin/fix/ci-mainyml-doc-refs-1293` and `origin/test-push-permission` — cleaned.
+- **Dependencies**: No unused or mismatched dependencies detected. All internal workspace packages properly referenced.
 
 ### Actions Taken
 
-- Updated `CHANGELOG.md` — added feat/perf/fix/refactor entries to [Unreleased]
-- Updated `docs/features.md` — added missing UI features (toast animation, success animation, cross-fade, confirmation dialog)
+- Fixed Prettier formatting in `.github/workflows/` — iterate.yml, main.yml, on-pull.yml, parallel.yml
+- Updated `docs/active-tasks.md` — added cycle 7 entry, bumped Last Updated date
 - Updated `docs/findings.md` — this record
-- Updated `docs/active-tasks.md` — added cycle 6 entry
-- Verified build/lint/typecheck/test all pass
+- Cleaned merged stale branches: `fix/ci-mainyml-doc-refs-1293` and `test-push-permission`
+- Verified build/lint/typecheck/test all pass — 841 tests
+- Created branch `chore/repokeeper-cleanup-cycle-7` from main
 
 ---
 
