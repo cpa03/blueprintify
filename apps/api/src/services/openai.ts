@@ -41,19 +41,20 @@ export interface StreamOptions {
 
 /**
  * Singleton circuit breaker instance for AI service resilience.
- * Lazily initialized on first use via getCircuitBreaker().
+ * Eagerly initialized at module load via initializeCircuitBreaker().
  */
 let circuitBreaker: CircuitBreaker | null = null;
 
 /**
- * Returns the singleton circuit breaker instance for AI API calls.
+ * Initializes and returns the singleton circuit breaker instance.
  *
- * Creates a new circuit breaker with default configuration on first call,
- * then returns the cached instance for subsequent calls.
+ * Creates a new circuit breaker with default configuration if not yet created,
+ * then returns the cached instance. Can be called eagerly during warmup
+ * to ensure the circuit breaker is ready before handling traffic.
  *
  * @returns The shared CircuitBreaker instance
  */
-function getCircuitBreaker(): CircuitBreaker {
+export function initializeCircuitBreaker(): CircuitBreaker {
   if (!circuitBreaker) {
     circuitBreaker = createCircuitBreaker({
       failureThreshold: CIRCUIT_BREAKER_CONFIG.DEFAULT_FAILURE_THRESHOLD,
@@ -62,6 +63,16 @@ function getCircuitBreaker(): CircuitBreaker {
     });
   }
   return circuitBreaker;
+}
+
+/**
+ * Returns the singleton circuit breaker instance.
+ * Alias for initializeCircuitBreaker() that guarantees the breaker is ready.
+ *
+ * @returns The shared CircuitBreaker instance
+ */
+function getCircuitBreaker(): CircuitBreaker {
+  return initializeCircuitBreaker();
 }
 
 /**

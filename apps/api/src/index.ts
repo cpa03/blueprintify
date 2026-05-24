@@ -38,6 +38,7 @@ import {
   setEnvConfig,
 } from "./config/constants";
 import { initializeContainer } from "./di";
+import { initializeCircuitBreaker } from "./services/openai";
 
 initializeContainer();
 
@@ -77,7 +78,7 @@ app.use(
 app.use("*", prettyJSON());
 app.use("*", bodyLimit(bodyLimitConfigs.standard));
 app.use("*", requestLogger({ excludePaths: [ROUTE_PATHS.ROOT] }));
-app.use("*", apiKeyAuth({ excludePaths: [ROUTE_PATHS.ROOT] }));
+app.use("*", apiKeyAuth({ excludePaths: [ROUTE_PATHS.ROOT, ROUTE_PATHS.WARMUP] }));
 app.use("*", rateLimit(rateLimitConfigs.standard));
 
 app.get(ROUTE_PATHS.ROOT, (c) => {
@@ -116,6 +117,19 @@ app.get(ROUTE_PATHS.ROOT, (c) => {
       shareCreate: `${API_ENDPOINTS.SHARE_CREATE.method} ${API_ENDPOINTS.SHARE_CREATE.path}`,
       shareGet: `${API_ENDPOINTS.SHARE_GET.method} ${API_ENDPOINTS.SHARE_GET.path}`,
       shareDelete: `${API_ENDPOINTS.SHARE_DELETE.method} ${API_ENDPOINTS.SHARE_DELETE.path}`,
+    },
+  });
+});
+
+app.get(ROUTE_PATHS.WARMUP, (c) => {
+  const cb = initializeCircuitBreaker();
+  const metrics = cb.getState();
+  return c.json({
+    status: "ok",
+    circuitBreaker: {
+      state: metrics.state,
+      failures: metrics.failures,
+      successes: metrics.successes,
     },
   });
 });
