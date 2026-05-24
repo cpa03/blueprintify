@@ -69,7 +69,7 @@ app.get("/quota", rateLimit(rateLimitConfigs.standard), async (c) => {
 
     // Cache quota response - this data rarely changes
     c.header(
-      "Cache-Control",
+      API_HEADERS.CACHE_CONTROL.HEADER_NAME,
       API_HEADERS.CACHE_CONTROL.PUBLIC_WITH_REVALIDATE(
         CACHE_CONFIG.ROOT_MAX_AGE,
         CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE

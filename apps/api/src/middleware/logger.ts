@@ -174,8 +174,7 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
     const allHeaders = c.req.header();
     Object.entries(allHeaders).forEach(([key, value]) => {
       if (
-        !key.toLowerCase().includes("authorization") &&
-        !key.toLowerCase().includes("cookie") &&
+        !LOGGER_CONFIG.SANITIZED_HEADER_EXCLUDE.some((h) => key.toLowerCase().includes(h)) &&
         value !== undefined
       ) {
         headers[key] = value;
@@ -202,7 +201,7 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
         const clonedReq = c.req.raw.clone();
         requestLog.body = await clonedReq.json();
       } catch {
-        requestLog.body = "[unparsable]";
+        requestLog.body = LOGGER_CONFIG.UNPARSABLE_BODY;
       }
     }
 
@@ -241,7 +240,7 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
         const clonedRes = c.res.clone();
         responseLog.body = await clonedRes.json();
       } catch {
-        responseLog.body = "[unparsable]";
+        responseLog.body = LOGGER_CONFIG.UNPARSABLE_BODY;
       }
     }
 

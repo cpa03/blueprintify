@@ -227,6 +227,8 @@ export const API_HEADERS = {
   },
   /** Standard cache-control directives */
   CACHE_CONTROL: {
+    /** The header name for Cache-Control */
+    HEADER_NAME: "Cache-Control",
     /** Public cache directive with only max-age */
     PUBLIC_MAX_AGE: (maxAge: number): string => `public, max-age=${maxAge}`,
     /** Public cache directive with max-age and stale-while-revalidate */
@@ -284,6 +286,8 @@ export const API_HEADERS = {
     FORWARDED_FOR: "x-forwarded-for",
     /** User agent header */
     USER_AGENT: "user-agent",
+    /** Content type header */
+    CONTENT_TYPE: "content-type",
     /** Content length header */
     CONTENT_LENGTH: "content-length",
   },
@@ -527,6 +531,8 @@ export const LOGGER_CONFIG = {
   REQUEST_ID_SUFFIX_LENGTH: 4,
   /** Default paths excluded from request logging */
   DEFAULT_EXCLUDE_PATHS: ["/"] as const,
+  SANITIZED_HEADER_EXCLUDE: ["authorization", "cookie"] as const,
+  UNPARSABLE_BODY: "[unparsable]",
 } as const;
 
 export const RATE_LIMIT_CONSTANTS = {

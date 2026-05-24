@@ -131,6 +131,10 @@ export const STORAGE_CONFIG = {
   MAX_LATENCY_MEASUREMENTS: 100,
   DEFAULT_MAX_RETRIES: 3,
   DEFAULT_RETRY_DELAY_MS: 100,
+  /** TTL (ms) for cached quota values to avoid serializing all localStorage on every call */
+  QUOTA_CACHE_TTL_MS: 5000,
+  /** Browser-specific localStorage quota exceeded error codes */
+  BROWSER_QUOTA_ERROR_CODES: { CHROME: 22, FIREFOX: 1014 } as const,
 };
 
 // UI Configuration
@@ -217,6 +221,7 @@ export const EXPORT_CONFIG = {
   METADATA_VERSION: "1.0.0",
   DOCS_FOLDER: ".docs",
   ZIP_FILENAME_SUFFIX: ".zip",
+  DATE_FORMAT_SEPARATOR: "T",
 } as const;
 
 // Suggested features for quick add

@@ -82,7 +82,7 @@ app.use("*", rateLimit(rateLimitConfigs.standard));
 
 app.get(ROUTE_PATHS.ROOT, (c) => {
   c.header(
-    "Cache-Control",
+    API_HEADERS.CACHE_CONTROL.HEADER_NAME,
     API_HEADERS.CACHE_CONTROL.PUBLIC_WITH_REVALIDATE(
       CACHE_CONFIG.ROOT_MAX_AGE,
       CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE
