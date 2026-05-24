@@ -1,18 +1,14 @@
-import { useState, Suspense, lazy, useEffect, useCallback, useRef } from "react";
+import { useState, lazy, Suspense, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "./components/Header";
-const StepIndicator = lazy(() =>
-  import("./components/StepIndicator").then((m) => ({ default: m.StepIndicator }))
-);
-const Wizard = lazy(() => import("./components/Wizard").then((m) => ({ default: m.Wizard })));
+import { StepIndicator } from "./components/StepIndicator";
+import { TemplateGrid } from "./components/TemplateGrid";
+import { Wizard } from "./components/Wizard";
+import { ToastContainer } from "./components/Toast";
 const ShowEditorButton = lazy(() =>
   import("./components/ShowEditorButton").then((m) => ({ default: m.ShowEditorButton }))
 );
-import { ToastContainer } from "./components/Toast";
 const KeyboardShortcutsModal = lazy(() => import("./components/KeyboardShortcutsModal"));
-const TemplateGrid = lazy(() =>
-  import("./components/TemplateGrid").then((m) => ({ default: m.TemplateGrid }))
-);
 import { SkipLink } from "./components/SkipLink";
 import { useWizardStore, useEditorStore } from "./store";
 import { UI_CONTENT } from "./config/constants";
@@ -136,24 +132,14 @@ function App(): JSX.Element {
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <Suspense
-                  fallback={
-                    <div className="flex items-center justify-center min-h-[300px] py-12">
-                      <div className={SPINNER.DEFAULT}></div>
-                    </div>
-                  }
-                >
-                  <TemplateGrid />
-                </Suspense>
+                <TemplateGrid />
                 <div className={LAYOUT.TEMPLATES_DIVIDER}>{UI_CONTENT.TEMPLATES_DIVIDER}</div>
               </motion.div>
             )}
           </AnimatePresence>
 
           {/* Step Indicator */}
-          <Suspense fallback={<div className="h-12" />}>
-            <StepIndicator />
-          </Suspense>
+          <StepIndicator />
 
           {/* Split Pane Layout */}
           <div className={LAYOUT.SPLIT_PANE}>
@@ -163,15 +149,7 @@ function App(): JSX.Element {
                 showEditor ? LAYOUT.HALF_WIDTH : LAYOUT.FULL_WIDTH
               }`}
             >
-              <Suspense
-                fallback={
-                  <div className="flex items-center justify-center min-h-[400px] py-12">
-                    <div className="w-8 h-8 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin"></div>
-                  </div>
-                }
-              >
-                <Wizard />
-              </Suspense>
+              <Wizard />
             </div>
 
             {/* Editor Panel */}
