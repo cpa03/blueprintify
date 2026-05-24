@@ -542,6 +542,88 @@ export const EXTERNAL_URLS = {
   PROJECT_HOMEPAGE: ENV.PROJECT_HOMEPAGE_URL,
 };
 
+/**
+ * Scroll trigger thresholds for UI interactions
+ * Flexy says: No hardcoded scroll values - everything configurable!
+ */
+export const SCROLL_THRESHOLDS = {
+  /** Header shadow trigger (px) */
+  HEADER_SHADOW: 20,
+} as const;
+
+/**
+ * Vercel deployment detection hostnames
+ * Flexy says: No hardcoded hostnames - everything in config!
+ */
+export const VERCEL_DOMAINS = {
+  /** Local development hostnames that should NOT show Vercel analytics */
+  LOCAL: ["localhost", "127.0.0.1"] as readonly string[],
+};
+
+/**
+ * Editor UI labels and text
+ * Flexy says: No hardcoded editor labels - everything configurable!
+ */
+export const EDITOR_LABELS = {
+  CONTENT_STATS: {
+    CHARS: "Chars",
+    WORDS: "Words",
+  },
+  VIEW_MODES: {
+    EDIT: "Edit",
+    SPLIT: "Split",
+    PREVIEW: "Preview",
+    GENERATING: "Generating...",
+    EXPORTED: "Exported!",
+  },
+  VIEW_MODE_SHORTCUTS: {
+    EDIT: "Ctrl+1",
+    SPLIT: "Ctrl+2",
+    PREVIEW: "Ctrl+3",
+  },
+  BUTTONS: {
+    EXPORT_ZIP: "Export .zip",
+    NEW_PROJECT: "New",
+    EXPORT_ARIA_LABEL: "Export as ZIP",
+    EXPORT_SUCCESS_ARIA: "Export successful",
+  },
+} as const;
+
+/**
+ * Wizard step titles used for document title and accessibility
+ * Flexy says: No hardcoded step titles - everything configurable!
+ */
+export const STEP_TITLES: Record<string, string> = {
+  info: "Project Info",
+  stack: "Tech Stack",
+  features: "Features",
+  review: "Review",
+  generating: "Generating...",
+};
+
+/**
+ * Celebration component text
+ * Flexy says: No hardcoded celebration text - everything configurable!
+ */
+export const CELEBRATION_TEXT = {
+  COMPLETE: "Generation Complete!",
+} as const;
+
+/**
+ * New Project confirmation dialog text
+ * Flexy says: No hardcoded dialog text - everything configurable!
+ */
+export const CONFIRM_DIALOG = {
+  NEW_PROJECT: {
+    TITLE: "Start New Project?",
+    DESCRIPTION:
+      "This will clear all your current blueprint and tasks content. This action cannot be undone.",
+    CONFIRM_LABEL: "Start New",
+    CANCEL_LABEL: "Cancel",
+    ICON: "🔄",
+  },
+} as const;
+
 // UI Fallback values for environment-dependent configs
 export const UI_FALLBACKS = {
   API_BASE: ENV.API_BASE_URL,

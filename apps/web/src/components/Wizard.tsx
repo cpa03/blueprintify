@@ -25,7 +25,7 @@ import { useWizardStore } from "../store";
 import { useEditorStore } from "../store";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useFocusOnStepChange, useStepAnnouncer } from "../hooks/useFocusOnStepChange";
-import { WIZARD_STEPS } from "../config/constants";
+import { WIZARD_STEPS, STEP_TITLES } from "../config/constants";
 import { SPINNER } from "../config/styles";
 import type { AnimationDirection } from "../utils/motion";
 
@@ -41,18 +41,6 @@ const StepReview = lazy(() =>
 const StepGenerating = lazy(() =>
   import("./wizard/StepGenerating").then((m) => ({ default: m.StepGenerating }))
 );
-
-/**
- * Human-readable titles for each wizard step.
- * Used for document title and accessibility announcements.
- */
-const STEP_TITLES: Record<string, string> = {
-  info: "Project Info",
-  stack: "Tech Stack",
-  features: "Features",
-  review: "Review",
-  generating: "Generating...",
-};
 
 /**
  * Main wizard component that renders the current step content.

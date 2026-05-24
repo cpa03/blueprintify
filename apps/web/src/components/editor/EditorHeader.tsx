@@ -31,7 +31,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { LastSavedIndicator } from "../LastSavedIndicator";
-import { SPRING_CONFIG } from "../../config/constants";
+import { SPRING_CONFIG, EDITOR_LABELS } from "../../config/constants";
+import { EDITOR_ANIMATION } from "../../config/theme";
 import clsx from "clsx";
 
 interface EditorHeaderProps {
@@ -84,8 +85,7 @@ const TabButton = React.memo(function TabButton({
           initial={false}
           transition={{
             type: "spring",
-            stiffness: 500,
-            damping: 30,
+            ...EDITOR_ANIMATION.TAB_INDICATOR,
           }}
           style={{ zIndex: -1 }}
         />
@@ -115,7 +115,7 @@ const ContentStats = React.memo(function ContentStats({ content }: { content: st
           className="hidden md:flex items-center gap-3 text-[10px] uppercase tracking-wider font-bold text-dark-400 bg-dark-800/50 px-2 py-1 rounded-md border border-dark-700/50"
         >
           <div className="flex items-center gap-1">
-            <span className="text-dark-500">Chars</span>
+            <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.CHARS}</span>
             <motion.span
               key={charCount}
               className="tabular-nums text-primary-400"
@@ -128,7 +128,7 @@ const ContentStats = React.memo(function ContentStats({ content }: { content: st
           </div>
           <div className="w-px h-2 bg-dark-700" />
           <div className="flex items-center gap-1">
-            <span className="text-dark-500">Words</span>
+            <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.WORDS}</span>
             <motion.span
               key={wordCount}
               className="tabular-nums text-secondary-400"

@@ -4,7 +4,7 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ReducedMotionProvider } from "./context/ReducedMotionContext";
 import { ExportProvider } from "./context/ExportContext";
 import { MotionConfigWrapper } from "./components/MotionConfigWrapper";
-import { SKELETON_CONFIG } from "./config/constants";
+import { SKELETON_CONFIG, VERCEL_DOMAINS } from "./config/constants";
 import "./index.css";
 
 // Static import App to avoid an extra network round-trip that delays hydration and LCP
@@ -47,9 +47,7 @@ const VercelAnalyticsComponent = React.lazy(() =>
 
 function Root(): JSX.Element {
   const isVercel =
-    typeof window !== "undefined" &&
-    window.location.hostname !== "localhost" &&
-    window.location.hostname !== "127.0.0.1";
+    typeof window !== "undefined" && !VERCEL_DOMAINS.LOCAL.includes(window.location.hostname);
 
   return (
     <React.StrictMode>

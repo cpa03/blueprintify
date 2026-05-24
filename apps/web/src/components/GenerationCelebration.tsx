@@ -17,8 +17,10 @@ import {
   CELEBRATION_COLORS,
   CELEBRATION_TIMING,
   CELEBRATION_PARTICLE,
+  CELEBRATION_TEXT,
   SPRING_CONFIG,
 } from "../config/constants";
+import { CELEBRATION_ANIMATION } from "../config/theme";
 
 interface Particle {
   id: number;
@@ -223,7 +225,7 @@ function GenerationCelebrationComponent({
               exit={{ opacity: 0 }}
               transition={{
                 duration: CELEBRATION_PARTICLE.ANIMATION_DURATION_S,
-                ease: [0.23, 1, 0.32, 1],
+                ease: CELEBRATION_ANIMATION.PARTICLE_EASE,
               }}
             >
               <ParticleShape shape={particle.shape} size={particle.size} color={particle.color} />
@@ -252,8 +254,8 @@ function GenerationCelebrationComponent({
                 opacity: [0, 0.5, 0],
               }}
               transition={{
-                duration: 1,
-                ease: "easeOut",
+                duration: CELEBRATION_ANIMATION.RIPPLE.DURATION_S,
+                ease: CELEBRATION_ANIMATION.RIPPLE.EASE,
               }}
             />
 
@@ -263,9 +265,8 @@ function GenerationCelebrationComponent({
               animate={{ scale: 1 }}
               transition={{
                 type: "spring",
-                stiffness: 500,
-                damping: 30,
-                delay: 0.1,
+                ...CELEBRATION_ANIMATION.CHECKMARK_CONTAINER,
+                delay: CELEBRATION_ANIMATION.CHECKMARK_DELAY_S,
               }}
             >
               <svg
@@ -304,7 +305,7 @@ function GenerationCelebrationComponent({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
             >
-              Generation Complete!
+              {CELEBRATION_TEXT.COMPLETE}
             </motion.p>
           </motion.div>
         )}

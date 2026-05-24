@@ -371,6 +371,29 @@ export const PROMPT_INPUT_CONFIG = {
 } as const;
 
 /**
+ * SSE CORS headers for streaming responses
+ * Flexy says: No hardcoded CORS header strings - everything in config!
+ */
+export const SSE_CORS_HEADERS = {
+  ACCESS_CONTROL_ALLOW_ORIGIN: "Access-Control-Allow-Origin",
+  ACCESS_CONTROL_ALLOW_METHODS: "Access-Control-Allow-Methods",
+  ACCESS_CONTROL_ALLOW_HEADERS: "Access-Control-Allow-Headers",
+} as const;
+
+/**
+ * Export template builders
+ * Flexy says: No hardcoded template strings - everything in config!
+ */
+export const EXPORT_TEMPLATES = {
+  MARKDOWN: {
+    HEADER: (projectName: string): string => `# ${projectName}\n\n`,
+    EXPORTED_LINE: (timestamp: string): string => `Exported: ${timestamp}\n\n`,
+    BLUEPRINT_SECTION: (blueprint: string): string => `## Blueprint\n\n${blueprint}\n\n`,
+    TASKS_SECTION: (tasks: string): string => `## Tasks\n\n${tasks}\n\n`,
+  },
+} as const;
+
+/**
  * Body Size Limits Configuration
  * Flexy says: extracted from middleware/bodyLimit.ts for shared access
  */
@@ -424,8 +447,10 @@ export const CACHE_CONFIG = {
   ROOT_STALE_WHILE_REVALIDATE: 30,
   /** Share route cache: 5 minutes */
   SHARE_MAX_AGE: 300,
-  /** Share route stale-while-revalidate: 1 hour */
+  /** Share route cache stale-while-revalidate: 1 hour */
   SHARE_STALE_WHILE_REVALIDATE: 3600,
+  /** CDN cache control format template */
+  CDN_MAX_AGE_FORMAT: "public, max-age=",
 } as const;
 
 export const ROUTE_PATHS = {
@@ -521,6 +546,7 @@ export const IMPORT_ERROR_MESSAGES = {
   INVALID_JSON_FORMAT: "Invalid JSON format",
   MISSING_BLUEPRINT_CONTENT: "Invalid markdown format: could not extract blueprint content",
   UNSUPPORTED_FORMAT: (format: string) => `Unsupported import format: ${format}`,
+  IMPORT_FAILED: "Import failed",
 } as const;
 
 export const EXPORT_ERROR_MESSAGES = {
