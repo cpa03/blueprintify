@@ -45,6 +45,7 @@ interface EditorHeaderProps {
   hasContent: boolean;
   copied: string | null;
   isExporting?: boolean;
+  exportSuccess?: boolean;
   lastSavedText?: string;
   hasChanges?: boolean;
   content?: string;
@@ -155,6 +156,7 @@ function EditorHeaderComponent({
   hasContent,
   copied,
   isExporting = false,
+  exportSuccess = false,
   lastSavedText = "",
   hasChanges = false,
   content = "",
@@ -205,6 +207,7 @@ function EditorHeaderComponent({
         hasContent={hasContent}
         copied={copied}
         isExporting={isExporting}
+        exportSuccess={exportSuccess}
       />
     </div>
   );

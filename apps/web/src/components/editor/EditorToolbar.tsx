@@ -26,10 +26,11 @@
 
 import React from "react";
 import clsx from "clsx";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { AnimatedCopyButton } from "../AnimatedCopyButton";
+import { SPRING_CONFIG } from "../../config/constants";
 
 export type ViewMode = "edit" | "preview" | "split";
 
@@ -43,6 +44,7 @@ interface EditorToolbarProps {
   hasContent: boolean;
   copied: string | null;
   isExporting?: boolean;
+  exportSuccess?: boolean;
 }
 
 function EditorToolbarComponent({
@@ -55,6 +57,7 @@ function EditorToolbarComponent({
   hasContent,
   copied,
   isExporting = false,
+  exportSuccess = false,
 }: EditorToolbarProps) {
   const isCopied = copied === activeTab;
 
@@ -168,7 +171,7 @@ function EditorToolbarComponent({
       <Tooltip
         content={
           <div className="flex items-center gap-2">
-            <span>Export as ZIP</span>
+            <span>{exportSuccess ? "Exported!" : "Export as ZIP"}</span>
             <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-xs font-mono text-dark-300">
               Ctrl+E
             </kbd>
@@ -180,77 +183,128 @@ function EditorToolbarComponent({
         <button
           onClick={onExport}
           disabled={!hasContent || isExporting}
-          className="btn-secondary text-sm relative"
-          aria-label="Export as ZIP"
+          className="btn-secondary text-sm relative overflow-hidden"
+          aria-label={exportSuccess ? "Export successful" : "Export as ZIP"}
         >
-          {isExporting ? (
-            <>
-              <motion.svg
-                className="w-4 h-4 mr-2 flex-shrink-0"
-                viewBox="0 0 24 24"
-                fill="none"
-                animate={{ rotate: 360 }}
-                transition={{
-                  duration: 1,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                aria-hidden="true"
-              >
-                <defs>
-                  <linearGradient id="toolbar-export-spinner-grad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#6366f1" />
-                    <stop offset="100%" stopColor="#a855f7" />
-                  </linearGradient>
-                </defs>
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeOpacity={0.15}
-                  fill="none"
-                />
-                <motion.circle
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="url(#toolbar-export-spinner-grad)"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  fill="none"
-                  strokeDasharray={2 * Math.PI * 10}
-                  strokeDashoffset={2 * Math.PI * 10 * 0.75}
-                />
-              </motion.svg>
+          <AnimatePresence mode="wait">
+            {isExporting ? (
               <motion.span
+                key="exporting"
+                className="flex items-center"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
               >
-                Generating...
+                <motion.svg
+                  className="w-4 h-4 mr-2 flex-shrink-0"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  animate={{ rotate: 360 }}
+                  transition={{
+                    duration: 1,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                  aria-hidden="true"
+                >
+                  <defs>
+                    <linearGradient id="toolbar-export-spinner-grad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="#6366f1" />
+                      <stop offset="100%" stopColor="#a855f7" />
+                    </linearGradient>
+                  </defs>
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeOpacity={0.15}
+                    fill="none"
+                  />
+                  <motion.circle
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="url(#toolbar-export-spinner-grad)"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    fill="none"
+                    strokeDasharray={2 * Math.PI * 10}
+                    strokeDashoffset={2 * Math.PI * 10 * 0.75}
+                  />
+                </motion.svg>
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  Generating...
+                </motion.span>
               </motion.span>
-            </>
-          ) : (
-            <>
-              <svg
-                className="w-4 h-4 mr-1.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
+            ) : exportSuccess ? (
+              <motion.span
+                key="exported"
+                className="flex items-center text-accent-emerald"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-              Export .zip
-            </>
-          )}
+                <motion.svg
+                  className="w-4 h-4 mr-1.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                >
+                  <motion.path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M5 13l4 4L19 7"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 0.25, delay: 0.05 }}
+                  />
+                </motion.svg>
+                <motion.span
+                  initial={{ opacity: 0, x: -5 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  Exported!
+                </motion.span>
+              </motion.span>
+            ) : (
+              <motion.span
+                key="default"
+                className="flex items-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <svg
+                  className="w-4 h-4 mr-1.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+                Export .zip
+              </motion.span>
+            )}
+          </AnimatePresence>
         </button>
       </Tooltip>
 
