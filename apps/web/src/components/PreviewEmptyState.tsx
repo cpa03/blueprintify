@@ -12,6 +12,7 @@ import { memo } from "react";
 import { motion } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
+import { EMPTY_STATE_CONFIG } from "../config/constants";
 
 interface PreviewEmptyStateProps {
   /** The active editor tab that is empty */
@@ -61,7 +62,12 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
       <motion.div className="relative mb-6" variants={fadeInUp}>
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-primary-500/10 via-accent-purple/10 to-accent-pink/10 blur-2xl"
-          style={{ width: 160, height: 160, marginLeft: -80, marginTop: -40 }}
+          style={{
+            width: EMPTY_STATE_CONFIG.PREVIEW_GLOW.WIDTH_PX,
+            height: EMPTY_STATE_CONFIG.PREVIEW_GLOW.HEIGHT_PX,
+            marginLeft: EMPTY_STATE_CONFIG.PREVIEW_GLOW.MARGIN_LEFT_PX,
+            marginTop: EMPTY_STATE_CONFIG.PREVIEW_GLOW.MARGIN_TOP_PX,
+          }}
         />
 
         <div className="relative">

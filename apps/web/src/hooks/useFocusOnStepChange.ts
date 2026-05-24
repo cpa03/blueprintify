@@ -9,7 +9,7 @@
  */
 
 import { useRef, useEffect, useCallback } from "react";
-import { TIMEOUTS, FOCUSABLE_SELECTOR_STRING } from "../config/constants";
+import { TIMEOUTS, FOCUSABLE_SELECTOR_STRING, FOCUS_ANNOUNCER } from "../config/constants";
 
 /** Configuration options for step change focus behavior */
 interface UseFocusOnStepChangeOptions {
@@ -114,7 +114,7 @@ export function useStepAnnouncer(stepId: string, stepLabel: string): void {
       liveRegionRef.current.setAttribute("role", "status");
       liveRegionRef.current.setAttribute("aria-live", "polite");
       liveRegionRef.current.setAttribute("aria-atomic", "true");
-      liveRegionRef.current.className = "sr-only";
+      liveRegionRef.current.className = FOCUS_ANNOUNCER.LIVE_REGION_CLASS;
       document.body.appendChild(liveRegionRef.current);
     }
 
@@ -129,7 +129,7 @@ export function useStepAnnouncer(stepId: string, stepLabel: string): void {
   useEffect(() => {
     if (previousStepRef.current !== stepId && liveRegionRef.current) {
       previousStepRef.current = stepId;
-      liveRegionRef.current.textContent = `Now on ${stepLabel} step`;
+      liveRegionRef.current.textContent = FOCUS_ANNOUNCER.STEP_CHANGE(stepLabel);
 
       const timeout = setTimeout(() => {
         if (liveRegionRef.current) {

@@ -34,6 +34,7 @@ import {
   TIMEOUTS,
   UI_CONTENT,
   VALIDATION_MESSAGES,
+  TEXTAREA_CONFIG,
 } from "../../config/constants";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
@@ -53,8 +54,8 @@ export const StepInfo = memo(function StepInfo({
   const projectNameInputRef = useRef<HTMLInputElement>(null);
   const [isShaking, setIsShaking] = useState(false);
   const { textareaRef: descriptionRef } = useAutoResizeTextarea({
-    minHeight: 128,
-    maxHeight: 400,
+    minHeight: TEXTAREA_CONFIG.STEP_INFO_MIN_HEIGHT_PX,
+    maxHeight: TEXTAREA_CONFIG.STEP_INFO_MAX_HEIGHT_PX,
   });
   const projectName = useWizardStore((s) => s.projectName);
   const description = useWizardStore((s) => s.description);

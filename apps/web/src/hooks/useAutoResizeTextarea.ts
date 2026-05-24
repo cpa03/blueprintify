@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "./useReducedMotion";
-import { ANIMATION } from "../config/constants";
+import { ANIMATION, TEXTAREA_CONFIG } from "../config/constants";
 
 interface UseAutoResizeTextareaOptions {
   minHeight?: number;
@@ -28,7 +28,12 @@ interface UseAutoResizeTextareaReturn {
 export function useAutoResizeTextarea(
   options: UseAutoResizeTextareaOptions = {}
 ): UseAutoResizeTextareaReturn {
-  const { minHeight = 80, maxHeight = 300, animate = true, extraPadding = 2 } = options;
+  const {
+    minHeight = TEXTAREA_CONFIG.DEFAULT_MIN_HEIGHT_PX,
+    maxHeight = TEXTAREA_CONFIG.DEFAULT_MAX_HEIGHT_PX,
+    animate = true,
+    extraPadding = TEXTAREA_CONFIG.DEFAULT_EXTRA_PADDING_PX,
+  } = options;
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [height, setHeight] = useState(minHeight);

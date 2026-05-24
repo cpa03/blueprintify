@@ -20,7 +20,7 @@
 import { useState, useEffect, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
-import { SPRING_CONFIG } from "../config/constants";
+import { SPRING_CONFIG, SCROLL_THRESHOLDS } from "../config/constants";
 
 /**
  * Props for the ScrollToTop component
@@ -55,7 +55,7 @@ interface ScrollToTopProps {
  */
 export const ScrollToTop = memo(function ScrollToTop({
   scrollContainerRef,
-  showAfter = 400,
+  showAfter = SCROLL_THRESHOLDS.SCROLL_TO_TOP,
 }: ScrollToTopProps): JSX.Element {
   const [isVisible, setIsVisible] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -88,7 +88,7 @@ export const ScrollToTop = memo(function ScrollToTop({
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = getScrollY();
-      setHasScrolled(scrollY > 50);
+      setHasScrolled(scrollY > SCROLL_THRESHOLDS.HAS_SCROLLED);
       setIsVisible(scrollY > showAfter);
     };
 
