@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Comprehensive body limit middleware tests for API request validation
+- Focus first invalid field on StepInfo form submit for better UX
+- Scroll-triggered shadow on header for depth feedback ([#1314](https://github.com/cpa03/blueprintify/pull/1314))
 - AI Agent System with 27+ specialized roles
 - OpenCode integration for automated development workflows
 - Comprehensive documentation structure
@@ -24,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Replaced hardcoded config values with config constants across API and web apps ([#1316](https://github.com/cpa03/blueprintify/pull/1316))
 - Removed `engine-strict=true` from `.npmrc` to allow `npm install` on node 20 without `--force` (project targets node 20 but some deps require >=22)
 - Updated `prepare` script from `husky install` (deprecated) to `husky` in package.json for compatibility with husky v9
 - Enhanced API documentation with JSDoc comments for secureLog utility functions ([#629](https://github.com/cpa03/blueprintify/pull/629))
@@ -42,6 +46,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Resolved Prettier formatting issue in `apps/web/index.html` ([#1313](https://github.com/cpa03/blueprintify/pull/1313))
+- Added `/warmup` endpoint to pre-initialize circuit breaker on cold start ([#1312](https://github.com/cpa03/blueprintify/pull/1312))
 - Recursive trigger bug in schema.sql that caused infinite loops
 - `deserializeJSON` safety with proper error handling
 - Share endpoint validation consistency using SHARE_CONFIG.ID_LENGTH constant
@@ -56,6 +62,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Performance
 
+- Reduced CLS from 0.995 to 0.077, improving Lighthouse Performance to 95/100
+- Lazy-loaded TemplateGrid and VercelAnalytics to reduce initial bundle ([#1317](https://github.com/cpa03/blueprintify/pull/1317))
 - Reduced CLS from 0.891 to 0.153, improving Lighthouse performance score to 93
 - Reduced CLS from 0.903 to 0.162 via skeleton layout match ([#1300](https://github.com/cpa03/blueprintify/pull/1300))
 - Cached localStorage quota calculation to avoid blocking main thread ([#1307](https://github.com/cpa03/blueprintify/pull/1307))
