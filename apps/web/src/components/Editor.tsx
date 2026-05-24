@@ -51,6 +51,7 @@ function EditorComponent(): JSX.Element {
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [copied, setCopied] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
+  const [exportSuccess, setExportSuccess] = useState(false);
   const [showNewProjectConfirm, setShowNewProjectConfirm] = useState(false);
   const toast = useToast();
   const previewRef = useRef<HTMLDivElement>(null);
@@ -142,6 +143,8 @@ function EditorComponent(): JSX.Element {
         description: exportData.description,
         features: exportData.features,
       });
+      setExportSuccess(true);
+      setTimeout(() => setExportSuccess(false), TIMEOUTS.COPY_FEEDBACK);
       toast.success("Project exported successfully!");
     } catch (error) {
       toast.error("Failed to export project");
@@ -201,6 +204,7 @@ function EditorComponent(): JSX.Element {
           lastSavedText={lastSavedText}
           hasChanges={hasChanges}
           content={currentContent}
+          exportSuccess={exportSuccess}
         />
 
         {/* Editor Content */}
