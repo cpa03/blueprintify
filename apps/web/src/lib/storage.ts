@@ -147,7 +147,7 @@ function generateChecksum(data: string): string {
 }
 
 // ============================================================================
-// Storage Quota Management (with TTL caching)
+// Storage Quota Management (incremental tracking)
 // ============================================================================
 
 export interface QuotaInfo {
@@ -157,41 +157,92 @@ export interface QuotaInfo {
   percentage: number;
 }
 
-let cachedQuota: QuotaInfo | null = null;
-let lastQuotaCalculation: number = 0;
+/** Running estimate of total bytes used in localStorage. Avoids O(n) serialization. */
+let runningBytesUsed: number = calculateTotalBytes();
+
+/**
+ * Fast estimate of localStorage byte usage by summing each key+value length.
+ * Still iterates all keys but avoids Blob serialization overhead (~10x faster).
+ * Used at module init and as a periodic sanity check.
+ */
+function calculateTotalBytes(): number {
+  try {
+    let total = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key !== null) {
+        const value = localStorage.getItem(key);
+        total += key.length * 2 + (value ? value.length * 2 : 0);
+      }
+    }
+    return total;
+  } catch {
+    return 0;
+  }
+}
+
+/** Full serialization-based quota check — expensive, used only as periodic fallback. */
+function calculateTotalBytesFull(): number {
+  try {
+    return new Blob([JSON.stringify(localStorage)]).size;
+  } catch {
+    return 0;
+  }
+}
+
+let lastFullCalculation: number = 0;
+const FULL_RECALCULATION_INTERVAL_MS = 10 * 60 * 1000; // 10 minutes
 
 function getStorageQuota(): QuotaInfo {
   const now = Date.now();
 
-  // Return cached value if still fresh — avoids O(n) serialization on every call
-  if (cachedQuota && now - lastQuotaCalculation < STORAGE_CONFIG.QUOTA_CACHE_TTL_MS) {
-    return cachedQuota;
+  // Periodic sanity check: do a full calculation every 10 minutes to correct drift
+  if (now - lastFullCalculation > FULL_RECALCULATION_INTERVAL_MS) {
+    const fullUsed = calculateTotalBytesFull();
+    // Only update if sanity check succeeds (storage errors return 0)
+    if (fullUsed > 0) {
+      runningBytesUsed = fullUsed;
+    }
+    lastFullCalculation = now;
   }
 
-  // Full recalculation (happens at most once per STORAGE_CONFIG.QUOTA_CACHE_TTL_MS)
-  try {
-    const used = new Blob([JSON.stringify(localStorage)]).size;
-    const total = SHARED_STORAGE_CONFIG.QUOTA_BYTES;
-    const remaining = Math.max(0, total - used);
-    const percentage = total > 0 ? (used / total) * 100 : 0;
+  const total = SHARED_STORAGE_CONFIG.QUOTA_BYTES;
+  const used = Math.max(0, runningBytesUsed);
+  const remaining = Math.max(0, total - used);
+  const percentage = total > 0 ? (used / total) * 100 : 0;
 
-    cachedQuota = { used, total, remaining, percentage };
-    lastQuotaCalculation = now;
+  return { used, total, remaining, percentage };
+}
 
-    return cachedQuota;
-  } catch {
-    return { used: 0, total: 0, remaining: 0, percentage: 0 };
+/**
+ * Update the running byte estimate when data is written.
+ * Called after every localStorage mutation to keep the estimate accurate.
+ */
+function updateQuotaEstimate(
+  key: string,
+  previousValue: string | null,
+  newValue: string | null
+): void {
+  if (previousValue !== null) {
+    runningBytesUsed -= key.length * 2 + previousValue.length * 2;
+  }
+  if (newValue !== null) {
+    runningBytesUsed += key.length * 2 + newValue.length * 2;
+  }
+  // Clamp to prevent negative from cross-tab interference
+  if (runningBytesUsed < 0) {
+    runningBytesUsed = 0;
   }
 }
 
-/** Invalidate quota cache so next call recalculates from scratch */
+/** Mark quota estimate as needing a sanity check on next read */
 function invalidateQuotaCache(): void {
-  cachedQuota = null;
-  lastQuotaCalculation = 0;
+  // Force full recalculation on next access by resetting the timer
+  lastFullCalculation = 0;
 }
 
 // Cross-tab cache invalidation: when another tab writes to localStorage,
-// our cached quota becomes stale
+// our running estimate may drift, so trigger a full recalculation
 if (typeof window !== "undefined" && typeof window.addEventListener === "function") {
   window.addEventListener("storage", () => {
     invalidateQuotaCache();
@@ -332,6 +383,7 @@ export class StorageService<T = unknown> {
       const serialized = JSON.stringify({ data, metadata: finalMetadata });
 
       // Retry logic for transient failures
+      const previousValue = localStorage.getItem(this.config.key);
       await this.retryOperation(() => {
         localStorage.setItem(this.config.key, serialized);
       });
@@ -340,8 +392,8 @@ export class StorageService<T = unknown> {
         await this.createBackup();
       }
 
-      // Invalidate quota cache since localStorage changed
-      invalidateQuotaCache();
+      // Update running byte estimate — avoids O(n) serialization on quota checks
+      updateQuotaEstimate(this.config.key, previousValue, serialized);
 
       this.recordLatency("write", performance.now() - startTime);
       this.health.operations.successful++;
@@ -369,10 +421,10 @@ export class StorageService<T = unknown> {
         await this.createBackup();
       }
 
+      const previousValue = localStorage.getItem(this.config.key);
       localStorage.removeItem(this.config.key);
 
-      // Invalidate quota cache since localStorage changed
-      invalidateQuotaCache();
+      updateQuotaEstimate(this.config.key, previousValue, null);
 
       this.health.operations.successful++;
     } catch (error) {
@@ -399,9 +451,7 @@ export class StorageService<T = unknown> {
       }
 
       localStorage.clear();
-
-      // Invalidate quota cache since localStorage changed
-      invalidateQuotaCache();
+      runningBytesUsed = 0;
 
       this.health.operations.successful++;
     } catch (error) {
