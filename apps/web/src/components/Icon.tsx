@@ -11,7 +11,7 @@
  * ```
  */
 
-import { type FC } from "react";
+import { memo } from "react";
 import { ICONS, type IconName } from "../config/icons";
 
 interface IconProps {
@@ -25,12 +25,12 @@ interface IconProps {
   strokeWidth?: number;
 }
 
-export const Icon: FC<IconProps> = ({
+const Icon = memo(function Icon({
   name,
   className = "w-5 h-5",
   ariaLabel,
   strokeWidth = 2,
-}) => {
+}: IconProps) {
   const icon = ICONS[name];
   if (!icon) return null;
 
@@ -46,6 +46,7 @@ export const Icon: FC<IconProps> = ({
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={strokeWidth} d={icon.path} />
     </svg>
   );
-};
+});
 
+export { Icon };
 export type { IconName };

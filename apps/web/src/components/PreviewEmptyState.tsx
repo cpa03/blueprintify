@@ -8,6 +8,7 @@
  * @module components/PreviewEmptyState
  */
 
+import { memo } from "react";
 import { motion } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
@@ -42,7 +43,7 @@ const tabContent: Record<EditorTab, { title: string; hint: string }> = {
   },
 };
 
-export function PreviewEmptyState({
+export const PreviewEmptyState = memo(function PreviewEmptyState({
   tab,
   isGenerating = false,
   siblingTabHasContent = false,
@@ -158,6 +159,4 @@ export function PreviewEmptyState({
       )}
     </motion.div>
   );
-}
-
-export default PreviewEmptyState;
+});

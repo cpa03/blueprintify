@@ -9,6 +9,7 @@
  * @module components/MotionConfigWrapper
  */
 
+import { memo } from "react";
 import { MotionConfig } from "framer-motion";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
 import { useEffect, ReactNode } from "react";
@@ -44,7 +45,10 @@ interface MotionConfigWrapperProps {
  * </MotionConfigWrapper>
  */
 
-export function MotionConfigWrapper({ children, onMount }: MotionConfigWrapperProps): JSX.Element {
+export const MotionConfigWrapper = memo(function MotionConfigWrapper({
+  children,
+  onMount,
+}: MotionConfigWrapperProps): JSX.Element {
   const { prefersReducedMotion } = useReducedMotionContext();
 
   useEffect(() => {
@@ -56,4 +60,4 @@ export function MotionConfigWrapper({ children, onMount }: MotionConfigWrapperPr
       {children}
     </MotionConfig>
   );
-}
+});
