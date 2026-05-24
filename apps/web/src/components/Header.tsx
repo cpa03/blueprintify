@@ -5,15 +5,18 @@
  * - App logo and branding with gradient icon
  * - Keyboard shortcuts button (optional)
  * - GitHub repository link
+ * - Scroll-triggered shadow for depth feedback
  *
  * The header uses glass morphism styling with backdrop blur and
  * Framer Motion for entrance animations. It's fixed at the top of
- * the viewport with proper z-index layering.
+ * the viewport with proper z-index layering. When scrolled past
+ * a 20px threshold, the border and shadow strengthen to provide
+ * a subtle depth cue that content is behind the header.
  *
  * @module components/Header
  */
 
-import { memo } from "react";
+import { memo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { UI_CONTENT, EXTERNAL_URLS } from "../config/constants";
 import { RippleButton } from "./RippleButton";
@@ -40,8 +43,26 @@ interface HeaderProps {
  * <Header onShowShortcuts={() => setShowShortcuts(true)} />
  */
 function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-dark-700/50 backdrop-blur-xl">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 glass-card backdrop-blur-xl transition-all duration-300 ${
+        isScrolled
+          ? "border-b border-dark-600/60 shadow-lg shadow-dark-950/30"
+          : "border-b border-dark-700/50"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <motion.div
           className="flex items-center gap-3"
