@@ -31,8 +31,7 @@ describe("Motion Utilities", () => {
 
     it("should have spring transition with type property", () => {
       expect(transitions.spring).toBeDefined();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      expect((transitions.spring as any).type).toBe("spring");
+      expect(transitions.spring.type).toBe("spring");
     });
   });
 

@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { GenerateController } from "./generate.controller";
+import type { BlueprintContext } from "../types";
 import { ConfigurationError } from "../errors";
 import { MOCK_ENV, setupStreamMocks } from "../test-utils";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
@@ -21,11 +22,14 @@ vi.mock("../errors", () => ({
 }));
 
 /** Creates a mock Hono context with get method for validated data */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const createMockContext = (env: Record<string, string>, validatedData?: unknown): any => ({
-  env,
-  get: (key: string) => (key === "validatedData" ? validatedData : undefined),
-});
+const createMockContext = (
+  env: Record<string, string>,
+  validatedData?: unknown
+): BlueprintContext =>
+  ({
+    env,
+    get: (key: string) => (key === "validatedData" ? validatedData : undefined),
+  }) as unknown as BlueprintContext;
 
 describe("GenerateController", () => {
   let controller: GenerateController;
@@ -60,8 +64,7 @@ describe("GenerateController", () => {
     it("should throw ConfigurationError when API key is missing", async () => {
       const mockContext = {
         env: {},
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any;
+      } as unknown as BlueprintContext;
 
       await expect(controller.generateBlueprint(mockContext)).rejects.toThrow(ConfigurationError);
     });
@@ -87,8 +90,7 @@ describe("GenerateController", () => {
     it("should validate environment before generating", async () => {
       const mockContext = {
         env: {},
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any;
+      } as unknown as BlueprintContext;
 
       await expect(controller.generateBlueprint(mockContext)).rejects.toThrow();
     });
