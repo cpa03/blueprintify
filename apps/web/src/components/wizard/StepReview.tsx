@@ -28,6 +28,7 @@ import { useBlueprintStream } from "../../hooks/useBlueprintStream";
 import { GENERATION_ESTIMATES } from "../../config/constants";
 import { pageTransition, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
+import { KeyboardShortcutTooltip } from "../SmartTooltip";
 
 interface StepReviewProps {
   direction?: AnimationDirection;
@@ -247,32 +248,38 @@ export const StepReview = memo(function StepReview({
           Back
         </RippleButton>
         <div className="flex flex-col items-end gap-2">
-          <RippleButton
-            onClick={startGeneration}
-            disabled={isGenerating || !projectName || !description}
-            whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
-            whileTap={{ scale: 0.95 }}
-            className="btn-primary flex items-center gap-2 animate-glow disabled:opacity-50 disabled:cursor-not-allowed"
+          <KeyboardShortcutTooltip
+            shortcut="Enter"
+            description="Generate blueprint"
+            position="left"
           >
-            {isGenerating ? (
-              <>
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                Generating...
-              </>
-            ) : (
-              <>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
-                Generate Blueprint
-              </>
-            )}
-          </RippleButton>
+            <RippleButton
+              onClick={startGeneration}
+              disabled={isGenerating || !projectName || !description}
+              whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
+              whileTap={{ scale: 0.95 }}
+              className="btn-primary flex items-center gap-2 animate-glow disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isGenerating ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
+                  </svg>
+                  Generate Blueprint
+                </>
+              )}
+            </RippleButton>
+          </KeyboardShortcutTooltip>
           {isGenerating && progress && (
             <motion.span
               initial={{ opacity: 0, y: -5 }}
