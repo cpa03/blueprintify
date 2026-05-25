@@ -41,27 +41,22 @@ export interface StreamOptions {
 
 /**
  * Singleton circuit breaker instance for AI service resilience.
- * Eagerly initialized at module load via initializeCircuitBreaker().
+ * Eagerly initialized at module load to eliminate cold-start gap
+ * where burst traffic could bypass protection.
  */
-let circuitBreaker: CircuitBreaker | null = null;
+const circuitBreaker: CircuitBreaker = createCircuitBreaker({
+  failureThreshold: CIRCUIT_BREAKER_CONFIG.DEFAULT_FAILURE_THRESHOLD,
+  resetTimeoutMs: CIRCUIT_BREAKER_CONFIG.DEFAULT_RESET_TIMEOUT_MS,
+  halfOpenMaxCalls: CIRCUIT_BREAKER_CONFIG.DEFAULT_HALF_OPEN_MAX_CALLS,
+});
 
 /**
- * Initializes and returns the singleton circuit breaker instance.
- *
- * Creates a new circuit breaker with default configuration if not yet created,
- * then returns the cached instance. Can be called eagerly during warmup
- * to ensure the circuit breaker is ready before handling traffic.
+ * Returns the singleton circuit breaker instance.
+ * Initialized at module load — no lazy init needed.
  *
  * @returns The shared CircuitBreaker instance
  */
 export function initializeCircuitBreaker(): CircuitBreaker {
-  if (!circuitBreaker) {
-    circuitBreaker = createCircuitBreaker({
-      failureThreshold: CIRCUIT_BREAKER_CONFIG.DEFAULT_FAILURE_THRESHOLD,
-      resetTimeoutMs: CIRCUIT_BREAKER_CONFIG.DEFAULT_RESET_TIMEOUT_MS,
-      halfOpenMaxCalls: CIRCUIT_BREAKER_CONFIG.DEFAULT_HALF_OPEN_MAX_CALLS,
-    });
-  }
   return circuitBreaker;
 }
 
