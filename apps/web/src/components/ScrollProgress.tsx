@@ -112,11 +112,11 @@ export const ScrollProgress = memo(function ScrollProgress({
             opacity: isVisible ? [0.8, 1, 0.8] : 0.8,
             boxShadow: isVisible
               ? [
-                  "0 0 8px rgb(from var(--color-primary-500) r g b / 0.3)",
-                  "0 0 16px rgb(from var(--color-accent-purple) r g b / 0.4)",
-                  "0 0 8px rgb(from var(--color-primary-500) r g b / 0.3)",
+                  "0 0 8px rgba(99, 102, 241, 0.3)",
+                  "0 0 16px rgba(139, 92, 246, 0.4)",
+                  "0 0 8px rgba(99, 102, 241, 0.3)",
                 ]
-              : "0 0 0px rgb(from var(--color-primary-500) r g b / 0)",
+              : "0 0 0px rgba(99, 102, 241, 0)",
           }}
           transition={{
             opacity: {
@@ -137,8 +137,7 @@ export const ScrollProgress = memo(function ScrollProgress({
         className="absolute top-0 h-full w-8 pointer-events-none"
         style={{
           right: `calc(${100 - scrollProgress}% - 16px)`,
-          background:
-            "linear-gradient(90deg, transparent, rgb(from var(--color-accent-purple) r g b / 0.3), transparent)",
+          background: "linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent)",
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: isVisible ? 1 : 0 }}
