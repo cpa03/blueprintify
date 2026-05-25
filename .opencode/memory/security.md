@@ -8,7 +8,7 @@
 - CI/CD security: Standardized runner versions (`ubuntu-24.04-arm`) and action versions across all workflows.
 - Regular security audits (monthly recommended).
 
-## Current Security Status (2026-02-22 21:05 UTC)
+## Current Security Status (2026-05-25 21:00 UTC)
 
 | Control             | Status                                                |
 | ------------------- | ----------------------------------------------------- |
@@ -25,7 +25,7 @@
 | Rate Limiting       | ✅ Cloudflare rate limiter                            |
 | CI Runner           | ✅ All workflows use ubuntu-24.04-arm                 |
 | CI Actions          | ⚠️ main.yml uses invalid @v5 (blocked by #743)        |
-| npm audit           | ⚠️ 16 vulnerabilities (dev deps only) - risk accepted |
+| npm audit           | ⚠️ 4 moderate vulnerabilities (dev deps only) - risk accepted |
 | .dev.vars gitignore  | ✅ Added to prevent credential commits               |
 
 ## Lessons Learned
@@ -83,6 +83,14 @@
 - **Risk**: Outdated CI runners may contain unpatched vulnerabilities; invalid action versions could fail or execute unintended code
 - **Fix**: Updated runner to `ubuntu-24.04-arm`, actions/checkout and actions/setup-node to `@v4`
 - **Lesson**: CI workflows should be audited regularly for version consistency and security compliance per AGENTS.md standards
+
+### 2026-05-25 21:00 UTC: Security Engineer Audit - Lighthouse Dependency Upgrade
+
+- **Finding**: PR upgraded `lighthouse` from `^12.8.2` to `^13.3.0` (dev dependency). No introduced vulnerabilities, secrets, or deprecated functions.
+- **Root Cause**: Routine dependency update for performance auditing tool.
+- **Verification**: Secret scan, deprecated function scan, npm audit, CVE database check (Snyk/ReversingLabs) all clean.
+- **Pre-existing Issue**: `ws@8.18.0` (GHSA-58qx-3vcg-4xpx, moderate) persists in `apps/api/node_modules/ws` — pinned by `miniflare@4.20260426.0` as exact direct dependency (`ws: "8.18.0"`). Root-level npm override `"ws": "8.20.1"` cannot bypass this nested exact pin. Requires miniflare/wrangler upgrade to resolve.
+- **Lesson**: When npm overrides don't propagate into workspace-level nested `node_modules` with exact version pins, the fix requires upgrading the parent dependency. Document this for future reference.
 
 ### 2026-02-20 09:35 UTC: Security Engineer Audit - Secure Logging Gap Fixed
 
