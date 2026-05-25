@@ -4,6 +4,24 @@
 
 ## Current Focus: Repository Maintenance
 
+### Task: RepoKeeper Cleanup Cycle 13 (2026-05-25)
+
+- **Priority**: High
+- **Status**: Active
+- **Objective**: Repository cleanup: fix Prettier formatting (6 files), fix stale doc refs in main.yml (again), update docs, prune stale tracking refs, verify build/lint/test, create PR
+- **Actions**:
+  - [x] Fix Prettier formatting in 6 files (4 workflow YAMLs, index.html, index.css)
+  - [x] Fix stale doc references in `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md` (fix had been lost/reverted after merge of PR #1357)
+  - [x] Prune 2 stale remote tracking refs
+  - [x] Update `docs/findings.md` — record cycle 13 observations
+  - [x] Update `docs/active-tasks.md` — mark cycle 12 complete, add cycle 13 entry
+  - [x] Update `docs/bugs.md` — bump last updated date
+  - [x] Update `docs/roadmap.md` — bump last updated date
+  - [x] Update `CHANGELOG.md` — add new unreleased commits (SSE stream tests, vitest-pool-workers compat fix)
+  - [x] Verify typecheck/lint/web+tests all pass clean
+  - [x] Create branch `chore/repokeeper-cleanup-cycle-13` from main
+  - [x] Create PR with all cleanup changes
+
 ### Task: BugFixer Cycle 1 — Fix stale doc references in main.yml (2026-05-25)
 
 - **Priority**: High
@@ -14,13 +32,13 @@
   - [x] Identified stale doc references in `.github/workflows/main.yml` (lines 39, 263)
   - [x] Applied fix: `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
   - [x] Verified build/lint/typecheck/test all pass — 851 tests
-  - [ ] Push fix branch and create PR (blocked: token lacks `workflows` permission to push `.github/workflows/` files — requires owner to apply diff or re-run with PAT)
-  - [ ] Close issue #1293
+  - [ ] Close issue #1293 (blocked: token may lack `workflows` permission to push `.github/workflows/` files)
+  - [x] Fix re-applied in cycle 13 (fix was lost/reverted in PR #1357 merge)
 
 ### Task: RepoKeeper Cleanup Cycle 12 (2026-05-25)
 
 - **Priority**: High
-- **Status**: Active
+- **Status**: Completed
 - **Objective**: Repository cleanup: fix Prettier formatting, update docs (findings/active-tasks/bugs), verify build/lint/test, create PR
 - **Actions**:
   - [x] Fix Prettier formatting in 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml)

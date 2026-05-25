@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Comprehensive SSE stream utility tests for API request validation and stream reliability
 - Enhanced ShowEditorButton with spring pop-in entrance animation for visual delight
 - Spring hover/tap animations on StepFeatures suggestion buttons for tactile interaction feedback
 - Animated SVG icon replacing emoji on New Project button for consistent visual identity ([#1330](https://github.com/cpa03/blueprintify/pull/1330))
@@ -50,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Downgraded `@cloudflare/vitest-pool-workers` to 0.12.21 for vitest 3.x compatibility
 - Resolved Prettier formatting issue in `apps/web/index.html` ([#1313](https://github.com/cpa03/blueprintify/pull/1313))
 - Added `/warmup` endpoint to pre-initialize circuit breaker on cold start ([#1312](https://github.com/cpa03/blueprintify/pull/1312))
 - Recursive trigger bug in schema.sql that caused infinite loops
