@@ -30,7 +30,7 @@ interface ScrollToTopProps {
    * Reference to a custom scroll container.
    * If not provided, uses window scroll.
    */
-  scrollContainerRef?: React.RefObject<HTMLElement>;
+  scrollContainerRef?: React.RefObject<HTMLElement | null>;
   /**
    * Scroll position (in pixels) after which the button appears.
    * @default 400
