@@ -4,10 +4,24 @@
 
 ## Current Focus: Repository Maintenance
 
-### Task: RepoKeeper Cleanup Cycle 11 (2026-05-25)
+### Task: RepoKeeper Cleanup Cycle 12 (2026-05-25)
 
 - **Priority**: High
 - **Status**: Active
+- **Objective**: Repository cleanup: fix Prettier formatting, update docs (findings/active-tasks/bugs), verify build/lint/test, create PR
+- **Actions**:
+  - [x] Fix Prettier formatting in 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml)
+  - [x] Update `docs/findings.md` — record cycle 12 observations
+  - [x] Update `docs/active-tasks.md` — mark cycle 11 complete, add cycle 12 entry
+  - [x] Update `docs/bugs.md` — bump last updated date
+  - [x] Verify build/lint/typecheck/test all pass — 851 tests (473 web + 271 api + 107 shared)
+  - [x] Create branch `chore/repokeeper-cleanup-cycle-12` from main
+  - [x] Create PR with all cleanup changes
+
+### Task: RepoKeeper Cleanup Cycle 11 (2026-05-25)
+
+- **Priority**: High
+- **Status**: Completed
 - **Objective**: Repository cleanup: update CHANGELOG with missing commits, update docs, verify build/lint/test, create PR
 - **Actions**:
   - [x] Update `docs/active-tasks.md` — mark cycle 10 complete, add cycle 11 entry
@@ -208,5 +222,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-05-24 (Cycle 9)  
+**Last Updated**: 2026-05-25 (Cycle 12)  
 **Maintainer**: RepoKeeper

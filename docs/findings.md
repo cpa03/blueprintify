@@ -2,31 +2,33 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-25 - RepoKeeper Cleanup Cycle 11)
+## Current Cycle (2026-05-25 - RepoKeeper Cleanup Cycle 12)
 
 ### Findings
 
 - **Build/Lint/Typecheck/Test**: All passing clean. 851 tests (473 web + 271 api + 107 shared).
-- **Cycle 10 Status**: Work committed directly to main (928ba83). PR creation step was skipped — now formalized as completed.
-- **Repository State**: Working tree clean. No temp/redundant/stray files detected. `.gitignore` comprehensive.
-- **Documentation**: CHANGELOG was missing several recent commits — StepFeatures animations, NewProject SVG icon, DOMPurify/ToastContainer lazy-load, `as any` test refactoring — now updated.
-- **Stale remote branches**: 90+ remote branches remain, mostly from Feb 2026. Pruning deferred (requires owner review).
+- **Repository State**: Working tree clean. No temp/redundant/stray files detected (`.omo/ralph-loop.local.md` is active session — preserved). `.gitignore` comprehensive.
+- **Documentation**: All README-referenced docs exist and are present. No missing file links detected.
+- **Prettier formatting**: 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml) had formatting regressions — fixed again.
+- **New since cycle 11**: Issue triage report (`docs/issue-triage-2026-05-25.md`) added via PR #1337.
+- **CHANGELOG**: [Unreleased] section is up to date — no missing feature/fix commits since cycle 11.
+- **Stale remote branches**: 100+ remote branches remain. Pruning still deferred (requires owner review, multiple cycles).
 - **Dependencies**: No unused or mismatched dependencies detected.
 - **Upstream vulns**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+ — unchanged.
 
 ### Actions Taken
 
-- Updated `docs/active-tasks.md` — marked Cycle 10 complete, added Cycle 11 entry
-- Updated `CHANGELOG.md` [Unreleased] — added StepFeatures spring hover/tap animations, New Project SVG icon, DOMPurify lazy-load, ToastContainer lazy-load, `as any` test refactoring
+- Fixed Prettier formatting in `.github/workflows/` — 4 files (iterate.yml, main.yml, on-pull.yml, parallel.yml)
+- Updated `docs/active-tasks.md` — marked Cycle 11 complete, added Cycle 12 entry, updated Last Updated
 - Updated `docs/findings.md` — this record
-- Updated `docs/features.md` — bumped date stamp to 2026-05-25
-- Created branch `chore/repokeeper-cleanup-cycle-11` from main
-- Verified build/lint/typecheck all pass
+- Updated `docs/bugs.md` — bumped last updated date
+- Verified build/lint/typecheck/test all pass — 851 tests (473 web + 271 api + 107 shared)
+- Created branch `chore/repokeeper-cleanup-cycle-12` from main
 - Created PR with all cleanup changes
 
 ---
 
-## Previous Cycle (2026-05-24 - RepoKeeper Cleanup Cycle 7)
+## Previous Cycle (2026-05-25 - RepoKeeper Cleanup Cycle 11)
 
 ### Findings
 
