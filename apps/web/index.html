@@ -33,6 +33,7 @@
       body {
         margin: 0;
         font-family:
+          "Inter Fallback",
           system-ui,
           -apple-system,
           BlinkMacSystemFont,
@@ -52,8 +53,17 @@
         font-family: "Inter";
         font-style: normal;
         font-weight: 400 600;
-        font-display: swap;
+        font-display: optional;
         src: local("Inter");
+      }
+      /* Size-adjusted fallback using system-ui to match Inter metrics - prevents FOUT CLS */
+      @font-face {
+        font-family: "Inter Fallback";
+        src: local("system-ui"), local("Arial"), local("sans-serif");
+        size-adjust: 88.5%;
+        ascent-override: 91%;
+        descent-override: 24%;
+        line-gap-override: 8%;
       }
       /* LCP critical text styles - prevent FOUC while CSS loads */
       .text-lg {
@@ -89,9 +99,10 @@
       .leading-tight {
         line-height: 1.25;
       }
-      /* Prevent layout shift from font loading */
+      /* Prevent layout shift from font loading - match Tailwind font-sans stack */
       .font-sans {
         font-family:
+          "Inter Fallback",
           system-ui,
           -apple-system,
           BlinkMacSystemFont,
@@ -158,7 +169,7 @@
     <link
       id="font-inter"
       rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=optional"
       as="style"
     />
     <script>
