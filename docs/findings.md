@@ -2,28 +2,40 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-25 - Security Audit Cycle)
+## Current Cycle (2026-05-25 - RepoKeeper Cleanup Cycle 13)
 
 ### Findings
 
-- **SECURITY AUDIT**: PR scan for `@types/node` bump (`^20.19.41` → `^25.9.1`)
-  - **Secrets**: None introduced — package.json/lock contain no credentials
-  - **Vulnerabilities**: `npm audit` reports 0 vulnerabilities — clean
-  - **Deprecated functions**: No runtime code changes — no deprecated usage introduced
-  - **Type errors**: No new type errors introduced by the `@types/node` bump (only pre-existing `@cloudflare/vitest-pool-workers/config` error persists)
-  - **Node compatibility note**: Runtime Node v20 with types for Node 25 — no runtime impact (types-only package), but teams should be aware when using Node 25+ APIs
-  - **Transitive dep change**: `undici-types` auto-upgraded from `6.21.0` → `7.24.6` (as dependency of `@types/node@25`) — this actually improves type/runtime alignment since the project uses `undici@7.x`
-- **SECURITY AUDIT**: PR scan for framer-motion bump (`^10.18.0` → `^12.40.0`)
-  - **npm audit**: 0 vulnerabilities — clean
-  - **Secrets scan**: No secrets, tokens, or credentials introduced — changed files only contain version bumps
-  - **Deprecated API check**: No deprecated framer-motion APIs found in codebase:
-    - `useViewportScroll` (removed in v12) — not used
-    - `useAnimation` (deprecated) — not used
-    - `exitBeforeEnter` (removed) — not used (codebase already uses `mode="wait"`)
-    - `useReducedMotion` from framer-motion — not used (project uses custom hook via browser API)
-  - **Fix applied**: `Skeleton.tsx` — `ease` properties in transition objects needed `as const` assertion for framer-motion v12's stricter `Easing` type
-  - **Verification**: TypeScript typecheck, lint, and all 851 tests pass clean
-- **Pre-existing (unchanged)**: BUG-013 (undici@7.24.8 override not applying to miniflare's dependency) — still blocked on Cloudflare SDK Node 22+
+- **Build/Lint/Typecheck**: All passing clean.
+- **Web Tests**: 473/473 passing. Shared package tests: 107/107 passing.
+- **API Tests**: 24 errors (pre-existing `@cloudflare/vitest-pool-workers` vs vitest 3.x incompatibility on Node 20 — Node 22 required).
+- **Prettier formatting**: Fixed in 6 files (4 workflow YAMLs, index.html, index.css).
+- **Stale doc refs in main.yml**: Fixed again — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`. Previous fix (commit ee42a06) was apparently lost/reverted during merge of PR #1357. Issue #1293 remains open.
+- **Blocker**: GitHub token likely lacks `workflows` permission — pushing `.github/workflows/` changes may still be blocked from this runner.
+- **No redundant/temp/stray files detected**. `.gitignore` is comprehensive.
+- **Docs updated**: active-tasks.md (cycle 13), bugs.md, roadmap.md, CHANGELOG.md.
+- **Stale remote tracking refs**: 2 pruned (framer-motion-12.40.0, types/node-25.9.1).
+- **Dependencies**: 1026 packages installed, 0 vulnerabilities. 31 outdated packages noted (mostly minor — React 19, zod 4, framer-motion 12+ deferred to future migration).
+- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
+
+### Actions Taken
+
+- Fixed Prettier formatting in 6 files (iterate.yml, main.yml, on-pull.yml, parallel.yml, index.html, index.css)
+- Fixed stale doc references in `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+- Pruned 2 stale remote tracking refs
+- Updated `docs/findings.md` — this record
+- Updated `docs/active-tasks.md` — marked cycle 12 complete, added cycle 13 entry
+- Updated `docs/bugs.md` — bumped last updated date
+- Updated `docs/roadmap.md` — bumped last updated date
+- Updated `CHANGELOG.md` — added new unreleased commits
+- Verified typecheck/lint/web+tests all pass clean
+- Created branch `chore/repokeeper-cleanup-cycle-13` from main
+- Created PR with all cleanup changes
+
+## Previous Cycle (2026-05-25 - BugFixer Cycle)
+
+### Findings
+
 - **BUG FOUND**: `.github/workflows/main.yml` has stale references to non-existent docs:
   - Line 39: `docs/bug.md` → should be `docs/bugs.md`
   - Line 39: `docs/feature.md` → should be `docs/features.md`
@@ -31,6 +43,7 @@
 - **Issue**: #1293 has been open since 2026-05-23 — the fix was previously attempted but apparently lost/reverted
 - **Fix applied locally**: verified build/lint/typecheck/test all pass (851 tests)
 - **Blocker**: GitHub token lacks `workflows` permission — cannot push `.github/workflows/` changes from this runner
+- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+
 
 ## Previous Cycle (2026-05-25 - RepoKeeper Cleanup Cycle 12)
 

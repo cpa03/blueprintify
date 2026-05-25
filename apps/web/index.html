@@ -205,26 +205,96 @@
       <!-- Critical LCP Skeleton - minimal for fast parse, covers viewport only -->
       <div
         id="skeleton-loader"
-        style="position:absolute;inset:0;z-index:9999;background:#020617;color:#f8fafc;opacity:1;transition:opacity .3s ease-out;pointer-events:none;contain:strict"
+        style="
+          position: absolute;
+          inset: 0;
+          z-index: 9999;
+          background: #020617;
+          color: #f8fafc;
+          opacity: 1;
+          transition: opacity 0.3s ease-out;
+          pointer-events: none;
+          contain: strict;
+        "
       >
-        <header style="position:fixed;top:0;left:0;right:0;z-index:50;border-bottom:1px solid #1e293b;background:rgba(2,6,23,.8);backdrop-filter:blur(12px);height:65px">
-          <div style="max-width:80rem;margin:0 auto;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between">
-            <div style="display:flex;align-items:center;gap:.75rem">
-              <div style="width:2.5rem;height:2.5rem;border-radius:.75rem;background:linear-gradient(135deg,#6366f1,#8b5cf6)"></div>
-              <div><div style="font-weight:700;font-size:1.25rem;color:#fff">Blueprint Generator</div></div>
+        <header
+          style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            border-bottom: 1px solid #1e293b;
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(12px);
+            height: 65px;
+          "
+        >
+          <div
+            style="
+              max-width: 80rem;
+              margin: 0 auto;
+              padding: 1rem 1.5rem;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <div style="display: flex; align-items: center; gap: 0.75rem">
+              <div
+                style="
+                  width: 2.5rem;
+                  height: 2.5rem;
+                  border-radius: 0.75rem;
+                  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                "
+              ></div>
+              <div>
+                <div style="font-weight: 700; font-size: 1.25rem; color: #fff">
+                  Blueprint Generator
+                </div>
+              </div>
             </div>
           </div>
         </header>
-        <main style="padding-top:5rem;flex:1">
-          <div style="max-width:80rem;margin:0 auto;padding:2rem 1rem">
+        <main style="padding-top: 5rem; flex: 1">
+          <div style="max-width: 80rem; margin: 0 auto; padding: 2rem 1rem">
             <!-- LCP Critical Element -->
-            <div style="text-align:center;margin-bottom:3rem;min-height:200px">
-              <h1 style="font-size:2.25rem;font-weight:700;color:#fff;margin-bottom:1rem;line-height:1.2">
-                From <span style="background:linear-gradient(135deg,#6366f1,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Idea</span>
-                to <span style="background:linear-gradient(135deg,#6366f1,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Blueprint</span>
+            <div style="text-align: center; margin-bottom: 3rem; min-height: 200px">
+              <h1
+                style="
+                  font-size: 2.25rem;
+                  font-weight: 700;
+                  color: #fff;
+                  margin-bottom: 1rem;
+                  line-height: 1.2;
+                "
+              >
+                From
+                <span
+                  style="
+                    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                  "
+                  >Idea</span
+                >
+                to
+                <span
+                  style="
+                    background: linear-gradient(135deg, #6366f1, #ec4899);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                  "
+                  >Blueprint</span
+                >
                 in Seconds
               </h1>
-              <p style="font-size:1.125rem;color:#94a3b8;max-width:42rem;margin:0 auto">Generate production-ready architectural documentation for your projects.</p>
+              <p style="font-size: 1.125rem; color: #94a3b8; max-width: 42rem; margin: 0 auto">
+                Generate production-ready architectural documentation for your projects.
+              </p>
             </div>
           </div>
         </main>

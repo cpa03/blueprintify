@@ -15,16 +15,8 @@
   body {
     @apply bg-dark-950 text-dark-100 font-sans antialiased;
     background-image:
-      radial-gradient(
-        ellipse at top left,
-        rgba(99, 102, 241, 0.08) 0%,
-        transparent 50%
-      ),
-      radial-gradient(
-        ellipse at bottom right,
-        rgba(139, 92, 246, 0.06) 0%,
-        transparent 50%
-      );
+      radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
     min-height: 100vh;
   }
 
@@ -73,11 +65,7 @@
 
   .gradient-border {
     position: relative;
-    background: linear-gradient(
-      135deg,
-      rgba(99, 102, 241, 0.1),
-      rgba(139, 92, 246, 0.1)
-    );
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
   }
   .gradient-border::before {
     content: "";
@@ -416,11 +404,7 @@
     position: absolute;
     inset: -2px;
     border-radius: inherit;
-    background: linear-gradient(
-      135deg,
-      rgba(99, 102, 241, 0.5),
-      rgba(139, 92, 246, 0.3)
-    );
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.5), rgba(139, 92, 246, 0.3));
     opacity: 0;
     z-index: -1;
     filter: blur(8px);
