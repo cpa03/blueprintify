@@ -2,7 +2,25 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-25 - RepoKeeper Cleanup Cycle 14)
+## Current Cycle (2026-05-25 - BugFixer Cycle 2)
+
+### Findings
+
+- **BUG-014**: Stale doc references in `main.yml` were still present — `docs/bug.md` and `docs/feature.md` instead of `docs/bugs.md` and `docs/features.md` (lines 39, 263).
+- **Prettier formatting**: 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml) had formatting regressions — fixed.
+- **Build/Lint/Typecheck/Test**: All passing clean after previous cycle fixes — 473 web + 284 api + 107 shared = 864 tests passing.
+- **Dependencies**: 1024 packages installed, 0 vulnerabilities.
+- **No other bugs or errors detected** in the repository.
+
+### Actions Taken
+
+- Fixed stale doc refs in `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+- Fixed Prettier formatting in 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml)
+- Updated `docs/bugs.md` — BUG-014 marked FIXED
+- Updated `docs/findings.md` — this record
+- Verified typecheck/lint/build/tests all pass clean
+
+## Previous Cycle (2026-05-25 - RepoKeeper Cleanup Cycle 14)
 
 ### Findings
 
