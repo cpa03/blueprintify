@@ -112,6 +112,7 @@ const ToastItem = memo(
     const remainingTimeRef = useRef<number>(toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION);
     const startTimeRef = useRef<number>(0);
     const durationRef = useRef<number>(toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION);
+    const originalDurationRef = useRef<number>(toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION);
     const rafRef = useRef<number | null>(null);
 
     const clearToastTimeout = useCallback(() => {
@@ -133,9 +134,15 @@ const ToastItem = memo(
         startTimeRef.current = startTime;
         durationRef.current = remaining;
 
+        // Calculate the correct initial progress relative to the original duration.
+        // When resuming after hover-pause, this prevents the ring from jumping
+        // back to 100% — it smoothly continues from where it paused.
+        const initialProgress = Math.round((remaining / originalDurationRef.current) * 100);
+        setProgress(initialProgress);
+
         const animateProgress = () => {
           const elapsed = Date.now() - startTime;
-          const newProgress = Math.max(0, 100 - (elapsed / remaining) * 100);
+          const newProgress = Math.max(0, initialProgress * (1 - elapsed / remaining));
           setProgress(newProgress);
 
           if (newProgress > 0 && !isHovered) {
