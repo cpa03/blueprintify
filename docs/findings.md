@@ -2,10 +2,18 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-25 - BugFixer Cycle)
+## Current Cycle (2026-05-25 - Security Audit Cycle)
 
 ### Findings
 
+- **SECURITY AUDIT**: PR scan for `@types/node` bump (`^20.19.41` → `^25.9.1`)
+  - **Secrets**: None introduced — package.json/lock contain no credentials
+  - **Vulnerabilities**: `npm audit` reports 0 vulnerabilities — clean
+  - **Deprecated functions**: No runtime code changes — no deprecated usage introduced
+  - **Type errors**: No new type errors introduced by the `@types/node` bump (only pre-existing `@cloudflare/vitest-pool-workers/config` error persists)
+  - **Node compatibility note**: Runtime Node v20 with types for Node 25 — no runtime impact (types-only package), but teams should be aware when using Node 25+ APIs
+  - **Transitive dep change**: `undici-types` auto-upgraded from `6.21.0` → `7.24.6` (as dependency of `@types/node@25`) — this actually improves type/runtime alignment since the project uses `undici@7.x`
+- **Pre-existing (unchanged)**: BUG-013 (undici@7.24.8 override not applying to miniflare's dependency) — still blocked on Cloudflare SDK Node 22+
 - **BUG FOUND**: `.github/workflows/main.yml` has stale references to non-existent docs:
   - Line 39: `docs/bug.md` → should be `docs/bugs.md`
   - Line 39: `docs/feature.md` → should be `docs/features.md`
@@ -13,7 +21,6 @@
 - **Issue**: #1293 has been open since 2026-05-23 — the fix was previously attempted but apparently lost/reverted
 - **Fix applied locally**: verified build/lint/typecheck/test all pass (851 tests)
 - **Blocker**: GitHub token lacks `workflows` permission — cannot push `.github/workflows/` changes from this runner
-- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+
 
 ## Previous Cycle (2026-05-25 - RepoKeeper Cleanup Cycle 12)
 
