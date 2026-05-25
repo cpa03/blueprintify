@@ -5,7 +5,7 @@ import { useReducedMotion } from "../hooks/useReducedMotion";
 import clsx from "clsx";
 
 interface ScrollProgressProps {
-  scrollContainerRef: React.RefObject<HTMLElement>;
+  scrollContainerRef: React.RefObject<HTMLElement | null>;
   /**
    * Minimum scroll amount (in pixels) before showing the progress bar
    * @default 50
