@@ -16,9 +16,9 @@
   - [x] Update `CHANGELOG.md` — add 7 missing commits to [Unreleased], fix React 18→19 in tech stack
   - [x] Update `docs/findings.md` — record cycle 15 observations
   - [x] Update `docs/active-tasks.md` — mark cycle 14 complete, add cycle 15 entry
-  - [ ] Verify typecheck/lint/build/web+tests all pass clean
-  - [ ] Create branch `chore/repokeeper-cleanup-cycle-15` from main
-  - [ ] Create PR with all cleanup changes
+  - [x] Verify typecheck/lint/build/web+tests all pass clean
+  - [x] Create branch `chore/repokeeper-cleanup-cycle-15` from main
+  - [x] Create PR with all cleanup changes
 
 ### Task: RepoKeeper Cleanup Cycle 14 (2026-05-25)
 
