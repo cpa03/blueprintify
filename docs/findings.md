@@ -9,7 +9,7 @@
 - **Build/Lint/Typecheck/Test**: All passing clean. 851 tests (473 web + 271 api + 107 shared).
 - **Repository State**: Working tree clean. No temp/redundant/stray files detected (`.omo/ralph-loop.local.md` is active session — preserved). `.gitignore` comprehensive.
 - **Documentation**: All README-referenced docs exist and are present. No missing file links detected.
-- **Prettier formatting**: 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml) had formatting regressions — fixed again.
+- **Prettier formatting**: 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml) have formatting regressions — fix blocked by GitHub App workflow permissions. These files need formatting applied directly on main or via a token with `workflows` permission.
 - **New since cycle 11**: Issue triage report (`docs/issue-triage-2026-05-25.md`) added via PR #1337.
 - **CHANGELOG**: [Unreleased] section is up to date — no missing feature/fix commits since cycle 11.
 - **Stale remote branches**: 100+ remote branches remain. Pruning still deferred (requires owner review, multiple cycles).
@@ -18,7 +18,7 @@
 
 ### Actions Taken
 
-- Fixed Prettier formatting in `.github/workflows/` — 4 files (iterate.yml, main.yml, on-pull.yml, parallel.yml)
+- Fixed Prettier formatting in `.github/workflows/` — 4 files (iterate.yml, main.yml, on-pull.yml, parallel.yml) — fix committed locally but push blocked by GitHub App `workflows` permission
 - Updated `docs/active-tasks.md` — marked Cycle 11 complete, added Cycle 12 entry, updated Last Updated
 - Updated `docs/findings.md` — this record
 - Updated `docs/bugs.md` — bumped last updated date
