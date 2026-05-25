@@ -181,6 +181,16 @@ export const ERROR_MESSAGES = {
   TIMEOUT_MESSAGE: (elapsed: number, timeout: number) =>
     `Retry operation timed out after ${elapsed}ms (timeout: ${timeout}ms)`,
   UNKNOWN_ERROR: "Unknown error",
+
+  // Circuit breaker errors
+  /** Circuit breaker is open - service unavailable */
+  CIRCUIT_BREAKER_OPEN_MESSAGE: "Circuit breaker is OPEN",
+  /** Circuit breaker is half-open and max test calls reached */
+  CIRCUIT_BREAKER_HALF_OPEN_MAX: "Circuit breaker is HALF_OPEN - max calls reached",
+
+  // Timeout errors
+  /** Default message template when an operation times out */
+  TIMEOUT_OCCURRED: (timeoutMs: number) => `Operation timed out after ${timeoutMs}ms`,
 } as const;
 
 // Default error messages for error classes

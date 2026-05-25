@@ -2,7 +2,20 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-25 - RepoKeeper Cleanup Cycle 12)
+## Current Cycle (2026-05-25 - BugFixer Cycle)
+
+### Findings
+
+- **BUG FOUND**: `.github/workflows/main.yml` has stale references to non-existent docs:
+  - Line 39: `docs/bug.md` → should be `docs/bugs.md`
+  - Line 39: `docs/feature.md` → should be `docs/features.md`
+  - Line 263: `docs/bug.md` → should be `docs/bugs.md`
+- **Issue**: #1293 has been open since 2026-05-23 — the fix was previously attempted but apparently lost/reverted
+- **Fix applied locally**: verified build/lint/typecheck/test all pass (851 tests)
+- **Blocker**: GitHub token lacks `workflows` permission — cannot push `.github/workflows/` changes from this runner
+- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+
+
+## Previous Cycle (2026-05-25 - RepoKeeper Cleanup Cycle 12)
 
 ### Findings
 

@@ -4,6 +4,19 @@
 
 ## Current Focus: Repository Maintenance
 
+### Task: BugFixer Cycle 1 — Fix stale doc references in main.yml (2026-05-25)
+
+- **Priority**: High
+- **Status**: Active
+- **Objective**: Fix references to non-existent docs in `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+- **Issue**: #1293
+- **Actions**:
+  - [x] Identified stale doc references in `.github/workflows/main.yml` (lines 39, 263)
+  - [x] Applied fix: `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+  - [x] Verified build/lint/typecheck/test all pass — 851 tests
+  - [ ] Push fix branch and create PR (blocked: token lacks `workflows` permission to push `.github/workflows/` files — requires owner to apply diff or re-run with PAT)
+  - [ ] Close issue #1293
+
 ### Task: RepoKeeper Cleanup Cycle 12 (2026-05-25)
 
 - **Priority**: High
