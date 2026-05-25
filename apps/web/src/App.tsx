@@ -16,7 +16,7 @@ const KeyboardShortcutsModal = lazy(() => import("./components/KeyboardShortcuts
 import { SkipLink } from "./components/SkipLink";
 import { useWizardStore, useEditorStore } from "./store";
 import { UI_CONTENT } from "./config/constants";
-import { LAYOUT, FOCUS_VISIBLE_RING, BUTTON, ICON, SPINNER } from "./config/styles";
+import { LAYOUT, BUTTON, ICON, SPINNER } from "./config/styles";
 const GenerationCelebration = lazy(() =>
   import("./components/GenerationCelebration").then((m) => ({ default: m.GenerationCelebration }))
 );
@@ -257,10 +257,25 @@ function App(): JSX.Element {
 
       {/* Footer */}
       <footer className={LAYOUT.FOOTER}>
-        <div className={LAYOUT.FOOTER_CONTAINER}>
-          <p className={FOCUS_VISIBLE_RING}>{UI_CONTENT.FOOTER.BUILT_WITH}</p>
-          <p className={FOCUS_VISIBLE_RING}>{UI_CONTENT.FOOTER.COPYRIGHT}</p>
-        </div>
+        {/* Gradient accent divider for visual delight */}
+        <div
+          className="h-px bg-gradient-to-r from-transparent via-primary-500/50 via-accent-purple/40 to-transparent"
+          aria-hidden="true"
+        />
+        <motion.div
+          className={LAYOUT.FOOTER_CONTAINER}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <motion.p
+            className="text-dark-500 hover:text-dark-300 transition-colors duration-200"
+            whileHover={{ scale: 1.02 }}
+          >
+            {UI_CONTENT.FOOTER.BUILT_WITH}
+          </motion.p>
+          <p className="text-dark-500">{UI_CONTENT.FOOTER.COPYRIGHT}</p>
+        </motion.div>
       </footer>
 
       <Suspense fallback={null}>
