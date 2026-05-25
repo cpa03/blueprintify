@@ -10,7 +10,7 @@ interface UseAutoResizeTextareaOptions {
 }
 
 interface UseAutoResizeTextareaReturn {
-  textareaRef: React.RefObject<HTMLTextAreaElement>;
+  textareaRef: React.RefObject<HTMLTextAreaElement | null>;
   height: number;
   resize: () => void;
 }
