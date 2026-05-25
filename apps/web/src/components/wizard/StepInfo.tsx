@@ -40,6 +40,7 @@ import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
 import { RippleButton } from "../RippleButton";
 import { CharacterCounter } from "../CharacterCounter";
+import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
 import { ValidationCheckmark } from "../ValidationCheckmark";
@@ -410,24 +411,35 @@ export const StepInfo = memo(function StepInfo({
 
         {/* Action Buttons */}
         <div className="flex justify-end pt-4">
-          <RippleButton
-            type="submit"
-            disabled={!canProceed}
-            whileHover={{ scale: 1.02, y: -2 }}
-            whileTap={{ scale: 0.98, y: 0 }}
-            className={`btn-primary flex items-center gap-2 ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
+          <KeyboardShortcutTooltip
+            shortcut="Enter"
+            description="Continue to next step"
+            position="left"
           >
-            {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
+            <RippleButton
+              type="submit"
+              disabled={!canProceed}
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98, y: 0 }}
+              className={`btn-primary flex items-center gap-2 ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </RippleButton>
+              {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </RippleButton>
+          </KeyboardShortcutTooltip>
         </div>
       </form>
     </motion.div>

@@ -36,6 +36,7 @@ import {
 } from "../../config/constants";
 import { pageTransition, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
+import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import clsx from "clsx";
 
 interface TechChipProps {
@@ -319,16 +320,22 @@ export const StepStack = memo(function StepStack({
           </svg>
           {UI_CONTENT.BUTTONS.BACK}
         </RippleButton>
-        <RippleButton
-          onClick={handleNextClick}
-          disabled={!canProceed}
-          className={`btn-primary flex items-center gap-2 ${isShaking ? "shake-animation" : ""}`}
+        <KeyboardShortcutTooltip
+          shortcut="Enter"
+          description="Continue to next step"
+          position="left"
         >
-          {UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON}
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </RippleButton>
+          <RippleButton
+            onClick={handleNextClick}
+            disabled={!canProceed}
+            className={`btn-primary flex items-center gap-2 ${isShaking ? "shake-animation" : ""}`}
+          >
+            {UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON}
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </RippleButton>
+        </KeyboardShortcutTooltip>
       </div>
     </motion.div>
   );

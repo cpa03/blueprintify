@@ -14,4 +14,9 @@ export const KEYBOARD_SHORTCUTS = {
     KEY: "Escape",
     DESCRIPTION: "Cancel generation",
   },
+  SUBMIT_WIZARD: {
+    KEY: "Enter",
+    MODIFIER: "ctrl/cmd",
+    DESCRIPTION: "Submit current wizard step",
+  },
 } as const;

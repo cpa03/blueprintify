@@ -49,6 +49,11 @@ const getShortcutItems = (): ShortcutItem[] => {
       category: "editor",
     },
     {
+      keys: [modifier, "Enter"],
+      description: KEYBOARD_SHORTCUTS.SUBMIT_WIZARD.DESCRIPTION,
+      category: "general",
+    },
+    {
       keys: ["Esc"],
       description: KEYBOARD_SHORTCUTS.CANCEL_GENERATION.DESCRIPTION,
       category: "generation",

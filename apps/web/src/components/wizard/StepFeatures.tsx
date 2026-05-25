@@ -33,6 +33,7 @@ import {
 } from "../../config/constants";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
+import { KeyboardShortcutTooltip } from "../SmartTooltip";
 
 interface StepFeaturesProps {
   direction?: AnimationDirection;
@@ -333,12 +334,18 @@ export const StepFeatures = memo(function StepFeatures({
           </svg>
           {UI_CONTENT.BUTTONS.BACK}
         </RippleButton>
-        <RippleButton onClick={nextStep} className="btn-primary flex items-center gap-2">
-          {UI_CONTENT.WIZARD.STEP_FEATURES.NEXT_BUTTON}
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </RippleButton>
+        <KeyboardShortcutTooltip
+          shortcut="Enter"
+          description="Continue to next step"
+          position="left"
+        >
+          <RippleButton onClick={nextStep} className="btn-primary flex items-center gap-2">
+            {UI_CONTENT.WIZARD.STEP_FEATURES.NEXT_BUTTON}
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </RippleButton>
+        </KeyboardShortcutTooltip>
       </div>
     </motion.div>
   );

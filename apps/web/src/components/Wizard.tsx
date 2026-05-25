@@ -19,7 +19,7 @@
  * @see {@link useEditorStore} - Generation state tracking
  */
 
-import React, { Suspense, lazy, useState, useEffect, useRef } from "react";
+import React, { Suspense, lazy, useState, useEffect, useRef, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../store";
 import { useEditorStore } from "../store";
@@ -77,6 +77,27 @@ function WizardComponent(): JSX.Element {
       prevStepRef.current = currentStep;
     }
   }, [currentStep]);
+
+  const handleCmdEnter = useCallback(
+    (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+        if (currentStep === "generating") return;
+        if (document.activeElement?.tagName === "TEXTAREA") return;
+
+        const primaryBtn = document.querySelector<HTMLButtonElement>(".btn-primary:not(:disabled)");
+        if (primaryBtn) {
+          e.preventDefault();
+          primaryBtn.click();
+        }
+      }
+    },
+    [currentStep]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleCmdEnter);
+    return () => window.removeEventListener("keydown", handleCmdEnter);
+  }, [handleCmdEnter]);
 
   const documentTitle =
     isGenerating && generationProgress
