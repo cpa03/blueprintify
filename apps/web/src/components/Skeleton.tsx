@@ -98,7 +98,7 @@ const shimmerVariants = {
     transition: {
       duration: SKELETON_PRESETS.SHIMMER_DURATION_S,
       repeat: Infinity,
-      ease: "linear",
+      ease: "linear" as const,
     },
   },
 };
@@ -111,7 +111,7 @@ const pulseVariants = {
       duration: SKELETON_PRESETS.PULSE_DURATION_S,
       repeat: Infinity,
       repeatType: "reverse" as const,
-      ease: "easeInOut",
+      ease: "easeInOut" as const,
     },
   },
 };
