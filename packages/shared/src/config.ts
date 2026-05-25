@@ -143,6 +143,17 @@ export const ID_GENERATION_CONFIG = {
 } as const;
 
 /**
+ * Character sets for ID generation
+ * Centralized to eliminate hardcoded character strings across the codebase
+ */
+export const ID_CHARS = {
+  /** Full alphanumeric set (mixed case + digits) for share IDs, tokens etc. */
+  FULL: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+  /** Lowercase alphanumeric set for database IDs, slugs etc. */
+  LOWERCASE: "abcdefghijklmnopqrstuvwxyz0123456789",
+} as const;
+
+/**
  * Time Units Constants
  * Centralized time conversion values to avoid magic numbers
  */
@@ -177,4 +188,22 @@ export const HTTP_STATUS = {
   BAD_GATEWAY: 502,
   SERVICE_UNAVAILABLE: 503,
   GATEWAY_TIMEOUT: 504,
+} as const;
+
+// ============================================================================
+// Shared Route Paths
+// Centralized source of truth for API route paths
+// Used by both API and Web to eliminate hardcoded route strings
+// ============================================================================
+
+export const ROUTE_PATHS = {
+  ROOT: "/",
+  GENERATE: "/generate",
+  TASKS: "/tasks",
+  REFINE: "/refine",
+  EXPORT: "/export",
+  IMPORT: "/import",
+  STORAGE: "/storage",
+  SHARE: "/share",
+  WARMUP: "/warmup",
 } as const;
