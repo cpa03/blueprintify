@@ -62,6 +62,15 @@ export const StepFeatures = memo(function StepFeatures({
     }
   }, [newFeature, addFeature]);
 
+  const handleSuggestionAdd = useCallback(
+    (feature: string) => {
+      addFeature(feature);
+      setJustAdded(feature);
+      setTimeout(() => setJustAdded(null), TIMEOUTS.TOAST_NOTIFICATION);
+    },
+    [addFeature]
+  );
+
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === "Enter") {
@@ -257,40 +266,108 @@ export const StepFeatures = memo(function StepFeatures({
               {UI_CONTENT.WIZARD.STEP_FEATURES.QUICK_ADD_LABEL}
             </label>
             <div className="flex flex-wrap gap-2" role="group" aria-labelledby="suggestions-label">
-              {suggestedNotAdded.map((feature) => (
-                <motion.button
-                  key={feature}
-                  onClick={() => addFeature(feature)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      addFeature(feature);
+              {suggestedNotAdded.map((feature) => {
+                const isJustAdded = justAdded === feature;
+                return (
+                  <motion.button
+                    key={feature}
+                    onClick={() => handleSuggestionAdd(feature)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        handleSuggestionAdd(feature);
+                      }
+                    }}
+                    layout
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: "spring", ...SPRING_CONFIG.SUBTLE_BOUNCE }}
+                    className="tech-chip relative overflow-hidden hover:border-accent-emerald/50"
+                    aria-label={`Add suggestion: ${feature}`}
+                    animate={
+                      isJustAdded
+                        ? {
+                            scale: [1, 1.12, 1],
+                            transition: { duration: 0.35, ease: "easeOut" },
+                          }
+                        : {}
                     }
-                  }}
-                  layout
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", ...SPRING_CONFIG.SUBTLE_BOUNCE }}
-                  className="tech-chip hover:border-accent-emerald/50"
-                  aria-label={`Add suggestion: ${feature}`}
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 4v16m8-8H4"
-                    />
-                  </svg>
-                  {feature}
-                </motion.button>
-              ))}
+                    <AnimatePresence>
+                      {isJustAdded && (
+                        <motion.div
+                          initial={{ scale: 0, opacity: 0.8 }}
+                          animate={{ scale: 2.5, opacity: 0 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.5, ease: "easeOut" }}
+                          className="absolute inset-0 rounded-full bg-accent-emerald/30 pointer-events-none"
+                          style={{ transformOrigin: "center" }}
+                        />
+                      )}
+                    </AnimatePresence>
+                    <AnimatePresence>
+                      {isJustAdded && (
+                        <motion.div
+                          initial={{ scale: 0.8, opacity: 1 }}
+                          animate={{ scale: 1.5, opacity: 0 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.4, ease: "easeOut" }}
+                          className="absolute inset-0 rounded-full border-2 border-accent-emerald pointer-events-none"
+                        />
+                      )}
+                    </AnimatePresence>
+                    <span className="relative z-10 flex items-center gap-1.5">
+                      <AnimatePresence mode="wait">
+                        {isJustAdded ? (
+                          <motion.svg
+                            key="checkmark"
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                            initial={{ scale: 0, rotate: -180 }}
+                            animate={{ scale: 1, rotate: 0 }}
+                            exit={{ scale: 0, rotate: 180 }}
+                            transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                          >
+                            <motion.path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                              initial={{ pathLength: 0 }}
+                              animate={{ pathLength: 1 }}
+                              transition={{ duration: 0.2, delay: 0.1 }}
+                            />
+                          </motion.svg>
+                        ) : (
+                          <motion.svg
+                            key="plus"
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                            initial={{ scale: 0, rotate: 180 }}
+                            animate={{ scale: 1, rotate: 0 }}
+                            exit={{ scale: 0, rotate: -180 }}
+                            transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 4v16m8-8H4"
+                            />
+                          </motion.svg>
+                        )}
+                      </AnimatePresence>
+                      <span>{feature}</span>
+                    </span>
+                  </motion.button>
+                );
+              })}
             </div>
           </div>
         )}
