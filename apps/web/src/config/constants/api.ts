@@ -4,16 +4,20 @@
  */
 
 import { ENV } from "../env";
-import { RETRYABLE_STATUS_CODES, SSE_CONFIG, HTTP_STATUS } from "@blueprint/shared";
+import { ROUTE_PATHS, RETRYABLE_STATUS_CODES, SSE_CONFIG, HTTP_STATUS } from "@blueprint/shared";
 
-export { RETRYABLE_STATUS_CODES, SSE_CONFIG, HTTP_STATUS };
+export { ROUTE_PATHS, RETRYABLE_STATUS_CODES, SSE_CONFIG, HTTP_STATUS };
 
 /** API endpoints for the Blueprintify backend */
 export const API_ENDPOINTS = {
-  GENERATE: "/generate",
-  TASKS: "/tasks",
-  REFINE: "/refine",
-  HEALTH: "/",
+  HEALTH: ROUTE_PATHS.ROOT,
+  GENERATE: ROUTE_PATHS.GENERATE,
+  TASKS: ROUTE_PATHS.TASKS,
+  REFINE: ROUTE_PATHS.REFINE,
+  EXPORT: ROUTE_PATHS.EXPORT,
+  IMPORT: ROUTE_PATHS.IMPORT,
+  STORAGE: ROUTE_PATHS.STORAGE,
+  SHARE: ROUTE_PATHS.SHARE,
 } as const;
 
 /**

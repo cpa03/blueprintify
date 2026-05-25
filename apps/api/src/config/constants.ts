@@ -14,6 +14,8 @@ import {
   SSE_HEADERS as SHARED_SSE_HEADERS,
   HTTP_STATUS as SHARED_HTTP_STATUS,
   ID_GENERATION_CONFIG,
+  ID_CHARS,
+  ROUTE_PATHS as SHARED_ROUTE_PATHS,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./env";
 import {
@@ -75,54 +77,55 @@ export const API_METADATA = {
 };
 
 // API Endpoints configuration
+// Uses shared ROUTE_PATHS as the single source of truth for paths
 export const API_ENDPOINTS = {
   GENERATE: {
-    path: "/generate",
+    path: SHARED_ROUTE_PATHS.GENERATE,
     method: "POST",
     description: "Generate blueprint",
   },
   TASKS: {
-    path: "/tasks",
+    path: SHARED_ROUTE_PATHS.TASKS,
     method: "POST",
     description: "Generate tasks",
   },
   REFINE: {
-    path: "/refine",
+    path: SHARED_ROUTE_PATHS.REFINE,
     method: "POST",
     description: "Refine content",
   },
   EXPORT: {
-    path: "/export",
+    path: SHARED_ROUTE_PATHS.EXPORT,
     method: "POST",
     description: "Export project",
   },
   IMPORT: {
-    path: "/import",
+    path: SHARED_ROUTE_PATHS.IMPORT,
     method: "POST",
     description: "Import project",
   },
   STORAGE_QUOTA: {
-    path: "/storage/quota",
+    path: `${SHARED_ROUTE_PATHS.STORAGE}/quota`,
     method: "GET",
     description: "Get storage quota",
   },
   STORAGE_CLEAR: {
-    path: "/storage/clear",
+    path: `${SHARED_ROUTE_PATHS.STORAGE}/clear`,
     method: "DELETE",
     description: "Clear storage",
   },
   SHARE_CREATE: {
-    path: "/share",
+    path: SHARED_ROUTE_PATHS.SHARE,
     method: "POST",
     description: "Create shareable blueprint link",
   },
   SHARE_GET: {
-    path: "/share/:id",
+    path: `${SHARED_ROUTE_PATHS.SHARE}/:id`,
     method: "GET",
     description: "Get shared blueprint by ID",
   },
   SHARE_DELETE: {
-    path: "/share/:id",
+    path: `${SHARED_ROUTE_PATHS.SHARE}/:id`,
     method: "DELETE",
     description: "Delete shared blueprint",
   },
@@ -343,7 +346,7 @@ export { SHARED_SSE_CONFIG as SSE_CONFIG, SHARED_SSE_HEADERS as SSE_HEADERS };
  */
 export const DB_ID_CONFIG = {
   /** Characters used for generating secure random IDs */
-  ID_CHARS: "abcdefghijklmnopqrstuvwxyz0123456789",
+  ID_CHARS: ID_CHARS.LOWERCASE,
   /** Prefixes for different entity types */
   ID_PREFIXES: {
     USER: "user",
@@ -463,17 +466,8 @@ export const CACHE_CONFIG = {
   CDN_MAX_AGE_FORMAT: "public, max-age=",
 } as const;
 
-export const ROUTE_PATHS = {
-  ROOT: "/",
-  GENERATE: "/generate",
-  TASKS: "/tasks",
-  REFINE: "/refine",
-  EXPORT: "/export",
-  IMPORT: "/import",
-  STORAGE: "/storage",
-  SHARE: "/share",
-  WARMUP: "/warmup",
-} as const;
+// Route paths - re-exported from shared package as single source of truth
+export { SHARED_ROUTE_PATHS as ROUTE_PATHS };
 
 export const RATE_LIMIT_CONFIG = {
   get WINDOW_MS(): number {
@@ -510,7 +504,7 @@ export const EXTERNAL_URLS = {
 
 export const SHARE_CONFIG = {
   ID_LENGTH: 12,
-  ALPHANUMERIC_CHARS: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+  ALPHANUMERIC_CHARS: ID_CHARS.FULL,
   EXPIRATION_DAYS: 30,
   TITLE_MAX_LENGTH: 200,
   BLUEPRINT_MAX_LENGTH: 50000,
@@ -569,7 +563,7 @@ export const LOGGER_CONFIG = {
   /** Length of random suffix in request ID (e.g., timestamp-abc1234 -> 4 chars) */
   REQUEST_ID_SUFFIX_LENGTH: 4,
   /** Default paths excluded from request logging */
-  DEFAULT_EXCLUDE_PATHS: ["/"] as const,
+  DEFAULT_EXCLUDE_PATHS: [SHARED_ROUTE_PATHS.ROOT] as const,
   SANITIZED_HEADER_EXCLUDE: ["authorization", "cookie"] as const,
   UNPARSABLE_BODY: "[unparsable]",
 } as const;

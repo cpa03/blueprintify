@@ -1,6 +1,7 @@
 import { memo, type ReactElement } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
+import { VERCEL_DOMAINS } from "../config/constants/api";
 
 /**
  * Conditionally renders Vercel Speed Insights and Analytics only on actual
@@ -10,8 +11,7 @@ import { Analytics } from "@vercel/analytics/react";
 export const VercelAnalytics = memo(function VercelAnalytics(): ReactElement | null {
   if (
     typeof window === "undefined" ||
-    window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1"
+    VERCEL_DOMAINS.LOCAL.includes(window.location.hostname as (typeof VERCEL_DOMAINS.LOCAL)[number])
   ) {
     return null;
   }

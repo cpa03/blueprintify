@@ -1,8 +1,33 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { checkHealth } from "./api";
 
+const { ROUTE_PATHS } = vi.hoisted(() => ({
+  ROUTE_PATHS: {
+    ROOT: "/",
+    GENERATE: "/generate",
+    TASKS: "/tasks",
+    REFINE: "/refine",
+    EXPORT: "/export",
+    IMPORT: "/import",
+    STORAGE: "/storage",
+    SHARE: "/share",
+    WARMUP: "/warmup",
+  },
+}));
+
 // Mock the @blueprint/shared module
 vi.mock("@blueprint/shared", () => ({
+  ROUTE_PATHS: {
+    ROOT: "/",
+    GENERATE: "/generate",
+    TASKS: "/tasks",
+    REFINE: "/refine",
+    EXPORT: "/export",
+    IMPORT: "/import",
+    STORAGE: "/storage",
+    SHARE: "/share",
+    WARMUP: "/warmup",
+  },
   RETRY_CONFIG: {
     DEFAULT_RETRIES: 3,
     DEFAULT_INITIAL_DELAY: 100,
@@ -18,14 +43,14 @@ vi.mock("@blueprint/shared", () => ({
 // Mock the constants module
 vi.mock("../config/constants", () => ({
   API_ENDPOINTS: {
-    GENERATE: "/generate",
-    TASKS: "/tasks",
-    REFINE: "/refine",
-    HEALTH: "/",
-    EXPORT: "/export",
-    IMPORT: "/import",
-    STORAGE: "/storage",
-    SHARE: "/share",
+    GENERATE: ROUTE_PATHS.GENERATE,
+    TASKS: ROUTE_PATHS.TASKS,
+    REFINE: ROUTE_PATHS.REFINE,
+    HEALTH: ROUTE_PATHS.ROOT,
+    EXPORT: ROUTE_PATHS.EXPORT,
+    IMPORT: ROUTE_PATHS.IMPORT,
+    STORAGE: ROUTE_PATHS.STORAGE,
+    SHARE: ROUTE_PATHS.SHARE,
   },
   API_ERROR_MESSAGES: {
     NO_RESPONSE_BODY: "No response body",

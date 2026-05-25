@@ -10,6 +10,7 @@ import storageRoute from "../routes/storage";
 import tasksRoute from "../routes/tasks";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 import { SSE_HEADERS } from "../config/constants";
+import { ROUTE_PATHS } from "@blueprint/shared";
 
 interface ApiResponse {
   success: boolean;
@@ -46,12 +47,12 @@ describe("Integration: End-to-End M2 Workflows", () => {
     setDefaultContainer(mockContainer);
 
     app = new Hono<{ Bindings: typeof MOCK_ENV }>();
-    app.route("/generate", generateRoute);
-    app.route("/refine", refineRoute);
-    app.route("/export", exportRoute);
-    app.route("/import", importRoute);
-    app.route("/storage", storageRoute);
-    app.route("/tasks", tasksRoute);
+    app.route(ROUTE_PATHS.GENERATE, generateRoute);
+    app.route(ROUTE_PATHS.REFINE, refineRoute);
+    app.route(ROUTE_PATHS.EXPORT, exportRoute);
+    app.route(ROUTE_PATHS.IMPORT, importRoute);
+    app.route(ROUTE_PATHS.STORAGE, storageRoute);
+    app.route(ROUTE_PATHS.TASKS, tasksRoute);
     app.onError(errorHandler);
   });
 
@@ -63,7 +64,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
   describe("Workflow 1: Complete Blueprint Generation Flow", () => {
     it("should generate blueprint, then export it", async () => {
       const generateRes = await app.request(
-        "/generate",
+        ROUTE_PATHS.GENERATE,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -80,7 +81,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
       expect(generateRes.headers.get("Content-Type")).toContain(SSE_HEADERS.CONTENT_TYPE);
 
       const exportRes = await app.request(
-        "/export",
+        ROUTE_PATHS.EXPORT,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -102,7 +103,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
 
     it("should generate blueprint, refine it, then export", async () => {
       const generateRes = await app.request(
-        "/generate",
+        ROUTE_PATHS.GENERATE,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -118,7 +119,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
       expect(generateRes.status).toBe(200);
 
       const refineRes = await app.request(
-        "/refine",
+        ROUTE_PATHS.REFINE,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -133,7 +134,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
       expect(refineRes.status).toBe(200);
 
       const exportRes = await app.request(
-        "/export",
+        ROUTE_PATHS.EXPORT,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -168,7 +169,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
       };
 
       const importRes = await app.request(
-        "/import",
+        ROUTE_PATHS.IMPORT,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -186,7 +187,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
       expect(importData.data?.projectName).toBe("Roundtrip Test");
 
       const exportRes = await app.request(
-        "/export",
+        ROUTE_PATHS.EXPORT,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -210,7 +211,11 @@ describe("Integration: End-to-End M2 Workflows", () => {
   describe("Workflow 3: Storage Operations Flow", () => {
     it("should get storage quota and clear storage", async () => {
       // Storage is client-side (localStorage), server only provides quota info
-      const quotaRes = await app.request("/storage/quota", { method: "GET" }, MOCK_ENV);
+      const quotaRes = await app.request(
+        `${ROUTE_PATHS.STORAGE}/quota`,
+        { method: "GET" },
+        MOCK_ENV
+      );
 
       expect(quotaRes.status).toBe(200);
       const quotaData = (await quotaRes.json()) as { data: QuotaResponse };
@@ -218,7 +223,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
       expect(quotaData.data).toHaveProperty("total");
 
       const clearRes = await app.request(
-        "/storage/clear",
+        `${ROUTE_PATHS.STORAGE}/clear`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -236,7 +241,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
   describe("Workflow 4: Error Propagation Across Services", () => {
     it("should propagate validation errors from generation to response", async () => {
       const res = await app.request(
-        "/generate",
+        ROUTE_PATHS.GENERATE,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -255,7 +260,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
 
     it("should handle malformed import data gracefully", async () => {
       const res = await app.request(
-        "/import",
+        ROUTE_PATHS.IMPORT,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -276,7 +281,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
       const envWithoutKey = { ...MOCK_ENV, OPENAI_API_KEY: "" };
 
       const res = await app.request(
-        "/generate",
+        ROUTE_PATHS.GENERATE,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -298,7 +303,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
   describe("Workflow 5: Concurrent Operations", () => {
     it("should handle concurrent quota requests", async () => {
       const promises = Array.from({ length: 5 }, () =>
-        app.request("/storage/quota", { method: "GET" }, MOCK_ENV)
+        app.request(`${ROUTE_PATHS.STORAGE}/quota`, { method: "GET" }, MOCK_ENV)
       );
 
       const results = await Promise.all(promises);
@@ -311,7 +316,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
     it("should handle concurrent generation requests", async () => {
       const requests = Array.from({ length: 3 }, () =>
         app.request(
-          "/generate",
+          ROUTE_PATHS.GENERATE,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -336,9 +341,9 @@ describe("Integration: End-to-End M2 Workflows", () => {
   describe("Workflow 6: API Health and Consistency", () => {
     it("should maintain consistent responses across multiple quota checks", async () => {
       const results = await Promise.all([
-        app.request("/storage/quota", { method: "GET" }, MOCK_ENV),
-        app.request("/storage/quota", { method: "GET" }, MOCK_ENV),
-        app.request("/storage/quota", { method: "GET" }, MOCK_ENV),
+        app.request(`${ROUTE_PATHS.STORAGE}/quota`, { method: "GET" }, MOCK_ENV),
+        app.request(`${ROUTE_PATHS.STORAGE}/quota`, { method: "GET" }, MOCK_ENV),
+        app.request(`${ROUTE_PATHS.STORAGE}/quota`, { method: "GET" }, MOCK_ENV),
       ]);
 
       results.forEach((res) => {
