@@ -4,44 +4,27 @@
 
 ## Active Bugs
 
-### BUG-014: Stale Doc References in main.yml Workflow
+### ~~BUG-014: Stale Doc References in main.yml Workflow~~ (FIXED)
 
-**Status**: Open (Fix available — blocked by token permissions)  
+**Status**: Fixed — 2026-05-25 (BugFixer Cycle 2)  
 **Priority**: High  
 **Area**: CI/CD  
-**First Reported**: 2026-05-25 (BugFixer Cycle)  
 **Issue**: #1293
 **Milestone**: Immediate
 
 #### Description
 
-`.github/workflows/main.yml` references two non-existent documentation files:
+`.github/workflows/main.yml` referenced two non-existent documentation files:
 
-- Line 39: `docs/bug.md` → should be `docs/bugs.md`
-- Line 39: `docs/feature.md` → should be `docs/features.md`
-- Line 263: `docs/bug.md` → should be `docs/bugs.md`
+- `docs/bug.md` → corrected to `docs/bugs.md`
+- `docs/feature.md` → corrected to `docs/features.md`
 
-#### Impact
+#### Fix Applied
 
-The Architect and Reliability Observer agents are instructed to read files that don't exist. This causes:
-
-- Architect step skips reading current bug/feature status
-- Reliability Observer can't document new bugs to the correct location
-- Potential silent failures or confusing agent behavior
-
-#### Fix
-
-```diff
-- "Baca docs/blueprint.md, docs/roadmap.md, docs/bug.md, docs/feature.md.
-+ "Baca docs/blueprint.md, docs/roadmap.md, docs/bugs.md, docs/features.md.
-
-- Catat bug baru ke docs/bug.md.
-+ Catat bug baru ke docs/bugs.md.
-```
-
-#### Current Status
-
-Fix has been verified locally (build/lint/typecheck/test all pass). Creation of PR blocked by GitHub token lacking `workflows` permission. Requires owner to apply the diff above or re-run with a PAT that has `workflows: write` scope.
+- Replaced stale `docs/bug.md` → `docs/bugs.md` on lines 39, 263
+- Replaced stale `docs/feature.md` → `docs/features.md` on line 39
+- Fixed Prettier formatting on 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml)
+- Verified: typecheck/lint/build/test all pass clean
 
 ---
 
