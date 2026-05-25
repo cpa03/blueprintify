@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Enhanced ShowEditorButton with spring pop-in entrance animation for visual delight
+- Spring hover/tap animations on StepFeatures suggestion buttons for tactile interaction feedback
+- Animated SVG icon replacing emoji on New Project button for consistent visual identity ([#1330](https://github.com/cpa03/blueprintify/pull/1330))
 - Comprehensive body limit middleware tests for API request validation
 - Focus first invalid field on StepInfo form submit for better UX
 - Scroll-triggered shadow on header for depth feedback ([#1314](https://github.com/cpa03/blueprintify/pull/1314))
@@ -43,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modularized hardcoded configuration values into constants across API and web apps ([#1289](https://github.com/cpa03/blueprintify/pull/1289))
 - Extracted route handler factory to eliminate handler duplication across routes ([#1288](https://github.com/cpa03/blueprintify/pull/1288))
 - Removed unused `MockDatabaseService` per cleanup task ([#1042](https://github.com/cpa03/blueprintify/pull/1042))
+- Replaced `as any` casts with typed alternatives across test files for improved type safety
 - Added `engines` field to root `package.json` for Node version specification
 
 ### Fixed
@@ -65,7 +68,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Replaced O(n) localStorage quota serialization with incremental estimate for non-blocking performance ([#1329](https://github.com/cpa03/blueprintify/pull/1329))
 - Reduced CLS from 0.995 to 0.077, improving Lighthouse Performance to 95/100
-- Lazy-loaded TemplateGrid and VercelAnalytics to reduce initial bundle ([#1317](https://github.com/cpa03/blueprintify/pull/1317))
+- Lazy-loaded TemplateGrid, VercelAnalytics, and ToastContainer to reduce initial bundle ([#1317](https://github.com/cpa03/blueprintify/pull/1317))
+- Lazy-loaded DOMPurify to reduce main bundle by ~25KB
 - Reduced CLS from 0.891 to 0.153, improving Lighthouse performance score to 93
 - Reduced CLS from 0.903 to 0.162 via skeleton layout match ([#1300](https://github.com/cpa03/blueprintify/pull/1300))
 - Cached localStorage quota calculation to avoid blocking main thread ([#1307](https://github.com/cpa03/blueprintify/pull/1307))
