@@ -25,8 +25,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { memo, useCallback } from "react";
-import { useEditorStore } from "../../store";
-import { useWizardStore } from "../../store";
+import { useEditorStore, useWizardStore, useToast } from "../../store";
 import { ANIMATION, GENERATION_MESSAGES } from "../../config/constants";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { AnimatedNumber } from "../AnimatedNumber";
@@ -46,6 +45,7 @@ export const StepGenerating = memo(function StepGenerating({
   const tasksContent = useEditorStore((s) => s.tasksContent);
   const cancelGeneration = useEditorStore((s) => s.cancelGeneration);
   const setStep = useWizardStore((s) => s.setStep);
+  const toast = useToast();
 
   const blueprintLines = blueprintContent?.split("\n").length ?? 0;
   const tasksLines = tasksContent?.split("\n").length ?? 0;
@@ -53,8 +53,9 @@ export const StepGenerating = memo(function StepGenerating({
 
   const handleCancel = useCallback(() => {
     cancelGeneration();
+    toast.info("Generation cancelled");
     setStep("review");
-  }, [cancelGeneration, setStep]);
+  }, [cancelGeneration, setStep, toast]);
 
   const handleViewReview = useCallback(() => {
     setStep("review");
