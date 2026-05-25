@@ -13,6 +13,16 @@
   - **Type errors**: No new type errors introduced by the `@types/node` bump (only pre-existing `@cloudflare/vitest-pool-workers/config` error persists)
   - **Node compatibility note**: Runtime Node v20 with types for Node 25 — no runtime impact (types-only package), but teams should be aware when using Node 25+ APIs
   - **Transitive dep change**: `undici-types` auto-upgraded from `6.21.0` → `7.24.6` (as dependency of `@types/node@25`) — this actually improves type/runtime alignment since the project uses `undici@7.x`
+- **SECURITY AUDIT**: PR scan for framer-motion bump (`^10.18.0` → `^12.40.0`)
+  - **npm audit**: 0 vulnerabilities — clean
+  - **Secrets scan**: No secrets, tokens, or credentials introduced — changed files only contain version bumps
+  - **Deprecated API check**: No deprecated framer-motion APIs found in codebase:
+    - `useViewportScroll` (removed in v12) — not used
+    - `useAnimation` (deprecated) — not used
+    - `exitBeforeEnter` (removed) — not used (codebase already uses `mode="wait"`)
+    - `useReducedMotion` from framer-motion — not used (project uses custom hook via browser API)
+  - **Fix applied**: `Skeleton.tsx` — `ease` properties in transition objects needed `as const` assertion for framer-motion v12's stricter `Easing` type
+  - **Verification**: TypeScript typecheck, lint, and all 851 tests pass clean
 - **Pre-existing (unchanged)**: BUG-013 (undici@7.24.8 override not applying to miniflare's dependency) — still blocked on Cloudflare SDK Node 22+
 - **BUG FOUND**: `.github/workflows/main.yml` has stale references to non-existent docs:
   - Line 39: `docs/bug.md` → should be `docs/bugs.md`
