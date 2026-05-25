@@ -4,11 +4,11 @@
 
 ## Overview
 
-The web application is a React 18 SPA built with Vite. It provides a wizard interface for configuring project details, generates blueprints using AI, and offers a split-pane editor for viewing and editing generated content.
+The web application is a React 19 SPA built with Vite. It provides a wizard interface for configuring project details, generates blueprints using AI, and offers a split-pane editor for viewing and editing generated content.
 
 ## Tech Stack
 
-- **Framework**: [React](https://react.dev/) 18
+- **Framework**: [React](https://react.dev/) 19
 - **Build Tool**: [Vite](https://vitejs.dev/) 7
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) 3
 - **State Management**: [Zustand](https://github.com/pmndrs/zustand)
