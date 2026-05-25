@@ -6,9 +6,10 @@ const DEV_SERVER_PORT = parseInt(process.env.VITE_DEV_SERVER_PORT || "3000", 10)
 const API_PROXY_TARGET = process.env.VITE_API_PROXY_TARGET || "http://localhost:8787";
 
 /**
- * Vite plugin to preload CSS for early fetch while keeping it render-blocking.
- * The preload ensures the CSS download starts as early as possible.
- * Keeping the stylesheet sync prevents CLS from unstyled content during React hydration.
+ * Vite plugin to preload CSS with high priority and load it asynchronously.
+ * Inlines critical CSS prevents CLS, so the full stylesheet can be deferred.
+ * The media="print" onload pattern loads CSS without blocking rendering,
+ * then switches to "all" once loaded to apply styles.
  */
 const preloadCssPlugin = (): Plugin => ({
   name: "preload-css",
@@ -21,8 +22,15 @@ const preloadCssPlugin = (): Plugin => ({
       if (!hrefMatch) return match;
       const href = hrefMatch[1];
       const crossorigin = attributes.includes("crossorigin") ? " crossorigin" : "";
-      // Preload for early fetch + keep stylesheet sync to prevent CLS
-      return `<link rel="preload" as="style"${crossorigin} href="${href}">\n    <link rel="stylesheet"${attributes}>`;
+      const nonce = attributes.match(/nonce="([^"]+)"/)?.[1] || "";
+      const nonceAttr = nonce ? ` nonce="${nonce}"` : "";
+      // Preload with high priority + async stylesheet via media="print" onload trick
+      // Critical CSS is inlined so the sync stylesheet is unnecessary for FCP
+      return (
+        `<link rel="preload" as="style"${crossorigin} href="${href}" fetchpriority="high">` +
+        `\n    <link rel="stylesheet"${attributes} media="print"${nonceAttr} onload="this.media='all';this.onload=null">` +
+        `\n    <noscript><link rel="stylesheet"${attributes}></noscript>`
+      );
     });
   },
 });
@@ -117,7 +125,6 @@ export default defineConfig({
         manualChunks: {
           vendor: ["react", "react-dom"],
           animation: ["framer-motion"],
-          zustand: ["zustand"],
         },
         assetFileNames: (assetInfo) => {
           const name = assetInfo.name ?? "";
