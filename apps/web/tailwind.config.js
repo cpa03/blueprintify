@@ -76,9 +76,6 @@ export default {
         "mesh-gradient":
           "linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 50%, rgba(236, 72, 153, 0.1) 100%)",
       },
-      backdropBlur: {
-        xs: "2px",
-      },
     },
   },
   plugins: [require("@tailwindcss/typography")],
