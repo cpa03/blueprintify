@@ -191,7 +191,7 @@ function calculateTotalBytesFull(): number {
 }
 
 let lastFullCalculation: number = 0;
-const FULL_RECALCULATION_INTERVAL_MS = 10 * 60 * 1000; // 10 minutes
+const FULL_RECALCULATION_INTERVAL_MS = STORAGE_CONFIG.FULL_RECALCULATION_INTERVAL_MS;
 
 function getStorageQuota(): QuotaInfo {
   const now = Date.now();

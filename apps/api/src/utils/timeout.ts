@@ -7,7 +7,7 @@
  * @module utils/timeout
  */
 
-import { RETRY_CONFIG } from "../config/constants";
+import { RETRY_CONFIG, ERROR_MESSAGES } from "../config/constants";
 
 /**
  * Configuration options for timeout behavior
@@ -26,7 +26,7 @@ export class TimeoutError extends Error {
   readonly timeoutMs: number;
 
   constructor(timeoutMs: number, message?: string) {
-    super(message ?? `Operation timed out after ${timeoutMs}ms`);
+    super(message ?? ERROR_MESSAGES.TIMEOUT_OCCURRED(timeoutMs));
     this.name = "TimeoutError";
     this.timeoutMs = timeoutMs;
   }

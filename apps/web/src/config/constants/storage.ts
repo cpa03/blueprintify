@@ -58,6 +58,8 @@ export const STORAGE_CONFIG = {
   DEFAULT_RETRY_DELAY_MS: 100,
   QUOTA_CACHE_TTL_MS: 5000,
   BROWSER_QUOTA_ERROR_CODES: { CHROME: 22, FIREFOX: 1014 } as const,
+  /** Full quota recalculation interval in ms (10 minutes) */
+  FULL_RECALCULATION_INTERVAL_MS: 10 * 60 * 1000,
 };
 
 // ============================================================================
