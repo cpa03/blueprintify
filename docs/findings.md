@@ -2,35 +2,37 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-25 - RepoKeeper Cleanup Cycle 13)
+## Current Cycle (2026-05-25 - RepoKeeper Cleanup Cycle 14)
 
 ### Findings
 
-- **Build/Lint/Typecheck**: All passing clean.
+- **RepoKeeper started**: Typecheck had 34 errors (React 18/19 version mismatch: react@18 + react-dom@19 + @types/react@19), lint and test runner broken due to incomplete `npm install` (eslint 10 vs eslint-plugin-jsx-a11y peer dep conflict).
+- **Build/Lint/Typecheck**: All passing clean after fixes.
 - **Web Tests**: 473/473 passing. Shared package tests: 107/107 passing.
-- **API Tests**: 24 errors (pre-existing `@cloudflare/vitest-pool-workers` vs vitest 3.x incompatibility on Node 20 — Node 22 required).
-- **Prettier formatting**: Fixed in 6 files (4 workflow YAMLs, index.html, index.css).
-- **Stale doc refs in main.yml**: Fixed again — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`. Previous fix (commit ee42a06) was apparently lost/reverted during merge of PR #1357. Issue #1293 remains open.
+- **React version alignment**: Upgraded `react` from `^18.2.0` to `^19.2.0`, `@types/react` from `^18.2.45` to `^19.2.0` to match existing `react-dom@19`. This resolved ~7 `bigint` ReactNode assignability errors.
+- **ESLint peer dep conflict**: Downgraded `eslint` from `^10.4.0` to `^9.39.4` to match `eslint-plugin-jsx-a11y@^6.10.2` (which only supports eslint ^3-9). This resolved `npm install` failure without needing `--legacy-peer-deps`.
+- **JSX namespace (30 errors)**: React 19 types removed global `JSX` namespace. Added `apps/web/src/global.d.ts` to redeclare it, fixing all `Cannot find namespace 'JSX'` errors across 27 files.
+- **RefObject nullability (3 errors)**: React 19 `RefObject<T>` is now `RefObject<T | null>`. Updated `ScrollProgress`, `ScrollToTop`, `useAutoResizeTextarea` types to accept nullable refs.
+- **Prettier formatting**: Fixed in 4 workflow YAMLs (iterate.yml, main.yml, on-pull.yml, parallel.yml).
+- **Stale doc refs in main.yml**: Fixed again — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md` (lines 39, 263).
 - **Blocker**: GitHub token likely lacks `workflows` permission — pushing `.github/workflows/` changes may still be blocked from this runner.
 - **No redundant/temp/stray files detected**. `.gitignore` is comprehensive.
-- **Docs updated**: active-tasks.md (cycle 13), bugs.md, roadmap.md, CHANGELOG.md.
-- **Stale remote tracking refs**: 2 pruned (framer-motion-12.40.0, types/node-25.9.1).
-- **Dependencies**: 1026 packages installed, 0 vulnerabilities. 31 outdated packages noted (mostly minor — React 19, zod 4, framer-motion 12+ deferred to future migration).
+- **Dependencies**: 1028 packages installed, 0 vulnerabilities.
 - **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
+- **Stale remote branches**: 128 branches not merged to main noted (no cleanup action — requires explicit owner approval per previous cycles).
 
 ### Actions Taken
 
-- Fixed Prettier formatting in 6 files (iterate.yml, main.yml, on-pull.yml, parallel.yml, index.html, index.css)
+- Upgraded `react` to ^19 and `@types/react` to ^19 to match existing react-dom@19
+- Downgraded `eslint` from ^10 to ^9 to fix peer dependency conflict
+- Added `apps/web/src/global.d.ts` to restore global JSX namespace (React 19 compat)
+- Fixed `RefObject` nullability types in ScrollProgress, ScrollToTop, useAutoResizeTextarea
 - Fixed stale doc references in `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
-- Pruned 2 stale remote tracking refs
+- Fixed Prettier formatting in 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml)
 - Updated `docs/findings.md` — this record
-- Updated `docs/active-tasks.md` — marked cycle 12 complete, added cycle 13 entry
-- Updated `docs/bugs.md` — bumped last updated date
-- Updated `docs/roadmap.md` — bumped last updated date
-- Updated `CHANGELOG.md` — added new unreleased commits
-- Verified typecheck/lint/web+tests all pass clean
-- Created branch `chore/repokeeper-cleanup-cycle-13` from main
-- Created PR with all cleanup changes
+- Updated `docs/active-tasks.md` — marked cycle 13 complete, added cycle 14 entry
+- Verified typecheck/lint/build/web+tests all pass clean (473 web + 107 shared)
+- Created branch `chore/repokeeper-cleanup-cycle-14` from main
 
 ## Previous Cycle (2026-05-25 - BugFixer Cycle)
 
