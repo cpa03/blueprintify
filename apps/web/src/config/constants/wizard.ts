@@ -125,3 +125,17 @@ Generated at: ${new Date().toISOString()}
 
 /** Default project name fallback */
 export const DEFAULT_PROJECT_NAME = ENV.DEFAULT_PROJECT_NAME;
+
+/**
+ * Tech stack project type detection rules
+ * Maps technology names to project type identifiers for export scaffolding
+ * Flexy says: No hardcoded tech names - everything in config!
+ */
+export const TECH_STACK_DETECTION = {
+  /** Technologies that indicate a React/Next.js project */
+  REACT_INDICATORS: ["react", "next.js"] as const,
+  /** Technologies that indicate a Node.js/Express project */
+  NODE_INDICATORS: ["node.js", "express", "hono"] as const,
+  /** Technologies that indicate a Python/Django project */
+  PYTHON_INDICATORS: ["python", "django", "flask"] as const,
+} as const;

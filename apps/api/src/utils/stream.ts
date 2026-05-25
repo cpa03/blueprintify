@@ -9,6 +9,7 @@ import {
   SSE_HEADERS,
   CORS_CONFIG,
   SSE_CONFIG,
+  SSE_CORS_HEADERS,
   ERROR_MESSAGES,
 } from "../config/constants";
 
@@ -56,13 +57,13 @@ export function formatSSE(message: SSEMessage): string {
 export function createSSEResponse(stream: ReadableStream<Uint8Array>): Response {
   return new Response(stream, {
     headers: {
-      "Content-Type": SSE_HEADERS.CONTENT_TYPE,
-      "Cache-Control": SSE_HEADERS.CACHE_CONTROL,
-      Connection: SSE_HEADERS.CONNECTION,
+      [API_HEADERS.CACHE_CONTROL.HEADER_NAME]: SSE_HEADERS.CACHE_CONTROL,
+      [SSE_CORS_HEADERS.ACCESS_CONTROL_ALLOW_ORIGIN]: CORS_CONFIG.ORIGIN,
+      [SSE_CORS_HEADERS.ACCESS_CONTROL_ALLOW_METHODS]: CORS_CONFIG.ALLOW_METHODS.join(", "),
+      [SSE_CORS_HEADERS.ACCESS_CONTROL_ALLOW_HEADERS]: CORS_CONFIG.ALLOW_HEADERS.join(", "),
       [API_HEADERS.SSE.X_ACCEL_BUFFERING]: API_HEADERS.SSE.X_ACCEL_BUFFERING_NO,
-      "Access-Control-Allow-Origin": CORS_CONFIG.ORIGIN,
-      "Access-Control-Allow-Methods": CORS_CONFIG.ALLOW_METHODS.join(", "),
-      "Access-Control-Allow-Headers": CORS_CONFIG.ALLOW_HEADERS.join(", "),
+      "Content-Type": SSE_HEADERS.CONTENT_TYPE,
+      Connection: SSE_HEADERS.CONNECTION,
     },
   });
 }

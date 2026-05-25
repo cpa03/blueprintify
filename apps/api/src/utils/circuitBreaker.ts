@@ -8,7 +8,7 @@
  * @see https://martinfowler.com/bliki/CircuitBreaker.html
  */
 
-import { HTTP_STATUS, CIRCUIT_BREAKER_CONFIG } from "../config/constants";
+import { HTTP_STATUS, CIRCUIT_BREAKER_CONFIG, ERROR_MESSAGES } from "../config/constants";
 
 /**
  * Configuration options for circuit breaker initialization.
@@ -142,13 +142,13 @@ class CircuitBreaker {
         this.state = CircuitState.HALF_OPEN;
         this.halfOpenCalls = 0;
       } else {
-        throw new CircuitBreakerOpenError("Circuit breaker is OPEN");
+        throw new CircuitBreakerOpenError(ERROR_MESSAGES.CIRCUIT_BREAKER_OPEN_MESSAGE);
       }
     }
 
     if (this.state === CircuitState.HALF_OPEN) {
       if (this.halfOpenCalls >= this.config.halfOpenMaxCalls) {
-        throw new CircuitBreakerOpenError("Circuit breaker is HALF_OPEN - max calls reached");
+        throw new CircuitBreakerOpenError(ERROR_MESSAGES.CIRCUIT_BREAKER_HALF_OPEN_MAX);
       }
       this.halfOpenCalls++;
     }

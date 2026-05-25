@@ -1,5 +1,10 @@
 import type JSZip from "jszip";
-import { EXPORT_CONFIG, README_TEMPLATE, DEFAULT_PROJECT_NAME } from "../config/constants";
+import {
+  EXPORT_CONFIG,
+  README_TEMPLATE,
+  DEFAULT_PROJECT_NAME,
+  TECH_STACK_DETECTION,
+} from "../config/constants";
 import { sanitizeMarkdown, validateAndSanitizeFileContent, handleSecurityError } from "./security";
 
 import {
@@ -96,15 +101,9 @@ async function generateProjectStructure(zip: JSZip, files: ExportFiles): Promise
 
   const techStackNames = techStack.map((item) => item.name.toLowerCase());
 
-  const isReact = techStackNames.includes("react") || techStackNames.includes("next.js");
-  const isNode =
-    techStackNames.includes("node.js") ||
-    techStackNames.includes("express") ||
-    techStackNames.includes("hono");
-  const isPython =
-    techStackNames.includes("python") ||
-    techStackNames.includes("django") ||
-    techStackNames.includes("flask");
+  const isReact = TECH_STACK_DETECTION.REACT_INDICATORS.some((t) => techStackNames.includes(t));
+  const isNode = TECH_STACK_DETECTION.NODE_INDICATORS.some((t) => techStackNames.includes(t));
+  const isPython = TECH_STACK_DETECTION.PYTHON_INDICATORS.some((t) => techStackNames.includes(t));
   if (isReact) {
     await generateReactProject(zip, normalizedProjectName, description, features, techStack);
   } else if (isNode) {
