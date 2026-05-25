@@ -2,7 +2,22 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-25 - BugFixer Cycle 2)
+## Current Cycle (2026-05-25 - RepoKeeper Cleanup Cycle 15)
+
+### Findings
+
+- **RepoKeeper started**: Build/lint/typecheck all passing clean. 473 web + 107 shared tests passing.
+- **No redundant/temp/stray files detected**. `.gitignore` is comprehensive.
+- **Documentation alignment issues found**:
+  - Root `README.md`: React badge showed `18` (should be `19`), TypeScript badge showed `5.3` (should be `6.0`), Tech Stack listed `React 18`
+  - `apps/web/README.md`: Framework listed as React 18
+  - `eslint.config.js`: `react` version setting was `"18"` (should be `"19"`)
+  - `CHANGELOG.md`: Tech stack listed "React 18" in the v1.0.0 section; missing 7 recent commits in [Unreleased]
+  - `docs/active-tasks.md`: Cycle 14 items for branch creation and PR were unchecked but changes were committed directly to main
+- **All docs-alignment issues fixed** in this cycle:
+  - README badges and tech stack references updated to React 19 / TypeScript 6.0
+
+## Previous Cycle (2026-05-25 - BugFixer Cycle 2)
 
 ### Findings
 
@@ -24,33 +39,34 @@
 
 ### Findings
 
-- **RepoKeeper started**: Typecheck had 34 errors (React 18/19 version mismatch: react@18 + react-dom@19 + @types/react@19), lint and test runner broken due to incomplete `npm install` (eslint 10 vs eslint-plugin-jsx-a11y peer dep conflict).
-- **Build/Lint/Typecheck**: All passing clean after fixes.
-- **Web Tests**: 473/473 passing. Shared package tests: 107/107 passing.
-- **React version alignment**: Upgraded `react` from `^18.2.0` to `^19.2.0`, `@types/react` from `^18.2.45` to `^19.2.0` to match existing `react-dom@19`. This resolved ~7 `bigint` ReactNode assignability errors.
-- **ESLint peer dep conflict**: Downgraded `eslint` from `^10.4.0` to `^9.39.4` to match `eslint-plugin-jsx-a11y@^6.10.2` (which only supports eslint ^3-9). This resolved `npm install` failure without needing `--legacy-peer-deps`.
-- **JSX namespace (30 errors)**: React 19 types removed global `JSX` namespace. Added `apps/web/src/global.d.ts` to redeclare it, fixing all `Cannot find namespace 'JSX'` errors across 27 files.
-- **RefObject nullability (3 errors)**: React 19 `RefObject<T>` is now `RefObject<T | null>`. Updated `ScrollProgress`, `ScrollToTop`, `useAutoResizeTextarea` types to accept nullable refs.
-- **Prettier formatting**: Fixed in 4 workflow YAMLs (iterate.yml, main.yml, on-pull.yml, parallel.yml).
-- **Stale doc refs in main.yml**: Fixed again — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md` (lines 39, 263).
-- **Blocker**: GitHub token likely lacks `workflows` permission — pushing `.github/workflows/` changes may still be blocked from this runner.
+- **RepoKeeper started**: Build/lint/typecheck all passing clean. 473 web + 107 shared tests passing.
 - **No redundant/temp/stray files detected**. `.gitignore` is comprehensive.
-- **Dependencies**: 1028 packages installed, 0 vulnerabilities.
+- **Documentation alignment issues found**:
+  - Root `README.md`: React badge showed `18` (should be `19`), TypeScript badge showed `5.3` (should be `6.0`), Tech Stack listed `React 18`
+  - `apps/web/README.md`: Framework listed as React 18
+  - `eslint.config.js`: `react` version setting was `"18"` (should be `"19"`)
+  - `CHANGELOG.md`: Tech stack listed "React 18" in the v1.0.0 section; missing 7 recent commits in [Unreleased]
+  - `docs/active-tasks.md`: Cycle 14 items for branch creation and PR were unchecked but changes were committed directly to main
+- **All docs-alignment issues fixed** in this cycle:
+  - README badges and tech stack references updated to React 19 / TypeScript 6.0
+  - eslint config react version updated to "19"
+  - CHANGELOG updated with missing commits and correct React version
+  - findings.md and active-tasks.md updated for cycle 15
+- **Dependencies**: 1020 packages installed, 0 vulnerabilities.
 - **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
-- **Stale remote branches**: 128 branches not merged to main noted (no cleanup action — requires explicit owner approval per previous cycles).
+- **Stale remote branches**: 133 branches not merged to main noted (no cleanup action — requires explicit owner approval per previous cycles).
 
 ### Actions Taken
 
-- Upgraded `react` to ^19 and `@types/react` to ^19 to match existing react-dom@19
-- Downgraded `eslint` from ^10 to ^9 to fix peer dependency conflict
-- Added `apps/web/src/global.d.ts` to restore global JSX namespace (React 19 compat)
-- Fixed `RefObject` nullability types in ScrollProgress, ScrollToTop, useAutoResizeTextarea
-- Fixed stale doc references in `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
-- Fixed Prettier formatting in 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml)
+- Updated root `README.md` — React badge 18→19, TypeScript badge 5.3→6.0, tech stack React 18→19
+- Updated `apps/web/README.md` — React 18→19
+- Updated `eslint.config.js` — react version "18"→"19"
+- Updated `CHANGELOG.md` — added 7 missing commits to [Unreleased] (circuit breaker cold start, toast animation, react upgrade, dep fixes, dead code removal); fixed React 18→19 in tech stack
 - Updated `docs/findings.md` — this record
-- Updated `docs/active-tasks.md` — marked cycle 13 complete, added cycle 14 entry
+- Updated `docs/active-tasks.md` — marked cycle 14 complete, added cycle 15 entry
 - Verified typecheck/lint/build/web+tests all pass clean (473 web + 107 shared)
-- Created branch `chore/repokeeper-cleanup-cycle-14` from main
+- Created branch `chore/repokeeper-cleanup-cycle-15` from main
+- Created PR with all cleanup changes
 
 ## Previous Cycle (2026-05-25 - BugFixer Cycle)
 

@@ -51,6 +51,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Eagerly initialize circuit breaker to mitigate cold start gap in API ([#?](https://github.com/cpa03/blueprintify/pull/?))
+- Smooth toast progress ring animation on hover-resume in web frontend
+- Upgraded react to v19 to resolve version mismatch with react-dom
+- Resolved dependency inconsistencies and type conflicts
+- Locked `@cloudflare/vitest-pool-workers` to 0.12.21 to resolve peer dep conflict
+- Removed dead code, unused barrel file, and pruned fraction.js dependency
 - Downgraded `@cloudflare/vitest-pool-workers` to 0.12.21 for vitest 3.x compatibility
 - Resolved Prettier formatting issue in `apps/web/index.html` ([#1313](https://github.com/cpa03/blueprintify/pull/1313))
 - Added `/warmup` endpoint to pre-initialize circuit breaker on cold start ([#1312](https://github.com/cpa03/blueprintify/pull/1312))
@@ -119,7 +125,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Tech Stack**
   - Backend: Hono, Cloudflare Workers, Zod, OpenAI SDK, Vitest
-  - Frontend: React 18, Vite, Tailwind CSS, Zustand, CodeMirror, Framer Motion
+  - Frontend: React 19, Vite, Tailwind CSS, Zustand, CodeMirror, Framer Motion
   - Development: TypeScript, ESLint, Concurrently, Wrangler
 
 ### Documentation

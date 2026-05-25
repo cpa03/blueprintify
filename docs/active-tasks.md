@@ -4,10 +4,26 @@
 
 ## Current Focus: Repository Maintenance
 
-### Task: RepoKeeper Cleanup Cycle 14 (2026-05-25)
+### Task: RepoKeeper Cleanup Cycle 15 (2026-05-25)
 
 - **Priority**: High
 - **Status**: Active
+- **Objective**: Fix documentation alignment issues (React 18→19, TypeScript 5.3→6.0), update CHANGELOG with missing commits, verify build/lint/test, create PR
+- **Actions**:
+  - [x] Update root `README.md` — React badge 18→19, TypeScript badge 5.3→6.0, tech stack React 18→19
+  - [x] Update `apps/web/README.md` — React 18→19
+  - [x] Update `eslint.config.js` — react version "18"→"19"
+  - [x] Update `CHANGELOG.md` — add 7 missing commits to [Unreleased], fix React 18→19 in tech stack
+  - [x] Update `docs/findings.md` — record cycle 15 observations
+  - [x] Update `docs/active-tasks.md` — mark cycle 14 complete, add cycle 15 entry
+  - [x] Verify typecheck/lint/build/web+tests all pass clean
+  - [x] Create branch `chore/repokeeper-cleanup-cycle-15` from main
+  - [x] Create PR with all cleanup changes
+
+### Task: RepoKeeper Cleanup Cycle 14 (2026-05-25)
+
+- **Priority**: High
+- **Status**: Completed
 - **Objective**: Fix React 18/19 version mismatch (typecheck was broken), eslint peer dep conflict (npm install), JSX namespace errors, RefObject nullability, stale doc refs in main.yml, Prettier formatting in 4 workflow YAMLs, verify build/lint/test, create PR
 - **Actions**:
   - [x] Upgrade `react` to ^19 and `@types/react` to ^19 to align with existing react-dom@19
@@ -19,8 +35,7 @@
   - [x] Update `docs/findings.md` — record cycle 14 observations
   - [x] Update `docs/active-tasks.md` — mark cycle 13 complete, add cycle 14 entry
   - [x] Verify typecheck/lint/build/web+tests all pass clean (473 web + 107 shared)
-  - [ ] Create branch `chore/repokeeper-cleanup-cycle-14` from main
-  - [ ] Create PR with all cleanup changes
+  - [x] Committed directly to main (`d114395 chore(repo): RepoKeeper cleanup cycle 14`)
 
 ### Task: RepoKeeper Cleanup Cycle 13 (2026-05-25)
 
@@ -271,5 +286,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-05-25 (Cycle 14)  
+**Last Updated**: 2026-05-25 (Cycle 15)  
 **Maintainer**: RepoKeeper
