@@ -4,10 +4,26 @@
 
 ## Current Focus: Repository Maintenance
 
-### Task: RepoKeeper Cleanup Cycle 15 (2026-05-25)
+### Task: RepoKeeper Cleanup Cycle 16 (2026-05-26)
 
 - **Priority**: High
 - **Status**: Active
+- **Objective**: Fix `.node-version` alignment (20→22), fix recurring stale doc refs in main.yml, remove dated triage file, update CHANGELOG, verify build/lint/test, create PR
+- **Actions**:
+  - [x] Fix `.node-version` — 20→22 to align with `.nvmrc` and `package.json` engines
+  - [x] Fix `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+  - [x] Remove `docs/issue-triage-2026-05-25.md` — dated temp file, findings consolidated
+  - [x] Update `CHANGELOG.md` — add `.nvmrc`/engines alignment commit to [Unreleased]
+  - [x] Update `docs/findings.md` — record cycle 16 observations
+  - [x] Update `docs/active-tasks.md` — mark cycle 15 complete, add cycle 16 entry
+  - [x] Verify typecheck/lint/build/web+api+shared tests all pass clean
+  - [ ] Create branch `chore/repokeeper-cleanup-cycle-16` from main
+  - [ ] Create PR with all cleanup changes
+
+### Task: RepoKeeper Cleanup Cycle 15 (2026-05-25)
+
+- **Priority**: High
+- **Status**: Completed
 - **Objective**: Fix documentation alignment issues (React 18→19, TypeScript 5.3→6.0), update CHANGELOG with missing commits, verify build/lint/test, create PR
 - **Actions**:
   - [x] Update root `README.md` — React badge 18→19, TypeScript badge 5.3→6.0, tech stack React 18→19
@@ -17,8 +33,7 @@
   - [x] Update `docs/findings.md` — record cycle 15 observations
   - [x] Update `docs/active-tasks.md` — mark cycle 14 complete, add cycle 15 entry
   - [x] Verify typecheck/lint/build/web+tests all pass clean
-  - [x] Create branch `chore/repokeeper-cleanup-cycle-15` from main
-  - [x] Create PR with all cleanup changes
+  - [x] Committed directly to main
 
 ### Task: RepoKeeper Cleanup Cycle 14 (2026-05-25)
 
@@ -286,5 +301,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-05-25 (Cycle 15)  
+**Last Updated**: 2026-05-26 (Cycle 16)  
 **Maintainer**: RepoKeeper
