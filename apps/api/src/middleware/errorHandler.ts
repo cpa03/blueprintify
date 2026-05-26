@@ -1,6 +1,6 @@
 import type { Context } from "hono";
 import type { ClientErrorStatusCode, ServerErrorStatusCode } from "hono/utils/http-status";
-import { createErrorResponse, isAPIError, ErrorType } from "../errors";
+import { createErrorResponse, isAPIError, ErrorType, createErrorJson, timestamp } from "../errors";
 import type { ErrorResponse } from "../errors";
 import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import { TimeoutError } from "../utils/timeout";
@@ -35,35 +35,21 @@ export const errorHandler = (err: unknown, c: Context): Response => {
 
   if (err instanceof TimeoutError) {
     return c.json(
-      {
-        success: false,
-        error: {
-          type: ErrorType.SERVICE_UNAVAILABLE,
-          message: err.message,
-          code: ERROR_CODES.TIMEOUT_ERROR,
-          details: {
-            timeoutMs: err.timeoutMs,
-          },
-          timestamp: new Date().toISOString(),
-          ...(requestId && { requestId }),
-        },
-      },
+      createErrorJson(ErrorType.SERVICE_UNAVAILABLE, err.message, {
+        code: ERROR_CODES.TIMEOUT_ERROR,
+        details: { timeoutMs: err.timeoutMs },
+        requestId,
+      }),
       HTTP_STATUS.GATEWAY_TIMEOUT
     );
   }
 
   if (err instanceof CircuitBreakerOpenError) {
     return c.json(
-      {
-        success: false,
-        error: {
-          type: ErrorType.SERVICE_UNAVAILABLE,
-          message: ERROR_MESSAGES.CIRCUIT_BREAKER_OPEN,
-          code: ERROR_CODES.CIRCUIT_BREAKER_OPEN,
-          timestamp: new Date().toISOString(),
-          ...(requestId && { requestId }),
-        },
-      },
+      createErrorJson(ErrorType.SERVICE_UNAVAILABLE, ERROR_MESSAGES.CIRCUIT_BREAKER_OPEN, {
+        code: ERROR_CODES.CIRCUIT_BREAKER_OPEN,
+        requestId,
+      }),
       HTTP_STATUS.SERVICE_UNAVAILABLE
     );
   }
@@ -89,7 +75,7 @@ export const errorHandler = (err: unknown, c: Context): Response => {
             return { message: VALIDATION_MESSAGES.VALIDATION_ERROR };
           }),
         },
-        timestamp: new Date().toISOString(),
+        timestamp: timestamp(),
         ...(requestId && { requestId }),
       },
     };
@@ -120,16 +106,14 @@ export const notFoundHandler = (c: Context): Response => {
   const requestId = c.get("requestId") as string | undefined;
 
   return c.json(
-    {
-      success: false,
-      error: {
-        type: ErrorType.NOT_FOUND,
-        message: ERROR_MESSAGES.NOT_FOUND(`${c.req.method} ${c.req.path}`),
+    createErrorJson(
+      ErrorType.NOT_FOUND,
+      ERROR_MESSAGES.NOT_FOUND(`${c.req.method} ${c.req.path}`),
+      {
         code: ERROR_CODES.NOT_FOUND_ERROR,
-        timestamp: new Date().toISOString(),
-        ...(requestId && { requestId }),
-      },
-    },
+        requestId,
+      }
+    ),
     HTTP_STATUS.NOT_FOUND
   );
 };

@@ -9,7 +9,7 @@ import {
   API_HEADERS,
 } from "../config/constants";
 import { TIME_UNITS } from "@blueprint/shared";
-import { ErrorType } from "../errors";
+import { ErrorType, createErrorJson } from "../errors";
 import { secureLogWarn, secureLogError } from "../utils/secureLog";
 
 type RateLimiterName = "STRICT_RATE_LIMITER" | "STANDARD_RATE_LIMITER" | "LENIENT_RATE_LIMITER";
@@ -97,18 +97,10 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
         method: c.req.method,
       });
       return c.json(
-        {
-          success: false,
-          error: {
-            type: ErrorType.CONFIGURATION,
-            message: ERROR_MESSAGES.RATE_LIMITER_NOT_CONFIGURED,
-            code: ERROR_CODES.CONFIGURATION_ERROR,
-            details: {
-              limiter,
-            },
-            timestamp: new Date().toISOString(),
-          },
-        },
+        createErrorJson(ErrorType.CONFIGURATION, ERROR_MESSAGES.RATE_LIMITER_NOT_CONFIGURED, {
+          code: ERROR_CODES.CONFIGURATION_ERROR,
+          details: { limiter },
+        }),
         HTTP_STATUS.SERVICE_UNAVAILABLE
       );
     }
@@ -143,19 +135,10 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
       });
 
       return c.json(
-        {
-          success: false,
-          error: {
-            type: ErrorType.VALIDATION,
-            message: ERROR_MESSAGES.RATE_LIMIT,
-            code: ERROR_CODES.RATE_LIMIT_ERROR,
-            details: {
-              limit,
-              retryAfter: retryAfterSeconds,
-            },
-            timestamp: new Date().toISOString(),
-          },
-        },
+        createErrorJson(ErrorType.VALIDATION, ERROR_MESSAGES.RATE_LIMIT, {
+          code: ERROR_CODES.RATE_LIMIT_ERROR,
+          details: { limit, retryAfter: retryAfterSeconds },
+        }),
         HTTP_STATUS.TOO_MANY_REQUESTS
       );
     }

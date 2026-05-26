@@ -6,7 +6,7 @@
 import { z } from "zod";
 import type { MiddlewareHandler } from "hono";
 import { HTTP_HEADERS } from "@blueprint/shared";
-import { ErrorResponse, ErrorType } from "../errors";
+import { ErrorType, createErrorJson } from "../errors";
 import { API_HEADERS, HTTP_STATUS, VALIDATION_MESSAGES, ERROR_CODES } from "../config/constants";
 
 /**
@@ -23,21 +23,17 @@ export const validateJson = <T extends z.ZodTypeAny>(
   return async (c, next) => {
     const contentType = c.req.header(API_HEADERS.REQUEST.CONTENT_TYPE);
     if (!contentType?.includes(HTTP_HEADERS.CONTENT_TYPE_JSON)) {
-      const errorResponse: ErrorResponse = {
-        success: false,
-        error: {
-          type: ErrorType.VALIDATION,
-          message: `Content-Type must be ${HTTP_HEADERS.CONTENT_TYPE_JSON}`,
-          code: ERROR_CODES.VALIDATION_ERROR,
-          details: {
-            expected: HTTP_HEADERS.CONTENT_TYPE_JSON,
-            received: contentType || "none",
-          },
-          timestamp: new Date().toISOString(),
-        },
-      };
-
-      return c.json(errorResponse, HTTP_STATUS.BAD_REQUEST);
+      return c.json(
+        createErrorJson(
+          ErrorType.VALIDATION,
+          `Content-Type must be ${HTTP_HEADERS.CONTENT_TYPE_JSON}`,
+          {
+            code: ERROR_CODES.VALIDATION_ERROR,
+            details: { expected: HTTP_HEADERS.CONTENT_TYPE_JSON, received: contentType || "none" },
+          }
+        ),
+        HTTP_STATUS.BAD_REQUEST
+      );
     }
 
     try {
@@ -45,11 +41,10 @@ export const validateJson = <T extends z.ZodTypeAny>(
       const result = schema.safeParse(body);
 
       if (!result.success) {
-        const errorResponse: ErrorResponse = {
-          success: false,
-          error: {
-            type: ErrorType.VALIDATION,
-            message: VALIDATION_MESSAGES.REQUEST_VALIDATION_FAILED,
+        const errorResponse = createErrorJson(
+          ErrorType.VALIDATION,
+          VALIDATION_MESSAGES.REQUEST_VALIDATION_FAILED,
+          {
             code: ERROR_CODES.VALIDATION_ERROR,
             details: {
               issues: result.error.issues.map((issue) => ({
@@ -57,9 +52,8 @@ export const validateJson = <T extends z.ZodTypeAny>(
                 message: issue.message,
               })),
             },
-            timestamp: new Date().toISOString(),
-          },
-        };
+          }
+        );
 
         return c.json(errorResponse, HTTP_STATUS.BAD_REQUEST);
       }
@@ -68,17 +62,12 @@ export const validateJson = <T extends z.ZodTypeAny>(
       c.set("validatedData", result.data);
       await next();
     } catch {
-      const errorResponse: ErrorResponse = {
-        success: false,
-        error: {
-          type: ErrorType.VALIDATION,
-          message: VALIDATION_MESSAGES.INVALID_JSON_BODY,
+      return c.json(
+        createErrorJson(ErrorType.VALIDATION, VALIDATION_MESSAGES.INVALID_JSON_BODY, {
           code: ERROR_CODES.VALIDATION_ERROR,
-          timestamp: new Date().toISOString(),
-        },
-      };
-
-      return c.json(errorResponse, HTTP_STATUS.BAD_REQUEST);
+        }),
+        HTTP_STATUS.BAD_REQUEST
+      );
     }
   };
 };

@@ -6,7 +6,57 @@ import { DEFAULT_ERROR_MESSAGES, ERROR_MESSAGES } from "./config/constants";
  * Defines standardized error types for the Blueprint Generator API
  */
 
-// ===== Error Types =====
+// ============================================================================
+// Utility Functions
+// ============================================================================
+
+/**
+ * Generates an ISO timestamp string.
+ * Flexy says: eliminates `new Date().toISOString()` duplication across the codebase!
+ *
+ * @returns ISO 8601 formatted timestamp string
+ */
+export function timestamp(): string {
+  return new Date().toISOString();
+}
+
+/**
+ * Creates a minimal, consistent error JSON object for inline use in middleware.
+ * Flexy says: no more manually constructing `{success:false, error:{type,message,code,details,timestamp}}`!
+ *
+ * @param type - Error type classification
+ * @param message - Human-readable error message
+ * @param options - Optional properties (code, details, requestId)
+ * @returns Standardized error response object
+ */
+export function createErrorJson(
+  type: ErrorType,
+  message: string,
+  options?: {
+    code?: string;
+    details?: Record<string, unknown>;
+    requestId?: string;
+  }
+): ErrorResponse {
+  const error: ErrorResponse["error"] = {
+    type,
+    message,
+    timestamp: timestamp(),
+    ...(options?.code && { code: options.code }),
+    ...(options?.details && { details: options.details }),
+    ...(options?.requestId && { requestId: options.requestId }),
+  };
+  return { success: false, error };
+}
+
+// ============================================================================
+// Error Types
+// ============================================================================
+
+/**
+ * Enumeration of error type classifications used throughout the API.
+ * Each type maps to a specific HTTP status code and error category.
+ */
 /**
  * Enumeration of error type classifications used throughout the API.
  * Each type maps to a specific HTTP status code and error category.
@@ -105,7 +155,7 @@ export class APIError extends Error {
         message: this.message,
         code: this.code,
         details: this.details,
-        timestamp: new Date().toISOString(),
+        timestamp: timestamp(),
         requestId: this.requestId,
       },
     };

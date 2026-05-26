@@ -9,7 +9,7 @@
 
 import type { MiddlewareHandler } from "hono";
 import { HTTP_STATUS, ERROR_CODES, ERROR_MESSAGES, API_HEADERS } from "../config/constants";
-import { ErrorType } from "../errors";
+import { ErrorType, createErrorJson } from "../errors";
 
 /**
  * Configuration options for API key authentication middleware.
@@ -81,15 +81,9 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
     // This prevents unauthenticated access when the server is misconfigured
     if (!validKey) {
       return c.json(
-        {
-          success: false,
-          error: {
-            type: ErrorType.CONFIGURATION,
-            message: ERROR_MESSAGES.AUTHENTICATION_MISSING_CONFIG,
-            code: ERROR_CODES.CONFIGURATION_ERROR,
-            timestamp: new Date().toISOString(),
-          },
-        },
+        createErrorJson(ErrorType.CONFIGURATION, ERROR_MESSAGES.AUTHENTICATION_MISSING_CONFIG, {
+          code: ERROR_CODES.CONFIGURATION_ERROR,
+        }),
         HTTP_STATUS.SERVICE_UNAVAILABLE
       );
     }
@@ -97,15 +91,9 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
     // Use constant-time comparison to prevent timing attacks
     if (!providedKey || !constantTimeCompare(providedKey, validKey)) {
       return c.json(
-        {
-          success: false,
-          error: {
-            type: ErrorType.AUTHENTICATION,
-            message: ERROR_MESSAGES.AUTHENTICATION_INVALID_KEY,
-            code: ERROR_CODES.AUTHENTICATION_ERROR,
-            timestamp: new Date().toISOString(),
-          },
-        },
+        createErrorJson(ErrorType.AUTHENTICATION, ERROR_MESSAGES.AUTHENTICATION_INVALID_KEY, {
+          code: ERROR_CODES.AUTHENTICATION_ERROR,
+        }),
         HTTP_STATUS.UNAUTHORIZED
       );
     }
