@@ -2,7 +2,23 @@
 
 > Current active work items and priorities. See [completed-tasks-2026-Q1.md](./completed-tasks-2026-Q1.md) for archived completed work.
 
-## Current Focus: Repository Maintenance
+## Current Focus: Bug Fixing
+
+### Task: BugFixer Cycle 3 — Fix BUG-014 stale doc refs (2026-05-26)
+
+- **Priority**: High
+- **Status**: Active
+- **Objective**: Fix BUG-014 re-occurrence (stale `docs/bug.md` and `docs/feature.md` refs in `main.yml`), fix Prettier formatting, update docs, create PR
+- **Issue**: #1293 (3rd fix attempt)
+- **Note**: Workflow YAML changes blocked from push (token lacks `workflows` permission) — requires manual apply
+- **Actions**:
+  - [x] Fix stale doc refs in `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md` (lines 38, 262), `docs/feature.md` → `docs/features.md` (line 38)
+  - [x] Fix Prettier formatting in 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml)
+  - [x] Update `docs/bugs.md` — BUG-014 re-opened with fix history table
+  - [x] Update `docs/findings.md` — record BugFixer cycle 3
+  - [x] Update `docs/active-tasks.md` — this record
+  - [x] Verify typecheck/lint/build/format/test all pass clean — 864 tests passing (473 web + 284 api + 107 shared)
+  - [ ] Create PR with docs changes (workflow YAML changes blocked — push requires token with `workflows` scope)
 
 ### Task: RepoKeeper Cleanup Cycle 16 (2026-05-26)
 
@@ -294,9 +310,9 @@ See [bugs.md](./bugs.md) for detailed bug information.
 ## Testing Coverage
 
 - **Frontend**: Co-located Vitest tests with component and store tests — 473 passing
-- **API**: Comprehensive route, middleware, service, and utility tests — 271 passing
+- **API**: Comprehensive route, middleware, service, and utility tests — 284 passing
 - **Shared**: Zod schema, type, and config tests — 107 passing
-- **Total**: 851 tests (all passing) [473 web + 271 api + 107 shared]
+- **Total**: 864 tests (all passing) [473 web + 284 api + 107 shared]
 - **TypeScript**: Strict mode, no unchecked `any` types
 
 ---
