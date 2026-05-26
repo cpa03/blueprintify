@@ -84,7 +84,6 @@ export default defineConfig({
       "framer-motion",
       "react-markdown",
       "remark-gfm",
-      "rehype-highlight",
     ],
     esbuildOptions: {
       target: "es2022",
