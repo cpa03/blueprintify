@@ -43,11 +43,14 @@ export interface StreamOptions {
  * Singleton circuit breaker instance for AI service resilience.
  * Eagerly initialized at module load to eliminate cold-start gap
  * where burst traffic could bypass protection.
+ * Uses a 30-second cold start window so the first requests after a
+ * cold start are met with a more sensitive (halved) failure threshold.
  */
 const circuitBreaker: CircuitBreaker = createCircuitBreaker({
   failureThreshold: CIRCUIT_BREAKER_CONFIG.DEFAULT_FAILURE_THRESHOLD,
   resetTimeoutMs: CIRCUIT_BREAKER_CONFIG.DEFAULT_RESET_TIMEOUT_MS,
   halfOpenMaxCalls: CIRCUIT_BREAKER_CONFIG.DEFAULT_HALF_OPEN_MAX_CALLS,
+  coldStartWindowMs: 30_000,
 });
 
 /**

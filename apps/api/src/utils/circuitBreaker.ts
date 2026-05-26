@@ -16,11 +16,14 @@ import { HTTP_STATUS, CIRCUIT_BREAKER_CONFIG, ERROR_MESSAGES } from "../config/c
  * @property failureThreshold - Number of consecutive failures before opening the circuit
  * @property resetTimeoutMs - Time in milliseconds before attempting to close the circuit
  * @property halfOpenMaxCalls - Maximum number of test calls allowed in half-open state
+ * @property coldStartWindowMs - Duration in ms after creation where reduced threshold applies.
+ *                               Defaults to 0 (disabled). Set >0 for cold-start protection.
  */
 interface CircuitBreakerConfig {
   failureThreshold: number;
   resetTimeoutMs: number;
   halfOpenMaxCalls: number;
+  coldStartWindowMs: number;
 }
 
 /**
@@ -44,6 +47,8 @@ enum CircuitState {
  * @property successes - Current consecutive success count (in half-open state)
  * @property lastFailureTime - Timestamp of last failure, or null if none
  * @property nextAttempt - Timestamp when next attempt will be allowed (in OPEN state)
+ * @property isColdStart - Whether the circuit is within the cold start window
+ * @property coldStartRemainingMs - Milliseconds remaining in the cold start window (0 if not in window)
  */
 interface CircuitBreakerMetrics {
   state: CircuitState;
@@ -51,6 +56,8 @@ interface CircuitBreakerMetrics {
   successes: number;
   lastFailureTime: number | null;
   nextAttempt: number;
+  isColdStart: boolean;
+  coldStartRemainingMs: number;
 }
 
 /**
@@ -89,6 +96,8 @@ class CircuitBreaker {
   private lastFailureTime: number | null = null;
   /** Number of test calls made in the current HALF_OPEN state */
   private halfOpenCalls = 0;
+  /** Timestamp when this circuit breaker was created (used for cold start window) */
+  private readonly createdAt: number = Date.now();
   /** Configuration settings for the circuit breaker */
   private readonly config: CircuitBreakerConfig;
 
@@ -103,7 +112,27 @@ class CircuitBreaker {
       resetTimeoutMs: config.resetTimeoutMs ?? CIRCUIT_BREAKER_CONFIG.DEFAULT_RESET_TIMEOUT_MS,
       halfOpenMaxCalls:
         config.halfOpenMaxCalls ?? CIRCUIT_BREAKER_CONFIG.DEFAULT_HALF_OPEN_MAX_CALLS,
+      coldStartWindowMs: config.coldStartWindowMs ?? 0,
     };
+  }
+
+  /**
+   * Returns the effective failure threshold, accounting for cold start window.
+   * During the cold start window, the threshold is halved (minimum 1).
+   */
+  private getEffectiveThreshold(): number {
+    if (!this.isInColdStartWindow()) {
+      return this.config.failureThreshold;
+    }
+    return Math.max(1, Math.floor(this.config.failureThreshold / 2));
+  }
+
+  /**
+   * Returns whether the circuit breaker is within the cold start window.
+   */
+  private isInColdStartWindow(): boolean {
+    if (this.config.coldStartWindowMs <= 0) return false;
+    return Date.now() - this.createdAt < this.config.coldStartWindowMs;
   }
 
   /**
@@ -112,6 +141,10 @@ class CircuitBreaker {
    * @returns A snapshot of the circuit breaker's current state
    */
   getState(): CircuitBreakerMetrics {
+    const inColdStart = this.isInColdStartWindow();
+    const remaining = inColdStart
+      ? Math.max(0, this.config.coldStartWindowMs - (Date.now() - this.createdAt))
+      : 0;
     return {
       state: this.state,
       failures: this.failures,
@@ -121,6 +154,8 @@ class CircuitBreaker {
         this.state === CircuitState.OPEN
           ? (this.lastFailureTime || 0) + this.config.resetTimeoutMs
           : Date.now(),
+      isColdStart: inColdStart,
+      coldStartRemainingMs: remaining,
     };
   }
 
@@ -181,7 +216,7 @@ class CircuitBreaker {
     this.lastFailureTime = Date.now();
     this.successes = 0;
 
-    if (this.state === CircuitState.HALF_OPEN || this.failures >= this.config.failureThreshold) {
+    if (this.state === CircuitState.HALF_OPEN || this.failures >= this.getEffectiveThreshold()) {
       this.state = CircuitState.OPEN;
       this.halfOpenCalls = 0;
     }
