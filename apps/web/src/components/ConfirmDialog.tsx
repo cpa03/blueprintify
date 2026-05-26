@@ -37,6 +37,7 @@
 import { useEffect, useRef, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SPRING_CONFIG } from "../config/constants";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 /**
  * Props for the ConfirmDialog component.
@@ -78,6 +79,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
 }: ConfirmDialogProps): JSX.Element {
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
   const lastActiveElement = useRef<HTMLElement | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   // Focus trap: trap focus within the dialog when open
   useEffect(() => {
@@ -170,9 +172,24 @@ export const ConfirmDialog = memo(function ConfirmDialog({
             >
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-accent-pink/20 flex items-center justify-center flex-shrink-0">
-                  <span className="text-2xl" aria-hidden="true">
+                  <motion.span
+                    className="text-2xl"
+                    aria-hidden="true"
+                    initial={shouldReduceMotion ? {} : { scale: 0, rotate: -15 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={
+                      shouldReduceMotion
+                        ? { duration: 0 }
+                        : {
+                            type: "spring",
+                            stiffness: 260,
+                            damping: 8,
+                            mass: 0.6,
+                          }
+                    }
+                  >
                     {icon}
-                  </span>
+                  </motion.span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <h2 id="confirm-dialog-title" className="text-lg font-bold text-white mb-1">
