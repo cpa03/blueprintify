@@ -1,0 +1,48 @@
+# Blueprint Generator
+
+> AI-Powered Project Architecture Documentation - Generate production-ready blueprint.md and task.md files for your projects in seconds.
+
+## About
+
+Blueprint Generator is a web application that helps developers and architects create comprehensive project documentation using AI. Built with Cloudflare Workers + React.
+
+## Key Pages
+
+- [Homepage](https://blueprintify.dev) - Main application entry point
+- [API Documentation](https://blueprintify.dev/api) - REST API reference
+- [User Guide](https://blueprintify.dev/docs/user-guide) - Complete usage guide
+- [GitHub Repository](https://github.com/cpa03/blueprintify) - Source code and issue tracking
+
+## Features
+
+- Wizard Interface: Step-by-step project configuration
+- Template Library: Pre-configured project templates
+- Real-time Streaming: SSE-based AI generation
+- Split-Pane Editor: CodeMirror with live markdown preview
+- One-Click Export: Download as ZIP/JSON/Markdown
+- Auto-Save: Session persistence with localStorage
+- Dark Mode: Premium dark UI with glassmorphism effects
+
+## Tech Stack
+
+- Frontend: React 19, Vite 7, Tailwind CSS 3, TypeScript 6
+- Backend: Hono, Cloudflare Workers
+- State: Zustand
+- Editing: CodeMirror
+- AI: OpenAI SDK
+
+## API Endpoints
+
+- GET / - Health check
+- POST /generate - Generate blueprint (SSE stream)
+- POST /tasks - Generate tasks from blueprint
+- POST /refine - Refine content section
+- POST /export - Export project files
+- POST /import - Import project with validation
+- POST /share - Create shareable blueprint link
+
+## Documentation
+
+- [Project README](https://github.com/cpa03/blueprintify#readme)
+- [Contributing Guide](https://github.com/cpa03/blueprintify/blob/main/CONTRIBUTING.md)
+- [Security Policy](https://github.com/cpa03/blueprintify/blob/main/SECURITY.md)
