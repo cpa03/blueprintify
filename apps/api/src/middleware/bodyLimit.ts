@@ -16,7 +16,7 @@ import {
   API_HEADERS,
   VALIDATION_MESSAGES,
 } from "../config/constants";
-import { ErrorType } from "../errors";
+import { ErrorType, createErrorJson } from "../errors";
 
 /**
  * Configuration options for body size limit middleware.
@@ -73,19 +73,10 @@ export const bodyLimit = (config: BodyLimitConfig = {}): MiddlewareHandler => {
 
       if (!isNaN(size) && size > maxSize) {
         return c.json(
-          {
-            success: false,
-            error: {
-              type: ErrorType.VALIDATION,
-              message: VALIDATION_MESSAGES.BODY_TOO_LARGE(maxSize),
-              code: ERROR_CODES.PAYLOAD_TOO_LARGE,
-              details: {
-                maxSize,
-                actualSize: size,
-              },
-              timestamp: new Date().toISOString(),
-            },
-          },
+          createErrorJson(ErrorType.VALIDATION, VALIDATION_MESSAGES.BODY_TOO_LARGE(maxSize), {
+            code: ERROR_CODES.PAYLOAD_TOO_LARGE,
+            details: { maxSize, actualSize: size },
+          }),
           HTTP_STATUS.PAYLOAD_TOO_LARGE
         );
       }
