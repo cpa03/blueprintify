@@ -2,12 +2,26 @@
 
 > Current active work items and priorities. See [completed-tasks-2026-Q1.md](./completed-tasks-2026-Q1.md) for archived completed work.
 
-## Current Focus: Bug Fixing
+## Current Focus: Repository Maintenance
+
+### Task: RepoKeeper Cleanup Cycle 19 (2026-05-26)
+
+- **Priority**: High
+- **Status**: Active
+- **Objective**: Update CHANGELOG with 6 recent commits, update docs (findings/active-tasks), prune 1 stale merged branch, verify build/lint/test
+- **Actions**:
+  - [x] Update `CHANGELOG.md` — add 6 missing commits to [Unreleased] (modulepreload perf, wobble animation, eslint-disable cleanup, preview auto-scroll, BroCula cycle 4, BugFixer cycle 4)
+  - [x] Update `docs/findings.md` — record cycle 19 observations
+  - [x] Update `docs/active-tasks.md` — mark cycle 18 complete, add cycle 19 entry
+  - [x] Prune 1 stale merged remote branch (agent/palette-cancel-feedback)
+  - [ ] Verify typecheck/lint/build/web+api+shared tests all pass clean (870 tests — 473 web + 290 api + 107 shared)
+  - [ ] Create branch `chore/repokeeper-cleanup-cycle-19` from main
+  - [ ] Create PR with all cleanup changes
 
 ### Task: BugFixer Cycle 3 — Fix BUG-014 stale doc refs (2026-05-26)
 
 - **Priority**: High
-- **Status**: Active
+- **Status**: Completed
 - **Objective**: Fix BUG-014 re-occurrence (stale `docs/bug.md` and `docs/feature.md` refs in `main.yml`), fix Prettier formatting, update docs, create PR
 - **Issue**: #1293 (3rd fix attempt)
 - **Note**: Workflow YAML changes blocked from push (token lacks `workflows` permission) — requires manual apply
@@ -270,9 +284,9 @@
   - [x] Fix `apps/api/README.md` — remove stale `src/db/` directory reference
   - [x] Fix `apps/api/src/utils/secureLog.ts` — add eslint-disable for intentional `console.debug`
   - [x] Prune 3 stale merged remote branches
-  - [ ] Verify typecheck/lint/build/web+api+shared tests all pass clean
-  - [ ] Create branch `chore/repokeeper-cleanup-cycle-18` from main
-  - [ ] Create PR with all cleanup changes
+  - [x] Verify typecheck/lint/build/web+api+shared tests all pass clean
+  - [x] Create branch `chore/repokeeper-cleanup-cycle-18` from main
+  - [x] Create PR with all cleanup changes
 
 ### Task: RepoKeeper Cleanup Cycle 3 (2026-05-23)
 
@@ -334,5 +348,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-05-26 (Cycle 16)  
+**Last Updated**: 2026-05-26 (Cycle 19)  
 **Maintainer**: RepoKeeper
