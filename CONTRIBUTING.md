@@ -6,7 +6,7 @@ Thank you for your interest in contributing to Blueprintify! This guide will hel
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 22+
 - npm 8+ (with workspaces support)
 - OpenAI API key (or compatible provider)
 - Git
@@ -273,7 +273,7 @@ npm install
 
 **Frontend Build Issues**
 
-- Check Node.js version: `node --version` (should be 18+)
+- Check Node.js version: `node --version` (should be 22+)
 - Clear build cache: `rm -rf apps/web/dist`
 - Check for TypeScript errors: `npm run typecheck`
 

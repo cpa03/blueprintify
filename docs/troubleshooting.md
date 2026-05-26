@@ -375,7 +375,7 @@ cat apps/api/.dev.vars
 **Solution:**
 
 ```bash
-# Check Node version (requires 18+)
+# Check Node version (requires 22+)
 node --version
 
 # Use nvm to switch
