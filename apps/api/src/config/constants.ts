@@ -23,6 +23,7 @@ import {
   TASK_SPLITTER_SYSTEM_TEMPLATE,
   REFINER_SYSTEM_TEMPLATE,
 } from "./prompts";
+import { MAX_INPUT_LENGTH } from "./prompt-security";
 
 let envConfig: EnvConfig | null = null;
 
@@ -199,7 +200,7 @@ export const ERROR_MESSAGES = {
 // Default error messages for error classes
 // Flexy says: Reference ERROR_MESSAGES where identical to eliminate duplication
 export const DEFAULT_ERROR_MESSAGES = {
-  VALIDATION: "Invalid request data",
+  VALIDATION: ERROR_MESSAGES.VALIDATION,
   AUTHENTICATION: ERROR_MESSAGES.AUTHENTICATION,
   AUTHORIZATION: ERROR_MESSAGES.AUTHORIZATION,
   NOT_FOUND: "Resource not found",
@@ -378,7 +379,7 @@ export const STORAGE_KV_CONFIG = {
  * Centralized limits for prompt sanitization
  */
 export const PROMPT_INPUT_CONFIG = {
-  MAX_LENGTH: 5000,
+  MAX_LENGTH: MAX_INPUT_LENGTH,
   USER_DELIMITER_START: "<user_input>",
   USER_DELIMITER_END: "</user_input>",
 } as const;

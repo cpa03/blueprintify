@@ -26,7 +26,7 @@ import { useState, memo, useCallback } from "react";
 import { motion } from "framer-motion";
 import { STARTER_TEMPLATES } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
-import { ANIMATION } from "../config/constants";
+import { ANIMATION, TOAST_MESSAGES } from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
 
 function TemplateGridComponent(): JSX.Element {
@@ -44,7 +44,7 @@ function TemplateGridComponent(): JSX.Element {
 
       setTimeout(() => {
         loadTemplate(template);
-        toast.success(`${template.name} template loaded`);
+        toast.success(TOAST_MESSAGES.TEMPLATE_LOADED(template.name));
         setIsLoading(false);
       }, ANIMATION.FAST);
     },
