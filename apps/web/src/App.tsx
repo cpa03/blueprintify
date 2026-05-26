@@ -1,5 +1,4 @@
 import { useState, lazy, Suspense, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
 import { Wizard } from "./components/Wizard";
@@ -157,21 +156,14 @@ function App(): JSX.Element {
           )}
 
           {/* Templates */}
-          <AnimatePresence>
-            {showTemplates && (
-              <motion.div
-                initial={{ opacity: 0.95 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Suspense fallback={<TemplateGridSkeleton />}>
-                  <TemplateGrid />
-                </Suspense>
-                <div className={LAYOUT.TEMPLATES_DIVIDER}>{UI_CONTENT.TEMPLATES_DIVIDER}</div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {showTemplates && (
+            <div className="animate-fade-in">
+              <Suspense fallback={<TemplateGridSkeleton />}>
+                <TemplateGrid />
+              </Suspense>
+              <div className={LAYOUT.TEMPLATES_DIVIDER}>{UI_CONTENT.TEMPLATES_DIVIDER}</div>
+            </div>
+          )}
 
           {/* Step Indicator */}
           <StepIndicator />
@@ -188,62 +180,54 @@ function App(): JSX.Element {
             </div>
 
             {/* Editor Panel */}
-            <AnimatePresence>
-              {showEditor && (
-                <motion.div
-                  initial={{ opacity: 0.95, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  transition={{ duration: 0.2 }}
-                  className={`${LAYOUT.HALF_WIDTH} ${LAYOUT.GLASS_CARD}`}
+            {showEditor && (
+              <div className={`${LAYOUT.HALF_WIDTH} ${LAYOUT.GLASS_CARD} animate-slide-in-right`}>
+                <button
+                  onClick={handleHideEditor}
+                  className={BUTTON.HIDE_EDITOR_DESKTOP}
+                  aria-label="Hide editor panel"
+                  title="Hide editor"
                 >
-                  <button
-                    onClick={handleHideEditor}
-                    className={BUTTON.HIDE_EDITOR_DESKTOP}
-                    aria-label="Hide editor panel"
-                    title="Hide editor"
-                  >
-                    <svg className={ICON.LG} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
+                  <svg className={ICON.LG} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
 
-                  <button
-                    onClick={handleHideEditor}
-                    className={BUTTON.HIDE_EDITOR_MOBILE}
-                    aria-label="Hide editor panel"
-                    title="Hide editor"
-                  >
-                    <svg className={ICON.LG} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
+                <button
+                  onClick={handleHideEditor}
+                  className={BUTTON.HIDE_EDITOR_MOBILE}
+                  aria-label="Hide editor panel"
+                  title="Hide editor"
+                >
+                  <svg className={ICON.LG} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
 
-                  <Suspense
-                    fallback={
-                      <div className="h-full min-h-[400px] flex items-center justify-center text-dark-500">
-                        <div className="flex flex-col items-center gap-2">
-                          <div className={SPINNER.DEFAULT}></div>
-                          <span>{UI_CONTENT.EDITOR.LOADING}</span>
-                        </div>
+                <Suspense
+                  fallback={
+                    <div className="h-full min-h-[400px] flex items-center justify-center text-dark-500">
+                      <div className="flex flex-col items-center gap-2">
+                        <div className={SPINNER.DEFAULT}></div>
+                        <span>{UI_CONTENT.EDITOR.LOADING}</span>
                       </div>
-                    }
-                  >
-                    <Editor />
-                  </Suspense>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                    </div>
+                  }
+                >
+                  <Editor />
+                </Suspense>
+              </div>
+            )}
           </div>
 
           {/* Show editor button when hidden */}
@@ -262,20 +246,12 @@ function App(): JSX.Element {
           className="h-px bg-gradient-to-r from-transparent via-primary-500/50 via-accent-purple/40 to-transparent"
           aria-hidden="true"
         />
-        <motion.div
-          className={LAYOUT.FOOTER_CONTAINER}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        >
-          <motion.p
-            className="text-dark-500 hover:text-dark-300 transition-colors duration-200"
-            whileHover={{ scale: 1.02 }}
-          >
+        <div className={`${LAYOUT.FOOTER_CONTAINER} animate-slide-up`}>
+          <p className="text-dark-500 hover:text-dark-300 transition-colors duration-200 hover:scale-[1.02]">
             {UI_CONTENT.FOOTER.BUILT_WITH}
-          </motion.p>
+          </p>
           <p className="text-dark-500">{UI_CONTENT.FOOTER.COPYRIGHT}</p>
-        </motion.div>
+        </div>
       </footer>
 
       <Suspense fallback={null}>
