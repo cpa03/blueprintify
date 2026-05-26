@@ -58,6 +58,16 @@ const getShortcutItems = (): ShortcutItem[] => {
       description: KEYBOARD_SHORTCUTS.CANCEL_GENERATION.DESCRIPTION,
       category: "generation",
     },
+    {
+      keys: [modifier, "N"],
+      description: KEYBOARD_SHORTCUTS.NEW_PROJECT.DESCRIPTION,
+      category: "general",
+    },
+    {
+      keys: ["Home"],
+      description: KEYBOARD_SHORTCUTS.SCROLL_TO_TOP.DESCRIPTION,
+      category: "navigation",
+    },
     ...WIZARD_STEPS.map((step) => ({
       keys: [altKey, step.shortcut],
       description: `Go to ${step.label}`,
