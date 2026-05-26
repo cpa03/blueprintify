@@ -23,7 +23,7 @@ The web application is a React 19 SPA built with Vite. It provides a wizard inte
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 22+
 - npm 8+
 
 ### Installation

@@ -79,7 +79,7 @@ Wizard Generation → Split-Pane Editor → Refinement Workflow → Export/Impor
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 22+
 - npm 8+ (with workspaces support)
 - OpenAI API key (or compatible provider)
 

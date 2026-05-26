@@ -18,7 +18,7 @@ The API is a Cloudflare Workers application built with [Hono](https://hono.dev/)
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 22+
 - npm 8+
 - Cloudflare account (for deployment)
 
