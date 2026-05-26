@@ -2,7 +2,43 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-26 - BugFixer Cycle 4)
+## Current Cycle (2026-05-26 - RepoKeeper Cleanup Cycle 17)
+
+### Findings
+
+- **RepoKeeper started**: Build/lint/typecheck all passing clean. 864 tests passing.
+- **Orphaned files removed**:
+  - `install_opencode.sh` — 13KB shell script, completely unreferenced in any config/doc/script. Removed.
+  - `scripts/check-console-errors.js` — standalone Playwright script, unreferenced (BroCula hunt is served by `brocula-hunt.mjs`). Removed.
+  - `scripts/lighthouse-audit.mjs` — Lighthouse CI script, unreferenced (no npm script, no CI step). Removed.
+  - `scripts/setup-cloudflare-resources.sh` — 7KB setup script, unreferenced. Removed.
+  - `scripts/setup-env.sh` — environment setup script, unreferenced (`.dev.vars.example` serves this purpose). Removed.
+- **Unused dependency removed**: `framer-motion` — replaced with CSS animations in earlier BroCula cycle, but the npm dependency was left behind. Zero imports remain in source. Removed from `apps/web/package.json`.
+- **Documentation alignment**:
+  - `CONTRIBUTING.md`: Node.js version 18+ → 22+ (3 references)
+  - `README.md`: Node.js version 18+ → 22+, framer-motion → CSS Animations in tech stack
+  - `apps/web/README.md`: Node.js version 18+ → 22+, framer-motion → CSS animations
+  - `.opencode/memory/frontend.md`: All 4 framer-motion references replaced with CSS animations (file also had duplicate content — deduplicated)
+  - `.opencode/agent/ui-ux-engineer.md`: framer-motion → CSS utility classes
+  - `.npmrc`: stale comment "node 20" → "node 22"
+- **Build/Lint/Typecheck**: All passing clean.
+- **Dependencies**: 0 vulnerabilities (npm audit clean).
+- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
+- **Stale remote branches**: 134 branches noted (no cleanup — requires explicit owner approval per previous cycles).
+
+### Actions Taken
+
+- Removed 5 orphaned script/config files
+- Removed `framer-motion` unused dependency
+- Updated Node.js version references across 4 doc files (18+ → 22+)
+- Replaced framer-motion references with CSS animations in 3 doc files
+- Fixed `.npmrc` stale comment
+- Updated `docs/findings.md` — this record
+- Verified typecheck/lint/build all pass clean
+- Created branch `chore/repokeeper-cleanup-cycle-2026-05-26` from main
+- Created PR with all cleanup changes
+
+## Previous Cycle (2026-05-26 - BugFixer Cycle 4)
 
 ### Findings
 

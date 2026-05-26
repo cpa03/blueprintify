@@ -248,7 +248,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **Tailwind CSS** - Styling
 - **Zustand** - State management
 - **CodeMirror** - Code editor (via @uiw/react-codemirror)
-- **Framer Motion** - Animations
+- **CSS Animations** - Animations (spring, transition)
 - **Radix UI** - Accessible components
 - **React Markdown** - Markdown rendering
 - **JSZip** - File compression for exports
