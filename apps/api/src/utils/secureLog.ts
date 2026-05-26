@@ -281,5 +281,5 @@ export function secureLogDebug(
     timestamp: new Date().toISOString(),
     ...additionalInfo,
   };
-  console.debug(JSON.stringify(logEntry));
+  console.log(JSON.stringify(logEntry));
 }
