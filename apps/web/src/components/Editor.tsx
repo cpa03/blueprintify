@@ -186,6 +186,15 @@ function EditorComponent(): JSX.Element {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleNewProject]);
 
+  // Smooth-scroll preview pane to top when switching tabs
+  // Prevents disorientation when content changes but scroll stays mid-content
+  useEffect(() => {
+    const el = previewRef.current;
+    if (el && typeof el.scrollTo === "function") {
+      el.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [activeTab]);
+
   return (
     <>
       <div className="h-full flex flex-col">
