@@ -350,6 +350,107 @@ describe("Circuit Breaker Utilities", () => {
     });
   });
 
+  describe("cold start awareness", () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it("should use reduced failure threshold during cold start window", async () => {
+      const breaker = createCircuitBreaker({
+        failureThreshold: 5,
+        resetTimeoutMs: 60000,
+        halfOpenMaxCalls: 3,
+        coldStartWindowMs: 30000,
+      });
+
+      // During cold start window, effective threshold = max(1, floor(5/2)) = 2
+      const failOp = vi.fn().mockRejectedValue(new Error("fail"));
+
+      // 2 failures should open circuit during cold start (not 5)
+      await expect(breaker.execute(failOp)).rejects.toThrow("fail");
+      await expect(breaker.execute(failOp)).rejects.toThrow("fail");
+
+      expect(breaker.getState().state).toBe(CircuitState.OPEN);
+      expect(breaker.getState().failures).toBe(2);
+    });
+
+    it("should use normal threshold after cold start window expires", async () => {
+      const breaker = createCircuitBreaker({
+        failureThreshold: 5,
+        resetTimeoutMs: 60000,
+        halfOpenMaxCalls: 3,
+        coldStartWindowMs: 1000,
+      });
+
+      // Advance past cold start window
+      vi.advanceTimersByTime(1001);
+
+      const failOp = vi.fn().mockRejectedValue(new Error("fail"));
+
+      // 3 failures should NOT open circuit (normal threshold of 5)
+      await expect(breaker.execute(failOp)).rejects.toThrow("fail");
+      await expect(breaker.execute(failOp)).rejects.toThrow("fail");
+      await expect(breaker.execute(failOp)).rejects.toThrow("fail");
+
+      expect(breaker.getState().state).not.toBe(CircuitState.OPEN);
+      expect(breaker.getState().failures).toBe(3);
+    });
+
+    it("should report cold start status in metrics", () => {
+      const breaker = createCircuitBreaker({
+        coldStartWindowMs: 30000,
+      });
+
+      const metrics = breaker.getState();
+      expect(metrics).toHaveProperty("isColdStart");
+      expect(metrics.isColdStart).toBe(true);
+      expect(metrics).toHaveProperty("coldStartRemainingMs");
+      expect(metrics.coldStartRemainingMs).toBeGreaterThan(0);
+      expect(metrics.coldStartRemainingMs).toBeLessThanOrEqual(30000);
+    });
+
+    it("should report cold start as false after window expires", () => {
+      const breaker = createCircuitBreaker({
+        coldStartWindowMs: 1000,
+      });
+
+      vi.advanceTimersByTime(1001);
+
+      const metrics = breaker.getState();
+      expect(metrics.isColdStart).toBe(false);
+      expect(metrics.coldStartRemainingMs).toBe(0);
+    });
+
+    it("should not reduce threshold below 1", async () => {
+      const breaker = createCircuitBreaker({
+        failureThreshold: 2,
+        resetTimeoutMs: 60000,
+        halfOpenMaxCalls: 1,
+        coldStartWindowMs: 30000,
+      });
+
+      // Even halved, threshold should be at least 1
+      const failOp = vi.fn().mockRejectedValue(new Error("fail"));
+
+      await expect(breaker.execute(failOp)).rejects.toThrow("fail");
+      expect(breaker.getState().state).toBe(CircuitState.OPEN);
+    });
+
+    it("should default coldStartWindowMs to 0 when not configured", () => {
+      const breaker = createCircuitBreaker({
+        failureThreshold: 5,
+      });
+
+      const metrics = breaker.getState();
+      expect(metrics.isColdStart).toBe(false);
+      expect(metrics.coldStartRemainingMs).toBe(0);
+    });
+  });
+
   describe("CircuitState enum", () => {
     it("should have correct state values", () => {
       expect(CircuitState.CLOSED).toBe("CLOSED");

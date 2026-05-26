@@ -126,11 +126,17 @@ app.get(ROUTE_PATHS.WARMUP, (c) => {
   const metrics = cb.getState();
   return c.json({
     status: "ok",
+    timestamp: Date.now(),
     circuitBreaker: {
       state: metrics.state,
       failures: metrics.failures,
       successes: metrics.successes,
+      isColdStart: metrics.isColdStart,
+      coldStartRemainingMs: metrics.coldStartRemainingMs,
     },
+    recommendation: metrics.isColdStart
+      ? "Circuit breaker is in cold start window — reduced failure threshold active"
+      : "Circuit breaker is fully warmed up",
   });
 });
 
