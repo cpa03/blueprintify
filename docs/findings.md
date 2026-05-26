@@ -34,16 +34,25 @@
 
 ### Findings
 
-- **RepoKeeper started**: Build/lint/typecheck all passing clean. 473 web + 107 shared tests passing.
-- **No redundant/temp/stray files detected**. `.gitignore` is comprehensive.
-- **Documentation alignment issues found**:
-  - Root `README.md`: React badge showed `18` (should be `19`), TypeScript badge showed `5.3` (should be `6.0`), Tech Stack listed `React 18`
-  - `apps/web/README.md`: Framework listed as React 18
-  - `eslint.config.js`: `react` version setting was `"18"` (should be `"19"`)
-  - `CHANGELOG.md`: Tech stack listed "React 18" in the v1.0.0 section; missing 7 recent commits in [Unreleased]
-  - `docs/active-tasks.md`: Cycle 14 items for branch creation and PR were unchecked but changes were committed directly to main
-- **All docs-alignment issues fixed** in this cycle:
-  - README badges and tech stack references updated to React 19 / TypeScript 6.0
+- **BUG-014 RE-OPENED**: Stale doc references in `.github/workflows/main.yml` returned for the 3rd time:
+  - Line 38: `docs/bug.md` → fixed to `docs/bugs.md`, `docs/feature.md` → fixed to `docs/features.md`
+  - Line 262: `docs/bug.md` → fixed to `docs/bugs.md`
+- **Prettier formatting**: 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml) had formatting regressions — fixed.
+- **Test count update**: API tests now 284 passing (up from 271) — total 864 tests passing (473 web + 284 api + 107 shared).
+- **Build/Lint/Typecheck/Test**: All passing clean.
+- **No deprecation warnings** during build.
+- **No new bugs detected.**
+- **Workflow push blocked**: GitHub App token lacks `workflows` permission — YAML file changes cannot be pushed via PR. Fix applied in working tree only.
+- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
+
+### Actions Taken
+
+- Fixed stale doc refs in `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+- Fixed Prettier formatting in 4 workflow YAML files
+- Updated `docs/bugs.md` — BUG-014 re-opened with fix history table
+- Updated `docs/findings.md` — this record
+- Updated `docs/active-tasks.md` — added BugFixer cycle 3 entry
+- Verified typecheck/lint/build/format/tests all pass clean
 
 ## Previous Cycle (2026-05-25 - BugFixer Cycle 2)
 

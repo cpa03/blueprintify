@@ -4,9 +4,9 @@
 
 ## Active Bugs
 
-### ~~BUG-014: Stale Doc References in main.yml Workflow~~ (FIXED)
+### BUG-014: Stale Doc References in main.yml Workflow (RE-OPENED)
 
-**Status**: Fixed — 2026-05-25 (BugFixer Cycle 2)  
+**Status**: Active — 2026-05-26 (BugFixer Cycle 3 — re-opened after fix was reverted)  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1293
@@ -14,17 +14,26 @@
 
 #### Description
 
-`.github/workflows/main.yml` referenced two non-existent documentation files:
+`.github/workflows/main.yml` continues to reference two non-existent documentation files. Despite multiple fixes, the stale references keep returning (likely re-introduced by workflow auto-generation or merge conflicts):
 
-- `docs/bug.md` → corrected to `docs/bugs.md`
-- `docs/feature.md` → corrected to `docs/features.md`
+- `docs/bug.md` → should be `docs/bugs.md`
+- `docs/feature.md` → should be `docs/features.md`
 
-#### Fix Applied
+#### Fix History
 
-- Replaced stale `docs/bug.md` → `docs/bugs.md` on lines 39, 263
-- Replaced stale `docs/feature.md` → `docs/features.md` on line 39
+| Cycle   | Date       | Action                       | Status                     |
+| ------- | ---------- | ---------------------------- | -------------------------- |
+| Cycle 1 | 2026-05-23 | Initial fix                  | Fix lost in PR #1357 merge |
+| Cycle 2 | 2026-05-25 | Re-fixed in BugFixer cycle 2 | Fix reverted               |
+| Cycle 3 | 2026-05-26 | Re-fixed again               | **Current**                |
+
+#### Latest Fix Applied (Cycle 3)
+
+- Replaced stale `docs/bug.md` → `docs/bugs.md` on lines 38, 262
+- Replaced stale `docs/feature.md` → `docs/features.md` on line 38
 - Fixed Prettier formatting on 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml)
-- Verified: typecheck/lint/build/test all pass clean
+- Verified: typecheck/lint/build/test/format all pass clean
+- 864 tests passing (473 web + 284 api + 107 shared)
 
 ---
 
