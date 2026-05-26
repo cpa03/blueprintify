@@ -281,6 +281,5 @@ export function secureLogDebug(
     timestamp: new Date().toISOString(),
     ...additionalInfo,
   };
-  // eslint-disable-next-line no-console -- intentional debug-level logging utility function
   console.debug(JSON.stringify(logEntry));
 }
