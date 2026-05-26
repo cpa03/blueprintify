@@ -14,7 +14,7 @@ The web application is a React 19 SPA built with Vite. It provides a wizard inte
 - **State Management**: [Zustand](https://github.com/pmndrs/zustand)
 - **Code Editor**: [CodeMirror](https://codemirror.net/) (via @uiw/react-codemirror)
 - **Markdown**: [React Markdown](https://remarkjs.github.io/react-markdown/) + [rehype](https://github.com/rehypejs/rehype)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Animations**: CSS spring/transition utility classes
 - **Components**: [Radix UI](https://www.radix-ui.com/) (accessible primitives)
 - **Testing**: [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/)
 - **Analytics**: [Vercel Analytics](https://vercel.com/analytics) + [Speed Insights](https://vercel.com/speed-insights)
