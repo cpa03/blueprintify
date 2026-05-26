@@ -61,6 +61,24 @@ export const StepGenerating = memo(function StepGenerating({
     setStep("review");
   }, [setStep]);
 
+  const handleViewEditor = useCallback(() => {
+    // Smoothly scroll the editor panel into view and focus it
+    const editorPanel = document.querySelector('[id$="-panel"]');
+    if (editorPanel) {
+      editorPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      // Briefly highlight the editor container with a focus ring
+      const editorContainer = editorPanel.closest(".glass-card");
+      if (editorContainer instanceof HTMLElement) {
+        editorContainer.style.outline = "2px solid rgb(99 102 241 / 0.5)";
+        editorContainer.style.outlineOffset = "2px";
+        setTimeout(() => {
+          editorContainer.style.outline = "";
+          editorContainer.style.outlineOffset = "";
+        }, 1500);
+      }
+    }
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -204,12 +222,39 @@ export const StepGenerating = memo(function StepGenerating({
             className="mt-8 flex flex-col items-center gap-3"
           >
             <RippleButton
-              onClick={handleViewReview}
+              onClick={handleViewEditor}
               className="btn-primary flex items-center gap-2"
-              ariaLabel="Back to review step"
+              ariaLabel="View the generated blueprint in the editor"
             >
               <svg
                 className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+              View in Editor
+            </RippleButton>
+            <RippleButton
+              onClick={handleViewReview}
+              className="btn-ghost text-sm text-dark-400 hover:text-dark-200 flex items-center gap-1.5"
+              ariaLabel="Back to review step"
+            >
+              <svg
+                className="w-4 h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -225,7 +270,7 @@ export const StepGenerating = memo(function StepGenerating({
               Back to Review
             </RippleButton>
             <p className="text-sm text-dark-500">
-              💡 Your content is in the editor panel on the right
+              💡 Content streams in real-time in the editor panel
             </p>
           </motion.div>
         ) : (
