@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `secureLogInfo` and `secureLogDebug` utility functions for structured debug logging
+- `llms.txt` file for LLM crawl guidance and Lighthouse agentic-browsing audit
+- Spring animations on editor panel close buttons for visual delight
+- Documentation for missing keyboard shortcuts (Ctrl+N, Home) in shortcuts modal
 - Comprehensive SSE stream utility tests for API request validation and stream reliability
 - Enhanced ShowEditorButton with spring pop-in entrance animation for visual delight
 - Spring hover/tap animations on StepFeatures suggestion buttons for tactile interaction feedback
@@ -52,6 +56,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- BugFixer cycle 3: fixed BUG-014 stale doc refs in main.yml (3rd fix attempt)
+- RepoKeeper cycle 16: aligned `.node-version` with `.nvmrc` (20→22), pruned triage file, updated docs
+- BroCula hunt: removed rehype-highlight, replaced framer-motion with CSS for performance
+- Aligned `.nvmrc` and `package.json` engines with Cloudflare Node 22 requirement
 - Eagerly initialize circuit breaker to mitigate cold start gap in API ([#?](https://github.com/cpa03/blueprintify/pull/?))
 - Smooth toast progress ring animation on hover-resume in web frontend
 - Upgraded react to v19 to resolve version mismatch with react-dom
@@ -75,6 +83,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Performance
 
+- BroCula hunt: removed rehype-highlight (~200KB), replaced framer-motion with CSS for lighter animations
+- Async CSS loading and fetchpriority optimizations for faster page loads
 - Replaced O(n) localStorage quota serialization with incremental estimate for non-blocking performance ([#1329](https://github.com/cpa03/blueprintify/pull/1329))
 - Reduced CLS from 0.995 to 0.077, improving Lighthouse Performance to 95/100
 - Lazy-loaded TemplateGrid, VercelAnalytics, and ToastContainer to reduce initial bundle ([#1317](https://github.com/cpa03/blueprintify/pull/1317))

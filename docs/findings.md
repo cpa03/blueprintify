@@ -2,7 +2,38 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-26 - RepoKeeper Cleanup Cycle 17)
+## Current Cycle (2026-05-26 - RepoKeeper Cleanup Cycle 18)
+
+### Findings
+
+- **RepoKeeper started**: Build/lint/typecheck all passing clean. 473 web + 290 api + 107 shared = 870 tests passing.
+- **No redundant/temp/stray binary files detected**. `.gitignore` is comprehensive.
+- **Lint warning found**: `apps/api/src/utils/secureLog.ts:284` — `console.debug` triggers ESLint `no-console` rule. Fixed with eslint-disable comment.
+- **Stale doc reference**: `apps/api/README.md` lists `src/db/` directory in project structure but directory does not exist. Removed reference.
+- **CHANGELOG.md**: Missing 10 recent commits in [Unreleased] — added (secureLog, llms.txt, spring animations, BroCula perf, BugFixer cycle 3, RepoKeeper cycle 16).
+- **docs/active-tasks.md**: Cycle 16 PR (#1373) already merged — marked Complete. Cycle 16 unchecked items were stale (work had already been committed).
+- **docs/bugs.md**: Last Updated date was "Cycle 14" — bumped to current.
+- **docs/roadmap.md**: Last Updated date was "Cycle 13" — bumped to current.
+- **Dependencies**: 0 vulnerabilities (npm audit clean).
+- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
+- **Stale merged remote branches**: 3 branches found merged into main — pruned (chore/repokeeper-cleanup-cycle-13, feat/flexy-zero-hardcode, fix/bugfixer-deps-and-docs-20260525).
+- **Open PRs**: 4 open (fix/bugfixer-cycle-4, brocula/hunt-cycle-4, chore/repokeeper-cleanup-cycle-17, palette/preview-scroll-reset) — no action needed.
+
+### Actions Taken
+
+- Updated CHANGELOG.md — added 10 recent commits to [Unreleased] (Added, Fixed, Performance sections)
+- Updated docs/findings.md — this record
+- Updated docs/active-tasks.md — marked Cycle 16 Complete, added Cycle 18 entry
+- Updated docs/bugs.md — bumped Last Updated to 2026-05-26 (Cycle 18)
+- Updated docs/roadmap.md — bumped Last Updated to 2026-05-26 (Cycle 18)
+- Fixed apps/api/README.md — removed stale src/db/ directory reference
+- Fixed apps/api/src/utils/secureLog.ts — added eslint-disable for intentional console.debug usage
+- Pruned 3 stale merged remote branches
+- Verified typecheck/lint/build/web+api+shared tests all pass clean (870 tests — 473 web + 290 api + 107 shared)
+- Created branch chore/repokeeper-cleanup-cycle-18 from main
+- Created PR with all cleanup changes
+
+## Previous Cycle (2026-05-26 - RepoKeeper Cleanup Cycle 17)
 
 ### Findings
 
