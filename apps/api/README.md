@@ -109,8 +109,6 @@ apps/api/
 │   │   ├── generate.controller.ts
 │   │   ├── tasks.controller.ts
 │   │   └── refine.controller.ts
-│   ├── db/             # Database (Cloudflare D1)
-│   │   └── index.ts
 │   ├── di/             # Dependency injection container
 │   │   ├── container.ts
 │   │   └── index.ts

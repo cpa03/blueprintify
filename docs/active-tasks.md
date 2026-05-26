@@ -23,7 +23,7 @@
 ### Task: RepoKeeper Cleanup Cycle 16 (2026-05-26)
 
 - **Priority**: High
-- **Status**: Active
+- **Status**: Completed
 - **Objective**: Fix `.node-version` alignment (20→22), fix recurring stale doc refs in main.yml, remove dated triage file, update CHANGELOG, verify build/lint/test, create PR
 - **Actions**:
   - [x] Fix `.node-version` — 20→22 to align with `.nvmrc` and `package.json` engines
@@ -33,8 +33,7 @@
   - [x] Update `docs/findings.md` — record cycle 16 observations
   - [x] Update `docs/active-tasks.md` — mark cycle 15 complete, add cycle 16 entry
   - [x] Verify typecheck/lint/build/web+api+shared tests all pass clean
-  - [ ] Create branch `chore/repokeeper-cleanup-cycle-16` from main
-  - [ ] Create PR with all cleanup changes
+  - [x] Branch and PR created — **PR #1373 merged** ✅
 
 ### Task: RepoKeeper Cleanup Cycle 15 (2026-05-25)
 
@@ -257,6 +256,24 @@
   - [x] Create PR #1292 with docs fixes
   - [x] Create issue #1293 for CI workflow bug (can't push workflow changes due to token permissions)
 
+### Task: RepoKeeper Cleanup Cycle 18 (2026-05-26)
+
+- **Priority**: High
+- **Status**: Active
+- **Objective**: Update CHANGELOG with 10 recent commits, fix lint warning (console.debug), fix stale db/ dir ref in API README, bump stale doc dates, prune 3 merged branches, verify build/lint/test
+- **Actions**:
+  - [x] Update `CHANGELOG.md` — add 10 recent commits to [Unreleased]
+  - [x] Update `docs/findings.md` — record cycle 18 observations
+  - [x] Update `docs/active-tasks.md` — mark cycle 16 complete, add cycle 18 entry
+  - [x] Update `docs/bugs.md` — bump Last Updated date to Cycle 18
+  - [x] Update `docs/roadmap.md` — bump Last Updated date to Cycle 18
+  - [x] Fix `apps/api/README.md` — remove stale `src/db/` directory reference
+  - [x] Fix `apps/api/src/utils/secureLog.ts` — add eslint-disable for intentional `console.debug`
+  - [x] Prune 3 stale merged remote branches
+  - [ ] Verify typecheck/lint/build/web+api+shared tests all pass clean
+  - [ ] Create branch `chore/repokeeper-cleanup-cycle-18` from main
+  - [ ] Create PR with all cleanup changes
+
 ### Task: RepoKeeper Cleanup Cycle 3 (2026-05-23)
 
 - **Priority**: High
@@ -312,7 +329,7 @@ See [bugs.md](./bugs.md) for detailed bug information.
 - **Frontend**: Co-located Vitest tests with component and store tests — 473 passing
 - **API**: Comprehensive route, middleware, service, and utility tests — 284 passing
 - **Shared**: Zod schema, type, and config tests — 107 passing
-- **Total**: 864 tests (all passing) [473 web + 284 api + 107 shared]
+- **Total**: 870 tests (all passing) [473 web + 290 api + 107 shared]
 - **TypeScript**: Strict mode, no unchecked `any` types
 
 ---
