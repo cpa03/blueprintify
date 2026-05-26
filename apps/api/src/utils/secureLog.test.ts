@@ -5,20 +5,28 @@ import {
   createSecureLogEntry,
   secureLogError,
   secureLogWarn,
+  secureLogInfo,
+  secureLogDebug,
 } from "./secureLog";
 
 describe("SecureLog Utilities", () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
   let consoleWarnSpy: ReturnType<typeof vi.spyOn>;
+  let consoleLogSpy: ReturnType<typeof vi.spyOn>;
+  let consoleDebugSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    consoleDebugSpy = vi.spyOn(console, "debug").mockImplementation(() => {});
   });
 
   afterEach(() => {
     consoleErrorSpy.mockRestore();
     consoleWarnSpy.mockRestore();
+    consoleLogSpy.mockRestore();
+    consoleDebugSpy.mockRestore();
   });
 
   describe("sanitizeString", () => {
@@ -218,6 +226,102 @@ describe("SecureLog Utilities", () => {
 
       expect(parsed.context).toBe("Test");
       expect(parsed.message).toBe("Warning message");
+    });
+  });
+
+  describe("secureLogInfo", () => {
+    it("should log sanitized info message to console.log", () => {
+      secureLogInfo("Server", "Worker started", { region: "us-east" });
+
+      expect(consoleLogSpy).toHaveBeenCalledTimes(1);
+      const callArgs = consoleLogSpy.mock.calls[0];
+      expect(callArgs).toBeDefined();
+      const loggedContent = callArgs![0] as string;
+      const parsed = JSON.parse(loggedContent) as {
+        context: string;
+        message: string;
+        region: string;
+      };
+
+      expect(parsed.context).toBe("Server");
+      expect(parsed.message).toBe("Worker started");
+      expect(parsed.region).toBe("us-east");
+    });
+
+    it("should sanitize sensitive data in info logs", () => {
+      secureLogInfo("Auth", "User logged in from 192.168.1.1:8080");
+
+      expect(consoleLogSpy).toHaveBeenCalledTimes(1);
+      const callArgs = consoleLogSpy.mock.calls[0];
+      expect(callArgs).toBeDefined();
+      const loggedContent = callArgs![0] as string;
+      const parsed = JSON.parse(loggedContent) as { message: string };
+
+      expect(parsed.message).toContain("[IP_REDACTED]");
+    });
+
+    it("should handle missing additionalInfo", () => {
+      secureLogInfo("Test", "Info message");
+
+      expect(consoleLogSpy).toHaveBeenCalledTimes(1);
+      const callArgs = consoleLogSpy.mock.calls[0];
+      expect(callArgs).toBeDefined();
+      const loggedContent = callArgs![0] as string;
+      const parsed = JSON.parse(loggedContent) as {
+        context: string;
+        message: string;
+      };
+
+      expect(parsed.context).toBe("Test");
+      expect(parsed.message).toBe("Info message");
+    });
+  });
+
+  describe("secureLogDebug", () => {
+    it("should log debug message to console.debug", () => {
+      secureLogDebug("OpenAI", "API response received", { tokens: 150 });
+
+      expect(consoleDebugSpy).toHaveBeenCalledTimes(1);
+      const callArgs = consoleDebugSpy.mock.calls[0];
+      expect(callArgs).toBeDefined();
+      const loggedContent = callArgs![0] as string;
+      const parsed = JSON.parse(loggedContent) as {
+        context: string;
+        message: string;
+        tokens: number;
+      };
+
+      expect(parsed.context).toBe("OpenAI");
+      expect(parsed.message).toBe("API response received");
+      expect(parsed.tokens).toBe(150);
+    });
+
+    it("should sanitize sensitive data in debug logs", () => {
+      secureLogDebug("DB", "Query result from mongodb://localhost");
+
+      expect(consoleDebugSpy).toHaveBeenCalledTimes(1);
+      const callArgs = consoleDebugSpy.mock.calls[0];
+      expect(callArgs).toBeDefined();
+      const loggedContent = callArgs![0] as string;
+      const parsed = JSON.parse(loggedContent) as { message: string };
+
+      expect(parsed.message).toContain("[REDACTED]");
+    });
+
+    it("should handle missing additionalInfo", () => {
+      secureLogDebug("Test", "Debug message");
+
+      expect(consoleDebugSpy).toHaveBeenCalledTimes(1);
+      const callArgs = consoleDebugSpy.mock.calls[0];
+      expect(callArgs).toBeDefined();
+      const loggedContent = callArgs![0] as string;
+      const parsed = JSON.parse(loggedContent) as {
+        context: string;
+        message: string;
+      };
+
+      expect(parsed.context).toBe("Test");
+      expect(parsed.message).toBe("Debug message");
     });
   });
 });
