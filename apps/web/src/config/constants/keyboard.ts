@@ -19,4 +19,14 @@ export const KEYBOARD_SHORTCUTS = {
     MODIFIER: "ctrl/cmd",
     DESCRIPTION: "Submit current wizard step",
   },
+  NEW_PROJECT: {
+    KEY: "n",
+    MODIFIER: "ctrl/cmd",
+    DESCRIPTION: "Start a new project",
+  },
+  SCROLL_TO_TOP: {
+    KEY: "Home",
+    MODIFIER: "none",
+    DESCRIPTION: "Scroll to top of content",
+  },
 } as const;
