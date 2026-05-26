@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `llms.txt` file for LLM crawl guidance and Lighthouse agentic-browsing audit
 - Spring animations on editor panel close buttons for visual delight
 - Documentation for missing keyboard shortcuts (Ctrl+N, Home) in shortcuts modal
+- Spring wobble animation on ConfirmDialog warning icon for visual emphasis ([#1387](https://github.com/cpa03/blueprintify/pull/1387))
+- Auto-scroll preview pane to top on tab switch for consistent viewing ([#1387](https://github.com/cpa03/blueprintify/pull/1387))
 - Comprehensive SSE stream utility tests for API request validation and stream reliability
 - Enhanced ShowEditorButton with spring pop-in entrance animation for visual delight
 - Spring hover/tap animations on StepFeatures suggestion buttons for tactile interaction feedback
@@ -57,8 +59,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - BugFixer cycle 3: fixed BUG-014 stale doc refs in main.yml (3rd fix attempt)
+- BugFixer cycle 4: fixed stale Node.js 18+ references to 22+ across 5 documentation files
 - RepoKeeper cycle 16: aligned `.node-version` with `.nvmrc` (20→22), pruned triage file, updated docs
 - BroCula hunt: removed rehype-highlight, replaced framer-motion with CSS for performance
+- Removed unused eslint-disable comment for no-console from secureLog.ts
 - Aligned `.nvmrc` and `package.json` engines with Cloudflare Node 22 requirement
 - Eagerly initialize circuit breaker to mitigate cold start gap in API ([#?](https://github.com/cpa03/blueprintify/pull/?))
 - Smooth toast progress ring animation on hover-resume in web frontend
@@ -84,6 +88,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Performance
 
 - BroCula hunt: removed rehype-highlight (~200KB), replaced framer-motion with CSS for lighter animations
+- BroCula hunt cycle 4: replaced eager framer-motion with CSS animations, lazy-loaded MotionConfigWrapper for further bundle reduction
+- Removed animation modulepreload hint for 100 Lighthouse performance score
 - Async CSS loading and fetchpriority optimizations for faster page loads
 - Replaced O(n) localStorage quota serialization with incremental estimate for non-blocking performance ([#1329](https://github.com/cpa03/blueprintify/pull/1329))
 - Reduced CLS from 0.995 to 0.077, improving Lighthouse Performance to 95/100
