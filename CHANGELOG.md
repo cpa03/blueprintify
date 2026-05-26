@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Aligned `.nvmrc` and `package.json` engines with Cloudflare Node 22 requirement (`.node-version` 20→22)
 - Replaced hardcoded config values with config constants across API and web apps ([#1316](https://github.com/cpa03/blueprintify/pull/1316))
 - Removed `engine-strict=true` from `.npmrc` to allow `npm install` on node 20 without `--force` (project targets node 20 but some deps require >=22)
 - Updated `prepare` script from `husky install` (deprecated) to `husky` in package.json for compatibility with husky v9

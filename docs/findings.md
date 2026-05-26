@@ -2,7 +2,35 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-25 - RepoKeeper Cleanup Cycle 15)
+## Current Cycle (2026-05-26 - RepoKeeper Cleanup Cycle 16)
+
+### Findings
+
+- **RepoKeeper started**: Build/lint/typecheck all passing clean. 473 web + 284 api + 107 shared = 864 tests passing.
+- **No redundant/temp/stray binary files detected**. `.gitignore` is comprehensive.
+- **Stale dated file found**: `docs/issue-triage-2026-05-25.md` — a dated triage report from yesterday whose findings are now consolidated in other docs. Removed.
+- **BUG-015 (NEW)**: `.node-version` was `20` but `.nvmrc` is `22` and `package.json` engines require `>=22` — inconsistencia. Fixed (20→22).
+- **BUG-014 (RE-OPENED)**: `.github/workflows/main.yml` had stale doc refs again — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md` on lines 39, 263. Fixed again.
+- **CHANGELOG.md**: Missing the latest `a70039b` commit in [Unreleased] — added.
+- **docs/active-tasks.md**: Cycle 15 was fully [x] but not formally closed — marked Completed, added Cycle 16.
+- **All issues fixed** in this cycle.
+- **Dependencies**: 0 vulnerabilities (npm audit clean).
+- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
+- **Stale remote branches**: 137 branches noted (no cleanup — requires explicit owner approval per previous cycles).
+
+### Actions Taken
+
+- Updated `.node-version` — 20→22
+- Fixed stale doc refs in `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+- Removed `docs/issue-triage-2026-05-25.md` — dated temp file
+- Updated `CHANGELOG.md` — added `.nvmrc`/engines alignment commit
+- Updated `docs/active-tasks.md` — marked Cycle 15 Complete, added Cycle 16
+- Updated `docs/findings.md` — this record
+- Verified typecheck/lint/build/web+api+shared tests all pass clean (864 tests)
+- Created branch `chore/repokeeper-cleanup-cycle-16` from main
+- Created PR with all cleanup changes
+
+## Previous Cycle (2026-05-25 - RepoKeeper Cleanup Cycle 15)
 
 ### Findings
 
@@ -150,5 +178,5 @@
 
 ---
 
-**Last Cleared**: 2026-05-24  
+**Last Cleared**: 2026-05-26  
 **Maintainer**: RepoKeeper
