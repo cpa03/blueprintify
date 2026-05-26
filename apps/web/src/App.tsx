@@ -13,6 +13,7 @@ const TemplateGrid = lazy(() =>
 );
 const KeyboardShortcutsModal = lazy(() => import("./components/KeyboardShortcutsModal"));
 import { SkipLink } from "./components/SkipLink";
+import { motion } from "framer-motion";
 import { useWizardStore, useEditorStore } from "./store";
 import { UI_CONTENT } from "./config/constants";
 import { LAYOUT, BUTTON, ICON, SPINNER } from "./config/styles";
@@ -182,37 +183,57 @@ function App(): JSX.Element {
             {/* Editor Panel */}
             {showEditor && (
               <div className={`${LAYOUT.HALF_WIDTH} ${LAYOUT.GLASS_CARD} animate-slide-in-right`}>
-                <button
+                <motion.button
                   onClick={handleHideEditor}
                   className={BUTTON.HIDE_EDITOR_DESKTOP}
                   aria-label="Hide editor panel"
                   title="Hide editor"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
-                  <svg className={ICON.LG} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <motion.svg
+                    className={ICON.LG}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    whileHover={{ rotate: 90 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 12 }}
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
                       d="M6 18L18 6M6 6l12 12"
                     />
-                  </svg>
-                </button>
+                  </motion.svg>
+                </motion.button>
 
-                <button
+                <motion.button
                   onClick={handleHideEditor}
                   className={BUTTON.HIDE_EDITOR_MOBILE}
                   aria-label="Hide editor panel"
                   title="Hide editor"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
-                  <svg className={ICON.LG} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <motion.svg
+                    className={ICON.LG}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    whileHover={{ rotate: 90 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 12 }}
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
                       d="M6 18L18 6M6 6l12 12"
                     />
-                  </svg>
-                </button>
+                  </motion.svg>
+                </motion.button>
 
                 <Suspense
                   fallback={
