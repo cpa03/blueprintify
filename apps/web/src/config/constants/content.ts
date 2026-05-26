@@ -145,6 +145,21 @@ export const CELEBRATION_TEXT = {
 } as const;
 
 /**
+ * Toast notification messages
+ * Flexy says: No hardcoded toast messages - everything configurable!
+ */
+export const TOAST_MESSAGES = {
+  COPY_SUCCESS: "Copied to clipboard",
+  EXPORT_SUCCESS: "Project exported successfully!",
+  EXPORT_FAILURE: "Failed to export project",
+  NEW_PROJECT: "Started new project",
+  GENERATION_CANCELLED: "Generation cancelled",
+  SECURITY_VALIDATION_FAILED: "Security validation failed",
+  TEMPLATE_LOADED: (name: string) => `${name} template loaded`,
+  STEP_LOCKED: (label: string) => `Complete previous steps to unlock "${label}"`,
+} as const;
+
+/**
  * New Project confirmation dialog text
  * Flexy says: No hardcoded dialog text - everything configurable!
  */

@@ -33,7 +33,7 @@ import { useEditorStore, resetAllStores, useToast } from "../store";
 import { useExportContext } from "../context/ExportContext";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
-import { TIMEOUTS, UI, CONFIRM_DIALOG } from "../config/constants";
+import { TIMEOUTS, UI, CONFIRM_DIALOG, TOAST_MESSAGES } from "../config/constants";
 import { useLastSaved } from "../hooks/useLastSaved";
 import clsx from "clsx";
 
@@ -88,7 +88,7 @@ function EditorComponent(): JSX.Element {
         markSaved();
       } catch (error) {
         const securityError = handleSecurityError(error);
-        toast.error(`Security validation failed: ${securityError.message}`);
+        toast.error(`${TOAST_MESSAGES.SECURITY_VALIDATION_FAILED}: ${securityError.message}`);
         if (import.meta.env.DEV) {
           console.error("Security validation failed:", securityError);
         }
@@ -123,7 +123,7 @@ function EditorComponent(): JSX.Element {
     if (success) {
       setCopied(activeTab);
       setTimeout(() => setCopied(null), TIMEOUTS.COPY_FEEDBACK);
-      toast.success("Copied to clipboard");
+      toast.success(TOAST_MESSAGES.COPY_SUCCESS);
     }
   }, [currentContent, activeTab, toast]);
 
@@ -145,9 +145,9 @@ function EditorComponent(): JSX.Element {
       });
       setExportSuccess(true);
       setTimeout(() => setExportSuccess(false), TIMEOUTS.COPY_FEEDBACK);
-      toast.success("Project exported successfully!");
+      toast.success(TOAST_MESSAGES.EXPORT_SUCCESS);
     } catch (error) {
-      toast.error("Failed to export project");
+      toast.error(TOAST_MESSAGES.EXPORT_FAILURE);
       if (import.meta.env.DEV) {
         console.error("Export error:", error);
       }
@@ -165,13 +165,13 @@ function EditorComponent(): JSX.Element {
       setShowNewProjectConfirm(true);
     } else {
       resetAllStores();
-      toast.info("Started new project");
+      toast.info(TOAST_MESSAGES.NEW_PROJECT);
     }
   }, [hasContent, toast]);
 
   const handleConfirmNewProject = useCallback(() => {
     resetAllStores();
-    toast.info("Started new project");
+    toast.info(TOAST_MESSAGES.NEW_PROJECT);
   }, [toast]);
 
   useEffect(() => {

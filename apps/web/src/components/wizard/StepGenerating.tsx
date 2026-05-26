@@ -26,7 +26,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { memo, useCallback } from "react";
 import { useEditorStore, useWizardStore, useToast } from "../../store";
-import { ANIMATION, GENERATION_MESSAGES } from "../../config/constants";
+import { ANIMATION, GENERATION_MESSAGES, TOAST_MESSAGES } from "../../config/constants";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { AnimatedNumber } from "../AnimatedNumber";
 import { RippleButton } from "../RippleButton";
@@ -53,7 +53,7 @@ export const StepGenerating = memo(function StepGenerating({
 
   const handleCancel = useCallback(() => {
     cancelGeneration();
-    toast.info("Generation cancelled");
+    toast.info(TOAST_MESSAGES.GENERATION_CANCELLED);
     setStep("review");
   }, [cancelGeneration, setStep, toast]);
 
