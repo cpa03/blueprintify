@@ -148,6 +148,60 @@ describe("StorageService", () => {
       expect(health.quota).toHaveProperty("percentage");
       expect(typeof health.quota.percentage).toBe("number");
     });
+
+    it("AC: should increment quota.used after writing data", async () => {
+      const quotaKey = `quota-inc-test-${Date.now()}`;
+      const quotaStorage = new StorageService<{ data: string }>({
+        key: quotaKey,
+        currentVersion: 1,
+        enableBackup: false,
+      });
+
+      const before = quotaStorage.checkHealth().quota.used;
+      await quotaStorage.set({ data: "x".repeat(1000) });
+      const after = quotaStorage.checkHealth().quota.used;
+
+      expect(after).toBeGreaterThan(before);
+      localStorage.removeItem(quotaKey);
+    });
+
+    it("AC: should reset quota.used after clear", async () => {
+      const quotaKey = `quota-clear-test-${Date.now()}`;
+      const quotaStorage = new StorageService<{ data: string }>({
+        key: quotaKey,
+        currentVersion: 1,
+        enableBackup: false,
+      });
+
+      await quotaStorage.set({ data: "test-data" });
+      const beforeClear = quotaStorage.checkHealth().quota.used;
+      expect(beforeClear).toBeGreaterThan(0);
+
+      await quotaStorage.clear();
+      const afterClear = quotaStorage.checkHealth().quota.used;
+
+      // After full clear, running estimate should be near zero
+      expect(afterClear).toBeLessThan(50);
+      localStorage.removeItem(quotaKey);
+    });
+
+    it("AC: should decrease quota.used after removing data", async () => {
+      const quotaKey = `quota-remove-test-${Date.now()}`;
+      const quotaStorage = new StorageService<{ data: string }>({
+        key: quotaKey,
+        currentVersion: 1,
+        enableBackup: false,
+      });
+
+      await quotaStorage.set({ data: "x".repeat(500) });
+      const afterSet = quotaStorage.checkHealth().quota.used;
+      expect(afterSet).toBeGreaterThan(0);
+
+      await quotaStorage.remove();
+      const afterRemove = quotaStorage.checkHealth().quota.used;
+      expect(afterRemove).toBeLessThan(afterSet);
+      localStorage.removeItem(quotaKey);
+    });
   });
 
   describe("backup and recovery", () => {
