@@ -207,3 +207,19 @@ export const ROUTE_PATHS = {
   SHARE: "/share",
   WARMUP: "/warmup",
 } as const;
+
+// Shared default URLs used by both API and Web
+export const DEFAULT_URLS = {
+  PROJECT_HOMEPAGE: "https://blueprint-generator.pages.dev",
+  GITHUB: "https://github.com/cpa03/blueprintify",
+} as const;
+
+// Shared defaults for app-wide values across API and Web
+export const SHARED_DEFAULTS = {
+  APP_NAME: "Blueprintify",
+  DEFAULT_PROJECT_NAME: "my-project",
+  STORAGE_QUOTA_MB: 5,
+  API_VERSION: "1.0.0",
+  CORS_ORIGIN_DEV: "*",
+  CORS_MAX_AGE: 86400,
+} as const;
