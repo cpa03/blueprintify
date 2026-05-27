@@ -6,15 +6,25 @@
 
 set -e
 
-# Configuration
-ENVIRONMENT=${1:-staging}
+# Source centralized config (Flexy says: no hardcoded values!)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+source "$SCRIPT_DIR/config.sh"
+
+# Configuration from single source of truth
+ENVIRONMENT=${1:-staging}
 
 echo "🚀 Deploying Blueprint Generator API to $ENVIRONMENT..."
 
 # Validate environment
-if [[ "$ENVIRONMENT" != "staging" && "$ENVIRONMENT" != "production" ]]; then
+VALID_ENV=false
+for env in "${ENVIRONMENTS[@]}"; do
+    if [[ "$ENVIRONMENT" == "$env" ]]; then
+        VALID_ENV=true
+        break
+    fi
+done
+
+if [[ "$VALID_ENV" == "false" ]]; then
     echo "❌ Invalid environment: $ENVIRONMENT. Use 'staging' or 'production'"
     exit 1
 fi
@@ -34,6 +44,19 @@ npm run build
 echo "🧪 Running tests..."
 npm run test
 
+# Get URLs from config
+if [[ "$ENVIRONMENT" == "staging" ]]; then
+    DEPLOY_URL="$STAGING_API_URL"
+    DEPLOY_URL_PATTERN="$STAGING_API_PATTERN"
+    SLEEP_DURATION="$STAGING_SLEEP_SECONDS"
+fi
+
+if [[ "$ENVIRONMENT" == "production" ]]; then
+    DEPLOY_URL="$PRODUCTION_API_URL"
+    DEPLOY_URL_PATTERN="$PRODUCTION_API_PATTERN"
+    SLEEP_DURATION="$PRODUCTION_SLEEP_SECONDS"
+fi
+
 # Environment-specific deployment
 case $ENVIRONMENT in
     staging)
@@ -47,7 +70,7 @@ case $ENVIRONMENT in
         wrangler deploy --env staging
         
         echo "✅ Staging deployment complete!"
-        echo "🌐 Staging URL: https://api-staging.blueprintify.dev"
+        echo "🌐 Staging URL: $DEPLOY_URL"
         ;;
         
     production)
@@ -67,7 +90,7 @@ case $ENVIRONMENT in
         
         # Run production health checks
         echo "🏥 Running production health checks..."
-        curl -f https://api-staging.blueprintify.dev/ || {
+        curl -f "$STAGING_API_URL/" || {
             echo "❌ Staging health check failed. Do not deploy to production."
             exit 1
         }
@@ -76,12 +99,12 @@ case $ENVIRONMENT in
         wrangler deploy --env production
         
         echo "✅ Production deployment complete!"
-        echo "🌐 Production URL: https://api.blueprintify.dev"
+        echo "🌐 Production URL: $DEPLOY_URL"
         
         # Run post-deployment health check
         echo "🏥 Running post-deployment health check..."
-        sleep 5
-        curl -f https://api.blueprintify.dev/ || {
+        sleep "$SLEEP_DURATION"
+        curl -f "$DEPLOY_URL/" || {
             echo "❌ Production health check failed!"
             exit 1
         }

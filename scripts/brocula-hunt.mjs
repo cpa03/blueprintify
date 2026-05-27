@@ -4,10 +4,16 @@ import * as chromeLauncher from 'chrome-launcher';
 import fs from 'fs';
 import { spawn, execSync } from 'child_process';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
+// Flexy says: No hardcoded values - everything configurable!
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const PROJECT_ROOT = process.env.PROJECT_ROOT || path.resolve(__dirname, '..');
 const CHROME_PATH = process.env.CHROME_PATH || undefined;
+const PREVIEW_PORT = process.env.PREVIEW_PORT || '4173';
+const PREVIEW_HOST = process.env.PREVIEW_HOST || 'http://localhost';
 let previewServer = null;
-let TARGET_URL = process.env.TARGET_URL || 'http://localhost:4173';
+let TARGET_URL = process.env.TARGET_URL || `${PREVIEW_HOST}:${PREVIEW_PORT}`;
 
 async function checkConsoleErrors() {
   console.log('🔍 BroCula is hunting for console errors...\n');
@@ -217,8 +223,9 @@ async function buildAndServe() {
   
   try {
     // Build the app
+    const webDir = path.join(PROJECT_ROOT, 'apps', 'web');
     execSync('npm run build', { 
-      cwd: '/home/runner/work/blueprintify/blueprintify/apps/web',
+      cwd: webDir,
       stdio: 'inherit'
     });
     
@@ -226,8 +233,8 @@ async function buildAndServe() {
     
     // Start preview server with compression
     return new Promise((resolve, reject) => {
-      const previewProcess = spawn('npx', ['vite', 'preview', '--port', '4173'], {
-        cwd: '/home/runner/work/blueprintify/blueprintify/apps/web',
+      const previewProcess = spawn('npx', ['vite', 'preview', '--port', PREVIEW_PORT], {
+        cwd: webDir,
         stdio: 'pipe'
       });
       
@@ -235,7 +242,8 @@ async function buildAndServe() {
       
       previewProcess.stdout.on('data', (data) => {
         const output = data.toString();
-        if (output.includes('Local:') || output.includes('http://localhost:4173')) {
+        const localUrl = `${PREVIEW_HOST}:${PREVIEW_PORT}`;
+        if (output.includes('Local:') || output.includes(localUrl)) {
           console.log('🚀 Preview server ready!\n');
           setTimeout(resolve, 1000); // Give server a moment to fully start
         }
