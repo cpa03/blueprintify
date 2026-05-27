@@ -17,7 +17,6 @@
  */
 
 import { memo, useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import {
   UI_CONTENT,
   EXTERNAL_URLS,
@@ -69,11 +68,7 @@ function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <motion.div
-          className="flex items-center gap-3"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-        >
+        <div className="flex items-center gap-3 animate-fade-in-left">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center">
             <svg
               className="w-6 h-6 text-white"
@@ -93,13 +88,9 @@ function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
             <div className="text-xl font-bold text-white">{UI_CONTENT.APP.NAME}</div>
             <p className="text-xs text-dark-400">{UI_CONTENT.APP.TAGLINE}</p>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.nav
-          className="flex items-center gap-2"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-        >
+        <nav className="flex items-center gap-2 animate-slide-in-right">
           {onShowShortcuts && (
             <RippleButton
               onClick={onShowShortcuts}
@@ -127,7 +118,7 @@ function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
             </svg>
             <span className="hidden sm:inline">{UI_CONTENT.BUTTONS.GITHUB}</span>
           </RippleButton>
-        </motion.nav>
+        </nav>
       </div>
     </header>
   );

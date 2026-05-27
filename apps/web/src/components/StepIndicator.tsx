@@ -21,17 +21,10 @@
  * ```
  */
 
-import { motion } from "framer-motion";
 import { useEffect, useCallback, useState, memo } from "react";
 import type { WizardStep } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
-import {
-  WIZARD_STEPS,
-  TIMEOUTS,
-  SPRING_CONFIG,
-  PROGRESS_COLORS,
-  TOAST_MESSAGES,
-} from "../config/constants";
+import { WIZARD_STEPS, TIMEOUTS, PROGRESS_COLORS, TOAST_MESSAGES } from "../config/constants";
 import { CircularProgress } from "./CircularProgress";
 import { SmartTooltip } from "./SmartTooltip";
 
@@ -97,12 +90,7 @@ function StepIndicatorComponent(): JSX.Element {
         content={`${Math.round(progressPercentage)}% complete - ${STEPS.length - 1 - currentIndex} steps remaining`}
         position="left"
       >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: "spring", ...SPRING_CONFIG.DEFAULT }}
-          className="relative group"
-        >
+        <div className="relative group animate-fade-in">
           <CircularProgress
             value={progressPercentage}
             size={36}
@@ -112,16 +100,12 @@ function StepIndicatorComponent(): JSX.Element {
             }
             ariaLabel={`Step ${currentIndex + 1} of ${STEPS.length}: ${currentStepLabel}`}
           />
-          <motion.div
-            className="absolute inset-0 flex items-center justify-center"
-            whileHover={{ scale: 1.1 }}
-            transition={{ type: "spring", ...SPRING_CONFIG.SUBTLE_BOUNCE }}
-          >
+          <div className="absolute inset-0 flex items-center justify-center transition-transform duration-200 hover:scale-110">
             <span className="text-xs font-semibold">
               {currentIndex >= STEPS.length - 1 ? "🎉" : `${currentIndex + 1}`}
             </span>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </SmartTooltip>
 
       {STEPS.map((step, index) => {
@@ -132,7 +116,7 @@ function StepIndicatorComponent(): JSX.Element {
 
         return (
           <div key={step.key} className="flex items-center">
-            <motion.button
+            <button
               onClick={() => handleStepClick(step.key, step.label)}
               disabled={!isClickable}
               title={
@@ -156,41 +140,20 @@ function StepIndicatorComponent(): JSX.Element {
                       ? "bg-accent-emerald/20 border border-accent-emerald/50 text-accent-emerald focus-visible:ring-2 focus-visible:ring-accent-emerald/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                       : "bg-dark-800/50 border border-dark-700 text-dark-300 focus-visible:ring-2 focus-visible:ring-dark-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                 }
-                ${isClickable ? "cursor-pointer hover:bg-dark-700" : "cursor-default"}
+                ${isClickable ? "cursor-pointer hover:bg-dark-700 hover:scale-[1.02] active:scale-[0.98]" : "cursor-default"}
+                ${isActive ? "animate-step-pulse" : ""}
                 ${isShaking ? "shake-animation" : ""}
               `}
-              whileHover={isClickable ? { scale: 1.02 } : undefined}
-              whileTap={isClickable ? { scale: 0.98 } : undefined}
-              animate={
-                isActive
-                  ? {
-                      boxShadow: [
-                        "0 0 0 0 rgba(99, 102, 241, 0.4)",
-                        "0 0 0 8px rgba(99, 102, 241, 0)",
-                      ],
-                    }
-                  : undefined
-              }
-              transition={
-                isActive
-                  ? {
-                      duration: 1.5,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }
-                  : undefined
-              }
             >
               <span>{step.icon}</span>
               <span className="text-sm font-medium hidden sm:inline">{step.label}</span>
               {isClickable && (
                 <span className="text-xs opacity-50 font-mono">Alt+{step.shortcut}</span>
               )}
-            </motion.button>
+            </button>
 
             {index < STEPS.length - 1 && (
-              <motion.div
-                layout="position"
+              <div
                 className={`w-8 h-0.5 mx-2 rounded-full transition-all duration-500 ease-in-out ${
                   isCompleted
                     ? "bg-accent-emerald shadow-[0_0_6px_rgba(16,185,129,0.4)]"

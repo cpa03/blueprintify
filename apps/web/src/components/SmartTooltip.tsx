@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useCallback, memo, ReactNode, useId } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { SPRING_CONFIG, TOOLTIP_CONFIG } from "../config/constants";
+import { TOOLTIP_CONFIG } from "../config/constants";
 
 type Position = "top" | "bottom" | "left" | "right";
 
@@ -253,45 +252,26 @@ function SmartTooltipComponent({
     >
       {children}
 
-      <AnimatePresence>
-        {isVisible && isPositioned && (
-          <motion.div
-            ref={tooltipRef}
-            id={tooltipId}
-            role="tooltip"
-            initial={{
-              opacity: 0,
-              scale: 0.85,
-              y: computedPosition === "top" ? 8 : computedPosition === "bottom" ? -8 : 0,
-              x: computedPosition === "left" ? 8 : computedPosition === "right" ? -8 : 0,
-            }}
-            animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-            exit={{
-              opacity: 0,
-              scale: 0.9,
-              y: computedPosition === "top" ? 4 : computedPosition === "bottom" ? -4 : 0,
-              x: computedPosition === "left" ? 4 : computedPosition === "right" ? -4 : 0,
-            }}
-            transition={{
-              type: "spring",
-              ...SPRING_CONFIG.DEFAULT,
-            }}
-            className={`absolute ${positionStyle.container} z-50 pointer-events-none ${className}`}
+      {isVisible && isPositioned && (
+        <div
+          ref={tooltipRef}
+          id={tooltipId}
+          role="tooltip"
+          className={`absolute ${positionStyle.container} z-50 pointer-events-none animate-tooltip-in ${className}`}
+          style={{ maxWidth }}
+        >
+          <div
+            className="glass-card px-3 py-2 text-sm shadow-xl backdrop-blur-xl"
             style={{ maxWidth }}
           >
-            <div
-              className="glass-card px-3 py-2 text-sm shadow-xl backdrop-blur-xl"
-              style={{ maxWidth }}
-            >
-              {content}
-            </div>
-            <div
-              className={`absolute w-2 h-2 border-4 border-dark-700/50 ${positionStyle.arrow}`}
-              aria-hidden="true"
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {content}
+          </div>
+          <div
+            className={`absolute w-2 h-2 border-4 border-dark-700/50 ${positionStyle.arrow}`}
+            aria-hidden="true"
+          />
+        </div>
+      )}
     </div>
   );
 }

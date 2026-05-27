@@ -419,6 +419,53 @@
     animation: animate-glow 2.5s ease-in-out infinite;
   }
 
+  /* CSS ripple effect for RippleButton — replaces framer-motion AnimatePresence + motion.span */
+  @keyframes ripple {
+    from {
+      transform: scale(0);
+      opacity: 0.5;
+    }
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+
+  .animate-ripple {
+    animation: ripple 0.6s ease-out forwards;
+  }
+
+  /* Tooltip entrance animation — replaces framer-motion spring for SmartTooltip */
+  @keyframes tooltip-in {
+    from {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-tooltip-in {
+    animation: tooltip-in 0.2s ease-out;
+  }
+
+  /* Pulse animation for active step indicator button — replicates framer-motion box-shadow animation */
+  @keyframes step-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
+    }
+  }
+
+  .animate-step-pulse {
+    animation: step-pulse 1.5s ease-in-out infinite;
+  }
+
   /* CSS animation utilities - replaces trivial framer-motion animations */
   @keyframes fade-in {
     from {
@@ -451,8 +498,23 @@
     }
   }
 
+  @keyframes fade-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
   .animate-fade-in {
     animation: fade-in 0.2s ease-out;
+  }
+
+  .animate-fade-in-left {
+    animation: fade-in-left 0.3s ease-out;
   }
 
   .animate-slide-in-right {
@@ -470,7 +532,14 @@
     .shake-animation,
     .skeleton-group,
     .progress-shimmer::after,
-    .animate-glow {
+    .animate-glow,
+    .animate-fade-in,
+    .animate-fade-in-left,
+    .animate-ripple,
+    .animate-step-pulse,
+    .animate-tooltip-in,
+    .animate-slide-in-right,
+    .animate-slide-up {
       animation: none !important;
     }
 
