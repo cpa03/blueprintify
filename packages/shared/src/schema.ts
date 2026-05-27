@@ -72,7 +72,7 @@ export const BlueprintRequestSchema = z.object({
     .max(VALIDATION_LIMITS.TECH_STACK.MAX, "Too many technologies selected"),
   features: z
     .array(z.string().min(1).max(VALIDATION_LIMITS.FEATURE.MAX))
-    .max(VALIDATION_LIMITS.FEATURE.MAX)
+    .max(VALIDATION_LIMITS.FEATURE.MAX_COUNT)
     .optional(),
   targetAudience: z.string().max(VALIDATION_LIMITS.TARGET_AUDIENCE.MAX).optional(),
   constraints: z.string().max(VALIDATION_LIMITS.CONSTRAINTS.MAX).optional(),
