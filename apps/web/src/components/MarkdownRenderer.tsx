@@ -24,7 +24,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { copyToClipboard } from "../lib/export";
 import { sanitizeHtml } from "../lib/security";
-import { TIMEOUTS } from "../config/constants";
+import { TIMEOUTS, ACCESSIBILITY_LABELS } from "../config/constants";
 import { MARKDOWN, ICON } from "../config/styles";
 import type { Components } from "react-markdown";
 
@@ -86,8 +86,14 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
         }}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        aria-label={copied ? "Copied to clipboard" : "Copy code to clipboard"}
-        title={copied ? "Copied!" : "Copy code"}
+        aria-label={
+          copied ? ACCESSIBILITY_LABELS.MARKDOWN.COPIED : ACCESSIBILITY_LABELS.MARKDOWN.COPY_CODE
+        }
+        title={
+          copied
+            ? ACCESSIBILITY_LABELS.MARKDOWN.COPIED_TITLE
+            : ACCESSIBILITY_LABELS.MARKDOWN.COPY_CODE_TITLE
+        }
       >
         <AnimatePresence mode="wait" initial={false}>
           {copied ? (

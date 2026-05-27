@@ -1,4 +1,4 @@
-import { SSE_HEADERS, ERROR_MESSAGES } from "../config/constants";
+import { API_HEADERS, SSE_HEADERS, ERROR_MESSAGES } from "../config/constants";
 
 /**
  * Interface for AI service implementations.
@@ -85,9 +85,9 @@ export function createMockContainer(overrides?: Partial<Container>): Container {
       createSSEResponse: () =>
         new Response(mockStream, {
           headers: {
-            "Content-Type": SSE_HEADERS.CONTENT_TYPE,
-            "Cache-Control": SSE_HEADERS.CACHE_CONTROL,
-            Connection: SSE_HEADERS.CONNECTION,
+            [API_HEADERS.CONTENT_TYPE]: SSE_HEADERS.CONTENT_TYPE,
+            [API_HEADERS.CACHE_CONTROL.HEADER_NAME]: SSE_HEADERS.CACHE_CONTROL,
+            [API_HEADERS.CONNECTION]: SSE_HEADERS.CONNECTION,
           },
         }),
     },

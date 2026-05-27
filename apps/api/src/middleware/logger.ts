@@ -9,6 +9,7 @@
 
 import type { Context, MiddlewareHandler, Next } from "hono";
 import { LOGGER_CONFIG, API_HEADERS } from "../config/constants";
+import { timestamp } from "../errors";
 
 /**
  * Configuration options for the request logger middleware.
@@ -187,7 +188,7 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
       path,
       query,
       headers,
-      timestamp: new Date().toISOString(),
+      timestamp: timestamp(),
       ip: cfMetadata.connectingIp || c.req.header(API_HEADERS.REQUEST.FORWARDED_FOR),
       userAgent: c.req.header(API_HEADERS.REQUEST.USER_AGENT),
     };
@@ -228,7 +229,7 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
       requestId,
       status,
       duration,
-      timestamp: new Date().toISOString(),
+      timestamp: timestamp(),
     };
 
     if (cfMetadata.rayId) {

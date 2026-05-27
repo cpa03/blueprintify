@@ -30,7 +30,7 @@
 import { useState, useRef, useCallback, useEffect, forwardRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
-import { TOAST_CONFIG, SPRING_CONFIG } from "../config/constants";
+import { TOAST_CONFIG, SPRING_CONFIG, ACCESSIBILITY_LABELS } from "../config/constants";
 import { TOAST_SPRING } from "../config/theme";
 
 const toastIcons: Record<ToastType, string> = {
@@ -252,7 +252,7 @@ const ToastItem = memo(
         <motion.button
           onClick={() => onRemove(toast.id)}
           className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
-          aria-label={`Dismiss ${toast.type} notification`}
+          aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
           whileHover={{ scale: 1.15, rotate: 90 }}
           whileTap={{ scale: 0.9 }}
           transition={{ type: "spring", ...TOAST_SPRING.DISMISS_BUTTON }}
