@@ -50,7 +50,7 @@ const circuitBreaker: CircuitBreaker = createCircuitBreaker({
   failureThreshold: CIRCUIT_BREAKER_CONFIG.DEFAULT_FAILURE_THRESHOLD,
   resetTimeoutMs: CIRCUIT_BREAKER_CONFIG.DEFAULT_RESET_TIMEOUT_MS,
   halfOpenMaxCalls: CIRCUIT_BREAKER_CONFIG.DEFAULT_HALF_OPEN_MAX_CALLS,
-  coldStartWindowMs: 30_000,
+  coldStartWindowMs: CIRCUIT_BREAKER_CONFIG.DEFAULT_COLD_START_WINDOW_MS,
 });
 
 /**
