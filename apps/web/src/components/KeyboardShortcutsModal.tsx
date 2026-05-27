@@ -13,7 +13,7 @@
 
 import { useEffect, useCallback, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { KEYBOARD_SHORTCUTS, WIZARD_STEPS } from "../config/constants";
+import { KEYBOARD_SHORTCUTS, WIZARD_STEPS, EDITOR_LABELS } from "../config/constants";
 import { useFocusTrap } from "../hooks";
 
 /**
@@ -46,6 +46,16 @@ const getShortcutItems = (): ShortcutItem[] => {
     {
       keys: [modifier, "E"],
       description: KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.DESCRIPTION,
+      category: "editor",
+    },
+    {
+      keys: ["←", "→"],
+      description: EDITOR_LABELS.TAB_NAVIGATION.SWITCH_TABS,
+      category: "editor",
+    },
+    {
+      keys: ["Home", "End"],
+      description: "Jump to first/last editor tab",
       category: "editor",
     },
     {

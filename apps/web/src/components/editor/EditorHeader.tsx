@@ -26,7 +26,7 @@
  * ```
  */
 
-import React from "react";
+import React, { useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
@@ -52,6 +52,8 @@ interface EditorHeaderProps {
   content?: string;
 }
 
+const TAB_IDS: EditorTab[] = ["blueprint", "tasks"];
+
 const TabButton = React.memo(function TabButton({
   id,
   isActive,
@@ -72,6 +74,7 @@ const TabButton = React.memo(function TabButton({
       aria-controls={hasContent ? `${id}-panel` : undefined}
       id={`tab-${id}`}
       onClick={onClick}
+      tabIndex={isActive ? 0 : -1}
       className={clsx(
         "relative px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950",
@@ -161,6 +164,39 @@ function EditorHeaderComponent({
   hasChanges = false,
   content = "",
 }: EditorHeaderProps) {
+  const handleTabKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      const currentIndex = TAB_IDS.indexOf(activeTab);
+      let nextIndex: number | null = null;
+
+      switch (e.key) {
+        case "ArrowRight":
+          nextIndex = (currentIndex + 1) % TAB_IDS.length;
+          break;
+        case "ArrowLeft":
+          nextIndex = (currentIndex - 1 + TAB_IDS.length) % TAB_IDS.length;
+          break;
+        case "Home":
+          nextIndex = 0;
+          break;
+        case "End":
+          nextIndex = TAB_IDS.length - 1;
+          break;
+        default:
+          return;
+      }
+
+      e.preventDefault();
+      const nextTab = TAB_IDS[nextIndex];
+      if (nextTab) {
+        setActiveTab(nextTab);
+        const nextTabEl = document.getElementById(`tab-${nextTab}`);
+        nextTabEl?.focus();
+      }
+    },
+    [activeTab, setActiveTab]
+  );
+
   return (
     <div className="flex items-center justify-between p-4 border-b border-dark-700">
       <div className="flex items-center gap-6">
@@ -169,6 +205,7 @@ function EditorHeaderComponent({
           role="tablist"
           aria-label="Document tabs"
           id="editor-tabs"
+          onKeyDown={handleTabKeyDown}
         >
           <TabButton
             id="blueprint"
