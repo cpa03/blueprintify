@@ -12,7 +12,11 @@ https://blueprintify-api.your-domain.workers.dev
 
 ## Authentication
 
-Currently, the API does not require authentication. However, all requests must include a valid OpenAI API key configured via environment variables on the server side.
+The API uses API key authentication via the `x-api-key` header. All endpoints except the health check (`GET /`) and warmup (`GET /warmup`) require a valid API key.
+
+The `API_KEY` environment variable must be configured server-side (set via `.dev.vars` locally or `wrangler secret put API_KEY` in production). If `API_KEY` is not configured, protected endpoints return `503 Service Unavailable`.
+
+Authentication uses constant-time string comparison to prevent timing attacks.
 
 ## Environment Variables
 
@@ -54,6 +58,26 @@ Health check endpoint to verify the API is running and provide API metadata.
     "shareCreate": "POST /share",
     "shareGet": "GET /share/:id",
     "shareDelete": "DELETE /share/:id"
+  }
+}
+```
+
+### GET /warmup
+
+Endpoint for pre-warming the circuit breaker on worker startup. Initializes the OpenAI circuit breaker and returns its state.
+
+#### Response
+
+```json
+{
+  "status": "ok",
+  "timestamp": 1716825600000,
+  "circuitBreaker": {
+    "state": "closed",
+    "failures": 0,
+    "successes": 0,
+    "isColdStart": true,
+    "coldStartRemainingMs": 30000
   }
 }
 ```
