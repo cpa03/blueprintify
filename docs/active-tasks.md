@@ -4,19 +4,33 @@
 
 ## Current Focus: Repository Maintenance
 
-### Task: RepoKeeper Cleanup Cycle 19 (2026-05-26)
+### Task: RepoKeeper Cleanup Cycle 20 (2026-05-27)
 
 - **Priority**: High
 - **Status**: Active
+- **Objective**: Update CHANGELOG with 3 recent commits, fix BUG-014 stale doc refs in main.yml, update docs (findings/active-tasks), verify build/lint/test, create PR
+- **Actions**:
+  - [x] Update `CHANGELOG.md` — add 3 missing commits to [Unreleased] (View in Editor CTA, cold start awareness, issue mgmt report)
+  - [x] Fix BUG-014 in `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+  - [x] Update `docs/findings.md` — record cycle 20 observations
+  - [x] Update `docs/active-tasks.md` — mark cycle 19 complete, add cycle 20 entry
+  - [x] Verify typecheck/lint/build/web+api+shared tests all pass clean (876 tests — 473 web + 296 api + 107 shared)
+  - [ ] Create branch `chore/repokeeper-cleanup-cycle-20` from main
+  - [ ] Create PR with all cleanup changes
+
+### Task: RepoKeeper Cleanup Cycle 19 (2026-05-26)
+
+- **Priority**: High
+- **Status**: Completed
 - **Objective**: Update CHANGELOG with 6 recent commits, update docs (findings/active-tasks), prune 1 stale merged branch, verify build/lint/test
+- **Note**: Cycle 19 actions were completed via subsequent direct commits to main (cold start circuit breaker, View in Editor CTA, issue management report). Last 2 unchecked items verified in Cycle 20.
 - **Actions**:
   - [x] Update `CHANGELOG.md` — add 6 missing commits to [Unreleased] (modulepreload perf, wobble animation, eslint-disable cleanup, preview auto-scroll, BroCula cycle 4, BugFixer cycle 4)
   - [x] Update `docs/findings.md` — record cycle 19 observations
   - [x] Update `docs/active-tasks.md` — mark cycle 18 complete, add cycle 19 entry
   - [x] Prune 1 stale merged remote branch (agent/palette-cancel-feedback)
-  - [ ] Verify typecheck/lint/build/web+api+shared tests all pass clean (870 tests — 473 web + 290 api + 107 shared)
-  - [ ] Create branch `chore/repokeeper-cleanup-cycle-19` from main
-  - [ ] Create PR with all cleanup changes
+  - [x] Verify typecheck/lint/build/web+api+shared tests all pass clean (876 tests — 473 web + 296 api + 107 shared)
+  - [x] Changes committed directly to main (subsequent commits)
 
 ### Task: BugFixer Cycle 3 — Fix BUG-014 stale doc refs (2026-05-26)
 

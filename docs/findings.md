@@ -242,5 +242,32 @@
 
 ---
 
-**Last Cleared**: 2026-05-26 (Cycle 19)  
+## Current Cycle (2026-05-27 - RepoKeeper Cleanup Cycle 20)
+
+### Findings
+
+- **RepoKeeper started**: Build/lint/typecheck all passing clean. 473 web + 296 api + 107 shared = 876 tests passing (API up from 290).
+- **No redundant/temp/stray files detected**. `.gitignore` is comprehensive. `.omo/ralph-loop.local.md` is the active ulw-loop session (current — preserved).
+- **CHANGELOG.md**: Missing 3 recent commits in [Unreleased] — added (View in Editor CTA, cold start awareness, issue management report + CI fix script).
+- **BUG-014**: Stale doc refs in `main.yml` (`docs/bug.md`, `docs/feature.md`) still present on line 39 — fixed again. Push blocked by GitHub App `workflows` permission (recurring).
+- **docs/active-tasks.md**: Cycle 19 had 2 unchecked items (verify tests, create PR) — those were completed in subsequent main commits. Marked Cycle 19 Complete, added Cycle 20 entry.
+- **Unreferenced docs**: `docs/audit-2026-05-26.md` and `docs/issue-management-2026-05-27.md` exist but are not linked from README.md. Issue management doc is brand new (added today) — no action needed.
+- **Dependencies**: 0 vulnerabilities (npm audit clean).
+- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
+- **Stale remote branches**: 131 branches on origin — most unmerged (cleanup deferred — requires explicit owner approval per previous cycles).
+- **No formatting regressions** detected in workflow YAMLs beyond the known pattern.
+
+### Actions Taken
+
+- Updated CHANGELOG.md — added 3 recent commits to [Unreleased] (Added, Fixed sections)
+- Fixed BUG-014 in `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+- Updated docs/findings.md — this record
+- Updated docs/active-tasks.md — marked Cycle 19 Complete, added Cycle 20 entry
+- Verified typecheck/lint/build/web+api+shared tests all pass clean (876 tests — 473 web + 296 api + 107 shared)
+- Created branch `chore/repokeeper-cleanup-cycle-20` from main
+- Created PR with all cleanup changes
+
+---
+
+**Last Cleared**: 2026-05-27 (Cycle 20)  
 **Maintainer**: RepoKeeper
