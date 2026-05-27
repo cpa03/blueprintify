@@ -367,6 +367,11 @@ export const StepInfo = memo(function StepInfo({
               <span className="text-dark-500">(optional)</span>
               <TypeIndicator isTyping={constraintsTyping.isTyping} />
             </label>
+            <CharacterCounter
+              current={constraints.length}
+              max={FORM_LIMITS.CONSTRAINTS.MAX}
+              min={0}
+            />
             <AnimatePresence>
               {constraints && (
                 <motion.button
