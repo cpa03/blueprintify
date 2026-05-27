@@ -57,9 +57,9 @@ export const DEFAULTS: Omit<EnvConfig, "OPENAI_API_KEY"> = {
   OPENAI_TEMPERATURE: 0.7,
 
   // API
-  API_VERSION: "1.0.0",
-  CORS_ORIGIN: "*",
-  CORS_MAX_AGE: 86400,
+  API_VERSION: SHARED_DEFAULTS.API_VERSION,
+  CORS_ORIGIN: SHARED_DEFAULTS.CORS_ORIGIN_DEV,
+  CORS_MAX_AGE: SHARED_DEFAULTS.CORS_MAX_AGE,
 
   // Rate Limiting
   RATE_LIMIT_WINDOW_MS: 60000,
@@ -68,7 +68,7 @@ export const DEFAULTS: Omit<EnvConfig, "OPENAI_API_KEY"> = {
   RATE_LIMIT_LENIENT_MAX: 120,
 
   // Storage
-  STORAGE_QUOTA_MB: 5,
+  STORAGE_QUOTA_MB: SHARED_DEFAULTS.STORAGE_QUOTA_MB,
 
   // Circuit Breaker
   CIRCUIT_BREAKER_FAILURE_THRESHOLD: 5,
@@ -82,8 +82,8 @@ export const DEFAULTS: Omit<EnvConfig, "OPENAI_API_KEY"> = {
   RETRY_MAX_DELAY_MS: 10000,
 
   // External URLs
-  PROJECT_HOMEPAGE_URL: "https://blueprint-generator.pages.dev",
-  GITHUB_URL: "https://github.com/cpa03/blueprintify",
+  PROJECT_HOMEPAGE_URL: DEFAULT_URLS.PROJECT_HOMEPAGE,
+  GITHUB_URL: DEFAULT_URLS.GITHUB,
 };
 
 /**
@@ -222,6 +222,7 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
 }
 
 // Singleton config instance - delegates to constants.ts for unified state
+import { DEFAULT_URLS, SHARED_DEFAULTS } from "@blueprint/shared";
 import { getEnvConfig, setEnvConfig as setConstantsConfig } from "./constants";
 
 /**

@@ -68,6 +68,8 @@ export {
   TIME_UNITS,
   HTTP_STATUS,
   ROUTE_PATHS,
+  DEFAULT_URLS,
+  SHARED_DEFAULTS,
 } from "./config";
 
 export type { RetryOptions } from "./config";

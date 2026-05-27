@@ -1,7 +1,4 @@
-/**
- * Web Environment Configuration
- * Type-safe environment variable handling for Vite
- */
+import { DEFAULT_URLS, SHARED_DEFAULTS } from "@blueprint/shared";
 
 const getEnvVar = (key: string, defaultValue?: string): string => {
   const value = import.meta.env[key];
@@ -26,27 +23,27 @@ export const ENV = {
     return getEnvVar("VITE_ENABLE_ANALYTICS", "false") === "true";
   },
 
-  // External URLs
+  // External URLs (defaults from @blueprint/shared)
   get PROJECT_HOMEPAGE_URL(): string {
-    return getEnvVar("VITE_PROJECT_HOMEPAGE_URL", "https://blueprint-generator.pages.dev");
+    return getEnvVar("VITE_PROJECT_HOMEPAGE_URL", DEFAULT_URLS.PROJECT_HOMEPAGE);
   },
 
   get GITHUB_URL(): string {
-    return getEnvVar("VITE_GITHUB_URL", "https://github.com/cpa03/blueprintify");
+    return getEnvVar("VITE_GITHUB_URL", DEFAULT_URLS.GITHUB);
   },
 
   // Storage Configuration
   get STORAGE_QUOTA_MB(): number {
-    return getNumericEnvVar("VITE_STORAGE_QUOTA_MB", 5);
+    return getNumericEnvVar("VITE_STORAGE_QUOTA_MB", SHARED_DEFAULTS.STORAGE_QUOTA_MB);
   },
 
   // UI Configuration
   get APP_NAME(): string {
-    return getEnvVar("VITE_APP_NAME", "Blueprintify");
+    return getEnvVar("VITE_APP_NAME", SHARED_DEFAULTS.APP_NAME);
   },
 
   // Default Project Name
   get DEFAULT_PROJECT_NAME(): string {
-    return getEnvVar("VITE_DEFAULT_PROJECT_NAME", "my-project");
+    return getEnvVar("VITE_DEFAULT_PROJECT_NAME", SHARED_DEFAULTS.DEFAULT_PROJECT_NAME);
   },
 } as const;
