@@ -19,17 +19,27 @@ Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
 Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 workflow files (11 occurrences). Recommended in PR.
 
+### ✅ Script Config Centralization (Pushed in PR #1414)
+
+| File                             | Change                                                    |
+| -------------------------------- | --------------------------------------------------------- |
+| `scripts/config.sh`              | **NEW** Centralized config for all scripts                |
+| `scripts/deploy-api.sh`          | Extracted hardcoded URLs to `config.sh`                   |
+| `scripts/fix-ci-node-version.sh` | Uses `node-version-file` approach, reads `.node-version`  |
+| `scripts/brocula-hunt.mjs`       | Dynamic PROJECT_ROOT, PREVIEW_PORT, PREVIEW_HOST from env |
+
 ## Verification
 
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run test:all` — 876 tests passing (56 test files)
 
-## PR
+## PRs
 
-- **URL**: https://github.com/cpa03/blueprintify/pull/1401
-- **Branch**: `feat/flexy-eliminate-hardcoded-v2`
-- **Title**: feat(flexy): eliminate hardcoded URLs with shared defaults
+| PR #  | Branch                              | Title                                                                        |
+| ----- | ----------------------------------- | ---------------------------------------------------------------------------- |
+| #1401 | `feat/flexy-eliminate-hardcoded-v2` | feat(flexy): eliminate hardcoded URLs with shared defaults                   |
+| #1414 | `feat/flexy-hardcoded-values-v3`    | feat(flexy): eliminate hardcoded values from scripts with centralized config |
 
 ## Status
 
