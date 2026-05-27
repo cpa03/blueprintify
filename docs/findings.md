@@ -2,32 +2,34 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-27 - RepoKeeper Cleanup Cycle 23)
+## Current Cycle (2026-05-27 - RepoKeeper Cleanup Cycle 24)
 
 ### Findings
 
-- **RepoKeeper started**: Build/lint/typecheck all passing clean. 473 web + 296 api + 107 shared = 876 tests passing.
+- **RepoKeeper started**: Build/lint/typecheck all passing clean. 876 tests passing (473 web + 296 api + 107 shared).
 - **No redundant/temp/stray files detected**. `.gitignore` is comprehensive. `.omo/ralph-loop.local.md` is the active ulw-loop session (current — preserved).
-- **CHANGELOG.md**: Missing 4 recent commits in [Unreleased] — added (animate-glow CSS Added, hardcoded v3 Changed, FEATURE.MAX_COUNT + Zustand persist Fixed).
-- **docs/active-tasks.md**: Cycle 22 had 2 unchecked items (create branch, create PR) but work was committed directly to main (`f024ba9`). Marked Cycle 22 Complete, added Cycle 23 entry.
-- **BUG-014**: Stale doc refs in `main.yml` (`docs/bug.md`, `docs/feature.md`) — still present on line 39. Fix blocked by GitHub App `workflows` permission (recurring — see previous cycles).
+- **No new commits since Cycle 23** — repo is stable with `e151b94` as HEAD.
+- **CHANGELOG.md**: [Unreleased] section is up to date — no missing commits detected.
+- **docs/active-tasks.md**: Cycle 23 had 1 unchecked item (Create PR) but work was committed directly to main (`e151b94`). Marked Cycle 23 Complete, added Cycle 24 entry.
+- **BUG-014**: Stale doc refs in `main.yml` (`docs/bug.md`, `docs/feature.md`) — still present on lines 39, 263. Fix remains blocked by GitHub App `workflows` permission (recurring — see 10+ previous cycles).
 - **Dependencies**: 0 vulnerabilities (npm audit clean).
 - **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
-- **No stale merged remote branches** found to prune.
+- **No open PRs**: `gh pr list` returns empty — all cycles merged.
+- **Stale remote branches**: 80+ branches on origin — none merged via standard merge (likely squash-merged via GitHub PRs). Cleanup still deferred (requires explicit owner approval per previous cycles).
 - **No formatting regressions** detected in workflow YAMLs beyond the known permissions-blocked pattern.
-- **No open PRs needing action** — all previous cycles merged.
-- **docs/bugs.md**: Last Updated bumped from Cycle 19 to Cycle 23.
-- **docs/roadmap.md**: Last Updated bumped from Cycle 18 to Cycle 23.
+- **All README-referenced docs exist**: No missing or dangling doc links. All 25 docs/\*.md files properly referenced from README.md.
+- **docs/bugs.md**: Last Updated bumped from Cycle 23 to Cycle 24.
+- **docs/roadmap.md**: Last Updated bumped from Cycle 23 to Cycle 24.
 
 ### Actions Taken
 
-- Updated CHANGELOG.md — added 4 recent commits to [Unreleased] (Added, Changed, Fixed sections)
+- Verified build/lint/typecheck all pass clean — no errors, no warnings
+- Ran npm audit — 0 vulnerabilities
 - Updated docs/findings.md — this record
-- Updated docs/active-tasks.md — marked Cycle 22 Complete, added Cycle 23 entry
-- Updated docs/bugs.md — bumped Last Updated date to Cycle 23
-- Updated docs/roadmap.md — bumped Last Updated date to Cycle 23
-- Verified typecheck/lint/build/web+api+shared tests all pass clean (876 tests — 473 web + 296 api + 107 shared)
-- Created branch `chore/repokeeper-cleanup-cycle-23` from main
+- Updated docs/active-tasks.md — marked Cycle 23 Complete, added Cycle 24 entry
+- Updated docs/bugs.md — bumped Last Updated date to Cycle 24
+- Updated docs/roadmap.md — bumped Last Updated date to Cycle 24
+- Created branch `chore/repokeeper-cleanup-cycle-24` from main
 - Created PR with all cleanup changes
 
 ## Previous Cycle (2026-05-26 - RepoKeeper Cleanup Cycle 19)
