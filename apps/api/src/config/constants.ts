@@ -341,6 +341,9 @@ export const CIRCUIT_BREAKER_CONFIG = {
   get DEFAULT_HALF_OPEN_MAX_CALLS(): number {
     return getEnvConfig().CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS;
   },
+  get DEFAULT_COLD_START_WINDOW_MS(): number {
+    return getEnvConfig().CIRCUIT_BREAKER_COLD_START_WINDOW_MS;
+  },
 };
 
 export { SHARED_SSE_CONFIG as SSE_CONFIG, SHARED_SSE_HEADERS as SSE_HEADERS };
