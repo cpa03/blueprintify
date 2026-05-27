@@ -46,16 +46,16 @@ export default [
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {
-          "argsIgnorePattern": "^_",
-          "varsIgnorePattern": "^_"
-        }
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
       ],
       "no-console": [
         "warn",
         {
-          "allow": ["error", "warn", "log", "debug"]
-        }
-      ]
+          allow: ["error", "warn", "log", "debug"],
+        },
+      ],
     },
     settings: {
       react: {
