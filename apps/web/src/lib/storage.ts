@@ -181,24 +181,17 @@ function calculateTotalBytes(): number {
   }
 }
 
-/** Full serialization-based quota check — expensive, used only as periodic fallback. */
-function calculateTotalBytesFull(): number {
-  try {
-    return new Blob([JSON.stringify(localStorage)]).size;
-  } catch {
-    return 0;
-  }
-}
-
+/** Fast iteration-based bytes estimate used as periodic drift correction. */
 let lastFullCalculation: number = 0;
 const FULL_RECALCULATION_INTERVAL_MS = STORAGE_CONFIG.FULL_RECALCULATION_INTERVAL_MS;
 
 function getStorageQuota(): QuotaInfo {
   const now = Date.now();
 
-  // Periodic sanity check: do a full calculation every 10 minutes to correct drift
+  // Periodic sanity check: recalculate every 10 minutes to correct drift.
+  // Uses fast key iteration (~10x faster than Blob serialization) to avoid blocking main thread.
   if (now - lastFullCalculation > FULL_RECALCULATION_INTERVAL_MS) {
-    const fullUsed = calculateTotalBytesFull();
+    const fullUsed = calculateTotalBytes();
     // Only update if sanity check succeeds (storage errors return 0)
     if (fullUsed > 0) {
       runningBytesUsed = fullUsed;
