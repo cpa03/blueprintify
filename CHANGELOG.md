@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- 'View in Editor' primary CTA button after generation completes for immediate navigation to split-pane editor
+- Issue management report (`docs/issue-management-2026-05-27.md`) and CI Node.js version fix script
 - `secureLogInfo` and `secureLogDebug` utility functions for structured debug logging
 - `llms.txt` file for LLM crawl guidance and Lighthouse agentic-browsing audit
 - Spring animations on editor panel close buttons for visual delight
@@ -58,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Cold start awareness: eagerly initialize circuit breaker in API warmup path and openai service init
 - BugFixer cycle 3: fixed BUG-014 stale doc refs in main.yml (3rd fix attempt)
 - BugFixer cycle 4: fixed stale Node.js 18+ references to 22+ across 5 documentation files
 - RepoKeeper cycle 16: aligned `.node-version` with `.nvmrc` (20→22), pruned triage file, updated docs
