@@ -284,14 +284,17 @@ _See `.opencode/skill/` directory for complete skill definitions._
 
 ### 📋 Project Documentation
 
-- **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
-- **[Task Management](./docs/task.md)** - Current development tasks and priorities
-- **[Feature Specifications](./docs/features.md)** - Detailed feature documentation and status
-- **[Known Bugs](./docs/bugs.md)** - Active bug tracking and known defects
 - **[Active Tasks](./docs/active-tasks.md)** - Current development tasks and priorities
 - **[Completed Tasks (Q1 2026)](./docs/completed-tasks-2026-Q1.md)** - Archived completed work from Q1 2026
+- **[Feature Specifications](./docs/features.md)** - Detailed feature documentation and status
 - **[Findings](./docs/findings.md)** - RepoKeeper observation and cleanup log
+- **[Flexy Plan](./docs/flexy-plan.md)** - Hardcoded value elimination and modularization plan
+- **[Issue Management Report](./docs/issue-management-2026-05-27.md)** - Issue normalization and tracking report
+- **[Known Bugs](./docs/bugs.md)** - Active bug tracking and known defects
+- **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
+- **[Repository Audit](./docs/audit-2026-05-26.md)** - Automated repository audit findings
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
+- **[Task Management](./docs/task.md)** - Current development tasks and priorities
 
 ### 📚 M2 Documentation
 

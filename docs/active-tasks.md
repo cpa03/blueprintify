@@ -4,19 +4,38 @@
 
 ## Current Focus: Repository Maintenance
 
-### Task: RepoKeeper Cleanup Cycle 20 (2026-05-27)
+### Task: RepoKeeper Cleanup Cycle 22 (2026-05-27) — Current
 
 - **Priority**: High
 - **Status**: Active
-- **Objective**: Update CHANGELOG with 3 recent commits, fix BUG-014 stale doc refs in main.yml, update docs (findings/active-tasks), verify build/lint/test, create PR
+- **Objective**: Update CHANGELOG with 3 missing commits (character counter, shimmer animation, flexy hardcoded URLs), link 3 unreferenced docs in README, update docs (findings/active-tasks), prune stale merged branch, verify build/lint/test, create PR
 - **Actions**:
-  - [x] Update `CHANGELOG.md` — add 3 missing commits to [Unreleased] (View in Editor CTA, cold start awareness, issue mgmt report)
-  - [x] Fix BUG-014 in `.github/workflows/main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
-  - [x] Update `docs/findings.md` — record cycle 20 observations
-  - [x] Update `docs/active-tasks.md` — mark cycle 19 complete, add cycle 20 entry
+  - [x] Update `CHANGELOG.md` — add 3 missing commits to [Unreleased] (character counter, shimmer animation, flexy hardcoded URLs)
+  - [x] Update `README.md` — add links to 3 unreferenced docs (audit, flexy-plan, issue-management)
+  - [x] Update `docs/findings.md` — record cycle 22 observations
+  - [x] Update `docs/active-tasks.md` — mark cycles 20/21 complete, add cycle 22 entry
   - [x] Verify typecheck/lint/build/web+api+shared tests all pass clean (876 tests — 473 web + 296 api + 107 shared)
-  - [ ] Create branch `chore/repokeeper-cleanup-cycle-20` from main
+  - [x] Prune 1 stale merged remote branch (test-ulw-permissions)
+  - [ ] Create branch `chore/repokeeper-cleanup-cycle-22` from main
   - [ ] Create PR with all cleanup changes
+
+### Task: RepoKeeper Cleanup Cycle 21 (2026-05-27)
+
+- **Priority**: High
+- **Status**: Completed
+- **Objective**: Update CHANGELOG, update docs, prune stale branches, verify build/lint/test
+- **Note**: Committed and merged directly to main via PR #1399.
+- **Actions**:
+  - [x] All actions completed — PR #1399 merged ✅
+
+### Task: RepoKeeper Cleanup Cycle 20 (2026-05-27)
+
+- **Priority**: High
+- **Status**: Completed
+- **Objective**: Update CHANGELOG with 3 recent commits, fix BUG-014 stale doc refs in main.yml, update docs (findings/active-tasks), verify build/lint/test, create PR
+- **Note**: All actions completed. Cycle 20 CHANGELOG entries superseded by cycle 21/22 updates.
+- **Actions**:
+  - [x] All actions completed — work merged via subsequent cycle 21
 
 ### Task: RepoKeeper Cleanup Cycle 19 (2026-05-26)
 
@@ -355,12 +374,12 @@ See [bugs.md](./bugs.md) for detailed bug information.
 ## Testing Coverage
 
 - **Frontend**: Co-located Vitest tests with component and store tests — 473 passing
-- **API**: Comprehensive route, middleware, service, and utility tests — 284 passing
+- **API**: Comprehensive route, middleware, service, and utility tests — 296 passing
 - **Shared**: Zod schema, type, and config tests — 107 passing
-- **Total**: 870 tests (all passing) [473 web + 290 api + 107 shared]
+- **Total**: 876 tests (all passing) [473 web + 296 api + 107 shared]
 - **TypeScript**: Strict mode, no unchecked `any` types
 
 ---
 
-**Last Updated**: 2026-05-26 (Cycle 19)  
+**Last Updated**: 2026-05-27 (Cycle 22)  
 **Maintainer**: RepoKeeper

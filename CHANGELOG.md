@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Shimmer completion animation on StepInfo progress bar for progress celebration feedback
+- Character counter for constraints textarea in StepInfo for real-time input awareness
 - 'View in Editor' primary CTA button after generation completes for immediate navigation to split-pane editor
 - Issue management report (`docs/issue-management-2026-05-27.md`) and CI Node.js version fix script
 - `secureLogInfo` and `secureLogDebug` utility functions for structured debug logging
@@ -39,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Eliminated hardcoded API URLs across codebase with shared defaults in `@blueprint/shared` package for single-source-of-truth configuration
 - Aligned `.nvmrc` and `package.json` engines with Cloudflare Node 22 requirement (`.node-version` 20→22)
 - Replaced hardcoded config values with config constants across API and web apps ([#1316](https://github.com/cpa03/blueprintify/pull/1316))
 - Removed `engine-strict=true` from `.npmrc` to allow `npm install` on node 20 without `--force` (project targets node 20 but some deps require >=22)
