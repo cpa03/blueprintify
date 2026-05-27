@@ -120,3 +120,4 @@ temp/
 # Generated audit reports
 audit-reports/
 lighthouse-report.json
+.playwright-mcp/

@@ -7,7 +7,7 @@ import path from 'path';
 
 const CHROME_PATH = process.env.CHROME_PATH || undefined;
 let previewServer = null;
-let TARGET_URL = 'http://localhost:4173';
+let TARGET_URL = process.env.TARGET_URL || 'http://localhost:4173';
 
 async function checkConsoleErrors() {
   console.log('🔍 BroCula is hunting for console errors...\n');
