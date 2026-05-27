@@ -2,31 +2,32 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-27 - RepoKeeper Cleanup Cycle 22)
+## Current Cycle (2026-05-27 - RepoKeeper Cleanup Cycle 23)
 
 ### Findings
 
 - **RepoKeeper started**: Build/lint/typecheck all passing clean. 473 web + 296 api + 107 shared = 876 tests passing.
 - **No redundant/temp/stray files detected**. `.gitignore` is comprehensive. `.omo/ralph-loop.local.md` is the active ulw-loop session (current — preserved).
-- **CHANGELOG.md**: Missing 3 recent commits in [Unreleased] — added (character counter, shimmer animation, flexy hardcoded URL elimination).
-- **READIME.md**: 3 unreferenced docs found in `docs/` not linked from project navigation — added links for `docs/audit-2026-05-26.md`, `docs/flexy-plan.md`, and `docs/issue-management-2026-05-27.md`.
-- **docs/active-tasks.md**: Cycle 20 still showed "Active" but work was completed via subsequent cycle 21. Marked Cycle 20 and Cycle 21 Complete, added Cycle 22 entry.
+- **CHANGELOG.md**: Missing 4 recent commits in [Unreleased] — added (animate-glow CSS Added, hardcoded v3 Changed, FEATURE.MAX_COUNT + Zustand persist Fixed).
+- **docs/active-tasks.md**: Cycle 22 had 2 unchecked items (create branch, create PR) but work was committed directly to main (`f024ba9`). Marked Cycle 22 Complete, added Cycle 23 entry.
 - **BUG-014**: Stale doc refs in `main.yml` (`docs/bug.md`, `docs/feature.md`) — still present on line 39. Fix blocked by GitHub App `workflows` permission (recurring — see previous cycles).
 - **Dependencies**: 0 vulnerabilities (npm audit clean).
 - **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
-- **Stale merged remote branch**: 1 branch found merged into main — pruned (test-ulw-permissions).
+- **No stale merged remote branches** found to prune.
 - **No formatting regressions** detected in workflow YAMLs beyond the known permissions-blocked pattern.
-- **Open PRs**: 1 open (fix/feat-max-count-validation) — no action needed.
+- **No open PRs needing action** — all previous cycles merged.
+- **docs/bugs.md**: Last Updated bumped from Cycle 19 to Cycle 23.
+- **docs/roadmap.md**: Last Updated bumped from Cycle 18 to Cycle 23.
 
 ### Actions Taken
 
-- Updated CHANGELOG.md — added 3 recent commits to [Unreleased] (Added, Changed sections)
-- Updated README.md — added links to 3 unreferenced docs (audit, flexy-plan, issue-management)
+- Updated CHANGELOG.md — added 4 recent commits to [Unreleased] (Added, Changed, Fixed sections)
 - Updated docs/findings.md — this record
-- Updated docs/active-tasks.md — marked Cycles 20/21 Complete, added Cycle 22 entry
-- Pruned 1 stale merged remote branch (test-ulw-permissions)
+- Updated docs/active-tasks.md — marked Cycle 22 Complete, added Cycle 23 entry
+- Updated docs/bugs.md — bumped Last Updated date to Cycle 23
+- Updated docs/roadmap.md — bumped Last Updated date to Cycle 23
 - Verified typecheck/lint/build/web+api+shared tests all pass clean (876 tests — 473 web + 296 api + 107 shared)
-- Created branch `chore/repokeeper-cleanup-cycle-22` from main
+- Created branch `chore/repokeeper-cleanup-cycle-23` from main
 - Created PR with all cleanup changes
 
 ## Previous Cycle (2026-05-26 - RepoKeeper Cleanup Cycle 19)
@@ -296,5 +297,5 @@
 
 ---
 
-**Last Cleared**: 2026-05-27 (Cycle 22)  
+**Last Cleared**: 2026-05-27 (Cycle 23)  
 **Maintainer**: RepoKeeper
