@@ -61,7 +61,8 @@ describe("createPersistedStore", () => {
       await loadState(mockSet);
 
       expect(getFn).toHaveBeenCalled();
-      expect(mockSet).toHaveBeenCalledWith(storedData as Partial<TestStoreState>, true);
+      // Merge (no replace) to preserve action functions like setProjectName, nextStep, etc.
+      expect(mockSet).toHaveBeenCalledWith(storedData as Partial<TestStoreState>);
     });
 
     it("does not call set when storage returns null", async () => {
