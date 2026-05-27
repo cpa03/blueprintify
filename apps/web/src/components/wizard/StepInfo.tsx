@@ -142,9 +142,9 @@ export const StepInfo = memo(function StepInfo({
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_INFO.TITLE}</h2>
           <div className="flex items-center gap-2 text-sm">
-            <div className="w-24 h-2 bg-dark-700 rounded-full overflow-hidden">
+            <div className="w-24 h-2 bg-dark-700 rounded-full overflow-hidden relative">
               <motion.div
-                className="h-full bg-gradient-to-r from-primary-500 to-accent-emerald"
+                className={`h-full bg-gradient-to-r from-primary-500 to-accent-emerald ${canProceed ? "progress-shimmer relative" : ""}`}
                 initial={{ width: 0 }}
                 animate={{ width: `${formProgress.percentage}%` }}
                 transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
