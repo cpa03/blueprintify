@@ -84,7 +84,10 @@ export function createPersistedStore<T, S>(
     try {
       const stored = await storage.get();
       if (stored !== null) {
-        set(stored as Partial<S>, true);
+        // Use merge (default) to preserve action functions that Zustand sets up
+        // in the store creator. Using `replace=true` would nuke all action functions
+        // (setProjectName, nextStep, etc.) since persisted data only contains fields.
+        set(stored as Partial<S>);
       }
     } catch {
       console.warn(STORAGE_ERROR_MESSAGES.LOAD_FAILED);
