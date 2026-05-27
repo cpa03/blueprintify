@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Animate-glow CSS class for primary CTA button breathing effect (pulsing box-shadow animation, respects prefers-reduced-motion)
 - Shimmer completion animation on StepInfo progress bar for progress celebration feedback
 - Character counter for constraints textarea in StepInfo for real-time input awareness
 - 'View in Editor' primary CTA button after generation completes for immediate navigation to split-pane editor
@@ -42,6 +43,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Eliminated hardcoded API URLs across codebase with shared defaults in `@blueprint/shared` package for single-source-of-truth configuration
+- Eliminated hardcoded HTTP header strings (Content-Type, Connection) into `API_HEADERS` config constants across API utilities and DI container
+- Consolidated 8x `new Date().toISOString()` calls into centralized `timestamp()` utility from errors.ts in secureLog, logger, and index
+- Extracted hardcoded aria-labels from Header, MarkdownRenderer, and Toast components into `ACCESSIBILITY_LABELS` config constant
 - Aligned `.nvmrc` and `package.json` engines with Cloudflare Node 22 requirement (`.node-version` 20→22)
 - Replaced hardcoded config values with config constants across API and web apps ([#1316](https://github.com/cpa03/blueprintify/pull/1316))
 - Removed `engine-strict=true` from `.npmrc` to allow `npm install` on node 20 without `--force` (project targets node 20 but some deps require >=22)
@@ -63,6 +67,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Prevent Zustand store action functions being replaced by persisted data (`loadState` used replace mode which stripped `setProjectName`, `nextStep`, etc.) — changed to merge mode to preserve action functions
+- Use `FEATURE.MAX_COUNT` (20) instead of `FEATURE.MAX` (100) for features array max length in shared schema
 - Cold start awareness: eagerly initialize circuit breaker in API warmup path and openai service init
 - BugFixer cycle 3: fixed BUG-014 stale doc refs in main.yml (3rd fix attempt)
 - BugFixer cycle 4: fixed stale Node.js 18+ references to 22+ across 5 documentation files
