@@ -11,7 +11,6 @@
  */
 
 import { memo } from "react";
-import { motion } from "framer-motion";
 import { PROGRESS_COLORS } from "../config/constants";
 
 /**
@@ -62,7 +61,6 @@ function CircularProgressComponent({
   value,
   size = 40,
   strokeWidth = 3,
-  animationDuration = 0.8,
   className = "",
   showPercentage = false,
   color = PROGRESS_COLORS.ACTIVE,
@@ -101,7 +99,7 @@ function CircularProgressComponent({
           opacity={0.3}
         />
 
-        <motion.circle
+        <circle
           cx={center}
           cy={center}
           r={radius}
@@ -110,28 +108,19 @@ function CircularProgressComponent({
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}
-          initial={{ strokeDashoffset: circumference }}
-          animate={{ strokeDashoffset }}
-          transition={{
-            type: "spring",
-            stiffness: 100,
-            damping: 20,
-            duration: animationDuration,
-          }}
+          className="transition-[stroke-dashoffset] duration-700 ease-out"
+          style={{ strokeDashoffset }}
         />
       </svg>
 
       {showPercentage && (
-        <motion.span
-          className="absolute text-xs font-semibold tabular-nums"
+        <span
+          className="absolute text-xs font-semibold tabular-nums animate-fade-in"
           style={{ color }}
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.3 }}
           aria-hidden="true"
         >
           {Math.round(clampedValue)}%
-        </motion.span>
+        </span>
       )}
     </div>
   );

@@ -1,33 +1,4 @@
-/**
- * Ripple Button Component
- *
- * A button component with ripple effect animation on click.
- * Provides accessible button functionality with motion preferences support.
- *
- * @module components/RippleButton
- * @see {@link RIPPLE_CONFIG} - Ripple animation configuration
- * @see {@link useReducedMotion} - Reduced motion preference hook
- *
- * @param {RippleButtonProps} props - Component props
- * @param {ReactNode} props.children - Button content
- * @param {(e: MouseEvent) => void} [props.onClick] - Click handler
- * @param {string} [props.className] - Additional CSS classes
- * @param {boolean} [props.disabled] - Disabled state
- * @param {"button"|"submit"|"reset"} [props.type] - Button type
- * @param {string} [props.ariaLabel] - ARIA label for accessibility
- * @param {string} [props.title] - Tooltip title
- * @returns {JSX.Element} Button with ripple effect
- *
- * @example
- * ```tsx
- * <RippleButton onClick={() => console.log('clicked')}>
- *   Click Me
- * </RippleButton>
- * ```
- */
-
 import { useState, useCallback, memo, type ReactNode, type MouseEvent } from "react";
-import { motion, AnimatePresence, type HTMLMotionProps } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { RIPPLE_CONFIG } from "../config/constants";
 
@@ -35,6 +6,12 @@ interface Ripple {
   id: number;
   x: number;
   y: number;
+}
+
+interface TransformStyle {
+  scale?: number;
+  y?: number;
+  filter?: string;
 }
 
 interface RippleButtonProps {
@@ -45,8 +22,16 @@ interface RippleButtonProps {
   type?: "button" | "submit" | "reset";
   ariaLabel?: string;
   title?: string;
-  whileHover?: HTMLMotionProps<"button">["whileHover"];
-  whileTap?: HTMLMotionProps<"button">["whileTap"];
+  whileHover?: TransformStyle;
+  whileTap?: TransformStyle;
+}
+
+function toTransformString(s?: TransformStyle): string {
+  if (!s) return "";
+  const parts: string[] = [];
+  if (s.scale) parts.push(`scale(${s.scale})`);
+  if (s.y) parts.push(`translateY(${s.y}px)`);
+  return parts.join(" ");
 }
 
 function RippleButtonComponent({
@@ -61,6 +46,7 @@ function RippleButtonComponent({
   whileTap,
 }: RippleButtonProps): JSX.Element {
   const [ripples, setRipples] = useState<Ripple[]>([]);
+  const [hoverTransform, setHoverTransform] = useState("");
   const shouldReduceMotion = useReducedMotion();
 
   const createRipple = useCallback(
@@ -95,53 +81,60 @@ function RippleButtonComponent({
     [createRipple, onClick]
   );
 
+  const handleMouseEnter = useCallback(() => {
+    if (!disabled && whileHover) {
+      setHoverTransform(toTransformString(whileHover));
+    }
+  }, [disabled, whileHover]);
+
+  const handleMouseLeave = useCallback(() => {
+    setHoverTransform("");
+  }, []);
+
+  const handleMouseDown = useCallback(() => {
+    if (!disabled && whileTap) {
+      setHoverTransform(toTransformString(whileTap));
+    }
+  }, [disabled, whileTap]);
+
+  const handleMouseUp = useCallback(() => {
+    if (!disabled && whileHover) {
+      setHoverTransform(toTransformString(whileHover));
+    } else {
+      setHoverTransform("");
+    }
+  }, [disabled, whileHover]);
+
   return (
-    <motion.button
+    <button
       type={type}
       onClick={handleClick}
       disabled={disabled}
-      whileHover={!disabled ? whileHover : undefined}
-      whileTap={!disabled ? whileTap : undefined}
-      className={`relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      className={`relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 transition-transform duration-150 ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`}
+      style={{ transform: hoverTransform || undefined }}
       aria-label={ariaLabel}
       title={title}
-      style={{ position: "relative" }}
     >
       <span className="relative z-10">{children}</span>
-      <AnimatePresence>
-        {ripples.map((ripple) => (
-          <motion.span
-            key={ripple.id}
-            initial={{
-              scale: 0,
-              opacity: RIPPLE_CONFIG.INITIAL_OPACITY,
-              x: ripple.x,
-              y: ripple.y,
-            }}
-            animate={{
-              scale: RIPPLE_CONFIG.FINAL_SCALE,
-              opacity: 0,
-              x: ripple.x,
-              y: ripple.y,
-            }}
-            exit={{ opacity: 0 }}
-            transition={{
-              duration: RIPPLE_CONFIG.TRANSITION_DURATION_S,
-              ease: "easeOut",
-            }}
-            className="absolute pointer-events-none bg-white/30 rounded-full"
-            style={{
-              width: RIPPLE_CONFIG.SIZE_PX,
-              height: RIPPLE_CONFIG.SIZE_PX,
-              marginLeft: RIPPLE_CONFIG.MARGIN_OFFSET_PX,
-              marginTop: RIPPLE_CONFIG.MARGIN_OFFSET_PX,
-              left: ripple.x,
-              top: ripple.y,
-            }}
-          />
-        ))}
-      </AnimatePresence>
-    </motion.button>
+      {ripples.map((ripple) => (
+        <span
+          key={ripple.id}
+          className="absolute pointer-events-none rounded-full bg-white/30 animate-ripple"
+          style={{
+            width: RIPPLE_CONFIG.SIZE_PX,
+            height: RIPPLE_CONFIG.SIZE_PX,
+            left: ripple.x,
+            top: ripple.y,
+            marginLeft: RIPPLE_CONFIG.MARGIN_OFFSET_PX,
+            marginTop: RIPPLE_CONFIG.MARGIN_OFFSET_PX,
+          }}
+        />
+      ))}
+    </button>
   );
 }
 
@@ -181,18 +174,11 @@ export function useRipple(): {
 
   const RippleOverlay = useCallback(
     () => (
-      <AnimatePresence>
+      <>
         {ripples.map((ripple) => (
-          <motion.span
+          <span
             key={ripple.id}
-            initial={{ scale: 0, opacity: RIPPLE_CONFIG.INITIAL_OPACITY }}
-            animate={{ scale: RIPPLE_CONFIG.FINAL_SCALE, opacity: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{
-              duration: RIPPLE_CONFIG.TRANSITION_DURATION_S,
-              ease: "easeOut",
-            }}
-            className="absolute pointer-events-none bg-white/30 rounded-full"
+            className="absolute pointer-events-none rounded-full bg-white/30 animate-ripple"
             style={{
               width: RIPPLE_CONFIG.SIZE_PX,
               height: RIPPLE_CONFIG.SIZE_PX,
@@ -203,7 +189,7 @@ export function useRipple(): {
             }}
           />
         ))}
-      </AnimatePresence>
+      </>
     ),
     [ripples]
   );
