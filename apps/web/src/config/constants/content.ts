@@ -104,6 +104,11 @@ export const EDITOR_LABELS = {
     CHARS: "Chars",
     WORDS: "Words",
   },
+  TAB_NAVIGATION: {
+    SWITCH_TABS: "Switch between blueprint and tasks tabs",
+    PREVIOUS: "Previous tab",
+    NEXT: "Next tab",
+  },
   VIEW_MODES: {
     EDIT: "Edit",
     SPLIT: "Split",
