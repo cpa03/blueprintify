@@ -173,3 +173,23 @@ export const CONFIRM_DIALOG = {
     ICON: "🔄",
   },
 } as const;
+
+/**
+ * Accessibility labels used across components
+ * Flexy says: No hardcoded aria-labels - everything configurable!
+ */
+export const ACCESSIBILITY_LABELS = {
+  HEADER: {
+    KEYBOARD_SHORTCUTS: "Keyboard shortcuts (?)",
+    GITHUB: "View on GitHub",
+  },
+  MARKDOWN: {
+    COPY_CODE: "Copy code to clipboard",
+    COPIED: "Copied to clipboard",
+    COPY_CODE_TITLE: "Copy code",
+    COPIED_TITLE: "Copied!",
+  },
+  TOAST: {
+    DISMISS: (type: string) => `Dismiss ${type} notification`,
+  },
+} as const;

@@ -10,6 +10,8 @@
  * - Internal implementation details
  */
 
+import { timestamp } from "../errors";
+
 /**
  * Patterns that indicate sensitive information in logs
  */
@@ -163,7 +165,7 @@ export function createSecureLogEntry(
   return {
     context,
     error: sanitizedError,
-    timestamp: new Date().toISOString(),
+    timestamp: timestamp(),
     ...sanitizedAdditional,
   };
 }
@@ -219,7 +221,7 @@ export function secureLogWarn(
   const logEntry = {
     context,
     message: sanitizeString(message),
-    timestamp: new Date().toISOString(),
+    timestamp: timestamp(),
     ...additionalInfo,
   };
   console.warn(JSON.stringify(logEntry));
@@ -248,7 +250,7 @@ export function secureLogInfo(
   const logEntry = {
     context,
     message: sanitizeString(message),
-    timestamp: new Date().toISOString(),
+    timestamp: timestamp(),
     ...additionalInfo,
   };
   console.log(JSON.stringify(logEntry));
@@ -278,7 +280,7 @@ export function secureLogDebug(
   const logEntry = {
     context,
     message: sanitizeString(message),
-    timestamp: new Date().toISOString(),
+    timestamp: timestamp(),
     ...additionalInfo,
   };
   console.debug(JSON.stringify(logEntry));

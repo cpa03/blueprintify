@@ -39,6 +39,7 @@ import {
 } from "./config/constants";
 import { initializeContainer } from "./di";
 import { initializeCircuitBreaker } from "./services/openai";
+import { timestamp } from "./errors";
 
 initializeContainer();
 
@@ -160,7 +161,7 @@ export default {
       ctx.waitUntil(
         Promise.resolve(
           env.ANALYTICS.writeDataPoint({
-            blobs: [request.url, request.method, new Date().toISOString()],
+            blobs: [request.url, request.method, timestamp()],
           })
         )
       );

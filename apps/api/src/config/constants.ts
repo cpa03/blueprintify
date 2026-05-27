@@ -305,6 +305,10 @@ export const API_HEADERS = {
     /** Content length header */
     CONTENT_LENGTH: "content-length",
   },
+  /** Standard HTTP connection header */
+  CONNECTION: "Connection",
+  /** Standard HTTP content type header */
+  CONTENT_TYPE: "Content-Type",
   /** Standard HTTP response headers set by middleware */
   RESPONSE: {
     /** Request ID for distributed tracing */
