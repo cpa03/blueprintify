@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Performance
 
+- Simplify font loading with `media='print'` onload pattern for improved initial render performance
 - Replace expensive Blob serialization with fast key iteration for localStorage quota checks
 
 ### Added

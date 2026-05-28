@@ -24,7 +24,7 @@
 - Ran verification: typecheck ✅ lint ✅ build ✅ tests (876 passing) ✅ npm audit (0 vulns) ✅
 - Created PR (#1419) with all cleanup changes
 
-## Current Cycle (2026-05-28 - RepoKeeper Cleanup Cycle 26)
+## Previous Cycle (2026-05-28 - RepoKeeper Cleanup Cycle 26)
 
 ### Findings
 
@@ -45,6 +45,33 @@
 - Updated docs/active-tasks.md — marked Cycle 24 Complete, added Cycle 26 entry
 - Ran verification: typecheck ✅ lint ✅ build ✅
 - Branch: `chore/repokeeper-cleanup-cycle-26`
+
+## Current Cycle (2026-05-28 - RepoKeeper Cleanup Cycle 27)
+
+### Findings
+
+- **RepoKeeper started**: On `main` branch at `71530a2`. Build/lint/typecheck all passing clean.
+- **Merge conflict artifact**: `docs/findings.md` had a `<<<<<<< HEAD` merge conflict marker with duplicate "Current Cycle (Cycle 25)" section from a partially resolved merge. Cleaned up.
+- **CHANGELOG.md**: Missing `71530a2 perf(html): simplify font loading with media='print' onload + formatting fix` in [Unreleased] — added.
+- **Test count increased**: 476 web tests (up from 473), 296 API, 107 shared = 879 total (up from 876).
+- **No redundant/temp/stray files detected** — repo remains clean after 26 previous cycles.
+- **No untracked files** — `.gitignore` is comprehensive.
+- **BUG-014**: Still present in `main.yml` — remains blocked by GitHub App `workflows` permission (recurring — 10+ previous cycles).
+- **Open PRs**: Managed by CI system, no action needed.
+- **Open issues**: 20+ open issues managed by issue tracker, no action needed.
+- **Dependencies**: 0 vulnerabilities (npm audit clean).
+- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
+
+### Actions Taken
+
+- Cleaned up `<<<<<<< HEAD` merge conflict artifact in `docs/findings.md`
+- Added missing perf commit to CHANGELOG [Unreleased] (Performance section)
+- Updated `docs/findings.md` — marked Cycle 26 as Previous, added Cycle 27 record
+- Updated `docs/active-tasks.md` — marked Cycle 26 Complete, added Cycle 27 entry, updated test count 876→879
+- Updated `docs/bugs.md` — bumped Last Updated to Cycle 27
+- Ran verification: typecheck ✅ lint ✅ build ✅ test:all (879 passing) ✅ npm audit (0 vulns) ✅
+- Created branch `chore/repokeeper-cleanup-cycle-27` from main
+- Created PR with all cleanup changes
 
 ## Previous Cycle (2026-05-26 - RepoKeeper Cleanup Cycle 19)
 
@@ -311,42 +338,5 @@
 - Created branch `chore/repokeeper-cleanup-cycle-20` from main
 - Created PR with all cleanup changes
 
----
-
-<<<<<<< HEAD
-
-## Current Cycle (2026-05-28 - RepoKeeper Cleanup Cycle 25)
-
-### Findings
-
-- **RepoKeeper started**: Build/lint/typecheck all passing clean. 876 tests passing (473 web + 296 api + 107 shared).
-- **No redundant/temp/stray files detected**. `.gitignore` is comprehensive. `.omo/ralph-loop.local.md` is the active ulw-loop session (current — preserved).
-- **1 new commit since Cycle 24**: `perf(web): replace expensive Blob serialization with fast key iteration for quota checks` (merge `dfe6689`) — not yet in CHANGELOG.
-- **CHANGELOG.md**: Missing the new perf commit in [Unreleased] — added.
-- **README.md**: Two docs not referenced:
-  - `docs/issue-audit-report-2026-05-27.md` — added to Project Documentation section
-  - `docs/security/assessment-ajv-vulnerabilities.md` — added to Development Resources section
-- **BUG-014**: Stale doc refs in `main.yml` (`docs/bug.md`, `docs/feature.md`) — still present on lines 39, 263. Fix remains blocked by GitHub App `workflows` permission (recurring — see 10+ previous cycles).
-- **Dependencies**: 0 vulnerabilities (npm audit clean).
-- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
-- **Stale remote branches**: 90+ branches on origin — cleanup still deferred (requires explicit owner approval per previous cycles).
-- **Prettier formatting**: 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml) have formatting regressions — fix blocked by GitHub App `workflows` permission (recurring).
-- **All README-referenced docs now verified**: 27/27 docs properly referenced (up from 25 in cycle 24).
-- **docs/active-tasks.md**: Cycle 24 had 1 unchecked item (Create PR) but work was committed directly to main (`9902df1`). Marked Cycle 24 Complete, added Cycle 25 entry.
-
-### Actions Taken
-
-- Verified build/lint/typecheck all pass clean — no errors, no warnings
-- Ran npm audit — 0 vulnerabilities
-- Updated CHANGELOG.md — added missing perf commit to [Unreleased] (Performance section)
-- Updated README.md — added links for `docs/issue-audit-report-2026-05-27.md` and `docs/security/assessment-ajv-vulnerabilities.md`
-- Updated docs/findings.md — this record
-- Updated docs/active-tasks.md — marked Cycle 24 Complete, added Cycle 25 entry
-- Updated docs/bugs.md — bumped Last Updated date to Cycle 25
-- Created branch `chore/repokeeper-cleanup-cycle-25` from main
-- Created PR with all cleanup changes
-
----
-
-**Last Cleared**: 2026-05-28 (Cycle 26)  
+**Last Cleared**: 2026-05-28 (Cycle 27)  
 **Maintainer**: RepoKeeper

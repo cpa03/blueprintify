@@ -13,15 +13,31 @@
 - **Actions**:
   - [x] All actions completed — PR #1419 merged ✅
 
-### Task: RepoKeeper Cleanup Cycle 26 (2026-05-28) — Current
+### Task: RepoKeeper Cleanup Cycle 26 (2026-05-28)
 
 - **Priority**: High
-- **Status**: Active
+- **Status**: Completed
 - **Objective**: Fix Node.js version mismatch in all CI workflows (node 20 → 22 to match .nvmrc), update README docs index with missing issue-audit-report link, verify build/lint/test, create PR
+- **Note**: Committed via PR #1425 (merged).
 - **Actions**:
   - [x] Fix `node-version: 20` → `"22"` in all 4 workflow files (.github/workflows/on-pull.yml, iterate.yml, parallel.yml, pr-gatekeeper.yml)
   - [x] Add missing `docs/issue-audit-report-2026-05-27.md` reference to README documentation index
   - [x] Run verification: typecheck ✅, lint ✅, build ✅
+  - [x] Create PR with all cleanup changes — PR #1425 merged ✅
+
+### Task: RepoKeeper Cleanup Cycle 27 (2026-05-28) — Current
+
+- **Priority**: High
+- **Status**: Active
+- **Objective**: Clean up merge conflict artifact in findings.md, add missing perf commit to CHANGELOG, update docs (active-tasks/findings/bugs), verify build/lint/test with updated test count (879), create PR
+- **Actions**:
+  - [x] Clean up `<<<<<<< HEAD` merge conflict artifact in `docs/findings.md`
+  - [x] Add missing perf commit `71530a2` to CHANGELOG [Unreleased]
+  - [x] Update `docs/findings.md` — record Cycle 27 findings
+  - [x] Update `docs/active-tasks.md` — this record
+  - [x] Update `docs/bugs.md` — bump Last Updated date to Cycle 27
+  - [x] Verify build/lint/typecheck/test all pass — 879 tests (476 web + 296 api + 107 shared)
+  - [ ] Create branch `chore/repokeeper-cleanup-cycle-27` from main
   - [ ] Create PR with all cleanup changes
 
 ### Task: RepoKeeper Cleanup Cycle 24 (2026-05-27)
@@ -405,13 +421,13 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ## Testing Coverage
 
-- **Frontend**: Co-located Vitest tests with component and store tests — 473 passing
+- **Frontend**: Co-located Vitest tests with component and store tests — 476 passing
 - **API**: Comprehensive route, middleware, service, and utility tests — 296 passing
 - **Shared**: Zod schema, type, and config tests — 107 passing
-- **Total**: 876 tests (all passing) [473 web + 296 api + 107 shared]
+- **Total**: 879 tests (all passing) [476 web + 296 api + 107 shared]
 - **TypeScript**: Strict mode, no unchecked `any` types
 
 ---
 
-**Last Updated**: 2026-05-27 (Cycle 24)  
+**Last Updated**: 2026-05-28 (Cycle 27)  
 **Maintainer**: RepoKeeper
