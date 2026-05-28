@@ -29,6 +29,7 @@ import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
+import { Icon } from "../Icon";
 import { AnimatedCopyButton } from "../AnimatedCopyButton";
 import { SPRING_CONFIG, EDITOR_LABELS } from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION } from "../../config/theme";
@@ -104,19 +105,19 @@ function EditorToolbarComponent({
               <span className="flex items-center gap-1.5">
                 {mode === "edit" && (
                   <>
-                    <span>✏️</span>
+                    <Icon name="edit" className="w-4 h-4" />
                     <span className="hidden sm:inline">Edit</span>
                   </>
                 )}
                 {mode === "split" && (
                   <>
-                    <span>⚡</span>
+                    <Icon name="columns" className="w-4 h-4" />
                     <span className="hidden sm:inline">Split</span>
                   </>
                 )}
                 {mode === "preview" && (
                   <>
-                    <span>👁️</span>
+                    <Icon name="eye" className="w-4 h-4" />
                     <span className="hidden sm:inline">Preview</span>
                   </>
                 )}
