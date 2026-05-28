@@ -46,7 +46,7 @@ export const SPINNER = {
 // ============================================================================
 export const LAYOUT = {
   PAGE_WRAPPER: "min-h-screen flex flex-col",
-  MAIN_CONTENT: "flex-1 pt-20",
+  MAIN_CONTENT: "flex-1 pt-20 scroll-mt-20",
   CONTENT_CONTAINER: "max-w-7xl mx-auto px-4 sm:px-6 py-8",
   HERO_SECTION: "text-center mb-12",
   HERO_TITLE: "text-4xl sm:text-5xl font-bold text-white mb-4",

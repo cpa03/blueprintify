@@ -102,10 +102,16 @@ const ProgressRing = memo(function ProgressRing({
 interface ToastItemProps {
   toast: Toast;
   onRemove: (id: string) => void;
+  staggerIndex?: number;
 }
 
+const TOAST_STAGGER_MS = 60; // milliseconds between each toast's entrance
+
 const ToastItem = memo(
-  forwardRef<HTMLDivElement, ToastItemProps>(function ToastItem({ toast, onRemove }, ref) {
+  forwardRef<HTMLDivElement, ToastItemProps>(function ToastItem(
+    { toast, onRemove, staggerIndex = 0 },
+    ref
+  ) {
     const [isHovered, setIsHovered] = useState(false);
     const [progress, setProgress] = useState(100);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -193,7 +199,11 @@ const ToastItem = memo(
         initial={{ opacity: 0, y: 20, scale: 0.9 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -20, scale: 0.9 }}
-        transition={{ type: "spring", ...SPRING_CONFIG.DEFAULT }}
+        transition={{
+          type: "spring",
+          ...SPRING_CONFIG.DEFAULT,
+          delay: staggerIndex * (TOAST_STAGGER_MS / 1000),
+        }}
         className={`pointer-events-auto px-4 py-3 rounded-xl border backdrop-blur-sm shadow-lg flex items-center gap-3 min-w-[280px] max-w-md relative overflow-hidden group ${toastStyles[toast.type]}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -280,8 +290,8 @@ function ToastContainerComponent(): JSX.Element {
   return (
     <div className={TOAST_SPRING.CONTAINER_CLASSES}>
       <AnimatePresence mode="popLayout">
-        {toasts.map((toast) => (
-          <ToastItem key={toast.id} toast={toast} onRemove={removeToast} />
+        {toasts.map((toast, index) => (
+          <ToastItem key={toast.id} toast={toast} onRemove={removeToast} staggerIndex={index} />
         ))}
       </AnimatePresence>
 
