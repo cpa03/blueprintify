@@ -1,7 +1,6 @@
 import { useState, lazy, Suspense, useEffect, useCallback, useRef } from "react";
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
-import { Wizard } from "./components/Wizard";
 const ShowEditorButton = lazy(() =>
   import("./components/ShowEditorButton").then((m) => ({ default: m.ShowEditorButton }))
 );
@@ -19,6 +18,9 @@ import { LAYOUT, BUTTON, ICON, SPINNER } from "./config/styles";
 const GenerationCelebration = lazy(() =>
   import("./components/GenerationCelebration").then((m) => ({ default: m.GenerationCelebration }))
 );
+
+// Lazy load Wizard to defer framer-motion and step components from initial bundle
+const Wizard = lazy(() => import("./components/Wizard").then((m) => ({ default: m.Wizard })));
 
 // Lazy load Editor to reduce initial bundle size
 const Editor = lazy(() =>
@@ -176,7 +178,15 @@ function App(): JSX.Element {
                 showEditor ? LAYOUT.HALF_WIDTH : LAYOUT.FULL_WIDTH
               }`}
             >
-              <Wizard />
+              <Suspense
+                fallback={
+                  <div className="flex items-center justify-center py-16">
+                    <div className={SPINNER.DEFAULT}></div>
+                  </div>
+                }
+              >
+                <Wizard />
+              </Suspense>
             </div>
 
             {/* Editor Panel */}
