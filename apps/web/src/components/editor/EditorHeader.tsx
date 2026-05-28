@@ -30,6 +30,7 @@ import React, { useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
+import { Icon } from "../Icon";
 import { LastSavedIndicator } from "../LastSavedIndicator";
 import { SPRING_CONFIG, EDITOR_LABELS } from "../../config/constants";
 import { EDITOR_ANIMATION } from "../../config/theme";
@@ -213,7 +214,8 @@ function EditorHeaderComponent({
             onClick={() => setActiveTab("blueprint")}
             hasContent={hasContent}
           >
-            📘 blueprint.md
+            <Icon name="document" className="w-4 h-4 mr-1.5" />
+            blueprint.md
           </TabButton>
           <TabButton
             id="tasks"
@@ -221,7 +223,8 @@ function EditorHeaderComponent({
             onClick={() => setActiveTab("tasks")}
             hasContent={hasContent}
           >
-            📋 task.md
+            <Icon name="clipboard" className="w-4 h-4 mr-1.5" />
+            task.md
           </TabButton>
         </div>
         <div className="flex items-center gap-3">
