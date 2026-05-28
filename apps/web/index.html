@@ -165,18 +165,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Async Inter font (body text) - font-display:swap for best LCP -->
+    <!-- Async Inter font (body text) - media="print" onload trick for non-blocking CSS -->
     <link
-      id="font-inter"
-      rel="preload"
+      rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=optional"
-      as="style"
+      media="print"
+      onload="this.media='all';this.onload=null"
     />
-    <script>
-      document.getElementById("font-inter").addEventListener("load", function () {
-        this.rel = "stylesheet";
-      });
-    </script>
 
     <!-- JetBrains Mono (code font) - async non-blocking load, not needed for initial render -->
     <link
