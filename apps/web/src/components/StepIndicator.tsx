@@ -24,7 +24,13 @@
 import { useEffect, useCallback, useState, memo } from "react";
 import type { WizardStep } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
-import { WIZARD_STEPS, TIMEOUTS, PROGRESS_COLORS, TOAST_MESSAGES } from "../config/constants";
+import {
+  WIZARD_STEPS,
+  TIMEOUTS,
+  PROGRESS_COLORS,
+  TOAST_MESSAGES,
+  STEP_CONNECTOR,
+} from "../config/constants";
 import { CircularProgress } from "./CircularProgress";
 import { SmartTooltip } from "./SmartTooltip";
 
@@ -155,10 +161,9 @@ function StepIndicatorComponent(): JSX.Element {
             {index < STEPS.length - 1 && (
               <div
                 className={`w-8 h-0.5 mx-2 rounded-full transition-all duration-500 ease-in-out ${
-                  isCompleted
-                    ? "bg-accent-emerald shadow-[0_0_6px_rgba(16,185,129,0.4)]"
-                    : "bg-dark-700"
+                  isCompleted ? "bg-accent-emerald" : "bg-dark-700"
                 }`}
+                style={isCompleted ? { boxShadow: STEP_CONNECTOR.COMPLETED_SHADOW } : undefined}
               />
             )}
           </div>
