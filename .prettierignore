@@ -2,6 +2,9 @@
 node_modules/
 .pnpm-store/
 
+# GitHub Actions workflow files - formatting follows GitHub's own YAML conventions
+.github/workflows/
+
 # Build outputs
 dist/
 build/
