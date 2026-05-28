@@ -5,8 +5,13 @@
 :root {
   --color-primary-500: #6366f1;
   --color-primary-400: #818cf8;
+  --color-primary-600: #4f46e5;
   --color-accent-purple: #8b5cf6;
   --color-accent-pink: #ec4899;
+  --color-accent-emerald: #10b981;
+  --color-bg-base: #020617;
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #94a3b8;
 }
 
 /* ===== Base Styles ===== */
@@ -15,8 +20,8 @@
   body {
     @apply bg-dark-950 text-dark-100 font-sans antialiased;
     background-image:
-      radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+      radial-gradient(ellipse at top left, color-mix(in srgb, var(--color-primary-500) 8%, transparent) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, color-mix(in srgb, var(--color-accent-purple) 6%, transparent) 0%, transparent 50%);
     min-height: 100vh;
   }
 
@@ -60,12 +65,12 @@
     transform: translateY(-1px);
     box-shadow:
       0 8px 32px rgba(0, 0, 0, 0.3),
-      0 0 0 1px rgba(99, 102, 241, 0.05);
+      0 0 0 1px color-mix(in srgb, var(--color-primary-500) 5%, transparent);
   }
 
   .gradient-border {
     position: relative;
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+    background: linear-gradient(135deg, color-mix(in srgb, var(--color-primary-500) 10%, transparent), color-mix(in srgb, var(--color-accent-purple) 10%, transparent));
   }
   .gradient-border::before {
     content: "";
@@ -319,7 +324,7 @@
 
   /* Glow effect */
   .glow-primary {
-    box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 0 30px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
   }
   /* Animated background */
   .animated-bg {
@@ -342,12 +347,12 @@
   @keyframes focus-glow {
     0%,
     100% {
-      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
     }
     50% {
       box-shadow:
-        0 0 0 4px rgba(99, 102, 241, 0.5),
-        0 0 20px rgba(99, 102, 241, 0.3);
+        0 0 0 4px color-mix(in srgb, var(--color-primary-500) 50%, transparent),
+        0 0 20px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
     }
   }
 
@@ -384,13 +389,13 @@
     0%,
     100% {
       box-shadow:
-        0 0 0 0 rgba(99, 102, 241, 0.4),
-        0 0 20px rgba(99, 102, 241, 0.1);
+        0 0 0 0 color-mix(in srgb, var(--color-primary-500) 40%, transparent),
+        0 0 20px color-mix(in srgb, var(--color-primary-500) 10%, transparent);
     }
     50% {
       box-shadow:
-        0 0 0 4px rgba(99, 102, 241, 0.2),
-        0 0 30px rgba(99, 102, 241, 0.2);
+        0 0 0 4px color-mix(in srgb, var(--color-primary-500) 20%, transparent),
+        0 0 30px color-mix(in srgb, var(--color-primary-500) 20%, transparent);
     }
   }
 
@@ -405,13 +410,13 @@
     0%,
     100% {
       box-shadow:
-        0 4px 14px 0 rgba(99, 102, 241, 0.12),
-        0 0 0 0 rgba(99, 102, 241, 0.2);
+        0 4px 14px 0 color-mix(in srgb, var(--color-primary-500) 12%, transparent),
+        0 0 0 0 color-mix(in srgb, var(--color-primary-500) 20%, transparent);
     }
     50% {
       box-shadow:
-        0 4px 20px 0 rgba(99, 102, 241, 0.25),
-        0 0 0 4px rgba(99, 102, 241, 0.1);
+        0 4px 20px 0 color-mix(in srgb, var(--color-primary-500) 25%, transparent),
+        0 0 0 4px color-mix(in srgb, var(--color-primary-500) 10%, transparent);
     }
   }
 
@@ -455,10 +460,10 @@
   @keyframes step-pulse {
     0%,
     100% {
-      box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-primary-500) 40%, transparent);
     }
     50% {
-      box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
+      box-shadow: 0 0 0 8px transparent;
     }
   }
 
@@ -566,7 +571,7 @@
     position: absolute;
     inset: -2px;
     border-radius: inherit;
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.5), rgba(139, 92, 246, 0.3));
+    background: linear-gradient(135deg, color-mix(in srgb, var(--color-primary-500) 50%, transparent), color-mix(in srgb, var(--color-accent-purple) 30%, transparent));
     opacity: 0;
     z-index: -1;
     filter: blur(8px);
@@ -591,18 +596,18 @@
 @keyframes skip-highlight {
   0% {
     box-shadow:
-      inset 0 0 0 0 rgba(99, 102, 241, 0),
-      0 0 0 0 rgba(99, 102, 241, 0);
+      inset 0 0 0 0 transparent,
+      0 0 0 0 transparent;
   }
   15% {
     box-shadow:
-      inset 0 0 0 1px rgba(99, 102, 241, 0.15),
-      0 0 20px -4px rgba(99, 102, 241, 0.15);
+      inset 0 0 0 1px color-mix(in srgb, var(--color-primary-500) 15%, transparent),
+      0 0 20px -4px color-mix(in srgb, var(--color-primary-500) 15%, transparent);
   }
   100% {
     box-shadow:
-      inset 0 0 0 0 rgba(99, 102, 241, 0),
-      0 0 0 0 rgba(99, 102, 241, 0);
+      inset 0 0 0 0 transparent,
+      0 0 0 0 transparent;
   }
 }
 

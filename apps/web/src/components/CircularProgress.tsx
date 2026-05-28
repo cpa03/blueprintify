@@ -11,7 +11,7 @@
  */
 
 import { memo } from "react";
-import { PROGRESS_COLORS } from "../config/constants";
+import { PROGRESS_COLORS, SVG_TRANSITION } from "../config/constants";
 
 /**
  * Props for the CircularProgress component.
@@ -108,8 +108,12 @@ function CircularProgressComponent({
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}
-          className="transition-[stroke-dashoffset] duration-700 ease-out"
-          style={{ strokeDashoffset }}
+          style={{
+            strokeDashoffset,
+            transitionProperty: "stroke-dashoffset",
+            transitionDuration: `${SVG_TRANSITION.STROKE_DASHOFFSET_DURATION_MS}ms`,
+            transitionTimingFunction: SVG_TRANSITION.STROKE_TIMING,
+          }}
         />
       </svg>
 

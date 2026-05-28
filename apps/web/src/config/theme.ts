@@ -199,7 +199,19 @@ export const SHADOWS = {
       start: "0 0 20px rgba(99, 102, 241, 0.3)",
       end: "0 0 40px rgba(99, 102, 241, 0.6)",
     },
+    /** Scroll progress bar glow variants */
+    scroll: {
+      /** Subtle primary glow */
+      SUBTLE: "0 0 8px rgba(99, 102, 241, 0.3)",
+      /** Medium purple glow */
+      MEDIUM: "0 0 16px rgba(139, 92, 246, 0.4)",
+      /** No glow (zero opacity) */
+      NONE: "0 0 0px rgba(99, 102, 241, 0)",
+    },
   },
+
+  /** Glow gradient for scroll progress bar */
+  SCROLL_GLOW_GRADIENT: "linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent)",
 
   // Box shadows
   box: {
