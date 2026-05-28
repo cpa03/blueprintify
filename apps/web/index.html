@@ -170,7 +170,10 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=optional"
       media="print"
-      onload="this.media='all';this.onload=null"
+      onload="
+        this.media = 'all';
+        this.onload = null;
+      "
     />
 
     <!-- JetBrains Mono (code font) - async non-blocking load, not needed for initial render -->
