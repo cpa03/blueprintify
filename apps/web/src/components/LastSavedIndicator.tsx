@@ -86,21 +86,41 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
             </>
           ) : (
             <>
-              <svg
+              <motion.svg
                 className="w-3.5 h-3.5 text-accent-emerald"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 aria-hidden="true"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 20,
+                  mass: 0.5,
+                }}
               >
-                <path
+                <motion.path
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
                   d="M5 13l4 4L19 7"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{
+                    pathLength: { type: "spring", stiffness: 400, damping: 25, delay: 0.05 },
+                    opacity: { duration: 0.1, delay: 0.05 },
+                  }}
                 />
-              </svg>
-              <span>{text}</span>
+              </motion.svg>
+              <motion.span
+                initial={{ opacity: 0, x: -4 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2, delay: 0.1, ease: "easeOut" }}
+              >
+                {text}
+              </motion.span>
             </>
           )}
         </motion.div>
