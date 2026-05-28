@@ -16,6 +16,9 @@ scripts/
 # OpenCode
 .opencode/
 
+# CI/CD workflow files (managed by maintainers with workflow permissions)
+.github/workflows/
+
 # Lock files
 package-lock.json
 pnpm-lock.yaml
