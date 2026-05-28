@@ -12,15 +12,15 @@ WORKFLOW_DIR="$PROJECT_ROOT/.github/workflows"
 # NODE VERSION
 NODE_VERSION_FILE="$PROJECT_ROOT/.node-version"
 
-# DEPLOYMENT URLS
-STAGING_API_URL="https://api-staging.blueprintify.dev"
-PRODUCTION_API_URL="https://api.blueprintify.dev"
-STAGING_API_PATTERN="api-staging.blueprintify.dev"
-PRODUCTION_API_PATTERN="api.blueprintify.dev"
+# DEPLOYMENT URLS (configurable via env vars, defaults for Blueprint Generator)
+STAGING_API_URL="${STAGING_API_URL:-https://api-staging.blueprintify.dev}"
+PRODUCTION_API_URL="${PRODUCTION_API_URL:-https://api.blueprintify.dev}"
+STAGING_API_PATTERN="${STAGING_API_PATTERN:-api-staging.blueprintify.dev}"
+PRODUCTION_API_PATTERN="${PRODUCTION_API_PATTERN:-api.blueprintify.dev}"
 
 # VALID ENVIRONMENTS
 ENVIRONMENTS=("staging" "production")
 
-# DEPLOYMENT SETTINGS
-STAGING_SLEEP_SECONDS=3
-PRODUCTION_SLEEP_SECONDS=5
+# DEPLOYMENT SETTINGS (configurable via env vars)
+STAGING_SLEEP_SECONDS="${STAGING_SLEEP_SECONDS:-3}"
+PRODUCTION_SLEEP_SECONDS="${PRODUCTION_SLEEP_SECONDS:-5}"
