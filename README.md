@@ -276,6 +276,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Troubleshooting Guide](./docs/troubleshooting.md)** - Common issues and solutions
 - **[Environment Variables](./docs/environment-variables.md)** - Configuration reference for API, frontend, and Cloudflare
 - **[Repository Rules](./docs/repo-rules.md)** - Repository governance and contribution rules
+- **[Security Assessment](./docs/security/assessment-ajv-vulnerabilities.md)** - AJV dependency vulnerability analysis
 
 ### 🤖 AI Agent System
 
@@ -292,6 +293,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Issue Management Report](./docs/issue-management-2026-05-27.md)** - Issue normalization and tracking report
 - **[Known Bugs](./docs/bugs.md)** - Active bug tracking and known defects
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
+- **[Issue Audit Report](./docs/issue-audit-report-2026-05-27.md)** - Automated repository audit session report
 - **[Repository Audit](./docs/audit-2026-05-26.md)** - Automated repository audit findings
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 - **[Task Management](./docs/task.md)** - Current development tasks and priorities

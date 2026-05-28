@@ -4,21 +4,30 @@
 
 ## Current Focus: Repository Maintenance
 
-### Task: RepoKeeper Cleanup Cycle 24 (2026-05-27) — Current
+### Task: RepoKeeper Cleanup Cycle 25 (2026-05-28) — Current
 
 - **Priority**: High
 - **Status**: Active
-- **Objective**: Verify repo stability post-cycle-23, no new redundant/temp files, npm audit clean, update docs (findings/active-tasks/bugs/roadmap dates), verify build/lint/test, create PR
+- **Objective**: Verify repo stability post-cycle-24, add missing perf commit to CHANGELOG, link unreferenced docs in README, no new redundant/temp files, npm audit clean, update docs (findings/active-tasks/bugs dates), verify build/lint/test, create PR
 - **Actions**:
   - [x] Verify typecheck/lint/build/web+api+shared tests all pass clean (876 tests — 473 web + 296 api + 107 shared)
   - [x] npm audit — 0 vulnerabilities
   - [x] Verify no redundant/temp/unused files detected
-  - [x] Verify all README-referenced docs exist (25/25)
-  - [x] Update `docs/findings.md` — record cycle 24 observations
-  - [x] Update `docs/active-tasks.md` — mark cycle 23 complete, add cycle 24 entry
-  - [x] Update `docs/bugs.md` — bump Last Updated date to Cycle 24
-  - [x] Update `docs/roadmap.md` — bump Last Updated date to Cycle 24
+  - [x] Update CHANGELOG.md — add missing perf commit to [Unreleased]
+  - [x] Update README.md — add links for `docs/issue-audit-report-2026-05-27.md` and `docs/security/assessment-ajv-vulnerabilities.md`
+  - [x] Update `docs/findings.md` — record cycle 25 observations
+  - [x] Update `docs/active-tasks.md` — mark cycle 24 complete, add cycle 25 entry
+  - [x] Update `docs/bugs.md` — bump Last Updated date to Cycle 25
   - [ ] Create PR with all cleanup changes
+
+### Task: RepoKeeper Cleanup Cycle 24 (2026-05-27)
+
+- **Priority**: High
+- **Status**: Completed
+- **Objective**: Verify repo stability post-cycle-23, no new redundant/temp files, npm audit clean, update docs (findings/active-tasks/bugs/roadmap dates), verify build/lint/test, create PR
+- **Note**: All actions completed — committed directly to main via commit `9902df1`.
+- **Actions**:
+  - [x] All actions completed ✅
 
 ### Task: RepoKeeper Cleanup Cycle 23 (2026-05-27)
 

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Performance
+
+- Replace expensive Blob serialization with fast key iteration for localStorage quota checks
+
 ### Added
 
 - Animate-glow CSS class for primary CTA button breathing effect (pulsing box-shadow animation, respects prefers-reduced-motion)
