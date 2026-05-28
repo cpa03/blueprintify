@@ -217,19 +217,20 @@ _See `.opencode/skill/` directory for complete skill definitions._
 
 ## 📡 API Endpoints
 
-| Method | Endpoint         | Description                                |
-| ------ | ---------------- | ------------------------------------------ |
-| GET    | `/`              | Health check                               |
-| POST   | `/generate`      | Generate blueprint (SSE stream)            |
-| POST   | `/tasks`         | Generate tasks from blueprint (SSE stream) |
-| POST   | `/refine`        | Refine content section (SSE stream)        |
-| POST   | `/export`        | Export project as ZIP/JSON/Markdown        |
-| POST   | `/import`        | Import project with validation             |
-| GET    | `/storage/quota` | Check localStorage usage                   |
-| DELETE | `/storage/clear` | Clear stored data                          |
-| POST   | `/share`         | Create shareable blueprint link            |
-| GET    | `/share/:id`     | Retrieve shared blueprint                  |
-| DELETE | `/share/:id`     | Delete shared blueprint                    |
+| Method | Endpoint          | Description                                    |
+| ------ | ----------------- | ---------------------------------------------- |
+| GET    | `/`               | Health check                                   |
+| POST   | `/generate`       | Generate blueprint (SSE stream)                |
+| POST   | `/tasks`          | Generate tasks from blueprint (SSE stream)     |
+| POST   | `/refine`         | Refine content section (SSE stream)            |
+| POST   | `/export`         | Export project as ZIP/JSON/Markdown            |
+| POST   | `/import`         | Import project with validation                 |
+| GET    | `/storage/quota`  | Check storage usage                            |
+| POST   | `/storage/report` | Report client storage usage for quota tracking |
+| DELETE | `/storage/clear`  | Clear stored data                              |
+| POST   | `/share`          | Create shareable blueprint link                |
+| GET    | `/share/:id`      | Retrieve shared blueprint                      |
+| DELETE | `/share/:id`      | Delete shared blueprint                        |
 
 ## 🛠️ Tech Stack
 

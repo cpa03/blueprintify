@@ -82,19 +82,20 @@ npm run deploy
 
 ## API Endpoints
 
-| Method | Endpoint         | Description                                  |
-| ------ | ---------------- | -------------------------------------------- |
-| GET    | `/`              | Health check - returns API metadata          |
-| POST   | `/generate`      | Generate blueprint from project config (SSE) |
-| POST   | `/tasks`         | Generate tasks from blueprint content (SSE)  |
-| POST   | `/refine`        | Refine specific content sections (SSE)       |
-| POST   | `/export`        | Export project data (ZIP/JSON/Markdown)      |
-| POST   | `/import`        | Import project data with validation          |
-| GET    | `/storage/quota` | Check storage usage                          |
-| DELETE | `/storage/clear` | Clear stored data                            |
-| POST   | `/share`         | Create shareable blueprint link              |
-| GET    | `/share/:id`     | Retrieve shared blueprint                    |
-| DELETE | `/share/:id`     | Delete shared blueprint                      |
+| Method | Endpoint          | Description                                    |
+| ------ | ----------------- | ---------------------------------------------- |
+| GET    | `/`               | Health check - returns API metadata            |
+| POST   | `/generate`       | Generate blueprint from project config (SSE)   |
+| POST   | `/tasks`          | Generate tasks from blueprint content (SSE)    |
+| POST   | `/refine`         | Refine specific content sections (SSE)         |
+| POST   | `/export`         | Export project data (ZIP/JSON/Markdown)        |
+| POST   | `/import`         | Import project data with validation            |
+| GET    | `/storage/quota`  | Check storage usage                            |
+| POST   | `/storage/report` | Report client storage usage for quota tracking |
+| DELETE | `/storage/clear`  | Clear stored data                              |
+| POST   | `/share`          | Create shareable blueprint link                |
+| GET    | `/share/:id`      | Retrieve shared blueprint                      |
+| DELETE | `/share/:id`      | Delete shared blueprint                        |
 
 ## Project Structure
 

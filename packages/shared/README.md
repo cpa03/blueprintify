@@ -59,18 +59,29 @@ import { RETRY_CONFIG, VALIDATION_LIMITS, STORAGE_CONFIG, SSE_CONFIG } from "@bl
 | Schema                        | Description                                                        |
 | ----------------------------- | ------------------------------------------------------------------ |
 | `TechStackCategory`           | Enum for tech stack categories (frontend, backend, database, etc.) |
+| `DatabaseSubcategory`         | Enum for database subcategories (relational, document, etc.)       |
 | `TechStackItem`               | Individual technology with name, category, optional version        |
 | `BlueprintRequestSchema`      | Request payload for blueprint generation                           |
 | `TaskGenerationRequestSchema` | Request payload for task generation                                |
+| `TaskStatusSchema`            | Enum for task status (todo, in_progress, done)                     |
+| `TaskPrioritySchema`          | Enum for task priority (low, medium, high, critical)               |
+| `TaskItemSchema`              | Individual task item                                               |
+| `TaskListSchema`              | Array of task items                                                |
 | `RefineRequestSchema`         | Request payload for content refinement                             |
 | `TemplateSchema`              | Predefined project template                                        |
 | `StreamChunkSchema`           | SSE chunk structure                                                |
 | `GenerationResultSchema`      | Complete generation result                                         |
+| `SuccessResponseSchema`       | Standard success response wrapper                                  |
 | `ErrorResponseSchema`         | Standard error response                                            |
+| `ErrorTypeSchema`             | Enum for error types                                               |
+| `ErrorDetailSchema`           | Individual error detail                                            |
 | `ExportFormatSchema`          | Export format enum (json, zip, markdown)                           |
 | `ExportRequestSchema`         | Export request payload                                             |
 | `ImportRequestSchema`         | Import request payload                                             |
+| `ImportResultSchema`          | Import result with warnings                                        |
 | `StorageQuotaSchema`          | Storage quota information                                          |
+| `StorageClearRequestSchema`   | Storage clear confirmation request                                 |
+| `StorageReportRequestSchema`  | Client storage usage report request                                |
 
 ### TypeScript Types
 
@@ -93,21 +104,30 @@ All schemas have corresponding TypeScript types inferred via `z.infer`:
 - `ExportRequest`
 - `ImportRequest`
 - `StorageQuota`
+- `StorageClearRequest`
+- `StorageReportRequest`
+- `ImportResult`
 
 ### Configuration
 
-| Config                 | Description                               |
-| ---------------------- | ----------------------------------------- |
-| `RETRY_CONFIG`         | Retry settings (retries, delays, backoff) |
-| `VALIDATION_LIMITS`    | Form and API validation limits            |
-| `STORAGE_CONFIG`       | LocalStorage quota settings               |
-| `DEBOUNCE_CONFIG`      | Debounce delays for auto-save             |
-| `SECURITY_LIMITS`      | Content validation limits                 |
-| `SSE_CONFIG`           | Server-Sent Events configuration          |
-| `SSE_HEADERS`          | Standard SSE response headers             |
-| `HTTP_HEADERS`         | Standard HTTP headers                     |
-| `ID_GENERATION_CONFIG` | ID generation settings                    |
-| `TIME_UNITS`           | Time conversion constants                 |
+| Config                   | Description                               |
+| ------------------------ | ----------------------------------------- |
+| `RETRY_CONFIG`           | Retry settings (retries, delays, backoff) |
+| `RETRYABLE_STATUS_CODES` | HTTP status codes eligible for retry      |
+| `VALIDATION_LIMITS`      | Form and API validation limits            |
+| `STORAGE_CONFIG`         | LocalStorage quota settings               |
+| `DEBOUNCE_CONFIG`        | Debounce delays for auto-save             |
+| `SECURITY_LIMITS`        | Content validation limits                 |
+| `SSE_CONFIG`             | Server-Sent Events configuration          |
+| `SSE_HEADERS`            | Standard SSE response headers             |
+| `HTTP_HEADERS`           | Standard HTTP headers                     |
+| `HTTP_STATUS`            | HTTP status code constants                |
+| `ID_GENERATION_CONFIG`   | ID generation settings                    |
+| `TIME_UNITS`             | Time conversion constants                 |
+| `ROUTE_PATHS`            | API route path constants                  |
+| `DEFAULT_URLS`           | Default URL configuration                 |
+| `SHARED_DEFAULTS`        | Shared default values                     |
+| `TECH_STACK_OPTIONS`     | Tech stack selection options              |
 
 ### Templates
 

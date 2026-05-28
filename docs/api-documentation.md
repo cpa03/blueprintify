@@ -54,6 +54,7 @@ Health check endpoint to verify the API is running and provide API metadata.
     "export": "POST /export",
     "import": "POST /import",
     "storageQuota": "GET /storage/quota",
+    "storageReport": "POST /storage/report",
     "storageClear": "DELETE /storage/clear",
     "shareCreate": "POST /share",
     "shareGet": "GET /share/:id",
@@ -382,6 +383,40 @@ Get storage quota information.
 
 ```bash
 curl http://localhost:8787/storage/quota
+```
+
+### POST /storage/report
+
+Report client-side localStorage usage to the server for distributed quota tracking. Clients periodically report their storage utilization so the server can provide accurate aggregate quota information.
+
+#### Request Body
+
+```typescript
+interface StorageReportRequest {
+  used: number; // Bytes used by the client
+  total: number; // Total quota bytes available
+  projects: number; // Number of stored projects
+}
+```
+
+#### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "stored": true,
+    "timestamp": "2026-02-18T10:00:00.000Z"
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost:8787/storage/report \
+  -H "Content-Type: application/json" \
+  -d '{"used": 1048576, "total": 5242880, "projects": 3}'
 ```
 
 ### DELETE /storage/clear
