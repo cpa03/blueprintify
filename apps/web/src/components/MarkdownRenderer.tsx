@@ -257,7 +257,15 @@ function MarkdownRendererComponent({ content, className }: MarkdownRendererProps
         );
       },
       img({ src, alt }) {
-        return <img src={src} alt={alt} className={MARKDOWN.IMAGE} loading="lazy" />;
+        return (
+          <img
+            src={src}
+            alt={alt ?? ""}
+            className={MARKDOWN.IMAGE}
+            loading="lazy"
+            decoding="async"
+          />
+        );
       },
       hr() {
         return <hr className={MARKDOWN.HR} />;
