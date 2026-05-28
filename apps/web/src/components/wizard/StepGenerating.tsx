@@ -24,7 +24,7 @@
  */
 
 import { motion, AnimatePresence } from "framer-motion";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useRef, useEffect } from "react";
 import { useEditorStore, useWizardStore, useToast } from "../../store";
 import { ANIMATION, GENERATION_MESSAGES, TOAST_MESSAGES } from "../../config/constants";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
@@ -56,6 +56,21 @@ export const StepGenerating = memo(function StepGenerating({
     toast.info(TOAST_MESSAGES.GENERATION_CANCELLED);
     setStep("review");
   }, [cancelGeneration, setStep, toast]);
+
+  const wasComplete = useRef(false);
+
+  // Auto-focus "View in Editor" button when generation completes
+  // so keyboard users don't have to search for the new action
+  useEffect(() => {
+    if (isComplete && !wasComplete.current) {
+      // Small delay to let the spring animation settle before focusing
+      requestAnimationFrame(() => {
+        const btn = document.querySelector<HTMLButtonElement>('[data-autofocus="complete"]');
+        btn?.focus();
+      });
+    }
+    wasComplete.current = isComplete;
+  }, [isComplete]);
 
   const handleViewReview = useCallback(() => {
     setStep("review");
@@ -225,6 +240,7 @@ export const StepGenerating = memo(function StepGenerating({
               onClick={handleViewEditor}
               className="btn-primary flex items-center gap-2"
               ariaLabel="View the generated blueprint in the editor"
+              data-autofocus="complete"
             >
               <svg
                 className="w-5 h-5"

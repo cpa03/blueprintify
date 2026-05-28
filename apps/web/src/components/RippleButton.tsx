@@ -24,6 +24,7 @@ interface RippleButtonProps {
   title?: string;
   whileHover?: TransformStyle;
   whileTap?: TransformStyle;
+  "data-autofocus"?: string;
 }
 
 function toTransformString(s?: TransformStyle): string {
@@ -44,6 +45,7 @@ function RippleButtonComponent({
   title,
   whileHover,
   whileTap,
+  "data-autofocus": dataAutofocus,
 }: RippleButtonProps): JSX.Element {
   const [ripples, setRipples] = useState<Ripple[]>([]);
   const [hoverTransform, setHoverTransform] = useState("");
@@ -118,6 +120,7 @@ function RippleButtonComponent({
       style={{ transform: hoverTransform || undefined }}
       aria-label={ariaLabel}
       title={title}
+      data-autofocus={dataAutofocus}
     >
       <span className="relative z-10">{children}</span>
       {ripples.map((ripple) => (
