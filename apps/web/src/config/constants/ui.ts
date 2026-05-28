@@ -124,6 +124,19 @@ export const PROGRESS_COLORS = {
   ACTIVE: "#6366f1",
 } as const;
 
+/** Step connector visual configuration */
+export const STEP_CONNECTOR = {
+  COMPLETED_SHADOW: "0 0 6px rgba(16, 185, 129, 0.4)",
+} as const;
+
+/** SVG transition configuration for progress indicators */
+export const SVG_TRANSITION = {
+  /** Duration in ms for stroke-dashoffset animation on circular progress */
+  STROKE_DASHOFFSET_DURATION_MS: 700,
+  /** Timing function for stroke animations */
+  STROKE_TIMING: "ease-out",
+} as const;
+
 // ============================================================================
 // Scroll Thresholds
 // ============================================================================

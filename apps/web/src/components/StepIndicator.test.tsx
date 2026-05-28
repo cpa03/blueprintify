@@ -39,6 +39,13 @@ vi.mock("../config/constants", () => ({
     COMPLETED: "#10b981",
     ACTIVE: "#6366f1",
   },
+  SVG_TRANSITION: {
+    STROKE_DASHOFFSET_DURATION_MS: 700,
+    STROKE_TIMING: "ease-out",
+  },
+  STEP_CONNECTOR: {
+    COMPLETED_SHADOW: "0 0 6px rgba(16, 185, 129, 0.4)",
+  },
   TOOLTIP_CONFIG: {
     DEFAULT_DELAY: 500,
     KEYBOARD_SHORTCUT_DELAY: 300,
