@@ -261,7 +261,7 @@ export const AI_DEFAULTS = {
 } as const;
 
 /**
- * Development Server Defaults
+ * Dev Server Defaults
  * Ports and URLs used during local development.
  * Single source of truth to eliminate hardcoded dev server addresses.
  */
@@ -274,4 +274,59 @@ export const DEV_DEFAULTS = {
   API_PROXY_TARGET: "http://localhost:8787",
   /** Default test server URL for Playwright */
   PLAYWRIGHT_TEST_URL: "http://localhost:3000",
+} as const;
+
+/**
+ * Rate Limiting Defaults
+ * Centralized rate limit configuration for API endpoints.
+ * Single source of truth to eliminate hardcoded rate limit values.
+ */
+export const RATE_LIMIT_DEFAULTS = {
+  /** Rate limit window in milliseconds (1 minute) */
+  WINDOW_MS: TIME_UNITS.MS_PER_SECOND * TIME_UNITS.SECONDS_PER_MINUTE,
+  /** Strict limit: max requests per window */
+  STRICT_MAX: 10,
+  /** Standard limit: max requests per window */
+  STANDARD_MAX: 60,
+  /** Lenient limit: max requests per window */
+  LENIENT_MAX: 120,
+} as const;
+
+/**
+ * Circuit Breaker Defaults
+ * Centralized circuit breaker configuration for service resilience.
+ * Single source of truth to eliminate hardcoded circuit breaker values.
+ */
+export const CIRCUIT_BREAKER_DEFAULTS = {
+  /** Number of consecutive failures before circuit opens */
+  FAILURE_THRESHOLD: 5,
+  /** Time in ms before circuit attempts half-open state (30 seconds) */
+  RESET_TIMEOUT_MS: TIME_UNITS.MS_PER_SECOND * TIME_UNITS.SECONDS_PER_MINUTE,
+  /** Max test calls allowed in half-open state */
+  HALF_OPEN_MAX_CALLS: 3,
+  /** Cold start window in ms (30 seconds) */
+  COLD_START_WINDOW_MS: 30 * TIME_UNITS.MS_PER_SECOND,
+} as const;
+
+/**
+ * Prompt Input Security Limits
+ * Centralized limits for prompt sanitization and input validation.
+ * Single source of truth to eliminate hardcoded input length values.
+ */
+export const MAX_INPUT_LENGTH = 5000;
+
+/**
+ * Playwright Test Configuration Defaults
+ * Centralized Playwright test timeouts and thresholds.
+ * Single source of truth for e2e test configuration.
+ */
+export const PLAYWRIGHT_DEFAULTS = {
+  /** Web server startup timeout in ms */
+  WEB_SERVER_TIMEOUT_MS: 120000,
+  /** Expect assertion timeout in ms */
+  EXPECT_TIMEOUT_MS: 10000,
+  /** Screenshot max diff pixels for visual comparison */
+  SCREENSHOT_MAX_DIFF_PIXELS: 100,
+  /** Snapshot comparison threshold */
+  SNAPSHOT_THRESHOLD: 0.2,
 } as const;

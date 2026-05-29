@@ -81,6 +81,30 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | #1414 | `feat/flexy-hardcoded-values-v3`    | feat(flexy): eliminate hardcoded values from scripts with centralized config |
 | #1448 | `feat/flexy-eliminate-hardcoded-v4` | feat(flexy): centralize AI, dev, and retry defaults into shared config       |
 
+### ✅ Flexy Iteration 5: Eliminate Remaining Magic Numbers & Centralize env.DEV
+
+| File                                               | Change                                                                                              |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`                    | Added `RATE_LIMIT_DEFAULTS`, `CIRCUIT_BREAKER_DEFAULTS`, `MAX_INPUT_LENGTH`, `PLAYWRIGHT_DEFAULTS`  |
+| `packages/shared/src/index.ts`                     | Exported new constants                                                                              |
+| `apps/api/src/config/env.ts`                       | Replaced magic numbers (10/60/120/5/3) with shared `RATE_LIMIT_DEFAULTS`/`CIRCUIT_BREAKER_DEFAULTS` |
+| `apps/api/src/config/prompt-security.ts`           | References shared `MAX_INPUT_LENGTH` from `@blueprint/shared`                                       |
+| `apps/web/src/config/constants/storage.ts`         | Added `STAGGER_MS` to `TOAST_CONFIG`                                                                |
+| `apps/web/src/components/Toast.tsx`                | Removed hardcoded `TOAST_STAGGER_MS`, references `TOAST_CONFIG.STAGGER_MS`                          |
+| `apps/web/src/config/theme.ts`                     | Added `SCROLL_PROGRESS_SPRING` config                                                               |
+| `apps/web/src/components/ScrollProgress.tsx`       | Uses `SCROLL_PROGRESS_SPRING` instead of hardcoded spring values                                    |
+| `apps/web/src/config/env.ts`                       | Added `isDev()` helper to centralize `import.meta.env.DEV`                                          |
+| `apps/web/src/components/ErrorBoundary.tsx`        | Uses `isDev()` instead of `import.meta.env.DEV`                                                     |
+| `apps/web/src/components/Editor.tsx`               | Uses `isDev()` instead of `import.meta.env.DEV`                                                     |
+| `apps/web/src/components/LazyCodeMirror.tsx`       | Uses `isDev()` instead of `import.meta.env.DEV`                                                     |
+| `apps/web/src/components/LazyMarkdownRenderer.tsx` | Uses `isDev()` instead of `import.meta.env.DEV`                                                     |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — 977 tests passing (64 files)
+
 ## Status
 
-**🔄 IN PROGRESS - Awaiting CI verification**
+**✅ COMPLETED - All iterations done**

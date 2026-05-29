@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, memo } from "react";
 import { motion, useSpring, useTransform } from "framer-motion";
 import { ANIMATION } from "../config/constants";
-import { SHADOWS } from "../config/theme";
+import { SHADOWS, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import clsx from "clsx";
 
@@ -61,11 +61,10 @@ export const ScrollProgress = memo(function ScrollProgress({
     return Math.min(Math.max(progress, 0), 100);
   }, [scrollContainerRef]);
 
-  const smoothProgress = useSpring(0, {
-    stiffness: prefersReducedMotion ? 1000 : 150,
-    damping: prefersReducedMotion ? 100 : 20,
-    mass: 0.5,
-  });
+  const springConfig = prefersReducedMotion
+    ? SCROLL_PROGRESS_SPRING.REDUCED_MOTION
+    : SCROLL_PROGRESS_SPRING.DEFAULT;
+  const smoothProgress = useSpring(0, springConfig);
 
   const width = useTransform(smoothProgress, [0, 100], ["0%", "100%"]);
 

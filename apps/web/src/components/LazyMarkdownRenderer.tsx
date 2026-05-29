@@ -25,6 +25,7 @@
 
 import React, { useState, useEffect, memo } from "react";
 import type { MarkdownRendererProps } from "./MarkdownRenderer";
+import { isDev } from "../config/env";
 
 interface LazyMarkdownRendererProps extends MarkdownRendererProps {
   fallback?: React.ReactNode;
@@ -50,7 +51,7 @@ function LazyMarkdownRendererComponent({
           setIsLoading(false);
         }
       } catch (error) {
-        if (import.meta.env.DEV) {
+        if (isDev()) {
           console.error("Failed to load MarkdownRenderer:", error);
         }
         if (isMounted) {

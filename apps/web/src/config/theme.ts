@@ -397,6 +397,18 @@ export const EDITOR_ANIMATION = {
 } as const;
 
 // ============================================================================
+// Scroll Progress Spring Configuration (extracted from ScrollProgress.tsx)
+// Flexy says: No hardcoded spring values - everything in config!
+// ============================================================================
+
+export const SCROLL_PROGRESS_SPRING = {
+  /** Normal motion spring config */
+  DEFAULT: { stiffness: 150, damping: 20, mass: 0.5 } as const,
+  /** Reduced motion spring config (stiffer = less animation) */
+  REDUCED_MOTION: { stiffness: 1000, damping: 100, mass: 0.5 } as const,
+} as const;
+
+// ============================================================================
 // Utility Types
 // ============================================================================
 

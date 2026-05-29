@@ -34,6 +34,7 @@ import { useExportContext } from "../context/ExportContext";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
 import { TIMEOUTS, UI, CONFIRM_DIALOG, TOAST_MESSAGES } from "../config/constants";
+import { isDev } from "../config/env";
 import { useLastSaved } from "../hooks/useLastSaved";
 import clsx from "clsx";
 
@@ -89,7 +90,7 @@ function EditorComponent(): JSX.Element {
       } catch (error) {
         const securityError = handleSecurityError(error);
         toast.error(`${TOAST_MESSAGES.SECURITY_VALIDATION_FAILED}: ${securityError.message}`);
-        if (import.meta.env.DEV) {
+        if (isDev()) {
           console.error("Security validation failed:", securityError);
         }
       }
@@ -148,7 +149,7 @@ function EditorComponent(): JSX.Element {
       toast.success(TOAST_MESSAGES.EXPORT_SUCCESS);
     } catch (error) {
       toast.error(TOAST_MESSAGES.EXPORT_FAILURE);
-      if (import.meta.env.DEV) {
+      if (isDev()) {
         console.error("Export error:", error);
       }
     } finally {
