@@ -316,6 +316,16 @@ export const CIRCUIT_BREAKER_DEFAULTS = {
 export const MAX_INPUT_LENGTH = 5000;
 
 /**
+ * Byte Conversion Constants
+ * Centralized byte multipliers to eliminate hardcoded 1024/KB/MB values.
+ */
+export const BYTE_CONVERSION = {
+  KB: 1024,
+  MB: 1024 * 1024,
+  GB: 1024 * 1024 * 1024,
+} as const;
+
+/**
  * Playwright Test Configuration Defaults
  * Centralized Playwright test timeouts and thresholds.
  * Single source of truth for e2e test configuration.

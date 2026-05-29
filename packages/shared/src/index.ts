@@ -76,6 +76,7 @@ export {
   CIRCUIT_BREAKER_DEFAULTS,
   MAX_INPUT_LENGTH,
   PLAYWRIGHT_DEFAULTS,
+  BYTE_CONVERSION,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";

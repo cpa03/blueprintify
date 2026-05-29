@@ -139,7 +139,7 @@ async function apiCallWithRetry(
 
     try {
       const response = await fetch(`${API_BASE}${endpoint}`, {
-        method: "POST",
+        method: API_CALL_CONFIG.METHOD,
         headers: { "Content-Type": API_CALL_CONFIG.CONTENT_TYPE },
         body: JSON.stringify(requestBody),
         signal: controller.signal,

@@ -24,7 +24,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { copyToClipboard } from "../lib/export";
 import { sanitizeHtml } from "../lib/security";
-import { TIMEOUTS, ACCESSIBILITY_LABELS } from "../config/constants";
+import { TIMEOUTS, ACCESSIBILITY_LABELS, ANIMATION } from "../config/constants";
 import { MARKDOWN, ICON } from "../config/styles";
 import type { Components } from "react-markdown";
 
@@ -106,7 +106,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              transition={{ duration: 0.15 }}
+              transition={{ duration: ANIMATION.FAST }}
             >
               <path
                 strokeLinecap="round"
@@ -125,7 +125,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              transition={{ duration: 0.15 }}
+              transition={{ duration: ANIMATION.FAST }}
             >
               <path
                 strokeLinecap="round"

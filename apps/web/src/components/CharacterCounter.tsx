@@ -1,5 +1,7 @@
 import { memo, useMemo } from "react";
 import { motion } from "framer-motion";
+import { ANIMATION } from "../config/constants";
+import { ANIMATION_TIMING } from "../config/theme";
 
 interface CharacterCounterProps {
   current: number;
@@ -92,7 +94,7 @@ function CharacterCounterCompactComponent({
           }`}
           initial={{ width: 0 }}
           animate={{ width: `${Math.min(percentage, 100)}%` }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
+          transition={{ duration: ANIMATION.NORMAL, ease: ANIMATION_TIMING.easing.easeOut }}
         />
       </div>
       <span
