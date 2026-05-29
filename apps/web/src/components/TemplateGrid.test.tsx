@@ -103,6 +103,7 @@ describe("TemplateGrid", () => {
     const plusBadges = screen.queryByText(/^\+/, { selector: "span" });
     expect(plusBadges).toBeNull();
     // Templates in mock have 2-3 items each, so no +N badge expected
+    expect(plusBadges).not.toBeInTheDocument();
     expect(screen.getByText("React")).toBeInTheDocument();
     expect(screen.getByText("Node.js")).toBeInTheDocument();
     expect(screen.getByText("PostgreSQL")).toBeInTheDocument();

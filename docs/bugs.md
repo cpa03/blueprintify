@@ -6,7 +6,7 @@
 
 ### BUG-014: Stale Doc References in main.yml Workflow (RE-OPENED)
 
-**Status**: Active — 2026-05-29 (RepoKeeper Cycle 29 — re-opened after fix was reverted)  
+**Status**: Active — 2026-05-29 (RepoKeeper Cycle 30 — re-opened after fix was reverted)  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1293

@@ -2,7 +2,36 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-29 - RepoKeeper Cleanup Cycle 29)
+## Current Cycle (2026-05-29 - RepoKeeper Cleanup Cycle 30)
+
+### Findings
+
+- **RepoKeeper started**: On `main` branch at `4f551dc`. Build/lint/typecheck all passing clean.
+- **Test count increased**: 558 web tests (up from 510), 296 API, 107 shared = 961 total (up from 913).
+- **No redundant/temp/stray files detected** — repo remains clean after 29 previous cycles.
+- **No untracked files** — `.gitignore` is comprehensive.
+- **CHANGELOG.md**: Up to date — no new commits since Cycle 29.
+- **Lint warning fixed**: Unused `plusBadges` variable in `TemplateGrid.test.tsx` — added missing assertion `expect(plusBadges).not.toBeInTheDocument()`.
+- **docs/active-tasks.md**: Cycle 29 marked Complete (items 59-60 verified as done — PR was merged), Cycle 30 entry added.
+- **BUG-014**: Still present in `main.yml` — remains blocked by GitHub App `workflows` permission (recurring — 10+ previous cycles).
+- **No stale branch artifacts** detected in working tree.
+- **Dependencies**: 0 vulnerabilities (npm audit clean).
+- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
+- **Open PRs / issues**: Managed by CI system, no action needed.
+
+### Actions Taken
+
+- Fixed lint warning in `TemplateGrid.test.tsx` — added assertion for previously unused `plusBadges` variable
+- Updated `docs/active-tasks.md` — marked Cycle 29 Complete, added Cycle 30 entry, updated test count 913→961
+- Updated `docs/findings.md` — this record
+- Updated `docs/features.md` — bumped "Last Updated" to Cycle 30
+- Updated `docs/bugs.md` — bumped "Last Updated" to Cycle 30
+- Updated `docs/roadmap.md` — bumped "Last Updated" to Cycle 30
+- Ran verification: typecheck ✅ lint ✅ build ✅ test:all (961 passing) ✅ npm audit (0 vulns) ✅
+- Created branch `chore/repokeeper-cleanup-cycle-30` from main
+- Created PR with all cleanup changes
+
+## Previous Cycle (2026-05-29 - RepoKeeper Cleanup Cycle 29)
 
 ### Findings
 
@@ -366,5 +395,5 @@
 - Created branch `chore/repokeeper-cleanup-cycle-20` from main
 - Created PR with all cleanup changes
 
-**Last Cleared**: 2026-05-28 (Cycle 27)  
+**Last Cleared**: 2026-05-29 (Cycle 30)  
 **Maintainer**: RepoKeeper
