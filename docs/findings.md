@@ -2,6 +2,34 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
+## Current Cycle (2026-05-29 - RepoKeeper Cleanup Cycle 29)
+
+### Findings
+
+- **RepoKeeper started**: On `main` branch at `f679bc5`. Build/lint/typecheck all passing clean.
+- **Test count increased**: 510 web tests (up from 476), 296 API, 107 shared = 913 total (up from 879).
+- **No redundant/temp/stray files detected** — repo remains clean after 28 previous cycles.
+- **No untracked files** — `.gitignore` is comprehensive.
+- **CHANGELOG.md**: Missing 5 commits in [Unreleased] — added (feat SVG icons, refactor flexy v3, perf resource hints, test hook tests, feat checkmark animation).
+- **docs/active-tasks.md**: Cycle 27 had 2 unchecked items (branch creation, PR) — already committed as `af69ab0`. Marked Complete. Cycle 28 was also not tracked — added.
+- **BUG-014**: Still present in `main.yml` — remains blocked by GitHub App `workflows` permission (recurring — 10+ previous cycles).
+- **No stale branch artifacts** detected in working tree.
+- **Dependencies**: 0 vulnerabilities (npm audit clean).
+- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
+- **Open PRs / issues**: Managed by CI system, no action needed.
+
+### Actions Taken
+
+- Updated `CHANGELOG.md` — added 5 missing commits to [Unreleased] (Added, Changed, Performance, Tests sections)
+- Updated `docs/active-tasks.md` — marked Cycle 27 Complete, added Cycle 28 entry (Complete), added Cycle 29 entry (Current), updated test count 879→913
+- Updated `docs/findings.md` — this record
+- Updated `docs/features.md` — bumped "Last Updated" to Cycle 29
+- Updated `docs/bugs.md` — bumped "Last Updated" to Cycle 29
+- Updated `docs/roadmap.md` — bumped "Last Updated" to Cycle 29
+- Ran verification: typecheck ✅ lint ✅ build ✅ test:all (913 passing) ✅ npm audit (0 vulns) ✅
+- Created branch `chore/repokeeper-cleanup-cycle-29` from main
+- Created PR with all cleanup changes
+
 ## Previous Cycle (2026-05-27 - RepoKeeper Cleanup Cycle 24)
 
 ### Findings

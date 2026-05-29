@@ -7,13 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Performance
-
-- Simplify font loading with `media='print'` onload pattern for improved initial render performance
-- Replace expensive Blob serialization with fast key iteration for localStorage quota checks
-
 ### Added
 
+- SVG icons replacing emoji in editor header and toolbar for consistent visual identity ([#1427](https://github.com/cpa03/blueprintify/pull/1427))
+- Spring-animated checkmark path draw on save transition in LastSavedIndicator with SVG spring-bounce and text slide-in ([#1424](https://github.com/cpa03/blueprintify/pull/1424))
 - Animate-glow CSS class for primary CTA button breathing effect (pulsing box-shadow animation, respects prefers-reduced-motion)
 - Shimmer completion animation on StepInfo progress bar for progress celebration feedback
 - Character counter for constraints textarea in StepInfo for real-time input awareness
@@ -47,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Eliminated remaining hardcoded values into centralized config constants across codebase (Flexy v3 deep clean) ([#1428](https://github.com/cpa03/blueprintify/pull/1428))
 - Eliminated hardcoded API URLs across codebase with shared defaults in `@blueprint/shared` package for single-source-of-truth configuration
 - Eliminated hardcoded HTTP header strings (Content-Type, Connection) into `API_HEADERS` config constants across API utilities and DI container
 - Consolidated 8x `new Date().toISOString()` calls into centralized `timestamp()` utility from errors.ts in secureLog, logger, and index
@@ -104,6 +102,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Performance
 
+- Add resource hints (dns-prefetch/preconnect) and optimize image loading with `decoding=async` for faster page loads ([#1429](https://github.com/cpa03/blueprintify/pull/1429))
+- Simplify font loading with `media='print'` onload pattern for improved initial render performance
+- Replace expensive Blob serialization with fast key iteration for localStorage quota checks
 - BroCula hunt: removed rehype-highlight (~200KB), replaced framer-motion with CSS for lighter animations
 - BroCula hunt cycle 4: replaced eager framer-motion with CSS animations, lazy-loaded MotionConfigWrapper for further bundle reduction
 - Removed animation modulepreload hint for 100 Lighthouse performance score
@@ -118,6 +119,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Lazy-loaded Wizard, StepIndicator, ShowEditorButton - Lighthouse score 74→98
 - Optimized font loading and critical CSS rendering for Lighthouse performance
 - Fixed CLS by giving lazy-loaded TemplateGrid a min-height fallback ([#1290](https://github.com/cpa03/blueprintify/pull/1290))
+
+### Tests
+
+- Add comprehensive unit tests for `useBlueprintStream` (11 tests), `usePersistedStore` (14 tests), and `useAutoSaveToast` (9 tests) React hooks ([#1423](https://github.com/cpa03/blueprintify/pull/1423))
 
 ### Security
 
