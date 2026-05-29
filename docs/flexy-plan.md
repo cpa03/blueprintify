@@ -15,9 +15,9 @@ Eliminate hardcoded values and build a modular, single-source-of-truth system.
 | `apps/api/src/config/env.ts`    | References shared defaults instead of hardcoding |
 | `apps/web/src/config/env.ts`    | References shared defaults instead of hardcoding |
 
-### ✅ CI Node Version (Not pushed - token restriction)
+### ✅ CI Node Version (Pushed in PR #[TBD])
 
-Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 workflow files (11 occurrences). Recommended in PR.
+Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 5 workflow files (11 occurrences). Now reading Node.js version from `.node-version` (v22) instead of hardcoded v20.
 
 ### ✅ Script Config Centralization (Pushed in PR #1414)
 
@@ -43,4 +43,8 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 
 ## Status
 
-**✅ COMPLETE**
+**✅ COMPLETE** (ongoing maintenance - new hardcoded values may be eliminated as they're discovered)
+
+## Flexy Says
+
+> "Hardcoded is the enemy of maintainability. Every magic string, every literal version, every inline number is a future bug waiting to happen. When you change one, you must remember to change all - and you will forget. Centralize. Modularize. Single source of truth."
