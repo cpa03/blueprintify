@@ -2,17 +2,16 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-29 - RepoKeeper Cleanup Cycle 30)
+## Current Cycle (2026-05-29 - RepoKeeper Cleanup Cycle 31)
 
 ### Findings
 
-- **RepoKeeper started**: On `main` branch at `4f551dc`. Build/lint/typecheck all passing clean.
-- **Test count increased**: 558 web tests (up from 510), 296 API, 107 shared = 961 total (up from 913).
-- **No redundant/temp/stray files detected** — repo remains clean after 29 previous cycles.
+- **RepoKeeper started**: On `main` branch at `84382da`. Build/lint/typecheck all passing clean.
+- **Test count increased**: 558 web, 299 API (up from 296), 120 shared (up from 107) = 977 total (up from 961).
+- **No redundant/temp/stray files detected** — repo remains clean after 30 previous cycles.
 - **No untracked files** — `.gitignore` is comprehensive.
-- **CHANGELOG.md**: Up to date — no new commits since Cycle 29.
-- **Lint warning fixed**: Unused `plusBadges` variable in `TemplateGrid.test.tsx` — added missing assertion `expect(plusBadges).not.toBeInTheDocument()`.
-- **docs/active-tasks.md**: Cycle 29 marked Complete (items 59-60 verified as done — PR was merged), Cycle 30 entry added.
+- **CHANGELOG.md**: Missing `feat(web): highlight animation on custom feature chip when added` commit in [Unreleased] — added.
+- **docs/active-tasks.md**: Fixed duplicate "RepoKeeper Cleanup Cycle 3" entry (second occurrence with "Active" status was stale — archived). BugFixer Cycle 1 status updated to "Blocked". Cycle 30 marked Complete. Cycle 31 added. Test count updated 961→977.
 - **BUG-014**: Still present in `main.yml` — remains blocked by GitHub App `workflows` permission (recurring — 10+ previous cycles).
 - **No stale branch artifacts** detected in working tree.
 - **Dependencies**: 0 vulnerabilities (npm audit clean).
@@ -21,17 +20,17 @@
 
 ### Actions Taken
 
-- Fixed lint warning in `TemplateGrid.test.tsx` — added assertion for previously unused `plusBadges` variable
-- Updated `docs/active-tasks.md` — marked Cycle 29 Complete, added Cycle 30 entry, updated test count 913→961
+- Updated `CHANGELOG.md` — added missing `feat(web): highlight animation on custom feature chip when added` to [Unreleased]
+- Updated `docs/active-tasks.md` — fixed duplicate Cycle 3 entry (archived), marked Cycle 30 Complete, added Cycle 31, updated test count 961→977
 - Updated `docs/findings.md` — this record
-- Updated `docs/features.md` — bumped "Last Updated" to Cycle 30
-- Updated `docs/bugs.md` — bumped "Last Updated" to Cycle 30
-- Updated `docs/roadmap.md` — bumped "Last Updated" to Cycle 30
-- Ran verification: typecheck ✅ lint ✅ build ✅ test:all (961 passing) ✅ npm audit (0 vulns) ✅
-- Created branch `chore/repokeeper-cleanup-cycle-30` from main
+- Updated `docs/features.md` — bumped "Last Updated" to Cycle 31
+- Updated `docs/bugs.md` — bumped "Last Updated" to Cycle 31
+- Updated `docs/roadmap.md` — bumped "Last Updated" to Cycle 31
+- Ran verification: typecheck ✅ lint ✅ build ✅ test:all (977 passing) ✅ npm audit (0 vulns) ✅
+- Created branch `chore/repokeeper-cleanup-cycle-31` from main
 - Created PR with all cleanup changes
 
-## Previous Cycle (2026-05-29 - RepoKeeper Cleanup Cycle 29)
+## Previous Cycle (2026-05-29 - RepoKeeper Cleanup Cycle 30)
 
 ### Findings
 
@@ -395,5 +394,5 @@
 - Created branch `chore/repokeeper-cleanup-cycle-20` from main
 - Created PR with all cleanup changes
 
-**Last Cleared**: 2026-05-29 (Cycle 30)  
+**Last Cleared**: 2026-05-29 (Cycle 31)  
 **Maintainer**: RepoKeeper
