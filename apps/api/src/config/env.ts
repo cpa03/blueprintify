@@ -50,12 +50,12 @@ export interface EnvConfig {
  * Exported for use in test utilities to avoid duplication
  */
 export const DEFAULTS: Omit<EnvConfig, "OPENAI_API_KEY"> = {
-  // AI Service
-  OPENAI_BASE_URL: "https://api.openai.com/v1",
-  OPENAI_MODEL: "gpt-4o-mini",
-  OPENAI_TIMEOUT_MS: 60000,
-  OPENAI_MAX_TOKENS: 4000,
-  OPENAI_TEMPERATURE: 0.7,
+  // AI Service (from shared single source of truth)
+  OPENAI_BASE_URL: AI_DEFAULTS.BASE_URL,
+  OPENAI_MODEL: AI_DEFAULTS.MODEL,
+  OPENAI_TIMEOUT_MS: AI_DEFAULTS.TIMEOUT_MS,
+  OPENAI_MAX_TOKENS: AI_DEFAULTS.MAX_TOKENS,
+  OPENAI_TEMPERATURE: AI_DEFAULTS.TEMPERATURE,
 
   // API
   API_VERSION: SHARED_DEFAULTS.API_VERSION,
@@ -63,7 +63,7 @@ export const DEFAULTS: Omit<EnvConfig, "OPENAI_API_KEY"> = {
   CORS_MAX_AGE: SHARED_DEFAULTS.CORS_MAX_AGE,
 
   // Rate Limiting
-  RATE_LIMIT_WINDOW_MS: 60000,
+  RATE_LIMIT_WINDOW_MS: TIME_UNITS.MS_PER_SECOND * TIME_UNITS.SECONDS_PER_MINUTE,
   RATE_LIMIT_STRICT_MAX: 10,
   RATE_LIMIT_STANDARD_MAX: 60,
   RATE_LIMIT_LENIENT_MAX: 120,
@@ -73,15 +73,15 @@ export const DEFAULTS: Omit<EnvConfig, "OPENAI_API_KEY"> = {
 
   // Circuit Breaker
   CIRCUIT_BREAKER_FAILURE_THRESHOLD: 5,
-  CIRCUIT_BREAKER_RESET_TIMEOUT_MS: 60000,
+  CIRCUIT_BREAKER_RESET_TIMEOUT_MS: TIME_UNITS.MS_PER_SECOND * TIME_UNITS.SECONDS_PER_MINUTE,
   CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS: 3,
-  CIRCUIT_BREAKER_COLD_START_WINDOW_MS: 30_000,
+  CIRCUIT_BREAKER_COLD_START_WINDOW_MS: 30 * TIME_UNITS.MS_PER_SECOND,
 
-  // Retry
-  RETRY_MAX_RETRIES: 3,
-  RETRY_INITIAL_DELAY_MS: 1000,
-  RETRY_BACKOFF_FACTOR: 2,
-  RETRY_MAX_DELAY_MS: 10000,
+  // Retry (from shared single source of truth)
+  RETRY_MAX_RETRIES: SHARED_RETRY_CONFIG.DEFAULT_RETRIES,
+  RETRY_INITIAL_DELAY_MS: SHARED_RETRY_CONFIG.DEFAULT_INITIAL_DELAY,
+  RETRY_BACKOFF_FACTOR: SHARED_RETRY_CONFIG.DEFAULT_BACKOFF_FACTOR,
+  RETRY_MAX_DELAY_MS: SHARED_RETRY_CONFIG.DEFAULT_MAX_DELAY,
 
   // External URLs
   PROJECT_HOMEPAGE_URL: DEFAULT_URLS.PROJECT_HOMEPAGE,
@@ -135,7 +135,7 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
   const openaiApiKey = getEnvVar("OPENAI_API_KEY", env);
   if (!openaiApiKey) {
     throw new Error(
-      "OPENAI_API_KEY is required but not set in environment. Please set the OPENAI_API_KEY environment variable in your .dev.vars file (for local development) or in your Cloudflare Workers secrets (for production)."
+      `OPENAI_API_KEY is required but not set in environment. Please set the OPENAI_API_KEY environment variable in your .dev.vars file (for local development) or in your Cloudflare Workers secrets (for production).`
     );
   }
 
@@ -229,7 +229,13 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
 }
 
 // Singleton config instance - delegates to constants.ts for unified state
-import { DEFAULT_URLS, SHARED_DEFAULTS } from "@blueprint/shared";
+import {
+  AI_DEFAULTS,
+  DEFAULT_URLS,
+  SHARED_DEFAULTS,
+  RETRY_CONFIG as SHARED_RETRY_CONFIG,
+  TIME_UNITS,
+} from "@blueprint/shared";
 import { getEnvConfig, setEnvConfig as setConstantsConfig } from "./constants";
 
 /**

@@ -1,9 +1,13 @@
 import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import { compression } from "vite-plugin-compression2";
+import { DEV_DEFAULTS } from "@blueprint/shared";
 
-const DEV_SERVER_PORT = parseInt(process.env.VITE_DEV_SERVER_PORT || "3000", 10);
-const API_PROXY_TARGET = process.env.VITE_API_PROXY_TARGET || "http://localhost:8787";
+const DEV_SERVER_PORT = parseInt(
+  process.env.VITE_DEV_SERVER_PORT || String(DEV_DEFAULTS.WEB_PORT),
+  10
+);
+const API_PROXY_TARGET = process.env.VITE_API_PROXY_TARGET || DEV_DEFAULTS.API_PROXY_TARGET;
 
 /**
  * Vite plugin to preload CSS with high priority and load it asynchronously.

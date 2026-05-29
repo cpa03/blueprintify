@@ -21,13 +21,17 @@ vi.mock("../errors", () => ({
 // Mock the config to ensure DEFAULT_MODEL getter works
 vi.mock("../config/constants", async () => {
   const actual = await vi.importActual("../config/constants");
+  // Reference AI_DEFAULTS to stay in sync with shared single source of truth
+  const shared: typeof import("@blueprint/shared") = (await vi.importActual(
+    "@blueprint/shared"
+  )) as typeof import("@blueprint/shared");
   return {
     ...actual,
     AI_CONFIG: {
-      DEFAULT_MODEL: "gpt-4o-mini",
-      DEFAULT_TIMEOUT: 60000,
-      DEFAULT_MAX_TOKENS: 4000,
-      DEFAULT_TEMPERATURE: 0.7,
+      DEFAULT_MODEL: shared.AI_DEFAULTS.MODEL,
+      DEFAULT_TIMEOUT: shared.AI_DEFAULTS.TIMEOUT_MS,
+      DEFAULT_MAX_TOKENS: shared.AI_DEFAULTS.MAX_TOKENS,
+      DEFAULT_TEMPERATURE: shared.AI_DEFAULTS.TEMPERATURE,
     },
   };
 });

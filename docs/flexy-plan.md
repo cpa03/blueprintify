@@ -41,6 +41,34 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | #1401 | `feat/flexy-eliminate-hardcoded-v2` | feat(flexy): eliminate hardcoded URLs with shared defaults                   |
 | #1414 | `feat/flexy-hardcoded-values-v3`    | feat(flexy): eliminate hardcoded values from scripts with centralized config |
 
+### ✅ AI & Dev Defaults Centralization (v4 - This PR)
+
+| File                                               | Change                                                                                                                 |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`                    | Added `AI_DEFAULTS` (OpenAI base URL, model, timeout, tokens, temperature) + `DEV_DEFAULTS` (ports, URLs for dev/test) |
+| `packages/shared/src/index.ts`                     | Exported `AI_DEFAULTS`, `DEV_DEFAULTS`                                                                                 |
+| `apps/api/src/config/env.ts`                       | References `AI_DEFAULTS`, `RETRY_CONFIG`, `TIME_UNITS` instead of hardcoded magic numbers                              |
+| `apps/api/src/config/env.test.ts`                  | Uses `TEST_CORS_ORIGIN` constant, `TIME_UNITS` for assertions                                                          |
+| `apps/api/src/test-utils.ts`                       | Uses `DEV_DEFAULTS.PLAYWRIGHT_TEST_URL` instead of hardcoded URL                                                       |
+| `apps/api/src/utils/stream.test.ts`                | Uses `DEV_DEFAULTS` for CORS origin in config + assertion                                                              |
+| `apps/api/src/controllers/base.controller.test.ts` | Mock references `AI_DEFAULTS` to stay in sync with shared config                                                       |
+| `apps/web/vite.config.ts`                          | Uses `DEV_DEFAULTS` for port + proxy target                                                                            |
+| `apps/web/playwright.config.ts`                    | Uses `DEV_DEFAULTS` for test server URL                                                                                |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — all tests passing
+
+## PRs
+
+| PR #  | Branch                              | Title                                                                        |
+| ----- | ----------------------------------- | ---------------------------------------------------------------------------- |
+| #1401 | `feat/flexy-eliminate-hardcoded-v2` | feat(flexy): eliminate hardcoded URLs with shared defaults                   |
+| #1414 | `feat/flexy-hardcoded-values-v3`    | feat(flexy): eliminate hardcoded values from scripts with centralized config |
+| #---- | `feat/flexy-eliminate-hardcoded-v4` | feat(flexy): centralize AI, dev, and retry defaults into shared config       |
+
 ## Status
 
-**✅ COMPLETE**
+**🔄 IN PROGRESS - Awaiting CI verification**

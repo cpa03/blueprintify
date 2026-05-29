@@ -1,4 +1,5 @@
 import { vi } from "vitest";
+import { DEV_DEFAULTS } from "@blueprint/shared";
 import { loadConfig, DEFAULTS } from "./config/env";
 import { setEnvConfig } from "./config/constants";
 
@@ -17,7 +18,7 @@ const createDefaultsEnvStrings = (): Record<string, string> => ({
   OPENAI_MAX_TOKENS: String(DEFAULTS.OPENAI_MAX_TOKENS),
   OPENAI_TEMPERATURE: String(DEFAULTS.OPENAI_TEMPERATURE),
   API_VERSION: DEFAULTS.API_VERSION,
-  CORS_ORIGIN: "http://localhost:3000", // Must be non-empty for validation
+  CORS_ORIGIN: DEV_DEFAULTS.PLAYWRIGHT_TEST_URL, // Must be non-empty for validation
   CORS_MAX_AGE: String(DEFAULTS.CORS_MAX_AGE),
   RATE_LIMIT_WINDOW_MS: String(DEFAULTS.RATE_LIMIT_WINDOW_MS),
   RATE_LIMIT_STRICT_MAX: String(DEFAULTS.RATE_LIMIT_STRICT_MAX),
