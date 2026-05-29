@@ -171,15 +171,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin fetchpriority="high" />
     <link rel="preconnect" href="https://va.vercel-scripts.com" crossorigin />
 
-    <!-- Preload Inter font for LCP hero text - URL must match actual stylesheet exactly -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
-      fetchpriority="high"
-    />
-
-    <!-- Async Inter font (body text) - media="print" onload trick for non-blocking CSS -->
+    <!-- Async Inter font - media="print" onload trick for non-blocking CSS -->
+    <!-- No preload needed: @font-face with local("Inter") + size-adjusted fallback in critical CSS
+         handles the FOUT/CLS, and the tiny Google Fonts stylesheet loads fast via async pattern -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
