@@ -51,7 +51,7 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | ----- | ----------------------------------- | -------------------------------------------------------------------------------------------- |
 | #1401 | `feat/flexy-eliminate-hardcoded-v2` | feat(flexy): eliminate hardcoded URLs with shared defaults                                   |
 | #1414 | `feat/flexy-hardcoded-values-v3`    | feat(flexy): eliminate hardcoded values from scripts with centralized config                 |
-| #NEW  | `feat/flexy-iteration-4`            | feat(flexy): eliminate duplicated TIME_UNITS and magic numbers, deduplicate animation config |
+| #1454 | `feat/flexy-iteration-4`            | feat(flexy): eliminate duplicated TIME_UNITS and magic numbers, deduplicate animation config |
 
 ### ✅ AI & Dev Defaults Centralization (v4 - This PR)
 
