@@ -4,9 +4,9 @@
 
 ## Active Bugs
 
-### BUG-014: Stale Doc References in main.yml Workflow (RE-OPENED)
+### BUG-014: Stale Doc References in main.yml Workflow (RESOLVED)
 
-**Status**: Active — 2026-05-29 (RepoKeeper Cycle 30 — re-opened after fix was reverted)  
+**Status**: Resolved — 2026-05-29 (BugFixer Cycle)  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1293
@@ -14,26 +14,39 @@
 
 #### Description
 
-`.github/workflows/main.yml` continues to reference two non-existent documentation files. Despite multiple fixes, the stale references keep returning (likely re-introduced by workflow auto-generation or merge conflicts):
+`.github/workflows/main.yml` continued to reference two non-existent documentation files.
 
-- `docs/bug.md` → should be `docs/bugs.md`
-- `docs/feature.md` → should be `docs/features.md`
+#### Latest Fix Applied (BugFixer Cycle 2026-05-29)
 
-#### Fix History
-
-| Cycle   | Date       | Action                       | Status                     |
-| ------- | ---------- | ---------------------------- | -------------------------- |
-| Cycle 1 | 2026-05-23 | Initial fix                  | Fix lost in PR #1357 merge |
-| Cycle 2 | 2026-05-25 | Re-fixed in BugFixer cycle 2 | Fix reverted               |
-| Cycle 3 | 2026-05-26 | Re-fixed again               | **Current**                |
-
-#### Latest Fix Applied (Cycle 3)
-
-- Replaced stale `docs/bug.md` → `docs/bugs.md` on lines 38, 262
-- Replaced stale `docs/feature.md` → `docs/features.md` on line 38
-- Fixed Prettier formatting on 4 workflow YAML files (iterate.yml, main.yml, on-pull.yml, parallel.yml)
+- Replaced stale `docs/bug.md` → `docs/bugs.md` on lines 39, 263
+- Replaced stale `docs/feature.md` → `docs/features.md` on line 39
 - Verified: typecheck/lint/build/test/format all pass clean
-- 864 tests passing (473 web + 284 api + 107 shared)
+- 977 tests passing (558 web + 299 api + 120 shared)
+
+---
+
+### BUG-017: CI Node.js Version Mismatch (RESOLVED)
+
+**Status**: Resolved — 2026-05-29 (BugFixer Cycle)  
+**Priority**: High  
+**Area**: CI/CD  
+**Issue**: #1390
+**Milestone**: Immediate
+
+#### Description
+
+All CI workflow files used Node.js 20, but the project requires Node.js 22+ per `.node-version`, `.nvmrc`, and `package.json` engines.
+
+#### Fix Applied
+
+- Updated `node-version` from `"20"` to `"22"` in all 4 workflow files:
+  - `.github/workflows/iterate.yml` (5 instances)
+  - `.github/workflows/parallel.yml` (4 instances)
+  - `.github/workflows/pr-gatekeeper.yml` (1 instance)
+  - `.github/workflows/on-pull.yml` (1 instance)
+- Also fixed Prettier formatting in `apps/web/index.html`
+- Verified: typecheck/lint/build/test/format all pass clean
+- 977 tests passing (558 web + 299 api + 120 shared)
 
 ---
 
