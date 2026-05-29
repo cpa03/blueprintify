@@ -103,6 +103,8 @@ export const EDITOR_LABELS = {
   CONTENT_STATS: {
     CHARS: "Chars",
     WORDS: "Words",
+    READING_TIME: "min read",
+    LESS_THAN_ONE_MIN: "<1 min",
   },
   TAB_NAVIGATION: {
     SWITCH_TABS: "Switch between blueprint and tasks tabs",
