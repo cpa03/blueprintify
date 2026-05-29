@@ -16,6 +16,11 @@
 
 /* ===== Base Styles ===== */
 @layer base {
+  /* Smooth scrolling for anchor links and scrollIntoView calls */
+  html {
+    scroll-behavior: smooth;
+  }
+
   /* ===== Base Styles ===== */
   body {
     @apply bg-dark-950 text-dark-100 font-sans antialiased;
@@ -543,6 +548,10 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
     .glow-pulse,
     .animated-bg,
     .focus-glow,
