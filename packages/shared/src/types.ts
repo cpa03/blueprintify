@@ -18,7 +18,7 @@ import {
   StorageQuotaSchema,
   StorageClearRequestSchema,
   StorageReportRequestSchema,
-} from "./schema";
+} from "./schema.js";
 
 // ===== Inferred Types from Zod Schemas =====
 

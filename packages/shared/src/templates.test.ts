@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { STARTER_TEMPLATES } from "./templates";
+import { STARTER_TEMPLATES } from "./templates.js";
 
 describe("STARTER_TEMPLATES", () => {
   it("should have at least one template", () => {

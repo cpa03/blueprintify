@@ -14,7 +14,7 @@ import type {
   Session,
   EditorTab,
   EditorState,
-} from "./types";
+} from "./types.js";
 
 describe("Type Exports", () => {
   describe("TechStackCategoryType", () => {
