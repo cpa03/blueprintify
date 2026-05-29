@@ -176,8 +176,12 @@ export const TIME_UNITS = {
   MS_PER_SECOND: 1000,
   /** Seconds per minute */
   SECONDS_PER_MINUTE: 60,
+  /** Minutes per hour */
+  MINUTES_PER_HOUR: 60,
   /** Seconds per hour */
   SECONDS_PER_HOUR: 3600,
+  /** Hours per day */
+  HOURS_PER_DAY: 24,
   /** Seconds per day */
   SECONDS_PER_DAY: 86400,
 } as const;

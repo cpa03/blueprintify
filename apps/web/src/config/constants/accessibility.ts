@@ -51,9 +51,6 @@ export const LAST_SAVED_MESSAGES = {
   DAYS_AGO: (days: number) => `Saved ${days}d ago`,
   LONG_AGO: "Saved a while ago",
   JUST_NOW_THRESHOLD_S: 10,
-  SECONDS_PER_MINUTE: 60,
-  MINUTES_PER_HOUR: 60,
-  HOURS_PER_DAY: 24,
   DAYS_LONG_AGO_THRESHOLD: 30,
 } as const;
 

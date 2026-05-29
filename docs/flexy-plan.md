@@ -28,18 +28,30 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | `scripts/fix-ci-node-version.sh` | Uses `node-version-file` approach, reads `.node-version`  |
 | `scripts/brocula-hunt.mjs`       | Dynamic PROJECT_ROOT, PREVIEW_PORT, PREVIEW_HOST from env |
 
+### ✅ Flexy Iteration 2: Eliminate Duplicated & Magic Number Configs
+
+| File                                             | Change                                                                                    |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`                  | Added `MINUTES_PER_HOUR` + `HOURS_PER_DAY` to `TIME_UNITS`                                |
+| `apps/web/src/config/constants/accessibility.ts` | Removed `SECONDS_PER_MINUTE`/`MINUTES_PER_HOUR`/`HOURS_PER_DAY` (duplicated `TIME_UNITS`) |
+| `apps/web/src/hooks/useLastSaved.ts`             | Uses `TIME_UNITS` from `@blueprint/shared` instead of local duplicates                    |
+| `apps/web/src/config/constants/ui.ts`            | `ANIMATION` values now reference `ANIMATION_TIMING` from `theme.ts`                       |
+| `apps/web/src/config/theme.ts`                   | Removed `SPRING_CONFIG` import (broke circular dependency); inlined spring vals           |
+| `apps/api/src/config/constants.ts`               | Replaced magic numbers `86400`/`3600`/`60`/`30`/`300` with `TIME_UNITS` refs              |
+
 ## Verification
 
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
-- ✅ `npm run test:all` — 876 tests passing (56 test files)
+- ✅ `npm run test:all` — 977 tests passing (64 test files)
 
 ## PRs
 
-| PR #  | Branch                              | Title                                                                        |
-| ----- | ----------------------------------- | ---------------------------------------------------------------------------- |
-| #1401 | `feat/flexy-eliminate-hardcoded-v2` | feat(flexy): eliminate hardcoded URLs with shared defaults                   |
-| #1414 | `feat/flexy-hardcoded-values-v3`    | feat(flexy): eliminate hardcoded values from scripts with centralized config |
+| PR #  | Branch                              | Title                                                                                        |
+| ----- | ----------------------------------- | -------------------------------------------------------------------------------------------- |
+| #1401 | `feat/flexy-eliminate-hardcoded-v2` | feat(flexy): eliminate hardcoded URLs with shared defaults                                   |
+| #1414 | `feat/flexy-hardcoded-values-v3`    | feat(flexy): eliminate hardcoded values from scripts with centralized config                 |
+| #NEW  | `feat/flexy-iteration-4`            | feat(flexy): eliminate duplicated TIME_UNITS and magic numbers, deduplicate animation config |
 
 ### ✅ AI & Dev Defaults Centralization (v4 - This PR)
 

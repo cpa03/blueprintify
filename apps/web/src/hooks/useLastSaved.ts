@@ -10,6 +10,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { TIME_UNITS } from "@blueprint/shared";
 import { TIMEOUTS, LAST_SAVED_MESSAGES } from "../config/constants";
 
 /**
@@ -28,18 +29,18 @@ import { TIMEOUTS, LAST_SAVED_MESSAGES } from "../config/constants";
 function formatRelativeTime(timestamp: number): string {
   const now = Date.now();
   const diff = now - timestamp;
-  const seconds = Math.floor(diff / 1000);
-  const minutes = Math.floor(seconds / LAST_SAVED_MESSAGES.SECONDS_PER_MINUTE);
-  const hours = Math.floor(minutes / LAST_SAVED_MESSAGES.MINUTES_PER_HOUR);
-  const days = Math.floor(hours / LAST_SAVED_MESSAGES.HOURS_PER_DAY);
+  const seconds = Math.floor(diff / TIME_UNITS.MS_PER_SECOND);
+  const minutes = Math.floor(seconds / TIME_UNITS.SECONDS_PER_MINUTE);
+  const hours = Math.floor(minutes / TIME_UNITS.MINUTES_PER_HOUR);
+  const days = Math.floor(hours / TIME_UNITS.HOURS_PER_DAY);
 
   if (seconds < LAST_SAVED_MESSAGES.JUST_NOW_THRESHOLD_S) {
     return LAST_SAVED_MESSAGES.JUST_NOW;
-  } else if (seconds < LAST_SAVED_MESSAGES.SECONDS_PER_MINUTE) {
+  } else if (seconds < TIME_UNITS.SECONDS_PER_MINUTE) {
     return LAST_SAVED_MESSAGES.SECONDS_AGO(seconds);
-  } else if (minutes < LAST_SAVED_MESSAGES.MINUTES_PER_HOUR) {
+  } else if (minutes < TIME_UNITS.MINUTES_PER_HOUR) {
     return LAST_SAVED_MESSAGES.MINUTES_AGO(minutes);
-  } else if (hours < LAST_SAVED_MESSAGES.HOURS_PER_DAY) {
+  } else if (hours < TIME_UNITS.HOURS_PER_DAY) {
     return LAST_SAVED_MESSAGES.HOURS_AGO(hours);
   } else if (days < LAST_SAVED_MESSAGES.DAYS_LONG_AGO_THRESHOLD) {
     return LAST_SAVED_MESSAGES.DAYS_AGO(days);
