@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
+import { DEV_DEFAULTS } from "@blueprint/shared";
 
-const TEST_SERVER_URL = process.env.PLAYWRIGHT_TEST_URL || "http://localhost:3000";
+const TEST_SERVER_URL = process.env.PLAYWRIGHT_TEST_URL || DEV_DEFAULTS.PLAYWRIGHT_TEST_URL;
 
 const PLAYWRIGHT_CONFIG = {
   WEB_SERVER_TIMEOUT_MS: 120000,

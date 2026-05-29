@@ -237,3 +237,37 @@ export const SHARED_DEFAULTS = {
   CORS_ORIGIN_DEV: "*",
   CORS_MAX_AGE: 86400,
 } as const;
+
+/**
+ * AI Service Defaults
+ * Centralized OpenAI/AI configuration defaults shared across API and Web.
+ * Single source of truth to eliminate hardcoded AI config values.
+ */
+export const AI_DEFAULTS = {
+  /** Default OpenAI API base URL */
+  BASE_URL: "https://api.openai.com/v1",
+  /** Default model identifier */
+  MODEL: "gpt-4o-mini",
+  /** Default request timeout in milliseconds */
+  TIMEOUT_MS: 60000,
+  /** Default max tokens for AI completion */
+  MAX_TOKENS: 4000,
+  /** Default temperature for AI completion */
+  TEMPERATURE: 0.7,
+} as const;
+
+/**
+ * Development Server Defaults
+ * Ports and URLs used during local development.
+ * Single source of truth to eliminate hardcoded dev server addresses.
+ */
+export const DEV_DEFAULTS = {
+  /** Frontend dev server port */
+  WEB_PORT: 3000,
+  /** API/dev server port */
+  API_PORT: 8787,
+  /** Default API base URL for web client (proxied via Vite) */
+  API_PROXY_TARGET: "http://localhost:8787",
+  /** Default test server URL for Playwright */
+  PLAYWRIGHT_TEST_URL: "http://localhost:3000",
+} as const;

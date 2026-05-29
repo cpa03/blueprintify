@@ -5,13 +5,14 @@
  * Verifies correct SSE protocol format and proper event handling.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { DEV_DEFAULTS } from "@blueprint/shared";
 import { formatSSE, createSSEResponse, createStreamFromGenerator } from "./stream";
 import { setEnvConfig } from "../config/constants";
 import type { SSEMessage } from "./stream";
 
 function makeMinimalEnvConfig(): Record<string, unknown> {
   return {
-    CORS_ORIGIN: "http://localhost:3000",
+    CORS_ORIGIN: DEV_DEFAULTS.PLAYWRIGHT_TEST_URL,
     CORS_MAX_AGE: 86400,
     OPENAI_API_KEY: "test-key",
     OPENAI_MODEL: "gpt-4o-mini",
@@ -144,7 +145,9 @@ describe("createSSEResponse", () => {
       },
     });
     const response = createSSEResponse(stream);
-    expect(response.headers.get("Access-Control-Allow-Origin")).toBe("http://localhost:3000");
+    expect(response.headers.get("Access-Control-Allow-Origin")).toBe(
+      DEV_DEFAULTS.PLAYWRIGHT_TEST_URL
+    );
   });
 
   it("should set CORS methods header", () => {
