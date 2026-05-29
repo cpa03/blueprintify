@@ -20,8 +20,16 @@
   body {
     @apply bg-dark-950 text-dark-100 font-sans antialiased;
     background-image:
-      radial-gradient(ellipse at top left, color-mix(in srgb, var(--color-primary-500) 8%, transparent) 0%, transparent 50%),
-      radial-gradient(ellipse at bottom right, color-mix(in srgb, var(--color-accent-purple) 6%, transparent) 0%, transparent 50%);
+      radial-gradient(
+        ellipse at top left,
+        color-mix(in srgb, var(--color-primary-500) 8%, transparent) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        ellipse at bottom right,
+        color-mix(in srgb, var(--color-accent-purple) 6%, transparent) 0%,
+        transparent 50%
+      );
     min-height: 100vh;
   }
 
@@ -70,7 +78,11 @@
 
   .gradient-border {
     position: relative;
-    background: linear-gradient(135deg, color-mix(in srgb, var(--color-primary-500) 10%, transparent), color-mix(in srgb, var(--color-accent-purple) 10%, transparent));
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-primary-500) 10%, transparent),
+      color-mix(in srgb, var(--color-accent-purple) 10%, transparent)
+    );
   }
   .gradient-border::before {
     content: "";
@@ -571,7 +583,11 @@
     position: absolute;
     inset: -2px;
     border-radius: inherit;
-    background: linear-gradient(135deg, color-mix(in srgb, var(--color-primary-500) 50%, transparent), color-mix(in srgb, var(--color-accent-purple) 30%, transparent));
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-primary-500) 50%, transparent),
+      color-mix(in srgb, var(--color-accent-purple) 30%, transparent)
+    );
     opacity: 0;
     z-index: -1;
     filter: blur(8px);
