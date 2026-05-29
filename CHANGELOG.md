@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Estimated reading time display in editor content stats for user time estimation
+- Interactive tab switch suggestion in PreviewEmptyState for easier navigation
 - Highlight animation on custom feature chip when added for visual feedback and delight ([#1443](https://github.com/cpa03/blueprintify/pull/1443))
 - SVG icons replacing emoji in editor header and toolbar for consistent visual identity ([#1427](https://github.com/cpa03/blueprintify/pull/1427))
 - Spring-animated checkmark path draw on save transition in LastSavedIndicator with SVG spring-bounce and text slide-in ([#1424](https://github.com/cpa03/blueprintify/pull/1424))
@@ -45,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Eliminated remaining magic numbers, centralized `env.DEV` detection, and added shared config defaults across packages (Flexy v3)
+- Eliminated duplicated `TIME_UNITS`, magic numbers, and deduplicated animation config across API, web, and shared packages (Flexy v3)
 - Eliminated remaining hardcoded values into centralized config constants across codebase (Flexy v3 deep clean) ([#1428](https://github.com/cpa03/blueprintify/pull/1428))
 - Eliminated hardcoded API URLs across codebase with shared defaults in `@blueprint/shared` package for single-source-of-truth configuration
 - Eliminated hardcoded HTTP header strings (Content-Type, Connection) into `API_HEADERS` config constants across API utilities and DI container
@@ -71,6 +75,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Remove redundant Google Font preload to fix console warning about unused preload
+- Resolve accessibility label mismatch in BroCula components and fix ESM build compatibility
+- Add `.js` extensions to ESM imports in shared package for Node.js compatibility
 - Prevent Zustand store action functions being replaced by persisted data (`loadState` used replace mode which stripped `setProjectName`, `nextStep`, etc.) — changed to merge mode to preserve action functions
 - Use `FEATURE.MAX_COUNT` (20) instead of `FEATURE.MAX` (100) for features array max length in shared schema
 - Cold start awareness: eagerly initialize circuit breaker in API warmup path and openai service init
