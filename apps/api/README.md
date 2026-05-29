@@ -104,7 +104,13 @@ apps/api/
 ├── src/
 │   ├── config/          # Environment and constants configuration
 │   │   ├── constants.ts # API endpoints, error codes, prompt templates
-│   │   └── env.ts       # Environment variable loading
+│   │   ├── env.ts       # Environment variable loading
+│   │   ├── env.test.ts  # Environment variable tests
+│   │   ├── prompt-security.ts # Prompt security validation
+│   │   └── prompts/     # AI system prompt templates (.ts)
+│   │       ├── architect.ts
+│   │       ├── refiner.ts
+│   │       └── task-splitter.ts
 │   ├── controllers/     # Request handlers
 │   │   ├── base.controller.ts
 │   │   ├── generate.controller.ts
@@ -132,10 +138,6 @@ apps/api/
 │   ├── services/        # Business logic
 │   │   ├── openai.ts   # OpenAI API client
 │   │   └── prompts.ts  # Prompt management
-│   ├── templates/       # AI system prompts
-│   │   ├── architect-system.txt
-│   │   ├── task-splitter-system.txt
-│   │   └── refiner-system.txt
 │   ├── utils/          # Utility functions
 │   │   ├── circuitBreaker.ts
 │   │   ├── retry.ts
