@@ -171,7 +171,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin fetchpriority="high" />
     <link rel="preconnect" href="https://va.vercel-scripts.com" crossorigin />
 
-    <!-- Preload Inter font for LCP hero text (weight 500/600 used in headings) -->
+    <!-- Preload Inter font for LCP hero text - URL must match actual stylesheet exactly -->
     <link
       rel="preload"
       as="style"
@@ -182,7 +182,7 @@
     <!-- Async Inter font (body text) - media="print" onload trick for non-blocking CSS -->
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=optional"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       media="print"
       onload="
         this.media = 'all';
@@ -204,7 +204,7 @@
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=optional"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       />
       <link
         rel="stylesheet"
