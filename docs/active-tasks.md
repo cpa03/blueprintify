@@ -25,19 +25,38 @@
   - [x] Run verification: typecheck ✅, lint ✅, build ✅
   - [x] Create PR with all cleanup changes — PR #1425 merged ✅
 
-### Task: RepoKeeper Cleanup Cycle 27 (2026-05-28) — Current
+### Task: RepoKeeper Cleanup Cycle 27 (2026-05-28) — Completed
+
+- **Priority**: High
+- **Status**: Completed
+- **Objective**: Clean up merge conflict artifact in findings.md, add missing perf commit to CHANGELOG, update docs (active-tasks/findings/bugs), verify build/lint/test with updated test count (879), create PR
+- **Note**: Committed via commit `af69ab0`.
+- **Actions**:
+  - [x] All actions completed ✅
+
+### Task: RepoKeeper Cleanup Cycle 28 (2026-05-28) — Completed
+
+- **Priority**: High
+- **Status**: Completed
+- **Objective**: Remove unused tldts from root devDependencies, remove redundant @typescript-eslint/\* packages, add POST /storage/report endpoint documentation, update README files
+- **Note**: Committed via commit `f679bc5`.
+- **Actions**:
+  - [x] All actions completed ✅
+
+### Task: RepoKeeper Cleanup Cycle 29 (2026-05-29) — Current
 
 - **Priority**: High
 - **Status**: Active
-- **Objective**: Clean up merge conflict artifact in findings.md, add missing perf commit to CHANGELOG, update docs (active-tasks/findings/bugs), verify build/lint/test with updated test count (879), create PR
+- **Objective**: Add 5 missing commits to CHANGELOG (feat SVG icons, refactor flexy v3, perf resource hints, test hooks, feat checkmark animation), mark Cycle 27/28 Complete in active-tasks, update docs dates, verify build/lint/test (913 tests), create PR
 - **Actions**:
-  - [x] Clean up `<<<<<<< HEAD` merge conflict artifact in `docs/findings.md`
-  - [x] Add missing perf commit `71530a2` to CHANGELOG [Unreleased]
-  - [x] Update `docs/findings.md` — record Cycle 27 findings
+  - [x] Add missing commits to CHANGELOG [Unreleased] (feat, refactor, perf, test)
   - [x] Update `docs/active-tasks.md` — this record
-  - [x] Update `docs/bugs.md` — bump Last Updated date to Cycle 27
-  - [x] Verify build/lint/typecheck/test all pass — 879 tests (476 web + 296 api + 107 shared)
-  - [ ] Create branch `chore/repokeeper-cleanup-cycle-27` from main
+  - [x] Update `docs/findings.md` — record Cycle 29 findings
+  - [x] Update `docs/features.md` — bump Last Updated
+  - [x] Update `docs/bugs.md` — bump Last Updated
+  - [x] Update `docs/roadmap.md` — bump Last Updated
+  - [x] Run verification: typecheck ✅, lint ✅, build ✅, test:all (913) ✅
+  - [ ] Create branch `chore/repokeeper-cleanup-cycle-29` from main
   - [ ] Create PR with all cleanup changes
 
 ### Task: RepoKeeper Cleanup Cycle 24 (2026-05-27)
@@ -424,10 +443,10 @@ See [bugs.md](./bugs.md) for detailed bug information.
 - **Frontend**: Co-located Vitest tests with component and store tests — 476 passing
 - **API**: Comprehensive route, middleware, service, and utility tests — 296 passing
 - **Shared**: Zod schema, type, and config tests — 107 passing
-- **Total**: 879 tests (all passing) [476 web + 296 api + 107 shared]
+- **Total**: 913 tests (all passing) [510 web + 296 api + 107 shared]
 - **TypeScript**: Strict mode, no unchecked `any` types
 
 ---
 
-**Last Updated**: 2026-05-28 (Cycle 27)  
+**Last Updated**: 2026-05-29 (Cycle 29)  
 **Maintainer**: RepoKeeper
