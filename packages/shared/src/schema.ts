@@ -1,7 +1,7 @@
-export * from "./config";
+export * from "./config.js";
 
 import { z } from "zod";
-import { VALIDATION_LIMITS, EXPORT_LIMITS } from "./config";
+import { VALIDATION_LIMITS, EXPORT_LIMITS } from "./config.js";
 
 // ===== Tech Stack Options =====
 
