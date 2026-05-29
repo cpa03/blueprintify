@@ -99,10 +99,8 @@ describe("TemplateGrid", () => {
 
     // The mock has Web App with 3 tech items (React, Node.js, PostgreSQL)
     // and Mobile App with 2 tech items (React Native, Firebase)
-    // Verify no +N badge since no template exceeds 3 items
-    const plusBadges = screen.queryByText(/^\+/, { selector: "span" });
-    expect(plusBadges).toBeNull();
     // Templates in mock have 2-3 items each, so no +N badge expected
+    expect(screen.queryByText(/^\+/, { selector: "span" })).not.toBeInTheDocument();
     expect(screen.getByText("React")).toBeInTheDocument();
     expect(screen.getByText("Node.js")).toBeInTheDocument();
     expect(screen.getByText("PostgreSQL")).toBeInTheDocument();
