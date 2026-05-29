@@ -7,18 +7,23 @@
 
 import { ENV } from "../env";
 import { VALIDATION_LIMITS } from "@blueprint/shared";
+import { ANIMATION_TIMING } from "../theme";
 
 // ============================================================================
 // Animation Durations
 // ============================================================================
 
-/** Animation durations (in seconds) */
+/**
+ * Animation durations (in seconds)
+ * Single source of truth lives in theme.ts (ANIMATION_TIMING)
+ * This re-export provides a flat convenience API for components
+ */
 export const ANIMATION = {
-  FAST: 0.15,
-  NORMAL: 0.2,
-  MEDIUM: 0.3,
-  SLOW: 0.5,
-  STAGGER: 0.1,
+  FAST: ANIMATION_TIMING.duration.fast,
+  NORMAL: ANIMATION_TIMING.duration.normal,
+  MEDIUM: ANIMATION_TIMING.duration.medium,
+  SLOW: ANIMATION_TIMING.duration.slow,
+  STAGGER: ANIMATION_TIMING.stagger.default,
   SPINNER_ROTATION: 1,
   TYPING_INDICATOR_DELAY_S: 0.6,
 } as const;

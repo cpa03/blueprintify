@@ -4,8 +4,6 @@
  * Flexy says: No hardcoded values - everything configurable!
  */
 
-import { SPRING_CONFIG } from "./constants";
-
 // ============================================================================
 // Color Palette
 // ============================================================================
@@ -94,8 +92,8 @@ export const ANIMATION_TIMING = {
     easeIn: [0.42, 0, 1, 1] as const,
     easeInOut: [0.42, 0, 0.58, 1] as const,
     spring: {
-      stiffness: SPRING_CONFIG.SNAPPY.stiffness,
-      damping: SPRING_CONFIG.SNAPPY.damping,
+      stiffness: 500,
+      damping: 25,
     },
     cubic: {
       default: "cubic-bezier(0.4, 0, 0.6, 1)",

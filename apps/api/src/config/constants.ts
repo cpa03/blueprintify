@@ -16,6 +16,7 @@ import {
   ID_GENERATION_CONFIG,
   ID_CHARS,
   ROUTE_PATHS as SHARED_ROUTE_PATHS,
+  TIME_UNITS,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./env";
 import {
@@ -378,7 +379,7 @@ export const DB_ID_CONFIG = {
 export const STORAGE_KV_CONFIG = {
   QUOTA_KEY: "storage:quota",
   /** TTL for storage reports in seconds (30 days) */
-  REPORT_TTL_SECONDS: 86400 * 30,
+  REPORT_TTL_SECONDS: TIME_UNITS.SECONDS_PER_DAY * 30,
 } as const;
 
 /**
@@ -464,12 +465,14 @@ export const RETRY_LOGIC = {
 } as const;
 
 export const CACHE_CONFIG = {
-  ROOT_MAX_AGE: 60,
-  ROOT_STALE_WHILE_REVALIDATE: 30,
+  /** Root cache: 1 minute */
+  ROOT_MAX_AGE: TIME_UNITS.SECONDS_PER_MINUTE,
+  /** Root stale-while-revalidate: 30 seconds */
+  ROOT_STALE_WHILE_REVALIDATE: TIME_UNITS.SECONDS_PER_MINUTE / 2,
   /** Share route cache: 5 minutes */
-  SHARE_MAX_AGE: 300,
+  SHARE_MAX_AGE: TIME_UNITS.SECONDS_PER_MINUTE * 5,
   /** Share route cache stale-while-revalidate: 1 hour */
-  SHARE_STALE_WHILE_REVALIDATE: 3600,
+  SHARE_STALE_WHILE_REVALIDATE: TIME_UNITS.SECONDS_PER_HOUR,
   /** CDN cache control format template */
   CDN_MAX_AGE_FORMAT: "public, max-age=",
 } as const;
