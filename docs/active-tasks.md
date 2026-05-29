@@ -43,11 +43,12 @@
 - **Actions**:
   - [x] All actions completed ✅
 
-### Task: RepoKeeper Cleanup Cycle 29 (2026-05-29) — Current
+### Task: RepoKeeper Cleanup Cycle 29 (2026-05-29) — Completed
 
 - **Priority**: High
-- **Status**: Active
+- **Status**: Completed
 - **Objective**: Add 5 missing commits to CHANGELOG (feat SVG icons, refactor flexy v3, perf resource hints, test hooks, feat checkmark animation), mark Cycle 27/28 Complete in active-tasks, update docs dates, verify build/lint/test (913 tests), create PR
+- **Note**: All actions completed — PR merged via commit `4f551dc`.
 - **Actions**:
   - [x] Add missing commits to CHANGELOG [Unreleased] (feat, refactor, perf, test)
   - [x] Update `docs/active-tasks.md` — this record
@@ -56,8 +57,25 @@
   - [x] Update `docs/bugs.md` — bump Last Updated
   - [x] Update `docs/roadmap.md` — bump Last Updated
   - [x] Run verification: typecheck ✅, lint ✅, build ✅, test:all (913) ✅
-  - [ ] Create branch `chore/repokeeper-cleanup-cycle-29` from main
-  - [ ] Create PR with all cleanup changes
+  - [x] Create branch `chore/repokeeper-cleanup-cycle-29` from main
+  - [x] Create PR with all cleanup changes — PR merged ✅
+
+### Task: RepoKeeper Cleanup Cycle 30 (2026-05-29) — Completed
+
+- **Priority**: High
+- **Status**: Completed
+- **Objective**: Fix lint warning (unused `plusBadges` in TemplateGrid.test.tsx), update test counts (558 web, 296 api, 107 shared = 961), mark Cycle 29 Complete, update docs dates, verify build/lint/test, create PR
+- **Note**: All actions completed — PR #1442 created.
+- **Actions**:
+  - [x] Fix lint warning: unused `plusBadges` in TemplateGrid.test.tsx — add missing assertion
+  - [x] Update `docs/active-tasks.md` — this record
+  - [x] Update `docs/findings.md` — record Cycle 30 findings
+  - [x] Update `docs/features.md` — bump Last Updated
+  - [x] Update `docs/bugs.md` — bump Last Updated
+  - [x] Update `docs/roadmap.md` — bump Last Updated
+  - [x] Run verification: typecheck ✅, lint ✅, build ✅, test:all (961) ✅
+  - [x] Create branch `chore/repokeeper-cleanup-cycle-30` from main
+  - [x] Create PR with all cleanup changes — PR #1442
 
 ### Task: RepoKeeper Cleanup Cycle 24 (2026-05-27)
 
@@ -440,13 +458,13 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ## Testing Coverage
 
-- **Frontend**: Co-located Vitest tests with component and store tests — 476 passing
+- **Frontend**: Co-located Vitest tests with component and store tests — 558 passing
 - **API**: Comprehensive route, middleware, service, and utility tests — 296 passing
 - **Shared**: Zod schema, type, and config tests — 107 passing
-- **Total**: 913 tests (all passing) [510 web + 296 api + 107 shared]
+- **Total**: 961 tests (all passing) [558 web + 296 api + 107 shared]
 - **TypeScript**: Strict mode, no unchecked `any` types
 
 ---
 
-**Last Updated**: 2026-05-29 (Cycle 29)  
+**Last Updated**: 2026-05-29 (Cycle 30)  
 **Maintainer**: RepoKeeper
