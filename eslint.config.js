@@ -17,6 +17,7 @@ export default [
       "apps/api/src/**/*.js",
       "apps/web/src/**/*.js",
       "packages/shared/src/**/*.js",
+      "packages/shared/fix-esm.mjs",
     ],
   },
   js.configs.recommended,
