@@ -67,7 +67,7 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | ----- | ----------------------------------- | ---------------------------------------------------------------------------- |
 | #1401 | `feat/flexy-eliminate-hardcoded-v2` | feat(flexy): eliminate hardcoded URLs with shared defaults                   |
 | #1414 | `feat/flexy-hardcoded-values-v3`    | feat(flexy): eliminate hardcoded values from scripts with centralized config |
-| #---- | `feat/flexy-eliminate-hardcoded-v4` | feat(flexy): centralize AI, dev, and retry defaults into shared config       |
+| #1448 | `feat/flexy-eliminate-hardcoded-v4` | feat(flexy): centralize AI, dev, and retry defaults into shared config       |
 
 ## Status
 
