@@ -17,6 +17,7 @@ import {
   ID_CHARS,
   ROUTE_PATHS as SHARED_ROUTE_PATHS,
   TIME_UNITS,
+  BYTE_CONVERSION,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./env";
 import {
@@ -428,10 +429,10 @@ export const BODY_SIZE_LIMITS = {
   LENIENT_MB: 10,
 } as const;
 
-/** Bytes per kilobyte */
-export const KB = 1024;
-/** Bytes per megabyte */
-export const MB = 1024 * KB;
+/** Bytes per kilobyte (from shared single source of truth) */
+export const KB = BYTE_CONVERSION.KB;
+/** Bytes per megabyte (from shared single source of truth) */
+export const MB = BYTE_CONVERSION.MB;
 
 /** Pre-computed body size limits */
 export const BODY_SIZE_MAX = {

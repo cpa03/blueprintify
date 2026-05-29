@@ -22,6 +22,8 @@ import {
 } from "../config/constants";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 
+const { CIRCLE_REVEAL_DURATION_S, CHECKMARK_PATH_DELAY_S, TEXT_DELAY_S } = CELEBRATION_ANIMATION;
+
 interface Particle {
   id: number;
   x: number;
@@ -284,7 +286,10 @@ function GenerationCelebrationComponent({
                   strokeWidth="3"
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
-                  transition={{ duration: 0.4, delay: 0.2 }}
+                  transition={{
+                    duration: CIRCLE_REVEAL_DURATION_S,
+                    delay: CHECKMARK_PATH_DELAY_S / 2,
+                  }}
                 />
                 <motion.path
                   d="M14 24L21 31L34 17"
@@ -294,7 +299,7 @@ function GenerationCelebrationComponent({
                   strokeLinejoin="round"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
-                  transition={{ duration: 0.4, delay: 0.4 }}
+                  transition={{ duration: CIRCLE_REVEAL_DURATION_S, delay: CHECKMARK_PATH_DELAY_S }}
                 />
               </svg>
             </motion.div>
@@ -303,7 +308,7 @@ function GenerationCelebrationComponent({
               className="mt-4 text-lg font-semibold text-accent-emerald"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
+              transition={{ delay: TEXT_DELAY_S }}
             >
               {CELEBRATION_TEXT.COMPLETE}
             </motion.p>

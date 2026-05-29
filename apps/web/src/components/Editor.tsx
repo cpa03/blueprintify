@@ -33,7 +33,8 @@ import { useEditorStore, resetAllStores, useToast } from "../store";
 import { useExportContext } from "../context/ExportContext";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
-import { TIMEOUTS, UI, CONFIRM_DIALOG, TOAST_MESSAGES } from "../config/constants";
+import { TIMEOUTS, UI, CONFIRM_DIALOG, TOAST_MESSAGES, ANIMATION } from "../config/constants";
+import { ANIMATION_TIMING } from "../config/theme";
 import { isDev } from "../config/env";
 import { useLastSaved } from "../hooks/useLastSaved";
 import clsx from "clsx";
@@ -226,7 +227,7 @@ function EditorComponent(): JSX.Element {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
+                transition={{ duration: ANIMATION.NORMAL, ease: ANIMATION_TIMING.easing.easeOut }}
                 className="h-full"
               >
                 <EditorEmptyState />
@@ -237,7 +238,7 @@ function EditorComponent(): JSX.Element {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
+                transition={{ duration: ANIMATION.NORMAL, ease: ANIMATION_TIMING.easing.easeOut }}
                 className="h-full"
               >
                 <AnimatePresence mode="wait">
@@ -246,7 +247,10 @@ function EditorComponent(): JSX.Element {
                     initial={{ opacity: 0, x: 10 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -10 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    transition={{
+                      duration: ANIMATION.NORMAL,
+                      ease: ANIMATION_TIMING.easing.easeOut,
+                    }}
                     id={activeTab === "blueprint" ? "blueprint-panel" : "tasks-panel"}
                     role="tabpanel"
                     aria-labelledby={`tab-${activeTab}`}
