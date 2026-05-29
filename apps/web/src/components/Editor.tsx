@@ -295,6 +295,9 @@ function EditorComponent(): JSX.Element {
                                   ? tasksContent.length > 0
                                   : blueprintContent.length > 0
                               }
+                              onSwitchTab={() =>
+                                setActiveTab(activeTab === "blueprint" ? "tasks" : "blueprint")
+                              }
                             />
                           )}
                         </motion.div>
