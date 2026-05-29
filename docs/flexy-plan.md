@@ -49,6 +49,7 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 5 w
 | ----- | ----------------------------------- | ---------------------------------------------------------------------------- |
 | #1401 | `feat/flexy-eliminate-hardcoded-v2` | feat(flexy): eliminate hardcoded URLs with shared defaults                   |
 | #1414 | `feat/flexy-hardcoded-values-v3`    | feat(flexy): eliminate hardcoded values from scripts with centralized config |
+| #1443 | `feat/flexy-ci-node-version-file`   | feat(flexy): eliminate hardcoded node-version in CI with node-version-file   |
 
 ## Status
 
