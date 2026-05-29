@@ -15,9 +15,18 @@ Eliminate hardcoded values and build a modular, single-source-of-truth system.
 | `apps/api/src/config/env.ts`    | References shared defaults instead of hardcoding |
 | `apps/web/src/config/env.ts`    | References shared defaults instead of hardcoding |
 
-### ✅ CI Node Version (Pushed in PR #[TBD])
+### ✅ CI Node Version (Not pushed - token restriction)
 
 Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 5 workflow files (11 occurrences). Now reading Node.js version from `.node-version` (v22) instead of hardcoded v20.
+⚠️ Workflow file changes require `workflows` GitHub permission — applied locally but blocked from push. Apply manually:
+
+```bash
+# Replace node-version: "20" with node-version-file: ".node-version" in:
+.github/workflows/on-pull.yml       # 1 occurrence
+.github/workflows/iterate.yml       # 5 occurrences
+.github/workflows/parallel.yml      # 4 occurrences
+.github/workflows/pr-gatekeeper.yml # 1 occurrence
+```
 
 ### ✅ Script Config Centralization (Pushed in PR #1414)
 
