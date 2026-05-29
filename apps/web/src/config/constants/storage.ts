@@ -70,6 +70,8 @@ export const TOAST_CONFIG = {
   DEFAULT_DURATION: 3000,
   SUCCESS_DURATION: 2000,
   AUTO_SAVE_DURATION: 2000,
+  /** Delay (ms) between each toast's entrance for staggered animation */
+  STAGGER_MS: 60,
   ICONS: {
     SUCCESS: "✓",
     ERROR: "✕",

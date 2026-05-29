@@ -7,10 +7,9 @@
  * @module config/prompt-security
  */
 
-/**
- * Maximum length for any single user input field
- */
-export const MAX_INPUT_LENGTH = 5000;
+import { MAX_INPUT_LENGTH } from "@blueprint/shared";
+// Re-exported for backward compatibility with modules that import from ./prompt-security
+export { MAX_INPUT_LENGTH };
 
 /**
  * Patterns that indicate prompt injection attempts (case-insensitive).
