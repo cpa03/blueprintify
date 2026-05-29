@@ -2,7 +2,45 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-29 - RepoKeeper Cleanup Cycle 31)
+## Current Cycle (2026-05-29 - RepoKeeper Cleanup Cycle 32)
+
+### Findings
+
+- **RepoKeeper started**: On `main` branch at `1de35ad` (Commit: `chore(repo): RepoKeeper cleanup cycle 31`). Build/lint/typecheck all passing clean.
+- **7 new commits since Cycle 31**:
+  - `b62ee43` feat(web): add estimated reading time to editor content stats
+  - `9c316f7` fix(shared): add `.js` extensions to ESM imports for Node.js compatibility
+  - `7f57964` feat(flexy): eliminate remaining magic numbers, centralize env.DEV, add shared config defaults
+  - `71eb498` fix(brocula): resolve accessibility label mismatch and ESM build compatibility
+  - `a56a0c4` feat(flexy): eliminate duplicated TIME_UNITS, magic numbers, and deduplicate animation config
+  - `726dd48` fix(web): remove redundant Google Font preload to fix console warning
+  - `8685561` feat(web): make PreviewEmptyState tab switch suggestion interactive
+- **Test count**: 558 web + 299 API + 120 shared = 977 total (unchanged from Cycle 31).
+- **No redundant/temp/stray files detected** — repo remains clean after 31 previous cycles.
+- **No untracked files** — `.gitignore` is comprehensive.
+- **CHANGELOG.md**: Missing 7 recent commits in [Unreleased] — added (2 Added, 3 Changed, 3 Fixed).
+- **docs/active-tasks.md**: Cycle 31 was still "In Progress" with 2 unchecked items (verification already passing, PR already created) — marked Complete. Cycle 32 added.
+- **BUG-014**: Still present in `main.yml` — remains blocked by GitHub App `workflows` permission (recurring — 10+ previous cycles).
+- **No stale branch artifacts** detected in working tree beyond 2 merged branches.
+- **2 stale merged remote branches** detected: `origin/chore/repokeeper-cleanup-cycle-29`, `origin/chore/repokeeper-cleanup-cycle-30` — pruned.
+- **Dependencies**: 0 vulnerabilities (npm audit clean).
+- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
+- **Open PRs / issues**: Managed by CI system, no action needed.
+
+### Actions Taken
+
+- Updated `CHANGELOG.md` — added 7 missing commits to [Unreleased] (2 feat: estimated reading time, PreviewEmptyState interactive; 3 Changed: Flexy v3 magic numbers, TIME_UNITS dedup, env.DEV centralization; 3 fix: Google Fonts preload, BroCula a11y/ESM, shared ESM imports)
+- Updated `docs/active-tasks.md` — marked Cycle 31 Complete, added Cycle 32 entry, updated Last Updated
+- Updated `docs/findings.md` — this record
+- Updated `docs/features.md` — bumped "Last Updated" to Cycle 32
+- Updated `docs/bugs.md` — bumped "Last Updated" to Cycle 32
+- Updated `docs/roadmap.md` — bumped "Last Updated" to Cycle 32
+- Pruned 2 stale merged remote branches (chore/repokeeper-cleanup-cycle-29, chore/repokeeper-cleanup-cycle-30)
+- Ran verification: typecheck ✅ lint ✅ build ✅ test:all (977 passing) ✅ npm audit (0 vulns) ✅
+- Created branch `chore/repokeeper-cleanup-cycle-32` from main
+- Created PR with all cleanup changes
+
+## Previous Cycle (2026-05-29 - RepoKeeper Cleanup Cycle 31)
 
 ### Findings
 
@@ -394,5 +432,5 @@
 - Created branch `chore/repokeeper-cleanup-cycle-20` from main
 - Created PR with all cleanup changes
 
-**Last Cleared**: 2026-05-29 (Cycle 31)  
+**Last Cleared**: 2026-05-29 (Cycle 32)  
 **Maintainer**: RepoKeeper
