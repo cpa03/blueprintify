@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Highlight animation on custom feature chip when added for visual feedback and delight ([#1443](https://github.com/cpa03/blueprintify/pull/1443))
 - SVG icons replacing emoji in editor header and toolbar for consistent visual identity ([#1427](https://github.com/cpa03/blueprintify/pull/1427))
 - Spring-animated checkmark path draw on save transition in LastSavedIndicator with SVG spring-bounce and text slide-in ([#1424](https://github.com/cpa03/blueprintify/pull/1424))
 - Animate-glow CSS class for primary CTA button breathing effect (pulsing box-shadow animation, respects prefers-reduced-motion)
