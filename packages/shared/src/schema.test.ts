@@ -13,8 +13,8 @@ import {
   ImportRequestSchema,
   StorageClearRequestSchema,
   SuccessResponseSchema,
-} from "./schema";
-import { EXPORT_LIMITS } from "./config";
+} from "./schema.js";
+import { EXPORT_LIMITS } from "./config.js";
 
 describe("TechStackCategory Schema", () => {
   it("should validate valid tech stack categories", () => {

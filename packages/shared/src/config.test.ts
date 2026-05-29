@@ -12,7 +12,7 @@ import {
   HTTP_HEADERS,
   ID_GENERATION_CONFIG,
   TIME_UNITS,
-} from "./config";
+} from "./config.js";
 
 describe("RETRY_CONFIG", () => {
   it("should have positive default retries", () => {

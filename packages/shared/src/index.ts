@@ -19,7 +19,7 @@ export {
   StorageQuotaSchema,
   StorageClearRequestSchema,
   StorageReportRequestSchema,
-} from "./schema";
+} from "./schema.js";
 
 // ===== TypeScript Types =====
 export type {
@@ -47,10 +47,10 @@ export type {
   StorageQuota,
   StorageClearRequest,
   StorageReportRequest,
-} from "./types";
+} from "./types.js";
 
 // ===== Templates =====
-export { STARTER_TEMPLATES } from "./templates";
+export { STARTER_TEMPLATES } from "./templates.js";
 
 // ===== Configuration =====
 export {
@@ -76,9 +76,9 @@ export {
   CIRCUIT_BREAKER_DEFAULTS,
   MAX_INPUT_LENGTH,
   PLAYWRIGHT_DEFAULTS,
-} from "./config";
+} from "./config.js";
 
-export type { RetryOptions } from "./config";
+export type { RetryOptions } from "./config.js";
 
 // ===== Utilities =====
-export { createDebouncedSaver } from "./utils";
+export { createDebouncedSaver } from "./utils/index.js";
