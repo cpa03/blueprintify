@@ -21,6 +21,8 @@ interface PreviewEmptyStateProps {
   isGenerating?: boolean;
   /** Whether the other tab has content */
   siblingTabHasContent?: boolean;
+  /** Callback to switch to the sibling tab (when sibling tab has content) */
+  onSwitchTab?: () => void;
 }
 
 const tabLabels: Record<EditorTab, string> = {
@@ -48,6 +50,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
   tab,
   isGenerating = false,
   siblingTabHasContent = false,
+  onSwitchTab,
 }: PreviewEmptyStateProps): JSX.Element {
   const content = tabContent[tab];
   const label = tabLabels[tab];
@@ -135,11 +138,14 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
           </>
         ) : siblingTabHasContent ? (
           <>
-            Switch to the{" "}
-            <strong className="text-primary-400">
-              {tab === "blueprint" ? "📘 blueprint" : "📋 tasks"}
-            </strong>{" "}
-            tab to view generated content.
+            <button
+              onClick={onSwitchTab}
+              className="inline-flex items-center gap-1.5 text-primary-400 hover:text-primary-300 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded px-1 -mx-1"
+              aria-label={`Switch to ${tab === "blueprint" ? "tasks" : "blueprint"} tab`}
+            >
+              <span aria-hidden="true">←</span>
+              Switch to <strong>{tab === "blueprint" ? "📋 tasks" : "📘 blueprint"}</strong> tab
+            </button>
           </>
         ) : (
           content.hint
