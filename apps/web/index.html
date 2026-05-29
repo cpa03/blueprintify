@@ -167,9 +167,17 @@
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="dns-prefetch" href="https://va.vercel-scripts.com" />
     <!-- Preconnect to Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" fetchpriority="high" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin fetchpriority="high" />
     <link rel="preconnect" href="https://va.vercel-scripts.com" crossorigin />
+
+    <!-- Preload Inter font for LCP hero text (weight 500/600 used in headings) -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      fetchpriority="high"
+    />
 
     <!-- Async Inter font (body text) - media="print" onload trick for non-blocking CSS -->
     <link
@@ -209,6 +217,7 @@
       <!-- Critical LCP Skeleton - minimal for fast parse, covers viewport only -->
       <div
         id="skeleton-loader"
+        fetchpriority="high"
         style="
           position: absolute;
           inset: 0;
@@ -263,39 +272,39 @@
         </header>
         <main style="padding-top: 5rem; flex: 1">
           <div style="max-width: 80rem; margin: 0 auto; padding: 2rem 1rem">
-            <!-- LCP Critical Element -->
-            <div style="text-align: center; margin-bottom: 3rem; min-height: 200px">
-              <h1
-                style="
-                  font-size: 2.25rem;
-                  font-weight: 700;
-                  color: #fff;
-                  margin-bottom: 1rem;
-                  line-height: 1.2;
-                "
-              >
-                From
-                <span
-                  style="
-                    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
-                  "
-                  >Idea</span
-                >
-                to
-                <span
-                  style="
-                    background: linear-gradient(135deg, #6366f1, #ec4899);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
-                  "
-                  >Blueprint</span
-                >
-                in Seconds
-              </h1>
+    <!-- LCP Critical Element -->
+    <div style="text-align: center; margin-bottom: 3rem; min-height: 200px" fetchpriority="high">
+      <h1
+        style="
+          font-size: 2.25rem;
+          font-weight: 700;
+          color: #fff;
+          margin-bottom: 1rem;
+          line-height: 1.2;
+        "
+      >
+        From
+        <span
+          style="
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          "
+          >Idea</span
+        >
+        to
+        <span
+          style="
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          "
+          >Blueprint</span
+        >
+        in Seconds
+      </h1>
               <p style="font-size: 1.125rem; color: #94a3b8; max-width: 42rem; margin: 0 auto">
                 Generate production-ready architectural documentation for your projects.
               </p>
