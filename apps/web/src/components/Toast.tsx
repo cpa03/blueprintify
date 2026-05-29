@@ -105,7 +105,7 @@ interface ToastItemProps {
   staggerIndex?: number;
 }
 
-const TOAST_STAGGER_MS = 60; // milliseconds between each toast's entrance
+const TOAST_STAGGER_MS = TOAST_CONFIG.STAGGER_MS;
 
 const ToastItem = memo(
   forwardRef<HTMLDivElement, ToastItemProps>(function ToastItem(

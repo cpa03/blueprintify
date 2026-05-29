@@ -26,6 +26,7 @@
 import { useState, useEffect, memo } from "react";
 import type { Extension } from "@codemirror/state";
 import type { ReactCodeMirrorProps, ReactCodeMirrorRef } from "@uiw/react-codemirror";
+import { isDev } from "../config/env";
 
 interface LazyCodeMirrorProps {
   value: string;
@@ -59,7 +60,7 @@ function LazyCodeMirrorComponent({ value, onChange, className }: LazyCodeMirrorP
           setTheme(oneDark);
         }
       } catch (error) {
-        if (import.meta.env.DEV) {
+        if (isDev()) {
           console.error("Failed to load CodeMirror:", error);
         }
       }

@@ -1,4 +1,5 @@
 import { ErrorBoundary as ErrorBoundaryLib, FallbackProps } from "react-error-boundary";
+import { isDev } from "../config/env";
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -95,7 +96,7 @@ export function ErrorBoundary({ children, fallback, onError }: ErrorBoundaryProp
     <ErrorBoundaryLib
       FallbackComponent={ErrorFallback}
       onError={(error, errorInfo) => {
-        if (import.meta.env.DEV) {
+        if (isDev()) {
           console.error("ErrorBoundary caught an error:", error);
           console.error("Component stack:", errorInfo.componentStack);
         }

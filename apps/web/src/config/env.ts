@@ -47,3 +47,10 @@ export const ENV = {
     return getEnvVar("VITE_DEFAULT_PROJECT_NAME", SHARED_DEFAULTS.DEFAULT_PROJECT_NAME);
   },
 } as const;
+
+/**
+ * Check if running in development mode
+ * Centralizes import.meta.env.DEV checks across the codebase
+ * Flexy says: No scattered import.meta.env.DEV - one single source of truth!
+ */
+export const isDev = (): boolean => import.meta.env.DEV;
