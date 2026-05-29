@@ -1,7 +1,7 @@
 export * from "./config";
 
 import { z } from "zod";
-import { VALIDATION_LIMITS } from "./config";
+import { VALIDATION_LIMITS, EXPORT_LIMITS } from "./config";
 
 // ===== Tech Stack Options =====
 
@@ -267,9 +267,18 @@ export const ExportRequestSchema = z.object({
     .max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
   blueprint: z
     .string()
-    .min(1)
-    .max(VALIDATION_LIMITS.DESCRIPTION.MAX * 10),
-  tasks: z.string().optional(),
+    .min(1, "Blueprint content is required")
+    .max(
+      EXPORT_LIMITS.MAX_BLUEPRINT_LENGTH,
+      `Blueprint must not exceed ${EXPORT_LIMITS.MAX_BLUEPRINT_LENGTH} characters`
+    ),
+  tasks: z
+    .string()
+    .max(
+      EXPORT_LIMITS.MAX_TASKS_LENGTH,
+      `Tasks must not exceed ${EXPORT_LIMITS.MAX_TASKS_LENGTH} characters`
+    )
+    .optional(),
   format: ExportFormatSchema.default("markdown"),
   includeMetadata: z.boolean().default(true),
 });
@@ -282,7 +291,10 @@ export const ImportRequestSchema = z.object({
   data: z
     .string()
     .min(1, "Import data is required")
-    .max(VALIDATION_LIMITS.DESCRIPTION.MAX * 10, "Import data must not exceed 20000 characters"),
+    .max(
+      EXPORT_LIMITS.MAX_IMPORT_DATA_LENGTH,
+      `Import data must not exceed ${EXPORT_LIMITS.MAX_IMPORT_DATA_LENGTH} characters`
+    ),
   format: ExportFormatSchema.default("json"),
   overwrite: z.boolean().default(false),
 });

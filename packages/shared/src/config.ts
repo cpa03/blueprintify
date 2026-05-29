@@ -75,6 +75,20 @@ export const SECURITY_LIMITS = {
 } as const;
 
 /**
+ * Export/Import Content Limits
+ * Maximum length constraints for export and import payloads.
+ * Prevents memory exhaustion and DoS vectors via oversized content.
+ */
+export const EXPORT_LIMITS = {
+  /** Maximum blueprint content length (100KB) */
+  MAX_BLUEPRINT_LENGTH: 100_000,
+  /** Maximum tasks content length (100KB) */
+  MAX_TASKS_LENGTH: 100_000,
+  /** Maximum import data length (200KB - needs to accommodate JSON-serialized payload) */
+  MAX_IMPORT_DATA_LENGTH: 200_000,
+} as const;
+
+/**
  * Type for retry options
  */
 export interface RetryOptions {

@@ -5,6 +5,7 @@ import {
   STORAGE_CONFIG,
   DEBOUNCE_CONFIG,
   SECURITY_LIMITS,
+  EXPORT_LIMITS,
   RETRYABLE_STATUS_CODES,
   SSE_CONFIG,
   SSE_HEADERS,
@@ -235,5 +236,29 @@ describe("TIME_UNITS", () => {
   it("should have consistent time calculations", () => {
     expect(TIME_UNITS.SECONDS_PER_HOUR).toBe(TIME_UNITS.SECONDS_PER_MINUTE * 60);
     expect(TIME_UNITS.SECONDS_PER_DAY).toBe(TIME_UNITS.SECONDS_PER_HOUR * 24);
+  });
+});
+
+describe("EXPORT_LIMITS", () => {
+  it("should have positive blueprint length limit", () => {
+    expect(EXPORT_LIMITS.MAX_BLUEPRINT_LENGTH).toBeGreaterThan(0);
+  });
+
+  it("should have positive tasks length limit", () => {
+    expect(EXPORT_LIMITS.MAX_TASKS_LENGTH).toBeGreaterThan(0);
+  });
+
+  it("should have positive import data length limit", () => {
+    expect(EXPORT_LIMITS.MAX_IMPORT_DATA_LENGTH).toBeGreaterThan(0);
+  });
+
+  it("should have blueprint limit at least 10KB", () => {
+    expect(EXPORT_LIMITS.MAX_BLUEPRINT_LENGTH).toBeGreaterThanOrEqual(10_000);
+  });
+
+  it("should have import data limit larger than blueprint limit", () => {
+    expect(EXPORT_LIMITS.MAX_IMPORT_DATA_LENGTH).toBeGreaterThan(
+      EXPORT_LIMITS.MAX_BLUEPRINT_LENGTH
+    );
   });
 });

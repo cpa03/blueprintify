@@ -9,9 +9,12 @@ import {
   TaskItemSchema,
   TaskListSchema,
   ExportFormatSchema,
+  ExportRequestSchema,
+  ImportRequestSchema,
   StorageClearRequestSchema,
   SuccessResponseSchema,
 } from "./schema";
+import { EXPORT_LIMITS } from "./config";
 
 describe("TechStackCategory Schema", () => {
   it("should validate valid tech stack categories", () => {
@@ -224,8 +227,7 @@ describe("TaskListSchema", () => {
 
 describe("ExportFormatSchema", () => {
   it("should validate valid export formats", () => {
-    const formats = ["json", "zip", "markdown"];
-    formats.forEach((format) => {
+    ["json", "zip", "markdown"].forEach((format) => {
       const result = ExportFormatSchema.safeParse(format);
       expect(result.success).toBe(true);
     });
@@ -233,6 +235,89 @@ describe("ExportFormatSchema", () => {
 
   it("should reject invalid export format", () => {
     const result = ExportFormatSchema.safeParse("invalid");
+    expect(result.success).toBe(false);
+  });
+});
+
+describe("ExportRequestSchema", () => {
+  it("should reject blueprint exceeding max length", () => {
+    const result = ExportRequestSchema.safeParse({
+      projectName: "Test",
+      blueprint: "x".repeat(EXPORT_LIMITS.MAX_BLUEPRINT_LENGTH + 1),
+      format: "json",
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues[0]!.path).toContain("blueprint");
+    }
+  });
+
+  it("should accept blueprint at max length", () => {
+    const result = ExportRequestSchema.safeParse({
+      projectName: "Test",
+      blueprint: "x".repeat(EXPORT_LIMITS.MAX_BLUEPRINT_LENGTH),
+      format: "json",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("should reject tasks exceeding max length", () => {
+    const result = ExportRequestSchema.safeParse({
+      projectName: "Test",
+      blueprint: "valid content",
+      tasks: "x".repeat(EXPORT_LIMITS.MAX_TASKS_LENGTH + 1),
+      format: "json",
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues[0]!.path).toContain("tasks");
+    }
+  });
+
+  it("should accept missing tasks", () => {
+    const result = ExportRequestSchema.safeParse({
+      projectName: "Test",
+      blueprint: "valid content",
+      format: "json",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("should reject empty blueprint", () => {
+    const result = ExportRequestSchema.safeParse({
+      projectName: "Test",
+      blueprint: "",
+      format: "json",
+    });
+    expect(result.success).toBe(false);
+  });
+});
+
+describe("ImportRequestSchema", () => {
+  it("should reject data exceeding max length", () => {
+    const result = ImportRequestSchema.safeParse({
+      data: "x".repeat(EXPORT_LIMITS.MAX_IMPORT_DATA_LENGTH + 1),
+      format: "json",
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues[0]!.path).toContain("data");
+    }
+  });
+
+  it("should accept data at max length", () => {
+    const result = ImportRequestSchema.safeParse({
+      data: "x".repeat(EXPORT_LIMITS.MAX_IMPORT_DATA_LENGTH),
+      format: "json",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("should reject empty data", () => {
+    const result = ImportRequestSchema.safeParse({
+      data: "",
+      format: "json",
+    });
     expect(result.success).toBe(false);
   });
 });

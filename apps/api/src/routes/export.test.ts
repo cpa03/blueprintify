@@ -161,6 +161,49 @@ describe("POST /export", () => {
     expect(data.data).toHaveProperty("note");
   });
 
+  it("should return 400 for blueprint exceeding max length", async () => {
+    const res = await app.request(
+      "/",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          projectName: "Test",
+          blueprint: "x".repeat(100_001),
+          format: "json",
+        }),
+      },
+      MOCK_ENV
+    );
+
+    expect(res.status).toBe(400);
+    const data = (await res.json()) as ErrorResponse;
+    expect(data).toHaveProperty("success", false);
+    expect(data.error).toHaveProperty("type", "validation");
+  });
+
+  it("should return 400 for tasks exceeding max length", async () => {
+    const res = await app.request(
+      "/",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          projectName: "Test",
+          blueprint: "valid blueprint",
+          tasks: "x".repeat(100_001),
+          format: "json",
+        }),
+      },
+      MOCK_ENV
+    );
+
+    expect(res.status).toBe(400);
+    const data = (await res.json()) as ErrorResponse;
+    expect(data).toHaveProperty("success", false);
+    expect(data.error).toHaveProperty("type", "validation");
+  });
+
   it("should handle special characters in project name", async () => {
     const res = await app.request(
       "/",

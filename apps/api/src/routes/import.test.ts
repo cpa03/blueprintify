@@ -39,6 +39,26 @@ describe("POST /import", () => {
     expect(data.error).toHaveProperty("timestamp");
   });
 
+  it("should return 400 for data exceeding max length", async () => {
+    const res = await app.request(
+      "/",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          data: "x".repeat(200_001),
+          format: "json",
+        }),
+      },
+      MOCK_ENV
+    );
+
+    expect(res.status).toBe(400);
+    const data = (await res.json()) as ErrorResponse;
+    expect(data).toHaveProperty("success", false);
+    expect(data.error).toHaveProperty("type", "validation");
+  });
+
   it("should return 400 for invalid JSON", async () => {
     const res = await app.request(
       "/",
