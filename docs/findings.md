@@ -2,7 +2,7 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-30 - RepoKeeper Cleanup Cycle 34)
+## Previous Cycle (2026-05-30 - RepoKeeper Cleanup Cycle 34)
 
 ### Findings
 
@@ -29,9 +29,38 @@
 - Updated `docs/features.md` — bumped "Last Updated" to Cycle 34
 - Updated `docs/bugs.md` — bumped "Last Updated" to Cycle 34
 - Updated `docs/roadmap.md` — bumped "Last Updated" to Cycle 34
-- Pruned 1 stale merged remote branch (`fix/ci-node-22-version-full`)
 - Ran verification: typecheck ✅ lint ✅ build ✅ test:all (977 passing) ✅ npm audit (0 vulns) ✅
 - Created branch `chore/repokeeper-cleanup-cycle-34` from main
+- Created PR with all cleanup changes
+
+## Current Cycle (2026-05-30 - RepoKeeper Cleanup Cycle 35)
+
+### Findings
+
+- **RepoKeeper started**: On `main` branch at `086932b` (Commit: `docs(brocula): BroCula Hunt Report - Console & Lighthouse Audit (#1481)`). Build/lint/typecheck all passing clean.
+- **1 new commit since Cycle 34**:
+  - `086932b` docs(brocula): BroCula Hunt Report - Console & Lighthouse Audit (#1481)
+- **No new test changes**: 558 web + 299 API + 120 shared = 977 total (unchanged from Cycle 34).
+- **No redundant/temp/stray files detected** — repo remains clean after 34 previous cycles.
+- **No untracked files** — `.gitignore` is comprehensive.
+- **CHANGELOG.md**: No new feature/fix/perf commits since Cycle 34 — no update needed.
+- **docs/active-tasks.md**: Cycle 34 was still "Active" — marked Complete. Cycle 35 added.
+- **BUG-014**: Still present in `main.yml` — remains blocked by GitHub App `workflows` permission (recurring — 11+ previous cycles).
+- **1 stale merged remote branch** detected: `origin/brocula-hunt-2026-05-30` — pending prune.
+- **Dependencies**: 0 vulnerabilities (npm audit clean).
+- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
+- **Open PRs / issues**: Managed by CI system, no action needed.
+
+### Actions Taken
+
+- Updated `docs/active-tasks.md` — marked Cycle 34 Complete, added Cycle 35 entry, updated Last Updated
+- Updated `docs/findings.md` — this record
+- Updated `docs/features.md` — bumped "Last Updated" to Cycle 35
+- Updated `docs/bugs.md` — bumped "Last Updated" to Cycle 35
+- Updated `docs/roadmap.md` — bumped "Last Updated" to Cycle 35
+- Ran verification: typecheck ✅ lint ✅ build ✅ test:all (977 passing) ✅ npm audit (0 vulns) ✅
+- Pruned 1 stale merged remote branch (`origin/brocula-hunt-2026-05-30`)
+- Created branch `chore/repokeeper-cleanup-cycle-35` from main
 - Created PR with all cleanup changes
 
 ## Previous Cycle (2026-05-29 - RepoKeeper Cleanup Cycle 31)
@@ -426,5 +455,5 @@
 - Created branch `chore/repokeeper-cleanup-cycle-20` from main
 - Created PR with all cleanup changes
 
-**Last Cleared**: 2026-05-29 (Cycle 32)  
+**Last Cleared**: 2026-05-30 (Cycle 35)  
 **Maintainer**: RepoKeeper

@@ -104,21 +104,38 @@
   - [x] Create branch `chore/repokeeper-cleanup-cycle-32` from main
   - [x] Create PR with all cleanup changes
 
-### Task: RepoKeeper Cleanup Cycle 34 (2026-05-30)
+### Task: RepoKeeper Cleanup Cycle 34 (2026-05-30) — Completed
+
+- **Priority**: High
+- **Status**: Completed
+- **Objective**: Add missing feat(web) keyboard shortcut tooltip to CHANGELOG, mark Cycle 32 Complete, add Cycle 34 entry, update docs dates, verify build/lint/test, prune stale merged branch, create PR
+- **Note**: All actions completed — PR #1475 merged ✅
+- **Actions**:
+  - [x] Update `CHANGELOG.md` — add missing `feat(web): keyboard shortcut tooltip on editor hide buttons` entry
+  - [x] Update `docs/active-tasks.md` — this record; mark Cycle 32 Complete; add Cycle 34 entry
+  - [x] Update `docs/findings.md` — record Cycle 34 findings
+  - [x] Update `docs/features.md` — bump Last Updated to Cycle 34
+  - [x] Update `docs/bugs.md` — bump Last Updated to Cycle 34
+  - [x] Update `docs/roadmap.md` — bump Last Updated to Cycle 34
+  - [x] Run verification: typecheck ✅, lint ✅, build ✅, test:all ✅, npm audit (0 vulns) ✅
+  - [x] Prune stale merged remote branch `origin/fix/ci-node-22-version-full`
+  - [x] Create branch `chore/repokeeper-cleanup-cycle-34` from main
+  - [x] Create PR with all cleanup changes
+
+### Task: RepoKeeper Cleanup Cycle 35 (2026-05-30)
 
 - **Priority**: High
 - **Status**: Active
-- **Objective**: Add missing feat(web) keyboard shortcut tooltip to CHANGELOG, mark Cycle 32 Complete, add Cycle 34 entry, update docs dates, verify build/lint/test, prune stale merged branch, create PR
+- **Objective**: Verify repo stability post-cycle-34, audit new BroCula hunt report, update docs dates (findings/active-tasks/bugs/features/roadmap), verify build/lint/test (977 tests), prune stale merged branch, create PR
 - **Actions**:
-  - [ ] Update `CHANGELOG.md` — add missing `feat(web): keyboard shortcut tooltip on editor hide buttons` entry
-  - [ ] Update `docs/active-tasks.md` — this record; mark Cycle 32 Complete; add Cycle 34 entry
-  - [ ] Update `docs/findings.md` — record Cycle 34 findings
-  - [ ] Update `docs/features.md` — bump Last Updated to Cycle 34
-  - [ ] Update `docs/bugs.md` — bump Last Updated to Cycle 34
-  - [ ] Update `docs/roadmap.md` — bump Last Updated to Cycle 34
-  - [ ] Run verification: typecheck ✅, lint ✅, build ✅, test:all ✅, npm audit (0 vulns) ✅
-  - [ ] Prune stale merged remote branch `origin/fix/ci-node-22-version-full`
-  - [ ] Create branch `chore/repokeeper-cleanup-cycle-34` from main
+  - [ ] Update `docs/active-tasks.md` — this record; mark Cycle 34 Complete; add Cycle 35 entry
+  - [ ] Update `docs/findings.md` — record Cycle 35 findings
+  - [ ] Update `docs/features.md` — bump Last Updated to Cycle 35
+  - [ ] Update `docs/bugs.md` — bump Last Updated to Cycle 35
+  - [ ] Update `docs/roadmap.md` — bump Last Updated to Cycle 35
+  - [ ] Run verification: typecheck ✅, lint ✅, build ✅, test:all (977) ✅, npm audit (0 vulns) ✅
+  - [ ] Prune stale merged remote branch `origin/brocula-hunt-2026-05-30`
+  - [ ] Create branch `chore/repokeeper-cleanup-cycle-35` from main
   - [ ] Create PR with all cleanup changes
 
 ### Task: RepoKeeper Cleanup Cycle 24 (2026-05-27)
@@ -505,10 +522,10 @@ See [bugs.md](./bugs.md) for detailed bug information.
 - **Frontend**: Co-located Vitest tests with component and store tests — 558 passing
 - **API**: Comprehensive route, middleware, service, and utility tests — 299 passing (up from 296)
 - **Shared**: Zod schema, type, and config tests — 120 passing (up from 107)
-- **Total**: 977 tests (all passing) [558 web + 299 api + 120 shared] — unchanged from Cycle 31
+- **Total**: 977 tests (all passing) [558 web + 299 api + 120 shared] — unchanged from Cycle 34
 - **TypeScript**: Strict mode, no unchecked `any` types
 
 ---
 
-**Last Updated**: 2026-05-30 (Cycle 34)  
+**Last Updated**: 2026-05-30 (Cycle 35)  
 **Maintainer**: RepoKeeper
