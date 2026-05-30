@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ReducedMotionProvider } from "./context/ReducedMotionContext";
 import { ExportProvider } from "./context/ExportContext";
+import { MotionConfigWrapper } from "./components/MotionConfigWrapper";
 import { SKELETON_CONFIG, VERCEL_DOMAINS } from "./config/constants";
 import "./index.css";
 
@@ -44,11 +45,6 @@ const VercelAnalyticsComponent = React.lazy(() =>
   import("./components/VercelAnalytics").then((m) => ({ default: m.VercelAnalytics }))
 );
 
-// Lazy load MotionConfigWrapper to defer framer-motion bundle until after initial render
-const MotionConfigWrapper = React.lazy(() =>
-  import("./components/MotionConfigWrapper").then((m) => ({ default: m.MotionConfigWrapper }))
-);
-
 function Root(): JSX.Element {
   const isVercel =
     typeof window !== "undefined" && !VERCEL_DOMAINS.LOCAL.includes(window.location.hostname);
@@ -58,11 +54,9 @@ function Root(): JSX.Element {
       <ErrorBoundary>
         <ReducedMotionProvider>
           <ExportProvider>
-            <React.Suspense fallback={null}>
-              <MotionConfigWrapper onMount={fadeOutAndRemoveSkeletonLoader}>
-                <App />
-              </MotionConfigWrapper>
-            </React.Suspense>
+            <MotionConfigWrapper onMount={fadeOutAndRemoveSkeletonLoader}>
+              <App />
+            </MotionConfigWrapper>
           </ExportProvider>
         </ReducedMotionProvider>
         {isVercel && (
