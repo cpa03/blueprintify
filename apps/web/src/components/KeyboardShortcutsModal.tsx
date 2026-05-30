@@ -13,7 +13,13 @@
 
 import { useEffect, useCallback, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { KEYBOARD_SHORTCUTS, WIZARD_STEPS, EDITOR_LABELS } from "../config/constants";
+import {
+  KEYBOARD_SHORTCUTS,
+  WIZARD_STEPS,
+  EDITOR_LABELS,
+  SPRING_CONFIG,
+  ANIMATION,
+} from "../config/constants";
 import { useFocusTrap } from "../hooks";
 
 /**
@@ -163,7 +169,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: ANIMATION.MODAL_FADE }}
             className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm z-50"
             onClick={onClose}
             aria-hidden="true"
@@ -175,8 +181,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{
               type: "spring",
-              stiffness: 400,
-              damping: 30,
+              ...SPRING_CONFIG.GENTLE,
             }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
             role="dialog"
@@ -230,8 +235,8 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{
-                        delay: categoryIndex * 0.1,
-                        duration: 0.3,
+                        delay: categoryIndex * ANIMATION.STAGGER,
+                        duration: ANIMATION.SUBTLE_MOVE,
                       }}
                     >
                       <div className="flex items-center gap-2 mb-3">
@@ -248,8 +253,9 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{
-                              delay: categoryIndex * 0.1 + index * 0.05,
-                              duration: 0.2,
+                              delay:
+                                categoryIndex * ANIMATION.STAGGER + (index * ANIMATION.STAGGER) / 2,
+                              duration: ANIMATION.NORMAL,
                             }}
                             className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-dark-800/50 transition-colors duration-200 group"
                           >

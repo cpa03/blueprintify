@@ -6,16 +6,16 @@
  */
 
 import type { Variants, Transition } from "framer-motion";
-import { SPRING_CONFIG } from "../config/constants";
+import { SPRING_CONFIG, ANIMATION } from "../config/constants";
 
 /**
  * Common transition configurations
- * Uses centralized SPRING_CONFIG for spring animations
+ * Uses centralized SPRING_CONFIG and ANIMATION for spring and duration values
  */
 export const transitions = {
-  fast: { duration: 0.15, ease: "easeOut" } as Transition,
-  normal: { duration: 0.3, ease: "easeOut" } as Transition,
-  slow: { duration: 0.5, ease: "easeOut" } as Transition,
+  fast: { duration: ANIMATION.TOOLTIP_FADE, ease: "easeOut" } as Transition,
+  normal: { duration: ANIMATION.SUBTLE_MOVE, ease: "easeOut" } as Transition,
+  slow: { duration: ANIMATION.HALF_SECOND, ease: "easeOut" } as Transition,
   spring: {
     type: "spring" as const,
     stiffness: SPRING_CONFIG.SNAPPY.stiffness,
@@ -45,8 +45,8 @@ export const staggerContainer: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
+      staggerChildren: ANIMATION.STAGGER,
+      delayChildren: ANIMATION.NORMAL,
     },
   },
 };
@@ -123,7 +123,7 @@ export const pulseAnimation = {
   scale: [1, 1.05, 1],
   opacity: [0.5, 0.8, 0.5],
   transition: {
-    duration: 2,
+    duration: ANIMATION.SLOW_PULSE,
     repeat: Infinity,
     ease: "easeInOut" as const,
   },
@@ -161,7 +161,10 @@ export function pageTransition(direction: "forward" | "backward" = "forward") {
  * @param staggerChildren - Delay between each child animation
  * @param delayChildren - Initial delay before children start animating
  */
-export function createStaggerContainer(staggerChildren = 0.1, delayChildren = 0.2): Variants {
+export function createStaggerContainer(
+  staggerChildren: number = ANIMATION.STAGGER,
+  delayChildren: number = ANIMATION.NORMAL
+): Variants {
   return {
     hidden: { opacity: 0 },
     visible: {
@@ -178,7 +181,7 @@ export function createStaggerContainer(staggerChildren = 0.1, delayChildren = 0.
  * Creates a fade-in variant with custom duration
  * @param duration - Animation duration in seconds
  */
-export function createFadeInUp(duration = 0.5): Variants {
+export function createFadeInUp(duration: number = ANIMATION.HALF_SECOND): Variants {
   return {
     hidden: { opacity: 0, y: 20 },
     visible: {

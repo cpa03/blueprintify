@@ -81,6 +81,8 @@ export const ANIMATION_TIMING = {
     fast: 0.15,
     normal: 0.2,
     medium: 0.3,
+    mediumSlow: 0.4,
+    semiSlow: 0.35,
     slow: 0.5,
     glow: 2,
     pulse: 3,

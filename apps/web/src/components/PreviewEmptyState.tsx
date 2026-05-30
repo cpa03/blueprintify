@@ -12,7 +12,7 @@ import { memo } from "react";
 import { motion } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
-import { EMPTY_STATE_CONFIG } from "../config/constants";
+import { EMPTY_STATE_CONFIG, SPRING_CONFIG } from "../config/constants";
 
 interface PreviewEmptyStateProps {
   /** The active editor tab that is empty */
@@ -94,7 +94,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-accent-emerald/20 flex items-center justify-center"
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.4, type: "spring", stiffness: 400, damping: 20 }}
+              transition={{ delay: 0.4, type: "spring", ...SPRING_CONFIG.SMOOTH }}
               aria-hidden="true"
             >
               <svg

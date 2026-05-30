@@ -30,6 +30,7 @@ import {
   TIMEOUTS,
   SPRING_CONFIG,
   UI_CONTENT,
+  ANIMATION,
 } from "../../config/constants";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
@@ -232,7 +233,7 @@ export const StepFeatures = memo(function StepFeatures({
                       scale: isJustAdded ? [1, 1.08, 1] : 1,
                       transition: isJustAdded
                         ? { duration: 0.4, ease: "easeOut" }
-                        : { type: "spring", stiffness: 400, damping: 25 },
+                        : { type: "spring", ...SPRING_CONFIG.DEFAULT },
                     }}
                     className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors duration-300 ${
                       isJustAdded
@@ -342,7 +343,7 @@ export const StepFeatures = memo(function StepFeatures({
                             initial={{ scale: 0, rotate: -180 }}
                             animate={{ scale: 1, rotate: 0 }}
                             exit={{ scale: 0, rotate: 180 }}
-                            transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                            transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK }}
                           >
                             <motion.path
                               strokeLinecap="round"
@@ -351,7 +352,7 @@ export const StepFeatures = memo(function StepFeatures({
                               d="M5 13l4 4L19 7"
                               initial={{ pathLength: 0 }}
                               animate={{ pathLength: 1 }}
-                              transition={{ duration: 0.2, delay: 0.1 }}
+                              transition={{ duration: ANIMATION.CHECKMARK_REVEAL, delay: 0.1 }}
                             />
                           </motion.svg>
                         ) : (
@@ -365,7 +366,7 @@ export const StepFeatures = memo(function StepFeatures({
                             initial={{ scale: 0, rotate: 180 }}
                             animate={{ scale: 1, rotate: 0 }}
                             exit={{ scale: 0, rotate: -180 }}
-                            transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                            transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK }}
                           >
                             <path
                               strokeLinecap="round"

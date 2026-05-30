@@ -76,7 +76,7 @@ const TechChip = memo(function TechChip({
         isJustSelected
           ? {
               scale: [1, 1.15, 1],
-              transition: { duration: 0.3, ease: "easeOut" },
+              transition: { duration: ANIMATION.SUBTLE_MOVE, ease: "easeOut" },
             }
           : {}
       }
@@ -88,7 +88,7 @@ const TechChip = memo(function TechChip({
             initial={{ scale: 0, opacity: 0.8 }}
             animate={{ scale: 2.5, opacity: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            transition={{ duration: ANIMATION.HALF_SECOND, ease: "easeOut" }}
             className="absolute inset-0 rounded-full bg-accent-emerald/30 pointer-events-none"
             style={{ transformOrigin: "center" }}
           />
@@ -101,7 +101,7 @@ const TechChip = memo(function TechChip({
             initial={{ scale: 0.8, opacity: 1 }}
             animate={{ scale: 1.5, opacity: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            transition={{ duration: ANIMATION.FADE_IN, ease: "easeOut" }}
             className="absolute inset-0 rounded-full border-2 border-accent-emerald pointer-events-none"
           />
         )}
@@ -129,7 +129,7 @@ const TechChip = memo(function TechChip({
                 d="M5 13l4 4L19 7"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={{ duration: 0.2, delay: 0.1 }}
+                transition={{ duration: ANIMATION.NORMAL, delay: 0.1 }}
               />
             </motion.svg>
           ) : (

@@ -31,7 +31,7 @@ import type { EditorTab } from "@blueprint/shared";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
 import { AnimatedCopyButton } from "../AnimatedCopyButton";
-import { SPRING_CONFIG, EDITOR_LABELS } from "../../config/constants";
+import { SPRING_CONFIG, EDITOR_LABELS, ANIMATION } from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION } from "../../config/theme";
 
 export type ViewMode = "edit" | "preview" | "split";
@@ -241,7 +241,11 @@ function EditorToolbarComponent({
                 <motion.span
                   initial={{ opacity: 0 }}
                   animate={{ opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                  transition={{
+                    duration: ANIMATION.SPINNER_ROTATION + ANIMATION.NORMAL,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
                 >
                   {EDITOR_LABELS.VIEW_MODES.GENERATING}
                 </motion.span>
@@ -263,7 +267,7 @@ function EditorToolbarComponent({
                   aria-hidden="true"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                  transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK }}
                 >
                   <motion.path
                     strokeLinecap="round"
@@ -272,7 +276,7 @@ function EditorToolbarComponent({
                     d="M5 13l4 4L19 7"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
-                    transition={{ duration: 0.25, delay: 0.05 }}
+                    transition={{ duration: ANIMATION.CHECKMARK_REVEAL, delay: 0.05 }}
                   />
                 </motion.svg>
                 <motion.span
@@ -337,7 +341,7 @@ function EditorToolbarComponent({
             viewBox="0 0 24 24"
             aria-hidden="true"
             whileHover={{ rotate: 180 }}
-            transition={{ type: "spring", stiffness: 200, damping: 15 }}
+            transition={{ type: "spring", ...SPRING_CONFIG.REFRESH }}
           >
             <path
               strokeLinecap="round"

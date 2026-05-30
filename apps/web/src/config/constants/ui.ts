@@ -22,10 +22,42 @@ export const ANIMATION = {
   FAST: ANIMATION_TIMING.duration.fast,
   NORMAL: ANIMATION_TIMING.duration.normal,
   MEDIUM: ANIMATION_TIMING.duration.medium,
+  MEDIUM_SLOW: ANIMATION_TIMING.duration.mediumSlow,
+  SEMI_SLOW: ANIMATION_TIMING.duration.semiSlow,
   SLOW: ANIMATION_TIMING.duration.slow,
   STAGGER: ANIMATION_TIMING.stagger.default,
   SPINNER_ROTATION: 1,
   TYPING_INDICATOR_DELAY_S: 0.6,
+  /** Duration for float/pulse animations */
+  FLOAT: 1.5,
+  /** Duration for slow glow/pulse effects */
+  SLOW_PULSE: 2,
+  /** Duration for very slow breath effects */
+  BREATH: 2.5,
+  /** Duration for smooth drift/float animations */
+  DRIFT: 2.2,
+  /** Duration emphasized float movements */
+  DRIFT_SLOW: 1.8,
+  /** Duration for gentle pulse effects */
+  GENTLE_PULSE: 1,
+  /** Duration for quick checkmark reveal */
+  CHECKMARK_REVEAL: 0.25,
+  /** Duration for modal/fade transitions */
+  MODAL_FADE: 0.2,
+  /** Duration for quick tooltip transitions */
+  TOOLTIP_FADE: 0.15,
+  /** Duration for smooth slider transitions */
+  SLIDER: 0.6,
+  /** Duration for quick fade transitions */
+  QUICK_FADE: 0.1,
+  /** Duration for robust fade/animate in */
+  FADE_IN: 0.4,
+  /** Duration for half-second transitions */
+  HALF_SECOND: 0.5,
+  /** Duration for subtle movement animations */
+  SUBTLE_MOVE: 0.3,
+  /** Duration for tab switch/view change */
+  TAB_SWITCH: 0.3,
 } as const;
 
 /** Animation durations (in milliseconds) */
@@ -73,6 +105,16 @@ export const SPRING_CONFIG = {
   SUBTLE_BOUNCE: { stiffness: 400, damping: 17, mass: 0.8 },
   CHECKMARK: { stiffness: 500, damping: 15, mass: 0.8 },
   SLOW: { stiffness: 100, damping: 20, mass: 0.8 },
+  /** Warning/alert icon bounce - softer spring for impactful elements */
+  WARNING: { stiffness: 260, damping: 8, mass: 0.6 },
+  /** Smooth reveal spring - subtle emphasis without bounce */
+  SMOOTH: { stiffness: 400, damping: 20 },
+  /** Refresh/rotate icon spring - looser for smooth rotation */
+  REFRESH: { stiffness: 200, damping: 15 },
+  /** Success/completion spring - snappy with pronounced settle */
+  SUCCESS: { stiffness: 500, damping: 30 },
+  /** Checkmark icon spring - precise with minimal bounce */
+  CHECKMARK_ICON: { stiffness: 500, damping: 20, mass: 0.5 },
 } as const;
 
 // ============================================================================
