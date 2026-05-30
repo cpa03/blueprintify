@@ -2,6 +2,7 @@
 // Source of truth for wizard-related constants
 
 import { ENV } from "../env";
+import { SHARED_DEFAULTS } from "@blueprint/shared";
 
 /**
  * Wizard step configuration
@@ -64,7 +65,7 @@ export const EXPORT_CONFIG = {
   METADATA_FILENAME: "metadata.json",
   BLUEPRINT_FILENAME: "blueprint.md",
   TASK_FILENAME: "task.md",
-  METADATA_VERSION: "1.0.0",
+  METADATA_VERSION: SHARED_DEFAULTS.API_VERSION,
   DOCS_FOLDER: ".docs",
   ZIP_FILENAME_SUFFIX: ".zip",
   DATE_FORMAT_SEPARATOR: "T",

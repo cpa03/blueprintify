@@ -1,5 +1,5 @@
 import { vi } from "vitest";
-import { SSE_HEADERS } from "@blueprint/shared";
+import { SSE_HEADERS, SHARED_DEFAULTS } from "@blueprint/shared";
 
 export interface TestBlueprint {
   projectName: string;
@@ -32,7 +32,7 @@ export function createTestBlueprint(overrides?: Partial<TestBlueprint>): TestBlu
     blueprint: `# Test Project\n\n## Overview\nThis is a test blueprint for integration testing.\n\n## Architecture\n- Frontend: React + Vite\n- Backend: Cloudflare Workers\n\n## Features\n- Feature 1\n- Feature 2\n`,
     tasks: `## Implementation Tasks\n\n### Phase 1\n- [ ] Setup project structure\n- [ ] Configure build tools\n- [ ] Initialize repository\n\n### Phase 2\n- [ ] Implement core features\n- [ ] Add authentication\n- [ ] Setup database\n`,
     metadata: {
-      version: "1.0.0",
+      version: SHARED_DEFAULTS.API_VERSION,
       createdAt: now,
       updatedAt: now,
     },
@@ -47,7 +47,7 @@ export function createTestProjectData(overrides?: Partial<TestProjectData>): Tes
     blueprint: "# Integration Test\n\n## Purpose\nTest data for integration testing.\n",
     tasks: "## Tasks\n- [ ] Test import\n- [ ] Test export\n",
     metadata: {
-      version: "1.0.0",
+      version: SHARED_DEFAULTS.API_VERSION,
       createdAt: new Date().toISOString(),
     },
     ...overrides,
@@ -84,7 +84,7 @@ export const mockStorageData = {
   },
   metadata: {
     lastSaved: new Date().toISOString(),
-    version: "1.0.0",
+    version: SHARED_DEFAULTS.API_VERSION,
   },
 };
 

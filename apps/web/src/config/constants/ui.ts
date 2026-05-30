@@ -7,7 +7,7 @@
 
 import { ENV } from "../env";
 import { VALIDATION_LIMITS } from "@blueprint/shared";
-import { ANIMATION_TIMING } from "../theme";
+import { ANIMATION_TIMING, COLORS } from "../theme";
 
 // ============================================================================
 // Animation Durations
@@ -147,13 +147,16 @@ export const TOOLTIP_CONFIG = {
 // Color Presets
 // ============================================================================
 
-/** Celebration colors for particle animations */
+/**
+ * Celebration colors for particle animations
+ * Flexy says: Colors that match theme values reference COLORS for single source of truth!
+ */
 export const CELEBRATION_COLORS = [
-  "#10b981",
+  COLORS.accent.emerald,
   "#34d399",
   "#6ee7b7",
-  "#6366f1",
-  "#818cf8",
+  COLORS.primary[500],
+  COLORS.primary[400],
   "#a78bfa",
   "#f472b6",
   "#fbbf24",
@@ -161,14 +164,14 @@ export const CELEBRATION_COLORS = [
 
 /** Animation colors for value change indicators */
 export const ANIMATION_COLORS = {
-  POSITIVE: "#10b981",
-  NEGATIVE: "#f43f5e",
+  POSITIVE: COLORS.semantic.success,
+  NEGATIVE: COLORS.semantic.danger,
 } as const;
 
 /** Progress indicator colors */
 export const PROGRESS_COLORS = {
-  COMPLETED: "#10b981",
-  ACTIVE: "#6366f1",
+  COMPLETED: COLORS.accent.emerald,
+  ACTIVE: COLORS.primary[500],
 } as const;
 
 /** Step connector visual configuration */
