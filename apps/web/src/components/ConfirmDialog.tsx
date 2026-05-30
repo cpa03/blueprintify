@@ -37,6 +37,7 @@
 import { useEffect, useRef, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SPRING_CONFIG, ANIMATION } from "../config/constants";
+import { useFocusTrap } from "../hooks/useFocusTrap";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 /**
@@ -78,52 +79,35 @@ export const ConfirmDialog = memo(function ConfirmDialog({
   icon = "⚠️",
 }: ConfirmDialogProps): JSX.Element {
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
-  const lastActiveElement = useRef<HTMLElement | null>(null);
   const shouldReduceMotion = useReducedMotion();
 
-  // Focus trap: trap focus within the dialog when open
+  const { containerRef } = useFocusTrap({
+    isActive: isOpen,
+    autoFocus: false,
+  });
+
+  useEffect(() => {
+    if (isOpen) {
+      confirmButtonRef.current?.focus();
+    }
+  }, [isOpen]);
+
   useEffect(() => {
     if (!isOpen) return;
 
-    lastActiveElement.current = document.activeElement as HTMLElement;
-    confirmButtonRef.current?.focus();
+    document.body.style.overflow = "hidden";
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onClose();
-        return;
-      }
-
-      // Simple focus trap: Tab and Shift+Tab cycle between the two buttons
-      if (e.key === "Tab") {
-        const focusableElements = [
-          confirmButtonRef.current,
-          // The cancel button is the only other focusable element
-          ...(document.querySelectorAll('[data-confirm-cancel="true"]') as NodeListOf<HTMLElement>),
-        ].filter(Boolean) as HTMLElement[];
-
-        if (focusableElements.length < 2) return;
-
-        const first = focusableElements[0] as HTMLElement;
-        const last = focusableElements[focusableElements.length - 1] as HTMLElement;
-
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
-    document.body.style.overflow = "hidden";
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
-      lastActiveElement.current?.focus();
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, onClose]);
 
@@ -153,6 +137,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
 
           {/* Dialog */}
           <motion.div
+            ref={containerRef as React.RefObject<HTMLDivElement>}
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -207,7 +192,6 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={onClose}
-                  data-confirm-cancel="true"
                   className="btn-ghost px-4 py-2 rounded-lg text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                 >
                   {cancelLabel}
