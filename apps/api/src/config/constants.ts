@@ -18,6 +18,7 @@ import {
   ROUTE_PATHS as SHARED_ROUTE_PATHS,
   TIME_UNITS,
   BYTE_CONVERSION,
+  SHARED_DEFAULTS,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./env";
 import {
@@ -548,7 +549,7 @@ export const IMPORT_CONFIG = {
   /** Default project name when no name can be extracted from imported content */
   DEFAULT_PROJECT_NAME: "Imported Project",
   /** Expected import data version */
-  EXPECTED_VERSION: "1.0.0",
+  EXPECTED_VERSION: SHARED_DEFAULTS.API_VERSION,
 } as const;
 
 export const IMPORT_REGEX = {

@@ -6,6 +6,7 @@
 import {
   DEBOUNCE_CONFIG as SHARED_DEBOUNCE_CONFIG,
   STORAGE_CONFIG as SHARED_STORAGE_CONFIG,
+  TIME_UNITS,
 } from "@blueprint/shared";
 import { ENV } from "../env";
 import { STORAGE_KEYS } from "../keys";
@@ -59,7 +60,7 @@ export const STORAGE_CONFIG = {
   QUOTA_CACHE_TTL_MS: 5000,
   BROWSER_QUOTA_ERROR_CODES: { CHROME: 22, FIREFOX: 1014 } as const,
   /** Full quota recalculation interval in ms (10 minutes) */
-  FULL_RECALCULATION_INTERVAL_MS: 10 * 60 * 1000,
+  FULL_RECALCULATION_INTERVAL_MS: 10 * TIME_UNITS.MS_PER_SECOND * TIME_UNITS.SECONDS_PER_MINUTE,
 };
 
 // ============================================================================

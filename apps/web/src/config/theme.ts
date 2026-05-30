@@ -55,6 +55,7 @@ export const COLORS = {
     error: "#ec4899",
     warning: "#eab308",
     info: "#6366f1",
+    danger: "#f43f5e",
   },
 
   // Gradient stops
