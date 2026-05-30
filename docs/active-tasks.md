@@ -89,8 +89,9 @@
 ### Task: RepoKeeper Cleanup Cycle 32 (2026-05-29)
 
 - **Priority**: High
-- **Status**: Active
+- **Status**: Completed
 - **Objective**: Add 7 missing commits to CHANGELOG (3 feat, 3 Changed, 3 fix), mark Cycle 31 Complete, prune 2 stale merged branches, update docs dates, verify build/lint/test (977), create PR
+- **Note**: Merged via PR #1461.
 - **Actions**:
   - [x] Update `CHANGELOG.md` — add 7 missing commits to [Unreleased] (2 feat, 3 Changed, 3 fix)
   - [x] Update `docs/active-tasks.md` — this record; mark Cycle 31 Complete; add Cycle 32 entry
@@ -98,9 +99,26 @@
   - [x] Update `docs/features.md` — bump Last Updated to Cycle 32
   - [x] Update `docs/bugs.md` — bump Last Updated to Cycle 32
   - [x] Update `docs/roadmap.md` — bump Last Updated to Cycle 32
-  - [ ] Run verification: typecheck ✅, lint ✅, build ✅, test:all (977) ✅, npm audit (0 vulns) ✅
-  - [ ] Prune 2 stale merged remote branches
-  - [ ] Create branch `chore/repokeeper-cleanup-cycle-32` from main
+  - [x] Run verification: typecheck ✅, lint ✅, build ✅, test:all (977) ✅, npm audit (0 vulns) ✅
+  - [x] Prune 2 stale merged remote branches
+  - [x] Create branch `chore/repokeeper-cleanup-cycle-32` from main
+  - [x] Create PR with all cleanup changes
+
+### Task: RepoKeeper Cleanup Cycle 34 (2026-05-30)
+
+- **Priority**: High
+- **Status**: Active
+- **Objective**: Add missing feat(web) keyboard shortcut tooltip to CHANGELOG, mark Cycle 32 Complete, add Cycle 34 entry, update docs dates, verify build/lint/test, prune stale merged branch, create PR
+- **Actions**:
+  - [ ] Update `CHANGELOG.md` — add missing `feat(web): keyboard shortcut tooltip on editor hide buttons` entry
+  - [ ] Update `docs/active-tasks.md` — this record; mark Cycle 32 Complete; add Cycle 34 entry
+  - [ ] Update `docs/findings.md` — record Cycle 34 findings
+  - [ ] Update `docs/features.md` — bump Last Updated to Cycle 34
+  - [ ] Update `docs/bugs.md` — bump Last Updated to Cycle 34
+  - [ ] Update `docs/roadmap.md` — bump Last Updated to Cycle 34
+  - [ ] Run verification: typecheck ✅, lint ✅, build ✅, test:all ✅, npm audit (0 vulns) ✅
+  - [ ] Prune stale merged remote branch `origin/fix/ci-node-22-version-full`
+  - [ ] Create branch `chore/repokeeper-cleanup-cycle-34` from main
   - [ ] Create PR with all cleanup changes
 
 ### Task: RepoKeeper Cleanup Cycle 24 (2026-05-27)
@@ -492,5 +510,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-05-29 (Cycle 32)  
+**Last Updated**: 2026-05-30 (Cycle 34)  
 **Maintainer**: RepoKeeper

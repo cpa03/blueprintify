@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Keyboard shortcut tooltip on editor hide buttons (desktop and mobile) showing Ctrl/Cmd+E toggle shortcut, with ARIA improvements for accessibility ([#1460](https://github.com/cpa03/blueprintify/pull/1460))
 - Estimated reading time display in editor content stats for user time estimation
 - Interactive tab switch suggestion in PreviewEmptyState for easier navigation
 - Highlight animation on custom feature chip when added for visual feedback and delight ([#1443](https://github.com/cpa03/blueprintify/pull/1443))
