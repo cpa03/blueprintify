@@ -18,6 +18,7 @@ import {
   ANIMATION_COLORS,
   SPRING_CONFIG,
   PARTICLE_CONFIG,
+  ANIMATION,
 } from "../config/constants";
 
 interface Particle {
@@ -204,7 +205,7 @@ function AnimatedCopyButtonComponent({
             initial={{ scale: 0.8, opacity: 0.8 }}
             animate={{ scale: 1.3, opacity: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            transition={{ duration: ANIMATION.HALF_SECOND, ease: "easeOut" }}
           />
         )}
       </AnimatePresence>
@@ -215,7 +216,7 @@ function AnimatedCopyButtonComponent({
             className="absolute inset-0 bg-accent-emerald/20 rounded-lg pointer-events-none"
             initial={{ opacity: 0 }}
             animate={{ opacity: [0, 0.5, 0] }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: ANIMATION.SLIDER }}
           />
         )}
       </AnimatePresence>
@@ -243,8 +244,7 @@ function AnimatedCopyButtonComponent({
                 animate={{ scale: 1 }}
                 transition={{
                   type: "spring",
-                  stiffness: 500,
-                  damping: 15,
+                  ...SPRING_CONFIG.CHECKMARK,
                   delay: 0.05,
                 }}
               >
@@ -256,7 +256,7 @@ function AnimatedCopyButtonComponent({
                   strokeLinejoin="round"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
-                  transition={{ duration: 0.25, delay: 0.1 }}
+                  transition={{ duration: ANIMATION.CHECKMARK_REVEAL, delay: 0.1 }}
                 />
               </motion.svg>
               <motion.span
@@ -275,7 +275,7 @@ function AnimatedCopyButtonComponent({
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: ANIMATION.NORMAL }}
             >
               <motion.svg
                 width="16"
@@ -290,7 +290,7 @@ function AnimatedCopyButtonComponent({
                   hasContent
                     ? {
                         rotate: [0, -10, 10, -5, 5, 0],
-                        transition: { duration: 0.5 },
+                        transition: { duration: ANIMATION.HALF_SECOND },
                       }
                     : undefined
                 }

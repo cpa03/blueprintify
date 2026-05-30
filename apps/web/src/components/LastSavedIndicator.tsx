@@ -12,6 +12,7 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { SPRING_CONFIG } from "../config/constants";
 
 /**
  * Props for the LastSavedIndicator component.
@@ -68,7 +69,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                 className="relative flex h-2 w-2"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
               >
                 <motion.span
                   className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"
@@ -96,9 +97,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                 animate={{ scale: 1 }}
                 transition={{
                   type: "spring",
-                  stiffness: 500,
-                  damping: 20,
-                  mass: 0.5,
+                  ...SPRING_CONFIG.CHECKMARK_ICON,
                 }}
               >
                 <motion.path
@@ -109,7 +108,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
                   transition={{
-                    pathLength: { type: "spring", stiffness: 400, damping: 25, delay: 0.05 },
+                    pathLength: { type: "spring", ...SPRING_CONFIG.DEFAULT, delay: 0.05 },
                     opacity: { duration: 0.1, delay: 0.05 },
                   }}
                 />

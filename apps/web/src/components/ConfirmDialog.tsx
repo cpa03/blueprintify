@@ -36,7 +36,7 @@
 
 import { useEffect, useRef, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SPRING_CONFIG } from "../config/constants";
+import { SPRING_CONFIG, ANIMATION } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 /**
@@ -145,7 +145,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: ANIMATION.MODAL_FADE }}
             className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm z-50"
             onClick={handleOverlayClick}
             aria-hidden="true"
@@ -182,9 +182,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                         ? { duration: 0 }
                         : {
                             type: "spring",
-                            stiffness: 260,
-                            damping: 8,
-                            mass: 0.6,
+                            ...SPRING_CONFIG.WARNING,
                           }
                     }
                   >
