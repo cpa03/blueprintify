@@ -609,12 +609,13 @@
 }
 
 /* ===== Skip-link Focus Animation ===== */
-/* Brief subtle highlight when main content receives focus via skip-link */
+/* Brief subtle highlight when main content receives focus via skip-link.
+   Uses :focus (not :focus-visible) because programmatic .focus() triggered by
+   clicking "Skip to main content" does not fire :focus-visible in most browsers.
+   Since <main tabIndex={-1}> is not in the tab order, :focus only fires when
+   explicitly focused via skip-link navigation — no risk of false positives. */
 #main-content:focus {
   outline: none;
-}
-
-#main-content:focus-visible {
   animation: skip-highlight 1.2s ease-out forwards;
 }
 
