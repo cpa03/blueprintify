@@ -58,6 +58,10 @@ export const StepInfo = memo(function StepInfo({
     minHeight: TEXTAREA_CONFIG.STEP_INFO_MIN_HEIGHT_PX,
     maxHeight: TEXTAREA_CONFIG.STEP_INFO_MAX_HEIGHT_PX,
   });
+  const { textareaRef: constraintsRef } = useAutoResizeTextarea({
+    minHeight: 96,
+    maxHeight: TEXTAREA_CONFIG.STEP_INFO_MAX_HEIGHT_PX,
+  });
   const projectName = useWizardStore((s) => s.projectName);
   const description = useWizardStore((s) => s.description);
   const targetAudience = useWizardStore((s) => s.targetAudience);
@@ -428,6 +432,7 @@ export const StepInfo = memo(function StepInfo({
             </AnimatePresence>
           </div>
           <motion.textarea
+            ref={constraintsRef}
             id="constraints"
             name="constraints"
             value={constraints}
@@ -437,7 +442,7 @@ export const StepInfo = memo(function StepInfo({
             }}
             onBlur={constraintsTyping.handleBlur}
             placeholder={UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_PLACEHOLDER}
-            className="textarea-field h-24"
+            className="textarea-field"
             animate={constraintsTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
             transition={transitions.fast}
           />
