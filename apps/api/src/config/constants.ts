@@ -19,6 +19,8 @@ import {
   TIME_UNITS,
   BYTE_CONVERSION,
   SHARED_DEFAULTS,
+  NETWORK_ERROR_CODES as SHARED_NETWORK_ERROR_CODES,
+  CORS_DEFAULTS as SHARED_CORS_DEFAULTS,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./env";
 import {
@@ -137,13 +139,7 @@ export const API_ENDPOINTS = {
 
 export { RETRYABLE_STATUS_CODES };
 
-export const RETRYABLE_ERROR_CODES = [
-  "ECONNRESET",
-  "ETIMEDOUT",
-  "ENOTFOUND",
-  "EAI_AGAIN",
-  "ECONNREFUSED",
-] as const;
+export const RETRYABLE_ERROR_CODES = SHARED_NETWORK_ERROR_CODES;
 
 // Error codes
 export const ERROR_CODES = {
@@ -223,8 +219,8 @@ export const CORS_CONFIG = {
   get ORIGIN(): string {
     return getEnvConfig().CORS_ORIGIN;
   },
-  ALLOW_METHODS: ["GET", "POST", "OPTIONS"] as string[],
-  ALLOW_HEADERS: ["Content-Type", "Authorization"] as string[],
+  ALLOW_METHODS: [...SHARED_CORS_DEFAULTS.ALLOW_METHODS] as string[],
+  ALLOW_HEADERS: [...SHARED_CORS_DEFAULTS.ALLOW_HEADERS] as string[],
   get MAX_AGE(): number {
     return getEnvConfig().CORS_MAX_AGE;
   },

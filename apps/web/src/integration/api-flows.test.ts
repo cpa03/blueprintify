@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { SSE_HEADERS } from "@blueprint/shared";
+import { SSE_HEADERS, HTTP_HEADERS } from "@blueprint/shared";
 import { StorageManager } from "../lib/storage";
 import {
   createTestBlueprint,
@@ -7,6 +7,8 @@ import {
   mockStorageData,
   createMockResponse,
 } from "./factories";
+import { API_ENDPOINTS } from "../config/constants";
+import { API_BASE } from "../config/api-client";
 
 interface ApiResponse {
   success: boolean;
@@ -49,9 +51,9 @@ describe("Integration: Frontend-Backend API Flow", () => {
           })
         );
 
-      const response = await fetch("/api/generate", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: testData.projectName,
           description: testData.description,
@@ -60,10 +62,10 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
       expect(response.status).toBe(200);
       expect(fetchMock).toHaveBeenCalledWith(
-        "/api/generate",
+        `${API_BASE}${API_ENDPOINTS.GENERATE}`,
         expect.objectContaining({
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         })
       );
     });
@@ -91,7 +93,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
         })
       );
 
-      const response = await fetch("/api/generate", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
         method: "POST",
         body: JSON.stringify({ projectName: "Test", description: "Test" }),
       });
@@ -112,9 +114,9 @@ describe("Integration: Frontend-Backend API Flow", () => {
         })
       );
 
-      const response = await fetch("/api/refine", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           content: testData.blueprint,
           instruction: "Add more details",
@@ -123,7 +125,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
       expect(response.status).toBe(200);
       expect(fetchMock).toHaveBeenCalledWith(
-        "/api/refine",
+        `${API_BASE}${API_ENDPOINTS.REFINE}`,
         expect.objectContaining({
           method: "POST",
           body: expect.stringContaining("Add more details"),
@@ -145,9 +147,9 @@ describe("Integration: Frontend-Backend API Flow", () => {
         })
       );
 
-      const response = await fetch("/api/refine", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           content: testData.blueprint,
           instruction: "Improve clarity",
@@ -179,9 +181,9 @@ describe("Integration: Frontend-Backend API Flow", () => {
           })
         );
 
-        const response = await fetch("/api/export", {
+        const response = await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             format,
             blueprint: testData.blueprint,
@@ -209,9 +211,9 @@ describe("Integration: Frontend-Backend API Flow", () => {
         })
       );
 
-      const response = await fetch("/api/import", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.IMPORT}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           format: "json",
           data: testData,
@@ -238,9 +240,9 @@ describe("Integration: Frontend-Backend API Flow", () => {
         )
       );
 
-      const response = await fetch("/api/import", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.IMPORT}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           format: "json",
           data: { invalid: "data" },
@@ -281,9 +283,9 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
       await sessionStorage.set(mockStorageData.session);
 
-      const syncResponse = await fetch("/api/storage/sync", {
+      const syncResponse = await fetch(`${API_BASE}/storage/sync`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           key: "test-session",
           data: mockStorageData.session,
@@ -292,7 +294,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
       expect(syncResponse.status).toBe(200);
 
-      const quotaResponse = await fetch("/api/storage/quota");
+      const quotaResponse = await fetch(`${API_BASE}/storage/quota`);
       const quotaData = (await quotaResponse.json()) as {
         quota: QuotaResponse;
       };
@@ -305,7 +307,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
       fetchMock.mockRejectedValueOnce(new Error("Network error"));
 
       await expect(
-        fetch("/api/generate", {
+        fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
           method: "POST",
           body: JSON.stringify({ projectName: "Test" }),
         })
@@ -316,7 +318,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
       fetchMock.mockRejectedValueOnce(new Error("Request timeout"));
 
       await expect(
-        fetch("/api/generate", {
+        fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
           method: "POST",
           body: JSON.stringify({ projectName: "Test" }),
         })
@@ -335,7 +337,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
         )
       );
 
-      const response = await fetch("/api/generate", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
         method: "POST",
         body: JSON.stringify({ projectName: "Test" }),
       });
@@ -356,12 +358,12 @@ describe("Integration: Frontend-Backend API Flow", () => {
         .mockResolvedValueOnce(createMockResponse({ success: true }))
         .mockResolvedValueOnce(createMockResponse({ data: testData }));
 
-      await fetch("/api/session/init", {
+      await fetch(`${API_BASE}/session/init`, {
         method: "POST",
         body: JSON.stringify({ projectName: testData.projectName }),
       });
 
-      await fetch("/api/storage", {
+      await fetch(`${API_BASE}/storage`, {
         method: "POST",
         body: JSON.stringify({
           key: sessionId,
@@ -369,7 +371,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
         }),
       });
 
-      const response = await fetch(`/api/storage?key=${sessionId}`);
+      const response = await fetch(`${API_BASE}/storage?key=${sessionId}`);
       expect(response.status).toBe(200);
     });
   });

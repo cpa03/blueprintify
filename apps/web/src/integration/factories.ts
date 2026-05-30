@@ -1,5 +1,5 @@
 import { vi } from "vitest";
-import { SSE_HEADERS, SHARED_DEFAULTS } from "@blueprint/shared";
+import { SSE_HEADERS, SHARED_DEFAULTS, HTTP_HEADERS } from "@blueprint/shared";
 
 export interface TestBlueprint {
   projectName: string;
@@ -97,7 +97,7 @@ export function setupFetchMock(response: Response | Promise<Response>) {
 export function createMockResponse(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
   });
 }
 

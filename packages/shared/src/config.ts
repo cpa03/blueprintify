@@ -340,3 +340,26 @@ export const PLAYWRIGHT_DEFAULTS = {
   /** Snapshot comparison threshold */
   SNAPSHOT_THRESHOLD: 0.2,
 } as const;
+
+/**
+ * Network Error Codes for Retry Logic
+ * Centralized retryable network error codes used by both API and Web.
+ * Single source of truth to eliminate hardcoded error code strings.
+ */
+export const NETWORK_ERROR_CODES = [
+  "ECONNRESET",
+  "ETIMEDOUT",
+  "ENOTFOUND",
+  "EAI_AGAIN",
+  "ECONNREFUSED",
+] as const;
+
+/**
+ * CORS Configuration Defaults
+ * Centralized CORS settings shared between API and Web.
+ * Single source of truth to eliminate hardcoded CORS values.
+ */
+export const CORS_DEFAULTS = {
+  ALLOW_METHODS: ["GET", "POST", "OPTIONS"] as const,
+  ALLOW_HEADERS: ["Content-Type", "Authorization"] as const,
+} as const;

@@ -105,6 +105,26 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run test:all` — 977 tests passing (64 files)
 
+### ✅ Flexy Iteration 6: Centralize Network Error Codes, CORS Defaults & Eliminate Hardcoded Test URLs
+
+| File                                                         | Change                                                                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`                              | Added `NETWORK_ERROR_CODES` (ECONNRESET, ETIMEDOUT etc.) + `CORS_DEFAULTS` (allowed methods/headers)    |
+| `packages/shared/src/index.ts`                               | Exported `NETWORK_ERROR_CODES`, `CORS_DEFAULTS`                                                         |
+| `apps/api/src/config/constants.ts`                           | References shared `NETWORK_ERROR_CODES` + `CORS_DEFAULTS` instead of hardcoded arrays                   |
+| `apps/web/src/integration/factories.ts`                      | Uses `HTTP_HEADERS.CONTENT_TYPE_JSON` instead of hardcoded `"application/json"`                         |
+| `apps/web/src/integration/api-flows.test.ts`                 | 14 hardcoded `/api/*` URLs replaced with `API_BASE`+`API_ENDPOINTS`; 10 hardcoded Content-Type replaced |
+| `apps/web/src/integration/cross-tab-concurrent.test.ts`      | 14 hardcoded `/api/*` URLs replaced with `API_BASE`+`API_ENDPOINTS`                                     |
+| `apps/web/src/integration/performance-api.benchmark.test.ts` | 16 hardcoded `/api/*` URLs replaced; 5 hardcoded Content-Type replaced                                  |
+| `apps/web/src/integration/refinement-export.test.ts`         | 14 hardcoded `/api/*` URLs replaced; 2 hardcoded Content-Type replaced                                  |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 977 tests passing (558 web + 299 api + 120 shared)
+
 ## Status
 
 **✅ COMPLETED - All iterations done**

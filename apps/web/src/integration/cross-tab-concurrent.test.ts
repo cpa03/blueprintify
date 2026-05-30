@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { SSE_HEADERS } from "@blueprint/shared";
+import { API_ENDPOINTS } from "../config/constants";
+import { API_BASE } from "../config/api-client";
 import { StorageManager, StorageError } from "../lib/storage";
 import { createTestBlueprint, createMockResponse, createMockStreamResponse } from "./factories";
 
@@ -47,21 +49,21 @@ describe("Integration: Concurrent Operations", () => {
         .mockResolvedValueOnce(createMockResponse({ success: true, refinedContent: "Refined 3" }));
 
       const requests = [
-        fetch("/api/refine", {
+        fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
           method: "POST",
           body: JSON.stringify({
             content: "Section 1",
             instruction: "Improve",
           }),
         }),
-        fetch("/api/refine", {
+        fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
           method: "POST",
           body: JSON.stringify({
             content: "Section 2",
             instruction: "Improve",
           }),
         }),
-        fetch("/api/refine", {
+        fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
           method: "POST",
           body: JSON.stringify({
             content: "Section 3",
@@ -187,7 +189,7 @@ describe("Integration: Error Propagation", () => {
         )
       );
 
-      const response = await fetch("/api/generate", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
         method: "POST",
         body: JSON.stringify({ projectName: "" }),
       });
@@ -206,7 +208,7 @@ describe("Integration: Error Propagation", () => {
       fetchMock.mockRejectedValueOnce(new Error("Network timeout"));
 
       await expect(
-        fetch("/api/generate", {
+        fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
           method: "POST",
           body: JSON.stringify({ projectName: "Test" }),
         })
@@ -224,7 +226,7 @@ describe("Integration: Error Propagation", () => {
         )
       );
 
-      const response = await fetch("/api/refine", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
         method: "POST",
         body: JSON.stringify({ content: "Test" }),
       });
@@ -250,7 +252,7 @@ describe("Integration: Error Propagation", () => {
         })
       );
 
-      const response = await fetch("/api/generate", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
         method: "POST",
         body: JSON.stringify({ projectName: "Test" }),
       });
@@ -291,7 +293,7 @@ describe("Integration: Error Propagation", () => {
       fetchMock.mockRejectedValueOnce(new Error("Network error"));
 
       try {
-        await fetch("/api/generate", {
+        await fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
           method: "POST",
           body: JSON.stringify(testData),
         });
@@ -404,7 +406,7 @@ describe("Integration: End-to-End Workflows", () => {
           })
         );
 
-      const generateResponse = await fetch("/api/generate", {
+      const generateResponse = await fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
         method: "POST",
         body: JSON.stringify(testData),
       });
@@ -413,7 +415,7 @@ describe("Integration: End-to-End Workflows", () => {
 
       await storage.set({ ...testData, blueprint: "# Generated Blueprint" });
 
-      const refineResponse = await fetch("/api/refine", {
+      const refineResponse = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
         method: "POST",
         body: JSON.stringify({
           content: "# Generated Blueprint",
@@ -423,7 +425,7 @@ describe("Integration: End-to-End Workflows", () => {
 
       expect(refineResponse.status).toBe(200);
 
-      const exportResponse = await fetch("/api/export", {
+      const exportResponse = await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
         method: "POST",
         body: JSON.stringify({ format: "markdown" }),
       });
@@ -448,7 +450,7 @@ describe("Integration: End-to-End Workflows", () => {
         })
       );
 
-      const importResponse = await fetch("/api/import", {
+      const importResponse = await fetch(`${API_BASE}${API_ENDPOINTS.IMPORT}`, {
         method: "POST",
         body: JSON.stringify({ format: "json", content: "{}" }),
       });
@@ -489,7 +491,7 @@ describe("Integration: End-to-End Workflows", () => {
 
       while (attempts < 2 && !success) {
         try {
-          const response = await fetch("/api/generate", {
+          const response = await fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
             method: "POST",
             body: JSON.stringify(createTestBlueprint()),
           });
@@ -526,7 +528,7 @@ describe("Integration: End-to-End Workflows", () => {
         createMockResponse({ success: false, error: "Refinement failed" }, 500)
       );
 
-      const response = await fetch("/api/refine", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
         method: "POST",
         body: JSON.stringify({ content: "test", instruction: "improve" }),
       });
