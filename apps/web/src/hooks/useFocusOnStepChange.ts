@@ -20,10 +20,12 @@ interface UseFocusOnStepChangeOptions {
 }
 
 /**
- * Hook for automatically focusing the first element when a wizard step changes
+ * Hook for automatically focusing the first element when a wizard step changes.
  *
  * Improves accessibility by ensuring keyboard users land on the first interactive
- * element of each step. Also scrolls the element into view smoothly.
+ * element of each step. Also scrolls the step container to the top smoothly,
+ * preventing disorientation when navigating from a scrolled-down position in
+ * the previous step.
  *
  * @param stepId - Unique identifier for the current step (triggers focus when changed)
  * @param options - Configuration options for focus behavior
@@ -47,6 +49,13 @@ export function useFocusOnStepChange(stepId: string, options: UseFocusOnStepChan
   const containerRef = useRef<HTMLDivElement>(null);
   const previousStepRef = useRef<string | null>(null);
   const isInitialMount = useRef(true);
+
+  /** Scroll the container to top when a new step enters, preventing disorientation
+   *  from preserved scroll positions on navigated-from steps. */
+  const scrollToTop = useCallback(() => {
+    if (!containerRef.current) return;
+    containerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   const focusFirstElement = useCallback(() => {
     if (!containerRef.current) return;
@@ -80,9 +89,12 @@ export function useFocusOnStepChange(stepId: string, options: UseFocusOnStepChan
 
     if (previousStepRef.current !== stepId) {
       previousStepRef.current = stepId;
+      // Immediately scroll container to top as the new step enters,
+      // then let the delayed focus management handle fine-grained positioning.
+      scrollToTop();
       focusFirstElement();
     }
-  }, [stepId, skipInitialMount, focusFirstElement]);
+  }, [stepId, skipInitialMount, focusFirstElement, scrollToTop]);
 
   return containerRef;
 }
