@@ -1,4 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { HTTP_HEADERS } from "@blueprint/shared";
+import { API_ENDPOINTS } from "../config/constants";
+import { API_BASE } from "../config/api-client";
 import {
   createTestBlueprint,
   createTestProjectData,
@@ -43,9 +46,9 @@ describe("Integration: Refinement Workflow", () => {
         })
       );
 
-      const response = await fetch("/api/refine", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           content: sectionContent,
           instruction: "Enhance with more details",
@@ -69,7 +72,7 @@ describe("Integration: Refinement Workflow", () => {
           })
         );
 
-        const response = await fetch("/api/refine", {
+        const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
           method: "POST",
           body: JSON.stringify({
             content: "Test content",
@@ -97,7 +100,7 @@ describe("Integration: Refinement Workflow", () => {
         )
       );
 
-      const response = await fetch("/api/refine", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
         method: "POST",
         body: JSON.stringify({
           content: "Test content",
@@ -114,7 +117,7 @@ describe("Integration: Refinement Workflow", () => {
       fetchMock.mockRejectedValueOnce(new Error("Request timeout"));
 
       await expect(
-        fetch("/api/refine", {
+        fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
           method: "POST",
           body: JSON.stringify({
             content: "Test content",
@@ -132,14 +135,14 @@ describe("Integration: Refinement Workflow", () => {
         .mockResolvedValueOnce(createMockResponse({ success: true }));
 
       const requests = [
-        fetch("/api/refine", {
+        fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
           method: "POST",
           body: JSON.stringify({
             content: "Section 1",
             instruction: "Improve",
           }),
         }),
-        fetch("/api/refine", {
+        fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
           method: "POST",
           body: JSON.stringify({
             content: "Section 2",
@@ -181,9 +184,9 @@ describe("Integration: Export/Import Workflow", () => {
         })
       );
 
-      const response = await fetch("/api/export", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           format: "markdown",
           blueprint: testData.blueprint,
@@ -207,7 +210,7 @@ describe("Integration: Export/Import Workflow", () => {
         })
       );
 
-      const response = await fetch("/api/export", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
         method: "POST",
         body: JSON.stringify({
           format: "json",
@@ -231,7 +234,7 @@ describe("Integration: Export/Import Workflow", () => {
         })
       );
 
-      const response = await fetch("/api/export", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
         method: "POST",
         body: JSON.stringify({
           format: "zip",
@@ -255,7 +258,7 @@ describe("Integration: Export/Import Workflow", () => {
         })
       );
 
-      const response = await fetch("/api/export", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
         method: "POST",
         body: JSON.stringify({
           format: "json",
@@ -283,9 +286,9 @@ describe("Integration: Export/Import Workflow", () => {
         })
       );
 
-      const response = await fetch("/api/import", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.IMPORT}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           format: "json",
           data: testData,
@@ -312,7 +315,7 @@ describe("Integration: Export/Import Workflow", () => {
         )
       );
 
-      const response = await fetch("/api/import", {
+      const response = await fetch(`${API_BASE}${API_ENDPOINTS.IMPORT}`, {
         method: "POST",
         body: JSON.stringify({
           format: "json",
@@ -346,7 +349,7 @@ describe("Integration: Export/Import Workflow", () => {
           })
         );
 
-      const exportRes = await fetch("/api/export", {
+      const exportRes = await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
         method: "POST",
         body: JSON.stringify({
           format: "json",
@@ -358,7 +361,7 @@ describe("Integration: Export/Import Workflow", () => {
       const exportData = (await exportRes.json()) as ApiResponse;
       expect(exportData.success).toBe(true);
 
-      const importRes = await fetch("/api/import", {
+      const importRes = await fetch(`${API_BASE}${API_ENDPOINTS.IMPORT}`, {
         method: "POST",
         body: JSON.stringify({
           format: "json",

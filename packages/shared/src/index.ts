@@ -77,6 +77,8 @@ export {
   MAX_INPUT_LENGTH,
   PLAYWRIGHT_DEFAULTS,
   BYTE_CONVERSION,
+  NETWORK_ERROR_CODES,
+  CORS_DEFAULTS,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";
