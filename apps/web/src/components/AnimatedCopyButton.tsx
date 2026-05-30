@@ -243,8 +243,7 @@ function AnimatedCopyButtonComponent({
                 animate={{ scale: 1 }}
                 transition={{
                   type: "spring",
-                  stiffness: 500,
-                  damping: 15,
+                  ...SPRING_CONFIG.CHECKMARK,
                   delay: 0.05,
                 }}
               >

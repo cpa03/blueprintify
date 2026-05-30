@@ -26,7 +26,7 @@ import { useState, memo, useCallback } from "react";
 import { motion } from "framer-motion";
 import { STARTER_TEMPLATES } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
-import { ANIMATION, TOAST_MESSAGES } from "../config/constants";
+import { ANIMATION, TOAST_MESSAGES, SPRING_CONFIG } from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
 
 function TemplateGridComponent(): JSX.Element {
@@ -164,7 +164,7 @@ function TemplateGridComponent(): JSX.Element {
                   className="text-3xl"
                   aria-hidden="true"
                   animate={isSelected ? { scale: 1.1 } : { scale: 1 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  transition={{ type: "spring", ...SPRING_CONFIG.BOUNCY }}
                 >
                   {template.icon}
                 </motion.div>
@@ -183,11 +183,7 @@ function TemplateGridComponent(): JSX.Element {
                       <motion.span
                         key={tech.name}
                         whileHover={{ scale: 1.05 }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 400,
-                          damping: 17,
-                        }}
+                        transition={{ type: "spring", ...SPRING_CONFIG.SUBTLE_BOUNCE }}
                         className={`
                           px-2 py-0.5 text-xs rounded transition-shadow duration-200
                           ${

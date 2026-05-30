@@ -13,7 +13,12 @@
 
 import { useEffect, useCallback, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { KEYBOARD_SHORTCUTS, WIZARD_STEPS, EDITOR_LABELS } from "../config/constants";
+import {
+  KEYBOARD_SHORTCUTS,
+  WIZARD_STEPS,
+  EDITOR_LABELS,
+  SPRING_CONFIG,
+} from "../config/constants";
 import { useFocusTrap } from "../hooks";
 
 /**
@@ -173,11 +178,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{
-              type: "spring",
-              stiffness: 400,
-              damping: 30,
-            }}
+            transition={{ type: "spring", ...SPRING_CONFIG.GENTLE }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
             role="dialog"
             aria-modal="true"

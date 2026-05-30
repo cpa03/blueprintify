@@ -182,9 +182,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                         ? { duration: 0 }
                         : {
                             type: "spring",
-                            stiffness: 260,
-                            damping: 8,
-                            mass: 0.6,
+                            ...SPRING_CONFIG.WARNING,
                           }
                     }
                   >

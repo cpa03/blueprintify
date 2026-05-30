@@ -22,6 +22,8 @@ export const ANIMATION = {
   FAST: ANIMATION_TIMING.duration.fast,
   NORMAL: ANIMATION_TIMING.duration.normal,
   MEDIUM: ANIMATION_TIMING.duration.medium,
+  MEDIUM_SLOW: ANIMATION_TIMING.duration.mediumSlow,
+  SEMI_SLOW: ANIMATION_TIMING.duration.semiSlow,
   SLOW: ANIMATION_TIMING.duration.slow,
   STAGGER: ANIMATION_TIMING.stagger.default,
   SPINNER_ROTATION: 1,
@@ -73,6 +75,16 @@ export const SPRING_CONFIG = {
   SUBTLE_BOUNCE: { stiffness: 400, damping: 17, mass: 0.8 },
   CHECKMARK: { stiffness: 500, damping: 15, mass: 0.8 },
   SLOW: { stiffness: 100, damping: 20, mass: 0.8 },
+  /** Warning/alert icon bounce - softer spring for impactful elements */
+  WARNING: { stiffness: 260, damping: 8, mass: 0.6 },
+  /** Smooth reveal spring - subtle emphasis without bounce */
+  SMOOTH: { stiffness: 400, damping: 20 },
+  /** Refresh/rotate icon spring - looser for smooth rotation */
+  REFRESH: { stiffness: 200, damping: 15 },
+  /** Success/completion spring - snappy with pronounced settle */
+  SUCCESS: { stiffness: 500, damping: 30 },
+  /** Checkmark icon spring - precise with minimal bounce */
+  CHECKMARK_ICON: { stiffness: 500, damping: 20, mass: 0.5 },
 } as const;
 
 // ============================================================================

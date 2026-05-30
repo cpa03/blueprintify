@@ -26,7 +26,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { memo, useCallback, useRef, useEffect } from "react";
 import { useEditorStore, useWizardStore, useToast } from "../../store";
-import { ANIMATION, GENERATION_MESSAGES, TOAST_MESSAGES } from "../../config/constants";
+import {
+  ANIMATION,
+  SPRING_CONFIG,
+  GENERATION_MESSAGES,
+  TOAST_MESSAGES,
+} from "../../config/constants";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { AnimatedNumber } from "../AnimatedNumber";
 import { RippleButton } from "../RippleButton";
@@ -107,8 +112,7 @@ export const StepGenerating = memo(function StepGenerating({
             animate={{ scale: 1 }}
             transition={{
               type: "spring",
-              stiffness: 500,
-              damping: 30,
+              ...SPRING_CONFIG.SUCCESS,
             }}
             className="w-24 h-24 rounded-full bg-accent-emerald/20 flex items-center justify-center"
           >
