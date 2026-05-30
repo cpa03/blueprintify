@@ -2,7 +2,41 @@
 
 > **Incoming signals and observations** - cleared after each orchestration cycle.
 
-## Current Cycle (2026-05-29 - RepoKeeper Cleanup Cycle 32)
+## Current Cycle (2026-05-30 - RepoKeeper Cleanup Cycle 33)
+
+### Findings
+
+- **RepoKeeper started**: On `main` branch at `2ba8a14` (Commit: `chore(repo): RepoKeeper cleanup cycle 32`). Build/lint/typecheck all passing clean.
+- **3 new commits since Cycle 32** (2 feat, 1 docs):
+  - `ef51a5e` feat(web): add keyboard shortcut tooltip to editor hide buttons (PR #1460)
+  - `7195e56` feat(flexy): eliminate remaining hardcoded values - BYTE_CONVERSION, animation, HTTP method (PR #1462)
+  - `4eb14c6` docs(brocula): add BroCula hunt audit report - clean bill of health (PR #1463)
+- **Test count**: 558 web + 299 API + 120 shared = 977 total (unchanged from Cycle 32).
+- **No redundant/temp/stray files detected** — repo remains clean after 32 previous cycles.
+- **No untracked files** — `.gitignore` is comprehensive.
+- **`.prettierignore`**: Found duplicate `.github/workflows/` entry (lines 6 and 23) — removed duplicate on line 23.
+- **CHANGELOG.md**: Missing 2 recent commits in [Unreleased] — added (1 Added, 1 Changed).
+- **docs/active-tasks.md**: Cycle 32 was still "Active" with unchecked items (verification already passing, PR already merged) — marked Complete. Cycle 33 added.
+- **BUG-014**: Still present in `main.yml` — remains blocked by GitHub App `workflows` permission (recurring — 11+ previous cycles).
+- **No stale merged remote branches** detected — all branches have been cleaned.
+- **Dependencies**: 0 vulnerabilities (npm audit clean).
+- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
+- **Open PRs / issues**: Managed by CI system, no action needed.
+
+### Actions Taken
+
+- Fixed `.prettierignore` — removed duplicate `.github/workflows/` entry
+- Updated `CHANGELOG.md` — added 2 missing commits to [Unreleased] (1 Added: keyboard shortcut tooltip on editor hide buttons #1460; 1 Changed: Flexy hardcoded values #1462)
+- Updated `docs/active-tasks.md` — marked Cycle 32 Complete, added Cycle 33 entry, updated Last Updated
+- Updated `docs/findings.md` — this record
+- Updated `docs/features.md` — bumped "Last Updated" to Cycle 33
+- Updated `docs/bugs.md` — bumped "Last Updated" to Cycle 33
+- Updated `docs/roadmap.md` — bumped "Last Updated" to Cycle 33
+- Ran verification: typecheck ✅ lint ✅ build ✅ test:all (977 passing) ✅ npm audit (0 vulns) ✅
+- Created branch `chore/repokeeper-cleanup-cycle-33` from main
+- Created PR with all cleanup changes
+
+## Previous Cycle (2026-05-29 - RepoKeeper Cleanup Cycle 32)
 
 ### Findings
 

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Keyboard shortcut tooltip on editor hide buttons showing Ctrl/Cmd+E toggle shortcut ([#1460](https://github.com/cpa03/blueprintify/pull/1460))
 - Estimated reading time display in editor content stats for user time estimation
 - Interactive tab switch suggestion in PreviewEmptyState for easier navigation
 - Highlight animation on custom feature chip when added for visual feedback and delight ([#1443](https://github.com/cpa03/blueprintify/pull/1443))
@@ -47,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Eliminated remaining hardcoded values — BYTE_CONVERSION (KB/MB), celebration animation delays, animation durations, and HTTP method — into shared config constants ([#1462](https://github.com/cpa03/blueprintify/pull/1462))
 - Eliminated remaining magic numbers, centralized `env.DEV` detection, and added shared config defaults across packages (Flexy v3)
 - Eliminated duplicated `TIME_UNITS`, magic numbers, and deduplicated animation config across API, web, and shared packages (Flexy v3)
 - Eliminated remaining hardcoded values into centralized config constants across codebase (Flexy v3 deep clean) ([#1428](https://github.com/cpa03/blueprintify/pull/1428))

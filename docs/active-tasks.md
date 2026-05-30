@@ -86,11 +86,12 @@
 - **Actions**:
   - [x] All actions completed ✅
 
-### Task: RepoKeeper Cleanup Cycle 32 (2026-05-29)
+### Task: RepoKeeper Cleanup Cycle 32 (2026-05-29) — Completed
 
 - **Priority**: High
-- **Status**: Active
+- **Status**: Completed
 - **Objective**: Add 7 missing commits to CHANGELOG (3 feat, 3 Changed, 3 fix), mark Cycle 31 Complete, prune 2 stale merged branches, update docs dates, verify build/lint/test (977), create PR
+- **Note**: All actions completed — PR #1461 merged.
 - **Actions**:
   - [x] Update `CHANGELOG.md` — add 7 missing commits to [Unreleased] (2 feat, 3 Changed, 3 fix)
   - [x] Update `docs/active-tasks.md` — this record; mark Cycle 31 Complete; add Cycle 32 entry
@@ -98,9 +99,26 @@
   - [x] Update `docs/features.md` — bump Last Updated to Cycle 32
   - [x] Update `docs/bugs.md` — bump Last Updated to Cycle 32
   - [x] Update `docs/roadmap.md` — bump Last Updated to Cycle 32
-  - [ ] Run verification: typecheck ✅, lint ✅, build ✅, test:all (977) ✅, npm audit (0 vulns) ✅
-  - [ ] Prune 2 stale merged remote branches
-  - [ ] Create branch `chore/repokeeper-cleanup-cycle-32` from main
+  - [x] Run verification: typecheck ✅, lint ✅, build ✅, test:all (977) ✅, npm audit (0 vulns) ✅
+  - [x] Prune 2 stale merged remote branches
+  - [x] Create branch `chore/repokeeper-cleanup-cycle-32` from main
+  - [x] Create PR with all cleanup changes — PR #1461 merged ✅
+
+### Task: RepoKeeper Cleanup Cycle 33 (2026-05-30)
+
+- **Priority**: High
+- **Status**: Active
+- **Objective**: Fix `.prettierignore` duplicate entry, add 2 new commits to CHANGELOG (1 Added, 1 Changed), mark Cycle 32 Complete, update docs dates, verify build/lint/test (977), create PR
+- **Actions**:
+  - [x] Fix `.prettierignore` — remove duplicate `.github/workflows/` entry
+  - [x] Update `CHANGELOG.md` — add 2 new commits to [Unreleased] (1 feat: keyboard shortcut tooltip, 1 Changed: Flexy hardcoded values)
+  - [x] Update `docs/active-tasks.md` — this record; mark Cycle 32 Complete; add Cycle 33 entry
+  - [x] Update `docs/findings.md` — record Cycle 33 findings
+  - [x] Update `docs/features.md` — bump Last Updated to Cycle 33
+  - [x] Update `docs/bugs.md` — bump Last Updated to Cycle 33
+  - [x] Update `docs/roadmap.md` — bump Last Updated to Cycle 33
+  - [x] Run verification: typecheck ✅, lint ✅, build ✅, test:all (977) ✅, npm audit (0 vulns) ✅
+  - [ ] Create branch `chore/repokeeper-cleanup-cycle-33` from main
   - [ ] Create PR with all cleanup changes
 
 ### Task: RepoKeeper Cleanup Cycle 24 (2026-05-27)
@@ -487,10 +505,10 @@ See [bugs.md](./bugs.md) for detailed bug information.
 - **Frontend**: Co-located Vitest tests with component and store tests — 558 passing
 - **API**: Comprehensive route, middleware, service, and utility tests — 299 passing (up from 296)
 - **Shared**: Zod schema, type, and config tests — 120 passing (up from 107)
-- **Total**: 977 tests (all passing) [558 web + 299 api + 120 shared] — unchanged from Cycle 31
+- **Total**: 977 tests (all passing) [558 web + 299 api + 120 shared] — unchanged from Cycle 32
 - **TypeScript**: Strict mode, no unchecked `any` types
 
 ---
 
-**Last Updated**: 2026-05-29 (Cycle 32)  
+**Last Updated**: 2026-05-30 (Cycle 33)  
 **Maintainer**: RepoKeeper
