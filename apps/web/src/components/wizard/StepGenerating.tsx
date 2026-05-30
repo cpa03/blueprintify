@@ -82,11 +82,14 @@ export const StepGenerating = memo(function StepGenerating({
   }, [setStep]);
 
   const handleViewEditor = useCallback(() => {
-    // Smoothly scroll the editor panel into view and focus it
-    const editorPanel = document.querySelector('[id$="-panel"]');
+    const editorPanel = document.querySelector<HTMLElement>('[id$="-panel"]');
     if (editorPanel) {
       editorPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      // Briefly highlight the editor container with a focus ring
+
+      const priorTabIndex = editorPanel.getAttribute("tabindex");
+      editorPanel.tabIndex = -1;
+      editorPanel.focus({ preventScroll: true });
+
       const editorContainer = editorPanel.closest(".glass-card");
       if (editorContainer instanceof HTMLElement) {
         editorContainer.style.outline = "2px solid rgb(99 102 241 / 0.5)";
@@ -94,6 +97,11 @@ export const StepGenerating = memo(function StepGenerating({
         setTimeout(() => {
           editorContainer.style.outline = "";
           editorContainer.style.outlineOffset = "";
+          if (priorTabIndex === null) {
+            editorPanel.removeAttribute("tabindex");
+          } else {
+            editorPanel.setAttribute("tabindex", priorTabIndex);
+          }
         }, 1500);
       }
     }
