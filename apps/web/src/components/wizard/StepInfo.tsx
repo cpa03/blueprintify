@@ -226,12 +226,22 @@ export const StepInfo = memo(function StepInfo({
               </div>
             )}
           </div>
-          {projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
-            projectName.length < FORM_LIMITS.PROJECT_NAME.MAX && (
-              <p id="projectName-warning" role="status" className="text-xs text-accent-pink mt-1">
-                {VALIDATION_MESSAGES.APPROACHING_CHARACTER_LIMIT}
-              </p>
-            )}
+          <AnimatePresence>
+            {projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
+              projectName.length < FORM_LIMITS.PROJECT_NAME.MAX && (
+                <motion.p
+                  id="projectName-warning"
+                  role="status"
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="text-xs text-accent-pink mt-1"
+                >
+                  {VALIDATION_MESSAGES.APPROACHING_CHARACTER_LIMIT}
+                </motion.p>
+              )}
+          </AnimatePresence>
         </div>
 
         {/* Description */}
@@ -293,20 +303,39 @@ export const StepInfo = memo(function StepInfo({
               </div>
             )}
           </div>
-          {!isDescriptionInvalid &&
-            description.length > 0 &&
-            description.length < FORM_LIMITS.DESCRIPTION.MIN && (
-              <p id="description-hint" className="text-xs text-yellow-500 mt-1">
-                {VALIDATION_MESSAGES.CHARACTERS_NEEDED(
-                  FORM_LIMITS.DESCRIPTION.MIN - description.length
-                )}
-              </p>
+          <AnimatePresence>
+            {!isDescriptionInvalid &&
+              description.length > 0 &&
+              description.length < FORM_LIMITS.DESCRIPTION.MIN && (
+                <motion.p
+                  id="description-hint"
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="text-xs text-yellow-500 mt-1"
+                >
+                  {VALIDATION_MESSAGES.CHARACTERS_NEEDED(
+                    FORM_LIMITS.DESCRIPTION.MIN - description.length
+                  )}
+                </motion.p>
+              )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {isDescriptionInvalid && (
+              <motion.p
+                id="description-error"
+                role="alert"
+                initial={{ opacity: 0, y: -4, x: -3 }}
+                animate={{ opacity: 1, y: 0, x: 0 }}
+                exit={{ opacity: 0, y: -4, x: -3 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="text-xs text-accent-pink mt-1"
+              >
+                {VALIDATION_MESSAGES.DESCRIPTION_MIN_LENGTH(FORM_LIMITS.DESCRIPTION.MIN)}
+              </motion.p>
             )}
-          {isDescriptionInvalid && (
-            <p id="description-error" role="alert" className="text-xs text-accent-pink mt-1">
-              {VALIDATION_MESSAGES.DESCRIPTION_MIN_LENGTH(FORM_LIMITS.DESCRIPTION.MIN)}
-            </p>
-          )}
+          </AnimatePresence>
         </div>
 
         {/* Target Audience (Optional) */}
