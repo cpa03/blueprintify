@@ -7,13 +7,24 @@
 ### Task: RepoKeeper Cleanup Cycle 34 (2026-05-30) — Docs Cleanup
 
 - **Priority**: High
-- **Status**: Active
+- **Status**: Complete
 - **Objective**: Clean up bloated docs — archive 30+ completed historical cycles from active-tasks.md and findings.md, simplify to current-cycle-only format
 - **Actions**:
   - [x] Clean up `docs/active-tasks.md` — archive 30+ completed cycles, simplify to current cycle
   - [x] Clean up `docs/findings.md` — archive 32 previous cycles, simplify to current cycle
   - [x] Run verification: typecheck ✅, lint ✅, build ✅, test:all (977) ✅
   - [ ] Create PR `chore/repokeeper-cleanup-cycle-34` from main
+
+### Task: RepoKeeper Cycle 35 (2026-05-31) — Type Fix & Audit
+
+- **Priority**: High
+- **Status**: Active
+- **Objective**: Fix empty QUOTA_BYTES getter causing type errors, audit repo for redundant/unused files, verify documentation
+- **Actions**:
+  - [x] Fix `apps/api/src/config/constants.ts` — empty `QUOTA_BYTES(): number {}` getter
+  - [x] Run full verification: typecheck ✅ lint ✅ build ✅ test:all (977) ✅
+  - [x] Audit repo — no redundant/temp/unused files found
+  - [ ] Create PR `chore/repokeeper-cycle-35` from main
 
 ---
 
