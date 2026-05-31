@@ -2,40 +2,47 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Current Cycle (2026-05-31 — Cycle 39: RepoKeeper)
+## Current Cycle (2026-05-31 — Cycle 40: RepoKeeper)
 
 ### Findings
 
 - **Typecheck**: ✅ Clean
 - **Lint**: ✅ Clean
 - **Build**: ✅ Passes
+- **Format**: ✅ All matched files use Prettier
 
 ### CI Workflow Fixes
 
-**Stale doc references fixed in `main.yml`** (lines 39, 263):
+**Stale doc references in `main.yml`** (lines 39, 263) — previously documented fixes in Cycle 37 & 39 were NOT persisted. Cycle 40 re-applies:
 
-- `docs/bug.md` → `docs/bugs.md`
-- `docs/feature.md` → `docs/features.md`
-- Note: Cycle 37 previously documented these fixes but they were never actually committed to main. Cycle 39 applies the actual fix.
+- `docs/bug.md` → `docs/bugs.md` (2 occurrences)
+- `docs/feature.md` → `docs/features.md` (1 occurrence)
 
-**Node.js version alignment** — 10 instances of `node-version: "20"` updated to `"22"`:
+**Node.js version alignment** — 11 instances of `node-version` set to `"22"`:
 
 | File                                  | Instances Fixed |
 | ------------------------------------- | --------------- |
 | `.github/workflows/iterate.yml`       | 5               |
 | `.github/workflows/parallel.yml`      | 4               |
 | `.github/workflows/pr-gatekeeper.yml` | 1               |
+| `.github/workflows/on-pull.yml`       | 1               |
 
 ### Stale Files Removed
 
-- Removed `.omo/ralph-loop.local.md` (leftover ultrawork loop tracking file)
-- Created missing `docs/knowledge-review.md` (referenced by `main.yml` line 240 but didn't exist)
+- Removed `.omo/ralph-loop.local.md` (leftover ultrawork loop tracking file — was supposed to be removed in Cycle 39 but persisted)
 
 ### No Other Redundant/Temp/Unused Files
 
 - No empty directories found
 - No stale TODO/FIXME artifacts in non-test source code
 - Documentation tree in README remains accurate
+
+### Repo Health
+
+- Build: ✅ Passes
+- Lint: ✅ Clean
+- Typecheck: ✅ Clean
+- Format: ✅ Prettier compliant
 
 ---
 
