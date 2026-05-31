@@ -497,7 +497,9 @@ export const STORAGE_CONFIG = {
   get QUOTA_MB(): number {
     return getEnvConfig().STORAGE_QUOTA_MB;
   },
-  get QUOTA_BYTES(): number {},
+  get QUOTA_BYTES(): number {
+    return getEnvConfig().STORAGE_QUOTA_MB * 1024 * 1024;
+  },
 };
 
 export const EXTERNAL_URLS = {
