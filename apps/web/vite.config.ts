@@ -125,9 +125,12 @@ export default defineConfig({
         // Note: CodeMirror, markdown, and syntaxHighlighter are intentionally NOT manually chunked
         // to allow dynamic imports in LazyCodeMirror/LazyMarkdownRenderer to create
         // natural separate chunks for better lazy loading and smaller initial bundles
-        manualChunks: {
-          vendor: ["react", "react-dom"],
-          animation: ["framer-motion"],
+        manualChunks(id: string) {
+          if (id.includes("node_modules/react-dom")) return "vendor";
+          if (id.includes("node_modules/react/")) return "vendor";
+          if (id.includes("node_modules/framer-motion")) return "animation";
+          if (id.includes("node_modules/zustand")) return "vendor";
+          if (id.includes("node_modules/scheduler")) return "vendor";
         },
         assetFileNames: (assetInfo) => {
           const name = assetInfo.name ?? "";
