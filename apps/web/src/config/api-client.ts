@@ -7,7 +7,12 @@
  * @module config/api-client
  */
 
-import { RETRY_CONFIG, HTTP_HEADERS, RETRYABLE_STATUS_CODES } from "@blueprint/shared";
+import {
+  RETRY_CONFIG,
+  HTTP_HEADERS,
+  RETRYABLE_STATUS_CODES,
+  HTTP_METHODS,
+} from "@blueprint/shared";
 import type { RetryOptions as SharedRetryOptions } from "@blueprint/shared";
 import { UI_FALLBACKS, TIMEOUTS } from "./constants";
 
@@ -88,7 +93,7 @@ export function isRetryableError(_error: unknown, response?: Response): boolean 
 // ============================================================================
 
 export const API_CALL_CONFIG = {
-  METHOD: "POST" as const,
+  METHOD: HTTP_METHODS.POST,
   CONTENT_TYPE: HTTP_HEADERS.CONTENT_TYPE_JSON,
   CONNECTION_TIMEOUT: TIMEOUTS.API_CONNECTION,
 } as const;

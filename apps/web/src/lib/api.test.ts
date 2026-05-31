@@ -1,7 +1,13 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { checkHealth } from "./api";
 
-const { ROUTE_PATHS } = vi.hoisted(() => ({
+const { DEV_DEFAULTS, ROUTE_PATHS } = vi.hoisted(() => ({
+  DEV_DEFAULTS: {
+    API_PROXY_TARGET: "http://localhost:8787",
+    WEB_PORT: 3000,
+    API_PORT: 8787,
+    PLAYWRIGHT_TEST_URL: "http://localhost:3000",
+  },
   ROUTE_PATHS: {
     ROOT: "/",
     GENERATE: "/generate",
@@ -17,6 +23,7 @@ const { ROUTE_PATHS } = vi.hoisted(() => ({
 
 // Mock the @blueprint/shared module
 vi.mock("@blueprint/shared", () => ({
+  DEV_DEFAULTS,
   ROUTE_PATHS: {
     ROOT: "/",
     GENERATE: "/generate",
@@ -38,6 +45,13 @@ vi.mock("@blueprint/shared", () => ({
     CONTENT_TYPE_JSON: "application/json",
   },
   RETRYABLE_STATUS_CODES: [408, 429, 500, 502, 503, 504],
+  HTTP_METHODS: {
+    GET: "GET",
+    POST: "POST",
+    PUT: "PUT",
+    DELETE: "DELETE",
+    PATCH: "PATCH",
+  },
 }));
 
 // Mock the constants module
@@ -69,7 +83,7 @@ vi.mock("../config/constants", () => ({
     },
   },
   UI_FALLBACKS: {
-    API_BASE: "http://localhost:8787",
+    API_BASE: DEV_DEFAULTS.API_PROXY_TARGET,
   },
   TIMEOUTS: {
     API_CONNECTION: 30000,

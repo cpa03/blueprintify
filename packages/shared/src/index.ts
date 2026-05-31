@@ -79,6 +79,7 @@ export {
   BYTE_CONVERSION,
   NETWORK_ERROR_CODES,
   CORS_DEFAULTS,
+  HTTP_METHODS,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";

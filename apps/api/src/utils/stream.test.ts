@@ -5,7 +5,7 @@
  * Verifies correct SSE protocol format and proper event handling.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { DEV_DEFAULTS } from "@blueprint/shared";
+import { DEV_DEFAULTS, SSE_HEADERS, CORS_DEFAULTS } from "@blueprint/shared";
 import { formatSSE, createSSEResponse, createStreamFromGenerator } from "./stream";
 import { setEnvConfig } from "../config/constants";
 import type { SSEMessage } from "./stream";
@@ -105,7 +105,7 @@ describe("createSSEResponse", () => {
       },
     });
     const response = createSSEResponse(stream);
-    expect(response.headers.get("Content-Type")).toBe("text/event-stream");
+    expect(response.headers.get("Content-Type")).toBe(SSE_HEADERS.CONTENT_TYPE);
   });
 
   it("should set cache-control to no-cache", () => {
@@ -171,7 +171,7 @@ describe("createSSEResponse", () => {
     const response = createSSEResponse(stream);
     const headers = response.headers.get("Access-Control-Allow-Headers");
     expect(headers).toContain("Content-Type");
-    expect(headers).toContain("Authorization");
+    expect(headers).toContain(CORS_DEFAULTS.ALLOW_HEADERS[1]);
   });
 });
 
