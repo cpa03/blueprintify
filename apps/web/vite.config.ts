@@ -1,4 +1,4 @@
-import { defineConfig, Plugin } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import { compression } from "vite-plugin-compression2";
 import { DEV_DEFAULTS, BYTE_CONVERSION } from "@blueprint/shared";
@@ -67,12 +67,48 @@ const fetchPriorityPlugin = (): Plugin => ({
   },
 });
 
+/**
+ * Vite plugin to add modulepreload for the animation (framer-motion) chunk.
+ * The animation chunk is dynamically imported via the lazy-loaded Wizard,
+ * but is needed immediately on page load because Wizard renders on every view.
+ * Adding modulepreload lets the browser discover it earlier, parallel to the
+ * main entry chunk, reducing the critical request chain depth.
+ */
+const animationPreloadPlugin = (): Plugin => ({
+  name: "animation-preload",
+  enforce: "post" as const,
+  generateBundle(_opts, bundle) {
+    const animationEntry = Object.entries(bundle).find(
+      ([, c]) => c.type === "chunk" && "name" in c && c.name === "animation"
+    );
+    if (!animationEntry) return;
+    const [animationFileName] = animationEntry;
+
+    const htmlEntry = Object.entries(bundle).find(
+      ([, c]) => c.type === "asset" && c.fileName.endsWith(".html")
+    );
+    if (!htmlEntry) return;
+    const [, htmlAsset] = htmlEntry;
+    if (htmlAsset.type !== "asset") return;
+    const src = htmlAsset.source as string;
+
+    const preloadHref = `/${animationFileName}`;
+    if (!src.includes(preloadHref)) {
+      htmlAsset.source = src.replace(
+        "</head>",
+        `  <link rel="modulepreload" crossorigin href="${preloadHref}">\n</head>`
+      );
+    }
+  },
+});
+
 export default defineConfig({
   plugins: [
     react(),
     preloadCssPlugin(),
     removeLazyPreloadPlugin(),
     fetchPriorityPlugin(),
+    animationPreloadPlugin(),
     compression({
       algorithms: ["gzip", "brotliCompress"],
       exclude: [/\.(br)$/, /\.(gz)$/],
