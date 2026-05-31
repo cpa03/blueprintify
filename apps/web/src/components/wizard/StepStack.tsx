@@ -328,7 +328,7 @@ export const StepStack = memo(function StepStack({
           <RippleButton
             onClick={handleNextClick}
             disabled={!canProceed}
-            className={`btn-primary flex items-center gap-2 ${isShaking ? "shake-animation" : ""}`}
+            className={`btn-primary flex items-center gap-2 ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
           >
             {UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON}
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
