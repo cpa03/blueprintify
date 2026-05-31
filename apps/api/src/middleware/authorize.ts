@@ -9,7 +9,7 @@
  */
 
 import type { MiddlewareHandler } from "hono";
-import type { UserRole } from "../types";
+import type { UserRole, AppVariables } from "../types";
 import { HTTP_STATUS, ERROR_CODES, ERROR_MESSAGES } from "../config/constants";
 import { ErrorType, createErrorJson } from "../errors";
 
@@ -37,7 +37,7 @@ const ROLE_HIERARCHY: Record<UserRole, number> = {
  * app.delete("/share/:id", authorize("user"), async (c) => { ... });
  * ```
  */
-export function authorize(minimumRole: UserRole): MiddlewareHandler {
+export function authorize(minimumRole: UserRole): MiddlewareHandler<{ Variables: AppVariables }> {
   return async (c, next) => {
     const user = c.get("user");
 

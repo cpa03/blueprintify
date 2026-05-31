@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import shareRoute from "./share";
 import { errorHandler } from "../middleware/errorHandler";
 import type { ErrorResponse } from "../errors";
-import type { User } from "../types";
+import type { User, AppVariables } from "../types";
 import { DEFAULTS } from "../config/env";
 
 let originalConsoleError: typeof console.error;
@@ -173,7 +173,7 @@ describe("GET /share/:id", () => {
 });
 
 describe("DELETE /share/:id", () => {
-  const app = new Hono<{ Bindings: ReturnType<typeof createMockEnv> }>();
+  const app = new Hono<{ Bindings: ReturnType<typeof createMockEnv>; Variables: AppVariables }>();
   // Set user context for tests since DELETE route now requires authorization
   app.use("*", async (c, next) => {
     const user: User = { id: "test-user", role: "user" };
