@@ -28,5 +28,7 @@ export { useBlueprintStream } from "./useBlueprintStream";
 export { useAutoSaveToast } from "./useAutoSaveToast";
 export { useFocusOnStepChange, useStepAnnouncer } from "./useFocusOnStepChange";
 export { useDocumentTitle } from "./useDocumentTitle";
+export { useOnlineStatus } from "./useOnlineStatus";
+export type { OnlineStatus } from "./useOnlineStatus";
 export { createPersistedStore } from "./usePersistedStore";
 export type { PersistedStoreConfig, PersistedStoreMethods } from "./usePersistedStore";

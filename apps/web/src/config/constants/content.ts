@@ -167,6 +167,17 @@ export const TOAST_MESSAGES = {
 } as const;
 
 /**
+ * Network connectivity notification messages
+ * Flexy says: No hardcoded network messages - everything configurable!
+ */
+export const NETWORK_MESSAGES = {
+  OFFLINE: "You are offline. Some features may be unavailable.",
+  ONLINE: "Connection restored.",
+  OFFLINE_DURATION: 0,
+  ONLINE_DURATION: 3000,
+} as const;
+
+/**
  * New Project confirmation dialog text
  * Flexy says: No hardcoded dialog text - everything configurable!
  */
