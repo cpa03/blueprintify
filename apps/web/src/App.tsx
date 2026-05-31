@@ -13,8 +13,9 @@ const TemplateGrid = lazy(() =>
 const KeyboardShortcutsModal = lazy(() => import("./components/KeyboardShortcutsModal"));
 import { SkipLink } from "./components/SkipLink";
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
-import { useWizardStore, useEditorStore } from "./store";
-import { UI_CONTENT } from "./config/constants";
+import { useWizardStore, useEditorStore, useToast } from "./store";
+import { useOnlineStatus } from "./hooks";
+import { UI_CONTENT, NETWORK_MESSAGES } from "./config/constants";
 import { LAYOUT, BUTTON, ICON, SPINNER } from "./config/styles";
 const GenerationCelebration = lazy(() =>
   import("./components/GenerationCelebration").then((m) => ({ default: m.GenerationCelebration }))
@@ -70,6 +71,21 @@ function App(): JSX.Element {
   const [showCelebration, setShowCelebration] = useState(false);
   const previousHasContentRef = useRef(hasContent);
   const previousIsGeneratingRef = useRef(isGenerating);
+
+  const { isOnline } = useOnlineStatus();
+  const toast = useToast();
+  const prevOnlineRef = useRef(isOnline);
+
+  useEffect(() => {
+    if (prevOnlineRef.current !== isOnline) {
+      if (isOnline) {
+        toast.success(NETWORK_MESSAGES.ONLINE, NETWORK_MESSAGES.ONLINE_DURATION);
+      } else {
+        toast.warning(NETWORK_MESSAGES.OFFLINE, NETWORK_MESSAGES.OFFLINE_DURATION);
+      }
+    }
+    prevOnlineRef.current = isOnline;
+  }, [isOnline, toast]);
 
   // Show templates only on first step with no content
   const showTemplates = currentStep === "info" && !hasContent;
