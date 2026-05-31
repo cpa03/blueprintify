@@ -81,36 +81,6 @@
       0 0 0 1px color-mix(in srgb, var(--color-primary-500) 5%, transparent);
   }
 
-  .gradient-border {
-    position: relative;
-    background: linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--color-primary-500) 10%, transparent),
-      color-mix(in srgb, var(--color-accent-purple) 10%, transparent)
-    );
-  }
-  .gradient-border::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    padding: 1px;
-    border-radius: inherit;
-    background: linear-gradient(
-      135deg,
-      var(--color-primary-500),
-      var(--color-accent-purple),
-      var(--color-accent-pink)
-    );
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-  }
-
   /* Button styles */
   .btn-primary {
     @apply px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-500 
@@ -339,44 +309,6 @@
     @apply bg-gradient-to-r from-primary-400 via-accent-purple to-accent-pink bg-clip-text text-transparent;
   }
 
-  /* Glow effect */
-  .glow-primary {
-    box-shadow: 0 0 30px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
-  }
-  /* Animated background */
-  .animated-bg {
-    background-size: 400% 400%;
-    animation: gradient-shift 15s ease infinite;
-  }
-
-  @keyframes gradient-shift {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
-  @keyframes focus-glow {
-    0%,
-    100% {
-      box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
-    }
-    50% {
-      box-shadow:
-        0 0 0 4px color-mix(in srgb, var(--color-primary-500) 50%, transparent),
-        0 0 20px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
-    }
-  }
-
-  .focus-glow {
-    animation: focus-glow 1.5s ease-in-out infinite;
-  }
-
   /* Shake animation for disabled button feedback */
   @keyframes shake {
     0%,
@@ -575,8 +507,6 @@
     }
 
     .glow-pulse,
-    .animated-bg,
-    .focus-glow,
     .shake-animation,
     .skeleton-group,
     .progress-shimmer::after,
