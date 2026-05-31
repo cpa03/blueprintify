@@ -36,12 +36,35 @@ blueprintify/
 │   ├── api/             # Hono backend (Cloudflare Workers)
 │   └── web/             # React frontend (Vite + Tailwind)
 ├── docs/                # Project documentation
-│   ├── user-guide.md    # Complete user documentation
-│   ├── api-documentation.md  # API reference
-│   ├── m2-technical-approach.md  # M2 implementation details
-│   ├── refinement-workflow.md  # Refinement system architecture
-│   ├── localstorage-schema.md  # Storage schema documentation
-│   └── export-import-specs.md  # Data portability specifications
+│   ├── active-tasks.md
+│   ├── ai-agent-usage-guide.md
+│   ├── api-documentation.md
+│   ├── audit-2026-05-26.md
+│   ├── audits/
+│   ├── blueprint.md
+│   ├── bugs.md
+│   ├── ci-configuration.md
+│   ├── code-style-guidelines.md
+│   ├── completed-tasks-2026-Q1.md
+│   ├── development-workflow.md
+│   ├── environment-variables.md
+│   ├── export-import-specs.md
+│   ├── features.md
+│   ├── findings.md
+│   ├── flexy-plan.md
+│   ├── issue-audit-report-2026-05-27.md
+│   ├── issue-management-2026-05-27.md
+│   ├── localstorage-schema.md
+│   ├── m2-technical-approach.md
+│   ├── refinement-workflow.md
+│   ├── release-process.md
+│   ├── repo-rules.md
+│   ├── roadmap.md
+│   ├── security/
+│   ├── task.md
+│   ├── testing-procedures.md
+│   ├── troubleshooting.md
+│   └── user-guide.md
 └── scripts/             # Build and deployment scripts
 ```
 
