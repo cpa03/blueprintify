@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import shareRoute from "./share";
 import { errorHandler } from "../middleware/errorHandler";
 import type { ErrorResponse } from "../errors";
-import type { User, AppVariables } from "../types";
+import type { AppVariables, User } from "../types";
 import { DEFAULTS } from "../config/env";
 
 let originalConsoleError: typeof console.error;

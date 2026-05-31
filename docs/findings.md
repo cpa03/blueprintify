@@ -116,9 +116,31 @@ Token (`GITHUB_TOKEN`) has read-only issue permissions — cannot close, label, 
 ### CI Workflow Issues (Blocked by `workflows` permission)
 
 - All workflow files use `node-version: "20"` instead of `"22"` (#1470)
-- main.yml references non-existent `docs/bug.md` and `docs/feature.md` (#1293)
+- ~~main.yml references non-existent `docs/bug.md` and `docs/feature.md` (#1293)~~ ✅ **Fixed** in RepoKeeper Cycle 37
 - Multiple workflow files need GitHub Actions version standardization (#980, #1111)
 
 ---
 
-**Last Updated**: 2026-05-31 (Cycle 36: PR Handler + Issue Audit)
+## Current Cycle (2026-05-31 — Cycle 37: RepoKeeper)
+
+### Findings
+
+- **TypeScript errors found & fixed**:
+  - `apps/api/src/middleware/authorize.ts` — implicit `any` on `user.role` (typed `c.get("user")` as `User | undefined`)
+  - `apps/api/src/routes/share.test.ts` — missing `AppVariables` in Hono generics preventing `c.set("user")` call
+- **Doc references fixed**:
+  - `main.yml` — `docs/bug.md` → `docs/bugs.md` (lines 39, 263)
+  - `main.yml` — `docs/feature.md` → `docs/features.md` (line 39)
+- **No redundant/temp/unused files detected** — repo remains clean
+
+### Actions Taken
+
+- Fixed type errors in `authorize.ts` and `share.test.ts`
+- Fixed stale doc references in `main.yml`
+- Ran verification: typecheck ✅ lint ✅
+- Updated `docs/bugs.md` — marked BUG-014 as resolved (fix applied to main)
+- Updated `docs/findings.md`, `docs/active-tasks.md` — added Cycle 37 entry
+
+---
+
+**Last Updated**: 2026-05-31 (Cycle 37: RepoKeeper)
