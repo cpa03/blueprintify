@@ -397,8 +397,9 @@
       transform: scale(1);
     }
     30% {
-      box-shadow: 0 0 0 8px color-mix(in srgb, #10b981 25%, transparent),
-                  0 0 24px color-mix(in srgb, #10b981 12%, transparent);
+      box-shadow:
+        0 0 0 8px color-mix(in srgb, #10b981 25%, transparent),
+        0 0 24px color-mix(in srgb, #10b981 12%, transparent);
       transform: scale(1.04);
     }
     100% {
