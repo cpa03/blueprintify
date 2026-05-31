@@ -6,7 +6,7 @@
 
 ### BUG-014: Stale Doc References in main.yml Workflow (RESOLVED)
 
-**Status**: Resolved — 2026-05-31 (RepoKeeper Cycle 37: fix applied to main)  
+**Status**: Resolved — 2026-05-31 (RepoKeeper Cycle 39: fix actually applied to main)  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1293
@@ -16,12 +16,12 @@
 
 `.github/workflows/main.yml` continued to reference two non-existent documentation files.
 
-#### Fix Applied (RepoKeeper Cycle 37 — 2026-05-31)
+#### Fix Applied (RepoKeeper Cycle 39 — 2026-05-31)
 
 - Replaced stale `docs/bug.md` → `docs/bugs.md` on lines 39, 263
 - Replaced stale `docs/feature.md` → `docs/features.md` on line 39
+- (Note: Cycle 37 previously documented this fix but the change was never committed to main)
 - Verified: typecheck ✅ lint ✅
-- Branch: `main` (direct commit via RepoKeeper PR)
 
 ---
 

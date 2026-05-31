@@ -2,44 +2,22 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 37
+## Current Focus: RepoKeeper Cycle 39
 
-### Task: PR Handler Cycle 36 (2026-05-31) — Process 5 Open PRs ✅ COMPLETE
-
-- **Priority**: High
-- **Status**: Complete
-- **Objective**: Process all 5 open PRs — rebase/verify/merge
-- **Actions**:
-  - [x] PR #1490: BroCula Hunt perf — Merged ✅
-  - [x] PR #1489: animate-glow CTA buttons — Merged ✅
-  - [x] PR #1488: fix QUOTA_BYTES return — Merged ✅
-  - [x] PR #1487: duplicate of #1488 — Closed as duplicate ✅
-  - [x] PR #1486: RBAC authorization — Merged ✅ (closes #1078)
-
-### Task: RepoKeeper Cycle 35 (2026-05-31) — Type Fix & Audit
-
-- **Priority**: High
-- **Status**: Complete
-- **Objective**: Fix empty QUOTA_BYTES getter causing type errors, audit repo for redundant/unused files, verify documentation
-- **Actions**:
-  - [x] Fix `apps/api/src/config/constants.ts` — empty `QUOTA_BYTES(): number {}` getter
-  - [x] Run full verification: typecheck ✅ lint ✅ build ✅ test:all (977) ✅
-  - [x] Audit repo — no redundant/temp/unused files found
-  - [x] Create PR `chore/repokeeper-cycle-35` from main
-
-### Task: RepoKeeper Cycle 37 (2026-05-31) — Type Fixes & Doc Cleanup
+### Task: RepoKeeper Cycle 39 (2026-05-31) — CI Fixes & Doc Sync
 
 - **Priority**: High
 - **Status**: Active
-- **Objective**: Fix typecheck errors, fix stale doc references in main.yml, update docs
+- **Objective**: Fix CI workflow node-version, stale doc references in main.yml, remove temp files, update docs
 - **Actions**:
-  - [x] Fix `apps/api/src/middleware/authorize.ts` — cast `c.get("user")` as `User | undefined`
-  - [x] Fix `apps/api/src/routes/share.test.ts` — add `AppVariables` to Hono generics
-  - [x] Fix `main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
-  - [x] Update `docs/bugs.md` — mark BUG-014 as resolved
-  - [x] Update `docs/findings.md` — add Cycle 37 findings
-  - [ ] Run full verification: typecheck ✅ lint ✅ build ✅ test:all ✅
-  - [ ] Create PR `chore/repokeeper-cycle-37`
+  - [x] Fix `main.yml` stale doc references: `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+  - [x] Fix `node-version: "20"` → `"22"` in all CI workflow files (10 instances across 3 files)
+  - [x] Remove stale `.omo/ralph-loop.local.md` (leftover loop tracker)
+  - [x] Create missing `docs/knowledge-review.md`
+  - [x] Update `docs/bugs.md` — verify BUG-014 fix actually applied
+  - [x] Update `docs/findings.md` — add Cycle 39 findings
+  - [ ] Run full verification: typecheck ✅ lint ✅ build ✅
+  - [ ] Create PR `chore/repokeeper-cycle-39`
 
 ---
 
