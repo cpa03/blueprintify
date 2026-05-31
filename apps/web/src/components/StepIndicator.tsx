@@ -21,7 +21,7 @@
  * ```
  */
 
-import { useEffect, useCallback, useState, memo } from "react";
+import { useEffect, useCallback, useState, useRef, memo } from "react";
 import type { WizardStep } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import {
@@ -45,11 +45,29 @@ function StepIndicatorComponent(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
   const setStep = useWizardStore((s) => s.setStep);
   const [shakingStep, setShakingStep] = useState<string | null>(null);
+  const [justCompletedStep, setJustCompletedStep] = useState<string | null>(null);
+  const prevStepRef = useRef(currentStep);
   const toast = useToast();
 
   const currentIndex = STEPS.findIndex((s) => s.key === currentStep);
   const progressPercentage = (currentIndex / (STEPS.length - 1)) * 100;
   const currentStepLabel = WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
+
+  // Detect forward step navigation and trigger a one-shot completion flash
+  // on the step that was just completed, giving a "checkpoint reached" feeling.
+  useEffect(() => {
+    const prevIdx = STEPS.findIndex((s) => s.key === prevStepRef.current);
+    const currIdx = STEPS.findIndex((s) => s.key === currentStep);
+
+    if (currIdx > prevIdx) {
+      const completedKey = prevStepRef.current;
+      setJustCompletedStep(completedKey);
+      const timer = setTimeout(() => setJustCompletedStep(null), 700);
+      prevStepRef.current = currentStep;
+      return () => clearTimeout(timer);
+    }
+    prevStepRef.current = currentStep;
+  }, [currentStep]);
 
   const canNavigateTo = useCallback(
     (stepKey: WizardStep): boolean => {
@@ -149,6 +167,7 @@ function StepIndicatorComponent(): JSX.Element {
                 ${isClickable ? "cursor-pointer hover:bg-dark-700 hover:scale-[1.02] active:scale-[0.98]" : "cursor-default"}
                 ${isActive ? "animate-step-pulse" : ""}
                 ${isShaking ? "shake-animation" : ""}
+                ${justCompletedStep === step.key ? "step-complete-flash" : ""}
               `}
             >
               <span>{step.icon}</span>
