@@ -1,7 +1,7 @@
 import { defineConfig, Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import { compression } from "vite-plugin-compression2";
-import { DEV_DEFAULTS } from "@blueprint/shared";
+import { DEV_DEFAULTS, BYTE_CONVERSION } from "@blueprint/shared";
 
 const DEV_SERVER_PORT = parseInt(
   process.env.VITE_DEV_SERVER_PORT || String(DEV_DEFAULTS.WEB_PORT),
@@ -76,7 +76,7 @@ export default defineConfig({
     compression({
       algorithms: ["gzip", "brotliCompress"],
       exclude: [/\.(br)$/, /\.(gz)$/],
-      threshold: 1024,
+      threshold: BYTE_CONVERSION.KB,
     }),
   ].filter(Boolean),
   optimizeDeps: {

@@ -125,6 +125,24 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 977 tests passing (558 web + 299 api + 120 shared)
 
+### ✅ Flexy Iteration 7: Fix Type Errors + Replace Remaining Magic Numbers
+
+| File                                   | Change                                                             |
+| -------------------------------------- | ------------------------------------------------------------------ |
+| `apps/api/src/middleware/authorize.ts` | Fix TS7053: type-assert `c.get("user") as User` for RBAC indexing  |
+| `apps/api/src/routes/share.test.ts`    | Fix TS2769: add `Variables: AppVariables` to Hono generic          |
+| `apps/api/src/config/constants.ts`     | `1024 * 1024` → `BYTE_CONVERSION.MB`                               |
+| `apps/web/src/lib/security.ts`         | `1024 * 1024` → `BYTE_CONVERSION.MB`                               |
+| `apps/web/vite.config.ts`              | `threshold: 1024` → `BYTE_CONVERSION.KB`                           |
+| `apps/web/playwright.config.ts`        | Remove local `PLAYWRIGHT_CONFIG`, use shared `PLAYWRIGHT_DEFAULTS` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (fixed 2 fatal type errors)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 977 tests passing (558 web + 299 api + 120 shared)
+
 ## Status
 
 **✅ COMPLETED - All iterations done**
