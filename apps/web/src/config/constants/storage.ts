@@ -29,6 +29,8 @@ export const TIMEOUTS = {
   API_HEALTH_CHECK: 5000,
   API_CONNECTION: 30000,
   LAST_SAVED_REFRESH: 30000,
+  /** Duration for step-complete flash animation in the StepIndicator (ms) */
+  STEP_COMPLETE_FLASH: 700,
 } as const;
 
 // ============================================================================

@@ -70,6 +70,15 @@ export const COLORS = {
       end: "rgba(99, 102, 241, 0.6)",
     },
   },
+
+  // Celebration colors for particle animations
+  celebration: {
+    emeraldLight: "#34d399",
+    greenLight: "#6ee7b7",
+    purpleLight: "#a78bfa",
+    pink: "#f472b6",
+    amber: "#fbbf24",
+  } as const,
 } as const;
 
 // ============================================================================

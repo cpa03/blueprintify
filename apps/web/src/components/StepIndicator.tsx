@@ -62,7 +62,7 @@ function StepIndicatorComponent(): JSX.Element {
     if (currIdx > prevIdx) {
       const completedKey = prevStepRef.current;
       setJustCompletedStep(completedKey);
-      const timer = setTimeout(() => setJustCompletedStep(null), 700);
+      const timer = setTimeout(() => setJustCompletedStep(null), TIMEOUTS.STEP_COMPLETE_FLASH);
       prevStepRef.current = currentStep;
       return () => clearTimeout(timer);
     }
