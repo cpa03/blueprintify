@@ -31,13 +31,15 @@ if (!rootElement) {
 }
 
 const fadeOutAndRemoveSkeletonLoader = () => {
-  const skeleton = document.getElementById("skeleton-loader");
-  if (skeleton) {
-    skeleton.style.opacity = "0";
-    setTimeout(() => {
-      skeleton.remove();
-    }, SKELETON_CONFIG.FADEOUT_MS);
-  }
+  requestAnimationFrame(() => {
+    const skeleton = document.getElementById("skeleton-loader");
+    if (skeleton) {
+      skeleton.style.opacity = "0";
+      setTimeout(() => {
+        skeleton.remove();
+      }, SKELETON_CONFIG.FADEOUT_MS);
+    }
+  });
 };
 
 // Lazy load Vercel Analytics — only loads on actual Vercel deployments, not localhost
