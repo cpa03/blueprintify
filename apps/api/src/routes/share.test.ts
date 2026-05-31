@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import shareRoute from "./share";
 import { errorHandler } from "../middleware/errorHandler";
 import type { ErrorResponse } from "../errors";
+import type { User } from "../types";
 import { DEFAULTS } from "../config/env";
 
 let originalConsoleError: typeof console.error;
@@ -173,11 +174,17 @@ describe("GET /share/:id", () => {
 
 describe("DELETE /share/:id", () => {
   const app = new Hono<{ Bindings: ReturnType<typeof createMockEnv> }>();
+  // Set user context for tests since DELETE route now requires authorization
+  app.use("*", async (c, next) => {
+    const user: User = { id: "test-user", role: "user" };
+    c.set("user", user);
+    await next();
+  });
   app.route("/", shareRoute);
   app.onError(errorHandler);
 
   it("should delete a shared blueprint", async () => {
-    const env = createMockEnv();
+    const env = createMockEnv("test-api-key");
     const res = await app.request("/testshare123", { method: "DELETE" }, env);
 
     expect(res.status).toBe(200);
@@ -187,7 +194,7 @@ describe("DELETE /share/:id", () => {
   });
 
   it("should return 400 for invalid share ID format on delete", async () => {
-    const env = createMockEnv();
+    const env = createMockEnv("test-api-key");
     const res = await app.request("/invalid-id", { method: "DELETE" }, env);
 
     expect(res.status).toBe(400);
@@ -257,7 +264,7 @@ describe("DELETE /share/:id", () => {
     expect(data.error.code).toBe("AUTHORIZATION_ERROR");
   });
 
-  it("should allow deletion without API key (backward compatibility)", async () => {
+  it("should allow deletion without API key", async () => {
     const env = createMockEnv();
     const postRes = await app.request(
       "/",

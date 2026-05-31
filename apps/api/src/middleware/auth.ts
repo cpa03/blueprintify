@@ -2,12 +2,14 @@
  * API Key Authentication Middleware
  *
  * Provides API key validation for protected routes with constant-time comparison
- * to prevent timing attacks. Supports configurable header name and path exclusions.
+ * to prevent timing attacks. Also extracts user identity context from request headers
+ * for downstream authorization checks.
  *
  * @module middleware/auth
  */
 
 import type { MiddlewareHandler } from "hono";
+import type { User, UserRole } from "../types";
 import { HTTP_STATUS, ERROR_CODES, ERROR_MESSAGES, API_HEADERS } from "../config/constants";
 import { ErrorType, createErrorJson } from "../errors";
 
@@ -16,10 +18,12 @@ import { ErrorType, createErrorJson } from "../errors";
  *
  * @property apiKeyHeader - Header name for API key (default: "x-api-key")
  * @property excludePaths - Array of paths to exclude from authentication
+ * @property defaultRole - Default role assigned to authenticated users (default: "user")
  */
 interface AuthConfig {
   apiKeyHeader?: string;
   excludePaths?: string[];
+  defaultRole?: UserRole;
 }
 
 /**
@@ -64,7 +68,11 @@ function constantTimeCompare(a: string, b: string): boolean {
  * ```
  */
 export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
-  const { apiKeyHeader = API_HEADERS.CUSTOM.API_KEY, excludePaths = ["/"] } = config;
+  const {
+    apiKeyHeader = API_HEADERS.CUSTOM.API_KEY,
+    excludePaths = ["/"],
+    defaultRole = "user",
+  } = config;
 
   return async (c, next) => {
     const path = c.req.path;
@@ -97,6 +105,17 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
         HTTP_STATUS.UNAUTHORIZED
       );
     }
+
+    const userId = c.req.header(API_HEADERS.CUSTOM.USER_ID) || "anonymous";
+    const userRoleHeader = c.req.header(API_HEADERS.CUSTOM.USER_ROLE);
+    const userRole: UserRole =
+      userRoleHeader === "admin" || userRoleHeader === "user" ? userRoleHeader : defaultRole;
+
+    const user: User = {
+      id: userId,
+      role: userRole,
+    };
+    c.set("user", user);
 
     await next();
   };

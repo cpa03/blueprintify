@@ -125,10 +125,30 @@ export interface Env {
  *
  * @property requestId - Unique identifier for request tracing
  * @property validatedData - Parsed and validated request data from validator middleware
+ * @property user - Authenticated user context with role information
  */
 export interface AppVariables {
   requestId?: string;
   validatedData?: unknown;
+  user?: User;
+}
+
+/**
+ * User role types for authorization.
+ * - admin: Full access to all resources
+ * - user: Standard access (create, read own resources)
+ */
+export type UserRole = "admin" | "user";
+
+/**
+ * Authenticated user context extracted from request.
+ *
+ * @property id - Unique user identifier (derived from API key or X-User-Id header)
+ * @property role - Authorization role for permission checks
+ */
+export interface User {
+  id: string;
+  role: UserRole;
 }
 
 /**

@@ -237,6 +237,10 @@ export const API_HEADERS = {
     API_KEY: "x-api-key",
     /** Request tracing identifier */
     REQUEST_ID: "x-request-id",
+    /** User identity header for multi-user support */
+    USER_ID: "x-user-id",
+    /** User role header for authorization checks */
+    USER_ROLE: "x-user-role",
   },
   /** Standard cache-control directives */
   CACHE_CONTROL: {
