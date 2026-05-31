@@ -502,7 +502,7 @@ export const STORAGE_CONFIG = {
     return getEnvConfig().STORAGE_QUOTA_MB;
   },
   get QUOTA_BYTES(): number {
-    return getEnvConfig().STORAGE_QUOTA_MB * 1024 * 1024;
+    return getEnvConfig().STORAGE_QUOTA_MB * BYTE_CONVERSION.MB;
   },
 };
 

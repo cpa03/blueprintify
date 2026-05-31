@@ -1,14 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
-import { DEV_DEFAULTS } from "@blueprint/shared";
+import { DEV_DEFAULTS, PLAYWRIGHT_DEFAULTS } from "@blueprint/shared";
 
 const TEST_SERVER_URL = process.env.PLAYWRIGHT_TEST_URL || DEV_DEFAULTS.PLAYWRIGHT_TEST_URL;
-
-const PLAYWRIGHT_CONFIG = {
-  WEB_SERVER_TIMEOUT_MS: 120000,
-  EXPECT_TIMEOUT_MS: 10000,
-  SCREENSHOT_MAX_DIFF_PIXELS: 100,
-  SNAPSHOT_THRESHOLD: 0.2,
-} as const;
 
 export default defineConfig({
   testDir: "./e2e",
@@ -60,17 +53,17 @@ export default defineConfig({
     command: "npm run dev",
     url: TEST_SERVER_URL,
     reuseExistingServer: !process.env.CI,
-    timeout: PLAYWRIGHT_CONFIG.WEB_SERVER_TIMEOUT_MS,
+    timeout: PLAYWRIGHT_DEFAULTS.WEB_SERVER_TIMEOUT_MS,
   },
 
   expect: {
-    timeout: PLAYWRIGHT_CONFIG.EXPECT_TIMEOUT_MS,
+    timeout: PLAYWRIGHT_DEFAULTS.EXPECT_TIMEOUT_MS,
     toHaveScreenshot: {
-      maxDiffPixels: PLAYWRIGHT_CONFIG.SCREENSHOT_MAX_DIFF_PIXELS,
-      threshold: PLAYWRIGHT_CONFIG.SNAPSHOT_THRESHOLD,
+      maxDiffPixels: PLAYWRIGHT_DEFAULTS.SCREENSHOT_MAX_DIFF_PIXELS,
+      threshold: PLAYWRIGHT_DEFAULTS.SNAPSHOT_THRESHOLD,
     },
     toMatchSnapshot: {
-      threshold: PLAYWRIGHT_CONFIG.SNAPSHOT_THRESHOLD,
+      threshold: PLAYWRIGHT_DEFAULTS.SNAPSHOT_THRESHOLD,
     },
   },
 });

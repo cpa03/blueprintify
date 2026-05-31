@@ -14,7 +14,7 @@
  */
 
 import { z } from "zod";
-import { SECURITY_LIMITS } from "@blueprint/shared";
+import { SECURITY_LIMITS, BYTE_CONVERSION } from "@blueprint/shared";
 import { SECURITY_CONFIG } from "../config/security";
 import { SECURITY_ERROR_MESSAGES } from "../config/constants";
 
@@ -180,7 +180,7 @@ export function validateFile(file: File): { isValid: boolean; error?: string } {
     return {
       isValid: false,
       error: SECURITY_ERROR_MESSAGES.FILE_SIZE_EXCEEDED(
-        SECURITY_CONFIG.MAX_FILE_SIZE / (1024 * 1024)
+        SECURITY_CONFIG.MAX_FILE_SIZE / BYTE_CONVERSION.MB
       ),
     };
   }
