@@ -2,17 +2,20 @@
  * @fileoverview Motion configuration wrapper component for accessibility.
  *
  * This component provides:
- * - Reduced motion preference handling
- * - Framer Motion configuration
+ * - Reduced motion preference handling (via CSS, framer-motion natively respects
+ *   prefers-reduced-motion so we don't need to import their MotionConfig)
  * - Optional mount callback
+ *
+ * Performance note: framer-motion's MotionConfig was previously imported here,
+ * which forced the entire 127 KB animation chunk onto the critical path. Since
+ * framer-motion already respects the prefers-reduced-motion media query by
+ * default, we can omit MotionConfig entirely and handle reduced motion purely
+ * via CSS (ReducedMotionContext).
  *
  * @module components/MotionConfigWrapper
  */
 
-import { memo } from "react";
-import { MotionConfig } from "framer-motion";
-import { useReducedMotionContext } from "../context/ReducedMotionContext";
-import { useEffect, ReactNode } from "react";
+import { memo, useEffect, type ReactNode } from "react";
 
 /**
  * Props for the MotionConfigWrapper component.
@@ -24,24 +27,20 @@ interface MotionConfigWrapperProps {
 }
 
 /**
- * Wrapper component that configures Framer Motion based on user accessibility preferences.
- * Automatically enables or disables animations based on the system's reduced motion setting.
+ * Wrapper component for app content.
+ * Previously configured Framer Motion for accessibility. Since framer-motion
+ * natively respects the prefers-reduced-motion media query, this wrapper now
+ * just handles the mount callback.
  *
  * @param props - Component props
- * @param props.children - Child components to render within the motion context
+ * @param props.children - Child components to render
  * @param props.onMount - Optional callback fired when component mounts
- * @returns The rendered component with motion configuration
+ * @returns The rendered component
  *
  * @example
  * // Basic usage
  * <MotionConfigWrapper>
  *   <AnimatedComponent />
- * </MotionConfigWrapper>
- *
- * @example
- * // With mount callback
- * <MotionConfigWrapper onMount={() => console.log('mounted')}>
- *   <Content />
  * </MotionConfigWrapper>
  */
 
@@ -49,15 +48,9 @@ export const MotionConfigWrapper = memo(function MotionConfigWrapper({
   children,
   onMount,
 }: MotionConfigWrapperProps): JSX.Element {
-  const { prefersReducedMotion } = useReducedMotionContext();
-
   useEffect(() => {
     onMount?.();
   }, [onMount]);
 
-  return (
-    <MotionConfig reducedMotion={prefersReducedMotion ? "always" : "never"}>
-      {children}
-    </MotionConfig>
-  );
+  return <>{children}</>;
 });
