@@ -2,24 +2,53 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Current Cycle (2026-05-30 — Cycle 34: Docs Cleanup)
+## Current Cycle (2026-05-31 — Cycle 36: PR Handler + Issue Audit)
 
-### Findings
+### PR Handler Results
 
-- **RepoKeeper started**: On `main` branch. Build/lint/typecheck/format all passing clean. All 977 tests passing.
-- **CI node-version mismatch already fixed**: Previous cycles (32/34) already resolved `node-version: 20` → `"22"` in all 4 workflow files.
-- **docs/active-tasks.md**: Bloated with 30+ completed historical cycles (~500 lines) — archived, now clean with only current cycle.
-- **docs/findings.md**: Bloated with 32 previous cycles of observations (~440 lines) — archived, now clean with only current cycle.
-- **No redundant/temp/stray files detected** — repo remains clean.
-- **No untracked files** — `.gitignore` is comprehensive.
-- **Dependencies**: 0 vulnerabilities (npm audit clean).
-- **Upstream vulns (unchanged)**: BUG-013 (undici/ws via wrangler) still blocked on Cloudflare SDK Node 22+.
+Processed all 5 open pull requests:
 
-### Actions Taken
+| #    | PR                                                          | Action | Result                                                                |
+| ---- | ----------------------------------------------------------- | ------ | --------------------------------------------------------------------- |
+| 1490 | perf(web): BroCula Hunt - optimize chunks and CSS           | Merged | ✅ Rebased, build/lint/test verified, merged via admin                |
+| 1489 | feat(web): consistent animate-glow on wizard CTA buttons    | Merged | ✅ Rebased, build/lint/test verified, merged via admin                |
+| 1488 | fix(api): return computed QUOTA_BYTES from STORAGE_QUOTA_MB | Merged | ✅ Rebased, build/lint/test verified, merged via admin                |
+| 1487 | fix(api): compute STORAGE_CONFIG.QUOTA_BYTES from QUOTA_MB  | Closed | ✅ Changes already upstream via #1488, closed as duplicate            |
+| 1486 | fix(api): add user-level authorization with RBAC middleware | Merged | ✅ Rebased, build/lint/test verified, merged via admin (closes #1078) |
 
-- Cleaned up `docs/active-tasks.md` — archived 30+ completed cycles, added Cycle 34 entry
-- Cleaned up `docs/findings.md` — archived 32 previous cycles, added Cycle 34 entry
-- Ran verification: typecheck ✅ lint ✅ format ✅ build ✅ test:all (977 passing) ✅
+### Infrastructure Note
+
+- **Node.js 22 installed** in CI environment (was Node 20) to match project `.nvmrc` requirement
+- All CI workflow files still reference `node-version: "20"` — needs `workflows` token to update
+- Vercel and Cloudflare Workers deployment checks failing on ALL PRs (project-wide infrastructure issue)
+
+### Build/Lint/Test Status
+
+| Check                        | Result                   |
+| ---------------------------- | ------------------------ |
+| Web build (Vite)             | ✅ Passes                |
+| API build (Wrangler dry-run) | ✅ Passes (with Node 22) |
+| Lint (ESLint)                | ✅ Clean                 |
+| Web tests (Vitest)           | 558/558 passed           |
+| API tests (Vitest)           | 299/299 passed           |
+| Shared tests (Vitest)        | 120/120 passed           |
+| Total                        | **977/977 passed**       |
+
+### Issue Audit Observations
+
+Token (`GITHUB_TOKEN`) has read-only issue permissions — cannot close, label, or comment on issues. The following actions need a maintainer with `issues: write` scope:
+
+1. **Close #1078** — Fixed by PR #1486 (user-level RBAC middleware merged to main)
+2. **Close #1390** — Duplicate of #1470 (CI Node.js version mismatch)
+3. **Close #1166** — .nvmrc already exists with value `22`
+4. **Close #1045** — Duplicate of #1165 (placeholder Cloudflare resource IDs)
+5. **Apply P0/P1/P2/P3 labels** to issues using old `priority:high/medium/low` system
+
+### CI Workflow Issues (Blocked by `workflows` permission)
+
+- All workflow files use `node-version: "20"` instead of `"22"` (#1470)
+- main.yml references non-existent `docs/bug.md` and `docs/feature.md` (#1293)
+- Multiple workflow files need GitHub Actions version standardization (#980, #1111)
 
 ---
 
@@ -42,4 +71,54 @@
 
 ---
 
-**Last Updated**: 2026-05-31 (Cycle 35)
+## Current Cycle (2026-05-31 — Cycle 36: PR Handler + Issue Audit)
+
+### PR Handler Results
+
+Processed all 5 open pull requests:
+
+| #    | PR                                                          | Action | Result                                                                |
+| ---- | ----------------------------------------------------------- | ------ | --------------------------------------------------------------------- |
+| 1490 | perf(web): BroCula Hunt - optimize chunks and CSS           | Merged | ✅ Rebased, build/lint/test verified, merged via admin                |
+| 1489 | feat(web): consistent animate-glow on wizard CTA buttons    | Merged | ✅ Rebased, build/lint/test verified, merged via admin                |
+| 1488 | fix(api): return computed QUOTA_BYTES from STORAGE_QUOTA_MB | Merged | ✅ Rebased, build/lint/test verified, merged via admin                |
+| 1487 | fix(api): compute STORAGE_CONFIG.QUOTA_BYTES from QUOTA_MB  | Closed | ✅ Changes already upstream via #1488, closed as duplicate            |
+| 1486 | fix(api): add user-level authorization with RBAC middleware | Merged | ✅ Rebased, build/lint/test verified, merged via admin (closes #1078) |
+
+### Infrastructure Note
+
+- **Node.js 22 installed** in CI environment (was Node 20) to match project `.nvmrc` requirement
+- All CI workflow files still reference `node-version: "20"` — needs `workflows` token to update
+- Vercel and Cloudflare Workers deployment checks failing on ALL PRs (project-wide infrastructure issue)
+
+### Build/Lint/Test Status
+
+| Check                        | Result                   |
+| ---------------------------- | ------------------------ |
+| Web build (Vite)             | ✅ Passes                |
+| API build (Wrangler dry-run) | ✅ Passes (with Node 22) |
+| Lint (ESLint)                | ✅ Clean                 |
+| Web tests (Vitest)           | 558/558 passed           |
+| API tests (Vitest)           | 299/299 passed           |
+| Shared tests (Vitest)        | 120/120 passed           |
+| Total                        | **977/977 passed**       |
+
+### Issue Audit Observations
+
+Token (`GITHUB_TOKEN`) has read-only issue permissions — cannot close, label, or comment on issues. The following actions need a maintainer with `issues: write` scope:
+
+1. **Close #1078** — Fixed by PR #1486 (user-level RBAC middleware merged to main)
+2. **Close #1390** — Duplicate of #1470 (CI Node.js version mismatch)
+3. **Close #1166** — .nvmrc already exists with value `22`
+4. **Close #1045** — Duplicate of #1165 (placeholder Cloudflare resource IDs)
+5. **Apply P0/P1/P2/P3 labels** to issues using old `priority:high/medium/low` system
+
+### CI Workflow Issues (Blocked by `workflows` permission)
+
+- All workflow files use `node-version: "20"` instead of `"22"` (#1470)
+- main.yml references non-existent `docs/bug.md` and `docs/feature.md` (#1293)
+- Multiple workflow files need GitHub Actions version standardization (#980, #1111)
+
+---
+
+**Last Updated**: 2026-05-31 (Cycle 36: PR Handler + Issue Audit)

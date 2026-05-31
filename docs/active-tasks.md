@@ -2,18 +2,19 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: Repository Maintenance
+## Current Focus: PR Handler & Issue Audit
 
-### Task: RepoKeeper Cleanup Cycle 34 (2026-05-30) — Docs Cleanup
+### Task: PR Handler Cycle 36 (2026-05-31) — Process 5 Open PRs
 
 - **Priority**: High
 - **Status**: Complete
-- **Objective**: Clean up bloated docs — archive 30+ completed historical cycles from active-tasks.md and findings.md, simplify to current-cycle-only format
+- **Objective**: Process all 5 open PRs — rebase/verify/merge
 - **Actions**:
-  - [x] Clean up `docs/active-tasks.md` — archive 30+ completed cycles, simplify to current cycle
-  - [x] Clean up `docs/findings.md` — archive 32 previous cycles, simplify to current cycle
-  - [x] Run verification: typecheck ✅, lint ✅, build ✅, test:all (977) ✅
-  - [ ] Create PR `chore/repokeeper-cleanup-cycle-34` from main
+  - [x] PR #1490: BroCula Hunt perf — Merged ✅
+  - [x] PR #1489: animate-glow CTA buttons — Merged ✅
+  - [x] PR #1488: fix QUOTA_BYTES return — Merged ✅
+  - [x] PR #1487: duplicate of #1488 — Closed as duplicate ✅
+  - [x] PR #1486: RBAC authorization — Merged ✅ (closes #1078)
 
 ### Task: RepoKeeper Cycle 35 (2026-05-31) — Type Fix & Audit
 
@@ -71,5 +72,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-05-30 (Cycle 34)  
+**Last Updated**: 2026-05-31 (Cycle 36)  
 **Maintainer**: RepoKeeper
