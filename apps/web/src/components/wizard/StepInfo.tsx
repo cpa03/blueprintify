@@ -54,6 +54,7 @@ export const StepInfo = memo(function StepInfo({
 }: StepInfoProps): JSX.Element {
   const projectNameInputRef = useRef<HTMLInputElement>(null);
   const [isShaking, setIsShaking] = useState(false);
+  const [invalidField, setInvalidField] = useState<string | null>(null);
   const { textareaRef: descriptionRef } = useAutoResizeTextarea({
     minHeight: TEXTAREA_CONFIG.STEP_INFO_MIN_HEIGHT_PX,
     maxHeight: TEXTAREA_CONFIG.STEP_INFO_MAX_HEIGHT_PX,
@@ -125,10 +126,17 @@ export const StepInfo = memo(function StepInfo({
     if (canProceed) {
       nextStep();
     } else {
+      let fieldId: string | null = null;
       if (projectName.length < FORM_LIMITS.PROJECT_NAME.MIN) {
         projectNameInputRef.current?.focus();
+        fieldId = "projectName";
       } else if (description.length < FORM_LIMITS.DESCRIPTION.MIN) {
         descriptionRef.current?.focus();
+        fieldId = "description";
+      }
+      if (fieldId) {
+        setInvalidField(fieldId);
+        setTimeout(() => setInvalidField(null), TIMEOUTS.SHAKE_ANIMATION);
       }
       // Trigger shake animation for visual feedback
       setIsShaking(true);
@@ -188,12 +196,15 @@ export const StepInfo = memo(function StepInfo({
               warningThreshold={FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD}
             />
           </div>
-          <div className="relative">
+          <div
+            className={`relative ${invalidField === "projectName" ? "invalid-field-flash rounded-xl" : ""}`}
+          >
             <motion.input
               ref={projectNameInputRef}
               id="projectName"
               name="projectName"
               type="text"
+              autoComplete="off"
               value={projectName}
               onChange={(e) => {
                 projectNameTyping.handleTyping(e.target.value);
@@ -268,11 +279,14 @@ export const StepInfo = memo(function StepInfo({
               min={FORM_LIMITS.DESCRIPTION.MIN}
             />
           </div>
-          <div className="relative">
+          <div
+            className={`relative ${invalidField === "description" ? "invalid-field-flash rounded-xl" : ""}`}
+          >
             <motion.textarea
               ref={descriptionRef}
               id="description"
               name="description"
+              autoComplete="off"
               value={description}
               onChange={(e) => {
                 descriptionTyping.handleTyping(e.target.value);
@@ -354,6 +368,7 @@ export const StepInfo = memo(function StepInfo({
               id="targetAudience"
               name="targetAudience"
               type="text"
+              autoComplete="off"
               value={targetAudience}
               onChange={(e) => {
                 targetAudienceTyping.handleTyping(e.target.value);
@@ -435,6 +450,7 @@ export const StepInfo = memo(function StepInfo({
             ref={constraintsRef}
             id="constraints"
             name="constraints"
+            autoComplete="off"
             value={constraints}
             onChange={(e) => {
               constraintsTyping.handleTyping(e.target.value);
