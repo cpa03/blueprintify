@@ -2,22 +2,20 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 39
+## Current Focus: RepoKeeper Cycle 40
 
-### Task: RepoKeeper Cycle 39 (2026-05-31) — CI Fixes & Doc Sync
+### Task: RepoKeeper Cycle 40 (2026-05-31) — CI Docs Sync & Cleanup
 
 - **Priority**: High
 - **Status**: Active
-- **Objective**: Fix CI workflow node-version, stale doc references in main.yml, remove temp files, update docs
+- **Objective**: Fix CI workflow node-version alignment, stale doc refs in main.yml, remove stale loop tracker, update docs
 - **Actions**:
   - [x] Fix `main.yml` stale doc references: `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
-  - [x] Fix `node-version: "20"` → `"22"` in all CI workflow files (10 instances across 3 files)
+  - [x] Fix `node-version: "20"` → `"22"` in all CI workflow files (11 instances across 4 files)
   - [x] Remove stale `.omo/ralph-loop.local.md` (leftover loop tracker)
-  - [x] Create missing `docs/knowledge-review.md`
-  - [x] Update `docs/bugs.md` — verify BUG-014 fix actually applied
-  - [x] Update `docs/findings.md` — add Cycle 39 findings
-  - [ ] Run full verification: typecheck ✅ lint ✅ build ✅
-  - [ ] Create PR `chore/repokeeper-cycle-39`
+  - [x] Update `docs/findings.md` — add Cycle 40 findings
+  - [ ] Run full verification: typecheck ✅ lint ✅ build ✅ format ✅
+  - [ ] Create PR `chore/repokeeper-cycle-40`
 
 ---
 
@@ -64,5 +62,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-05-31 (Cycle 37: RepoKeeper Type Fixes & Doc Cleanup)  
+**Last Updated**: 2026-05-31 (Cycle 40: RepoKeeper — CI Docs Sync & Cleanup)  
 **Maintainer**: RepoKeeper
