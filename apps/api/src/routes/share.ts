@@ -11,6 +11,7 @@
 import { Hono } from "hono";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
+import { authorize } from "../middleware/authorize";
 import { z } from "zod";
 import type { Env } from "../types";
 import {
@@ -298,7 +299,7 @@ app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
   }
 });
 
-app.delete("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
+app.delete("/:id", rateLimit(rateLimitConfigs.standard), authorize("user"), async (c) => {
   try {
     const shareId = c.req.param("id");
 
