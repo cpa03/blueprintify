@@ -9,7 +9,7 @@
  */
 
 import type { MiddlewareHandler } from "hono";
-import type { UserRole } from "../types";
+import type { User, UserRole } from "../types";
 import { HTTP_STATUS, ERROR_CODES, ERROR_MESSAGES } from "../config/constants";
 import { ErrorType, createErrorJson } from "../errors";
 
@@ -39,7 +39,7 @@ const ROLE_HIERARCHY: Record<UserRole, number> = {
  */
 export function authorize(minimumRole: UserRole): MiddlewareHandler {
   return async (c, next) => {
-    const user = c.get("user");
+    const user = c.get("user") as User | undefined;
 
     // Require authentication - user context must be set by auth middleware
     if (!user) {
