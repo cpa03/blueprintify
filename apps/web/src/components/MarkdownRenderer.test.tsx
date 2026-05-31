@@ -1,6 +1,11 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from "vitest";
 import { MarkdownRenderer } from "./MarkdownRenderer";
+import { ensureDOMPurifyLoaded } from "../lib/security";
+
+beforeAll(async () => {
+  await ensureDOMPurifyLoaded();
+});
 
 describe("MarkdownRenderer", () => {
   describe("Basic Rendering", () => {
