@@ -561,6 +561,30 @@
   }
 }
 
+/* Brief red glow flash on form fields that fail validation — draws the eye to the
+   specific field that needs attention when the user clicks "Continue" with invalid input,
+   working together with the button shake animation for multi-modal feedback. */
+@keyframes invalid-field-flash {
+  0% {
+    box-shadow: 0 0 0 0 transparent;
+    border-color: transparent;
+  }
+  20% {
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--color-accent-pink) 35%, transparent),
+      0 0 12px color-mix(in srgb, var(--color-accent-pink) 10%, transparent);
+    border-color: color-mix(in srgb, var(--color-accent-pink) 70%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+    border-color: transparent;
+  }
+}
+
+.invalid-field-flash {
+  animation: invalid-field-flash 0.6s ease-out;
+}
+
 /* ===== Skip-link Focus Animation ===== */
 /* Brief subtle highlight when main content receives focus via skip-link.
    Uses :focus (not :focus-visible) because programmatic .focus() triggered by
