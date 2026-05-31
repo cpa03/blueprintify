@@ -8,6 +8,7 @@
  */
 
 import type { Context, MiddlewareHandler, Next } from "hono";
+import { HTTP_METHODS } from "@blueprint/shared";
 import { LOGGER_CONFIG, API_HEADERS } from "../config/constants";
 import { timestamp } from "../errors";
 
@@ -197,7 +198,7 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
       requestLog.cloudflare = cfMetadata;
     }
 
-    if (logRequestBody && c.req.method !== "GET") {
+    if (logRequestBody && c.req.method !== HTTP_METHODS.GET) {
       try {
         const clonedReq = c.req.raw.clone();
         requestLog.body = await clonedReq.json();

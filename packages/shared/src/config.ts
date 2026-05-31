@@ -363,3 +363,16 @@ export const CORS_DEFAULTS = {
   ALLOW_METHODS: ["GET", "POST", "OPTIONS"] as const,
   ALLOW_HEADERS: ["Content-Type", "Authorization"] as const,
 } as const;
+
+/**
+ * HTTP Methods Constants
+ * Centralized HTTP method strings to eliminate hardcoded method literals.
+ * Single source of truth for HTTP methods across API and Web.
+ */
+export const HTTP_METHODS = {
+  GET: "GET",
+  POST: "POST",
+  PUT: "PUT",
+  DELETE: "DELETE",
+  PATCH: "PATCH",
+} as const;

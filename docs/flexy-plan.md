@@ -143,6 +143,23 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 977 tests passing (558 web + 299 api + 120 shared)
 
+### ✅ Flexy Iteration 8: Add HTTP_METHODS Shared Constant + Eliminate Remaining Hardcoded Literals
+
+| File                                | Change                                                                                                                  |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`     | Added `HTTP_METHODS` (GET, POST, PUT, DELETE, PATCH)                                                                    |
+| `packages/shared/src/index.ts`      | Exported `HTTP_METHODS`                                                                                                 |
+| `apps/web/src/config/api-client.ts` | Replaced hardcoded `"POST"` with `HTTP_METHODS.POST`                                                                    |
+| `apps/api/src/middleware/logger.ts` | Replaced hardcoded `"GET"` with `HTTP_METHODS.GET`                                                                      |
+| `apps/api/src/utils/stream.test.ts` | Replaced `"text/event-stream"` with `SSE_HEADERS.CONTENT_TYPE`; `"Authorization"` with `CORS_DEFAULTS.ALLOW_HEADERS[1]` |
+| `apps/web/src/lib/api.test.ts`      | Replaced hardcoded `"http://localhost:8787"` with `DEV_DEFAULTS.API_PROXY_TARGET`                                       |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — 983 tests passing (564 web + 299 api + 120 shared)
+
 ## Status
 
 **✅ COMPLETED - All iterations done**
