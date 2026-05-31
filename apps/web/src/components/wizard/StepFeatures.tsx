@@ -222,53 +222,61 @@ export const StepFeatures = memo(function StepFeatures({
               role="list"
               aria-labelledby="added-features-label"
             >
-              {features.map((feature) => {
-                const isJustAdded = feature === justAdded;
-                return (
-                  <motion.span
-                    key={feature}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{
-                      opacity: 1,
-                      scale: isJustAdded ? [1, 1.08, 1] : 1,
-                      transition: isJustAdded
-                        ? { duration: 0.4, ease: "easeOut" }
-                        : { type: "spring", ...SPRING_CONFIG.DEFAULT },
-                    }}
-                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors duration-300 ${
-                      isJustAdded
-                        ? "bg-accent-emerald/20 border border-accent-emerald/50 text-accent-emerald"
-                        : "bg-primary-500/20 border border-primary-500/30 text-primary-300"
-                    }`}
-                    role="listitem"
-                  >
-                    <span className="text-accent-emerald" aria-hidden="true">
-                      ✓
-                    </span>
-                    {feature}
-                    <button
-                      onClick={() => removeFeature(feature)}
-                      className="hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors"
-                      aria-label={`Remove ${feature}`}
+              <AnimatePresence mode="popLayout">
+                {features.map((feature) => {
+                  const isJustAdded = feature === justAdded;
+                  return (
+                    <motion.span
+                      key={feature}
+                      layout
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{
+                        opacity: 1,
+                        scale: isJustAdded ? [1, 1.08, 1] : 1,
+                        transition: isJustAdded
+                          ? { duration: 0.4, ease: "easeOut" }
+                          : { type: "spring", ...SPRING_CONFIG.DEFAULT },
+                      }}
+                      exit={{
+                        opacity: 0,
+                        scale: 0.8,
+                        transition: { duration: 0.2, ease: "easeOut" },
+                      }}
+                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors duration-300 ${
+                        isJustAdded
+                          ? "bg-accent-emerald/20 border border-accent-emerald/50 text-accent-emerald"
+                          : "bg-primary-500/20 border border-primary-500/30 text-primary-300"
+                      }`}
+                      role="listitem"
                     >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
+                      <span className="text-accent-emerald" aria-hidden="true">
+                        ✓
+                      </span>
+                      {feature}
+                      <button
+                        onClick={() => removeFeature(feature)}
+                        className="hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors"
+                        aria-label={`Remove ${feature}`}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-                  </motion.span>
-                );
-              })}
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </motion.span>
+                  );
+                })}
+              </AnimatePresence>
             </div>
           </div>
         )}
