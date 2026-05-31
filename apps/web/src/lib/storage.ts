@@ -11,7 +11,7 @@
 import { z } from "zod";
 import { STORAGE_KEYS, STORAGE_CONFIG, STORAGE_ERROR_MESSAGES } from "../config/constants";
 import { BACKUP_KEY_PREFIX, TEST_KEYS } from "../config/keys";
-import { STORAGE_CONFIG as SHARED_STORAGE_CONFIG } from "@blueprint/shared";
+import { STORAGE_CONFIG as SHARED_STORAGE_CONFIG, BYTE_CONVERSION } from "@blueprint/shared";
 
 // ============================================================================
 // Storage Error Types
@@ -664,7 +664,7 @@ export class StorageService<T = unknown> {
 
   private checkQuota(): void {
     const quota = getStorageQuota();
-    if (quota.remaining < STORAGE_CONFIG.QUOTA_WARNING_THRESHOLD_KB * 1024) {
+    if (quota.remaining < STORAGE_CONFIG.QUOTA_WARNING_THRESHOLD_KB * BYTE_CONVERSION.KB) {
       throw this.createStorageError(STORAGE_ERROR_MESSAGES.QUOTA_EXCEEDED, "QUOTA_EXCEEDED", {
         key: this.config.key,
         operation: "write",

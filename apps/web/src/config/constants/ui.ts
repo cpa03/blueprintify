@@ -153,13 +153,13 @@ export const TOOLTIP_CONFIG = {
  */
 export const CELEBRATION_COLORS = [
   COLORS.accent.emerald,
-  "#34d399",
-  "#6ee7b7",
+  COLORS.celebration.emeraldLight,
+  COLORS.celebration.greenLight,
   COLORS.primary[500],
   COLORS.primary[400],
-  "#a78bfa",
-  "#f472b6",
-  "#fbbf24",
+  COLORS.celebration.purpleLight,
+  COLORS.celebration.pink,
+  COLORS.celebration.amber,
 ] as const;
 
 /** Animation colors for value change indicators */
