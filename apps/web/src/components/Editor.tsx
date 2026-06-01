@@ -213,6 +213,7 @@ function EditorComponent(): JSX.Element {
           hasContent={hasContent}
           copied={copied}
           isExporting={isExporting}
+          isGenerating={isGenerating}
           lastSavedText={lastSavedText}
           hasChanges={hasChanges}
           content={currentContent}

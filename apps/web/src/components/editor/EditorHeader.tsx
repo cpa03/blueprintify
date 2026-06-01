@@ -47,6 +47,7 @@ interface EditorHeaderProps {
   hasContent: boolean;
   copied: string | null;
   isExporting?: boolean;
+  isGenerating?: boolean;
   exportSuccess?: boolean;
   lastSavedText?: string;
   hasChanges?: boolean;
@@ -58,12 +59,14 @@ const TAB_IDS: EditorTab[] = ["blueprint", "tasks"];
 const TabButton = React.memo(function TabButton({
   id,
   isActive,
+  isGenerating,
   onClick,
   hasContent,
   children,
 }: {
   id: string;
   isActive: boolean;
+  isGenerating?: boolean;
   onClick: () => void;
   hasContent: boolean;
   children: React.ReactNode;
@@ -94,7 +97,24 @@ const TabButton = React.memo(function TabButton({
           style={{ zIndex: -1 }}
         />
       )}
-      <span className="relative z-10">{children}</span>
+      <span className="relative z-10 flex items-center gap-1.5">
+        {children}
+        {isActive && isGenerating && (
+          <motion.span
+            className="w-1.5 h-1.5 rounded-full bg-accent-emerald flex-shrink-0"
+            animate={{
+              opacity: [1, 0.35, 1],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 1.4,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            aria-label="Streaming content in real-time"
+          />
+        )}
+      </span>
     </button>
   );
 });
@@ -178,6 +198,7 @@ function EditorHeaderComponent({
   hasContent,
   copied,
   isExporting = false,
+  isGenerating = false,
   exportSuccess = false,
   lastSavedText = "",
   hasChanges = false,
@@ -229,6 +250,7 @@ function EditorHeaderComponent({
           <TabButton
             id="blueprint"
             isActive={activeTab === "blueprint"}
+            isGenerating={isGenerating}
             onClick={() => setActiveTab("blueprint")}
             hasContent={hasContent}
           >
@@ -238,6 +260,7 @@ function EditorHeaderComponent({
           <TabButton
             id="tasks"
             isActive={activeTab === "tasks"}
+            isGenerating={isGenerating}
             onClick={() => setActiveTab("tasks")}
             hasContent={hasContent}
           >
