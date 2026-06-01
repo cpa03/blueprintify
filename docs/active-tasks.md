@@ -2,20 +2,21 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 40
+## Current Focus: RepoKeeper Cycle 41
 
-### Task: RepoKeeper Cycle 40 (2026-05-31) — CI Docs Sync & Cleanup
+### Task: RepoKeeper Cycle 41 (2026-06-01) — CI Docs Sync & Cleanup
 
 - **Priority**: High
 - **Status**: Active
-- **Objective**: Fix CI workflow node-version alignment, stale doc refs in main.yml, remove stale loop tracker, update docs
+- **Objective**: Fix CI workflow node-version alignment, stale doc refs in main.yml, remove unused dependency, format fixes, update docs
 - **Actions**:
+  - [x] Fix `apps/web/index.html` Prettier formatting
   - [x] Fix `main.yml` stale doc references: `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
   - [x] Fix `node-version: "20"` → `"22"` in all CI workflow files (11 instances across 4 files)
-  - [x] Remove stale `.omo/ralph-loop.local.md` (leftover loop tracker)
-  - [x] Update `docs/findings.md` — add Cycle 40 findings
-  - [ ] Run full verification: typecheck ✅ lint ✅ build ✅ format ✅
-  - [ ] Create PR `chore/repokeeper-cycle-40`
+  - [x] Remove unused `playwright-lighthouse` dependency from `package.json`
+  - [x] Update `docs/findings.md` — add Cycle 41 findings
+  - [ ] Run full verification: typecheck ✅ lint ✅ build ✅ format ✅ test:all ✅
+  - [ ] Create PR `chore/repokeeper-cycle-41`
 
 ---
 
