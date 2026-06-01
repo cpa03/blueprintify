@@ -13,10 +13,28 @@
  * @see https://owasp.org/www-community/xss-filter-evasion-cheatsheet
  */
 
-import { z } from "zod";
 import { SECURITY_LIMITS, BYTE_CONVERSION } from "@blueprint/shared";
 import { SECURITY_CONFIG } from "../config/security";
 import { SECURITY_ERROR_MESSAGES } from "../config/constants";
+
+// Lazy Zod - kept out of initial bundle; only needed for content/file validation on user action.
+
+let _zod: { z: (typeof import("zod"))["z"] } | null = null;
+let _zodPromise: Promise<void> | null = null;
+function _initZod(): Promise<void> {
+  if (!_zodPromise) {
+    _zodPromise = import("zod").then((mod) => {
+      _zod = mod;
+    });
+  }
+  return _zodPromise;
+}
+void _initZod();
+
+function _getZodOrThrow(): (typeof import("zod"))["z"] {
+  if (!_zod) throw new Error("Zod not yet loaded");
+  return _zod.z;
+}
 
 /**
  * Lazy DOMPurify - ~40KB kept out of main bundle; only used on user save/render.
@@ -58,27 +76,41 @@ function basicEscapeHtml(str: string): string {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#x27;");
 }
-export const ContentValidationSchema = z.object({
-  blueprintContent: z
-    .string()
-    .max(SECURITY_CONFIG.MAX_CONTENT_LENGTH, "Blueprint content exceeds maximum length")
-    .refine((content) => !containsXSSPatterns(content), {
-      message: "Blueprint content contains potentially dangerous patterns",
-    }),
-  tasksContent: z
-    .string()
-    .max(SECURITY_CONFIG.MAX_CONTENT_LENGTH, "Tasks content exceeds maximum length")
-    .refine((content) => !containsXSSPatterns(content), {
-      message: "Tasks content contains potentially dangerous patterns",
-    }),
-});
+let _contentSchema: ReturnType<ReturnType<(typeof import("zod"))["z"]["object"]>> | null = null;
+function getContentSchema() {
+  if (!_contentSchema) {
+    const z = _getZodOrThrow();
+    _contentSchema = z.object({
+      blueprintContent: z
+        .string()
+        .max(SECURITY_CONFIG.MAX_CONTENT_LENGTH, "Blueprint content exceeds maximum length")
+        .refine((content: string) => !containsXSSPatterns(content), {
+          message: "Blueprint content contains potentially dangerous patterns",
+        }),
+      tasksContent: z
+        .string()
+        .max(SECURITY_CONFIG.MAX_CONTENT_LENGTH, "Tasks content exceeds maximum length")
+        .refine((content: string) => !containsXSSPatterns(content), {
+          message: "Tasks content contains potentially dangerous patterns",
+        }),
+    });
+  }
+  return _contentSchema;
+}
 
-export const FileValidationSchema = z.object({
-  name: z.string().min(1).max(255),
-  size: z.number().max(SECURITY_CONFIG.MAX_FILE_SIZE),
-  type: z.string(),
-  content: z.string().max(SECURITY_CONFIG.MAX_CONTENT_LENGTH),
-});
+let _fileSchema: ReturnType<ReturnType<(typeof import("zod"))["z"]["object"]>> | null = null;
+function getFileSchema() {
+  if (!_fileSchema) {
+    const z = _getZodOrThrow();
+    _fileSchema = z.object({
+      name: z.string().min(1).max(255),
+      size: z.number().max(SECURITY_CONFIG.MAX_FILE_SIZE),
+      type: z.string(),
+      content: z.string().max(SECURITY_CONFIG.MAX_CONTENT_LENGTH),
+    });
+  }
+  return _fileSchema;
+}
 export function containsXSSPatterns(content: string): boolean {
   return SECURITY_CONFIG.XSS_PATTERNS.some((pattern) => pattern.test(content));
 }
@@ -129,7 +161,8 @@ export function validateContent(content: unknown): {
 } {
   try {
     const contentInput = content as ContentInput;
-    const validated = ContentValidationSchema.parse({
+    const schema = getContentSchema();
+    const validated = schema.parse({
       blueprintContent:
         typeof content === "object" && content !== null ? contentInput.blueprintContent || "" : "",
       tasksContent:
@@ -144,10 +177,11 @@ export function validateContent(content: unknown): {
       },
     };
   } catch (error) {
-    if (error instanceof z.ZodError) {
+    if (error instanceof Error && error.name === "ZodError") {
+      const zodError = error as unknown as { issues: Array<{ message: string }> };
       return {
         isValid: false,
-        error: error.issues.map((e) => e.message).join(", "),
+        error: zodError.issues.map((e) => e.message).join(", "),
       };
     }
     return {
@@ -211,7 +245,8 @@ export async function validateAndSanitizeFileContent(file: File): Promise<{
     }
 
     // Validate content with schema
-    FileValidationSchema.parse({
+    const fileSchema = getFileSchema();
+    fileSchema.parse({
       name: file.name,
       size: file.size,
       type: file.type,
@@ -225,10 +260,11 @@ export async function validateAndSanitizeFileContent(file: File): Promise<{
       content: sanitizedContent,
     };
   } catch (error) {
-    if (error instanceof z.ZodError) {
+    if (error instanceof Error && error.name === "ZodError") {
+      const zodError = error as unknown as { issues: Array<{ message: string }> };
       return {
         isValid: false,
-        error: error.issues.map((e) => e.message).join(", "),
+        error: zodError.issues.map((e) => e.message).join(", "),
       };
     }
     return {
@@ -398,11 +434,12 @@ export function handleSecurityError(error: unknown): SecurityError {
     return error;
   }
 
-  if (error instanceof z.ZodError) {
+  if (error instanceof Error && error.name === "ZodError") {
+    const zodError = error as unknown as { issues: Array<{ message: string }> };
     return new SecurityError(
-      error.issues.map((e) => e.message).join(", "),
+      zodError.issues.map((e) => e.message).join(", "),
       "VALIDATION",
-      error.issues
+      zodError.issues
     );
   }
 
