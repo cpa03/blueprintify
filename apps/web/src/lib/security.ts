@@ -31,6 +31,14 @@ function _initZod(): Promise<void> {
 }
 void _initZod();
 
+/**
+ * Ensure Zod has loaded. Resolves immediately if already loaded.
+ * Useful in tests and SSR contexts where timing guarantees are needed.
+ */
+export function ensureZodLoaded(): Promise<void> {
+  return _initZod();
+}
+
 function _getZodOrThrow(): (typeof import("zod"))["z"] {
   if (!_zod) throw new Error("Zod not yet loaded");
   return _zod.z;
@@ -76,7 +84,7 @@ function basicEscapeHtml(str: string): string {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#x27;");
 }
-let _contentSchema: ReturnType<ReturnType<(typeof import("zod"))["z"]["object"]>> | null = null;
+let _contentSchema: ReturnType<(typeof import("zod"))["z"]["object"]> | null = null;
 function getContentSchema() {
   if (!_contentSchema) {
     const z = _getZodOrThrow();
@@ -98,7 +106,7 @@ function getContentSchema() {
   return _contentSchema;
 }
 
-let _fileSchema: ReturnType<ReturnType<(typeof import("zod"))["z"]["object"]>> | null = null;
+let _fileSchema: ReturnType<(typeof import("zod"))["z"]["object"]> | null = null;
 function getFileSchema() {
   if (!_fileSchema) {
     const z = _getZodOrThrow();
@@ -167,7 +175,7 @@ export function validateContent(content: unknown): {
         typeof content === "object" && content !== null ? contentInput.blueprintContent || "" : "",
       tasksContent:
         typeof content === "object" && content !== null ? contentInput.tasksContent || "" : "",
-    });
+    }) as { blueprintContent: string; tasksContent: string };
 
     return {
       isValid: true,

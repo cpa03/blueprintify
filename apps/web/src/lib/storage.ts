@@ -25,6 +25,14 @@ function _initZod(): Promise<void> {
 }
 void _initZod();
 
+/**
+ * Ensure Zod has loaded. Resolves immediately if already loaded.
+ * Useful in tests and SSR contexts where timing guarantees are needed.
+ */
+export function ensureZodLoaded(): Promise<void> {
+  return _initZod();
+}
+
 function _getZodOrThrow(): typeof z {
   if (!_zod) throw new Error("Zod not yet loaded");
   return _zod.z;
@@ -111,7 +119,7 @@ export interface StorageMetadata {
   checksum: string;
 }
 
-let _metadataSchema: ReturnType<ReturnType<(typeof import("zod"))["z"]["object"]>> | null = null;
+let _metadataSchema: ReturnType<(typeof import("zod"))["z"]["object"]> | null = null;
 function getMetadataSchema() {
   if (!_metadataSchema) {
     const z = _getZodOrThrow();
@@ -500,6 +508,9 @@ export class StorageService<T = unknown> {
   // ========================================================================
 
   private async validateAndMigrate(parsed: unknown): Promise<T> {
+    // Ensure Zod is loaded before attempting metadata schema validation
+    await _initZod();
+
     if (!parsed || typeof parsed !== "object") {
       throw new Error(
         `Invalid storage data structure for key "${this.config.key}": expected an object, got ${parsed === null ? "null" : typeof parsed}. The storage data may be corrupted. Try clearing localStorage and refreshing.`
@@ -514,11 +525,11 @@ export class StorageService<T = unknown> {
       const metadataResult = schema.safeParse(obj.metadata);
       if (!metadataResult.success) {
         throw new Error(
-          `Invalid metadata structure for key "${this.config.key}": ${metadataResult.error.issues.map((e) => e.message).join(", ")}. The storage metadata may be corrupted.`
+          `Invalid metadata structure for key "${this.config.key}": ${metadataResult.error.issues.map((e: { message: string }) => e.message).join(", ")}. The storage metadata may be corrupted.`
         );
       }
 
-      const metadata = metadataResult.data as StorageMetadata;
+      const metadata = metadataResult.data as unknown as StorageMetadata;
 
       // Check if migration is needed
       if (metadata.version < this.config.currentVersion) {
