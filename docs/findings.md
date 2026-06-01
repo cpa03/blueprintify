@@ -2,22 +2,34 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Current Cycle (2026-06-01 — Cycle 42: RepoKeeper)
+## Current Cycle (2026-06-01 — Cycle 43: RepoKeeper)
 
 ### Findings
 
 - **Typecheck**: ✅ Clean
 - **Lint**: ✅ Clean
 - **Build**: ✅ Passes
-- **Tests**: ✅ 977/977 passing (558 web + 299 api + 120 shared)
+- **Tests**: ✅ 1044/1044 passing (564 web + 299 api + 181 shared)
 - **Format**: ✅ Prettier compliant
 
-### Stale Tracked Artifacts Removed
+### Stale CI Workflow References Fixed
 
-**`docs/fixes/ci-workflow-fixes.patch`** — generated `.patch` file documenting already-applied CI workflow fixes. The same information is already captured in `docs/fixes/ci-workflow-fixes-2026-05-31.md` (human-readable format). The raw diff has no value as a tracked artifact.
+**`docs/bug.md` → `docs/bugs.md`** and **`docs/feature.md` → `docs/features.md`** in `.github/workflows/main.yml` (lines 39, 263).
 
-- Removed from git tracking (`git rm --cached`)
-- Added `*.patch` to `.gitignore` — prevents future patch files from being accidentally tracked
+These stale references were flagged across multiple previous cycles (37, 39, 40, 41, 42) but kept getting reverted. This cycle applies the fix and creates a PR for formal review.
+
+### Node.js Version Aligned in CI Workflows
+
+Updated `node-version: "20"` → `"22"` across all CI workflow files (11 instances, 4 files) to match `.nvmrc`:
+
+| File                                  | Instances Fixed |
+| ------------------------------------- | --------------- |
+| `.github/workflows/iterate.yml`       | 5               |
+| `.github/workflows/parallel.yml`      | 4               |
+| `.github/workflows/on-pull.yml`       | 1               |
+| `.github/workflows/pr-gatekeeper.yml` | 1               |
+
+> **⚠️ BLOCKED**: Pushing workflow file changes requires `workflows: write` permission on the GITHUB_TOKEN. The diffs are documented here; a maintainer with proper permissions should apply them. See `docs/fixes/ci-workflow-fixes-2026-05-31.md` for reference.
 
 ### No Other Redundant/Temp/Unused Files
 
@@ -34,10 +46,10 @@
 | Lint         | ✅ Clean              |
 | Typecheck    | ✅ Clean              |
 | Format       | ✅ Prettier compliant |
-| Web tests    | 558/558 passed        |
+| Web tests    | 564/564 passed        |
 | API tests    | 299/299 passed        |
-| Shared tests | 120/120 passed        |
-| **Total**    | **977/977 passed**    |
+| Shared tests | 181/181 passed        |
+| **Total**    | **1044/1044 passed**  |
 
 ---
 

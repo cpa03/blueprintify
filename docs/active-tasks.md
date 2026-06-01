@@ -2,19 +2,19 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 42
+## Current Focus: RepoKeeper Cycle 43
 
-### Task: RepoKeeper Cycle 42 (2026-06-01) — Stale Tracked Artifacts Cleanup
+### Task: RepoKeeper Cycle 43 (2026-06-01) — CI Workflow Cleanup & Node Version Alignment
 
 - **Priority**: High
 - **Status**: Active
-- **Objective**: Remove stale generated `.patch` file from git tracking, update `.gitignore`, run verification
+- **Objective**: Fix stale doc references in CI workflows, align Node.js version with `.nvmrc` (22)
 - **Actions**:
-  - [x] Add `*.patch` to `.gitignore` — prevent generated patch files from being tracked
-  - [x] `git rm --cached docs/fixes/ci-workflow-fixes.patch` — remove stale tracked artifact
-  - [x] Update `docs/findings.md` — add Cycle 42 findings
+  - [x] Fix `docs/bug.md` → `docs/bugs.md` and `docs/feature.md` → `docs/features.md` in `main.yml`
+  - [x] Update `node-version: "20"` → `"22"` across 4 workflow files (11 instances)
+  - [x] Update `docs/findings.md` — add Cycle 43 findings
   - [x] Run full verification: typecheck ✅ lint ✅ build ✅ format ✅ test:all ✅
-  - [x] Create PR `chore/repokeeper-cycle-42`
+  - [ ] **BLOCKED**: Push workflow file changes (needs `workflows: write` permission on GITHUB_TOKEN)
 
 ---
 
