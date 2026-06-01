@@ -245,7 +245,7 @@ export const ScrollProgressCompact = memo(function ScrollProgressCompact({
             scale: [1, 1.05, 1],
           }}
           transition={{
-            duration: 0.3,
+            duration: ANIMATION.SUBTLE_MOVE,
             repeat: 0,
           }}
         >

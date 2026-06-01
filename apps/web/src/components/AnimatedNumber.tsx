@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback, memo } from "react";
 import { motion, useSpring, MotionValue } from "framer-motion";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
-import { ANIMATION_COLORS } from "../config/constants";
+import { ANIMATION_COLORS, ANIMATION } from "../config/constants";
 
 interface AnimatedNumberProps {
   value: number;
@@ -107,7 +107,7 @@ function AnimatedNumberComponent({
           : {}
       }
       transition={{
-        duration: 0.3,
+        duration: ANIMATION.MEDIUM,
         ease: "easeOut",
       }}
       aria-live="polite"
@@ -183,7 +183,7 @@ function AnimatedCounterComponent({
             }
           : {}
       }
-      transition={{ duration: 0.6 }}
+      transition={{ duration: ANIMATION.PULSE }}
     >
       <div className="flex items-center gap-3">
         {icon && (
@@ -191,7 +191,7 @@ function AnimatedCounterComponent({
             animate={
               shouldAnimate && pulseKey > 0 ? { scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] } : {}
             }
-            transition={{ duration: 0.4 }}
+            transition={{ duration: ANIMATION.MEDIUM_SLOW }}
           >
             {icon}
           </motion.div>

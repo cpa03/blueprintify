@@ -139,7 +139,7 @@ export const StepGenerating = memo(function StepGenerating({
                 strokeWidth="3"
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 0.4, delay: 0.1 }}
+                transition={{ duration: ANIMATION.MEDIUM_SLOW, delay: 0.1 }}
               />
               <motion.path
                 d="M14 24L21 31L34 17"
@@ -149,7 +149,7 @@ export const StepGenerating = memo(function StepGenerating({
                 strokeLinejoin="round"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={{ duration: 0.4, delay: 0.3 }}
+                transition={{ duration: ANIMATION.MEDIUM_SLOW, delay: 0.3 }}
               />
             </svg>
           </motion.div>
