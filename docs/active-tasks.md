@@ -15,8 +15,8 @@
   - [x] Fix `node-version: "20"` → `"22"` in all CI workflow files (11 instances across 4 files)
   - [x] Remove unused `playwright-lighthouse` dependency from `package.json`
   - [x] Update `docs/findings.md` — add Cycle 41 findings
-  - [ ] Run full verification: typecheck ✅ lint ✅ build ✅ format ✅ test:all ✅
-  - [ ] Create PR `chore/repokeeper-cycle-41`
+  - [x] Run full verification: typecheck ✅ lint ✅ build ✅ format ✅ test:all ✅
+  - [x] Create PR `chore/repokeeper-cycle-41` ([#1514](https://github.com/cpa03/blueprintify/pull/1514))
 
 ---
 

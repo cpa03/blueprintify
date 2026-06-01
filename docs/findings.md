@@ -34,6 +34,20 @@ Updated `node-version: "20"` → `"22"` across all CI workflow files (11 instanc
 
 - Removed `playwright-lighthouse` from root `package.json` — not imported in any source file
 
+### Blocked Changes (require `workflows` permission)
+
+GITHUB_TOKEN lacks `workflows: write` permission, preventing CI workflow file modifications:
+
+1. **Stale doc refs in `main.yml`** — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md` (lines 39, 263)
+2. **Node.js version alignment** — `node-version: "20"` → `"22"` in 4 workflow files (11 instances)
+
+These fixes need to be applied by a maintainer with `workflows: write` scope.
+
+### PR
+
+- **Branch**: `chore/repokeeper-cycle-41`
+- **PR**: [#1514](https://github.com/cpa03/blueprintify/pull/1514)
+
 ### No Other Redundant/Temp/Unused Files
 
 - No empty directories found
