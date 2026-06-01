@@ -2,21 +2,19 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 41
+## Current Focus: RepoKeeper Cycle 42
 
-### Task: RepoKeeper Cycle 41 (2026-06-01) — CI Docs Sync & Cleanup
+### Task: RepoKeeper Cycle 42 (2026-06-01) — Stale Tracked Artifacts Cleanup
 
 - **Priority**: High
 - **Status**: Active
-- **Objective**: Fix CI workflow node-version alignment, stale doc refs in main.yml, remove unused dependency, format fixes, update docs
+- **Objective**: Remove stale generated `.patch` file from git tracking, update `.gitignore`, run verification
 - **Actions**:
-  - [x] Fix `apps/web/index.html` Prettier formatting
-  - [x] Fix `main.yml` stale doc references: `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
-  - [x] Fix `node-version: "20"` → `"22"` in all CI workflow files (11 instances across 4 files)
-  - [x] Remove unused `playwright-lighthouse` dependency from `package.json`
-  - [x] Update `docs/findings.md` — add Cycle 41 findings
+  - [x] Add `*.patch` to `.gitignore` — prevent generated patch files from being tracked
+  - [x] `git rm --cached docs/fixes/ci-workflow-fixes.patch` — remove stale tracked artifact
+  - [x] Update `docs/findings.md` — add Cycle 42 findings
   - [x] Run full verification: typecheck ✅ lint ✅ build ✅ format ✅ test:all ✅
-  - [x] Create PR `chore/repokeeper-cycle-41` ([#1514](https://github.com/cpa03/blueprintify/pull/1514))
+  - [x] Create PR `chore/repokeeper-cycle-42`
 
 ---
 
@@ -63,5 +61,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-05-31 (Cycle 40: RepoKeeper — CI Docs Sync & Cleanup)  
+**Last Updated**: 2026-06-01 (Cycle 42: RepoKeeper — Stale Tracked Artifacts Cleanup)  
 **Maintainer**: RepoKeeper

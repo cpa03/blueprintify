@@ -120,6 +120,9 @@ temp/
 *.sqlite3
 *.db
 
+# Generated patch files (CI fixes, accumulated patches)
+*.patch
+
 # Generated audit reports
 audit-reports/
 lighthouse-report.json
