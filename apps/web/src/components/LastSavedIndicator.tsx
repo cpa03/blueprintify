@@ -12,7 +12,7 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SPRING_CONFIG } from "../config/constants";
+import { SPRING_CONFIG, ANIMATION } from "../config/constants";
 
 /**
  * Props for the LastSavedIndicator component.
@@ -56,7 +56,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -5 }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
+          transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
           className={`flex items-center gap-2 text-xs ${
             hasChanges ? "text-amber-400" : "text-dark-400"
           }`}
@@ -109,14 +109,14 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                   animate={{ pathLength: 1, opacity: 1 }}
                   transition={{
                     pathLength: { type: "spring", ...SPRING_CONFIG.DEFAULT, delay: 0.05 },
-                    opacity: { duration: 0.1, delay: 0.05 },
+                    opacity: { duration: ANIMATION.QUICK_FADE, delay: 0.05 },
                   }}
                 />
               </motion.svg>
               <motion.span
                 initial={{ opacity: 0, x: -4 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.2, delay: 0.1, ease: "easeOut" }}
+                transition={{ duration: ANIMATION.NORMAL, delay: 0.1, ease: "easeOut" }}
               >
                 {text}
               </motion.span>

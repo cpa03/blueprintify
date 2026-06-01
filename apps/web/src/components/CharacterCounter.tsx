@@ -49,7 +49,7 @@ function CharacterCounterComponent({
         transition={
           shouldPulse
             ? {
-                duration: 0.6,
+                duration: ANIMATION.PULSE,
                 repeat: Infinity,
                 repeatType: "loop",
                 ease: "easeInOut",

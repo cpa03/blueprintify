@@ -250,7 +250,7 @@ export const StepInfo = memo(function StepInfo({
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
                   className="text-xs text-accent-pink mt-1"
                 >
                   {VALIDATION_MESSAGES.APPROACHING_CHARACTER_LIMIT}
@@ -330,7 +330,7 @@ export const StepInfo = memo(function StepInfo({
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
                   className="text-xs text-yellow-500 mt-1"
                 >
                   {VALIDATION_MESSAGES.CHARACTERS_NEEDED(
@@ -347,7 +347,7 @@ export const StepInfo = memo(function StepInfo({
                 initial={{ opacity: 0, y: -4, x: -3 }}
                 animate={{ opacity: 1, y: 0, x: 0 }}
                 exit={{ opacity: 0, y: -4, x: -3 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
+                transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
                 className="text-xs text-accent-pink mt-1"
               >
                 {VALIDATION_MESSAGES.DESCRIPTION_MIN_LENGTH(FORM_LIMITS.DESCRIPTION.MIN)}

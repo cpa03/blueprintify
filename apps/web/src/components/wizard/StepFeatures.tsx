@@ -234,13 +234,13 @@ export const StepFeatures = memo(function StepFeatures({
                         opacity: 1,
                         scale: isJustAdded ? [1, 1.08, 1] : 1,
                         transition: isJustAdded
-                          ? { duration: 0.4, ease: "easeOut" }
+                          ? { duration: ANIMATION.MEDIUM_SLOW, ease: "easeOut" }
                           : { type: "spring", ...SPRING_CONFIG.DEFAULT },
                       }}
                       exit={{
                         opacity: 0,
                         scale: 0.8,
-                        transition: { duration: 0.2, ease: "easeOut" },
+                        transition: { duration: ANIMATION.NORMAL, ease: "easeOut" },
                       }}
                       className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors duration-300 ${
                         isJustAdded
@@ -310,7 +310,7 @@ export const StepFeatures = memo(function StepFeatures({
                       isJustAdded
                         ? {
                             scale: [1, 1.12, 1],
-                            transition: { duration: 0.35, ease: "easeOut" },
+                            transition: { duration: ANIMATION.SEMI_SLOW, ease: "easeOut" },
                           }
                         : {}
                     }
@@ -321,7 +321,7 @@ export const StepFeatures = memo(function StepFeatures({
                           initial={{ scale: 0, opacity: 0.8 }}
                           animate={{ scale: 2.5, opacity: 0 }}
                           exit={{ opacity: 0 }}
-                          transition={{ duration: 0.5, ease: "easeOut" }}
+                          transition={{ duration: ANIMATION.SLOW, ease: "easeOut" }}
                           className="absolute inset-0 rounded-full bg-accent-emerald/30 pointer-events-none"
                           style={{ transformOrigin: "center" }}
                         />
@@ -333,7 +333,7 @@ export const StepFeatures = memo(function StepFeatures({
                           initial={{ scale: 0.8, opacity: 1 }}
                           animate={{ scale: 1.5, opacity: 0 }}
                           exit={{ opacity: 0 }}
-                          transition={{ duration: 0.4, ease: "easeOut" }}
+                          transition={{ duration: ANIMATION.MEDIUM_SLOW, ease: "easeOut" }}
                           className="absolute inset-0 rounded-full border-2 border-accent-emerald pointer-events-none"
                         />
                       )}

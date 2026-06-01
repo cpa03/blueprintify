@@ -13,7 +13,7 @@
 
 import { useState, useCallback, useRef, ReactNode, useId, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { TOOLTIP_CONFIG } from "../config/constants";
+import { TOOLTIP_CONFIG, ANIMATION } from "../config/constants";
 
 /**
  * Props for the Tooltip component.
@@ -127,7 +127,7 @@ const TooltipComponent = ({
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.15, ease: "easeOut" }}
+            transition={{ duration: ANIMATION.FAST, ease: "easeOut" }}
             className={`absolute ${positionClasses[position]} z-50 pointer-events-none`}
           >
             <div className="glass-card px-3 py-2 text-sm whitespace-nowrap shadow-xl">

@@ -32,7 +32,7 @@ import type { EditorTab } from "@blueprint/shared";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { Icon } from "../Icon";
 import { LastSavedIndicator } from "../LastSavedIndicator";
-import { SPRING_CONFIG, EDITOR_LABELS } from "../../config/constants";
+import { SPRING_CONFIG, EDITOR_LABELS, ANIMATION } from "../../config/constants";
 import { EDITOR_ANIMATION } from "../../config/theme";
 import clsx from "clsx";
 
@@ -130,7 +130,7 @@ const ContentStats = React.memo(function ContentStats({ content }: { content: st
               className="tabular-nums text-primary-400"
               initial={{ opacity: 0.6, y: -3 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.1, ease: "easeOut" }}
+              transition={{ duration: ANIMATION.QUICK_FADE, ease: "easeOut" }}
             >
               {charCount.toLocaleString()}
             </motion.span>
@@ -143,7 +143,7 @@ const ContentStats = React.memo(function ContentStats({ content }: { content: st
               className="tabular-nums text-secondary-400"
               initial={{ opacity: 0.6, y: -3 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.1, ease: "easeOut" }}
+              transition={{ duration: ANIMATION.QUICK_FADE, ease: "easeOut" }}
             >
               {wordCount.toLocaleString()}
             </motion.span>
@@ -156,7 +156,7 @@ const ContentStats = React.memo(function ContentStats({ content }: { content: st
               className="tabular-nums text-accent-cyan"
               initial={{ opacity: 0.6, y: -3 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.1, ease: "easeOut" }}
+              transition={{ duration: ANIMATION.QUICK_FADE, ease: "easeOut" }}
             >
               {readingTimeDisplay}
             </motion.span>

@@ -58,6 +58,8 @@ export const ANIMATION = {
   SUBTLE_MOVE: 0.3,
   /** Duration for tab switch/view change */
   TAB_SWITCH: 0.3,
+  /** Duration for gentle pulse animations */
+  PULSE: 0.6,
 } as const;
 
 /** Animation durations (in milliseconds) */
