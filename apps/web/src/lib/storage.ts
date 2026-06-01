@@ -8,8 +8,36 @@
  * - Health monitoring and metrics
  */
 
-import { z } from "zod";
 import { STORAGE_KEYS, STORAGE_CONFIG, STORAGE_ERROR_MESSAGES } from "../config/constants";
+
+// Lazy Zod — kept out of initial bundle; only needed for schema validation on storage read.
+import type { z } from "zod";
+
+let _zod: { z: typeof z } | null = null;
+let _zodPromise: Promise<void> | null = null;
+function _initZod(): Promise<void> {
+  if (!_zodPromise) {
+    _zodPromise = import("zod").then((mod) => {
+      _zod = mod;
+    });
+  }
+  return _zodPromise;
+}
+void _initZod();
+
+/**
+ * Ensure Zod has loaded. Resolves immediately if already loaded.
+ * Useful in tests and SSR contexts where timing guarantees are needed.
+ */
+export function ensureZodLoaded(): Promise<void> {
+  return _initZod();
+}
+
+function _getZodOrThrow(): typeof z {
+  if (!_zod) throw new Error("Zod not yet loaded");
+  return _zod.z;
+}
+
 import { BACKUP_KEY_PREFIX, TEST_KEYS } from "../config/keys";
 import { STORAGE_CONFIG as SHARED_STORAGE_CONFIG, BYTE_CONVERSION } from "@blueprint/shared";
 
@@ -84,14 +112,26 @@ export interface StorageMetrics {
 // Schema Versioning and Migration
 // ============================================================================
 
-export const StorageMetadataSchema = z.object({
-  version: z.number(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
-  checksum: z.string(),
-});
+export interface StorageMetadata {
+  version: number;
+  createdAt: string;
+  updatedAt: string;
+  checksum: string;
+}
 
-export type StorageMetadata = z.infer<typeof StorageMetadataSchema>;
+let _metadataSchema: ReturnType<(typeof import("zod"))["z"]["object"]> | null = null;
+function getMetadataSchema() {
+  if (!_metadataSchema) {
+    const z = _getZodOrThrow();
+    _metadataSchema = z.object({
+      version: z.number(),
+      createdAt: z.string().datetime(),
+      updatedAt: z.string().datetime(),
+      checksum: z.string(),
+    });
+  }
+  return _metadataSchema;
+}
 
 export interface SchemaMigration<T = unknown> {
   fromVersion: number;
@@ -468,6 +508,9 @@ export class StorageService<T = unknown> {
   // ========================================================================
 
   private async validateAndMigrate(parsed: unknown): Promise<T> {
+    // Ensure Zod is loaded before attempting metadata schema validation
+    await _initZod();
+
     if (!parsed || typeof parsed !== "object") {
       throw new Error(
         `Invalid storage data structure for key "${this.config.key}": expected an object, got ${parsed === null ? "null" : typeof parsed}. The storage data may be corrupted. Try clearing localStorage and refreshing.`
@@ -478,14 +521,15 @@ export class StorageService<T = unknown> {
 
     // Check if it has the new format with metadata
     if ("data" in obj && "metadata" in obj) {
-      const metadataResult = StorageMetadataSchema.safeParse(obj.metadata);
+      const schema = getMetadataSchema();
+      const metadataResult = schema.safeParse(obj.metadata);
       if (!metadataResult.success) {
         throw new Error(
-          `Invalid metadata structure for key "${this.config.key}": ${metadataResult.error.issues.map((e) => e.message).join(", ")}. The storage metadata may be corrupted.`
+          `Invalid metadata structure for key "${this.config.key}": ${metadataResult.error.issues.map((e: { message: string }) => e.message).join(", ")}. The storage metadata may be corrupted.`
         );
       }
 
-      const metadata = metadataResult.data;
+      const metadata = metadataResult.data as unknown as StorageMetadata;
 
       // Check if migration is needed
       if (metadata.version < this.config.currentVersion) {

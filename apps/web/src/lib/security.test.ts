@@ -12,6 +12,7 @@ import {
   checkStorageQuota,
   validateJSONSecurity,
   ensureDOMPurifyLoaded,
+  ensureZodLoaded,
 } from "../lib/security";
 
 describe("Security Utilities", () => {
@@ -70,6 +71,11 @@ describe("Security Utilities", () => {
   });
 
   describe("validateContent", () => {
+    // Zod is lazy-loaded for perf - ensure it's resolved before testing
+    beforeAll(async () => {
+      await ensureZodLoaded();
+    });
+
     it("should validate safe content", () => {
       const safeContent = {
         blueprintContent: "# Safe blueprint",
@@ -131,6 +137,11 @@ describe("Security Utilities", () => {
   });
 
   describe("validateAndSanitizeFileContent", () => {
+    // Zod is lazy-loaded for perf - ensure it's resolved before testing
+    beforeAll(async () => {
+      await ensureZodLoaded();
+    });
+
     it("should validate and sanitize safe file content", async () => {
       const mockContent = "# Safe content";
       const mockFile = new File([mockContent], "test.md", {
