@@ -22,7 +22,7 @@ import {
   NETWORK_ERROR_CODES as SHARED_NETWORK_ERROR_CODES,
   CORS_DEFAULTS as SHARED_CORS_DEFAULTS,
 } from "@blueprint/shared";
-import type { EnvConfig } from "./env";
+import type { EnvConfig } from "./config-types";
 import {
   ARCHITECT_SYSTEM_TEMPLATE,
   TASK_SPLITTER_SYSTEM_TEMPLATE,
