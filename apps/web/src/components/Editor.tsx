@@ -38,6 +38,7 @@ import { ANIMATION_TIMING } from "../config/theme";
 import { isDev } from "../config/env";
 import { useLastSaved } from "../hooks/useLastSaved";
 import clsx from "clsx";
+import "../styles/markdown.css";
 
 /**
  * Main editor component providing split-pane editing with live preview.
