@@ -11,7 +11,22 @@ import {
   SSE_HEADERS,
   HTTP_HEADERS,
   ID_GENERATION_CONFIG,
+  ID_CHARS,
   TIME_UNITS,
+  HTTP_STATUS,
+  ROUTE_PATHS,
+  DEFAULT_URLS,
+  SHARED_DEFAULTS,
+  AI_DEFAULTS,
+  DEV_DEFAULTS,
+  RATE_LIMIT_DEFAULTS,
+  CIRCUIT_BREAKER_DEFAULTS,
+  MAX_INPUT_LENGTH,
+  PLAYWRIGHT_DEFAULTS,
+  BYTE_CONVERSION,
+  NETWORK_ERROR_CODES,
+  CORS_DEFAULTS,
+  HTTP_METHODS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -260,5 +275,353 @@ describe("EXPORT_LIMITS", () => {
     expect(EXPORT_LIMITS.MAX_IMPORT_DATA_LENGTH).toBeGreaterThan(
       EXPORT_LIMITS.MAX_BLUEPRINT_LENGTH
     );
+  });
+
+  it("should have tasks limit same as blueprint limit", () => {
+    expect(EXPORT_LIMITS.MAX_TASKS_LENGTH).toBe(EXPORT_LIMITS.MAX_BLUEPRINT_LENGTH);
+  });
+});
+
+// ============================================================================
+// Config constants added in Flexy Iterations 4-9
+// ============================================================================
+
+describe("DEFAULT_URLS", () => {
+  it("should have a project homepage URL", () => {
+    expect(DEFAULT_URLS.PROJECT_HOMEPAGE).toBeTruthy();
+    expect(DEFAULT_URLS.PROJECT_HOMEPAGE).toMatch(/^https?:\/\//);
+  });
+
+  it("should have a GitHub URL", () => {
+    expect(DEFAULT_URLS.GITHUB).toBeTruthy();
+    expect(DEFAULT_URLS.GITHUB).toMatch(/^https?:\/\//);
+  });
+});
+
+describe("SHARED_DEFAULTS", () => {
+  it("should have an app name", () => {
+    expect(SHARED_DEFAULTS.APP_NAME).toBeTruthy();
+    expect(typeof SHARED_DEFAULTS.APP_NAME).toBe("string");
+  });
+
+  it("should have a default project name", () => {
+    expect(SHARED_DEFAULTS.DEFAULT_PROJECT_NAME).toBeTruthy();
+    expect(typeof SHARED_DEFAULTS.DEFAULT_PROJECT_NAME).toBe("string");
+  });
+
+  it("should have positive storage quota in MB", () => {
+    expect(SHARED_DEFAULTS.STORAGE_QUOTA_MB).toBeGreaterThan(0);
+    expect(SHARED_DEFAULTS.STORAGE_QUOTA_MB).toBeLessThanOrEqual(100);
+  });
+
+  it("should have an API version", () => {
+    expect(SHARED_DEFAULTS.API_VERSION).toBeTruthy();
+    expect(typeof SHARED_DEFAULTS.API_VERSION).toBe("string");
+  });
+
+  it("should have positive CORS max age", () => {
+    expect(SHARED_DEFAULTS.CORS_MAX_AGE).toBeGreaterThan(0);
+  });
+});
+
+describe("AI_DEFAULTS", () => {
+  it("should have a base URL", () => {
+    expect(AI_DEFAULTS.BASE_URL).toBeTruthy();
+    expect(AI_DEFAULTS.BASE_URL).toMatch(/^https?:\/\//);
+  });
+
+  it("should have a model name", () => {
+    expect(AI_DEFAULTS.MODEL).toBeTruthy();
+    expect(typeof AI_DEFAULTS.MODEL).toBe("string");
+  });
+
+  it("should have a positive timeout", () => {
+    expect(AI_DEFAULTS.TIMEOUT_MS).toBeGreaterThan(0);
+    expect(AI_DEFAULTS.TIMEOUT_MS).toBeLessThanOrEqual(300000);
+  });
+
+  it("should have positive max tokens", () => {
+    expect(AI_DEFAULTS.MAX_TOKENS).toBeGreaterThan(0);
+    expect(AI_DEFAULTS.MAX_TOKENS).toBeLessThanOrEqual(100000);
+  });
+
+  it("should have a valid temperature between 0 and 1", () => {
+    expect(AI_DEFAULTS.TEMPERATURE).toBeGreaterThanOrEqual(0);
+    expect(AI_DEFAULTS.TEMPERATURE).toBeLessThanOrEqual(1);
+  });
+});
+
+describe("DEV_DEFAULTS", () => {
+  it("should have positive web port", () => {
+    expect(DEV_DEFAULTS.WEB_PORT).toBeGreaterThan(0);
+    expect(DEV_DEFAULTS.WEB_PORT).toBeLessThan(65536);
+  });
+
+  it("should have positive API port", () => {
+    expect(DEV_DEFAULTS.API_PORT).toBeGreaterThan(0);
+    expect(DEV_DEFAULTS.API_PORT).toBeLessThan(65536);
+  });
+
+  it("should have API proxy target as URL", () => {
+    expect(DEV_DEFAULTS.API_PROXY_TARGET).toMatch(/^https?:\/\/localhost:\d+/);
+  });
+
+  it("should have Playwright test URL as URL", () => {
+    expect(DEV_DEFAULTS.PLAYWRIGHT_TEST_URL).toMatch(/^https?:\/\/localhost:\d+/);
+  });
+});
+
+describe("RATE_LIMIT_DEFAULTS", () => {
+  it("should have positive window MS", () => {
+    expect(RATE_LIMIT_DEFAULTS.WINDOW_MS).toBeGreaterThan(0);
+  });
+
+  it("should have window MS at least 1 second", () => {
+    expect(RATE_LIMIT_DEFAULTS.WINDOW_MS).toBeGreaterThanOrEqual(1000);
+  });
+
+  it("should have strict max less than standard", () => {
+    expect(RATE_LIMIT_DEFAULTS.STRICT_MAX).toBeLessThan(RATE_LIMIT_DEFAULTS.STANDARD_MAX);
+  });
+
+  it("should have lenient max greater than standard", () => {
+    expect(RATE_LIMIT_DEFAULTS.LENIENT_MAX).toBeGreaterThan(RATE_LIMIT_DEFAULTS.STANDARD_MAX);
+  });
+
+  it("should have all max limits positive", () => {
+    expect(RATE_LIMIT_DEFAULTS.STRICT_MAX).toBeGreaterThan(0);
+    expect(RATE_LIMIT_DEFAULTS.STANDARD_MAX).toBeGreaterThan(0);
+    expect(RATE_LIMIT_DEFAULTS.LENIENT_MAX).toBeGreaterThan(0);
+  });
+});
+
+describe("CIRCUIT_BREAKER_DEFAULTS", () => {
+  it("should have positive failure threshold", () => {
+    expect(CIRCUIT_BREAKER_DEFAULTS.FAILURE_THRESHOLD).toBeGreaterThan(0);
+    expect(CIRCUIT_BREAKER_DEFAULTS.FAILURE_THRESHOLD).toBeLessThanOrEqual(100);
+  });
+
+  it("should have positive reset timeout", () => {
+    expect(CIRCUIT_BREAKER_DEFAULTS.RESET_TIMEOUT_MS).toBeGreaterThan(0);
+  });
+
+  it("should have positive half-open max calls", () => {
+    expect(CIRCUIT_BREAKER_DEFAULTS.HALF_OPEN_MAX_CALLS).toBeGreaterThan(0);
+  });
+
+  it("should have positive cold start window", () => {
+    expect(CIRCUIT_BREAKER_DEFAULTS.COLD_START_WINDOW_MS).toBeGreaterThan(0);
+  });
+
+  it("should have half-open max calls less than failure threshold", () => {
+    expect(CIRCUIT_BREAKER_DEFAULTS.HALF_OPEN_MAX_CALLS).toBeLessThan(
+      CIRCUIT_BREAKER_DEFAULTS.FAILURE_THRESHOLD
+    );
+  });
+});
+
+describe("MAX_INPUT_LENGTH", () => {
+  it("should be a positive number", () => {
+    expect(MAX_INPUT_LENGTH).toBeGreaterThan(0);
+    expect(MAX_INPUT_LENGTH).toBeLessThanOrEqual(100000);
+  });
+});
+
+describe("BYTE_CONVERSION", () => {
+  it("should have KB as 1024", () => {
+    expect(BYTE_CONVERSION.KB).toBe(1024);
+  });
+
+  it("should have MB as 1048576", () => {
+    expect(BYTE_CONVERSION.MB).toBe(1024 * 1024);
+  });
+
+  it("should have GB as 1073741824", () => {
+    expect(BYTE_CONVERSION.GB).toBe(1024 * 1024 * 1024);
+  });
+
+  it("should have consistent byte conversions (MB = KB * KB)", () => {
+    expect(BYTE_CONVERSION.MB).toBe(BYTE_CONVERSION.KB * BYTE_CONVERSION.KB);
+  });
+
+  it("should have consistent byte conversions (GB = MB * KB)", () => {
+    expect(BYTE_CONVERSION.GB).toBe(BYTE_CONVERSION.MB * BYTE_CONVERSION.KB);
+  });
+});
+
+describe("PLAYWRIGHT_DEFAULTS", () => {
+  it("should have positive web server timeout", () => {
+    expect(PLAYWRIGHT_DEFAULTS.WEB_SERVER_TIMEOUT_MS).toBeGreaterThan(0);
+  });
+
+  it("should have positive expect timeout", () => {
+    expect(PLAYWRIGHT_DEFAULTS.EXPECT_TIMEOUT_MS).toBeGreaterThan(0);
+  });
+
+  it("should have valid screenshot max diff pixels", () => {
+    expect(PLAYWRIGHT_DEFAULTS.SCREENSHOT_MAX_DIFF_PIXELS).toBeGreaterThan(0);
+  });
+
+  it("should have valid snapshot threshold between 0 and 1", () => {
+    expect(PLAYWRIGHT_DEFAULTS.SNAPSHOT_THRESHOLD).toBeGreaterThan(0);
+    expect(PLAYWRIGHT_DEFAULTS.SNAPSHOT_THRESHOLD).toBeLessThanOrEqual(1);
+  });
+
+  it("should have expect timeout less than web server timeout", () => {
+    expect(PLAYWRIGHT_DEFAULTS.EXPECT_TIMEOUT_MS).toBeLessThan(
+      PLAYWRIGHT_DEFAULTS.WEB_SERVER_TIMEOUT_MS
+    );
+  });
+});
+
+describe("NETWORK_ERROR_CODES", () => {
+  it("should have at least one error code", () => {
+    expect(NETWORK_ERROR_CODES.length).toBeGreaterThan(0);
+  });
+
+  it("should only contain string values", () => {
+    NETWORK_ERROR_CODES.forEach((code) => {
+      expect(typeof code).toBe("string");
+    });
+  });
+
+  it("should have unique error codes", () => {
+    const uniqueCodes = new Set(NETWORK_ERROR_CODES);
+    expect(uniqueCodes.size).toBe(NETWORK_ERROR_CODES.length);
+  });
+
+  it("should contain common network error codes", () => {
+    expect(NETWORK_ERROR_CODES).toContain("ECONNRESET");
+    expect(NETWORK_ERROR_CODES).toContain("ETIMEDOUT");
+  });
+});
+
+describe("CORS_DEFAULTS", () => {
+  it("should have at least one allowed method", () => {
+    expect(CORS_DEFAULTS.ALLOW_METHODS.length).toBeGreaterThan(0);
+  });
+
+  it("should have unique methods", () => {
+    const uniqueMethods = new Set(CORS_DEFAULTS.ALLOW_METHODS);
+    expect(uniqueMethods.size).toBe(CORS_DEFAULTS.ALLOW_METHODS.length);
+  });
+
+  it("should have at least one allowed header", () => {
+    expect(CORS_DEFAULTS.ALLOW_HEADERS.length).toBeGreaterThan(0);
+  });
+
+  it("should include GET and POST in allowed methods", () => {
+    expect(CORS_DEFAULTS.ALLOW_METHODS).toContain("GET");
+    expect(CORS_DEFAULTS.ALLOW_METHODS).toContain("POST");
+  });
+});
+
+describe("HTTP_METHODS", () => {
+  it("should have GET, POST, PUT, DELETE, PATCH defined", () => {
+    expect(HTTP_METHODS.GET).toBe("GET");
+    expect(HTTP_METHODS.POST).toBe("POST");
+    expect(HTTP_METHODS.PUT).toBe("PUT");
+    expect(HTTP_METHODS.DELETE).toBe("DELETE");
+    expect(HTTP_METHODS.PATCH).toBe("PATCH");
+  });
+
+  it("should have unique method values", () => {
+    const methods = Object.values(HTTP_METHODS);
+    const uniqueMethods = new Set(methods);
+    expect(uniqueMethods.size).toBe(methods.length);
+  });
+});
+
+describe("ID_CHARS", () => {
+  it("should have FULL charset", () => {
+    expect(ID_CHARS.FULL).toBeTruthy();
+    expect(ID_CHARS.FULL.length).toBeGreaterThan(0);
+  });
+
+  it("should have LOWERCASE charset", () => {
+    expect(ID_CHARS.LOWERCASE).toBeTruthy();
+    expect(ID_CHARS.LOWERCASE.length).toBeGreaterThan(0);
+  });
+
+  it("should have LOWERCASE as subset of FULL", () => {
+    for (const char of ID_CHARS.LOWERCASE) {
+      expect(ID_CHARS.FULL).toContain(char);
+    }
+  });
+
+  it("should have FULL charset with mixed case and digits", () => {
+    expect(ID_CHARS.FULL).toMatch(/[A-Z]/);
+    expect(ID_CHARS.FULL).toMatch(/[a-z]/);
+    expect(ID_CHARS.FULL).toMatch(/[0-9]/);
+  });
+});
+
+describe("ROUTE_PATHS", () => {
+  it("should have root path as '/'", () => {
+    expect(ROUTE_PATHS.ROOT).toBe("/");
+  });
+
+  it("should have all paths starting with '/'", () => {
+    const paths = Object.values(ROUTE_PATHS);
+    paths.forEach((path) => {
+      expect(path).toMatch(/^\//);
+    });
+  });
+
+  it("should have unique path values", () => {
+    const paths = Object.values(ROUTE_PATHS);
+    const uniquePaths = new Set(paths);
+    expect(uniquePaths.size).toBe(paths.length);
+  });
+
+  it("should have known routes defined", () => {
+    expect(ROUTE_PATHS.GENERATE).toBe("/generate");
+    expect(ROUTE_PATHS.TASKS).toBe("/tasks");
+    expect(ROUTE_PATHS.REFINE).toBe("/refine");
+    expect(ROUTE_PATHS.EXPORT).toBe("/export");
+    expect(ROUTE_PATHS.IMPORT).toBe("/import");
+    expect(ROUTE_PATHS.STORAGE).toBe("/storage");
+    expect(ROUTE_PATHS.SHARE).toBe("/share");
+  });
+});
+
+describe("HTTP_STATUS", () => {
+  it("should have standard HTTP status codes", () => {
+    expect(HTTP_STATUS.OK).toBe(200);
+    expect(HTTP_STATUS.CREATED).toBe(201);
+    expect(HTTP_STATUS.NO_CONTENT).toBe(204);
+    expect(HTTP_STATUS.BAD_REQUEST).toBe(400);
+    expect(HTTP_STATUS.UNAUTHORIZED).toBe(401);
+    expect(HTTP_STATUS.FORBIDDEN).toBe(403);
+    expect(HTTP_STATUS.NOT_FOUND).toBe(404);
+    expect(HTTP_STATUS.CONFLICT).toBe(409);
+    expect(HTTP_STATUS.PAYLOAD_TOO_LARGE).toBe(413);
+    expect(HTTP_STATUS.UNPROCESSABLE_ENTITY).toBe(422);
+    expect(HTTP_STATUS.TOO_MANY_REQUESTS).toBe(429);
+    expect(HTTP_STATUS.INTERNAL_ERROR).toBe(500);
+    expect(HTTP_STATUS.BAD_GATEWAY).toBe(502);
+    expect(HTTP_STATUS.SERVICE_UNAVAILABLE).toBe(503);
+    expect(HTTP_STATUS.GATEWAY_TIMEOUT).toBe(504);
+  });
+
+  it("should have unique status code values", () => {
+    const codes = Object.values(HTTP_STATUS);
+    const uniqueCodes = new Set(codes);
+    expect(uniqueCodes.size).toBe(codes.length);
+  });
+
+  it("should have 2xx success codes", () => {
+    expect(HTTP_STATUS.OK).toBeGreaterThanOrEqual(200);
+    expect(HTTP_STATUS.CREATED).toBeGreaterThanOrEqual(200);
+    expect(HTTP_STATUS.NO_CONTENT).toBeGreaterThanOrEqual(200);
+  });
+
+  it("should have 4xx client error codes", () => {
+    expect(HTTP_STATUS.BAD_REQUEST).toBeGreaterThanOrEqual(400);
+    expect(HTTP_STATUS.BAD_REQUEST).toBeLessThan(500);
+  });
+
+  it("should have 5xx server error codes", () => {
+    expect(HTTP_STATUS.INTERNAL_ERROR).toBeGreaterThanOrEqual(500);
   });
 });
