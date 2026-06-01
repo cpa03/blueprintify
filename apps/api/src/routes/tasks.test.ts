@@ -5,6 +5,7 @@ import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
+import { HTTP_HEADERS } from "@blueprint/shared";
 
 beforeEach(() => {
   const mockContainer = createMockContainer();
@@ -25,7 +26,7 @@ describe("POST /tasks", () => {
       "/",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: "Test Project",
           // blueprint is missing
@@ -45,7 +46,7 @@ describe("POST /tasks", () => {
       "/",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: "Test Project",
           blueprint: "# Test Blueprint\n\nThis is a test blueprint content.",
