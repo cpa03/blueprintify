@@ -12,6 +12,7 @@ const TemplateGrid = lazy(() =>
 );
 const KeyboardShortcutsModal = lazy(() => import("./components/KeyboardShortcutsModal"));
 import { SkipLink } from "./components/SkipLink";
+import { OfflineBanner } from "./components/OfflineBanner";
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 import { useWizardStore, useEditorStore, useToast } from "./store";
 import { useOnlineStatus } from "./hooks";
@@ -156,6 +157,9 @@ function App(): JSX.Element {
     <div className={LAYOUT.PAGE_WRAPPER}>
       <SkipLink />
       <Header onShowShortcuts={handleShowShortcuts} />
+
+      {/* Offline banner - persistent connectivity status */}
+      <OfflineBanner />
 
       {/* Main Content */}
       <main id="main-content" className={LAYOUT.MAIN_CONTENT} tabIndex={-1}>
