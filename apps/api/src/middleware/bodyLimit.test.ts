@@ -12,6 +12,7 @@ import { Hono } from "hono";
 import { bodyLimit, bodyLimitConfigs } from "./bodyLimit";
 import { ERROR_CODES, HTTP_STATUS, BODY_SIZE_MAX } from "../config/constants";
 import type { ErrorResponse } from "../errors";
+import { HTTP_METHODS } from "@blueprint/shared";
 
 describe("bodyLimit middleware", () => {
   describe("bodyLimit", () => {
@@ -24,7 +25,7 @@ describe("bodyLimit middleware", () => {
       });
 
       const res = await app.request("/", {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "content-length": "10" },
         body: "small body",
       });
@@ -40,7 +41,7 @@ describe("bodyLimit middleware", () => {
       app.post("/", async (c) => c.json({ success: true }));
 
       const res = await app.request("/", {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "content-length": "200" },
         body: "x".repeat(200),
       });
@@ -64,7 +65,7 @@ describe("bodyLimit middleware", () => {
 
       // Default is ~1MB, 500KB should be fine
       const res = await app.request("/", {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "content-length": String(500 * 1024) },
         body: "x".repeat(500 * 1024),
       });
@@ -79,7 +80,7 @@ describe("bodyLimit middleware", () => {
 
       // Would exceed limit if not excluded
       const res = await app.request("/upload", {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "content-length": "5000" },
         body: "x".repeat(5000),
       });
@@ -93,7 +94,7 @@ describe("bodyLimit middleware", () => {
       app.post("/", async (c) => c.json({ success: true }));
 
       const res = await app.request("/", {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: "small",
         // No content-length header
       });
@@ -107,7 +108,7 @@ describe("bodyLimit middleware", () => {
       app.post("/", async (c) => c.json({ success: true }));
 
       const res = await app.request("/", {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "content-length": "not-a-number" },
         body: "small body",
       });
@@ -125,7 +126,7 @@ describe("bodyLimit middleware", () => {
       app.get("/", (c) => c.json({ success: true }));
 
       const res = await app.request("/", {
-        method: "GET",
+        method: HTTP_METHODS.GET,
         headers: { "content-length": "5" },
       });
 

@@ -10,7 +10,7 @@ import storageRoute from "../routes/storage";
 import tasksRoute from "../routes/tasks";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 import { SSE_HEADERS } from "../config/constants";
-import { ROUTE_PATHS } from "@blueprint/shared";
+import { ROUTE_PATHS, HTTP_METHODS, HTTP_HEADERS } from "@blueprint/shared";
 
 interface ApiResponse {
   success: boolean;
@@ -66,8 +66,8 @@ describe("Integration: End-to-End M2 Workflows", () => {
       const generateRes = await app.request(
         ROUTE_PATHS.GENERATE,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: HTTP_METHODS.POST,
+          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             projectName: "Test Project",
             description: "A comprehensive test project for integration testing",
@@ -83,8 +83,8 @@ describe("Integration: End-to-End M2 Workflows", () => {
       const exportRes = await app.request(
         ROUTE_PATHS.EXPORT,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: HTTP_METHODS.POST,
+          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             projectName: "Test Project",
             format: "markdown",
@@ -105,8 +105,8 @@ describe("Integration: End-to-End M2 Workflows", () => {
       const generateRes = await app.request(
         ROUTE_PATHS.GENERATE,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: HTTP_METHODS.POST,
+          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             projectName: "Test Project",
             description: "A comprehensive test project for integration testing",
@@ -121,8 +121,8 @@ describe("Integration: End-to-End M2 Workflows", () => {
       const refineRes = await app.request(
         ROUTE_PATHS.REFINE,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: HTTP_METHODS.POST,
+          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             content: "# Test Blueprint\n\n## Overview\nThis is a test blueprint.\n",
             instruction: "Add more details to the overview section",
@@ -136,8 +136,8 @@ describe("Integration: End-to-End M2 Workflows", () => {
       const exportRes = await app.request(
         ROUTE_PATHS.EXPORT,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: HTTP_METHODS.POST,
+          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             projectName: "Test Project",
             format: "zip",
@@ -171,8 +171,8 @@ describe("Integration: End-to-End M2 Workflows", () => {
       const importRes = await app.request(
         ROUTE_PATHS.IMPORT,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: HTTP_METHODS.POST,
+          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             data: JSON.stringify(projectData),
             format: "json",
@@ -189,8 +189,8 @@ describe("Integration: End-to-End M2 Workflows", () => {
       const exportRes = await app.request(
         ROUTE_PATHS.EXPORT,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: HTTP_METHODS.POST,
+          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             projectName: projectData.projectName,
             format: "json",
@@ -213,7 +213,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
       // Storage is client-side (localStorage), server only provides quota info
       const quotaRes = await app.request(
         `${ROUTE_PATHS.STORAGE}/quota`,
-        { method: "GET" },
+        { method: HTTP_METHODS.GET },
         MOCK_ENV
       );
 
@@ -225,8 +225,8 @@ describe("Integration: End-to-End M2 Workflows", () => {
       const clearRes = await app.request(
         `${ROUTE_PATHS.STORAGE}/clear`,
         {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
+          method: HTTP_METHODS.DELETE,
+          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({ confirm: true }),
         },
         MOCK_ENV
@@ -243,8 +243,8 @@ describe("Integration: End-to-End M2 Workflows", () => {
       const res = await app.request(
         ROUTE_PATHS.GENERATE,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: HTTP_METHODS.POST,
+          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             description: "Missing project name",
           }),
@@ -262,8 +262,8 @@ describe("Integration: End-to-End M2 Workflows", () => {
       const res = await app.request(
         ROUTE_PATHS.IMPORT,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: HTTP_METHODS.POST,
+          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             data: "invalid json structure",
             format: "json",
@@ -283,8 +283,8 @@ describe("Integration: End-to-End M2 Workflows", () => {
       const res = await app.request(
         ROUTE_PATHS.GENERATE,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: HTTP_METHODS.POST,
+          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             projectName: "Test",
             description: "Test description for validation",
@@ -303,7 +303,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
   describe("Workflow 5: Concurrent Operations", () => {
     it("should handle concurrent quota requests", async () => {
       const promises = Array.from({ length: 5 }, () =>
-        app.request(`${ROUTE_PATHS.STORAGE}/quota`, { method: "GET" }, MOCK_ENV)
+        app.request(`${ROUTE_PATHS.STORAGE}/quota`, { method: HTTP_METHODS.GET }, MOCK_ENV)
       );
 
       const results = await Promise.all(promises);
@@ -318,8 +318,8 @@ describe("Integration: End-to-End M2 Workflows", () => {
         app.request(
           ROUTE_PATHS.GENERATE,
           {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: HTTP_METHODS.POST,
+            headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
             body: JSON.stringify({
               projectName: "Concurrent Test",
               description: "Testing concurrent requests with validation",
@@ -341,9 +341,9 @@ describe("Integration: End-to-End M2 Workflows", () => {
   describe("Workflow 6: API Health and Consistency", () => {
     it("should maintain consistent responses across multiple quota checks", async () => {
       const results = await Promise.all([
-        app.request(`${ROUTE_PATHS.STORAGE}/quota`, { method: "GET" }, MOCK_ENV),
-        app.request(`${ROUTE_PATHS.STORAGE}/quota`, { method: "GET" }, MOCK_ENV),
-        app.request(`${ROUTE_PATHS.STORAGE}/quota`, { method: "GET" }, MOCK_ENV),
+        app.request(`${ROUTE_PATHS.STORAGE}/quota`, { method: HTTP_METHODS.GET }, MOCK_ENV),
+        app.request(`${ROUTE_PATHS.STORAGE}/quota`, { method: HTTP_METHODS.GET }, MOCK_ENV),
+        app.request(`${ROUTE_PATHS.STORAGE}/quota`, { method: HTTP_METHODS.GET }, MOCK_ENV),
       ]);
 
       results.forEach((res) => {
