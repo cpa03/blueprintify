@@ -13,36 +13,10 @@
  * @see https://owasp.org/www-community/xss-filter-evasion-cheatsheet
  */
 
+import { z } from "zod";
 import { SECURITY_LIMITS, BYTE_CONVERSION } from "@blueprint/shared";
 import { SECURITY_CONFIG } from "../config/security";
 import { SECURITY_ERROR_MESSAGES } from "../config/constants";
-
-// Lazy Zod - kept out of initial bundle; only needed for content/file validation on user action.
-
-let _zod: { z: (typeof import("zod"))["z"] } | null = null;
-let _zodPromise: Promise<void> | null = null;
-function _initZod(): Promise<void> {
-  if (!_zodPromise) {
-    _zodPromise = import("zod").then((mod) => {
-      _zod = mod;
-    });
-  }
-  return _zodPromise;
-}
-void _initZod();
-
-/**
- * Ensure Zod has loaded. Resolves immediately if already loaded.
- * Useful in tests and SSR contexts where timing guarantees are needed.
- */
-export function ensureZodLoaded(): Promise<void> {
-  return _initZod();
-}
-
-function _getZodOrThrow(): (typeof import("zod"))["z"] {
-  if (!_zod) throw new Error("Zod not yet loaded");
-  return _zod.z;
-}
 
 /**
  * Lazy DOMPurify - ~40KB kept out of main bundle; only used on user save/render.
@@ -84,10 +58,9 @@ function basicEscapeHtml(str: string): string {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#x27;");
 }
-let _contentSchema: ReturnType<(typeof import("zod"))["z"]["object"]> | null = null;
+let _contentSchema: ReturnType<typeof z.object> | null = null;
 function getContentSchema() {
   if (!_contentSchema) {
-    const z = _getZodOrThrow();
     _contentSchema = z.object({
       blueprintContent: z
         .string()
@@ -106,10 +79,9 @@ function getContentSchema() {
   return _contentSchema;
 }
 
-let _fileSchema: ReturnType<(typeof import("zod"))["z"]["object"]> | null = null;
+let _fileSchema: ReturnType<typeof z.object> | null = null;
 function getFileSchema() {
   if (!_fileSchema) {
-    const z = _getZodOrThrow();
     _fileSchema = z.object({
       name: z.string().min(1).max(255),
       size: z.number().max(SECURITY_CONFIG.MAX_FILE_SIZE),
