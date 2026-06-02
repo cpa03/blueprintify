@@ -169,11 +169,32 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | `apps/api/src/routes/tasks.test.ts`         | Replaced 2 hardcoded `"application/json"` with shared `HTTP_HEADERS.CONTENT_TYPE_JSON`                                                                                                                                                                                                                                                                   |
 | `apps/api/src/routes/share.test.ts`         | Replaced 5 hardcoded `"application/json"` with shared `HTTP_HEADERS.CONTENT_TYPE_JSON`                                                                                                                                                                                                                                                                   |
 
+### ✅ Flexy Iteration 10: HTTP_HEADER_NAMES, Eliminate Hardcoded Methods/Status/CType in Tests
+
+| File                                    | Change                                                                                                                       |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`         | Added `HTTP_HEADER_NAMES` (Content-Type, Cache-Control, Authorization, Connection, Accept, Content-Length, User-Agent, etc.) |
+| `packages/shared/src/config.ts`         | Added `SHARE_DEFAULTS` (ID_LENGTH, EXPIRATION_DAYS, TITLE_MAX_LENGTH, BLUEPRINT_MAX_LENGTH)                                  |
+| `packages/shared/src/config.ts`         | Added `BODY_SIZE_LIMITS` (DEFAULT_MB, STRICT_KB, LENIENT_MB)                                                                 |
+| `packages/shared/src/index.ts`          | Exported `HTTP_HEADER_NAMES`, `SHARE_DEFAULTS`, `BODY_SIZE_LIMITS`                                                           |
+| `apps/api/src/config/constants.ts`      | Replaced 12 hardcoded `"POST"/"GET"/"DELETE"` with `HTTP_METHODS` in `API_ENDPOINTS`                                         |
+| `apps/api/src/config/constants.ts`      | `SHARE_CONFIG`/`BODY_SIZE_LIMITS` ref shared config instead of magic numbers                                                 |
+| `apps/web/src/integration/factories.ts` | Replaced hardcoded `"Content-Type"`/`"Cache-Control"` header keys with `HTTP_HEADER_NAMES` computed properties               |
+| `apps/web/src/lib/api.ts`               | Replaced hardcoded `"Content-Type"` header key with `HTTP_HEADER_NAMES.CONTENT_TYPE`                                         |
+| `apps/api/src/**/*.test.ts` (10 files)  | Replaced ~88 hardcoded `"POST"/"GET"/"DELETE"` with `HTTP_METHODS.POST/GET/DELETE`                                           |
+| `apps/web/src/**/*.test.ts` (6 files)   | Replaced ~68 hardcoded `"POST"/"GET"/"DELETE"` with `HTTP_METHODS.POST/GET/DELETE`                                           |
+| `apps/api/src/utils/retry.test.ts`      | Replaced 12 hardcoded HTTP status codes with `HTTP_STATUS` constants                                                         |
+| `apps/web/src/**/*.test.ts` (5 files)   | Replaced 22 hardcoded HTTP status codes with `HTTP_STATUS` constants                                                         |
+| `apps/api/src/**/*.test.ts` (6 files)   | Replaced 42 hardcoded `"application/json"` with `HTTP_HEADERS.CONTENT_TYPE_JSON`                                             |
+| `apps/api/src/utils/stream.test.ts`     | Replaced `"no-cache"`/`"keep-alive"` with `SSE_HEADERS.CACHE_CONTROL`/`SSE_HEADERS.CONNECTION`                               |
+| `apps/web/src/lib/api.test.ts`          | Mock constants now reference hoisted shared variables instead of hardcoded strings                                           |
+
 ## Verification
 
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
-- ✅ `npm run test:all` — 1,044 tests passing (564 web + 299 api + 181 shared) across 65 files
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,063 tests passing (564 web + 318 api + 181 shared) across 66 files
 
 ## PRs
 
@@ -185,7 +206,8 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | #1454 | `feat/flexy-iteration-4`              | feat(flexy): eliminate duplicated TIME_UNITS and magic numbers, deduplicate animation config    |
 | #1509 | `feat/flexy-iteration-8`              | feat(flexy): add HTTP_METHODS shared constant and eliminate remaining hardcoded string literals |
 | TBD   | `feat/flexy-iteration-9-config-tests` | feat(flexy): add comprehensive shared config tests and eliminate hardcoded test strings         |
+| TBD   | `feat/flexy-iteration-10`             | feat(flexy): add HTTP_HEADER_NAMES, eliminate hardcoded methods/status/CType in tests           |
 
 ## Status
 
-**✅ COMPLETED - 9 iterations done**
+**✅ COMPLETED - 10 iterations done**

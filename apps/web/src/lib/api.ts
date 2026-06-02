@@ -25,6 +25,7 @@
  * ```
  */
 
+import { HTTP_HEADER_NAMES } from "@blueprint/shared";
 import type {
   BlueprintRequest,
   TaskGenerationRequest,
@@ -140,7 +141,7 @@ async function apiCallWithRetry(
     try {
       const response = await fetch(`${API_BASE}${endpoint}`, {
         method: API_CALL_CONFIG.METHOD,
-        headers: { "Content-Type": API_CALL_CONFIG.CONTENT_TYPE },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: API_CALL_CONFIG.CONTENT_TYPE },
         body: JSON.stringify(requestBody),
         signal: controller.signal,
       });
