@@ -89,9 +89,6 @@ export default defineConfig({
       "react-markdown",
       "remark-gfm",
     ],
-    esbuildOptions: {
-      target: "es2022",
-    },
   },
   server: {
     port: DEV_SERVER_PORT,
@@ -144,28 +141,7 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 600,
     cssCodeSplit: true,
-    minify: "terser",
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-        pure_funcs: ["console.log", "console.info", "console.debug"],
-        passes: 2,
-        dead_code: true,
-        unused: true,
-        hoist_funs: true,
-        hoist_vars: true,
-        if_return: true,
-        join_vars: true,
-        typeofs: true,
-      },
-      format: {
-        comments: false,
-      },
-      mangle: {
-        safari10: true,
-      },
-    },
+    minify: "esbuild",
     cssMinify: true,
     reportCompressedSize: true,
     emptyOutDir: true,

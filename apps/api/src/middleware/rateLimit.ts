@@ -20,11 +20,17 @@ interface RateLimitConfig {
 }
 
 /**
- * Check if we're running in test environment
+ * Check if we're running in test environment.
+ * Uses a safe check compatible with both Workers runtime and Vitest.
  * Vitest automatically sets NODE_ENV to 'test'
  */
 const isTestEnvironment = (): boolean => {
-  return process.env.NODE_ENV === "test";
+  const nodeProcess = (globalThis as Record<string, unknown>).process;
+  if (nodeProcess && typeof nodeProcess === "object") {
+    const env = (nodeProcess as Record<string, unknown>).env as Record<string, string | undefined>;
+    return env?.NODE_ENV === "test";
+  }
+  return false;
 };
 
 /**

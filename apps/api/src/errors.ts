@@ -138,8 +138,9 @@ export class APIError extends Error {
 
     // Maintains proper stack trace for where our error was thrown (V8 environments only)
     // Cloudflare Workers may not support captureStackTrace
-    if (typeof Error.captureStackTrace === "function") {
-      Error.captureStackTrace(this, this.constructor);
+    const captureStackTrace = (Error as unknown as Record<string, unknown>).captureStackTrace;
+    if (typeof captureStackTrace === "function") {
+      captureStackTrace(this, this.constructor);
     }
   }
 

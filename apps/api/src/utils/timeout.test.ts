@@ -83,7 +83,7 @@ describe("Timeout Utilities", () => {
 
     it("should clear timeout on successful completion", async () => {
       const operation = vi.fn().mockResolvedValue("done");
-      const clearTimeoutSpy = vi.spyOn(global, "clearTimeout");
+      const clearTimeoutSpy = vi.spyOn(globalThis, "clearTimeout");
 
       await withTimeout(operation, { timeoutMs: 5000 });
 
@@ -92,7 +92,7 @@ describe("Timeout Utilities", () => {
 
     it("should clear timeout on error", async () => {
       const operation = vi.fn().mockRejectedValue(new Error("fail"));
-      const clearTimeoutSpy = vi.spyOn(global, "clearTimeout");
+      const clearTimeoutSpy = vi.spyOn(globalThis, "clearTimeout");
 
       await withTimeout(operation, { timeoutMs: 5000 }).catch(() => {});
 
