@@ -2,19 +2,42 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Current Cycle (2026-06-02 — Security Audit: Dependabot PR Review)
+## Current Cycle (2026-06-02 — Cycle 44: Security Engineering Audit)
 
-### Findings
+### Security Audit: `concurrently` ^9.2.1 → ^10.0.1 (Dependabot PR)
 
-### Dependabot Security Audit — `@cloudflare/vitest-pool-workers` Incompatibility
+**Files audited**: `package.json`, `package-lock.json`
 
-**Branch**: `dependabot/npm_and_yarn/development-dependencies-ed9099b1c1`
+**Verdict: SAFE TO MERGE** — No vulnerabilities, secrets, or deprecated functions introduced.
 
-**Finding**: Dependabot bumped `@cloudflare/vitest-pool-workers` from `0.12.21` → `0.16.11`, which changed peer dependency requirements from `vitest@2.0.x - 3.2.x` to `vitest@^4.1.0`. The project is pinned to `vitest@^3.2.4`, causing `npm ls` to report `ELSPROBLEMS` and potentially breaking API tests at runtime.
+| Security Check       | Result                                           |
+| -------------------- | ------------------------------------------------ |
+| New vulnerabilities  | ✅ None — `concurrently@10.0.1` has 0 known CVEs |
+| Hardcoded secrets    | ✅ None found                                    |
+| Deprecated functions | ✅ None used                                     |
+| Breaking changes     | ✅ Compatible — only used in `"dev:all"` script  |
+| Lockfile integrity   | ✅ `concurrently@10.0.1` resolved correctly      |
 
-**Other checks**: ✅ No secrets, ✅ No deprecated functions, ✅ Registry integrity verified (all packages from `registry.npmjs.org` with valid SHA-512 integrity hashes)
+#### Pre-existing Critical Vulnerabilities (not introduced by this PR)
 
-**Fix**: Reverted `@cloudflare/vitest-pool-workers` to `0.12.21` in `apps/api/package.json` and regenerated `package-lock.json`.
+`npm audit` revealed **4 critical severity vulnerabilities** in the vitest ecosystem that were already present before this change:
+
+| Advisory            | Package                                 | Severity | CVSS | Issue                                                    |
+| ------------------- | --------------------------------------- | -------- | ---- | -------------------------------------------------------- |
+| GHSA-5xrq-8626-4rwp | vitest@3.2.4                            | Critical | 9.8  | Arbitrary file read/exec when Vitest UI server listening |
+| ↑ via               | @vitest/ui@3.2.4                        | Critical | 9.8  | Same advisory                                            |
+| ↑ via               | @vitest/coverage-v8@3.2.4               | Critical | 9.8  | Same advisory                                            |
+| ↑ via               | @cloudflare/vitest-pool-workers@0.12.21 | Critical | 9.8  | Same advisory                                            |
+
+- **Fix**: Upgrade vitest to 4.1.8+ (major version bump — requires separate migration PR)
+- **Mitigating factor**: Vitest UI is development-only; not exposed in production
+- **Dependabot branches already exist**: `dependabot/npm_and_yarn/vitest-4.1.8`, `dependabot/npm_and_yarn/vitest/coverage-v8-4.1.8`
+
+#### Detailed Analysis
+
+1. **`concurrently@10.0.1`** — No known CVEs, no deprecated APIs, no transitive dependency changes that introduce risk. The `dev:all` script usage (`concurrently "npm run dev:api" "npm run dev"`) is unaffected by any behavioral changes in 10.0.1.
+2. **Secrets scan**: Zero secrets, credentials, or sensitive data in the diff.
+3. **Deprecated functions**: Zero usage of deprecated Node.js, npm, or JavaScript APIs.
 
 ---
 
