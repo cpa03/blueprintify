@@ -73,6 +73,12 @@ export const StepInfo = memo(function StepInfo({
   const setConstraints = useWizardStore((s) => s.setConstraints);
   const nextStep = useWizardStore((s) => s.nextStep);
 
+  const modifierKey = useMemo(() => {
+    const isMac =
+      typeof navigator !== "undefined" && navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+    return isMac ? "\u2318" : "Ctrl";
+  }, []);
+
   useAutoSaveToast(
     [projectName, description, targetAudience, constraints],
     "Project info saved",
@@ -479,6 +485,12 @@ export const StepInfo = memo(function StepInfo({
               className={`btn-primary flex items-center gap-2 ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
             >
               {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
+              <kbd
+                className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                aria-hidden="true"
+              >
+                {modifierKey}+↵
+              </kbd>
               <svg
                 className="w-5 h-5"
                 fill="none"

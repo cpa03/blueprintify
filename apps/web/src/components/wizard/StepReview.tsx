@@ -22,7 +22,7 @@
  */
 
 import { motion } from "framer-motion";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { useWizardStore } from "../../store";
 import { useBlueprintStream } from "../../hooks/useBlueprintStream";
 import { ANIMATION, GENERATION_ESTIMATES } from "../../config/constants";
@@ -50,6 +50,12 @@ export const StepReview = memo(function StepReview({
   const handleEditInfo = useCallback(() => setStep("info"), [setStep]);
   const handleEditStack = useCallback(() => setStep("stack"), [setStep]);
   const handleEditFeatures = useCallback(() => setStep("features"), [setStep]);
+
+  const modifierKey = useMemo(() => {
+    const isMac =
+      typeof navigator !== "undefined" && navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+    return isMac ? "\u2318" : "Ctrl";
+  }, []);
 
   return (
     <motion.div {...pageTransition(direction)} className="space-y-6">
@@ -304,6 +310,12 @@ export const StepReview = memo(function StepReview({
                       />
                     </svg>
                     Generate Blueprint
+                    <kbd
+                      className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                      aria-hidden="true"
+                    >
+                      {modifierKey}+↵
+                    </kbd>
                   </>
                 )}
               </RippleButton>
