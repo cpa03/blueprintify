@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { ROUTE_PATHS } from "@blueprint/shared";
+import { HTTP_METHODS, ROUTE_PATHS } from "@blueprint/shared";
 
 describe("M2 Integration Workflows", () => {
   describe("Complete M2 User Journey", () => {
@@ -53,37 +53,37 @@ describe("M2 Integration Workflows", () => {
       const apiEndpoints = [
         {
           path: ROUTE_PATHS.GENERATE,
-          method: "POST",
+          method: HTTP_METHODS.POST,
           tested: true,
           m2Feature: "generation",
         },
         {
           path: ROUTE_PATHS.TASKS,
-          method: "POST",
+          method: HTTP_METHODS.POST,
           tested: true,
           m2Feature: "generation",
         },
         {
           path: ROUTE_PATHS.REFINE,
-          method: "POST",
+          method: HTTP_METHODS.POST,
           tested: true,
           m2Feature: "refinement",
         },
-        { path: ROUTE_PATHS.EXPORT, method: "POST", tested: true, m2Feature: "export" },
-        { path: ROUTE_PATHS.IMPORT, method: "POST", tested: true, m2Feature: "import" },
+        { path: ROUTE_PATHS.EXPORT, method: HTTP_METHODS.POST, tested: true, m2Feature: "export" },
+        { path: ROUTE_PATHS.IMPORT, method: HTTP_METHODS.POST, tested: true, m2Feature: "import" },
         {
           path: `${ROUTE_PATHS.STORAGE}/quota`,
-          method: "GET",
+          method: HTTP_METHODS.GET,
           tested: true,
           m2Feature: "storage",
         },
         {
           path: `${ROUTE_PATHS.STORAGE}/clear`,
-          method: "DELETE",
+          method: HTTP_METHODS.DELETE,
           tested: true,
           m2Feature: "storage",
         },
-        { path: ROUTE_PATHS.SHARE, method: "POST", tested: true, m2Feature: "sharing" },
+        { path: ROUTE_PATHS.SHARE, method: HTTP_METHODS.POST, tested: true, m2Feature: "sharing" },
       ];
 
       const m2Endpoints = apiEndpoints.filter(

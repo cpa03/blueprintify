@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { checkHealth } from "./api";
 
-const { DEV_DEFAULTS, ROUTE_PATHS } = vi.hoisted(() => ({
+const { DEV_DEFAULTS, ROUTE_PATHS, HTTP_HEADERS, HTTP_METHODS, HTTP_STATUS } = vi.hoisted(() => ({
   DEV_DEFAULTS: {
     API_PROXY_TARGET: "http://localhost:8787",
     WEB_PORT: 3000,
@@ -18,6 +18,33 @@ const { DEV_DEFAULTS, ROUTE_PATHS } = vi.hoisted(() => ({
     STORAGE: "/storage",
     SHARE: "/share",
     WARMUP: "/warmup",
+  },
+  HTTP_HEADERS: {
+    CONTENT_TYPE_JSON: "application/json",
+  },
+  HTTP_METHODS: {
+    GET: "GET",
+    POST: "POST",
+    PUT: "PUT",
+    DELETE: "DELETE",
+    PATCH: "PATCH",
+  },
+  HTTP_STATUS: {
+    OK: 200,
+    CREATED: 201,
+    NO_CONTENT: 204,
+    BAD_REQUEST: 400,
+    UNAUTHORIZED: 401,
+    FORBIDDEN: 403,
+    NOT_FOUND: 404,
+    CONFLICT: 409,
+    PAYLOAD_TOO_LARGE: 413,
+    UNPROCESSABLE_ENTITY: 422,
+    TOO_MANY_REQUESTS: 429,
+    INTERNAL_ERROR: 500,
+    BAD_GATEWAY: 502,
+    SERVICE_UNAVAILABLE: 503,
+    GATEWAY_TIMEOUT: 504,
   },
 }));
 
@@ -42,15 +69,16 @@ vi.mock("@blueprint/shared", () => ({
     DEFAULT_MAX_DELAY: 5000,
   },
   HTTP_HEADERS: {
-    CONTENT_TYPE_JSON: "application/json",
+    CONTENT_TYPE_JSON: HTTP_HEADERS.CONTENT_TYPE_JSON,
   },
+  HTTP_STATUS,
   RETRYABLE_STATUS_CODES: [408, 429, 500, 502, 503, 504],
   HTTP_METHODS: {
-    GET: "GET",
-    POST: "POST",
-    PUT: "PUT",
-    DELETE: "DELETE",
-    PATCH: "PATCH",
+    GET: HTTP_METHODS.GET,
+    POST: HTTP_METHODS.POST,
+    PUT: HTTP_METHODS.PUT,
+    DELETE: HTTP_METHODS.DELETE,
+    PATCH: HTTP_METHODS.PATCH,
   },
 }));
 
@@ -116,7 +144,7 @@ describe("API Client", () => {
     it("should return false when API returns error status", async () => {
       const mockResponse = {
         ok: false,
-        status: 500,
+        status: HTTP_STATUS.INTERNAL_ERROR,
       };
       vi.mocked(fetch).mockResolvedValue(mockResponse as unknown as Response);
 

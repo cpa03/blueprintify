@@ -9,7 +9,7 @@ The web application is a React 19 SPA built with Vite. It provides a wizard inte
 ## Tech Stack
 
 - **Framework**: [React](https://react.dev/) 19
-- **Build Tool**: [Vite](https://vitejs.dev/) 7
+- **Build Tool**: [Vite](https://vitejs.dev/) 8
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) 3
 - **State Management**: [Zustand](https://github.com/pmndrs/zustand)
 - **Code Editor**: [CodeMirror](https://codemirror.net/) (via @uiw/react-codemirror)
