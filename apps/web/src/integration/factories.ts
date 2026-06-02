@@ -1,5 +1,5 @@
 import { vi } from "vitest";
-import { SSE_HEADERS, SHARED_DEFAULTS, HTTP_HEADERS } from "@blueprint/shared";
+import { SSE_HEADERS, SHARED_DEFAULTS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
 
 export interface TestBlueprint {
   projectName: string;
@@ -97,7 +97,7 @@ export function setupFetchMock(response: Response | Promise<Response>) {
 export function createMockResponse(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+    headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
   });
 }
 
@@ -114,8 +114,8 @@ export function createMockStreamResponse(chunks: string[]) {
   return new Response(stream, {
     status: 200,
     headers: {
-      "Content-Type": SSE_HEADERS.CONTENT_TYPE,
-      "Cache-Control": SSE_HEADERS.CACHE_CONTROL,
+      [HTTP_HEADER_NAMES.CONTENT_TYPE]: SSE_HEADERS.CONTENT_TYPE,
+      [HTTP_HEADER_NAMES.CACHE_CONTROL]: SSE_HEADERS.CACHE_CONTROL,
     },
   });
 }

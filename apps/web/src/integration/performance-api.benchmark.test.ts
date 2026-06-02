@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { SSE_HEADERS, HTTP_HEADERS } from "@blueprint/shared";
+import { HTTP_METHODS, SSE_HEADERS, HTTP_HEADERS, HTTP_STATUS } from "@blueprint/shared";
 import { API_ENDPOINTS } from "../config/constants";
 import { API_BASE } from "../config/api-client";
 import { createTestBlueprint, createLargeBlueprint, createMockResponse } from "./factories";
@@ -36,7 +36,7 @@ describe("Performance Benchmarks: API Integration", () => {
 
       const { duration } = await measureAsync(() =>
         fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             projectName: testData.projectName,
@@ -60,14 +60,14 @@ describe("Performance Benchmarks: API Integration", () => {
 
       fetchMock.mockResolvedValueOnce(
         new Response(stream, {
-          status: 200,
+          status: HTTP_STATUS.OK,
           headers: { "Content-Type": SSE_HEADERS.CONTENT_TYPE },
         })
       );
 
       const { duration } = await measureAsync(() =>
         fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           body: JSON.stringify({ projectName: "Test", description: "Test" }),
         })
       );
@@ -87,7 +87,7 @@ describe("Performance Benchmarks: API Integration", () => {
 
       const { duration } = await measureAsync(() =>
         fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           body: JSON.stringify({
             projectName: largeData.projectName,
             description: largeData.description,
@@ -110,7 +110,7 @@ describe("Performance Benchmarks: API Integration", () => {
 
       const { duration } = await measureAsync(() =>
         fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             content: "Test content",
@@ -129,7 +129,7 @@ describe("Performance Benchmarks: API Integration", () => {
 
       const requests = Array.from({ length: 5 }, () =>
         fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           body: JSON.stringify({ content: "Test", instruction: "Improve" }),
         })
       );
@@ -157,7 +157,7 @@ describe("Performance Benchmarks: API Integration", () => {
 
       const { duration } = await measureAsync(() =>
         fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             format: "json",
@@ -183,7 +183,7 @@ describe("Performance Benchmarks: API Integration", () => {
 
       const { duration } = await measureAsync(() =>
         fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           body: JSON.stringify({
             format: "json",
             blueprint: largeData.blueprint,
@@ -207,7 +207,7 @@ describe("Performance Benchmarks: API Integration", () => {
 
       const { duration } = await measureAsync(() =>
         fetch(`${API_BASE}${API_ENDPOINTS.IMPORT}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             format: "json",
@@ -238,7 +238,7 @@ describe("Performance Benchmarks: API Integration", () => {
 
       const { duration } = await measureAsync(() =>
         fetch(`${API_BASE}/storage/sync`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             key: "test-session",
@@ -264,7 +264,7 @@ describe("Performance Benchmarks: API Integration", () => {
 
       // Generate
       await fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({
           projectName: testData.projectName,
           description: testData.description,
@@ -273,7 +273,7 @@ describe("Performance Benchmarks: API Integration", () => {
 
       // Refine
       await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({
           content: testData.blueprint,
           instruction: "Improve",
@@ -282,7 +282,7 @@ describe("Performance Benchmarks: API Integration", () => {
 
       // Export
       await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({
           format: "json",
           blueprint: testData.blueprint,

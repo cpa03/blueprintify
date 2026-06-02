@@ -4,6 +4,7 @@ import storageRoute from "./storage";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
+import { HTTP_METHODS, HTTP_HEADERS } from "@blueprint/shared";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -112,8 +113,8 @@ describe("POST /storage/report", () => {
     const res = await app.request(
       "/report",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           used: 2097152,
           total: 5242880,
@@ -141,8 +142,8 @@ describe("POST /storage/report", () => {
     const res = await app.request(
       "/report",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           used: -1,
           total: 5242880,
@@ -163,8 +164,8 @@ describe("POST /storage/report", () => {
     const res = await app.request(
       "/report",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           used: 1024,
         }),
@@ -188,8 +189,8 @@ describe("DELETE /storage/clear", () => {
     const res = await app.request(
       "/clear",
       {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.DELETE,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({}),
       },
       mockEnv
@@ -206,8 +207,8 @@ describe("DELETE /storage/clear", () => {
     const res = await app.request(
       "/clear",
       {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.DELETE,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({ confirm: false }),
       },
       mockEnv
@@ -232,8 +233,8 @@ describe("DELETE /storage/clear", () => {
     const res = await app.request(
       "/clear",
       {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.DELETE,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({ confirm: true }),
       },
       mockEnv

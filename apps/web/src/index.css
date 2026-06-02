@@ -176,33 +176,6 @@
     @apply bg-accent-emerald;
   }
 
-  /* Skeleton loading states */
-  .skeleton-base {
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.04) 25%,
-      rgba(255, 255, 255, 0.08) 50%,
-      rgba(255, 255, 255, 0.04) 75%
-    );
-    background-size: 200% 100%;
-    @apply rounded-md;
-  }
-
-  .skeleton-static {
-    background: rgba(255, 255, 255, 0.04);
-  }
-
-  .skeleton-circular {
-    @apply rounded-full;
-  }
-
-  .skeleton-button {
-    @apply rounded-lg;
-  }
-
-  .skeleton-group {
-    @apply animate-pulse;
-  }
 }
 
 /* Form progress shimmer animation */
@@ -442,7 +415,6 @@
 
     .glow-pulse,
     .shake-animation,
-    .skeleton-group,
     .progress-shimmer::after,
     .animate-glow,
     .animate-fade-in,
@@ -467,12 +439,6 @@
        card is focused (accessibility) but skip the transition animation. */
     .glass-card:focus-within {
       transition: none !important;
-    }
-
-    /* Static skeleton for reduced motion - use solid color instead of animated gradient */
-    .skeleton-base {
-      animation: none !important;
-      background: rgba(255, 255, 255, 0.04);
     }
   }
 

@@ -21,6 +21,9 @@ import {
   SHARED_DEFAULTS,
   NETWORK_ERROR_CODES as SHARED_NETWORK_ERROR_CODES,
   CORS_DEFAULTS as SHARED_CORS_DEFAULTS,
+  HTTP_METHODS as SHARED_HTTP_METHODS,
+  SHARE_DEFAULTS as SHARED_SHARE_DEFAULTS,
+  BODY_SIZE_LIMITS as SHARED_BODY_SIZE_LIMITS,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./config-types";
 import {
@@ -84,55 +87,56 @@ export const API_METADATA = {
 
 // API Endpoints configuration
 // Uses shared ROUTE_PATHS as the single source of truth for paths
+// Uses shared HTTP_METHODS - Flexy says: no hardcoded method strings!
 export const API_ENDPOINTS = {
   GENERATE: {
     path: SHARED_ROUTE_PATHS.GENERATE,
-    method: "POST",
+    method: SHARED_HTTP_METHODS.POST,
     description: "Generate blueprint",
   },
   TASKS: {
     path: SHARED_ROUTE_PATHS.TASKS,
-    method: "POST",
+    method: SHARED_HTTP_METHODS.POST,
     description: "Generate tasks",
   },
   REFINE: {
     path: SHARED_ROUTE_PATHS.REFINE,
-    method: "POST",
+    method: SHARED_HTTP_METHODS.POST,
     description: "Refine content",
   },
   EXPORT: {
     path: SHARED_ROUTE_PATHS.EXPORT,
-    method: "POST",
+    method: SHARED_HTTP_METHODS.POST,
     description: "Export project",
   },
   IMPORT: {
     path: SHARED_ROUTE_PATHS.IMPORT,
-    method: "POST",
+    method: SHARED_HTTP_METHODS.POST,
     description: "Import project",
   },
   STORAGE_QUOTA: {
     path: `${SHARED_ROUTE_PATHS.STORAGE}/quota`,
-    method: "GET",
+    method: SHARED_HTTP_METHODS.GET,
     description: "Get storage quota",
   },
   STORAGE_CLEAR: {
     path: `${SHARED_ROUTE_PATHS.STORAGE}/clear`,
-    method: "DELETE",
+    method: SHARED_HTTP_METHODS.DELETE,
     description: "Clear storage",
   },
   SHARE_CREATE: {
     path: SHARED_ROUTE_PATHS.SHARE,
-    method: "POST",
+    method: SHARED_HTTP_METHODS.POST,
     description: "Create shareable blueprint link",
   },
   SHARE_GET: {
     path: `${SHARED_ROUTE_PATHS.SHARE}/:id`,
-    method: "GET",
+    method: SHARED_HTTP_METHODS.GET,
     description: "Get shared blueprint by ID",
   },
   SHARE_DELETE: {
     path: `${SHARED_ROUTE_PATHS.SHARE}/:id`,
-    method: "DELETE",
+    method: SHARED_HTTP_METHODS.DELETE,
     description: "Delete shared blueprint",
   },
 } as const;
@@ -422,12 +426,12 @@ export const EXPORT_TEMPLATES = {
  * Flexy says: extracted from middleware/bodyLimit.ts for shared access
  */
 export const BODY_SIZE_LIMITS = {
-  /** Default maximum body size: 1MB - reasonable for JSON API requests */
-  DEFAULT_MB: 1,
-  /** Strict limit: 100KB - for text-only endpoints */
-  STRICT_KB: 100,
-  /** Lenient limit: 10MB - for file upload endpoints */
-  LENIENT_MB: 10,
+  /** Default maximum body size (from shared single source of truth) */
+  DEFAULT_MB: SHARED_BODY_SIZE_LIMITS.DEFAULT_MB,
+  /** Strict limit in KB (from shared single source of truth) */
+  STRICT_KB: SHARED_BODY_SIZE_LIMITS.STRICT_KB,
+  /** Lenient limit in MB (from shared single source of truth) */
+  LENIENT_MB: SHARED_BODY_SIZE_LIMITS.LENIENT_MB,
 } as const;
 
 /** Bytes per kilobyte (from shared single source of truth) */
@@ -516,11 +520,11 @@ export const EXTERNAL_URLS = {
 };
 
 export const SHARE_CONFIG = {
-  ID_LENGTH: 12,
+  ID_LENGTH: SHARED_SHARE_DEFAULTS.ID_LENGTH,
   ALPHANUMERIC_CHARS: ID_CHARS.FULL,
-  EXPIRATION_DAYS: 30,
-  TITLE_MAX_LENGTH: 200,
-  BLUEPRINT_MAX_LENGTH: 50000,
+  EXPIRATION_DAYS: SHARED_SHARE_DEFAULTS.EXPIRATION_DAYS,
+  TITLE_MAX_LENGTH: SHARED_SHARE_DEFAULTS.TITLE_MAX_LENGTH,
+  BLUEPRINT_MAX_LENGTH: SHARED_SHARE_DEFAULTS.BLUEPRINT_MAX_LENGTH,
 } as const;
 
 // Share route error messages

@@ -5,7 +5,7 @@ import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
-import { HTTP_HEADERS } from "@blueprint/shared";
+import { HTTP_HEADERS, HTTP_METHODS } from "@blueprint/shared";
 
 beforeEach(() => {
   const mockContainer = createMockContainer();
@@ -25,7 +25,7 @@ describe("POST /tasks", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: "Test Project",
@@ -45,7 +45,7 @@ describe("POST /tasks", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: "Test Project",
