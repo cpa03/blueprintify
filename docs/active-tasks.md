@@ -2,19 +2,24 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 43
+## Current Focus: RepoKeeper Cycle 44
 
-### Task: RepoKeeper Cycle 43 (2026-06-01) — CI Workflow Cleanup & Node Version Alignment
+### Task: RepoKeeper Cycle 44 (2026-06-02) — CI Workflow Cleanup & Stale File Removal
 
 - **Priority**: High
 - **Status**: Active
-- **Objective**: Fix stale doc references in CI workflows, align Node.js version with `.nvmrc` (22)
+- **Objective**: Fix stale CI workflow references, remove redundant docs, clean repo
 - **Actions**:
   - [x] Fix `docs/bug.md` → `docs/bugs.md` and `docs/feature.md` → `docs/features.md` in `main.yml`
+  - [x] Fix `docs/task.md` → `docs/active-tasks.md` in `main.yml` orchestrator prompt
   - [x] Update `node-version: "20"` → `"22"` across 4 workflow files (11 instances)
-  - [x] Update `docs/findings.md` — add Cycle 43 findings
-  - [x] Run full verification: typecheck ✅ lint ✅ build ✅ format ✅ test:all ✅
-  - [ ] **BLOCKED**: Push workflow file changes (needs `workflows: write` permission on GITHUB_TOKEN)
+  - [x] Remove `docs/task.md` (stub file, all tasks completed)
+  - [x] Remove `docs/plans/2026-06-01-flexy-iteration-10.md` (plan already executed)
+  - [x] Remove `.omo/ralph-loop.local.md` (gitignored leftover)
+  - [x] Condense `docs/findings.md` — keep only current cycle
+  - [x] Update `docs/active-tasks.md` — add Cycle 44 entry
+  - [ ] Run full verification: typecheck ✅ lint ✅ build ✅ format ✅ test:all ✅
+  - [ ] Create PR with all changes
 
 ---
 
@@ -53,13 +58,12 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ## Testing Coverage
 
-- **Frontend**: Co-located Vitest tests with component and store tests — 558 passing
-- **API**: Comprehensive route, middleware, service, and utility tests — 299 passing
-- **Shared**: Zod schema, type, and config tests — 120 passing
-- **Total**: 977 tests (all passing) [558 web + 299 api + 120 shared]
+- **Frontend**: Co-located Vitest tests with component and store tests
+- **API**: Comprehensive route, middleware, service, and utility tests
+- **Shared**: Zod schema, type, and config tests
 - **TypeScript**: Strict mode, no unchecked `any` types
 
 ---
 
-**Last Updated**: 2026-06-01 (Cycle 42: RepoKeeper — Stale Tracked Artifacts Cleanup)  
-**Maintainer**: RepoKeeper
+**Last Updated**: 2026-06-02 (Cycle 44: RepoKeeper)
+**Maintainer**: RepoKeeper (Ultrawork Loop)
