@@ -4,6 +4,7 @@ import generateRoute from "./generate";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV, MOCK_ENV_NO_KEY } from "../test-utils";
 import type { ErrorResponse } from "../errors";
+import { HTTP_METHODS, HTTP_HEADERS } from "@blueprint/shared";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 
 let originalConsoleError: typeof console.error;
@@ -33,8 +34,8 @@ describe("POST /generate", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: "Test Project",
           description: "A valid description longer than 10 chars.",
@@ -55,8 +56,8 @@ describe("POST /generate", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: "Test Project",
           description: "Too short",
@@ -74,8 +75,8 @@ describe("POST /generate", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: "Test Project",
           description: "A valid description longer than 10 chars for testing purposes.",
@@ -94,8 +95,8 @@ describe("POST /generate", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: "Test Project",
           description: "A valid description longer than 10 chars for testing purposes.",

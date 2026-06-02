@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { withRetry } from "./retry";
+import { HTTP_STATUS } from "@blueprint/shared";
 
 describe("Retry Utilities", () => {
   beforeEach(() => {
@@ -29,7 +30,7 @@ describe("Retry Utilities", () => {
     });
 
     it("should retry on retryable error (rate limit 429)", async () => {
-      const rateLimitError = { status: 429 };
+      const rateLimitError = { status: HTTP_STATUS.TOO_MANY_REQUESTS };
       const operation = vi
         .fn()
         .mockRejectedValueOnce(rateLimitError)
@@ -49,7 +50,7 @@ describe("Retry Utilities", () => {
     });
 
     it("should retry on server error (5xx)", async () => {
-      const serverError = { status: 503 };
+      const serverError = { status: HTTP_STATUS.SERVICE_UNAVAILABLE };
       const operation = vi.fn().mockRejectedValueOnce(serverError).mockResolvedValueOnce("success");
 
       const resultPromise = withRetry(operation, {
@@ -84,7 +85,7 @@ describe("Retry Utilities", () => {
     });
 
     it("should not retry on non-retryable errors", async () => {
-      const clientError = { status: 400 };
+      const clientError = { status: HTTP_STATUS.BAD_REQUEST };
       const operation = vi.fn().mockRejectedValue(clientError);
 
       await expect(withRetry(operation, { retries: 3 })).rejects.toEqual(clientError);
@@ -92,7 +93,7 @@ describe("Retry Utilities", () => {
     });
 
     it("should throw last error after max retries exceeded", async () => {
-      const serverError = { status: 503 };
+      const serverError = { status: HTTP_STATUS.SERVICE_UNAVAILABLE };
       const operation = vi.fn().mockRejectedValue(serverError);
 
       const resultPromise = withRetry(operation, {
@@ -110,7 +111,7 @@ describe("Retry Utilities", () => {
     });
 
     it("should apply exponential backoff between retries", async () => {
-      const serverError = { status: 503 };
+      const serverError = { status: HTTP_STATUS.SERVICE_UNAVAILABLE };
       const operation = vi.fn().mockRejectedValue(serverError);
 
       const resultPromise = withRetry(operation, {
@@ -131,7 +132,7 @@ describe("Retry Utilities", () => {
     });
 
     it("should call onRetry callback on each retry", async () => {
-      const serverError = { status: 503 };
+      const serverError = { status: HTTP_STATUS.SERVICE_UNAVAILABLE };
       const operation = vi
         .fn()
         .mockRejectedValueOnce(serverError)
@@ -157,7 +158,7 @@ describe("Retry Utilities", () => {
     });
 
     it("should handle error with response.status property", async () => {
-      const error = { response: { status: 502 } };
+      const error = { response: { status: HTTP_STATUS.BAD_GATEWAY } };
       const operation = vi.fn().mockRejectedValueOnce(error).mockResolvedValueOnce("success");
 
       const resultPromise = withRetry(operation, {
@@ -188,7 +189,7 @@ describe("Retry Utilities", () => {
     });
 
     it("should handle zero retries option", async () => {
-      const serverError = { status: 503 };
+      const serverError = { status: HTTP_STATUS.SERVICE_UNAVAILABLE };
       const operation = vi.fn().mockRejectedValue(serverError);
 
       await expect(withRetry(operation, { retries: 0 })).rejects.toEqual(serverError);
@@ -196,7 +197,7 @@ describe("Retry Utilities", () => {
     });
 
     it("should use custom initial delay", async () => {
-      const serverError = { status: 503 };
+      const serverError = { status: HTTP_STATUS.SERVICE_UNAVAILABLE };
       const operation = vi.fn().mockRejectedValueOnce(serverError).mockResolvedValueOnce("success");
 
       const resultPromise = withRetry(operation, {
@@ -217,7 +218,7 @@ describe("Retry Utilities", () => {
     });
 
     it("should use custom backoff factor", async () => {
-      const serverError = { status: 503 };
+      const serverError = { status: HTTP_STATUS.SERVICE_UNAVAILABLE };
       const operation = vi.fn().mockRejectedValue(serverError);
 
       const resultPromise = withRetry(operation, {
@@ -238,7 +239,7 @@ describe("Retry Utilities", () => {
     });
 
     it("should cap delay at maxDelay option", async () => {
-      const serverError = { status: 503 };
+      const serverError = { status: HTTP_STATUS.SERVICE_UNAVAILABLE };
       const operation = vi.fn().mockRejectedValue(serverError);
 
       const resultPromise = withRetry(operation, {
@@ -272,7 +273,7 @@ describe("Retry Utilities", () => {
     });
 
     it("should use default maxDelay from config when not specified", async () => {
-      const serverError = { status: 503 };
+      const serverError = { status: HTTP_STATUS.SERVICE_UNAVAILABLE };
       const operation = vi.fn().mockRejectedValue(serverError);
 
       // With default maxDelay of 10000ms, delay should cap at 10000

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { HTTP_HEADERS } from "@blueprint/shared";
+import { HTTP_METHODS, HTTP_HEADERS, HTTP_STATUS } from "@blueprint/shared";
 import { API_ENDPOINTS } from "../config/constants";
 import { API_BASE } from "../config/api-client";
 import {
@@ -47,7 +47,7 @@ describe("Integration: Refinement Workflow", () => {
       );
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           content: sectionContent,
@@ -55,7 +55,7 @@ describe("Integration: Refinement Workflow", () => {
         }),
       });
 
-      expect(response.status).toBe(200);
+      expect(response.status).toBe(HTTP_STATUS.OK);
     });
 
     it("should handle multiple refinement iterations", async () => {
@@ -73,7 +73,7 @@ describe("Integration: Refinement Workflow", () => {
         );
 
         const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           body: JSON.stringify({
             content: "Test content",
             instruction: iteration.instruction,
@@ -101,14 +101,14 @@ describe("Integration: Refinement Workflow", () => {
       );
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({
           content: "Test content",
           instruction: "Improve this",
         }),
       });
 
-      expect(response.status).toBe(500);
+      expect(response.status).toBe(HTTP_STATUS.INTERNAL_ERROR);
       const result = (await response.json()) as ApiResponse;
       expect(result.success).toBe(false);
     });
@@ -118,7 +118,7 @@ describe("Integration: Refinement Workflow", () => {
 
       await expect(
         fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           body: JSON.stringify({
             content: "Test content",
             instruction: "Improve this",
@@ -136,14 +136,14 @@ describe("Integration: Refinement Workflow", () => {
 
       const requests = [
         fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           body: JSON.stringify({
             content: "Section 1",
             instruction: "Improve",
           }),
         }),
         fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           body: JSON.stringify({
             content: "Section 2",
             instruction: "Improve",
@@ -152,7 +152,7 @@ describe("Integration: Refinement Workflow", () => {
       ];
 
       const results = await Promise.all(requests);
-      results.forEach((res) => expect(res.status).toBe(200));
+      results.forEach((res) => expect(res.status).toBe(HTTP_STATUS.OK));
     });
   });
 });
@@ -185,7 +185,7 @@ describe("Integration: Export/Import Workflow", () => {
       );
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           format: "markdown",
@@ -211,7 +211,7 @@ describe("Integration: Export/Import Workflow", () => {
       );
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({
           format: "json",
           blueprint: testData.blueprint,
@@ -229,13 +229,13 @@ describe("Integration: Export/Import Workflow", () => {
       const mockBuffer = new ArrayBuffer(10);
       fetchMock.mockResolvedValueOnce(
         new Response(mockBuffer, {
-          status: 200,
+          status: HTTP_STATUS.OK,
           headers: { "Content-Type": "application/zip" },
         })
       );
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({
           format: "zip",
           blueprint: testData.blueprint,
@@ -243,7 +243,7 @@ describe("Integration: Export/Import Workflow", () => {
         }),
       });
 
-      expect(response.status).toBe(200);
+      expect(response.status).toBe(HTTP_STATUS.OK);
       expect(response.headers.get("Content-Type")).toBe("application/zip");
     });
 
@@ -259,7 +259,7 @@ describe("Integration: Export/Import Workflow", () => {
       );
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({
           format: "json",
           blueprint: largeData.blueprint,
@@ -287,7 +287,7 @@ describe("Integration: Export/Import Workflow", () => {
       );
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.IMPORT}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           format: "json",
@@ -316,7 +316,7 @@ describe("Integration: Export/Import Workflow", () => {
       );
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.IMPORT}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({
           format: "json",
           data: { invalid: "data" },
@@ -350,7 +350,7 @@ describe("Integration: Export/Import Workflow", () => {
         );
 
       const exportRes = await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({
           format: "json",
           blueprint: testData.blueprint,
@@ -362,7 +362,7 @@ describe("Integration: Export/Import Workflow", () => {
       expect(exportData.success).toBe(true);
 
       const importRes = await fetch(`${API_BASE}${API_ENDPOINTS.IMPORT}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({
           format: "json",
           data: exportData.data,
