@@ -4,56 +4,44 @@
 
 ## Current Cycle (2026-06-02 — Cycle 44: Security Engineering Audit)
 
-### Security Audit: PR Dependency Updates
+### Security Audit: `concurrently` ^9.2.1 → ^10.0.1 (Dependabot PR)
 
-**Files audited**: `apps/web/package.json`, `package.json`, `package-lock.json`
+**Files audited**: `package.json`, `package-lock.json`
 
-#### No Vulnerabilities Introduced
+**Verdict: SAFE TO MERGE** — No vulnerabilities, secrets, or deprecated functions introduced.
 
-This PR is **clean**. None of the 3 changed files introduce new vulnerabilities, secrets, or deprecated functions.
+| Security Check       | Result                                           |
+| -------------------- | ------------------------------------------------ |
+| New vulnerabilities  | ✅ None — `concurrently@10.0.1` has 0 known CVEs |
+| Hardcoded secrets    | ✅ None found                                    |
+| Deprecated functions | ✅ None used                                     |
+| Breaking changes     | ✅ Compatible — only used in `"dev:all"` script  |
+| Lockfile integrity   | ✅ `concurrently@10.0.1` resolved correctly      |
 
-| Change                             | Security Impact                                                                    |
-| ---------------------------------- | ---------------------------------------------------------------------------------- |
-| `dompurify: ^3.3.1 → ^3.4.7`       | ✅ **SECURITY IMPROVEMENT** — 3.3.1 had 6 medium + 1 low vulns; 3.4.7 has 0        |
-| `react: ^19.2.0 → ^19.2.7`         | ✅ Safe — patch bump, compatible, no regressions                                   |
-| `react-dom: ^19.2.6 → ^19.2.7`     | ✅ Safe — patch bump, compatible                                                   |
-| `@types/react: ^19.2.0 → ^19.2.16` | ✅ Safe — type definitions only                                                    |
-| `playwright-lighthouse` removed    | ✅ Clean — unused, reduces attack surface (also removes `ua-parser-js` dependency) |
+#### Pre-existing Critical Vulnerabilities (not introduced by this PR)
 
-#### Pre-existing Critical Vulnerability (not introduced by this PR)
+`npm audit` revealed **4 critical severity vulnerabilities** in the vitest ecosystem that were already present before this change:
 
-- **4 critical severity** vulnerabilities in vitest ecosystem
-- **Advisory**: `GHSA-5xrq-8626-4rwp` (CWE-862: Missing Authorization)
-- **CVSS**: 9.8 (Critical)
-- **Issue**: When Vitest UI server is listening, arbitrary file can be read and executed
-- **Affected packages**:
-  - `vitest@3.2.4` (used in both web and API workspaces)
-  - `@vitest/ui@3.2.4`
-  - `@vitest/coverage-v8@3.2.4`
-  - `@cloudflare/vitest-pool-workers@0.12.21`
-- **Fix**: Upgrade to `vitest@4.1.8`, `@vitest/ui@4.1.8` (requires major version bump)
-- **Risk context**: Vitest UI is only active during development (`vitest --ui`), not in production. Severity is mitigated.
-- **Recommended action**: Audit and plan vitest 3.x → 4.x migration in a separate PR.
+| Advisory            | Package                                 | Severity | CVSS | Issue                                                    |
+| ------------------- | --------------------------------------- | -------- | ---- | -------------------------------------------------------- |
+| GHSA-5xrq-8626-4rwp | vitest@3.2.4                            | Critical | 9.8  | Arbitrary file read/exec when Vitest UI server listening |
+| ↑ via               | @vitest/ui@3.2.4                        | Critical | 9.8  | Same advisory                                            |
+| ↑ via               | @vitest/coverage-v8@3.2.4               | Critical | 9.8  | Same advisory                                            |
+| ↑ via               | @cloudflare/vitest-pool-workers@0.12.21 | Critical | 9.8  | Same advisory                                            |
 
-#### Secrets Scan
+- **Fix**: Upgrade vitest to 4.1.8+ (major version bump — requires separate migration PR)
+- **Mitigating factor**: Vitest UI is development-only; not exposed in production
+- **Dependabot branches already exist**: `dependabot/npm_and_yarn/vitest-4.1.8`, `dependabot/npm_and_yarn/vitest/coverage-v8-4.1.8`
 
-- ✅ No hardcoded secrets, API keys, passwords, or credentials found
-- ✅ No `.env` files or sensitive configurations in changed files
-- ✅ No deprecated function usage detected (changes are purely dependency metadata)
+#### Detailed Analysis
 
-#### Verified Dependencies
-
-- `dompurify@3.4.7` resolved correctly in lockfile
-- `react@19.2.7` / `react-dom@19.2.7` resolved correctly
-- `@types/react@19.2.16` resolved correctly
-
-### Summary
-
-**Verdict: SAFE TO MERGE** — This PR improves security posture by updating dompurify to a version with 0 known vulnerabilities and removing an unused dependency.
+1. **`concurrently@10.0.1`** — No known CVEs, no deprecated APIs, no transitive dependency changes that introduce risk. The `dev:all` script usage (`concurrently "npm run dev:api" "npm run dev"`) is unaffected by any behavioral changes in 10.0.1.
+2. **Secrets scan**: Zero secrets, credentials, or sensitive data in the diff.
+3. **Deprecated functions**: Zero usage of deprecated Node.js, npm, or JavaScript APIs.
 
 ---
 
-## Current Cycle (2026-06-01 — Cycle 43: RepoKeeper)
+## Previous Cycle (2026-06-01 — Cycle 43: RepoKeeper)
 
 ### Findings
 
