@@ -9,12 +9,11 @@
  * - Cancellation of ongoing generation
  * - Progress tracking
  */
-import { describe, expect, it, vi, beforeEach, beforeAll } from "vitest";
+import { describe, expect, it, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useBlueprintStream } from "./useBlueprintStream";
 import { generateBlueprint, generateTasks } from "../lib/api";
 import { useWizardStore, useEditorStore } from "../store";
-import { ensureZodLoaded } from "../lib/security";
 
 // Mock the API module
 vi.mock("../lib/api", () => ({
@@ -45,13 +44,6 @@ function resetStores(): void {
 }
 
 describe("useBlueprintStream", () => {
-  beforeAll(async () => {
-    // Ensure lazy-loaded Zod is available before content validation tests run.
-    // security.ts imports Zod via dynamic import (import("zod")) for bundle size.
-    // The dynamic import may not resolve before test execution in vitest's module system.
-    await ensureZodLoaded();
-  });
-
   beforeEach(() => {
     vi.clearAllMocks();
     resetStores();
