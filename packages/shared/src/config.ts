@@ -376,3 +376,60 @@ export const HTTP_METHODS = {
   DELETE: "DELETE",
   PATCH: "PATCH",
 } as const;
+
+/**
+ * HTTP Header Names
+ * Centralized header NAME strings to eliminate hardcoded header key literals.
+ * Single source of truth for HTTP header field names used across API and Web.
+ * Flexy says: Use these instead of hardcoded "Content-Type" strings in header objects!
+ */
+/**
+ * Share Link Configuration
+ * Centralized defaults for shareable blueprint link generation.
+ * Flexy says: No magic numbers for share IDs or expiry!
+ */
+export const SHARE_DEFAULTS = {
+  /** Length of randomly generated share IDs */
+  ID_LENGTH: 12,
+  /** Number of days before share links expire */
+  EXPIRATION_DAYS: 30,
+  /** Maximum length of share title */
+  TITLE_MAX_LENGTH: 200,
+  /** Maximum length of share blueprint content */
+  BLUEPRINT_MAX_LENGTH: 50000,
+} as const;
+
+/**
+ * Body Size Limits
+ * Centralized body size limits for request validation.
+ * Flexy says: No hardcoded MB/KB magic numbers!
+ */
+export const BODY_SIZE_LIMITS = {
+  /** Default maximum body size in MB - for standard JSON API requests */
+  DEFAULT_MB: 1,
+  /** Strict limit in KB - for text-only endpoints */
+  STRICT_KB: 100,
+  /** Lenient limit in MB - for file upload endpoints */
+  LENIENT_MB: 10,
+} as const;
+
+export const HTTP_HEADER_NAMES = {
+  /** Content-Type header - most commonly hardcoded as object key */
+  CONTENT_TYPE: "Content-Type",
+  /** Cache-Control header for caching directives */
+  CACHE_CONTROL: "Cache-Control",
+  /** Authorization header for bearer tokens */
+  AUTHORIZATION: "Authorization",
+  /** Connection header for HTTP connection management */
+  CONNECTION: "Connection",
+  /** Accept header for content negotiation */
+  ACCEPT: "Accept",
+  /** Content-Length header for body size indication */
+  CONTENT_LENGTH: "Content-Length",
+  /** User-Agent header for client identification */
+  USER_AGENT: "User-Agent",
+  /** Retry-After header for rate limiting */
+  RETRY_AFTER: "Retry-After",
+  /** Set-Cookie header for cookie management */
+  SET_COOKIE: "Set-Cookie",
+} as const;

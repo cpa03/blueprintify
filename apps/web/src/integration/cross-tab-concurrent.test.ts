@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { SSE_HEADERS } from "@blueprint/shared";
+import { HTTP_METHODS, SSE_HEADERS, HTTP_STATUS } from "@blueprint/shared";
 import { API_ENDPOINTS } from "../config/constants";
 import { API_BASE } from "../config/api-client";
 import { StorageManager, StorageError } from "../lib/storage";
@@ -50,21 +50,21 @@ describe("Integration: Concurrent Operations", () => {
 
       const requests = [
         fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           body: JSON.stringify({
             content: "Section 1",
             instruction: "Improve",
           }),
         }),
         fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           body: JSON.stringify({
             content: "Section 2",
             instruction: "Improve",
           }),
         }),
         fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           body: JSON.stringify({
             content: "Section 3",
             instruction: "Improve",
@@ -76,7 +76,7 @@ describe("Integration: Concurrent Operations", () => {
 
       expect(responses).toHaveLength(3);
       responses.forEach((response) => {
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(HTTP_STATUS.OK);
       });
       expect(fetchMock).toHaveBeenCalledTimes(3);
     });
@@ -190,7 +190,7 @@ describe("Integration: Error Propagation", () => {
       );
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({ projectName: "" }),
       });
 
@@ -209,7 +209,7 @@ describe("Integration: Error Propagation", () => {
 
       await expect(
         fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           body: JSON.stringify({ projectName: "Test" }),
         })
       ).rejects.toThrow("Network timeout");
@@ -227,11 +227,11 @@ describe("Integration: Error Propagation", () => {
       );
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({ content: "Test" }),
       });
 
-      expect(response.status).toBe(500);
+      expect(response.status).toBe(HTTP_STATUS.INTERNAL_ERROR);
 
       const data = (await response.json()) as { error: string };
       expect(data.error).toBe("Internal server error");
@@ -247,13 +247,13 @@ describe("Integration: Error Propagation", () => {
 
       fetchMock.mockResolvedValueOnce(
         new Response(errorStream, {
-          status: 200,
+          status: HTTP_STATUS.OK,
           headers: { "Content-Type": SSE_HEADERS.CONTENT_TYPE },
         })
       );
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({ projectName: "Test" }),
       });
 
@@ -294,7 +294,7 @@ describe("Integration: Error Propagation", () => {
 
       try {
         await fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
-          method: "POST",
+          method: HTTP_METHODS.POST,
           body: JSON.stringify(testData),
         });
       } catch {
@@ -407,30 +407,30 @@ describe("Integration: End-to-End Workflows", () => {
         );
 
       const generateResponse = await fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify(testData),
       });
 
-      expect(generateResponse.status).toBe(200);
+      expect(generateResponse.status).toBe(HTTP_STATUS.OK);
 
       await storage.set({ ...testData, blueprint: "# Generated Blueprint" });
 
       const refineResponse = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({
           content: "# Generated Blueprint",
           instruction: "Enhance this",
         }),
       });
 
-      expect(refineResponse.status).toBe(200);
+      expect(refineResponse.status).toBe(HTTP_STATUS.OK);
 
       const exportResponse = await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({ format: "markdown" }),
       });
 
-      expect(exportResponse.status).toBe(200);
+      expect(exportResponse.status).toBe(HTTP_STATUS.OK);
 
       const finalData = await storage.get();
       expect(finalData).toBeDefined();
@@ -451,7 +451,7 @@ describe("Integration: End-to-End Workflows", () => {
       );
 
       const importResponse = await fetch(`${API_BASE}${API_ENDPOINTS.IMPORT}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({ format: "json", content: "{}" }),
       });
 
@@ -492,7 +492,7 @@ describe("Integration: End-to-End Workflows", () => {
       while (attempts < 2 && !success) {
         try {
           const response = await fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
-            method: "POST",
+            method: HTTP_METHODS.POST,
             body: JSON.stringify(createTestBlueprint()),
           });
 
@@ -529,13 +529,13 @@ describe("Integration: End-to-End Workflows", () => {
       );
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         body: JSON.stringify({ content: "test", instruction: "improve" }),
       });
 
       const data = (await storage.get()) as { projectName: string };
       expect(data.projectName).toBe(initialData.projectName);
-      expect(response.status).toBe(500);
+      expect(response.status).toBe(HTTP_STATUS.INTERNAL_ERROR);
     });
   });
 });
