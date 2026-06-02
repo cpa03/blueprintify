@@ -1,7 +1,17 @@
 # CI Workflow Fix Instructions
 
-> **Last updated**: 2026-05-31
-> **Status**: Fixes ready, awaiting `workflows: write` permission
+> **Last updated**: 2026-06-02
+> **Status**: Fixes ready, cannot be pushed (token lacks `workflows: write` permission)
+>
+> Fix commands are ready. A maintainer with `workflows: write` scope should run:
+>
+> ```bash
+> sed -i 's|docs/bug.md, docs/feature.md|docs/bugs.md, docs/features.md|g' .github/workflows/main.yml
+> sed -i 's|Catat bug baru ke docs/bug.md|Catat bug baru ke docs/bugs.md|g' .github/workflows/main.yml
+> sed -i 's|Update docs/task.md|Update docs/active-tasks.md|g' .github/workflows/main.yml
+> sed -i 's/node-version: "20"/node-version: "22"/g' .github/workflows/iterate.yml .github/workflows/parallel.yml .github/workflows/pr-gatekeeper.yml
+> sed -i 's/node-version: 20/node-version: 22/g' .github/workflows/on-pull.yml
+> ```
 
 ## Overview
 
