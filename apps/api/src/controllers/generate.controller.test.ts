@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { GenerateController } from "./generate.controller";
 import type { BlueprintContext } from "../types";
 import { ConfigurationError } from "../errors";
-import { MOCK_ENV, setupStreamMocks } from "../test-utils";
+import { MOCK_ENV } from "../test-utils";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 
 // Mock the prompts module
@@ -43,7 +43,7 @@ describe("GenerateController", () => {
     const mockContainer = createMockContainer();
     setDefaultContainer(mockContainer);
 
-    setupStreamMocks();
+    // Stream mocks are auto-applied via top-level vi.mock in test-utils.ts
   });
 
   afterEach(() => {

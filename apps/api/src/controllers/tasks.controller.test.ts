@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { TasksController } from "./tasks.controller";
 import type { TasksContext } from "../types";
 import { ConfigurationError } from "../errors";
-import { MOCK_ENV, setupStreamMocks } from "../test-utils";
+import { MOCK_ENV } from "../test-utils";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 
 // Mock the prompts module
@@ -40,7 +40,7 @@ describe("TasksController", () => {
     const mockContainer = createMockContainer();
     setDefaultContainer(mockContainer);
 
-    setupStreamMocks();
+    // Stream mocks are auto-applied via top-level vi.mock in test-utils.ts
   });
 
   afterEach(() => {

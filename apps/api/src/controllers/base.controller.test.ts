@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { BaseController } from "./base.controller";
 import { ConfigurationError } from "../errors";
-import { setupStreamMocks } from "../test-utils";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 import type { ControllerContext } from "../types";
 
@@ -69,7 +68,7 @@ describe("BaseController", () => {
     const mockContainer = createMockContainer();
     setDefaultContainer(mockContainer);
 
-    setupStreamMocks();
+    // Stream mocks are auto-applied via top-level vi.mock in test-utils.ts
   });
 
   afterEach(() => {

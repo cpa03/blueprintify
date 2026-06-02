@@ -52,15 +52,13 @@ export function setupTestConfig(env: Record<string, string> = MOCK_ENV): void {
   setEnvConfig(config);
 }
 
-export function setupCommonMocks(): void {
-  vi.mock("../services/openai", () => ({
-    streamCompletion: vi.fn(),
-  }));
-}
+// vi.mock calls must be at the top level (hoisted by Vitest)
+// Placing them inside functions causes hoisting warnings that will become errors
+vi.mock("../services/openai", () => ({
+  streamCompletion: vi.fn(),
+}));
 
-export function setupStreamMocks(mockResponse = "mock-stream"): void {
-  vi.mock("../utils/stream", () => ({
-    createStreamFromGenerator: vi.fn(),
-    createSSEResponse: vi.fn().mockImplementation(() => new Response(mockResponse)),
-  }));
-}
+vi.mock("../utils/stream", () => ({
+  createStreamFromGenerator: vi.fn(),
+  createSSEResponse: vi.fn().mockImplementation(() => new Response("mock-stream")),
+}));
