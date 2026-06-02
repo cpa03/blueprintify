@@ -89,9 +89,6 @@ export default defineConfig({
       "react-markdown",
       "remark-gfm",
     ],
-    esbuildOptions: {
-      target: "es2022",
-    },
   },
   server: {
     port: DEV_SERVER_PORT,
