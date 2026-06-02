@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from "vitest";
-import { StorageManager, ensureZodLoaded } from "../lib/storage";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { StorageManager } from "../lib/storage";
 import { createTestBlueprint, createLargeBlueprint } from "./factories";
 
 async function measureAsync<T>(
@@ -15,12 +15,6 @@ async function measureAsync<T>(
 describe("Performance Benchmarks: Storage Operations", () => {
   let manager: StorageManager;
   const localStorageStore: Record<string, string> = {};
-
-  // Pre-load Zod outside the timed paths so benchmark measurements reflect
-  // storage performance, not the one-time dynamic import overhead.
-  beforeAll(async () => {
-    await ensureZodLoaded();
-  });
 
   beforeEach(() => {
     vi.clearAllMocks();
