@@ -2,22 +2,21 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 44
+## Current Focus: RepoKeeper Cycle 45
 
-### Task: RepoKeeper Cycle 44 (2026-06-02) — CI Workflow Cleanup & Stale File Removal
+### Task: RepoKeeper Cycle 45 (2026-06-02) — CI Workflow Fixes, Stale File Removal & Doc Sync
 
 - **Priority**: High
 - **Status**: Active
-- **Objective**: Fix stale CI workflow references, remove redundant docs, clean repo
+- **Objective**: Apply CI workflow fixes (node version, stale doc refs), remove stale root files, sync docs
 - **Actions**:
-  - [x] Fix `docs/bug.md` → `docs/bugs.md` and `docs/feature.md` → `docs/features.md` in `main.yml`
-  - [x] Fix `docs/task.md` → `docs/active-tasks.md` in `main.yml` orchestrator prompt
+  - [x] Fix `docs/bug.md` → `docs/bugs.md` and `docs/feature.md` → `docs/features.md` in `main.yml` (lines 39, 263)
+  - [x] Fix `docs/task.md` → `docs/active-tasks.md` in `main.yml` (lines 41, 67, 115)
   - [x] Update `node-version: "20"` → `"22"` across 4 workflow files (11 instances)
-  - [x] Remove `docs/task.md` (stub file, all tasks completed)
-  - [x] Remove `docs/plans/2026-06-01-flexy-iteration-10.md` (plan already executed)
-  - [x] Remove `.omo/ralph-loop.local.md` (gitignored leftover)
-  - [x] Condense `docs/findings.md` — keep only current cycle
-  - [x] Update `docs/active-tasks.md` — add Cycle 44 entry
+  - [x] Remove `task_plan.md` and `notes.md` (stale security audit artifacts at root)
+  - [x] Update README.md — fix docs tree and listing (add missing docs, remove deleted `task.md`)
+  - [x] Update `docs/active-tasks.md` — add Cycle 45 entry
+  - [x] Update `docs/findings.md` — add Cycle 45 findings
   - [ ] Run full verification: typecheck ✅ lint ✅ build ✅ format ✅ test:all ✅
   - [ ] Create PR with all changes
 

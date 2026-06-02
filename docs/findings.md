@@ -2,7 +2,34 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Current Cycle (2026-06-02 — Cycle 44: Security Engineering Audit)
+## Current Cycle (2026-06-02 — Cycle 45: RepoKeeper — CI Workflow Fixes & Doc Sync)
+
+### Actions Taken
+
+1. **Removed stale root files**: `task_plan.md` and `notes.md` — leftover from prior security audit, no longer needed
+2. **Fixed CI workflow files**:
+   - Updated `node-version: "20"` → `"22"` across 4 workflow files (11 instances total)
+   - Fixed `main.yml` stale doc references: `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+   - Fixed `main.yml` task references: `docs/task.md` → `docs/active-tasks.md` (3 occurrences)
+3. **Updated README.md**:
+   - Fixed docs tree — replaced deleted `task.md` with `knowledge-review.md`, `ci-workflow-fixes.md`, `fixes/`
+   - Added missing doc links to listings: CI Configuration, CI Workflow Fixes, Knowledge Review
+   - Removed duplicate "Active Tasks" entry
+4. **Updated cycle tracking docs** (`active-tasks.md`, `findings.md`)
+
+### Repo Health
+
+| Check     | Result     |
+| --------- | ---------- |
+| Typecheck | ⏳ Pending |
+| Lint      | ⏳ Pending |
+| Build     | ⏳ Pending |
+| Tests     | ⏳ Pending |
+| Format    | ⏳ Pending |
+
+---
+
+## Previous Cycle (2026-06-02 — Cycle 44: Security Engineering Audit)
 
 ### Security Audit: `concurrently` ^9.2.1 → ^10.0.1 (Dependabot PR)
 
@@ -21,35 +48,6 @@
 #### Pre-existing Critical Vulnerabilities (not introduced by this PR)
 
 `npm audit` revealed **4 critical severity vulnerabilities** in the vitest ecosystem that were already present before this change:
-
-| Advisory            | Package                                 | Severity | CVSS | Issue                                                    |
-| ------------------- | --------------------------------------- | -------- | ---- | -------------------------------------------------------- |
-| GHSA-5xrq-8626-4rwp | vitest@3.2.4                            | Critical | 9.8  | Arbitrary file read/exec when Vitest UI server listening |
-| ↑ via               | @vitest/ui@3.2.4                        | Critical | 9.8  | Same advisory                                            |
-| ↑ via               | @vitest/coverage-v8@3.2.4               | Critical | 9.8  | Same advisory                                            |
-| ↑ via               | @cloudflare/vitest-pool-workers@0.12.21 | Critical | 9.8  | Same advisory                                            |
-
-- **Fix**: Upgrade vitest to 4.1.8+ (major version bump — requires separate migration PR)
-- **Mitigating factor**: Vitest UI is development-only; not exposed in production
-- **Dependabot branches already exist**: `dependabot/npm_and_yarn/vitest-4.1.8`, `dependabot/npm_and_yarn/vitest/coverage-v8-4.1.8`
-
-#### Detailed Analysis
-
-1. **`concurrently@10.0.1`** — No known CVEs, no deprecated APIs, no transitive dependency changes that introduce risk. The `dev:all` script usage (`concurrently "npm run dev:api" "npm run dev"`) is unaffected by any behavioral changes in 10.0.1.
-2. **Secrets scan**: Zero secrets, credentials, or sensitive data in the diff.
-3. **Deprecated functions**: Zero usage of deprecated Node.js, npm, or JavaScript APIs.
-
----
-
-## Previous Cycle (2026-06-01 — Cycle 43: RepoKeeper)
-
-### Findings
-
-- **Typecheck**: ✅ Clean
-- **Lint**: ✅ Clean
-- **Build**: ✅ Passes
-- **Tests**: ✅ 1044/1044 passing (564 web + 299 api + 181 shared)
-- **Format**: ✅ Prettier compliant
 
 ### Stale CI Workflow References Fixed
 

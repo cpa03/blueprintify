@@ -44,6 +44,7 @@ blueprintify/
 │   ├── blueprint.md
 │   ├── bugs.md
 │   ├── ci-configuration.md
+│   ├── ci-workflow-fixes.md
 │   ├── code-style-guidelines.md
 │   ├── completed-tasks-2026-Q1.md
 │   ├── development-workflow.md
@@ -51,9 +52,11 @@ blueprintify/
 │   ├── export-import-specs.md
 │   ├── features.md
 │   ├── findings.md
+│   ├── fixes/
 │   ├── flexy-plan.md
 │   ├── issue-audit-report-2026-05-27.md
 │   ├── issue-management-2026-05-27.md
+│   ├── knowledge-review.md
 │   ├── localstorage-schema.md
 │   ├── m2-technical-approach.md
 │   ├── refinement-workflow.md
@@ -61,7 +64,6 @@ blueprintify/
 │   ├── repo-rules.md
 │   ├── roadmap.md
 │   ├── security/
-│   ├── task.md
 │   ├── testing-procedures.md
 │   ├── troubleshooting.md
 │   └── user-guide.md
@@ -299,12 +301,15 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Release Process](./docs/release-process.md)** - Release and deployment procedures
 - **[Troubleshooting Guide](./docs/troubleshooting.md)** - Common issues and solutions
 - **[Environment Variables](./docs/environment-variables.md)** - Configuration reference for API, frontend, and Cloudflare
+- **[CI Configuration](./docs/ci-configuration.md)** - CI/CD configuration and Node.js version requirements
+- **[CI Workflow Fixes](./docs/ci-workflow-fixes.md)** - CI workflow fix instructions and status
 - **[Repository Rules](./docs/repo-rules.md)** - Repository governance and contribution rules
 - **[Security Assessment](./docs/security/assessment-ajv-vulnerabilities.md)** - AJV dependency vulnerability analysis
 
 ### 🤖 AI Agent System
 
 - **[AI Agent Usage Guide](./docs/ai-agent-usage-guide.md)** - Working with the AI agent system
+- **[Knowledge Review](./docs/knowledge-review.md)** - Document drift tracking and consistency checks
 - **[Technical Writer Agent](./.opencode/agent/technical-writer.md)** - Documentation agent configuration and workflow
 
 ### 📋 Project Documentation
@@ -320,7 +325,6 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Issue Audit Report](./docs/issue-audit-report-2026-05-27.md)** - Comprehensive issue audit with fix status tracking
 - **[Repository Audit](./docs/audit-2026-05-26.md)** - Automated repository audit findings
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
-- **[Task Management](./docs/task.md)** - Current development tasks and priorities
 
 ### 📚 M2 Documentation
 
