@@ -2,7 +2,23 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Current Cycle (2026-06-01 — Cycle 43: RepoKeeper)
+## Current Cycle (2026-06-02 — Security Audit: Dependabot PR Review)
+
+### Findings
+
+### Dependabot Security Audit — `@cloudflare/vitest-pool-workers` Incompatibility
+
+**Branch**: `dependabot/npm_and_yarn/development-dependencies-ed9099b1c1`
+
+**Finding**: Dependabot bumped `@cloudflare/vitest-pool-workers` from `0.12.21` → `0.16.11`, which changed peer dependency requirements from `vitest@2.0.x - 3.2.x` to `vitest@^4.1.0`. The project is pinned to `vitest@^3.2.4`, causing `npm ls` to report `ELSPROBLEMS` and potentially breaking API tests at runtime.
+
+**Other checks**: ✅ No secrets, ✅ No deprecated functions, ✅ Registry integrity verified (all packages from `registry.npmjs.org` with valid SHA-512 integrity hashes)
+
+**Fix**: Reverted `@cloudflare/vitest-pool-workers` to `0.12.21` in `apps/api/package.json` and regenerated `package-lock.json`.
+
+---
+
+## Previous Cycle (2026-06-01 — Cycle 43: RepoKeeper)
 
 ### Findings
 
