@@ -46,7 +46,9 @@ const preloadCssPlugin = (): Plugin => ({
 const removeLazyPreloadPlugin = (): Plugin => ({
   name: "remove-lazy-preload",
   transformIndexHtml(html) {
-    const lazyChunks = ["codemirror", "markdown", "syntaxHighlighter"];
+    // Also remove modulepreload for framer-motion (animation) and DOMPurify (security)
+    // since they're only used by lazy-loaded components (Wizard, Editor, etc.)
+    const lazyChunks = ["codemirror", "markdown", "syntaxHighlighter", "animation", "security"];
     return html.replace(
       new RegExp(
         `<link rel="modulepreload"[^>]*href="[^"]*(?:${lazyChunks.join("|")})-[^"]*\\.js"[^>]*>`,
