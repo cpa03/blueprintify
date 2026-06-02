@@ -116,12 +116,12 @@ export const TaskPrioritySchema = z.enum(["low", "medium", "high", "critical"]);
  * Represents a single actionable item in the generated task list.
  */
 export const TaskItemSchema = z.object({
-  id: z.string(),
+  id: z.string().max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
   title: z.string().min(1).max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
   status: TaskStatusSchema,
   priority: TaskPrioritySchema.optional(),
   description: z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX).optional(),
-  dependencies: z.array(z.string()).optional(),
+  dependencies: z.array(z.string().max(VALIDATION_LIMITS.PROJECT_NAME.MAX)).optional(),
 });
 
 /**
@@ -150,7 +150,7 @@ export const RefineRequestSchema = z.object({
       VALIDATION_LIMITS.CONSTRAINTS.MAX,
       `Instruction must not exceed ${VALIDATION_LIMITS.CONSTRAINTS.MAX} characters`
     ),
-  context: z.string().optional(),
+  context: z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX).optional(),
 });
 
 // ===== Template Schema =====
