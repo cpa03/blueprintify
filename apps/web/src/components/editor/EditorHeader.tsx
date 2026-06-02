@@ -121,7 +121,13 @@ const TabButton = React.memo(function TabButton({
 
 export type { ViewMode };
 
-const ContentStats = React.memo(function ContentStats({ content }: { content: string }) {
+const ContentStats = React.memo(function ContentStats({
+  content,
+  isGenerating = false,
+}: {
+  content: string;
+  isGenerating?: boolean;
+}) {
   const charCount = content.length;
   const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
   const rawReadingTime = wordCount / 200;
@@ -135,13 +141,51 @@ const ContentStats = React.memo(function ContentStats({ content }: { content: st
         <motion.div
           key="content-stats"
           initial={{ opacity: 0, y: -8, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -8, scale: 0.95 }}
-          transition={{
-            type: "spring",
-            ...SPRING_CONFIG.SNAPPY,
+          animate={{
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            borderColor: isGenerating
+              ? [
+                  "rgb(99 102 241 / 0.5)",
+                  "rgb(99 102 241 / 0.8)",
+                  "rgb(139 92 246 / 0.6)",
+                  "rgb(99 102 241 / 0.5)",
+                ]
+              : "rgb(55 65 81 / 0.5)",
+            boxShadow: isGenerating
+              ? [
+                  "0 0 0 0 rgb(99 102 241 / 0)",
+                  "0 0 12px 2px rgb(99 102 241 / 0.15)",
+                  "0 0 20px 4px rgb(139 92 246 / 0.1)",
+                  "0 0 0 0 rgb(99 102 241 / 0)",
+                ]
+              : "0 0 0 0 transparent",
           }}
-          className="hidden md:flex items-center gap-3 text-[10px] uppercase tracking-wider font-bold text-dark-400 bg-dark-800/50 px-2 py-1 rounded-md border border-dark-700/50"
+          exit={{ opacity: 0, y: -8, scale: 0.95 }}
+          transition={
+            isGenerating
+              ? {
+                  borderColor: {
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  },
+                  boxShadow: {
+                    duration: 2.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  },
+                  opacity: { type: "spring", ...SPRING_CONFIG.SNAPPY },
+                  y: { type: "spring", ...SPRING_CONFIG.SNAPPY },
+                  scale: { type: "spring", ...SPRING_CONFIG.SNAPPY },
+                }
+              : {
+                  type: "spring",
+                  ...SPRING_CONFIG.SNAPPY,
+                }
+          }
+          className="hidden md:flex items-center gap-3 text-[10px] uppercase tracking-wider font-bold text-dark-400 bg-dark-800/50 px-2 py-1 rounded-md border"
         >
           <div className="flex items-center gap-1">
             <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.CHARS}</span>
@@ -274,7 +318,7 @@ function EditorHeaderComponent({
             isVisible={hasContent && (!!lastSavedText || hasChanges)}
             hasChanges={hasChanges}
           />
-          {hasContent && <ContentStats content={content} />}
+          {hasContent && <ContentStats content={content} isGenerating={isGenerating} />}
         </div>
       </div>
 
