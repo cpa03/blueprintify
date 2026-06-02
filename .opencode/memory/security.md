@@ -8,7 +8,7 @@
 - CI/CD security: Standardized runner versions (`ubuntu-24.04-arm`) and action versions across all workflows.
 - Regular security audits (monthly recommended).
 
-## Current Security Status (2026-05-25 21:00 UTC)
+## Current Security Status (2026-06-02 04:10 UTC)
 
 | Control             | Status                                                |
 | ------------------- | ----------------------------------------------------- |
@@ -25,7 +25,7 @@
 | Rate Limiting       | ✅ Cloudflare rate limiter                            |
 | CI Runner           | ✅ All workflows use ubuntu-24.04-arm                 |
 | CI Actions          | ⚠️ main.yml uses invalid @v5 (blocked by #743)        |
-| npm audit           | ⚠️ 4 moderate vulnerabilities (dev deps only) - risk accepted |
+| npm audit           | ⚠️ **4 critical** vulnerabilities in vitest (dev deps) — GHSA-5xrq-8626-4rwp (CVSS 9.8). Upgrade to vitest@4.1.8+ required. Moderate AJV vulns (risk accepted, tracked in docs/security/assessment-ajv-vulnerabilities.md) |
 | .dev.vars gitignore  | ✅ Added to prevent credential commits               |
 
 ## Lessons Learned
