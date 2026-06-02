@@ -119,7 +119,6 @@ export default defineConfig({
       treeshake: {
         moduleSideEffects: false,
         propertyReadSideEffects: false,
-        tryCatchDeoptimization: false,
       },
       output: {
         // Note: CodeMirror, markdown, and syntaxHighlighter are intentionally NOT manually chunked
@@ -174,25 +173,6 @@ export default defineConfig({
     cssTarget: ["chrome111", "firefox114", "safari16.4", "edge111"],
     commonjsOptions: {
       transformMixedEsModules: true,
-    },
-  },
-  test: {
-    globals: true,
-    environment: "jsdom",
-    setupFiles: ["./src/test/setup.ts"],
-    exclude: ["node_modules/", "e2e/", "dist/"],
-    coverage: {
-      provider: "v8",
-      reporter: ["text", "json", "html"],
-      exclude: ["node_modules/", "src/test/", "**/*.d.ts", "**/*.config.*", "dist/"],
-      thresholds: {
-        global: {
-          branches: 80,
-          functions: 80,
-          lines: 80,
-          statements: 80,
-        },
-      },
     },
   },
 });

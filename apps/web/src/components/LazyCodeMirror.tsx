@@ -55,7 +55,7 @@ function LazyCodeMirrorComponent({ value, onChange, className }: LazyCodeMirrorP
         ]);
 
         if (isMounted) {
-          setCodeMirrorComponent(() => CodeMirror);
+          setCodeMirrorComponent(CodeMirror as unknown as CodeMirrorComponent);
           setExtensions([markdown()]);
           setTheme(oneDark);
         }
