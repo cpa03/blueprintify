@@ -55,7 +55,7 @@ export const LAYOUT = {
   /** Glass card with overflow hidden */
   GLASS_CARD: "glass-card overflow-hidden relative",
   /** Glass card with width transition */
-  GLASS_CARD_FLEX: "glass-card overflow-hidden transition-all duration-300",
+  GLASS_CARD_FLEX: "glass-card overflow-hidden transition-[width,transform,opacity] duration-300",
   FULL_WIDTH: "w-full",
   HALF_WIDTH: "w-full lg:w-1/2",
   TEMPLATES_DIVIDER: "text-center text-dark-500 my-8",
