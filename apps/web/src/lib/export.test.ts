@@ -5,13 +5,15 @@ import type { TechStackItemType } from "@blueprint/shared";
 
 // Mock JSZip
 vi.mock("jszip", () => {
-  const mockJSZip = vi.fn().mockImplementation(() => ({
-    folder: vi.fn().mockReturnValue({
+  const mockJSZip = vi.fn(function () {
+    return {
+      folder: vi.fn().mockReturnValue({
+        file: vi.fn(),
+      }),
       file: vi.fn(),
-    }),
-    file: vi.fn(),
-    generateAsync: vi.fn().mockResolvedValue(new Blob()),
-  }));
+      generateAsync: vi.fn().mockResolvedValue(new Blob()),
+    };
+  });
   return { default: mockJSZip };
 });
 
@@ -138,7 +140,9 @@ describe("Export functionality", () => {
         generateAsync: vi.fn().mockResolvedValue(new Blob()),
       };
 
-      (JSZip as unknown as ReturnType<typeof vi.fn>).mockImplementation(() => mockZip);
+      (JSZip as unknown as ReturnType<typeof vi.fn>).mockImplementation(function () {
+        return mockZip;
+      });
 
       await exportAsZip(mockFiles);
 

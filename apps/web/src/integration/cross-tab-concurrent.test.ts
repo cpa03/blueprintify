@@ -166,7 +166,7 @@ describe("Integration: Error Propagation", () => {
 
   beforeEach(() => {
     fetchMock = vi.fn();
-    global.fetch = fetchMock;
+    global.fetch = fetchMock as unknown as typeof global.fetch;
   });
 
   afterEach(() => {
@@ -346,7 +346,7 @@ describe("Integration: End-to-End Workflows", () => {
 
   beforeEach(() => {
     fetchMock = vi.fn();
-    global.fetch = fetchMock;
+    global.fetch = fetchMock as unknown as typeof global.fetch;
     manager = new StorageManager();
 
     Object.keys(localStorageStore).forEach((key) => delete localStorageStore[key]);
