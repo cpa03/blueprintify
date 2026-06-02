@@ -2,7 +2,7 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Current Cycle (2026-06-02 — Cycle 45: RepoKeeper — CI Workflow Fixes & Doc Sync)
+## Previous Cycle (2026-06-02 — Cycle 45: RepoKeeper — CI Workflow Fixes & Doc Sync)
 
 ### Actions Taken
 
@@ -87,6 +87,43 @@ Updated `node-version: "20"` → `"22"` across all CI workflow files (11 instanc
 | API tests    | 299/299 passed        |
 | Shared tests | 181/181 passed        |
 | **Total**    | **1044/1044 passed**  |
+
+---
+
+## Current Cycle (2026-06-02 — Cycle 46: BugFixer — CI Workflow Fixes & Doc Sync)
+
+### Actions Taken
+
+1. **Fixed stale doc references in `main.yml`**:
+   - `docs/bug.md` → `docs/bugs.md` (lines 39, 263)
+   - `docs/feature.md` → `docs/features.md` (line 39)
+   - `docs/task.md` → `docs/active-tasks.md` (lines 41, 67, 115)
+   - `task.md` → `active-tasks.md` (line 239, knowledge-steward prompt)
+
+2. **Updated `node-version` from `"20"` to `"22"`** across 5 workflow files (11 instances):
+   - `iterate.yml`: 5 instances
+   - `on-pull.yml`: 1 instance (also standardized `node-version: 20` → `node-version: "22"`)
+   - `parallel.yml`: 4 instances
+   - `pr-gatekeeper.yml`: 1 instance
+
+### Repo Health
+
+| Check        | Result                |
+| ------------ | --------------------- |
+| Typecheck    | ✅ Clean              |
+| Lint         | ✅ Clean              |
+| Build (web)  | ✅ Passes             |
+| Build (api)  | ❌ Node.js 20 env     |
+| Format       | ✅ Prettier compliant |
+| npm audit    | 0 vulnerabilities     |
+| Web tests    | 564/564 passed        |
+| API tests    | 318/318 passed        |
+| Shared tests | 181/181 passed        |
+| **Total**    | **1063/1063 passed**  |
+
+### Blocked
+
+Push of workflow file changes rejected: GITHUB_TOKEN lacks `workflows: write` permission. The fixes are committed locally on `fix/bugfixer-cycle-45-ci-workflow-fixes` branch. A maintainer with `workflows: write` scope must push this branch and create a PR.
 
 ---
 
