@@ -31,7 +31,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
   beforeEach(() => {
     fetchMock = vi.fn();
-    global.fetch = fetchMock;
+    global.fetch = fetchMock as unknown as typeof global.fetch;
   });
 
   afterEach(() => {

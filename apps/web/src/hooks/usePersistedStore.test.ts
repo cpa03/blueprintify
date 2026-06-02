@@ -56,8 +56,8 @@ describe("createPersistedStore", () => {
     remove: ReturnType<typeof vi.fn>;
   };
   let config: PersistedStoreConfig<TestData>;
-  let onLoadError: ReturnType<typeof vi.fn>;
-  let onSaveError: ReturnType<typeof vi.fn>;
+  let onLoadError: (error: unknown) => void;
+  let onSaveError: (error: unknown) => void;
 
   beforeEach(() => {
     vi.useFakeTimers();

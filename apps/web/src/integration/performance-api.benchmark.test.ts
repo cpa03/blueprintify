@@ -16,7 +16,7 @@ describe("Performance Benchmarks: API Integration", () => {
 
   beforeEach(() => {
     fetchMock = vi.fn();
-    global.fetch = fetchMock;
+    global.fetch = fetchMock as unknown as typeof global.fetch;
   });
 
   afterEach(() => {
