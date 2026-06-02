@@ -5,7 +5,7 @@ import { errorHandler } from "../middleware/errorHandler";
 import type { ErrorResponse } from "../errors";
 import type { AppVariables, User } from "../types";
 import { DEFAULTS } from "../config/env";
-import { HTTP_HEADERS } from "@blueprint/shared";
+import { HTTP_HEADERS, HTTP_METHODS } from "@blueprint/shared";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -67,7 +67,7 @@ describe("POST /share", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           title: "Test Blueprint",
@@ -100,7 +100,7 @@ describe("POST /share", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           title: "",
@@ -123,7 +123,7 @@ describe("POST /share", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           title: "Simple Blueprint",
@@ -186,7 +186,7 @@ describe("DELETE /share/:id", () => {
 
   it("should delete a shared blueprint", async () => {
     const env = createMockEnv("test-api-key");
-    const res = await app.request("/testshare123", { method: "DELETE" }, env);
+    const res = await app.request("/testshare123", { method: HTTP_METHODS.DELETE }, env);
 
     expect(res.status).toBe(200);
     const body = (await res.json()) as { success: true; data: { message: string } };
@@ -196,7 +196,7 @@ describe("DELETE /share/:id", () => {
 
   it("should return 400 for invalid share ID format on delete", async () => {
     const env = createMockEnv("test-api-key");
-    const res = await app.request("/invalid-id", { method: "DELETE" }, env);
+    const res = await app.request("/invalid-id", { method: HTTP_METHODS.DELETE }, env);
 
     expect(res.status).toBe(400);
     const data = (await res.json()) as ErrorResponse;
@@ -211,7 +211,7 @@ describe("DELETE /share/:id", () => {
     const postRes = await app.request(
       "/",
       {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           title: "Owned Blueprint",
@@ -222,7 +222,7 @@ describe("DELETE /share/:id", () => {
     );
     const postBody = (await postRes.json()) as { success: true; data: { id: string } };
     const { id } = postBody.data;
-    const delRes = await app.request(`/${id}`, { method: "DELETE" }, env);
+    const delRes = await app.request(`/${id}`, { method: HTTP_METHODS.DELETE }, env);
     expect(delRes.status).toBe(200);
     const delBody = (await delRes.json()) as { success: true; data: { message: string } };
     expect(delBody.success).toBe(true);
@@ -246,7 +246,7 @@ describe("DELETE /share/:id", () => {
     const postRes = await app.request(
       "/",
       {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           title: "Protected Blueprint",
@@ -257,7 +257,7 @@ describe("DELETE /share/:id", () => {
     );
     const postBody = (await postRes.json()) as { success: true; data: { id: string } };
     const { id } = postBody.data;
-    const delRes = await app.request(`/${id}`, { method: "DELETE" }, attackerEnv);
+    const delRes = await app.request(`/${id}`, { method: HTTP_METHODS.DELETE }, attackerEnv);
     expect(delRes.status).toBe(403);
     const data = (await delRes.json()) as ErrorResponse;
     expect(data.success).toBe(false);
@@ -270,7 +270,7 @@ describe("DELETE /share/:id", () => {
     const postRes = await app.request(
       "/",
       {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           title: "Legacy Blueprint",
@@ -281,7 +281,7 @@ describe("DELETE /share/:id", () => {
     );
     const postBody = (await postRes.json()) as { success: true; data: { id: string } };
     const { id } = postBody.data;
-    const delRes = await app.request(`/${id}`, { method: "DELETE" }, env);
+    const delRes = await app.request(`/${id}`, { method: HTTP_METHODS.DELETE }, env);
     expect(delRes.status).toBe(200);
     const delBody = (await delRes.json()) as { success: true; data: { message: string } };
     expect(delBody.success).toBe(true);

@@ -4,6 +4,7 @@ import importRoute from "./import";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
+import { HTTP_METHODS, HTTP_HEADERS } from "@blueprint/shared";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -23,8 +24,8 @@ describe("POST /import", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           format: "json",
         }),
@@ -43,8 +44,8 @@ describe("POST /import", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: "x".repeat(200_001),
           format: "json",
@@ -63,8 +64,8 @@ describe("POST /import", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: "not valid json {{{",
           format: "json",
@@ -83,8 +84,8 @@ describe("POST /import", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: JSON.stringify({ projectName: "Test" }),
           format: "json",
@@ -110,8 +111,8 @@ describe("POST /import", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: JSON.stringify(importData),
           format: "json",
@@ -150,8 +151,8 @@ describe("POST /import", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: JSON.stringify(importData),
           format: "json",
@@ -190,8 +191,8 @@ Details here
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: markdownContent,
           format: "markdown",
@@ -219,8 +220,8 @@ Details here
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: "No blueprint section here",
           format: "markdown",
@@ -249,8 +250,8 @@ Architecture details here
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: markdownContent,
           format: "markdown",

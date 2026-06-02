@@ -41,6 +41,9 @@ blueprintify/
 │   ├── api-documentation.md
 │   ├── audit-2026-05-26.md
 │   ├── audits/
+│   │   ├── brocula-hunt-2026-05-29.md
+│   │   ├── brocula-hunt-2026-05-30.md
+│   │   └── diagnostic-scoring-2026-05-31.md
 │   ├── blueprint.md
 │   ├── bugs.md
 │   ├── ci-configuration.md
@@ -53,6 +56,7 @@ blueprintify/
 │   ├── features.md
 │   ├── findings.md
 │   ├── fixes/
+│   │   └── ci-workflow-fixes-2026-05-31.md
 │   ├── flexy-plan.md
 │   ├── issue-audit-report-2026-05-27.md
 │   ├── issue-management-2026-05-27.md

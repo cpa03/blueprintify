@@ -80,6 +80,9 @@ export {
   NETWORK_ERROR_CODES,
   CORS_DEFAULTS,
   HTTP_METHODS,
+  HTTP_HEADER_NAMES,
+  SHARE_DEFAULTS,
+  BODY_SIZE_LIMITS,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";

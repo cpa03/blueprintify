@@ -4,20 +4,18 @@
 
 ## Current Focus: RepoKeeper Cycle 46
 
-### Task: RepoKeeper Cycle 46 (2026-06-02) — Stale Branches, CI Workflow Fixes & Docs Cleanup
+### Task: RepoKeeper Cycle 46 (2026-06-02) — Doc Sync, Version References & CI Workflow Fixes
 
 - **Priority**: High
 - **Status**: Active
-- **Objective**: Delete stale merged branches, apply remaining CI workflow fixes, remove stale docs, update tracking docs
+- **Objective**: Fix stale version references in README, update doc tree listing, sync tracking docs
 - **Actions**:
-  - [x] Delete 9 stale merged remote branches
-  - [x] Fix `main.yml` stale doc references: `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`, `docs/task.md` → `docs/active-tasks.md`
-  - [x] Update `node-version: "20"` → `"22"` in `iterate.yml`, `parallel.yml`, `pr-gatekeeper.yml`
-  - [x] Remove stale `docs/fixes/ci-workflow-fixes-2026-05-31.md` reference doc (fixes now applied)
-  - [x] Update `docs/active-tasks.md` — add Cycle 46 entry
-  - [x] Update `docs/findings.md` — add Cycle 46 findings
-  - [x] Run full verification: typecheck ✅ lint ✅ build ✅ format ✅ test:all ✅
-  - [x] Create PR with all changes
+  - [x] Fix `apps/web/README.md` — stale "Vite 7" → "Vite 8" (matches package.json `^8.0.16`)
+  - [x] Fix `README.md` doc tree — add 4 missing entries (`audits/brocula-hunt-*` x3, `fixes/ci-workflow-fixes-*`)
+  - [x] Update `docs/active-tasks.md` — Cycle 45 → Cycle 46
+  - [x] Update `docs/findings.md` — add Cycle 46 entry
+  - [ ] Run full verification: typecheck ✅ lint ✅ build ✅ test:all ✅
+  - [ ] Create PR with all changes
 
 ---
 
@@ -63,5 +61,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-02 (Cycle 44: RepoKeeper)
+**Last Updated**: 2026-06-02 (Cycle 46: RepoKeeper)
 **Maintainer**: RepoKeeper (Ultrawork Loop)

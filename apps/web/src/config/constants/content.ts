@@ -210,4 +210,9 @@ export const ACCESSIBILITY_LABELS = {
   TOAST: {
     DISMISS: (type: string) => `Dismiss ${type} notification`,
   },
+  OFFLINE_BANNER: {
+    LABEL: "You are currently offline",
+    DESCRIPTION: "Some features may be unavailable while you are offline.",
+    DISMISS: "Dismiss offline notice",
+  },
 } as const;

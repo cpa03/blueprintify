@@ -4,6 +4,7 @@ import exportRoute from "./export";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
+import { HTTP_METHODS, HTTP_HEADERS } from "@blueprint/shared";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -23,8 +24,8 @@ describe("POST /export", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           blueprint: "Test blueprint content",
           format: "json",
@@ -44,8 +45,8 @@ describe("POST /export", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: "Test Project",
           format: "json",
@@ -63,8 +64,8 @@ describe("POST /export", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: "Test Project",
           blueprint: "# Test Blueprint",
@@ -103,8 +104,8 @@ describe("POST /export", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: "My Project",
           blueprint: "# Architecture\n\nDetails here",
@@ -135,8 +136,8 @@ describe("POST /export", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: "Zip Project",
           blueprint: "# Blueprint",
@@ -165,8 +166,8 @@ describe("POST /export", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: "Test",
           blueprint: "x".repeat(100_001),
@@ -186,8 +187,8 @@ describe("POST /export", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: "Test",
           blueprint: "valid blueprint",
@@ -208,8 +209,8 @@ describe("POST /export", () => {
     const res = await app.request(
       "/",
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: "My Special Project",
           blueprint: "# Blueprint",
