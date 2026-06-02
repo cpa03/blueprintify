@@ -36,6 +36,38 @@
 
 ## Previous Cycle (2026-06-02 — Cycle 45: RepoKeeper — CI Workflow Fixes & Doc Sync)
 
+### Actions Taken
+
+1. **Fixed stale version reference**: `apps/web/README.md` — "Vite 7" → "Vite 8" (matches package.json `^8.0.16`)
+2. **Updated README.md doc tree**: Added 4 missing entries:
+   - `audits/brocula-hunt-2026-05-29.md`
+   - `audits/brocula-hunt-2026-05-30.md`
+   - `audits/diagnostic-scoring-2026-05-31.md`
+   - `fixes/ci-workflow-fixes-2026-05-31.md`
+3. **Updated cycle tracking docs** (`active-tasks.md`, `findings.md`)
+
+### Repo Health
+
+| Check     | Result |
+| --------- | ------ |
+| Build     | ✅     |
+| Lint      | ✅     |
+| Typecheck | ✅     |
+| Tests     | ✅     |
+| Format    | ✅     |
+
+### No Other Redundant/Temp/Unused Files
+
+- No empty directories found
+- No temp files or build artifacts tracked
+- No stale TODO/FIXME artifacts in non-test source code
+- No unused gitignored tracked files
+- Documentation tree in README now matches actual docs
+
+---
+
+## Previous Cycle (2026-06-02 — Cycle 45: RepoKeeper — CI Workflow Fixes & Doc Sync)
+
 ### Security Audit: `concurrently` ^9.2.1 → ^10.0.1 (Dependabot PR)
 
 **Files audited**: `package.json`, `package-lock.json`
@@ -92,6 +124,43 @@ Updated `node-version: "20"` → `"22"` across all CI workflow files (11 instanc
 | API tests    | 299/299 passed        |
 | Shared tests | 181/181 passed        |
 | **Total**    | **1044/1044 passed**  |
+
+---
+
+## Current Cycle (2026-06-02 — Cycle 46: BugFixer — CI Workflow Fixes & Doc Sync)
+
+### Actions Taken
+
+1. **Fixed stale doc references in `main.yml`**:
+   - `docs/bug.md` → `docs/bugs.md` (lines 39, 263)
+   - `docs/feature.md` → `docs/features.md` (line 39)
+   - `docs/task.md` → `docs/active-tasks.md` (lines 41, 67, 115)
+   - `task.md` → `active-tasks.md` (line 239, knowledge-steward prompt)
+
+2. **Updated `node-version` from `"20"` to `"22"`** across 5 workflow files (11 instances):
+   - `iterate.yml`: 5 instances
+   - `on-pull.yml`: 1 instance (also standardized `node-version: 20` → `node-version: "22"`)
+   - `parallel.yml`: 4 instances
+   - `pr-gatekeeper.yml`: 1 instance
+
+### Repo Health
+
+| Check        | Result                |
+| ------------ | --------------------- |
+| Typecheck    | ✅ Clean              |
+| Lint         | ✅ Clean              |
+| Build (web)  | ✅ Passes             |
+| Build (api)  | ❌ Node.js 20 env     |
+| Format       | ✅ Prettier compliant |
+| npm audit    | 0 vulnerabilities     |
+| Web tests    | 564/564 passed        |
+| API tests    | 318/318 passed        |
+| Shared tests | 181/181 passed        |
+| **Total**    | **1063/1063 passed**  |
+
+### Blocked
+
+Push of workflow file changes rejected: GITHUB_TOKEN lacks `workflows: write` permission. The fixes are committed locally on `fix/bugfixer-cycle-45-ci-workflow-fixes` branch. A maintainer with `workflows: write` scope must push this branch and create a PR.
 
 ---
 
