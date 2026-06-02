@@ -82,6 +82,20 @@
       0 0 0 1px color-mix(in srgb, var(--color-primary-500) 5%, transparent);
   }
 
+  /* Subtle focus-within glow when any focusable child inside a glass-card is focused.
+     Provides spatial awareness — the entire card lights up gently, helping users
+     orient themselves in multi-card layouts. Designed to complement the existing
+     input-level focus-visible rings without competing with them. */
+  .glass-card:focus-within {
+    border-color: color-mix(in srgb, var(--color-primary-500) 40%, transparent);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 0 0 1px color-mix(in srgb, var(--color-primary-500) 12%, transparent);
+    transition:
+      border-color 0.2s ease-out,
+      box-shadow 0.2s ease-out;
+  }
+
   /* Button styles */
   .btn-primary {
     @apply px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-500 
@@ -443,9 +457,16 @@
 
     /* Disable hover transforms for reduced motion */
     .glass-card:hover,
+    .glass-card:focus-within,
     .btn-secondary:not(:disabled):hover,
     .btn-ghost:not(:disabled):hover {
       transform: none !important;
+    }
+
+    /* Static border for focus-within in reduced motion mode — still show which
+       card is focused (accessibility) but skip the transition animation. */
+    .glass-card:focus-within {
+      transition: none !important;
     }
 
     /* Static skeleton for reduced motion - use solid color instead of animated gradient */
