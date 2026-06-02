@@ -171,6 +171,7 @@ export default defineConfig({
     reportCompressedSize: true,
     emptyOutDir: true,
     target: "ES2022",
+    cssTarget: ["chrome111", "firefox114", "safari16.4", "edge111"],
     commonjsOptions: {
       transformMixedEsModules: true,
     },
