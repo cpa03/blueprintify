@@ -2,23 +2,22 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 45
+## Current Focus: RepoKeeper Cycle 46
 
-### Task: RepoKeeper Cycle 45 (2026-06-02) — CI Workflow Fixes, Stale File Removal & Doc Sync
+### Task: RepoKeeper Cycle 46 (2026-06-02) — Stale Branches, CI Workflow Fixes & Docs Cleanup
 
 - **Priority**: High
 - **Status**: Active
-- **Objective**: Apply CI workflow fixes (node version, stale doc refs), remove stale root files, sync docs
+- **Objective**: Delete stale merged branches, apply remaining CI workflow fixes, remove stale docs, update tracking docs
 - **Actions**:
-  - [x] Fix `docs/bug.md` → `docs/bugs.md` and `docs/feature.md` → `docs/features.md` in `main.yml` (lines 39, 263)
-  - [x] Fix `docs/task.md` → `docs/active-tasks.md` in `main.yml` (lines 41, 67, 115)
-  - [x] Update `node-version: "20"` → `"22"` across 4 workflow files (11 instances)
-  - [x] Remove `task_plan.md` and `notes.md` (stale security audit artifacts at root)
-  - [x] Update README.md — fix docs tree and listing (add missing docs, remove deleted `task.md`)
-  - [x] Update `docs/active-tasks.md` — add Cycle 45 entry
-  - [x] Update `docs/findings.md` — add Cycle 45 findings
-  - [ ] Run full verification: typecheck ✅ lint ✅ build ✅ format ✅ test:all ✅
-  - [ ] Create PR with all changes
+  - [x] Delete 9 stale merged remote branches
+  - [x] Fix `main.yml` stale doc references: `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`, `docs/task.md` → `docs/active-tasks.md`
+  - [x] Update `node-version: "20"` → `"22"` in `iterate.yml`, `parallel.yml`, `pr-gatekeeper.yml`
+  - [x] Remove stale `docs/fixes/ci-workflow-fixes-2026-05-31.md` reference doc (fixes now applied)
+  - [x] Update `docs/active-tasks.md` — add Cycle 46 entry
+  - [x] Update `docs/findings.md` — add Cycle 46 findings
+  - [x] Run full verification: typecheck ✅ lint ✅ build ✅ format ✅ test:all ✅
+  - [x] Create PR with all changes
 
 ---
 

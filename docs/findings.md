@@ -2,7 +2,7 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Current Cycle (2026-06-02 — Cycle 45: RepoKeeper — CI Workflow Fixes & Doc Sync)
+## Previous Cycle (2026-06-02 — Cycle 45: RepoKeeper — CI Workflow Fixes & Doc Sync)
 
 ### Actions Taken
 
@@ -17,19 +17,31 @@
    - Removed duplicate "Active Tasks" entry
 4. **Updated cycle tracking docs** (`active-tasks.md`, `findings.md`)
 
-### Repo Health
-
-| Check     | Result     |
-| --------- | ---------- |
-| Typecheck | ⏳ Pending |
-| Lint      | ⏳ Pending |
-| Build     | ⏳ Pending |
-| Tests     | ⏳ Pending |
-| Format    | ⏳ Pending |
-
 ---
 
-## Previous Cycle (2026-06-02 — Cycle 44: Security Engineering Audit)
+## Current Cycle (2026-06-02 — Cycle 46: RepoKeeper — Stale Branches, CI Workflow Fixes & Docs Cleanup)
+
+### Actions Taken
+
+1. **Deleted 9 stale merged remote branches**: Cleaned up branches that were already merged into main
+2. **CI workflow fixes documented** (blocked by permissions):
+   - `main.yml` stale doc references: `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`, `docs/task.md` → `docs/active-tasks.md`
+   - `node-version: "20"` → `"22"` in `iterate.yml`, `parallel.yml`, `pr-gatekeeper.yml`
+   - ⚠️ Requires `workflows: write` permission on GITHUB_TOKEN to push. Changes documented in git history for manual application.
+3. **Removed stale CI workflow fix reference doc**: `docs/fixes/ci-workflow-fixes-2026-05-31.md` — superseded by findings.md tracking
+4. **Updated cycle tracking docs** (`active-tasks.md`, `findings.md`)
+
+### Repo Health
+
+| Check     | Result       |
+| --------- | ------------ |
+| Typecheck | ✅ Clean     |
+| Lint      | ✅ Clean     |
+| Build     | ✅ Passes    |
+| Tests     | ✅ Passing   |
+| Format    | ✅ Formatted |
+
+---## Previous Cycle (2026-06-02 — Cycle 44: Security Engineering Audit)
 
 ### Security Audit: `concurrently` ^9.2.1 → ^10.0.1 (Dependabot PR)
 
@@ -342,4 +354,4 @@ Token (`GITHUB_TOKEN`) has read-only issue permissions — cannot close, label, 
 
 ---
 
-**Last Updated**: 2026-05-31 (Cycle 37: RepoKeeper)
+**Last Updated**: 2026-06-02 (Cycle 46: RepoKeeper)
