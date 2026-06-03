@@ -198,16 +198,33 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 
 ## PRs
 
-| PR #  | Branch                                | Title                                                                                           |
-| ----- | ------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| #1401 | `feat/flexy-eliminate-hardcoded-v2`   | feat(flexy): eliminate hardcoded URLs with shared defaults                                      |
-| #1414 | `feat/flexy-hardcoded-values-v3`      | feat(flexy): eliminate hardcoded values from scripts with centralized config                    |
-| #1448 | `feat/flexy-eliminate-hardcoded-v4`   | feat(flexy): centralize AI, dev, and retry defaults into shared config                          |
-| #1454 | `feat/flexy-iteration-4`              | feat(flexy): eliminate duplicated TIME_UNITS and magic numbers, deduplicate animation config    |
-| #1509 | `feat/flexy-iteration-8`              | feat(flexy): add HTTP_METHODS shared constant and eliminate remaining hardcoded string literals |
-| TBD   | `feat/flexy-iteration-9-config-tests` | feat(flexy): add comprehensive shared config tests and eliminate hardcoded test strings         |
-| TBD   | `feat/flexy-iteration-10`             | feat(flexy): add HTTP_HEADER_NAMES, eliminate hardcoded methods/status/CType in tests           |
+| PR #  | Branch                                      | Title                                                                                                              |
+| ----- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| #1401 | `feat/flexy-eliminate-hardcoded-v2`         | feat(flexy): eliminate hardcoded URLs with shared defaults                                                         |
+| #1414 | `feat/flexy-hardcoded-values-v3`            | feat(flexy): eliminate hardcoded values from scripts with centralized config                                       |
+| #1448 | `feat/flexy-eliminate-hardcoded-v4`         | feat(flexy): centralize AI, dev, and retry defaults into shared config                                             |
+| #1454 | `feat/flexy-iteration-4`                    | feat(flexy): eliminate duplicated TIME_UNITS and magic numbers, deduplicate animation config                       |
+| #1509 | `feat/flexy-iteration-8`                    | feat(flexy): add HTTP_METHODS shared constant and eliminate remaining hardcoded string literals                    |
+| TBD   | `feat/flexy-iteration-9-config-tests`       | feat(flexy): add comprehensive shared config tests and eliminate hardcoded test strings                            |
+| TBD   | `feat/flexy-iteration-10`                   | feat(flexy): add HTTP_HEADER_NAMES, eliminate hardcoded methods/status/CType in tests                              |
+| TBD   | `feat/flexy-iteration-11-mime-cors-headers` | feat(flexy): add CONTENT_TYPE_ZIP, CORS header names to shared config, eliminate remaining hardcoded test literals |
+
+### ✅ Flexy Iteration 11: Add CONTENT_TYPE_ZIP & CORS Header Names to Shared Config
+
+| File                                                 | Change                                                                                           |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `packages/shared/src/config.ts`                      | Added `CONTENT_TYPE_ZIP/HTML/PLAIN` to `HTTP_HEADERS` + CORS header names to `HTTP_HEADER_NAMES` |
+| `packages/shared/src/config.test.ts`                 | Added 7 tests for new `HTTP_HEADERS` MIME types + `HTTP_HEADER_NAMES` CORS headers               |
+| `apps/api/src/config/constants.ts`                   | `SSE_CORS_HEADERS` now references shared `HTTP_HEADER_NAMES` (deduplicated)                      |
+| `apps/api/src/utils/stream.test.ts`                  | Replaced `"GET"/"POST"` with `HTTP_METHODS`, CORS strings with `SSE_CORS_HEADERS`                |
+| `apps/web/src/integration/refinement-export.test.ts` | Replaced `"application/zip"` with `HTTP_HEADERS.CONTENT_TYPE_ZIP` (2 occurrences)                |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — 1,069 tests passing (564 web + 318 api + 187 shared) across 66 files
 
 ## Status
 
-**✅ COMPLETED - 10 iterations done**
+**✅ COMPLETED - 11 iterations done**
