@@ -2,17 +2,17 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Current Cycle (2026-06-02 — Cycle 46: RepoKeeper — Doc Sync, Version References & CI Workflow Fixes)
+## Current Cycle (2026-06-03 — Cycle 47: BugFixer — CI Node.js 22 Version & Stale Doc References)
 
 ### Actions Taken
 
-1. **Fixed stale version reference**: `apps/web/README.md` — "Vite 7" → "Vite 8" (matches package.json `^8.0.16`)
-2. **Updated README.md doc tree**: Added 4 missing entries:
-   - `audits/brocula-hunt-2026-05-29.md`
-   - `audits/brocula-hunt-2026-05-30.md`
-   - `audits/diagnostic-scoring-2026-05-31.md`
-   - `fixes/ci-workflow-fixes-2026-05-31.md`
-3. **Updated cycle tracking docs** (`active-tasks.md`, `findings.md`)
+1. **Fixed stale doc refs in main.yml**: `docs/bug.md` → `docs/bugs.md` (lines 39, 263), `docs/feature.md` → `docs/features.md` (line 39)
+2. **Updated node-version to "22"** in all 4 CI workflow files:
+   - `.github/workflows/iterate.yml` — 5 instances of `"20"` → `"22"`
+   - `.github/workflows/parallel.yml` — 4 instances of `"20"` → `"22"`
+   - `.github/workflows/on-pull.yml` — `20` (unquoted) → `"22"`
+   - `.github/workflows/pr-gatekeeper.yml` — `"20"` → `"22"`
+3. **Updated tracking docs** (`active-tasks.md`, `bugs.md`, `findings.md`)
 
 ### Repo Health
 
