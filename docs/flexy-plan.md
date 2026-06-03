@@ -225,6 +225,20 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run test:all` — 1,069 tests passing (564 web + 318 api + 187 shared) across 66 files
 
+### ✅ Flexy Iteration 12: Centralize Preview, Observability, Queue, Python, & CSP Domain Configs
+
+| File                             | Change                                                                                                                                                                                                                                           |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `packages/shared/src/config.ts`  | Added `PREVIEW_DEFAULTS` (preview port/host/URL), `OBSERVABILITY_DEFAULTS` (sampling rates, CPU limit), `QUEUE_DEFAULTS` (batch size, timeout, retries), `PYTHON_DEV_DEFAULTS` (dev port/host), `CSP_CONNECT_DOMAINS` (known deployment domains) |
+| `packages/shared/src/index.ts`   | Exported 5 new config objects                                                                                                                                                                                                                    |
+| `scripts/brocula-lighthouse.mjs` | Replaced hardcoded `http://localhost:4173` with env vars + defaults (`PREVIEW_PORT`, `PREVIEW_HOST`, `PREVIEW_URL`)                                                                                                                              |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — 1,069 tests passing (564 web + 318 api + 187 shared) across 66 files
+
 ## Status
 
-**✅ COMPLETED - 11 iterations done**
+**✅ COMPLETED - 12 iterations done**

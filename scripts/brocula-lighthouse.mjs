@@ -3,6 +3,11 @@ import lighthouse from 'lighthouse';
 import { execSync } from 'child_process';
 import fs from 'fs';
 
+// Flexy says: No hardcoded preview URLs!
+const PREVIEW_PORT = process.env.PREVIEW_PORT || '4173';
+const PREVIEW_HOST = process.env.PREVIEW_HOST || 'localhost';
+const PREVIEW_URL = process.env.PREVIEW_URL || `http://${PREVIEW_HOST}:${PREVIEW_PORT}`;
+
 async function runLighthouse() {
   let chromePath;
   try {
@@ -23,7 +28,7 @@ async function runLighthouse() {
       preset: 'desktop'
     };
 
-    const runnerResult = await lighthouse('http://localhost:4173', options);
+    const runnerResult = await lighthouse(PREVIEW_URL, options);
     const report = JSON.parse(runnerResult.report);
 
     console.log('=== LIGHTHOUSE SCORES ===');
