@@ -5,9 +5,9 @@
  * Verifies correct SSE protocol format and proper event handling.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { DEV_DEFAULTS, SSE_HEADERS, CORS_DEFAULTS } from "@blueprint/shared";
+import { DEV_DEFAULTS, SSE_HEADERS, CORS_DEFAULTS, HTTP_METHODS } from "@blueprint/shared";
 import { formatSSE, createSSEResponse, createStreamFromGenerator } from "./stream";
-import { setEnvConfig } from "../config/constants";
+import { setEnvConfig, SSE_CORS_HEADERS } from "../config/constants";
 import type { SSEMessage } from "./stream";
 
 function makeMinimalEnvConfig(): Record<string, unknown> {
@@ -145,7 +145,7 @@ describe("createSSEResponse", () => {
       },
     });
     const response = createSSEResponse(stream);
-    expect(response.headers.get("Access-Control-Allow-Origin")).toBe(
+    expect(response.headers.get(SSE_CORS_HEADERS.ACCESS_CONTROL_ALLOW_ORIGIN)).toBe(
       DEV_DEFAULTS.PLAYWRIGHT_TEST_URL
     );
   });
@@ -157,9 +157,9 @@ describe("createSSEResponse", () => {
       },
     });
     const response = createSSEResponse(stream);
-    const methods = response.headers.get("Access-Control-Allow-Methods");
-    expect(methods).toContain("GET");
-    expect(methods).toContain("POST");
+    const methods = response.headers.get(SSE_CORS_HEADERS.ACCESS_CONTROL_ALLOW_METHODS);
+    expect(methods).toContain(HTTP_METHODS.GET);
+    expect(methods).toContain(HTTP_METHODS.POST);
   });
 
   it("should set CORS headers header", () => {
@@ -169,7 +169,7 @@ describe("createSSEResponse", () => {
       },
     });
     const response = createSSEResponse(stream);
-    const headers = response.headers.get("Access-Control-Allow-Headers");
+    const headers = response.headers.get(SSE_CORS_HEADERS.ACCESS_CONTROL_ALLOW_HEADERS);
     expect(headers).toContain("Content-Type");
     expect(headers).toContain(CORS_DEFAULTS.ALLOW_HEADERS[1]);
   });

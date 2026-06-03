@@ -137,10 +137,17 @@ export const SSE_HEADERS = {
 /**
  * HTTP Headers configuration
  * Standard HTTP header values used across frontend and backend
+ * Flexy says: Add new MIME types here instead of hardcoding them!
  */
 export const HTTP_HEADERS = {
   /** Content-Type header for JSON requests/responses */
   CONTENT_TYPE_JSON: "application/json",
+  /** Content-Type header for ZIP file downloads */
+  CONTENT_TYPE_ZIP: "application/zip",
+  /** Content-Type header for HTML responses */
+  CONTENT_TYPE_HTML: "text/html",
+  /** Content-Type header for plain text */
+  CONTENT_TYPE_PLAIN: "text/plain",
 } as const;
 
 /**
@@ -432,4 +439,9 @@ export const HTTP_HEADER_NAMES = {
   RETRY_AFTER: "Retry-After",
   /** Set-Cookie header for cookie management */
   SET_COOKIE: "Set-Cookie",
+
+  /** CORS headers */
+  ACCESS_CONTROL_ALLOW_ORIGIN: "Access-Control-Allow-Origin",
+  ACCESS_CONTROL_ALLOW_METHODS: "Access-Control-Allow-Methods",
+  ACCESS_CONTROL_ALLOW_HEADERS: "Access-Control-Allow-Headers",
 } as const;

@@ -230,7 +230,7 @@ describe("Integration: Export/Import Workflow", () => {
       fetchMock.mockResolvedValueOnce(
         new Response(mockBuffer, {
           status: HTTP_STATUS.OK,
-          headers: { "Content-Type": "application/zip" },
+          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_ZIP },
         })
       );
 
@@ -244,7 +244,7 @@ describe("Integration: Export/Import Workflow", () => {
       });
 
       expect(response.status).toBe(HTTP_STATUS.OK);
-      expect(response.headers.get("Content-Type")).toBe("application/zip");
+      expect(response.headers.get("Content-Type")).toBe(HTTP_HEADERS.CONTENT_TYPE_ZIP);
     });
 
     it("should handle large project exports", async () => {

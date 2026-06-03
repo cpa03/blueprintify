@@ -24,6 +24,7 @@ import {
   HTTP_METHODS as SHARED_HTTP_METHODS,
   SHARE_DEFAULTS as SHARED_SHARE_DEFAULTS,
   BODY_SIZE_LIMITS as SHARED_BODY_SIZE_LIMITS,
+  HTTP_HEADER_NAMES,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./config-types";
 import {
@@ -400,12 +401,12 @@ export const PROMPT_INPUT_CONFIG = {
 
 /**
  * SSE CORS headers for streaming responses
- * Flexy says: No hardcoded CORS header strings - everything in config!
+ * Flexy says: No hardcoded CORS header strings - reference shared HTTP_HEADER_NAMES!
  */
 export const SSE_CORS_HEADERS = {
-  ACCESS_CONTROL_ALLOW_ORIGIN: "Access-Control-Allow-Origin",
-  ACCESS_CONTROL_ALLOW_METHODS: "Access-Control-Allow-Methods",
-  ACCESS_CONTROL_ALLOW_HEADERS: "Access-Control-Allow-Headers",
+  ACCESS_CONTROL_ALLOW_ORIGIN: HTTP_HEADER_NAMES.ACCESS_CONTROL_ALLOW_ORIGIN,
+  ACCESS_CONTROL_ALLOW_METHODS: HTTP_HEADER_NAMES.ACCESS_CONTROL_ALLOW_METHODS,
+  ACCESS_CONTROL_ALLOW_HEADERS: HTTP_HEADER_NAMES.ACCESS_CONTROL_ALLOW_HEADERS,
 } as const;
 
 /**

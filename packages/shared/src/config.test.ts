@@ -27,6 +27,7 @@ import {
   NETWORK_ERROR_CODES,
   CORS_DEFAULTS,
   HTTP_METHODS,
+  HTTP_HEADER_NAMES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -209,6 +210,21 @@ describe("HTTP_HEADERS", () => {
   it("should have JSON content type", () => {
     expect(HTTP_HEADERS.CONTENT_TYPE_JSON).toBeTruthy();
     expect(HTTP_HEADERS.CONTENT_TYPE_JSON).toBe("application/json");
+  });
+
+  it("should have ZIP content type", () => {
+    expect(HTTP_HEADERS.CONTENT_TYPE_ZIP).toBeTruthy();
+    expect(HTTP_HEADERS.CONTENT_TYPE_ZIP).toBe("application/zip");
+  });
+
+  it("should have HTML content type", () => {
+    expect(HTTP_HEADERS.CONTENT_TYPE_HTML).toBeTruthy();
+    expect(HTTP_HEADERS.CONTENT_TYPE_HTML).toBe("text/html");
+  });
+
+  it("should have plain text content type", () => {
+    expect(HTTP_HEADERS.CONTENT_TYPE_PLAIN).toBeTruthy();
+    expect(HTTP_HEADERS.CONTENT_TYPE_PLAIN).toBe("text/plain");
   });
 });
 
@@ -623,5 +639,26 @@ describe("HTTP_STATUS", () => {
 
   it("should have 5xx server error codes", () => {
     expect(HTTP_STATUS.INTERNAL_ERROR).toBeGreaterThanOrEqual(500);
+  });
+});
+
+describe("HTTP_HEADER_NAMES", () => {
+  it("should have standard header names", () => {
+    expect(HTTP_HEADER_NAMES.CONTENT_TYPE).toBe("Content-Type");
+    expect(HTTP_HEADER_NAMES.CACHE_CONTROL).toBe("Cache-Control");
+    expect(HTTP_HEADER_NAMES.AUTHORIZATION).toBe("Authorization");
+    expect(HTTP_HEADER_NAMES.CONTENT_LENGTH).toBe("Content-Length");
+  });
+
+  it("should have CORS header names", () => {
+    expect(HTTP_HEADER_NAMES.ACCESS_CONTROL_ALLOW_ORIGIN).toBe("Access-Control-Allow-Origin");
+    expect(HTTP_HEADER_NAMES.ACCESS_CONTROL_ALLOW_METHODS).toBe("Access-Control-Allow-Methods");
+    expect(HTTP_HEADER_NAMES.ACCESS_CONTROL_ALLOW_HEADERS).toBe("Access-Control-Allow-Headers");
+  });
+
+  it("should have unique header name values", () => {
+    const names = Object.values(HTTP_HEADER_NAMES);
+    const uniqueNames = new Set(names);
+    expect(uniqueNames.size).toBe(names.length);
   });
 });
