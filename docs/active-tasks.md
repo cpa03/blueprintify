@@ -2,18 +2,19 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 46
+## Current Focus: BugFixer Cycle 47
 
-### Task: RepoKeeper Cycle 46 (2026-06-02) — Doc Sync, Version References & CI Workflow Fixes
+### Task: BugFixer Cycle 47 (2026-06-03) — CI Node.js 22 Version & Stale Doc References
 
 - **Priority**: High
 - **Status**: Active
-- **Objective**: Fix stale version references in README, update doc tree listing, sync tracking docs
+- **Objective**: Fix remaining `node-version: "20"` in all 4 workflow files, fix stale doc refs (`docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`) in main.yml
 - **Actions**:
-  - [x] Fix `apps/web/README.md` — stale "Vite 7" → "Vite 8" (matches package.json `^8.0.16`)
-  - [x] Fix `README.md` doc tree — add 4 missing entries (`audits/brocula-hunt-*` x3, `fixes/ci-workflow-fixes-*`)
-  - [x] Update `docs/active-tasks.md` — Cycle 45 → Cycle 46
-  - [x] Update `docs/findings.md` — add Cycle 46 entry
+  - [x] Fix `.github/workflows/main.yml` — stale `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+  - [x] Fix `.github/workflows/iterate.yml` — 5× `node-version: "20"` → `"22"`
+  - [x] Fix `.github/workflows/parallel.yml` — 4× `node-version: "20"` → `"22"`
+  - [x] Fix `.github/workflows/on-pull.yml` — `node-version: 20` → `"22"`
+  - [x] Fix `.github/workflows/pr-gatekeeper.yml` — `node-version: "20"` → `"22"`
   - [ ] Run full verification: typecheck ✅ lint ✅ build ✅ test:all ✅
   - [ ] Create PR with all changes
 
