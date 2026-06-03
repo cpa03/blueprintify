@@ -420,6 +420,78 @@ export const BODY_SIZE_LIMITS = {
   LENIENT_MB: 10,
 } as const;
 
+/**
+ * Preview Server Defaults
+ * Centralized defaults for Vite preview and Lighthouse testing.
+ * Flexy says: No hardcoded preview URLs or ports!
+ */
+export const PREVIEW_DEFAULTS = {
+  /** Default port for Vite preview server */
+  PREVIEW_PORT: 4173,
+  /** Default preview server host */
+  PREVIEW_HOST: "localhost",
+  /** Full default preview URL */
+  PREVIEW_URL: "http://localhost:4173",
+} as const;
+
+/**
+ * Observability Configuration Defaults
+ * Centralized sampling rates and limits for Cloudflare Workers observability.
+ * Flexy says: No hardcoded sampling rates!
+ */
+export const OBSERVABILITY_DEFAULTS = {
+  /** Trace sampling rate for production (0.0 - 1.0) */
+  TRACES_SAMPLING_RATE: 0.1,
+  /** Log sampling rate for production (0.0 - 1.0) */
+  LOGS_SAMPLING_RATE: 0.5,
+  /** CPU limit in ms for Cloudflare Workers */
+  CPU_LIMIT_MS: 50000,
+} as const;
+
+/**
+ * Worker Queue Configuration Defaults
+ * Centralized defaults for Cloudflare Workers Queue bindings.
+ * Flexy says: No hardcoded queue config values!
+ */
+export const QUEUE_DEFAULTS = {
+  /** Default max batch size for queue consumers */
+  MAX_BATCH_SIZE: 10,
+  /** Default max batch timeout in seconds for queue consumers */
+  MAX_BATCH_TIMEOUT_S: 30,
+  /** Default max retries for queue consumers */
+  MAX_RETRIES: 5,
+  /** Default retry delay in seconds for queue consumers */
+  RETRY_DELAY_S: 60,
+} as const;
+
+/**
+ * Python Development Server Defaults
+ * Centralized defaults for Python backend templates.
+ * Flexy says: No hardcoded Python port numbers!
+ */
+export const PYTHON_DEV_DEFAULTS = {
+  /** Default port for FastAPI/Flask dev servers in generated templates */
+  DEV_PORT: 8000,
+  /** Default host for Python dev servers */
+  DEV_HOST: "0.0.0.0",
+} as const;
+
+/**
+ * CSP Connect-Source Domains
+ * Centralized domain list for Content Security Policy connect-src directives.
+ * Flexy says: No hardcoded domain URLs in security config!
+ */
+export const CSP_CONNECT_DOMAINS = {
+  /** Production API domain */
+  PRODUCTION_API: "https://api.blueprintify.dev",
+  /** Staging API domain */
+  STAGING_API: "https://api-staging.blueprintify.dev",
+  /** Production web domain */
+  PRODUCTION_WEB: "https://blueprintify.dev",
+  /** Staging web domain */
+  STAGING_WEB: "https://staging.blueprintify.dev",
+} as const;
+
 export const HTTP_HEADER_NAMES = {
   /** Content-Type header - most commonly hardcoded as object key */
   CONTENT_TYPE: "Content-Type",
