@@ -123,6 +123,7 @@ export const EDITOR_LABELS = {
     SPLIT: "Ctrl+2",
     PREVIEW: "Ctrl+3",
   },
+  VIEW_MODES_ARIA_LABEL: "Editor view mode",
   BUTTONS: {
     EXPORT_ZIP: "Export .zip",
     NEW_PROJECT: "New",

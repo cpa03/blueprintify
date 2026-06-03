@@ -24,7 +24,7 @@
  * ```
  */
 
-import React from "react";
+import React, { useCallback } from "react";
 import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
@@ -35,6 +35,8 @@ import { SPRING_CONFIG, EDITOR_LABELS, ANIMATION } from "../../config/constants"
 import { COLORS, EDITOR_ANIMATION } from "../../config/theme";
 
 export type ViewMode = "edit" | "preview" | "split";
+
+const VIEW_MODES: ViewMode[] = ["edit", "split", "preview"];
 
 interface EditorToolbarProps {
   activeTab: EditorTab;
@@ -75,10 +77,55 @@ function EditorToolbarComponent({
     preview: EDITOR_LABELS.VIEW_MODES.PREVIEW,
   };
 
+  const handleViewModeKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      const currentIndex = VIEW_MODES.indexOf(viewMode);
+      let nextIndex: number | null = null;
+
+      switch (e.key) {
+        case "ArrowRight":
+          e.preventDefault();
+          nextIndex = (currentIndex + 1) % VIEW_MODES.length;
+          break;
+        case "ArrowLeft":
+          e.preventDefault();
+          nextIndex = (currentIndex - 1 + VIEW_MODES.length) % VIEW_MODES.length;
+          break;
+        case "Home":
+          e.preventDefault();
+          nextIndex = 0;
+          break;
+        case "End":
+          e.preventDefault();
+          nextIndex = VIEW_MODES.length - 1;
+          break;
+        default:
+          return;
+      }
+
+      if (nextIndex !== null) {
+        const nextMode = VIEW_MODES[nextIndex];
+        if (nextMode) {
+          setViewMode(nextMode);
+          const nextButton = document.querySelector<HTMLButtonElement>(
+            `[data-view-mode="${nextMode}"]`
+          );
+          nextButton?.focus();
+        }
+      }
+    },
+    [viewMode, setViewMode]
+  );
+
   return (
     <div className="flex items-center gap-2">
-      <div className="flex bg-dark-800 p-1 rounded-lg relative">
-        {(["edit", "split", "preview"] as const).map((mode) => (
+      <div
+        className="flex bg-dark-800 p-1 rounded-lg relative"
+        role="radiogroup"
+        aria-label={EDITOR_LABELS.VIEW_MODES_ARIA_LABEL}
+        onKeyDown={handleViewModeKeyDown}
+      >
+        {VIEW_MODES.map((mode) => (
           <Tooltip
             key={mode}
             content={
@@ -94,13 +141,15 @@ function EditorToolbarComponent({
           >
             <button
               onClick={() => setViewMode(mode)}
+              data-view-mode={mode}
+              role="radio"
+              aria-checked={viewMode === mode}
               className={clsx(
                 "px-4 py-2 rounded text-xs font-medium transition-colors duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center relative z-10",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950",
                 viewMode === mode ? "text-white" : "text-dark-400 hover:text-white"
               )}
-              aria-label={`Switch to ${mode} mode (${viewModeShortcuts[mode]})`}
-              aria-pressed={viewMode === mode}
+              aria-label={`${viewModeLabels[mode]} view (${viewModeShortcuts[mode]})`}
             >
               <span className="flex items-center gap-1.5">
                 {mode === "edit" && (
