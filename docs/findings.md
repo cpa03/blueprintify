@@ -395,3 +395,20 @@ These fixes exist in separate branches (`agent/bugfix-ci-node-22-stale-docs`, `f
 4. Updated `docs/active-tasks.md` — clarified CI workflow status
 
 **Last Updated**: 2026-06-03 (Cycle 49: RepoKeeper)
+
+## 2026-06-03: CI Node Version Mismatch — Changes Needed
+
+**Issue:** All CI workflows reference `node-version: "20"` but `.nvmrc` specifies Node 22.
+
+**Files requiring update (11 references across 4 files):**
+
+- `.github/workflows/iterate.yml` — 5 references to `node-version: "20"` → must be `"22"`
+- `.github/workflows/on-pull.yml` — 1 reference to `node-version: 20` → must be `22`
+- `.github/workflows/parallel.yml` — 4 references to `node-version: "20"` → must be `"22"`
+- `.github/workflows/pr-gatekeeper.yml` — 1 reference to `node-version: "20"` → must be `"22"`
+
+**Additional fix:** `main.yml` references non-existent `docs/bug.md` and `docs/feature.md` — should be `docs/bugs.md` and `docs/features.md`.
+
+**Blocked by:** GitHub App token lacks `workflows: write` permission. These changes must be applied manually or via a PAT with the `workflows` scope.
+
+**References:** Issues #1549, #1470, #1390 (CI node version), #1293 (stale doc refs)
