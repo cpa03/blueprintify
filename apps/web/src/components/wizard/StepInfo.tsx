@@ -105,6 +105,8 @@ export const StepInfo = memo(function StepInfo({
   const canProceed =
     projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN &&
     description.length >= FORM_LIMITS.DESCRIPTION.MIN;
+  const isProjectNameInvalid =
+    projectName.length > 0 && projectName.length < FORM_LIMITS.PROJECT_NAME.MIN;
   const isDescriptionInvalid =
     description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN;
 
@@ -230,6 +232,7 @@ export const StepInfo = memo(function StepInfo({
               maxLength={FORM_LIMITS.PROJECT_NAME.MAX}
               required
               aria-required="true"
+              aria-invalid={isProjectNameInvalid || undefined}
               animate={projectNameTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
               transition={{ duration: ANIMATION.FAST }}
               {...(projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
