@@ -175,7 +175,6 @@
   .step-dot.completed {
     @apply bg-accent-emerald;
   }
-
 }
 
 /* Form progress shimmer animation */

@@ -166,8 +166,6 @@ export const ERROR_MESSAGES = {
   VALIDATION: "Request validation failed",
   NOT_FOUND: (route: string) => `Route not found: ${route}`,
   CONFIGURATION: "OpenAI API key not configured",
-  NETWORK: "Network error occurred",
-  AI_SERVICE: "AI service error",
   AI_SERVICE_UNAVAILABLE: "AI service temporarily unavailable",
   AI_SERVICE_FAILURE: (detail: string) => `AI service error: ${detail}`,
   INTERNAL: "Internal server error",
@@ -205,11 +203,8 @@ export const ERROR_MESSAGES = {
 export const DEFAULT_ERROR_MESSAGES = {
   VALIDATION: ERROR_MESSAGES.VALIDATION,
   AUTHENTICATION: ERROR_MESSAGES.AUTHENTICATION,
-  AUTHORIZATION: ERROR_MESSAGES.AUTHORIZATION,
   NOT_FOUND: "Resource not found",
   CONFIGURATION: "Service configuration error",
-  NETWORK: ERROR_MESSAGES.NETWORK,
-  AI_SERVICE: ERROR_MESSAGES.AI_SERVICE,
   INTERNAL: ERROR_MESSAGES.INTERNAL,
 } as const;
 

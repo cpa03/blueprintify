@@ -55,8 +55,6 @@ blueprintify/
 │   ├── export-import-specs.md
 │   ├── features.md
 │   ├── findings.md
-│   ├── fixes/
-│   │   └── ci-workflow-fixes-2026-05-31.md
 │   ├── flexy-plan.md
 │   ├── issue-audit-report-2026-05-27.md
 │   ├── issue-management-2026-05-27.md
