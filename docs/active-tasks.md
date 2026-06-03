@@ -2,7 +2,7 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 49
+## Current Focus: RepoKeeper Cycle 50
 
 ### Task: CI Workflow Fixes (Node.js 22 + Stale Doc Refs) — BLOCKED
 
@@ -27,6 +27,19 @@
   - [x] Verify all quality checks: typecheck ✅ lint ✅ format ✅ test:all (1069/1069) ✅
   - [x] Update `docs/findings.md` — Cycle 49 entry
   - [x] Update `docs/active-tasks.md` — clarify workflow status
+
+### Task: RepoKeeper Cycle 50 — Repository Cleanup Audit ✅ COMPLETE
+
+- **Priority**: Medium
+- **Status**: Complete
+- **Objective**: Full repository audit — redundant/temp/unused files, documentation health, CI workflow status
+- **Actions**:
+  - [x] Full repository scan for stale files, temp artifacts, empty dirs → none found
+  - [x] No type suppressions or TODO/FIXME/HACK artifacts found
+  - [x] Verified all quality checks: typecheck ✅ lint ✅ format ✅ test:all (1069/1069) ✅
+  - [x] Updated `docs/findings.md` — Cycle 50 entry
+  - [x] Updated `docs/active-tasks.md` — reference Cycle 50
+  - [x] Updated `README.md` — added missing links for docs/audits/ files
 
 ---
 
@@ -72,5 +85,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-03 (Cycle 49: RepoKeeper)
+**Last Updated**: 2026-06-03 (Cycle 50: RepoKeeper)
 **Maintainer**: RepoKeeper (Ultrawork Loop)
