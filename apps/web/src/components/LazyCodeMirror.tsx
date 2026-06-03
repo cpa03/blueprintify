@@ -23,7 +23,7 @@
  * ```
  */
 
-import { useState, useEffect, memo } from "react";
+import { useState, useEffect, memo, forwardRef } from "react";
 import type { Extension } from "@codemirror/state";
 import type { ReactCodeMirrorProps, ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { isDev } from "../config/env";
@@ -38,71 +38,74 @@ type CodeMirrorComponent = React.ForwardRefExoticComponent<
   ReactCodeMirrorProps & React.RefAttributes<ReactCodeMirrorRef>
 > | null;
 
-function LazyCodeMirrorComponent({ value, onChange, className }: LazyCodeMirrorProps) {
-  const [CodeMirrorComponent, setCodeMirrorComponent] = useState<CodeMirrorComponent>(null);
-  const [extensions, setExtensions] = useState<Extension[]>([]);
-  const [theme, setTheme] = useState<Extension | undefined>(undefined);
+const LazyCodeMirrorComponent = forwardRef<ReactCodeMirrorRef, LazyCodeMirrorProps>(
+  function LazyCodeMirrorComponent({ value, onChange, className }, ref) {
+    const [CodeMirrorComponent, setCodeMirrorComponent] = useState<CodeMirrorComponent>(null);
+    const [extensions, setExtensions] = useState<Extension[]>([]);
+    const [theme, setTheme] = useState<Extension | undefined>(undefined);
 
-  useEffect(() => {
-    let isMounted = true;
+    useEffect(() => {
+      let isMounted = true;
 
-    const loadCodeMirror = async () => {
-      try {
-        const [{ default: CodeMirror }, { markdown }, { oneDark }] = await Promise.all([
-          import("@uiw/react-codemirror"),
-          import("@codemirror/lang-markdown"),
-          import("@codemirror/theme-one-dark"),
-        ]);
+      const loadCodeMirror = async () => {
+        try {
+          const [{ default: CodeMirror }, { markdown }, { oneDark }] = await Promise.all([
+            import("@uiw/react-codemirror"),
+            import("@codemirror/lang-markdown"),
+            import("@codemirror/theme-one-dark"),
+          ]);
 
-        if (isMounted) {
-          setCodeMirrorComponent(CodeMirror as unknown as CodeMirrorComponent);
-          setExtensions([markdown()]);
-          setTheme(oneDark);
+          if (isMounted) {
+            setCodeMirrorComponent(CodeMirror as unknown as CodeMirrorComponent);
+            setExtensions([markdown()]);
+            setTheme(oneDark);
+          }
+        } catch (error) {
+          if (isDev()) {
+            console.error("Failed to load CodeMirror:", error);
+          }
         }
-      } catch (error) {
-        if (isDev()) {
-          console.error("Failed to load CodeMirror:", error);
-        }
-      }
-    };
+      };
 
-    loadCodeMirror();
+      loadCodeMirror();
 
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+      return () => {
+        isMounted = false;
+      };
+    }, []);
 
-  if (!CodeMirrorComponent) {
-    return (
-      <div
-        role="status"
-        aria-live="polite"
-        aria-label="Loading code editor"
-        className={`flex items-center justify-center ${className || ""}`}
-      >
-        <div className="flex flex-col items-center gap-2 text-dark-500">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
-          <span className="text-sm">Loading editor...</span>
+    if (!CodeMirrorComponent) {
+      return (
+        <div
+          role="status"
+          aria-live="polite"
+          aria-label="Loading code editor"
+          className={`flex items-center justify-center ${className || ""}`}
+        >
+          <div className="flex flex-col items-center gap-2 text-dark-500">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+            <span className="text-sm">Loading editor...</span>
+          </div>
         </div>
-      </div>
+      );
+    }
+
+    return (
+      <CodeMirrorComponent
+        ref={ref}
+        value={value}
+        onChange={onChange}
+        extensions={extensions}
+        theme={theme}
+        className={className}
+        basicSetup={{
+          lineNumbers: true,
+          foldGutter: true,
+          highlightActiveLine: true,
+        }}
+      />
     );
   }
-
-  return (
-    <CodeMirrorComponent
-      value={value}
-      onChange={onChange}
-      extensions={extensions}
-      theme={theme}
-      className={className}
-      basicSetup={{
-        lineNumbers: true,
-        foldGutter: true,
-        highlightActiveLine: true,
-      }}
-    />
-  );
-}
+);
 
 export const LazyCodeMirror = memo(LazyCodeMirrorComponent);
