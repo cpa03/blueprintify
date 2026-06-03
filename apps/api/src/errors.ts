@@ -206,23 +206,6 @@ export class AuthenticationError extends APIError {
   }
 }
 
-// ===== Authorization Error (403) =====
-
-/**
- * Error for authorization failures (HTTP 403).
- * Used when authenticated user lacks permission for the requested resource.
- */
-export class AuthorizationError extends APIError {
-  /**
-   * Creates a new AuthorizationError instance.
-   * @param message - Human-readable authorization error message
-   */
-  constructor(message: string = DEFAULT_ERROR_MESSAGES.AUTHORIZATION) {
-    super(ErrorType.AUTHORIZATION, message, HTTP_STATUS.FORBIDDEN, "AUTHORIZATION_ERROR");
-    this.name = "AuthorizationError";
-  }
-}
-
 // ===== Not Found Error (404) =====
 
 /**
@@ -257,44 +240,7 @@ export class ConfigurationError extends APIError {
   }
 }
 
-// ===== Network Error (502) =====
-
-/**
- * Error for network-related failures (HTTP 502).
- * Used when external service communication fails.
- */
-export class NetworkError extends APIError {
-  /**
-   * Creates a new NetworkError instance.
-   * @param message - Human-readable network error message
-   * @param details - Optional details about the network failure
-   */
-  constructor(message: string = DEFAULT_ERROR_MESSAGES.NETWORK, details?: Record<string, unknown>) {
-    super(ErrorType.NETWORK, message, HTTP_STATUS.BAD_GATEWAY, "NETWORK_ERROR", details);
-    this.name = "NetworkError";
-  }
-}
-
 // ===== AI Service Error (502) =====
-
-/**
- * Error for AI service failures (HTTP 502).
- * Used when the AI provider returns an error or is unavailable.
- */
-export class AIServiceError extends APIError {
-  /**
-   * Creates a new AIServiceError instance.
-   * @param message - Human-readable AI service error message
-   * @param details - Optional details about the AI service failure
-   */
-  constructor(
-    message: string = DEFAULT_ERROR_MESSAGES.AI_SERVICE,
-    details?: Record<string, unknown>
-  ) {
-    super(ErrorType.AI_SERVICE, message, HTTP_STATUS.BAD_GATEWAY, "AI_SERVICE_ERROR", details);
-    this.name = "AIServiceError";
-  }
-}
 
 // ===== Internal Server Error (500) =====
 

@@ -171,17 +171,6 @@ export type AppContext = Context<{
 }>;
 
 /**
- * Base context type with environment bindings.
- *
- * Use this for middleware or utilities that need environment access
- * but don't require validated data.
- */
-export type BaseContext = Context<{
-  Bindings: Env;
-  Variables: AppVariables;
-}>;
-
-/**
  * Generic context type with typed validated data.
  *
  * Combines environment bindings with Zod-validated request data.
