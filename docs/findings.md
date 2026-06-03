@@ -412,3 +412,117 @@ These fixes exist in separate branches (`agent/bugfix-ci-node-22-stale-docs`, `f
 **Blocked by:** GitHub App token lacks `workflows: write` permission. These changes must be applied manually or via a PAT with the `workflows` scope.
 
 **References:** Issues #1549, #1470, #1390 (CI node version), #1293 (stale doc refs)
+
+## 2026-06-03: Issue Duplicate Detection Results
+
+### Duplicate Group 1: CI Node.js Version Mismatch
+
+- **#1549** (bug, P2) — "CI workflows use Node 20 but .nvmrc specifies Node 22" [CANONICAL - best title]
+- **#1470** (bug, P1) — "fix(ci): CI workflows use Node.js 20 but project requires Node.js 22" [DUPLICATE]
+- **#1390** (bug, priority:high) — "fix(ci): CI Node.js version mismatch with project requirement" [DUPLICATE]
+- **#1166** (chore, P3) — "Add .nvmrc for Node version specification" [ALREADY DONE - .nvmrc exists with "22"]
+
+**Resolution:** Close #1470 and #1390 as duplicates of #1549. Update #1549 label to P1 (matches severity).
+
+### Duplicate Group 2: Placeholder Cloudflare Resource IDs
+
+- **#1165** (chore, P2) — "[Infra] Replace placeholder Cloudflare resource IDs in wrangler.toml" [CANONICAL]
+- **#1045** (DEVOPS, HIGH) — "[DEVOPS] HIGH: Placeholder Infrastructure IDs in wrangler.toml" [DUPLICATE]
+
+**Resolution:** Close #1045 as duplicate of #1165. Ensure #1165 has P2 priority.
+
+### Non-Duplicate but Related: CI Issues
+
+- **#1293** (bug) — "main.yml references non-existent docs/bug.md and docs/feature.md" — distinct issue, fix documented above
+
+### Issues Requiring Label Fixes (token cannot apply)
+
+| Issue | Missing Labels            |
+| ----- | ------------------------- |
+| #1293 | needs priority label (P3) |
+| #1111 | needs bug + P3            |
+| #1090 | needs enhancement + P3    |
+| #1089 | needs enhancement + P3    |
+| #1088 | needs security + P2       |
+| #1087 | needs chore + P3          |
+| #1086 | needs refactor + P3       |
+| #1084 | needs ci + P2             |
+| #1083 | needs test + P2           |
+| #1082 | needs test + P1           |
+| #1081 | needs refactor + P2       |
+| #1078 | needs security + P1       |
+| #1077 | needs security + P1       |
+
+## 2026-06-03: Phase 1 — Comprehensive Diagnostic Scoring
+
+### A. CODE QUALITY (86/100)
+
+| Criterion                    | Weight | Score | Evidence                                                                                             |
+| ---------------------------- | ------ | ----- | ---------------------------------------------------------------------------------------------------- |
+| Correctness                  | 15     | 95    | All 1,069 tests pass; build/lint/typecheck clean                                                     |
+| Readability & Naming         | 10     | 85    | Consistent naming observed; some console.warn in env.ts could be cleaner                             |
+| Simplicity                   | 10     | 80    | OfflineBanner.tsx (228 lines) could be simpler; Wizard components are modular                        |
+| Modularity & SRP             | 15     | 82    | Good workspace separation (api/web/shared); some tight coupling in Editor-Wizard export flow (#1086) |
+| Consistency                  | 5      | 90    | Consistent patterns across the codebase                                                              |
+| Testability                  | 15     | 85    | 205 test files for 213 source files (96% ratio); but coverage tool not configured                    |
+| Maintainability              | 10     | 88    | Strict TypeScript, clear interfaces; some large components                                           |
+| Error Handling               | 10     | 80    | ErrorBoundary exists; ErrorHandler in API has narrow type assertions (#1048)                         |
+| Dependency Discipline        | 5      | 90    | 0 vulnerabilities in npm audit; ~990 packages (reasonable for full-stack)                            |
+| Determinism & Predictability | 5      | 85    | Pure functions where possible; some side effects in storage layer                                    |
+
+### B. SYSTEM QUALITY (78/100)
+
+| Criterion                    | Weight | Score | Evidence                                                                                                            |
+| ---------------------------- | ------ | ----- | ------------------------------------------------------------------------------------------------------------------- |
+| Stability                    | 20     | 85    | All tests pass consistently; build is reproducible                                                                  |
+| Performance Efficiency       | 15     | 85    | PR #1569 confirmed FCP 1.36s, LCP 1.36s, Lighthouse 100/100                                                         |
+| Security Practices           | 20     | 70    | DOMPurify/XSS protection exists; No CSP headers; No user-level authorization (#1078); Prompt injection risk (#1077) |
+| Scalability Readiness        | 15     | 75    | Cloudflare Workers edge deployment; but circuit breaker cold start issue (#1043)                                    |
+| Resilience & Fault Tolerance | 15     | 75    | Circuit breaker exists but has cold start; Toast error handling; ErrorBoundary coverage                             |
+| Observability                | 15     | 70    | Secure logging exists; no structured logging; no monitoring configuration visible                                   |
+
+### C. EXPERIENCE QUALITY (82/100)
+
+**UX:**
+
+- Accessibility: Keyboard navigation exists; Radix UI components used for a11y
+- User Flow Clarity: Wizard-based interface is intuitive
+- Feedback & Error Messaging: Toast notifications, ErrorBoundary fallbacks
+- Responsiveness: Mobile-responsive via Tailwind
+
+**DX:**
+
+- API Clarity: Well-documented endpoints in README; Zod schemas define contracts
+- Local Dev Setup: `npm install && npm run dev:all` works; requires .env setup
+- Documentation Accuracy: Comprehensive docs/ directory; ongoing RepoKeeper cycle maintenance
+- Debuggability: Console errors caught by ErrorBoundary; secure logging for API
+- Build/Test Feedback Loop: Fast build (~3-5s); tests run in ~25s total
+
+### D. DELIVERY & EVOLUTION READINESS (72/100)
+
+| Criterion                      | Weight | Score | Evidence                                                                                       |
+| ------------------------------ | ------ | ----- | ---------------------------------------------------------------------------------------------- |
+| CI/CD Health                   | 20     | 60    | Workflows exist but use Node 20 (vs 22 requirement); stale doc refs; Vercel/CF deploy failures |
+| Release & Rollback Safety      | 20     | 75    | PR-based workflow; squash merges; but no release automation visible                            |
+| Config & Env Parity            | 15     | 80    | .dev.vars.example exists; environment variables documented in docs/                            |
+| Migration Safety               | 15     | 70    | Schema validation with Zod; no DB migrations (MockDB unused - #1042)                           |
+| Technical Debt Exposure        | 15     | 75    | 46 open issues; many are enhancement/innovation requests rather than debt                      |
+| Change Velocity & Blast Radius | 15     | 70    | Workspace isolation helps; but workflow changes require workflows:write permission             |
+
+### OVERALL HEALTH SCORE: 80/100
+
+**Key Strengths:**
+
+- ✅ Strict TypeScript throughout
+- ✅ Clean build/lint/test suite with 0 failures
+- ✅ Comprehensive test coverage (205 test files)
+- ✅ Strong security foundations (DOMPurify, Zod validation, secure logging)
+- ✅ Excellent performance (Lighthouse 100/100)
+
+**Key Weaknesses:**
+
+- ❌ CI workflows use Node 20 (project requires 22) — blocked by token scope
+- ❌ 46 open issues need triage (token cannot label)
+- ❌ No CSP headers in API responses
+- ❌ No user-level authorization (all authenticated users equal)
+- ❌ Vercel/Cloudflare deployment failures on all PRs
