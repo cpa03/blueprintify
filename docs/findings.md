@@ -2,33 +2,30 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Current Cycle (2026-06-03 — Cycle 48: RepoKeeper — CI Node Version Alignment & Agent Name Fix)
+## Current Cycle (2026-06-03 — Cycle 48: BugFixer — CI Node Version Alignment & Stale Doc Refs)
 
 ### Actions Taken
 
-1. **Updated `node-version` from `"20"` to `"22"`** across 4 workflow files (8 instances):
+1. **Fixed stale doc references in `main.yml`**: `docs/bug.md` → `docs/bugs.md` (lines 39, 263), `docs/feature.md` → `docs/features.md` (line 39)
+
+2. **Updated `node-version` from `"20"` to `"22"`** across 4 workflow files (11 instances):
    - `iterate.yml`: 5 instances (`node-version: "20"` → `"22"`)
-   - `on-pull.yml`: 1 instance (`node-version: 20` → `22`)
-   - `parallel.yml`: 2 instances (`node-version: "20"` → `"22"`)
+   - `parallel.yml`: 4 instances (`node-version: "20"` → `"22"`)
+   - `on-pull.yml`: 1 instance (`node-version: 20` → `"22"`)
    - `pr-gatekeeper.yml`: 1 instance (`node-version: "20"` → `"22"`)
-
-2. **Fixed agent names in `iterate.yml`**: All jobs incorrectly used `--agent RepoKeeper`. Fixed to match their actual role:
-   - BugFixer job: `--agent RepoKeeper` → `--agent BugFixer`
-   - Palette job: `--agent RepoKeeper` → `--agent Palette`
-   - Flexy job: `--agent RepoKeeper` → `--agent Flexy`
-   - BroCula job: `--agent RepoKeeper` → `--agent BroCula`
-   - RepoKeeper/Architect job: kept as `--agent RepoKeeper` (correct)
-
-3. **Consolidated duplicate/conflicting entries** in `findings.md` — merged Cycle 45 duplicate and Cycle 46 BugFixer content into unified history.
 
 ### Verification
 
-| Check       | Result                |
-| ----------- | --------------------- |
-| Typecheck   | ✅ Clean              |
-| Lint        | ✅ Clean              |
-| Build (web) | ✅ Passes             |
-| Format      | ✅ Prettier compliant |
+| Check        | Result                |
+| ------------ | --------------------- |
+| Typecheck    | ✅ Clean              |
+| Lint         | ✅ Clean              |
+| Build (web)  | ✅ Passes             |
+| Format       | ✅ Prettier compliant |
+| Web tests    | 564/564 passed        |
+| API tests    | 318/318 passed        |
+| Shared tests | 187/187 passed        |
+| **Total**    | **1069/1069 passed**  |
 
 ### No Redundant/Temp/Unused Files
 
@@ -44,8 +41,8 @@ Found ~100 stale remote branches (60–145 days since last commit, none merged t
 
 ### Branch & PR
 
-- **Branch**: `repokeeper-cleanup`
-- **PR**: Created with label `chore` — syncs CI node version with `.nvmrc`/`.node-version` (Node 22)
+- **Branch**: `fix/bugfixer-cycle-48-stale-refs`
+- **PR**: Created with label `chore` — syncs CI node version with `.nvmrc`/`.node-version` (Node 22) and fixes stale doc references in main.yml
 
 ---
 
