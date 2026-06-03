@@ -336,4 +336,65 @@ Token (`GITHUB_TOKEN`) has read-only issue permissions — cannot close, label, 
 
 ---
 
-**Last Updated**: 2026-05-31 (Cycle 37: RepoKeeper)
+---
+
+## Current Cycle (2026-06-03 — Cycle 49: RepoKeeper — Repository Cleanup Audit)
+
+### Audit Scope
+
+Full repository audit covering redundant files, stale documentation, CI workflow issues, code quality, and dependency health.
+
+### Status Summary
+
+| Check               | Result                                       |
+| ------------------- | -------------------------------------------- |
+| Typecheck           | ✅ Clean                                     |
+| Lint                | ✅ Clean                                     |
+| Format (Prettier)   | ✅ All matched files use Prettier code style |
+| Build (web)         | ✅ Passes                                    |
+| Build (api)         | ✅ Passes (dry-run)                          |
+| Web tests           | 564/564 passed                               |
+| API tests           | 318/318 passed                               |
+| Shared tests        | 187/187 passed                               |
+| **Total**           | **1069/1069 passed**                         |
+| npm vulnerabilities | ✅ 0 vulnerabilities                         |
+
+### Findings
+
+1. **No redundant/temp/unused source files found** — repo remains clean from dead code, backup files, temp artifacts, or empty directories.
+2. **No `@ts-ignore`, `@ts-expect-error`, or `as any`** type suppressions found in source code.
+3. **No TODO/FIXME/HACK artifacts** in non-test source files.
+4. **All `console.*` calls** are intentional (JSDoc examples, logging utilities, secure log wrappers, template generation).
+5. **`.omo/ralph-loop.local.md`** — Stale ultrawork loop tracking file present (gitignored). Previous cycles (39, 40) attempted removal but it regenerates with each ultrawork loop session.
+
+### CI Workflow Issues (Still Blocked — Requires `workflows: write` Permission)
+
+Despite being flagged across 8+ previous cycles (37–48), the following **main.yml** issues persist because GITHUB_TOKEN lacks `workflows: write` scope:
+
+- **Stale doc references** in `.github/workflows/main.yml`:
+  - Line 39: `docs/bug.md` → should be `docs/bugs.md`
+  - Line 39: `docs/feature.md` → should be `docs/features.md`
+  - Line 263: `docs/bug.md` → should be `docs/bugs.md`
+- **Node.js version mismatch** — all 4 workflow files (11 instances total) still reference `node-version: "20"` instead of `"22"`:
+  - `iterate.yml`: 5 instances
+  - `parallel.yml`: 4 instances
+  - `pr-gatekeeper.yml`: 1 instance
+  - `on-pull.yml`: 1 instance (unquoted)
+
+These fixes exist in separate branches (`agent/bugfix-ci-node-22-stale-docs`, `fix/ci-node-22-v3`, `feat/flexy-ci-node-version-file`) but require a maintainer with `workflows: write` scope to merge.
+
+### Documentation Health
+
+- `docs/active-tasks.md`: References BugFixer Cycle 47 with stale CI workflow tasks marked complete — but changes never merged to main. Needs clarification.
+- `docs/bugs.md`: BUG-014 (stale doc refs) and BUG-016 (Node 18+ refs) accurately documented. Stale Node 18 references in workflow docs deferred.
+- `docs/ci-workflow-fixes.md`: Accurate fix instructions; fixes blocked by permissions.
+- `docs/knowledge-review.md`: Drift tracking accurate.
+
+### Actions Taken
+
+1. Full repository audit — no dead/redundant/temp files found
+2. Verified all quality checks pass (typecheck ✅ lint ✅ format ✅ test:all ✅)
+3. Updated `docs/findings.md` — Cycle 49 entry
+4. Updated `docs/active-tasks.md` — clarified CI workflow status
+
+**Last Updated**: 2026-06-03 (Cycle 49: RepoKeeper)

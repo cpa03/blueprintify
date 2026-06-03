@@ -2,21 +2,31 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: BugFixer Cycle 47
+## Current Focus: RepoKeeper Cycle 49
 
-### Task: BugFixer Cycle 47 (2026-06-03) — CI Node.js 22 Version & Stale Doc References
+### Task: CI Workflow Fixes (Node.js 22 + Stale Doc Refs) — BLOCKED
 
 - **Priority**: High
-- **Status**: Active
-- **Objective**: Fix remaining `node-version: "20"` in all 4 workflow files, fix stale doc refs (`docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`) in main.yml
+- **Status**: ⛔ Blocked (requires `workflows: write` permission)
+- **Objective**: Fix `node-version: "20"` → `"22"` in all 4 workflow files (11 instances), fix stale doc refs (`docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`) in `main.yml`
+- **Blocked By**: GITHUB_TOKEN lacks `workflows: write` scope in CI runner
+- **Workarounds**:
+  - Fixes exist in branches: `agent/bugfix-ci-node-22-stale-docs`, `fix/ci-node-22-v3`
+  - A maintainer with `workflows: write` scope must apply changes or merge the fix branch
+  - Alternative: Apply changes manually via `scripts/fix-ci-workflows.sh`
+
+### Task: RepoKeeper Cycle 49 — Repository Cleanup Audit ✅ COMPLETE
+
+- **Priority**: Medium
+- **Status**: Complete
+- **Objective**: Full repository audit — redundant/temp/unused files, documentation health, code quality
 - **Actions**:
-  - [x] Fix `.github/workflows/main.yml` — stale `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
-  - [x] Fix `.github/workflows/iterate.yml` — 5× `node-version: "20"` → `"22"`
-  - [x] Fix `.github/workflows/parallel.yml` — 4× `node-version: "20"` → `"22"`
-  - [x] Fix `.github/workflows/on-pull.yml` — `node-version: 20` → `"22"`
-  - [x] Fix `.github/workflows/pr-gatekeeper.yml` — `node-version: "20"` → `"22"`
-  - [ ] Run full verification: typecheck ✅ lint ✅ build ✅ test:all ✅
-  - [ ] Create PR with all changes
+  - [x] Full repository scan for stale files, temp artifacts, empty dirs → none found
+  - [x] Check for `@ts-ignore`/`@ts-expect-error`/`as any` suppressions → none found
+  - [x] Check for TODO/FIXME/HACK artifacts in source → none found
+  - [x] Verify all quality checks: typecheck ✅ lint ✅ format ✅ test:all (1069/1069) ✅
+  - [x] Update `docs/findings.md` — Cycle 49 entry
+  - [x] Update `docs/active-tasks.md` — clarify workflow status
 
 ---
 
@@ -62,5 +72,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-02 (Cycle 46: RepoKeeper)
+**Last Updated**: 2026-06-03 (Cycle 49: RepoKeeper)
 **Maintainer**: RepoKeeper (Ultrawork Loop)
