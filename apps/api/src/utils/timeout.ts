@@ -68,31 +68,36 @@ export async function withTimeout<T>(
   const controller = new AbortController();
   const { signal } = controller;
 
-  let timeoutId: ReturnType<typeof setTimeout> | undefined;
-  let settled = false;
+  return new Promise<T>((resolve, reject) => {
+    let settled = false;
 
-  const timeoutPromise = new Promise<never>((_, reject) => {
-    timeoutId = setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       if (!settled) {
+        settled = true;
         controller.abort();
         reject(new TimeoutError(timeoutMs, errorMessage));
       }
     }, timeoutMs);
-  });
 
-  try {
-    const result = await Promise.race([operation(signal), timeoutPromise]);
-    settled = true;
-    if (timeoutId !== undefined) clearTimeout(timeoutId);
-    return result;
-  } catch (error) {
-    settled = true;
-    if (timeoutId !== undefined) clearTimeout(timeoutId);
-    if (error instanceof TimeoutError) {
-      throw error;
-    }
-    throw error;
-  }
+    // Start the operation. Whichever settles first (operation or timeout)
+    // wins the race; the loser's rejection is silently ignored via settled flag.
+    Promise.resolve(operation(signal)).then(
+      (value) => {
+        if (!settled) {
+          settled = true;
+          clearTimeout(timeoutId);
+          resolve(value);
+        }
+      },
+      (error) => {
+        if (!settled) {
+          settled = true;
+          clearTimeout(timeoutId);
+          reject(error);
+        }
+      }
+    );
+  });
 }
 
 /**
