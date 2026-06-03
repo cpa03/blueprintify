@@ -21,6 +21,7 @@
  */
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { LazyMarkdownRenderer } from "./LazyMarkdownRenderer";
 import { LazyCodeMirror } from "./LazyCodeMirror";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
@@ -58,6 +59,7 @@ function EditorComponent(): JSX.Element {
   const [showNewProjectConfirm, setShowNewProjectConfirm] = useState(false);
   const toast = useToast();
   const previewRef = useRef<HTMLDivElement>(null);
+  const codeMirrorRef = useRef<ReactCodeMirrorRef>(null);
 
   const activeTab = useEditorStore((s) => s.activeTab);
   const setActiveTab = useEditorStore((s) => s.setActiveTab);
@@ -189,12 +191,18 @@ function EditorComponent(): JSX.Element {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleNewProject]);
 
-  // Smooth-scroll preview pane to top when switching tabs
+  // Smooth-scroll both preview pane and CodeMirror editor to top when switching tabs
   // Prevents disorientation when content changes but scroll stays mid-content
   useEffect(() => {
-    const el = previewRef.current;
-    if (el && typeof el.scrollTo === "function") {
-      el.scrollTo({ top: 0, behavior: "smooth" });
+    // Scroll markdown preview pane
+    const previewEl = previewRef.current;
+    if (previewEl && typeof previewEl.scrollTo === "function") {
+      previewEl.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    // Scroll CodeMirror editor to top for visual consistency with preview pane
+    const cmView = codeMirrorRef.current?.view;
+    if (cmView?.scrollDOM) {
+      cmView.scrollDOM.scrollTop = 0;
     }
   }, [activeTab]);
 
@@ -269,6 +277,7 @@ function EditorComponent(): JSX.Element {
                         )}
                       >
                         <LazyCodeMirror
+                          ref={codeMirrorRef}
                           value={currentContent}
                           onChange={setCurrentContent}
                           className="h-full"
