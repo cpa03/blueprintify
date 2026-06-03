@@ -164,7 +164,8 @@ function App(): JSX.Element {
       {/* Main Content */}
       <main id="main-content" className={LAYOUT.MAIN_CONTENT} tabIndex={-1}>
         <div className={LAYOUT.CONTENT_CONTAINER}>
-          {/* Hero section (only on first view) - Critical LCP element, no opacity animation */}
+          {/* Hero section (only on first view) - Critical LCP element, no opacity animation on title.
+              Subtitle gets a subtle delayed entrance for a polished cascade feel. */}
           {showTemplates && (
             <div className={LAYOUT.HERO_SECTION}>
               <h1 className={LAYOUT.HERO_TITLE}>
@@ -174,7 +175,15 @@ function App(): JSX.Element {
                 <span className="text-gradient">{UI_CONTENT.HERO.TITLE_HIGHLIGHT_2}</span>
                 {UI_CONTENT.HERO.TITLE_3}
               </h1>
-              <p className={LAYOUT.HERO_SUBTITLE}>{UI_CONTENT.HERO.SUBTITLE}</p>
+              <p
+                className={`${LAYOUT.HERO_SUBTITLE} animate-slide-up`}
+                style={{
+                  animationDelay: "0.15s",
+                  animationFillMode: "backwards",
+                }}
+              >
+                {UI_CONTENT.HERO.SUBTITLE}
+              </p>
             </div>
           )}
 
