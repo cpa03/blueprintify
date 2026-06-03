@@ -2,7 +2,62 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Current Cycle (2026-06-03 — Cycle 48: BugFixer — CI Node Version Alignment & Stale Doc Refs)
+## Current Cycle (2026-06-03 — Cycle 50: RepoKeeper — Repository Cleanup Audit)
+
+### Audit Scope
+
+Full repository audit covering redundant files, stale documentation, CI workflow issues, code quality, and dependency health.
+
+### Status Summary
+
+| Check             | Result                                       |
+| ----------------- | -------------------------------------------- |
+| Typecheck         | ✅ Clean                                     |
+| Lint              | ✅ Clean                                     |
+| Format (Prettier) | ✅ All matched files use Prettier code style |
+| Build (web)       | ✅ Passes                                    |
+| npm audit         | ✅ 0 vulnerabilities                         |
+| Web tests         | 564/564 passed                               |
+| API tests         | 318/318 passed                               |
+| Shared tests      | 187/187 passed                               |
+| **Total**         | **1069/1069 passed**                         |
+
+### Findings
+
+1. **No redundant/temp/unused source files found** — repo remains clean from dead code, backup files, temp artifacts, or empty directories.
+2. **No `@ts-ignore`, `@ts-expect-error`, or `as any`** type suppressions found in source code.
+3. **No TODO/FIXME/HACK artifacts** in non-test source files.
+4. **163 stale remote branches** on origin, all unmerged to main. Most are from automated agent sessions (Jan–Feb 2026). Excessively noisy `git branch -r` output. Deletion requires `write` permission for the remote repo.
+5. **`.omo/ralph-loop.local.md`** — Stale ultrawork loop tracking file present (gitignored). Regenerates with each ultrawork loop session.
+6. **All docs/ files exist and are referenced** in README. 4 audit docs under `docs/audits/` appear in the tree listing but lack individual hyperlinks in the README body.
+
+### CI Workflow Issues (Still Blocked — Requires `workflows: write` Permission)
+
+Despite being flagged across 9+ previous cycles (37–49), the following issues persist because GITHUB_TOKEN lacks `workflows: write` scope:
+
+- **Stale doc references** in `.github/workflows/main.yml`:
+  - Line 39: `docs/bug.md` → should be `docs/bugs.md`
+  - Line 39: `docs/feature.md` → should be `docs/features.md`
+  - Line 263: `docs/bug.md` → should be `docs/bugs.md`
+- **Node.js version mismatch** — all 4 workflow files (11 instances total) still reference `node-version: "20"` instead of `"22"`:
+  - `iterate.yml`: 5 instances
+  - `parallel.yml`: 4 instances
+  - `pr-gatekeeper.yml`: 1 instance
+  - `on-pull.yml`: 1 instance (unquoted)
+
+### Actions Taken
+
+1. Full repository audit — no dead/redundant/temp files found
+2. Verified all quality checks pass (typecheck ✅ lint ✅ format ✅ test:all ✅)
+3. Updated `docs/findings.md` — Cycle 50 entry
+4. Updated `docs/active-tasks.md` — reference Cycle 50
+5. Updated `README.md` — added missing links for docs/audits/ files
+
+**Last Updated**: 2026-06-03 (Cycle 50: RepoKeeper)
+
+---
+
+## Previous Cycle (2026-06-03 — Cycle 48: BugFixer — CI Node Version Alignment & Stale Doc Refs)
 
 ### Actions Taken
 
