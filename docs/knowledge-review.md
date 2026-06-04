@@ -12,16 +12,19 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-04 (RepoKeeper Cycle 51)
+**Last Review**: 2026-06-04 (RepoKeeper Cycle 52)
 **Status**: ✅ Up to date
 
-As of Cycle 51:
+As of Cycle 52:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
 - README tree reflects actual `docs/` directory contents
-- CI workflow node-version aligned from `"20"` → `"22"` across all 4 workflow files
-- Stale doc references in `main.yml` corrected (`docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`)
+- **CI workflow fixes applied locally but BLOCKED from push** — GitHub App token lacks `workflows: write` permission
+- **Node-version fixes needed**: `.github/workflows/*.yml` still use `"20"` — need `"22"` (11 instances across 4 files)
+- **Stale doc refs in `main.yml`**: `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md` (lines 39, 263)
+- `.omo/ralph-loop.local.md` removed
+- Maintainer with `workflows: write` scope required to push workflow file changes
 
 ## Historical Drift Corrections
 
