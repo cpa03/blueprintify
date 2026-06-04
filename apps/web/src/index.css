@@ -66,6 +66,7 @@
   /* Glass card effect */
   .glass-card {
     @apply bg-dark-900/60 backdrop-blur-xl border border-dark-700/50 rounded-2xl;
+    position: relative;
     transition:
       border-color 0.2s ease-out,
       box-shadow 0.2s ease-out,
@@ -94,6 +95,41 @@
     transition:
       border-color 0.2s ease-out,
       box-shadow 0.2s ease-out;
+  }
+
+  /* Focus sweep beam — one-shot gradient sweep across the top when a child
+     receives focus. Provides spatial awareness that "this card is active"
+     without competing with input-level focus-visible rings. The sweep enters
+     from off-screen left (clipped by contain:paint) and exits right, leaving
+     a subtle afterglow on the focus-within border. */
+  @keyframes glass-focus-sweep {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .glass-card:focus-within::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--color-primary-500) 20%, transparent) 30%,
+      color-mix(in srgb, var(--color-primary-500) 50%, transparent) 50%,
+      color-mix(in srgb, var(--color-primary-500) 20%, transparent) 70%,
+      transparent 100%
+    );
+    border-radius: 2px;
+    animation: glass-focus-sweep 0.5s ease-out forwards;
+    pointer-events: none;
+    z-index: 1;
   }
 
   /* Button styles */
@@ -422,7 +458,8 @@
     .animate-step-pulse,
     .animate-tooltip-in,
     .animate-slide-in-right,
-    .animate-slide-up {
+    .animate-slide-up,
+    .glass-card:focus-within::before {
       animation: none !important;
     }
 
