@@ -2,20 +2,30 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 53
+## Current Focus: PR Merge Cycle & Code Quality Fixes
 
-### Task: Repository Audit & Doc Refresh ✅ COMPLETE
+### Task: PR Merge Cycle ✅ COMPLETE
 
 - **Priority**: High
 - **Status**: ✅ Complete
-- **Objective**: Full repository audit, clean redundant/temp/unused files, align docs with code
+- **Objective**: Process open PRs, fix pre-existing issues, merge
 - **Actions**:
-  - [x] Full repository scan for redundant/temp/unused files → none found
-  - [x] Added `docs/audits/brocula-hunt-2026-06-04.md` to README documentation tree
-  - [x] Updated `docs/findings.md` — Cycle 53 entry
-  - [x] Updated `docs/active-tasks.md` — Cycle 53 status
-  - [x] Updated `docs/knowledge-review.md` — review date refreshed
-  - [x] All quality checks clean (typecheck ✅ lint ✅ format ✅ build ✅ tests ✅)
+  - [x] **PR #1586** — Merged: glass-card focus sweep animation (CSS-only, reduced-motion support)
+  - [x] **PR #1585** — Merged: RepoKeeper Cycle 53 docs refresh
+  - [x] **PR #1583** — Merged: Flexy Iteration 13 (doc/dev vars; CI workflow changes blocked by token)
+  - [x] Fixed 2 lint warnings + 6 typecheck errors in `logger.test.ts` (pre-existing on main)
+  - [x] Updated `docs/audits/diagnostic-scoring-2026-06-04.md` — Phase 1 scoring update
+  - [x] **⚠️ CI workflow changes still blocked** — token lacks `workflows: write` permission
+
+### Task: CI Node.js Version Fix ⏳ BLOCKED
+
+- **Priority**: High
+- **Status**: ⏳ Blocked
+- **Objective**: Replace hardcoded `node-version: "20"` with `node-version-file: ".node-version"` in all workflows
+- **Actions**:
+  - [x] Changes applied locally and committed to PR #1583 branch
+  - [x] Push rejected — `GITHUB_TOKEN` lacks `workflows` scope
+  - [ ] Manual action needed: Push CI workflow changes from a token with `workflows: write` permission
 
 ### Task: RepoKeeper Cycle 52 — Repository Audit & Doc Refresh ✅ COMPLETE
 
