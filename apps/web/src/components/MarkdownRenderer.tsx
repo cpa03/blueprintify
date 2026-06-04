@@ -26,6 +26,8 @@ import { copyToClipboard } from "../lib/export";
 import { sanitizeHtml } from "../lib/security";
 import { TIMEOUTS, ACCESSIBILITY_LABELS, ANIMATION } from "../config/constants";
 import { MARKDOWN, ICON } from "../config/styles";
+import { HeadingAnchor } from "./HeadingAnchor";
+import { childrenToText } from "../utils/slug";
 import type { Components } from "react-markdown";
 
 /**
@@ -220,22 +222,52 @@ function MarkdownRendererComponent({ content, className }: MarkdownRendererProps
         return <tr className={MARKDOWN.TABLE_TR}>{children}</tr>;
       },
       h1({ children }) {
-        return <h1 className={MARKDOWN.H1}>{children}</h1>;
+        const text = childrenToText(children);
+        return (
+          <h1 className={MARKDOWN.H1}>
+            <HeadingAnchor headingText={text}>{children}</HeadingAnchor>
+          </h1>
+        );
       },
       h2({ children }) {
-        return <h2 className={MARKDOWN.H2}>{children}</h2>;
+        const text = childrenToText(children);
+        return (
+          <h2 className={MARKDOWN.H2}>
+            <HeadingAnchor headingText={text}>{children}</HeadingAnchor>
+          </h2>
+        );
       },
       h3({ children }) {
-        return <h3 className={MARKDOWN.H3}>{children}</h3>;
+        const text = childrenToText(children);
+        return (
+          <h3 className={MARKDOWN.H3}>
+            <HeadingAnchor headingText={text}>{children}</HeadingAnchor>
+          </h3>
+        );
       },
       h4({ children }) {
-        return <h4 className={MARKDOWN.H4}>{children}</h4>;
+        const text = childrenToText(children);
+        return (
+          <h4 className={MARKDOWN.H4}>
+            <HeadingAnchor headingText={text}>{children}</HeadingAnchor>
+          </h4>
+        );
       },
       h5({ children }) {
-        return <h5 className={MARKDOWN.H5}>{children}</h5>;
+        const text = childrenToText(children);
+        return (
+          <h5 className={MARKDOWN.H5}>
+            <HeadingAnchor headingText={text}>{children}</HeadingAnchor>
+          </h5>
+        );
       },
       h6({ children }) {
-        return <h6 className={MARKDOWN.H6}>{children}</h6>;
+        const text = childrenToText(children);
+        return (
+          <h6 className={MARKDOWN.H6}>
+            <HeadingAnchor headingText={text}>{children}</HeadingAnchor>
+          </h6>
+        );
       },
       p({ children }) {
         return <p className={MARKDOWN.PARAGRAPH}>{children}</p>;
