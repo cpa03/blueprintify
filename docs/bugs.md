@@ -27,10 +27,10 @@
 
 ### BUG-017: CI Node.js Version Mismatch (RESOLVED)
 
-**Status**: Resolved — 2026-05-29 (BugFixer Cycle)  
+**Status**: Resolved — 2026-06-04 (RepoKeeper Cycle 52)  
 **Priority**: High  
 **Area**: CI/CD  
-**Issue**: #1390
+**Issue**: #1390, #1470
 **Milestone**: Immediate
 
 #### Description
@@ -39,14 +39,14 @@ All CI workflow files used Node.js 20, but the project requires Node.js 22+ per 
 
 #### Fix Applied
 
-- Updated `node-version` from `"20"` to `"22"` in all 4 workflow files:
+- Updated `node-version` from `"20"` to `"22"` in all 4 workflow files (11 instances):
   - `.github/workflows/iterate.yml` (5 instances)
   - `.github/workflows/parallel.yml` (4 instances)
   - `.github/workflows/pr-gatekeeper.yml` (1 instance)
-  - `.github/workflows/on-pull.yml` (1 instance)
-- Also fixed Prettier formatting in `apps/web/index.html`
-- Verified: typecheck/lint/build/test/format all pass clean
-- 977 tests passing (558 web + 299 api + 120 shared)
+  - `.github/workflows/on-pull.yml` (1 instance, unquoted)
+- Fixed stale doc references in `main.yml`: `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`
+- Fixed TS errors (implicit `any`) and lint warnings in `apps/api/src/middleware/logger.test.ts`
+- Verified: typecheck/lint/build all pass clean
 
 ---
 
