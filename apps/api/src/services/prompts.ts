@@ -117,10 +117,11 @@ Create a production-ready architectural blueprint that an autonomous development
  * @returns Formatted prompt string for AI processing
  */
 export function buildTaskPrompt(blueprint: string, projectName: string): string {
+  const sanitizedBlueprint = sanitizePromptInput(blueprint);
   return `Based on the following blueprint.md, generate a comprehensive task.md checklist:
 
 ---
-${blueprint}
+${sanitizedBlueprint}
 ---
 
 Create prioritized tasks (P0, P1, P2) for building "${sanitizePromptInput(projectName)}" from scratch. Each task should be:
