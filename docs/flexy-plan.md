@@ -239,6 +239,23 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run test:all` — 1,069 tests passing (564 web + 318 api + 187 shared) across 66 files
 
+### ✅ Flexy Iteration 13: CI Node Version via .node-version + .dev.vars.example Comments
+
+| File                                             | Change                                                                                                |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| `.github/workflows/iterate.yml` (5 occurrences)  | `node-version: "20"` → `node-version-file: ".node-version"`                                           |
+| `.github/workflows/parallel.yml` (4 occurrences) | `node-version: "20"` → `node-version-file: ".node-version"`                                           |
+| `.github/workflows/on-pull.yml`                  | `node-version: 20` → `node-version-file: ".node-version"`                                             |
+| `.github/workflows/pr-gatekeeper.yml`            | `node-version: "20"` → `node-version-file: ".node-version"`                                           |
+| `.github/workflows/pr-gatekeeper.yml`            | Fixed hardcoded `node-version: "20"` to use `node-version-file` (11 total occurrences across 4 files) |
+| `apps/api/.dev.vars.example`                     | Added Flexy comments linking each var group to its `@blueprint/shared` source of truth                |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — 1,082 tests passing (564 web + 331 api + 187 shared) across 66 files
+
 ## Status
 
-**✅ COMPLETED - 12 iterations done**
+**✅ COMPLETED - 13 iterations done**
