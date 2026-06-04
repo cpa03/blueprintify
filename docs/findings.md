@@ -16,7 +16,8 @@ Full repository audit covering redundant files, stale documentation, CI workflow
 | Lint              | ✅ Clean                                     |
 | Format (Prettier) | ✅ All matched files use Prettier code style |
 | Build (web)       | ✅ Passes                                    |
-| **Total**         | **All quality checks passing**               |
+
+| **Total** | **All quality checks passing** |
 
 ### Findings
 
