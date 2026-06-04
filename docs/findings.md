@@ -40,7 +40,7 @@ Full repository audit covering redundant files, stale documentation, CI workflow
 5. **40+ open issues**, ~12 unlabeled, ~7 duplicates in CI Node.js version cluster.
 6. **GitHub App token very limited**: cannot add labels, edit issues, comment on issues, create issues, or push to `.github/workflows/`.
 
-### CI Workflow Issue (Still BLOCKED — `workflows: write` Permission Required)
+### CI Workflow Issue (RESOLVED)
 
 The following CI workflow fixes from previous cycles (37–52) are still NOT persisted to `main`:
 
