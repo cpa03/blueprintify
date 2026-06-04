@@ -1,7 +1,7 @@
 # CI Workflow Fix Instructions
 
-> **Last updated**: 2026-06-02
-> **Status**: ✅ **FIXES APPLIED** in RepoKeeper Cycle 45 (branch `chore/repokeeper-cycle-45`)
+> **Last updated**: 2026-06-04
+> **Status**: 🔧 **FIX LOCALLY READY** — blocked by `workflows: write` token permission
 
 ## Overview
 
@@ -30,7 +30,7 @@ The actual changes to `.github/workflows/` files cannot be pushed by the `github
 
 **Note**: `docs/bugs.md` (8,352 bytes) and `docs/features.md` (12,877 bytes) both exist. `docs/bug.md` and `docs/feature.md` do not exist.
 
-### Fix 2: Node.js 20 → 22 (#1470, #1390)
+### Fix 2: Node.js 20 → 22 (#1470, #1390, #1549, #1575, #1584)
 
 Project requirements:
 
@@ -38,38 +38,38 @@ Project requirements:
 - `.nvmrc`: `22`
 - `package.json > engines.node`: `>=22`
 
+**Preferred approach**: Use `node-version-file: ".node-version"` instead of hardcoding `"22"`. This keeps CI in sync automatically as the project evolves.
+
 #### iterate.yml (5 occurrences)
 
-| Line | Current              | Correct              |
-| ---- | -------------------- | -------------------- |
-| 55   | `node-version: "20"` | `node-version: "22"` |
-| 120  | `node-version: "20"` | `node-version: "22"` |
-| 184  | `node-version: "20"` | `node-version: "22"` |
-| 249  | `node-version: "20"` | `node-version: "22"` |
-| 315  | `node-version: "20"` | `node-version: "22"` |
+| Line | Current              | Correct                              |
+| ---- | -------------------- | ------------------------------------ |
+| 55   | `node-version: "20"` | `node-version-file: ".node-version"` |
+| 120  | `node-version: "20"` | `node-version-file: ".node-version"` |
+| 185  | `node-version: "20"` | `node-version-file: ".node-version"` |
+| 250  | `node-version: "20"` | `node-version-file: ".node-version"` |
+| 315  | `node-version: "20"` | `node-version-file: ".node-version"` |
 
 #### pr-gatekeeper.yml (1 occurrence)
 
-| Line | Current              | Correct              |
-| ---- | -------------------- | -------------------- |
-| 31   | `node-version: "20"` | `node-version: "22"` |
+| Line | Current              | Correct                              |
+| ---- | -------------------- | ------------------------------------ |
+| 31   | `node-version: "20"` | `node-version-file: ".node-version"` |
 
 #### on-pull.yml (1 occurrence)
 
-| Line | Current            | Correct            |
-| ---- | ------------------ | ------------------ |
-| 53   | `node-version: 20` | `node-version: 22` |
-
-Note: No quotes around `20` in this file.
+| Line | Current            | Correct                              |
+| ---- | ------------------ | ------------------------------------ |
+| 53   | `node-version: 20` | `node-version-file: ".node-version"` |
 
 #### parallel.yml (4 occurrences)
 
-| Line | Current              | Correct              |
-| ---- | -------------------- | -------------------- |
-| 70   | `node-version: "20"` | `node-version: "22"` |
-| 266  | `node-version: "20"` | `node-version: "22"` |
-| 343  | `node-version: "20"` | `node-version: "22"` |
-| 398  | `node-version: "20"` | `node-version: "22"` |
+| Line | Current              | Correct                              |
+| ---- | -------------------- | ------------------------------------ |
+| 70   | `node-version: "20"` | `node-version-file: ".node-version"` |
+| 266  | `node-version: "20"` | `node-version-file: ".node-version"` |
+| 344  | `node-version: "20"` | `node-version-file: ".node-version"` |
+| 399  | `node-version: "20"` | `node-version-file: ".node-version"` |
 
 ### Fix 3: GitHub Actions @v5 (#1111)
 
@@ -94,22 +94,24 @@ chmod +x scripts/fix-ci-workflows.sh
 
 ## Manual Application
 
+Use `node-version-file` (preferred — automatically stays in sync):
+
 ```bash
 # Fix 1: main.yml
 sed -i 's|docs/bug.md, docs/feature.md|docs/bugs.md, docs/features.md|g' .github/workflows/main.yml
 sed -i 's|Catat bug baru ke docs/bug.md|Catat bug baru ke docs/bugs.md|g' .github/workflows/main.yml
 
 # Fix 2: iterate.yml (5 occurrences)
-sed -i 's/node-version: "20"/node-version: "22"/g' .github/workflows/iterate.yml
+sed -i 's/node-version: "20"/node-version-file: ".node-version"/g' .github/workflows/iterate.yml
 
 # Fix 2: pr-gatekeeper.yml (1 occurrence)
-sed -i 's/node-version: "20"/node-version: "22"/g' .github/workflows/pr-gatekeeper.yml
+sed -i 's/node-version: "20"/node-version-file: ".node-version"/g' .github/workflows/pr-gatekeeper.yml
 
 # Fix 2: on-pull.yml (1 occurrence)
-sed -i 's/node-version: 20/node-version: 22/g' .github/workflows/on-pull.yml
+sed -i 's/node-version: 20/node-version-file: ".node-version"/g' .github/workflows/on-pull.yml
 
 # Fix 2: parallel.yml (4 occurrences)
-sed -i 's/node-version: "20"/node-version: "22"/g' .github/workflows/parallel.yml
+sed -i 's/node-version: "20"/node-version-file: ".node-version"/g' .github/workflows/parallel.yml
 ```
 
 ## Verification
@@ -141,4 +143,7 @@ The commit message should reference:
 - Closes #1293
 - Closes #1470
 - Closes #1390
+- Closes #1549
+- Closes #1575
+- Closes #1584
 - Closes #1111
