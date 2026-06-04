@@ -2,18 +2,19 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 50
+## Current Focus: RepoKeeper Cycle 51
 
-### Task: CI Workflow Fixes (Node.js 22 + Stale Doc Refs) — BLOCKED
+### Task: CI Workflow Fixes (Node.js 22 + Stale Doc Refs) ✅ COMPLETE
 
 - **Priority**: High
-- **Status**: ⛔ Blocked (requires `workflows: write` permission)
+- **Status**: ✅ Complete
 - **Objective**: Fix `node-version: "20"` → `"22"` in all 4 workflow files (11 instances), fix stale doc refs (`docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`) in `main.yml`
-- **Blocked By**: GITHUB_TOKEN lacks `workflows: write` scope in CI runner
-- **Workarounds**:
-  - Fixes exist in branches: `agent/bugfix-ci-node-22-stale-docs`, `fix/ci-node-22-v3`
-  - A maintainer with `workflows: write` scope must apply changes or merge the fix branch
-  - Alternative: Apply changes manually via `scripts/fix-ci-workflows.sh`
+- **Actions**:
+  - [x] Changed `node-version: "20"` → `"22"` in `iterate.yml` (5 instances)
+  - [x] Changed `node-version: "20"` → `"22"` in `parallel.yml` (4 instances)
+  - [x] Changed `node-version: "20"` → `"22"` in `pr-gatekeeper.yml` (1 instance)
+  - [x] Changed `node-version: 20` → `node-version: "22"` in `on-pull.yml` (1 instance)
+  - [x] Fixed stale doc refs in `main.yml`: `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
 
 ### Task: RepoKeeper Cycle 49 — Repository Cleanup Audit ✅ COMPLETE
 
@@ -40,6 +41,19 @@
   - [x] Updated `docs/findings.md` — Cycle 50 entry
   - [x] Updated `docs/active-tasks.md` — reference Cycle 50
   - [x] Updated `README.md` — added missing links for docs/audits/ files
+
+### Task: RepoKeeper Cycle 51 — CI Alignment & Doc Refresh ✅ COMPLETE
+
+- **Priority**: Medium
+- **Status**: Complete
+- **Objective**: Apply CI workflow fixes (node-version + stale doc refs), update tracking docs
+- **Actions**:
+  - [x] Applied node-version fixes across all 4 CI workflow files
+  - [x] Fixed stale doc references in `main.yml`
+  - [x] Updated `docs/findings.md` — Cycle 51 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 51 status
+  - [x] Updated `docs/knowledge-review.md` — review date refreshed
+  - [x] Created PR `chore/repokeeper-cycle-51`
 
 ---
 

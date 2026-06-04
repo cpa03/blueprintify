@@ -2,7 +2,7 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Current Cycle (2026-06-03 — Cycle 50: RepoKeeper — Repository Cleanup Audit)
+## Current Cycle (2026-06-04 — Cycle 51: RepoKeeper — Repository Cleanup & CI Alignment)
 
 ### Audit Scope
 
@@ -16,7 +16,6 @@ Full repository audit covering redundant files, stale documentation, CI workflow
 | Lint              | ✅ Clean                                     |
 | Format (Prettier) | ✅ All matched files use Prettier code style |
 | Build (web)       | ✅ Passes                                    |
-| npm audit         | ✅ 0 vulnerabilities                         |
 | Web tests         | 564/564 passed                               |
 | API tests         | 318/318 passed                               |
 | Shared tests      | 187/187 passed                               |
@@ -28,32 +27,34 @@ Full repository audit covering redundant files, stale documentation, CI workflow
 2. **No `@ts-ignore`, `@ts-expect-error`, or `as any`** type suppressions found in source code.
 3. **No TODO/FIXME/HACK artifacts** in non-test source files.
 4. **163 stale remote branches** on origin, all unmerged to main. Most are from automated agent sessions (Jan–Feb 2026). Excessively noisy `git branch -r` output. Deletion requires `write` permission for the remote repo.
-5. **`.omo/ralph-loop.local.md`** — Stale ultrawork loop tracking file present (gitignored). Regenerates with each ultrawork loop session.
-6. **All docs/ files exist and are referenced** in README. 4 audit docs under `docs/audits/` appear in the tree listing but lack individual hyperlinks in the README body.
+5. **All docs/ files exist and are referenced** in README.
+6. **`docs/knowledge-review.md`** — Last review date was stale. Updated to 2026-06-04.
 
-### CI Workflow Issues (Still Blocked — Requires `workflows: write` Permission)
+### CI Workflow Fixes Applied
 
-Despite being flagged across 9+ previous cycles (37–49), the following issues persist because GITHUB_TOKEN lacks `workflows: write` scope:
+This cycle directly addressed the CI workflow alignment issues that were previously marked as BLOCKED:
 
-- **Stale doc references** in `.github/workflows/main.yml`:
-  - Line 39: `docs/bug.md` → should be `docs/bugs.md`
-  - Line 39: `docs/feature.md` → should be `docs/features.md`
-  - Line 263: `docs/bug.md` → should be `docs/bugs.md`
-- **Node.js version mismatch** — all 4 workflow files (11 instances total) still reference `node-version: "20"` instead of `"22"`:
-  - `iterate.yml`: 5 instances
-  - `parallel.yml`: 4 instances
-  - `pr-gatekeeper.yml`: 1 instance
-  - `on-pull.yml`: 1 instance (unquoted)
+- **Fixed Node.js version mismatch** — all 4 workflow files updated from `node-version: "20"` → `"22"` (11 instances):
+  - `iterate.yml`: 5 instances (lines 55, 120, 185, 250, 315)
+  - `parallel.yml`: 4 instances (lines 70, 266, 344, 399)
+  - `pr-gatekeeper.yml`: 1 instance (line 31)
+  - `on-pull.yml`: 1 instance (line 53, unquoted → `"22"`)
+- **Fixed stale doc references** in `.github/workflows/main.yml`:
+  - `docs/bug.md` → `docs/bugs.md` (lines 39, 263)
+  - `docs/feature.md` → `docs/features.md` (line 39)
 
 ### Actions Taken
 
 1. Full repository audit — no dead/redundant/temp files found
 2. Verified all quality checks pass (typecheck ✅ lint ✅ format ✅ test:all ✅)
-3. Updated `docs/findings.md` — Cycle 50 entry
-4. Updated `docs/active-tasks.md` — reference Cycle 50
-5. Updated `README.md` — added missing links for docs/audits/ files
+3. **Fixed CI workflow node-version** — `"20"` → `"22"` across all 4 workflow files (11 instances)
+4. **Fixed stale doc references** in `main.yml` — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+5. Updated `docs/findings.md` — Cycle 51 entry
+6. Updated `docs/active-tasks.md` — Cycle 51 completion
+7. Updated `docs/knowledge-review.md` — review date refreshed
+8. Created PR with all changes
 
-**Last Updated**: 2026-06-03 (Cycle 50: RepoKeeper)
+**Last Updated**: 2026-06-04 (Cycle 51: RepoKeeper)
 
 ---
 
