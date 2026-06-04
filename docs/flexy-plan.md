@@ -259,3 +259,27 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 ## Status
 
 **✅ COMPLETED - 13 iterations done**
+
+### ✅ Flexy Iteration 14: Centralize Security & API Headers into Shared HTTP_HEADER_NAMES
+
+| File                                     | Change                                                                                               |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`          | Added 18 new header names to `HTTP_HEADER_NAMES` (tracing, streaming, rate-limit, security, CORS)    |
+| `packages/shared/src/config.test.ts`     | Added 4 test blocks for new header name categories                                                   |
+| `apps/api/src/config/constants.ts`       | 12 `API_HEADERS` entries now reference `HTTP_HEADER_NAMES` instead of hardcoded strings              |
+| `apps/api/src/middleware/logger.test.ts` | Replaced `"x-request-id"`/`"x-response-time"`/`"cf-ray"` with `API_HEADERS` refs                     |
+| `apps/api/src/middleware/logger.test.ts` | Replaced `"POST"`/`"Content-Type"`/`"application/json"` with `HTTP_METHODS`/`HTTP_HEADER_NAMES` refs |
+| `apps/api/src/middleware/logger.test.ts` | Fixed 6 TS7006 type errors (implicit `any`) + 2 lint warnings (unused vars)                          |
+| `apps/api/src/utils/stream.test.ts`      | Replaced `"X-Accel-Buffering"`/`"Content-Type"` with `API_HEADERS`/`HTTP_HEADER_NAMES` refs          |
+| `apps/web/src/config/security.ts`        | 7 security header keys now use `HTTP_HEADER_NAMES` computed properties                               |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (fixed 6 TS7006 errors)
+- ✅ `npm run lint` — zero warnings (fixed 2 unused var warnings)
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,098 tests passing (564 web + 343 api + 191 shared) across 67 files
+
+## Status
+
+**✅ COMPLETED - 14 iterations done**

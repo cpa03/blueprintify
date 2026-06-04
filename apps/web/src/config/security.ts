@@ -7,7 +7,7 @@
  * @module config/security
  */
 
-import { SECURITY_LIMITS, STORAGE_CONFIG } from "@blueprint/shared";
+import { SECURITY_LIMITS, STORAGE_CONFIG, HTTP_HEADER_NAMES } from "@blueprint/shared";
 
 // ============================================================================
 // DOMPurify Configuration
@@ -199,18 +199,18 @@ export const CSP_DIRECTIVES = {
  * Used by getContentSecurityHeaders() and API responses
  */
 export const SECURITY_HEADERS = {
-  "Content-Security-Policy": Object.entries(CSP_DIRECTIVES)
+  [HTTP_HEADER_NAMES.CONTENT_SECURITY_POLICY]: Object.entries(CSP_DIRECTIVES)
     .map(([key, values]) => {
       const directive = key.toLowerCase().replace(/_/g, "-");
       return `${directive} ${values.join(" ")}`;
     })
     .join("; "),
-  "X-Content-Type-Options": "nosniff",
-  "X-Frame-Options": "DENY",
-  "X-XSS-Protection": "1; mode=block",
-  "Referrer-Policy": "strict-origin-when-cross-origin",
-  "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-  "Permissions-Policy": [
+  [HTTP_HEADER_NAMES.X_CONTENT_TYPE_OPTIONS]: "nosniff",
+  [HTTP_HEADER_NAMES.X_FRAME_OPTIONS]: "DENY",
+  [HTTP_HEADER_NAMES.X_XSS_PROTECTION]: "1; mode=block",
+  [HTTP_HEADER_NAMES.REFERRER_POLICY]: "strict-origin-when-cross-origin",
+  [HTTP_HEADER_NAMES.STRICT_TRANSPORT_SECURITY]: "max-age=31536000; includeSubDomains; preload",
+  [HTTP_HEADER_NAMES.PERMISSIONS_POLICY]: [
     "accelerometer=()",
     "camera=()",
     "geolocation=()",

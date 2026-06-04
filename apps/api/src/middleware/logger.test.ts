@@ -11,6 +11,8 @@
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Hono } from "hono";
+import { HTTP_HEADERS, HTTP_HEADER_NAMES, HTTP_METHODS } from "@blueprint/shared";
+import { API_HEADERS } from "../config/constants";
 import { requestLogger } from "./logger";
 
 describe("requestLogger middleware", () => {
@@ -29,7 +31,7 @@ describe("requestLogger middleware", () => {
       const res = await app.request("/test");
 
       expect(res.status).toBe(200);
-      const requestId = res.headers.get("x-request-id");
+      const requestId = res.headers.get(API_HEADERS.RESPONSE.REQUEST_ID);
       expect(requestId).toBeTruthy();
       // Format: timestamp-random (e.g., "1712345678900-abc123def456")
       expect(requestId).toMatch(/^\d+-[a-z0-9]+$/);
@@ -43,8 +45,8 @@ describe("requestLogger middleware", () => {
       const res1 = await app.request("/test");
       const res2 = await app.request("/test");
 
-      const id1 = res1.headers.get("x-request-id");
-      const id2 = res2.headers.get("x-request-id");
+      const id1 = res1.headers.get(API_HEADERS.RESPONSE.REQUEST_ID);
+      const id2 = res2.headers.get(API_HEADERS.RESPONSE.REQUEST_ID);
       expect(id1).not.toBe(id2);
     });
   });
@@ -57,7 +59,7 @@ describe("requestLogger middleware", () => {
 
       const res = await app.request("/test");
 
-      const responseTime = res.headers.get("x-response-time");
+      const responseTime = res.headers.get(API_HEADERS.RESPONSE.RESPONSE_TIME);
       expect(responseTime).toBeTruthy();
       expect(responseTime).toMatch(/^\d+ms$/);
     });
@@ -95,12 +97,13 @@ describe("requestLogger middleware", () => {
       app.get("/test", (c) => c.json({ ok: true }));
 
       await app.request("/test", {
-        headers: { "cf-ray": "test-ray-123" },
+        headers: { [API_HEADERS.CF_PROPERTIES.RAY_ID]: "test-ray-123" },
       });
 
       const logCalls = consoleLogSpy.mock.calls;
       const requestLogs = logCalls.filter(
-        (call: unknown[]) => typeof call[0] === "string" && call[0].includes("test-ray-123")
+        (call: unknown[]) =>
+          typeof call[0] === "string" && (call[0] as string).includes("test-ray-123")
       );
       expect(requestLogs.length).toBeGreaterThanOrEqual(1);
     });
@@ -113,9 +116,9 @@ describe("requestLogger middleware", () => {
       app.post("/api/data", (c) => c.json({ received: true }));
 
       await app.request("/api/data", {
-        method: "POST",
+        method: HTTP_METHODS.POST,
         headers: {
-          "Content-Type": "application/json",
+          [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON,
           Authorization: "Bearer secret-token-12345",
           Cookie: "session=abc123",
         },
@@ -125,7 +128,8 @@ describe("requestLogger middleware", () => {
       // Find the request log entry
       const logCalls = consoleLogSpy.mock.calls;
       const requestLogs = logCalls.filter(
-        (call: unknown[]) => typeof call[0] === "string" && call[0].includes('"type":"request"')
+        (call: unknown[]) =>
+          typeof call[0] === "string" && (call[0] as string).includes('"type":"request"')
       );
 
       if (requestLogs.length > 0) {
@@ -148,14 +152,15 @@ describe("requestLogger middleware", () => {
       app.post("/api/data", (c) => c.json({ received: true }));
 
       await app.request("/api/data", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({ message: "hello" }),
       });
 
       // Verify a request log was written
       const requestLogs = consoleLogSpy.mock.calls.filter(
-        (call: unknown[]) => typeof call[0] === "string" && call[0].includes('"type":"request"')
+        (call: unknown[]) =>
+          typeof call[0] === "string" && (call[0] as string).includes('"type":"request"')
       );
       expect(requestLogs.length).toBeGreaterThanOrEqual(1);
     });
@@ -166,15 +171,15 @@ describe("requestLogger middleware", () => {
       app.post("/api/data", (c) => c.json({ received: true }));
 
       await app.request("/api/data", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: HTTP_METHODS.POST,
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({ message: "hello" }),
       });
 
       const requestLogs = consoleLogSpy.mock.calls.filter(
-        (call: unknown[]) => typeof call[0] === "string" && call[0].includes('"type":"request"')
+        (call: unknown[]) =>
+          typeof call[0] === "string" && (call[0] as string).includes('"type":"request"')
       );
-      // Verify request logs exist (but we won't check body content since it depends on clone behavior in test env)
       expect(requestLogs.length).toBeGreaterThanOrEqual(1);
     });
   });
@@ -189,10 +194,12 @@ describe("requestLogger middleware", () => {
 
       const logCalls = consoleLogSpy.mock.calls;
       const requestLogs = logCalls.filter(
-        (call: unknown[]) => typeof call[0] === "string" && call[0].includes('"type":"request"')
+        (call: unknown[]) =>
+          typeof call[0] === "string" && (call[0] as string).includes('"type":"request"')
       );
       const responseLogs = logCalls.filter(
-        (call: unknown[]) => typeof call[0] === "string" && call[0].includes('"type":"response"')
+        (call: unknown[]) =>
+          typeof call[0] === "string" && (call[0] as string).includes('"type":"response"')
       );
 
       // Should have at least one request and one response log
