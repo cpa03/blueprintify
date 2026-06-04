@@ -10,10 +10,12 @@ The project requires Node.js 22+ (see `.nvmrc`, `.node-version`, `package.json` 
 
 | Workflow File                                    | Current | Required |
 | ------------------------------------------------ | ------- | -------- |
-| `.github/workflows/on-pull.yml`                  | `20`    | `22`     |
-| `.github/workflows/parallel.yml` (4 occurrences) | `20`    | `22`     |
-| `.github/workflows/pr-gatekeeper.yml`            | `20`    | `22`     |
-| `.github/workflows/iterate.yml` (5 occurrences)  | `20`    | `22`     |
+| `.github/workflows/on-pull.yml`                  | `20` ⚠️ | `22`     |
+| `.github/workflows/parallel.yml` (4 occurrences) | `20` ⚠️ | `22`     |
+| `.github/workflows/pr-gatekeeper.yml`            | `20` ⚠️ | `22`     |
+| `.github/workflows/iterate.yml` (5 occurrences)  | `20` ⚠️ | `22`     |
+
+> **Note**: Fixes applied locally in Cycle 52 but BLOCKED from push — GitHub App token requires `workflows: write` scope. Maintainer intervention needed.
 
 ### Setup
 
