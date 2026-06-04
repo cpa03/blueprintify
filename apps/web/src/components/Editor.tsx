@@ -295,28 +295,48 @@ function EditorComponent(): JSX.Element {
                         )}
                       >
                         <ScrollProgress scrollContainerRef={previewRef} />
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          className="min-h-full"
-                        >
+                        <AnimatePresence mode="wait">
                           {currentContent ? (
-                            <LazyMarkdownRenderer content={currentContent} />
+                            <motion.div
+                              key={`${activeTab}-content`}
+                              initial={{ opacity: 0, y: 6 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -6 }}
+                              transition={{
+                                duration: ANIMATION.NORMAL,
+                                ease: ANIMATION_TIMING.easing.easeOut,
+                              }}
+                              className="min-h-full"
+                            >
+                              <LazyMarkdownRenderer content={currentContent} />
+                            </motion.div>
                           ) : (
-                            <PreviewEmptyState
-                              tab={activeTab}
-                              isGenerating={isGenerating}
-                              siblingTabHasContent={
-                                activeTab === "blueprint"
-                                  ? tasksContent.length > 0
-                                  : blueprintContent.length > 0
-                              }
-                              onSwitchTab={() =>
-                                setActiveTab(activeTab === "blueprint" ? "tasks" : "blueprint")
-                              }
-                            />
+                            <motion.div
+                              key={`${activeTab}-empty`}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{
+                                duration: ANIMATION.NORMAL,
+                                ease: ANIMATION_TIMING.easing.easeOut,
+                              }}
+                              className="min-h-full"
+                            >
+                              <PreviewEmptyState
+                                tab={activeTab}
+                                isGenerating={isGenerating}
+                                siblingTabHasContent={
+                                  activeTab === "blueprint"
+                                    ? tasksContent.length > 0
+                                    : blueprintContent.length > 0
+                                }
+                                onSwitchTab={() =>
+                                  setActiveTab(activeTab === "blueprint" ? "tasks" : "blueprint")
+                                }
+                              />
+                            </motion.div>
                           )}
-                        </motion.div>
+                        </AnimatePresence>
                         <ScrollToTop
                           scrollContainerRef={previewRef}
                           showAfter={UI.SCROLL_TO_TOP_THRESHOLD}
