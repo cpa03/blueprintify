@@ -89,6 +89,14 @@ async function runLighthouse() {
     });
     console.log(JSON.stringify(diagnostics, null, 2));
 
+    console.log('=== METRICS (with scores) ===');
+    const metricDetails = {};
+    ['first-contentful-paint', 'largest-contentful-paint', 'total-blocking-time', 'cumulative-layout-shift', 'speed-index', 'interactive'].forEach(id => {
+      const a = report.audits[id];
+      if (a) metricDetails[id] = { score: a.score, displayValue: a.displayValue, numericValue: a.numericValue };
+    });
+    console.log(JSON.stringify(metricDetails, null, 2));
+
   } finally {
     await chrome.kill();
   }
