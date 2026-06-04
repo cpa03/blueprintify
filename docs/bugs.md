@@ -4,9 +4,9 @@
 
 ## Active Bugs
 
-### BUG-014: Stale Doc References in main.yml Workflow (RESOLVED)
+### BUG-014: Stale Doc References in main.yml Workflow (UNRESOLVED)
 
-**Status**: Resolved — 2026-05-31 (RepoKeeper Cycle 39: fix actually applied to main)  
+**Status**: Unresolved — blocked by `workflows: write` permission  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1293
@@ -14,39 +14,45 @@
 
 #### Description
 
-`.github/workflows/main.yml` continued to reference two non-existent documentation files.
+`.github/workflows/main.yml` continues to reference two non-existent documentation files. Fixes applied in multiple cycles (37, 39, 47, 48, 52) but never merged to `main` — each cycle's branch could not push workflow changes.
 
-#### Fix Applied (RepoKeeper Cycle 39 — 2026-05-31)
+#### Current State (Cycle 55 — 2026-06-04)
 
-- Replaced stale `docs/bug.md` → `docs/bugs.md` on lines 39, 263
-- Replaced stale `docs/feature.md` → `docs/features.md` on line 39
-- (Note: Cycle 37 previously documented this fix but the change was never committed to main)
-- Verified: typecheck ✅ lint ✅
+- `main.yml` line 39: still references `docs/bug.md` and `docs/feature.md`
+- `main.yml` line 263: still references `docs/bug.md`
+- **Root Cause**: GitHub App token lacks `workflows: write` permission. All workflow file changes must be applied by a maintainer with this scope.
+
+#### Fix Required
+
+- Line 39: `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+- Line 263: `docs/bug.md` → `docs/bugs.md`
 
 ---
 
-### BUG-017: CI Node.js Version Mismatch (RESOLVED)
+### BUG-017: CI Node.js Version Mismatch (UNRESOLVED)
 
-**Status**: Resolved — 2026-06-04 (RepoKeeper Cycle 52)  
+**Status**: Unresolved — blocked by `workflows: write` permission  
 **Priority**: High  
 **Area**: CI/CD  
-**Issue**: #1390, #1470
+**Issue**: #1390, #1470, #1549
 **Milestone**: Immediate
 
 #### Description
 
-All CI workflow files used Node.js 20, but the project requires Node.js 22+ per `.node-version`, `.nvmrc`, and `package.json` engines.
+All CI workflow files use Node.js 20, but the project requires Node.js 22+ per `.node-version`, `.nvmrc`, and `package.json` engines. Fixes applied in 8+ cycles (37–54) but never merged to `main`.
 
-#### Fix Applied
+#### Current State (Cycle 55 — 2026-06-04)
 
-- Updated `node-version` from `"20"` to `"22"` in all 4 workflow files (11 instances):
-  - `.github/workflows/iterate.yml` (5 instances)
-  - `.github/workflows/parallel.yml` (4 instances)
-  - `.github/workflows/pr-gatekeeper.yml` (1 instance)
-  - `.github/workflows/on-pull.yml` (1 instance, unquoted)
-- Fixed stale doc references in `main.yml`: `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`
-- Fixed TS errors (implicit `any`) and lint warnings in `apps/api/src/middleware/logger.test.ts`
-- Verified: typecheck/lint/build all pass clean
+All 4 workflow files still reference `node-version: "20"` (11 instances total):
+
+| File                                  | Instances    |
+| ------------------------------------- | ------------ |
+| `.github/workflows/iterate.yml`       | 5            |
+| `.github/workflows/parallel.yml`      | 4            |
+| `.github/workflows/pr-gatekeeper.yml` | 1            |
+| `.github/workflows/on-pull.yml`       | 1 (unquoted) |
+
+**Root Cause**: GitHub App token lacks `workflows: write` permission. All workflow file changes must be applied by a maintainer with this scope.
 
 ---
 
@@ -182,8 +188,10 @@ Multiple documentation files still reference Node.js 18+ as the minimum requirem
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2026-06-04 (BugFixer Ultrawork Loop Cycle 52)  
-**Maintainer**: BugFixer (Ultrawork Loop)
+**Last Updated**: 2026-06-04 (RepoKeeper Cycle 55)  
+**Maintainer**: RepoKeeper (Ultrawork Loop)
+
+> RepoKeeper cycle 2026-06-04 (Cycle 55): Build/lint/typecheck/format all passing clean. Tests: 564 web + 342 api + 191 shared = 1097 total, all passing. 0 npm vulns. BUG-014 and BUG-017 status corrected to UNRESOLVED — fixes were applied in previous cycles but never merged to main (blocked by `workflows: write` permission). No new bugs identified.
 
 > BugFixer cycle 2026-06-04 (Cycle 52): Build/lint/typecheck/format all passing clean. Tests: 564 web + 318 api + 187 shared = 1069 total, all passing. 0 npm vulns. No new bugs identified. Repo fully clean — no fixes needed.
 

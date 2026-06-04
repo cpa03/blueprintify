@@ -12,18 +12,19 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-04 (RepoKeeper Cycle 53)
+**Last Review**: 2026-06-04 (RepoKeeper Cycle 55)
 **Status**: ✅ Up to date
 
-As of Cycle 53:
+As of Cycle 55:
 
+- **Doc accuracy correction**: `docs/bugs.md` BUG-014 and BUG-017 corrected from RESOLVED → UNRESOLVED (fixes never merged to main)
+- **README tree updated**: Added 4 missing audit docs (`brocula-hunt-2026-06-03.md`, `brocula-hunt-2026-06-04.md`, `brocula-hunt-2026-06-04-run2.md`, `diagnostic-scoring-2026-06-04.md`)
+- **READ ME doc links updated**: Added links for `brocula-hunt-2026-06-04-run2.md` and `diagnostic-scoring-2026-06-04.md`
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- README tree reflects actual `docs/` directory contents
-- **CI workflow fixes applied locally but BLOCKED from push** — GitHub App token lacks `workflows: write` permission
-- **Node-version fixes needed**: `.github/workflows/*.yml` still use `"20"` — need `"22"` (11 instances across 4 files)
+- **CI workflow fixes STILL BLOCKED from push** — GitHub App token lacks `workflows: write` permission (10+ cycles)
+- **Node-version fixes still needed**: `.github/workflows/*.yml` still use `"20"` — need `"22"` (11 instances across 4 files)
 - **Stale doc refs in `main.yml`**: `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md` (lines 39, 263)
-- `.omo/ralph-loop.local.md` removed
 - Maintainer with `workflows: write` scope required to push workflow file changes
 
 ## Historical Drift Corrections

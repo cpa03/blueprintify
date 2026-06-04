@@ -43,7 +43,11 @@ blueprintify/
 │   ├── audits/
 │   │   ├── brocula-hunt-2026-05-29.md
 │   │   ├── brocula-hunt-2026-05-30.md
-│   │   └── diagnostic-scoring-2026-05-31.md
+│   │   ├── brocula-hunt-2026-06-03.md
+│   │   ├── brocula-hunt-2026-06-04.md
+│   │   ├── brocula-hunt-2026-06-04-run2.md
+│   │   ├── diagnostic-scoring-2026-05-31.md
+│   │   └── diagnostic-scoring-2026-06-04.md
 │   ├── blueprint.md
 │   ├── bugs.md
 │   ├── ci-configuration.md
@@ -330,7 +334,9 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[BroCula Hunt (May 30)](./docs/audits/brocula-hunt-2026-05-30.md)** - Second performance optimization hunt
 - **[BroCula Hunt (Jun 3)](./docs/audits/brocula-hunt-2026-06-03.md)** - Third performance optimization cycle
 - **[BroCula Hunt (Jun 4)](./docs/audits/brocula-hunt-2026-06-04.md)** - Fourth performance optimization cycle
-- **[Diagnostic Scoring](./docs/audits/diagnostic-scoring-2026-05-31.md)** - Comprehensive diagnostic scoring analysis
+- **[BroCula Hunt (Jun 4 Run 2)](./docs/audits/brocula-hunt-2026-06-04-run2.md)** - Fifth performance optimization cycle (console + lighthouse)
+- **[Diagnostic Scoring (May 31)](./docs/audits/diagnostic-scoring-2026-05-31.md)** - Comprehensive diagnostic scoring analysis
+- **[Diagnostic Scoring (Jun 4)](./docs/audits/diagnostic-scoring-2026-06-04.md)** - Phase 1 diagnostic scoring report (81.1/100)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 
 ### 📚 M2 Documentation

@@ -2,7 +2,77 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Current Cycle (2026-06-04 — Cycle 54: PR Merge & Quality Fixes)
+## Current Cycle (2026-06-04 — Cycle 55: RepoKeeper — Repository Cleanup & Doc Accuracy)
+
+### Audit Scope
+
+Full repository audit covering redundant files, stale documentation, doc accuracy assessment, CI workflow status, and comprehensive quality checks.
+
+### Status Summary
+
+| Check             | Result                                       |
+| ----------------- | -------------------------------------------- |
+| Typecheck         | ✅ Clean (0 errors)                          |
+| Lint              | ✅ Clean (0 warnings)                        |
+| Format (Prettier) | ✅ All matched files use Prettier code style |
+| Build (web)       | ✅ Passes                                    |
+| Build (api)       | ✅ Passes (dry-run via typecheck)            |
+| Web tests         | ✅ 564/564 passed                            |
+| API tests         | ✅ 342/342 passed                            |
+| Shared tests      | ✅ 191/191 passed                            |
+| **Total tests**   | **✅ 1,097/1,097 passed**                    |
+| npm audit         | ✅ 0 vulnerabilities                         |
+
+### Actions Taken This Cycle
+
+1. **Doc accuracy fix**: Corrected `docs/bugs.md` — BUG-014 and BUG-017 were incorrectly marked RESOLVED but fixes never merged to `main` (blocked by `workflows: write` permission). Set to UNRESOLVED with accurate current-state documentation.
+2. **README tree fix**: Added missing audit docs to directory tree — `brocula-hunt-2026-06-03.md`, `brocula-hunt-2026-06-04.md`, `brocula-hunt-2026-06-04-run2.md`, `diagnostic-scoring-2026-06-04.md`.
+3. **README doc list fix**: Added links for `brocula-hunt-2026-06-04-run2.md` and `diagnostic-scoring-2026-06-04.md`.
+4. **Full quality verification**: typecheck/lint/build/test:all all passing (0 errors, 0 warnings).
+5. **Stale tracking file**: Removed `.omo/ralph-loop.local.md` (ultrawork loop tracking artifact).
+
+### Findings
+
+1. **No redundant/temp/unused source files found** — repo remains clean from dead code, backup files, temp artifacts, or empty directories.
+2. **No `@ts-ignore`, `@ts-expect-error`, or `as any`** type suppressions found in source code.
+3. **No TODO/FIXME/HACK artifacts** in non-test source files.
+4. **Doc accuracy issue corrected**: `docs/bugs.md` claimed BUG-014 and BUG-017 were RESOLVED, but the workflow file fixes never merged to `main`. Status updated to UNRESOLVED.
+5. **README tree was missing 4 audit files** from the directory listing — corrected.
+6. **CI workflow fixes still blocked** — `workflows: write` permission required on GITHUB_TOKEN.
+
+### CI Workflow Issue (STILL BLOCKED)
+
+CI workflow changes from 10+ previous cycles (37–54) are still NOT persisted to `main`:
+
+**Fixes needed (require maintainer with `workflows: write`):**
+
+- **Node.js version mismatch** — all 4 workflow files need `node-version: "20"` → `"22"` (11 instances total):
+  - `iterate.yml`: 5 occurrences (lines 55, 120, 185, 250, 315)
+  - `parallel.yml`: 4 occurrences (lines 70, 266, 344, 399)
+  - `pr-gatekeeper.yml`: 1 occurrence (line 31)
+  - `on-pull.yml`: 1 occurrence (line 53, unquoted → `"22"`)
+- **Stale doc references** in `.github/workflows/main.yml`:
+  - Line 39: `docs/bug.md` → `docs/bugs.md`
+  - Line 39: `docs/feature.md` → `docs/features.md`
+  - Line 263: `docs/bug.md` → `docs/bugs.md`
+
+### Actions Taken
+
+1. Full repository audit — no dead/redundant/temp files found
+2. Verified all quality checks pass (typecheck ✅ lint ✅ format ✅ build ✅ tests 1097/1097 ✅)
+3. Fixed `docs/bugs.md` — corrected BUG-014 and BUG-017 status from RESOLVED to UNRESOLVED
+4. Fixed `README.md` — added 4 missing audit docs to tree view and 2 missing doc links
+5. Updated `docs/findings.md` — Cycle 55 entry (this file)
+6. Updated `docs/active-tasks.md` — Cycle 55 status
+7. Updated `docs/knowledge-review.md` — review date refreshed
+8. Removed stale `.omo/ralph-loop.local.md`
+9. CI workflow changes remain blocked by `workflows: write` permission
+
+**Last Updated**: 2026-06-04 (Cycle 55: RepoKeeper)
+
+---
+
+## Previous Cycle (2026-06-04 — Cycle 54: PR Merge & Quality Fixes)
 
 ### Audit Scope
 
@@ -65,8 +135,6 @@ The following CI workflow fixes from previous cycles (37–52) are still NOT per
 5. Updated `docs/active-tasks.md` — Cycle 53 status
 6. Updated `docs/knowledge-review.md` — review date refreshed
 7. CI workflow changes remain blocked by `workflows: write` permission
-
-**Last Updated**: 2026-06-04 (Cycle 53: RepoKeeper)
 
 ---
 

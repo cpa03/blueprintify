@@ -2,53 +2,44 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: PR Merge Cycle & Code Quality Fixes
+## Current Focus: RepoKeeper Cycle 55 — Doc Accuracy & Repository Cleanup
 
-### Task: PR Merge Cycle ✅ COMPLETE
+### Task: RepoKeeper Cycle 55 — Repository Cleanup & Doc Accuracy ✅ COMPLETE
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Full repository audit, fix doc inaccuracies, update README tree, refresh documentation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (source files)
+  - [x] Removed stale `.omo/ralph-loop.local.md` (ultrawork loop tracking artifact)
+  - [x] **Doc accuracy fix**: Corrected `docs/bugs.md` — BUG-014 and BUG-017 were incorrectly marked RESOLVED but fixes never merged to `main`
+  - [x] **README tree fix**: Added 4 missing audit docs and 2 missing doc links
+  - [x] Updated docs: `findings.md`, `active-tasks.md`, `knowledge-review.md`
+  - [x] **⚠️ CI workflow fixes still BLOCKED** — token lacks `workflows: write` permission (10+ cycles unresolved)
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1097/1097 ✅
+
+### Task: CI Node.js Version Fix ⏳ BLOCKED
+
+- **Priority**: High
+- **Status**: ⏳ Blocked (10+ cycles — needs maintainer with `workflows: write` scope)
+- **Objective**: Replace hardcoded `node-version: "20"` with `"22"` in all workflows
+- **Actions**:
+  - [x] Changes applied locally and committed across multiple cycles (37–54)
+  - [x] Push always rejected — `GITHUB_TOKEN` lacks `workflows` scope
+  - [ ] Manual action needed: Push CI workflow changes from a token with `workflows: write` permission
+
+### Task: Previous — PR Merge Cycle ✅ COMPLETE
 
 - **Priority**: High
 - **Status**: ✅ Complete
 - **Objective**: Process open PRs, fix pre-existing issues, merge
 - **Actions**:
-  - [x] **PR #1586** — Merged: glass-card focus sweep animation (CSS-only, reduced-motion support)
+  - [x] **PR #1586** — Merged: glass-card focus sweep animation
   - [x] **PR #1585** — Merged: RepoKeeper Cycle 53 docs refresh
-  - [x] **PR #1583** — Merged: Flexy Iteration 13 (doc/dev vars; CI workflow changes blocked by token)
-  - [x] Fixed 2 lint warnings + 6 typecheck errors in `logger.test.ts` (pre-existing on main)
-  - [x] Updated `docs/audits/diagnostic-scoring-2026-06-04.md` — Phase 1 scoring update
-  - [x] **⚠️ CI workflow changes still blocked** — token lacks `workflows: write` permission
-
-### Task: CI Node.js Version Fix ⏳ BLOCKED
-
-- **Priority**: High
-- **Status**: ⏳ Blocked
-- **Objective**: Replace hardcoded `node-version: "20"` with `node-version-file: ".node-version"` in all workflows
-- **Actions**:
-  - [x] Changes applied locally and committed to PR #1583 branch
-  - [x] Push rejected — `GITHUB_TOKEN` lacks `workflows` scope
-  - [ ] Manual action needed: Push CI workflow changes from a token with `workflows: write` permission
-
-### Task: RepoKeeper Cycle 52 — Repository Audit & Doc Refresh ✅ COMPLETE
-
-- **Priority**: High
-- **Status**: ✅ Complete
-- **Objective**: Full repository audit, apply CI workflow fixes (locally), update documentation
-- **Actions**:
-  - [x] Full repository scan for redundant/temp/unused files → none found
-  - [x] Removed stale `.omo/ralph-loop.local.md`
-  - [x] Applied CI workflow fixes locally (node-version `"20"`→`"22"`, stale doc refs in main.yml)
-  - [x] **⚠️ CI workflow fixes BLOCKED** — push rejected: GitHub App token lacks `workflows: write` permission
-  - [x] Updated docs: `ci-configuration.md`, `findings.md`, `active-tasks.md`, `knowledge-review.md`
-  - [x] Created PR with docs-only changes
-
-### Task: RepoKeeper Cycle 51 — CI Alignment & Doc Refresh ✅ COMPLETE
-
-- **Priority**: Medium
-- **Status**: Complete
-- **Objective**: Update docs to record Cycle 51 audit
-- **Actions**:
-  - [x] Updated `docs/findings.md` — Cycle 51 entry
-  - [x] Updated `docs/active-tasks.md` — Cycle 51 status
-  - [x] Updated `docs/knowledge-review.md` — review date refreshed
+  - [x] **PR #1583** — Merged: Flexy Iteration 13
+  - [x] Fixed 2 lint warnings + 6 typecheck errors in `logger.test.ts`
+  - [x] Updated `docs/audits/diagnostic-scoring-2026-06-04.md`
+  - [x] **⚠️ CI workflow changes still blocked**
 
 ---
 
@@ -94,5 +85,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-04 (Cycle 53: RepoKeeper)  
+**Last Updated**: 2026-06-04 (Cycle 55: RepoKeeper)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
