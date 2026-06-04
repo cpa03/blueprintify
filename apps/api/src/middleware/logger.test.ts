@@ -12,7 +12,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Hono } from "hono";
 import { requestLogger } from "./logger";
-import { LOGGER_CONFIG } from "../config/constants";
 
 describe("requestLogger middleware", () => {
   let consoleLogSpy: ReturnType<typeof vi.spyOn>;
@@ -95,13 +94,13 @@ describe("requestLogger middleware", () => {
       app.use("*", requestLogger());
       app.get("/test", (c) => c.json({ ok: true }));
 
-      const res = await app.request("/test", {
+      await app.request("/test", {
         headers: { "cf-ray": "test-ray-123" },
       });
 
       const logCalls = consoleLogSpy.mock.calls;
       const requestLogs = logCalls.filter(
-        (call) => typeof call[0] === "string" && call[0].includes("test-ray-123")
+        (call: unknown[]) => typeof call[0] === "string" && call[0].includes("test-ray-123")
       );
       expect(requestLogs.length).toBeGreaterThanOrEqual(1);
     });
@@ -126,7 +125,7 @@ describe("requestLogger middleware", () => {
       // Find the request log entry
       const logCalls = consoleLogSpy.mock.calls;
       const requestLogs = logCalls.filter(
-        (call) => typeof call[0] === "string" && call[0].includes('"type":"request"')
+        (call: unknown[]) => typeof call[0] === "string" && call[0].includes('"type":"request"')
       );
 
       if (requestLogs.length > 0) {
@@ -156,7 +155,7 @@ describe("requestLogger middleware", () => {
 
       // Verify a request log was written
       const requestLogs = consoleLogSpy.mock.calls.filter(
-        (call) => typeof call[0] === "string" && call[0].includes('"type":"request"')
+        (call: unknown[]) => typeof call[0] === "string" && call[0].includes('"type":"request"')
       );
       expect(requestLogs.length).toBeGreaterThanOrEqual(1);
     });
@@ -173,7 +172,7 @@ describe("requestLogger middleware", () => {
       });
 
       const requestLogs = consoleLogSpy.mock.calls.filter(
-        (call) => typeof call[0] === "string" && call[0].includes('"type":"request"')
+        (call: unknown[]) => typeof call[0] === "string" && call[0].includes('"type":"request"')
       );
       // Verify request logs exist (but we won't check body content since it depends on clone behavior in test env)
       expect(requestLogs.length).toBeGreaterThanOrEqual(1);
@@ -190,10 +189,10 @@ describe("requestLogger middleware", () => {
 
       const logCalls = consoleLogSpy.mock.calls;
       const requestLogs = logCalls.filter(
-        (call) => typeof call[0] === "string" && call[0].includes('"type":"request"')
+        (call: unknown[]) => typeof call[0] === "string" && call[0].includes('"type":"request"')
       );
       const responseLogs = logCalls.filter(
-        (call) => typeof call[0] === "string" && call[0].includes('"type":"response"')
+        (call: unknown[]) => typeof call[0] === "string" && call[0].includes('"type":"response"')
       );
 
       // Should have at least one request and one response log
