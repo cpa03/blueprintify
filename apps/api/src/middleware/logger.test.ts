@@ -100,7 +100,8 @@ describe("requestLogger middleware", () => {
 
       const logCalls = consoleLogSpy.mock.calls;
       const requestLogs = logCalls.filter(
-        (call: unknown[]) => typeof call[0] === "string" && call[0].includes("test-ray-123")
+        (call: unknown[]) =>
+          typeof call[0] === "string" && (call[0] as string).includes("test-ray-123")
       );
       expect(requestLogs.length).toBeGreaterThanOrEqual(1);
     });
@@ -125,7 +126,8 @@ describe("requestLogger middleware", () => {
       // Find the request log entry
       const logCalls = consoleLogSpy.mock.calls;
       const requestLogs = logCalls.filter(
-        (call: unknown[]) => typeof call[0] === "string" && call[0].includes('"type":"request"')
+        (call: unknown[]) =>
+          typeof call[0] === "string" && (call[0] as string).includes('"type":"request"')
       );
 
       if (requestLogs.length > 0) {
@@ -155,7 +157,8 @@ describe("requestLogger middleware", () => {
 
       // Verify a request log was written
       const requestLogs = consoleLogSpy.mock.calls.filter(
-        (call: unknown[]) => typeof call[0] === "string" && call[0].includes('"type":"request"')
+        (call: unknown[]) =>
+          typeof call[0] === "string" && (call[0] as string).includes('"type":"request"')
       );
       expect(requestLogs.length).toBeGreaterThanOrEqual(1);
     });
@@ -172,7 +175,8 @@ describe("requestLogger middleware", () => {
       });
 
       const requestLogs = consoleLogSpy.mock.calls.filter(
-        (call: unknown[]) => typeof call[0] === "string" && call[0].includes('"type":"request"')
+        (call: unknown[]) =>
+          typeof call[0] === "string" && (call[0] as string).includes('"type":"request"')
       );
       // Verify request logs exist (but we won't check body content since it depends on clone behavior in test env)
       expect(requestLogs.length).toBeGreaterThanOrEqual(1);
@@ -189,10 +193,12 @@ describe("requestLogger middleware", () => {
 
       const logCalls = consoleLogSpy.mock.calls;
       const requestLogs = logCalls.filter(
-        (call: unknown[]) => typeof call[0] === "string" && call[0].includes('"type":"request"')
+        (call: unknown[]) =>
+          typeof call[0] === "string" && (call[0] as string).includes('"type":"request"')
       );
       const responseLogs = logCalls.filter(
-        (call: unknown[]) => typeof call[0] === "string" && call[0].includes('"type":"response"')
+        (call: unknown[]) =>
+          typeof call[0] === "string" && (call[0] as string).includes('"type":"response"')
       );
 
       // Should have at least one request and one response log
