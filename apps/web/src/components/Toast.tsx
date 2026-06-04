@@ -220,6 +220,19 @@ const ToastItem = memo(
           }}
         />
 
+        {/* Hover glow ring — subtle inset glow that gently "catches" the toast
+            when paused, reinforcing the paused state visually. Uses currentColor
+            which inherits from the toast type (success/error/warning/info), so
+            the glow color always matches naturally. */}
+        <div
+          className="absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-300 ease-out"
+          style={{
+            opacity: isHovered ? 1 : 0,
+            boxShadow: `inset 0 0 24px 0 color-mix(in srgb, currentColor 10%, transparent)`,
+          }}
+          aria-hidden="true"
+        />
+
         <AnimatePresence>
           {isHovered && (
             <motion.div
