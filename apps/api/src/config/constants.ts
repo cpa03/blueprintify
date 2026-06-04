@@ -244,8 +244,8 @@ export const API_HEADERS = {
   },
   /** Standard cache-control directives */
   CACHE_CONTROL: {
-    /** The header name for Cache-Control */
-    HEADER_NAME: "Cache-Control",
+    /** The header name for Cache-Control (from shared config) */
+    HEADER_NAME: HTTP_HEADER_NAMES.CACHE_CONTROL,
     /** Public cache directive with only max-age */
     PUBLIC_MAX_AGE: (maxAge: number): string => `public, max-age=${maxAge}`,
     /** Public cache directive with max-age and stale-while-revalidate */
@@ -261,25 +261,25 @@ export const API_HEADERS = {
   },
   /** Server timing header */
   SERVER_TIMING: {
-    HEADER: "Server-Timing",
+    HEADER: HTTP_HEADER_NAMES.SERVER_TIMING,
     /** Format a server-timing entry */
     ENTRY: (name: string, description: string, duration: number): string =>
       `${name};desc="${description}";dur=${duration}`,
   },
   /** SSE-specific headers for streaming responses */
   SSE: {
-    /** Nginx buffering disable header */
-    X_ACCEL_BUFFERING: "X-Accel-Buffering",
+    /** Nginx buffering disable header (from shared config) */
+    X_ACCEL_BUFFERING: HTTP_HEADER_NAMES.X_ACCEL_BUFFERING,
     /** Value to disable Nginx buffering */
     X_ACCEL_BUFFERING_NO: "no",
   },
 
   /** Security-related HTTP headers */
   SECURITY: {
-    /** Cross-Origin-Opener-Policy header name */
-    CROSS_ORIGIN_OPENER_POLICY: "Cross-Origin-Opener-Policy",
-    /** Cross-Origin-Resource-Policy header name */
-    CROSS_ORIGIN_RESOURCE_POLICY: "Cross-Origin-Resource-Policy",
+    /** Cross-Origin-Opener-Policy header name (from shared config) */
+    CROSS_ORIGIN_OPENER_POLICY: HTTP_HEADER_NAMES.CROSS_ORIGIN_OPENER_POLICY,
+    /** Cross-Origin-Resource-Policy header name (from shared config) */
+    CROSS_ORIGIN_RESOURCE_POLICY: HTTP_HEADER_NAMES.CROSS_ORIGIN_RESOURCE_POLICY,
     /** Same-origin policy value */
     SAME_ORIGIN: "same-origin",
   },
@@ -310,27 +310,27 @@ export const API_HEADERS = {
   },
   /** Standard HTTP connection header */
   CONNECTION: "Connection",
-  /** Standard HTTP content type header */
-  CONTENT_TYPE: "Content-Type",
+  /** Standard HTTP content type header (from shared config) */
+  CONTENT_TYPE: HTTP_HEADER_NAMES.CONTENT_TYPE,
   /** Standard HTTP response headers set by middleware */
   RESPONSE: {
-    /** Request ID for distributed tracing */
-    REQUEST_ID: "X-Request-ID",
-    /** Response time in milliseconds */
-    RESPONSE_TIME: "X-Response-Time",
-    /** Cloudflare Ray ID response header */
-    CF_RAY: "X-CF-Ray",
+    /** Request ID for distributed tracing (from shared config) */
+    REQUEST_ID: HTTP_HEADER_NAMES.X_REQUEST_ID,
+    /** Response time in milliseconds (from shared config) */
+    RESPONSE_TIME: HTTP_HEADER_NAMES.X_RESPONSE_TIME,
+    /** Cloudflare Ray ID response header (from shared config) */
+    CF_RAY: HTTP_HEADER_NAMES.CF_RAY,
   },
   /** Rate limiting response headers */
   RATE_LIMIT: {
-    /** Maximum requests allowed in window */
-    LIMIT: "X-RateLimit-Limit",
-    /** Remaining requests in current window */
-    REMAINING: "X-RateLimit-Remaining",
-    /** Timestamp when rate limit resets */
-    RESET: "X-RateLimit-Reset",
-    /** Seconds until client can retry */
-    RETRY_AFTER: "Retry-After",
+    /** Maximum requests allowed in window (from shared config) */
+    LIMIT: HTTP_HEADER_NAMES.RATE_LIMIT_LIMIT,
+    /** Remaining requests in current window (from shared config) */
+    REMAINING: HTTP_HEADER_NAMES.RATE_LIMIT_REMAINING,
+    /** Timestamp when rate limit resets (from shared config) */
+    RESET: HTTP_HEADER_NAMES.RATE_LIMIT_RESET,
+    /** Seconds until client can retry (from shared config) */
+    RETRY_AFTER: HTTP_HEADER_NAMES.RETRY_AFTER,
   },
 } as const;
 

@@ -511,9 +511,35 @@ export const HTTP_HEADER_NAMES = {
   RETRY_AFTER: "Retry-After",
   /** Set-Cookie header for cookie management */
   SET_COOKIE: "Set-Cookie",
+  /** Request-ID header for distributed tracing */
+  X_REQUEST_ID: "X-Request-ID",
+  /** Response-Time header for performance monitoring */
+  X_RESPONSE_TIME: "X-Response-Time",
+  /** Cloudflare Ray-ID header for request tracing */
+  CF_RAY: "X-CF-Ray",
 
   /** CORS headers */
   ACCESS_CONTROL_ALLOW_ORIGIN: "Access-Control-Allow-Origin",
   ACCESS_CONTROL_ALLOW_METHODS: "Access-Control-Allow-Methods",
   ACCESS_CONTROL_ALLOW_HEADERS: "Access-Control-Allow-Headers",
+
+  /** Streaming headers */
+  X_ACCEL_BUFFERING: "X-Accel-Buffering",
+  SERVER_TIMING: "Server-Timing",
+
+  /** Rate limiting headers */
+  RATE_LIMIT_LIMIT: "X-RateLimit-Limit",
+  RATE_LIMIT_REMAINING: "X-RateLimit-Remaining",
+  RATE_LIMIT_RESET: "X-RateLimit-Reset",
+
+  /** Security headers */
+  CONTENT_SECURITY_POLICY: "Content-Security-Policy",
+  X_CONTENT_TYPE_OPTIONS: "X-Content-Type-Options",
+  X_FRAME_OPTIONS: "X-Frame-Options",
+  X_XSS_PROTECTION: "X-XSS-Protection",
+  REFERRER_POLICY: "Referrer-Policy",
+  STRICT_TRANSPORT_SECURITY: "Strict-Transport-Security",
+  PERMISSIONS_POLICY: "Permissions-Policy",
+  CROSS_ORIGIN_OPENER_POLICY: "Cross-Origin-Opener-Policy",
+  CROSS_ORIGIN_RESOURCE_POLICY: "Cross-Origin-Resource-Policy",
 } as const;

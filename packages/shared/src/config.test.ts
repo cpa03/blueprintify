@@ -656,6 +656,35 @@ describe("HTTP_HEADER_NAMES", () => {
     expect(HTTP_HEADER_NAMES.ACCESS_CONTROL_ALLOW_HEADERS).toBe("Access-Control-Allow-Headers");
   });
 
+  it("should have tracing and monitoring header names", () => {
+    expect(HTTP_HEADER_NAMES.X_REQUEST_ID).toBe("X-Request-ID");
+    expect(HTTP_HEADER_NAMES.X_RESPONSE_TIME).toBe("X-Response-Time");
+    expect(HTTP_HEADER_NAMES.CF_RAY).toBe("X-CF-Ray");
+  });
+
+  it("should have streaming header names", () => {
+    expect(HTTP_HEADER_NAMES.X_ACCEL_BUFFERING).toBe("X-Accel-Buffering");
+    expect(HTTP_HEADER_NAMES.SERVER_TIMING).toBe("Server-Timing");
+  });
+
+  it("should have rate limiting header names", () => {
+    expect(HTTP_HEADER_NAMES.RATE_LIMIT_LIMIT).toBe("X-RateLimit-Limit");
+    expect(HTTP_HEADER_NAMES.RATE_LIMIT_REMAINING).toBe("X-RateLimit-Remaining");
+    expect(HTTP_HEADER_NAMES.RATE_LIMIT_RESET).toBe("X-RateLimit-Reset");
+  });
+
+  it("should have security header names", () => {
+    expect(HTTP_HEADER_NAMES.CONTENT_SECURITY_POLICY).toBe("Content-Security-Policy");
+    expect(HTTP_HEADER_NAMES.X_CONTENT_TYPE_OPTIONS).toBe("X-Content-Type-Options");
+    expect(HTTP_HEADER_NAMES.X_FRAME_OPTIONS).toBe("X-Frame-Options");
+    expect(HTTP_HEADER_NAMES.X_XSS_PROTECTION).toBe("X-XSS-Protection");
+    expect(HTTP_HEADER_NAMES.REFERRER_POLICY).toBe("Referrer-Policy");
+    expect(HTTP_HEADER_NAMES.STRICT_TRANSPORT_SECURITY).toBe("Strict-Transport-Security");
+    expect(HTTP_HEADER_NAMES.PERMISSIONS_POLICY).toBe("Permissions-Policy");
+    expect(HTTP_HEADER_NAMES.CROSS_ORIGIN_OPENER_POLICY).toBe("Cross-Origin-Opener-Policy");
+    expect(HTTP_HEADER_NAMES.CROSS_ORIGIN_RESOURCE_POLICY).toBe("Cross-Origin-Resource-Policy");
+  });
+
   it("should have unique header name values", () => {
     const names = Object.values(HTTP_HEADER_NAMES);
     const uniqueNames = new Set(names);
