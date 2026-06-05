@@ -135,11 +135,12 @@ npm run check
 
 ## Application Attempt Log
 
-| Cycle | Date       | Result                                                 |
-| ----- | ---------- | ------------------------------------------------------ |
-| 57    | 2026-06-05 | Fixes prepared, push rejected (no `workflows: write`)  |
-| 58    | 2026-06-05 | Documentation refresh pushed, workflow changes blocked |
-| ULW   | 2026-06-05 | Fixes re-verified locally, push rejected again         |
+| Cycle | Date       | Result                                                                      |
+| ----- | ---------- | --------------------------------------------------------------------------- |
+| 57    | 2026-06-05 | Fixes prepared, push rejected (no `workflows: write`)                       |
+| 58    | 2026-06-05 | Documentation refresh pushed, workflow changes blocked                      |
+| ULW   | 2026-06-05 | Fixes re-verified locally, push rejected again                              |
+| ULW-2 | 2026-06-05 | BugFixer re-applied BUG-014 and BUG-017 fixes, push rejected (same blocker) |
 
 ## How to Apply (for maintainer with PAT)
 
