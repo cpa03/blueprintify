@@ -304,8 +304,8 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 
 ## PRs
 
-| PR # | Branch                                              | Title                                                                                                    |
-| ---- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| TBD  | `feat/flexy-iteration-15-content-type-header-names` | feat(flexy): eliminate hardcoded 'Content-Type' header keys with HTTP_HEADER_NAMES.CONTENT_TYPE in tests |
+| PR #  | Branch                                              | Title                                                                                                    |
+| ----- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| #1598 | `feat/flexy-iteration-15-content-type-header-names` | feat(flexy): eliminate hardcoded 'Content-Type' header keys with HTTP_HEADER_NAMES.CONTENT_TYPE in tests |
 
 **✅ COMPLETED - 15 iterations done**
