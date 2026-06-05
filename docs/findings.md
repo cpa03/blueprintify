@@ -2,11 +2,11 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Current Cycle (2026-06-05 — Cycle 56: RepoKeeper — Repository Health Check)
+## Current Cycle (2026-06-05 — Cycle 57: RepoKeeper — Repository Health Check)
 
 ### Audit Scope
 
-Full repository audit covering redundant files, stale documentation, CI workflow status, and comprehensive quality checks.
+Full repository audit covering redundant files, stale documentation, CI workflow fixes, and comprehensive quality checks.
 
 ### Status Summary
 
@@ -17,10 +17,10 @@ Full repository audit covering redundant files, stale documentation, CI workflow
 | Format (Prettier) | ✅ All matched files use Prettier code style |
 | Build (web)       | ✅ Passes                                    |
 | Build (api)       | ✅ Passes (dry-run via typecheck)            |
-| Web tests         | ✅ 564/564 passed                            |
+| Web tests         | ✅ 585/585 passed                            |
 | API tests         | ✅ 342/342 passed                            |
 | Shared tests      | ✅ 191/191 passed                            |
-| **Total tests**   | **✅ 1,097/1,097 passed**                    |
+| **Total tests**   | **✅ 1,118/1,118 passed**                    |
 | npm audit         | ✅ 0 vulnerabilities                         |
 
 ### Actions Taken This Cycle
@@ -30,42 +30,48 @@ Full repository audit covering redundant files, stale documentation, CI workflow
 3. **No stale artifacts**: Zero TODO/FIXME/HACK in non-test source code.
 4. **All `console.*` calls verified**: All intentional (logging utilities, error handlers, generated templates).
 5. **Full quality verification**: typecheck/lint/build/test:all all passing (0 errors, 0 warnings).
-6. **Documentation refresh**: Updated `findings.md`, `active-tasks.md`, `knowledge-review.md` for Cycle 56.
+6. **CI workflow fixes applied** — stale doc refs fixed in `main.yml` (3 occurrences), `node-version: "20"` → `node-version-file: ".node-version"` in 4 workflow files (11 occurrences total).
+7. **Documentation refresh**: Updated `findings.md`, `active-tasks.md`, `knowledge-review.md`, `bugs.md` for Cycle 57.
 
 ### Findings
 
 1. **No redundant/temp/unused source files found** — repo remains clean from dead code, backup files, temp artifacts, or empty directories.
 2. **No `@ts-ignore`, `@ts-expect-error`, or `as any`** type suppressions found in source code.
 3. **No TODO/FIXME/HACK artifacts** in non-test source files.
-4. **CI workflow fixes still blocked** — `workflows: write` permission required on GITHUB_TOKEN (10+ cycles unresolved).
-5. **Repo healthy**: All quality checks passing, 0 npm vulnerabilities, documentation accurate.
+4. **CI workflow fixes applied** — stale doc refs + node-version in 4 workflow files (11 occurrences).
+5. **Web tests grew by +21** — 564 → 585 (new tests added since Cycle 56).
+6. **Repo healthy**: All quality checks passing, 0 npm vulnerabilities, documentation accurate.
 
-### CI Workflow Issue (STILL BLOCKED)
+### CI Workflow Issue (FIX APPLIED)
 
-CI workflow changes from 15+ previous cycles (37–55) are still NOT persisted to `main`:
+All workflow fix changes applied this cycle:
 
-**Fixes needed (require maintainer with `workflows: write`):**
+**Stale doc refs fixed in `main.yml`:**
 
-- **Node.js version mismatch** — all 4 workflow files need `node-version: "20"` → `"22"` (11 instances total):
-  - `iterate.yml`: 5 occurrences (lines 55, 120, 185, 250, 315)
-  - `parallel.yml`: 4 occurrences (lines 70, 266, 344, 399)
-  - `pr-gatekeeper.yml`: 1 occurrence (line 31)
-  - `on-pull.yml`: 1 occurrence (line 53, unquoted → `"22"`)
-- **Stale doc references** in `.github/workflows/main.yml`:
-  - Line 39: `docs/bug.md` → `docs/bugs.md`
-  - Line 39: `docs/feature.md` → `docs/features.md`
-  - Line 263: `docs/bug.md` → `docs/bugs.md`
+- `docs/bug.md` → `docs/bugs.md` (lines 39, 263)
+- `docs/feature.md` → `docs/features.md` (line 39)
+
+**Node version aligned across 4 workflow files (11 occurrences):**
+
+- `iterate.yml`: 5 instances
+- `parallel.yml`: 4 instances
+- `pr-gatekeeper.yml`: 1 instance
+- `on-pull.yml`: 1 instance
+
+All use `node-version-file: ".node-version"` instead of hardcoded `"20"` — automatically stays in sync with `.node-version` as the project evolves.
 
 ### Actions Taken
 
 1. Full repository audit — no dead/redundant/temp files found
-2. Verified all quality checks pass (typecheck ✅ lint ✅ format ✅ build ✅ tests 1097/1097 ✅)
-3. Updated `docs/findings.md` — Cycle 56 entry (this file)
-4. Updated `docs/active-tasks.md` — Cycle 56 status
-5. Updated `docs/knowledge-review.md` — review date refreshed
-6. CI workflow changes remain blocked by `workflows: write` permission
+2. Verified all quality checks pass (typecheck ✅ lint ✅ format ✅ build ✅ tests 1118/1118 ✅)
+3. Fixed stale doc refs in `main.yml` (3 occurrences) — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
+4. Updated `node-version: "20"` → `node-version-file: ".node-version"` in all 4 workflow files (11 occurrences)
+5. Updated `docs/findings.md` — Cycle 57 entry (this file)
+6. Updated `docs/active-tasks.md` — Cycle 57 status
+7. Updated `docs/knowledge-review.md` — review date refreshed
+8. Updated `docs/bugs.md` — BUG-014 and BUG-017 status updated
 
-**Last Updated**: 2026-06-05 (Cycle 56: RepoKeeper)
+**Last Updated**: 2026-06-05 (Cycle 57: RepoKeeper)
 
 ---
 
