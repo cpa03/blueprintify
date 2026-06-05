@@ -579,8 +579,16 @@ export const HTTP_HEADER_NAMES = {
   CF_IPCITY: "cf-ipcity",
   CF_WORKER_DC: "cf-worker-dc",
 
+  /** CDN cache control header names */
+  CLOUDFLARE_CACHE_CONTROL: "Cloudflare-CDN-Cache-Control",
+  CDN_CACHE_CONTROL: "CDN-Cache-Control",
+
   /** Lowercase variants for request header lookups */
   USER_AGENT_LC: "user-agent",
   CONTENT_TYPE_LC: "content-type",
   CONTENT_LENGTH_LC: "content-length",
+  AUTHORIZATION_LC: "authorization",
+  COOKIE_LC: "cookie",
+  X_REQUEST_ID_LC: "x-request-id",
+  CF_RAY_LC: "cf-ray",
 } as const;

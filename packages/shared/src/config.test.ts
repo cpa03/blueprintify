@@ -710,6 +710,15 @@ describe("HTTP_HEADER_NAMES", () => {
     expect(HTTP_HEADER_NAMES.USER_AGENT_LC).toBe("user-agent");
     expect(HTTP_HEADER_NAMES.CONTENT_TYPE_LC).toBe("content-type");
     expect(HTTP_HEADER_NAMES.CONTENT_LENGTH_LC).toBe("content-length");
+    expect(HTTP_HEADER_NAMES.AUTHORIZATION_LC).toBe("authorization");
+    expect(HTTP_HEADER_NAMES.COOKIE_LC).toBe("cookie");
+    expect(HTTP_HEADER_NAMES.X_REQUEST_ID_LC).toBe("x-request-id");
+    expect(HTTP_HEADER_NAMES.CF_RAY_LC).toBe("cf-ray");
+  });
+
+  it("should have CDN cache control header names", () => {
+    expect(HTTP_HEADER_NAMES.CLOUDFLARE_CACHE_CONTROL).toBe("Cloudflare-CDN-Cache-Control");
+    expect(HTTP_HEADER_NAMES.CDN_CACHE_CONTROL).toBe("CDN-Cache-Control");
   });
 
   it("should have Connection header name", () => {

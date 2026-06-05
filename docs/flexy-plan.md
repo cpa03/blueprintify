@@ -278,57 +278,31 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run typecheck` — clean (fixed 6 TS7006 errors)
 - ✅ `npm run lint` — zero warnings (fixed 2 unused var warnings)
 - ✅ `npm run build` — clean
-- ✅ `npm run test:all` — 1,098 tests passing (564 web + 343 api + 191 shared) across 67 files
+- ✅ `npm run test:all` — 1,130 tests passing (585 web + 342 api + 203 shared) across 68 files
 
-## Status
+**✅ COMPLETED - 16 iterations done**
 
-**✅ COMPLETED - 14 iterations done**
+### ✅ Flexy Iteration 17: Complete HTTP_HEADER_NAMES Coverage + Eliminate Remaining Hardcoded Header/Security Strings
 
-### ✅ Flexy Iteration 15: Eliminate Hardcoded "Content-Type" Header Keys in Tests
-
-| File                                                 | Change                                                                                                                                  |
-| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/api/src/**/*.test.ts` (10 files)               | Added `HTTP_HEADER_NAMES` import, replaced 80+ `"Content-Type":` header keys with `[HTTP_HEADER_NAMES.CONTENT_TYPE]:` computed property |
-| `apps/web/src/integration/**/*.test.ts` (4 files)    | Added `HTTP_HEADER_NAMES` import, replaced all `"Content-Type"` header keys with `[HTTP_HEADER_NAMES.CONTENT_TYPE]:` computed property  |
-| `apps/api/src/utils/stream.test.ts`                  | Replaced `response.headers.get("Content-Type")` with `HTTP_HEADER_NAMES.CONTENT_TYPE` ref                                               |
-| `apps/web/src/integration/api-flows.test.ts`         | Replaced `response.headers.get("Content-Type")` with `HTTP_HEADER_NAMES.CONTENT_TYPE` ref                                               |
-| `apps/web/src/integration/refinement-export.test.ts` | Replaced `response.headers.get("Content-Type")` with `HTTP_HEADER_NAMES.CONTENT_TYPE` ref                                               |
-| `apps/api/src/integration/m2-workflows.test.ts`      | Replaced `generateRes.headers.get("Content-Type")` with `HTTP_HEADER_NAMES.CONTENT_TYPE` ref                                            |
-| `docs/flexy-plan.md`                                 | Added iteration 15 documentation                                                                                                        |
-
-## Verification
-
-- ✅ `npm run typecheck` — clean
-- ✅ `npm run lint` — zero warnings
-- ✅ `npm run test:all` — 1,097 tests passing (564 web + 342 api + 191 shared) across 67 files
-
-## PRs
-
-| PR #  | Branch                                              | Title                                                                                                    |
-| ----- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| #1598 | `feat/flexy-iteration-15-content-type-header-names` | feat(flexy): eliminate hardcoded 'Content-Type' header keys with HTTP_HEADER_NAMES.CONTENT_TYPE in tests |
-
-### ✅ Flexy Iteration 16: Centralize Request/Custom Header Names & Security Values + Fix Hardcoded Test Strings
-
-| File                                          | Change                                                                                                                                                       |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `packages/shared/src/config.ts`               | Added 14 new entries to `HTTP_HEADER_NAMES` (custom app, Cloudflare, lowercase request headers) + new `SECURITY_VALUES` config with 7 security header values |
-| `packages/shared/src/index.ts`                | Exported `SECURITY_VALUES`                                                                                                                                   |
-| `packages/shared/src/config.test.ts`          | Added 17 tests for new header names + 7 tests for `SECURITY_VALUES`                                                                                          |
-| `apps/api/src/config/constants.ts`            | 15 `API_HEADERS` entries now reference shared `HTTP_HEADER_NAMES`/`SECURITY_VALUES` instead of hardcoded strings                                             |
-| `apps/api/src/middleware/auth.test.ts`        | 7 hardcoded `"x-api-key"` header keys replaced with `API_HEADERS.CUSTOM.API_KEY`                                                                             |
-| `apps/api/src/middleware/rateLimit.test.ts`   | 13 hardcoded CF/forwarded-for header keys replaced with `API_HEADERS` refs                                                                                   |
-| `apps/api/src/middleware/bodyLimit.test.ts`   | 6 hardcoded `"content-length"` header keys replaced with `HTTP_HEADER_NAMES.CONTENT_LENGTH_LC`                                                               |
-| `apps/web/src/config/env.test.ts`             | 5 hardcoded URL/name defaults replaced with `SHARED_DEFAULTS`/`DEFAULT_URLS` imports                                                                         |
-| `apps/web/src/hooks/useDocumentTitle.test.ts` | 10 hardcoded `"Blueprintify"` strings replaced with `SHARED_DEFAULTS.APP_NAME` + `DOCUMENT_TITLE_CONFIG.SEPARATOR`                                           |
-| `apps/web/src/components/Header.test.tsx`     | Hardcoded `"Blueprintify"` replaced with `UI_CONTENT.APP.NAME`                                                                                               |
-| `apps/web/src/lib/api.test.ts`                | Added Flexy source-of-truth comment linking mock to shared config                                                                                            |
+| File                                     | Change                                                                                                                                                                                    |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`          | Added `AUTHORIZATION_LC`, `COOKIE_LC`, `X_REQUEST_ID_LC`, `CF_RAY_LC` lowercase header variants + `CLOUDFLARE_CACHE_CONTROL`, `CDN_CACHE_CONTROL` CDN header names to `HTTP_HEADER_NAMES` |
+| `packages/shared/src/config.test.ts`     | Added 6 tests for new lowercase/CDN header names                                                                                                                                          |
+| `apps/api/src/config/constants.ts`       | `CUSTOM.REQUEST_ID`, `CF_PROPERTIES.RAY_ID`, `CDN` headers, `LOGGER_CONFIG.SANITIZED_HEADER_EXCLUDE` now reference shared `HTTP_HEADER_NAMES` instead of hardcoded strings                |
+| `apps/web/src/config/security.ts`        | 5 `SECURITY_HEADERS` values (`nosniff`, `DENY`, `1; mode=block`, `strict-origin`, HSTS) now reference shared `SECURITY_VALUES`                                                            |
+| `apps/api/src/middleware/logger.test.ts` | Hardcoded `"authorization"`/`"cookie"` replaced with `HTTP_HEADER_NAMES.AUTHORIZATION_LC`/`COOKIE_LC`                                                                                     |
+| `apps/api/src/routes/storage.test.ts`    | Hardcoded `"storage:quota"` replaced with `STORAGE_KV_CONFIG.QUOTA_KEY` computed property                                                                                                 |
+| `apps/api/src/services/prompts.test.ts`  | Hardcoded `"<user_input>"`/`"</user_input>"` replaced with `PROMPT_INPUT_CONFIG.USER_DELIMITER_START`/`_END` refs                                                                         |
 
 ## Verification
 
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
-- ✅ `npm run test:all` — 1,129 tests passing (585 web + 342 api + 202 shared) across 68 files
+- ✅ `npm run test:all` — 1,130 tests passing (585 web + 342 api + 203 shared) across 68 files
 
-**✅ COMPLETED - 16 iterations done**
+## PRs
+
+| PR # | Branch                                          | Title                                                                                                      |
+| ---- | ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| TBD  | `feat/flexy-iteration-17-header-names-complete` | feat(flexy): complete HTTP_HEADER_NAMES coverage and eliminate remaining hardcoded header/security strings |

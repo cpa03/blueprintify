@@ -7,7 +7,12 @@
  * @module config/security
  */
 
-import { SECURITY_LIMITS, STORAGE_CONFIG, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import {
+  SECURITY_LIMITS,
+  STORAGE_CONFIG,
+  HTTP_HEADER_NAMES,
+  SECURITY_VALUES,
+} from "@blueprint/shared";
 
 // ============================================================================
 // DOMPurify Configuration
@@ -205,11 +210,11 @@ export const SECURITY_HEADERS = {
       return `${directive} ${values.join(" ")}`;
     })
     .join("; "),
-  [HTTP_HEADER_NAMES.X_CONTENT_TYPE_OPTIONS]: "nosniff",
-  [HTTP_HEADER_NAMES.X_FRAME_OPTIONS]: "DENY",
-  [HTTP_HEADER_NAMES.X_XSS_PROTECTION]: "1; mode=block",
-  [HTTP_HEADER_NAMES.REFERRER_POLICY]: "strict-origin-when-cross-origin",
-  [HTTP_HEADER_NAMES.STRICT_TRANSPORT_SECURITY]: "max-age=31536000; includeSubDomains; preload",
+  [HTTP_HEADER_NAMES.X_CONTENT_TYPE_OPTIONS]: SECURITY_VALUES.X_CONTENT_TYPE_OPTIONS_NOSNIFF,
+  [HTTP_HEADER_NAMES.X_FRAME_OPTIONS]: SECURITY_VALUES.X_FRAME_OPTIONS_DENY,
+  [HTTP_HEADER_NAMES.X_XSS_PROTECTION]: SECURITY_VALUES.X_XSS_PROTECTION_VALUE,
+  [HTTP_HEADER_NAMES.REFERRER_POLICY]: SECURITY_VALUES.REFERRER_POLICY_STRICT_ORIGIN,
+  [HTTP_HEADER_NAMES.STRICT_TRANSPORT_SECURITY]: SECURITY_VALUES.STRICT_TRANSPORT_SECURITY_VALUE,
   [HTTP_HEADER_NAMES.PERMISSIONS_POLICY]: [
     "accelerometer=()",
     "camera=()",

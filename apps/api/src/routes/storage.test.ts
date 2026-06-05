@@ -5,6 +5,7 @@ import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
 import { HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import { STORAGE_KV_CONFIG } from "../config/constants";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -78,7 +79,7 @@ describe("GET /storage/quota", () => {
       updatedAt: new Date().toISOString(),
     };
     const mockEnv = createMockEnv({
-      "storage:quota": JSON.stringify(storedData),
+      [STORAGE_KV_CONFIG.QUOTA_KEY]: JSON.stringify(storedData),
     });
     const res = await app.request("/quota", {}, mockEnv);
 
@@ -228,7 +229,7 @@ describe("DELETE /storage/clear", () => {
       updatedAt: new Date().toISOString(),
     };
     const mockEnv = createMockEnv({
-      "storage:quota": JSON.stringify(storedData),
+      [STORAGE_KV_CONFIG.QUOTA_KEY]: JSON.stringify(storedData),
     });
     const res = await app.request(
       "/clear",
