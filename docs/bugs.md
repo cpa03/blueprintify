@@ -16,11 +16,12 @@
 
 `.github/workflows/main.yml` continues to reference two non-existent documentation files. Fixes applied in multiple cycles (37, 39, 47, 48, 52) but never merged to `main` — each cycle's branch could not push workflow changes.
 
-#### Current State (Cycle 55 — 2026-06-04)
+#### Current State (Cycle 56 — 2026-06-05)
 
 - `main.yml` line 39: still references `docs/bug.md` and `docs/feature.md`
 - `main.yml` line 263: still references `docs/bug.md`
 - **Root Cause**: GitHub App token lacks `workflows: write` permission. All workflow file changes must be applied by a maintainer with this scope.
+- **Latest attempt**: Fix applied and committed on `fix/bugfixer-cycle-node-version-stale-docs` branch. Push blocked.
 
 #### Fix Required
 
@@ -41,9 +42,9 @@
 
 All CI workflow files use Node.js 20, but the project requires Node.js 22+ per `.node-version`, `.nvmrc`, and `package.json` engines. Fixes applied in 8+ cycles (37–54) but never merged to `main`.
 
-#### Current State (Cycle 55 — 2026-06-04)
+#### Current State (Cycle 56 — 2026-06-05)
 
-All 4 workflow files still reference `node-version: "20"` (11 instances total):
+All 4 workflow files still reference `node-version: "20"` (11 instances total) on main. Fix committed on `fix/bugfixer-cycle-node-version-stale-docs` but push blocked:
 
 | File                                  | Instances    |
 | ------------------------------------- | ------------ |
@@ -188,8 +189,10 @@ Multiple documentation files still reference Node.js 18+ as the minimum requirem
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2026-06-04 (RepoKeeper Cycle 55)  
+**Last Updated**: 2026-06-05 (BugFixer Cycle)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
+
+> BugFixer cycle 2026-06-05: Build/lint/typecheck/format all passing clean. Tests: 564 web + 342 api + 191 shared = 1097 total, all passing. 0 npm vulns. Fixed stale doc refs (`docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`) in `main.yml`. Updated node-version to `"22"` in all 4 workflow files (11 occurrences across iterate.yml, parallel.yml, on-pull.yml, pr-gatekeeper.yml). Push of workflow files blocked by `workflows` permission — committed locally on `fix/bugfixer-cycle-node-version-stale-docs`.
 
 > RepoKeeper cycle 2026-06-04 (Cycle 55): Build/lint/typecheck/format all passing clean. Tests: 564 web + 342 api + 191 shared = 1097 total, all passing. 0 npm vulns. BUG-014 and BUG-017 status corrected to UNRESOLVED — fixes were applied in previous cycles but never merged to main (blocked by `workflows: write` permission). No new bugs identified.
 
