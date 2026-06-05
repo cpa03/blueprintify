@@ -308,4 +308,27 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | ----- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | #1598 | `feat/flexy-iteration-15-content-type-header-names` | feat(flexy): eliminate hardcoded 'Content-Type' header keys with HTTP_HEADER_NAMES.CONTENT_TYPE in tests |
 
-**✅ COMPLETED - 15 iterations done**
+### ✅ Flexy Iteration 16: Centralize Request/Custom Header Names & Security Values + Fix Hardcoded Test Strings
+
+| File                                          | Change                                                                                                                                                       |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `packages/shared/src/config.ts`               | Added 14 new entries to `HTTP_HEADER_NAMES` (custom app, Cloudflare, lowercase request headers) + new `SECURITY_VALUES` config with 7 security header values |
+| `packages/shared/src/index.ts`                | Exported `SECURITY_VALUES`                                                                                                                                   |
+| `packages/shared/src/config.test.ts`          | Added 17 tests for new header names + 7 tests for `SECURITY_VALUES`                                                                                          |
+| `apps/api/src/config/constants.ts`            | 15 `API_HEADERS` entries now reference shared `HTTP_HEADER_NAMES`/`SECURITY_VALUES` instead of hardcoded strings                                             |
+| `apps/api/src/middleware/auth.test.ts`        | 7 hardcoded `"x-api-key"` header keys replaced with `API_HEADERS.CUSTOM.API_KEY`                                                                             |
+| `apps/api/src/middleware/rateLimit.test.ts`   | 13 hardcoded CF/forwarded-for header keys replaced with `API_HEADERS` refs                                                                                   |
+| `apps/api/src/middleware/bodyLimit.test.ts`   | 6 hardcoded `"content-length"` header keys replaced with `HTTP_HEADER_NAMES.CONTENT_LENGTH_LC`                                                               |
+| `apps/web/src/config/env.test.ts`             | 5 hardcoded URL/name defaults replaced with `SHARED_DEFAULTS`/`DEFAULT_URLS` imports                                                                         |
+| `apps/web/src/hooks/useDocumentTitle.test.ts` | 10 hardcoded `"Blueprintify"` strings replaced with `SHARED_DEFAULTS.APP_NAME` + `DOCUMENT_TITLE_CONFIG.SEPARATOR`                                           |
+| `apps/web/src/components/Header.test.tsx`     | Hardcoded `"Blueprintify"` replaced with `UI_CONTENT.APP.NAME`                                                                                               |
+| `apps/web/src/lib/api.test.ts`                | Added Flexy source-of-truth comment linking mock to shared config                                                                                            |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,129 tests passing (585 web + 342 api + 202 shared) across 68 files
+
+**✅ COMPLETED - 16 iterations done**

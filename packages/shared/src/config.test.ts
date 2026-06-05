@@ -28,6 +28,7 @@ import {
   CORS_DEFAULTS,
   HTTP_METHODS,
   HTTP_HEADER_NAMES,
+  SECURITY_VALUES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -689,5 +690,61 @@ describe("HTTP_HEADER_NAMES", () => {
     const names = Object.values(HTTP_HEADER_NAMES);
     const uniqueNames = new Set(names);
     expect(uniqueNames.size).toBe(names.length);
+  });
+
+  it("should have custom application header names", () => {
+    expect(HTTP_HEADER_NAMES.X_API_KEY).toBe("x-api-key");
+    expect(HTTP_HEADER_NAMES.X_USER_ID).toBe("x-user-id");
+    expect(HTTP_HEADER_NAMES.X_USER_ROLE).toBe("x-user-role");
+    expect(HTTP_HEADER_NAMES.X_FORWARDED_FOR).toBe("x-forwarded-for");
+  });
+
+  it("should have Cloudflare-specific header names", () => {
+    expect(HTTP_HEADER_NAMES.CF_IPCOUNTRY).toBe("cf-ipcountry");
+    expect(HTTP_HEADER_NAMES.CF_CONNECTING_IP).toBe("cf-connecting-ip");
+    expect(HTTP_HEADER_NAMES.CF_IPCITY).toBe("cf-ipcity");
+    expect(HTTP_HEADER_NAMES.CF_WORKER_DC).toBe("cf-worker-dc");
+  });
+
+  it("should have lowercase request header variants", () => {
+    expect(HTTP_HEADER_NAMES.USER_AGENT_LC).toBe("user-agent");
+    expect(HTTP_HEADER_NAMES.CONTENT_TYPE_LC).toBe("content-type");
+    expect(HTTP_HEADER_NAMES.CONTENT_LENGTH_LC).toBe("content-length");
+  });
+
+  it("should have Connection header name", () => {
+    expect(HTTP_HEADER_NAMES.CONNECTION).toBe("Connection");
+  });
+});
+
+describe("SECURITY_VALUES", () => {
+  it("should have X-Content-Type-Options nosniff value", () => {
+    expect(SECURITY_VALUES.X_CONTENT_TYPE_OPTIONS_NOSNIFF).toBe("nosniff");
+  });
+
+  it("should have X-Frame-Options DENY value", () => {
+    expect(SECURITY_VALUES.X_FRAME_OPTIONS_DENY).toBe("DENY");
+  });
+
+  it("should have X-XSS-Protection value", () => {
+    expect(SECURITY_VALUES.X_XSS_PROTECTION_VALUE).toBe("1; mode=block");
+  });
+
+  it("should have Referrer-Policy strict-origin value", () => {
+    expect(SECURITY_VALUES.REFERRER_POLICY_STRICT_ORIGIN).toBe("strict-origin-when-cross-origin");
+  });
+
+  it("should have Strict-Transport-Security value", () => {
+    expect(SECURITY_VALUES.STRICT_TRANSPORT_SECURITY_VALUE).toBe(
+      "max-age=31536000; includeSubDomains; preload"
+    );
+  });
+
+  it("should have same-origin value", () => {
+    expect(SECURITY_VALUES.SAME_ORIGIN).toBe("same-origin");
+  });
+
+  it("should have X-Accel-Buffering no value", () => {
+    expect(SECURITY_VALUES.X_ACCEL_BUFFERING_NO).toBe("no");
   });
 });

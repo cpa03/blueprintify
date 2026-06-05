@@ -1,6 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { checkHealth } from "./api";
 
+// Flexy: Mock values MUST match @blueprint/shared single source of truth.
+// When shared config values change, update these mocks accordingly.
 const { DEV_DEFAULTS, ROUTE_PATHS, HTTP_HEADERS, HTTP_METHODS, HTTP_STATUS } = vi.hoisted(() => ({
   DEV_DEFAULTS: {
     API_PROXY_TARGET: "http://localhost:8787",

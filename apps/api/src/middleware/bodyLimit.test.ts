@@ -12,7 +12,7 @@ import { Hono } from "hono";
 import { bodyLimit, bodyLimitConfigs } from "./bodyLimit";
 import { ERROR_CODES, HTTP_STATUS, BODY_SIZE_MAX } from "../config/constants";
 import type { ErrorResponse } from "../errors";
-import { HTTP_METHODS } from "@blueprint/shared";
+import { HTTP_METHODS, HTTP_HEADER_NAMES } from "@blueprint/shared";
 
 describe("bodyLimit middleware", () => {
   describe("bodyLimit", () => {
@@ -26,7 +26,7 @@ describe("bodyLimit middleware", () => {
 
       const res = await app.request("/", {
         method: HTTP_METHODS.POST,
-        headers: { "content-length": "10" },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_LENGTH_LC]: "10" },
         body: "small body",
       });
 
@@ -42,7 +42,7 @@ describe("bodyLimit middleware", () => {
 
       const res = await app.request("/", {
         method: HTTP_METHODS.POST,
-        headers: { "content-length": "200" },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_LENGTH_LC]: "200" },
         body: "x".repeat(200),
       });
 
@@ -66,7 +66,7 @@ describe("bodyLimit middleware", () => {
       // Default is ~1MB, 500KB should be fine
       const res = await app.request("/", {
         method: HTTP_METHODS.POST,
-        headers: { "content-length": String(500 * 1024) },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_LENGTH_LC]: String(500 * 1024) },
         body: "x".repeat(500 * 1024),
       });
 
@@ -81,7 +81,7 @@ describe("bodyLimit middleware", () => {
       // Would exceed limit if not excluded
       const res = await app.request("/upload", {
         method: HTTP_METHODS.POST,
-        headers: { "content-length": "5000" },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_LENGTH_LC]: "5000" },
         body: "x".repeat(5000),
       });
 
@@ -109,7 +109,7 @@ describe("bodyLimit middleware", () => {
 
       const res = await app.request("/", {
         method: HTTP_METHODS.POST,
-        headers: { "content-length": "not-a-number" },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_LENGTH_LC]: "not-a-number" },
         body: "small body",
       });
 
@@ -127,7 +127,7 @@ describe("bodyLimit middleware", () => {
 
       const res = await app.request("/", {
         method: HTTP_METHODS.GET,
-        headers: { "content-length": "5" },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_LENGTH_LC]: "5" },
       });
 
       expect(res.status).toBe(HTTP_STATUS.OK);

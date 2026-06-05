@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { Hono } from "hono";
 import { apiKeyAuth } from "./auth";
-import { ERROR_CODES } from "../config/constants";
+import { ERROR_CODES, API_HEADERS } from "../config/constants";
 import type { ErrorResponse } from "../errors";
 
 describe("auth middleware", () => {
@@ -19,7 +19,7 @@ describe("auth middleware", () => {
       app.get("/", (c) => c.json({ success: true }));
 
       const res = await app.request("/", {
-        headers: { "x-api-key": validApiKey },
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: validApiKey },
       });
 
       expect(res.status).toBe(200);
@@ -37,7 +37,7 @@ describe("auth middleware", () => {
       app.get("/", (c) => c.json({ success: true }));
 
       const res = await app.request("/", {
-        headers: { "x-api-key": "invalid-key" },
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: "invalid-key" },
       });
 
       expect(res.status).toBe(401);
@@ -74,7 +74,7 @@ describe("auth middleware", () => {
       app.get("/", (c) => c.json({ success: true }));
 
       const res = await app.request("/", {
-        headers: { "x-api-key": validApiKey },
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: validApiKey },
       });
 
       expect(res.status).toBe(503);
@@ -118,7 +118,7 @@ describe("auth middleware", () => {
 
       // Should fail with default header
       const res2 = await app.request("/", {
-        headers: { "x-api-key": customKey },
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: customKey },
       });
       expect(res2.status).toBe(401);
     });
@@ -160,7 +160,7 @@ describe("auth middleware", () => {
       app.get("/", (c) => c.json({ success: true }));
 
       const res = await app.request("/", {
-        headers: { "x-api-key": "" },
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: "" },
       });
 
       expect(res.status).toBe(401);
@@ -177,13 +177,13 @@ describe("auth middleware", () => {
 
       // Exact match should work
       const res1 = await app.request("/", {
-        headers: { "x-api-key": "Key123" },
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: "Key123" },
       });
       expect(res1.status).toBe(200);
 
       // Different case should fail
       const res2 = await app.request("/", {
-        headers: { "x-api-key": "key123" },
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: "key123" },
       });
       expect(res2.status).toBe(401);
     });

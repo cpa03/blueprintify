@@ -1,5 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { ENV } from "./env";
+import { SHARED_DEFAULTS, DEFAULT_URLS } from "@blueprint/shared";
 
 describe("ENV Configuration", () => {
   beforeEach(() => {
@@ -46,7 +47,7 @@ describe("ENV Configuration", () => {
 
   describe("External URLs", () => {
     it("should return default project homepage URL", () => {
-      expect(ENV.PROJECT_HOMEPAGE_URL).toBe("https://blueprint-generator.pages.dev");
+      expect(ENV.PROJECT_HOMEPAGE_URL).toBe(DEFAULT_URLS.PROJECT_HOMEPAGE);
     });
 
     it("should use custom project homepage URL when provided", async () => {
@@ -57,7 +58,7 @@ describe("ENV Configuration", () => {
     });
 
     it("should return default GitHub URL", () => {
-      expect(ENV.GITHUB_URL).toBe("https://github.com/cpa03/blueprintify");
+      expect(ENV.GITHUB_URL).toBe(DEFAULT_URLS.GITHUB);
     });
 
     it("should use custom GitHub URL when provided", async () => {
@@ -70,7 +71,7 @@ describe("ENV Configuration", () => {
 
   describe("Storage Configuration", () => {
     it("should return default storage quota of 5MB", () => {
-      expect(ENV.STORAGE_QUOTA_MB).toBe(5);
+      expect(ENV.STORAGE_QUOTA_MB).toBe(SHARED_DEFAULTS.STORAGE_QUOTA_MB);
     });
 
     it("should parse custom storage quota from environment", async () => {
@@ -83,14 +84,14 @@ describe("ENV Configuration", () => {
     it("should return default when storage quota is NaN", async () => {
       vi.stubEnv("VITE_STORAGE_QUOTA_MB", "invalid");
       const { ENV: freshENV } = await import("./env");
-      expect(freshENV.STORAGE_QUOTA_MB).toBe(5);
+      expect(freshENV.STORAGE_QUOTA_MB).toBe(SHARED_DEFAULTS.STORAGE_QUOTA_MB);
       vi.unstubAllEnvs();
     });
   });
 
   describe("UI Configuration", () => {
     it("should return default app name", () => {
-      expect(ENV.APP_NAME).toBe("Blueprintify");
+      expect(ENV.APP_NAME).toBe(SHARED_DEFAULTS.APP_NAME);
     });
 
     it("should use custom app name when provided", async () => {
@@ -101,7 +102,7 @@ describe("ENV Configuration", () => {
     });
 
     it("should return default project name", () => {
-      expect(ENV.DEFAULT_PROJECT_NAME).toBe("my-project");
+      expect(ENV.DEFAULT_PROJECT_NAME).toBe(SHARED_DEFAULTS.DEFAULT_PROJECT_NAME);
     });
 
     it("should use custom default project name when provided", async () => {
