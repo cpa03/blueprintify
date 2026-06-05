@@ -63,21 +63,38 @@
 
 /* ===== Component Styles ===== */
 @layer components {
-  /* Glass card effect */
+  /* Glass card effect
+     Note: Uses ::after pseudo-element for glow/shadow to keep animations
+     GPU-composited (opacity + transform). Border-color changes are instant
+     since they can't be composited — the visual smoothness comes from the
+     ::after overlay fade-in. */
   .glass-card {
     @apply bg-dark-900/60 backdrop-blur-xl border border-dark-700/50 rounded-2xl;
     position: relative;
-    transition:
-      border-color 0.2s ease-out,
-      box-shadow 0.2s ease-out,
-      transform 0.2s ease-out;
+    transition: transform 0.2s ease-out;
     contain: layout style paint;
     will-change: transform;
   }
 
+  .glass-card::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    border: 1px solid transparent;
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+    pointer-events: none;
+    z-index: -1;
+  }
+
   .glass-card:hover {
-    @apply border-dark-600/60;
     transform: translateY(-1px);
+  }
+
+  .glass-card:hover::after {
+    opacity: 1;
+    border-color: color-mix(in srgb, var(--color-dark-600) 60%, transparent);
     box-shadow:
       0 8px 32px rgba(0, 0, 0, 0.3),
       0 0 0 1px color-mix(in srgb, var(--color-primary-500) 5%, transparent);
@@ -89,12 +106,14 @@
      input-level focus-visible rings without competing with them. */
   .glass-card:focus-within {
     border-color: color-mix(in srgb, var(--color-primary-500) 40%, transparent);
+  }
+
+  .glass-card:focus-within::after {
+    opacity: 1;
+    border-color: transparent;
     box-shadow:
       0 8px 32px rgba(0, 0, 0, 0.3),
       0 0 0 1px color-mix(in srgb, var(--color-primary-500) 12%, transparent);
-    transition:
-      border-color 0.2s ease-out,
-      box-shadow 0.2s ease-out;
   }
 
   /* Focus sweep beam — one-shot gradient sweep across the top when a child
@@ -365,19 +384,32 @@
     animation: tooltip-in 0.2s ease-out;
   }
 
-  /* Pulse animation for active step indicator button — replicates framer-motion box-shadow animation */
-  @keyframes step-pulse {
-    0%,
-    100% {
-      box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-primary-500) 40%, transparent);
-    }
-    50% {
-      box-shadow: 0 0 0 8px transparent;
-    }
+  /* Pulse animation for active step indicator button — uses composited
+     transform:scale + opacity on ::before instead of box-shadow animation. */
+  .animate-step-pulse {
+    position: relative;
   }
 
-  .animate-step-pulse {
-    animation: step-pulse 1.5s ease-in-out infinite;
+  .animate-step-pulse::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 9999px;
+    border: 2px solid color-mix(in srgb, var(--color-primary-500) 25%, transparent);
+    pointer-events: none;
+    animation: step-pulse-composited 1.5s ease-in-out infinite;
+  }
+
+  @keyframes step-pulse-composited {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0;
+    }
   }
 
   /* CSS animation utilities - replaces trivial framer-motion animations */
@@ -456,24 +488,24 @@
     .animate-fade-in-left,
     .animate-ripple,
     .animate-step-pulse,
+    .animate-step-pulse::before,
     .animate-tooltip-in,
     .animate-slide-in-right,
     .animate-slide-up,
+    .glass-card::after,
     .glass-card:focus-within::before {
       animation: none !important;
     }
 
-    /* Disable hover transforms for reduced motion */
+    /* Disable hover/glow transforms + transitions for reduced motion */
     .glass-card:hover,
     .glass-card:focus-within,
+    .glass-card::after,
+    .glass-card:hover::after,
+    .glass-card:focus-within::after,
     .btn-secondary:not(:disabled):hover,
     .btn-ghost:not(:disabled):hover {
       transform: none !important;
-    }
-
-    /* Static border for focus-within in reduced motion mode — still show which
-       card is focused (accessibility) but skip the transition animation. */
-    .glass-card:focus-within {
       transition: none !important;
     }
   }
