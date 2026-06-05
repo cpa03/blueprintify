@@ -11,7 +11,7 @@ import { DOCUMENT_TITLE_CONFIG } from "../config/constants";
  *
  * @example
  * ```tsx
- * useDocumentTitle("My Project"); // Sets "My Project | Blueprint Generator"
+ * useDocumentTitle("My Project"); // Sets "My Project | Blueprintify"
  * ```
  */
 export function useDocumentTitle(title: string): void {

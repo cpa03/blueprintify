@@ -477,6 +477,28 @@ export const PYTHON_DEV_DEFAULTS = {
 } as const;
 
 /**
+ * Common Security Header Values
+ * Centralized values for standard security HTTP response headers.
+ * Flexy says: No hardcoded security values - single source of truth!
+ */
+export const SECURITY_VALUES = {
+  /** X-Content-Type-Options: prevent MIME sniffing */
+  X_CONTENT_TYPE_OPTIONS_NOSNIFF: "nosniff",
+  /** X-Frame-Options: deny framing */
+  X_FRAME_OPTIONS_DENY: "DENY",
+  /** X-XSS-Protection: enable browser XSS filter */
+  X_XSS_PROTECTION_VALUE: "1; mode=block",
+  /** Referrer-Policy: strict origin when cross-origin */
+  REFERRER_POLICY_STRICT_ORIGIN: "strict-origin-when-cross-origin",
+  /** Strict-Transport-Security: 1 year HSTS with preload */
+  STRICT_TRANSPORT_SECURITY_VALUE: "max-age=31536000; includeSubDomains; preload",
+  /** Same-origin value for Cross-Origin-Opener-Policy and Cross-Origin-Resource-Policy */
+  SAME_ORIGIN: "same-origin",
+  /** X-Accel-Buffering: disable nginx buffering for SSE */
+  X_ACCEL_BUFFERING_NO: "no",
+} as const;
+
+/**
  * CSP Connect-Source Domains
  * Centralized domain list for Content Security Policy connect-src directives.
  * Flexy says: No hardcoded domain URLs in security config!
@@ -542,4 +564,23 @@ export const HTTP_HEADER_NAMES = {
   PERMISSIONS_POLICY: "Permissions-Policy",
   CROSS_ORIGIN_OPENER_POLICY: "Cross-Origin-Opener-Policy",
   CROSS_ORIGIN_RESOURCE_POLICY: "Cross-Origin-Resource-Policy",
+
+  /** Custom application headers for API key auth and user identity */
+  X_API_KEY: "x-api-key",
+  X_USER_ID: "x-user-id",
+  X_USER_ROLE: "x-user-role",
+
+  /** Forwarded-for IP header for proxy/client IP detection */
+  X_FORWARDED_FOR: "x-forwarded-for",
+
+  /** Cloudflare-specific request property headers */
+  CF_IPCOUNTRY: "cf-ipcountry",
+  CF_CONNECTING_IP: "cf-connecting-ip",
+  CF_IPCITY: "cf-ipcity",
+  CF_WORKER_DC: "cf-worker-dc",
+
+  /** Lowercase variants for request header lookups */
+  USER_AGENT_LC: "user-agent",
+  CONTENT_TYPE_LC: "content-type",
+  CONTENT_LENGTH_LC: "content-length",
 } as const;

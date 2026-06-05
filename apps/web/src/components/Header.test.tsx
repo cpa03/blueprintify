@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Header } from "./Header";
+import { UI_CONTENT } from "../config/constants";
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -30,7 +31,7 @@ describe("Header", () => {
   it("renders the application title and subtitle", () => {
     render(<Header />);
 
-    expect(screen.getByText("Blueprintify")).toBeInTheDocument();
+    expect(screen.getByText(UI_CONTENT.APP.NAME)).toBeInTheDocument();
     expect(screen.getByText("AI-Powered Project Architecture")).toBeInTheDocument();
   });
 

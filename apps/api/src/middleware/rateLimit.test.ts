@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, afterAll, vi } from "vites
 import { Hono } from "hono";
 import { rateLimit, rateLimitConfigs } from "./rateLimit";
 import { ErrorType } from "../errors";
-import { ERROR_CODES } from "../config/constants";
+import { ERROR_CODES, API_HEADERS } from "../config/constants";
 import type { ErrorResponse } from "../errors";
 import { initializeConfig, resetConfig } from "../config/env";
 
@@ -58,7 +58,7 @@ describe("rateLimit middleware", () => {
 
       for (let i = 0; i < 3; i++) {
         const res = await app.request("/", {
-          headers: { "cf-connecting-ip": "1.2.3.4" },
+          headers: { [API_HEADERS.CF_PROPERTIES.CONNECTING_IP]: "1.2.3.4" },
         });
         expect(res.status).toBe(200);
         expect(res.headers.get("X-RateLimit-Limit")).toBe("60");
@@ -82,13 +82,13 @@ describe("rateLimit middleware", () => {
 
       for (let i = 0; i < 2; i++) {
         const res = await app.request("/", {
-          headers: { "cf-connecting-ip": "1.2.3.5" },
+          headers: { [API_HEADERS.CF_PROPERTIES.CONNECTING_IP]: "1.2.3.5" },
         });
         expect(res.status).toBe(200);
       }
 
       const blockedRes = await app.request("/", {
-        headers: { "cf-connecting-ip": "1.2.3.5" },
+        headers: { [API_HEADERS.CF_PROPERTIES.CONNECTING_IP]: "1.2.3.5" },
       });
       expect(blockedRes.status).toBe(429);
 
@@ -113,7 +113,7 @@ describe("rateLimit middleware", () => {
       app.get("/", (c) => c.json({ success: true }));
 
       const res = await app.request("/", {
-        headers: { "x-forwarded-for": "192.168.1.1" },
+        headers: { [API_HEADERS.REQUEST.FORWARDED_FOR]: "192.168.1.1" },
       });
       expect(res.status).toBe(200);
     });
@@ -159,23 +159,23 @@ describe("rateLimit middleware", () => {
         "/",
         rateLimit({
           limiter: "STANDARD_RATE_LIMITER",
-          keyGenerator: (c) => c.req.header("x-api-key") || "default",
+          keyGenerator: (c) => c.req.header(API_HEADERS.CUSTOM.API_KEY) || "default",
         })
       );
       app.get("/", (c) => c.json({ success: true }));
 
       const res1 = await app.request("/", {
-        headers: { "x-api-key": "key-123" },
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: "key-123" },
       });
       expect(res1.status).toBe(200);
 
       const res2 = await app.request("/", {
-        headers: { "x-api-key": "key-123" },
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: "key-123" },
       });
       expect(res2.status).toBe(200);
 
       const res3 = await app.request("/", {
-        headers: { "x-api-key": "key-123" },
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: "key-123" },
       });
       expect(res3.status).toBe(429);
     });
@@ -213,7 +213,7 @@ describe("rateLimit middleware", () => {
         app.get("/", (c) => c.json({ success: true }));
 
         const res = await app.request("/", {
-          headers: { "cf-connecting-ip": "1.2.3.9" },
+          headers: { [API_HEADERS.CF_PROPERTIES.CONNECTING_IP]: "1.2.3.9" },
         });
         expect(res.status).toBe(503);
 
@@ -243,7 +243,7 @@ describe("rateLimit middleware", () => {
       app.get("/", (c) => c.json({ success: true }));
 
       const res = await app.request("/", {
-        headers: { "cf-connecting-ip": "1.2.3.7" },
+        headers: { [API_HEADERS.CF_PROPERTIES.CONNECTING_IP]: "1.2.3.7" },
       });
 
       expect(res.status).toBe(200);
@@ -265,11 +265,11 @@ describe("rateLimit middleware", () => {
       app.get("/", (c) => c.json({ success: true }));
 
       await app.request("/", {
-        headers: { "cf-connecting-ip": "1.2.3.8" },
+        headers: { [API_HEADERS.CF_PROPERTIES.CONNECTING_IP]: "1.2.3.8" },
       });
 
       const res = await app.request("/", {
-        headers: { "cf-connecting-ip": "1.2.3.8" },
+        headers: { [API_HEADERS.CF_PROPERTIES.CONNECTING_IP]: "1.2.3.8" },
       });
 
       expect(res.status).toBe(429);
@@ -293,7 +293,7 @@ describe("rateLimit middleware", () => {
       app.get("/", (c) => c.json({ success: true }));
 
       const res = await app.request("/", {
-        headers: { "cf-connecting-ip": "1.2.3.10" },
+        headers: { [API_HEADERS.CF_PROPERTIES.CONNECTING_IP]: "1.2.3.10" },
       });
 
       expect(res.status).toBe(200);
@@ -315,7 +315,7 @@ describe("rateLimit middleware", () => {
       app.get("/", (c) => c.json({ success: true }));
 
       const res = await app.request("/", {
-        headers: { "cf-connecting-ip": "1.2.3.11" },
+        headers: { [API_HEADERS.CF_PROPERTIES.CONNECTING_IP]: "1.2.3.11" },
       });
 
       expect(res.status).toBe(200);

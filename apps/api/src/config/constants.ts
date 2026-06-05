@@ -25,6 +25,7 @@ import {
   SHARE_DEFAULTS as SHARED_SHARE_DEFAULTS,
   BODY_SIZE_LIMITS as SHARED_BODY_SIZE_LIMITS,
   HTTP_HEADER_NAMES,
+  SECURITY_VALUES,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./config-types";
 import {
@@ -233,14 +234,14 @@ export const CORS_CONFIG = {
 export const API_HEADERS = {
   /** Custom headers for API identification and tracing */
   CUSTOM: {
-    /** API key authentication header */
-    API_KEY: "x-api-key",
+    /** API key authentication header (from shared config) */
+    API_KEY: HTTP_HEADER_NAMES.X_API_KEY,
     /** Request tracing identifier */
     REQUEST_ID: "x-request-id",
-    /** User identity header for multi-user support */
-    USER_ID: "x-user-id",
-    /** User role header for authorization checks */
-    USER_ROLE: "x-user-role",
+    /** User identity header for multi-user support (from shared config) */
+    USER_ID: HTTP_HEADER_NAMES.X_USER_ID,
+    /** User role header for authorization checks (from shared config) */
+    USER_ROLE: HTTP_HEADER_NAMES.X_USER_ROLE,
   },
   /** Standard cache-control directives */
   CACHE_CONTROL: {
@@ -270,8 +271,8 @@ export const API_HEADERS = {
   SSE: {
     /** Nginx buffering disable header (from shared config) */
     X_ACCEL_BUFFERING: HTTP_HEADER_NAMES.X_ACCEL_BUFFERING,
-    /** Value to disable Nginx buffering */
-    X_ACCEL_BUFFERING_NO: "no",
+    /** Value to disable Nginx buffering (from shared config) */
+    X_ACCEL_BUFFERING_NO: SECURITY_VALUES.X_ACCEL_BUFFERING_NO,
   },
 
   /** Security-related HTTP headers */
@@ -280,36 +281,36 @@ export const API_HEADERS = {
     CROSS_ORIGIN_OPENER_POLICY: HTTP_HEADER_NAMES.CROSS_ORIGIN_OPENER_POLICY,
     /** Cross-Origin-Resource-Policy header name (from shared config) */
     CROSS_ORIGIN_RESOURCE_POLICY: HTTP_HEADER_NAMES.CROSS_ORIGIN_RESOURCE_POLICY,
-    /** Same-origin policy value */
-    SAME_ORIGIN: "same-origin",
+    /** Same-origin policy value (from shared config) */
+    SAME_ORIGIN: SECURITY_VALUES.SAME_ORIGIN,
   },
 
   /** CF properties from request headers */
   CF_PROPERTIES: {
-    /** Cloudflare request country header */
-    IP_COUNTRY: "cf-ipcountry",
+    /** Cloudflare request country header (from shared config) */
+    IP_COUNTRY: HTTP_HEADER_NAMES.CF_IPCOUNTRY,
     /** Cloudflare Ray ID for request tracing */
     RAY_ID: "cf-ray",
-    /** Cloudflare connecting IP */
-    CONNECTING_IP: "cf-connecting-ip",
-    /** Cloudflare client city */
-    CITY: "cf-ipcity",
-    /** Cloudflare worker datacenter */
-    DATACENTER: "cf-worker-dc",
+    /** Cloudflare connecting IP (from shared config) */
+    CONNECTING_IP: HTTP_HEADER_NAMES.CF_CONNECTING_IP,
+    /** Cloudflare client city (from shared config) */
+    CITY: HTTP_HEADER_NAMES.CF_IPCITY,
+    /** Cloudflare worker datacenter (from shared config) */
+    DATACENTER: HTTP_HEADER_NAMES.CF_WORKER_DC,
   },
   /** Standard HTTP request headers used by middleware */
   REQUEST: {
-    /** Forwarded-for IP header */
-    FORWARDED_FOR: "x-forwarded-for",
-    /** User agent header */
-    USER_AGENT: "user-agent",
-    /** Content type header */
-    CONTENT_TYPE: "content-type",
-    /** Content length header */
-    CONTENT_LENGTH: "content-length",
+    /** Forwarded-for IP header (from shared config) */
+    FORWARDED_FOR: HTTP_HEADER_NAMES.X_FORWARDED_FOR,
+    /** User agent header (from shared config) */
+    USER_AGENT: HTTP_HEADER_NAMES.USER_AGENT_LC,
+    /** Content type header (from shared config) */
+    CONTENT_TYPE: HTTP_HEADER_NAMES.CONTENT_TYPE_LC,
+    /** Content length header (from shared config) */
+    CONTENT_LENGTH: HTTP_HEADER_NAMES.CONTENT_LENGTH_LC,
   },
-  /** Standard HTTP connection header */
-  CONNECTION: "Connection",
+  /** Standard HTTP connection header (from shared config) */
+  CONNECTION: HTTP_HEADER_NAMES.CONNECTION,
   /** Standard HTTP content type header (from shared config) */
   CONTENT_TYPE: HTTP_HEADER_NAMES.CONTENT_TYPE,
   /** Standard HTTP response headers set by middleware */

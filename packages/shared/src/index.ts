@@ -88,6 +88,7 @@ export {
   QUEUE_DEFAULTS,
   PYTHON_DEV_DEFAULTS,
   CSP_CONNECT_DOMAINS,
+  SECURITY_VALUES,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";
