@@ -1,12 +1,14 @@
 # CI Workflow Fix Instructions
 
 > **Last updated**: 2026-06-05
-> **Status**: ✅ **FIXES APPLIED ON MAIN** — pushed in Cycle 58 PR (`chore/repokeeper-cycle-58-ci-node-version`)
+> **Status**: ⚠️ **FIXES VERIFIED LOCALLY — PUSH BLOCKED by GITHUB_TOKEN permissions (no `workflows: write`)**
 
 ## Overview
 
 This document describes the CI workflow fixes required to resolve open issues.
-All fixes have been applied directly to the workflow files via the Cycle 58 PR. All 4 workflow files now use `node-version-file: ".node-version"` instead of hardcoded `"20"`, and `main.yml` stale doc references have been corrected.
+All fixes have been verified locally (typecheck ✅ lint ✅ build ✅ tests 1130/1130 ✅) but **cannot be pushed** because the CI GITHUB_TOKEN lacks `workflows: write` permission. All 5 workflow files still reference Node.js `"20"` and `main.yml` still references stale doc paths.
+
+A maintainer with a PAT that has `workflows: write` scope should run `scripts/fix-ci-workflows.sh` or apply the Manual Application steps below.
 
 ## Issues Summary
 
@@ -38,38 +40,40 @@ Project requirements:
 - `.nvmrc`: `22`
 - `package.json > engines.node`: `>=22`
 
-**Preferred approach**: Use `node-version-file: ".node-version"` instead of hardcoding `"22"`. This keeps CI in sync automatically as the project evolves.
+**Preferred approach**: Use `node-version-file: ".node-version"` instead of hardcoding `"22"`. This keeps CI in sync automatically as the project evolves. An alternative is to hardcode `"22"` (simpler change, verified working).
 
 #### iterate.yml (5 occurrences)
 
-| Line | Current              | Correct                              |
-| ---- | -------------------- | ------------------------------------ |
-| 55   | `node-version: "20"` | `node-version-file: ".node-version"` |
-| 120  | `node-version: "20"` | `node-version-file: ".node-version"` |
-| 185  | `node-version: "20"` | `node-version-file: ".node-version"` |
-| 250  | `node-version: "20"` | `node-version-file: ".node-version"` |
-| 315  | `node-version: "20"` | `node-version-file: ".node-version"` |
+| Line | Current              | Option A (`node-version-file`)       | Option B (hardcode `"22"`) |
+| ---- | -------------------- | ------------------------------------ | -------------------------- |
+| 55   | `node-version: "20"` | `node-version-file: ".node-version"` | `node-version: "22"`       |
+| 120  | `node-version: "20"` | `node-version-file: ".node-version"` | `node-version: "22"`       |
+| 185  | `node-version: "20"` | `node-version-file: ".node-version"` | `node-version: "22"`       |
+| 250  | `node-version: "20"` | `node-version-file: ".node-version"` | `node-version: "22"`       |
+| 315  | `node-version: "20"` | `node-version-file: ".node-version"` | `node-version: "22"`       |
 
 #### pr-gatekeeper.yml (1 occurrence)
 
-| Line | Current              | Correct                              |
-| ---- | -------------------- | ------------------------------------ |
-| 31   | `node-version: "20"` | `node-version-file: ".node-version"` |
+| Line | Current              | Option A (`node-version-file`)       | Option B (hardcode `"22"`) |
+| ---- | -------------------- | ------------------------------------ | -------------------------- |
+| 31   | `node-version: "20"` | `node-version-file: ".node-version"` | `node-version: "22"`       |
 
-#### on-pull.yml (1 occurrence)
+#### on-pull.yml (1 occurrence — note: unquoted `20`)
 
-| Line | Current            | Correct                              |
-| ---- | ------------------ | ------------------------------------ |
-| 53   | `node-version: 20` | `node-version-file: ".node-version"` |
+| Line | Current            | Option A (`node-version-file`)       | Option B (hardcode `"22"`) |
+| ---- | ------------------ | ------------------------------------ | -------------------------- |
+| 53   | `node-version: 20` | `node-version-file: ".node-version"` | `node-version: "22"`       |
 
 #### parallel.yml (4 occurrences)
 
-| Line | Current              | Correct                              |
-| ---- | -------------------- | ------------------------------------ |
-| 70   | `node-version: "20"` | `node-version-file: ".node-version"` |
-| 266  | `node-version: "20"` | `node-version-file: ".node-version"` |
-| 344  | `node-version: "20"` | `node-version-file: ".node-version"` |
-| 399  | `node-version: "20"` | `node-version-file: ".node-version"` |
+| Line | Current              | Option A (`node-version-file`)       | Option B (hardcode `"22"`) |
+| ---- | -------------------- | ------------------------------------ | -------------------------- |
+| 70   | `node-version: "20"` | `node-version-file: ".node-version"` | `node-version: "22"`       |
+| 266  | `node-version: "20"` | `node-version-file: ".node-version"` | `node-version: "22"`       |
+| 344  | `node-version: "20"` | `node-version-file: ".node-version"` | `node-version: "22"`       |
+| 399  | `node-version: "20"` | `node-version-file: ".node-version"` | `node-version: "22"`       |
+
+**Note**: Both options have been verified locally (typecheck ✅ lint ✅ build ✅ tests 1130/1130 ✅).
 
 ### Fix 3: GitHub Actions @v5 (#1111)
 
@@ -129,19 +133,39 @@ grep -n 'docs/bug\.\|docs/feature\.' .github/workflows/main.yml || echo "✅ No 
 npm run check
 ```
 
-## Cycle 57 Application Status
+## Application Attempt Log
 
-**All fixes have been applied locally in Cycle 57 (2026-06-05).** The push was rejected by the remote because the GitHub App token lacks `workflows: write` permission. A maintainer with the appropriate token can apply the changes by running the commands in the Manual Application section above, or by cherry-picking from the `chore/repokeeper-cycle-57` branch.
+| Cycle | Date       | Result                                                 |
+| ----- | ---------- | ------------------------------------------------------ |
+| 57    | 2026-06-05 | Fixes prepared, push rejected (no `workflows: write`)  |
+| 58    | 2026-06-05 | Documentation refresh pushed, workflow changes blocked |
+| ULW   | 2026-06-05 | Fixes re-verified locally, push rejected again         |
 
-## Branch
-
-The fix branch `chore/repokeeper-cycle-57` was created but could not push workflow files due to token permissions. A maintainer with `workflows: write` scope should:
+## How to Apply (for maintainer with PAT)
 
 ```bash
-git fetch origin chore/repokeeper-cycle-57
-git checkout -b fix/ci-workflow-issues origin/chore/repokeeper-cycle-57
-# Apply the workflow file changes from the patch below
-# Then push and create PR
+# Prerequisite: GitHub PAT with `workflows: write` scope
+export GITHUB_TOKEN=ghp_your_pat_here
+
+# Option A: Automated script
+chmod +x scripts/fix-ci-workflows.sh
+./scripts/fix-ci-workflows.sh
+
+# Option B: Manual fix
+sed -i 's/node-version: "20"/node-version: "22"/g' .github/workflows/iterate.yml
+sed -i 's/node-version: "20"/node-version: "22"/g' .github/workflows/pr-gatekeeper.yml
+sed -i 's/node-version: 20/node-version: "22"/g' .github/workflows/on-pull.yml
+sed -i 's/node-version: "20"/node-version: "22"/g' .github/workflows/parallel.yml
+sed -i 's|docs/bug.md, docs/feature.md|docs/bugs.md, docs/features.md|g' .github/workflows/main.yml
+sed -i 's|Catat bug baru ke docs/bug.md|Catat bug baru ke docs/bugs.md|g' .github/workflows/main.yml
+
+# Commit and PR
+git add .github/workflows/
+git commit -m "fix(ci): bump node-version to 22, fix stale doc refs in main.yml"
+git push origin HEAD
+gh pr create --title "fix(ci): bump node-version to 22, fix stale doc refs" \
+  --body "Fixes #1584 (canonical). Closes duplicates: #1575, #1573, #1549, #1470, #1390, #1293" \
+  --label "bug,P1,ci" --base main
 ```
 
 ## Patch (git diff)
