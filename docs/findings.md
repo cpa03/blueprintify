@@ -2,7 +2,7 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Current Cycle (2026-06-05 — Cycle 57: RepoKeeper — Repository Health Check)
+## Current Cycle (2026-06-05 — Cycle 58: RepoKeeper — CI Node Version Fix & Documentation Refresh)
 
 ### Audit Scope
 
@@ -19,8 +19,8 @@ Full repository audit covering redundant files, stale documentation, CI workflow
 | Build (api)       | ✅ Passes (dry-run via typecheck)            |
 | Web tests         | ✅ 585/585 passed                            |
 | API tests         | ✅ 342/342 passed                            |
-| Shared tests      | ✅ 191/191 passed                            |
-| **Total tests**   | **✅ 1,118/1,118 passed**                    |
+| Shared tests      | ✅ 202/202 passed                            |
+| **Total tests**   | **✅ 1,129/1,129 passed**                    |
 | npm audit         | ✅ 0 vulnerabilities                         |
 
 ### Actions Taken This Cycle
@@ -30,48 +30,62 @@ Full repository audit covering redundant files, stale documentation, CI workflow
 3. **No stale artifacts**: Zero TODO/FIXME/HACK in non-test source code.
 4. **All `console.*` calls verified**: All intentional (logging utilities, error handlers, generated templates).
 5. **Full quality verification**: typecheck/lint/build/test:all all passing (0 errors, 0 warnings).
-6. **CI workflow fixes applied** — stale doc refs fixed in `main.yml` (3 occurrences), `node-version: "20"` → `node-version-file: ".node-version"` in 4 workflow files (11 occurrences total).
-7. **Documentation refresh**: Updated `findings.md`, `active-tasks.md`, `knowledge-review.md`, `bugs.md` for Cycle 57.
+6. **CI workflow fixes prepared** — stale doc refs fixed in `main.yml` (2 occurrences), `node-version: "20"` → `node-version-file: ".node-version"` in 4 workflow files (11 occurrences total). **Blocked from push**: `github-actions[bot]` token lacks `workflows: write` permission. Patch file saved as `/tmp/workflow-fixes.patch`.
+7. **Documentation refresh**: Updated `findings.md`, `active-tasks.md`, `bugs.md`, `ci-configuration.md` for Cycle 58.
+8. **PR created**: `chore/repokeeper-cycle-58-ci-node-version` with documentation changes (PR #1607).
 
 ### Findings
 
 1. **No redundant/temp/unused source files found** — repo remains clean from dead code, backup files, temp artifacts, or empty directories.
 2. **No `@ts-ignore`, `@ts-expect-error`, or `as any`** type suppressions found in source code.
 3. **No TODO/FIXME/HACK artifacts** in non-test source files.
-4. **CI workflow fixes applied** — stale doc refs + node-version in 4 workflow files (11 occurrences).
-5. **Web tests grew by +21** — 564 → 585 (new tests added since Cycle 56).
-6. **Repo healthy**: All quality checks passing, 0 npm vulnerabilities, documentation accurate.
+4. **CI workflow fixes prepared but BLOCKED from push** — stale doc refs + node-version fixes applied locally in 4 workflow files (11 occurrences). Blocked because `github-actions[bot]` token lacks `workflows: write` permission. Same issue as previous 20+ cycles.
+5. **Shared tests grew by +11** — 191 → 202 (new tests added since Cycle 57).
+6. **Repo healthy**: All quality checks passing, 0 npm vulnerabilities, documentation refreshed.
 
-### CI Workflow Issue (FIX APPLIED)
+### CI Workflow Issue (changes PREPARED locally — BLOCKED from push)
 
-All workflow fix changes applied this cycle:
+All workflow fix changes are committed locally on branch `chore/repokeeper-cycle-58-ci-node-version` but could not be pushed due to GitHub App token permissions (`workflows: write` required).
 
-**Stale doc refs fixed in `main.yml`:**
+**Stale doc refs fixed in `main.yml` (committed):**
 
 - `docs/bug.md` → `docs/bugs.md` (lines 39, 263)
 - `docs/feature.md` → `docs/features.md` (line 39)
 
-**Node version aligned across 4 workflow files (11 occurrences):**
+**Node version aligned across 4 workflow files (11 occurrences, committed):**
 
-- `iterate.yml`: 5 instances
-- `parallel.yml`: 4 instances
-- `pr-gatekeeper.yml`: 1 instance
-- `on-pull.yml`: 1 instance
+| File                                  | Instances |
+| ------------------------------------- | --------- |
+| `.github/workflows/iterate.yml`       | 5         |
+| `.github/workflows/parallel.yml`      | 4         |
+| `.github/workflows/pr-gatekeeper.yml` | 1         |
+| `.github/workflows/on-pull.yml`       | 1         |
 
 All use `node-version-file: ".node-version"` instead of hardcoded `"20"` — automatically stays in sync with `.node-version` as the project evolves.
+
+**To apply**: Maintainer with `workflows: write` PAT can run:
+
+```bash
+git fetch origin
+git checkout chore/repokeeper-cycle-58-ci-node-version
+git push origin HEAD
+```
 
 ### Actions Taken
 
 1. Full repository audit — no dead/redundant/temp files found
-2. Verified all quality checks pass (typecheck ✅ lint ✅ format ✅ build ✅ tests 1118/1118 ✅)
-3. Fixed stale doc refs in `main.yml` (3 occurrences) — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md`
-4. Updated `node-version: "20"` → `node-version-file: ".node-version"` in all 4 workflow files (11 occurrences)
-5. Updated `docs/findings.md` — Cycle 57 entry (this file)
-6. Updated `docs/active-tasks.md` — Cycle 57 status
-7. Updated `docs/knowledge-review.md` — review date refreshed
+2. Verified all quality checks pass (typecheck ✅ lint ✅ format ✅ build ✅ tests 1129/1129 ✅)
+3. Fixed stale doc refs in `main.yml` (2 occurrences) — `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md` (committed locally, blocked from push)
+4. Updated `node-version: "20"` → `node-version-file: ".node-version"` in all 4 workflow files (11 occurrences) (committed locally, blocked from push)
+5. Saved workflow patch to `/tmp/workflow-fixes.patch` for manual application
+6. Updated `docs/findings.md` — Cycle 58 entry (this file)
+7. Updated `docs/active-tasks.md` — Cycle 58 status
 8. Updated `docs/bugs.md` — BUG-014 and BUG-017 status updated
+9. Updated `docs/ci-configuration.md` — node-version status corrected
+10. Updated `docs/ci-workflow-fixes.md` — status corrected
+11. Created branch `chore/repokeeper-cycle-58-ci-node-version` — docs pushed in PR #1607; workflow changes blocked by permissions
 
-**Last Updated**: 2026-06-05 (Cycle 57: RepoKeeper)
+**Last Updated**: 2026-06-05 (Cycle 58: RepoKeeper)
 
 ---
 
