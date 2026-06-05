@@ -5,7 +5,7 @@ import { errorHandler } from "../middleware/errorHandler";
 import type { ErrorResponse } from "../errors";
 import type { AppVariables, User } from "../types";
 import { DEFAULTS } from "../config/env";
-import { HTTP_HEADERS, HTTP_METHODS } from "@blueprint/shared";
+import { HTTP_HEADERS, HTTP_METHODS, HTTP_HEADER_NAMES } from "@blueprint/shared";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -68,7 +68,7 @@ describe("POST /share", () => {
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           title: "Test Blueprint",
           blueprint: "# Test\n\nThis is a test blueprint",
@@ -101,7 +101,7 @@ describe("POST /share", () => {
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           title: "",
           blueprint: "",
@@ -124,7 +124,7 @@ describe("POST /share", () => {
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           title: "Simple Blueprint",
           blueprint: "# Simple",
@@ -212,7 +212,7 @@ describe("DELETE /share/:id", () => {
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           title: "Owned Blueprint",
           blueprint: "# Owned",
@@ -247,7 +247,7 @@ describe("DELETE /share/:id", () => {
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           title: "Protected Blueprint",
           blueprint: "# Protected",
@@ -271,7 +271,7 @@ describe("DELETE /share/:id", () => {
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           title: "Legacy Blueprint",
           blueprint: "# Legacy",

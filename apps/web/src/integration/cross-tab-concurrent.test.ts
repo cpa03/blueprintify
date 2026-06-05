@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { HTTP_METHODS, SSE_HEADERS, HTTP_STATUS } from "@blueprint/shared";
+import { HTTP_METHODS, SSE_HEADERS, HTTP_STATUS, HTTP_HEADER_NAMES } from "@blueprint/shared";
 import { API_ENDPOINTS } from "../config/constants";
 import { API_BASE } from "../config/api-client";
 import { StorageManager, StorageError } from "../lib/storage";
@@ -248,7 +248,7 @@ describe("Integration: Error Propagation", () => {
       fetchMock.mockResolvedValueOnce(
         new Response(errorStream, {
           status: HTTP_STATUS.OK,
-          headers: { "Content-Type": SSE_HEADERS.CONTENT_TYPE },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: SSE_HEADERS.CONTENT_TYPE },
         })
       );
 

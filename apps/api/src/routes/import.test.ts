@@ -4,7 +4,7 @@ import importRoute from "./import";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
-import { HTTP_METHODS, HTTP_HEADERS } from "@blueprint/shared";
+import { HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -25,7 +25,7 @@ describe("POST /import", () => {
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           format: "json",
         }),
@@ -45,7 +45,7 @@ describe("POST /import", () => {
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: "x".repeat(200_001),
           format: "json",
@@ -65,7 +65,7 @@ describe("POST /import", () => {
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: "not valid json {{{",
           format: "json",
@@ -85,7 +85,7 @@ describe("POST /import", () => {
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: JSON.stringify({ projectName: "Test" }),
           format: "json",
@@ -112,7 +112,7 @@ describe("POST /import", () => {
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: JSON.stringify(importData),
           format: "json",
@@ -152,7 +152,7 @@ describe("POST /import", () => {
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: JSON.stringify(importData),
           format: "json",
@@ -192,7 +192,7 @@ Details here
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: markdownContent,
           format: "markdown",
@@ -221,7 +221,7 @@ Details here
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: "No blueprint section here",
           format: "markdown",
@@ -251,7 +251,7 @@ Architecture details here
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           data: markdownContent,
           format: "markdown",

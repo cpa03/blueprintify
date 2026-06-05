@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { HTTP_METHODS, HTTP_HEADERS, HTTP_STATUS } from "@blueprint/shared";
+import { HTTP_METHODS, HTTP_HEADERS, HTTP_STATUS, HTTP_HEADER_NAMES } from "@blueprint/shared";
 import { API_ENDPOINTS } from "../config/constants";
 import { API_BASE } from "../config/api-client";
 import {
@@ -48,7 +48,7 @@ describe("Integration: Refinement Workflow", () => {
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           content: sectionContent,
           instruction: "Enhance with more details",
@@ -186,7 +186,7 @@ describe("Integration: Export/Import Workflow", () => {
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           format: "markdown",
           blueprint: testData.blueprint,
@@ -230,7 +230,7 @@ describe("Integration: Export/Import Workflow", () => {
       fetchMock.mockResolvedValueOnce(
         new Response(mockBuffer, {
           status: HTTP_STATUS.OK,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_ZIP },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_ZIP },
         })
       );
 
@@ -244,7 +244,9 @@ describe("Integration: Export/Import Workflow", () => {
       });
 
       expect(response.status).toBe(HTTP_STATUS.OK);
-      expect(response.headers.get("Content-Type")).toBe(HTTP_HEADERS.CONTENT_TYPE_ZIP);
+      expect(response.headers.get(HTTP_HEADER_NAMES.CONTENT_TYPE)).toBe(
+        HTTP_HEADERS.CONTENT_TYPE_ZIP
+      );
     });
 
     it("should handle large project exports", async () => {
@@ -288,7 +290,7 @@ describe("Integration: Export/Import Workflow", () => {
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.IMPORT}`, {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           format: "json",
           data: testData,
