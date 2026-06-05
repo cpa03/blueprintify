@@ -329,12 +329,16 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Known Bugs](./docs/bugs.md)** - Active bug tracking and known defects
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
 - **[Issue Audit Report](./docs/issue-audit-report-2026-05-27.md)** - Comprehensive issue audit with fix status tracking
+- **[Issue Audit Report (Jun 5)](./docs/issue-audit-report-2026-06-05.md)** - Issue label normalization and duplicate detection report
 - **[Repository Audit](./docs/audit-2026-05-26.md)** - Automated repository audit findings
 - **[BroCula Hunt (May 29)](./docs/audits/brocula-hunt-2026-05-29.md)** - Performance optimization hunt findings
 - **[BroCula Hunt (May 30)](./docs/audits/brocula-hunt-2026-05-30.md)** - Second performance optimization hunt
 - **[BroCula Hunt (Jun 3)](./docs/audits/brocula-hunt-2026-06-03.md)** - Third performance optimization cycle
 - **[BroCula Hunt (Jun 4)](./docs/audits/brocula-hunt-2026-06-04.md)** - Fourth performance optimization cycle
 - **[BroCula Hunt (Jun 4 Run 2)](./docs/audits/brocula-hunt-2026-06-04-run2.md)** - Fifth performance optimization cycle (console + lighthouse)
+- **[BroCula Hunt (Jun 5)](./docs/audits/brocula-hunt-2026-06-05.md)** - Sixth performance optimization cycle
+- **[BroCula Hunt (Jun 5 Run 2)](./docs/audits/brocula-hunt-2026-06-05-run2.md)** - Seventh performance optimization cycle (lighthouse + console)
+- **[BroCula Hunt (Jun 5 Run 3)](./docs/audits/brocula-hunt-2026-06-05-run3.md)** - Eighth performance optimization cycle (lighthouse + console)
 - **[Diagnostic Scoring (May 31)](./docs/audits/diagnostic-scoring-2026-05-31.md)** - Comprehensive diagnostic scoring analysis
 - **[Diagnostic Scoring (Jun 4)](./docs/audits/diagnostic-scoring-2026-06-04.md)** - Phase 1 diagnostic scoring report (81.1/100)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans

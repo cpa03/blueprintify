@@ -2,6 +2,65 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 60 (2026-06-05 — RepoKeeper: Documentation Refresh & Missing References)
+
+### Audit Scope
+
+Full repository audit covering redundant files, stale documentation, missing doc references in README, and comprehensive quality checks.
+
+### Status Summary
+
+| Check             | Result                                       |
+| ----------------- | -------------------------------------------- |
+| Typecheck         | ✅ Clean (0 errors)                          |
+| Lint              | ✅ Clean (0 warnings)                        |
+| Format (Prettier) | ✅ All matched files use Prettier code style |
+| Build (web)       | ✅ Passes                                    |
+| Web tests         | ✅ 585/585 passed                            |
+| API tests         | ✅ 342/342 passed                            |
+| Shared tests      | ✅ 203/203 passed                            |
+| **Total tests**   | **✅ 1,130/1,130 passed**                    |
+| npm audit         | ✅ 0 vulnerabilities                         |
+
+### Actions Taken This Cycle
+
+1. **Full repository audit**: No redundant/temp/unused files found. No empty directories.
+2. **No type suppressions**: Zero `@ts-ignore`, `@ts-expect-error`, or `as any` found in source code.
+3. **No stale artifacts**: Zero TODO/FIXME/HACK in non-test source code.
+4. **All `console.*` calls verified**: All intentional (logging utilities, error handlers, generated templates).
+5. **Full quality verification**: typecheck ✅ lint ✅ format ✅ build (web) ✅ test:all (1,130 passing) ✅ npm audit ✅.
+6. **Fixed missing doc references in README** — 4 new files not listed in documentation section:
+   - Added `docs/issue-audit-report-2026-06-05.md` — Issue label normalization report (Cycle 59a)
+   - Added `docs/audits/brocula-hunt-2026-06-05.md` — Sixth BroCula hunt
+   - Added `docs/audits/brocula-hunt-2026-06-05-run2.md` — Seventh BroCula hunt
+   - Added `docs/audits/brocula-hunt-2026-06-05-run3.md` — Eighth BroCula hunt
+7. **Documentation refresh**: Updated `findings.md`, `active-tasks.md` for Cycle 60.
+
+### Findings
+
+1. **No redundant/temp/unused source files found** — repo remains clean from dead code, backup files, temp artifacts, or empty directories.
+2. **No `@ts-ignore`, `@ts-expect-error`, or `as any`** type suppressions found in source code.
+3. **No TODO/FIXME/HACK artifacts** in non-test source files.
+4. **4 new doc files missing from README** — `issue-audit-report-2026-06-05.md` and 3 BroCula hunt files (Jun 5, Jun 5 Run 2, Jun 5 Run 3) were created but never added to README documentation section. Fixed in this cycle.
+5. **CI workflow fixes still blocked** — stale doc refs + node-version fixes on `chore/repokeeper-cycle-59` branch, blocked by `workflows: write` permission. Same issue as 20+ previous cycles.
+6. **Repo healthy**: All quality checks passing, 0 npm vulnerabilities, documentation refreshed.
+
+### CI Workflow Issue (Still Blocked — unchanged from previous cycles)
+
+All workflow fix changes remain on branch `chore/repokeeper-cycle-59` but cannot be pushed due to GitHub App token permissions (`workflows: write` required). Same stale doc refs and node-version issues documented in Cycles 37–59.
+
+### Actions Taken
+
+1. Full repository audit — no dead/redundant/temp files found
+2. Verified all quality checks pass (typecheck ✅ lint ✅ format ✅ build ✅ tests 1,130/1,130 ✅ audit ✅)
+3. Fixed missing doc references in README — added 4 new files to documentation section
+4. Updated `docs/findings.md` — Cycle 60 entry (this file)
+5. Updated `docs/active-tasks.md` — Cycle 60 status
+
+**Last Updated**: 2026-06-05 (Cycle 60: RepoKeeper)
+
+---
+
 ## Cycle 59a (2026-06-05 — ULW Loop: ISSUE MANAGER MODE)
 
 ### Scope

@@ -2,23 +2,22 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 59 — CI Node Version Fix & Documentation Refresh
+## Current Focus: RepoKeeper Cycle 60 — Documentation Refresh & Missing References
 
-### Task: RepoKeeper Cycle 59 — CI Node Version Fix & Documentation Refresh 🔄 IN PROGRESS
+### Task: RepoKeeper Cycle 60 — Documentation Refresh & Missing References ✅ COMPLETE
 
 - **Priority**: High
-- **Status**: 🔄 Branch created — preparing PR
-- **Objective**: Re-apply CI workflow fixes (stale doc refs + node-version-file), correct documentation inaccuracy, refresh docs
+- **Status**: ✅ Complete — PR created
+- **Objective**: Full repository audit, fix missing doc references in README, refresh documentation
 - **Actions**:
   - [x] Full repository scan for redundant/temp/unused files → none found
   - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
   - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
-  - [x] All quality checks verified: typecheck ✅ lint ✅ build (web) ✅ tests 1130/1130 ✅
-  - [x] Fixed stale doc refs in `main.yml`: `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`
-  - [x] Updated `node-version: "20"` → `node-version-file: ".node-version"` in 4 workflow files (11 occurrences)
-  - [x] Corrected `knowledge-review.md` — CI fix status now accurately reflects branch-only state
-  - [x] Updated docs: `findings.md`, `active-tasks.md`
-  - [ ] Created PR `chore/repokeeper-cycle-59` — CI workflow fixes prepared (blocked from push by `workflows: write` permission)
+  - [x] All quality checks verified: typecheck ✅ lint ✅ format ✅ build ✅ tests 1130/1130 ✅ audit ✅
+  - [x] Fixed missing doc references in README — added 4 new files to documentation section
+  - [x] Updated `findings.md` — Cycle 60 entry
+  - [x] Updated `active-tasks.md` — Cycle 60 status
+  - [x] Created PR `chore/repokeeper-cycle-60` — documentation refresh
 
 ---
 
@@ -64,5 +63,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-05 (Cycle 59: RepoKeeper)  
+**Last Updated**: 2026-06-05 (Cycle 60: RepoKeeper)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
