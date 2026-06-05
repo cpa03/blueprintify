@@ -21,6 +21,7 @@ import {
   ANIMATION,
 } from "../config/constants";
 import { useFocusTrap } from "../hooks";
+import { Icon, type IconName } from "./Icon";
 
 /**
  * Props for the KeyboardShortcutsModal component.
@@ -99,11 +100,11 @@ const categoryLabels: Record<string, string> = {
   generation: "Generation",
 };
 
-const categoryIcons: Record<string, string> = {
-  general: "⌨️",
-  editor: "📝",
-  navigation: "🧭",
-  generation: "⚡",
+const categoryIcons: Record<string, IconName> = {
+  general: "keyboard",
+  editor: "edit",
+  navigation: "compass",
+  generation: "lightning",
 };
 
 /**
@@ -197,7 +198,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
               <div className="flex items-center justify-between px-6 py-4 border-b border-dark-700/50">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500/20 to-accent-purple/20 flex items-center justify-center">
-                    <span className="text-xl">⌨️</span>
+                    <Icon name="keyboard" className="w-5 h-5 text-primary-400" />
                   </div>
                   <div>
                     <h2 id="keyboard-shortcuts-title" className="text-xl font-bold text-white">
@@ -240,8 +241,8 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                       }}
                     >
                       <div className="flex items-center gap-2 mb-3">
-                        <span className="text-lg" aria-hidden="true">
-                          {categoryIcons[category]}
+                        <span className="text-lg flex items-center" aria-hidden="true">
+                          <Icon name={categoryIcons[category]!} className="w-4 h-4 text-dark-300" />
                         </span>
                         <h3 className="text-sm font-semibold text-dark-300 uppercase tracking-wider">
                           {categoryLabels[category]}
