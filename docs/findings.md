@@ -112,6 +112,10 @@ git checkout chore/repokeeper-cycle-59
 git push origin HEAD
 ```
 
+A patch file is also saved at `/tmp/workflow-fixes-cycle-59.patch` for manual application via `git apply`.
+
+**Note**: The workflow changes are saved as a patch file at `/tmp/workflow-fixes-cycle-59.patch` for manual application via `git apply`.
+
 ### Actions Taken
 
 1. Full repository audit — no dead/redundant/temp files found
