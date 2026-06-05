@@ -138,7 +138,8 @@ describe("requestLogger middleware", () => {
         const loggedHeaderKeys = Object.keys(logEntry.headers || {});
         const hasSensitive = loggedHeaderKeys.some(
           (key) =>
-            key.toLowerCase().includes("authorization") || key.toLowerCase().includes("cookie")
+            key.toLowerCase().includes(HTTP_HEADER_NAMES.AUTHORIZATION_LC) ||
+            key.toLowerCase().includes(HTTP_HEADER_NAMES.COOKIE_LC)
         );
         expect(hasSensitive).toBe(false);
       }

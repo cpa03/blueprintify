@@ -236,8 +236,8 @@ export const API_HEADERS = {
   CUSTOM: {
     /** API key authentication header (from shared config) */
     API_KEY: HTTP_HEADER_NAMES.X_API_KEY,
-    /** Request tracing identifier */
-    REQUEST_ID: "x-request-id",
+    /** Request tracing identifier (from shared config) */
+    REQUEST_ID: HTTP_HEADER_NAMES.X_REQUEST_ID_LC,
     /** User identity header for multi-user support (from shared config) */
     USER_ID: HTTP_HEADER_NAMES.X_USER_ID,
     /** User role header for authorization checks (from shared config) */
@@ -255,10 +255,10 @@ export const API_HEADERS = {
   },
   /** CDN-specific cache headers */
   CDN: {
-    /** Cloudflare CDN cache control header name */
-    CLOUDFLARE_CACHE_CONTROL: "Cloudflare-CDN-Cache-Control",
-    /** Standard CDN cache control header name */
-    CDN_CACHE_CONTROL: "CDN-Cache-Control",
+    /** Cloudflare CDN cache control header name (from shared config) */
+    CLOUDFLARE_CACHE_CONTROL: HTTP_HEADER_NAMES.CLOUDFLARE_CACHE_CONTROL,
+    /** Standard CDN cache control header name (from shared config) */
+    CDN_CACHE_CONTROL: HTTP_HEADER_NAMES.CDN_CACHE_CONTROL,
   },
   /** Server timing header */
   SERVER_TIMING: {
@@ -289,8 +289,8 @@ export const API_HEADERS = {
   CF_PROPERTIES: {
     /** Cloudflare request country header (from shared config) */
     IP_COUNTRY: HTTP_HEADER_NAMES.CF_IPCOUNTRY,
-    /** Cloudflare Ray ID for request tracing */
-    RAY_ID: "cf-ray",
+    /** Cloudflare Ray ID for request tracing (from shared config) */
+    RAY_ID: HTTP_HEADER_NAMES.CF_RAY_LC,
     /** Cloudflare connecting IP (from shared config) */
     CONNECTING_IP: HTTP_HEADER_NAMES.CF_CONNECTING_IP,
     /** Cloudflare client city (from shared config) */
@@ -578,7 +578,10 @@ export const LOGGER_CONFIG = {
   REQUEST_ID_SUFFIX_LENGTH: 4,
   /** Default paths excluded from request logging */
   DEFAULT_EXCLUDE_PATHS: [SHARED_ROUTE_PATHS.ROOT] as const,
-  SANITIZED_HEADER_EXCLUDE: ["authorization", "cookie"] as const,
+  SANITIZED_HEADER_EXCLUDE: [
+    HTTP_HEADER_NAMES.AUTHORIZATION_LC,
+    HTTP_HEADER_NAMES.COOKIE_LC,
+  ] as const,
   UNPARSABLE_BODY: "[unparsable]",
 } as const;
 

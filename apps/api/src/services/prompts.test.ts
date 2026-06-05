@@ -9,6 +9,7 @@ import {
   REFINER_SYSTEM_PROMPT,
 } from "./prompts";
 import type { BlueprintRequest, RefineRequest } from "@blueprint/shared";
+import { PROMPT_INPUT_CONFIG } from "../config/constants";
 
 describe("prompts service", () => {
   describe("System Prompts", () => {
@@ -427,8 +428,8 @@ describe("prompts service", () => {
         techStack: [{ name: "React", category: "frontend" }],
       };
       const prompt = buildBlueprintPrompt(request);
-      expect(prompt).toContain("<user_input>");
-      expect(prompt).toContain("</user_input>");
+      expect(prompt).toContain(PROMPT_INPUT_CONFIG.USER_DELIMITER_START);
+      expect(prompt).toContain(PROMPT_INPUT_CONFIG.USER_DELIMITER_END);
       expect(prompt).toContain("User description content");
     });
 
