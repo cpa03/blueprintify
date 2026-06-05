@@ -2,31 +2,35 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 56 — Repository Health Check
+## Current Focus: RepoKeeper Cycle 57 — Repository Health Check
 
-### Task: RepoKeeper Cycle 56 — Repository Health Check ✅ COMPLETE
+### Task: RepoKeeper Cycle 57 — Repository Health Check ✅ COMPLETE
 
 - **Priority**: High
 - **Status**: ✅ Complete
-- **Objective**: Full repository audit, verify quality checks, refresh documentation
+- **Objective**: Full repository audit, fix CI workflow issues, verify quality checks, refresh documentation
 - **Actions**:
   - [x] Full repository scan for redundant/temp/unused files → none found
   - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
   - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
   - [x] Verified all `console.*` calls are intentional (logging utilities, error handlers, templates)
-  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1097/1097 ✅
-  - [x] Updated docs: `findings.md`, `active-tasks.md`, `knowledge-review.md`
-  - [x] **⚠️ CI workflow fixes still BLOCKED** — token lacks `workflows: write` permission (15+ cycles unresolved)
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1118/1118 ✅
+  - [x] Fixed stale doc refs in `main.yml`: `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`
+  - [x] Updated `node-version: "20"` → `node-version-file: ".node-version"` in 4 workflow files (11 occurrences)
+  - [x] Updated docs: `findings.md`, `active-tasks.md`, `knowledge-review.md`, `bugs.md`
 
-### Task: CI Node.js Version Fix ⏳ BLOCKED
+### Task: CI Node.js Version Fix ✅ FIX APPLIED
 
 - **Priority**: High
-- **Status**: ⏳ Blocked (15+ cycles — needs maintainer with `workflows: write` scope)
-- **Objective**: Replace hardcoded `node-version: "20"` with `"22"` in all workflows
+- **Status**: ✅ Fix applied
+- **Objective**: Replace hardcoded `node-version: "20"` with `node-version-file: ".node-version"` in all workflows
 - **Actions**:
-  - [x] Changes applied locally and committed across multiple cycles (37–54)
-  - [x] Push always rejected — `GITHUB_TOKEN` lacks `workflows` scope
-  - [ ] Manual action needed: Push CI workflow changes from a token with `workflows: write` permission
+  - [x] Stale doc refs fixed in `main.yml` (3 occurrences)
+  - [x] `iterate.yml`: 5 instances of `node-version: "20"` → `node-version-file: ".node-version"`
+  - [x] `parallel.yml`: 4 instances of `node-version: "20"` → `node-version-file: ".node-version"`
+  - [x] `pr-gatekeeper.yml`: 1 instance → `node-version-file: ".node-version"`
+  - [x] `on-pull.yml`: 1 instance (unquoted) → `node-version-file: ".node-version"`
+  - [ ] PR created with workflow changes
 
 ### Task: Previous — PR Merge Cycle ✅ COMPLETE
 
@@ -85,5 +89,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-05 (Cycle 56: RepoKeeper)  
+**Last Updated**: 2026-06-05 (Cycle 57: RepoKeeper)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)

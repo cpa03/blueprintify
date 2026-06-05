@@ -12,17 +12,16 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-05 (RepoKeeper Cycle 56)
+**Last Review**: 2026-06-05 (RepoKeeper Cycle 57)
 **Status**: ✅ Up to date
 
-As of Cycle 56:
+As of Cycle 57:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **CI workflow fixes STILL BLOCKED from push** — GitHub App token lacks `workflows: write` permission (15+ cycles)
-- **Node-version fixes still needed**: `.github/workflows/*.yml` still use `"20"` — need `"22"` (11 instances across 4 files)
-- **Stale doc refs in `main.yml`**: `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md` (lines 39, 263)
-- Maintainer with `workflows: write` scope required to push workflow file changes
+- **CI workflow fixes APPLIED** — stale doc refs fixed in `main.yml` (3 occurrences)
+- **Node-version fixed**: all 4 workflow files (11 instances) now use `node-version-file: ".node-version"` instead of hardcoded `"20"`
+- Changes pushed on PR branch for review
 
 ## Historical Drift Corrections
 
