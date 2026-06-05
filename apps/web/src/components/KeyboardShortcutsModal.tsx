@@ -240,7 +240,9 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                       }}
                     >
                       <div className="flex items-center gap-2 mb-3">
-                        <span className="text-lg">{categoryIcons[category]}</span>
+                        <span className="text-lg" aria-hidden="true">
+                          {categoryIcons[category]}
+                        </span>
                         <h3 className="text-sm font-semibold text-dark-300 uppercase tracking-wider">
                           {categoryLabels[category]}
                         </h3>
