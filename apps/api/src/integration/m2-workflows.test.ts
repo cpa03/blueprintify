@@ -10,7 +10,7 @@ import storageRoute from "../routes/storage";
 import tasksRoute from "../routes/tasks";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 import { SSE_HEADERS } from "../config/constants";
-import { ROUTE_PATHS, HTTP_METHODS, HTTP_HEADERS } from "@blueprint/shared";
+import { ROUTE_PATHS, HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
 
 interface ApiResponse {
   success: boolean;
@@ -67,7 +67,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         ROUTE_PATHS.GENERATE,
         {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             projectName: "Test Project",
             description: "A comprehensive test project for integration testing",
@@ -78,13 +78,15 @@ describe("Integration: End-to-End M2 Workflows", () => {
       );
 
       expect(generateRes.status).toBe(200);
-      expect(generateRes.headers.get("Content-Type")).toContain(SSE_HEADERS.CONTENT_TYPE);
+      expect(generateRes.headers.get(HTTP_HEADER_NAMES.CONTENT_TYPE)).toContain(
+        SSE_HEADERS.CONTENT_TYPE
+      );
 
       const exportRes = await app.request(
         ROUTE_PATHS.EXPORT,
         {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             projectName: "Test Project",
             format: "markdown",
@@ -106,7 +108,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         ROUTE_PATHS.GENERATE,
         {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             projectName: "Test Project",
             description: "A comprehensive test project for integration testing",
@@ -122,7 +124,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         ROUTE_PATHS.REFINE,
         {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             content: "# Test Blueprint\n\n## Overview\nThis is a test blueprint.\n",
             instruction: "Add more details to the overview section",
@@ -137,7 +139,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         ROUTE_PATHS.EXPORT,
         {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             projectName: "Test Project",
             format: "zip",
@@ -172,7 +174,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         ROUTE_PATHS.IMPORT,
         {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             data: JSON.stringify(projectData),
             format: "json",
@@ -190,7 +192,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         ROUTE_PATHS.EXPORT,
         {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             projectName: projectData.projectName,
             format: "json",
@@ -226,7 +228,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         `${ROUTE_PATHS.STORAGE}/clear`,
         {
           method: HTTP_METHODS.DELETE,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({ confirm: true }),
         },
         MOCK_ENV
@@ -244,7 +246,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         ROUTE_PATHS.GENERATE,
         {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             description: "Missing project name",
           }),
@@ -263,7 +265,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         ROUTE_PATHS.IMPORT,
         {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             data: "invalid json structure",
             format: "json",
@@ -284,7 +286,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         ROUTE_PATHS.GENERATE,
         {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             projectName: "Test",
             description: "Test description for validation",
@@ -319,7 +321,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
           ROUTE_PATHS.GENERATE,
           {
             method: HTTP_METHODS.POST,
-            headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+            headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
             body: JSON.stringify({
               projectName: "Concurrent Test",
               description: "Testing concurrent requests with validation",
