@@ -283,3 +283,29 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 ## Status
 
 **✅ COMPLETED - 14 iterations done**
+
+### ✅ Flexy Iteration 15: Eliminate Hardcoded "Content-Type" Header Keys in Tests
+
+| File                                                 | Change                                                                                                                                  |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/api/src/**/*.test.ts` (10 files)               | Added `HTTP_HEADER_NAMES` import, replaced 80+ `"Content-Type":` header keys with `[HTTP_HEADER_NAMES.CONTENT_TYPE]:` computed property |
+| `apps/web/src/integration/**/*.test.ts` (4 files)    | Added `HTTP_HEADER_NAMES` import, replaced all `"Content-Type"` header keys with `[HTTP_HEADER_NAMES.CONTENT_TYPE]:` computed property  |
+| `apps/api/src/utils/stream.test.ts`                  | Replaced `response.headers.get("Content-Type")` with `HTTP_HEADER_NAMES.CONTENT_TYPE` ref                                               |
+| `apps/web/src/integration/api-flows.test.ts`         | Replaced `response.headers.get("Content-Type")` with `HTTP_HEADER_NAMES.CONTENT_TYPE` ref                                               |
+| `apps/web/src/integration/refinement-export.test.ts` | Replaced `response.headers.get("Content-Type")` with `HTTP_HEADER_NAMES.CONTENT_TYPE` ref                                               |
+| `apps/api/src/integration/m2-workflows.test.ts`      | Replaced `generateRes.headers.get("Content-Type")` with `HTTP_HEADER_NAMES.CONTENT_TYPE` ref                                            |
+| `docs/flexy-plan.md`                                 | Added iteration 15 documentation                                                                                                        |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — 1,097 tests passing (564 web + 342 api + 191 shared) across 67 files
+
+## PRs
+
+| PR #  | Branch                                              | Title                                                                                                    |
+| ----- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| #1598 | `feat/flexy-iteration-15-content-type-header-names` | feat(flexy): eliminate hardcoded 'Content-Type' header keys with HTTP_HEADER_NAMES.CONTENT_TYPE in tests |
+
+**✅ COMPLETED - 15 iterations done**

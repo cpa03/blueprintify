@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { HTTP_METHODS, SSE_HEADERS, HTTP_HEADERS, HTTP_STATUS } from "@blueprint/shared";
+import {
+  HTTP_METHODS,
+  SSE_HEADERS,
+  HTTP_HEADERS,
+  HTTP_STATUS,
+  HTTP_HEADER_NAMES,
+} from "@blueprint/shared";
 import { StorageManager } from "../lib/storage";
 import {
   createTestBlueprint,
@@ -53,7 +59,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           projectName: testData.projectName,
           description: testData.description,
@@ -65,7 +71,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
         `${API_BASE}${API_ENDPOINTS.GENERATE}`,
         expect.objectContaining({
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         })
       );
     });
@@ -89,7 +95,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
       fetchMock.mockResolvedValueOnce(
         new Response(stream, {
           status: HTTP_STATUS.OK,
-          headers: { "Content-Type": SSE_HEADERS.CONTENT_TYPE },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: SSE_HEADERS.CONTENT_TYPE },
         })
       );
 
@@ -99,7 +105,9 @@ describe("Integration: Frontend-Backend API Flow", () => {
       });
 
       expect(response.status).toBe(HTTP_STATUS.OK);
-      expect(response.headers.get("Content-Type")).toContain(SSE_HEADERS.CONTENT_TYPE);
+      expect(response.headers.get(HTTP_HEADER_NAMES.CONTENT_TYPE)).toContain(
+        SSE_HEADERS.CONTENT_TYPE
+      );
     });
   });
 
@@ -116,7 +124,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           content: testData.blueprint,
           instruction: "Add more details",
@@ -149,7 +157,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           content: testData.blueprint,
           instruction: "Improve clarity",
@@ -183,7 +191,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
         const response = await fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             format,
             blueprint: testData.blueprint,
@@ -213,7 +221,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.IMPORT}`, {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           format: "json",
           data: testData,
@@ -242,7 +250,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.IMPORT}`, {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           format: "json",
           data: { invalid: "data" },
@@ -285,7 +293,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
       const syncResponse = await fetch(`${API_BASE}/storage/sync`, {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           key: "test-session",
           data: mockStorageData.session,

@@ -111,7 +111,7 @@ describe("createSSEResponse", () => {
       },
     });
     const response = createSSEResponse(stream);
-    expect(response.headers.get("Content-Type")).toBe(SSE_HEADERS.CONTENT_TYPE);
+    expect(response.headers.get(HTTP_HEADER_NAMES.CONTENT_TYPE)).toBe(SSE_HEADERS.CONTENT_TYPE);
   });
 
   it("should set cache-control to no-cache", () => {

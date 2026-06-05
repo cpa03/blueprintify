@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { validateJson } from "./validator";
 import type { ErrorResponse } from "../errors";
-import { HTTP_HEADERS, HTTP_METHODS } from "@blueprint/shared";
+import { HTTP_HEADERS, HTTP_METHODS, HTTP_HEADER_NAMES } from "@blueprint/shared";
 
 describe("validateJson middleware", () => {
   const TestSchema = z.object({
@@ -21,7 +21,7 @@ describe("validateJson middleware", () => {
 
     const res = await app.request("/", {
       method: HTTP_METHODS.POST,
-      headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+      headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
       body: JSON.stringify({
         name: "John Doe",
         age: 30,
@@ -48,7 +48,7 @@ describe("validateJson middleware", () => {
 
     const res = await app.request("/", {
       method: HTTP_METHODS.POST,
-      headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+      headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
       body: JSON.stringify({
         name: "John Doe",
         email: "john@example.com",
@@ -74,7 +74,7 @@ describe("validateJson middleware", () => {
 
     const res = await app.request("/", {
       method: HTTP_METHODS.POST,
-      headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+      headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
       body: JSON.stringify({
         name: "John Doe",
         age: 30,
@@ -106,7 +106,7 @@ describe("validateJson middleware", () => {
 
     const res = await app.request("/", {
       method: HTTP_METHODS.POST,
-      headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+      headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
       body: "not valid json",
     });
 
@@ -126,7 +126,7 @@ describe("validateJson middleware", () => {
 
     const res = await app.request("/", {
       method: HTTP_METHODS.POST,
-      headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+      headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
       body: "",
     });
 
@@ -145,7 +145,7 @@ describe("validateJson middleware", () => {
 
     const res = await app.request("/", {
       method: HTTP_METHODS.POST,
-      headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+      headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
       body: JSON.stringify({
         name: "",
         age: -5,
@@ -176,7 +176,7 @@ describe("validateJson middleware", () => {
 
     const res = await app.request("/", {
       method: HTTP_METHODS.POST,
-      headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+      headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
       body: JSON.stringify({
         name: "John",
         age: "not-a-number",
@@ -216,7 +216,7 @@ describe("validateJson middleware", () => {
 
     const validRes = await app.request("/", {
       method: HTTP_METHODS.POST,
-      headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+      headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
       body: JSON.stringify({
         user: {
           name: "John",
@@ -228,7 +228,7 @@ describe("validateJson middleware", () => {
 
     const invalidRes = await app.request("/", {
       method: HTTP_METHODS.POST,
-      headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+      headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
       body: JSON.stringify({
         user: {
           name: "John",
@@ -248,7 +248,7 @@ describe("validateJson middleware", () => {
 
     const res = await app.request("/", {
       method: HTTP_METHODS.POST,
-      headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+      headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
       body: JSON.stringify({ invalid: "data" }),
     });
 

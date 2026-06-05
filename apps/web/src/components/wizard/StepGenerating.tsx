@@ -35,6 +35,7 @@ import {
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { AnimatedNumber } from "../AnimatedNumber";
 import { RippleButton } from "../RippleButton";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import type { AnimationDirection } from "../../utils/motion";
 
 interface StepGeneratingProps {
@@ -52,6 +53,7 @@ export const StepGenerating = memo(function StepGenerating({
   const setStep = useWizardStore((s) => s.setStep);
   const toast = useToast();
 
+  const shouldReduceMotion = useReducedMotion();
   const blueprintLines = blueprintContent?.split("\n").length ?? 0;
   const tasksLines = tasksContent?.split("\n").length ?? 0;
   const isComplete = !isGenerating && progress === GENERATION_MESSAGES.COMPLETE;
@@ -168,8 +170,20 @@ export const StepGenerating = memo(function StepGenerating({
             <div className="absolute inset-0 flex items-center justify-center">
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: ANIMATION.FAST }}
+                animate={
+                  shouldReduceMotion
+                    ? { scale: 1, opacity: 1 }
+                    : {
+                        scale: [1, 1.08, 1],
+                        y: [0, -3, 0],
+                        opacity: [1, 0.85, 1],
+                      }
+                }
+                transition={{
+                  duration: ANIMATION.SLOW_PULSE,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
                 className="text-3xl"
               >
                 🚀

@@ -4,7 +4,7 @@ import refineRoute from "./refine";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
-import { HTTP_METHODS, HTTP_HEADERS } from "@blueprint/shared";
+import { HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 
 beforeEach(() => {
@@ -26,7 +26,7 @@ describe("POST /refine", () => {
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           instruction: "Make it better",
           // content is missing
@@ -46,7 +46,7 @@ describe("POST /refine", () => {
       "/",
       {
         method: HTTP_METHODS.POST,
-        headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           content: "# Original Content",
           instruction: "Make it more detailed",

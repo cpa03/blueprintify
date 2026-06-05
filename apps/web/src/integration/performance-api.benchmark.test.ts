@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { HTTP_METHODS, SSE_HEADERS, HTTP_HEADERS, HTTP_STATUS } from "@blueprint/shared";
+import {
+  HTTP_METHODS,
+  SSE_HEADERS,
+  HTTP_HEADERS,
+  HTTP_STATUS,
+  HTTP_HEADER_NAMES,
+} from "@blueprint/shared";
 import { API_ENDPOINTS } from "../config/constants";
 import { API_BASE } from "../config/api-client";
 import { createTestBlueprint, createLargeBlueprint, createMockResponse } from "./factories";
@@ -37,7 +43,7 @@ describe("Performance Benchmarks: API Integration", () => {
       const { duration } = await measureAsync(() =>
         fetch(`${API_BASE}${API_ENDPOINTS.GENERATE}`, {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             projectName: testData.projectName,
             description: testData.description,
@@ -61,7 +67,7 @@ describe("Performance Benchmarks: API Integration", () => {
       fetchMock.mockResolvedValueOnce(
         new Response(stream, {
           status: HTTP_STATUS.OK,
-          headers: { "Content-Type": SSE_HEADERS.CONTENT_TYPE },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: SSE_HEADERS.CONTENT_TYPE },
         })
       );
 
@@ -111,7 +117,7 @@ describe("Performance Benchmarks: API Integration", () => {
       const { duration } = await measureAsync(() =>
         fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             content: "Test content",
             instruction: "Improve",
@@ -158,7 +164,7 @@ describe("Performance Benchmarks: API Integration", () => {
       const { duration } = await measureAsync(() =>
         fetch(`${API_BASE}${API_ENDPOINTS.EXPORT}`, {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             format: "json",
             blueprint: testData.blueprint,
@@ -208,7 +214,7 @@ describe("Performance Benchmarks: API Integration", () => {
       const { duration } = await measureAsync(() =>
         fetch(`${API_BASE}${API_ENDPOINTS.IMPORT}`, {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             format: "json",
             data: testData,
@@ -239,7 +245,7 @@ describe("Performance Benchmarks: API Integration", () => {
       const { duration } = await measureAsync(() =>
         fetch(`${API_BASE}/storage/sync`, {
           method: HTTP_METHODS.POST,
-          headers: { "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON },
+          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
             key: "test-session",
             data: { step: 1 },
