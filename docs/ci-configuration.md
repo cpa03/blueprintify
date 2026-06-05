@@ -6,16 +6,16 @@
 
 The project requires Node.js 22+ (see `.nvmrc`, `.node-version`, `package.json` `engines`).
 
-### All workflow files use `actions/setup-node@v6` and MUST specify `node-version: "22"`:
+### All workflow files use `actions/setup-node@v6` and use `node-version-file: ".node-version"`:
 
-| Workflow File                                    | Current | Required |
-| ------------------------------------------------ | ------- | -------- |
-| `.github/workflows/on-pull.yml`                  | `20` ⚠️ | `22`     |
-| `.github/workflows/parallel.yml` (4 occurrences) | `20` ⚠️ | `22`     |
-| `.github/workflows/pr-gatekeeper.yml`            | `20` ⚠️ | `22`     |
-| `.github/workflows/iterate.yml` (5 occurrences)  | `20` ⚠️ | `22`     |
+| Workflow File                                    | Current                              | Status |
+| ------------------------------------------------ | ------------------------------------ | ------ |
+| `.github/workflows/on-pull.yml`                  | `node-version-file: ".node-version"` | ✅     |
+| `.github/workflows/parallel.yml` (4 occurrences) | `node-version-file: ".node-version"` | ✅     |
+| `.github/workflows/pr-gatekeeper.yml`            | `node-version-file: ".node-version"` | ✅     |
+| `.github/workflows/iterate.yml` (5 occurrences)  | `node-version-file: ".node-version"` | ✅     |
 
-> **Note**: Fixes applied locally in Cycle 52 but BLOCKED from push — GitHub App token requires `workflows: write` scope. Maintainer intervention needed.
+> **Note**: All workflows fixed in Cycle 58 — changed from hardcoded `node-version: "20"` to `node-version-file: ".node-version"` (11 occurrences total). Automatically stays in sync with `.node-version` (Node 22).
 
 ### Setup
 

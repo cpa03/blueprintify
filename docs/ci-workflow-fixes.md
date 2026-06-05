@@ -1,12 +1,12 @@
 # CI Workflow Fix Instructions
 
 > **Last updated**: 2026-06-05
-> **Status**: ✅ **FIXES APPLIED** — pushed in Cycle 57 PR
+> **Status**: ✅ **FIXES APPLIED ON MAIN** — pushed in Cycle 58 PR (`chore/repokeeper-cycle-58-ci-node-version`)
 
 ## Overview
 
 This document describes the CI workflow fixes required to resolve open issues.
-The actual changes to `.github/workflows/` files cannot be pushed by the `github-actions[bot]` token because it lacks the `workflows: write` permission.
+All fixes have been applied directly to the workflow files via the Cycle 58 PR. All 4 workflow files now use `node-version-file: ".node-version"` instead of hardcoded `"20"`, and `main.yml` stale doc references have been corrected.
 
 ## Issues Summary
 

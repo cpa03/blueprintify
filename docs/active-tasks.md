@@ -2,48 +2,22 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 57 — Repository Health Check
+## Current Focus: RepoKeeper Cycle 58 — CI Node Version Fix & Documentation Refresh
 
-### Task: RepoKeeper Cycle 57 — Repository Health Check ✅ COMPLETE
+### Task: RepoKeeper Cycle 58 — CI Node Version Fix & Documentation Refresh 🔄 IN PROGRESS
 
 - **Priority**: High
-- **Status**: ✅ Complete
-- **Objective**: Full repository audit, fix CI workflow issues, verify quality checks, refresh documentation
+- **Status**: 🔄 PR created — awaiting merge
+- **Objective**: Fix CI workflow node-version from "20" to node-version-file, fix stale doc refs, refresh documentation
 - **Actions**:
   - [x] Full repository scan for redundant/temp/unused files → none found
   - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
   - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
-  - [x] Verified all `console.*` calls are intentional (logging utilities, error handlers, templates)
-  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1118/1118 ✅
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1129/1129 ✅
   - [x] Fixed stale doc refs in `main.yml`: `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`
   - [x] Updated `node-version: "20"` → `node-version-file: ".node-version"` in 4 workflow files (11 occurrences)
-  - [x] Updated docs: `findings.md`, `active-tasks.md`, `knowledge-review.md`, `bugs.md`
-
-### Task: CI Node.js Version Fix ✅ FIX APPLIED
-
-- **Priority**: High
-- **Status**: ✅ Fix applied
-- **Objective**: Replace hardcoded `node-version: "20"` with `node-version-file: ".node-version"` in all workflows
-- **Actions**:
-  - [x] Stale doc refs fixed in `main.yml` (3 occurrences)
-  - [x] `iterate.yml`: 5 instances of `node-version: "20"` → `node-version-file: ".node-version"`
-  - [x] `parallel.yml`: 4 instances of `node-version: "20"` → `node-version-file: ".node-version"`
-  - [x] `pr-gatekeeper.yml`: 1 instance → `node-version-file: ".node-version"`
-  - [x] `on-pull.yml`: 1 instance (unquoted) → `node-version-file: ".node-version"`
-  - [ ] PR created with workflow changes
-
-### Task: Previous — PR Merge Cycle ✅ COMPLETE
-
-- **Priority**: High
-- **Status**: ✅ Complete
-- **Objective**: Process open PRs, fix pre-existing issues, merge
-- **Actions**:
-  - [x] **PR #1586** — Merged: glass-card focus sweep animation
-  - [x] **PR #1585** — Merged: RepoKeeper Cycle 53 docs refresh
-  - [x] **PR #1583** — Merged: Flexy Iteration 13
-  - [x] Fixed 2 lint warnings + 6 typecheck errors in `logger.test.ts`
-  - [x] Updated `docs/audits/diagnostic-scoring-2026-06-04.md`
-  - [x] **⚠️ CI workflow changes still blocked**
+  - [x] Updated docs: `findings.md`, `active-tasks.md`, `bugs.md`, `ci-configuration.md`
+  - [x] Created PR `chore/repokeeper-cycle-58-ci-node-version` — resolves long-standing CI workflow issue (previously blocked 20+ cycles)
 
 ---
 
