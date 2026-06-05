@@ -308,6 +308,29 @@
     animation: glow-pulse 2s ease-in-out infinite;
   }
 
+  /* Completion glow for CircularProgress when progress reaches 100% — subtle
+     pulsing ring that provides a "step fully complete" satisfying moment. Uses
+     a CSS custom property (--glow-color) set dynamically by the component so
+     the glow always matches the active stroke color. */
+  @keyframes circular-complete-glow {
+    0%,
+    100% {
+      box-shadow:
+        0 0 4px 0 color-mix(in srgb, var(--glow-color) 25%, transparent),
+        0 0 12px 0 color-mix(in srgb, var(--glow-color) 10%, transparent);
+    }
+    50% {
+      box-shadow:
+        0 0 8px 2px color-mix(in srgb, var(--glow-color) 45%, transparent),
+        0 0 20px 4px color-mix(in srgb, var(--glow-color) 20%, transparent);
+    }
+  }
+
+  .circular-complete-glow {
+    border-radius: 9999px;
+    animation: circular-complete-glow 2s ease-in-out infinite;
+  }
+
   /* Animated glow for primary CTA buttons — subtle breathing effect that draws
      the eye to the primary action when form requirements are met. Used on the
      "Continue" and "Generate Blueprint" buttons across wizard steps. */
@@ -481,6 +504,7 @@
     }
 
     .glow-pulse,
+    .circular-complete-glow,
     .shake-animation,
     .progress-shimmer::after,
     .animate-glow,

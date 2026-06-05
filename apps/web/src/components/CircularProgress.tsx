@@ -68,6 +68,7 @@ function CircularProgressComponent({
   ariaLabel,
 }: CircularProgressProps): JSX.Element {
   const clampedValue = Math.max(0, Math.min(100, value));
+  const isComplete = clampedValue >= 100;
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
   const center = size / 2;
@@ -75,8 +76,8 @@ function CircularProgressComponent({
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center ${className}`}
-      style={{ width: size, height: size }}
+      className={`relative inline-flex items-center justify-center ${isComplete ? "circular-complete-glow" : ""} ${className}`}
+      style={{ width: size, height: size, "--glow-color": color } as React.CSSProperties}
       role="progressbar"
       aria-valuenow={Math.round(clampedValue)}
       aria-valuemin={0}
