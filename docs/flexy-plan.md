@@ -303,6 +303,17 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 
 ## PRs
 
-| PR # | Branch                                          | Title                                                                                                      |
-| ---- | ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| TBD  | `feat/flexy-iteration-17-header-names-complete` | feat(flexy): complete HTTP_HEADER_NAMES coverage and eliminate remaining hardcoded header/security strings |
+| #1610 | `feat/flexy-iteration-17-header-names-complete` | feat(flexy): complete HTTP_HEADER_NAMES coverage and eliminate remaining hardcoded header/security strings |
+
+### ✅ Flexy Iteration 19: Eliminate Remaining Hardcoded HTTP Status Codes in Integration Factories
+
+| File                                    | Change                                                                                  |
+| --------------------------------------- | --------------------------------------------------------------------------------------- |
+| `apps/web/src/integration/factories.ts` | Added `HTTP_STATUS` import; replaced `status = 200` default param with `HTTP_STATUS.OK` |
+| `apps/web/src/integration/factories.ts` | Replaced hardcoded `status: 200` in `createMockStreamResponse` with `HTTP_STATUS.OK`    |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — 1,130 tests passing (585 web + 342 api + 203 shared) across 68 files
