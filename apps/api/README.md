@@ -241,6 +241,49 @@ Optional configuration variables:
 | `OPENAI_MODEL`    | gpt-4o-mini    | Model to use        |
 | `CORS_ORIGIN`     | \*             | Allowed CORS origin |
 
+### Required Infrastructure
+
+Before deploying to Cloudflare Workers, the following resources must be created and their IDs must be set in `wrangler.toml`.
+
+> ⚠️ **Warning**: `wrangler.toml` currently contains placeholder IDs (`local_database_id`, `cache_kv_namespace_id`, etc.). Real IDs must be substituted before production deployment. See the `TODO` comments and `# ⚠️ PLACEHOLDER` markers in the file.
+
+#### 1. KV Namespace (for caching)
+
+```bash
+# Create a KV namespace for each environment
+wrangler kv:namespace create "blueprint-cache"
+# → Returns an ID. Set it in wrangler.toml [[kv_namespaces]] id field.
+
+# Repeat for production (create with separate namespace)
+wrangler kv:namespace create "blueprint-cache-prod" --env production
+```
+
+#### 2. D1 Database (for blueprint storage)
+
+```bash
+# Create a D1 database for each environment
+wrangler d1 create "blueprint-db"
+# → Returns a database_id. Set it in wrangler.toml [[d1_databases]] database_id field.
+
+wrangler d1 create "blueprint-db-prod" --env production
+wrangler d1 create "blueprint-db-staging" --env staging
+```
+
+#### 3. Queue (for background processing)
+
+The queue `background-processing` is referenced in `wrangler.toml`. Create it via:
+
+```bash
+wrangler queue create background-processing
+wrangler queue create background-processing-staging --env staging
+```
+
+#### 4. Rate Limiting
+
+The rate limiter namespace IDs (`1001`, `1002`, `1003` etc.) are pre-configured. No additional setup is needed for Cloudflare Native Rate Limiting.
+
+> **Tip**: Run `grep -n "TODO\|PLACEHOLDER" apps/api/wrangler.toml` after setup to verify all placeholders have been replaced.
+
 ## Related Documentation
 
 - [Main README](../../README.md)

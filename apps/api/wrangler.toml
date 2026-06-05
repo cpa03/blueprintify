@@ -157,33 +157,39 @@ RATE_LIMIT_WINDOW = "60"
 # SENTRY_DSN = ""
 
 # KV namespaces for caching
+# ⚠️ PLACEHOLDER: Replace with real KV namespace IDs before deployment.
+#    Create via: `wrangler kv:namespace create "blueprint-cache"`
+#    Then set the returned ID here for each environment.
 [[kv_namespaces]]
 binding = "CACHE"
-id = "cache_kv_namespace_id"
+id = "cache_kv_namespace_id"               # TODO: Replace with actual dev KV namespace ID
 
 [[env.production.kv_namespaces]]
 binding = "CACHE"
-id = "production_cache_kv_id"
+id = "production_cache_kv_id"              # TODO: Replace with actual production KV namespace ID
 
 [[env.staging.kv_namespaces]]
 binding = "CACHE"
-id = "staging_cache_kv_id"
+id = "staging_cache_kv_id"                 # TODO: Replace with actual staging KV namespace ID
 
 # D1 database bindings
+# ⚠️ PLACEHOLDER: Replace with real D1 database IDs before deployment.
+#    Create via: `wrangler d1 create "blueprint-db"` (repeat for each env)
+#    Then set the returned database_id for each environment.
 [[d1_databases]]
 binding = "DB"
 database_name = "blueprint-db"
-database_id = "local_database_id"
+database_id = "local_database_id"          # TODO: Replace with actual dev D1 database ID
 
 [[env.production.d1_databases]]
 binding = "DB"
 database_name = "blueprint-db-prod"
-database_id = "production_database_id"
+database_id = "production_database_id"     # TODO: Replace with actual production D1 database ID
 
 [[env.staging.d1_databases]]
 binding = "DB"
 database_name = "blueprint-db-staging"
-database_id = "staging_database_id"
+database_id = "staging_database_id"        # TODO: Replace with actual staging D1 database ID
 
 # Queue for background processing
 [[queues.producers]]
