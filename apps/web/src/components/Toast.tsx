@@ -30,8 +30,9 @@
 import { useState, useRef, useCallback, useEffect, forwardRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
-import { TOAST_CONFIG, SPRING_CONFIG, ACCESSIBILITY_LABELS } from "../config/constants";
+import { TOAST_CONFIG, SPRING_CONFIG, ACCESSIBILITY_LABELS, ANIMATION } from "../config/constants";
 import { TOAST_SPRING } from "../config/theme";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 const toastIcons: Record<ToastType, string> = {
   success: TOAST_CONFIG.ICONS.SUCCESS,
@@ -120,6 +121,7 @@ const ToastItem = memo(
     const durationRef = useRef<number>(toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION);
     const originalDurationRef = useRef<number>(toast.duration ?? TOAST_CONFIG.DEFAULT_DURATION);
     const rafRef = useRef<number | null>(null);
+    const shouldReduceMotion = useReducedMotion();
 
     const clearToastTimeout = useCallback(() => {
       if (timeoutRef.current) {
@@ -192,18 +194,35 @@ const ToastItem = memo(
       setIsHovered(false);
     };
 
+    const defaultTransition = {
+      type: "spring" as const,
+      ...SPRING_CONFIG.DEFAULT,
+      delay: staggerIndex * (TOAST_STAGGER_MS / 1000),
+    };
+
+    const reducedTransition = {
+      duration: ANIMATION.NORMAL,
+      delay: staggerIndex * (TOAST_STAGGER_MS / 1000),
+      ease: "easeOut" as const,
+    };
+
     return (
       <motion.div
         ref={ref}
-        layout
-        initial={{ opacity: 0, y: 20, scale: 0.9 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: -20, scale: 0.9 }}
-        transition={{
-          type: "spring",
-          ...SPRING_CONFIG.DEFAULT,
-          delay: staggerIndex * (TOAST_STAGGER_MS / 1000),
-        }}
+        {...(shouldReduceMotion
+          ? {
+              initial: { opacity: 0 },
+              animate: { opacity: 1 },
+              exit: { opacity: 0 },
+              transition: reducedTransition,
+            }
+          : {
+              layout: true,
+              initial: { opacity: 0, y: 20, scale: 0.9 },
+              animate: { opacity: 1, y: 0, scale: 1 },
+              exit: { opacity: 0, y: -20, scale: 0.9 },
+              transition: defaultTransition,
+            })}
         className={`pointer-events-auto px-4 py-3 rounded-xl border backdrop-blur-sm shadow-lg flex items-center gap-3 min-w-[280px] max-w-md relative overflow-hidden group ${toastStyles[toast.type]}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -233,13 +252,9 @@ const ToastItem = memo(
           aria-hidden="true"
         />
 
-        <AnimatePresence>
-          {isHovered && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5, y: 5 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.5, y: 5 }}
-              transition={{ type: "spring", ...TOAST_SPRING.WARNING_ICON }}
+        {shouldReduceMotion ? (
+          isHovered && (
+            <div
               className="absolute -top-1 -right-1 w-4 h-4 bg-current/20 rounded-full flex items-center justify-center"
               aria-hidden="true"
             >
@@ -252,43 +267,89 @@ const ToastItem = memo(
                 <rect x="6" y="4" width="4" height="16" rx="1" />
                 <rect x="14" y="4" width="4" height="16" rx="1" />
               </svg>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+          )
+        ) : (
+          <AnimatePresence>
+            {isHovered && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5, y: 5 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.5, y: 5 }}
+                transition={{ type: "spring", ...TOAST_SPRING.WARNING_ICON }}
+                className="absolute -top-1 -right-1 w-4 h-4 bg-current/20 rounded-full flex items-center justify-center"
+                aria-hidden="true"
+              >
+                <svg
+                  className="w-2.5 h-2.5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <rect x="6" y="4" width="4" height="16" rx="1" />
+                  <rect x="14" y="4" width="4" height="16" rx="1" />
+                </svg>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
 
         <span className="relative flex-shrink-0 w-7 h-7 flex items-center justify-center">
           <ProgressRing progress={progress} size={28} strokeWidth={2} />
-          <motion.span
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{
-              type: "spring",
-              ...TOAST_SPRING.CHECKMARK,
-              delay: 0.12,
-            }}
-            className="w-6 h-6 rounded-full bg-current/20 flex items-center justify-center font-bold text-sm relative z-10"
-          >
-            {toastIcons[toast.type]}
-          </motion.span>
+          {shouldReduceMotion ? (
+            <span className="w-6 h-6 rounded-full bg-current/20 flex items-center justify-center font-bold text-sm relative z-10">
+              {toastIcons[toast.type]}
+            </span>
+          ) : (
+            <motion.span
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{
+                type: "spring",
+                ...TOAST_SPRING.CHECKMARK,
+                delay: 0.12,
+              }}
+              className="w-6 h-6 rounded-full bg-current/20 flex items-center justify-center font-bold text-sm relative z-10"
+            >
+              {toastIcons[toast.type]}
+            </motion.span>
+          )}
         </span>
         <p className="text-sm font-medium flex-1">{toast.message}</p>
-        <motion.button
-          onClick={() => onRemove(toast.id)}
-          className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
-          aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
-          whileHover={{ scale: 1.15, rotate: 90 }}
-          whileTap={{ scale: 0.9 }}
-          transition={{ type: "spring", ...TOAST_SPRING.DISMISS_BUTTON }}
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </motion.button>
+        {shouldReduceMotion ? (
+          <button
+            onClick={() => onRemove(toast.id)}
+            className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
+            aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        ) : (
+          <motion.button
+            onClick={() => onRemove(toast.id)}
+            className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
+            aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
+            whileHover={{ scale: 1.15, rotate: 90 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: "spring", ...TOAST_SPRING.DISMISS_BUTTON }}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </motion.button>
+        )}
       </motion.div>
     );
   })
@@ -299,6 +360,7 @@ function ToastContainerComponent(): JSX.Element {
   const removeToast = useToastStore((state) => state.removeToast);
   const clearAll = useToastStore((state) => state.clearAll);
   const showDismissAll = toasts.length > 1;
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <div className={TOAST_SPRING.CONTAINER_CLASSES}>
@@ -308,13 +370,9 @@ function ToastContainerComponent(): JSX.Element {
         ))}
       </AnimatePresence>
 
-      <AnimatePresence>
-        {showDismissAll && (
-          <motion.button
-            initial={{ opacity: 0, y: -8, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.9 }}
-            transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
+      {shouldReduceMotion ? (
+        showDismissAll && (
+          <button
             onClick={clearAll}
             className="pointer-events-auto self-center mt-1 px-3 py-1.5 rounded-lg
                        text-xs font-medium text-dark-400
@@ -341,9 +399,46 @@ function ToastContainerComponent(): JSX.Element {
               </svg>
               Dismiss all ({toasts.length})
             </span>
-          </motion.button>
-        )}
-      </AnimatePresence>
+          </button>
+        )
+      ) : (
+        <AnimatePresence>
+          {showDismissAll && (
+            <motion.button
+              initial={{ opacity: 0, y: -8, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.9 }}
+              transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
+              onClick={clearAll}
+              className="pointer-events-auto self-center mt-1 px-3 py-1.5 rounded-lg
+                         text-xs font-medium text-dark-400
+                         bg-dark-800/80 backdrop-blur-sm border border-dark-700/50
+                         hover:text-white hover:bg-dark-700 hover:border-dark-600
+                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
+                         transition-all duration-200"
+              aria-label={`Dismiss all ${toasts.length} notifications`}
+            >
+              <span className="flex items-center gap-1.5">
+                <svg
+                  className="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+                Dismiss all ({toasts.length})
+              </span>
+            </motion.button>
+          )}
+        </AnimatePresence>
+      )}
     </div>
   );
 }
