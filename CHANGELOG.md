@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Comprehensive `useFocusTrap` hook test coverage (163 lines, addresses #1082)
 - Keyboard shortcut tooltip on editor hide buttons (desktop and mobile) showing Ctrl/Cmd+E toggle shortcut, with ARIA improvements for accessibility ([#1460](https://github.com/cpa03/blueprintify/pull/1460))
 - Estimated reading time display in editor content stats for user time estimation
 - Interactive tab switch suggestion in PreviewEmptyState for easier navigation
@@ -51,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Centralized playwright config, template ports, env names & browser quota codes into `@blueprint/shared` (Flexy #1644)
 - Removed archived quality assessment document from docs
 - RepoKeeper Cycle 61: documentation accuracy & missing references cleanup ([#1628](https://github.com/cpa03/blueprintify/pull/1628))
 - Eliminated hardcoded header strings and HTTP status codes in tests (Flexy) ([#1625](https://github.com/cpa03/blueprintify/pull/1625))
