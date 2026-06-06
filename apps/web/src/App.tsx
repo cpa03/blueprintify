@@ -167,6 +167,9 @@ function App(): JSX.Element {
 
   return (
     <div className={LAYOUT.PAGE_WRAPPER}>
+      {/* Ambient background glow — slow drifting gradient behind all content */}
+      <div className="fixed inset-0 pointer-events-none z-0 ambient-glow" aria-hidden="true" />
+
       <SkipLink />
       <Header onShowShortcuts={handleShowShortcuts} />
 
