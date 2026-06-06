@@ -187,6 +187,17 @@ Multiple documentation files still reference Node.js 18+ as the minimum requirem
 **Last Updated**: 2026-06-06 (BugFixer ULW Cycle)  
 **Maintainer**: BugFixer (Ultrawork Loop)
 
+#### How to Apply Workflow Fixes
+
+Since GITHUB_TOKEN does not have `workflows: write` permission, workflow file changes must be applied by a maintainer with a PAT. Run:
+
+```bash
+bash scripts/apply-ci-workflow-fixes.sh
+git add .github/workflows/
+git commit -m "fix(ci): update Node.js to 22, fix stale doc refs"
+git push origin HEAD
+```
+
 > RepoKeeper/RepoKeeper cycle 2026-06-05 (Cycle 58): Build/lint/typecheck/format all passing clean. Tests: 585 web + 342 api + 202 shared = 1129 total, all passing. 0 npm vulns. Full repository audit clean. BUG-014 and BUG-017 fixes were attempted (PR created) but never merged — still blocked by `workflows: write` permission as of this cycle. Workflow files on main remain unchanged.
 
 > RepoKeeper cycle 2026-06-04 (Cycle 55): Build/lint/typecheck/format all passing clean. Tests: 564 web + 342 api + 191 shared = 1097 total, all passing. 0 npm vulns. BUG-014 and BUG-017 status corrected to UNRESOLVED — fixes were applied in previous cycles but never merged to main (blocked by `workflows: write` permission). No new bugs identified.
