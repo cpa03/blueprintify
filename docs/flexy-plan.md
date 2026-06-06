@@ -294,12 +294,28 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | `apps/api/src/routes/storage.test.ts`    | Hardcoded `"storage:quota"` replaced with `STORAGE_KV_CONFIG.QUOTA_KEY` computed property                                                                                                 |
 | `apps/api/src/services/prompts.test.ts`  | Hardcoded `"<user_input>"`/`"</user_input>"` replaced with `PROMPT_INPUT_CONFIG.USER_DELIMITER_START`/`_END` refs                                                                         |
 
+### ✅ Flexy Iteration 21: Centralize Playwright config, template ports, env names & browser quota codes
+
+| File                                        | Change                                                                                                                                                                                      |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`             | Added `PLAYWRIGHT_CONFIG` (VIEWPORT, CI_RETRIES, CI_WORKERS), `TEMPLATE_NODE_PORT`, `ENVIRONMENT_NAMES` (PRODUCTION/DEVELOPMENT/STAGING/TEST), `BROWSER_QUOTA_ERROR_CODES` (CHROME/FIREFOX) |
+| `packages/shared/src/index.ts`              | Exported 4 new config objects                                                                                                                                                               |
+| `apps/web/playwright.config.ts`             | Replaced hardcoded `{ width: 1280, height: 720 }` with `PLAYWRIGHT_CONFIG.VIEWPORT`; `process.env.CI ? 2` → `CI_RETRIES`; `process.env.CI ? 1` → `CI_WORKERS`                               |
+| `apps/web/src/lib/templates/node.ts`        | Replaced hardcoded `PORT = process.env.PORT \|\| 3000` (Express + basic) with `TEMPLATE_NODE_PORT`                                                                                          |
+| `apps/web/src/config/constants/storage.ts`  | Replaced `BROWSER_QUOTA_ERROR_CODES: { CHROME: 22, FIREFOX: 1014 }` with shared `SHARED_BROWSER_QUOTA_ERROR_CODES`                                                                          |
+| `apps/api/src/middleware/rateLimit.test.ts` | Replaced hardcoded `"production"` with `ENVIRONMENT_NAMES.PRODUCTION`                                                                                                                       |
+
 ## Verification
 
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
-- ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 1,130 tests passing (585 web + 342 api + 203 shared) across 68 files
+
+## PRs
+
+| PR # | Branch                                      | Title                                                                                      |
+| ---- | ------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| TBD  | `feat/flexy-iteration-21-hardcoded-cleanup` | feat(flexy): centralize playwright config, template ports, env names & browser quota codes |
 
 ## PRs
 
