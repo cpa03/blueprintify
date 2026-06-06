@@ -66,3 +66,17 @@ export const FOCUS_ANNOUNCER = {
   STEP_CHANGE: (stepLabel: string) => `Now on ${stepLabel} step`,
   LIVE_REGION_CLASS: "sr-only",
 } as const;
+
+// ============================================================================
+// Editor Announcer
+// ============================================================================
+
+/**
+ * Announcer templates for screen reader editor notifications
+ * Flexy says: No hardcoded announcer text - everything configurable!
+ */
+export const EDITOR_ANNOUNCER = {
+  OPENED: "Editor panel opened",
+  OPENED_WITH_CONTENT: (tabName: string) =>
+    `Editor opened with ${tabName} content ready for review and editing`,
+} as const;
