@@ -12,17 +12,17 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-06 (RepoKeeper Cycle 63)
+**Last Review**: 2026-06-06 (RepoKeeper Cycle 64)
 **Status**: ✅ Up to date — with noted exceptions
 
-As of Cycle 63:
+As of Cycle 64:
 
 - All documentation aligns with current codebase state — with one correction noted below
 - No drift detected between docs/ and apps/ code
 - **Docs correction applied**: `ci-configuration.md` was corrected — it falsely claimed all workflow files use `node-version-file: ".node-version"` on `main`. They still use `node-version: "20"`. The doc now accurately reflects `main` state and documents the blocker.
-- **CI workflow fixes PREPARED on branch `chore/repokeeper-cycle-59`** — stale doc refs fixed in `main.yml` (2 occurrences), node-version fixed (11 instances across 4 files)
-- **⚠️ NOTE**: These workflow changes are PREPARED on a branch but CANNOT be pushed to `main` without `workflows: write` permission. On `main` branch, the stale refs and Node 20 version persist. A maintainer with `workflows: write` scope must push these changes.
-- **Cycle 63 (2026-06-06)**: 6 new empty CI fix commits attempted by `github-actions[bot]` — all blocked by `workflows: write` permission. No changes applied to `main` branch workflow files.
+- **CI workflow fixes PREPARED on branches** — stale doc refs fixed in `main.yml` (2 occurrences), node-version fixed (11 instances across 4 files)
+- **⚠️ NOTE**: These workflow changes are PREPARED on branches but CANNOT be pushed to `main` without `workflows: write` permission. On `main` branch, the stale refs and Node 20 version persist. A maintainer with `workflows: write` scope must push these changes.
+- **Cycle 64 (2026-06-06)**: Added missing `brocula-hunt-2026-06-06-run2.md` reference in README directory tree and docs section. Updated CHANGELOG with latest commit. All quality checks passing.
 
 ## Historical Drift Corrections
 

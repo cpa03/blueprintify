@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Progress shimmer animation on StepStack progress bar after completion for progress celebration feedback ([#1649](https://github.com/cpa03/blueprintify/pull/1649))
 - Comprehensive `useFocusTrap` hook test coverage (163 lines, addresses #1082)
 - Keyboard shortcut tooltip on editor hide buttons (desktop and mobile) showing Ctrl/Cmd+E toggle shortcut, with ARIA improvements for accessibility ([#1460](https://github.com/cpa03/blueprintify/pull/1460))
 - Estimated reading time display in editor content stats for user time estimation
