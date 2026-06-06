@@ -18,6 +18,8 @@ All CI workflow files still use the **hardcoded** `node-version: "20"` on `main`
 | `.github/workflows/on-pull.yml`                  | `node-version: 20` (unquoted) | `node-version-file: ".node-version"` |
 
 > **Fix approach**: Change from hardcoded `node-version` to `node-version-file: ".node-version"` (11 occurrences across 4 files). Fixes are prepared in branches `chore/repokeeper-cycle-59` and `fix/bugfixer-cycle-48-stale-refs` — both blocked from push by missing `workflows: write` permission.
+>
+> **Latest attempt (2026-06-06)**: 6 empty commits authored by `github-actions[bot]` attempted to apply fixes (`fix(ci): update Node.js to 22` and `fix(ci): update stale doc references in main.yml`) — all failed silently due to `GITHUB_TOKEN` lacking `workflows: write` scope. Workflow files on `main` remain unchanged.
 
 ### Setup
 
