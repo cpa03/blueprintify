@@ -202,6 +202,11 @@ export const ACCESSIBILITY_LABELS = {
     KEYBOARD_SHORTCUTS: "Keyboard shortcuts (?)",
     GITHUB: "View on GitHub",
   },
+  REVIEW: {
+    GENERATE_DISABLED_TOOLTIP: "Add a project name and description to continue",
+    GENERATE_DISABLED_ARIA:
+      "Generate Blueprint button is disabled. Fill in project name and description first.",
+  },
   MARKDOWN: {
     COPY_CODE: "Copy code to clipboard",
     COPIED: "Copied to clipboard",
