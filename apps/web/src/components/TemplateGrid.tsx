@@ -12,6 +12,11 @@
  * - Loading state with animation
  * - Toast notification on template selection
  *
+ * Performance: Uses CSS animations instead of framer-motion. This component
+ * is shown on the initial page render (when templates are visible), so keeping
+ * framer-motion out of its import tree prevents the 45 KiB animation chunk
+ * from loading before user interaction.
+ *
  * @module components/TemplateGrid
  * @see {@link STARTER_TEMPLATES} - Available template definitions
  * @see {@link useWizardStore} - Wizard state management
@@ -23,11 +28,17 @@
  */
 
 import { useState, memo, useCallback } from "react";
-import { motion } from "framer-motion";
 import { STARTER_TEMPLATES } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
-import { ANIMATION, TOAST_MESSAGES, SPRING_CONFIG } from "../config/constants";
+import { ANIMATION, TOAST_MESSAGES } from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
+
+/**
+ * Animation timing constants for staggered card entrance.
+ * Matches previous framer-motion stagger config.
+ */
+const CARD_ENTRANCE_DELAY = 0.05;
+const CARD_ENTRANCE_DURATION = 0.3;
 
 function TemplateGridComponent(): JSX.Element {
   const loadTemplate = useWizardStore((s) => s.loadTemplate);
@@ -75,41 +86,39 @@ function TemplateGridComponent(): JSX.Element {
           const isSelected = selectedId === template.id;
 
           return (
-            <motion.button
+            <button
               key={template.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                scale: isSelected ? 0.98 : 1,
-              }}
-              transition={{ delay: index * ANIMATION.STAGGER }}
               onClick={() => handleTemplateClick(template)}
               onKeyDown={(e) => handleKeyDown(e, template)}
               disabled={selectedId !== null}
               aria-busy={isSelected && isLoading}
+              style={{
+                animationDelay: `${index * CARD_ENTRANCE_DELAY}s`,
+                animationDuration: `${CARD_ENTRANCE_DURATION}s`,
+              }}
               className={`
-                glass-card p-5 text-left transition-all duration-300 group relative card-glow-hover
+                glass-card p-5 text-left relative group card-glow-hover
                 will-change-transform
+                animate-fade-in
+                motion-safe:transition-all motion-safe:duration-200 motion-safe:ease-out
+                motion-safe:hover:scale-[1.02] motion-safe:hover:-translate-y-0.5
+                motion-safe:active:scale-[0.98]
                 ${
                   isSelected
-                    ? "border-accent-emerald/70 bg-accent-emerald/10"
-                    : "hover:border-primary-500/50"
+                    ? "border-accent-emerald/70 bg-accent-emerald/10 scale-[0.98]"
+                    : "hover:border-primary-500/50 cursor-pointer"
                 }
                 ${selectedId !== null && !isSelected ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
                 ${FOCUS_VISIBLE_RING_CARD}
               `}
-              whileHover={selectedId === null ? { scale: 1.02, y: -2 } : undefined}
-              whileTap={selectedId === null ? { scale: 0.98 } : undefined}
             >
               {/* Selected state overlay elements animated via conditional mount */}
               {isSelected && (
                 <>
                   {/* Checkmark badge */}
-                  <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    className="absolute top-3 right-3 w-6 h-6 bg-accent-emerald rounded-full flex items-center justify-center z-10"
+                  <div
+                    className="absolute top-3 right-3 w-6 h-6 bg-accent-emerald rounded-full flex items-center justify-center z-10 animate-fade-in"
+                    style={{ animationDuration: "0.25s" }}
                   >
                     <svg
                       className={`${ICON.MD} text-white`}
@@ -124,54 +133,39 @@ function TemplateGridComponent(): JSX.Element {
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
-                  </motion.div>
+                  </div>
 
-                  {/* Pulsing border using opacity animation (composited, no forced reflow) */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: [0.4, 1, 0.4] }}
-                    transition={{
-                      duration: ANIMATION.FLOAT,
-                      ease: "easeInOut",
-                      repeat: Infinity,
-                    }}
-                    className="absolute inset-0 rounded-lg border-2 border-accent-emerald/50 pointer-events-none"
+                  {/* Pulsing border using CSS animation (composited, no forced reflow) */}
+                  <div
+                    className="absolute inset-0 rounded-lg border-2 border-accent-emerald/50 pointer-events-none animate-glow"
+                    aria-hidden="true"
                   />
                 </>
               )}
 
-              {/* Loading overlay - separate from selected state for animation control */}
+              {/* Loading overlay */}
               {isSelected && isLoading && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="absolute inset-0 flex items-center justify-center bg-dark-950/30 backdrop-blur-[1px] rounded-lg z-20"
+                <div
+                  className="absolute inset-0 flex items-center justify-center bg-dark-950/30 backdrop-blur-[1px] rounded-lg z-20 animate-fade-in"
+                  style={{ animationDuration: "0.15s" }}
                 >
-                  <motion.div
-                    className={SPINNER.OVERLAY}
-                    animate={{ rotate: 360 }}
-                    transition={{
-                      duration: ANIMATION.SPINNER_ROTATION * 0.8,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                  />
-                </motion.div>
+                  <div className={SPINNER.OVERLAY} />
+                </div>
               )}
 
               <div className="flex items-start gap-4 relative z-10">
-                <motion.div
-                  className="text-3xl"
+                <div
+                  className={`text-3xl motion-safe:transition-transform motion-safe:duration-200 ${
+                    isSelected ? "scale-110" : ""
+                  }`}
                   aria-hidden="true"
-                  animate={isSelected ? { scale: 1.1 } : { scale: 1 }}
-                  transition={{ type: "spring", ...SPRING_CONFIG.BOUNCY }}
                 >
                   {template.icon}
-                </motion.div>
+                </div>
                 <div className="flex-1 min-w-0">
                   <h3
                     className={`
-                    font-semibold transition-colors
+                    font-semibold transition-colors duration-200
                     ${isSelected ? "text-accent-emerald" : "text-white group-hover:text-primary-300"}
                   `}
                   >
@@ -180,12 +174,11 @@ function TemplateGridComponent(): JSX.Element {
                   <p className="text-sm text-dark-400 mt-1 line-clamp-2">{template.description}</p>
                   <div className="flex flex-wrap gap-1.5 mt-3">
                     {template.techStack.slice(0, 3).map((tech) => (
-                      <motion.span
+                      <span
                         key={tech.name}
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ type: "spring", ...SPRING_CONFIG.SUBTLE_BOUNCE }}
                         className={`
-                          px-2 py-0.5 text-xs rounded transition-shadow duration-200
+                          px-2 py-0.5 text-xs rounded motion-safe:transition-all motion-safe:duration-150
+                          motion-safe:hover:scale-105
                           ${
                             isSelected
                               ? "bg-accent-emerald/20 text-accent-emerald"
@@ -194,7 +187,7 @@ function TemplateGridComponent(): JSX.Element {
                         `}
                       >
                         {tech.name}
-                      </motion.span>
+                      </span>
                     ))}
                     {template.techStack.length > 3 && (
                       <span className="px-2 py-0.5 text-xs bg-dark-800 rounded text-dark-300">
@@ -204,7 +197,7 @@ function TemplateGridComponent(): JSX.Element {
                   </div>
                 </div>
               </div>
-            </motion.button>
+            </button>
           );
         })}
       </div>
