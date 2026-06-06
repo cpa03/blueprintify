@@ -493,6 +493,22 @@
     will-change: transform, opacity;
   }
 
+  .animate-slide-out-right {
+    animation: slide-out-right 0.2s ease-out forwards;
+    will-change: transform, opacity;
+  }
+
+  @keyframes slide-out-right {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(10px);
+    }
+  }
+
   .animate-slide-up {
     animation: slide-up 0.5s ease-out;
     will-change: transform, opacity;
@@ -515,6 +531,7 @@
     .animate-step-pulse::before,
     .animate-tooltip-in,
     .animate-slide-in-right,
+    .animate-slide-out-right,
     .animate-slide-up,
     .glass-card::after,
     .glass-card:focus-within::before {
