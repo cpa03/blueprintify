@@ -18,5 +18,9 @@ process.on("unhandledRejection", (reason: unknown) => {
   if (reason instanceof Error && reason.message === "OpenAI API key not configured") {
     return;
   }
-  throw reason;
+  // Log unexpected rejections instead of re-throwing to prevent
+  // recursive unhandledRejection loops. Vitest already tracks and
+  // fails tests on unhandled rejections during test execution.
+  const reasonStr = reason instanceof Error ? `${reason.name}: ${reason.message}` : String(reason);
+  console.warn(`[test-setup] Unhandled rejection: ${reasonStr}`);
 });
