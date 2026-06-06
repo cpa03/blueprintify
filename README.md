@@ -46,6 +46,10 @@ blueprintify/
 │   │   ├── brocula-hunt-2026-06-03.md
 │   │   ├── brocula-hunt-2026-06-04.md
 │   │   ├── brocula-hunt-2026-06-04-run2.md
+│   │   ├── brocula-hunt-2026-06-05.md
+│   │   ├── brocula-hunt-2026-06-05-run2.md
+│   │   ├── brocula-hunt-2026-06-05-run3.md
+│   │   ├── brocula-hunt-2026-06-05-run4.md
 │   │   ├── diagnostic-scoring-2026-05-31.md
 │   │   └── diagnostic-scoring-2026-06-04.md
 │   ├── blueprint.md
@@ -61,6 +65,7 @@ blueprintify/
 │   ├── findings.md
 │   ├── flexy-plan.md
 │   ├── issue-audit-report-2026-05-27.md
+│   ├── issue-audit-report-2026-06-05.md
 │   ├── issue-management-2026-05-27.md
 │   ├── knowledge-review.md
 │   ├── localstorage-schema.md
@@ -339,6 +344,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[BroCula Hunt (Jun 5)](./docs/audits/brocula-hunt-2026-06-05.md)** - Sixth performance optimization cycle
 - **[BroCula Hunt (Jun 5 Run 2)](./docs/audits/brocula-hunt-2026-06-05-run2.md)** - Seventh performance optimization cycle (lighthouse + console)
 - **[BroCula Hunt (Jun 5 Run 3)](./docs/audits/brocula-hunt-2026-06-05-run3.md)** - Eighth performance optimization cycle (lighthouse + console)
+- **[BroCula Hunt (Jun 5 Run 4)](./docs/audits/brocula-hunt-2026-06-05-run4.md)** - Ninth performance optimization cycle (console + lighthouse)
 - **[Diagnostic Scoring (May 31)](./docs/audits/diagnostic-scoring-2026-05-31.md)** - Comprehensive diagnostic scoring analysis
 - **[Diagnostic Scoring (Jun 4)](./docs/audits/diagnostic-scoring-2026-06-04.md)** - Phase 1 diagnostic scoring report (81.1/100)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
