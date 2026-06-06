@@ -362,3 +362,38 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run test:all` — 1,130 tests passing (585 web + 342 api + 203 shared) across 68 files
+
+### ✅ Flexy Iteration 23: Document Hardcoded Values in wrangler.toml & CI Node Version Findings
+
+| File                     | Change                                                                                                            |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| `apps/api/wrangler.toml` | Added 3 `Flexy says` comment blocks linking queue, observability, rate limit values to `@blueprint/shared` config |
+| `docs/flexy-plan.md`     | Documented CI node-version findings (cannot push - GitHub App lacks `workflows` permission)                       |
+
+### ⏳ CI Node Version — Identified but Blocked
+
+**Finding**: 11 occurrences of hardcoded `node-version: "20"` across 4 CI workflow files.
+`.node-version` specifies Node 22. `engines.node >= 22` in package.json.
+
+| File                                  | Occurrences             |
+| ------------------------------------- | ----------------------- |
+| `.github/workflows/iterate.yml`       | 5x `node-version: "20"` |
+| `.github/workflows/parallel.yml`      | 4x `node-version: "20"` |
+| `.github/workflows/on-pull.yml`       | 1x `node-version: 20`   |
+| `.github/workflows/pr-gatekeeper.yml` | 1x `node-version: "20"` |
+
+**Fix**: Replace all with `node-version-file: ".node-version"`.
+
+**Status**: ❌ Cannot push — GitHub App token lacks `workflows` permission to modify `.github/workflows/*.yml` files. Apply manually via branch with a PAT that has `workflows` scope.
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+
+## PRs
+
+| PR # | Branch                          | Title                                                                         |
+| ---- | ------------------------------- | ----------------------------------------------------------------------------- |
+| TBD  | `feat/flexy-ci-node-version-v2` | feat(flexy): add wrangler.toml Flexy comments linking values to shared config |

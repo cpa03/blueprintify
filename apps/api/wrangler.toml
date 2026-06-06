@@ -1,3 +1,6 @@
+# Flexy says: Default values throughout this file should match @blueprint/shared config defaults.
+# Single source of truth: packages/shared/src/config.ts (QUEUE_DEFAULTS, OBSERVABILITY_DEFAULTS,
+# RATE_LIMIT_DEFAULTS, DEV_DEFAULTS, etc.). Update shared config FIRST, then sync here.
 name = "blueprintify"
 main = "src/index.ts"
 compatibility_date = "2026-02-19"
@@ -192,6 +195,8 @@ database_name = "blueprint-db-staging"
 database_id = "staging_database_id"        # TODO: Replace with actual staging D1 database ID
 
 # Queue for background processing
+# Flexy says: Default values match @blueprint/shared QUEUE_DEFAULTS
+# (MAX_BATCH_SIZE=10, MAX_BATCH_TIMEOUT_S=30, MAX_RETRIES=5, RETRY_DELAY_S=60)
 [[queues.producers]]
 binding = "BACKGROUND_QUEUE"
 queue = "background-processing"
@@ -219,6 +224,8 @@ binding = "ANALYTICS"
 # service = "log-processor"
 
 # Observability: Traces and Logs for production monitoring
+# Flexy says: Sampling rates match @blueprint/shared OBSERVABILITY_DEFAULTS
+# (TRACES_SAMPLING_RATE=0.1, LOGS_SAMPLING_RATE=0.5)
 # https://developers.cloudflare.com/workers/observability/traces
 [observability]
 enabled = true
@@ -232,6 +239,8 @@ enabled = true
 head_sampling_rate = 0.5
 
 # Cloudflare Native Rate Limiting
+# Flexy says: Limit/period values match @blueprint/shared RATE_LIMIT_DEFAULTS
+# (STRICT_MAX=10, STANDARD_MAX=60, LENIENT_MAX=120, WINDOW_MS=60000)
 # https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit
 [[ratelimits]]
 name = "STRICT_RATE_LIMITER"
