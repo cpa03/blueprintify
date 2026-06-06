@@ -2,13 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 60 — Documentation Refresh & Missing References
+## Current Focus: RepoKeeper Cycle 61 — Documentation Refresh (BroCula Run 4)
 
-### Task: RepoKeeper Cycle 60 — Documentation Refresh & Missing References ✅ COMPLETE
+### Task: RepoKeeper Cycle 61 — Documentation Refresh (BroCula Run 4)
 
 - **Priority**: High
 - **Status**: ✅ Complete — PR created
 - **Objective**: Full repository audit, fix missing doc references in README, refresh documentation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ format ✅ build ✅ tests 1130/1130 ✅ audit ✅
+  - [x] Fixed missing `brocula-hunt-2026-06-05-run4.md` reference in README (was missing after Run 3)
+  - [x] Updated `findings.md` — Cycle 61 entry
+  - [x] Updated `active-tasks.md` — Cycle 61 status
+
+---
+
+## Previous Cycle: RepoKeeper Cycle 60 — Documentation Refresh & Missing References ✅ COMPLETE
+
+- **Status**: ✅ Complete — PR created
 - **Actions**:
   - [x] Full repository scan for redundant/temp/unused files → none found
   - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
@@ -63,5 +77,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-05 (Cycle 60: RepoKeeper)  
+**Last Updated**: 2026-06-06 (Cycle 61: RepoKeeper)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)

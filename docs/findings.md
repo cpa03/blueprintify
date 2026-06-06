@@ -2,6 +2,61 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 61 (2026-06-06 — RepoKeeper: BroCula Run 4 Missing Reference)
+
+### Audit Scope
+
+Full repository audit covering redundant files, stale documentation, missing doc references in README, and comprehensive quality checks.
+
+### Status Summary
+
+| Check             | Result                                       |
+| ----------------- | -------------------------------------------- |
+| Typecheck         | ✅ Clean (0 errors)                          |
+| Lint              | ✅ Clean (0 warnings)                        |
+| Format (Prettier) | ✅ All matched files use Prettier code style |
+| Build (web)       | ✅ Passes                                    |
+| Web tests         | ✅ 585/585 passed                            |
+| API tests         | ✅ 342/342 passed                            |
+| Shared tests      | ✅ 203/203 passed                            |
+| **Total tests**   | **✅ 1,130/1,130 passed**                    |
+| npm audit         | ✅ 0 vulnerabilities                         |
+
+### Actions Taken This Cycle
+
+1. **Full repository audit**: No redundant/temp/unused files found. No empty directories.
+2. **No type suppressions**: Zero `@ts-ignore`, `@ts-expect-error`, or `as any` found in source code.
+3. **No stale artifacts**: Zero TODO/FIXME/HACK in non-test source code.
+4. **All `console.*` calls verified**: All intentional (logging utilities, error handlers, generated templates).
+5. **Full quality verification**: typecheck ✅ lint ✅ format ✅ build (web) ✅ test:all (1,130 passing) ✅ npm audit ✅.
+6. **Fixed missing README reference**: `docs/audits/brocula-hunt-2026-06-05-run4.md` (Ninth BroCula hunt) was not listed in the documentation section — added after Run 3 entry.
+
+### Findings
+
+1. **No redundant/temp/unused source files found** — repo remains clean from dead code, backup files, temp artifacts, or empty directories.
+2. **No `@ts-ignore`, `@ts-expect-error`, or `as any`** type suppressions found in source code.
+3. **No TODO/FIXME/HACK artifacts** in non-test source files.
+4. **1 new doc file missing from README** — `brocula-hunt-2026-06-05-run4.md` was created but never added to README documentation section. Fixed in this cycle.
+5. **166+ stale remote branches** — unchanged from previous cycles; deletion requires explicit maintainer review.
+6. **CI workflow fixes still blocked** — stale doc refs + node-version fixes blocked by `workflows: write` permission. Same issue as 20+ previous cycles.
+7. **Repo healthy**: All quality checks passing, 0 npm vulnerabilities, documentation refreshed.
+
+### CI Workflow Issue (Still Blocked — unchanged from previous cycles)
+
+All workflow fix changes remain on various `chore/repokeeper-*` branches but cannot be pushed due to GitHub App token permissions (`workflows: write` required). Same stale doc refs and node-version issues documented in Cycles 37–60.
+
+### Actions Taken
+
+1. Full repository audit — no dead/redundant/temp files found
+2. Verified all quality checks pass (typecheck ✅ lint ✅ format ✅ build ✅ tests 1,130/1,130 ✅ audit ✅)
+3. Fixed missing README reference — added `brocula-hunt-2026-06-05-run4.md` (Ninth BroCula hunt)
+4. Updated `docs/findings.md` — Cycle 61 entry (this file)
+5. Updated `docs/active-tasks.md` — Cycle 61 status
+
+**Last Updated**: 2026-06-06 (Cycle 61: RepoKeeper)
+
+---
+
 ## Cycle 60 (2026-06-05 — RepoKeeper: Documentation Refresh & Missing References)
 
 ### Audit Scope
