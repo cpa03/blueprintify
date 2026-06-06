@@ -34,7 +34,14 @@ import { useEditorStore, resetAllStores, useToast } from "../store";
 import { useExportContext } from "../context/ExportContext";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
-import { TIMEOUTS, UI, CONFIRM_DIALOG, TOAST_MESSAGES, ANIMATION } from "../config/constants";
+import {
+  TIMEOUTS,
+  UI,
+  CONFIRM_DIALOG,
+  TOAST_MESSAGES,
+  ANIMATION,
+  EDITOR_ANNOUNCER,
+} from "../config/constants";
 import { ANIMATION_TIMING } from "../config/theme";
 import { isDev } from "../config/env";
 import { useLastSaved } from "../hooks/useLastSaved";
@@ -74,6 +81,16 @@ function EditorComponent(): JSX.Element {
 
   const currentContent = activeTab === "blueprint" ? blueprintContent : tasksContent;
   const hasContent = blueprintContent.length > 0 || tasksContent.length > 0;
+
+  // Freeze announcement text at mount via useState initializer so screen readers
+  // only announce once when the editor panel appears, not on every re-render
+  const [mountAnnouncement] = useState(() =>
+    hasContent
+      ? EDITOR_ANNOUNCER.OPENED_WITH_CONTENT(
+          activeTab === "blueprint" ? "blueprint.md" : "tasks.md"
+        )
+      : EDITOR_ANNOUNCER.OPENED
+  );
 
   /**
    * Updates the current content (blueprint or tasks) with sanitization.
@@ -117,6 +134,17 @@ function EditorComponent(): JSX.Element {
       markSaved();
     }
   }, [blueprintContent, tasksContent, markSaved]);
+
+  // Auto-focus the editor's active tab when it mounts, so keyboard users
+  // land immediately in the panel rather than losing focus to the previous element
+  const initialTabRef = useRef(activeTab);
+  useEffect(() => {
+    const tabId = initialTabRef.current;
+    const focusTimer = setTimeout(() => {
+      document.getElementById(`tab-${tabId}`)?.focus({ preventScroll: true });
+    }, 180);
+    return () => clearTimeout(focusTimer);
+  }, []);
 
   /**
    * Copies the current content to clipboard in IDE-friendly format.
@@ -362,6 +390,12 @@ function EditorComponent(): JSX.Element {
         cancelLabel={CONFIRM_DIALOG.NEW_PROJECT.CANCEL_LABEL}
         icon={CONFIRM_DIALOG.NEW_PROJECT.ICON}
       />
+
+      {/* Screen reader announcement when editor mounts — text frozen at mount
+          via useRef to prevent re-announcement on re-renders */}
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {mountAnnouncement}
+      </div>
     </>
   );
 }
