@@ -2,8 +2,8 @@
 # Script to apply BUG-014 and BUG-017 CI workflow fixes
 # Run from repository root: bash scripts/apply-ci-workflow-fixes.sh
 #
-# BUG-014: Stale doc references in main.yml
-# BUG-017: CI Node.js version mismatch (20 -> 22)
+# BUG-014: Stale doc references in main.yml (docs/bug.md -> docs/bugs.md etc.)
+# BUG-017: CI Node.js version hardcoded as "20" -> node-version-file ".node-version"
 #
 # NOTE: Requires `workflows: write` permission on GitHub token to push.
 #       GITHUB_TOKEN from Actions runner does NOT have this permission.
@@ -11,32 +11,46 @@
 
 set -euo pipefail
 
-echo "=== Applying BUG-014 & BUG-017 fixes ==="
-
-# Fix main.yml stale doc references (BUG-014)
-echo "[1/2] Fixing stale doc references in main.yml..."
-sed -i 's/docs\/bug.md, docs\/feature.md/docs\/bugs.md, docs\/features.md/g' .github/workflows/main.yml
-sed -i 's/Catat bug baru ke docs\/bug.md/Catat bug baru ke docs\/bugs.md/g' .github/workflows/main.yml
-
-# Fix node-version in all workflow files (BUG-017)
-echo "[2/2] Updating node-version from 20 to 22 in all workflow files..."
-for f in .github/workflows/iterate.yml .github/workflows/parallel.yml .github/workflows/on-pull.yml .github/workflows/pr-gatekeeper.yml; do
-  sed -i 's/node-version: "20"/node-version: "22"/g' "$f"
-  sed -i 's/node-version: 20/node-version: 22/g' "$f"
-  echo "  Fixed: $f"
-done
+echo "=== Applying BUG-014: Stale doc refs in main.yml ==="
+sed -i 's|docs/bug.md, docs/feature.md|docs/bugs.md, docs/features.md|g' .github/workflows/main.yml
+sed -i 's|Catat bug baru ke docs/bug.md.|Catat bug baru ke docs/bugs.md.|g' .github/workflows/main.yml
+echo "✅ main.yml - stale doc refs fixed"
 
 echo ""
-echo "=== Changes applied ==="
-echo "Files modified:"
-git diff --stat
+echo "=== Applying BUG-017: node-version hardcoding -> node-version-file ==="
+
+# iterate.yml - 5 instances
+sed -i 's/node-version: "20"/node-version-file: ".node-version"/g' .github/workflows/iterate.yml
+echo "✅ iterate.yml - 5 instances fixed"
+
+# parallel.yml - 4 instances
+sed -i 's/node-version: "20"/node-version-file: ".node-version"/g' .github/workflows/parallel.yml
+echo "✅ parallel.yml - 4 instances fixed"
+
+# on-pull.yml - 1 instance (no quotes)
+sed -i 's/node-version: 20/node-version-file: ".node-version"/g' .github/workflows/on-pull.yml
+echo "✅ on-pull.yml - 1 instance fixed"
+
+# pr-gatekeeper.yml - 1 instance
+sed -i 's/node-version: "20"/node-version-file: ".node-version"/g' .github/workflows/pr-gatekeeper.yml
+echo "✅ pr-gatekeeper.yml - 1 instance fixed"
 
 echo ""
-echo "=== To verify ==="
-echo "  git diff"
-echo "  npm run check"
+echo "=== Verification ==="
+if grep -rn 'node-version:' .github/workflows/ | grep -v 'node-version-file'; then
+  echo "❌ WARNING: Remaining node-version: references found!"
+  exit 1
+else
+  echo "✅ Zero remaining node-version: references"
+fi
+
+if grep -rn 'docs/bug\.md\|docs/feature\.md' .github/workflows/; then
+  echo "❌ WARNING: Remaining stale doc refs found!"
+  exit 1
+else
+  echo "✅ Zero remaining stale doc refs"
+fi
+
 echo ""
-echo "=== To push (requires PAT with workflows:write) ==="
-echo "  git add .github/workflows/"
-echo "  git commit -m \"fix(ci): update Node.js to 22, fix stale doc refs\""
-echo "  git push origin HEAD"
+echo "=== All fixes applied. Ready to commit. ==="
+echo "Run: git add .github/workflows/ && git commit -m \"fix(ci): apply BUG-014 and BUG-017 fixes\" && git push origin HEAD"
