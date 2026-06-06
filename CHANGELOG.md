@@ -45,8 +45,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Spring dismiss animation on toast notification button
 - Smooth cross-fade transition between editor empty and content states ([#1297](https://github.com/cpa03/blueprintify/pull/1297))
 - Confirmation dialog before New Project to prevent accidental data loss
+- Keyboard shortcut hints (Ctrl/Cmd+E) in ConfirmDialog for improved UX ([#1629](https://github.com/cpa03/blueprintify/pull/1629))
+- Smooth slide-out exit animation for editor panel ([#1624](https://github.com/cpa03/blueprintify/pull/1624))
+- Label normalization script for automated open issue triage
 
 ### Changed
+
+- Removed archived quality assessment document from docs
+- RepoKeeper Cycle 61: documentation accuracy & missing references cleanup ([#1628](https://github.com/cpa03/blueprintify/pull/1628))
+- Eliminated hardcoded header strings and HTTP status codes in tests (Flexy) ([#1625](https://github.com/cpa03/blueprintify/pull/1625))
 
 - Eliminated remaining magic numbers, centralized `env.DEV` detection, and added shared config defaults across packages (Flexy v3)
 - Eliminated duplicated `TIME_UNITS`, magic numbers, and deduplicated animation config across API, web, and shared packages (Flexy v3)
@@ -76,6 +83,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Replaced `console.debug` with `console.log` in API to satisfy no-console lint rule
+- Prevented unhandledRejection handler recursive warning loop ([#1626](https://github.com/cpa03/blueprintify/pull/1626))
 - Remove redundant Google Font preload to fix console warning about unused preload
 - Resolve accessibility label mismatch in BroCula components and fix ESM build compatibility
 - Add `.js` extensions to ESM imports in shared package for Node.js compatibility
@@ -111,6 +120,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Performance
 
+- Replaced framer-motion with CSS animations in initial-load components ([#1627](https://github.com/cpa03/blueprintify/pull/1627))
 - Add resource hints (dns-prefetch/preconnect) and optimize image loading with `decoding=async` for faster page loads ([#1429](https://github.com/cpa03/blueprintify/pull/1429))
 - Simplify font loading with `media='print'` onload pattern for improved initial render performance
 - Replace expensive Blob serialization with fast key iteration for localStorage quota checks
@@ -128,6 +138,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Lazy-loaded Wizard, StepIndicator, ShowEditorButton - Lighthouse score 74→98
 - Optimized font loading and critical CSS rendering for Lighthouse performance
 - Fixed CLS by giving lazy-loaded TemplateGrid a min-height fallback ([#1290](https://github.com/cpa03/blueprintify/pull/1290))
+
+### Documentation
+
+- BroCula hunt 2026-06-06: console and lighthouse audit report
+- BugFixer ULW cycle: BUG-014/017 fixes applied documentation ([#1630](https://github.com/cpa03/blueprintify/pull/1630))
 
 ### Tests
 
