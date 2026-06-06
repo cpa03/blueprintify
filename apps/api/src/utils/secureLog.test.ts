@@ -13,20 +13,17 @@ describe("SecureLog Utilities", () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
   let consoleWarnSpy: ReturnType<typeof vi.spyOn>;
   let consoleLogSpy: ReturnType<typeof vi.spyOn>;
-  let consoleDebugSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
     consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    consoleDebugSpy = vi.spyOn(console, "debug").mockImplementation(() => {});
   });
 
   afterEach(() => {
     consoleErrorSpy.mockRestore();
     consoleWarnSpy.mockRestore();
     consoleLogSpy.mockRestore();
-    consoleDebugSpy.mockRestore();
   });
 
   describe("sanitizeString", () => {
@@ -278,11 +275,11 @@ describe("SecureLog Utilities", () => {
   });
 
   describe("secureLogDebug", () => {
-    it("should log debug message to console.debug", () => {
+    it("should log debug message to console.log", () => {
       secureLogDebug("OpenAI", "API response received", { tokens: 150 });
 
-      expect(consoleDebugSpy).toHaveBeenCalledTimes(1);
-      const callArgs = consoleDebugSpy.mock.calls[0];
+      expect(consoleLogSpy).toHaveBeenCalledTimes(1);
+      const callArgs = consoleLogSpy.mock.calls[0];
       expect(callArgs).toBeDefined();
       const loggedContent = callArgs![0] as string;
       const parsed = JSON.parse(loggedContent) as {
@@ -299,8 +296,8 @@ describe("SecureLog Utilities", () => {
     it("should sanitize sensitive data in debug logs", () => {
       secureLogDebug("DB", "Query result from mongodb://localhost");
 
-      expect(consoleDebugSpy).toHaveBeenCalledTimes(1);
-      const callArgs = consoleDebugSpy.mock.calls[0];
+      expect(consoleLogSpy).toHaveBeenCalledTimes(1);
+      const callArgs = consoleLogSpy.mock.calls[0];
       expect(callArgs).toBeDefined();
       const loggedContent = callArgs![0] as string;
       const parsed = JSON.parse(loggedContent) as { message: string };
@@ -311,8 +308,8 @@ describe("SecureLog Utilities", () => {
     it("should handle missing additionalInfo", () => {
       secureLogDebug("Test", "Debug message");
 
-      expect(consoleDebugSpy).toHaveBeenCalledTimes(1);
-      const callArgs = consoleDebugSpy.mock.calls[0];
+      expect(consoleLogSpy).toHaveBeenCalledTimes(1);
+      const callArgs = consoleLogSpy.mock.calls[0];
       expect(callArgs).toBeDefined();
       const loggedContent = callArgs![0] as string;
       const parsed = JSON.parse(loggedContent) as {

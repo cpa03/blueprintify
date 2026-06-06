@@ -283,5 +283,5 @@ export function secureLogDebug(
     timestamp: timestamp(),
     ...additionalInfo,
   };
-  console.debug(JSON.stringify(logEntry));
+  console.log(JSON.stringify(logEntry));
 }
