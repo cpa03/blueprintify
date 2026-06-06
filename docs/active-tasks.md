@@ -2,11 +2,29 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 61 — Documentation Refresh (BroCula Run 4)
+## Current Focus: RepoKeeper Cycle 61 — Documentation Cleanup & Accuracy Fixes
 
-### Task: RepoKeeper Cycle 61 — Documentation Refresh (BroCula Run 4)
+### Task: RepoKeeper Cycle 61 — Documentation Cleanup & Accuracy Fixes
 
 - **Priority**: High
+- **Status**: 🟢 In Progress
+- **Objective**: Full repository audit, fix inaccurate documentation, add missing doc references in README
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ format ✅ build ✅ tests 1130/1130 ✅ audit ✅
+  - [x] Fixed missing `brocula-hunt-2026-06-05-run4.md` in README directory tree and docs section
+  - [x] Fixed `ci-configuration.md` — corrected false claim that workflow fixes are applied (they're still blocked)
+  - [x] Updated `findings.md` — Cycle 61 entry
+  - [x] Updated `active-tasks.md` — Cycle 61 status
+  - [x] Updated `knowledge-review.md` — refreshed for Cycle 61
+  - [ ] Create PR `chore/repokeeper-cycle-61` — documentation cleanup
+
+---
+
+## Previous Cycle: RepoKeeper Cycle 60 — Documentation Refresh & Missing References ✅ COMPLETE
+
 - **Status**: ✅ Complete — PR created
 - **Objective**: Full repository audit, fix missing doc references in README, refresh documentation
 - **Actions**:

@@ -2,11 +2,11 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Cycle 61 (2026-06-06 — RepoKeeper: BroCula Run 4 Missing Reference)
+## Cycle 61 (2026-06-06 — RepoKeeper: Documentation Accuracy & Missing References)
 
 ### Audit Scope
 
-Full repository audit covering redundant files, stale documentation, missing doc references in README, and comprehensive quality checks.
+Full repository audit covering redundant files, stale documentation, documentation accuracy fixes, missing doc references in README, and comprehensive quality checks.
 
 ### Status Summary
 
@@ -29,29 +29,33 @@ Full repository audit covering redundant files, stale documentation, missing doc
 3. **No stale artifacts**: Zero TODO/FIXME/HACK in non-test source code.
 4. **All `console.*` calls verified**: All intentional (logging utilities, error handlers, generated templates).
 5. **Full quality verification**: typecheck ✅ lint ✅ format ✅ build (web) ✅ test:all (1,130 passing) ✅ npm audit ✅.
-6. **Fixed missing README reference**: `docs/audits/brocula-hunt-2026-06-05-run4.md` (Ninth BroCula hunt) was not listed in the documentation section — added after Run 3 entry.
+6. **Fixed missing doc reference in README** — `docs/audits/brocula-hunt-2026-06-05-run4.md` (BroCula Run 4) was not listed in the README directory tree or docs section. Added to both.
+7. **Fixed inaccurate documentation in `ci-configuration.md`** — falsely claimed all workflow files use `node-version-file: ".node-version"`. Corrected to accurately reflect `main` state (all still use `node-version: "20"`) and documented the blocker.
+8. **Documentation refresh**: Updated `findings.md`, `active-tasks.md`, `knowledge-review.md` for Cycle 61.
 
 ### Findings
 
 1. **No redundant/temp/unused source files found** — repo remains clean from dead code, backup files, temp artifacts, or empty directories.
 2. **No `@ts-ignore`, `@ts-expect-error`, or `as any`** type suppressions found in source code.
 3. **No TODO/FIXME/HACK artifacts** in non-test source files.
-4. **1 new doc file missing from README** — `brocula-hunt-2026-06-05-run4.md` was created but never added to README documentation section. Fixed in this cycle.
-5. **166+ stale remote branches** — unchanged from previous cycles; deletion requires explicit maintainer review.
-6. **CI workflow fixes still blocked** — stale doc refs + node-version fixes blocked by `workflows: write` permission. Same issue as 20+ previous cycles.
+4. **`ci-configuration.md` had a dangerous inaccuracy**: It claimed workflow fixes (`node-version-file: ".node-version"`) were applied, but on `main` all workflow files still use `node-version: "20"`. This could mislead contributors. Fixed in this cycle.
+5. **`brocula-hunt-2026-06-05-run4.md` missing from README** — the ninth BroCula hunt file existed on disk but was not referenced in the README documentation tree or links section. Fixed.
+6. **CI workflow fixes still blocked** — same `workflows: write` permission issue as 20+ previous cycles.
 7. **Repo healthy**: All quality checks passing, 0 npm vulnerabilities, documentation refreshed.
 
 ### CI Workflow Issue (Still Blocked — unchanged from previous cycles)
 
-All workflow fix changes remain on various `chore/repokeeper-*` branches but cannot be pushed due to GitHub App token permissions (`workflows: write` required). Same stale doc refs and node-version issues documented in Cycles 37–60.
+All workflow fix changes remain on branches (`chore/repokeeper-cycle-59`, `fix/bugfixer-cycle-48-stale-refs`) but cannot be pushed due to GitHub App token permissions (`workflows: write` required). Same stale doc refs and node-version issues documented in Cycles 37–60.
 
 ### Actions Taken
 
 1. Full repository audit — no dead/redundant/temp files found
 2. Verified all quality checks pass (typecheck ✅ lint ✅ format ✅ build ✅ tests 1,130/1,130 ✅ audit ✅)
-3. Fixed missing README reference — added `brocula-hunt-2026-06-05-run4.md` (Ninth BroCula hunt)
-4. Updated `docs/findings.md` — Cycle 61 entry (this file)
-5. Updated `docs/active-tasks.md` — Cycle 61 status
+3. Fixed missing `brocula-hunt-2026-06-05-run4.md` reference in README directory tree and docs section
+4. Fixed `docs/ci-configuration.md` — corrected inaccurate claim that workflow fixes are on `main`
+5. Updated `docs/findings.md` — Cycle 61 entry (this file)
+6. Updated `docs/active-tasks.md` — Cycle 61 status
+7. Updated `docs/knowledge-review.md` — refreshed for Cycle 61
 
 **Last Updated**: 2026-06-06 (Cycle 61: RepoKeeper)
 
