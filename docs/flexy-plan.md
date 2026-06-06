@@ -4,6 +4,19 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 22: Eliminate Remaining Hardcoded MIME Types in Test Files
+
+| File                                | Change                                                                     |
+| ----------------------------------- | -------------------------------------------------------------------------- |
+| `apps/web/src/lib/security.test.ts` | Added `HTTP_HEADERS` import from `@blueprint/shared`                       |
+| `apps/web/src/lib/security.test.ts` | Replaced 2 hardcoded `"text/plain"` with `HTTP_HEADERS.CONTENT_TYPE_PLAIN` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — 1,138 tests passing (593 web + 342 api + 203 shared) across 69 files
+
 ## Completed
 
 ### ✅ Shared Defaults (Pushed in PR #1401)

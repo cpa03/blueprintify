@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
+import { HTTP_HEADERS } from "@blueprint/shared";
 import {
   sanitizeHtml,
   sanitizeMarkdown,
@@ -103,7 +104,11 @@ describe("Security Utilities", () => {
   });
 
   describe("validateFile", () => {
-    const createMockFile = (name: string, size: number, type: string = "text/plain"): File => {
+    const createMockFile = (
+      name: string,
+      size: number,
+      type: string = HTTP_HEADERS.CONTENT_TYPE_PLAIN
+    ): File => {
       const mockFile = new File(["content"], name, { type });
       Object.defineProperty(mockFile, "size", { value: size });
       return mockFile;
@@ -134,7 +139,7 @@ describe("Security Utilities", () => {
     it("should validate and sanitize safe file content", async () => {
       const mockContent = "# Safe content";
       const mockFile = new File([mockContent], "test.md", {
-        type: "text/plain",
+        type: HTTP_HEADERS.CONTENT_TYPE_PLAIN,
       });
       Object.defineProperty(mockFile, "size", { value: mockContent.length });
       // jsdom File doesn't implement text() method, so we mock it
