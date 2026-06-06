@@ -24,17 +24,6 @@
   /* ===== Base Styles ===== */
   body {
     @apply bg-dark-950 text-dark-100 font-sans antialiased;
-    background-image:
-      radial-gradient(
-        ellipse at top left,
-        color-mix(in srgb, var(--color-primary-500) 8%, transparent) 0%,
-        transparent 50%
-      ),
-      radial-gradient(
-        ellipse at bottom right,
-        color-mix(in srgb, var(--color-accent-purple) 6%, transparent) 0%,
-        transparent 50%
-      );
     min-height: 100vh;
   }
 
@@ -574,6 +563,49 @@
 
   .card-glow-hover:hover::before {
     opacity: 1;
+  }
+}
+
+/* Ambient background glow — a slow, drifting gradient overlay that creates a
+   subtle "living atmosphere" behind the content. The glow gently shifts position
+   and opacity over a 15-second cycle, adding premium depth to the dark theme
+   without being distracting. Uses transform + opacity for GPU compositing.
+   Disabled when prefers-reduced-motion is active. */
+@keyframes ambient-glow {
+  0% {
+    opacity: 0.5;
+    transform: scale(1) translate(0%, 0%);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.08) translate(-2%, -1%);
+  }
+  100% {
+    opacity: 0.6;
+    transform: scale(1.04) translate(1%, 1%);
+  }
+}
+
+.ambient-glow {
+  background-image:
+    radial-gradient(
+      ellipse 70% 55% at 20% 25%,
+      color-mix(in srgb, var(--color-primary-500) 18%, transparent) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 55% 70% at 80% 75%,
+      color-mix(in srgb, var(--color-accent-purple) 12%, transparent) 0%,
+      transparent 60%
+    );
+  animation: ambient-glow 15s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-glow {
+    animation: none;
+    opacity: 0.5;
   }
 }
 
