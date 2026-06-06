@@ -5,6 +5,7 @@ import { ErrorType } from "../errors";
 import { ERROR_CODES, API_HEADERS, HTTP_STATUS } from "../config/constants";
 import type { ErrorResponse } from "../errors";
 import { initializeConfig, resetConfig } from "../config/env";
+import { ENVIRONMENT_NAMES } from "@blueprint/shared";
 
 function createMockRateLimit(shouldSucceed: boolean[] = []) {
   let callCount = 0;
@@ -199,7 +200,7 @@ describe("rateLimit middleware", () => {
     it("should reject requests with 503 when rate limiter is not configured", async () => {
       // Save original NODE_ENV and set to production to test security behavior
       const originalNodeEnv = process.env.NODE_ENV;
-      process.env.NODE_ENV = "production";
+      process.env.NODE_ENV = ENVIRONMENT_NAMES.PRODUCTION;
 
       try {
         const app = new Hono<{

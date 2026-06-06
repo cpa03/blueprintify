@@ -1,5 +1,6 @@
 import type JSZip from "jszip";
 import type { TechStackItemType } from "@blueprint/shared";
+import { TEMPLATE_NODE_PORT } from "@blueprint/shared";
 import { PackageJson, generateProjectReadme } from "./shared";
 
 export async function generateNodeProject(
@@ -115,7 +116,7 @@ export function generateExpressIndex(projectName: string, features: string[]): s
   return `import express from 'express'
 
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || ${TEMPLATE_NODE_PORT}
 
 app.use(express.json())
 
@@ -140,7 +141,7 @@ export default app`;
 export function generateBasicNodeIndex(projectName: string, features: string[]): string {
   return `const http = require('http')
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || ${TEMPLATE_NODE_PORT}
 
 const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'application/json' })

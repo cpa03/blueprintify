@@ -1,5 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
-import { DEV_DEFAULTS, PLAYWRIGHT_DEFAULTS } from "@blueprint/shared";
+import { DEV_DEFAULTS, PLAYWRIGHT_DEFAULTS, PLAYWRIGHT_CONFIG } from "@blueprint/shared";
 
 const TEST_SERVER_URL = process.env.PLAYWRIGHT_TEST_URL || DEV_DEFAULTS.PLAYWRIGHT_TEST_URL;
 
@@ -10,8 +10,8 @@ export default defineConfig({
 
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  retries: process.env.CI ? PLAYWRIGHT_CONFIG.CI_RETRIES : 0,
+  workers: process.env.CI ? PLAYWRIGHT_CONFIG.CI_WORKERS : undefined,
 
   reporter: [["html", { outputFolder: "./e2e/report" }], ["list"]],
 
@@ -21,7 +21,7 @@ export default defineConfig({
     screenshot: "only-on-failure",
     video: "on-first-retry",
 
-    viewport: { width: 1280, height: 720 },
+    viewport: PLAYWRIGHT_CONFIG.VIEWPORT,
 
     ignoreHTTPSErrors: true,
   },

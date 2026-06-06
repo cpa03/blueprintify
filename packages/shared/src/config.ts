@@ -514,6 +514,49 @@ export const CSP_CONNECT_DOMAINS = {
   STAGING_WEB: "https://staging.blueprintify.dev",
 } as const;
 
+/**
+ * Playwright Test Configuration Defaults
+ * Viewport, retries, and worker settings for e2e tests.
+ * Flexy says: No hardcoded viewport dimensions or CI magic numbers!
+ */
+export const PLAYWRIGHT_CONFIG = {
+  /** Default viewport for headless browser tests */
+  VIEWPORT: { width: 1280, height: 720 } as const,
+  /** Default retries on CI (2) vs local (0) */
+  CI_RETRIES: 2,
+  /** Default workers on CI (1 for stability) */
+  CI_WORKERS: 1,
+} as const;
+
+/**
+ * Node.js Template Port Defaults
+ * Default port used in generated Node.js template code.
+ * Flexy says: No hardcoded 3000 in template generators!
+ */
+export const TEMPLATE_NODE_PORT = 3000;
+
+/**
+ * Environment Names
+ * Centralized string constants for environment names.
+ * Flexy says: No hardcoded "production" strings in tests!
+ */
+export const ENVIRONMENT_NAMES = {
+  PRODUCTION: "production",
+  DEVELOPMENT: "development",
+  STAGING: "staging",
+  TEST: "test",
+} as const;
+
+/**
+ * Browser Quota Error Codes
+ * Centralized quota error codes for localStorage quota management.
+ * Flexy says: No hardcoded Chrome 22 / Firefox 1014 magic numbers!
+ */
+export const BROWSER_QUOTA_ERROR_CODES = {
+  CHROME: 22,
+  FIREFOX: 1014,
+} as const;
+
 export const HTTP_HEADER_NAMES = {
   /** Content-Type header - most commonly hardcoded as object key */
   CONTENT_TYPE: "Content-Type",
