@@ -32,6 +32,20 @@
   - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
   - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
   - [x] All quality checks verified: typecheck ✅ lint ✅ format ✅ build ✅ tests 1130/1130 ✅ audit ✅
+  - [x] Fixed missing `brocula-hunt-2026-06-05-run4.md` reference in README (was missing after Run 3)
+  - [x] Updated `findings.md` — Cycle 61 entry
+  - [x] Updated `active-tasks.md` — Cycle 61 status
+
+---
+
+## Previous Cycle: RepoKeeper Cycle 60 — Documentation Refresh & Missing References ✅ COMPLETE
+
+- **Status**: ✅ Complete — PR created
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ format ✅ build ✅ tests 1130/1130 ✅ audit ✅
   - [x] Fixed missing doc references in README — added 4 new files to documentation section
   - [x] Updated `findings.md` — Cycle 60 entry
   - [x] Updated `active-tasks.md` — Cycle 60 status

@@ -317,3 +317,19 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run test:all` — 1,130 tests passing (585 web + 342 api + 203 shared) across 68 files
+
+### ✅ Flexy Iteration 20: Eliminate Hardcoded Header Strings & HTTP Status Codes in Tests
+
+| File                                        | Change                                                                                        |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `apps/api/src/utils/stream.test.ts`         | Replaced `"Cache-Control"`/`"Connection"` with `HTTP_HEADER_NAMES.CACHE_CONTROL`/`CONNECTION` |
+| `apps/api/src/middleware/rateLimit.test.ts` | Added `HTTP_STATUS` import from shared config                                                 |
+| `apps/api/src/middleware/rateLimit.test.ts` | Replaced 10x `toBe(200)` with `toBe(HTTP_STATUS.OK)`                                          |
+| `apps/api/src/middleware/rateLimit.test.ts` | Replaced 4x `toBe(429)` with `toBe(HTTP_STATUS.TOO_MANY_REQUESTS)`                            |
+| `apps/api/src/middleware/rateLimit.test.ts` | Replaced `toBe(503)` with `toBe(HTTP_STATUS.SERVICE_UNAVAILABLE)`                             |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — 1,130 tests passing (585 web + 342 api + 203 shared) across 68 files

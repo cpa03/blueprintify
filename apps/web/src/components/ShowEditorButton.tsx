@@ -3,17 +3,22 @@
  * Lazy-loaded to keep it out of the main bundle since it's conditionally rendered.
  *
  * Features:
- * - Spring pop-in entrance with subtle bounce for delightful reveal
- * - Hover scale for tactile feedback
- * - Tap press for responsive feel
+ * - CSS slide-up entrance with fade-in for delightful reveal
+ * - Hover scale for tactile feedback (CSS transition)
+ * - Tap press for responsive feel (CSS transition)
  * - Keyboard shortcut tooltip (Ctrl/Cmd+E)
+ *
+ * Performance: Uses CSS animations instead of framer-motion to avoid
+ * pulling the animation chunk into the critical path. This component
+ * is shown on initial page render (when editor is hidden), so keeping
+ * framer-motion out of its import tree prevents the 45 KiB animation
+ * chunk from loading before user interaction.
  */
 import { useMemo, memo } from "react";
-import { motion } from "framer-motion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
 import { BUTTON, ICON } from "../config/styles";
-import { UI_CONTENT, SPRING_CONFIG } from "../config/constants";
+import { UI_CONTENT } from "../config/constants";
 
 interface ShowEditorButtonProps {
   onClick: () => void;
@@ -28,16 +33,7 @@ function ShowEditorButtonComponent({ onClick }: ShowEditorButtonProps): JSX.Elem
 
   return (
     <KeyboardShortcutTooltip shortcut="e" description="Toggle editor" position="left">
-      <motion.div
-        initial={{ opacity: 0, y: 20, scale: 0.85 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{
-          type: "spring",
-          ...SPRING_CONFIG.SUBTLE_BOUNCE,
-        }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
+      <div className="animate-slide-up will-change-transform motion-safe:transition-transform motion-safe:duration-150 motion-safe:hover:scale-105 motion-safe:active:scale-95">
         <RippleButton
           onClick={onClick}
           className={BUTTON.SHOW_EDITOR_FAB}
@@ -67,7 +63,7 @@ function ShowEditorButtonComponent({ onClick }: ShowEditorButtonProps): JSX.Elem
             </kbd>
           </span>
         </RippleButton>
-      </motion.div>
+      </div>
     </KeyboardShortcutTooltip>
   );
 }

@@ -14,7 +14,7 @@ const KeyboardShortcutsModal = lazy(() => import("./components/KeyboardShortcuts
 import { SkipLink } from "./components/SkipLink";
 import { OfflineBanner } from "./components/OfflineBanner";
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
-import { useWizardStore, useEditorStore, useToast } from "./store";
+import { useWizardStore, useEditorStore, useToast, useToastStore } from "./store";
 import { useOnlineStatus } from "./hooks";
 import { UI_CONTENT, NETWORK_MESSAGES } from "./config/constants";
 import { LAYOUT, BUTTON, ICON, SPINNER } from "./config/styles";
@@ -68,6 +68,7 @@ function App(): JSX.Element {
   const cancelGeneration = useEditorStore((s) => s.cancelGeneration);
 
   const [showEditor, setShowEditor] = useState(hasContent || isGenerating);
+  const [editorExiting, setEditorExiting] = useState(false);
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
   const previousHasContentRef = useRef(hasContent);
@@ -76,6 +77,7 @@ function App(): JSX.Element {
   const { isOnline } = useOnlineStatus();
   const toast = useToast();
   const prevOnlineRef = useRef(isOnline);
+  const toastCount = useToastStore((s) => s.toasts.length);
 
   useEffect(() => {
     if (prevOnlineRef.current !== isOnline) {
@@ -92,7 +94,13 @@ function App(): JSX.Element {
   const showTemplates = currentStep === "info" && !hasContent;
 
   // Memoized handlers for stable references to child components
-  const handleHideEditor = useCallback(() => setShowEditor(false), []);
+  const handleHideEditor = useCallback(() => {
+    setEditorExiting(true);
+  }, []);
+  const handleHideEditorComplete = useCallback(() => {
+    setShowEditor(false);
+    setEditorExiting(false);
+  }, []);
   const handleShowEditor = useCallback(() => setShowEditor(true), []);
   const handleShowShortcuts = useCallback(() => setShowShortcutsModal(true), []);
   const handleHideShortcuts = useCallback(() => setShowShortcutsModal(false), []);
@@ -115,7 +123,11 @@ function App(): JSX.Element {
 
       if ((e.metaKey || e.ctrlKey) && e.key === "e") {
         e.preventDefault();
-        setShowEditor((prev) => !prev);
+        if (showEditor || editorExiting) {
+          setEditorExiting(true);
+        } else {
+          setShowEditor(true);
+        }
       }
 
       if (e.key === "Escape" && isGenerating) {
@@ -123,7 +135,7 @@ function App(): JSX.Element {
         cancelGeneration();
       }
     },
-    [isGenerating, cancelGeneration, showShortcutsModal]
+    [isGenerating, cancelGeneration, showShortcutsModal, showEditor, editorExiting]
   );
 
   useEffect(() => {
@@ -220,8 +232,13 @@ function App(): JSX.Element {
             </div>
 
             {/* Editor Panel */}
-            {showEditor && (
-              <div className={`${LAYOUT.HALF_WIDTH} ${LAYOUT.GLASS_CARD} animate-slide-in-right`}>
+            {(showEditor || editorExiting) && (
+              <div
+                className={`${LAYOUT.HALF_WIDTH} ${LAYOUT.GLASS_CARD} ${
+                  editorExiting ? "animate-slide-out-right" : "animate-slide-in-right"
+                }`}
+                onAnimationEnd={editorExiting ? handleHideEditorComplete : undefined}
+              >
                 <KeyboardShortcutTooltip shortcut="e" description="Toggle editor" position="left">
                   <button
                     onClick={handleHideEditor}
@@ -310,9 +327,14 @@ function App(): JSX.Element {
         </div>
       </footer>
 
-      <Suspense fallback={null}>
-        <ToastContainer />
-      </Suspense>
+      {/* ToastContainer is conditionally rendered to defer the framer-motion
+          animation chunk until a toast actually appears. On initial page load
+          there are no toasts, so this saves ~46 KB gzip from being loaded. */}
+      {toastCount > 0 && (
+        <Suspense fallback={null}>
+          <ToastContainer />
+        </Suspense>
+      )}
 
       <Suspense fallback={null}>
         <KeyboardShortcutsModal isOpen={showShortcutsModal} onClose={handleHideShortcuts} />
