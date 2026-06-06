@@ -222,7 +222,7 @@ export const StepStack = memo(function StepStack({
               <motion.div
                 className={`h-full transition-colors duration-300 ${
                   canProceed
-                    ? "bg-gradient-to-r from-accent-emerald to-primary-500"
+                    ? "bg-gradient-to-r from-accent-emerald to-primary-500 progress-shimmer relative"
                     : "bg-gradient-to-r from-primary-500 to-accent-purple"
                 }`}
                 initial={{ width: 0 }}
