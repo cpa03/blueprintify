@@ -121,7 +121,7 @@ describe("createSSEResponse", () => {
       },
     });
     const response = createSSEResponse(stream);
-    expect(response.headers.get("Cache-Control")).toBe(SSE_HEADERS.CACHE_CONTROL);
+    expect(response.headers.get(HTTP_HEADER_NAMES.CACHE_CONTROL)).toBe(SSE_HEADERS.CACHE_CONTROL);
   });
 
   it("should set connection to keep-alive", () => {
@@ -131,7 +131,7 @@ describe("createSSEResponse", () => {
       },
     });
     const response = createSSEResponse(stream);
-    expect(response.headers.get("Connection")).toBe(SSE_HEADERS.CONNECTION);
+    expect(response.headers.get(HTTP_HEADER_NAMES.CONNECTION)).toBe(SSE_HEADERS.CONNECTION);
   });
 
   it("should set X-Accel-Buffering to no", () => {
