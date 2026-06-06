@@ -68,6 +68,7 @@ function App(): JSX.Element {
   const cancelGeneration = useEditorStore((s) => s.cancelGeneration);
 
   const [showEditor, setShowEditor] = useState(hasContent || isGenerating);
+  const [editorExiting, setEditorExiting] = useState(false);
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
   const previousHasContentRef = useRef(hasContent);
@@ -92,7 +93,13 @@ function App(): JSX.Element {
   const showTemplates = currentStep === "info" && !hasContent;
 
   // Memoized handlers for stable references to child components
-  const handleHideEditor = useCallback(() => setShowEditor(false), []);
+  const handleHideEditor = useCallback(() => {
+    setEditorExiting(true);
+  }, []);
+  const handleHideEditorComplete = useCallback(() => {
+    setShowEditor(false);
+    setEditorExiting(false);
+  }, []);
   const handleShowEditor = useCallback(() => setShowEditor(true), []);
   const handleShowShortcuts = useCallback(() => setShowShortcutsModal(true), []);
   const handleHideShortcuts = useCallback(() => setShowShortcutsModal(false), []);
@@ -115,7 +122,11 @@ function App(): JSX.Element {
 
       if ((e.metaKey || e.ctrlKey) && e.key === "e") {
         e.preventDefault();
-        setShowEditor((prev) => !prev);
+        if (showEditor || editorExiting) {
+          setEditorExiting(true);
+        } else {
+          setShowEditor(true);
+        }
       }
 
       if (e.key === "Escape" && isGenerating) {
@@ -123,7 +134,7 @@ function App(): JSX.Element {
         cancelGeneration();
       }
     },
-    [isGenerating, cancelGeneration, showShortcutsModal]
+    [isGenerating, cancelGeneration, showShortcutsModal, showEditor, editorExiting]
   );
 
   useEffect(() => {
@@ -220,8 +231,13 @@ function App(): JSX.Element {
             </div>
 
             {/* Editor Panel */}
-            {showEditor && (
-              <div className={`${LAYOUT.HALF_WIDTH} ${LAYOUT.GLASS_CARD} animate-slide-in-right`}>
+            {(showEditor || editorExiting) && (
+              <div
+                className={`${LAYOUT.HALF_WIDTH} ${LAYOUT.GLASS_CARD} ${
+                  editorExiting ? "animate-slide-out-right" : "animate-slide-in-right"
+                }`}
+                onAnimationEnd={editorExiting ? handleHideEditorComplete : undefined}
+              >
                 <KeyboardShortcutTooltip shortcut="e" description="Toggle editor" position="left">
                   <button
                     onClick={handleHideEditor}
