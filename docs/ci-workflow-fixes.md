@@ -1,6 +1,6 @@
 # CI Workflow Fix Instructions
 
-> **Last updated**: 2026-06-05
+> **Last updated**: 2026-06-07
 > **Status**: ⚠️ **FIXES VERIFIED LOCALLY — PUSH BLOCKED by GITHUB_TOKEN permissions (no `workflows: write`)**
 
 ## Overview
@@ -135,12 +135,13 @@ npm run check
 
 ## Application Attempt Log
 
-| Cycle | Date       | Result                                                                      |
-| ----- | ---------- | --------------------------------------------------------------------------- |
-| 57    | 2026-06-05 | Fixes prepared, push rejected (no `workflows: write`)                       |
-| 58    | 2026-06-05 | Documentation refresh pushed, workflow changes blocked                      |
-| ULW   | 2026-06-05 | Fixes re-verified locally, push rejected again                              |
-| ULW-2 | 2026-06-05 | BugFixer re-applied BUG-014 and BUG-017 fixes, push rejected (same blocker) |
+| Cycle | Date       | Result                                                                                         |
+| ----- | ---------- | ---------------------------------------------------------------------------------------------- |
+| 57    | 2026-06-05 | Fixes prepared, push rejected (no `workflows: write`)                                          |
+| 58    | 2026-06-05 | Documentation refresh pushed, workflow changes blocked                                         |
+| ULW   | 2026-06-05 | Fixes re-verified locally, push rejected again                                                 |
+| ULW-2 | 2026-06-05 | BugFixer re-applied BUG-014 and BUG-017 fixes, push rejected (same blocker)                    |
+| ULW-3 | 2026-06-07 | Sisyphus re-applied using node-version-file approach (auto-sync), push rejected (same blocker) |
 
 ## How to Apply (for maintainer with PAT)
 
@@ -152,11 +153,11 @@ export GITHUB_TOKEN=ghp_your_pat_here
 chmod +x scripts/fix-ci-workflows.sh
 ./scripts/fix-ci-workflows.sh
 
-# Option B: Manual fix
-sed -i 's/node-version: "20"/node-version: "22"/g' .github/workflows/iterate.yml
-sed -i 's/node-version: "20"/node-version: "22"/g' .github/workflows/pr-gatekeeper.yml
-sed -i 's/node-version: 20/node-version: "22"/g' .github/workflows/on-pull.yml
-sed -i 's/node-version: "20"/node-version: "22"/g' .github/workflows/parallel.yml
+# Option B: Manual fix (preferred: use node-version-file for auto-sync)
+sed -i 's/node-version: "20"/node-version-file: ".node-version"/g' .github/workflows/iterate.yml
+sed -i 's/node-version: "20"/node-version-file: ".node-version"/g' .github/workflows/pr-gatekeeper.yml
+sed -i 's/node-version: 20/node-version-file: ".node-version"/g' .github/workflows/on-pull.yml
+sed -i 's/node-version: "20"/node-version-file: ".node-version"/g' .github/workflows/parallel.yml
 sed -i 's|docs/bug.md, docs/feature.md|docs/bugs.md, docs/features.md|g' .github/workflows/main.yml
 sed -i 's|Catat bug baru ke docs/bug.md|Catat bug baru ke docs/bugs.md|g' .github/workflows/main.yml
 
@@ -165,7 +166,7 @@ git add .github/workflows/
 git commit -m "fix(ci): bump node-version to 22, fix stale doc refs in main.yml"
 git push origin HEAD
 gh pr create --title "fix(ci): bump node-version to 22, fix stale doc refs" \
-  --body "Fixes #1584 (canonical). Closes duplicates: #1575, #1573, #1549, #1470, #1390, #1293" \
+  --body "Fixes #1621 (canonical). Closes duplicates: #1584, #1575, #1573, #1549, #1470, #1390, #1293" \
   --label "bug,P1,ci" --base main
 ```
 

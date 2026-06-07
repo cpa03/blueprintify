@@ -38,22 +38,23 @@ echo "  ✓ main.yml updated"
 # ===================================================================
 # FIX 2: All workflows - Node.js 20 → 22 (#1470)
 # ===================================================================
-echo "[2/3] Updating Node.js version from 20 to 22 (Issue #1470)..."
+echo "[2/3] Updating Node.js version from 20 to node-version-file (Issue #1470)..."
+echo "  Using node-version-file: .node-version (auto-syncs with project requirement)"
 
 # iterate.yml - 5 occurrences
-sed -i 's/node-version: "20"/node-version: "22"/g' .github/workflows/iterate.yml
+sed -i 's/node-version: "20"/node-version-file: ".node-version"/g' .github/workflows/iterate.yml
 echo "  ✓ iterate.yml (5 occurrences)"
 
 # pr-gatekeeper.yml - 1 occurrence
-sed -i 's/node-version: "20"/node-version: "22"/g' .github/workflows/pr-gatekeeper.yml
+sed -i 's/node-version: "20"/node-version-file: ".node-version"/g' .github/workflows/pr-gatekeeper.yml
 echo "  ✓ pr-gatekeeper.yml (1 occurrence)"
 
 # on-pull.yml - 1 occurrence (note: no quotes)
-sed -i 's/node-version: 20/node-version: 22/g' .github/workflows/on-pull.yml
+sed -i 's/node-version: 20/node-version-file: ".node-version"/g' .github/workflows/on-pull.yml
 echo "  ✓ on-pull.yml (1 occurrence)"
 
 # parallel.yml - 4 occurrences
-sed -i 's/node-version: "20"/node-version: "22"/g' .github/workflows/parallel.yml
+sed -i 's/node-version: "20"/node-version-file: ".node-version"/g' .github/workflows/parallel.yml
 echo "  ✓ parallel.yml (4 occurrences)"
 
 # ===================================================================
