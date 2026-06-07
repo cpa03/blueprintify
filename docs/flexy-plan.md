@@ -441,3 +441,36 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run test:all` — 1,156 tests passing (593 web + 342 api + 221 shared) across 69 files
+
+### ✅ Flexy Iteration 26: Eliminate Remaining Hardcoded Strings & Document CI Node-Version
+
+| File                               | Change                                                                  |
+| ---------------------------------- | ----------------------------------------------------------------------- |
+| `apps/api/src/config/constants.ts` | `ANONYMOUS_CLIENT_KEY: "anonymous"` → `AUTH_DEFAULTS.ANONYMOUS_USER_ID` |
+
+**Summary**: Replaced remaining hardcoded `"anonymous"` string with shared `AUTH_DEFAULTS.ANONYMOUS_USER_ID`. CI node-version fix identified but blocked.
+
+### ⏳ CI Node Version — Identified but Blocked (persists)
+
+11 occurrences of hardcoded `node-version: "20"` across 4 CI workflow files:
+
+- `.github/workflows/iterate.yml` (5x)
+- `.github/workflows/parallel.yml` (4x)
+- `.github/workflows/on-pull.yml` (1x)
+- `.github/workflows/pr-gatekeeper.yml` (1x)
+
+**Fix**: Replace all with `node-version-file: ".node-version"`.
+**Status**: ❌ PUSH REJECTED — GitHub App token lacks `workflows` permission. Apply via PAT with `workflows` scope.
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,159 tests passing (596 web + 342 api + 221 shared) across 69 files
+
+## PR
+
+| PR # | Branch                                      | Title                                                                  |
+| ---- | ------------------------------------------- | ---------------------------------------------------------------------- |
+| TBD  | `feat/flexy-iteration-26-hardcoded-cleanup` | feat(flexy): eliminate remaining hardcoded strings in config constants |

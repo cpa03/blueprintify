@@ -28,6 +28,7 @@ import {
   SECURITY_VALUES,
   UI_STRINGS,
   PROMPT_DELIMITERS,
+  AUTH_DEFAULTS,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./config-types";
 import {
@@ -591,7 +592,7 @@ export const LOGGER_CONFIG = {
 } as const;
 
 export const RATE_LIMIT_CONSTANTS = {
-  ANONYMOUS_CLIENT_KEY: "anonymous",
+  ANONYMOUS_CLIENT_KEY: AUTH_DEFAULTS.ANONYMOUS_USER_ID,
   LIMITER_BINDINGS: {
     STRICT: "STRICT_RATE_LIMITER",
     STANDARD: "STANDARD_RATE_LIMITER",
