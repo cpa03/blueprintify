@@ -30,6 +30,7 @@ import {
   HTTP_HEADER_NAMES,
   SECURITY_VALUES,
   UI_STRINGS,
+  ENV_VAR_KEYS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -778,6 +779,71 @@ describe("UI_STRINGS", () => {
     values.forEach((v) => {
       expect(typeof v).toBe("string");
       expect(v.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("ENV_VAR_KEYS", () => {
+  describe("API keys", () => {
+    it("should have all expected API env var keys", () => {
+      const keys = ENV_VAR_KEYS.API;
+      expect(keys.OPENAI_API_KEY).toBe("OPENAI_API_KEY");
+      expect(keys.OPENAI_BASE_URL).toBe("OPENAI_BASE_URL");
+      expect(keys.OPENAI_MODEL).toBe("OPENAI_MODEL");
+      expect(keys.OPENAI_TIMEOUT_MS).toBe("OPENAI_TIMEOUT_MS");
+      expect(keys.OPENAI_MAX_TOKENS).toBe("OPENAI_MAX_TOKENS");
+      expect(keys.OPENAI_TEMPERATURE).toBe("OPENAI_TEMPERATURE");
+      expect(keys.API_VERSION).toBe("API_VERSION");
+      expect(keys.CORS_ORIGIN).toBe("CORS_ORIGIN");
+      expect(keys.CORS_MAX_AGE).toBe("CORS_MAX_AGE");
+      expect(keys.RATE_LIMIT_WINDOW_MS).toBe("RATE_LIMIT_WINDOW_MS");
+      expect(keys.RATE_LIMIT_STRICT_MAX).toBe("RATE_LIMIT_STRICT_MAX");
+      expect(keys.RATE_LIMIT_STANDARD_MAX).toBe("RATE_LIMIT_STANDARD_MAX");
+      expect(keys.RATE_LIMIT_LENIENT_MAX).toBe("RATE_LIMIT_LENIENT_MAX");
+      expect(keys.STORAGE_QUOTA_MB).toBe("STORAGE_QUOTA_MB");
+      expect(keys.CIRCUIT_BREAKER_FAILURE_THRESHOLD).toBe("CIRCUIT_BREAKER_FAILURE_THRESHOLD");
+      expect(keys.CIRCUIT_BREAKER_RESET_TIMEOUT_MS).toBe("CIRCUIT_BREAKER_RESET_TIMEOUT_MS");
+      expect(keys.CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS).toBe("CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS");
+      expect(keys.CIRCUIT_BREAKER_COLD_START_WINDOW_MS).toBe(
+        "CIRCUIT_BREAKER_COLD_START_WINDOW_MS"
+      );
+      expect(keys.RETRY_MAX_RETRIES).toBe("RETRY_MAX_RETRIES");
+      expect(keys.RETRY_INITIAL_DELAY_MS).toBe("RETRY_INITIAL_DELAY_MS");
+      expect(keys.RETRY_BACKOFF_FACTOR).toBe("RETRY_BACKOFF_FACTOR");
+      expect(keys.RETRY_MAX_DELAY_MS).toBe("RETRY_MAX_DELAY_MS");
+      expect(keys.PROJECT_HOMEPAGE_URL).toBe("PROJECT_HOMEPAGE_URL");
+      expect(keys.GITHUB_URL).toBe("GITHUB_URL");
+    });
+
+    it("should have all string values", () => {
+      const values = Object.values(ENV_VAR_KEYS.API);
+      expect(values.length).toBeGreaterThan(0);
+      values.forEach((v) => {
+        expect(typeof v).toBe("string");
+        expect(v.length).toBeGreaterThan(0);
+      });
+    });
+  });
+
+  describe("WEB keys", () => {
+    it("should have all expected WEB env var keys", () => {
+      const keys = ENV_VAR_KEYS.WEB;
+      expect(keys.VITE_API_BASE_URL).toBe("VITE_API_BASE_URL");
+      expect(keys.VITE_ENABLE_ANALYTICS).toBe("VITE_ENABLE_ANALYTICS");
+      expect(keys.VITE_PROJECT_HOMEPAGE_URL).toBe("VITE_PROJECT_HOMEPAGE_URL");
+      expect(keys.VITE_GITHUB_URL).toBe("VITE_GITHUB_URL");
+      expect(keys.VITE_STORAGE_QUOTA_MB).toBe("VITE_STORAGE_QUOTA_MB");
+      expect(keys.VITE_APP_NAME).toBe("VITE_APP_NAME");
+      expect(keys.VITE_DEFAULT_PROJECT_NAME).toBe("VITE_DEFAULT_PROJECT_NAME");
+    });
+
+    it("should have all string values", () => {
+      const values = Object.values(ENV_VAR_KEYS.WEB);
+      expect(values.length).toBeGreaterThan(0);
+      values.forEach((v) => {
+        expect(typeof v).toBe("string");
+        expect(v.length).toBeGreaterThan(0);
+      });
     });
   });
 });

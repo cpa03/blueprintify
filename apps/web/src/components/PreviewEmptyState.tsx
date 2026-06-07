@@ -12,7 +12,7 @@ import { memo } from "react";
 import { motion } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
-import { EMPTY_STATE_CONFIG, SPRING_CONFIG } from "../config/constants";
+import { EMPTY_STATE_CONFIG, SPRING_CONFIG, UI_CONTENT } from "../config/constants";
 
 interface PreviewEmptyStateProps {
   /** The active editor tab that is empty */
@@ -35,24 +35,14 @@ const tabEmojis: Record<EditorTab, string> = {
   tasks: "📋",
 };
 
-const tabContent: Record<EditorTab, { title: string; hint: string }> = {
-  blueprint: {
-    title: "Blueprint not yet generated",
-    hint: "Complete the wizard and generate your blueprint to see architectural documentation here.",
-  },
-  tasks: {
-    title: "Tasks not yet generated",
-    hint: "Tasks are generated automatically after the blueprint is complete. They'll appear here once ready.",
-  },
-};
-
 export const PreviewEmptyState = memo(function PreviewEmptyState({
   tab,
   isGenerating = false,
   siblingTabHasContent = false,
   onSwitchTab,
 }: PreviewEmptyStateProps): JSX.Element {
-  const content = tabContent[tab];
+  const content =
+    tab === "blueprint" ? UI_CONTENT.PREVIEW_EMPTY.BLUEPRINT : UI_CONTENT.PREVIEW_EMPTY.TASKS;
   const label = tabLabels[tab];
 
   return (
@@ -116,7 +106,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
       </motion.div>
 
       <motion.h3 className="text-lg font-semibold text-white mb-2 text-center" variants={fadeInUp}>
-        {content.title}
+        {content.TITLE}
       </motion.h3>
 
       <motion.p
@@ -133,8 +123,8 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               ⏳
             </motion.span>{" "}
             {tab === "tasks"
-              ? "Blueprint generation in progress — tasks will follow once the blueprint is complete."
-              : "Content is being generated and will appear here shortly."}
+              ? UI_CONTENT.PREVIEW_EMPTY.GENERATING_TASKS
+              : UI_CONTENT.PREVIEW_EMPTY.GENERATING_BLUEPRINT}
           </>
         ) : siblingTabHasContent ? (
           <>
@@ -148,7 +138,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
             </button>
           </>
         ) : (
-          content.hint
+          content.HINT
         )}
       </motion.p>
 

@@ -44,6 +44,20 @@ export const UI_CONTENT = {
     LOADING: "Loading Editor...",
     SHOW_EDITOR_BUTTON: "Show Editor",
   },
+  /** Preview empty state tab-specific messages */
+  PREVIEW_EMPTY: {
+    BLUEPRINT: {
+      TITLE: "Blueprint not yet generated",
+      HINT: "Complete the wizard and generate your blueprint to see architectural documentation here.",
+    },
+    TASKS: {
+      TITLE: "Tasks not yet generated",
+      HINT: "Tasks are generated automatically after the blueprint is complete. They'll appear here once ready.",
+    },
+    GENERATING_TASKS:
+      "Blueprint generation in progress — tasks will follow once the blueprint is complete.",
+    GENERATING_BLUEPRINT: "Content is being generated and will appear here shortly.",
+  },
   FOOTER: {
     BUILT_WITH: "Built with ⚡ Cloudflare Workers + React",
     get COPYRIGHT(): string {
