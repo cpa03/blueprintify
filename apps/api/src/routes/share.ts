@@ -14,6 +14,7 @@ import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { authorize } from "../middleware/authorize";
 import { z } from "zod";
 import type { Env } from "../types";
+import { CONTEXT_KEYS } from "@blueprint/shared";
 import {
   API_HEADERS,
   HTTP_STATUS,
@@ -24,7 +25,7 @@ import {
   CACHE_CONFIG,
 } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
-import { ErrorType } from "../errors";
+import { ErrorType, createErrorJson } from "../errors";
 
 /**
  * Derives a deterministic creator identifier from the API key.
@@ -46,43 +47,21 @@ async function getCreatorId(apiKey: string | undefined): Promise<string | undefi
 const app = new Hono<{ Bindings: Env }>();
 
 /**
- * Creates a standardized error response with requestId and timestamp.
- * @param c - Hono context for getting requestId
- * @param type - Error type from ErrorType enum
- * @param message - Human-readable error message
- * @param code - Error code for client handling
- * @param details - Optional additional error details
- * @returns Standardized error response object
+ * Creates a standardized error response with requestId extracted from the Hono context.
+ * Thin wrapper around the shared createErrorJson utility.
  */
-function createErrorResponse(
+function withCtxError(
   c: { get: (key: string) => string | undefined },
   type: ErrorType,
   message: string,
   code: string,
   details?: Record<string, unknown>
-): {
-  success: false;
-  error: {
-    type: ErrorType;
-    message: string;
-    code: string;
-    details?: Record<string, unknown>;
-    timestamp: string;
-    requestId?: string;
-  };
-} {
-  const requestId = c.get("requestId");
-  return {
-    success: false,
-    error: {
-      type,
-      message,
-      code,
-      ...(details && { details }),
-      timestamp: new Date().toISOString(),
-      ...(requestId && { requestId }),
-    },
-  };
+) {
+  return createErrorJson(type, message, {
+    code,
+    details,
+    requestId: c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined,
+  });
 }
 
 const createShareSchema = z.object({
@@ -136,7 +115,7 @@ app.post("/", rateLimit(rateLimitConfigs.standard), validateJson(createShareSche
 
     if (!c.env.DB) {
       return c.json(
-        createErrorResponse(
+        withCtxError(
           c,
           ErrorType.CONFIGURATION,
           SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
@@ -175,12 +154,7 @@ app.post("/", rateLimit(rateLimitConfigs.standard), validateJson(createShareSche
   } catch (error) {
     secureLogError("Share creation error", error);
     return c.json(
-      createErrorResponse(
-        c,
-        ErrorType.INTERNAL,
-        ERROR_MESSAGES.INTERNAL,
-        ERROR_CODES.INTERNAL_ERROR
-      ),
+      withCtxError(c, ErrorType.INTERNAL, ERROR_MESSAGES.INTERNAL, ERROR_CODES.INTERNAL_ERROR),
       HTTP_STATUS.INTERNAL_ERROR
     );
   }
@@ -192,7 +166,7 @@ app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
 
     if (!shareId || shareId.length !== SHARE_CONFIG.ID_LENGTH) {
       return c.json(
-        createErrorResponse(
+        withCtxError(
           c,
           ErrorType.VALIDATION,
           SHARE_ERROR_MESSAGES.INVALID_SHARE_ID_FORMAT,
@@ -204,7 +178,7 @@ app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
 
     if (!c.env.DB) {
       return c.json(
-        createErrorResponse(
+        withCtxError(
           c,
           ErrorType.CONFIGURATION,
           SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
@@ -224,7 +198,7 @@ app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
 
     if (!result) {
       return c.json(
-        createErrorResponse(
+        withCtxError(
           c,
           ErrorType.NOT_FOUND,
           SHARE_ERROR_MESSAGES.SHARE_NOT_FOUND_OR_EXPIRED,
@@ -237,7 +211,7 @@ app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
     const expirationDate = result.expires_at ? new Date(result.expires_at as string) : null;
     if (expirationDate && expirationDate < new Date()) {
       return c.json(
-        createErrorResponse(
+        withCtxError(
           c,
           ErrorType.NOT_FOUND,
           SHARE_ERROR_MESSAGES.SHARE_EXPIRED,
@@ -288,12 +262,7 @@ app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
   } catch (error) {
     secureLogError("Share retrieval error", error);
     return c.json(
-      createErrorResponse(
-        c,
-        ErrorType.INTERNAL,
-        ERROR_MESSAGES.INTERNAL,
-        ERROR_CODES.INTERNAL_ERROR
-      ),
+      withCtxError(c, ErrorType.INTERNAL, ERROR_MESSAGES.INTERNAL, ERROR_CODES.INTERNAL_ERROR),
       HTTP_STATUS.INTERNAL_ERROR
     );
   }
@@ -305,7 +274,7 @@ app.delete("/:id", rateLimit(rateLimitConfigs.standard), authorize("user"), asyn
 
     if (!shareId || shareId.length !== SHARE_CONFIG.ID_LENGTH) {
       return c.json(
-        createErrorResponse(
+        withCtxError(
           c,
           ErrorType.VALIDATION,
           SHARE_ERROR_MESSAGES.INVALID_SHARE_ID_FORMAT,
@@ -317,7 +286,7 @@ app.delete("/:id", rateLimit(rateLimitConfigs.standard), authorize("user"), asyn
 
     if (!c.env.DB) {
       return c.json(
-        createErrorResponse(
+        withCtxError(
           c,
           ErrorType.CONFIGURATION,
           SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
@@ -360,7 +329,7 @@ app.delete("/:id", rateLimit(rateLimitConfigs.standard), authorize("user"), asyn
       const shareCreatorId = parsedMetadata.createdBy as string | undefined;
       if (shareCreatorId && shareCreatorId !== creatorId) {
         return c.json(
-          createErrorResponse(
+          withCtxError(
             c,
             ErrorType.AUTHORIZATION,
             ERROR_MESSAGES.AUTHORIZATION,
@@ -385,12 +354,7 @@ app.delete("/:id", rateLimit(rateLimitConfigs.standard), authorize("user"), asyn
   } catch (error) {
     secureLogError("Share deletion error", error);
     return c.json(
-      createErrorResponse(
-        c,
-        ErrorType.INTERNAL,
-        ERROR_MESSAGES.INTERNAL,
-        ERROR_CODES.INTERNAL_ERROR
-      ),
+      withCtxError(c, ErrorType.INTERNAL, ERROR_MESSAGES.INTERNAL, ERROR_CODES.INTERNAL_ERROR),
       HTTP_STATUS.INTERNAL_ERROR
     );
   }
