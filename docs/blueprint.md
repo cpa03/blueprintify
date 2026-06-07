@@ -53,10 +53,10 @@ blueprintify/
 
 ### Frontend
 
-- **Framework**: React 18 with TypeScript
+- **Framework**: React 19 with TypeScript
 - **Build Tool**: Vite
 - **Styling**: Tailwind CSS
-- **State Management**: React hooks
+- **State Management**: Zustand (with React hooks)
 - **Testing**: Vitest + Testing Library
 
 ### Backend
