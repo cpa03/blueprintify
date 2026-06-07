@@ -2,25 +2,24 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: ULW Loop — Jun 7 (PR Merge & Issue Audit)
+## Current Focus: RepoKeeper Cycle 69 — Documentation Sync & Missing References
 
-### Task: ULW Loop — PR Handler & Issue Manager Cycle
+### Task: Full repository audit, README missing refs, CHANGELOG update
 
 - **Priority**: High
 - **Status**: 🟢 Complete
-- **Objective**: Merge all open PRs, normalize open issues, fix high-priority issue
+- **Objective**: Full repository audit, add missing BroCula Run 3 & Issue Audit Jun 7 refs to README, update CHANGELOG, refresh documentation
 - **Actions**:
-  - [x] Merged PR #1682 — BroCula ULW Loop Run 3 (docs audit, Lighthouse 100-100-100-100)
-  - [x] Merged PR #1681 — Flexy hardcoded constants cleanup
-  - [x] Merged PR #1680 — UX breathing animation for generation progress
-  - [x] Merged PR #1679 — RepoKeeper Cycle 68 documentation sync ✅
-  - [x] Cycle 68 PR was previously unchecked — now completed and merged
-  - [x] Issue normalization attempted — blocked by GITHUB_TOKEN (no `issues: write` scope)
-  - [x] Identified duplicate CI issues (#1470, #1549, #1575, #1584, #1573, #1390, #1621, #1293) — all about Node.js 20→22 + stale doc refs
-  - [x] Verified many old issues already fixed (#1077 prompt injection, #1087 Vite target, #1082 hook tests)
-  - [x] Codebase health verified: typecheck ✅ lint ✅ build ✅ tests 1,159/1,159 ✅ audit 0 vulns ✅
-
----
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ npm audit ✅
+  - [x] Added missing `brocula-hunt-2026-06-07-run3.md` to README directory tree and docs section
+  - [x] Added missing `issue-audit-report-2026-06-07.md` to README docs section
+  - [x] Updated CHANGELOG.md — added BroCula Jun 7 Run 3 (#1682) and RepoKeeper Cycle 69 (#1683)
+  - [x] Updated `docs/findings.md` — Cycle 69 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 69 status
+  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 69
 
 ## Previous Cycle: RepoKeeper Cycle 67 — Documentation Sync & CHANGELOG Update ✅ COMPLETE
 
@@ -130,5 +129,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-07 (Cycle 68: RepoKeeper)  
+**Last Updated**: 2026-06-07 (Cycle 69: RepoKeeper)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)

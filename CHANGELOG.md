@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 69: documentation sync, missing BroCula Run 3 ref, issue audit report ref, CHANGELOG update ([#1683](https://github.com/cpa03/blueprintify/pull/1683))
 - Smooth slide-out animation for hero and templates on exit ([#1671](https://github.com/cpa03/blueprintify/pull/1671))
 - ENV_VAR_KEYS shared config to eliminate hardcoded env var name strings across the codebase (Flexy) ([#1672](https://github.com/cpa03/blueprintify/pull/1672))
 - Content-available indicator dot on editor tab buttons — green animated dot when content exists in sibling tab ([#1664](https://github.com/cpa03/blueprintify/pull/1664))
@@ -65,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Centralized prompt delimiters, auth defaults, context keys & response status strings into shared config (Flexy) ([#1678](https://github.com/cpa03/blueprintify/pull/1678))
 - RepoKeeper Cycle 66: documentation sync, CHANGELOG update & missing BroCula Jun 7 reference ([#1670](https://github.com/cpa03/blueprintify/pull/1670))
 - RepoKeeper Cycle 65: documentation sync & stale ref fixes — React 18→19, Zustand state mgmt ([#1665](https://github.com/cpa03/blueprintify/pull/1665))
+- Flexy hardcoded constants cleanup: eliminated remaining hardcoded strings across config constants ([#1681](https://github.com/cpa03/blueprintify/pull/1681))
 - Centralized playwright config, template ports, env names & browser quota codes into `@blueprint/shared` (Flexy #1644)
 - Removed archived quality assessment document from docs
 - RepoKeeper Cycle 61: documentation accuracy & missing references cleanup ([#1628](https://github.com/cpa03/blueprintify/pull/1628))
@@ -160,6 +162,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
+- BroCula ULW Loop — Jun 7 Run 3: Console Clean, Lighthouse 100-100-100-100 ([#1682](https://github.com/cpa03/blueprintify/pull/1682))
 - BroCula ULW Loop — Jun 7 Run 2: Console Clean, Lighthouse 99-100-100-100 ([#1677](https://github.com/cpa03/blueprintify/pull/1677))
 - BroCula ULW Loop — Jun 7: Console Clean, Lighthouse 99-100-100-100 ([#1673](https://github.com/cpa03/blueprintify/pull/1673))
 - BugFixer ULW Loop Cycle 4 audit status ([#1669](https://github.com/cpa03/blueprintify/pull/1669))
