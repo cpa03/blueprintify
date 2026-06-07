@@ -216,9 +216,16 @@ export const StepGenerating = memo(function StepGenerating({
             className="text-center"
           >
             <h2 className="text-xl font-bold text-white mb-2">Generating Your Blueprint</h2>
-            <p className="text-dark-400 mb-6" role="status" aria-live="polite" aria-atomic="true">
+            <motion.p
+              className="text-dark-400 mb-6"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+              animate={{ opacity: [1, 0.55, 1] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+            >
               {progress || "Starting..."}
-            </p>
+            </motion.p>
           </motion.div>
         )}
       </AnimatePresence>
