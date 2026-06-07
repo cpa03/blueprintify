@@ -95,6 +95,10 @@ export {
   BROWSER_QUOTA_ERROR_CODES,
   UI_STRINGS,
   ENV_VAR_KEYS,
+  PROMPT_DELIMITERS,
+  AUTH_DEFAULTS,
+  CONTEXT_KEYS,
+  RESPONSE_STATUS,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";

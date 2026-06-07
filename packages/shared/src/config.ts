@@ -651,6 +651,66 @@ export const UI_STRINGS = {
 } as const;
 
 /**
+ * Prompt Input Delimiters
+ * Centralized source of truth for delimiter strings used in prompt
+ * construction and sanitization. Eliminates hardcoded XML-like tags
+ * across the API source code.
+ * Flexy says: No hardcoded "<user_input>" in prompt config!
+ */
+export const PROMPT_DELIMITERS = {
+  /** Start delimiter wrapping user input in prompt templates */
+  USER_INPUT_START: "<user_input>",
+  /** End delimiter wrapping user input in prompt templates */
+  USER_INPUT_END: "</user_input>",
+} as const;
+
+/**
+ * Authentication Defaults
+ * Centralized defaults for middleware auth configuration including
+ * role names, anonymous user identifiers, and Hono context keys.
+ * Flexy says: No hardcoded "user"/"admin" strings in auth middleware!
+ */
+export const AUTH_DEFAULTS = {
+  /** Default user role assigned to authenticated users */
+  DEFAULT_ROLE: "user" as const,
+  /** Admin role for elevated access */
+  ADMIN_ROLE: "admin" as const,
+  /** Fallback anonymous user ID when no user header is provided */
+  ANONYMOUS_USER_ID: "anonymous" as const,
+  /** Hono context key for storing authenticated user object */
+  USER_CONTEXT_KEY: "user" as const,
+  /** Default role for authenticated users */
+  DEFAULT_USER_ROLE: "user" as const,
+} as const;
+
+/**
+ * Hono Context Keys
+ * Centralized source of truth for all Hono context key strings used
+ * with c.set() and c.get() across the API middleware and routes.
+ * Flexy says: No hardcoded "requestId" context keys in middleware!
+ */
+export const CONTEXT_KEYS = {
+  /** Request tracing identifier */
+  REQUEST_ID: "requestId",
+  /** Zod-validated request data */
+  VALIDATED_DATA: "validatedData",
+  /** Authenticated user object */
+  USER: "user",
+} as const;
+
+/**
+ * API Status Response Strings
+ * Centralized status strings used in API JSON responses.
+ * Flexy says: No hardcoded "ok" in health check endpoints!
+ */
+export const RESPONSE_STATUS = {
+  /** Healthy / successful operation status */
+  OK: "ok",
+  /** Error / failed operation status */
+  ERROR: "error",
+} as const;
+
+/**
  * Environment Variable Key Names
  * Centralized source of truth for environment variable name strings used
  * across both API (Cloudflare Workers) and Web (Vite) configurations.

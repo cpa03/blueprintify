@@ -8,7 +8,7 @@
  */
 
 import type { Context, MiddlewareHandler, Next } from "hono";
-import { HTTP_METHODS } from "@blueprint/shared";
+import { HTTP_METHODS, CONTEXT_KEYS } from "@blueprint/shared";
 import { LOGGER_CONFIG, API_HEADERS } from "../config/constants";
 import { timestamp } from "../errors";
 
@@ -168,7 +168,7 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
     const startTime = Date.now();
     const cfMetadata = extractCloudflareMetadata(c);
 
-    c.set("requestId", requestId);
+    c.set(CONTEXT_KEYS.REQUEST_ID, requestId);
 
     const query = c.req.query() as Record<string, string>;
 

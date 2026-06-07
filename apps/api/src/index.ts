@@ -27,6 +27,7 @@ import { requestLogger } from "./middleware/logger";
 import { bodyLimit, bodyLimitConfigs } from "./middleware/bodyLimit";
 import type { Env, AppVariables } from "./types";
 import { loadConfig } from "./config/env";
+import { RESPONSE_STATUS } from "@blueprint/shared";
 import {
   API_METADATA,
   API_ENDPOINTS,
@@ -126,7 +127,7 @@ app.get(ROUTE_PATHS.WARMUP, (c) => {
   const cb = initializeCircuitBreaker();
   const metrics = cb.getState();
   return c.json({
-    status: "ok",
+    status: RESPONSE_STATUS.OK,
     timestamp: Date.now(),
     circuitBreaker: {
       state: metrics.state,
