@@ -247,6 +247,8 @@ function EditorComponent(): JSX.Element {
           onExport={handleExport}
           onNew={handleNewProject}
           hasContent={hasContent}
+          blueprintHasContent={blueprintContent.length > 0}
+          tasksHasContent={tasksContent.length > 0}
           copied={copied}
           isExporting={isExporting}
           isGenerating={isGenerating}

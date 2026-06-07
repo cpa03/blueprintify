@@ -45,6 +45,10 @@ interface EditorHeaderProps {
   onExport: () => void;
   onNew: () => void;
   hasContent: boolean;
+  /** Whether the blueprint tab has content (triggers indicator dot on the tab button) */
+  blueprintHasContent?: boolean;
+  /** Whether the tasks tab has content (triggers indicator dot on the tab button) */
+  tasksHasContent?: boolean;
   copied: string | null;
   isExporting?: boolean;
   isGenerating?: boolean;
@@ -62,6 +66,7 @@ const TabButton = React.memo(function TabButton({
   isGenerating,
   onClick,
   hasContent,
+  contentAvailable = false,
   children,
 }: {
   id: string;
@@ -69,6 +74,7 @@ const TabButton = React.memo(function TabButton({
   isGenerating?: boolean;
   onClick: () => void;
   hasContent: boolean;
+  contentAvailable?: boolean;
   children: React.ReactNode;
 }) {
   return (
@@ -99,6 +105,23 @@ const TabButton = React.memo(function TabButton({
       )}
       <span className="relative z-10 flex items-center gap-1.5">
         {children}
+        {/* Content available dot — subtle green indicator on inactive tabs
+            to help users discover content in the sibling tab. Uses a gentle
+            CSS pulse animation to draw attention without being distracting. */}
+        {!isActive && contentAvailable && (
+          <motion.span
+            className="w-1.5 h-1.5 rounded-full bg-accent-emerald flex-shrink-0"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 15,
+            }}
+            aria-label={`${id === "blueprint" ? "Blueprint" : "Tasks"} content available`}
+          />
+        )}
         {isActive && isGenerating && (
           <motion.span
             className="w-1.5 h-1.5 rounded-full bg-accent-emerald flex-shrink-0"
@@ -240,6 +263,8 @@ function EditorHeaderComponent({
   onExport,
   onNew,
   hasContent,
+  blueprintHasContent = false,
+  tasksHasContent = false,
   copied,
   isExporting = false,
   isGenerating = false,
@@ -297,6 +322,7 @@ function EditorHeaderComponent({
             isGenerating={isGenerating}
             onClick={() => setActiveTab("blueprint")}
             hasContent={hasContent}
+            contentAvailable={blueprintHasContent}
           >
             <Icon name="document" className="w-4 h-4 mr-1.5" />
             blueprint.md
@@ -307,6 +333,7 @@ function EditorHeaderComponent({
             isGenerating={isGenerating}
             onClick={() => setActiveTab("tasks")}
             hasContent={hasContent}
+            contentAvailable={tasksHasContent}
           >
             <Icon name="clipboard" className="w-4 h-4 mr-1.5" />
             task.md
