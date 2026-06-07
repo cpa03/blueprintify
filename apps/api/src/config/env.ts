@@ -95,99 +95,120 @@ function getFloatEnvVar(
  */
 export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
   // Validate required variables
-  const openaiApiKey = getEnvVar("OPENAI_API_KEY", env);
+  const openaiApiKey = getEnvVar(ENV_VAR_KEYS.API.OPENAI_API_KEY, env);
   if (!openaiApiKey) {
-    throw new Error(
-      `OPENAI_API_KEY is required but not set in environment. Please set the OPENAI_API_KEY environment variable in your .dev.vars file (for local development) or in your Cloudflare Workers secrets (for production).`
-    );
+    throw new Error(`${ENV_VAR_KEYS.API.OPENAI_API_KEY} is required but not set in environment.`);
   }
 
   // Validate CORS_ORIGIN is not empty - empty string allows any origin which is a security risk
-  const corsOrigin = getEnvVar("CORS_ORIGIN", env) ?? DEFAULTS.CORS_ORIGIN;
+  const corsOrigin = getEnvVar(ENV_VAR_KEYS.API.CORS_ORIGIN, env) ?? DEFAULTS.CORS_ORIGIN;
   if (!corsOrigin || corsOrigin.trim() === "") {
-    throw new Error(
-      "CORS_ORIGIN is required and cannot be empty. Please set a valid origin (e.g., 'https://yourdomain.com') in your .dev.vars file (for local development) or in your Cloudflare Workers secrets (for production). Do not use '*' in production."
-    );
+    throw new Error(`${ENV_VAR_KEYS.API.CORS_ORIGIN} is required and cannot be empty.`);
   }
 
-  if (corsOrigin === "*" && env.NODE_ENV === "production") {
+  if (corsOrigin === "*" && env.NODE_ENV === ENVIRONMENT_NAMES.PRODUCTION) {
     console.warn(
-      "WARNING: CORS_ORIGIN is set to '*' (allow all). This is a security risk in production. Please set a specific origin."
+      `WARNING: ${ENV_VAR_KEYS.API.CORS_ORIGIN} is set to '*' (allow all). This is a security risk in production.`
     );
   }
 
   return {
     OPENAI_API_KEY: openaiApiKey,
-    OPENAI_BASE_URL: getEnvVar("OPENAI_BASE_URL", env) ?? DEFAULTS.OPENAI_BASE_URL,
-    OPENAI_MODEL: getEnvVar("OPENAI_MODEL", env) ?? DEFAULTS.OPENAI_MODEL,
-    OPENAI_TIMEOUT_MS: getNumericEnvVar("OPENAI_TIMEOUT_MS", env, DEFAULTS.OPENAI_TIMEOUT_MS),
-    OPENAI_MAX_TOKENS: getNumericEnvVar("OPENAI_MAX_TOKENS", env, DEFAULTS.OPENAI_MAX_TOKENS),
-    OPENAI_TEMPERATURE: getFloatEnvVar("OPENAI_TEMPERATURE", env, DEFAULTS.OPENAI_TEMPERATURE),
+    OPENAI_BASE_URL: getEnvVar(ENV_VAR_KEYS.API.OPENAI_BASE_URL, env) ?? DEFAULTS.OPENAI_BASE_URL,
+    OPENAI_MODEL: getEnvVar(ENV_VAR_KEYS.API.OPENAI_MODEL, env) ?? DEFAULTS.OPENAI_MODEL,
+    OPENAI_TIMEOUT_MS: getNumericEnvVar(
+      ENV_VAR_KEYS.API.OPENAI_TIMEOUT_MS,
+      env,
+      DEFAULTS.OPENAI_TIMEOUT_MS
+    ),
+    OPENAI_MAX_TOKENS: getNumericEnvVar(
+      ENV_VAR_KEYS.API.OPENAI_MAX_TOKENS,
+      env,
+      DEFAULTS.OPENAI_MAX_TOKENS
+    ),
+    OPENAI_TEMPERATURE: getFloatEnvVar(
+      ENV_VAR_KEYS.API.OPENAI_TEMPERATURE,
+      env,
+      DEFAULTS.OPENAI_TEMPERATURE
+    ),
 
-    API_VERSION: getEnvVar("API_VERSION", env) ?? DEFAULTS.API_VERSION,
+    API_VERSION: getEnvVar(ENV_VAR_KEYS.API.API_VERSION, env) ?? DEFAULTS.API_VERSION,
 
     CORS_ORIGIN: corsOrigin,
-    CORS_MAX_AGE: getNumericEnvVar("CORS_MAX_AGE", env, DEFAULTS.CORS_MAX_AGE),
+    CORS_MAX_AGE: getNumericEnvVar(ENV_VAR_KEYS.API.CORS_MAX_AGE, env, DEFAULTS.CORS_MAX_AGE),
 
     RATE_LIMIT_WINDOW_MS: getNumericEnvVar(
-      "RATE_LIMIT_WINDOW_MS",
+      ENV_VAR_KEYS.API.RATE_LIMIT_WINDOW_MS,
       env,
       DEFAULTS.RATE_LIMIT_WINDOW_MS
     ),
     RATE_LIMIT_STRICT_MAX: getNumericEnvVar(
-      "RATE_LIMIT_STRICT_MAX",
+      ENV_VAR_KEYS.API.RATE_LIMIT_STRICT_MAX,
       env,
       DEFAULTS.RATE_LIMIT_STRICT_MAX
     ),
     RATE_LIMIT_STANDARD_MAX: getNumericEnvVar(
-      "RATE_LIMIT_STANDARD_MAX",
+      ENV_VAR_KEYS.API.RATE_LIMIT_STANDARD_MAX,
       env,
       DEFAULTS.RATE_LIMIT_STANDARD_MAX
     ),
     RATE_LIMIT_LENIENT_MAX: getNumericEnvVar(
-      "RATE_LIMIT_LENIENT_MAX",
+      ENV_VAR_KEYS.API.RATE_LIMIT_LENIENT_MAX,
       env,
       DEFAULTS.RATE_LIMIT_LENIENT_MAX
     ),
 
-    STORAGE_QUOTA_MB: getNumericEnvVar("STORAGE_QUOTA_MB", env, DEFAULTS.STORAGE_QUOTA_MB),
+    STORAGE_QUOTA_MB: getNumericEnvVar(
+      ENV_VAR_KEYS.API.STORAGE_QUOTA_MB,
+      env,
+      DEFAULTS.STORAGE_QUOTA_MB
+    ),
 
     CIRCUIT_BREAKER_FAILURE_THRESHOLD: getNumericEnvVar(
-      "CIRCUIT_BREAKER_FAILURE_THRESHOLD",
+      ENV_VAR_KEYS.API.CIRCUIT_BREAKER_FAILURE_THRESHOLD,
       env,
       DEFAULTS.CIRCUIT_BREAKER_FAILURE_THRESHOLD
     ),
     CIRCUIT_BREAKER_RESET_TIMEOUT_MS: getNumericEnvVar(
-      "CIRCUIT_BREAKER_RESET_TIMEOUT_MS",
+      ENV_VAR_KEYS.API.CIRCUIT_BREAKER_RESET_TIMEOUT_MS,
       env,
       DEFAULTS.CIRCUIT_BREAKER_RESET_TIMEOUT_MS
     ),
     CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS: getNumericEnvVar(
-      "CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS",
+      ENV_VAR_KEYS.API.CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS,
       env,
       DEFAULTS.CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS
     ),
     CIRCUIT_BREAKER_COLD_START_WINDOW_MS: getNumericEnvVar(
-      "CIRCUIT_BREAKER_COLD_START_WINDOW_MS",
+      ENV_VAR_KEYS.API.CIRCUIT_BREAKER_COLD_START_WINDOW_MS,
       env,
       DEFAULTS.CIRCUIT_BREAKER_COLD_START_WINDOW_MS
     ),
 
-    RETRY_MAX_RETRIES: getNumericEnvVar("RETRY_MAX_RETRIES", env, DEFAULTS.RETRY_MAX_RETRIES),
+    RETRY_MAX_RETRIES: getNumericEnvVar(
+      ENV_VAR_KEYS.API.RETRY_MAX_RETRIES,
+      env,
+      DEFAULTS.RETRY_MAX_RETRIES
+    ),
     RETRY_INITIAL_DELAY_MS: getNumericEnvVar(
-      "RETRY_INITIAL_DELAY_MS",
+      ENV_VAR_KEYS.API.RETRY_INITIAL_DELAY_MS,
       env,
       DEFAULTS.RETRY_INITIAL_DELAY_MS
     ),
     RETRY_BACKOFF_FACTOR: getNumericEnvVar(
-      "RETRY_BACKOFF_FACTOR",
+      ENV_VAR_KEYS.API.RETRY_BACKOFF_FACTOR,
       env,
       DEFAULTS.RETRY_BACKOFF_FACTOR
     ),
-    RETRY_MAX_DELAY_MS: getNumericEnvVar("RETRY_MAX_DELAY_MS", env, DEFAULTS.RETRY_MAX_DELAY_MS),
+    RETRY_MAX_DELAY_MS: getNumericEnvVar(
+      ENV_VAR_KEYS.API.RETRY_MAX_DELAY_MS,
+      env,
+      DEFAULTS.RETRY_MAX_DELAY_MS
+    ),
 
-    PROJECT_HOMEPAGE_URL: getEnvVar("PROJECT_HOMEPAGE_URL", env) ?? DEFAULTS.PROJECT_HOMEPAGE_URL,
-    GITHUB_URL: getEnvVar("GITHUB_URL", env) ?? DEFAULTS.GITHUB_URL,
+    PROJECT_HOMEPAGE_URL:
+      getEnvVar(ENV_VAR_KEYS.API.PROJECT_HOMEPAGE_URL, env) ?? DEFAULTS.PROJECT_HOMEPAGE_URL,
+    GITHUB_URL: getEnvVar(ENV_VAR_KEYS.API.GITHUB_URL, env) ?? DEFAULTS.GITHUB_URL,
   };
 }
 
@@ -199,6 +220,8 @@ import {
   RETRY_CONFIG as SHARED_RETRY_CONFIG,
   RATE_LIMIT_DEFAULTS,
   CIRCUIT_BREAKER_DEFAULTS,
+  ENV_VAR_KEYS,
+  ENVIRONMENT_NAMES,
 } from "@blueprint/shared";
 import { getEnvConfig, setEnvConfig as setConstantsConfig } from "./constants";
 

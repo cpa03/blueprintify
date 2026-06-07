@@ -649,3 +649,80 @@ export const UI_STRINGS = {
   /** Unparsable body fallback for API logging */
   UNPARSABLE_BODY: "[unparsable]",
 } as const;
+
+/**
+ * Environment Variable Key Names
+ * Centralized source of truth for environment variable name strings used
+ * across both API (Cloudflare Workers) and Web (Vite) configurations.
+ * Flexy says: No hardcoded "OPENAI_API_KEY" strings in env.ts!
+ */
+export const ENV_VAR_KEYS = {
+  /** API-side env var names (Cloudflare Workers bindings) */
+  API: {
+    /** OpenAI API key (required) */
+    OPENAI_API_KEY: "OPENAI_API_KEY",
+    /** Custom OpenAI API base URL */
+    OPENAI_BASE_URL: "OPENAI_BASE_URL",
+    /** OpenAI model identifier */
+    OPENAI_MODEL: "OPENAI_MODEL",
+    /** OpenAI request timeout in milliseconds */
+    OPENAI_TIMEOUT_MS: "OPENAI_TIMEOUT_MS",
+    /** OpenAI max tokens for completion */
+    OPENAI_MAX_TOKENS: "OPENAI_MAX_TOKENS",
+    /** OpenAI temperature setting */
+    OPENAI_TEMPERATURE: "OPENAI_TEMPERATURE",
+    /** API version string */
+    API_VERSION: "API_VERSION",
+    /** CORS allowed origin */
+    CORS_ORIGIN: "CORS_ORIGIN",
+    /** CORS max age in seconds */
+    CORS_MAX_AGE: "CORS_MAX_AGE",
+    /** Rate limit window in milliseconds */
+    RATE_LIMIT_WINDOW_MS: "RATE_LIMIT_WINDOW_MS",
+    /** Strict rate limit max requests */
+    RATE_LIMIT_STRICT_MAX: "RATE_LIMIT_STRICT_MAX",
+    /** Standard rate limit max requests */
+    RATE_LIMIT_STANDARD_MAX: "RATE_LIMIT_STANDARD_MAX",
+    /** Lenient rate limit max requests */
+    RATE_LIMIT_LENIENT_MAX: "RATE_LIMIT_LENIENT_MAX",
+    /** Storage quota in megabytes */
+    STORAGE_QUOTA_MB: "STORAGE_QUOTA_MB",
+    /** Circuit breaker failure threshold */
+    CIRCUIT_BREAKER_FAILURE_THRESHOLD: "CIRCUIT_BREAKER_FAILURE_THRESHOLD",
+    /** Circuit breaker reset timeout in ms */
+    CIRCUIT_BREAKER_RESET_TIMEOUT_MS: "CIRCUIT_BREAKER_RESET_TIMEOUT_MS",
+    /** Circuit breaker half-open max calls */
+    CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS: "CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS",
+    /** Circuit breaker cold start window in ms */
+    CIRCUIT_BREAKER_COLD_START_WINDOW_MS: "CIRCUIT_BREAKER_COLD_START_WINDOW_MS",
+    /** Retry max retries */
+    RETRY_MAX_RETRIES: "RETRY_MAX_RETRIES",
+    /** Retry initial delay in ms */
+    RETRY_INITIAL_DELAY_MS: "RETRY_INITIAL_DELAY_MS",
+    /** Retry backoff factor */
+    RETRY_BACKOFF_FACTOR: "RETRY_BACKOFF_FACTOR",
+    /** Retry max delay in ms */
+    RETRY_MAX_DELAY_MS: "RETRY_MAX_DELAY_MS",
+    /** Project homepage URL */
+    PROJECT_HOMEPAGE_URL: "PROJECT_HOMEPAGE_URL",
+    /** GitHub repository URL */
+    GITHUB_URL: "GITHUB_URL",
+  } as const,
+  /** Web-side env var names (Vite import.meta.env) */
+  WEB: {
+    /** API base URL for web client */
+    VITE_API_BASE_URL: "VITE_API_BASE_URL",
+    /** Enable analytics tracking */
+    VITE_ENABLE_ANALYTICS: "VITE_ENABLE_ANALYTICS",
+    /** Project homepage URL */
+    VITE_PROJECT_HOMEPAGE_URL: "VITE_PROJECT_HOMEPAGE_URL",
+    /** GitHub repository URL */
+    VITE_GITHUB_URL: "VITE_GITHUB_URL",
+    /** Storage quota in megabytes */
+    VITE_STORAGE_QUOTA_MB: "VITE_STORAGE_QUOTA_MB",
+    /** Application display name */
+    VITE_APP_NAME: "VITE_APP_NAME",
+    /** Default project name for new projects */
+    VITE_DEFAULT_PROJECT_NAME: "VITE_DEFAULT_PROJECT_NAME",
+  } as const,
+} as const;

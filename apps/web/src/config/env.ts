@@ -1,4 +1,6 @@
-import { DEFAULT_URLS, SHARED_DEFAULTS } from "@blueprint/shared";
+import { DEFAULT_URLS, SHARED_DEFAULTS, ENV_VAR_KEYS } from "@blueprint/shared";
+
+const { WEB: WEB_ENV } = ENV_VAR_KEYS;
 
 const getEnvVar = (key: string, defaultValue?: string): string => {
   const value = import.meta.env[key];
@@ -15,36 +17,36 @@ const getNumericEnvVar = (key: string, defaultValue: number): number => {
 export const ENV = {
   // API Configuration
   get API_BASE_URL(): string {
-    return getEnvVar("VITE_API_BASE_URL", "/api");
+    return getEnvVar(WEB_ENV.VITE_API_BASE_URL, "/api");
   },
 
   // Feature Flags
   get ENABLE_ANALYTICS(): boolean {
-    return getEnvVar("VITE_ENABLE_ANALYTICS", "false") === "true";
+    return getEnvVar(WEB_ENV.VITE_ENABLE_ANALYTICS, "false") === "true";
   },
 
   // External URLs (defaults from @blueprint/shared)
   get PROJECT_HOMEPAGE_URL(): string {
-    return getEnvVar("VITE_PROJECT_HOMEPAGE_URL", DEFAULT_URLS.PROJECT_HOMEPAGE);
+    return getEnvVar(WEB_ENV.VITE_PROJECT_HOMEPAGE_URL, DEFAULT_URLS.PROJECT_HOMEPAGE);
   },
 
   get GITHUB_URL(): string {
-    return getEnvVar("VITE_GITHUB_URL", DEFAULT_URLS.GITHUB);
+    return getEnvVar(WEB_ENV.VITE_GITHUB_URL, DEFAULT_URLS.GITHUB);
   },
 
   // Storage Configuration
   get STORAGE_QUOTA_MB(): number {
-    return getNumericEnvVar("VITE_STORAGE_QUOTA_MB", SHARED_DEFAULTS.STORAGE_QUOTA_MB);
+    return getNumericEnvVar(WEB_ENV.VITE_STORAGE_QUOTA_MB, SHARED_DEFAULTS.STORAGE_QUOTA_MB);
   },
 
   // UI Configuration
   get APP_NAME(): string {
-    return getEnvVar("VITE_APP_NAME", SHARED_DEFAULTS.APP_NAME);
+    return getEnvVar(WEB_ENV.VITE_APP_NAME, SHARED_DEFAULTS.APP_NAME);
   },
 
   // Default Project Name
   get DEFAULT_PROJECT_NAME(): string {
-    return getEnvVar("VITE_DEFAULT_PROJECT_NAME", SHARED_DEFAULTS.DEFAULT_PROJECT_NAME);
+    return getEnvVar(WEB_ENV.VITE_DEFAULT_PROJECT_NAME, SHARED_DEFAULTS.DEFAULT_PROJECT_NAME);
   },
 } as const;
 

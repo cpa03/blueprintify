@@ -42,8 +42,9 @@ const DEFAULT_MAX_SIZE = BODY_SIZE_MAX.DEFAULT;
  *
  * @example
  * ```typescript
+ * import { BYTE_CONVERSION } from "@blueprint/shared";
  * app.use('*', bodyLimit({
- *   maxSize: 1024 * 1024, // 1MB
+ *   maxSize: BYTE_CONVERSION.MB, // 1MB
  *   excludePaths: ['/upload'],
  * }));
  * ```
