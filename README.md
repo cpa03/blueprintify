@@ -56,6 +56,7 @@ blueprintify/
 │   │   ├── brocula-hunt-2026-06-06-run4.md
 │   │   ├── brocula-hunt-2026-06-07.md
 │   │   ├── brocula-hunt-2026-06-07-run2.md
+│   │   ├── brocula-hunt-2026-06-07-run3.md
 │   │   ├── diagnostic-scoring-2026-05-31.md
 │   │   └── diagnostic-scoring-2026-06-04.md
 │   ├── blueprint.md
@@ -341,6 +342,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
 - **[Issue Audit Report](./docs/issue-audit-report-2026-05-27.md)** - Comprehensive issue audit with fix status tracking
 - **[Issue Audit Report (Jun 5)](./docs/issue-audit-report-2026-06-05.md)** - Issue label normalization and duplicate detection report
+- **[Issue Audit Report (Jun 7)](./docs/issue-audit-report-2026-06-07.md)** - ULW Loop issue audit with fix status tracking
 - **[Repository Audit](./docs/audit-2026-05-26.md)** - Automated repository audit findings
 - **[BroCula Hunt (May 29)](./docs/audits/brocula-hunt-2026-05-29.md)** - Performance optimization hunt findings
 - **[BroCula Hunt (May 30)](./docs/audits/brocula-hunt-2026-05-30.md)** - Second performance optimization hunt
@@ -357,6 +359,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[BroCula Hunt (Jun 6 Run 4)](./docs/audits/brocula-hunt-2026-06-06-run4.md)** - Thirteenth performance optimization cycle (console + lighthouse)
 - **[BroCula Hunt (Jun 7)](./docs/audits/brocula-hunt-2026-06-07.md)** - Fourteenth performance optimization cycle — Console Clean, Lighthouse 100-100-100-100
 - **[BroCula Hunt (Jun 7 Run 2)](./docs/audits/brocula-hunt-2026-06-07-run2.md)** - Fifteenth performance optimization cycle — Console Clean, Lighthouse 99-100-100-100
+- **[BroCula Hunt (Jun 7 Run 3)](./docs/audits/brocula-hunt-2026-06-07-run3.md)** - Sixteenth performance optimization cycle — Console Clean, Lighthouse 100-100-100-100
 - **[Diagnostic Scoring (May 31)](./docs/audits/diagnostic-scoring-2026-05-31.md)** - Comprehensive diagnostic scoring analysis
 - **[Diagnostic Scoring (Jun 4)](./docs/audits/diagnostic-scoring-2026-06-04.md)** - Phase 1 diagnostic scoring report (81.1/100)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
