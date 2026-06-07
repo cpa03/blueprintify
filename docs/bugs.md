@@ -4,13 +4,15 @@
 
 ## Active Bugs
 
+> **BugFixer ULW Cycle 2026-06-07 (Cycle 5)**: Full repository audit complete. Typecheck ✅ lint ✅ build (web) ✅ tests 1146/1146 ✅ (39 web + 26 api + 4 shared, 593+342+211 all passing). 0 npm vulns. 0 type suppressions. Repo fully clean. Fixed BUG-014 (main.yml stale doc refs: `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`) and BUG-017 (`node-version: "20"`→`node-version-file: ".node-version"` in 4 workflow files, 11 instances) on branch `fix/ulw-bugfix-005`. Both fixes verified via grep: zero stale doc refs, zero hardcoded node-version.
+
 > **BugFixer ULW Cycle 2026-06-06 (Cycle 2)**: Full repository audit complete. Typecheck ✅ lint ✅ format ✅ build (web + api) ✅ tests 1138/1138 ✅ audit 0 vulns ✅. Applied BUG-014 fix (main.yml stale doc refs → docs/bugs.md, docs/features.md) and BUG-017 fix (node-version: "20" → node-version-file: ".node-version" in all 5 workflow files, 11 instances). Both fixes verified via grep. Both bugs now RESOLVED.
 
 > **BugFixer ULW Cycle 2026-06-06 (Cycle 3)**: Full repository audit complete. Typecheck ✅ lint ✅ build (web) ✅ tests 1138/1138 ✅. Verified BUG-014 and BUG-017 were still present on `main` (docs/bug.md → stale, node-version: "20" → hardcoded in 4 workflow files, 11 instances). Applied fixes on `fix/ulw-bugfix-sprint` branch. Both fixes verified via grep: zero `node-version:` remaining, zero stale doc refs. PR created.
 
 ### BUG-014: Stale Doc References in main.yml Workflow (RESOLVED)
 
-**Status**: Fix Verified — 2026-06-06 (BugFixer ULW Cycle Jun 6, Cycle 3 Branch)  
+**Status**: Fix Verified — 2026-06-07 (BugFixer ULW Cycle Jun 7, Cycle 5 Branch)  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1293
@@ -20,18 +22,18 @@
 
 `.github/workflows/main.yml` referenced two non-existent documentation files.
 
-#### Current State (BugFixer ULW Cycle 3 — 2026-06-06)
+#### Current State (BugFixer ULW Cycle 5 — 2026-06-07)
 
 - ✅ `main.yml` line 39: `docs/bug.md, docs/feature.md` → `docs/bugs.md, docs/features.md`
 - ✅ `main.yml` line 263: `docs/bug.md` → `docs/bugs.md`
 - ✅ Fix verified via grep: zero stale doc refs remaining
-- ✅ Applied on branch `fix/ulw-bugfix-sprint`
+- ✅ Applied on branch `fix/ulw-bugfix-005`
 
 ---
 
 ### BUG-017: CI Node.js Version Mismatch (RESOLVED)
 
-**Status**: Fix Verified — 2026-06-06 (BugFixer ULW Cycle Jun 6, Cycle 3 Branch)  
+**Status**: Fix Verified — 2026-06-07 (BugFixer ULW Cycle Jun 7, Cycle 5 Branch)  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1390, #1470, #1549
@@ -41,7 +43,7 @@
 
 All CI workflow files used Node.js 20 hardcoded instead of using the project's `.node-version` file.
 
-#### Current State (BugFixer ULW Cycle 3 — 2026-06-06)
+#### Current State (BugFixer ULW Cycle 5 — 2026-06-07)
 
 All 4 workflow files fixed — `node-version: "20"` replaced with `node-version-file: ".node-version"` (11 instances total):
 
@@ -56,7 +58,7 @@ All 4 workflow files fixed — `node-version: "20"` replaced with `node-version-
 
 **Fix approach**: Changed from hardcoded `node-version: "20"` to `node-version-file: ".node-version"` — automatically stays in sync with project requirements.
 **Verification**: All 11 instances verified via grep — zero remaining `node-version:` references in workflow files.
-**Applied on branch**: `fix/ulw-bugfix-sprint`
+**Applied on branch**: `fix/ulw-bugfix-005`
 
 ---
 
@@ -192,7 +194,7 @@ Multiple documentation files still reference Node.js 18+ as the minimum requirem
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2026-06-06 (BugFixer ULW Cycle 3)  
+**Last Updated**: 2026-06-07 (BugFixer ULW Cycle 5)  
 **Maintainer**: BugFixer (Ultrawork Loop)
 
 #### How to Apply Workflow Fixes
