@@ -694,6 +694,45 @@
   }
 }
 
+/* ===== Discovery Glow ===== */
+/* Subtle one-shot attention pulse for discovery-oriented UI elements (keyboard
+   shortcuts button, etc.). Plays once on mount to hint at hidden functionality
+   without being distracting — uses composited opacity + box-shadow only.
+   Disabled via animation: none when prefers-reduced-motion is active. */
+@keyframes attention-glow {
+  0% {
+    box-shadow: 0 0 0 0 transparent;
+    opacity: 1;
+  }
+  15% {
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--color-primary-500) 20%, transparent),
+      0 0 16px 2px color-mix(in srgb, var(--color-primary-500) 12%, transparent);
+    opacity: 1;
+  }
+  30% {
+    box-shadow:
+      0 0 0 6px color-mix(in srgb, var(--color-primary-500) 8%, transparent),
+      0 0 24px 4px color-mix(in srgb, var(--color-primary-500) 6%, transparent);
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+    opacity: 1;
+  }
+}
+
+.attention-glow {
+  animation: attention-glow 2.2s ease-out 1;
+  will-change: box-shadow, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .attention-glow {
+    animation: none;
+  }
+}
+
 /* ===== CodeMirror Overrides ===== */
 .cm-editor {
   @apply h-full bg-transparent !important;
