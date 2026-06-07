@@ -12,15 +12,15 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-07 (RepoKeeper Cycle 65)
+**Last Review**: 2026-06-07 (RepoKeeper Cycle 66)
 **Status**: ✅ Up to date — with noted exceptions
 
-As of Cycle 65:
+As of Cycle 66:
 
 - All documentation aligns with current codebase state — with corrections noted below
 - No drift detected between docs/ and apps/ code
-- **BroCula hunt file added to README**: `brocula-hunt-2026-06-06-run4.md` was missing from README — now added to directory tree and docs links section as thirteenth performance optimization cycle
-- **Stale doc reference fixed**: `docs/blueprint.md` claimed React 18 and "React hooks" state management — updated to React 19 and Zustand (with React hooks)
+- **CHANGELOG updated**: Added missing entries for PRs #1649 through #1668 including UI features, Flexy improvements, BroCula audits, and CI fixes
+- **BroCula hunt file added to README**: `brocula-hunt-2026-06-07.md` was missing from README — now added to directory tree and docs links section as fourteenth performance optimization cycle
 - **CI workflow fixes PREPARED on branch `chore/repokeeper-cycle-59`** — stale doc refs fixed in `main.yml` (2 occurrences), node-version fixed (11 instances across 4 files)
 - **⚠️ NOTE**: These workflow changes are PREPARED on a branch but CANNOT be pushed to `main` without `workflows: write` permission. On `main` branch, the stale refs and Node 20 version persist. A maintainer with `workflows: write` scope must push these changes.
 - **Cycle 63 (2026-06-06)**: 6 empty CI fix commits attempted by `github-actions[bot]` — all blocked by `workflows: write` permission. No changes applied to `main` branch workflow files.
@@ -38,3 +38,4 @@ As of Cycle 65:
 | 2026-06-06 | `brocula-hunt-2026-06-06-run2.md` and `brocula-hunt-2026-06-06-run3.md` missing from README       | Fixed in RepoKeeper Cycle 64 — added both to directory tree and docs links section   |
 | 2026-06-07 | `docs/blueprint.md` claimed React 18 and "React hooks" state management                           | Fixed in RepoKeeper Cycle 65 — updated to React 19 and Zustand                       |
 | 2026-06-07 | `brocula-hunt-2026-06-06-run4.md` missing from README                                             | Fixed in RepoKeeper Cycle 65 — added to directory tree and docs links section        |
+| 2026-06-07 | `brocula-hunt-2026-06-07.md` missing from README; CHANGELOG stale (#1649-#1668 missing)           | Fixed in RepoKeeper Cycle 66 — added BroCula Jun 7 ref, updated CHANGELOG            |

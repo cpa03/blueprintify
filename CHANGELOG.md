@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Content-available indicator dot on editor tab buttons — green animated dot when content exists in sibling tab ([#1664](https://github.com/cpa03/blueprintify/pull/1664))
+- Centralized UI display strings into shared `UI_STRINGS` config across apps and tests (Flexy) ([#1667](https://github.com/cpa03/blueprintify/pull/1667))
+- Progress-shimmer animation on StepStack progress bar on tech stack completion ([#1649](https://github.com/cpa03/blueprintify/pull/1649))
+- Ambient glow background animation for premium dark theme atmosphere
+- Disabled-reason tooltip on Generate Blueprint button explaining missing fields
+- `fix-node-version` helper script to patch CI workflow files to Node.js v22 ([#1666](https://github.com/cpa03/blueprintify/pull/1666))
 - Comprehensive `useFocusTrap` hook test coverage (163 lines, addresses #1082)
 - Keyboard shortcut tooltip on editor hide buttons (desktop and mobile) showing Ctrl/Cmd+E toggle shortcut, with ARIA improvements for accessibility ([#1460](https://github.com/cpa03/blueprintify/pull/1460))
 - Estimated reading time display in editor content stats for user time estimation
@@ -52,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- RepoKeeper Cycle 65: documentation sync & stale ref fixes — React 18→19, Zustand state mgmt ([#1665](https://github.com/cpa03/blueprintify/pull/1665))
 - Centralized playwright config, template ports, env names & browser quota codes into `@blueprint/shared` (Flexy #1644)
 - Removed archived quality assessment document from docs
 - RepoKeeper Cycle 61: documentation accuracy & missing references cleanup ([#1628](https://github.com/cpa03/blueprintify/pull/1628))
@@ -85,6 +92,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- BUG-017: Replaced node-version hardcoding in pr-gatekeeper.yml, on-pull.yml, parallel.yml, iterate.yml (5 workflow files)
+- BUG-014: Updated stale doc references in main.yml to use `bugs.md`/`features.md`/`active-tasks.md`
 - Replaced `console.debug` with `console.log` in API to satisfy no-console lint rule
 - Prevented unhandledRejection handler recursive warning loop ([#1626](https://github.com/cpa03/blueprintify/pull/1626))
 - Remove redundant Google Font preload to fix console warning about unused preload
@@ -122,6 +131,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Performance
 
+- Replaced expensive Blob serialization with fast key iteration in `checkStorageQuota` (~10x faster) ([#946](https://github.com/cpa03/blueprintify/issues/946))
 - Replaced framer-motion with CSS animations in initial-load components ([#1627](https://github.com/cpa03/blueprintify/pull/1627))
 - Add resource hints (dns-prefetch/preconnect) and optimize image loading with `decoding=async` for faster page loads ([#1429](https://github.com/cpa03/blueprintify/pull/1429))
 - Simplify font loading with `media='print'` onload pattern for improved initial render performance
@@ -143,6 +153,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
+- BroCula ULW Loop — Jun 7: Console Clean, Lighthouse 100-100-100-100 ([#1668](https://github.com/cpa03/blueprintify/pull/1668))
+- BroCula ULW Loop — Jun 6 Run 4: Console Clean, Lighthouse 100-100-100-100
+- BroCula ULW Loop — Jun 6 Run 3: Console Clean, Lighthouse 100-100-100-100 ([#1653](https://github.com/cpa03/blueprintify/pull/1653))
 - BroCula hunt 2026-06-06: console and lighthouse audit report
 - BugFixer ULW cycle: BUG-014/017 fixes applied documentation ([#1630](https://github.com/cpa03/blueprintify/pull/1630))
 
