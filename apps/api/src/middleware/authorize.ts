@@ -11,6 +11,7 @@
 import type { MiddlewareHandler } from "hono";
 import type { User, UserRole } from "../types";
 import { HTTP_STATUS, ERROR_CODES, ERROR_MESSAGES } from "../config/constants";
+import { CONTEXT_KEYS, AUTH_DEFAULTS } from "@blueprint/shared";
 import { ErrorType, createErrorJson } from "../errors";
 
 /**
@@ -18,8 +19,8 @@ import { ErrorType, createErrorJson } from "../errors";
  * Higher index = more privileges.
  */
 const ROLE_HIERARCHY: Record<UserRole, number> = {
-  user: 0,
-  admin: 1,
+  [AUTH_DEFAULTS.DEFAULT_ROLE]: 0,
+  [AUTH_DEFAULTS.ADMIN_ROLE]: 1,
 };
 
 /**
@@ -39,7 +40,7 @@ const ROLE_HIERARCHY: Record<UserRole, number> = {
  */
 export function authorize(minimumRole: UserRole): MiddlewareHandler {
   return async (c, next) => {
-    const user = c.get("user") as User | undefined;
+    const user = c.get(CONTEXT_KEYS.USER) as User | undefined;
 
     // Require authentication - user context must be set by auth middleware
     if (!user) {

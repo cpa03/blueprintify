@@ -416,3 +416,28 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 1,142 tests passing (593 web + 342 api + 207 shared) across 69 files
+
+### ✅ Flexy Iteration 25: Centralize Prompt Delimiters, Auth Defaults, Context Keys & Response Status Strings
+
+| File                                          | Change                                                                                                                                                                                                                              |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`               | Added `PROMPT_DELIMITERS` (USER_INPUT_START, USER_INPUT_END)                                                                                                                                                                        |
+| `packages/shared/src/config.ts`               | Added `AUTH_DEFAULTS` (DEFAULT_ROLE, ADMIN_ROLE, ANONYMOUS_USER_ID, USER_CONTEXT_KEY, DEFAULT_USER_ROLE)                                                                                                                            |
+| `packages/shared/src/config.ts`               | Added `CONTEXT_KEYS` (REQUEST_ID, VALIDATED_DATA, USER) for Hono c.set/c.get                                                                                                                                                        |
+| `packages/shared/src/config.ts`               | Added `RESPONSE_STATUS` (OK, ERROR) for API JSON responses                                                                                                                                                                          |
+| `packages/shared/src/index.ts`                | Exported 4 new config objects                                                                                                                                                                                                       |
+| `packages/shared/src/config.test.ts`          | Added 10 tests covering all 4 new config objects (values + type checks)                                                                                                                                                             |
+| `apps/api/src/config/constants.ts`            | `PROMPT_INPUT_CONFIG.USER_DELIMITER_START/_END` now reference shared `PROMPT_DELIMITERS`                                                                                                                                            |
+| `apps/api/src/middleware/auth.ts`             | `defaultRole` uses `AUTH_DEFAULTS.DEFAULT_ROLE`; `"anonymous"` fallback → `AUTH_DEFAULTS.ANONYMOUS_USER_ID`; `"admin"/"user"` role checks → `AUTH_DEFAULTS.ADMIN_ROLE`/`DEFAULT_ROLE`; `c.set("user")` → `c.set(CONTEXT_KEYS.USER)` |
+| `apps/api/src/middleware/authorize.ts`        | `ROLE_HIERARCHY` keys use `AUTH_DEFAULTS.DEFAULT_ROLE`/`ADMIN_ROLE`; `c.get("user")` → `c.get(CONTEXT_KEYS.USER)`                                                                                                                   |
+| `apps/api/src/middleware/errorHandler.ts`     | `c.get("requestId")` → `c.get(CONTEXT_KEYS.REQUEST_ID)` (2 occurrences)                                                                                                                                                             |
+| `apps/api/src/middleware/logger.ts`           | `c.set("requestId")` → `c.set(CONTEXT_KEYS.REQUEST_ID)`                                                                                                                                                                             |
+| `apps/api/src/middleware/validator.ts`        | `c.set("validatedData")` → `c.set(CONTEXT_KEYS.VALIDATED_DATA)`                                                                                                                                                                     |
+| `apps/api/src/controllers/base.controller.ts` | `c.get("validatedData")` → `c.get(CONTEXT_KEYS.VALIDATED_DATA)`                                                                                                                                                                     |
+| `apps/api/src/index.ts`                       | Warmup endpoint `status: "ok"` → `status: RESPONSE_STATUS.OK`                                                                                                                                                                       |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — 1,156 tests passing (593 web + 342 api + 221 shared) across 69 files

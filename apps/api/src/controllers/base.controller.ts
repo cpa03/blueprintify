@@ -3,6 +3,7 @@ import { getContainer } from "../di/container";
 import { ConfigurationError } from "../errors";
 import type { ValidatedContext, ControllerContext, AppContext } from "../types";
 import type { z } from "zod";
+import { CONTEXT_KEYS } from "@blueprint/shared";
 import { CONFIG_MESSAGES, AI_CONFIG } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
 
@@ -53,7 +54,7 @@ export abstract class BaseController {
    * @throws {Error} When validated data is not found in context
    */
   public getValidatedData<T extends z.ZodSchema>(c: ValidatedContext<T>): z.infer<T> {
-    const data = c.get("validatedData");
+    const data = c.get(CONTEXT_KEYS.VALIDATED_DATA);
     if (!data) {
       throw new Error(CONFIG_MESSAGES.VALIDATED_DATA_NOT_FOUND);
     }

@@ -31,6 +31,10 @@ import {
   SECURITY_VALUES,
   UI_STRINGS,
   ENV_VAR_KEYS,
+  PROMPT_DELIMITERS,
+  AUTH_DEFAULTS,
+  CONTEXT_KEYS,
+  RESPONSE_STATUS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -844,6 +848,80 @@ describe("ENV_VAR_KEYS", () => {
         expect(typeof v).toBe("string");
         expect(v.length).toBeGreaterThan(0);
       });
+    });
+  });
+});
+
+describe("PROMPT_DELIMITERS", () => {
+  it("should have user input start delimiter", () => {
+    expect(PROMPT_DELIMITERS.USER_INPUT_START).toBe("<user_input>");
+  });
+
+  it("should have user input end delimiter", () => {
+    expect(PROMPT_DELIMITERS.USER_INPUT_END).toBe("</user_input>");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(PROMPT_DELIMITERS);
+    expect(values.length).toBeGreaterThan(0);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("AUTH_DEFAULTS", () => {
+  it("should have all expected auth defaults", () => {
+    expect(AUTH_DEFAULTS.DEFAULT_ROLE).toBe("user");
+    expect(AUTH_DEFAULTS.ADMIN_ROLE).toBe("admin");
+    expect(AUTH_DEFAULTS.ANONYMOUS_USER_ID).toBe("anonymous");
+    expect(AUTH_DEFAULTS.USER_CONTEXT_KEY).toBe("user");
+    expect(AUTH_DEFAULTS.DEFAULT_USER_ROLE).toBe("user");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(AUTH_DEFAULTS);
+    expect(values.length).toBeGreaterThan(0);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("CONTEXT_KEYS", () => {
+  it("should have all expected context keys", () => {
+    expect(CONTEXT_KEYS.REQUEST_ID).toBe("requestId");
+    expect(CONTEXT_KEYS.VALIDATED_DATA).toBe("validatedData");
+    expect(CONTEXT_KEYS.USER).toBe("user");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(CONTEXT_KEYS);
+    expect(values.length).toBeGreaterThan(0);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("RESPONSE_STATUS", () => {
+  it("should have ok status", () => {
+    expect(RESPONSE_STATUS.OK).toBe("ok");
+  });
+
+  it("should have error status", () => {
+    expect(RESPONSE_STATUS.ERROR).toBe("error");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(RESPONSE_STATUS);
+    expect(values.length).toBeGreaterThan(0);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
     });
   });
 });

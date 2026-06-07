@@ -4,6 +4,7 @@ import { createErrorResponse, isAPIError, ErrorType, createErrorJson, timestamp 
 import type { ErrorResponse } from "../errors";
 import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import { TimeoutError } from "../utils/timeout";
+import { CONTEXT_KEYS } from "@blueprint/shared";
 import { ERROR_CODES, ERROR_MESSAGES, HTTP_STATUS, VALIDATION_MESSAGES } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
 
@@ -25,7 +26,7 @@ import { secureLogError } from "../utils/secureLog";
  * @returns JSON response with error details
  */
 export const errorHandler = (err: unknown, c: Context): Response => {
-  const requestId = c.get("requestId") as string | undefined;
+  const requestId = c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined;
 
   secureLogError("API Error", err, {
     path: c.req.path,
@@ -103,7 +104,7 @@ export const errorHandler = (err: unknown, c: Context): Response => {
  * @returns JSON response with 404 error details
  */
 export const notFoundHandler = (c: Context): Response => {
-  const requestId = c.get("requestId") as string | undefined;
+  const requestId = c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined;
 
   return c.json(
     createErrorJson(

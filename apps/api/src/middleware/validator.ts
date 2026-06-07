@@ -5,7 +5,7 @@
 
 import { z } from "zod";
 import type { MiddlewareHandler } from "hono";
-import { HTTP_HEADERS } from "@blueprint/shared";
+import { HTTP_HEADERS, CONTEXT_KEYS } from "@blueprint/shared";
 import { ErrorType, createErrorJson } from "../errors";
 import { API_HEADERS, HTTP_STATUS, VALIDATION_MESSAGES, ERROR_CODES } from "../config/constants";
 
@@ -59,7 +59,7 @@ export const validateJson = <T extends z.ZodTypeAny>(
       }
 
       // Attach validated data to the context
-      c.set("validatedData", result.data);
+      c.set(CONTEXT_KEYS.VALIDATED_DATA, result.data);
       await next();
     } catch {
       return c.json(

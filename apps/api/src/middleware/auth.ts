@@ -11,6 +11,7 @@
 import type { MiddlewareHandler } from "hono";
 import type { User, UserRole } from "../types";
 import { HTTP_STATUS, ERROR_CODES, ERROR_MESSAGES, API_HEADERS } from "../config/constants";
+import { AUTH_DEFAULTS, CONTEXT_KEYS } from "@blueprint/shared";
 import { ErrorType, createErrorJson } from "../errors";
 
 /**
@@ -71,7 +72,7 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
   const {
     apiKeyHeader = API_HEADERS.CUSTOM.API_KEY,
     excludePaths = ["/"],
-    defaultRole = "user",
+    defaultRole = AUTH_DEFAULTS.DEFAULT_ROLE,
   } = config;
 
   return async (c, next) => {
@@ -106,16 +107,18 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
       );
     }
 
-    const userId = c.req.header(API_HEADERS.CUSTOM.USER_ID) || "anonymous";
+    const userId = c.req.header(API_HEADERS.CUSTOM.USER_ID) || AUTH_DEFAULTS.ANONYMOUS_USER_ID;
     const userRoleHeader = c.req.header(API_HEADERS.CUSTOM.USER_ROLE);
     const userRole: UserRole =
-      userRoleHeader === "admin" || userRoleHeader === "user" ? userRoleHeader : defaultRole;
+      userRoleHeader === AUTH_DEFAULTS.ADMIN_ROLE || userRoleHeader === AUTH_DEFAULTS.DEFAULT_ROLE
+        ? userRoleHeader
+        : defaultRole;
 
     const user: User = {
       id: userId,
       role: userRole,
     };
-    c.set("user", user);
+    c.set(CONTEXT_KEYS.USER, user);
 
     await next();
   };
