@@ -498,8 +498,38 @@
     }
   }
 
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes slide-out-up {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+  }
+
   .animate-slide-up {
     animation: slide-up 0.5s ease-out;
+    will-change: transform, opacity;
+  }
+
+  .animate-fade-out {
+    animation: fade-out 0.25s ease-out forwards;
+    will-change: opacity;
+  }
+
+  .animate-slide-out-up {
+    animation: slide-out-up 0.3s ease-out forwards;
     will-change: transform, opacity;
   }
 
@@ -522,6 +552,8 @@
     .animate-slide-in-right,
     .animate-slide-out-right,
     .animate-slide-up,
+    .animate-fade-out,
+    .animate-slide-out-up,
     .glass-card::after,
     .glass-card:focus-within::before {
       animation: none !important;

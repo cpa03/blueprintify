@@ -71,8 +71,10 @@ function App(): JSX.Element {
   const [editorExiting, setEditorExiting] = useState(false);
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [templatesExiting, setTemplatesExiting] = useState(false);
   const previousHasContentRef = useRef(hasContent);
   const previousIsGeneratingRef = useRef(isGenerating);
+  const prevShowTemplatesRef = useRef(currentStep === "info" && !hasContent);
 
   const { isOnline } = useOnlineStatus();
   const toast = useToast();
@@ -90,8 +92,38 @@ function App(): JSX.Element {
     prevOnlineRef.current = isOnline;
   }, [isOnline, toast]);
 
-  // Show templates only on first step with no content
-  const showTemplates = currentStep === "info" && !hasContent;
+  // Templates exit animation — when the hero/templates should disappear, we
+  // animate them out with a CSS animation before removing them from the DOM.
+  // This prevents the abrupt unmount that previously occurred when navigating
+  // away from the first step or after content generation completes.
+  const showTemplates = currentStep === "info" && !hasContent && !templatesExiting;
+
+  useEffect(() => {
+    const wasVisible = prevShowTemplatesRef.current;
+    const isNowVisible = currentStep === "info" && !hasContent;
+
+    // Detect transition from visible → hidden and trigger exit animation
+    if (wasVisible && !isNowVisible && !templatesExiting) {
+      setTemplatesExiting(true);
+    }
+
+    prevShowTemplatesRef.current = isNowVisible;
+  }, [currentStep, hasContent, templatesExiting]);
+
+  // Backup cleanup timeout — ensures templatesExiting gets reset even if
+  // onAnimationEnd doesn't fire (prefers-reduced-motion, browser quirks)
+  useEffect(() => {
+    if (templatesExiting) {
+      const timer = setTimeout(() => {
+        setTemplatesExiting(false);
+      }, 350);
+      return () => clearTimeout(timer);
+    }
+  }, [templatesExiting]);
+
+  const handleTemplatesExitEnd = useCallback(() => {
+    setTemplatesExiting(false);
+  }, []);
 
   // Memoized handlers for stable references to child components
   const handleHideEditor = useCallback(() => {
@@ -180,9 +212,10 @@ function App(): JSX.Element {
       <main id="main-content" className={LAYOUT.MAIN_CONTENT} tabIndex={-1}>
         <div className={LAYOUT.CONTENT_CONTAINER}>
           {/* Hero section (only on first view) - Critical LCP element, no opacity animation on title.
-              Subtitle gets a subtle delayed entrance for a polished cascade feel. */}
-          {showTemplates && (
-            <div className={LAYOUT.HERO_SECTION}>
+              Subtitle gets a subtle delayed entrance for a polished cascade feel.
+              On exit, fades/slides upward for a smooth transition when navigating away. */}
+          {(showTemplates || templatesExiting) && (
+            <div className={templatesExiting ? "animate-slide-out-up" : LAYOUT.HERO_SECTION}>
               <h1 className={LAYOUT.HERO_TITLE}>
                 {UI_CONTENT.HERO.TITLE_1}
                 <span className="text-gradient">{UI_CONTENT.HERO.TITLE_HIGHLIGHT_1}</span>
@@ -202,9 +235,12 @@ function App(): JSX.Element {
             </div>
           )}
 
-          {/* Templates */}
-          {showTemplates && (
-            <div className="animate-fade-in">
+          {/* Templates - with exit animation */}
+          {(showTemplates || templatesExiting) && (
+            <div
+              className={templatesExiting ? "animate-slide-out-up" : "animate-fade-in"}
+              onAnimationEnd={templatesExiting ? handleTemplatesExitEnd : undefined}
+            >
               <Suspense fallback={<TemplateGridSkeleton />}>
                 <TemplateGrid />
               </Suspense>
