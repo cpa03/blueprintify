@@ -635,3 +635,17 @@ export const HTTP_HEADER_NAMES = {
   X_REQUEST_ID_LC: "x-request-id",
   CF_RAY_LC: "cf-ray",
 } as const;
+
+/**
+ * Common UI Display Strings
+ * Centralized source of truth for frequently-used UI text to avoid hardcoded
+ * strings in components. Flexy says: No "Loading editor..." in components!
+ */
+export const UI_STRINGS = {
+  /** Loading display for lazy-loaded editor */
+  LOADING_EDITOR: "Loading editor...",
+  /** Loading display for lazy-loaded markdown preview */
+  LOADING_PREVIEW: "Loading preview...",
+  /** Unparsable body fallback for API logging */
+  UNPARSABLE_BODY: "[unparsable]",
+} as const;

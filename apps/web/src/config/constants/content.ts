@@ -6,6 +6,17 @@
  */
 
 import { ENV } from "../env";
+import { UI_STRINGS } from "@blueprint/shared";
+
+/**
+ * Loading State Messages
+ * Flexy says: No "Loading editor..." hardcoded in components!
+ * Single source of truth from @blueprint/shared UI_STRINGS
+ */
+export const LOADING_MESSAGES = {
+  EDITOR: UI_STRINGS.LOADING_EDITOR,
+  PREVIEW: UI_STRINGS.LOADING_PREVIEW,
+} as const;
 
 /**
  * UI Content - Text content for the application

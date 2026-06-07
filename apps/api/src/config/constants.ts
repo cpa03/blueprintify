@@ -26,6 +26,7 @@ import {
   BODY_SIZE_LIMITS as SHARED_BODY_SIZE_LIMITS,
   HTTP_HEADER_NAMES,
   SECURITY_VALUES,
+  UI_STRINGS,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./config-types";
 import {
@@ -582,7 +583,7 @@ export const LOGGER_CONFIG = {
     HTTP_HEADER_NAMES.AUTHORIZATION_LC,
     HTTP_HEADER_NAMES.COOKIE_LC,
   ] as const,
-  UNPARSABLE_BODY: "[unparsable]",
+  UNPARSABLE_BODY: UI_STRINGS.UNPARSABLE_BODY,
 } as const;
 
 export const RATE_LIMIT_CONSTANTS = {

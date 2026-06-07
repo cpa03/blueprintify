@@ -397,3 +397,22 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR # | Branch                          | Title                                                                         |
 | ---- | ------------------------------- | ----------------------------------------------------------------------------- |
 | TBD  | `feat/flexy-ci-node-version-v2` | feat(flexy): add wrangler.toml Flexy comments linking values to shared config |
+
+### ✅ Flexy Iteration 24: Centralize UI Display Strings into Shared UI_STRINGS Config
+
+| File                                               | Change                                                                               |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `packages/shared/src/config.ts`                    | Added `UI_STRINGS` (LOADING_EDITOR, LOADING_PREVIEW, UNPARSABLE_BODY)                |
+| `packages/shared/src/index.ts`                     | Exported `UI_STRINGS`                                                                |
+| `packages/shared/src/config.test.ts`               | Added 4 tests for `UI_STRINGS` (values + type check)                                 |
+| `apps/web/src/config/constants/content.ts`         | Added `LOADING_MESSAGES` re-export referencing `UI_STRINGS` from `@blueprint/shared` |
+| `apps/web/src/components/LazyCodeMirror.tsx`       | Replaced hardcoded `"Loading editor..."` with `{LOADING_MESSAGES.EDITOR}`            |
+| `apps/web/src/components/LazyMarkdownRenderer.tsx` | Replaced hardcoded `"Loading preview..."` with `{LOADING_MESSAGES.PREVIEW}`          |
+| `apps/api/src/config/constants.ts`                 | Replaced `"[unparsable]"` literal with `UI_STRINGS.UNPARSABLE_BODY` reference        |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,142 tests passing (593 web + 342 api + 207 shared) across 69 files
