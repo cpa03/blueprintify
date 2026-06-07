@@ -110,4 +110,33 @@ describe("ConfirmDialog", () => {
     const dialog = screen.getByRole("dialog");
     expect(dialog).toHaveAttribute("aria-describedby", "confirm-dialog-description");
   });
+
+  it("calls onConfirm and onClose when Enter is pressed", () => {
+    render(<ConfirmDialog {...defaultProps} />);
+
+    fireEvent.keyDown(document, { key: "Enter" });
+
+    expect(defaultProps.onConfirm).toHaveBeenCalledTimes(1);
+    expect(defaultProps.onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("calls onClose but not onConfirm when Escape is pressed", () => {
+    const onConfirm = vi.fn();
+    const onClose = vi.fn();
+    render(<ConfirmDialog {...defaultProps} onConfirm={onConfirm} onClose={onClose} />);
+
+    fireEvent.keyDown(document, { key: "Escape" });
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(onConfirm).not.toHaveBeenCalled();
+  });
+
+  it("does not trigger confirm when Enter is pressed with shift modifier", () => {
+    const onConfirm = vi.fn();
+    render(<ConfirmDialog {...defaultProps} onConfirm={onConfirm} />);
+
+    fireEvent.keyDown(document, { key: "Enter", shiftKey: true });
+
+    expect(onConfirm).not.toHaveBeenCalled();
+  });
 });
