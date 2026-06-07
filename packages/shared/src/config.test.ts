@@ -29,6 +29,7 @@ import {
   HTTP_METHODS,
   HTTP_HEADER_NAMES,
   SECURITY_VALUES,
+  UI_STRINGS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -755,5 +756,28 @@ describe("SECURITY_VALUES", () => {
 
   it("should have X-Accel-Buffering no value", () => {
     expect(SECURITY_VALUES.X_ACCEL_BUFFERING_NO).toBe("no");
+  });
+});
+
+describe("UI_STRINGS", () => {
+  it("should have loading editor message", () => {
+    expect(UI_STRINGS.LOADING_EDITOR).toBe("Loading editor...");
+  });
+
+  it("should have loading preview message", () => {
+    expect(UI_STRINGS.LOADING_PREVIEW).toBe("Loading preview...");
+  });
+
+  it("should have unparsable body fallback", () => {
+    expect(UI_STRINGS.UNPARSABLE_BODY).toBe("[unparsable]");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(UI_STRINGS);
+    expect(values.length).toBeGreaterThan(0);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
   });
 });

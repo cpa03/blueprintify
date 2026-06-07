@@ -27,6 +27,7 @@ import { useState, useEffect, memo, forwardRef } from "react";
 import type { Extension } from "@codemirror/state";
 import type { ReactCodeMirrorProps, ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { isDev } from "../config/env";
+import { LOADING_MESSAGES } from "../config/constants";
 
 interface LazyCodeMirrorProps {
   value: string;
@@ -84,7 +85,7 @@ const LazyCodeMirrorComponent = forwardRef<ReactCodeMirrorRef, LazyCodeMirrorPro
         >
           <div className="flex flex-col items-center gap-2 text-dark-500">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
-            <span className="text-sm">Loading editor...</span>
+            <span className="text-sm">{LOADING_MESSAGES.EDITOR}</span>
           </div>
         </div>
       );

@@ -26,6 +26,7 @@
 import React, { useState, useEffect, memo } from "react";
 import type { MarkdownRendererProps } from "./MarkdownRenderer";
 import { isDev } from "../config/env";
+import { LOADING_MESSAGES } from "../config/constants";
 
 interface LazyMarkdownRendererProps extends MarkdownRendererProps {
   fallback?: React.ReactNode;
@@ -73,7 +74,7 @@ function LazyMarkdownRendererComponent({
         {fallback || (
           <div className="flex flex-col items-center gap-2 text-dark-500">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
-            <span className="text-sm">Loading preview...</span>
+            <span className="text-sm">{LOADING_MESSAGES.PREVIEW}</span>
           </div>
         )}
       </div>

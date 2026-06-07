@@ -93,6 +93,7 @@ export {
   TEMPLATE_NODE_PORT,
   ENVIRONMENT_NAMES,
   BROWSER_QUOTA_ERROR_CODES,
+  UI_STRINGS,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";
