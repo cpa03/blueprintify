@@ -60,6 +60,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- RepoKeeper Cycle 68: documentation sync, CHANGELOG update, missing BroCula Run 2 ref, and quality verification ([#1679](https://github.com/cpa03/blueprintify/pull/1679))
+- RepoKeeper Cycle 67: CHANGELOG update & documentation sync ([#1676](https://github.com/cpa03/blueprintify/pull/1676))
+- Centralized prompt delimiters, auth defaults, context keys & response status strings into shared config (Flexy) ([#1678](https://github.com/cpa03/blueprintify/pull/1678))
 - RepoKeeper Cycle 66: documentation sync, CHANGELOG update & missing BroCula Jun 7 reference ([#1670](https://github.com/cpa03/blueprintify/pull/1670))
 - RepoKeeper Cycle 65: documentation sync & stale ref fixes — React 18→19, Zustand state mgmt ([#1665](https://github.com/cpa03/blueprintify/pull/1665))
 - Centralized playwright config, template ports, env names & browser quota codes into `@blueprint/shared` (Flexy #1644)
@@ -95,8 +98,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- BUG-017: Replaced node-version hardcoding in pr-gatekeeper.yml, on-pull.yml, parallel.yml, iterate.yml (5 workflow files)
-- BUG-014: Updated stale doc references in main.yml to use `bugs.md`/`features.md`/`active-tasks.md`
+- BUG-017: Replaced node-version hardcoding in pr-gatekeeper.yml, on-pull.yml, parallel.yml, iterate.yml (5 workflow files) — re-applied in Fixy (#1675)
+- BUG-014: Updated stale doc references in main.yml to use `bugs.md`/`features.md`/`active-tasks.md` — re-applied in Fixy (#1675)
+- Enter key now actually confirms ConfirmDialog instead of needing to click button ([#1674](https://github.com/cpa03/blueprintify/pull/1674))
 - Replaced `console.debug` with `console.log` in API to satisfy no-console lint rule
 - Prevented unhandledRejection handler recursive warning loop ([#1626](https://github.com/cpa03/blueprintify/pull/1626))
 - Remove redundant Google Font preload to fix console warning about unused preload
@@ -156,6 +160,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
+- BroCula ULW Loop — Jun 7 Run 2: Console Clean, Lighthouse 99-100-100-100 ([#1677](https://github.com/cpa03/blueprintify/pull/1677))
 - BroCula ULW Loop — Jun 7: Console Clean, Lighthouse 99-100-100-100 ([#1673](https://github.com/cpa03/blueprintify/pull/1673))
 - BugFixer ULW Loop Cycle 4 audit status ([#1669](https://github.com/cpa03/blueprintify/pull/1669))
 - BroCula ULW Loop — Jun 7: Console Clean, Lighthouse 100-100-100-100 ([#1668](https://github.com/cpa03/blueprintify/pull/1668))
