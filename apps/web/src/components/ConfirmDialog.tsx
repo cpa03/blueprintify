@@ -86,6 +86,11 @@ export const ConfirmDialog = memo(function ConfirmDialog({
     autoFocus: false,
   });
 
+  const handleConfirm = useCallback(() => {
+    onConfirm();
+    onClose();
+  }, [onConfirm, onClose]);
+
   useEffect(() => {
     if (isOpen) {
       confirmButtonRef.current?.focus();
@@ -100,6 +105,9 @@ export const ConfirmDialog = memo(function ConfirmDialog({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onClose();
+      } else if (e.key === "Enter" && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+        handleConfirm();
       }
     };
 
@@ -109,12 +117,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
       document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen, onClose]);
-
-  const handleConfirm = useCallback(() => {
-    onConfirm();
-    onClose();
-  }, [onConfirm, onClose]);
+  }, [isOpen, onClose, handleConfirm]);
 
   const handleOverlayClick = useCallback(() => {
     onClose();
