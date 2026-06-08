@@ -60,8 +60,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Keyboard shortcut hints (Ctrl/Cmd+E) in ConfirmDialog for improved UX ([#1629](https://github.com/cpa03/blueprintify/pull/1629))
 - Smooth slide-out exit animation for editor panel ([#1624](https://github.com/cpa03/blueprintify/pull/1624))
 - Label normalization script for automated open issue triage
+- Keyboard shortcuts for view mode switching (Ctrl/Cmd+1/2/3) ([#1701](https://github.com/cpa03/blueprintify/pull/1701))
+- BroCula ULW Loop Jun 8 Run 1 — Console Clean, Lighthouse 100-100-100-100 audit report
+- Issue audit report for ULW Loop 2026-06-08
 
 ### Changed
+
+- RepoKeeper Cycle 71: documentation sync, missing BroCula Jun 8, Jun 8 Run 2 & issue audit Jun 8 refs, CHANGELOG update, quality verification
+- RepoKeeper Cycle 70b: deduplicate root devDependencies and remove stale merged branch ([#1700](https://github.com/cpa03/blueprintify/pull/1700))
+- CI workflow fixes documentation: ULW-4 verification ([#1698](https://github.com/cpa03/blueprintify/pull/1698))
+- CI workflow fixes documentation: ULW-5 attempt (.nvmrc approach)
 
 - RepoKeeper Cycle 68: documentation sync, CHANGELOG update, missing BroCula Run 2 ref, and quality verification ([#1679](https://github.com/cpa03/blueprintify/pull/1679))
 - Refactored `createErrorResponse` duplication in share routes — replaced 57-line local functions with shared `createErrorJson` from errors.ts
@@ -103,6 +111,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Remove explicit HMR clientPort to prevent WebSocket mismatch in dev server ([#1703](https://github.com/cpa03/blueprintify/pull/1703))
+- Replace `any` type with `StoreApi` in persistence.ts `setState` type ([#46c6d83](https://github.com/cpa03/blueprintify/commit/46c6d83))
+- Restore pinned dompurify version accidentally widened by lockfile regeneration ([#21b1ea9](https://github.com/cpa03/blueprintify/commit/21b1ea9))
 - BUG-017: Replaced node-version hardcoding in pr-gatekeeper.yml, on-pull.yml, parallel.yml, iterate.yml (5 workflow files) — re-applied in Fixy (#1675)
 - BUG-014: Updated stale doc references in main.yml to use `bugs.md`/`features.md`/`active-tasks.md` — re-applied in Fixy (#1675)
 - Enter key now actually confirms ConfirmDialog instead of needing to click button ([#1674](https://github.com/cpa03/blueprintify/pull/1674))
@@ -140,6 +151,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Pinned wrangler to v4.86.0 for Node.js v20 compatibility ([#1299](https://github.com/cpa03/blueprintify/pull/1299))
 - Restored accidentally removed `lsp` config section in `oh-my-openagent.json`
 - Corrected Prettier formatting across multiple files (workflows, index.html)
+
+### Documentation
+
+- BugFixer ULW Cycle 8 run — full repo audit log ([#1702](https://github.com/cpa03/blueprintify/pull/1702))
+- BroCula ULW Loop Jun 8 Run 1 audit report — Console Clean, Lighthouse 100-100-100-100
+- BroCula ULW Loop Jun 8 Run 2 audit report
+- Issue audit report for ULW Loop 2026-06-08
+- CI workflow fixes: ULW-4 verification (CI Node.js version fix status)
+- CI workflow fixes: ULW-5 attempt (`.nvmrc` approach)
 
 ### Performance
 
