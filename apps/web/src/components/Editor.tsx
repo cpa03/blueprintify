@@ -48,6 +48,13 @@ import { useLastSaved } from "../hooks/useLastSaved";
 import clsx from "clsx";
 import "../styles/markdown.css";
 
+/** Map of keyboard digits to view modes for Ctrl/Cmd+1/2/3 switching */
+const VIEW_MODE_SHORTCUT_MAP: Record<string, ViewMode> = {
+  "1": "edit",
+  "2": "split",
+  "3": "preview",
+} as const;
+
 /**
  * Main editor component providing split-pane editing with live preview.
  *
@@ -213,11 +220,27 @@ function EditorComponent(): JSX.Element {
         e.preventDefault();
         handleNewProject();
       }
+
+      // Ctrl/Cmd+1/2/3 to switch editor view mode
+      // Tooltips already display these shortcuts, making them functional
+      // gives power users the keyboard-driven workflow they expect.
+      if ((e.metaKey || e.ctrlKey) && e.key in VIEW_MODE_SHORTCUT_MAP) {
+        // Skip when user is typing in an input or textarea to avoid
+        // accidentally switching views while trying to type numbers.
+        if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+          return;
+        }
+        e.preventDefault();
+        const mode = VIEW_MODE_SHORTCUT_MAP[e.key];
+        if (mode) {
+          setViewMode(mode);
+        }
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleNewProject]);
+  }, [handleNewProject, setViewMode]);
 
   // Smooth-scroll both preview pane and CodeMirror editor to top when switching tabs
   // Prevents disorientation when content changes but scroll stays mid-content

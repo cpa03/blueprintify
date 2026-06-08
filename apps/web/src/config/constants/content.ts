@@ -144,9 +144,9 @@ export const EDITOR_LABELS = {
     EXPORTED: "Exported!",
   },
   VIEW_MODE_SHORTCUTS: {
-    EDIT: "Ctrl+1",
-    SPLIT: "Ctrl+2",
-    PREVIEW: "Ctrl+3",
+    EDIT: "Ctrl/Cmd+1",
+    SPLIT: "Ctrl/Cmd+2",
+    PREVIEW: "Ctrl/Cmd+3",
   },
   VIEW_MODES_ARIA_LABEL: "Editor view mode",
   BUTTONS: {
