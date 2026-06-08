@@ -41,6 +41,9 @@ export const VALIDATION_LIMITS = {
     MIN: 1,
     MAX: 10,
   },
+  VERSION: {
+    MAX: 50,
+  },
 } as const;
 
 /**
