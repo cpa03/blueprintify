@@ -359,6 +359,18 @@
 
   /* Green success flash for completed wizard steps — one-shot scale + glow burst
      that gives a "checkpoint reached" feeling when navigating forward through steps. */
+  @keyframes stack-card-attention {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 transparent;
+    }
+    25% {
+      box-shadow:
+        0 0 0 2px color-mix(in srgb, var(--color-accent-pink) 25%, transparent),
+        0 0 18px -4px color-mix(in srgb, var(--color-accent-pink) 12%, transparent);
+    }
+  }
+
   @keyframes step-complete-flash {
     0% {
       box-shadow: 0 0 0 0 color-mix(in srgb, #10b981 40%, transparent);
@@ -378,6 +390,10 @@
 
   .step-complete-flash {
     animation: step-complete-flash 0.6s ease-out;
+  }
+
+  .stack-card-attention {
+    animation: stack-card-attention 0.5s ease-out;
   }
 
   /* Tooltip entrance animation — replaces framer-motion spring for SmartTooltip */
@@ -541,6 +557,7 @@
     .glow-pulse,
     .circular-complete-glow,
     .shake-animation,
+    .stack-card-attention,
     .progress-shimmer::after,
     .animate-glow,
     .animate-fade-in,
