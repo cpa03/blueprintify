@@ -69,7 +69,9 @@ export function createPersistedStore<T, S>(
   options: CreatePersistedStoreOptions<T, S>
 ): {
   loadState: (
-    set: (partial: Partial<S> | ((state: S) => Partial<S>) | S, replace?: boolean) => void
+    set:
+      | ((partial: Partial<S> | ((state: S) => Partial<S>) | S, replace?: false) => void)
+      | ((state: S | ((state: S) => S), replace: true) => void)
   ) => Promise<void>;
   saveState: (get: () => S) => Promise<void>;
   debouncedSave: (get: () => S) => void;
@@ -78,9 +80,8 @@ export function createPersistedStore<T, S>(
 } {
   const { storage, debounceDelay, getPersistData } = options;
 
-  const loadState = async (
-    set: (partial: Partial<S> | ((state: S) => Partial<S>) | S, replace?: boolean) => void
-  ): Promise<void> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const loadState = async (set: (...args: any[]) => void): Promise<void> => {
     try {
       const stored = await storage.get();
       if (stored !== null) {
