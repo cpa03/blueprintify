@@ -2,27 +2,25 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 72 — Documentation Sync & Missing References
+## Current Focus: RepoKeeper Cycle 73 — Documentation Sync & Missing BroCula Run 3 Reference
 
-### Task: Full repository audit, missing README refs (BroCula Jun 8, Issue Audit Jun 8), CHANGELOG update
+### Task: Full repository audit, add missing BroCula Jun 8 Run 3 README ref, update documentation
 
 - **Priority**: High
 - **Status**: 🟢 Complete
-- **Objective**: Full repository audit, add missing BroCula Jun 8, Jun 8 Run 2 & Issue Audit Jun 8 refs to README, update CHANGELOG, refresh documentation
+- **Objective**: Full repository audit, add missing BroCula Jun 8 Run 3 ref to README, update CHANGELOG, refresh documentation
 - **Actions**:
   - [x] Full repository scan for redundant/temp/unused files → none found
   - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
   - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
-  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅
-  - [x] Added missing `brocula-hunt-2026-06-08.md` to README directory tree and docs section
-  - [x] Added missing `brocula-hunt-2026-06-08-run2.md` to README directory tree and docs section
-  - [x] Added missing `issue-audit-report-2026-06-08.md` to README directory tree and docs section
-  - [x] Updated CHANGELOG.md — added BroCula Jun 8, Jun 8 Run 2, Issue Audit Jun 8, and missing PR entries
-  - [x] Updated `docs/findings.md` — Cycle 72 entry
-  - [x] Updated `docs/active-tasks.md` — Cycle 72 status
-  - [x] Updated `docs/bugs.md` — Cycle 72 status log
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,162/1,162 ✅
+  - [x] Added missing `brocula-hunt-2026-06-08-run3.md` to README directory tree and docs section
+  - [x] Updated CHANGELOG.md — added RepoKeeper Cycle 73 entry
+  - [x] Updated `docs/findings.md` — Cycle 73 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 73 status
+  - [x] Updated `docs/bugs.md` — Cycle 73 status log
 
-## Previous Cycle: RepoKeeper Cycle 70 — Documentation Sync & Stale Branch Cleanup ✅ COMPLETE
+## Previous Cycle: RepoKeeper Cycle 72 — Documentation Sync & Missing References ✅ COMPLETE
 
 ### Task: Full repository audit, missing README refs, stale branch cleanup, CHANGELOG update
 
@@ -172,5 +170,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-08 (Cycle 72: RepoKeeper)  
+**Last Updated**: 2026-06-08 (Cycle 73: RepoKeeper)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)

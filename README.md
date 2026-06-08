@@ -60,6 +60,7 @@ blueprintify/
 │   │   ├── brocula-hunt-2026-06-07-run4.md
 │   │   ├── brocula-hunt-2026-06-08.md
 │   │   ├── brocula-hunt-2026-06-08-run2.md
+│   │   ├── brocula-hunt-2026-06-08-run3.md
 │   │   ├── diagnostic-scoring-2026-05-31.md
 │   │   ├── diagnostic-scoring-2026-06-04.md
 │   │   └── diagnostic-scoring-2026-06-07.md
@@ -371,6 +372,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[BroCula Hunt (Jun 7 Run 4)](./docs/audits/brocula-hunt-2026-06-07-run4.md)** - Seventeenth performance optimization cycle — Console Clean, Lighthouse 99-100-100-100
 - **[BroCula Hunt (Jun 8)](./docs/audits/brocula-hunt-2026-06-08.md)** - Eighteenth performance optimization cycle — Console Clean
 - **[BroCula Hunt (Jun 8 Run 2)](./docs/audits/brocula-hunt-2026-06-08-run2.md)** - Nineteenth performance optimization cycle
+- **[BroCula Hunt (Jun 8 Run 3)](./docs/audits/brocula-hunt-2026-06-08-run3.md)** - Twentieth performance optimization cycle
 - **[Diagnostic Scoring (May 31)](./docs/audits/diagnostic-scoring-2026-05-31.md)** - Comprehensive diagnostic scoring analysis
 - **[Diagnostic Scoring (Jun 4)](./docs/audits/diagnostic-scoring-2026-06-04.md)** - Phase 1 diagnostic scoring report (81.1/100)
 - **[Diagnostic Scoring (Jun 7)](./docs/audits/diagnostic-scoring-2026-06-07.md)** - Phase 1 diagnostic scoring report (81.3/100)
