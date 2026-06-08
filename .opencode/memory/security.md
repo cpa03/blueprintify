@@ -8,7 +8,7 @@
 - CI/CD security: Standardized runner versions (`ubuntu-24.04-arm`) and action versions across all workflows.
 - Regular security audits (monthly recommended).
 
-## Current Security Status (2026-06-02 04:10 UTC)
+## Current Security Status (2026-06-08)
 
 | Control             | Status                                                |
 | ------------------- | ----------------------------------------------------- |
@@ -25,7 +25,7 @@
 | Rate Limiting       | ✅ Cloudflare rate limiter                            |
 | CI Runner           | ✅ All workflows use ubuntu-24.04-arm                 |
 | CI Actions          | ⚠️ main.yml uses invalid @v5 (blocked by #743)        |
-| npm audit           | ⚠️ **4 critical** vulnerabilities in vitest (dev deps) — GHSA-5xrq-8626-4rwp (CVSS 9.8). Upgrade to vitest@4.1.8+ required. Moderate AJV vulns (risk accepted, tracked in docs/security/assessment-ajv-vulnerabilities.md) |
+| npm audit           | ✅ **0 vulnerabilities** — Clean                      |
 | .dev.vars gitignore  | ✅ Added to prevent credential commits               |
 
 ## Lessons Learned
@@ -150,6 +150,15 @@
 - **Risk Assessment**: LOW - development-only dependency, not in production bundle
 - **Resolution**: Risk accepted, documented in `docs/security/assessment-ajv-vulnerabilities.md`
 - **Lesson**: Always assess actual exploitability before panic-fixing dependency vulnerabilities
+
+### 2026-06-08: Security Engineer Audit — Dependency Downgrade Regression Fixed
+
+- **Finding**: PR contained two unauthorized dependency downgrades: `dompurify` from `^3.4.8` to `^3.4.7` (XSS sanitizer regression) and `openai` from `^6.42.0` to `^6.41.0` (OpenAI SDK regression).
+- **Root Cause**: Manual edits to `apps/web/package.json` and `apps/api/package.json` lowered version constraints, and `package-lock.json` was regenerated to match.
+- **Risk**: Downgrading `dompurify` (XSS sanitization library) reintroduces XSS vulnerabilities patched in 3.4.8. Downgrading `openai` loses bug fixes and security hardening from 6.41.0 → 6.42.0.
+- **Fix**: Reverted both dependencies to their correct versions (`dompurify@^3.4.8`, `openai@^6.42.0`) and regenerated `package-lock.json`.
+- **Verification**: TypeScript clean, npm audit clean (0 vulnerabilities).
+- **Lesson**: Dependency version changes in PRs must only move forward, never backward. A security-critical dependency (like DOMPurify) should never be downgraded without explicit security review sign-off.
 
 ### 2026-02-18: Timing Attack Vulnerability in Auth Middleware
 
