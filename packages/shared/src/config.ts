@@ -806,3 +806,25 @@ export const ENV_VAR_KEYS = {
     VITE_DEFAULT_PROJECT_NAME: "VITE_DEFAULT_PROJECT_NAME",
   } as const,
 } as const;
+
+/**
+ * API Error Codes
+ * Centralized source of truth for all API error response codes.
+ * Used by API middleware, controllers, and error classes for consistent
+ * error code values in JSON error responses.
+ * Flexy says: No hardcoded "VALIDATION_ERROR" strings in error handlers!
+ */
+export const ERROR_CODES = {
+  VALIDATION_ERROR: "VALIDATION_ERROR",
+  NOT_FOUND_ERROR: "NOT_FOUND_ERROR",
+  CONFIGURATION_ERROR: "CONFIGURATION_ERROR",
+  NETWORK_ERROR: "NETWORK_ERROR",
+  AI_SERVICE_ERROR: "AI_SERVICE_ERROR",
+  INTERNAL_ERROR: "INTERNAL_ERROR",
+  AUTHENTICATION_ERROR: "AUTHENTICATION_ERROR",
+  AUTHORIZATION_ERROR: "AUTHORIZATION_ERROR",
+  RATE_LIMIT_ERROR: "RATE_LIMIT_ERROR",
+  CIRCUIT_BREAKER_OPEN: "CIRCUIT_BREAKER_OPEN",
+  TIMEOUT_ERROR: "TIMEOUT_ERROR",
+  PAYLOAD_TOO_LARGE: "PAYLOAD_TOO_LARGE",
+} as const;

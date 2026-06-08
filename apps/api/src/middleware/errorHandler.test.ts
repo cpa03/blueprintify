@@ -4,6 +4,7 @@ import { errorHandler, notFoundHandler } from "./errorHandler";
 import { ValidationError, AuthenticationError, NotFoundError, ConfigurationError } from "../errors";
 import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import type { ErrorResponse } from "../errors";
+import { ERROR_CODES } from "../config/constants";
 
 const TEST_REQUEST_ID = "test-request-id-12345";
 
@@ -44,7 +45,7 @@ describe("errorHandler", () => {
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("validation");
-    expect(data.error.code).toBe("VALIDATION_ERROR");
+    expect(data.error.code).toBe(ERROR_CODES.VALIDATION_ERROR);
   });
 
   it("should handle AuthenticationError with 401 status", async () => {
@@ -105,7 +106,7 @@ describe("errorHandler", () => {
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("service_unavailable");
-    expect(data.error.code).toBe("CIRCUIT_BREAKER_OPEN");
+    expect(data.error.code).toBe(ERROR_CODES.CIRCUIT_BREAKER_OPEN);
   });
 
   it("should handle generic Error with 500 status", async () => {
@@ -220,7 +221,7 @@ describe("notFoundHandler", () => {
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("not_found");
-    expect(data.error.code).toBe("NOT_FOUND_ERROR");
+    expect(data.error.code).toBe(ERROR_CODES.NOT_FOUND_ERROR);
   });
 
   it("should include the requested path in error message", async () => {
