@@ -22,13 +22,14 @@
  */
 
 import { motion } from "framer-motion";
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback } from "react";
 import { useWizardStore } from "../../store";
 import { useBlueprintStream } from "../../hooks/useBlueprintStream";
 import { ANIMATION, GENERATION_ESTIMATES, ACCESSIBILITY_LABELS } from "../../config/constants";
 import { pageTransition, fadeInUp, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 import { SmartTooltip, KeyboardShortcutTooltip } from "../SmartTooltip";
+import { getModifierLabel } from "../../lib/platform";
 
 interface StepReviewProps {
   direction?: AnimationDirection;
@@ -51,11 +52,7 @@ export const StepReview = memo(function StepReview({
   const handleEditStack = useCallback(() => setStep("stack"), [setStep]);
   const handleEditFeatures = useCallback(() => setStep("features"), [setStep]);
 
-  const modifierKey = useMemo(() => {
-    const isMac =
-      typeof navigator !== "undefined" && navigator.platform.toUpperCase().indexOf("MAC") >= 0;
-    return isMac ? "\u2318" : "Ctrl";
-  }, []);
+  const modifierKey = getModifierLabel();
 
   return (
     <motion.div {...pageTransition(direction)} className="space-y-6">
