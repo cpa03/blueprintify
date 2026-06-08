@@ -496,6 +496,26 @@ export const SECURITY_VALUES = {
   SAME_ORIGIN: "same-origin",
   /** X-Accel-Buffering: disable nginx buffering for SSE */
   X_ACCEL_BUFFERING_NO: "no",
+
+  /** Permissions-Policy directive values - individual feature permissions */
+  PERMISSIONS_POLICY: {
+    /** Disable accelerometer access */
+    ACCELEROMETER_NONE: "accelerometer=()",
+    /** Disable camera access */
+    CAMERA_NONE: "camera=()",
+    /** Disable geolocation access */
+    GEOLOCATION_NONE: "geolocation=()",
+    /** Disable gyroscope access */
+    GYROSCOPE_NONE: "gyroscope=()",
+    /** Disable magnetometer access */
+    MAGNETOMETER_NONE: "magnetometer=()",
+    /** Disable microphone access */
+    MICROPHONE_NONE: "microphone=()",
+    /** Disable payment request API */
+    PAYMENT_NONE: "payment=()",
+    /** Disable USB device access */
+    USB_NONE: "usb=()",
+  } as const,
 } as const;
 
 /**
