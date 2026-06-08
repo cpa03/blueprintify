@@ -1,4 +1,5 @@
 import { STORAGE_ERROR_MESSAGES } from "../config/constants";
+import type { StoreApi } from "zustand";
 
 /**
  * Generic storage interface that the persistence utilities expect.
@@ -80,8 +81,7 @@ export function createPersistedStore<T, S>(
 } {
   const { storage, debounceDelay, getPersistData } = options;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const loadState = async (set: (...args: any[]) => void): Promise<void> => {
+  const loadState = async (set: StoreApi<S>["setState"]): Promise<void> => {
     try {
       const stored = await storage.get();
       if (stored !== null) {
