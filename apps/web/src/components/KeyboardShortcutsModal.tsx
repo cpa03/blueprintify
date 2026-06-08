@@ -66,6 +66,21 @@ const getShortcutItems = (): ShortcutItem[] => {
       category: "editor",
     },
     {
+      keys: [modifier, "1"],
+      description: KEYBOARD_SHORTCUTS.VIEW_MODE_EDIT.DESCRIPTION,
+      category: "editor",
+    },
+    {
+      keys: [modifier, "2"],
+      description: KEYBOARD_SHORTCUTS.VIEW_MODE_SPLIT.DESCRIPTION,
+      category: "editor",
+    },
+    {
+      keys: [modifier, "3"],
+      description: KEYBOARD_SHORTCUTS.VIEW_MODE_PREVIEW.DESCRIPTION,
+      category: "editor",
+    },
+    {
       keys: [modifier, "Enter"],
       description: KEYBOARD_SHORTCUTS.SUBMIT_WIZARD.DESCRIPTION,
       category: "general",

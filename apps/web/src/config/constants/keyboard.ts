@@ -29,4 +29,19 @@ export const KEYBOARD_SHORTCUTS = {
     MODIFIER: "none",
     DESCRIPTION: "Scroll to top of content",
   },
+  VIEW_MODE_EDIT: {
+    KEY: "1",
+    MODIFIER: "ctrl/cmd",
+    DESCRIPTION: "Switch editor to Edit view",
+  },
+  VIEW_MODE_SPLIT: {
+    KEY: "2",
+    MODIFIER: "ctrl/cmd",
+    DESCRIPTION: "Switch editor to Split view",
+  },
+  VIEW_MODE_PREVIEW: {
+    KEY: "3",
+    MODIFIER: "ctrl/cmd",
+    DESCRIPTION: "Switch editor to Preview view",
+  },
 } as const;
