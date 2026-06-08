@@ -57,8 +57,10 @@ blueprintify/
 │   │   ├── brocula-hunt-2026-06-07.md
 │   │   ├── brocula-hunt-2026-06-07-run2.md
 │   │   ├── brocula-hunt-2026-06-07-run3.md
+│   │   ├── brocula-hunt-2026-06-07-run4.md
 │   │   ├── diagnostic-scoring-2026-05-31.md
-│   │   └── diagnostic-scoring-2026-06-04.md
+│   │   ├── diagnostic-scoring-2026-06-04.md
+│   │   └── diagnostic-scoring-2026-06-07.md
 │   ├── blueprint.md
 │   ├── bugs.md
 │   ├── ci-configuration.md
@@ -73,6 +75,7 @@ blueprintify/
 │   ├── flexy-plan.md
 │   ├── issue-audit-report-2026-05-27.md
 │   ├── issue-audit-report-2026-06-05.md
+│   ├── issue-audit-report-2026-06-07.md
 │   ├── issue-management-2026-05-27.md
 │   ├── knowledge-review.md
 │   ├── localstorage-schema.md
@@ -80,6 +83,7 @@ blueprintify/
 │   ├── refinement-workflow.md
 │   ├── release-process.md
 │   ├── repo-rules.md
+│   ├── roadmap-m3-proposal.md
 │   ├── roadmap.md
 │   ├── security/
 │   ├── testing-procedures.md
@@ -360,9 +364,12 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[BroCula Hunt (Jun 7)](./docs/audits/brocula-hunt-2026-06-07.md)** - Fourteenth performance optimization cycle — Console Clean, Lighthouse 100-100-100-100
 - **[BroCula Hunt (Jun 7 Run 2)](./docs/audits/brocula-hunt-2026-06-07-run2.md)** - Fifteenth performance optimization cycle — Console Clean, Lighthouse 99-100-100-100
 - **[BroCula Hunt (Jun 7 Run 3)](./docs/audits/brocula-hunt-2026-06-07-run3.md)** - Sixteenth performance optimization cycle — Console Clean, Lighthouse 100-100-100-100
+- **[BroCula Hunt (Jun 7 Run 4)](./docs/audits/brocula-hunt-2026-06-07-run4.md)** - Seventeenth performance optimization cycle — Console Clean, Lighthouse 99-100-100-100
 - **[Diagnostic Scoring (May 31)](./docs/audits/diagnostic-scoring-2026-05-31.md)** - Comprehensive diagnostic scoring analysis
 - **[Diagnostic Scoring (Jun 4)](./docs/audits/diagnostic-scoring-2026-06-04.md)** - Phase 1 diagnostic scoring report (81.1/100)
+- **[Diagnostic Scoring (Jun 7)](./docs/audits/diagnostic-scoring-2026-06-07.md)** - Phase 1 diagnostic scoring report (81.3/100)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
+- **[Roadmap M3 Proposal](./docs/roadmap-m3-proposal.md)** - M3 strategic expansion proposal
 
 ### 📚 M2 Documentation
 

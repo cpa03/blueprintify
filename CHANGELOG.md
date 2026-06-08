@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 70: documentation sync, missing BroCula Run 4 ref, diagnostic scoring Jun 7 ref, roadmap M3 proposal ref, stale branch cleanup ([#1684](https://github.com/cpa03/blueprintify/pull/1684))
+- One-shot attention-glow animation on keyboard shortcuts button for visual feedback
 - RepoKeeper Cycle 69: documentation sync, missing BroCula Run 3 ref, issue audit report ref, CHANGELOG update ([#1683](https://github.com/cpa03/blueprintify/pull/1683))
 - Smooth slide-out animation for hero and templates on exit ([#1671](https://github.com/cpa03/blueprintify/pull/1671))
 - ENV_VAR_KEYS shared config to eliminate hardcoded env var name strings across the codebase (Flexy) ([#1672](https://github.com/cpa03/blueprintify/pull/1672))
@@ -62,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - RepoKeeper Cycle 68: documentation sync, CHANGELOG update, missing BroCula Run 2 ref, and quality verification ([#1679](https://github.com/cpa03/blueprintify/pull/1679))
+- Refactored `createErrorResponse` duplication in share routes — replaced 57-line local functions with shared `createErrorJson` from errors.ts
 - RepoKeeper Cycle 67: CHANGELOG update & documentation sync ([#1676](https://github.com/cpa03/blueprintify/pull/1676))
 - Centralized prompt delimiters, auth defaults, context keys & response status strings into shared config (Flexy) ([#1678](https://github.com/cpa03/blueprintify/pull/1678))
 - RepoKeeper Cycle 66: documentation sync, CHANGELOG update & missing BroCula Jun 7 reference ([#1670](https://github.com/cpa03/blueprintify/pull/1670))
@@ -162,8 +165,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
+- BroCula ULW Loop — Jun 7 Run 4: Console Clean, Lighthouse 99-100-100-100 — Seventeenth optimization cycle
 - BroCula ULW Loop — Jun 7 Run 3: Console Clean, Lighthouse 100-100-100-100 ([#1682](https://github.com/cpa03/blueprintify/pull/1682))
 - BroCula ULW Loop — Jun 7 Run 2: Console Clean, Lighthouse 99-100-100-100 ([#1677](https://github.com/cpa03/blueprintify/pull/1677))
+- Phase 1 diagnostic scoring report (81.30/100) — comprehensive health check across 4 domains
+- M3 strategic expansion proposal — collaborative sharing, AI enhancement, version history roadmap
+- CI fix script updated to use `node-version-file` for automatic Node.js version sync
 - BroCula ULW Loop — Jun 7: Console Clean, Lighthouse 99-100-100-100 ([#1673](https://github.com/cpa03/blueprintify/pull/1673))
 - BugFixer ULW Loop Cycle 4 audit status ([#1669](https://github.com/cpa03/blueprintify/pull/1669))
 - BroCula ULW Loop — Jun 7: Console Clean, Lighthouse 100-100-100-100 ([#1668](https://github.com/cpa03/blueprintify/pull/1668))
