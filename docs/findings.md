@@ -2,6 +2,33 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 71 (2026-06-08 — Security Engineer: PR Dependency Audit)
+
+### Audit Scope
+
+Security scan of changed files in PR diff (`origin/main..HEAD`). Checked for version downgrades introducing vulnerabilities, hardcoded secrets, deprecated function usage, and injection risks.
+
+### Actions Taken
+
+1. **Reverted `dompurify` downgrade `^3.4.8` → `^3.4.7`** (High severity). v3.4.8 contained Trusted Types policy fix and template scrubbing fix — both XSS-related security patches. Downgrade would re-expose users to XSS vectors.
+2. **Reverted `openai` downgrade `^6.42.0` → `^6.41.0`** (Low severity). Feature regression only (moderation endpoints), but downgrades should always be justified.
+3. **Regenerated `package-lock.json`** to reflect corrected versions.
+4. **Verified `npm audit`**: 0 vulnerabilities across all workspaces.
+5. **Scanned for hardcoded secrets**: No secrets found.
+6. **Scanned for deprecated functions**: No deprecated function usage found.
+7. **Reviewed auth/authorization logic**: No regressions introduced.
+8. **Reviewed XSS protections**: DOMPurify lazy-loaded with basic escape fallback — pattern is sound.
+
+### Status Summary
+
+| Check                | Result                  |
+| -------------------- | ----------------------- |
+| npm audit            | ✅ 0 vulnerabilities    |
+| Hardcoded secrets    | ✅ None found           |
+| Deprecated functions | ✅ None found           |
+| Injection risks      | ✅ No injection vectors |
+| **Overall**          | **✅ PR is secure**     |
+
 ## Cycle 70 (2026-06-08 — RepoKeeper: Documentation Sync & Stale Branch Cleanup)
 
 ### Audit Scope
