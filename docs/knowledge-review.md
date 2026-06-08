@@ -12,15 +12,21 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-07 (RepoKeeper Cycle 69)
+**Last Review**: 2026-06-08 (RepoKeeper Cycle 70)
 **Status**: ✅ Up to date — with noted exceptions
 
-As of RepoKeeper Cycle 69 (refreshed):
+As of RepoKeeper Cycle 70 (refreshed):
 
 - All documentation aligns with current codebase state — with corrections noted below
 - No drift detected between docs/ and apps/ code
-- **CHANGELOG updated**: Added missing entries for BroCula Jun 7 Run 3 (#1682) and RepoKeeper Cycle 69 (#1683)
-- **Added missing README references**: `brocula-hunt-2026-06-07-run3.md` (16th BroCula cycle) and `issue-audit-report-2026-06-07.md` (ULW issue audit) added to directory tree and docs section
+- **CHANGELOG updated**: Added missing entries for BroCula Jun 7 Run 4, diagnostic scoring Jun 7, M3 proposal, CI fix script, refactor and feature entries
+- **Added missing README references**:
+  - `docs/audits/brocula-hunt-2026-06-07-run4.md` (17th BroCula cycle) — directory tree + docs section
+  - `docs/audits/diagnostic-scoring-2026-06-07.md` (Phase 1 scoring 81.3/100) — directory tree + docs section
+  - `docs/issue-audit-report-2026-06-07.md` — directory tree (was already in docs section)
+  - `docs/roadmap-m3-proposal.md` (M3 proposal) — directory tree + docs section (entirely missing)
+- **5 stale remote branches cleaned up** (merged into main, deleted)
+- **`.omo/ralph-loop.local.md` temp file removed**
 - **CI workflow fixes still blocked**: workflow files on `main` still use `node-version: "20"` and stale `docs/bug.md`/`docs/feature.md` references. A maintainer with `workflows: write` permission must push the prepared fixes.
 
 ## Historical Drift Corrections
