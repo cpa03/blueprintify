@@ -1312,3 +1312,39 @@ These fixes exist in separate branches (`agent/bugfix-ci-node-22-stale-docs`, `f
 - ❌ No CSP headers in API responses
 - ❌ No user-level authorization (all authenticated users equal)
 - ❌ Vercel/Cloudflare deployment failures on all PRs
+
+## Cycle 71 (2026-06-08 — Security Engineer: Dependency Security Audit)
+
+### Audit Scope
+
+Security audit of Dependabot PR `dependabot/npm_and_yarn/vercel/analytics-2.0.1` bumping `@vercel/analytics` from `1.6.1` → `2.0.1`.
+
+### Security Findings
+
+| #   | Severity             | Finding                                                                                                                                | Fixed?   |
+| --- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| 1   | 🟡 **Medium**        | `dompurify` semver constraint accidentally widened from pinned `"3.4.8"` to range `"^3.4.8"` as a side-effect of lockfile regeneration | ✅ Fixed |
+| 2   | 🟢 **Informational** | `@vercel/analytics` v2.0.1 uses MIT license (was MPL-2.0) — more permissive, acceptable                                                | N/A      |
+| 3   | 🟢 **Informational** | `@vercel/analytics` v2.0.1 adds resilient intake; `<Analytics />` API is fully backward-compatible                                     | N/A      |
+
+### Finding 1: dompurify Semver Widened (Medium Severity)
+
+**What happened**: When Dependabot regenerated `package-lock.json` for the `@vercel/analytics` bump, the `dompurify` entry was rewritten from the original pinned exact version `"dompurify": "3.4.8"` to a caret range `"dompurify": "^3.4.8"`.
+
+**Impact**: DOMPurify is a **security-critical XSS sanitization library**. Pinning to an exact version ensures:
+
+- Deterministic, reproducible installs
+- Protection against supply-chain attacks via malicious patch releases
+- Known, tested behavior for sanitization logic
+
+Widening to `^3.4.8` means future `npm install` could silently install `3.4.9`, `3.5.0`, etc., potentially introducing security regressions or altered behavior.
+
+**Fix**: Restored pinned version `"dompurify": "3.4.8"` in both `apps/web/package.json` and `package-lock.json`.
+
+### Finding 2-3: @vercel/analytics v2.0.1 Clean (Informational)
+
+- No deprecated functions or broken APIs detected
+- `<Analytics />` component usage (zero props) is fully compatible
+- License change MPL-2.0 → MIT is less restrictive (acceptable)
+- npm audit: 0 vulnerabilities
+- TypeScript typecheck: clean
