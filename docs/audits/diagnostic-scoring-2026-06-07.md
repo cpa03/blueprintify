@@ -198,3 +198,22 @@ The following issues are missing standard category and/or priority labels (P0-P3
 2. **Fix branch** — Created `fix/ci-node22-stale-docs-ulw` with verified CI workflow fixes (11 node-version changes + 2 doc ref fixes)
 3. **Diagnostic audit** — Full Phase 1 scoring completed (81.30/100)
 4. **Issue analysis** — 35+ issues analyzed, duplicate cluster identified (7 CI issues), label normalization documented (28 issues need labels)
+
+---
+
+## ULW Loop — Jun 8 Run 1
+
+**Phase**: Issue Manager Mode → Phase 1 → Phase 2
+**Decision**: 0 open PRs, 26 open issues → Issue Manager Mode. Phase 1 already scored recently. Phase 2 hardening.
+
+### Actions
+
+| Action              | Target                      | Result                                                                                                                                                                    |
+| ------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Issue normalization | 26 open issues              | Documented missing labels for 20+ issues. Blocked by token permissions.                                                                                                   |
+| Duplicate detection | CI issues cluster           | Identified 7 duplicates (#1293, #1390, #1470, #1549, #1573, #1575, #1621). Canonical: #1584.                                                                              |
+| Repair mode         | Issue #1584                 | Re-applied all CI workflow fixes (11 node-version changes + 2 doc refs). Typecheck ✅ lint ✅ build ✅ tests 1162/1162 ✅. Push blocked — token lacks `workflows: write`. |
+| Docs update         | `docs/ci-workflow-fixes.md` | Updated attempt log, re-verified fixes. PR #1698 created.                                                                                                                 |
+| Phase 2 hardening   | `persistence.ts`            | Replaced last `any` type with `StoreApi['setState']`. Typecheck ✅ lint ✅ tests ✅. PR #1699 created.                                                                    |
+
+**Final state**: 2 PRs created (#1698 docs, #1699 type fix). CI fix still blocked by token permissions. Last `any` eliminated from production source code.
