@@ -108,24 +108,27 @@ export function useFocusTrap(options: UseFocusTrapOptions): UseFocusTrapReturn {
       returnFocusTo && typeof returnFocusTo !== "function" ? returnFocusTo.current : null;
 
     return () => {
-      if (!isActive && previousFocusRef.current) {
-        let returnElement: HTMLElement | null = null;
+      // No isActive guard: cleanup closure captures old (true) value when
+      // deactivating, so !isActive would always be false. Only return focus
+      // when we captured something before activation.
+      if (!previousFocusRef.current) return;
 
-        if (returnFocusTo) {
-          if (typeof returnFocusTo === "function") {
-            returnElement = returnFocusTo();
-          } else {
-            returnElement = returnFocusElement;
-          }
-        }
+      let returnElement: HTMLElement | null = null;
 
-        if (!returnElement) {
-          returnElement = previousFocusRef.current;
+      if (returnFocusTo) {
+        if (typeof returnFocusTo === "function") {
+          returnElement = returnFocusTo();
+        } else {
+          returnElement = returnFocusElement;
         }
+      }
 
-        if (returnElement && document.contains(returnElement)) {
-          returnElement.focus();
-        }
+      if (!returnElement) {
+        returnElement = previousFocusRef.current;
+      }
+
+      if (returnElement && document.contains(returnElement)) {
+        returnElement.focus();
       }
     };
   }, [isActive, returnFocusTo]);
