@@ -8,7 +8,7 @@ import path from "path";
 
 const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const RESULTS_FILE = path.join(__dirname, "..", "docs", "audits", "brocula-hunt-2026-06-04-run2-console.md");
+const RESULTS_FILE = path.join(__dirname, "..", "docs", "audits", "brocula-hunt-2026-06-08-run2.md");
 
 const results = {
   errors: [],
