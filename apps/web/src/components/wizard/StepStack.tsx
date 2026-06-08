@@ -39,6 +39,27 @@ import { RippleButton } from "../RippleButton";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import clsx from "clsx";
 
+const attentionKeyframes = `@keyframes stack-card-attention {
+  0%, 100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  25% {
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--color-accent-pink) 25%, transparent),
+      0 0 18px -4px color-mix(in srgb, var(--color-accent-pink) 12%, transparent);
+  }
+}`;
+
+if (typeof document !== "undefined") {
+  const styleId = "stack-card-attention-anim";
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = attentionKeyframes;
+    document.head.appendChild(style);
+  }
+}
+
 interface TechChipProps {
   tech: { name: string; category: string };
   isSelected: boolean;
@@ -159,6 +180,7 @@ export const StepStack = memo(function StepStack({
   direction = "forward",
 }: StepStackProps): JSX.Element {
   const [isShaking, setIsShaking] = useState(false);
+  const [invalidField, setInvalidField] = useState(false);
   const [justSelected, setJustSelected] = useState<string | null>(null);
   const techStack = useWizardStore((s) => s.techStack);
   const addTechStack = useWizardStore((s) => s.addTechStack);
@@ -175,7 +197,11 @@ export const StepStack = memo(function StepStack({
       nextStep();
     } else {
       setIsShaking(true);
-      setTimeout(() => setIsShaking(false), TIMEOUTS.SHAKE_ANIMATION);
+      setInvalidField(true);
+      setTimeout(() => {
+        setIsShaking(false);
+        setInvalidField(false);
+      }, TIMEOUTS.SHAKE_ANIMATION);
     }
   };
 
@@ -240,7 +266,11 @@ export const StepStack = memo(function StepStack({
         <p className="text-dark-400">{UI_CONTENT.WIZARD.STEP_STACK.SUBTITLE}</p>
       </div>
 
-      <div className="glass-card p-6 space-y-6" role="group" aria-label="Tech Stack Selection">
+      <div
+        className={`glass-card p-6 space-y-6 ${invalidField ? "stack-card-attention" : ""}`}
+        role="group"
+        aria-label="Tech Stack Selection"
+      >
         {categories.map(([category, options]) => (
           <div key={category}>
             <h3
