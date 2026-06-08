@@ -44,7 +44,7 @@ describe("auth middleware", () => {
       const data = (await res.json()) as ErrorResponse;
       expect(data.success).toBe(false);
       expect(data.error.type).toBe("authentication");
-      expect(data.error.code).toBe("AUTHENTICATION_ERROR");
+      expect(data.error.code).toBe(ERROR_CODES.AUTHENTICATION_ERROR);
     });
 
     it("should reject requests with missing API key", async () => {

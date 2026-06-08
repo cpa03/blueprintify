@@ -4,6 +4,7 @@ import { z } from "zod";
 import { validateJson } from "./validator";
 import type { ErrorResponse } from "../errors";
 import { HTTP_HEADERS, HTTP_METHODS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import { ERROR_CODES } from "../config/constants";
 
 describe("validateJson middleware", () => {
   const TestSchema = z.object({
@@ -59,7 +60,7 @@ describe("validateJson middleware", () => {
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("validation");
-    expect(data.error.code).toBe("VALIDATION_ERROR");
+    expect(data.error.code).toBe(ERROR_CODES.VALIDATION_ERROR);
     expect(data.error.details).toBeDefined();
     expect(data.error.details!.issues).toBeDefined();
     expect(Array.isArray(data.error.details!.issues)).toBe(true);

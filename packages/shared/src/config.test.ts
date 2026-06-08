@@ -35,6 +35,7 @@ import {
   AUTH_DEFAULTS,
   CONTEXT_KEYS,
   RESPONSE_STATUS,
+  ERROR_CODES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -950,5 +951,37 @@ describe("RESPONSE_STATUS", () => {
       expect(typeof v).toBe("string");
       expect(v.length).toBeGreaterThan(0);
     });
+  });
+});
+
+describe("ERROR_CODES", () => {
+  it("should have all expected API error codes", () => {
+    expect(ERROR_CODES.VALIDATION_ERROR).toBe("VALIDATION_ERROR");
+    expect(ERROR_CODES.NOT_FOUND_ERROR).toBe("NOT_FOUND_ERROR");
+    expect(ERROR_CODES.CONFIGURATION_ERROR).toBe("CONFIGURATION_ERROR");
+    expect(ERROR_CODES.NETWORK_ERROR).toBe("NETWORK_ERROR");
+    expect(ERROR_CODES.AI_SERVICE_ERROR).toBe("AI_SERVICE_ERROR");
+    expect(ERROR_CODES.INTERNAL_ERROR).toBe("INTERNAL_ERROR");
+    expect(ERROR_CODES.AUTHENTICATION_ERROR).toBe("AUTHENTICATION_ERROR");
+    expect(ERROR_CODES.AUTHORIZATION_ERROR).toBe("AUTHORIZATION_ERROR");
+    expect(ERROR_CODES.RATE_LIMIT_ERROR).toBe("RATE_LIMIT_ERROR");
+    expect(ERROR_CODES.CIRCUIT_BREAKER_OPEN).toBe("CIRCUIT_BREAKER_OPEN");
+    expect(ERROR_CODES.TIMEOUT_ERROR).toBe("TIMEOUT_ERROR");
+    expect(ERROR_CODES.PAYLOAD_TOO_LARGE).toBe("PAYLOAD_TOO_LARGE");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(ERROR_CODES);
+    expect(values.length).toBe(12);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique error code values", () => {
+    const codes = Object.values(ERROR_CODES);
+    const uniqueCodes = new Set(codes);
+    expect(uniqueCodes.size).toBe(codes.length);
   });
 });

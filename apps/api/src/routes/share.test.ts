@@ -6,6 +6,7 @@ import type { ErrorResponse } from "../errors";
 import type { AppVariables, User } from "../types";
 import { DEFAULTS } from "../config/env";
 import { HTTP_HEADERS, HTTP_METHODS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import { ERROR_CODES } from "../config/constants";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -114,7 +115,7 @@ describe("POST /share", () => {
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("validation");
-    expect(data.error.code).toBe("VALIDATION_ERROR");
+    expect(data.error.code).toBe(ERROR_CODES.VALIDATION_ERROR);
     expect(data.error.timestamp).toBeDefined();
   });
 
@@ -157,7 +158,7 @@ describe("GET /share/:id", () => {
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("validation");
-    expect(data.error.code).toBe("VALIDATION_ERROR");
+    expect(data.error.code).toBe(ERROR_CODES.VALIDATION_ERROR);
     expect(data.error.message).toContain("Invalid share ID format");
   });
 
@@ -169,7 +170,7 @@ describe("GET /share/:id", () => {
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("not_found");
-    expect(data.error.code).toBe("NOT_FOUND_ERROR");
+    expect(data.error.code).toBe(ERROR_CODES.NOT_FOUND_ERROR);
   });
 });
 
@@ -202,7 +203,7 @@ describe("DELETE /share/:id", () => {
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("validation");
-    expect(data.error.code).toBe("VALIDATION_ERROR");
+    expect(data.error.code).toBe(ERROR_CODES.VALIDATION_ERROR);
     expect(data.error.message).toContain("Invalid share ID format");
   });
 
@@ -262,7 +263,7 @@ describe("DELETE /share/:id", () => {
     const data = (await delRes.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("authorization");
-    expect(data.error.code).toBe("AUTHORIZATION_ERROR");
+    expect(data.error.code).toBe(ERROR_CODES.AUTHORIZATION_ERROR);
   });
 
   it("should allow deletion without API key", async () => {

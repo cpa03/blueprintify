@@ -497,3 +497,32 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR #  | Branch                                    | Title                                                                   |
 | ----- | ----------------------------------------- | ----------------------------------------------------------------------- |
 | #1690 | `feat/flexy-iteration-27-permissions-cdn` | feat(flexy): centralize Permissions-Policy values and CDN cache headers |
+
+### ✅ Flexy Iteration 28: Centralize ERROR_CODES into Shared Config & Eliminate Hardcoded Error Code Strings
+
+| File                                           | Change                                                                                             |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`                | Added `ERROR_CODES` with 12 API error response codes (`VALIDATION_ERROR`, `NOT_FOUND_ERROR`, etc.) |
+| `packages/shared/src/index.ts`                 | Exported `ERROR_CODES`                                                                             |
+| `packages/shared/src/config.test.ts`           | Added 3 test blocks (value matching, type check, uniqueness)                                       |
+| `apps/api/src/config/constants.ts`             | Re-export `ERROR_CODES` from `@blueprint/shared` instead of local definition                       |
+| `apps/api/src/errors.ts`                       | Replaced 6 hardcoded `"VALIDATION_ERROR"`/`"AUTHENTICATION_ERROR"`/etc. with `ERROR_CODES.*` refs  |
+| `apps/api/src/middleware/validator.test.ts`    | Replaced hardcoded `"VALIDATION_ERROR"` with `ERROR_CODES.VALIDATION_ERROR`                        |
+| `apps/api/src/middleware/errorHandler.test.ts` | Replaced 3 hardcoded error code strings with `ERROR_CODES.*` refs                                  |
+| `apps/api/src/middleware/auth.test.ts`         | Replaced hardcoded `"AUTHENTICATION_ERROR"` with `ERROR_CODES.AUTHENTICATION_ERROR`                |
+| `apps/api/src/routes/generate.test.ts`         | Replaced hardcoded `"CONFIGURATION_ERROR"` with `ERROR_CODES.CONFIGURATION_ERROR`                  |
+| `apps/api/src/routes/share.test.ts`            | Replaced 5 hardcoded error code strings with `ERROR_CODES.*` refs                                  |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,165 tests passing (596 web + 342 api + 227 shared) across 69 files
+
+## PR
+
+| PR #  | Branch                                    | Title                                                                                             |
+| ----- | ----------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| #1690 | `feat/flexy-iteration-27-permissions-cdn` | feat(flexy): centralize Permissions-Policy values and CDN cache headers                           |
+| TBD   | `feat/flexy-error-codes-shared`           | feat(flexy): centralize ERROR_CODES into shared config and eliminate hardcoded error code strings |

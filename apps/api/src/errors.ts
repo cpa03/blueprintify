@@ -1,5 +1,5 @@
 import { HTTP_STATUS } from "@blueprint/shared";
-import { DEFAULT_ERROR_MESSAGES, ERROR_MESSAGES } from "./config/constants";
+import { DEFAULT_ERROR_MESSAGES, ERROR_CODES, ERROR_MESSAGES } from "./config/constants";
 
 /**
  * API Error Types and Classes
@@ -99,7 +99,7 @@ export interface ErrorResponse {
  *
  * @example
  * ```typescript
- * throw new APIError(ErrorType.VALIDATION, "Invalid input", 400, "VALIDATION_ERROR", { field: "email" });
+ * throw new APIError(ErrorType.VALIDATION, "Invalid input", 400, ERROR_CODES.VALIDATION_ERROR, { field: "email" });
  * ```
  */
 export class APIError extends Error {
@@ -184,7 +184,13 @@ export class ValidationError extends APIError {
     message: string = DEFAULT_ERROR_MESSAGES.VALIDATION,
     details?: Record<string, unknown>
   ) {
-    super(ErrorType.VALIDATION, message, HTTP_STATUS.BAD_REQUEST, "VALIDATION_ERROR", details);
+    super(
+      ErrorType.VALIDATION,
+      message,
+      HTTP_STATUS.BAD_REQUEST,
+      ERROR_CODES.VALIDATION_ERROR,
+      details
+    );
     this.name = "ValidationError";
   }
 }
@@ -201,7 +207,12 @@ export class AuthenticationError extends APIError {
    * @param message - Human-readable authentication error message
    */
   constructor(message: string = DEFAULT_ERROR_MESSAGES.AUTHENTICATION) {
-    super(ErrorType.AUTHENTICATION, message, HTTP_STATUS.UNAUTHORIZED, "AUTHENTICATION_ERROR");
+    super(
+      ErrorType.AUTHENTICATION,
+      message,
+      HTTP_STATUS.UNAUTHORIZED,
+      ERROR_CODES.AUTHENTICATION_ERROR
+    );
     this.name = "AuthenticationError";
   }
 }
@@ -218,7 +229,7 @@ export class NotFoundError extends APIError {
    * @param resource - Description of the resource that was not found
    */
   constructor(resource: string = DEFAULT_ERROR_MESSAGES.NOT_FOUND) {
-    super(ErrorType.NOT_FOUND, resource, HTTP_STATUS.NOT_FOUND, "NOT_FOUND_ERROR");
+    super(ErrorType.NOT_FOUND, resource, HTTP_STATUS.NOT_FOUND, ERROR_CODES.NOT_FOUND_ERROR);
     this.name = "NotFoundError";
   }
 }
@@ -235,7 +246,12 @@ export class ConfigurationError extends APIError {
    * @param message - Human-readable configuration error message
    */
   constructor(message: string = DEFAULT_ERROR_MESSAGES.CONFIGURATION) {
-    super(ErrorType.CONFIGURATION, message, HTTP_STATUS.INTERNAL_ERROR, "CONFIGURATION_ERROR");
+    super(
+      ErrorType.CONFIGURATION,
+      message,
+      HTTP_STATUS.INTERNAL_ERROR,
+      ERROR_CODES.CONFIGURATION_ERROR
+    );
     this.name = "ConfigurationError";
   }
 }
@@ -254,7 +270,7 @@ export class InternalServerError extends APIError {
    * @param message - Human-readable internal error message
    */
   constructor(message: string = DEFAULT_ERROR_MESSAGES.INTERNAL) {
-    super(ErrorType.INTERNAL, message, HTTP_STATUS.INTERNAL_ERROR, "INTERNAL_ERROR");
+    super(ErrorType.INTERNAL, message, HTTP_STATUS.INTERNAL_ERROR, ERROR_CODES.INTERNAL_ERROR);
     this.name = "InternalServerError";
   }
 }

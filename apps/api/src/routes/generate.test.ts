@@ -6,6 +6,7 @@ import { MOCK_ENV, MOCK_ENV_NO_KEY } from "../test-utils";
 import type { ErrorResponse } from "../errors";
 import { HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
+import { ERROR_CODES } from "../config/constants";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -111,7 +112,7 @@ describe("POST /generate", () => {
     expect(data).toHaveProperty("success", false);
     expect(data.error).toHaveProperty("type", "configuration");
     expect(data.error).toHaveProperty("message", "OpenAI API key not configured");
-    expect(data.error).toHaveProperty("code", "CONFIGURATION_ERROR");
+    expect(data.error).toHaveProperty("code", ERROR_CODES.CONFIGURATION_ERROR);
     expect(data.error).toHaveProperty("timestamp");
   });
 });
