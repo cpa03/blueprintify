@@ -14,22 +14,19 @@
  * framer-motion out of its import tree prevents the 45 KiB animation
  * chunk from loading before user interaction.
  */
-import { useMemo, memo } from "react";
+import { memo } from "react";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
 import { BUTTON, ICON } from "../config/styles";
 import { UI_CONTENT } from "../config/constants";
+import { getModifierLabel } from "../lib/platform";
 
 interface ShowEditorButtonProps {
   onClick: () => void;
 }
 
 function ShowEditorButtonComponent({ onClick }: ShowEditorButtonProps): JSX.Element {
-  const modifierKey = useMemo(() => {
-    const isMac =
-      typeof navigator !== "undefined" && navigator.platform.toUpperCase().indexOf("MAC") >= 0;
-    return isMac ? "\u2318" : "Ctrl";
-  }, []);
+  const modifierKey = getModifierLabel();
 
   return (
     <KeyboardShortcutTooltip shortcut="e" description="Toggle editor" position="left">

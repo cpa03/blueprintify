@@ -5,8 +5,9 @@
 import { chromium } from "@playwright/test";
 import { fileURLToPath } from "url";
 import path from "path";
+import { DEV_DEFAULTS } from "@blueprint/shared";
 
-const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
+const BASE_URL = process.env.BASE_URL || DEV_DEFAULTS.PLAYWRIGHT_TEST_URL;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const RESULTS_FILE = path.join(__dirname, "..", "docs", "audits", "brocula-hunt-2026-06-08-run2.md");
 

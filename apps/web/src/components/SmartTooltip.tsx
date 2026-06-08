@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback, memo, ReactNode, useId } from "react";
 import { TOOLTIP_CONFIG } from "../config/constants";
+import { formatShortcut } from "../lib/platform";
 
 type Position = "top" | "bottom" | "left" | "right";
 
@@ -297,17 +298,7 @@ function KeyboardShortcutTooltipComponent({
   position = "top",
   modifier = "cmd",
 }: KeyboardShortcutTooltipProps) {
-  const isMac =
-    typeof navigator !== "undefined" && navigator.platform.toUpperCase().indexOf("MAC") >= 0;
-
-  let fullShortcut: string;
-  if (modifier === "none") {
-    fullShortcut = shortcut;
-  } else if (modifier === "cmd") {
-    fullShortcut = `${isMac ? "⌘" : "Ctrl"} + ${shortcut.toUpperCase()}`;
-  } else {
-    fullShortcut = `Ctrl + ${shortcut.toUpperCase()}`;
-  }
+  const fullShortcut = formatShortcut(shortcut, modifier);
 
   const content = (
     <div className="flex items-center gap-2">

@@ -44,6 +44,7 @@ import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
 import { ValidationCheckmark } from "../ValidationCheckmark";
+import { getModifierLabel } from "../../lib/platform";
 
 interface StepInfoProps {
   direction?: AnimationDirection;
@@ -60,7 +61,7 @@ export const StepInfo = memo(function StepInfo({
     maxHeight: TEXTAREA_CONFIG.STEP_INFO_MAX_HEIGHT_PX,
   });
   const { textareaRef: constraintsRef } = useAutoResizeTextarea({
-    minHeight: 96,
+    minHeight: TEXTAREA_CONFIG.DEFAULT_MIN_HEIGHT_PX,
     maxHeight: TEXTAREA_CONFIG.STEP_INFO_MAX_HEIGHT_PX,
   });
   const projectName = useWizardStore((s) => s.projectName);
@@ -73,11 +74,7 @@ export const StepInfo = memo(function StepInfo({
   const setConstraints = useWizardStore((s) => s.setConstraints);
   const nextStep = useWizardStore((s) => s.nextStep);
 
-  const modifierKey = useMemo(() => {
-    const isMac =
-      typeof navigator !== "undefined" && navigator.platform.toUpperCase().indexOf("MAC") >= 0;
-    return isMac ? "\u2318" : "Ctrl";
-  }, []);
+  const modifierKey = getModifierLabel();
 
   useAutoSaveToast(
     [projectName, description, targetAudience, constraints],

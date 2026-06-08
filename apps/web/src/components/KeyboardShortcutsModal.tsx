@@ -22,6 +22,7 @@ import {
 } from "../config/constants";
 import { useFocusTrap } from "../hooks";
 import { Icon, type IconName } from "./Icon";
+import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
 
 /**
  * Props for the KeyboardShortcutsModal component.
@@ -39,10 +40,8 @@ interface ShortcutItem {
 }
 
 const getShortcutItems = (): ShortcutItem[] => {
-  const isMac =
-    typeof navigator !== "undefined" && navigator.platform.toUpperCase().indexOf("MAC") >= 0;
-  const modifier = isMac ? "⌘" : "Ctrl";
-  const altKey = isMac ? "⌥" : "Alt";
+  const modifier = getModifierLabel();
+  const altKey = getAltKeyLabel();
 
   return [
     {
