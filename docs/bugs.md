@@ -14,9 +14,9 @@
 
 > **BugFixer ULW Cycle 2026-06-06 (Cycle 3)**: Full repository audit complete. Typecheck ✅ lint ✅ build (web) ✅ tests 1138/1138 ✅. Verified BUG-014 and BUG-017 were still present on `main` (docs/bug.md → stale, node-version: "20" → hardcoded in 4 workflow files, 11 instances). Applied fixes on `fix/ulw-bugfix-sprint` branch. Both fixes verified via grep: zero `node-version:` remaining, zero stale doc refs. PR created.
 
-### BUG-014: Stale Doc References in main.yml Workflow (RESOLVED)
+### BUG-014: Stale Doc References in main.yml Workflow (FIXED ON BRANCH)
 
-**Status**: Fix Applied — 2026-06-08 (BugFixer ULW Cycle Jun 8, Cycle 8 - PR)  
+**Status**: Fix Applied — 2026-06-08 (ULW Loop)  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1293
@@ -26,19 +26,19 @@
 
 `.github/workflows/main.yml` referenced two non-existent documentation files.
 
-#### Current State (BugFixer ULW Cycle 8 — 2026-06-08)
+#### Current State (ULW Loop — 2026-06-08)
 
 - ✅ `main.yml` line 39: `docs/bug.md, docs/feature.md` → `docs/bugs.md, docs/features.md`
 - ✅ `main.yml` line 263: `docs/bug.md` → `docs/bugs.md`
 - ✅ Fix verified via grep: zero stale doc refs remaining
-- ✅ Applied on branch `fix/bugfixer-cycle-jun-8`
-- ✅ PR created
+- ✅ Applied on branch `fix/ci-node-version-stale-docs-fix`
+- ⚠️ Push blocked: GITHUB_TOKEN lacks `workflows: write` permission
 
 ---
 
-### BUG-017: CI Node.js Version Mismatch (RESOLVED)
+### BUG-017: CI Node.js Version Mismatch (FIXED ON BRANCH)
 
-**Status**: Fix Applied — 2026-06-08 (BugFixer ULW Cycle Jun 8, Cycle 8 - PR)  
+**Status**: Fix Applied — 2026-06-08 (ULW Loop)  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1390, #1470, #1549
@@ -48,9 +48,9 @@
 
 All CI workflow files used Node.js 20 hardcoded instead of using the project's `.node-version` file.
 
-#### Current State (BugFixer ULW Cycle 8 — 2026-06-08)
+#### Current State (ULW Loop — 2026-06-08)
 
-All 4 workflow files fixed — `node-version: "20"` replaced with `node-version-file: ".node-version"` (11 instances total):
+All 5 workflow files fixed — `node-version: "20"` replaced with `node-version-file: ".node-version"` (11 instances total):
 
 | File                                  | Instances Fixed |
 | ------------------------------------- | --------------- |
@@ -63,8 +63,8 @@ All 4 workflow files fixed — `node-version: "20"` replaced with `node-version-
 
 **Fix approach**: Changed from hardcoded `node-version: "20"` to `node-version-file: ".node-version"` — automatically stays in sync with project requirements.
 **Verification**: All 11 instances verified via grep — zero remaining `node-version:` references in workflow files.
-**Applied on branch**: `fix/bugfixer-cycle-jun-8`
-**Status**: ✅ PR created
+**Applied on branch**: `fix/ci-node-version-stale-docs-fix`
+**Status**: ⚠️ Push blocked — GITHUB_TOKEN lacks `workflows: write` permission
 
 ---
 
