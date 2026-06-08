@@ -1,6 +1,6 @@
 # CI Workflow Fix Instructions
 
-> **Last updated**: 2026-06-07
+> **Last updated**: 2026-06-08
 > **Status**: ⚠️ **FIXES VERIFIED LOCALLY — PUSH BLOCKED by GITHUB_TOKEN permissions (no `workflows: write`)**
 
 ## Overview
@@ -135,13 +135,14 @@ npm run check
 
 ## Application Attempt Log
 
-| Cycle | Date       | Result                                                                                         |
-| ----- | ---------- | ---------------------------------------------------------------------------------------------- |
-| 57    | 2026-06-05 | Fixes prepared, push rejected (no `workflows: write`)                                          |
-| 58    | 2026-06-05 | Documentation refresh pushed, workflow changes blocked                                         |
-| ULW   | 2026-06-05 | Fixes re-verified locally, push rejected again                                                 |
-| ULW-2 | 2026-06-05 | BugFixer re-applied BUG-014 and BUG-017 fixes, push rejected (same blocker)                    |
-| ULW-3 | 2026-06-07 | Sisyphus re-applied using node-version-file approach (auto-sync), push rejected (same blocker) |
+| Cycle | Date       | Result                                                                                                                                                                       |
+| ----- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 57    | 2026-06-05 | Fixes prepared, push rejected (no `workflows: write`)                                                                                                                        |
+| 58    | 2026-06-05 | Documentation refresh pushed, workflow changes blocked                                                                                                                       |
+| ULW   | 2026-06-05 | Fixes re-verified locally, push rejected again                                                                                                                               |
+| ULW-2 | 2026-06-05 | BugFixer re-applied BUG-014 and BUG-017 fixes, push rejected (same blocker)                                                                                                  |
+| ULW-3 | 2026-06-07 | Sisyphus re-applied using node-version-file approach (auto-sync), push rejected (same blocker)                                                                               |
+| ULW-4 | 2026-06-08 | Sisyphus ULW Loop re-applied all workflow fixes (node-version-file approach, stale doc refs), typecheck ✅ lint ✅ build ✅ tests 1162/1162 ✅, push rejected (same blocker) |
 
 ## How to Apply (for maintainer with PAT)
 
