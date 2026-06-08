@@ -92,6 +92,11 @@ describe("VALIDATION_LIMITS", () => {
     expect(VALIDATION_LIMITS.TECH_STACK.MIN).toBeGreaterThan(0);
     expect(VALIDATION_LIMITS.TECH_STACK.MAX).toBeGreaterThan(VALIDATION_LIMITS.TECH_STACK.MIN);
   });
+
+  it("should have valid version max limit", () => {
+    expect(VALIDATION_LIMITS.VERSION.MAX).toBeGreaterThan(0);
+    expect(VALIDATION_LIMITS.VERSION.MAX).toBeLessThanOrEqual(100);
+  });
 });
 
 describe("STORAGE_CONFIG", () => {

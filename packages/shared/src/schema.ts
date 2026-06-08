@@ -43,7 +43,7 @@ export const TechStackItem = z.object({
   name: z.string().min(1).max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
   category: TechStackCategory,
   subcategory: DatabaseSubcategory.optional(),
-  version: z.string().optional(),
+  version: z.string().max(VALIDATION_LIMITS.VERSION.MAX).optional(),
   description: z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX).optional(),
   features: z.array(z.string().min(1).max(VALIDATION_LIMITS.FEATURE.MAX)).optional(),
 });
