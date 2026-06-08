@@ -103,7 +103,6 @@ export default defineConfig({
     host: true,
     strictPort: true,
     hmr: {
-      clientPort: DEV_SERVER_PORT,
       overlay: true,
     },
     proxy: {
