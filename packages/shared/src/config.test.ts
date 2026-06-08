@@ -762,6 +762,33 @@ describe("SECURITY_VALUES", () => {
   it("should have X-Accel-Buffering no value", () => {
     expect(SECURITY_VALUES.X_ACCEL_BUFFERING_NO).toBe("no");
   });
+
+  describe("PERMISSIONS_POLICY", () => {
+    it("should have all Permissions-Policy directives", () => {
+      const pp = SECURITY_VALUES.PERMISSIONS_POLICY;
+      expect(pp.ACCELEROMETER_NONE).toBe("accelerometer=()");
+      expect(pp.CAMERA_NONE).toBe("camera=()");
+      expect(pp.GEOLOCATION_NONE).toBe("geolocation=()");
+      expect(pp.GYROSCOPE_NONE).toBe("gyroscope=()");
+      expect(pp.MAGNETOMETER_NONE).toBe("magnetometer=()");
+      expect(pp.MICROPHONE_NONE).toBe("microphone=()");
+      expect(pp.PAYMENT_NONE).toBe("payment=()");
+      expect(pp.USB_NONE).toBe("usb=()");
+    });
+
+    it("should have unique permission values", () => {
+      const values = Object.values(SECURITY_VALUES.PERMISSIONS_POLICY);
+      const uniqueValues = new Set(values);
+      expect(uniqueValues.size).toBe(values.length);
+    });
+
+    it("should have all string values ending with =()", () => {
+      const values = Object.values(SECURITY_VALUES.PERMISSIONS_POLICY);
+      values.forEach((v) => {
+        expect(v).toMatch(/^[a-z-]+=\(\)$/);
+      });
+    });
+  });
 });
 
 describe("UI_STRINGS", () => {

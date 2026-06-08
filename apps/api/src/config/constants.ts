@@ -482,8 +482,6 @@ export const CACHE_CONFIG = {
   SHARE_MAX_AGE: TIME_UNITS.SECONDS_PER_MINUTE * 5,
   /** Share route cache stale-while-revalidate: 1 hour */
   SHARE_STALE_WHILE_REVALIDATE: TIME_UNITS.SECONDS_PER_HOUR,
-  /** CDN cache control format template */
-  CDN_MAX_AGE_FORMAT: "public, max-age=",
 } as const;
 
 // Route paths - re-exported from shared package as single source of truth
