@@ -494,6 +494,6 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 
 ## PR
 
-| PR # | Branch                                    | Title                                                                   |
-| ---- | ----------------------------------------- | ----------------------------------------------------------------------- |
-| TBD  | `feat/flexy-iteration-27-permissions-cdn` | feat(flexy): centralize Permissions-Policy values and CDN cache headers |
+| PR #  | Branch                                    | Title                                                                   |
+| ----- | ----------------------------------------- | ----------------------------------------------------------------------- |
+| #1690 | `feat/flexy-iteration-27-permissions-cdn` | feat(flexy): centralize Permissions-Policy values and CDN cache headers |
