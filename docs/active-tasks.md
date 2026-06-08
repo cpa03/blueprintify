@@ -2,7 +2,30 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 69 — Documentation Sync & Missing References
+## Current Focus: RepoKeeper Cycle 70 — Documentation Sync & Stale Branch Cleanup
+
+### Task: Full repository audit, missing README refs, stale branch cleanup, CHANGELOG update
+
+- **Priority**: High
+- **Status**: 🟢 Complete
+- **Objective**: Full repository audit, add missing BroCula Run 4, Diagnostic Scoring Jun 7, Issue Audit Jun 7, and Roadmap M3 Proposal refs to README, delete stale branches, update CHANGELOG, refresh documentation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Cleaned stale `.omo/ralph-loop.local.md` temp file
+  - [x] Deleted 5 stale remote branches merged into `main`
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,159/1,159 ✅ npm audit ✅
+  - [x] Added missing `brocula-hunt-2026-06-07-run4.md` to README directory tree and docs section
+  - [x] Added missing `diagnostic-scoring-2026-06-07.md` to README directory tree and docs section
+  - [x] Added missing `issue-audit-report-2026-06-07.md` to README directory tree
+  - [x] Added missing `roadmap-m3-proposal.md` to README directory tree and docs section
+  - [x] Updated CHANGELOG.md — added BroCula Jun 7 Run 4, diagnostic scoring Jun 7, M3 proposal, and other entries
+  - [x] Updated `docs/findings.md` — Cycle 70 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 70 status
+  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 70
+
+## Previous Cycle: RepoKeeper Cycle 69 — Documentation Sync & Missing References ✅ COMPLETE
 
 ### Task: Full repository audit, README missing refs, CHANGELOG update
 
@@ -129,5 +152,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-07 (Cycle 69: RepoKeeper)  
+**Last Updated**: 2026-06-08 (Cycle 70: RepoKeeper)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)

@@ -474,3 +474,26 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR # | Branch                                      | Title                                                                  |
 | ---- | ------------------------------------------- | ---------------------------------------------------------------------- |
 | TBD  | `feat/flexy-iteration-26-hardcoded-cleanup` | feat(flexy): eliminate remaining hardcoded strings in config constants |
+
+### ✅ Flexy Iteration 27: Centralize Permissions-Policy values & CDN cache format
+
+| File                                 | Change                                                                                           |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `packages/shared/src/config.ts`      | Added `PERMISSIONS_POLICY` to `SECURITY_VALUES` (8 Permissions-Policy directive values)          |
+| `packages/shared/src/config.test.ts` | Added 3 test blocks for `PERMISSIONS_POLICY` (values, uniqueness, pattern validation)            |
+| `apps/web/src/config/security.ts`    | `SECURITY_HEADERS` Permissions-Policy now references `SECURITY_VALUES.PERMISSIONS_POLICY.*`      |
+| `apps/api/src/index.ts`              | CDN cache headers use `API_HEADERS.CACHE_CONTROL.PUBLIC_MAX_AGE()` instead of hardcoded template |
+| `apps/api/src/config/constants.ts`   | Removed unused `CDN_MAX_AGE_FORMAT` (replaced by `PUBLIC_MAX_AGE` function)                      |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,162 tests passing (596 web + 342 api + 224 shared) across 69 files
+
+## PR
+
+| PR #  | Branch                                    | Title                                                                   |
+| ----- | ----------------------------------------- | ----------------------------------------------------------------------- |
+| #1690 | `feat/flexy-iteration-27-permissions-cdn` | feat(flexy): centralize Permissions-Policy values and CDN cache headers |
