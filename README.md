@@ -36,24 +36,10 @@ blueprintify/
 │   ├── api/             # Hono backend (Cloudflare Workers)
 │   └── web/             # React frontend (Vite + Tailwind)
 ├── docs/                # Project documentation
-│   ├── active-tasks.md
-│   ├── ai-agent-usage-guide.md
-│   ├── api-documentation.md
-│   ├── audit-2026-05-26.md
+│   ├── archive/          # Archived/outdated docs (historical reference)
 │   ├── audits/
-│   │   ├── brocula-hunt-2026-05-29.md
-│   │   ├── brocula-hunt-2026-05-30.md
-│   │   ├── brocula-hunt-2026-06-03.md
-│   │   ├── brocula-hunt-2026-06-04.md
-│   │   ├── brocula-hunt-2026-06-04-run2.md
-│   │   ├── brocula-hunt-2026-06-05.md
-│   │   ├── brocula-hunt-2026-06-05-run2.md
-│   │   ├── brocula-hunt-2026-06-05-run3.md
-│   │   ├── brocula-hunt-2026-06-05-run4.md
-│   │   ├── brocula-hunt-2026-06-06.md
-│   │   ├── brocula-hunt-2026-06-06-run2.md
-│   │   ├── brocula-hunt-2026-06-06-run3.md
-│   │   ├── brocula-hunt-2026-06-06-run4.md
+│   │   ├── README.md     # Audit file index
+│   │   ├── archive/      # Historical audit runs (consolidated)
 │   │   ├── brocula-hunt-2026-06-07.md
 │   │   ├── brocula-hunt-2026-06-07-run2.md
 │   │   ├── brocula-hunt-2026-06-07-run3.md
@@ -61,9 +47,7 @@ blueprintify/
 │   │   ├── brocula-hunt-2026-06-08.md
 │   │   ├── brocula-hunt-2026-06-08-run2.md
 │   │   ├── brocula-hunt-2026-06-08-run3.md
-│   │   ├── diagnostic-scoring-2026-05-31.md
-│   │   ├── diagnostic-scoring-2026-06-04.md
-│   │   └── diagnostic-scoring-2026-06-07.md
+│   │   └── brocula-hunt-2026-06-08-run4.md
 │   ├── blueprint.md
 │   ├── bugs.md
 │   ├── ci-configuration.md
@@ -76,11 +60,9 @@ blueprintify/
 │   ├── features.md
 │   ├── findings.md
 │   ├── flexy-plan.md
-│   ├── issue-audit-report-2026-05-27.md
 │   ├── issue-audit-report-2026-06-05.md
 │   ├── issue-audit-report-2026-06-07.md
 │   ├── issue-audit-report-2026-06-08.md
-│   ├── issue-management-2026-05-27.md
 │   ├── knowledge-review.md
 │   ├── localstorage-schema.md
 │   ├── m2-technical-approach.md
@@ -345,37 +327,12 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Feature Specifications](./docs/features.md)** - Detailed feature documentation and status
 - **[Findings](./docs/findings.md)** - RepoKeeper observation and cleanup log
 - **[Flexy Plan](./docs/flexy-plan.md)** - Hardcoded value elimination and modularization plan
-- **[Issue Management Report](./docs/issue-management-2026-05-27.md)** - Issue normalization and tracking report
 - **[Known Bugs](./docs/bugs.md)** - Active bug tracking and known defects
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
-- **[Issue Audit Report](./docs/issue-audit-report-2026-05-27.md)** - Comprehensive issue audit with fix status tracking
 - **[Issue Audit Report (Jun 5)](./docs/issue-audit-report-2026-06-05.md)** - Issue label normalization and duplicate detection report
 - **[Issue Audit Report (Jun 7)](./docs/issue-audit-report-2026-06-07.md)** - ULW Loop issue audit with fix status tracking
 - **[Issue Audit Report (Jun 8)](./docs/issue-audit-report-2026-06-08.md)** - ULW Loop issue audit with fix status tracking
-- **[Repository Audit](./docs/audit-2026-05-26.md)** - Automated repository audit findings
-- **[BroCula Hunt (May 29)](./docs/audits/brocula-hunt-2026-05-29.md)** - Performance optimization hunt findings
-- **[BroCula Hunt (May 30)](./docs/audits/brocula-hunt-2026-05-30.md)** - Second performance optimization hunt
-- **[BroCula Hunt (Jun 3)](./docs/audits/brocula-hunt-2026-06-03.md)** - Third performance optimization cycle
-- **[BroCula Hunt (Jun 4)](./docs/audits/brocula-hunt-2026-06-04.md)** - Fourth performance optimization cycle
-- **[BroCula Hunt (Jun 4 Run 2)](./docs/audits/brocula-hunt-2026-06-04-run2.md)** - Fifth performance optimization cycle (console + lighthouse)
-- **[BroCula Hunt (Jun 5)](./docs/audits/brocula-hunt-2026-06-05.md)** - Sixth performance optimization cycle
-- **[BroCula Hunt (Jun 5 Run 2)](./docs/audits/brocula-hunt-2026-06-05-run2.md)** - Seventh performance optimization cycle (lighthouse + console)
-- **[BroCula Hunt (Jun 5 Run 3)](./docs/audits/brocula-hunt-2026-06-05-run3.md)** - Eighth performance optimization cycle (lighthouse + console)
-- **[BroCula Hunt (Jun 5 Run 4)](./docs/audits/brocula-hunt-2026-06-05-run4.md)** - Ninth performance optimization cycle (console + lighthouse)
-- **[BroCula Hunt (Jun 6)](./docs/audits/brocula-hunt-2026-06-06.md)** - Tenth performance optimization cycle (console + lighthouse)
-- **[BroCula Hunt (Jun 6 Run 2)](./docs/audits/brocula-hunt-2026-06-06-run2.md)** - Eleventh performance optimization cycle (console + lighthouse)
-- **[BroCula Hunt (Jun 6 Run 3)](./docs/audits/brocula-hunt-2026-06-06-run3.md)** - Twelfth performance optimization cycle (console + lighthouse)
-- **[BroCula Hunt (Jun 6 Run 4)](./docs/audits/brocula-hunt-2026-06-06-run4.md)** - Thirteenth performance optimization cycle (console + lighthouse)
-- **[BroCula Hunt (Jun 7)](./docs/audits/brocula-hunt-2026-06-07.md)** - Fourteenth performance optimization cycle — Console Clean, Lighthouse 100-100-100-100
-- **[BroCula Hunt (Jun 7 Run 2)](./docs/audits/brocula-hunt-2026-06-07-run2.md)** - Fifteenth performance optimization cycle — Console Clean, Lighthouse 99-100-100-100
-- **[BroCula Hunt (Jun 7 Run 3)](./docs/audits/brocula-hunt-2026-06-07-run3.md)** - Sixteenth performance optimization cycle — Console Clean, Lighthouse 100-100-100-100
-- **[BroCula Hunt (Jun 7 Run 4)](./docs/audits/brocula-hunt-2026-06-07-run4.md)** - Seventeenth performance optimization cycle — Console Clean, Lighthouse 99-100-100-100
-- **[BroCula Hunt (Jun 8)](./docs/audits/brocula-hunt-2026-06-08.md)** - Eighteenth performance optimization cycle — Console Clean
-- **[BroCula Hunt (Jun 8 Run 2)](./docs/audits/brocula-hunt-2026-06-08-run2.md)** - Nineteenth performance optimization cycle
-- **[BroCula Hunt (Jun 8 Run 3)](./docs/audits/brocula-hunt-2026-06-08-run3.md)** - Twentieth performance optimization cycle
-- **[Diagnostic Scoring (May 31)](./docs/audits/diagnostic-scoring-2026-05-31.md)** - Comprehensive diagnostic scoring analysis
-- **[Diagnostic Scoring (Jun 4)](./docs/audits/diagnostic-scoring-2026-06-04.md)** - Phase 1 diagnostic scoring report (81.1/100)
-- **[Diagnostic Scoring (Jun 7)](./docs/audits/diagnostic-scoring-2026-06-07.md)** - Phase 1 diagnostic scoring report (81.3/100)
+- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jun 7–latest)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 - **[Roadmap M3 Proposal](./docs/roadmap-m3-proposal.md)** - M3 strategic expansion proposal
 
