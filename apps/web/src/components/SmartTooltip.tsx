@@ -284,7 +284,7 @@ interface KeyboardShortcutTooltipProps {
   shortcut: string;
   description?: string;
   position?: Position;
-  modifier?: "cmd" | "ctrl" | "none";
+  modifier?: "cmd" | "ctrl" | "alt" | "none";
 }
 
 /**
