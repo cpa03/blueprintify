@@ -2,6 +2,42 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 77 (2026-06-09 — RepoKeeper: Documentation Sync & README Tree Fix)
+
+### Audit Scope
+
+Full repository audit covering build/lint health, stale README directory tree (archived Jun 9 Run 1 referenced in audits/ tree), missing BroCula Jun 9 Run 3 reference, CHANGELOG update, and comprehensive quality checks.
+
+### Status Summary
+
+| Check       | Result                                                  |
+| ----------- | ------------------------------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)                                     |
+| Lint        | ✅ Clean (0 warnings/errors)                            |
+| Build       | ✅ Passes (web)                                         |
+| Tests       | ✅ 1,166/1,166 passing (596 Web + 342 API + 228 Shared) |
+| **Overall** | **✅ All quality checks passing**                       |
+
+### Actions Taken This Cycle
+
+1. **Full repository audit**: No redundant/temp/unused source files found. No empty directories. No `.orig`/`.bak`/`.DS_Store` artifacts. No merge conflicts detected.
+2. **Build/Lint/Typecheck/Test verification**: All pass cleanly — 0 errors, 0 warnings.
+3. **Fixed stale README directory tree**: Removed `brocula-hunt-2026-06-09.md` (archived) from audits/ tree; added `brocula-hunt-2026-06-09-run3.md`.
+4. **Updated CHANGELOG.md**: Added entries for BroCula Run 3 domain fix, keyboard shortcut hints, CI Node.js 22 patch, and Cycle 77.
+5. **Updated `docs/findings.md`**: Cycle 77 entry (this file).
+6. **Updated `docs/active-tasks.md`**: Cycle 77 status.
+7. **Updated `docs/bugs.md`**: Cycle 77 status log.
+8. **Updated `docs/knowledge-review.md`**: refreshed for Cycle 77.
+
+### Verification
+
+- No `@ts-ignore`, `@ts-expect-error`, or `as any` found in source code
+- No TODO/FIXME/HACK artifacts in non-test source files
+- README directory tree now accurately reflects actual audits/ filesystem
+- CHANGELOG entries match actual recent commits
+
+---
+
 ## Cycle 76 (2026-06-09 — RepoKeeper: Documentation Sync & Missing BroCula Jun 9 Run 2 Reference)
 
 ### Audit Scope

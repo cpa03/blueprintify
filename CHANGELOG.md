@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 77: documentation sync, README tree fix (archived Jun 9 Run 1 → Run 3), CHANGELOG update, quality verification
+- Keyboard shortcut hints on wizard step buttons showing Ctrl+number access keys ([#1727](https://github.com/cpa03/blueprintify/pull/1727))
 - RepoKeeper Cycle 76: documentation sync, missing BroCula Jun 9 Run 2 README ref, CHANGELOG update, quality verification
 - RepoKeeper Cycle 75: archive stale Jun 8 BroCula audits, update docs/audits/README.md, README.md tree, CHANGELOG, findings, active-tasks
 - BroCula ULW Loop Jun 9 Run 2 audit — console clean, Lighthouse 100-100-100-100
@@ -121,6 +123,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Align sitemap/robots domain to blueprintify.dev (BroCula Run 3) ([#1730](https://github.com/cpa03/blueprintify/pull/1730))
+- Add workflow fix patch for Node.js 22 migration ([#1726](https://github.com/cpa03/blueprintify/pull/1726))
 - Remove explicit HMR clientPort to prevent WebSocket mismatch in dev server ([#1703](https://github.com/cpa03/blueprintify/pull/1703))
 - Replace `any` type with `StoreApi` in persistence.ts `setState` type ([#46c6d83](https://github.com/cpa03/blueprintify/commit/46c6d83))
 - Restore pinned dompurify version accidentally widened by lockfile regeneration ([#21b1ea9](https://github.com/cpa03/blueprintify/commit/21b1ea9))
@@ -164,6 +168,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
+- BroCula ULW Loop Jun 9 Run 3 audit report — LH 100-100-100-100, domain fix
 - BroCula ULW Loop Jun 8 Run 3 audit report — 20th performance optimization cycle
 - BroCula ULW Loop Jun 8 Run 2 audit report
 - BroCula ULW Loop Jun 8 Run 1 audit report — Console Clean, Lighthouse 100-100-100-100

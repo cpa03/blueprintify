@@ -12,17 +12,18 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-09 (RepoKeeper Cycle 76)
+**Last Review**: 2026-06-09 (RepoKeeper Cycle 77)
 **Status**: ✅ Up to date — with noted exceptions
 
-As of RepoKeeper Cycle 76 (refreshed):
+As of RepoKeeper Cycle 77 (refreshed):
 
 - All documentation aligns with current codebase state — with corrections noted below
 - No drift detected between docs/ and apps/ code
-- **CHANGELOG updated**: Added missing entries for BroCula Jun 9 Run 2, scroll-to-bottom button, hardcoded role strings fix, share route validation extraction
-- **Added missing README references**:
-  - `docs/audits/brocula-hunt-2026-06-09-run2.md` (Jun 9 Run 2) — directory tree + docs/audits/README.md
-  - Updated BroCula Audits description from "Jun 8–latest" to "Jun 9–latest"
+- **CHANGELOG updated**: Added entries for BroCula Run 3 domain fix, keyboard shortcut hints, CI Node.js 22 patch, and Cycle 77
+- **Fixed stale README directory tree**:
+  - Removed `brocula-hunt-2026-06-09.md` (archived) from audits/ tree
+  - Added `brocula-hunt-2026-06-09-run3.md` (Jun 9 Run 3)
+  - docs/audits/README.md already correctly lists Run 3 as latest current report
 - **CI workflow fixes still blocked**: workflow files on `main` still use `node-version: "20"` and stale `docs/bug.md`/`docs/feature.md` references. A maintainer with `workflows: write` permission must push the prepared fixes.
 
 ## Historical Drift Corrections
