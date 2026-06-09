@@ -71,7 +71,7 @@ export interface Env {
 
   // API Configuration
   API_KEY?: string;
-  ENVIRONMENT?: "development" | "production" | "test";
+  ENVIRONMENT?: "development" | "production" | "staging" | "test";
   API_VERSION?: string;
   CORS_ORIGIN?: string;
   CORS_MAX_AGE?: string;
