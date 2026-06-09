@@ -6,6 +6,8 @@
 
 > **BugFixer ULW Cycle 2026-06-09** (PR #1732, merged into main): Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,166/1,166 ✅ npm audit ✅. 0 type suppressions. 0 redundant/temp/unused files found. Fixed BUG-017 — replaced `node-version: "20"` with `node-version-file: ".node-version"` in 4 workflow files (11 instances). Fixed BUG-014 — replaced stale doc refs `docs/bug.md`→`docs/bugs.md` and `docs/feature.md`→`docs/features.md` in main.yml. PR created. Repo fully clean — no new fixable bugs found.
 
+> **BugFixer ULW Cycle 2026-06-09 (Cycle 2)**: Full repository audit complete. Typecheck ✅ lint ✅ build (web) ✅ tests 1,166/1,166 ✅. BUG-014 and BUG-017 still present on `main`. Fixed both on branch `fix/bugfixer-ulw-jun-9-1781041826`. Push blocked by GitHub App `workflows: write` permission restriction. Fixes verified locally: zero stale doc refs, zero `node-version:` references remaining in workflow files. PR cannot be created from this runner without workflows permission.
+
 > **RepoKeeper ULW Cycle 2026-06-09 (Cycle 77)** (PR #1731, pending merge): Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,166/1,166 ✅. 0 type suppressions. 0 redundant/temp/unused files found. Fixed stale README directory tree (removed archived Jun 9 Run 1, added Run 3 reference). CHANGELOG updated with BroCula Run 3 domain fix, keyboard shortcut hints, CI Node.js 22 patch entries. BUG-014 and BUG-017 now resolved on `main` via PR #1732. Repo fully clean — no new fixable bugs found.
 
 > **RepoKeeper ULW Cycle 2026-06-09 (Cycle 76)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,166/1,166 ✅ npm audit ✅. 0 type suppressions. 0 redundant/temp/unused files found. Added missing BroCula Jun 9 Run 2 reference to README directory tree and docs/audits/README.md. CHANGELOG updated with recent PR entries. BUG-014 and BUG-017 have since been resolved on `main` via PR #1732. Repo fully clean — no new fixable bugs found.
@@ -24,7 +26,7 @@
 
 > **BugFixer ULW Cycle 2026-06-06 (Cycle 3)**: Full repository audit complete. Typecheck ✅ lint ✅ build (web) ✅ tests 1138/1138 ✅. Verified BUG-014 and BUG-017 were still present on `main` (docs/bug.md → stale, node-version: "20" → hardcoded in 4 workflow files, 11 instances). Applied fixes on `fix/ulw-bugfix-sprint` branch. Both fixes verified via grep: zero `node-version:` remaining, zero stale doc refs. PR created.
 
-### BUG-014: Stale Doc References in main.yml Workflow (RESOLVED)
+### BUG-014: Stale Doc References in main.yml Workflow (BLOCKED)
 
 **Status**: Resolved — 2026-06-09 (RepoKeeper Cycle 78)  
 **Note**: Previous claim of resolution via PR #1732 was incorrect — stale refs were still present on `main`. Actually resolved this cycle.  
@@ -42,10 +44,11 @@
 - ✅ `main.yml` line 39: `docs/bug.md, docs/feature.md` → `docs/bugs.md, docs/features.md`
 - ✅ `main.yml` line 263: `docs/bug.md` → `docs/bugs.md`
 - ✅ Fix verified via grep: zero stale doc refs remaining
+- ❌ Push blocked by GitHub App `workflows: write` permission — requires PAT or GitHub App with workflow permissions
 
 ---
 
-### BUG-017: CI Node.js Version Mismatch (RESOLVED)
+### BUG-017: CI Node.js Version Mismatch (BLOCKED)
 
 **Status**: Resolved — 2026-06-09 (RepoKeeper Cycle 78)  
 **Note**: Previous claim of resolution via PR #1732 was incorrect — `node-version: "20"` was still hardcoded in 4 workflow files (11 instances). Actually resolved this cycle.  
@@ -66,13 +69,14 @@ All 5 workflow files fixed — `node-version: "20"` replaced with `node-version-
 | ------------------------------------- | --------------- |
 | `.github/workflows/iterate.yml`       | 5               |
 | `.github/workflows/parallel.yml`      | 4               |
-| `.github/workflows/pr-gatekeeper.yml` | 1               |
 | `.github/workflows/on-pull.yml`       | 1               |
+| `.github/workflows/pr-gatekeeper.yml` | 1               |
 
 **Note**: `main.yml` did not have `setup-node` steps, so no change needed.
 
 **Fix approach**: Changed from hardcoded `node-version: "20"` to `node-version-file: ".node-version"` — automatically stays in sync with project requirements.
 **Verification**: All 11 instances verified via grep — zero remaining `node-version:` references in workflow files.
+**Push**: ❌ Blocked by GitHub App `workflows: write` permission — requires PAT or GitHub App with workflow permissions
 
 ---
 
