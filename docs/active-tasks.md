@@ -2,7 +2,26 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 76 — Documentation Sync & Missing BroCula Jun 9 Run 2 Reference ✅ COMPLETE
+## Current Focus: RepoKeeper Cycle 77 — Documentation Sync & README Tree Fix 🔄 IN PROGRESS
+
+### Task: Full repository audit, fix stale README directory tree (archived Jun 9 Run 1 reference), add missing BroCula Jun 9 Run 3, CHANGELOG update, refresh documentation
+
+- **Priority**: High
+- **Status**: 🟡 In Progress
+- **Objective**: Full repository audit, fix stale README directory tree (removed archived Jun 9 Run 1, added Run 3), update CHANGELOG with missing entries, refresh documentation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,166/1,166 ✅
+  - [x] Fixed stale README directory tree (removed archived `brocula-hunt-2026-06-09.md`, added `brocula-hunt-2026-06-09-run3.md`)
+  - [x] Updated CHANGELOG.md — added entries for BroCula Run 3, keyboard shortcut hints, CI Node.js 22 patch
+  - [x] Updated `docs/findings.md` — Cycle 77 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 77 status
+  - [x] Updated `docs/bugs.md` — Cycle 77 status log
+  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 77
+
+## Previous Cycle: RepoKeeper Cycle 76 — Documentation Sync & Missing BroCula Jun 9 Run 2 Reference ✅ COMPLETE
 
 ### Task: Full repository audit, add missing BroCula Jun 9 Run 2 README ref, update docs/audits/README.md, CHANGELOG, refresh documentation
 
@@ -173,5 +192,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-09 (Cycle 75: RepoKeeper)  
+**Last Updated**: 2026-06-09 (Cycle 77: RepoKeeper)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
