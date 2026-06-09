@@ -2,24 +2,26 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 75 — Archive Stale Jun 8 Audits, Update Documentation
+## Current Focus: RepoKeeper Cycle 76 — Documentation Sync & Missing BroCula Jun 9 Run 2 Reference ✅ COMPLETE
 
-### Task: Full repository audit, archive stale Jun 8 BroCula audits, update README/audit docs, update CHANGELOG
+### Task: Full repository audit, add missing BroCula Jun 9 Run 2 README ref, update docs/audits/README.md, CHANGELOG, refresh documentation
 
 - **Priority**: High
-- **Status**: 🔵 In Progress
-- **Objective**: Full repository audit, archive stale Jun 8 BroCula audit files, update docs/audits/README.md, README.md tree, CHANGELOG, refresh documentation
+- **Status**: 🟢 Complete
+- **Objective**: Full repository audit, add missing BroCula Jun 9 Run 2 reference to README directory tree, update docs/audits/README.md, CHANGELOG with missing entries, refresh documentation
 - **Actions**:
   - [x] Full repository scan for redundant/temp/unused files → none found
   - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
   - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
-  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅
-  - [x] Archived stale Jun 8 BroCula audit files (4 files moved to `docs/audits/archive/`)
-  - [x] Updated `docs/audits/README.md` — moved Jun 8 to archive, kept Jun 9 as latest
-  - [x] Updated `README.md` architecture tree — removed Jun 8 entries from active listing
-  - [x] Updated CHANGELOG.md — added RepoKeeper Cycle 75 entry
-  - [x] Updated `docs/findings.md` — Cycle 75 entry
-  - [x] Updated `docs/active-tasks.md` — Cycle 75 status
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,166/1,166 ✅ npm audit ✅
+  - [x] Added missing `brocula-hunt-2026-06-09-run2.md` to README directory tree
+  - [x] Updated `docs/audits/README.md` — added Jun 9 Run 2 as latest current report
+  - [x] Updated `README.md` directory tree — added Jun 9 Run 2 entry
+  - [x] Updated CHANGELOG.md — added missing entries for BroCula Jun 9 Run 2 and recent commits
+  - [x] Updated `docs/findings.md` — Cycle 76 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 76 status
+  - [x] Updated `docs/bugs.md` — Cycle 76 status log
+  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 76
 
 ## Previous Cycle: RepoKeeper Cycle 74 — Archive Stale Audits, Add Jun 9 Reference, Quality Check ✅ COMPLETE
 

@@ -9,8 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 76: documentation sync, missing BroCula Jun 9 Run 2 README ref, CHANGELOG update, quality verification
 - RepoKeeper Cycle 75: archive stale Jun 8 BroCula audits, update docs/audits/README.md, README.md tree, CHANGELOG, findings, active-tasks
+- BroCula ULW Loop Jun 9 Run 2 audit — console clean, Lighthouse 100-100-100-100
 - BroCula ULW Loop Jun 9 audit — console clean, Lighthouse 99-100-100-100
+- Scroll-to-bottom button and End key support to editor preview pane
+- Eliminate remaining hardcoded role strings in share routes and tests (Flexy)
+- Extract duplicate share route validation into shared helpers
 - Eliminate remaining hardcoded env strings and ENVIRONMENT type (Flexy)
 - Staggered entrance animation on wizard content area
 - RepoKeeper Cycle 70: documentation sync, missing BroCula Run 4 ref, diagnostic scoring Jun 7 ref, roadmap M3 proposal ref, stale branch cleanup ([#1684](https://github.com/cpa03/blueprintify/pull/1684))

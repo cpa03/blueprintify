@@ -2,6 +2,45 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 76 (2026-06-09 — RepoKeeper: Documentation Sync & Missing BroCula Jun 9 Run 2 Reference)
+
+### Audit Scope
+
+Full repository audit covering build/lint health, missing BroCula Jun 9 Run 2 reference in README, docs/audits/README.md update, CHANGELOG update, and comprehensive quality checks.
+
+### Status Summary
+
+| Check       | Result                                                  |
+| ----------- | ------------------------------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)                                     |
+| Lint        | ✅ Clean (0 warnings/errors)                            |
+| Build       | ✅ Passes (web)                                         |
+| Tests       | ✅ 1,166/1,166 passing (596 Web + 342 API + 228 Shared) |
+| npm audit   | ✅ 0 vulnerabilities                                    |
+| **Overall** | **✅ All quality checks passing**                       |
+
+### Actions Taken This Cycle
+
+1. **Full repository audit**: No redundant/temp/unused source files found. No empty directories. No `.orig`/`.bak`/`.DS_Store` artifacts. No merge conflicts detected.
+2. **Build/Lint/Typecheck/Test verification**: All pass cleanly — 0 errors, 0 warnings.
+3. **Added missing BroCula Run 2 reference to README**: `docs/audits/brocula-hunt-2026-06-09-run2.md` existed on disk but was not referenced in the README documentation tree or the `docs/audits/README.md` current reports section.
+4. **Updated `docs/audits/README.md`**: Added Jun 9 Run 2 as latest current report.
+5. **Updated `README.md` directory tree**: Added Jun 9 Run 2 entry; updated BroCula Audits description to "Jun 9–latest".
+6. **Updated CHANGELOG.md**: Added missing entries for BroCula Jun 9 Run 2, scroll-to-bottom button, hardcoded role strings fix, share route validation extraction.
+7. **Updated `docs/findings.md`**: Cycle 76 entry (this file).
+8. **Updated `docs/active-tasks.md`**: Cycle 76 status.
+9. **Updated `docs/bugs.md`**: Cycle 76 status log.
+10. **Updated `docs/knowledge-review.md`**: refreshed for Cycle 76.
+
+### Verification
+
+- No `@ts-ignore`, `@ts-expect-error`, or `as any` found in source code
+- No TODO/FIXME/HACK artifacts in non-test source files
+- All audit files correctly referenced: Jun 9 (Run 1 + Run 2) active, Jun 8+ archived
+- CHANGELOG entries match actual recent commits
+
+---
+
 ## Cycle 75 (2026-06-09 — RepoKeeper: Archive Stale Jun 8 Audits, Update Documentation)
 
 ### Audit Scope
