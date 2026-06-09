@@ -11,7 +11,7 @@
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Hono } from "hono";
-import { HTTP_HEADERS, HTTP_HEADER_NAMES, HTTP_METHODS } from "@blueprint/shared";
+import { HTTP_HEADERS, HTTP_HEADER_NAMES, HTTP_METHODS, HTTP_STATUS } from "@blueprint/shared";
 import { API_HEADERS } from "../config/constants";
 import { requestLogger } from "./logger";
 
@@ -30,7 +30,7 @@ describe("requestLogger middleware", () => {
 
       const res = await app.request("/test");
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(HTTP_STATUS.OK);
       const requestId = res.headers.get(API_HEADERS.RESPONSE.REQUEST_ID);
       expect(requestId).toBeTruthy();
       // Format: timestamp-random (e.g., "1712345678900-abc123def456")
@@ -220,7 +220,7 @@ describe("requestLogger middleware", () => {
 
       const res = await app.request("/chain-test");
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(HTTP_STATUS.OK);
       expect(res.headers.get("x-chain-verified")).toBe("true");
     });
   });

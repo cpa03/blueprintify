@@ -4,7 +4,7 @@ import importRoute from "./import";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
-import { HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import { HTTP_STATUS, HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -33,7 +33,7 @@ describe("POST /import", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
     expect(data.error).toHaveProperty("type", "validation");
@@ -54,7 +54,7 @@ describe("POST /import", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
     expect(data.error).toHaveProperty("type", "validation");
@@ -74,7 +74,7 @@ describe("POST /import", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.error).toHaveProperty("type", "validation");
     expect(data.error).toHaveProperty("message", "Invalid JSON format");
@@ -94,7 +94,7 @@ describe("POST /import", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.error).toHaveProperty("type", "validation");
     expect(data.error.message).toContain("missing required fields");
@@ -122,7 +122,7 @@ describe("POST /import", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const data = (await res.json()) as {
       success: boolean;
       data: {
@@ -161,7 +161,7 @@ describe("POST /import", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const data = (await res.json()) as {
       data: {
         warnings: string[];
@@ -201,7 +201,7 @@ Details here
       MOCK_ENV
     );
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const data = (await res.json()) as {
       success: boolean;
       data: {
@@ -230,7 +230,7 @@ Details here
       MOCK_ENV
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.error).toHaveProperty("type", "validation");
     expect(data.error.message).toContain("could not extract blueprint");
@@ -260,7 +260,7 @@ Architecture details here
       MOCK_ENV
     );
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const data = (await res.json()) as {
       data: {
         projectName: string;

@@ -6,6 +6,7 @@ import type { ErrorResponse } from "../errors";
 import type { AppVariables, User } from "../types";
 import { DEFAULTS } from "../config/env";
 import {
+  HTTP_STATUS,
   HTTP_HEADERS,
   HTTP_METHODS,
   HTTP_HEADER_NAMES,
@@ -89,7 +90,7 @@ describe("POST /share", () => {
       env
     );
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const body = (await res.json()) as {
       success: true;
       data: { id: string; url: string; expiresAt: string };
@@ -117,7 +118,7 @@ describe("POST /share", () => {
       env
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("validation");
@@ -140,7 +141,7 @@ describe("POST /share", () => {
       env
     );
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const body = (await res.json()) as {
       success: true;
       data: { id: string };
@@ -160,7 +161,7 @@ describe("GET /share/:id", () => {
     const env = createMockEnv();
     const res = await app.request("/invalid-id", {}, env);
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("validation");
@@ -172,7 +173,7 @@ describe("GET /share/:id", () => {
     const env = createMockEnv();
     const res = await app.request("/ABC123def456", {}, env);
 
-    expect(res.status).toBe(404);
+    expect(res.status).toBe(HTTP_STATUS.NOT_FOUND);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("not_found");
@@ -195,7 +196,7 @@ describe("DELETE /share/:id", () => {
     const env = createMockEnv("test-api-key");
     const res = await app.request("/testshare123", { method: HTTP_METHODS.DELETE }, env);
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const body = (await res.json()) as { success: true; data: { message: string } };
     expect(body.success).toBe(true);
     expect(body.data).toHaveProperty("message", "Share deleted successfully");
@@ -205,7 +206,7 @@ describe("DELETE /share/:id", () => {
     const env = createMockEnv("test-api-key");
     const res = await app.request("/invalid-id", { method: HTTP_METHODS.DELETE }, env);
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("validation");
@@ -230,7 +231,7 @@ describe("DELETE /share/:id", () => {
     const postBody = (await postRes.json()) as { success: true; data: { id: string } };
     const { id } = postBody.data;
     const delRes = await app.request(`/${id}`, { method: HTTP_METHODS.DELETE }, env);
-    expect(delRes.status).toBe(200);
+    expect(delRes.status).toBe(HTTP_STATUS.OK);
     const delBody = (await delRes.json()) as { success: true; data: { message: string } };
     expect(delBody.success).toBe(true);
     expect(delBody.data.message).toBe("Share deleted successfully");
@@ -265,7 +266,7 @@ describe("DELETE /share/:id", () => {
     const postBody = (await postRes.json()) as { success: true; data: { id: string } };
     const { id } = postBody.data;
     const delRes = await app.request(`/${id}`, { method: HTTP_METHODS.DELETE }, attackerEnv);
-    expect(delRes.status).toBe(403);
+    expect(delRes.status).toBe(HTTP_STATUS.FORBIDDEN);
     const data = (await delRes.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("authorization");
@@ -289,7 +290,7 @@ describe("DELETE /share/:id", () => {
     const postBody = (await postRes.json()) as { success: true; data: { id: string } };
     const { id } = postBody.data;
     const delRes = await app.request(`/${id}`, { method: HTTP_METHODS.DELETE }, env);
-    expect(delRes.status).toBe(200);
+    expect(delRes.status).toBe(HTTP_STATUS.OK);
     const delBody = (await delRes.json()) as { success: true; data: { message: string } };
     expect(delBody.success).toBe(true);
     expect(delBody.data.message).toBe("Share deleted successfully");
