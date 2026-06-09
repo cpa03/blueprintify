@@ -40,10 +40,6 @@ blueprintify/
 │   ├── audits/
 │   │   ├── README.md     # Audit file index
 │   │   ├── archive/      # Historical audit runs (consolidated)
-│   │   ├── brocula-hunt-2026-06-08.md
-│   │   ├── brocula-hunt-2026-06-08-run2.md
-│   │   ├── brocula-hunt-2026-06-08-run3.md
-│   │   ├── brocula-hunt-2026-06-08-run4.md
 │   │   └── brocula-hunt-2026-06-09.md
 │   ├── blueprint.md
 │   ├── bugs.md
