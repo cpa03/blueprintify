@@ -4,6 +4,8 @@
 
 ## Active Bugs
 
+> **RepoKeeper ULW Cycle 2026-06-09 (Cycle 76)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,166/1,166 ✅ npm audit ✅. 0 type suppressions. 0 redundant/temp/unused files found. Added missing BroCula Jun 9 Run 2 reference to README directory tree and docs/audits/README.md. CHANGELOG updated with recent PR entries. BUG-014 and BUG-017 remain unresolved on `main` — CI workflows still use `node-version: "20"`. Repo fully clean — no new fixable bugs found.
+
 > **RepoKeeper ULW Cycle 2026-06-08 (Cycle 73)**: Full repository audit complete. Typecheck ✅ lint ✅ tests 1,162/1,162 ✅. 0 type suppressions. 0 `as any`. 0 redundant/temp/unused files found. 1 new doc file added to README (BroCula Jun 8 Run 3). CHANGELOG updated with Cycle 73. BUG-014 and BUG-017 remain unresolved on `main` — still blocked by `workflows: write` permission. Repo fully clean — no new fixable bugs found.
 
 > **RepoKeeper ULW Cycle 2026-06-08 (Cycle 72)**: Full repository audit complete. Typecheck ✅ lint ✅ build (web) ✅. 0 type suppressions. 0 `as any`. 0 redundant/temp/unused files found. 3 new doc files added to README (BroCula Jun 8, Jun 8 Run 2, Issue Audit Jun 8). CHANGELOG updated with recent PRs. BUG-014 and BUG-017 remain unresolved on `main` — still blocked by `workflows: write` permission. Repo fully clean — no new fixable bugs found.
