@@ -2,12 +2,33 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 77 — Documentation Sync & README Tree Fix 🔄 IN PROGRESS
+## Current Focus: RepoKeeper Cycle 78 — BUG-014/BUG-017 CI Workflow Fixes & Full Audit 🔄 IN PROGRESS
+
+### Task: Full repository audit, fix BUG-014 (stale doc refs in main.yml), fix BUG-017 (hardcoded node-version in 4 workflow files, 11 instances), documentation sync, stale branch cleanup
+
+- **Priority**: High
+- **Status**: 🟡 In Progress
+- **Objective**: Full repository audit, fix BUG-014 (main.yml stale docs/bug.md and docs/feature.md refs), fix BUG-017 (node-version: "20" → node-version-file: ".node-version" across 4 workflow files, 11 instances), delete stale merged branch, update CHANGELOG, refresh documentation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,166/1,166 ✅
+  - [x] Fixed BUG-014: Updated main.yml stale `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`
+  - [x] Fixed BUG-017: Replaced `node-version: "20"` with `node-version-file: ".node-version"` in 4 workflow files (11 instances)
+  - [x] Deleted stale merged remote branch `fix/bugfixer-ulw-jun-9`
+  - [x] Updated `docs/bugs.md` — corrected BUG-014/BUG-017 status, Cycle 78 entry
+  - [x] Updated `docs/findings.md` — Cycle 78 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 78 status
+  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 78
+  - [x] Updated CHANGELOG.md — Cycle 78 entry
+
+## Previous Cycle: RepoKeeper Cycle 77 — Documentation Sync & README Tree Fix ✅ COMPLETE
 
 ### Task: Full repository audit, fix stale README directory tree (archived Jun 9 Run 1 reference), add missing BroCula Jun 9 Run 3, CHANGELOG update, refresh documentation
 
 - **Priority**: High
-- **Status**: 🟡 In Progress
+- **Status**: 🟢 Complete
 - **Objective**: Full repository audit, fix stale README directory tree (removed archived Jun 9 Run 1, added Run 3), update CHANGELOG with missing entries, refresh documentation
 - **Actions**:
   - [x] Full repository scan for redundant/temp/unused files → none found
@@ -192,5 +213,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-09 (Cycle 77: RepoKeeper)  
+**Last Updated**: 2026-06-09 (Cycle 78: RepoKeeper)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
