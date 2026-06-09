@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- BroCula ULW Loop Jun 9 audit — console clean, Lighthouse 99-100-100-100
+- Eliminate remaining hardcoded env strings and ENVIRONMENT type (Flexy)
+- Staggered entrance animation on wizard content area
 - RepoKeeper Cycle 70: documentation sync, missing BroCula Run 4 ref, diagnostic scoring Jun 7 ref, roadmap M3 proposal ref, stale branch cleanup ([#1684](https://github.com/cpa03/blueprintify/pull/1684))
 - One-shot attention-glow animation on keyboard shortcuts button for visual feedback
 - RepoKeeper Cycle 69: documentation sync, missing BroCula Run 3 ref, issue audit report ref, CHANGELOG update ([#1683](https://github.com/cpa03/blueprintify/pull/1683))
