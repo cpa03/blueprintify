@@ -14,7 +14,7 @@ import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { authorize } from "../middleware/authorize";
 import { z } from "zod";
 import type { Env } from "../types";
-import { CONTEXT_KEYS } from "@blueprint/shared";
+import { CONTEXT_KEYS, AUTH_DEFAULTS } from "@blueprint/shared";
 import {
   API_HEADERS,
   HTTP_STATUS,
@@ -287,34 +287,75 @@ app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
   }
 });
 
-app.delete("/:id", rateLimit(rateLimitConfigs.standard), authorize("user"), async (c) => {
-  try {
-    const shareId = c.req.param("id") || "";
+app.delete(
+  "/:id",
+  rateLimit(rateLimitConfigs.standard),
+  authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
+  async (c) => {
+    try {
+      const shareId = c.req.param("id") || "";
 
-    if (!isValidShareId(shareId)) {
-      return c.json(
-        withCtxError(
-          c,
-          ErrorType.VALIDATION,
-          SHARE_ERROR_MESSAGES.INVALID_SHARE_ID_FORMAT,
-          ERROR_CODES.VALIDATION_ERROR
-        ),
-        HTTP_STATUS.BAD_REQUEST
-      );
-    }
+      if (!isValidShareId(shareId)) {
+        return c.json(
+          withCtxError(
+            c,
+            ErrorType.VALIDATION,
+            SHARE_ERROR_MESSAGES.INVALID_SHARE_ID_FORMAT,
+            ERROR_CODES.VALIDATION_ERROR
+          ),
+          HTTP_STATUS.BAD_REQUEST
+        );
+      }
 
-    const dbError = checkDbConfigured(c);
-    if (dbError) return dbError;
+      const dbError = checkDbConfigured(c);
+      if (dbError) return dbError;
 
-    // Fetch share to verify ownership before deletion
-    const existing = await c.env.DB.prepare(
-      `SELECT id, metadata FROM blueprint_shares WHERE id = ?`
-    )
-      .bind(shareId)
-      .first<{ id: string; metadata: string | null }>();
+      // Fetch share to verify ownership before deletion
+      const existing = await c.env.DB.prepare(
+        `SELECT id, metadata FROM blueprint_shares WHERE id = ?`
+      )
+        .bind(shareId)
+        .first<{ id: string; metadata: string | null }>();
 
-    if (!existing) {
-      // Share doesn't exist — treat as success to avoid leaking existence info
+      if (!existing) {
+        // Share doesn't exist — treat as success to avoid leaking existence info
+        return c.json(
+          {
+            success: true,
+            data: {
+              message: SHARE_ERROR_MESSAGES.SHARE_DELETED_SUCCESSFULLY,
+            },
+          },
+          HTTP_STATUS.OK
+        );
+      }
+
+      // Validate ownership: if the share has a creatorId, the request must match
+      const creatorId = await getCreatorId(c.env.API_KEY);
+      if (creatorId && existing.metadata) {
+        let parsedMetadata: Record<string, unknown> = {};
+        try {
+          parsedMetadata = JSON.parse(existing.metadata) as Record<string, unknown>;
+        } catch {
+          // If metadata can't be parsed, proceed with deletion
+          // rather than locking the resource due to data corruption
+        }
+        const shareCreatorId = parsedMetadata.createdBy as string | undefined;
+        if (shareCreatorId && shareCreatorId !== creatorId) {
+          return c.json(
+            withCtxError(
+              c,
+              ErrorType.AUTHORIZATION,
+              ERROR_MESSAGES.AUTHORIZATION,
+              ERROR_CODES.AUTHORIZATION_ERROR
+            ),
+            HTTP_STATUS.FORBIDDEN
+          );
+        }
+      }
+
+      await c.env.DB.prepare("DELETE FROM blueprint_shares WHERE id = ?").bind(shareId).run();
+
       return c.json(
         {
           success: true,
@@ -324,50 +365,14 @@ app.delete("/:id", rateLimit(rateLimitConfigs.standard), authorize("user"), asyn
         },
         HTTP_STATUS.OK
       );
+    } catch (error) {
+      secureLogError("Share deletion error", error);
+      return c.json(
+        withCtxError(c, ErrorType.INTERNAL, ERROR_MESSAGES.INTERNAL, ERROR_CODES.INTERNAL_ERROR),
+        HTTP_STATUS.INTERNAL_ERROR
+      );
     }
-
-    // Validate ownership: if the share has a creatorId, the request must match
-    const creatorId = await getCreatorId(c.env.API_KEY);
-    if (creatorId && existing.metadata) {
-      let parsedMetadata: Record<string, unknown> = {};
-      try {
-        parsedMetadata = JSON.parse(existing.metadata) as Record<string, unknown>;
-      } catch {
-        // If metadata can't be parsed, proceed with deletion
-        // rather than locking the resource due to data corruption
-      }
-      const shareCreatorId = parsedMetadata.createdBy as string | undefined;
-      if (shareCreatorId && shareCreatorId !== creatorId) {
-        return c.json(
-          withCtxError(
-            c,
-            ErrorType.AUTHORIZATION,
-            ERROR_MESSAGES.AUTHORIZATION,
-            ERROR_CODES.AUTHORIZATION_ERROR
-          ),
-          HTTP_STATUS.FORBIDDEN
-        );
-      }
-    }
-
-    await c.env.DB.prepare("DELETE FROM blueprint_shares WHERE id = ?").bind(shareId).run();
-
-    return c.json(
-      {
-        success: true,
-        data: {
-          message: SHARE_ERROR_MESSAGES.SHARE_DELETED_SUCCESSFULLY,
-        },
-      },
-      HTTP_STATUS.OK
-    );
-  } catch (error) {
-    secureLogError("Share deletion error", error);
-    return c.json(
-      withCtxError(c, ErrorType.INTERNAL, ERROR_MESSAGES.INTERNAL, ERROR_CODES.INTERNAL_ERROR),
-      HTTP_STATUS.INTERNAL_ERROR
-    );
   }
-});
+);
 
 export default app;

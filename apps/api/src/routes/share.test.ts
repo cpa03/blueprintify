@@ -5,7 +5,13 @@ import { errorHandler } from "../middleware/errorHandler";
 import type { ErrorResponse } from "../errors";
 import type { AppVariables, User } from "../types";
 import { DEFAULTS } from "../config/env";
-import { HTTP_HEADERS, HTTP_METHODS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import {
+  HTTP_HEADERS,
+  HTTP_METHODS,
+  HTTP_HEADER_NAMES,
+  AUTH_DEFAULTS,
+  CONTEXT_KEYS,
+} from "@blueprint/shared";
 import { ERROR_CODES } from "../config/constants";
 
 let originalConsoleError: typeof console.error;
@@ -178,8 +184,8 @@ describe("DELETE /share/:id", () => {
   const app = new Hono<{ Bindings: ReturnType<typeof createMockEnv>; Variables: AppVariables }>();
   // Set user context for tests since DELETE route now requires authorization
   app.use("*", async (c, next) => {
-    const user: User = { id: "test-user", role: "user" };
-    c.set("user", user);
+    const user: User = { id: "test-user", role: AUTH_DEFAULTS.DEFAULT_ROLE };
+    c.set(CONTEXT_KEYS.USER, user);
     await next();
   });
   app.route("/", shareRoute);

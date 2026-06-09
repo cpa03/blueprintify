@@ -526,3 +526,17 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | ----- | ----------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | #1690 | `feat/flexy-iteration-27-permissions-cdn` | feat(flexy): centralize Permissions-Policy values and CDN cache headers                           |
 | TBD   | `feat/flexy-error-codes-shared`           | feat(flexy): centralize ERROR_CODES into shared config and eliminate hardcoded error code strings |
+
+### ✅ Flexy Iteration 29: Eliminate Remaining Hardcoded Role Strings in Routes & Tests
+
+| File                                | Change                                                                                                  |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `apps/api/src/routes/share.ts`      | Added `AUTH_DEFAULTS` import; replaced `authorize("user")` with `authorize(AUTH_DEFAULTS.DEFAULT_ROLE)` |
+| `apps/api/src/routes/share.test.ts` | Added `AUTH_DEFAULTS`, `CONTEXT_KEYS` import; replaced `role: "user"` with `AUTH_DEFAULTS.DEFAULT_ROLE` |
+| `apps/api/src/routes/share.test.ts` | Replaced `c.set("user", user)` with `c.set(CONTEXT_KEYS.USER, user)`                                    |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — 1,166 tests passing (596 web + 342 api + 228 shared) across 69 files
