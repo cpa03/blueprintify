@@ -35,6 +35,7 @@ import {
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
+import { getModifierLabel } from "../../lib/platform";
 
 interface StepFeaturesProps {
   direction?: AnimationDirection;
@@ -51,6 +52,7 @@ export const StepFeatures = memo(function StepFeatures({
   const clearFeatures = useWizardStore((s) => s.clearFeatures);
   const nextStep = useWizardStore((s) => s.nextStep);
   const prevStep = useWizardStore((s) => s.prevStep);
+  const modifierKey = getModifierLabel();
 
   const handleAddFeature = useCallback(() => {
     if (newFeature.trim()) {
@@ -443,6 +445,12 @@ export const StepFeatures = memo(function StepFeatures({
             className="btn-primary flex items-center gap-2 animate-glow"
           >
             {UI_CONTENT.WIZARD.STEP_FEATURES.NEXT_BUTTON}
+            <kbd
+              className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+              aria-hidden="true"
+            >
+              {modifierKey}+↵
+            </kbd>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
