@@ -47,11 +47,21 @@ async function getCreatorId(apiKey: string | undefined): Promise<string | undefi
 const app = new Hono<{ Bindings: Env }>();
 
 /**
+ * Minimal interface for Hono context operations used by internal helpers.
+ * Extracted to avoid complex Hono generic type variance issues in utility functions.
+ */
+interface RouteHelperContext {
+  env: { DB?: unknown };
+  get: (key: string) => string | undefined;
+  json: (data: unknown, status?: number) => Response;
+}
+
+/**
  * Creates a standardized error response with requestId extracted from the Hono context.
  * Thin wrapper around the shared createErrorJson utility.
  */
 function withCtxError(
-  c: { get: (key: string) => string | undefined },
+  c: RouteHelperContext,
   type: ErrorType,
   message: string,
   code: string,
@@ -62,6 +72,33 @@ function withCtxError(
     details,
     requestId: c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined,
   });
+}
+
+/**
+ * Validates that a share ID has the expected length.
+ * Returns true if valid, false otherwise.
+ */
+function isValidShareId(id: string | undefined): id is string {
+  return typeof id === "string" && id.length === SHARE_CONFIG.ID_LENGTH;
+}
+
+/**
+ * Checks if the database binding is configured and returns a 500 error response if not.
+ * Returns null when DB is available (caller can proceed), or a Response when it's missing.
+ */
+function checkDbConfigured(c: RouteHelperContext): Response | null {
+  if (!c.env.DB) {
+    return c.json(
+      withCtxError(
+        c,
+        ErrorType.CONFIGURATION,
+        SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
+        ERROR_CODES.CONFIGURATION_ERROR
+      ),
+      HTTP_STATUS.INTERNAL_ERROR
+    );
+  }
+  return null;
 }
 
 const createShareSchema = z.object({
@@ -113,17 +150,8 @@ app.post("/", rateLimit(rateLimitConfigs.standard), validateJson(createShareSche
     const expiresAt = getExpirationDate();
     const creatorId = await getCreatorId(c.env.API_KEY);
 
-    if (!c.env.DB) {
-      return c.json(
-        withCtxError(
-          c,
-          ErrorType.CONFIGURATION,
-          SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
-          ERROR_CODES.CONFIGURATION_ERROR
-        ),
-        HTTP_STATUS.INTERNAL_ERROR
-      );
-    }
+    const dbError = checkDbConfigured(c);
+    if (dbError) return dbError;
 
     // Store creator info in metadata for ownership validation on delete
     const enrichedMetadata = {
@@ -162,9 +190,9 @@ app.post("/", rateLimit(rateLimitConfigs.standard), validateJson(createShareSche
 
 app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
   try {
-    const shareId = c.req.param("id");
+    const shareId = c.req.param("id") || "";
 
-    if (!shareId || shareId.length !== SHARE_CONFIG.ID_LENGTH) {
+    if (!isValidShareId(shareId)) {
       return c.json(
         withCtxError(
           c,
@@ -176,17 +204,8 @@ app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
       );
     }
 
-    if (!c.env.DB) {
-      return c.json(
-        withCtxError(
-          c,
-          ErrorType.CONFIGURATION,
-          SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
-          ERROR_CODES.CONFIGURATION_ERROR
-        ),
-        HTTP_STATUS.INTERNAL_ERROR
-      );
-    }
+    const dbError = checkDbConfigured(c);
+    if (dbError) return dbError;
 
     const result = await c.env.DB.prepare(
       `SELECT id, title, blueprint, metadata, created_at, expires_at
@@ -270,9 +289,9 @@ app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
 
 app.delete("/:id", rateLimit(rateLimitConfigs.standard), authorize("user"), async (c) => {
   try {
-    const shareId = c.req.param("id");
+    const shareId = c.req.param("id") || "";
 
-    if (!shareId || shareId.length !== SHARE_CONFIG.ID_LENGTH) {
+    if (!isValidShareId(shareId)) {
       return c.json(
         withCtxError(
           c,
@@ -284,17 +303,8 @@ app.delete("/:id", rateLimit(rateLimitConfigs.standard), authorize("user"), asyn
       );
     }
 
-    if (!c.env.DB) {
-      return c.json(
-        withCtxError(
-          c,
-          ErrorType.CONFIGURATION,
-          SHARE_ERROR_MESSAGES.DATABASE_NOT_CONFIGURED,
-          ERROR_CODES.CONFIGURATION_ERROR
-        ),
-        HTTP_STATUS.INTERNAL_ERROR
-      );
-    }
+    const dbError = checkDbConfigured(c);
+    if (dbError) return dbError;
 
     // Fetch share to verify ownership before deletion
     const existing = await c.env.DB.prepare(
