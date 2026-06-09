@@ -111,14 +111,33 @@ function WizardComponent(): JSX.Element {
     [currentStep]
   );
 
+  const handleAltArrowRight = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.altKey && e.key === "ArrowRight") {
+        // Skip during generation — prevents navigating away mid-stream
+        if (currentStep === "generating") return;
+        if (currentStep === "review") return; // Review is the last step before generation
+
+        const nextBtn = document.querySelector<HTMLButtonElement>(".btn-primary:not(:disabled)");
+        if (nextBtn) {
+          e.preventDefault();
+          nextBtn.click();
+        }
+      }
+    },
+    [currentStep]
+  );
+
   useEffect(() => {
     window.addEventListener("keydown", handleCmdEnter);
     window.addEventListener("keydown", handleAltArrowLeft);
+    window.addEventListener("keydown", handleAltArrowRight);
     return () => {
       window.removeEventListener("keydown", handleCmdEnter);
       window.removeEventListener("keydown", handleAltArrowLeft);
+      window.removeEventListener("keydown", handleAltArrowRight);
     };
-  }, [handleCmdEnter, handleAltArrowLeft]);
+  }, [handleCmdEnter, handleAltArrowLeft, handleAltArrowRight]);
 
   const documentTitle =
     isGenerating && generationProgress
