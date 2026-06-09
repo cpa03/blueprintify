@@ -8,7 +8,7 @@ import {
   ERROR_MESSAGES,
   API_HEADERS,
 } from "../config/constants";
-import { TIME_UNITS } from "@blueprint/shared";
+import { TIME_UNITS, ENVIRONMENT_NAMES } from "@blueprint/shared";
 import { ErrorType, createErrorJson } from "../errors";
 import { secureLogWarn, secureLogError } from "../utils/secureLog";
 
@@ -22,13 +22,13 @@ interface RateLimitConfig {
 /**
  * Check if we're running in test environment.
  * Uses a safe check compatible with both Workers runtime and Vitest.
- * Vitest automatically sets NODE_ENV to 'test'
+ * Vitest automatically sets NODE_ENV to ENVIRONMENT_NAMES.TEST
  */
 const isTestEnvironment = (): boolean => {
   const nodeProcess = (globalThis as Record<string, unknown>).process;
   if (nodeProcess && typeof nodeProcess === "object") {
     const env = (nodeProcess as Record<string, unknown>).env as Record<string, string | undefined>;
-    return env?.NODE_ENV === "test";
+    return env?.NODE_ENV === ENVIRONMENT_NAMES.TEST;
   }
   return false;
 };
