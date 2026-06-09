@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 78: BUG-014/BUG-017 CI workflow fixes (stale doc refs in main.yml, hardcoded node-version in 4 files, 11 instances), stale branch cleanup, documentation sync, quality verification
 - RepoKeeper Cycle 77: documentation sync, README tree fix (archived Jun 9 Run 1 → Run 3), CHANGELOG update, quality verification
 - Keyboard shortcut hints on wizard step buttons showing Ctrl+number access keys ([#1727](https://github.com/cpa03/blueprintify/pull/1727))
 - RepoKeeper Cycle 76: documentation sync, missing BroCula Jun 9 Run 2 README ref, CHANGELOG update, quality verification

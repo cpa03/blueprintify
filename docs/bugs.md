@@ -26,7 +26,8 @@
 
 ### BUG-014: Stale Doc References in main.yml Workflow (RESOLVED)
 
-**Status**: Resolved — 2026-06-09 (PR #1732 merged into main)  
+**Status**: Resolved — 2026-06-09 (RepoKeeper Cycle 78)  
+**Note**: Previous claim of resolution via PR #1732 was incorrect — stale refs were still present on `main`. Actually resolved this cycle.  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1293
@@ -46,7 +47,8 @@
 
 ### BUG-017: CI Node.js Version Mismatch (RESOLVED)
 
-**Status**: Resolved — 2026-06-09 (PR #1732 merged into main)  
+**Status**: Resolved — 2026-06-09 (RepoKeeper Cycle 78)  
+**Note**: Previous claim of resolution via PR #1732 was incorrect — `node-version: "20"` was still hardcoded in 4 workflow files (11 instances). Actually resolved this cycle.  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1390, #1470, #1549
@@ -206,7 +208,7 @@ Multiple documentation files still reference Node.js 18+ as the minimum requirem
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2026-06-09 (BugFixer ULW Cycle)  
+**Last Updated**: 2026-06-09 (RepoKeeper Cycle 78)  
 **Maintainer**: BugFixer (Ultrawork Loop)
 
 > RepoKeeper cycle 2026-06-04 (Cycle 55): Build/lint/typecheck/format all passing clean. Tests: 564 web + 342 api + 191 shared = 1097 total, all passing. 0 npm vulns. BUG-014 and BUG-017 status corrected to UNRESOLVED — fixes were applied in previous cycles but never merged to main (blocked by `workflows: write` permission). No new bugs identified.

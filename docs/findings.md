@@ -2,6 +2,45 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 78 (2026-06-09 — RepoKeeper: BUG-014/BUG-017 CI Workflow Fixes & Full Audit)
+
+### Audit Scope
+
+Full repository audit covering build/lint health, BUG-014 (stale doc refs in main.yml), BUG-017 (hardcoded node-version in workflow files), documentation sync, stale branch cleanup, and comprehensive quality checks.
+
+### Status Summary
+
+| Check       | Result                                                  |
+| ----------- | ------------------------------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)                                     |
+| Lint        | ✅ Clean (0 warnings/errors)                            |
+| Build       | ✅ Passes (web)                                         |
+| Tests       | ✅ 1,166/1,166 passing (596 Web + 342 API + 228 Shared) |
+| **Overall** | **✅ All quality checks passing**                       |
+
+### Actions Taken This Cycle
+
+1. **Full repository audit**: No redundant/temp/unused source files found. No empty directories. No `.orig`/`.bak`/`.DS_Store` artifacts. No merge conflicts detected.
+2. **Build/Lint/Typecheck/Test verification**: All pass cleanly — 0 errors, 0 warnings.
+3. **Fixed BUG-014**: Updated `main.yml` stale `docs/bug.md` → `docs/bugs.md` and `docs/feature.md` → `docs/features.md` (2 occurrences).
+4. **Fixed BUG-017**: Replaced hardcoded `node-version: "20"` with `node-version-file: ".node-version"` across 4 workflow files (11 instances):
+   - `iterate.yml` (5 instances), `parallel.yml` (4 instances), `on-pull.yml` (1 instance), `pr-gatekeeper.yml` (1 instance)
+5. **Deleted stale merged remote branch**: `fix/bugfixer-ulw-jun-9` (merged into main).
+6. **Updated `docs/bugs.md`**: Corrected BUG-014/BUG-017 status from "RESOLVED" (incorrectly claimed) back to "Resolved — Cycle 78".
+7. **Updated `docs/active-tasks.md`**: Cycle 78 status.
+8. **Updated `docs/knowledge-review.md`**: Refreshed for Cycle 78.
+9. **Updated `CHANGELOG.md`**: Added Cycle 78 entry.
+
+### Verification
+
+- No `@ts-ignore`, `@ts-expect-error`, or `as any` found in source code
+- No TODO/FIXME/HACK artifacts in non-test source files
+- Zero stale `docs/bug.md` or `docs/feature.md` references remaining in any workflow file
+- Zero hardcoded `node-version:` references remaining in any workflow file
+- All documentation changes applied and consistent
+
+---
+
 ## Cycle 77 (2026-06-09 — RepoKeeper: Documentation Sync & README Tree Fix)
 
 ### Audit Scope

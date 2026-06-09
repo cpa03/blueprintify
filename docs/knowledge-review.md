@@ -12,19 +12,18 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-09 (RepoKeeper Cycle 77)
-**Status**: ✅ Up to date — with noted exceptions
+**Last Review**: 2026-06-09 (RepoKeeper Cycle 78)
+**Status**: ✅ Up to date — fully synced
 
-As of RepoKeeper Cycle 77 (refreshed):
+As of RepoKeeper Cycle 78 (refreshed):
 
-- All documentation aligns with current codebase state — with corrections noted below
+- All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **CHANGELOG updated**: Added entries for BroCula Run 3 domain fix, keyboard shortcut hints, CI Node.js 22 patch, and Cycle 77
-- **Fixed stale README directory tree**:
-  - Removed `brocula-hunt-2026-06-09.md` (archived) from audits/ tree
-  - Added `brocula-hunt-2026-06-09-run3.md` (Jun 9 Run 3)
-  - docs/audits/README.md already correctly lists Run 3 as latest current report
-- **CI workflow fixes still blocked**: workflow files on `main` still use `node-version: "20"` and stale `docs/bug.md`/`docs/feature.md` references. A maintainer with `workflows: write` permission must push the prepared fixes.
+- **CHANGELOG updated**: Added Cycle 78 entry (BUG-014/BUG-017 fixes)
+- **BUG-014 and BUG-017 finally resolved on `main`**:
+  - `main.yml`: stale `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` (2 occurrences)
+  - 4 workflow files: `node-version: "20"`→`node-version-file: ".node-version"` (11 instances across iterate.yml, parallel.yml, on-pull.yml, pr-gatekeeper.yml)
+  - Both fixes verified via grep: zero stale doc refs, zero hardcoded node-version remaining
 
 ## Historical Drift Corrections
 
