@@ -27,7 +27,7 @@ import { LazyCodeMirror } from "./LazyCodeMirror";
 import { EditorHeader, type ViewMode } from "./editor/EditorHeader";
 import { EditorEmptyState } from "./EditorEmptyState";
 import { PreviewEmptyState } from "./PreviewEmptyState";
-import { ScrollToTop } from "./ScrollToTop";
+import { ScrollToTop, ScrollToBottom } from "./ScrollToTop";
 import { ScrollProgress } from "./ScrollProgress";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { useEditorStore, resetAllStores, useToast } from "../store";
@@ -391,6 +391,10 @@ function EditorComponent(): JSX.Element {
                           )}
                         </AnimatePresence>
                         <ScrollToTop
+                          scrollContainerRef={previewRef}
+                          showAfter={UI.SCROLL_TO_TOP_THRESHOLD}
+                        />
+                        <ScrollToBottom
                           scrollContainerRef={previewRef}
                           showAfter={UI.SCROLL_TO_TOP_THRESHOLD}
                         />
