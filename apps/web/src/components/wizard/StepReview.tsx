@@ -29,7 +29,7 @@ import { ANIMATION, GENERATION_ESTIMATES, ACCESSIBILITY_LABELS } from "../../con
 import { pageTransition, fadeInUp, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 import { SmartTooltip, KeyboardShortcutTooltip } from "../SmartTooltip";
-import { getModifierLabel } from "../../lib/platform";
+import { getModifierLabel, getAltKeyLabel } from "../../lib/platform";
 
 interface StepReviewProps {
   direction?: AnimationDirection;
@@ -263,21 +263,34 @@ export const StepReview = memo(function StepReview({
         transition={{ delay: ANIMATION.SUBTLE_MOVE + 0.24 }}
       >
         <div className="flex justify-between">
-          <RippleButton
-            onClick={handleEditFeatures}
-            className="btn-secondary"
-            disabled={isGenerating}
+          <KeyboardShortcutTooltip
+            shortcut="←"
+            description="Go back"
+            position="right"
+            modifier="alt"
           >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            Back
-          </RippleButton>
+            <RippleButton
+              onClick={handleEditFeatures}
+              className="btn-secondary flex items-center gap-2"
+              disabled={isGenerating}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+              Back
+              <kbd
+                className="px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                aria-hidden="true"
+              >
+                {getAltKeyLabel()}+←
+              </kbd>
+            </RippleButton>
+          </KeyboardShortcutTooltip>
           <div className="flex flex-col items-end gap-2">
             {isGenerating || !projectName || !description ? (
               <SmartTooltip

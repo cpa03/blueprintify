@@ -325,7 +325,7 @@ describe("Integration: Export/Import Workflow", () => {
         }),
       });
 
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(HTTP_STATUS.BAD_REQUEST);
       const result = (await response.json()) as ApiResponse;
       expect(result.validation?.errors?.length).toBeGreaterThan(0);
     });

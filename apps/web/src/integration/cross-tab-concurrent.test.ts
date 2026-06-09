@@ -199,7 +199,7 @@ describe("Integration: Error Propagation", () => {
         validation: { errors: string[] };
       };
 
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(HTTP_STATUS.BAD_REQUEST);
       expect(data.error).toBe("Invalid blueprint format");
       expect(data.validation.errors).toContain("Missing required field: projectName");
     });

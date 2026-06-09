@@ -94,10 +94,31 @@ function WizardComponent(): JSX.Element {
     [currentStep]
   );
 
+  const handleAltArrowLeft = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.altKey && e.key === "ArrowLeft") {
+        // Skip during generation — prevents navigating away mid-stream
+        if (currentStep === "generating") return;
+        if (currentStep === "info") return; // Already at the first step
+
+        const prevBtn = document.querySelector<HTMLButtonElement>(".btn-secondary:not(:disabled)");
+        if (prevBtn) {
+          e.preventDefault();
+          prevBtn.click();
+        }
+      }
+    },
+    [currentStep]
+  );
+
   useEffect(() => {
     window.addEventListener("keydown", handleCmdEnter);
-    return () => window.removeEventListener("keydown", handleCmdEnter);
-  }, [handleCmdEnter]);
+    window.addEventListener("keydown", handleAltArrowLeft);
+    return () => {
+      window.removeEventListener("keydown", handleCmdEnter);
+      window.removeEventListener("keydown", handleAltArrowLeft);
+    };
+  }, [handleCmdEnter, handleAltArrowLeft]);
 
   const documentTitle =
     isGenerating && generationProgress

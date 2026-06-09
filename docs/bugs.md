@@ -4,9 +4,11 @@
 
 ## Active Bugs
 
-> **RepoKeeper ULW Cycle 2026-06-09 (Cycle 77)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,166/1,166 ✅. 0 type suppressions. 0 redundant/temp/unused files found. Fixed stale README directory tree (removed archived Jun 9 Run 1, added Run 3 reference). CHANGELOG updated with BroCula Run 3 domain fix, keyboard shortcut hints, CI Node.js 22 patch entries. BUG-014 and BUG-017 remain unresolved on `main` — CI workflows still use `node-version: "20"`. Repo fully clean — no new fixable bugs found.
+> **BugFixer ULW Cycle 2026-06-09** (PR #1732, merged into main): Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,166/1,166 ✅ npm audit ✅. 0 type suppressions. 0 redundant/temp/unused files found. Fixed BUG-017 — replaced `node-version: "20"` with `node-version-file: ".node-version"` in 4 workflow files (11 instances). Fixed BUG-014 — replaced stale doc refs `docs/bug.md`→`docs/bugs.md` and `docs/feature.md`→`docs/features.md` in main.yml. PR created. Repo fully clean — no new fixable bugs found.
 
-> **RepoKeeper ULW Cycle 2026-06-09 (Cycle 76)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,166/1,166 ✅ npm audit ✅. 0 type suppressions. 0 redundant/temp/unused files found. Added missing BroCula Jun 9 Run 2 reference to README directory tree and docs/audits/README.md. CHANGELOG updated with recent PR entries. BUG-014 and BUG-017 remain unresolved on `main` — CI workflows still use `node-version: "20"`. Repo fully clean — no new fixable bugs found.
+> **RepoKeeper ULW Cycle 2026-06-09 (Cycle 77)** (PR #1731, pending merge): Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,166/1,166 ✅. 0 type suppressions. 0 redundant/temp/unused files found. Fixed stale README directory tree (removed archived Jun 9 Run 1, added Run 3 reference). CHANGELOG updated with BroCula Run 3 domain fix, keyboard shortcut hints, CI Node.js 22 patch entries. BUG-014 and BUG-017 now resolved on `main` via PR #1732. Repo fully clean — no new fixable bugs found.
+
+> **RepoKeeper ULW Cycle 2026-06-09 (Cycle 76)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,166/1,166 ✅ npm audit ✅. 0 type suppressions. 0 redundant/temp/unused files found. Added missing BroCula Jun 9 Run 2 reference to README directory tree and docs/audits/README.md. CHANGELOG updated with recent PR entries. BUG-014 and BUG-017 have since been resolved on `main` via PR #1732. Repo fully clean — no new fixable bugs found.
 
 > **RepoKeeper ULW Cycle 2026-06-08 (Cycle 73)**: Full repository audit complete. Typecheck ✅ lint ✅ tests 1,162/1,162 ✅. 0 type suppressions. 0 `as any`. 0 redundant/temp/unused files found. 1 new doc file added to README (BroCula Jun 8 Run 3). CHANGELOG updated with Cycle 73. BUG-014 and BUG-017 remain unresolved on `main` — still blocked by `workflows: write` permission. Repo fully clean — no new fixable bugs found.
 
@@ -24,7 +26,7 @@
 
 ### BUG-014: Stale Doc References in main.yml Workflow (RESOLVED)
 
-**Status**: Resolved — 2026-06-09 (BugFixer ULW Cycle)  
+**Status**: Resolved — 2026-06-09 (PR #1732 merged into main)  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1293
@@ -44,7 +46,7 @@
 
 ### BUG-017: CI Node.js Version Mismatch (RESOLVED)
 
-**Status**: Resolved — 2026-06-09 (BugFixer ULW Cycle)  
+**Status**: Resolved — 2026-06-09 (PR #1732 merged into main)  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1390, #1470, #1549

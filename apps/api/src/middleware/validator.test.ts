@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { validateJson } from "./validator";
 import type { ErrorResponse } from "../errors";
-import { HTTP_HEADERS, HTTP_METHODS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import { HTTP_HEADERS, HTTP_METHODS, HTTP_HEADER_NAMES, HTTP_STATUS } from "@blueprint/shared";
 import { ERROR_CODES } from "../config/constants";
 
 describe("validateJson middleware", () => {
@@ -30,7 +30,7 @@ describe("validateJson middleware", () => {
       }),
     });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const json = (await res.json()) as { success: boolean; data: unknown };
     expect(json.success).toBe(true);
     expect(json.data).toEqual({
@@ -56,7 +56,7 @@ describe("validateJson middleware", () => {
       }),
     });
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("validation");
@@ -83,7 +83,7 @@ describe("validateJson middleware", () => {
       }),
     });
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("validation");
@@ -111,7 +111,7 @@ describe("validateJson middleware", () => {
       body: "not valid json",
     });
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("validation");
@@ -131,7 +131,7 @@ describe("validateJson middleware", () => {
       body: "",
     });
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("validation");
@@ -154,7 +154,7 @@ describe("validateJson middleware", () => {
       }),
     });
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.details).toBeDefined();
@@ -185,7 +185,7 @@ describe("validateJson middleware", () => {
       }),
     });
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.details).toBeDefined();
@@ -225,7 +225,7 @@ describe("validateJson middleware", () => {
         },
       }),
     });
-    expect(validRes.status).toBe(200);
+    expect(validRes.status).toBe(HTTP_STATUS.OK);
 
     const invalidRes = await app.request("/", {
       method: HTTP_METHODS.POST,
@@ -237,7 +237,7 @@ describe("validateJson middleware", () => {
         },
       }),
     });
-    expect(invalidRes.status).toBe(400);
+    expect(invalidRes.status).toBe(HTTP_STATUS.BAD_REQUEST);
   });
 
   it("should include timestamp in error response", async () => {
@@ -253,7 +253,7 @@ describe("validateJson middleware", () => {
       body: JSON.stringify({ invalid: "data" }),
     });
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.error.timestamp).toBeTruthy();
     expect(new Date(data.error.timestamp).getTime()).not.toBeNaN();

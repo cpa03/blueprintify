@@ -540,3 +540,52 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run test:all` — 1,166 tests passing (596 web + 342 api + 228 shared) across 69 files
+
+## PRs
+
+| PR #  | Branch                                    | Title                                                                                             |
+| ----- | ----------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| #1690 | `feat/flexy-iteration-27-permissions-cdn` | feat(flexy): centralize Permissions-Policy values and CDN cache headers                           |
+| TBD   | `feat/flexy-error-codes-shared`           | feat(flexy): centralize ERROR_CODES into shared config and eliminate hardcoded error code strings |
+
+### ✅ Flexy Iteration 29: Eliminate Remaining Hardcoded Role Strings in Routes & Tests
+
+| File                                | Change                                                                                                  |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `apps/api/src/routes/share.ts`      | Added `AUTH_DEFAULTS` import; replaced `authorize("user")` with `authorize(AUTH_DEFAULTS.DEFAULT_ROLE)` |
+| `apps/api/src/routes/share.test.ts` | Added `AUTH_DEFAULTS`, `CONTEXT_KEYS` import; replaced `role: "user"` with `AUTH_DEFAULTS.DEFAULT_ROLE` |
+| `apps/api/src/routes/share.test.ts` | Replaced `c.set("user", user)` with `c.set(CONTEXT_KEYS.USER, user)`                                    |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — 1,166 tests passing (596 web + 342 api + 228 shared) across 69 files
+
+### ✅ Flexy Iteration 30: Eliminate Remaining Hardcoded HTTP Status Codes & Magic Numbers in Test Files
+
+| File                                                    | Change                                                                                                                                                         |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/api/src/routes/generate.test.ts`                  | Added `HTTP_STATUS` import; replaced 4 hardcoded status codes (400×2, 200, 500) with `HTTP_STATUS.*` refs                                                      |
+| `apps/api/src/routes/refine.test.ts`                    | Added `HTTP_STATUS` import; replaced 2 hardcoded status codes (400, 200)                                                                                       |
+| `apps/api/src/routes/share.test.ts`                     | Added `HTTP_STATUS` import; replaced 10 hardcoded status codes (200×5, 400×3, 404, 403)                                                                        |
+| `apps/api/src/routes/import.test.ts`                    | Added `HTTP_STATUS` import; replaced 9 hardcoded status codes (400×5, 200×4)                                                                                   |
+| `apps/api/src/routes/tasks.test.ts`                     | Added `HTTP_STATUS` import; replaced 2 hardcoded status codes (400, 200)                                                                                       |
+| `apps/api/src/routes/export.test.ts`                    | Added `HTTP_STATUS` import; replaced 8 hardcoded status codes (400×4, 200×4)                                                                                   |
+| `apps/api/src/routes/storage.test.ts`                   | Added `HTTP_STATUS, STORAGE_CONFIG, BYTE_CONVERSION` imports; replaced 8 status codes + magic numbers                                                          |
+| `apps/api/src/middleware/auth.test.ts`                  | Added `HTTP_STATUS` import; replaced 14 hardcoded status codes (200×8, 401×5, 503)                                                                             |
+| `apps/api/src/middleware/errorHandler.test.ts`          | Added `HTTP_STATUS` import; replaced 9 hardcoded status codes (400, 401, 404×3, 500×3, 503)                                                                    |
+| `apps/api/src/middleware/logger.test.ts`                | Added `HTTP_STATUS` to import; replaced 2 hardcoded status codes (200×2)                                                                                       |
+| `apps/api/src/middleware/validator.test.ts`             | Added `HTTP_STATUS` to import; replaced 10 hardcoded status codes (200×2, 400×8)                                                                               |
+| `apps/api/src/integration/m2-workflows.test.ts`         | Added `HTTP_STATUS` to import; replaced 13 hardcoded status codes (200×11, 400×2)                                                                              |
+| `apps/api/src/utils/circuitBreaker.test.ts`             | Added `HTTP_STATUS` import; replaced 1 hardcoded status code (503)                                                                                             |
+| `apps/web/src/integration/api-flows.test.ts`            | Replaced 1 hardcoded status code (400) — import already existed                                                                                                |
+| `apps/web/src/integration/refinement-export.test.ts`    | Replaced 1 hardcoded status code (400) — import already existed                                                                                                |
+| `apps/web/src/integration/cross-tab-concurrent.test.ts` | Replaced 1 hardcoded status code (400) — import already existed                                                                                                |
+| `apps/api/src/routes/storage.test.ts`                   | `5*1024*1024` → `STORAGE_CONFIG.QUOTA_BYTES`; `1048576` → `BYTE_CONVERSION.MB`; `5242880` → `STORAGE_CONFIG.QUOTA_BYTES`; `2097152` → `BYTE_CONVERSION.MB * 2` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — 1,166 tests passing (596 web + 342 api + 228 shared) across 69 files

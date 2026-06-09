@@ -10,7 +10,13 @@ import storageRoute from "../routes/storage";
 import tasksRoute from "../routes/tasks";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 import { SSE_HEADERS } from "../config/constants";
-import { ROUTE_PATHS, HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import {
+  ROUTE_PATHS,
+  HTTP_METHODS,
+  HTTP_HEADERS,
+  HTTP_HEADER_NAMES,
+  HTTP_STATUS,
+} from "@blueprint/shared";
 
 interface ApiResponse {
   success: boolean;
@@ -77,7 +83,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         MOCK_ENV
       );
 
-      expect(generateRes.status).toBe(200);
+      expect(generateRes.status).toBe(HTTP_STATUS.OK);
       expect(generateRes.headers.get(HTTP_HEADER_NAMES.CONTENT_TYPE)).toContain(
         SSE_HEADERS.CONTENT_TYPE
       );
@@ -97,7 +103,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         MOCK_ENV
       );
 
-      expect(exportRes.status).toBe(200);
+      expect(exportRes.status).toBe(HTTP_STATUS.OK);
       const exportData = await exportRes.json();
       expect(exportData).toHaveProperty("success", true);
       expect(exportData).toHaveProperty("data");
@@ -118,7 +124,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         MOCK_ENV
       );
 
-      expect(generateRes.status).toBe(200);
+      expect(generateRes.status).toBe(HTTP_STATUS.OK);
 
       const refineRes = await app.request(
         ROUTE_PATHS.REFINE,
@@ -133,7 +139,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         MOCK_ENV
       );
 
-      expect(refineRes.status).toBe(200);
+      expect(refineRes.status).toBe(HTTP_STATUS.OK);
 
       const exportRes = await app.request(
         ROUTE_PATHS.EXPORT,
@@ -151,7 +157,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         MOCK_ENV
       );
 
-      expect(exportRes.status).toBe(200);
+      expect(exportRes.status).toBe(HTTP_STATUS.OK);
       const exportData = (await exportRes.json()) as ApiResponse;
       expect(exportData.success).toBe(true);
     });
@@ -183,7 +189,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         MOCK_ENV
       );
 
-      expect(importRes.status).toBe(200);
+      expect(importRes.status).toBe(HTTP_STATUS.OK);
       const importData = (await importRes.json()) as ApiResponse;
       expect(importData.success).toBe(true);
       expect(importData.data?.projectName).toBe("Roundtrip Test");
@@ -204,7 +210,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         MOCK_ENV
       );
 
-      expect(exportRes.status).toBe(200);
+      expect(exportRes.status).toBe(HTTP_STATUS.OK);
       const exportData = (await exportRes.json()) as ApiResponse;
       expect(exportData.success).toBe(true);
     });
@@ -219,7 +225,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         MOCK_ENV
       );
 
-      expect(quotaRes.status).toBe(200);
+      expect(quotaRes.status).toBe(HTTP_STATUS.OK);
       const quotaData = (await quotaRes.json()) as { data: QuotaResponse };
       expect(quotaData.data).toHaveProperty("used");
       expect(quotaData.data).toHaveProperty("total");
@@ -234,7 +240,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         MOCK_ENV
       );
 
-      expect(clearRes.status).toBe(200);
+      expect(clearRes.status).toBe(HTTP_STATUS.OK);
       const clearData = (await clearRes.json()) as { success: boolean };
       expect(clearData.success).toBe(true);
     });
@@ -254,7 +260,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         MOCK_ENV
       );
 
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
       const data = (await res.json()) as ApiResponse;
       expect(data.success).toBe(false);
       expect(data.error).toHaveProperty("type", "validation");
@@ -274,7 +280,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         MOCK_ENV
       );
 
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
       const data = (await res.json()) as ApiResponse;
       expect(data.success).toBe(false);
     });
@@ -311,7 +317,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
       const results = await Promise.all(promises);
 
       results.forEach((res) => {
-        expect(res.status).toBe(200);
+        expect(res.status).toBe(HTTP_STATUS.OK);
       });
     });
 
@@ -349,7 +355,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
       ]);
 
       results.forEach((res) => {
-        expect(res.status).toBe(200);
+        expect(res.status).toBe(HTTP_STATUS.OK);
       });
 
       const data = (await Promise.all(results.map((r) => r.json()))) as Array<{
