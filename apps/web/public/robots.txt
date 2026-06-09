@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://blueprintify.app/sitemap.xml
+Sitemap: https://blueprintify.dev/sitemap.xml
