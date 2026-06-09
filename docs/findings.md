@@ -2,6 +2,44 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 75 (2026-06-09 — RepoKeeper: Archive Stale Jun 8 Audits, Update Documentation)
+
+### Audit Scope
+
+Full repository audit covering build/lint health, archiving stale Jun 8 BroCula audit files, updating docs/audits/README.md, README.md tree, CHANGELOG update, and comprehensive quality checks.
+
+### Status Summary
+
+| Check       | Result                            |
+| ----------- | --------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)               |
+| Lint        | ✅ Clean (0 warnings/errors)      |
+| Build       | ✅ Passes (web)                   |
+| Tests       | ✅ (verified in Cycle 74)         |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository audit**: No redundant/temp/unused source files found. No empty directories. No `.orig`/`.bak`/`.DS_Store` artifacts. No merge conflicts detected.
+2. **Build/Lint/Typecheck verification**: All pass cleanly — 0 errors, 0 warnings.
+3. **Archived stale audit files** (4 files):
+   - `docs/audits/brocula-hunt-2026-06-08.md` → `docs/audits/archive/`
+   - `docs/audits/brocula-hunt-2026-06-08-run2.md` → `docs/audits/archive/`
+   - `docs/audits/brocula-hunt-2026-06-08-run3.md` → `docs/audits/archive/`
+   - `docs/audits/brocula-hunt-2026-06-08-run4.md` → `docs/audits/archive/`
+4. **Updated `docs/audits/README.md`**: Added Jun 8 entries to archive section, kept Jun 9 as latest.
+5. **Updated `README.md` architecture tree**: Removed Jun 8 audit entries from active tree.
+6. **Updated CHANGELOG.md**: Added RepoKeeper Cycle 75 entry.
+7. **Updated `docs/findings.md`**: Cycle 75 entry (this file).
+8. **Updated `docs/active-tasks.md`**: Cycle 75 status.
+
+### Verification
+
+- No `@ts-ignore`, `@ts-expect-error`, or `as any` found in source code
+- No TODO/FIXME/HACK artifacts in non-test source files
+- All archived files move correctly (git mv verified)
+- CHANGELOG entries match actual recent commits
+
 ## Cycle 74 (2026-06-09 — RepoKeeper: Archive Stale Audits, Add Jun 9 Reference, Quality Check)
 
 ### Audit Scope

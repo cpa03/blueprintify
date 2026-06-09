@@ -2,26 +2,26 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 74 — Archive Stale Audits, Add Jun 9 Reference, Quality Check
+## Current Focus: RepoKeeper Cycle 75 — Archive Stale Jun 8 Audits, Update Documentation
 
-### Task: Full repository audit, archive stale Jun 7 BroCula audits, add Jun 9 audit ref, update CHANGELOG
+### Task: Full repository audit, archive stale Jun 8 BroCula audits, update README/audit docs, update CHANGELOG
 
 - **Priority**: High
-- **Status**: 🟢 Complete
-- **Objective**: Full repository audit, archive stale Jun 7 BroCula audit files, add Jun 9 audit ref to README, update CHANGELOG, refresh documentation
+- **Status**: 🔵 In Progress
+- **Objective**: Full repository audit, archive stale Jun 8 BroCula audit files, update docs/audits/README.md, README.md tree, CHANGELOG, refresh documentation
 - **Actions**:
   - [x] Full repository scan for redundant/temp/unused files → none found
   - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
   - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
-  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,166/1,166 ✅
-  - [x] Archived stale Jun 7 BroCula audit files (4 files moved to `docs/audits/archive/`)
-  - [x] Added missing `brocula-hunt-2026-06-09.md` to README directory tree and docs section
-  - [x] Updated `docs/audits/README.md` — added Jun 9, moved Jun 7 to archive
-  - [x] Updated CHANGELOG.md — added BroCula Jun 9 audit, flexy env hardcoded fix, stagger animation
-  - [x] Updated `docs/findings.md` — Cycle 74 entry
-  - [x] Updated `docs/active-tasks.md` — Cycle 74 status
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅
+  - [x] Archived stale Jun 8 BroCula audit files (4 files moved to `docs/audits/archive/`)
+  - [x] Updated `docs/audits/README.md` — moved Jun 8 to archive, kept Jun 9 as latest
+  - [x] Updated `README.md` architecture tree — removed Jun 8 entries from active listing
+  - [x] Updated CHANGELOG.md — added RepoKeeper Cycle 75 entry
+  - [x] Updated `docs/findings.md` — Cycle 75 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 75 status
 
-## Previous Cycle: RepoKeeper Cycle 72 — Documentation Sync & Missing References ✅ COMPLETE
+## Previous Cycle: RepoKeeper Cycle 74 — Archive Stale Audits, Add Jun 9 Reference, Quality Check ✅ COMPLETE
 
 ### Task: Full repository audit, missing README refs, stale branch cleanup, CHANGELOG update
 
@@ -171,5 +171,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-09 (Cycle 74: RepoKeeper)  
+**Last Updated**: 2026-06-09 (Cycle 75: RepoKeeper)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)

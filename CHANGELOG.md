@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 75: archive stale Jun 8 BroCula audits, update docs/audits/README.md, README.md tree, CHANGELOG, findings, active-tasks
 - BroCula ULW Loop Jun 9 audit — console clean, Lighthouse 99-100-100-100
 - Eliminate remaining hardcoded env strings and ENVIRONMENT type (Flexy)
 - Staggered entrance animation on wizard content area
