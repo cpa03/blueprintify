@@ -248,11 +248,19 @@ function App(): JSX.Element {
             </div>
           )}
 
-          {/* Step Indicator */}
-          <StepIndicator />
+          {/* Step Indicator — slides up on page load with hero-adjacent timing */}
+          <div
+            className="animate-slide-up"
+            style={{ animationDelay: "0.1s", animationFillMode: "backwards" }}
+          >
+            <StepIndicator />
+          </div>
 
-          {/* Split Pane Layout */}
-          <div className={LAYOUT.SPLIT_PANE}>
+          {/* Split Pane Layout — slides up slightly after the step indicator for a staggered cascade */}
+          <div
+            className={`${LAYOUT.SPLIT_PANE} animate-slide-up`}
+            style={{ animationDelay: "0.2s", animationFillMode: "backwards" }}
+          >
             {/* Wizard Panel */}
             <div
               className={`${LAYOUT.GLASS_CARD_FLEX} ${
