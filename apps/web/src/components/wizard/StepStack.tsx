@@ -37,6 +37,7 @@ import {
 import { pageTransition, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
+import { getModifierLabel } from "../../lib/platform";
 import clsx from "clsx";
 
 const attentionKeyframes = `@keyframes stack-card-attention {
@@ -235,6 +236,7 @@ export const StepStack = memo(function StepStack({
     [isSelected, addTechStack, removeTechStack]
   );
 
+  const modifierKey = getModifierLabel();
   const minRequired = MIN_REQUIREMENTS.TECH_STACK;
   const progressPercentage = Math.min((techStack.length / minRequired) * 100, 100);
 
@@ -361,6 +363,12 @@ export const StepStack = memo(function StepStack({
             className={`btn-primary flex items-center gap-2 ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
           >
             {UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON}
+            <kbd
+              className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+              aria-hidden="true"
+            >
+              {modifierKey}+↵
+            </kbd>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
