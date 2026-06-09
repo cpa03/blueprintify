@@ -168,7 +168,7 @@ function StepIndicatorComponent(): JSX.Element {
               <span>{step.icon}</span>
               <span className="text-sm font-medium hidden sm:inline">{step.label}</span>
               {isClickable && (
-                <span className="text-xs opacity-50 font-mono">Alt+{step.shortcut}</span>
+                <span className="text-xs opacity-70 font-mono">Alt+{step.shortcut}</span>
               )}
             </button>
 
