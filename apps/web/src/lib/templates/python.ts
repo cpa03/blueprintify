@@ -1,5 +1,6 @@
 import type JSZip from "jszip";
 import type { TechStackItemType } from "@blueprint/shared";
+import { PYTHON_DEV_DEFAULTS } from "@blueprint/shared";
 import { generateProjectReadme } from "./shared";
 
 export async function generatePythonProject(
@@ -353,7 +354,7 @@ async def get_project():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="${PYTHON_DEV_DEFAULTS.DEV_HOST}", port=${PYTHON_DEV_DEFAULTS.DEV_PORT})
 `;
 }
 

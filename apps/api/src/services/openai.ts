@@ -10,6 +10,7 @@ import {
   createCircuitBreaker,
   CircuitBreaker,
   CircuitBreakerOpenError,
+  CircuitState,
 } from "../utils/circuitBreaker";
 import { AI_CONFIG, CIRCUIT_BREAKER_CONFIG, ERROR_MESSAGES } from "../config/constants";
 
@@ -98,7 +99,7 @@ export async function* streamCompletion(
 ): AsyncGenerator<string, void, unknown> {
   const cb = getCircuitBreaker();
 
-  if (cb.getState().state === "OPEN") {
+  if (cb.getState().state === CircuitState.OPEN) {
     throw new CircuitBreakerOpenError(ERROR_MESSAGES.AI_SERVICE_UNAVAILABLE);
   }
 
@@ -150,7 +151,7 @@ export async function* streamCompletion(
 export async function generateCompletion(options: StreamOptions): Promise<string> {
   const cb = getCircuitBreaker();
 
-  if (cb.getState().state === "OPEN") {
+  if (cb.getState().state === CircuitState.OPEN) {
     throw new CircuitBreakerOpenError(ERROR_MESSAGES.AI_SERVICE_UNAVAILABLE);
   }
 

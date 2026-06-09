@@ -10,7 +10,13 @@
 
 import type { MiddlewareHandler } from "hono";
 import type { User, UserRole } from "../types";
-import { HTTP_STATUS, ERROR_CODES, ERROR_MESSAGES, API_HEADERS } from "../config/constants";
+import {
+  HTTP_STATUS,
+  ERROR_CODES,
+  ERROR_MESSAGES,
+  API_HEADERS,
+  ROUTE_PATHS,
+} from "../config/constants";
 import { AUTH_DEFAULTS, CONTEXT_KEYS } from "@blueprint/shared";
 import { ErrorType, createErrorJson } from "../errors";
 
@@ -71,7 +77,7 @@ function constantTimeCompare(a: string, b: string): boolean {
 export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
   const {
     apiKeyHeader = API_HEADERS.CUSTOM.API_KEY,
-    excludePaths = ["/"],
+    excludePaths = [ROUTE_PATHS.ROOT],
     defaultRole = AUTH_DEFAULTS.DEFAULT_ROLE,
   } = config;
 

@@ -75,6 +75,11 @@ vi.mock("../utils/circuitBreaker", () => ({
       this.statusCode = 503;
     }
   },
+  CircuitState: {
+    CLOSED: "CLOSED",
+    OPEN: "OPEN",
+    HALF_OPEN: "HALF_OPEN",
+  },
 }));
 
 // ---- target module (imported after mocks) ----
