@@ -4,7 +4,14 @@ import storageRoute from "./storage";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
-import { HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import {
+  HTTP_STATUS,
+  HTTP_METHODS,
+  HTTP_HEADERS,
+  HTTP_HEADER_NAMES,
+  STORAGE_CONFIG,
+  BYTE_CONVERSION,
+} from "@blueprint/shared";
 import { STORAGE_KV_CONFIG } from "../config/constants";
 
 let originalConsoleError: typeof console.error;
@@ -52,7 +59,7 @@ describe("GET /storage/quota", () => {
     const mockEnv = createMockEnv();
     const res = await app.request("/quota", {}, mockEnv);
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const data = (await res.json()) as {
       success: boolean;
       data: {
@@ -65,7 +72,7 @@ describe("GET /storage/quota", () => {
     };
     expect(data).toHaveProperty("success", true);
     expect(data.data).toHaveProperty("used", 0);
-    expect(data.data).toHaveProperty("total", 5 * 1024 * 1024);
+    expect(data.data).toHaveProperty("total", STORAGE_CONFIG.QUOTA_BYTES);
     expect(data.data).toHaveProperty("percentage", 0);
     expect(data.data).toHaveProperty("projects", 0);
     expect(data.data).toHaveProperty("note");
@@ -73,8 +80,8 @@ describe("GET /storage/quota", () => {
 
   it("should return stored quota data when available", async () => {
     const storedData = {
-      used: 1048576,
-      total: 5242880,
+      used: BYTE_CONVERSION.MB,
+      total: STORAGE_CONFIG.QUOTA_BYTES,
       projects: 3,
       updatedAt: new Date().toISOString(),
     };
@@ -83,7 +90,7 @@ describe("GET /storage/quota", () => {
     });
     const res = await app.request("/quota", {}, mockEnv);
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const data = (await res.json()) as {
       success: boolean;
       data: {
@@ -95,8 +102,8 @@ describe("GET /storage/quota", () => {
       };
     };
     expect(data).toHaveProperty("success", true);
-    expect(data.data).toHaveProperty("used", 1048576);
-    expect(data.data).toHaveProperty("total", 5242880);
+    expect(data.data).toHaveProperty("used", BYTE_CONVERSION.MB);
+    expect(data.data).toHaveProperty("total", STORAGE_CONFIG.QUOTA_BYTES);
     expect(data.data).toHaveProperty("percentage", 20);
     expect(data.data).toHaveProperty("projects", 3);
   });
@@ -117,15 +124,15 @@ describe("POST /storage/report", () => {
         method: HTTP_METHODS.POST,
         headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
-          used: 2097152,
-          total: 5242880,
+          used: BYTE_CONVERSION.MB * 2,
+          total: STORAGE_CONFIG.QUOTA_BYTES,
           projects: 2,
         }),
       },
       mockEnv
     );
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const data = (await res.json()) as {
       success: boolean;
       data: {
@@ -147,14 +154,14 @@ describe("POST /storage/report", () => {
         headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
           used: -1,
-          total: 5242880,
+          total: STORAGE_CONFIG.QUOTA_BYTES,
           projects: 2,
         }),
       },
       mockEnv
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
     expect(data.error).toHaveProperty("type", "validation");
@@ -174,7 +181,7 @@ describe("POST /storage/report", () => {
       mockEnv
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
   });
 });
 
@@ -197,7 +204,7 @@ describe("DELETE /storage/clear", () => {
       mockEnv
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
     expect(data.error).toHaveProperty("type", "validation");
@@ -215,7 +222,7 @@ describe("DELETE /storage/clear", () => {
       mockEnv
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.error).toHaveProperty("type", "validation");
     expect(data.error.message).toBeDefined();
@@ -223,8 +230,8 @@ describe("DELETE /storage/clear", () => {
 
   it("should clear storage with valid confirmation", async () => {
     const storedData = {
-      used: 1048576,
-      total: 5242880,
+      used: BYTE_CONVERSION.MB,
+      total: STORAGE_CONFIG.QUOTA_BYTES,
       projects: 3,
       updatedAt: new Date().toISOString(),
     };
@@ -241,7 +248,7 @@ describe("DELETE /storage/clear", () => {
       mockEnv
     );
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const data = (await res.json()) as {
       success: boolean;
       data: {

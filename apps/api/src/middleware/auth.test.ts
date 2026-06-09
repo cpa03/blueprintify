@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { Hono } from "hono";
 import { apiKeyAuth } from "./auth";
 import { ERROR_CODES, API_HEADERS } from "../config/constants";
+import { HTTP_STATUS } from "@blueprint/shared";
 import type { ErrorResponse } from "../errors";
 
 describe("auth middleware", () => {
@@ -22,7 +23,7 @@ describe("auth middleware", () => {
         headers: { [API_HEADERS.CUSTOM.API_KEY]: validApiKey },
       });
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(HTTP_STATUS.OK);
       const data = (await res.json()) as { success: boolean };
       expect(data.success).toBe(true);
     });
@@ -40,7 +41,7 @@ describe("auth middleware", () => {
         headers: { [API_HEADERS.CUSTOM.API_KEY]: "invalid-key" },
       });
 
-      expect(res.status).toBe(401);
+      expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
       const data = (await res.json()) as ErrorResponse;
       expect(data.success).toBe(false);
       expect(data.error.type).toBe("authentication");
@@ -58,7 +59,7 @@ describe("auth middleware", () => {
 
       const res = await app.request("/");
 
-      expect(res.status).toBe(401);
+      expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
       const data = (await res.json()) as ErrorResponse;
       expect(data.success).toBe(false);
       expect(data.error.type).toBe("authentication");
@@ -77,7 +78,7 @@ describe("auth middleware", () => {
         headers: { [API_HEADERS.CUSTOM.API_KEY]: validApiKey },
       });
 
-      expect(res.status).toBe(503);
+      expect(res.status).toBe(HTTP_STATUS.SERVICE_UNAVAILABLE);
       const data = (await res.json()) as ErrorResponse;
       expect(data.success).toBe(false);
       expect(data.error.code).toBe(ERROR_CODES.CONFIGURATION_ERROR);
@@ -95,7 +96,7 @@ describe("auth middleware", () => {
 
       const res = await app.request("/");
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(HTTP_STATUS.OK);
     });
 
     it("should use custom API key header", async () => {
@@ -114,13 +115,13 @@ describe("auth middleware", () => {
       const res1 = await app.request("/", {
         headers: { [customHeader]: customKey },
       });
-      expect(res1.status).toBe(200);
+      expect(res1.status).toBe(HTTP_STATUS.OK);
 
       // Should fail with default header
       const res2 = await app.request("/", {
         headers: { [API_HEADERS.CUSTOM.API_KEY]: customKey },
       });
-      expect(res2.status).toBe(401);
+      expect(res2.status).toBe(HTTP_STATUS.UNAUTHORIZED);
     });
 
     it("should allow multiple excluded paths", async () => {
@@ -141,13 +142,13 @@ describe("auth middleware", () => {
       app.get("/protected", (c) => c.json({ success: true }));
 
       // Excluded paths should work without key
-      expect((await app.request("/health")).status).toBe(200);
-      expect((await app.request("/api/ping")).status).toBe(200);
-      expect((await app.request("/docs")).status).toBe(200);
+      expect((await app.request("/health")).status).toBe(HTTP_STATUS.OK);
+      expect((await app.request("/api/ping")).status).toBe(HTTP_STATUS.OK);
+      expect((await app.request("/docs")).status).toBe(HTTP_STATUS.OK);
 
       // Protected path should require key
       const res = await app.request("/protected");
-      expect(res.status).toBe(401);
+      expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
     });
 
     it("should reject empty API key header", async () => {
@@ -163,7 +164,7 @@ describe("auth middleware", () => {
         headers: { [API_HEADERS.CUSTOM.API_KEY]: "" },
       });
 
-      expect(res.status).toBe(401);
+      expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
     });
 
     it("should handle case-sensitive API key comparison", async () => {
@@ -179,13 +180,13 @@ describe("auth middleware", () => {
       const res1 = await app.request("/", {
         headers: { [API_HEADERS.CUSTOM.API_KEY]: "Key123" },
       });
-      expect(res1.status).toBe(200);
+      expect(res1.status).toBe(HTTP_STATUS.OK);
 
       // Different case should fail
       const res2 = await app.request("/", {
         headers: { [API_HEADERS.CUSTOM.API_KEY]: "key123" },
       });
-      expect(res2.status).toBe(401);
+      expect(res2.status).toBe(HTTP_STATUS.UNAUTHORIZED);
     });
 
     it("should return consistent error response structure", async () => {

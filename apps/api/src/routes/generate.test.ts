@@ -4,7 +4,7 @@ import generateRoute from "./generate";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV, MOCK_ENV_NO_KEY } from "../test-utils";
 import type { ErrorResponse } from "../errors";
-import { HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import { HTTP_STATUS, HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 import { ERROR_CODES } from "../config/constants";
 
@@ -46,7 +46,7 @@ describe("POST /generate", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
     expect(data.error).toHaveProperty("type", "validation");
@@ -67,7 +67,7 @@ describe("POST /generate", () => {
       },
       MOCK_ENV
     );
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.error).toHaveProperty("type", "validation");
   });
@@ -87,7 +87,7 @@ describe("POST /generate", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const text = await res.text();
     expect(text).toBe("mock data");
   });
@@ -107,7 +107,7 @@ describe("POST /generate", () => {
       MOCK_ENV_NO_KEY
     );
 
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(HTTP_STATUS.INTERNAL_ERROR);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
     expect(data.error).toHaveProperty("type", "configuration");

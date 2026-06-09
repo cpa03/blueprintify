@@ -257,7 +257,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
         }),
       });
 
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(HTTP_STATUS.BAD_REQUEST);
       const result = (await response.json()) as ApiResponse;
       expect(result.success).toBe(false);
     });

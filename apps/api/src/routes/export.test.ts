@@ -4,7 +4,7 @@ import exportRoute from "./export";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
-import { HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import { HTTP_STATUS, HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -34,7 +34,7 @@ describe("POST /export", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
     expect(data.error).toHaveProperty("type", "validation");
@@ -55,7 +55,7 @@ describe("POST /export", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.error).toHaveProperty("type", "validation");
   });
@@ -77,7 +77,7 @@ describe("POST /export", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const data = (await res.json()) as {
       success: boolean;
       data: {
@@ -116,7 +116,7 @@ describe("POST /export", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const data = (await res.json()) as {
       success: boolean;
       data: {
@@ -147,7 +147,7 @@ describe("POST /export", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const data = (await res.json()) as {
       success: boolean;
       data: {
@@ -177,7 +177,7 @@ describe("POST /export", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
     expect(data.error).toHaveProperty("type", "validation");
@@ -199,7 +199,7 @@ describe("POST /export", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
     expect(data.error).toHaveProperty("type", "validation");
@@ -220,7 +220,7 @@ describe("POST /export", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const data = (await res.json()) as {
       filename: string;
     };

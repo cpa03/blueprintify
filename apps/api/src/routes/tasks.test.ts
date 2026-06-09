@@ -5,7 +5,7 @@ import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
-import { HTTP_HEADERS, HTTP_METHODS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import { HTTP_STATUS, HTTP_HEADERS, HTTP_METHODS, HTTP_HEADER_NAMES } from "@blueprint/shared";
 
 beforeEach(() => {
   const mockContainer = createMockContainer();
@@ -35,7 +35,7 @@ describe("POST /tasks", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
     expect(data.error).toHaveProperty("type", "validation");
@@ -55,7 +55,7 @@ describe("POST /tasks", () => {
       MOCK_ENV
     );
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(HTTP_STATUS.OK);
     const text = await res.text();
     expect(text).toBe("mock data");
   });

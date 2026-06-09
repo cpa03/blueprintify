@@ -5,6 +5,7 @@ import { ValidationError, AuthenticationError, NotFoundError, ConfigurationError
 import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import type { ErrorResponse } from "../errors";
 import { ERROR_CODES } from "../config/constants";
+import { HTTP_STATUS } from "@blueprint/shared";
 
 const TEST_REQUEST_ID = "test-request-id-12345";
 
@@ -41,7 +42,7 @@ describe("errorHandler", () => {
 
     const res = await app.request("/");
 
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("validation");
@@ -57,7 +58,7 @@ describe("errorHandler", () => {
 
     const res = await app.request("/");
 
-    expect(res.status).toBe(401);
+    expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("authentication");
@@ -72,7 +73,7 @@ describe("errorHandler", () => {
 
     const res = await app.request("/");
 
-    expect(res.status).toBe(404);
+    expect(res.status).toBe(HTTP_STATUS.NOT_FOUND);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("not_found");
@@ -87,7 +88,7 @@ describe("errorHandler", () => {
 
     const res = await app.request("/");
 
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(HTTP_STATUS.INTERNAL_ERROR);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("configuration");
@@ -102,7 +103,7 @@ describe("errorHandler", () => {
 
     const res = await app.request("/");
 
-    expect(res.status).toBe(503);
+    expect(res.status).toBe(HTTP_STATUS.SERVICE_UNAVAILABLE);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("service_unavailable");
@@ -118,7 +119,7 @@ describe("errorHandler", () => {
 
     const res = await app.request("/");
 
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(HTTP_STATUS.INTERNAL_ERROR);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("internal");
@@ -203,7 +204,7 @@ describe("errorHandler", () => {
     const res = await app.request("/");
     const data = (await res.json()) as ErrorResponse;
 
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(HTTP_STATUS.INTERNAL_ERROR);
     expect(data.success).toBe(false);
     expect(data.error.requestId).toBeUndefined();
   });
@@ -217,7 +218,7 @@ describe("notFoundHandler", () => {
 
     const res = await app.request("/does-not-exist");
 
-    expect(res.status).toBe(404);
+    expect(res.status).toBe(HTTP_STATUS.NOT_FOUND);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
     expect(data.error.type).toBe("not_found");
@@ -230,7 +231,7 @@ describe("notFoundHandler", () => {
 
     const res = await app.request("/missing/route");
 
-    expect(res.status).toBe(404);
+    expect(res.status).toBe(HTTP_STATUS.NOT_FOUND);
     const data = (await res.json()) as ErrorResponse;
     expect(data.error.message).toContain("/missing/route");
   });
