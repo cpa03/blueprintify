@@ -99,6 +99,16 @@ const getShortcutItems = (): ShortcutItem[] => {
       description: KEYBOARD_SHORTCUTS.SCROLL_TO_TOP.DESCRIPTION,
       category: "navigation",
     },
+    {
+      keys: [altKey, "←"],
+      description: "Go to previous wizard step",
+      category: "navigation",
+    },
+    {
+      keys: [altKey, "→"],
+      description: "Go to next wizard step",
+      category: "navigation",
+    },
     ...WIZARD_STEPS.map((step) => ({
       keys: [altKey, step.shortcut],
       description: `Go to ${step.label}`,
