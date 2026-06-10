@@ -91,11 +91,10 @@ export const SUGGESTED_FEATURES = [
 /**
  * Editor tab constants
  * Identifiers for the split-pane editor tabs
+ * Single source of truth: @blueprint/shared
+ * Flexy says: No hardcoded "blueprint"/"tasks" in editor components!
  */
-export const EDITOR_TABS = {
-  BLUEPRINT: "blueprint",
-  TASKS: "tasks",
-} as const;
+export { EDITOR_TABS } from "@blueprint/shared";
 
 /**
  * Generates a README template for project documentation

@@ -265,6 +265,8 @@ export const SHARED_DEFAULTS = {
   API_VERSION: "1.0.0",
   CORS_ORIGIN_DEV: "*",
   CORS_MAX_AGE: 86400,
+  /** Namespace prefix for all localStorage keys */
+  STORAGE_NAMESPACE: "blueprint" as const,
 } as const;
 
 /**
@@ -593,6 +595,20 @@ export const ENVIRONMENT_NAMES = {
 export const BROWSER_QUOTA_ERROR_CODES = {
   CHROME: 22,
   FIREFOX: 1014,
+} as const;
+
+/**
+ * Editor Tab Identifiers
+ * Centralized identifiers for the split-pane editor tabs.
+ * Flexy says: No hardcoded "blueprint"/"tasks" strings in editor components!
+ * Usage: import { EDITOR_TABS } from "@blueprint/shared";
+ *        editor.activeTab === EDITOR_TABS.BLUEPRINT
+ */
+export const EDITOR_TABS = {
+  /** Blueprint/documentation tab identifier */
+  BLUEPRINT: "blueprint" as const,
+  /** Tasks tab identifier */
+  TASKS: "tasks" as const,
 } as const;
 
 export const HTTP_HEADER_NAMES = {

@@ -12,7 +12,7 @@ import { memo } from "react";
 import { motion } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
-import { EMPTY_STATE_CONFIG, SPRING_CONFIG, UI_CONTENT } from "../config/constants";
+import { EMPTY_STATE_CONFIG, SPRING_CONFIG, UI_CONTENT, EDITOR_TABS } from "../config/constants";
 
 interface PreviewEmptyStateProps {
   /** The active editor tab that is empty */
@@ -26,13 +26,13 @@ interface PreviewEmptyStateProps {
 }
 
 const tabLabels: Record<EditorTab, string> = {
-  blueprint: "blueprint.md",
-  tasks: "task.md",
+  [EDITOR_TABS.BLUEPRINT]: "blueprint.md",
+  [EDITOR_TABS.TASKS]: "task.md",
 };
 
 const tabEmojis: Record<EditorTab, string> = {
-  blueprint: "📘",
-  tasks: "📋",
+  [EDITOR_TABS.BLUEPRINT]: "📘",
+  [EDITOR_TABS.TASKS]: "📋",
 };
 
 export const PreviewEmptyState = memo(function PreviewEmptyState({
@@ -42,7 +42,9 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
   onSwitchTab,
 }: PreviewEmptyStateProps): JSX.Element {
   const content =
-    tab === "blueprint" ? UI_CONTENT.PREVIEW_EMPTY.BLUEPRINT : UI_CONTENT.PREVIEW_EMPTY.TASKS;
+    tab === EDITOR_TABS.BLUEPRINT
+      ? UI_CONTENT.PREVIEW_EMPTY.BLUEPRINT
+      : UI_CONTENT.PREVIEW_EMPTY.TASKS;
   const label = tabLabels[tab];
 
   return (
@@ -122,7 +124,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
             >
               ⏳
             </motion.span>{" "}
-            {tab === "tasks"
+            {tab === EDITOR_TABS.TASKS
               ? UI_CONTENT.PREVIEW_EMPTY.GENERATING_TASKS
               : UI_CONTENT.PREVIEW_EMPTY.GENERATING_BLUEPRINT}
           </>
@@ -131,10 +133,11 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
             <button
               onClick={onSwitchTab}
               className="inline-flex items-center gap-1.5 text-primary-400 hover:text-primary-300 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded px-1 -mx-1"
-              aria-label={`Switch to ${tab === "blueprint" ? "tasks" : "blueprint"} tab`}
+              aria-label={`Switch to ${tab === EDITOR_TABS.BLUEPRINT ? "tasks" : "blueprint"} tab`}
             >
               <span aria-hidden="true">←</span>
-              Switch to <strong>{tab === "blueprint" ? "📋 tasks" : "📘 blueprint"}</strong> tab
+              Switch to{" "}
+              <strong>{tab === EDITOR_TABS.BLUEPRINT ? "📋 tasks" : "📘 blueprint"}</strong> tab
             </button>
           </>
         ) : (
@@ -153,8 +156,8 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
           >
             <span>💡</span>
             <span>
-              {tab === "blueprint" ? "Start" : "Complete"} the wizard to generate{" "}
-              {tab === "blueprint" ? "blueprint" : "tasks"}
+              {tab === EDITOR_TABS.BLUEPRINT ? "Start" : "Complete"} the wizard to generate{" "}
+              {tab === EDITOR_TABS.BLUEPRINT ? "blueprint" : "tasks"}
             </span>
           </motion.div>
         </motion.div>

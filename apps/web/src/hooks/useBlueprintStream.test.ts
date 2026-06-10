@@ -14,6 +14,7 @@ import { renderHook, act } from "@testing-library/react";
 import { useBlueprintStream } from "./useBlueprintStream";
 import { generateBlueprint, generateTasks } from "../lib/api";
 import { useWizardStore, useEditorStore } from "../store";
+import { EDITOR_TABS } from "../config/constants";
 
 // Mock the API module
 vi.mock("../lib/api", () => ({
@@ -36,7 +37,7 @@ function resetStores(): void {
   useEditorStore.setState({
     blueprintContent: "",
     tasksContent: "",
-    activeTab: "blueprint",
+    activeTab: EDITOR_TABS.BLUEPRINT,
     isGenerating: false,
     generationProgress: "",
     isDirty: false,

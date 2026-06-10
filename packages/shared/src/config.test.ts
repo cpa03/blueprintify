@@ -37,6 +37,7 @@ import {
   CONTEXT_KEYS,
   RESPONSE_STATUS,
   ERROR_CODES,
+  EDITOR_TABS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -351,6 +352,12 @@ describe("SHARED_DEFAULTS", () => {
 
   it("should have positive CORS max age", () => {
     expect(SHARED_DEFAULTS.CORS_MAX_AGE).toBeGreaterThan(0);
+  });
+
+  it("should have a storage namespace string", () => {
+    expect(SHARED_DEFAULTS.STORAGE_NAMESPACE).toBeTruthy();
+    expect(typeof SHARED_DEFAULTS.STORAGE_NAMESPACE).toBe("string");
+    expect(SHARED_DEFAULTS.STORAGE_NAMESPACE).toBe("blueprint");
   });
 });
 
@@ -1013,5 +1020,31 @@ describe("ERROR_CODES", () => {
     const codes = Object.values(ERROR_CODES);
     const uniqueCodes = new Set(codes);
     expect(uniqueCodes.size).toBe(codes.length);
+  });
+});
+
+describe("EDITOR_TABS", () => {
+  it("should have blueprint and tasks identifiers", () => {
+    expect(EDITOR_TABS.BLUEPRINT).toBe("blueprint");
+    expect(EDITOR_TABS.TASKS).toBe("tasks");
+  });
+
+  it("should have exactly 2 tab identifiers", () => {
+    const values = Object.values(EDITOR_TABS);
+    expect(values.length).toBe(2);
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(EDITOR_TABS);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(EDITOR_TABS);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
   });
 });

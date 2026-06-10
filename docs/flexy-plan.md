@@ -634,3 +634,26 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 1,176 tests passing (596 web + 349 api + 231 shared) across 69 files
+
+### ✅ Flexy Iteration 33: Add EDITOR_TABS to Shared Config + Centralize STORAGE_NAMESPACE
+
+| File                                              | Change                                                                                                        |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`                   | Added `EDITOR_TABS` (BLUEPRINT/TASKS) + `STORAGE_NAMESPACE` to `SHARED_DEFAULTS`                              |
+| `packages/shared/src/index.ts`                    | Exported `EDITOR_TABS`                                                                                        |
+| `packages/shared/src/config.test.ts`              | Added 5 tests for `EDITOR_TABS` + 1 test for `STORAGE_NAMESPACE`                                              |
+| `apps/web/src/config/constants/wizard.ts`         | `EDITOR_TABS` now re-exports from `@blueprint/shared` instead of local hardcoded                              |
+| `apps/web/src/components/editor/EditorHeader.tsx` | 6 hardcoded `"blueprint"`/`"tasks"` replaced with `EDITOR_TABS.BLUEPRINT`/`EDITOR_TABS.TASKS`                 |
+| `apps/web/src/components/Editor.tsx`              | 7 hardcoded `"blueprint"`/`"tasks"` replaced with `EDITOR_TABS.BLUEPRINT`/`EDITOR_TABS.TASKS`                 |
+| `apps/web/src/components/PreviewEmptyState.tsx`   | 7 hardcoded `"blueprint"`/`"tasks"` replaced with `EDITOR_TABS.*` + `tabLabels`/`tabEmojis` use computed keys |
+| `apps/web/src/components/Wizard.test.tsx`         | `activeTab: "blueprint"` → `EDITOR_TABS.BLUEPRINT`                                                            |
+| `apps/web/src/components/Editor.test.tsx`         | 2 hardcoded `"blueprint"`/`"tasks"` → `EDITOR_TABS.BLUEPRINT`/`EDITOR_TABS.TASKS`                             |
+| `apps/web/src/hooks/useBlueprintStream.test.ts`   | `activeTab: "blueprint"` → `EDITOR_TABS.BLUEPRINT`                                                            |
+| `apps/web/src/config/keys.ts`                     | `NAMESPACE = "blueprint"` → `SHARED_DEFAULTS.STORAGE_NAMESPACE` from `@blueprint/shared`                      |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,181 tests passing (596 web + 349 api + 236 shared) across 69 files

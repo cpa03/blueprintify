@@ -101,6 +101,7 @@ export {
   AUTH_DEFAULTS,
   CONTEXT_KEYS,
   RESPONSE_STATUS,
+  EDITOR_TABS,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";

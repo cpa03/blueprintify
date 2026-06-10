@@ -1,9 +1,12 @@
 /**
  * Storage Keys Module
  * All localStorage/sessionStorage keys centralized
+ * Flexy says: No hardcoded "blueprint" namespace!
  */
 
-const NAMESPACE = "blueprint";
+import { SHARED_DEFAULTS } from "@blueprint/shared";
+
+const NAMESPACE = SHARED_DEFAULTS.STORAGE_NAMESPACE;
 
 const createKey = (key: string): string => `${NAMESPACE}-${key}`;
 
