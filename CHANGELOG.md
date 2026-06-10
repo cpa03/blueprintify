@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 82: full repository audit, README tree fix (added Jun 10 Run 7 BroCula audit), docs/audits/README.md update, documentation sync, quality verification
 - RepoKeeper Cycle 81: full repository audit, README tree fix (added Jun 10 Run 2 BroCula audit), documentation sync, quality verification
 - RepoKeeper Cycle 80: full repository audit, README tree fix (added Jun 10 BroCula audit), documentation sync, quality verification
 - RepoKeeper Cycle 79: cleanup redundant tracked patch file `docs/ci-workflow-fixes.patch`, add missing BroCula Jun 9 Run 4 audit reference, documentation sync, quality verification

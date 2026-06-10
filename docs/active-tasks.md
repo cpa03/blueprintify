@@ -2,7 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 81 — Full Repository Audit, Doc Sync, README Tree Fix ✅ COMPLETE
+## Current Focus: RepoKeeper Cycle 82 — Full Repository Audit, README Tree Fix (Add Run 7), Doc Sync ✅ COMPLETE
+
+### Task: Full repository audit, add missing Jun 10 Run 7 BroCula audit to README tree, docs/audits/README.md, documentation sync, quality verification
+
+- **Priority**: High
+- **Status**: 🟢 Complete
+- **Objective**: Full repository audit, add missing `brocula-hunt-2026-06-10-run3.md` (Run 7) to README directory tree and `docs/audits/README.md`, update CHANGELOG, refresh documentation for Cycle 82
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅
+  - [x] Added missing `brocula-hunt-2026-06-10-run3.md` to README directory tree
+  - [x] Added missing `brocula-hunt-2026-06-10-run3.md` (Run 7) to `docs/audits/README.md` as latest report
+  - [x] Updated `docs/bugs.md` — Cycle 82 status log
+  - [x] Updated `docs/findings.md` — Cycle 82 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 82 status
+  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 82
+  - [x] Updated CHANGELOG.md — Cycle 82 entry
+
+## Previous Cycle: RepoKeeper Cycle 81 — Full Repository Audit, Doc Sync, README Tree Fix ✅ COMPLETE
 
 ### Task: Full repository audit, add missing Jun 10 Run 2 BroCula audit to README tree, documentation sync, quality verification
 
