@@ -41,6 +41,7 @@ import {
   TOAST_MESSAGES,
   ANIMATION,
   EDITOR_ANNOUNCER,
+  EDITOR_TABS,
 } from "../config/constants";
 import { ANIMATION_TIMING } from "../config/theme";
 import { isDev } from "../config/env";
@@ -86,7 +87,7 @@ function EditorComponent(): JSX.Element {
 
   const { lastSavedText, markSaved, hasChanges, markAsChanged } = useLastSaved();
 
-  const currentContent = activeTab === "blueprint" ? blueprintContent : tasksContent;
+  const currentContent = activeTab === EDITOR_TABS.BLUEPRINT ? blueprintContent : tasksContent;
   const hasContent = blueprintContent.length > 0 || tasksContent.length > 0;
 
   // Freeze announcement text at mount via useState initializer so screen readers
@@ -94,7 +95,7 @@ function EditorComponent(): JSX.Element {
   const [mountAnnouncement] = useState(() =>
     hasContent
       ? EDITOR_ANNOUNCER.OPENED_WITH_CONTENT(
-          activeTab === "blueprint" ? "blueprint.md" : "tasks.md"
+          activeTab === EDITOR_TABS.BLUEPRINT ? "blueprint.md" : "tasks.md"
         )
       : EDITOR_ANNOUNCER.OPENED
   );
@@ -109,7 +110,7 @@ function EditorComponent(): JSX.Element {
     (content: string) => {
       try {
         const sanitizedContent = sanitizeMarkdown(content);
-        if (activeTab === "blueprint") {
+        if (activeTab === EDITOR_TABS.BLUEPRINT) {
           setBlueprintContent(sanitizedContent);
         } else {
           setTasksContent(sanitizedContent);
@@ -314,7 +315,7 @@ function EditorComponent(): JSX.Element {
                       duration: ANIMATION.NORMAL,
                       ease: ANIMATION_TIMING.easing.easeOut,
                     }}
-                    id={activeTab === "blueprint" ? "blueprint-panel" : "tasks-panel"}
+                    id={activeTab === EDITOR_TABS.BLUEPRINT ? "blueprint-panel" : "tasks-panel"}
                     role="tabpanel"
                     aria-labelledby={`tab-${activeTab}`}
                     className="h-full flex flex-col lg:flex-row"
@@ -379,12 +380,16 @@ function EditorComponent(): JSX.Element {
                                 tab={activeTab}
                                 isGenerating={isGenerating}
                                 siblingTabHasContent={
-                                  activeTab === "blueprint"
+                                  activeTab === EDITOR_TABS.BLUEPRINT
                                     ? tasksContent.length > 0
                                     : blueprintContent.length > 0
                                 }
                                 onSwitchTab={() =>
-                                  setActiveTab(activeTab === "blueprint" ? "tasks" : "blueprint")
+                                  setActiveTab(
+                                    activeTab === EDITOR_TABS.BLUEPRINT
+                                      ? EDITOR_TABS.TASKS
+                                      : EDITOR_TABS.BLUEPRINT
+                                  )
                                 }
                               />
                             </motion.div>

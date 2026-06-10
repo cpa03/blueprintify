@@ -7,6 +7,7 @@ import { ExportProvider } from "../context/ExportContext";
 import type { EditorStore } from "../store/editor";
 import type { WizardStore } from "../store/wizard";
 import type { TechStackItemType } from "@blueprint/shared";
+import { EDITOR_TABS } from "../config/constants";
 
 vi.mock("../store", () => ({
   useEditorStore: vi.fn(),
@@ -91,7 +92,7 @@ vi.mock("../config/constants", async (importOriginal) => {
 });
 
 const mockEditorStore: EditorStore = {
-  activeTab: "blueprint",
+  activeTab: EDITOR_TABS.BLUEPRINT,
   blueprintContent: "",
   tasksContent: "",
   isDirty: false,
@@ -184,7 +185,7 @@ describe("Editor", () => {
   });
 
   it("displays tasks content when tasks tab is active", () => {
-    mockEditorStore.activeTab = "tasks";
+    mockEditorStore.activeTab = EDITOR_TABS.TASKS;
     mockEditorStore.tasksContent = "# Tasks Content";
     render(
       <ExportProvider>

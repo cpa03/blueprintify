@@ -5,6 +5,7 @@ import { Wizard } from "./Wizard";
 import { useWizardStore, useEditorStore } from "../store";
 import type { WizardStore } from "../store/wizard";
 import type { EditorStore } from "../store/editor";
+import { EDITOR_TABS } from "../config/constants";
 
 vi.mock("../store", () => ({
   useWizardStore: vi.fn(),
@@ -86,7 +87,7 @@ const mockWizardStore: WizardStore = {
 };
 
 const mockEditorStore: EditorStore = {
-  activeTab: "blueprint",
+  activeTab: EDITOR_TABS.BLUEPRINT,
   blueprintContent: "",
   tasksContent: "",
   isDirty: false,

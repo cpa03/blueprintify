@@ -32,7 +32,7 @@ import type { EditorTab } from "@blueprint/shared";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { Icon } from "../Icon";
 import { LastSavedIndicator } from "../LastSavedIndicator";
-import { SPRING_CONFIG, EDITOR_LABELS, ANIMATION } from "../../config/constants";
+import { SPRING_CONFIG, EDITOR_LABELS, ANIMATION, EDITOR_TABS } from "../../config/constants";
 import { EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
 import clsx from "clsx";
 
@@ -58,7 +58,7 @@ interface EditorHeaderProps {
   content?: string;
 }
 
-const TAB_IDS: EditorTab[] = ["blueprint", "tasks"];
+const TAB_IDS: EditorTab[] = [EDITOR_TABS.BLUEPRINT, EDITOR_TABS.TASKS];
 
 const TabButton = React.memo(function TabButton({
   id,
@@ -119,7 +119,7 @@ const TabButton = React.memo(function TabButton({
               stiffness: 400,
               damping: 15,
             }}
-            aria-label={`${id === "blueprint" ? "Blueprint" : "Tasks"} content available`}
+            aria-label={`${id === EDITOR_TABS.BLUEPRINT ? "Blueprint" : "Tasks"} content available`}
           />
         )}
         {isActive && isGenerating && (
@@ -317,10 +317,10 @@ function EditorHeaderComponent({
           onKeyDown={handleTabKeyDown}
         >
           <TabButton
-            id="blueprint"
-            isActive={activeTab === "blueprint"}
+            id={EDITOR_TABS.BLUEPRINT}
+            isActive={activeTab === EDITOR_TABS.BLUEPRINT}
             isGenerating={isGenerating}
-            onClick={() => setActiveTab("blueprint")}
+            onClick={() => setActiveTab(EDITOR_TABS.BLUEPRINT)}
             hasContent={hasContent}
             contentAvailable={blueprintHasContent}
           >
@@ -328,10 +328,10 @@ function EditorHeaderComponent({
             blueprint.md
           </TabButton>
           <TabButton
-            id="tasks"
-            isActive={activeTab === "tasks"}
+            id={EDITOR_TABS.TASKS}
+            isActive={activeTab === EDITOR_TABS.TASKS}
             isGenerating={isGenerating}
-            onClick={() => setActiveTab("tasks")}
+            onClick={() => setActiveTab(EDITOR_TABS.TASKS)}
             hasContent={hasContent}
             contentAvailable={tasksHasContent}
           >
