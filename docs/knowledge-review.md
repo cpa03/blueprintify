@@ -12,18 +12,17 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-09 (RepoKeeper Cycle 78)
+**Last Review**: 2026-06-10 (RepoKeeper Cycle 79)
 **Status**: ✅ Up to date — fully synced
 
-As of RepoKeeper Cycle 78 (refreshed):
+As of RepoKeeper Cycle 79 (refreshed):
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **CHANGELOG updated**: Added Cycle 78 entry (BUG-014/BUG-017 fixes)
-- **BUG-014 and BUG-017 finally resolved on `main`**:
-  - `main.yml`: stale `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` (2 occurrences)
-  - 4 workflow files: `node-version: "20"`→`node-version-file: ".node-version"` (11 instances across iterate.yml, parallel.yml, on-pull.yml, pr-gatekeeper.yml)
-  - Both fixes verified via grep: zero stale doc refs, zero hardcoded node-version remaining
+- **CHANGELOG updated**: Added Cycle 79 entry (patch file cleanup, audit README update)
+- **Removed redundant tracked file**: `docs/ci-workflow-fixes.patch` (generated artifact, info preserved in `.md`)
+- **Added missing audit reference**: `brocula-hunt-2026-06-09-run4.md` now listed in `docs/audits/README.md`
+- **BUG-014 and BUG-017**: Remained resolved on `main` from Cycle 78
 
 ## Historical Drift Corrections
 
