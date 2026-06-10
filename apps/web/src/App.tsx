@@ -13,6 +13,7 @@ const TemplateGrid = lazy(() =>
 const KeyboardShortcutsModal = lazy(() => import("./components/KeyboardShortcutsModal"));
 import { SkipLink } from "./components/SkipLink";
 import { OfflineBanner } from "./components/OfflineBanner";
+import { PageScrollProgressBar } from "./components/PageScrollProgressBar";
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 import { useWizardStore, useEditorStore, useToast, useToastStore } from "./store";
 import { useOnlineStatus } from "./hooks";
@@ -207,6 +208,9 @@ function App(): JSX.Element {
 
       {/* Offline banner - persistent connectivity status */}
       <OfflineBanner />
+
+      {/* Page scroll progress — subtle gradient bar showing reading progress */}
+      <PageScrollProgressBar showAfter={80} height={2} />
 
       {/* Main Content */}
       <main id="main-content" className={LAYOUT.MAIN_CONTENT} tabIndex={-1}>
