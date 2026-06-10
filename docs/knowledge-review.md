@@ -12,15 +12,15 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-10 (RepoKeeper Cycle 80)
+**Last Review**: 2026-06-10 (RepoKeeper Cycle 81)
 **Status**: ✅ Up to date — fully synced
 
-As of RepoKeeper Cycle 80 (refreshed):
+As of RepoKeeper Cycle 81 (refreshed):
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **CHANGELOG updated**: Added Cycle 80 entry
-- **README tree fixed**: Added missing `brocula-hunt-2026-06-10.md` reference
+- **CHANGELOG updated**: Added Cycle 81 entry
+- **README tree fixed**: Added missing `brocula-hunt-2026-06-10-run2.md` reference
 - **BUG-014 and BUG-017**: Remained resolved on `main` from Cycle 78
 
 ## Historical Drift Corrections
