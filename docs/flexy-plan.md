@@ -589,3 +589,24 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run test:all` — 1,166 tests passing (596 web + 342 api + 228 shared) across 69 files
+
+### ✅ Flexy Iteration 31: Replace Hardcoded z-index & Editor Tab Strings with Constants
+
+| File                                               | Change                                                                                          |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `apps/web/src/components/editor/EditorHeader.tsx`  | Added `Z_INDEX` import; replaced `zIndex: -1` with `Z_INDEX.hide`                               |
+| `apps/web/src/components/editor/EditorToolbar.tsx` | Added `Z_INDEX` import; replaced `zIndex: 0` with `Z_INDEX.base`                                |
+| `apps/web/src/store/editor.test.ts`                | Added `EDITOR_TABS` import; replaced `"blueprint"`/`"tasks"` literals with `EDITOR_TABS.*` refs |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,166 tests passing (596 web + 342 api + 228 shared) across 69 files
+
+## PR
+
+| PR # | Branch                                | Title                                                                            |
+| ---- | ------------------------------------- | -------------------------------------------------------------------------------- |
+| TBD  | `feat/modularize-hardcoded-constants` | refactor(flexy): replace hardcoded z-index and editor tab strings with constants |
