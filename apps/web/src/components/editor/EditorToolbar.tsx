@@ -32,7 +32,7 @@ import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
 import { AnimatedCopyButton } from "../AnimatedCopyButton";
 import { SPRING_CONFIG, EDITOR_LABELS, ANIMATION } from "../../config/constants";
-import { COLORS, EDITOR_ANIMATION } from "../../config/theme";
+import { COLORS, EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
 
 export type ViewMode = "edit" | "preview" | "split";
 
@@ -192,7 +192,7 @@ function EditorToolbarComponent({
             ...EDITOR_ANIMATION.VIEW_MODE_INDICATOR,
           }}
           style={{
-            zIndex: 0,
+            zIndex: Z_INDEX.base,
           }}
         />
       </div>
