@@ -354,10 +354,14 @@ function App(): JSX.Element {
             )}
           </div>
 
-          {/* Show editor button when hidden */}
+          {/* Show editor button when hidden — glows when content is ready */}
           {!showEditor && (
             <Suspense fallback={null}>
-              <ShowEditorButton onClick={handleShowEditor} />
+              <ShowEditorButton
+                onClick={handleShowEditor}
+                hasContent={hasContent}
+                isGenerating={isGenerating}
+              />
             </Suspense>
           )}
         </div>
