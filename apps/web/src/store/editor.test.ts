@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useEditorStore } from "./editor";
+import { EDITOR_TABS } from "../config/constants";
 
 // Mock the storage module
 vi.mock("../lib/storage", () => ({
@@ -55,7 +56,7 @@ describe("editor store", () => {
     it("should have correct initial values", () => {
       const state = useEditorStore.getState();
 
-      expect(state.activeTab).toBe("blueprint");
+      expect(state.activeTab).toBe(EDITOR_TABS.BLUEPRINT);
       expect(state.blueprintContent).toBe("");
       expect(state.tasksContent).toBe("");
       expect(state.isDirty).toBe(false);
@@ -68,17 +69,17 @@ describe("editor store", () => {
     it("should set active tab to blueprint", () => {
       const { setActiveTab } = useEditorStore.getState();
 
-      setActiveTab("blueprint");
+      setActiveTab(EDITOR_TABS.BLUEPRINT);
 
-      expect(useEditorStore.getState().activeTab).toBe("blueprint");
+      expect(useEditorStore.getState().activeTab).toBe(EDITOR_TABS.BLUEPRINT);
     });
 
     it("should set active tab to tasks", () => {
       const { setActiveTab } = useEditorStore.getState();
 
-      setActiveTab("tasks");
+      setActiveTab(EDITOR_TABS.TASKS);
 
-      expect(useEditorStore.getState().activeTab).toBe("tasks");
+      expect(useEditorStore.getState().activeTab).toBe(EDITOR_TABS.TASKS);
     });
   });
 

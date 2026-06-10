@@ -33,7 +33,7 @@ import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { Icon } from "../Icon";
 import { LastSavedIndicator } from "../LastSavedIndicator";
 import { SPRING_CONFIG, EDITOR_LABELS, ANIMATION } from "../../config/constants";
-import { EDITOR_ANIMATION } from "../../config/theme";
+import { EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
 import clsx from "clsx";
 
 interface EditorHeaderProps {
@@ -100,7 +100,7 @@ const TabButton = React.memo(function TabButton({
             type: "spring",
             ...EDITOR_ANIMATION.TAB_INDICATOR,
           }}
-          style={{ zIndex: -1 }}
+          style={{ zIndex: Z_INDEX.hide }}
         />
       )}
       <span className="relative z-10 flex items-center gap-1.5">
