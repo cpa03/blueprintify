@@ -2,6 +2,42 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 81 (2026-06-10 — RepoKeeper: Full Repository Audit, README Tree Fix, Doc Sync)
+
+### Audit Scope
+
+Full repository audit covering build/lint health, missing `brocula-hunt-2026-06-10-run2.md` reference in README architecture tree, documentation sync, quality verification.
+
+### Status Summary
+
+| Check       | Result                                                  |
+| ----------- | ------------------------------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)                                     |
+| Lint        | ✅ Clean (0 warnings/errors)                            |
+| Build       | ✅ Passes (web)                                         |
+| Tests       | ✅ 1,176/1,176 passing (596 Web + 349 API + 231 Shared) |
+| **Overall** | **✅ All quality checks passing**                       |
+
+### Actions Taken This Cycle
+
+1. **Full repository audit**: No redundant/temp/unused source files found. No empty directories. No `.orig`/`.bak`/`.DS_Store` artifacts. No merge conflicts detected.
+2. **Build/Lint/Typecheck/Test verification**: All pass cleanly — 0 errors, 0 warnings.
+3. **Fixed README architecture tree**: Added missing `brocula-hunt-2026-06-10-run2.md` reference (Jun 10 Run 6 BroCula audit) to directory tree.
+4. **Updated `docs/active-tasks.md`**: Cycle 81 status (marked Cycle 80 complete, created Cycle 81 entry).
+5. **Updated `docs/findings.md`**: Cycle 81 entry (this file).
+6. **Updated `docs/bugs.md`**: Cycle 81 status log.
+7. **Updated `docs/knowledge-review.md`**: Refreshed for Cycle 81.
+8. **Updated CHANGELOG.md**: Added Cycle 81 entry.
+
+### Verification
+
+- No `@ts-ignore`, `@ts-expect-error`, or `as any` found in source code
+- No TODO/FIXME/HACK artifacts in non-test source files
+- All documentation changes applied and consistent
+- Build/lint/typecheck/tests: clean
+
+---
+
 ## Cycle 79 (2026-06-10 — RepoKeeper: Cleanup Redundant Patch File, Doc Sync, Audit README Update)
 
 ### Audit Scope
