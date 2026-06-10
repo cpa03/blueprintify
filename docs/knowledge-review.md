@@ -12,16 +12,15 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-10 (RepoKeeper Cycle 79)
+**Last Review**: 2026-06-10 (RepoKeeper Cycle 80)
 **Status**: ✅ Up to date — fully synced
 
-As of RepoKeeper Cycle 79 (refreshed):
+As of RepoKeeper Cycle 80 (refreshed):
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **CHANGELOG updated**: Added Cycle 79 entry (patch file cleanup, audit README update)
-- **Removed redundant tracked file**: `docs/ci-workflow-fixes.patch` (generated artifact, info preserved in `.md`)
-- **Added missing audit reference**: `brocula-hunt-2026-06-09-run4.md` now listed in `docs/audits/README.md`
+- **CHANGELOG updated**: Added Cycle 80 entry
+- **README tree fixed**: Added missing `brocula-hunt-2026-06-10.md` reference
 - **BUG-014 and BUG-017**: Remained resolved on `main` from Cycle 78
 
 ## Historical Drift Corrections

@@ -1673,3 +1673,37 @@ Widening to `^3.4.8` means future `npm install` could silently install `3.4.9`, 
 - License change MPL-2.0 → MIT is less restrictive (acceptable)
 - npm audit: 0 vulnerabilities
 - TypeScript typecheck: clean
+
+---
+
+## Cycle 80 (2026-06-10 — RepoKeeper: Full Repository Audit, README Tree Fix, Doc Sync)
+
+### Audit Scope
+
+Full repository audit covering build/lint/test health, redundant/temp/unused file scan, type suppression audit, README directory tree accuracy (missing `brocula-hunt-2026-06-10.md`), documentation sync, and comprehensive quality checks.
+
+### Status Summary
+
+| Check       | Result                                          |
+| ----------- | ----------------------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)                             |
+| Lint        | ✅ Clean (0 warnings/errors)                    |
+| Build       | ✅ Passes (web — 3.13s)                         |
+| Tests       | ✅ 1,173/1,173 (596 web + 349 api + 228 shared) |
+| **Overall** | **✅ All quality checks passing**               |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No remaining tracked `.patch` files. No `.bak`/`.DS_Store`/`.swp` artifacts.
+2. **Type suppression audit**: Zero `@ts-ignore`, zero `@ts-expect-error`, zero `as any` in source code.
+3. **TODO/FIXME/HACK scan**: Zero artifacts in non-test source files.
+4. **README tree fix**: Added missing `brocula-hunt-2026-06-10.md` to the audits directory tree listing.
+5. **Documentation refreshed**: `docs/active-tasks.md`, `docs/findings.md`, `docs/bugs.md`, `docs/knowledge-review.md`, `CHANGELOG.md` updated for Cycle 80.
+
+### Verification
+
+- No `@ts-ignore`, `@ts-expect-error`, or `as any` found in source code
+- No TODO/FIXME/HACK artifacts in non-test source files
+- All documentation changes applied and consistent
+- Build/lint/typecheck/tests: all clean
+- **README directory tree**: Now includes `brocula-hunt-2026-06-10.md` in audits section
