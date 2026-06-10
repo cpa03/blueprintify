@@ -28,6 +28,7 @@ import {
   CORS_DEFAULTS,
   HTTP_METHODS,
   HTTP_HEADER_NAMES,
+  DB_ID_PREFIXES,
   SECURITY_VALUES,
   UI_STRINGS,
   ENV_VAR_KEYS,
@@ -582,6 +583,30 @@ describe("ID_CHARS", () => {
     expect(ID_CHARS.FULL).toMatch(/[A-Z]/);
     expect(ID_CHARS.FULL).toMatch(/[a-z]/);
     expect(ID_CHARS.FULL).toMatch(/[0-9]/);
+  });
+});
+
+describe("DB_ID_PREFIXES", () => {
+  it("should have all entity prefixes defined", () => {
+    expect(DB_ID_PREFIXES.USER).toBe("user");
+    expect(DB_ID_PREFIXES.PROJECT).toBe("project");
+    expect(DB_ID_PREFIXES.BLUEPRINT).toBe("blueprint");
+    expect(DB_ID_PREFIXES.TASK).toBe("task");
+    expect(DB_ID_PREFIXES.TEMPLATE).toBe("template");
+    expect(DB_ID_PREFIXES.ANALYTICS).toBe("analytics");
+    expect(DB_ID_PREFIXES.SESSION).toBe("session");
+  });
+
+  it("should have all unique values", () => {
+    const values = Object.values(DB_ID_PREFIXES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should only contain lowercase alphabetic values", () => {
+    const values = Object.values(DB_ID_PREFIXES);
+    values.forEach((value) => {
+      expect(value).toMatch(/^[a-z]+$/);
+    });
   });
 });
 

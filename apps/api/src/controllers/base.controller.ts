@@ -4,7 +4,7 @@ import { ConfigurationError } from "../errors";
 import type { ValidatedContext, ControllerContext, AppContext } from "../types";
 import type { z } from "zod";
 import { CONTEXT_KEYS } from "@blueprint/shared";
-import { CONFIG_MESSAGES, AI_CONFIG } from "../config/constants";
+import { CONFIG_MESSAGES, ERROR_MESSAGES, AI_CONFIG } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
 
 /**
@@ -28,7 +28,7 @@ export abstract class BaseController {
     };
 
     if (!config.apiKey) {
-      throw new ConfigurationError(CONFIG_MESSAGES.OPENAI_API_KEY_MISSING);
+      throw new ConfigurationError(ERROR_MESSAGES.CONFIGURATION);
     }
 
     return config;
@@ -68,7 +68,7 @@ export abstract class BaseController {
    */
   public validateEnvironment(c: ControllerContext): void {
     if (!c.env.OPENAI_API_KEY) {
-      throw new ConfigurationError(CONFIG_MESSAGES.OPENAI_API_KEY_MISSING);
+      throw new ConfigurationError(ERROR_MESSAGES.CONFIGURATION);
     }
   }
 

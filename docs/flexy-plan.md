@@ -607,6 +607,30 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 
 ## PR
 
-| PR # | Branch                                | Title                                                                            |
-| ---- | ------------------------------------- | -------------------------------------------------------------------------------- |
-| TBD  | `feat/modularize-hardcoded-constants` | refactor(flexy): replace hardcoded z-index and editor tab strings with constants |
+| PR #  | Branch                                | Title                                                                            |
+| ----- | ------------------------------------- | -------------------------------------------------------------------------------- |
+| TBD   | `feat/modularize-hardcoded-constants` | refactor(flexy): replace hardcoded z-index and editor tab strings with constants |
+| #1748 | `feat/flexy-iteration-32-error-dedup` | refactor(flexy): deduplicate API error messages and centralize DB_ID_PREFIXES    |
+
+### ✅ Flexy Iteration 32: Deduplicate API Error Messages & Centralize DB_ID_PREFIXES
+
+| File                                          | Change                                                                                            |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`               | Added `DB_ID_PREFIXES` (USER, PROJECT, BLUEPRINT, TASK, TEMPLATE, ANALYTICS, SESSION)             |
+| `packages/shared/src/index.ts`                | Exported `DB_ID_PREFIXES`                                                                         |
+| `packages/shared/src/config.test.ts`          | Added 3 test blocks for `DB_ID_PREFIXES` (values, uniqueness, lowercase validation)               |
+| `apps/api/src/config/constants.ts`            | Removed `VALIDATION_MESSAGES.REQUEST_VALIDATION_FAILED`, `CONFIG_MESSAGES.OPENAI_API_KEY_MISSING` |
+| `apps/api/src/config/constants.ts`            | Removed `ERROR_MESSAGES.SSE_UNKNOWN_ERROR` (duplicate of `UNKNOWN_ERROR`)                         |
+| `apps/api/src/config/constants.ts`            | `DB_ID_CONFIG.ID_PREFIXES` now references shared `DB_ID_PREFIXES`                                 |
+| `apps/api/src/controllers/base.controller.ts` | `CONFIG_MESSAGES.OPENAI_API_KEY_MISSING` → `ERROR_MESSAGES.CONFIGURATION` (2 occurrences)         |
+| `apps/api/src/middleware/validator.ts`        | `VALIDATION_MESSAGES.REQUEST_VALIDATION_FAILED` → `ERROR_MESSAGES.VALIDATION`                     |
+| `apps/api/src/utils/stream.ts`                | `ERROR_MESSAGES.SSE_UNKNOWN_ERROR` → `ERROR_MESSAGES.UNKNOWN_ERROR`                               |
+| `apps/api/src/test-setup.ts`                  | Added `ERROR_MESSAGES` import; replaced `"OpenAI API key not configured"` with ref                |
+| `apps/api/src/routes/generate.test.ts`        | Added `ERROR_MESSAGES` import; replaced hardcoded string with `ERROR_MESSAGES.CONFIGURATION`      |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,176 tests passing (596 web + 349 api + 231 shared) across 69 files

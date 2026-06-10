@@ -15,6 +15,7 @@ import {
   HTTP_STATUS as SHARED_HTTP_STATUS,
   ID_GENERATION_CONFIG,
   ID_CHARS,
+  DB_ID_PREFIXES,
   ROUTE_PATHS as SHARED_ROUTE_PATHS,
   TIME_UNITS,
   BYTE_CONVERSION,
@@ -175,7 +176,6 @@ export const ERROR_MESSAGES = {
   JSON_PARSE_FAILURE: (detail: string) => `Failed to parse JSON: ${detail}`,
   PLATFORM_UNKNOWN: "unknown",
   PLATFORM_RUNTIME: "cloudflare-workers",
-  SSE_UNKNOWN_ERROR: "Unknown error",
   TIMEOUT_MESSAGE: (elapsed: number, timeout: number) =>
     `Retry operation timed out after ${elapsed}ms (timeout: ${timeout}ms)`,
   UNKNOWN_ERROR: "Unknown error",
@@ -353,16 +353,8 @@ export { SHARED_SSE_CONFIG as SSE_CONFIG, SHARED_SSE_HEADERS as SSE_HEADERS };
 export const DB_ID_CONFIG = {
   /** Characters used for generating secure random IDs */
   ID_CHARS: ID_CHARS.LOWERCASE,
-  /** Prefixes for different entity types */
-  ID_PREFIXES: {
-    USER: "user",
-    PROJECT: "project",
-    BLUEPRINT: "blueprint",
-    TASK: "task",
-    TEMPLATE: "template",
-    ANALYTICS: "analytics",
-    SESSION: "session",
-  } as const,
+  /** Prefixes for different entity types - from shared single source of truth */
+  ID_PREFIXES: DB_ID_PREFIXES,
   /** Default limit for popular templates query */
   DEFAULT_POPULAR_LIMIT: 10,
   /** String length for random ID portion (uses shared config) */
@@ -441,8 +433,8 @@ export const BODY_SIZE_MAX = {
 export const HTTP_STATUS = SHARED_HTTP_STATUS;
 
 // Validation messages
+// Flexy says: REQUEST_VALIDATION_FAILED moved - use ERROR_MESSAGES.VALIDATION instead
 export const VALIDATION_MESSAGES = {
-  REQUEST_VALIDATION_FAILED: "Request validation failed",
   INVALID_JSON_BODY: "Invalid JSON in request body",
   VALIDATION_ERROR: "Validation error",
   BODY_TOO_LARGE: (maxSize: number) =>
@@ -450,8 +442,8 @@ export const VALIDATION_MESSAGES = {
 } as const;
 
 // Configuration messages
+// Flexy says: OPENAI_API_KEY_MISSING replaced - use ERROR_MESSAGES.CONFIGURATION instead
 export const CONFIG_MESSAGES = {
-  OPENAI_API_KEY_MISSING: "OpenAI API key not configured",
   VALIDATED_DATA_NOT_FOUND: "Validated data not found in context",
 } as const;
 

@@ -178,6 +178,21 @@ export const ID_CHARS = {
 } as const;
 
 /**
+ * Database Entity ID Prefixes
+ * Centralized entity type prefixes used in database ID generation.
+ * Flexy says: No hardcoded "user"/"project"/"blueprint" prefix strings!
+ */
+export const DB_ID_PREFIXES = {
+  USER: "user",
+  PROJECT: "project",
+  BLUEPRINT: "blueprint",
+  TASK: "task",
+  TEMPLATE: "template",
+  ANALYTICS: "analytics",
+  SESSION: "session",
+} as const;
+
+/**
  * Time Units Constants
  * Centralized time conversion values to avoid magic numbers
  */
