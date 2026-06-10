@@ -271,7 +271,7 @@ export const StepGenerating = memo(function StepGenerating({
           >
             <RippleButton
               onClick={handleViewEditor}
-              className="btn-primary flex items-center gap-2"
+              className="btn-primary flex items-center gap-2 attention-glow"
               ariaLabel="View the generated blueprint in the editor"
               data-autofocus="complete"
             >
