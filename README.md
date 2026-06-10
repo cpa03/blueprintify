@@ -45,7 +45,8 @@ blueprintify/
 │   │   ├── brocula-hunt-2026-06-09-run4.md
 │   │   ├── brocula-hunt-2026-06-10.md
 │   │   ├── brocula-hunt-2026-06-10-run2.md
-│   │   └── brocula-hunt-2026-06-10-run3.md
+│   │   ├── brocula-hunt-2026-06-10-run3.md
+│   │   └── brocula-hunt-2026-06-10-run4.md
 │   ├── blueprint.md
 │   ├── bugs.md
 │   ├── ci-configuration.md
@@ -330,7 +331,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Issue Audit Report (Jun 5)](./docs/issue-audit-report-2026-06-05.md)** - Issue label normalization and duplicate detection report
 - **[Issue Audit Report (Jun 7)](./docs/issue-audit-report-2026-06-07.md)** - ULW Loop issue audit with fix status tracking
 - **[Issue Audit Report (Jun 8)](./docs/issue-audit-report-2026-06-08.md)** - ULW Loop issue audit with fix status tracking
-- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jun 9–latest)
+- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jun 9–Jun 10 Run 8)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 - **[Roadmap M3 Proposal](./docs/roadmap-m3-proposal.md)** - M3 strategic expansion proposal
 

@@ -2,6 +2,44 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 83 (2026-06-10 — RepoKeeper: Full Repository Audit, README Tree Fix (Add Run 8), Doc Sync, BUG-014/BUG-017 Status Correction)
+
+### Audit Scope
+
+Full repository audit covering build/lint health, missing `brocula-hunt-2026-06-10-run4.md` (Run 8) reference in README architecture tree, missing `brocula-hunt-2026-06-10-run3.md` (Run 7) reference in `docs/audits/README.md`, stale BUG-014/BUG-017 status in `docs/bugs.md`, documentation sync, quality verification.
+
+### Status Summary
+
+| Check       | Result                            |
+| ----------- | --------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)               |
+| Lint        | ✅ Clean (0 warnings/errors)      |
+| Build       | ✅ Passes (web)                   |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository audit**: No redundant/temp/unused source files found. No empty directories. No `.orig`/`.bak`/`.DS_Store` artifacts. No merge conflicts detected.
+2. **Build/Lint/Typecheck verification**: All pass cleanly — 0 errors, 0 warnings.
+3. **Fixed README architecture tree**: Added missing `brocula-hunt-2026-06-10-run4.md` (Run 8) to directory tree; updated BroCula Audits description to "Jun 9–Jun 10 Run 8".
+4. **Fixed `docs/audits/README.md`**: Added missing `brocula-hunt-2026-06-10-run3.md` (Run 7) to current reports section.
+5. **Fixed `docs/bugs.md`**: Corrected BUG-014 and BUG-017 stale status from "UNRESOLVED on main" to "Resolved — Cycle 78" (merged via PR #1732).
+6. **Updated `docs/active-tasks.md`**: Cycle 83 status (marked Cycle 82 complete, created Cycle 83 entry).
+7. **Updated `docs/findings.md`**: Cycle 83 entry (this file).
+8. **Updated `docs/bugs.md`**: Cycle 83 status log.
+9. **Updated `docs/knowledge-review.md`**: Refreshed for Cycle 83.
+10. **Updated CHANGELOG.md**: Added Cycle 83 entry.
+
+### Verification
+
+- No `@ts-ignore`, `@ts-expect-error`, or `as any` found in source code
+- No TODO/FIXME/HACK artifacts in non-test source files
+- All documentation changes applied and consistent
+- Build/lint/typecheck: clean
+- BUG-014/BUG-017 status corrected from "UNRESOLVED" to "Resolved — Cycle 78"
+
+---
+
 ## Cycle 82 (2026-06-10 — RepoKeeper: Full Repository Audit, README Tree Fix (Add Run 7), Doc Sync)
 
 ### Audit Scope

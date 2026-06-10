@@ -2,7 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 82 — Full Repository Audit, README Tree Fix (Add Run 7), Doc Sync ✅ COMPLETE
+## Current Focus: RepoKeeper Cycle 83 — Full Repository Audit, README Tree Fix (Add Run 8), Doc Sync, BUG-014/BUG-017 Status Correction 🟢 COMPLETE
+
+### Task: Full repository audit, add missing Jun 10 Run 8 BroCula audit to README tree, fix docs/audits/README.md missing Run 7 reference, correct BUG-014/BUG-017 stale status, documentation sync, quality verification
+
+- **Priority**: High
+- **Status**: 🟢 Complete
+- **Objective**: Full repository audit, add missing `brocula-hunt-2026-06-10-run4.md` (Run 8) to README directory tree and fix missing `brocula-hunt-2026-06-10-run3.md` (Run 7) in `docs/audits/README.md`, correct BUG-014/BUG-017 stale "UNRESOLVED on main" status to "Resolved — Cycle 78", update CHANGELOG, refresh documentation for Cycle 83
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅
+  - [x] Added missing `brocula-hunt-2026-06-10-run4.md` (Run 8) to README directory tree
+  - [x] Added missing `brocula-hunt-2026-06-10-run3.md` (Run 7) to `docs/audits/README.md` current reports section
+  - [x] Updated `docs/bugs.md` — corrected BUG-014/BUG-017 from "UNRESOLVED on main" to "Resolved — Cycle 78"; Cycle 83 status log
+  - [x] Updated `docs/findings.md` — Cycle 83 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 83 status
+  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 83
+  - [x] Updated CHANGELOG.md — Cycle 83 entry
+
+## Previous Cycle: RepoKeeper Cycle 82 — Full Repository Audit, README Tree Fix (Add Run 7), Doc Sync ✅ COMPLETE
 
 ### Task: Full repository audit, add missing Jun 10 Run 7 BroCula audit to README tree, docs/audits/README.md, documentation sync, quality verification
 
@@ -291,5 +311,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-10 (Cycle 80: RepoKeeper)  
+**Last Updated**: 2026-06-10 (Cycle 83: RepoKeeper)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
