@@ -2,12 +2,32 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 78 — BUG-014/BUG-017 CI Workflow Fixes & Full Audit 🔄 IN PROGRESS
+## Current Focus: RepoKeeper Cycle 79 — Cleanup Redundant Patch File, Doc Sync, Audit README Update 🔄 IN PROGRESS
+
+### Task: Full repository audit, remove tracked `.patch` artifact, add missing BroCula Run 4 audit reference, documentation sync
+
+- **Priority**: High
+- **Status**: 🟡 In Progress
+- **Objective**: Full repository audit, remove tracked `docs/ci-workflow-fixes.patch` (redundant generated artifact, `.gitignore` already excludes `*.patch`), add missing `brocula-hunt-2026-06-09-run4.md` reference to `docs/audits/README.md`, update CHANGELOG, refresh documentation
+- **Actions**:
+  - [ ] Full repository scan for redundant/temp/unused files
+  - [ ] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [ ] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [ ] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests ✅
+  - [ ] Removed `docs/ci-workflow-fixes.patch` — redundant generated artifact, information preserved in `docs/ci-workflow-fixes.md`
+  - [ ] Added missing `brocula-hunt-2026-06-09-run4.md` reference to `docs/audits/README.md`
+  - [ ] Updated `docs/bugs.md` — Cycle 79 status log
+  - [ ] Updated `docs/findings.md` — Cycle 79 entry
+  - [ ] Updated `docs/active-tasks.md` — Cycle 79 status
+  - [ ] Updated `docs/knowledge-review.md` — refreshed for Cycle 79
+  - [ ] Updated CHANGELOG.md — Cycle 79 entry
+
+## Previous Cycle: RepoKeeper Cycle 78 — BUG-014/BUG-017 CI Workflow Fixes & Full Audit ✅ COMPLETE
 
 ### Task: Full repository audit, fix BUG-014 (stale doc refs in main.yml), fix BUG-017 (hardcoded node-version in 4 workflow files, 11 instances), documentation sync, stale branch cleanup
 
 - **Priority**: High
-- **Status**: 🟡 In Progress
+- **Status**: 🟢 Complete
 - **Objective**: Full repository audit, fix BUG-014 (main.yml stale docs/bug.md and docs/feature.md refs), fix BUG-017 (node-version: "20" → node-version-file: ".node-version" across 4 workflow files, 11 instances), delete stale merged branch, update CHANGELOG, refresh documentation
 - **Actions**:
   - [x] Full repository scan for redundant/temp/unused files → none found
