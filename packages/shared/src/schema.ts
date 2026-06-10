@@ -201,11 +201,11 @@ export const ErrorTypeSchema = z.enum([
  */
 export const ErrorDetailSchema = z.object({
   type: ErrorTypeSchema,
-  message: z.string(),
-  code: z.string().optional(),
+  message: z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX),
+  code: z.string().max(VALIDATION_LIMITS.PROJECT_NAME.MAX).optional(),
   details: z.record(z.unknown()).optional(),
   timestamp: z.string(),
-  requestId: z.string().optional(),
+  requestId: z.string().max(VALIDATION_LIMITS.PROJECT_NAME.MAX).optional(),
 });
 
 /**
@@ -224,8 +224,8 @@ export const ErrorResponseSchema = z.object({
  */
 export const StreamChunkSchema = z.object({
   type: z.enum(["content", "error", "done"]),
-  content: z.string().optional(),
-  error: z.string().optional(),
+  content: z.string().max(EXPORT_LIMITS.MAX_IMPORT_DATA_LENGTH).optional(),
+  error: z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX).optional(),
 });
 
 /**
@@ -233,8 +233,8 @@ export const StreamChunkSchema = z.object({
  * Contains the full generated content and metadata.
  */
 export const GenerationResultSchema = z.object({
-  blueprint: z.string(),
-  tasks: z.string().optional(),
+  blueprint: z.string().max(EXPORT_LIMITS.MAX_BLUEPRINT_LENGTH),
+  tasks: z.string().max(EXPORT_LIMITS.MAX_TASKS_LENGTH).optional(),
   generatedAt: z.string(),
 });
 
@@ -304,11 +304,14 @@ export const ImportRequestSchema = z.object({
  * Contains success status, imported data, and any warnings.
  */
 export const ImportResultSchema = z.object({
-  projectName: z.string(),
-  blueprint: z.string(),
-  tasks: z.string().optional(),
+  projectName: z
+    .string()
+    .min(VALIDATION_LIMITS.PROJECT_NAME.MIN)
+    .max(VALIDATION_LIMITS.PROJECT_NAME.MAX),
+  blueprint: z.string().max(EXPORT_LIMITS.MAX_BLUEPRINT_LENGTH),
+  tasks: z.string().max(EXPORT_LIMITS.MAX_TASKS_LENGTH).optional(),
   importedAt: z.string(),
-  warnings: z.array(z.string()).optional(),
+  warnings: z.array(z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX)).optional(),
 });
 
 // ===== Storage Schemas (M2) =====
