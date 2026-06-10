@@ -42,7 +42,8 @@ blueprintify/
 │   │   ├── archive/      # Historical audit runs (consolidated)
 │   │   ├── brocula-hunt-2026-06-09-run2.md
 │   │   ├── brocula-hunt-2026-06-09-run3.md
-│   │   └── brocula-hunt-2026-06-09-run4.md
+│   │   ├── brocula-hunt-2026-06-09-run4.md
+│   │   └── brocula-hunt-2026-06-10.md
 │   ├── blueprint.md
 │   ├── bugs.md
 │   ├── ci-configuration.md
