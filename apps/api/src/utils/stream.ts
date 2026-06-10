@@ -100,8 +100,7 @@ export function createStreamFromGenerator(
 
         onComplete?.();
       } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : ERROR_MESSAGES.SSE_UNKNOWN_ERROR;
+        const errorMessage = error instanceof Error ? error.message : ERROR_MESSAGES.UNKNOWN_ERROR;
         const errSSE = formatSSE({
           data: JSON.stringify({
             type: SSE_CONFIG.EVENT_TYPES.ERROR,
