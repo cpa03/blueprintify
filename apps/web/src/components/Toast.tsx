@@ -397,7 +397,18 @@ function ToastContainerComponent(): JSX.Element {
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
-              Dismiss all ({toasts.length})
+              Dismiss all (
+              <motion.span
+                key={toasts.length}
+                className="tabular-nums"
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 500, damping: 15, mass: 0.5 }}
+                aria-hidden="true"
+              >
+                {toasts.length}
+              </motion.span>
+              )
             </span>
           </button>
         )
@@ -433,7 +444,18 @@ function ToastContainerComponent(): JSX.Element {
                     d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
-                Dismiss all ({toasts.length})
+                Dismiss all (
+                <motion.span
+                  key={toasts.length}
+                  className="tabular-nums"
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 15, mass: 0.5 }}
+                  aria-hidden="true"
+                >
+                  {toasts.length}
+                </motion.span>
+                )
               </span>
             </motion.button>
           )}
