@@ -46,6 +46,7 @@ function StepIndicatorComponent(): JSX.Element {
   const setStep = useWizardStore((s) => s.setStep);
   const [shakingStep, setShakingStep] = useState<string | null>(null);
   const [justCompletedStep, setJustCompletedStep] = useState<string | null>(null);
+  const [activatingStep, setActivatingStep] = useState<string | null>(null);
   const prevStepRef = useRef(currentStep);
   const toast = useToast();
 
@@ -61,8 +62,13 @@ function StepIndicatorComponent(): JSX.Element {
 
     if (currIdx > prevIdx) {
       const completedKey = prevStepRef.current;
+      const activatedKey = currentStep;
       setJustCompletedStep(completedKey);
-      const timer = setTimeout(() => setJustCompletedStep(null), TIMEOUTS.STEP_COMPLETE_FLASH);
+      setActivatingStep(activatedKey);
+      const timer = setTimeout(() => {
+        setJustCompletedStep(null);
+        setActivatingStep(null);
+      }, TIMEOUTS.STEP_COMPLETE_FLASH);
       prevStepRef.current = currentStep;
       return () => clearTimeout(timer);
     }
@@ -163,6 +169,7 @@ function StepIndicatorComponent(): JSX.Element {
                 ${isActive ? "animate-step-pulse" : ""}
                 ${isShaking ? "shake-animation" : ""}
                 ${justCompletedStep === step.key ? "step-complete-flash" : ""}
+                ${activatingStep === step.key ? "step-activate" : ""}
               `}
             >
               <span>{step.icon}</span>

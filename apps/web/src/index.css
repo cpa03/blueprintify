@@ -392,6 +392,31 @@
     animation: step-complete-flash 0.6s ease-out;
   }
 
+  /* Active step activation flash — one-shot scale + glow burst when a step
+     becomes the current step, giving a satisfying "you are here" confirmation
+     as the user navigates forward. Complements the green completion flash on
+     the previous step with a primary-colored activation on the new step. */
+  @keyframes step-activate {
+    0% {
+      box-shadow: 0 0 0 0 transparent;
+      transform: scale(1);
+    }
+    35% {
+      box-shadow:
+        0 0 0 6px color-mix(in srgb, var(--color-primary-500) 18%, transparent),
+        0 0 24px color-mix(in srgb, var(--color-primary-500) 8%, transparent);
+      transform: scale(1.05);
+    }
+    100% {
+      box-shadow: 0 0 0 0 transparent;
+      transform: scale(1);
+    }
+  }
+
+  .step-activate {
+    animation: step-activate 0.5s ease-out;
+  }
+
   .stack-card-attention {
     animation: stack-card-attention 0.5s ease-out;
   }
@@ -563,6 +588,7 @@
     .animate-fade-in,
     .animate-fade-in-left,
     .animate-ripple,
+    .step-activate,
     .animate-step-pulse,
     .animate-step-pulse::before,
     .animate-tooltip-in,
