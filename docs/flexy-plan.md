@@ -657,3 +657,21 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 1,181 tests passing (596 web + 349 api + 236 shared) across 69 files
+
+### ✅ Flexy Iteration 34: Eliminate Remaining Hardcoded Tab/Category Strings in Components
+
+| File                                                 | Change                                                                                                                                   |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/web/src/config/constants/keyboard.ts`          | Added `SHORTCUT_CATEGORIES` (GENERAL/EDITOR/NAVIGATION/GENERATION), `SHORTCUT_CATEGORY_LABELS`, `SHORTCUT_CATEGORY_ICONS` config objects |
+| `apps/web/src/components/KeyboardShortcutsModal.tsx` | Replaced 13 hardcoded `"general"`/`"editor"`/`"navigation"`/`"generation"` category strings with `SHORTCUT_CATEGORIES.*` references      |
+| `apps/web/src/components/KeyboardShortcutsModal.tsx` | Replaced hardcoded `categoryLabels`/`categoryIcons` records with `SHORTCUT_CATEGORY_LABELS`/`SHORTCUT_CATEGORY_ICONS` config imports     |
+| `apps/web/src/components/PreviewEmptyState.tsx`      | Replaced hardcoded `"blueprint"`/`"tasks"` in aria-label with `EDITOR_TABS.BLUEPRINT`/`EDITOR_TABS.TASKS`                                |
+| `apps/web/src/components/PreviewEmptyState.tsx`      | Replaced hardcoded `"📋 tasks"`/`"📘 blueprint"` display strings with `tabLabels`/`tabEmojis` references using `EDITOR_TABS` keys        |
+| `apps/web/src/components/PreviewEmptyState.tsx`      | Replaced hardcoded `"blueprint"`/`"tasks"` in info tip with `EDITOR_TABS.BLUEPRINT`/`EDITOR_TABS.TASKS`                                  |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,181 tests passing (596 web + 349 api + 236 shared) across 69 files

@@ -133,11 +133,16 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
             <button
               onClick={onSwitchTab}
               className="inline-flex items-center gap-1.5 text-primary-400 hover:text-primary-300 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded px-1 -mx-1"
-              aria-label={`Switch to ${tab === EDITOR_TABS.BLUEPRINT ? "tasks" : "blueprint"} tab`}
+              aria-label={`Switch to ${tab === EDITOR_TABS.BLUEPRINT ? EDITOR_TABS.TASKS : EDITOR_TABS.BLUEPRINT} tab`}
             >
               <span aria-hidden="true">←</span>
               Switch to{" "}
-              <strong>{tab === EDITOR_TABS.BLUEPRINT ? "📋 tasks" : "📘 blueprint"}</strong> tab
+              <strong>
+                {tab === EDITOR_TABS.BLUEPRINT
+                  ? `${tabEmojis[EDITOR_TABS.TASKS]} ${tabLabels[EDITOR_TABS.TASKS]}`
+                  : `${tabEmojis[EDITOR_TABS.BLUEPRINT]} ${tabLabels[EDITOR_TABS.BLUEPRINT]}`}
+              </strong>{" "}
+              tab
             </button>
           </>
         ) : (
@@ -157,7 +162,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
             <span>💡</span>
             <span>
               {tab === EDITOR_TABS.BLUEPRINT ? "Start" : "Complete"} the wizard to generate{" "}
-              {tab === EDITOR_TABS.BLUEPRINT ? "blueprint" : "tasks"}
+              {tab === EDITOR_TABS.BLUEPRINT ? EDITOR_TABS.BLUEPRINT : EDITOR_TABS.TASKS}
             </span>
           </motion.div>
         </motion.div>
