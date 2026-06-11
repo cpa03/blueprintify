@@ -1,6 +1,6 @@
 # CI Workflow Fix Instructions
 
-> **Last updated**: 2026-06-08
+> **Last updated**: 2026-06-11
 > **Status**: ⚠️ **FIXES VERIFIED LOCALLY — PUSH BLOCKED by GITHUB_TOKEN permissions (no `workflows: write`)**
 
 ## Overview
@@ -135,15 +135,16 @@ npm run check
 
 ## Application Attempt Log
 
-| Cycle | Date       | Result                                                                                                                                                                               |
-| ----- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 57    | 2026-06-05 | Fixes prepared, push rejected (no `workflows: write`)                                                                                                                                |
-| 58    | 2026-06-05 | Documentation refresh pushed, workflow changes blocked                                                                                                                               |
-| ULW   | 2026-06-05 | Fixes re-verified locally, push rejected again                                                                                                                                       |
-| ULW-2 | 2026-06-05 | BugFixer re-applied BUG-014 and BUG-017 fixes, push rejected (same blocker)                                                                                                          |
-| ULW-3 | 2026-06-07 | Sisyphus re-applied using node-version-file approach (auto-sync), push rejected (same blocker)                                                                                       |
-| ULW-4 | 2026-06-08 | Sisyphus ULW Loop re-applied all workflow fixes (node-version-file: .nvmrc approach, stale doc refs), typecheck ✅ lint ✅ build ✅ tests 1162/1162 ✅, push rejected (same blocker) |
-| ULW-5 | 2026-06-08 | Sisyphus re-applied using \`.nvmrc\` approach (supports auto-sync), push rejected (no \`workflows: write\`). Branch: \`fix/ci-node-version-file\` (unpushed)                         |
+| Cycle | Date       | Result                                                                                                                                                                                                                                                   |
+| ----- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 57    | 2026-06-05 | Fixes prepared, push rejected (no `workflows: write`)                                                                                                                                                                                                    |
+| 58    | 2026-06-05 | Documentation refresh pushed, workflow changes blocked                                                                                                                                                                                                   |
+| ULW   | 2026-06-05 | Fixes re-verified locally, push rejected again                                                                                                                                                                                                           |
+| ULW-2 | 2026-06-05 | BugFixer re-applied BUG-014 and BUG-017 fixes, push rejected (same blocker)                                                                                                                                                                              |
+| ULW-3 | 2026-06-07 | Sisyphus re-applied using node-version-file approach (auto-sync), push rejected (same blocker)                                                                                                                                                           |
+| ULW-4 | 2026-06-08 | Sisyphus ULW Loop re-applied all workflow fixes (node-version-file: .nvmrc approach, stale doc refs), typecheck ✅ lint ✅ build ✅ tests 1162/1162 ✅, push rejected (same blocker)                                                                     |
+| ULW-5 | 2026-06-08 | Sisyphus re-applied using \`.nvmrc\` approach (supports auto-sync), push rejected (no \`workflows: write\`). Branch: \`fix/ci-node-version-file\` (unpushed)                                                                                             |
+| ULW-6 | 2026-06-11 | Sisyphus ULW Loop re-applied all workflow fixes (node-version hardcoded to "22" style, stale doc refs), typecheck ✅ lint ✅ build ✅ tests 1181/1181 ✅, push rejected (no \`workflows: write\`). Branch: \`fix/ci-node-version-and-doc-refs-20260611\` |
 
 ## How to Apply (for maintainer with PAT)
 
@@ -171,6 +172,22 @@ gh pr create --title "fix(ci): bump node-version to 22, fix stale doc refs" \
   --body "Fixes #1621 (canonical). Closes duplicates: #1584, #1575, #1573, #1549, #1470, #1390, #1293" \
   --label "bug,P1,ci" --base main
 ```
+
+### Fix 4: Hardcoded `"22"` approach (ULW-6)
+
+This cycle used hardcoded `node-version: "22"` instead of `node-version-file` for maximum compatibility.
+
+#### Changes applied locally:
+
+| File                                  | Lines                  | Change                                                                 |
+| ------------------------------------- | ---------------------- | ---------------------------------------------------------------------- |
+| `.github/workflows/iterate.yml`       | 55, 120, 185, 250, 315 | `node-version: "20"` → `node-version: "22"`                            |
+| `.github/workflows/parallel.yml`      | 70, 266, 344, 399      | `node-version: "20"` → `node-version: "22"`                            |
+| `.github/workflows/on-pull.yml`       | 53                     | `node-version: 20` → `node-version: "22"`                              |
+| `.github/workflows/pr-gatekeeper.yml` | 31                     | `node-version: "20"` → `node-version: "22"`                            |
+| `.github/workflows/main.yml`          | 39, 263                | `docs/bug.md` → `docs/bugs.md`, `docs/feature.md` → `docs/features.md` |
+
+**Verification**: typecheck ✅ lint ✅ build ✅ tests 1181/1181 ✅
 
 ## Patch (git diff)
 
