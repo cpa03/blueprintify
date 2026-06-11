@@ -2,7 +2,26 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 84 — Full Repository Audit, Merge Conflict Resolution, README Tree Fix (Add Run 5), Doc Sync 🟢 COMPLETE
+## Current Focus: RepoKeeper Cycle 85 — Full Repository Audit, Stale Branch Cleanup, Doc Sync 🟢 COMPLETE
+
+### Task: Full repository audit, delete 3 stale merged remote branches, update documentation, quality verification
+
+- **Priority**: High
+- **Status**: 🟢 Complete
+- **Objective**: Full repository audit, delete stale merged branches (3 branches: `chore/repokeeper-cycle-79`, `palette/micro-ux-jun-10`, `fix/brocula-ulw-jun-10`), update CHANGELOG, refresh documentation for Cycle 85
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅
+  - [x] **Deleted 3 stale merged remote branches**: `chore/repokeeper-cycle-79`, `palette/micro-ux-jun-10`, `fix/brocula-ulw-jun-10`
+  - [x] Updated `docs/bugs.md` — Cycle 85 status log
+  - [x] Updated `docs/findings.md` — Cycle 85 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 85 status
+  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 85
+  - [x] Updated CHANGELOG.md — Cycle 85 entry
+
+## Previous Cycle: RepoKeeper Cycle 84 — Full Repository Audit, Merge Conflict Resolution, README Tree Fix (Add Run 5), Doc Sync 🟢 COMPLETE
 
 ### Task: Full repository audit, resolve merge conflict in docs/audits/README.md, add missing Jun 10 Run 5 BroCula audit to README tree, documentation sync, quality verification
 
