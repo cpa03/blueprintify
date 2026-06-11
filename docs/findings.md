@@ -2,6 +2,67 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 86 (2026-06-11 — Sisyphus ULW: PR Handler + Issue Manager + Repair Attempt)
+
+### Audit Scope
+
+PR handler mode: process and merge all 5 open PRs. Issue manager mode: normalize labels, detect duplicates, attempt repair of highest-priority issue.
+
+### PR Handler — Actions Taken
+
+| PR    | Title                                         | Status                                |
+| ----- | --------------------------------------------- | ------------------------------------- |
+| #1768 | chore(brocula): jun 11 brocula ulw run        | ✅ Merged (squash)                    |
+| #1767 | feat(web): add scroll shadows to wizard panel | ✅ Merged (squash)                    |
+| #1766 | fix: resolve BUG-014/BUG-017 on main          | ✅ Merged (squash)                    |
+| #1765 | chore(repokeeper): cycle 85                   | ✅ Merged (squash, conflict resolved) |
+| #1764 | fix(ci): bump node-version to 22 docs         | ✅ Merged (squash)                    |
+
+### Issue Manager — Blocked
+
+- **Label normalization**: Cannot modify issue labels — GITHUB_TOKEN lacks `issues: write` scope (addLabelsToLabelable denied)
+- **Issue creation**: Cannot create new issues — GITHUB_TOKEN lacks `issues: write` scope (createIssue denied)
+- **Duplicate consolidation**: Cannot close/consolidate duplicates — same permission blocker
+
+### Duplicate Detection Results (documented for manual action)
+
+1. **Node.js 22 CI cluster** (8 issues): #1729, #1621, #1584, #1575, #1573, #1549, #1470, #1390 — all about CI workflows using Node 20 instead of 22. Fix is committed locally but blocked by `workflows: write` permission.
+2. **CI workflow versions cluster** (2 issues): #1111, #980 — both about action version conflicts.
+3. **Testing coverage cluster** (6 issues): #1141, #1083, #1082, #1053, #1019, #1014 — various testing gaps.
+4. **Innovation features cluster** (4 issues): #1143, #1116, #1090, #1089 — feature enhancement ideas.
+
+### Repair Mode — Attempted
+
+**Target**: #1729 — update remaining `.github/workflows/*.yml` from `node-version: "20"` to `node-version-file: ".node-version"`.
+
+**Result**: ❌ Push rejected — GITHUB_TOKEN lacks `workflows: write` permission. This is the same blocker documented across 20+ prior cycles. A maintainer with a PAT having `workflows: write` scope must push the fix.
+
+The fix was verified locally before revert:
+
+- 5 files changed, 13 insertions(+), 13 deletions(-)
+- 11 instances of `node-version: "20"` → `node-version-file: ".node-version"`
+- 3 stale doc refs (`docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`) in `main.yml`
+- Build/lint/test: all clean
+
+### Status Summary
+
+| Check           | Result                         |
+| --------------- | ------------------------------ |
+| PRs merged      | ✅ 5/5                         |
+| Build           | ✅ Passes                      |
+| Lint            | ✅ Clean                       |
+| Tests           | ✅ 596/596 web, 349/349 api    |
+| Issues labeled  | ❌ Blocked (token permissions) |
+| CI workflow fix | ❌ Blocked (token permissions) |
+
+### Recommendation
+
+A maintainer with a GitHub PAT containing `workflows: write` and `issues: write` scopes should:
+
+1. Apply the CI workflow fix (attached in previous cycles' branches)
+2. Run label normalization on ~30 issues missing category/priority labels
+3. Merge/close duplicate issues across the 4 clusters identified above
+
 ## Cycle 85 (2026-06-11 — RepoKeeper: Full Repository Audit, Stale Branch Cleanup, Doc Sync)
 
 ### Audit Scope
