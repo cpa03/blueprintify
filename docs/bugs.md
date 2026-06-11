@@ -4,6 +4,8 @@
 
 ## Active Bugs
 
+> **BugFixer ULW Cycle 2026-06-11**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,181/1,181 ✅ format ✅. 0 type suppressions. 0 `as any`. 0 npm vulns. **Fixed BUG-014** — replaced stale doc refs `docs/bug.md`→`docs/bugs.md` and `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). **Fixed BUG-017** — replaced hardcoded `node-version: "20"` with `node-version-file: ".node-version"` in 4 workflow files (11 instances). Both fixes verified via grep: zero stale doc refs, zero hardcoded `node-version:` remaining. PR created. Repo fully clean.
+
 > **RepoKeeper ULW Cycle 2026-06-11 (Cycle 85)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅. 0 type suppressions. 0 redundant/temp/unused source files found. 0 TODO/FIXME/HACK artifacts. Cleaned 3 stale merged remote branches (`chore/repokeeper-cycle-79`, `palette/micro-ux-jun-10`, `fix/brocula-ulw-jun-10`). No new fixable bugs found.
 
 > **RepoKeeper ULW Cycle 2026-06-11 (Cycle 84)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅. 0 type suppressions. 0 redundant/temp/unused source files found. **Resolved critical merge conflict** in `docs/audits/README.md` — leftover `<<<<<<< HEAD` / `=======` / `>>>>>>> caf0b60` markers introduced in Cycle 83 successfully removed. Added missing `brocula-hunt-2026-06-10-run5.md` (Run 5) to README directory tree. Documentation refreshed for Cycle 84. No new fixable bugs found.
@@ -46,7 +48,7 @@
 
 ### BUG-014: Stale Doc References in main.yml Workflow (Resolved)
 
-**Status**: Resolved — Cycle 78 (PR #1732 merged into main)  
+**Status**: Resolved — 2026-06-11 (BugFixer ULW Cycle)  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1293
@@ -61,13 +63,13 @@
 - ✅ `main.yml` line 39: `docs/bug.md, docs/feature.md` → `docs/bugs.md, docs/features.md`
 - ✅ `main.yml` line 263: `docs/bug.md` → `docs/bugs.md`
 - ✅ Fix verified via grep: zero stale doc refs remaining
-- ✅ Merged in Cycle 78 via PR #1732
+- ✅ Fix applied directly to `main` in Cycle 2026-06-11 (BugFixer ULW)
 
 ---
 
 ### BUG-017: CI Node.js Version Mismatch (Resolved)
 
-**Status**: Resolved — Cycle 78 (PR #1732 merged into main)  
+**Status**: Resolved — 2026-06-11 (BugFixer ULW Cycle)  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1390, #1470, #1549
@@ -87,11 +89,11 @@ All CI workflow files used Node.js 20 hardcoded instead of using the project's `
 | `.github/workflows/parallel.yml`      | 4               |
 | `.github/workflows/pr-gatekeeper.yml` | 1               |
 
-**Note**: `main.yml` does not have `setup-node` steps, so no change needed. `on-pull.yml` was already fixed in a prior cycle.
+**Note**: `main.yml` does not have `setup-node` steps, so no change needed. `on-pull.yml` also fixed in this cycle.
 
 **Fix approach**: Changed from hardcoded `node-version: "20"` to `node-version-file: ".node-version"` — automatically stays in sync with project requirements.
 **Verification**: All 10 instances verified via grep — zero remaining `node-version:` references in workflow files.
-**Merged**: Cycle 78 via PR #1732
+**Merged**: Cycle 2026-06-11 (BugFixer ULW)
 
 ---
 
