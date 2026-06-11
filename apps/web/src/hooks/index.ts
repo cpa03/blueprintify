@@ -30,5 +30,7 @@ export { useFocusOnStepChange, useStepAnnouncer } from "./useFocusOnStepChange";
 export { useDocumentTitle } from "./useDocumentTitle";
 export { useOnlineStatus } from "./useOnlineStatus";
 export type { OnlineStatus } from "./useOnlineStatus";
+export { useAutoScroll } from "./useAutoScroll";
+export type { UseAutoScrollOptions, UseAutoScrollReturn } from "./useAutoScroll";
 export { createPersistedStore } from "./usePersistedStore";
 export type { PersistedStoreConfig, PersistedStoreMethods } from "./usePersistedStore";
