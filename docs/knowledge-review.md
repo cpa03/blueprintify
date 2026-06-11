@@ -12,18 +12,18 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-11 (RepoKeeper Cycle 84)
+**Last Review**: 2026-06-11 (RepoKeeper Cycle 85)
 **Status**: ✅ Up to date — fully synced
 
-As of RepoKeeper Cycle 84 (refreshed):
+As of RepoKeeper Cycle 85 (refreshed):
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **CRITICAL FIX — Resolved merge conflict** in `docs/audits/README.md`: Removed leftover `<<<<<<< HEAD` / `=======` / `>>>>>>> caf0b60` markers introduced in Cycle 83
-- **CHANGELOG updated**: Added Cycle 84 entry
-- **README tree fixed**: Added missing `brocula-hunt-2026-06-10-run5.md` (Run 5) reference
-- **`docs/audits/README.md` table corrected**: All Jun 10 run entries (Run 8, Run 7, Run 6, Run 5, Jun 10) listed in correct descending order
-- **`docs/bugs.md` updated**: Cycle 84 status log added
+- **Stale branches cleaned**: 3 merged remote branches deleted (`chore/repokeeper-cycle-79`, `palette/micro-ux-jun-10`, `fix/brocula-ulw-jun-10`)
+- **CHANGELOG updated**: Added Cycle 85 entry
+- **`docs/bugs.md` updated**: Cycle 85 status log added
+- **`docs/findings.md` updated**: Cycle 85 entry added
+- **`docs/active-tasks.md` updated**: Cycle 85 created
 
 ## Historical Drift Corrections
 

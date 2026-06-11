@@ -2,6 +2,42 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 85 (2026-06-11 — RepoKeeper: Full Repository Audit, Stale Branch Cleanup, Doc Sync)
+
+### Audit Scope
+
+Full repository audit covering build/lint health, redundant/temp/unused file scan, type suppression audit, stale merged remote branch cleanup, documentation sync, quality verification.
+
+### Status Summary
+
+| Check       | Result                            |
+| ----------- | --------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)               |
+| Lint        | ✅ Clean (0 warnings/errors)      |
+| Build       | ✅ Passes (web)                   |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository audit**: No redundant/temp/unused source files found. No empty directories. No `.orig`/`.bak`/`.DS_Store` artifacts.
+2. **Build/Lint/Typecheck verification**: All pass cleanly — 0 errors, 0 warnings.
+3. **Deleted 3 stale merged remote branches**: `chore/repokeeper-cycle-79`, `palette/micro-ux-jun-10`, `fix/brocula-ulw-jun-10` — all confirmed merged via PRs #1739, #1741, #1742.
+4. **Updated `docs/findings.md`**: Cycle 85 entry (this file).
+5. **Updated `docs/active-tasks.md`**: Cycle 85 status (marked Cycle 84 complete, created Cycle 85 entry).
+6. **Updated `docs/bugs.md`**: Cycle 85 status log.
+7. **Updated `docs/knowledge-review.md`**: Refreshed for Cycle 85.
+8. **Updated CHANGELOG.md**: Added Cycle 85 entry.
+
+### Verification
+
+- No `@ts-ignore`, `@ts-expect-error`, or `as any` found in source code
+- No TODO/FIXME/HACK artifacts in non-test source files
+- All documentation changes applied and consistent
+- Build/lint/typecheck: clean
+- Stale merged branches deleted: `chore/repokeeper-cycle-79`, `palette/micro-ux-jun-10`, `fix/brocula-ulw-jun-10`
+
+---
+
 ## Cycle 84 (2026-06-11 — RepoKeeper: Full Repository Audit, Merge Conflict Resolution, README Tree Fix (Add Run 5), Doc Sync)
 
 ### Audit Scope
