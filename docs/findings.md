@@ -2,6 +2,43 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 87 (2026-06-11 — RepoKeeper: Full Repository Audit, README Tree Fix, Doc Sync)
+
+### Audit Scope
+
+Full repository audit covering build/lint health, redundant/temp/unused file scan, type suppression audit, missing README directory tree reference (Jun 11 BroCula audit), documentation sync, quality verification.
+
+### Status Summary
+
+| Check       | Result                            |
+| ----------- | --------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)               |
+| Lint        | ✅ Clean (0 warnings/errors)      |
+| Build       | ✅ Passes (web)                   |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository audit**: No redundant/temp/unused source files found. No empty directories. No `.orig`/`.bak`/`.DS_Store` artifacts.
+2. **Build/Lint/Typecheck verification**: All pass cleanly — 0 errors, 0 warnings.
+3. **Fixed README directory tree**: Added missing `brocula-hunt-2026-06-11.md` (Jun 11 BroCula audit) to directory tree and docs section.
+4. **Updated BroCula Audits description**: Changed `(Jun 9–Jun 10 Run 8)` to `(Jun 9–Jun 11)` in README.md.
+5. **Updated `docs/findings.md`**: Cycle 87 entry (this file).
+6. **Updated `docs/active-tasks.md`**: Cycle 87 status (marked Cycle 85/86 complete, created Cycle 87 entry).
+7. **Updated `docs/bugs.md`**: Cycle 87 status log.
+8. **Updated `docs/knowledge-review.md`**: Refreshed for Cycle 87.
+9. **Updated CHANGELOG.md**: Added Cycle 87 entry.
+
+### Verification
+
+- No `@ts-ignore`, `@ts-expect-error`, or `as any` found in source code
+- No TODO/FIXME/HACK artifacts in non-test source files
+- All documentation changes applied and consistent
+- Build/lint/typecheck: clean
+- README directory tree now includes `brocula-hunt-2026-06-11.md`
+
+---
+
 ## Cycle 86 (2026-06-11 — Sisyphus ULW: PR Handler + Issue Manager + Repair Attempt)
 
 ### Audit Scope
