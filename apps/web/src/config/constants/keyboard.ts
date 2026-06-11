@@ -1,7 +1,46 @@
 /**
  * Keyboard Shortcut Configuration Constants
  * Source of truth for keyboard shortcut definitions
+ * Flexy says: No hardcoded category strings in components!
  */
+
+/**
+ * Shortcut category identifiers and display labels.
+ * Single source of truth for shortcut grouping in the keyboard shortcuts modal.
+ * Flexy says: No "general"/"editor"/"navigation"/"generation" hardcoded in components!
+ */
+export const SHORTCUT_CATEGORIES = {
+  GENERAL: "general" as const,
+  EDITOR: "editor" as const,
+  NAVIGATION: "navigation" as const,
+  GENERATION: "generation" as const,
+} as const;
+
+export type ShortcutCategory = (typeof SHORTCUT_CATEGORIES)[keyof typeof SHORTCUT_CATEGORIES];
+
+/** Display labels for each shortcut category */
+export const SHORTCUT_CATEGORY_LABELS: Record<ShortcutCategory, string> = {
+  [SHORTCUT_CATEGORIES.GENERAL]: "General",
+  [SHORTCUT_CATEGORIES.EDITOR]: "Editor",
+  [SHORTCUT_CATEGORIES.NAVIGATION]: "Navigation",
+  [SHORTCUT_CATEGORIES.GENERATION]: "Generation",
+};
+
+/** Icon names for each shortcut category */
+export const SHORTCUT_CATEGORY_ICONS: Record<ShortcutCategory, string> = {
+  [SHORTCUT_CATEGORIES.GENERAL]: "keyboard",
+  [SHORTCUT_CATEGORIES.EDITOR]: "edit",
+  [SHORTCUT_CATEGORIES.NAVIGATION]: "compass",
+  [SHORTCUT_CATEGORIES.GENERATION]: "lightning",
+};
+
+/** All shortcut category values as an array */
+export const SHORTCUT_CATEGORIES_LIST: readonly ShortcutCategory[] = [
+  SHORTCUT_CATEGORIES.GENERAL,
+  SHORTCUT_CATEGORIES.EDITOR,
+  SHORTCUT_CATEGORIES.NAVIGATION,
+  SHORTCUT_CATEGORIES.GENERATION,
+] as const;
 
 // Keyboard shortcuts
 export const KEYBOARD_SHORTCUTS = {

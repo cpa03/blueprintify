@@ -15,6 +15,9 @@ import { useEffect, useCallback, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   KEYBOARD_SHORTCUTS,
+  SHORTCUT_CATEGORIES,
+  SHORTCUT_CATEGORY_LABELS,
+  SHORTCUT_CATEGORY_ICONS,
   WIZARD_STEPS,
   EDITOR_LABELS,
   SPRING_CONFIG,
@@ -36,7 +39,7 @@ interface KeyboardShortcutsModalProps {
 interface ShortcutItem {
   keys: string[];
   description: string;
-  category: "general" | "editor" | "navigation" | "generation";
+  category: (typeof SHORTCUT_CATEGORIES)[keyof typeof SHORTCUT_CATEGORIES];
 }
 
 const getShortcutItems = (): ShortcutItem[] => {
@@ -47,89 +50,78 @@ const getShortcutItems = (): ShortcutItem[] => {
     {
       keys: ["?"],
       description: "Show/hide keyboard shortcuts",
-      category: "general",
+      category: SHORTCUT_CATEGORIES.GENERAL,
     },
     {
       keys: [modifier, "E"],
       description: KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.DESCRIPTION,
-      category: "editor",
+      category: SHORTCUT_CATEGORIES.EDITOR,
     },
     {
       keys: ["←", "→"],
       description: EDITOR_LABELS.TAB_NAVIGATION.SWITCH_TABS,
-      category: "editor",
+      category: SHORTCUT_CATEGORIES.EDITOR,
     },
     {
       keys: ["Home", "End"],
       description: "Jump to first/last editor tab",
-      category: "editor",
+      category: SHORTCUT_CATEGORIES.EDITOR,
     },
     {
       keys: [modifier, "1"],
       description: KEYBOARD_SHORTCUTS.VIEW_MODE_EDIT.DESCRIPTION,
-      category: "editor",
+      category: SHORTCUT_CATEGORIES.EDITOR,
     },
     {
       keys: [modifier, "2"],
       description: KEYBOARD_SHORTCUTS.VIEW_MODE_SPLIT.DESCRIPTION,
-      category: "editor",
+      category: SHORTCUT_CATEGORIES.EDITOR,
     },
     {
       keys: [modifier, "3"],
       description: KEYBOARD_SHORTCUTS.VIEW_MODE_PREVIEW.DESCRIPTION,
-      category: "editor",
+      category: SHORTCUT_CATEGORIES.EDITOR,
     },
     {
       keys: [modifier, "Enter"],
       description: KEYBOARD_SHORTCUTS.SUBMIT_WIZARD.DESCRIPTION,
-      category: "general",
+      category: SHORTCUT_CATEGORIES.GENERAL,
     },
     {
       keys: ["Esc"],
       description: KEYBOARD_SHORTCUTS.CANCEL_GENERATION.DESCRIPTION,
-      category: "generation",
+      category: SHORTCUT_CATEGORIES.GENERATION,
     },
     {
       keys: [modifier, "N"],
       description: KEYBOARD_SHORTCUTS.NEW_PROJECT.DESCRIPTION,
-      category: "general",
+      category: SHORTCUT_CATEGORIES.GENERAL,
     },
     {
       keys: ["Home"],
       description: KEYBOARD_SHORTCUTS.SCROLL_TO_TOP.DESCRIPTION,
-      category: "navigation",
+      category: SHORTCUT_CATEGORIES.NAVIGATION,
     },
     {
       keys: [altKey, "←"],
       description: "Go to previous wizard step",
-      category: "navigation",
+      category: SHORTCUT_CATEGORIES.NAVIGATION,
     },
     {
       keys: [altKey, "→"],
       description: "Go to next wizard step",
-      category: "navigation",
+      category: SHORTCUT_CATEGORIES.NAVIGATION,
     },
     ...WIZARD_STEPS.map((step) => ({
       keys: [altKey, step.shortcut],
       description: `Go to ${step.label}`,
-      category: "navigation" as const,
+      category: SHORTCUT_CATEGORIES.NAVIGATION,
     })),
   ];
 };
 
-const categoryLabels: Record<string, string> = {
-  general: "General",
-  editor: "Editor",
-  navigation: "Navigation",
-  generation: "Generation",
-};
-
-const categoryIcons: Record<string, IconName> = {
-  general: "keyboard",
-  editor: "edit",
-  navigation: "compass",
-  generation: "lightning",
-};
+const categoryLabels: Record<string, string> = SHORTCUT_CATEGORY_LABELS;
+const categoryIcons: Record<string, IconName> = SHORTCUT_CATEGORY_ICONS as Record<string, IconName>;
 
 /**
  * Modal dialog displaying available keyboard shortcuts.
