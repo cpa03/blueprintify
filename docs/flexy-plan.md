@@ -675,3 +675,9 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 1,181 tests passing (596 web + 349 api + 236 shared) across 69 files
+
+## PR
+
+| PR #  | Branch  | Title                                                                         |
+| ----- | ------- | ----------------------------------------------------------------------------- |
+| #1772 | `agent` | feat(flexy): eliminate remaining hardcoded tab/category strings in components |
