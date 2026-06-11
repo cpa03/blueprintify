@@ -46,6 +46,7 @@ import {
 import { ANIMATION_TIMING } from "../config/theme";
 import { isDev } from "../config/env";
 import { useLastSaved } from "../hooks/useLastSaved";
+import { useAutoScroll } from "../hooks/useAutoScroll";
 import clsx from "clsx";
 import "../styles/markdown.css";
 
@@ -142,6 +143,13 @@ function EditorComponent(): JSX.Element {
       markSaved();
     }
   }, [blueprintContent, tasksContent, markSaved]);
+
+  // Auto-scroll preview during generation, pausing when user scrolls up to read
+  useAutoScroll({
+    scrollContainerRef: previewRef,
+    enabled: isGenerating,
+    trigger: currentContent,
+  });
 
   // Auto-focus the editor's active tab when it mounts, so keyboard users
   // land immediately in the panel rather than losing focus to the previous element
