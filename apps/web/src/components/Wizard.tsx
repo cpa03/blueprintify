@@ -20,7 +20,7 @@
  */
 
 import React, { Suspense, lazy, useState, useEffect, useRef, useCallback } from "react";
-import { AnimatePresence } from "framer-motion";
+import { StepTransition } from "./StepTransition";
 import { useWizardStore } from "../store";
 import { useEditorStore } from "../store";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
@@ -183,7 +183,7 @@ function WizardComponent(): JSX.Element {
       role="region"
       aria-label={`Wizard step: ${currentStepLabel}`}
     >
-      <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
+      <StepTransition mode="wait">{renderStep()}</StepTransition>
     </div>
   );
 }
