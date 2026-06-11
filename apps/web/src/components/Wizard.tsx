@@ -25,6 +25,7 @@ import { useWizardStore } from "../store";
 import { useEditorStore } from "../store";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useFocusOnStepChange, useStepAnnouncer } from "../hooks/useFocusOnStepChange";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import { WIZARD_STEPS, STEP_TITLES } from "../config/constants";
 import { SPINNER } from "../config/styles";
 import type { AnimationDirection } from "../utils/motion";
@@ -63,6 +64,23 @@ function WizardComponent(): JSX.Element {
   const containerRef = useFocusOnStepChange(currentStep);
   const currentStepLabel = WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
   useStepAnnouncer(currentStep, currentStepLabel);
+
+  // Scroll shadow state — subtle gradient overlays that gently fade in at the
+  // top/bottom edges when content is scrolled off-screen, providing spatial
+  // awareness within the scrollable wizard panel. Disabled when reduced motion
+  // is preferred, since the whole point is a visual transition cue.
+  const [scrollState, setScrollState] = useState({ isTop: true, isBottom: false });
+  const shouldReduceMotion = useReducedMotion();
+  const handleScroll = useCallback(() => {
+    const el = containerRef.current;
+    if (!el || shouldReduceMotion) return;
+    const isTop = el.scrollTop <= 4;
+    const isBottom = Math.abs(el.scrollHeight - el.scrollTop - el.clientHeight) <= 4;
+    setScrollState((prev) => {
+      if (prev.isTop === isTop && prev.isBottom === isBottom) return prev;
+      return { isTop, isBottom };
+    });
+  }, [containerRef, shouldReduceMotion]);
 
   // Derive animation direction from step index changes
   const [direction, setDirection] = useState<AnimationDirection>("forward");
@@ -176,14 +194,46 @@ function WizardComponent(): JSX.Element {
     );
   };
 
+  const scrollShadowVisible = !shouldReduceMotion;
+  const shadowOpacity = scrollShadowVisible ? undefined : 0;
+
   return (
-    <div
-      ref={containerRef}
-      className="flex-1 overflow-y-auto p-6"
-      role="region"
-      aria-label={`Wizard step: ${currentStepLabel}`}
-    >
-      <StepTransition mode="wait">{renderStep()}</StepTransition>
+    <div className="relative flex h-full">
+      {/* Top scroll shadow — fades in when wizard content is scrolled down,
+          providing a subtle spatial cue that content is hidden above. */}
+      <div
+        className="absolute top-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
+        style={{
+          opacity: shadowOpacity ?? (scrollState.isTop ? 0 : 1),
+          height: "20px",
+          background:
+            "linear-gradient(to bottom, rgba(2,6,23,0.85) 0%, rgba(2,6,23,0.5) 40%, transparent 100%)",
+        }}
+        aria-hidden="true"
+      />
+
+      <div
+        ref={containerRef}
+        onScroll={handleScroll}
+        className="flex-1 overflow-y-auto p-6"
+        role="region"
+        aria-label={`Wizard step: ${currentStepLabel}`}
+      >
+        <StepTransition mode="wait">{renderStep()}</StepTransition>
+      </div>
+
+      {/* Bottom scroll shadow — fades in when there's more wizard content
+          below the visible area, hinting the user to keep scrolling. */}
+      <div
+        className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
+        style={{
+          opacity: shadowOpacity ?? (scrollState.isBottom ? 0 : 1),
+          height: "20px",
+          background:
+            "linear-gradient(to top, rgba(2,6,23,0.85) 0%, rgba(2,6,23,0.5) 40%, transparent 100%)",
+        }}
+        aria-hidden="true"
+      />
     </div>
   );
 }
