@@ -86,22 +86,28 @@ export const StepReview = memo(function StepReview({
                 </span>
                 Project Information
               </h3>
-              <button
-                onClick={handleEditInfo}
-                className="btn-ghost btn-sm flex items-center gap-1 text-primary-400 hover:text-primary-300"
-                aria-label="Edit project information"
-                title="Edit project information"
+              <KeyboardShortcutTooltip
+                shortcut="1"
+                description="Edit project information"
+                position="left"
+                modifier="alt"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                  />
-                </svg>
-                Edit
-              </button>
+                <button
+                  onClick={handleEditInfo}
+                  className="btn-ghost btn-sm flex items-center gap-1 text-primary-400 hover:text-primary-300"
+                  aria-label="Edit project information"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  </svg>
+                  Edit
+                </button>
+              </KeyboardShortcutTooltip>
             </div>
             <div className="bg-dark-800/50 rounded-xl p-4 space-y-3">
               <div>
@@ -136,22 +142,28 @@ export const StepReview = memo(function StepReview({
                 </span>
                 Tech Stack ({techStack.length})
               </h3>
-              <button
-                onClick={handleEditStack}
-                className="btn-ghost btn-sm flex items-center gap-1 text-accent-cyan hover:text-accent-cyan/80"
-                aria-label="Edit tech stack"
-                title="Edit tech stack"
+              <KeyboardShortcutTooltip
+                shortcut="2"
+                description="Edit tech stack"
+                position="left"
+                modifier="alt"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                  />
-                </svg>
-                Edit
-              </button>
+                <button
+                  onClick={handleEditStack}
+                  className="btn-ghost btn-sm flex items-center gap-1 text-accent-cyan hover:text-accent-cyan/80"
+                  aria-label="Edit tech stack"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  </svg>
+                  Edit
+                </button>
+              </KeyboardShortcutTooltip>
             </div>
             <div className="flex flex-wrap gap-2">
               {techStack.map((tech) => (
@@ -176,22 +188,28 @@ export const StepReview = memo(function StepReview({
                   </span>
                   Features ({features.length})
                 </h3>
-                <button
-                  onClick={handleEditFeatures}
-                  className="btn-ghost btn-sm flex items-center gap-1 text-accent-emerald hover:text-accent-emerald/80"
-                  aria-label="Edit features"
-                  title="Edit features"
+                <KeyboardShortcutTooltip
+                  shortcut="3"
+                  description="Edit features"
+                  position="left"
+                  modifier="alt"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                    />
-                  </svg>
-                  Edit
-                </button>
+                  <button
+                    onClick={handleEditFeatures}
+                    className="btn-ghost btn-sm flex items-center gap-1 text-accent-emerald hover:text-accent-emerald/80"
+                    aria-label="Edit features"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                    Edit
+                  </button>
+                </KeyboardShortcutTooltip>
               </div>
               <ul className="space-y-2">
                 {features.map((feature) => (
