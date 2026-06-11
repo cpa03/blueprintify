@@ -12,17 +12,18 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-10 (RepoKeeper Cycle 83)
+**Last Review**: 2026-06-11 (RepoKeeper Cycle 84)
 **Status**: ✅ Up to date — fully synced
 
-As of RepoKeeper Cycle 83 (refreshed):
+As of RepoKeeper Cycle 84 (refreshed):
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **CHANGELOG updated**: Added Cycle 83 entry
-- **README tree fixed**: Added missing `brocula-hunt-2026-06-10-run4.md` (Run 8) reference
-- **`docs/audits/README.md` fixed**: Added missing Jun 10 Run 7 (`brocula-hunt-2026-06-10-run3.md`) to current reports
-- **`docs/bugs.md` fixed**: Corrected BUG-014/BUG-017 stale status from "UNRESOLVED on main" to "Resolved — Cycle 78"
+- **CRITICAL FIX — Resolved merge conflict** in `docs/audits/README.md`: Removed leftover `<<<<<<< HEAD` / `=======` / `>>>>>>> caf0b60` markers introduced in Cycle 83
+- **CHANGELOG updated**: Added Cycle 84 entry
+- **README tree fixed**: Added missing `brocula-hunt-2026-06-10-run5.md` (Run 5) reference
+- **`docs/audits/README.md` table corrected**: All Jun 10 run entries (Run 8, Run 7, Run 6, Run 5, Jun 10) listed in correct descending order
+- **`docs/bugs.md` updated**: Cycle 84 status log added
 
 ## Historical Drift Corrections
 

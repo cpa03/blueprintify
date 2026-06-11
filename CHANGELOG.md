@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 84: full repository audit, **critical merge conflict resolution** in docs/audits/README.md (removed leftover `<<<<<<< HEAD` markers from Cycle 83), README tree fix (added Jun 10 Run 5 BroCula audit), documentation sync, quality verification
 - RepoKeeper Cycle 83: full repository audit, README tree fix (added Jun 10 Run 8 BroCula audit), docs/audits/README.md fix (added missing Run 7), BUG-014/BUG-017 stale status correction, documentation sync, quality verification
 - RepoKeeper Cycle 82: full repository audit, README tree fix (added Jun 10 Run 7 BroCula audit), docs/audits/README.md update, documentation sync, quality verification
 - RepoKeeper Cycle 81: full repository audit, README tree fix (added Jun 10 Run 2 BroCula audit), documentation sync, quality verification

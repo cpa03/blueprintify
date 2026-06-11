@@ -4,6 +4,8 @@
 
 ## Active Bugs
 
+> **RepoKeeper ULW Cycle 2026-06-11 (Cycle 84)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅. 0 type suppressions. 0 redundant/temp/unused source files found. **Resolved critical merge conflict** in `docs/audits/README.md` — leftover `<<<<<<< HEAD` / `=======` / `>>>>>>> caf0b60` markers introduced in Cycle 83 successfully removed. Added missing `brocula-hunt-2026-06-10-run5.md` (Run 5) to README directory tree. Documentation refreshed for Cycle 84. No new fixable bugs found.
+
 > **RepoKeeper ULW Cycle 2026-06-10 (Cycle 83)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅. 0 type suppressions. 0 redundant/temp/unused source files found. Added missing `brocula-hunt-2026-06-10-run4.md` (Run 8) to README directory tree. Fixed `docs/audits/README.md` — added missing `brocula-hunt-2026-06-10-run3.md` (Run 7) to current reports. Corrected BUG-014/BUG-017 stale status from "UNRESOLVED on main" to "Resolved — Cycle 78" in `docs/bugs.md`. Documentation refreshed for Cycle 83. Repo fully clean — no new fixable bugs found.
 
 > **BugFixer ULW Cycle 2026-06-10**: Full repository audit complete. Typecheck ✅ lint ✅ build (web) ✅ tests 596/596 ✅. 0 type suppressions. 0 `as any`. Fixed BUG-014 (main.yml stale doc refs: `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 3 occurrences) and BUG-017 (`node-version: "20"`→`node-version-file: ".node-version"` in 3 workflow files, 10 instances) on local branch `fix/bugfixer-ulw-jun-10-1781116450`. Both fixes verified via grep: zero stale doc refs, zero hardcoded `node-version:`. Push blocked by GitHub App `workflows: write` permission — same documented blocker as all prior cycles. See commit `41c39cf` for the verified fix.
