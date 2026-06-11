@@ -156,7 +156,9 @@ describe("Wizard", () => {
 
   it("has proper styling classes", () => {
     const { container } = render(<Wizard />);
-    const wizardContainer = container.firstChild;
-    expect(wizardContainer).toHaveClass("flex-1", "overflow-y-auto", "p-6");
+    const wizardWrapper = container.firstChild;
+    expect(wizardWrapper).toHaveClass("relative", "flex", "h-full");
+    const scrollContainer = wizardWrapper?.childNodes[1];
+    expect(scrollContainer).toHaveClass("flex-1", "overflow-y-auto", "p-6");
   });
 });
