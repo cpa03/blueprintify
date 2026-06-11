@@ -12,18 +12,18 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-11 (RepoKeeper Cycle 87)
+**Last Review**: 2026-06-11 (RepoKeeper Cycle 88)
 **Status**: ✅ Up to date — fully synced
 
-As of RepoKeeper Cycle 87 (refreshed):
+As of RepoKeeper Cycle 88 (refreshed):
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README fixed**: Added missing `brocula-hunt-2026-06-11.md` to directory tree and docs section; updated BroCula Audits description to `(Jun 9–Jun 11)`
-- **CHANGELOG updated**: Added Cycle 87 entry
-- **`docs/bugs.md` updated**: Cycle 87 status log added
-- **`docs/findings.md` updated**: Cycle 87 entry added
-- **`docs/active-tasks.md` updated**: Cycle 87 created
+- **README fixed**: Added missing `brocula-hunt-2026-06-11-run2.md` to directory tree and docs section; updated BroCula Audits description to `(Jun 9–Jun 11 Run 2)`
+- **CHANGELOG updated**: Added Cycle 88 entry
+- **`docs/bugs.md` updated**: Cycle 88 status log added
+- **`docs/findings.md` updated**: Cycle 88 entry added
+- **`docs/active-tasks.md` updated**: Cycle 88 created
 
 ## Historical Drift Corrections
 
