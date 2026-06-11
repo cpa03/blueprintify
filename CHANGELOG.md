@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- RepoKeeper Cycle 86: full repository audit, README tree fix (added Jun 11 BroCula audit), documentation sync, quality verification
+- RepoKeeper Cycle 88: full repository audit, README tree fix (added Jun 11 Run 2 BroCula audit), documentation sync, quality verification
+- RepoKeeper Cycle 87: full repository audit, README tree fix (added Jun 11 BroCula audit), documentation sync, quality verification
 - RepoKeeper Cycle 85: full repository audit, stale merged branch cleanup (3 branches deleted: `chore/repokeeper-cycle-79`, `palette/micro-ux-jun-10`, `fix/brocula-ulw-jun-10`), documentation sync, quality verification
 - RepoKeeper Cycle 84: full repository audit, **critical merge conflict resolution** in docs/audits/README.md (removed leftover `<<<<<<< HEAD` markers from Cycle 83), README tree fix (added Jun 10 Run 5 BroCula audit), documentation sync, quality verification
 - RepoKeeper Cycle 83: full repository audit, README tree fix (added Jun 10 Run 8 BroCula audit), docs/audits/README.md fix (added missing Run 7), BUG-014/BUG-017 stale status correction, documentation sync, quality verification
