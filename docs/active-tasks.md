@@ -2,7 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 85 — Full Repository Audit, Stale Branch Cleanup, Doc Sync 🟢 COMPLETE
+## Current Focus: RepoKeeper Cycle 87 — Full Repository Audit, README Tree Fix, Doc Sync 🟢 ACTIVE
+
+### Task: Full repository audit, add missing Jun 11 BroCula audit to README tree, documentation sync, quality verification
+
+- **Priority**: High
+- **Status**: 🟢 Complete
+- **Objective**: Full repository audit, add missing `brocula-hunt-2026-06-11.md` (Jun 11 BroCula audit) to README directory tree and docs section, update CHANGELOG, refresh documentation for Cycle 87
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅
+  - [x] Added missing `brocula-hunt-2026-06-11.md` to README directory tree and docs section
+  - [x] Updated BroCula Audits description from `(Jun 9–Jun 10 Run 8)` to `(Jun 9–Jun 11)`
+  - [x] Updated `docs/bugs.md` — Cycle 87 status log
+  - [x] Updated `docs/findings.md` — Cycle 87 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 87 status
+  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 87
+  - [x] Updated CHANGELOG.md — Cycle 87 entry
+
+## Previous Cycle: RepoKeeper Cycle 85 — Full Repository Audit, Stale Branch Cleanup, Doc Sync 🟢 COMPLETE
 
 ### Task: Full repository audit, delete 3 stale merged remote branches, update documentation, quality verification
 

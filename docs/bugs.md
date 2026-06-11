@@ -4,6 +4,8 @@
 
 ## Active Bugs
 
+> **RepoKeeper ULW Cycle 2026-06-11 (Cycle 87)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅. 0 type suppressions. 0 redundant/temp/unused source files found. 0 TODO/FIXME/HACK artifacts. Fixed README directory tree — added missing `brocula-hunt-2026-06-11.md` (Jun 11 BroCula audit). Updated BroCula Audits description to `(Jun 9–Jun 11)`. Documentation refreshed for Cycle 87. Repo fully clean — no new fixable bugs found.
+
 > **BugFixer ULW Cycle 2026-06-11**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,181/1,181 ✅ format ✅. 0 type suppressions. 0 `as any`. 0 npm vulns. **Fixed BUG-014** — replaced stale doc refs `docs/bug.md`→`docs/bugs.md` and `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). **Fixed BUG-017** — replaced hardcoded `node-version: "20"` with `node-version-file: ".node-version"` in 4 workflow files (11 instances). Both fixes verified via grep: zero stale doc refs, zero hardcoded `node-version:` remaining. PR created. Repo fully clean.
 
 > **RepoKeeper ULW Cycle 2026-06-11 (Cycle 85)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅. 0 type suppressions. 0 redundant/temp/unused source files found. 0 TODO/FIXME/HACK artifacts. Cleaned 3 stale merged remote branches (`chore/repokeeper-cycle-79`, `palette/micro-ux-jun-10`, `fix/brocula-ulw-jun-10`). No new fixable bugs found.
