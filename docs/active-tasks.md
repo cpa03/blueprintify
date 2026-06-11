@@ -2,7 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 83 — Full Repository Audit, README Tree Fix (Add Run 8), Doc Sync, BUG-014/BUG-017 Status Correction 🟢 COMPLETE
+## Current Focus: RepoKeeper Cycle 84 — Full Repository Audit, Merge Conflict Resolution, README Tree Fix (Add Run 5), Doc Sync 🟢 COMPLETE
+
+### Task: Full repository audit, resolve merge conflict in docs/audits/README.md, add missing Jun 10 Run 5 BroCula audit to README tree, documentation sync, quality verification
+
+- **Priority**: High
+- **Status**: 🟢 Complete
+- **Objective**: Full repository audit, resolve leftover merge conflict markers in `docs/audits/README.md`, add missing `brocula-hunt-2026-06-10-run5.md` (Run 5) to README directory tree, update CHANGELOG, refresh documentation for Cycle 84
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅
+  - [x] **Resolved merge conflict** in `docs/audits/README.md` — removed `<<<<<<< HEAD` / `=======` / `>>>>>>> caf0b60` markers, incorporated all three valid entries (Run 8, Run 7, Run 5) in correct descending order
+  - [x] Added missing `brocula-hunt-2026-06-10-run5.md` (Run 5) to README directory tree
+  - [x] Updated `docs/bugs.md` — Cycle 84 status log
+  - [x] Updated `docs/findings.md` — Cycle 84 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 84 status
+  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 84
+  - [x] Updated CHANGELOG.md — Cycle 84 entry
+
+## Previous Cycle: RepoKeeper Cycle 83 — Full Repository Audit, README Tree Fix (Add Run 8), Doc Sync, BUG-014/BUG-017 Status Correction 🟢 COMPLETE
 
 ### Task: Full repository audit, add missing Jun 10 Run 8 BroCula audit to README tree, fix docs/audits/README.md missing Run 7 reference, correct BUG-014/BUG-017 stale status, documentation sync, quality verification
 

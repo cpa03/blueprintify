@@ -2,6 +2,43 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 84 (2026-06-11 — RepoKeeper: Full Repository Audit, Merge Conflict Resolution, README Tree Fix (Add Run 5), Doc Sync)
+
+### Audit Scope
+
+Full repository audit covering build/lint health, unresolved merge conflict in `docs/audits/README.md`, missing `brocula-hunt-2026-06-10-run5.md` (Run 5) reference in README architecture tree, documentation sync, quality verification.
+
+### Status Summary
+
+| Check       | Result                            |
+| ----------- | --------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)               |
+| Lint        | ✅ Clean (0 warnings/errors)      |
+| Build       | ✅ Passes (web)                   |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository audit**: No redundant/temp/unused source files found. No empty directories. No `.orig`/`.bak`/`.DS_Store` artifacts.
+2. **Build/Lint/Typecheck verification**: All pass cleanly — 0 errors, 0 warnings.
+3. **CRITICAL BUG FIX — Resolved merge conflict in `docs/audits/README.md`**: Found and fixed leftover `<<<<<<< HEAD` / `=======` / `>>>>>>> caf0b60` merge conflict markers introduced in Cycle 83. Conflict resolved by incorporating all three valid entries (Run 8, Run 7, Run 5) in correct descending order.
+4. **Fixed README architecture tree**: Added missing `brocula-hunt-2026-06-10-run5.md` (Run 5) to directory tree.
+5. **Updated `docs/findings.md`**: Cycle 84 entry (this file).
+6. **Updated `docs/active-tasks.md`**: Cycle 84 status (marked Cycle 83 complete, created Cycle 84 entry).
+7. **Updated `docs/bugs.md`**: Cycle 84 status log.
+8. **Updated `docs/knowledge-review.md`**: Refreshed for Cycle 84.
+9. **Updated CHANGELOG.md**: Added Cycle 84 entry.
+
+### Verification
+
+- No `@ts-ignore`, `@ts-expect-error`, or `as any` found in source code
+- No TODO/FIXME/HACK artifacts in non-test source files
+- All documentation changes applied and consistent
+- Build/lint/typecheck: clean
+- Merge conflict in `docs/audits/README.md` resolved
+
+---
+
 ## Cycle 83 (2026-06-10 — RepoKeeper: Full Repository Audit, README Tree Fix (Add Run 8), Doc Sync, BUG-014/BUG-017 Status Correction)
 
 ### Audit Scope
