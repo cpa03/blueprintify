@@ -190,7 +190,9 @@ export const StepInfo = memo(function StepInfo({
               </span>
               <ValidationCheckmark
                 isValid={projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN}
+                showInvalid
                 ariaLabel="Project name is valid"
+                invalidAriaLabel="Project name needs at least 3 characters"
               />
               <TypeIndicator isTyping={projectNameTyping.isTyping} />
             </label>
@@ -275,7 +277,9 @@ export const StepInfo = memo(function StepInfo({
               </span>
               <ValidationCheckmark
                 isValid={description.length >= FORM_LIMITS.DESCRIPTION.MIN}
+                showInvalid
                 ariaLabel="Description is valid"
+                invalidAriaLabel="Description needs at least 10 characters"
               />
               <TypeIndicator isTyping={descriptionTyping.isTyping} />
             </label>
