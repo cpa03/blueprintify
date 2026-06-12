@@ -33,13 +33,6 @@ import { useWizardStore, useToast } from "../store";
 import { ANIMATION, TOAST_MESSAGES } from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
 
-/**
- * Animation timing constants for staggered card entrance.
- * Matches previous framer-motion stagger config.
- */
-const CARD_ENTRANCE_DELAY = 0.05;
-const CARD_ENTRANCE_DURATION = 0.3;
-
 function TemplateGridComponent(): JSX.Element {
   const loadTemplate = useWizardStore((s) => s.loadTemplate);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -93,8 +86,8 @@ function TemplateGridComponent(): JSX.Element {
               disabled={selectedId !== null}
               aria-busy={isSelected && isLoading}
               style={{
-                animationDelay: `${index * CARD_ENTRANCE_DELAY}s`,
-                animationDuration: `${CARD_ENTRANCE_DURATION}s`,
+                animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY}s`,
+                animationDuration: `${ANIMATION.CARD_ENTRANCE_DURATION}s`,
               }}
               className={`
                 glass-card p-5 text-left relative group card-glow-hover
@@ -118,7 +111,7 @@ function TemplateGridComponent(): JSX.Element {
                   {/* Checkmark badge */}
                   <div
                     className="absolute top-3 right-3 w-6 h-6 bg-accent-emerald rounded-full flex items-center justify-center z-10 animate-fade-in"
-                    style={{ animationDuration: "0.25s" }}
+                    style={{ animationDuration: `${ANIMATION.CHECKMARK_OVERLAY_S}s` }}
                   >
                     <svg
                       className={`${ICON.MD} text-white`}
@@ -147,7 +140,7 @@ function TemplateGridComponent(): JSX.Element {
               {isSelected && isLoading && (
                 <div
                   className="absolute inset-0 flex items-center justify-center bg-dark-950/30 backdrop-blur-[1px] rounded-lg z-20 animate-fade-in"
-                  style={{ animationDuration: "0.15s" }}
+                  style={{ animationDuration: `${ANIMATION.LOADING_OVERLAY_S}s` }}
                 >
                   <div className={SPINNER.OVERLAY} />
                 </div>

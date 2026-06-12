@@ -33,6 +33,7 @@ import {
   TOAST_MESSAGES,
   SPRING_CONFIG,
 } from "../../config/constants";
+import { COLORS } from "../../config/theme";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { AnimatedNumber } from "../AnimatedNumber";
 import { RippleButton } from "../RippleButton";
@@ -160,7 +161,7 @@ export const StepGenerating = memo(function StepGenerating({
           <>
             <motion.div
               className="w-24 h-24 rounded-full border-4 border-dark-700"
-              style={{ borderTopColor: "rgb(99 102 241)" }}
+              style={{ borderTopColor: COLORS.primary[500] }}
               animate={{ rotate: 360 }}
               transition={{
                 duration: ANIMATION.SPINNER_ROTATION,

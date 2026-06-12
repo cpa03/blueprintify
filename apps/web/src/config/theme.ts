@@ -159,6 +159,32 @@ export const SPACING = {
 } as const;
 
 // ============================================================================
+// Layout Constants
+// ============================================================================
+
+/**
+ * Fixed layout dimensions used across components.
+ * Flexy says: No hardcoded pixel values in components!
+ */
+export const LAYOUT = {
+  /** Height of the fixed header bar (px), referenced by scroll-aware components */
+  HEADER_HEIGHT_PX: 64,
+} as const;
+
+// ============================================================================
+// CSS Transform Presets
+// ============================================================================
+
+/**
+ * Predefined CSS transform values used across components.
+ * Flexy says: No hardcoded transform strings in components!
+ */
+export const TRANSFORMS = {
+  /** Standard SVG rotation for circular progress indicators */
+  ROTATE_NEG_90: "rotate(-90deg)",
+} as const;
+
+// ============================================================================
 // Typography
 // ============================================================================
 

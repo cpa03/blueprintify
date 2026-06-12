@@ -711,3 +711,22 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR # | Branch                                     | Title                                                                                            |
 | ---- | ------------------------------------------ | ------------------------------------------------------------------------------------------------ |
 | TBD  | `feat/flexy-iteration-35-wizard-step-keys` | feat(flexy): centralize wizard step keys into shared config and eliminate hardcoded step strings |
+
+### ✅ Flexy Iteration 36: Eliminate Remaining Hardcoded Inline CSS Values & Animation Constants
+
+| File                                                | Change                                                                                            |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `apps/web/src/config/theme.ts`                      | Added `TRANSFORMS.ROTATE_NEG_90` + `LAYOUT.HEADER_HEIGHT_PX` constants                            |
+| `apps/web/src/config/constants/ui.ts`               | Added `CARD_ENTRANCE_DELAY`, `CARD_ENTRANCE_DURATION`, `CHECKMARK_OVERLAY_S`, `LOADING_OVERLAY_S` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced hardcoded `"rgb(99 102 241)"` with `COLORS.primary[500]`                                 |
+| `apps/web/src/components/TemplateGrid.tsx`          | Replaced local `CARD_ENTRANCE_*` + inline `animationDuration` with config refs                    |
+| `apps/web/src/components/PageScrollProgressBar.tsx` | Replaced hardcoded `marginTop: "64px"` with `LAYOUT.HEADER_HEIGHT_PX`                             |
+| `apps/web/src/components/CircularProgress.tsx`      | Replaced hardcoded `opacity={0.3}`, `animationDuration={0.4}`, `rotate(-90deg)` with config refs  |
+| `apps/web/src/components/Toast.tsx`                 | Replaced hardcoded `transform: "rotate(-90deg)"` with `TRANSFORMS.ROTATE_NEG_90`                  |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,193 tests passing (596 web + 352 api + 245 shared) across 69 files

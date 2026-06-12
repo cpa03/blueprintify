@@ -11,7 +11,8 @@
  */
 
 import { memo } from "react";
-import { PROGRESS_COLORS, SVG_TRANSITION } from "../config/constants";
+import { PROGRESS_COLORS, SVG_TRANSITION, ANIMATION } from "../config/constants";
+import { TRANSFORMS, OPACITY } from "../config/theme";
 
 /**
  * Props for the CircularProgress component.
@@ -88,7 +89,7 @@ function CircularProgressComponent({
         width={size}
         height={size}
         className="-rotate-90"
-        style={{ transform: "rotate(-90deg)" }}
+        style={{ transform: TRANSFORMS.ROTATE_NEG_90 }}
       >
         <circle
           cx={center}
@@ -97,7 +98,7 @@ function CircularProgressComponent({
           fill="none"
           stroke={trackColor}
           strokeWidth={strokeWidth}
-          opacity={0.3}
+          opacity={OPACITY[30]}
         />
 
         <circle
@@ -148,7 +149,7 @@ function CircularProgressCompactComponent({
       color={color}
       className={className}
       showPercentage={false}
-      animationDuration={0.4}
+      animationDuration={ANIMATION.MEDIUM_SLOW}
     />
   );
 }
