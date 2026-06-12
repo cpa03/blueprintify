@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useWizardStore } from "./wizard";
 import type { WizardStep, TechStackItemType } from "@blueprint/shared";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared";
 
 // Mock the storage module
 vi.mock("../lib/storage", () => ({
@@ -46,7 +47,7 @@ describe("wizard store", () => {
     it("should have correct initial values", () => {
       const state = useWizardStore.getState();
 
-      expect(state.currentStep).toBe("info");
+      expect(state.currentStep).toBe(WIZARD_STEP_KEYS.INFO);
       expect(state.projectName).toBe("");
       expect(state.description).toBe("");
       expect(state.techStack).toEqual([]);
@@ -60,14 +61,20 @@ describe("wizard store", () => {
     it("should set current step to specified value", () => {
       const { setStep } = useWizardStore.getState();
 
-      setStep("stack");
+      setStep(WIZARD_STEP_KEYS.STACK);
 
-      expect(useWizardStore.getState().currentStep).toBe("stack");
+      expect(useWizardStore.getState().currentStep).toBe(WIZARD_STEP_KEYS.STACK);
     });
 
     it("should allow setting to any valid wizard step", () => {
       const { setStep } = useWizardStore.getState();
-      const steps: WizardStep[] = ["info", "stack", "features", "review", "generating"];
+      const steps: WizardStep[] = [
+        WIZARD_STEP_KEYS.INFO,
+        WIZARD_STEP_KEYS.STACK,
+        WIZARD_STEP_KEYS.FEATURES,
+        WIZARD_STEP_KEYS.REVIEW,
+        WIZARD_STEP_KEYS.GENERATING,
+      ];
 
       steps.forEach((step) => {
         setStep(step);
@@ -82,19 +89,19 @@ describe("wizard store", () => {
 
       nextStep();
 
-      expect(useWizardStore.getState().currentStep).toBe("stack");
+      expect(useWizardStore.getState().currentStep).toBe(WIZARD_STEP_KEYS.STACK);
     });
 
     it("should not advance beyond last step", () => {
       const { setStep, nextStep } = useWizardStore.getState();
 
       // Go to last step
-      setStep("generating");
+      setStep(WIZARD_STEP_KEYS.GENERATING);
 
       nextStep();
 
       // Should still be on generating (last step)
-      expect(useWizardStore.getState().currentStep).toBe("generating");
+      expect(useWizardStore.getState().currentStep).toBe(WIZARD_STEP_KEYS.GENERATING);
     });
   });
 
@@ -102,10 +109,10 @@ describe("wizard store", () => {
     it("should return to previous step when not on first step", () => {
       const { setStep, prevStep } = useWizardStore.getState();
 
-      setStep("stack");
+      setStep(WIZARD_STEP_KEYS.STACK);
       prevStep();
 
-      expect(useWizardStore.getState().currentStep).toBe("info");
+      expect(useWizardStore.getState().currentStep).toBe(WIZARD_STEP_KEYS.INFO);
     });
 
     it("should not go before first step", () => {
@@ -114,7 +121,7 @@ describe("wizard store", () => {
       prevStep();
 
       // Should still be on info (first step)
-      expect(useWizardStore.getState().currentStep).toBe("info");
+      expect(useWizardStore.getState().currentStep).toBe(WIZARD_STEP_KEYS.INFO);
     });
   });
 
@@ -315,7 +322,7 @@ describe("wizard store", () => {
       expect(state.description).toBe("A full-featured e-commerce platform");
       expect(state.techStack).toEqual(template.techStack);
       expect(state.features).toEqual(template.features);
-      expect(state.currentStep).toBe("review");
+      expect(state.currentStep).toBe(WIZARD_STEP_KEYS.REVIEW);
     });
   });
 });

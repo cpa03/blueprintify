@@ -1,4 +1,5 @@
 import { useState, lazy, Suspense, useEffect, useCallback, useRef } from "react";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared";
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
 const ShowEditorButton = lazy(() =>
@@ -75,7 +76,7 @@ function App(): JSX.Element {
   const [templatesExiting, setTemplatesExiting] = useState(false);
   const previousHasContentRef = useRef(hasContent);
   const previousIsGeneratingRef = useRef(isGenerating);
-  const prevShowTemplatesRef = useRef(currentStep === "info" && !hasContent);
+  const prevShowTemplatesRef = useRef(currentStep === WIZARD_STEP_KEYS.INFO && !hasContent);
 
   const { isOnline } = useOnlineStatus();
   const toast = useToast();
@@ -97,11 +98,11 @@ function App(): JSX.Element {
   // animate them out with a CSS animation before removing them from the DOM.
   // This prevents the abrupt unmount that previously occurred when navigating
   // away from the first step or after content generation completes.
-  const showTemplates = currentStep === "info" && !hasContent && !templatesExiting;
+  const showTemplates = currentStep === WIZARD_STEP_KEYS.INFO && !hasContent && !templatesExiting;
 
   useEffect(() => {
     const wasVisible = prevShowTemplatesRef.current;
-    const isNowVisible = currentStep === "info" && !hasContent;
+    const isNowVisible = currentStep === WIZARD_STEP_KEYS.INFO && !hasContent;
 
     // Detect transition from visible → hidden and trigger exit animation
     if (wasVisible && !isNowVisible && !templatesExiting) {

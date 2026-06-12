@@ -611,6 +611,26 @@ export const EDITOR_TABS = {
   TASKS: "tasks" as const,
 } as const;
 
+/**
+ * Wizard Step Keys
+ * Centralized identifiers for the project setup wizard steps.
+ * Flexy says: No hardcoded "info"/"stack"/"features"/"review"/"generating" strings!
+ * Usage: import { WIZARD_STEP_KEYS } from "@blueprint/shared";
+ *        wizard.currentStep === WIZARD_STEP_KEYS.INFO
+ */
+export const WIZARD_STEP_KEYS = {
+  /** Project info step - name, description, target audience */
+  INFO: "info" as const,
+  /** Tech stack selection step */
+  STACK: "stack" as const,
+  /** Features selection step */
+  FEATURES: "features" as const,
+  /** Review and confirm step */
+  REVIEW: "review" as const,
+  /** AI generation in progress step */
+  GENERATING: "generating" as const,
+} as const;
+
 export const HTTP_HEADER_NAMES = {
   /** Content-Type header - most commonly hardcoded as object key */
   CONTENT_TYPE: "Content-Type",

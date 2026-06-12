@@ -6,6 +6,7 @@ import { useWizardStore, useEditorStore } from "../store";
 import type { WizardStore } from "../store/wizard";
 import type { EditorStore } from "../store/editor";
 import { EDITOR_TABS } from "../config/constants";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared";
 
 vi.mock("../store", () => ({
   useWizardStore: vi.fn(),
@@ -62,7 +63,7 @@ vi.mock("../wizard/StepGenerating", () => ({
 }));
 
 const mockWizardStore: WizardStore = {
-  currentStep: "info" as const,
+  currentStep: WIZARD_STEP_KEYS.INFO,
   projectName: "",
   description: "",
   techStack: [],
@@ -124,26 +125,26 @@ describe("Wizard", () => {
   });
 
   it("renders StepStack when currentStep is stack", async () => {
-    mockWizardStore.currentStep = "stack";
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.STACK;
     render(<Wizard />);
     expect(await screen.findByTestId("step-stack")).toBeInTheDocument();
     expect(screen.queryByTestId("step-info")).not.toBeInTheDocument();
   });
 
   it("renders StepFeatures when currentStep is features", async () => {
-    mockWizardStore.currentStep = "features";
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.FEATURES;
     render(<Wizard />);
     expect(await screen.findByTestId("step-features")).toBeInTheDocument();
   });
 
   it("renders StepReview when currentStep is review", async () => {
-    mockWizardStore.currentStep = "review";
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.REVIEW;
     render(<Wizard />);
     expect(await screen.findByTestId("step-review")).toBeInTheDocument();
   });
 
   it("renders StepGenerating when currentStep is generating", async () => {
-    mockWizardStore.currentStep = "generating";
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.GENERATING;
     render(<Wizard />);
     expect(await screen.findByTestId("step-generating")).toBeInTheDocument();
   });

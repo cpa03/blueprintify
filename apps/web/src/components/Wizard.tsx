@@ -28,6 +28,7 @@ import { useFocusOnStepChange, useStepAnnouncer } from "../hooks/useFocusOnStepC
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { WIZARD_STEPS, STEP_TITLES } from "../config/constants";
 import { SPINNER } from "../config/styles";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared";
 import type { AnimationDirection } from "../utils/motion";
 
 // Lazy load step components — only one renders at a time, so eager imports waste bandwidth
@@ -99,7 +100,7 @@ function WizardComponent(): JSX.Element {
   const handleCmdEnter = useCallback(
     (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
-        if (currentStep === "generating") return;
+        if (currentStep === WIZARD_STEP_KEYS.GENERATING) return;
         if (document.activeElement?.tagName === "TEXTAREA") return;
 
         const primaryBtn = document.querySelector<HTMLButtonElement>(".btn-primary:not(:disabled)");
@@ -116,8 +117,8 @@ function WizardComponent(): JSX.Element {
     (e: KeyboardEvent) => {
       if (e.altKey && e.key === "ArrowLeft") {
         // Skip during generation — prevents navigating away mid-stream
-        if (currentStep === "generating") return;
-        if (currentStep === "info") return; // Already at the first step
+        if (currentStep === WIZARD_STEP_KEYS.GENERATING) return;
+        if (currentStep === WIZARD_STEP_KEYS.INFO) return; // Already at the first step
 
         const prevBtn = document.querySelector<HTMLButtonElement>(".btn-secondary:not(:disabled)");
         if (prevBtn) {
@@ -133,8 +134,8 @@ function WizardComponent(): JSX.Element {
     (e: KeyboardEvent) => {
       if (e.altKey && e.key === "ArrowRight") {
         // Skip during generation — prevents navigating away mid-stream
-        if (currentStep === "generating") return;
-        if (currentStep === "review") return; // Review is the last step before generation
+        if (currentStep === WIZARD_STEP_KEYS.GENERATING) return;
+        if (currentStep === WIZARD_STEP_KEYS.REVIEW) return; // Review is the last step before generation
 
         const nextBtn = document.querySelector<HTMLButtonElement>(".btn-primary:not(:disabled)");
         if (nextBtn) {
@@ -166,16 +167,16 @@ function WizardComponent(): JSX.Element {
   const renderStep = (): JSX.Element => {
     const stepElement = (() => {
       switch (currentStep) {
-        case "info":
-          return <StepInfo key="info" direction={direction} />;
-        case "stack":
-          return <StepStack key="stack" direction={direction} />;
-        case "features":
-          return <StepFeatures key="features" direction={direction} />;
-        case "review":
-          return <StepReview key="review" direction={direction} />;
-        case "generating":
-          return <StepGenerating key="generating" direction={direction} />;
+        case WIZARD_STEP_KEYS.INFO:
+          return <StepInfo key={WIZARD_STEP_KEYS.INFO} direction={direction} />;
+        case WIZARD_STEP_KEYS.STACK:
+          return <StepStack key={WIZARD_STEP_KEYS.STACK} direction={direction} />;
+        case WIZARD_STEP_KEYS.FEATURES:
+          return <StepFeatures key={WIZARD_STEP_KEYS.FEATURES} direction={direction} />;
+        case WIZARD_STEP_KEYS.REVIEW:
+          return <StepReview key={WIZARD_STEP_KEYS.REVIEW} direction={direction} />;
+        case WIZARD_STEP_KEYS.GENERATING:
+          return <StepGenerating key={WIZARD_STEP_KEYS.GENERATING} direction={direction} />;
         default:
           return <StepInfo key="default" direction={direction} />;
       }

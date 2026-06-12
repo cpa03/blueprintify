@@ -38,6 +38,7 @@ import {
   RESPONSE_STATUS,
   ERROR_CODES,
   EDITOR_TABS,
+  WIZARD_STEP_KEYS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -1046,5 +1047,54 @@ describe("EDITOR_TABS", () => {
     const values = Object.values(EDITOR_TABS);
     const uniqueValues = new Set(values);
     expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("WIZARD_STEP_KEYS", () => {
+  it("should have INFO key", () => {
+    expect(WIZARD_STEP_KEYS.INFO).toBe("info");
+  });
+
+  it("should have STACK key", () => {
+    expect(WIZARD_STEP_KEYS.STACK).toBe("stack");
+  });
+
+  it("should have FEATURES key", () => {
+    expect(WIZARD_STEP_KEYS.FEATURES).toBe("features");
+  });
+
+  it("should have REVIEW key", () => {
+    expect(WIZARD_STEP_KEYS.REVIEW).toBe("review");
+  });
+
+  it("should have GENERATING key", () => {
+    expect(WIZARD_STEP_KEYS.GENERATING).toBe("generating");
+  });
+
+  it("should have exactly 5 step identifiers", () => {
+    const values = Object.values(WIZARD_STEP_KEYS);
+    expect(values.length).toBe(5);
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(WIZARD_STEP_KEYS);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(WIZARD_STEP_KEYS);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+
+  it("should have keys matching WizardStep type (info, stack, features, review, generating)", () => {
+    const validSteps = ["info", "stack", "features", "review", "generating"] as const;
+    const values = Object.values(WIZARD_STEP_KEYS);
+    validSteps.forEach((step) => {
+      expect(values).toContain(step);
+    });
   });
 });

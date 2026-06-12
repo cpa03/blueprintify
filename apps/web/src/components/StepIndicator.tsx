@@ -22,7 +22,7 @@
  */
 
 import { useEffect, useCallback, useState, useRef, memo } from "react";
-import type { WizardStep } from "@blueprint/shared";
+import { type WizardStep, WIZARD_STEP_KEYS } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import {
   WIZARD_STEPS,
@@ -78,7 +78,7 @@ function StepIndicatorComponent(): JSX.Element {
   const canNavigateTo = useCallback(
     (stepKey: WizardStep): boolean => {
       const targetIndex = STEPS.findIndex((s) => s.key === stepKey);
-      return targetIndex <= currentIndex && stepKey !== "generating";
+      return targetIndex <= currentIndex && stepKey !== WIZARD_STEP_KEYS.GENERATING;
     },
     [currentIndex]
   );

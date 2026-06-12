@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";
 import { StepIndicator } from "./StepIndicator";
 import { useWizardStore } from "../store";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared";
 import type { WizardStore } from "../store/wizard";
 
 vi.mock("../store", () => ({
@@ -96,7 +97,7 @@ vi.mock("framer-motion", () => {
 });
 
 const mockWizardStore: WizardStore = {
-  currentStep: "info" as const,
+  currentStep: WIZARD_STEP_KEYS.INFO,
   projectName: "",
   description: "",
   techStack: [],
@@ -149,7 +150,7 @@ describe("StepIndicator", () => {
   });
 
   it("highlights current step as active", () => {
-    mockWizardStore.currentStep = "stack";
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.STACK;
     render(<StepIndicator />);
 
     const stackButton = screen.getByText("Tech Stack").closest("button");
@@ -161,7 +162,7 @@ describe("StepIndicator", () => {
   });
 
   it("marks completed steps as completed", () => {
-    mockWizardStore.currentStep = "features";
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.FEATURES;
     render(<StepIndicator />);
 
     const infoButton = screen.getByText("Project Info").closest("button");
@@ -180,7 +181,7 @@ describe("StepIndicator", () => {
   });
 
   it("shows uncompleted steps as locked", () => {
-    mockWizardStore.currentStep = "features";
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.FEATURES;
     render(<StepIndicator />);
 
     const reviewButton = screen.getByText("Review").closest("button");
@@ -191,7 +192,7 @@ describe("StepIndicator", () => {
   });
 
   it("allows navigation to completed and current steps", () => {
-    mockWizardStore.currentStep = "features";
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.FEATURES;
     render(<StepIndicator />);
 
     const infoButton = screen.getByText("Project Info").closest("button");
@@ -204,7 +205,7 @@ describe("StepIndicator", () => {
   });
 
   it("disables navigation to future steps", () => {
-    mockWizardStore.currentStep = "features";
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.FEATURES;
     render(<StepIndicator />);
 
     const reviewButton = screen.getByText("Review").closest("button");
@@ -215,17 +216,17 @@ describe("StepIndicator", () => {
   });
 
   it("calls setStep when clicking on a clickable step", () => {
-    mockWizardStore.currentStep = "features";
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.FEATURES;
     render(<StepIndicator />);
 
     const infoButton = screen.getByText("Project Info").closest("button");
     fireEvent.click(infoButton!);
 
-    expect(mockWizardStore.setStep).toHaveBeenCalledWith("info");
+    expect(mockWizardStore.setStep).toHaveBeenCalledWith(WIZARD_STEP_KEYS.INFO);
   });
 
   it("disables generating step navigation", () => {
-    mockWizardStore.currentStep = "generating";
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.GENERATING;
     render(<StepIndicator />);
 
     const generatingButton = screen.getByText("Generating").closest("button");
@@ -233,7 +234,7 @@ describe("StepIndicator", () => {
   });
 
   it("shows keyboard shortcuts for clickable steps", () => {
-    mockWizardStore.currentStep = "features";
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.FEATURES;
     render(<StepIndicator />);
 
     expect(screen.getByText("Alt+1")).toBeInTheDocument();
@@ -242,7 +243,7 @@ describe("StepIndicator", () => {
   });
 
   it("hides keyboard shortcuts for non-clickable steps", () => {
-    mockWizardStore.currentStep = "features";
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.FEATURES;
     render(<StepIndicator />);
 
     const reviewButton = screen.getByText("Review").closest("button");

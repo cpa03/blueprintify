@@ -681,3 +681,33 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR #  | Branch  | Title                                                                         |
 | ----- | ------- | ----------------------------------------------------------------------------- |
 | #1772 | `agent` | feat(flexy): eliminate remaining hardcoded tab/category strings in components |
+
+### ✅ Flexy Iteration 35: Centralize Wizard Step Keys into Shared Config
+
+| File                                                | Change                                                                                          |
+| --------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`                     | Added `WIZARD_STEP_KEYS` (INFO/STACK/FEATURES/REVIEW/GENERATING)                                |
+| `packages/shared/src/index.ts`                      | Exported `WIZARD_STEP_KEYS`                                                                     |
+| `packages/shared/src/config.test.ts`                | Added 8 tests for `WIZARD_STEP_KEYS` (values, length, uniqueness, type matching)                |
+| `apps/web/src/config/constants/wizard.ts`           | `WIZARD_STEPS` entries now reference `WIZARD_STEP_KEYS.*` instead of hardcoded keys             |
+| `apps/web/src/store/wizard.ts`                      | `currentStep: "info"` → `WIZARD_STEP_KEYS.INFO`; `"review"` → `WIZARD_STEP_KEYS.REVIEW`         |
+| `apps/web/src/hooks/useBlueprintStream.ts`          | `setStep("generating")` → `setStep(WIZARD_STEP_KEYS.GENERATING)`                                |
+| `apps/web/src/App.tsx`                              | 3 hardcoded `currentStep === "info"` → `WIZARD_STEP_KEYS.INFO`                                  |
+| `apps/web/src/components/Wizard.tsx`                | 9 hardcoded step strings in switch/case/key → `WIZARD_STEP_KEYS.*` refs                         |
+| `apps/web/src/components/StepIndicator.tsx`         | `stepKey !== "generating"` → `WIZARD_STEP_KEYS.GENERATING`                                      |
+| `apps/web/src/components/wizard/StepReview.tsx`     | 3 `setStep("info"/"stack"/"features")` → `WIZARD_STEP_KEYS.*` refs                              |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | `setStep("review")` (×2) + `key="generating"` → `WIZARD_STEP_KEYS.*` refs                       |
+| `apps/web/src/**/*.test.ts` (5 files)               | 50+ hardcoded step strings replaced with `WIZARD_STEP_KEYS.*` refs in test assertions and state |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,193 tests passing (596 web + 352 api + 245 shared) across 69 files
+
+## PR
+
+| PR # | Branch                                     | Title                                                                                            |
+| ---- | ------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| TBD  | `feat/flexy-iteration-35-wizard-step-keys` | feat(flexy): centralize wizard step keys into shared config and eliminate hardcoded step strings |
