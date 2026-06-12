@@ -23,6 +23,7 @@
  * ```
  */
 
+import { WIZARD_STEP_KEYS } from "@blueprint/shared";
 import { motion, AnimatePresence } from "framer-motion";
 import { memo, useCallback, useRef, useEffect } from "react";
 import { useEditorStore, useWizardStore, useToast } from "../../store";
@@ -61,7 +62,7 @@ export const StepGenerating = memo(function StepGenerating({
   const handleCancel = useCallback(() => {
     cancelGeneration();
     toast.info(TOAST_MESSAGES.GENERATION_CANCELLED);
-    setStep("review");
+    setStep(WIZARD_STEP_KEYS.REVIEW);
   }, [cancelGeneration, setStep, toast]);
 
   const wasComplete = useRef(false);
@@ -80,7 +81,7 @@ export const StepGenerating = memo(function StepGenerating({
   }, [isComplete]);
 
   const handleViewReview = useCallback(() => {
-    setStep("review");
+    setStep(WIZARD_STEP_KEYS.REVIEW);
   }, [setStep]);
 
   const handleViewEditor = useCallback(() => {
@@ -209,7 +210,7 @@ export const StepGenerating = memo(function StepGenerating({
           </motion.div>
         ) : (
           <motion.div
-            key="generating"
+            key={WIZARD_STEP_KEYS.GENERATING}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}

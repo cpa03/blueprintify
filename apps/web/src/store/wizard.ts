@@ -16,6 +16,7 @@
 
 import { create } from "zustand";
 import type { WizardState, WizardStep, TechStackItemType } from "@blueprint/shared";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared";
 import { WIZARD_STEPS, DEBOUNCE_CONFIG } from "../config/constants";
 import { wizardStorage } from "../lib/storage";
 import { createPersistedStore, type PersistedStorage } from "./persistence";
@@ -66,7 +67,7 @@ export interface WizardStore extends WizardState {
 const STEPS: WizardStep[] = WIZARD_STEPS.map((s) => s.key);
 
 const initialState: WizardState = {
-  currentStep: "info",
+  currentStep: WIZARD_STEP_KEYS.INFO,
   projectName: "",
   description: "",
   techStack: [],
@@ -199,7 +200,7 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
         description: template.defaultDescription,
         techStack: template.techStack,
         features: template.features,
-        currentStep: "review" as WizardStep,
+        currentStep: WIZARD_STEP_KEYS.REVIEW,
       };
       set(newState);
       void wizardStorage.set(newState);

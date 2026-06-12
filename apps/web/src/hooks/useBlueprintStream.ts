@@ -14,6 +14,7 @@ import { useCallback } from "react";
 import { useWizardStore, useEditorStore } from "../store";
 import { generateBlueprint, generateTasks } from "../lib/api";
 import type { BlueprintRequest } from "@blueprint/shared";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared";
 import { GENERATION_MESSAGES } from "../config/constants";
 
 /**
@@ -88,7 +89,7 @@ export function useBlueprintStream(): {
     reset();
     setIsGenerating(true);
     setGenerationProgress(GENERATION_MESSAGES.BLUEPRINT_START);
-    setStep("generating");
+    setStep(WIZARD_STEP_KEYS.GENERATING);
 
     // Prepare request
     const request: BlueprintRequest = {

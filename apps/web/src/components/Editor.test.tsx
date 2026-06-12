@@ -7,6 +7,7 @@ import { ExportProvider } from "../context/ExportContext";
 import type { EditorStore } from "../store/editor";
 import type { WizardStore } from "../store/wizard";
 import type { TechStackItemType } from "@blueprint/shared";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared";
 import { EDITOR_TABS } from "../config/constants";
 
 vi.mock("../store", () => ({
@@ -112,7 +113,7 @@ const mockEditorStore: EditorStore = {
 };
 
 const mockWizardStore: WizardStore = {
-  currentStep: "info" as const,
+  currentStep: WIZARD_STEP_KEYS.INFO,
   projectName: "Test Project",
   description: "",
   techStack: [],

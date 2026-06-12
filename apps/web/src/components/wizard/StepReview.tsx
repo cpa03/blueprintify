@@ -21,6 +21,7 @@
  * ```
  */
 
+import { WIZARD_STEP_KEYS } from "@blueprint/shared";
 import { motion } from "framer-motion";
 import { memo, useCallback } from "react";
 import { useWizardStore } from "../../store";
@@ -48,9 +49,9 @@ export const StepReview = memo(function StepReview({
   const setStep = useWizardStore((s) => s.setStep);
   const { startGeneration, isGenerating, progress } = useBlueprintStream();
 
-  const handleEditInfo = useCallback(() => setStep("info"), [setStep]);
-  const handleEditStack = useCallback(() => setStep("stack"), [setStep]);
-  const handleEditFeatures = useCallback(() => setStep("features"), [setStep]);
+  const handleEditInfo = useCallback(() => setStep(WIZARD_STEP_KEYS.INFO), [setStep]);
+  const handleEditStack = useCallback(() => setStep(WIZARD_STEP_KEYS.STACK), [setStep]);
+  const handleEditFeatures = useCallback(() => setStep(WIZARD_STEP_KEYS.FEATURES), [setStep]);
 
   const modifierKey = getModifierLabel();
 

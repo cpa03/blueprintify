@@ -15,6 +15,7 @@ import { useBlueprintStream } from "./useBlueprintStream";
 import { generateBlueprint, generateTasks } from "../lib/api";
 import { useWizardStore, useEditorStore } from "../store";
 import { EDITOR_TABS } from "../config/constants";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared";
 
 // Mock the API module
 vi.mock("../lib/api", () => ({
@@ -32,7 +33,7 @@ function resetStores(): void {
     features: [],
     targetAudience: "",
     constraints: "",
-    currentStep: "info",
+    currentStep: WIZARD_STEP_KEYS.INFO,
   });
   useEditorStore.setState({
     blueprintContent: "",
@@ -231,13 +232,13 @@ describe("useBlueprintStream", () => {
 
     const { result } = renderHook(() => useBlueprintStream());
 
-    expect(useWizardStore.getState().currentStep).toBe("info");
+    expect(useWizardStore.getState().currentStep).toBe(WIZARD_STEP_KEYS.INFO);
 
     await act(async () => {
       await result.current.startGeneration();
     });
 
-    expect(useWizardStore.getState().currentStep).toBe("generating");
+    expect(useWizardStore.getState().currentStep).toBe(WIZARD_STEP_KEYS.GENERATING);
   });
 
   it("should progress to task generation after blueprint completes", async () => {

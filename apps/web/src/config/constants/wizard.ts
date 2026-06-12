@@ -2,18 +2,19 @@
 // Source of truth for wizard-related constants
 
 import { ENV } from "../env";
-import { SHARED_DEFAULTS } from "@blueprint/shared";
+import { SHARED_DEFAULTS, WIZARD_STEP_KEYS } from "@blueprint/shared";
 
 /**
  * Wizard step configuration
  * Defines the ordered steps in the project setup wizard
+ * Flexy says: Step keys reference WIZARD_STEP_KEYS from @blueprint/shared!
  */
 export const WIZARD_STEPS = [
-  { key: "info", label: "Project Info", icon: "📝", shortcut: "1" },
-  { key: "stack", label: "Tech Stack", icon: "⚙️", shortcut: "2" },
-  { key: "features", label: "Features", icon: "✨", shortcut: "3" },
-  { key: "review", label: "Review", icon: "👀", shortcut: "4" },
-  { key: "generating", label: "Generate", icon: "🚀", shortcut: "5" },
+  { key: WIZARD_STEP_KEYS.INFO, label: "Project Info", icon: "📝", shortcut: "1" },
+  { key: WIZARD_STEP_KEYS.STACK, label: "Tech Stack", icon: "⚙️", shortcut: "2" },
+  { key: WIZARD_STEP_KEYS.FEATURES, label: "Features", icon: "✨", shortcut: "3" },
+  { key: WIZARD_STEP_KEYS.REVIEW, label: "Review", icon: "👀", shortcut: "4" },
+  { key: WIZARD_STEP_KEYS.GENERATING, label: "Generate", icon: "🚀", shortcut: "5" },
 ] as const;
 
 /**
