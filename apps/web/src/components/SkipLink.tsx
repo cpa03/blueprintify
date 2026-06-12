@@ -1,26 +1,5 @@
 import { memo } from "react";
-
-/**
- * SkipLink - Accessibility component for keyboard navigation
- *
- * Provides a hidden link that becomes visible when focused, allowing
- * keyboard users to skip directly to the main content. This is a
- * WCAG 2.1 Level A requirement (Success Criterion 2.4.1).
- *
- * Features:
- * - Glassmorphism design for premium visual appearance
- * - Subtle glow animation for enhanced feedback
- * - CSS transitions and keyframes for smooth animations
- * - Icon for improved visual recognition
- *
- * @see https://www.w3.org/WAI/WCAG21/Understanding/bypass-blocks.html
- */
-
-/* Keyframes injected once via style tag for the skip-link animations */
-const skipLinkStyles = {
-  arrowBounce: `@keyframes skip-arrow-bounce { 0%,100% { transform: translateX(0); } 50% { transform: translateX(3px); } }`,
-  glowPulse: `@keyframes skip-glow-pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 0.6; } }`,
-};
+import { SKIP_LINK_ANIMATION } from "../config/constants";
 
 export const SkipLink = memo(function SkipLink(): JSX.Element {
   return (
@@ -47,7 +26,7 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
-          style={{ animation: "skip-arrow-bounce 1.2s ease-in-out infinite" }}
+          style={{ animation: SKIP_LINK_ANIMATION.ARROW_BOUNCE }}
         >
           <path
             strokeLinecap="round"
@@ -60,11 +39,11 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
       </span>
       <span
         className="absolute inset-0 rounded-xl bg-primary-400/20 blur-md -z-10"
-        style={{ animation: "skip-glow-pulse 2s ease-in-out infinite" }}
+        style={{ animation: SKIP_LINK_ANIMATION.GLOW_PULSE }}
       />
       <style>
-        {skipLinkStyles.arrowBounce}
-        {skipLinkStyles.glowPulse}
+        {SKIP_LINK_ANIMATION.ARROW_BOUNCE_KEYFRAMES}
+        {SKIP_LINK_ANIMATION.GLOW_PULSE_KEYFRAMES}
       </style>
     </a>
   );

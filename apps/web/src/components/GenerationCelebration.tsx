@@ -18,6 +18,7 @@ import {
   CELEBRATION_TIMING,
   CELEBRATION_PARTICLE,
   CELEBRATION_TEXT,
+  CELEBRATION_PARTICLE_STYLE,
   SPRING_CONFIG,
 } from "../config/constants";
 import { CELEBRATION_ANIMATION } from "../config/theme";
@@ -94,8 +95,8 @@ const ParticleShape = memo(function ParticleShape({
           width: size,
           height: size,
           backgroundColor: color,
-          borderRadius: "50%",
-          boxShadow: `0 0 ${size}px ${color}`,
+          borderRadius: CELEBRATION_PARTICLE_STYLE.CIRCLE_RADIUS,
+          boxShadow: CELEBRATION_PARTICLE_STYLE.BOX_SHADOW_TEMPLATE(size, color),
         }}
       />
     );
@@ -108,7 +109,7 @@ const ParticleShape = memo(function ParticleShape({
           width: size,
           height: size,
           backgroundColor: color,
-          boxShadow: `0 0 ${size}px ${color}`,
+          boxShadow: CELEBRATION_PARTICLE_STYLE.BOX_SHADOW_TEMPLATE(size, color),
         }}
       />
     );

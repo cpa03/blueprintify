@@ -31,21 +31,14 @@
 import { useState, useCallback, useEffect, useRef, memo } from "react";
 import { useOnlineStatus } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { NETWORK_MESSAGES, ACCESSIBILITY_LABELS } from "../config/constants";
+import { NETWORK_MESSAGES, ACCESSIBILITY_LABELS, OFFLINE_ANIMATION } from "../config/constants";
 
 /**
  * CSS keyframes injected once for the pulse-ring animation.
  * Matches the original framer-motion spring pulse (2s infinite).
  */
-const pulseKeyframes = `@keyframes offline-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.3; }
-  50% { transform: scale(1.6); opacity: 0; }
-}`;
-
-const pulseScaleKeyframes = `@keyframes offline-pulse-scale {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-}`;
+const pulseKeyframes = OFFLINE_ANIMATION.PULSE_RING_KEYFRAMES;
+const pulseScaleKeyframes = OFFLINE_ANIMATION.PULSE_SCALE_KEYFRAMES;
 
 // Inject keyframes only once
 if (typeof document !== "undefined") {
@@ -103,11 +96,7 @@ function OfflineBannerComponent(): JSX.Element | null {
               {/* Pulsing warning icon — CSS animation replaces framer-motion */}
               <span
                 className="relative flex h-5 w-5 flex-shrink-0"
-                style={
-                  shouldReduceMotion
-                    ? {}
-                    : { animation: "offline-pulse-scale 2s ease-in-out infinite" }
-                }
+                style={shouldReduceMotion ? {} : { animation: OFFLINE_ANIMATION.PULSE_SCALE }}
                 aria-hidden="true"
               >
                 {/* Ping ring */}
@@ -116,7 +105,7 @@ function OfflineBannerComponent(): JSX.Element | null {
                   style={
                     shouldReduceMotion
                       ? { opacity: 0.3 }
-                      : { animation: "offline-pulse 2s ease-in-out infinite" }
+                      : { animation: OFFLINE_ANIMATION.PULSE_RING }
                   }
                 />
                 <span className="relative inline-flex rounded-full h-5 w-5 bg-accent-pink/20 items-center justify-center">

@@ -58,6 +58,13 @@ vi.mock("../config/constants", () => ({
     ESTIMATED_HEIGHT: 60,
     VIEWPORT_PADDING: 16,
   },
+  ENTRANCE_STAGGER: {
+    BASE_DELAY_S: 0.15,
+    INCREMENT_S: 0.07,
+    FILL_MODE: "backwards",
+    SHORT_DELAY_S: 0.1,
+    MEDIUM_DELAY_S: 0.2,
+  },
 }));
 
 vi.mock("framer-motion", () => {
