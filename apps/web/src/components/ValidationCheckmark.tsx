@@ -58,6 +58,7 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
             type: "spring",
             ...ANIMATION_TIMING.easing.spring,
           }}
+          role="img"
           className={`${containerClasses} ${isValid ? validClasses : invalidClasses} ${className}`}
           aria-label={isValid ? ariaLabel : invalidAriaLabel}
         >
