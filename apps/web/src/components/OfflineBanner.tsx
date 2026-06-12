@@ -75,9 +75,9 @@ function OfflineBannerComponent(): JSX.Element | null {
   return (
     <div
       ref={containerRef}
-      role="status"
-      aria-live="polite"
-      aria-atomic="true"
+      role={isVisible ? "status" : undefined}
+      aria-live={isVisible ? "polite" : undefined}
+      aria-atomic={isVisible ? "true" : undefined}
       className={`overflow-hidden transition-all duration-300 ease-out ${
         isVisible ? "max-h-16 opacity-100" : "max-h-0 opacity-0"
       } ${shouldReduceMotion ? "transition-none" : ""}`}
