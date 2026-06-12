@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 90: full repository audit, BroCula description fix (Jun 11 Run 3 → Jun 12 Run 1), documentation sync, quality verification
 - RepoKeeper Cycle 89: full repository audit, README tree fix (added Jun 11 Run 3 BroCula audit), documentation sync, quality verification
 - fix(security): add instruction reinforcement against prompt injection in architect, refiner, task-splitter prompts
 - RepoKeeper Cycle 88: full repository audit, README tree fix (added Jun 11 Run 2 BroCula audit), documentation sync, quality verification
