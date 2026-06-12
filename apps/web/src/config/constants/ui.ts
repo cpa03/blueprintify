@@ -60,6 +60,14 @@ export const ANIMATION = {
   TAB_SWITCH: 0.3,
   /** Duration for gentle pulse animations */
   PULSE: 0.6,
+  /** Stagger delay between card entrance animations (seconds) */
+  CARD_ENTRANCE_DELAY: 0.05,
+  /** Duration of each card entrance animation (seconds) */
+  CARD_ENTRANCE_DURATION: 0.3,
+  /** Duration for checkmark overlay fade-in (seconds) */
+  CHECKMARK_OVERLAY_S: 0.25,
+  /** Duration for loading overlay fade-in (seconds) */
+  LOADING_OVERLAY_S: 0.15,
 } as const;
 
 /** Animation durations (in milliseconds) */

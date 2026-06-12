@@ -31,7 +31,7 @@ import { useState, useRef, useCallback, useEffect, forwardRef, memo } from "reac
 import { motion, AnimatePresence } from "framer-motion";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
 import { TOAST_CONFIG, SPRING_CONFIG, ACCESSIBILITY_LABELS, ANIMATION } from "../config/constants";
-import { TOAST_SPRING } from "../config/theme";
+import { TOAST_SPRING, TRANSFORMS } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 const toastIcons: Record<ToastType, string> = {
@@ -71,7 +71,7 @@ const ProgressRing = memo(function ProgressRing({
       width={size}
       height={size}
       className="absolute pointer-events-none"
-      style={{ transform: "rotate(-90deg)" }}
+      style={{ transform: TRANSFORMS.ROTATE_NEG_90 }}
     >
       <circle
         cx={size / 2}

@@ -29,6 +29,7 @@
 import { useState, useEffect, useCallback, memo } from "react";
 import { motion, useSpring, useTransform } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { LAYOUT } from "../config/theme";
 
 interface PageScrollProgressBarProps {
   /**
@@ -105,7 +106,7 @@ function PageScrollProgressBarComponent({
   return (
     <motion.div
       className={`fixed top-0 left-0 right-0 z-40 pointer-events-none ${className}`}
-      style={{ marginTop: "64px" }}
+      style={{ marginTop: `${LAYOUT.HEADER_HEIGHT_PX}px` }}
       initial={{ opacity: 0 }}
       animate={{ opacity: isVisible ? 1 : 0 }}
       transition={{ duration: prefersReducedMotion ? 0 : 0.25, ease: "easeOut" }}
