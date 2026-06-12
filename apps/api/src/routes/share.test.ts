@@ -179,6 +179,48 @@ describe("GET /share/:id", () => {
     expect(data.error.type).toBe("not_found");
     expect(data.error.code).toBe(ERROR_CODES.NOT_FOUND_ERROR);
   });
+
+  it("should return share with metadata parsed correctly", async () => {
+    const env = createMockEnv();
+    // First create a share with metadata
+    const postRes = await app.request(
+      "/",
+      {
+        method: HTTP_METHODS.POST,
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
+        body: JSON.stringify({
+          title: "Metadata Test",
+          blueprint: "# Metadata Test",
+          metadata: {
+            projectName: "My Project",
+            techStack: ["React"],
+            author: "Tester",
+          },
+        }),
+      },
+      env
+    );
+    const postBody = (await postRes.json()) as {
+      success: true;
+      data: { id: string };
+    };
+    const { id } = postBody.data;
+
+    // Then retrieve it and verify metadata
+    const getRes = await app.request(`/${id}`, {}, env);
+    expect(getRes.status).toBe(HTTP_STATUS.OK);
+    const getBody = (await getRes.json()) as {
+      success: true;
+      data: {
+        metadata: { projectName: string; techStack: string[]; author: string } | null;
+      };
+    };
+    expect(getBody.success).toBe(true);
+    expect(getBody.data.metadata).toBeDefined();
+    expect(getBody.data.metadata?.projectName).toBe("My Project");
+    expect(getBody.data.metadata?.techStack).toEqual(["React"]);
+    expect(getBody.data.metadata?.author).toBe("Tester");
+  });
 });
 
 describe("DELETE /share/:id", () => {

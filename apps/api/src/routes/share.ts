@@ -83,6 +83,23 @@ function isValidShareId(id: string | undefined): id is string {
 }
 
 /**
+ * Safely parses a metadata JSON string into a Record.
+ * Returns undefined if the input is null/undefined or unparseable.
+ * Avoids unsafe `as` type assertions by validating the parsed value at runtime.
+ */
+function parseMetadata(metadata: unknown): Record<string, unknown> | undefined {
+  if (!metadata || typeof metadata !== "string") return undefined;
+  try {
+    const parsed = JSON.parse(metadata);
+    return typeof parsed === "object" && parsed !== null
+      ? (parsed as Record<string, unknown>)
+      : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
  * Checks if the database binding is configured and returns a 500 error response if not.
  * Returns null when DB is available (caller can proceed), or a Response when it's missing.
  */
@@ -243,11 +260,9 @@ app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
     // Safely parse metadata JSON with error handling
     let parsedMetadata: Record<string, unknown> | undefined;
     if (result.metadata) {
-      try {
-        parsedMetadata = JSON.parse(result.metadata as string) as Record<string, unknown>;
-      } catch (parseError) {
-        secureLogError("Failed to parse share metadata", parseError);
-        parsedMetadata = undefined;
+      parsedMetadata = parseMetadata(result.metadata);
+      if (parsedMetadata === undefined) {
+        secureLogError("Failed to parse share metadata", null);
       }
     }
 
@@ -333,13 +348,7 @@ app.delete(
       // Validate ownership: if the share has a creatorId, the request must match
       const creatorId = await getCreatorId(c.env.API_KEY);
       if (creatorId && existing.metadata) {
-        let parsedMetadata: Record<string, unknown> = {};
-        try {
-          parsedMetadata = JSON.parse(existing.metadata) as Record<string, unknown>;
-        } catch {
-          // If metadata can't be parsed, proceed with deletion
-          // rather than locking the resource due to data corruption
-        }
+        const parsedMetadata = parseMetadata(existing.metadata) ?? {};
         const shareCreatorId = parsedMetadata.createdBy as string | undefined;
         if (shareCreatorId && shareCreatorId !== creatorId) {
           return c.json(
