@@ -130,20 +130,35 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
           </>
         ) : siblingTabHasContent ? (
           <>
-            <button
+            <motion.button
               onClick={onSwitchTab}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{
+                type: "spring",
+                ...SPRING_CONFIG.SNAPPY,
+                delay: 0.15,
+              }}
               className="inline-flex items-center gap-1.5 text-primary-400 hover:text-primary-300 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded px-1 -mx-1"
               aria-label={`Switch to ${tab === EDITOR_TABS.BLUEPRINT ? EDITOR_TABS.TASKS : EDITOR_TABS.BLUEPRINT} tab`}
             >
               <span aria-hidden="true">←</span>
               Switch to{" "}
               <strong>
-                {tab === EDITOR_TABS.BLUEPRINT
-                  ? `${tabEmojis[EDITOR_TABS.TASKS]} ${tabLabels[EDITOR_TABS.TASKS]}`
-                  : `${tabEmojis[EDITOR_TABS.BLUEPRINT]} ${tabLabels[EDITOR_TABS.BLUEPRINT]}`}
+                {tab === EDITOR_TABS.BLUEPRINT ? (
+                  <>
+                    <span aria-hidden="true">{tabEmojis[EDITOR_TABS.TASKS]}</span>{" "}
+                    {tabLabels[EDITOR_TABS.TASKS]}
+                  </>
+                ) : (
+                  <>
+                    <span aria-hidden="true">{tabEmojis[EDITOR_TABS.BLUEPRINT]}</span>{" "}
+                    {tabLabels[EDITOR_TABS.BLUEPRINT]}
+                  </>
+                )}
               </strong>{" "}
               tab
-            </button>
+            </motion.button>
           </>
         ) : (
           content.HINT
