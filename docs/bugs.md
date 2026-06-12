@@ -4,7 +4,7 @@
 
 ## Active Bugs
 
-> **BugFixer ULW Cycle 2026-06-12**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,184/1,184 ✅ npm audit 0 vulns ✅. 0 type suppressions. 0 TODO/FIXME/HACK artifacts. 0 `as any`. Fixed BUG-014 — replaced stale doc refs `docs/bug.md`→`docs/bugs.md` and `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). Fixed BUG-017 — replaced `node-version: "20"` with `node-version-file: ".node-version"` in 4 workflow files (11 instances). Both fixes verified via grep: zero stale doc refs, zero hardcoded `node-version:` remaining. Push blocked by GitHub App `workflows: write` permission — same documented blocker as all prior cycles. See branch `fix/bugfixer-ulw-jun-12` for the verified fix.
+> **BugFixer ULW Cycle 2026-06-12**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,184/1,184 ✅ npm audit 0 vulns ✅. 0 type suppressions. 0 TODO/FIXME/HACK artifacts. 0 `as any`. Fixed BUG-014 — replaced stale doc refs `docs/bug.md`→`docs/bugs.md` and `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). Fixed BUG-017 — replaced `node-version: "20"` with `node-version-file: ".node-version"` in 4 workflow files (11 instances). Both fixes verified via grep: zero stale doc refs, zero hardcoded `node-version:` remaining. Push blocked by GitHub App `workflows: write` permission — same documented blocker as all prior cycles. See local branch `fix/bugfixer-ulw-jun-12-2` for the verified fix.
 
 > **BroCula ULW Cycle 2026-06-12**: Full BroCula audit complete. Console ✅ zero errors/warnings. Lighthouse ✅ 99-100-100-100. Typecheck ✅ lint ✅ build ✅ tests 1184/1184 ✅. 0 type suppressions. 0 `as any`. 0 code quality issues. Repo fully clean — no new fixable bugs found.
 
