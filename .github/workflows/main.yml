@@ -36,7 +36,7 @@ jobs:
           IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
           opencode run \
-            "Baca docs/blueprint.md, docs/roadmap.md, docs/bugs.md, docs/features.md.
+            "Baca docs/blueprint.md, docs/roadmap.md, docs/bug.md, docs/feature.md.
              Evaluasi prioritas.
              Update docs/task.md (OPEN / PRIORITY / ROLE / SCOPE).
              Jangan coding." \
@@ -260,7 +260,7 @@ jobs:
         run: |
           opencode run \
             "Scan log, PR, issue.
-             Catat bug baru ke docs/bugs.md.
+             Catat bug baru ke docs/bug.md.
              Jangan fix." \
             --agent reliability-engineer \
             --model opencode/deepseek-v4-flash-free \
