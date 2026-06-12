@@ -22,7 +22,7 @@
  */
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useCallback, memo } from "react";
+import { useState, useCallback, useMemo, memo } from "react";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
 import {
@@ -67,13 +67,17 @@ interface TechChipProps {
   isSelected: boolean;
   onToggle: (tech: { name: string; category: string }) => void;
   justSelected: string | null;
+  entranceIndex?: number;
 }
+
+const CHIP_ENTRANCE_STAGGER_S = 0.03;
 
 const TechChip = memo(function TechChip({
   tech,
   isSelected,
   onToggle,
   justSelected,
+  entranceIndex = 0,
 }: TechChipProps) {
   const isJustSelected = justSelected === tech.name;
 
@@ -89,10 +93,14 @@ const TechChip = memo(function TechChip({
       }}
       aria-pressed={isSelected}
       className={clsx(
-        "tech-chip relative overflow-hidden",
+        "tech-chip relative overflow-hidden animate-fade-in",
         isSelected && "selected",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
       )}
+      style={{
+        animationDelay: `${entranceIndex * CHIP_ENTRANCE_STAGGER_S}s`,
+        animationFillMode: "backwards",
+      }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       animate={
@@ -192,6 +200,20 @@ export const StepStack = memo(function StepStack({
 
   const categories = Object.entries(TECH_STACK_OPTIONS);
 
+  // Pre-compute the starting global index for each category so every tech chip
+  // receives its position in the full flattened list. Used for staggered entrance
+  // animation — each chip fades in with a short delay based on its global index,
+  // creating a polished cascade effect when the step loads.
+  const categoryStartIndices = useMemo(() => {
+    const indices: Record<string, number> = {};
+    let idx = 0;
+    for (const [category, options] of categories) {
+      indices[category] = idx;
+      idx += options.length;
+    }
+    return indices;
+  }, [categories]);
+
   const canProceed = techStack.length >= MIN_REQUIREMENTS.TECH_STACK;
 
   const handleNextClick = () => {
@@ -288,15 +310,19 @@ export const StepStack = memo(function StepStack({
               role="group"
               aria-labelledby={`category-${category}`}
             >
-              {options.map((tech) => (
-                <TechChip
-                  key={tech.name}
-                  tech={tech}
-                  isSelected={isSelected(tech.name)}
-                  onToggle={toggleTech}
-                  justSelected={justSelected}
-                />
-              ))}
+              {options.map((tech, chipIdx) => {
+                const globalIndex = (categoryStartIndices[category] ?? 0) + chipIdx;
+                return (
+                  <TechChip
+                    key={tech.name}
+                    tech={tech}
+                    isSelected={isSelected(tech.name)}
+                    onToggle={toggleTech}
+                    justSelected={justSelected}
+                    entranceIndex={globalIndex}
+                  />
+                );
+              })}
             </div>
           </div>
         ))}
