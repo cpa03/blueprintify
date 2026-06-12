@@ -49,7 +49,8 @@ blueprintify/
 │   │   ├── brocula-hunt-2026-06-10-run4.md
 │   │   ├── brocula-hunt-2026-06-10-run5.md
 │   │   ├── brocula-hunt-2026-06-11.md
-│   │   └── brocula-hunt-2026-06-11-run2.md
+│   │   ├── brocula-hunt-2026-06-11-run2.md
+│   │   └── brocula-hunt-2026-06-12.md
 │   ├── blueprint.md
 │   ├── bugs.md
 │   ├── ci-configuration.md
