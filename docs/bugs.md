@@ -4,6 +4,8 @@
 
 ## Active Bugs
 
+> **BugFixer ULW Cycle 2026-06-12**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,184/1,184 ✅ npm audit 0 vulns ✅. 0 type suppressions. 0 TODO/FIXME/HACK artifacts. 0 `as any`. Fixed BUG-014 — replaced stale doc refs `docs/bug.md`→`docs/bugs.md` and `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). Fixed BUG-017 — replaced `node-version: "20"` with `node-version-file: ".node-version"` in 4 workflow files (11 instances). Both fixes verified via grep: zero stale doc refs, zero hardcoded `node-version:` remaining. Push blocked by GitHub App `workflows: write` permission — same documented blocker as all prior cycles. See branch `fix/bugfixer-ulw-jun-12` for the verified fix.
+
 > **RepoKeeper ULW Cycle 2026-06-11 (Cycle 88)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅. 0 type suppressions. 0 redundant/temp/unused source files found. 0 TODO/FIXME/HACK artifacts. Fixed README directory tree — added missing `brocula-hunt-2026-06-11-run2.md` (Jun 11 Run 2 BroCula audit). Updated BroCula Audits description to `(Jun 9–Jun 11 Run 2)`. Documentation refreshed for Cycle 88. Repo fully clean — no new fixable bugs found.
 
 > **RepoKeeper ULW Cycle 2026-06-11 (Cycle 87)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅. 0 type suppressions. 0 redundant/temp/unused source files found. 0 TODO/FIXME/HACK artifacts. Fixed README directory tree — added missing `brocula-hunt-2026-06-11.md` (Jun 11 BroCula audit). Updated BroCula Audits description to `(Jun 9–Jun 11)`. Documentation refreshed for Cycle 87. Repo fully clean — no new fixable bugs found.
@@ -233,7 +235,7 @@ Multiple documentation files still reference Node.js 18+ as the minimum requirem
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2026-06-11 (RepoKeeper Cycle 88)  
+**Last Updated**: 2026-06-12 (BugFixer ULW Cycle)  
 **Maintainer**: BugFixer (Ultrawork Loop)
 
 > RepoKeeper cycle 2026-06-04 (Cycle 55): Build/lint/typecheck/format all passing clean. Tests: 564 web + 342 api + 191 shared = 1097 total, all passing. 0 npm vulns. BUG-014 and BUG-017 status corrected to UNRESOLVED — fixes were applied in previous cycles but never merged to main (blocked by `workflows: write` permission). No new bugs identified.
