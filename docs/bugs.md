@@ -6,6 +6,8 @@
 
 > **RepoKeeper ULW Cycle 2026-06-12 (Cycle 92)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,193/1,193 ✅. 0 type suppressions. 0 redundant/temp/unused source files found. 0 TODO/FIXME/HACK artifacts. 0 `as any`. README tree verified accurate. All 28 referenced docs exist. Documentation refreshed for Cycle 92. Repo fully clean — no new fixable bugs found.
 
+> **BugFixer ULW Cycle 2026-06-12 (Run 2)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,193/1,193 ✅ npm audit 0 vulns ✅. 0 type suppressions. 0 TODO/FIXME/HACK artifacts. 0 `as any`. **Fixed missing README directory tree entry** — added `brocula-hunt-2026-06-12-run2.md` (Jun 12 Run 2 BroCula audit) to README directory tree. Fix verified: all 14 audit files now listed in tree, matching files on disk. Repo fully clean — no new fixable bugs found.
+
 > **BugFixer ULW Cycle 2026-06-12**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,184/1,184 ✅ npm audit 0 vulns ✅. 0 type suppressions. 0 TODO/FIXME/HACK artifacts. 0 `as any`. Fixed BUG-014 — replaced stale doc refs `docs/bug.md`→`docs/bugs.md` and `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). Fixed BUG-017 — replaced `node-version: "20"` with `node-version-file: ".node-version"` in 4 workflow files (11 instances). Both fixes verified via grep: zero stale doc refs, zero hardcoded `node-version:` remaining. Push blocked by GitHub App `workflows: write` permission — same documented blocker as all prior cycles. See local branch `fix/bugfixer-ulw-jun-12-2` for the verified fix.
 
 > **BroCula ULW Cycle 2026-06-12 (Run 2)**: Full BroCula audit complete. Console ✅ zero errors/warnings. Lighthouse ✅ 98-100-100-100 (perf dip due to CI runner variability — TBT 93ms vs 51ms). Typecheck ✅ lint ✅ build ✅ tests 1193/1193 ✅. 0 type suppressions. 0 `as any`. 0 code quality issues. Repo fully clean — no new fixable bugs found.
@@ -247,7 +249,7 @@ Multiple documentation files still reference Node.js 18+ as the minimum requirem
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2026-06-12 (BugFixer ULW Cycle)  
+**Last Updated**: 2026-06-12 (BugFixer ULW Cycle Run 2)  
 **Maintainer**: BugFixer (Ultrawork Loop)
 
 > RepoKeeper cycle 2026-06-04 (Cycle 55): Build/lint/typecheck/format all passing clean. Tests: 564 web + 342 api + 191 shared = 1097 total, all passing. 0 npm vulns. BUG-014 and BUG-017 status corrected to UNRESOLVED — fixes were applied in previous cycles but never merged to main (blocked by `workflows: write` permission). No new bugs identified.
