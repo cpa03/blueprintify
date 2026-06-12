@@ -14,7 +14,8 @@ import {
   HTTP_METHODS,
 } from "@blueprint/shared";
 import type { RetryOptions as SharedRetryOptions } from "@blueprint/shared";
-import { UI_FALLBACKS, TIMEOUTS } from "./constants";
+import { TIMEOUTS } from "./constants";
+import { ENV } from "./env";
 
 // ============================================================================
 // API Base URL
@@ -22,11 +23,9 @@ import { UI_FALLBACKS, TIMEOUTS } from "./constants";
 
 /**
  * Base URL for all API requests.
- * Priority: VITE_API_BASE_URL env var > UI_FALLBACKS.API_BASE
+ * Flexy says: Uses ENV.API_BASE_URL instead of direct import.meta.env access!
  */
-export const API_BASE: string =
-  (typeof import.meta !== "undefined" && import.meta.env?.VITE_API_BASE_URL) ||
-  UI_FALLBACKS.API_BASE;
+export const API_BASE: string = ENV.API_BASE_URL;
 
 // ============================================================================
 // Stream Event Types

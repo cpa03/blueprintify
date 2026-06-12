@@ -730,3 +730,20 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 1,193 tests passing (596 web + 352 api + 245 shared) across 69 files
+
+### ✅ Flexy Iteration 37: Derive UserRole from AUTH_DEFAULTS, Eliminate Test Mock Duplication & Direct env Access
+
+| File                                | Change                                                                                                                          |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/api/src/types.ts`             | `UserRole` type now derives from `typeof AUTH_DEFAULTS.ADMIN_ROLE \| AUTH_DEFAULTS.DEFAULT_ROLE` instead of `"admin" \| "user"` |
+| `apps/api/src/types.ts`             | AppVariables JSDoc references CONTEXT_KEYS instead of hardcoded context key strings                                             |
+| `apps/web/src/lib/api.test.ts`      | Replaced `vi.hoisted()` mock duplication with `vi.importActual` — mocks derive from real shared config at test time             |
+| `apps/web/src/lib/api.test.ts`      | Removed 49 lines of hardcoded mock config values (DEV_DEFAULTS, ROUTE_PATHS, HTTP_HEADERS, HTTP_METHODS, HTTP_STATUS)           |
+| `apps/web/src/config/api-client.ts` | Replaced direct `import.meta.env?.VITE_API_BASE_URL` with `ENV.API_BASE_URL`                                                    |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,194 tests passing (596 web + 353 api + 245 shared) across 69 files

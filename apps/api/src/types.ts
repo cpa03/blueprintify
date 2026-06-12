@@ -11,6 +11,7 @@
 
 import type { Context } from "hono";
 import type { z } from "zod";
+import { AUTH_DEFAULTS } from "@blueprint/shared";
 import type {
   BlueprintRequestSchema,
   RefineRequestSchema,
@@ -121,11 +122,12 @@ export interface Env {
  * Application-level variables stored in Hono context.
  *
  * These variables are set by middleware and available to route handlers
- * via `c.get('variableName')`.
+ * via `c.get(...)`. Keys reference CONTEXT_KEYS from @blueprint/shared.
+ * Flexy says: No hardcoded context key strings!
  *
- * @property requestId - Unique identifier for request tracing
- * @property validatedData - Parsed and validated request data from validator middleware
- * @property user - Authenticated user context with role information
+ * @property requestId - Unique identifier for request tracing (CONTEXT_KEYS.REQUEST_ID)
+ * @property validatedData - Parsed and validated request data from validator middleware (CONTEXT_KEYS.VALIDATED_DATA)
+ * @property user - Authenticated user context with role information (CONTEXT_KEYS.USER)
  */
 export interface AppVariables {
   requestId?: string;
@@ -137,8 +139,9 @@ export interface AppVariables {
  * User role types for authorization.
  * - admin: Full access to all resources
  * - user: Standard access (create, read own resources)
+ * Flexy says: Derived from AUTH_DEFAULTS in @blueprint/shared — single source of truth!
  */
-export type UserRole = "admin" | "user";
+export type UserRole = typeof AUTH_DEFAULTS.ADMIN_ROLE | typeof AUTH_DEFAULTS.DEFAULT_ROLE;
 
 /**
  * Authenticated user context extracted from request.
