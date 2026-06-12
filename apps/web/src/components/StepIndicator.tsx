@@ -157,7 +157,7 @@ function StepIndicatorComponent(): JSX.Element {
               aria-current={isActive ? "step" : undefined}
               className={`
                 flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300
-                outline-none
+                outline-none animate-fade-in
                 ${
                   isActive
                     ? "bg-primary-500/20 border border-primary-500/50 text-primary-300 focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
@@ -171,8 +171,14 @@ function StepIndicatorComponent(): JSX.Element {
                 ${justCompletedStep === step.key ? "step-complete-flash" : ""}
                 ${activatingStep === step.key ? "step-activate" : ""}
               `}
+              style={{
+                animationDelay: `${0.15 + index * 0.07}s`,
+                animationFillMode: "backwards",
+              }}
             >
-              <span>{step.icon}</span>
+              <span className="inline-block transition-transform duration-200 hover:scale-125">
+                {step.icon}
+              </span>
               <span className="text-sm font-medium hidden sm:inline">{step.label}</span>
               {isClickable && (
                 <span className="text-xs opacity-70 font-mono">Alt+{step.shortcut}</span>
@@ -181,10 +187,14 @@ function StepIndicatorComponent(): JSX.Element {
 
             {index < STEPS.length - 1 && (
               <div
-                className={`w-8 h-0.5 mx-2 rounded-full transition-all duration-500 ease-in-out ${
+                className={`w-8 h-0.5 mx-2 rounded-full transition-all duration-500 ease-in-out animate-fade-in ${
                   isCompleted ? "bg-accent-emerald" : "bg-dark-700"
                 }`}
-                style={isCompleted ? { boxShadow: STEP_CONNECTOR.COMPLETED_SHADOW } : undefined}
+                style={{
+                  ...(isCompleted ? { boxShadow: STEP_CONNECTOR.COMPLETED_SHADOW } : {}),
+                  animationDelay: `${0.15 + index * 0.07}s`,
+                  animationFillMode: "backwards",
+                }}
               />
             )}
           </div>
