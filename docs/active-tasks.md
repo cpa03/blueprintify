@@ -2,12 +2,33 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 90 — Full Repository Audit, BroCula Description Fix (Jun 11 Run 3 → Jun 12 Run 1), Doc Sync 🟢 ACTIVE
+## Current Focus: RepoKeeper Cycle 91 — Full Repository Audit, README Tree Fix (Add Jun 13 Run 1), Doc Sync 🟢 ACTIVE
+
+### Task: Full repository audit, add missing Jun 13 Run 1 BroCula audit to README tree, documentation sync, quality verification
+
+- **Priority**: High
+- **Status**: 🟢 Active
+- **Objective**: Full repository audit, add missing `brocula-hunt-2026-06-13.md` (Jun 13 Run 1 BroCula audit) to README directory tree and docs section, update CHANGELOG, refresh documentation for Cycle 91
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅
+  - [x] Added missing `brocula-hunt-2026-06-13.md` to README directory tree and docs section
+  - [x] Updated BroCula Audits description from `(Jun 9–Jun 12 Run 1)` to `(Jun 9–Jun 13 Run 1)`
+  - [x] Updated `docs/audits/README.md` — added Jun 13 as latest report
+  - [x] Updated `docs/bugs.md` — Cycle 91 status log
+  - [x] Updated `docs/findings.md` — Cycle 91 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 91 status
+  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 91
+  - [x] Updated CHANGELOG.md — Cycle 91 entry
+
+## Previous Cycle: RepoKeeper Cycle 90 — Full Repository Audit, BroCula Description Fix (Jun 11 Run 3 → Jun 12 Run 1), Doc Sync 🟢 COMPLETE
 
 ### Task: Full repository audit, fix stale BroCula Audits description, documentation sync, quality verification
 
 - **Priority**: High
-- **Status**: 🟢 Active
+- **Status**: 🟢 Complete
 - **Objective**: Full repository audit, fix BroCula Audits link description from `(Jun 9–Jun 11 Run 3)` to `(Jun 9–Jun 12 Run 1)` (directory tree already had Jun 12 file), update CHANGELOG, refresh documentation for Cycle 90
 - **Actions**:
   - [x] Full repository scan for redundant/temp/unused files → none found
@@ -429,5 +450,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-11 (Cycle 88: RepoKeeper)  
+**Last Updated**: 2026-06-13 (Cycle 91: RepoKeeper)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)

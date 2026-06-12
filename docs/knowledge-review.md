@@ -12,18 +12,19 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-12 (RepoKeeper Cycle 90)
+**Last Review**: 2026-06-13 (RepoKeeper Cycle 91)
 **Status**: ✅ Up to date — fully synced
 
-As of RepoKeeper Cycle 90 (refreshed):
+As of RepoKeeper Cycle 91 (refreshed):
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README fixed**: Updated BroCula Audits description from `(Jun 9–Jun 11 Run 3)` to `(Jun 9–Jun 12 Run 1)` — directory tree already had the Jun 12 file
-- **CHANGELOG updated**: Added Cycle 90 entry
-- **`docs/bugs.md` updated**: Cycle 90 status log added
-- **`docs/findings.md` updated**: Cycle 90 entry added
-- **`docs/active-tasks.md` updated**: Cycle 90 created, Cycle 89 marked complete
+- **README fixed**: Updated BroCula Audits description from `(Jun 9–Jun 12 Run 1)` to `(Jun 9–Jun 13 Run 1)` — added Jun 13 Run 1 to directory tree
+- **`docs/audits/README.md` updated**: Added Jun 13 as latest current report
+- **CHANGELOG updated**: Added Cycle 91 entry
+- **`docs/bugs.md` updated**: Cycle 91 status log added
+- **`docs/findings.md` updated**: Cycle 91 entry added
+- **`docs/active-tasks.md` updated**: Cycle 91 created, Cycle 90 marked complete
 
 ## Historical Drift Corrections
 
