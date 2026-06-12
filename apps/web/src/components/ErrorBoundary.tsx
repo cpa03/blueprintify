@@ -33,7 +33,7 @@ export function ErrorBoundary({ children, fallback, onError }: ErrorBoundaryProp
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
 
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark-900 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-dark-900 p-4 animate-fade-in">
         <div className="glass-card p-8 max-w-md w-full text-center">
           <div className="mb-6">
             <svg
