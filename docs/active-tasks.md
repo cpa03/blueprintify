@@ -2,12 +2,31 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 89 — Full Repository Audit, README Tree Fix (Add Jun 11 Run 3), Doc Sync 🟢 ACTIVE
+## Current Focus: RepoKeeper Cycle 90 — Full Repository Audit, BroCula Description Fix (Jun 11 Run 3 → Jun 12 Run 1), Doc Sync 🟢 ACTIVE
+
+### Task: Full repository audit, fix stale BroCula Audits description, documentation sync, quality verification
+
+- **Priority**: High
+- **Status**: 🟢 Active
+- **Objective**: Full repository audit, fix BroCula Audits link description from `(Jun 9–Jun 11 Run 3)` to `(Jun 9–Jun 12 Run 1)` (directory tree already had Jun 12 file), update CHANGELOG, refresh documentation for Cycle 90
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅
+  - [x] Fixed BroCula Audits description from `(Jun 9–Jun 11 Run 3)` to `(Jun 9–Jun 12 Run 1)` in README.md
+  - [x] Updated `docs/bugs.md` — Cycle 90 status log
+  - [x] Updated `docs/findings.md` — Cycle 90 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 90 status
+  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 90
+  - [x] Updated CHANGELOG.md — Cycle 90 entry
+
+## Previous Cycle: RepoKeeper Cycle 89 — Full Repository Audit, README Tree Fix (Add Jun 11 Run 3), Doc Sync 🟢 COMPLETE
 
 ### Task: Full repository audit, add missing Jun 11 Run 3 BroCula audit to README tree, documentation sync, quality verification
 
 - **Priority**: High
-- **Status**: 🟢 Active
+- **Status**: 🟢 Complete
 - **Objective**: Full repository audit, add missing `brocula-hunt-2026-06-11-run3.md` (Jun 11 Run 3 BroCula audit) to README directory tree and docs section, update CHANGELOG, refresh documentation for Cycle 89
 - **Actions**:
   - [x] Full repository scan for redundant/temp/unused files → none found

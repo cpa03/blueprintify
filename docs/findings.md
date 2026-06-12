@@ -2,6 +2,42 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 90 (2026-06-12 — RepoKeeper: Full Repository Audit, BroCula Description Fix (Jun 11 Run 3 → Jun 12 Run 1), Doc Sync)
+
+### Audit Scope
+
+Full repository audit covering build/lint health, redundant/temp/unused file scan, type suppression audit, stale BroCula Audits description in README (still said `Jun 9–Jun 11 Run 3` despite Jun 12 Run 1 file being in the tree), documentation sync, quality verification.
+
+### Status Summary
+
+| Check       | Result                            |
+| ----------- | --------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)               |
+| Lint        | ✅ Clean (0 warnings/errors)      |
+| Build       | ✅ Passes (web)                   |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories.
+2. **Type suppression audit**: Zero `@ts-ignore`, zero `@ts-expect-error`, zero `as any` in source code.
+3. **TODO/FIXME/HACK scan**: Zero artifacts in non-test source files.
+4. **README description fix**: Updated BroCula Audits link description from `(Jun 9–Jun 11 Run 3)` to `(Jun 9–Jun 12 Run 1)` — the directory tree already listed the Jun 12 file but the description was stale.
+5. **CHANGELOG updated**: Added Cycle 90 entry.
+6. **`docs/bugs.md` updated**: Cycle 90 status log added.
+7. **`docs/findings.md` updated**: Cycle 90 entry (this file).
+8. **`docs/active-tasks.md` updated**: Cycle 90 created, Cycle 89 marked complete.
+9. **`docs/knowledge-review.md` refreshed**: Cycle 90.
+
+### Key Findings
+
+- **No redundant/temp/unused files found** — repo remains clean.
+- **No `@ts-ignore`, `@ts-expect-error`, or `as any`** in source code.
+- **No TODO/FIXME/HACK artifacts** in non-test source files.
+- **README BroCula description stale**: Said `Jun 9–Jun 11 Run 3` but tree already had `brocula-hunt-2026-06-12.md` — fixed.
+- **2 remote branches not merged to main**: `feat/flexy-iteration-33-hardcoded-cleanup` and `palette/micro-ux-document-title-emoji` — left as-is (not merged into main, intentional work-in-progress).
+- **Repo healthy**: All quality checks passing, documentation refreshed.
+
 ## Cycle 89 (2026-06-12 — RepoKeeper: Full Repository Audit, README Tree Fix (Add Jun 11 Run 3), Doc Sync)
 
 ### Audit Scope
