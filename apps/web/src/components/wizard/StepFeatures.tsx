@@ -32,6 +32,7 @@ import {
   UI_CONTENT,
   ANIMATION,
 } from "../../config/constants";
+import { TRANSFORMS } from "../../config/theme";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
@@ -325,7 +326,7 @@ export const StepFeatures = memo(function StepFeatures({
                           exit={{ opacity: 0 }}
                           transition={{ duration: ANIMATION.SLOW, ease: "easeOut" }}
                           className="absolute inset-0 rounded-full bg-accent-emerald/30 pointer-events-none"
-                          style={{ transformOrigin: "center" }}
+                          style={{ transformOrigin: TRANSFORMS.ORIGIN_CENTER }}
                         />
                       )}
                     </AnimatePresence>

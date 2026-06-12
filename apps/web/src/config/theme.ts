@@ -169,6 +169,14 @@ export const SPACING = {
 export const LAYOUT = {
   /** Height of the fixed header bar (px), referenced by scroll-aware components */
   HEADER_HEIGHT_PX: 64,
+  /** Wizard scroll shadow height (px) */
+  SCROLL_SHADOW_HEIGHT_PX: 20,
+  /** Wizard scroll shadow gradient (top) — rgba(2,6,23) is the dark-950 base bg */
+  SCROLL_SHADOW_TOP_GRADIENT:
+    "linear-gradient(to bottom, rgba(2,6,23,0.85) 0%, rgba(2,6,23,0.5) 40%, transparent 100%)",
+  /** Wizard scroll shadow gradient (bottom) */
+  SCROLL_SHADOW_BOTTOM_GRADIENT:
+    "linear-gradient(to top, rgba(2,6,23,0.85) 0%, rgba(2,6,23,0.5) 40%, transparent 100%)",
 } as const;
 
 // ============================================================================
@@ -182,6 +190,8 @@ export const LAYOUT = {
 export const TRANSFORMS = {
   /** Standard SVG rotation for circular progress indicators */
   ROTATE_NEG_90: "rotate(-90deg)",
+  /** CSS transform-origin value for ripple/pulse effects centered in element */
+  ORIGIN_CENTER: "center" as const,
 } as const;
 
 // ============================================================================

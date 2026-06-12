@@ -29,6 +29,7 @@ import { useReducedMotion } from "../hooks/useReducedMotion";
 import { WIZARD_STEPS, STEP_TITLES } from "../config/constants";
 import { SPINNER } from "../config/styles";
 import { WIZARD_STEP_KEYS } from "@blueprint/shared";
+import { LAYOUT } from "../config/theme";
 import type { AnimationDirection } from "../utils/motion";
 
 // Lazy load step components — only one renders at a time, so eager imports waste bandwidth
@@ -206,9 +207,8 @@ function WizardComponent(): JSX.Element {
         className="absolute top-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
         style={{
           opacity: shadowOpacity ?? (scrollState.isTop ? 0 : 1),
-          height: "20px",
-          background:
-            "linear-gradient(to bottom, rgba(2,6,23,0.85) 0%, rgba(2,6,23,0.5) 40%, transparent 100%)",
+          height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
+          background: LAYOUT.SCROLL_SHADOW_TOP_GRADIENT,
         }}
         aria-hidden="true"
       />
@@ -229,9 +229,8 @@ function WizardComponent(): JSX.Element {
         className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
         style={{
           opacity: shadowOpacity ?? (scrollState.isBottom ? 0 : 1),
-          height: "20px",
-          background:
-            "linear-gradient(to top, rgba(2,6,23,0.85) 0%, rgba(2,6,23,0.5) 40%, transparent 100%)",
+          height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
+          background: LAYOUT.SCROLL_SHADOW_BOTTOM_GRADIENT,
         }}
         aria-hidden="true"
       />

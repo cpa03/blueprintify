@@ -30,6 +30,7 @@ import {
   PROGRESS_COLORS,
   TOAST_MESSAGES,
   STEP_CONNECTOR,
+  ENTRANCE_STAGGER,
 } from "../config/constants";
 import { CircularProgress } from "./CircularProgress";
 import { SmartTooltip } from "./SmartTooltip";
@@ -172,8 +173,8 @@ function StepIndicatorComponent(): JSX.Element {
                 ${activatingStep === step.key ? "step-activate" : ""}
               `}
               style={{
-                animationDelay: `${0.15 + index * 0.07}s`,
-                animationFillMode: "backwards",
+                animationDelay: `${ENTRANCE_STAGGER.BASE_DELAY_S + index * ENTRANCE_STAGGER.INCREMENT_S}s`,
+                animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
               }}
             >
               <span className="inline-block transition-transform duration-200 hover:scale-125">
@@ -192,8 +193,8 @@ function StepIndicatorComponent(): JSX.Element {
                 }`}
                 style={{
                   ...(isCompleted ? { boxShadow: STEP_CONNECTOR.COMPLETED_SHADOW } : {}),
-                  animationDelay: `${0.15 + index * 0.07}s`,
-                  animationFillMode: "backwards",
+                  animationDelay: `${ENTRANCE_STAGGER.BASE_DELAY_S + index * ENTRANCE_STAGGER.INCREMENT_S}s`,
+                  animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
                 }}
               />
             )}

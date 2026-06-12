@@ -34,6 +34,7 @@ import {
   SPRING_CONFIG,
   UI_CONTENT,
 } from "../../config/constants";
+import { TRANSFORMS } from "../../config/theme";
 import { pageTransition, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
@@ -112,7 +113,7 @@ const TechChip = memo(function TechChip({
             exit={{ opacity: 0 }}
             transition={{ duration: ANIMATION.HALF_SECOND, ease: "easeOut" }}
             className="absolute inset-0 rounded-full bg-accent-emerald/30 pointer-events-none"
-            style={{ transformOrigin: "center" }}
+            style={{ transformOrigin: TRANSFORMS.ORIGIN_CENTER }}
           />
         )}
       </AnimatePresence>

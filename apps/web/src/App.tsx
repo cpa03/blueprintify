@@ -18,7 +18,7 @@ import { PageScrollProgressBar } from "./components/PageScrollProgressBar";
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 import { useWizardStore, useEditorStore, useToast, useToastStore } from "./store";
 import { useOnlineStatus } from "./hooks";
-import { UI_CONTENT, NETWORK_MESSAGES } from "./config/constants";
+import { UI_CONTENT, NETWORK_MESSAGES, ENTRANCE_STAGGER } from "./config/constants";
 import { LAYOUT, BUTTON, ICON, SPINNER } from "./config/styles";
 const GenerationCelebration = lazy(() =>
   import("./components/GenerationCelebration").then((m) => ({ default: m.GenerationCelebration }))
@@ -231,8 +231,8 @@ function App(): JSX.Element {
               <p
                 className={`${LAYOUT.HERO_SUBTITLE} animate-slide-up`}
                 style={{
-                  animationDelay: "0.15s",
-                  animationFillMode: "backwards",
+                  animationDelay: `${ENTRANCE_STAGGER.BASE_DELAY_S}s`,
+                  animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
                 }}
               >
                 {UI_CONTENT.HERO.SUBTITLE}
@@ -256,7 +256,10 @@ function App(): JSX.Element {
           {/* Step Indicator — slides up on page load with hero-adjacent timing */}
           <div
             className="animate-slide-up"
-            style={{ animationDelay: "0.1s", animationFillMode: "backwards" }}
+            style={{
+              animationDelay: `${ENTRANCE_STAGGER.SHORT_DELAY_S}s`,
+              animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
+            }}
           >
             <StepIndicator />
           </div>
@@ -264,7 +267,10 @@ function App(): JSX.Element {
           {/* Split Pane Layout — slides up slightly after the step indicator for a staggered cascade */}
           <div
             className={`${LAYOUT.SPLIT_PANE} animate-slide-up`}
-            style={{ animationDelay: "0.2s", animationFillMode: "backwards" }}
+            style={{
+              animationDelay: `${ENTRANCE_STAGGER.MEDIUM_DELAY_S}s`,
+              animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
+            }}
           >
             {/* Wizard Panel */}
             <div
