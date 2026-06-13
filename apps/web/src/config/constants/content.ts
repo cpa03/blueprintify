@@ -6,7 +6,7 @@
  */
 
 import { ENV } from "../env";
-import { UI_STRINGS, UI_MESSAGES } from "@blueprint/shared";
+import { UI_STRINGS, UI_MESSAGES, WIZARD_STEP_KEYS } from "@blueprint/shared";
 
 /**
  * Loading State Messages
@@ -162,11 +162,11 @@ export const EDITOR_LABELS = {
  * Flexy says: No hardcoded step titles - everything configurable!
  */
 export const STEP_TITLES: Record<string, string> = {
-  info: "Project Info",
-  stack: "Tech Stack",
-  features: "Features",
-  review: "Review",
-  generating: "Generating...",
+  [WIZARD_STEP_KEYS.INFO]: "Project Info",
+  [WIZARD_STEP_KEYS.STACK]: "Tech Stack",
+  [WIZARD_STEP_KEYS.FEATURES]: "Features",
+  [WIZARD_STEP_KEYS.REVIEW]: "Review",
+  [WIZARD_STEP_KEYS.GENERATING]: "Generating...",
 };
 
 /**

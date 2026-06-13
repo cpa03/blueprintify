@@ -783,3 +783,18 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | ---- | ------------------------------------------- | --------------------------------------------------------------------------------- |
 | TBD  | `feat/flexy-iteration-38-hardcoded-cleanup` | feat(flexy): eliminate hardcoded mock values and status strings in test files     |
 | TBD  | `feat/flexy-iteration-39-hardcoded-cleanup` | feat(flexy): centralize API status, platform names, error strings and UI messages |
+
+### ✅ Flexy Iteration 40: Eliminate Remaining Hardcoded Platform Values & Step Title Keys
+
+| File                                       | Change                                                                                                                  |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| `apps/api/src/config/constants.ts`         | `PLATFORM_RUNTIME: "cloudflare-workers"` → `PLATFORM_VALUES.CLOUDFLARE_WORKERS` (references shared `PLATFORM_VALUES`)   |
+| `apps/web/src/config/constants/content.ts` | `STEP_TITLES` keys (`info`/`stack`/`features`/`review`/`generating`) now use computed `[WIZARD_STEP_KEYS.*]` references |
+| `apps/api/src/routes/import.test.ts`       | Replaced hardcoded `"Imported Project"` with `IMPORT_CONFIG.DEFAULT_PROJECT_NAME` config reference                      |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,214 tests passing (596 web + 353 api + 265 shared) across 69 files
