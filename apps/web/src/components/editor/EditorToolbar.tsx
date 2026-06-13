@@ -33,6 +33,7 @@ import { Icon } from "../Icon";
 import { AnimatedCopyButton } from "../AnimatedCopyButton";
 import { SPRING_CONFIG, EDITOR_LABELS, ANIMATION } from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
+import { getAriaShortcutKey } from "../../lib/platform";
 
 export type ViewMode = "edit" | "preview" | "split";
 
@@ -150,6 +151,10 @@ function EditorToolbarComponent({
                 viewMode === mode ? "text-white" : "text-dark-400 hover:text-white"
               )}
               aria-label={`${viewModeLabels[mode]} view (${viewModeShortcuts[mode]})`}
+              aria-keyshortcuts={getAriaShortcutKey(
+                mode === "edit" ? "1" : mode === "split" ? "2" : "3",
+                "cmd"
+              )}
             >
               <span className="flex items-center gap-1.5">
                 {mode === "edit" && (

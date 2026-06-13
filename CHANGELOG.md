@@ -9,8 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 95: full repository audit, fixed `docs/task.md` drift (created stub, updated `repo-rules.md` references), README tree fix (added Jun 14 BroCula audit, task.md), BroCula description update `(Jun 9–Jun 14)`, documentation sync, quality verification (1,194/1,194 tests passing)
 - feat(ui): spring entrance animation for tab-switch button + emoji aria-hidden fix
-- RepoKeeper Cycle 94: full repository audit, README tree fix (added Jun 14 BroCula audit), BroCula description update (Jun 13 Run 1 → Jun 14), documentation sync, quality verification (1,194/1,194 tests passing)
+- fix(a11y): BroCula Hunt 2026-06-14 — aria-hidden+role conflict resolution
 - RepoKeeper Cycle 93: full repository audit, stale merged branch cleanup (`fix/brocula-ulw-jun-13-run2`), unused BroCula scripts noted, documentation sync, quality verification (1,194/1,194 tests passing)
 - RepoKeeper Cycle 92: full repository audit, documentation sync, quality verification (1,193/1,193 tests passing)
 - RepoKeeper Cycle 91: full repository audit, README tree fix (added Jun 13 Run 1 BroCula audit), docs/audits/README.md update, documentation sync, quality verification

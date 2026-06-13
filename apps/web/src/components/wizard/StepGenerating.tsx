@@ -357,6 +357,7 @@ export const StepGenerating = memo(function StepGenerating({
                   onClick={handleCancel}
                   className="btn-ghost text-dark-400 hover:text-accent-pink flex items-center gap-2"
                   ariaLabel="Cancel generation (Esc)"
+                  aria-keyshortcuts="Escape"
                 >
                   <svg
                     className="w-4 h-4"

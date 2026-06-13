@@ -12,21 +12,22 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-13 (RepoKeeper Cycle 94)
+**Last Review**: 2026-06-13 (RepoKeeper Cycle 95)
 **Status**: ✅ Up to date — fully synced
 
-As of RepoKeeper Cycle 94 (refreshed):
+As of RepoKeeper Cycle 95 (refreshed):
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README tree verified**: Added missing `brocula-hunt-2026-06-14.md` entry, updated BroCula description to `(Jun 9–Jun 14)`
-- **`docs/audits/README.md` verified**: Already has Jun 14 as latest report — no change needed
-- **All referenced docs** exist — no missing or broken references
-- **CHANGELOG updated**: Added Cycle 94 entry + missing `feat(ui)` commit
-- **`docs/bugs.md` updated**: Cycle 94 status log added
-- **`docs/findings.md` updated**: Cycle 94 entry added
-- **`docs/active-tasks.md` updated**: Cycle 94 created, Cycle 93 marked complete
-- **Unreferenced BroCula scripts noted**: 8 scripts in `scripts/` remain unused (same as prior cycles)
+- **README tree verified**: Directory tree accurately reflects current file structure
+- **Fixed doc drift**: `docs/task.md` referenced in `repo-rules.md` but file did not exist — created stub redirect to `docs/active-tasks.md`
+- **Updated `repo-rules.md`**: 3 references updated from `docs/task.md` to `docs/active-tasks.md`
+- **README tree updated**: Added `brocula-hunt-2026-06-14.md` (Jun 14 audit) and `task.md` to directory tree
+- **BroCula description updated**: `(Jun 9–Jun 13 Run 1)` → `(Jun 9–Jun 14)`
+- **CHANGELOG updated**: Added Cycle 95 entry
+- **`docs/bugs.md` updated**: Cycle 95 status log added
+- **`docs/findings.md` updated**: Cycle 95 entry added
+- **`docs/active-tasks.md` updated**: Cycle 95 created, Cycle 93/94 marked complete
 
 ## Historical Drift Corrections
 
