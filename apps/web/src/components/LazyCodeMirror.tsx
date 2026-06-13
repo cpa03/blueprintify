@@ -28,6 +28,7 @@ import type { Extension } from "@codemirror/state";
 import type { ReactCodeMirrorProps, ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { isDev } from "../config/env";
 import { LOADING_MESSAGES } from "../config/constants";
+import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 
 interface LazyCodeMirrorProps {
   value: string;
@@ -80,7 +81,7 @@ const LazyCodeMirrorComponent = forwardRef<ReactCodeMirrorRef, LazyCodeMirrorPro
         <div
           role="status"
           aria-live="polite"
-          aria-label="Loading code editor"
+          aria-label={ACCESSIBILITY_LABELS.LAZY_CODEMIRROR.LOADING}
           className={`flex items-center justify-center ${className || ""}`}
         >
           <div className="flex flex-col items-center gap-2 text-dark-500">

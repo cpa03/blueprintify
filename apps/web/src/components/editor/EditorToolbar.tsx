@@ -33,6 +33,7 @@ import { Icon } from "../Icon";
 import { AnimatedCopyButton } from "../AnimatedCopyButton";
 import { SPRING_CONFIG, EDITOR_LABELS, ANIMATION } from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
+import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { getAriaShortcutKey } from "../../lib/platform";
 
 export type ViewMode = "edit" | "preview" | "split";
@@ -386,7 +387,7 @@ function EditorToolbarComponent({
         <button
           onClick={onNew}
           className="btn-ghost text-sm flex items-center gap-1.5"
-          aria-label="Start new project"
+          aria-label={ACCESSIBILITY_LABELS.EDITOR.START_NEW_PROJECT}
         >
           <motion.svg
             className="w-4 h-4"

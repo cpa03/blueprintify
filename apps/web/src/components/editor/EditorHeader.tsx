@@ -34,6 +34,7 @@ import { Icon } from "../Icon";
 import { LastSavedIndicator } from "../LastSavedIndicator";
 import { SPRING_CONFIG, EDITOR_LABELS, ANIMATION, EDITOR_TABS } from "../../config/constants";
 import { EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
+import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import clsx from "clsx";
 
 interface EditorHeaderProps {
@@ -134,7 +135,7 @@ const TabButton = React.memo(function TabButton({
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            aria-label="Streaming content in real-time"
+            aria-label={ACCESSIBILITY_LABELS.EDITOR.STREAMING_CONTENT}
           />
         )}
       </span>
@@ -312,7 +313,7 @@ function EditorHeaderComponent({
         <div
           className="flex gap-1 bg-dark-800 p-1 rounded-lg"
           role="tablist"
-          aria-label="Document tabs"
+          aria-label={ACCESSIBILITY_LABELS.EDITOR.DOCUMENT_TABS}
           id="editor-tabs"
           onKeyDown={handleTabKeyDown}
         >

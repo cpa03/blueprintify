@@ -246,4 +246,43 @@ export const ACCESSIBILITY_LABELS = {
     DESCRIPTION: "Some features may be unavailable while you are offline.",
     DISMISS: "Dismiss offline notice",
   },
+  ERROR_BOUNDARY: {
+    TRY_AGAIN: "Try again",
+    RELOAD_PAGE: "Reload page",
+  },
+  CELEBRATION: {
+    COMPLETE: "Generation complete",
+  },
+  KEYBOARD_SHORTCUTS: {
+    CLOSE: "Close keyboard shortcuts",
+  },
+  SCROLL_PROGRESS: {
+    READING: "Reading progress",
+  },
+  LAZY_CODEMIRROR: {
+    LOADING: "Loading code editor",
+  },
+  EDITOR: {
+    STREAMING_CONTENT: "Streaming content in real-time",
+    DOCUMENT_TABS: "Document tabs",
+    START_NEW_PROJECT: "Start new project",
+  },
+  WIZARD_FEATURES: {
+    NEW_FEATURE_NAME: "New feature name",
+    CLEAR_FEATURE_INPUT: "Clear feature input",
+    ADD_FEATURE: "Add feature",
+    CLEAR_ALL_FEATURES: "Clear all features",
+  },
+  WIZARD_INFO: {
+    CLEAR_TARGET_AUDIENCE: "Clear target audience",
+    CLEAR_CONSTRAINTS: "Clear constraints",
+  },
+  WIZARD_STACK: {
+    TECH_STACK_SELECTION: "Tech Stack Selection",
+  },
+  WIZARD_REVIEW: {
+    EDIT_INFO: "Edit project information",
+    EDIT_STACK: "Edit tech stack",
+    EDIT_FEATURES: "Edit features",
+  },
 } as const;

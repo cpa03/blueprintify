@@ -36,6 +36,7 @@ import {
   VALIDATION_MESSAGES,
   TEXTAREA_CONFIG,
 } from "../../config/constants";
+import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
 import { RippleButton } from "../RippleButton";
@@ -400,8 +401,8 @@ export const StepInfo = memo(function StepInfo({
                   transition={{ duration: ANIMATION.FAST }}
                   onClick={() => setTargetAudience("")}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors p-1 rounded-md hover:bg-dark-700/50"
-                  aria-label="Clear target audience"
-                  title="Clear target audience"
+                  aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_TARGET_AUDIENCE}
+                  title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_TARGET_AUDIENCE}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
@@ -440,8 +441,8 @@ export const StepInfo = memo(function StepInfo({
                   transition={{ duration: ANIMATION.FAST }}
                   onClick={() => setConstraints("")}
                   className="text-xs text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors flex items-center gap-1 px-2 py-1 rounded-md hover:bg-dark-700/50"
-                  aria-label="Clear constraints"
-                  title="Clear constraints"
+                  aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_CONSTRAINTS}
+                  title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_CONSTRAINTS}
                 >
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path

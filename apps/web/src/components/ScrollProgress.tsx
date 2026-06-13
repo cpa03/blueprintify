@@ -3,6 +3,7 @@ import { motion, useSpring, useTransform } from "framer-motion";
 import { ANIMATION } from "../config/constants";
 import { SHADOWS, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 import clsx from "clsx";
 
 interface ScrollProgressProps {
@@ -219,7 +220,7 @@ export const ScrollProgressCompact = memo(function ScrollProgressCompact({
         aria-valuenow={Math.round(scrollProgress)}
         aria-valuemin={0}
         aria-valuemax={100}
-        aria-label="Reading progress"
+        aria-label={ACCESSIBILITY_LABELS.SCROLL_PROGRESS.READING}
       >
         <motion.div
           className="h-full bg-gradient-to-r from-primary-500 to-accent-purple rounded-full"

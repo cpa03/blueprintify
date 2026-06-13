@@ -37,6 +37,7 @@ import {
   CONTEXT_KEYS,
   RESPONSE_STATUS,
   ERROR_CODES,
+  ERROR_TYPES,
   EDITOR_TABS,
   WIZARD_STEP_KEYS,
   API_STATUS_VALUES,
@@ -1025,6 +1026,39 @@ describe("ERROR_CODES", () => {
     const codes = Object.values(ERROR_CODES);
     const uniqueCodes = new Set(codes);
     expect(uniqueCodes.size).toBe(codes.length);
+  });
+});
+
+describe("ERROR_TYPES", () => {
+  it("should have all expected error type classifications", () => {
+    expect(ERROR_TYPES.VALIDATION).toBe("validation");
+    expect(ERROR_TYPES.AUTHENTICATION).toBe("authentication");
+    expect(ERROR_TYPES.AUTHORIZATION).toBe("authorization");
+    expect(ERROR_TYPES.NOT_FOUND).toBe("not_found");
+    expect(ERROR_TYPES.CONFIGURATION).toBe("configuration");
+    expect(ERROR_TYPES.NETWORK).toBe("network");
+    expect(ERROR_TYPES.AI_SERVICE).toBe("ai_service");
+    expect(ERROR_TYPES.INTERNAL).toBe("internal");
+    expect(ERROR_TYPES.SERVICE_UNAVAILABLE).toBe("service_unavailable");
+  });
+
+  it("should have 9 error type classifications", () => {
+    const values = Object.values(ERROR_TYPES);
+    expect(values.length).toBe(9);
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(ERROR_TYPES);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(ERROR_TYPES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
   });
 });
 

@@ -1,4 +1,4 @@
-import { HTTP_STATUS } from "@blueprint/shared";
+import { HTTP_STATUS, ERROR_TYPES } from "@blueprint/shared";
 import { DEFAULT_ERROR_MESSAGES, ERROR_CODES, ERROR_MESSAGES } from "./config/constants";
 
 /**
@@ -54,24 +54,12 @@ export function createErrorJson(
 // ============================================================================
 
 /**
- * Enumeration of error type classifications used throughout the API.
- * Each type maps to a specific HTTP status code and error category.
+ * Error type classifications derived from shared @blueprint/shared ERROR_TYPES.
+ * Flexy says: No hardcoded error type strings — single source of truth in shared config!
+ * Usage: ErrorType.VALIDATION (value: "validation") — same as the old enum.
  */
-/**
- * Enumeration of error type classifications used throughout the API.
- * Each type maps to a specific HTTP status code and error category.
- */
-export enum ErrorType {
-  VALIDATION = "validation",
-  AUTHENTICATION = "authentication",
-  AUTHORIZATION = "authorization",
-  NOT_FOUND = "not_found",
-  CONFIGURATION = "configuration",
-  NETWORK = "network",
-  AI_SERVICE = "ai_service",
-  INTERNAL = "internal",
-  SERVICE_UNAVAILABLE = "service_unavailable",
-}
+export const ErrorType = ERROR_TYPES;
+export type ErrorType = (typeof ERROR_TYPES)[keyof typeof ERROR_TYPES];
 
 // ===== Error Response Interface =====
 /**
