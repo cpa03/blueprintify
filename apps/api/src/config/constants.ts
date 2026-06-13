@@ -178,7 +178,7 @@ export const ERROR_MESSAGES = {
     "DI Container not initialized. Call setDefaultContainer() before using services.",
   JSON_PARSE_FAILURE: (detail: string) => `Failed to parse JSON: ${detail}`,
   PLATFORM_UNKNOWN: PLATFORM_VALUES.UNKNOWN,
-  PLATFORM_RUNTIME: "cloudflare-workers",
+  PLATFORM_RUNTIME: PLATFORM_VALUES.CLOUDFLARE_WORKERS,
   TIMEOUT_MESSAGE: (elapsed: number, timeout: number) =>
     `Retry operation timed out after ${elapsed}ms (timeout: ${timeout}ms)`,
   UNKNOWN_ERROR: ERROR_STRINGS.UNKNOWN,
