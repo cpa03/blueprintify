@@ -169,11 +169,20 @@ export const StepInfo = memo(function StepInfo({
               />
             </div>
             <span
-              className="text-dark-400 tabular-nums"
+              className="text-dark-400 tabular-nums flex items-center gap-0.5"
               aria-live="polite"
               aria-label={`${formProgress.completed} of ${formProgress.total} fields completed`}
             >
-              {formProgress.completed}/{formProgress.total}
+              <motion.span
+                key={formProgress.completed}
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 500, damping: 15, mass: 0.5 }}
+                className="tabular-nums"
+              >
+                {formProgress.completed}
+              </motion.span>
+              <span className="text-dark-600">/{formProgress.total}</span>
             </span>
           </div>
         </div>
