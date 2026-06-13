@@ -83,6 +83,83 @@ Three high-leverage capabilities ordered by value:
 | CI/CD workflow node-version fix | ⚠️ Blocked | Requires `workflows: write` token — manual push by maintainer |
 | No new npm dependencies         | ✅         | All proposals use existing deps                               |
 
+## Implementation Plan: M3-A — Collaborative Blueprint Sharing
+
+### Iteration 1: Passphrase Protection & Enhanced Share API (Estimated: 1 day)
+
+**User Story**: As a project creator, I want to protect my shared blueprints with a passphrase so that only intended collaborators can access them.
+
+**Backend Tasks**:
+
+1. Add optional `passphraseHash` field to share schema (apps/api/src/routes/share.ts)
+2. Add `POST /share/:id/verify` endpoint that accepts passphrase and returns access token
+3. Add `passphrase_required` flag to share GET response
+4. Rate limit verify endpoint per share ID (prevent brute-force)
+5. Update Zod validation schemas in packages/shared
+
+**Frontend Tasks**:
+
+1. Add passphrase input dialog when accessing passphrase-protected share
+2. Update ShareDialog component with passphrase toggle
+3. Store access token in session storage
+
+**Verification**:
+
+- [ ] Shares created with passphrase require verification before viewing
+- [ ] Shares without passphrase work as before (backward compatible)
+- [ ] Failed passphrase attempts rate-limited (5 attempts/minute)
+- [ ] Access token expires after browser session ends
+- [ ] All existing tests pass (1,223+)
+
+### Iteration 2: Read-Only View & Fork Capability (Estimated: 1 day)
+
+**User Story**: As a user viewing a shared blueprint, I want to see it in a clean read-only view and create my own copy to build upon.
+
+**Backend Tasks**:
+
+1. Ensure share GET returns full blueprint content for read-only view
+2. No additional backend needed — fork is client-side operation
+
+**Frontend Tasks**:
+
+1. Create `SharedBlueprintView` component (read-only markdown renderer)
+2. Add "Fork this Blueprint" button that copies content to local editor
+3. Style read-only view consistently with editor (dark mode support)
+4. Handle fork-from-share edge case (user not authenticated)
+
+**Verification**:
+
+- [ ] Shared blueprint renders in read-only view
+- [ ] Fork button creates local copy in editor
+- [ ] Fork works without auth (localStorage only)
+- [ ] Dark mode toggle works in read-only view
+
+### Iteration 3: Share Management UI (Estimated: 1-2 days)
+
+**User Story**: As a user with active shares, I want to see all my shared blueprints, revoke access, and extend expiration dates from a single dashboard.
+
+**Backend Tasks**:
+
+1. Add `GET /shares` endpoint listing user's active shares with metadata
+2. Add `PATCH /share/:id` endpoint for updating expiration/revoking
+3. Add share metadata (view count, created date, expires at) to list response
+
+**Frontend Tasks**:
+
+1. Create `ShareManager` component with share list table
+2. Add "Revoke" button with confirmation dialog
+3. Add "Extend Expiration" action
+4. Add share status indicators (active/expired/revoked)
+5. Integrate ShareManager into user settings or main navigation
+
+**Verification**:
+
+- [ ] Share list shows all active shares with metadata
+- [ ] Revoke immediately invalidates share link
+- [ ] Expiration extension works correctly
+- [ ] Expired/revoked shares show appropriate status
+- [ ] Empty state handled when no shares exist
+
 ## Definition of Done
 
 - [ ] M3 scope approved and added to roadmap
