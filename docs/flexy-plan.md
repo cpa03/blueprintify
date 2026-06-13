@@ -756,15 +756,30 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | `apps/web/src/store/editor.test.ts`    | Replaced hardcoded EDITOR_TABS mock values with `vi.importActual` — tabs derive from shared @blueprint/shared        |
 | `apps/api/src/middleware/auth.test.ts` | Added `RESPONSE_STATUS` import; replaced `status: "ok"` with `status: RESPONSE_STATUS.OK`                            |
 
+### ✅ Flexy Iteration 39: Centralize API Status, Platform Names, Error Strings & UI Messages
+
+| File                                       | Change                                                                                                                                                                                                                                                                                   |
+| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`            | Added `API_STATUS_VALUES` (healthy/ok/error), `PLATFORM_VALUES` (unknown/cloudflare-workers), `ERROR_STRINGS` (Unknown error/Resource not found/Internal server error), `UI_MESSAGES` (Changes saved/Generation cancelled/Complete!/title separator)                                     |
+| `packages/shared/src/index.ts`             | Exported `API_STATUS_VALUES`, `PLATFORM_VALUES`, `ERROR_STRINGS`, `UI_MESSAGES`                                                                                                                                                                                                          |
+| `packages/shared/src/config.test.ts`       | Added 20 tests covering all 4 new config objects (values + type + uniqueness checks)                                                                                                                                                                                                     |
+| `apps/api/src/config/constants.ts`         | `API_METADATA.STATUS: "healthy"` → `API_STATUS_VALUES.HEALTHY`; `ERROR_MESSAGES.INTERNAL` → `ERROR_STRINGS.INTERNAL`; `PLATFORM_UNKNOWN` → `PLATFORM_VALUES.UNKNOWN`; `UNKNOWN_ERROR` → `ERROR_STRINGS.UNKNOWN`; `DEFAULT_ERROR_MESSAGES.NOT_FOUND` → `ERROR_STRINGS.RESOURCE_NOT_FOUND` |
+| `apps/api/src/routes/share.ts`             | Hardcoded `"/share/"` URL construction → `ROUTE_PATHS.SHARE` reference                                                                                                                                                                                                                   |
+| `apps/web/src/config/constants/api.ts`     | `FRONTEND_ERROR_MESSAGES.UNKNOWN_ERROR: "Unknown error"` → `ERROR_STRINGS.UNKNOWN`                                                                                                                                                                                                       |
+| `apps/web/src/config/constants/storage.ts` | `AUTO_SAVE_CONFIG.DEFAULT_MESSAGE: "Changes saved"` → `UI_MESSAGES.CHANGES_SAVED`                                                                                                                                                                                                        |
+| `apps/web/src/config/constants/content.ts` | `TOAST_MESSAGES.GENERATION_CANCELLED: "Generation cancelled"` → `UI_MESSAGES.GENERATION_CANCELLED`                                                                                                                                                                                       |
+| `apps/api/src/routes/share.test.ts`        | Hardcoded `"/share/"` assertion → `ROUTE_PATHS.SHARE` reference                                                                                                                                                                                                                          |
+
 ## Verification
 
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
-- ✅ `npm run test:all` — 1,194 tests passing (596 web + 353 api + 245 shared) across 69 files
+- ✅ `npm run test:all` — 1,214 tests passing (596 web + 353 api + 265 shared) across 69 files
 
 ## PRs
 
-| PR # | Branch                                      | Title                                                                         |
-| ---- | ------------------------------------------- | ----------------------------------------------------------------------------- |
-| TBD  | `feat/flexy-iteration-38-hardcoded-cleanup` | feat(flexy): eliminate hardcoded mock values and status strings in test files |
+| PR # | Branch                                      | Title                                                                             |
+| ---- | ------------------------------------------- | --------------------------------------------------------------------------------- |
+| TBD  | `feat/flexy-iteration-38-hardcoded-cleanup` | feat(flexy): eliminate hardcoded mock values and status strings in test files     |
+| TBD  | `feat/flexy-iteration-39-hardcoded-cleanup` | feat(flexy): centralize API status, platform names, error strings and UI messages |
