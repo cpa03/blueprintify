@@ -125,8 +125,8 @@ Every significant feature must include:
 - User guides: `docs/user-guide.md`
 - API docs: `docs/api-documentation.md`
 - Architecture: `docs/blueprint.md`
-- Tasks (entry point): `docs/task.md`
-- Active Tasks: `docs/active-tasks.md`
+- Active Tasks (entry point): `docs/active-tasks.md`
+- Completed Tasks: `docs/completed-tasks-YYYY-QX.md`
 - Completed Tasks: `docs/completed-tasks-YYYY-QX.md`
 - Features: `docs/features.md`
 
@@ -147,7 +147,7 @@ Tasks move through the following states:
 
 - **Active Tasks** (`docs/active-tasks.md`): Current work items
 - **Completed Tasks** (`docs/completed-tasks-YYYY-QX.md`): Archived completed work
-- **Main Task File** (`docs/task.md`): Entry point and references
+- **Active Tasks** (`docs/active-tasks.md`): Current work items and priorities
 
 ### Archival Process
 
@@ -162,12 +162,12 @@ When a task is completed:
 
 - Maintain active-tasks.md with current priorities
 - Quarterly archival of completed tasks
-- Ensure task.md references are accurate
+- Ensure active-tasks.md references are accurate
 - Report task sprawl issues
 
 ### Task Sprawl Prevention
 
-If `docs/task.md` exceeds 100 lines, the Technical Writer must:
+If `docs/active-tasks.md` exceeds 200 lines, the Technical Writer must:
 
 1. Archive completed tasks to the quarterly file
 2. Simplify active-tasks.md

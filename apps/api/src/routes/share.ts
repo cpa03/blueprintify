@@ -20,6 +20,7 @@ import {
   HTTP_STATUS,
   ERROR_CODES,
   ERROR_MESSAGES,
+  ROUTE_PATHS,
   SHARE_CONFIG,
   SHARE_ERROR_MESSAGES,
   CACHE_CONFIG,
@@ -190,7 +191,7 @@ app.post("/", rateLimit(rateLimitConfigs.standard), validateJson(createShareSche
         success: true,
         data: {
           id: shareId,
-          url: `${c.env.CORS_ORIGIN || ""}/share/${shareId}`,
+          url: `${c.env.CORS_ORIGIN || ""}${ROUTE_PATHS.SHARE}/${shareId}`,
           expiresAt: expiresAt.toISOString(),
         },
       },

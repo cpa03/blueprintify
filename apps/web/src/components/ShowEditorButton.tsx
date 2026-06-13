@@ -22,7 +22,7 @@ import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
 import { BUTTON, ICON } from "../config/styles";
 import { UI_CONTENT } from "../config/constants";
-import { getModifierLabel } from "../lib/platform";
+import { getModifierLabel, getAriaShortcutKey } from "../lib/platform";
 
 interface ShowEditorButtonProps {
   onClick: () => void;
@@ -52,6 +52,7 @@ function ShowEditorButtonComponent({
           onClick={onClick}
           className={`${BUTTON.SHOW_EDITOR_FAB} ${hasContent || isGenerating ? "glow-pulse" : ""}`}
           ariaLabel={buttonLabel}
+          aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
         >
           <span className="flex items-center">
             <svg

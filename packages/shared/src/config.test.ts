@@ -39,6 +39,10 @@ import {
   ERROR_CODES,
   EDITOR_TABS,
   WIZARD_STEP_KEYS,
+  API_STATUS_VALUES,
+  PLATFORM_VALUES,
+  ERROR_STRINGS,
+  UI_MESSAGES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -1096,5 +1100,121 @@ describe("WIZARD_STEP_KEYS", () => {
     validSteps.forEach((step) => {
       expect(values).toContain(step);
     });
+  });
+});
+
+describe("API_STATUS_VALUES", () => {
+  it("should have healthy status", () => {
+    expect(API_STATUS_VALUES.HEALTHY).toBe("healthy");
+  });
+
+  it("should have ok status", () => {
+    expect(API_STATUS_VALUES.OK).toBe("ok");
+  });
+
+  it("should have error status", () => {
+    expect(API_STATUS_VALUES.ERROR).toBe("error");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(API_STATUS_VALUES);
+    expect(values.length).toBe(3);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(API_STATUS_VALUES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("PLATFORM_VALUES", () => {
+  it("should have unknown platform", () => {
+    expect(PLATFORM_VALUES.UNKNOWN).toBe("unknown");
+  });
+
+  it("should have cloudflare workers platform", () => {
+    expect(PLATFORM_VALUES.CLOUDFLARE_WORKERS).toBe("cloudflare-workers");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(PLATFORM_VALUES);
+    expect(values.length).toBe(2);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(PLATFORM_VALUES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("ERROR_STRINGS", () => {
+  it("should have unknown error string", () => {
+    expect(ERROR_STRINGS.UNKNOWN).toBe("Unknown error");
+  });
+
+  it("should have resource not found string", () => {
+    expect(ERROR_STRINGS.RESOURCE_NOT_FOUND).toBe("Resource not found");
+  });
+
+  it("should have internal error string", () => {
+    expect(ERROR_STRINGS.INTERNAL).toBe("Internal server error");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(ERROR_STRINGS);
+    expect(values.length).toBe(3);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(ERROR_STRINGS);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("UI_MESSAGES", () => {
+  it("should have changes saved message", () => {
+    expect(UI_MESSAGES.CHANGES_SAVED).toBe("Changes saved");
+  });
+
+  it("should have generation cancelled message", () => {
+    expect(UI_MESSAGES.GENERATION_CANCELLED).toBe("Generation cancelled");
+  });
+
+  it("should have complete message", () => {
+    expect(UI_MESSAGES.COMPLETE).toBe("Complete!");
+  });
+
+  it("should have title separator", () => {
+    expect(UI_MESSAGES.TITLE_SEPARATOR).toBe(" | ");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(UI_MESSAGES);
+    expect(values.length).toBe(4);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(UI_MESSAGES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
   });
 });

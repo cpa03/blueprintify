@@ -8,6 +8,7 @@ import {
   STORAGE_CONFIG as SHARED_STORAGE_CONFIG,
   TIME_UNITS,
   BROWSER_QUOTA_ERROR_CODES as SHARED_BROWSER_QUOTA_ERROR_CODES,
+  UI_MESSAGES,
 } from "@blueprint/shared";
 import { ENV } from "../env";
 import { STORAGE_KEYS } from "../keys";
@@ -95,7 +96,7 @@ export const TOAST_CONFIG = {
 // ============================================================================
 
 export const AUTO_SAVE_CONFIG = {
-  DEFAULT_MESSAGE: "Changes saved",
+  DEFAULT_MESSAGE: UI_MESSAGES.CHANGES_SAVED,
   DEFAULT_DELAY: 1000,
 } as const;
 

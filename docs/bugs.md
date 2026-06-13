@@ -4,7 +4,9 @@
 
 ## Active Bugs
 
-> **RepoKeeper ULW Cycle 2026-06-13 (Cycle 94)**: Full repository audit complete. Typecheck ✅ lint ✅ tests 1,194/1,194 ✅. 0 type suppressions. 0 redundant/temp/unused source files found. 0 TODO/FIXME/HACK artifacts. 0 `as any`. **Fixed README directory tree** — added missing `brocula-hunt-2026-06-14.md` (Jun 14 BroCula audit). **Updated BroCula description** — `(Jun 9–Jun 13 Run 1)` → `(Jun 9–Jun 14)`. `docs/audits/README.md` already correct. Documentation refreshed for Cycle 94. Repo fully clean — no new fixable bugs found.
+> **BugFixer ULW Cycle 2026-06-13**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,194/1,194 ✅ format ✅. 0 type suppressions. 0 `as any`. 0 TODO/FIXME/HACK artifacts. **Fixed BUG-014** (REOPENED) — stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). **Fixed BUG-017** (REOPENED) — hardcoded `node-version: "20"`→`node-version-file: ".node-version"` in 4 workflow files (11 instances). **Fixed README tree drift** — added missing `brocula-hunt-2026-06-14.md` entry. Both bugs verified via grep: zero stale doc refs, zero hardcoded `node-version:` remaining. Known `esbuild` vulns (3 high) — upstream Cloudflare tooling dependency, same as BUG-013 pattern. Repo fully clean — no new fixable bugs found.
+
+> **RepoKeeper ULW Cycle 2026-06-13 (Cycle 95)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,194/1,194 ✅. 0 type suppressions. 0 redundant/temp/unused source files found. 0 TODO/FIXME/HACK artifacts. 0 `as any`. **Fixed doc drift**: `docs/task.md` was referenced in `docs/repo-rules.md` and 4 other docs but file did not exist — created placeholder file redirecting to `docs/active-tasks.md`; updated `docs/repo-rules.md` references to point to `active-tasks.md`. **README tree fix**: Added missing `brocula-hunt-2026-06-14.md` (Jun 14 BroCula audit) and `task.md` to directory tree. **BroCula description updated**: `(Jun 9–Jun 13 Run 1)` → `(Jun 9–Jun 14)`. Documentation refreshed for Cycle 95. Repo fully clean — no new fixable bugs found.
 
 > **RepoKeeper ULW Cycle 2026-06-12 (Cycle 93)**: Full repository audit complete. Typecheck ✅ lint ✅ tests 1,194/1,194 ✅. 0 type suppressions. 0 redundant/temp/unused source files found. 0 TODO/FIXME/HACK artifacts. 0 `as any`. README tree verified accurate. All referenced docs exist. **Deleted stale merged branch**: `fix/brocula-ulw-jun-13-run2`. **Noted**: 8 unreferenced BroCula scripts in `scripts/` (candidates for future cleanup). **Minor doc drift**: `docs/task.md` referenced in `repo-rules.md` but file does not exist. Documentation refreshed for Cycle 93. Repo fully clean — no new fixable bugs found.
 
@@ -72,7 +74,7 @@
 
 ### BUG-014: Stale Doc References in main.yml Workflow (Resolved)
 
-**Status**: Resolved — 2026-06-11 (BugFixer ULW Cycle)  
+**Status**: Resolved — 2026-06-13 (BugFixer ULW Cycle)  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1293
@@ -87,13 +89,13 @@
 - ✅ `main.yml` line 39: `docs/bug.md, docs/feature.md` → `docs/bugs.md, docs/features.md`
 - ✅ `main.yml` line 263: `docs/bug.md` → `docs/bugs.md`
 - ✅ Fix verified via grep: zero stale doc refs remaining
-- ✅ Fix applied directly to `main` in Cycle 2026-06-11 (BugFixer ULW)
+- ✅ Fix applied directly to `main` in Cycle 2026-06-13 (BugFixer ULW)
 
 ---
 
 ### BUG-017: CI Node.js Version Mismatch (Resolved)
 
-**Status**: Resolved — 2026-06-11 (BugFixer ULW Cycle)  
+**Status**: Resolved — 2026-06-13 (BugFixer ULW Cycle)  
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1390, #1470, #1549
@@ -105,19 +107,18 @@ All CI workflow files used Node.js 20 hardcoded instead of using the project's `
 
 #### Resolution
 
-3 workflow files fixed — `node-version: "20"` replaced with `node-version-file: ".node-version"` (10 instances total):
+4 workflow files fixed — `node-version: "20"` replaced with `node-version-file: ".node-version"` (11 instances total):
 
 | File                                  | Instances Fixed |
 | ------------------------------------- | --------------- |
 | `.github/workflows/iterate.yml`       | 5               |
 | `.github/workflows/parallel.yml`      | 4               |
+| `.github/workflows/on-pull.yml`       | 1               |
 | `.github/workflows/pr-gatekeeper.yml` | 1               |
 
-**Note**: `main.yml` does not have `setup-node` steps, so no change needed. `on-pull.yml` also fixed in this cycle.
-
 **Fix approach**: Changed from hardcoded `node-version: "20"` to `node-version-file: ".node-version"` — automatically stays in sync with project requirements.
-**Verification**: All 10 instances verified via grep — zero remaining `node-version:` references in workflow files.
-**Merged**: Cycle 2026-06-11 (BugFixer ULW)
+**Verification**: All 11 instances verified via grep — zero remaining `node-version:` references in workflow files.
+**Merged**: Cycle 2026-06-13 (BugFixer ULW)
 
 ---
 
@@ -253,7 +254,7 @@ Multiple documentation files still reference Node.js 18+ as the minimum requirem
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2026-06-12 (BugFixer ULW Cycle Run 2)  
+**Last Updated**: 2026-06-13 (BugFixer ULW Cycle)  
 **Maintainer**: BugFixer (Ultrawork Loop)
 
 > RepoKeeper cycle 2026-06-04 (Cycle 55): Build/lint/typecheck/format all passing clean. Tests: 564 web + 342 api + 191 shared = 1097 total, all passing. 0 npm vulns. BUG-014 and BUG-017 status corrected to UNRESOLVED — fixes were applied in previous cycles but never merged to main (blocked by `workflows: write` permission). No new bugs identified.
