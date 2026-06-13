@@ -90,6 +90,7 @@ function CircularProgressComponent({
         height={size}
         className="-rotate-90"
         style={{ transform: TRANSFORMS.ROTATE_NEG_90 }}
+        aria-hidden="true"
       >
         <circle
           cx={center}

@@ -72,6 +72,7 @@ const ProgressRing = memo(function ProgressRing({
       height={size}
       className="absolute pointer-events-none"
       style={{ transform: TRANSFORMS.ROTATE_NEG_90 }}
+      aria-hidden="true"
     >
       <circle
         cx={size / 2}
@@ -237,6 +238,7 @@ const ToastItem = memo(
             width: `${progress}%`,
             opacity: isHovered ? 0 : 0.3,
           }}
+          aria-hidden="true"
         />
 
         {/* Hover glow ring — subtle inset glow that gently "catches" the toast
