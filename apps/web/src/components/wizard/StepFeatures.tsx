@@ -36,6 +36,7 @@ import { TRANSFORMS } from "../../config/theme";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
+import { CharacterCounterCompact } from "../CharacterCounter";
 import { getModifierLabel, getAltKeyLabel } from "../../lib/platform";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 
@@ -123,11 +124,7 @@ export const StepFeatures = memo(function StepFeatures({
               {UI_CONTENT.WIZARD.STEP_FEATURES.ADD_FEATURE_LABEL}
             </label>
             <div className="flex items-center gap-3">
-              <span
-                className={`text-xs ${newFeature.length > FORM_LIMITS.FEATURE.MAX ? "text-accent-pink" : "text-dark-500"}`}
-              >
-                {newFeature.length}/{FORM_LIMITS.FEATURE.MAX}
-              </span>
+              <CharacterCounterCompact current={newFeature.length} max={FORM_LIMITS.FEATURE.MAX} />
               <span className="text-xs text-dark-500 flex items-center gap-1">
                 <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-dark-400 font-mono text-xs">
                   Enter
