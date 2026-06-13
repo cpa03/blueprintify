@@ -398,16 +398,9 @@ function ToastContainerComponent(): JSX.Element {
                 />
               </svg>
               Dismiss all (
-              <motion.span
-                key={toasts.length}
-                className="tabular-nums"
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 500, damping: 15, mass: 0.5 }}
-                aria-hidden="true"
-              >
+              <span className="tabular-nums" aria-hidden="true">
                 {toasts.length}
-              </motion.span>
+              </span>
               )
             </span>
           </button>
