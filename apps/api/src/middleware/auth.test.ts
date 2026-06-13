@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { Hono } from "hono";
 import { apiKeyAuth } from "./auth";
 import { ERROR_CODES, API_HEADERS } from "../config/constants";
-import { HTTP_STATUS } from "@blueprint/shared";
+import { HTTP_STATUS, RESPONSE_STATUS } from "@blueprint/shared";
 import type { ErrorResponse } from "../errors";
 
 describe("auth middleware", () => {
@@ -136,7 +136,7 @@ describe("auth middleware", () => {
           excludePaths: ["/health", "/api/ping", "/docs"],
         })
       );
-      app.get("/health", (c) => c.json({ status: "ok" }));
+      app.get("/health", (c) => c.json({ status: RESPONSE_STATUS.OK }));
       app.get("/api/ping", (c) => c.json({ pong: true }));
       app.get("/docs", (c) => c.json({ docs: true }));
       app.get("/protected", (c) => c.json({ success: true }));

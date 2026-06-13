@@ -22,15 +22,9 @@ vi.mock("./persistence", () => ({
   })),
 }));
 
-// Mock constants
-vi.mock("../config/constants", () => ({
-  WIZARD_STEPS: [
-    { key: "info", label: "Project Info", icon: "📝", shortcut: "1" },
-    { key: "stack", label: "Tech Stack", icon: "⚙️", shortcut: "2" },
-    { key: "features", label: "Features", icon: "✨", shortcut: "3" },
-    { key: "review", label: "Review", icon: "👀", shortcut: "4" },
-    { key: "generating", label: "Generate", icon: "🚀", shortcut: "5" },
-  ],
+// Mock constants — use importActual so WIZARD_STEPS keys come from @blueprint/shared
+vi.mock("../config/constants", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../config/constants")>()),
   DEBOUNCE_CONFIG: {
     WIZARD: 300,
     EDITOR: 300,
