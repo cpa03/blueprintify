@@ -54,6 +54,7 @@ blueprintify/
 │   │   ├── brocula-hunt-2026-06-12.md
 │   │   ├── brocula-hunt-2026-06-12-run2.md
 │   │   ├── brocula-hunt-2026-06-13.md
+│   │   ├── brocula-hunt-2026-06-13-2.md
 │   │   └── brocula-hunt-2026-06-14.md
 │   ├── blueprint.md
 │   ├── bugs.md
