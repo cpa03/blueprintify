@@ -15,11 +15,13 @@ const KeyboardShortcutsModal = lazy(() => import("./components/KeyboardShortcuts
 import { SkipLink } from "./components/SkipLink";
 import { OfflineBanner } from "./components/OfflineBanner";
 import { PageScrollProgressBar } from "./components/PageScrollProgressBar";
+import { ScrollToTop } from "./components/ScrollToTop";
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 import { useWizardStore, useEditorStore, useToast, useToastStore } from "./store";
 import { useOnlineStatus } from "./hooks";
 import { UI_CONTENT, NETWORK_MESSAGES, ENTRANCE_STAGGER } from "./config/constants";
 import { LAYOUT, BUTTON, ICON, SPINNER } from "./config/styles";
+import { getAriaShortcutKey } from "./lib/platform";
 const GenerationCelebration = lazy(() =>
   import("./components/GenerationCelebration").then((m) => ({ default: m.GenerationCelebration }))
 );
@@ -303,6 +305,7 @@ function App(): JSX.Element {
                     className={`${BUTTON.HIDE_EDITOR_DESKTOP} transition-transform duration-150 active:scale-90 hover:scale-110`}
                     aria-label="Hide editor panel"
                     title="Hide editor"
+                    aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
                   >
                     <svg
                       className={`${ICON.LG} transition-transform duration-200 hover:rotate-90`}
@@ -327,6 +330,7 @@ function App(): JSX.Element {
                     className={`${BUTTON.HIDE_EDITOR_MOBILE} transition-transform duration-150 active:scale-90 hover:scale-110`}
                     aria-label="Hide editor panel"
                     title="Hide editor"
+                    aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
                   >
                     <svg
                       className={`${ICON.LG} transition-transform duration-200 hover:rotate-90`}
@@ -408,6 +412,14 @@ function App(): JSX.Element {
           onComplete={handleCelebrationComplete}
         />
       </Suspense>
+
+      {/* Floating scroll-to-top button for main page — provides a visual
+          affordance to quickly jump back to the top after scrolling through
+          the wizard flow or generated content. The fixed wrapper anchors
+          the absolute-positioned ScrollToTop to the viewport. */}
+      <div className="fixed bottom-6 right-6 z-30">
+        <ScrollToTop showAfter={400} />
+      </div>
     </div>
   );
 }
