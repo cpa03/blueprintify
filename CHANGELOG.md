@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 98: **critical typecheck fix** — `authorize.test.ts` untyped `new Hono()` causing `c.set(CONTEXT_KEYS.USER, user)` type error, fixed with `AppVariables` type parameter; cleaned unused imports (`beforeEach`, `ERROR_MESSAGES`, `AUTH_DEFAULTS`); fixed orphaned `brocula-hunt-2026-06-14.md` audit file (existed on disk but unreferenced); updated BroCula description `(Jun 13–Jun 14 Run 2)` → `(Jun 13–Jun 14 Run 3)`; documentation sync, quality verification
 - RepoKeeper Cycle 95: full repository audit, fixed `docs/task.md` drift (created stub, updated `repo-rules.md` references), README tree fix (added Jun 14 BroCula audit, task.md), BroCula description update `(Jun 9–Jun 14)`, documentation sync, quality verification (1,194/1,194 tests passing)
 - feat(ui): spring entrance animation for tab-switch button + emoji aria-hidden fix
 - fix(a11y): BroCula Hunt 2026-06-14 — aria-hidden+role conflict resolution
