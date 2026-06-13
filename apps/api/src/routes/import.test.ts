@@ -5,6 +5,7 @@ import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
 import { HTTP_STATUS, HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import { IMPORT_CONFIG } from "../config/constants";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -266,6 +267,6 @@ Architecture details here
         projectName: string;
       };
     };
-    expect(data.data).toHaveProperty("projectName", "Imported Project");
+    expect(data.data).toHaveProperty("projectName", IMPORT_CONFIG.DEFAULT_PROJECT_NAME);
   });
 });
