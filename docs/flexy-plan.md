@@ -747,3 +747,24 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 1,194 tests passing (596 web + 353 api + 245 shared) across 69 files
+
+### ✅ Flexy Iteration 38: Eliminate Hardcoded Mock Values & Status Strings in Tests
+
+| File                                   | Change                                                                                                               |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `apps/web/src/store/wizard.test.ts`    | Replaced hardcoded WIZARD_STEPS mock keys with `vi.importActual` — steps derive from shared WIZARD_STEP_KEYS at test |
+| `apps/web/src/store/editor.test.ts`    | Replaced hardcoded EDITOR_TABS mock values with `vi.importActual` — tabs derive from shared @blueprint/shared        |
+| `apps/api/src/middleware/auth.test.ts` | Added `RESPONSE_STATUS` import; replaced `status: "ok"` with `status: RESPONSE_STATUS.OK`                            |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,194 tests passing (596 web + 353 api + 245 shared) across 69 files
+
+## PRs
+
+| PR # | Branch                                      | Title                                                                         |
+| ---- | ------------------------------------------- | ----------------------------------------------------------------------------- |
+| TBD  | `feat/flexy-iteration-38-hardcoded-cleanup` | feat(flexy): eliminate hardcoded mock values and status strings in test files |
