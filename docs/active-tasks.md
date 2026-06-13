@@ -2,50 +2,48 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 94 — Full Repository Audit, README Tree Fix (Add Jun 14), Doc Sync 🟢 ACTIVE
+## Current Focus: RepoKeeper Cycle 95 — Full Repository Audit, Doc Drift Fix, BroCula Jun 14 & Doc Sync 🟢 ACTIVE
 
-### Task: Full repository audit, add missing Jun 14 BroCula audit to README tree, documentation sync, quality verification
+### Task: Full repository audit, fix docs/task.md drift (referenced but missing), add Jun 14 BroCula audit to README tree, update BroCula description, documentation sync, quality verification
 
 - **Priority**: High
 - **Status**: 🟢 Active
-- **Objective**: Full repository audit, add missing `brocula-hunt-2026-06-14.md` (Jun 14 BroCula audit) to README directory tree and docs section, update CHANGELOG, refresh documentation for Cycle 94
-- **Actions**:
-  - [x] Full repository scan for redundant/temp/unused files → none found
-  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
-  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
-  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,194/1,194 ✅
-  - [x] README tree — added missing `brocula-hunt-2026-06-14.md` entry after Jun 13
-  - [x] BroCula description — updated from `(Jun 9–Jun 13 Run 1)` to `(Jun 9–Jun 14)`
-  - [x] `docs/audits/README.md` verified — already has Jun 14 as latest report
-  - [x] Updated `docs/bugs.md` — Cycle 94 status log
-  - [x] Updated `docs/findings.md` — Cycle 94 entry
-  - [x] Updated `docs/active-tasks.md` — Cycle 94 status
-  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 94
-  - [x] Updated CHANGELOG.md — Cycle 94 entry + missing feat(ui) commit
-
-## Previous Cycle: RepoKeeper Cycle 93 — Full Repository Audit, Stale Branch Cleanup, Doc Sync 🟢 COMPLETE
-
-### Task: Full repository audit, stale merged branch cleanup, unused scripts analysis, documentation sync, quality verification
-
-- **Priority**: High
-- **Status**: 🟢 Complete
-- **Objective**: Full repository audit, delete stale merged branch `fix/brocula-ulw-jun-13-run2`, note unused BroCula scripts, verify quality checks, refresh documentation for Cycle 93
+- **Objective**: Full repository audit, fix `docs/task.md` drift (created placeholder, updated `docs/repo-rules.md` references), add missing `brocula-hunt-2026-06-14.md` to README directory tree, update BroCula Audits description to `(Jun 9–Jun 14)`, verify quality checks, refresh documentation for Cycle 95
 - **Actions**:
   - [x] Full repository scan for redundant/temp/unused files → none found
   - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
   - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
   - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,194/1,194 ✅
-  - [x] README tree is accurate and up to date
-  - [x] `docs/audits/README.md` references all current files correctly
-  - [x] Deleted stale merged remote branch `fix/brocula-ulw-jun-13-run2`
-  - [x] Noted 8 unreferenced BroCula scripts for future cleanup
-  - [x] Updated `docs/bugs.md` — Cycle 93 status log
-  - [x] Updated `docs/findings.md` — Cycle 93 entry
-  - [x] Updated `docs/active-tasks.md` — Cycle 93 status
-  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 93
-  - [x] Updated CHANGELOG.md — Cycle 93 entry
+  - [x] Fixed `docs/task.md` drift — created placeholder file redirecting to `docs/active-tasks.md`; updated `docs/repo-rules.md` references from `task.md` to `active-tasks.md`
+  - [x] Added missing `brocula-hunt-2026-06-14.md` to README directory tree
+  - [x] Updated BroCula Audits description from `(Jun 9–Jun 13 Run 1)` to `(Jun 9–Jun 14)`
+  - [x] Updated `docs/bugs.md` — Cycle 95 status log
+  - [x] Updated `docs/findings.md` — Cycle 95 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 95 status
+  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 95
+  - [x] Updated CHANGELOG.md — Cycle 95 entry
 
-## Previous Cycle: RepoKeeper Cycle 92 — Full Repository Audit & Doc Sync 🟢 COMPLETE
+## Previous Cycle: RepoKeeper Cycle 94 — Full Repository Audit, README Tree Fix (Add Jun 14), Doc Sync 🟢 COMPLETE
+
+### Task: Full repository audit, add missing Jun 14 BroCula audit to README tree, documentation sync, quality verification
+
+- **Priority**: High
+- **Status**: 🟢 Complete
+- **Objective**: Full repository audit, add missing `brocula-hunt-2026-06-14.md` (Jun 14 BroCula audit) to README directory tree, update BroCula Audits description, update CHANGELOG, refresh documentation for Cycle 94
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,194/1,194 ✅
+  - [x] Added missing `brocula-hunt-2026-06-14.md` to README directory tree
+  - [x] Updated BroCula Audits description from `(Jun 9–Jun 13 Run 1)` to `(Jun 9–Jun 14)`
+  - [x] Updated `docs/bugs.md` — Cycle 94 status log
+  - [x] Updated `docs/findings.md` — Cycle 94 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 94 status
+  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 94
+  - [x] Updated CHANGELOG.md — Cycle 94 entry
+
+## Previous Cycle: RepoKeeper Cycle 93 — Full Repository Audit, Stale Branch Cleanup, Doc Sync 🟢 COMPLETE
 
 ### Task: Full repository audit, documentation sync, quality verification
 
@@ -513,5 +511,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-13 (Cycle 94: RepoKeeper)  
+**Last Updated**: 2026-06-13 (Cycle 95: RepoKeeper)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
