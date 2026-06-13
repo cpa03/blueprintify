@@ -118,6 +118,7 @@ function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
                 className={`btn-ghost flex items-center justify-center w-10 h-10 ${showDiscoveryHint ? "attention-glow" : ""}`}
                 ariaLabel={ACCESSIBILITY_LABELS.HEADER.KEYBOARD_SHORTCUTS}
                 title={ACCESSIBILITY_LABELS.HEADER.KEYBOARD_SHORTCUTS}
+                aria-keyshortcuts="?"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
