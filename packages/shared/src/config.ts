@@ -882,3 +882,60 @@ export const ERROR_CODES = {
   TIMEOUT_ERROR: "TIMEOUT_ERROR",
   PAYLOAD_TOO_LARGE: "PAYLOAD_TOO_LARGE",
 } as const;
+
+/**
+ * API Status Values
+ * Centralized status strings used in API JSON responses.
+ * Flexy says: No hardcoded "healthy" or "ok" in health endpoints!
+ */
+export const API_STATUS_VALUES = {
+  /** Service status for health check responses */
+  HEALTHY: "healthy",
+  /** Default status for operational state */
+  OK: "ok",
+  /** Error state */
+  ERROR: "error",
+} as const;
+
+/**
+ * Platform & Runtime Names
+ * Centralized platform identifiers used across the API.
+ * Flexy says: No hardcoded "unknown" or "cloudflare-workers" strings!
+ */
+export const PLATFORM_VALUES = {
+  /** Fallback when platform cannot be determined */
+  UNKNOWN: "unknown",
+  /** Cloudflare Workers runtime identifier */
+  CLOUDFLARE_WORKERS: "cloudflare-workers",
+} as const;
+
+/**
+ * Common Error Strings
+ * Centralized source of truth for frequently-used error message strings.
+ * Flexy says: No hardcoded "Unknown error" or "Resource not found" in error handlers!
+ */
+export const ERROR_STRINGS = {
+  /** Generic unknown error fallback */
+  UNKNOWN: "Unknown error",
+  /** Generic not-found error message */
+  RESOURCE_NOT_FOUND: "Resource not found",
+  /** Internal server error fallback */
+  INTERNAL: "Internal server error",
+} as const;
+
+/**
+ * Common UI Display Strings
+ * Centralized source of truth for frequently-used UI text strings
+ * used across both API and Web contexts.
+ * Flexy says: No hardcoded status/notification strings in components!
+ */
+export const UI_MESSAGES = {
+  /** Auto-save notification text */
+  CHANGES_SAVED: "Changes saved",
+  /** Generation cancelled notification */
+  GENERATION_CANCELLED: "Generation cancelled",
+  /** Generation complete notification */
+  COMPLETE: "Complete!",
+  /** Document title separator */
+  TITLE_SEPARATOR: " | ",
+} as const;

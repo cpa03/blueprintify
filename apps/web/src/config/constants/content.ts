@@ -6,7 +6,7 @@
  */
 
 import { ENV } from "../env";
-import { UI_STRINGS } from "@blueprint/shared";
+import { UI_STRINGS, UI_MESSAGES } from "@blueprint/shared";
 
 /**
  * Loading State Messages
@@ -186,7 +186,7 @@ export const TOAST_MESSAGES = {
   EXPORT_SUCCESS: "Project exported successfully!",
   EXPORT_FAILURE: "Failed to export project",
   NEW_PROJECT: "Started new project",
-  GENERATION_CANCELLED: "Generation cancelled",
+  GENERATION_CANCELLED: UI_MESSAGES.GENERATION_CANCELLED,
   SECURITY_VALIDATION_FAILED: "Security validation failed",
   TEMPLATE_LOADED: (name: string) => `${name} template loaded`,
   STEP_LOCKED: (label: string) => `Complete previous steps to unlock "${label}"`,

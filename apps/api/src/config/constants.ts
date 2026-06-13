@@ -31,6 +31,9 @@ import {
   PROMPT_DELIMITERS,
   AUTH_DEFAULTS,
   ERROR_CODES as SHARED_ERROR_CODES,
+  API_STATUS_VALUES,
+  PLATFORM_VALUES,
+  ERROR_STRINGS,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./config-types";
 import {
@@ -89,7 +92,7 @@ export const API_METADATA = {
   get VERSION(): string {
     return getEnvConfig().API_VERSION;
   },
-  STATUS: "healthy",
+  STATUS: API_STATUS_VALUES.HEALTHY,
 };
 
 // API Endpoints configuration
@@ -162,7 +165,7 @@ export const ERROR_MESSAGES = {
   CONFIGURATION: "OpenAI API key not configured",
   AI_SERVICE_UNAVAILABLE: "AI service temporarily unavailable",
   AI_SERVICE_FAILURE: (detail: string) => `AI service error: ${detail}`,
-  INTERNAL: "Internal server error",
+  INTERNAL: ERROR_STRINGS.INTERNAL,
   INTERNAL_FALLBACK: "Unknown error occurred",
   AUTHENTICATION: "Authentication required",
   AUTHENTICATION_INVALID_KEY: "Invalid or missing API key",
@@ -174,11 +177,11 @@ export const ERROR_MESSAGES = {
   CONTAINER_NOT_INITIALIZED:
     "DI Container not initialized. Call setDefaultContainer() before using services.",
   JSON_PARSE_FAILURE: (detail: string) => `Failed to parse JSON: ${detail}`,
-  PLATFORM_UNKNOWN: "unknown",
+  PLATFORM_UNKNOWN: PLATFORM_VALUES.UNKNOWN,
   PLATFORM_RUNTIME: "cloudflare-workers",
   TIMEOUT_MESSAGE: (elapsed: number, timeout: number) =>
     `Retry operation timed out after ${elapsed}ms (timeout: ${timeout}ms)`,
-  UNKNOWN_ERROR: "Unknown error",
+  UNKNOWN_ERROR: ERROR_STRINGS.UNKNOWN,
 
   // Circuit breaker errors
   /** Circuit breaker is open - service unavailable */
@@ -196,7 +199,7 @@ export const ERROR_MESSAGES = {
 export const DEFAULT_ERROR_MESSAGES = {
   VALIDATION: ERROR_MESSAGES.VALIDATION,
   AUTHENTICATION: ERROR_MESSAGES.AUTHENTICATION,
-  NOT_FOUND: "Resource not found",
+  NOT_FOUND: ERROR_STRINGS.RESOURCE_NOT_FOUND,
   CONFIGURATION: "Service configuration error",
   INTERNAL: ERROR_MESSAGES.INTERNAL,
 } as const;

@@ -4,7 +4,13 @@
  */
 
 import { ENV } from "../env";
-import { ROUTE_PATHS, RETRYABLE_STATUS_CODES, SSE_CONFIG, HTTP_STATUS } from "@blueprint/shared";
+import {
+  ROUTE_PATHS,
+  RETRYABLE_STATUS_CODES,
+  SSE_CONFIG,
+  HTTP_STATUS,
+  ERROR_STRINGS,
+} from "@blueprint/shared";
 
 export { ROUTE_PATHS, RETRYABLE_STATUS_CODES, SSE_CONFIG, HTTP_STATUS };
 
@@ -67,5 +73,5 @@ export const VERCEL_DOMAINS = {
 
 /** Frontend-specific error messages (supplemental) */
 export const FRONTEND_ERROR_MESSAGES = {
-  UNKNOWN_ERROR: "Unknown error",
+  UNKNOWN_ERROR: ERROR_STRINGS.UNKNOWN,
 } as const;

@@ -12,6 +12,7 @@ import {
   HTTP_HEADER_NAMES,
   AUTH_DEFAULTS,
   CONTEXT_KEYS,
+  ROUTE_PATHS,
 } from "@blueprint/shared";
 import { ERROR_CODES } from "../config/constants";
 
@@ -100,7 +101,7 @@ describe("POST /share", () => {
     expect(body.data).toHaveProperty("url");
     expect(body.data).toHaveProperty("expiresAt");
     expect(body.data.id).toHaveLength(12);
-    expect(body.data.url).toContain("/share/");
+    expect(body.data.url).toContain(`${ROUTE_PATHS.SHARE}/`);
   });
 
   it("should return 400 for invalid request body", async () => {
