@@ -30,8 +30,9 @@ vi.mock("../lib/security", () => ({
   handleSecurityError: vi.fn((error) => error),
 }));
 
-// Mock constants
-vi.mock("../config/constants", () => ({
+// Mock constants — use importActual so EDITOR_TABS come from @blueprint/shared
+vi.mock("../config/constants", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../config/constants")>()),
   GENERATION_MESSAGES: {
     CANCELLED: "Generation cancelled",
     ERROR: "An error occurred during generation",
@@ -39,10 +40,6 @@ vi.mock("../config/constants", () => ({
   DEBOUNCE_CONFIG: {
     WIZARD: 300,
     EDITOR: 300,
-  },
-  EDITOR_TABS: {
-    BLUEPRINT: "blueprint",
-    TASKS: "tasks",
   },
 }));
 
