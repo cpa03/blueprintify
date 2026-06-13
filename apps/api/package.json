@@ -14,15 +14,15 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@blueprint/shared": "*",
-    "@hono/zod-validator": "^0.8.0",
-    "hono": "^4.12.23",
-    "openai": "^6.42.0",
+    "@blueprint/shared": "1.0.0",
+    "@hono/zod-validator": "0.8.0",
+    "hono": "4.12.25",
+    "openai": "6.42.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.16.13",
-    "@cloudflare/workers-types": "^4.20260525.1",
+    "@cloudflare/vitest-pool-workers": "0.16.15",
+    "@cloudflare/workers-types": "4.20260613.1",
     "vitest": "^4.1.8",
     "wrangler": "4.98.0"
   }
