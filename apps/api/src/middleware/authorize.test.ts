@@ -6,12 +6,12 @@
  * proper error responses for insufficient permissions, and
  * correct handling of missing/unknown user contexts.
  */
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { Hono } from "hono";
 import { authorize } from "./authorize";
-import { ERROR_MESSAGES, ERROR_CODES } from "../config/constants";
-import { HTTP_STATUS, AUTH_DEFAULTS, CONTEXT_KEYS } from "@blueprint/shared";
-import type { User, UserRole } from "../types";
+import { ERROR_CODES } from "../config/constants";
+import { HTTP_STATUS, CONTEXT_KEYS } from "@blueprint/shared";
+import type { User, UserRole, AppVariables } from "../types";
 
 /**
  * Creates a minimal Hono app with the authorize middleware applied.
@@ -19,7 +19,7 @@ import type { User, UserRole } from "../types";
  * the authorize middleware runs.
  */
 function createTestApp(minimumRole: UserRole, user: User | undefined) {
-  const app = new Hono();
+  const app = new Hono<{ Variables: AppVariables }>();
 
   // Middleware that sets user context (simulates auth middleware)
   app.use("*", async (c, next) => {
