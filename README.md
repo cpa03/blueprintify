@@ -36,6 +36,9 @@ blueprintify/
 │   ├── api/             # Hono backend (Cloudflare Workers)
 │   └── web/             # React frontend (Vite + Tailwind)
 ├── docs/                # Project documentation
+│   ├── active-tasks.md
+│   ├── ai-agent-usage-guide.md
+│   ├── api-documentation.md
 │   ├── archive/          # Archived/outdated docs (historical reference)
 │   ├── audits/
 │   │   ├── README.md     # Audit file index
