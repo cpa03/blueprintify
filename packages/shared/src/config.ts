@@ -884,6 +884,33 @@ export const ERROR_CODES = {
 } as const;
 
 /**
+ * API Error Type Classifications
+ * Centralized source of truth for the ErrorType enum string values used
+ * across API middleware, error handlers, and error response objects.
+ * Flexy says: No hardcoded "validation" or "not_found" in error classes!
+ */
+export const ERROR_TYPES = {
+  /** Request validation failures */
+  VALIDATION: "validation",
+  /** Authentication failures (missing/invalid credentials) */
+  AUTHENTICATION: "authentication",
+  /** Authorization failures (insufficient permissions) */
+  AUTHORIZATION: "authorization",
+  /** Resource not found */
+  NOT_FOUND: "not_found",
+  /** Server configuration errors */
+  CONFIGURATION: "configuration",
+  /** Network-level failures */
+  NETWORK: "network",
+  /** AI service errors (OpenAI, etc.) */
+  AI_SERVICE: "ai_service",
+  /** Internal server errors */
+  INTERNAL: "internal",
+  /** Service temporarily unavailable */
+  SERVICE_UNAVAILABLE: "service_unavailable",
+} as const;
+
+/**
  * API Status Values
  * Centralized status strings used in API JSON responses.
  * Flexy says: No hardcoded "healthy" or "ok" in health endpoints!

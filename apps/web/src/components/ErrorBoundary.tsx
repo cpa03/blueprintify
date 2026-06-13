@@ -1,5 +1,6 @@
 import { ErrorBoundary as ErrorBoundaryLib, FallbackProps } from "react-error-boundary";
 import { isDev } from "../config/env";
+import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -74,7 +75,7 @@ export function ErrorBoundary({ children, fallback, onError }: ErrorBoundaryProp
             <button
               onClick={resetErrorBoundary}
               className="btn-primary px-6 py-2 rounded-lg font-medium transition-colors"
-              aria-label="Try again"
+              aria-label={ACCESSIBILITY_LABELS.ERROR_BOUNDARY.TRY_AGAIN}
             >
               Try Again
             </button>
@@ -82,7 +83,7 @@ export function ErrorBoundary({ children, fallback, onError }: ErrorBoundaryProp
             <button
               onClick={handleReload}
               className="btn-ghost px-6 py-2 rounded-lg font-medium transition-colors"
-              aria-label="Reload page"
+              aria-label={ACCESSIBILITY_LABELS.ERROR_BOUNDARY.RELOAD_PAGE}
             >
               Reload Page
             </button>

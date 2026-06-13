@@ -26,6 +26,7 @@ import {
 import { useFocusTrap } from "../hooks";
 import { Icon, type IconName } from "./Icon";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
+import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 
 /**
  * Props for the KeyboardShortcutsModal component.
@@ -231,7 +232,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                   ref={closeButtonRef}
                   onClick={onClose}
                   className="p-2 text-dark-400 hover:text-white hover:bg-dark-700/50 rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50"
-                  aria-label="Close keyboard shortcuts"
+                  aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.CLOSE}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path

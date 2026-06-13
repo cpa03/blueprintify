@@ -96,7 +96,7 @@ export const StepReview = memo(function StepReview({
                 <button
                   onClick={handleEditInfo}
                   className="btn-ghost btn-sm flex items-center gap-1 text-primary-400 hover:text-primary-300"
-                  aria-label="Edit project information"
+                  aria-label={ACCESSIBILITY_LABELS.WIZARD_REVIEW.EDIT_INFO}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
@@ -152,7 +152,7 @@ export const StepReview = memo(function StepReview({
                 <button
                   onClick={handleEditStack}
                   className="btn-ghost btn-sm flex items-center gap-1 text-accent-cyan hover:text-accent-cyan/80"
-                  aria-label="Edit tech stack"
+                  aria-label={ACCESSIBILITY_LABELS.WIZARD_REVIEW.EDIT_STACK}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
@@ -198,7 +198,7 @@ export const StepReview = memo(function StepReview({
                   <button
                     onClick={handleEditFeatures}
                     className="btn-ghost btn-sm flex items-center gap-1 text-accent-emerald hover:text-accent-emerald/80"
-                    aria-label="Edit features"
+                    aria-label={ACCESSIBILITY_LABELS.WIZARD_REVIEW.EDIT_FEATURES}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path

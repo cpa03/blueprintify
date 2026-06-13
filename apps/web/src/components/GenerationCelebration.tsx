@@ -22,6 +22,7 @@ import {
   SPRING_CONFIG,
 } from "../config/constants";
 import { CELEBRATION_ANIMATION } from "../config/theme";
+import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 
 const { CIRCLE_REVEAL_DURATION_S, CHECKMARK_PATH_DELAY_S, TEXT_DELAY_S } = CELEBRATION_ANIMATION;
 
@@ -200,7 +201,7 @@ function GenerationCelebrationComponent({
       className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center"
       role="status"
       aria-live="polite"
-      aria-label="Generation complete"
+      aria-label={ACCESSIBILITY_LABELS.CELEBRATION.COMPLETE}
     >
       <AnimatePresence>
         {particles.map((particle) => {

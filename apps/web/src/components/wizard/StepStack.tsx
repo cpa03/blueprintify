@@ -35,6 +35,7 @@ import {
   UI_CONTENT,
 } from "../../config/constants";
 import { TRANSFORMS } from "../../config/theme";
+import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { pageTransition, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
@@ -294,7 +295,7 @@ export const StepStack = memo(function StepStack({
       <div
         className={`glass-card p-6 space-y-6 ${invalidField ? "stack-card-attention" : ""}`}
         role="group"
-        aria-label="Tech Stack Selection"
+        aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.TECH_STACK_SELECTION}
       >
         {categories.map(([category, options]) => (
           <div key={category}>

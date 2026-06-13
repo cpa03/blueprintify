@@ -37,6 +37,7 @@ import { pageTransition, transitions, type AnimationDirection } from "../../util
 import { RippleButton } from "../RippleButton";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { getModifierLabel, getAltKeyLabel } from "../../lib/platform";
+import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 
 interface StepFeaturesProps {
   direction?: AnimationDirection;
@@ -145,7 +146,7 @@ export const StepFeatures = memo(function StepFeatures({
                 onKeyDown={handleKeyDown}
                 placeholder={UI_CONTENT.WIZARD.STEP_FEATURES.ADD_FEATURE_PLACEHOLDER}
                 className={`input-field w-full pr-10 ${newFeature.length >= FORM_LIMITS.FEATURE.MAX ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20" : ""}`}
-                aria-label="New feature name"
+                aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.NEW_FEATURE_NAME}
                 maxLength={FORM_LIMITS.FEATURE.MAX}
               />
               <AnimatePresence>
@@ -158,8 +159,8 @@ export const StepFeatures = memo(function StepFeatures({
                     transition={transitions.fast}
                     onClick={() => setNewFeature("")}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors p-1 rounded-md hover:bg-dark-700/50"
-                    aria-label="Clear feature input"
-                    title="Clear feature input"
+                    aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.CLEAR_FEATURE_INPUT}
+                    title={ACCESSIBILITY_LABELS.WIZARD_FEATURES.CLEAR_FEATURE_INPUT}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -177,7 +178,7 @@ export const StepFeatures = memo(function StepFeatures({
               onClick={handleAddFeature}
               disabled={!newFeature.trim()}
               className="btn-primary px-4"
-              aria-label="Add feature"
+              aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_FEATURE}
             >
               <svg
                 className="w-5 h-5"
@@ -207,7 +208,7 @@ export const StepFeatures = memo(function StepFeatures({
               <button
                 onClick={clearFeatures}
                 className="text-xs text-accent-pink hover:text-accent-pink/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded px-1 transition-colors flex items-center gap-1"
-                aria-label="Clear all features"
+                aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.CLEAR_ALL_FEATURES}
               >
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
