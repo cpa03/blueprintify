@@ -4,6 +4,8 @@
 
 ## Active Bugs
 
+> **RepoKeeper ULW Cycle 2026-06-13 (Cycle 94)**: Full repository audit complete. Typecheck ✅ lint ✅ tests 1,194/1,194 ✅. 0 type suppressions. 0 redundant/temp/unused source files found. 0 TODO/FIXME/HACK artifacts. 0 `as any`. **Fixed README directory tree** — added missing `brocula-hunt-2026-06-14.md` (Jun 14 BroCula audit). **Updated BroCula description** — `(Jun 9–Jun 13 Run 1)` → `(Jun 9–Jun 14)`. `docs/audits/README.md` already correct. Documentation refreshed for Cycle 94. Repo fully clean — no new fixable bugs found.
+
 > **RepoKeeper ULW Cycle 2026-06-12 (Cycle 93)**: Full repository audit complete. Typecheck ✅ lint ✅ tests 1,194/1,194 ✅. 0 type suppressions. 0 redundant/temp/unused source files found. 0 TODO/FIXME/HACK artifacts. 0 `as any`. README tree verified accurate. All referenced docs exist. **Deleted stale merged branch**: `fix/brocula-ulw-jun-13-run2`. **Noted**: 8 unreferenced BroCula scripts in `scripts/` (candidates for future cleanup). **Minor doc drift**: `docs/task.md` referenced in `repo-rules.md` but file does not exist. Documentation refreshed for Cycle 93. Repo fully clean — no new fixable bugs found.
 
 > **RepoKeeper ULW Cycle 2026-06-12 (Cycle 92)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,193/1,193 ✅. 0 type suppressions. 0 redundant/temp/unused source files found. 0 TODO/FIXME/HACK artifacts. 0 `as any`. README tree verified accurate. All 28 referenced docs exist. Documentation refreshed for Cycle 92. Repo fully clean — no new fixable bugs found.

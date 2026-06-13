@@ -2,12 +2,33 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Current Focus: RepoKeeper Cycle 93 — Full Repository Audit, Stale Branch Cleanup, Doc Sync 🟢 ACTIVE
+## Current Focus: RepoKeeper Cycle 94 — Full Repository Audit, README Tree Fix (Add Jun 14), Doc Sync 🟢 ACTIVE
+
+### Task: Full repository audit, add missing Jun 14 BroCula audit to README tree, documentation sync, quality verification
+
+- **Priority**: High
+- **Status**: 🟢 Active
+- **Objective**: Full repository audit, add missing `brocula-hunt-2026-06-14.md` (Jun 14 BroCula audit) to README directory tree and docs section, update CHANGELOG, refresh documentation for Cycle 94
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,194/1,194 ✅
+  - [x] README tree — added missing `brocula-hunt-2026-06-14.md` entry after Jun 13
+  - [x] BroCula description — updated from `(Jun 9–Jun 13 Run 1)` to `(Jun 9–Jun 14)`
+  - [x] `docs/audits/README.md` verified — already has Jun 14 as latest report
+  - [x] Updated `docs/bugs.md` — Cycle 94 status log
+  - [x] Updated `docs/findings.md` — Cycle 94 entry
+  - [x] Updated `docs/active-tasks.md` — Cycle 94 status
+  - [x] Updated `docs/knowledge-review.md` — refreshed for Cycle 94
+  - [x] Updated CHANGELOG.md — Cycle 94 entry + missing feat(ui) commit
+
+## Previous Cycle: RepoKeeper Cycle 93 — Full Repository Audit, Stale Branch Cleanup, Doc Sync 🟢 COMPLETE
 
 ### Task: Full repository audit, stale merged branch cleanup, unused scripts analysis, documentation sync, quality verification
 
 - **Priority**: High
-- **Status**: 🟢 Active
+- **Status**: 🟢 Complete
 - **Objective**: Full repository audit, delete stale merged branch `fix/brocula-ulw-jun-13-run2`, note unused BroCula scripts, verify quality checks, refresh documentation for Cycle 93
 - **Actions**:
   - [x] Full repository scan for redundant/temp/unused files → none found
@@ -492,5 +513,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-12 (Cycle 93: RepoKeeper)  
+**Last Updated**: 2026-06-13 (Cycle 94: RepoKeeper)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)

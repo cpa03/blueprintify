@@ -12,21 +12,21 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-12 (RepoKeeper Cycle 93)
+**Last Review**: 2026-06-13 (RepoKeeper Cycle 94)
 **Status**: ✅ Up to date — fully synced
 
-As of RepoKeeper Cycle 93 (refreshed):
+As of RepoKeeper Cycle 94 (refreshed):
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README tree verified**: Directory tree accurately reflects current file structure
-- **`docs/audits/README.md` verified**: All current BroCula audit files correctly listed
+- **README tree verified**: Added missing `brocula-hunt-2026-06-14.md` entry, updated BroCula description to `(Jun 9–Jun 14)`
+- **`docs/audits/README.md` verified**: Already has Jun 14 as latest report — no change needed
 - **All referenced docs** exist — no missing or broken references
-- **CHANGELOG updated**: Added Cycle 93 entry
-- **`docs/bugs.md` updated**: Cycle 93 status log added
-- **`docs/findings.md` updated**: Cycle 93 entry added
-- **`docs/active-tasks.md` updated**: Cycle 93 created, Cycle 92 marked complete
-- **Stale merged branch deleted**: `fix/brocula-ulw-jun-13-run2`
+- **CHANGELOG updated**: Added Cycle 94 entry + missing `feat(ui)` commit
+- **`docs/bugs.md` updated**: Cycle 94 status log added
+- **`docs/findings.md` updated**: Cycle 94 entry added
+- **`docs/active-tasks.md` updated**: Cycle 94 created, Cycle 93 marked complete
+- **Unreferenced BroCula scripts noted**: 8 scripts in `scripts/` remain unused (same as prior cycles)
 
 ## Historical Drift Corrections
 
