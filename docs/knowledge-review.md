@@ -26,6 +26,7 @@ As of RepoKeeper Cycle 101 (refreshed):
 - **`docs/bugs.md` updated**: Cycle 101 status log added
 - **`docs/findings.md` updated**: Cycle 101 entry added
 - **`docs/active-tasks.md` updated**: Cycle 101 created, Cycle 100 marked complete
+- **`docs/active-tasks.md` updated**: BugFixer cycle as current focus, Cycle 100 marked complete
 
 ## Historical Drift Corrections
 

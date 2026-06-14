@@ -24,6 +24,7 @@
  * ```
  */
 
+import { ANIMATION_DIRECTIONS } from "@blueprint/shared";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
 import { FormEvent, useEffect, useRef, useState, memo, useMemo } from "react";
@@ -52,7 +53,7 @@ interface StepInfoProps {
 }
 
 export const StepInfo = memo(function StepInfo({
-  direction = "forward",
+  direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepInfoProps): JSX.Element {
   const projectNameInputRef = useRef<HTMLInputElement>(null);
   const [isShaking, setIsShaking] = useState(false);

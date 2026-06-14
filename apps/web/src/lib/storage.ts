@@ -12,7 +12,11 @@ import { z } from "zod";
 import { STORAGE_KEYS, STORAGE_CONFIG, STORAGE_ERROR_MESSAGES } from "../config/constants";
 
 import { BACKUP_KEY_PREFIX, TEST_KEYS } from "../config/keys";
-import { STORAGE_CONFIG as SHARED_STORAGE_CONFIG, BYTE_CONVERSION } from "@blueprint/shared";
+import {
+  STORAGE_CONFIG as SHARED_STORAGE_CONFIG,
+  BYTE_CONVERSION,
+  STORAGE_OPERATIONS,
+} from "@blueprint/shared";
 
 // ============================================================================
 // Storage Error Types
@@ -31,7 +35,7 @@ export type StorageErrorType =
 
 export interface StorageErrorDetails {
   key: string;
-  operation: "read" | "write" | "delete" | "clear" | "migrate" | "backup";
+  operation: (typeof STORAGE_OPERATIONS)[keyof typeof STORAGE_OPERATIONS];
   originalError?: unknown;
   data?: unknown;
 }
@@ -329,12 +333,12 @@ export class StorageService<T = unknown> {
       const parsed = JSON.parse(raw);
       const validated = await this.validateAndMigrate(parsed);
 
-      this.recordLatency("read", performance.now() - startTime);
+      this.recordLatency(STORAGE_OPERATIONS.READ, performance.now() - startTime);
       this.health.operations.successful++;
 
       return validated;
     } catch (error) {
-      this.handleError("read", error);
+      this.handleError(STORAGE_OPERATIONS.READ, error);
 
       // Try recovery from backup
       const recovered = await this.recoverFromBackup();
@@ -344,7 +348,7 @@ export class StorageService<T = unknown> {
 
       throw this.createStorageError(STORAGE_ERROR_MESSAGES.READ_FAILED, "CORRUPTED_DATA", {
         key: this.config.key,
-        operation: "read",
+        operation: STORAGE_OPERATIONS.READ,
         originalError: error,
       });
     } finally {
@@ -400,13 +404,13 @@ export class StorageService<T = unknown> {
       // Update running byte estimate — avoids O(n) serialization on quota checks
       updateQuotaEstimate(this.config.key, previousValue, serialized);
 
-      this.recordLatency("write", performance.now() - startTime);
+      this.recordLatency(STORAGE_OPERATIONS.WRITE, performance.now() - startTime);
       this.health.operations.successful++;
     } catch (error) {
-      this.handleError("write", error);
+      this.handleError(STORAGE_OPERATIONS.WRITE, error);
       throw this.createStorageError(STORAGE_ERROR_MESSAGES.WRITE_FAILED, "SERIALIZATION_ERROR", {
         key: this.config.key,
-        operation: "write",
+        operation: STORAGE_OPERATIONS.WRITE,
         originalError: error,
         data,
       });
@@ -433,10 +437,10 @@ export class StorageService<T = unknown> {
 
       this.health.operations.successful++;
     } catch (error) {
-      this.handleError("delete", error);
+      this.handleError(STORAGE_OPERATIONS.DELETE, error);
       throw this.createStorageError(STORAGE_ERROR_MESSAGES.REMOVE_FAILED, "BROWSER_UNSUPPORTED", {
         key: this.config.key,
-        operation: "delete",
+        operation: STORAGE_OPERATIONS.DELETE,
         originalError: error,
       });
     } finally {
@@ -460,13 +464,13 @@ export class StorageService<T = unknown> {
 
       this.health.operations.successful++;
     } catch (error) {
-      this.handleError("clear", error);
+      this.handleError(STORAGE_OPERATIONS.CLEAR, error);
       throw this.createStorageError(
         STORAGE_ERROR_MESSAGES.CLEAR_STORAGE_FAILED,
         "BROWSER_UNSUPPORTED",
         {
           key: "*",
-          operation: "clear",
+          operation: STORAGE_OPERATIONS.CLEAR,
           originalError: error,
         }
       );
@@ -530,7 +534,7 @@ export class StorageService<T = unknown> {
           "MIGRATION_ERROR",
           {
             key: this.config.key,
-            operation: "migrate",
+            operation: STORAGE_OPERATIONS.MIGRATE,
             originalError: error,
             data: migratedData,
           }
@@ -663,14 +667,14 @@ export class StorageService<T = unknown> {
       throw this.createStorageError(
         STORAGE_ERROR_MESSAGES.STORAGE_UNSUPPORTED,
         "BROWSER_UNSUPPORTED",
-        { key: this.config.key, operation: "read" }
+        { key: this.config.key, operation: STORAGE_OPERATIONS.READ }
       );
     }
 
     if (isPrivacyMode()) {
       throw this.createStorageError(STORAGE_ERROR_MESSAGES.PRIVACY_MODE, "PRIVACY_MODE", {
         key: this.config.key,
-        operation: "read",
+        operation: STORAGE_OPERATIONS.READ,
       });
     }
   }
@@ -680,7 +684,7 @@ export class StorageService<T = unknown> {
     if (quota.remaining < STORAGE_CONFIG.QUOTA_WARNING_THRESHOLD_KB * BYTE_CONVERSION.KB) {
       throw this.createStorageError(STORAGE_ERROR_MESSAGES.QUOTA_EXCEEDED, "QUOTA_EXCEEDED", {
         key: this.config.key,
-        operation: "write",
+        operation: STORAGE_OPERATIONS.WRITE,
         data: quota,
       });
     }
@@ -701,7 +705,14 @@ export class StorageService<T = unknown> {
     }
   }
 
-  private handleError(operation: "read" | "write" | "delete" | "clear", error: unknown): void {
+  private handleError(
+    operation:
+      | typeof STORAGE_OPERATIONS.READ
+      | typeof STORAGE_OPERATIONS.WRITE
+      | typeof STORAGE_OPERATIONS.DELETE
+      | typeof STORAGE_OPERATIONS.CLEAR,
+    error: unknown
+  ): void {
     this.metrics.errorCount++;
     this.health.operations.failed++;
 
@@ -721,8 +732,12 @@ export class StorageService<T = unknown> {
     return new StorageError(message, type, details);
   }
 
-  private recordLatency(type: "read" | "write", latency: number): void {
-    const latencies = type === "read" ? this.metrics.readLatency : this.metrics.writeLatency;
+  private recordLatency(
+    type: typeof STORAGE_OPERATIONS.READ | typeof STORAGE_OPERATIONS.WRITE,
+    latency: number
+  ): void {
+    const latencies =
+      type === STORAGE_OPERATIONS.READ ? this.metrics.readLatency : this.metrics.writeLatency;
     latencies.push(latency);
 
     if (latencies.length > STORAGE_CONFIG.MAX_LATENCY_MEASUREMENTS) {

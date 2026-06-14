@@ -824,3 +824,29 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 1,214 tests passing (596 web + 353 api + 265 shared) across 69 files
+
+### ✅ Flexy Iteration 42: Centralize Toast Types, Animation Directions & Storage Operation Strings
+
+| File                                              | Change                                                                                                                                                     |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`                   | Added `TOAST_TYPES` (SUCCESS/INFO/WARNING/ERROR), `ANIMATION_DIRECTIONS` (FORWARD/BACKWARD), `STORAGE_OPERATIONS` (READ/WRITE/DELETE/CLEAR/MIGRATE/BACKUP) |
+| `packages/shared/src/index.ts`                    | Exported 3 new config objects                                                                                                                              |
+| `packages/shared/src/config.test.ts`              | Added 24 tests covering all 3 new config objects (values + string + uniqueness)                                                                            |
+| `apps/web/src/store/toast.ts`                     | `ToastType` no longer hardcoded union; derives `(typeof TOAST_TYPES)[keyof typeof TOAST_TYPES]`; store methods use `TOAST_TYPES.SUCCESS`/`ERROR`           |
+| `apps/web/src/store/toast.test.ts`                | 30 hardcoded `"success"/"error"/"warning"/"info"` replaced with `TOAST_TYPES.*` refs                                                                       |
+| `apps/web/src/components/Toast.test.tsx`          | 14 hardcoded `type: "success"/"error"/"warning"/"info"` replaced with `TOAST_TYPES.*` refs                                                                 |
+| `apps/web/src/utils/motion.ts`                    | `AnimationDirection` now derives from `ANIMATION_DIRECTIONS`; function signatures use `ANIMATION_DIRECTIONS.FORWARD`/`BACKWARD`                            |
+| `apps/web/src/utils/motion.test.ts`               | Hardcoded `"forward"/"backward"` replaced with `ANIMATION_DIRECTIONS.*` refs                                                                               |
+| `apps/web/src/lib/storage.ts`                     | Operation type unions derive from `STORAGE_OPERATIONS`; 14 hardcoded operation strings replaced                                                            |
+| `apps/web/src/components/Wizard.tsx`              | `"forward"/"backward"` direction strings replaced with `ANIMATION_DIRECTIONS.*` refs                                                                       |
+| `apps/web/src/components/wizard/StepInfo.tsx`     | `direction = "forward"` → `ANIMATION_DIRECTIONS.FORWARD`                                                                                                   |
+| `apps/web/src/components/wizard/StepStack.tsx`    | Same                                                                                                                                                       |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | Same                                                                                                                                                       |
+| `apps/web/src/components/wizard/StepReview.tsx`   | Same                                                                                                                                                       |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 596 web + 362 api + 287 shared = 1,245 tests passing across 70 files

@@ -829,3 +829,119 @@
 .cm-editor.cm-focused {
   @apply outline-none;
 }
+
+/* ===== Loading Skeletons ===== */
+/* Shimmer sweep used across all skeleton variants */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Base skeleton block with shimmer — a dark placeholder with a moving
+   gradient highlight that sweeps left-to-right to signal "loading".
+   Each skeleton component controls its own dimensions and layout;
+   this class provides the shared visual + animation only. */
+.skeleton-block {
+  position: relative;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-dark-600) 60%, transparent) 25%,
+    color-mix(in srgb, var(--color-dark-500) 40%, transparent) 40%,
+    color-mix(in srgb, var(--color-dark-600) 60%, transparent) 55%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-block {
+    animation: none;
+    background: color-mix(in srgb, var(--color-dark-600) 60%, transparent);
+  }
+}
+
+/* --- Code Editor Skeleton --- */
+/* Mimics CodeMirror layout: line-number gutter on the left, code lines on the
+   right. Each code line has a random-ish width via inline style to look
+   natural, and the gutter numbers create the familiar editor feel. */
+
+.editor-skeleton {
+  display: flex;
+  height: 100%;
+  min-height: 300px;
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+.editor-skeleton-gutter {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px 16px 16px;
+  border-right: 1px solid color-mix(in srgb, var(--color-dark-700) 80%, transparent);
+  background: color-mix(in srgb, var(--color-dark-900) 50%, transparent);
+  user-select: none;
+}
+
+.editor-skeleton-line-number {
+  height: 18px;
+  line-height: 18px;
+  font-size: 12px;
+  color: color-mix(in srgb, var(--color-dark-500) 60%, transparent);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.editor-skeleton-code {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.editor-skeleton-code-line {
+  height: 18px;
+  display: flex;
+  align-items: center;
+}
+
+/* --- Markdown Preview Skeleton --- */
+/* Mimics rendered markdown: a thick heading bar at the top, followed by
+   paragraph lines of varying widths, then a smaller sub-heading, more text,
+   and a short code-fence block to hint at code blocks in the preview. */
+
+.preview-skeleton {
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.preview-skeleton-heading {
+  height: 24px;
+  margin-bottom: 4px;
+  width: 40%;
+}
+
+.preview-skeleton-subheading {
+  height: 18px;
+  width: 28%;
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+.preview-skeleton-line {
+  height: 14px;
+}
+
+.preview-skeleton-code-block {
+  height: 60px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+}

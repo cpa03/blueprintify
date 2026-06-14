@@ -21,6 +21,7 @@
  * ```
  */
 
+import { ANIMATION_DIRECTIONS } from "@blueprint/shared";
 import { useState, useCallback, useMemo, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
@@ -45,7 +46,7 @@ interface StepFeaturesProps {
 }
 
 export const StepFeatures = memo(function StepFeatures({
-  direction = "forward",
+  direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepFeaturesProps): JSX.Element {
   const [newFeature, setNewFeature] = useState("");
   const [justAdded, setJustAdded] = useState<string | null>(null);
