@@ -1,33 +1,7 @@
-/**
- * Lazy CodeMirror Component
- *
- * Lazy-loads the CodeMirror editor for better initial page load performance.
- * Provides syntax-highlighted markdown editing with real-time content updates.
- *
- * @module components/LazyCodeMirror
- * @see {@link ReactCodeMirrorProps} - CodeMirror props interface
- *
- * @param {LazyCodeMirrorProps} props - Component props
- * @param {string} props.value - Editor content
- * @param {(value: string) => void} props.onChange - Content change callback
- * @param {string} [props.className] - Additional CSS classes
- * @returns {JSX.Element} Lazy-loaded CodeMirror editor
- *
- * @example
- * ```tsx
- * <LazyCodeMirror
- *   value="# My Blueprint\n\n## Tasks"
- *   onChange={(content) => console.log(content)}
- *   className="h-96"
- * />
- * ```
- */
-
 import { useState, useEffect, memo, forwardRef } from "react";
 import type { Extension } from "@codemirror/state";
 import type { ReactCodeMirrorProps, ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { isDev } from "../config/env";
-import { LOADING_MESSAGES } from "../config/constants";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 
 interface LazyCodeMirrorProps {
@@ -39,6 +13,45 @@ interface LazyCodeMirrorProps {
 type CodeMirrorComponent = React.ForwardRefExoticComponent<
   ReactCodeMirrorProps & React.RefAttributes<ReactCodeMirrorRef>
 > | null;
+
+const LINE_COUNT = 16;
+const GUTTER_NUMBERS = Array.from({ length: LINE_COUNT }, (_, i) => i + 1);
+
+const LINE_WIDTHS = [92, 78, 85, 60, 95, 72, 88, 55, 80, 70, 90, 65, 82, 75, 58, 87];
+const LINE_INDENTS = [0, 0, 2, 0, 4, 0, 2, 0, 6, 0, 0, 3, 0, 2, 0, 4];
+
+function EditorSkeleton(): JSX.Element {
+  return (
+    <div
+      className="editor-skeleton"
+      role="status"
+      aria-live="polite"
+      aria-label={ACCESSIBILITY_LABELS.LAZY_CODEMIRROR.LOADING}
+    >
+      <div className="editor-skeleton-gutter" aria-hidden="true">
+        {GUTTER_NUMBERS.map((n) => (
+          <div key={n} className="editor-skeleton-line-number">
+            {n}
+          </div>
+        ))}
+      </div>
+      <div className="editor-skeleton-code" aria-hidden="true">
+        {LINE_WIDTHS.map((widthPct, i) => (
+          <div key={i} className="editor-skeleton-code-line">
+            <div
+              className="skeleton-block"
+              style={{
+                width: `${widthPct}%`,
+                height: "14px",
+                marginLeft: `${(LINE_INDENTS[i] ?? 0) * 12}px`,
+              }}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 const LazyCodeMirrorComponent = forwardRef<ReactCodeMirrorRef, LazyCodeMirrorProps>(
   function LazyCodeMirrorComponent({ value, onChange, className }, ref) {
@@ -77,19 +90,7 @@ const LazyCodeMirrorComponent = forwardRef<ReactCodeMirrorRef, LazyCodeMirrorPro
     }, []);
 
     if (!CodeMirrorComponent) {
-      return (
-        <div
-          role="status"
-          aria-live="polite"
-          aria-label={ACCESSIBILITY_LABELS.LAZY_CODEMIRROR.LOADING}
-          className={`flex items-center justify-center ${className || ""}`}
-        >
-          <div className="flex flex-col items-center gap-2 text-dark-500">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
-            <span className="text-sm">{LOADING_MESSAGES.EDITOR}</span>
-          </div>
-        </div>
-      );
+      return <EditorSkeleton />;
     }
 
     return (
