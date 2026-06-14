@@ -1138,3 +1138,108 @@ export const RATE_LIMITER_BINDINGS = {
   /** Lenient rate limiter binding */
   LENIENT: "LENIENT_RATE_LIMITER",
 } as const;
+
+/**
+ * Authentication Error Messages
+ * Centralized source of truth for authentication-related error message strings.
+ * Flexy says: No hardcoded "Invalid or missing API key" strings in auth middleware!
+ * Usage: import { AUTH_MESSAGES } from "@blueprint/shared";
+ *        error.message === AUTH_MESSAGES.INVALID_API_KEY
+ */
+export const AUTH_MESSAGES = {
+  /** Invalid or missing API key */
+  INVALID_API_KEY: "Invalid or missing API key",
+  /** API key not configured on server */
+  API_KEY_NOT_CONFIGURED: "API_KEY is not configured. Server authentication is unavailable.",
+  /** Service configuration error fallback */
+  SERVICE_CONFIG_ERROR: "Service configuration error",
+} as const;
+
+/**
+ * API Validation Messages
+ * Centralized source of truth for validation-related error message strings.
+ * Flexy says: No hardcoded "Invalid JSON in request body" strings in validation middleware!
+ * Usage: import { API_VALIDATION_MESSAGES } from "@blueprint/shared";
+ */
+export const API_VALIDATION_MESSAGES = {
+  /** Invalid JSON payload */
+  INVALID_JSON_BODY: "Invalid JSON in request body",
+  /** Generic validation error */
+  VALIDATION_ERROR: "Validation error",
+  /** Validated data not found in Hono context */
+  VALIDATED_DATA_NOT_FOUND: "Validated data not found in context",
+} as const;
+
+/**
+ * Circuit Breaker Messages
+ * Centralized source of truth for circuit breaker state message strings.
+ * Flexy says: No hardcoded "Circuit breaker is OPEN" strings in circuit breaker code!
+ * Usage: import { CIRCUIT_BREAKER_MESSAGES } from "@blueprint/shared";
+ */
+export const CIRCUIT_BREAKER_MESSAGES = {
+  /** Circuit breaker open state message */
+  OPEN: "Circuit breaker is OPEN",
+  /** Circuit breaker half-open max calls reached */
+  HALF_OPEN_MAX_CALLS: "Circuit breaker is HALF_OPEN - max calls reached",
+} as const;
+
+/**
+ * Storage Error Messages
+ * Centralized source of truth for storage-related error message strings.
+ * Flexy says: No hardcoded "Failed to load state from storage" strings in storage adapters!
+ * Usage: import { STORAGE_ERROR_MESSAGES } from "@blueprint/shared";
+ */
+export const STORAGE_ERROR_MESSAGES = {
+  /** Failed to load data from storage */
+  LOAD_FAILED: "Failed to load state from storage",
+  /** Failed to save data to storage */
+  SAVE_FAILED: "Failed to save state to storage",
+  /** Failed to clear storage */
+  CLEAR_FAILED: "Failed to clear storage",
+  /** Failed to read from storage */
+  READ_FAILED: "Failed to read from storage",
+  /** Failed to write to storage */
+  WRITE_FAILED: "Failed to write to storage",
+  /** Failed to remove from storage */
+  REMOVE_FAILED: "Failed to remove from storage",
+  /** Failed to create backup */
+  BACKUP_FAILED: "Failed to create backup",
+  /** Generic recovery failure */
+  RECOVERY_FAILED: "Recovery failed",
+  /** localStorage not supported */
+  STORAGE_UNSUPPORTED: "localStorage is not supported in this browser",
+  /** Storage unavailable in private browsing */
+  PRIVACY_MODE: "Storage is unavailable in private browsing mode",
+  /** Storage quota exceeded */
+  QUOTA_EXCEEDED: "Storage quota exceeded",
+  /** Corrupted data detected */
+  DATA_CORRUPTED: "Stored data appears to be corrupted. Attempting recovery...",
+  /** Browser does not support local storage */
+  BROWSER_UNSUPPORTED: "Your browser does not support local storage.",
+  /** Validation failed */
+  VALIDATION_FAILED: "Data validation failed.",
+  /** Migration failed */
+  MIGRATION_FAILED: "Data migration failed. Please clear storage and try again.",
+  /** Unexpected storage error */
+  UNEXPECTED_ERROR: "An unexpected storage error occurred.",
+  /** Storage is full */
+  STORAGE_FULL: "Storage is full. Please clear some data and try again.",
+} as const;
+
+/**
+ * Input Validation States
+ * Centralized source of truth for input validation state string values.
+ * Flexy says: No hardcoded "valid"/"invalid"/"warning" in AnimatedInput validationState types!
+ * Usage: import { INPUT_VALIDATION_STATES } from "@blueprint/shared";
+ *        type ValidationState = (typeof INPUT_VALIDATION_STATES)[keyof typeof INPUT_VALIDATION_STATES];
+ */
+export const INPUT_VALIDATION_STATES = {
+  /** Default/neutral input state */
+  DEFAULT: "default",
+  /** Valid input state */
+  VALID: "valid",
+  /** Invalid input state */
+  INVALID: "invalid",
+  /** Warning input state */
+  WARNING: "warning",
+} as const;

@@ -880,3 +880,28 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 640 web + 362 api + 315 shared = 1,317 tests passing across 71 files
+
+### ✅ Flexy Iteration 44: Centralize Remaining Auth, Validation, Circuit Breaker & Storage Error Strings
+
+| File                                        | Change                                                                                                      |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `packages/shared/src/config.ts`             | Added `AUTH_MESSAGES` (3 auth error strings)                                                                |
+| `packages/shared/src/config.ts`             | Added `API_VALIDATION_MESSAGES` (3 validation strings)                                                      |
+| `packages/shared/src/config.ts`             | Added `CIRCUIT_BREAKER_MESSAGES` (2 circuit breaker strings)                                                |
+| `packages/shared/src/config.ts`             | Added `STORAGE_ERROR_MESSAGES` (17 storage error strings)                                                   |
+| `packages/shared/src/config.ts`             | Added `INPUT_VALIDATION_STATES` (4 input validation state constants)                                        |
+| `packages/shared/src/index.ts`              | Exported 5 new config objects                                                                               |
+| `packages/shared/src/config.test.ts`        | Added 33 tests covering all 5 new config objects (values + types + uniqueness)                              |
+| `apps/api/src/config/constants.ts`          | Added imports for `AUTH_MESSAGES`, `API_VALIDATION_MESSAGES`, `CIRCUIT_BREAKER_MESSAGES`                    |
+| `apps/api/src/config/constants.ts`          | Replaced 5 hardcoded auth/validation/circuit-breaker strings with shared refs                               |
+| `apps/web/src/config/constants/storage.ts`  | Added `STORAGE_ERROR_MESSAGES as SHARED_STORAGE_ERROR_MESSAGES` import from shared                          |
+| `apps/web/src/config/constants/storage.ts`  | 12 hardcoded storage error message strings replaced with `SHARED_STORAGE_ERROR_MESSAGES.*` refs             |
+| `apps/web/src/lib/storage.ts`               | `CLEAR_STORAGE_FAILED` → `CLEAR_FAILED`, `PRIVACY_MODE_MSG` → `PRIVACY_MODE` (deduplicated)                 |
+| `apps/web/src/components/AnimatedInput.tsx` | Added `INPUT_VALIDATION_STATES` import; replaced hardcoded `"valid"`/`"invalid"`/`"warning"` with constants |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 640 web + 362 api + 338 shared = 1,340 tests passing across 74 files

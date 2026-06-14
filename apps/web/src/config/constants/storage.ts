@@ -9,6 +9,7 @@ import {
   TIME_UNITS,
   BROWSER_QUOTA_ERROR_CODES as SHARED_BROWSER_QUOTA_ERROR_CODES,
   UI_MESSAGES,
+  STORAGE_ERROR_MESSAGES as SHARED_STORAGE_ERROR_MESSAGES,
 } from "@blueprint/shared";
 import { ENV } from "../env";
 import { STORAGE_KEYS } from "../keys";
@@ -115,27 +116,25 @@ export const DOCUMENT_TITLE_CONFIG = {
 // ============================================================================
 
 export const STORAGE_ERROR_MESSAGES = {
-  LOAD_FAILED: "Failed to load state from storage",
-  SAVE_FAILED: "Failed to save state to storage",
-  CLEAR_FAILED: "Failed to clear storage",
-  READ_FAILED: "Failed to read from storage",
-  WRITE_FAILED: "Failed to write to storage",
-  REMOVE_FAILED: "Failed to remove from storage",
-  CLEAR_STORAGE_FAILED: "Failed to clear storage",
-  BACKUP_FAILED: "Failed to create backup",
-  RECOVERY_FAILED: "Recovery failed",
+  LOAD_FAILED: SHARED_STORAGE_ERROR_MESSAGES.LOAD_FAILED,
+  SAVE_FAILED: SHARED_STORAGE_ERROR_MESSAGES.SAVE_FAILED,
+  CLEAR_FAILED: SHARED_STORAGE_ERROR_MESSAGES.CLEAR_FAILED,
+  READ_FAILED: SHARED_STORAGE_ERROR_MESSAGES.READ_FAILED,
+  WRITE_FAILED: SHARED_STORAGE_ERROR_MESSAGES.WRITE_FAILED,
+  REMOVE_FAILED: SHARED_STORAGE_ERROR_MESSAGES.REMOVE_FAILED,
+  BACKUP_FAILED: SHARED_STORAGE_ERROR_MESSAGES.BACKUP_FAILED,
+  RECOVERY_FAILED: SHARED_STORAGE_ERROR_MESSAGES.RECOVERY_FAILED,
   RECOVERY_SUCCESS: (timestamp: number) =>
     `Successfully recovered from backup created at ${new Date(timestamp)}`,
   OPERATION_FAILED: (operation: string) => `Storage ${operation} failed`,
-  STORAGE_UNSUPPORTED: "localStorage is not supported in this browser",
-  PRIVACY_MODE: "Storage is unavailable in private browsing mode",
-  QUOTA_EXCEEDED: "Storage quota exceeded",
-  DATA_CORRUPTED: "Stored data appears to be corrupted. Attempting recovery...",
-  BROWSER_UNSUPPORTED: "Your browser does not support local storage.",
-  PRIVACY_MODE_MSG: "Storage is unavailable in private browsing mode.",
-  VALIDATION_FAILED: "Data validation failed.",
-  MIGRATION_FAILED: "Data migration failed. Please clear storage and try again.",
-  UNEXPECTED_ERROR: "An unexpected storage error occurred.",
-  STORAGE_FULL: "Storage is full. Please clear some data and try again.",
+  STORAGE_UNSUPPORTED: SHARED_STORAGE_ERROR_MESSAGES.STORAGE_UNSUPPORTED,
+  PRIVACY_MODE: SHARED_STORAGE_ERROR_MESSAGES.PRIVACY_MODE,
+  QUOTA_EXCEEDED: SHARED_STORAGE_ERROR_MESSAGES.QUOTA_EXCEEDED,
+  DATA_CORRUPTED: SHARED_STORAGE_ERROR_MESSAGES.DATA_CORRUPTED,
+  BROWSER_UNSUPPORTED: SHARED_STORAGE_ERROR_MESSAGES.BROWSER_UNSUPPORTED,
+  VALIDATION_FAILED: SHARED_STORAGE_ERROR_MESSAGES.VALIDATION_FAILED,
+  MIGRATION_FAILED: SHARED_STORAGE_ERROR_MESSAGES.MIGRATION_FAILED,
+  UNEXPECTED_ERROR: SHARED_STORAGE_ERROR_MESSAGES.UNEXPECTED_ERROR,
+  STORAGE_FULL: SHARED_STORAGE_ERROR_MESSAGES.STORAGE_FULL,
   SERVICE_EXISTS: (key: string) => `Storage service for key "${key}" already exists`,
 } as const;
