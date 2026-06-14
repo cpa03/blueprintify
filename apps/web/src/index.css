@@ -874,7 +874,7 @@
   display: flex;
   height: 100%;
   min-height: 300px;
-  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 }
 
 .editor-skeleton-gutter {
