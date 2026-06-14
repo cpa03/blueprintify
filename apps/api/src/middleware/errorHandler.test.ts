@@ -5,7 +5,7 @@ import { ValidationError, AuthenticationError, NotFoundError, ConfigurationError
 import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import type { ErrorResponse } from "../errors";
 import { ERROR_CODES } from "../config/constants";
-import { HTTP_STATUS } from "@blueprint/shared";
+import { CONTEXT_KEYS, HTTP_STATUS } from "@blueprint/shared";
 
 const TEST_REQUEST_ID = "test-request-id-12345";
 
@@ -16,7 +16,7 @@ type Variables = {
 const withRequestId = (): Hono<{ Variables: Variables }> => {
   const app = new Hono<{ Variables: Variables }>();
   app.use("*", async (c, next) => {
-    c.set("requestId", TEST_REQUEST_ID);
+    c.set(CONTEXT_KEYS.REQUEST_ID, TEST_REQUEST_ID);
     await next();
   });
   return app;
@@ -249,7 +249,7 @@ describe("notFoundHandler", () => {
   it("should include requestId in 404 response when available", async () => {
     const app = new Hono<{ Variables: Variables }>();
     app.use("*", async (c, next) => {
-      c.set("requestId", TEST_REQUEST_ID);
+      c.set(CONTEXT_KEYS.REQUEST_ID, TEST_REQUEST_ID);
       await next();
     });
     app.notFound(notFoundHandler);

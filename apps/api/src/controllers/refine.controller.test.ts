@@ -3,6 +3,7 @@ import { RefineController } from "./refine.controller";
 import type { RefineContext } from "../types";
 import { ConfigurationError } from "../errors";
 import { MOCK_ENV } from "../test-utils";
+import { CONTEXT_KEYS } from "@blueprint/shared";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 
 // Mock the prompts module
@@ -27,7 +28,7 @@ vi.mock("../errors", () => ({
 const createMockContext = (env: Record<string, string>, validatedData?: unknown): RefineContext =>
   ({
     env,
-    get: (key: string) => (key === "validatedData" ? validatedData : undefined),
+    get: (key: string) => (key === CONTEXT_KEYS.VALIDATED_DATA ? validatedData : undefined),
   }) as unknown as RefineContext;
 
 describe("RefineController", () => {

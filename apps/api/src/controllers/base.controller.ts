@@ -92,7 +92,7 @@ export abstract class BaseController {
     secureLogError(context, error ?? message, {
       ...details,
       logMessage: message,
-      requestId: (c as AppContext).get("requestId"),
+      requestId: (c as AppContext).get(CONTEXT_KEYS.REQUEST_ID),
       path: c.req.path,
       method: c.req.method,
     });

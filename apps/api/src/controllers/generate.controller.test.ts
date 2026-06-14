@@ -3,6 +3,7 @@ import { GenerateController } from "./generate.controller";
 import type { BlueprintContext } from "../types";
 import { ConfigurationError } from "../errors";
 import { MOCK_ENV } from "../test-utils";
+import { CONTEXT_KEYS } from "@blueprint/shared";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 
 // Mock the prompts module
@@ -28,7 +29,7 @@ const createMockContext = (
 ): BlueprintContext =>
   ({
     env,
-    get: (key: string) => (key === "validatedData" ? validatedData : undefined),
+    get: (key: string) => (key === CONTEXT_KEYS.VALIDATED_DATA ? validatedData : undefined),
   }) as unknown as BlueprintContext;
 
 describe("GenerateController", () => {

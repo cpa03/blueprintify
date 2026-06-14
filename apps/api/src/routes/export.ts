@@ -9,7 +9,7 @@
  */
 
 import { Hono } from "hono";
-import { ExportRequestSchema } from "@blueprint/shared";
+import { CONTEXT_KEYS, ExportRequestSchema } from "@blueprint/shared";
 import { ErrorType } from "../errors";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
@@ -33,7 +33,7 @@ app.post(
   rateLimit(rateLimitConfigs.standard),
   validateJson(ExportRequestSchema),
   async (c) => {
-    const { projectName, blueprint, tasks, format } = c.get("validatedData");
+    const { projectName, blueprint, tasks, format } = c.get(CONTEXT_KEYS.VALIDATED_DATA);
 
     try {
       const timestamp = new Date().toISOString();
