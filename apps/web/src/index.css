@@ -48,6 +48,15 @@
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-dark-500;
   }
+
+  /* Firefox scrollbar — matches the WebKit custom scrollbar above so all
+     browsers get consistent dark-theme scrollbar styling. Without this,
+     Firefox users see the default system (light or OS-native) scrollbar
+     which clashes with the dark glass-morphism aesthetic. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #4b5563 #0f172a;
+  }
 }
 
 /* ===== Component Styles ===== */
@@ -791,6 +800,30 @@
 
 .cm-editor .cm-gutters {
   @apply bg-dark-900/50 border-r border-dark-700;
+}
+
+/* CodeMirror scroller scrollbar — matches the app's custom dark scrollbar
+   so the editor scrollbar doesn't stand out as a different style. */
+.cm-editor .cm-scroller::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.cm-editor .cm-scroller::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+.cm-editor .cm-scroller::-webkit-scrollbar-thumb {
+  @apply bg-dark-600 rounded-full;
+}
+
+.cm-editor .cm-scroller::-webkit-scrollbar-thumb:hover {
+  @apply bg-dark-500;
+}
+
+.cm-editor .cm-scroller {
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 transparent;
 }
 
 .cm-editor.cm-focused {
