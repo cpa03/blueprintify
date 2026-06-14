@@ -162,7 +162,7 @@ function getExpirationDate(): Date {
 
 app.post("/", rateLimit(rateLimitConfigs.standard), validateJson(createShareSchema), async (c) => {
   try {
-    const { title, blueprint, metadata } = c.get("validatedData");
+    const { title, blueprint, metadata } = c.get(CONTEXT_KEYS.VALIDATED_DATA);
     const shareId = generateShareId();
     const now = new Date().toISOString();
     const expiresAt = getExpirationDate();

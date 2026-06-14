@@ -777,7 +777,33 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 1,214 tests passing (596 web + 353 api + 265 shared) across 69 files
 
+### ✅ Flexy Iteration 41: Eliminate Remaining Hardcoded Context Keys & Auth Role Strings
+
+| File                                                   | Change                                                                                                                                                                          |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/api/src/routes/export.ts`                        | Added `CONTEXT_KEYS` import; replaced `c.get("validatedData")` with `c.get(CONTEXT_KEYS.VALIDATED_DATA)`                                                                        |
+| `apps/api/src/routes/import.ts`                        | Added `CONTEXT_KEYS` import; replaced `c.get("validatedData")` with `c.get(CONTEXT_KEYS.VALIDATED_DATA)`                                                                        |
+| `apps/api/src/routes/storage.ts`                       | Added `CONTEXT_KEYS` import; replaced 2x `c.get("validatedData")` with `c.get(CONTEXT_KEYS.VALIDATED_DATA)`                                                                     |
+| `apps/api/src/routes/share.ts`                         | Replaced `c.get("validatedData")` with `c.get(CONTEXT_KEYS.VALIDATED_DATA)` (already imported)                                                                                  |
+| `apps/api/src/controllers/base.controller.ts`          | Replaced `c.get("requestId")` with `c.get(CONTEXT_KEYS.REQUEST_ID)` (already imported)                                                                                          |
+| `apps/api/src/middleware/errorHandler.test.ts`         | Added `CONTEXT_KEYS` import; replaced 2x `c.set("requestId")` with `c.set(CONTEXT_KEYS.REQUEST_ID)`                                                                             |
+| `apps/api/src/middleware/validator.test.ts`            | Added `CONTEXT_KEYS` import; replaced 9x `c.get("validatedData")` with `c.get(CONTEXT_KEYS.VALIDATED_DATA)`                                                                     |
+| `apps/api/src/middleware/authorize.test.ts`            | Added `AUTH_DEFAULTS` import; replaced 7 `role: "user"/"admin"` with `AUTH_DEFAULTS.DEFAULT_ROLE/ADMIN_ROLE`; replaced 9 `createTestApp("user"/"admin")` with `AUTH_DEFAULTS.*` |
+| `apps/api/src/controllers/refine.controller.test.ts`   | Added `CONTEXT_KEYS` import; replaced `"validatedData"` with `CONTEXT_KEYS.VALIDATED_DATA` in mock context getter                                                               |
+| `apps/api/src/controllers/generate.controller.test.ts` | Added `CONTEXT_KEYS` import; replaced `"validatedData"` with `CONTEXT_KEYS.VALIDATED_DATA` in mock context getter                                                               |
+| `apps/api/src/controllers/tasks.controller.test.ts`    | Added `CONTEXT_KEYS` import; replaced `"validatedData"` with `CONTEXT_KEYS.VALIDATED_DATA` in mock context getter                                                               |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — 1,227 tests passing (596 web + 362 api + 269 shared) across 69 files
+
 ## PRs
+
+| PR # | Branch                                            | Title                                                                         |
+| ---- | ------------------------------------------------- | ----------------------------------------------------------------------------- |
+| TBD  | `feat/flexy-iteration-41-context-keys-auth-roles` | feat(flexy): eliminate remaining hardcoded context keys and auth role strings |
 
 | PR # | Branch                                      | Title                                                                             |
 | ---- | ------------------------------------------- | --------------------------------------------------------------------------------- |

@@ -3,7 +3,13 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { validateJson } from "./validator";
 import type { ErrorResponse } from "../errors";
-import { HTTP_HEADERS, HTTP_METHODS, HTTP_HEADER_NAMES, HTTP_STATUS } from "@blueprint/shared";
+import {
+  CONTEXT_KEYS,
+  HTTP_HEADERS,
+  HTTP_METHODS,
+  HTTP_HEADER_NAMES,
+  HTTP_STATUS,
+} from "@blueprint/shared";
 import { ERROR_CODES } from "../config/constants";
 
 describe("validateJson middleware", () => {
@@ -16,7 +22,7 @@ describe("validateJson middleware", () => {
   it("should pass valid JSON body", async () => {
     const app = new Hono();
     app.post("/", validateJson(TestSchema), (c) => {
-      const data = c.get("validatedData");
+      const data = c.get(CONTEXT_KEYS.VALIDATED_DATA);
       return c.json({ success: true, data });
     });
 
@@ -43,7 +49,7 @@ describe("validateJson middleware", () => {
   it("should return 400 for missing required fields", async () => {
     const app = new Hono();
     app.post("/", validateJson(TestSchema), (c) => {
-      const data = c.get("validatedData");
+      const data = c.get(CONTEXT_KEYS.VALIDATED_DATA);
       return c.json({ success: true, data });
     });
 
@@ -69,7 +75,7 @@ describe("validateJson middleware", () => {
   it("should return 400 for invalid email format", async () => {
     const app = new Hono();
     app.post("/", validateJson(TestSchema), (c) => {
-      const data = c.get("validatedData");
+      const data = c.get(CONTEXT_KEYS.VALIDATED_DATA);
       return c.json({ success: true, data });
     });
 
@@ -101,7 +107,7 @@ describe("validateJson middleware", () => {
   it("should return 400 for invalid JSON body", async () => {
     const app = new Hono();
     app.post("/", validateJson(TestSchema), (c) => {
-      const data = c.get("validatedData");
+      const data = c.get(CONTEXT_KEYS.VALIDATED_DATA);
       return c.json({ success: true, data });
     });
 
@@ -121,7 +127,7 @@ describe("validateJson middleware", () => {
   it("should return 400 for empty body", async () => {
     const app = new Hono();
     app.post("/", validateJson(TestSchema), (c) => {
-      const data = c.get("validatedData");
+      const data = c.get(CONTEXT_KEYS.VALIDATED_DATA);
       return c.json({ success: true, data });
     });
 
@@ -140,7 +146,7 @@ describe("validateJson middleware", () => {
   it("should include path information in validation errors", async () => {
     const app = new Hono();
     app.post("/", validateJson(TestSchema), (c) => {
-      const data = c.get("validatedData");
+      const data = c.get(CONTEXT_KEYS.VALIDATED_DATA);
       return c.json({ success: true, data });
     });
 
@@ -171,7 +177,7 @@ describe("validateJson middleware", () => {
   it("should include error messages in validation response", async () => {
     const app = new Hono();
     app.post("/", validateJson(TestSchema), (c) => {
-      const data = c.get("validatedData");
+      const data = c.get(CONTEXT_KEYS.VALIDATED_DATA);
       return c.json({ success: true, data });
     });
 
@@ -211,7 +217,7 @@ describe("validateJson middleware", () => {
 
     const app = new Hono();
     app.post("/", validateJson(NestedSchema), (c) => {
-      const data = c.get("validatedData");
+      const data = c.get(CONTEXT_KEYS.VALIDATED_DATA);
       return c.json({ success: true, data });
     });
 
@@ -243,7 +249,7 @@ describe("validateJson middleware", () => {
   it("should include timestamp in error response", async () => {
     const app = new Hono();
     app.post("/", validateJson(TestSchema), (c) => {
-      const data = c.get("validatedData");
+      const data = c.get(CONTEXT_KEYS.VALIDATED_DATA);
       return c.json({ success: true, data });
     });
 

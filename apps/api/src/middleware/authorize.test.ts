@@ -10,7 +10,7 @@ import { describe, it, expect } from "vitest";
 import { Hono } from "hono";
 import { authorize } from "./authorize";
 import { ERROR_CODES } from "../config/constants";
-import { HTTP_STATUS, CONTEXT_KEYS } from "@blueprint/shared";
+import { AUTH_DEFAULTS, HTTP_STATUS, CONTEXT_KEYS } from "@blueprint/shared";
 import type { User, UserRole, AppVariables } from "../types";
 
 /**
@@ -39,8 +39,8 @@ function createTestApp(minimumRole: UserRole, user: User | undefined) {
 describe("authorize middleware", () => {
   describe("when user is authenticated", () => {
     it("should allow access when user role meets minimum requirement", async () => {
-      const user: User = { id: "user-1", role: "user" };
-      const app = createTestApp("user", user);
+      const user: User = { id: "user-1", role: AUTH_DEFAULTS.DEFAULT_ROLE };
+      const app = createTestApp(AUTH_DEFAULTS.DEFAULT_ROLE, user);
 
       const res = await app.request("/protected/resource");
 
@@ -50,8 +50,8 @@ describe("authorize middleware", () => {
     });
 
     it("should allow admin access to user-level resources", async () => {
-      const user: User = { id: "admin-1", role: "admin" };
-      const app = createTestApp("user", user);
+      const user: User = { id: "admin-1", role: AUTH_DEFAULTS.ADMIN_ROLE };
+      const app = createTestApp(AUTH_DEFAULTS.DEFAULT_ROLE, user);
 
       const res = await app.request("/protected/resource");
 
@@ -59,8 +59,8 @@ describe("authorize middleware", () => {
     });
 
     it("should allow admin access to admin-level resources", async () => {
-      const user: User = { id: "admin-1", role: "admin" };
-      const app = createTestApp("admin", user);
+      const user: User = { id: "admin-1", role: AUTH_DEFAULTS.ADMIN_ROLE };
+      const app = createTestApp(AUTH_DEFAULTS.ADMIN_ROLE, user);
 
       const res = await app.request("/protected/resource");
 
@@ -68,8 +68,8 @@ describe("authorize middleware", () => {
     });
 
     it("should deny user access to admin-level resources with 403", async () => {
-      const user: User = { id: "user-1", role: "user" };
-      const app = createTestApp("admin", user);
+      const user: User = { id: "user-1", role: AUTH_DEFAULTS.DEFAULT_ROLE };
+      const app = createTestApp(AUTH_DEFAULTS.ADMIN_ROLE, user);
 
       const res = await app.request("/protected/resource");
 
@@ -80,13 +80,13 @@ describe("authorize middleware", () => {
       };
       expect(data.success).toBe(false);
       expect(data.error.type).toBe("authorization");
-      expect(data.error.details.requiredRole).toBe("admin");
-      expect(data.error.details.userRole).toBe("user");
+      expect(data.error.details.requiredRole).toBe(AUTH_DEFAULTS.ADMIN_ROLE);
+      expect(data.error.details.userRole).toBe(AUTH_DEFAULTS.DEFAULT_ROLE);
     });
 
     it("should not affect unprotected routes regardless of role", async () => {
-      const user: User = { id: "user-1", role: "user" };
-      const app = createTestApp("admin", user);
+      const user: User = { id: "user-1", role: AUTH_DEFAULTS.DEFAULT_ROLE };
+      const app = createTestApp(AUTH_DEFAULTS.ADMIN_ROLE, user);
 
       const res = await app.request("/public");
 
@@ -98,7 +98,7 @@ describe("authorize middleware", () => {
 
   describe("when user is not authenticated", () => {
     it("should return 401 when no user context is set", async () => {
-      const app = createTestApp("user", undefined);
+      const app = createTestApp(AUTH_DEFAULTS.DEFAULT_ROLE, undefined);
 
       const res = await app.request("/protected/resource");
 
@@ -116,7 +116,7 @@ describe("authorize middleware", () => {
   describe("edge cases", () => {
     it("should handle user with unknown role gracefully", async () => {
       const user = { id: "unknown-1", role: "unknown" } as unknown as User;
-      const app = createTestApp("user", user);
+      const app = createTestApp(AUTH_DEFAULTS.DEFAULT_ROLE, user);
 
       const res = await app.request("/protected/resource");
 
@@ -125,8 +125,8 @@ describe("authorize middleware", () => {
     });
 
     it("should handle minimum role of user correctly", async () => {
-      const user: User = { id: "user-1", role: "user" };
-      const app = createTestApp("user", user);
+      const user: User = { id: "user-1", role: AUTH_DEFAULTS.DEFAULT_ROLE };
+      const app = createTestApp(AUTH_DEFAULTS.DEFAULT_ROLE, user);
 
       const res = await app.request("/protected/resource");
 
@@ -134,8 +134,8 @@ describe("authorize middleware", () => {
     });
 
     it("should return 403 with details on role mismatch", async () => {
-      const user: User = { id: "user-1", role: "user" };
-      const app = createTestApp("admin", user);
+      const user: User = { id: "user-1", role: AUTH_DEFAULTS.DEFAULT_ROLE };
+      const app = createTestApp(AUTH_DEFAULTS.ADMIN_ROLE, user);
 
       const res = await app.request("/protected/resource");
       const data = (await res.json()) as {
@@ -144,8 +144,8 @@ describe("authorize middleware", () => {
 
       expect(data.error.code).toBe(ERROR_CODES.AUTHORIZATION_ERROR);
       expect(data.error.details).toEqual({
-        requiredRole: "admin",
-        userRole: "user",
+        requiredRole: AUTH_DEFAULTS.ADMIN_ROLE,
+        userRole: AUTH_DEFAULTS.DEFAULT_ROLE,
       });
     });
   });

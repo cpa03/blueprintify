@@ -9,7 +9,7 @@
  */
 
 import { Hono } from "hono";
-import { ImportRequestSchema } from "@blueprint/shared";
+import { CONTEXT_KEYS, ImportRequestSchema } from "@blueprint/shared";
 import { ErrorType } from "../errors";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
@@ -33,7 +33,7 @@ app.post(
   rateLimit(rateLimitConfigs.standard),
   validateJson(ImportRequestSchema),
   async (c) => {
-    const { data, format, overwrite } = c.get("validatedData");
+    const { data, format, overwrite } = c.get(CONTEXT_KEYS.VALIDATED_DATA);
 
     try {
       const warnings: string[] = [];

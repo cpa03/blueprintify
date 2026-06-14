@@ -20,6 +20,7 @@ import {
   STORAGE_KV_CONFIG,
 } from "../config/constants";
 import { ErrorType } from "../errors";
+import { CONTEXT_KEYS } from "@blueprint/shared";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -113,7 +114,7 @@ app.post(
   rateLimit(rateLimitConfigs.standard),
   validateJson(StorageReportRequestSchema),
   async (c) => {
-    const { used, total, projects } = c.get("validatedData");
+    const { used, total, projects } = c.get(CONTEXT_KEYS.VALIDATED_DATA);
 
     try {
       // Store the reported quota data in KV
@@ -160,7 +161,7 @@ app.delete(
   rateLimit(rateLimitConfigs.strict),
   validateJson(StorageClearRequestSchema),
   async (c) => {
-    const { confirm } = c.get("validatedData");
+    const { confirm } = c.get(CONTEXT_KEYS.VALIDATED_DATA);
 
     if (!confirm) {
       return c.json(
