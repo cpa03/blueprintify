@@ -21,7 +21,7 @@
  * ```
  */
 
-import { WIZARD_STEP_KEYS } from "@blueprint/shared";
+import { WIZARD_STEP_KEYS, ANIMATION_DIRECTIONS } from "@blueprint/shared";
 import { motion } from "framer-motion";
 import { memo, useCallback } from "react";
 import { useWizardStore } from "../../store";
@@ -37,7 +37,7 @@ interface StepReviewProps {
 }
 
 export const StepReview = memo(function StepReview({
-  direction = "forward",
+  direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepReviewProps): JSX.Element {
   // Use specific selectors to avoid re-rendering on unrelated state changes
   const projectName = useWizardStore((s) => s.projectName);

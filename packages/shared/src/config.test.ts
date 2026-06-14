@@ -44,6 +44,9 @@ import {
   PLATFORM_VALUES,
   ERROR_STRINGS,
   UI_MESSAGES,
+  TOAST_TYPES,
+  ANIMATION_DIRECTIONS,
+  STORAGE_OPERATIONS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -1248,6 +1251,105 @@ describe("UI_MESSAGES", () => {
 
   it("should have unique values", () => {
     const values = Object.values(UI_MESSAGES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("TOAST_TYPES", () => {
+  it("should have success type", () => {
+    expect(TOAST_TYPES.SUCCESS).toBe("success");
+  });
+
+  it("should have info type", () => {
+    expect(TOAST_TYPES.INFO).toBe("info");
+  });
+
+  it("should have warning type", () => {
+    expect(TOAST_TYPES.WARNING).toBe("warning");
+  });
+
+  it("should have error type", () => {
+    expect(TOAST_TYPES.ERROR).toBe("error");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(TOAST_TYPES);
+    expect(values.length).toBe(4);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(TOAST_TYPES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("ANIMATION_DIRECTIONS", () => {
+  it("should have forward direction", () => {
+    expect(ANIMATION_DIRECTIONS.FORWARD).toBe("forward");
+  });
+
+  it("should have backward direction", () => {
+    expect(ANIMATION_DIRECTIONS.BACKWARD).toBe("backward");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(ANIMATION_DIRECTIONS);
+    expect(values.length).toBe(2);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(ANIMATION_DIRECTIONS);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("STORAGE_OPERATIONS", () => {
+  it("should have read operation", () => {
+    expect(STORAGE_OPERATIONS.READ).toBe("read");
+  });
+
+  it("should have write operation", () => {
+    expect(STORAGE_OPERATIONS.WRITE).toBe("write");
+  });
+
+  it("should have delete operation", () => {
+    expect(STORAGE_OPERATIONS.DELETE).toBe("delete");
+  });
+
+  it("should have clear operation", () => {
+    expect(STORAGE_OPERATIONS.CLEAR).toBe("clear");
+  });
+
+  it("should have migrate operation", () => {
+    expect(STORAGE_OPERATIONS.MIGRATE).toBe("migrate");
+  });
+
+  it("should have backup operation", () => {
+    expect(STORAGE_OPERATIONS.BACKUP).toBe("backup");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(STORAGE_OPERATIONS);
+    expect(values.length).toBe(6);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(STORAGE_OPERATIONS);
     const uniqueValues = new Set(values);
     expect(uniqueValues.size).toBe(values.length);
   });
