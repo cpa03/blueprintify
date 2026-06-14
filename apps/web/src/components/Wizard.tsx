@@ -28,7 +28,7 @@ import { useFocusOnStepChange, useStepAnnouncer } from "../hooks/useFocusOnStepC
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { WIZARD_STEPS, STEP_TITLES } from "../config/constants";
 import { SPINNER } from "../config/styles";
-import { WIZARD_STEP_KEYS } from "@blueprint/shared";
+import { WIZARD_STEP_KEYS, ANIMATION_DIRECTIONS } from "@blueprint/shared";
 import { LAYOUT } from "../config/theme";
 import type { AnimationDirection } from "../utils/motion";
 
@@ -85,7 +85,7 @@ function WizardComponent(): JSX.Element {
   }, [containerRef, shouldReduceMotion]);
 
   // Derive animation direction from step index changes
-  const [direction, setDirection] = useState<AnimationDirection>("forward");
+  const [direction, setDirection] = useState<AnimationDirection>(ANIMATION_DIRECTIONS.FORWARD);
   const prevStepRef = useRef(currentStep);
 
   useEffect(() => {
@@ -93,7 +93,9 @@ function WizardComponent(): JSX.Element {
     const currIdx = WIZARD_STEPS.findIndex((s) => s.key === currentStep);
 
     if (currIdx !== prevIdx) {
-      setDirection(currIdx > prevIdx ? "forward" : "backward");
+      setDirection(
+        currIdx > prevIdx ? ANIMATION_DIRECTIONS.FORWARD : ANIMATION_DIRECTIONS.BACKWARD
+      );
       prevStepRef.current = currentStep;
     }
   }, [currentStep]);

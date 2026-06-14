@@ -23,7 +23,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useCallback, useMemo, memo } from "react";
-import { TECH_STACK_OPTIONS } from "@blueprint/shared";
+import { TECH_STACK_OPTIONS, ANIMATION_DIRECTIONS } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
 import {
   CATEGORY_ICONS,
@@ -188,7 +188,7 @@ interface StepStackProps {
 }
 
 export const StepStack = memo(function StepStack({
-  direction = "forward",
+  direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepStackProps): JSX.Element {
   const [isShaking, setIsShaking] = useState(false);
   const [invalidField, setInvalidField] = useState(false);
