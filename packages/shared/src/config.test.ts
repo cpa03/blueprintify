@@ -54,6 +54,11 @@ import {
   IMPORT_DEFAULTS,
   EXPORT_MESSAGES,
   RATE_LIMITER_BINDINGS,
+  AUTH_MESSAGES,
+  API_VALIDATION_MESSAGES,
+  CIRCUIT_BREAKER_MESSAGES,
+  STORAGE_ERROR_MESSAGES,
+  INPUT_VALIDATION_STATES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -1536,6 +1541,147 @@ describe("RATE_LIMITER_BINDINGS", () => {
 
   it("should have unique values", () => {
     const values = Object.values(RATE_LIMITER_BINDINGS);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("AUTH_MESSAGES", () => {
+  it("should have invalid API key message", () => {
+    expect(AUTH_MESSAGES.INVALID_API_KEY).toBe("Invalid or missing API key");
+  });
+
+  it("should have API key not configured message", () => {
+    expect(AUTH_MESSAGES.API_KEY_NOT_CONFIGURED).toBe(
+      "API_KEY is not configured. Server authentication is unavailable."
+    );
+  });
+
+  it("should have service config error message", () => {
+    expect(AUTH_MESSAGES.SERVICE_CONFIG_ERROR).toBe("Service configuration error");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(AUTH_MESSAGES);
+    expect(values.length).toBe(3);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(AUTH_MESSAGES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("API_VALIDATION_MESSAGES", () => {
+  it("should have invalid JSON body message", () => {
+    expect(API_VALIDATION_MESSAGES.INVALID_JSON_BODY).toBe("Invalid JSON in request body");
+  });
+
+  it("should have validation error message", () => {
+    expect(API_VALIDATION_MESSAGES.VALIDATION_ERROR).toBe("Validation error");
+  });
+
+  it("should have validated data not found message", () => {
+    expect(API_VALIDATION_MESSAGES.VALIDATED_DATA_NOT_FOUND).toBe(
+      "Validated data not found in context"
+    );
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(API_VALIDATION_MESSAGES);
+    expect(values.length).toBe(3);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(API_VALIDATION_MESSAGES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("CIRCUIT_BREAKER_MESSAGES", () => {
+  it("should have open message", () => {
+    expect(CIRCUIT_BREAKER_MESSAGES.OPEN).toBe("Circuit breaker is OPEN");
+  });
+
+  it("should have half-open max calls message", () => {
+    expect(CIRCUIT_BREAKER_MESSAGES.HALF_OPEN_MAX_CALLS).toBe(
+      "Circuit breaker is HALF_OPEN - max calls reached"
+    );
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(CIRCUIT_BREAKER_MESSAGES);
+    expect(values.length).toBe(2);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(CIRCUIT_BREAKER_MESSAGES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("STORAGE_ERROR_MESSAGES", () => {
+  it("should have load failed message", () => {
+    expect(STORAGE_ERROR_MESSAGES.LOAD_FAILED).toBe("Failed to load state from storage");
+  });
+
+  it("should have save failed message", () => {
+    expect(STORAGE_ERROR_MESSAGES.SAVE_FAILED).toBe("Failed to save state to storage");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(STORAGE_ERROR_MESSAGES);
+    expect(values.length).toBe(17);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("INPUT_VALIDATION_STATES", () => {
+  it("should have default state", () => {
+    expect(INPUT_VALIDATION_STATES.DEFAULT).toBe("default");
+  });
+
+  it("should have valid state", () => {
+    expect(INPUT_VALIDATION_STATES.VALID).toBe("valid");
+  });
+
+  it("should have invalid state", () => {
+    expect(INPUT_VALIDATION_STATES.INVALID).toBe("invalid");
+  });
+
+  it("should have warning state", () => {
+    expect(INPUT_VALIDATION_STATES.WARNING).toBe("warning");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(INPUT_VALIDATION_STATES);
+    expect(values.length).toBe(4);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(INPUT_VALIDATION_STATES);
     const uniqueValues = new Set(values);
     expect(uniqueValues.size).toBe(values.length);
   });

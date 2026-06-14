@@ -465,15 +465,11 @@ export class StorageService<T = unknown> {
       this.health.operations.successful++;
     } catch (error) {
       this.handleError(STORAGE_OPERATIONS.CLEAR, error);
-      throw this.createStorageError(
-        STORAGE_ERROR_MESSAGES.CLEAR_STORAGE_FAILED,
-        "BROWSER_UNSUPPORTED",
-        {
-          key: "*",
-          operation: STORAGE_OPERATIONS.CLEAR,
-          originalError: error,
-        }
-      );
+      throw this.createStorageError(STORAGE_ERROR_MESSAGES.CLEAR_FAILED, "BROWSER_UNSUPPORTED", {
+        key: "*",
+        operation: STORAGE_OPERATIONS.CLEAR,
+        originalError: error,
+      });
     } finally {
       this.health.operations.total++;
     }
@@ -826,7 +822,7 @@ export function getStorageErrorMessage(error: unknown): string {
       case "BROWSER_UNSUPPORTED":
         return STORAGE_ERROR_MESSAGES.BROWSER_UNSUPPORTED;
       case "PRIVACY_MODE":
-        return STORAGE_ERROR_MESSAGES.PRIVACY_MODE_MSG;
+        return STORAGE_ERROR_MESSAGES.PRIVACY_MODE;
       case "VALIDATION_ERROR":
         return STORAGE_ERROR_MESSAGES.VALIDATION_FAILED;
       case "MIGRATION_ERROR":

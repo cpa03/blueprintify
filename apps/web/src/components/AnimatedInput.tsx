@@ -36,7 +36,10 @@ import {
 } from "react";
 import { motion } from "framer-motion";
 import { TypeIndicator, useTypingIndicator } from "./TypeIndicator";
+import { INPUT_VALIDATION_STATES } from "@blueprint/shared";
 import { SPRING_CONFIG, ANIMATION_MS } from "../config/constants";
+
+type ValidationState = (typeof INPUT_VALIDATION_STATES)[keyof typeof INPUT_VALIDATION_STATES];
 
 interface AnimatedInputBaseProps {
   label?: string;
@@ -44,7 +47,7 @@ interface AnimatedInputBaseProps {
   typingDelay?: number;
   error?: string;
   hint?: string;
-  validationState?: "default" | "valid" | "invalid" | "warning";
+  validationState?: ValidationState;
 }
 
 type AnimatedInputProps = AnimatedInputBaseProps &
@@ -55,11 +58,11 @@ type AnimatedTextareaProps = AnimatedInputBaseProps &
 
 const getValidationStyles = (state: AnimatedInputBaseProps["validationState"]) => {
   switch (state) {
-    case "valid":
+    case INPUT_VALIDATION_STATES.VALID:
       return "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20";
-    case "invalid":
+    case INPUT_VALIDATION_STATES.INVALID:
       return "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20";
-    case "warning":
+    case INPUT_VALIDATION_STATES.WARNING:
       return "border-yellow-500/50 focus:border-yellow-500 focus:ring-yellow-500/20";
     default:
       return "border-dark-700 focus:border-primary-500/50 focus:ring-primary-500/20";
