@@ -3,6 +3,7 @@
  * Unit tests for Framer Motion animation variants
  */
 
+import { ANIMATION_DIRECTIONS } from "@blueprint/shared";
 import { describe, it, expect } from "vitest";
 import {
   transitions,
@@ -159,7 +160,7 @@ describe("Motion Utilities", () => {
     });
 
     it("should return backward variant when direction is backward", () => {
-      const transition = pageTransition("backward");
+      const transition = pageTransition(ANIMATION_DIRECTIONS.BACKWARD);
       expect(transition.initial).toBeDefined();
       expect(transition.animate).toBeDefined();
       expect(transition.exit).toBeDefined();
@@ -170,7 +171,7 @@ describe("Motion Utilities", () => {
     });
 
     it("should return forward variant when direction is forward", () => {
-      const transition = pageTransition("forward");
+      const transition = pageTransition(ANIMATION_DIRECTIONS.FORWARD);
       expect(transition.initial).toEqual({ opacity: 0, y: 20 });
       expect(transition.animate).toEqual({ opacity: 1, y: 0 });
       expect(transition.exit).toEqual({ opacity: 0, y: -20 });

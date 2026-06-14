@@ -966,3 +966,60 @@ export const UI_MESSAGES = {
   /** Document title separator */
   TITLE_SEPARATOR: " | ",
 } as const;
+
+/**
+ * Toast Notification Types
+ * Centralized source of truth for all toast notification type strings.
+ * Flexy says: No hardcoded "success"/"error"/"warning"/"info" in toast components!
+ * Usage: import { TOAST_TYPES } from "@blueprint/shared";
+ *        addToast("Done!", TOAST_TYPES.SUCCESS)
+ *        type ToastType = (typeof TOAST_TYPES)[keyof typeof TOAST_TYPES];
+ */
+export const TOAST_TYPES = {
+  /** Success toast - green styling, indicates successful operations */
+  SUCCESS: "success",
+  /** Info toast - blue styling, provides informational messages */
+  INFO: "info",
+  /** Warning toast - yellow styling, indicates caution or potential issues */
+  WARNING: "warning",
+  /** Error toast - red styling, indicates errors or failures */
+  ERROR: "error",
+} as const;
+
+/**
+ * Animation Direction Constants
+ * Centralized source of truth for wizard/step animation direction strings.
+ * Flexy says: No hardcoded "forward"/"backward" in animation components!
+ * Usage: import { ANIMATION_DIRECTIONS } from "@blueprint/shared";
+ *        direction === ANIMATION_DIRECTIONS.FORWARD
+ *        type AnimationDirection = (typeof ANIMATION_DIRECTIONS)[keyof typeof ANIMATION_DIRECTIONS];
+ */
+export const ANIMATION_DIRECTIONS = {
+  /** Forward navigation direction (next step / page) */
+  FORWARD: "forward",
+  /** Backward navigation direction (previous step / page) */
+  BACKWARD: "backward",
+} as const;
+
+/**
+ * Storage Operation Type Constants
+ * Centralized source of truth for storage adapter operation type strings.
+ * Flexy says: No hardcoded "read"/"write"/"delete" strings in storage code!
+ * Usage: import { STORAGE_OPERATIONS } from "@blueprint/shared";
+ *        operation === STORAGE_OPERATIONS.READ
+ *        type StorageOperation = (typeof STORAGE_OPERATIONS)[keyof typeof STORAGE_OPERATIONS];
+ */
+export const STORAGE_OPERATIONS = {
+  /** Read operation - retrieving data from storage */
+  READ: "read",
+  /** Write operation - persisting data to storage */
+  WRITE: "write",
+  /** Delete operation - removing data from storage */
+  DELETE: "delete",
+  /** Clear operation - wiping all storage data */
+  CLEAR: "clear",
+  /** Migrate operation - migrating data between storage versions */
+  MIGRATE: "migrate",
+  /** Backup operation - creating a backup snapshot */
+  BACKUP: "backup",
+} as const;

@@ -17,7 +17,7 @@
 
 import { create } from "zustand";
 import { TOAST_CONFIG } from "../config/constants";
-import { ID_GENERATION_CONFIG } from "@blueprint/shared";
+import { ID_GENERATION_CONFIG, TOAST_TYPES } from "@blueprint/shared";
 
 const { RANDOM_STRING_START_INDEX, RANDOM_STRING_LENGTH, ALPHANUMERIC_RADIX } =
   ID_GENERATION_CONFIG;
@@ -31,7 +31,7 @@ const END_INDEX = RANDOM_STRING_START_INDEX + RANDOM_STRING_LENGTH;
  * - `warning` - Indicates caution or potential issues (yellow styling)
  * - `info` - Provides informational messages (blue styling)
  */
-export type ToastType = "success" | "info" | "warning" | "error";
+export type ToastType = (typeof TOAST_TYPES)[keyof typeof TOAST_TYPES];
 
 /**
  * Represents a single toast notification.
@@ -124,9 +124,10 @@ export const useToast = () => {
   const addToast = useToastStore((state) => state.addToast);
 
   return {
-    success: (message: string, duration?: number) => addToast(message, "success", duration),
+    success: (message: string, duration?: number) =>
+      addToast(message, TOAST_TYPES.SUCCESS, duration),
     info: (message: string, duration?: number) => addToast(message, "info", duration),
     warning: (message: string, duration?: number) => addToast(message, "warning", duration),
-    error: (message: string, duration?: number) => addToast(message, "error", duration),
+    error: (message: string, duration?: number) => addToast(message, TOAST_TYPES.ERROR, duration),
   };
 };

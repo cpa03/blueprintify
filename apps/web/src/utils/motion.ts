@@ -7,6 +7,7 @@
 
 import type { Variants, Transition } from "framer-motion";
 import { SPRING_CONFIG, ANIMATION } from "../config/constants";
+import { ANIMATION_DIRECTIONS } from "@blueprint/shared";
 
 /**
  * Common transition configurations
@@ -130,7 +131,7 @@ export const pulseAnimation = {
 };
 
 /** Direction for animated page/step transitions */
-export type AnimationDirection = "forward" | "backward";
+export type AnimationDirection = (typeof ANIMATION_DIRECTIONS)[keyof typeof ANIMATION_DIRECTIONS];
 
 /**
  * Direction-aware page/step transition animation props
@@ -148,11 +149,11 @@ export type AnimationDirection = "forward" | "backward";
  * // Backward navigation (previous step)
  * <motion.div {...pageTransition("backward")}>
  */
-export function pageTransition(direction: "forward" | "backward" = "forward") {
+export function pageTransition(direction: AnimationDirection = ANIMATION_DIRECTIONS.FORWARD) {
   return {
-    initial: { opacity: 0, y: direction === "forward" ? 20 : -20 },
+    initial: { opacity: 0, y: direction === ANIMATION_DIRECTIONS.FORWARD ? 20 : -20 },
     animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: direction === "forward" ? -20 : 20 },
+    exit: { opacity: 0, y: direction === ANIMATION_DIRECTIONS.FORWARD ? -20 : 20 },
   };
 }
 
