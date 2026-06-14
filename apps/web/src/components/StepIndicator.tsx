@@ -155,6 +155,7 @@ function StepIndicatorComponent(): JSX.Element {
                   ? `${step.label} (Alt+${step.shortcut})`
                   : "Complete previous steps to unlock"
               }
+              aria-keyshortcuts={isClickable ? `Alt+${step.shortcut}` : undefined}
               aria-current={isActive ? "step" : undefined}
               className={`
                 flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300
