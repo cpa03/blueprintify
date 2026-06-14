@@ -129,7 +129,7 @@ describe("ToastContainer", () => {
     expect(screen.queryByText(/dismiss all/i)).not.toBeInTheDocument();
   });
 
-  it("renders toast with role='alert' and aria-live='polite'", () => {
+  it("renders toast with role='status' and aria-live='polite'", () => {
     mockToasts.push({
       id: "toast-1",
       message: "Accessible toast",
@@ -138,9 +138,9 @@ describe("ToastContainer", () => {
 
     render(<ToastContainer />);
 
-    const alert = screen.getByRole("alert");
-    expect(alert).toBeInTheDocument();
-    expect(alert).toHaveAttribute("aria-live", "polite");
+    const status = screen.getByRole("status");
+    expect(status).toBeInTheDocument();
+    expect(status).toHaveAttribute("aria-live", "polite");
   });
 
   it("renders different toast types correctly", () => {
