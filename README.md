@@ -328,7 +328,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Issue Audit Report (Jun 5)](./docs/issue-audit-report-2026-06-05.md)** - Issue label normalization and duplicate detection report
 - **[Issue Audit Report (Jun 7)](./docs/issue-audit-report-2026-06-07.md)** - ULW Loop issue audit with fix status tracking
 - **[Issue Audit Report (Jun 8)](./docs/issue-audit-report-2026-06-08.md)** - ULW Loop issue audit with fix status tracking
-- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jun 13–Jun 14 Run 4)
+- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jun 13–Jun 14 Run 5)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 - **[Roadmap M3 Proposal](./docs/roadmap-m3-proposal.md)** - M3 strategic expansion proposal
 
