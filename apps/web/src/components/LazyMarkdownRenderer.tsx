@@ -1,35 +1,31 @@
-/**
- * Lazy Markdown Renderer Component
- *
- * Lazy-loads the MarkdownRenderer component for better performance.
- * Displays a fallback while loading and renders markdown content with
- * syntax highlighting and GFM support.
- *
- * @module components/LazyMarkdownRenderer
- * @see {@link MarkdownRenderer} - Full markdown renderer
- *
- * @param {LazyMarkdownRendererProps} props - Component props
- * @param {string} props.content - Markdown content to render
- * @param {string} [props.className] - Additional CSS classes
- * @param {ReactNode} [props.fallback] - Fallback content while loading
- * @returns {JSX.Element} Lazy-loaded markdown renderer
- *
- * @example
- * ```tsx
- * <LazyMarkdownRenderer
- *   content="# Hello World\n\nThis is **bold** text"
- *   className="prose dark:prose-invert"
- * />
- * ```
- */
-
 import React, { useState, useEffect, memo } from "react";
 import type { MarkdownRendererProps } from "./MarkdownRenderer";
 import { isDev } from "../config/env";
-import { LOADING_MESSAGES } from "../config/constants";
 
 interface LazyMarkdownRendererProps extends MarkdownRendererProps {
   fallback?: React.ReactNode;
+}
+
+function MarkdownPreviewSkeleton(): JSX.Element {
+  return (
+    <div className="preview-skeleton" aria-hidden="true">
+      <div className="skeleton-block preview-skeleton-heading" />
+      <div className="skeleton-block preview-skeleton-line" style={{ width: "88%" }} />
+      <div className="skeleton-block preview-skeleton-line" style={{ width: "72%" }} />
+      <div className="skeleton-block preview-skeleton-line" style={{ width: "95%" }} />
+      <div className="skeleton-block preview-skeleton-line" style={{ width: "60%" }} />
+
+      <div className="skeleton-block preview-skeleton-subheading" />
+
+      <div className="skeleton-block preview-skeleton-line" style={{ width: "82%" }} />
+      <div className="skeleton-block preview-skeleton-line" style={{ width: "70%" }} />
+      <div className="skeleton-block preview-skeleton-line" style={{ width: "90%" }} />
+      <div className="skeleton-block preview-skeleton-line" style={{ width: "55%" }} />
+      <div className="skeleton-block preview-skeleton-line" style={{ width: "78%" }} />
+
+      <div className="skeleton-block preview-skeleton-code-block" style={{ width: "92%" }} />
+    </div>
+  );
 }
 
 function LazyMarkdownRendererComponent({
@@ -69,16 +65,7 @@ function LazyMarkdownRendererComponent({
   }, []);
 
   if (isLoading || !MarkdownComponent) {
-    return (
-      <div className={`flex items-center justify-center ${className || ""}`}>
-        {fallback || (
-          <div className="flex flex-col items-center gap-2 text-dark-500">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
-            <span className="text-sm">{LOADING_MESSAGES.PREVIEW}</span>
-          </div>
-        )}
-      </div>
-    );
+    return fallback ? <>{fallback}</> : <MarkdownPreviewSkeleton />;
   }
 
   return <MarkdownComponent content={content} className={className} />;
