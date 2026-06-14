@@ -39,19 +39,12 @@ function ShowEditorButtonComponent({
 }: ShowEditorButtonProps): JSX.Element {
   const modifierKey = getModifierLabel();
 
-  const buttonLabel = isGenerating
-    ? "Content generating, click to view live stream"
-    : hasContent
-      ? "Show Editor (generated content available)"
-      : UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON;
-
   return (
     <KeyboardShortcutTooltip shortcut="e" description="Toggle editor" position="left">
       <div className="animate-slide-up will-change-transform motion-safe:transition-transform motion-safe:duration-150 motion-safe:hover:scale-105 motion-safe:active:scale-95">
         <RippleButton
           onClick={onClick}
           className={`${BUTTON.SHOW_EDITOR_FAB} ${hasContent || isGenerating ? "glow-pulse" : ""}`}
-          ariaLabel={buttonLabel}
           aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
         >
           <span className="flex items-center">
@@ -76,10 +69,7 @@ function ShowEditorButtonComponent({
                 aria-hidden="true"
               />
             )}
-            <kbd
-              className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
-              aria-hidden="true"
-            >
+            <kbd className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none">
               {modifierKey}+E
             </kbd>
           </span>
