@@ -1023,3 +1023,118 @@ export const STORAGE_OPERATIONS = {
   /** Backup operation - creating a backup snapshot */
   BACKUP: "backup",
 } as const;
+
+/**
+ * API Common Error Messages
+ * Centralized source of truth for frequently-used API error message strings.
+ * Flexy says: No hardcoded "Request validation failed" strings in middleware!
+ * Usage: import { API_MESSAGES } from "@blueprint/shared";
+ *        error.message === API_MESSAGES.VALIDATION_FAILED
+ */
+export const API_MESSAGES = {
+  /** Request validation failure message */
+  VALIDATION_FAILED: "Request validation failed",
+  /** AI service temporarily unavailable */
+  AI_SERVICE_UNAVAILABLE: "AI service temporarily unavailable",
+  /** Authentication required */
+  AUTHENTICATION_REQUIRED: "Authentication required",
+  /** Insufficient permissions */
+  AUTHORIZATION_FAILED: "Insufficient permissions",
+  /** Rate limit exceeded */
+  RATE_LIMIT_EXCEEDED: "Too many requests, please try again later",
+  /** Internal fallback message */
+  INTERNAL_FALLBACK: "Unknown error occurred",
+  /** Circuit breaker open message */
+  CIRCUIT_BREAKER_OPEN: "Service temporarily unavailable, please try again later",
+  /** Rate limiter not configured */
+  RATE_LIMITER_NOT_CONFIGURED: "Rate limiter not configured",
+  /** DI container not initialized */
+  CONTAINER_NOT_INITIALIZED:
+    "DI Container not initialized. Call setDefaultContainer() before using services.",
+} as const;
+
+/**
+ * KV Storage Key Names
+ * Centralized source of truth for Cloudflare Workers KV storage key strings.
+ * Flexy says: No hardcoded "storage:quota" KV keys!
+ */
+export const KV_STORAGE_KEYS = {
+  /** Key for storing storage quota/tracking data */
+  QUOTA_KEY: "storage:quota",
+} as const;
+
+/**
+ * Share Route Messages
+ * Centralized source of truth for share route response messages.
+ * Flexy says: No hardcoded "Share deleted successfully" in route handlers!
+ */
+export const SHARE_MESSAGES = {
+  /** Database not configured error */
+  DATABASE_NOT_CONFIGURED: "Database not configured",
+  /** Invalid share ID format */
+  INVALID_SHARE_ID_FORMAT: "Invalid share ID format",
+  /** Share not found or expired */
+  NOT_FOUND_OR_EXPIRED: "Shared blueprint not found or expired",
+  /** Share has expired */
+  EXPIRED: "Shared blueprint has expired",
+  /** Share deleted successfully */
+  DELETED_SUCCESSFULLY: "Share deleted successfully",
+} as const;
+
+/**
+ * Storage Route Messages
+ * Centralized source of truth for storage route response messages.
+ * Flexy says: No hardcoded storage response strings in route handlers!
+ */
+export const STORAGE_ROUTE_MESSAGES = {
+  /** Note displayed in quota response */
+  QUOTA_NOTE:
+    "Server-side storage tracking. Client-side storage quota available via localStorage API.",
+  /** Error when confirmation is not provided for clear operation */
+  CONFIRMATION_REQUIRED: "Confirmation required to clear storage",
+  /** Success message after clearing storage */
+  CLEAR_SUCCESS:
+    "Server-side storage cleared. Client-side storage must be cleared via localStorage API.",
+} as const;
+
+/**
+ * Import Configuration Defaults
+ * Centralized defaults for the import route and error messages.
+ * Flexy says: No hardcoded "Imported Project" strings in import handlers!
+ */
+export const IMPORT_DEFAULTS = {
+  /** Default project name when no name can be extracted from imported content */
+  DEFAULT_PROJECT_NAME: "Imported Project",
+  /** Missing required fields error */
+  MISSING_REQUIRED_FIELDS: "Invalid import data: missing required fields (projectName, blueprint)",
+  /** Invalid JSON format error */
+  INVALID_JSON_FORMAT: "Invalid JSON format",
+  /** Missing blueprint content error */
+  MISSING_BLUEPRINT_CONTENT: "Invalid markdown format: could not extract blueprint content",
+  /** Generic import failure */
+  IMPORT_FAILED: "Import failed",
+} as const;
+
+/**
+ * Export Error Messages
+ * Centralized source of truth for export route error messages.
+ * Flexy says: No hardcoded "Export failed" strings in export handlers!
+ */
+export const EXPORT_MESSAGES = {
+  /** Generic export failure */
+  EXPORT_FAILED: "Export failed",
+} as const;
+
+/**
+ * Rate Limiter Binding Names
+ * Centralized source of truth for Cloudflare Workers rate limiter binding names.
+ * Flexy says: No hardcoded "STRICT_RATE_LIMITER" strings in rate limit config!
+ */
+export const RATE_LIMITER_BINDINGS = {
+  /** Strict rate limiter binding */
+  STRICT: "STRICT_RATE_LIMITER",
+  /** Standard rate limiter binding */
+  STANDARD: "STANDARD_RATE_LIMITER",
+  /** Lenient rate limiter binding */
+  LENIENT: "LENIENT_RATE_LIMITER",
+} as const;

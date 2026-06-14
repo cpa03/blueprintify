@@ -47,6 +47,13 @@ import {
   TOAST_TYPES,
   ANIMATION_DIRECTIONS,
   STORAGE_OPERATIONS,
+  API_MESSAGES,
+  KV_STORAGE_KEYS,
+  SHARE_MESSAGES,
+  STORAGE_ROUTE_MESSAGES,
+  IMPORT_DEFAULTS,
+  EXPORT_MESSAGES,
+  RATE_LIMITER_BINDINGS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -1350,6 +1357,185 @@ describe("STORAGE_OPERATIONS", () => {
 
   it("should have unique values", () => {
     const values = Object.values(STORAGE_OPERATIONS);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("API_MESSAGES", () => {
+  it("should have validation failed message", () => {
+    expect(API_MESSAGES.VALIDATION_FAILED).toBe("Request validation failed");
+  });
+
+  it("should have AI service unavailable message", () => {
+    expect(API_MESSAGES.AI_SERVICE_UNAVAILABLE).toBe("AI service temporarily unavailable");
+  });
+
+  it("should have authentication required message", () => {
+    expect(API_MESSAGES.AUTHENTICATION_REQUIRED).toBe("Authentication required");
+  });
+
+  it("should have authorization failed message", () => {
+    expect(API_MESSAGES.AUTHORIZATION_FAILED).toBe("Insufficient permissions");
+  });
+
+  it("should have rate limit exceeded message", () => {
+    expect(API_MESSAGES.RATE_LIMIT_EXCEEDED).toBe("Too many requests, please try again later");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(API_MESSAGES);
+    expect(values.length).toBeGreaterThan(0);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(API_MESSAGES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("KV_STORAGE_KEYS", () => {
+  it("should have quota key", () => {
+    expect(KV_STORAGE_KEYS.QUOTA_KEY).toBe("storage:quota");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(KV_STORAGE_KEYS);
+    expect(values.length).toBe(1);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("SHARE_MESSAGES", () => {
+  it("should have all expected share messages", () => {
+    expect(SHARE_MESSAGES.DATABASE_NOT_CONFIGURED).toBe("Database not configured");
+    expect(SHARE_MESSAGES.INVALID_SHARE_ID_FORMAT).toBe("Invalid share ID format");
+    expect(SHARE_MESSAGES.NOT_FOUND_OR_EXPIRED).toBe("Shared blueprint not found or expired");
+    expect(SHARE_MESSAGES.EXPIRED).toBe("Shared blueprint has expired");
+    expect(SHARE_MESSAGES.DELETED_SUCCESSFULLY).toBe("Share deleted successfully");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(SHARE_MESSAGES);
+    expect(values.length).toBe(5);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(SHARE_MESSAGES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("STORAGE_ROUTE_MESSAGES", () => {
+  it("should have quota note", () => {
+    expect(STORAGE_ROUTE_MESSAGES.QUOTA_NOTE).toBeTruthy();
+    expect(typeof STORAGE_ROUTE_MESSAGES.QUOTA_NOTE).toBe("string");
+  });
+
+  it("should have confirmation required message", () => {
+    expect(STORAGE_ROUTE_MESSAGES.CONFIRMATION_REQUIRED).toBe(
+      "Confirmation required to clear storage"
+    );
+  });
+
+  it("should have clear success message", () => {
+    expect(STORAGE_ROUTE_MESSAGES.CLEAR_SUCCESS).toBeTruthy();
+    expect(typeof STORAGE_ROUTE_MESSAGES.CLEAR_SUCCESS).toBe("string");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(STORAGE_ROUTE_MESSAGES);
+    expect(values.length).toBe(3);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("IMPORT_DEFAULTS", () => {
+  it("should have default project name", () => {
+    expect(IMPORT_DEFAULTS.DEFAULT_PROJECT_NAME).toBe("Imported Project");
+  });
+
+  it("should have missing required fields message", () => {
+    expect(IMPORT_DEFAULTS.MISSING_REQUIRED_FIELDS).toBe(
+      "Invalid import data: missing required fields (projectName, blueprint)"
+    );
+  });
+
+  it("should have invalid JSON format message", () => {
+    expect(IMPORT_DEFAULTS.INVALID_JSON_FORMAT).toBe("Invalid JSON format");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(IMPORT_DEFAULTS);
+    expect(values.length).toBe(5);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(IMPORT_DEFAULTS);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("EXPORT_MESSAGES", () => {
+  it("should have export failed message", () => {
+    expect(EXPORT_MESSAGES.EXPORT_FAILED).toBe("Export failed");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(EXPORT_MESSAGES);
+    expect(values.length).toBe(1);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("RATE_LIMITER_BINDINGS", () => {
+  it("should have strict binding name", () => {
+    expect(RATE_LIMITER_BINDINGS.STRICT).toBe("STRICT_RATE_LIMITER");
+  });
+
+  it("should have standard binding name", () => {
+    expect(RATE_LIMITER_BINDINGS.STANDARD).toBe("STANDARD_RATE_LIMITER");
+  });
+
+  it("should have lenient binding name", () => {
+    expect(RATE_LIMITER_BINDINGS.LENIENT).toBe("LENIENT_RATE_LIMITER");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(RATE_LIMITER_BINDINGS);
+    expect(values.length).toBe(3);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(RATE_LIMITER_BINDINGS);
     const uniqueValues = new Set(values);
     expect(uniqueValues.size).toBe(values.length);
   });
