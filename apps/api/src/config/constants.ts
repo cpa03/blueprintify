@@ -34,6 +34,13 @@ import {
   API_STATUS_VALUES,
   PLATFORM_VALUES,
   ERROR_STRINGS,
+  API_MESSAGES,
+  KV_STORAGE_KEYS,
+  SHARE_MESSAGES,
+  STORAGE_ROUTE_MESSAGES,
+  IMPORT_DEFAULTS as SHARED_IMPORT_DEFAULTS,
+  EXPORT_MESSAGES,
+  RATE_LIMITER_BINDINGS,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./config-types";
 import {
@@ -160,22 +167,21 @@ export const ERROR_CODES = SHARED_ERROR_CODES;
 
 // Error messages
 export const ERROR_MESSAGES = {
-  VALIDATION: "Request validation failed",
+  VALIDATION: API_MESSAGES.VALIDATION_FAILED,
   NOT_FOUND: (route: string) => `Route not found: ${route}`,
   CONFIGURATION: "OpenAI API key not configured",
-  AI_SERVICE_UNAVAILABLE: "AI service temporarily unavailable",
+  AI_SERVICE_UNAVAILABLE: API_MESSAGES.AI_SERVICE_UNAVAILABLE,
   AI_SERVICE_FAILURE: (detail: string) => `AI service error: ${detail}`,
   INTERNAL: ERROR_STRINGS.INTERNAL,
-  INTERNAL_FALLBACK: "Unknown error occurred",
-  AUTHENTICATION: "Authentication required",
+  INTERNAL_FALLBACK: API_MESSAGES.INTERNAL_FALLBACK,
+  AUTHENTICATION: API_MESSAGES.AUTHENTICATION_REQUIRED,
   AUTHENTICATION_INVALID_KEY: "Invalid or missing API key",
   AUTHENTICATION_MISSING_CONFIG: "API_KEY is not configured. Server authentication is unavailable.",
-  AUTHORIZATION: "Insufficient permissions",
-  RATE_LIMIT: "Too many requests, please try again later",
-  RATE_LIMITER_NOT_CONFIGURED: "Rate limiter not configured",
-  CIRCUIT_BREAKER_OPEN: "Service temporarily unavailable, please try again later",
-  CONTAINER_NOT_INITIALIZED:
-    "DI Container not initialized. Call setDefaultContainer() before using services.",
+  AUTHORIZATION: API_MESSAGES.AUTHORIZATION_FAILED,
+  RATE_LIMIT: API_MESSAGES.RATE_LIMIT_EXCEEDED,
+  RATE_LIMITER_NOT_CONFIGURED: API_MESSAGES.RATE_LIMITER_NOT_CONFIGURED,
+  CIRCUIT_BREAKER_OPEN: API_MESSAGES.CIRCUIT_BREAKER_OPEN,
+  CONTAINER_NOT_INITIALIZED: API_MESSAGES.CONTAINER_NOT_INITIALIZED,
   JSON_PARSE_FAILURE: (detail: string) => `Failed to parse JSON: ${detail}`,
   PLATFORM_UNKNOWN: PLATFORM_VALUES.UNKNOWN,
   PLATFORM_RUNTIME: PLATFORM_VALUES.CLOUDFLARE_WORKERS,
@@ -369,7 +375,7 @@ export const DB_ID_CONFIG = {
  * Flexible: KV key + TTL, no hardcoded strings!
  */
 export const STORAGE_KV_CONFIG = {
-  QUOTA_KEY: "storage:quota",
+  QUOTA_KEY: KV_STORAGE_KEYS.QUOTA_KEY,
   /** TTL for storage reports in seconds (30 days) */
   REPORT_TTL_SECONDS: TIME_UNITS.SECONDS_PER_DAY * 30,
 } as const;
@@ -512,31 +518,27 @@ export const SHARE_CONFIG = {
 } as const;
 
 // Share route error messages
+// Flexy says: References shared SHARE_MESSAGES — single source of truth!
 export const SHARE_ERROR_MESSAGES = {
-  DATABASE_NOT_CONFIGURED: "Database not configured",
-  INVALID_SHARE_ID_FORMAT: "Invalid share ID format",
-  SHARE_NOT_FOUND_OR_EXPIRED: "Shared blueprint not found or expired",
-  SHARE_EXPIRED: "Shared blueprint has expired",
-  SHARE_DELETED_SUCCESSFULLY: "Share deleted successfully",
+  DATABASE_NOT_CONFIGURED: SHARE_MESSAGES.DATABASE_NOT_CONFIGURED,
+  INVALID_SHARE_ID_FORMAT: SHARE_MESSAGES.INVALID_SHARE_ID_FORMAT,
+  SHARE_NOT_FOUND_OR_EXPIRED: SHARE_MESSAGES.NOT_FOUND_OR_EXPIRED,
+  SHARE_EXPIRED: SHARE_MESSAGES.EXPIRED,
+  SHARE_DELETED_SUCCESSFULLY: SHARE_MESSAGES.DELETED_SUCCESSFULLY,
 } as const;
 
 // Storage route messages
+// Flexy says: References shared STORAGE_ROUTE_MESSAGES — single source of truth!
 export const STORAGE_MESSAGES = {
-  /** Note displayed in quota response */
-  QUOTA_NOTE:
-    "Server-side storage tracking. Client-side storage quota available via localStorage API.",
-  /** Error when confirmation is not provided for clear operation */
-  CONFIRMATION_REQUIRED: "Confirmation required to clear storage",
-  /** Success message after clearing storage */
-  CLEAR_SUCCESS:
-    "Server-side storage cleared. Client-side storage must be cleared via localStorage API.",
+  QUOTA_NOTE: STORAGE_ROUTE_MESSAGES.QUOTA_NOTE,
+  CONFIRMATION_REQUIRED: STORAGE_ROUTE_MESSAGES.CONFIRMATION_REQUIRED,
+  CLEAR_SUCCESS: STORAGE_ROUTE_MESSAGES.CLEAR_SUCCESS,
 } as const;
 
 // Import route configuration
+// Flexy says: References shared IMPORT_DEFAULTS — single source of truth!
 export const IMPORT_CONFIG = {
-  /** Default project name when no name can be extracted from imported content */
-  DEFAULT_PROJECT_NAME: "Imported Project",
-  /** Expected import data version */
+  DEFAULT_PROJECT_NAME: SHARED_IMPORT_DEFAULTS.DEFAULT_PROJECT_NAME,
   EXPECTED_VERSION: SHARED_DEFAULTS.API_VERSION,
 } as const;
 
@@ -546,17 +548,19 @@ export const IMPORT_REGEX = {
   TASKS_SECTION: /## Tasks\s*\n\n?([\s\S]*?)(?=\n## |$)/,
 } as const;
 
+// Flexy says: References shared IMPORT_DEFAULTS — single source of truth!
 export const IMPORT_ERROR_MESSAGES = {
-  MISSING_REQUIRED_FIELDS: "Invalid import data: missing required fields (projectName, blueprint)",
-  INVALID_JSON_FORMAT: "Invalid JSON format",
-  MISSING_BLUEPRINT_CONTENT: "Invalid markdown format: could not extract blueprint content",
+  MISSING_REQUIRED_FIELDS: SHARED_IMPORT_DEFAULTS.MISSING_REQUIRED_FIELDS,
+  INVALID_JSON_FORMAT: SHARED_IMPORT_DEFAULTS.INVALID_JSON_FORMAT,
+  MISSING_BLUEPRINT_CONTENT: SHARED_IMPORT_DEFAULTS.MISSING_BLUEPRINT_CONTENT,
   UNSUPPORTED_FORMAT: (format: string) => `Unsupported import format: ${format}`,
-  IMPORT_FAILED: "Import failed",
+  IMPORT_FAILED: SHARED_IMPORT_DEFAULTS.IMPORT_FAILED,
 } as const;
 
+// Flexy says: EXPORT_FAILED references shared EXPORT_MESSAGES — single source of truth!
 export const EXPORT_ERROR_MESSAGES = {
   UNSUPPORTED_FORMAT: (format: string) => `Unsupported export format: ${format}`,
-  EXPORT_FAILED: "Export failed",
+  EXPORT_FAILED: EXPORT_MESSAGES.EXPORT_FAILED,
 } as const;
 
 // Logger middleware configuration
@@ -572,11 +576,12 @@ export const LOGGER_CONFIG = {
   UNPARSABLE_BODY: UI_STRINGS.UNPARSABLE_BODY,
 } as const;
 
+// Flexy says: LIMITER_BINDINGS references shared RATE_LIMITER_BINDINGS — single source of truth!
 export const RATE_LIMIT_CONSTANTS = {
   ANONYMOUS_CLIENT_KEY: AUTH_DEFAULTS.ANONYMOUS_USER_ID,
   LIMITER_BINDINGS: {
-    STRICT: "STRICT_RATE_LIMITER",
-    STANDARD: "STANDARD_RATE_LIMITER",
-    LENIENT: "LENIENT_RATE_LIMITER",
+    STRICT: RATE_LIMITER_BINDINGS.STRICT,
+    STANDARD: RATE_LIMITER_BINDINGS.STANDARD,
+    LENIENT: RATE_LIMITER_BINDINGS.LENIENT,
   },
 } as const;

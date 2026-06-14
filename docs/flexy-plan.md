@@ -850,3 +850,33 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 596 web + 362 api + 287 shared = 1,245 tests passing across 70 files
+
+### ✅ Flexy Iteration 43: Centralize API Error Messages, Storage Keys, KV Keys & Limiter Bindings
+
+| File                                       | Change                                                                                                       |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `packages/shared/src/config.ts`            | Added `API_MESSAGES` (9 common API error message strings)                                                    |
+| `packages/shared/src/config.ts`            | Added `KV_STORAGE_KEYS` (QUOTA_KEY for KV namespace)                                                         |
+| `packages/shared/src/config.ts`            | Added `SHARE_MESSAGES` (5 share route response messages)                                                     |
+| `packages/shared/src/config.ts`            | Added `STORAGE_ROUTE_MESSAGES` (3 storage route response messages)                                           |
+| `packages/shared/src/config.ts`            | Added `IMPORT_DEFAULTS` (5 import config/error messages)                                                     |
+| `packages/shared/src/config.ts`            | Added `EXPORT_MESSAGES` (export failure message)                                                             |
+| `packages/shared/src/config.ts`            | Added `RATE_LIMITER_BINDINGS` (3 rate limiter binding names)                                                 |
+| `packages/shared/src/index.ts`             | Exported 7 new config objects                                                                                |
+| `packages/shared/src/config.test.ts`       | Added 29+ tests covering all 7 new config objects (values + types + uniqueness)                              |
+| `apps/api/src/config/constants.ts`         | 8 `ERROR_MESSAGES` values now reference `API_MESSAGES` instead of hardcoded strings                          |
+| `apps/api/src/config/constants.ts`         | `STORAGE_KV_CONFIG.QUOTA_KEY` references `KV_STORAGE_KEYS.QUOTA_KEY` instead of hardcoded `"storage:quota"`  |
+| `apps/api/src/config/constants.ts`         | `SHARE_ERROR_MESSAGES` (5 messages) reference `SHARE_MESSAGES`                                               |
+| `apps/api/src/config/constants.ts`         | `STORAGE_MESSAGES` (3 messages) reference `STORAGE_ROUTE_MESSAGES`                                           |
+| `apps/api/src/config/constants.ts`         | `IMPORT_CONFIG.DEFAULT_PROJECT_NAME` + 4 `IMPORT_ERROR_MESSAGES` reference `IMPORT_DEFAULTS`                 |
+| `apps/api/src/config/constants.ts`         | `EXPORT_ERROR_MESSAGES.EXPORT_FAILED` references `EXPORT_MESSAGES.EXPORT_FAILED`                             |
+| `apps/api/src/config/constants.ts`         | `RATE_LIMIT_CONSTANTS.LIMITER_BINDINGS` (3 bindings) reference `RATE_LIMITER_BINDINGS`                       |
+| `apps/web/src/store/toast.ts`              | Replaced hardcoded `"info"`/`"warning"` in convenience methods with `TOAST_TYPES.INFO`/`TOAST_TYPES.WARNING` |
+| `apps/web/src/config/constants/storage.ts` | `DOCUMENT_TITLE_CONFIG.SEPARATOR` uses `UI_MESSAGES.TITLE_SEPARATOR` instead of hardcoded `" \| "`           |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 640 web + 362 api + 315 shared = 1,317 tests passing across 71 files

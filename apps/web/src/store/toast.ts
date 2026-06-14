@@ -126,8 +126,9 @@ export const useToast = () => {
   return {
     success: (message: string, duration?: number) =>
       addToast(message, TOAST_TYPES.SUCCESS, duration),
-    info: (message: string, duration?: number) => addToast(message, "info", duration),
-    warning: (message: string, duration?: number) => addToast(message, "warning", duration),
+    info: (message: string, duration?: number) => addToast(message, TOAST_TYPES.INFO, duration),
+    warning: (message: string, duration?: number) =>
+      addToast(message, TOAST_TYPES.WARNING, duration),
     error: (message: string, duration?: number) => addToast(message, TOAST_TYPES.ERROR, duration),
   };
 };
