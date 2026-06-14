@@ -229,14 +229,15 @@ const ToastItem = memo(
         onMouseLeave={handleMouseLeave}
         onFocus={handleMouseEnter}
         onBlur={handleMouseLeave}
-        role="alert"
+        role="status"
         aria-live="polite"
       >
         <div
-          className="absolute bottom-0 left-0 h-0.5 bg-current opacity-30 transition-none"
+          className="absolute bottom-0 left-0 h-0.5 bg-current opacity-30"
           style={{
             width: `${progress}%`,
             opacity: isHovered ? 0 : 0.3,
+            transition: "opacity 200ms ease-out, width 100ms linear",
           }}
           aria-hidden="true"
         />
