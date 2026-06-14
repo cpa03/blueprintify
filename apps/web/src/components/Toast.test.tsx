@@ -1,3 +1,4 @@
+import { TOAST_TYPES } from "@blueprint/shared";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ToastContainer } from "./Toast";
@@ -56,7 +57,7 @@ describe("ToastContainer", () => {
     mockToasts.push({
       id: "toast-1",
       message: "Operation successful!",
-      type: "success",
+      type: TOAST_TYPES.SUCCESS,
     });
 
     render(<ToastContainer />);
@@ -66,8 +67,8 @@ describe("ToastContainer", () => {
 
   it("renders multiple toasts", () => {
     mockToasts.push(
-      { id: "toast-1", message: "First toast", type: "success" },
-      { id: "toast-2", message: "Second toast", type: "error" }
+      { id: "toast-1", message: "First toast", type: TOAST_TYPES.SUCCESS },
+      { id: "toast-2", message: "Second toast", type: TOAST_TYPES.ERROR }
     );
 
     render(<ToastContainer />);
@@ -80,7 +81,7 @@ describe("ToastContainer", () => {
     mockToasts.push({
       id: "toast-1",
       message: "Dismiss me",
-      type: "warning",
+      type: TOAST_TYPES.WARNING,
     });
 
     render(<ToastContainer />);
@@ -93,8 +94,8 @@ describe("ToastContainer", () => {
 
   it("renders dismiss all button when multiple toasts exist", () => {
     mockToasts.push(
-      { id: "toast-1", message: "Toast 1", type: "info" },
-      { id: "toast-2", message: "Toast 2", type: "success" }
+      { id: "toast-1", message: "Toast 1", type: TOAST_TYPES.INFO },
+      { id: "toast-2", message: "Toast 2", type: TOAST_TYPES.SUCCESS }
     );
 
     render(<ToastContainer />);
@@ -105,8 +106,8 @@ describe("ToastContainer", () => {
 
   it("calls clearAll when dismiss all button is clicked", () => {
     mockToasts.push(
-      { id: "toast-1", message: "Toast 1", type: "info" },
-      { id: "toast-2", message: "Toast 2", type: "success" }
+      { id: "toast-1", message: "Toast 1", type: TOAST_TYPES.INFO },
+      { id: "toast-2", message: "Toast 2", type: TOAST_TYPES.SUCCESS }
     );
 
     render(<ToastContainer />);
@@ -120,7 +121,7 @@ describe("ToastContainer", () => {
     mockToasts.push({
       id: "toast-1",
       message: "Only toast",
-      type: "info",
+      type: TOAST_TYPES.INFO,
     });
 
     render(<ToastContainer />);
@@ -132,7 +133,7 @@ describe("ToastContainer", () => {
     mockToasts.push({
       id: "toast-1",
       message: "Accessible toast",
-      type: "success",
+      type: TOAST_TYPES.SUCCESS,
     });
 
     render(<ToastContainer />);
@@ -144,10 +145,10 @@ describe("ToastContainer", () => {
 
   it("renders different toast types correctly", () => {
     mockToasts.push(
-      { id: "toast-1", message: "Success toast", type: "success" },
-      { id: "toast-2", message: "Error toast", type: "error" },
-      { id: "toast-3", message: "Warning toast", type: "warning" },
-      { id: "toast-4", message: "Info toast", type: "info" }
+      { id: "toast-1", message: "Success toast", type: TOAST_TYPES.SUCCESS },
+      { id: "toast-2", message: "Error toast", type: TOAST_TYPES.ERROR },
+      { id: "toast-3", message: "Warning toast", type: TOAST_TYPES.WARNING },
+      { id: "toast-4", message: "Info toast", type: TOAST_TYPES.INFO }
     );
 
     render(<ToastContainer />);
