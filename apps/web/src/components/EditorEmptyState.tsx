@@ -15,6 +15,7 @@ import { motion } from "framer-motion";
 import { useWizardStore } from "../store";
 import { WIZARD_STEPS, UI_EMOJIS, EMPTY_STATE_CONFIG, ANIMATION } from "../config/constants";
 import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from "../utils/motion";
+import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
 
 /**
  * Empty state display shown in the editor when no content has been generated.
@@ -30,6 +31,8 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
   const currentIndex = WIZARD_STEPS.findIndex((s) => s.key === currentStep);
   const progress = ((currentIndex + 1) / WIZARD_STEPS.length) * 100;
+  const modifierKey = getModifierLabel();
+  const altKey = getAltKeyLabel();
 
   return (
     <motion.div
@@ -175,6 +178,42 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
           {WIZARD_STEPS.find((s) => s.key === currentStep)?.label}
         </span>
       </motion.p>
+
+      {/* Keyboard shortcut discovery hints — helps users unlock power-user
+          workflows without having to know about the `?` shortcuts modal.
+          Shown as subtle, non-intrusive kbd badges at the bottom of the
+          empty state, following the same glass-card pattern used elsewhere. */}
+      <motion.div
+        className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs text-dark-500"
+        variants={fadeInUp}
+      >
+        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-dark-800/50 border border-dark-700/50">
+          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none">
+            ?
+          </kbd>
+          <span>Keyboard shortcuts</span>
+        </span>
+        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-dark-800/50 border border-dark-700/50">
+          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none">
+            {modifierKey}
+          </kbd>
+          <span className="text-dark-500">+</span>
+          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none">
+            ↵
+          </kbd>
+          <span>Submit wizard</span>
+        </span>
+        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-dark-800/50 border border-dark-700/50">
+          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none">
+            {altKey}
+          </kbd>
+          <span className="text-dark-500">+</span>
+          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none">
+            →
+          </kbd>
+          <span>Next step</span>
+        </span>
+      </motion.div>
     </motion.div>
   );
 });
