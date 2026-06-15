@@ -9,13 +9,15 @@
  * reading-context cue at the page level — helping users gauge how much
  * content remains without needing to scroll to the bottom.
  *
- * Features:
+ * Interactive features:
+ * - Click/tap anywhere on the bar to jump to that scroll position
+ * - Hover reveals a thumb indicator for discoverability
+ * - Keyboard accessible with proper ARIA progressbar role
+ * - Smooth spring-based scroll animation
  * - Window scroll detection (no container ref needed)
  * - Gradient progress bar matching the app's design language
  * - Fade in/out based on scroll position
  * - Respects prefers-reduced-motion
- * - Accessible with role="progressbar" ARIA attributes
- * - Spring-based width animation for smooth feel
  *
  * @module components/PageScrollProgressBar
  *
@@ -26,7 +28,7 @@
  * ```
  */
 
-import { useState, useEffect, useCallback, memo } from "react";
+import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { motion, useSpring, useTransform } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { LAYOUT } from "../config/theme";
@@ -49,7 +51,7 @@ interface PageScrollProgressBarProps {
 }
 
 /**
- * Window-level scroll progress indicator with spring animation.
+ * Window-level scroll progress indicator with interactive click-to-scrub.
  *
  * @param props - Component props
  * @returns The rendered progress bar or null when not visible
@@ -61,6 +63,8 @@ function PageScrollProgressBarComponent({
 }: PageScrollProgressBarProps): JSX.Element | null {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const barRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
   const calculateProgress = useCallback(() => {
@@ -72,6 +76,67 @@ function PageScrollProgressBarComponent({
     const progress = (scrollTop / scrollHeight) * 100;
     return Math.min(Math.max(progress, 0), 100);
   }, []);
+
+  /**
+   * Converts a click position on the bar to a scroll position and scrolls there.
+   * Calculates the ratio of the click X to the bar width, then maps that
+   * ratio to the total scrollable distance of the page.
+   */
+  const handleBarClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
+      const bar = barRef.current;
+      if (!bar) return;
+
+      let clickRatio: number;
+
+      if ("clientX" in e) {
+        // Mouse/touch click — calculate position from cursor
+        const rect = bar.getBoundingClientRect();
+        clickRatio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      } else {
+        // Keyboard event — arrow keys nudge by 10%, Home/End go to 0%/100%
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (scrollHeight <= 0) return;
+
+        const currentScroll = window.scrollY;
+        const step = scrollHeight * 0.1;
+        let targetScroll = currentScroll;
+
+        switch (e.key) {
+          case "ArrowRight":
+          case "ArrowDown":
+            e.preventDefault();
+            targetScroll = Math.min(scrollHeight, currentScroll + step);
+            break;
+          case "ArrowLeft":
+          case "ArrowUp":
+            e.preventDefault();
+            targetScroll = Math.max(0, currentScroll - step);
+            break;
+          case "Home":
+            e.preventDefault();
+            targetScroll = 0;
+            break;
+          case "End":
+            e.preventDefault();
+            targetScroll = scrollHeight;
+            break;
+          default:
+            return;
+        }
+
+        window.scrollTo({ top: targetScroll, behavior: "smooth" });
+        return;
+      }
+
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (scrollHeight <= 0) return;
+
+      const targetScroll = clickRatio * scrollHeight;
+      window.scrollTo({ top: targetScroll, behavior: "smooth" });
+    },
+    []
+  );
 
   const springConfig = prefersReducedMotion
     ? { stiffness: 300, damping: 30, mass: 1 }
@@ -105,16 +170,33 @@ function PageScrollProgressBarComponent({
 
   return (
     <motion.div
-      className={`fixed top-0 left-0 right-0 z-40 pointer-events-none ${className}`}
+      className={`fixed top-0 left-0 right-0 z-40 ${className}`}
       style={{ marginTop: `${LAYOUT.HEADER_HEIGHT_PX}px` }}
       initial={{ opacity: 0 }}
       animate={{ opacity: isVisible ? 1 : 0 }}
       transition={{ duration: prefersReducedMotion ? 0 : 0.25, ease: "easeOut" }}
-      aria-hidden="true"
+      role="progressbar"
+      aria-valuenow={isVisible ? Math.round(scrollProgress) : undefined}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-label="Page scroll position — click to navigate"
+      tabIndex={isVisible ? 0 : -1}
+      onKeyDown={isVisible ? handleBarClick : undefined}
     >
-      <div className="w-full bg-dark-800/30 backdrop-blur-sm" style={{ height }}>
+      <div
+        ref={barRef}
+        className="relative w-full cursor-pointer group"
+        style={{ height: `${height + (isHovered ? 6 : 0)}px` }}
+        onClick={isVisible ? handleBarClick : undefined}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* Track background */}
+        <div className="absolute inset-0 bg-dark-800/30 backdrop-blur-sm transition-all duration-200 group-hover:bg-dark-800/50" />
+
+        {/* Filled progress */}
         <motion.div
-          className="h-full bg-gradient-to-r from-primary-500 via-accent-purple to-accent-pink"
+          className="relative h-full bg-gradient-to-r from-primary-500 via-accent-purple to-accent-pink"
           style={{ width }}
           initial={{ opacity: 0.8 }}
           animate={
@@ -133,9 +215,30 @@ function PageScrollProgressBarComponent({
           }}
         />
 
+        {/* Hover thumb — a small dot at the leading edge that appears on hover
+            to signal the bar is interactive and clickable. Uses a spring pop
+            for a tactile feel. */}
+        <motion.div
+          className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-white shadow-lg shadow-primary-500/40 border-2 border-primary-400 pointer-events-none"
+          style={{
+            left: `calc(${scrollProgress}% - 6px)`,
+          }}
+          initial={false}
+          animate={{
+            scale: isHovered && isVisible ? 1 : 0,
+            opacity: isHovered && isVisible ? 1 : 0,
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 400,
+            damping: 20,
+            mass: 0.3,
+          }}
+        />
+
         {/* Subtle trailing glow — a small gradient flare that follows the
             progress bar's leading edge, giving it a "live" feel as it
-            advances. Uses transform to keep compositing on the GPU. */}
+            advances. */}
         <motion.div
           className="absolute top-0 h-full w-10 pointer-events-none"
           style={{
