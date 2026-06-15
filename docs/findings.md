@@ -2,6 +2,52 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 109 (2026-06-15 — RepoKeeper ULW: Full Repository Audit, README BroCula Description Fix & Doc Sync)
+
+### Audit Scope
+
+Full repository audit covering build/lint/test health, redundant/temp/unused file scan, type suppression audit, README BroCula description drift fix (Run 1 → Run 2), stale remote branch assessment, documentation sync, quality verification.
+
+### Status Summary
+
+| Check       | Result                            |
+| ----------- | --------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)               |
+| Lint        | ✅ Clean (0 warnings/errors)      |
+| Build       | ✅ Clean (0 errors)               |
+| Tests       | ✅ 1,340/1,340 (74 files)         |
+| Format      | ✅ Clean                          |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No temp/backup artifacts.
+2. **Type suppression audit**: Zero `@ts-ignore`, zero `@ts-expect-error`, zero `as any` in source code.
+3. **TODO/FIXME/HACK scan**: Zero artifacts in non-test source files.
+4. **README tree verification**: All docs entries accurately listed — no drift. BroCula description updated from `(Jun 13–Jun 15 Run 1)` to `(Jun 13–Jun 15 Run 2)` — matches `brocula-hunt-2026-06-15-run2.md` on disk (added by commit `c0b0d87`).
+5. **Stale remote branch assessment**: 3 branches assessed — `origin/agent/janitor` (8 unique commits, 5 behind), `origin/agent/security-engineer` (3 unique commits, 7 behind), `origin/bugfixer/ulw-cycle-001` (2 unique commits, 10 behind). All have unique unmerged content — kept as active agent development branches.
+6. **npm audit**: 8 high in ws (upstream Cloudflare tooling via wrangler/lighthouse/openai — BUG-013, same documented blocker). No new actionable vulns.
+7. **No new fixable bugs found**: Repo remains healthy and fully clean.
+8. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/bugs.md`, `docs/knowledge-review.md`, `CHANGELOG.md` updated.
+
+### Key Findings
+
+- **No redundant/temp/unused files found** — repo remains clean.
+- **No `@ts-ignore`, `@ts-expect-error`, or `as any`** in source code.
+- **No TODO/FIXME/HACK artifacts** in non-test source files.
+- **1,340/1,340 tests passing** (640 web + 362 api + 338 shared).
+- **README BroCula description updated**: `(Jun 13–Jun 15 Run 1)` → `(Jun 13–Jun 15 Run 2)` — backlogged from Cycle 108 (Jun 15 Run 2 file was added to `docs/audits/` by commit `c0b0d87` post-Cycle 108).
+- **3 stale remote branches assessed**: All have unique unmerged content — kept as active agent branches (not deleted).
+- **npm audit**: 8 high in ws (upstream — BUG-013). Previously 3 high in esbuild; the ws vulns are newly surfaced or expanded due to `npm audit` scanning. No actionable fix (requires upstream wrangler/lighthouse update).
+- **Repo healthy**: All quality checks passing, documentation refreshed.
+
+### Verification
+
+- [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,340/1,340 ✅ format ✅
+- [x] 3 stale remote branches assessed (kept — active agent branches)
+- [x] README BroCula description updated to `(Jun 13–Jun 15 Run 2)`
+- [x] No build/lint/test regressions
+
 ## Cycle 108 (2026-06-15 — RepoKeeper ULW: Full Repository Audit, Stale Branch Cleanup & Doc Sync)
 
 ### Audit Scope

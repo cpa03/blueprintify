@@ -12,21 +12,22 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-15 (RepoKeeper Cycle 108)
+**Last Review**: 2026-06-15 (RepoKeeper Cycle 109)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README tree verified**: Directory tree accurate, BroCula description correct at `(Jun 13–Jun 15 Run 1)`
-- **Typecheck/Lint/Tests/Format**: All clean (0 errors, 0 warnings, 1,340/1,340 passing)
-- **3 stale remote branches deleted**: `brocula/jun-15-run-1`, `chore/repokeeper-cycle-106`, `ux/interactive-scroll-progress` — all squash-merged
+- **README tree verified**: Directory tree accurate, BroCula description correct at `(Jun 13–Jun 15 Run 2)`
+- **Typecheck/Lint/Build/Tests/Format**: All clean (0 errors, 0 warnings, 1,340/1,340 passing)
+- **3 stale remote branches noted** (`agent/janitor`, `agent/security-engineer`, `bugfixer/ulw-cycle-001`) — unique unmerged content, kept as active agent branches
 - **No type suppressions, TODO/FIXME/HACK, or `as any`** found in source code
-- **`docs/bugs.md` updated**: Cycle 108 status log added
-- **`docs/findings.md` updated**: Cycle 108 entry added
-- **`docs/active-tasks.md` updated**: Cycle 108 status
-- **`docs/knowledge-review.md` updated**: Refreshed for Cycle 108
+- **README BroCula description updated**: `(Jun 13–Jun 15 Run 1)` → `(Jun 13–Jun 15 Run 2)` — matches `brocula-hunt-2026-06-15-run2.md` on disk
+- **`docs/bugs.md` updated**: Cycle 109 status log added
+- **`docs/findings.md` updated**: Cycle 109 entry added
+- **`docs/active-tasks.md` updated**: Cycle 109 status
+- **`docs/knowledge-review.md` updated**: Refreshed for Cycle 109
 
 ## Historical Drift Corrections
 
