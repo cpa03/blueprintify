@@ -397,8 +397,28 @@
     }
   }
 
+  @keyframes connector-flash {
+    0% {
+      box-shadow: 0 0 0 0 transparent;
+    }
+    20% {
+      box-shadow:
+        0 0 6px 2px color-mix(in srgb, #10b981 35%, transparent),
+        0 0 14px 1px color-mix(in srgb, #10b981 15%, transparent);
+      opacity: 1;
+    }
+    100% {
+      box-shadow: 0 0 0 0 transparent;
+      opacity: 1;
+    }
+  }
+
   .step-complete-flash {
     animation: step-complete-flash 0.6s ease-out;
+  }
+
+  .connector-flash {
+    animation: connector-flash 0.5s ease-out;
   }
 
   /* Active step activation flash — one-shot scale + glow burst when a step
@@ -600,6 +620,7 @@
     .step-activate,
     .animate-step-pulse,
     .animate-step-pulse::before,
+    .connector-flash,
     .animate-tooltip-in,
     .animate-slide-in-right,
     .animate-slide-out-right,

@@ -191,7 +191,7 @@ function StepIndicatorComponent(): JSX.Element {
               <div
                 className={`w-8 h-0.5 mx-2 rounded-full transition-all duration-500 ease-in-out animate-fade-in ${
                   isCompleted ? "bg-accent-emerald" : "bg-dark-700"
-                }`}
+                } ${justCompletedStep === step.key ? "connector-flash" : ""}`}
                 style={{
                   ...(isCompleted ? { boxShadow: STEP_CONNECTOR.COMPLETED_SHADOW } : {}),
                   animationDelay: `${ENTRANCE_STAGGER.BASE_DELAY_S + index * ENTRANCE_STAGGER.INCREMENT_S}s`,
