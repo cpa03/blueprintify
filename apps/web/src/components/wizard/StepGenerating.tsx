@@ -224,7 +224,7 @@ export const StepGenerating = memo(function StepGenerating({
               aria-live="polite"
               aria-atomic="true"
               animate={{ opacity: [1, 0.55, 1] }}
-              transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: ANIMATION.DRIFT, repeat: Infinity, ease: "easeInOut" }}
             >
               {progress || "Starting..."}
             </motion.p>

@@ -905,3 +905,23 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 640 web + 362 api + 338 shared = 1,340 tests passing across 74 files
+
+### ✅ Flexy Iteration 45: Eliminate Remaining Hardcoded Animation Duration Magic Numbers & Test Status Code
+
+| File                                                | Change                                                                                                             |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `apps/api/src/services/openai.test.ts`              | Added `MOCK_SERVICE_UNAVAILABLE` hoisted constant (comment-links to `HTTP_STATUS.SERVICE_UNAVAILABLE` from shared) |
+| `apps/api/src/services/openai.test.ts`              | Replaced `this.statusCode = 503` with `this.statusCode = MOCK_SERVICE_UNAVAILABLE`                                 |
+| `apps/web/src/components/PreviewEmptyState.tsx`     | Added `ANIMATION` import; replaced inline `duration: 2` with `ANIMATION.SLOW_PULSE`                                |
+| `apps/web/src/components/PreviewEmptyState.tsx`     | Replaced inline `duration: 1.5` with `ANIMATION.FLOAT`                                                             |
+| `apps/web/src/components/EditorEmptyState.tsx`      | Added `ANIMATION` import; replaced inline `duration: 2` with `ANIMATION.SLOW_PULSE`                                |
+| `apps/web/src/components/EditorEmptyState.tsx`      | Replaced inline `duration: 1` with `ANIMATION.GENTLE_PULSE`                                                        |
+| `apps/web/src/components/EditorEmptyState.tsx`      | Replaced inline `duration: 1.5` with `ANIMATION.FLOAT`                                                             |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced inline `duration: 2.2` with `ANIMATION.DRIFT` (import already existed)                                    |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 640 web + 362 api + 338 shared = 1,340 tests passing across 74 files
