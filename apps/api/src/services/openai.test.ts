@@ -34,6 +34,13 @@ const mockBreaker = vi.hoisted(() => ({
 }));
 
 /**
+ * Hoisted constant — must be defined before vi.mock since vi.mock factories
+ * are evaluated at hoist time, before top-level imports.
+ * Flexy says: This matches HTTP_STATUS.SERVICE_UNAVAILABLE (503) from @blueprint/shared.
+ */
+const MOCK_SERVICE_UNAVAILABLE = vi.hoisted(() => 503);
+
+/**
  * Stable mock OpenAI instance — created once, referenced by the vi.mock factory.
  * The .create method is a vi.fn() we reconfigure per-test.
  * This survives vi.clearAllMocks() (the mock instance object stays, only the
@@ -72,7 +79,7 @@ vi.mock("../utils/circuitBreaker", () => ({
     constructor(message: string) {
       super(message);
       this.name = "CircuitBreakerOpenError";
-      this.statusCode = 503;
+      this.statusCode = MOCK_SERVICE_UNAVAILABLE;
     }
   },
   CircuitState: {

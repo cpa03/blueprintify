@@ -13,7 +13,7 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
 import { useWizardStore } from "../store";
-import { WIZARD_STEPS, UI_EMOJIS, EMPTY_STATE_CONFIG } from "../config/constants";
+import { WIZARD_STEPS, UI_EMOJIS, EMPTY_STATE_CONFIG, ANIMATION } from "../config/constants";
 import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from "../utils/motion";
 
 /**
@@ -81,7 +81,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               className="w-full h-1.5 bg-dark-600 rounded mb-2"
               initial={{ width: "30%" }}
               animate={{ width: ["30%", "80%", "30%"] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: ANIMATION.SLOW_PULSE, repeat: Infinity, ease: "easeInOut" }}
             />
             <motion.div
               className="w-full h-1 bg-dark-700 rounded mb-1.5"
@@ -146,7 +146,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
                   isCompleted ? "bg-accent-emerald" : isCurrent ? "bg-primary-500" : "bg-dark-600"
                 }`}
                 animate={isCurrent ? { scale: [1, 1.3, 1] } : {}}
-                transition={{ duration: 1, repeat: Infinity }}
+                transition={{ duration: ANIMATION.GENTLE_PULSE, repeat: Infinity }}
               />
             );
           })}
@@ -164,7 +164,10 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
       >
-        <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+        <motion.span
+          animate={{ x: [0, 4, 0] }}
+          transition={{ duration: ANIMATION.FLOAT, repeat: Infinity }}
+        >
           →
         </motion.span>
         Currently on:{" "}
