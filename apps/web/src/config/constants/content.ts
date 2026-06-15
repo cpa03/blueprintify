@@ -128,6 +128,7 @@ export const EDITOR_LABELS = {
   CONTENT_STATS: {
     CHARS: "Chars",
     WORDS: "Words",
+    LINES: "Lines",
     READING_TIME: "min read",
     LESS_THAN_ONE_MIN: "<1 min",
   },

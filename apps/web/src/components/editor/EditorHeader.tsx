@@ -154,6 +154,7 @@ const ContentStats = React.memo(function ContentStats({
 }) {
   const charCount = content.length;
   const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
+  const lineCount = content ? content.split("\n").length : 0;
   const rawReadingTime = wordCount / 200;
   const readingTimeDisplay =
     rawReadingTime < 1
@@ -234,6 +235,19 @@ const ContentStats = React.memo(function ContentStats({
               transition={{ duration: ANIMATION.QUICK_FADE, ease: "easeOut" }}
             >
               {wordCount.toLocaleString()}
+            </motion.span>
+          </div>
+          <div className="w-px h-2 bg-dark-700" />
+          <div className="flex items-center gap-1">
+            <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.LINES}</span>
+            <motion.span
+              key={lineCount}
+              className="tabular-nums text-accent-emerald"
+              initial={{ opacity: 0.6, y: -3 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: ANIMATION.QUICK_FADE, ease: "easeOut" }}
+            >
+              {lineCount.toLocaleString()}
             </motion.span>
           </div>
           <div className="w-px h-2 bg-dark-700" />
