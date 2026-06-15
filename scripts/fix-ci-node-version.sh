@@ -1,37 +1,25 @@
-#!/usr/bin/env bash
-# Fix CI Node.js version mismatch (#1390)
-# Changes hardcoded node-version to node-version-file for single-source-of-truth
-# Flexy says: No hardcoded values - read from .node-version!
+#!/bin/bash
+# Fix CI Node.js version from 20 to 22 across all workflow files
+# The project requires Node.js >=22 (per package.json engines, .nvmrc, .node-version)
+# but all CI workflows were pinned to Node.js 20, causing API build failures (wrangler requires Node.js >=22)
+
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/config.sh"
+FILES=(
+  ".github/workflows/iterate.yml"
+  ".github/workflows/on-pull.yml"
+  ".github/workflows/parallel.yml"
+  ".github/workflows/pr-gatekeeper.yml"
+)
 
-if [ ! -d "$WORKFLOW_DIR" ]; then
-  echo "Error: .github/workflows directory not found"
-  exit 1
-fi
-
-NODE_VERSION=$(cat "$NODE_VERSION_FILE" 2>/dev/null || echo "22")
-echo "📦 Using Node.js version from $NODE_VERSION_FILE: v$NODE_VERSION"
-
-# Replace hardcoded node-version: with node-version-file reference
-# This is the Flexy way: single source of truth, no hardcoded values!
-for file in "$WORKFLOW_DIR"/*.yml; do
-  if [ -f "$file" ]; then
-    # Replace node-version: "VERSION" with node-version-file: ".node-version"
-    sed -i 's/node-version: "[0-9]*"/node-version-file: "\.node-version"/g' "$file"
-    # Also handle unquoted: node-version: 20
-    sed -i 's/node-version: [0-9]*$/node-version-file: "\.node-version"/' "$file"
-    echo "✓ Updated: $file"
+for file in "${FILES[@]}"; do
+  if [[ -f "$file" ]]; then
+    sed -i 's/node-version: "20"/node-version: "22"/g' "$file"
+    sed -i 's/node-version: 20/node-version: "22"/g' "$file"
+    echo "Fixed: $file"
+  else
+    echo "Not found: $file"
   fi
 done
 
-echo ""
-echo "✅ Done. All workflows now reference .node-version as single source of truth."
-echo "   Verify with: grep -rn 'node-version' .github/workflows/"
-echo ""
-echo "   Changes made:"
-echo "     - Removed hardcoded version strings (e.g., \"20\", \"22\")"
-echo "     - Using node-version-file: \".node-version\" instead"
-echo "     - CI auto-syncs with project's actual Node.js version"
+echo "Done. Run 'git diff' to verify changes."
