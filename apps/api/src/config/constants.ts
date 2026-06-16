@@ -44,6 +44,7 @@ import {
   AUTH_MESSAGES,
   API_VALIDATION_MESSAGES,
   CIRCUIT_BREAKER_MESSAGES,
+  API_CONFIG_DEFAULTS,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./config-types";
 import {
@@ -172,7 +173,7 @@ export const ERROR_CODES = SHARED_ERROR_CODES;
 export const ERROR_MESSAGES = {
   VALIDATION: API_MESSAGES.VALIDATION_FAILED,
   NOT_FOUND: (route: string) => `Route not found: ${route}`,
-  CONFIGURATION: "OpenAI API key not configured",
+  CONFIGURATION: API_MESSAGES.OPENAI_KEY_NOT_CONFIGURED,
   AI_SERVICE_UNAVAILABLE: API_MESSAGES.AI_SERVICE_UNAVAILABLE,
   AI_SERVICE_FAILURE: (detail: string) => `AI service error: ${detail}`,
   INTERNAL: ERROR_STRINGS.INTERNAL,
@@ -368,7 +369,7 @@ export const DB_ID_CONFIG = {
   /** Prefixes for different entity types - from shared single source of truth */
   ID_PREFIXES: DB_ID_PREFIXES,
   /** Default limit for popular templates query */
-  DEFAULT_POPULAR_LIMIT: 10,
+  DEFAULT_POPULAR_LIMIT: API_CONFIG_DEFAULTS.DEFAULT_POPULAR_LIMIT,
   /** String length for random ID portion (uses shared config) */
   RANDOM_STRING_LENGTH: ID_GENERATION_CONFIG.RANDOM_STRING_LENGTH,
 } as const;
@@ -449,8 +450,7 @@ export const HTTP_STATUS = SHARED_HTTP_STATUS;
 export const VALIDATION_MESSAGES = {
   INVALID_JSON_BODY: API_VALIDATION_MESSAGES.INVALID_JSON_BODY,
   VALIDATION_ERROR: API_VALIDATION_MESSAGES.VALIDATION_ERROR,
-  BODY_TOO_LARGE: (maxSize: number) =>
-    `Request body too large. Maximum allowed size is ${maxSize} bytes.`,
+  BODY_TOO_LARGE: API_VALIDATION_MESSAGES.BODY_TOO_LARGE,
 } as const;
 
 // Configuration messages
@@ -556,20 +556,20 @@ export const IMPORT_ERROR_MESSAGES = {
   MISSING_REQUIRED_FIELDS: SHARED_IMPORT_DEFAULTS.MISSING_REQUIRED_FIELDS,
   INVALID_JSON_FORMAT: SHARED_IMPORT_DEFAULTS.INVALID_JSON_FORMAT,
   MISSING_BLUEPRINT_CONTENT: SHARED_IMPORT_DEFAULTS.MISSING_BLUEPRINT_CONTENT,
-  UNSUPPORTED_FORMAT: (format: string) => `Unsupported import format: ${format}`,
+  UNSUPPORTED_FORMAT: API_MESSAGES.UNSUPPORTED_IMPORT_FORMAT,
   IMPORT_FAILED: SHARED_IMPORT_DEFAULTS.IMPORT_FAILED,
 } as const;
 
 // Flexy says: EXPORT_FAILED references shared EXPORT_MESSAGES — single source of truth!
 export const EXPORT_ERROR_MESSAGES = {
-  UNSUPPORTED_FORMAT: (format: string) => `Unsupported export format: ${format}`,
+  UNSUPPORTED_FORMAT: API_MESSAGES.UNSUPPORTED_EXPORT_FORMAT,
   EXPORT_FAILED: EXPORT_MESSAGES.EXPORT_FAILED,
 } as const;
 
 // Logger middleware configuration
 export const LOGGER_CONFIG = {
   /** Length of random suffix in request ID (e.g., timestamp-abc1234 -> 4 chars) */
-  REQUEST_ID_SUFFIX_LENGTH: 4,
+  REQUEST_ID_SUFFIX_LENGTH: API_CONFIG_DEFAULTS.REQUEST_ID_SUFFIX_LENGTH,
   /** Default paths excluded from request logging */
   DEFAULT_EXCLUDE_PATHS: [SHARED_ROUTE_PATHS.ROOT] as const,
   SANITIZED_HEADER_EXCLUDE: [

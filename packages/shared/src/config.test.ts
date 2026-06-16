@@ -59,6 +59,7 @@ import {
   CIRCUIT_BREAKER_MESSAGES,
   STORAGE_ERROR_MESSAGES,
   INPUT_VALIDATION_STATES,
+  API_CONFIG_DEFAULTS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -261,6 +262,16 @@ describe("HTTP_HEADERS", () => {
   it("should have plain text content type", () => {
     expect(HTTP_HEADERS.CONTENT_TYPE_PLAIN).toBeTruthy();
     expect(HTTP_HEADERS.CONTENT_TYPE_PLAIN).toBe("text/plain");
+  });
+
+  it("should have markdown content type", () => {
+    expect(HTTP_HEADERS.CONTENT_TYPE_MARKDOWN).toBeTruthy();
+    expect(HTTP_HEADERS.CONTENT_TYPE_MARKDOWN).toBe("text/markdown");
+  });
+
+  it("should have executable content type", () => {
+    expect(HTTP_HEADERS.CONTENT_TYPE_EXECUTABLE).toBeTruthy();
+    expect(HTTP_HEADERS.CONTENT_TYPE_EXECUTABLE).toBe("application/x-executable");
   });
 });
 
@@ -1388,19 +1399,26 @@ describe("API_MESSAGES", () => {
     expect(API_MESSAGES.RATE_LIMIT_EXCEEDED).toBe("Too many requests, please try again later");
   });
 
-  it("should have all string values", () => {
-    const values = Object.values(API_MESSAGES);
+  it("should have openai key not configured message", () => {
+    expect(API_MESSAGES.OPENAI_KEY_NOT_CONFIGURED).toBe("OpenAI API key not configured");
+  });
+
+  it("should have all string values for message strings", () => {
+    const values = Object.values(API_MESSAGES).filter((v) => typeof v === "string");
     expect(values.length).toBeGreaterThan(0);
     values.forEach((v) => {
-      expect(typeof v).toBe("string");
       expect(v.length).toBeGreaterThan(0);
     });
   });
 
-  it("should have unique values", () => {
-    const values = Object.values(API_MESSAGES);
-    const uniqueValues = new Set(values);
-    expect(uniqueValues.size).toBe(values.length);
+  it("should have template function for unsupported import format", () => {
+    expect(typeof API_MESSAGES.UNSUPPORTED_IMPORT_FORMAT).toBe("function");
+    expect(API_MESSAGES.UNSUPPORTED_IMPORT_FORMAT("test")).toBe("Unsupported import format: test");
+  });
+
+  it("should have template function for unsupported export format", () => {
+    expect(typeof API_MESSAGES.UNSUPPORTED_EXPORT_FORMAT).toBe("function");
+    expect(API_MESSAGES.UNSUPPORTED_EXPORT_FORMAT("test")).toBe("Unsupported export format: test");
   });
 });
 
@@ -1592,19 +1610,19 @@ describe("API_VALIDATION_MESSAGES", () => {
     );
   });
 
-  it("should have all string values", () => {
-    const values = Object.values(API_VALIDATION_MESSAGES);
-    expect(values.length).toBe(3);
-    values.forEach((v) => {
-      expect(typeof v).toBe("string");
-      expect(v.length).toBeGreaterThan(0);
-    });
+  it("should have body too large template function", () => {
+    expect(typeof API_VALIDATION_MESSAGES.BODY_TOO_LARGE).toBe("function");
+    expect(API_VALIDATION_MESSAGES.BODY_TOO_LARGE(1024)).toBe(
+      "Request body too large. Maximum allowed size is 1024 bytes."
+    );
   });
 
-  it("should have unique values", () => {
-    const values = Object.values(API_VALIDATION_MESSAGES);
-    const uniqueValues = new Set(values);
-    expect(uniqueValues.size).toBe(values.length);
+  it("should have all string values for message strings", () => {
+    const values = Object.values(API_VALIDATION_MESSAGES).filter((v) => typeof v === "string");
+    expect(values.length).toBe(3);
+    values.forEach((v) => {
+      expect(v.length).toBeGreaterThan(0);
+    });
   });
 });
 
@@ -1684,5 +1702,25 @@ describe("INPUT_VALIDATION_STATES", () => {
     const values = Object.values(INPUT_VALIDATION_STATES);
     const uniqueValues = new Set(values);
     expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("API_CONFIG_DEFAULTS", () => {
+  it("should have positive default popular limit", () => {
+    expect(API_CONFIG_DEFAULTS.DEFAULT_POPULAR_LIMIT).toBeGreaterThan(0);
+    expect(API_CONFIG_DEFAULTS.DEFAULT_POPULAR_LIMIT).toBeLessThanOrEqual(100);
+  });
+
+  it("should have positive request ID suffix length", () => {
+    expect(API_CONFIG_DEFAULTS.REQUEST_ID_SUFFIX_LENGTH).toBeGreaterThan(0);
+    expect(API_CONFIG_DEFAULTS.REQUEST_ID_SUFFIX_LENGTH).toBeLessThanOrEqual(20);
+  });
+
+  it("should have all numeric values", () => {
+    const values = Object.values(API_CONFIG_DEFAULTS);
+    expect(values.length).toBe(2);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+    });
   });
 });

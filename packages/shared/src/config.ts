@@ -151,6 +151,10 @@ export const HTTP_HEADERS = {
   CONTENT_TYPE_HTML: "text/html",
   /** Content-Type header for plain text */
   CONTENT_TYPE_PLAIN: "text/plain",
+  /** Content-Type header for markdown files */
+  CONTENT_TYPE_MARKDOWN: "text/markdown",
+  /** Content-Type header for executable binaries */
+  CONTENT_TYPE_EXECUTABLE: "application/x-executable",
 } as const;
 
 /**
@@ -1034,6 +1038,8 @@ export const STORAGE_OPERATIONS = {
 export const API_MESSAGES = {
   /** Request validation failure message */
   VALIDATION_FAILED: "Request validation failed",
+  /** OpenAI API key missing from environment configuration */
+  OPENAI_KEY_NOT_CONFIGURED: "OpenAI API key not configured",
   /** AI service temporarily unavailable */
   AI_SERVICE_UNAVAILABLE: "AI service temporarily unavailable",
   /** Authentication required */
@@ -1051,6 +1057,10 @@ export const API_MESSAGES = {
   /** DI container not initialized */
   CONTAINER_NOT_INITIALIZED:
     "DI Container not initialized. Call setDefaultContainer() before using services.",
+  /** Import unsupported format template */
+  UNSUPPORTED_IMPORT_FORMAT: (format: string): string => `Unsupported import format: ${format}`,
+  /** Export unsupported format template */
+  UNSUPPORTED_EXPORT_FORMAT: (format: string): string => `Unsupported export format: ${format}`,
 } as const;
 
 /**
@@ -1168,6 +1178,9 @@ export const API_VALIDATION_MESSAGES = {
   VALIDATION_ERROR: "Validation error",
   /** Validated data not found in Hono context */
   VALIDATED_DATA_NOT_FOUND: "Validated data not found in context",
+  /** Request body exceeded maximum allowed size */
+  BODY_TOO_LARGE: (maxSize: number): string =>
+    `Request body too large. Maximum allowed size is ${maxSize} bytes.`,
 } as const;
 
 /**
@@ -1233,6 +1246,18 @@ export const STORAGE_ERROR_MESSAGES = {
  * Usage: import { INPUT_VALIDATION_STATES } from "@blueprint/shared";
  *        type ValidationState = (typeof INPUT_VALIDATION_STATES)[keyof typeof INPUT_VALIDATION_STATES];
  */
+/**
+ * API Shared Config Defaults
+ * Centralized magic numbers and defaults for API configuration.
+ * Flexy says: No magic numbers in API config constants!
+ */
+export const API_CONFIG_DEFAULTS = {
+  /** Default limit for popular/trending template queries */
+  DEFAULT_POPULAR_LIMIT: 10,
+  /** Length of random suffix appended to request IDs (e.g., timestamp-abc1234) */
+  REQUEST_ID_SUFFIX_LENGTH: 4,
+} as const;
+
 export const INPUT_VALIDATION_STATES = {
   /** Default/neutral input state */
   DEFAULT: "default",
