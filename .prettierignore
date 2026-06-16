@@ -19,6 +19,9 @@ scripts/
 # OpenCode
 .opencode/
 
+# Patch/diff files
+docs/*-patch.md
+
 # Lock files
 package-lock.json
 pnpm-lock.yaml
