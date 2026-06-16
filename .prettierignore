@@ -19,8 +19,8 @@ scripts/
 # OpenCode
 .opencode/
 
-# Patch/diff files
-docs/*-patch.md
+# Documentation - contains patch/diff files that prettier would corrupt
+docs/
 
 # Lock files
 package-lock.json
