@@ -334,8 +334,22 @@ export const StepGenerating = memo(function StepGenerating({
                 </kbd>
               </RippleButton>
             </KeyboardShortcutTooltip>
-            <p className="text-sm text-dark-500">
-              💡 Content streams in real-time in the editor panel
+            <p className="text-sm text-dark-500 flex items-center gap-1.5">
+              <svg
+                className="w-4 h-4 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              Your generated content is available in the editor panel
             </p>
           </motion.div>
         ) : (
@@ -350,9 +364,23 @@ export const StepGenerating = memo(function StepGenerating({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: ANIMATION.SLOW }}
-              className="text-sm text-dark-500 mt-8"
+              className="text-sm text-dark-500 mt-8 flex items-center gap-1.5"
             >
-              💡 Content streams in real-time. View the editor panel to see progress.
+              <svg
+                className="w-4 h-4 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              Content streams in real-time. View the editor panel to see progress.
             </motion.p>
 
             <motion.div
