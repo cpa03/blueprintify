@@ -12,24 +12,26 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-16 (RepoKeeper Cycle 111)
+**Last Review**: 2026-06-16 (RepoKeeper Cycle 112)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README tree verified**: Directory tree accurate, BroCula description correct at `(Jun 13–Jun 15 Run 4)`
+- **README tree verified**: Directory tree accurate, BroCula description correct at `(Jun 13–Jun 16 Run 1)`
 - **Typecheck/Lint/Build/Format**: All clean (0 errors, 0 warnings)
-- **Audit archive consolidated**: 10 superseded Jun 13-14 BroCula reports moved to `docs/audits/archive/` — current reports trimmed to 5 entries (Jun 15 Run 1-4 + Phase 1 Audit)
-- **5 stale remote branches noted** (`agent/janitor`, `agent/security-engineer`, `bugfixer/ulw-cycle-001`, `feat/flexy-iteration-45-eliminate-magic-numbers`, `fix/bugfixer-node22-stale-docs-jun-15`) — unchanged since Cycle 110, unique unmerged content kept as active agent branches
+- **Audit archive consolidated**: 10 superseded Jun 13-14 BroCula reports moved to `docs/audits/archive/` — current reports trimmed to 6 entries (Jun 16 Run 1, Jun 15 Run 1-4 + Phase 1 Audit)
+- **Fixed docs/audits/README.md Current Reports drift**: Removed 10 archived Jun 13-14 entries that were erroneously listed as current, added missing Jun 15 Run 4 — table now accurately reflects only the 6 files in `docs/audits/` root
+- **Fixed README directory tree**: Added missing `docs/ci-workflow-fixes-patch.md` entry
+- **9 stale remote branches noted**: 5 existing (`agent/janitor`, `agent/security-engineer`, `bugfixer/ulw-cycle-001`, `feat/flexy-iteration-45-eliminate-magic-numbers`, `fix/bugfixer-node22-stale-docs-jun-15`) + 4 new (`bugfixer/ulw-cycle-jun-16`, `chore/repokeeper-cycle-112`, `feat/flexy-iteration-46-remaining-hardcoded-cleanup`, `fix/stale-generation-tip-text`) — all with unique unmerged content, kept as active branches
 - **No type suppressions, TODO/FIXME/HACK, or `as any`** found in source code
-- **README BroCula description updated**: `(Jun 13–Jun 15 Run 3)` → `(Jun 13–Jun 15 Run 4)` — matches `brocula-hunt-2026-06-15-run4.md` on disk (added by commit `fa912c8`)
-- **`docs/audits/README.md` updated**: Added Run 4 as latest, archived 10 older reports
-- **`docs/bugs.md` updated**: Cycle 111 status log added
-- **`docs/findings.md` updated**: Cycle 111 entry added
-- **`docs/active-tasks.md` updated**: Cycle 111 status
-- **`docs/knowledge-review.md` updated**: Refreshed for Cycle 111
+- **README BroCula description correct at**: `(Jun 13–Jun 16 Run 1)` — matches `brocula-hunt-2026-06-16-run1.md` on disk
+- **`docs/audits/README.md` current reports fixed**: Removed 10 archived entries, added missing Jun 15 Run 4
+- **`docs/bugs.md` updated**: Cycle 112 status log added
+- **`docs/findings.md` updated**: Cycle 112 entry added
+- **`docs/active-tasks.md` updated**: Cycle 112 status
+- **`docs/knowledge-review.md` updated**: Refreshed for Cycle 112
 
 ## Historical Drift Corrections
 
