@@ -6,7 +6,7 @@
  */
 
 import { ENV } from "../env";
-import { UI_STRINGS, UI_MESSAGES, WIZARD_STEP_KEYS } from "@blueprint/shared";
+import { UI_STRINGS, UI_MESSAGES, WIZARD_STEP_KEYS, EXPORT_ERROR_STRINGS } from "@blueprint/shared";
 
 /**
  * Loading State Messages
@@ -185,7 +185,7 @@ export const CELEBRATION_TEXT = {
 export const TOAST_MESSAGES = {
   COPY_SUCCESS: "Copied to clipboard",
   EXPORT_SUCCESS: "Project exported successfully!",
-  EXPORT_FAILURE: "Failed to export project",
+  EXPORT_FAILURE: EXPORT_ERROR_STRINGS.EXPORT_FAILED,
   NEW_PROJECT: "Started new project",
   GENERATION_CANCELLED: UI_MESSAGES.GENERATION_CANCELLED,
   SECURITY_VALIDATION_FAILED: "Security validation failed",

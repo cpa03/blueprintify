@@ -10,6 +10,7 @@ import {
   SSE_CONFIG,
   HTTP_STATUS,
   ERROR_STRINGS,
+  DEV_DOMAIN_DEFAULTS,
 } from "@blueprint/shared";
 
 export { ROUTE_PATHS, RETRYABLE_STATUS_CODES, SSE_CONFIG, HTTP_STATUS };
@@ -68,7 +69,7 @@ export const EXTERNAL_URLS = {
  * Flexy says: No hardcoded hostnames - everything in config!
  */
 export const VERCEL_DOMAINS = {
-  LOCAL: ["localhost", "127.0.0.1"] as readonly string[],
+  LOCAL: DEV_DOMAIN_DEFAULTS.LOCAL_HOSTNAMES,
 };
 
 /** Frontend-specific error messages (supplemental) */

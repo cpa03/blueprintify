@@ -124,6 +124,9 @@ export {
   STORAGE_ERROR_MESSAGES,
   INPUT_VALIDATION_STATES,
   API_CONFIG_DEFAULTS,
+  STORAGE_FALLBACK_MESSAGES,
+  EXPORT_ERROR_STRINGS,
+  DEV_DOMAIN_DEFAULTS,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";

@@ -1268,3 +1268,51 @@ export const INPUT_VALIDATION_STATES = {
   /** Warning input state */
   WARNING: "warning",
 } as const;
+
+/**
+ * Storage Route Fallback Messages
+ * Centralized source of truth for storage route catch-block fallback messages.
+ * Flexy says: No hardcoded "Failed to get storage quota" strings in route handlers!
+ * Usage: import { STORAGE_FALLBACK_MESSAGES } from "@blueprint/shared";
+ *        message: error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.QUOTA_GET
+ */
+export const STORAGE_FALLBACK_MESSAGES = {
+  /** Fallback when getting storage quota fails with unknown error */
+  QUOTA_GET: "Failed to get storage quota",
+  /** Fallback when reporting storage usage fails with unknown error */
+  REPORT_USAGE: "Failed to report storage usage",
+  /** Fallback when clearing storage fails with unknown error */
+  CLEAR_STORAGE: "Failed to clear storage",
+} as const;
+
+/**
+ * Export/File Error Messages (non-API)
+ * Centralized source of truth for frontend export and clipboard error strings.
+ * Flexy says: No hardcoded "Failed to export project" or "Failed to create .docs folder" strings!
+ * Usage: import { EXPORT_ERROR_STRINGS } from "@blueprint/shared";
+ *        throw new Error(EXPORT_ERROR_STRINGS.ZIP_FOLDER_FAILED)
+ */
+export const EXPORT_ERROR_STRINGS = {
+  /** ZIP folder creation failure — likely memory or library issue */
+  ZIP_FOLDER_FAILED:
+    "Failed to create .docs folder in ZIP archive. This may indicate a memory issue or ZIP library error. Try reducing the content size or refreshing the page.",
+  /** Generic export failure displayed as toast */
+  EXPORT_FAILED: "Failed to export project",
+  /** Fallback when file validation fails with unknown reason */
+  FILE_VALIDATION_FAILED: "File validation failed",
+  /** Share metadata parsing failure logged server-side */
+  SHARE_METADATA_PARSE_FAILED: "Failed to parse share metadata",
+} as const;
+
+/**
+ * Local Development Domain Defaults
+ * Centralized source of truth for local development hostnames used in
+ * deployment detection, CORS configs, and environment checks.
+ * Flexy says: No hardcoded "localhost" strings in deployment detection!
+ * Usage: import { DEV_DOMAIN_DEFAULTS } from "@blueprint/shared";
+ *        VERCEL_DOMAINS.LOCAL.includes(hostname)
+ */
+export const DEV_DOMAIN_DEFAULTS = {
+  /** Local development hostnames for deployment detection */
+  LOCAL_HOSTNAMES: ["localhost", "127.0.0.1"] as readonly string[],
+} as const;

@@ -14,7 +14,7 @@ import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { authorize } from "../middleware/authorize";
 import { z } from "zod";
 import type { Env } from "../types";
-import { CONTEXT_KEYS, AUTH_DEFAULTS } from "@blueprint/shared";
+import { CONTEXT_KEYS, AUTH_DEFAULTS, EXPORT_ERROR_STRINGS } from "@blueprint/shared";
 import {
   API_HEADERS,
   HTTP_STATUS,
@@ -263,7 +263,7 @@ app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
     if (result.metadata) {
       parsedMetadata = parseMetadata(result.metadata);
       if (parsedMetadata === undefined) {
-        secureLogError("Failed to parse share metadata", null);
+        secureLogError(EXPORT_ERROR_STRINGS.SHARE_METADATA_PARSE_FAILED, null);
       }
     }
 
