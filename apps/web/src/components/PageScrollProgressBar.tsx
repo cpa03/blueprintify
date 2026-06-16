@@ -32,6 +32,7 @@ import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { motion, useSpring, useTransform } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { LAYOUT } from "../config/theme";
+import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 
 interface PageScrollProgressBarProps {
   /**
@@ -179,7 +180,7 @@ function PageScrollProgressBarComponent({
       aria-valuenow={isVisible ? Math.round(scrollProgress) : undefined}
       aria-valuemin={0}
       aria-valuemax={100}
-      aria-label="Page scroll position — click to navigate"
+      aria-label={ACCESSIBILITY_LABELS.SCROLL_PROGRESS.PAGE_SCROLL_POSITION}
       tabIndex={isVisible ? 0 : -1}
       onKeyDown={isVisible ? handleBarClick : undefined}
     >

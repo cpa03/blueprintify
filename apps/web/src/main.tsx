@@ -5,6 +5,7 @@ import { ReducedMotionProvider } from "./context/ReducedMotionContext";
 import { ExportProvider } from "./context/ExportContext";
 import { MotionConfigWrapper } from "./components/MotionConfigWrapper";
 import { SKELETON_CONFIG, VERCEL_DOMAINS } from "./config/constants";
+import { DEBUG_MESSAGES } from "./config/constants/content";
 import "./index.css";
 
 // Static import App to avoid an extra network round-trip that delays hydration and LCP
@@ -12,13 +13,13 @@ import App from "./App";
 
 // Global error handlers for uncaught errors and unhandled Promise rejections
 window.addEventListener("unhandledrejection", (event) => {
-  console.error("[Unhandled Rejection] Promise rejected:", event.reason);
+  console.error(DEBUG_MESSAGES.UNHANDLED_REJECTION, event.reason);
   // Prevent the default browser behavior (which shows a cryptic error in console)
   event.preventDefault();
 });
 
 window.addEventListener("error", (event) => {
-  console.error("[Uncaught Error]", event.message, event.error?.stack ?? "");
+  console.error(DEBUG_MESSAGES.UNCAUGHT_ERROR, event.message, event.error?.stack ?? "");
   // Prevent the default browser behavior for non-critical errors
   if (!event.isTrusted) {
     event.preventDefault();
@@ -27,7 +28,7 @@ window.addEventListener("error", (event) => {
 
 const rootElement = document.getElementById("root");
 if (!rootElement) {
-  throw new Error("Root element not found");
+  throw new Error(DEBUG_MESSAGES.ROOT_ELEMENT_NOT_FOUND);
 }
 
 const fadeOutAndRemoveSkeletonLoader = () => {

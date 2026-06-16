@@ -259,6 +259,7 @@ export const ACCESSIBILITY_LABELS = {
   },
   SCROLL_PROGRESS: {
     READING: "Reading progress",
+    PAGE_SCROLL_POSITION: "Page scroll position — click to navigate",
   },
   LAZY_CODEMIRROR: {
     LOADING: "Loading code editor",
@@ -286,4 +287,65 @@ export const ACCESSIBILITY_LABELS = {
     EDIT_STACK: "Edit tech stack",
     EDIT_FEATURES: "Edit features",
   },
+} as const;
+
+// ============================================================================
+// Error Boundary UI Text
+// ============================================================================
+
+/**
+ * Error boundary UI text content
+ * Flexy says: No hardcoded error boundary text - everything configurable!
+ */
+export const ERROR_BOUNDARY_TEXT = {
+  TITLE: "Something went wrong",
+  DESCRIPTION:
+    "An unexpected error occurred. Your data is safely stored locally. You can try again or reload the page.",
+  VIEW_DETAILS: "View error details",
+  UNKNOWN_ERROR: "Unknown error",
+} as const;
+
+// ============================================================================
+// Debug/Error Log Messages
+// ============================================================================
+
+/**
+ * Debug/error log message templates
+ * Flexy says: No hardcoded console.error strings in handlers!
+ * Usage: console.error(DEBUG_MESSAGES.ERROR_BOUNDARY_CAUGHT, error)
+ */
+export const DEBUG_MESSAGES = {
+  UNHANDLED_REJECTION: "[Unhandled Rejection] Promise rejected:",
+  UNCAUGHT_ERROR: "[Uncaught Error]",
+  ROOT_ELEMENT_NOT_FOUND: "Root element not found",
+  ERROR_BOUNDARY_CAUGHT: "ErrorBoundary caught an error:",
+  COMPONENT_STACK: "Component stack:",
+  SECURITY_VALIDATION_FAILED: "Security validation failed:",
+  EXPORT_ERROR: "Export error:",
+  LOAD_FAILED: (name: string): string => `Failed to load ${name}:`,
+} as const;
+
+// ============================================================================
+// Skeleton Loader Layout
+// ============================================================================
+
+/**
+ * Skeleton layout configuration
+ * Flexy says: No hardcoded skeleton widths - everything configurable!
+ */
+export const SKELETON_LAYOUT = {
+  /** Preview skeleton line widths (percentages) */
+  PREVIEW_LINE_WIDTHS: ["88%", "72%", "95%", "60%", "82%", "70%", "90%", "55%", "78%"] as const,
+  /** Preview skeleton code block width (percentage) */
+  PREVIEW_CODE_WIDTH: "92%" as const,
+  /** Number of lines in editor skeleton */
+  EDITOR_LINE_COUNT: 16,
+  /** Editor skeleton line widths (percentages) */
+  EDITOR_LINE_WIDTHS: [92, 78, 85, 60, 95, 72, 88, 55, 80, 70, 90, 65, 82, 75, 58, 87] as const,
+  /** Editor skeleton indent values */
+  EDITOR_LINE_INDENTS: [0, 0, 2, 0, 4, 0, 2, 0, 6, 0, 0, 3, 0, 2, 0, 4] as const,
+  /** Editor skeleton line height in pixels */
+  EDITOR_LINE_HEIGHT_PX: 14,
+  /** Editor skeleton indent multiplier in pixels */
+  EDITOR_INDENT_MULTIPLIER_PX: 12,
 } as const;

@@ -1,6 +1,10 @@
 import { ErrorBoundary as ErrorBoundaryLib, FallbackProps } from "react-error-boundary";
 import { isDev } from "../config/env";
-import { ACCESSIBILITY_LABELS } from "../config/constants/content";
+import {
+  ACCESSIBILITY_LABELS,
+  ERROR_BOUNDARY_TEXT,
+  DEBUG_MESSAGES,
+} from "../config/constants/content";
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -31,7 +35,7 @@ export function ErrorBoundary({ children, fallback, onError }: ErrorBoundaryProp
       return <>{fallback}</>;
     }
 
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    const errorMessage = error instanceof Error ? error.message : ERROR_BOUNDARY_TEXT.UNKNOWN_ERROR;
 
     return (
       <div className="min-h-screen flex items-center justify-center bg-dark-900 p-4 animate-fade-in">
@@ -53,17 +57,14 @@ export function ErrorBoundary({ children, fallback, onError }: ErrorBoundaryProp
             </svg>
           </div>
 
-          <h1 className="text-2xl font-bold text-white mb-2">Something went wrong</h1>
+          <h1 className="text-2xl font-bold text-white mb-2">{ERROR_BOUNDARY_TEXT.TITLE}</h1>
 
-          <p className="text-dark-400 mb-6">
-            An unexpected error occurred. Your data is safely stored locally. You can try again or
-            reload the page.
-          </p>
+          <p className="text-dark-400 mb-6">{ERROR_BOUNDARY_TEXT.DESCRIPTION}</p>
 
           {error !== undefined && (
             <details className="mb-6 text-left">
               <summary className="text-sm text-dark-500 cursor-pointer hover:text-dark-400 transition-colors">
-                View error details
+                {ERROR_BOUNDARY_TEXT.VIEW_DETAILS}
               </summary>
               <pre className="mt-2 p-3 bg-dark-800 rounded-lg text-xs text-dark-400 overflow-auto max-h-32">
                 {errorMessage}
@@ -77,7 +78,7 @@ export function ErrorBoundary({ children, fallback, onError }: ErrorBoundaryProp
               className="btn-primary px-6 py-2 rounded-lg font-medium transition-colors"
               aria-label={ACCESSIBILITY_LABELS.ERROR_BOUNDARY.TRY_AGAIN}
             >
-              Try Again
+              {ACCESSIBILITY_LABELS.ERROR_BOUNDARY.TRY_AGAIN}
             </button>
 
             <button
@@ -85,7 +86,7 @@ export function ErrorBoundary({ children, fallback, onError }: ErrorBoundaryProp
               className="btn-ghost px-6 py-2 rounded-lg font-medium transition-colors"
               aria-label={ACCESSIBILITY_LABELS.ERROR_BOUNDARY.RELOAD_PAGE}
             >
-              Reload Page
+              {ACCESSIBILITY_LABELS.ERROR_BOUNDARY.RELOAD_PAGE}
             </button>
           </div>
         </div>
@@ -98,8 +99,8 @@ export function ErrorBoundary({ children, fallback, onError }: ErrorBoundaryProp
       FallbackComponent={ErrorFallback}
       onError={(error, errorInfo) => {
         if (isDev()) {
-          console.error("ErrorBoundary caught an error:", error);
-          console.error("Component stack:", errorInfo.componentStack);
+          console.error(DEBUG_MESSAGES.ERROR_BOUNDARY_CAUGHT, error);
+          console.error(DEBUG_MESSAGES.COMPONENT_STACK, errorInfo.componentStack);
         }
         onError?.(error as Error, errorInfo);
       }}
