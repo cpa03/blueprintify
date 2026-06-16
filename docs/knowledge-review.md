@@ -12,22 +12,24 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-15 (RepoKeeper Cycle 110)
+**Last Review**: 2026-06-16 (RepoKeeper Cycle 111)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README tree verified**: Directory tree accurate, BroCula description correct at `(Jun 13–Jun 15 Run 3)`
-- **Typecheck/Lint/Build/Tests/Format**: All clean (0 errors, 0 warnings, 1,340/1,340 passing)
-- **5 stale remote branches noted** (`agent/janitor`, `agent/security-engineer`, `bugfixer/ulw-cycle-001`, `feat/flexy-iteration-45-eliminate-magic-numbers`, `fix/bugfixer-node22-stale-docs-jun-15`) — unique unmerged content, kept as active agent branches
+- **README tree verified**: Directory tree accurate, BroCula description correct at `(Jun 13–Jun 15 Run 4)`
+- **Typecheck/Lint/Build/Format**: All clean (0 errors, 0 warnings)
+- **Audit archive consolidated**: 10 superseded Jun 13-14 BroCula reports moved to `docs/audits/archive/` — current reports trimmed to 5 entries (Jun 15 Run 1-4 + Phase 1 Audit)
+- **5 stale remote branches noted** (`agent/janitor`, `agent/security-engineer`, `bugfixer/ulw-cycle-001`, `feat/flexy-iteration-45-eliminate-magic-numbers`, `fix/bugfixer-node22-stale-docs-jun-15`) — unchanged since Cycle 110, unique unmerged content kept as active agent branches
 - **No type suppressions, TODO/FIXME/HACK, or `as any`** found in source code
-- **README BroCula description updated**: `(Jun 13–Jun 15 Run 2)` → `(Jun 13–Jun 15 Run 3)` — matches `brocula-hunt-2026-06-15-run3.md` on disk (added by commit `092f2b8`)
-- **`docs/bugs.md` updated**: Cycle 110 status log added
-- **`docs/findings.md` updated**: Cycle 110 entry added
-- **`docs/active-tasks.md` updated**: Cycle 110 status
-- **`docs/knowledge-review.md` updated**: Refreshed for Cycle 110
+- **README BroCula description updated**: `(Jun 13–Jun 15 Run 3)` → `(Jun 13–Jun 15 Run 4)` — matches `brocula-hunt-2026-06-15-run4.md` on disk (added by commit `fa912c8`)
+- **`docs/audits/README.md` updated**: Added Run 4 as latest, archived 10 older reports
+- **`docs/bugs.md` updated**: Cycle 111 status log added
+- **`docs/findings.md` updated**: Cycle 111 entry added
+- **`docs/active-tasks.md` updated**: Cycle 111 status
+- **`docs/knowledge-review.md` updated**: Refreshed for Cycle 111
 
 ## Historical Drift Corrections
 
