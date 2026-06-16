@@ -110,7 +110,7 @@ export const slideInLeft: Variants = {
 export const floatingAnimation = {
   y: [-8, 8, -8],
   transition: {
-    duration: 3,
+    duration: ANIMATION.FLOATING_DURATION,
     repeat: Infinity,
     ease: "easeInOut" as const,
   },

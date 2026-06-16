@@ -50,6 +50,8 @@ export const ANIMATION = {
   SLIDER: 0.6,
   /** Duration for quick fade transitions */
   QUICK_FADE: 0.1,
+  /** Duration for floating/bobbing decorative animations */
+  FLOATING_DURATION: 3,
   /** Duration for robust fade/animate in */
   FADE_IN: 0.4,
   /** Duration for half-second transitions */

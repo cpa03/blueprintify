@@ -1316,3 +1316,16 @@ export const DEV_DOMAIN_DEFAULTS = {
   /** Local development hostnames for deployment detection */
   LOCAL_HOSTNAMES: ["localhost", "127.0.0.1"] as readonly string[],
 } as const;
+
+/**
+ * Cold Start / Warmup Messages
+ * Centralized source of truth for circuit breaker cold start recommendation strings.
+ * Flexy says: No hardcoded "Circuit breaker is in cold start window" in index.ts!
+ * Usage: import { COLD_START_MESSAGES } from "@blueprint/shared";
+ */
+export const COLD_START_MESSAGES = {
+  /** Message shown when circuit breaker is within cold start window */
+  ACTIVE: "Circuit breaker is in cold start window — reduced failure threshold active",
+  /** Message shown when circuit breaker is fully warmed up */
+  INACTIVE: "Circuit breaker is fully warmed up",
+} as const;
