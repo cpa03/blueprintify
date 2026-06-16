@@ -42,6 +42,7 @@ import {
   ANIMATION,
   EDITOR_ANNOUNCER,
   EDITOR_TABS,
+  DEBUG_MESSAGES,
 } from "../config/constants";
 import { ANIMATION_TIMING } from "../config/theme";
 import { isDev } from "../config/env";
@@ -121,7 +122,7 @@ function EditorComponent(): JSX.Element {
         const securityError = handleSecurityError(error);
         toast.error(`${TOAST_MESSAGES.SECURITY_VALIDATION_FAILED}: ${securityError.message}`);
         if (isDev()) {
-          console.error("Security validation failed:", securityError);
+          console.error(DEBUG_MESSAGES.SECURITY_VALIDATION_FAILED, securityError);
         }
       }
     },
@@ -198,7 +199,7 @@ function EditorComponent(): JSX.Element {
     } catch (error) {
       toast.error(TOAST_MESSAGES.EXPORT_FAILURE);
       if (isDev()) {
-        console.error("Export error:", error);
+        console.error(DEBUG_MESSAGES.EXPORT_ERROR, error);
       }
     } finally {
       setIsExporting(false);

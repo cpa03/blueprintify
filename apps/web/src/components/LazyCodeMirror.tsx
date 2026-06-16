@@ -2,7 +2,7 @@ import { useState, useEffect, memo, forwardRef } from "react";
 import type { Extension } from "@codemirror/state";
 import type { ReactCodeMirrorProps, ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { isDev } from "../config/env";
-import { ACCESSIBILITY_LABELS } from "../config/constants/content";
+import { ACCESSIBILITY_LABELS, DEBUG_MESSAGES, SKELETON_LAYOUT } from "../config/constants/content";
 
 interface LazyCodeMirrorProps {
   value: string;
@@ -14,11 +14,7 @@ type CodeMirrorComponent = React.ForwardRefExoticComponent<
   ReactCodeMirrorProps & React.RefAttributes<ReactCodeMirrorRef>
 > | null;
 
-const LINE_COUNT = 16;
-const GUTTER_NUMBERS = Array.from({ length: LINE_COUNT }, (_, i) => i + 1);
-
-const LINE_WIDTHS = [92, 78, 85, 60, 95, 72, 88, 55, 80, 70, 90, 65, 82, 75, 58, 87];
-const LINE_INDENTS = [0, 0, 2, 0, 4, 0, 2, 0, 6, 0, 0, 3, 0, 2, 0, 4];
+const GUTTER_NUMBERS = Array.from({ length: SKELETON_LAYOUT.EDITOR_LINE_COUNT }, (_, i) => i + 1);
 
 function EditorSkeleton(): JSX.Element {
   return (
@@ -36,14 +32,14 @@ function EditorSkeleton(): JSX.Element {
         ))}
       </div>
       <div className="editor-skeleton-code" aria-hidden="true">
-        {LINE_WIDTHS.map((widthPct, i) => (
+        {SKELETON_LAYOUT.EDITOR_LINE_WIDTHS.map((widthPct, i) => (
           <div key={i} className="editor-skeleton-code-line">
             <div
               className="skeleton-block"
               style={{
                 width: `${widthPct}%`,
-                height: "14px",
-                marginLeft: `${(LINE_INDENTS[i] ?? 0) * 12}px`,
+                height: `${SKELETON_LAYOUT.EDITOR_LINE_HEIGHT_PX}px`,
+                marginLeft: `${(SKELETON_LAYOUT.EDITOR_LINE_INDENTS[i] ?? 0) * SKELETON_LAYOUT.EDITOR_INDENT_MULTIPLIER_PX}px`,
               }}
             />
           </div>
@@ -77,7 +73,7 @@ const LazyCodeMirrorComponent = forwardRef<ReactCodeMirrorRef, LazyCodeMirrorPro
           }
         } catch (error) {
           if (isDev()) {
-            console.error("Failed to load CodeMirror:", error);
+            console.error(DEBUG_MESSAGES.LOAD_FAILED("CodeMirror"), error);
           }
         }
       };

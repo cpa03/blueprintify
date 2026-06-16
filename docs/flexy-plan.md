@@ -925,3 +925,27 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 640 web + 362 api + 338 shared = 1,340 tests passing across 74 files
+
+### ✅ Flexy Iteration 47: Centralize Error Boundary Strings, Debug Messages & Skeleton Layout Config
+
+| File                                                | Change                                                                                                                                                                                         |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/web/src/config/constants/content.ts`          | Added `ERROR_BOUNDARY_TEXT` (TITLE, DESCRIPTION, VIEW_DETAILS, UNKNOWN_ERROR)                                                                                                                  |
+| `apps/web/src/config/constants/content.ts`          | Added `DEBUG_MESSAGES` (UNHANDLED_REJECTION, UNCAUGHT_ERROR, ROOT_ELEMENT_NOT_FOUND, ERROR_BOUNDARY_CAUGHT, COMPONENT_STACK, SECURITY_VALIDATION_FAILED, EXPORT_ERROR, LOAD_FAILED)            |
+| `apps/web/src/config/constants/content.ts`          | Added `SKELETON_LAYOUT` (PREVIEW_LINE_WIDTHS, PREVIEW_CODE_WIDTH, EDITOR_LINE_COUNT, EDITOR_LINE_WIDTHS, EDITOR_LINE_INDENTS, EDITOR_LINE_HEIGHT_PX, EDITOR_INDENT_MULTIPLIER_PX)              |
+| `apps/web/src/config/constants/content.ts`          | Added `ACCESSIBILITY_LABELS.SCROLL_PROGRESS.PAGE_SCROLL_POSITION`                                                                                                                              |
+| `apps/web/src/components/ErrorBoundary.tsx`         | Replaced 5 hardcoded UI strings (`"Something went wrong"`, paragraph text, `"View error details"`, `"Try Again"`, `"Reload Page"`) with `ERROR_BOUNDARY_TEXT` and `ACCESSIBILITY_LABELS`       |
+| `apps/web/src/components/ErrorBoundary.tsx`         | Replaced 2 `console.error` messages with `DEBUG_MESSAGES.ERROR_BOUNDARY_CAUGHT`/`COMPONENT_STACK`                                                                                              |
+| `apps/web/src/main.tsx`                             | Replaced 3 `console.error` messages + `throw new Error("Root element not found")` with `DEBUG_MESSAGES.*` refs                                                                                 |
+| `apps/web/src/components/Editor.tsx`                | Replaced 2 `console.error` messages with `DEBUG_MESSAGES.SECURITY_VALIDATION_FAILED`/`EXPORT_ERROR`                                                                                            |
+| `apps/web/src/components/LazyMarkdownRenderer.tsx`  | Replaced 10 hardcoded skeleton `width` percentages with `SKELETON_LAYOUT.PREVIEW_LINE_WIDTHS` + `PREVIEW_CODE_WIDTH`; replaced `console.error` with `DEBUG_MESSAGES.LOAD_FAILED`               |
+| `apps/web/src/components/LazyCodeMirror.tsx`        | Replaced hardcoded `LINE_COUNT=16`, `LINE_WIDTHS`, `LINE_INDENTS` arrays with `SKELETON_LAYOUT.*`; replaced hardcoded `"14px"`/`12` with `EDITOR_LINE_HEIGHT_PX`/`EDITOR_INDENT_MULTIPLIER_PX` |
+| `apps/web/src/components/LazyCodeMirror.tsx`        | Replaced `console.error("Failed to load CodeMirror:", error)` with `DEBUG_MESSAGES.LOAD_FAILED("CodeMirror")`                                                                                  |
+| `apps/web/src/components/PageScrollProgressBar.tsx` | Replaced hardcoded `aria-label="Page scroll position — click to navigate"` with `ACCESSIBILITY_LABELS.SCROLL_PROGRESS.PAGE_SCROLL_POSITION`                                                    |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 640 web + 362 api + 358 shared = 1,360 tests passing across 74 files

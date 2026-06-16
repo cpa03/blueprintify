@@ -1,6 +1,7 @@
 import React, { useState, useEffect, memo } from "react";
 import type { MarkdownRendererProps } from "./MarkdownRenderer";
 import { isDev } from "../config/env";
+import { DEBUG_MESSAGES, SKELETON_LAYOUT } from "../config/constants/content";
 
 interface LazyMarkdownRendererProps extends MarkdownRendererProps {
   fallback?: React.ReactNode;
@@ -10,20 +11,13 @@ function MarkdownPreviewSkeleton(): JSX.Element {
   return (
     <div className="preview-skeleton" aria-hidden="true">
       <div className="skeleton-block preview-skeleton-heading" />
-      <div className="skeleton-block preview-skeleton-line" style={{ width: "88%" }} />
-      <div className="skeleton-block preview-skeleton-line" style={{ width: "72%" }} />
-      <div className="skeleton-block preview-skeleton-line" style={{ width: "95%" }} />
-      <div className="skeleton-block preview-skeleton-line" style={{ width: "60%" }} />
-
-      <div className="skeleton-block preview-skeleton-subheading" />
-
-      <div className="skeleton-block preview-skeleton-line" style={{ width: "82%" }} />
-      <div className="skeleton-block preview-skeleton-line" style={{ width: "70%" }} />
-      <div className="skeleton-block preview-skeleton-line" style={{ width: "90%" }} />
-      <div className="skeleton-block preview-skeleton-line" style={{ width: "55%" }} />
-      <div className="skeleton-block preview-skeleton-line" style={{ width: "78%" }} />
-
-      <div className="skeleton-block preview-skeleton-code-block" style={{ width: "92%" }} />
+      {SKELETON_LAYOUT.PREVIEW_LINE_WIDTHS.map((w, i) => (
+        <div key={i} className="skeleton-block preview-skeleton-line" style={{ width: w }} />
+      ))}
+      <div
+        className="skeleton-block preview-skeleton-code-block"
+        style={{ width: SKELETON_LAYOUT.PREVIEW_CODE_WIDTH }}
+      />
     </div>
   );
 }
@@ -49,7 +43,7 @@ function LazyMarkdownRendererComponent({
         }
       } catch (error) {
         if (isDev()) {
-          console.error("Failed to load MarkdownRenderer:", error);
+          console.error(DEBUG_MESSAGES.LOAD_FAILED("MarkdownRenderer"), error);
         }
         if (isMounted) {
           setIsLoading(false);
