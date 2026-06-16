@@ -12,24 +12,27 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-16 (RepoKeeper Cycle 111)
+**Last Review**: 2026-06-16 (RepoKeeper Cycle 112)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README tree verified**: Directory tree accurate, BroCula description correct at `(Jun 13–Jun 15 Run 4)`
+- **README tree verified**: Directory tree accurate, BroCula description correct at `(Jun 13–Jun 16 Run 1)`
 - **Typecheck/Lint/Build/Format**: All clean (0 errors, 0 warnings)
-- **Audit archive consolidated**: 10 superseded Jun 13-14 BroCula reports moved to `docs/audits/archive/` — current reports trimmed to 5 entries (Jun 15 Run 1-4 + Phase 1 Audit)
-- **5 stale remote branches noted** (`agent/janitor`, `agent/security-engineer`, `bugfixer/ulw-cycle-001`, `feat/flexy-iteration-45-eliminate-magic-numbers`, `fix/bugfixer-node22-stale-docs-jun-15`) — unchanged since Cycle 110, unique unmerged content kept as active agent branches
+- **CRITICAL FIX — docs/audits/README.md Current Reports drift**: Removed 10 archived entries (Jun 13-14) from Current table — table now matches only files present in `docs/audits/` root (6 entries: Jun 16 Run 1, Jun 15 Run 1-4, Phase 1 Audit)
+- **Redundant files cleaned**: Removed `docs/CONTRIBUTING.md` (duplicate of root `CONTRIBUTING.md`), 3 unused scripts (`brocula-scan.mjs`, `apply-ci-workflow-fixes.sh`, `normalize-labels.sh`), `.vite-temp` build directory
+- **Prettier formatting fixed**: `docs/ci-workflow-fixes-patch.md` resolved
+- **README directory tree**: Added missing `ci-workflow-fixes-patch.md` entry
+- **9 stale remote branches noted** — all have unique unmerged content, kept as active agent branches
 - **No type suppressions, TODO/FIXME/HACK, or `as any`** found in source code
-- **README BroCula description updated**: `(Jun 13–Jun 15 Run 3)` → `(Jun 13–Jun 15 Run 4)` — matches `brocula-hunt-2026-06-15-run4.md` on disk (added by commit `fa912c8`)
-- **`docs/audits/README.md` updated**: Added Run 4 as latest, archived 10 older reports
-- **`docs/bugs.md` updated**: Cycle 111 status log added
-- **`docs/findings.md` updated**: Cycle 111 entry added
-- **`docs/active-tasks.md` updated**: Cycle 111 status
-- **`docs/knowledge-review.md` updated**: Refreshed for Cycle 111
+- **README BroCula description correct at**: `(Jun 13–Jun 16 Run 1)`
+- **`docs/audits/README.md` fixed**: Current Reports clean, Jun 15 Run 4 added
+- **`docs/bugs.md` updated**: Cycle 112 status log added
+- **`docs/findings.md` updated**: Cycle 112 entry added
+- **`docs/active-tasks.md` updated**: Cycle 112 status
+- **`docs/knowledge-review.md` updated**: Refreshed for Cycle 112
 
 ## Historical Drift Corrections
 

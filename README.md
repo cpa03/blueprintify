@@ -47,6 +47,7 @@ blueprintify/
 │   ├── bugs.md
 │   ├── ci-configuration.md
 │   ├── ci-workflow-fixes.md
+│   ├── ci-workflow-fixes-patch.md
 │   ├── code-style-guidelines.md
 │   ├── completed-tasks-2026-Q1.md
 │   ├── development-workflow.md
