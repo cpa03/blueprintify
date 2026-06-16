@@ -17,6 +17,7 @@ import {
   SPRING_CONFIG,
   UI_CONTENT,
   EDITOR_TABS,
+  EDITOR_LABELS,
   ANIMATION,
 } from "../config/constants";
 
@@ -176,16 +177,35 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
           className="mt-6 flex items-center gap-3 text-xs text-dark-500"
           variants={fadeInUp}
         >
-          <motion.div
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-800/50 border border-dark-700"
-            whileHover={{ scale: 1.02 }}
-          >
-            <span>💡</span>
-            <span>
-              {tab === EDITOR_TABS.BLUEPRINT ? "Start" : "Complete"} the wizard to generate{" "}
-              {tab === EDITOR_TABS.BLUEPRINT ? EDITOR_TABS.BLUEPRINT : EDITOR_TABS.TASKS}
-            </span>
-          </motion.div>
+          {siblingTabHasContent ? (
+            <motion.div
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-800/50 border border-dark-700"
+              whileHover={{ scale: 1.02 }}
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, type: "spring", ...SPRING_CONFIG.SNAPPY }}
+            >
+              <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none">
+                ←
+              </kbd>
+              <span className="text-dark-500">/</span>
+              <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none">
+                →
+              </kbd>
+              <span>{EDITOR_LABELS.TAB_NAVIGATION.SWITCH_TABS}</span>
+            </motion.div>
+          ) : (
+            <motion.div
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-800/50 border border-dark-700"
+              whileHover={{ scale: 1.02 }}
+            >
+              <span>💡</span>
+              <span>
+                {tab === EDITOR_TABS.BLUEPRINT ? "Start" : "Complete"} the wizard to generate{" "}
+                {tab === EDITOR_TABS.BLUEPRINT ? EDITOR_TABS.BLUEPRINT : EDITOR_TABS.TASKS}
+              </span>
+            </motion.div>
+          )}
         </motion.div>
       )}
     </motion.div>
