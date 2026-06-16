@@ -146,8 +146,8 @@ export const TYPING = {
 // Button and interaction classes
 // ============================================================================
 export const BUTTON = {
-  /** Fixed bottom-right show editor button */
-  SHOW_EDITOR_FAB: "fixed bottom-6 right-6 btn-primary shadow-2xl",
+  /** Fixed bottom-right show editor button — positioned above ScrollToTop (bottom-6) to prevent overlap */
+  SHOW_EDITOR_FAB: "fixed bottom-24 right-6 btn-primary shadow-2xl",
   /** Hide editor button (desktop) */
   HIDE_EDITOR_DESKTOP: "hidden lg:flex absolute top-4 right-4 z-10 btn-ghost",
   /** Hide editor button (mobile) */
