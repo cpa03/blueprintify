@@ -19,6 +19,9 @@ scripts/
 # OpenCode
 .opencode/
 
+# Patch/generated docs - contain raw git diffs, not standard markdown
+docs/ci-workflow-fixes-patch.md
+
 # Lock files
 package-lock.json
 pnpm-lock.yaml
