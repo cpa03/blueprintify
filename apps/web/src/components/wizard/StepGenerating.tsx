@@ -35,6 +35,7 @@ import {
 } from "../../config/constants";
 import { COLORS } from "../../config/theme";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
+import { getAltKeyLabel } from "../../lib/platform";
 import { AnimatedNumber } from "../AnimatedNumber";
 import { RippleButton } from "../RippleButton";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
@@ -299,27 +300,40 @@ export const StepGenerating = memo(function StepGenerating({
               </svg>
               View in Editor
             </RippleButton>
-            <RippleButton
-              onClick={handleViewReview}
-              className="btn-ghost text-sm text-dark-400 hover:text-dark-200 flex items-center gap-1.5"
-              ariaLabel="Back to review step"
+            <KeyboardShortcutTooltip
+              shortcut="←"
+              description="Back to review step"
+              position="left"
+              modifier="alt"
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
+              <RippleButton
+                onClick={handleViewReview}
+                className="btn-ghost text-sm text-dark-400 hover:text-dark-200 flex items-center gap-1.5"
+                ariaLabel="Back to review step"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-              Back to Review
-            </RippleButton>
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+                Back to Review
+                <kbd
+                  className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                  aria-hidden="true"
+                >
+                  {getAltKeyLabel()}+←
+                </kbd>
+              </RippleButton>
+            </KeyboardShortcutTooltip>
             <p className="text-sm text-dark-500">
               💡 Content streams in real-time in the editor panel
             </p>
