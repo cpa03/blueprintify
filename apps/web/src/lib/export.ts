@@ -1,4 +1,5 @@
 import type JSZip from "jszip";
+import { EXPORT_ERROR_STRINGS } from "@blueprint/shared";
 import {
   EXPORT_CONFIG,
   README_TEMPLATE,
@@ -32,9 +33,7 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
 
   const docsFolder = zip.folder(EXPORT_CONFIG.DOCS_FOLDER);
   if (!docsFolder) {
-    throw new Error(
-      "Failed to create .docs folder in ZIP archive. This may indicate a memory issue or ZIP library error. Try reducing the content size or refreshing the page."
-    );
+    throw new Error(EXPORT_ERROR_STRINGS.ZIP_FOLDER_FAILED);
   }
 
   if (sanitizedBlueprint) {
@@ -81,7 +80,7 @@ export async function importFile({ file, onImport, onError }: ImportFile): Promi
   try {
     const validation = await validateAndSanitizeFileContent(file);
     if (!validation.isValid) {
-      onError(validation.error || "File validation failed");
+      onError(validation.error || EXPORT_ERROR_STRINGS.FILE_VALIDATION_FAILED);
       return;
     }
 

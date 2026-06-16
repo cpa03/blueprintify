@@ -60,6 +60,9 @@ import {
   STORAGE_ERROR_MESSAGES,
   INPUT_VALIDATION_STATES,
   API_CONFIG_DEFAULTS,
+  STORAGE_FALLBACK_MESSAGES,
+  EXPORT_ERROR_STRINGS,
+  DEV_DOMAIN_DEFAULTS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -1721,6 +1724,76 @@ describe("API_CONFIG_DEFAULTS", () => {
     expect(values.length).toBe(2);
     values.forEach((v) => {
       expect(typeof v).toBe("number");
+    });
+  });
+});
+
+// ============================================================================
+// New Config Objects (Flexy Iteration 46)
+// ============================================================================
+
+describe("STORAGE_FALLBACK_MESSAGES", () => {
+  it("should have quota get message", () => {
+    expect(STORAGE_FALLBACK_MESSAGES.QUOTA_GET).toBe("Failed to get storage quota");
+  });
+  it("should have report usage message", () => {
+    expect(STORAGE_FALLBACK_MESSAGES.REPORT_USAGE).toBe("Failed to report storage usage");
+  });
+  it("should have clear storage message", () => {
+    expect(STORAGE_FALLBACK_MESSAGES.CLEAR_STORAGE).toBe("Failed to clear storage");
+  });
+  it("should have all string values", () => {
+    const values = Object.values(STORAGE_FALLBACK_MESSAGES);
+    expect(values.length).toBe(3);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+    });
+  });
+  it("should have unique values", () => {
+    const values = Object.values(STORAGE_FALLBACK_MESSAGES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("EXPORT_ERROR_STRINGS", () => {
+  it("should have zip folder failed message", () => {
+    expect(EXPORT_ERROR_STRINGS.ZIP_FOLDER_FAILED).toContain("Failed to create .docs folder");
+  });
+  it("should have export failed message", () => {
+    expect(EXPORT_ERROR_STRINGS.EXPORT_FAILED).toBe("Failed to export project");
+  });
+  it("should have file validation failed message", () => {
+    expect(EXPORT_ERROR_STRINGS.FILE_VALIDATION_FAILED).toBe("File validation failed");
+  });
+  it("should have share metadata parse failed message", () => {
+    expect(EXPORT_ERROR_STRINGS.SHARE_METADATA_PARSE_FAILED).toBe("Failed to parse share metadata");
+  });
+  it("should have all string values", () => {
+    const values = Object.values(EXPORT_ERROR_STRINGS);
+    expect(values.length).toBe(4);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+    });
+  });
+  it("should have unique values", () => {
+    const values = Object.values(EXPORT_ERROR_STRINGS);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("DEV_DOMAIN_DEFAULTS", () => {
+  it("should have local hostnames", () => {
+    expect(DEV_DOMAIN_DEFAULTS.LOCAL_HOSTNAMES).toContain("localhost");
+    expect(DEV_DOMAIN_DEFAULTS.LOCAL_HOSTNAMES).toContain("127.0.0.1");
+  });
+  it("should have all readonly string array values", () => {
+    const values = Object.values(DEV_DOMAIN_DEFAULTS);
+    expect(values.length).toBe(1);
+    values.forEach((v) => {
+      expect(Array.isArray(v)).toBe(true);
+      v.forEach((item: string) => {
+        expect(typeof item).toBe("string");
+      });
     });
   });
 });

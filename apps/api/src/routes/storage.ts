@@ -8,7 +8,12 @@
  */
 
 import { Hono } from "hono";
-import { StorageClearRequestSchema, StorageReportRequestSchema } from "@blueprint/shared";
+import {
+  CONTEXT_KEYS,
+  STORAGE_FALLBACK_MESSAGES,
+  StorageClearRequestSchema,
+  StorageReportRequestSchema,
+} from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import {
@@ -20,7 +25,6 @@ import {
   STORAGE_KV_CONFIG,
 } from "../config/constants";
 import { ErrorType } from "../errors";
-import { CONTEXT_KEYS } from "@blueprint/shared";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -93,7 +97,7 @@ app.get("/quota", rateLimit(rateLimitConfigs.standard), async (c) => {
         success: false,
         error: {
           type: ErrorType.INTERNAL,
-          message: error instanceof Error ? error.message : "Failed to get storage quota",
+          message: error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.QUOTA_GET,
           timestamp: new Date().toISOString(),
         },
       },
@@ -142,7 +146,8 @@ app.post(
           success: false,
           error: {
             type: ErrorType.INTERNAL,
-            message: error instanceof Error ? error.message : "Failed to report storage usage",
+            message:
+              error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.REPORT_USAGE,
             timestamp: new Date().toISOString(),
           },
         },
@@ -195,7 +200,8 @@ app.delete(
           success: false,
           error: {
             type: ErrorType.INTERNAL,
-            message: error instanceof Error ? error.message : "Failed to clear storage",
+            message:
+              error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.CLEAR_STORAGE,
             timestamp: new Date().toISOString(),
           },
         },
