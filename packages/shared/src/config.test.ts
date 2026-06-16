@@ -63,6 +63,7 @@ import {
   STORAGE_FALLBACK_MESSAGES,
   EXPORT_ERROR_STRINGS,
   DEV_DOMAIN_DEFAULTS,
+  COLD_START_MESSAGES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -1795,5 +1796,26 @@ describe("DEV_DOMAIN_DEFAULTS", () => {
         expect(typeof item).toBe("string");
       });
     });
+
+describe("COLD_START_MESSAGES", () => {
+  it("should have ACTIVE and INACTIVE messages", () => {
+    expect(COLD_START_MESSAGES.ACTIVE).toBeDefined();
+    expect(COLD_START_MESSAGES.INACTIVE).toBeDefined();
+  });
+
+  it("should have non-empty string messages", () => {
+    expect(typeof COLD_START_MESSAGES.ACTIVE).toBe("string");
+    expect(COLD_START_MESSAGES.ACTIVE.length).toBeGreaterThan(0);
+    expect(typeof COLD_START_MESSAGES.INACTIVE).toBe("string");
+    expect(COLD_START_MESSAGES.INACTIVE.length).toBeGreaterThan(0);
+  });
+
+  it("should have distinct messages", () => {
+    expect(COLD_START_MESSAGES.ACTIVE).not.toBe(COLD_START_MESSAGES.INACTIVE);
+  });
+
+  it("should mention circuit breaker context", () => {
+    expect(COLD_START_MESSAGES.ACTIVE.toLowerCase()).toContain("circuit");
+    expect(COLD_START_MESSAGES.INACTIVE.toLowerCase()).toContain("circuit");
   });
 });

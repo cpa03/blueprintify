@@ -127,6 +127,7 @@ export {
   STORAGE_FALLBACK_MESSAGES,
   EXPORT_ERROR_STRINGS,
   DEV_DOMAIN_DEFAULTS,
+  COLD_START_MESSAGES,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";

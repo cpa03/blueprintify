@@ -27,7 +27,7 @@ import { requestLogger } from "./middleware/logger";
 import { bodyLimit, bodyLimitConfigs } from "./middleware/bodyLimit";
 import type { Env, AppVariables } from "./types";
 import { loadConfig } from "./config/env";
-import { RESPONSE_STATUS } from "@blueprint/shared";
+import { COLD_START_MESSAGES, RESPONSE_STATUS } from "@blueprint/shared";
 import {
   API_METADATA,
   API_ENDPOINTS,
@@ -139,9 +139,7 @@ app.get(ROUTE_PATHS.WARMUP, (c) => {
       isColdStart: metrics.isColdStart,
       coldStartRemainingMs: metrics.coldStartRemainingMs,
     },
-    recommendation: metrics.isColdStart
-      ? "Circuit breaker is in cold start window — reduced failure threshold active"
-      : "Circuit breaker is fully warmed up",
+    recommendation: metrics.isColdStart ? COLD_START_MESSAGES.ACTIVE : COLD_START_MESSAGES.INACTIVE,
   });
 });
 
