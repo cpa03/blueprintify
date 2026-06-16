@@ -123,6 +123,7 @@ export {
   CIRCUIT_BREAKER_MESSAGES,
   STORAGE_ERROR_MESSAGES,
   INPUT_VALIDATION_STATES,
+  API_CONFIG_DEFAULTS,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";

@@ -115,13 +115,13 @@ describe("Security Utilities", () => {
     };
 
     it("should allow valid file types", () => {
-      const validFile = createMockFile("test.md", 1024, "text/markdown");
+      const validFile = createMockFile("test.md", 1024, HTTP_HEADERS.CONTENT_TYPE_MARKDOWN);
       const result = validateFile(validFile);
       expect(result.isValid).toBe(true);
     });
 
     it("should reject invalid file types", () => {
-      const invalidFile = createMockFile("test.exe", 1024, "application/x-executable");
+      const invalidFile = createMockFile("test.exe", 1024, HTTP_HEADERS.CONTENT_TYPE_EXECUTABLE);
       const result = validateFile(invalidFile);
       expect(result.isValid).toBe(false);
       expect(result.error).toContain("not allowed");
