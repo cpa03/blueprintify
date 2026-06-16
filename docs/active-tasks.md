@@ -2,23 +2,25 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## Completed: RepoKeeper Cycle 110 — Full Repository Audit, README BroCula Description Fix (Run 2 → Run 3) & Doc Sync ✅
+## Completed: RepoKeeper Cycle 111 — Full Repository Audit, README BroCula Description Fix (Run 3 → Run 4), Audit Archive Consolidation & Doc Sync ✅
 
-### Task: Full repository audit, README BroCula description drift fix (Run 2 → Run 3), stale remote branch assessment (5 branches), documentation sync, quality verification
+### Task: Full repository audit, README BroCula description drift fix (Run 3 → Run 4), audit archive consolidation (10 reports moved to archive), stale remote branch assessment (5 branches), documentation sync, quality verification
 
 - **Priority**: High
 - **Status**: ✅ Complete
-- **Objective**: Full repository audit covering build/lint/test health, redundant/temp/unused file scan, type suppression audit, README BroCula description drift fix (Run 2 → Run 3 to match `brocula-hunt-2026-06-15-run3.md` on disk, added by commit `092f2b8`), stale remote branch assessment (5 branches), documentation sync, quality verification
+- **Objective**: Full repository audit covering build/lint/test health, redundant/temp/unused file scan, type suppression audit, README BroCula description drift fix (Run 3 → Run 4 to match `brocula-hunt-2026-06-15-run4.md` on disk, added by commit `fa912c8` post-Cycle 110), audit archive consolidation (moved 10 superseded Jun 13-14 BroCula reports to archive, current reports trimmed to 5 entries), stale remote branch assessment (5 branches), documentation sync, quality verification
 - **Actions**:
   - [x] Full repository scan for redundant/temp/unused files → none found
   - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
   - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
-  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,340/1,340 ✅ format ✅
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ format ✅
   - [x] npm audit: 24 vulns (16 moderate, 8 high) — upstream Cloudflare tooling (BUG-013, same documented blocker)
   - [x] README directory tree verified — all docs entries match filesystem
   - [x] Documentation drift check — all referenced docs exist
-  - [x] **Updated README BroCula description**: `(Jun 13–Jun 15 Run 2)` → `(Jun 13–Jun 15 Run 3)` — matches `brocula-hunt-2026-06-15-run3.md` on disk
-  - [x] **Stale remote branch assessment**: 5 branches assessed (`agent/janitor`, `agent/security-engineer`, `bugfixer/ulw-cycle-001`, `feat/flexy-iteration-45-eliminate-magic-numbers`, `fix/bugfixer-node22-stale-docs-jun-15`) — all have unique unmerged content, kept as active agent branches
+  - [x] **Audit archive consolidation**: Moved 10 superseded Jun 13-14 BroCula reports to `docs/audits/archive/` — current reports trimmed from 16 to 5 entries
+  - [x] **Added Jun 15 Run 4 as latest** in `docs/audits/README.md` — `brocula-hunt-2026-06-15-run4.md` existed on disk but was unreferenced
+  - [x] **Updated README BroCula description**: `(Jun 13–Jun 15 Run 3)` → `(Jun 13–Jun 15 Run 4)` — matches `brocula-hunt-2026-06-15-run4.md` on disk
+  - [x] **Stale remote branch assessment**: 5 branches assessed (`agent/janitor`, `agent/security-engineer`, `bugfixer/ulw-cycle-001`, `feat/flexy-iteration-45-eliminate-magic-numbers`, `fix/bugfixer-node22-stale-docs-jun-15`) — all unchanged since Cycle 110, unique unmerged content kept as active agent branches
   - [x] No new fixable bugs found — repo remains healthy and fully clean
   - [x] Updated `docs/bugs.md` — cycle status log
   - [x] Updated `docs/findings.md` — cycle entry
