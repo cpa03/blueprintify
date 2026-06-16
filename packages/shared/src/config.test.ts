@@ -1796,6 +1796,8 @@ describe("DEV_DOMAIN_DEFAULTS", () => {
         expect(typeof item).toBe("string");
       });
     });
+  });
+});
 
 describe("COLD_START_MESSAGES", () => {
   it("should have ACTIVE and INACTIVE messages", () => {
