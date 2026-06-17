@@ -5,7 +5,7 @@ import { ValidationError, AuthenticationError, NotFoundError, ConfigurationError
 import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import type { ErrorResponse } from "../errors";
 import { ERROR_CODES } from "../config/constants";
-import { CONTEXT_KEYS, HTTP_STATUS } from "@blueprint/shared";
+import { CONTEXT_KEYS, HTTP_STATUS, ERROR_TYPES } from "@blueprint/shared";
 
 const TEST_REQUEST_ID = "test-request-id-12345";
 
@@ -106,7 +106,7 @@ describe("errorHandler", () => {
     expect(res.status).toBe(HTTP_STATUS.SERVICE_UNAVAILABLE);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("service_unavailable");
+    expect(data.error.type).toBe(ERROR_TYPES.SERVICE_UNAVAILABLE);
     expect(data.error.code).toBe(ERROR_CODES.CIRCUIT_BREAKER_OPEN);
   });
 

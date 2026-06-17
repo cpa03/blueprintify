@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { HTTP_HEADERS } from "@blueprint/shared";
+import { HTTP_HEADERS, SECURITY_ERROR_CATEGORIES } from "@blueprint/shared";
 import {
   sanitizeHtml,
   sanitizeMarkdown,
@@ -263,9 +263,11 @@ describe("Security Utilities", () => {
 
   describe("SecurityError", () => {
     it("should create security error with type", () => {
-      const error = new SecurityError("Test error", "XSS", { details: "test" });
+      const error = new SecurityError("Test error", SECURITY_ERROR_CATEGORIES.XSS, {
+        details: "test",
+      });
       expect(error.message).toBe("Test error");
-      expect(error.type).toBe("XSS");
+      expect(error.type).toBe(SECURITY_ERROR_CATEGORIES.XSS);
       expect(error.details).toEqual({ details: "test" });
       expect(error.name).toBe("SecurityError");
     });
@@ -273,7 +275,7 @@ describe("Security Utilities", () => {
 
   describe("handleSecurityError", () => {
     it("should return SecurityError as-is", () => {
-      const originalError = new SecurityError("test", "XSS");
+      const originalError = new SecurityError("test", SECURITY_ERROR_CATEGORIES.XSS);
       const result = handleSecurityError(originalError);
       expect(result).toBe(originalError);
     });
@@ -285,21 +287,21 @@ describe("Security Utilities", () => {
       ];
       const result = handleSecurityError(zodError);
       expect(result).toBeInstanceOf(SecurityError);
-      expect(result.type).toBe("VALIDATION");
+      expect(result.type).toBe(SECURITY_ERROR_CATEGORIES.VALIDATION);
     });
 
     it("should handle regular Error", () => {
       const regularError = new Error("Regular error");
       const result = handleSecurityError(regularError);
       expect(result).toBeInstanceOf(SecurityError);
-      expect(result.type).toBe("VALIDATION");
+      expect(result.type).toBe(SECURITY_ERROR_CATEGORIES.VALIDATION);
     });
 
     it("should handle unknown error", () => {
       const unknownError = { someProperty: "someValue" };
       const result = handleSecurityError(unknownError);
       expect(result).toBeInstanceOf(SecurityError);
-      expect(result.type).toBe("VALIDATION");
+      expect(result.type).toBe(SECURITY_ERROR_CATEGORIES.VALIDATION);
     });
   });
 

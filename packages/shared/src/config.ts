@@ -1329,3 +1329,29 @@ export const COLD_START_MESSAGES = {
   /** Message shown when circuit breaker is fully warmed up */
   INACTIVE: "Circuit breaker is fully warmed up",
 } as const;
+
+/**
+ * Vite Dev Server Proxy Path
+ * Centralized source of truth for the API proxy path used in Vite config.
+ * Flexy says: No hardcoded "/api" strings in vite.config.ts or env.ts!
+ * Usage: import { API_PROXY_PATH } from "@blueprint/shared";
+ */
+export const API_PROXY_PATH = "/api" as const;
+
+/**
+ * Security Error Categories
+ * Centralized source of truth for SecurityError category type strings.
+ * Flexy says: No hardcoded "XSS" or "VALIDATION" strings in SecurityError class!
+ * Usage: import { SECURITY_ERROR_CATEGORIES } from "@blueprint/shared";
+ *        type SecurityErrorCategory = (typeof SECURITY_ERROR_CATEGORIES)[keyof typeof SECURITY_ERROR_CATEGORIES];
+ */
+export const SECURITY_ERROR_CATEGORIES = {
+  /** Cross-site scripting (XSS) violation */
+  XSS: "XSS",
+  /** General validation failure */
+  VALIDATION: "VALIDATION",
+  /** Storage quota exceeded */
+  QUOTA: "QUOTA",
+  /** File validation failure */
+  FILE: "FILE",
+} as const;

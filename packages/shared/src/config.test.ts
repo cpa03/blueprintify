@@ -64,6 +64,8 @@ import {
   EXPORT_ERROR_STRINGS,
   DEV_DOMAIN_DEFAULTS,
   COLD_START_MESSAGES,
+  API_PROXY_PATH,
+  SECURITY_ERROR_CATEGORIES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -1819,5 +1821,44 @@ describe("COLD_START_MESSAGES", () => {
   it("should mention circuit breaker context", () => {
     expect(COLD_START_MESSAGES.ACTIVE.toLowerCase()).toContain("circuit");
     expect(COLD_START_MESSAGES.INACTIVE.toLowerCase()).toContain("circuit");
+  });
+});
+
+describe("API_PROXY_PATH", () => {
+  it("should be /api", () => {
+    expect(API_PROXY_PATH).toBe("/api");
+  });
+
+  it("should be a non-empty string", () => {
+    expect(typeof API_PROXY_PATH).toBe("string");
+    expect(API_PROXY_PATH.length).toBeGreaterThan(0);
+  });
+});
+
+describe("SECURITY_ERROR_CATEGORIES", () => {
+  it("should have all expected error categories", () => {
+    expect(SECURITY_ERROR_CATEGORIES.XSS).toBe("XSS");
+    expect(SECURITY_ERROR_CATEGORIES.VALIDATION).toBe("VALIDATION");
+    expect(SECURITY_ERROR_CATEGORIES.QUOTA).toBe("QUOTA");
+    expect(SECURITY_ERROR_CATEGORIES.FILE).toBe("FILE");
+  });
+
+  it("should have 4 error categories", () => {
+    const values = Object.values(SECURITY_ERROR_CATEGORIES);
+    expect(values.length).toBe(4);
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(SECURITY_ERROR_CATEGORIES);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(SECURITY_ERROR_CATEGORIES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
   });
 });

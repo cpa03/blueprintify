@@ -14,7 +14,7 @@
  */
 
 import { z } from "zod";
-import { SECURITY_LIMITS, BYTE_CONVERSION } from "@blueprint/shared";
+import { SECURITY_LIMITS, BYTE_CONVERSION, SECURITY_ERROR_CATEGORIES } from "@blueprint/shared";
 import { SECURITY_CONFIG } from "../config/security";
 import { SECURITY_ERROR_MESSAGES } from "../config/constants";
 
@@ -425,7 +425,7 @@ export function getContentSecurityHeaders(): Record<string, string> {
 export class SecurityError extends Error {
   constructor(
     message: string,
-    public readonly type: "XSS" | "VALIDATION" | "QUOTA" | "FILE",
+    public readonly type: (typeof SECURITY_ERROR_CATEGORIES)[keyof typeof SECURITY_ERROR_CATEGORIES],
     public readonly details?: unknown
   ) {
     super(message);
@@ -442,19 +442,26 @@ export function handleSecurityError(error: unknown): SecurityError {
     const zodError = error as unknown as { issues: Array<{ message: string }> };
     return new SecurityError(
       zodError.issues.map((e) => e.message).join(", "),
-      "VALIDATION",
+      SECURITY_ERROR_CATEGORIES.VALIDATION,
       zodError.issues
     );
   }
 
   if (error instanceof Error) {
     if (containsXSSPatterns(error.message)) {
-      return new SecurityError(SECURITY_ERROR_MESSAGES.XSS_DANGEROUS_PATTERNS, "XSS");
+      return new SecurityError(
+        SECURITY_ERROR_MESSAGES.XSS_DANGEROUS_PATTERNS,
+        SECURITY_ERROR_CATEGORIES.XSS
+      );
     }
-    return new SecurityError(error.message, "VALIDATION", error);
+    return new SecurityError(error.message, SECURITY_ERROR_CATEGORIES.VALIDATION, error);
   }
 
-  return new SecurityError(SECURITY_ERROR_MESSAGES.UNKNOWN_SECURITY_ERROR, "VALIDATION", error);
+  return new SecurityError(
+    SECURITY_ERROR_MESSAGES.UNKNOWN_SECURITY_ERROR,
+    SECURITY_ERROR_CATEGORIES.VALIDATION,
+    error
+  );
 }
 
 // Re-export SECURITY_CONFIG for backward compatibility
