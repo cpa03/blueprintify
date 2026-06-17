@@ -4,7 +4,7 @@
 
 ## Active Bugs
 
-> **BugFixer ULW Cycle 2026-06-17 (Run 3)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,370/1,370 ✅ (640 web + 362 api + 368 shared). Format ✅. 0 type suppressions. 0 TODO/FIXME/HACK artifacts. 0 `as any`. **FIXED BUG-014** — replaced stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences) — **actual workflow files fixed, not just docs updated**. **FIXED BUG-017** — replaced all `node-version: "20"` with `node-version: "22"` in 4 workflow files (11 instances). Both fixes verified via grep: zero stale doc refs, zero `node-version: "20"` remaining. Previous "fix" commit `101cba2` only updated docs/bugs.md but DID NOT touch the actual workflow files — now genuinely resolved. All fixes on branch `fix/bugfixer-ulw-cycle-jun-17-run2`. PR created.
+> **BugFixer ULW Cycle 2026-06-17 (Run 4)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests 1,385/1,385 ✅ (640 web + 362 api + 383 shared). Format ✅. 0 type suppressions. 0 TODO/FIXME/HACK artifacts. 0 `as any`. **BUG-014** — stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). **BUG-017** — hardcoded `node-version: "20"`→`node-version-file: ".node-version"` in 4 workflow files (11 occurrences across iterate.yml, on-pull.yml, parallel.yml, pr-gatekeeper.yml). Both fixes committed on local branch `fix/bugfixer-ulw-cycle-jun-17-run4`. Push blocked by GitHub App token `workflows: write` permission (same documented blocker as all prior cycles). Fixes verified via grep: zero stale doc refs, zero hardcoded `node-version:` remaining. No other fixable bugs found in codebase.
 
 > **RepoKeeper Cycle 113 (2026-06-17)**: Full repository audit complete. Typecheck ✅ lint ✅ format ✅ tests 1,364/1,364 ✅ (640 web + 362 api + 362 shared). 0 type suppressions. 0 TODO/FIXME/HACK artifacts. 0 `as any`. **Cleaned up `docs/archive/`**: Deleted 3 superseded files from May 26-27 (`audit-2026-05-26.md`, `issue-audit-report-2026-05-27.md`, `issue-management-2026-05-27.md`). **Consolidated 3 stale issue audit reports**: Moved `docs/issue-audit-report-2026-06-05.md`, `docs/issue-audit-report-2026-06-07.md`, `docs/issue-audit-report-2026-06-08.md` to `docs/audits/archive/`. **Updated README.md**: Removed `docs/archive/` from tree, updated links. **Updated `docs/audits/README.md`**: Added Moved Reports section. **9 stale remote branches reassessed** — all with unique unmerged content, kept as active agent branches. Documentation refreshed for Cycle 113. Repo fully clean — no new fixable bugs found.
 >
@@ -118,9 +118,9 @@
 
 > **BugFixer ULW Cycle 2026-06-06 (Cycle 3)**: Full repository audit complete. Typecheck ✅ lint ✅ build (web) ✅ tests 1138/1138 ✅. Verified BUG-014 and BUG-017 were still present on `main` (docs/bug.md → stale, node-version: "20" → hardcoded in 4 workflow files, 11 instances). Applied fixes on `fix/ulw-bugfix-sprint` branch. Both fixes verified via grep: zero `node-version:` remaining, zero stale doc refs. PR created.
 
-### BUG-014: Stale Doc References in main.yml Workflow (Resolved)
+### BUG-014: Stale Doc References in main.yml Workflow (Unresolved on main)
 
-**Status**: Resolved — applied in fix/bugfixer-ulw-cycle-jun-17-run2 (BugFixer ULW Cycle Jun 17 Run 3 — actual workflow files fixed)
+**Status**: **Unresolved on main** — fix applied on branch `fix/bugfixer-ulw-cycle-jun-17-run4` (BugFixer ULW Cycle Jun 17 Run 4)
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1293
@@ -128,20 +128,25 @@
 
 #### Description
 
-`.github/workflows/main.yml` referenced two non-existent documentation files.
+`.github/workflows/main.yml` references two non-existent documentation files.
+- Line 39: `docs/bug.md, docs/feature.md` (should be `docs/bugs.md, docs/features.md`)
+- Line 263: `docs/bug.md` (should be `docs/bugs.md`)
+
+Re-introduced by commit `3f4a559` ("Multi-Phase Development Workflow Implementation (#1202)") which replaced main.yml with a version containing stale refs.
 
 #### Resolution
 
+- ✅ Fix committed on branch `fix/bugfixer-ulw-cycle-jun-17-run4` (commit `8573448`)
 - ✅ `main.yml` line 39: `docs/bug.md, docs/feature.md` → `docs/bugs.md, docs/features.md`
 - ✅ `main.yml` line 263: `docs/bug.md` → `docs/bugs.md`
 - ✅ Fix verified via grep: zero stale doc refs remaining
-- ⚠️ Note: Prior "fix" commit `101cba2` only updated docs/bugs.md but did NOT touch the actual workflow files. Genuinely fixed in this cycle.
+- ⚠️ Push blocked: GitHub App token lacks `workflows: write` permission
 
 ---
 
-### BUG-017: CI Node.js Version Mismatch (Resolved)
+### BUG-017: CI Node.js Version Mismatch (Unresolved on main)
 
-**Status**: Resolved — applied in fix/bugfixer-ulw-cycle-jun-17-run2 (BugFixer ULW Cycle Jun 17 Run 3 — actual workflow files fixed)
+**Status**: **Unresolved on main** — fix applied on branch `fix/bugfixer-ulw-cycle-jun-17-run4` (BugFixer ULW Cycle Jun 17 Run 4)
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1390, #1470, #1549
@@ -149,11 +154,19 @@
 
 #### Description
 
-All CI workflow files used Node.js 20 hardcoded instead of the project's `.node-version` file (which requires Node.js 22).
+All CI workflow files use Node.js 20 hardcoded instead of the project's `.node-version` file (which requires Node.js 22). 
+- `iterate.yml`: 5 occurrences
+- `parallel.yml`: 4 occurrences  
+- `on-pull.yml`: 1 occurrence
+- `pr-gatekeeper.yml`: 1 occurrence
+Total: 11 occurrences of hardcoded `node-version: "20"` (or `node-version: 20`).
+
+Re-introduced by commit `3f4a559` which replaced workflow files with old versions.
 
 #### Resolution
 
-Updated `node-version: "20"` → `node-version: "22"` (11 instances total):
+- ✅ Fix committed on branch `fix/bugfixer-ulw-cycle-jun-17-run4` (commit `8573448`)
+- Replaced `node-version: "20"` with `node-version-file: ".node-version"` (11 instances):
 
 | File                                  | Instances Fixed |
 | ------------------------------------- | ---------------- |
@@ -161,6 +174,9 @@ Updated `node-version: "20"` → `node-version: "22"` (11 instances total):
 | `.github/workflows/parallel.yml`      | 4                |
 | `.github/workflows/on-pull.yml`       | 1                |
 | `.github/workflows/pr-gatekeeper.yml` | 1                |
+- ✅ Uses project `.node-version` file (currently `22`) as single source of truth
+- ✅ Fix verified via grep: zero hardcoded `node-version:` remaining
+- ⚠️ Push blocked: GitHub App token lacks `workflows: write` permission
 
 - ✅ Fix verified via grep: zero remaining `node-version: "20"` references in workflow files
 
