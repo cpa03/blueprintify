@@ -28,6 +28,11 @@ import React, { useCallback } from "react";
 import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
+import {
+  VIEW_MODES as SHARED_VIEW_MODES,
+  TOOLTIP_LABELS,
+  SHORTCUT_LABELS,
+} from "@blueprint/shared";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
 import { AnimatedCopyButton } from "../AnimatedCopyButton";
@@ -36,9 +41,13 @@ import { COLORS, EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { getAriaShortcutKey } from "../../lib/platform";
 
-export type ViewMode = "edit" | "preview" | "split";
+export type ViewMode = (typeof SHARED_VIEW_MODES)[keyof typeof SHARED_VIEW_MODES];
 
-const VIEW_MODES: ViewMode[] = ["edit", "split", "preview"];
+const VIEW_MODES: ViewMode[] = [
+  SHARED_VIEW_MODES.EDIT,
+  SHARED_VIEW_MODES.SPLIT,
+  SHARED_VIEW_MODES.PREVIEW,
+];
 
 interface EditorToolbarProps {
   activeTab: EditorTab;
@@ -206,9 +215,11 @@ function EditorToolbarComponent({
       <Tooltip
         content={
           <div className="flex items-center gap-2">
-            <span>{isCopied ? "Copied!" : "Copy to clipboard"}</span>
+            <span>
+              {isCopied ? TOOLTIP_LABELS.EDITOR.COPIED : TOOLTIP_LABELS.EDITOR.COPY_TO_CLIPBOARD}
+            </span>
             <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-xs font-mono text-dark-300">
-              Ctrl+C
+              {SHORTCUT_LABELS.COPY}
             </kbd>
           </div>
         }
@@ -226,9 +237,11 @@ function EditorToolbarComponent({
       <Tooltip
         content={
           <div className="flex items-center gap-2">
-            <span>{exportSuccess ? "Exported!" : "Export as ZIP"}</span>
+            <span>
+              {exportSuccess ? TOOLTIP_LABELS.EDITOR.EXPORTED : TOOLTIP_LABELS.EDITOR.EXPORT_AS_ZIP}
+            </span>
             <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-xs font-mono text-dark-300">
-              Ctrl+E
+              {SHORTCUT_LABELS.EXPORT}
             </kbd>
           </div>
         }
@@ -375,9 +388,9 @@ function EditorToolbarComponent({
       <Tooltip
         content={
           <div className="flex items-center gap-2">
-            <span>Start new project</span>
+            <span>{TOOLTIP_LABELS.EDITOR.START_NEW_PROJECT}</span>
             <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-xs font-mono text-dark-300">
-              Ctrl+N
+              {SHORTCUT_LABELS.NEW_PROJECT}
             </kbd>
           </div>
         }

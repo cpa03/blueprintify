@@ -1355,3 +1355,91 @@ export const SECURITY_ERROR_CATEGORIES = {
   /** File validation failure */
   FILE: "FILE",
 } as const;
+
+/**
+ * Editor View Mode Identifiers
+ * Centralized source of truth for editor view mode strings.
+ * Flexy says: No hardcoded "edit"/"preview"/"split" in EditorToolbar!
+ * Usage: import { VIEW_MODES } from "@blueprint/shared";
+ *        type ViewMode = (typeof VIEW_MODES)[keyof typeof VIEW_MODES];
+ */
+export const VIEW_MODES = {
+  /** Full-width code editing view */
+  EDIT: "edit" as const,
+  /** Full-width markdown preview view */
+  PREVIEW: "preview" as const,
+  /** Side-by-side editor and preview view */
+  SPLIT: "split" as const,
+} as const;
+
+/**
+ * Editor File Display Names
+ * Centralized source of truth for editor tab filenames shown in UI.
+ * Flexy says: No hardcoded "blueprint.md" or "task.md" in editor components!
+ * Usage: import { EDITOR_FILENAMES } from "@blueprint/shared";
+ *        label === EDITOR_FILENAMES.BLUEPRINT
+ */
+export const EDITOR_FILENAMES = {
+  /** Display label for the blueprint tab */
+  BLUEPRINT: "blueprint.md" as const,
+  /** Display label for the tasks tab */
+  TASKS: "task.md" as const,
+  /** Screen reader announcement text for blueprint tab */
+  BLUEPRINT_ANNOUNCE: "blueprint.md" as const,
+  /** Screen reader announcement text for tasks tab */
+  TASKS_ANNOUNCE: "tasks.md" as const,
+} as const;
+
+/**
+ * Editor Tooltip Labels
+ * Centralized source of truth for tooltip text in the editor toolbar.
+ * Flexy says: No hardcoded "Copy to clipboard" strings in button tooltips!
+ * Usage: import { TOOLTIP_LABELS } from "@blueprint/shared";
+ *        tooltip={TOOLTIP_LABELS.EDITOR.COPY_TO_CLIPBOARD}
+ */
+export const TOOLTIP_LABELS = {
+  EDITOR: {
+    /** Tooltip when content is ready to copy */
+    COPY_TO_CLIPBOARD: "Copy to clipboard",
+    /** Tooltip when content has been copied */
+    COPIED: "Copied!",
+    /** Tooltip for export button default state */
+    EXPORT_AS_ZIP: "Export as ZIP",
+    /** Tooltip for export button success state */
+    EXPORTED: "Exported!",
+    /** Tooltip for new project button */
+    START_NEW_PROJECT: "Start new project",
+  },
+} as const;
+
+/**
+ * Keyboard Shortcut Display Labels
+ * Centralized source of truth for keyboard shortcut text shown in tooltips.
+ * Flexy says: No hardcoded "Ctrl+C" strings in tooltip kbd elements!
+ * Usage: import { SHORTCUT_LABELS } from "@blueprint/shared";
+ *        kbd>{SHORTCUT_LABELS.COPY}</kbd>
+ */
+export const SHORTCUT_LABELS = {
+  /** Copy keyboard shortcut display */
+  COPY: "Ctrl+C",
+  /** Export keyboard shortcut display */
+  EXPORT: "Ctrl+E",
+  /** New project keyboard shortcut display */
+  NEW_PROJECT: "Ctrl+N",
+  /** Keyboard shortcut modal trigger display */
+  SHORTCUTS_MODAL: "?",
+} as const;
+
+/**
+ * UI Timing Defaults
+ * Centralized source of truth for UI timing magic numbers.
+ * Flexy says: No hardcoded timeout values in component code!
+ * Usage: import { UI_TIMING } from "@blueprint/shared";
+ *        setTimeout(fn, UI_TIMING.DISCOVERY_HINT_MS)
+ */
+export const UI_TIMING = {
+  /** Duration in ms for the discovery hint glow animation on keyboard shortcuts button */
+  DISCOVERY_HINT_MS: 3000,
+  /** Duration in ms for auto-focus delay after editor mounts */
+  EDITOR_FOCUS_DELAY_MS: 180,
+} as const;

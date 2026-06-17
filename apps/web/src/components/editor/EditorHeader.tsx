@@ -29,6 +29,7 @@
 import React, { useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
+import { EDITOR_FILENAMES } from "@blueprint/shared";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { Icon } from "../Icon";
 import { LastSavedIndicator } from "../LastSavedIndicator";
@@ -340,7 +341,7 @@ function EditorHeaderComponent({
             contentAvailable={blueprintHasContent}
           >
             <Icon name="document" className="w-4 h-4 mr-1.5" />
-            blueprint.md
+            {EDITOR_FILENAMES.BLUEPRINT}
           </TabButton>
           <TabButton
             id={EDITOR_TABS.TASKS}
@@ -351,7 +352,7 @@ function EditorHeaderComponent({
             contentAvailable={tasksHasContent}
           >
             <Icon name="clipboard" className="w-4 h-4 mr-1.5" />
-            task.md
+            {EDITOR_FILENAMES.TASKS}
           </TabButton>
         </div>
         <div className="flex items-center gap-3">

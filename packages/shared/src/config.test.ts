@@ -28,6 +28,11 @@ import {
   CORS_DEFAULTS,
   HTTP_METHODS,
   HTTP_HEADER_NAMES,
+  VIEW_MODES,
+  EDITOR_FILENAMES,
+  TOOLTIP_LABELS,
+  SHORTCUT_LABELS,
+  UI_TIMING,
   DB_ID_PREFIXES,
   SECURITY_VALUES,
   UI_STRINGS,
@@ -1860,5 +1865,119 @@ describe("SECURITY_ERROR_CATEGORIES", () => {
     const values = Object.values(SECURITY_ERROR_CATEGORIES);
     const uniqueValues = new Set(values);
     expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("VIEW_MODES", () => {
+  it("should have all expected view modes", () => {
+    expect(VIEW_MODES.EDIT).toBe("edit");
+    expect(VIEW_MODES.PREVIEW).toBe("preview");
+    expect(VIEW_MODES.SPLIT).toBe("split");
+  });
+
+  it("should have 3 view modes", () => {
+    const values = Object.values(VIEW_MODES);
+    expect(values.length).toBe(3);
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(VIEW_MODES);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(VIEW_MODES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("EDITOR_FILENAMES", () => {
+  it("should have all expected filenames", () => {
+    expect(EDITOR_FILENAMES.BLUEPRINT).toBe("blueprint.md");
+    expect(EDITOR_FILENAMES.TASKS).toBe("task.md");
+    expect(EDITOR_FILENAMES.BLUEPRINT_ANNOUNCE).toBe("blueprint.md");
+    expect(EDITOR_FILENAMES.TASKS_ANNOUNCE).toBe("tasks.md");
+  });
+
+  it("should have 4 filename entries", () => {
+    const values = Object.values(EDITOR_FILENAMES);
+    expect(values.length).toBe(4);
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(EDITOR_FILENAMES);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("TOOLTIP_LABELS", () => {
+  it("should have all expected editor tooltip labels", () => {
+    expect(TOOLTIP_LABELS.EDITOR.COPY_TO_CLIPBOARD).toBe("Copy to clipboard");
+    expect(TOOLTIP_LABELS.EDITOR.COPIED).toBe("Copied!");
+    expect(TOOLTIP_LABELS.EDITOR.EXPORT_AS_ZIP).toBe("Export as ZIP");
+    expect(TOOLTIP_LABELS.EDITOR.EXPORTED).toBe("Exported!");
+    expect(TOOLTIP_LABELS.EDITOR.START_NEW_PROJECT).toBe("Start new project");
+  });
+
+  it("should have all string values", () => {
+    const checkStrings = (obj: Record<string, unknown>) => {
+      Object.values(obj).forEach((v) => {
+        if (typeof v === "string") {
+          expect(v.length).toBeGreaterThan(0);
+        } else if (typeof v === "object" && v !== null) {
+          checkStrings(v as Record<string, unknown>);
+        }
+      });
+    };
+    checkStrings(TOOLTIP_LABELS as unknown as Record<string, unknown>);
+  });
+});
+
+describe("SHORTCUT_LABELS", () => {
+  it("should have all expected shortcut labels", () => {
+    expect(SHORTCUT_LABELS.COPY).toBe("Ctrl+C");
+    expect(SHORTCUT_LABELS.EXPORT).toBe("Ctrl+E");
+    expect(SHORTCUT_LABELS.NEW_PROJECT).toBe("Ctrl+N");
+    expect(SHORTCUT_LABELS.SHORTCUTS_MODAL).toBe("?");
+  });
+
+  it("should have 4 shortcut labels", () => {
+    const values = Object.values(SHORTCUT_LABELS);
+    expect(values.length).toBe(4);
+  });
+
+  it("should have all string values with length > 0", () => {
+    const values = Object.values(SHORTCUT_LABELS);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("UI_TIMING", () => {
+  it("should have all expected timing values", () => {
+    expect(UI_TIMING.DISCOVERY_HINT_MS).toBe(3000);
+    expect(UI_TIMING.EDITOR_FOCUS_DELAY_MS).toBe(180);
+  });
+
+  it("should have 2 timing entries", () => {
+    const values = Object.values(UI_TIMING);
+    expect(values.length).toBe(2);
+  });
+
+  it("should have all numeric values", () => {
+    const values = Object.values(UI_TIMING);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(v).toBeGreaterThan(0);
+    });
   });
 });

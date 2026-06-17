@@ -34,6 +34,7 @@ import { useEditorStore, resetAllStores, useToast } from "../store";
 import { useExportContext } from "../context/ExportContext";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
+import { EDITOR_FILENAMES } from "@blueprint/shared";
 import {
   TIMEOUTS,
   UI,
@@ -97,7 +98,9 @@ function EditorComponent(): JSX.Element {
   const [mountAnnouncement] = useState(() =>
     hasContent
       ? EDITOR_ANNOUNCER.OPENED_WITH_CONTENT(
-          activeTab === EDITOR_TABS.BLUEPRINT ? "blueprint.md" : "tasks.md"
+          activeTab === EDITOR_TABS.BLUEPRINT
+            ? EDITOR_FILENAMES.BLUEPRINT_ANNOUNCE
+            : EDITOR_FILENAMES.TASKS_ANNOUNCE
         )
       : EDITOR_ANNOUNCER.OPENED
   );

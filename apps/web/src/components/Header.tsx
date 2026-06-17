@@ -17,6 +17,7 @@
  */
 
 import { memo, useState, useEffect, useRef } from "react";
+import { UI_TIMING, SHORTCUT_LABELS } from "@blueprint/shared";
 import {
   UI_CONTENT,
   EXTERNAL_URLS,
@@ -68,7 +69,7 @@ function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
   useEffect(() => {
     if (onShowShortcuts && !hintShownRef.current) {
       hintShownRef.current = true;
-      const timer = setTimeout(() => setShowDiscoveryHint(false), 3000);
+      const timer = setTimeout(() => setShowDiscoveryHint(false), UI_TIMING.DISCOVERY_HINT_MS);
       return () => clearTimeout(timer);
     }
     return;
@@ -108,7 +109,7 @@ function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
         <nav className="flex items-center gap-2 animate-slide-in-right">
           {onShowShortcuts && (
             <KeyboardShortcutTooltip
-              shortcut="?"
+              shortcut={SHORTCUT_LABELS.SHORTCUTS_MODAL}
               description="Show keyboard shortcuts"
               position="bottom"
               modifier="none"
@@ -118,7 +119,7 @@ function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
                 className={`btn-ghost flex items-center justify-center w-10 h-10 ${showDiscoveryHint ? "attention-glow" : ""}`}
                 ariaLabel={ACCESSIBILITY_LABELS.HEADER.KEYBOARD_SHORTCUTS}
                 title={ACCESSIBILITY_LABELS.HEADER.KEYBOARD_SHORTCUTS}
-                aria-keyshortcuts="?"
+                aria-keyshortcuts={SHORTCUT_LABELS.SHORTCUTS_MODAL}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
