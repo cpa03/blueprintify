@@ -27,7 +27,7 @@
  * ```
  */
 
-import { useState, memo, useCallback } from "react";
+import { useState, memo, useCallback, useRef, useMemo } from "react";
 import { STARTER_TEMPLATES } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { ANIMATION, TOAST_MESSAGES } from "../config/constants";
@@ -38,6 +38,18 @@ function TemplateGridComponent(): JSX.Element {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
+  const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [focusIndex, setFocusIndex] = useState<number>(-1);
+
+  // Estimate grid columns based on viewport — used for ArrowUp/ArrowDown navigation.
+  // Defaults to 1 for mobile, detects 2 at md breakpoint (768px), 3 at lg (1024px).
+  const gridColumns = useMemo(() => {
+    if (typeof window === "undefined") return 1;
+    const width = window.innerWidth;
+    if (width >= 1024) return 3;
+    if (width >= 768) return 2;
+    return 1;
+  }, []);
 
   const handleTemplateClick = useCallback(
     (template: (typeof STARTER_TEMPLATES)[0]) => {
@@ -55,16 +67,56 @@ function TemplateGridComponent(): JSX.Element {
     [selectedId, loadTemplate, toast]
   );
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent, template: (typeof STARTER_TEMPLATES)[0]) => {
+  const handleCardKeyDown = useCallback(
+    (e: React.KeyboardEvent, template: (typeof STARTER_TEMPLATES)[0], index: number) => {
+      // Enter/Space to select the template
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         if (selectedId === null) {
           handleTemplateClick(template);
         }
+        return;
+      }
+
+      // Arrow key navigation between template cards
+      const totalCards = STARTER_TEMPLATES.length;
+      let nextIndex = -1;
+
+      switch (e.key) {
+        case "ArrowRight":
+          e.preventDefault();
+          nextIndex = Math.min(totalCards - 1, index + 1);
+          break;
+        case "ArrowLeft":
+          e.preventDefault();
+          nextIndex = Math.max(0, index - 1);
+          break;
+        case "ArrowDown":
+          e.preventDefault();
+          nextIndex = Math.min(totalCards - 1, index + gridColumns);
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          nextIndex = Math.max(0, index - gridColumns);
+          break;
+        case "Home":
+          e.preventDefault();
+          nextIndex = 0;
+          break;
+        case "End":
+          e.preventDefault();
+          nextIndex = totalCards - 1;
+          break;
+        default:
+          return;
+      }
+
+      if (nextIndex >= 0 && nextIndex < totalCards && nextIndex !== index) {
+        setFocusIndex(nextIndex);
+        cardRefs.current[nextIndex]?.focus();
       }
     },
-    [selectedId, handleTemplateClick]
+    [selectedId, handleTemplateClick, gridColumns]
   );
 
   return (
@@ -74,17 +126,28 @@ function TemplateGridComponent(): JSX.Element {
         Choose a template to pre-fill your project configuration
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        role="listbox"
+        aria-label="Quick start templates"
+        aria-orientation="horizontal"
+      >
         {STARTER_TEMPLATES.map((template, index) => {
           const isSelected = selectedId === template.id;
 
           return (
             <button
               key={template.id}
+              ref={(el) => {
+                cardRefs.current[index] = el;
+              }}
               onClick={() => handleTemplateClick(template)}
-              onKeyDown={(e) => handleKeyDown(e, template)}
+              onKeyDown={(e) => handleCardKeyDown(e, template, index)}
               disabled={selectedId !== null}
               aria-busy={isSelected && isLoading}
+              aria-selected={isSelected}
+              role="option"
+              tabIndex={focusIndex >= 0 ? (focusIndex === index ? 0 : -1) : 0}
               style={{
                 animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY}s`,
                 animationDuration: `${ANIMATION.CARD_ENTRANCE_DURATION}s`,
