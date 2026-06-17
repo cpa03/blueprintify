@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { ENV } from "./env";
-import { SHARED_DEFAULTS, DEFAULT_URLS } from "@blueprint/shared";
+import { SHARED_DEFAULTS, DEFAULT_URLS, API_PROXY_PATH } from "@blueprint/shared";
 
 describe("ENV Configuration", () => {
   beforeEach(() => {
@@ -10,7 +10,7 @@ describe("ENV Configuration", () => {
   describe("API Configuration", () => {
     it("should return default API base URL when VITE_API_BASE_URL is not set", () => {
       // Import fresh module to get default values
-      expect(ENV.API_BASE_URL).toBe("/api");
+      expect(ENV.API_BASE_URL).toBe(API_PROXY_PATH);
     });
 
     it("should use custom API base URL when provided", async () => {

@@ -1,4 +1,4 @@
-import { DEFAULT_URLS, SHARED_DEFAULTS, ENV_VAR_KEYS } from "@blueprint/shared";
+import { DEFAULT_URLS, SHARED_DEFAULTS, ENV_VAR_KEYS, API_PROXY_PATH } from "@blueprint/shared";
 
 const { WEB: WEB_ENV } = ENV_VAR_KEYS;
 
@@ -17,7 +17,7 @@ const getNumericEnvVar = (key: string, defaultValue: number): number => {
 export const ENV = {
   // API Configuration
   get API_BASE_URL(): string {
-    return getEnvVar(WEB_ENV.VITE_API_BASE_URL, "/api");
+    return getEnvVar(WEB_ENV.VITE_API_BASE_URL, API_PROXY_PATH);
   },
 
   // Feature Flags

@@ -4,6 +4,32 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 48: Centralize API Proxy Path & Security Error Categories
+
+| File | Change |
+| ---- | ------ |
+| `packages/shared/src/config.ts` | Added `API_PROXY_PATH` (`"/api"`) + `SECURITY_ERROR_CATEGORIES` (XSS/VALIDATION/QUOTA/FILE) |
+| `packages/shared/src/index.ts` | Exported `API_PROXY_PATH`, `SECURITY_ERROR_CATEGORIES` |
+| `packages/shared/src/config.test.ts` | Added 2 test blocks (7 tests) for new config constants |
+| `apps/web/src/config/env.ts` | Replaced hardcoded `"/api"` default with `API_PROXY_PATH` |
+| `apps/web/src/config/env.test.ts` | Uses `API_PROXY_PATH` for assertion instead of hardcoded `"/api"` |
+| `apps/web/src/lib/security.ts` | `SecurityError.type` type union now derives from `SECURITY_ERROR_CATEGORIES`; replaced 4 hardcoded category strings with constants |
+| `apps/web/src/lib/security.test.ts` | Replaced 6 hardcoded `"XSS"`/`"VALIDATION"` with `SECURITY_ERROR_CATEGORIES.*` constants |
+| `apps/api/src/middleware/errorHandler.test.ts` | Replaced `"service_unavailable"` with `ERROR_TYPES.SERVICE_UNAVAILABLE` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 640 web + 362 api + 368 shared = 1,370 tests passing across 74 files
+
+## PR
+
+| PR #  | Branch                                              | Title                                                               |
+| ----- | --------------------------------------------------- | ------------------------------------------------------------------- |
+| TBD   | `feat/flexy-iteration-48-hardcoded-cleanup`         | feat(flexy): centralize API proxy path and security error categories |
+
 ### ✅ Flexy Iteration 22: Eliminate Remaining Hardcoded MIME Types in Test Files
 
 | File                                | Change                                                                     |

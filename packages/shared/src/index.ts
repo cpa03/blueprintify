@@ -128,6 +128,8 @@ export {
   EXPORT_ERROR_STRINGS,
   DEV_DOMAIN_DEFAULTS,
   COLD_START_MESSAGES,
+  API_PROXY_PATH,
+  SECURITY_ERROR_CATEGORIES,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";
