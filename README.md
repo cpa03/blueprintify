@@ -39,7 +39,6 @@ blueprintify/
 │   ├── active-tasks.md
 │   ├── ai-agent-usage-guide.md
 │   ├── api-documentation.md
-│   ├── archive/          # Archived/outdated docs (historical reference)
 │   ├── audits/
 │   │   ├── README.md     # Audit file index
 │   │   └── archive/      # Historical audit runs (consolidated)
@@ -56,9 +55,6 @@ blueprintify/
 │   ├── features.md
 │   ├── findings.md
 │   ├── flexy-plan.md
-│   ├── issue-audit-report-2026-06-05.md
-│   ├── issue-audit-report-2026-06-07.md
-│   ├── issue-audit-report-2026-06-08.md
 │   ├── knowledge-review.md
 │   ├── localstorage-schema.md
 │   ├── m2-technical-approach.md
@@ -326,9 +322,9 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Flexy Plan](./docs/flexy-plan.md)** - Hardcoded value elimination and modularization plan
 - **[Known Bugs](./docs/bugs.md)** - Active bug tracking and known defects
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
-- **[Issue Audit Report (Jun 5)](./docs/issue-audit-report-2026-06-05.md)** - Issue label normalization and duplicate detection report
-- **[Issue Audit Report (Jun 7)](./docs/issue-audit-report-2026-06-07.md)** - ULW Loop issue audit with fix status tracking
-- **[Issue Audit Report (Jun 8)](./docs/issue-audit-report-2026-06-08.md)** - ULW Loop issue audit with fix status tracking
+- **[Issue Audit Report (Jun 5)](./docs/audits/archive/issue-audit-report-2026-06-05.md)** - Issue label normalization and duplicate detection report (archived)
+- **[Issue Audit Report (Jun 7)](./docs/audits/archive/issue-audit-report-2026-06-07.md)** - ULW Loop issue audit with fix status tracking (archived)
+- **[Issue Audit Report (Jun 8)](./docs/audits/archive/issue-audit-report-2026-06-08.md)** - ULW Loop issue audit with fix status tracking (archived)
 - **[RepoKeeper Task](./docs/task.md)** - Current RepoKeeper task placeholder
 - **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jun 13–Jun 16 Run 2)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans

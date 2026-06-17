@@ -2,6 +2,31 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 113 — Archive Cleanup, Stale Issue Audit Reports Consolidation, Doc Sync ✅
+
+### Task: Full repository audit, `docs/archive/` cleanup (3 superseded May files deleted), stale issue audit reports consolidation (3 moved to `docs/audits/archive/`), README tree fix & link updates, documentation sync, quality verification
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Full repository audit covering build/lint/test health, redundant/temp/unused file scan, type suppression audit, **cleanup of `docs/archive/`** (3 superseded May 26-27 files deleted — all content superseded by June reports), **consolidation of stale issue audit reports** (`docs/issue-audit-report-2026-06-{05,07,08}.md` moved to `docs/audits/archive/`), **README tree fix** (removed deleted `docs/archive/` entry, moved issue audit report entries), **README link updates** (3 issue audit report links), **docs/audits/README.md update** (added Moved Reports section), stale remote branch assessment (9 branches), documentation sync, quality verification
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ format ✅ tests 1,364/1,364 ✅
+  - [x] **Cleaned up `docs/archive/`**: Deleted 3 superseded May 26-27 files (`audit-2026-05-26.md`, `issue-audit-report-2026-05-27.md`, `issue-management-2026-05-27.md`). Removed empty directory.
+  - [x] **Consolidated 3 stale issue audit reports**: Moved from `docs/` root to `docs/audits/archive/`
+  - [x] **Updated README directory tree**: Removed deleted `docs/archive/` entry, removed 3 issue audit report entries
+  - [x] **Updated README docs links**: 3 issue audit report links now point to `docs/audits/archive/`
+  - [x] **Updated `docs/audits/README.md`**: Added Moved Reports section
+  - [x] **Stale remote branch assessment**: 9 branches unchanged from Cycle 112 — all with unique unmerged content, kept as active branches
+  - [x] No new fixable bugs found — repo remains healthy and fully clean
+  - [x] Updated `docs/bugs.md` — cycle status log
+  - [x] Updated `docs/findings.md` — cycle entry
+  - [x] Updated `docs/active-tasks.md` — cycle status
+  - [x] Updated `docs/knowledge-review.md` — refreshed
+  - [x] Updated CHANGELOG.md — cycle entry
+
 ## Completed: RepoKeeper Cycle 112 — Full Repository Audit, Audit README Drift Fix (10 archived entries removed from Current Reports), README Tree Fix, Doc Sync ✅
 
 ### Task: Full repository audit, docs/audits/README.md drift fix (10 archived Jun 13-14 entries removed from Current Reports, missing Jun 15 Run 4 added), README tree fix (added missing ci-workflow-fixes-patch.md), stale remote branch assessment (9 branches), documentation sync, quality verification
@@ -758,5 +783,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-16 (Cycle 112: RepoKeeper)  
+**Last Updated**: 2026-06-17 (Cycle 113: RepoKeeper)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
