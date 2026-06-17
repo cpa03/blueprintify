@@ -104,6 +104,8 @@ function PageScrollProgressBarComponent({
         let targetScroll = currentScroll;
 
         switch (e.key) {
+          case "Enter":
+          case " ":
           case "ArrowRight":
           case "ArrowDown":
             e.preventDefault();
