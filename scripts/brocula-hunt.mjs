@@ -18,10 +18,22 @@ let TARGET_URL = process.env.TARGET_URL || `${PREVIEW_HOST}:${PREVIEW_PORT}`;
 async function checkConsoleErrors() {
   console.log('🔍 BroCula is hunting for console errors...\n');
   
-  const browser = await chromium.launch({ 
-    headless: true,
-    executablePath: CHROME_PATH
-  });
+  // Find Playwright's Chromium binary for console checks (prefer headless shell)
+  let pwChromiumPath = CHROME_PATH;
+  if (!pwChromiumPath) {
+    try {
+      pwChromiumPath = execSync('find /home/runner/.cache/ms-playwright -name "chrome" -o -name "chromium" -type f 2>/dev/null | head -1').toString().trim();
+    } catch (e) {
+      pwChromiumPath = undefined;
+    }
+  }
+  
+  const launchOptions = { headless: true };
+  if (pwChromiumPath) {
+    launchOptions.executablePath = pwChromiumPath;
+  }
+  
+  const browser = await chromium.launch(launchOptions);
   const context = await browser.newContext();
   const page = await context.newPage();
   
@@ -121,7 +133,8 @@ async function runLighthouse() {
     let chromePath = CHROME_PATH;
     if (!chromePath) {
       try {
-        chromePath = execSync('find /home/runner/.cache/ms-playwright -name "chrome" -type f 2>/dev/null | head -1').toString().trim();
+        // Try chrome first, then chromium as fallback
+        chromePath = execSync('find /home/runner/.cache/ms-playwright -name "chrome" -o -name "chromium" -type f 2>/dev/null | head -1').toString().trim();
       } catch (e) {
         chromePath = undefined;
       }
