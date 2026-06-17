@@ -30,6 +30,31 @@ Eliminate hardcoded values and build a modular, single-source-of-truth system.
 | ----- | --------------------------------------------------- | ------------------------------------------------------------------- |
 | TBD   | `feat/flexy-iteration-48-hardcoded-cleanup`         | feat(flexy): centralize API proxy path and security error categories |
 
+### ✅ Flexy Iteration 49: Centralize Remaining Labels, Filenames, Shortcuts & Timing
+
+| File | Change |
+| ---- | ------ |
+| `packages/shared/src/config.ts` | Added `VIEW_MODES` (edit/preview/split), `EDITOR_FILENAMES` (blueprint.md/task.md), `TOOLTIP_LABELS` (editor toolbar labels), `SHORTCUT_LABELS` (Ctrl+C/E/N/?), `UI_TIMING` (discovery hint 3000ms, editor focus 180ms) |
+| `packages/shared/src/index.ts` | Exported all 5 new config objects |
+| `packages/shared/src/config.test.ts` | Added 5 test blocks (20 tests) for new config constants |
+| `apps/web/src/components/editor/EditorToolbar.tsx` | ViewMode type derives from `VIEW_MODES`; toolbar items ordered via config; tooltip text and shortcut labels use `TOOLTIP_LABELS` / `SHORTCUT_LABELS` |
+| `apps/web/src/components/editor/EditorHeader.tsx` | Replaced hardcoded `"blueprint.md"` / `"task.md"` with `EDITOR_FILENAMES.BLUEPRINT` / `EDITOR_FILENAMES.TASKS` |
+| `apps/web/src/components/Editor.tsx` | Replaced hardcoded `"blueprint.md"` / `"tasks.md"` in screen-reader announcer with `EDITOR_FILENAMES.BLUEPRINT_ANNOUNCE` / `EDITOR_FILENAMES.TASKS_ANNOUNCE` |
+| `apps/web/src/components/Header.tsx` | Replaced magic number `3000` with `UI_TIMING.DISCOVERY_HINT_MS`; replaced hardcoded `"?"` shortcut strings with `SHORTCUT_LABELS.SHORTCUTS_MODAL` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 640 web + 362 api + 383 shared = 1,385 tests passing across 74 files
+
+## PR
+
+| PR #  | Branch                                              | Title                                                               |
+| ----- | --------------------------------------------------- | ------------------------------------------------------------------- |
+| TBD   | `feat/flexy-iteration-49-remaining-labels`          | feat(flexy): centralize remaining labels, filenames, shortcuts and timing |
+
 ### ✅ Flexy Iteration 22: Eliminate Remaining Hardcoded MIME Types in Test Files
 
 | File                                | Change                                                                     |

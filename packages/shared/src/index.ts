@@ -130,6 +130,11 @@ export {
   COLD_START_MESSAGES,
   API_PROXY_PATH,
   SECURITY_ERROR_CATEGORIES,
+  VIEW_MODES,
+  EDITOR_FILENAMES,
+  TOOLTIP_LABELS,
+  SHORTCUT_LABELS,
+  UI_TIMING,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";
