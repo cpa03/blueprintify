@@ -37,6 +37,36 @@ fi
 
 cd "$PROJECT_ROOT/apps/api"
 
+# Validate placeholder IDs in wrangler.toml
+echo "🔍 Checking for placeholder infrastructure IDs..."
+PLACEHOLDER_WARNINGS=0
+while IFS= read -r line; do
+    if echo "$line" | grep -iqE "TODO|PLACEHOLDER"; then
+        PLACEHOLDER_WARNINGS=$((PLACEHOLDER_WARNINGS + 1))
+    fi
+done < <(grep -n "TODO\|PLACEHOLDER\|cache_kv_namespace_id\|production_cache_kv_id\|staging_cache_kv_id\|local_database_id\|production_database_id\|staging_database_id" wrangler.toml 2>/dev/null || true)
+
+if [[ "$PLACEHOLDER_WARNINGS" -gt 0 ]]; then
+    echo "⚠️  Found $PLACEHOLDER_WARNINGS placeholder IDs in wrangler.toml."
+    echo "   These MUST be replaced with real Cloudflare resource IDs before deployment."
+    echo "   See: apps/api/README.md#required-infrastructure"
+    echo ""
+    
+    if [[ "$ENVIRONMENT" == "production" ]]; then
+        echo "❌ Cannot deploy to production with placeholder IDs."
+        echo "   Run: grep -n \"TODO\\|PLACEHOLDER\" apps/api/wrangler.toml"
+        exit 1
+    fi
+    
+    # For staging/dev, warn but allow continuation
+    read -p "⚠️  Continue with placeholder IDs? (yes/no): " -r
+    if [[ ! $REPLY =~ ^[Yy][Ee][Ss]$ ]]; then
+        echo "❌ Deployment cancelled. Replace placeholders first."
+        exit 1
+    fi
+    echo "⚠️  Proceeding with placeholder IDs... (not suitable for production)"
+fi
+
 # Build and test
 echo "📦 Building application..."
 npm run build
