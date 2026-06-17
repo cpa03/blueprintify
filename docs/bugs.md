@@ -4,7 +4,7 @@
 
 ## Active Bugs
 
-> **BugFixer ULW Cycle 2026-06-17**: Full repository audit complete. Typecheck ✅ lint ✅ format ✅ build ✅ tests 1,364/1,364 ✅ (640 web + 362 api + 362 shared). 0 type suppressions. 0 TODO/FIXME/HACK artifacts. 0 `as any`. **Fixed BUG-014** — stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). **Fixed BUG-017** — replaced `node-version: "20"` with `node-version: "22"` in 4 workflow files (11 instances). Both fixes verified via grep: zero stale doc refs, zero `node-version: "20"` remaining. PR created.
+> **BugFixer ULW Cycle 2026-06-17**: Full repository audit complete. Typecheck ✅ lint ✅ format ✅ build ✅ tests 1,364/1,364 ✅ (640 web + 362 api + 362 shared). 0 type suppressions. 0 TODO/FIXME/HACK artifacts. 0 `as any`. **Fixed BUG-014** — stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). **Fixed BUG-017** — replaced `node-version: "20"` with `node-version: "22"` in 4 workflow files (11 instances). Both fixes verified via grep: zero stale doc refs, zero `node-version: "20"` remaining. PR #1894 created.
 
 > **BroCula ULW Cycle 2026-06-16 (Run 2)**: Full BroCula audit complete. Console ✅ zero errors/warnings across all routes (/, /editor, /templates). Lighthouse ✅ 99-100-100-100 (stable: no regression from Run 1). Typecheck ✅ lint ✅ build ✅ tests 1,347/1,347 ✅ (+7 shared package). 0 type suppressions. 0 `as any`. 0 code quality issues. Repo fully clean — no new fixable bugs found.
 
@@ -116,7 +116,7 @@
 
 ### BUG-014: Stale Doc References in main.yml Workflow (Resolved)
 
-**Status**: Resolved — applied in PR #TODO (BugFixer ULW Cycle Jun 17)
+**Status**: Resolved — applied in PR #1894 (BugFixer ULW Cycle Jun 17)
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1293
@@ -136,7 +136,7 @@
 
 ### BUG-017: CI Node.js Version Mismatch (Resolved)
 
-**Status**: Resolved — applied in PR #TODO (BugFixer ULW Cycle Jun 17)
+**Status**: Resolved — applied in PR #1894 (BugFixer ULW Cycle Jun 17)
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1390, #1470, #1549
