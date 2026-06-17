@@ -57,8 +57,13 @@ function RippleButtonComponent({
 
       const button = event.currentTarget;
       const rect = button.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
+      // Keyboard-triggered clicks (Enter/Space) set clientX/Y to 0,
+      // which places the ripple at the button's top-left corner or
+      // even outside it. Detect this and center the ripple instead,
+      // giving keyboard users the same visual feedback as mouse users.
+      const isKeyboardClick = event.clientX === 0 && event.clientY === 0;
+      const x = isKeyboardClick ? rect.width / 2 : event.clientX - rect.left;
+      const y = isKeyboardClick ? rect.height / 2 : event.clientY - rect.top;
 
       const newRipple: Ripple = {
         id: Date.now(),
@@ -157,8 +162,12 @@ export function useRipple(): {
 
       const element = event.currentTarget;
       const rect = element.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
+      // Keyboard-triggered clicks (Enter/Space) set clientX/Y to 0,
+      // which places the ripple at the element's top-left corner or
+      // even outside it. Detect this and center the ripple instead.
+      const isKeyboardClick = event.clientX === 0 && event.clientY === 0;
+      const x = isKeyboardClick ? rect.width / 2 : event.clientX - rect.left;
+      const y = isKeyboardClick ? rect.height / 2 : event.clientY - rect.top;
 
       const newRipple: Ripple = {
         id: Date.now(),
