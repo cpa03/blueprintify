@@ -14,8 +14,10 @@ const TemplateGrid = lazy(() =>
 const KeyboardShortcutsModal = lazy(() => import("./components/KeyboardShortcutsModal"));
 import { SkipLink } from "./components/SkipLink";
 import { OfflineBanner } from "./components/OfflineBanner";
-import { PageScrollProgressBar } from "./components/PageScrollProgressBar";
-import { ScrollToTop } from "./components/ScrollToTop";
+const PageScrollProgressBar = lazy(() => import("./components/PageScrollProgressBar"));
+const ScrollToTop = lazy(() =>
+  import("./components/ScrollToTop").then((m) => ({ default: m.ScrollToTop }))
+);
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 import { useWizardStore, useEditorStore, useToast, useToastStore } from "./store";
 import { useOnlineStatus } from "./hooks";
@@ -213,7 +215,9 @@ function App(): JSX.Element {
       <OfflineBanner />
 
       {/* Page scroll progress — subtle gradient bar showing reading progress */}
-      <PageScrollProgressBar showAfter={80} height={2} />
+      <Suspense fallback={null}>
+        <PageScrollProgressBar showAfter={80} height={2} />
+      </Suspense>
 
       {/* Main Content */}
       <main id="main-content" className={LAYOUT.MAIN_CONTENT} tabIndex={-1}>
@@ -418,7 +422,9 @@ function App(): JSX.Element {
           the wizard flow or generated content. The fixed wrapper anchors
           the absolute-positioned ScrollToTop to the viewport. */}
       <div className="fixed bottom-6 right-6 z-30">
-        <ScrollToTop showAfter={400} />
+        <Suspense fallback={null}>
+          <ScrollToTop showAfter={400} />
+        </Suspense>
       </div>
     </div>
   );
