@@ -18,6 +18,9 @@ const PageScrollProgressBar = lazy(() => import("./components/PageScrollProgress
 const ScrollToTop = lazy(() =>
   import("./components/ScrollToTop").then((m) => ({ default: m.ScrollToTop }))
 );
+const ScrollToBottomLazy = lazy(() =>
+  import("./components/ScrollToTop").then((m) => ({ default: m.ScrollToBottom }))
+);
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 import { useWizardStore, useEditorStore, useToast, useToastStore } from "./store";
 import { useOnlineStatus } from "./hooks";
@@ -417,13 +420,19 @@ function App(): JSX.Element {
         />
       </Suspense>
 
-      {/* Floating scroll-to-top button for main page — provides a visual
-          affordance to quickly jump back to the top after scrolling through
-          the wizard flow or generated content. The fixed wrapper anchors
-          the absolute-positioned ScrollToTop to the viewport. */}
+      {/* Floating scroll buttons for main page — provides visual affordance
+          to quickly jump to the top or bottom of long wizard or generated
+          content. ScrollToTop sits bottom-right, ScrollToBottom sits
+          bottom-left so they never overlap. The fixed wrapper anchors the
+          absolute-positioned buttons to the viewport. */}
       <div className="fixed bottom-6 right-6 z-30">
         <Suspense fallback={null}>
           <ScrollToTop showAfter={400} />
+        </Suspense>
+      </div>
+      <div className="fixed bottom-6 left-6 z-30">
+        <Suspense fallback={null}>
+          <ScrollToBottomLazy showAfter={400} />
         </Suspense>
       </div>
     </div>
