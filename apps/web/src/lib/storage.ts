@@ -16,6 +16,7 @@ import {
   STORAGE_CONFIG as SHARED_STORAGE_CONFIG,
   BYTE_CONVERSION,
   STORAGE_OPERATIONS,
+  STORAGE_ERROR_TYPE_VALUES,
 } from "@blueprint/shared";
 
 // ============================================================================
@@ -23,15 +24,7 @@ import {
 // ============================================================================
 
 export type StorageErrorType =
-  | "QUOTA_EXCEEDED"
-  | "CORRUPTED_DATA"
-  | "SERIALIZATION_ERROR"
-  | "BROWSER_UNSUPPORTED"
-  | "PRIVACY_MODE"
-  | "VALIDATION_ERROR"
-  | "MIGRATION_ERROR"
-  | "BACKUP_ERROR"
-  | "RECOVERY_ERROR";
+  (typeof STORAGE_ERROR_TYPE_VALUES)[keyof typeof STORAGE_ERROR_TYPE_VALUES];
 
 export interface StorageErrorDetails {
   key: string;

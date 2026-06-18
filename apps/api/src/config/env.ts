@@ -97,19 +97,17 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
   // Validate required variables
   const openaiApiKey = getEnvVar(ENV_VAR_KEYS.API.OPENAI_API_KEY, env);
   if (!openaiApiKey) {
-    throw new Error(`${ENV_VAR_KEYS.API.OPENAI_API_KEY} is required but not set in environment.`);
+    throw new Error(ENV_ERROR_MESSAGES.REQUIRED_NOT_SET(ENV_VAR_KEYS.API.OPENAI_API_KEY));
   }
 
   // Validate CORS_ORIGIN is not empty - empty string allows any origin which is a security risk
   const corsOrigin = getEnvVar(ENV_VAR_KEYS.API.CORS_ORIGIN, env) ?? DEFAULTS.CORS_ORIGIN;
   if (!corsOrigin || corsOrigin.trim() === "") {
-    throw new Error(`${ENV_VAR_KEYS.API.CORS_ORIGIN} is required and cannot be empty.`);
+    throw new Error(ENV_ERROR_MESSAGES.REQUIRED_CANNOT_BE_EMPTY(ENV_VAR_KEYS.API.CORS_ORIGIN));
   }
 
   if (corsOrigin === "*" && env.NODE_ENV === ENVIRONMENT_NAMES.PRODUCTION) {
-    console.warn(
-      `WARNING: ${ENV_VAR_KEYS.API.CORS_ORIGIN} is set to '*' (allow all). This is a security risk in production.`
-    );
+    console.warn(ENV_ERROR_MESSAGES.CORS_WILDCARD_WARNING(ENV_VAR_KEYS.API.CORS_ORIGIN));
   }
 
   return {
@@ -222,6 +220,7 @@ import {
   CIRCUIT_BREAKER_DEFAULTS,
   ENV_VAR_KEYS,
   ENVIRONMENT_NAMES,
+  ENV_ERROR_MESSAGES,
 } from "@blueprint/shared";
 import { getEnvConfig, setEnvConfig as setConstantsConfig } from "./constants";
 

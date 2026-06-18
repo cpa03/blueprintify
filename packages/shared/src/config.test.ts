@@ -71,6 +71,12 @@ import {
   COLD_START_MESSAGES,
   API_PROXY_PATH,
   SECURITY_ERROR_CATEGORIES,
+  ENV_ERROR_MESSAGES,
+  LOG_TYPE_STRINGS,
+  STORAGE_KEY_PREFIXES,
+  STORAGE_ERROR_TYPE_VALUES,
+  TEST_SETUP_STRINGS,
+  STORAGE_OPERATION_ERROR_STRINGS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -1979,5 +1985,141 @@ describe("UI_TIMING", () => {
       expect(typeof v).toBe("number");
       expect(v).toBeGreaterThan(0);
     });
+  });
+});
+
+describe("ENV_ERROR_MESSAGES", () => {
+  const expectedKeys = ["REQUIRED_NOT_SET", "REQUIRED_CANNOT_BE_EMPTY", "CORS_WILDCARD_WARNING"];
+
+  it("should have 3 error message templates", () => {
+    expect(Object.keys(ENV_ERROR_MESSAGES).length).toBe(3);
+  });
+
+  it("should have all expected keys", () => {
+    expectedKeys.forEach((key) => {
+      expect(ENV_ERROR_MESSAGES).toHaveProperty(key);
+    });
+  });
+
+  it("REQUIRED_NOT_SET should format correctly", () => {
+    const result = ENV_ERROR_MESSAGES.REQUIRED_NOT_SET("TEST_KEY");
+    expect(result).toBe("TEST_KEY is required but not set in environment.");
+  });
+
+  it("REQUIRED_CANNOT_BE_EMPTY should format correctly", () => {
+    const result = ENV_ERROR_MESSAGES.REQUIRED_CANNOT_BE_EMPTY("CORS_ORIGIN");
+    expect(result).toBe("CORS_ORIGIN is required and cannot be empty.");
+  });
+
+  it("CORS_WILDCARD_WARNING should format correctly", () => {
+    const result = ENV_ERROR_MESSAGES.CORS_WILDCARD_WARNING("CORS_ORIGIN");
+    expect(result).toBe(
+      "WARNING: CORS_ORIGIN is set to '*' (allow all). This is a security risk in production."
+    );
+  });
+});
+
+describe("LOG_TYPE_STRINGS", () => {
+  it("should have REQUEST and RESPONSE", () => {
+    expect(LOG_TYPE_STRINGS.REQUEST).toBe("request");
+    expect(LOG_TYPE_STRINGS.RESPONSE).toBe("response");
+  });
+
+  it("should have 2 log type entries", () => {
+    expect(Object.values(LOG_TYPE_STRINGS).length).toBe(2);
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(LOG_TYPE_STRINGS);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("STORAGE_KEY_PREFIXES", () => {
+  it("should have all expected prefix values", () => {
+    expect(STORAGE_KEY_PREFIXES.BACKUP).toBe("__backup__");
+    expect(STORAGE_KEY_PREFIXES.STORAGE_TEST).toBe("__storage_test__");
+    expect(STORAGE_KEY_PREFIXES.PRIVACY_TEST).toBe("__privacy_test__");
+  });
+
+  it("should have 3 prefix entries", () => {
+    expect(Object.values(STORAGE_KEY_PREFIXES).length).toBe(3);
+  });
+
+  it("should have all string values with underscores", () => {
+    const values = Object.values(STORAGE_KEY_PREFIXES);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.startsWith("__")).toBe(true);
+    });
+  });
+});
+
+describe("STORAGE_ERROR_TYPE_VALUES", () => {
+  const expectedValues = [
+    "QUOTA_EXCEEDED",
+    "CORRUPTED_DATA",
+    "SERIALIZATION_ERROR",
+    "BROWSER_UNSUPPORTED",
+    "PRIVACY_MODE",
+    "VALIDATION_ERROR",
+    "MIGRATION_ERROR",
+    "BACKUP_ERROR",
+    "RECOVERY_ERROR",
+  ];
+
+  it("should have 9 error type entries", () => {
+    expect(Object.keys(STORAGE_ERROR_TYPE_VALUES).length).toBe(9);
+  });
+
+  it("should have all expected values", () => {
+    expectedValues.forEach((value) => {
+      expect(STORAGE_ERROR_TYPE_VALUES).toHaveProperty(value);
+      expect(STORAGE_ERROR_TYPE_VALUES[value as keyof typeof STORAGE_ERROR_TYPE_VALUES]).toBe(
+        value
+      );
+    });
+  });
+
+  it("should match self-referential pattern (value === key)", () => {
+    const entries = Object.entries(STORAGE_ERROR_TYPE_VALUES);
+    entries.forEach(([key, value]) => {
+      expect(key).toBe(value);
+    });
+  });
+});
+
+describe("TEST_SETUP_STRINGS", () => {
+  it("should have UNHANDLED_REJECTION_PREFIX", () => {
+    expect(TEST_SETUP_STRINGS.UNHANDLED_REJECTION_PREFIX).toBe("[test-setup] ");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.values(TEST_SETUP_STRINGS).length).toBe(1);
+  });
+});
+
+describe("STORAGE_OPERATION_ERROR_STRINGS", () => {
+  it("should have 3 template functions", () => {
+    expect(Object.keys(STORAGE_OPERATION_ERROR_STRINGS).length).toBe(3);
+  });
+
+  it("OPERATION_FAILED should format correctly", () => {
+    const result = STORAGE_OPERATION_ERROR_STRINGS.OPERATION_FAILED("read");
+    expect(result).toBe("Storage read failed");
+  });
+
+  it("RECOVERY_SUCCESS should include timestamp", () => {
+    const result = STORAGE_OPERATION_ERROR_STRINGS.RECOVERY_SUCCESS(0);
+    expect(result).toContain("Successfully recovered from backup");
+    expect(result).toContain("1970");
+  });
+
+  it("SERVICE_EXISTS should include key", () => {
+    const result = STORAGE_OPERATION_ERROR_STRINGS.SERVICE_EXISTS("test-key");
+    expect(result).toBe('Storage service for key "test-key" already exists');
   });
 });

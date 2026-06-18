@@ -1000,3 +1000,30 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 640 web + 362 api + 358 shared = 1,360 tests passing across 74 files
+
+### ✅ Flexy Iteration 50: Centralize Remaining Env Error Messages, Log Types, Storage Key Prefixes & Error Type Values
+
+| File | Change |
+| ---- | ------ |
+| `packages/shared/src/config.ts` | Added `ENV_ERROR_MESSAGES`, `LOG_TYPE_STRINGS`, `STORAGE_KEY_PREFIXES`, `STORAGE_ERROR_TYPE_VALUES`, `TEST_SETUP_STRINGS`, `STORAGE_OPERATION_ERROR_STRINGS` |
+| `packages/shared/src/index.ts` | Exported 6 new config objects |
+| `packages/shared/src/config.test.ts` | Added 35+ tests covering all new config objects (values + formatting + type checks) |
+| `apps/api/src/config/env.ts` | Replaced 3 hardcoded error message templates with `ENV_ERROR_MESSAGES.*` refs |
+| `apps/api/src/test-setup.ts` | Replaced hardcoded `[test-setup]` prefix with `TEST_SETUP_STRINGS.UNHANDLED_REJECTION_PREFIX` |
+| `apps/api/src/middleware/logger.ts` | Replaced hardcoded `"request"/"response"` type strings with `LOG_TYPE_STRINGS.*` refs |
+| `apps/web/src/config/keys.ts` | Replaced hardcoded `BACKUP_KEY_PREFIX` and `TEST_KEYS` values with `STORAGE_KEY_PREFIXES.*` refs |
+| `apps/web/src/lib/storage.ts` | `StorageErrorType` type now derives from `STORAGE_ERROR_TYPE_VALUES` instead of hardcoded string union |
+| `apps/web/src/config/constants/storage.ts` | Replaced hardcoded `RECOVERY_SUCCESS`/`OPERATION_FAILED`/`SERVICE_EXISTS` template functions with `STORAGE_OPERATION_ERROR_STRINGS.*` refs |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 640 web + 362 api + 403 shared = 1,405 tests passing across 74 files
+
+## PR
+
+| PR #  | Branch | Title |
+| ----- | ------ | ----- |
+| #1914 | `feat/flexy-iteration-50-hardcoded-cleanup` | feat(flexy): centralize remaining env error messages, log types, storage key prefixes and error type values |
