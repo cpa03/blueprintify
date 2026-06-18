@@ -1443,3 +1443,109 @@ export const UI_TIMING = {
   /** Duration in ms for auto-focus delay after editor mounts */
   EDITOR_FOCUS_DELAY_MS: 180,
 } as const;
+
+/**
+ * Environment Variable Error Messages
+ * Centralized error message templates for environment variable validation.
+ * Flexy says: No hardcoded "is required but not set" strings in env.ts!
+ * Usage: import { ENV_ERROR_MESSAGES } from "@blueprint/shared";
+ *        throw new Error(ENV_ERROR_MESSAGES.REQUIRED_NOT_SET("OPENAI_API_KEY"))
+ */
+export const ENV_ERROR_MESSAGES = {
+  /** Template for required env var that is missing from environment */
+  REQUIRED_NOT_SET: (key: string): string => `${key} is required but not set in environment.`,
+  /** Template for required env var that is empty */
+  REQUIRED_CANNOT_BE_EMPTY: (key: string): string => `${key} is required and cannot be empty.`,
+  /** Template for CORS wildcard warning in production */
+  CORS_WILDCARD_WARNING: (key: string): string =>
+    `WARNING: ${key} is set to '*' (allow all). This is a security risk in production.`,
+} as const;
+
+/**
+ * Log Type Identifiers
+ * Centralized source of truth for structured log type strings used
+ * in the logger middleware and secure logging utilities.
+ * Flexy says: No hardcoded "request"/"response" strings in logger.ts!
+ * Usage: import { LOG_TYPE_STRINGS } from "@blueprint/shared";
+ *        type: LOG_TYPE_STRINGS.REQUEST
+ */
+export const LOG_TYPE_STRINGS = {
+  /** Request log entry type */
+  REQUEST: "request" as const,
+  /** Response log entry type */
+  RESPONSE: "response" as const,
+} as const;
+
+/**
+ * Storage Key Prefixes
+ * Centralized source of truth for internal storage key prefixes used
+ * in backup, test, and privacy detection operations.
+ * Flexy says: No hardcoded "__backup__"/__storage_test__" strings in keys.ts!
+ * Usage: import { STORAGE_KEY_PREFIXES } from "@blueprint/shared";
+ *       `{STORAGE_KEY_PREFIXES.BACKUP}${key}`
+ */
+export const STORAGE_KEY_PREFIXES = {
+  /** Prefix for backup entries in localStorage */
+  BACKUP: "__backup__" as const,
+  /** Prefix for storage availability test keys */
+  STORAGE_TEST: "__storage_test__" as const,
+  /** Prefix for privacy mode detection test keys */
+  PRIVACY_TEST: "__privacy_test__" as const,
+} as const;
+
+/**
+ * Storage Error Type Identifiers
+ * Centralized source of truth for all storage error type string values.
+ * Flexy says: No hardcoded "QUOTA_EXCEEDED"/"CORRUPTED_DATA" string unions in storage.ts!
+ * Usage: import { STORAGE_ERROR_TYPE_VALUES } from "@blueprint/shared";
+ *        type StorageErrorType = (typeof STORAGE_ERROR_TYPE_VALUES)[keyof typeof STORAGE_ERROR_TYPE_VALUES];
+ */
+export const STORAGE_ERROR_TYPE_VALUES = {
+  /** Storage quota exceeded error */
+  QUOTA_EXCEEDED: "QUOTA_EXCEEDED" as const,
+  /** Corrupted or unparseable stored data */
+  CORRUPTED_DATA: "CORRUPTED_DATA" as const,
+  /** JSON serialization/deserialization failure */
+  SERIALIZATION_ERROR: "SERIALIZATION_ERROR" as const,
+  /** Browser does not support localStorage */
+  BROWSER_UNSUPPORTED: "BROWSER_UNSUPPORTED" as const,
+  /** Private browsing / incognito mode detected */
+  PRIVACY_MODE: "PRIVACY_MODE" as const,
+  /** Data validation failure */
+  VALIDATION_ERROR: "VALIDATION_ERROR" as const,
+  /** Schema/data migration failure */
+  MIGRATION_ERROR: "MIGRATION_ERROR" as const,
+  /** Backup operation failure */
+  BACKUP_ERROR: "BACKUP_ERROR" as const,
+  /** Recovery from backup failure */
+  RECOVERY_ERROR: "RECOVERY_ERROR" as const,
+} as const;
+
+/**
+ * Test Setup Prefix Strings
+ * Centralized source of truth for test setup prefix strings.
+ * Flexy says: No hardcoded "[test-setup]" prefix strings in test-setup.ts!
+ * Usage: import { TEST_SETUP_STRINGS } from "@blueprint/shared";
+ *        console.warn(`${TEST_SETUP_STRINGS.PREFIX}some message`);
+ */
+export const TEST_SETUP_STRINGS = {
+  /** Prefix logged before unhandled rejection warnings in test setup */
+  UNHANDLED_REJECTION_PREFIX: "[test-setup] ",
+} as const;
+
+/**
+ * Storage Operation Error Template Functions
+ * Centralized template functions for storage operation error messages.
+ * Flexy says: No hardcoded "Storage X failed" strings in storage.ts!
+ * Usage: import { STORAGE_OPERATION_ERROR_STRINGS } from "@blueprint/shared";
+ *        console.warn(STORAGE_OPERATION_ERROR_STRINGS.OPERATION_FAILED(operation));
+ */
+export const STORAGE_OPERATION_ERROR_STRINGS = {
+  /** Template for failed storage operation */
+  OPERATION_FAILED: (operation: string): string => `Storage ${operation} failed`,
+  /** Template for successful recovery from backup at timestamp */
+  RECOVERY_SUCCESS: (timestamp: number): string =>
+    `Successfully recovered from backup created at ${new Date(timestamp)}`,
+  /** Template for duplicate storage service registration */
+  SERVICE_EXISTS: (key: string): string => `Storage service for key "${key}" already exists`,
+} as const;

@@ -7,6 +7,7 @@
  *
  * @module test-setup
  */
+import { TEST_SETUP_STRINGS } from "@blueprint/shared";
 import { setupTestConfig, MOCK_ENV } from "./test-utils";
 import { ERROR_MESSAGES } from "./config/constants";
 
@@ -23,5 +24,5 @@ process.on("unhandledRejection", (reason: unknown) => {
   // recursive unhandledRejection loops. Vitest already tracks and
   // fails tests on unhandled rejections during test execution.
   const reasonStr = reason instanceof Error ? `${reason.name}: ${reason.message}` : String(reason);
-  console.warn(`[test-setup] Unhandled rejection: ${reasonStr}`);
+  console.warn(`${TEST_SETUP_STRINGS.UNHANDLED_REJECTION_PREFIX}Unhandled rejection: ${reasonStr}`);
 });

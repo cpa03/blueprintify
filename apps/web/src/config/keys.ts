@@ -4,7 +4,7 @@
  * Flexy says: No hardcoded "blueprint" namespace!
  */
 
-import { SHARED_DEFAULTS } from "@blueprint/shared";
+import { SHARED_DEFAULTS, STORAGE_KEY_PREFIXES } from "@blueprint/shared";
 
 const NAMESPACE = SHARED_DEFAULTS.STORAGE_NAMESPACE;
 
@@ -33,11 +33,11 @@ export const COOKIE_KEYS = {
 } as const;
 
 export const TEST_KEYS = {
-  STORAGE_TEST: "__storage_test__",
-  PRIVACY_TEST: "__privacy_test__",
+  STORAGE_TEST: STORAGE_KEY_PREFIXES.STORAGE_TEST,
+  PRIVACY_TEST: STORAGE_KEY_PREFIXES.PRIVACY_TEST,
 } as const;
 
-export const BACKUP_KEY_PREFIX = "__backup__";
+export const BACKUP_KEY_PREFIX = STORAGE_KEY_PREFIXES.BACKUP;
 
 export const createBackupKey = (key: string): string => `${BACKUP_KEY_PREFIX}${key}`;
 
