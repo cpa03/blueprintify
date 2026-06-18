@@ -2,6 +2,55 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 116 (2026-06-18 — RepoKeeper: CHANGELOG Gap Fix, Doc Sync, Quality Verification)
+
+### Audit Scope
+
+Full repository audit covering build/lint/test health, redundant/temp/unused file scan, type suppression audit, **CHANGELOG gap fix** (Cycle 115 missed 4 commits: feat keyboard shortcuts, perf textarea reflow, feat flexy centralization, fix security injection logging), README BroCula description verification, documentation sync, CI workflow stale-refs reassessment.
+
+### Status Summary
+
+| Check       | Result                            |
+| ----------- | --------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)               |
+| Lint        | ✅ Clean (0 warnings/errors)      |
+| Format      | ✅ Clean                          |
+| Tests       | ✅ 1,425/1,425 (75 files)         |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused files found. No empty directories.
+2. **Type suppression audit**: Zero `@ts-ignore`, zero `@ts-expect-error`, zero `as any` in source code.
+3. **TODO/FIXME/HACK scan**: Zero artifacts in non-test source files.
+4. **CHANGELOG gap fix**: Added 4 missing entries — `feat(web): toggle keyboard shortcuts modal`, `feat(flexy): centralize remaining env error messages/log types/storage key prefixes/error type values (#1914)`, `perf(web): reduce forced reflow in auto-resize textarea (#1915)`, `fix(security): add injection pattern detection and observability logging (#1916)`. Restructured CHANGELOG with Perf/Fixed sections per Keep a Changelog.
+5. **README BroCula description verified**: `(Jun 13–Jun 18 Run 1)` — correct, matches `brocula-hunt-2026-06-18-run1.md` on disk.
+6. **CI workflow stale refs reassessed**: main.yml still references `docs/bug.md`/`docs/feature.md` (BUG-014); 5 workflow files still use `node-version: "20"` (BUG-017) — same documented blocker (no `workflows: write`).
+7. **Updated docs/knowledge-review.md**: BroCula description, last review date, and test count refreshed.
+8. **Stale remote branch assessment**: 16 remote branches assessed — none are fully merged/squash-merged, all have unique uncommitted content, kept as active agent branches.
+9. **No new fixable bugs found**: Repo remains healthy and fully clean.
+10. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/bugs.md`, `docs/knowledge-review.md`, `CHANGELOG.md` updated.
+
+### Key Findings
+
+- **CHANGELOG gap detected**: Cycle 115 missed 4 feature/perf/fix commits. Now fixed with proper Perf/Fixed section structure.
+- **README BroCula description accurate**: `(Jun 13–Jun 18 Run 1)` matches `brocula-hunt-2026-06-18-run1.md` on disk.
+- **No redundant/temp/unused files found** — repo remains clean.
+- **No `@ts-ignore`, `@ts-expect-error`, or `as any`** in source code.
+- **No TODO/FIXME/HACK artifacts** in non-test source files.
+- **BUG-014/BUG-017 unchanged**: CI workflow files still have stale node-version:20 and doc refs — unchanged blocker.
+- **No new fixable bugs found** — repo healthy, all quality checks passing.
+
+### Verification
+
+- [x] CHANGELOG gap fixed — 4 missing entries added
+- [x] README BroCula description verified at `(Jun 13–Jun 18 Run 1)`
+- [x] docs/knowledge-review.md refreshed (date, description, test count)
+- [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,425/1,425 ✅
+- [x] No build/lint/test regressions
+
+---
+
 ## Cycle 115 (2026-06-18 — RepoKeeper: README BroCula Description Drift Fix, Doc Sync)
 
 ### Audit Scope

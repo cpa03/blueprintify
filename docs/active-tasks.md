@@ -2,6 +2,28 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 116 — CHANGELOG Gap Fix, Doc Sync, Quality Verification ✅
+
+### Task: Full repository audit, **CHANGELOG gap fix** (added missing feature/perf/security entries #1914-#1916 & keyboard shortcuts `?` modal), documentation sync (findings, active-tasks, bugs, knowledge-review, CHANGELOG), README BroCula description verification `(Jun 13–Jun 18 Run 1)` — matches latest audit, quality verification, CI workflow stale-refs reassessment (BUG-014/BUG-017 — pending `workflows: write`)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Full repository audit covering build/lint/test health, redundant/temp/unused file scan, type suppression audit, **CHANGELOG gap fix** (Cycle 115 missed 4 commits: feat keyboard shortcuts, perf textarea reflow, feat flexy centralization, fix security injection logging), documentation sync (findings, active-tasks, bugs, knowledge-review, CHANGELOG), quality verification
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,425/1,425 ✅ (640 web + 382 api + 403 shared)
+  - [x] **CHANGELOG gap fix**: Added `feat(web): toggle keyboard shortcuts modal`, `feat(flexy): centralize remaining env error messages/log types/storage key prefixes/error type values (#1914)`, `perf(web): reduce forced reflow in auto-resize textarea (#1915)`, `fix(security): add injection pattern detection and observability logging (#1916)`
+  - [x] **README BroCula description verified**: `(Jun 13–Jun 18 Run 1)` — correct, matches `brocula-hunt-2026-06-18-run1.md`
+  - [x] **CI workflow stale refs reassessed**: main.yml still references `docs/bug.md`/`docs/feature.md` (BUG-014); 5 workflow files still use `node-version: "20"` instead of `"22"` (BUG-017) — same documented blocker
+  - [x] **Updated docs/knowledge-review.md**: refreshed for Cycle 116 (review date, test count, CHANGELOG gap fix noted)
+  - [x] **Updated docs/findings.md**: Cycle 116 entry added
+  - [x] **Updated docs/bugs.md**: Cycle 116 status log
+  - [x] **Updated docs/active-tasks.md**: Cycle 116 completed, Cycle 115 preserved
+  - [x] **Updated CHANGELOG.md**: Cycle 116 entry + restructured with Perf/Fixed sections
+  - [x] No new fixable bugs found — repo remains healthy and fully clean
+
 ## Completed: RepoKeeper Cycle 115 — README BroCula Description Drift Fix, Doc Sync ✅
 
 ### Task: Full repository audit, fix README BroCula description drift (`(Jun 13–Jun 17 Run 1)` → `(Jun 13–Jun 18 Run 1)` — latest audit is `brocula-hunt-2026-06-18-run1.md`), documentation sync, quality verification
