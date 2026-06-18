@@ -1027,3 +1027,31 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR #  | Branch | Title |
 | ----- | ------ | ----- |
 | #1914 | `feat/flexy-iteration-50-hardcoded-cleanup` | feat(flexy): centralize remaining env error messages, log types, storage key prefixes and error type values |
+
+### ✅ Flexy Iteration 51: Fix Hardcoded CI Node Version — Use .node-version File
+
+> **Note**: Workflow file changes identified but PUSH REJECTED — GitHub App token lacks `workflows` permission.
+
+| File | Occurrences | Required Change |
+| ---- | ----------- | --------------- |
+| `.github/workflows/iterate.yml` | 5x | `node-version: "20"` → `node-version-file: ".node-version"` |
+| `.github/workflows/parallel.yml` | 4x | `node-version: "20"` → `node-version-file: ".node-version"` |
+| `.github/workflows/on-pull.yml` | 1x | `node-version: 20` → `node-version-file: ".node-version"` |
+| `.github/workflows/pr-gatekeeper.yml` | 1x | `node-version: "20"` → `node-version-file: ".node-version"` |
+
+**Total**: 11 occurrences across 4 files.
+
+**Fix**: Replace all with `node-version-file: ".node-version"`.
+**Status**: ❌ Cannot push — GitHub App token lacks `workflows` permission to modify `.github/workflows/*.yml` files. Apply manually via branch with a PAT that has `workflows` scope, or update the GitHub App permissions.
+
+## Verification
+
+- ✅ `.node-version` contains `22`, matching `engines.node >= 22` in package.json
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-51-ci-node-version` | feat(flexy): fix hardcoded CI node version — use .node-version file |
