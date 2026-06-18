@@ -7,11 +7,11 @@ import lighthouse from "lighthouse";
 import * as puppeteer from "puppeteer";
 import { writeFileSync } from "fs";
 
-const URL = process.env.TEST_URL || "http://127.0.0.1:4173";
+const TEST_URL = process.env.TEST_URL || "http://127.0.0.1:4173";
 const CHROME_PATH = "/home/runner/.cache/ms-playwright/chromium-1223/chrome-linux/chrome";
 
 async function run() {
-  console.log("🔦 Running Lighthouse audit on:", URL);
+  console.log("🔦 Running Lighthouse audit on:", TEST_URL);
 
   // Launch Chrome via Puppeteer
   const browser = await puppeteer.launch({
@@ -49,7 +49,7 @@ async function run() {
   };
 
   try {
-    const result = await lighthouse(URL, options, config);
+    const result = await lighthouse(TEST_URL, options, config);
     const report = result.lhr;
 
     console.log("\n========================================");
