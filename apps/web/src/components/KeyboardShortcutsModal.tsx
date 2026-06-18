@@ -148,7 +148,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === "Escape" || e.key === "?") {
         onClose();
       }
     },
@@ -305,6 +305,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
               <div className="px-6 py-4 border-t border-dark-700/50 bg-dark-800/30">
                 <p id="keyboard-shortcuts-tip" className="text-xs text-dark-500 text-center">
                   Tip: Keyboard shortcuts work throughout the app. Press{" "}
+                  <kbd className="px-1 py-0.5 bg-dark-700 rounded text-[10px] font-mono">?</kbd> or{" "}
                   <kbd className="px-1 py-0.5 bg-dark-700 rounded text-[10px] font-mono">Esc</kbd>{" "}
                   to close this dialog.
                 </p>

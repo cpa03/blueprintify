@@ -149,17 +149,13 @@ function App(): JSX.Element {
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (
-        e.target instanceof HTMLInputElement ||
-        e.target instanceof HTMLTextAreaElement ||
-        showShortcutsModal
-      ) {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
         return;
       }
 
       if (e.key === "?" && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
-        setShowShortcutsModal(true);
+        setShowShortcutsModal((prev) => !prev);
       }
 
       if ((e.metaKey || e.ctrlKey) && e.key === "e") {
@@ -176,7 +172,7 @@ function App(): JSX.Element {
         cancelGeneration();
       }
     },
-    [isGenerating, cancelGeneration, showShortcutsModal, showEditor, editorExiting]
+    [isGenerating, cancelGeneration, showEditor, editorExiting]
   );
 
   useEffect(() => {
