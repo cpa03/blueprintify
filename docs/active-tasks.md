@@ -2,6 +2,29 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 114 — Redundant Audit File Removal, Audit README Duplicate Fix, Doc Sync ✅
+
+### Task: Full repository audit, remove duplicate `docs/audits/brocula-hunt-2026-06-16-run1.md` (root copy redundant — identical to archive/ copy), fix `docs/audits/README.md` duplicate entry (Jun 16 Run 1 in both Current and Archived Reports), update README BroCula description, documentation sync, quality verification
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Full repository audit covering build/lint/test health, redundant/temp/unused file scan, type suppression audit, **cleanup of duplicate `docs/audits/brocula-hunt-2026-06-16-run1.md`** (file existed in both `docs/audits/` root and `docs/audits/archive/` — identical content — root copy deleted), **fix of `docs/audits/README.md` duplicate entry** (Jun 16 Run 1 listed in both Current and Archived — removed from Current), **README BroCula description update** (`(Jun 13–Jun 16 Run 2)` → `(Jun 13–Jun 17 Run 1)`), stale remote branch assessment, documentation sync, quality verification
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → duplicate audit file removed
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ format ✅ tests 1,385/1,385 ✅
+  - [x] **Removed duplicate audit file**: `docs/audits/brocula-hunt-2026-06-16-run1.md` root copy deleted (identical archive copy preserved)
+  - [x] **Fixed docs/audits/README.md duplicate**: Jun 16 Run 1 removed from Current Reports (already in Archived Reports)
+  - [x] **Updated README BroCula description**: `(Jun 13–Jun 16 Run 2)` → `(Jun 13–Jun 17 Run 1)`
+  - [x] **Updated docs/knowledge-review.md**: refreshed for Cycle 114
+  - [x] No new fixable bugs found — repo remains healthy and fully clean
+  - [x] Updated `docs/bugs.md` — cycle status log
+  - [x] Updated `docs/findings.md` — cycle entry
+  - [x] Updated `docs/active-tasks.md` — cycle status
+  - [x] Updated `docs/knowledge-review.md` — refreshed
+  - [x] Updated CHANGELOG.md — cycle entry
+
 ## Completed: RepoKeeper Cycle 113 — Archive Cleanup, Stale Issue Audit Reports Consolidation, Doc Sync ✅
 
 ### Task: Full repository audit, `docs/archive/` cleanup (3 superseded May files deleted), stale issue audit reports consolidation (3 moved to `docs/audits/archive/`), README tree fix & link updates, documentation sync, quality verification
