@@ -9,7 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 117: full repository audit, **README BroCula description drift fix** `(Jun 13–Jun 18 Run 1)` → `(Jun 13–Jun 18 Run 2)`, CHANGELOG structure fix (consolidated duplicate `### Added` sections), 5 stale merged remote branches deleted, typecheck ✅ lint ✅ tests 1,425/1,425 ✅, zero redundant/temp/unused files, zero type suppressions, documentation sync (findings, active-tasks, bugs, knowledge-review, CHANGELOG), CI workflow stale-refs reassessed (BUG-014/BUG-017 — pending `workflows: write`), quality verification
 - RepoKeeper Cycle 116: full repository audit, **CHANGELOG gap fix** (added missing feat/perf/fix entries), typecheck ✅ lint ✅ tests 1,425/1,425 ✅ (640 web + 382 api + 403 shared), zero redundant/temp/unused files, zero type suppressions, **README BroCula description verified** `(Jun 13–Jun 18 Run 1)` — matches latest audit, documentation sync (findings, active-tasks, bugs, knowledge-review), CI workflow stale-refs reassessed (BUG-014/BUG-017 — pending `workflows: write`), quality verification
+- RepoKeeper Cycle 115: full repository audit, **README BroCula description drift fix** `(Jun 13–Jun 17 Run 1)` → `(Jun 13–Jun 18 Run 1)`, documentation sync, quality verification
 - feat(web): toggle keyboard shortcuts modal with `?` key for discoverability
 - feat(flexy): centralize remaining env error messages, log types, storage key prefixes, and error type values (#1914)
 
@@ -20,10 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - fix(security): add injection pattern detection and observability logging (#1916)
-
-### Added
-
-- RepoKeeper Cycle 115: full repository audit, **README BroCula description drift fix** `(Jun 13–Jun 17 Run 1)` → `(Jun 13–Jun 18 Run 1)`, documentation sync, quality verification
 - RepoKeeper Cycle 114: full repository audit, typecheck ✅ lint ✅ format ✅ tests 1,385/1,385 ✅, **removed duplicate `docs/audits/brocula-hunt-2026-06-16-run1.md`** (existed in both root and `archive/` — root deleted, archive preserved), **fixed docs/audits/README.md duplicate** (Jun 16 Run 1 listed in both Current and Archived Reports — removed from Current), **README BroCula description updated** `(Jun 13–Jun 16 Run 2)` → `(Jun 13–Jun 17 Run 1)`, documentation sync, quality verification
 - RepoKeeper Cycle 113: full repository audit, typecheck ✅ lint ✅ format ✅ tests 1,364/1,364 ✅, **cleaned up `docs/archive/`** (3 superseded May 26-27 files deleted — `audit-2026-05-26.md`, `issue-audit-report-2026-05-27.md`, `issue-management-2026-05-27.md`), **consolidated stale issue audit reports** (3 files moved from `docs/` root to `docs/audits/archive/` — `issue-audit-report-2026-06-05.md`, `issue-audit-report-2026-06-07.md`, `issue-audit-report-2026-06-08.md`), **README tree fix** (removed deleted `docs/archive/` entry, moved issue audit report entries), **README link updates** (3 issue audit report links updated to `docs/audits/archive/`), **docs/audits/README.md update** (added Moved Reports section), **9 stale remote branches reassessed** (all kept — unique unmerged content), documentation sync, quality verification
 - RepoKeeper Cycle 112: full repository audit, typecheck ✅ lint ✅ format ✅, **CRITICAL — fixed docs/audits/README.md Current Reports drift** (10 archived Jun 13-14 entries erroneously listed as "Current" — removed; added missing Jun 15 Run 4 — table now accurately reflects 6 files in root), **fixed README directory tree** (added missing `docs/ci-workflow-fixes-patch.md`), **fixed docs/knowledge-review.md** (stale BroCula description `Run 4` → `Jun 16 Run 1`, current reports count), **9 stale remote branches assessed** (5 existing + 4 new — all kept), documentation sync, quality verification

@@ -2,6 +2,58 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 117 (2026-06-18 — RepoKeeper: README BroCula Drift Fix (Run 1 → Run 2), CHANGELOG Structure Fix, Dep Override Update)
+
+### Audit Scope
+
+Full repository audit covering build/lint/test health, redundant/temp/unused file scan, type suppression audit, **README BroCula description drift fix** (`(Jun 13–Jun 18 Run 1)` → `(Jun 13–Jun 18 Run 2)` — latest audit is `brocula-hunt-2026-06-18-run2.md`), **CHANGELOG structure fix** (consolidated duplicate `### Added` sections), **dependency override updates** (`ws` 8.20.1 → 8.21.0, `undici` 7.25.0 → 7.28.0 — reduced high vulns from 9 to 4), **stale remote branch cleanup** (5 merged branches deleted), documentation sync, quality verification.
+
+### Status Summary
+
+| Check       | Result                            |
+| ----------- | --------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)               |
+| Lint        | ✅ Clean (0 warnings/errors)      |
+| Format      | ✅ Clean                          |
+| Tests       | ✅ 1,425/1,425 (75 files)         |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused files found. No empty directories.
+2. **Type suppression audit**: Zero `@ts-ignore`, zero `@ts-expect-error`, zero `as any` in source code.
+3. **TODO/FIXME/HACK scan**: Zero artifacts in non-test source files.
+4. **README BroCula description drift fix**: `(Jun 13–Jun 18 Run 1)` → `(Jun 13–Jun 18 Run 2)` — matches `brocula-hunt-2026-06-18-run2.md` as latest.
+5. **CHANGELOG structure fix**: Consolidated duplicate `### Added` sections (Cycle 116 entries appeared between Performance and Fixed sections, splitting the Added list). Restructured per Keep a Changelog format.
+6. **Dependency override updates**: `ws` 8.20.1 → 8.21.0 (fixes high-severity memory exhaustion DoS), `undici` 7.25.0 → 7.28.0. Reduced high-severity vulns from 9 to 4 (remaining are upstream Cloudflare tooling via wrangler/miniflare — BUG-013).
+7. **Stale remote branch cleanup**: Deleted 5 merged remote branches (`brocula/jun-18-run-2`, `chore/repokeeper-cycle-116`, `feat/flexy-iteration-51-ci-node-version-docs`, `fix/docs-bugfixer-cycle-jun-18`, `palette/toast-alert-role`).
+8. **CI workflow stale refs reassessed**: BUG-014 (doc refs `docs/bug.md`→`docs/bugs.md`) and BUG-017 (`node-version: "20"`→`"22"`) remain unchanged — same documented blocker (no `workflows: write`).
+9. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/bugs.md`, `docs/knowledge-review.md`, `CHANGELOG.md` updated for Cycle 117.
+
+### Key Findings
+
+- **README BroCula description stale**: Said `(Jun 13–Jun 18 Run 1)` but latest audit is `brocula-hunt-2026-06-18-run2.md`. Fixed.
+- **CHANGELOG had duplicate `### Added` sections**: Cycle 116 entries (feat/perf/fix) were placed between the first Added section and the second Added section, splitting the entries. Consolidated into one Added section with proper sequencing.
+- **Dependency overrides reduced high vulns**: `ws` 8.21.0 fixes memory exhaustion DoS (GHSA-96hv-2xvq-fx4p). 9 high → 4 high. Remaining high vulns are upstream Cloudflare tooling (BUG-013).
+- **5 stale merged remote branches deleted**: All fully merged into main, no unique content lost.
+- **No other redundant/temp/unused files found** — repo remains clean.
+- **No `@ts-ignore`, `@ts-expect-error`, or `as any`** in source code.
+- **No TODO/FIXME/HACK artifacts** in non-test source files.
+- **BUG-014/BUG-017 unchanged**: CI workflow files still have stale node-version:20 and doc refs — unchanged blocker.
+- **No new fixable bugs found** — repo healthy, all quality checks passing.
+
+### Verification
+
+- [x] README BroCula description fixed — `(Jun 13–Jun 18 Run 1)` → `(Jun 13–Jun 18 Run 2)`
+- [x] CHANGELOG duplicate `### Added` sections consolidated
+- [x] Dependency overrides updated — ws 8.21.0, undici 7.28.0
+- [x] 5 stale merged remote branches deleted
+- [x] docs/knowledge-review.md refreshed (date, BroCula description)
+- [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,425/1,425 ✅
+- [x] No build/lint/test regressions
+
+---
+
 ## Cycle 116 (2026-06-18 — RepoKeeper: CHANGELOG Gap Fix, Doc Sync, Quality Verification)
 
 ### Audit Scope

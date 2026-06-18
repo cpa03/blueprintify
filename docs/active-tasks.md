@@ -2,6 +2,30 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 117 — README BroCula Drift Fix, CHANGELOG Structure Fix, Dep Override Update ✅
+
+### Task: Full repository audit, **README BroCula description drift fix** (`(Jun 13–Jun 18 Run 1)` → `(Jun 13–Jun 18 Run 2)` — latest is `brocula-hunt-2026-06-18-run2.md`), **CHANGELOG structure fix** (consolidated duplicate `### Added` sections), **dependency override updates** (`ws` 8.21.0, `undici` 7.28.0 — high vulns 9→4), **stale remote branch cleanup** (5 merged branches deleted), documentation sync (findings, active-tasks, bugs, knowledge-review, CHANGELOG), quality verification, CI workflow stale-refs reassessment (BUG-014/BUG-017 — pending `workflows: write`)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Full repository audit covering build/lint/test health, redundant/temp/unused file scan, type suppression audit, **README BroCula description drift fix** (`(Jun 13–Jun 18 Run 1)` → `(Jun 13–Jun 18 Run 2)`), **CHANGELOG structure fix** (duplicate `### Added` sections consolidated), **dependency override updates** (ws 8.20.1→8.21.0, undici 7.25.0→7.28.0), **stale remote branch cleanup** (5 merged branches deleted), documentation sync, quality verification
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,425/1,425 ✅
+  - [x] **README BroCula description fix**: `(Jun 13–Jun 18 Run 1)` → `(Jun 13–Jun 18 Run 2)` — matches latest audit
+  - [x] **CHANGELOG structure fix**: Consolidated duplicate `### Added` sections (Cycle 116 entries split between two Added sections)
+  - [x] **Dependency override updates**: `ws` 8.20.1→8.21.0, `undici` 7.25.0→7.28.0 — high vulns reduced from 9 to 4
+  - [x] **Stale remote branch cleanup**: Deleted 5 merged remote branches (`brocula/jun-18-run-2`, `chore/repokeeper-cycle-116`, `feat/flexy-iteration-51-ci-node-version-docs`, `fix/docs-bugfixer-cycle-jun-18`, `palette/toast-alert-role`)
+  - [x] **CI workflow stale refs reassessed**: BUG-014 and BUG-017 unchanged — same documented blocker
+  - [x] **Updated docs/knowledge-review.md**: refreshed for Cycle 117
+  - [x] **Updated docs/findings.md**: Cycle 117 entry added
+  - [x] **Updated docs/bugs.md**: Cycle 117 status log
+  - [x] **Updated docs/active-tasks.md**: Cycle 117 completed
+  - [x] **Updated CHANGELOG.md**: Cycle 117 entry + structure fix
+  - [x] No new fixable bugs found — repo remains healthy and fully clean
+
 ## Completed: RepoKeeper Cycle 116 — CHANGELOG Gap Fix, Doc Sync, Quality Verification ✅
 
 ### Task: Full repository audit, **CHANGELOG gap fix** (added missing feature/perf/security entries #1914-#1916 & keyboard shortcuts `?` modal), documentation sync (findings, active-tasks, bugs, knowledge-review, CHANGELOG), README BroCula description verification `(Jun 13–Jun 18 Run 1)` — matches latest audit, quality verification, CI workflow stale-refs reassessment (BUG-014/BUG-017 — pending `workflows: write`)
