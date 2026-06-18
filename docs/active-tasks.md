@@ -2,6 +2,28 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 115 — README BroCula Description Drift Fix, Doc Sync ✅
+
+### Task: Full repository audit, fix README BroCula description drift (`(Jun 13–Jun 17 Run 1)` → `(Jun 13–Jun 18 Run 1)` — latest audit is `brocula-hunt-2026-06-18-run1.md`), documentation sync, quality verification
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Full repository audit covering build/lint/test health, redundant/temp/unused file scan, type suppression audit, **README BroCula description drift fix** (`(Jun 13–Jun 17 Run 1)` → `(Jun 13–Jun 18 Run 1)` — matches `brocula-hunt-2026-06-18-run1.md` on disk), stale remote branch assessment, documentation sync, quality verification
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅
+  - [x] **Fixed README BroCula description**: `(Jun 13–Jun 17 Run 1)` → `(Jun 13–Jun 18 Run 1)`
+  - [x] **Updated docs/knowledge-review.md**: refreshed for Cycle 115
+  - [x] **Stale remote branch assessment**: 16 branches assessed — none fully merged/squash-merged, kept as active agent branches
+  - [x] No new fixable bugs found — repo remains healthy and fully clean
+  - [x] Updated `docs/bugs.md` — cycle status log
+  - [x] Updated `docs/findings.md` — cycle entry
+  - [x] Updated `docs/active-tasks.md` — cycle status
+  - [x] Updated `docs/knowledge-review.md` — refreshed
+  - [x] Updated CHANGELOG.md — cycle entry
+
 ## Completed: RepoKeeper Cycle 114 — Redundant Audit File Removal, Audit README Duplicate Fix, Doc Sync ✅
 
 ### Task: Full repository audit, remove duplicate `docs/audits/brocula-hunt-2026-06-16-run1.md` (root copy redundant — identical to archive/ copy), fix `docs/audits/README.md` duplicate entry (Jun 16 Run 1 in both Current and Archived Reports), update README BroCula description, documentation sync, quality verification

@@ -12,24 +12,27 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-18 (RepoKeeper Cycle 114)
+**Last Review**: 2026-06-18 (RepoKeeper Cycle 115)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README tree verified**: Directory tree accurate, BroCula description correct at `(Jun 13–Jun 17 Run 1)`
+- **README tree verified**: Directory tree accurate, BroCula description correct at `(Jun 13–Jun 18 Run 1)`
 - **Typecheck/Lint/Build/Format**: All clean (0 errors, 0 warnings) — Tests 1,385/1,385 ✅
+- **Cycle 115 fix**: README BroCula description updated from `(Jun 13–Jun 17 Run 1)` to `(Jun 13–Jun 18 Run 1)` — matches `brocula-hunt-2026-06-18-run1.md`
 - **Duplicate `docs/audits/brocula-hunt-2026-06-16-run1.md` removed**: File existed in both root and `archive/` — root copy deleted (identical content, archived copy preserved)
 - **docs/audits/README.md drift fixed**: Jun 16 Run 1 was listed in BOTH Current Reports and Archived Reports — removed from Current Reports (already indexed in Archived)
 - **README tree fixed**: BroCula description updated from `(Jun 13–Jun 16 Run 2)` to `(Jun 13–Jun 17 Run 1)`
+- **Cycle 115 fix**: BroCula description updated from `(Jun 13–Jun 17 Run 1)` to `(Jun 13–Jun 18 Run 1)` — matches `brocula-hunt-2026-06-18-run1.md`
 - **No redundant/temp/unused files found** beyond the duplicate audit removal
 - **No type suppressions, TODO/FIXME/HACK, or `as any`** found in source code
 - **`docs/bugs.md` updated**: Cycle 114 status log added
 - **`docs/findings.md` updated**: Cycle 114 entry added
 - **`docs/active-tasks.md` updated**: Cycle 114 status
 - **`docs/knowledge-review.md` updated**: Refreshed for Cycle 114
+- **`docs/knowledge-review.md` refreshed**: Cycle 115 — BroCula description updated to `(Jun 13–Jun 18 Run 1)`
 
 ## Historical Drift Corrections
 
