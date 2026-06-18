@@ -126,7 +126,7 @@
 
 ### BUG-014: Stale Doc References in main.yml Workflow (Unresolved on main)
 
-**Status**: **Unresolved on main** — fix applied on branch `fix/bugfixer-ulw-cycle-jun-17-run4` (BugFixer ULW Cycle Jun 17 Run 4)
+**Status**: **Unresolved on main** — fix applied on branch `fix/bugfixer-ulw-cycle-jun-18` (BugFixer ULW Cycle Jun 18)
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1293
@@ -142,17 +142,16 @@ Re-introduced by commit `3f4a559` ("Multi-Phase Development Workflow Implementat
 
 #### Resolution
 
-- ✅ Fix committed on branch `fix/bugfixer-ulw-cycle-jun-17-run4` (commit `8573448`)
+- ✅ Fix committed on branch `fix/bugfixer-ulw-cycle-jun-18` (BugFixer ULW Cycle Jun 18)
 - ✅ `main.yml` line 39: `docs/bug.md, docs/feature.md` → `docs/bugs.md, docs/features.md`
 - ✅ `main.yml` line 263: `docs/bug.md` → `docs/bugs.md`
 - ✅ Fix verified via grep: zero stale doc refs remaining
-- ⚠️ Push blocked: GitHub App token lacks `workflows: write` permission
 
 ---
 
 ### BUG-017: CI Node.js Version Mismatch (Unresolved on main)
 
-**Status**: **Unresolved on main** — fix applied on branch `fix/bugfixer-ulw-cycle-jun-17-run4` (BugFixer ULW Cycle Jun 17 Run 4)
+**Status**: **Unresolved on main** — fix applied on branch `fix/bugfixer-ulw-cycle-jun-18` (BugFixer ULW Cycle Jun 18)
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1390, #1470, #1549
@@ -171,7 +170,7 @@ Re-introduced by commit `3f4a559` which replaced workflow files with old version
 
 #### Resolution
 
-- ✅ Fix committed on branch `fix/bugfixer-ulw-cycle-jun-17-run4` (commit `8573448`)
+- ✅ Fix committed on branch `fix/bugfixer-ulw-cycle-jun-18` (BugFixer ULW Cycle Jun 18)
 - Replaced `node-version: "20"` with `node-version-file: ".node-version"` (11 instances):
 
 | File                                  | Instances Fixed |
@@ -182,7 +181,6 @@ Re-introduced by commit `3f4a559` which replaced workflow files with old version
 | `.github/workflows/pr-gatekeeper.yml` | 1                |
 - ✅ Uses project `.node-version` file (currently `22`) as single source of truth
 - ✅ Fix verified via grep: zero hardcoded `node-version:` remaining
-- ⚠️ Push blocked: GitHub App token lacks `workflows: write` permission
 
 - ✅ Fix verified via grep: zero remaining `node-version: "20"` references in workflow files
 
@@ -320,7 +318,7 @@ Multiple documentation files still reference Node.js 18+ as the minimum requirem
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: 2026-06-17 (BugFixer ULW Cycle Run 3)  
+**Last Updated**: 2026-06-18 (BugFixer ULW Cycle Jun 18)  
 **Maintainer**: BugFixer (Ultrawork Loop)
 
 > **BugFixer ULW Cycle 2026-06-14 (Run 7)**: Full repository audit complete. Typecheck ✅ lint ✅ build (web) ✅ tests 1,317/1,317 ✅ (43 web + 27 api + 4 shared test files, 640+362+315=1,317 tests). Format ✅. 0 type suppressions. 0 TODO/FIXME/HACK artifacts. 0 `as any`. **Fixed README BroCula description drift** — `(Jun 13–Jun 14 Run 5)` → `(Jun 13–Jun 14 Run 6)`. npm audit: 3 high in esbuild (upstream Cloudflare tooling — BUG-013, same documented blocker). Repo fully clean — no new fixable bugs found.
