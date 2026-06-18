@@ -2,6 +2,30 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 118 — README BroCula Drift Fix (Run 2 → Run 3), Doc Sync ✅
+
+### Task: Full repository audit, **README BroCula description drift fix** (`(Jun 13–Jun 18 Run 2)` → `(Jun 13–Jun 18 Run 3)` — latest is `brocula-hunt-2026-06-18-run3.md`), **CHANGELOG update** (added Cycle 118 entry + missing `feat(web): add hover percentage label to PageScrollProgressBar`), stale remote branch assessment (16 branches — all active), documentation sync (findings, active-tasks, bugs, knowledge-review, CHANGELOG), quality verification
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Full repository audit covering build/lint/test health, redundant/temp/unused file scan, type suppression audit, **README BroCula description drift fix** (`(Jun 13–Jun 18 Run 2)` → `(Jun 13–Jun 18 Run 3)`), **CHANGELOG update** (added missing latest commit), **stale remote branch assessment** (16 branches — all active), documentation sync, quality verification
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,425/1,425 ✅ format ✅
+  - [x] **README BroCula description fix**: `(Jun 13–Jun 18 Run 2)` → `(Jun 13–Jun 18 Run 3)` — matches latest audit
+  - [x] **CHANGELOG update**: Added Cycle 118 entry + missing `feat(web): add hover percentage label to PageScrollProgressBar`
+  - [x] **Stale remote branch assessment**: 16 branches assessed — all active with unique unmerged content, none deleted
+  - [x] **Node version consistency verified**: `.node-version` (22), `.nvmrc` (22), `package.json engines.node` (`>=22`)
+  - [x] **CI workflow stale refs reassessed**: BUG-014 and BUG-017 unchanged — same documented blocker
+  - [x] **Updated docs/knowledge-review.md**: refreshed for Cycle 118
+  - [x] **Updated docs/findings.md**: Cycle 118 entry added
+  - [x] **Updated docs/bugs.md**: Cycle 118 status log
+  - [x] **Updated docs/active-tasks.md**: Cycle 118 completed
+  - [x] **Updated CHANGELOG.md**: Cycle 118 entry + missing commit
+  - [x] No new fixable bugs found — repo remains healthy and fully clean
+
 ## Completed: RepoKeeper Cycle 117 — README BroCula Drift Fix, CHANGELOG Structure Fix, Dep Override Update ✅
 
 ### Task: Full repository audit, **README BroCula description drift fix** (`(Jun 13–Jun 18 Run 1)` → `(Jun 13–Jun 18 Run 2)` — latest is `brocula-hunt-2026-06-18-run2.md`), **CHANGELOG structure fix** (consolidated duplicate `### Added` sections), **dependency override updates** (`ws` 8.21.0, `undici` 7.28.0 — high vulns 9→4), **stale remote branch cleanup** (5 merged branches deleted), documentation sync (findings, active-tasks, bugs, knowledge-review, CHANGELOG), quality verification, CI workflow stale-refs reassessment (BUG-014/BUG-017 — pending `workflows: write`)
