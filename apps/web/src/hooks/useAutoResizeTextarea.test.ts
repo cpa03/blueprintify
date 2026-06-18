@@ -175,7 +175,9 @@ describe("useAutoResizeTextarea", () => {
     });
 
     // Simulate React effect running by dispatching
-    expect(addEventListenerSpy).toHaveBeenCalledWith("input", expect.any(Function));
+    expect(addEventListenerSpy).toHaveBeenCalledWith("input", expect.any(Function), {
+      passive: true,
+    });
 
     unmount();
 

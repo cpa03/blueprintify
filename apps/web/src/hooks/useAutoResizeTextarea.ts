@@ -43,17 +43,13 @@ export function useAutoResizeTextarea(
 
   const calculateAndApplyHeight = useCallback(
     (textarea: HTMLTextAreaElement) => {
-      const scrollTop = window.scrollY;
       const selectionStart = textarea.selectionStart;
       const selectionEnd = textarea.selectionEnd;
 
-      const previousHeight = textarea.style.height;
+      // Single write+read cycle to measure content height
       textarea.style.height = "auto";
-
       const scrollHeight = textarea.scrollHeight + extraPadding;
       const newHeight = Math.min(Math.max(scrollHeight, minHeight), maxHeight);
-
-      textarea.style.height = previousHeight;
 
       if (animate && !prefersReducedMotion) {
         textarea.style.transition = `height ${ANIMATION.NORMAL}s ease-out`;
@@ -63,7 +59,6 @@ export function useAutoResizeTextarea(
 
       textarea.style.height = `${newHeight}px`;
       textarea.setSelectionRange(selectionStart, selectionEnd);
-      window.scrollTo({ top: scrollTop, behavior: "auto" });
 
       return newHeight;
     },
@@ -82,16 +77,28 @@ export function useAutoResizeTextarea(
     const textarea = textareaRef.current;
     if (!textarea) return;
 
+    let rafId: number | null = null;
+
     const handleInput = () => {
       if (textarea.value !== previousValueRef.current) {
         previousValueRef.current = textarea.value;
-        const newHeight = calculateAndApplyHeight(textarea);
-        setHeight(newHeight);
+        if (rafId === null) {
+          rafId = requestAnimationFrame(() => {
+            rafId = null;
+            const newHeight = calculateAndApplyHeight(textarea);
+            setHeight(newHeight);
+          });
+        }
       }
     };
 
-    textarea.addEventListener("input", handleInput);
-    return () => textarea.removeEventListener("input", handleInput);
+    textarea.addEventListener("input", handleInput, { passive: true });
+    return () => {
+      textarea.removeEventListener("input", handleInput);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+    };
   }, [calculateAndApplyHeight]);
 
   useEffect(() => {
@@ -105,7 +112,7 @@ export function useAutoResizeTextarea(
       });
     };
 
-    window.addEventListener("resize", handleWindowResize);
+    window.addEventListener("resize", handleWindowResize, { passive: true });
     return () => window.removeEventListener("resize", handleWindowResize);
   }, [calculateAndApplyHeight]);
 
