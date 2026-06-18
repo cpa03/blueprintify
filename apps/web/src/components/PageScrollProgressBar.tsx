@@ -65,6 +65,7 @@ function PageScrollProgressBarComponent({
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [hoverProgress, setHoverProgress] = useState<number | null>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
@@ -83,6 +84,18 @@ function PageScrollProgressBarComponent({
    * Calculates the ratio of the click X to the bar width, then maps that
    * ratio to the total scrollable distance of the page.
    */
+  const handleBarHover = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const bar = barRef.current;
+    if (!bar) return;
+    const rect = bar.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    setHoverProgress(Math.round(ratio * 100));
+  }, []);
+
+  const handleBarHoverEnd = useCallback(() => {
+    setHoverProgress(null);
+  }, []);
+
   const handleBarClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
       const bar = barRef.current;
@@ -192,7 +205,11 @@ function PageScrollProgressBarComponent({
         style={{ height: `${height + (isHovered ? 6 : 0)}px` }}
         onClick={isVisible ? handleBarClick : undefined}
         onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          handleBarHoverEnd();
+        }}
+        onMouseMove={isVisible ? handleBarHover : undefined}
       >
         {/* Track background */}
         <div className="absolute inset-0 bg-dark-800/30 backdrop-blur-sm transition-all duration-200 group-hover:bg-dark-800/50" />
@@ -253,6 +270,29 @@ function PageScrollProgressBarComponent({
           animate={{ opacity: isVisible ? 0.6 : 0 }}
           transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
         />
+
+        {/* Hover scrub label — shows the scroll percentage at the cursor position
+            so users know exactly where they'll jump before clicking. Appears above
+            the bar during mouse movement, with a small arrow pointing down. */}
+        {isHovered && hoverProgress !== null && isVisible && (
+          <motion.div
+            className="absolute -top-8 transform -translate-x-1/2 pointer-events-none z-50"
+            style={{ left: `${hoverProgress}%` }}
+            initial={{ opacity: 0, y: 4, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.12, ease: "easeOut" }}
+          >
+            <div className="bg-dark-800/90 backdrop-blur-sm border border-dark-600/60 rounded-md px-1.5 py-0.5 shadow-lg shadow-dark-950/40">
+              <span className="text-[10px] font-semibold tabular-nums text-primary-300">
+                {hoverProgress}%
+              </span>
+            </div>
+            {/* Small arrow pointing down to the bar */}
+            <div className="flex justify-center -mt-px">
+              <div className="w-0 h-0 border-l-[4px] border-r-[4px] border-t-[4px] border-l-transparent border-r-transparent border-t-dark-600/60" />
+            </div>
+          </motion.div>
+        )}
       </div>
     </motion.div>
   );
