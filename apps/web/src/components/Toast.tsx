@@ -207,6 +207,13 @@ const ToastItem = memo(
       ease: "easeOut" as const,
     };
 
+    // For error/warning toasts, use role="alert" so screen readers announce
+    // them immediately. Success/info toasts keep role="status" with polite
+    // announcements — advisory information that isn't time-sensitive.
+    const isAlert = toast.type === "error" || toast.type === "warning";
+    const toastRole = isAlert ? "alert" : "status";
+    const toastAriaLive = isAlert ? undefined : "polite";
+
     return (
       <motion.div
         ref={ref}
@@ -229,8 +236,8 @@ const ToastItem = memo(
         onMouseLeave={handleMouseLeave}
         onFocus={handleMouseEnter}
         onBlur={handleMouseLeave}
-        role="status"
-        aria-live="polite"
+        role={toastRole}
+        aria-live={toastAriaLive}
       >
         <div
           className="absolute bottom-0 left-0 h-0.5 bg-current opacity-30"
