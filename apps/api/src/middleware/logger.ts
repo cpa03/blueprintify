@@ -8,7 +8,7 @@
  */
 
 import type { Context, MiddlewareHandler, Next } from "hono";
-import { HTTP_METHODS, CONTEXT_KEYS } from "@blueprint/shared";
+import { HTTP_METHODS, CONTEXT_KEYS, LOG_TYPE_STRINGS } from "@blueprint/shared";
 import { LOGGER_CONFIG, API_HEADERS } from "../config/constants";
 import { timestamp } from "../errors";
 
@@ -209,7 +209,7 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
 
     console.log(
       JSON.stringify({
-        type: "request",
+        type: LOG_TYPE_STRINGS.REQUEST,
         ...requestLog,
       })
     );
@@ -248,7 +248,7 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
 
     console.log(
       JSON.stringify({
-        type: "response",
+        type: LOG_TYPE_STRINGS.RESPONSE,
         ...responseLog,
       })
     );
