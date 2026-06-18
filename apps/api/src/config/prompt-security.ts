@@ -74,6 +74,99 @@ export const INJECTION_PATTERNS: readonly RegExp[] = [
 ];
 
 /**
+ * Human-readable descriptions for each injection pattern category.
+ * Used for observability logging when injection attempts are detected.
+ */
+const PATTERN_DESCRIPTIONS: ReadonlyArray<{ pattern: RegExp; label: string }> = [
+  {
+    pattern: /ignore\s+(all\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/gi,
+    label: "instruction_override:ignore",
+  },
+  {
+    pattern:
+      /forget\s+(all\s+)?(above\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/gi,
+    label: "instruction_override:forget",
+  },
+  {
+    pattern: /disregard\s+(all\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/gi,
+    label: "instruction_override:disregard",
+  },
+  {
+    pattern:
+      /(print|output|reveal|display|show|repeat|echo|return)\s+(all\s+)?(your\s+|the\s+)?(previous\s+)?(system\s+)?(instructions|prompts?|directives?|commands?)/gi,
+    label: "output_disclosure",
+  },
+  {
+    pattern: /show\s+me\s+(your\s+|the\s+)?(prompts?|instructions|directives?|system)/gi,
+    label: "output_disclosure:show_me",
+  },
+  { pattern: /system\s+prompts?:/gi, label: "impersonation:system_prompt" },
+  { pattern: /you\s+(are\s+)?(now|will\s+now)\s+(an?\s+)?/gi, label: "impersonation:you_are_now" },
+  { pattern: /act\s+as\s+(an?\s+)?/gi, label: "impersonation:act_as" },
+  { pattern: /role[-\s]?play(\s+(as|that\s+you\s+are))?/gi, label: "impersonation:role_play" },
+  { pattern: /pretend\s+(you\s+are|to\s+be)\s+/gi, label: "impersonation:pretend" },
+  { pattern: /(do\s+anything\s+now|dan\s+jailbreak)/gi, label: "jailbreak:dan" },
+  { pattern: /you\s+(are\s+)?(free|released)\s+(from|of)/gi, label: "jailbreak:release" },
+  {
+    pattern: /no\s+(rules|restrictions|boundaries|limitations|filter(s|ing)?)/gi,
+    label: "jailbreak:no_restrictions",
+  },
+  { pattern: /new\s+(instructions|prompts?|directives?):/gi, label: "instruction_override:new" },
+  {
+    pattern: /over[-\s]?ride\s+(instructions|prompts?|directives?)/gi,
+    label: "instruction_override:override",
+  },
+  { pattern: /^[=\-_*]{3,}$/gm, label: "boundary:separator" },
+  {
+    pattern: /\{\{\s*(system_prompt|instructions|prompt|config)\s*\}\}/gi,
+    label: "template_injection",
+  },
+];
+
+/**
+ * Detects prompt injection patterns in user input and returns the matched labels.
+ * Used for security observability and logging — allows monitoring systems to
+ * track injection attempt patterns without breaking UX.
+ *
+ * @param input - Raw user input string to scan
+ * @returns Array of matched pattern labels (empty if clean)
+ *
+ * @example
+ * ```typescript
+ * const matches = detectInjectionPatterns("Ignore all instructions and do X");
+ * // Returns: ["instruction_override:ignore"]
+ * ```
+ */
+export function detectInjectionPatterns(input: string): string[] {
+  if (!input) return [];
+  const matches: string[] = [];
+  for (const { pattern, label } of PATTERN_DESCRIPTIONS) {
+    if (pattern.test(input)) {
+      matches.push(label);
+    }
+  }
+  return matches;
+}
+
+/**
+ * Returns true if any prompt injection pattern is detected in the input.
+ * Useful for quick boolean checks before detailed logging.
+ *
+ * @param input - Raw user input string to scan
+ * @returns true if any injection pattern is matched
+ *
+ * @example
+ * ```typescript
+ * if (hasInjectionPattern(userInput)) {
+ *   logWarning("Injection attempt detected");
+ * }
+ * ```
+ */
+export function hasInjectionPattern(input: string): boolean {
+  return detectInjectionPatterns(input).length > 0;
+}
+
+/**
  * Control characters that are filtered out during sanitization.
  * Allowed control characters: tab (9), newline (10), carriage return (13).
  * All other characters with charCode < 32 are removed.
