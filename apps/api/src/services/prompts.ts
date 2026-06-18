@@ -13,7 +13,9 @@ import {
   INJECTION_PATTERNS,
   MAX_INPUT_LENGTH,
   CONTROL_CHAR_FILTER,
+  hasInjectionPattern,
 } from "../config/prompt-security";
+import { secureLogWarn } from "../utils/secureLog";
 
 // ===== System Prompts =====
 // Re-export from config for backward compatibility
@@ -31,12 +33,20 @@ export const REFINER_SYSTEM_PROMPT = PROMPT_CONFIG.REFINER_SYSTEM;
 
 /**
  * Sanitizes user input to prevent prompt injection attacks.
+ * Also logs a warning when injection patterns are detected for security observability.
  *
  * @param input - Raw user input string
  * @returns Sanitized string with injection patterns removed
  */
 export function sanitizePromptInput(input: string): string {
   if (!input) return input;
+
+  // Log injection attempts for security observability (before sanitization)
+  if (hasInjectionPattern(input)) {
+    secureLogWarn("PromptInjection", "Injection pattern detected and sanitized", {
+      inputLength: input.length,
+    });
+  }
 
   let sanitized = input;
 
