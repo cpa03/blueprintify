@@ -38,8 +38,15 @@ const createDefaultsEnvStrings = (): Record<string, string> => ({
 
 const DEFAULTS_ENV_STRINGS = createDefaultsEnvStrings();
 
+/**
+ * Shared test API key - single source of truth for all test files.
+ * Flexy says: No hardcoded "test-key" or "test-api-key-12345" in test files!
+ * Import this constant instead of hardcoding API key values in tests.
+ */
+export const TEST_API_KEY = "test-key" as const;
+
 export const MOCK_ENV: Record<string, string> = {
-  OPENAI_API_KEY: "test-key",
+  OPENAI_API_KEY: TEST_API_KEY,
   ...DEFAULTS_ENV_STRINGS,
 };
 

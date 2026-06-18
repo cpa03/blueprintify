@@ -11,17 +11,19 @@ import {
   CORS_DEFAULTS,
   HTTP_METHODS,
   HTTP_HEADER_NAMES,
+  AI_DEFAULTS,
 } from "@blueprint/shared";
 import { formatSSE, createSSEResponse, createStreamFromGenerator } from "./stream";
 import { API_HEADERS, setEnvConfig, SSE_CORS_HEADERS } from "../config/constants";
 import type { SSEMessage } from "./stream";
+import { MOCK_ENV } from "../test-utils";
 
 function makeMinimalEnvConfig(): Record<string, unknown> {
   return {
     CORS_ORIGIN: DEV_DEFAULTS.PLAYWRIGHT_TEST_URL,
     CORS_MAX_AGE: 86400,
-    OPENAI_API_KEY: "test-key",
-    OPENAI_MODEL: "gpt-4o-mini",
+    OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
+    OPENAI_MODEL: AI_DEFAULTS.MODEL,
     OPENAI_TIMEOUT_MS: 30000,
     OPENAI_MAX_TOKENS: 4096,
     OPENAI_TEMPERATURE: 0.7,

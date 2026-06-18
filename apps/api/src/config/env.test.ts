@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { DEV_DEFAULTS, TIME_UNITS } from "@blueprint/shared";
+import { DEV_DEFAULTS, TIME_UNITS, AI_DEFAULTS } from "@blueprint/shared";
 import { loadConfig, DEFAULTS, getConfig, initializeConfig, resetConfig } from "./env";
 import { setEnvConfig } from "./constants";
+import { MOCK_ENV } from "../test-utils";
 
 const TEST_CORS_ORIGIN = DEV_DEFAULTS.PLAYWRIGHT_TEST_URL;
 
@@ -20,28 +21,31 @@ describe("Environment Configuration", () => {
     });
 
     it("should throw error when CORS_ORIGIN is empty", () => {
-      expect(() => loadConfig({ OPENAI_API_KEY: "test-key", CORS_ORIGIN: "" })).toThrow(
-        "CORS_ORIGIN is required and cannot be empty"
-      );
+      expect(() =>
+        loadConfig({ OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY, CORS_ORIGIN: "" })
+      ).toThrow("CORS_ORIGIN is required and cannot be empty");
     });
 
     it("should load config with required fields", () => {
       const config = loadConfig({
-        OPENAI_API_KEY: "test-key",
+        OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
         CORS_ORIGIN: TEST_CORS_ORIGIN,
       });
-      expect(config.OPENAI_API_KEY).toBe("test-key");
+      expect(config.OPENAI_API_KEY).toBe(MOCK_ENV.OPENAI_API_KEY);
       expect(config.CORS_ORIGIN).toBe(TEST_CORS_ORIGIN);
     });
 
     it("should use provided CORS_ORIGIN when set", () => {
-      const config = loadConfig({ OPENAI_API_KEY: "test-key", CORS_ORIGIN: "https://example.com" });
+      const config = loadConfig({
+        OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
+        CORS_ORIGIN: "https://example.com",
+      });
       expect(config.CORS_ORIGIN).toBe("https://example.com");
     });
 
     it("should use default values when env vars not set (except CORS_ORIGIN)", () => {
       const config = loadConfig({
-        OPENAI_API_KEY: "test-key",
+        OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
         CORS_ORIGIN: TEST_CORS_ORIGIN,
       });
       expect(config.OPENAI_MODEL).toBe(DEFAULTS.OPENAI_MODEL);
@@ -50,7 +54,7 @@ describe("Environment Configuration", () => {
 
     it("should override defaults with env vars", () => {
       const config = loadConfig({
-        OPENAI_API_KEY: "test-key",
+        OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
         CORS_ORIGIN: TEST_CORS_ORIGIN,
         OPENAI_MODEL: "gpt-4",
         API_VERSION: "2.0.0",
@@ -61,7 +65,7 @@ describe("Environment Configuration", () => {
 
     it("should parse numeric env vars correctly", () => {
       const config = loadConfig({
-        OPENAI_API_KEY: "test-key",
+        OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
         CORS_ORIGIN: TEST_CORS_ORIGIN,
         OPENAI_TIMEOUT_MS: "30000",
         OPENAI_MAX_TOKENS: "2000",
@@ -72,7 +76,7 @@ describe("Environment Configuration", () => {
 
     it("should use default for invalid numeric env vars", () => {
       const config = loadConfig({
-        OPENAI_API_KEY: "test-key",
+        OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
         CORS_ORIGIN: TEST_CORS_ORIGIN,
         OPENAI_TIMEOUT_MS: "invalid",
       });
@@ -81,7 +85,7 @@ describe("Environment Configuration", () => {
 
     it("should parse float env vars correctly", () => {
       const config = loadConfig({
-        OPENAI_API_KEY: "test-key",
+        OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
         CORS_ORIGIN: TEST_CORS_ORIGIN,
         OPENAI_TEMPERATURE: "0.5",
       });
@@ -90,7 +94,7 @@ describe("Environment Configuration", () => {
 
     it("should use default for invalid float env vars", () => {
       const config = loadConfig({
-        OPENAI_API_KEY: "test-key",
+        OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
         CORS_ORIGIN: TEST_CORS_ORIGIN,
         OPENAI_TEMPERATURE: "invalid",
       });
@@ -99,7 +103,7 @@ describe("Environment Configuration", () => {
 
     it("should load all rate limit config values", () => {
       const config = loadConfig({
-        OPENAI_API_KEY: "test-key",
+        OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
         CORS_ORIGIN: TEST_CORS_ORIGIN,
         RATE_LIMIT_WINDOW_MS: "120000",
         RATE_LIMIT_STRICT_MAX: "5",
@@ -114,7 +118,7 @@ describe("Environment Configuration", () => {
 
     it("should load all circuit breaker config values", () => {
       const config = loadConfig({
-        OPENAI_API_KEY: "test-key",
+        OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
         CORS_ORIGIN: TEST_CORS_ORIGIN,
         CIRCUIT_BREAKER_FAILURE_THRESHOLD: "10",
         CIRCUIT_BREAKER_RESET_TIMEOUT_MS: "120000",
@@ -127,7 +131,7 @@ describe("Environment Configuration", () => {
 
     it("should load all retry config values", () => {
       const config = loadConfig({
-        OPENAI_API_KEY: "test-key",
+        OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
         CORS_ORIGIN: TEST_CORS_ORIGIN,
         RETRY_MAX_RETRIES: "5",
         RETRY_INITIAL_DELAY_MS: "2000",
@@ -142,7 +146,7 @@ describe("Environment Configuration", () => {
 
     it("should load external URLs", () => {
       const config = loadConfig({
-        OPENAI_API_KEY: "test-key",
+        OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
         CORS_ORIGIN: TEST_CORS_ORIGIN,
         PROJECT_HOMEPAGE_URL: "https://custom.example.com",
         GITHUB_URL: "https://github.com/custom/repo",
@@ -154,9 +158,9 @@ describe("Environment Configuration", () => {
 
   describe("initializeConfig", () => {
     it("should initialize and set config", () => {
-      initializeConfig({ OPENAI_API_KEY: "init-key", CORS_ORIGIN: TEST_CORS_ORIGIN });
+      initializeConfig({ OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY, CORS_ORIGIN: TEST_CORS_ORIGIN });
       const config = getConfig();
-      expect(config.OPENAI_API_KEY).toBe("init-key");
+      expect(config.OPENAI_API_KEY).toBe(MOCK_ENV.OPENAI_API_KEY);
     });
   });
 
@@ -167,7 +171,7 @@ describe("Environment Configuration", () => {
 
     it("should return config when set", () => {
       const config = loadConfig({
-        OPENAI_API_KEY: "test-key",
+        OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
         CORS_ORIGIN: TEST_CORS_ORIGIN,
       });
       setEnvConfig(config);
@@ -177,7 +181,7 @@ describe("Environment Configuration", () => {
 
   describe("resetConfig", () => {
     it("should clear the config", () => {
-      initializeConfig({ OPENAI_API_KEY: "test-key", CORS_ORIGIN: TEST_CORS_ORIGIN });
+      initializeConfig({ OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY, CORS_ORIGIN: TEST_CORS_ORIGIN });
       expect(getConfig().OPENAI_API_KEY).toBe("test-key");
       resetConfig();
       expect(() => getConfig()).toThrow();
@@ -187,7 +191,7 @@ describe("Environment Configuration", () => {
   describe("DEFAULTS", () => {
     it("should have all required default values", () => {
       expect(DEFAULTS.OPENAI_BASE_URL).toBe("https://api.openai.com/v1");
-      expect(DEFAULTS.OPENAI_MODEL).toBe("gpt-4o-mini");
+      expect(DEFAULTS.OPENAI_MODEL).toBe(AI_DEFAULTS.MODEL);
       expect(DEFAULTS.API_VERSION).toBe("1.0.0");
       expect(DEFAULTS.CORS_ORIGIN).toBe("*");
     });

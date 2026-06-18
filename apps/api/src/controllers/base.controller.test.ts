@@ -3,6 +3,8 @@ import { BaseController } from "./base.controller";
 import { ConfigurationError } from "../errors";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 import type { ControllerContext } from "../types";
+import { AI_DEFAULTS } from "@blueprint/shared";
+import { TEST_API_KEY } from "../test-utils";
 
 // Create a concrete implementation for testing
 class TestController extends BaseController {}
@@ -79,23 +81,23 @@ describe("BaseController", () => {
   describe("createAIConfig", () => {
     it("should create AI config with all required fields", () => {
       const mockContext = createMockControllerContext({
-        OPENAI_API_KEY: "test-key",
-        OPENAI_BASE_URL: "https://api.openai.com",
+        OPENAI_API_KEY: TEST_API_KEY,
+        OPENAI_BASE_URL: AI_DEFAULTS.BASE_URL,
         OPENAI_MODEL: "gpt-4",
       });
 
       const config = controller.createAIConfig(mockContext);
 
-      expect(config.apiKey).toBe("test-key");
-      expect(config.baseURL).toBe("https://api.openai.com");
+      expect(config.apiKey).toBe(TEST_API_KEY);
+      expect(config.baseURL).toBe(AI_DEFAULTS.BASE_URL);
       expect(config.model).toBe("gpt-4");
-      expect(config.timeout).toBe(60000);
+      expect(config.timeout).toBe(AI_DEFAULTS.TIMEOUT_MS);
     });
 
     it("should use provided model from env", () => {
       const mockContext = createMockControllerContext({
-        OPENAI_API_KEY: "test-key",
-        OPENAI_BASE_URL: "https://api.openai.com",
+        OPENAI_API_KEY: TEST_API_KEY,
+        OPENAI_BASE_URL: AI_DEFAULTS.BASE_URL,
         OPENAI_MODEL: "gpt-4o",
       });
 
@@ -152,7 +154,7 @@ describe("BaseController", () => {
   describe("validateEnvironment", () => {
     it("should not throw when API key is present", () => {
       const mockContext = createMockControllerContext({
-        OPENAI_API_KEY: "test-key",
+        OPENAI_API_KEY: TEST_API_KEY,
       });
 
       expect(() => controller.validateEnvironment(mockContext)).not.toThrow();
