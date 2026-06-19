@@ -2,6 +2,29 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: BugFixer ULW Cycle Jun 19 — BUG-014 & BUG-017 Actual Fix on main ✅
+
+### Task: Full repository audit, **fix BUG-014** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **fix BUG-017** (replace hardcoded `node-version: "20"`/`node-version: 20` with `node-version-file: ".node-version"` in 4 workflow files — 11 occurrences), documentation sync, quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Actually fix BUG-014 and BUG-017 on main — previous cycles documented fixes that were NOT actually applied. This cycle verified and correctly applied all workflow fixes.
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,425/1,425 ✅
+  - [x] **BUG-014 fixed**: main.yml line 39 `docs/bug.md, docs/feature.md`→`docs/bugs.md, docs/features.md`; line 263 `docs/bug.md`→`docs/bugs.md`
+  - [x] **BUG-017 fixed**: Replaced `node-version: "20"`/`node-version: 20` with `node-version-file: ".node-version"` (11 instances across 4 files)
+  - [x] **Verification**: grep confirms zero stale doc refs, zero hardcoded `node-version:` remaining
+  - [x] **Updated `docs/bugs.md`**: Corrected inaccurate "Resolved" claims from prior cycles, added actual fix for this cycle
+  - [x] **Updated `CHANGELOG.md`**: Added BugFixer cycle entry with fix details
+  - [x] **Updated `docs/active-tasks.md`**: This entry
+  - [x] **PR created**: Branch created from main with all fixes verified
+  - [x] No other fixable bugs found — repo healthy
+
+---
+
 ## Completed: RepoKeeper Cycle 119 — Unused Script Cleanup, Audit Report Consolidation ✅
 
 ### Task: Full repository audit, **removed 11 unreferenced scripts** (8 obsolete BroCula variants + 3 stale shell scripts), **archived 6 old audit reports** (pre-Jun-17) from `docs/audits/` to `docs/audits/archive/`, `docs/audits/README.md` consolidated (removed stale Moved Reports section, integrated into unified Archived Reports), documentation sync (findings, active-tasks, CHANGELOG), quality verification
@@ -920,5 +943,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-17 (Cycle 113: RepoKeeper)  
+**Last Updated**: 2026-06-19 (BugFixer ULW Cycle Jun 19)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
