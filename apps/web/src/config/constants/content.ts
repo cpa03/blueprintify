@@ -251,6 +251,12 @@ export const ACCESSIBILITY_LABELS = {
     TRY_AGAIN: "Try again",
     RELOAD_PAGE: "Reload page",
   },
+  TEMPLATES: {
+    QUICK_START: "Quick start templates",
+  },
+  HEADING_ANCHOR: {
+    COPY_LINK_TITLE: "Copy anchor link",
+  },
   CELEBRATION: {
     COMPLETE: "Generation complete",
   },
@@ -268,6 +274,8 @@ export const ACCESSIBILITY_LABELS = {
     STREAMING_CONTENT: "Streaming content in real-time",
     DOCUMENT_TABS: "Document tabs",
     START_NEW_PROJECT: "Start new project",
+    HIDE_EDITOR: "Hide editor panel",
+    HIDE_EDITOR_TITLE: "Hide editor",
   },
   WIZARD_FEATURES: {
     NEW_FEATURE_NAME: "New feature name",

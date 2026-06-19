@@ -31,7 +31,7 @@
 import { useState, useCallback, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { generateSlug } from "../utils/slug";
-import { ANIMATION, SPRING_CONFIG } from "../config/constants";
+import { ANIMATION, SPRING_CONFIG, ACCESSIBILITY_LABELS } from "../config/constants";
 import { copyToClipboard } from "../lib/export";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -113,7 +113,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
           -translate-y-px
         `}
         aria-label={`Copy link to "${headingText}" section`}
-        title="Copy anchor link"
+        title={ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_TITLE}
         tabIndex={0}
       >
         {/* Link icon */}
