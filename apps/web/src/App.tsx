@@ -24,7 +24,12 @@ const ScrollToBottomLazy = lazy(() =>
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 import { useWizardStore, useEditorStore, useToast, useToastStore } from "./store";
 import { useOnlineStatus } from "./hooks";
-import { UI_CONTENT, NETWORK_MESSAGES, ENTRANCE_STAGGER } from "./config/constants";
+import {
+  UI_CONTENT,
+  NETWORK_MESSAGES,
+  ENTRANCE_STAGGER,
+  ACCESSIBILITY_LABELS,
+} from "./config/constants";
 import { LAYOUT, BUTTON, ICON, SPINNER } from "./config/styles";
 import { getAriaShortcutKey } from "./lib/platform";
 const GenerationCelebration = lazy(() =>
@@ -306,8 +311,8 @@ function App(): JSX.Element {
                   <button
                     onClick={handleHideEditor}
                     className={`${BUTTON.HIDE_EDITOR_DESKTOP} transition-transform duration-150 active:scale-90 hover:scale-110`}
-                    aria-label="Hide editor panel"
-                    title="Hide editor"
+                    aria-label={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR}
+                    title={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR_TITLE}
                     aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
                   >
                     <svg
@@ -331,8 +336,8 @@ function App(): JSX.Element {
                   <button
                     onClick={handleHideEditor}
                     className={`${BUTTON.HIDE_EDITOR_MOBILE} transition-transform duration-150 active:scale-90 hover:scale-110`}
-                    aria-label="Hide editor panel"
-                    title="Hide editor"
+                    aria-label={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR}
+                    title={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR_TITLE}
                     aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
                   >
                     <svg

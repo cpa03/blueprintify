@@ -30,7 +30,7 @@
 import { useState, memo, useCallback, useRef, useMemo } from "react";
 import { STARTER_TEMPLATES } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
-import { ANIMATION, TOAST_MESSAGES } from "../config/constants";
+import { ANIMATION, TOAST_MESSAGES, ACCESSIBILITY_LABELS } from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
 
 function TemplateGridComponent(): JSX.Element {
@@ -129,7 +129,7 @@ function TemplateGridComponent(): JSX.Element {
       <div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
         role="listbox"
-        aria-label="Quick start templates"
+        aria-label={ACCESSIBILITY_LABELS.TEMPLATES.QUICK_START}
         aria-orientation="horizontal"
       >
         {STARTER_TEMPLATES.map((template, index) => {
