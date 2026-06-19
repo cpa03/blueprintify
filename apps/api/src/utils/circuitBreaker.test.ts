@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { HTTP_STATUS } from "@blueprint/shared";
+import { HTTP_STATUS, ERROR_CLASS_NAMES } from "@blueprint/shared";
 import {
   createCircuitBreaker,
   CircuitBreakerOpenError,
@@ -12,7 +12,7 @@ describe("Circuit Breaker Utilities", () => {
     it("should create error with message", () => {
       const error = new CircuitBreakerOpenError("Circuit breaker is OPEN");
       expect(error.message).toBe("Circuit breaker is OPEN");
-      expect(error.name).toBe("CircuitBreakerOpenError");
+      expect(error.name).toBe(ERROR_CLASS_NAMES.CIRCUIT_BREAKER_OPEN_ERROR);
       expect(error.statusCode).toBe(HTTP_STATUS.SERVICE_UNAVAILABLE);
     });
 

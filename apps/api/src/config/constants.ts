@@ -45,6 +45,7 @@ import {
   API_VALIDATION_MESSAGES,
   CIRCUIT_BREAKER_MESSAGES,
   API_CONFIG_DEFAULTS,
+  API_NAME,
 } from "@blueprint/shared";
 import type { EnvConfig } from "./config-types";
 import {
@@ -99,7 +100,7 @@ export const AI_CONFIG = {
 };
 
 export const API_METADATA = {
-  NAME: "Blueprint Generator API",
+  NAME: API_NAME,
   get VERSION(): string {
     return getEnvConfig().API_VERSION;
   },

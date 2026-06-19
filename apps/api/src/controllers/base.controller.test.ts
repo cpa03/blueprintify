@@ -3,7 +3,7 @@ import { BaseController } from "./base.controller";
 import { ConfigurationError } from "../errors";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 import type { ControllerContext } from "../types";
-import { AI_DEFAULTS } from "@blueprint/shared";
+import { AI_DEFAULTS, ERROR_CLASS_NAMES } from "@blueprint/shared";
 import { TEST_API_KEY } from "../test-utils";
 
 // Create a concrete implementation for testing
@@ -14,7 +14,7 @@ vi.mock("../errors", () => ({
   ConfigurationError: class ConfigurationError extends Error {
     constructor(message: string) {
       super(message);
-      this.name = "ConfigurationError";
+      this.name = ERROR_CLASS_NAMES.CONFIGURATION_ERROR;
     }
   },
 }));

@@ -3,7 +3,7 @@ import { RefineController } from "./refine.controller";
 import type { RefineContext } from "../types";
 import { ConfigurationError } from "../errors";
 import { MOCK_ENV } from "../test-utils";
-import { CONTEXT_KEYS } from "@blueprint/shared";
+import { CONTEXT_KEYS, ERROR_CLASS_NAMES } from "@blueprint/shared";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 
 // Mock the prompts module
@@ -19,7 +19,7 @@ vi.mock("../errors", () => ({
   ConfigurationError: class ConfigurationError extends Error {
     constructor(message: string) {
       super(message);
-      this.name = "ConfigurationError";
+      this.name = ERROR_CLASS_NAMES.CONFIGURATION_ERROR;
     }
   },
 }));
