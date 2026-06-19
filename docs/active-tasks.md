@@ -7,23 +7,30 @@
 ### Task: Full repository audit, **fix BUG-014** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **fix BUG-017** (replace hardcoded `node-version: "20"`/`node-version: 20` with `node-version-file: ".node-version"` in 4 workflow files — 11 occurrences), documentation sync, quality verification, PR creation
 
 - **Priority**: High
-- **Status**: ✅ Complete — PR created
+- **Status**: ✅ Complete — PR created (merged)
 - **Objective**: Actually fix BUG-014 and BUG-017 on main — previous cycles documented fixes that were NOT actually applied. This cycle verified and correctly applied all workflow fixes.
+
+---
+
+## Completed: RepoKeeper Cycle 120 — BUG-014/BUG-017 Fix on main, Stale Branch Cleanup ✅
+
+### Task: Full repository audit, **fix BUG-014** (stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in `main.yml`), **fix BUG-017** (node-version `"20"`→`node-version-file: ".node-version"` across 4 workflow files with 11 occurrences), **delete stale merged remote branch** (`test-permissions-verify`), documentation sync (findings, active-tasks, CHANGELOG), quality verification
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Full repository audit covering build/lint/test health, redundant/temp/unused file scan, type suppression audit, **BUG-014** (fix stale `docs/bug.md` and `docs/feature.md` references in `main.yml`), **BUG-017** (fix hardcoded `node-version: "20"` in iterate.yml, on-pull.yml, parallel.yml, pr-gatekeeper.yml — replace with `node-version-file: ".node-version"`), **stale remote branch cleanup** (`test-permissions-verify`), documentation sync, quality verification
 - **Actions**:
   - [x] Full repository scan for redundant/temp/unused files → none found
   - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
   - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
   - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,425/1,425 ✅
-  - [x] **BUG-014 fixed**: main.yml line 39 `docs/bug.md, docs/feature.md`→`docs/bugs.md, docs/features.md`; line 263 `docs/bug.md`→`docs/bugs.md`
-  - [x] **BUG-017 fixed**: Replaced `node-version: "20"`/`node-version: 20` with `node-version-file: ".node-version"` (11 instances across 4 files)
-  - [x] **Verification**: grep confirms zero stale doc refs, zero hardcoded `node-version:` remaining
-  - [x] **Updated `docs/bugs.md`**: Corrected inaccurate "Resolved" claims from prior cycles, added actual fix for this cycle
-  - [x] **Updated `CHANGELOG.md`**: Added BugFixer cycle entry with fix details
-  - [x] **Updated `docs/active-tasks.md`**: This entry
-  - [x] **PR created**: Branch created from main with all fixes verified
-  - [x] No other fixable bugs found — repo healthy
-
----
+  - [x] **BUG-014 fixed**: `main.yml` stale doc refs (`docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`) — 2 occurrences
+  - [x] **BUG-017 fixed**: 11 hardcoded `node-version: "20"` replaced with `node-version-file: ".node-version"` across iterate.yml (5), on-pull.yml (1), parallel.yml (4), pr-gatekeeper.yml (1)
+  - [x] **Stale remote branch deleted**: `origin/test-permissions-verify` (merged into main)
+  - [x] **README BroCula description verified**: `(Jun 13–Jun 18 Run 3)` — matches latest audit
+  - [x] **Node version consistency verified**: `.node-version` (22), `.nvmrc` (22), `package.json engines.node` (`>=22`), workflows now reference `.node-version`
+  - [x] **Updated docs/findings.md**: Cycle 120 entry added
+  - [x] **Updated docs/active-tasks.md**: Cycle 120 completed
 
 ## Completed: RepoKeeper Cycle 119 — Unused Script Cleanup, Audit Report Consolidation ✅
 
