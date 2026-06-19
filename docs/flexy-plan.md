@@ -1055,3 +1055,18 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD | `feat/flexy-iteration-51-ci-node-version` | feat(flexy): fix hardcoded CI node version — use .node-version file |
+
+### ✅ Flexy Iteration 53: Replace Remaining Hardcoded Proxy Path & Toast Type Comparisons
+
+| File | Change |
+| ---- | ------ |
+| `apps/web/vite.config.ts` | Import `API_PROXY_PATH` from `@blueprint/shared`; replaced hardcoded `"/api"` proxy path with `API_PROXY_PATH` computed key and dynamic regex rewrite |
+| `apps/web/src/components/Toast.tsx` | Added `TOAST_TYPES` import from `@blueprint/shared`; replaced 4 hardcoded string keys (`success`/`error`/`warning`/`info`) in `toastIcons`/`toastStyles` records with `[TOAST_TYPES.*]` computed property references |
+| `apps/web/src/components/Toast.tsx` | Replaced hardcoded `"error"`/`"warning"` string comparisons in `isAlert` with `TOAST_TYPES.ERROR`/`TOAST_TYPES.WARNING` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 640 web + 382 api + 403 shared = 1,425 tests passing across 75 files
