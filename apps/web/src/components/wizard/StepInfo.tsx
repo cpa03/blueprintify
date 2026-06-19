@@ -497,7 +497,7 @@ export const StepInfo = memo(function StepInfo({
               disabled={!canProceed}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98, y: 0 }}
-              className={`btn-primary flex items-center gap-2 ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
+              className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
             >
               {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
               <kbd
@@ -507,7 +507,7 @@ export const StepInfo = memo(function StepInfo({
                 {modifierKey}+↵
               </kbd>
               <svg
-                className="w-5 h-5"
+                className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

@@ -425,8 +425,13 @@ export const StepFeatures = memo(function StepFeatures({
 
       <div className="flex justify-between">
         <KeyboardShortcutTooltip shortcut="←" description="Go back" position="right" modifier="alt">
-          <RippleButton onClick={prevStep} className="btn-secondary flex items-center gap-2">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <RippleButton onClick={prevStep} className="btn-secondary flex items-center gap-2 group">
+            <svg
+              className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -450,7 +455,7 @@ export const StepFeatures = memo(function StepFeatures({
         >
           <RippleButton
             onClick={nextStep}
-            className="btn-primary flex items-center gap-2 animate-glow"
+            className="btn-primary flex items-center gap-2 group animate-glow"
           >
             {UI_CONTENT.WIZARD.STEP_FEATURES.NEXT_BUTTON}
             <kbd
@@ -459,7 +464,12 @@ export const StepFeatures = memo(function StepFeatures({
             >
               {modifierKey}+↵
             </kbd>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </RippleButton>
