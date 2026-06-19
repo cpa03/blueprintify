@@ -33,7 +33,7 @@ import { useWizardStore, useToast } from "../store";
 import { ANIMATION, TOAST_MESSAGES, ACCESSIBILITY_LABELS } from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
 
-function TemplateGridComponent(): JSX.Element {
+function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Element {
   const loadTemplate = useWizardStore((s) => s.loadTemplate);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -55,6 +55,7 @@ function TemplateGridComponent(): JSX.Element {
     (template: (typeof STARTER_TEMPLATES)[0]) => {
       if (selectedId !== null) return;
 
+      onSelect?.();
       setSelectedId(template.id);
       setIsLoading(true);
 
@@ -64,7 +65,7 @@ function TemplateGridComponent(): JSX.Element {
         setIsLoading(false);
       }, ANIMATION.FAST);
     },
-    [selectedId, loadTemplate, toast]
+    [selectedId, loadTemplate, toast, onSelect]
   );
 
   const handleCardKeyDown = useCallback(

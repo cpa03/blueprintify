@@ -86,6 +86,25 @@ function App(): JSX.Element {
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
   const [templatesExiting, setTemplatesExiting] = useState(false);
+  // Defer framer-motion (45 KB) from initial load: only mount the Wizard
+  // after user interaction or a 3s fallback timeout. The flag is derived
+  // from store conditions + user interaction, avoiding setState-in-effect.
+  const [userInteracted, setUserInteracted] = useState(false);
+
+  // Derive mount condition from existing store state + interaction flag
+  const wizardActivated =
+    userInteracted || currentStep !== WIZARD_STEP_KEYS.INFO || hasContent || isGenerating;
+
+  // Activate wizard on first user interaction (template select, step change)
+  const activateWizard = useCallback(() => {
+    setUserInteracted(true);
+  }, []);
+
+  // Fallback: activate wizard after 3s so it loads even without interaction
+  useEffect(() => {
+    const timer = setTimeout(() => setUserInteracted(true), 3000);
+    return () => clearTimeout(timer);
+  }, []);
   const previousHasContentRef = useRef(hasContent);
   const previousIsGeneratingRef = useRef(isGenerating);
   const prevShowTemplatesRef = useRef(currentStep === WIZARD_STEP_KEYS.INFO && !hasContent);
@@ -257,7 +276,7 @@ function App(): JSX.Element {
               onAnimationEnd={templatesExiting ? handleTemplatesExitEnd : undefined}
             >
               <Suspense fallback={<TemplateGridSkeleton />}>
-                <TemplateGrid />
+                <TemplateGrid onSelect={activateWizard} />
               </Suspense>
               <div className={LAYOUT.TEMPLATES_DIVIDER}>{UI_CONTENT.TEMPLATES_DIVIDER}</div>
             </div>
@@ -282,21 +301,33 @@ function App(): JSX.Element {
               animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
             }}
           >
-            {/* Wizard Panel */}
+            {/* Wizard Panel — deferred until first interaction to keep
+                framer-motion (45 KB) out of the initial page load */}
             <div
               className={`${LAYOUT.GLASS_CARD_FLEX} ${
                 showEditor ? LAYOUT.HALF_WIDTH : LAYOUT.FULL_WIDTH
               }`}
             >
-              <Suspense
-                fallback={
-                  <div className="flex items-center justify-center py-16">
-                    <div className={SPINNER.DEFAULT}></div>
-                  </div>
-                }
-              >
-                <Wizard />
-              </Suspense>
+              {wizardActivated ? (
+                <Suspense
+                  fallback={
+                    <div className="flex items-center justify-center py-16">
+                      <div className={SPINNER.DEFAULT}></div>
+                    </div>
+                  }
+                >
+                  <Wizard />
+                </Suspense>
+              ) : (
+                <div className="p-6 space-y-4">
+                  <div className="h-5 w-36 bg-dark-700 rounded animate-pulse" />
+                  <div className="h-10 w-full bg-dark-700 rounded animate-pulse" />
+                  <div className="h-5 w-48 bg-dark-700 rounded animate-pulse" />
+                  <div className="h-24 w-full bg-dark-700 rounded animate-pulse" />
+                  <div className="h-5 w-32 bg-dark-700 rounded animate-pulse" />
+                  <div className="h-10 w-full bg-dark-700 rounded animate-pulse" />
+                </div>
+              )}
             </div>
 
             {/* Editor Panel */}
