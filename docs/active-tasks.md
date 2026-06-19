@@ -962,6 +962,7 @@ See [bugs.md](./bugs.md) for detailed bug information.
 - **BUG-001**: Frontend Bundle Size Performance Issue (In Progress)
 - **BUG-008**: ajv Package Security Vulnerabilities (Open)
 - **BUG-013**: Upstream npm Vulns (undici/ws via wrangler) (Blocked - Node 22+)
+- **BUG-014**: Stale Doc References in main.yml (Reopened — still present on main, push blocked)
 
 ---
 
@@ -974,5 +975,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-19 (BugFixer ULW Cycle Jun 19)  
+**Last Updated**: 2026-06-19 (BugFixer ULW Cycle Jun 19 Run 3)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
