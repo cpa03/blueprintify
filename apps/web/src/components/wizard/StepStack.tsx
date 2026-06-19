@@ -370,8 +370,13 @@ export const StepStack = memo(function StepStack({
 
       <div className="flex justify-between">
         <KeyboardShortcutTooltip shortcut="←" description="Go back" position="right" modifier="alt">
-          <RippleButton onClick={prevStep} className="btn-secondary flex items-center gap-2">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <RippleButton onClick={prevStep} className="btn-secondary flex items-center gap-2 group">
+            <svg
+              className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -396,7 +401,7 @@ export const StepStack = memo(function StepStack({
           <RippleButton
             onClick={handleNextClick}
             disabled={!canProceed}
-            className={`btn-primary flex items-center gap-2 ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
+            className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
           >
             {UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON}
             <kbd
@@ -405,7 +410,12 @@ export const StepStack = memo(function StepStack({
             >
               {modifierKey}+↵
             </kbd>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </RippleButton>
