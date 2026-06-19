@@ -2,6 +2,28 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 119 — Unused Script Cleanup, Audit Report Consolidation ✅
+
+### Task: Full repository audit, **removed 11 unreferenced scripts** (8 obsolete BroCula variants + 3 stale shell scripts), **archived 6 old audit reports** (pre-Jun-17) from `docs/audits/` to `docs/audits/archive/`, `docs/audits/README.md` consolidated (removed stale Moved Reports section, integrated into unified Archived Reports), documentation sync (findings, active-tasks, CHANGELOG), quality verification
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Clean up redundant/unreferenced files across the repository while verifying all quality checks pass
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → found and cleaned
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,425/1,425 ✅
+  - [x] **Removed 11 unreferenced scripts**: 8 obsolete BroCula scripts (`brocula-audit.mjs`, `brocula-check.mjs`, `brocula-console-audit.mjs`, `brocula-console-check.mjs`, `brocula-interaction-audit.mjs`, `brocula-lh-quick.mjs`, `brocula-lighthouse-audit.mjs`, `brocula-lighthouse.mjs`), 3 stale shell scripts (`config.sh`, `deploy-api.sh`, `fix-node-version.sh`), 1 issue label script (`normalize-labels.sh`) — all zero references from CI, package.json, or active docs
+  - [x] **Archived 6 old audit reports** from `docs/audits/` to `docs/audits/archive/`: Jun 15 Run 1-4, Jun 16 Run 2, Phase 1 Audit
+  - [x] **Consolidated `docs/audits/README.md`**: Integrated Moved Reports section into unified Archived Reports with sub-sections (Issue Audits, BroCula Audits); Current Reports now shows only latest 4 (Jun 17 + Jun 18 Runs 1-3)
+  - [x] **Node version consistency verified**: `.node-version` (22), `.nvmrc` (22), `package.json engines.node` (`>=22`)
+  - [x] **CI workflow stale refs reassessed**: BUG-014 and BUG-017 unchanged — same documented blocker
+  - [x] **Updated docs/findings.md**: Cycle 119 entry added
+  - [x] **Updated docs/active-tasks.md**: Cycle 119 completed
+  - [x] **Updated CHANGELOG.md**: Cycle 119 entry added
+  - [x] No new fixable bugs found — repo remains healthy, cleaner than before
+
 ## Completed: RepoKeeper Cycle 118 — README BroCula Drift Fix (Run 2 → Run 3), Doc Sync ✅
 
 ### Task: Full repository audit, **README BroCula description drift fix** (`(Jun 13–Jun 18 Run 2)` → `(Jun 13–Jun 18 Run 3)` — latest is `brocula-hunt-2026-06-18-run3.md`), **CHANGELOG update** (added Cycle 118 entry + missing `feat(web): add hover percentage label to PageScrollProgressBar`), stale remote branch assessment (16 branches — all active), documentation sync (findings, active-tasks, bugs, knowledge-review, CHANGELOG), quality verification

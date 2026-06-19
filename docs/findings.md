@@ -2,6 +2,60 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 119 (2026-06-19 — RepoKeeper: Unused Script Cleanup, Audit Report Consolidation)
+
+### Audit Scope
+
+Full repository audit covering build/lint/test health, redundant/temp/unused file scan, type suppression audit, **removed 11 unreferenced scripts** (8 obsolete BroCula variants + 3 stale shell scripts), **archived 6 old audit reports** (pre-Jun-17) from `docs/audits/` to `docs/audits/archive/`, **consolidated `docs/audits/README.md`** (removed stale Moved Reports section, integrated into unified Archived Reports), documentation sync (findings, active-tasks, CHANGELOG), quality verification.
+
+### Status Summary
+
+| Check       | Result                            |
+| ----------- | --------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)               |
+| Lint        | ✅ Clean (0 warnings/errors)      |
+| Format      | ✅ Clean                          |
+| Tests       | ✅ 1,425/1,425 (75 files)         |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: Found and cleaned redundant/unused files across the repo.
+2. **Type suppression audit**: Zero `@ts-ignore`, zero `@ts-expect-error`, zero `as any` in source code.
+3. **TODO/FIXME/HACK scan**: Zero artifacts in non-test source files.
+4. **Removed 11 unreferenced scripts**: All with zero references from CI, package.json, or active documentation:
+   - 8 obsolete BroCula scripts: `brocula-audit.mjs`, `brocula-check.mjs`, `brocula-console-audit.mjs`, `brocula-console-check.mjs`, `brocula-interaction-audit.mjs`, `brocula-lh-quick.mjs`, `brocula-lighthouse-audit.mjs`, `brocula-lighthouse.mjs` — superseded by `brocula-hunt.mjs`
+   - 3 stale shell scripts: `config.sh`, `deploy-api.sh`, `fix-node-version.sh` — no active references
+   - 1 issue label script: `normalize-labels.sh` — one-time utility, only referenced in archived audit doc
+5. **Archived 6 old audit reports**: Moved pre-Jun-17 reports from `docs/audits/` to `docs/audits/archive/`:
+   - `brocula-hunt-2026-06-15-run1.md` through `run4.md`, `brocula-hunt-2026-06-16-run2.md`, `ulw-loop-phase1-audit-2026-06-14.md`
+   - Root `docs/audits/` now contains only the latest 4 reports (Jun 17 Run 1 + Jun 18 Runs 1-3) plus README
+6. **Consolidated `docs/audits/README.md`**: Integrated archived Issue Audits from stale "Moved Reports" section into unified "Archived Reports" with sub-sections (Issue Audits, BroCula Audits). Current Reports table trimmed to 4 latest entries.
+7. **Node version consistency verified**: `.node-version` (22), `.nvmrc` (22), `package.json engines.node` (`>=22`) — all aligned.
+8. **CI workflow stale refs reassessed**: BUG-014 and BUG-017 remain unchanged — same documented blocker (`workflows: write` permission).
+9. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `CHANGELOG.md` updated for Cycle 119.
+
+### Key Findings
+
+- **11 unreferenced scripts removed**: These were `git rm`'d from the repository. All 8 BroCula scripts are superseded by `brocula-hunt.mjs` which is the maintained entry point. The shell scripts were standalone utilities with no active references.
+- **Audit report consolidation**: Root `docs/audits/` reduced from 10 reports to 4. Archived reports count increased from 53 to 59 — no data lost, just better organized.
+- **No `@ts-ignore`, `@ts-expect-error`, or `as any`** in source code.
+- **No TODO/FIXME/HACK artifacts** in non-test source files.
+- **BUG-014/BUG-017 unchanged**: CI workflow files still have stale node-version and doc refs — unchanged blocker (no `workflows: write` permission).
+- **No new fixable bugs found** — repo healthy, all quality checks passing.
+- **README BroCula description drift check**: Verified — `(Jun 13–Jun 18 Run 3)` matches latest `brocula-hunt-2026-06-18-run3.md`.
+
+### Verification
+
+- [x] 11 unreferenced scripts removed — `git rm` verified, no broken references
+- [x] 6 old audit reports archived to `docs/audits/archive/`
+- [x] `docs/audits/README.md` consolidated — Current Reports trimmed, Archived Reports unified
+- [x] CHANGELOG updated — Cycle 119 entry added
+- [x] docs/findings.md — Cycle 119 entry added
+- [x] docs/active-tasks.md — Cycle 119 entry added
+- [x] Typecheck, lint, format, tests — all clean (1,425/1,425)
+- [x] No stale branches, no type suppressions
+
 ## Cycle 118 (2026-06-18 — RepoKeeper: README BroCula Drift Fix (Run 2 → Run 3), Documentation Sync, Quality Verification)
 
 ### Audit Scope
