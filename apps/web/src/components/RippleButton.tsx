@@ -1,4 +1,11 @@
-import { useState, useCallback, memo, type ReactNode, type MouseEvent } from "react";
+import {
+  useState,
+  useCallback,
+  memo,
+  type ReactNode,
+  type MouseEvent,
+  type ButtonHTMLAttributes,
+} from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { RIPPLE_CONFIG } from "../config/constants";
 
@@ -14,7 +21,17 @@ interface TransformStyle {
   filter?: string;
 }
 
-interface RippleButtonProps {
+interface RippleButtonProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  | "children"
+  | "className"
+  | "type"
+  | "disabled"
+  | "title"
+  | "onClick"
+  | "aria-label"
+  | "data-autofocus"
+> {
   children: ReactNode;
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   className?: string;
@@ -46,6 +63,7 @@ function RippleButtonComponent({
   whileHover,
   whileTap,
   "data-autofocus": dataAutofocus,
+  ...rest
 }: RippleButtonProps): JSX.Element {
   const [ripples, setRipples] = useState<Ripple[]>([]);
   const [hoverTransform, setHoverTransform] = useState("");
@@ -126,6 +144,7 @@ function RippleButtonComponent({
       aria-label={ariaLabel}
       title={title}
       data-autofocus={dataAutofocus}
+      {...rest}
     >
       <span className="relative z-10">{children}</span>
       {ripples.map((ripple) => (
