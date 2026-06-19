@@ -126,7 +126,10 @@ export const StepFeatures = memo(function StepFeatures({
             </label>
             <div className="flex items-center gap-3">
               <CharacterCounterCompact current={newFeature.length} max={FORM_LIMITS.FEATURE.MAX} />
-              <span className="text-xs text-dark-500 flex items-center gap-1">
+              <span
+                id="feature-input-hint"
+                className="text-xs text-dark-500 flex items-center gap-1"
+              >
                 <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-dark-400 font-mono text-xs">
                   Enter
                 </kbd>
@@ -145,6 +148,7 @@ export const StepFeatures = memo(function StepFeatures({
                 placeholder={UI_CONTENT.WIZARD.STEP_FEATURES.ADD_FEATURE_PLACEHOLDER}
                 className={`input-field w-full pr-10 ${newFeature.length >= FORM_LIMITS.FEATURE.MAX ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20" : ""}`}
                 aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.NEW_FEATURE_NAME}
+                aria-describedby="feature-input-hint"
                 maxLength={FORM_LIMITS.FEATURE.MAX}
               />
               <AnimatePresence>
