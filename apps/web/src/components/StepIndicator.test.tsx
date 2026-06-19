@@ -65,6 +65,11 @@ vi.mock("../config/constants", () => ({
     SHORT_DELAY_S: 0.1,
     MEDIUM_DELAY_S: 0.2,
   },
+  ACCESSIBILITY_LABELS: {
+    PROGRESS: {
+      STEPS_COMPLETE: (_pct: number, _remaining: number) => `Steps complete`,
+    },
+  },
 }));
 
 vi.mock("framer-motion", () => {

@@ -33,9 +33,9 @@ import {
   ANIMATION_MS,
   SPRING_CONFIG,
   UI_CONTENT,
+  ACCESSIBILITY_LABELS,
 } from "../../config/constants";
 import { TRANSFORMS } from "../../config/theme";
-import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { pageTransition, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
@@ -344,7 +344,7 @@ export const StepStack = memo(function StepStack({
                   <button
                     onClick={() => removeTechStack(tech.name)}
                     className="hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors"
-                    aria-label={`Remove ${tech.name}`}
+                    aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.REMOVE_TECH(tech.name)}
                   >
                     <svg
                       className="w-4 h-4"

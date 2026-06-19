@@ -19,6 +19,7 @@ import {
   SPRING_CONFIG,
   PARTICLE_CONFIG,
   ANIMATION,
+  COPY_BUTTON_LABELS,
 } from "../config/constants";
 
 interface Particle {
@@ -140,7 +141,7 @@ function AnimatedCopyButtonComponent({
           : "btn-ghost text-dark-300 hover:text-white hover:bg-dark-800/50",
         className
       )}
-      aria-label={isCopied ? "Copied to clipboard" : "Copy to clipboard"}
+      aria-label={isCopied ? COPY_BUTTON_LABELS.COPIED : COPY_BUTTON_LABELS.COPY}
       aria-live="polite"
       animate={{
         scale: isPressed ? 0.92 : 1,

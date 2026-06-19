@@ -391,7 +391,7 @@ function ToastContainerComponent(): JSX.Element {
                        hover:text-white hover:bg-dark-700 hover:border-dark-600
                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
                        transition-all duration-200"
-            aria-label={`Dismiss all ${toasts.length} notifications`}
+            aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS_ALL(toasts.length)}
           >
             <span className="flex items-center gap-1.5">
               <svg
@@ -431,7 +431,7 @@ function ToastContainerComponent(): JSX.Element {
                          hover:text-white hover:bg-dark-700 hover:border-dark-600
                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
                          transition-all duration-200"
-              aria-label={`Dismiss all ${toasts.length} notifications`}
+              aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS_ALL(toasts.length)}
             >
               <span className="flex items-center gap-1.5">
                 <svg

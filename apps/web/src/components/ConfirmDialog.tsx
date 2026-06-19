@@ -36,7 +36,7 @@
 
 import { useEffect, useRef, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SPRING_CONFIG, ANIMATION } from "../config/constants";
+import { SPRING_CONFIG, ANIMATION, CONFIRM_DIALOG_HINTS } from "../config/constants";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -214,15 +214,15 @@ export const ConfirmDialog = memo(function ConfirmDialog({
               <div className="flex items-center justify-center gap-4 mt-4 pt-3 border-t border-dark-700/50">
                 <span className="flex items-center gap-1.5 text-[11px] text-dark-500">
                   <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-400 border border-dark-600/50 leading-none">
-                    Enter
+                    {CONFIRM_DIALOG_HINTS.ENTER_KEY}
                   </kbd>
-                  <span>to confirm</span>
+                  <span>{CONFIRM_DIALOG_HINTS.TO_CONFIRM}</span>
                 </span>
                 <span className="flex items-center gap-1.5 text-[11px] text-dark-500">
                   <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-400 border border-dark-600/50 leading-none">
-                    Esc
+                    {CONFIRM_DIALOG_HINTS.ESC_KEY}
                   </kbd>
-                  <span>to cancel</span>
+                  <span>{CONFIRM_DIALOG_HINTS.TO_CANCEL}</span>
                 </span>
               </div>
             </div>

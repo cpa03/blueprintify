@@ -238,9 +238,12 @@ export const ACCESSIBILITY_LABELS = {
     COPIED: "Copied to clipboard",
     COPY_CODE_TITLE: "Copy code",
     COPIED_TITLE: "Copied!",
+    COPY_TO_CLIPBOARD: "Copy to clipboard",
+    COPIED_TO_CLIPBOARD: "Copied to clipboard",
   },
   TOAST: {
     DISMISS: (type: string) => `Dismiss ${type} notification`,
+    DISMISS_ALL: (count: number) => `Dismiss all ${count} notifications`,
   },
   OFFLINE_BANNER: {
     LABEL: "You are currently offline",
@@ -256,6 +259,7 @@ export const ACCESSIBILITY_LABELS = {
   },
   HEADING_ANCHOR: {
     COPY_LINK_TITLE: "Copy anchor link",
+    COPY_LINK_ARIA: (section: string) => `Copy link to "${section}" section`,
   },
   CELEBRATION: {
     COMPLETE: "Generation complete",
@@ -267,6 +271,11 @@ export const ACCESSIBILITY_LABELS = {
     READING: "Reading progress",
     PAGE_SCROLL_POSITION: "Page scroll position — click to navigate",
   },
+  PROGRESS: {
+    PERCENT_COMPLETE: (pct: number) => `${Math.round(pct)}% complete`,
+    STEPS_COMPLETE: (pct: number, remaining: number) =>
+      `${Math.round(pct)}% complete - ${remaining} steps remaining`,
+  },
   LAZY_CODEMIRROR: {
     LOADING: "Loading code editor",
   },
@@ -276,25 +285,64 @@ export const ACCESSIBILITY_LABELS = {
     START_NEW_PROJECT: "Start new project",
     HIDE_EDITOR: "Hide editor panel",
     HIDE_EDITOR_TITLE: "Hide editor",
+    CONTENT_AVAILABLE: (tabName: string) => `${tabName} content available`,
+    VIEW_MODE: (modeLabel: string, shortcut: string) => `${modeLabel} view (${shortcut})`,
   },
   WIZARD_FEATURES: {
     NEW_FEATURE_NAME: "New feature name",
     CLEAR_FEATURE_INPUT: "Clear feature input",
     ADD_FEATURE: "Add feature",
     CLEAR_ALL_FEATURES: "Clear all features",
+    REMOVE_FEATURE: (feature: string) => `Remove ${feature}`,
+    ADD_SUGGESTION: (feature: string) => `Add suggestion: ${feature}`,
   },
   WIZARD_INFO: {
     CLEAR_TARGET_AUDIENCE: "Clear target audience",
     CLEAR_CONSTRAINTS: "Clear constraints",
+    FIELDS_COMPLETED: (completed: number, total: number) =>
+      `${completed} of ${total} fields completed`,
   },
   WIZARD_STACK: {
     TECH_STACK_SELECTION: "Tech Stack Selection",
+    REMOVE_TECH: (tech: string) => `Remove ${tech}`,
   },
   WIZARD_REVIEW: {
     EDIT_INFO: "Edit project information",
     EDIT_STACK: "Edit tech stack",
     EDIT_FEATURES: "Edit features",
   },
+} as const;
+
+// ============================================================================
+// Error Boundary UI Text
+// ============================================================================
+
+// ============================================================================
+// Confirm Dialog Keyboard Hints
+// ============================================================================
+
+/**
+ * Keyboard shortcut hint labels for ConfirmDialog component
+ * Flexy says: No hardcoded "Enter" / "to confirm" strings in components!
+ */
+export const CONFIRM_DIALOG_HINTS = {
+  ENTER_KEY: "Enter",
+  ESC_KEY: "Esc",
+  TO_CONFIRM: "to confirm",
+  TO_CANCEL: "to cancel",
+} as const;
+
+// ============================================================================
+// Copy Button Labels
+// ============================================================================
+
+/**
+ * Copy button aria-label templates for AnimatedCopyButton
+ * Flexy says: No hardcoded "Copy to clipboard" strings in components!
+ */
+export const COPY_BUTTON_LABELS = {
+  COPY: "Copy to clipboard",
+  COPIED: "Copied to clipboard",
 } as const;
 
 // ============================================================================

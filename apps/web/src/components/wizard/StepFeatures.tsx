@@ -262,7 +262,7 @@ export const StepFeatures = memo(function StepFeatures({
                       <button
                         onClick={() => removeFeature(feature)}
                         className="hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors"
-                        aria-label={`Remove ${feature}`}
+                        aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.REMOVE_FEATURE(feature)}
                       >
                         <svg
                           className="w-4 h-4"
@@ -311,7 +311,7 @@ export const StepFeatures = memo(function StepFeatures({
                     whileTap={{ scale: 0.95 }}
                     transition={{ type: "spring", ...SPRING_CONFIG.SUBTLE_BOUNCE }}
                     className="tech-chip relative overflow-hidden hover:border-accent-emerald/50"
-                    aria-label={`Add suggestion: ${feature}`}
+                    aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_SUGGESTION(feature)}
                     animate={
                       isJustAdded
                         ? {

@@ -31,6 +31,7 @@ import {
   TOAST_MESSAGES,
   STEP_CONNECTOR,
   ENTRANCE_STAGGER,
+  ACCESSIBILITY_LABELS,
 } from "../config/constants";
 import { CircularProgress } from "./CircularProgress";
 import { SmartTooltip } from "./SmartTooltip";
@@ -118,7 +119,10 @@ function StepIndicatorComponent(): JSX.Element {
   return (
     <div className="flex items-center justify-center gap-3 mb-8">
       <SmartTooltip
-        content={`${Math.round(progressPercentage)}% complete - ${STEPS.length - 1 - currentIndex} steps remaining`}
+        content={ACCESSIBILITY_LABELS.PROGRESS.STEPS_COMPLETE(
+          progressPercentage,
+          STEPS.length - 1 - currentIndex
+        )}
         position="left"
       >
         <div className="relative group animate-fade-in">
