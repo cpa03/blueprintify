@@ -1549,3 +1549,42 @@ export const STORAGE_OPERATION_ERROR_STRINGS = {
   /** Template for duplicate storage service registration */
   SERVICE_EXISTS: (key: string): string => `Storage service for key "${key}" already exists`,
 } as const;
+
+/**
+ * Error Class Name Constants
+ * Centralized source of truth for Error subclass name strings used with `this.name = ...`.
+ * Flexy says: No hardcoded "APIError" or "ValidationError" strings in Error constructors!
+ * Usage: import { ERROR_CLASS_NAMES } from "@blueprint/shared";
+ *        this.name = ERROR_CLASS_NAMES.API_ERROR
+ */
+export const ERROR_CLASS_NAMES = {
+  /** Base API error class name */
+  API_ERROR: "APIError",
+  /** Validation error (400) class name */
+  VALIDATION_ERROR: "ValidationError",
+  /** Authentication error (401) class name */
+  AUTHENTICATION_ERROR: "AuthenticationError",
+  /** Not found error (404) class name */
+  NOT_FOUND_ERROR: "NotFoundError",
+  /** Configuration error (500) class name */
+  CONFIGURATION_ERROR: "ConfigurationError",
+  /** Internal server error (500) class name */
+  INTERNAL_SERVER_ERROR: "InternalServerError",
+  /** Circuit breaker open error class name */
+  CIRCUIT_BREAKER_OPEN_ERROR: "CircuitBreakerOpenError",
+  /** Timeout error class name */
+  TIMEOUT_ERROR: "TimeoutError",
+  /** Storage error class name */
+  STORAGE_ERROR: "StorageError",
+  /** Security error class name */
+  SECURITY_ERROR: "SecurityError",
+} as const;
+
+/**
+ * API Metadata Name Constants
+ * Centralized source of truth for API metadata name strings.
+ * Flexy says: No hardcoded "Blueprint Generator API" strings in metadata!
+ * Usage: import { API_NAME } from "@blueprint/shared";
+ *        NAME: API_NAME
+ */
+export const API_NAME = "Blueprint Generator API" as const;

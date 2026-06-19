@@ -8,6 +8,7 @@
  * @see https://martinfowler.com/bliki/CircuitBreaker.html
  */
 
+import { ERROR_CLASS_NAMES } from "@blueprint/shared";
 import { HTTP_STATUS, CIRCUIT_BREAKER_CONFIG, ERROR_MESSAGES } from "../config/constants";
 
 /**
@@ -237,7 +238,7 @@ export class CircuitBreakerOpenError extends Error {
 
   constructor(message: string) {
     super(message);
-    this.name = "CircuitBreakerOpenError";
+    this.name = ERROR_CLASS_NAMES.CIRCUIT_BREAKER_OPEN_ERROR;
   }
 }
 

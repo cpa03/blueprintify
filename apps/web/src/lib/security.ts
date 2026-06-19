@@ -14,7 +14,12 @@
  */
 
 import { z } from "zod";
-import { SECURITY_LIMITS, BYTE_CONVERSION, SECURITY_ERROR_CATEGORIES } from "@blueprint/shared";
+import {
+  SECURITY_LIMITS,
+  BYTE_CONVERSION,
+  SECURITY_ERROR_CATEGORIES,
+  ERROR_CLASS_NAMES,
+} from "@blueprint/shared";
 import { SECURITY_CONFIG } from "../config/security";
 import { SECURITY_ERROR_MESSAGES } from "../config/constants";
 
@@ -429,7 +434,7 @@ export class SecurityError extends Error {
     public readonly details?: unknown
   ) {
     super(message);
-    this.name = "SecurityError";
+    this.name = ERROR_CLASS_NAMES.SECURITY_ERROR;
   }
 }
 

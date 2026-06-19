@@ -7,6 +7,7 @@
  * to isolate testing of the service logic.
  */
 
+import { ERROR_CLASS_NAMES } from "@blueprint/shared";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 // ---------------------------------------------------------------------------
@@ -78,7 +79,7 @@ vi.mock("../utils/circuitBreaker", () => ({
     public readonly statusCode: number;
     constructor(message: string) {
       super(message);
-      this.name = "CircuitBreakerOpenError";
+      this.name = ERROR_CLASS_NAMES.CIRCUIT_BREAKER_OPEN_ERROR;
       this.statusCode = MOCK_SERVICE_UNAVAILABLE;
     }
   },

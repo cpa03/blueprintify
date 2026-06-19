@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { HTTP_HEADERS, SECURITY_ERROR_CATEGORIES } from "@blueprint/shared";
+import { HTTP_HEADERS, SECURITY_ERROR_CATEGORIES, ERROR_CLASS_NAMES } from "@blueprint/shared";
 import {
   sanitizeHtml,
   sanitizeMarkdown,
@@ -269,7 +269,7 @@ describe("Security Utilities", () => {
       expect(error.message).toBe("Test error");
       expect(error.type).toBe(SECURITY_ERROR_CATEGORIES.XSS);
       expect(error.details).toEqual({ details: "test" });
-      expect(error.name).toBe("SecurityError");
+      expect(error.name).toBe(ERROR_CLASS_NAMES.SECURITY_ERROR);
     });
   });
 

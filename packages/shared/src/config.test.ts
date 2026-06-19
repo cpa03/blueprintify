@@ -77,6 +77,8 @@ import {
   STORAGE_ERROR_TYPE_VALUES,
   TEST_SETUP_STRINGS,
   STORAGE_OPERATION_ERROR_STRINGS,
+  ERROR_CLASS_NAMES,
+  API_NAME,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -2121,5 +2123,62 @@ describe("STORAGE_OPERATION_ERROR_STRINGS", () => {
   it("SERVICE_EXISTS should include key", () => {
     const result = STORAGE_OPERATION_ERROR_STRINGS.SERVICE_EXISTS("test-key");
     expect(result).toBe('Storage service for key "test-key" already exists');
+  });
+});
+
+describe("ERROR_CLASS_NAMES", () => {
+  it("should have 10 error class names", () => {
+    expect(Object.keys(ERROR_CLASS_NAMES).length).toBe(10);
+  });
+
+  it("API_ERROR should be APIError", () => {
+    expect(ERROR_CLASS_NAMES.API_ERROR).toBe("APIError");
+  });
+
+  it("VALIDATION_ERROR should be ValidationError", () => {
+    expect(ERROR_CLASS_NAMES.VALIDATION_ERROR).toBe("ValidationError");
+  });
+
+  it("AUTHENTICATION_ERROR should be AuthenticationError", () => {
+    expect(ERROR_CLASS_NAMES.AUTHENTICATION_ERROR).toBe("AuthenticationError");
+  });
+
+  it("NOT_FOUND_ERROR should be NotFoundError", () => {
+    expect(ERROR_CLASS_NAMES.NOT_FOUND_ERROR).toBe("NotFoundError");
+  });
+
+  it("CONFIGURATION_ERROR should be ConfigurationError", () => {
+    expect(ERROR_CLASS_NAMES.CONFIGURATION_ERROR).toBe("ConfigurationError");
+  });
+
+  it("INTERNAL_SERVER_ERROR should be InternalServerError", () => {
+    expect(ERROR_CLASS_NAMES.INTERNAL_SERVER_ERROR).toBe("InternalServerError");
+  });
+
+  it("CIRCUIT_BREAKER_OPEN_ERROR should be CircuitBreakerOpenError", () => {
+    expect(ERROR_CLASS_NAMES.CIRCUIT_BREAKER_OPEN_ERROR).toBe("CircuitBreakerOpenError");
+  });
+
+  it("TIMEOUT_ERROR should be TimeoutError", () => {
+    expect(ERROR_CLASS_NAMES.TIMEOUT_ERROR).toBe("TimeoutError");
+  });
+
+  it("STORAGE_ERROR should be StorageError", () => {
+    expect(ERROR_CLASS_NAMES.STORAGE_ERROR).toBe("StorageError");
+  });
+
+  it("SECURITY_ERROR should be SecurityError", () => {
+    expect(ERROR_CLASS_NAMES.SECURITY_ERROR).toBe("SecurityError");
+  });
+
+  it("all values should be unique", () => {
+    const values = Object.values(ERROR_CLASS_NAMES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("API_NAME", () => {
+  it("should be Blueprint Generator API", () => {
+    expect(API_NAME).toBe("Blueprint Generator API");
   });
 });

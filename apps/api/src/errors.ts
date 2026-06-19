@@ -1,4 +1,4 @@
-import { HTTP_STATUS, ERROR_TYPES } from "@blueprint/shared";
+import { HTTP_STATUS, ERROR_TYPES, ERROR_CLASS_NAMES } from "@blueprint/shared";
 import { DEFAULT_ERROR_MESSAGES, ERROR_CODES, ERROR_MESSAGES } from "./config/constants";
 
 /**
@@ -118,7 +118,7 @@ export class APIError extends Error {
     details?: Record<string, unknown>
   ) {
     super(message);
-    this.name = "APIError";
+    this.name = ERROR_CLASS_NAMES.API_ERROR;
     this.type = type;
     this.statusCode = statusCode;
     this.code = code;
@@ -179,7 +179,7 @@ export class ValidationError extends APIError {
       ERROR_CODES.VALIDATION_ERROR,
       details
     );
-    this.name = "ValidationError";
+    this.name = ERROR_CLASS_NAMES.VALIDATION_ERROR;
   }
 }
 
@@ -201,7 +201,7 @@ export class AuthenticationError extends APIError {
       HTTP_STATUS.UNAUTHORIZED,
       ERROR_CODES.AUTHENTICATION_ERROR
     );
-    this.name = "AuthenticationError";
+    this.name = ERROR_CLASS_NAMES.AUTHENTICATION_ERROR;
   }
 }
 
@@ -218,7 +218,7 @@ export class NotFoundError extends APIError {
    */
   constructor(resource: string = DEFAULT_ERROR_MESSAGES.NOT_FOUND) {
     super(ErrorType.NOT_FOUND, resource, HTTP_STATUS.NOT_FOUND, ERROR_CODES.NOT_FOUND_ERROR);
-    this.name = "NotFoundError";
+    this.name = ERROR_CLASS_NAMES.NOT_FOUND_ERROR;
   }
 }
 
@@ -240,7 +240,7 @@ export class ConfigurationError extends APIError {
       HTTP_STATUS.INTERNAL_ERROR,
       ERROR_CODES.CONFIGURATION_ERROR
     );
-    this.name = "ConfigurationError";
+    this.name = ERROR_CLASS_NAMES.CONFIGURATION_ERROR;
   }
 }
 
@@ -259,7 +259,7 @@ export class InternalServerError extends APIError {
    */
   constructor(message: string = DEFAULT_ERROR_MESSAGES.INTERNAL) {
     super(ErrorType.INTERNAL, message, HTTP_STATUS.INTERNAL_ERROR, ERROR_CODES.INTERNAL_ERROR);
-    this.name = "InternalServerError";
+    this.name = ERROR_CLASS_NAMES.INTERNAL_SERVER_ERROR;
   }
 }
 

@@ -17,6 +17,7 @@ import {
   BYTE_CONVERSION,
   STORAGE_OPERATIONS,
   STORAGE_ERROR_TYPE_VALUES,
+  ERROR_CLASS_NAMES,
 } from "@blueprint/shared";
 
 // ============================================================================
@@ -40,7 +41,7 @@ export class StorageError extends Error {
     public readonly details: StorageErrorDetails
   ) {
     super(message);
-    this.name = "StorageError";
+    this.name = ERROR_CLASS_NAMES.STORAGE_ERROR;
   }
 }
 

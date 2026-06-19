@@ -7,6 +7,7 @@
  * @module utils/timeout
  */
 
+import { ERROR_CLASS_NAMES } from "@blueprint/shared";
 import { RETRY_CONFIG, ERROR_MESSAGES } from "../config/constants";
 
 /**
@@ -27,7 +28,7 @@ export class TimeoutError extends Error {
 
   constructor(timeoutMs: number, message?: string) {
     super(message ?? ERROR_MESSAGES.TIMEOUT_OCCURRED(timeoutMs));
-    this.name = "TimeoutError";
+    this.name = ERROR_CLASS_NAMES.TIMEOUT_ERROR;
     this.timeoutMs = timeoutMs;
   }
 }

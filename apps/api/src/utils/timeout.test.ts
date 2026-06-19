@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { ERROR_CLASS_NAMES } from "@blueprint/shared";
 import { withTimeout, TimeoutError, createTimeoutWrapper, withTimeoutAndRetry } from "./timeout";
 
 describe("Timeout Utilities", () => {
@@ -15,7 +16,7 @@ describe("Timeout Utilities", () => {
     it("should create error with default message", () => {
       const error = new TimeoutError(5000);
       expect(error.message).toBe("Operation timed out after 5000ms");
-      expect(error.name).toBe("TimeoutError");
+      expect(error.name).toBe(ERROR_CLASS_NAMES.TIMEOUT_ERROR);
       expect(error.timeoutMs).toBe(5000);
     });
 

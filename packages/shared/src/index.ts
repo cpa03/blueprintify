@@ -141,6 +141,8 @@ export {
   STORAGE_ERROR_TYPE_VALUES,
   TEST_SETUP_STRINGS,
   STORAGE_OPERATION_ERROR_STRINGS,
+  ERROR_CLASS_NAMES,
+  API_NAME,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";
