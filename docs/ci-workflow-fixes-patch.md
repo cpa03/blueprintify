@@ -1,5 +1,16 @@
+commit b87749fac3895a93ad7b3c956ba241c693888236
+Author: cpa03 <245960241+cpa03@users.noreply.github.com>
+Date:   Thu Jun 18 22:15:01 2026 +0000
+
+    fix(ci): resolve BUG-014 and BUG-017 - stale doc refs and Node.js 20 hardcode (#1922)
+    
+    BUG-014: Fix stale doc references in main.yml (docs/bug.md -> docs/bugs.md, docs/feature.md -> docs/features.md) - 2 occurrences
+    BUG-017: Replace hardcoded node-version: '20' with node-version-file: '.node-version' in iterate.yml, on-pull.yml, parallel.yml, pr-gatekeeper.yml - 11 occurrences
+    
+    Verified: typecheck ✅ lint ✅ build ✅ tests 1,425/1,425 ✅
+
 diff --git a/.github/workflows/iterate.yml b/.github/workflows/iterate.yml
-index e4a11cc..05a8768 100644
+index e4a11cc..644d98b 100644
 --- a/.github/workflows/iterate.yml
 +++ b/.github/workflows/iterate.yml
 @@ -52,7 +52,7 @@ jobs:
@@ -7,7 +18,7 @@ index e4a11cc..05a8768 100644
          uses: actions/setup-node@v6
          with:
 -          node-version: "20"
-+          node-version: "22"
++          node-version-file: ".node-version"
        - name: Install Dependencies
          continue-on-error: true
          run: npm ci
@@ -16,7 +27,7 @@ index e4a11cc..05a8768 100644
          uses: actions/setup-node@v6
          with:
 -          node-version: "20"
-+          node-version: "22"
++          node-version-file: ".node-version"
        - name: Install Dependencies
          continue-on-error: true
          run: npm ci
@@ -25,7 +36,7 @@ index e4a11cc..05a8768 100644
          uses: actions/setup-node@v6
          with:
 -          node-version: "20"
-+          node-version: "22"
++          node-version-file: ".node-version"
        - name: Install Dependencies
          continue-on-error: true
          run: npm ci
@@ -34,7 +45,7 @@ index e4a11cc..05a8768 100644
          uses: actions/setup-node@v6
          with:
 -          node-version: "20"
-+          node-version: "22"
++          node-version-file: ".node-version"
        - name: Install Dependencies
          continue-on-error: true
          run: npm ci
@@ -43,7 +54,7 @@ index e4a11cc..05a8768 100644
          uses: actions/setup-node@v6
          with:
 -          node-version: "20"
-+          node-version: "22"
++          node-version-file: ".node-version"
        - name: Install Dependencies
          continue-on-error: true
          run: npm ci
@@ -70,7 +81,7 @@ index 2b908dc..30cb026 100644
              --agent reliability-engineer \
              --model opencode/deepseek-v4-flash-free \
 diff --git a/.github/workflows/on-pull.yml b/.github/workflows/on-pull.yml
-index 85281ff..1773ee7 100644
+index 85281ff..c8d9866 100644
 --- a/.github/workflows/on-pull.yml
 +++ b/.github/workflows/on-pull.yml
 @@ -50,7 +50,7 @@ jobs:
@@ -78,12 +89,12 @@ index 85281ff..1773ee7 100644
          continue-on-error: true
          with:
 -          node-version: 20
-+          node-version: 22
++          node-version-file: ".node-version"
            cache: 'npm'
  
        - name: Configure Git
 diff --git a/.github/workflows/parallel.yml b/.github/workflows/parallel.yml
-index 4f19b74..e9c1f68 100644
+index 4f19b74..ff6084f 100644
 --- a/.github/workflows/parallel.yml
 +++ b/.github/workflows/parallel.yml
 @@ -67,7 +67,7 @@ jobs:
@@ -91,7 +102,7 @@ index 4f19b74..e9c1f68 100644
        - uses: actions/setup-node@v6
          with:
 -          node-version: "20"
-+          node-version: "22"
++          node-version-file: ".node-version"
  
        - run: npm ci || true
  
@@ -100,7 +111,7 @@ index 4f19b74..e9c1f68 100644
        - uses: actions/setup-node@v6
          with:
 -          node-version: "20"
-+          node-version: "22"
++          node-version-file: ".node-version"
  
        - name: Install OpenCode
          run: |
@@ -109,7 +120,7 @@ index 4f19b74..e9c1f68 100644
        - uses: actions/setup-node@v6
          with:
 -          node-version: "20"
-+          node-version: "22"
++          node-version-file: ".node-version"
  
        - run: npm ci || true
  
@@ -118,12 +129,12 @@ index 4f19b74..e9c1f68 100644
        - uses: actions/setup-node@v6
          with:
 -          node-version: "20"
-+          node-version: "22"
++          node-version-file: ".node-version"
  
        - name: Install OpenCode
          run: |
 diff --git a/.github/workflows/pr-gatekeeper.yml b/.github/workflows/pr-gatekeeper.yml
-index 6ca545a..aeaa7cc 100644
+index 6ca545a..fd0f08c 100644
 --- a/.github/workflows/pr-gatekeeper.yml
 +++ b/.github/workflows/pr-gatekeeper.yml
 @@ -28,7 +28,7 @@ jobs:
@@ -131,7 +142,7 @@ index 6ca545a..aeaa7cc 100644
          uses: actions/setup-node@v6
          with:
 -          node-version: "20"
-+          node-version: "22"
++          node-version-file: ".node-version"
            cache: "npm"
  
        - name: Cache Build & Deps
