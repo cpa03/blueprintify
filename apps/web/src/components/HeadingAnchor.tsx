@@ -112,7 +112,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
           transition-colors duration-150
           -translate-y-px
         `}
-        aria-label={`Copy link to "${headingText}" section`}
+        aria-label={ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_ARIA(headingText)}
         title={ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_TITLE}
         tabIndex={0}
       >

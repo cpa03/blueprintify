@@ -24,7 +24,7 @@
  * ```
  */
 
-import React, { useCallback } from "react";
+import React from "react";
 import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
@@ -36,7 +36,13 @@ import {
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
 import { AnimatedCopyButton } from "../AnimatedCopyButton";
-import { SPRING_CONFIG, EDITOR_LABELS, ANIMATION } from "../../config/constants";
+import {
+  SPRING_CONFIG,
+  EDITOR_LABELS,
+  ANIMATION,
+  VIEW_MODE_SHORTCUT_KEYS,
+  VIEW_MODE_MODIFIER,
+} from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { getAriaShortcutKey } from "../../lib/platform";
@@ -48,6 +54,30 @@ const VIEW_MODES: ViewMode[] = [
   SHARED_VIEW_MODES.SPLIT,
   SHARED_VIEW_MODES.PREVIEW,
 ];
+
+function computeNextViewIndex(
+  e: React.KeyboardEvent,
+  modes: readonly ViewMode[],
+  currentMode: ViewMode
+): number | null {
+  const currentIndex = modes.indexOf(currentMode);
+  switch (e.key) {
+    case "ArrowRight":
+      e.preventDefault();
+      return (currentIndex + 1) % modes.length;
+    case "ArrowLeft":
+      e.preventDefault();
+      return (currentIndex - 1 + modes.length) % modes.length;
+    case "Home":
+      e.preventDefault();
+      return 0;
+    case "End":
+      e.preventDefault();
+      return modes.length - 1;
+    default:
+      return null;
+  }
+}
 
 interface EditorToolbarProps {
   activeTab: EditorTab;
@@ -88,45 +118,18 @@ function EditorToolbarComponent({
     preview: EDITOR_LABELS.VIEW_MODES.PREVIEW,
   };
 
-  const handleViewModeKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      const currentIndex = VIEW_MODES.indexOf(viewMode);
-      let nextIndex: number | null = null;
-
-      switch (e.key) {
-        case "ArrowRight":
-          e.preventDefault();
-          nextIndex = (currentIndex + 1) % VIEW_MODES.length;
-          break;
-        case "ArrowLeft":
-          e.preventDefault();
-          nextIndex = (currentIndex - 1 + VIEW_MODES.length) % VIEW_MODES.length;
-          break;
-        case "Home":
-          e.preventDefault();
-          nextIndex = 0;
-          break;
-        case "End":
-          e.preventDefault();
-          nextIndex = VIEW_MODES.length - 1;
-          break;
-        default:
-          return;
-      }
-
-      if (nextIndex !== null) {
-        const nextMode = VIEW_MODES[nextIndex];
-        if (nextMode) {
-          setViewMode(nextMode);
-          const nextButton = document.querySelector<HTMLButtonElement>(
-            `[data-view-mode="${nextMode}"]`
-          );
-          nextButton?.focus();
-        }
-      }
-    },
-    [viewMode, setViewMode]
-  );
+  const handleViewModeKeyDown = (e: React.KeyboardEvent): void => {
+    const nextIndex = computeNextViewIndex(e, VIEW_MODES, viewMode);
+    if (nextIndex === null) return;
+    const nextMode = VIEW_MODES[nextIndex];
+    if (nextMode) {
+      setViewMode(nextMode);
+      const nextButton = document.querySelector<HTMLButtonElement>(
+        `[data-view-mode="${nextMode}"]`
+      );
+      nextButton?.focus();
+    }
+  };
 
   return (
     <div className="flex items-center gap-2">
@@ -160,10 +163,13 @@ function EditorToolbarComponent({
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950",
                 viewMode === mode ? "text-white" : "text-dark-400 hover:text-white"
               )}
-              aria-label={`${viewModeLabels[mode]} view (${viewModeShortcuts[mode]})`}
+              aria-label={ACCESSIBILITY_LABELS.EDITOR.VIEW_MODE(
+                viewModeLabels[mode],
+                viewModeShortcuts[mode]
+              )}
               aria-keyshortcuts={getAriaShortcutKey(
-                mode === "edit" ? "1" : mode === "split" ? "2" : "3",
-                "cmd"
+                VIEW_MODE_SHORTCUT_KEYS[mode as keyof typeof VIEW_MODE_SHORTCUT_KEYS],
+                VIEW_MODE_MODIFIER
               )}
             >
               <span className="flex items-center gap-1.5">

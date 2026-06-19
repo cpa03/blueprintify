@@ -121,7 +121,9 @@ const TabButton = React.memo(function TabButton({
               stiffness: 400,
               damping: 15,
             }}
-            aria-label={`${id === EDITOR_TABS.BLUEPRINT ? "Blueprint" : "Tasks"} content available`}
+            aria-label={ACCESSIBILITY_LABELS.EDITOR.CONTENT_AVAILABLE(
+              id === EDITOR_TABS.BLUEPRINT ? "Blueprint" : "Tasks"
+            )}
           />
         )}
         {isActive && isGenerating && (

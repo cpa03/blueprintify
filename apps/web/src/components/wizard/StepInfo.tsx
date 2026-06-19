@@ -172,7 +172,10 @@ export const StepInfo = memo(function StepInfo({
             <span
               className="text-dark-400 tabular-nums flex items-center gap-0.5"
               aria-live="polite"
-              aria-label={`${formProgress.completed} of ${formProgress.total} fields completed`}
+              aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(
+                formProgress.completed,
+                formProgress.total
+              )}
             >
               <motion.span
                 key={formProgress.completed}

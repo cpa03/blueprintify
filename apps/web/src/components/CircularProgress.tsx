@@ -11,7 +11,12 @@
  */
 
 import { memo } from "react";
-import { PROGRESS_COLORS, SVG_TRANSITION, ANIMATION } from "../config/constants";
+import {
+  PROGRESS_COLORS,
+  SVG_TRANSITION,
+  ANIMATION,
+  ACCESSIBILITY_LABELS,
+} from "../config/constants";
 import { TRANSFORMS, OPACITY } from "../config/theme";
 
 /**
@@ -83,7 +88,7 @@ function CircularProgressComponent({
       aria-valuenow={Math.round(clampedValue)}
       aria-valuemin={0}
       aria-valuemax={100}
-      aria-label={ariaLabel ?? `${Math.round(clampedValue)}% complete`}
+      aria-label={ariaLabel ?? ACCESSIBILITY_LABELS.PROGRESS.PERCENT_COMPLETE(clampedValue)}
     >
       <svg
         width={size}

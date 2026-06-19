@@ -84,3 +84,20 @@ export const KEYBOARD_SHORTCUTS = {
     DESCRIPTION: "Switch editor to Preview view",
   },
 } as const;
+
+/**
+ * View mode shortcut key mapping
+ * Maps view mode identifiers to their keyboard shortcut keys.
+ * Flexy says: No hardcoded "1"/"2"/"3" magic strings in EditorToolbar!
+ */
+export const VIEW_MODE_SHORTCUT_KEYS = {
+  edit: "1",
+  split: "2",
+  preview: "3",
+} as const;
+
+/**
+ * View mode shortcut modifier key
+ * Flexy says: No hardcoded "cmd" strings in components!
+ */
+export const VIEW_MODE_MODIFIER = "cmd" as const;

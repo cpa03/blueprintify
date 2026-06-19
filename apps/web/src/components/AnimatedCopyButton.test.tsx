@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { COPY_BUTTON_LABELS } from "../config/constants";
 import { AnimatedCopyButton } from "./AnimatedCopyButton";
 
 vi.mock("framer-motion", () => ({
@@ -64,13 +65,13 @@ describe("AnimatedCopyButton", () => {
   it("has aria-label 'Copy to clipboard' when not copied", () => {
     render(<AnimatedCopyButton {...defaultProps} />);
 
-    expect(screen.getByRole("button")).toHaveAttribute("aria-label", "Copy to clipboard");
+    expect(screen.getByRole("button")).toHaveAttribute("aria-label", COPY_BUTTON_LABELS.COPY);
   });
 
   it("has aria-label 'Copied to clipboard' when copied", () => {
     render(<AnimatedCopyButton {...defaultProps} isCopied={true} />);
 
-    expect(screen.getByRole("button")).toHaveAttribute("aria-label", "Copied to clipboard");
+    expect(screen.getByRole("button")).toHaveAttribute("aria-label", COPY_BUTTON_LABELS.COPIED);
   });
 
   it("has aria-live polite attribute", () => {
