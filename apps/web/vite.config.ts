@@ -1,7 +1,7 @@
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import { compression } from "vite-plugin-compression2";
-import { DEV_DEFAULTS, BYTE_CONVERSION } from "@blueprint/shared";
+import { DEV_DEFAULTS, BYTE_CONVERSION, API_PROXY_PATH } from "@blueprint/shared";
 
 const DEV_SERVER_PORT = parseInt(
   process.env.VITE_DEV_SERVER_PORT || String(DEV_DEFAULTS.WEB_PORT),
@@ -106,10 +106,10 @@ export default defineConfig({
       overlay: true,
     },
     proxy: {
-      "/api": {
+      [API_PROXY_PATH]: {
         target: API_PROXY_TARGET,
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        rewrite: (path) => path.replace(new RegExp(`^${API_PROXY_PATH}`), ""),
       },
     },
   },

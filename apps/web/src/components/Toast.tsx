@@ -2,7 +2,7 @@
  * Toast Notification Component
  *
  * Displays toast notifications with auto-dismiss functionality and visual progress
- * indicators. Supports multiple toast types (success, error, warning, info) with
+ * indicators. Supports multiple toast types via TOAST_TYPES (SUCCESS, ERROR, WARNING, INFO) with
  * distinct styling and icons.
  *
  * Features:
@@ -32,20 +32,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
 import { TOAST_CONFIG, SPRING_CONFIG, ACCESSIBILITY_LABELS, ANIMATION } from "../config/constants";
 import { TOAST_SPRING, TRANSFORMS } from "../config/theme";
+import { TOAST_TYPES } from "@blueprint/shared";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 const toastIcons: Record<ToastType, string> = {
-  success: TOAST_CONFIG.ICONS.SUCCESS,
-  error: TOAST_CONFIG.ICONS.ERROR,
-  warning: TOAST_CONFIG.ICONS.WARNING,
-  info: TOAST_CONFIG.ICONS.INFO,
+  [TOAST_TYPES.SUCCESS]: TOAST_CONFIG.ICONS.SUCCESS,
+  [TOAST_TYPES.ERROR]: TOAST_CONFIG.ICONS.ERROR,
+  [TOAST_TYPES.WARNING]: TOAST_CONFIG.ICONS.WARNING,
+  [TOAST_TYPES.INFO]: TOAST_CONFIG.ICONS.INFO,
 };
 
 const toastStyles: Record<ToastType, string> = {
-  success: TOAST_CONFIG.STYLES.SUCCESS,
-  error: TOAST_CONFIG.STYLES.ERROR,
-  warning: TOAST_CONFIG.STYLES.WARNING,
-  info: TOAST_CONFIG.STYLES.INFO,
+  [TOAST_TYPES.SUCCESS]: TOAST_CONFIG.STYLES.SUCCESS,
+  [TOAST_TYPES.ERROR]: TOAST_CONFIG.STYLES.ERROR,
+  [TOAST_TYPES.WARNING]: TOAST_CONFIG.STYLES.WARNING,
+  [TOAST_TYPES.INFO]: TOAST_CONFIG.STYLES.INFO,
 };
 
 // Circular progress ring component
@@ -210,7 +211,7 @@ const ToastItem = memo(
     // For error/warning toasts, use role="alert" so screen readers announce
     // them immediately. Success/info toasts keep role="status" with polite
     // announcements — advisory information that isn't time-sensitive.
-    const isAlert = toast.type === "error" || toast.type === "warning";
+    const isAlert = toast.type === TOAST_TYPES.ERROR || toast.type === TOAST_TYPES.WARNING;
     const toastRole = isAlert ? "alert" : "status";
     const toastAriaLive = isAlert ? undefined : "polite";
 
