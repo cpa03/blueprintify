@@ -6,6 +6,7 @@ import { ERROR_CODES, API_HEADERS, HTTP_STATUS } from "../config/constants";
 import type { ErrorResponse } from "../errors";
 import { initializeConfig, resetConfig } from "../config/env";
 import { ENVIRONMENT_NAMES } from "@blueprint/shared";
+import { MOCK_ENV } from "../test-utils";
 
 function createMockRateLimit(shouldSucceed: boolean[] = []) {
   let callCount = 0;
@@ -28,7 +29,7 @@ describe("rateLimit middleware", () => {
   beforeEach(() => {
     vi.resetModules();
     initializeConfig({
-      OPENAI_API_KEY: "test-api-key",
+      OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
     });
   });
 

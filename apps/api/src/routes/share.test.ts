@@ -15,6 +15,7 @@ import {
   ROUTE_PATHS,
 } from "@blueprint/shared";
 import { ERROR_CODES } from "../config/constants";
+import { MOCK_ENV } from "../test-utils";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -59,7 +60,7 @@ function createMockDB() {
 
 function createMockEnv(apiKey?: string) {
   return {
-    OPENAI_API_KEY: "test-key",
+    OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
     API_KEY: apiKey,
     DB: createMockDB(),
     CORS_ORIGIN: DEFAULTS.CORS_ORIGIN,
@@ -283,13 +284,13 @@ describe("DELETE /share/:id", () => {
   it("should reject deletion with mismatched API key", async () => {
     const sharedDb = createMockDB();
     const creatorEnv = {
-      OPENAI_API_KEY: "test-key",
+      OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
       API_KEY: "creator-key-456",
       DB: sharedDb,
       CORS_ORIGIN: DEFAULTS.CORS_ORIGIN,
     };
     const attackerEnv = {
-      OPENAI_API_KEY: "test-key",
+      OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
       API_KEY: "attacker-key-789",
       DB: sharedDb,
       CORS_ORIGIN: DEFAULTS.CORS_ORIGIN,

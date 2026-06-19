@@ -4,9 +4,15 @@ import { apiKeyAuth } from "./auth";
 import { ERROR_CODES, API_HEADERS } from "../config/constants";
 import { HTTP_STATUS, RESPONSE_STATUS } from "@blueprint/shared";
 import type { ErrorResponse } from "../errors";
+import { TEST_API_KEY } from "../test-utils";
+
+/** Flexy says: Shared test constants - no hardcoded test-key strings! */
+const TEST_VALID_API_KEY = TEST_API_KEY;
+const TEST_CUSTOM_HEADER = "x-custom-auth";
+const TEST_CUSTOM_KEY = "my-custom-key";
 
 describe("auth middleware", () => {
-  const validApiKey = "test-api-key-12345";
+  const validApiKey = TEST_VALID_API_KEY;
 
   describe("apiKeyAuth", () => {
     it("should allow requests with valid API key", async () => {
@@ -38,7 +44,7 @@ describe("auth middleware", () => {
       app.get("/", (c) => c.json({ success: true }));
 
       const res = await app.request("/", {
-        headers: { [API_HEADERS.CUSTOM.API_KEY]: "invalid-key" },
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: "invalid_key_value" },
       });
 
       expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
@@ -100,26 +106,23 @@ describe("auth middleware", () => {
     });
 
     it("should use custom API key header", async () => {
-      const customHeader = "x-custom-auth";
-      const customKey = "my-custom-key";
-
       const app = new Hono<{ Bindings: { API_KEY: string } }>();
       app.use("*", async (c, next) => {
-        c.env = { API_KEY: customKey } as unknown as { API_KEY: string };
+        c.env = { API_KEY: TEST_CUSTOM_KEY } as unknown as { API_KEY: string };
         await next();
       });
-      app.use("/", apiKeyAuth({ apiKeyHeader: customHeader, excludePaths: [] }));
+      app.use("/", apiKeyAuth({ apiKeyHeader: TEST_CUSTOM_HEADER, excludePaths: [] }));
       app.get("/", (c) => c.json({ success: true }));
 
       // Should work with custom header
       const res1 = await app.request("/", {
-        headers: { [customHeader]: customKey },
+        headers: { [TEST_CUSTOM_HEADER]: TEST_CUSTOM_KEY },
       });
       expect(res1.status).toBe(HTTP_STATUS.OK);
 
       // Should fail with default header
       const res2 = await app.request("/", {
-        headers: { [API_HEADERS.CUSTOM.API_KEY]: customKey },
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: TEST_CUSTOM_KEY },
       });
       expect(res2.status).toBe(HTTP_STATUS.UNAUTHORIZED);
     });
