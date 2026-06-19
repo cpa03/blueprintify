@@ -2,6 +2,61 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 122 (2026-06-19 — RepoKeeper: BUG-014/BUG-017 Actually Fixed on main, Cleanup, Docs Refresh)
+
+### Audit Scope
+Full repository audit covering redundant/temp/unused file cleanup, **BUG-014 actually fixed in workflow files** (stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in `main.yml` — 2 occurrences), **BUG-017 actually fixed in workflow files** (hardcoded `node-version: "20"`→`node-version-file: ".node-version"` in 4 workflow files — 11 occurrences across iterate.yml, on-pull.yml, parallel.yml, pr-gatekeeper.yml), redundant file cleanup, documentation sync, quality verification, PR creation.
+
+### Status Summary
+
+| Check       | Result                            |
+| ----------- | --------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)               |
+| Lint        | ✅ Clean (0 warnings/errors)      |
+| Tests       | ✅ 1,425 passed (640+382+403)     |
+| Format      | ✅ All files formatted             |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **BUG-014 actually fixed in workflow files (NOT just docs)**:
+   - `.github/workflows/main.yml` line 39: `docs/bug.md, docs/feature.md` → `docs/bugs.md, docs/features.md`
+   - `.github/workflows/main.yml` line 263: `docs/bug.md` → `docs/bugs.md`
+   - Previous cycles (57–121) only documented these fixes; this cycle actually applied them to the workflow files.
+
+2. **BUG-017 actually fixed in workflow files (NOT just docs)**:
+   - `iterate.yml` (5 occurrences): `node-version: "20"` → `node-version-file: ".node-version"`
+   - `parallel.yml` (4 occurrences): `node-version: "20"` → `node-version-file: ".node-version"`
+   - `on-pull.yml` (1 occurrence): `node-version: 20` → `node-version-file: ".node-version"`
+   - `pr-gatekeeper.yml` (1 occurrence): `node-version: "20"` → `node-version-file: ".node-version"`
+   - Total: 11 instances replaced. Zero `node-version: "20"` remain.
+
+3. **Redundant file cleanup**:
+   - Deleted `docs/bugfixer-cycle-jun-19-run2.md` — redundant cycle log (same info in git commit `cf68569`)
+   - Deleted `docs/ci-workflow-fixes-patch.md` — redundant git diff as documentation
+   - Deleted `scripts/fix-ci-node-version.sh` — broken (references missing `scripts/config.sh`)
+   - Deleted `scripts/apply-ci-workflow-fixes.sh` — one-time fix script, fixes now applied
+   - Deleted `scripts/fix-ci-workflows.sh` — one-time fix script, fixes now applied
+   - Simplified `docs/task.md` — concise redirect to `active-tasks.md`
+
+4. **Documentation updates**:
+   - `docs/ci-workflow-fixes.md` — rewritten to reflect applied state (was stuck at "blocked by workflows:write")
+   - `README.md` — removed `ci-workflow-fixes-patch.md` from directory tree
+   - `docs/features.md` — updated last-modified date to 2026-06-19
+
+5. **Quality verification**:
+   - Typecheck ✅ Lint ✅ Tests 1,425/1,425 ✅ Format ✅
+   - Zero `@ts-ignore`, `@ts-expect-error`, or `as any` in source
+   - Zero TODO/FIXME/HACK artifacts in non-test source files
+
+### Key Findings
+
+- **BUG-014 and BUG-017 were NEVER actually fixed on `main`** despite 20+ cycles claiming to fix them. All prior cycles only updated documentation. This cycle applied the actual workflow file changes.
+- **No other redundant/temp/unused source files found** — codebase remains clean.
+- **All quality checks passing** — repo is healthy.
+
+---
+
 ## Cycle 121 (2026-06-19 — RepoKeeper: BUG-014/BUG-017 Applied on main, Workflow CI Fixes, Audit Ref)
 
 ### Audit Scope

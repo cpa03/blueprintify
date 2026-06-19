@@ -1,14 +1,3 @@
-commit b87749fac3895a93ad7b3c956ba241c693888236
-Author: cpa03 <245960241+cpa03@users.noreply.github.com>
-Date:   Thu Jun 18 22:15:01 2026 +0000
-
-    fix(ci): resolve BUG-014 and BUG-017 - stale doc refs and Node.js 20 hardcode (#1922)
-    
-    BUG-014: Fix stale doc references in main.yml (docs/bug.md -> docs/bugs.md, docs/feature.md -> docs/features.md) - 2 occurrences
-    BUG-017: Replace hardcoded node-version: '20' with node-version-file: '.node-version' in iterate.yml, on-pull.yml, parallel.yml, pr-gatekeeper.yml - 11 occurrences
-    
-    Verified: typecheck ✅ lint ✅ build ✅ tests 1,425/1,425 ✅
-
 diff --git a/.github/workflows/iterate.yml b/.github/workflows/iterate.yml
 index e4a11cc..644d98b 100644
 --- a/.github/workflows/iterate.yml
