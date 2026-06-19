@@ -3441,3 +3441,38 @@ Full repository audit covering build/lint/test health, redundant/temp/unused fil
 - **`docs/task.md` referenced in `repo-rules.md`** but file does not exist — minor doc drift.
 - **`react-refresh` in root devDependencies** may be unused (handled by `@vitejs/plugin-react` transitively) — minor.
 - **Repo healthy**: All quality checks passing, documentation refreshed.
+
+---
+
+## Cycle 122 (2026-06-19 — BugFixer ULW Jun 19 Run 3: Full Repository Bug Audit)
+
+### Audit Summary
+
+**Typecheck ✅ lint ✅ build ✅ tests 1,425/1,425 ✅ format ✅.**
+
+- **0 type suppressions**: No `@ts-ignore`, `@ts-expect-error`, or `as any` in source code.
+- **0 TODO/FIXME/HACK artifacts** in non-test source files.
+- **BUG-017 verified fixed on `main`** — zero hardcoded `node-version:` in workflow files.
+- **BUG-014 STILL PRESENT on `main`** — stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in `.github/workflows/main.yml` (lines 39, 263).
+
+### Critical Finding: BUG-014 Fix Never Actually Merged
+
+Despite **7 prior BugFixer cycles** claiming BUG-014 was "fixed" (Jun 12, Jun 13 Run 2, Jun 13 Run 3, Jun 14 Run 6, Jun 18 Run 2, Jun 19 Run 1, Jun 19 Run 2), the fix was **never applied to `main`**. Each cycle:
+1. Created a local branch with the fix
+2. Either couldn't push (workflows permission) or created a PR that was never merged
+3. Documented it as "Resolved" in `docs/bugs.md` despite the fix never landing
+
+### Actions Taken
+
+1. **BUG-014 fixed on local branch** `fix/bugfixer-ulw-cycle-jun-19-run3`: main.yml lines 39, 263 corrected.
+2. **`docs/bugs.md` updated**: BUG-014 status corrected from "Resolved" to "Reopened" with root cause of recurrence documented.
+3. **Verified diff documented** in `docs/bugs.md` for manual application.
+4. **Push blocked** — GitHub App token lacks `workflows: write` permission (same blocker).
+5. **PR #1947 created** for the `docs/bugs.md` correction.
+6. **`docs/findings.md` updated**: Cycle 122 entry (this file).
+
+### Recommendations
+
+- BUG-014 main.yml fix requires a token with `workflows: write` permission to push.
+- Consider using a Personal Access Token (PAT) or GitHub App with workflows permission for BugFixer cycles that modify CI files.
+- Alternatively, the two-line fix can be applied manually via the GitHub web editor.
