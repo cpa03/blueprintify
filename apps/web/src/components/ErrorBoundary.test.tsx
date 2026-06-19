@@ -90,7 +90,7 @@ describe("ErrorBoundary", () => {
     expect(screen.getByTestId("fallback")).toBeInTheDocument();
   });
 
-  it("renders default fallback UI when no custom fallback provided", () => {
+  it("renders default fallback UI when no custom fallback provided", async () => {
     const onError = vi.fn();
 
     function ChildWithError(): JSX.Element {
@@ -103,9 +103,10 @@ describe("ErrorBoundary", () => {
       </ErrorBoundary>
     );
 
-    expect(screen.getByText("Something went wrong")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /try again/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /reload page/i })).toBeInTheDocument();
+    // ErrorFallback is lazy-loaded, so we need to wait for the
+    // framer-motion animated fallback to fully load (buttons appear)
+    expect(await screen.findByRole("button", { name: /try again/i })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: /reload page/i })).toBeInTheDocument();
   });
 
   it("calls onError when error is thrown in nested component", () => {
