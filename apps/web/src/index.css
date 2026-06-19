@@ -258,9 +258,20 @@
 
 /* ===== Utility Classes ===== */
 @layer utilities {
-  /* Text gradient */
+  /* Slow shifting gradient animation for hero text — complements ambient-glow */
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
   .text-gradient {
     @apply bg-gradient-to-r from-primary-400 via-accent-purple to-accent-pink bg-clip-text text-transparent;
+    background-size: 200% 200%;
+    animation: gradient-shift 6s ease-in-out infinite;
   }
 
   /* Shake animation for disabled button feedback */
@@ -628,7 +639,8 @@
     .animate-fade-out,
     .animate-slide-out-up,
     .glass-card::after,
-    .glass-card:focus-within::before {
+    .glass-card:focus-within::before,
+    .text-gradient {
       animation: none !important;
     }
 
