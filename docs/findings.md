@@ -2,6 +2,53 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 121 (2026-06-19 — RepoKeeper: BUG-014/BUG-017 Applied on main, Workflow CI Fixes, Audit Ref)
+
+### Audit Scope
+
+Full repository audit covering build/lint/test health, redundant/temp/unused file scan, type suppression audit, **BUG-014 actually fixed** (stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in `main.yml` — 3 occurrences), **BUG-017 actually fixed** (node-version `"20"`→`node-version-file: ".node-version"` in 4 workflow files — 11 occurrences across iterate.yml, on-pull.yml, parallel.yml, pr-gatekeeper.yml — plus removed `continue-on-error: true` from Install Node.js steps), documentation sync (findings, active-tasks, CHANGELOG, audits/README), quality verification.
+
+### Status Summary
+
+| Check       | Result                            |
+| ----------- | --------------------------------- |
+| Typecheck   | ✅ Clean (0 errors)               |
+| Lint        | ✅ Clean (0 warnings/errors)      |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: Found no redundant/temp/unused source files. No empty directories.
+2. **Type suppression audit**: Zero `@ts-ignore`, zero `@ts-expect-error`, zero `as any` in source code.
+3. **TODO/FIXME/HACK scan**: Zero artifacts in non-test source files.
+4. **BUG-014 — Actually fixed stale doc refs in main.yml**: `docs/bug.md`→`docs/bugs.md` (2 occurrences), `docs/feature.md`→`docs/features.md` (1 occurrence). Previous cycles only documented these fixes — this cycle applies them to `main` via PR.
+5. **BUG-017 — Actually fixed node-version mismatch**: 11 occurrences of hardcoded `node-version: "20"` replaced with `node-version-file: ".node-version"` across 4 workflow files (iterate.yml: 5, on-pull.yml: 1, parallel.yml: 4, pr-gatekeeper.yml: 1). Also removed `continue-on-error: true` from Install Node.js steps in iterate.yml and on-pull.yml.
+6. **docs/audits/README.md updated**: Added `issue-audit-report-2026-06-19.md` to Current Reports table and Issue Audits section.
+7. **Node version consistency verified**: `.node-version` (22), `.nvmrc` (22), `package.json engines.node` (`>=22`), workflows now reference `.node-version` consistently.
+8. **README BroCula description verified**: `(Jun 13–Jun 18 Run 3)` — matches latest audit.
+9. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `CHANGELOG.md`, `docs/audits/README.md` updated for Cycle 121.
+
+### Key Findings
+
+- **BUG-014/BUG-017 actually applied to main**: Unlike previous cycles that only prepared or documented these fixes, Cycle 121 applies them directly to a PR branch that can be merged into `main`. All 3 stale doc refs and 11 hardcoded node-version occurrences are fixed.
+- **No redundant/temp/unused files found** — repo remains clean.
+- **No `@ts-ignore`, `@ts-expect-error`, or `as any`** in source code.
+- **No TODO/FIXME/HACK artifacts** in non-test source files.
+- **No new fixable bugs found** — repo healthy, all quality checks passing.
+- **Typecheck ✅ Lint ✅** — all passing cleanly.
+
+### Verification
+
+- [x] BUG-014 fixed — `main.yml` stale doc refs `docs/bug.md`→`docs/bugs.md` and `docs/feature.md`→`docs/features.md` (3 occurrences)
+- [x] BUG-017 fixed — 11 occurrences of `node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files
+- [x] `continue-on-error: true` removed from Install Node.js steps in iterate.yml and on-pull.yml
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] No stale branches, no unused files, no type suppressions
+- [x] docs/audits/README.md updated with issue-audit-report-2026-06-19.md
+
+---
+
 ## Cycle 120 (2026-06-19 — RepoKeeper: BUG-014/BUG-017 Fix on main, Stale Branch Cleanup, Audit Ref)
 
 ### Audit Scope

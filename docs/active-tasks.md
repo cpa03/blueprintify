@@ -2,6 +2,30 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 121 — BUG-014/BUG-017 Actually Applied on main ✅
+
+### Task: Full repository audit, **fix BUG-014** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 3 occurrences), **fix BUG-017** (replace hardcoded `node-version: "20"` with `node-version-file: ".node-version"` in 4 workflow files — 11 occurrences), documentation sync, quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Actually apply BUG-014 and BUG-017 fixes on main — previous cycles documented fixes that were not actually merged. This cycle applies all workflow fixes and creates a proper PR.
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅
+  - [x] **BUG-014 actually fixed**: `main.yml` stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` — 3 occurrences
+  - [x] **BUG-017 actually fixed**: 11 hardcoded `node-version: "20"` replaced with `node-version-file: ".node-version"` across iterate.yml (5), on-pull.yml (1), parallel.yml (4), pr-gatekeeper.yml (1)
+  - [x] **Removed `continue-on-error: true`** from Install Node.js steps in iterate.yml (5) and on-pull.yml (1)
+  - [x] **README BroCula description verified**: `(Jun 13–Jun 18 Run 3)` — matches latest audit
+  - [x] **Node version consistency verified**: `.node-version` (22), `.nvmrc` (22), `package.json engines.node` (`>=22`), workflows now reference `.node-version`
+  - [x] **docs/audits/README.md updated**: Added issue-audit-report-2026-06-19.md to Current Reports
+  - [x] **Updated docs/findings.md**: Cycle 121 entry added
+  - [x] **Updated docs/active-tasks.md**: Cycle 121 completed
+  - [x] **Updated CHANGELOG.md**: Cycle 121 entry added
+
+---
+
 ## Completed: BugFixer ULW Cycle Jun 19 — BUG-014 & BUG-017 Actual Fix on main ✅
 
 ### Task: Full repository audit, **fix BUG-014** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **fix BUG-017** (replace hardcoded `node-version: "20"`/`node-version: 20` with `node-version-file: ".node-version"` in 4 workflow files — 11 occurrences), documentation sync, quality verification, PR creation
