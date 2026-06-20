@@ -7,6 +7,7 @@
  * Features:
  * - Pre-defined feature suggestions (auth, API, testing, etc.)
  * - Custom feature input with add button
+ * - Add all suggestions with one click for bulk selection
  * - Visual feedback when features are added
  * - Clear all functionality
  * - Feature count display
@@ -50,6 +51,7 @@ export const StepFeatures = memo(function StepFeatures({
 }: StepFeaturesProps): JSX.Element {
   const [newFeature, setNewFeature] = useState("");
   const [justAdded, setJustAdded] = useState<string | null>(null);
+  const [showAllAddedMsg, setShowAllAddedMsg] = useState(false);
   const featureInputRef = useRef<HTMLInputElement>(null);
   const features = useWizardStore((s) => s.features);
   const addFeature = useWizardStore((s) => s.addFeature);
@@ -102,6 +104,18 @@ export const StepFeatures = memo(function StepFeatures({
     () => SUGGESTED_FEATURES.filter((f: string) => !isInFeatures(f)),
     [isInFeatures]
   );
+
+  const handleAddAllSuggestions = useCallback(() => {
+    const suggestionsToAdd = suggestedNotAdded;
+    if (suggestionsToAdd.length === 0) return;
+
+    Promise.resolve().then(() => {
+      suggestionsToAdd.forEach((feature: string) => addFeature(feature));
+    });
+
+    setShowAllAddedMsg(true);
+    setTimeout(() => setShowAllAddedMsg(false), TIMEOUTS.TOAST_NOTIFICATION);
+  }, [suggestedNotAdded, addFeature]);
 
   return (
     <motion.div {...pageTransition(direction)} className="space-y-6">
@@ -296,9 +310,40 @@ export const StepFeatures = memo(function StepFeatures({
         {/* Suggestions */}
         {suggestedNotAdded.length > 0 && (
           <div>
-            <label className="label" id="suggestions-label">
-              {UI_CONTENT.WIZARD.STEP_FEATURES.QUICK_ADD_LABEL}
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="label mb-0" id="suggestions-label">
+                {UI_CONTENT.WIZARD.STEP_FEATURES.QUICK_ADD_LABEL}
+              </label>
+              <motion.button
+                type="button"
+                onClick={handleAddAllSuggestions}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
+                className="text-xs text-primary-400 hover:text-primary-300
+                           focus-visible:outline-none focus-visible:ring-2
+                           focus-visible:ring-primary-500/50 rounded px-2 py-1
+                           transition-colors flex items-center gap-1
+                           bg-primary-500/10 hover:bg-primary-500/20"
+                aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_ALL_SUGGESTIONS}
+              >
+                <svg
+                  className="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+                {UI_CONTENT.WIZARD.STEP_FEATURES.ADD_ALL_SUGGESTIONS}
+              </motion.button>
+            </div>
             <div className="flex flex-wrap gap-2" role="group" aria-labelledby="suggestions-label">
               {suggestedNotAdded.map((feature) => {
                 const isJustAdded = justAdded === feature;
@@ -409,15 +454,25 @@ export const StepFeatures = memo(function StepFeatures({
 
       {/* Success toast notification */}
       <AnimatePresence>
-        {justAdded && (
+        {(justAdded || showAllAddedMsg) && (
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.9 }}
             className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50"
           >
-            <div className="bg-accent-emerald/90 backdrop-blur-sm text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <motion.div
+              className="bg-accent-emerald/90 backdrop-blur-sm text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
+              initial={showAllAddedMsg ? { scale: 0.9 } : undefined}
+              animate={showAllAddedMsg ? { scale: [1, 1.05, 1] } : undefined}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              <svg
+                className="w-4 h-4 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -426,9 +481,13 @@ export const StepFeatures = memo(function StepFeatures({
                 />
               </svg>
               <span className="text-sm">
-                {UI_CONTENT.WIZARD.STEP_FEATURES.ADDED_MESSAGE(justAdded)}
+                {showAllAddedMsg
+                  ? UI_CONTENT.WIZARD.STEP_FEATURES.ADD_ALL_MESSAGE
+                  : justAdded
+                    ? UI_CONTENT.WIZARD.STEP_FEATURES.ADDED_MESSAGE(justAdded)
+                    : ""}
               </span>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
