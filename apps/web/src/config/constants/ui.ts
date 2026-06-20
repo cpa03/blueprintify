@@ -6,7 +6,11 @@
  */
 
 import { ENV } from "../env";
-import { VALIDATION_LIMITS } from "@blueprint/shared";
+import {
+  VALIDATION_LIMITS,
+  ANIMATION_DURATION_MS as SHARED_ANIMATION_DURATION_MS,
+  CELEBRATION_DEFAULTS as SHARED_CELEBRATION_DEFAULTS,
+} from "@blueprint/shared";
 import { ANIMATION_TIMING, COLORS } from "../theme";
 
 // ============================================================================
@@ -72,33 +76,39 @@ export const ANIMATION = {
   LOADING_OVERLAY_S: 0.15,
 } as const;
 
-/** Animation durations (in milliseconds) */
+/**
+ * Animation durations (in milliseconds)
+ * Flexy says: Single source of truth in @blueprint/shared!
+ */
 export const ANIMATION_MS = {
-  TYPING_INDICATOR_DELAY: 600,
-  TYPING_INDICATOR_TIMEOUT: 800,
-  CHIP_SELECT_FEEDBACK: 600,
-  INPUT_TYPING_DELAY: 800,
-} as const;
-
-/** Celebration animation timing (in milliseconds) */
-export const CELEBRATION_TIMING = {
-  REDUCED_MOTION_DISPLAY: 1500,
-  PARTICLE_FADEOUT: 2000,
-  COMPLETION_DELAY: 2500,
+  TYPING_INDICATOR_DELAY: SHARED_ANIMATION_DURATION_MS.TYPING_INDICATOR_DELAY,
+  TYPING_INDICATOR_TIMEOUT: SHARED_ANIMATION_DURATION_MS.TYPING_INDICATOR_TIMEOUT,
+  CHIP_SELECT_FEEDBACK: SHARED_ANIMATION_DURATION_MS.CHIP_SELECT_FEEDBACK,
+  INPUT_TYPING_DELAY: SHARED_ANIMATION_DURATION_MS.INPUT_TYPING_DELAY,
 } as const;
 
 /**
- * Celebration particle configuration
- * Controls the number, size, and spread of particles during completion animation
+ * Celebration animation timing (in milliseconds)
+ * Flexy says: Single source of truth in @blueprint/shared!
+ */
+export const CELEBRATION_TIMING = {
+  REDUCED_MOTION_DISPLAY: SHARED_CELEBRATION_DEFAULTS.REDUCED_MOTION_DISPLAY_MS,
+  PARTICLE_FADEOUT: SHARED_CELEBRATION_DEFAULTS.PARTICLE_FADEOUT_MS,
+  COMPLETION_DELAY: SHARED_CELEBRATION_DEFAULTS.COMPLETION_DELAY_MS,
+} as const;
+
+/**
+ * Celebration particle configuration (from shared config)
+ * Flexy says: Single source of truth in @blueprint/shared!
  */
 export const CELEBRATION_PARTICLE = {
-  COUNT: 24,
-  BASE_DISTANCE_PX: 80,
-  RANDOM_DISTANCE_PX: 120,
-  BASE_SIZE_PX: 6,
-  RANDOM_SIZE_PX: 8,
-  SHAPES: ["circle", "square", "star"] as const,
-  ANIMATION_DURATION_S: 1.2,
+  COUNT: SHARED_CELEBRATION_DEFAULTS.PARTICLE_COUNT,
+  BASE_DISTANCE_PX: SHARED_CELEBRATION_DEFAULTS.PARTICLE_BASE_DISTANCE_PX,
+  RANDOM_DISTANCE_PX: SHARED_CELEBRATION_DEFAULTS.PARTICLE_RANDOM_DISTANCE_PX,
+  BASE_SIZE_PX: SHARED_CELEBRATION_DEFAULTS.PARTICLE_BASE_SIZE_PX,
+  RANDOM_SIZE_PX: SHARED_CELEBRATION_DEFAULTS.PARTICLE_RANDOM_SIZE_PX,
+  SHAPES: SHARED_CELEBRATION_DEFAULTS.PARTICLE_SHAPES,
+  ANIMATION_DURATION_S: SHARED_CELEBRATION_DEFAULTS.PARTICLE_ANIMATION_DURATION_S,
 } as const;
 
 // ============================================================================

@@ -11,6 +11,9 @@ import {
   HTTP_STATUS,
   ERROR_STRINGS,
   DEV_DOMAIN_DEFAULTS,
+  API_ERROR_MESSAGES as SHARED_API_ERROR_MESSAGES,
+  GENERATION_MESSAGES as SHARED_GENERATION_MESSAGES,
+  GENERATION_ESTIMATES as SHARED_GENERATION_ESTIMATES,
 } from "@blueprint/shared";
 
 export { ROUTE_PATHS, RETRYABLE_STATUS_CODES, SSE_CONFIG, HTTP_STATUS };
@@ -28,35 +31,23 @@ export const API_ENDPOINTS = {
 } as const;
 
 /**
- * API Error Messages
- * Displayed to users when API calls fail
+ * API Error Messages (from shared config)
+ * Flexy says: Single source of truth in @blueprint/shared!
  */
-export const API_ERROR_MESSAGES = {
-  GENERATION_FAILED: "Generation failed. Please check your input and try again.",
-  TASK_GENERATION_FAILED: "Task generation failed. Ensure blueprint content is valid.",
-  REFINEMENT_FAILED: "Refinement failed. Please check your refinement instructions.",
-  NO_RESPONSE_BODY: "Server returned empty response. Check if API server is running.",
-  STREAM_ERROR: "Connection interrupted. Check your network and try again.",
-} as const;
+export const API_ERROR_MESSAGES = SHARED_API_ERROR_MESSAGES;
 
-/** Generation timing estimates */
+/** Generation timing estimates (from shared config) */
 export const GENERATION_ESTIMATES = {
-  TYPICAL_DURATION_SECONDS: "30-60",
-  SHORT: "15-30",
-  LONG: "60-90",
+  /** Typical generation duration estimate (30-60 seconds) */
+  TYPICAL_DURATION_SECONDS: SHARED_GENERATION_ESTIMATES.TYPICAL,
+  /** Short generation duration estimate (15-30 seconds) */
+  SHORT: SHARED_GENERATION_ESTIMATES.SHORT,
+  /** Long generation duration estimate (60-90 seconds) */
+  LONG: SHARED_GENERATION_ESTIMATES.LONG,
 } as const;
 
-/** Generation progress messages */
-export const GENERATION_MESSAGES = {
-  CANCELLED: "Generation cancelled",
-  BLUEPRINT_START: "Generating blueprint...",
-  BLUEPRINT_COMPLETE: "Blueprint complete. Generating tasks...",
-  COMPLETE: "Complete!",
-  RETRY: (attempt: number, maxRetries: number) =>
-    `Connection issue, retrying (${attempt}/${maxRetries})...`,
-  ERROR: (error: string) => `Error: ${error}`,
-  ERROR_TASKS: (error: string) => `Error generating tasks: ${error}`,
-} as const;
+/** Generation progress messages (from shared config) */
+export const GENERATION_MESSAGES = SHARED_GENERATION_MESSAGES;
 
 /** External URLs used throughout the application */
 export const EXTERNAL_URLS = {
