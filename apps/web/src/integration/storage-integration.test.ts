@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { StorageManager, StorageError } from "../lib/storage";
 import { createTestBlueprint } from "./factories";
+import { STORAGE_KEY_PREFIXES } from "@blueprint/shared";
 
 describe("Integration: Cross-Browser Storage Operations", () => {
   let manager: StorageManager;
@@ -241,7 +242,7 @@ describe("Integration: Cross-Browser Storage Operations", () => {
       await storage.set({ version: 2 });
       await storage.set({ version: 3 });
 
-      const backupKey = `__backup__${key}`;
+      const backupKey = `${STORAGE_KEY_PREFIXES.BACKUP}${key}`;
       const backupRaw = localStorageStore[backupKey];
       expect(backupRaw).toBeDefined();
 
