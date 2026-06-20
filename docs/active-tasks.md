@@ -2,6 +2,25 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 125 — BUG-014 & BUG-017 Actually Fixed on main, Documentation Refresh ✅
+
+### Task: Full repository audit, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files — 11 occurrences), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Full repository audit covering redundant/temp/unused file scan, **BUG-014 actually fixed on main** (main.yml stale doc refs), **BUG-017 actually fixed on main** (hardcoded node-version replaced across 5 workflow files), documentation refresh, quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] **BUG-014 actually fixed**: `main.yml` stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` — 2 occurrences
+  - [x] **BUG-017 actually fixed**: `node-version: "20"`→`node-version-file: ".node-version"` — 11 occurrences across iterate.yml (5), parallel.yml (4), on-pull.yml (1), pr-gatekeeper.yml (1)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests ✅
+  - [x] Updated docs/findings.md: Cycle 125 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 125 completed
+  - [x] Updated docs/knowledge-review.md: Cycle 125 refreshed
+  - [x] Updated CHANGELOG.md: Cycle 125 entry added
+  - [x] PR created
+
 ## Completed: RepoKeeper Cycle 124 — BUG-014 Actual Fix, Audit Dashboard Refresh, Redundant File Cleanup ✅
 
 ### Task: Full repository audit, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **redundant file cleanup** (deleted `docs/bug-014-017-workflow-patch.diff`), **audit dashboard refresh** (add Jun 19 BroCula + Jun 20 ULW Loop to Current Reports), README BroCula description update, documentation sync, quality verification, PR creation
