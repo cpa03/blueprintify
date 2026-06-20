@@ -126,4 +126,9 @@ temp/
 # Generated audit reports
 audit-reports/
 lighthouse-report*.json
+
+# Playwright e2e artifacts
+apps/web/e2e/report/
+apps/web/e2e/test-results/
+apps/web/e2e/snapshots/
 .playwright-mcp/
