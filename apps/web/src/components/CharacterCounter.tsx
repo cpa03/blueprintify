@@ -1,7 +1,11 @@
-import { memo, useMemo } from "react";
+import { memo, useMemo, useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ANIMATION } from "../config/constants";
 import { ANIMATION_TIMING } from "../config/theme";
+
+// One-shot shake keyframes for the limit-reached alert: a gentle horizontal
+// vibration that plays when the character counter hits the maximum value.
+const LIMIT_SHAKE_KEYFRAMES = [0, -2, 2, -1, 1, 0];
 
 interface CharacterCounterProps {
   current: number;
@@ -33,28 +37,44 @@ function CharacterCounterComponent({
 
   const remaining = max - current;
 
+  const [showLimitShake, setShowLimitShake] = useState(false);
+  const prevAtLimitRef = useRef(false);
+
+  useEffect(() => {
+    if (isAtLimit && !prevAtLimitRef.current) {
+      setShowLimitShake(true);
+      const timer = setTimeout(() => setShowLimitShake(false), 400);
+      return () => clearTimeout(timer);
+    }
+    prevAtLimitRef.current = isAtLimit;
+  }, [isAtLimit]);
+
   return (
     <>
       {/* Visual counter — hidden from screen readers */}
       <motion.span
         className={`text-xs tabular-nums transition-colors duration-200 ${colorClass} ${className}`}
         animate={
-          shouldPulse
-            ? {
-                scale: [1, 1.15, 1],
-                opacity: [1, 0.7, 1],
-              }
-            : {}
+          showLimitShake
+            ? { x: LIMIT_SHAKE_KEYFRAMES, scale: 1, opacity: 1 }
+            : shouldPulse
+              ? {
+                  scale: [1, 1.15, 1],
+                  opacity: [1, 0.7, 1],
+                }
+              : {}
         }
         transition={
-          shouldPulse
-            ? {
-                duration: ANIMATION.PULSE,
-                repeat: Infinity,
-                repeatType: "loop",
-                ease: "easeInOut",
-              }
-            : {}
+          showLimitShake
+            ? { duration: 0.35, ease: "easeInOut" }
+            : shouldPulse
+              ? {
+                  duration: ANIMATION.PULSE,
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  ease: "easeInOut",
+                }
+              : { duration: 0.2 }
         }
         aria-hidden="true"
       >
@@ -62,12 +82,28 @@ function CharacterCounterComponent({
         <span className="text-dark-600">/{max}</span>
         {isAtLimit && (
           <motion.span
-            initial={{ opacity: 0, x: -5 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="ml-1"
+            initial={{ opacity: 0, x: -4, scale: 0.5 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 12,
+              mass: 0.5,
+            }}
+            className="ml-1 inline-flex"
             aria-hidden="true"
           >
-            ⚠️
+            <svg
+              className="w-3.5 h-3.5 text-accent-pink"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
           </motion.span>
         )}
       </motion.span>
