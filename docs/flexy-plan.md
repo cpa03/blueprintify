@@ -1088,3 +1088,32 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 640 web + 382 api + 417 shared = 1,439 tests passing across 75 files
+
+### ✅ Flexy Iteration 56: Centralize UI_TIMEOUTS, Animation Ms, Celebration Defaults, API Error Messages, Toast Icons/Styles
+
+| Config Object | File | Change |
+|---|---|---|
+| `UI_TIMEOUTS` | `packages/shared/src/config.ts` | Added 11 common timeout magic numbers (COPY_FEEDBACK, SHAKE_ANIMATION, TOAST_NOTIFICATION, FOCUS_DELAY, LIVE_REGION_CLEAR, API_HEALTH_CHECK, API_CONNECTION, LAST_SAVED_REFRESH, STEP_COMPLETE_FLASH, DEBOUNCE, GENERATION_CHECK) |
+| `API_ERROR_MESSAGES` | `packages/shared/src/config.ts` | Added 5 user-facing API error strings |
+| `GENERATION_MESSAGES` | `packages/shared/src/config.ts` | Added 7 generation status strings including 3 template functions (RETRY, ERROR, ERROR_TASKS) |
+| `GENERATION_ESTIMATES` | `packages/shared/src/config.ts` | Added 3 duration estimate strings (TYPICAL, SHORT, LONG) |
+| `ANIMATION_DURATION_MS` | `packages/shared/src/config.ts` | Added 4 animation timing magic numbers |
+| `CELEBRATION_DEFAULTS` | `packages/shared/src/config.ts` | Added 12 celebration/particle config values (timing, count, distances, sizes, shapes, duration) |
+| `TOAST_ICONS` | `packages/shared/src/config.ts` | Added 4 toast icon symbol strings (✓, ✕, ⚠, ℹ) |
+| `TOAST_STYLES` | `packages/shared/src/config.ts` | Added 4 toast Tailwind CSS class strings |
+
+| File | Change |
+|---|---|
+| `packages/shared/src/index.ts` | Added exports for all 8 new config objects |
+| `packages/shared/src/config.test.ts` | Added 41 tests for value matching, type checks, template function signature verification |
+| `apps/web/src/config/constants/api.ts` | `API_ERROR_MESSAGES`, `GENERATION_MESSAGES` re-export from shared; `GENERATION_ESTIMATES` maps shared `TYPICAL` → local `TYPICAL_DURATION_SECONDS` |
+| `apps/web/src/config/constants/storage.ts` | `TIMEOUTS` re-exports from `UI_TIMEOUTS`; `TOAST_CONFIG.ICONS`/`STYLES` re-export from shared |
+| `apps/web/src/config/constants/ui.ts` | `ANIMATION_MS`, `CELEBRATION_TIMING`, `CELEBRATION_PARTICLE` all reference shared configs |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 640 web + 382 api + 444 shared = 1,466 tests passing across 75 files
+- ✅ PR [#1968](https://github.com/cpa03/blueprintify/pull/1968) — open, mergeable
