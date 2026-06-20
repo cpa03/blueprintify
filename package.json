@@ -30,6 +30,8 @@
     "db:status": "node scripts/migrate.ts status",
     "db:rollback": "node scripts/migrate.ts rollback",
     "brocula": "node scripts/brocula-hunt.mjs",
+    "validate:wrangler": "node scripts/validate-wrangler.mjs",
+    "prebuild:api": "npm run validate:wrangler",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "doctor": "node -e \"console.log('Node:', process.version); const fs=require('fs'); try{console.log('.nvmrc:',fs.readFileSync('.nvmrc','utf8').trim())}catch(e){}\"",
