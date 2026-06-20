@@ -173,19 +173,19 @@ function EditorToolbarComponent({
               )}
             >
               <span className="flex items-center gap-1.5">
-                {mode === "edit" && (
+                {mode === SHARED_VIEW_MODES.EDIT && (
                   <>
                     <Icon name="edit" className="w-4 h-4" />
                     <span className="hidden sm:inline">Edit</span>
                   </>
                 )}
-                {mode === "split" && (
+                {mode === SHARED_VIEW_MODES.SPLIT && (
                   <>
                     <Icon name="columns" className="w-4 h-4" />
                     <span className="hidden sm:inline">Split</span>
                   </>
                 )}
-                {mode === "preview" && (
+                {mode === SHARED_VIEW_MODES.PREVIEW && (
                   <>
                     <Icon name="eye" className="w-4 h-4" />
                     <span className="hidden sm:inline">Preview</span>
@@ -201,12 +201,13 @@ function EditorToolbarComponent({
           initial={false}
           animate={{
             left:
-              viewMode === "edit"
+              viewMode === SHARED_VIEW_MODES.EDIT
                 ? "4px"
-                : viewMode === "split"
+                : viewMode === SHARED_VIEW_MODES.SPLIT
                   ? "calc(33.33% + 2px)"
                   : "calc(66.67% - 0px)",
-            width: viewMode === "split" ? "calc(33.33% - 2px)" : "calc(33.33% - 4px)",
+            width:
+              viewMode === SHARED_VIEW_MODES.SPLIT ? "calc(33.33% - 2px)" : "calc(33.33% - 4px)",
           }}
           transition={{
             type: "spring",
