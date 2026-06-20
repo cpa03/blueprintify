@@ -34,7 +34,7 @@ import { useEditorStore, resetAllStores, useToast } from "../store";
 import { useExportContext } from "../context/ExportContext";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
-import { EDITOR_FILENAMES } from "@blueprint/shared";
+import { EDITOR_FILENAMES, VIEW_MODES } from "@blueprint/shared";
 import {
   TIMEOUTS,
   UI,
@@ -54,9 +54,9 @@ import "../styles/markdown.css";
 
 /** Map of keyboard digits to view modes for Ctrl/Cmd+1/2/3 switching */
 const VIEW_MODE_SHORTCUT_MAP: Record<string, ViewMode> = {
-  "1": "edit",
-  "2": "split",
-  "3": "preview",
+  "1": VIEW_MODES.EDIT,
+  "2": VIEW_MODES.SPLIT,
+  "3": VIEW_MODES.PREVIEW,
 } as const;
 
 /**
@@ -70,7 +70,7 @@ const VIEW_MODE_SHORTCUT_MAP: Record<string, ViewMode> = {
  * ```
  */
 function EditorComponent(): JSX.Element {
-  const [viewMode, setViewMode] = useState<ViewMode>("split");
+  const [viewMode, setViewMode] = useState<ViewMode>(VIEW_MODES.SPLIT);
   const [copied, setCopied] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
   const [exportSuccess, setExportSuccess] = useState(false);
@@ -333,11 +333,11 @@ function EditorComponent(): JSX.Element {
                     className="h-full flex flex-col lg:flex-row"
                   >
                     {/* Code Editor */}
-                    {(viewMode === "edit" || viewMode === "split") && (
+                    {(viewMode === VIEW_MODES.EDIT || viewMode === VIEW_MODES.SPLIT) && (
                       <div
                         className={clsx(
                           "h-full overflow-hidden",
-                          viewMode === "split"
+                          viewMode === VIEW_MODES.SPLIT
                             ? "w-full lg:w-1/2 lg:border-r lg:border-dark-700 border-b border-dark-700 lg:border-b-0"
                             : "w-full"
                         )}
@@ -352,12 +352,12 @@ function EditorComponent(): JSX.Element {
                     )}
 
                     {/* Preview */}
-                    {(viewMode === "preview" || viewMode === "split") && (
+                    {(viewMode === VIEW_MODES.PREVIEW || viewMode === VIEW_MODES.SPLIT) && (
                       <div
                         ref={previewRef}
                         className={clsx(
                           "h-full overflow-y-auto p-4 lg:p-6 relative",
-                          viewMode === "split" ? "w-full lg:w-1/2" : "w-full"
+                          viewMode === VIEW_MODES.SPLIT ? "w-full lg:w-1/2" : "w-full"
                         )}
                       >
                         <ScrollProgress scrollContainerRef={previewRef} />
