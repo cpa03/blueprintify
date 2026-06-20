@@ -14,4 +14,12 @@ import { RefineController } from "../controllers";
 
 const refineController = new RefineController();
 
-export default createPostRoute(RefineRequestSchema, async (c) => refineController.refineContent(c));
+export default createPostRoute(
+  RefineRequestSchema,
+  async (c) => refineController.refineContent(c),
+  [
+    { path: "content", label: "content" },
+    { path: "instruction", label: "instruction" },
+    { path: "context", label: "context" },
+  ]
+);

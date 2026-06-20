@@ -14,6 +14,14 @@ import { GenerateController } from "../controllers";
 
 const generateController = new GenerateController();
 
-export default createPostRoute(BlueprintRequestSchema, async (c) =>
-  generateController.generateBlueprint(c)
+export default createPostRoute(
+  BlueprintRequestSchema,
+  async (c) => generateController.generateBlueprint(c),
+  [
+    { path: "projectName", label: "project name" },
+    { path: "description", label: "description" },
+    { path: "targetAudience", label: "target audience" },
+    { path: "constraints", label: "constraints" },
+    { path: "features", label: "features" },
+  ]
 );

@@ -14,6 +14,11 @@ import { TasksController } from "../controllers";
 
 const tasksController = new TasksController();
 
-export default createPostRoute(TaskGenerationRequestSchema, async (c) =>
-  tasksController.generateTasks(c)
+export default createPostRoute(
+  TaskGenerationRequestSchema,
+  async (c) => tasksController.generateTasks(c),
+  [
+    { path: "projectName", label: "project name" },
+    { path: "blueprint", label: "blueprint" },
+  ]
 );

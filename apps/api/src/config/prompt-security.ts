@@ -167,6 +167,66 @@ export function hasInjectionPattern(input: string): boolean {
 }
 
 /**
+ * Error message used when prompt injection is detected during validation.
+ * Provides a clear, user-safe message that doesn't reveal detection internals.
+ */
+export const PROMPT_INJECTION_ERROR_MESSAGE =
+  "Input contains potentially unsafe content. Please remove any instructions directed at the AI system and try again.";
+
+/**
+ * Validates that user input doesn't contain prompt injection patterns.
+ * Throws a standard Error with a clear message if injection is detected.
+ * Designed to be used in Zod refinements and API validation middleware.
+ *
+ * This provides defense-in-depth: even if the sanitization in
+ * sanitizePromptInput() is bypassed, the request will be rejected
+ * at the validation layer before reaching the AI service.
+ *
+ * @param input - Raw user input string to validate
+ * @param fieldName - Optional field name for error context (e.g., "description")
+ * @throws {Error} When injection patterns are detected
+ *
+ * @example
+ * ```typescript
+ * // In Zod schema refinement:
+ * .refine((val) => { validatePromptInput(val); return true; }, {
+ *   message: PROMPT_INJECTION_ERROR_MESSAGE
+ * })
+ * ```
+ */
+export function validatePromptInput(input: string, fieldName?: string): void {
+  if (!input) return;
+
+  const detected = detectInjectionPatterns(input);
+  if (detected.length > 0) {
+    const context = fieldName ? ` in field '${fieldName}'` : "";
+    throw new Error(
+      `${PROMPT_INJECTION_ERROR_MESSAGE} Detected patterns${context}: ${detected.join(", ")}`
+    );
+  }
+}
+
+/**
+ * Zod refinement function for prompt injection detection.
+ * Returns true if the input is clean (no injection detected).
+ * Returns false with a clear error message if injection patterns are found.
+ *
+ * Use this in Zod schemas to add prompt-injection protection at the
+ * validation boundary — before data reaches the prompt builder.
+ *
+ * @example
+ * ```typescript
+ * const SafeStringSchema = z.string().refine(
+ *   (val) => isPromptInjectionClean(val),
+ *   { message: PROMPT_INJECTION_ERROR_MESSAGE }
+ * );
+ * ```
+ */
+export function isPromptInjectionClean(input: string): boolean {
+  return !hasInjectionPattern(input);
+}
+
+/**
  * Control characters that are filtered out during sanitization.
  * Allowed control characters: tab (9), newline (10), carriage return (13).
  * All other characters with charCode < 32 are removed.

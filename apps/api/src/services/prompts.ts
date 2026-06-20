@@ -130,9 +130,7 @@ export function buildTaskPrompt(blueprint: string, projectName: string): string 
   const sanitizedBlueprint = sanitizePromptInput(blueprint);
   return `Based on the following blueprint.md, generate a comprehensive task.md checklist:
 
----
-${sanitizedBlueprint}
----
+${withUserDelimiters(sanitizedBlueprint)}
 
 Create prioritized tasks (P0, P1, P2) for building "${sanitizePromptInput(projectName)}" from scratch. Each task should be:
 - Atomic and clearly defined
