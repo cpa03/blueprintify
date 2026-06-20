@@ -1055,6 +1055,7 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD | `feat/flexy-iteration-51-ci-node-version` | feat(flexy): fix hardcoded CI node version — use .node-version file |
+| #1979 | `feat/flexy-iteration-57-animations-durations` | feat(flexy): replace remaining hardcoded animation durations with ANIMATION constants |
 
 ### ✅ Flexy Iteration 53: Replace Remaining Hardcoded Proxy Path & Toast Type Comparisons
 
@@ -1117,3 +1118,33 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 640 web + 382 api + 444 shared = 1,466 tests passing across 75 files
 - ✅ PR [#1968](https://github.com/cpa03/blueprintify/pull/1968) — open, mergeable
+
+## PR
+
+| PR #  | Branch                                              | Title                                                                         |
+| ----- | --------------------------------------------------- | ----------------------------------------------------------------------------- |
+| #1979 | `feat/flexy-iteration-57-animations-durations`      | feat(flexy): replace remaining hardcoded animation durations with ANIMATION constants |
+
+### ✅ Flexy Iteration 57: Replace Remaining Hardcoded Animation Durations with ANIMATION Constants
+
+| File | Change |
+|---|---|
+| `apps/web/src/config/constants/ui.ts` | Added `HOVER_POPUP` (0.12s), `LIVE_INDICATOR` (1.4s) to `ANIMATION` |
+| `apps/web/src/components/ScrollProgress.tsx` | `duration:2` → `ANIMATION.SLOW_PULSE` (×2) |
+| `apps/web/src/components/ScrollToTop.tsx` | `duration:1.5` → `ANIMATION.FLOAT`; added `ANIMATION` import |
+| `apps/web/src/components/editor/EditorHeader.tsx` | `duration:1.4/2/2.5` → `LIVE_INDICATOR/SLOW_PULSE/BREATH` |
+| `apps/web/src/components/editor/EditorToolbar.tsx` | `duration:1` → `ANIMATION.GENTLE_PULSE` |
+| `apps/web/src/components/EditorEmptyState.tsx` | `duration:2.5/2.2/1.8` → `BREATH/DRIFT/DRIFT_SLOW` |
+| `apps/web/src/components/PageScrollProgressBar.tsx` | `duration:2.5/0.12` → `BREATH/HOVER_POPUP`; added `ANIMATION` import |
+| `apps/web/src/components/LastSavedIndicator.tsx` | `duration:1` → `ANIMATION.GENTLE_PULSE` |
+| `apps/web/src/components/CharacterCounter.tsx` | `duration:0.35/0.2` → `ANIMATION.SEMI_SLOW/NORMAL` |
+| `apps/web/src/components/ErrorFallback.tsx` | `duration:0.2` → `ANIMATION.NORMAL` |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | `duration:0.4` → `ANIMATION.FADE_IN` |
+| `apps/web/src/components/PreviewEmptyState.tsx` | Hardcoded `"blueprint.md"/"task.md"` → `EDITOR_FILENAMES.*` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 640 web + 382 api + 444 shared = 1,466 tests passing across 75 files
