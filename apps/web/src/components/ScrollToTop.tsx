@@ -20,7 +20,7 @@
 import { useState, useEffect, useCallback, memo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
-import { SPRING_CONFIG, SCROLL_THRESHOLDS } from "../config/constants";
+import { ANIMATION, SPRING_CONFIG, SCROLL_THRESHOLDS } from "../config/constants";
 
 type ScrollDirection = "top" | "bottom";
 
@@ -199,7 +199,7 @@ export const ScrollToPosition = memo(function ScrollToPosition({
                 initial={false}
                 animate={isToTop ? { y: [2, -2, 2] } : { y: [-2, 2, -2] }}
                 transition={{
-                  duration: 1.5,
+                  duration: ANIMATION.FLOAT,
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}

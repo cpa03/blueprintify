@@ -91,7 +91,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               initial={{ width: "60%" }}
               animate={{ width: ["60%", "40%", "60%"] }}
               transition={{
-                duration: 2.5,
+                duration: ANIMATION.BREATH,
                 repeat: Infinity,
                 ease: "easeInOut",
                 delay: 0.2,
@@ -102,7 +102,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               initial={{ width: "80%" }}
               animate={{ width: ["80%", "50%", "80%"] }}
               transition={{
-                duration: 2.2,
+                duration: ANIMATION.DRIFT,
                 repeat: Infinity,
                 ease: "easeInOut",
                 delay: 0.4,
@@ -113,7 +113,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               initial={{ width: "40%" }}
               animate={{ width: ["40%", "70%", "40%"] }}
               transition={{
-                duration: 1.8,
+                duration: ANIMATION.DRIFT_SLOW,
                 repeat: Infinity,
                 ease: "easeInOut",
                 delay: 0.6,
