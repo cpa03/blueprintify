@@ -11,6 +11,9 @@ import {
   UI_MESSAGES,
   STORAGE_ERROR_MESSAGES as SHARED_STORAGE_ERROR_MESSAGES,
   STORAGE_OPERATION_ERROR_STRINGS,
+  UI_TIMEOUTS as SHARED_UI_TIMEOUTS,
+  TOAST_ICONS,
+  TOAST_STYLES,
 } from "@blueprint/shared";
 import { ENV } from "../env";
 import { STORAGE_KEYS } from "../keys";
@@ -21,20 +24,22 @@ export { STORAGE_KEYS };
 // Timeouts
 // ============================================================================
 
-/** Timeout durations (in milliseconds) */
+/**
+ * Timeout durations (in milliseconds)
+ * Flexy says: Single source of truth in @blueprint/shared!
+ */
 export const TIMEOUTS = {
-  COPY_FEEDBACK: 2000,
-  DEBOUNCE: 300,
-  GENERATION_CHECK: 100,
-  TOAST_NOTIFICATION: 1500,
-  SHAKE_ANIMATION: 400,
-  FOCUS_DELAY: 100,
-  LIVE_REGION_CLEAR: 1000,
-  API_HEALTH_CHECK: 5000,
-  API_CONNECTION: 30000,
-  LAST_SAVED_REFRESH: 30000,
-  /** Duration for step-complete flash animation in the StepIndicator (ms) */
-  STEP_COMPLETE_FLASH: 700,
+  COPY_FEEDBACK: SHARED_UI_TIMEOUTS.COPY_FEEDBACK,
+  DEBOUNCE: SHARED_UI_TIMEOUTS.DEBOUNCE,
+  GENERATION_CHECK: SHARED_UI_TIMEOUTS.GENERATION_CHECK,
+  TOAST_NOTIFICATION: SHARED_UI_TIMEOUTS.TOAST_NOTIFICATION,
+  SHAKE_ANIMATION: SHARED_UI_TIMEOUTS.SHAKE_ANIMATION,
+  FOCUS_DELAY: SHARED_UI_TIMEOUTS.FOCUS_DELAY,
+  LIVE_REGION_CLEAR: SHARED_UI_TIMEOUTS.LIVE_REGION_CLEAR,
+  API_HEALTH_CHECK: SHARED_UI_TIMEOUTS.API_HEALTH_CHECK,
+  API_CONNECTION: SHARED_UI_TIMEOUTS.API_CONNECTION,
+  LAST_SAVED_REFRESH: SHARED_UI_TIMEOUTS.LAST_SAVED_REFRESH,
+  STEP_COMPLETE_FLASH: SHARED_UI_TIMEOUTS.STEP_COMPLETE_FLASH,
 } as const;
 
 // ============================================================================
@@ -79,18 +84,10 @@ export const TOAST_CONFIG = {
   AUTO_SAVE_DURATION: 2000,
   /** Delay (ms) between each toast's entrance for staggered animation */
   STAGGER_MS: 60,
-  ICONS: {
-    SUCCESS: "✓",
-    ERROR: "✕",
-    WARNING: "⚠",
-    INFO: "ℹ",
-  } as const,
-  STYLES: {
-    SUCCESS: "bg-accent-emerald/10 border-accent-emerald/30 text-accent-emerald",
-    ERROR: "bg-accent-pink/10 border-accent-pink/30 text-accent-pink",
-    WARNING: "bg-yellow-500/10 border-yellow-500/30 text-yellow-400",
-    INFO: "bg-primary-500/10 border-primary-500/30 text-primary-300",
-  } as const,
+  /** Flexy says: Single source of truth in @blueprint/shared! */
+  ICONS: TOAST_ICONS,
+  /** Flexy says: Single source of truth in @blueprint/shared! */
+  STYLES: TOAST_STYLES,
 } as const;
 
 // ============================================================================

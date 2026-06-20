@@ -79,6 +79,14 @@ import {
   STORAGE_OPERATION_ERROR_STRINGS,
   ERROR_CLASS_NAMES,
   API_NAME,
+  UI_TIMEOUTS,
+  API_ERROR_MESSAGES,
+  GENERATION_MESSAGES,
+  GENERATION_ESTIMATES,
+  ANIMATION_DURATION_MS,
+  CELEBRATION_DEFAULTS,
+  TOAST_ICONS,
+  TOAST_STYLES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -2185,5 +2193,225 @@ describe("ERROR_CLASS_NAMES", () => {
 describe("API_NAME", () => {
   it("should be Blueprint Generator API", () => {
     expect(API_NAME).toBe("Blueprint Generator API");
+  });
+});
+
+// ============================================================================
+// New Config Objects (Flexy Iteration 56)
+// ============================================================================
+
+describe("UI_TIMEOUTS", () => {
+  it("should have all expected timeout values", () => {
+    expect(UI_TIMEOUTS.COPY_FEEDBACK).toBe(2000);
+    expect(UI_TIMEOUTS.SHAKE_ANIMATION).toBe(400);
+    expect(UI_TIMEOUTS.TOAST_NOTIFICATION).toBe(1500);
+    expect(UI_TIMEOUTS.FOCUS_DELAY).toBe(100);
+    expect(UI_TIMEOUTS.LIVE_REGION_CLEAR).toBe(1000);
+    expect(UI_TIMEOUTS.API_HEALTH_CHECK).toBe(5000);
+    expect(UI_TIMEOUTS.API_CONNECTION).toBe(30000);
+    expect(UI_TIMEOUTS.LAST_SAVED_REFRESH).toBe(30000);
+    expect(UI_TIMEOUTS.STEP_COMPLETE_FLASH).toBe(700);
+    expect(UI_TIMEOUTS.DEBOUNCE).toBe(300);
+    expect(UI_TIMEOUTS.GENERATION_CHECK).toBe(100);
+  });
+
+  it("should have all numeric values", () => {
+    const values = Object.values(UI_TIMEOUTS);
+    expect(values.length).toBe(11);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(v).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have only positive integer values", () => {
+    const values = Object.values(UI_TIMEOUTS);
+    values.forEach((v) => {
+      expect(Number.isInteger(v)).toBe(true);
+      expect(v).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("API_ERROR_MESSAGES", () => {
+  it("should have all expected error messages", () => {
+    expect(API_ERROR_MESSAGES.GENERATION_FAILED).toBe(
+      "Generation failed. Please check your input and try again."
+    );
+    expect(API_ERROR_MESSAGES.TASK_GENERATION_FAILED).toBe(
+      "Task generation failed. Ensure blueprint content is valid."
+    );
+    expect(API_ERROR_MESSAGES.REFINEMENT_FAILED).toBe(
+      "Refinement failed. Please check your refinement instructions."
+    );
+    expect(API_ERROR_MESSAGES.NO_RESPONSE_BODY).toBe(
+      "Server returned empty response. Check if API server is running."
+    );
+    expect(API_ERROR_MESSAGES.STREAM_ERROR).toBe(
+      "Connection interrupted. Check your network and try again."
+    );
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(API_ERROR_MESSAGES);
+    expect(values.length).toBe(5);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(API_ERROR_MESSAGES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("GENERATION_MESSAGES", () => {
+  it("should have all expected generation messages", () => {
+    expect(GENERATION_MESSAGES.CANCELLED).toBe("Generation cancelled");
+    expect(GENERATION_MESSAGES.BLUEPRINT_START).toBe("Generating blueprint...");
+    expect(GENERATION_MESSAGES.BLUEPRINT_COMPLETE).toBe("Blueprint complete. Generating tasks...");
+    expect(GENERATION_MESSAGES.COMPLETE).toBe("Complete!");
+  });
+
+  it("should have string values for non-template properties", () => {
+    const values = Object.values(GENERATION_MESSAGES).filter((v) => typeof v === "string");
+    expect(values.length).toBe(4);
+    values.forEach((v) => {
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have template function for RETRY", () => {
+    expect(typeof GENERATION_MESSAGES.RETRY).toBe("function");
+    expect(GENERATION_MESSAGES.RETRY(1, 3)).toBe("Connection issue, retrying (1/3)...");
+  });
+
+  it("should have template function for ERROR", () => {
+    expect(typeof GENERATION_MESSAGES.ERROR).toBe("function");
+    expect(GENERATION_MESSAGES.ERROR("test")).toBe("Error: test");
+  });
+
+  it("should have template function for ERROR_TASKS", () => {
+    expect(typeof GENERATION_MESSAGES.ERROR_TASKS).toBe("function");
+    expect(GENERATION_MESSAGES.ERROR_TASKS("test")).toBe("Error generating tasks: test");
+  });
+});
+
+describe("GENERATION_ESTIMATES", () => {
+  it("should have all expected estimate values", () => {
+    expect(GENERATION_ESTIMATES.TYPICAL).toBe("30-60");
+    expect(GENERATION_ESTIMATES.SHORT).toBe("15-30");
+    expect(GENERATION_ESTIMATES.LONG).toBe("60-90");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(GENERATION_ESTIMATES);
+    expect(values.length).toBe(3);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(GENERATION_ESTIMATES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("ANIMATION_DURATION_MS", () => {
+  it("should have all expected animation ms values", () => {
+    expect(ANIMATION_DURATION_MS.TYPING_INDICATOR_DELAY).toBe(600);
+    expect(ANIMATION_DURATION_MS.TYPING_INDICATOR_TIMEOUT).toBe(800);
+    expect(ANIMATION_DURATION_MS.CHIP_SELECT_FEEDBACK).toBe(600);
+    expect(ANIMATION_DURATION_MS.INPUT_TYPING_DELAY).toBe(800);
+  });
+
+  it("should have all numeric values", () => {
+    const values = Object.values(ANIMATION_DURATION_MS);
+    expect(values.length).toBe(4);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(v).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("CELEBRATION_DEFAULTS", () => {
+  it("should have all expected celebration timing values", () => {
+    expect(CELEBRATION_DEFAULTS.REDUCED_MOTION_DISPLAY_MS).toBe(1500);
+    expect(CELEBRATION_DEFAULTS.PARTICLE_FADEOUT_MS).toBe(2000);
+    expect(CELEBRATION_DEFAULTS.COMPLETION_DELAY_MS).toBe(2500);
+  });
+
+  it("should have all expected particle config values", () => {
+    expect(CELEBRATION_DEFAULTS.PARTICLE_COUNT).toBe(24);
+    expect(CELEBRATION_DEFAULTS.PARTICLE_BASE_DISTANCE_PX).toBe(80);
+    expect(CELEBRATION_DEFAULTS.PARTICLE_RANDOM_DISTANCE_PX).toBe(120);
+    expect(CELEBRATION_DEFAULTS.PARTICLE_BASE_SIZE_PX).toBe(6);
+    expect(CELEBRATION_DEFAULTS.PARTICLE_RANDOM_SIZE_PX).toBe(8);
+    expect(CELEBRATION_DEFAULTS.PARTICLE_ANIMATION_DURATION_S).toBe(1.2);
+  });
+
+  it("should have particle shapes array", () => {
+    expect(Array.isArray(CELEBRATION_DEFAULTS.PARTICLE_SHAPES)).toBe(true);
+    expect(CELEBRATION_DEFAULTS.PARTICLE_SHAPES).toContain("circle");
+    expect(CELEBRATION_DEFAULTS.PARTICLE_SHAPES).toContain("square");
+    expect(CELEBRATION_DEFAULTS.PARTICLE_SHAPES).toContain("star");
+  });
+
+  it("should have timing values smaller than each other in logical order", () => {
+    expect(CELEBRATION_DEFAULTS.REDUCED_MOTION_DISPLAY_MS).toBeLessThan(
+      CELEBRATION_DEFAULTS.PARTICLE_FADEOUT_MS
+    );
+    expect(CELEBRATION_DEFAULTS.PARTICLE_FADEOUT_MS).toBeLessThan(
+      CELEBRATION_DEFAULTS.COMPLETION_DELAY_MS
+    );
+  });
+});
+
+describe("TOAST_ICONS", () => {
+  it("should have all expected toast icon strings", () => {
+    expect(TOAST_ICONS.SUCCESS).toBe("\u2713");
+    expect(TOAST_ICONS.ERROR).toBe("\u2715");
+    expect(TOAST_ICONS.WARNING).toBe("\u26A0");
+    expect(TOAST_ICONS.INFO).toBe("\u2139");
+  });
+
+  it("should have 4 icon entries", () => {
+    expect(Object.keys(TOAST_ICONS).length).toBe(4);
+  });
+
+  it("should have all unique icon characters", () => {
+    const values = Object.values(TOAST_ICONS);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("TOAST_STYLES", () => {
+  it("should have all expected toast style classes", () => {
+    expect(TOAST_STYLES.SUCCESS).toContain("bg-accent-emerald");
+    expect(TOAST_STYLES.ERROR).toContain("bg-accent-pink");
+    expect(TOAST_STYLES.WARNING).toContain("bg-yellow-500");
+    expect(TOAST_STYLES.INFO).toContain("bg-primary-500");
+  });
+
+  it("should have 4 style entries", () => {
+    expect(Object.keys(TOAST_STYLES).length).toBe(4);
+  });
+
+  it("should have all unique style strings", () => {
+    const values = Object.values(TOAST_STYLES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(TOAST_STYLES);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
   });
 });

@@ -1590,3 +1590,181 @@ export const ERROR_CLASS_NAMES = {
  *        NAME: API_NAME
  */
 export const API_NAME = "Blueprint Generator API" as const;
+
+/**
+ * Common UI Timeout Values (milliseconds)
+ * Centralized source of truth for setTimeout/interval durations used
+ * across the frontend. Single source to eliminate magic number timeouts.
+ * Flexy says: No hardcoded 2000/400/100 magic timeout numbers in components!
+ * Usage: import { UI_TIMEOUTS } from "@blueprint/shared";
+ *        setTimeout(fn, UI_TIMEOUTS.COPY_FEEDBACK)
+ */
+export const UI_TIMEOUTS = {
+  /** Duration to show copy feedback before resetting (2s) */
+  COPY_FEEDBACK: 2000,
+  /** Duration for shake animation feedback (400ms) */
+  SHAKE_ANIMATION: 400,
+  /** Duration to show toast notifications (1.5s) */
+  TOAST_NOTIFICATION: 1500,
+  /** Delay before focusing element after step change (100ms) */
+  FOCUS_DELAY: 100,
+  /** Delay before clearing screen-reader live region (1s) */
+  LIVE_REGION_CLEAR: 1000,
+  /** API health check polling interval (5s) */
+  API_HEALTH_CHECK: 5000,
+  /** API connection timeout (30s) */
+  API_CONNECTION: 30000,
+  /** Last saved indicator refresh interval (30s) */
+  LAST_SAVED_REFRESH: 30000,
+  /** Step-complete flash animation duration (700ms) */
+  STEP_COMPLETE_FLASH: 700,
+  /** Debounce delay for state persistence (300ms) */
+  DEBOUNCE: 300,
+  /** Generation check polling interval (100ms) */
+  GENERATION_CHECK: 100,
+} as const;
+
+/**
+ * Frontend API Error Messages
+ * Centralized source of truth for user-facing API error strings.
+ * Flexy says: No hardcoded "Generation failed" strings in API client!
+ * Usage: import { API_ERROR_MESSAGES } from "@blueprint/shared";
+ *        toast.error(API_ERROR_MESSAGES.GENERATION_FAILED)
+ */
+export const API_ERROR_MESSAGES = {
+  /** Blueprint generation failed */
+  GENERATION_FAILED: "Generation failed. Please check your input and try again.",
+  /** Task generation failed */
+  TASK_GENERATION_FAILED: "Task generation failed. Ensure blueprint content is valid.",
+  /** Content refinement failed */
+  REFINEMENT_FAILED: "Refinement failed. Please check your refinement instructions.",
+  /** Server returned empty response */
+  NO_RESPONSE_BODY: "Server returned empty response. Check if API server is running.",
+  /** SSE stream connection interrupted */
+  STREAM_ERROR: "Connection interrupted. Check your network and try again.",
+} as const;
+
+/**
+ * Generation Progress Messages
+ * Centralized source of truth for generation progress/status strings.
+ * Flexy says: No hardcoded "Generating blueprint..." strings in API client!
+ * Usage: import { GENERATION_MESSAGES } from "@blueprint/shared";
+ *        setStatus(GENERATION_MESSAGES.BLUEPRINT_START)
+ */
+export const GENERATION_MESSAGES = {
+  /** Generation was cancelled by user */
+  CANCELLED: "Generation cancelled",
+  /** Blueprint generation starting */
+  BLUEPRINT_START: "Generating blueprint...",
+  /** Blueprint complete, tasks starting */
+  BLUEPRINT_COMPLETE: "Blueprint complete. Generating tasks...",
+  /** All generation complete */
+  COMPLETE: "Complete!",
+  /** Retry attempt message template */
+  RETRY: (attempt: number, maxRetries: number): string =>
+    `Connection issue, retrying (${attempt}/${maxRetries})...`,
+  /** Error message template */
+  ERROR: (error: string): string => `Error: ${error}`,
+  /** Task generation error template */
+  ERROR_TASKS: (error: string): string => `Error generating tasks: ${error}`,
+} as const;
+
+/**
+ * Generation Timing Estimates
+ * Centralized source of truth for estimated generation duration strings.
+ * Flexy says: No hardcoded "30-60" generation estimate strings in config!
+ * Usage: import { GENERATION_ESTIMATES } from "@blueprint/shared";
+ *        estimate: GENERATION_ESTIMATES.TYPICAL
+ */
+export const GENERATION_ESTIMATES = {
+  /** Typical generation duration estimate (30-60 seconds) */
+  TYPICAL: "30-60",
+  /** Short generation duration estimate (15-30 seconds) */
+  SHORT: "15-30",
+  /** Long generation duration estimate (60-90 seconds) */
+  LONG: "60-90",
+} as const;
+
+/**
+ * Animation Timing Values (milliseconds)
+ * Centralized source of truth for animation duration magic numbers.
+ * Flexy says: No hardcoded 800ms typing delays in component code!
+ * Usage: import { ANIMATION_DURATION_MS } from "@blueprint/shared";
+ *        delay: ANIMATION_DURATION_MS.TYPING_INDICATOR_DELAY
+ */
+export const ANIMATION_DURATION_MS = {
+  /** Typing indicator animation delay (600ms) */
+  TYPING_INDICATOR_DELAY: 600,
+  /** Typing indicator idle timeout before showing indicator (800ms) */
+  TYPING_INDICATOR_TIMEOUT: 800,
+  /** Chip/selection feedback animation duration (600ms) */
+  CHIP_SELECT_FEEDBACK: 600,
+  /** Input field typing simulation delay (800ms) */
+  INPUT_TYPING_DELAY: 800,
+} as const;
+
+/**
+ * Celebration Animation Defaults
+ * Centralized source of truth for completion celebration timing and particle config.
+ * Flexy says: No hardcoded 24 particles or 1500ms delay in celebration code!
+ * Usage: import { CELEBRATION_DEFAULTS } from "@blueprint/shared";
+ *        particleCount: CELEBRATION_DEFAULTS.PARTICLE_COUNT
+ */
+export const CELEBRATION_DEFAULTS = {
+  /** Display duration for reduced-motion celebration variant (ms) */
+  REDUCED_MOTION_DISPLAY_MS: 1500,
+  /** Time before particles begin fading out (ms) */
+  PARTICLE_FADEOUT_MS: 2000,
+  /** Delay before completion state settles (ms) */
+  COMPLETION_DELAY_MS: 2500,
+  /** Number of celebration particles to render */
+  PARTICLE_COUNT: 24,
+  /** Base distance particles travel from origin (px) */
+  PARTICLE_BASE_DISTANCE_PX: 80,
+  /** Random additional distance for particles (px) */
+  PARTICLE_RANDOM_DISTANCE_PX: 120,
+  /** Base particle size (px) */
+  PARTICLE_BASE_SIZE_PX: 6,
+  /** Random additional particle size (px) */
+  PARTICLE_RANDOM_SIZE_PX: 8,
+  /** Particle shape options */
+  PARTICLE_SHAPES: ["circle", "square", "star"] as const,
+  /** Particle animation duration (seconds) */
+  PARTICLE_ANIMATION_DURATION_S: 1.2,
+} as const;
+
+/**
+ * Toast Icon Display Characters
+ * Centralized source of truth for toast notification icon symbols.
+ * Flexy says: No hardcoded "✓" / "✕" icon strings in toast config!
+ * Usage: import { TOAST_ICONS } from "@blueprint/shared";
+ *        icon: TOAST_ICONS.SUCCESS
+ */
+export const TOAST_ICONS = {
+  /** Success toast checkmark icon */
+  SUCCESS: "\u2713",
+  /** Error toast X mark icon */
+  ERROR: "\u2715",
+  /** Warning toast warning sign icon */
+  WARNING: "\u26A0",
+  /** Info toast info circle icon */
+  INFO: "\u2139",
+} as const;
+
+/**
+ * Toast CSS Style Class Strings
+ * Centralized source of truth for toast notification Tailwind style strings.
+ * Flexy says: No hardcoded "bg-accent-emerald/10" Tailwind strings in toast config!
+ * Usage: import { TOAST_STYLES } from "@blueprint/shared";
+ *        className: TOAST_STYLES.SUCCESS
+ */
+export const TOAST_STYLES = {
+  /** Success toast styling — green/emerald theme */
+  SUCCESS: "bg-accent-emerald/10 border-accent-emerald/30 text-accent-emerald",
+  /** Error toast styling — pink/red theme */
+  ERROR: "bg-accent-pink/10 border-accent-pink/30 text-accent-pink",
+  /** Warning toast styling — yellow/amber theme */
+  WARNING: "bg-yellow-500/10 border-yellow-500/30 text-yellow-400",
+  /** Info toast styling — blue/primary theme */
+  INFO: "bg-primary-500/10 border-primary-500/30 text-primary-300",
+} as const;
