@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat(flexy): centralize WARNING_THRESHOLD and eliminate hardcoded **backup** prefixes (#1963)
 - feat(seo): Add OG and Twitter Card meta tags for social sharing (#1962)
 - feat(web): return focus to feature input after adding a feature (#1961)
+- RepoKeeper Cycle 127: **BUG-014 and BUG-017 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` — 2 occurrences; hardcoded `node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files — 11 occurrences), CHANGELOG gap fix (added 3 missing commits), docs refresh (findings, active-tasks, knowledge-review), typecheck ✅ lint ✅, quality verification
+- docs(brocula): BroCula Run 3 — LH 100-100-100-100, zero console errors
+- feat(flexy): centralize UI_TIMEOUTS, animation ms, celebration defaults, API error messages, toast icons/styles into shared config
+- feat(scripts): add npm audit script for dependency vulnerability scanning
 - RepoKeeper Cycle 126: full repository audit, prettier formatting fix (apps/web/src/index.css), CHANGELOG gap fix (added 4 missing commits #1961-#1964), 22 remote branches assessed (all active — none stale), typecheck ✅ lint ✅ format ✅, zero redundant/temp/unused source files, zero type suppressions, zero TODO/FIXME/HACK artifacts, documentation sync (findings, active-tasks, knowledge-review, CHANGELOG), quality verification
 - feat(web): add hover percentage label to PageScrollProgressBar for precise scroll feedback
 - RepoKeeper Cycle 125: **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files — 11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG), typecheck ✅ lint ✅ tests ✅, quality verification, PR created
