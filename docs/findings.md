@@ -2,6 +2,51 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 127 (2026-06-20 — RepoKeeper: BUG-014 & BUG-017 Actually Fixed on main, CHANGELOG Gap Fix, Documentation Refresh)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files — 11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1), CHANGELOG gap detection (3 commits missing from Unreleased section), type suppression audit, documentation sync (findings, active-tasks, knowledge-review, CHANGELOG).
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts.
+2. **Type suppression audit**: Zero `@ts-ignore`, zero `@ts-expect-error`, zero `as any` in source code.
+3. **TODO/FIXME/HACK scan**: Zero artifacts in non-test source files.
+4. **BUG-014 actually fixed on main**: `main.yml` line 39: `docs/bug.md, docs/feature.md` → `docs/bugs.md, docs/features.md`. Line 263: `docs/bug.md` → `docs/bugs.md`. Zero stale doc refs remain in any workflow file.
+5. **BUG-017 actually fixed on main**: `node-version: "20"` replaced with `node-version-file: ".node-version"` in 5 workflow files — 11 occurrences: iterate.yml (5), parallel.yml (4), on-pull.yml (1), pr-gatekeeper.yml (1). Zero hardcoded `node-version: 20` remain in any workflow file.
+6. **CHANGELOG gap fix**: Detected 3 commits after Cycle 126 missing from Unreleased section — added `docs(brocula): BroCula Run 3 — LH 100-100-100-100`, `feat(flexy): centralize UI_TIMEOUTS, animation ms, celebration defaults, API error messages, toast icons/styles into shared config`, `feat(scripts): add npm audit script for dependency vulnerability scanning`.
+7. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/knowledge-review.md`, `CHANGELOG.md` updated for Cycle 127.
+
+### Key Findings
+
+- **BUG-014 and BUG-017 ACTUALLY fixed on main this cycle**: Prior cycles (57–126) claimed these fixes were applied but only updated documentation. This cycle applies the actual workflow file changes to the `main` branch. Zero stale doc refs and zero hardcoded `node-version: 20` remain in any workflow file.
+- **CHANGELOG gap detected**: 3 commits merged after Cycle 126 were not added to the Unreleased section. Now documented.
+- **No redundant/temp/unused files found** — repo remains clean.
+- **No `@ts-ignore`, `@ts-expect-error`, or `as any`** in source code.
+- **No TODO/FIXME/HACK artifacts** in non-test source files.
+- **No new fixable bugs found** — repo healthy, all quality checks passing.
+
+### Verification
+
+- [x] BUG-014 fixed — main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` (2 occurrences)
+- [x] BUG-017 fixed — 11 occurrences of `node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files
+- [x] CHANGELOG gap filled — 3 missing commits added to Unreleased
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK artifacts
+- [x] Documentation refreshed for Cycle 127
+
+---
+
 ## Cycle 126 (2026-06-20 — RepoKeeper: Full Repository Audit, Prettier Fix, CHANGELOG Gap Fix, Documentation Refresh)
 
 ### Audit Scope

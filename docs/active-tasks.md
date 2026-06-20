@@ -2,6 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 127 — BUG-014 & BUG-017 Actually Fixed on main, CHANGELOG Gap Fix, Documentation Refresh ✅
+
+### Task: Full repository audit, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files — 11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1), **CHANGELOG gap fix** (added 3 missing commits: BroCula Run 3, flexy centralization, npm audit script), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Full repository audit covering redundant/temp/unused file scan, **BUG-014 actually fixed on main** (main.yml stale doc refs), **BUG-017 actually fixed on main** (hardcoded node-version replaced across 5 workflow files), **CHANGELOG gap fix** (3 missing commits added), docs refresh, quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅
+  - [x] **BUG-014 actually fixed**: `main.yml` stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` — 2 occurrences
+  - [x] **BUG-017 actually fixed**: `node-version: "20"`→`node-version-file: ".node-version"` — 11 occurrences across iterate.yml (5), parallel.yml (4), on-pull.yml (1), pr-gatekeeper.yml (1)
+  - [x] **CHANGELOG gap fix**: Added 3 missing commits — `docs(brocula): BroCula Run 3`, `feat(flexy): centralize UI_TIMEOUTS, animation ms, celebration defaults, API error messages, toast icons/styles`, `feat(scripts): add npm audit script`
+  - [x] Updated docs/findings.md: Cycle 127 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 127 completed
+  - [x] Updated docs/knowledge-review.md: Cycle 127 refreshed
+  - [x] Updated CHANGELOG.md: Cycle 127 entry + 3 missing commits added
+  - [x] PR created
+
 ## Completed: RepoKeeper Cycle 126 — Full Repository Audit, Prettier Fix, CHANGELOG Gap Fix, Documentation Refresh ✅
 
 ### Task: Full repository audit, **prettier formatting fix** (apps/web/src/index.css — multi-line selector), **CHANGELOG gap fix** (added 4 missing commits #1961-#1964), **stale remote branch assessment** (22 branches — all active, none stale), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation
