@@ -260,7 +260,8 @@
 @layer utilities {
   /* Slow shifting gradient animation for hero text — complements ambient-glow */
   @keyframes gradient-shift {
-    0%, 100% {
+    0%,
+    100% {
       background-position: 0% 50%;
     }
     50% {
