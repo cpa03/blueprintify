@@ -108,7 +108,9 @@ export const UI_CONTENT = {
       FEATURES_COUNT: (count: number) => `${count} features`,
       YOUR_FEATURES_LABEL: "Your features",
       QUICK_ADD_LABEL: "Quick add suggestions",
+      ADD_ALL_SUGGESTIONS: "Add all suggestions",
       ADDED_MESSAGE: (feature: string) => `Added "${feature}"`,
+      ADD_ALL_MESSAGE: "Added all suggestions!",
       NEXT_BUTTON: "Next: Review",
       CLEAR_ALL_FEATURES: "Clear all features",
     },
@@ -295,6 +297,7 @@ export const ACCESSIBILITY_LABELS = {
     CLEAR_ALL_FEATURES: "Clear all features",
     REMOVE_FEATURE: (feature: string) => `Remove ${feature}`,
     ADD_SUGGESTION: (feature: string) => `Add suggestion: ${feature}`,
+    ADD_ALL_SUGGESTIONS: "Add all suggested features at once",
   },
   WIZARD_INFO: {
     CLEAR_TARGET_AUDIENCE: "Clear target audience",
