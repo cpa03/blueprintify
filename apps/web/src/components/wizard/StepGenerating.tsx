@@ -32,6 +32,7 @@ import {
   GENERATION_MESSAGES,
   TOAST_MESSAGES,
   SPRING_CONFIG,
+  WIZARD_GENERATING_LABELS,
 } from "../../config/constants";
 import { COLORS } from "../../config/theme";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
@@ -275,7 +276,7 @@ export const StepGenerating = memo(function StepGenerating({
             <RippleButton
               onClick={handleViewEditor}
               className="btn-primary flex items-center gap-2 attention-glow"
-              ariaLabel="View the generated blueprint in the editor"
+              ariaLabel={WIZARD_GENERATING_LABELS.VIEW_EDITOR_ARIA}
               data-autofocus="complete"
             >
               <svg
@@ -298,18 +299,18 @@ export const StepGenerating = memo(function StepGenerating({
                   d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                 />
               </svg>
-              View in Editor
+              {WIZARD_GENERATING_LABELS.VIEW_IN_EDITOR}
             </RippleButton>
             <KeyboardShortcutTooltip
               shortcut="←"
-              description="Back to review step"
+              description={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_DESC}
               position="left"
               modifier="alt"
             >
               <RippleButton
                 onClick={handleViewReview}
                 className="btn-ghost text-sm text-dark-400 hover:text-dark-200 flex items-center gap-1.5"
-                ariaLabel="Back to review step"
+                ariaLabel={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_ARIA}
               >
                 <svg
                   className="w-4 h-4"
@@ -325,7 +326,7 @@ export const StepGenerating = memo(function StepGenerating({
                     d="M15 19l-7-7 7-7"
                   />
                 </svg>
-                Back to Review
+                {WIZARD_GENERATING_LABELS.BACK_TO_REVIEW}
                 <kbd
                   className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
                   aria-hidden="true"
@@ -349,7 +350,7 @@ export const StepGenerating = memo(function StepGenerating({
                   d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              Your generated content is available in the editor panel
+              {WIZARD_GENERATING_LABELS.CONTENT_AVAILABLE}
             </p>
           </motion.div>
         ) : (
@@ -380,7 +381,7 @@ export const StepGenerating = memo(function StepGenerating({
                   d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              Content streams in real-time. View the editor panel to see progress.
+              {WIZARD_GENERATING_LABELS.STREAMING_HINT}
             </motion.p>
 
             <motion.div
@@ -391,14 +392,14 @@ export const StepGenerating = memo(function StepGenerating({
             >
               <KeyboardShortcutTooltip
                 shortcut="Esc"
-                description="Cancel generation"
+                description={WIZARD_GENERATING_LABELS.CANCEL_GENERATION_DESC}
                 position="top"
                 modifier="none"
               >
                 <RippleButton
                   onClick={handleCancel}
                   className="btn-ghost text-dark-400 hover:text-accent-pink flex items-center gap-2"
-                  ariaLabel="Cancel generation (Esc)"
+                  ariaLabel={WIZARD_GENERATING_LABELS.CANCEL_GENERATION_ARIA}
                   aria-keyshortcuts="Escape"
                 >
                   <svg
@@ -415,7 +416,7 @@ export const StepGenerating = memo(function StepGenerating({
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
-                  Cancel Generation
+                  {WIZARD_GENERATING_LABELS.CANCEL_GENERATION}
                   <kbd
                     className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
                     aria-hidden="true"

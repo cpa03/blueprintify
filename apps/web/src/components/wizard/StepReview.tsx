@@ -26,7 +26,12 @@ import { motion } from "framer-motion";
 import { memo, useCallback } from "react";
 import { useWizardStore } from "../../store";
 import { useBlueprintStream } from "../../hooks/useBlueprintStream";
-import { ANIMATION, GENERATION_ESTIMATES, ACCESSIBILITY_LABELS } from "../../config/constants";
+import {
+  ANIMATION,
+  GENERATION_ESTIMATES,
+  ACCESSIBILITY_LABELS,
+  WIZARD_REVIEW_DESCRIPTIONS,
+} from "../../config/constants";
 import { pageTransition, fadeInUp, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 import { SmartTooltip, KeyboardShortcutTooltip } from "../SmartTooltip";
@@ -89,7 +94,7 @@ export const StepReview = memo(function StepReview({
               </h3>
               <KeyboardShortcutTooltip
                 shortcut="1"
-                description="Edit project information"
+                description={WIZARD_REVIEW_DESCRIPTIONS.EDIT_INFO}
                 position="left"
                 modifier="alt"
               >
@@ -145,7 +150,7 @@ export const StepReview = memo(function StepReview({
               </h3>
               <KeyboardShortcutTooltip
                 shortcut="2"
-                description="Edit tech stack"
+                description={WIZARD_REVIEW_DESCRIPTIONS.EDIT_STACK}
                 position="left"
                 modifier="alt"
               >
@@ -191,7 +196,7 @@ export const StepReview = memo(function StepReview({
                 </h3>
                 <KeyboardShortcutTooltip
                   shortcut="3"
-                  description="Edit features"
+                  description={WIZARD_REVIEW_DESCRIPTIONS.EDIT_FEATURES}
                   position="left"
                   modifier="alt"
                 >
@@ -262,7 +267,9 @@ export const StepReview = memo(function StepReview({
               </svg>
             </div>
             <div>
-              <h4 className="font-medium text-white">What happens next?</h4>
+              <h4 className="font-medium text-white">
+                {WIZARD_REVIEW_DESCRIPTIONS.WHAT_HAPPENS_NEXT}
+              </h4>
               <p className="text-sm text-dark-300 mt-1">
                 Clicking &quot;Generate Blueprint&quot; will use AI to create a comprehensive{" "}
                 <code className="text-primary-300">blueprint.md</code> and{" "}
@@ -284,7 +291,7 @@ export const StepReview = memo(function StepReview({
         <div className="flex justify-between">
           <KeyboardShortcutTooltip
             shortcut="←"
-            description="Go back"
+            description={WIZARD_REVIEW_DESCRIPTIONS.GO_BACK}
             position="right"
             modifier="alt"
           >
@@ -315,7 +322,7 @@ export const StepReview = memo(function StepReview({
               <SmartTooltip
                 content={
                   isGenerating
-                    ? "Generation in progress..."
+                    ? WIZARD_REVIEW_DESCRIPTIONS.GENERATION_IN_PROGRESS
                     : ACCESSIBILITY_LABELS.REVIEW.GENERATE_DISABLED_TOOLTIP
                 }
                 position="left"
@@ -357,7 +364,7 @@ export const StepReview = memo(function StepReview({
             ) : (
               <KeyboardShortcutTooltip
                 shortcut="Enter"
-                description="Generate blueprint"
+                description={WIZARD_REVIEW_DESCRIPTIONS.GENERATE_BLUEPRINT}
                 position="left"
               >
                 <RippleButton

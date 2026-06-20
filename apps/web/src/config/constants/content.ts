@@ -346,6 +346,19 @@ export const COPY_BUTTON_LABELS = {
 } as const;
 
 // ============================================================================
+// Markdown Copy Labels
+// ============================================================================
+
+/**
+ * Markdown code block copy button labels
+ * Flexy says: No hardcoded "Copy" / "Copied!" strings in MarkdownRenderer!
+ */
+export const MARKDOWN_COPY_LABELS = {
+  COPY: "Copy",
+  COPIED: "Copied!",
+} as const;
+
+// ============================================================================
 // Error Boundary UI Text
 // ============================================================================
 
@@ -389,6 +402,58 @@ export const DEBUG_MESSAGES = {
  * Skeleton layout configuration
  * Flexy says: No hardcoded skeleton widths - everything configurable!
  */
+// ============================================================================
+// Wizard Generating Screen Labels
+// ============================================================================
+
+/**
+ * Labels for the StepGenerating wizard step
+ * Flexy says: No hardcoded generation screen labels in components!
+ */
+export const WIZARD_GENERATING_LABELS = {
+  VIEW_IN_EDITOR: "View in Editor",
+  VIEW_EDITOR_ARIA: "View the generated blueprint in the editor",
+  BACK_TO_REVIEW: "Back to Review",
+  BACK_TO_REVIEW_DESC: "Back to review step",
+  BACK_TO_REVIEW_ARIA: "Back to review step",
+  CANCEL_GENERATION: "Cancel Generation",
+  CANCEL_GENERATION_DESC: "Cancel generation",
+  CANCEL_GENERATION_ARIA: "Cancel generation (Esc)",
+  CONTENT_AVAILABLE: "Your generated content is available in the editor panel",
+  STREAMING_HINT: "Content streams in real-time. View the editor panel to see progress.",
+} as const;
+
+// ============================================================================
+// Wizard Step Review Descriptions
+// ============================================================================
+
+/**
+ * KeyboardShortcutTooltip description strings for StepReview component
+ * Flexy says: No hardcoded shortcut descriptions in StepReview!
+ */
+export const WIZARD_REVIEW_DESCRIPTIONS = {
+  EDIT_INFO: "Edit project information",
+  EDIT_STACK: "Edit tech stack",
+  EDIT_FEATURES: "Edit features",
+  GO_BACK: "Go back",
+  GENERATE_BLUEPRINT: "Generate blueprint",
+  WHAT_HAPPENS_NEXT: "What happens next?",
+  GENERATION_IN_PROGRESS: "Generation in progress...",
+} as const;
+
+// ============================================================================
+// Preview Empty State Labels
+// ============================================================================
+
+/**
+ * Labels for the preview empty state "Start/Complete the wizard" hint
+ * Flexy says: No hardcoded "Start"/"Complete" strings in PreviewEmptyState!
+ */
+export const PREVIEW_EMPTY_LABELS = {
+  START: "Start",
+  COMPLETE: "Complete",
+} as const;
+
 export const SKELETON_LAYOUT = {
   /** Preview skeleton line widths (percentages) */
   PREVIEW_LINE_WIDTHS: ["88%", "72%", "95%", "60%", "82%", "70%", "90%", "55%", "78%"] as const,
