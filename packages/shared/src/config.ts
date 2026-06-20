@@ -22,6 +22,8 @@ export const VALIDATION_LIMITS = {
   PROJECT_NAME: {
     MIN: 1,
     MAX: 100,
+    /** Warning threshold percentage for character counters */
+    WARNING_THRESHOLD: 90,
   },
   DESCRIPTION: {
     MIN: 10,

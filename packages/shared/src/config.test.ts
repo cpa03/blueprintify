@@ -140,6 +140,11 @@ describe("VALIDATION_LIMITS", () => {
     expect(VALIDATION_LIMITS.VERSION.MAX).toBeGreaterThan(0);
     expect(VALIDATION_LIMITS.VERSION.MAX).toBeLessThanOrEqual(100);
   });
+
+  it("should have a valid warning threshold between 0 and 100", () => {
+    expect(VALIDATION_LIMITS.PROJECT_NAME.WARNING_THRESHOLD).toBeGreaterThan(0);
+    expect(VALIDATION_LIMITS.PROJECT_NAME.WARNING_THRESHOLD).toBeLessThanOrEqual(100);
+  });
 });
 
 describe("STORAGE_CONFIG", () => {

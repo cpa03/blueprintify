@@ -7,6 +7,7 @@ import {
   getStorageErrorMessage,
   withStorageRecovery,
 } from "./storage";
+import { STORAGE_KEY_PREFIXES } from "@blueprint/shared";
 
 describe("StorageService", () => {
   let storage: StorageService<{ test: string }>;
@@ -232,7 +233,7 @@ describe("StorageService", () => {
       await backupStorage.set(newData);
 
       // Check that backup was created
-      const backupRaw = localStorage.getItem(`__backup__${backupKey}`);
+      const backupRaw = localStorage.getItem(`${STORAGE_KEY_PREFIXES.BACKUP}${backupKey}`);
       expect(backupRaw).not.toBeNull();
 
       const backups = JSON.parse(backupRaw!);
@@ -243,7 +244,7 @@ describe("StorageService", () => {
 
       // Cleanup
       localStorage.removeItem(backupKey);
-      localStorage.removeItem(`__backup__${backupKey}`);
+      localStorage.removeItem(`${STORAGE_KEY_PREFIXES.BACKUP}${backupKey}`);
     });
 
     it("AC: should recover from backup when data is corrupted", async () => {
@@ -268,7 +269,10 @@ describe("StorageService", () => {
         data: JSON.stringify(initialData),
         metadata: initialData.metadata,
       };
-      localStorage.setItem(`__backup__${recoveryKey}`, JSON.stringify([backupEntry]));
+      localStorage.setItem(
+        `${STORAGE_KEY_PREFIXES.BACKUP}${recoveryKey}`,
+        JSON.stringify([backupEntry])
+      );
 
       const recoveryStorage = new StorageService<{ data: string }>({
         key: recoveryKey,
@@ -286,7 +290,7 @@ describe("StorageService", () => {
 
       // Cleanup
       localStorage.removeItem(recoveryKey);
-      localStorage.removeItem(`__backup__${recoveryKey}`);
+      localStorage.removeItem(`${STORAGE_KEY_PREFIXES.BACKUP}${recoveryKey}`);
     });
 
     it("AC: should return null when recovery fails", async () => {
@@ -307,7 +311,7 @@ describe("StorageService", () => {
 
       // Cleanup
       localStorage.removeItem(noBackupKey);
-      localStorage.removeItem(`__backup__${noBackupKey}`);
+      localStorage.removeItem(`${STORAGE_KEY_PREFIXES.BACKUP}${noBackupKey}`);
     });
   });
 
@@ -702,7 +706,10 @@ describe("Acceptance Criteria Verification - Issue #242", () => {
       data: JSON.stringify(payload),
       metadata: payload.metadata,
     };
-    localStorage.setItem(`__backup__${recoveryKey}`, JSON.stringify([backupEntry]));
+    localStorage.setItem(
+      `${STORAGE_KEY_PREFIXES.BACKUP}${recoveryKey}`,
+      JSON.stringify([backupEntry])
+    );
 
     const recoveryStorage = new StorageService<{ critical: string }>({
       key: recoveryKey,
@@ -718,7 +725,7 @@ describe("Acceptance Criteria Verification - Issue #242", () => {
     expect(result).toEqual(goodData);
 
     localStorage.removeItem(recoveryKey);
-    localStorage.removeItem(`__backup__${recoveryKey}`);
+    localStorage.removeItem(`${STORAGE_KEY_PREFIXES.BACKUP}${recoveryKey}`);
   });
 
   it("AC3: Storage quota exceeded is handled gracefully", async () => {

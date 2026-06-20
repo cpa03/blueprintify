@@ -1070,3 +1070,21 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 640 web + 382 api + 403 shared = 1,425 tests passing across 75 files
+
+### ✅ Flexy Iteration 55: Centralize WARNING_THRESHOLD & Eliminate Hardcoded Backup Key Prefixes in Tests
+
+| File | Change |
+| ---- | ------ |
+| `packages/shared/src/config.ts` | Added `PROJECT_NAME.WARNING_THRESHOLD: 90` to shared `VALIDATION_LIMITS` |
+| `packages/shared/src/index.ts` | `VALIDATION_LIMITS` already exported — no change needed |
+| `packages/shared/src/config.test.ts` | Added 1 test block for `WARNING_THRESHOLD` (range check 0-100) |
+| `apps/web/src/config/constants/validation.ts` | `FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD` now references `VALIDATION_LIMITS.PROJECT_NAME.WARNING_THRESHOLD` instead of magic number `90` |
+| `apps/web/src/lib/storage.test.ts` | Replaced 6 hardcoded `__backup__` prefix strings with `STORAGE_KEY_PREFIXES.BACKUP` from `@blueprint/shared` |
+| `apps/web/src/integration/storage-integration.test.ts` | Replaced 1 hardcoded `__backup__` prefix string with `STORAGE_KEY_PREFIXES.BACKUP` from `@blueprint/shared` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 640 web + 382 api + 417 shared = 1,439 tests passing across 75 files
