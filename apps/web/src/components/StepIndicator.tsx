@@ -136,7 +136,7 @@ function StepIndicatorComponent(): JSX.Element {
             ariaLabel={`Step ${currentIndex + 1} of ${STEPS.length}: ${currentStepLabel}`}
           />
           <div className="absolute inset-0 flex items-center justify-center transition-transform duration-200 hover:scale-110">
-            <span className="text-xs font-semibold">
+            <span key={currentStep} className="text-xs font-semibold step-count-pop">
               {currentIndex >= STEPS.length - 1 ? "🎉" : `${currentIndex + 1}`}
             </span>
           </div>

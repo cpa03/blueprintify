@@ -377,6 +377,28 @@
     animation: ripple 0.6s ease-out forwards;
   }
 
+  /* Step number pop — a brief scale + opacity bounce on the step count inside
+     CircularProgress. The changing key prop in StepIndicator triggers this as
+     a re-mount, giving each step transition a satisfying little "pop" that
+     complements the existing step-complete-flash and step-activate animations. */
+  @keyframes step-count-pop {
+    0% {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .step-count-pop {
+    animation: step-count-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
   /* Green success flash for completed wizard steps — one-shot scale + glow burst
      that gives a "checkpoint reached" feeling when navigating forward through steps. */
   @keyframes stack-card-attention {
@@ -631,6 +653,7 @@
     .step-activate,
     .animate-step-pulse,
     .animate-step-pulse::before,
+    .step-count-pop,
     .connector-flash,
     .animate-tooltip-in,
     .animate-slide-in-right,
