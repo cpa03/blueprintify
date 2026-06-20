@@ -32,6 +32,7 @@ import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { motion, useSpring, useTransform } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { LAYOUT } from "../config/theme";
+import { ANIMATION } from "../config/constants";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 
 interface PageScrollProgressBarProps {
@@ -228,7 +229,7 @@ function PageScrollProgressBarComponent({
           }
           transition={{
             opacity: {
-              duration: 2.5,
+              duration: ANIMATION.BREATH,
               repeat: Infinity,
               ease: "easeInOut",
             },
@@ -280,7 +281,7 @@ function PageScrollProgressBarComponent({
             style={{ left: `${hoverProgress}%` }}
             initial={{ opacity: 0, y: 4, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.12, ease: "easeOut" }}
+            transition={{ duration: ANIMATION.HOVER_POPUP, ease: "easeOut" }}
           >
             <div className="bg-dark-800/90 backdrop-blur-sm border border-dark-600/60 rounded-md px-1.5 py-0.5 shadow-lg shadow-dark-950/40">
               <span className="text-[10px] font-semibold tabular-nums text-primary-300">

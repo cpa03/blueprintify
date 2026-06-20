@@ -134,7 +134,7 @@ const TabButton = React.memo(function TabButton({
               scale: [1, 1.2, 1],
             }}
             transition={{
-              duration: 1.4,
+              duration: ANIMATION.LIVE_INDICATOR,
               repeat: Infinity,
               ease: "easeInOut",
             }}
@@ -195,12 +195,12 @@ const ContentStats = React.memo(function ContentStats({
             isGenerating
               ? {
                   borderColor: {
-                    duration: 2,
+                    duration: ANIMATION.SLOW_PULSE,
                     repeat: Infinity,
                     ease: "easeInOut",
                   },
                   boxShadow: {
-                    duration: 2.5,
+                    duration: ANIMATION.BREATH,
                     repeat: Infinity,
                     ease: "easeInOut",
                   },

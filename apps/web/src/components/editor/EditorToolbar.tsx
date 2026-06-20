@@ -280,7 +280,7 @@ function EditorToolbarComponent({
                   fill="none"
                   animate={{ rotate: 360 }}
                   transition={{
-                    duration: 1,
+                    duration: ANIMATION.GENTLE_PULSE,
                     repeat: Infinity,
                     ease: "linear",
                   }}

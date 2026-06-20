@@ -54,6 +54,10 @@ export const ANIMATION = {
   SLIDER: 0.6,
   /** Duration for quick fade transitions */
   QUICK_FADE: 0.1,
+  /** Duration for hover tooltip/popup entrance animations */
+  HOVER_POPUP: 0.12,
+  /** Duration for streaming content live indicator pulse */
+  LIVE_INDICATOR: 1.4,
   /** Duration for floating/bobbing decorative animations */
   FLOATING_DURATION: 3,
   /** Duration for robust fade/animate in */

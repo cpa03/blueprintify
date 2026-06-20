@@ -76,7 +76,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                   initial={{ scale: 0.8 }}
                   animate={{ scale: 1.5, opacity: 0 }}
                   transition={{
-                    duration: 1,
+                    duration: ANIMATION.GENTLE_PULSE,
                     repeat: Infinity,
                     ease: "easeOut",
                   }}

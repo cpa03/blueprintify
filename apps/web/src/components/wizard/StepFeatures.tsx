@@ -465,7 +465,7 @@ export const StepFeatures = memo(function StepFeatures({
               className="bg-accent-emerald/90 backdrop-blur-sm text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
               initial={showAllAddedMsg ? { scale: 0.9 } : undefined}
               animate={showAllAddedMsg ? { scale: [1, 1.05, 1] } : undefined}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              transition={{ duration: ANIMATION.FADE_IN, ease: "easeOut" }}
             >
               <svg
                 className="w-4 h-4 flex-shrink-0"

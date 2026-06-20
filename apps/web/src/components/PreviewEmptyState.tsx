@@ -11,6 +11,7 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
+import { EDITOR_FILENAMES } from "@blueprint/shared";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
 import {
   EMPTY_STATE_CONFIG,
@@ -34,8 +35,8 @@ interface PreviewEmptyStateProps {
 }
 
 const tabLabels: Record<EditorTab, string> = {
-  [EDITOR_TABS.BLUEPRINT]: "blueprint.md",
-  [EDITOR_TABS.TASKS]: "task.md",
+  [EDITOR_TABS.BLUEPRINT]: EDITOR_FILENAMES.BLUEPRINT,
+  [EDITOR_TABS.TASKS]: EDITOR_FILENAMES.TASKS,
 };
 
 const tabEmojis: Record<EditorTab, string> = {

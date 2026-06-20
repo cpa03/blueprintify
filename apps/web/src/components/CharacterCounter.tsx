@@ -66,7 +66,7 @@ function CharacterCounterComponent({
         }
         transition={
           showLimitShake
-            ? { duration: 0.35, ease: "easeInOut" }
+            ? { duration: ANIMATION.SEMI_SLOW, ease: "easeInOut" }
             : shouldPulse
               ? {
                   duration: ANIMATION.PULSE,
@@ -74,7 +74,7 @@ function CharacterCounterComponent({
                   repeatType: "loop",
                   ease: "easeInOut",
                 }
-              : { duration: 0.2 }
+              : { duration: ANIMATION.NORMAL }
         }
         aria-hidden="true"
       >

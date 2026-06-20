@@ -117,12 +117,12 @@ export const ScrollProgress = memo(function ScrollProgress({
           }}
           transition={{
             opacity: {
-              duration: 2,
+              duration: ANIMATION.SLOW_PULSE,
               repeat: Infinity,
               ease: "easeInOut",
             },
             boxShadow: {
-              duration: 2,
+              duration: ANIMATION.SLOW_PULSE,
               repeat: Infinity,
               ease: "easeInOut",
             },

@@ -59,7 +59,11 @@ export const ErrorFallback = memo(function ErrorFallback({
   const errorMessage = error instanceof Error ? error.message : ERROR_BOUNDARY_TEXT.UNKNOWN_ERROR;
 
   const cardSpring = shouldReduceMotion
-    ? { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.2 } }
+    ? {
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
+        transition: { duration: ANIMATION.NORMAL },
+      }
     : {
         initial: { opacity: 0, scale: 0.95, y: 20 },
         animate: { opacity: 1, scale: 1, y: 0 },
