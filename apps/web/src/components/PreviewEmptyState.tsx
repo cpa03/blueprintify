@@ -19,6 +19,7 @@ import {
   EDITOR_TABS,
   EDITOR_LABELS,
   ANIMATION,
+  PREVIEW_EMPTY_LABELS,
 } from "../config/constants";
 
 interface PreviewEmptyStateProps {
@@ -201,7 +202,10 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
             >
               <span>💡</span>
               <span>
-                {tab === EDITOR_TABS.BLUEPRINT ? "Start" : "Complete"} the wizard to generate{" "}
+                {tab === EDITOR_TABS.BLUEPRINT
+                  ? PREVIEW_EMPTY_LABELS.START
+                  : PREVIEW_EMPTY_LABELS.COMPLETE}{" "}
+                the wizard to generate{" "}
                 {tab === EDITOR_TABS.BLUEPRINT ? EDITOR_TABS.BLUEPRINT : EDITOR_TABS.TASKS}
               </span>
             </motion.div>

@@ -24,7 +24,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { copyToClipboard } from "../lib/export";
 import { sanitizeHtml } from "../lib/security";
-import { TIMEOUTS, ACCESSIBILITY_LABELS, ANIMATION } from "../config/constants";
+import {
+  TIMEOUTS,
+  ACCESSIBILITY_LABELS,
+  ANIMATION,
+  MARKDOWN_COPY_LABELS,
+} from "../config/constants";
 import { MARKDOWN, ICON } from "../config/styles";
 import { HeadingAnchor } from "./HeadingAnchor";
 import { childrenToText } from "../utils/slug";
@@ -138,7 +143,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
             </motion.svg>
           )}
         </AnimatePresence>
-        <span>{copied ? "Copied!" : "Copy"}</span>
+        <span>{copied ? MARKDOWN_COPY_LABELS.COPIED : MARKDOWN_COPY_LABELS.COPY}</span>
       </motion.button>
     </div>
   );
