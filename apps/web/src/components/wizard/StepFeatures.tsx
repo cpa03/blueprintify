@@ -22,7 +22,7 @@
  */
 
 import { ANIMATION_DIRECTIONS } from "@blueprint/shared";
-import { useState, useCallback, useMemo, memo } from "react";
+import { useState, useCallback, useMemo, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
 import {
@@ -50,6 +50,7 @@ export const StepFeatures = memo(function StepFeatures({
 }: StepFeaturesProps): JSX.Element {
   const [newFeature, setNewFeature] = useState("");
   const [justAdded, setJustAdded] = useState<string | null>(null);
+  const featureInputRef = useRef<HTMLInputElement>(null);
   const features = useWizardStore((s) => s.features);
   const addFeature = useWizardStore((s) => s.addFeature);
   const removeFeature = useWizardStore((s) => s.removeFeature);
@@ -66,6 +67,10 @@ export const StepFeatures = memo(function StepFeatures({
       // Show visual feedback
       setJustAdded(trimmed);
       setTimeout(() => setJustAdded(null), TIMEOUTS.TOAST_NOTIFICATION);
+      // Return focus to the input so users can quickly chain-add multiple features
+      requestAnimationFrame(() => {
+        featureInputRef.current?.focus();
+      });
     }
   }, [newFeature, addFeature]);
 
@@ -140,6 +145,7 @@ export const StepFeatures = memo(function StepFeatures({
           <div className="flex gap-2">
             <div className="relative flex-1">
               <input
+                ref={featureInputRef}
                 id="feature-input"
                 type="text"
                 value={newFeature}
