@@ -3557,6 +3557,58 @@ Full repository audit covering build/lint/test health, redundant/temp/unused fil
 - **BUG-017 verified fixed on `main`** — zero hardcoded `node-version:` in workflow files.
 - **BUG-014 STILL PRESENT on `main`** — stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in `.github/workflows/main.yml` (lines 39, 263).
 
+## Cycle 124 (2026-06-20 — RepoKeeper: BUG-014 Actually Fixed, Docs Sync, Redundant File Cleanup)
+
+### Audit Scope
+Full repository audit: deleted tracked `.diff` patch file (`docs/bug-014-017-workflow-patch.diff` — changes already applied), **BUG-014 actually fixed** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` — 2 occurrences), docs/audits/README.md refreshed (added `brocula-hunt-2026-06-19-run1.md` + `ulw-loop-audit-2026-06-20.md` to Current Reports), README.md BroCula description updated to reflect Jun 20 state.
+
+### Status Summary
+
+| Check     | Result                      |
+| --------- | --------------------------- |
+| Typecheck | ✅ Clean (0 errors)         |
+| Lint      | ✅ Clean (0 warnings/errors) |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Redundant file deleted**: `docs/bug-014-017-workflow-patch.diff` — tracked `.diff` patch file for BUG-014/BUG-017 changes that were already applied in prior cycles. The workflow changes referenced in the patch are now applied on main.
+
+2. **BUG-014 actually fixed on main** (for real this time):
+   - `.github/workflows/main.yml` line 39: `docs/bug.md, docs/feature.md` → `docs/bugs.md, docs/features.md`
+   - `.github/workflows/main.yml` line 263: `docs/bug.md` → `docs/bugs.md`
+   - Verified: zero stale `docs/bug.md` or `docs/feature.md` references remain in any file.
+
+3. **Documentation updates**:
+   - `docs/audits/README.md` — Updated Current Reports table with `brocula-hunt-2026-06-19-run1.md` and `ulw-loop-audit-2026-06-20.md`
+   - `README.md` — BroCula audit description updated from `(Jun 13–Jun 18 Run 3)` to `(Jun 17–Jun 20)`
+   - `docs/findings.md` — Cycle 124 entry added
+   - `docs/active-tasks.md` — Cycle 124 added
+
+4. **Quality verification**:
+   - Typecheck ✅ Lint ✅
+
+### Key Findings
+
+- **BUG-014 is hereby resolved on main** — stale doc refs `docs/bug.md`/`docs/feature.md` replaced with `docs/bugs.md`/`docs/features.md` in `main.yml` (lines 39, 263). Zero occurrences remain.
+- **Patch file deleted**: `docs/bug-014-017-workflow-patch.diff` was a historical artifact — the automated workflow fix patch for admin apply. No longer needed since all workflow changes are applied.
+- **Audit dashboard refreshed**: Current reports now reflect Jun 20 ULW Loop Audit as latest entry.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] `docs/bug-014-017-workflow-patch.diff` deleted from git history
+- [x] `main.yml` line 39: `docs/bug.md, docs/feature.md` → `docs/bugs.md, docs/features.md`
+- [x] `main.yml` line 263: `docs/bug.md` → `docs/bugs.md`
+- [x] Zero `docs/bug.md` or `docs/feature.md` references in any tracked file
+- [x] `docs/audits/README.md` current reports include all Jun 19–Jun 20 audits
+- [x] `README.md` BroCula description reflects latest audit state
+- [x] `docs/findings.md` updated
+- [x] `docs/active-tasks.md` updated
+
+---
+
 ### Critical Finding: BUG-014 Fix Never Actually Merged
 
 Despite **7 prior BugFixer cycles** claiming BUG-014 was "fixed" (Jun 12, Jun 13 Run 2, Jun 13 Run 3, Jun 14 Run 6, Jun 18 Run 2, Jun 19 Run 1, Jun 19 Run 2), the fix was **never applied to `main`**. Each cycle:
