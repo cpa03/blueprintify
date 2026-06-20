@@ -100,11 +100,10 @@ function App(): JSX.Element {
     setUserInteracted(true);
   }, []);
 
-  // Fallback: activate wizard after 3s so it loads even without interaction
-  useEffect(() => {
-    const timer = setTimeout(() => setUserInteracted(true), 3000);
-    return () => clearTimeout(timer);
-  }, []);
+  // Note: no fallback timeout — the wizard activates only on user interaction
+  // (template select, step change) or when content is already present.
+  // This keeps framer-motion (~136 KB) out of the initial load for first-time
+  // visitors, improving unused-JavaScript metrics and Time to Interactive.
   const previousHasContentRef = useRef(hasContent);
   const previousIsGeneratingRef = useRef(isGenerating);
   const prevShowTemplatesRef = useRef(currentStep === WIZARD_STEP_KEYS.INFO && !hasContent);
