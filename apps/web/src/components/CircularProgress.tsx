@@ -13,6 +13,7 @@
 import { memo } from "react";
 import {
   PROGRESS_COLORS,
+  PROGRESS_TRACK_COLOR,
   SVG_TRANSITION,
   ANIMATION,
   ACCESSIBILITY_LABELS,
@@ -70,7 +71,7 @@ function CircularProgressComponent({
   className = "",
   showPercentage = false,
   color = PROGRESS_COLORS.ACTIVE,
-  trackColor = "rgb(255_255_255/0.1)",
+  trackColor = PROGRESS_TRACK_COLOR,
   ariaLabel,
 }: CircularProgressProps): JSX.Element {
   const clampedValue = Math.max(0, Math.min(100, value));
