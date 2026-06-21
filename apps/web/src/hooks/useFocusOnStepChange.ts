@@ -11,6 +11,20 @@
 import { useRef, useEffect, useCallback } from "react";
 import { TIMEOUTS, FOCUSABLE_SELECTOR_STRING, FOCUS_ANNOUNCER } from "../config/constants";
 
+/**
+ * Returns the appropriate scroll behavior based on the user's motion preference.
+ * When prefers-reduced-motion is active, returns "instant" to prevent unwanted
+ * smooth-scroll animations. This ensures programmatic scrollTo/scrollIntoView
+ * calls respect the user's accessibility settings, even when the CSS
+ * scroll-behavior: smooth is overridden by the reduced-motion media query
+ * (JS scroll calls bypass CSS scroll-behavior entirely in most browsers).
+ */
+function getScrollBehavior(): ScrollBehavior {
+  if (typeof window === "undefined") return "auto";
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return prefersReducedMotion ? "instant" : "smooth";
+}
+
 /** Configuration options for step change focus behavior */
 interface UseFocusOnStepChangeOptions {
   /** Delay before focusing element (default: TIMEOUTS.FOCUS_DELAY) */
@@ -54,7 +68,7 @@ export function useFocusOnStepChange(stepId: string, options: UseFocusOnStepChan
    *  from preserved scroll positions on navigated-from steps. */
   const scrollToTop = useCallback(() => {
     if (!containerRef.current) return;
-    containerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    containerRef.current.scrollTo({ top: 0, behavior: getScrollBehavior() });
   }, []);
 
   const focusFirstElement = useCallback(() => {
@@ -67,7 +81,7 @@ export function useFocusOnStepChange(stepId: string, options: UseFocusOnStepChan
     const firstElement = focusableElements[0] as HTMLElement;
 
     setTimeout(() => {
-      firstElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      firstElement.scrollIntoView({ behavior: getScrollBehavior(), block: "nearest" });
       firstElement.focus({ preventScroll: true });
 
       const inputElement = firstElement as HTMLInputElement;
