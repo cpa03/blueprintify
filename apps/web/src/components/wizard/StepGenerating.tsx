@@ -98,17 +98,15 @@ export const StepGenerating = memo(function StepGenerating({
 
       const editorContainer = editorPanel.closest(".glass-card");
       if (editorContainer instanceof HTMLElement) {
-        editorContainer.style.outline = "2px solid rgb(99 102 241 / 0.5)";
-        editorContainer.style.outlineOffset = "2px";
+        editorContainer.classList.add("editor-focus-highlight");
         setTimeout(() => {
-          editorContainer.style.outline = "";
-          editorContainer.style.outlineOffset = "";
+          editorContainer.classList.remove("editor-focus-highlight");
           if (priorTabIndex === null) {
             editorPanel.removeAttribute("tabindex");
           } else {
             editorPanel.setAttribute("tabindex", priorTabIndex);
           }
-        }, 1500);
+        }, 1900);
       }
     }
   }, []);
