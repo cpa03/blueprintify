@@ -34,7 +34,7 @@ import {
   REFINER_SYSTEM_PROMPT,
 } from "../services/prompts";
 import { MOCK_ENV, setupTestConfig } from "../test-utils";
-import type { BlueprintRequest, RefineRequest } from "@blueprint/shared";
+import type { BlueprintRequest } from "@blueprint/shared";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
