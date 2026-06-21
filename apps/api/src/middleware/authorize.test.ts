@@ -10,7 +10,7 @@ import { describe, it, expect } from "vitest";
 import { Hono } from "hono";
 import { authorize } from "./authorize";
 import { ERROR_CODES } from "../config/constants";
-import { AUTH_DEFAULTS, HTTP_STATUS, CONTEXT_KEYS } from "@blueprint/shared";
+import { AUTH_DEFAULTS, ERROR_TYPES, HTTP_STATUS, CONTEXT_KEYS } from "@blueprint/shared";
 import type { User, UserRole, AppVariables } from "../types";
 
 /**
@@ -79,7 +79,7 @@ describe("authorize middleware", () => {
         error: { type: string; code: string; details: { requiredRole: string; userRole: string } };
       };
       expect(data.success).toBe(false);
-      expect(data.error.type).toBe("authorization");
+      expect(data.error.type).toBe(ERROR_TYPES.AUTHORIZATION);
       expect(data.error.details.requiredRole).toBe(AUTH_DEFAULTS.ADMIN_ROLE);
       expect(data.error.details.userRole).toBe(AUTH_DEFAULTS.DEFAULT_ROLE);
     });
@@ -108,7 +108,7 @@ describe("authorize middleware", () => {
         error: { type: string; code: string };
       };
       expect(data.success).toBe(false);
-      expect(data.error.type).toBe("authentication");
+      expect(data.error.type).toBe(ERROR_TYPES.AUTHENTICATION);
       expect(data.error.code).toBe(ERROR_CODES.AUTHENTICATION_ERROR);
     });
   });
