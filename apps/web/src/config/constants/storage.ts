@@ -14,6 +14,7 @@ import {
   UI_TIMEOUTS as SHARED_UI_TIMEOUTS,
   TOAST_ICONS,
   TOAST_STYLES,
+  TOAST_DEFAULTS,
 } from "@blueprint/shared";
 import { ENV } from "../env";
 import { STORAGE_KEYS } from "../keys";
@@ -79,11 +80,11 @@ export const STORAGE_CONFIG = {
 // ============================================================================
 
 export const TOAST_CONFIG = {
-  DEFAULT_DURATION: 3000,
-  SUCCESS_DURATION: 2000,
-  AUTO_SAVE_DURATION: 2000,
+  DEFAULT_DURATION: TOAST_DEFAULTS.DEFAULT_DURATION_MS,
+  SUCCESS_DURATION: TOAST_DEFAULTS.SUCCESS_DURATION_MS,
+  AUTO_SAVE_DURATION: TOAST_DEFAULTS.AUTO_SAVE_DURATION_MS,
   /** Delay (ms) between each toast's entrance for staggered animation */
-  STAGGER_MS: 60,
+  STAGGER_MS: TOAST_DEFAULTS.STAGGER_MS,
   /** Flexy says: Single source of truth in @blueprint/shared! */
   ICONS: TOAST_ICONS,
   /** Flexy says: Single source of truth in @blueprint/shared! */

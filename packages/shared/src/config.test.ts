@@ -87,6 +87,12 @@ import {
   CELEBRATION_DEFAULTS,
   TOAST_ICONS,
   TOAST_STYLES,
+  TOAST_DEFAULTS,
+  SCROLL_THRESHOLD_DEFAULTS,
+  TEXTAREA_DEFAULTS,
+  TOOLTIP_DEFAULTS,
+  UI_DEFAULTS,
+  NETWORK_DEFAULTS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -2413,5 +2419,151 @@ describe("TOAST_STYLES", () => {
       expect(typeof v).toBe("string");
       expect(v.length).toBeGreaterThan(0);
     });
+  });
+});
+
+describe("TOAST_DEFAULTS", () => {
+  it("should have all expected toast duration values", () => {
+    expect(TOAST_DEFAULTS.DEFAULT_DURATION_MS).toBeGreaterThan(0);
+    expect(TOAST_DEFAULTS.SUCCESS_DURATION_MS).toBeGreaterThan(0);
+    expect(TOAST_DEFAULTS.AUTO_SAVE_DURATION_MS).toBeGreaterThan(0);
+    expect(TOAST_DEFAULTS.STAGGER_MS).toBeGreaterThan(0);
+  });
+
+  it("should have all numeric values", () => {
+    const values = Object.values(TOAST_DEFAULTS);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(Number.isFinite(v)).toBe(true);
+    });
+  });
+
+  it("should have 4 entries", () => {
+    expect(Object.keys(TOAST_DEFAULTS).length).toBe(4);
+  });
+
+  it("should have success duration shorter than default", () => {
+    expect(TOAST_DEFAULTS.SUCCESS_DURATION_MS).toBeLessThanOrEqual(
+      TOAST_DEFAULTS.DEFAULT_DURATION_MS
+    );
+  });
+});
+
+describe("SCROLL_THRESHOLD_DEFAULTS", () => {
+  it("should have all expected scroll threshold values", () => {
+    expect(SCROLL_THRESHOLD_DEFAULTS.HEADER_SHADOW_PX).toBeGreaterThan(0);
+    expect(SCROLL_THRESHOLD_DEFAULTS.SCROLL_TO_TOP_PX).toBeGreaterThan(0);
+    expect(SCROLL_THRESHOLD_DEFAULTS.HAS_SCROLLED_PX).toBeGreaterThan(0);
+  });
+
+  it("should have all numeric values", () => {
+    const values = Object.values(SCROLL_THRESHOLD_DEFAULTS);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(Number.isFinite(v)).toBe(true);
+    });
+  });
+
+  it("should have 3 entries", () => {
+    expect(Object.keys(SCROLL_THRESHOLD_DEFAULTS).length).toBe(3);
+  });
+
+  it("should have SCROLL_TO_TOP greater than HEADER_SHADOW", () => {
+    expect(SCROLL_THRESHOLD_DEFAULTS.SCROLL_TO_TOP_PX).toBeGreaterThan(
+      SCROLL_THRESHOLD_DEFAULTS.HEADER_SHADOW_PX
+    );
+  });
+});
+
+describe("TEXTAREA_DEFAULTS", () => {
+  it("should have all expected textarea dimension values", () => {
+    expect(TEXTAREA_DEFAULTS.MIN_HEIGHT_PX).toBeGreaterThan(0);
+    expect(TEXTAREA_DEFAULTS.MAX_HEIGHT_PX).toBeGreaterThan(0);
+    expect(TEXTAREA_DEFAULTS.STEP_INFO_MIN_HEIGHT_PX).toBeGreaterThan(0);
+    expect(TEXTAREA_DEFAULTS.STEP_INFO_MAX_HEIGHT_PX).toBeGreaterThan(0);
+  });
+
+  it("should have all numeric values", () => {
+    const values = Object.values(TEXTAREA_DEFAULTS);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(Number.isFinite(v)).toBe(true);
+    });
+  });
+
+  it("should have 5 entries", () => {
+    expect(Object.keys(TEXTAREA_DEFAULTS).length).toBe(5);
+  });
+
+  it("should have MAX greater than MIN", () => {
+    expect(TEXTAREA_DEFAULTS.MAX_HEIGHT_PX).toBeGreaterThan(TEXTAREA_DEFAULTS.MIN_HEIGHT_PX);
+    expect(TEXTAREA_DEFAULTS.STEP_INFO_MAX_HEIGHT_PX).toBeGreaterThan(
+      TEXTAREA_DEFAULTS.STEP_INFO_MIN_HEIGHT_PX
+    );
+  });
+});
+
+describe("TOOLTIP_DEFAULTS", () => {
+  it("should have all expected tooltip config values", () => {
+    expect(TOOLTIP_DEFAULTS.SHOW_DELAY_MS).toBeGreaterThan(0);
+    expect(TOOLTIP_DEFAULTS.MAX_WIDTH_PX).toBeGreaterThan(0);
+    expect(TOOLTIP_DEFAULTS.ESTIMATED_HEIGHT_PX).toBeGreaterThan(0);
+  });
+
+  it("should have all numeric values", () => {
+    const values = Object.values(TOOLTIP_DEFAULTS);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(Number.isFinite(v)).toBe(true);
+    });
+  });
+
+  it("should have 9 entries", () => {
+    expect(Object.keys(TOOLTIP_DEFAULTS).length).toBe(9);
+  });
+});
+
+describe("UI_DEFAULTS", () => {
+  it("should have all expected UI layout values", () => {
+    expect(UI_DEFAULTS.TOOLTIP_DELAY_MS).toBeGreaterThan(0);
+    expect(UI_DEFAULTS.SCROLL_OFFSET_PX).toBeGreaterThan(0);
+    expect(UI_DEFAULTS.SCROLL_TO_TOP_THRESHOLD_PX).toBeGreaterThan(0);
+  });
+
+  it("should have all numeric values", () => {
+    const values = Object.values(UI_DEFAULTS);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(Number.isFinite(v)).toBe(true);
+    });
+  });
+
+  it("should have 3 entries", () => {
+    expect(Object.keys(UI_DEFAULTS).length).toBe(3);
+  });
+});
+
+describe("NETWORK_DEFAULTS", () => {
+  it("should have all expected network status values", () => {
+    expect(NETWORK_DEFAULTS.OFFLINE_DURATION_MS).toBeGreaterThanOrEqual(0);
+    expect(NETWORK_DEFAULTS.ONLINE_DURATION_MS).toBeGreaterThan(0);
+  });
+
+  it("should have all numeric values", () => {
+    const values = Object.values(NETWORK_DEFAULTS);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(Number.isFinite(v)).toBe(true);
+    });
+  });
+
+  it("should have 2 entries", () => {
+    expect(Object.keys(NETWORK_DEFAULTS).length).toBe(2);
+  });
+
+  it("should have ONLINE duration greater than OFFLINE", () => {
+    expect(NETWORK_DEFAULTS.ONLINE_DURATION_MS).toBeGreaterThan(
+      NETWORK_DEFAULTS.OFFLINE_DURATION_MS
+    );
   });
 });

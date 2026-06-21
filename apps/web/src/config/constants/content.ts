@@ -6,7 +6,13 @@
  */
 
 import { ENV } from "../env";
-import { UI_STRINGS, UI_MESSAGES, WIZARD_STEP_KEYS, EXPORT_ERROR_STRINGS } from "@blueprint/shared";
+import {
+  UI_STRINGS,
+  UI_MESSAGES,
+  WIZARD_STEP_KEYS,
+  EXPORT_ERROR_STRINGS,
+  NETWORK_DEFAULTS,
+} from "@blueprint/shared";
 
 /**
  * Loading State Messages
@@ -202,8 +208,8 @@ export const TOAST_MESSAGES = {
 export const NETWORK_MESSAGES = {
   OFFLINE: "You are offline. Some features may be unavailable.",
   ONLINE: "Connection restored.",
-  OFFLINE_DURATION: 0,
-  ONLINE_DURATION: 3000,
+  OFFLINE_DURATION: NETWORK_DEFAULTS.OFFLINE_DURATION_MS,
+  ONLINE_DURATION: NETWORK_DEFAULTS.ONLINE_DURATION_MS,
 } as const;
 
 /**
