@@ -68,7 +68,7 @@ export const TypeIndicator = memo(function TypeIndicator({
           <span className={TYPING.SR_ONLY}>Typing</span>
           {[0, 1, 2].map((index) => (
             <motion.span
-              key={index}
+              key={`typing-dot-${index}`}
               className={TYPING.DOT}
               animate={{
                 y: [0, -4, 0],
