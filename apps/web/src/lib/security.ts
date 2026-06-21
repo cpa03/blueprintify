@@ -222,7 +222,10 @@ export async function validateAndSanitizeFileContent(file: File): Promise<{
     const content = await file.text();
 
     // Additional security checks for JSON files
-    if (file.name.endsWith(".json")) {
+    const fileNameParts = file.name.split(".");
+    const fileExt = fileNameParts.length > 1 ? "." + fileNameParts.pop()?.toLowerCase() : "";
+    const jsonFileExt = SECURITY_LIMITS.FILE_EXTENSIONS.JSON;
+    if (fileExt === jsonFileExt) {
       const jsonValidation = validateJSONSecurity(content);
       if (!jsonValidation.isValid) {
         return jsonValidation;
