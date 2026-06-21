@@ -39,7 +39,7 @@ import { pageTransition, transitions, type AnimationDirection } from "../../util
 import { RippleButton } from "../RippleButton";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { CharacterCounterCompact } from "../CharacterCounter";
-import { getModifierLabel, getAltKeyLabel } from "../../lib/platform";
+import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 
 interface StepFeaturesProps {
@@ -494,7 +494,11 @@ export const StepFeatures = memo(function StepFeatures({
 
       <div className="flex justify-between">
         <KeyboardShortcutTooltip shortcut="←" description="Go back" position="right" modifier="alt">
-          <RippleButton onClick={prevStep} className="btn-secondary flex items-center gap-2 group">
+          <RippleButton
+            onClick={prevStep}
+            className="btn-secondary flex items-center gap-2 group"
+            aria-keyshortcuts={getAriaShortcutKey("ArrowLeft", "alt")}
+          >
             <svg
               className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5"
               fill="none"
@@ -525,6 +529,7 @@ export const StepFeatures = memo(function StepFeatures({
           <RippleButton
             onClick={nextStep}
             className="btn-primary flex items-center gap-2 group animate-glow"
+            aria-keyshortcuts={getAriaShortcutKey("Enter", "cmd")}
           >
             {UI_CONTENT.WIZARD.STEP_FEATURES.NEXT_BUTTON}
             <kbd
