@@ -118,11 +118,12 @@ const TabButton = React.memo(function TabButton({
             exit={{ scale: 0, opacity: 0 }}
             transition={{
               type: "spring",
-              stiffness: 400,
-              damping: 15,
+              ...EDITOR_ANIMATION.CONTENT_DOT,
             }}
             aria-label={ACCESSIBILITY_LABELS.EDITOR.CONTENT_AVAILABLE(
-              id === EDITOR_TABS.BLUEPRINT ? "Blueprint" : "Tasks"
+              id === EDITOR_TABS.BLUEPRINT
+                ? EDITOR_FILENAMES.BLUEPRINT_DISPLAY
+                : EDITOR_FILENAMES.TASKS_DISPLAY
             )}
           />
         )}

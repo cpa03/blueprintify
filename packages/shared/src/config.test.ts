@@ -1928,11 +1928,13 @@ describe("EDITOR_FILENAMES", () => {
     expect(EDITOR_FILENAMES.TASKS).toBe("task.md");
     expect(EDITOR_FILENAMES.BLUEPRINT_ANNOUNCE).toBe("blueprint.md");
     expect(EDITOR_FILENAMES.TASKS_ANNOUNCE).toBe("tasks.md");
+    expect(EDITOR_FILENAMES.BLUEPRINT_DISPLAY).toBe("Blueprint");
+    expect(EDITOR_FILENAMES.TASKS_DISPLAY).toBe("Tasks");
   });
 
-  it("should have 4 filename entries", () => {
+  it("should have 6 filename entries", () => {
     const values = Object.values(EDITOR_FILENAMES);
-    expect(values.length).toBe(4);
+    expect(values.length).toBe(6);
   });
 
   it("should have all string values", () => {

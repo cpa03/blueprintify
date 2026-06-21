@@ -1159,3 +1159,20 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 640 web + 382 api + 466 shared = 1,488 tests passing across 75 files
+
+### ✅ Flexy Iteration 60: Eliminate Inline Spring Configs & Hardcoded Display Labels in EditorHeader and CharacterCounter
+
+| File | Change |
+| ---- | ------ |
+| `packages/shared/src/config.ts` | Added `EDITOR_FILENAMES.BLUEPRINT_DISPLAY: "Blueprint"` + `EDITOR_FILENAMES.TASKS_DISPLAY: "Tasks"` human-readable display labels |
+| `packages/shared/src/config.test.ts` | Updated test assertions; length check 4→6 + display label assertions |
+| `apps/web/src/config/theme.ts` | Added `EDITOR_ANIMATION.CONTENT_DOT` (stiffness:400/damping:15) + `EDITOR_ANIMATION.WARNING_ICON` (stiffness:400/damping:12/mass:0.5) spring configs |
+| `apps/web/src/components/editor/EditorHeader.tsx` | Replaced inline spring `{stiffness:400,damping:15}` with `EDITOR_ANIMATION.CONTENT_DOT`; replaced hardcoded `"Blueprint"/"Tasks"` fallback strings with `EDITOR_FILENAMES.BLUEPRINT_DISPLAY`/`TASKS_DISPLAY` |
+| `apps/web/src/components/CharacterCounter.tsx` | Replaced inline spring `{stiffness:400,damping:12,mass:0.5}` with `EDITOR_ANIMATION.WARNING_ICON` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 640 web + 382 api + 466 shared = 1,488 tests passing across 75 files
