@@ -46,7 +46,7 @@ import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
 import { ValidationCheckmark } from "../ValidationCheckmark";
-import { getModifierLabel } from "../../lib/platform";
+import { getModifierLabel, getAriaShortcutKey } from "../../lib/platform";
 
 interface StepInfoProps {
   direction?: AnimationDirection;
@@ -501,6 +501,7 @@ export const StepInfo = memo(function StepInfo({
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98, y: 0 }}
               className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
+              aria-keyshortcuts={getAriaShortcutKey("Enter", "cmd")}
             >
               {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
               <kbd

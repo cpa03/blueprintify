@@ -35,7 +35,7 @@ import {
 import { pageTransition, fadeInUp, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 import { SmartTooltip, KeyboardShortcutTooltip } from "../SmartTooltip";
-import { getModifierLabel, getAltKeyLabel } from "../../lib/platform";
+import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
 
 interface StepReviewProps {
   direction?: AnimationDirection;
@@ -299,6 +299,7 @@ export const StepReview = memo(function StepReview({
               onClick={handleEditFeatures}
               className="btn-secondary flex items-center gap-2"
               disabled={isGenerating}
+              aria-keyshortcuts={getAriaShortcutKey("ArrowLeft", "alt")}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -335,6 +336,7 @@ export const StepReview = memo(function StepReview({
                   whileTap={undefined}
                   className="btn-primary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-label={ACCESSIBILITY_LABELS.REVIEW.GENERATE_DISABLED_ARIA}
+                  aria-keyshortcuts={getAriaShortcutKey("Enter", "cmd")}
                 >
                   {isGenerating ? (
                     <>
@@ -373,6 +375,7 @@ export const StepReview = memo(function StepReview({
                   whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
                   whileTap={{ scale: 0.95 }}
                   className="btn-primary flex items-center gap-2 animate-glow"
+                  aria-keyshortcuts={getAriaShortcutKey("Enter", "cmd")}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
