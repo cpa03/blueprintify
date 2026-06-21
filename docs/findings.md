@@ -2,6 +2,57 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 130 (2026-06-21 — RepoKeeper: Remove Unused Components, Barrel Files, Scripts & Unused Depts)
+
+### Audit Scope
+
+Repository cleanup scan covering unused source files (components, barrel files, scripts), unused dependencies, documentation alignment, and stale remote branch assessment.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build | ✅ Successful (7.54s) |
+| Tests | ✅ **640/640 passing** |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Removed unused components** — `apps/web/src/components/Tooltip.tsx` and `apps/web/src/components/AnimatedInput.tsx` (zero imports in source code; SmartTooltip.tsx is the active tooltip component).
+2. **Removed unused barrel files** — `apps/web/src/config/constants/index.ts` and `apps/web/src/config/index.ts` (individual modules imported directly; no direct imports of these barrels).
+3. **Removed unused scripts** — `scripts/ensure-node-version.mjs` and `scripts/fix-ci-node-version.mjs` (not referenced in `package.json` scripts or CI workflows; `scan-secrets.mjs`, `migrate.ts`, `brocula-hunt.mjs`, and `validate-wrangler.mjs` remain).
+4. **Removed unused dependencies**:
+   - `@hono/zod-validator` from `apps/api/package.json` (zero imports in API source)
+   - `@codemirror/commands` from `apps/web/package.json` (zero imports in web source)
+   - `@codemirror/search` from `apps/web/package.json` (zero imports in web source)
+5. **Verified all quality gates pass** — typecheck, lint, build, and 640 tests all green.
+6. **Preserved** — `cssnano` (used in `postcss.config.js`), `@types/dompurify` (used via type import), `@testing-library/user-event` (used in tests).
+
+### Key Findings
+
+- **Repo remains clean** — no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code.
+- **640/640 tests passing**, zero typecheck/lint errors, build successful.
+- **Knip audit validated**: 4 unused files and 3 unused dependencies confirmed and removed. `cssnano` and `@types/dompurify` are false positives — both are actively used.
+- **Stale remote branches detected** (28 branches with unmerged commits) — not deleted without explicit authorization.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — Successful ✅
+- [x] Tests — 640/640 passing ✅
+- [x] Unused components removed (Tooltip.tsx, AnimatedInput.tsx)
+- [x] Unused barrel files removed (config/constants/index.ts, config/index.ts)
+- [x] Unused scripts removed (ensure-node-version.mjs, fix-ci-node-version.mjs)
+- [x] Unused deps removed (@hono/zod-validator, @codemirror/commands, @codemirror/search)
+- [x] No type suppressions in source code
+- [x] CHANGELOG.md updated for Cycle 130
+- [x] docs/findings.md refreshed
+
+---
+
 ## Cycle 129 (2026-06-21 — BroCula Run 8: LH 100-100-100-100, 1488 Tests Passing, Zero Console Errors)
 
 ### Audit Scope
