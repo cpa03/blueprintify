@@ -2,6 +2,67 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 129 (2026-06-21 — BroCula Run 8: LH 100-100-100-100, 1488 Tests Passing, Zero Console Errors)
+
+### Audit Scope
+
+BroCula full browser console audit and Lighthouse optimization check on `brocula/run-8` branch. Verified via `scripts/brocula-hunt.mjs` (Playwright + Lighthouse on production build, desktop preset).
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Console Errors | ✅ 0 |
+| Console Warnings | ✅ 0 |
+| Lighthouse Performance | ✅ **100** |
+| Lighthouse Accessibility | ✅ **100** |
+| Lighthouse Best Practices | ✅ **100** |
+| Lighthouse SEO | ✅ **100** |
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,488/1,488 passing** |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full BroCula audit**: Zero console errors/warnings on production build. All 4 Lighthouse categories at 100.
+2. **1,488 tests passing** (640 web + 382 api + 466 shared) — up 22 from Run 1 (1,466).
+3. **Only finding**: "Reduce unused JavaScript" at score 0.5 — 45 KiB potential savings from animation chunk (23.8 KiB framer-motion) + vendor chunk (21.3 KiB react-dom). Standard for React + framer-motion SPA with aggressive lazy loading — not actionable.
+4. **No CSS, accessibility, or best-practices issues** found.
+5. **Build successful** (2.94s), secrets scan clean (261 files).
+6. **BroCula Run 8 audit indexed** in docs/audits/README.md, report saved to `docs/audits/brocula-hunt-2026-06-21-run2.md`.
+
+### Key Findings
+
+- **Project remains in excellent health** — zero console errors, Lighthouse 100/100/100/100, 1488 tests all passing.
+- **No actionable optimization opportunities** — the 45 KiB "unused JS" is expected behavior for lazy-loaded framer-motion and React.
+- **Existing optimization strategies validated**:
+  - Lazy-loaded Wizard defers framer-motion until user interaction
+  - ToastContainer conditionally rendered (only mounts when toasts exist)
+  - AnimatePresence lazily imported via StepTransition
+  - CSS animations replace framer-motion in 5 components (OfflineBanner, ShowEditorButton, TemplateGrid, etc.)
+  - Critical CSS inlined in index.html for LCP
+  - Font loading with size-adjusted fallback prevents CLS
+- **No regressions** from prior audit runs.
+
+### Verification
+
+- [x] Console errors: 0 ✅
+- [x] Console warnings: 0 ✅
+- [x] Lighthouse Performance: 100 ✅
+- [x] Lighthouse Accessibility: 100 ✅
+- [x] Lighthouse Best Practices: 100 ✅
+- [x] Lighthouse SEO: 100 ✅
+- [x] Typecheck: 0 errors ✅
+- [x] Lint: 0 warnings/errors ✅
+- [x] Tests: 1,488/1,488 passing ✅
+- [x] Build: Successful (2.94s) ✅
+- [x] Secrets scan: Clean (261 files) ✅
+- [x] BroCula Run 8 indexed in audits/README
+- [x] Audit report saved
+
+---
+
 ## Cycle 128 (2026-06-21 — RepoKeeper: BUG-014 & BUG-017 Actually Fixed on main, Run 5 Indexed, CHANGELOG Gap Fix, Documentation Refresh)
 
 ### Audit Scope
@@ -46,6 +107,41 @@ Full repository audit covering redundant/temp/unused file scan, **BUG-014 actual
 - [x] Tests — 1,466/1,466 passing ✅
 - [x] No redundant/temp/unused files, no type suppressions
 - [x] Documentation refreshed for Cycle 128
+
+---
+
+## Cycle 129 (2026-06-21 — RepoKeeper: Full Repository Audit, docs/audits/README.md Gap Fix, CHANGELOG Gap Fix, Documentation Refresh, Stale Branch Cleanup)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, docs/audits/README.md gap detection (Jun 20 Run 3 missing from Current Reports), CHANGELOG gap detection (Cycle 129 + feat(shared) + feat(wizard) missing from Unreleased section), type suppression audit, stale remote branch assessment, documentation sync (findings, active-tasks, knowledge-review, bugs, CHANGELOG).
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ 1,488/1,488 passing (640 web + 382 api + 466 shared) |
+| Format | ✅ All files Prettier-compliant |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts.
+2. **Type suppression audit**: Zero `@ts-ignore`, zero `@ts-expect-error`, zero `as any` in source code.
+3. **docs/audits/README.md gap fix**: Added missing `brocula-hunt-2026-06-20-run3.md` (LH 100-100-100-100, 1466 tests) to Current Reports between Run 4 and Run 2 entries.
+4. **CHANGELOG gap fix**: Added Cycle 129 entry plus 3 missing commits: `feat(shared): centralize UI defaults`, `feat(wizard): add aria-keyshortcuts to step buttons for screen readers`, `docs: Cycle 129 — Phase 1 diagnostic scoring and findings`.
+5. **Stale remote branch deleted**: `origin/fix/prompt-injection-protection-1077` (merged into main via PR #1975, 0 unique commits remaining).
+6. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/knowledge-review.md`, `docs/bugs.md`, `CHANGELOG.md`, `docs/audits/README.md` updated for Cycle 129.
+
+### Key Findings
+
+- **README BroCula description**: `(Jun 17–Jun 21)` — accurate, matches latest audit `brocula-hunt-2026-06-21-run1.md`
+- **Test count**: 1,488 total (640 web + 382 api + 466 shared) — all passing
+- **npm audit**: Known upstream Cloudflare vulns (BUG-013 — same documented blocker)
+- **Stale remote branches**: 20 remote branches assessed — only `fix/prompt-injection-protection-1077` was merged (deleted); remaining 19 have unique unmerged content (kept as active agent branches)
+- **Workflow CI health**: BUG-014 (stale doc refs) and BUG-017 (node-version) remain properly fixed on main — verified in prior cycles
 
 ---
 

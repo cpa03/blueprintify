@@ -32,6 +32,7 @@ import { STARTER_TEMPLATES } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { ANIMATION, TOAST_MESSAGES, ACCESSIBILITY_LABELS } from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
+import { TEMPLATE_GLOW_SHADOW } from "../config/theme";
 
 function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Element {
   const loadTemplate = useWizardStore((s) => s.loadTemplate);
@@ -149,10 +150,13 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
               aria-selected={isSelected}
               role="option"
               tabIndex={focusIndex >= 0 ? (focusIndex === index ? 0 : -1) : 0}
-              style={{
-                animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY}s`,
-                animationDuration: `${ANIMATION.CARD_ENTRANCE_DURATION}s`,
-              }}
+              style={
+                {
+                  animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY}s`,
+                  animationDuration: `${ANIMATION.CARD_ENTRANCE_DURATION}s`,
+                  "--tech-glow": TEMPLATE_GLOW_SHADOW,
+                } as React.CSSProperties
+              }
               className={`
                 glass-card p-5 text-left relative group card-glow-hover
                 will-change-transform
@@ -239,7 +243,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                           ${
                             isSelected
                               ? "bg-accent-emerald/20 text-accent-emerald"
-                              : "bg-dark-800 text-dark-300 group-hover:shadow-[0_0_8px_rgb(99_102_241/0.3)]"
+                              : "bg-dark-800 text-dark-300 group-hover:[box-shadow:var(--tech-glow)]"
                           }
                         `}
                       >
