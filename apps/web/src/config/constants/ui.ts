@@ -15,7 +15,12 @@ import {
   TOOLTIP_DEFAULTS,
   UI_DEFAULTS,
 } from "@blueprint/shared";
-import { ANIMATION_TIMING, COLORS } from "../theme";
+import {
+  ANIMATION_TIMING,
+  COLORS,
+  THEME_PROGRESS_TRACK_COLOR,
+  STEP_CONNECTOR_COMPLETED_SHADOW as THEME_STEP_CONNECTOR_COMPLETED_SHADOW,
+} from "../theme";
 
 // ============================================================================
 // Animation Durations
@@ -206,8 +211,11 @@ export const PROGRESS_COLORS = {
 
 /** Step connector visual configuration */
 export const STEP_CONNECTOR = {
-  COMPLETED_SHADOW: "0 0 6px rgba(16, 185, 129, 0.4)",
+  COMPLETED_SHADOW: THEME_STEP_CONNECTOR_COMPLETED_SHADOW,
 } as const;
+
+/** CircularProgress track color default */
+export const PROGRESS_TRACK_COLOR = THEME_PROGRESS_TRACK_COLOR;
 
 /** SVG transition configuration for progress indicators */
 export const SVG_TRANSITION = {

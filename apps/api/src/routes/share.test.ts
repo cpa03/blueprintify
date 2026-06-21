@@ -6,6 +6,7 @@ import type { ErrorResponse } from "../errors";
 import type { AppVariables, User } from "../types";
 import { DEFAULTS } from "../config/env";
 import {
+  ERROR_TYPES,
   HTTP_STATUS,
   HTTP_HEADERS,
   HTTP_METHODS,
@@ -13,6 +14,7 @@ import {
   AUTH_DEFAULTS,
   CONTEXT_KEYS,
   ROUTE_PATHS,
+  SHARE_MESSAGES,
 } from "@blueprint/shared";
 import { ERROR_CODES } from "../config/constants";
 import { MOCK_ENV } from "../test-utils";
@@ -123,7 +125,7 @@ describe("POST /share", () => {
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("validation");
+    expect(data.error.type).toBe(ERROR_TYPES.VALIDATION);
     expect(data.error.code).toBe(ERROR_CODES.VALIDATION_ERROR);
     expect(data.error.timestamp).toBeDefined();
   });
@@ -166,9 +168,9 @@ describe("GET /share/:id", () => {
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("validation");
+    expect(data.error.type).toBe(ERROR_TYPES.VALIDATION);
     expect(data.error.code).toBe(ERROR_CODES.VALIDATION_ERROR);
-    expect(data.error.message).toContain("Invalid share ID format");
+    expect(data.error.message).toContain(SHARE_MESSAGES.INVALID_SHARE_ID_FORMAT);
   });
 
   it("should return 404 for non-existent share", async () => {
@@ -178,7 +180,7 @@ describe("GET /share/:id", () => {
     expect(res.status).toBe(HTTP_STATUS.NOT_FOUND);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("not_found");
+    expect(data.error.type).toBe(ERROR_TYPES.NOT_FOUND);
     expect(data.error.code).toBe(ERROR_CODES.NOT_FOUND_ERROR);
   });
 
@@ -243,7 +245,7 @@ describe("DELETE /share/:id", () => {
     expect(res.status).toBe(HTTP_STATUS.OK);
     const body = (await res.json()) as { success: true; data: { message: string } };
     expect(body.success).toBe(true);
-    expect(body.data).toHaveProperty("message", "Share deleted successfully");
+    expect(body.data).toHaveProperty("message", SHARE_MESSAGES.DELETED_SUCCESSFULLY);
   });
 
   it("should return 400 for invalid share ID format on delete", async () => {
@@ -253,9 +255,9 @@ describe("DELETE /share/:id", () => {
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("validation");
+    expect(data.error.type).toBe(ERROR_TYPES.VALIDATION);
     expect(data.error.code).toBe(ERROR_CODES.VALIDATION_ERROR);
-    expect(data.error.message).toContain("Invalid share ID format");
+    expect(data.error.message).toContain(SHARE_MESSAGES.INVALID_SHARE_ID_FORMAT);
   });
 
   it("should allow deletion with matching API key", async () => {
@@ -278,7 +280,7 @@ describe("DELETE /share/:id", () => {
     expect(delRes.status).toBe(HTTP_STATUS.OK);
     const delBody = (await delRes.json()) as { success: true; data: { message: string } };
     expect(delBody.success).toBe(true);
-    expect(delBody.data.message).toBe("Share deleted successfully");
+    expect(delBody.data.message).toBe(SHARE_MESSAGES.DELETED_SUCCESSFULLY);
   });
 
   it("should reject deletion with mismatched API key", async () => {
@@ -313,7 +315,7 @@ describe("DELETE /share/:id", () => {
     expect(delRes.status).toBe(HTTP_STATUS.FORBIDDEN);
     const data = (await delRes.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("authorization");
+    expect(data.error.type).toBe(ERROR_TYPES.AUTHORIZATION);
     expect(data.error.code).toBe(ERROR_CODES.AUTHORIZATION_ERROR);
   });
 
@@ -337,6 +339,6 @@ describe("DELETE /share/:id", () => {
     expect(delRes.status).toBe(HTTP_STATUS.OK);
     const delBody = (await delRes.json()) as { success: true; data: { message: string } };
     expect(delBody.success).toBe(true);
-    expect(delBody.data.message).toBe("Share deleted successfully");
+    expect(delBody.data.message).toBe(SHARE_MESSAGES.DELETED_SUCCESSFULLY);
   });
 });
