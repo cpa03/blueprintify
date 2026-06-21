@@ -1142,9 +1142,20 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | `apps/web/src/components/wizard/StepFeatures.tsx` | `duration:0.4` → `ANIMATION.FADE_IN` |
 | `apps/web/src/components/PreviewEmptyState.tsx` | Hardcoded `"blueprint.md"/"task.md"` → `EDITOR_FILENAMES.*` |
 
+### ✅ Flexy Iteration 58: Eliminate Remaining Hardcoded Error Type Strings & Test Assertions
+
+| File | Change |
+| ---- | ------ |
+| `apps/api/src/middleware/validator.test.ts` | Imported `API_VALIDATION_MESSAGES`, `ERROR_TYPES`; replaced `"Invalid JSON in request body"` with `API_VALIDATION_MESSAGES.INVALID_JSON_BODY` |
+| `apps/api/src/middleware/validator.test.ts` | Replaced 4x `"validation"` with `ERROR_TYPES.VALIDATION` |
+| `apps/api/src/middleware/errorHandler.test.ts` | Replaced `"internal"` with `ERROR_TYPES.INTERNAL`, `"validation"` with `ERROR_TYPES.VALIDATION`, `"authentication"` with `ERROR_TYPES.AUTHENTICATION`, `"not_found"` with `ERROR_TYPES.NOT_FOUND`, `"configuration"` with `ERROR_TYPES.CONFIGURATION` |
+| `apps/api/src/middleware/auth.test.ts` | Imported `ERROR_TYPES`; replaced 2x `"authentication"` with `ERROR_TYPES.AUTHENTICATION` |
+| `apps/api/src/middleware/authorize.test.ts` | Imported `ERROR_TYPES`; replaced `"authorization"` with `ERROR_TYPES.AUTHORIZATION`, `"authentication"` with `ERROR_TYPES.AUTHENTICATION` |
+| `apps/api/src/routes/share.test.ts` | Imported `ERROR_TYPES`, `SHARE_MESSAGES`; replaced 3x `"Share deleted successfully"` with `SHARE_MESSAGES.DELETED_SUCCESSFULLY`, 2x `"Invalid share ID format"` with `SHARE_MESSAGES.INVALID_SHARE_ID_FORMAT`; replaced `"validation"`/`"not_found"`/`"authorization"` with `ERROR_TYPES.*` |
+
 ## Verification
 
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
-- ✅ `npm run test:all` — 640 web + 382 api + 444 shared = 1,466 tests passing across 75 files
+- ✅ `npm run test:all` — 640 web + 382 api + 466 shared = 1,488 tests passing across 75 files

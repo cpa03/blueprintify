@@ -4,7 +4,9 @@ import { z } from "zod";
 import { validateJson } from "./validator";
 import type { ErrorResponse } from "../errors";
 import {
+  API_VALIDATION_MESSAGES,
   CONTEXT_KEYS,
+  ERROR_TYPES,
   HTTP_HEADERS,
   HTTP_METHODS,
   HTTP_HEADER_NAMES,
@@ -65,7 +67,7 @@ describe("validateJson middleware", () => {
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("validation");
+    expect(data.error.type).toBe(ERROR_TYPES.VALIDATION);
     expect(data.error.code).toBe(ERROR_CODES.VALIDATION_ERROR);
     expect(data.error.details).toBeDefined();
     expect(data.error.details!.issues).toBeDefined();
@@ -92,7 +94,7 @@ describe("validateJson middleware", () => {
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("validation");
+    expect(data.error.type).toBe(ERROR_TYPES.VALIDATION);
     expect(data.error.details).toBeDefined();
     expect(data.error.details!.issues).toHaveLength(1);
     const issues = data.error.details!.issues as Array<{
@@ -120,8 +122,8 @@ describe("validateJson middleware", () => {
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("validation");
-    expect(data.error.message).toBe("Invalid JSON in request body");
+    expect(data.error.type).toBe(ERROR_TYPES.VALIDATION);
+    expect(data.error.message).toBe(API_VALIDATION_MESSAGES.INVALID_JSON_BODY);
   });
 
   it("should return 400 for empty body", async () => {
@@ -140,7 +142,7 @@ describe("validateJson middleware", () => {
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("validation");
+    expect(data.error.type).toBe(ERROR_TYPES.VALIDATION);
   });
 
   it("should include path information in validation errors", async () => {
