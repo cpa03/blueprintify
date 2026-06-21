@@ -34,7 +34,7 @@ import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { Icon } from "../Icon";
 import { LastSavedIndicator } from "../LastSavedIndicator";
 import { SPRING_CONFIG, EDITOR_LABELS, ANIMATION, EDITOR_TABS } from "../../config/constants";
-import { EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
+import { EDITOR_ANIMATION, HEADER_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import clsx from "clsx";
 
@@ -174,21 +174,11 @@ const ContentStats = React.memo(function ContentStats({
             y: 0,
             scale: 1,
             borderColor: isGenerating
-              ? [
-                  "rgb(99 102 241 / 0.5)",
-                  "rgb(99 102 241 / 0.8)",
-                  "rgb(139 92 246 / 0.6)",
-                  "rgb(99 102 241 / 0.5)",
-                ]
-              : "rgb(55 65 81 / 0.5)",
+              ? [...HEADER_ANIMATION.CONTENT_STATS.BORDER_COLORS]
+              : HEADER_ANIMATION.CONTENT_STATS.BORDER_STATIC,
             boxShadow: isGenerating
-              ? [
-                  "0 0 0 0 rgb(99 102 241 / 0)",
-                  "0 0 12px 2px rgb(99 102 241 / 0.15)",
-                  "0 0 20px 4px rgb(139 92 246 / 0.1)",
-                  "0 0 0 0 rgb(99 102 241 / 0)",
-                ]
-              : "0 0 0 0 transparent",
+              ? [...HEADER_ANIMATION.CONTENT_STATS.BOX_SHADOWS]
+              : HEADER_ANIMATION.CONTENT_STATS.SHADOW_STATIC,
           }}
           exit={{ opacity: 0, y: -8, scale: 0.95 }}
           transition={

@@ -16,61 +16,27 @@ vi.mock("../store", () => ({
   }),
 }));
 
-vi.mock("../config/constants", () => ({
-  WIZARD_STEPS: [
-    { key: "info", label: "Project Info", icon: "📋", shortcut: "1" },
-    { key: "stack", label: "Tech Stack", icon: "🛠️", shortcut: "2" },
-    { key: "features", label: "Features", icon: "✨", shortcut: "3" },
-    { key: "review", label: "Review", icon: "👀", shortcut: "4" },
-    { key: "generating", label: "Generating", icon: "⚡", shortcut: "5" },
-  ],
-  SPRING_CONFIG: {
-    DEFAULT: { stiffness: 400, damping: 25, mass: 0.8 },
-    REDUCED_MOTION: { stiffness: 1000, damping: 100, mass: 0.1 },
-    SNAPPY: { stiffness: 500, damping: 25, mass: 0.8 },
-    GENTLE: { stiffness: 400, damping: 30, mass: 0.8 },
-    BOUNCY: { stiffness: 400, damping: 10, mass: 0.8 },
-    SUBTLE_BOUNCE: { stiffness: 400, damping: 17, mass: 0.8 },
-    SLOW: { stiffness: 100, damping: 20, mass: 0.8 },
-  },
-  TIMEOUTS: {
-    SHAKE_ANIMATION: 400,
-  },
-  PROGRESS_COLORS: {
-    COMPLETED: "#10b981",
-    ACTIVE: "#6366f1",
-  },
-  SVG_TRANSITION: {
-    STROKE_DASHOFFSET_DURATION_MS: 700,
-    STROKE_TIMING: "ease-out",
-  },
-  STEP_CONNECTOR: {
-    COMPLETED_SHADOW: "0 0 6px rgba(16, 185, 129, 0.4)",
-  },
-  TOOLTIP_CONFIG: {
-    DEFAULT_DELAY: 500,
-    KEYBOARD_SHORTCUT_DELAY: 300,
-    INFO_DELAY: 200,
-    DEFAULT_HIDE_DELAY: 100,
-    DEFAULT_SHOW_DELAY: 400,
-    DEFAULT_MAX_WIDTH: 320,
-    INFO_MAX_WIDTH: 280,
-    ESTIMATED_HEIGHT: 60,
-    VIEWPORT_PADDING: 16,
-  },
-  ENTRANCE_STAGGER: {
-    BASE_DELAY_S: 0.15,
-    INCREMENT_S: 0.07,
-    FILL_MODE: "backwards",
-    SHORT_DELAY_S: 0.1,
-    MEDIUM_DELAY_S: 0.2,
-  },
-  ACCESSIBILITY_LABELS: {
-    PROGRESS: {
-      STEPS_COMPLETE: (_pct: number, _remaining: number) => `Steps complete`,
+vi.mock("../config/constants", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../config/constants")>();
+  return {
+    ...actual,
+    // Override WIZARD_STEPS to match StepIndicator expectations
+    WIZARD_STEPS: [
+      { key: "info", label: "Project Info", icon: "📋", shortcut: "1" },
+      { key: "stack", label: "Tech Stack", icon: "🛠️", shortcut: "2" },
+      { key: "features", label: "Features", icon: "✨", shortcut: "3" },
+      { key: "review", label: "Review", icon: "👀", shortcut: "4" },
+      { key: "generating", label: "Generating", icon: "⚡", shortcut: "5" },
+    ],
+    // Use actual PROGRESS_COLORS, STEP_CONNECTOR, SVG_TRANSITION, etc. from shared config
+    // via importOriginal to eliminate hardcoded hex/rgba values
+    ACCESSIBILITY_LABELS: {
+      PROGRESS: {
+        STEPS_COMPLETE: (_pct: number, _remaining: number) => `Steps complete`,
+      },
     },
-  },
-}));
+  };
+});
 
 vi.mock("framer-motion", () => {
   const motion = {
