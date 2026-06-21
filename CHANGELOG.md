@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 130: **removed unused source files** (Tooltip.tsx, AnimatedInput.tsx, config/constants/index.ts barrel, config/index.ts barrel), **removed unused scripts** (ensure-node-version.mjs, fix-ci-node-version.mjs), **removed unused deps** (@hono/zod-validator from api, @codemirror/commands and @codemirror/search from web), typecheck ✅ lint ✅ build ✅ tests 640/640 ✅, docs refresh (findings, CHANGELOG), quality verification
 - BroCula Run 8: **LH 100-100-100-100, 1488 tests passing, zero console errors** — full browser console audit and Lighthouse optimization check clean
 - RepoKeeper Cycle 129: full repository audit, docs/audits/README.md gap fix (added missing Jun 20 Run 3 entry), CHANGELOG gap fix (added Cycle 129 entry), docs refresh (findings, active-tasks, knowledge-review, bugs), stale remote branch cleanup (fix/prompt-injection-protection-1077 — merged into main), typecheck ✅ lint ✅ tests 1,488/1,488 ✅ (640 web + 382 api + 466 shared), quality verification
 - feat(shared): centralize UI defaults into @blueprint/shared config
