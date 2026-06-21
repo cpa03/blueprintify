@@ -2,6 +2,53 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 128 (2026-06-21 — RepoKeeper: BUG-014 & BUG-017 Actually Fixed on main, Run 5 Indexed, CHANGELOG Gap Fix, Documentation Refresh)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 10 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1 — `on-pull.yml` used unquoted `20` which previous patterns missed), BroCula Run 5 indexed in audits/README, CHANGELOG gap detection (6 commits missing from Unreleased section), type suppression audit, documentation sync (findings, active-tasks, knowledge-review, CHANGELOG).
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ 1,466/1,466 passing |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts.
+2. **Type suppression audit**: Zero `@ts-ignore`, zero `@ts-expect-error`, zero `as any` in source code.
+3. **BUG-014 actually fixed on main**: `main.yml` lines 39 and 263: `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` — 2 occurrences.
+4. **BUG-017 actually fixed on main**: `node-version: "20"` replaced with `node-version-file: ".node-version"` across 4 workflow files — 10 occurrences: iterate.yml (5), parallel.yml (4), on-pull.yml (1 — used unquoted `20`), pr-gatekeeper.yml (1). Zero hardcoded `node-version:` remain in any workflow file.
+5. **BroCula Run 5 indexed**: `docs/audits/brocula-hunt-2026-06-20-run5.md` added to audit index as latest current report.
+6. **CHANGELOG gap fix**: Detected 6 commits after Cycle 127 missing from Unreleased section — added `feat(security): add secrets detection script`, `feat(web): add persistent validation error message to tech stack step`, `feat(flexy): replace remaining hardcoded animation durations with ANIMATION constants (Iteration 57)`, `fix(security): add defense-in-depth prompt injection protection`, `fix(api): move wrangler validation from prebuild to predeploy`, `docs(brocula): BroCula Run 5`.
+7. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/knowledge-review.md`, `CHANGELOG.md`, `README.md` (BroCula description `Jun 17–Jun 20`→`Jun 17–Jun 21`), `docs/audits/README.md` (Run 5 indexed) updated for Cycle 128.
+
+### Key Findings
+
+- **BUG-014 and BUG-017 still persisted on main after Cycle 127**: Prior Cycle 127 claimed these were fixed but `main.yml` still contained `docs/bug.md`/`docs/feature.md` (BUG-014) and `node-version: "20"` still existed in iterate.yml, parallel.yml, pr-gatekeeper.yml (BUG-017). Additionally, `on-pull.yml` had `node-version: 20` (unquoted, not caught by `node-version: "20"` pattern). This cycle applies the actual fixes.
+- **CHANGELOG gap detected**: 6 commits merged after Cycle 127 were not added to the Unreleased section. Now documented.
+- **No redundant/temp/unused files found** — repo remains clean.
+- **No `@ts-ignore`, `@ts-expect-error`, or `as any`** in source code.
+- **1466 tests passing, zero typecheck/lint errors.**
+
+### Verification
+
+- [x] BUG-014 fixed — main.yml `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` (2 occurrences)
+- [x] BUG-017 fixed — 10 occurrences of `node-version:`→`node-version-file: ".node-version"` across 4 workflow files
+- [x] BroCula Run 5 indexed in audits/README
+- [x] CHANGELOG gap filled — 6 missing commits added
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Tests — 1,466/1,466 passing ✅
+- [x] No redundant/temp/unused files, no type suppressions
+- [x] Documentation refreshed for Cycle 128
+
+---
+
 ## Cycle 127 (2026-06-20 — RepoKeeper: BUG-014 & BUG-017 Actually Fixed on main, CHANGELOG Gap Fix, Documentation Refresh)
 
 ### Audit Scope
