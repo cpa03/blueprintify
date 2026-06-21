@@ -195,9 +195,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin fetchpriority="high" />
     <link rel="preconnect" href="https://va.vercel-scripts.com" crossorigin />
 
-    <!-- Async Inter font - media="print" onload trick for non-blocking CSS -->
-    <!-- No preload needed: @font-face with local("Inter") + size-adjusted fallback in critical CSS
-         handles the FOUT/CLS, and the tiny Google Fonts stylesheet loads fast via async pattern -->
+    <!-- Async Inter font - Preload + media="print" onload trick for non-blocking CSS
+         The preload tells the browser to start fetching the stylesheet early (before the
+         CSSOM is constructed), while media="print" onload prevents it from blocking render.
+         @font-face with local("Inter") + size-adjusted fallback in critical CSS handles
+         the FOUT/CLS during the brief async load window. -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      fetchpriority="high"
+    />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
