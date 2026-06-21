@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - BroCula Run 8: **LH 100-100-100-100, 1488 tests passing, zero console errors** — full browser console audit and Lighthouse optimization check clean
+- RepoKeeper Cycle 129: full repository audit, docs/audits/README.md gap fix (added missing Jun 20 Run 3 entry), CHANGELOG gap fix (added Cycle 129 entry), docs refresh (findings, active-tasks, knowledge-review, bugs), stale remote branch cleanup (fix/prompt-injection-protection-1077 — merged into main), typecheck ✅ lint ✅ tests 1,488/1,488 ✅ (640 web + 382 api + 466 shared), quality verification
+- feat(shared): centralize UI defaults into @blueprint/shared config
+- feat(wizard): add aria-keyshortcuts to step buttons for screen readers
+- docs: Cycle 129 — Phase 1 diagnostic scoring and findings
 - feat(security): add secrets detection script and integrate with CI checks (#1974)
 - feat(web): add persistent validation error message to tech stack step
 - feat(flexy): replace remaining hardcoded animation durations with ANIMATION constants (Iteration 57)

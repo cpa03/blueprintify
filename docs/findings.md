@@ -110,6 +110,41 @@ Full repository audit covering redundant/temp/unused file scan, **BUG-014 actual
 
 ---
 
+## Cycle 129 (2026-06-21 — RepoKeeper: Full Repository Audit, docs/audits/README.md Gap Fix, CHANGELOG Gap Fix, Documentation Refresh, Stale Branch Cleanup)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, docs/audits/README.md gap detection (Jun 20 Run 3 missing from Current Reports), CHANGELOG gap detection (Cycle 129 + feat(shared) + feat(wizard) missing from Unreleased section), type suppression audit, stale remote branch assessment, documentation sync (findings, active-tasks, knowledge-review, bugs, CHANGELOG).
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ 1,488/1,488 passing (640 web + 382 api + 466 shared) |
+| Format | ✅ All files Prettier-compliant |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts.
+2. **Type suppression audit**: Zero `@ts-ignore`, zero `@ts-expect-error`, zero `as any` in source code.
+3. **docs/audits/README.md gap fix**: Added missing `brocula-hunt-2026-06-20-run3.md` (LH 100-100-100-100, 1466 tests) to Current Reports between Run 4 and Run 2 entries.
+4. **CHANGELOG gap fix**: Added Cycle 129 entry plus 3 missing commits: `feat(shared): centralize UI defaults`, `feat(wizard): add aria-keyshortcuts to step buttons for screen readers`, `docs: Cycle 129 — Phase 1 diagnostic scoring and findings`.
+5. **Stale remote branch deleted**: `origin/fix/prompt-injection-protection-1077` (merged into main via PR #1975, 0 unique commits remaining).
+6. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/knowledge-review.md`, `docs/bugs.md`, `CHANGELOG.md`, `docs/audits/README.md` updated for Cycle 129.
+
+### Key Findings
+
+- **README BroCula description**: `(Jun 17–Jun 21)` — accurate, matches latest audit `brocula-hunt-2026-06-21-run1.md`
+- **Test count**: 1,488 total (640 web + 382 api + 466 shared) — all passing
+- **npm audit**: Known upstream Cloudflare vulns (BUG-013 — same documented blocker)
+- **Stale remote branches**: 20 remote branches assessed — only `fix/prompt-injection-protection-1077` was merged (deleted); remaining 19 have unique unmerged content (kept as active agent branches)
+- **Workflow CI health**: BUG-014 (stale doc refs) and BUG-017 (node-version) remain properly fixed on main — verified in prior cycles
+
+---
+
 ## Cycle 127 (2026-06-20 — RepoKeeper: BUG-014 & BUG-017 Actually Fixed on main, CHANGELOG Gap Fix, Documentation Refresh)
 
 ### Audit Scope
