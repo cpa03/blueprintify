@@ -3818,3 +3818,114 @@ Despite **7 prior BugFixer cycles** claiming BUG-014 was "fixed" (Jun 12, Jun 13
 - BUG-014 main.yml fix requires a token with `workflows: write` permission to push.
 - Consider using a Personal Access Token (PAT) or GitHub App with workflows permission for BugFixer cycles that modify CI files.
 - Alternatively, the two-line fix can be applied manually via the GitHub web editor.
+
+---
+
+## Cycle 129 (2026-06-21 — Sisyphus ULW: PR Handler + Issue Manager + Phase 1 Audit)
+
+### Audit Scope
+
+Full repository health check, PR processing (4 PRs merged), issue normalization audit, and comprehensive scoring. Runs in CI environment (Node 20).
+
+### PRs Processed
+
+| PR | Title | Result |
+|----|-------|--------|
+| #1983 | docs(brocula): BroCula Run 6 | ✅ merged, branch deleted |
+| #1982 | chore(repokeeper): Cycle 128 | ✅ merged after conflict resolution |
+| #1981 | feat(shared): centralize UI defaults | ✅ merged, branch deleted |
+| #1980 | feat(wizard): add aria-keyshortcuts | ✅ merged, branch deleted |
+
+### Status Summary (main @ 2f85f74)
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 errors, 0 warnings) |
+| Tests | ✅ 1,488 passing (75 files: 43+28+4) |
+| Build | ✅ Builds in 3.03s |
+| Secrets Scan | ✅ Clean |
+| Dependencies | ⚠️ 19 vulnerabilities (2 low, 17 moderate) — all transitive |
+| Validated Wrangler Config | ✅ Script catches 6 placeholder IDs pre-deploy |
+
+### Comprehensive Scoring
+
+#### A. CODE QUALITY — 87/100
+
+| Criterion | Score | Evidence |
+|-----------|-------|----------|
+| Correctness | 90 | 1488 tests pass, typecheck clean, no `any`/`@ts-ignore` in source |
+| Readability & Naming | 85 | Consistent naming, but some wizard/editor files exceed 250 LOC |
+| Simplicity | 85 | Some store files (`wizard.ts`, `editor.ts`) have high complexity |
+| Modularity & SRP | 80 | Constants extracted to shared, but some modules still coupled |
+| Consistency | 90 | ESLint enforces consistent style, shared patterns emerging |
+| Testability | 85 | Tests exist for stores, hooks, components, API — 75 test files strong |
+| Maintainability | 85 | TS strict mode, Zod schemas, clear boundaries |
+| Error Handling | 85 | Error boundaries, Zod validation, prompt injection protection — coverage is good |
+| Dependency Discipline | 80 | 19 moderate vulns (all transitive), some unused deps likely |
+| Determinism | 90 | Pure functions preferred, state managed via Zustand |
+
+#### B. SYSTEM QUALITY — 80/100
+
+| Criterion | Score | Evidence |
+|-----------|-------|----------|
+| Stability | 85 | 0 build failures, all tests pass consistently |
+| Performance Efficiency | 85 | LH 100/100, 0.3s FCP, 0.7s LCP, 0 TBT |
+| Security Practices | 75 | Prompt injection protected (#1975), but: no authz, wildcard CORS, no secrets detection in CI, placeholder infra IDs |
+| Scalability Readiness | 75 | Cloudflare Workers edge-ready, but no D1/KV infrastructure created |
+| Resilience & Fault Tolerance | 80 | Circuit breaker, retry logic, error boundaries exist — no chaos testing |
+| Observability | 75 | Analytics Engine configured, logs/traces enabled — no Sentry configured, no audit logging |
+
+**Security-specific findings (noted in issues):**
+- #1045: Placeholder infra IDs (P1)
+- #1046: Share IDs accessible without auth (P2)
+- #1078: No user-level authorization (P1)
+- #1088: No secrets detection in CI (P2)
+- #930: Permissive CORS default (P2)
+- #955: Weak CSP (P3)
+- #973: ajv moderate vulns (P2)
+
+#### C. EXPERIENCE QUALITY — 85/100
+
+| Criterion | Score | Evidence |
+|-----------|-------|----------|
+| UX: Accessibility | 80 | aria-keyshortcuts added, focus management — no axe tests yet |
+| UX: User Flow Clarity | 90 | Wizard interface, clear step progression |
+| UX: Feedback & Errors | 85 | Toast notifications, auto-save indicators, error boundaries |
+| UX: Responsiveness | 90 | LH 100 on mobile, 0.5s Speed Index |
+| DX: API Clarity | 85 | Hono routes well-structured, Zod schemas document shapes |
+| DX: Local Dev Setup | 75 | 4 steps to start (`cp .dev.vars.example`, `npm install`, 2 dev commands) |
+| DX: Documentation Accuracy | 80 | docs/ well-maintained, some drift in stale refs |
+| DX: Debuggability | 85 | Observability traces enabled, secure logging |
+| DX: Build/Test Feedback | 85 | `npm run check` runs all in ~45s, vitest watch mode |
+
+#### D. DELIVERY & EVOLUTION — 75/100
+
+| Criterion | Score | Evidence |
+|-----------|-------|----------|
+| CI/CD Health | 75 | 5 workflow files, but BUG-017 (node-version to node-version-file) only just fixed, PR gatekeeper CI shows `action_required` |
+| Release & Rollback Safety | 75 | Wrangler deploys from main, no canary/staged rollout |
+| Config & Env Parity | 80 | .dev.vars.example, wrangler.toml env sections — placeholder IDs block prod |
+| Migration Safety | 75 | SQLite migrations exist, no D1 database yet |
+| Technical Debt Exposure | 75 | ~20 open issues (many stale), some feature/UX issues aging |
+| Change Velocity | 80 | 4 PRs processed/merged this cycle, 0 conflicts introduced |
+
+### Overall Score: 82/100
+
+### Issue Normalization Notes
+
+GitHub token lacks `issues: write` permission — label normalization and issue closing blocked. Issues requiring attention:
+- **P1 issues (unresolved)**: #1045 (placeholder infra), #1078 (no authz), #1014 (component coverage)
+- **P1 issues (fixed, needs close)**: #1077 (prompt injection — fixed by #1975)
+- **P2 security issues**: #1046 (share IDs), #1088 (secrets CI), #973 (ajv), #930 (CORS)
+- **Duplicate/overlapping**: #1045 ↔ #1165 (same wrangler placeholder issue, different priorities)
+
+### Recommendations
+
+1. Grant GitHub token with `issues: write` scope for issue label normalization and closure
+2. Grant GitHub token with `workflows: write` scope to push CI workflow fixes
+3. Create Cloudflare KV/D1 resources and update wrangler.toml (#1045 / #1165)
+4. Add `npm audit` scanning to CI pipeline (#1084)
+5. Implement user-level authorization for audit trail (#1078)
+6. Add e2e test infrastructure with Playwright (#1015)
+7. Close #1077 (prompt injection) since fix is merged in #1975
