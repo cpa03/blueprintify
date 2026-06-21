@@ -1399,6 +1399,10 @@ export const EDITOR_FILENAMES = {
   BLUEPRINT_ANNOUNCE: "blueprint.md" as const,
   /** Screen reader announcement text for tasks tab */
   TASKS_ANNOUNCE: "tasks.md" as const,
+  /** Human-readable display name for the blueprint tab (capitalized, no extension) */
+  BLUEPRINT_DISPLAY: "Blueprint" as const,
+  /** Human-readable display name for the tasks tab (capitalized, no extension) */
+  TASKS_DISPLAY: "Tasks" as const,
 } as const;
 
 /**

@@ -1,7 +1,7 @@
 import { memo, useMemo, useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ANIMATION } from "../config/constants";
-import { ANIMATION_TIMING } from "../config/theme";
+import { ANIMATION_TIMING, EDITOR_ANIMATION } from "../config/theme";
 
 // One-shot shake keyframes for the limit-reached alert: a gentle horizontal
 // vibration that plays when the character counter hits the maximum value.
@@ -86,9 +86,7 @@ function CharacterCounterComponent({
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{
               type: "spring",
-              stiffness: 400,
-              damping: 12,
-              mass: 0.5,
+              ...EDITOR_ANIMATION.WARNING_ICON,
             }}
             className="ml-1 inline-flex"
             aria-hidden="true"

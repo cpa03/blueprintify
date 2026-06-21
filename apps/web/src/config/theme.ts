@@ -440,6 +440,10 @@ export const EDITOR_ANIMATION = {
   CONTENT_STATS: { stiffness: 500, damping: 30 } as const,
   /** Spring for tooltip spring */
   TOOLTIP_DEFAULT: { stiffness: 500, damping: 25 } as const,
+  /** Spring for tab content-available dot reveal */
+  CONTENT_DOT: { stiffness: 400, damping: 15 } as const,
+  /** Spring for warning/limit indicator icon */
+  WARNING_ICON: { stiffness: 400, damping: 12, mass: 0.5 } as const,
   /** Transition duration for stat number changes */
   STAT_NUMBER_DURATION_S: 0.1,
 } as const;
