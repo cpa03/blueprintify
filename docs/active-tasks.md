@@ -2,6 +2,30 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 129 — Full Repository Audit, Docs/audits/README.md Gap Fix, CHANGELOG Gap Fix, Documentation Refresh, Stale Branch Cleanup ✅
+
+### Task: Full repository audit, docs/audits/README.md gap fix (added missing Jun 20 Run 3 entry), CHANGELOG gap fix (added Cycle 129 + feat(shared) + feat(wizard) commits), stale remote branch deletion (fix/prompt-injection-protection-1077), documentation refresh (findings, active-tasks, knowledge-review, bugs, CHANGELOG, audits/README), quality verification
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Full repository audit covering redundant/temp/unused file scan, docs/audits/README.md Current Reports gap (Jun 20 Run 3 existed on disk but was unreferenced), CHANGELOG gap (Cycle 129 + feat(shared) + feat(wizard) missing from Unreleased), type suppression audit, stale remote branch cleanup (fix/prompt-injection-protection-1077), documentation sync, quality verification
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,488/1,488 ✅ (640 web + 382 api + 466 shared) format ✅
+  - [x] **docs/audits/README.md gap fix**: Added missing `brocula-hunt-2026-06-20-run3.md` to Current Reports between Run 4 and Run 2
+  - [x] **CHANGELOG gap fix**: Added Cycle 129 entry + `feat(shared): centralize UI defaults` + `feat(wizard): add aria-keyshortcuts to step buttons` + `docs: Cycle 129`
+  - [x] **Stale remote branch deleted**: `origin/fix/prompt-injection-protection-1077` (merged into main via PR #1975, 0 unique commits)
+  - [x] **README BroCula description verified**: `(Jun 17–Jun 21)` — correct, matches latest audit
+  - [x] Updated docs/findings.md: Cycle 129 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 129 completed
+  - [x] Updated docs/knowledge-review.md: Cycle 129 refreshed
+  - [x] Updated docs/bugs.md: Cycle 129 status log
+  - [x] Updated CHANGELOG.md: Cycle 129 entry + 3 missing commits added
+  - [x] Updated docs/audits/README.md: Run 3 added to Current Reports
+  - [x] PR created
+
 ## Completed: RepoKeeper Cycle 128 — BUG-014 & BUG-017 Actually Fixed on main, Run 5 Indexed, CHANGELOG Gap Fix, Documentation Refresh ✅
 
 ### Task: Full repository audit, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 10 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1 (unquoted `20`), pr-gatekeeper.yml 1), **BroCula Run 5 indexed** in audits/README, **CHANGELOG gap fix** (added 6 missing commits: secrets detection script, persistent validation error message, flexy animation constants iteration 57, prompt injection protection, wrangler validation move, BroCula Run 5), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification, PR creation

@@ -77,6 +77,15 @@ export const SECURITY_LIMITS = {
   MAX_FILE_SIZE_BYTES: 10 * 1024 * 1024,
   MAX_JSON_DEPTH: 20,
   ALLOWED_FILE_TYPES: [".json", ".md", ".txt"] as const,
+  /** Individual file extension constants for type-safe checks */
+  FILE_EXTENSIONS: {
+    /** JSON file extension */
+    JSON: ".json" as const,
+    /** Markdown file extension */
+    MARKDOWN: ".md" as const,
+    /** Plain text file extension */
+    TEXT: ".txt" as const,
+  } as const,
 } as const;
 
 /**

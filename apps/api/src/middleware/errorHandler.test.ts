@@ -45,7 +45,7 @@ describe("errorHandler", () => {
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("validation");
+    expect(data.error.type).toBe(ERROR_TYPES.VALIDATION);
     expect(data.error.code).toBe(ERROR_CODES.VALIDATION_ERROR);
   });
 
@@ -61,7 +61,7 @@ describe("errorHandler", () => {
     expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("authentication");
+    expect(data.error.type).toBe(ERROR_TYPES.AUTHENTICATION);
   });
 
   it("should handle NotFoundError with 404 status", async () => {
@@ -76,7 +76,7 @@ describe("errorHandler", () => {
     expect(res.status).toBe(HTTP_STATUS.NOT_FOUND);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("not_found");
+    expect(data.error.type).toBe(ERROR_TYPES.NOT_FOUND);
   });
 
   it("should handle ConfigurationError with 500 status", async () => {
@@ -91,7 +91,7 @@ describe("errorHandler", () => {
     expect(res.status).toBe(HTTP_STATUS.INTERNAL_ERROR);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("configuration");
+    expect(data.error.type).toBe(ERROR_TYPES.CONFIGURATION);
   });
 
   it("should handle CircuitBreakerOpenError with 503 status", async () => {
@@ -122,7 +122,7 @@ describe("errorHandler", () => {
     expect(res.status).toBe(HTTP_STATUS.INTERNAL_ERROR);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("internal");
+    expect(data.error.type).toBe(ERROR_TYPES.INTERNAL);
     expect(data.error.message).toBe("Something went wrong");
   });
 
@@ -221,7 +221,7 @@ describe("notFoundHandler", () => {
     expect(res.status).toBe(HTTP_STATUS.NOT_FOUND);
     const data = (await res.json()) as ErrorResponse;
     expect(data.success).toBe(false);
-    expect(data.error.type).toBe("not_found");
+    expect(data.error.type).toBe(ERROR_TYPES.NOT_FOUND);
     expect(data.error.code).toBe(ERROR_CODES.NOT_FOUND_ERROR);
   });
 

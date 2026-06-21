@@ -803,6 +803,62 @@
   }
 }
 
+/* ===== Editor Focus Highlight ===== */
+/* Gentle pulsing glow that briefly highlights the editor panel when the user
+   clicks "View in Editor" after generation completes. Provides a clear visual
+   cue connecting the button action to the editor panel's appearance, helping
+   users orient themselves when the split-pane slides in.
+   Fades in smoothly, pulses twice, then fades out — all via composited
+   box-shadow only (no layout thrashing). Respects reduced motion. */
+@keyframes editor-focus-highlight {
+  0% {
+    box-shadow:
+      0 0 0 0 transparent,
+      0 0 0 0 transparent;
+  }
+  8% {
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--color-primary-500) 40%, transparent),
+      0 0 24px -4px color-mix(in srgb, var(--color-primary-500) 18%, transparent);
+  }
+  20% {
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--color-primary-500) 50%, transparent),
+      0 0 32px -4px color-mix(in srgb, var(--color-primary-500) 22%, transparent);
+  }
+  40% {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-primary-500) 25%, transparent),
+      0 0 16px -4px color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+  }
+  60% {
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--color-primary-500) 40%, transparent),
+      0 0 28px -4px color-mix(in srgb, var(--color-primary-500) 18%, transparent);
+  }
+  85% {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-primary-500) 15%, transparent),
+      0 0 8px -4px color-mix(in srgb, var(--color-primary-500) 5%, transparent);
+  }
+  100% {
+    box-shadow:
+      0 0 0 0 transparent,
+      0 0 0 0 transparent;
+  }
+}
+
+.editor-focus-highlight {
+  animation: editor-focus-highlight 1.8s ease-out forwards;
+  will-change: box-shadow;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editor-focus-highlight {
+    animation: none;
+  }
+}
+
 /* ===== Discovery Glow ===== */
 /* Subtle one-shot attention pulse for discovery-oriented UI elements (keyboard
    shortcuts button, etc.). Plays once on mount to hint at hidden functionality

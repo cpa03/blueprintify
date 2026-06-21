@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { Hono } from "hono";
 import { apiKeyAuth } from "./auth";
 import { ERROR_CODES, API_HEADERS } from "../config/constants";
-import { HTTP_STATUS, RESPONSE_STATUS } from "@blueprint/shared";
+import { ERROR_TYPES, HTTP_STATUS, RESPONSE_STATUS } from "@blueprint/shared";
 import type { ErrorResponse } from "../errors";
 import { TEST_API_KEY } from "../test-utils";
 
@@ -50,7 +50,7 @@ describe("auth middleware", () => {
       expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
       const data = (await res.json()) as ErrorResponse;
       expect(data.success).toBe(false);
-      expect(data.error.type).toBe("authentication");
+      expect(data.error.type).toBe(ERROR_TYPES.AUTHENTICATION);
       expect(data.error.code).toBe(ERROR_CODES.AUTHENTICATION_ERROR);
     });
 
@@ -68,7 +68,7 @@ describe("auth middleware", () => {
       expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
       const data = (await res.json()) as ErrorResponse;
       expect(data.success).toBe(false);
-      expect(data.error.type).toBe("authentication");
+      expect(data.error.type).toBe(ERROR_TYPES.AUTHENTICATION);
     });
 
     it("should reject requests when API_KEY is not configured", async () => {
