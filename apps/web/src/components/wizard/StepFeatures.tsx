@@ -456,6 +456,8 @@ export const StepFeatures = memo(function StepFeatures({
       <AnimatePresence>
         {(justAdded || showAllAddedMsg) && (
           <motion.div
+            role="alert"
+            aria-live="assertive"
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.9 }}
