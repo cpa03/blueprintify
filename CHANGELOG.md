@@ -9,10 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- feat(security): add secrets detection script and integrate with CI checks (#1974)
+- feat(web): add persistent validation error message to tech stack step
+- feat(flexy): replace remaining hardcoded animation durations with ANIMATION constants (Iteration 57)
 - fix(infra): add wrangler.toml placeholder validation script and prebuild hook (#1964)
 - feat(flexy): centralize WARNING_THRESHOLD and eliminate hardcoded **backup** prefixes (#1963)
 - feat(seo): Add OG and Twitter Card meta tags for social sharing (#1962)
 - feat(web): return focus to feature input after adding a feature (#1961)
+- RepoKeeper Cycle 128: **BUG-014 and BUG-017 actually fixed on main** — main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` (2 occurrences); `node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files (10 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1), BroCula Run 5 indexed in audits/README, CHANGELOG gap fix (added 6 missing commits), docs refresh (findings, active-tasks, knowledge-review), typecheck ✅ lint ✅ tests 1,466/1,466 ✅, quality verification
 - RepoKeeper Cycle 127: **BUG-014 and BUG-017 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` — 2 occurrences; hardcoded `node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files — 11 occurrences), CHANGELOG gap fix (added 3 missing commits), docs refresh (findings, active-tasks, knowledge-review), typecheck ✅ lint ✅, quality verification
 - docs(brocula): BroCula Run 3 — LH 100-100-100-100, zero console errors
 - feat(flexy): centralize UI_TIMEOUTS, animation ms, celebration defaults, API error messages, toast icons/styles into shared config
@@ -37,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- fix(security): add defense-in-depth prompt injection protection
+- fix(api): move wrangler validation from prebuild to predeploy to unblock builds
 - **fix(ci): BUG-014 BUG-017 — actual fix applied on main** — main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` (2 occurrences); 4 workflow files `node-version: "20"`→`node-version-file: ".node-version"` (11 occurrences across iterate.yml, on-pull.yml, parallel.yml, pr-gatekeeper.yml). Previous cycles documented fixes were NOT applied on `main` — this cycle applied them correctly. Typecheck ✅ lint ✅ build ✅ tests 1,425/1,425 ✅. PR created.
 - fix(security): add injection pattern detection and observability logging (#1916)
 - RepoKeeper Cycle 114: full repository audit, typecheck ✅ lint ✅ format ✅ tests 1,385/1,385 ✅, **removed duplicate `docs/audits/brocula-hunt-2026-06-16-run1.md`** (existed in both root and `archive/` — root deleted, archive preserved), **fixed docs/audits/README.md duplicate** (Jun 16 Run 1 listed in both Current and Archived Reports — removed from Current), **README BroCula description updated** `(Jun 13–Jun 16 Run 2)` → `(Jun 13–Jun 17 Run 1)`, documentation sync, quality verification

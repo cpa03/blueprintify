@@ -2,6 +2,30 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 128 — BUG-014 & BUG-017 Actually Fixed on main, Run 5 Indexed, CHANGELOG Gap Fix, Documentation Refresh ✅
+
+### Task: Full repository audit, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 10 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1 (unquoted `20`), pr-gatekeeper.yml 1), **BroCula Run 5 indexed** in audits/README, **CHANGELOG gap fix** (added 6 missing commits: secrets detection script, persistent validation error message, flexy animation constants iteration 57, prompt injection protection, wrangler validation move, BroCula Run 5), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Full repository audit covering redundant/temp/unused file scan, **BUG-014 actually fixed on main** (main.yml stale doc refs), **BUG-017 actually fixed on main** (hardcoded node-version replaced across 4 workflow files), **BroCula Run 5 indexed**, **CHANGELOG gap fix** (6 missing commits added), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source files
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,466/1,466 ✅
+  - [x] **BUG-014 actually fixed**: `main.yml` stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` — 2 occurrences
+  - [x] **BUG-017 actually fixed**: `node-version: "20"`→`node-version-file: ".node-version"` — 10 occurrences across iterate.yml (5), parallel.yml (4), on-pull.yml (1, unquoted `20`), pr-gatekeeper.yml (1)
+  - [x] **BroCula Run 5 indexed**: `docs/audits/brocula-hunt-2026-06-20-run5.md` added to audits/README as latest
+  - [x] **CHANGELOG gap fix**: Added 6 missing commits — `feat(security): add secrets detection script`, `feat(web): add persistent validation error message`, `feat(flexy): replace remaining hardcoded animation durations (Iteration 57)`, `fix(security): add defense-in-depth prompt injection protection`, `fix(api): move wrangler validation from prebuild to predeploy`, `docs(brocula): BroCula Run 5`
+  - [x] Updated docs/findings.md: Cycle 128 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 128 completed
+  - [x] Updated docs/knowledge-review.md: Cycle 128 refreshed
+  - [x] Updated CHANGELOG.md: Cycle 128 entry + 6 missing commits added
+  - [x] Updated README.md: BroCula description `Jun 17–Jun 20`→`Jun 17–Jun 21`
+  - [x] Updated docs/audits/README.md: Run 5 added as latest
+  - [x] PR created
+
 ## Completed: RepoKeeper Cycle 127 — BUG-014 & BUG-017 Actually Fixed on main, CHANGELOG Gap Fix, Documentation Refresh ✅
 
 ### Task: Full repository audit, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files — 11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1), **CHANGELOG gap fix** (added 3 missing commits: BroCula Run 3, flexy centralization, npm audit script), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation

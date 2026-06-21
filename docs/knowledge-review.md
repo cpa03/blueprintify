@@ -12,23 +12,23 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-20 (RepoKeeper Cycle 127)
+**Last Review**: 2026-06-21 (RepoKeeper Cycle 128)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jun 20)` — matches latest audit `brocula-hunt-2026-06-20-run3.md`
-- **Typecheck/Lint**: All clean (0 errors, 0 warnings)
-- **Cycle 127**: Full repository audit, **BUG-014 and BUG-017 actually fixed on main** (main.yml stale doc refs fixed; hardcoded node-version replaced across 5 workflow files), CHANGELOG gap fix (3 missing commits added), docs refresh
+- **README BroCula description updated**: `(Jun 17–Jun 20)` → `(Jun 17–Jun 21)` — matches latest audit `brocula-hunt-2026-06-20-run5.md`
+- **Typecheck/Lint/Tests**: All clean (0 errors, 0 warnings, 1,466/1,466 tests passing)
+- **Cycle 128**: Full repository audit, **BUG-014 and BUG-017 actually fixed on main** (main.yml stale doc refs fixed; hardcoded node-version replaced across 4 workflow files — 10 occurrences, including unquoted `20` in on-pull.yml), BroCula Run 5 indexed, CHANGELOG gap fix (6 missing commits added), docs refresh
 - **README tree verified**: All entries match filesystem
-- **CI workflow stale refs fixed**: BUG-014 and BUG-017 permanently resolved — zero stale doc refs, zero hardcoded node-version 20 remain
+- **CI workflow stale refs fixed**: BUG-014 and BUG-017 fully resolved — zero stale doc refs (`docs/bug.md`, `docs/feature.md`) and zero hardcoded `node-version: "20"` / `node-version: 20` remain in any workflow file
 - **No redundant/temp/unused files found**
 - **No type suppressions, TODO/FIXME/HACK, or `as any`** found in source code
-- **`docs/findings.md` updated**: Cycle 127 entry added
-- **`docs/active-tasks.md` updated**: Cycle 127 completed
-- **`docs/knowledge-review.md` refreshed**: Cycle 127 — review date, cycle reference
+- **`docs/findings.md` updated**: Cycle 128 entry added
+- **`docs/active-tasks.md` updated**: Cycle 128 completed
+- **`docs/knowledge-review.md` refreshed**: Cycle 128 — review date, cycle reference
 
 ## Historical Drift Corrections
 
