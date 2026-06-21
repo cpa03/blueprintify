@@ -151,6 +151,12 @@ export {
   CELEBRATION_DEFAULTS,
   TOAST_ICONS,
   TOAST_STYLES,
+  TOAST_DEFAULTS,
+  SCROLL_THRESHOLD_DEFAULTS,
+  TEXTAREA_DEFAULTS,
+  TOOLTIP_DEFAULTS,
+  UI_DEFAULTS,
+  NETWORK_DEFAULTS,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";

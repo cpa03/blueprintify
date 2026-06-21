@@ -1768,3 +1768,115 @@ export const TOAST_STYLES = {
   /** Info toast styling — blue/primary theme */
   INFO: "bg-primary-500/10 border-primary-500/30 text-primary-300",
 } as const;
+
+/**
+ * Toast Display Duration Defaults (milliseconds)
+ * Centralized source of truth for toast notification auto-dismiss durations.
+ * Flexy says: No hardcoded 3000/2000 magic numbers in toast config!
+ * Usage: import { TOAST_DEFAULTS } from "@blueprint/shared";
+ *        duration: TOAST_DEFAULTS.DEFAULT_DURATION_MS
+ */
+export const TOAST_DEFAULTS = {
+  /** Default toast display duration (3s) */
+  DEFAULT_DURATION_MS: 3000,
+  /** Success toast display duration (2s) */
+  SUCCESS_DURATION_MS: 2000,
+  /** Auto-save notification duration (2s) */
+  AUTO_SAVE_DURATION_MS: 2000,
+  /** Delay between stacked toast entrance animations (60ms) */
+  STAGGER_MS: 60,
+} as const;
+
+/**
+ * Scroll Trigger Thresholds (pixels)
+ * Centralized source of truth for scroll-based UI trigger points.
+ * Flexy says: No hardcoded scroll pixel values in component code!
+ * Usage: import { SCROLL_THRESHOLD_DEFAULTS } from "@blueprint/shared";
+ *        window.scrollY > SCROLL_THRESHOLD_DEFAULTS.HEADER_SHADOW_PX
+ */
+export const SCROLL_THRESHOLD_DEFAULTS = {
+  /** Scroll distance before header shadow appears (20px) */
+  HEADER_SHADOW_PX: 20,
+  /** Scroll distance before scroll-to-top button appears (400px) */
+  SCROLL_TO_TOP_PX: 400,
+  /** Minimum scroll distance to consider page as scrolled (50px) */
+  HAS_SCROLLED_PX: 50,
+} as const;
+
+/**
+ * Textarea Dimension Defaults (pixels)
+ * Centralized source of truth for textarea height constraints.
+ * Flexy says: No hardcoded textarea pixel dimensions in components!
+ * Usage: import { TEXTAREA_DEFAULTS } from "@blueprint/shared";
+ *        style={{ minHeight: TEXTAREA_DEFAULTS.MIN_HEIGHT_PX }}
+ */
+export const TEXTAREA_DEFAULTS = {
+  /** Default minimum textarea height */
+  MIN_HEIGHT_PX: 80,
+  /** Default maximum textarea height */
+  MAX_HEIGHT_PX: 300,
+  /** Extra padding offset for auto-resize calculation */
+  EXTRA_PADDING_PX: 2,
+  /** Step info section minimum height */
+  STEP_INFO_MIN_HEIGHT_PX: 128,
+  /** Step info section maximum height */
+  STEP_INFO_MAX_HEIGHT_PX: 400,
+} as const;
+
+/**
+ * Tooltip Configuration Defaults
+ * Centralized source of truth for tooltip display timing and sizing.
+ * Flexy says: No hardcoded tooltip delay/size magic numbers in components!
+ * Usage: import { TOOLTIP_DEFAULTS } from "@blueprint/shared";
+ *        delay: TOOLTIP_DEFAULTS.SHOW_DELAY_MS
+ */
+export const TOOLTIP_DEFAULTS = {
+  /** Delay before tooltip shows (400ms) */
+  SHOW_DELAY_MS: 400,
+  /** Delay before tooltip hides (100ms) */
+  HIDE_DELAY_MS: 100,
+  /** Maximum tooltip width in pixels */
+  MAX_WIDTH_PX: 320,
+  /** Delay for keyboard shortcut tooltips (300ms) */
+  KEYBOARD_SHORTCUT_DELAY_MS: 300,
+  /** Delay for info tooltips (200ms) */
+  INFO_DELAY_MS: 200,
+  /** Maximum info tooltip width in pixels */
+  INFO_MAX_WIDTH_PX: 280,
+  /** Estimated tooltip height for position calculation */
+  ESTIMATED_HEIGHT_PX: 60,
+  /** Viewport edge padding for tooltip positioning */
+  VIEWPORT_PADDING_PX: 16,
+  /** Auto-hide delay for touch tooltips (3s) */
+  TOUCH_AUTO_HIDE_DELAY_MS: 3000,
+} as const;
+
+/**
+ * UI Layout Defaults
+ * Centralized source of truth for common UI layout and spacing values.
+ * Flexy says: No hardcoded tooltip delay or scroll offset magic numbers!
+ * Usage: import { UI_DEFAULTS } from "@blueprint/shared";
+ *        TOOLTIP_DELAY: UI_DEFAULTS.TOOLTIP_DELAY_MS
+ */
+export const UI_DEFAULTS = {
+  /** General tooltip hover delay (500ms) */
+  TOOLTIP_DELAY_MS: 500,
+  /** Scroll offset for anchor/section navigation (100px) */
+  SCROLL_OFFSET_PX: 100,
+  /** Scroll threshold to show scroll-to-top button (600px) */
+  SCROLL_TO_TOP_THRESHOLD_PX: 600,
+} as const;
+
+/**
+ * Network Status Notification Defaults
+ * Centralized source of truth for offline/online banner display durations.
+ * Flexy says: No hardcoded 3000ms offline banner durations in components!
+ * Usage: import { NETWORK_DEFAULTS } from "@blueprint/shared";
+ *        ONLINE_DURATION: NETWORK_DEFAULTS.ONLINE_DURATION_MS
+ */
+export const NETWORK_DEFAULTS = {
+  /** Default offline indicator duration — stays visible (0 = no auto-dismiss) */
+  OFFLINE_DURATION_MS: 0,
+  /** Online restoration banner display duration before auto-dismiss (3s) */
+  ONLINE_DURATION_MS: 3000,
+} as const;
