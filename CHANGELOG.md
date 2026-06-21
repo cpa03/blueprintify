@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- BroCula Run 8: **LH 100-100-100-100, 1488 tests passing, zero console errors** — full browser console audit and Lighthouse optimization check clean
 - feat(security): add secrets detection script and integrate with CI checks (#1974)
 - feat(web): add persistent validation error message to tech stack step
 - feat(flexy): replace remaining hardcoded animation durations with ANIMATION constants (Iteration 57)
