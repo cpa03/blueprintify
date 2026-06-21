@@ -62,7 +62,7 @@ export const INJECTION_PATTERNS: readonly RegExp[] = [
 
   // === New instruction injection patterns ===
   /new\s+(instructions|prompts?|directives?):/gi,
-  /over[-\s]?ride\s+(instructions|prompts?|directives?)/gi,
+  /over[-\s]?ride\s+(all\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/gi,
 
   // === Separator / boundary attack patterns ===
   // Lines of 3+ repeated separator characters (e.g., ---, ===, ___)
@@ -113,7 +113,8 @@ const PATTERN_DESCRIPTIONS: ReadonlyArray<{ pattern: RegExp; label: string }> = 
   },
   { pattern: /new\s+(instructions|prompts?|directives?):/gi, label: "instruction_override:new" },
   {
-    pattern: /over[-\s]?ride\s+(instructions|prompts?|directives?)/gi,
+    pattern:
+      /over[-\s]?ride\s+(all\s+)?(previous\s+)?(instructions|prompts?|directives?|commands?)/gi,
     label: "instruction_override:override",
   },
   { pattern: /^[=\-_*]{3,}$/gm, label: "boundary:separator" },
