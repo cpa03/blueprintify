@@ -33,6 +33,7 @@ import {
   TOAST_MESSAGES,
   SPRING_CONFIG,
   WIZARD_GENERATING_LABELS,
+  GENERATION_ERROR_LABELS,
 } from "../../config/constants";
 import { COLORS } from "../../config/theme";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
@@ -61,6 +62,10 @@ export const StepGenerating = memo(function StepGenerating({
   const blueprintLines = blueprintContent?.split("\n").length ?? 0;
   const tasksLines = tasksContent?.split("\n").length ?? 0;
   const isComplete = !isGenerating && progress === GENERATION_MESSAGES.COMPLETE;
+  // Detect error state from the progress message. Both GENERATION_MESSAGES.ERROR
+  // and GENERATION_MESSAGES.ERROR_TASKS produce strings starting with "Error",
+  // which is the only terminal state that isn't "Complete!" after generation stops.
+  const isError = !isGenerating && !isComplete && progress.startsWith("Error");
 
   const handleCancel = useCallback(() => {
     cancelGeneration();
@@ -69,6 +74,8 @@ export const StepGenerating = memo(function StepGenerating({
   }, [cancelGeneration, setStep, toast]);
 
   const wasComplete = useRef(false);
+  const wasError = useRef(false);
+  const errorShownRef = useRef(false);
 
   // Auto-focus "View in Editor" button when generation completes
   // so keyboard users don't have to search for the new action
@@ -82,6 +89,15 @@ export const StepGenerating = memo(function StepGenerating({
     }
     wasComplete.current = isComplete;
   }, [isComplete]);
+
+  // Fire a single error toast when generation transitions into the error state
+  useEffect(() => {
+    if (isError && !wasError.current && !errorShownRef.current) {
+      errorShownRef.current = true;
+      toast.error(TOAST_MESSAGES.GENERATION_FAILED);
+    }
+    wasError.current = isError;
+  }, [isError, toast]);
 
   const handleViewReview = useCallback(() => {
     setStep(WIZARD_STEP_KEYS.REVIEW);
@@ -159,6 +175,46 @@ export const StepGenerating = memo(function StepGenerating({
               />
             </svg>
           </motion.div>
+        ) : isError ? (
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{
+              type: "spring",
+              ...SPRING_CONFIG.SUCCESS,
+            }}
+            className="w-24 h-24 rounded-full bg-accent-pink/20 flex items-center justify-center"
+          >
+            <svg
+              width="48"
+              height="48"
+              viewBox="0 0 48 48"
+              fill="none"
+              className="text-accent-pink"
+              role="img"
+              aria-label="Error"
+            >
+              <motion.circle
+                cx="24"
+                cy="24"
+                r="22"
+                stroke="currentColor"
+                strokeWidth="3"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={{ duration: ANIMATION.MEDIUM_SLOW, delay: 0.1 }}
+              />
+              <motion.path
+                d="M16 16L32 32M32 16L16 32"
+                stroke="currentColor"
+                strokeWidth="4"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: ANIMATION.MEDIUM_SLOW, delay: 0.3 }}
+              />
+            </svg>
+          </motion.div>
         ) : (
           <>
             <motion.div
@@ -209,6 +265,23 @@ export const StepGenerating = memo(function StepGenerating({
             <h2 className="text-xl font-bold text-white mb-2">Generation Complete!</h2>
             <p className="text-dark-400 mb-6">
               Your blueprint and tasks are ready to review in the editor
+            </p>
+          </motion.div>
+        ) : isError ? (
+          <motion.div
+            key="error"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="text-center"
+          >
+            <h2 className="text-xl font-bold text-accent-pink mb-2">
+              {progress.startsWith("Error generating tasks")
+                ? GENERATION_ERROR_LABELS.ERROR_TASKS_TITLE
+                : GENERATION_ERROR_LABELS.ERROR_TITLE}
+            </h2>
+            <p className="text-dark-400 mb-6" role="alert" aria-live="assertive" aria-atomic="true">
+              {progress}
             </p>
           </motion.div>
         ) : (
@@ -352,6 +425,70 @@ export const StepGenerating = memo(function StepGenerating({
               </svg>
               {WIZARD_GENERATING_LABELS.CONTENT_AVAILABLE}
             </p>
+          </motion.div>
+        ) : isError ? (
+          <motion.div
+            key="error-actions"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="mt-8 flex flex-col items-center gap-3"
+          >
+            <RippleButton
+              onClick={handleViewReview}
+              className="btn-primary flex items-center gap-2"
+              ariaLabel={GENERATION_ERROR_LABELS.TRY_AGAIN_ARIA}
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                />
+              </svg>
+              {GENERATION_ERROR_LABELS.TRY_AGAIN}
+            </RippleButton>
+            <KeyboardShortcutTooltip
+              shortcut="←"
+              description={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_DESC}
+              position="left"
+              modifier="alt"
+            >
+              <RippleButton
+                onClick={handleViewReview}
+                className="btn-ghost text-sm text-dark-400 hover:text-dark-200 flex items-center gap-1.5"
+                ariaLabel={GENERATION_ERROR_LABELS.BACK_TO_REVIEW_ARIA}
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+                {GENERATION_ERROR_LABELS.BACK_TO_REVIEW}
+                <kbd
+                  className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                  aria-hidden="true"
+                >
+                  {getAltKeyLabel()}+←
+                </kbd>
+              </RippleButton>
+            </KeyboardShortcutTooltip>
           </motion.div>
         ) : (
           <motion.div

@@ -457,6 +457,58 @@ export const SCROLL_PROGRESS_SPRING = {
 } as const;
 
 // ============================================================================
+// Animation Color Presets
+// ============================================================================
+
+/**
+ * EditorHeader content-stats animation color values.
+ * Used in framer-motion keyframe arrays for borderColor and boxShadow during generation.
+ * Flexy says: No hardcoded rgb() strings in EditorHeader animation definitions!
+ */
+export const HEADER_ANIMATION = {
+  CONTENT_STATS: {
+    /** Keyframe sequence for border color during generation pulse */
+    BORDER_COLORS: [
+      "rgb(99 102 241 / 0.5)",
+      "rgb(99 102 241 / 0.8)",
+      "rgb(139 92 246 / 0.6)",
+      "rgb(99 102 241 / 0.5)",
+    ] as const,
+    /** Static border color when not generating */
+    BORDER_STATIC: "rgb(55 65 81 / 0.5)",
+    /** Keyframe sequence for box-shadow during generation pulse */
+    BOX_SHADOWS: [
+      "0 0 0 0 rgb(99 102 241 / 0)",
+      "0 0 12px 2px rgb(99 102 241 / 0.15)",
+      "0 0 20px 4px rgb(139 92 246 / 0.1)",
+      "0 0 0 0 rgb(99 102 241 / 0)",
+    ] as const,
+    /** Static shadow when not generating */
+    SHADOW_STATIC: "0 0 0 0 transparent",
+  } as const,
+} as const;
+
+/**
+ * Template card hover glow shadow value.
+ * Flexy says: No hardcoded arbitrary shadow values in TemplateGrid!
+ */
+export const TEMPLATE_GLOW_SHADOW = "0 0 8px rgb(99 102 241 / 0.3)";
+
+/**
+ * CircularProgress track color default.
+ * Flexy says: No hardcoded track color strings in CircularProgress!
+ * Re-exported as PROGRESS_TRACK_COLOR from config/constants/ui.ts
+ */
+const THEME_PROGRESS_TRACK_COLOR = "rgb(255_255_255/0.1)";
+export { THEME_PROGRESS_TRACK_COLOR };
+
+/**
+ * Step connector completed shadow value.
+ * Flexy says: No hardcoded rgba shadow strings in STEP_CONNECTOR!
+ */
+export const STEP_CONNECTOR_COMPLETED_SHADOW = "0 0 6px rgba(16, 185, 129, 0.4)";
+
+// ============================================================================
 // Utility Types
 // ============================================================================
 

@@ -199,6 +199,7 @@ export const TOAST_MESSAGES = {
   SECURITY_VALIDATION_FAILED: "Security validation failed",
   TEMPLATE_LOADED: (name: string) => `${name} template loaded`,
   STEP_LOCKED: (label: string) => `Complete previous steps to unlock "${label}"`,
+  GENERATION_FAILED: "Generation failed. Please check your inputs and try again.",
 } as const;
 
 /**
@@ -430,6 +431,23 @@ export const WIZARD_GENERATING_LABELS = {
   CANCEL_GENERATION_ARIA: "Cancel generation (Esc)",
   CONTENT_AVAILABLE: "Your generated content is available in the editor panel",
   STREAMING_HINT: "Content streams in real-time. View the editor panel to see progress.",
+} as const;
+
+// ============================================================================
+// Generation Error Screen Labels
+// ============================================================================
+
+/**
+ * Labels for the generation error state shown when AI generation fails.
+ * Flexy says: No hardcoded error screen labels in components!
+ */
+export const GENERATION_ERROR_LABELS = {
+  ERROR_TITLE: "Generation Failed",
+  ERROR_TASKS_TITLE: "Task Generation Failed",
+  TRY_AGAIN: "Try Again",
+  TRY_AGAIN_ARIA: "Go back to review step and try generating again",
+  BACK_TO_REVIEW: "Back to Review",
+  BACK_TO_REVIEW_ARIA: "Go back to review your configuration",
 } as const;
 
 // ============================================================================
