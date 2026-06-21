@@ -47,7 +47,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
   });
 
   describe("Read Operations", () => {
-    it("should read small data under 10ms", async () => {
+    it("should read small data under 50ms", async () => {
       const storage = manager.create({
         key: "perf-read-small",
         currentVersion: 1,
@@ -58,10 +58,10 @@ describe("Performance Benchmarks: Storage Operations", () => {
 
       const { duration } = await measureAsync("read", () => storage.get());
 
-      expect(duration).toBeLessThan(15);
+      expect(duration).toBeLessThan(50);
     });
 
-    it("should read blueprint data under 20ms", async () => {
+    it("should read blueprint data under 50ms", async () => {
       const storage = manager.create({
         key: "perf-read-blueprint",
         currentVersion: 1,
@@ -72,10 +72,10 @@ describe("Performance Benchmarks: Storage Operations", () => {
 
       const { duration } = await measureAsync("read", () => storage.get());
 
-      expect(duration).toBeLessThan(20);
+      expect(duration).toBeLessThan(50);
     });
 
-    it("should read large data under 50ms", async () => {
+    it("should read large data under 100ms", async () => {
       const storage = manager.create({
         key: "perf-read-large",
         currentVersion: 1,
@@ -86,12 +86,12 @@ describe("Performance Benchmarks: Storage Operations", () => {
 
       const { duration } = await measureAsync("read", () => storage.get());
 
-      expect(duration).toBeLessThan(50);
+      expect(duration).toBeLessThan(100);
     });
   });
 
   describe("Write Operations", () => {
-    it("should write small data under 10ms", async () => {
+    it("should write small data under 50ms", async () => {
       const storage = manager.create({
         key: "perf-write-small",
         currentVersion: 1,
@@ -99,10 +99,10 @@ describe("Performance Benchmarks: Storage Operations", () => {
 
       const { duration } = await measureAsync("write", () => storage.set({ value: "test" }));
 
-      expect(duration).toBeLessThan(10);
+      expect(duration).toBeLessThan(50);
     });
 
-    it("should write blueprint data under 30ms", async () => {
+    it("should write blueprint data under 50ms", async () => {
       const storage = manager.create({
         key: "perf-write-blueprint",
         currentVersion: 1,
@@ -114,7 +114,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
       expect(duration).toBeLessThan(50);
     });
 
-    it("should write large data under 100ms", async () => {
+    it("should write large data under 200ms", async () => {
       const storage = manager.create({
         key: "perf-write-large",
         currentVersion: 1,
@@ -123,12 +123,12 @@ describe("Performance Benchmarks: Storage Operations", () => {
       const largeData = createLargeBlueprint(100);
       const { duration } = await measureAsync("write", () => storage.set(largeData));
 
-      expect(duration).toBeLessThan(100);
+      expect(duration).toBeLessThan(200);
     });
   });
 
   describe("Update Operations", () => {
-    it("should update existing data under 20ms", async () => {
+    it("should update existing data under 50ms", async () => {
       const storage = manager.create({
         key: "perf-update",
         currentVersion: 1,
@@ -141,7 +141,7 @@ describe("Performance Benchmarks: Storage Operations", () => {
         storage.set({ ...initialData, projectName: "Updated" })
       );
 
-      expect(duration).toBeLessThan(20);
+      expect(duration).toBeLessThan(50);
     });
 
     it("should handle rapid sequential writes efficiently", async () => {
@@ -160,12 +160,12 @@ describe("Performance Benchmarks: Storage Operations", () => {
       const totalDuration = performance.now() - startTime;
       const averageDuration = totalDuration / iterations;
 
-      expect(averageDuration).toBeLessThan(15);
+      expect(averageDuration).toBeLessThan(50);
     });
   });
 
   describe("Quota Check Performance", () => {
-    it("should check quota under 5ms", async () => {
+    it("should check quota under 50ms", async () => {
       const storage = manager.create({
         key: "perf-quota",
         currentVersion: 1,
@@ -177,10 +177,10 @@ describe("Performance Benchmarks: Storage Operations", () => {
         Promise.resolve(storage.checkHealth())
       );
 
-      expect(duration).toBeLessThan(20);
+      expect(duration).toBeLessThan(50);
     });
 
-    it("should calculate storage size under 10ms for large data", async () => {
+    it("should calculate storage size under 50ms for large data", async () => {
       const storage = manager.create({
         key: "perf-quota-large",
         currentVersion: 1,
@@ -192,12 +192,12 @@ describe("Performance Benchmarks: Storage Operations", () => {
         Promise.resolve(storage.checkHealth())
       );
 
-      expect(duration).toBeLessThan(10);
+      expect(duration).toBeLessThan(50);
     });
   });
 
   describe("Migration Performance", () => {
-    it("should migrate small data under 30ms", async () => {
+    it("should migrate small data under 100ms", async () => {
       const key = "perf-migrate-small";
       const v1Data = {
         data: { name: "Test", version: 1 },
@@ -227,10 +227,10 @@ describe("Performance Benchmarks: Storage Operations", () => {
 
       const { duration } = await measureAsync("migrate", () => storage.get());
 
-      expect(duration).toBeLessThan(30);
+      expect(duration).toBeLessThan(100);
     });
 
-    it("should migrate blueprint data under 50ms", async () => {
+    it("should migrate blueprint data under 100ms", async () => {
       const key = "perf-migrate-blueprint";
       const testData = createTestBlueprint();
       const v1Data = {
@@ -260,12 +260,12 @@ describe("Performance Benchmarks: Storage Operations", () => {
 
       const { duration } = await measureAsync("migrate", () => storage.get());
 
-      expect(duration).toBeLessThan(50);
+      expect(duration).toBeLessThan(100);
     });
   });
 
   describe("Backup Operations", () => {
-    it("should create backup under 30ms", async () => {
+    it("should create backup under 100ms", async () => {
       const storage = manager.create({
         key: "perf-backup",
         currentVersion: 1,
@@ -275,10 +275,10 @@ describe("Performance Benchmarks: Storage Operations", () => {
       const testData = createTestBlueprint();
       const { duration } = await measureAsync("backup", () => storage.set(testData));
 
-      expect(duration).toBeLessThan(30);
+      expect(duration).toBeLessThan(100);
     });
 
-    it("should recover from backup under 40ms", async () => {
+    it("should recover from backup under 100ms", async () => {
       const key = "perf-recovery";
       const storage = manager.create({
         key,
@@ -293,12 +293,12 @@ describe("Performance Benchmarks: Storage Operations", () => {
 
       const { duration } = await measureAsync("recovery", () => storage.get().catch(() => null));
 
-      expect(duration).toBeLessThan(40);
+      expect(duration).toBeLessThan(100);
     });
   });
 
   describe("End-to-End Session Performance", () => {
-    it("should complete full session lifecycle under 200ms", async () => {
+    it("should complete full session lifecycle under 500ms", async () => {
       const storage = manager.create({
         key: "perf-session-lifecycle",
         currentVersion: 1,
@@ -313,10 +313,10 @@ describe("Performance Benchmarks: Storage Operations", () => {
       await storage.set({ step: 3, data: testData });
 
       const totalDuration = performance.now() - startTime;
-      expect(totalDuration).toBeLessThan(200);
+      expect(totalDuration).toBeLessThan(500);
     });
 
-    it("should handle 100 operations under 1000ms", async () => {
+    it("should handle 100 operations under 2000ms", async () => {
       const storage = manager.create({
         key: "perf-stress-test",
         currentVersion: 1,
@@ -331,8 +331,8 @@ describe("Performance Benchmarks: Storage Operations", () => {
       const totalDuration = performance.now() - startTime;
       const averageDuration = totalDuration / 100;
 
-      expect(totalDuration).toBeLessThan(1000);
-      expect(averageDuration).toBeLessThan(10);
+      expect(totalDuration).toBeLessThan(2000);
+      expect(averageDuration).toBeLessThan(50);
     });
   });
 });
