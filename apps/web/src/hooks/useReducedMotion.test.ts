@@ -20,6 +20,7 @@ import {
   useAccessibleAnimation,
   useAccessibilityPreferences,
 } from "./useReducedMotion";
+import { SPRING_CONFIG } from "../config/constants";
 
 /**
  * Creates a mock matchMedia implementation that allows changing matches.
@@ -136,7 +137,7 @@ describe("getAnimationDuration", () => {
 describe("getSpringConfig", () => {
   it("should return REDUCED_MOTION config when reduced motion is preferred", () => {
     const config = getSpringConfig(true);
-    expect(config).toEqual({ stiffness: 1000, damping: 100, mass: 0.1 });
+    expect(config).toEqual(SPRING_CONFIG.REDUCED_MOTION);
   });
 
   it("should return reduced motion config regardless of provided config", () => {
@@ -145,32 +146,24 @@ describe("getSpringConfig", () => {
       damping: 50,
       mass: 0.5,
     });
-    expect(config).toEqual({ stiffness: 1000, damping: 100, mass: 0.1 });
+    expect(config).toEqual(SPRING_CONFIG.REDUCED_MOTION);
   });
 
   it("should return default spring config when no config provided", () => {
     const config = getSpringConfig(false);
-    expect(config).toEqual({
-      stiffness: 400,
-      damping: 25,
-      mass: 0.8,
-    });
+    expect(config).toEqual(SPRING_CONFIG.DEFAULT);
   });
 
   it("should merge provided config with defaults", () => {
     const config = getSpringConfig(false, { stiffness: 200 });
     expect(config.stiffness).toBe(200);
-    expect(config.damping).toBe(25);
-    expect(config.mass).toBe(0.8);
+    expect(config.damping).toBe(SPRING_CONFIG.DEFAULT.damping);
+    expect(config.mass).toBe(SPRING_CONFIG.DEFAULT.mass);
   });
 
   it("should return empty object defaults when no config provided", () => {
     const config = getSpringConfig(false, {});
-    expect(config).toEqual({
-      stiffness: 400,
-      damping: 25,
-      mass: 0.8,
-    });
+    expect(config).toEqual(SPRING_CONFIG.DEFAULT);
   });
 });
 

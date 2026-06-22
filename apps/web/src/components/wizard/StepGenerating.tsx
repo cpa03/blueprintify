@@ -23,7 +23,7 @@
  * ```
  */
 
-import { WIZARD_STEP_KEYS } from "@blueprint/shared";
+import { WIZARD_STEP_KEYS, UI_TIMING } from "@blueprint/shared";
 import { motion, AnimatePresence } from "framer-motion";
 import { memo, useCallback, useRef, useEffect } from "react";
 import { useEditorStore, useWizardStore, useToast } from "../../store";
@@ -122,7 +122,7 @@ export const StepGenerating = memo(function StepGenerating({
           } else {
             editorPanel.setAttribute("tabindex", priorTabIndex);
           }
-        }, 1900);
+        }, UI_TIMING.EDITOR_FOCUS_HIGHLIGHT_MS);
       }
     }
   }, []);

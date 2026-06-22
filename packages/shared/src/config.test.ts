@@ -93,6 +93,7 @@ import {
   TOOLTIP_DEFAULTS,
   UI_DEFAULTS,
   NETWORK_DEFAULTS,
+  EMPTY_STATE_LAYOUT,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -1995,11 +1996,12 @@ describe("UI_TIMING", () => {
   it("should have all expected timing values", () => {
     expect(UI_TIMING.DISCOVERY_HINT_MS).toBe(3000);
     expect(UI_TIMING.EDITOR_FOCUS_DELAY_MS).toBe(180);
+    expect(UI_TIMING.EDITOR_FOCUS_HIGHLIGHT_MS).toBe(1900);
   });
 
-  it("should have 2 timing entries", () => {
+  it("should have 3 timing entries", () => {
     const values = Object.values(UI_TIMING);
-    expect(values.length).toBe(2);
+    expect(values.length).toBe(3);
   });
 
   it("should have all numeric values", () => {
@@ -2566,6 +2568,58 @@ describe("NETWORK_DEFAULTS", () => {
   it("should have ONLINE duration greater than OFFLINE", () => {
     expect(NETWORK_DEFAULTS.ONLINE_DURATION_MS).toBeGreaterThan(
       NETWORK_DEFAULTS.OFFLINE_DURATION_MS
+    );
+  });
+});
+
+describe("EMPTY_STATE_LAYOUT", () => {
+  it("should have expected EDITOR_GLOW dimensions", () => {
+    expect(EMPTY_STATE_LAYOUT.EDITOR_GLOW.WIDTH_PX).toBe(200);
+    expect(EMPTY_STATE_LAYOUT.EDITOR_GLOW.HEIGHT_PX).toBe(200);
+    expect(EMPTY_STATE_LAYOUT.EDITOR_GLOW.MARGIN_LEFT_PX).toBe(-100);
+    expect(EMPTY_STATE_LAYOUT.EDITOR_GLOW.MARGIN_TOP_PX).toBe(-50);
+  });
+
+  it("should have expected PREVIEW_GLOW dimensions", () => {
+    expect(EMPTY_STATE_LAYOUT.PREVIEW_GLOW.WIDTH_PX).toBe(160);
+    expect(EMPTY_STATE_LAYOUT.PREVIEW_GLOW.HEIGHT_PX).toBe(160);
+    expect(EMPTY_STATE_LAYOUT.PREVIEW_GLOW.MARGIN_LEFT_PX).toBe(-80);
+    expect(EMPTY_STATE_LAYOUT.PREVIEW_GLOW.MARGIN_TOP_PX).toBe(-40);
+  });
+
+  it("should have all numeric pixel values in EDITOR_GLOW", () => {
+    const values = Object.values(EMPTY_STATE_LAYOUT.EDITOR_GLOW);
+    values.forEach((v) => expect(typeof v).toBe("number"));
+  });
+
+  it("should have all numeric pixel values in PREVIEW_GLOW", () => {
+    const values = Object.values(EMPTY_STATE_LAYOUT.PREVIEW_GLOW);
+    values.forEach((v) => expect(typeof v).toBe("number"));
+  });
+
+  it("should have 2 sub-configs (EDITOR_GLOW, PREVIEW_GLOW)", () => {
+    expect(Object.keys(EMPTY_STATE_LAYOUT).length).toBe(2);
+  });
+
+  it("should have 4 entries in EDITOR_GLOW", () => {
+    expect(Object.keys(EMPTY_STATE_LAYOUT.EDITOR_GLOW).length).toBe(4);
+  });
+
+  it("should have 4 entries in PREVIEW_GLOW", () => {
+    expect(Object.keys(EMPTY_STATE_LAYOUT.PREVIEW_GLOW).length).toBe(4);
+  });
+
+  it("should have MARGIN_LEFT values as negative (centering offset)", () => {
+    expect(EMPTY_STATE_LAYOUT.EDITOR_GLOW.MARGIN_LEFT_PX).toBeLessThan(0);
+    expect(EMPTY_STATE_LAYOUT.PREVIEW_GLOW.MARGIN_LEFT_PX).toBeLessThan(0);
+  });
+
+  it("should have editor glow larger than preview glow", () => {
+    expect(EMPTY_STATE_LAYOUT.EDITOR_GLOW.WIDTH_PX).toBeGreaterThan(
+      EMPTY_STATE_LAYOUT.PREVIEW_GLOW.WIDTH_PX
+    );
+    expect(EMPTY_STATE_LAYOUT.EDITOR_GLOW.HEIGHT_PX).toBeGreaterThan(
+      EMPTY_STATE_LAYOUT.PREVIEW_GLOW.HEIGHT_PX
     );
   });
 });
