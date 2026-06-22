@@ -1202,3 +1202,9 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 702 web + 438 api + 466 shared = 1,606 tests passing across 82 files
+
+## PR
+
+| PR #  | Branch | Title |
+| ----- | ------ | ----- |
+| #2027 | `flexy/modularize-hardcoded` | feat(flexy): replace hardcoded storage error types and operation strings with shared constants (Iteration 62) |
