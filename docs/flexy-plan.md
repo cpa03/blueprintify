@@ -1188,3 +1188,17 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test` (web) — 666 tests passing across 46 files
+
+### ✅ Flexy Iteration 62: Replace Hardcoded Storage Error Type & Operation Strings with Shared Constants
+
+| File | Change |
+| ---- | ------ |
+| `apps/web/src/lib/storage.ts` | 5 hardcoded error type strings in `createStorageError` calls replaced with `STORAGE_ERROR_TYPE_VALUES.*` refs; 6 switch/case labels in `getStorageErrorMessage` replaced with `STORAGE_ERROR_TYPE_VALUES.*` refs |
+| `apps/web/src/lib/storage.test.ts` | 13 hardcoded error type strings replaced with `STORAGE_ERROR_TYPE_VALUES.*` refs; 9 hardcoded `operation: "write"/"read"` strings replaced with `STORAGE_OPERATIONS.WRITE`/`STORAGE_OPERATIONS.READ`; added `STORAGE_OPERATIONS`, `STORAGE_ERROR_TYPE_VALUES` imports |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 702 web + 438 api + 466 shared = 1,606 tests passing across 82 files
