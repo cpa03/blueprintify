@@ -113,6 +113,7 @@ Before initiating any release, ensure:
 - [ ] Monitoring dashboards ready
 - [ ] Alert thresholds configured
 - [ ] Team notified of release window
+- [ ] Cloudflare infrastructure verified — KV namespaces, D1 databases, and queues created with real IDs (see `apps/api/README.md` "Required Infrastructure" section)
 
 ### Release Preparation
 
