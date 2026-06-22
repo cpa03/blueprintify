@@ -1457,6 +1457,8 @@ export const UI_TIMING = {
   DISCOVERY_HINT_MS: 3000,
   /** Duration in ms for auto-focus delay after editor mounts */
   EDITOR_FOCUS_DELAY_MS: 180,
+  /** Duration in ms for editor focus highlight animation (should match CSS animation ~1.8s) */
+  EDITOR_FOCUS_HIGHLIGHT_MS: 1900,
 } as const;
 
 /**
@@ -1892,4 +1894,36 @@ export const NETWORK_DEFAULTS = {
   OFFLINE_DURATION_MS: 0,
   /** Online restoration banner display duration before auto-dismiss (3s) */
   ONLINE_DURATION_MS: 3000,
+} as const;
+
+/**
+ * Empty State Component Layout Dimensions (pixels)
+ * Centralized source of truth for empty state glow background dimensions.
+ * Flexy says: No hardcoded 200/160px glow dimensions in empty state components!
+ * Usage: import { EMPTY_STATE_LAYOUT } from "@blueprint/shared";
+ *        width: EMPTY_STATE_LAYOUT.EDITOR_GLOW.WIDTH_PX
+ */
+export const EMPTY_STATE_LAYOUT = {
+  /** Editor empty state glow circle dimensions */
+  EDITOR_GLOW: {
+    /** Glow circle width in pixels */
+    WIDTH_PX: 200,
+    /** Glow circle height in pixels */
+    HEIGHT_PX: 200,
+    /** CSS margin-left offset to horizontally center the glow */
+    MARGIN_LEFT_PX: -100,
+    /** CSS margin-top offset to vertically position the glow */
+    MARGIN_TOP_PX: -50,
+  } as const,
+  /** Preview empty state glow circle dimensions */
+  PREVIEW_GLOW: {
+    /** Glow circle width in pixels */
+    WIDTH_PX: 160,
+    /** Glow circle height in pixels */
+    HEIGHT_PX: 160,
+    /** CSS margin-left offset to horizontally center the glow */
+    MARGIN_LEFT_PX: -80,
+    /** CSS margin-top offset to vertically position the glow */
+    MARGIN_TOP_PX: -40,
+  } as const,
 } as const;
