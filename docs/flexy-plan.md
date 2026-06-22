@@ -1176,3 +1176,15 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 640 web + 382 api + 466 shared = 1,488 tests passing across 75 files
+
+### ✅ Flexy Iteration 61: Replace Remaining Hardcoded Magic Number in Editor Focus Delay
+
+| File | Change |
+| ---- | ------ |
+| `apps/web/src/components/Editor.tsx` | Added `UI_TIMING` import from `@blueprint/shared`; replaced hardcoded `180` focus delay with `UI_TIMING.EDITOR_FOCUS_DELAY_MS` |
+
+## Verification
+
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test` (web) — 666 tests passing across 46 files

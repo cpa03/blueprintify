@@ -34,7 +34,7 @@ import { useEditorStore, resetAllStores, useToast } from "../store";
 import { useExportContext } from "../context/ExportContext";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
-import { EDITOR_FILENAMES, VIEW_MODES } from "@blueprint/shared";
+import { EDITOR_FILENAMES, VIEW_MODES, UI_TIMING } from "@blueprint/shared";
 import {
   TIMEOUTS,
   UI,
@@ -162,7 +162,7 @@ function EditorComponent(): JSX.Element {
     const tabId = initialTabRef.current;
     const focusTimer = setTimeout(() => {
       document.getElementById(`tab-${tabId}`)?.focus({ preventScroll: true });
-    }, 180);
+    }, UI_TIMING.EDITOR_FOCUS_DELAY_MS);
     return () => clearTimeout(focusTimer);
   }, []);
 
