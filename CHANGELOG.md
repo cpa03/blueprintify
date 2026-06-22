@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- feat(editor): add persistent keyboard shortcut badge to content stats
+- test(components): add tests for ValidationCheckmark, TypeIndicator, ShowEditorButton
+- RepoKeeper Cycle 133: **full repository audit**, archived old audit reports (Jun 20 Runs 2-5 to archive/), CHANGELOG gap fix (added missing feat(editor) keyboard shortcut badge), audit README refresh (Current Reports trimmed from 8 to latest 4 entries), typecheck ✅ lint ✅ tests 1,570/1,570 ✅ (666 web + 438 api + 466 shared), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification, PR created
 - RepoKeeper Cycle 132: **fixed packages/shared missing vitest devDependency** (caused TS2307 during postinstall `tsc --build` — test files imported vitest but package declared no dependency), README BroCula description drift fix `(Jun 17–Jun 21)`→`(Jun 17–Jun 22)`, full repo audit (zero redundant/temp/unused files, zero type suppressions), typecheck ✅ lint ✅ format ✅ tests 1,570/1,570 ✅ (666 web + 438 api + 466 shared), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification, PR created
 - RepoKeeper Cycle 131: **full repository audit**, archive old audit reports (Jun 17-19, issue audit, ULW loop → archive/), CHANGELOG gap fix (added 8 missing commits), doc drift correction (test count 1,488→1,570), docs refresh (findings, active-tasks, knowledge-review, audits/README, CHANGELOG), typecheck ✅ lint ✅ tests 1,570/1,570 ✅ (666 web + 438 api + 466 shared), quality verification, PR created
 - feat(accessibility): add role alert to StepFeatures toast for screen reader announcements
