@@ -21,6 +21,7 @@ As of cycle refresh:
 - No drift detected between docs/ and apps/ code
 - **README BroCula description verified**: `(Jun 17–Jun 21)` — matches latest audit `brocula-hunt-2026-06-21-run3.md`
 - **Typecheck/Lint/Tests**: All clean (0 errors, 0 warnings, 1,570/1,570 tests passing — 666 web + 438 api + 466 shared)
+- **Cycle 132**: Fixed `packages/shared` missing `vitest` devDependency (caused TS2307 during postinstall `tsc --build`), README BroCula description drift fix `(Jun 17–Jun 21)`→`(Jun 17–Jun 22)`, full repo audit (clean), quality verification (typecheck ✅ lint ✅ format ✅ tests 1,570/1,570 ✅), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), PR created
 - **Cycle 131**: Full repository audit, archive old audit reports (Jun 17-19, issue audit Jun 19, ULW loop audit moved to archive), CHANGELOG gap fix (added missing commits: accessibility toast alert, BugFixer cycle, component tests, security strengthening, micro-ux reduced motion, flexy iteration 60, font preload), quality verification (typecheck ✅ lint ✅ tests 1,570/1,570 ✅), docs refresh (findings, active-tasks, knowledge-review, audits/README, CHANGELOG), PR created
 - **README tree verified**: All entries match filesystem
 - **CI workflow stale refs fixed**: BUG-014 and BUG-017 fully resolved — zero stale doc refs (`docs/bug.md`, `docs/feature.md`) and zero hardcoded `node-version: "20"` / `node-version: 20` remain in any workflow file

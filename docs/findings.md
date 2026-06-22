@@ -2,6 +2,51 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 132 (2026-06-22 — RepoKeeper: Fix Missing vitest Dependency in packages/shared, Doc Drift Fix, Quality Verification)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, **TS2307 fix** (`packages/shared` missing `vitest` devDependency — test files imported from vitest but package didn't declare it, causing `npm install` postinstall build failure), documentation drift check (README BroCula description `(Jun 17–Jun 21)`→`(Jun 17–Jun 22)`), comprehensive documentation sync (findings, active-tasks, CHANGELOG, knowledge-review), quality verification, PR creation.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Format | ✅ All files Prettier-compliant |
+| Tests | ✅ **1,570/1,570 passing** (666 web + 438 api + 466 shared) |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0).
+2. **Fixed packages/shared missing vitest dependency**: `packages/shared/package.json` had `"test": "vitest --run"` and 4 test files importing from `vitest`, but vitest was not declared as a dependency. The `tsconfig.json` `include: ["src/**/*"]` picked up test files, causing `TS2307: Cannot find module 'vitest'` during `tsc --build` (run via postinstall). Added `vitest: "^4.1.9"` as devDependency — now vitest is properly installed and hoisted.
+3. **README BroCula description drift fix**: `(Jun 17–Jun 21)` → `(Jun 17–Jun 22)` — latest audit is `brocula-hunt-2026-06-22-run1.md`.
+4. **No other issues found**: Zero TODO/FIXME/HACK artifacts in non-test source. Zero redundant/temp/unused files. All quality checks green.
+5. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/knowledge-review.md`, `CHANGELOG.md`, `README.md` updated for Cycle 132.
+
+### Key Findings
+
+- **packages/shared had undeclared vitest dependency**: The package runs `vitest` for testing and imports it in `.test.ts` files compiled by `tsc --build`, but vitest was only listed in `apps/web` and `apps/api`. Adding it as a devDependency fixes the postinstall build failure and aligns with the principle that each package should declare its own dependencies.
+- **README BroCula description stale**: Said `(Jun 17–Jun 21)` but latest audit is `brocula-hunt-2026-06-22-run1.md`. Fixed.
+- **No redundant/temp/unused files found** — repo remains clean after Cycle 131.
+- **All quality checks passing**: typecheck ✅ lint ✅ prettier ✅ tests 1,570/1,570 ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Format — All files pass ✅
+- [x] Tests — 1,570/1,570 passing (666 web + 438 api + 466 shared) ✅
+- [x] packages/shared vitest devDependency added
+- [x] npm install — success, postinstall build passes
+- [x] README BroCula description fixed: `(Jun 17–Jun 21)` → `(Jun 17–Jun 22)`
+- [x] No redundant/temp/unused files, no type suppressions
+- [x] Documentation refreshed for Cycle 132 (findings, active-tasks, knowledge-review, CHANGELOG, README)
+
+---
+
 ## Cycle 131 (2026-06-22 — RepoKeeper: Archive Old Audits, CHANGELOG Gap Fix, Doc Drift Correction)
 
 ### Audit Scope
