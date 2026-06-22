@@ -257,6 +257,28 @@ const ContentStats = React.memo(function ContentStats({
               {readingTimeDisplay}
             </motion.span>
           </div>
+          {/* Keyboard shortcut discovery badge — a persistent yet subtle hint that
+              `?` opens the shortcuts modal, ensuring users can always discover
+              power-user workflows even after the initial hint glow fades from
+              the header button. Shown alongside content stats since both are
+              status/utility information about the current editor state. */}
+          <div className="w-px h-2 bg-dark-700" />
+          <motion.div
+            key="shortcut-hint"
+            className="flex items-center gap-1"
+            initial={{ opacity: 0, x: -4 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -4 }}
+            transition={{ duration: ANIMATION.QUICK_FADE, ease: "easeOut" }}
+          >
+            <kbd
+              className="px-1 py-0.5 bg-dark-700 rounded text-[9px] font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"
+              aria-hidden="true"
+            >
+              ?
+            </kbd>
+            <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.SHORTCUTS}</span>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
