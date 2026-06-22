@@ -2,6 +2,26 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 132 — Fix Missing vitest Dependency in packages/shared, Doc Drift Fix, Quality Verification ✅
+
+### Task: Full repository scan, fix TS2307 (packages/shared missing vitest devDependency), README BroCula description drift fix (Jun 17–Jun 21 → Jun 17–Jun 22), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 132 full repository audit covering redundant/temp/unused file scan, fix packages/shared missing vitest devDependency causing postinstall build failure, README BroCula description drift fix, documentation sync, quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (clean after Cycle 131)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,570/1,570 ✅ (666 web + 438 api + 466 shared) format ✅
+  - [x] **Fixed packages/shared missing vitest dependency**: Added `vitest: "^4.1.9"` as devDependency — test files import from vitest but package didn't declare it, causing TS2307 during tsc --build
+  - [x] **README BroCula description drift fix**: `(Jun 17–Jun 21)` → `(Jun 17–Jun 22)` — latest audit `brocula-hunt-2026-06-22-run1.md`
+  - [x] Updated docs/findings.md: Cycle 132 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 132 completed
+  - [x] Updated docs/knowledge-review.md: Cycle 132 refreshed
+  - [x] Updated CHANGELOG.md: Cycle 132 entry added
+  - [x] Updated README.md: BroCula description updated
+  - [x] PR created
+
 ## Completed: RepoKeeper Cycle 131 — Full Repository Audit, Archive Old Audits, CHANGELOG Gap Fix, Doc Refresh, PR Created ✅
 
 ### Task: Full repository audit, archive old audit reports (Jun 17-19, issue audit, ULW loop audit → archive/), CHANGELOG gap fix (added 8 missing commits after Cycle 130), doc drift correction (test count 1,488→1,570), documentation refresh (findings, active-tasks, knowledge-review, audits/README, CHANGELOG), quality verification, PR creation
