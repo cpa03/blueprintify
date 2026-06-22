@@ -68,6 +68,11 @@ export const KEYBOARD_SHORTCUTS = {
     MODIFIER: "none",
     DESCRIPTION: "Scroll to top of content",
   },
+  SCROLL_TO_BOTTOM: {
+    KEY: "End",
+    MODIFIER: "none",
+    DESCRIPTION: "Scroll to bottom of content",
+  },
   VIEW_MODE_EDIT: {
     KEY: "1",
     MODIFIER: "ctrl/cmd",
