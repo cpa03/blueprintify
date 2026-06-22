@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
-    "@playwright/test": "1.60.0",
+    "@playwright/test": "1.61.0",
     "@types/node": "26.0.0",
     "chrome-launcher": "1.2.1",
     "concurrently": "10.0.3",
@@ -55,10 +55,10 @@
     "eslint-plugin-react-hooks": "7.1.1",
     "husky": "9.1.7",
     "lighthouse": "13.4.0",
-    "lint-staged": "17.0.7",
+    "lint-staged": "17.0.8",
     "prettier": "3.8.4",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.61.0"
+    "typescript-eslint": "8.61.1"
   },
   "overrides": {
     "undici": "7.28.0",
