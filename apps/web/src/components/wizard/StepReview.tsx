@@ -23,7 +23,7 @@
 
 import { WIZARD_STEP_KEYS, ANIMATION_DIRECTIONS } from "@blueprint/shared";
 import { motion } from "framer-motion";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { useWizardStore } from "../../store";
 import { useBlueprintStream } from "../../hooks/useBlueprintStream";
 import {
@@ -59,6 +59,28 @@ export const StepReview = memo(function StepReview({
   const handleEditFeatures = useCallback(() => setStep(WIZARD_STEP_KEYS.FEATURES), [setStep]);
 
   const modifierKey = getModifierLabel();
+
+  // Alt+1/2/3 keyboard shortcuts for edit buttons
+  // These shortcuts are displayed in the KeyboardShortcutTooltip on each edit
+  // button — making them functional gives power users fast keyboard-driven
+  // navigation back to specific wizard steps without reaching for the mouse.
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      if (e.key === "1") {
+        e.preventDefault();
+        handleEditInfo();
+      } else if (e.key === "2") {
+        e.preventDefault();
+        handleEditStack();
+      } else if (e.key === "3") {
+        e.preventDefault();
+        handleEditFeatures();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleEditInfo, handleEditStack, handleEditFeatures]);
 
   return (
     <motion.div {...pageTransition(direction)} className="space-y-6">
@@ -102,6 +124,7 @@ export const StepReview = memo(function StepReview({
                   onClick={handleEditInfo}
                   className="btn-ghost btn-sm flex items-center gap-1 text-primary-400 hover:text-primary-300"
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_REVIEW.EDIT_INFO}
+                  aria-keyshortcuts={getAriaShortcutKey("1", "alt")}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
@@ -158,6 +181,7 @@ export const StepReview = memo(function StepReview({
                   onClick={handleEditStack}
                   className="btn-ghost btn-sm flex items-center gap-1 text-accent-cyan hover:text-accent-cyan/80"
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_REVIEW.EDIT_STACK}
+                  aria-keyshortcuts={getAriaShortcutKey("2", "alt")}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
@@ -204,6 +228,7 @@ export const StepReview = memo(function StepReview({
                     onClick={handleEditFeatures}
                     className="btn-ghost btn-sm flex items-center gap-1 text-accent-emerald hover:text-accent-emerald/80"
                     aria-label={ACCESSIBILITY_LABELS.WIZARD_REVIEW.EDIT_FEATURES}
+                    aria-keyshortcuts={getAriaShortcutKey("3", "alt")}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
