@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 131: **full repository audit**, archive old audit reports (Jun 17-19, issue audit, ULW loop → archive/), CHANGELOG gap fix (added 8 missing commits), doc drift correction (test count 1,488→1,570), docs refresh (findings, active-tasks, knowledge-review, audits/README, CHANGELOG), typecheck ✅ lint ✅ tests 1,570/1,570 ✅ (666 web + 438 api + 466 shared), quality verification, PR created
+- feat(accessibility): add role alert to StepFeatures toast for screen reader announcements
+- feat(micro-ux): respect prefers-reduced-motion for wizard step smooth scroll
+- feat(flexy): eliminate inline spring configs and hardcoded display labels (Iteration 60)
+- test(web): add component tests for CharacterCounter, SkipLink, and OfflineBanner
 - RepoKeeper Cycle 130: **removed unused source files** (Tooltip.tsx, AnimatedInput.tsx, config/constants/index.ts barrel, config/index.ts barrel), **removed unused scripts** (ensure-node-version.mjs, fix-ci-node-version.mjs), **removed unused deps** (@hono/zod-validator from api, @codemirror/commands and @codemirror/search from web), typecheck ✅ lint ✅ build ✅ tests 640/640 ✅, docs refresh (findings, CHANGELOG), quality verification
 - BroCula Run 8: **LH 100-100-100-100, 1488 tests passing, zero console errors** — full browser console audit and Lighthouse optimization check clean
 - RepoKeeper Cycle 129: full repository audit, docs/audits/README.md gap fix (added missing Jun 20 Run 3 entry), CHANGELOG gap fix (added Cycle 129 entry), docs refresh (findings, active-tasks, knowledge-review, bugs), stale remote branch cleanup (fix/prompt-injection-protection-1077 — merged into main), typecheck ✅ lint ✅ tests 1,488/1,488 ✅ (640 web + 382 api + 466 shared), quality verification
@@ -43,10 +48,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Performance
 
+- perf(web): add font preload and optimize TypeIndicator keys
 - perf(web): reduce forced reflow in auto-resize textarea (#1915)
 
 ### Fixed
 
+- fix(bugfixer): Cycle Jun 21 Run 2 — BUG-014/017 re-resolved (#2002)
+- fix(security): strengthen prompt injection detection and add comprehensive security tests (#1997)
+- fix(security): remove unused RefineRequest import to resolve lint warning
+- fix(ci): add script to patch Node.js version from 20 to 22 in workflows (#1996)
 - fix(security): add defense-in-depth prompt injection protection
 - fix(api): move wrangler validation from prebuild to predeploy to unblock builds
 - **fix(ci): BUG-014 BUG-017 — actual fix applied on main** — main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` (2 occurrences); 4 workflow files `node-version: "20"`→`node-version-file: ".node-version"` (11 occurrences across iterate.yml, on-pull.yml, parallel.yml, pr-gatekeeper.yml). Previous cycles documented fixes were NOT applied on `main` — this cycle applied them correctly. Typecheck ✅ lint ✅ build ✅ tests 1,425/1,425 ✅. PR created.

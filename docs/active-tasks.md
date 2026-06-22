@@ -2,6 +2,45 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 131 — Full Repository Audit, Archive Old Audits, CHANGELOG Gap Fix, Doc Refresh, PR Created ✅
+
+### Task: Full repository audit, archive old audit reports (Jun 17-19, issue audit, ULW loop audit → archive/), CHANGELOG gap fix (added 8 missing commits after Cycle 130), doc drift correction (test count 1,488→1,570), documentation refresh (findings, active-tasks, knowledge-review, audits/README, CHANGELOG), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 131 full repository audit covering redundant/temp/unused file scan, archive old audit reports, CHANGELOG gap fix, doc drift correction (test counts), documentation sync, quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (clean after Cycle 130)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,570/1,570 ✅ (666 web + 438 api + 466 shared)
+  - [x] **Old audit reports archived**: Jun 17-19 BroCula runs, Jun 19 issue audit, Jun 20 ULW loop audit moved to `docs/audits/archive/`
+  - [x] **docs/audits/README.md updated**: Current Reports trimmed to 7 latest (Jun 20-21), archived entries moved to archive tables
+  - [x] **CHANGELOG gap fix**: Added 8 missing commits — `feat(accessibility): add role alert to StepFeatures toast`, `fix(bugfixer): Cycle Jun 21 Run 2 — BUG-014/017`, `test(web): add component tests for CharacterCounter/SkipLink/OfflineBanner`, `fix(security): strengthen prompt injection detection`, `fix(security): remove unused RefineRequest import`, `feat(micro-ux): respect prefers-reduced-motion`, `fix(ci): add script to patch Node.js version`, `feat(flexy): eliminate inline spring configs (Iteration 60)`, `perf(web): add font preload and optimize TypeIndicator keys`
+  - [x] **Doc drift corrected**: Test count updated from 1,488/1,488 → 1,570/1,570 across knowledge-review.md, findings.md
+  - [x] **README BroCula description verified**: `(Jun 17–Jun 21)` — correct, matches latest `brocula-hunt-2026-06-21-run3.md`
+  - [x] Updated docs/findings.md: Cycle 131 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 131 completed
+  - [x] Updated docs/knowledge-review.md: Cycle 131 refreshed
+  - [x] Updated CHANGELOG.md: Cycle 131 entry + missing commits added
+  - [x] Updated docs/audits/README.md: archived old reports, refreshed Current Reports
+  - [x] PR created
+
+## Completed: RepoKeeper Cycle 130 — Remove Unused Components, Barrel Files, Scripts & Unused Deps ✅
+
+### Task: Full repository scan, remove unused source files (Tooltip.tsx, AnimatedInput.tsx, config barrels), remove unused scripts (ensure-node-version.mjs, fix-ci-node-version.mjs), remove unused deps (@hono/zod-validator, @codemirror/commands, @codemirror/search), quality verification
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created via #2001
+- **Objective**: Cycle 130 repository cleanup removing 2 unused components, 2 unused barrel files, 2 unused scripts, 3 unused dependencies, quality verification
+- **Actions**:
+  - [x] Knip audit: identified 4 unused files + 3 unused dependencies
+  - [x] Removed unused components: Tooltip.tsx, AnimatedInput.tsx
+  - [x] Removed unused barrel files: config/constants/index.ts, config/index.ts
+  - [x] Removed unused scripts: ensure-node-version.mjs, fix-ci-node-version.mjs
+  - [x] Removed unused deps: @hono/zod-validator, @codemirror/commands, @codemirror/search
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 640/640 ✅
+  - [x] PR created and merged
+
 ## Completed: RepoKeeper Cycle 129 — Full Repository Audit, Docs/audits/README.md Gap Fix, CHANGELOG Gap Fix, Documentation Refresh, Stale Branch Cleanup ✅
 
 ### Task: Full repository audit, docs/audits/README.md gap fix (added missing Jun 20 Run 3 entry), CHANGELOG gap fix (added Cycle 129 + feat(shared) + feat(wizard) commits), stale remote branch deletion (fix/prompt-injection-protection-1077), documentation refresh (findings, active-tasks, knowledge-review, bugs, CHANGELOG, audits/README), quality verification
