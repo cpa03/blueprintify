@@ -2,6 +2,71 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 131 (2026-06-22 — RepoKeeper: Archive Old Audits, CHANGELOG Gap Fix, Doc Drift Correction)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, archive old audit reports (Jun 17-19, June 19 issue audit, Jun 20 ULW Loop audit moved to `docs/audits/archive/`), CHANGELOG gap detection (9 commits after Cycle 130 missing from Unreleased section), documentation drift correction (test counts 1,488→1,570), comprehensive documentation sync (findings, active-tasks, knowledge-review, audits/README, CHANGELOG), quality verification, PR creation.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,570/1,570 passing** (666 web + 438 api + 466 shared) |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. Repo remains clean after Cycle 130.
+2. **Type suppression audit**: Zero `@ts-ignore`, zero `@ts-expect-error`, zero `as any` in source code.
+3. **Archived old audit reports**: Moved 7 files from `docs/audits/` to `docs/audits/archive/`:
+   - `brocula-hunt-2026-06-17-run1.md` through `brocula-hunt-2026-06-18-run3.md` (4 files)
+   - `brocula-hunt-2026-06-19-run1.md`
+   - `issue-audit-report-2026-06-19.md`
+   - `ulw-loop-audit-2026-06-20.md`
+   - Updated `docs/audits/README.md` — Current Reports trimmed to 7 latest entries (Jun 20-21), archived entries added to archive tables.
+4. **CHANGELOG gap fix**: Detected 9 commits after Cycle 130 missing from Unreleased section. Added:
+   - `feat(accessibility): add role alert to StepFeatures toast for screen reader announcements`
+   - `feat(micro-ux): respect prefers-reduced-motion for wizard step smooth scroll`
+   - `feat(flexy): eliminate inline spring configs and hardcoded display labels (Iteration 60)`
+   - `test(web): add component tests for CharacterCounter, SkipLink, and OfflineBanner`
+   - `fix(bugfixer): Cycle Jun 21 Run 2 — BUG-014/017 re-resolved`
+   - `fix(security): strengthen prompt injection detection and add comprehensive security tests`
+   - `fix(security): remove unused RefineRequest import to resolve lint warning`
+   - `fix(ci): add script to patch Node.js version from 20 to 22 in workflows`
+   - `perf(web): add font preload and optimize TypeIndicator keys`
+5. **Documentation drift correction**: Updated test counts from 1,488→1,570 across `docs/knowledge-review.md`, `docs/findings.md`, and `docs/audits/README.md`.
+6. **README BroCula description verified**: `(Jun 17–Jun 21)` — correct, matches latest `brocula-hunt-2026-06-21-run3.md`.
+7. **README BroCula audit entry updated**: Ref link changed from `(Jun 17–Jun 20)` → `(Jun 17–Jun 21)` and latest audit link updated.
+8. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/knowledge-review.md`, `CHANGELOG.md`, `docs/audits/README.md` updated for Cycle 131.
+
+### Key Findings
+
+- **Repo remains clean** — no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code.
+- **1,570/1,570 tests passing** (up from 1,488 in Cycle 130 — 82 new tests added).
+- **CHANGELOG had 9 missing commits** after Cycle 130 — now documented.
+- **Old audit reports archived**: 7 files moved to archive, Current Reports trimmed from 14 to 7 entries.
+- **Test count drifted**: Documentation still cited 1,488 tests from Cycle 129 — actual is now 1,570. Corrected.
+- **No redundant/temp/unused files found** — repo remains clean after Cycle 130 cleanup.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Tests — 1,570/1,570 passing (666 web + 438 api + 466 shared) ✅
+- [x] Old audit reports archived (7 files moved to archive/)
+- [x] docs/audits/README.md updated — Current Reports trimmed, archive entries added
+- [x] CHANGELOG gap filled — 9 missing commits added
+- [x] Test count drift corrected — 1,488→1,570 across docs
+- [x] README BroCula description verified — `(Jun 17–Jun 21)`
+- [x] No redundant/temp/unused files, no type suppressions
+- [x] Documentation refreshed for Cycle 131 (findings, active-tasks, knowledge-review, CHANGELOG, audits/README)
+- [x] PR created
+
+---
+
 ## Cycle 130 (2026-06-21 — RepoKeeper: Remove Unused Components, Barrel Files, Scripts & Unused Depts)
 
 ### Audit Scope
