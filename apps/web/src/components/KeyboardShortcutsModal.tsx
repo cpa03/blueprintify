@@ -104,6 +104,11 @@ const getShortcutItems = (): ShortcutItem[] => {
       category: SHORTCUT_CATEGORIES.NAVIGATION,
     },
     {
+      keys: ["End"],
+      description: KEYBOARD_SHORTCUTS.SCROLL_TO_BOTTOM.DESCRIPTION,
+      category: SHORTCUT_CATEGORIES.NAVIGATION,
+    },
+    {
       keys: [altKey, "←"],
       description: "Go to previous wizard step",
       category: SHORTCUT_CATEGORIES.NAVIGATION,
