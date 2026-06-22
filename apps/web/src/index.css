@@ -637,6 +637,25 @@
     will-change: transform, opacity;
   }
 
+  /* Gentle breathing animation for content availability dots on editor tab
+     buttons — a slow, subtle opacity pulse draws the user's eye to discover
+     content in the sibling tab without being distracting. Designed to start
+     after the spring entrance completes so the initial appearance is crisp. */
+  @keyframes content-dot-breathe {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .content-dot-breathe {
+    opacity: 0;
+    animation: content-dot-breathe 2.5s ease-in-out 0.6s infinite;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
@@ -662,6 +681,7 @@
     .animate-slide-up,
     .animate-fade-out,
     .animate-slide-out-up,
+    .content-dot-breathe,
     .glass-card::after,
     .glass-card:focus-within::before,
     .text-gradient {
