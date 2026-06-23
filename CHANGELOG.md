@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 136: **full repository audit**, test count drift correction (1,615→1,627: +12 from scrolllock hook test suite), CHANGELOG gap fix (added missing test(web) useScrollLock hook commit), stale merged remote branch check (0 to delete), archive age assessment (71 files — all within 30-day retention), doc drift correction (knowledge-review test count 1,615→1,627), typecheck ✅ lint ✅ format ✅ tests 1,627/1,627 ✅ (714 web + 438 api + 475 shared), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR created
+- test(web): add comprehensive test suite for useScrollLock hook (#2039)
 - RepoKeeper Cycle 135: **full repository audit**, README BroCula description drift fix `(Jun 17–Jun 22)`→`(Jun 17–Jun 23)`, stale merged remote branch cleanup (4 deleted: brocula/perf-hunt-007, chore/repokeeper-cycle-131, fix/bugfixer-ci-node22-patch, test-permissions-pr-check), typecheck ✅ lint ✅ format ✅ tests 1,615/1,615 ✅ (702 web + 438 api + 475 shared), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification, PR created
 - feat(ux): add gentle breathing animation to editor content-availability dot (#2026)
 - feat(flexy): replace hardcoded storage error types and operation strings with shared constants (Iteration 62) (#2027)

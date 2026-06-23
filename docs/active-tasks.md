@@ -2,6 +2,28 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 136 — Full Repository Audit, Test Count Drift Fix, Doc Refresh ✅
+
+### Task: Full repository audit, test count drift correction (1,615→1,627), CHANGELOG gap fix (added missing useScrollLock test commit), stale merged remote branch check (0 to delete), archive age assessment (71 files — all within 30-day retention), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 136 full repository audit covering redundant/temp/unused file scan, test count drift correction, stale remote branch check, docs sync, quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (clean after Cycle 135)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,627/1,627 ✅ (714 web + 438 api + 475 shared) format ✅
+  - [x] **Test count drift corrected**: 1,615→1,627 (+12 from useScrollLock hook test suite)
+  - [x] **CHANGELOG gap fix**: Added missing `test(web): add comprehensive test suite for useScrollLock hook (#2039)`
+  - [x] **README BroCula description verified**: `(Jun 17–Jun 23)` — matches latest audit, no drift
+  - [x] **Stale merged remote branches check**: 31 branches examined, all with unique unmerged commits — 0 deleted
+  - [x] **Archive age assessment**: 71 files (504K) — all within 30-day retention
+  - [x] Updated docs/findings.md: Cycle 136 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 136 completed
+  - [x] Updated docs/knowledge-review.md: test count 1,615→1,627, cycle ref updated
+  - [x] Updated CHANGELOG.md: Cycle 136 entry + missing scrolllock test commit added
+  - [x] PR created
+
 ## Completed: RepoKeeper Cycle 135 — Full Repository Audit, README BroCula Drift Fix, Stale Branch Cleanup, Doc Refresh ✅
 
 ### Task: Full repository audit, README BroCula description drift fix `(Jun 17–Jun 22)`→`(Jun 17–Jun 23)`, stale merged remote branch cleanup (4 deleted: brocula/perf-hunt-007, chore/repokeeper-cycle-131, fix/bugfixer-ci-node22-patch, test-permissions-pr-check), archive age assessment (71 files — all within 30-day retention), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification, PR creation
