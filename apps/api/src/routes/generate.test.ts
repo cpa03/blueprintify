@@ -4,7 +4,13 @@ import generateRoute from "./generate";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV, MOCK_ENV_NO_KEY } from "../test-utils";
 import type { ErrorResponse } from "../errors";
-import { HTTP_STATUS, HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import {
+  HTTP_STATUS,
+  HTTP_METHODS,
+  HTTP_HEADERS,
+  HTTP_HEADER_NAMES,
+  ERROR_TYPES,
+} from "@blueprint/shared";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 import { ERROR_CODES, ERROR_MESSAGES } from "../config/constants";
 
@@ -49,7 +55,7 @@ describe("POST /generate", () => {
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
-    expect(data.error).toHaveProperty("type", "validation");
+    expect(data.error).toHaveProperty("type", ERROR_TYPES.VALIDATION);
     expect(data.error).toHaveProperty("timestamp");
   });
 
@@ -69,7 +75,7 @@ describe("POST /generate", () => {
     );
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
-    expect(data.error).toHaveProperty("type", "validation");
+    expect(data.error).toHaveProperty("type", ERROR_TYPES.VALIDATION);
   });
 
   it("should return 200/Stream for valid input", async () => {
@@ -110,7 +116,7 @@ describe("POST /generate", () => {
     expect(res.status).toBe(HTTP_STATUS.INTERNAL_ERROR);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
-    expect(data.error).toHaveProperty("type", "configuration");
+    expect(data.error).toHaveProperty("type", ERROR_TYPES.CONFIGURATION);
     expect(data.error).toHaveProperty("message", ERROR_MESSAGES.CONFIGURATION);
     expect(data.error).toHaveProperty("code", ERROR_CODES.CONFIGURATION_ERROR);
     expect(data.error).toHaveProperty("timestamp");

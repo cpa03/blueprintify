@@ -1208,3 +1208,31 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR #  | Branch | Title |
 | ----- | ------ | ----- |
 | #2027 | `flexy/modularize-hardcoded` | feat(flexy): replace hardcoded storage error types and operation strings with shared constants (Iteration 62) |
+
+### ✅ Flexy Iteration 64: Eliminate Remaining Hardcoded Error Type Strings, Step Keys & Toast Type Mocks in Tests
+
+| File | Change |
+| ---- | ------ |
+| `apps/api/src/routes/export.test.ts` | Added `ERROR_TYPES` import; replaced 4x `"validation"` with `ERROR_TYPES.VALIDATION` |
+| `apps/api/src/routes/refine.test.ts` | Added `ERROR_TYPES` import; replaced 1x `"validation"` with `ERROR_TYPES.VALIDATION` |
+| `apps/api/src/routes/tasks.test.ts` | Added `ERROR_TYPES` import; replaced 1x `"validation"` with `ERROR_TYPES.VALIDATION` |
+| `apps/api/src/routes/storage.test.ts` | Added `ERROR_TYPES` import; replaced 3x `"validation"` with `ERROR_TYPES.VALIDATION` |
+| `apps/api/src/routes/generate.test.ts` | Added `ERROR_TYPES` import; replaced 2x `"validation"` + 1x `"configuration"` with `ERROR_TYPES.*` |
+| `apps/api/src/routes/import.test.ts` | Added `ERROR_TYPES` import; replaced 5x `"validation"` with `ERROR_TYPES.VALIDATION` |
+| `apps/api/src/integration/m2-workflows.test.ts` | Added `ERROR_TYPES` import; replaced 1x `"validation"` with `ERROR_TYPES.VALIDATION` |
+| `apps/api/src/integration/prompt-injection-security.test.ts` | Added `ERROR_TYPES` import; replaced 1x `"validation"` with `ERROR_TYPES.VALIDATION` |
+| `apps/web/src/components/Editor.test.tsx` | Mock `WIZARD_STEPS` keys now use `WIZARD_STEP_KEYS.*` via `await import("@blueprint/shared")` instead of hardcoded `"info"`/`"stack"`/`"features"`/`"review"`/`"generating"` |
+| `apps/web/src/components/StepIndicator.test.tsx` | Same — 5 hardcoded wizard step keys replaced with `WIZARD_STEP_KEYS.*` refs |
+| `apps/web/src/store/toast.test.ts` | `vi.mock("@blueprint/shared")` now uses `importOriginal` to derive `TOAST_TYPES` from real shared config instead of hardcoded `"success"`/`"info"`/`"warning"`/`"error"` strings |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run test:all` — 714 web + 438 api + 475 shared = 1,627 tests passing across 83 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-64-hardcoded-cleanup` | feat(flexy): eliminate remaining hardcoded error type strings, step keys and toast type mocks in tests |

@@ -19,6 +19,7 @@ import {
   HTTP_HEADER_NAMES,
   HTTP_METHODS,
   CONTEXT_KEYS,
+  ERROR_TYPES,
 } from "@blueprint/shared";
 import type { ErrorResponse } from "../errors";
 import { validateJson, validatePromptInjection } from "../middleware/validator";
@@ -114,7 +115,7 @@ async function assertRejected(
   expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
   const data = (await res.json()) as ErrorResponse;
   expect(data).toHaveProperty("success", false);
-  expect(data.error).toHaveProperty("type", "validation");
+  expect(data.error).toHaveProperty("type", ERROR_TYPES.VALIDATION);
   if (expectedField) {
     expect(data.error.details).toBeDefined();
     const details = data.error.details as Record<string, unknown>;

@@ -4,7 +4,13 @@ import exportRoute from "./export";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
-import { HTTP_STATUS, HTTP_METHODS, HTTP_HEADERS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import {
+  HTTP_STATUS,
+  HTTP_METHODS,
+  HTTP_HEADERS,
+  HTTP_HEADER_NAMES,
+  ERROR_TYPES,
+} from "@blueprint/shared";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -37,7 +43,7 @@ describe("POST /export", () => {
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
-    expect(data.error).toHaveProperty("type", "validation");
+    expect(data.error).toHaveProperty("type", ERROR_TYPES.VALIDATION);
     expect(data.error).toHaveProperty("timestamp");
   });
 
@@ -57,7 +63,7 @@ describe("POST /export", () => {
 
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
-    expect(data.error).toHaveProperty("type", "validation");
+    expect(data.error).toHaveProperty("type", ERROR_TYPES.VALIDATION);
   });
 
   it("should export as JSON format successfully", async () => {
@@ -180,7 +186,7 @@ describe("POST /export", () => {
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
-    expect(data.error).toHaveProperty("type", "validation");
+    expect(data.error).toHaveProperty("type", ERROR_TYPES.VALIDATION);
   });
 
   it("should return 400 for tasks exceeding max length", async () => {
@@ -202,7 +208,7 @@ describe("POST /export", () => {
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
-    expect(data.error).toHaveProperty("type", "validation");
+    expect(data.error).toHaveProperty("type", ERROR_TYPES.VALIDATION);
   });
 
   it("should handle special characters in project name", async () => {

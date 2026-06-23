@@ -18,15 +18,16 @@ vi.mock("../store", () => ({
 
 vi.mock("../config/constants", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../config/constants")>();
+  const { WIZARD_STEP_KEYS } = await import("@blueprint/shared");
   return {
     ...actual,
     // Override WIZARD_STEPS to match StepIndicator expectations
     WIZARD_STEPS: [
-      { key: "info", label: "Project Info", icon: "📋", shortcut: "1" },
-      { key: "stack", label: "Tech Stack", icon: "🛠️", shortcut: "2" },
-      { key: "features", label: "Features", icon: "✨", shortcut: "3" },
-      { key: "review", label: "Review", icon: "👀", shortcut: "4" },
-      { key: "generating", label: "Generating", icon: "⚡", shortcut: "5" },
+      { key: WIZARD_STEP_KEYS.INFO, label: "Project Info", icon: "📋", shortcut: "1" },
+      { key: WIZARD_STEP_KEYS.STACK, label: "Tech Stack", icon: "🛠️", shortcut: "2" },
+      { key: WIZARD_STEP_KEYS.FEATURES, label: "Features", icon: "✨", shortcut: "3" },
+      { key: WIZARD_STEP_KEYS.REVIEW, label: "Review", icon: "👀", shortcut: "4" },
+      { key: WIZARD_STEP_KEYS.GENERATING, label: "Generating", icon: "⚡", shortcut: "5" },
     ],
     // Use actual PROGRESS_COLORS, STEP_CONNECTOR, SVG_TRANSITION, etc. from shared config
     // via importOriginal to eliminate hardcoded hex/rgba values
