@@ -45,10 +45,11 @@ import {
   EDITOR_TABS,
   DEBUG_MESSAGES,
 } from "../config/constants";
-import { ANIMATION_TIMING } from "../config/theme";
+import { ANIMATION_TIMING, LAYOUT } from "../config/theme";
 import { isDev } from "../config/env";
 import { useLastSaved } from "../hooks/useLastSaved";
 import { useAutoScroll } from "../hooks/useAutoScroll";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import clsx from "clsx";
 import "../styles/markdown.css";
 
@@ -78,6 +79,19 @@ function EditorComponent(): JSX.Element {
   const toast = useToast();
   const previewRef = useRef<HTMLDivElement>(null);
   const codeMirrorRef = useRef<ReactCodeMirrorRef>(null);
+
+  const [previewScrollState, setPreviewScrollState] = useState({ isTop: true, isBottom: false });
+  const shouldReduceMotion = useReducedMotion();
+  const handlePreviewScroll = useCallback(() => {
+    const el = previewRef.current;
+    if (!el || shouldReduceMotion) return;
+    const isTop = el.scrollTop <= 4;
+    const isBottom = Math.abs(el.scrollHeight - el.scrollTop - el.clientHeight) <= 4;
+    setPreviewScrollState((prev) => {
+      if (prev.isTop === isTop && prev.isBottom === isBottom) return prev;
+      return { isTop, isBottom };
+    });
+  }, [shouldReduceMotion]);
 
   const activeTab = useEditorStore((s) => s.activeTab);
   const setActiveTab = useEditorStore((s) => s.setActiveTab);
@@ -355,11 +369,30 @@ function EditorComponent(): JSX.Element {
                     {(viewMode === VIEW_MODES.PREVIEW || viewMode === VIEW_MODES.SPLIT) && (
                       <div
                         ref={previewRef}
+                        onScroll={handlePreviewScroll}
                         className={clsx(
                           "h-full overflow-y-auto p-4 lg:p-6 relative",
                           viewMode === VIEW_MODES.SPLIT ? "w-full lg:w-1/2" : "w-full"
                         )}
                       >
+                        <div
+                          className="absolute top-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
+                          style={{
+                            opacity: shouldReduceMotion ? 0 : previewScrollState.isTop ? 0 : 1,
+                            height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
+                            background: LAYOUT.SCROLL_SHADOW_TOP_GRADIENT,
+                          }}
+                          aria-hidden="true"
+                        />
+                        <div
+                          className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
+                          style={{
+                            opacity: shouldReduceMotion ? 0 : previewScrollState.isBottom ? 0 : 1,
+                            height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
+                            background: LAYOUT.SCROLL_SHADOW_BOTTOM_GRADIENT,
+                          }}
+                          aria-hidden="true"
+                        />
                         <ScrollProgress scrollContainerRef={previewRef} />
                         <AnimatePresence mode="wait">
                           {currentContent ? (
