@@ -2,11 +2,11 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Cycle 135 (2026-06-23 — RepoKeeper: Full Repository Audit, README BroCula Drift Fix, Stale Branch Cleanup, Doc Refresh)
+## Cycle 136 (2026-06-23 — RepoKeeper: Full Repository Audit, Test Count Drift Fix, Doc Refresh)
 
 ### Audit Scope
 
-Full repository audit covering redundant/temp/unused file scan, README BroCula description drift fix `(Jun 17–Jun 22)`→`(Jun 17–Jun 23)`, stale merged remote branch cleanup (4 deleted), archive age assessment (71 files at 504K — all within 30-day retention), comprehensive documentation sync (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification, PR creation.
+Full repository audit covering redundant/temp/unused file scan, test count drift correction (1,615→1,627: 714 web + 438 api + 475 shared) from scrolllock hook test suite, CHANGELOG gap fix (added missing `test(web): useScrollLock hook (#2039)`), stale merged remote branch check (0 to delete), archive age assessment (71 files — all within 30-day retention), comprehensive documentation sync (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation.
 
 ### Status Summary
 
@@ -14,40 +14,42 @@ Full repository audit covering redundant/temp/unused file scan, README BroCula d
 |-------|--------|
 | Typecheck | ✅ Clean (0 errors) |
 | Lint | ✅ Clean (0 warnings/errors) |
-| Tests | ✅ **1,615/1,615 passing** (702 web + 438 api + 475 shared) |
+| Tests | ✅ **1,627/1,627 passing** (714 web + 438 api + 475 shared) |
 | Format | ✅ All files Prettier-compliant |
 | **Overall** | **✅ All quality checks passing** |
 
 ### Actions Taken This Cycle
 
 1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0). No TODO/FIXME/HACK artifacts in non-test source.
-2. **README BroCula description drift fix**: `(Jun 17–Jun 22)` → `(Jun 17–Jun 23)` — latest audit is `brocula-hunt-2026-06-23-run1.md`.
-3. **Stale merged remote branch cleanup**: Deleted 4 fully-merged remote branches:
-   - `brocula/perf-hunt-007` — merged into main
-   - `chore/repokeeper-cycle-131` — merged into main
-   - `fix/bugfixer-ci-node22-patch` — merged into main
-   - `test-permissions-pr-check` — merged into main
-4. **Archive age assessment**: 71 files at 504K total. Per retention policy (30 days), all files are within retention window (oldest: May 29 = 25 days). No files deleted.
-5. **Test count stable**: 1,615 tests (702 web + 438 api + 475 shared) — unchanged from Cycle 134.
-6. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/knowledge-review.md`, `CHANGELOG.md`, `README.md` updated for Cycle 135.
+2. **README BroCula description verified**: `(Jun 17–Jun 23)` — still matches latest audit `brocula-hunt-2026-06-23-run1.md`. No drift.
+3. **Stale merged remote branch check**: 31 remote branches examined — all have unique unmerged commits. 0 branches deleted.
+4. **Archive age assessment**: 71 files at 504K total. Per retention policy (30 days), all files are within retention window (oldest: May 29 = 25 days, but this file was re-copied. All files under 30 days). No files deleted.
+5. **Test count increased**: 1,627 tests (714 web + 438 api + 475 shared) — +12 from Cycle 135 due to `test(web): useScrollLock hook (#2039)`.
+6. **CHANGELOG gap fix**: Added missing `test(web): add comprehensive test suite for useScrollLock hook (#2039)` entry.
+7. **Doc drift correction**: Test count 1,615→1,627 in knowledge-review.md, active-tasks.md, findings.md, CHANGELOG.md.
+8. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/knowledge-review.md`, `CHANGELOG.md` updated for Cycle 136.
 
 ### Key Findings
 
-- **README BroCula description drifted**: Said `(Jun 17–Jun 22)` but latest audit is Jun 23 Run 1. Fixed.
-- **4 stale merged branches** found with zero unique commits — deleted.
-- **No redundant/temp/unused files found** — repo remains clean after Cycle 134.
+- **Test count drifted**: knowledge-review.md said 1,615 but actual is 1,627 (+12 from scrolllock hook tests). Fixed.
+- **CHANGELOG gap**: Missing `test(web): add comprehensive test suite for useScrollLock hook (#2039)` — added.
+- **No redundant/temp/unused files found** — repo remains clean after Cycle 135.
+- **0 stale merged branches** — all remote branches have unique unmerged content. No cleanup needed.
+- **README BroCula description still correct**: `(Jun 17–Jun 23)` matches latest audit.
 - **Archived audit reports**: 71 files (504K) — all within 30-day retention. No cleanup needed.
-- **All quality checks passing**: typecheck ✅ lint ✅ tests 1,615/1,615 ✅ format ✅.
+- **BUG-017 (hardcoded node-version)**: Still present in CI workflow files — fix documented as blocked by `workflows: write` permission on GitHub App token. Known issue, addressed each cycle.
+- **All quality checks passing**: typecheck ✅ lint ✅ tests 1,627/1,627 ✅ format ✅.
 
 ### Verification
 
 - [x] Typecheck — 0 errors ✅
 - [x] Lint — 0 errors/warnings ✅
-- [x] Tests — 1,615/1,615 passing (702 web + 438 api + 475 shared) ✅
+- [x] Tests — 1,627/1,627 passing (714 web + 438 api + 475 shared) ✅
 - [x] Format — All files pass ✅
-- [x] README BroCula description fixed: `(Jun 17–Jun 22)` → `(Jun 17–Jun 23)`
-- [x] Stale remote branches deleted: 4 merged branches removed
+- [x] README BroCula description verified: `(Jun 17–Jun 23)` — no drift
+- [x] Stale merged branches: 0 to delete — all active
 - [x] Archive age assessed — 71 files, all within 30-day retention
+- [x] CHANGELOG gap fixed: added useScrollLock test commit
 - [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK
 - [x] Documentation refreshed for Cycle 135 (findings, active-tasks, knowledge-review, CHANGELOG, README)
 - [x] PR created

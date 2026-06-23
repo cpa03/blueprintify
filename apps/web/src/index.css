@@ -936,7 +936,11 @@
   }
 
   .glass-card:focus-within {
-    background: color-mix(in srgb, var(--color-dark-800) 95%, var(--color-primary-500) 5%) !important;
+    background: color-mix(
+      in srgb,
+      var(--color-dark-800) 95%,
+      var(--color-primary-500) 5%
+    ) !important;
     border-color: color-mix(in srgb, var(--color-primary-500) 50%, transparent) !important;
   }
 
