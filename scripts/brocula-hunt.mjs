@@ -147,7 +147,7 @@ async function runLighthouse() {
     console.log(`Using Chrome path: ${chromePath || 'system default'}\n`);
     
     const launchOptions = {
-      chromeFlags: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1920,1080']
+      chromeFlags: ['--headless=old', '--no-sandbox', '--disable-gpu', '--allow-insecure-localhost', '--ignore-certificate-errors', '--window-size=1920,1080']
     };
     
     if (chromePath) {
