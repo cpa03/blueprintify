@@ -37,7 +37,7 @@
 import { useEffect, useRef, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SPRING_CONFIG, ANIMATION, CONFIRM_DIALOG_HINTS } from "../config/constants";
-import { useFocusTrap } from "../hooks/useFocusTrap";
+import { useFocusTrap, useScrollLock } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 /**
@@ -97,10 +97,10 @@ export const ConfirmDialog = memo(function ConfirmDialog({
     }
   }, [isOpen]);
 
+  useScrollLock({ isLocked: isOpen });
+
   useEffect(() => {
     if (!isOpen) return;
-
-    document.body.style.overflow = "hidden";
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -114,7 +114,6 @@ export const ConfirmDialog = memo(function ConfirmDialog({
     document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, onClose, handleConfirm]);

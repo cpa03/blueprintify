@@ -34,3 +34,5 @@ export { useAutoScroll } from "./useAutoScroll";
 export type { UseAutoScrollOptions, UseAutoScrollReturn } from "./useAutoScroll";
 export { createPersistedStore } from "./usePersistedStore";
 export type { PersistedStoreConfig, PersistedStoreMethods } from "./usePersistedStore";
+export { useScrollLock } from "./useScrollLock";
+export type { UseScrollLockOptions } from "./useScrollLock";
