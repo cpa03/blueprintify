@@ -7,7 +7,11 @@ import {
   getStorageErrorMessage,
   withStorageRecovery,
 } from "./storage";
-import { STORAGE_KEY_PREFIXES } from "@blueprint/shared";
+import {
+  STORAGE_KEY_PREFIXES,
+  STORAGE_OPERATIONS,
+  STORAGE_ERROR_TYPE_VALUES,
+} from "@blueprint/shared";
 
 describe("StorageService", () => {
   let storage: StorageService<{ test: string }>;
@@ -408,24 +412,26 @@ describe("StorageService", () => {
   describe("error handling", () => {
     it("AC: should provide user-friendly error messages", () => {
       const errorTypes = [
-        { type: "QUOTA_EXCEEDED" as const, expected: "full" },
-        { type: "CORRUPTED_DATA" as const, expected: "corrupted" },
-        { type: "BROWSER_UNSUPPORTED" as const, expected: "browser" },
-        { type: "PRIVACY_MODE" as const, expected: "private" },
-        { type: "VALIDATION_ERROR" as const, expected: "validation" },
-        { type: "MIGRATION_ERROR" as const, expected: "migration" },
+        { type: STORAGE_ERROR_TYPE_VALUES.QUOTA_EXCEEDED, expected: "full" },
+        { type: STORAGE_ERROR_TYPE_VALUES.CORRUPTED_DATA, expected: "corrupted" },
+        { type: STORAGE_ERROR_TYPE_VALUES.BROWSER_UNSUPPORTED, expected: "browser" },
+        { type: STORAGE_ERROR_TYPE_VALUES.PRIVACY_MODE, expected: "private" },
+        { type: STORAGE_ERROR_TYPE_VALUES.VALIDATION_ERROR, expected: "validation" },
+        { type: STORAGE_ERROR_TYPE_VALUES.MIGRATION_ERROR, expected: "migration" },
         {
-          type: "SERIALIZATION_ERROR" as const,
+          type: STORAGE_ERROR_TYPE_VALUES.SERIALIZATION_ERROR,
           expected: "Failed to write to storage",
         },
       ];
 
       for (const { type, expected } of errorTypes) {
         const messageText =
-          type === "SERIALIZATION_ERROR" ? "Failed to write to storage" : "test message";
+          type === STORAGE_ERROR_TYPE_VALUES.SERIALIZATION_ERROR
+            ? "Failed to write to storage"
+            : "test message";
         const error = new StorageError(messageText, type, {
           key: "test",
-          operation: "write",
+          operation: STORAGE_OPERATIONS.WRITE,
         });
         const message = getStorageErrorMessage(error);
         expect(message.toLowerCase()).toContain(expected.toLowerCase());
@@ -586,9 +592,9 @@ describe("StorageManager", () => {
 describe("utility functions", () => {
   describe("isStorageError", () => {
     it("should identify StorageError instances", () => {
-      const error = new StorageError("test", "QUOTA_EXCEEDED", {
+      const error = new StorageError("test", STORAGE_ERROR_TYPE_VALUES.QUOTA_EXCEEDED, {
         key: "test",
-        operation: "write",
+        operation: STORAGE_OPERATIONS.WRITE,
       });
       expect(isStorageError(error)).toBe(true);
     });
@@ -602,25 +608,25 @@ describe("utility functions", () => {
 
   describe("getStorageErrorMessage", () => {
     it("should return user-friendly messages for quota exceeded", () => {
-      const quotaError = new StorageError("test", "QUOTA_EXCEEDED", {
+      const quotaError = new StorageError("test", STORAGE_ERROR_TYPE_VALUES.QUOTA_EXCEEDED, {
         key: "test",
-        operation: "write",
+        operation: STORAGE_OPERATIONS.WRITE,
       });
       expect(getStorageErrorMessage(quotaError)).toContain("full");
     });
 
     it("should return user-friendly messages for corrupted data", () => {
-      const corruptedError = new StorageError("test", "CORRUPTED_DATA", {
+      const corruptedError = new StorageError("test", STORAGE_ERROR_TYPE_VALUES.CORRUPTED_DATA, {
         key: "test",
-        operation: "read",
+        operation: STORAGE_OPERATIONS.READ,
       });
       expect(getStorageErrorMessage(corruptedError)).toContain("corrupted");
     });
 
     it("should return user-friendly messages for privacy mode", () => {
-      const privacyError = new StorageError("test", "PRIVACY_MODE", {
+      const privacyError = new StorageError("test", STORAGE_ERROR_TYPE_VALUES.PRIVACY_MODE, {
         key: "test",
-        operation: "write",
+        operation: STORAGE_OPERATIONS.WRITE,
       });
       expect(getStorageErrorMessage(privacyError)).toContain("private");
     });
@@ -644,9 +650,9 @@ describe("utility functions", () => {
     });
 
     it("AC: should handle storage errors gracefully", async () => {
-      const storageError = new StorageError("test", "QUOTA_EXCEEDED", {
+      const storageError = new StorageError("test", STORAGE_ERROR_TYPE_VALUES.QUOTA_EXCEEDED, {
         key: "test",
-        operation: "write",
+        operation: STORAGE_OPERATIONS.WRITE,
       });
 
       const result = await withStorageRecovery(async () => {
@@ -765,16 +771,16 @@ describe("Acceptance Criteria Verification - Issue #242", () => {
     expect(result1).toEqual({ success: true });
 
     const result2 = await withStorageRecovery(async () => {
-      throw new StorageError("fail", "CORRUPTED_DATA", {
+      throw new StorageError("fail", STORAGE_ERROR_TYPE_VALUES.CORRUPTED_DATA, {
         key: "test",
-        operation: "read",
+        operation: STORAGE_OPERATIONS.READ,
       });
     }, fallback);
     expect(result2).toEqual(fallback);
 
-    const error = new StorageError("test", "RECOVERY_ERROR", {
+    const error = new StorageError("test", STORAGE_ERROR_TYPE_VALUES.RECOVERY_ERROR, {
       key: "test",
-      operation: "read",
+      operation: STORAGE_OPERATIONS.READ,
     });
     const message = getStorageErrorMessage(error);
     expect(message).toBeTruthy();

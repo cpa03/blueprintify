@@ -340,11 +340,15 @@ export class StorageService<T = unknown> {
         return recovered;
       }
 
-      throw this.createStorageError(STORAGE_ERROR_MESSAGES.READ_FAILED, "CORRUPTED_DATA", {
-        key: this.config.key,
-        operation: STORAGE_OPERATIONS.READ,
-        originalError: error,
-      });
+      throw this.createStorageError(
+        STORAGE_ERROR_MESSAGES.READ_FAILED,
+        STORAGE_ERROR_TYPE_VALUES.CORRUPTED_DATA,
+        {
+          key: this.config.key,
+          operation: STORAGE_OPERATIONS.READ,
+          originalError: error,
+        }
+      );
     } finally {
       this.health.operations.total++;
     }
@@ -402,12 +406,16 @@ export class StorageService<T = unknown> {
       this.health.operations.successful++;
     } catch (error) {
       this.handleError(STORAGE_OPERATIONS.WRITE, error);
-      throw this.createStorageError(STORAGE_ERROR_MESSAGES.WRITE_FAILED, "SERIALIZATION_ERROR", {
-        key: this.config.key,
-        operation: STORAGE_OPERATIONS.WRITE,
-        originalError: error,
-        data,
-      });
+      throw this.createStorageError(
+        STORAGE_ERROR_MESSAGES.WRITE_FAILED,
+        STORAGE_ERROR_TYPE_VALUES.SERIALIZATION_ERROR,
+        {
+          key: this.config.key,
+          operation: STORAGE_OPERATIONS.WRITE,
+          originalError: error,
+          data,
+        }
+      );
     } finally {
       this.health.operations.total++;
     }
@@ -656,27 +664,35 @@ export class StorageService<T = unknown> {
     if (!isLocalStorageSupported()) {
       throw this.createStorageError(
         STORAGE_ERROR_MESSAGES.STORAGE_UNSUPPORTED,
-        "BROWSER_UNSUPPORTED",
+        STORAGE_ERROR_TYPE_VALUES.BROWSER_UNSUPPORTED,
         { key: this.config.key, operation: STORAGE_OPERATIONS.READ }
       );
     }
 
     if (isPrivacyMode()) {
-      throw this.createStorageError(STORAGE_ERROR_MESSAGES.PRIVACY_MODE, "PRIVACY_MODE", {
-        key: this.config.key,
-        operation: STORAGE_OPERATIONS.READ,
-      });
+      throw this.createStorageError(
+        STORAGE_ERROR_MESSAGES.PRIVACY_MODE,
+        STORAGE_ERROR_TYPE_VALUES.PRIVACY_MODE,
+        {
+          key: this.config.key,
+          operation: STORAGE_OPERATIONS.READ,
+        }
+      );
     }
   }
 
   private checkQuota(): void {
     const quota = getStorageQuota();
     if (quota.remaining < STORAGE_CONFIG.QUOTA_WARNING_THRESHOLD_KB * BYTE_CONVERSION.KB) {
-      throw this.createStorageError(STORAGE_ERROR_MESSAGES.QUOTA_EXCEEDED, "QUOTA_EXCEEDED", {
-        key: this.config.key,
-        operation: STORAGE_OPERATIONS.WRITE,
-        data: quota,
-      });
+      throw this.createStorageError(
+        STORAGE_ERROR_MESSAGES.QUOTA_EXCEEDED,
+        STORAGE_ERROR_TYPE_VALUES.QUOTA_EXCEEDED,
+        {
+          key: this.config.key,
+          operation: STORAGE_OPERATIONS.WRITE,
+          data: quota,
+        }
+      );
     }
   }
 
@@ -809,17 +825,17 @@ export function isStorageError(error: unknown): error is StorageError {
 export function getStorageErrorMessage(error: unknown): string {
   if (isStorageError(error)) {
     switch (error.type) {
-      case "QUOTA_EXCEEDED":
+      case STORAGE_ERROR_TYPE_VALUES.QUOTA_EXCEEDED:
         return STORAGE_ERROR_MESSAGES.STORAGE_FULL;
-      case "CORRUPTED_DATA":
+      case STORAGE_ERROR_TYPE_VALUES.CORRUPTED_DATA:
         return STORAGE_ERROR_MESSAGES.DATA_CORRUPTED;
-      case "BROWSER_UNSUPPORTED":
+      case STORAGE_ERROR_TYPE_VALUES.BROWSER_UNSUPPORTED:
         return STORAGE_ERROR_MESSAGES.BROWSER_UNSUPPORTED;
-      case "PRIVACY_MODE":
+      case STORAGE_ERROR_TYPE_VALUES.PRIVACY_MODE:
         return STORAGE_ERROR_MESSAGES.PRIVACY_MODE;
-      case "VALIDATION_ERROR":
+      case STORAGE_ERROR_TYPE_VALUES.VALIDATION_ERROR:
         return STORAGE_ERROR_MESSAGES.VALIDATION_FAILED;
-      case "MIGRATION_ERROR":
+      case STORAGE_ERROR_TYPE_VALUES.MIGRATION_ERROR:
         return STORAGE_ERROR_MESSAGES.MIGRATION_FAILED;
       default:
         return error.message;
