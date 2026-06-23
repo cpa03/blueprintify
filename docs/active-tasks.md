@@ -2,6 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 133 — Full Repository Audit, Archive Old Audits, CHANGELOG Gap Fix, Doc Refresh ✅
+
+### Task: Full repository audit, archive old audit reports (Jun 20 Runs 2-5 + Jun 22 issue audit → archive/), CHANGELOG gap fix (added missing feat(editor) commit), audit README refresh (Current Reports trimmed from 8 to 4 latest entries), documentation refresh (findings, active-tasks, knowledge-review, audits/README, CHANGELOG), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 133 full repository audit covering redundant/temp/unused file scan, archive old audit reports, CHANGELOG gap fix, documentation sync, quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (clean after Cycle 132)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,570/1,570 ✅ (666 web + 438 api + 466 shared) format ✅
+  - [x] **Old audit reports archived**: 5 files moved to archive/ — Jun 20 Runs 2-5 (BroCula) + Jun 22 issue audit
+  - [x] **docs/audits/README.md updated**: Current Reports trimmed from 8 to 4 latest entries (Jun 21-22), archived entries added to archive tables
+  - [x] **CHANGELOG gap fix**: Added missing `feat(editor): add persistent keyboard shortcut badge to content stats`
+  - [x] Updated docs/findings.md: Cycle 133 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 133 completed
+  - [x] Updated docs/knowledge-review.md: Cycle 133 refreshed
+  - [x] Updated CHANGELOG.md: Cycle 133 entry added
+  - [x] Updated docs/audits/README.md: archived old reports, refreshed Current Reports
+  - [x] PR created
+
 ## Completed: RepoKeeper Cycle 132 — Fix Missing vitest Dependency in packages/shared, Doc Drift Fix, Quality Verification ✅
 
 ### Task: Full repository scan, fix TS2307 (packages/shared missing vitest devDependency), README BroCula description drift fix (Jun 17–Jun 21 → Jun 17–Jun 22), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification, PR creation

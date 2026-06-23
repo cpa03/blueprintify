@@ -2,6 +2,54 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 133 (2026-06-22 — RepoKeeper: Full Repository Audit, Archive Old Audits, CHANGELOG Gap Fix, Doc Refresh)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, archive old audit reports (Jun 20 Runs 2-5 → archive/), archive issue audit report (Jun 22 → archive/), CHANGELOG gap fix (added missing feat(editor) commit), documentation drift check, comprehensive documentation sync (findings, active-tasks, knowledge-review, audits/README, CHANGELOG), quality verification, PR creation.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,570/1,570 passing** (666 web + 438 api + 466 shared) |
+| Format | ✅ All files Prettier-compliant |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0).
+2. **Archived old audit reports**: Moved 5 files from `docs/audits/` to `docs/audits/archive/`:
+   - `brocula-hunt-2026-06-20-run2.md` through `brocula-hunt-2026-06-20-run5.md` (4 BroCula runs)
+   - `issue-audit-report-2026-06-22.md` (issue audit)
+   - Updated `docs/audits/README.md` — Current Reports trimmed from 8 to 4 latest entries (Jun 21-22), archived entries added to archive tables.
+3. **CHANGELOG gap fix**: Added 2 missing commits after Cycle 132 — `feat(editor): add persistent keyboard shortcut badge to content stats` and `test(components): add tests for ValidationCheckmark, TypeIndicator, ShowEditorButton`.
+4. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/knowledge-review.md`, `CHANGELOG.md`, `docs/audits/README.md` updated for Cycle 133.
+
+### Key Findings
+
+- **1 new repo-maintenance commit** after Cycle 132: `feat(editor): add persistent keyboard shortcut badge to content stats` — documented in CHANGELOG.
+- **README BroCula description**: `(Jun 17–Jun 22)` — correct, matches latest audit.
+- **No redundant/temp/unused files found** — repo remains clean after Cycle 132.
+- **All quality checks passing**: typecheck ✅ lint ✅ tests 1,570/1,570 ✅ format ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Tests — 1,570/1,570 passing (666 web + 438 api + 466 shared) ✅
+- [x] Format — All files pass ✅
+- [x] Old audit reports archived (5 files moved to archive/)
+- [x] docs/audits/README.md — Current Reports trimmed from 8 to 4, archived entries added
+- [x] CHANGELOG gap filled — feat(editor) commit added
+- [x] No redundant/temp/unused files, no type suppressions
+- [x] Documentation refreshed for Cycle 133 (findings, active-tasks, knowledge-review, CHANGELOG, audits/README)
+- [x] PR created
+
+---
+
 ## Cycle 132 (2026-06-22 — RepoKeeper: Fix Missing vitest Dependency in packages/shared, Doc Drift Fix, Quality Verification)
 
 ### Audit Scope
