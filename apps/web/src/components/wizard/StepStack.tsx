@@ -23,7 +23,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useCallback, useMemo, memo } from "react";
-import { TECH_STACK_OPTIONS, ANIMATION_DIRECTIONS } from "@blueprint/shared";
+import { TECH_STACK_OPTIONS, ANIMATION_DIRECTIONS, STYLE_ID_STRINGS } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
 import {
   CATEGORY_ICONS,
@@ -55,7 +55,7 @@ const attentionKeyframes = `@keyframes stack-card-attention {
 }`;
 
 if (typeof document !== "undefined") {
-  const styleId = "stack-card-attention-anim";
+  const styleId = STYLE_ID_STRINGS.STACK_CARD_ATTENTION;
   if (!document.getElementById(styleId)) {
     const style = document.createElement("style");
     style.id = styleId;

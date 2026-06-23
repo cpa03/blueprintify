@@ -158,6 +158,8 @@ export {
   UI_DEFAULTS,
   NETWORK_DEFAULTS,
   EMPTY_STATE_LAYOUT,
+  STYLE_ID_STRINGS,
+  ANIMATION_DEFAULTS,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";

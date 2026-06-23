@@ -1927,3 +1927,29 @@ export const EMPTY_STATE_LAYOUT = {
     MARGIN_TOP_PX: -40,
   } as const,
 } as const;
+
+/**
+ * Injected Style Element ID Strings
+ * Centralized source of truth for style element IDs injected by components.
+ * Flexy says: No hardcoded "offline-banner-animations" or "stack-card-attention-anim" IDs!
+ * Usage: import { STYLE_ID_STRINGS } from "@blueprint/shared";
+ *        style.id = STYLE_ID_STRINGS.OFFLINE_BANNER
+ */
+export const STYLE_ID_STRINGS = {
+  /** Style element ID for OfflineBanner pulse ring animations */
+  OFFLINE_BANNER: "offline-banner-animations" as const,
+  /** Style element ID for StepStack card attention animation */
+  STACK_CARD_ATTENTION: "stack-card-attention-anim" as const,
+} as const;
+
+/**
+ * Animation Default Duration Values (seconds)
+ * Centralized source of truth for common framer-motion animation duration values.
+ * Flexy says: No hardcoded { duration: 0 } for instant/no-animation transitions!
+ * Usage: import { ANIMATION_DEFAULTS } from "@blueprint/shared";
+ *        transition={{ ...ANIMATION_DEFAULTS.ZERO_DURATION }}
+ */
+export const ANIMATION_DEFAULTS = {
+  /** Zero-duration transition for instant/no-animation state changes */
+  ZERO_DURATION: { duration: 0 } as const,
+} as const;
