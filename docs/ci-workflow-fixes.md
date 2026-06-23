@@ -57,4 +57,4 @@ grep -rn 'docs/bug\.\|docs/feature\.' .github/workflows/  # should be empty afte
 
 ## Historical Context
 
-BUG-014/017 have been identified and re-identified multiple times. The fixes are committed locally on branch `fix/ci-node-version-22-2030` but cannot be pushed from CI due to GitHub App token `workflows: write` permission restriction. Apply the one-liner above with a Personal Access Token or via the GitHub UI to resolve permanently.
+BUG-014/017 have been identified and re-identified multiple times. The fixes are committed locally on branch `fix/bugfixer-ulw-cycle-jun-23` (commit `513d071`) but cannot be pushed from CI due to GitHub App token `workflows: write` permission restriction. Apply the one-liner above with a Personal Access Token or via the GitHub UI to resolve permanently.
