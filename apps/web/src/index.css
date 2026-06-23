@@ -918,6 +918,58 @@
   }
 }
 
+/* ===== High Contrast Support ===== */
+@media (prefers-contrast: more) {
+  .glass-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-color: color-mix(in srgb, var(--color-dark-500) 60%, transparent) !important;
+  }
+
+  .backdrop-blur-xl,
+  .backdrop-blur-lg,
+  .backdrop-blur-md,
+  .backdrop-blur-sm,
+  .backdrop-blur {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .glass-card:focus-within {
+    background: color-mix(in srgb, var(--color-dark-800) 95%, var(--color-primary-500) 5%) !important;
+    border-color: color-mix(in srgb, var(--color-primary-500) 50%, transparent) !important;
+  }
+
+  .glass-card:hover {
+    border-color: color-mix(in srgb, var(--color-dark-400) 50%, transparent) !important;
+  }
+
+  .pointer-events-auto[role="alert"],
+  .pointer-events-auto[role="status"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .fixed.inset-0.bg-dark-950\/80 {
+    background: color-mix(in srgb, var(--color-dark-950) 92%, transparent) !important;
+  }
+
+  .ambient-glow {
+    opacity: 0.25 !important;
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    border-color: color-mix(in srgb, var(--color-dark-500) 50%, transparent) !important;
+  }
+  input:not([type="checkbox"]):not([type="radio"]):focus,
+  textarea:focus,
+  select:focus {
+    border-color: color-mix(in srgb, var(--color-primary-500) 60%, transparent) !important;
+  }
+}
+
 /* ===== CodeMirror Overrides ===== */
 .cm-editor {
   @apply h-full bg-transparent !important;
