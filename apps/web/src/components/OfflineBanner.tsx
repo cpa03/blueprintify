@@ -31,6 +31,7 @@
 import { useState, useCallback, useEffect, useRef, memo } from "react";
 import { useOnlineStatus } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { STYLE_ID_STRINGS } from "@blueprint/shared";
 import { NETWORK_MESSAGES, ACCESSIBILITY_LABELS, OFFLINE_ANIMATION } from "../config/constants";
 
 /**
@@ -42,7 +43,7 @@ const pulseScaleKeyframes = OFFLINE_ANIMATION.PULSE_SCALE_KEYFRAMES;
 
 // Inject keyframes only once
 if (typeof document !== "undefined") {
-  const styleId = "offline-banner-animations";
+  const styleId = STYLE_ID_STRINGS.OFFLINE_BANNER;
   if (!document.getElementById(styleId)) {
     const style = document.createElement("style");
     style.id = styleId;

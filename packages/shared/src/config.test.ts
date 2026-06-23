@@ -94,6 +94,8 @@ import {
   UI_DEFAULTS,
   NETWORK_DEFAULTS,
   EMPTY_STATE_LAYOUT,
+  STYLE_ID_STRINGS,
+  ANIMATION_DEFAULTS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -2621,5 +2623,34 @@ describe("EMPTY_STATE_LAYOUT", () => {
     expect(EMPTY_STATE_LAYOUT.EDITOR_GLOW.HEIGHT_PX).toBeGreaterThan(
       EMPTY_STATE_LAYOUT.PREVIEW_GLOW.HEIGHT_PX
     );
+  });
+});
+
+describe("STYLE_ID_STRINGS", () => {
+  it("should have expected OFFLINE_BANNER value", () => {
+    expect(STYLE_ID_STRINGS.OFFLINE_BANNER).toBe("offline-banner-animations");
+  });
+
+  it("should have expected STACK_CARD_ATTENTION value", () => {
+    expect(STYLE_ID_STRINGS.STACK_CARD_ATTENTION).toBe("stack-card-attention-anim");
+  });
+
+  it("should have 2 entries", () => {
+    expect(Object.keys(STYLE_ID_STRINGS).length).toBe(2);
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(STYLE_ID_STRINGS);
+    values.forEach((v) => expect(typeof v).toBe("string"));
+  });
+});
+
+describe("ANIMATION_DEFAULTS", () => {
+  it("should have ZERO_DURATION with duration 0", () => {
+    expect(ANIMATION_DEFAULTS.ZERO_DURATION).toEqual({ duration: 0 });
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(ANIMATION_DEFAULTS).length).toBe(1);
   });
 });

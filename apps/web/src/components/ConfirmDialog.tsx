@@ -36,6 +36,7 @@
 
 import { useEffect, useRef, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ANIMATION_DEFAULTS } from "@blueprint/shared";
 import { SPRING_CONFIG, ANIMATION, CONFIRM_DIALOG_HINTS } from "../config/constants";
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -166,7 +167,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                     animate={{ scale: 1, rotate: 0 }}
                     transition={
                       shouldReduceMotion
-                        ? { duration: 0 }
+                        ? ANIMATION_DEFAULTS.ZERO_DURATION
                         : {
                             type: "spring",
                             ...SPRING_CONFIG.WARNING,
