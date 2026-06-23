@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- feat(ux): add gentle breathing animation to editor content-availability dot (#2026)
+- feat(flexy): replace hardcoded storage error types and operation strings with shared constants (Iteration 62) (#2027)
+- fix(build): rebuild @blueprint/shared before web to prevent stale-dist regressions (#2028)
 - feat(editor): add persistent keyboard shortcut badge to content stats
 - test(components): add tests for ValidationCheckmark, TypeIndicator, ShowEditorButton
 - RepoKeeper Cycle 133: **full repository audit**, archived old audit reports (Jun 20 Runs 2-5 to archive/), CHANGELOG gap fix (added missing feat(editor) keyboard shortcut badge), audit README refresh (Current Reports trimmed from 8 to latest 4 entries), typecheck ✅ lint ✅ tests 1,570/1,570 ✅ (666 web + 438 api + 466 shared), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification, PR created
