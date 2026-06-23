@@ -39,6 +39,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SPRING_CONFIG, ANIMATION, CONFIRM_DIALOG_HINTS } from "../config/constants";
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { KeyboardShortcutTooltip } from "./SmartTooltip";
 
 /**
  * Props for the ConfirmDialog component.
@@ -195,18 +196,27 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                   whileTap={{ scale: 0.98 }}
                   onClick={onClose}
                   className="btn-ghost px-4 py-2 rounded-lg text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
+                  aria-keyshortcuts="Escape"
                 >
                   {cancelLabel}
                 </motion.button>
-                <motion.button
-                  ref={confirmButtonRef}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleConfirm}
-                  className="bg-accent-pink hover:bg-accent-pink/80 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
+                <KeyboardShortcutTooltip
+                  shortcut="Enter"
+                  description="Confirm action"
+                  position="left"
+                  modifier="none"
                 >
-                  {confirmLabel}
-                </motion.button>
+                  <motion.button
+                    ref={confirmButtonRef}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleConfirm}
+                    className="bg-accent-pink hover:bg-accent-pink/80 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
+                    aria-keyshortcuts="Enter"
+                  >
+                    {confirmLabel}
+                  </motion.button>
+                </KeyboardShortcutTooltip>
               </div>
 
               {/* Keyboard shortcut hints */}
