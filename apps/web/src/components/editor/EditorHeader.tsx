@@ -108,24 +108,33 @@ const TabButton = React.memo(function TabButton({
       <span className="relative z-10 flex items-center gap-1.5">
         {children}
         {/* Content available dot — subtle green indicator on inactive tabs
-            to help users discover content in the sibling tab. Uses a gentle
-            CSS pulse animation to draw attention without being distracting. */}
+            to help users discover content in the sibling tab. The breathing
+            ring provides a gentle discovery cue without being distracting. */}
         {!isActive && contentAvailable && (
-          <motion.span
-            className="w-1.5 h-1.5 rounded-full bg-accent-emerald flex-shrink-0"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{
-              type: "spring",
-              ...EDITOR_ANIMATION.CONTENT_DOT,
-            }}
-            aria-label={ACCESSIBILITY_LABELS.EDITOR.CONTENT_AVAILABLE(
-              id === EDITOR_TABS.BLUEPRINT
-                ? EDITOR_FILENAMES.BLUEPRINT_DISPLAY
-                : EDITOR_FILENAMES.TASKS_DISPLAY
-            )}
-          />
+          <span className="relative flex h-1.5 w-1.5 flex-shrink-0">
+            {/* Breathing ring — CSS-only pulse that starts after the spring
+                entrance of the core dot settles (~0.6s delay in keyframes). */}
+            <span
+              className="absolute inset-0 rounded-full bg-accent-emerald content-dot-breathe"
+              aria-hidden="true"
+            />
+            {/* Core dot with spring entrance */}
+            <motion.span
+              className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent-emerald"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{
+                type: "spring",
+                ...EDITOR_ANIMATION.CONTENT_DOT,
+              }}
+              aria-label={ACCESSIBILITY_LABELS.EDITOR.CONTENT_AVAILABLE(
+                id === EDITOR_TABS.BLUEPRINT
+                  ? EDITOR_FILENAMES.BLUEPRINT_DISPLAY
+                  : EDITOR_FILENAMES.TASKS_DISPLAY
+              )}
+            />
+          </span>
         )}
         {isActive && isGenerating && (
           <motion.span
