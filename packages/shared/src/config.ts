@@ -1438,7 +1438,7 @@ export const SHORTCUT_LABELS = {
   /** Copy keyboard shortcut display */
   COPY: "Ctrl+C",
   /** Export keyboard shortcut display */
-  EXPORT: "Ctrl+E",
+  EXPORT: "Ctrl+Shift+E",
   /** New project keyboard shortcut display */
   NEW_PROJECT: "Ctrl+N",
   /** Keyboard shortcut modal trigger display */
