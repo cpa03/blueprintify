@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 135: **full repository audit**, README BroCula description drift fix `(Jun 17–Jun 22)`→`(Jun 17–Jun 23)`, stale merged remote branch cleanup (4 deleted: brocula/perf-hunt-007, chore/repokeeper-cycle-131, fix/bugfixer-ci-node22-patch, test-permissions-pr-check), typecheck ✅ lint ✅ format ✅ tests 1,615/1,615 ✅ (702 web + 438 api + 475 shared), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification, PR created
 - feat(ux): add gentle breathing animation to editor content-availability dot (#2026)
 - feat(flexy): replace hardcoded storage error types and operation strings with shared constants (Iteration 62) (#2027)
 - fix(build): rebuild @blueprint/shared before web to prevent stale-dist regressions (#2028)
