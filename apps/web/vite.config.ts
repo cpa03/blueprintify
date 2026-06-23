@@ -46,7 +46,8 @@ const preloadCssPlugin = (): Plugin => ({
 const removeLazyPreloadPlugin = (): Plugin => ({
   name: "remove-lazy-preload",
   transformIndexHtml(html) {
-    // Omit modulepreload for lazy-loaded chunks used only by dynamic imports
+    // Omit modulepreload for lazy-loaded chunks used only by dynamic imports.
+    // These are imported via React.lazy() and should not be eagerly preloaded.
     const lazyChunks = [
       "codemirror",
       "markdown",
@@ -54,10 +55,20 @@ const removeLazyPreloadPlugin = (): Plugin => ({
       "animation",
       "security",
       "wizard",
+      "Toast",
+      "ShowEditorButton",
+      "KeyboardShortcutsModal",
+      "PageScrollProgressBar",
+      "ScrollToTop",
+      "GenerationCelebration",
+      "VercelAnalytics",
+      "lazyLoad",
     ];
+    if (!lazyChunks.length) return html;
+    const escaped = lazyChunks.map((c) => c.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
     return html.replace(
       new RegExp(
-        `<link rel="modulepreload"[^>]*href="[^"]*(?:${lazyChunks.join("|")})-[^"]*\\.js"[^>]*>`,
+        `<link rel="modulepreload"[^>]*href="[^"]*(?:${escaped.join("|")})-[^"]*\\.js"[^>]*>`,
         "g"
       ),
       ""
@@ -93,9 +104,9 @@ export default defineConfig({
       "react-dom",
       "zustand",
       "clsx",
-      "framer-motion",
-      "react-markdown",
-      "remark-gfm",
+      // framer-motion, react-markdown, and remark-gfm are excluded because
+      // they are lazy-loaded via dynamic import() and not needed in the
+      // initial critical path, even during development.
     ],
   },
   server: {
