@@ -5,7 +5,13 @@ import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
-import { HTTP_STATUS, HTTP_HEADERS, HTTP_METHODS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import {
+  HTTP_STATUS,
+  HTTP_HEADERS,
+  HTTP_METHODS,
+  HTTP_HEADER_NAMES,
+  ERROR_TYPES,
+} from "@blueprint/shared";
 
 beforeEach(() => {
   const mockContainer = createMockContainer();
@@ -38,7 +44,7 @@ describe("POST /tasks", () => {
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
-    expect(data.error).toHaveProperty("type", "validation");
+    expect(data.error).toHaveProperty("type", ERROR_TYPES.VALIDATION);
   });
 
   it("should return 200/Stream for valid input", async () => {

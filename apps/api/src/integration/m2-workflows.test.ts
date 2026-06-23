@@ -16,6 +16,7 @@ import {
   HTTP_HEADERS,
   HTTP_HEADER_NAMES,
   HTTP_STATUS,
+  ERROR_TYPES,
 } from "@blueprint/shared";
 
 interface ApiResponse {
@@ -263,7 +264,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
       expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
       const data = (await res.json()) as ApiResponse;
       expect(data.success).toBe(false);
-      expect(data.error).toHaveProperty("type", "validation");
+      expect(data.error).toHaveProperty("type", ERROR_TYPES.VALIDATION);
     });
 
     it("should handle malformed import data gracefully", async () => {

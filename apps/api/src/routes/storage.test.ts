@@ -11,6 +11,7 @@ import {
   HTTP_HEADER_NAMES,
   STORAGE_CONFIG,
   BYTE_CONVERSION,
+  ERROR_TYPES,
 } from "@blueprint/shared";
 import { STORAGE_KV_CONFIG } from "../config/constants";
 
@@ -164,7 +165,7 @@ describe("POST /storage/report", () => {
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
-    expect(data.error).toHaveProperty("type", "validation");
+    expect(data.error).toHaveProperty("type", ERROR_TYPES.VALIDATION);
   });
 
   it("should return 400 for missing required fields", async () => {
@@ -207,7 +208,7 @@ describe("DELETE /storage/clear", () => {
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
     expect(data).toHaveProperty("success", false);
-    expect(data.error).toHaveProperty("type", "validation");
+    expect(data.error).toHaveProperty("type", ERROR_TYPES.VALIDATION);
   });
 
   it("should return 400 if confirmation is false", async () => {
@@ -224,7 +225,7 @@ describe("DELETE /storage/clear", () => {
 
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
-    expect(data.error).toHaveProperty("type", "validation");
+    expect(data.error).toHaveProperty("type", ERROR_TYPES.VALIDATION);
     expect(data.error.message).toBeDefined();
   });
 

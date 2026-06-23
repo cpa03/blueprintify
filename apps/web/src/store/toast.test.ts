@@ -9,20 +9,18 @@ vi.mock("../config/constants", () => ({
   },
 }));
 
-// Mock shared config
-vi.mock("@blueprint/shared", () => ({
-  ID_GENERATION_CONFIG: {
-    RANDOM_STRING_START_INDEX: 2,
-    RANDOM_STRING_LENGTH: 9,
-    ALPHANUMERIC_RADIX: 36,
-  },
-  TOAST_TYPES: {
-    SUCCESS: "success",
-    INFO: "info",
-    WARNING: "warning",
-    ERROR: "error",
-  },
-}));
+// Mock shared config — derive TOAST_TYPES from actual to eliminate hardcoded duplicates
+vi.mock("@blueprint/shared", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@blueprint/shared")>();
+  return {
+    ...actual,
+    ID_GENERATION_CONFIG: {
+      RANDOM_STRING_START_INDEX: 2,
+      RANDOM_STRING_LENGTH: 9,
+      ALPHANUMERIC_RADIX: 36,
+    },
+  };
+});
 
 // Mock setTimeout and clearTimeout globally
 const originalSetTimeout = global.setTimeout;
