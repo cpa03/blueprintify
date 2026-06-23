@@ -354,6 +354,10 @@ export const CONFIRM_DIALOG_HINTS = {
 export const COPY_BUTTON_LABELS = {
   COPY: "Copy to clipboard",
   COPIED: "Copied to clipboard",
+  /** Visual display text shown inside the copy button */
+  DISPLAY_COPY: "Copy",
+  /** Visual display text shown after successful copy */
+  DISPLAY_COPIED: "Copied!",
 } as const;
 
 // ============================================================================

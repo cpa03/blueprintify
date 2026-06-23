@@ -1,6 +1,6 @@
 import { memo, useMemo, useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ANIMATION } from "../config/constants";
+import { ANIMATION, TIMEOUTS } from "../config/constants";
 import { ANIMATION_TIMING, EDITOR_ANIMATION } from "../config/theme";
 
 // One-shot shake keyframes for the limit-reached alert: a gentle horizontal
@@ -43,7 +43,7 @@ function CharacterCounterComponent({
   useEffect(() => {
     if (isAtLimit && !prevAtLimitRef.current) {
       setShowLimitShake(true);
-      const timer = setTimeout(() => setShowLimitShake(false), 400);
+      const timer = setTimeout(() => setShowLimitShake(false), TIMEOUTS.SHAKE_ANIMATION);
       return () => clearTimeout(timer);
     }
     prevAtLimitRef.current = isAtLimit;
