@@ -46,11 +46,6 @@ Older audit reports have been moved to [archive/](archive/) for historical refer
 | [Jun 15 Run 3](archive/brocula-hunt-2026-06-15-run3.md) | 2026-06-15 | BroCula audit — LH **100-100-100-100**, 1340 tests ✅ |
 | [Jun 15 Run 2](archive/brocula-hunt-2026-06-15-run2.md) | 2026-06-15 | BroCula audit — LH **100-100-100-100**, 1340 tests ✅ |
 | [Jun 15 Run 1](archive/brocula-hunt-2026-06-15-run1.md) | 2026-06-15 | BroCula audit — LH **100-100-100-100**, 1340 tests ✅ |
-| [Jun 16 Run 1](archive/brocula-hunt-2026-06-16-run1.md) | 2026-06-16 | BroCula audit — LH **99**, 1340 tests ✅ |
-| [Jun 15 Run 4](archive/brocula-hunt-2026-06-15-run4.md) | 2026-06-15 | BroCula audit — LH **100-100-100-100**, 1340 tests ✅ |
-| [Jun 15 Run 3](archive/brocula-hunt-2026-06-15-run3.md) | 2026-06-15 | BroCula audit — LH **100-100-100-100**, 1340 tests ✅ |
-| [Jun 15 Run 2](archive/brocula-hunt-2026-06-15-run2.md) | 2026-06-15 | BroCula audit — LH **100-100-100-100**, 1340 tests ✅ |
-| [Jun 15 Run 1](archive/brocula-hunt-2026-06-15-run1.md) | 2026-06-15 | BroCula audit — LH **100-100-100-100**, 1340 tests ✅ |
 | [Phase 1 Audit](archive/ulw-loop-phase1-audit-2026-06-14.md) | 2026-06-14 | Comprehensive codebase scoring (77.6/100) |
 | [Jun 14 Run 7](archive/brocula-hunt-2026-06-14-run7.md) | 2026-06-14 | BroCula audit — clean                    |
 | [Jun 14 Run 6](archive/brocula-hunt-2026-06-14-run6.md) | 2026-06-14 | BroCula audit — clean                    |
