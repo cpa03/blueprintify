@@ -23,7 +23,7 @@ import {
   SPRING_CONFIG,
   ANIMATION,
 } from "../config/constants";
-import { useFocusTrap } from "../hooks";
+import { useFocusTrap, useScrollLock } from "../hooks";
 import { Icon, type IconName } from "./Icon";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
@@ -160,15 +160,15 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
     [onClose]
   );
 
+  useScrollLock({ isLocked: isOpen });
+
   useEffect(() => {
     if (isOpen) {
       document.addEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "hidden";
     }
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
     };
   }, [isOpen, handleKeyDown]);
 
