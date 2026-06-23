@@ -2,6 +2,31 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 137 (2026-06-23 — RepoKeeper: Full Repository Audit, CHANGELOG Gap Fix, Doc Refresh)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, CHANGELOG gap fix (added missing `docs(ci): document required workflow changes for Node 22 migration (#2030)`), knowledge-review BroCula description drift fix (run1→run4 — latest is `brocula-hunt-2026-06-23-run4.md`), comprehensive documentation sync (findings, active-tasks, knowledge-review, CHANGELOG), quality verification.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,627/1,627 passing** (714 web + 438 api + 475 shared) |
+| Format | ✅ All files Prettier-compliant |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0). No TODO/FIXME/HACK artifacts in non-test source.
+2. **README BroCula description verified**: `(Jun 17–Jun 23)` — still matches latest audit `brocula-hunt-2026-06-23-run4.md`. No drift.
+3. **CHANGELOG gap fix**: Added missing `docs(ci): document required workflow changes for Node 22 migration (#2030)` entry.
+4. **knowledge-review.md drift fix**: Updated BroCula latest audit reference from `brocula-hunt-2026-06-23-run1.md` to `brocula-hunt-2026-06-23-run4.md`.
+5. **Stale merged remote branch check**: 0 merged branches found to delete. All remote branches have unique unmerged commits.
+6. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/knowledge-review.md`, `CHANGELOG.md` updated for Cycle 137.
+
 ## Cycle 136 (2026-06-23 — RepoKeeper: Full Repository Audit, Test Count Drift Fix, Doc Refresh)
 
 ### Audit Scope
@@ -21,7 +46,7 @@ Full repository audit covering redundant/temp/unused file scan, test count drift
 ### Actions Taken This Cycle
 
 1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0). No TODO/FIXME/HACK artifacts in non-test source.
-2. **README BroCula description verified**: `(Jun 17–Jun 23)` — still matches latest audit `brocula-hunt-2026-06-23-run1.md`. No drift.
+2. **README BroCula description verified**: `(Jun 17–Jun 23)` — still matches latest audit `brocula-hunt-2026-06-23-run4.md`. No drift.
 3. **Stale merged remote branch check**: 31 remote branches examined — all have unique unmerged commits. 0 branches deleted.
 4. **Archive age assessment**: 71 files at 504K total. Per retention policy (30 days), all files are within retention window (oldest: May 29 = 25 days, but this file was re-copied. All files under 30 days). No files deleted.
 5. **Test count increased**: 1,627 tests (714 web + 438 api + 475 shared) — +12 from Cycle 135 due to `test(web): useScrollLock hook (#2039)`.

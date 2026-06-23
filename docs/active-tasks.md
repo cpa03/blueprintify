@@ -2,6 +2,13 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 137 — Full Repository Audit, CHANGELOG Gap Fix, Doc Refresh ✅
+
+### Task: Full repository audit, CHANGELOG gap fix (added missing docs(ci) Node 22 migration commit), knowledge-review BroCula description drift fix (run1→run4), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+
 ## Completed: RepoKeeper Cycle 136 — Full Repository Audit, Test Count Drift Fix, Doc Refresh ✅
 
 ### Task: Full repository audit, test count drift correction (1,615→1,627), CHANGELOG gap fix (added missing useScrollLock test commit), stale merged remote branch check (0 to delete), archive age assessment (71 files — all within 30-day retention), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation
