@@ -1973,7 +1973,7 @@ describe("TOOLTIP_LABELS", () => {
 describe("SHORTCUT_LABELS", () => {
   it("should have all expected shortcut labels", () => {
     expect(SHORTCUT_LABELS.COPY).toBe("Ctrl+C");
-    expect(SHORTCUT_LABELS.EXPORT).toBe("Ctrl+E");
+    expect(SHORTCUT_LABELS.EXPORT).toBe("Ctrl+Shift+E");
     expect(SHORTCUT_LABELS.NEW_PROJECT).toBe("Ctrl+N");
     expect(SHORTCUT_LABELS.SHORTCUTS_MODAL).toBe("?");
   });
