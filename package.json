@@ -16,7 +16,7 @@
     "dev": "npm run dev --workspace=apps/web",
     "dev:api": "npm run dev --workspace=apps/api",
     "dev:all": "concurrently \"npm run dev:api\" \"npm run dev\"",
-    "build": "npm run build --workspace=apps/web",
+    "build": "npm run build --workspace=@blueprint/shared && npm run build --workspace=apps/web",
     "build:api": "npm run build --workspace=apps/api",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
