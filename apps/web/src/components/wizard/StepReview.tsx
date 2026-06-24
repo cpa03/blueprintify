@@ -399,7 +399,7 @@ export const StepReview = memo(function StepReview({
                   disabled={false}
                   whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
                   whileTap={{ scale: 0.95 }}
-                  className="btn-primary flex items-center gap-2 animate-glow"
+                  className="btn-primary flex items-center gap-2 animate-glow animate-cta-ring"
                   aria-keyshortcuts={getAriaShortcutKey("Enter", "cmd")}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

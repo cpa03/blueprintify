@@ -362,6 +362,43 @@
     animation: animate-glow 2.5s ease-in-out infinite;
   }
 
+  /* CTA outward ring — a subtle radar-like pulse that expands from the primary
+     action button, drawing the user's eye to the main call-to-action. The ring
+     emanates from the button's center via a ::before pseudo-element, using
+     composited transform + opacity so the animation stays GPU-accelerated.
+     Designed to complement (not compete with) animate-glow's box-shadow pulse
+     on the button itself — the ring lives outside the button boundary while
+     animate-glow lives on the button surface. */
+  @keyframes cta-ring {
+    0% {
+      transform: scale(0.9);
+      opacity: 0.6;
+    }
+    50% {
+      transform: scale(1.25);
+      opacity: 0.15;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  .animate-cta-ring {
+    position: relative;
+  }
+
+  .animate-cta-ring::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: inherit;
+    border: 2px solid color-mix(in srgb, var(--color-primary-500) 35%, transparent);
+    pointer-events: none;
+    animation: cta-ring 2.8s ease-out infinite;
+    will-change: transform, opacity;
+  }
+
   /* CSS ripple effect for RippleButton — replaces framer-motion AnimatePresence + motion.span */
   @keyframes ripple {
     from {
@@ -667,6 +704,8 @@
     .stack-card-attention,
     .progress-shimmer::after,
     .animate-glow,
+    .animate-cta-ring,
+    .animate-cta-ring::before,
     .animate-fade-in,
     .animate-fade-in-left,
     .animate-ripple,
