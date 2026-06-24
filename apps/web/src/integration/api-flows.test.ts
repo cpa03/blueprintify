@@ -5,6 +5,7 @@ import {
   HTTP_HEADERS,
   HTTP_STATUS,
   HTTP_HEADER_NAMES,
+  EDITOR_FILENAMES,
 } from "@blueprint/shared";
 import { StorageManager } from "../lib/storage";
 import {
@@ -184,7 +185,10 @@ describe("Integration: Frontend-Backend API Flow", () => {
           createMockResponse({
             success: true,
             format,
-            files: format === "zip" ? [{ name: "blueprint.md" }, { name: "tasks.md" }] : undefined,
+            files:
+              format === "zip"
+                ? [{ name: EDITOR_FILENAMES.BLUEPRINT }, { name: EDITOR_FILENAMES.TASKS_ANNOUNCE }]
+                : undefined,
             content: format !== "zip" ? testData.blueprint : undefined,
           })
         );

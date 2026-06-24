@@ -1258,4 +1258,25 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 
 ## Remaining Blocked
 
-- CI workflow `node-version: "20"` → `22` (11 occurrences in `.github/workflows/*.yml`) — **blocked**: GitHub App token lacks `workflows` permission. `.node-version` already confirms `22`, package.json `engines.node >= 22` is correct. Workflow files cannot be modified from this context. |
+- CI workflow `node-version: "20"` → `22` (11 occurrences in `.github/workflows/*.yml`) — **blocked**: GitHub App token lacks `workflows` permission. `.node-version` already confirms `22`, package.json `engines.node >= 22` is correct. Workflow files cannot be modified from this context.
+
+### ✅ Flexy Iteration 67: Centralize EXPORT_FILENAMES into Shared Config & Eliminate Hardcoded Export Filenames
+
+| File | Change |
+| ---- | ------ |
+| `packages/shared/src/config.ts` | Added `EXPORT_FILENAMES` (BLUEPRINT referencing `EDITOR_FILENAMES.BLUEPRINT`, TASKS referencing `EDITOR_FILENAMES.TASKS`) |
+| `packages/shared/src/index.ts` | Exported `EXPORT_FILENAMES` |
+| `packages/shared/src/config.test.ts` | Added 3 test blocks (values matching EDITOR_FILENAMES, count=2, string types) |
+| `apps/web/src/config/constants/wizard.ts` | Replaced hardcoded `BLUEPRINT_FILENAME: "blueprint.md"` with `EXPORT_FILENAMES.BLUEPRINT` |
+| `apps/web/src/config/constants/wizard.ts` | Replaced hardcoded `TASK_FILENAME: "task.md"` with `EXPORT_FILENAMES.TASKS` |
+| `apps/web/src/config/constants/wizard.ts` | Replaced hardcoded `"blueprint.md"`/`"task.md"` in `README_TEMPLATE` with `EXPORT_FILENAMES.*` refs |
+| `apps/web/src/integration/api-flows.test.ts` | Replaced 2 hardcoded `"blueprint.md"`/`"tasks.md"` with `EDITOR_FILENAMES.*` |
+| `apps/web/src/integration/refinement-export.test.ts` | Replaced 2 hardcoded filenames with `EDITOR_FILENAMES.*` |
+| `apps/web/src/integration/cross-tab-concurrent.test.ts` | Replaced 2 hardcoded filenames with `EDITOR_FILENAMES.*` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 716 web + 438 api + 487 shared = 1,641 tests passing across 83 files
