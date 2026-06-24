@@ -138,9 +138,13 @@ describe("ToastContainer", () => {
 
     render(<ToastContainer />);
 
-    const status = screen.getByRole("status");
-    expect(status).toBeInTheDocument();
-    expect(status).toHaveAttribute("aria-live", "polite");
+    // There are now two role="status" elements: the toast itself (polite)
+    // and the batch-dismiss screen reader announcement (assertive).
+    // Filter by aria-live value to target the toast element.
+    const statusElements = screen.getAllByRole("status");
+    const toastStatus = statusElements.find((el) => el.getAttribute("aria-live") === "polite");
+    expect(toastStatus).toBeInTheDocument();
+    expect(toastStatus).toHaveAttribute("aria-live", "polite");
   });
 
   it("renders different toast types correctly", () => {

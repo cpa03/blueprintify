@@ -372,6 +372,22 @@ function ToastContainerComponent(): JSX.Element {
   const clearAll = useToastStore((state) => state.clearAll);
   const showDismissAll = toasts.length > 1;
   const shouldReduceMotion = useReducedMotion();
+  const [dismissAnnouncement, setDismissAnnouncement] = useState("");
+
+  const handleClearAll = useCallback(() => {
+    const count = toasts.length;
+    clearAll();
+    setDismissAnnouncement(`Dismissed all ${count} notifications`);
+  }, [clearAll, toasts.length]);
+
+  // Clear the dismiss announcement after screen readers have had time to
+  // announce it. A short timeout prevents the sr-only region from accumulating
+  // stale text that would be re-announced on subsequent dismiss-all actions.
+  useEffect(() => {
+    if (!dismissAnnouncement) return;
+    const timer = setTimeout(() => setDismissAnnouncement(""), 3000);
+    return () => clearTimeout(timer);
+  }, [dismissAnnouncement]);
 
   return (
     <div className={TOAST_SPRING.CONTAINER_CLASSES}>
@@ -384,7 +400,7 @@ function ToastContainerComponent(): JSX.Element {
       {shouldReduceMotion ? (
         showDismissAll && (
           <button
-            onClick={clearAll}
+            onClick={handleClearAll}
             className="pointer-events-auto self-center mt-1 px-3 py-1.5 rounded-lg
                        text-xs font-medium text-dark-400
                        bg-dark-800/80 backdrop-blur-sm border border-dark-700/50
@@ -424,7 +440,7 @@ function ToastContainerComponent(): JSX.Element {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.9 }}
               transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
-              onClick={clearAll}
+              onClick={handleClearAll}
               className="pointer-events-auto self-center mt-1 px-3 py-1.5 rounded-lg
                          text-xs font-medium text-dark-400
                          bg-dark-800/80 backdrop-blur-sm border border-dark-700/50
@@ -465,6 +481,14 @@ function ToastContainerComponent(): JSX.Element {
           )}
         </AnimatePresence>
       )}
+
+      {/* Screen reader announcement for batch dismiss actions — provides
+          clear feedback that all notifications were dismissed. Without this,
+          screen reader users only hear individual toast removals without
+          context that a batch dismiss occurred. */}
+      <div className="sr-only" role="status" aria-live="assertive" aria-atomic="true">
+        {dismissAnnouncement}
+      </div>
     </div>
   );
 }
