@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback, memo } from "react";
 import { motion, useSpring, MotionValue } from "framer-motion";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
 import { ANIMATION_COLORS, ANIMATION } from "../config/constants";
+import { COUNTER_ANIMATION } from "../config/theme";
 
 interface AnimatedNumberProps {
   value: number;
@@ -175,11 +176,7 @@ function AnimatedCounterComponent({
       animate={
         shouldAnimate && pulseKey > 0
           ? {
-              boxShadow: [
-                "0 0 0 0 rgb(99 102 241 / 0)",
-                "0 0 20px 4px rgb(99 102 241 / 0.3)",
-                "0 0 0 0 rgb(99 102 241 / 0)",
-              ],
+              boxShadow: [...COUNTER_ANIMATION.BOX_SHADOWS],
             }
           : {}
       }

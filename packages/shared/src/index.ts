@@ -162,6 +162,9 @@ export {
   EMPTY_STATE_LAYOUT,
   STYLE_ID_STRINGS,
   ANIMATION_DEFAULTS,
+  EXPORT_DEFAULTS,
+  STORAGE_LOCAL_DEFAULTS,
+  UI_ANIMATION_DEFAULTS,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";

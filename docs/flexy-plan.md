@@ -1280,3 +1280,26 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 716 web + 438 api + 487 shared = 1,641 tests passing across 83 files
+
+### ✅ Flexy Iteration 68: Centralize EXPORT_DEFAULTS, STORAGE_LOCAL_DEFAULTS, UI_ANIMATION_DEFAULTS & Counter Animation Shadows
+
+| File | Change |
+| ---- | ------ |
+| `packages/shared/src/config.ts` | Added `EXPORT_DEFAULTS` (7 export config values: ZIP_COMPRESSION_LEVEL, DOCS_FOLDER, README_FILENAME, METADATA_FILENAME, ZIP_FILENAME_SUFFIX, DATE_FORMAT_SEPARATOR, COPY_TEXTAREA_OFFSET_PX) |
+| `packages/shared/src/config.ts` | Added `STORAGE_LOCAL_DEFAULTS` (7 storage magic numbers: MAX_BACKUP_ENTRIES, QUOTA_WARNING_THRESHOLD_KB, MAX_LATENCY_MEASUREMENTS, DEFAULT_MAX_RETRIES, DEFAULT_RETRY_DELAY_MS, QUOTA_CACHE_TTL_MS, AUTO_SAVE_DELAY_MS) |
+| `packages/shared/src/config.ts` | Added `UI_ANIMATION_DEFAULTS` (SPINNER_ROTATION_S) |
+| `packages/shared/src/index.ts` | Exported `EXPORT_DEFAULTS`, `STORAGE_LOCAL_DEFAULTS`, `UI_ANIMATION_DEFAULTS` |
+| `packages/shared/src/config.test.ts` | Added 3 test blocks (26 tests) for new config objects |
+| `apps/web/src/config/constants/wizard.ts` | `EXPORT_CONFIG` now references `EXPORT_DEFAULTS.*` instead of 7 hardcoded values |
+| `apps/web/src/config/constants/storage.ts` | `STORAGE_CONFIG` now references `STORAGE_LOCAL_DEFAULTS.*` instead of 6 hardcoded magic numbers |
+| `apps/web/src/config/constants/storage.ts` | `AUTO_SAVE_CONFIG.DEFAULT_DELAY` now references `STORAGE_LOCAL_DEFAULTS.AUTO_SAVE_DELAY_MS` instead of magic number `1000` |
+| `apps/web/src/config/constants/ui.ts` | `ANIMATION.SPINNER_ROTATION` now references `UI_ANIMATION_DEFAULTS.SPINNER_ROTATION_S` instead of hardcoded `1` |
+| `apps/web/src/config/theme.ts` | Added `COUNTER_ANIMATION` (BOX_SHADOWS keyframe sequence) for AnimatedNumber pulse effect |
+| `apps/web/src/components/AnimatedNumber.tsx` | Replaced hardcoded `boxShadow` keyframe array with `[...COUNTER_ANIMATION.BOX_SHADOWS]` reference |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 716 web + 438 api + 505 shared = 1,659 tests passing across 83 files

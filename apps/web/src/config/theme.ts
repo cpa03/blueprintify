@@ -493,6 +493,19 @@ export const HEADER_ANIMATION = {
 } as const;
 
 /**
+ * AnimatedNumber counter pulse shadow sequence.
+ * Flexy says: No hardcoded rgb() shadow keyframes in AnimatedNumber!
+ */
+export const COUNTER_ANIMATION = {
+  /** Box shadow keyframe sequence for value-change pulse effect */
+  BOX_SHADOWS: [
+    "0 0 0 0 rgb(99 102 241 / 0)",
+    "0 0 20px 4px rgb(99 102 241 / 0.3)",
+    "0 0 0 0 rgb(99 102 241 / 0)",
+  ] as const,
+} as const;
+
+/**
  * Template card hover glow shadow value.
  * Flexy says: No hardcoded arbitrary shadow values in TemplateGrid!
  */
