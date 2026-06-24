@@ -74,10 +74,24 @@ describe("AnimatedCopyButton", () => {
     expect(screen.getByRole("button")).toHaveAttribute("aria-label", COPY_BUTTON_LABELS.COPIED);
   });
 
-  it("has aria-live polite attribute", () => {
+  it("has a screen reader live region for copy announcements", () => {
     render(<AnimatedCopyButton {...defaultProps} />);
 
-    expect(screen.getByRole("button")).toHaveAttribute("aria-live", "polite");
+    expect(screen.getByRole("status")).toBeInTheDocument();
+  });
+
+  it("announces 'Copied to clipboard' via live region when copied", () => {
+    render(<AnimatedCopyButton {...defaultProps} isCopied={true} />);
+
+    const statusRegion = screen.getByRole("status");
+    expect(statusRegion).toHaveTextContent(COPY_BUTTON_LABELS.COPIED);
+  });
+
+  it("has empty live region when not copied", () => {
+    render(<AnimatedCopyButton {...defaultProps} />);
+
+    const statusRegion = screen.getByRole("status");
+    expect(statusRegion).toBeEmptyDOMElement();
   });
 
   it("applies copied styling when isCopied is true", () => {
