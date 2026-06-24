@@ -98,6 +98,9 @@ import {
   EMPTY_STATE_LAYOUT,
   STYLE_ID_STRINGS,
   ANIMATION_DEFAULTS,
+  EXPORT_DEFAULTS,
+  STORAGE_LOCAL_DEFAULTS,
+  UI_ANIMATION_DEFAULTS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -2697,5 +2700,84 @@ describe("ANIMATION_DEFAULTS", () => {
 
   it("should have 1 entry", () => {
     expect(Object.keys(ANIMATION_DEFAULTS).length).toBe(1);
+  });
+});
+
+describe("EXPORT_DEFAULTS", () => {
+  it("should have valid ZIP compression level", () => {
+    expect(EXPORT_DEFAULTS.ZIP_COMPRESSION_LEVEL).toBeGreaterThanOrEqual(0);
+    expect(EXPORT_DEFAULTS.ZIP_COMPRESSION_LEVEL).toBeLessThanOrEqual(9);
+  });
+
+  it("should have DOCS_FOLDER starting with .", () => {
+    expect(EXPORT_DEFAULTS.DOCS_FOLDER).toMatch(/^\./);
+  });
+
+  it("should have README_FILENAME ending with .md", () => {
+    expect(EXPORT_DEFAULTS.README_FILENAME).toMatch(/\.md$/);
+  });
+
+  it("should have METADATA_FILENAME ending with .json", () => {
+    expect(EXPORT_DEFAULTS.METADATA_FILENAME).toMatch(/\.json$/);
+  });
+
+  it("should have ZIP_FILENAME_SUFFIX ending with .zip", () => {
+    expect(EXPORT_DEFAULTS.ZIP_FILENAME_SUFFIX).toMatch(/\.zip$/);
+  });
+
+  it("should have valid DATE_FORMAT_SEPARATOR", () => {
+    expect(EXPORT_DEFAULTS.DATE_FORMAT_SEPARATOR).toBe("T");
+  });
+
+  it("should have negative COPY_TEXTAREA_OFFSET_PX", () => {
+    expect(EXPORT_DEFAULTS.COPY_TEXTAREA_OFFSET_PX).toBeLessThan(0);
+  });
+
+  it("should have 7 entries", () => {
+    expect(Object.keys(EXPORT_DEFAULTS).length).toBe(7);
+  });
+});
+
+describe("STORAGE_LOCAL_DEFAULTS", () => {
+  it("should have positive MAX_BACKUP_ENTRIES", () => {
+    expect(STORAGE_LOCAL_DEFAULTS.MAX_BACKUP_ENTRIES).toBeGreaterThan(0);
+  });
+
+  it("should have positive QUOTA_WARNING_THRESHOLD_KB", () => {
+    expect(STORAGE_LOCAL_DEFAULTS.QUOTA_WARNING_THRESHOLD_KB).toBeGreaterThan(0);
+  });
+
+  it("should have positive MAX_LATENCY_MEASUREMENTS", () => {
+    expect(STORAGE_LOCAL_DEFAULTS.MAX_LATENCY_MEASUREMENTS).toBeGreaterThan(0);
+  });
+
+  it("should have positive DEFAULT_MAX_RETRIES", () => {
+    expect(STORAGE_LOCAL_DEFAULTS.DEFAULT_MAX_RETRIES).toBeGreaterThan(0);
+  });
+
+  it("should have positive DEFAULT_RETRY_DELAY_MS", () => {
+    expect(STORAGE_LOCAL_DEFAULTS.DEFAULT_RETRY_DELAY_MS).toBeGreaterThan(0);
+  });
+
+  it("should have positive QUOTA_CACHE_TTL_MS", () => {
+    expect(STORAGE_LOCAL_DEFAULTS.QUOTA_CACHE_TTL_MS).toBeGreaterThan(0);
+  });
+
+  it("should have positive AUTO_SAVE_DELAY_MS", () => {
+    expect(STORAGE_LOCAL_DEFAULTS.AUTO_SAVE_DELAY_MS).toBeGreaterThan(0);
+  });
+
+  it("should have 7 entries", () => {
+    expect(Object.keys(STORAGE_LOCAL_DEFAULTS).length).toBe(7);
+  });
+});
+
+describe("UI_ANIMATION_DEFAULTS", () => {
+  it("should have positive SPINNER_ROTATION_S", () => {
+    expect(UI_ANIMATION_DEFAULTS.SPINNER_ROTATION_S).toBeGreaterThan(0);
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(UI_ANIMATION_DEFAULTS).length).toBe(1);
   });
 });

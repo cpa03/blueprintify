@@ -1989,3 +1989,66 @@ export const ANIMATION_DEFAULTS = {
   /** Zero-duration transition for instant/no-animation state changes */
   ZERO_DURATION: { duration: 0 } as const,
 } as const;
+
+/**
+ * Export File & Compression Defaults
+ * Centralized source of truth for export-related file naming, folder structure,
+ * and compression configuration used by the frontend export utilities.
+ * Flexy says: No hardcoded "README.md" or ".docs" strings in export code!
+ * Usage: import { EXPORT_DEFAULTS } from "@blueprint/shared";
+ *        zip.file(EXPORT_DEFAULTS.DOCS_FOLDER + "/" + EXPORT_DEFAULTS.README_FILENAME, ...)
+ */
+export const EXPORT_DEFAULTS = {
+  /** ZIP compression level (0-9, where 0=no compression, 9=maximum) */
+  ZIP_COMPRESSION_LEVEL: 6,
+  /** Name of the docs folder inside the ZIP archive */
+  DOCS_FOLDER: ".docs" as const,
+  /** Filename for the generated README inside the docs folder */
+  README_FILENAME: "README.md" as const,
+  /** Filename for the export metadata JSON file */
+  METADATA_FILENAME: "metadata.json" as const,
+  /** Suffix appended to project name for ZIP filename */
+  ZIP_FILENAME_SUFFIX: ".zip" as const,
+  /** Separator used in ISO date string formatting (T between date and time) */
+  DATE_FORMAT_SEPARATOR: "T" as const,
+  /** Screen-reader hidden textarea offset for copy operations (negative pixel value) */
+  COPY_TEXTAREA_OFFSET_PX: -9999,
+} as const;
+
+/**
+ * Local Storage Configuration Defaults
+ * Centralized source of truth for localStorage-specific magic numbers
+ * used by the frontend storage adapter and quota management.
+ * Flexy says: No hardcoded 5/100/1000 magic numbers in storage config!
+ * Usage: import { STORAGE_LOCAL_DEFAULTS } from "@blueprint/shared";
+ *        MAX_BACKUP_ENTRIES: STORAGE_LOCAL_DEFAULTS.MAX_BACKUP_ENTRIES
+ */
+export const STORAGE_LOCAL_DEFAULTS = {
+  /** Maximum number of backup entries kept in localStorage */
+  MAX_BACKUP_ENTRIES: 5,
+  /** Quota warning threshold in KB — fires warning when free space drops below this */
+  QUOTA_WARNING_THRESHOLD_KB: 1,
+  /** Maximum number of latency measurements stored for analytics */
+  MAX_LATENCY_MEASUREMENTS: 100,
+  /** Default retry count for storage operations */
+  DEFAULT_MAX_RETRIES: 3,
+  /** Default delay in ms between storage operation retries */
+  DEFAULT_RETRY_DELAY_MS: 100,
+  /** Cache TTL in ms for quota data */
+  QUOTA_CACHE_TTL_MS: 5000,
+  /** Default auto-save delay in ms */
+  AUTO_SAVE_DELAY_MS: 1000,
+} as const;
+
+/**
+ * UI Animation Timing Defaults (seconds)
+ * Centralized source of truth for simple animation duration values
+ * that don't fit the theme ANIMATION_TIMING structure.
+ * Flexy says: No hardcoded rotation duration values in spinner components!
+ * Usage: import { UI_ANIMATION_DEFAULTS } from "@blueprint/shared";
+ *        duration: UI_ANIMATION_DEFAULTS.SPINNER_ROTATION_S
+ */
+export const UI_ANIMATION_DEFAULTS = {
+  /** Duration in seconds for one full spinner rotation */
+  SPINNER_ROTATION_S: 1,
+} as const;

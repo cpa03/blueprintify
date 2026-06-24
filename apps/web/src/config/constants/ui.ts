@@ -14,6 +14,7 @@ import {
   TEXTAREA_DEFAULTS,
   TOOLTIP_DEFAULTS,
   UI_DEFAULTS,
+  UI_ANIMATION_DEFAULTS,
   EMPTY_STATE_LAYOUT as SHARED_EMPTY_STATE_LAYOUT,
 } from "@blueprint/shared";
 import {
@@ -40,7 +41,7 @@ export const ANIMATION = {
   SEMI_SLOW: ANIMATION_TIMING.duration.semiSlow,
   SLOW: ANIMATION_TIMING.duration.slow,
   STAGGER: ANIMATION_TIMING.stagger.default,
-  SPINNER_ROTATION: 1,
+  SPINNER_ROTATION: UI_ANIMATION_DEFAULTS.SPINNER_ROTATION_S,
   TYPING_INDICATOR_DELAY_S: 0.6,
   /** Duration for float/pulse animations */
   FLOAT: 1.5,
