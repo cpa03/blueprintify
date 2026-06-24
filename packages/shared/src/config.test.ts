@@ -30,6 +30,7 @@ import {
   HTTP_HEADER_NAMES,
   VIEW_MODES,
   EDITOR_FILENAMES,
+  EXPORT_FILENAMES,
   TOOLTIP_LABELS,
   SHORTCUT_LABELS,
   SHORTCUT_DESCRIPTIONS,
@@ -1943,6 +1944,26 @@ describe("EDITOR_FILENAMES", () => {
 
   it("should have all string values", () => {
     const values = Object.values(EDITOR_FILENAMES);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("EXPORT_FILENAMES", () => {
+  it("should have all expected export filenames", () => {
+    expect(EXPORT_FILENAMES.BLUEPRINT).toBe(EDITOR_FILENAMES.BLUEPRINT);
+    expect(EXPORT_FILENAMES.TASKS).toBe(EDITOR_FILENAMES.TASKS);
+  });
+
+  it("should have 2 export filename entries", () => {
+    const values = Object.values(EXPORT_FILENAMES);
+    expect(values.length).toBe(2);
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(EXPORT_FILENAMES);
     values.forEach((v) => {
       expect(typeof v).toBe("string");
       expect(v.length).toBeGreaterThan(0);

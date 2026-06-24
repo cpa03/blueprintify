@@ -1406,6 +1406,21 @@ export const EDITOR_FILENAMES = {
 } as const;
 
 /**
+ * Export File Name Constants
+ * Centralized source of truth for file names used in project exports (ZIP/JSON/Markdown).
+ * References EDITOR_FILENAMES to ensure export filenames stay in sync with display names.
+ * Flexy says: No hardcoded "blueprint.md" or "task.md" in export config — single source of truth!
+ * Usage: import { EXPORT_FILENAMES } from "@blueprint/shared";
+ *        fileName: EXPORT_FILENAMES.BLUEPRINT
+ */
+export const EXPORT_FILENAMES = {
+  /** Exported blueprint file name */
+  BLUEPRINT: EDITOR_FILENAMES.BLUEPRINT,
+  /** Exported tasks file name */
+  TASKS: EDITOR_FILENAMES.TASKS,
+} as const;
+
+/**
  * Editor Tooltip Labels
  * Centralized source of truth for tooltip text in the editor toolbar.
  * Flexy says: No hardcoded "Copy to clipboard" strings in button tooltips!

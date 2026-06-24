@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { HTTP_METHODS, SSE_HEADERS, HTTP_STATUS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import {
+  HTTP_METHODS,
+  SSE_HEADERS,
+  HTTP_STATUS,
+  HTTP_HEADER_NAMES,
+  EDITOR_FILENAMES,
+} from "@blueprint/shared";
 import { API_ENDPOINTS } from "../config/constants";
 import { API_BASE } from "../config/api-client";
 import { StorageManager, StorageError } from "../lib/storage";
@@ -400,8 +406,8 @@ describe("Integration: End-to-End Workflows", () => {
           createMockResponse({
             success: true,
             files: [
-              { name: "blueprint.md", content: "# Enhanced Blueprint" },
-              { name: "tasks.md", content: "## Tasks" },
+              { name: EDITOR_FILENAMES.BLUEPRINT, content: "# Enhanced Blueprint" },
+              { name: EDITOR_FILENAMES.TASKS_ANNOUNCE, content: "## Tasks" },
             ],
           })
         );

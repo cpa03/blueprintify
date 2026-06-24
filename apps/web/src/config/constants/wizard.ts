@@ -2,7 +2,7 @@
 // Source of truth for wizard-related constants
 
 import { ENV } from "../env";
-import { SHARED_DEFAULTS, WIZARD_STEP_KEYS } from "@blueprint/shared";
+import { SHARED_DEFAULTS, WIZARD_STEP_KEYS, EXPORT_FILENAMES } from "@blueprint/shared";
 
 /**
  * Wizard step configuration
@@ -64,8 +64,8 @@ export const EXPORT_CONFIG = {
   COPY_TEXTAREA_OFFSET: -9999,
   README_FILENAME: "README.md",
   METADATA_FILENAME: "metadata.json",
-  BLUEPRINT_FILENAME: "blueprint.md",
-  TASK_FILENAME: "task.md",
+  BLUEPRINT_FILENAME: EXPORT_FILENAMES.BLUEPRINT,
+  TASK_FILENAME: EXPORT_FILENAMES.TASKS,
   METADATA_VERSION: SHARED_DEFAULTS.API_VERSION,
   DOCS_FOLDER: ".docs",
   ZIP_FILENAME_SUFFIX: ".zip",
@@ -110,8 +110,8 @@ This folder contains AI-generated documentation for your project.
 
 ## Files
 
-- **blueprint.md** - Architectural blueprint and technical specifications
-- **task.md** - Prioritized task breakdown for implementation
+- **${EXPORT_FILENAMES.BLUEPRINT}** - Architectural blueprint and technical specifications
+- **${EXPORT_FILENAMES.TASKS}** - Prioritized task breakdown for implementation
 
 ## Usage
 

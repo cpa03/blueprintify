@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { HTTP_METHODS, HTTP_HEADERS, HTTP_STATUS, HTTP_HEADER_NAMES } from "@blueprint/shared";
+import {
+  HTTP_METHODS,
+  HTTP_HEADERS,
+  HTTP_STATUS,
+  HTTP_HEADER_NAMES,
+  EDITOR_FILENAMES,
+} from "@blueprint/shared";
 import { API_ENDPOINTS } from "../config/constants";
 import { API_BASE } from "../config/api-client";
 import {
@@ -178,8 +184,8 @@ describe("Integration: Export/Import Workflow", () => {
           success: true,
           format: "markdown",
           files: [
-            { name: "blueprint.md", content: testData.blueprint },
-            { name: "tasks.md", content: testData.tasks },
+            { name: EDITOR_FILENAMES.BLUEPRINT, content: testData.blueprint },
+            { name: EDITOR_FILENAMES.TASKS_ANNOUNCE, content: testData.tasks },
           ],
         })
       );
