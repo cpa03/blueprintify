@@ -2,6 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 141 — BroCula Run 2→3 Drift Fix, CHANGELOG Gap Fix, Doc Refresh ✅
+
+### Task: Full repository audit, BroCula description drift fix (run2→run3 — latest audit: `brocula-hunt-2026-06-24-run3.md`: BroCula Run 11 / LH 100-100-100-100 / 1633 tests), CHANGELOG gap fix (added 3 missing commits after Cycle 140: fix(web) aria-label #2066, feat(editor) scroll shadow #2065, docs(brocula) BroCula Run 11 #2064), stale merged remote branch check (0 to delete — all 30 active), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 141 full repository audit covering redundant/temp/unused file scan, BroCula description drift fix (run2→run3), CHANGELOG gap fix, stale merged branch check, docs sync, quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (clean after Cycle 140)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source
+  - [x] All quality checks verified: typecheck ✅ lint ✅ format ✅
+  - [x] **BroCula description drift fix**: `brocula-hunt-2026-06-24-run2.md` → `brocula-hunt-2026-06-24-run3.md` (Run 3 / Run 11 is latest, LH 100-100-100-100, 1633 tests) — fixed in knowledge-review.md
+  - [x] **CHANGELOG gap fix**: Added 3 missing commits after Cycle 140: fix(web) aria-label #2066, feat(editor) scroll shadow #2065, docs(brocula) BroCula Run 11 #2064
+  - [x] **Stale merged remote branch check**: 30 branches examined — all with unique unmerged commits, 0 to delete
+  - [x] Updated docs/findings.md: Cycle 141 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 141 completed
+  - [x] Updated docs/knowledge-review.md: cycle ref updated to Cycle 141, BroCula ref run2→run3
+  - [x] Updated CHANGELOG.md: Cycle 141 entry + 3 missing commits added
+  - [x] PR created
+
 ## Completed: RepoKeeper Cycle 140 — BroCula Description Drift Fix (run2), CHANGELOG Gap Fix, Stale Branch Cleanup, Doc Refresh ✅
 
 ### Task: Full repository audit, BroCula description drift fix (run1→run2 — latest audit: `brocula-hunt-2026-06-24-run2.md`), CHANGELOG gap fix (added 2 missing commits after Cycle 139: feat(web) CTA ring animation + fix(bugfixer) stale doc refs update), stale merged remote branch cleanup (deleted `brocula/jun-24-console-lighthouse`), archive age assessment (71 files within 30-day retention), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation
