@@ -2,6 +2,59 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 142 (2026-06-24 — RepoKeeper: BroCula Run 3→4 Drift Fix, CHANGELOG Gap Fix, Audit Archive Cleanup, Stale Branch Cleanup, Doc Refresh)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, BroCula description drift fix (run3→run4 — latest audit: `brocula-hunt-2026-06-24-run4.md`: BroCula Run 12 / LH 100-100-100-100 / 1633 tests), CHANGELOG gap fix (added 3 missing commits after Cycle 141: feat(shared) KeyboardShortcutTooltip #2067, docs(brocula) BroCula Run 12, fix(web) aria-live copy button), audit archive cleanup (archived Jun 21–22 BroCula reports), stale merged remote branch cleanup (deleted `fix/bugfixer-ulw-cycle-jun-24-run2`), comprehensive documentation sync (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Format | ✅ All files Prettier-compliant |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0). No TODO/FIXME/HACK artifacts in non-test source.
+2. **BroCula description drift fix**: `brocula-hunt-2026-06-24-run3.md` → `brocula-hunt-2026-06-24-run4.md` — latest BroCula audit is now Run 12 (Run 4 / LH 100-100-100-100 / 1633 tests). Fixed in `docs/knowledge-review.md`.
+3. **CHANGELOG gap fix**: Added 3 missing commits after Cycle 141 to `[Unreleased]` section:
+   - `feat(shared): centralize hardcoded KeyboardShortcutTooltip descriptions (#2067)`
+   - `docs(brocula): BroCula Run 12 — LH 100-100-100-100, 1,633 passing`
+   - `fix(web): replace invalid aria-live on copy button with dedicated screen reader live region`
+4. **Audit archive cleanup**: Archived 6 old reports from `docs/audits/` to `docs/audits/archive/`:
+   - `brocula-hunt-2026-06-21-run1.md` through `brocula-hunt-2026-06-21-run3.md` (3 files)
+   - `brocula-hunt-2026-06-22-run1.md` through `brocula-hunt-2026-06-22-run2.md` (2 files)
+   - Updated `docs/audits/README.md` — Current Reports trimmed, archived entries added.
+5. **Stale merged remote branch cleanup**: `origin/fix/bugfixer-ulw-cycle-jun-24-run2` — fully merged into main with 0 unique commits. Deleted.
+6. **README BroCula description verified**: `(Jun 17–Jun 24)` — still correct, matches latest audit `brocula-hunt-2026-06-24-run4.md`.
+7. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/knowledge-review.md`, `CHANGELOG.md`, `docs/audits/README.md` updated for Cycle 142.
+
+### Key Findings
+
+- **BroCula run4 not referenced in docs**: `brocula-hunt-2026-06-24-run4.md` (Run 12) existed on disk and was indexed in `docs/audits/README.md` as latest, but `knowledge-review.md` still referenced `run3`/Run 11. Fixed.
+- **3 missing commits after Cycle 141**: `feat(shared) KeyboardShortcutTooltip #2067`, `docs(brocula) BroCula Run 12`, `fix(web) aria-live copy button` — CHANGELOG gap fixed.
+- **Stale merged branch deleted**: `fix/bugfixer-ulw-cycle-jun-24-run2` was fully merged into main with 0 unique commits. Cleaned up.
+- **No redundant/temp/unused files found** — repo remains clean after Cycle 141.
+- **All quality checks passing**: typecheck ✅ lint ✅ format ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Format — All files pass ✅
+- [x] BroCula description fixed: `run3`→`run4` in knowledge-review.md
+- [x] CHANGELOG gap filled — 3 missing commits added
+- [x] Audit archive cleanup — 6 old reports archived, audits/README updated
+- [x] Stale merged branch deleted — `fix/bugfixer-ulw-cycle-jun-24-run2`
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK
+- [x] Documentation refreshed for Cycle 142 (findings, active-tasks, knowledge-review, CHANGELOG, audits/README)
+
+---
+
 ## Cycle 141 (2026-06-24 — RepoKeeper: BroCula Run 2→3 Drift Fix, CHANGELOG Gap Fix, Doc Refresh)
 
 ### Audit Scope
