@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 143: **full repository audit**, BroCula description drift fix (run4→run5 — latest audit: `brocula-hunt-2026-06-24-run5.md`: BroCula Run 13 / LH 100-100-100-100 / TBT 30ms / 1638 tests), CHANGELOG gap fix (added missing docs(brocula) BroCula Run 13 commit after Cycle 142), stale merged remote branch check, docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ tests 1,638/1,638 ✅), PR created
+- docs(brocula): BroCula Run 13 — LH 100-100-100-100, 1,638 passing
 - RepoKeeper Cycle 142: **full repository audit**, BroCula description drift fix (run3→run4 — latest audit: `brocula-hunt-2026-06-24-run4.md`: BroCula Run 12 / LH 100-100-100-100 / 1633 tests), CHANGELOG gap fix (added 3 missing commits after Cycle 141: feat(shared) KeyboardShortcutTooltip #2067, docs(brocula) BroCula Run 12, fix(web) aria-live copy button), audit archive cleanup (archived Jun 21-22 BroCula reports), stale merged remote branch cleanup (deleted `fix/bugfixer-ulw-cycle-jun-24-run2`), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ format ✅ tests 1,633/1,633 ✅), PR created
 - feat(shared): centralize hardcoded KeyboardShortcutTooltip descriptions (#2067)
 - docs(brocula): BroCula Run 12 — LH 100-100-100-100, 1,633 passing
