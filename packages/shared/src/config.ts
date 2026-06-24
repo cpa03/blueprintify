@@ -1446,6 +1446,27 @@ export const SHORTCUT_LABELS = {
 } as const;
 
 /**
+ * Keyboard Shortcut Tooltip Descriptions
+ * Centralized source of truth for shortcut tooltip description strings
+ * used in KeyboardShortcutTooltip components across the web app.
+ * Flexy says: No hardcoded "Toggle editor" strings in component code!
+ * Usage: import { SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
+ *        <KeyboardShortcutTooltip description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR} />
+ */
+export const SHORTCUT_DESCRIPTIONS = {
+  /** Toggle the editor pane open/closed */
+  TOGGLE_EDITOR: "Toggle editor",
+  /** Navigate to the previous wizard step */
+  GO_BACK: "Go back",
+  /** Proceed to the next wizard step */
+  CONTINUE_NEXT_STEP: "Continue to next step",
+  /** Confirm a dialog action */
+  CONFIRM_ACTION: "Confirm action",
+  /** Show or hide the keyboard shortcuts modal */
+  SHOW_KEYBOARD_SHORTCUTS: "Show keyboard shortcuts",
+} as const;
+
+/**
  * UI Timing Defaults
  * Centralized source of truth for UI timing magic numbers.
  * Flexy says: No hardcoded timeout values in component code!

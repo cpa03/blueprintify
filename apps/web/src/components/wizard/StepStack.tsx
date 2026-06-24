@@ -23,7 +23,12 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useCallback, useMemo, memo } from "react";
-import { TECH_STACK_OPTIONS, ANIMATION_DIRECTIONS, STYLE_ID_STRINGS } from "@blueprint/shared";
+import {
+  TECH_STACK_OPTIONS,
+  ANIMATION_DIRECTIONS,
+  STYLE_ID_STRINGS,
+  SHORTCUT_DESCRIPTIONS,
+} from "@blueprint/shared";
 import { useWizardStore } from "../../store";
 import {
   CATEGORY_ICONS,
@@ -403,7 +408,12 @@ export const StepStack = memo(function StepStack({
       </AnimatePresence>
 
       <div className="flex justify-between">
-        <KeyboardShortcutTooltip shortcut="←" description="Go back" position="right" modifier="alt">
+        <KeyboardShortcutTooltip
+          shortcut="←"
+          description={SHORTCUT_DESCRIPTIONS.GO_BACK}
+          position="right"
+          modifier="alt"
+        >
           <RippleButton
             onClick={prevStep}
             className="btn-secondary flex items-center gap-2 group"
@@ -433,7 +443,7 @@ export const StepStack = memo(function StepStack({
         </KeyboardShortcutTooltip>
         <KeyboardShortcutTooltip
           shortcut="Enter"
-          description="Continue to next step"
+          description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
           position="left"
         >
           <RippleButton

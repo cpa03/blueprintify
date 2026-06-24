@@ -5,6 +5,13 @@
  */
 
 /**
+ * Re-export shared shortcut descriptions for use in KeyboardShortcutTooltip components.
+ * Flexy says: No hardcoded "Toggle editor" strings in component code!
+ * Usage: <KeyboardShortcutTooltip description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR} />
+ */
+export { SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
+
+/**
  * Shortcut category identifiers and display labels.
  * Single source of truth for shortcut grouping in the keyboard shortcuts modal.
  * Flexy says: No "general"/"editor"/"navigation"/"generation" hardcoded in components!

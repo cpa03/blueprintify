@@ -36,7 +36,7 @@
 
 import { useEffect, useRef, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ANIMATION_DEFAULTS } from "@blueprint/shared";
+import { ANIMATION_DEFAULTS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
 import { SPRING_CONFIG, ANIMATION, CONFIRM_DIALOG_HINTS } from "../config/constants";
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -203,7 +203,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                 </motion.button>
                 <KeyboardShortcutTooltip
                   shortcut="Enter"
-                  description="Confirm action"
+                  description={SHORTCUT_DESCRIPTIONS.CONFIRM_ACTION}
                   position="left"
                   modifier="none"
                 >

@@ -17,7 +17,7 @@
  */
 
 import { memo, useState, useEffect, useRef } from "react";
-import { UI_TIMING, SHORTCUT_LABELS } from "@blueprint/shared";
+import { UI_TIMING, SHORTCUT_LABELS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
 import {
   UI_CONTENT,
   EXTERNAL_URLS,
@@ -110,7 +110,7 @@ function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
           {onShowShortcuts && (
             <KeyboardShortcutTooltip
               shortcut={SHORTCUT_LABELS.SHORTCUTS_MODAL}
-              description="Show keyboard shortcuts"
+              description={SHORTCUT_DESCRIPTIONS.SHOW_KEYBOARD_SHORTCUTS}
               position="bottom"
               modifier="none"
             >

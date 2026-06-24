@@ -22,7 +22,7 @@
  * ```
  */
 
-import { ANIMATION_DIRECTIONS } from "@blueprint/shared";
+import { ANIMATION_DIRECTIONS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
 import { useState, useCallback, useMemo, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
@@ -495,7 +495,12 @@ export const StepFeatures = memo(function StepFeatures({
       </AnimatePresence>
 
       <div className="flex justify-between">
-        <KeyboardShortcutTooltip shortcut="←" description="Go back" position="right" modifier="alt">
+        <KeyboardShortcutTooltip
+          shortcut="←"
+          description={SHORTCUT_DESCRIPTIONS.GO_BACK}
+          position="right"
+          modifier="alt"
+        >
           <RippleButton
             onClick={prevStep}
             className="btn-secondary flex items-center gap-2 group"
@@ -525,7 +530,7 @@ export const StepFeatures = memo(function StepFeatures({
         </KeyboardShortcutTooltip>
         <KeyboardShortcutTooltip
           shortcut="Enter"
-          description="Continue to next step"
+          description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
           position="left"
         >
           <RippleButton

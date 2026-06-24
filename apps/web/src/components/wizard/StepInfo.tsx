@@ -24,7 +24,7 @@
  * ```
  */
 
-import { ANIMATION_DIRECTIONS } from "@blueprint/shared";
+import { ANIMATION_DIRECTIONS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
 import { FormEvent, useEffect, useRef, useState, memo, useMemo } from "react";
@@ -492,7 +492,7 @@ export const StepInfo = memo(function StepInfo({
         <div className="flex justify-end pt-4">
           <KeyboardShortcutTooltip
             shortcut="Enter"
-            description="Continue to next step"
+            description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
             position="left"
           >
             <RippleButton
