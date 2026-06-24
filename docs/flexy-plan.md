@@ -1236,3 +1236,26 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD | `feat/flexy-iteration-64-hardcoded-cleanup` | feat(flexy): eliminate remaining hardcoded error type strings, step keys and toast type mocks in tests |
+
+### ✅ Flexy Iteration 66: Centralize Remaining Hardcoded aria-label in Source
+
+| File | Change |
+| ---- | ------ |
+| `apps/web/src/config/constants/content.ts` | Added `GENERATION_ERROR_LABELS.ERROR_ICON_ARIA` constant for the error icon aria-label |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced hardcoded `aria-label="Error"` with `GENERATION_ERROR_LABELS.ERROR_ICON_ARIA` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+
+## PR
+
+| PR #  | Branch | Title |
+| ----- | ------ | ----- |
+| #2066 | `feat/flexy-iteration-66-remaining-hardcoded` | feat(flexy): centralize hardcoded aria-label in StepGenerating error icon (Iteration 66) |
+
+## Remaining Blocked
+
+- CI workflow `node-version: "20"` → `22` (11 occurrences in `.github/workflows/*.yml`) — **blocked**: GitHub App token lacks `workflows` permission. `.node-version` already confirms `22`, package.json `engines.node >= 22` is correct. Workflow files cannot be modified from this context. |

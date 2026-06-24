@@ -449,6 +449,7 @@ export const WIZARD_GENERATING_LABELS = {
 export const GENERATION_ERROR_LABELS = {
   ERROR_TITLE: "Generation Failed",
   ERROR_TASKS_TITLE: "Task Generation Failed",
+  ERROR_ICON_ARIA: "Error",
   TRY_AGAIN: "Try Again",
   TRY_AGAIN_ARIA: "Go back to review step and try generating again",
   BACK_TO_REVIEW: "Back to Review",

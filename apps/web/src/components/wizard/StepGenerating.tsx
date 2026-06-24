@@ -190,7 +190,7 @@ export const StepGenerating = memo(function StepGenerating({
               fill="none"
               className="text-accent-pink"
               role="img"
-              aria-label="Error"
+              aria-label={GENERATION_ERROR_LABELS.ERROR_ICON_ARIA}
             >
               <motion.circle
                 cx="24"
