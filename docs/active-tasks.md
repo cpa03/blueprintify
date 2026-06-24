@@ -2,6 +2,28 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 138 — Test Count Drift Fix, Audit Report Indexing, API Doc Drift Fix ✅
+
+### Task: Full repository audit, test count drift correction (1,627→1,633), docs/audits/README.md issue audit report indexing, api-documentation.md health check response drift fix, documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 138 full repository audit covering redundant/temp/unused file scan, test count drift correction, issue audit report indexing, API doc drift fix, docs sync, quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (clean after Cycle 137)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,633/1,633 ✅ (714 web + 438 api + 481 shared) format ✅
+  - [x] **Test count drift corrected**: 1,627→1,633 (+6 shared package)
+  - [x] **docs/audits/README.md**: Added issue-audit-report-2026-06-24 to Current Reports Issue Audits section
+  - [x] **api-documentation.md**: Removed `storageReport` from health check JSON example (matches actual code)
+  - [x] **README BroCula description verified**: `(Jun 17–Jun 23)` — matches latest audit `brocula-hunt-2026-06-23-run5.md`, no drift
+  - [x] **Stale merged remote branches check**: 32 branches examined, all with unique unmerged commits — 0 deleted
+  - [x] Updated docs/findings.md: Cycle 138 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 138 completed
+  - [x] Updated docs/knowledge-review.md: test count 1,627→1,633, BroCula ref run4→run5, cycle ref updated
+  - [x] Updated CHANGELOG.md: Cycle 138 entry added
+  - [x] Updated docs/audits/README.md: issue audit report indexed
+
 ## Completed: RepoKeeper Cycle 137 — Full Repository Audit, CHANGELOG Gap Fix, Doc Refresh ✅
 
 ### Task: Full repository audit, CHANGELOG gap fix (added missing docs(ci) Node 22 migration commit), knowledge-review BroCula description drift fix (run1→run4), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation

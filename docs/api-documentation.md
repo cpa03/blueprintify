@@ -54,7 +54,6 @@ Health check endpoint to verify the API is running and provide API metadata.
     "export": "POST /export",
     "import": "POST /import",
     "storageQuota": "GET /storage/quota",
-    "storageReport": "POST /storage/report",
     "storageClear": "DELETE /storage/clear",
     "shareCreate": "POST /share",
     "shareGet": "GET /share/:id",

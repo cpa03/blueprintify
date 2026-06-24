@@ -2,6 +2,62 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 138 (2026-06-24 — RepoKeeper: Test Count Drift Fix, Audit Report Indexing, API Doc Drift Fix)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, test count drift correction (1,627→1,633: shared +6, now 714 web + 438 api + 481 shared), docs/audits/README.md issue audit report indexing (added issue-audit-report-2026-06-24), api-documentation.md health check response drift fix (storageReport removed from JSON example — actual API health check doesn't return this field), comprehensive documentation sync (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build | ✅ Successful |
+| Tests | ✅ **1,633/1,633 passing** (714 web + 438 api + 481 shared) |
+| Format | ✅ All files Prettier-compliant |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0). No TODO/FIXME/HACK artifacts in non-test source.
+2. **Test count drift correction**: Actual tests now at 1,633 (714 web + 438 api + 481 shared) — up from 1,627 in Cycle 137. Shared package gained +6 tests. Updated `docs/knowledge-review.md`.
+3. **docs/audits/README.md issue audit indexing**: Added `issue-audit-report-2026-06-24.md` to Current Reports Issue Audits section.
+4. **api-documentation.md health check response drift fix**: Removed `"storageReport": "POST /storage/report"` from the health check JSON example — matches actual `index.ts` implementation which does not expose this field in metadata.
+5. **README BroCula description verified**: `(Jun 17–Jun 23)` — matches latest audit `brocula-hunt-2026-06-23-run5.md`. No drift.
+6. **Stale merged remote branch check**: 0 merged branches found to delete. All remote branches have unique unmerged commits.
+7. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/knowledge-review.md`, `CHANGELOG.md`, `docs/audits/README.md` updated for Cycle 138.
+
+### Key Findings
+
+- **Test count increased**: 1,627 → 1,633 (+6 in shared package). Documentation was stale at 1,627. Now corrected.
+- **docs/audits/README.md missing issue audit**: `issue-audit-report-2026-06-24.md` existed on filesystem but was not listed in audit index. Now indexed under Current Reports Issue Audits.
+- **api-documentation.md health check mismatch**: Example JSON included `"storageReport"` but actual `index.ts` health check handler does not return this field. Removed from docs to match code.
+- **No redundant/temp/unused files found** — repo remains clean after Cycle 137.
+- **README BroCula description still correct**: `(Jun 17–Jun 23)` matches latest audit `brocula-hunt-2026-06-23-run5.md`.
+- **0 stale merged branches** — all remote branches have unique unmerged content. No cleanup needed.
+- **All quality checks passing**: typecheck ✅ lint ✅ build ✅ format ✅ tests 1,633/1,633 ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — Successful ✅
+- [x] Tests — 1,633/1,633 passing (714 web + 438 api + 481 shared) ✅
+- [x] Format — All files pass ✅
+- [x] Test count drift corrected — 1,627→1,633 in knowledge-review.md
+- [x] docs/audits/README.md — issue-audit-report-2026-06-24 added to Current Reports
+- [x] api-documentation.md — storageReport removed from health check JSON example
+- [x] README BroCula description verified: `(Jun 17–Jun 23)` — no drift
+- [x] Stale merged branches: 0 to delete — all active
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK
+- [x] CHANGELOG.md updated for Cycle 138
+- [x] Documentation refreshed for Cycle 138 (findings, active-tasks, knowledge-review, CHANGELOG, audits/README)
+- [x] PR created
+
+---
+
 ## Cycle 137 (2026-06-23 — RepoKeeper: Full Repository Audit, CHANGELOG Gap Fix, Doc Refresh)
 
 ### Audit Scope
