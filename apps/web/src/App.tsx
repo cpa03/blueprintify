@@ -1,5 +1,5 @@
 import { useState, lazy, Suspense, useEffect, useCallback, useRef } from "react";
-import { WIZARD_STEP_KEYS } from "@blueprint/shared";
+import { WIZARD_STEP_KEYS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
 const ShowEditorButton = lazy(() =>
@@ -337,7 +337,11 @@ function App(): JSX.Element {
                 }`}
                 onAnimationEnd={editorExiting ? handleHideEditorComplete : undefined}
               >
-                <KeyboardShortcutTooltip shortcut="e" description="Toggle editor" position="left">
+                <KeyboardShortcutTooltip
+                  shortcut="e"
+                  description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
+                  position="left"
+                >
                   <button
                     onClick={handleHideEditor}
                     className={`${BUTTON.HIDE_EDITOR_DESKTOP} transition-transform duration-150 active:scale-90 hover:scale-110`}
@@ -362,7 +366,11 @@ function App(): JSX.Element {
                   </button>
                 </KeyboardShortcutTooltip>
 
-                <KeyboardShortcutTooltip shortcut="e" description="Toggle editor" position="left">
+                <KeyboardShortcutTooltip
+                  shortcut="e"
+                  description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
+                  position="left"
+                >
                   <button
                     onClick={handleHideEditor}
                     className={`${BUTTON.HIDE_EDITOR_MOBILE} transition-transform duration-150 active:scale-90 hover:scale-110`}

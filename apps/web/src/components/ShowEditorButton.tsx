@@ -21,7 +21,7 @@ import { memo } from "react";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
 import { BUTTON, ICON } from "../config/styles";
-import { UI_CONTENT } from "../config/constants";
+import { UI_CONTENT, SHORTCUT_DESCRIPTIONS } from "../config/constants";
 import { getModifierLabel, getAriaShortcutKey } from "../lib/platform";
 
 interface ShowEditorButtonProps {
@@ -40,7 +40,11 @@ function ShowEditorButtonComponent({
   const modifierKey = getModifierLabel();
 
   return (
-    <KeyboardShortcutTooltip shortcut="e" description="Toggle editor" position="left">
+    <KeyboardShortcutTooltip
+      shortcut="e"
+      description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
+      position="left"
+    >
       <div className="animate-slide-up will-change-transform motion-safe:transition-transform motion-safe:duration-150 motion-safe:hover:scale-105 motion-safe:active:scale-95">
         <RippleButton
           onClick={onClick}

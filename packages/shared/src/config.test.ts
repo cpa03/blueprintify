@@ -32,6 +32,7 @@ import {
   EDITOR_FILENAMES,
   TOOLTIP_LABELS,
   SHORTCUT_LABELS,
+  SHORTCUT_DESCRIPTIONS,
   UI_TIMING,
   DB_ID_PREFIXES,
   SECURITY_VALUES,
@@ -1987,6 +1988,29 @@ describe("SHORTCUT_LABELS", () => {
 
   it("should have all string values with length > 0", () => {
     const values = Object.values(SHORTCUT_LABELS);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("SHORTCUT_DESCRIPTIONS", () => {
+  it("should have all expected shortcut descriptions", () => {
+    expect(SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR).toBe("Toggle editor");
+    expect(SHORTCUT_DESCRIPTIONS.GO_BACK).toBe("Go back");
+    expect(SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP).toBe("Continue to next step");
+    expect(SHORTCUT_DESCRIPTIONS.CONFIRM_ACTION).toBe("Confirm action");
+    expect(SHORTCUT_DESCRIPTIONS.SHOW_KEYBOARD_SHORTCUTS).toBe("Show keyboard shortcuts");
+  });
+
+  it("should have 5 shortcut descriptions", () => {
+    const values = Object.values(SHORTCUT_DESCRIPTIONS);
+    expect(values.length).toBe(5);
+  });
+
+  it("should have all non-empty string values", () => {
+    const values = Object.values(SHORTCUT_DESCRIPTIONS);
     values.forEach((v) => {
       expect(typeof v).toBe("string");
       expect(v.length).toBeGreaterThan(0);
