@@ -49,6 +49,7 @@ export const UI_CONTENT = {
     },
     LOADING: "Loading Editor...",
     SHOW_EDITOR_BUTTON: "Show Editor",
+    VIEW_BLUEPRINT_BUTTON: "View Blueprint",
   },
   /** Preview empty state tab-specific messages */
   PREVIEW_EMPTY: {

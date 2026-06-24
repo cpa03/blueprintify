@@ -67,6 +67,13 @@ describe("ShowEditorButton", () => {
     expect(pulseDot).toBeNull();
   });
 
+  it("shows View Blueprint label when hasContent is true", () => {
+    render(<ShowEditorButton {...defaultProps} hasContent={true} />);
+
+    expect(screen.getByText(UI_CONTENT.EDITOR.VIEW_BLUEPRINT_BUTTON)).toBeInTheDocument();
+    expect(screen.queryByText(UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON)).not.toBeInTheDocument();
+  });
+
   it("applies glow-pulse class when hasContent is true", () => {
     render(<ShowEditorButton {...defaultProps} hasContent={true} />);
 
