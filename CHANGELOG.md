@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 138: **full repository audit**, test count drift correction (1,627→1,633: shared +6), docs/audits/README.md issue audit report indexing (issue-audit-report-2026-06-24), api-documentation.md health check response drift fix (storageReport removed from example — matches actual code), typecheck ✅ lint ✅ build ✅ format ✅ tests 1,633/1,633 ✅ (714 web + 438 api + 481 shared), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification, PR created
 - RepoKeeper Cycle 137: **full repository audit**, CHANGELOG gap fix (added missing `docs(ci): document required workflow changes for Node 22 migration (#2030)`), knowledge-review BroCula description drift fix (run1→run4), typecheck ✅ lint ✅ tests 1,627/1,627 ✅ (714 web + 438 api + 475 shared), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR created
 - docs(ci): document required workflow changes for Node 22 migration (#2030)
 - BroCula Run 7: **LH 100-100-100-100, 1627 tests passing, zero console errors** — full browser console audit and Lighthouse optimization check clean
