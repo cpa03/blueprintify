@@ -142,7 +142,6 @@ function AnimatedCopyButtonComponent({
         className
       )}
       aria-label={isCopied ? COPY_BUTTON_LABELS.COPIED : COPY_BUTTON_LABELS.COPY}
-      aria-live="polite"
       animate={{
         scale: isPressed ? 0.92 : 1,
       }}
@@ -221,6 +220,11 @@ function AnimatedCopyButtonComponent({
           />
         )}
       </AnimatePresence>
+
+      {/* Screen reader announcement for copy status */}
+      <span className="sr-only" role="status" aria-live="polite">
+        {isCopied ? COPY_BUTTON_LABELS.COPIED : null}
+      </span>
 
       <span className="relative z-10 flex items-center gap-2">
         <AnimatePresence mode="wait">
