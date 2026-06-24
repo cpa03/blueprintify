@@ -81,6 +81,8 @@ function EditorComponent(): JSX.Element {
   const codeMirrorRef = useRef<ReactCodeMirrorRef>(null);
 
   const [previewScrollState, setPreviewScrollState] = useState({ isTop: true, isBottom: false });
+  const [editorScrollState, setEditorScrollState] = useState({ isTop: true, isBottom: false });
+  const editorWrapperRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
   const handlePreviewScroll = useCallback(() => {
     const el = previewRef.current;
@@ -168,6 +170,78 @@ function EditorComponent(): JSX.Element {
     enabled: isGenerating,
     trigger: currentContent,
   });
+
+  // Attach scroll shadow listener to CodeMirror's .cm-scroller element.
+  // Uses MutationObserver because CodeMirror is lazy-loaded — the .cm-scroller
+  // DOM node doesn't exist until the async import completes. Once found, we
+  // attach a passive scroll listener and clean up on unmount or view mode change.
+  const scrollListenerCleanupRef = useRef<(() => void) | null>(null);
+  useEffect(() => {
+    const isEditorVisible = viewMode === VIEW_MODES.EDIT || viewMode === VIEW_MODES.SPLIT;
+    if (!isEditorVisible) {
+      scrollListenerCleanupRef.current?.();
+      scrollListenerCleanupRef.current = null;
+      return;
+    }
+
+    const attach = () => {
+      const scrollDom = codeMirrorRef.current?.view?.scrollDOM;
+      if (!scrollDom) return false;
+
+      const onScroll = () => {
+        if (!scrollDom || shouldReduceMotion) return;
+        const isTop = scrollDom.scrollTop <= 4;
+        const isBottom =
+          Math.abs(scrollDom.scrollHeight - scrollDom.scrollTop - scrollDom.clientHeight) <= 4;
+        setEditorScrollState((prev) => {
+          if (prev.isTop === isTop && prev.isBottom === isBottom) return prev;
+          return { isTop, isBottom };
+        });
+      };
+
+      scrollDom.addEventListener("scroll", onScroll, { passive: true });
+
+      // Set initial state
+      const isTop = scrollDom.scrollTop <= 4;
+      const isBottom =
+        Math.abs(scrollDom.scrollHeight - scrollDom.scrollTop - scrollDom.clientHeight) <= 4;
+      setEditorScrollState({ isTop, isBottom });
+
+      scrollListenerCleanupRef.current = () => {
+        scrollDom.removeEventListener("scroll", onScroll);
+      };
+      return true;
+    };
+
+    // Try immediately (CodeMirror may already be mounted)
+    if (!attach()) {
+      // If CodeMirror hasn't mounted yet, watch the wrapper for DOM changes
+      const wrapper = editorWrapperRef.current;
+      if (!wrapper) return;
+
+      const observer = new MutationObserver(() => {
+        if (attach()) {
+          observer.disconnect();
+        }
+      });
+      observer.observe(wrapper, { childList: true, subtree: true });
+
+      // Safety timeout: stop observing after 10s to avoid memory leaks
+      const safetyTimer = setTimeout(() => observer.disconnect(), 10000);
+
+      return () => {
+        observer.disconnect();
+        clearTimeout(safetyTimer);
+        scrollListenerCleanupRef.current?.();
+        scrollListenerCleanupRef.current = null;
+      };
+    }
+
+    return () => {
+      scrollListenerCleanupRef.current?.();
+      scrollListenerCleanupRef.current = null;
+    };
+  }, [viewMode, shouldReduceMotion]);
 
   // Auto-focus the editor's active tab when it mounts, so keyboard users
   // land immediately in the panel rather than losing focus to the previous element
@@ -278,9 +352,9 @@ function EditorComponent(): JSX.Element {
       previewEl.scrollTo({ top: 0, behavior: "smooth" });
     }
     // Scroll CodeMirror editor to top for visual consistency with preview pane
-    const cmView = codeMirrorRef.current?.view;
-    if (cmView?.scrollDOM) {
-      cmView.scrollDOM.scrollTop = 0;
+    const scroller = editorWrapperRef.current?.querySelector<HTMLElement>(".cm-scroller");
+    if (scroller) {
+      scroller.scrollTop = 0;
     }
   }, [activeTab]);
 
@@ -349,8 +423,9 @@ function EditorComponent(): JSX.Element {
                     {/* Code Editor */}
                     {(viewMode === VIEW_MODES.EDIT || viewMode === VIEW_MODES.SPLIT) && (
                       <div
+                        ref={editorWrapperRef}
                         className={clsx(
-                          "h-full overflow-hidden",
+                          "h-full overflow-hidden relative",
                           viewMode === VIEW_MODES.SPLIT
                             ? "w-full lg:w-1/2 lg:border-r lg:border-dark-700 border-b border-dark-700 lg:border-b-0"
                             : "w-full"
@@ -361,6 +436,26 @@ function EditorComponent(): JSX.Element {
                           value={currentContent}
                           onChange={setCurrentContent}
                           className="h-full"
+                        />
+                        {/* Top scroll shadow */}
+                        <div
+                          className="absolute top-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
+                          style={{
+                            opacity: shouldReduceMotion ? 0 : editorScrollState.isTop ? 0 : 1,
+                            height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
+                            background: LAYOUT.SCROLL_SHADOW_TOP_GRADIENT,
+                          }}
+                          aria-hidden="true"
+                        />
+                        {/* Bottom scroll shadow */}
+                        <div
+                          className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
+                          style={{
+                            opacity: shouldReduceMotion ? 0 : editorScrollState.isBottom ? 0 : 1,
+                            height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
+                            background: LAYOUT.SCROLL_SHADOW_BOTTOM_GRADIENT,
+                          }}
+                          aria-hidden="true"
                         />
                       </div>
                     )}
