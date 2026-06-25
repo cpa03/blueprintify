@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 146: **full repository audit**, audit archive consolidation (archived Jun 23 Runs 1-5 from Current to Archived in docs/audits/README.md), stale remote branch prune (pruned local tracking of `fix/bug-017-ci-node-version`), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,660/1,660 ✅)
 - RepoKeeper Cycle 145: **full repository audit**, test count drift fix (1,638→1,660: +1 web, +21 shared), BroCula run6 indexing (latest `brocula-hunt-2026-06-24-run6.md`), CHANGELOG gap fix (added Cycle 144 + Cycle 145 entries), stale merged remote branch cleanup (deleted 30 fully-merged branches), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ tests 1,660/1,660 ✅), PR created
 - Cycle 144 (ULW Loop Run 2): **PR Handler Mode + Issue Manager Mode** — merged 5 open PRs, fixed Issue #2030 (CI node-version) status documentation, issue audit, docs refresh, quality verification (typecheck ✅ lint ✅ build ✅ tests 1,660/1,660 ✅)
 - docs(ci): update ci-workflow-fixes.md with BUG-017 fix status
