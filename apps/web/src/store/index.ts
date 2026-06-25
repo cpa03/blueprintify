@@ -72,6 +72,7 @@ export * from "./toast";
 
 import { useWizardStore } from "./wizard";
 import { useEditorStore } from "./editor";
+import { useToastStore } from "./toast";
 
 /**
  * Resets all application stores to their initial state.
@@ -95,4 +96,5 @@ import { useEditorStore } from "./editor";
 export function resetAllStores(): void {
   useWizardStore.getState().reset();
   useEditorStore.getState().reset();
+  useToastStore.getState().clearAll();
 }
