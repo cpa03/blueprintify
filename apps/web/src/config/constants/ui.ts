@@ -9,6 +9,7 @@ import { ENV } from "../env";
 import {
   VALIDATION_LIMITS,
   ANIMATION_DURATION_MS as SHARED_ANIMATION_DURATION_MS,
+  ANIMATION_DURATION_S,
   CELEBRATION_DEFAULTS as SHARED_CELEBRATION_DEFAULTS,
   SCROLL_THRESHOLD_DEFAULTS,
   TEXTAREA_DEFAULTS,
@@ -42,53 +43,30 @@ export const ANIMATION = {
   SLOW: ANIMATION_TIMING.duration.slow,
   STAGGER: ANIMATION_TIMING.stagger.default,
   SPINNER_ROTATION: UI_ANIMATION_DEFAULTS.SPINNER_ROTATION_S,
-  TYPING_INDICATOR_DELAY_S: 0.6,
-  /** Duration for float/pulse animations */
-  FLOAT: 1.5,
-  /** Duration for slow glow/pulse effects */
-  SLOW_PULSE: 2,
-  /** Duration for very slow breath effects */
-  BREATH: 2.5,
-  /** Duration for smooth drift/float animations */
-  DRIFT: 2.2,
-  /** Duration emphasized float movements */
-  DRIFT_SLOW: 1.8,
-  /** Duration for gentle pulse effects */
-  GENTLE_PULSE: 1,
-  /** Duration for quick checkmark reveal */
-  CHECKMARK_REVEAL: 0.25,
-  /** Duration for modal/fade transitions */
-  MODAL_FADE: 0.2,
-  /** Duration for quick tooltip transitions */
-  TOOLTIP_FADE: 0.15,
-  /** Duration for smooth slider transitions */
-  SLIDER: 0.6,
-  /** Duration for quick fade transitions */
-  QUICK_FADE: 0.1,
-  /** Duration for hover tooltip/popup entrance animations */
-  HOVER_POPUP: 0.12,
-  /** Duration for streaming content live indicator pulse */
-  LIVE_INDICATOR: 1.4,
-  /** Duration for floating/bobbing decorative animations */
-  FLOATING_DURATION: 3,
-  /** Duration for robust fade/animate in */
-  FADE_IN: 0.4,
-  /** Duration for half-second transitions */
-  HALF_SECOND: 0.5,
-  /** Duration for subtle movement animations */
-  SUBTLE_MOVE: 0.3,
-  /** Duration for tab switch/view change */
-  TAB_SWITCH: 0.3,
-  /** Duration for gentle pulse animations */
-  PULSE: 0.6,
-  /** Stagger delay between card entrance animations (seconds) */
-  CARD_ENTRANCE_DELAY: 0.05,
-  /** Duration of each card entrance animation (seconds) */
-  CARD_ENTRANCE_DURATION: 0.3,
-  /** Duration for checkmark overlay fade-in (seconds) */
-  CHECKMARK_OVERLAY_S: 0.25,
-  /** Duration for loading overlay fade-in (seconds) */
-  LOADING_OVERLAY_S: 0.15,
+  TYPING_INDICATOR_DELAY_S: ANIMATION_DURATION_S.TYPING_INDICATOR_DELAY_S,
+  FLOAT: ANIMATION_DURATION_S.FLOAT,
+  SLOW_PULSE: ANIMATION_DURATION_S.SLOW_PULSE,
+  BREATH: ANIMATION_DURATION_S.BREATH,
+  DRIFT: ANIMATION_DURATION_S.DRIFT,
+  DRIFT_SLOW: ANIMATION_DURATION_S.DRIFT_SLOW,
+  GENTLE_PULSE: ANIMATION_DURATION_S.GENTLE_PULSE,
+  CHECKMARK_REVEAL: ANIMATION_DURATION_S.CHECKMARK_REVEAL,
+  MODAL_FADE: ANIMATION_DURATION_S.MODAL_FADE,
+  TOOLTIP_FADE: ANIMATION_DURATION_S.TOOLTIP_FADE,
+  SLIDER: ANIMATION_DURATION_S.SLIDER,
+  QUICK_FADE: ANIMATION_DURATION_S.QUICK_FADE,
+  HOVER_POPUP: ANIMATION_DURATION_S.HOVER_POPUP,
+  LIVE_INDICATOR: ANIMATION_DURATION_S.LIVE_INDICATOR,
+  FLOATING_DURATION: ANIMATION_DURATION_S.FLOATING_DURATION,
+  FADE_IN: ANIMATION_DURATION_S.FADE_IN,
+  HALF_SECOND: ANIMATION_DURATION_S.HALF_SECOND,
+  SUBTLE_MOVE: ANIMATION_DURATION_S.SUBTLE_MOVE,
+  TAB_SWITCH: ANIMATION_DURATION_S.TAB_SWITCH,
+  PULSE: ANIMATION_DURATION_S.PULSE,
+  CARD_ENTRANCE_DELAY: ANIMATION_DURATION_S.CARD_ENTRANCE_DELAY,
+  CARD_ENTRANCE_DURATION: ANIMATION_DURATION_S.CARD_ENTRANCE_DURATION,
+  CHECKMARK_OVERLAY_S: ANIMATION_DURATION_S.CHECKMARK_OVERLAY_S,
+  LOADING_OVERLAY_S: ANIMATION_DURATION_S.LOADING_OVERLAY_S,
 } as const;
 
 /**

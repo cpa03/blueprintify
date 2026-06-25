@@ -165,6 +165,7 @@ export {
   EXPORT_DEFAULTS,
   STORAGE_LOCAL_DEFAULTS,
   UI_ANIMATION_DEFAULTS,
+  ANIMATION_DURATION_S,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";
