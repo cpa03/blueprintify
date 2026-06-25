@@ -2,6 +2,28 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 145 — Test Count Drift Fix, BroCula Run6 Index, CHANGELOG Gap Fix, Stale Branch Cleanup, Doc Refresh ✅
+
+### Task: Full repository audit, test count drift correction (1,638→1,660: 717 web + 438 api + 505 shared), BroCula description drift fix (run5→run6 — latest audit: `brocula-hunt-2026-06-24-run6.md`), CHANGELOG gap fix (added Cycle 144 + Cycle 145 entries), stale merged remote branch cleanup (deleted 30 fully-merged branches), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 145 full repository audit covering redundant/temp/unused file scan, test count drift fix, BroCula description drift fix (run5→run6), CHANGELOG gap fix, stale branch cleanup (30 deleted), docs sync, quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (clean after Cycle 143)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ format ✅
+  - [x] **Test count drift corrected**: 1,638→1,660 (+22 tests: shared +21, web +1) in knowledge-review.md
+  - [x] **BroCula description drift fix**: `brocula-hunt-2026-06-24-run5.md` → `brocula-hunt-2026-06-24-run6.md` — fixed in audits/README.md and knowledge-review.md
+  - [x] **CHANGELOG gap fix**: Added Cycle 144 (ULW Loop Run 2) + Cycle 145 entries
+  - [x] **Stale merged remote branch cleanup**: Deleted 30 fully-merged branches (kept agent/janitor + agent/security-engineer)
+  - [x] Updated docs/findings.md: Cycle 145 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 145 completed
+  - [x] Updated docs/knowledge-review.md: cycle ref updated to Cycle 145, test count 1,638→1,660, BroCula ref run5→run6
+  - [x] Updated CHANGELOG.md: Cycle 144 + Cycle 145 entries added
+  - [x] Updated docs/audits/README.md: run6 added as latest
+
 ## Completed: ULW Loop Run 2 — PR Handler + Issue #2030 Repair ✅
 
 ### Task: ULW Loop execution — merged 5 open PRs, fixed CI node-version issue (#2030, P1), issue audit
