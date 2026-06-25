@@ -237,7 +237,7 @@ export const CONFIRM_DIALOG = {
 export const ACCESSIBILITY_LABELS = {
   HEADER: {
     KEYBOARD_SHORTCUTS: "Keyboard shortcuts (?)",
-    GITHUB: "View on GitHub",
+    GITHUB: "View on GitHub (opens in new tab)",
   },
   REVIEW: {
     GENERATE_DISABLED_TOOLTIP: "Add a project name and description to continue",
