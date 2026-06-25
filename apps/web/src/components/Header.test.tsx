@@ -50,7 +50,7 @@ describe("Header", () => {
       name: /view on github/i,
     });
     expect(githubButton).toBeInTheDocument();
-    expect(githubButton).toHaveAttribute("aria-label", "View on GitHub");
+    expect(githubButton).toHaveAttribute("aria-label", "View on GitHub (opens in new tab)");
   });
 
   it("renders GitHub icon", () => {
