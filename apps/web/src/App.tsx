@@ -1,5 +1,9 @@
 import { useState, lazy, Suspense, useEffect, useCallback, useRef } from "react";
-import { WIZARD_STEP_KEYS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
+import {
+  WIZARD_STEP_KEYS,
+  SHORTCUT_DESCRIPTIONS,
+  SCROLL_THRESHOLD_DEFAULTS,
+} from "@blueprint/shared";
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
 const ShowEditorButton = lazy(() =>
@@ -466,12 +470,12 @@ function App(): JSX.Element {
           absolute-positioned buttons to the viewport. */}
       <div className="fixed bottom-6 right-6 z-30">
         <Suspense fallback={null}>
-          <ScrollToTop showAfter={400} />
+          <ScrollToTop showAfter={SCROLL_THRESHOLD_DEFAULTS.SCROLL_TO_TOP_PX} />
         </Suspense>
       </div>
       <div className="fixed bottom-6 left-6 z-30">
         <Suspense fallback={null}>
-          <ScrollToBottomLazy showAfter={400} />
+          <ScrollToBottomLazy showAfter={SCROLL_THRESHOLD_DEFAULTS.SCROLL_TO_TOP_PX} />
         </Suspense>
       </div>
     </div>

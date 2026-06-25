@@ -191,7 +191,7 @@ describe("Integration: Error Propagation", () => {
               errors: ["Missing required field: projectName"],
             },
           },
-          400
+          HTTP_STATUS.BAD_REQUEST
         )
       );
 
@@ -228,7 +228,7 @@ describe("Integration: Error Propagation", () => {
             success: false,
             error: "Internal server error",
           },
-          500
+          HTTP_STATUS.INTERNAL_ERROR
         )
       );
 
@@ -531,7 +531,10 @@ describe("Integration: End-to-End Workflows", () => {
       await storage.set(initialData);
 
       fetchMock.mockResolvedValueOnce(
-        createMockResponse({ success: false, error: "Refinement failed" }, 500)
+        createMockResponse(
+          { success: false, error: "Refinement failed" },
+          HTTP_STATUS.INTERNAL_ERROR
+        )
       );
 
       const response = await fetch(`${API_BASE}${API_ENDPOINTS.REFINE}`, {

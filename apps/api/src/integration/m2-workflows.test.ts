@@ -303,7 +303,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
         envWithoutKey
       );
 
-      expect([400, 500]).toContain(res.status);
+      expect([HTTP_STATUS.BAD_REQUEST, HTTP_STATUS.INTERNAL_ERROR]).toContain(res.status);
       const data = (await res.json()) as ApiResponse;
       expect(data.success).toBe(false);
     });
@@ -342,7 +342,7 @@ describe("Integration: End-to-End M2 Workflows", () => {
       const results = await Promise.all(requests);
 
       results.forEach((res) => {
-        expect([200, 429]).toContain(res.status);
+        expect([HTTP_STATUS.OK, HTTP_STATUS.TOO_MANY_REQUESTS]).toContain(res.status);
       });
     });
   });

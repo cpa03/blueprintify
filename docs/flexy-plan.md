@@ -1297,9 +1297,25 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | `apps/web/src/config/theme.ts` | Added `COUNTER_ANIMATION` (BOX_SHADOWS keyframe sequence) for AnimatedNumber pulse effect |
 | `apps/web/src/components/AnimatedNumber.tsx` | Replaced hardcoded `boxShadow` keyframe array with `[...COUNTER_ANIMATION.BOX_SHADOWS]` reference |
 
+### ✅ Flexy Iteration 70: Eliminate Remaining Hardcoded HTTP Status Codes & Scroll Thresholds
+
+| File | Change |
+| ---- | ------ |
+| `apps/web/src/App.tsx` | Added `SCROLL_THRESHOLD_DEFAULTS` import; replaced 2 hardcoded `showAfter={400}` with `SCROLL_THRESHOLD_DEFAULTS.SCROLL_TO_TOP_PX` |
+| `apps/web/src/integration/api-flows.test.ts` | Replaced hardcoded `400`/`500` with `HTTP_STATUS.BAD_REQUEST`/`HTTP_STATUS.INTERNAL_ERROR` (2 occurrences) |
+| `apps/web/src/integration/cross-tab-concurrent.test.ts` | Replaced hardcoded `400`/`500` with `HTTP_STATUS.BAD_REQUEST`/`HTTP_STATUS.INTERNAL_ERROR` (3 occurrences) |
+| `apps/web/src/integration/refinement-export.test.ts` | Replaced hardcoded `500`/`400` with `HTTP_STATUS.INTERNAL_ERROR`/`HTTP_STATUS.BAD_REQUEST` (2 occurrences) |
+| `apps/api/src/integration/m2-workflows.test.ts` | Replaced hardcoded `[400, 500]` → `[HTTP_STATUS.BAD_REQUEST, HTTP_STATUS.INTERNAL_ERROR]`; `[200, 429]` → `[HTTP_STATUS.OK, HTTP_STATUS.TOO_MANY_REQUESTS]` |
+
 ## Verification
 
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
-- ✅ `npm run test:all` — 716 web + 438 api + 505 shared = 1,659 tests passing across 83 files
+- ✅ `npm run test:all` — 723 web + 438 api + 510 shared = 1,671 tests passing across 84 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| #2102 | `feat/flexy-iteration-70-hardcoded-cleanup` | feat(flexy): eliminate hardcoded HTTP status codes and scroll thresholds (Iteration 70) |
