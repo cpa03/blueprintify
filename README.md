@@ -302,7 +302,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Troubleshooting Guide](./docs/troubleshooting.md)** - Common issues and solutions
 - **[Environment Variables](./docs/environment-variables.md)** - Configuration reference for API, frontend, and Cloudflare
 - **[CI Configuration](./docs/ci-configuration.md)** - CI/CD configuration and Node.js version requirements
-- **[CI Workflow Fixes](./docs/ci-workflow-fixes.md)** - CI workflow fix instructions and status
+
 - **[Repository Rules](./docs/repo-rules.md)** - Repository governance and contribution rules
 - **[Security Assessment](./docs/security/assessment-ajv-vulnerabilities.md)** - AJV dependency vulnerability analysis
 
@@ -324,7 +324,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Issue Audit Report (Jun 5)](./docs/audits/archive/issue-audit-report-2026-06-05.md)** - Issue label normalization and duplicate detection report (archived)
 - **[Issue Audit Report (Jun 7)](./docs/audits/archive/issue-audit-report-2026-06-07.md)** - ULW Loop issue audit with fix status tracking (archived)
 - **[Issue Audit Report (Jun 8)](./docs/audits/archive/issue-audit-report-2026-06-08.md)** - ULW Loop issue audit with fix status tracking (archived)
-- **[RepoKeeper Task](./docs/task.md)** - Current RepoKeeper task placeholder
+
 - **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jun 17–Jun 25)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 - **[Roadmap M3 Proposal](./docs/roadmap-m3-proposal.md)** - M3 strategic expansion proposal

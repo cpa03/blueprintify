@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- feat(web): add spring-animated features count in StepFeatures
+- docs(audit): BroCula Run 16 — LH 100-100-100-100, 1671 tests pass
+- chore(docs): remove stale docs, update ci-configuration
+- fix(docs): BUG-014 BUG-017 — fix stale doc refs
+- fix(web): resetAllStores now clears toast store
+- RepoKeeper Cycle 148: **full repository audit**, test count drift fix (1,666→1,671: shared +5 from latest test suite additions), BroCula description drift fix (ref: `brocula-hunt-2026-06-25-run2.md` — latest Jun 25 Run 2), stale README link cleanup (removed `docs/ci-workflow-fixes.md` and `docs/task.md` references — files no longer exist), stale merged remote branch cleanup (deleted `origin/brocula-run-16` — BroCula Run 16 audit branch), audit archive consolidation (archived Jun 24 Runs 1-6 from Current to Archived in docs/audits/README.md), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,671/1,671 ✅), PR created
 - RepoKeeper Cycle 147: **full repository audit**, test count drift fix (1,660→1,666: +6 web from Icon unit tests), BroCula description drift fix (ref: `brocula-hunt-2026-06-25-run1.md`), CHANGELOG gap fix (added 8 missing commits after Cycle 146), stale merged remote branch cleanup (deleted `test/icon-component-coverage`), README BroCula description drift fix `(Jun 17–Jun 24)`→`(Jun 17–Jun 25)`, docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ tests 1,666/1,666 ✅), PR created
 - fix(ci): add patch doc for CI node-version 20→22 migration (#2090)
 - fix(bugfixer): BUG-014 BUG-017 — fix stale doc refs and hardcoded node-version in CI workflows (#2085)
