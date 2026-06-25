@@ -101,6 +101,7 @@ import {
   EXPORT_DEFAULTS,
   STORAGE_LOCAL_DEFAULTS,
   UI_ANIMATION_DEFAULTS,
+  ANIMATION_DURATION_S,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -2779,5 +2780,42 @@ describe("UI_ANIMATION_DEFAULTS", () => {
 
   it("should have 1 entry", () => {
     expect(Object.keys(UI_ANIMATION_DEFAULTS).length).toBe(1);
+  });
+});
+
+describe("ANIMATION_DURATION_S", () => {
+  it("should have positive duration values", () => {
+    const values = Object.values(ANIMATION_DURATION_S);
+    values.forEach((v) => {
+      expect(v).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have all values be numbers (seconds)", () => {
+    const values = Object.values(ANIMATION_DURATION_S);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+    });
+  });
+
+  it("should have 24 entries", () => {
+    expect(Object.keys(ANIMATION_DURATION_S).length).toBe(24);
+  });
+
+  it("should have values distributed across a range (not all identical)", () => {
+    const values = Object.values(ANIMATION_DURATION_S);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBeGreaterThan(10);
+    expect(uniqueValues.size).toBeLessThanOrEqual(values.length);
+  });
+
+  it("should have expected specific values", () => {
+    expect(ANIMATION_DURATION_S.FLOAT).toBe(1.5);
+    expect(ANIMATION_DURATION_S.SLOW_PULSE).toBe(2);
+    expect(ANIMATION_DURATION_S.BREATH).toBe(2.5);
+    expect(ANIMATION_DURATION_S.GENTLE_PULSE).toBe(1);
+    expect(ANIMATION_DURATION_S.TYPING_INDICATOR_DELAY_S).toBe(0.6);
+    expect(ANIMATION_DURATION_S.FLOATING_DURATION).toBe(3);
+    expect(ANIMATION_DURATION_S.CARD_ENTRANCE_DELAY).toBe(0.05);
   });
 });

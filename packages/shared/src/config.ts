@@ -2052,3 +2052,63 @@ export const UI_ANIMATION_DEFAULTS = {
   /** Duration in seconds for one full spinner rotation */
   SPINNER_ROTATION_S: 1,
 } as const;
+
+/**
+ * Common Animation Duration Values (seconds)
+ * Centralized source of truth for framer-motion animation duration values
+ * used across the frontend. Eliminates hardcoded float magic numbers from
+ * UI component config files.
+ * Flexy says: No hardcoded 0.6/1.5/2.5 animation seconds in ui.ts — single source of truth!
+ * Usage: import { ANIMATION_DURATION_S } from "@blueprint/shared";
+ *        transition={{ duration: ANIMATION_DURATION_S.FLOAT }}
+ */
+export const ANIMATION_DURATION_S = {
+  /** Duration for typing indicator animation (0.6s) */
+  TYPING_INDICATOR_DELAY_S: 0.6,
+  /** Duration for float/bob entrance animations (1.5s) */
+  FLOAT: 1.5,
+  /** Duration for slow glow/pulse effects (2s) */
+  SLOW_PULSE: 2,
+  /** Duration for very slow breath effects (2.5s) */
+  BREATH: 2.5,
+  /** Duration for smooth drift/float animations (2.2s) */
+  DRIFT: 2.2,
+  /** Duration for emphasized float movements (1.8s) */
+  DRIFT_SLOW: 1.8,
+  /** Duration for gentle pulse effects (1s) */
+  GENTLE_PULSE: 1,
+  /** Duration for quick checkmark reveal (0.25s) */
+  CHECKMARK_REVEAL: 0.25,
+  /** Duration for modal/fade transitions (0.2s) */
+  MODAL_FADE: 0.2,
+  /** Duration for quick tooltip transitions (0.15s) */
+  TOOLTIP_FADE: 0.15,
+  /** Duration for smooth slider transitions (0.6s) */
+  SLIDER: 0.6,
+  /** Duration for quick fade transitions (0.1s) */
+  QUICK_FADE: 0.1,
+  /** Duration for hover tooltip/popup entrance animations (0.12s) */
+  HOVER_POPUP: 0.12,
+  /** Duration for streaming content live indicator pulse (1.4s) */
+  LIVE_INDICATOR: 1.4,
+  /** Duration for floating/bobbing decorative animations (3s) */
+  FLOATING_DURATION: 3,
+  /** Duration for robust fade/animate in (0.4s) */
+  FADE_IN: 0.4,
+  /** Duration for half-second transitions (0.5s) */
+  HALF_SECOND: 0.5,
+  /** Duration for subtle movement animations (0.3s) */
+  SUBTLE_MOVE: 0.3,
+  /** Duration for tab switch/view change (0.3s) */
+  TAB_SWITCH: 0.3,
+  /** Duration for gentle pulse animations (0.6s) */
+  PULSE: 0.6,
+  /** Stagger delay between card entrance animations (0.05s) */
+  CARD_ENTRANCE_DELAY: 0.05,
+  /** Duration of each card entrance animation (0.3s) */
+  CARD_ENTRANCE_DURATION: 0.3,
+  /** Duration for checkmark overlay fade-in (0.25s) */
+  CHECKMARK_OVERLAY_S: 0.25,
+  /** Duration for loading overlay fade-in (0.15s) */
+  LOADING_OVERLAY_S: 0.15,
+} as const;
