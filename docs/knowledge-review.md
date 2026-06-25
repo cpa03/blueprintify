@@ -12,15 +12,16 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-24 (RepoKeeper Cycle 143)
+**Last Review**: 2026-06-25 (RepoKeeper Cycle 145)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jun 24)` — matches latest audit `brocula-hunt-2026-06-24-run5.md`
-- **Typecheck/Lint/Tests**: All clean (0 errors, 0 warnings, **1,638/1,638 tests passing** — 716 web + 438 api + 484 shared)
+- **README BroCula description verified**: `(Jun 17–Jun 24)` — matches latest audit `brocula-hunt-2026-06-24-run6.md`
+- **Typecheck/Lint/Tests**: All clean (0 errors, 0 warnings, **1,660/1,660 tests passing** — 717 web + 438 api + 505 shared)
+- **Cycle 145**: Full repository audit, test count drift fix (1,638→1,660: +1 web, +21 shared), BroCula run6 indexing (latest `brocula-hunt-2026-06-24-run6.md`), CHANGELOG gap fix (added Cycle 144 + Cycle 145 entries), stale merged remote branch cleanup (deleted 30 fully-merged branches), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ tests 1,660/1,660 ✅), PR created
 - **Cycle 143**: Full repository audit, BroCula description drift fix (run4→run5 — latest `brocula-hunt-2026-06-24-run5.md`: BroCula Run 13 / LH 100-100-100-100 / TBT 30ms / 1638 tests), CHANGELOG gap fix (added missing docs(brocula) BroCula Run 13 commit after Cycle 142), stale merged remote branch check, docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ format ✅ tests 1,638/1,638 ✅), PR created
 - **Cycle 142**: Full repository audit, BroCula description drift fix (run3→run4 — latest `brocula-hunt-2026-06-24-run4.md`: BroCula Run 12 / LH 100-100-100-100 / 1633 tests), CHANGELOG gap fix (added 3 missing commits after Cycle 141: feat(shared) KeyboardShortcutTooltip #2067, docs(brocula) BroCula Run 12, fix(web) aria-live copy button), audit archive cleanup (archived Jun 21-22 BroCula reports), stale merged remote branch cleanup (deleted `fix/bugfixer-ulw-cycle-jun-24-run2`), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ format ✅ tests 1,633/1,633 ✅), PR created
 - **Cycle 141**: Full repository audit, BroCula description drift fix (run2→run3 — latest `brocula-hunt-2026-06-24-run3.md`: BroCula Run 11 / LH 100-100-100-100 / 1633 tests), CHANGELOG gap fix (added 3 missing commits after Cycle 140: fix(web) aria-label #2066, feat(editor) scroll shadow #2065, docs(brocula) BroCula Run 11 #2064), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ format ✅ tests 1,633/1,633 ✅), PR created
