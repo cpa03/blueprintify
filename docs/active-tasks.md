@@ -2,6 +2,26 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 146 — Audit Archive Cleanup, Stale Branch Prune, Doc Refresh ✅
+
+### Task: Full repository audit, audit archive consolidation (archived Jun 23 Runs 1-5 from Current to Archived in docs/audits/README.md), stale remote branch prune (pruned local tracking of `fix/bug-017-ci-node-version`), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 146 full repository audit covering redundant/temp/unused file scan, audit archive consolidation, stale branch prune, docs sync, quality verification
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (clean after Cycle 145)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅
+  - [x] **Audit archive consolidation**: Archived Jun 23 Runs 1-5 from Current to Archived in docs/audits/README.md
+  - [x] **Stale remote branch pruned**: `fix/bug-017-ci-node-version` tracking ref removed via `git remote prune origin`
+  - [x] Updated docs/findings.md: Cycle 146 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 146 completed
+  - [x] Updated docs/knowledge-review.md: cycle ref updated to Cycle 146
+  - [x] Updated CHANGELOG.md: Cycle 146 entry added
+  - [x] Updated docs/audits/README.md: Jun 23 reports archived
+
 ## Completed: RepoKeeper Cycle 145 — Test Count Drift Fix, BroCula Run6 Index, CHANGELOG Gap Fix, Stale Branch Cleanup, Doc Refresh ✅
 
 ### Task: Full repository audit, test count drift correction (1,638→1,660: 717 web + 438 api + 505 shared), BroCula description drift fix (run5→run6 — latest audit: `brocula-hunt-2026-06-24-run6.md`), CHANGELOG gap fix (added Cycle 144 + Cycle 145 entries), stale merged remote branch cleanup (deleted 30 fully-merged branches), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification, PR creation
