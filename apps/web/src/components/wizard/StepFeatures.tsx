@@ -123,11 +123,15 @@ export const StepFeatures = memo(function StepFeatures({
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_FEATURES.TITLE}</h2>
           <div className="flex items-center gap-2 text-sm">
-            <span
+            <motion.span
+              key={features.length}
               className={`tabular-nums ${features.length === 0 ? "text-accent-pink" : "text-dark-400"}`}
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", stiffness: 500, damping: 15, mass: 0.5 }}
             >
               {features.length}
-            </span>
+            </motion.span>
             <span className="text-dark-500">
               {UI_CONTENT.WIZARD.STEP_FEATURES.FEATURES_COUNT(features.length)}
             </span>
