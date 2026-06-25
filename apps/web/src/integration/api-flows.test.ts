@@ -248,7 +248,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
               errors: ["Missing required field: projectName"],
             },
           },
-          400
+          HTTP_STATUS.BAD_REQUEST
         )
       );
 
@@ -345,7 +345,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
             error: "Internal server error",
             type: "server_error",
           },
-          500
+          HTTP_STATUS.INTERNAL_ERROR
         )
       );
 

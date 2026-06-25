@@ -102,7 +102,7 @@ describe("Integration: Refinement Workflow", () => {
             success: false,
             error: "OpenAI API error",
           },
-          500
+          HTTP_STATUS.INTERNAL_ERROR
         )
       );
 
@@ -319,7 +319,7 @@ describe("Integration: Export/Import Workflow", () => {
               errors: ["Missing required field: projectName"],
             },
           },
-          400
+          HTTP_STATUS.BAD_REQUEST
         )
       );
 
