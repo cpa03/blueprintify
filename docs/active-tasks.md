@@ -2,6 +2,29 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 147 — Test Count Drift Fix, BroCula Description Drift Fix, CHANGELOG Gap Fix, Stale Branch Cleanup, Doc Refresh ✅
+
+### Task: Full repository audit, test count drift correction (1,660→1,666: 723 web + 438 api + 505 shared — +6 from Icon tests #2089), BroCula description drift fix (ref: `brocula-hunt-2026-06-25-run1.md` — latest Jun 25 Run 1), CHANGELOG gap fix (added 8 missing commits after Cycle 146), stale merged remote branch cleanup (deleted `test/icon-component-coverage`), README BroCula description drift fix `(Jun 17–Jun 24)`→`(Jun 17–Jun 25)`, documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 147 full repository audit covering redundant/temp/unused file scan, test count drift fix, BroCula description drift fix, CHANGELOG gap fix, stale branch cleanup, docs sync, quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (clean after Cycle 146)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ format ✅
+  - [x] **Test count drift corrected**: 1,660→1,666 (+6 web: Icon component unit tests via PR #2089) in knowledge-review.md
+  - [x] **BroCula description drift fix**: Ref updated from `brocula-hunt-2026-06-24-run6.md` → `brocula-hunt-2026-06-25-run1.md` in knowledge-review.md
+  - [x] **README BroCula description drift fix**: `(Jun 17–Jun 24)` → `(Jun 17–Jun 25)`
+  - [x] **CHANGELOG gap fix**: Added 8 missing commits after Cycle 146
+  - [x] **Stale merged remote branch cleanup**: Deleted `origin/test/icon-component-coverage` (fully merged into main)
+  - [x] Updated docs/findings.md: Cycle 147 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 147 completed
+  - [x] Updated docs/knowledge-review.md: cycle ref updated to Cycle 147, test count 1,660→1,666, BroCula ref updated
+  - [x] Updated CHANGELOG.md: Cycle 147 entry + missing commits added
+  - [x] Updated README.md: BroCula description fixed
+
 ## Completed: RepoKeeper Cycle 146 — Audit Archive Cleanup, Stale Branch Prune, Doc Refresh ✅
 
 ### Task: Full repository audit, audit archive consolidation (archived Jun 23 Runs 1-5 from Current to Archived in docs/audits/README.md), stale remote branch prune (pruned local tracking of `fix/bug-017-ci-node-version`), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification

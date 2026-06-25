@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 147: **full repository audit**, test count drift fix (1,660→1,666: +6 web from Icon unit tests), BroCula description drift fix (ref: `brocula-hunt-2026-06-25-run1.md`), CHANGELOG gap fix (added 8 missing commits after Cycle 146), stale merged remote branch cleanup (deleted `test/icon-component-coverage`), README BroCula description drift fix `(Jun 17–Jun 24)`→`(Jun 17–Jun 25)`, docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ tests 1,666/1,666 ✅), PR created
+- fix(ci): add patch doc for CI node-version 20→22 migration (#2090)
+- fix(bugfixer): BUG-014 BUG-017 — fix stale doc refs and hardcoded node-version in CI workflows (#2085)
+- docs(brocula): BroCula Run 15 — LH 95-100-100-100, 0 console errors, 1,660 tests pass (#2086)
+- chore(repokeeper): Cycle 146 — audit archive cleanup, stale branch prune, doc refresh (#2087)
+- feat(web): add external link indicator to GitHub button (#2088)
+- test(web): add Icon component unit tests (#2089)
 - RepoKeeper Cycle 146: **full repository audit**, audit archive consolidation (archived Jun 23 Runs 1-5 from Current to Archived in docs/audits/README.md), stale remote branch prune (pruned local tracking of `fix/bug-017-ci-node-version`), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,660/1,660 ✅)
 - RepoKeeper Cycle 145: **full repository audit**, test count drift fix (1,638→1,660: +1 web, +21 shared), BroCula run6 indexing (latest `brocula-hunt-2026-06-24-run6.md`), CHANGELOG gap fix (added Cycle 144 + Cycle 145 entries), stale merged remote branch cleanup (deleted 30 fully-merged branches), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ tests 1,660/1,660 ✅), PR created
 - Cycle 144 (ULW Loop Run 2): **PR Handler Mode + Issue Manager Mode** — merged 5 open PRs, fixed Issue #2030 (CI node-version) status documentation, issue audit, docs refresh, quality verification (typecheck ✅ lint ✅ build ✅ tests 1,660/1,660 ✅)

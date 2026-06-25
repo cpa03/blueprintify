@@ -2,6 +2,63 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 147 (2026-06-25 — RepoKeeper: Test Count Drift Fix, BroCula Description Drift Fix, CHANGELOG Gap Fix, Stale Branch Cleanup, Doc Refresh)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, test count drift correction (1,660→1,666: 723 web + 438 api + 505 shared — +6 tests: Icon component tests via PR #2089), BroCula description drift fix (latest audit: `brocula-hunt-2026-06-25-run1.md` — BroCula Run 15 / LH 95-100-100-100 / 1660 tests), CHANGELOG gap fix (added 8 missing commits after Cycle 146: Icon tests #2089, external link indicator #2088, BroCula Run 15 #2086, bugfixer #2085, CI patch doc #2090, documentation follow-ups), stale remote branch cleanup (deleted `origin/test/icon-component-coverage` — fully merged into main), README BroCula description drift fix `(Jun 17–Jun 24)`→`(Jun 17–Jun 25)`, comprehensive documentation sync (findings, active-tasks, knowledge-review, CHANGELOG), quality verification.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build | ✅ Successful |
+| Tests | ✅ **1,666/1,666 passing** (723 web + 438 api + 505 shared) |
+| Secrets Scan | ✅ Clean |
+| Format | ✅ All files Prettier-compliant |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0). No TODO/FIXME/HACK artifacts in non-test source.
+2. **Test count drift fix**: Actual tests now at 1,666 (723 web + 438 api + 505 shared) — up from 1,660 in Cycle 146 (web +6 from Icon component unit tests). Updated `docs/knowledge-review.md`.
+3. **BroCula description drift fix**: Latest audit is `brocula-hunt-2026-06-25-run1.md` (Run 15 / LH 95-100-100-100 / 1660 tests). Updated `docs/knowledge-review.md` and `README.md`.
+4. **README BroCula description drift fix**: `(Jun 17–Jun 24)` → `(Jun 17–Jun 25)` — matches latest audit `brocula-hunt-2026-06-25-run1.md`.
+5. **CHANGELOG gap fix**: Added 8 missing commits after Cycle 146: Icon tests (#2089), external link indicator (#2088), BroCula Run 15 (#2086), bugfixer (#2085), CI patch doc (#2090), RepoKeeper Cycle 147 entry.
+6. **Stale merged remote branch cleanup**: Deleted `origin/test/icon-component-coverage` — fully merged into main via PR #2089 (ancestor check confirmed). Only `agent/janitor` and `agent/security-engineer` remain as active agent branches.
+7. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/knowledge-review.md`, `CHANGELOG.md`, `README.md` updated for Cycle 147.
+
+### Key Findings
+
+- **Test count increased**: 1,660 → 1,666 (+6 web from Icon component unit tests via PR #2089). Documentation was stale at 1,660. Now corrected.
+- **BroCula description drift**: `docs/knowledge-review.md` and `README.md` still referenced `(Jun 17–Jun 24)` and `brocula-hunt-2026-06-24-run6.md` — latest is now `brocula-hunt-2026-06-25-run1.md` (Run 15). Fixed.
+- **CHANGELOG had 8 missing commits** after Cycle 146 — now documented.
+- **Stale merged branch deleted**: `origin/test/icon-component-coverage` was fully merged into main via PR #2089. Cleaned up.
+- **No redundant/temp/unused files found** — repo remains clean after Cycle 146.
+- **CI workflow node-version still at "20"**: BUG-017 remains unresolved on `main` — blocked by `workflows: write` token permission. Patch docs retained.
+- **All quality checks passing**: typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅ tests 1,666/1,666 ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — Successful ✅
+- [x] Tests — 1,666/1,666 passing (723 web + 438 api + 505 shared) ✅
+- [x] Format — All files pass ✅
+- [x] Secrets scan — Passed ✅
+- [x] Test count drift corrected — 1,660→1,666 in knowledge-review.md
+- [x] BroCula description fixed: ref updated to `brocula-hunt-2026-06-25-run1.md`
+- [x] README BroCula description fixed: `(Jun 17–Jun 24)` → `(Jun 17–Jun 25)`
+- [x] CHANGELOG gap filled — 8 commits added after Cycle 146
+- [x] Stale merged branch deleted — `origin/test/icon-component-coverage`
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK
+- [x] Documentation refreshed for Cycle 147 (findings, active-tasks, knowledge-review, CHANGELOG, README)
+- [x] PR created
+
+---
+
 ## Cycle 146 (2026-06-25 — RepoKeeper: Audit Archive Cleanup, Stale Branch Prune, Doc Refresh)
 
 ### Audit Scope
