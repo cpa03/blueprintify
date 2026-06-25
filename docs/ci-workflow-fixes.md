@@ -1,7 +1,7 @@
 # CI Workflow Fixes — Partial (Workflow Files Pending)
 
-> **Last updated**: 2026-06-24 (ULW Cycle — Run 2)
-> **Status**: ⚠️ **FIX APPLIED LOCALLY — AWAITING WORKFLOWS:WRITE PERMISSION TO PUSH**
+> **Last updated**: 2026-06-25 (ULW Cycle — Run 3 / Cycle 145)
+> **Status**: ⚠️ **FIX RE-APPLIED AND VERIFIED — AWAITING USER WITH `workflows: write` PERMISSION TO PUSH**
 
 ## Overview
 
