@@ -2,6 +2,55 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 152 (2026-06-26 — RepoKeeper: BroCula Run 17 Indexing, Stale README Link Cleanup, CHANGELOG Gap Fix, Doc Refresh)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, BroCula description drift fix (run2→run3 — latest audit: `brocula-hunt-2026-06-25-run3.md` — BroCula Run 17 / LH 100-100-100-100 / 723 web tests), stale README link cleanup (removed `docs/ci-workflow-fixes.md` from directory tree — file no longer exists), CHANGELOG gap fix (added missing `feat(ux): add smooth fade-in entrance animation to ToastContainer (#2108)` after Cycle 151), stale merged remote branch cleanup (0 to delete — all 8 remote branches have unique unmerged commits), comprehensive documentation sync (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,671/1,671 passing** (723 web + 438 api + 510 shared) |
+| Format | ✅ All files Prettier-compliant |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0). No TODO/FIXME/HACK artifacts in non-test source.
+2. **BroCula description drift fix**: `brocula-hunt-2026-06-25-run2.md` → `brocula-hunt-2026-06-25-run3.md` — latest BroCula audit is now Run 17 (Run 3 / LH 100-100-100-100 / 723 web tests). Updated `docs/knowledge-review.md`.
+3. **Stale README link cleanup**: Removed `docs/ci-workflow-fixes.md` from README directory tree — file no longer exists on disk. Cycle 148 had claimed to fix this but the reference persisted in the tree.
+4. **CHANGELOG gap fix**: Added missing `feat(ux): add smooth fade-in entrance animation to ToastContainer (#2108)` after Cycle 151 entry.
+5. **Stale merged remote branch cleanup**: 8 remote branches examined — all have unique unmerged commits. 0 branches to delete.
+6. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG, README for Cycle 152.
+
+### Key Findings
+
+- **BroCula run3 not referenced in knowledge-review.md**: `brocula-hunt-2026-06-25-run3.md` (Run 17) existed on disk and was indexed in `docs/audits/README.md` as latest, but `knowledge-review.md` still referenced `run2`/Run 16. Fixed.
+- **README tree still had stale `docs/ci-workflow-fixes.md`**: File was deleted in a prior cycle but the directory tree entry remained. Now removed.
+- **CHANGELOG gap**: `feat(ux): add smooth fade-in entrance animation to ToastContainer (#2108)` was missing after Cycle 151. Added.
+- **No redundant/temp/unused files found** — repo remains clean after Cycle 151.
+- **0 stale merged branches** — all 8 remote branches have unique unmerged content. No cleanup needed.
+- **All quality checks passing**: typecheck ✅ lint ✅ tests 1,671/1,671 ✅ format ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Tests — 1,671/1,671 passing (723 web + 438 api + 510 shared) ✅
+- [x] Format — All files pass ✅
+- [x] BroCula description fixed: `run2`→`run3` in knowledge-review.md
+- [x] README tree stale link removed: `docs/ci-workflow-fixes.md` deleted
+- [x] CHANGELOG gap filled — ToastContainer animation commit added
+- [x] Stale merged branches: 0 to delete — all active
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK
+- [x] Documentation refreshed for Cycle 152 (findings, active-tasks, knowledge-review, CHANGELOG, README)
+
+---
+
 ## Cycle 148 (2026-06-25 — RepoKeeper: Test Count Drift Fix, BroCula Description Drift Fix, Stale README Link Cleanup, Audit Archive Consolidation, Stale Branch Cleanup, Doc Refresh)
 
 ### Audit Scope
