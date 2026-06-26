@@ -1,7 +1,10 @@
 import { memo } from "react";
 import { SKIP_LINK_ANIMATION } from "../config/constants";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 export const SkipLink = memo(function SkipLink(): JSX.Element {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <a
       href="#main-content"
@@ -17,7 +20,7 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
                  transition-all duration-300 ease-out
                  hover:scale-[1.02]"
       style={{
-        willChange: "transform, opacity",
+        willChange: shouldReduceMotion ? "auto" : "transform, opacity",
       }}
     >
       <span className="flex items-center gap-2">
@@ -26,7 +29,9 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
-          style={{ animation: SKIP_LINK_ANIMATION.ARROW_BOUNCE }}
+          style={{
+            animation: shouldReduceMotion ? "none" : SKIP_LINK_ANIMATION.ARROW_BOUNCE,
+          }}
         >
           <path
             strokeLinecap="round"
@@ -39,7 +44,9 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
       </span>
       <span
         className="absolute inset-0 rounded-xl bg-primary-400/20 blur-md -z-10"
-        style={{ animation: SKIP_LINK_ANIMATION.GLOW_PULSE }}
+        style={{
+          animation: shouldReduceMotion ? "none" : SKIP_LINK_ANIMATION.GLOW_PULSE,
+        }}
       />
       <style>
         {SKIP_LINK_ANIMATION.ARROW_BOUNCE_KEYFRAMES}
