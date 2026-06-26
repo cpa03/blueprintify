@@ -12,16 +12,18 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-26 (RepoKeeper Cycle 151)
+**Last Review**: 2026-06-26 (RepoKeeper Cycle 152)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jun 25)` — matches latest audit `brocula-hunt-2026-06-25-run2.md`
+- **README BroCula description verified**: `(Jun 17–Jun 25)` — matches latest audit `brocula-hunt-2026-06-25-run3.md` (BroCula Run 17 / LH 100-100-100-100, 723 web tests)
 - **Typecheck/Lint/Tests**: All clean (0 errors, 0 warnings, **1,671/1,671 tests passing** — 723 web + 438 api + 510 shared)
 - **CI workflow stale refs fixed**: BUG-014 and BUG-017 fully resolved — zero stale doc refs (`docs/bug.md`, `docs/feature.md`) and zero hardcoded `node-version: "20"` / `node-version: 20` remain in any workflow file
+- **Cycle 152**: Full repository audit, BroCula description drift fix (run2→run3 — latest `brocula-hunt-2026-06-25-run3.md`: BroCula Run 17 / LH 100-100-100-100 / 723 web tests), stale README link cleanup (removed `docs/ci-workflow-fixes.md` from directory tree — file no longer exists), CHANGELOG gap fix (added feat(ux) ToastContainer entrance animation #2108 after Cycle 151), stale merged remote branch check (0 to delete — all 8 active with unique commits), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ tests 1,671/1,671 ✅ format ✅), PR created
+- **Cycle 151**: Full repository audit, BUG-014 actually fixed on main (main.yml stale doc refs), BUG-017 actually fixed on main (node-version-file across 5 workflow files, 11 occurrences), documentation refresh, quality verification (typecheck ✅ lint ✅ build ✅ tests 1,671/1,671 ✅), PR created
 - **Cycle 150**: Full repository audit, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1), stale merged remote branch cleanup (deleted `origin/feat/flexy-iteration-70-hardcoded-cleanup`), docs refresh (findings, active-tasks, knowledge-review, bugs, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests ✅), PR created
 - **CI workflow stale refs (BUG-014/BUG-017) actually fixed on main**: BUG-014 (stale doc refs) and BUG-017 (hardcoded node-version) resolved for the first time on `main`. Zero stale doc refs and zero hardcoded `node-version:` remain in any workflow file.
 - **Cycle 151**: Full repository audit, BUG-014 actually fixed on main (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`), BUG-017 actually fixed on main (`node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files, 11 occurrences), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,671/1,671 ✅), PR created

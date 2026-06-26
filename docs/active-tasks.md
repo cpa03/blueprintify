@@ -2,6 +2,28 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 152 — BroCula Run 17 Indexing, Stale README Link Cleanup, CHANGELOG Gap Fix, Doc Refresh ✅
+
+### Task: Full repository audit, BroCula description drift fix (run2→run3 — latest audit: `brocula-hunt-2026-06-25-run3.md`: BroCula Run 17 / LH 100-100-100-100 / 723 web tests), stale README link cleanup (removed `docs/ci-workflow-fixes.md` from directory tree), CHANGELOG gap fix (added missing `feat(ux): ToastContainer entrance animation (#2108)` after Cycle 151), stale merged remote branch check (0 to delete), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 152 full repository audit covering redundant/temp/unused file scan, BroCula description drift fix (run2→run3), stale README link cleanup, CHANGELOG gap fix, stale merged branch check, docs sync, quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (clean after Cycle 151)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,671/1,671 ✅ format ✅
+  - [x] **BroCula description drift fix**: `brocula-hunt-2026-06-25-run2.md` → `brocula-hunt-2026-06-25-run3.md` (Run 17 is latest, LH 100-100-100-100, 723 web tests) — fixed in knowledge-review.md
+  - [x] **Stale README link cleanup**: Removed stale `docs/ci-workflow-fixes.md` reference from README directory tree (file no longer exists on disk)
+  - [x] **CHANGELOG gap fix**: Added missing `feat(ux): add smooth fade-in entrance animation to ToastContainer (#2108)` after Cycle 151
+  - [x] **Stale merged remote branch check**: 8 branches examined — all with unique unmerged commits, 0 to delete
+  - [x] Updated docs/findings.md: Cycle 152 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 152 completed
+  - [x] Updated docs/knowledge-review.md: cycle ref updated to Cycle 152, BroCula ref run2→run3
+  - [x] Updated CHANGELOG.md: Cycle 152 entry + ToastContainer animation commit added
+  - [x] Updated README.md: stale ci-workflow-fixes.md removed from directory tree
+
 ## Completed: RepoKeeper Cycle 150 — BUG-014/BUG-017 Actual Fix, Stale Branch Cleanup, Doc Refresh ✅
 
 ### Task: Full repository audit, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 11 occurrences), stale merged remote branch cleanup (deleted `origin/feat/flexy-iteration-70-hardcoded-cleanup`), documentation refresh (findings, active-tasks, knowledge-review, bugs, CHANGELOG), quality verification, PR creation
