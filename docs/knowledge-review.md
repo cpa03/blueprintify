@@ -12,7 +12,7 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-25 (RepoKeeper Cycle 148)
+**Last Review**: 2026-06-26 (RepoKeeper Cycle 151)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
@@ -21,6 +21,8 @@ As of cycle refresh:
 - No drift detected between docs/ and apps/ code
 - **README BroCula description verified**: `(Jun 17–Jun 25)` — matches latest audit `brocula-hunt-2026-06-25-run2.md`
 - **Typecheck/Lint/Tests**: All clean (0 errors, 0 warnings, **1,671/1,671 tests passing** — 723 web + 438 api + 510 shared)
+- **CI workflow stale refs (BUG-014/BUG-017) actually fixed on main**: BUG-014 (stale doc refs) and BUG-017 (hardcoded node-version) resolved for the first time on `main`. Zero stale doc refs and zero hardcoded `node-version:` remain in any workflow file.
+- **Cycle 151**: Full repository audit, BUG-014 actually fixed on main (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`), BUG-017 actually fixed on main (`node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files, 11 occurrences), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,671/1,671 ✅), PR created
 - **Cycle 148**: Full repository audit, test count drift fix (1,666→1,671: shared +5 from latest test suite additions), BroCula description drift fix (ref: `brocula-hunt-2026-06-25-run2.md` — latest Jun 25 Run 2), stale README link cleanup (removed `docs/ci-workflow-fixes.md` and `docs/task.md` references), stale merged remote branch cleanup (deleted `origin/brocula-run-16`), audit archive consolidation (archived Jun 24 Runs 1-6 from Current to Archived), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,671/1,671 ✅), PR created
 - **Cycle 146**: Full repository audit, audit archive consolidation (archived Jun 23 Runs 1-5 from Current to Archived), stale remote branch prune (pruned local tracking of `fix/bug-017-ci-node-version`), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,660/1,660 ✅)
 - **Cycle 145**: Full repository audit, test count drift fix (1,638→1,660: +1 web, +21 shared), BroCula run6 indexing (latest `brocula-hunt-2026-06-24-run6.md`), CHANGELOG gap fix (added Cycle 144 + Cycle 145 entries), stale merged remote branch cleanup (deleted 30 fully-merged branches), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ tests 1,660/1,660 ✅), PR created
