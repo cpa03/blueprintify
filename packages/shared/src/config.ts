@@ -248,6 +248,29 @@ export const HTTP_STATUS = {
   GATEWAY_TIMEOUT: 504,
 } as const;
 
+/**
+ * View Mode Indicator Positioning Values
+ * Centralized source of truth for the sliding indicator bar position and width
+ * in the editor toolbar's view mode toggle (edit/split/preview).
+ * These calc() and px values position the animated background indicator
+ * behind the active view mode button.
+ * Flexy says: No hardcoded "calc(33.33% + 2px)" or "4px" in view mode indicator!
+ * Usage: import { VIEW_MODE_INDICATOR_POSITION } from "@blueprint/shared";
+ *        animate={{ left: VIEW_MODE_INDICATOR_POSITION.EDIT_LEFT }}
+ */
+export const VIEW_MODE_INDICATOR_POSITION = {
+  /** Left offset for EDIT view mode button indicator */
+  EDIT_LEFT: "4px" as const,
+  /** Left offset for SPLIT view mode button indicator (centered on middle button) */
+  SPLIT_LEFT: "calc(33.33% + 2px)" as const,
+  /** Left offset for PREVIEW view mode button indicator (on right button) */
+  PREVIEW_LEFT: "calc(66.67% - 0px)" as const,
+  /** Width of indicator in SPLIT mode (when middle button is active) */
+  SPLIT_WIDTH: "calc(33.33% - 2px)" as const,
+  /** Width of indicator in EDIT or PREVIEW mode (single button active) */
+  SINGLE_WIDTH: "calc(33.33% - 4px)" as const,
+} as const;
+
 // ============================================================================
 // Shared Route Paths
 // Centralized source of truth for API route paths

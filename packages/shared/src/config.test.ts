@@ -102,6 +102,7 @@ import {
   STORAGE_LOCAL_DEFAULTS,
   UI_ANIMATION_DEFAULTS,
   ANIMATION_DURATION_S,
+  VIEW_MODE_INDICATOR_POSITION,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -2817,5 +2818,34 @@ describe("ANIMATION_DURATION_S", () => {
     expect(ANIMATION_DURATION_S.TYPING_INDICATOR_DELAY_S).toBe(0.6);
     expect(ANIMATION_DURATION_S.FLOATING_DURATION).toBe(3);
     expect(ANIMATION_DURATION_S.CARD_ENTRANCE_DELAY).toBe(0.05);
+  });
+});
+
+describe("VIEW_MODE_INDICATOR_POSITION", () => {
+  it("should have all expected positioning values", () => {
+    expect(VIEW_MODE_INDICATOR_POSITION.EDIT_LEFT).toBe("4px");
+    expect(VIEW_MODE_INDICATOR_POSITION.SPLIT_LEFT).toBe("calc(33.33% + 2px)");
+    expect(VIEW_MODE_INDICATOR_POSITION.PREVIEW_LEFT).toBe("calc(66.67% - 0px)");
+    expect(VIEW_MODE_INDICATOR_POSITION.SPLIT_WIDTH).toBe("calc(33.33% - 2px)");
+    expect(VIEW_MODE_INDICATOR_POSITION.SINGLE_WIDTH).toBe("calc(33.33% - 4px)");
+  });
+
+  it("should have 5 positioning entries", () => {
+    const values = Object.values(VIEW_MODE_INDICATOR_POSITION);
+    expect(values.length).toBe(5);
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(VIEW_MODE_INDICATOR_POSITION);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(VIEW_MODE_INDICATOR_POSITION);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
   });
 });

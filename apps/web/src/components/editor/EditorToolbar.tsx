@@ -32,6 +32,7 @@ import {
   VIEW_MODES as SHARED_VIEW_MODES,
   TOOLTIP_LABELS,
   SHORTCUT_LABELS,
+  VIEW_MODE_INDICATOR_POSITION,
 } from "@blueprint/shared";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
@@ -202,12 +203,14 @@ function EditorToolbarComponent({
           animate={{
             left:
               viewMode === SHARED_VIEW_MODES.EDIT
-                ? "4px"
+                ? VIEW_MODE_INDICATOR_POSITION.EDIT_LEFT
                 : viewMode === SHARED_VIEW_MODES.SPLIT
-                  ? "calc(33.33% + 2px)"
-                  : "calc(66.67% - 0px)",
+                  ? VIEW_MODE_INDICATOR_POSITION.SPLIT_LEFT
+                  : VIEW_MODE_INDICATOR_POSITION.PREVIEW_LEFT,
             width:
-              viewMode === SHARED_VIEW_MODES.SPLIT ? "calc(33.33% - 2px)" : "calc(33.33% - 4px)",
+              viewMode === SHARED_VIEW_MODES.SPLIT
+                ? VIEW_MODE_INDICATOR_POSITION.SPLIT_WIDTH
+                : VIEW_MODE_INDICATOR_POSITION.SINGLE_WIDTH,
           }}
           transition={{
             type: "spring",
