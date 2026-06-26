@@ -36,6 +36,7 @@ import {
   UI_CONTENT,
   VALIDATION_MESSAGES,
   TEXTAREA_CONFIG,
+  SPRING_CONFIG,
 } from "../../config/constants";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
@@ -181,7 +182,7 @@ export const StepInfo = memo(function StepInfo({
                 key={formProgress.completed}
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 500, damping: 15, mass: 0.5 }}
+                transition={{ type: "spring", ...SPRING_CONFIG.COUNTER_FLIP }}
                 className="tabular-nums"
               >
                 {formProgress.completed}

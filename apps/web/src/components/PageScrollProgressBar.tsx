@@ -31,7 +31,7 @@
 import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { motion, useSpring, useTransform } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { LAYOUT } from "../config/theme";
+import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { ANIMATION } from "../config/constants";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 
@@ -156,8 +156,8 @@ function PageScrollProgressBarComponent({
   );
 
   const springConfig = prefersReducedMotion
-    ? { stiffness: 300, damping: 30, mass: 1 }
-    : { stiffness: 120, damping: 20, mass: 0.5 };
+    ? SCROLL_PROGRESS_SPRING.PAGE_BAR_REDUCED
+    : SCROLL_PROGRESS_SPRING.PAGE_BAR_NORMAL;
 
   const smoothProgress = useSpring(0, springConfig);
   const width = useTransform(smoothProgress, [0, 100], ["0%", "100%"]);

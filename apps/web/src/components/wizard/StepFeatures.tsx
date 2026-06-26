@@ -128,7 +128,7 @@ export const StepFeatures = memo(function StepFeatures({
               className={`tabular-nums ${features.length === 0 ? "text-accent-pink" : "text-dark-400"}`}
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 500, damping: 15, mass: 0.5 }}
+              transition={{ type: "spring", ...SPRING_CONFIG.COUNTER_FLIP }}
             >
               {features.length}
             </motion.span>
