@@ -185,12 +185,9 @@
       }
     </style>
 
-    <!-- DNS prefetch and preconnect for critical origins -->
+    <!-- Preconnect + DNS prefetch for critical origins -->
+    <!-- Note: preconnect implies dns-prefetch, so only add dns-prefetch for origins without full preconnect -->
     <link rel="dns-prefetch" href="https://github.com" />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-    <link rel="dns-prefetch" href="https://va.vercel-scripts.com" />
-    <!-- Preconnect to Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" fetchpriority="high" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin fetchpriority="high" />
     <link rel="preconnect" href="https://va.vercel-scripts.com" crossorigin />
