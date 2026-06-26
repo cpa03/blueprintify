@@ -46,7 +46,7 @@ import {
 } from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
-import { getAriaShortcutKey } from "../../lib/platform";
+import { getAriaShortcutKey, getModifierLabel } from "../../lib/platform";
 
 export type ViewMode = (typeof SHARED_VIEW_MODES)[keyof typeof SHARED_VIEW_MODES];
 
@@ -429,6 +429,12 @@ function EditorToolbarComponent({
             />
           </motion.svg>
           New
+          <kbd
+            className="ml-1.5 px-1 py-0.5 bg-dark-700/80 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none"
+            aria-hidden="true"
+          >
+            {getModifierLabel()}+N
+          </kbd>
         </button>
       </Tooltip>
     </div>
