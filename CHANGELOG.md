@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- feat(validation): add path drawing animation to validation checkmark/X icons
+- chore(repokeeper): BroCula Run 18 — audit report (LH 100-100-100-100, 723 tests ✅) (#2114)
+- feat(flexy): centralize inline spring configs into shared constants (Iteration 72)
+- fix(web): respect prefers-reduced-motion in SkipLink arrow and glow animations (#2116)
+- RepoKeeper Cycle 154: **full repository audit**, README BroCula description drift fix `(Jun 17–Jun 25)`→`(Jun 17–Jun 26)` (latest audit: `brocula-hunt-2026-06-26-run1.md` / BroCula Run 18 / LH 100-100-100-100 / 723 web tests), knowledge-review BroCula ref drift fix (run3→Jun 26 Run 1), CHANGELOG gap fix (added 4 missing commits after Cycle 153: feat(validation) checkmark/X path drawing animation, BroCula Run 18 audit report, feat(flexy) Iteration 72 spring config centralization, fix(web) prefers-reduced-motion SkipLink animation), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,675/1,675 ✅), PR created
 - feat(editor): add visible Cmd/Ctrl+N shortcut badge to New button
 - feat(flexy): centralize view mode indicator positioning values into shared config (Iteration 71)
 - chore(repokeeper): Cycle 152 — BroCula run2→run3 drift fix, stale README link cleanup, CHANGELOG gap fix, doc refresh
