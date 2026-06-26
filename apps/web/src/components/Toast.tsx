@@ -483,7 +483,7 @@ function ToastContainerComponent(): JSX.Element {
                   className="tabular-nums"
                   initial={{ scale: 0.5, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 15, mass: 0.5 }}
+                  transition={{ type: "spring", ...SPRING_CONFIG.COUNTER_FLIP }}
                   aria-hidden="true"
                 >
                   {toasts.length}

@@ -130,6 +130,8 @@ export const SPRING_CONFIG = {
   SUCCESS: { stiffness: 500, damping: 30 },
   /** Checkmark icon spring - precise with minimal bounce */
   CHECKMARK_ICON: { stiffness: 500, damping: 20, mass: 0.5 },
+  /** Counter/tab number flip spring - snappy bounce for animated counters */
+  COUNTER_FLIP: { stiffness: 500, damping: 15, mass: 0.5 },
 } as const;
 
 // ============================================================================

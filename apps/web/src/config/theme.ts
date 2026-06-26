@@ -458,6 +458,10 @@ export const SCROLL_PROGRESS_SPRING = {
   DEFAULT: { stiffness: 150, damping: 20, mass: 0.5 } as const,
   /** Reduced motion spring config (stiffer = less animation) */
   REDUCED_MOTION: { stiffness: 1000, damping: 100, mass: 0.5 } as const,
+  /** Page scroll progress bar — normal motion */
+  PAGE_BAR_NORMAL: { stiffness: 120, damping: 20, mass: 0.5 } as const,
+  /** Page scroll progress bar — reduced motion */
+  PAGE_BAR_REDUCED: { stiffness: 300, damping: 30, mass: 1 } as const,
 } as const;
 
 // ============================================================================
