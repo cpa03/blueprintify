@@ -250,6 +250,24 @@ const ToastItem = memo(
           aria-hidden="true"
         />
 
+        {/* Entry glow ring — brief initial glow that fades out after the toast
+            enters, giving notifications a subtle "pop" as they appear. Uses
+            currentColor so the glow matches the toast type (success green,
+            error red, warning amber, info blue). Skipped when reduced motion
+            is preferred to avoid unnecessary visual noise. */}
+        {!shouldReduceMotion && (
+          <motion.div
+            className="absolute inset-0 rounded-xl pointer-events-none"
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 0 }}
+            transition={{ duration: ANIMATION.SLOW, ease: "easeOut" }}
+            style={{
+              boxShadow: `inset 0 0 40px 0 color-mix(in srgb, currentColor 18%, transparent)`,
+            }}
+            aria-hidden="true"
+          />
+        )}
+
         {/* Hover glow ring — subtle inset glow that gently "catches" the toast
             when paused, reinforcing the paused state visually. Uses currentColor
             which inherits from the toast type (success/error/warning/info), so
