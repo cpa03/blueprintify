@@ -95,6 +95,11 @@ export const KEYBOARD_SHORTCUTS = {
     MODIFIER: "ctrl/cmd",
     DESCRIPTION: "Switch editor to Preview view",
   },
+  SEARCH_SHORTCUTS: {
+    KEY: "f",
+    MODIFIER: "ctrl/cmd",
+    DESCRIPTION: "Search keyboard shortcuts",
+  },
 } as const;
 
 /**

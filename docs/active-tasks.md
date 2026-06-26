@@ -2,6 +2,14 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 150 — BUG-014/BUG-017 Actual Fix, Stale Branch Cleanup, Doc Refresh ✅
+
+### Task: Full repository audit, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 11 occurrences), stale merged remote branch cleanup (deleted `origin/feat/flexy-iteration-70-hardcoded-cleanup`), documentation refresh (findings, active-tasks, knowledge-review, bugs, CHANGELOG), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 150 full repository audit covering redundant/temp/unused file scan, **BUG-014 actually fixed** (main.yml stale doc refs), **BUG-017 actually fixed** (hardcoded node-version replaced across 4 workflow files), stale merged remote branch cleanup, docs sync, quality verification, PR creation
+
 ## Completed: RepoKeeper Cycle 151 — BUG-014/BUG-017 Actually Fixed on main, CI Node Version Migration Applied, Stale Branch Cleanup, Doc Refresh ✅
 
 ### Task: Full repository audit, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files — 11 occurrences: iterate.yml 5, on-pull.yml 1, parallel.yml 4, pr-gatekeeper.yml 1), stale merged remote branch cleanup prep, documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation
