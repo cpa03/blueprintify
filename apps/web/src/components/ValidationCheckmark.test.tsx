@@ -7,6 +7,9 @@ vi.mock("framer-motion", () => ({
     span: vi.fn(({ children, animate: _a, initial: _i, exit: _e, transition: _t, ...props }) => (
       <span {...props}>{children}</span>
     )),
+    path: vi.fn(({ children, animate: _a, initial: _i, transition: _t, ...props }) => (
+      <path {...props}>{children}</path>
+    )),
   },
   AnimatePresence: vi.fn(({ children }) => <>{children}</>),
 }));

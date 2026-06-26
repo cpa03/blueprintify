@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ANIMATION_TIMING } from "../config/theme";
+import { ANIMATION } from "../config/constants";
 
 interface ValidationCheckmarkProps {
   isValid: boolean;
@@ -64,20 +65,38 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
         >
           {isValid ? (
             <svg className={iconSize} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
+              <motion.path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={strokeWidth}
                 d="M5 13l4 4L19 7"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={{
+                  pathLength: {
+                    duration: ANIMATION.CHECKMARK_REVEAL,
+                    ease: "easeOut",
+                  },
+                  opacity: { duration: 0.1, ease: "easeOut" },
+                }}
               />
             </svg>
           ) : (
             <svg className={iconSize} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
+              <motion.path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={strokeWidth}
                 d="M6 18L18 6M6 6l12 12"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={{
+                  pathLength: {
+                    duration: ANIMATION.CHECKMARK_REVEAL,
+                    ease: "easeOut",
+                  },
+                  opacity: { duration: 0.1, ease: "easeOut" },
+                }}
               />
             </svg>
           )}
