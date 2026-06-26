@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- feat(editor): add visible Cmd/Ctrl+N shortcut badge to New button
+- feat(flexy): centralize view mode indicator positioning values into shared config (Iteration 71)
+- chore(repokeeper): Cycle 152 — BroCula run2→run3 drift fix, stale README link cleanup, CHANGELOG gap fix, doc refresh
+- perf(html): remove redundant dns-prefetch hints, optimize resource loading
 - RepoKeeper Cycle 150: **full repository audit**, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1), stale merged remote branch cleanup (deleted `origin/feat/flexy-iteration-70-hardcoded-cleanup`), docs refresh (findings, active-tasks, knowledge-review, bugs, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests ✅), PR created
 - RepoKeeper Cycle 151: **BUG-014 and BUG-017 actually fixed on main for the first time** — main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` (2 occurrences); `node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files (11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1). CI workflow fixes finally applied to `main` after 30+ blocked cycles. Full repository audit, docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,671/1,671 ✅), PR created
 - feat(ux): add smooth fade-in entrance animation to ToastContainer (#2108)
