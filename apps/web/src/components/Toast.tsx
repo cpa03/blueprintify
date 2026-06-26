@@ -389,8 +389,21 @@ function ToastContainerComponent(): JSX.Element {
     return () => clearTimeout(timer);
   }, [dismissAnnouncement]);
 
+  // Container entrance animation — a gentle fade+slide-up that smooths the
+  // initial appearance of the toast panel. Without this, the container
+  // pops in abruptly when the first toast fires. The subtle spring gives
+  // a polished "surface rising into view" feel that matches the toast
+  // item animations. Disabled when reduced motion is preferred.
+  const containerAnimation = shouldReduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 12 },
+        animate: { opacity: 1, y: 0 },
+        transition: { type: "spring" as const, ...SPRING_CONFIG.SNAPPY },
+      };
+
   return (
-    <div className={TOAST_SPRING.CONTAINER_CLASSES}>
+    <motion.div className={TOAST_SPRING.CONTAINER_CLASSES} {...containerAnimation}>
       <AnimatePresence mode="popLayout">
         {toasts.map((toast, index) => (
           <ToastItem key={toast.id} toast={toast} onRemove={removeToast} staggerIndex={index} />
@@ -489,7 +502,7 @@ function ToastContainerComponent(): JSX.Element {
       <div className="sr-only" role="status" aria-live="assertive" aria-atomic="true">
         {dismissAnnouncement}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
