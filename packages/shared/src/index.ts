@@ -166,6 +166,7 @@ export {
   STORAGE_LOCAL_DEFAULTS,
   UI_ANIMATION_DEFAULTS,
   ANIMATION_DURATION_S,
+  VIEW_MODE_INDICATOR_POSITION,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";
