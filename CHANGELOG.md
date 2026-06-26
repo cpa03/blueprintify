@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 150: **full repository audit**, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1), stale merged remote branch cleanup (deleted `origin/feat/flexy-iteration-70-hardcoded-cleanup`), docs refresh (findings, active-tasks, knowledge-review, bugs, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests ✅), PR created
 - feat(web): add spring-animated features count in StepFeatures
 - docs(audit): BroCula Run 16 — LH 100-100-100-100, 1671 tests pass
 - chore(docs): remove stale docs, update ci-configuration
