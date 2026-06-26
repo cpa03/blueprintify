@@ -31,6 +31,7 @@ import type { EditorTab } from "@blueprint/shared";
 import {
   VIEW_MODES as SHARED_VIEW_MODES,
   TOOLTIP_LABELS,
+  TOOLTIP_DEFAULTS,
   SHORTCUT_LABELS,
   VIEW_MODE_INDICATOR_POSITION,
 } from "@blueprint/shared";
@@ -152,7 +153,7 @@ function EditorToolbarComponent({
               </div>
             }
             position="bottom"
-            delay={400}
+            delay={TOOLTIP_DEFAULTS.SHOW_DELAY_MS}
           >
             <button
               onClick={() => setViewMode(mode)}
@@ -234,7 +235,7 @@ function EditorToolbarComponent({
           </div>
         }
         position="bottom"
-        delay={400}
+        delay={TOOLTIP_DEFAULTS.SHOW_DELAY_MS}
       >
         <AnimatedCopyButton
           onCopy={onCopy}
@@ -256,7 +257,7 @@ function EditorToolbarComponent({
           </div>
         }
         position="bottom"
-        delay={400}
+        delay={TOOLTIP_DEFAULTS.SHOW_DELAY_MS}
       >
         <button
           onClick={onExport}
@@ -405,7 +406,7 @@ function EditorToolbarComponent({
           </div>
         }
         position="bottom"
-        delay={400}
+        delay={TOOLTIP_DEFAULTS.SHOW_DELAY_MS}
       >
         <button
           onClick={onNew}
