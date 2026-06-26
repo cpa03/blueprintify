@@ -2,6 +2,28 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 150 — BUG-014/BUG-017 Actual Fix, Stale Branch Cleanup, Doc Refresh ✅
+
+### Task: Full repository audit, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 11 occurrences), stale merged remote branch cleanup (deleted `origin/feat/flexy-iteration-70-hardcoded-cleanup`), documentation refresh (findings, active-tasks, knowledge-review, bugs, CHANGELOG), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 150 full repository audit covering redundant/temp/unused file scan, **BUG-014 actually fixed** (main.yml stale doc refs), **BUG-017 actually fixed** (hardcoded node-version replaced across 4 workflow files), stale merged remote branch cleanup, docs sync, quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (clean after Cycle 148)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests ✅
+  - [x] **BUG-014 actually fixed**: `main.yml` stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` — 2 occurrences
+  - [x] **BUG-017 actually fixed**: `node-version: "20"`→`node-version-file: ".node-version"` — 11 occurrences across iterate.yml (5), on-pull.yml (1), parallel.yml (4), pr-gatekeeper.yml (1)
+  - [x] **Stale merged remote branch cleanup**: Deleted `origin/feat/flexy-iteration-70-hardcoded-cleanup` (fully merged into main)
+  - [x] Updated docs/findings.md: Cycle 150 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 150 completed
+  - [x] Updated docs/knowledge-review.md: cycle ref updated to Cycle 150
+  - [x] Updated docs/bugs.md: Cycle 150 status log
+  - [x] Updated CHANGELOG.md: Cycle 150 entry added
+  - [x] PR created
+
 ## Completed: RepoKeeper Cycle 148 — Test Count Drift Fix, BroCula Description Drift Fix, Stale README Link Cleanup, Audit Archive Consolidation, Stale Branch Cleanup, Doc Refresh ✅
 
 ### Task: Full repository audit, test count drift correction (1,666→1,671: 723 web + 438 api + 510 shared — +5 from shared test suite additions), BroCula description drift fix (ref: `brocula-hunt-2026-06-25-run2.md` — latest Jun 25 Run 2), stale README link cleanup (removed `docs/ci-workflow-fixes.md` and `docs/task.md` references), stale merged remote branch cleanup (deleted `origin/brocula-run-16`), audit archive consolidation (archived Jun 24 Runs 1-6 from Current to Archived in docs/audits/README.md), documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification, PR creation

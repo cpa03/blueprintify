@@ -4942,3 +4942,41 @@ Applied fix: replaced 11 occurrences of `node-version: "20"` with `node-version-
 3. **CI Node version fix** applied locally (11 occurrences replaced) — push blocked by token permissions
 4. **Duplicate issue consolidation** documented: Node.js issues #2030/#2063/#2073
 5. **Resolved-but-open issues identified**: #1077, #1082, #936 — fixes already in codebase
+
+## Cycle 150 (2026-06-26 — RepoKeeper: BUG-014/BUG-017 Actual Fix, Stale Branch Cleanup, Doc Refresh)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (`node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1), stale remote branch cleanup (deleted `origin/feat/flexy-iteration-70-hardcoded-cleanup` — fully merged into main), comprehensive documentation sync (findings, active-tasks, knowledge-review, bugs, CHANGELOG), quality verification.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build | ✅ Successful |
+| Tests | ✅ **1,671/1,671 passing** (723 web + 438 api + 510 shared) |
+| Format | ✅ All files Prettier-compliant |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0). No TODO/FIXME/HACK artifacts in non-test source.
+2. **BUG-014 actually fixed**: `main.yml` stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` — 2 occurrences.
+3. **BUG-017 actually fixed**: `node-version: "20"`→`node-version-file: ".node-version"` — 11 occurrences across iterate.yml (5), on-pull.yml (1), parallel.yml (4), pr-gatekeeper.yml (1).
+4. **Stale merged remote branch cleanup**: Deleted `origin/feat/flexy-iteration-70-hardcoded-cleanup` — fully merged into main.
+5. **Documentation refreshed**: `docs/findings.md`, `docs/active-tasks.md`, `docs/knowledge-review.md`, `docs/bugs.md`, `CHANGELOG.md` updated for Cycle 150.
+
+### Verification
+
+- [x] BUG-014 — zero stale doc refs (`docs/bug.md`, `docs/feature.md`) in main.yml ✅
+- [x] BUG-017 — zero hardcoded `node-version: "20"` / `node-version: 20` in all workflow files ✅
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — Successful ✅
+- [x] Tests — All passing ✅
+- [x] Stale merged branch deleted — `origin/feat/flexy-iteration-70-hardcoded-cleanup` ✅
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK ✅
+- [x] Documentation refreshed for Cycle 150 (findings, active-tasks, knowledge-review, bugs, CHANGELOG) ✅
+- [x] PR created ✅
