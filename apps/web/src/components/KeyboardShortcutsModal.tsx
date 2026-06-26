@@ -11,7 +11,7 @@
  * @module components/KeyboardShortcutsModal
  */
 
-import { useEffect, useCallback, useRef, memo } from "react";
+import { useEffect, useCallback, useRef, useState, useMemo, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   KEYBOARD_SHORTCUTS,
@@ -143,8 +143,27 @@ const categoryIcons: Record<string, IconName> = SHORTCUT_CATEGORY_ICONS as Recor
  * <KeyboardShortcutsModal isOpen={showModal} onClose={() => setShowModal(false)} />
  */
 
+const modifierKey = getModifierLabel();
+
+/** Lowercases and joins shortcut keys into a single searchable string */
+function shortcutKeysText(keys: string[]): string {
+  return keys.join(" ").toLowerCase();
+}
+
+function matchesQuery(shortcut: ShortcutItem, query: string): boolean {
+  const q = query.toLowerCase().trim();
+  if (!q) return true;
+  return (
+    shortcut.description.toLowerCase().includes(q) ||
+    shortcutKeysText(shortcut.keys).includes(q) ||
+    shortcut.category.toLowerCase().includes(q)
+  );
+}
+
 function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsModalProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const { containerRef } = useFocusTrap({
     isActive: isOpen,
     returnFocusTo: closeButtonRef,
@@ -154,10 +173,24 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape" || e.key === "?") {
+        if (e.key === "Escape" && searchQuery) {
+          // Clear search first, then close on second Escape
+          setSearchQuery("");
+          searchInputRef.current?.focus();
+          e.preventDefault();
+          return;
+        }
         onClose();
+        return;
+      }
+
+      // Ctrl/Cmd+F to focus search
+      if ((e.metaKey || e.ctrlKey) && e.key === "f") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
       }
     },
-    [onClose]
+    [onClose, searchQuery]
   );
 
   useScrollLock({ isLocked: isOpen });
@@ -172,17 +205,39 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
     };
   }, [isOpen, handleKeyDown]);
 
-  const shortcuts = getShortcutItems();
-  const groupedShortcuts = shortcuts.reduce(
-    (acc, shortcut) => {
-      if (!acc[shortcut.category]) {
-        acc[shortcut.category] = [];
-      }
-      acc[shortcut.category]!.push(shortcut);
-      return acc;
-    },
-    {} as Record<string, ShortcutItem[]>
+  const shortcuts = useMemo(() => getShortcutItems(), []);
+
+  const filteredShortcuts = useMemo(
+    () => shortcuts.filter((s) => matchesQuery(s, searchQuery)),
+    [shortcuts, searchQuery]
   );
+
+  const groupedShortcuts = useMemo(
+    () =>
+      filteredShortcuts.reduce(
+        (acc, shortcut) => {
+          if (!acc[shortcut.category]) {
+            acc[shortcut.category] = [];
+          }
+          acc[shortcut.category]!.push(shortcut);
+          return acc;
+        },
+        {} as Record<string, ShortcutItem[]>
+      ),
+    [filteredShortcuts]
+  );
+
+  const hasResults = filteredShortcuts.length > 0;
+  const entries = Object.entries(groupedShortcuts);
+
+  const handleClearSearch = useCallback(() => {
+    setSearchQuery("");
+    searchInputRef.current?.focus();
+  }, []);
+
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  }, []);
 
   return (
     <AnimatePresence>
@@ -250,9 +305,72 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                 </button>
               </div>
 
-              <div className="p-6 overflow-y-auto max-h-[60vh] space-y-6">
-                {Object.entries(groupedShortcuts).map(
-                  ([category, categoryShortcuts], categoryIndex) => (
+              <div className="px-6 pt-4 pb-2">
+                <div className="relative">
+                  <svg
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-400 pointer-events-none"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    placeholder={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.SEARCH_PLACEHOLDER}
+                    className="w-full pl-10 pr-10 py-2.5 bg-dark-800/80 border border-dark-700/50 rounded-lg
+                               text-sm text-white placeholder-dark-400
+                               focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50
+                               transition-all duration-200"
+                    aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.SEARCH}
+                    role="searchbox"
+                    autoComplete="off"
+                    spellCheck={false}
+                  />
+                  {/* Clear button */}
+                  <AnimatePresence>
+                    {searchQuery && (
+                      <motion.button
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ duration: ANIMATION.FAST }}
+                        onClick={handleClearSearch}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-400 hover:text-white
+                                   hover:bg-dark-700/50 rounded-md p-1 transition-colors duration-150"
+                        aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.CLEAR_SEARCH}
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </motion.button>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+
+              <div className="p-6 overflow-y-auto max-h-[50vh] space-y-6">
+                {hasResults ? (
+                  entries.map(([category, categoryShortcuts], categoryIndex) => (
                     <motion.div
                       key={category}
                       initial={{ opacity: 0, y: 10 }}
@@ -270,6 +388,11 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                           {categoryLabels[category]}
                         </h3>
                         <div className="flex-1 h-px bg-dark-700/50 ml-2" />
+                        {searchQuery && (
+                          <span className="text-[10px] text-dark-500 tabular-nums">
+                            {categoryShortcuts.length}
+                          </span>
+                        )}
                       </div>
                       <div className="space-y-2">
                         {categoryShortcuts.map((shortcut, index) => (
@@ -303,16 +426,48 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                         ))}
                       </div>
                     </motion.div>
-                  )
+                  ))
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex flex-col items-center justify-center py-16 text-dark-400"
+                  >
+                    <svg
+                      className="w-12 h-12 mb-4 text-dark-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                    <p className="text-sm font-medium text-dark-300">
+                      {ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.NO_RESULTS(searchQuery)}
+                    </p>
+                    <p className="text-xs text-dark-500 mt-1">
+                      Try a different search term, or{" "}
+                      <button
+                        onClick={handleClearSearch}
+                        className="text-primary-400 hover:text-primary-300 underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 rounded"
+                      >
+                        clear the search
+                      </button>
+                    </p>
+                  </motion.div>
                 )}
               </div>
 
               <div className="px-6 py-4 border-t border-dark-700/50 bg-dark-800/30">
                 <p id="keyboard-shortcuts-tip" className="text-xs text-dark-500 text-center">
-                  Tip: Keyboard shortcuts work throughout the app. Press{" "}
-                  <kbd className="px-1 py-0.5 bg-dark-700 rounded text-[10px] font-mono">?</kbd> or{" "}
-                  <kbd className="px-1 py-0.5 bg-dark-700 rounded text-[10px] font-mono">Esc</kbd>{" "}
-                  to close this dialog.
+                  {searchQuery
+                    ? `${filteredShortcuts.length} shortcut${filteredShortcuts.length !== 1 ? "s" : ""} found`
+                    : `Tip: Press ${modifierKey}+F to search shortcuts. Press ? or Esc to close this dialog.`}
                 </p>
               </div>
             </div>

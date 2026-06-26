@@ -277,6 +277,11 @@ export const ACCESSIBILITY_LABELS = {
   },
   KEYBOARD_SHORTCUTS: {
     CLOSE: "Close keyboard shortcuts",
+    SEARCH: "Search keyboard shortcuts",
+    SEARCH_PLACEHOLDER: "Search shortcuts by key or description...",
+    SEARCH_SHORTCUT_HINT: "Press Ctrl+F to search",
+    NO_RESULTS: (query: string) => `No shortcuts matching "${query}"`,
+    CLEAR_SEARCH: "Clear search",
   },
   SCROLL_PROGRESS: {
     READING: "Reading progress",
