@@ -94,6 +94,10 @@ function App(): JSX.Element {
   // after user interaction or a 3s fallback timeout. The flag is derived
   // from store conditions + user interaction, avoiding setState-in-effect.
   const [userInteracted, setUserInteracted] = useState(false);
+  // Defer non-critical lazy components (PageScrollProgressBar, ScrollToTop,
+  // ScrollToBottom) from initial mount to prevent triggering their dynamic
+  // imports — and framer-motion — during the critical rendering path.
+  const [deferMount, setDeferMount] = useState(false);
 
   // Derive mount condition from existing store state + interaction flag
   const wizardActivated =
@@ -102,6 +106,14 @@ function App(): JSX.Element {
   // Activate wizard on first user interaction (template select, step change)
   const activateWizard = useCallback(() => {
     setUserInteracted(true);
+  }, []);
+
+  // Defer mount state — activates after a brief timeout so non-critical lazy
+  // components (PageScrollProgressBar, ScrollToTop, ScrollToBottom) don't
+  // trigger their dynamic imports — and framer-motion — during first paint.
+  useEffect(() => {
+    const timer = setTimeout(() => setDeferMount(true), 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   // Note: no fallback timeout — the wizard activates only on user interaction
@@ -240,10 +252,13 @@ function App(): JSX.Element {
       {/* Offline banner - persistent connectivity status */}
       <OfflineBanner />
 
-      {/* Page scroll progress — subtle gradient bar showing reading progress */}
-      <Suspense fallback={null}>
-        <PageScrollProgressBar showAfter={80} height={2} />
-      </Suspense>
+      {/* Page scroll progress — deferred via deferMount to keep framer-motion
+          out of the critical rendering path. Only mounts after 2s timeout. */}
+      {deferMount && (
+        <Suspense fallback={null}>
+          <PageScrollProgressBar showAfter={80} height={2} />
+        </Suspense>
+      )}
 
       {/* Main Content */}
       <main id="main-content" className={LAYOUT.MAIN_CONTENT} tabIndex={-1}>
@@ -452,9 +467,11 @@ function App(): JSX.Element {
         </Suspense>
       )}
 
-      <Suspense fallback={null}>
-        <KeyboardShortcutsModal isOpen={showShortcutsModal} onClose={handleHideShortcuts} />
-      </Suspense>
+      {showShortcutsModal && (
+        <Suspense fallback={null}>
+          <KeyboardShortcutsModal isOpen={showShortcutsModal} onClose={handleHideShortcuts} />
+        </Suspense>
+      )}
 
       <Suspense fallback={null}>
         <GenerationCelebration
@@ -463,21 +480,22 @@ function App(): JSX.Element {
         />
       </Suspense>
 
-      {/* Floating scroll buttons for main page — provides visual affordance
-          to quickly jump to the top or bottom of long wizard or generated
-          content. ScrollToTop sits bottom-right, ScrollToBottom sits
-          bottom-left so they never overlap. The fixed wrapper anchors the
-          absolute-positioned buttons to the viewport. */}
-      <div className="fixed bottom-6 right-6 z-30">
-        <Suspense fallback={null}>
-          <ScrollToTop showAfter={SCROLL_THRESHOLD_DEFAULTS.SCROLL_TO_TOP_PX} />
-        </Suspense>
-      </div>
-      <div className="fixed bottom-6 left-6 z-30">
-        <Suspense fallback={null}>
-          <ScrollToBottomLazy showAfter={SCROLL_THRESHOLD_DEFAULTS.SCROLL_TO_TOP_PX} />
-        </Suspense>
-      </div>
+      {/* Floating scroll buttons — deferred via deferMount to keep framer-motion
+          out of the critical path. Only mount after 2s timeout. */}
+      {deferMount && (
+        <>
+          <div className="fixed bottom-6 right-6 z-30">
+            <Suspense fallback={null}>
+              <ScrollToTop showAfter={SCROLL_THRESHOLD_DEFAULTS.SCROLL_TO_TOP_PX} />
+            </Suspense>
+          </div>
+          <div className="fixed bottom-6 left-6 z-30">
+            <Suspense fallback={null}>
+              <ScrollToBottomLazy showAfter={SCROLL_THRESHOLD_DEFAULTS.SCROLL_TO_TOP_PX} />
+            </Suspense>
+          </div>
+        </>
+      )}
     </div>
   );
 }
