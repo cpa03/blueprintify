@@ -167,8 +167,19 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
   const { containerRef } = useFocusTrap({
     isActive: isOpen,
     returnFocusTo: closeButtonRef,
-    autoFocus: true,
+    autoFocus: false,
   });
+
+  // Focus the search input on open so users can start typing immediately —
+  // the primary action when opening this modal (VS Code / DevTools pattern).
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
