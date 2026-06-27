@@ -62,7 +62,6 @@ blueprintify/
 │   ├── roadmap-m3-proposal.md
 │   ├── roadmap.md
 │   ├── security/
-│   ├── task.md
 │   ├── testing-procedures.md
 │   ├── troubleshooting.md
 │   └── user-guide.md
