@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat(flexy): centralize inline spring configs into shared constants (Iteration 72)
 - fix(web): respect prefers-reduced-motion in SkipLink arrow and glow animations (#2116)
 - RepoKeeper Cycle 154: **full repository audit**, README BroCula description drift fix `(Jun 17–Jun 25)`→`(Jun 17–Jun 26)` (latest audit: `brocula-hunt-2026-06-26-run1.md` / BroCula Run 18 / LH 100-100-100-100 / 723 web tests), knowledge-review BroCula ref drift fix (run3→Jun 26 Run 1), CHANGELOG gap fix (added 4 missing commits after Cycle 153: feat(validation) checkmark/X path drawing animation, BroCula Run 18 audit report, feat(flexy) Iteration 72 spring config centralization, fix(web) prefers-reduced-motion SkipLink animation), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,675/1,675 ✅), PR created
+- feat(ui): add subtle entry glow animation to toast notifications (#2123)
+- refactor(flexy): replace hardcoded tooltip delays with TOOLTIP_DEFAULTS from shared config (#2122)
+- chore(audit): BroCula Run 19 — audit report (LH 99-100-100-100, 1675 tests ✅) (#2121)
 - feat(editor): add visible Cmd/Ctrl+N shortcut badge to New button
 - feat(flexy): centralize view mode indicator positioning values into shared config (Iteration 71)
 - chore(repokeeper): Cycle 152 — BroCula run2→run3 drift fix, stale README link cleanup, CHANGELOG gap fix, doc refresh
