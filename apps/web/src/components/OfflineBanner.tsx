@@ -35,11 +35,35 @@ import { STYLE_ID_STRINGS } from "@blueprint/shared";
 import { NETWORK_MESSAGES, ACCESSIBILITY_LABELS, OFFLINE_ANIMATION } from "../config/constants";
 
 /**
- * CSS keyframes injected once for the pulse-ring animation.
- * Matches the original framer-motion spring pulse (2s infinite).
+ * CSS keyframes injected once for the pulse-ring animation
+ * and the banner slide entrance/exit animations.
+ *
+ * The banner uses GPU-composited transform + opacity for smooth
+ * 60fps sliding — unlike a max-height transition which triggers
+ * layout recalculations on every frame.
+ *
+ * Entrance: slides down from -100% to 0% with a gentle bounce
+ * via an overshoot-friendly cubic-bezier so the velocity of the
+ * incoming banner feels natural — like a notification ribbon
+ * dropping into place. The bounce is subtle enough to feel
+ * premium without being cartoony.
+ *
+ * Exit: smooth slide-up + fade for a clean dismissal, matching
+ * the ease-out used throughout the rest of the app.
  */
 const pulseKeyframes = OFFLINE_ANIMATION.PULSE_RING_KEYFRAMES;
 const pulseScaleKeyframes = OFFLINE_ANIMATION.PULSE_SCALE_KEYFRAMES;
+const bannerEnterKeyframes = `@keyframes offline-banner-enter {
+  0% { transform: translateY(-100%); opacity: 0; }
+  55% { transform: translateY(4px); opacity: 1; }
+  75% { transform: translateY(-2px); opacity: 1; }
+  90% { transform: translateY(1px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}`;
+const bannerExitKeyframes = `@keyframes offline-banner-exit {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100%); opacity: 0; }
+}`;
 
 // Inject keyframes only once
 if (typeof document !== "undefined") {
@@ -47,7 +71,12 @@ if (typeof document !== "undefined") {
   if (!document.getElementById(styleId)) {
     const style = document.createElement("style");
     style.id = styleId;
-    style.textContent = `${pulseKeyframes}\n${pulseScaleKeyframes}`;
+    style.textContent = [
+      pulseKeyframes,
+      pulseScaleKeyframes,
+      bannerEnterKeyframes,
+      bannerExitKeyframes,
+    ].join("\n");
     document.head.appendChild(style);
   }
 }
@@ -88,13 +117,26 @@ function OfflineBannerComponent(): JSX.Element | null {
         role={isVisible ? "status" : undefined}
         aria-live={isVisible ? "polite" : undefined}
         aria-atomic={isVisible ? "true" : undefined}
-        className={`overflow-hidden transition-all duration-300 ease-out ${
-          isVisible ? "max-h-16 opacity-100" : "max-h-0 opacity-0"
-        } ${shouldReduceMotion ? "transition-none" : ""}`}
+        className={`overflow-hidden ${
+          // Outer container handles layout space via max-height
+          // while the inner banner slides with GPU-composited transform.
+          shouldReduceMotion
+            ? isVisible
+              ? "max-h-16 opacity-100"
+              : "max-h-0 opacity-0"
+            : "transition-[max-height] duration-400 ease-out " +
+              (isVisible ? "max-h-16" : "max-h-0")
+        }`}
         aria-hidden={!isVisible}
       >
         {isVisible && (
-          <div className="relative bg-gradient-to-r from-accent-pink/15 via-accent-pink/10 to-dark-900/80 border-b border-accent-pink/20 backdrop-blur-xl">
+          <div
+            className={`relative bg-gradient-to-r from-accent-pink/15 via-accent-pink/10 to-dark-900/80 border-b border-accent-pink/20 backdrop-blur-xl ${
+              shouldReduceMotion
+                ? ""
+                : "animate-[offline-banner-enter_0.4s_cubic-bezier(0.34,1.56,0.64,1)_forwards]"
+            }`}
+          >
             {/* Gradient accent line */}
             <div
               className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-accent-pink/60 via-accent-pink/40 to-transparent"
