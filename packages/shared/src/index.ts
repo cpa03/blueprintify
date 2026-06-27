@@ -19,6 +19,7 @@ export {
   StorageQuotaSchema,
   StorageClearRequestSchema,
   StorageReportRequestSchema,
+  CreateShareSchema,
 } from "./schema.js";
 
 // ===== TypeScript Types =====
@@ -47,6 +48,7 @@ export type {
   StorageQuota,
   StorageClearRequest,
   StorageReportRequest,
+  CreateShareRequest,
 } from "./types.js";
 
 // ===== Templates =====

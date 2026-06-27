@@ -1,7 +1,7 @@
 export * from "./config.js";
 
 import { z } from "zod";
-import { VALIDATION_LIMITS, EXPORT_LIMITS } from "./config.js";
+import { VALIDATION_LIMITS, EXPORT_LIMITS, SHARE_DEFAULTS } from "./config.js";
 
 // ===== Tech Stack Options =====
 
@@ -345,6 +345,20 @@ export const StorageReportRequestSchema = z.object({
   used: z.number().int().min(0).describe("Used storage in bytes"),
   total: z.number().int().min(0).describe("Total storage quota in bytes"),
   projects: z.number().int().min(0).describe("Number of projects stored"),
+});
+
+// ===== Share Schemas =====
+
+export const CreateShareSchema = z.object({
+  title: z.string().min(1).max(SHARE_DEFAULTS.TITLE_MAX_LENGTH),
+  blueprint: z.string().min(1).max(SHARE_DEFAULTS.BLUEPRINT_MAX_LENGTH),
+  metadata: z
+    .object({
+      projectName: z.string().optional(),
+      techStack: z.array(z.string()).optional(),
+      author: z.string().optional(),
+    })
+    .optional(),
 });
 
 // ===== Predefined Tech Stack Options =====

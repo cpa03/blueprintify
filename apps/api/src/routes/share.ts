@@ -12,9 +12,13 @@ import { Hono } from "hono";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { authorize } from "../middleware/authorize";
-import { z } from "zod";
 import type { Env } from "../types";
-import { CONTEXT_KEYS, AUTH_DEFAULTS, EXPORT_ERROR_STRINGS } from "@blueprint/shared";
+import {
+  CONTEXT_KEYS,
+  AUTH_DEFAULTS,
+  EXPORT_ERROR_STRINGS,
+  CreateShareSchema,
+} from "@blueprint/shared";
 import {
   API_HEADERS,
   HTTP_STATUS,
@@ -119,18 +123,6 @@ function checkDbConfigured(c: RouteHelperContext): Response | null {
   return null;
 }
 
-const createShareSchema = z.object({
-  title: z.string().min(1).max(SHARE_CONFIG.TITLE_MAX_LENGTH),
-  blueprint: z.string().min(1).max(SHARE_CONFIG.BLUEPRINT_MAX_LENGTH),
-  metadata: z
-    .object({
-      projectName: z.string().optional(),
-      techStack: z.array(z.string()).optional(),
-      author: z.string().optional(),
-    })
-    .optional(),
-});
-
 /**
  * Generate a cryptographically secure random share ID.
  * Uses crypto.getRandomValues() instead of Math.random() to prevent
@@ -160,7 +152,7 @@ function getExpirationDate(): Date {
   return expiresAt;
 }
 
-app.post("/", rateLimit(rateLimitConfigs.standard), validateJson(createShareSchema), async (c) => {
+app.post("/", rateLimit(rateLimitConfigs.standard), validateJson(CreateShareSchema), async (c) => {
   try {
     const { title, blueprint, metadata } = c.get(CONTEXT_KEYS.VALIDATED_DATA);
     const shareId = generateShareId();

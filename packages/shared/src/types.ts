@@ -18,6 +18,7 @@ import {
   StorageQuotaSchema,
   StorageClearRequestSchema,
   StorageReportRequestSchema,
+  CreateShareSchema,
 } from "./schema.js";
 
 // ===== Inferred Types from Zod Schemas =====
@@ -126,6 +127,13 @@ export type StorageClearRequest = z.infer<typeof StorageClearRequestSchema>;
  * Request payload for reporting client storage usage.
  */
 export type StorageReportRequest = z.infer<typeof StorageReportRequestSchema>;
+
+// ===== Share Types =====
+
+/**
+ * Request payload for creating a shareable blueprint link.
+ */
+export type CreateShareRequest = z.infer<typeof CreateShareSchema>;
 
 // ===== Wizard Step Types =====
 
