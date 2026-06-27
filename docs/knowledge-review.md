@@ -12,18 +12,24 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-27 (RepoKeeper Cycle 157)
+**Last Review**: 2026-06-27 (RepoKeeper Cycle 159)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jun 26)` — matches latest audit `brocula-hunt-2026-06-26-run2.md` (BroCula Run 19 / LH 99-100-100-100, 1675 tests ✅)
+- **README BroCula description verified**: `(Jun 17–Jun 27)` — matches latest audit `brocula-hunt-2026-06-27-run4.md` (BroCula Run 23 / LH **94-100-100-100**, 1701 tests ✅)
 - **Typecheck/Lint**: All clean (0 errors, 0 warnings)
-- **BUG-014 and BUG-017 FIXED ON MAIN — THIS CYCLE (Cycle 157)**: Unlike Cycle 156 (which only updated documentation claiming fixes but left workflow files untouched), this cycle directly edits the actual `.github/workflows/*.yml` files. Zero stale doc refs (`docs/bug.md`, `docs/feature.md`) and zero hardcoded `node-version: "20"` / `node-version: 20` remain in any workflow file.
-- **BroCula Run 21 indexed**: Latest audit `brocula-hunt-2026-06-27-run2.md` (BroCula Run 21 / LH **95-100-100-100**, 723 tests ✅)
-- **CHANGELOG gap filled**: Added 3 missing commits after Cycle 156 — chore(audit) BroCula Run 21 (#2130), feat(OfflineBanner) screen reader announcements (#2129), docs(ci) workflow permission blocker (#2133)
+- **Build**: Clean ✅
+- **Tests**: **1,701/1,701 passing** (723 web + 438 API + 540 shared) ✅
+- **Secrets scan**: Clean ✅
+- **Stale merged branches cleaned**: Deleted `origin/fix/bugfixer-ulw-jun-27` — fully merged into main
+- **BroCula Run 23 indexed**: Latest audit `brocula-hunt-2026-06-27-run4.md` (BroCula Run 23 / LH **94-100-100-100**, 1701 tests ✅)
+- **BroCula Run 22 indexed**: `brocula-hunt-2026-06-27-run3.md` (BroCula Run 22 / LH **100-100-100-100**)
+- **CHANGELOG gap filled**: Added 10 missing commits after Cycle 156 — refactor(api) constants split (#2139), Cycle 157, GPU OfflineBanner, flexy Iteration 75, bugfixer docs, BroCula Run 22, CircularProgress (#2142), Cycle 158, BroCula Run 23 (#2140), wrangler fix (#2143)
+- **Cycle 159**: Full repository audit, post-Cycle-158 commit indexing (10 commits), CHANGELOG gap fix, stale branch cleanup (`origin/fix/bugfixer-ulw-jun-27` deleted), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅ format ✅ secrets ✅), PR created
+- **Cycle 158**: Doc cleanup (removed stale `.patch` files), CI fix script (`scripts/apply-ci-fixes.sh`), README tree cleanup (removed non-existent `docs/task.md`), `docs/ci-configuration.md` updated to reflect applied CI node-version fix
 - **Cycle 157**: Full repository audit, **BUG-014 ACTUALLY fixed on main** (main.yml `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences — first actual edit of workflow files), **BUG-017 ACTUALLY fixed on main** (`node-version: "20"`/`node-version: 20`→`node-version-file: ".node-version"` across 5 workflow files — 11 occurrences — first actual edit of workflow files), BroCula Run 21 indexing, CHANGELOG gap fix, docs refresh (findings, active-tasks, knowledge-review, bugs, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅), PR created
 - **Cycle 154**: Full repository audit, README BroCula description drift fix (Jun 17–Jun 25→Jun 17–Jun 26), knowledge-review BroCula ref drift fix (run3→Jun 26 Run 1), CHANGELOG gap fix (added 4 missing commits after Cycle 153: feat(validation) checkmark/X path drawing animation, BroCula Run 18 audit report, feat(flexy) Iteration 72 spring config centralization, fix(web) prefers-reduced-motion SkipLink animation), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,675/1,675 ✅ format ✅)
 - **Cycle 152**: Full repository audit, BroCula description drift fix (run2→run3 — latest `brocula-hunt-2026-06-25-run3.md`: BroCula Run 17 / LH 100-100-100-100 / 723 web tests), stale README link cleanup (removed `docs/ci-workflow-fixes.md` from directory tree — file no longer exists), CHANGELOG gap fix (added feat(ux) ToastContainer entrance animation #2108 after Cycle 151), stale merged remote branch check (0 to delete — all 8 active with unique commits), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ tests 1,671/1,671 ✅ format ✅), PR created
