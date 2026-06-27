@@ -23,7 +23,7 @@
  */
 
 import { ANIMATION_DIRECTIONS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
-import { useState, useCallback, useMemo, useRef, memo } from "react";
+import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
 import {
@@ -99,6 +99,14 @@ export const StepFeatures = memo(function StepFeatures({
     (feature: string) => features.some((f: string) => f.toLowerCase() === feature.toLowerCase()),
     [features]
   );
+
+  const prevFeaturesLengthRef = useRef(features.length);
+  useEffect(() => {
+    if (prevFeaturesLengthRef.current > 0 && features.length === 0) {
+      featureInputRef.current?.focus();
+    }
+    prevFeaturesLengthRef.current = features.length;
+  }, [features.length]);
 
   const suggestedNotAdded = useMemo(
     () => SUGGESTED_FEATURES.filter((f: string) => !isInFeatures(f)),
