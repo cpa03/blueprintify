@@ -227,6 +227,7 @@ export const StepInfo = memo(function StepInfo({
               name="projectName"
               type="text"
               autoComplete="off"
+              dir="auto"
               value={projectName}
               onChange={(e) => {
                 projectNameTyping.handleTyping(e.target.value);
@@ -312,6 +313,7 @@ export const StepInfo = memo(function StepInfo({
               id="description"
               name="description"
               autoComplete="off"
+              dir="auto"
               value={description}
               onChange={(e) => {
                 descriptionTyping.handleTyping(e.target.value);
@@ -394,6 +396,7 @@ export const StepInfo = memo(function StepInfo({
               name="targetAudience"
               type="text"
               autoComplete="off"
+              dir="auto"
               value={targetAudience}
               onChange={(e) => {
                 targetAudienceTyping.handleTyping(e.target.value);
@@ -476,6 +479,7 @@ export const StepInfo = memo(function StepInfo({
             id="constraints"
             name="constraints"
             autoComplete="off"
+            dir="auto"
             value={constraints}
             onChange={(e) => {
               constraintsTyping.handleTyping(e.target.value);

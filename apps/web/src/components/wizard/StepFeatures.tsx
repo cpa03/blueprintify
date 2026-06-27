@@ -174,6 +174,7 @@ export const StepFeatures = memo(function StepFeatures({
                 ref={featureInputRef}
                 id="feature-input"
                 type="text"
+                dir="auto"
                 value={newFeature}
                 onChange={(e) => setNewFeature(e.target.value.slice(0, FORM_LIMITS.FEATURE.MAX))}
                 onKeyDown={handleKeyDown}
