@@ -324,6 +324,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                   <input
                     ref={searchInputRef}
                     type="text"
+                    dir="auto"
                     value={searchQuery}
                     onChange={handleSearchChange}
                     placeholder={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.SEARCH_PLACEHOLDER}
