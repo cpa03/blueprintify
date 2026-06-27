@@ -261,6 +261,8 @@ export const ACCESSIBILITY_LABELS = {
     LABEL: "You are currently offline",
     DESCRIPTION: "Some features may be unavailable while you are offline.",
     DISMISS: "Dismiss offline notice",
+    DISMISS_ANNOUNCEMENT: "Offline notice dismissed",
+    ONLINE_ANNOUNCEMENT: "Back online — connection restored",
   },
   ERROR_BOUNDARY: {
     TRY_AGAIN: "Try again",
