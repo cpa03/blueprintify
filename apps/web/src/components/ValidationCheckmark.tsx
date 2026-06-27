@@ -77,7 +77,7 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
                     duration: ANIMATION.CHECKMARK_REVEAL,
                     ease: "easeOut",
                   },
-                  opacity: { duration: 0.1, ease: "easeOut" },
+                  opacity: { duration: ANIMATION.QUICK_FADE, ease: "easeOut" },
                 }}
               />
             </svg>
@@ -95,7 +95,7 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
                     duration: ANIMATION.CHECKMARK_REVEAL,
                     ease: "easeOut",
                   },
-                  opacity: { duration: 0.1, ease: "easeOut" },
+                  opacity: { duration: ANIMATION.QUICK_FADE, ease: "easeOut" },
                 }}
               />
             </svg>

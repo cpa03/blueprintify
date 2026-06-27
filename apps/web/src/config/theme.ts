@@ -391,6 +391,8 @@ export const TOAST_SPRING = {
   DISMISS_BUTTON: { stiffness: 400, damping: 20 } as const,
   /** Progress ring transition duration */
   PROGRESS_RING_TRANSITION: "stroke-dashoffset 0.1s linear",
+  /** Progress bar CSS transition for opacity and width changes */
+  PROGRESS_BAR_TRANSITION: "opacity 200ms ease-out, width 100ms linear",
   /** Progress ring default dimensions */
   PROGRESS_RING: {
     SIZE_PX: 28,

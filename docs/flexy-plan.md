@@ -1319,3 +1319,27 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | #2102 | `feat/flexy-iteration-70-hardcoded-cleanup` | feat(flexy): eliminate hardcoded HTTP status codes and scroll thresholds (Iteration 70) |
+
+### ✅ Flexy Iteration 75: Eliminate Remaining Hardcoded Animation Durations, Transition Strings & Keyboard Shortcut Keys
+
+| File | Change |
+| ---- | ------ |
+| `apps/web/src/components/ValidationCheckmark.tsx` | Replaced 2x hardcoded `opacity: { duration: 0.1 }` with `ANIMATION.QUICK_FADE` (references `ANIMATION_DURATION_S.QUICK_FADE` from shared config) |
+| `apps/web/src/config/theme.ts` | Added `TOAST_SPRING.PROGRESS_BAR_TRANSITION` for toast progress bar CSS transition string |
+| `apps/web/src/components/Toast.tsx` | Replaced hardcoded inline `transition: "opacity 200ms ease-out, width 100ms linear"` with `TOAST_SPRING.PROGRESS_BAR_TRANSITION` |
+| `apps/web/src/components/Editor.tsx` | Replaced hardcoded `VIEW_MODE_SHORTCUT_MAP` keys `"1"/"2"/"3"` with computed `[VIEW_MODE_SHORTCUT_KEYS.*]` references |
+| `apps/web/src/config/constants/wizard.ts` | Added `WIZARD_REVIEW_EDIT_SHORTCUTS` config object (INFO/STACK/FEATURES shortcut keys) |
+| `apps/web/src/components/wizard/StepReview.tsx` | Replaced 9 hardcoded `"1"/"2"/"3"` strings in keyboard handler and JSX with `WIZARD_REVIEW_EDIT_SHORTCUTS.*` references |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 723 web + 438 api + 540 shared = 1,701 tests passing across 84 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-75-hardcoded-cleanup` | refactor(flexy): eliminate remaining hardcoded animation durations, transition strings and keyboard shortcut keys (Iteration 75) |

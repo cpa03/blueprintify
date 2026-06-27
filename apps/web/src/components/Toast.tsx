@@ -245,7 +245,7 @@ const ToastItem = memo(
           style={{
             width: `${progress}%`,
             opacity: isHovered ? 0 : 0.3,
-            transition: "opacity 200ms ease-out, width 100ms linear",
+            transition: TOAST_SPRING.PROGRESS_BAR_TRANSITION,
           }}
           aria-hidden="true"
         />
