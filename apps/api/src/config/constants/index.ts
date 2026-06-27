@@ -1,10 +1,7 @@
 /**
- * API Configuration Constants
+ * API Configuration Constants - Modular Re-export Hub
  *
- * Centralized configuration constants for the Blueprint Generator API.
- *
- * Flexy says: This file is now a re-export hub!
- * Each constant is defined in its own module under config/constants/.
+ * Each constant domain is defined in its own module under config/constants/.
  * Import directly from the specific module for tree-shaking,
  * or from this index for convenience.
  *
@@ -20,10 +17,10 @@
  * @module config/constants
  */
 
-export { setEnvConfig, getEnvConfig } from "./constants/env";
+export { setEnvConfig, getEnvConfig } from "./env";
 
-export { AI_CONFIG, API_METADATA } from "./constants/ai";
-export { API_ENDPOINTS, ROUTE_PATHS } from "./constants/endpoints";
+export { AI_CONFIG, API_METADATA } from "./ai";
+export { API_ENDPOINTS, ROUTE_PATHS } from "./endpoints";
 export {
   ERROR_CODES,
   RETRYABLE_ERROR_CODES,
@@ -31,7 +28,7 @@ export {
   DEFAULT_ERROR_MESSAGES,
   VALIDATION_MESSAGES,
   CONFIG_MESSAGES,
-} from "./constants/errors";
+} from "./errors";
 export {
   CORS_CONFIG,
   API_HEADERS,
@@ -39,15 +36,15 @@ export {
   HTTP_STATUS,
   SSE_CONFIG,
   SSE_HEADERS,
-} from "./constants/network";
-export { PROMPT_CONFIG, PROMPT_INPUT_CONFIG } from "./constants/prompts";
+} from "./network";
+export { PROMPT_CONFIG, PROMPT_INPUT_CONFIG } from "./prompts";
 export {
   RETRY_CONFIG,
   RETRYABLE_STATUS_CODES,
   RETRY_LOGIC,
   CIRCUIT_BREAKER_CONFIG,
   CACHE_CONFIG,
-} from "./constants/resilience";
+} from "./resilience";
 export {
   DB_ID_CONFIG,
   STORAGE_KV_CONFIG,
@@ -56,8 +53,8 @@ export {
   BODY_SIZE_MAX,
   KB,
   MB,
-} from "./constants/storage";
-export { RATE_LIMIT_CONFIG, RATE_LIMIT_CONSTANTS } from "./constants/ratelimit";
+} from "./storage";
+export { RATE_LIMIT_CONFIG, RATE_LIMIT_CONSTANTS } from "./ratelimit";
 export {
   SHARE_CONFIG,
   SHARE_ERROR_MESSAGES,
@@ -67,6 +64,6 @@ export {
   IMPORT_ERROR_MESSAGES,
   EXPORT_TEMPLATES,
   EXPORT_ERROR_MESSAGES,
-} from "./constants/share";
-export { LOGGER_CONFIG } from "./constants/logger";
-export { EXTERNAL_URLS } from "./constants/external";
+} from "./share";
+export { LOGGER_CONFIG } from "./logger";
+export { EXTERNAL_URLS } from "./external";
