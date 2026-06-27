@@ -12,6 +12,7 @@ import {
   WIZARD_STEP_KEYS,
   EXPORT_ERROR_STRINGS,
   NETWORK_DEFAULTS,
+  SKELETON_DEFAULTS as SHARED_SKELETON_DEFAULTS,
 } from "@blueprint/shared";
 
 /**
@@ -495,17 +496,17 @@ export const PREVIEW_EMPTY_LABELS = {
 
 export const SKELETON_LAYOUT = {
   /** Preview skeleton line widths (percentages) */
-  PREVIEW_LINE_WIDTHS: ["88%", "72%", "95%", "60%", "82%", "70%", "90%", "55%", "78%"] as const,
+  PREVIEW_LINE_WIDTHS: SHARED_SKELETON_DEFAULTS.PREVIEW_LINE_WIDTHS,
   /** Preview skeleton code block width (percentage) */
-  PREVIEW_CODE_WIDTH: "92%" as const,
+  PREVIEW_CODE_WIDTH: SHARED_SKELETON_DEFAULTS.PREVIEW_CODE_WIDTH,
   /** Number of lines in editor skeleton */
-  EDITOR_LINE_COUNT: 16,
+  EDITOR_LINE_COUNT: SHARED_SKELETON_DEFAULTS.EDITOR_LINE_COUNT,
   /** Editor skeleton line widths (percentages) */
-  EDITOR_LINE_WIDTHS: [92, 78, 85, 60, 95, 72, 88, 55, 80, 70, 90, 65, 82, 75, 58, 87] as const,
+  EDITOR_LINE_WIDTHS: SHARED_SKELETON_DEFAULTS.EDITOR_LINE_WIDTHS,
   /** Editor skeleton indent values */
-  EDITOR_LINE_INDENTS: [0, 0, 2, 0, 4, 0, 2, 0, 6, 0, 0, 3, 0, 2, 0, 4] as const,
+  EDITOR_LINE_INDENTS: SHARED_SKELETON_DEFAULTS.EDITOR_LINE_INDENTS,
   /** Editor skeleton line height in pixels */
-  EDITOR_LINE_HEIGHT_PX: 14,
+  EDITOR_LINE_HEIGHT_PX: SHARED_SKELETON_DEFAULTS.EDITOR_LINE_HEIGHT_PX,
   /** Editor skeleton indent multiplier in pixels */
-  EDITOR_INDENT_MULTIPLIER_PX: 12,
+  EDITOR_INDENT_MULTIPLIER_PX: SHARED_SKELETON_DEFAULTS.EDITOR_INDENT_MULTIPLIER_PX,
 } as const;
