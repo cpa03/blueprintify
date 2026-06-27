@@ -44,6 +44,7 @@ import {
   EDITOR_ANNOUNCER,
   EDITOR_TABS,
   DEBUG_MESSAGES,
+  VIEW_MODE_SHORTCUT_KEYS,
 } from "../config/constants";
 import { ANIMATION_TIMING, LAYOUT } from "../config/theme";
 import { isDev } from "../config/env";
@@ -55,9 +56,9 @@ import "../styles/markdown.css";
 
 /** Map of keyboard digits to view modes for Ctrl/Cmd+1/2/3 switching */
 const VIEW_MODE_SHORTCUT_MAP: Record<string, ViewMode> = {
-  "1": VIEW_MODES.EDIT,
-  "2": VIEW_MODES.SPLIT,
-  "3": VIEW_MODES.PREVIEW,
+  [VIEW_MODE_SHORTCUT_KEYS.edit]: VIEW_MODES.EDIT,
+  [VIEW_MODE_SHORTCUT_KEYS.split]: VIEW_MODES.SPLIT,
+  [VIEW_MODE_SHORTCUT_KEYS.preview]: VIEW_MODES.PREVIEW,
 } as const;
 
 /**

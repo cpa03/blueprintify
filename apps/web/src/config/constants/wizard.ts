@@ -10,6 +10,17 @@ import {
 } from "@blueprint/shared";
 
 /**
+ * Wizard review edit shortcut keys
+ * Maps editable wizard sections to their Alt+keyboard shortcuts shown on the review step.
+ * Flexy says: No hardcoded "1"/"2"/"3" strings in StepReview keyboard handler!
+ */
+export const WIZARD_REVIEW_EDIT_SHORTCUTS = {
+  INFO: "1" as const,
+  STACK: "2" as const,
+  FEATURES: "3" as const,
+} as const;
+
+/**
  * Wizard step configuration
  * Defines the ordered steps in the project setup wizard
  * Flexy says: Step keys reference WIZARD_STEP_KEYS from @blueprint/shared!

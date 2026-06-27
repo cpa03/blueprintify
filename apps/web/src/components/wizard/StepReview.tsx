@@ -31,6 +31,7 @@ import {
   GENERATION_ESTIMATES,
   ACCESSIBILITY_LABELS,
   WIZARD_REVIEW_DESCRIPTIONS,
+  WIZARD_REVIEW_EDIT_SHORTCUTS,
 } from "../../config/constants";
 import { pageTransition, fadeInUp, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
@@ -67,13 +68,13 @@ export const StepReview = memo(function StepReview({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
-      if (e.key === "1") {
+      if (e.key === WIZARD_REVIEW_EDIT_SHORTCUTS.INFO) {
         e.preventDefault();
         handleEditInfo();
-      } else if (e.key === "2") {
+      } else if (e.key === WIZARD_REVIEW_EDIT_SHORTCUTS.STACK) {
         e.preventDefault();
         handleEditStack();
-      } else if (e.key === "3") {
+      } else if (e.key === WIZARD_REVIEW_EDIT_SHORTCUTS.FEATURES) {
         e.preventDefault();
         handleEditFeatures();
       }
@@ -115,7 +116,7 @@ export const StepReview = memo(function StepReview({
                 Project Information
               </h3>
               <KeyboardShortcutTooltip
-                shortcut="1"
+                shortcut={WIZARD_REVIEW_EDIT_SHORTCUTS.INFO}
                 description={WIZARD_REVIEW_DESCRIPTIONS.EDIT_INFO}
                 position="left"
                 modifier="alt"
@@ -124,7 +125,7 @@ export const StepReview = memo(function StepReview({
                   onClick={handleEditInfo}
                   className="btn-ghost btn-sm flex items-center gap-1 text-primary-400 hover:text-primary-300"
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_REVIEW.EDIT_INFO}
-                  aria-keyshortcuts={getAriaShortcutKey("1", "alt")}
+                  aria-keyshortcuts={getAriaShortcutKey(WIZARD_REVIEW_EDIT_SHORTCUTS.INFO, "alt")}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
@@ -172,7 +173,7 @@ export const StepReview = memo(function StepReview({
                 Tech Stack ({techStack.length})
               </h3>
               <KeyboardShortcutTooltip
-                shortcut="2"
+                shortcut={WIZARD_REVIEW_EDIT_SHORTCUTS.STACK}
                 description={WIZARD_REVIEW_DESCRIPTIONS.EDIT_STACK}
                 position="left"
                 modifier="alt"
@@ -181,7 +182,7 @@ export const StepReview = memo(function StepReview({
                   onClick={handleEditStack}
                   className="btn-ghost btn-sm flex items-center gap-1 text-accent-cyan hover:text-accent-cyan/80"
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_REVIEW.EDIT_STACK}
-                  aria-keyshortcuts={getAriaShortcutKey("2", "alt")}
+                  aria-keyshortcuts={getAriaShortcutKey(WIZARD_REVIEW_EDIT_SHORTCUTS.STACK, "alt")}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
@@ -219,7 +220,7 @@ export const StepReview = memo(function StepReview({
                   Features ({features.length})
                 </h3>
                 <KeyboardShortcutTooltip
-                  shortcut="3"
+                  shortcut={WIZARD_REVIEW_EDIT_SHORTCUTS.FEATURES}
                   description={WIZARD_REVIEW_DESCRIPTIONS.EDIT_FEATURES}
                   position="left"
                   modifier="alt"
@@ -228,7 +229,10 @@ export const StepReview = memo(function StepReview({
                     onClick={handleEditFeatures}
                     className="btn-ghost btn-sm flex items-center gap-1 text-accent-emerald hover:text-accent-emerald/80"
                     aria-label={ACCESSIBILITY_LABELS.WIZARD_REVIEW.EDIT_FEATURES}
-                    aria-keyshortcuts={getAriaShortcutKey("3", "alt")}
+                    aria-keyshortcuts={getAriaShortcutKey(
+                      WIZARD_REVIEW_EDIT_SHORTCUTS.FEATURES,
+                      "alt"
+                    )}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
