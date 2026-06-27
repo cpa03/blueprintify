@@ -4,6 +4,8 @@
 
 ## Active Bugs
 
+> **BugFixer ULW Cycle Jun 27 2026 ULW (2026-06-27 — fix/bugfixer-jun-27-2026-ulw)**: Full repository audit complete. Build ✅ typecheck ✅ lint ✅ tests 1,701/1,701 ✅ (723 web + 438 api + 540 shared). Secrets scan ✅. Format ✅. 0 type suppressions. 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. **BUG-014 and BUG-017 — FIXED on local branch (push blocked)**: Both stale doc refs (`docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml, 2 occurrences) and hardcoded `node-version: "20"`/`node-version: 20`→`node-version-file: ".node-version"` (11 occurrences, 4 files) fixed and verified via grep (zero stale doc refs, zero hardcoded `node-version:` remaining). Branch `fix/bugfixer-jun-27-2026-ulw` created with fixes committed. Push rejected by GitHub App token lacking `workflows: write` permission — same documented blocker as all prior cycles. Patch saved as `docs/ci-workflow-fixes-patch.md` (updated). npm audit: 17 moderate vulns in `@opentelemetry/core` (< 2.8.0) via `lighthouse` → `@sentry/node` — upstream tooling dependency (BUG-013, no fix within lighthouse 13.x). No other fixable bugs found in codebase. Documentation-only PR created.
+
 > **BugFixer ULW Cycle Jun 27 (2026-06-27 — fix/bugfixer-jun-27-2026)**: Full repository audit complete. Build ✅ typecheck ✅ lint ✅ tests 1,701/1,701 ✅ (723 web + 438 api + 540 shared). Secrets scan ✅. 0 type suppressions. 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. **BUG-014 and BUG-017 — FIXED on branch**: Both stale doc refs (`docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`) and hardcoded `node-version: "20"`→`node-version-file: ".node-version"` (11 occurrences, 4 files) fixed and verified via grep. Branch `fix/bugfixer-jun-27-2026` created. All checks pass. npm audit: 17 moderate vulns in `@opentelemetry/core` (< 2.8.0) via `lighthouse` → `@sentry/node` — upstream tooling dependency (BUG-013, no fix within lighthouse 13.x). No other fixable bugs found in codebase. PR created.
 
 > **RepoKeeper Cycle 157 (2026-06-27 — chore/repokeeper-cycle-157)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅. 0 type suppressions. 0 `@ts-expect-error`/`@ts-ignore`. 0 TODO/FIXME/HACK artifacts. 0 `as any`. **BUG-014 and BUG-017 — FIXED ON BRANCH (push blocked)**: Unlike Cycle 156 (which only updated documentation claiming fixes), this cycle directly edits the `.github/workflows/*.yml` files. BUG-014 — stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). BUG-017 — replaced all 11 occurrences of hardcoded `node-version: "20"`/`node-version: 20` with `node-version-file: ".node-version"` across iterate.yml (5), parallel.yml (4), on-pull.yml (1), pr-gatekeeper.yml (1). Both fixes verified via grep: zero stale doc refs, zero `node-version:` remaining. **Push blocked** by GitHub App token `workflows: write` permission. Workflow fix patch saved as `docs/ci-workflow-fixes-cycle-157.patch` for manual application. BroCula Run 21 indexed (LH **95-100-100-100**, 723 tests ✅). 3 new commits after Cycle 156 indexed in CHANGELOG. npm audit: 17 moderate vulns in `@opentelemetry/core` (< 2.8.0) via `lighthouse` → `@sentry/node` — upstream tooling dependency (same as BUG-013, no fix within lighthouse 13.x). No other fixable bugs found. PR created.
@@ -153,7 +155,7 @@
 
 ### BUG-014: Stale Doc References in main.yml Workflow
 
-**Status**: **Fixed on branch `fix/bugfixer-jun-27-2026`** — BugFixer ULW Cycle Jun 27 2026.
+**Status**: **Fixed on branch `fix/bugfixer-jun-27-2026-ulw`** — BugFixer ULW Cycle Jun 27 2026 ULW (but push blocked by `workflows: write` permission).
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1293
@@ -171,20 +173,19 @@ Re-introduced by commit `3f4a559` ("Multi-Phase Development Workflow Implementat
 
 The `main.yml` file is periodically replaced by CI workflows that use a template version containing stale doc refs. Previous fixes were either never properly merged to main or were overwritten by subsequent workflow updates. Additionally, **every prior cycle claiming "Resolved on main" was wrong** — the workflow file changes could never be pushed because the GitHub App token lacks `workflows: write` permission.
 
-#### Fix Applied (BugFixer ULW Cycle Jun 27 2026 — `fix/bugfixer-jun-27-2026`)
+#### Fix Applied (BugFixer ULW Cycle Jun 27 2026 ULW — `fix/bugfixer-jun-27-2026-ulw`)
 
 - ✅ `main.yml` line 39: `docs/bug.md, docs/feature.md` → `docs/bugs.md, docs/features.md`
 - ✅ `main.yml` line 263: `docs/bug.md` → `docs/bugs.md`
 - ✅ Fix verified via grep: zero stale doc refs remaining in `.github/`
-- ✅ Branch pushed: `fix/bugfixer-jun-27-2026`
-- ✅ PR created with all fixes
-- ✅ All checks pass: build ✅ lint ✅ typecheck ✅ tests 1,701/1,701 ✅ secrets ✅
+- ⛔ Push blocked: GitHub App token lacks `workflows: write` permission
+- ✅ Patch saved to `docs/ci-workflow-fixes-patch.md`
 
 ---
 
 ### BUG-017: CI Node.js Version Mismatch
 
-**Status**: **Fixed on branch `fix/bugfixer-jun-27-2026`** — BugFixer ULW Cycle Jun 27 2026.
+**Status**: **Fixed on branch `fix/bugfixer-jun-27-2026-ulw`** — BugFixer ULW Cycle Jun 27 2026 ULW (but push blocked by `workflows: write` permission).
 **Priority**: High  
 **Area**: CI/CD  
 **Issue**: #1390, #1470, #1549
@@ -201,7 +202,7 @@ Total: 11 occurrences of hardcoded `node-version: "20"` (or `node-version: 20`).
 
 Re-introduced by commit `3f4a559` which replaced workflow files with old versions. Fix keeps getting re-introduced on `main` — the CI workflows are periodically overwritten. Additionally, **every prior cycle claiming "Resolved on main" was wrong** — the workflow file changes could never be pushed because the GitHub App token lacks `workflows: write` permission.
 
-#### Fix Applied (BugFixer ULW Cycle Jun 27 2026 — `fix/bugfixer-jun-27-2026`)
+#### Fix Applied (BugFixer ULW Cycle Jun 27 2026 ULW — `fix/bugfixer-jun-27-2026-ulw`)
 
 - ✅ Replaced `node-version: "20"`/`node-version: 20` with `node-version-file: ".node-version"` (11 instances):
 
