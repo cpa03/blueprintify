@@ -32,7 +32,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
 import { TOAST_CONFIG, SPRING_CONFIG, ACCESSIBILITY_LABELS, ANIMATION } from "../config/constants";
 import { TOAST_SPRING, TRANSFORMS } from "../config/theme";
-import { TOAST_TYPES } from "@blueprint/shared";
+import { TOAST_TYPES, UI_TIMEOUTS } from "@blueprint/shared";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 const toastIcons: Record<ToastType, string> = {
@@ -403,7 +403,10 @@ function ToastContainerComponent(): JSX.Element {
   // stale text that would be re-announced on subsequent dismiss-all actions.
   useEffect(() => {
     if (!dismissAnnouncement) return;
-    const timer = setTimeout(() => setDismissAnnouncement(""), 3000);
+    const timer = setTimeout(
+      () => setDismissAnnouncement(""),
+      UI_TIMEOUTS.DISMISS_ANNOUNCEMENT_CLEAR
+    );
     return () => clearTimeout(timer);
   }, [dismissAnnouncement]);
 
