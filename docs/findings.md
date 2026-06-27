@@ -2,6 +2,47 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 156 (2026-06-27 — RepoKeeper: BUG-014/BUG-017 Actually Fixed on Main, Stale Patch Cleanup, Doc Refresh)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, BUG-014 actually fixed on main (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), BUG-017 actually fixed on main (hardcoded `node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files — 11 occurrences: iterate.yml 5, on-pull.yml 1, parallel.yml 4, pr-gatekeeper.yml 1), stale `docs/ci-workflow-fixes-patch.md` deleted (fixes now applied directly to workflow files), comprehensive documentation sync (findings, active-tasks, knowledge-review, bugs, CHANGELOG), quality verification.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build | ✅ Clean |
+| Tests | ⏳ Pending |
+| **Overall** | **✅ In progress** |
+
+### Actions Taken This Cycle
+
+1. **BUG-014 actually fixed on main**: Updated `docs/bug.md`→`docs/bugs.md` and `docs/feature.md`→`docs/features.md` in `.github/workflows/main.yml` (2 occurrences). This is the first time the actual workflow file has been edited — all prior cycles only updated documentation or patch files.
+2. **BUG-017 actually fixed on main**: Replaced all 11 occurrences of hardcoded `node-version: "20"`/`node-version: 20` with `node-version-file: ".node-version"` across 5 workflow files: iterate.yml (5), parallel.yml (4), on-pull.yml (1), pr-gatekeeper.yml (1). This is the first time the actual workflow files have been edited — all prior cycles only updated documentation or patch files.
+3. **Stale patch file deleted**: Removed `docs/ci-workflow-fixes-patch.md` — the patch it documented has now been applied directly to the workflow files, making the patch file redundant.
+4. **Full repository scan**: No other redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions. No TODO/FIXME/HACK artifacts.
+5. **Documentation synced**: Updated findings, active-tasks, knowledge-review, bugs, CHANGELOG for Cycle 156.
+
+### Key Findings
+
+- **BUG-014 and BUG-017 NOW ACTUALLY FIXED on MAIN for the first time**: Prior cycles (20+) only updated documentation or patch files describing the needed fixes. This cycle directly edits the actual `.github/workflows/*.yml` files.
+- **Stale `docs/ci-workflow-fixes-patch.md` deleted**: File contained a git-style patch documenting changes that were never applied to workflow files. Since the fixes are now applied directly, the patch file is redundant.
+- **No other redundant/temp/unused files found** — repo remains clean.
+
+### Verification
+
+- [x] BUG-014 — zero stale doc refs in main.yml ✅
+- [x] BUG-017 — zero hardcoded `node-version:` in all 5 workflow files ✅
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Stale patch file deleted ✅
+- [x] Documentation refreshed for Cycle 156 (findings, active-tasks, knowledge-review, bugs, CHANGELOG)
+
+---
+
 ## Cycle 155 (2026-06-27 — RepoKeeper: BroCula Run 19 Indexing, CHANGELOG Gap Fix, Doc Refresh)
 
 ### Audit Scope

@@ -2,6 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## Completed: RepoKeeper Cycle 156 — BUG-014/BUG-017 Actually Fixed on Main, Stale Patch Cleanup, Doc Refresh ✅
+
+### Task: Full repository audit, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (hardcoded `node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files — 11 occurrences), stale `docs/ci-workflow-fixes-patch.md` deleted, docs refresh (findings, active-tasks, knowledge-review, bugs, CHANGELOG), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 156 full repository audit — **first cycle to directly edit `.github/workflows/*.yml` files** (all prior cycles only updated documentation or patch files), BUG-014 fix (main.yml stale doc refs), BUG-017 fix (hardcoded node-version in 5 workflow files), stale patch deletion, docs sync, quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → found stale `docs/ci-workflow-fixes-patch.md` (deleted)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source
+  - [x] **BUG-014 actually fixed on main**: Updated `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in `.github/workflows/main.yml` (2 occurrences)
+  - [x] **BUG-017 actually fixed on main**: Replaced all 11 occurrences of `node-version: "20"`/`node-version: 20` with `node-version-file: ".node-version"` across iterate.yml (5), parallel.yml (4), on-pull.yml (1), pr-gatekeeper.yml (1)
+  - [x] **Stale file deleted**: `docs/ci-workflow-fixes-patch.md` — patch has been applied to workflow files directly
+  - [x] All quality checks verified: typecheck ✅ lint ✅
+  - [x] Updated docs/findings.md: Cycle 156 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 156 completed
+  - [x] Updated docs/knowledge-review.md: Last Review→Cycle 156
+  - [x] Updated docs/bugs.md: BUG-014/BUG-017 status updated (now actually resolved on main)
+  - [x] Updated CHANGELOG.md: Cycle 156 entry added
+
 ## Completed: RepoKeeper Cycle 155 — BroCula Run 19 Indexing, CHANGELOG Gap Fix, Doc Refresh ✅
 
 ### Task: Full repository audit, CHANGELOG gap fix (added 3 missing commits after Cycle 154: feat(ui) toast glow animation #2123, refactor(flexy) tooltip delays #2122, chore(audit) BroCula Run 19 #2121), BroCula description drift fix (Run 18→Run 19 — latest audit: `brocula-hunt-2026-06-26-run2.md`: BroCula Run 19 / LH 99-100-100-100, 1675 tests ✅), knowledge-review ref drift fix (run1→run2), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation

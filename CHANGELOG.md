@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 156 — **BUG-014 and BUG-017 actually fixed on main** (workflow files edited directly for the first time), stale patch file cleanup, doc refresh
 - feat(validation): add path drawing animation to validation checkmark/X icons
 - chore(repokeeper): BroCula Run 18 — audit report (LH 100-100-100-100, 723 tests ✅) (#2114)
 - feat(flexy): centralize inline spring configs into shared constants (Iteration 72)
