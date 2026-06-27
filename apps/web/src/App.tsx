@@ -3,6 +3,7 @@ import {
   WIZARD_STEP_KEYS,
   SHORTCUT_DESCRIPTIONS,
   SCROLL_THRESHOLD_DEFAULTS,
+  UI_TIMEOUTS,
 } from "@blueprint/shared";
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
@@ -112,7 +113,7 @@ function App(): JSX.Element {
   // components (PageScrollProgressBar, ScrollToTop, ScrollToBottom) don't
   // trigger their dynamic imports — and framer-motion — during first paint.
   useEffect(() => {
-    const timer = setTimeout(() => setDeferMount(true), 2000);
+    const timer = setTimeout(() => setDeferMount(true), UI_TIMEOUTS.DEFER_MOUNT);
     return () => clearTimeout(timer);
   }, []);
 
@@ -164,7 +165,7 @@ function App(): JSX.Element {
     if (templatesExiting) {
       const timer = setTimeout(() => {
         setTemplatesExiting(false);
-      }, 350);
+      }, UI_TIMEOUTS.TEMPLATES_EXIT);
       return () => clearTimeout(timer);
     }
   }, [templatesExiting]);

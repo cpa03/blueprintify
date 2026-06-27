@@ -1696,6 +1696,12 @@ export const UI_TIMEOUTS = {
   DEBOUNCE: 300,
   /** Generation check polling interval (100ms) */
   GENERATION_CHECK: 100,
+  /** Deferred mount delay — lets non-critical lazy components avoid first-paint (2s) */
+  DEFER_MOUNT: 2000,
+  /** Templates exiting backup timeout — ensures state resets if onAnimationEnd doesn't fire (350ms) */
+  TEMPLATES_EXIT: 350,
+  /** Delay before clearing screen-reader dismiss announcement (3s) */
+  DISMISS_ANNOUNCEMENT_CLEAR: 3000,
 } as const;
 
 /**
