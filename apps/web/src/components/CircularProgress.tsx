@@ -119,8 +119,8 @@ function CircularProgressComponent({
           strokeDasharray={circumference}
           style={{
             strokeDashoffset,
-            transitionProperty: "stroke-dashoffset",
-            transitionDuration: `${SVG_TRANSITION.STROKE_DASHOFFSET_DURATION_MS}ms`,
+            transitionProperty: "stroke-dashoffset, stroke",
+            transitionDuration: `${SVG_TRANSITION.STROKE_DASHOFFSET_DURATION_MS}ms, 0.45s`,
             transitionTimingFunction: SVG_TRANSITION.STROKE_TIMING,
           }}
         />
