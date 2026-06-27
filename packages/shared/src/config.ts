@@ -2135,3 +2135,101 @@ export const ANIMATION_DURATION_S = {
   /** Duration for loading overlay fade-in (0.15s) */
   LOADING_OVERLAY_S: 0.15,
 } as const;
+
+// ============================================================================
+// Ripple Animation Defaults
+// ============================================================================
+
+/**
+ * Ripple animation configuration defaults for RippleButton components.
+ * Centralized source of truth for ripple click feedback animation timing and sizing.
+ * Flexy says: No hardcoded ripple delay/size/scale magic numbers in components!
+ * Usage: import { RIPPLE_DEFAULTS } from "@blueprint/shared";
+ *        removalDelay: RIPPLE_DEFAULTS.REMOVAL_DELAY_MS
+ */
+export const RIPPLE_DEFAULTS = {
+  /** Delay before ripple element is removed from DOM (ms) */
+  REMOVAL_DELAY_MS: 600,
+  /** CSS transition duration for ripple expand animation (s) */
+  TRANSITION_DURATION_S: 0.6,
+  /** Initial size of the ripple element (px) */
+  SIZE_PX: 20,
+  /** Offset to center the ripple under the cursor (px) */
+  MARGIN_OFFSET_PX: -10,
+  /** Initial opacity of the ripple at creation */
+  INITIAL_OPACITY: 0.5,
+  /** Final scale multiplier for ripple expansion */
+  FINAL_SCALE: 4,
+} as const;
+
+/**
+ * Particle Animation Defaults
+ * Centralized source of truth for AnimatedCopyButton celebration particle config.
+ * Flexy says: No hardcoded particle count/distance/duration magic numbers in components!
+ * Usage: import { PARTICLE_DEFAULTS } from "@blueprint/shared";
+ *        particleCount: PARTICLE_DEFAULTS.COUNT
+ */
+export const PARTICLE_DEFAULTS = {
+  /** Number of particles spawned per click */
+  COUNT: 12,
+  /** Base distance particles travel from origin (px) */
+  BASE_DISTANCE_PX: 30,
+  /** Random additional distance for particle travel (px) */
+  RANDOM_DISTANCE_PX: 20,
+  /** Base duration of particle animation (ms) */
+  BASE_DURATION_MS: 400,
+  /** Random additional duration for particle animation (ms) */
+  RANDOM_DURATION_MS: 200,
+  /** Delay before GPU cleanup of particle elements (ms) */
+  CLEANUP_DELAY_MS: 700,
+  /** Base particle size (px) */
+  BASE_SIZE_PX: 3,
+  /** Random additional particle size (px) */
+  RANDOM_SIZE_PX: 3,
+} as const;
+
+/**
+ * Skeleton Loading Defaults
+ * Centralized source of truth for skeleton loader timing and layout dimensions.
+ * Flexy says: No hardcoded skeleton fadeout timings or layout percentages in components!
+ * Usage: import { SKELETON_DEFAULTS } from "@blueprint/shared";
+ *        fadeoutMs: SKELETON_DEFAULTS.FADEOUT_MS
+ */
+export const SKELETON_DEFAULTS = {
+  /** Fadeout transition duration for skeleton placeholders (ms) */
+  FADEOUT_MS: 300,
+  /** Preview skeleton line widths (percentages) */
+  PREVIEW_LINE_WIDTHS: ["88%", "72%", "95%", "60%", "82%", "70%", "90%", "55%", "78%"] as const,
+  /** Preview skeleton code block width (percentage) */
+  PREVIEW_CODE_WIDTH: "92%" as const,
+  /** Number of lines in editor skeleton */
+  EDITOR_LINE_COUNT: 16,
+  /** Editor skeleton line widths (percentages) */
+  EDITOR_LINE_WIDTHS: [92, 78, 85, 60, 95, 72, 88, 55, 80, 70, 90, 65, 82, 75, 58, 87] as const,
+  /** Editor skeleton indent levels (multiples of INDENT_MULTIPLIER_PX) */
+  EDITOR_LINE_INDENTS: [0, 0, 2, 0, 4, 0, 2, 0, 6, 0, 0, 3, 0, 2, 0, 4] as const,
+  /** Editor skeleton line height (px) */
+  EDITOR_LINE_HEIGHT_PX: 14,
+  /** Editor skeleton indent multiplier (px per indent level) */
+  EDITOR_INDENT_MULTIPLIER_PX: 12,
+} as const;
+
+/**
+ * Entrance Stagger Defaults
+ * Centralized source of truth for staggered entrance animation timing.
+ * Flexy says: No hardcoded stagger delays in component entrance animations!
+ * Usage: import { ENTRANCE_STAGGER_DEFAULTS } from "@blueprint/shared";
+ *        delay: ENTRANCE_STAGGER_DEFAULTS.BASE_DELAY_S
+ */
+export const ENTRANCE_STAGGER_DEFAULTS = {
+  /** Base delay before the cascade begins (s) */
+  BASE_DELAY_S: 0.15,
+  /** Delay increment between staggered elements (s) */
+  INCREMENT_S: 0.07,
+  /** Default CSS animation-fill-mode for entrance animations */
+  FILL_MODE: "backwards" as const,
+  /** Short delay for secondary elements (s) */
+  SHORT_DELAY_S: 0.1,
+  /** Medium delay for tertiary elements (s) */
+  MEDIUM_DELAY_S: 0.2,
+} as const;

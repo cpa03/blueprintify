@@ -103,6 +103,10 @@ import {
   UI_ANIMATION_DEFAULTS,
   ANIMATION_DURATION_S,
   VIEW_MODE_INDICATOR_POSITION,
+  RIPPLE_DEFAULTS,
+  PARTICLE_DEFAULTS,
+  SKELETON_DEFAULTS,
+  ENTRANCE_STAGGER_DEFAULTS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -2847,5 +2851,135 @@ describe("VIEW_MODE_INDICATOR_POSITION", () => {
     const values = Object.values(VIEW_MODE_INDICATOR_POSITION);
     const uniqueValues = new Set(values);
     expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("RIPPLE_DEFAULTS", () => {
+  it("should have positive removal delay", () => {
+    expect(RIPPLE_DEFAULTS.REMOVAL_DELAY_MS).toBeGreaterThan(0);
+  });
+
+  it("should have reasonable transition duration", () => {
+    expect(RIPPLE_DEFAULTS.TRANSITION_DURATION_S).toBeGreaterThan(0);
+    expect(RIPPLE_DEFAULTS.TRANSITION_DURATION_S).toBeLessThan(5);
+  });
+
+  it("should have positive size", () => {
+    expect(RIPPLE_DEFAULTS.SIZE_PX).toBeGreaterThan(0);
+  });
+
+  it("should have negative margin offset for centering", () => {
+    expect(RIPPLE_DEFAULTS.MARGIN_OFFSET_PX).toBeLessThan(0);
+  });
+
+  it("should have opacity between 0 and 1", () => {
+    expect(RIPPLE_DEFAULTS.INITIAL_OPACITY).toBeGreaterThan(0);
+    expect(RIPPLE_DEFAULTS.INITIAL_OPACITY).toBeLessThanOrEqual(1);
+  });
+
+  it("should have final scale greater than initial", () => {
+    expect(RIPPLE_DEFAULTS.FINAL_SCALE).toBeGreaterThan(1);
+  });
+
+  it("should have 6 entries", () => {
+    expect(Object.keys(RIPPLE_DEFAULTS).length).toBe(6);
+  });
+});
+
+describe("PARTICLE_DEFAULTS", () => {
+  it("should have positive particle count", () => {
+    expect(PARTICLE_DEFAULTS.COUNT).toBeGreaterThan(0);
+  });
+
+  it("should have positive distance values", () => {
+    expect(PARTICLE_DEFAULTS.BASE_DISTANCE_PX).toBeGreaterThan(0);
+    expect(PARTICLE_DEFAULTS.RANDOM_DISTANCE_PX).toBeGreaterThan(0);
+  });
+
+  it("should have positive duration values", () => {
+    expect(PARTICLE_DEFAULTS.BASE_DURATION_MS).toBeGreaterThan(0);
+    expect(PARTICLE_DEFAULTS.RANDOM_DURATION_MS).toBeGreaterThan(0);
+    expect(PARTICLE_DEFAULTS.CLEANUP_DELAY_MS).toBeGreaterThan(0);
+  });
+
+  it("should have positive particle size values", () => {
+    expect(PARTICLE_DEFAULTS.BASE_SIZE_PX).toBeGreaterThan(0);
+    expect(PARTICLE_DEFAULTS.RANDOM_SIZE_PX).toBeGreaterThan(0);
+  });
+
+  it("should have 8 entries", () => {
+    expect(Object.keys(PARTICLE_DEFAULTS).length).toBe(8);
+  });
+});
+
+describe("SKELETON_DEFAULTS", () => {
+  it("should have positive fadeout ms", () => {
+    expect(SKELETON_DEFAULTS.FADEOUT_MS).toBeGreaterThan(0);
+  });
+
+  it("should have string values for preview widths", () => {
+    SKELETON_DEFAULTS.PREVIEW_LINE_WIDTHS.forEach((w) => {
+      expect(typeof w).toBe("string");
+      expect(w).toMatch(/%$/);
+    });
+  });
+
+  it("should have expected preview code width", () => {
+    expect(SKELETON_DEFAULTS.PREVIEW_CODE_WIDTH).toMatch(/%$/);
+  });
+
+  it("should have positive editor line count", () => {
+    expect(SKELETON_DEFAULTS.EDITOR_LINE_COUNT).toBeGreaterThan(0);
+  });
+
+  it("should have matching editor widths and indents length", () => {
+    expect(SKELETON_DEFAULTS.EDITOR_LINE_WIDTHS.length).toBe(SKELETON_DEFAULTS.EDITOR_LINE_COUNT);
+    expect(SKELETON_DEFAULTS.EDITOR_LINE_INDENTS.length).toBe(SKELETON_DEFAULTS.EDITOR_LINE_COUNT);
+  });
+
+  it("should have positive height and multiplier", () => {
+    expect(SKELETON_DEFAULTS.EDITOR_LINE_HEIGHT_PX).toBeGreaterThan(0);
+    expect(SKELETON_DEFAULTS.EDITOR_INDENT_MULTIPLIER_PX).toBeGreaterThan(0);
+  });
+
+  it("should have all non-negative indent values", () => {
+    SKELETON_DEFAULTS.EDITOR_LINE_INDENTS.forEach((indent) => {
+      expect(indent).toBeGreaterThanOrEqual(0);
+    });
+  });
+
+  it("should have 8 entries", () => {
+    expect(Object.keys(SKELETON_DEFAULTS).length).toBe(8);
+  });
+});
+
+describe("ENTRANCE_STAGGER_DEFAULTS", () => {
+  it("should have positive base delay", () => {
+    expect(ENTRANCE_STAGGER_DEFAULTS.BASE_DELAY_S).toBeGreaterThan(0);
+  });
+
+  it("should have positive increment", () => {
+    expect(ENTRANCE_STAGGER_DEFAULTS.INCREMENT_S).toBeGreaterThan(0);
+  });
+
+  it("should have valid fill mode string", () => {
+    expect(typeof ENTRANCE_STAGGER_DEFAULTS.FILL_MODE).toBe("string");
+    expect(ENTRANCE_STAGGER_DEFAULTS.FILL_MODE.length).toBeGreaterThan(0);
+  });
+
+  it("should have short delay less than base delay", () => {
+    expect(ENTRANCE_STAGGER_DEFAULTS.SHORT_DELAY_S).toBeLessThan(
+      ENTRANCE_STAGGER_DEFAULTS.BASE_DELAY_S
+    );
+  });
+
+  it("should have medium delay greater than short delay", () => {
+    expect(ENTRANCE_STAGGER_DEFAULTS.MEDIUM_DELAY_S).toBeGreaterThan(
+      ENTRANCE_STAGGER_DEFAULTS.SHORT_DELAY_S
+    );
+  });
+
+  it("should have 5 entries", () => {
+    expect(Object.keys(ENTRANCE_STAGGER_DEFAULTS).length).toBe(5);
   });
 });
