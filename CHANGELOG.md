@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- fix(deploy): validate wrangler.toml placeholders before deploy (#2143)
+- chore(audit): BroCula Run 23 — audit report (LH **94-100-100-100**, 1701 tests ✅) (723 web + 438 API + 540 shared) (#2140)
+- chore(repokeeper): Cycle 158 — doc cleanup, CI fix script, stale patch removal (#2141)
+- feat(web): smooth stroke color transition on CircularProgress ring (#2142)
+- chore(audit): BroCula Run 22 — audit report (LH **100-100-100-100**)
+- docs(bugfixer): BugFixer ULW Cycle Jun 27 — BUG-014/017 documentation
+- refactor(flexy): eliminate remaining hardcoded values (Iteration 75)
+- feat(web): GPU-composited slide animation for OfflineBanner entrance
+- chore(repokeeper): Cycle 157 — doc refresh, BUG-014/BUG-017 patch, audit findings
+- refactor(api): split large constants.ts into modular files (#2139)
 - docs(ci): reflect actual CI state with workflow permission blocker (#2133)
 - feat(OfflineBanner): add screen reader announcements for dismiss and connectivity restore (#2129)
 - chore(audit): BroCula Run 21 — audit report (LH **95-100-100-100**, 723 tests ✅) (#2130)
