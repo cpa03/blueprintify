@@ -52,7 +52,11 @@ describe("OfflineBanner", () => {
     mockOnlineStatus.mockReturnValue(false);
     render(<OfflineBanner />);
 
-    const banner = screen.getByRole("status");
+    // Two role="status" elements exist: the visible banner (polite) and the
+    // sr-only announcement live region (assertive). Select by aria-live value.
+    const banners = screen.getAllByRole("status");
+    const banner = banners.find((b) => b.getAttribute("aria-live") === "polite");
+    expect(banner).toBeDefined();
     expect(banner).toHaveAttribute("aria-live", "polite");
     expect(banner).toHaveAttribute("aria-atomic", "true");
   });
