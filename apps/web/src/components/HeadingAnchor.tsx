@@ -31,7 +31,7 @@
 import { useState, useCallback, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { generateSlug } from "../utils/slug";
-import { ANIMATION_DEFAULTS } from "@blueprint/shared";
+import { ANIMATION_DEFAULTS, TOOLTIP_LABELS, UI_TIMEOUTS } from "@blueprint/shared";
 import { ANIMATION, SPRING_CONFIG, ACCESSIBILITY_LABELS } from "../config/constants";
 import { copyToClipboard } from "../lib/export";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -67,7 +67,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
       setShowCopied(true);
       timeoutRef.current = setTimeout(() => {
         setShowCopied(false);
-      }, 2000);
+      }, UI_TIMEOUTS.COPY_FEEDBACK);
 
       // Update URL hash without scrolling
       history.replaceState(null, "", url.toString());
@@ -147,7 +147,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
               className="text-accent-emerald font-semibold whitespace-nowrap"
               aria-live="polite"
             >
-              Copied!
+              {TOOLTIP_LABELS.EDITOR.COPIED}
             </motion.span>
           )}
         </AnimatePresence>

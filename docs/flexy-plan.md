@@ -1343,3 +1343,24 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD | `feat/flexy-iteration-75-hardcoded-cleanup` | refactor(flexy): eliminate remaining hardcoded animation durations, transition strings and keyboard shortcut keys (Iteration 75) |
+
+### ✅ Flexy Iteration 77: Eliminate Remaining Hardcoded Copy Feedback Timeout & Display Text in HeadingAnchor
+
+| File | Change |
+| ---- | ------ |
+| `apps/web/src/components/HeadingAnchor.tsx` | Added `TOOLTIP_LABELS, UI_TIMEOUTS` imports from `@blueprint/shared` |
+| `apps/web/src/components/HeadingAnchor.tsx` | Replaced hardcoded `2000` ms with `UI_TIMEOUTS.COPY_FEEDBACK` |
+| `apps/web/src/components/HeadingAnchor.tsx` | Replaced hardcoded `Copied!` display text with `{TOOLTIP_LABELS.EDITOR.COPIED}` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 723 web + 438 api + 540 shared = 1,701 tests passing across 84 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-77-heading-anchor-hardcoded` | refactor(flexy): replace hardcoded copy feedback timeout and display text in HeadingAnchor (Iteration 77) |

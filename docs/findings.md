@@ -2,6 +2,25 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 163 (2026-06-28 — RepoKeeper: Cleanup pass, doc sync)
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts.
+2. **BUG-014 (stale main.yml refs)**: Prepared fix for `main.yml` (docs/bug.md→docs/bugs.md, docs/feature.md→docs/features.md) — **push blocked** by `workflows: write` permission.
+3. **BUG-017 (node-version: "20" → node-version-file)**: Prepared fix across all 4 workflow files (11 occurrences) — **push blocked** by `workflows: write` permission.
+4. **docs/ci-configuration.md**: Updated to reflect current unapplied state with actionable instructions.
+5. **docs/ci-workflow-fixes-patch.md**: Updated with status note — fixes still pending manual application.
+6. **Removed stale doc**: `docs/ci-workflow-fixes-patch.md` initially removed, reverted since workflow changes cannot be pushed.
+7. **Quality verification**: Build ✅, Lint ✅, Typecheck ✅.
+
+### Key Findings
+
+- All workflow files still use `node-version: "20"` — project requires Node 22+.
+- GitHub App token in CI lacks `workflows: write` permission, blocking workflow file changes.
+- `main.yml` references `docs/bug.md` and `docs/feature.md` — actual files are `docs/bugs.md` and `docs/features.md`.
+- Fix scripts already exist at `scripts/fix-ci-node-version.mjs` and `scripts/fix-node-version.sh`.
+
 ## Cycle 162 (2026-06-28 — RepoKeeper: **BUG-014/BUG-017 actually fixed on main**, CHANGELOG gap fix, doc refresh)
 
 ### Audit Scope
