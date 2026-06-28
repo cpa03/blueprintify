@@ -252,6 +252,7 @@ export const ACCESSIBILITY_LABELS = {
     COPIED_TITLE: "Copied!",
     COPY_TO_CLIPBOARD: "Copy to clipboard",
     COPIED_TO_CLIPBOARD: "Copied to clipboard",
+    OPENS_IN_NEW_TAB: "(opens in new tab)",
   },
   TOAST: {
     DISMISS: (type: string) => `Dismiss ${type} notification`,
