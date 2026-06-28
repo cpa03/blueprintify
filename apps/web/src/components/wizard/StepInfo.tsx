@@ -136,10 +136,18 @@ export const StepInfo = memo(function StepInfo({
     } else {
       let fieldId: string | null = null;
       if (projectName.length < FORM_LIMITS.PROJECT_NAME.MIN) {
-        projectNameInputRef.current?.focus();
+        projectNameInputRef.current?.focus({ preventScroll: true });
+        projectNameInputRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+        });
         fieldId = "projectName";
       } else if (description.length < FORM_LIMITS.DESCRIPTION.MIN) {
-        descriptionRef.current?.focus();
+        descriptionRef.current?.focus({ preventScroll: true });
+        descriptionRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+        });
         fieldId = "description";
       }
       if (fieldId) {
