@@ -246,8 +246,8 @@ function EditorComponent(): JSX.Element {
       });
       observer.observe(wrapper, { childList: true, subtree: true });
 
-      // Safety timeout: stop observing after 10s to avoid memory leaks
-      const safetyTimer = setTimeout(() => observer.disconnect(), 10000);
+      // Safety timeout: stop observing to avoid memory leaks
+      const safetyTimer = setTimeout(() => observer.disconnect(), TIMEOUTS.OBSERVER_DISCONNECT);
 
       return () => {
         observer.disconnect();
