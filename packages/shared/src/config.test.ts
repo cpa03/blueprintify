@@ -2282,11 +2282,12 @@ describe("UI_TIMEOUTS", () => {
     expect(UI_TIMEOUTS.DEFER_MOUNT).toBe(2000);
     expect(UI_TIMEOUTS.TEMPLATES_EXIT).toBe(350);
     expect(UI_TIMEOUTS.DISMISS_ANNOUNCEMENT_CLEAR).toBe(3000);
+    expect(UI_TIMEOUTS.OBSERVER_DISCONNECT).toBe(10000);
   });
 
   it("should have all numeric values", () => {
     const values = Object.values(UI_TIMEOUTS);
-    expect(values.length).toBe(14);
+    expect(values.length).toBe(15);
     values.forEach((v) => {
       expect(typeof v).toBe("number");
       expect(v).toBeGreaterThan(0);

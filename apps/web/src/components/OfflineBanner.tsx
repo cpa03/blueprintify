@@ -31,7 +31,7 @@
 import { useState, useCallback, useEffect, useRef, memo } from "react";
 import { useOnlineStatus } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { STYLE_ID_STRINGS } from "@blueprint/shared";
+import { STYLE_ID_STRINGS, UI_TIMEOUTS } from "@blueprint/shared";
 import { NETWORK_MESSAGES, ACCESSIBILITY_LABELS, OFFLINE_ANIMATION } from "../config/constants";
 
 /**
@@ -95,7 +95,7 @@ function OfflineBannerComponent(): JSX.Element | null {
     setIsDismissed(true);
     setDismissAnnouncement(ACCESSIBILITY_LABELS.OFFLINE_BANNER.DISMISS_ANNOUNCEMENT);
     // Clear the dismiss announcement after screen readers have had time to announce it
-    setTimeout(() => setDismissAnnouncement(""), 3000);
+    setTimeout(() => setDismissAnnouncement(""), UI_TIMEOUTS.DISMISS_ANNOUNCEMENT_CLEAR);
   }, []);
 
   // Reset dismissed state when coming back online so banner can show again next time
@@ -105,7 +105,7 @@ function OfflineBannerComponent(): JSX.Element | null {
       // Announce connectivity was restored — the banner auto-hides so screen
       // reader users get explicit confirmation that they are back online
       setDismissAnnouncement(ACCESSIBILITY_LABELS.OFFLINE_BANNER.ONLINE_ANNOUNCEMENT);
-      setTimeout(() => setDismissAnnouncement(""), 3000);
+      setTimeout(() => setDismissAnnouncement(""), UI_TIMEOUTS.DISMISS_ANNOUNCEMENT_CLEAR);
     }
     prevOnlineRef.current = isOnline;
   }, [isOnline]);

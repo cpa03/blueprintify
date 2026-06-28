@@ -1702,6 +1702,8 @@ export const UI_TIMEOUTS = {
   TEMPLATES_EXIT: 350,
   /** Delay before clearing screen-reader dismiss announcement (3s) */
   DISMISS_ANNOUNCEMENT_CLEAR: 3000,
+  /** Safety timeout for MutationObserver in Editor component — stops observing after 10s to prevent memory leaks */
+  OBSERVER_DISCONNECT: 10000,
 } as const;
 
 /**
