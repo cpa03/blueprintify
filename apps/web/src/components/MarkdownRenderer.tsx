@@ -288,8 +288,30 @@ function MarkdownRendererComponent({ content, className }: MarkdownRendererProps
       },
       a({ children, href }) {
         return (
-          <a href={href} className={MARKDOWN.LINK} target="_blank" rel="noopener noreferrer">
+          <a
+            href={href}
+            className={`${MARKDOWN.LINK} group inline-flex items-center gap-0.5`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {children}
+            <span className="sr-only">{ACCESSIBILITY_LABELS.MARKDOWN.OPENS_IN_NEW_TAB}</span>
+            {/* External link indicator — visible on hover/focus to signal the
+                link opens in a new tab, matching the Header pattern. */}
+            <svg
+              className="w-3 h-3 opacity-0 group-hover:opacity-60 group-focus-visible:opacity-60 transition-all duration-200 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6m4-3h6v6m-10 4L21 3"
+              />
+            </svg>
           </a>
         );
       },
