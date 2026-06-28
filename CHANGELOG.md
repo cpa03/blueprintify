@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 165 — full repository audit, BroCula ref drift fix (run11→run12 in knowledge-review.md — latest `brocula-hunt-2026-06-28-run12.md` / LH **100-100-100-100** / 1701 tests ✅), duplicate commit investigation (01abb3b6 is legitimate merge — cleared), CHANGELOG gap fix (added 3 missing commits after Cycle 164), BUG-014/BUG-017 status verified (still present on main), docs refresh (findings, active-tasks, knowledge-review), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created
+- feat(wizard): smooth scroll to invalid fields on form validation failure
+- fix(ci): BUG-014 — stale doc refs + BUG-017 — hardcoded node-version (BugFixer Cycle Jun 28 2026 Run 2)
+- docs(bugs): BugFixer Cycle Jun 28 2026 Run 2 — BUG-014/017 fixed on branch (workflow push blocked)
 - docs: update CI workflow fix patch with improved node-version-file approach
 - fix(ci): BUG-014 — stale doc refs + BUG-017 — hardcoded node-version (Cycle Jun 28 2026) — documentation-patch update for BUG-014 (stale doc refs in main.yml) and BUG-017 (hardcoded `node-version: "20"` across 4 workflow files); actual workflow files remain unchanged on main (`workflows: write` permission blocker)
 - chore(repokeeper): Cycle 164 — full repository audit, BroCula ref drift fix (run9→run11 in knowledge-review.md), CHANGELOG gap fix (added 2 missing commits after Cycle 163), docs refresh (findings, active-tasks, knowledge-review), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created
