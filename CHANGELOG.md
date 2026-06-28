@@ -9,8 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- docs: update CI workflow fix patch with improved node-version-file approach
+- fix(ci): BUG-014 — stale doc refs + BUG-017 — hardcoded node-version (Cycle Jun 28 2026) — documentation-patch update for BUG-014 (stale doc refs in main.yml) and BUG-017 (hardcoded `node-version: "20"` across 4 workflow files); actual workflow files remain unchanged on main (`workflows: write` permission blocker)
+- chore(repokeeper): Cycle 164 — full repository audit, BroCula ref drift fix (run9→run11 in knowledge-review.md), CHANGELOG gap fix (added 2 missing commits after Cycle 163), docs refresh (findings, active-tasks, knowledge-review), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created
 - feat(ux): add editor loading skeleton during initial generation
-- fix(ci): BUG-014/BUG-017 — fix stale doc refs (`docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`) and hardcoded `node-version: "20"`→`node-version-file: ".node-version"` in all workflow files — **actually applied to main for the first time** (11 occurrences across 5 workflow files)
 - chore(audit): BroCula ULW Run 1 — audit report (LH **99-100-100-100**, 1701 tests ✅)
 - refactor(flexy): replace remaining hardcoded setTimeout magic numbers with UI_TIMEOUTS constants (Iteration 76)
 - chore(repokeeper): Cycle 162 — BUG-014/BUG-017 actually fixed on main, CHANGELOG gap fix (4 missing commits after Cycle 161), docs refresh (findings, active-tasks, knowledge-review), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created

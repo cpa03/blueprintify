@@ -2,6 +2,60 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 164 (2026-06-28 — RepoKeeper: Full audit, BroCula ref drift fix, CHANGELOG gap fix, doc sync)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, BroCula ref drift fix in knowledge-review.md (run9→run11 — latest: `brocula-hunt-2026-06-28-run11.md` / BroCula ULW Run 11 / LH **99-100-100-100** / 1701 tests ✅), knowledge-review.md Last Review bumped from Cycle 162→164, BUG-014/BUG-017 status correction in docs (still present on main — push blocked by `workflows: write`), CHANGELOG gap fix (added 2 missing commits after Cycle 163: `fix(ci): BUG-014/BUG-017 doc/patch update` + `docs: update CI workflow fix patch`), active-tasks.md Cycle 164 entry, findings.md Cycle 164 entry, quality verification, PR creation.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,701/1,701 passing** (723 web + 438 API + 540 shared) |
+| Secrets Scan | ✅ Clean |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0). No TODO/FIXME/HACK artifacts in non-test source.
+2. **BroCula ref drift fix**: knowledge-review.md updated from `brocula-hunt-2026-06-28-run9.md` (Run 26) to `brocula-hunt-2026-06-28-run11.md` (BroCula ULW Run 11 / LH **99-100-100-100** / 1701 tests ✅).
+3. **knowledge-review.md Last Review bumped**: Cycle 162 → Cycle 164.
+4. **BUG-014/BUG-017 status corrected**: Both bugs still present on main — prior docs incorrectly claimed "actually fixed on main". Workflow files unchanged due to `workflows: write` permission blocker.
+5. **CHANGELOG gap fix**: Added 2 missing commits after Cycle 163 to [Unreleased]:
+   - `fix(ci): BUG-014 — stale doc refs + BUG-017 — hardcoded node-version (Cycle Jun 28 2026)`
+   - `docs: update CI workflow fix patch with improved node-version-file approach`
+6. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 164.
+7. **Quality verification**: typecheck ✅ lint ✅ tests 1,701/1,701 ✅ secrets scan ✅.
+
+### Key Findings
+
+- **BUG-014 and BUG-017 still present on main** — workflow files remain unchanged. Prior cycle docs incorrectly claimed "actually fixed on main". The commits after Cycle 163 only updated documentation/patch files, not the actual `.github/workflows/*.yml` files. Blocker: GitHub App token lacks `workflows: write` permission.
+- **BroCula run9→run11 drift**: knowledge-review.md still referenced `brocula-hunt-2026-06-28-run9.md` (Run 26). Latest on disk is `brocula-hunt-2026-06-28-run11.md` (BroCula ULW Run 11). Fixed.
+- **knowledge-review.md Last Review was stuck at Cycle 162**: Cycles 163 and 164 had passed without bumping it. Fixed.
+- **CHANGELOG gap**: 2 commits after Cycle 163 missing. Added.
+- **No redundant/temp/unused files found** — repo remains clean.
+- **No stale remote branches** — all 8 remote branches have unique unmerged commits.
+- **All quality checks passing**: typecheck ✅ lint ✅ tests 1,701/1,701 ✅ secrets scan ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Tests — 1,701/1,701 passing (723 web + 438 API + 540 shared) ✅
+- [x] Secrets scan — Clean ✅
+- [x] BroCula ref drift fixed: knowledge-review.md run9→run11 ✅
+- [x] knowledge-review.md Last Review bumped to Cycle 164 ✅
+- [x] BUG-014/BUG-017 status corrected in docs (still present on main) ✅
+- [x] CHANGELOG gap filled — 2 missing commits after Cycle 163 added ✅
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK ✅
+- [x] Documentation refreshed for Cycle 164 (findings, active-tasks, knowledge-review, CHANGELOG) ✅
+- [x] PR created ✅
+
+---
+
 ## Cycle 163 (2026-06-28 — RepoKeeper: Cleanup pass, doc sync)
 
 ### Actions Taken This Cycle
