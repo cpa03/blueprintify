@@ -12,23 +12,25 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-27 (RepoKeeper Cycle 159)
+**Last Review**: 2026-06-28 (RepoKeeper Cycle 160)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jun 27)` — matches latest audit `brocula-hunt-2026-06-27-run4.md` (BroCula Run 23 / LH **94-100-100-100**, 1701 tests ✅)
+- **README BroCula description verified**: `(Jun 17–Jun 27)` — matches latest audit `brocula-hunt-2026-06-27-run8.md` (BroCula ULW Run 8 / LH **100-100-100-100**, 1701 tests ✅)
 - **Typecheck/Lint**: All clean (0 errors, 0 warnings)
 - **Build**: Clean ✅
 - **Tests**: **1,701/1,701 passing** (723 web + 438 API + 540 shared) ✅
 - **Secrets scan**: Clean ✅
-- **Stale merged branches cleaned**: Deleted `origin/fix/bugfixer-ulw-jun-27` — fully merged into main
-- **BroCula Run 23 indexed**: Latest audit `brocula-hunt-2026-06-27-run4.md` (BroCula Run 23 / LH **94-100-100-100**, 1701 tests ✅)
-- **BroCula Run 22 indexed**: `brocula-hunt-2026-06-27-run3.md` (BroCula Run 22 / LH **100-100-100-100**)
-- **CHANGELOG gap filled**: Added 10 missing commits after Cycle 156 — refactor(api) constants split (#2139), Cycle 157, GPU OfflineBanner, flexy Iteration 75, bugfixer docs, BroCula Run 22, CircularProgress (#2142), Cycle 158, BroCula Run 23 (#2140), wrangler fix (#2143)
-- **Cycle 159**: Full repository audit, post-Cycle-158 commit indexing (10 commits), CHANGELOG gap fix, stale branch cleanup (`origin/fix/bugfixer-ulw-jun-27` deleted), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅ format ✅ secrets ✅), PR created
+- **Stale merged branches cleaned**: 0 stale branches to delete — all remote branches have unique unmerged commits
+- **BUG-017 fully resolved on main**: `fix(ci): update node-version from 20 to 22 across all workflow files (#2152)` — hardcoded `node-version: "20"` replaced with `node-version-file: ".node-version"` across all workflow files
+- **Stale patch file deleted**: `docs/ci-workflow-fixes-cycle-jun-27-2026.patch` removed (node-version fix applied via #2152, file redundant)
+- **BroCula ULW Run 8 indexed**: Latest audit `brocula-hunt-2026-06-27-run8.md` (BroCula ULW Run 8 / LH **100-100-100-100**, 1701 tests ✅)
+- **BroCula ULW Run 7 indexed**: `brocula-hunt-2026-06-27-run7.md` (BroCula ULW Run 7 / LH **99-100-100-100**, 1701 tests ✅)
+- **CHANGELOG gap filled**: Added 8 missing commits after Cycle 158 — fix(bugfixer) BUG-014/017, BroCula ULW Run 7, Cycle 159, feat(ux) dir="auto" RTL, docs(ci) Node 20→22 instructions, BroCula ULW Run 8, docs(bugfixer) BUG-014/017 docs, feat(ux) auto-focus search modal, fix(ci) node-version 20→22 (#2152)
+- **Cycle 160**: Full repository audit, stale patch cleanup, post-Cycle-159 commit indexing (8 commits), BroCula ULW Run 7/8 indexing, CHANGELOG gap fix, docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅ format ✅ secrets ✅)
 - **Cycle 158**: Doc cleanup (removed stale `.patch` files), CI fix script (`scripts/apply-ci-fixes.sh`), README tree cleanup (removed non-existent `docs/task.md`), `docs/ci-configuration.md` updated to reflect applied CI node-version fix
 - **Cycle 157**: Full repository audit, **BUG-014 ACTUALLY fixed on main** (main.yml `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences — first actual edit of workflow files), **BUG-017 ACTUALLY fixed on main** (`node-version: "20"`/`node-version: 20`→`node-version-file: ".node-version"` across 5 workflow files — 11 occurrences — first actual edit of workflow files), BroCula Run 21 indexing, CHANGELOG gap fix, docs refresh (findings, active-tasks, knowledge-review, bugs, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅), PR created
 - **Cycle 154**: Full repository audit, README BroCula description drift fix (Jun 17–Jun 25→Jun 17–Jun 26), knowledge-review BroCula ref drift fix (run3→Jun 26 Run 1), CHANGELOG gap fix (added 4 missing commits after Cycle 153: feat(validation) checkmark/X path drawing animation, BroCula Run 18 audit report, feat(flexy) Iteration 72 spring config centralization, fix(web) prefers-reduced-motion SkipLink animation), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,675/1,675 ✅ format ✅)

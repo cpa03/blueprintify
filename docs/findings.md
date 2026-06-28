@@ -2,6 +2,64 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 160 (2026-06-28 — RepoKeeper: **Stale patch cleanup, post-Cycle-159 commit indexing, BUG-017 verified on main, BroCula ULW Run 7/8 indexing, doc refresh**)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, stale patch cleanup (deleted `docs/ci-workflow-fixes-cycle-jun-27-2026.patch` — node-version fix already applied via #2152), post-Cycle-159 commit indexing (8 commits: feat(ux) dir="auto" RTL, docs(ci) Node 20→22 instructions, BroCula ULW Run 8 #2151, docs(bugfixer) BUG-014/017 #2150, feat(ux) auto-focus search #2149, fix(ci) node-version 20→22 #2152), BroCula gap fix (ULW Run 7 indexed — missed by Cycle 159), fix(bugfixer) commit indexed, BroCula description drift fix (latest audit: `brocula-hunt-2026-06-27-run8.md` — BroCula ULW Run 8 / LH **100-100-100-100**, 1701 tests ✅), CHANGELOG gap fix (8 missing commits after Cycle 158), comprehensive documentation sync (findings, active-tasks, knowledge-review, CHANGELOG), quality verification.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build | ✅ Clean |
+| Tests | ✅ **1,701/1,701 passing** (723 web + 438 API + 540 shared) |
+| Format | ✅ All files Prettier-compliant |
+| Secrets Scan | ✅ Clean |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Stale patch file deleted**: Removed `docs/ci-workflow-fixes-cycle-jun-27-2026.patch` — this patch documented the `node-version: "20"`→`node-version-file: ".node-version"` fix for workflow files. Since PR #2152 (fix(ci): update node-version from 20 to 22 across all workflow files) has now been applied on `main`, the patch file was redundant.
+2. **BUG-017 FINALLY verified on main**: `fix(ci): update node-version from 20 to 22 across all workflow files (#2152)` — confirmed all workflow files now use `node-version-file: ".node-version"` instead of hardcoded `node-version: "20"`/`node-version: 20`. This is the **first time** BUG-017 has been resolved on `main` after 30+ cycles of being blocked by `workflows: write` permission issues.
+3. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0). No TODO/FIXME/HACK artifacts in non-test source.
+4. **CHANGELOG gap fix**: Added 8 missing commits after Cycle 158 — fix(bugfixer) BUG-014/017, BroCula ULW Run 7 (missed by Cycle 159), Cycle 159 entry, feat(ux) dir="auto" RTL, docs(ci) Node 20→22 instructions, BroCula ULW Run 8, docs(bugfixer) BUG-014/017 docs, feat(ux) auto-focus search modal, fix(ci) node-version 20→22 (#2152).
+5. **BroCula indexing gap fixed**: Cycle 159 missed indexing `brocula-hunt-2026-06-27-run7.md` (BroCula ULW Run 7 / LH **99-100-100-100**, 1701 tests ✅). Now indexed in CHANGELOG and knowledge-review.
+6. **BroCula description drift fix**: knowledge-review.md ref updated from `brocula-hunt-2026-06-27-run4.md` (Run 23) to `brocula-hunt-2026-06-27-run8.md` (ULW Run 8 / LH **100-100-100-100**, 1701 tests ✅).
+7. **Stale merged remote branch assessment**: All remote branches examined — all have unique unmerged commits. 0 branches to delete.
+8. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 160.
+
+### Key Findings
+
+- **BUG-017 FULLY RESOLVED on main**: The hardcoded `node-version: "20"`/`node-version: 20` issue across all workflow files has been fixed by PR #2152 (`fix(ci): update node-version from 20 to 22 across all workflow files`). This resolves the longest-standing CI bug after 30+ cycles of blocked attempts due to `workflows: write` token permission issues.
+- **Stale patch file deleted**: `docs/ci-workflow-fixes-cycle-jun-27-2026.patch` removed — the fix it documented (#2152) has been applied directly to workflow files on main.
+- **BroCula ULW Run 7 gap fixed**: Missed by Cycle 159 — `brocula-hunt-2026-06-27-run7.md` (ULW Run 7 / LH **99-100-100-100**, 1701 tests ✅) now indexed in CHANGELOG and knowledge-review.
+- **8 post-Cycle-158 commits indexed**: fix(bugfixer) BUG-014/017, BroCula ULW Run 7, Cycle 159, feat(ux) dir="auto" RTL, docs(ci) Node 20→22 instructions, BroCula ULW Run 8, docs(bugfixer) docs, feat(ux) auto-focus search, fix(ci) node-version 20→22.
+- **No redundant/temp/unused files found** — repo remains clean after Cycle 159.
+- **0 stale merged branches** — all remote branches have unique unmerged content. No cleanup needed.
+- **All quality checks passing**: typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅ format ✅ secrets ✅.
+
+### Verification
+
+- [x] Stale patch file deleted — `docs/ci-workflow-fixes-cycle-jun-27-2026.patch` removed ✅
+- [x] BUG-017 verified fixed on main — all workflow files use `node-version-file: ".node-version"` ✅
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — clean ✅
+- [x] Tests — 1,701/1,701 passing (723 web + 438 API + 540 shared) ✅
+- [x] Format — All files pass ✅
+- [x] Secrets scan — Clean (279 files, 64ms) ✅
+- [x] CHANGELOG gap filled — 8 missing commits added after Cycle 158
+- [x] BroCula ULW Run 8 indexed — latest `brocula-hunt-2026-06-27-run8.md` (LH **100-100-100-100**)
+- [x] BroCula ULW Run 7 indexed — `brocula-hunt-2026-06-27-run7.md` (LH **99-100-100-100**)
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK
+- [x] Documentation refreshed for Cycle 160 (findings, active-tasks, knowledge-review, CHANGELOG)
+- [x] PR created
+
+---
+
 ## Cycle 159 (2026-06-27 — RepoKeeper: **Post-Cycle-158 audit, BroCula Run 22/23 indexing, stale branch cleanup, doc refresh**)
 
 ### Audit Scope

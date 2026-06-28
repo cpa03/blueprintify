@@ -2,7 +2,30 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## ✅ RepoKeeper Cycle 159 — **Post-Cycle-158 audit, BroCula Run 22/23 indexing, stale branch cleanup, doc refresh** ✅
+## ✅ RepoKeeper Cycle 160 — **Stale patch cleanup, post-Cycle-159 commit indexing, BUG-017 verified on main, BroCula ULW Run 7/8 indexing, doc refresh** ✅
+
+### Task: Full repository audit, delete stale patch file `docs/ci-workflow-fixes-cycle-jun-27-2026.patch` (node-version fix already applied via #2152), post-Cycle-159 commit indexing (8 commits: feat(ux) dir="auto" RTL, docs(ci) Node 20→22 instructions, BroCula ULW Run 8 #2151, docs(bugfixer) BUG-014/017 #2150, feat(ux) auto-focus search #2149, fix(ci) node-version 20→22 #2152 — BUG-017 FINALLY resolved on main), BroCula gap fix (ULW Run 7 indexed — missed by Cycle 159), fix(bugfixer) commit indexed, BroCula description drift fix (Run 4→Run 8 latest), CHANGELOG gap fix, docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 160 full repository audit — stale patch cleanup, post-Cycle-159 commit indexing, BroCula indexing, CHANGELOG gap fix, docs sync, quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → repo clean (no redundant source files)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source
+  - [x] **Stale patch file deleted**: `docs/ci-workflow-fixes-cycle-jun-27-2026.patch` removed (node-version fix applied via #2152, file was redundant)
+  - [x] **BUG-017 verified on main**: `fix(ci): update node-version from 20 to 22 across all workflow files (#2152)` — hardcoded `node-version` fully replaced with `node-version-file: ".node-version"` across all workflow files
+  - [x] **CHANGELOG gap fix**: Added 8 missing commits after Cycle 158
+  - [x] **BroCula ULW Run 8 indexed**: `brocula-hunt-2026-06-27-run8.md` (LH **100-100-100-100**, 1701 tests ✅)
+  - [x] **BroCula ULW Run 7 indexed**: `brocula-hunt-2026-06-27-run7.md` (LH **99-100-100-100**, 1701 tests ✅)
+  - [x] **Stale merged branch check**: All remote branches have unique unmerged commits — 0 to delete
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅ format ✅ secrets ✅
+  - [x] Updated docs/findings.md: Cycle 160 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 160 completed
+  - [x] Updated docs/knowledge-review.md: Last Review→Cycle 160
+  - [x] Updated CHANGELOG.md: 8 new entries added
+
+## Completed: RepoKeeper Cycle 159 — **Post-Cycle-158 audit, BroCula Run 22/23 indexing, stale branch cleanup, doc refresh** ✅
 
 ### Task: Full repository audit, post-Cycle-158 commit indexing (10 commits: refactor(api) constants split, Cycle 157, GPU OfflineBanner, flexy Iteration 75, bugfixer docs, BroCula Run 22/23, CircularProgress, Cycle 158, wrangler fix), CHANGELOG gap fix, stale merged branch cleanup (deleted `origin/fix/bugfixer-ulw-jun-27`), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation
 

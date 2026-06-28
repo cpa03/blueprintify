@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- RepoKeeper Cycle 160: **full repository audit**, stale patch cleanup (deleted `docs/ci-workflow-fixes-cycle-jun-27-2026.patch` — node-version fix already applied via #2152), 6 post-Cycle-159 commits indexed (feat(ux) dir="auto" RTL, docs(ci) Node 20→22 instructions, BroCula ULW Run 8, docs(bugfixer) BUG-014/017 docs, feat(ux) auto-focus search modal, fix(ci) node-version 20→22 across all workflows #2152), BroCula gap fix (ULW Run 7 indexed — missed by Cycle 159), fix(bugfixer) commit indexed, docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅ tests **1,701/1,701** ✅)
+- fix(ci): update node-version from 20 to 22 across all workflow files (#2152) — BUG-017 **fully resolved on main** after 30+ blocked cycles
+- feat(ux): auto-focus search input when keyboard shortcuts modal opens (#2149)
+- docs(bugfixer): BugFixer ULW Cycle Jun 27 2026 — BUG-014/017 documentation (#2150)
+- chore(audit): BroCula ULW Run 8 — audit report (LH **100-100-100-100**, 1701 tests ✅) (#2151)
+- docs(ci): update CI config and add Node 20→22 fix instructions
+- feat(ux): add dir="auto" to input fields for RTL language support
+- chore(repokeeper): Cycle 159 — post-Cycle-158 audit, BroCula Run 22/23 indexing, stale branch cleanup, doc refresh
+- chore(audit): BroCula ULW Run 7 — audit report (LH **99-100-100-100**, 1701 tests ✅)
+- fix(bugfixer): resolve BUG-014 stale doc refs and BUG-017 Node.js version mismatch
 - fix(deploy): validate wrangler.toml placeholders before deploy (#2143)
 - chore(audit): BroCula Run 23 — audit report (LH **94-100-100-100**, 1701 tests ✅) (723 web + 438 API + 540 shared) (#2140)
 - chore(repokeeper): Cycle 158 — doc cleanup, CI fix script, stale patch removal (#2141)
