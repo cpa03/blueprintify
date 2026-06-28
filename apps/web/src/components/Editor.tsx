@@ -62,6 +62,41 @@ const VIEW_MODE_SHORTCUT_MAP: Record<string, ViewMode> = {
 } as const;
 
 /**
+ * EditorSkeleton - Loading skeleton that mimics CodeMirror layout during initial generation.
+ *
+ * Shows a gutter with line numbers on the left and shimmer code lines on the right,
+ * giving users a visual placeholder that looks like the editor is "loading" rather
+ * than appearing as a blank white page while the generation stream starts.
+ *
+ * Uses the editor-skeleton CSS classes defined in index.css with skeleton-block
+ * shimmer animation for the code lines.
+ */
+const LINE_NUMBERS = Array.from({ length: 15 }, (_, i) => i + 1);
+const CODE_LINE_WIDTHS = [65, 80, 45, 70, 55, 85, 40, 60, 75, 50, 68, 58, 72, 48, 62];
+
+function EditorSkeleton({ isVisible }: { isVisible: boolean }): JSX.Element | null {
+  if (!isVisible) return null;
+  return (
+    <div className="editor-skeleton" role="status" aria-label="Content is being generated">
+      <div className="editor-skeleton-gutter">
+        {LINE_NUMBERS.map((num) => (
+          <div key={num} className="editor-skeleton-line-number">
+            {num}
+          </div>
+        ))}
+      </div>
+      <div className="editor-skeleton-code">
+        {CODE_LINE_WIDTHS.map((width, i) => (
+          <div key={i} className="editor-skeleton-code-line">
+            <div className="skeleton-block" style={{ width: `${width}%`, height: "14px" }} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
  * Main editor component providing split-pane editing with live preview.
  *
  * @returns The rendered editor interface
@@ -451,17 +486,53 @@ function EditorComponent(): JSX.Element {
                             : "w-full"
                         )}
                       >
-                        <LazyCodeMirror
-                          ref={codeMirrorRef}
-                          value={currentContent}
-                          onChange={setCurrentContent}
-                          className="h-full"
-                        />
-                        {/* Top scroll shadow */}
+                        <AnimatePresence mode="wait">
+                          {isGenerating && !currentContent ? (
+                            <motion.div
+                              key="editor-skeleton"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{
+                                duration: ANIMATION.NORMAL,
+                                ease: ANIMATION_TIMING.easing.easeOut,
+                              }}
+                              className="h-full"
+                            >
+                              <EditorSkeleton isVisible={true} />
+                            </motion.div>
+                          ) : (
+                            <motion.div
+                              key="editor-codemirror"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{
+                                duration: ANIMATION.NORMAL,
+                                ease: ANIMATION_TIMING.easing.easeOut,
+                              }}
+                              className="h-full"
+                            >
+                              <LazyCodeMirror
+                                ref={codeMirrorRef}
+                                value={currentContent}
+                                onChange={setCurrentContent}
+                                className="h-full"
+                              />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                        {/* Top scroll shadow — only visible when CodeMirror
+                            is rendered and scrolled; hidden during skeleton. */}
                         <div
                           className="absolute top-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
                           style={{
-                            opacity: shouldReduceMotion ? 0 : editorScrollState.isTop ? 0 : 1,
+                            opacity:
+                              shouldReduceMotion || (isGenerating && !currentContent)
+                                ? 0
+                                : editorScrollState.isTop
+                                  ? 0
+                                  : 1,
                             height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
                             background: LAYOUT.SCROLL_SHADOW_TOP_GRADIENT,
                           }}
@@ -471,7 +542,12 @@ function EditorComponent(): JSX.Element {
                         <div
                           className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
                           style={{
-                            opacity: shouldReduceMotion ? 0 : editorScrollState.isBottom ? 0 : 1,
+                            opacity:
+                              shouldReduceMotion || (isGenerating && !currentContent)
+                                ? 0
+                                : editorScrollState.isBottom
+                                  ? 0
+                                  : 1,
                             height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
                             background: LAYOUT.SCROLL_SHADOW_BOTTOM_GRADIENT,
                           }}
