@@ -2,6 +2,24 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ BugFixer Cycle 160 — **BUG-014/BUG-017 fix, CI workflow node-version cleanup** ✅
+
+### Task: Full repository audit, BUG-014 fix (stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml), BUG-017 fix (hardcoded `node-version: "20"`→`node-version-file: ".node-version"` in 4 workflow files, 11 occurrences), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 160 full repository audit — fix BUG-014 (stale doc refs) and BUG-017 (hardcoded node-version), verify all quality checks, create PR
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (repo remains clean)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] **BUG-014 fixed**: Updated `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in `.github/workflows/main.yml` (2 occurrences)
+  - [x] **BUG-017 fixed**: Replaced all 11 occurrences of `node-version: "20"`/`node-version: 20` with `node-version-file: ".node-version"` across iterate.yml (5), parallel.yml (4), on-pull.yml (1), pr-gatekeeper.yml (1)
+  - [x] Fixes verified via grep: zero stale doc refs, zero hardcoded `node-version:` remaining
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅
+  - [x] Updated docs/bugs.md: Cycle 160 entry added, BUG-014/BUG-017 status updated
+  - [x] Updated docs/findings.md: Cycle 160 entry added
+  - [x] PR created
+
 ## ✅ RepoKeeper Cycle 161 — **Stale patch/doc cleanup, audit archive consolidation, doc refresh** ✅
 
 ### Task: Remove stale `.patch` file (`docs/ci-workflow-fixes-cycle-jun-27-2026.patch`), delete stale generated reports (`issue-consolidation-report.md`, `ci-workflow-fixes-patch.md`, `ci-workflow-fixes-node-version.md`), archive 10 intermediate BroCula hunt reports (Jun 25-27 runs 1-7) to archive/, update docs/audits/README.md (keep only Run 8), fix README BroCula date drift (Jun 26→Jun 27), run full quality verification, create PR
