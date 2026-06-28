@@ -7,36 +7,33 @@
 The project requires Node.js 22+ (see `.nvmrc`, `.node-version`, `package.json` `engines`).
 Wrangler 4.x requires Node.js >=22 — the API build (`npm run build:api`) fails with Node 20.
 
-### ❌ Workflow Node Version: NOT Applied
+### ✅ Workflow Node Version: FIXED (RepoKeeper Cycle 162)
 
-All CI workflow files still pin `node-version: "20"` despite the project requiring Node 22+.
-This causes API builds to fail in CI with:
+All CI workflow files now use `node-version-file: ".node-version"` instead of hardcoded `node-version: "20"`.
+This was fixed in RepoKeeper Cycle 162 (Jun 28, 2026) — changes applied to `.github/workflows/` on branch `chore/repokeeper-cycle-162`.
 
-```
-Wrangler requires at least Node.js v22.0.0. You are using v20.20.2.
-```
+| File | Occurrences | Change |
+|------|-------------|--------|
+| `iterate.yml` | 5 | `node-version: "20"` → `node-version-file: ".node-version"` |
+| `parallel.yml` | 4 | `node-version: "20"` → `node-version-file: ".node-version"` |
+| `on-pull.yml` | 1 | `node-version: 20` → `node-version-file: ".node-version"` |
+| `pr-gatekeeper.yml` | 1 | `node-version: "20"` → `node-version-file: ".node-version"` |
 
-**Affected files** (11 occurrences across 4 files):
-- `.github/workflows/iterate.yml` — 5 occurrences
-- `.github/workflows/parallel.yml` — 4 occurrences
-- `.github/workflows/on-pull.yml` — 1 occurrence
-- `.github/workflows/pr-gatekeeper.yml` — 1 occurrence
+This uses `.node-version` (contents: `22`) as single source of truth, so updating the Node.js version in future requires changing only `.node-version`.
 
-### Applying the Fix
+### Applying the Fix (if not yet merged)
 
-The fix has been verified (build + typecheck + lint + all 1,701 tests pass with Node 22).
-
-**Option A: Run the fix script**
+**Option A: Run the fix script (Node.js)**
 ```bash
 node scripts/fix-ci-node-version.mjs
 ```
 
-**Option B: Apply the patch file**
+**Option B: Run the fix script (bash)**
 ```bash
-git apply docs/ci-workflow-fixes-node-version.patch
+bash scripts/fix-node-version.sh
 ```
 
-The patch updates all `node-version: "20"` to `node-version: "22"` in all workflow files.
+Both scripts now replace `node-version: "20"` with `node-version-file: ".node-version"`.
 
 ### Push Restriction
 
@@ -44,10 +41,10 @@ The GITHUB_TOKEN used in CI Actions runners lacks `workflows: write` permission,
 which means workflow file changes cannot be pushed via the CI pipeline.
 
 **To merge this fix, a maintainer with `workflows: write` access must:**
-1. Check out the PR branch or apply the patch locally:
-   ```bash
-   git fetch origin
-   git checkout fix/ci-node-version-22-doc
+1. Check out the PR branch or apply the changes locally:
+    ```bash
+    git fetch origin
+    git checkout chore/repokeeper-cycle-162
    node scripts/fix-ci-node-version.mjs
    ```
 2. Commit and push:
