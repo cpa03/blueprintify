@@ -57,10 +57,8 @@ which means workflow file changes cannot be pushed via the CI pipeline.
 
 ### Related Issues
 
-- [#2030](https://github.com/cpa03/blueprintify/issues/2030) — Original bug report (P1)
-- [#2063](https://github.com/cpa03/blueprintify/issues/2063) — Duplicate, fix documented (closed)
-- [#2073](https://github.com/cpa03/blueprintify/issues/2073) — Duplicate, fix documented (closed)
-- [#2119](https://github.com/cpa03/blueprintify/issues/2119) — Duplicate, fix documented (closed)
+- [#2030](https://github.com/cpa03/blueprintify/issues/2030) — Original bug report (P1, canonical)
+- [#2160](https://github.com/cpa03/blueprintify/issues/2160) — Duplicate of #2030 (same BUG-017, CI Node version mismatch)
 
 ### Setup
 
