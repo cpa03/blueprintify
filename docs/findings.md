@@ -2,6 +2,62 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 165 (2026-06-28 — RepoKeeper: Full audit, BroCula ref drift fix (run11→run12), CHANGELOG gap fix (3 commits after Cycle 164), doc sync)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, BroCula ref drift fix in knowledge-review.md (run11→run12 — latest: `brocula-hunt-2026-06-28-run12.md` / BroCula ULW Run 12 / LH **100-100-100-100** / 1701 tests ✅), knowledge-review.md Last Review bumped from Cycle 164→165, CHANGELOG gap fix (added 3 missing commits after Cycle 164: BugFixer Run 2 docs + fix(ci) BUG-014/BUG-017 + feat(wizard) smooth scroll), BUG-014/BUG-017 status verification (still present on main — push blocked by `workflows: write`), duplicate commit investigation (01abb3b6 is a legitimate merge of wizard + BugFixer — cleared), active-tasks.md Cycle 165 entry, findings.md Cycle 165 entry, quality verification, PR creation.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,701/1,701 passing** (723 web + 438 API + 540 shared) |
+| Secrets Scan | ✅ Clean |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0). No TODO/FIXME/HACK artifacts in non-test source.
+2. **BroCula ref drift fix**: knowledge-review.md updated from `brocula-hunt-2026-06-28-run11.md` (Run 11) to `brocula-hunt-2026-06-28-run12.md` (BroCula ULW Run 12 / LH **100-100-100-100** / 1701 tests ✅). Run 12 achieved perfect 100-100-100-100 Lighthouse across all categories.
+3. **knowledge-review.md Last Review bumped**: Cycle 164 → Cycle 165.
+4. **BUG-014/BUG-017 status verified**: Both bugs still present on main. The BugFixer Run 2 commit (`9d585906`) only updated `docs/bugs.md` — actual `.github/workflows/*.yml` files remain unchanged. Blocker: GitHub App token lacks `workflows: write` permission.
+5. **Duplicate commit investigation**: Commits `01abb3b6` and `9fb616f1` both have message "feat(wizard): smooth scroll to invalid fields". Investigation confirmed `01abb3b6` is a merge commit (parents: `9d585906` + `9fb616f1`), not a duplicate. The merge combines the BugFixer CI fix with the wizard feature branch.
+6. **CHANGELOG gap fix**: Added 3 missing commits after Cycle 164 to [Unreleased]:
+   - `docs(bugs): BugFixer Cycle Jun 28 2026 Run 2 — BUG-014/017 fixed on branch (workflow push blocked)`
+   - `fix(ci): BUG-014 — stale doc refs + BUG-017 — hardcoded node-version (BugFixer Cycle Jun 28 2026 Run 2)`
+   - `feat(wizard): smooth scroll to invalid fields on form validation failure`
+7. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 165.
+8. **Quality verification**: typecheck ✅ lint ✅ tests 1,701/1,701 ✅ secrets scan ✅.
+
+### Key Findings
+
+- **BUG-014 and BUG-017 still present on main** — workflow files remain unchanged. BugFixer Run 2 only updated `docs/bugs.md`, not the actual `.github/workflows/*.yml` files. Blocker: GitHub App token lacks `workflows: write` permission.
+- **BroCula run11→run12 drift**: knowledge-review.md still referenced `brocula-hunt-2026-06-28-run11.md` (Run 11 / LH 99-100-100-100). Latest on disk is `brocula-hunt-2026-06-28-run12.md` (Run 12 / LH **100-100-100-100**). Fixed.
+- **No duplicate commits found**: `01abb3b6` is a legitimate merge commit merging wizard feature (`9fb616f1`) and BugFixer CI fix (`9d585906`) into main.
+- **No redundant/temp/unused files found** — repo remains clean.
+- **No stale remote branches** — all 8 remote branches have unique unmerged commits.
+- **All quality checks passing**: typecheck ✅ lint ✅ tests 1,701/1,701 ✅ secrets scan ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Tests — 1,701/1,701 passing (723 web + 438 API + 540 shared) ✅
+- [x] Secrets scan — Clean ✅
+- [x] BroCula ref drift fixed: knowledge-review.md run11→run12 ✅
+- [x] knowledge-review.md Last Review bumped to Cycle 165 ✅
+- [x] BUG-014/BUG-017 status verified (still present on main) ✅
+- [x] Duplicate commits investigated — no duplicates found (01abb3b6 is a merge) ✅
+- [x] CHANGELOG gap filled — 3 missing commits after Cycle 164 added ✅
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK ✅
+- [x] Documentation refreshed for Cycle 165 (findings, active-tasks, knowledge-review, CHANGELOG) ✅
+- [x] PR created ✅ (branch: `chore/repokeeper-cycle-165`)
+
+---
+
 ## Cycle 164 (2026-06-28 — RepoKeeper: Full audit, BroCula ref drift fix, CHANGELOG gap fix, doc sync)
 
 ### Audit Scope
