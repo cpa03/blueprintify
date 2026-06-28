@@ -2,11 +2,11 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Cycle 159 (2026-06-27 — RepoKeeper: **Post-Cycle-158 audit, BroCula Run 22/23 indexing, stale branch cleanup, doc refresh**)
+## Cycle 161 (2026-06-28 — RepoKeeper: **Stale patch/doc cleanup, audit archive consolidation, doc refresh**)
 
 ### Audit Scope
 
-Full repository audit covering redundant/temp/unused file scan, post-Cycle-158 commit indexing (BroCula Run 22/23, GPU-composited OfflineBanner, flexy hardcoded cleanup Iteration 75, CircularProgress stroke transition, wrangler placeholder validation), CHANGELOG gap fix (10 missing commits after Cycle 156), stale merged remote branch cleanup (deleted `origin/fix/bugfixer-ulw-jun-27`), comprehensive documentation sync (findings, active-tasks, knowledge-review, CHANGELOG), quality verification.
+Full repository audit focusing on removal of stale generated artifacts, audit report archive consolidation, and documentation synchronization. Targets: stale `.patch` file tracked in git despite `.gitignore` rule, stale generated reports from BugFixer ULW cycles (fix documentation for unpushed branch-only changes), redundant BroCula hunt reports (Jun 25-27 runs 1-7), and documentation drift correction (README BroCula date range, audits/README current reports).
 
 ### Status Summary
 
@@ -22,11 +22,13 @@ Full repository audit covering redundant/temp/unused file scan, post-Cycle-158 c
 
 ### Actions Taken This Cycle
 
-1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0). No TODO/FIXME/HACK artifacts in non-test source. No `.patch` files (Cycle 158 cleaned them).
-2. **CHANGELOG gap fix**: Added 10 missing commits after Cycle 156 — refactor(api) constants.ts split (#2139), Cycle 157 (doc refresh, BUG-014/BUG-017 patch, audit findings), feat(web) GPU-composited OfflineBanner, refactor(flexy) Iteration 75 hardcoded cleanup, docs(bugfixer) BUG-014/017 docs, BroCula Run 22 (LH **100-100-100-100**), feat(web) CircularProgress stroke transition (#2142), Cycle 158 (doc cleanup, CI fix script, stale patch removal), BroCula Run 23 (LH **94-100-100-100**, 1701 tests ✅) (#2140), fix(deploy) wrangler.toml placeholder validation (#2143).
-3. **Stale merged remote branch cleanup**: Deleted `origin/fix/bugfixer-ulw-jun-27` — fully merged into main.
-4. **Docs/audits/README.md verified**: BroCula Run 23 (`brocula-hunt-2026-06-27-run4.md`) already indexed as latest — no update needed.
-5. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 159.
+1. **Full repository scan**: No new redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0). No TODO/FIXME/HACK artifacts in non-test source.
+2. **Stale `.patch` file removed**: `docs/ci-workflow-fixes-cycle-jun-27-2026.patch` — tracked artifact matching `*.patch` gitignore rule. Removed via `git rm`.
+3. **Stale generated reports deleted**: `docs/issue-consolidation-report.md` (generated issue audit with no write access — stale), `docs/ci-workflow-fixes-patch.md` and `docs/ci-workflow-fixes-node-version.md` (BugFixer ULW documentation for fixes applied on branch but never merged to main — content superseded by `docs/ci-configuration.md`).
+4. **BroCula audit archive consolidation**: Archived 10 intermediate BroCula hunt reports (Jun 25-27 runs 1-7) from `docs/audits/` to `docs/audits/archive/`. Kept only latest `brocula-hunt-2026-06-27-run8.md` in Current Reports.
+5. **`docs/audits/README.md` refreshed**: Current Reports trimmed to only Run 8. All archived runs moved to Archived Reports section with LH/test count metadata preserved.
+6. **README BroCula date drift fix**: Updated `(Jun 17–Jun 26)` → `(Jun 17–Jun 27)` to match latest Run 8.
+7. **Documentation synced**: Updated findings, active-tasks, knowledge-review for Cycle 161.
 
 ### Key Findings
 

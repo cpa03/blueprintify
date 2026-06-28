@@ -2,6 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 161 — **Stale patch/doc cleanup, audit archive consolidation, doc refresh** ✅
+
+### Task: Remove stale `.patch` file (`docs/ci-workflow-fixes-cycle-jun-27-2026.patch`), delete stale generated reports (`issue-consolidation-report.md`, `ci-workflow-fixes-patch.md`, `ci-workflow-fixes-node-version.md`), archive 10 intermediate BroCula hunt reports (Jun 25-27 runs 1-7) to archive/, update docs/audits/README.md (keep only Run 8), fix README BroCula date drift (Jun 26→Jun 27), run full quality verification, create PR
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 161 — full repository audit, stale artifact cleanup, audit archive consolidation, doc refresh, quality verification, PR creation
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → clean (no new issues)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK artifacts in non-test source
+  - [x] **Stale `.patch` file removed**: `docs/ci-workflow-fixes-cycle-jun-27-2026.patch` (gitignored artifact)
+  - [x] **Stale docs deleted**: `docs/issue-consolidation-report.md`, `docs/ci-workflow-fixes-patch.md`, `docs/ci-workflow-fixes-node-version.md`
+  - [x] **BroCula audit archive**: Archived 10 intermediate reports from Jun 25-27 (runs 1-7) to archive/
+  - [x] **README BroCula date drift fixed**: `(Jun 17–Jun 26)` → `(Jun 17–Jun 27)`
+  - [x] **docs/audits/README.md refreshed**: Current Reports trimmed to Run 8 only
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅
+  - [x] Updated docs/findings.md: Cycle 161 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 161 completed
+  - [x] Updated docs/knowledge-review.md: Last Review→Cycle 161
+
 ## ✅ RepoKeeper Cycle 159 — **Post-Cycle-158 audit, BroCula Run 22/23 indexing, stale branch cleanup, doc refresh** ✅
 
 ### Task: Full repository audit, post-Cycle-158 commit indexing (10 commits: refactor(api) constants split, Cycle 157, GPU OfflineBanner, flexy Iteration 75, bugfixer docs, BroCula Run 22/23, CircularProgress, Cycle 158, wrangler fix), CHANGELOG gap fix, stale merged branch cleanup (deleted `origin/fix/bugfixer-ulw-jun-27`), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation
@@ -1659,5 +1680,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-06-20 (RepoKeeper Cycle 124)  
+**Last Updated**: 2026-06-28 (RepoKeeper Cycle 161)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
