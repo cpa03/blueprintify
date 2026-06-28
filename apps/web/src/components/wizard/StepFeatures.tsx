@@ -262,8 +262,9 @@ export const StepFeatures = memo(function StepFeatures({
               aria-labelledby="added-features-label"
             >
               <AnimatePresence mode="popLayout">
-                {features.map((feature) => {
+                {features.map((feature, index) => {
                   const isJustAdded = feature === justAdded;
+                  const staggerDelay = index * 0.04;
                   return (
                     <motion.span
                       key={feature}
@@ -274,7 +275,11 @@ export const StepFeatures = memo(function StepFeatures({
                         scale: isJustAdded ? [1, 1.08, 1] : 1,
                         transition: isJustAdded
                           ? { duration: ANIMATION.MEDIUM_SLOW, ease: "easeOut" }
-                          : { type: "spring", ...SPRING_CONFIG.DEFAULT },
+                          : {
+                              type: "spring" as const,
+                              ...SPRING_CONFIG.DEFAULT,
+                              delay: staggerDelay,
+                            },
                       }}
                       exit={{
                         opacity: 0,
