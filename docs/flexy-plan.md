@@ -1364,3 +1364,25 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD | `feat/flexy-iteration-77-heading-anchor-hardcoded` | refactor(flexy): replace hardcoded copy feedback timeout and display text in HeadingAnchor (Iteration 77) |
+
+
+### ⏳ Flexy Iteration 78: Fix Hardcoded CI Node Version — Use .node-version File Across All Workflows
+
+**Still blocked**. Flexy identified and applied the fix locally, but push was rejected.
+
+| File | Occurrences | Required Change |
+| ---- | ----------- | --------------- |
+| `.github/workflows/iterate.yml` | 5x | `node-version: "20"` → `node-version-file: ".node-version"` |
+| `.github/workflows/parallel.yml` | 4x | `node-version: "20"` → `node-version-file: ".node-version"` |
+| `.github/workflows/on-pull.yml` | 1x | `node-version: 20` → `node-version-file: ".node-version"` |
+| `.github/workflows/pr-gatekeeper.yml` | 1x | `node-version: "20"` → `node-version-file: ".node-version"` |
+
+**Total**: 11 occurrences across 4 files identified. All verified locally.
+
+**Block reason**: GitHub App token `refusing to allow a GitHub App to create or update workflow .github/workflows/iterate.yml without workflows permission`. Apply via branch with a PAT that has `workflows` scope, or update the GitHub App permissions.
+
+**Verification** (local):
+- `.node-version` contains `22`, matching `engines.node >= 22` in package.json
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
