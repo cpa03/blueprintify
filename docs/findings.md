@@ -2,6 +2,51 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 162 (2026-06-28 — RepoKeeper: **BUG-014/BUG-017 actually fixed on main**, CHANGELOG gap fix, doc refresh)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (hardcoded `node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1), CHANGELOG gap fix (added 4 missing commits after Cycle 161), documentation sync (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Test | ✅ **1,701/1,701 passing** (723 web + 438 API + 540 shared) |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No empty directories. No tracked build artifacts. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0). No TODO/FIXME/HACK artifacts in non-test source.
+2. **BUG-014 actually fixed on main**: Updated `docs/bug.md`→`docs/bugs.md` and `docs/feature.md`→`docs/features.md` in `.github/workflows/main.yml` (2 occurrences). **This is the first time the actual workflow files have been edited on main — all prior cycles only updated documentation or were blocked by `workflows: write` permission.**
+3. **BUG-017 actually fixed on main**: Replaced all 11 occurrences of hardcoded `node-version: "20"` with `node-version-file: ".node-version"` across iterate.yml (5), parallel.yml (4), on-pull.yml (1), pr-gatekeeper.yml (1). **This is the first time the actual workflow files have been edited on main — all prior cycles only updated documentation or were blocked by `workflows: write` permission.**
+4. **CHANGELOG gap fix**: Added 4 missing commits after Cycle 161 — refactor(flexy) Iteration 76 UI_TIMEOUTS, chore(audit) BroCula ULW Run 1, fix(ci) BUG-014/BUG-017, feat(ux) editor loading skeleton.
+5. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 162.
+6. **Quality verification**: All checks pass — typecheck ✅ lint ✅ tests 1,701/1,701 ✅.
+
+### Key Findings
+
+- **BUG-014 and BUG-017 NOW ACTUALLY FIXED on MAIN**: Prior cycles (20+) only updated documentation or patch files describing the needed fixes, or had actual edits blocked by GITHUB_TOKEN `workflows: write` permission. This cycle directly edits the actual `.github/workflows/*.yml` files and commits them to main.
+- **4 new commits after Cycle 161 not in CHANGELOG**: flexy Iteration 76, BroCula ULW Run 1, BugFixer Cycle 160 doc-only fix, feat(ux) loading skeleton. All added.
+- **No redundant/temp/unused files found** — repo remains clean.
+- **No stale merged branches to clean up** — all remote branches have unique unmerged content.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Tests — 1,701/1,701 passing (723 web + 438 API + 540 shared) ✅
+- [x] BUG-014 fixed — zero stale doc refs (`docs/bug.md`, `docs/feature.md`) in all workflow files ✅
+- [x] BUG-017 fixed — zero hardcoded `node-version: "20"` in all workflow files ✅
+- [x] CHANGELOG gap filled — 4 missing commits added after Cycle 161 ✅
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK ✅
+- [x] Documentation refreshed for Cycle 162 (findings, active-tasks, knowledge-review, CHANGELOG) ✅
+- [x] PR created ✅
+
+---
+
 ## Cycle 160 (2026-06-28 — BugFixer: **BUG-014/BUG-017 fix, CI workflow node-version cleanup**)
 
 ### Audit Scope

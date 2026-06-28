@@ -3,8 +3,9 @@
 /**
  * CI Node.js Version Fix Script
  *
- * Updates all GitHub Actions workflow files to use Node.js 22
- * instead of Node.js 20. Wrangler 4.x requires Node.js 22+.
+ * Replaces hardcoded node-version with node-version-file in all
+ * GitHub Actions workflow files. Uses .node-version as single source
+ * of truth for Node.js version.
  *
  * Usage: node scripts/fix-ci-node-version.mjs
  */
@@ -26,10 +27,9 @@ for (const file of workflowFiles) {
   const filePath = join(root, ".github/workflows", file);
   let content = readFileSync(filePath, "utf-8");
 
-  // Match node-version specifications (with or without quotes)
   const original = content;
-  content = content.replace(/node-version:\s*"20"/g, 'node-version: "22"');
-  content = content.replace(/node-version:\s*20\b(?!")/g, 'node-version: "22"');
+  content = content.replace(/node-version:\s*"20"/g, 'node-version-file: ".node-version"');
+  content = content.replace(/node-version:\s*20\b(?!")/g, 'node-version-file: ".node-version"');
 
   if (content !== original) {
     writeFileSync(filePath, content, "utf-8");

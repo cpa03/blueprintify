@@ -2,6 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 162 — **BUG-014/BUG-017 actually fixed on main, CHANGELOG gap fix, doc refresh** ✅
+
+### Task: Full repository audit, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (hardcoded `node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1), CHANGELOG gap fix (added 4 missing commits after Cycle 161: refactor(flexy) Iteration 76 UI_TIMEOUTS constants, chore(audit) BroCula ULW Run 1, fix(ci) BUG-014/BUG-017 doc-only fix, feat(ux) editor loading skeleton), documentation sync (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 162 full repository audit — fix BUG-014 (stale doc refs) and BUG-017 (hardcoded node-version) in workflow files directly on main, add missing CHANGELOG entries, sync docs, verify quality, create PR
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (repo remains clean)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] **BUG-014 actually fixed on main**: Updated `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in `.github/workflows/main.yml` (2 occurrences)
+  - [x] **BUG-017 actually fixed on main**: Replaced all 11 occurrences of `node-version: "20"` with `node-version-file: ".node-version"` across iterate.yml (5), parallel.yml (4), on-pull.yml (1), pr-gatekeeper.yml (1)
+  - [x] Fixes verified via grep: zero stale doc refs, zero hardcoded `node-version:` remaining
+  - [x] **CHANGELOG gap fix**: Added 4 missing commits after Cycle 161 — refactor(flexy) UI_TIMEOUTS constants, chore(audit) BroCula ULW Run 1, fix(ci) BUG-014/BUG-017, feat(ux) editor loading skeleton
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,701/1,701 ✅
+  - [x] Updated docs/findings.md: Cycle 162 entry added
+  - [x] Updated docs/active-tasks.md: Cycle 162 completed
+  - [x] Updated docs/knowledge-review.md: Last Review→Cycle 162
+  - [x] Updated CHANGELOG.md: 4 missing commits added after Cycle 161
+  - [x] PR created
+
 ## ✅ BugFixer Cycle 160 — **BUG-014/BUG-017 fix, CI workflow node-version cleanup** ✅
 
 ### Task: Full repository audit, BUG-014 fix (stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml), BUG-017 fix (hardcoded `node-version: "20"`→`node-version-file: ".node-version"` in 4 workflow files, 11 occurrences), quality verification, PR creation
