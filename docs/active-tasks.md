@@ -2,6 +2,26 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 164 — **Full repository audit, doc sync (knowledge-review, active-tasks, findings, CHANGELOG), BroCula ref drift fix, quality verification** ✅
+
+### Task: Full repository audit, `docs/knowledge-review.md` BroCula ref drift fix (run9→run11) + Last Review bumped to Cycle 164, `docs/active-tasks.md` Cycle 164 entry added, `docs/findings.md` Cycle 164 entry added, `CHANGELOG.md` gap fix (added 2 missing commits after Cycle 163: `fix(ci): BUG-014/BUG-017 doc/patch update` + `docs: update CI workflow fix patch`), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 164 full repository audit — fix BroCula ref drift (run9→run11), update knowledge-review Last Review to Cycle 164, add missing CHANGELOG entries, sync docs (findings, active-tasks), verify quality, create PR
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (repo remains clean)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] **knowledge-review.md updated**: Last Review→Cycle 164, BroCula ref fixed (run9→run11), BUG-014/BUG-017 status corrected to "still present on main"
+  - [x] **active-tasks.md updated**: Cycle 164 entry added at top
+  - [x] **findings.md updated**: Cycle 164 entry added
+  - [x] **CHANGELOG gap fix**: Added 2 missing commits after Cycle 163 — `fix(ci): BUG-014/BUG-017 doc/patch update` + `docs: update CI workflow fix patch with improved node-version-file approach`
+  - [x] BroCula description drift fixed: knowledge-review.md run9→run11 (Run 11 / LH **99-100-100-100** / 1701 tests ✅)
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,701/1,701 ✅ secrets scan ✅
+  - [x] BUG-014/BUG-017 reassessed: still present on main (push blocked by `workflows: write` permission)
+  - [x] No stale remote branches — all have unique unmerged commits
+  - [x] PR created
+
 ## ✅ RepoKeeper Cycle 162 — **BUG-014/BUG-017 actually fixed on main, CHANGELOG gap fix, doc refresh** ✅
 
 ### Task: Full repository audit, **BUG-014 actually fixed on main** (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), **BUG-017 actually fixed on main** (hardcoded `node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1), CHANGELOG gap fix (added 4 missing commits after Cycle 161: refactor(flexy) Iteration 76 UI_TIMEOUTS constants, chore(audit) BroCula ULW Run 1, fix(ci) BUG-014/BUG-017 doc-only fix, feat(ux) editor loading skeleton), documentation sync (findings, active-tasks, knowledge-review, CHANGELOG), quality verification, PR creation
