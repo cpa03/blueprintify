@@ -37,7 +37,8 @@ import {
 } from "../../config/constants";
 import { COLORS } from "../../config/theme";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
-import { getAltKeyLabel } from "../../lib/platform";
+import { getAltKeyLabel, getModifierLabel, getAriaShortcutKey } from "../../lib/platform";
+import { SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
 import { AnimatedNumber } from "../AnimatedNumber";
 import { RippleButton } from "../RippleButton";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
@@ -344,34 +345,48 @@ export const StepGenerating = memo(function StepGenerating({
             transition={{ delay: 0.3 }}
             className="mt-8 flex flex-col items-center gap-3"
           >
-            <RippleButton
-              onClick={handleViewEditor}
-              className="btn-primary flex items-center gap-2 attention-glow"
-              ariaLabel={WIZARD_GENERATING_LABELS.VIEW_EDITOR_ARIA}
-              data-autofocus="complete"
+            <KeyboardShortcutTooltip
+              shortcut="e"
+              description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
+              position="right"
+              modifier="cmd"
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
+              <RippleButton
+                onClick={handleViewEditor}
+                className="btn-primary flex items-center gap-2 attention-glow"
+                ariaLabel={WIZARD_GENERATING_LABELS.VIEW_EDITOR_ARIA}
+                data-autofocus="complete"
+                aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                />
-              </svg>
-              {WIZARD_GENERATING_LABELS.VIEW_IN_EDITOR}
-            </RippleButton>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  />
+                </svg>
+                {WIZARD_GENERATING_LABELS.VIEW_IN_EDITOR}
+                <kbd
+                  className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                  aria-hidden="true"
+                >
+                  {getModifierLabel()}+E
+                </kbd>
+              </RippleButton>
+            </KeyboardShortcutTooltip>
             <KeyboardShortcutTooltip
               shortcut="←"
               description={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_DESC}
