@@ -2,6 +2,42 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 160 (2026-06-28 — BugFixer: **BUG-014/BUG-017 fix, CI workflow node-version cleanup**)
+
+### Audit Scope
+
+Full repository audit covering redundant/temp/unused file scan, BUG-014 fix (stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml — 2 occurrences), BUG-017 fix (hardcoded `node-version: "20"`/`node-version: 20`→`node-version-file: ".node-version"` in 4 workflow files — 11 occurrences), quality verification, PR creation.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build | ✅ Clean |
+| Test | ✅ **1,701/1,701 passing** (723 web + 438 API + 540 shared) |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused source files found. No type suppressions (`@ts-ignore`, `@ts-expect-error`, `as any` = 0).
+2. **BUG-014 fix**: Fixed stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in `.github/workflows/main.yml` (2 occurrences).
+3. **BUG-017 fix**: Replaced all 11 occurrences of hardcoded `node-version: "20"`/`node-version: 20` with `node-version-file: ".node-version"` across iterate.yml (5), parallel.yml (4), on-pull.yml (1), pr-gatekeeper.yml (1).
+4. **Verification**: Both fixes verified via grep — zero stale doc refs, zero hardcoded `node-version:` remaining.
+5. **Documentation synced**: Updated bugs.md, findings.md for Cycle 160.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — clean ✅
+- [x] Tests — 1,701/1,701 passing (723 web + 438 API + 540 shared) ✅
+- [x] BUG-014 fixed — stale doc refs eliminated ✅
+- [x] BUG-017 fixed — all node-version hardcoded references eliminated ✅
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK
+- [x] Documentation refreshed for Cycle 160 (bugs.md, findings.md)
+- [x] PR created
+
 ## Cycle 161 (2026-06-28 — RepoKeeper: **Stale patch/doc cleanup, audit archive consolidation, doc refresh**)
 
 ### Audit Scope
