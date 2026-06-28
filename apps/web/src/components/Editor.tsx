@@ -34,7 +34,7 @@ import { useEditorStore, resetAllStores, useToast } from "../store";
 import { useExportContext } from "../context/ExportContext";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
-import { EDITOR_FILENAMES, VIEW_MODES, UI_TIMING } from "@blueprint/shared";
+import { EDITOR_FILENAMES, VIEW_MODES, UI_TIMING, type EditorTab } from "@blueprint/shared";
 import {
   TIMEOUTS,
   UI,
@@ -98,6 +98,25 @@ function EditorComponent(): JSX.Element {
 
   const activeTab = useEditorStore((s) => s.activeTab);
   const setActiveTab = useEditorStore((s) => s.setActiveTab);
+
+  // Track tab switch direction so the slide animation follows the correct
+  // direction: Blueprint → Tasks slides content left, Tasks → Blueprint
+  // slides content right. Reads the previous tab via Zustand's synchronous
+  // getState() before calling setActiveTab, ensuring the first render
+  // after a tab switch has the correct direction.
+  const [tabDirection, setTabDirection] = useState(1);
+  const handleTabChange = useCallback(
+    (tab: EditorTab) => {
+      const TAB_ORDER = [EDITOR_TABS.BLUEPRINT, EDITOR_TABS.TASKS] as const;
+      const prevTab = useEditorStore.getState().activeTab;
+      const prevIdx = TAB_ORDER.indexOf(prevTab);
+      const currIdx = TAB_ORDER.indexOf(tab);
+      setTabDirection(currIdx > prevIdx ? 1 : -1);
+      setActiveTab(tab);
+    },
+    [setActiveTab]
+  );
+
   const blueprintContent = useEditorStore((s) => s.blueprintContent);
   const tasksContent = useEditorStore((s) => s.tasksContent);
   const setBlueprintContent = useEditorStore((s) => s.setBlueprintContent);
@@ -365,7 +384,7 @@ function EditorComponent(): JSX.Element {
         {/* Editor Header */}
         <EditorHeader
           activeTab={activeTab}
-          setActiveTab={setActiveTab}
+          setActiveTab={handleTabChange}
           viewMode={viewMode}
           setViewMode={setViewMode}
           onCopy={handleCopy}
@@ -409,9 +428,9 @@ function EditorComponent(): JSX.Element {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeTab}
-                    initial={{ opacity: 0, x: 10 }}
+                    initial={{ opacity: 0, x: tabDirection * 16 }}
                     animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -10 }}
+                    exit={{ opacity: 0, x: tabDirection * -16 }}
                     transition={{
                       duration: ANIMATION.NORMAL,
                       ease: ANIMATION_TIMING.easing.easeOut,
@@ -526,7 +545,7 @@ function EditorComponent(): JSX.Element {
                                     : blueprintContent.length > 0
                                 }
                                 onSwitchTab={() =>
-                                  setActiveTab(
+                                  handleTabChange(
                                     activeTab === EDITOR_TABS.BLUEPRINT
                                       ? EDITOR_TABS.TASKS
                                       : EDITOR_TABS.BLUEPRINT
