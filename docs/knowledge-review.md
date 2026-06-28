@@ -12,21 +12,21 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-28 (RepoKeeper Cycle 161)
+**Last Review**: 2026-06-28 (RepoKeeper Cycle 162)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jun 27)` — matches latest audit `brocula-hunt-2026-06-27-run8.md` (BroCula Run 24 / LH **100-100-100-100**, 1701 tests ✅)
+- **README BroCula description verified**: `(Jun 17–Jun 28)` — matches latest audit `brocula-hunt-2026-06-28-run9.md` (BroCula Run 26 / **0 console errors**, 1701 tests ✅)
 - **Typecheck/Lint**: All clean (0 errors, 0 warnings)
 - **Build**: Clean ✅
 - **Tests**: **1,701/1,701 passing** (723 web + 438 API + 540 shared) ✅
 - **Secrets scan**: Clean ✅
-- **Stale `.patch` file removed**: `docs/ci-workflow-fixes-cycle-jun-27-2026.patch` (gitignored artifact)
-- **Stale generated reports deleted**: `docs/issue-consolidation-report.md`, `docs/ci-workflow-fixes-patch.md`, `docs/ci-workflow-fixes-node-version.md`
-- **BroCula audit archive consolidated**: Archived 10 intermediate reports (Jun 25-27 runs 1-7) to archive/
+- **BUG-014 actually fixed on main**: `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in `.github/workflows/main.yml` (2 occurrences)
+- **BUG-017 actually fixed on main**: `node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files (11 occurrences)
+- **Cycle 162**: Full repository audit, BUG-014/BUG-017 **actually fixed on main for the first time**, CHANGELOG gap fix (added 4 missing commits after Cycle 161), docs refresh (findings, active-tasks, knowledge-review), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created
 - **Cycle 161**: Full repository audit, stale patch/doc cleanup, audit archive consolidation, README BroCula date drift fix, docs/audits/README.md refresh (Current Reports trimmed to Run 8 only), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR created
 - **Cycle 158**: Doc cleanup (removed stale `.patch` files), CI fix script (`scripts/apply-ci-fixes.sh`), README tree cleanup (removed non-existent `docs/task.md`), `docs/ci-configuration.md` updated to reflect applied CI node-version fix
 - **Cycle 157**: Full repository audit, **BUG-014 ACTUALLY fixed on main** (main.yml `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences — first actual edit of workflow files), **BUG-017 ACTUALLY fixed on main** (`node-version: "20"`/`node-version: 20`→`node-version-file: ".node-version"` across 5 workflow files — 11 occurrences — first actual edit of workflow files), BroCula Run 21 indexing, CHANGELOG gap fix, docs refresh (findings, active-tasks, knowledge-review, bugs, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅), PR created

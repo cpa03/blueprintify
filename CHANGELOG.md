@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- feat(ux): add editor loading skeleton during initial generation
+- fix(ci): BUG-014/BUG-017 — fix stale doc refs (`docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`) and hardcoded `node-version: "20"`→`node-version-file: ".node-version"` in all workflow files — **actually applied to main for the first time** (11 occurrences across 5 workflow files)
+- chore(audit): BroCula ULW Run 1 — audit report (LH **99-100-100-100**, 1701 tests ✅)
+- refactor(flexy): replace remaining hardcoded setTimeout magic numbers with UI_TIMEOUTS constants (Iteration 76)
+- chore(repokeeper): Cycle 162 — BUG-014/BUG-017 actually fixed on main, CHANGELOG gap fix (4 missing commits after Cycle 161), docs refresh (findings, active-tasks, knowledge-review), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created
 - fix(deploy): validate wrangler.toml placeholders before deploy (#2143)
 - chore(audit): BroCula Run 23 — audit report (LH **94-100-100-100**, 1701 tests ✅) (723 web + 438 API + 540 shared) (#2140)
 - chore(repokeeper): Cycle 158 — doc cleanup, CI fix script, stale patch removal (#2141)
