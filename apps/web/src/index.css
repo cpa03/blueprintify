@@ -740,6 +740,26 @@
     will-change: transform, opacity;
   }
 
+  /* Brief scale pop on the character counter when it first crosses the minimum
+     character threshold — a one-shot spring-like bounce that gives a subtle
+     "you did it" feeling as the counter turns green. */
+  @keyframes counter-celebrate-pop {
+    0% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(1.25);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .counter-celebrate-pop {
+    animation: counter-celebrate-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: transform;
+  }
+
   /* Gentle breathing animation for content availability dots on editor tab
      buttons — a slow, subtle opacity pulse draws the user's eye to discover
      content in the sibling tab without being distracting. Designed to start
@@ -788,6 +808,7 @@
     .animate-slide-out-up,
     .animate-pulse-scale,
     .animate-warning-icon,
+    .counter-celebrate-pop,
     .content-dot-breathe,
     .arrival-pop,
     .glass-card::after,

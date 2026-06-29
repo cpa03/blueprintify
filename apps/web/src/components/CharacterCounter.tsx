@@ -20,6 +20,7 @@ function CharacterCounterComponent({
   const isWarning = current >= warningThreshold && current < max;
   const isValid = min !== undefined && current >= min;
   const isEmpty = current === 0;
+  const belowMin = min !== undefined && current < min;
   const shouldPulse = isWarning && !isAtLimit;
 
   const colorClass = useMemo(() => {
@@ -43,14 +44,27 @@ function CharacterCounterComponent({
     prevAtLimitRef.current = isAtLimit;
   }, [isAtLimit]);
 
+  const [showCelebrate, setShowCelebrate] = useState(false);
+  const prevBelowMinRef = useRef(belowMin);
+
+  useEffect(() => {
+    if (!belowMin && prevBelowMinRef.current && min !== undefined) {
+      setShowCelebrate(true);
+      const timer = setTimeout(() => setShowCelebrate(false), TIMEOUTS.SHAKE_ANIMATION);
+      return () => clearTimeout(timer);
+    }
+    prevBelowMinRef.current = belowMin;
+  }, [belowMin, min]);
+
   const shakeClass = showLimitShake ? "shake-animation" : "";
   const pulseClass = shouldPulse && !showLimitShake ? "animate-pulse-scale" : "";
+  const celebrateClass = showCelebrate ? "counter-celebrate-pop" : "";
 
   return (
     <>
       {/* Visual counter — hidden from screen readers */}
       <span
-        className={`text-xs tabular-nums transition-colors duration-200 inline-flex items-center ${colorClass} ${shakeClass} ${pulseClass} ${className}`}
+        className={`text-xs tabular-nums transition-colors duration-200 inline-flex items-center ${colorClass} ${shakeClass} ${pulseClass} ${celebrateClass} ${className}`}
         aria-hidden="true"
       >
         <span className={isAtLimit ? "font-bold" : ""}>{current}</span>
