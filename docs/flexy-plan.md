@@ -1386,3 +1386,32 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
+
+### ✅ Flexy Iteration 79: Eliminate Hardcoded Status Codes & Content-Type in Node Template Generators
+
+| File | Change |
+| ---- | ------ |
+| `apps/web/src/lib/templates/node.ts` | Replaced hardcoded `200`, `404` status codes with `HTTP_STATUS.OK`, `HTTP_STATUS.NOT_FOUND` |
+| `apps/web/src/lib/templates/node.ts` | Replaced hardcoded `Content-Type` header with `HTTP_HEADER_NAMES.CONTENT_TYPE` |
+| `apps/web/src/lib/templates/node.ts` | Replaced hardcoded `application/json` with `HTTP_HEADERS.CONTENT_TYPE_JSON` |
+
+**Verification:**
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ Tests: 723 web + 438 api + 540 shared = 1,701 passing
+
+**PR:** [#2185](https://github.com/cpa03/blueprintify/pull/2185) — `feat/flexy-iteration-79-template-hardcoded`
+
+### ✅ Flexy Iteration 80: Centralize Remaining Hardcoded Editor Accessibility Labels
+
+| File | Change |
+| ---- | ------ |
+| `apps/web/src/config/constants/accessibility.ts` | Added `EDITOR_ANNOUNCER.SKELETON_GENERATING` ("Content is being generated") |
+| `apps/web/src/components/Editor.tsx` | Replaced hardcoded `aria-label="Content is being generated"` with `EDITOR_ANNOUNCER.SKELETON_GENERATING` |
+
+**Verification:**
+- ✅ Lint: Clean (no warnings)
+- ✅ Type check: Clean (no new errors)
+
+**PR:** [#2196](https://github.com/cpa03/blueprintify/pull/2196) — `feat/flexy-iteration-80-editor-a11y-labels`

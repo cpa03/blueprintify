@@ -77,7 +77,11 @@ const CODE_LINE_WIDTHS = [65, 80, 45, 70, 55, 85, 40, 60, 75, 50, 68, 58, 72, 48
 function EditorSkeleton({ isVisible }: { isVisible: boolean }): JSX.Element | null {
   if (!isVisible) return null;
   return (
-    <div className="editor-skeleton" role="status" aria-label="Content is being generated">
+    <div
+      className="editor-skeleton"
+      role="status"
+      aria-label={EDITOR_ANNOUNCER.SKELETON_GENERATING}
+    >
       <div className="editor-skeleton-gutter">
         {LINE_NUMBERS.map((num) => (
           <div key={num} className="editor-skeleton-line-number">
