@@ -2,6 +2,59 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 167 (2026-06-29 — RepoKeeper: Fix typecheck regression (#2187/#2188), tracked .patch cleanup, CHANGELOG gap fix (Cycle 166 + 3 post-Cycle-166 commits), doc sync)
+
+### Audit Scope
+
+Full repository audit covering typecheck regression fix (Hono type mismatch in m2-workflows.test.ts caused by dep bumps #2187/#2188), tracked `.patch` file removal (`docs/ci-workflow-fixes-cycle-jun-28-2026-run3.patch` — was force-tracked despite `*.patch` in .gitignore), CHANGELOG gap fix (added missing Cycle 166 entry + 3 post-Cycle-166 commits: fix(api) auth middleware #2191, chore(deps) #2187, chore(deps-dev) #2188), BUG-014/BUG-017 status verification (still present on main), knowledge-review.md Last Review bumped from Cycle 166→167, active-tasks.md Cycle 167 entry, findings.md Cycle 167 entry, quality verification, PR creation.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) — **was broken** after dep bumps, fixed |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,701/1,701 passing** (723 web + 438 API + 540 shared) |
+| Tracked .patch | ✅ Removed from git tracking |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Typecheck regression fix**: Recent dep bumps (#2187/#2188) broke typecheck in `apps/api/src/integration/m2-workflows.test.ts` — Hono type mismatch (app declared without `Variables: AppVariables`). Fixed by updating the type declaration.
+2. **Tracked `.patch` file cleanup**: `docs/ci-workflow-fixes-cycle-jun-28-2026-run3.patch` was force-tracked in git despite `*.patch` in `.gitignore`. Removed via `git rm`.
+3. **CHANGELOG gap fix**: Added Cycle 166 entry + 3 post-Cycle-166 commits: fix(api) auth middleware #2191, chore(deps) #2187, chore(deps-dev) #2188.
+4. **README/docs tree verified**: All docs files match filesystem. No drift.
+5. **knowledge-review.md Last Review bumped**: Cycle 166 → Cycle 167.
+6. **BUG-014/BUG-017 status verified**: Both bugs still present on main. Blocker: GitHub App token lacks `workflows: write` permission.
+7. **Stale remote branches**: All 13 remote branches have unique unmerged commits — none can be pruned.
+8. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 167.
+9. **Quality verification**: typecheck ✅ lint ✅ tests 1,701/1,701 ✅.
+
+### Key Findings
+
+- **BUG-014 and BUG-017 still present on main** — workflow files remain unchanged. All prior fix attempts blocked by `workflows: write` permission.
+- **Typecheck regression fixed**: Dependency bumps broke typecheck (Hono `Variables` type mismatch). Fix applied.
+- **Tracked .patch removed**: `docs/ci-workflow-fixes-cycle-jun-28-2026-run3.patch` was force-tracked despite `*.patch` in `.gitignore`. Removed.
+- **CHANGELOG gap**: Cycle 166 + 3 post-Cycle-166 commits (fix(api) auth middleware #2191, chore(deps) #2187, chore(deps-dev) #2188) were missing. All added.
+- **No redundant/temp/unused source files found** — repo remains clean.
+- **No stale remote branches** — all 13 remote branches have unique unmerged commits.
+- **All quality checks passing**: typecheck ✅ lint ✅ tests 1,701/1,701 ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅ (regression fixed)
+- [x] Lint — 0 errors/warnings ✅
+- [x] Tests — 1,701/1,701 passing (723 web + 438 API + 540 shared) ✅
+- [x] Tracked .patch file removed ✅
+- [x] knowledge-review.md Last Review bumped to Cycle 167 ✅
+- [x] CHANGELOG gap filled — Cycle 166 + 3 post-Cycle-166 commits added ✅
+- [x] BUG-014/BUG-017 status verified (still present on main) ✅
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK ✅
+- [x] Documentation refreshed for Cycle 167 (findings, active-tasks, knowledge-review, CHANGELOG) ✅
+- [x] PR created ✅
+
+---
+
 ## Cycle 166 (2026-06-29 — RepoKeeper: Full repository audit, CHANGELOG gap fix (4 commits after Cycle 165), doc sync)
 
 ### Audit Scope
