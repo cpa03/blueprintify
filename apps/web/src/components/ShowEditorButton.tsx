@@ -21,7 +21,7 @@ import { memo } from "react";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
 import { BUTTON, ICON } from "../config/styles";
-import { UI_CONTENT, SHORTCUT_DESCRIPTIONS, ACCESSIBILITY_LABELS } from "../config/constants";
+import { UI_CONTENT, SHORTCUT_DESCRIPTIONS } from "../config/constants";
 import { getModifierLabel, getAriaShortcutKey } from "../lib/platform";
 
 interface ShowEditorButtonProps {
@@ -39,9 +39,6 @@ function ShowEditorButtonComponent({
 }: ShowEditorButtonProps): JSX.Element {
   const modifierKey = getModifierLabel();
 
-  const buttonLabel = hasContent
-    ? ACCESSIBILITY_LABELS.EDITOR.SHOW_EDITOR_WITH_CONTENT
-    : ACCESSIBILITY_LABELS.EDITOR.SHOW_EDITOR;
   const buttonTitle = hasContent
     ? UI_CONTENT.EDITOR.VIEW_BLUEPRINT_BUTTON
     : UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON;
@@ -57,7 +54,6 @@ function ShowEditorButtonComponent({
           onClick={onClick}
           className={`${BUTTON.SHOW_EDITOR_FAB} ${hasContent || isGenerating ? "glow-pulse" : ""}`}
           aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
-          ariaLabel={buttonLabel}
           title={buttonTitle}
         >
           <span className="flex items-center">
