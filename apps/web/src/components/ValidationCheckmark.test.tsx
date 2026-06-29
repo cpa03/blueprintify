@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { ValidationCheckmark } from "./ValidationCheckmark";
+import { VALIDATION_LABELS } from "../config/constants/validation";
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -20,7 +21,7 @@ describe("ValidationCheckmark", () => {
 
     const icon = screen.getByRole("img");
     expect(icon).toBeInTheDocument();
-    expect(icon).toHaveAttribute("aria-label", "Field is valid");
+    expect(icon).toHaveAttribute("aria-label", VALIDATION_LABELS.FIELD_VALID);
   });
 
   it("renders invalid indicator when showInvalid and not valid", () => {
@@ -28,7 +29,7 @@ describe("ValidationCheckmark", () => {
 
     const icon = screen.getByRole("img");
     expect(icon).toBeInTheDocument();
-    expect(icon).toHaveAttribute("aria-label", "Field needs attention");
+    expect(icon).toHaveAttribute("aria-label", VALIDATION_LABELS.FIELD_INVALID);
   });
 
   it("does not render when isValid is false and showInvalid is false", () => {

@@ -38,6 +38,7 @@ import {
   TEXTAREA_CONFIG,
   SPRING_CONFIG,
 } from "../../config/constants";
+import { STEP_INFO_LABELS } from "../../config/constants/validation";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
@@ -214,8 +215,8 @@ export const StepInfo = memo(function StepInfo({
               <ValidationCheckmark
                 isValid={projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN}
                 showInvalid
-                ariaLabel="Project name is valid"
-                invalidAriaLabel="Project name needs at least 3 characters"
+                ariaLabel={STEP_INFO_LABELS.PROJECT_NAME_VALID}
+                invalidAriaLabel={STEP_INFO_LABELS.PROJECT_NAME_INVALID}
               />
               <TypeIndicator isTyping={projectNameTyping.isTyping} />
             </label>
@@ -268,7 +269,7 @@ export const StepInfo = memo(function StepInfo({
                 <ValidationCheckmark
                   isValid={true}
                   size="input"
-                  ariaLabel="Project name is valid"
+                  ariaLabel={STEP_INFO_LABELS.PROJECT_NAME_VALID}
                 />
               </div>
             )}
@@ -302,8 +303,8 @@ export const StepInfo = memo(function StepInfo({
               <ValidationCheckmark
                 isValid={description.length >= FORM_LIMITS.DESCRIPTION.MIN}
                 showInvalid
-                ariaLabel="Description is valid"
-                invalidAriaLabel="Description needs at least 10 characters"
+                ariaLabel={STEP_INFO_LABELS.DESCRIPTION_VALID}
+                invalidAriaLabel={STEP_INFO_LABELS.DESCRIPTION_INVALID}
               />
               <TypeIndicator isTyping={descriptionTyping.isTyping} />
             </label>
@@ -352,7 +353,11 @@ export const StepInfo = memo(function StepInfo({
             />
             {description.length >= FORM_LIMITS.DESCRIPTION.MIN && (
               <div className="absolute right-3 top-3 pointer-events-none">
-                <ValidationCheckmark isValid={true} size="input" ariaLabel="Description is valid" />
+                <ValidationCheckmark
+                  isValid={true}
+                  size="input"
+                  ariaLabel={STEP_INFO_LABELS.DESCRIPTION_VALID}
+                />
               </div>
             )}
           </div>

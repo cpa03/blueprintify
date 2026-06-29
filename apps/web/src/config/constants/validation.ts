@@ -3,9 +3,9 @@
  * Source of truth for validation-related constants
  */
 
-import { VALIDATION_LIMITS } from "@blueprint/shared";
+import { VALIDATION_LIMITS, VALIDATION_LABELS } from "@blueprint/shared";
 
-export { VALIDATION_LIMITS };
+export { VALIDATION_LIMITS, VALIDATION_LABELS };
 
 // Form validation limits derived from shared config
 export const FORM_LIMITS = {
@@ -37,4 +37,16 @@ export const VALIDATION_MESSAGES = {
   CHARACTERS_NEEDED: (count: number) => `${count} more characters needed`,
   TECH_STACK_MIN: (min: number) =>
     `Please select at least ${min} ${min === 1 ? "technology" : "technologies"} to proceed.`,
+} as const;
+
+/**
+ * Step info validation labels for the wizard project info step
+ * Centralized source of truth for step-specific ValidationCheckmark aria-labels.
+ * Flexy says: No hardcoded "Project name is valid" or "Description is valid" in StepInfo!
+ */
+export const STEP_INFO_LABELS = {
+  PROJECT_NAME_VALID: "Project name is valid",
+  PROJECT_NAME_INVALID: "Project name needs at least 3 characters",
+  DESCRIPTION_VALID: "Description is valid",
+  DESCRIPTION_INVALID: "Description needs at least 10 characters",
 } as const;
