@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(deps-dev): bump the development-dependencies group with 11 updates (#2188)
+- chore(deps): bump the production-dependencies group with 3 updates (#2187)
+- fix(api): add authorization middleware to DELETE /storage/clear (#2191)
+- chore(repokeeper): Cycle 166 — full repository audit, CHANGELOG gap fix (added 4 missing commits after Cycle 165: BugFixer Run 3 + feat(wizard) stagger animation + BroCula audit cycle + docs(flexy) Iteration 78), BUG-014/BUG-017 status verified (still present on main), docs refresh (findings, active-tasks, knowledge-review), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created
 - chore(repokeeper): Cycle 165 — full repository audit, BroCula ref drift fix (run11→run12 in knowledge-review.md — latest `brocula-hunt-2026-06-28-run12.md` / LH **100-100-100-100** / 1701 tests ✅), duplicate commit investigation (01abb3b6 is legitimate merge — cleared), CHANGELOG gap fix (added 3 missing commits after Cycle 164), BUG-014/BUG-017 status verified (still present on main), docs refresh (findings, active-tasks, knowledge-review), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created
 - fix(ci): BUG-014 stale doc refs + BUG-017 hardcoded node-version (BugFixer Cycle Jun 28 2026 Run 3)
 - feat(wizard): stagger entrance animation for feature tags

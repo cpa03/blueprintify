@@ -12,7 +12,7 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-29 (RepoKeeper Cycle 166)
+**Last Review**: 2026-06-29 (RepoKeeper Cycle 167)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
@@ -26,6 +26,8 @@ As of cycle refresh:
 - **Secrets scan**: Clean ✅
 - **BUG-014 still present on main**: `docs/bug.md`/`docs/feature.md` stale refs remain in `.github/workflows/main.yml` (2 occurrences) — push blocked by `workflows: write` permission
 - **BUG-017 still present on main**: `node-version: "20"` hardcoded across 4 workflow files (11 occurrences) — push blocked by `workflows: write` permission
+- **Tracked .patch file**: `docs/ci-workflow-fixes-cycle-jun-28-2026-run3.patch` removed in Cycle 167 — was force-tracked despite `*.patch` in .gitignore
+- **Cycle 167**: Full repository audit, typecheck regression fix (Hono Variables type mismatch in m2-workflows.test.ts caused by dep bumps #2187/#2188), tracked `.patch` file cleanup (`docs/ci-workflow-fixes-cycle-jun-28-2026-run3.patch` — force-tracked despite `*.patch` in .gitignore), CHANGELOG gap fix (added Cycle 166 + 3 post-Cycle-166 commits: fix(api) auth middleware #2191, chore(deps) #2187, chore(deps-dev) #2188), BUG-014/BUG-017 status verified (still present on main), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created
 - **Cycle 166**: Full repository audit, CHANGELOG gap fix (added 4 missing commits after Cycle 165: BugFixer Run 3 + feat(wizard) stagger animation + BroCula audit cycle + docs(flexy) Iteration 78), BUG-014/BUG-017 status verified (still present on main), docs refresh (findings, active-tasks, knowledge-review), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created
 - **Cycle 165**: Full repository audit, BroCula ref drift fix (run11→run12 — latest `brocula-hunt-2026-06-28-run12.md` / Run 12 / LH **100-100-100-100** / 1701 tests ✅), knowledge-review.md Last Review bumped Cycle 164→165, duplicate commit investigation (01abb3b6 is a legitimate merge — cleared), CHANGELOG gap fix (added 3 missing commits after Cycle 164: BugFixer Run 2 docs + fix(ci) BUG-014/BUG-017 + feat(wizard) smooth scroll), BUG-014/BUG-017 status verified (still present on main), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created
 - **Cycle 164**: Full repository audit, BroCula ref drift fix (run9→run11), CHANGELOG gap fix (added 2 missing commits after Cycle 163), docs refresh (findings, active-tasks, knowledge-review), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created

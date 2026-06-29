@@ -2,6 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 167 — **Fix typecheck regression, tracked .patch cleanup, CHANGELOG gap fix (Cycle 166 + 3 post-Cycle-166 commits), doc sync** ✅
+
+### Task: Full repository audit, typecheck regression fix (Hono Variables type in m2-workflows.test.ts), tracked `.patch` removal (`docs/ci-workflow-fixes-cycle-jun-28-2026-run3.patch`), `docs/knowledge-review.md` Last Review bumped to Cycle 167, `docs/active-tasks.md` Cycle 167 entry added, `docs/findings.md` Cycle 167 entry added, `CHANGELOG.md` gap fix (added Cycle 166 + 3 post-Cycle-166 commits: fix(api) auth middleware #2191, chore(deps) #2187, chore(deps-dev) #2188), BUG-014/BUG-017 status verification (still present on main), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 167 full repository audit — fix typecheck regression, remove tracked .patch, fix CHANGELOG gap (Cycle 166 + 3 post-Cycle-166 commits), update knowledge-review Last Review to Cycle 167, sync docs (findings, active-tasks), verify quality, create PR
+- **Actions**:
+  - [x] Typecheck regression fixed — Hono Variables type mismatch in m2-workflows.test.ts
+  - [x] Tracked `.patch` file removed — `docs/ci-workflow-fixes-cycle-jun-28-2026-run3.patch`
+  - [x] Full repository scan for redundant/temp/unused files → none found (repo remains clean)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] **knowledge-review.md updated**: Last Review→Cycle 167, Cycle 167 entry added
+  - [x] **active-tasks.md updated**: Cycle 167 entry added at top
+  - [x] **findings.md updated**: Cycle 167 entry added
+  - [x] **CHANGELOG gap fix**: Added Cycle 166 + 3 post-Cycle-166 commits — fix(api) auth middleware #2191, chore(deps) #2187, chore(deps-dev) #2188
+  - [x] BUG-014/BUG-017 reassessed: still present on main (push blocked by `workflows: write` permission)
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,701/1,701 ✅
+  - [x] No stale remote branches — all 13 have unique unmerged commits
+  - [x] PR created
+
 ## ✅ RepoKeeper Cycle 166 — **Full repository audit, CHANGELOG gap fix (4 commits after Cycle 165), doc sync** ✅
 
 ### Task: Full repository audit, `docs/knowledge-review.md` Last Review bumped to Cycle 166, `docs/active-tasks.md` Cycle 166 entry added, `docs/findings.md` Cycle 166 entry added, `CHANGELOG.md` gap fix (added 4 missing commits after Cycle 165: BugFixer Run 3 + feat(wizard) stagger animation + BroCula audit cycle + docs(flexy) Iteration 78), BUG-014/BUG-017 status verification (still present on main), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR creation

@@ -48,7 +48,7 @@ afterAll(() => {
 });
 
 describe("Integration: End-to-End M2 Workflows", () => {
-  let app: Hono<{ Bindings: typeof MOCK_ENV }>;
+  let app: Hono<{ Bindings: typeof MOCK_ENV; Variables: AppVariables }>;
 
   beforeEach(() => {
     vi.clearAllMocks();
