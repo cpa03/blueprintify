@@ -218,7 +218,7 @@ function WizardComponent(): JSX.Element {
       <div
         ref={containerRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto p-6"
+        className="flex-1 overflow-y-auto overscroll-contain p-6"
         role="region"
         aria-label={`Wizard step: ${currentStepLabel}`}
       >

@@ -380,7 +380,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                 </div>
               </div>
 
-              <div className="p-6 overflow-y-auto max-h-[50vh] space-y-6">
+              <div className="p-6 overflow-y-auto overscroll-contain max-h-[50vh] space-y-6">
                 {hasResults ? (
                   entries.map(([category, categoryShortcuts], categoryIndex) => (
                     <motion.div
