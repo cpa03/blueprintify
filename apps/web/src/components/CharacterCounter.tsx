@@ -1,11 +1,5 @@
 import { memo, useMemo, useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { ANIMATION, TIMEOUTS } from "../config/constants";
-import { ANIMATION_TIMING, EDITOR_ANIMATION } from "../config/theme";
-
-// One-shot shake keyframes for the limit-reached alert: a gentle horizontal
-// vibration that plays when the character counter hits the maximum value.
-const LIMIT_SHAKE_KEYFRAMES = [0, -2, 2, -1, 1, 0];
+import { TIMEOUTS } from "../config/constants";
 
 interface CharacterCounterProps {
   current: number;
@@ -49,48 +43,20 @@ function CharacterCounterComponent({
     prevAtLimitRef.current = isAtLimit;
   }, [isAtLimit]);
 
+  const shakeClass = showLimitShake ? "shake-animation" : "";
+  const pulseClass = shouldPulse && !showLimitShake ? "animate-pulse-scale" : "";
+
   return (
     <>
       {/* Visual counter — hidden from screen readers */}
-      <motion.span
-        className={`text-xs tabular-nums transition-colors duration-200 ${colorClass} ${className}`}
-        animate={
-          showLimitShake
-            ? { x: LIMIT_SHAKE_KEYFRAMES, scale: 1, opacity: 1 }
-            : shouldPulse
-              ? {
-                  scale: [1, 1.15, 1],
-                  opacity: [1, 0.7, 1],
-                }
-              : {}
-        }
-        transition={
-          showLimitShake
-            ? { duration: ANIMATION.SEMI_SLOW, ease: "easeInOut" }
-            : shouldPulse
-              ? {
-                  duration: ANIMATION.PULSE,
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  ease: "easeInOut",
-                }
-              : { duration: ANIMATION.NORMAL }
-        }
+      <span
+        className={`text-xs tabular-nums transition-colors duration-200 inline-flex items-center ${colorClass} ${shakeClass} ${pulseClass} ${className}`}
         aria-hidden="true"
       >
         <span className={isAtLimit ? "font-bold" : ""}>{current}</span>
         <span className="text-dark-600">/{max}</span>
         {isAtLimit && (
-          <motion.span
-            initial={{ opacity: 0, x: -4, scale: 0.5 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{
-              type: "spring",
-              ...EDITOR_ANIMATION.WARNING_ICON,
-            }}
-            className="ml-1 inline-flex"
-            aria-hidden="true"
-          >
+          <span className="ml-1 inline-flex animate-warning-icon" aria-hidden="true">
             <svg
               className="w-3.5 h-3.5 text-accent-pink"
               viewBox="0 0 24 24"
@@ -102,9 +68,9 @@ function CharacterCounterComponent({
             >
               <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
-          </motion.span>
+          </span>
         )}
-      </motion.span>
+      </span>
       {/* Screen-reader-only announcement with descriptive label */}
       <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {current} of {max} character{max !== 1 ? "s" : ""} used
@@ -133,13 +99,11 @@ function CharacterCounterCompactComponent({
   return (
     <div className={`flex items-center gap-1.5 ${className}`}>
       <div className="w-12 h-1.5 bg-dark-700 rounded-full overflow-hidden" aria-hidden="true">
-        <motion.div
-          className={`h-full rounded-full ${
+        <div
+          className={`h-full rounded-full transition-all duration-300 ease-out ${
             isDanger ? "bg-accent-pink" : isWarning ? "bg-yellow-500" : "bg-dark-500"
           }`}
-          initial={{ width: 0 }}
-          animate={{ width: `${Math.min(percentage, 100)}%` }}
-          transition={{ duration: ANIMATION.NORMAL, ease: ANIMATION_TIMING.easing.easeOut }}
+          style={{ width: `${Math.min(percentage, 100)}%` }}
         />
       </div>
       <span

@@ -674,6 +674,49 @@
     will-change: transform, opacity;
   }
 
+  /* Scale + opacity pulse for character counter warning state — replaces
+     framer-motion's scale/opacity keyframe array with a pure CSS animation
+     that loops while the warning threshold is active. */
+  @keyframes pulse-scale {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.15);
+      opacity: 0.7;
+    }
+  }
+
+  .animate-pulse-scale {
+    animation: pulse-scale 1.5s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+
+  /* Spring-like entrance for character counter warning icon — a quick
+     pop-in with slight overshoot, replacing framer-motion's spring
+     animation on the SVG warning triangle. */
+  @keyframes warning-icon-in {
+    0% {
+      opacity: 0;
+      transform: translateX(-4px) scale(0.5);
+    }
+    60% {
+      opacity: 1;
+      transform: translateX(1px) scale(1.1);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+  }
+
+  .animate-warning-icon {
+    animation: warning-icon-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    will-change: transform, opacity;
+  }
+
   /* Gentle breathing animation for content availability dots on editor tab
      buttons — a slow, subtle opacity pulse draws the user's eye to discover
      content in the sibling tab without being distracting. Designed to start
@@ -720,6 +763,8 @@
     .animate-slide-up,
     .animate-fade-out,
     .animate-slide-out-up,
+    .animate-pulse-scale,
+    .animate-warning-icon,
     .content-dot-breathe,
     .glass-card::after,
     .glass-card:focus-within::before,
