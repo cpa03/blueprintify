@@ -2,6 +2,28 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 168 — **Full repository audit, CHANGELOG gap fix (Cycle 167 + 4 commits after Cycle 167), BroCula drift fix (Jun 28→Jun 29), audit archive consolidation, doc sync** ✅
+
+### Task: Full repository audit, `CHANGELOG.md` gap fix (added Cycle 167 + 4 post-Cycle-167 commits: #2193 brocula hunt Jun 29, #2194 overscroll-contain fix, #2199 WCAG label fix, #2200 flexy Iteration 81), `docs/audits/README.md` updated (Jun 29 Run 1 as latest, archived 5 old reports), `README.md` BroCula date drift fix (Jun 17–Jun 28 → Jun 17–Jun 29), `docs/knowledge-review.md` Last Review bumped to Cycle 168, `docs/active-tasks.md` Cycle 168 entry added, `docs/findings.md` Cycle 168 entry added, stale merged branch cleanup (deleted `origin/brocula/hunt-2026-06-29-run2`), audit archive consolidation (moved Jun 28 Runs 1/3/9/11 and Jun 27 Run 8 to archive/), BUG-014/BUG-017 status verification (still present on main), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 168 full repository audit — fix CHANGELOG gap (Cycle 167 + 4 post-Cycle-167 commits), fix BroCula description drift (Jun 28→Jun 29), archive old audit reports, delete stale merged branch, update knowledge-review Last Review to Cycle 168, sync docs (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), verify quality, create PR
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (repo remains clean)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] **CHANGELOG gap fix**: Added Cycle 167 + 4 post-Cycle-167 commits — fix(web) WCAG label mismatch #2199, refactor(flexy) Iteration 81 #2200, chore(brocula) Jun 29 hunt #2193, fix(web) overscroll-contain #2194
+  - [x] **docs/audits/README.md updated**: Jun 29 Run 1 added as latest, Jun 28 Runs 1/3/9/11 and Jun 27 Run 8 archived
+  - [x] **Audit files archived**: Moved 5 BroCula report files from `docs/audits/` to `docs/audits/archive/`
+  - [x] **README BroCula date fixed**: `(Jun 17–Jun 28)` → `(Jun 17–Jun 29)`
+  - [x] **knowledge-review.md updated**: Last Review→Cycle 168, BroCula ref updated to Jun 29 Run 1
+  - [x] **active-tasks.md updated**: Cycle 168 entry added at top
+  - [x] **findings.md updated**: Cycle 168 entry added
+  - [x] **Stale merged branch deleted**: `origin/brocula/hunt-2026-06-29-run2`
+  - [x] BUG-014/BUG-017 reassessed: still present on main (push blocked by `workflows: write` permission)
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,701/1,701 ✅
+  - [x] PR created
+
 ## ✅ RepoKeeper Cycle 167 — **Fix typecheck regression, tracked .patch cleanup, CHANGELOG gap fix (Cycle 166 + 3 post-Cycle-166 commits), doc sync** ✅
 
 ### Task: Full repository audit, typecheck regression fix (Hono Variables type in m2-workflows.test.ts), tracked `.patch` removal (`docs/ci-workflow-fixes-cycle-jun-28-2026-run3.patch`), `docs/knowledge-review.md` Last Review bumped to Cycle 167, `docs/active-tasks.md` Cycle 167 entry added, `docs/findings.md` Cycle 167 entry added, `CHANGELOG.md` gap fix (added Cycle 166 + 3 post-Cycle-166 commits: fix(api) auth middleware #2191, chore(deps) #2187, chore(deps-dev) #2188), BUG-014/BUG-017 status verification (still present on main), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR creation
