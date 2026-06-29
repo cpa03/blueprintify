@@ -2,6 +2,26 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 166 — **Full repository audit, CHANGELOG gap fix (4 commits after Cycle 165), doc sync** ✅
+
+### Task: Full repository audit, `docs/knowledge-review.md` Last Review bumped to Cycle 166, `docs/active-tasks.md` Cycle 166 entry added, `docs/findings.md` Cycle 166 entry added, `CHANGELOG.md` gap fix (added 4 missing commits after Cycle 165: BugFixer Run 3 + feat(wizard) stagger animation + BroCula audit cycle + docs(flexy) Iteration 78), BUG-014/BUG-017 status verification (still present on main), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 166 full repository audit — fix CHANGELOG gap (4 missing commits after Cycle 165), update knowledge-review Last Review to Cycle 166, sync docs (findings, active-tasks), verify quality, create PR
+- **Actions**:
+  - [x] Full repository scan for redundant/temp/unused files → none found (repo remains clean)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] **knowledge-review.md updated**: Last Review→Cycle 166, Cycle 166 entry added
+  - [x] **active-tasks.md updated**: Cycle 166 entry added at top
+  - [x] **findings.md updated**: Cycle 166 entry added
+  - [x] **CHANGELOG gap fix**: Added 4 missing commits after Cycle 165 — `fix(ci): BUG-014/BUG-017 (BugFixer Cycle Jun 28 2026 Run 3)`, `feat(wizard): stagger entrance animation for feature tags`, `feat(audit): BroCula browser console + Lighthouse audit cycle`, `docs(flexy): document Iteration 78 — CI node-version fix identified but blocked by token permissions`
+  - [x] BroCula ref drift: none — already at `brocula-hunt-2026-06-28-run12.md` (Run 12 / LH **100-100-100-100** / 1701 tests ✅)
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,701/1,701 ✅ secrets scan ✅
+  - [x] BUG-014/BUG-017 reassessed: still present on main (push blocked by `workflows: write` permission)
+  - [x] No stale remote branches — all have unique unmerged commits
+  - [x] PR created
+
 ## ✅ RepoKeeper Cycle 165 — **Full repository audit, BroCula ref drift fix (run11→run12), CHANGELOG gap fix (3 commits after Cycle 164), duplicate commit investigation, doc sync** ✅
 
 ### Task: Full repository audit, `docs/knowledge-review.md` BroCula ref drift fix (run11→run12 — latest: `brocula-hunt-2026-06-28-run12.md` / BroCula ULW Run 12 / LH **100-100-100-100**) + Last Review bumped to Cycle 165, `docs/active-tasks.md` Cycle 165 entry added, `docs/findings.md` Cycle 165 entry added, `CHANGELOG.md` gap fix (added 3 missing commits after Cycle 164: BugFixer Run 2 docs + fix(ci) BUG-014/BUG-017 + feat(wizard) smooth scroll), duplicate commit investigation (01abb3b6 & 9fb616f1 — cleared, legitimate merge), BUG-014/BUG-017 status verification (still present on main), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR creation
