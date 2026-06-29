@@ -562,7 +562,7 @@ function EditorComponent(): JSX.Element {
                         ref={previewRef}
                         onScroll={handlePreviewScroll}
                         className={clsx(
-                          "h-full overflow-y-auto p-4 lg:p-6 relative",
+                          "h-full overflow-y-auto overscroll-contain p-4 lg:p-6 relative",
                           viewMode === VIEW_MODES.SPLIT ? "w-full lg:w-1/2" : "w-full"
                         )}
                       >
