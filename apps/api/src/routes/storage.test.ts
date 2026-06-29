@@ -4,7 +4,10 @@ import storageRoute from "./storage";
 import { errorHandler } from "../middleware/errorHandler";
 import { MOCK_ENV } from "../test-utils";
 import type { ErrorResponse } from "../errors";
+import type { AppVariables, User } from "../types";
 import {
+  AUTH_DEFAULTS,
+  CONTEXT_KEYS,
   HTTP_STATUS,
   HTTP_METHODS,
   HTTP_HEADERS,
@@ -189,7 +192,14 @@ describe("POST /storage/report", () => {
 describe("DELETE /storage/clear", () => {
   const app = new Hono<{
     Bindings: { OPENAI_API_KEY: string; CACHE: ReturnType<typeof createMockCache> };
+    Variables: AppVariables;
   }>();
+  // Set user context for tests since DELETE route now requires authorization
+  app.use("*", async (c, next) => {
+    const user: User = { id: "test-user", role: AUTH_DEFAULTS.DEFAULT_ROLE };
+    c.set(CONTEXT_KEYS.USER, user);
+    await next();
+  });
   app.route("/", storageRoute);
   app.onError(errorHandler);
 

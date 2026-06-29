@@ -10,12 +10,14 @@
 import { Hono } from "hono";
 import {
   CONTEXT_KEYS,
+  AUTH_DEFAULTS,
   STORAGE_FALLBACK_MESSAGES,
   StorageClearRequestSchema,
   StorageReportRequestSchema,
 } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
+import { authorize } from "../middleware/authorize";
 import {
   API_HEADERS,
   STORAGE_CONFIG,
@@ -164,6 +166,7 @@ app.post(
 app.delete(
   "/clear",
   rateLimit(rateLimitConfigs.strict),
+  authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
   validateJson(StorageClearRequestSchema),
   async (c) => {
     const { confirm } = c.get(CONTEXT_KEYS.VALIDATED_DATA);
