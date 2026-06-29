@@ -21,7 +21,7 @@ import { memo } from "react";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
 import { BUTTON, ICON } from "../config/styles";
-import { UI_CONTENT, SHORTCUT_DESCRIPTIONS } from "../config/constants";
+import { UI_CONTENT, SHORTCUT_DESCRIPTIONS, ACCESSIBILITY_LABELS } from "../config/constants";
 import { getModifierLabel, getAriaShortcutKey } from "../lib/platform";
 
 interface ShowEditorButtonProps {
@@ -39,17 +39,26 @@ function ShowEditorButtonComponent({
 }: ShowEditorButtonProps): JSX.Element {
   const modifierKey = getModifierLabel();
 
+  const buttonLabel = hasContent
+    ? ACCESSIBILITY_LABELS.EDITOR.SHOW_EDITOR_WITH_CONTENT
+    : ACCESSIBILITY_LABELS.EDITOR.SHOW_EDITOR;
+  const buttonTitle = hasContent
+    ? UI_CONTENT.EDITOR.VIEW_BLUEPRINT_BUTTON
+    : UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON;
+
   return (
     <KeyboardShortcutTooltip
       shortcut="e"
       description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
       position="left"
     >
-      <div className="animate-slide-up will-change-transform motion-safe:transition-transform motion-safe:duration-150 motion-safe:hover:scale-105 motion-safe:active:scale-95">
+      <div className="group animate-slide-up will-change-transform motion-safe:transition-transform motion-safe:duration-150 motion-safe:hover:scale-105 motion-safe:active:scale-95">
         <RippleButton
           onClick={onClick}
           className={`${BUTTON.SHOW_EDITOR_FAB} ${hasContent || isGenerating ? "glow-pulse" : ""}`}
           aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
+          ariaLabel={buttonLabel}
+          title={buttonTitle}
         >
           <span className="flex items-center">
             <svg
@@ -69,9 +78,21 @@ function ShowEditorButtonComponent({
             {hasContent
               ? UI_CONTENT.EDITOR.VIEW_BLUEPRINT_BUTTON
               : UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON}
+            {/* Direction arrow — subtle chevron that glides right on hover,
+                visually hinting that clicking reveals the editor panel from
+                the right side of the layout. */}
+            <svg
+              className="w-4 h-4 ml-1.5 -mr-1 transition-transform duration-200 motion-safe:group-hover:translate-x-0.5 opacity-60 group-hover:opacity-100"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
             {isGenerating && (
               <span
-                className="ml-2 w-2 h-2 rounded-full bg-accent-emerald motion-safe:animate-pulse"
+                className="ml-1.5 w-2 h-2 rounded-full bg-accent-emerald motion-safe:animate-pulse"
                 aria-hidden="true"
               />
             )}
