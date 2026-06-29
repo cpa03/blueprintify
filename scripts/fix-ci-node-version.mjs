@@ -1,11 +1,16 @@
 #!/usr/bin/env node
 
 /**
- * CI Node.js Version Fix Script
+ * CI Workflow Fix Script
  *
- * Replaces hardcoded node-version with node-version-file in all
- * GitHub Actions workflow files. Uses .node-version as single source
- * of truth for Node.js version.
+ * Fixes two categories of issues in GitHub Actions workflow files:
+ *
+ * BUG-014 — Stale doc references:
+ *   Replaces legacy `docs/bug.md` and `docs/feature.md` with `docs/bugs.md` and `docs/features.md`.
+ *
+ * BUG-017 — Hardcoded Node.js version:
+ *   Replaces hardcoded node-version:"20" with node-version-file: ".node-version"
+ *   Uses .node-version as single source of truth for Node.js version.
  *
  * Usage: node scripts/fix-ci-node-version.mjs
  */
@@ -28,6 +33,12 @@ for (const file of workflowFiles) {
   let content = readFileSync(filePath, "utf-8");
 
   const original = content;
+
+  // BUG-014: Fix stale doc references
+  content = content.replace(/docs\/bug\.md/g, "docs/bugs.md");
+  content = content.replace(/docs\/feature\.md/g, "docs/features.md");
+
+  // BUG-017: Replace hardcoded node-version with node-version-file
   content = content.replace(/node-version:\s*"20"/g, 'node-version-file: ".node-version"');
   content = content.replace(/node-version:\s*20\b(?!")/g, 'node-version-file: ".node-version"');
 
@@ -35,7 +46,9 @@ for (const file of workflowFiles) {
     writeFileSync(filePath, content, "utf-8");
     const count =
       (original.match(/node-version:\s*"20"/g) || []).length +
-      (original.match(/node-version:\s*20\b(?!")/g) || []).length;
+      (original.match(/node-version:\s*20\b(?!")/g) || []).length +
+      (original.match(/docs\/bug\.md/g) || []).length +
+      (original.match(/docs\/feature\.md/g) || []).length;
     changed++;
     totalReplacements += count;
     console.log(`✓ ${file}: updated ${count} occurrence(s)`);
