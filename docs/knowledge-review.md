@@ -12,20 +12,23 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-29 (RepoKeeper Cycle 167)
+**Last Review**: 2026-06-29 (RepoKeeper Cycle 168)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jun 28)` — matches latest audit `brocula-hunt-2026-06-28-run12.md` (BroCula ULW Run 12 / LH **100-100-100-100**, 1701 tests ✅)
+- **README BroCula description verified**: `(Jun 17–Jun 29)` — matches latest audit `brocula-hunt-2026-06-29-run1.md` (BroCula Run 1 / LH **100-100-100-100**, 1701 tests ✅)
 - **Typecheck/Lint**: All clean (0 errors, 0 warnings)
 - **Build**: Clean ✅
 - **Tests**: **1,701/1,701 passing** (723 web + 438 API + 540 shared) ✅
 - **Secrets scan**: Clean ✅
 - **BUG-014 still present on main**: `docs/bug.md`/`docs/feature.md` stale refs remain in `.github/workflows/main.yml` (2 occurrences) — push blocked by `workflows: write` permission
 - **BUG-017 still present on main**: `node-version: "20"` hardcoded across 4 workflow files (11 occurrences) — push blocked by `workflows: write` permission
+- **Stale merged branch cleaned**: `origin/brocula/hunt-2026-06-29-run2` — merged into main, deleted
+- **Audit archive consolidated**: Jun 28 Runs 1, 3, 9, 11 and Jun 27 Run 8 archived to `docs/audits/archive/`
+- **Cycle 168**: Full repository audit, CHANGELOG gap fix (added Cycle 167 + 4 post-Cycle-167 commits: #2193, #2194, #2199, #2200), docs/audits/README.md updated with Jun 29 Run 1 as latest, README BroCula date drift fix (Jun 17–Jun 28 → Jun 17–Jun 29), stale merged branch cleanup (`origin/brocula/hunt-2026-06-29-run2` deleted), audit archive consolidation (archived 5 old BroCula reports), BUG-014/BUG-017 status verified (still present on main), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created
 - **Tracked .patch file**: `docs/ci-workflow-fixes-cycle-jun-28-2026-run3.patch` removed in Cycle 167 — was force-tracked despite `*.patch` in .gitignore
 - **Cycle 167**: Full repository audit, typecheck regression fix (Hono Variables type mismatch in m2-workflows.test.ts caused by dep bumps #2187/#2188), tracked `.patch` file cleanup (`docs/ci-workflow-fixes-cycle-jun-28-2026-run3.patch` — force-tracked despite `*.patch` in .gitignore), CHANGELOG gap fix (added Cycle 166 + 3 post-Cycle-166 commits: fix(api) auth middleware #2191, chore(deps) #2187, chore(deps-dev) #2188), BUG-014/BUG-017 status verified (still present on main), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created
 - **Cycle 166**: Full repository audit, CHANGELOG gap fix (added 4 missing commits after Cycle 165: BugFixer Run 3 + feat(wizard) stagger animation + BroCula audit cycle + docs(flexy) Iteration 78), BUG-014/BUG-017 status verified (still present on main), docs refresh (findings, active-tasks, knowledge-review), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created

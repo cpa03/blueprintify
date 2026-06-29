@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- fix(web): resolve label-content-name-mismatch on ShowEditorButton (WCAG 2.5.3) (#2199)
+- refactor(flexy): centralize validation aria-labels into shared config (Iteration 81) (#2200)
+- chore(brocula): hunt report 2026-06-29 — LH 100-100-100-100, 1701 tests ✅ (#2193)
+- fix(web): add overscroll-contain to scrollable panels preventing pull-to-refresh on mobile (#2194)
+- chore(repokeeper): Cycle 167 — full repository audit, typecheck regression fix (Hono Variables type mismatch in m2-workflows.test.ts caused by dep bumps #2187/#2188), tracked `.patch` file cleanup (`docs/ci-workflow-fixes-cycle-jun-28-2026-run3.patch` removed — was force-tracked despite `*.patch` in .gitignore), CHANGELOG gap fix (added Cycle 166 + 3 post-Cycle-166 commits: fix(api) auth middleware #2191, chore(deps) #2187, chore(deps-dev) #2188), BUG-014/BUG-017 status verified (still present on main), docs refresh (findings, active-tasks, knowledge-review), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created (#2195)
 - chore(deps-dev): bump the development-dependencies group with 11 updates (#2188)
 - chore(deps): bump the production-dependencies group with 3 updates (#2187)
 - fix(api): add authorization middleware to DELETE /storage/clear (#2191)
