@@ -31,7 +31,6 @@ let totalReplacements = 0;
 for (const file of workflowFiles) {
   const filePath = join(root, ".github/workflows", file);
   let content = readFileSync(filePath, "utf-8");
-
   const original = content;
 
   // BUG-014: Fix stale doc references
@@ -60,3 +59,5 @@ console.log(`\nDone! ${changed} file(s) updated, ${totalReplacements} total repl
 if (changed === 0) {
   console.log("No workflow files needed updating.");
 }
+
+

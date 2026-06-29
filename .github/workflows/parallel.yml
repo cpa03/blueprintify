@@ -67,7 +67,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version-file: ".node-version"
+          node-version: "20"
 
       - run: npm ci || true
 
@@ -263,7 +263,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version-file: ".node-version"
+          node-version: "20"
 
       - name: Install OpenCode
         run: |
@@ -341,7 +341,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version-file: ".node-version"
+          node-version: "20"
 
       - run: npm ci || true
 
@@ -396,7 +396,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version-file: ".node-version"
+          node-version: "20"
 
       - name: Install OpenCode
         run: |
