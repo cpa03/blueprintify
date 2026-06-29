@@ -1,6 +1,11 @@
 import type JSZip from "jszip";
 import type { TechStackItemType } from "@blueprint/shared";
-import { TEMPLATE_NODE_PORT } from "@blueprint/shared";
+import {
+  HTTP_HEADERS,
+  HTTP_HEADER_NAMES,
+  HTTP_STATUS,
+  TEMPLATE_NODE_PORT,
+} from "@blueprint/shared";
 import { PackageJson, generateProjectReadme } from "./shared";
 
 export async function generateNodeProject(
@@ -144,7 +149,7 @@ export function generateBasicNodeIndex(projectName: string, features: string[]):
 const PORT = process.env.PORT || ${TEMPLATE_NODE_PORT}
 
 const server = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'application/json' })
+  res.writeHead(${HTTP_STATUS.OK}, { '${HTTP_HEADER_NAMES.CONTENT_TYPE}': '${HTTP_HEADERS.CONTENT_TYPE_JSON}' })
   
   if (req.url === '/') {
     res.end(JSON.stringify({ 
@@ -154,7 +159,7 @@ const server = http.createServer((req, res) => {
   } else if (req.url === '/health') {
     res.end(JSON.stringify({ status: 'ok' }))
   } else {
-    res.writeHead(404)
+    res.writeHead(${HTTP_STATUS.NOT_FOUND})
     res.end(JSON.stringify({ error: 'Not found' }))
   }
 })
@@ -171,7 +176,7 @@ describe('API Tests', () => {
   test('GET /', async () => {
     const response = await request(app)
       .get('/')
-      .expect(200)
+      .expect(${HTTP_STATUS.OK})
     
     expect(response.body).toHaveProperty('message')
   })
@@ -179,7 +184,7 @@ describe('API Tests', () => {
   test('GET /health', async () => {
     const response = await request(app)
       .get('/health')
-      .expect(200)
+      .expect(${HTTP_STATUS.OK})
     
     expect(response.body.status).toBe('ok')
   })
