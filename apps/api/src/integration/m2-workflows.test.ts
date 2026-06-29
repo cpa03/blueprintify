@@ -8,9 +8,12 @@ import exportRoute from "../routes/export";
 import importRoute from "../routes/import";
 import storageRoute from "../routes/storage";
 import tasksRoute from "../routes/tasks";
+import type { AppVariables, User } from "../types";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 import { SSE_HEADERS } from "../config/constants";
 import {
+  AUTH_DEFAULTS,
+  CONTEXT_KEYS,
   ROUTE_PATHS,
   HTTP_METHODS,
   HTTP_HEADERS,
@@ -53,7 +56,13 @@ describe("Integration: End-to-End M2 Workflows", () => {
     const mockContainer = createMockContainer();
     setDefaultContainer(mockContainer);
 
-    app = new Hono<{ Bindings: typeof MOCK_ENV }>();
+    app = new Hono<{ Bindings: typeof MOCK_ENV; Variables: AppVariables }>();
+    // Set user context for tests since storage DELETE route requires authorization
+    app.use("*", async (c, next) => {
+      const user: User = { id: "test-user", role: AUTH_DEFAULTS.DEFAULT_ROLE };
+      c.set(CONTEXT_KEYS.USER, user);
+      await next();
+    });
     app.route(ROUTE_PATHS.GENERATE, generateRoute);
     app.route(ROUTE_PATHS.REFINE, refineRoute);
     app.route(ROUTE_PATHS.EXPORT, exportRoute);
