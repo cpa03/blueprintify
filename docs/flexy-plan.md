@@ -1415,3 +1415,20 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ Type check: Clean (no new errors)
 
 **PR:** [#2196](https://github.com/cpa03/blueprintify/pull/2196) — `feat/flexy-iteration-80-editor-a11y-labels`
+
+### ✅ Flexy Iteration 81: Centralize Validation Aria-Labels into Shared Config
+
+| File | Change |
+| ---- | ------ |
+| `packages/shared/src/config.ts` | Added `VALIDATION_LABELS` (FIELD_VALID, FIELD_INVALID) for checkmark default aria-labels |
+| `packages/shared/src/index.ts` | Exported `VALIDATION_LABELS` |
+| `apps/web/src/config/constants/validation.ts` | Re-exported `VALIDATION_LABELS` from shared; added `STEP_INFO_LABELS` for step-specific validation labels |
+| `apps/web/src/components/ValidationCheckmark.tsx` | Replaced hardcoded `ariaLabel = "Field is valid"` and `invalidAriaLabel = "Field needs attention"` defaults with `VALIDATION_LABELS.*` refs |
+| `apps/web/src/components/ValidationCheckmark.test.tsx` | Replaced 4 hardcoded aria-label assertions with `VALIDATION_LABELS.*` and `STEP_INFO_LABELS.*` refs |
+| `apps/web/src/components/wizard/StepInfo.tsx` | Replaced 6 hardcoded `ariaLabel`/`invalidAriaLabel` strings with `STEP_INFO_LABELS.*` refs |
+
+**Verification:**
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 723 web + 438 api + 540 shared = 1,701 tests passing

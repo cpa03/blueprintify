@@ -2,6 +2,7 @@ import { memo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ANIMATION_TIMING } from "../config/theme";
 import { ANIMATION } from "../config/constants";
+import { VALIDATION_LABELS } from "../config/constants/validation";
 
 interface ValidationCheckmarkProps {
   isValid: boolean;
@@ -25,8 +26,8 @@ interface ValidationCheckmarkProps {
 export const ValidationCheckmark = memo(function ValidationCheckmark({
   isValid,
   size = "inline",
-  ariaLabel = "Field is valid",
-  invalidAriaLabel = "Field needs attention",
+  ariaLabel = VALIDATION_LABELS.FIELD_VALID,
+  invalidAriaLabel = VALIDATION_LABELS.FIELD_INVALID,
   showInvalid = false,
   className = "",
 }: ValidationCheckmarkProps) {

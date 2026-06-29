@@ -2241,3 +2241,18 @@ export const ENTRANCE_STAGGER_DEFAULTS = {
   /** Medium delay for tertiary elements (s) */
   MEDIUM_DELAY_S: 0.2,
 } as const;
+
+/**
+ * Validation Checkmark Aria-Labels
+ * Centralized source of truth for validation indicator accessibility labels.
+ * Flexy says: No hardcoded "Field is valid" or "Field needs attention" in ValidationCheckmark!
+ * Usage: import { VALIDATION_LABELS } from "@blueprint/shared";
+ *        ariaLabel={VALIDATION_LABELS.FIELD_VALID}
+ *        invalidAriaLabel={VALIDATION_LABELS.FIELD_INVALID}
+ */
+export const VALIDATION_LABELS = {
+  /** Default label shown when a validated field passes validation */
+  FIELD_VALID: "Field is valid",
+  /** Default label shown when a validated field fails validation */
+  FIELD_INVALID: "Field needs attention",
+} as const;
