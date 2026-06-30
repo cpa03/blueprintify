@@ -2053,11 +2053,12 @@ describe("UI_TIMING", () => {
     expect(UI_TIMING.DISCOVERY_HINT_MS).toBe(3000);
     expect(UI_TIMING.EDITOR_FOCUS_DELAY_MS).toBe(180);
     expect(UI_TIMING.EDITOR_FOCUS_HIGHLIGHT_MS).toBe(1900);
+    expect(UI_TIMING.ARRIVAL_POP_DISPLAY_MS).toBe(600);
   });
 
-  it("should have 3 timing entries", () => {
+  it("should have 4 timing entries", () => {
     const values = Object.values(UI_TIMING);
-    expect(values.length).toBe(3);
+    expect(values.length).toBe(4);
   });
 
   it("should have all numeric values", () => {
