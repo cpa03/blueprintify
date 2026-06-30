@@ -2,6 +2,26 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 172 — **Stale legacy doc removal, BroCula ref drift fix (Run 2→Run 3), CHANGELOG gap fix, doc sync** ✅
+
+### Task: Full repository audit, stale legacy doc removal (`docs/ci-workflow-fixes-patch.md` — superseded by `docs/ci-configuration.md` + `scripts/fix-ci-node-version.mjs`), BroCula ref drift fix in `docs/audits/README.md` (Run 2→Run 3 as latest — latest audit: `brocula-hunt-2026-06-30-run3.md` / LH **99-100-100-100**, 1701 tests ✅), CHANGELOG gap fix (added 1 post-Cycle-171 commit: brocula Run 3 + Cycle 172 entry), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README, ci-configuration), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 172 full repository audit — remove stale legacy doc `docs/ci-workflow-fixes-patch.md` (superseded by ci-configuration.md + fix script), fix BroCula ref drift in audits/README.md (Run 2→Run 3 — latest: `brocula-hunt-2026-06-30-run3.md` / LH **99-100-100-100**, 1701 tests ✅), fix CHANGELOG gap (1 post-Cycle-171 commit + Cycle 172 entry), bump ci-configuration.md to Cycle 172, sync docs (findings, active-tasks, knowledge-review, CHANGELOG, audits/README, ci-configuration), verify quality, create PR
+- **Actions**:
+  - [x] Full repository scan — no redundant/temp/unused source files found beyond the 1 removed
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] **Stale legacy doc removed**: `docs/ci-workflow-fixes-patch.md` — superseded by `docs/ci-configuration.md` + `scripts/fix-ci-node-version.mjs`
+  - [x] **BroCula ref drift fix**: `docs/audits/README.md` — Jun 30 Run 3 added as latest (Run 2 → Run 3)
+  - [x] **CHANGELOG gap fix**: Added 1 post-Cycle-171 commit (brocula Run 3 #2214) + Cycle 172 entry
+  - [x] **knowledge-review.md updated**: Last Review→Cycle 172, BroCula ref updated to Run 3
+  - [x] **ci-configuration.md updated**: Workflow fix status bumped to Cycle 172
+  - [x] **findings.md updated**: Cycle 172 entry added
+  - [x] **active-tasks.md updated**: Cycle 172 entry added at top
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,701/1,701 ✅
+  - [x] PR created
+
 ## ✅ RepoKeeper Cycle 171 — **BUG-014/BUG-017 fixes prepared (blocked: `workflows: write`), stale branch cleanup, doc sync** ✅
 
 ### Task: Full repository audit, BUG-014 fix prepared on branch (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), BUG-017 fix prepared on branch (hardcoded `node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1) — **both blocked** by GitHub App token lacking `workflows: write` permission, stale merged remote branch cleanup (deleted `origin/fix/ci-node-version-22`), CHANGELOG gap fix (added 3 post-Cycle-170 commits: brocula Run 2, feat(toast) stagger dismiss, docs(bugfixer) Run 2), README BroCula date drift fix (Jun 17–Jun 29 → Jun 17–Jun 30), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR creation
