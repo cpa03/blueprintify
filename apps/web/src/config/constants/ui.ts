@@ -219,6 +219,12 @@ export const SCROLL_THRESHOLDS = {
   HEADER_SHADOW: SCROLL_THRESHOLD_DEFAULTS.HEADER_SHADOW_PX,
   SCROLL_TO_TOP: SCROLL_THRESHOLD_DEFAULTS.SCROLL_TO_TOP_PX,
   HAS_SCROLLED: SCROLL_THRESHOLD_DEFAULTS.HAS_SCROLLED_PX,
+  /**
+   * Duration (ms) of the subtle entry-pulse ring effect on the scroll-to-top
+   * / scroll-to-bottom button. After this timeout, the pulse resolves and
+   * the button returns to its resting glassmorphism look.
+   */
+  ENTRY_PULSE_MS: 1500,
 } as const;
 
 // ============================================================================
