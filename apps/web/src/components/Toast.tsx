@@ -346,28 +346,44 @@ const ToastItem = memo(
         </span>
         <p className="text-sm font-medium flex-1">{toast.message}</p>
         {shouldReduceMotion ? (
-          <button
-            onClick={() => onRemove(toast.id)}
-            className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
-            aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
+            className="inline-flex"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
+            <button
+              onClick={() => onRemove(toast.id)}
+              className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
+              aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </motion.span>
         ) : (
           <motion.button
             onClick={() => onRemove(toast.id)}
-            className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
+            className="flex-shrink-0 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
             aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 0.6, scale: 1 }}
+            transition={{
+              opacity: { duration: ANIMATION.NORMAL, ease: "easeOut", delay: 0.15 },
+              scale: {
+                type: "spring",
+                ...TOAST_SPRING.DISMISS_BUTTON,
+                delay: 0.15,
+              },
+            }}
             whileHover={{ scale: 1.15, rotate: 90 }}
             whileTap={{ scale: 0.9 }}
-            transition={{ type: "spring", ...TOAST_SPRING.DISMISS_BUTTON }}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
