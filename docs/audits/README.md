@@ -36,7 +36,7 @@ Older audit reports have been moved to [archive/](archive/) for historical refer
 | [Issue Audit Jun 8](archive/issue-audit-report-2026-06-08.md) | 2026-06-08 | ULW Loop issue audit with fix status tracking (archived)      |
 | [Issue Audit Jun 7](archive/issue-audit-report-2026-06-07.md) | 2026-06-07 | ULW Loop issue audit with fix status tracking (archived)      |
 | [Issue Audit Jun 5](archive/issue-audit-report-2026-06-05.md) | 2026-06-05 | Issue label normalization and duplicate detection report (archived) |
-| [Issue Audit Jun 24](archive/issue-audit-report-2026-06-24.md) | 2026-06-24 | Issue audit — comprehensive issue audit report (archived)     |
+<!-- Removed: archive/issue-audit-report-2026-06-24.md does not exist on disk. The non-archived issue audit is listed in Current Reports above. -->
 
 ### BroCula Audits
 

@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 169 — redundant file cleanup, stale audit removal, broken link fix, doc sync
+- chore(repokeeper): remove redundant `scripts/fix-node-version.sh` (superseded by `fix-ci-node-version.mjs`)
+- chore(repokeeper): remove redundant `docs/audits/fix-ci-node-version-instructions.md`
+- chore(repokeeper): remove stale `docs/audits/ulw-loop-2026-06-28.md`
+- chore(repokeeper): fix broken link in `docs/audits/README.md` (non-existent archive reference)
 - fix(web): resolve label-content-name-mismatch on ShowEditorButton (WCAG 2.5.3) (#2199)
 - refactor(flexy): centralize validation aria-labels into shared config (Iteration 81) (#2200)
 - chore(brocula): hunt report 2026-06-29 — LH 100-100-100-100, 1701 tests ✅ (#2193)

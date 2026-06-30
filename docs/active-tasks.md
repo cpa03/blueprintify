@@ -2,6 +2,29 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 169 — **Redundant file cleanup, stale audit removal, broken link fix, doc sync** ✅
+
+### Task: Full repository audit, redundant script removal (`scripts/fix-node-version.sh` — superseded by `scripts/fix-ci-node-version.mjs`), redundant instructions doc removal (`docs/audits/fix-ci-node-version-instructions.md`), stale audit removal (`docs/audits/ulw-loop-2026-06-28.md`), broken link fix in `docs/audits/README.md` (removed non-existent `archive/issue-audit-report-2026-06-24.md` reference), `docs/knowledge-review.md` Last Review bumped to Cycle 169, `docs/active-tasks.md` Cycle 169 entry added, `docs/findings.md` Cycle 169 entry added, `CHANGELOG.md` Cycle 169 entry added, BUG-014/BUG-017 status verification (still present on main), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 169 full repository audit — remove redundant script (`fix-node-version.sh` superseded by `fix-ci-node-version.mjs`), remove redundant instructions doc (`fix-ci-node-version-instructions.md`), remove stale audit (`ulw-loop-2026-06-28.md`), fix broken link in audits/README.md, update knowledge-review Last Review to Cycle 169, sync docs (findings, active-tasks, knowledge-review, CHANGELOG), verify quality, create PR
+- **Actions**:
+  - [x] Full repository scan — found 3 redundant/stale files to remove
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] **Redundant script removed**: `scripts/fix-node-version.sh` — fully superseded by `scripts/fix-ci-node-version.mjs`
+  - [x] **Redundant instructions doc removed**: `docs/audits/fix-ci-node-version-instructions.md`
+  - [x] **Stale audit removed**: `docs/audits/ulw-loop-2026-06-28.md` (2 days old, superseded)
+  - [x] **Broken link fixed**: `docs/audits/README.md` — removed reference to non-existent `archive/issue-audit-report-2026-06-24.md`
+  - [x] **knowledge-review.md updated**: Last Review→Cycle 169
+  - [x] **active-tasks.md updated**: Cycle 169 entry added at top
+  - [x] **findings.md updated**: Cycle 169 entry added
+  - [x] **CHANGELOG.md updated**: Cycle 169 entry added
+  - [x] BUG-014/BUG-017 reassessed: still present on main (push blocked by `workflows: write` permission)
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅
+  - [x] No stale remote branches — all have unique unmerged commits
+  - [x] PR created
+
 ## ✅ RepoKeeper Cycle 168 — **Full repository audit, CHANGELOG gap fix (Cycle 167 + 4 commits after Cycle 167), BroCula drift fix (Jun 28→Jun 29), audit archive consolidation, doc sync** ✅
 
 ### Task: Full repository audit, `CHANGELOG.md` gap fix (added Cycle 167 + 4 post-Cycle-167 commits: #2193 brocula hunt Jun 29, #2194 overscroll-contain fix, #2199 WCAG label fix, #2200 flexy Iteration 81), `docs/audits/README.md` updated (Jun 29 Run 1 as latest, archived 5 old reports), `README.md` BroCula date drift fix (Jun 17–Jun 28 → Jun 17–Jun 29), `docs/knowledge-review.md` Last Review bumped to Cycle 168, `docs/active-tasks.md` Cycle 168 entry added, `docs/findings.md` Cycle 168 entry added, stale merged branch cleanup (deleted `origin/brocula/hunt-2026-06-29-run2`), audit archive consolidation (moved Jun 28 Runs 1/3/9/11 and Jun 27 Run 8 to archive/), BUG-014/BUG-017 status verification (still present on main), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR creation
