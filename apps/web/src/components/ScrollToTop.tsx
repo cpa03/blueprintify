@@ -21,6 +21,7 @@ import { useState, useEffect, useCallback, memo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { ANIMATION, SPRING_CONFIG, SCROLL_THRESHOLDS } from "../config/constants";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 type ScrollDirection = "top" | "bottom";
 
@@ -67,7 +68,25 @@ export const ScrollToPosition = memo(function ScrollToPosition({
 }: ScrollToPositionProps): JSX.Element | null {
   const [isVisible, setIsVisible] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [showEntryPulse, setShowEntryPulse] = useState(false);
+  const prevVisibleRef = useRef(false);
   const prevScrollRef = useRef(0);
+  const shouldReduceMotion = useReducedMotion();
+
+  // Detect invisible→visible transition and trigger a subtle entry pulse
+  // that draws the user's eye to the newly-appeared scroll button, then
+  // fades out after 1.5s. The pulse only fires once per appearance cycle
+  // (not on every scroll event while visible), so repeated pass-by scrolling
+  // doesn't re-trigger the effect.
+  useEffect(() => {
+    if (isVisible && !prevVisibleRef.current) {
+      setShowEntryPulse(true);
+      const timer = setTimeout(() => setShowEntryPulse(false), SCROLL_THRESHOLDS.ENTRY_PULSE_MS);
+      prevVisibleRef.current = true;
+      return () => clearTimeout(timer);
+    }
+    prevVisibleRef.current = isVisible;
+  }, [isVisible]);
 
   const isToTop = direction === "top";
 
@@ -172,6 +191,22 @@ export const ScrollToPosition = memo(function ScrollToPosition({
           }}
           className={positionClass}
         >
+          {/* Entry pulse ring — a subtle expanding glow that plays once when
+              the button first appears, drawing the user's eye to the new UI
+              without being distracting. Matches the primary color theme.
+              Skipped when reduced motion is preferred. */}
+          {!shouldReduceMotion && showEntryPulse && (
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+              initial={false}
+              animate={{ opacity: [0.6, 0], scale: [0.85, 1.8] }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              aria-hidden="true"
+            >
+              <div className="w-10 h-10 rounded-full bg-primary-500/25 blur-sm" />
+            </motion.div>
+          )}
+
           <KeyboardShortcutTooltip
             shortcut={shortcutKey}
             description={tooltipDescription}
