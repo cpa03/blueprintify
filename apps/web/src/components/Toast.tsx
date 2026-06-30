@@ -32,7 +32,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
 import { TOAST_CONFIG, SPRING_CONFIG, ACCESSIBILITY_LABELS, ANIMATION } from "../config/constants";
 import { TOAST_SPRING, TRANSFORMS } from "../config/theme";
-import { TOAST_TYPES, UI_TIMEOUTS } from "@blueprint/shared";
+import { TOAST_TYPES, UI_TIMEOUTS, ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 const toastIcons: Record<ToastType, string> = {
@@ -336,7 +336,7 @@ const ToastItem = memo(
               transition={{
                 type: "spring",
                 ...TOAST_SPRING.CHECKMARK,
-                delay: 0.12,
+                delay: ANIMATION_ENTRANCE_DELAYS.VERY_MODERATE,
               }}
               className="w-6 h-6 rounded-full bg-current/20 flex items-center justify-center font-bold text-sm relative z-10"
             >
@@ -375,11 +375,15 @@ const ToastItem = memo(
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 0.6, scale: 1 }}
             transition={{
-              opacity: { duration: ANIMATION.NORMAL, ease: "easeOut", delay: 0.15 },
+              opacity: {
+                duration: ANIMATION.NORMAL,
+                ease: "easeOut",
+                delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
+              },
               scale: {
                 type: "spring",
                 ...TOAST_SPRING.DISMISS_BUTTON,
-                delay: 0.15,
+                delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
               },
             }}
             whileHover={{ scale: 1.15, rotate: 90 }}

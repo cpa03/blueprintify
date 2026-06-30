@@ -22,7 +22,11 @@
  * ```
  */
 
-import { ANIMATION_DIRECTIONS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
+import {
+  ANIMATION_DIRECTIONS,
+  SHORTCUT_DESCRIPTIONS,
+  ANIMATION_ENTRANCE_DELAYS,
+} from "@blueprint/shared";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
@@ -435,7 +439,10 @@ export const StepFeatures = memo(function StepFeatures({
                               d="M5 13l4 4L19 7"
                               initial={{ pathLength: 0 }}
                               animate={{ pathLength: 1 }}
-                              transition={{ duration: ANIMATION.CHECKMARK_REVEAL, delay: 0.1 }}
+                              transition={{
+                                duration: ANIMATION.CHECKMARK_REVEAL,
+                                delay: ANIMATION_ENTRANCE_DELAYS.FAST,
+                              }}
                             />
                           </motion.svg>
                         ) : (

@@ -24,6 +24,10 @@ import {
   THEME_PROGRESS_TRACK_COLOR,
   STEP_CONNECTOR_COMPLETED_SHADOW as THEME_STEP_CONNECTOR_COMPLETED_SHADOW,
 } from "../theme";
+import {
+  SCROLL_PULSE_DEFAULTS as SHARED_SCROLL_PULSE_DEFAULTS,
+  SVG_TRANSITION_DEFAULTS as SHARED_SVG_TRANSITION_DEFAULTS,
+} from "@blueprint/shared";
 
 // ============================================================================
 // Animation Durations
@@ -202,9 +206,9 @@ export const PROGRESS_TRACK_COLOR = THEME_PROGRESS_TRACK_COLOR;
 /** SVG transition configuration for progress indicators */
 export const SVG_TRANSITION = {
   /** Duration in ms for stroke-dashoffset animation on circular progress */
-  STROKE_DASHOFFSET_DURATION_MS: 700,
+  STROKE_DASHOFFSET_DURATION_MS: SHARED_SVG_TRANSITION_DEFAULTS.STROKE_DASHOFFSET_DURATION_MS,
   /** Timing function for stroke animations */
-  STROKE_TIMING: "ease-out",
+  STROKE_TIMING: SHARED_SVG_TRANSITION_DEFAULTS.STROKE_TIMING,
 } as const;
 
 // ============================================================================
@@ -223,8 +227,9 @@ export const SCROLL_THRESHOLDS = {
    * Duration (ms) of the subtle entry-pulse ring effect on the scroll-to-top
    * / scroll-to-bottom button. After this timeout, the pulse resolves and
    * the button returns to its resting glassmorphism look.
+   * Single source of truth: @blueprint/shared SCROLL_PULSE_DEFAULTS
    */
-  ENTRY_PULSE_MS: 1500,
+  ENTRY_PULSE_MS: SHARED_SCROLL_PULSE_DEFAULTS.ENTRY_PULSE_MS,
 } as const;
 
 // ============================================================================

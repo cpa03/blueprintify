@@ -28,6 +28,7 @@ import {
   ANIMATION_DIRECTIONS,
   STYLE_ID_STRINGS,
   SHORTCUT_DESCRIPTIONS,
+  ANIMATION_ENTRANCE_DELAYS,
 } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
 import {
@@ -167,7 +168,7 @@ const TechChip = memo(function TechChip({
                 d="M5 13l4 4L19 7"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={{ duration: ANIMATION.NORMAL, delay: 0.1 }}
+                transition={{ duration: ANIMATION.NORMAL, delay: ANIMATION_ENTRANCE_DELAYS.FAST }}
               />
             </motion.svg>
           ) : (

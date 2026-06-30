@@ -13,6 +13,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SPRING_CONFIG, ANIMATION } from "../config/constants";
+import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
 
 /**
  * Props for the LastSavedIndicator component.
@@ -108,15 +109,26 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
                   transition={{
-                    pathLength: { type: "spring", ...SPRING_CONFIG.DEFAULT, delay: 0.05 },
-                    opacity: { duration: ANIMATION.QUICK_FADE, delay: 0.05 },
+                    pathLength: {
+                      type: "spring",
+                      ...SPRING_CONFIG.DEFAULT,
+                      delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
+                    },
+                    opacity: {
+                      duration: ANIMATION.QUICK_FADE,
+                      delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
+                    },
                   }}
                 />
               </motion.svg>
               <motion.span
                 initial={{ opacity: 0, x: -4 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: ANIMATION.NORMAL, delay: 0.1, ease: "easeOut" }}
+                transition={{
+                  duration: ANIMATION.NORMAL,
+                  delay: ANIMATION_ENTRANCE_DELAYS.FAST,
+                  ease: "easeOut",
+                }}
               >
                 {text}
               </motion.span>
