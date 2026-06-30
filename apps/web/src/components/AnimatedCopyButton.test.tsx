@@ -8,10 +8,28 @@ vi.mock("framer-motion", () => ({
     button: vi.fn(({ children, whileHover: _w1, whileTap: _w2, animate: _a, ...props }) => (
       <button {...props}>{children}</button>
     )),
-    span: vi.fn(({ children, ...props }) => <span {...props}>{children}</span>),
-    div: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
-    svg: vi.fn(({ children, ...props }) => <svg {...props}>{children}</svg>),
-    path: vi.fn(({ children, ...props }) => <path {...props}>{children}</path>),
+    span: vi.fn(({ children, whileHover: _w1, whileTap: _w2, ...props }) => (
+      <span {...props}>{children}</span>
+    )),
+    div: vi.fn(
+      ({
+        children,
+        whileHover: _w1,
+        whileTap: _w2,
+        animate: _a,
+        initial: _i,
+        exit: _e,
+        ...props
+      }) => <div {...props}>{children}</div>
+    ),
+    svg: vi.fn(
+      ({ children, whileHover: _w1, initial: _i, animate: _a, transition: _t, ...props }) => (
+        <svg {...props}>{children}</svg>
+      )
+    ),
+    path: vi.fn(({ children, initial: _i, animate: _a, transition: _t, ...props }) => (
+      <path {...props}>{children}</path>
+    )),
   },
   AnimatePresence: vi.fn(({ children }) => <>{children}</>),
 }));
