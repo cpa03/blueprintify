@@ -2,6 +2,63 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 174 (2026-06-30 — RepoKeeper: Stale patch cleanup, CHANGELOG gap fix, audits/README duplicate cleanup, doc sync)
+
+### Audit Scope
+
+Full repository audit covering stale `docs/ci-workflow-fixes-cycle-jun-30-run4.patch.md` removal (BugFixer patch artifact documenting unappliable BUG-014/BUG-017 workflow fixes — same recurring pattern as Cycles 167/170/173), audits/README.md duplicate cleanup (removed duplicate Jun 27 Run 8 entry from Archived BroCula section), CHANGELOG gap fix (added 4 post-Cycle-173 commits: kbd badges staggered entrance animation, flexy scrollbar colors centralization, BroCula Run 5, BugFixer Run 4 + Cycle 174 entry), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,717/1,717 ✅), PR creation.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build | ✅ Successful |
+| Tests | ✅ **1,717/1,717 passing** (723 web + 438 API + 556 shared) |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Stale patch file removal**: `docs/ci-workflow-fixes-cycle-jun-30-run4.patch.md` deleted — BugFixer patch artifact documenting BUG-014/BUG-017 workflow fixes that cannot be applied (blocked by `workflows: write` permission — same blocker as all prior 30+ cycles). Same recurring pattern as Cycles 167/170/173 that removed previous `.patch`/`.patch.md` files. The same information is documented in `docs/ci-configuration.md` (state) and `scripts/fix-ci-node-version.mjs` (executable fix).
+2. **audits/README duplicate cleanup**: Removed duplicate Jun 27 Run 8 entry from Archived BroCula section (appeared twice with different descriptions — one with LH 100-100-100-100 summary, another as generic entry).
+3. **CHANGELOG gap fix**: Added 4 post-Cycle-173 commits to [Unreleased]:
+   - `feat(ui): add staggered entrance animation to kbd shortcut badges`
+   - `feat(flexy): centralize scrollbar colors in shared config and CSS variables`
+   - `chore(brocula): hunt report 2026-06-30 Run 5 — LH 98-100-100-100, 1714 tests ✅`
+   - `docs(bugfixer): BugFixer Cycle Jun 30 2026 Run 4 — BUG-014/017 status update`
+4. **knowledge-review.md updated**: Last Review bumped Cycle 173→174. BroCula ref updated from Run 4 (`brocula-hunt-2026-06-30-run4.md` / LH **100-100-100-100** 🏆) to Run 5 (`brocula-hunt-2026-06-30-run5.md` / LH **98-100-100-100**). Test count updated from 1,714→1,717 (shared +3 from latest test suite additions).
+5. **BUG-014/BUG-017 status verified**: Both bugs still present on main. Workflow files remain unchanged. Blocker: GitHub App token lacks `workflows: write` permission (same blocker as all prior 30+ cycles). Maintainer must run `scripts/fix-ci-node-version.mjs` or cherry-pick from branch.
+6. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG, audits/README for Cycle 174.
+7. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,717/1,717 ✅.
+
+### Key Findings
+
+- **Stale patch file removed**: `docs/ci-workflow-fixes-cycle-jun-30-run4.patch.md` — BugFixer patch artifact documenting BUG-014/BUG-017 fixes that cannot be applied (always blocked by `workflows: write` permission). Same recurring pattern as Cycles 167/170/173. Superseded by `docs/ci-configuration.md` (current state) + `scripts/fix-ci-node-version.mjs` (executable fix).
+- **audits/README duplicate fixed**: Jun 27 Run 8 appeared twice in Archived BroCula section with different descriptions. Removed the duplicate.
+- **CHANGELOG gap filled**: 4 post-Cycle-173 commits added to [Unreleased].
+- **BUG-014 and BUG-017 still present on main** — workflow files remain unchanged. All prior fix attempts blocked by `workflows: write` permission.
+- **No redundant/temp/unused source files beyond the 1 removed** — repo remains clean.
+- **Test count increased**: 1,714→1,717 (shared +3 from latest test suite additions).
+- **All quality checks passing**: typecheck ✅ lint ✅ build ✅ tests 1,717/1,717 ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — clean ✅
+- [x] Tests — 1,717/1,717 passing (723 web + 438 API + 556 shared) ✅
+- [x] Stale patch file removed — `docs/ci-workflow-fixes-cycle-jun-30-run4.patch.md` ✅
+- [x] audits/README duplicate removed — Jun 27 Run 8 duplicate entry cleaned ✅
+- [x] CHANGELOG gap filled — 4 post-Cycle-173 commits + Cycle 174 entry ✅
+- [x] knowledge-review.md Last Review bumped to Cycle 174, BroCula ref→Run 5 ✅
+- [x] BUG-014/BUG-017 status verified (still present on main) ✅
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK ✅
+- [x] Documentation refreshed for Cycle 174 (findings, active-tasks, knowledge-review, CHANGELOG, audits/README) ✅
+- [x] PR created ✅
+
+---
+
 ## Cycle 173 (2026-06-30 — RepoKeeper: Tracked .patch removal, BroCula ref drift fix (Run 3→Run 4), audits/README cleanup, CHANGELOG gap fix, doc sync)
 
 ### Audit Scope

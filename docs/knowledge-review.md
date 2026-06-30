@@ -12,22 +12,22 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-30 (RepoKeeper Cycle 173)
+**Last Review**: 2026-06-30 (RepoKeeper Cycle 174)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jun 30)` — matches latest audit `brocula-hunt-2026-06-30-run4.md` (BroCula Run 4 / LH **100-100-100-100** 🏆, 1701 tests ✅)
+- **README BroCula description verified**: `(Jun 17–Jun 30)` — matches latest audit `brocula-hunt-2026-06-30-run5.md` (BroCula Run 5 / LH **98-100-100-100**, 1714 tests ✅)
 - **Typecheck/Lint**: All clean (0 errors, 0 warnings)
 - **Build**: Clean ✅
-- **Tests**: **1,714/1,714 passing** (723 web + 438 API + 553 shared) ✅
+- **Tests**: **1,717/1,717 passing** (723 web + 438 API + 556 shared) ✅
 - **Secrets scan**: Clean ✅
-- **BUG-014/BUG-017 fixes prepared on branch**: Fixes prepared via `scripts/fix-ci-node-version.mjs` — push blocked by `workflows: write` permission (same blocker as all prior 30+ cycles). Maintainer must run script or cherry-pick from branch.
-- **Tracked .patch file removed**: `docs/ci-workflow-fixes-cycle-jun-30-run3.patch` untracked — violated `*.patch` in .gitignore (recurring issue, same pattern as Cycles 167/170).
-- **CHANGELOG gap fix**: Added 5 post-Cycle-172 commits (BugFixer Run 3, BroCula Run 4, copy button animation, ANIMATION_ENTRANCE_DELAYS, merge conflict fix) + Cycle 173 entry.
-- **Cycle 173**: Full repository audit, tracked `.patch` file removal (`docs/ci-workflow-fixes-cycle-jun-30-run3.patch` — violated `*.patch` in .gitignore), BroCula ref drift fix (Run 3→Run 4 in audits/README.md — Run 4 is LH **100-100-100-100** 🏆), audits/README.md Current Reports trimmed (7 entries, removed 5 stale duplicates that also appeared in Archive), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README, ci-configuration), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created.
+- **BUG-014/BUG-017 still present on main**: Workflow files unchanged — push blocked by `workflows: write` permission (same blocker as all prior 30+ cycles). Maintainer must run `scripts/fix-ci-node-version.mjs` or cherry-pick from branch.
+- **Tracked `.patch.md` file removed**: `docs/ci-workflow-fixes-cycle-jun-30-run4.patch.md` removed — stale BugFixer patch artifact documenting unappliable workflow fixes (same recurring pattern as Cycles 167/170/173).
+- **CHANGELOG gap fix**: Added 4 post-Cycle-173 commits (kbd shortcut badges, scrollbar colors centralization, BroCula Run 5, BugFixer Run 4) + Cycle 174 entry.
+- **Cycle 174**: Full repository audit, stale `docs/ci-workflow-fixes-cycle-jun-30-run4.patch.md` removed (stale patch artifact, same pattern as Cycles 167/170/173), audits/README.md duplicate entry cleanup (removed duplicate Jun 27 Run 8 from Archived section), CHANGELOG gap fix (4 post-Cycle-173 commits: kbd badges, flexy scrollbar colors, BroCula Run 5, BugFixer Run 4), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ tests 1,717/1,717 ✅), PR created.
 - **Cycle 171**: Full repository audit, BUG-014/BUG-017 fixes prepared on branch (blocked by `workflows: write`), stale branch cleanup (`origin/fix/ci-node-version-22` deleted), CHANGELOG gap fix (3 post-Cycle-170 commits + Cycle 171 entry), README BroCula date drift fix, docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR created.
 - **Cycle 170**: Full repository audit, tracked `.patch` file removal (`docs/ci-workflow-fixes-cycle-jun-30-2026.patch`), CI workflow fixes prepared but blocked by `workflows: write` permission, CHANGELOG gap fix (added 4 post-Cycle-169 commits + Cycle 170 entry), ci-configuration.md updated, docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR created
 - **Cycle 169**: Full repository audit, redundant file cleanup (removed 3 files: `scripts/fix-node-version.sh`, `docs/audits/fix-ci-node-version-instructions.md`, `docs/audits/ulw-loop-2026-06-28.md`), broken link fix in `docs/audits/README.md`, BUG-014/BUG-017 status verified (still present on main), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR created

@@ -46,7 +46,6 @@ Older audit reports have been moved to [archive/](archive/) for historical refer
 | [Jun 28 Run 9](archive/brocula-hunt-2026-06-28-run9.md) | 2026-06-28 | BroCula audit — **0 console errors**, 1701 tests ✅ (archived) |
 | [Jun 28 Run 3](archive/brocula-hunt-2026-06-28-run3.md) | 2026-06-28 | BroCula audit — LH **100-100-100-100**, 1701 tests ✅ (archived) |
 | [Jun 28 Run 1](archive/brocula-hunt-2026-06-28-run1.md) | 2026-06-28 | BroCula audit — LH **99-100-100-100**, 1701 tests ✅ (archived) |
-| [Jun 27 Run 8](archive/brocula-hunt-2026-06-27-run8.md) | 2026-06-27 | BroCula audit — LH **100-100-100-100**, 1701 tests ✅ (archived) |
 | [Jun 27 Run 7](archive/brocula-hunt-2026-06-27-run7.md) | 2026-06-27 | BroCula audit — LH **99-100-100-100**, 1701 tests ✅ (archived) |
 | [Jun 27 Run 4](archive/brocula-hunt-2026-06-27-run4.md) | 2026-06-27 | BroCula audit — LH **94-100-100-100**, 1701 tests ✅ (archived) |
 | [Jun 27 Run 3](archive/brocula-hunt-2026-06-27-run3.md) | 2026-06-27 | BroCula audit — LH **100-100-100-100**, 723 tests ✅ (archived) |

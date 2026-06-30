@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- docs(bugfixer): BugFixer Cycle Jun 30 2026 Run 4 — BUG-014/017 status update
+- chore(brocula): hunt report 2026-06-30 Run 5 — LH **98-100-100-100**, 1714 tests ✅ (723 web + 438 API + 553 shared), 1 test mock fix
+- feat(flexy): centralize scrollbar colors in shared config and CSS variables
+- feat(ui): add staggered entrance animation to kbd shortcut badges
 - chore(repokeeper): Cycle 173 — tracked .patch removal, BroCula ref drift fix (Run 3→Run 4), audits/README cleanup, CHANGELOG gap fix, doc sync
 - chore(repokeeper): remove tracked `docs/ci-workflow-fixes-cycle-jun-30-run3.patch` (violated `*.patch` in .gitignore — recurring issue, same pattern as Cycles 167/170)
 - fix: resolve merge conflict in docs/audits/README.md
