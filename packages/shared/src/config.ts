@@ -2336,3 +2336,18 @@ export const VALIDATION_LABELS = {
   /** Default label shown when a validated field fails validation */
   FIELD_INVALID: "Field needs attention",
 } as const;
+
+/**
+ * Scrollbar Color Tokens
+ * Centralized source of truth for scrollbar thumb and track color values.
+ * Used by index.css to define CSS custom properties and by any component
+ * that needs to reference scrollbar color values programmatically.
+ * Flexy says: No hardcoded "#4b5563" or "#0f172a" hex values in CSS scrollbar rules!
+ * Usage: CSS uses `var(--scrollbar-thumb)` and `var(--scrollbar-track)`
+ */
+export const SCROLLBAR_COLORS = {
+  /** Scrollbar thumb color — dark gray-600, visible on dark backgrounds */
+  THUMB: "#4b5563",
+  /** Scrollbar track color — dark slate-900, subtle background for the scrollbar track */
+  TRACK: "#0f172a",
+} as const;

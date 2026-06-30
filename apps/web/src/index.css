@@ -12,6 +12,8 @@
   --color-bg-base: #020617;
   --color-text-primary: #f8fafc;
   --color-text-secondary: #94a3b8;
+  --scrollbar-thumb: #4b5563;
+  --scrollbar-track: #0f172a;
 }
 
 /* ===== Base Styles ===== */
@@ -55,7 +57,7 @@
      which clashes with the dark glass-morphism aesthetic. */
   * {
     scrollbar-width: thin;
-    scrollbar-color: #4b5563 #0f172a;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
   }
 }
 
@@ -476,13 +478,13 @@
 
   @keyframes step-complete-flash {
     0% {
-      box-shadow: 0 0 0 0 color-mix(in srgb, #10b981 40%, transparent);
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent-emerald) 40%, transparent);
       transform: scale(1);
     }
     30% {
       box-shadow:
-        0 0 0 8px color-mix(in srgb, #10b981 25%, transparent),
-        0 0 24px color-mix(in srgb, #10b981 12%, transparent);
+        0 0 0 8px color-mix(in srgb, var(--color-accent-emerald) 25%, transparent),
+        0 0 24px color-mix(in srgb, var(--color-accent-emerald) 12%, transparent);
       transform: scale(1.04);
     }
     100% {
@@ -497,8 +499,8 @@
     }
     20% {
       box-shadow:
-        0 0 6px 2px color-mix(in srgb, #10b981 35%, transparent),
-        0 0 14px 1px color-mix(in srgb, #10b981 15%, transparent);
+        0 0 6px 2px color-mix(in srgb, var(--color-accent-emerald) 35%, transparent),
+        0 0 14px 1px color-mix(in srgb, var(--color-accent-emerald) 15%, transparent);
       opacity: 1;
     }
     100% {
@@ -1141,7 +1143,7 @@
 
 .cm-editor .cm-scroller {
   scrollbar-width: thin;
-  scrollbar-color: #4b5563 transparent;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
 }
 
 .cm-editor.cm-focused {

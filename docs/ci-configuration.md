@@ -7,7 +7,7 @@
 The project requires Node.js 22+ (see `.nvmrc`, `.node-version`, `package.json` `engines`).
 Wrangler 4.x requires Node.js >=22 — the API build (`npm run build:api`) fails with Node 20.
 
-### ⚠️ Workflow Node Version: FIXES PREPARED (RepoKeeper Cycle 172)
+### ⚠️ Workflow Node Version: FIXES PREPARED (RepoKeeper Cycle 173)
 
 All CI workflow files **still use hardcoded `node-version: "20"`** on `main`. This does NOT match the project's Node.js 22+ requirement (see `.nvmrc`, `.node-version`).
 
