@@ -2,6 +2,57 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 173 (2026-06-30 — RepoKeeper: Tracked .patch removal, BroCula ref drift fix (Run 3→Run 4), audits/README cleanup, CHANGELOG gap fix, doc sync)
+
+### Audit Scope
+
+Full repository audit covering tracked `.patch` file removal (`docs/ci-workflow-fixes-cycle-jun-30-run3.patch` — violated `*.patch` in .gitignore, same recurring pattern as Cycles 167/170), BroCula report drift fix in `docs/audits/README.md` (Run 3→Run 4 as latest — latest audit: `brocula-hunt-2026-06-30-run4.md` / BroCula Run 4 / LH **100-100-100-100** 🏆, 1714 tests ✅ (723 web + 438 API + 553 shared)), audits/README.md Current Reports cleanup (removed 5 duplicate entries that also appeared in Archive section — Jun 28 Run 11/9/3/1, Jun 27 Run 8), CHANGELOG gap fix (added 5 post-Cycle-172 commits: BugFixer Run 3, BroCula Run 4, copy button animation, ANIMATION_ENTRANCE_DELAYS, merge conflict fix + Cycle 173 entry), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README, ci-configuration), quality verification (typecheck ✅ lint ✅ tests 1,714/1,714 ✅), PR creation.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,714/1,714 passing** (723 web + 438 API + 553 shared) |
+| Tracked .patch removal | ✅ `docs/ci-workflow-fixes-cycle-jun-30-run3.patch` untracked (violated `*.patch` in .gitignore) |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Tracked .patch file removed**: `docs/ci-workflow-fixes-cycle-jun-30-run3.patch` removed from git tracking — violated `*.patch` in .gitignore. Same recurring issue as Cycles 167 and 170 — BugFixer agents keep force-tracking `.patch` files. Added reminder to findings.
+2. **BroCula ref drift fix**: `docs/audits/README.md` updated — Jun 30 Run 4 promoted to **Latest** (LH **100-100-100-100** 🏆, 1701 tests ✅). Run 3 moved to non-latest entry.
+3. **Audits/README cleanup**: Removed 5 duplicate entries from Current Reports that also appeared in Archive (Jun 28 Run 11/9/3/1, Jun 27 Run 8). Added Jun 27 Run 8 to Archive section.
+4. **knowledge-review.md updated**: Last Review bumped Cycle 172→173. BroCula ref updated from `brocula-hunt-2026-06-30-run3.md` (Run 3) to `brocula-hunt-2026-06-30-run4.md` (Run 4 / LH **100-100-100-100** 🏆).
+5. **ci-configuration.md bumped**: Workflow fix status updated from Cycle 172 → Cycle 173.
+6. **CHANGELOG gap fix**: Added 5 post-Cycle-172 commits (BugFixer Run 3, BroCula Run 4, copy button animation, ANIMATION_ENTRANCE_DELAYS, merge conflict fix) + Cycle 173 entry.
+7. **BUG-014/BUG-017 status verified**: Both bugs still present on main. Fixes blocked by `workflows: write` permission (same blocker as all prior 30+ cycles).
+8. **No stale remote branches**: All 13 remote branches have unique unmerged commits — none can be pruned.
+9. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG, audits/README, ci-configuration for Cycle 173.
+10. **Quality verification**: typecheck ✅ lint ✅ tests 1,714/1,714 ✅.
+
+### Key Findings
+
+- **Tracked .patch file removed**: `docs/ci-workflow-fixes-cycle-jun-30-run3.patch` — violated `*.patch` in .gitignore. This is a recurring issue (same pattern as Cycles 167/170). BugFixer agents keep force-tracking `.patch` files.
+- **BroCula Run 4 now indexed**: `brocula-hunt-2026-06-30-run4.md` (LH **100-100-100-100** 🏆, 1714 tests ✅) added as latest in audits/README.md and knowledge-review.md.
+- **Audits/README deduplicated**: 5 entries removed from Current Reports that also appeared in Archive section.
+- **BUG-014 and BUG-017 still present on main** — workflow files remain unchanged. All prior fix attempts blocked by `workflows: write` permission.
+- **No stale merged branches** — all 13 remote branches have unique unmerged commits.
+- **No redundant/temp/unused source files found** — repo remains clean.
+- **All quality checks passing**: typecheck ✅ lint ✅ tests 1,714/1,714 ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Tests — 1,714/1,714 passing (723 web + 438 API + 553 shared) ✅
+- [x] Tracked .patch removed — `docs/ci-workflow-fixes-cycle-jun-30-run3.patch` untracked ✅
+- [x] BroCula ref drift fixed — Run 4 added as latest in audits/README.md ✅
+- [x] knowledge-review.md Last Review bumped to Cycle 173, BroCula ref→Run 4 ✅
+- [x] ci-configuration.md bumped to Cycle 173 ✅
+
+---
+
 ## Cycle 172 (2026-06-30 — RepoKeeper: Stale legacy doc removal, BroCula ref drift fix (Run 2→Run 3), CHANGELOG gap fix, doc sync)
 
 ### Audit Scope

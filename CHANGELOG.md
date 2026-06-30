@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 173 — tracked .patch removal, BroCula ref drift fix (Run 3→Run 4), audits/README cleanup, CHANGELOG gap fix, doc sync
+- chore(repokeeper): remove tracked `docs/ci-workflow-fixes-cycle-jun-30-run3.patch` (violated `*.patch` in .gitignore — recurring issue, same pattern as Cycles 167/170)
+- fix: resolve merge conflict in docs/audits/README.md
+- docs(bugfixer): BugFixer Cycle Jun 30 2026 Run 3 — BUG-014/017 status update
+- chore(brocula): hunt report 2026-06-30 Run 4 — LH **100-100-100-100** 🏆, 1701 tests ✅
+- feat(web): spring-animate code block copy icon swap for satisfying feedback
+- feat(shared): add ANIMATION_ENTRANCE_DELAYS config, eliminate 29 hardcoded animation delays across 11 components
 - chore(repokeeper): Cycle 172 — stale `docs/ci-workflow-fixes-patch.md` removed (superseded by ci-configuration.md + fix script), docs/audits/README.md updated with Jun 30 Run 3 as latest BroCula report (LH **99-100-100-100**), CHANGELOG gap fix (1 post-Cycle-171 commit: brocula Run 3), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README, ci-configuration), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅)
 - chore(brocula): hunt report 2026-06-30 Run 3 — LH 99-100-100-100, 1701 tests ✅ (#2214)
 - chore(repokeeper): Cycle 171 — BUG-014/BUG-017 fixes prepared on branch (blocked by `workflows: write` — same blocker as all prior cycles), stale remote branch cleanup (`origin/fix/ci-node-version-22` deleted), CHANGELOG gap fix (3 post-Cycle-170 commits), README BroCula date drift fix (Jun 17–Jun 29 → Jun 17–Jun 30), docs refresh (findings, active-tasks, knowledge-review, README, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅)

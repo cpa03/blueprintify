@@ -2,6 +2,25 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 173 — **Tracked .patch removal, BroCula ref drift fix (Run 3→Run 4), audits/README cleanup, CHANGELOG gap fix, doc sync** ✅
+
+### Task: Full repository audit, tracked `.patch` file removal (`docs/ci-workflow-fixes-cycle-jun-30-run3.patch` — violated `*.patch` in .gitignore, same recurring pattern as Cycles 167/170), BroCula ref drift fix in `docs/audits/README.md` (Run 3→Run 4 as latest — latest audit: `brocula-hunt-2026-06-30-run4.md` / BroCula Run 4 / LH **100-100-100-100** 🏆, 1701 tests ✅), audits/README.md Current Reports cleanup (removed 5 duplicate entries that also appeared in Archive), CHANGELOG gap fix (added 5 post-Cycle-172 commits: BugFixer Run 3, BroCula Run 4, copy button animation, ANIMATION_ENTRANCE_DELAYS, merge conflict fix + Cycle 173 entry), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README, ci-configuration), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created ([#2225](https://github.com/cpa03/blueprintify/pull/2225))
+- **Objective**: Cycle 173 full repository audit — remove tracked .patch file `docs/ci-workflow-fixes-cycle-jun-30-run3.patch`, fix BroCula ref drift (Run 3→Run 4 — latest: `brocula-hunt-2026-06-30-run4.md` / LH **100-100-100-100** 🏆, 1701 tests ✅), clean up audits/README duplicates, fix CHANGELOG gap (5 post-Cycle-172 commits + Cycle 173 entry), bump ci-configuration.md to Cycle 173, sync docs, verify quality, create PR
+- **Actions**:
+  - [x] Full repository scan — no redundant/temp/unused source files found
+  - [x] Tracked `.patch` removed: `docs/ci-workflow-fixes-cycle-jun-30-run3.patch` untracked (violated `*.patch` in .gitignore)
+  - [x] **BroCula ref drift fix**: `docs/audits/README.md` — Jun 30 Run 4 set as latest (Run 3 → Run 4), Current Reports trimmed (7 entries), duplicates removed
+  - [x] **CHANGELOG gap fix**: Added 5 post-Cycle-172 commits + Cycle 173 entry
+  - [x] **knowledge-review.md updated**: Last Review→Cycle 173, BroCula ref updated to Run 4
+  - [x] **ci-configuration.md updated**: Workflow fix status bumped to Cycle 173
+  - [x] **findings.md updated**: Cycle 173 entry added
+  - [x] **active-tasks.md updated**: Cycle 173 entry added
+  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,714/1,714 ✅
+  - [x] PR created ([#2225](https://github.com/cpa03/blueprintify/pull/2225))
+
 ## ✅ RepoKeeper Cycle 172 — **Stale legacy doc removal, BroCula ref drift fix (Run 2→Run 3), CHANGELOG gap fix, doc sync** ✅
 
 ### Task: Full repository audit, stale legacy doc removal (`docs/ci-workflow-fixes-patch.md` — superseded by `docs/ci-configuration.md` + `scripts/fix-ci-node-version.mjs`), BroCula ref drift fix in `docs/audits/README.md` (Run 2→Run 3 as latest — latest audit: `brocula-hunt-2026-06-30-run3.md` / LH **99-100-100-100**, 1701 tests ✅), CHANGELOG gap fix (added 1 post-Cycle-171 commit: brocula Run 3 + Cycle 172 entry), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README, ci-configuration), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR creation
