@@ -134,6 +134,8 @@ function StepIndicatorComponent(): JSX.Element {
               currentIndex >= STEPS.length - 1 ? PROGRESS_COLORS.COMPLETED : PROGRESS_COLORS.ACTIVE
             }
             ariaLabel={`Step ${currentIndex + 1} of ${STEPS.length}: ${currentStepLabel}`}
+            animateOnMount
+            mountAnimationDelayMs={300}
           />
           <div className="absolute inset-0 flex items-center justify-center transition-transform duration-200 hover:scale-110">
             <span key={currentStep} className="text-xs font-semibold step-count-pop">
