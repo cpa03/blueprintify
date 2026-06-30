@@ -29,6 +29,7 @@ import {
   STYLE_ID_STRINGS,
   SHORTCUT_DESCRIPTIONS,
   ANIMATION_ENTRANCE_DELAYS,
+  ENTRANCE_STAGGER_DEFAULTS,
 } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
 import {
@@ -78,8 +79,6 @@ interface TechChipProps {
   entranceIndex?: number;
 }
 
-const CHIP_ENTRANCE_STAGGER_S = 0.03;
-
 const TechChip = memo(function TechChip({
   tech,
   isSelected,
@@ -106,8 +105,8 @@ const TechChip = memo(function TechChip({
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
       )}
       style={{
-        animationDelay: `${entranceIndex * CHIP_ENTRANCE_STAGGER_S}s`,
-        animationFillMode: "backwards",
+        animationDelay: `${entranceIndex * ENTRANCE_STAGGER_DEFAULTS.CHIP_STAGGER_S}s`,
+        animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
       }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
