@@ -2,12 +2,34 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 171 — **BUG-014/BUG-017 fixes prepared (blocked: `workflows: write`), stale branch cleanup, doc sync** ✅
+
+### Task: Full repository audit, BUG-014 fix prepared on branch (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), BUG-017 fix prepared on branch (hardcoded `node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1) — **both blocked** by GitHub App token lacking `workflows: write` permission, stale merged remote branch cleanup (deleted `origin/fix/ci-node-version-22`), CHANGELOG gap fix (added 3 post-Cycle-170 commits: brocula Run 2, feat(toast) stagger dismiss, docs(bugfixer) Run 2), README BroCula date drift fix (Jun 17–Jun 29 → Jun 17–Jun 30), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 171 full repository audit — prepare BUG-014 (stale doc refs) and BUG-017 (hardcoded node-version) fixes on branch (push blocked by `workflows: write` permission), delete stale merged branch, fix CHANGELOG gap (3 post-Cycle-170 commits + Cycle 171 entry), fix README BroCula date drift, sync docs (findings, active-tasks, knowledge-review, CHANGELOG, README), verify quality, create PR
+- **Actions**:
+  - [x] Full repository scan — no redundant/temp/unused files found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] **BUG-014 fix prepared**: Updated `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in `.github/workflows/main.yml` (2 occurrences) — **push blocked** by `workflows: write` permission
+  - [x] **BUG-017 fix prepared**: Replaced all 11 occurrences of `node-version: "20"` with `node-version-file: ".node-version"` across iterate.yml (5), parallel.yml (4), on-pull.yml (1), pr-gatekeeper.yml (1) — **push blocked** by `workflows: write` permission
+  - [x] Fixes verified via grep: zero stale doc refs, zero hardcoded `node-version:` (on branch)
+  - [x] **Stale merged branch deleted**: `origin/fix/ci-node-version-22`
+  - [x] **CHANGELOG gap fix**: Added 3 post-Cycle-170 commits + Cycle 171 entry
+  - [x] **README BroCula date drift fix**: `(Jun 17–Jun 29)` → `(Jun 17–Jun 30)`
+  - [x] **knowledge-review.md updated**: Last Review→Cycle 171, BUG-014/BUG-017 status→"fixes prepared (blocked)"
+  - [x] **findings.md updated**: Cycle 171 entry added
+  - [x] **active-tasks.md updated**: Cycle 171 entry added at top
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅
+  - [x] PR created
+
 ## ✅ RepoKeeper Cycle 170 — **Tracked .patch removal, CI workflow fixes prepared (BUG-014/BUG-017), CHANGELOG gap fix, doc sync** ✅
 
 ### Task: Full repository audit, tracked `.patch` file removal (`docs/ci-workflow-fixes-cycle-jun-30-2026.patch` — violated `*.patch` in .gitignore, same pattern as Cycle 167), CI workflow fixes prepared via `scripts/fix-ci-node-version.mjs` (BUG-014 stale doc refs in main.yml + BUG-017 hardcoded node-version across 4 workflow files — push blocked by `workflows: write` permission), `CHANGELOG.md` gap fix (added 4 post-Cycle-169 commits + Cycle 170 entry), `docs/ci-configuration.md` updated to reflect current fix status, `docs/knowledge-review.md` Last Review bumped to Cycle 170, `docs/active-tasks.md` Cycle 170 entry added, `docs/findings.md` Cycle 170 entry added, quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR creation
 
 - **Priority**: High
-- **Status**: ✅ Complete — PR pending creation
+- **Status**: ✅ Complete — PR created
 - **Objective**: Cycle 170 full repository audit — remove tracked .patch file, prepare CI workflow fixes (BUG-014 + BUG-017 — blocked by `workflows: write`), fix CHANGELOG gap (4 post-Cycle-169 commits + Cycle 170 entry), update ci-configuration.md, update knowledge-review Last Review to Cycle 170, sync docs (findings, active-tasks, knowledge-review, CHANGELOG, ci-configuration), verify quality, create PR
 - **Actions**:
   - [x] Full repository scan — found tracked `.patch` file to remove

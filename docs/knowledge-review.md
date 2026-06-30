@@ -12,22 +12,24 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-06-30 (RepoKeeper Cycle 170)
+**Last Review**: 2026-06-30 (RepoKeeper Cycle 171)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jun 29)` — matches latest audit `brocula-hunt-2026-06-30-run1.md` (BroCula Run 1 / LH **99-100-100-100**, 1701 tests ✅)
+- **README BroCula description verified**: `(Jun 17–Jun 30)` — matches latest audit `brocula-hunt-2026-06-30-run2.md` (BroCula Run 2 / LH **98-100-100-100**, 1701 tests ✅)
 - **Typecheck/Lint**: All clean (0 errors, 0 warnings)
 - **Build**: Clean ✅
 - **Tests**: **1,701/1,701 passing** (723 web + 438 API + 540 shared) ✅
 - **Secrets scan**: Clean ✅
-- **BUG-014/BUG-017 fixes prepared on branch**: CI workflow fixes applied via `scripts/fix-ci-node-version.mjs` — push blocked by `workflows: write` permission. Maintainer must cherry-pick or re-run script.
-- **Tracked `.patch` file removed**: `docs/ci-workflow-fixes-cycle-jun-30-2026.patch` removed from git tracking (violated `*.patch` in .gitignore) — same pattern as Cycle 167
-- **CI documentation updated**: `docs/ci-configuration.md` reflects current fix status
-- **CHANGELOG gap fix**: Added 4 post-Cycle-169 commits + Cycle 170 entry
+- **BUG-014/BUG-017 fixes prepared on branch**: Fixes prepared via `scripts/fix-ci-node-version.mjs` — push blocked by `workflows: write` permission (same blocker as all prior 30+ cycles). Maintainer must run script or cherry-pick from branch.
+- **Stale merged branch deleted**: `origin/fix/ci-node-version-22` pruned (fully merged into main).
+- **CHANGELOG gap fix**: Added 3 post-Cycle-170 commits + Cycle 171 entry.
+- **README BroCula date drift fix**: `(Jun 17–Jun 29)` → `(Jun 17–Jun 30)`.
+- **Cycle 171**: Full repository audit, BUG-014/BUG-017 fixes prepared on branch (blocked by `workflows: write`), stale branch cleanup (`origin/fix/ci-node-version-22` deleted), CHANGELOG gap fix (3 post-Cycle-170 commits + Cycle 171 entry), README BroCula date drift fix, docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR created.
+- **Cycle 170**: Full repository audit, tracked `.patch` file removal (`docs/ci-workflow-fixes-cycle-jun-30-2026.patch`), CI workflow fixes prepared but blocked by `workflows: write` permission, CHANGELOG gap fix (added 4 post-Cycle-169 commits + Cycle 170 entry), ci-configuration.md updated, docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR created
 - **Cycle 169**: Full repository audit, redundant file cleanup (removed 3 files: `scripts/fix-node-version.sh`, `docs/audits/fix-ci-node-version-instructions.md`, `docs/audits/ulw-loop-2026-06-28.md`), broken link fix in `docs/audits/README.md`, BUG-014/BUG-017 status verified (still present on main), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR created
 - **Cycle 168**: Full repository audit, CHANGELOG gap fix (added Cycle 167 + 4 post-Cycle-167 commits: #2193, #2194, #2199, #2200), docs/audits/README.md updated with Jun 29 Run 1 as latest, README BroCula date drift fix (Jun 17–Jun 28 → Jun 17–Jun 29), stale merged branch cleanup (`origin/brocula/hunt-2026-06-29-run2` deleted), audit archive consolidation (archived 5 old BroCula reports), BUG-014/BUG-017 status verified (still present on main), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR created
 - **Tracked .patch file**: `docs/ci-workflow-fixes-cycle-jun-28-2026-run3.patch` removed in Cycle 167 — was force-tracked despite `*.patch` in .gitignore
