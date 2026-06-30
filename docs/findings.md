@@ -2,6 +2,54 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 169 (2026-06-30 — RepoKeeper: Redundant file cleanup, stale audit removal, broken link fix, doc sync)
+
+### Audit Scope
+
+Full repository audit covering redundant script removal (`scripts/fix-node-version.sh` — superseded by `scripts/fix-ci-node-version.mjs` which handles both BUG-014 and BUG-017), redundant instructions doc removal (`docs/audits/fix-ci-node-version-instructions.md` — info already in `scripts/fix-ci-node-version.mjs` and `docs/ci-workflow-fixes-patch.md`), stale audit removal (`docs/audits/ulw-loop-2026-06-28.md` — superseded by current state in knowledge-review.md), broken link fix in `docs/audits/README.md` (removed reference to non-existent `archive/issue-audit-report-2026-06-24.md`), BUG-014/BUG-017 status verification (still present on main — push blocked by `workflows: write` permission), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR creation.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,701/1,701 passing** (723 web + 438 API + 540 shared) |
+| Stale Files Removed | ✅ 3 files: redundant `scripts/fix-node-version.sh`, redundant `docs/audits/fix-ci-node-version-instructions.md`, stale `docs/audits/ulw-loop-2026-06-28.md` |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Redundant script removal**: `scripts/fix-node-version.sh` removed — fully superseded by `scripts/fix-ci-node-version.mjs` which handles both BUG-014 (stale doc refs) and BUG-017 (hardcoded node-version). The `.sh` only handled BUG-017.
+2. **Redundant instructions doc removal**: `docs/audits/fix-ci-node-version-instructions.md` removed — info redundant with `scripts/fix-ci-node-version.mjs` and `docs/ci-workflow-fixes-patch.md`.
+3. **Stale audit removal**: `docs/audits/ulw-loop-2026-06-28.md` removed — stale audit report from 2 days ago, superseded by current state tracked in knowledge-review.md and findings.md.
+4. **Broken link fix**: `docs/audits/README.md` — removed reference to non-existent `archive/issue-audit-report-2026-06-24.md`. The non-archived version at `docs/audits/issue-audit-report-2026-06-24.md` correctly remains in Current Reports.
+5. **BUG-014/BUG-017 status verified**: Both bugs still present on main. Workflow files remain unchanged. Blocker: GitHub App token lacks `workflows: write` permission.
+6. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 169.
+7. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅.
+
+### Key Findings
+
+- **3 redundant/stale files removed** — `scripts/fix-node-version.sh` (redundant script), `docs/audits/fix-ci-node-version-instructions.md` (redundant instructions), `docs/audits/ulw-loop-2026-06-28.md` (stale audit).
+- **1 broken link fixed** in `docs/audits/README.md` — removed reference to non-existent archived issue audit.
+- **BUG-014 and BUG-017 still present on main** — workflow files remain unchanged. All prior fix attempts blocked by `workflows: write` permission.
+- **No redundant/temp/unused source files found beyond the 3 removed** — repo remains clean.
+- **All quality checks passing**: typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — clean ✅
+- [x] Tests — 1,701/1,701 passing (723 web + 438 API + 540 shared) ✅
+- [x] Redundant files removed — 3 files cleaned ✅
+- [x] Broken link fixed — audits/README.md ✅
+- [x] Docs refreshed — findings, active-tasks, knowledge-review, CHANGELOG ✅
+- [x] Branch created — `chore/repokeeper-cycle-169` ✅
+- [x] PR created ✅
+
+---
+
 ## Cycle 168 (2026-06-29 — RepoKeeper: Full repository audit, CHANGELOG gap fix (Cycle 167 + 4 commits after Cycle 167), BroCula drift fix (Jun 28→Jun 29), audit archive consolidation, stale branch cleanup, doc sync)
 
 ### Audit Scope
