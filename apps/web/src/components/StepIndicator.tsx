@@ -22,7 +22,7 @@
  */
 
 import { useEffect, useCallback, useState, useRef, memo } from "react";
-import { type WizardStep, WIZARD_STEP_KEYS } from "@blueprint/shared";
+import { type WizardStep, WIZARD_STEP_KEYS, ANIMATION_ENTRANCE_DELAYS_MS } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import {
   WIZARD_STEPS,
@@ -135,7 +135,7 @@ function StepIndicatorComponent(): JSX.Element {
             }
             ariaLabel={`Step ${currentIndex + 1} of ${STEPS.length}: ${currentStepLabel}`}
             animateOnMount
-            mountAnimationDelayMs={300}
+            mountAnimationDelayMs={ANIMATION_ENTRANCE_DELAYS_MS.STANDARD_MOUNT}
           />
           <div className="absolute inset-0 flex items-center justify-center transition-transform duration-200 hover:scale-110">
             <span key={currentStep} className="text-xs font-semibold step-count-pop">

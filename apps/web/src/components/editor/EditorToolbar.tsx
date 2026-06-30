@@ -33,6 +33,7 @@ import {
   TOOLTIP_LABELS,
   TOOLTIP_DEFAULTS,
   SHORTCUT_LABELS,
+  ANIMATION_ENTRANCE_DELAYS,
   VIEW_MODE_INDICATOR_POSITION,
 } from "@blueprint/shared";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
@@ -355,13 +356,16 @@ function EditorToolbarComponent({
                     d="M5 13l4 4L19 7"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
-                    transition={{ duration: ANIMATION.CHECKMARK_REVEAL, delay: 0.05 }}
+                    transition={{
+                      duration: ANIMATION.CHECKMARK_REVEAL,
+                      delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
+                    }}
                   />
                 </motion.svg>
                 <motion.span
                   initial={{ opacity: 0, x: -5 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 }}
+                  transition={{ delay: ANIMATION_ENTRANCE_DELAYS.FAST }}
                 >
                   {EDITOR_LABELS.VIEW_MODES.EXPORTED}
                 </motion.span>

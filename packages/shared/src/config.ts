@@ -2245,6 +2245,84 @@ export const ENTRANCE_STAGGER_DEFAULTS = {
 } as const;
 
 /**
+ * Scroll-to-top Button Entry Pulse Duration (ms)
+ * Centralized source of truth for the entry pulse ring animation duration
+ * on scroll-to-top/scroll-to-bottom buttons. Controls how long the subtle
+ * expanding glow effect plays when the button first appears.
+ * Flexy says: No hardcoded 1500ms pulse durations in components!
+ * Usage: import { SCROLL_PULSE_DEFAULTS } from "@blueprint/shared";
+ *        setTimeout(fn, SCROLL_PULSE_DEFAULTS.ENTRY_PULSE_MS)
+ */
+export const SCROLL_PULSE_DEFAULTS = {
+  /** Duration (ms) of the entry-pulse ring effect on scroll buttons */
+  ENTRY_PULSE_MS: 1500,
+} as const;
+
+/**
+ * SVG/Circular Progress Transition Defaults
+ * Centralized source of truth for SVG stroke animation configuration.
+ * Eliminates hardcoded "ease-out" timing functions and stroke animation durations.
+ * Flexy says: No hardcoded SVG stroke transition values in components!
+ * Usage: import { SVG_TRANSITION_DEFAULTS } from "@blueprint/shared";
+ *        transition: SVG_TRANSITION_DEFAULTS.STROKE_TIMING
+ */
+export const SVG_TRANSITION_DEFAULTS = {
+  /** Duration in ms for stroke-dashoffset animation on circular progress indicators */
+  STROKE_DASHOFFSET_DURATION_MS: 700,
+  /** Timing function for SVG stroke animations */
+  STROKE_TIMING: "ease-out",
+} as const;
+
+/**
+ * Common Animation Entrance Delays (seconds)
+ * Centralized source of truth for framer-motion animation entrance delay values
+ * used across component entrance animations. Single source to eliminate hardcoded
+ * float magic numbers from transition configs.
+ * Flexy says: No hardcoded 0.1 / 0.15 / 0.2 delay values in component transition configs!
+ * Usage: import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
+ *        transition={{ delay: ANIMATION_ENTRANCE_DELAYS.FAST }}
+ */
+export const ANIMATION_ENTRANCE_DELAYS = {
+  /** Very fast entrance delay (0.05s) — for micro-interactions where speed matters */
+  VERY_FAST: 0.05,
+  /** Fast entrance delay (0.1s) — for quick element reveals and toolbar feedback */
+  FAST: 0.1,
+  /** Slightly faster than moderate (0.12s) — for near-instant feedback */
+  VERY_MODERATE: 0.12,
+  /** Moderate entrance delay (0.15s) — for standard staggered entrances */
+  MODERATE: 0.15,
+  /** Slow entrance delay (0.2s) — for secondary entrance effects */
+  SLOW: 0.2,
+  /** Slower entrance delay (0.3s) — for tertiary elements and content reveals */
+  SLOWER: 0.3,
+  /** Slowest common entrance delay (0.4s) — for delayed emphasis entrances */
+  SLOWEST: 0.4,
+  /** Half-second entrance delay (0.5s) — for prominent delayed reveals */
+  HALF_SECOND: 0.5,
+  /** Three-quarter second entrance delay (0.6s) — for substantial delayed reveals */
+  THREE_QUARTER: 0.6,
+  /** Full-second entrance delay (0.8s) — for closing/ending entrance cascades */
+  FULL_SECOND: 0.8,
+} as const;
+
+/**
+ * Common Animation Entrance Delays (milliseconds)
+ * Centralized source of truth for entrance delay values in milliseconds,
+ * used for setTimeout/setTimeout-like operations in mount animations.
+ * Flexy says: No hardcoded 300ms mount animation delays in components!
+ * Usage: import { ANIMATION_ENTRANCE_DELAYS_MS } from "@blueprint/shared";
+ *        mountAnimationDelayMs={ANIMATION_ENTRANCE_DELAYS_MS.SHORT_MOUNT}
+ */
+export const ANIMATION_ENTRANCE_DELAYS_MS = {
+  /** Short mount animation delay (150ms) — for rapid mount entrance effects */
+  SHORT_MOUNT: 150,
+  /** Standard mount animation delay (300ms) — for typical mount entrance effects */
+  STANDARD_MOUNT: 300,
+  /** Long mount animation delay (500ms) — for delayed mount entrance effects */
+  LONG_MOUNT: 500,
+} as const;
+
+/**
  * Validation Checkmark Aria-Labels
  * Centralized source of truth for validation indicator accessibility labels.
  * Flexy says: No hardcoded "Field is valid" or "Field needs attention" in ValidationCheckmark!

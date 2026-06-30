@@ -21,6 +21,7 @@ import {
   ANIMATION,
   COPY_BUTTON_LABELS,
 } from "../config/constants";
+import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
 
 interface Particle {
   id: number;
@@ -250,7 +251,7 @@ function AnimatedCopyButtonComponent({
                 transition={{
                   type: "spring",
                   ...SPRING_CONFIG.CHECKMARK,
-                  delay: 0.05,
+                  delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
                 }}
               >
                 <motion.path
@@ -261,14 +262,17 @@ function AnimatedCopyButtonComponent({
                   strokeLinejoin="round"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
-                  transition={{ duration: ANIMATION.CHECKMARK_REVEAL, delay: 0.1 }}
+                  transition={{
+                    duration: ANIMATION.CHECKMARK_REVEAL,
+                    delay: ANIMATION_ENTRANCE_DELAYS.FAST,
+                  }}
                 />
               </motion.svg>
               <motion.span
                 className="font-medium"
                 initial={{ opacity: 0, x: -5 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.15 }}
+                transition={{ delay: ANIMATION_ENTRANCE_DELAYS.MODERATE }}
               >
                 {COPY_BUTTON_LABELS.DISPLAY_COPIED}
               </motion.span>

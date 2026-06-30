@@ -107,6 +107,10 @@ import {
   PARTICLE_DEFAULTS,
   SKELETON_DEFAULTS,
   ENTRANCE_STAGGER_DEFAULTS,
+  SCROLL_PULSE_DEFAULTS,
+  SVG_TRANSITION_DEFAULTS,
+  ANIMATION_ENTRANCE_DELAYS,
+  ANIMATION_ENTRANCE_DELAYS_MS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -2955,6 +2959,74 @@ describe("SKELETON_DEFAULTS", () => {
 
   it("should have 8 entries", () => {
     expect(Object.keys(SKELETON_DEFAULTS).length).toBe(8);
+  });
+});
+
+describe("SCROLL_PULSE_DEFAULTS", () => {
+  it("should have positive entry pulse duration", () => {
+    expect(SCROLL_PULSE_DEFAULTS.ENTRY_PULSE_MS).toBeGreaterThan(0);
+  });
+
+  it("should have a number value", () => {
+    expect(typeof SCROLL_PULSE_DEFAULTS.ENTRY_PULSE_MS).toBe("number");
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(SCROLL_PULSE_DEFAULTS).length).toBe(1);
+  });
+});
+
+describe("SVG_TRANSITION_DEFAULTS", () => {
+  it("should have positive stroke dashoffset duration", () => {
+    expect(SVG_TRANSITION_DEFAULTS.STROKE_DASHOFFSET_DURATION_MS).toBeGreaterThan(0);
+  });
+
+  it("should have non-empty stroke timing string", () => {
+    expect(SVG_TRANSITION_DEFAULTS.STROKE_TIMING.length).toBeGreaterThan(0);
+    expect(typeof SVG_TRANSITION_DEFAULTS.STROKE_TIMING).toBe("string");
+  });
+
+  it("should have 2 entries", () => {
+    expect(Object.keys(SVG_TRANSITION_DEFAULTS).length).toBe(2);
+  });
+});
+
+describe("ANIMATION_ENTRANCE_DELAYS", () => {
+  it("should have all positive values", () => {
+    const values = Object.values(ANIMATION_ENTRANCE_DELAYS) as number[];
+    values.forEach((v) => expect(v).toBeGreaterThan(0));
+  });
+
+  it("should have strictly ascending values", () => {
+    const values = Object.values(ANIMATION_ENTRANCE_DELAYS) as number[];
+    for (let i = 1; i < values.length; i++) {
+      expect(values[i]!).toBeGreaterThan(values[i - 1]!);
+    }
+  });
+
+  it("should have all number values", () => {
+    const values = Object.values(ANIMATION_ENTRANCE_DELAYS) as number[];
+    values.forEach((v) => expect(typeof v).toBe("number"));
+  });
+
+  it("should have 10 entries", () => {
+    expect(Object.keys(ANIMATION_ENTRANCE_DELAYS).length).toBe(10);
+  });
+});
+
+describe("ANIMATION_ENTRANCE_DELAYS_MS", () => {
+  it("should have all positive values", () => {
+    const values = Object.values(ANIMATION_ENTRANCE_DELAYS_MS);
+    values.forEach((v) => expect(v).toBeGreaterThan(0));
+  });
+
+  it("should have all number values", () => {
+    const values = Object.values(ANIMATION_ENTRANCE_DELAYS_MS);
+    values.forEach((v) => expect(typeof v).toBe("number"));
+  });
+
+  it("should have 3 entries", () => {
+    expect(Object.keys(ANIMATION_ENTRANCE_DELAYS_MS).length).toBe(3);
   });
 });
 

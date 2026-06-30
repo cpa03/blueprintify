@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import { FallbackProps } from "react-error-boundary";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { SPRING_CONFIG, ANIMATION } from "../config/constants";
+import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
 
 /**
@@ -145,8 +146,15 @@ export const ErrorFallback = memo(function ErrorFallback({
                   initial={shouldReduceMotion ? undefined : { pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
                   transition={{
-                    pathLength: { duration: ANIMATION.MEDIUM_SLOW, ease: "easeOut", delay: 0.15 },
-                    opacity: { duration: ANIMATION.QUICK_FADE, delay: 0.15 },
+                    pathLength: {
+                      duration: ANIMATION.MEDIUM_SLOW,
+                      ease: "easeOut",
+                      delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
+                    },
+                    opacity: {
+                      duration: ANIMATION.QUICK_FADE,
+                      delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
+                    },
                   }}
                 />
               </svg>

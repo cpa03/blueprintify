@@ -11,7 +11,7 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
-import { EDITOR_FILENAMES } from "@blueprint/shared";
+import { EDITOR_FILENAMES, ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
 import {
   EMPTY_STATE_CONFIG,
@@ -95,7 +95,11 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-accent-emerald/20 flex items-center justify-center"
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.4, type: "spring", ...SPRING_CONFIG.SMOOTH }}
+              transition={{
+                delay: ANIMATION_ENTRANCE_DELAYS.SLOWEST,
+                type: "spring",
+                ...SPRING_CONFIG.SMOOTH,
+              }}
               aria-hidden="true"
             >
               <svg
@@ -146,7 +150,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               transition={{
                 type: "spring",
                 ...SPRING_CONFIG.SNAPPY,
-                delay: 0.15,
+                delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
               }}
               className="inline-flex items-center gap-1.5 text-primary-400 hover:text-primary-300 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded px-1 -mx-1"
               aria-label={`Switch to ${tab === EDITOR_TABS.BLUEPRINT ? EDITOR_TABS.TASKS : EDITOR_TABS.BLUEPRINT} tab`}
@@ -185,7 +189,11 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               whileHover={{ scale: 1.02 }}
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, type: "spring", ...SPRING_CONFIG.SNAPPY }}
+              transition={{
+                delay: ANIMATION_ENTRANCE_DELAYS.HALF_SECOND,
+                type: "spring",
+                ...SPRING_CONFIG.SNAPPY,
+              }}
             >
               <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none">
                 ←
