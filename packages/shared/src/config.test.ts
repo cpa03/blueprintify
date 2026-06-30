@@ -3010,8 +3010,8 @@ describe("ANIMATION_ENTRANCE_DELAYS", () => {
     values.forEach((v) => expect(typeof v).toBe("number"));
   });
 
-  it("should have 10 entries", () => {
-    expect(Object.keys(ANIMATION_ENTRANCE_DELAYS).length).toBe(10);
+  it("should have 13 entries", () => {
+    expect(Object.keys(ANIMATION_ENTRANCE_DELAYS).length).toBe(13);
   });
 });
 
@@ -3057,8 +3057,15 @@ describe("ENTRANCE_STAGGER_DEFAULTS", () => {
     );
   });
 
-  it("should have 5 entries", () => {
-    expect(Object.keys(ENTRANCE_STAGGER_DEFAULTS).length).toBe(5);
+  it("should have positive chip stagger", () => {
+    expect(ENTRANCE_STAGGER_DEFAULTS.CHIP_STAGGER_S).toBeGreaterThan(0);
+    expect(ENTRANCE_STAGGER_DEFAULTS.CHIP_STAGGER_S).toBeLessThan(
+      ENTRANCE_STAGGER_DEFAULTS.INCREMENT_S
+    );
+  });
+
+  it("should have 6 entries", () => {
+    expect(Object.keys(ENTRANCE_STAGGER_DEFAULTS).length).toBe(6);
   });
 });
 

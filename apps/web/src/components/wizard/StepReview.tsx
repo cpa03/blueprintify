@@ -21,7 +21,12 @@
  * ```
  */
 
-import { WIZARD_STEP_KEYS, ANIMATION_DIRECTIONS } from "@blueprint/shared";
+import {
+  WIZARD_STEP_KEYS,
+  ANIMATION_DIRECTIONS,
+  ANIMATION_ENTRANCE_DELAYS,
+  ENTRANCE_STAGGER_DEFAULTS,
+} from "@blueprint/shared";
 import { motion } from "framer-motion";
 import { memo, useCallback, useEffect } from "react";
 import { useWizardStore } from "../../store";
@@ -341,7 +346,10 @@ export const StepReview = memo(function StepReview({
               Back
               <kbd
                 className="px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none animate-fade-in"
-                style={{ animationDelay: "0.65s", animationFillMode: "backwards" }}
+                style={{
+                  animationDelay: `${ANIMATION_ENTRANCE_DELAYS.TWO_THIRDS}s`,
+                  animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
+                }}
                 aria-hidden="true"
               >
                 {getAltKeyLabel()}+←
@@ -418,7 +426,10 @@ export const StepReview = memo(function StepReview({
                   Generate Blueprint
                   <kbd
                     className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none animate-fade-in"
-                    style={{ animationDelay: "0.70s", animationFillMode: "backwards" }}
+                    style={{
+                      animationDelay: `${ANIMATION_ENTRANCE_DELAYS.SEVEN_TENTHS}s`,
+                      animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
+                    }}
                     aria-hidden="true"
                   >
                     {modifierKey}+↵

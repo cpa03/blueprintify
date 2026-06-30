@@ -2242,6 +2242,8 @@ export const ENTRANCE_STAGGER_DEFAULTS = {
   SHORT_DELAY_S: 0.1,
   /** Medium delay for tertiary elements (s) */
   MEDIUM_DELAY_S: 0.2,
+  /** Stagger delay between chip/tech-stack item entrance animations (s) */
+  CHIP_STAGGER_S: 0.03,
 } as const;
 
 /**
@@ -2293,6 +2295,8 @@ export const ANIMATION_ENTRANCE_DELAYS = {
   MODERATE: 0.15,
   /** Slow entrance delay (0.2s) — for secondary entrance effects */
   SLOW: 0.2,
+  /** Near half-second entrance delay (0.25s) — for kbd entrance animation in ShowEditorButton */
+  NEARLY_HALF: 0.25,
   /** Slower entrance delay (0.3s) — for tertiary elements and content reveals */
   SLOWER: 0.3,
   /** Slowest common entrance delay (0.4s) — for delayed emphasis entrances */
@@ -2301,6 +2305,10 @@ export const ANIMATION_ENTRANCE_DELAYS = {
   HALF_SECOND: 0.5,
   /** Three-quarter second entrance delay (0.6s) — for substantial delayed reveals */
   THREE_QUARTER: 0.6,
+  /** Two-thirds second entrance delay (0.65s) — for kbd/back-button entrance animations in StepReview */
+  TWO_THIRDS: 0.65,
+  /** Seven-tenths second entrance delay (0.7s) — for generate-button entrance animation in StepReview */
+  SEVEN_TENTHS: 0.7,
   /** Full-second entrance delay (0.8s) — for closing/ending entrance cascades */
   FULL_SECOND: 0.8,
 } as const;

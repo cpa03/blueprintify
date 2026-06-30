@@ -18,7 +18,7 @@
  * chunk from loading before user interaction.
  */
 import { memo, useState, useEffect, useRef } from "react";
-import { UI_TIMING } from "@blueprint/shared";
+import { UI_TIMING, ANIMATION_ENTRANCE_DELAYS, ENTRANCE_STAGGER_DEFAULTS } from "@blueprint/shared";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
 import { BUTTON, ICON } from "../config/styles";
@@ -110,7 +110,10 @@ function ShowEditorButtonComponent({
             )}
             <kbd
               className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none animate-fade-in"
-              style={{ animationDelay: "0.25s", animationFillMode: "backwards" }}
+              style={{
+                animationDelay: `${ANIMATION_ENTRANCE_DELAYS.NEARLY_HALF}s`,
+                animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
+              }}
             >
               {modifierKey}+E
             </kbd>
