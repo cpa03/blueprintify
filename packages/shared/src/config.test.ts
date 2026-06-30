@@ -107,6 +107,7 @@ import {
   PARTICLE_DEFAULTS,
   SKELETON_DEFAULTS,
   ENTRANCE_STAGGER_DEFAULTS,
+  SCROLLBAR_COLORS,
   SCROLL_PULSE_DEFAULTS,
   SVG_TRANSITION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
@@ -3058,5 +3059,24 @@ describe("ENTRANCE_STAGGER_DEFAULTS", () => {
 
   it("should have 5 entries", () => {
     expect(Object.keys(ENTRANCE_STAGGER_DEFAULTS).length).toBe(5);
+  });
+});
+
+// ============================================================================
+// SCROLLBAR_COLORS
+// ============================================================================
+describe("SCROLLBAR_COLORS", () => {
+  it("should have a THUMB color", () => {
+    expect(SCROLLBAR_COLORS.THUMB).toBeTruthy();
+    expect(SCROLLBAR_COLORS.THUMB).toMatch(/^#[0-9a-fA-F]{6}$/);
+  });
+
+  it("should have a TRACK color", () => {
+    expect(SCROLLBAR_COLORS.TRACK).toBeTruthy();
+    expect(SCROLLBAR_COLORS.TRACK).toMatch(/^#[0-9a-fA-F]{6}$/);
+  });
+
+  it("should have exactly 2 entries", () => {
+    expect(Object.keys(SCROLLBAR_COLORS).length).toBe(2);
   });
 });

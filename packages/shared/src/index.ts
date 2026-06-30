@@ -178,6 +178,7 @@ export {
   PARTICLE_DEFAULTS,
   SKELETON_DEFAULTS,
   ENTRANCE_STAGGER_DEFAULTS,
+  SCROLLBAR_COLORS,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";
