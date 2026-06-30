@@ -23,7 +23,7 @@
  * ```
  */
 
-import { WIZARD_STEP_KEYS, UI_TIMING } from "@blueprint/shared";
+import { WIZARD_STEP_KEYS, UI_TIMING, ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
 import { motion, AnimatePresence } from "framer-motion";
 import { memo, useCallback, useRef, useEffect } from "react";
 import { useEditorStore, useWizardStore, useToast } from "../../store";
@@ -160,7 +160,10 @@ export const StepGenerating = memo(function StepGenerating({
                 strokeWidth="3"
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: ANIMATION.MEDIUM_SLOW, delay: 0.1 }}
+                transition={{
+                  duration: ANIMATION.MEDIUM_SLOW,
+                  delay: ANIMATION_ENTRANCE_DELAYS.FAST,
+                }}
               />
               <motion.path
                 d="M14 24L21 31L34 17"
@@ -170,7 +173,10 @@ export const StepGenerating = memo(function StepGenerating({
                 strokeLinejoin="round"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={{ duration: ANIMATION.MEDIUM_SLOW, delay: 0.3 }}
+                transition={{
+                  duration: ANIMATION.MEDIUM_SLOW,
+                  delay: ANIMATION_ENTRANCE_DELAYS.SLOWER,
+                }}
               />
             </svg>
           </motion.div>
@@ -201,7 +207,10 @@ export const StepGenerating = memo(function StepGenerating({
                 strokeWidth="3"
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: ANIMATION.MEDIUM_SLOW, delay: 0.1 }}
+                transition={{
+                  duration: ANIMATION.MEDIUM_SLOW,
+                  delay: ANIMATION_ENTRANCE_DELAYS.FAST,
+                }}
               />
               <motion.path
                 d="M16 16L32 32M32 16L16 32"
@@ -210,7 +219,10 @@ export const StepGenerating = memo(function StepGenerating({
                 strokeLinecap="round"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={{ duration: ANIMATION.MEDIUM_SLOW, delay: 0.3 }}
+                transition={{
+                  duration: ANIMATION.MEDIUM_SLOW,
+                  delay: ANIMATION_ENTRANCE_DELAYS.SLOWER,
+                }}
               />
             </svg>
           </motion.div>
@@ -342,7 +354,7 @@ export const StepGenerating = memo(function StepGenerating({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: ANIMATION_ENTRANCE_DELAYS.SLOWER }}
             className="mt-8 flex flex-col items-center gap-3"
           >
             <KeyboardShortcutTooltip

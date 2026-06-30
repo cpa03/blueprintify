@@ -14,6 +14,7 @@ import { memo } from "react";
 import { motion } from "framer-motion";
 import { useWizardStore } from "../store";
 import { WIZARD_STEPS, UI_EMOJIS, EMPTY_STATE_CONFIG, ANIMATION } from "../config/constants";
+import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
 import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from "../utils/motion";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
 
@@ -60,7 +61,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               ...floatingAnimation,
               y: [-6, 6, -6],
             }}
-            transition={{ ...floatingAnimation.transition, delay: 0.2 }}
+            transition={{ ...floatingAnimation.transition, delay: ANIMATION_ENTRANCE_DELAYS.SLOW }}
           >
             <span className="text-2xl opacity-50">{UI_EMOJIS.DOCUMENT_BLANK}</span>
           </motion.div>
@@ -71,7 +72,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               ...floatingAnimation,
               y: [-4, 8, -4],
             }}
-            transition={{ ...floatingAnimation.transition, delay: 0.1 }}
+            transition={{ ...floatingAnimation.transition, delay: ANIMATION_ENTRANCE_DELAYS.FAST }}
           >
             <span className="text-2xl opacity-70">{UI_EMOJIS.DOCUMENT}</span>
           </motion.div>
@@ -94,7 +95,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
                 duration: ANIMATION.BREATH,
                 repeat: Infinity,
                 ease: "easeInOut",
-                delay: 0.2,
+                delay: ANIMATION_ENTRANCE_DELAYS.SLOW,
               }}
             />
             <motion.div
@@ -105,7 +106,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
                 duration: ANIMATION.DRIFT,
                 repeat: Infinity,
                 ease: "easeInOut",
-                delay: 0.4,
+                delay: ANIMATION_ENTRANCE_DELAYS.SLOWEST,
               }}
             />
             <motion.div
@@ -116,7 +117,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
                 duration: ANIMATION.DRIFT_SLOW,
                 repeat: Infinity,
                 ease: "easeInOut",
-                delay: 0.6,
+                delay: ANIMATION_ENTRANCE_DELAYS.THREE_QUARTER,
               }}
             />
           </motion.div>
@@ -165,7 +166,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
         variants={fadeInUp}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.8 }}
+        transition={{ delay: ANIMATION_ENTRANCE_DELAYS.FULL_SECOND }}
       >
         <motion.span
           animate={{ x: [0, 4, 0] }}
