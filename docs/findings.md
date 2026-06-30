@@ -2,6 +2,61 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 172 (2026-06-30 — RepoKeeper: Stale legacy doc removal, BroCula ref drift fix (Run 2→Run 3), CHANGELOG gap fix, doc sync)
+
+### Audit Scope
+
+Full repository audit covering stale legacy doc removal (`docs/ci-workflow-fixes-patch.md` — superseded by `docs/ci-configuration.md` + `scripts/fix-ci-node-version.mjs`), BroCula report drift fix in `docs/audits/README.md` (Run 2→Run 3 as latest — latest audit: `brocula-hunt-2026-06-30-run3.md` / BroCula Run 3 / LH **99-100-100-100**, 1701 tests ✅), CHANGELOG gap fix (added 1 post-Cycle-171 commit: brocula Run 3 + Cycle 172 entry), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README, ci-configuration), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR creation.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,701/1,701 passing** (723 web + 438 API + 540 shared) |
+| Stale Doc Removal | ✅ `docs/ci-workflow-fixes-patch.md` deleted (superseded by ci-configuration.md + fix script) |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Stale legacy doc removal**: `docs/ci-workflow-fixes-patch.md` removed — this file documented BUG-014/BUG-017 fixes that have been prepared on branches across 30+ cycles but never applied on main. The same information is now covered by `docs/ci-configuration.md` (state documentation) and `scripts/fix-ci-node-version.mjs` (executable fix script).
+2. **BroCula ref drift fix**: `docs/audits/README.md` updated — Jun 30 Run 3 added as **Latest** (LH **99-100-100-100**, 1701 tests ✅). Run 2 moved to non-latest entry.
+3. **knowledge-review.md updated**: Last Review bumped Cycle 171→172. BroCula ref updated from `brocula-hunt-2026-06-30-run2.md` (Run 2) to `brocula-hunt-2026-06-30-run3.md` (Run 3 / LH **99-100-100-100**).
+4. **ci-configuration.md bumped**: Workflow fix status updated from Cycle 170 → Cycle 172.
+5. **CHANGELOG gap fix**: Added 1 post-Cycle-171 commit (brocula Run 3 #2214) + Cycle 172 entry.
+6. **BUG-014/BUG-017 status verified**: Both bugs still present on main. Fixes blocked by `workflows: write` permission (same blocker as all prior 30+ cycles).
+7. **No stale remote branches**: All 14 remote branches have unique unmerged commits — none can be pruned.
+8. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG, audits/README, ci-configuration for Cycle 172.
+9. **Quality verification**: typecheck ✅ lint ✅ tests 1,701/1,701 ✅.
+
+### Key Findings
+
+- **Stale legacy doc removed**: `docs/ci-workflow-fixes-patch.md` — documented a patch-based approach to BUG-014/BUG-017 that was never applicable (always blocked by `workflows: write`). Superseded by `docs/ci-configuration.md` (current state) + `scripts/fix-ci-node-version.mjs` (executable fix).
+- **BroCula Run 3 now indexed**: `brocula-hunt-2026-06-30-run3.md` (LH **99-100-100-100**, 1701 tests ✅) added as latest in audits/README.md and knowledge-review.md.
+- **BUG-014 and BUG-017 still present on main** — workflow files remain unchanged. All prior fix attempts blocked by `workflows: write` permission.
+- **No stale merged branches** — all 14 remote branches have unique unmerged commits.
+- **No redundant/temp/unused source files found beyond the 1 removed** — repo remains clean.
+- **All quality checks passing**: typecheck ✅ lint ✅ tests 1,701/1,701 ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Tests — 1,701/1,701 passing (723 web + 438 API + 540 shared) ✅
+- [x] Stale legacy doc removed — `docs/ci-workflow-fixes-patch.md` deleted ✅
+- [x] BroCula ref drift fixed — Run 3 added as latest in audits/README.md ✅
+- [x] knowledge-review.md Last Review bumped to Cycle 172, BroCula ref→Run 3 ✅
+- [x] ci-configuration.md bumped to Cycle 172 ✅
+- [x] CHANGELOG gap filled — 1 post-Cycle-171 commit + Cycle 172 entry ✅
+- [x] BUG-014/BUG-017 status verified (still present on main) ✅
+- [x] No stale merged remote branches — all 14 active ✅
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK ✅
+- [x] Documentation refreshed for Cycle 172 (findings, active-tasks, knowledge-review, CHANGELOG, audits/README, ci-configuration) ✅
+- [x] PR created ✅
+
+---
+
 ## Cycle 171 (2026-06-30 — RepoKeeper: BUG-014/BUG-017 fixes prepared (blocked: `workflows: write`), stale branch cleanup, doc sync)
 
 ### Audit Scope
