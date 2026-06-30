@@ -1432,3 +1432,23 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 723 web + 438 api + 540 shared = 1,701 tests passing
+
+### ✅ Flexy Iteration 84: Centralize Scrollbar Colors into Shared Config & CSS Variables
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config.ts` | Added `SCROLLBAR_COLORS` config (THUMB: #4b5563, TRACK: #0f172a) |
+| `packages/shared/src/index.ts` | Exported `SCROLLBAR_COLORS` |
+| `packages/shared/src/config.test.ts` | Added 3 tests for `SCROLLBAR_COLORS` |
+| `apps/web/src/index.css` | Added `--scrollbar-thumb`/`--scrollbar-track` CSS custom properties in `:root` |
+| `apps/web/src/index.css` | Replaced hardcoded `#10b981` with `var(--color-accent-emerald)` in `step-complete-flash` and `connector-flash` keyframes |
+| `apps/web/src/index.css` | Replaced hardcoded `scrollbar-color: #4b5563 #0f172a` with `var(--scrollbar-thumb) var(--scrollbar-track)` |
+| `apps/web/src/index.css` | Replaced hardcoded `scrollbar-color: #4b5563 transparent` with `var(--scrollbar-thumb) transparent` |
+
+**Verification:**
+- ✅ `npm run typecheck` — clean (web + api + shared)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean (web + shared)
+- ✅ `npm run test:all` — 723 web + 438 api + 556 shared = 1,717 tests passing
+
+**PR:** [#2224](https://github.com/cpa03/blueprintify/pull/2224) — `feat/flexy-iteration-84-modularize-hardcoded`
