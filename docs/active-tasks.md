@@ -2,6 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 174 — **Stale patch cleanup, CHANGELOG gap fix, audits/README duplicate cleanup, doc sync** ✅
+
+### Task: Full repository audit, stale `docs/ci-workflow-fixes-cycle-jun-30-run4.patch.md` removal (stale BugFixer patch artifact documenting unappliable workflow fixes — same recurring pattern as Cycles 167/170/173 that removed previous `.patch` files in `.gitignore`), audits/README.md duplicate cleanup (removed duplicate Jun 27 Run 8 entry from Archived section), CHANGELOG gap fix (added 4 post-Cycle-173 commits: kbd badges, flexy scrollbar colors, BroCula Run 5, BugFixer Run 4 + Cycle 174 entry), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,717/1,717 ✅), PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 174 full repository audit — remove stale `docs/ci-workflow-fixes-cycle-jun-30-run4.patch.md` (stale patch artifact documenting unappliable BUG-014/BUG-017 fixes, same pattern as Cycles 167/170/173), fix audits/README duplicate (removed duplicate Jun 27 Run 8 from Archived section), fix CHANGELOG gap (4 post-Cycle-173 commits + Cycle 174 entry), sync docs (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), verify quality, create PR
+- **Actions**:
+  - [x] Full repository scan — no redundant/temp/unused source files found beyond the 1 removed
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK in non-test source code
+  - [x] **Stale patch file removed**: `docs/ci-workflow-fixes-cycle-jun-30-run4.patch.md` deleted — stale BugFixer patch artifact documenting unappliable BUG-014/BUG-017 workflow fixes (same recurring pattern as Cycles 167/170/173)
+  - [x] **audits/README.md duplicate cleanup**: Removed duplicate Jun 27 Run 8 entry from Archived BroCula section
+  - [x] **CHANGELOG gap fix**: Added 4 post-Cycle-173 commits (kbd badges, flexy scrollbar colors, BroCula Run 5, BugFixer Run 4) + Cycle 174 entry
+  - [x] **knowledge-review.md updated**: Last Review→Cycle 174, BroCula ref updated to Run 5 (LH 98-100-100-100, 1714 tests), test count 1,714→1,717
+  - [x] **findings.md updated**: Cycle 174 entry added
+  - [x] **active-tasks.md updated**: Cycle 174 entry added at top
+  - [x] **BUG-014/BUG-017 status verified**: Still present on main — same blocker as all prior 30+ cycles
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,717/1,717 ✅
+  - [x] PR created
+
 ## ✅ RepoKeeper Cycle 173 — **Tracked .patch removal, BroCula ref drift fix (Run 3→Run 4), audits/README cleanup, CHANGELOG gap fix, doc sync** ✅
 
 ### Task: Full repository audit, tracked `.patch` file removal (`docs/ci-workflow-fixes-cycle-jun-30-run3.patch` — violated `*.patch` in .gitignore, same recurring pattern as Cycles 167/170), BroCula ref drift fix in `docs/audits/README.md` (Run 3→Run 4 as latest — latest audit: `brocula-hunt-2026-06-30-run4.md` / BroCula Run 4 / LH **100-100-100-100** 🏆, 1701 tests ✅), audits/README.md Current Reports cleanup (removed 5 duplicate entries that also appeared in Archive), CHANGELOG gap fix (added 5 post-Cycle-172 commits: BugFixer Run 3, BroCula Run 4, copy button animation, ANIMATION_ENTRANCE_DELAYS, merge conflict fix + Cycle 173 entry), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README, ci-configuration), quality verification (typecheck ✅ lint ✅ tests 1,701/1,701 ✅), PR creation
