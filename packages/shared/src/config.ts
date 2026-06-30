@@ -1518,6 +1518,8 @@ export const UI_TIMING = {
   EDITOR_FOCUS_DELAY_MS: 180,
   /** Duration in ms for editor focus highlight animation (should match CSS animation ~1.8s) */
   EDITOR_FOCUS_HIGHLIGHT_MS: 1900,
+  /** Duration in ms for the ShowEditorButton arrival pop animation before removing the CSS class */
+  ARRIVAL_POP_DISPLAY_MS: 600,
 } as const;
 
 /**

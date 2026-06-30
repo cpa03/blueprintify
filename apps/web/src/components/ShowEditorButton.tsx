@@ -18,6 +18,7 @@
  * chunk from loading before user interaction.
  */
 import { memo, useState, useEffect, useRef } from "react";
+import { UI_TIMING } from "@blueprint/shared";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
 import { BUTTON, ICON } from "../config/styles";
@@ -45,7 +46,7 @@ function ShowEditorButtonComponent({
   useEffect(() => {
     if (prevIsGenerating.current && !isGenerating && hasContent) {
       setShowArrival(true);
-      const timer = setTimeout(() => setShowArrival(false), 600);
+      const timer = setTimeout(() => setShowArrival(false), UI_TIMING.ARRIVAL_POP_DISPLAY_MS);
       prevIsGenerating.current = isGenerating;
       return () => clearTimeout(timer);
     }
