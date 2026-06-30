@@ -27,7 +27,7 @@ import { sanitizeHtml } from "../lib/security";
 import {
   TIMEOUTS,
   ACCESSIBILITY_LABELS,
-  ANIMATION,
+  SPRING_CONFIG,
   MARKDOWN_COPY_LABELS,
 } from "../config/constants";
 import { MARKDOWN, ICON } from "../config/styles";
@@ -113,7 +113,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              transition={{ duration: ANIMATION.FAST }}
+              transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK_ICON }}
             >
               <path
                 strokeLinecap="round"
@@ -132,7 +132,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              transition={{ duration: ANIMATION.FAST }}
+              transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK_ICON }}
             >
               <path
                 strokeLinecap="round"
