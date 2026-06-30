@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 171 — BUG-014/BUG-017 fixes prepared on branch (blocked by `workflows: write` — same blocker as all prior cycles), stale remote branch cleanup (`origin/fix/ci-node-version-22` deleted), CHANGELOG gap fix (3 post-Cycle-170 commits), README BroCula date drift fix (Jun 17–Jun 29 → Jun 17–Jun 30), docs refresh (findings, active-tasks, knowledge-review, README, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅)
+- chore(brocula): hunt report 2026-06-30 Run 2 — LH 98-100-100-100, 1701 tests ✅
+- feat(web): add staggered spring entrance to toast dismiss button (#2211)
+- docs(bugfixer): BugFixer Cycle Jun 30 2026 Run 2 — BUG-014/017 status update (#2212)
 - chore(repokeeper): Cycle 170 — tracked .patch removal, CI workflow fixes prepared (BUG-014/BUG-017 — requires `workflows: write`), doc sync
 - chore(repokeeper): remove tracked `docs/ci-workflow-fixes-cycle-jun-30-2026.patch` (violated `*.patch` in .gitignore)
 - feat(shared): centralize arrival pop display duration into UI_TIMING config (#2209)

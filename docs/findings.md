@@ -2,6 +2,59 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 171 (2026-06-30 — RepoKeeper: BUG-014/BUG-017 fixes prepared (blocked: `workflows: write`), stale branch cleanup, doc sync)
+
+### Audit Scope
+
+Full repository audit covering BUG-014 fix prepared (stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml — 2 occurrences), BUG-017 fix prepared (hardcoded `node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 11 occurrences) — **both blocked** by GitHub App token lacking `workflows: write` permission, stale merged remote branch cleanup (`origin/fix/ci-node-version-22` deleted — fully merged into main), CHANGELOG gap fix (added 3 post-Cycle-170 commits: brocula Run 2, feat(toast) stagger dismiss, docs(bugfixer) Run 2), README BroCula date drift fix (Jun 17–Jun 29 → Jun 17–Jun 30 — latest: `brocula-hunt-2026-06-30-run2.md` / BroCula Run 2 / LH 98-100-100-100 / 1701 tests ✅), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR creation.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,701/1,701 passing** (723 web + 438 API + 540 shared) |
+| BUG-014 | ⏳ Fix prepared — push blocked by `workflows: write` permission |
+| BUG-017 | ⏳ Fix prepared — push blocked by `workflows: write` permission |
+| Stale Branch Cleanup | ✅ `origin/fix/ci-node-version-22` deleted (fully merged) |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **BUG-014 fix prepared on branch**: Updated `docs/bug.md`→`docs/bugs.md` and `docs/feature.md`→`docs/features.md` in `.github/workflows/main.yml` (2 occurrences) — **push rejected** by GitHub App token lacking `workflows: write` permission. Fixes documented in `docs/ci-workflow-fixes-patch.md` for manual application by a maintainer.
+2. **BUG-017 fix prepared on branch**: Replaced all 11 occurrences of hardcoded `node-version: "20"` with `node-version-file: ".node-version"` across iterate.yml (5), parallel.yml (4), on-pull.yml (1), pr-gatekeeper.yml (1) — **push rejected** by GitHub App token lacking `workflows: write` permission. Fix available in fix script `scripts/fix-ci-node-version.mjs`.
+3. **Stale merged branch deleted**: `origin/fix/ci-node-version-22` — fully merged into main, 0 unique commits. Pruned.
+4. **CHANGELOG gap fix**: Added 3 post-Cycle-170 commits + Cycle 171 entry to [Unreleased].
+5. **README BroCula date drift fix**: `(Jun 17–Jun 29)` → `(Jun 17–Jun 30)` — latest audit: `brocula-hunt-2026-06-30-run2.md` (BroCula Run 2 / LH 98-100-100-100 / 1701 tests ✅).
+6. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG, README for Cycle 171.
+7. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅.
+
+### Key Findings
+
+- **BUG-014 and BUG-017 still present on main** — fixes prepared on branch but push blocked by `workflows: write` permission. Same blocker as all prior cycles (30+). Maintainer must apply fixes manually via `scripts/fix-ci-node-version.mjs` or cherry-pick from branch.
+- **Zero redundant/temp/unused source files found** — repo remains clean.
+- **Stale merged branch deleted**: `origin/fix/ci-node-version-22` — fully merged, 0 unique commits. Pruned.
+- **3 post-Cycle-170 commits added to CHANGELOG**: brocula Run 2, feat(toast) stagger dismiss, docs(bugfixer) Run 2.
+- **No type suppressions** (`@ts-ignore`, `@ts-expect-error`, `as any` = 0).
+- **All quality checks passing**: typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — clean ✅
+- [x] Tests — 1,701/1,701 passing (723 web + 438 API + 540 shared) ✅
+- [x] BUG-014/BUG-017 fixes prepared on branch (push blocked) ✅
+- [x] Stale merged branch deleted — `origin/fix/ci-node-version-22` ✅
+- [x] CHANGELOG gap filled — 3 post-Cycle-170 commits + Cycle 171 entry ✅
+- [x] README BroCula date fixed — `(Jun 17–Jun 30)` ✅
+- [x] Docs refreshed — findings, active-tasks, knowledge-review, CHANGELOG, README ✅
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK ✅
+- [x] PR created ✅
+
+---
+
 ## Cycle 169 (2026-06-30 — RepoKeeper: Redundant file cleanup, stale audit removal, broken link fix, doc sync)
 
 ### Audit Scope
