@@ -2,6 +2,38 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 173 (2026-06-30 — BroCula Run 5: console clean, LH 98-100-100-100, 1714 tests, test mock filter fix)
+
+### Audit Scope
+
+Full BroCula browser console + Lighthouse audit on current `main` (post flexy iteration 83 + palette micro-ux copy button spring). Fixed 1 React DOM prop warning in `AnimatedCopyButton.test.tsx` — framer-motion mock was not filtering `whileHover`/`animate`/`initial`/`transition` props from `motion.svg` and `motion.path`, causing React warnings during test runs.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build | ✅ Successful |
+| Tests | ✅ **1,714/1,714 passing** (723 web + 438 API + 553 shared) |
+| Console Errors | ✅ **0** |
+| Console Warnings | ✅ **0** |
+| Lighthouse Perf | ✅ **98** (-2, run-to-run variance) |
+| Lighthouse Acc | ✅ **100** |
+| Lighthouse BP | ✅ **100** |
+| Lighthouse SEO | ✅ **100** |
+
+### Actions Taken This Cycle
+
+1. **Test mock fix**: `apps/web/src/components/AnimatedCopyButton.test.tsx` — filtered `whileHover`, `initial`, `animate`, `transition` from `motion.svg`/`motion.path`/`motion.div` mocks to prevent React DOM prop warnings.
+2. **Lighthouse audit**: Performance 98-100-100-100, same 23 KiB unused framer-motion JS (not actionable).
+3. **Report written**: `docs/audits/brocula-hunt-2026-06-30-run5.md`.
+4. **Audit README updated**: Run 5 set as latest.
+
+### Open Items
+
+- BUG-014/BUG-017: Still blocked by `workflows: write` permission (same as all prior cycles).
+
 ## Cycle 172 (2026-06-30 — RepoKeeper: Stale legacy doc removal, BroCula ref drift fix (Run 2→Run 3), CHANGELOG gap fix, doc sync)
 
 ### Audit Scope
