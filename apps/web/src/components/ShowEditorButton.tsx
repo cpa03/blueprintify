@@ -108,7 +108,10 @@ function ShowEditorButtonComponent({
                 aria-hidden="true"
               />
             )}
-            <kbd className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none">
+            <kbd
+              className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none animate-fade-in"
+              style={{ animationDelay: "0.25s", animationFillMode: "backwards" }}
+            >
               {modifierKey}+E
             </kbd>
           </span>
