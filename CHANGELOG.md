@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 170 — tracked .patch removal, CI workflow fixes prepared (BUG-014/BUG-017 — requires `workflows: write`), doc sync
+- chore(repokeeper): remove tracked `docs/ci-workflow-fixes-cycle-jun-30-2026.patch` (violated `*.patch` in .gitignore)
+- feat(shared): centralize arrival pop display duration into UI_TIMING config (#2209)
+- feat(web): add smooth draw-in mount animation to CircularProgress in StepIndicator (#2208)
+- chore(brocula): hunt report 2026-06-30 — LH 99-100-100-100, 1701 tests ✅ (#2207)
+- docs(bugfixer): BugFixer Cycle Jun 30 2026 — BUG-014/017 status update (#2205)
 - chore(repokeeper): Cycle 169 — redundant file cleanup, stale audit removal, broken link fix, doc sync
 - chore(repokeeper): remove redundant `scripts/fix-node-version.sh` (superseded by `fix-ci-node-version.mjs`)
 - chore(repokeeper): remove redundant `docs/audits/fix-ci-node-version-instructions.md`

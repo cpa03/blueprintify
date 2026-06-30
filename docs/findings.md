@@ -5781,3 +5781,30 @@ Full repository audit covering redundant/temp/unused file scan, **BUG-014 actual
 - [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK ✅
 - [x] Documentation refreshed for Cycle 150 (findings, active-tasks, knowledge-review, bugs, CHANGELOG) ✅
 - [x] PR created ✅
+
+## Cycle 170 (2026-06-30 — RepoKeeper: Tracked .patch removal, CI workflow fixes prepared, CHANGELOG gap fix, doc sync)
+
+### Audit Scope
+
+Full repository audit covering tracked `.patch` file removal (`docs/ci-workflow-fixes-cycle-jun-30-2026.patch` — violated `*.patch` in .gitignore, same pattern as Cycle 167), CI workflow fixes prepared via `scripts/fix-ci-node-version.mjs` (BUG-014 stale doc refs in main.yml + BUG-017 hardcoded node-version across 4 workflow files — push blocked by `workflows: write` permission), CHANGELOG gap fix (added 4 post-Cycle-169 commits + Cycle 170 entry), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, ci-configuration), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR creation.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,701/1,701 passing** (723 web + 438 API + 540 shared) |
+| BUG-014/BUG-017 | 🔧 Fixes prepared on branch — push blocked by `workflows: write` permission |
+| Tracked .patch Removed | ✅ `docs/ci-workflow-fixes-cycle-jun-30-2026.patch` removed from git tracking |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Tracked .patch file removed**: `docs/ci-workflow-fixes-cycle-jun-30-2026.patch` — force-tracked despite `*.patch` in `.gitignore`. Same cleanup pattern as Cycle 167 which removed `docs/ci-workflow-fixes-cycle-jun-28-2026-run3.patch`.
+2. **BUG-014/BUG-017 fixes prepared**: Applied via `scripts/fix-ci-node-version.mjs` on local branch. Cannot push workflow file changes — GitHub App token lacks `workflows: write` permission. Maintainer must: `node scripts/fix-ci-node-version.mjs && git add .github/workflows/ && git commit -m "fix(ci): apply BUG-014 and BUG-017" && git push`.
+3. **CHANGELOG gap fix**: Added 4 post-Cycle-169 commits + Cycle 170 entry to Unreleased section.
+4. **Knowledge review updated**: Last Review bumped to Cycle 170, BUG-014/BUG-017 status updated to "fixes prepared".
+5. **CI documentation updated**: `docs/ci-configuration.md` reflects current fix status.
+6. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 170.
+7. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅.

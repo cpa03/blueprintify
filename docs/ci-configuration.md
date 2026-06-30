@@ -7,38 +7,36 @@
 The project requires Node.js 22+ (see `.nvmrc`, `.node-version`, `package.json` `engines`).
 Wrangler 4.x requires Node.js >=22 — the API build (`npm run build:api`) fails with Node 20.
 
-### ⚠️ Workflow Node Version: PENDING FIX (RepoKeeper Cycle 163)
+### ⚠️ Workflow Node Version: FIXES PREPARED (RepoKeeper Cycle 170)
 
-All CI workflow files **still use hardcoded `node-version: "20"`**. This does NOT match the project's Node.js 22+ requirement (see `.nvmrc`, `.node-version`).
+All CI workflow files **still use hardcoded `node-version: "20"`** on `main`. This does NOT match the project's Node.js 22+ requirement (see `.nvmrc`, `.node-version`).
 
-The fix (replace `node-version: "20"` with `node-version-file: ".node-version"`) was prepared on branch `chore/repokeeper-cycle-163` but **cannot be pushed via CI** because the GitHub App token lacks `workflows: write` permission.
+The fix (replace `node-version: "20"` with `node-version-file: ".node-version"`) was prepared on branch `chore/repokeeper-cycle-170` via `scripts/fix-ci-node-version.mjs` but **cannot be pushed** because the GitHub App token lacks `workflows: write` permission.
 
 #### Affected Files
 
-| File | Occurrences | Current | Required |
-|------|-------------|---------|----------|
+| File | Occurrences | Current | Required Fix |
+|------|-------------|---------|-------------|
 | `iterate.yml` | 5 | `node-version: "20"` | `node-version-file: ".node-version"` |
 | `parallel.yml` | 4 | `node-version: "20"` | `node-version-file: ".node-version"` |
 | `on-pull.yml` | 1 | `node-version: 20` | `node-version-file: ".node-version"` |
 | `pr-gatekeeper.yml` | 1 | `node-version: "20"` | `node-version-file: ".node-version"` |
+
+Additionally, BUG-014 — stale doc references in `main.yml` (`docs/bug.md`/`docs/feature.md` → `docs/bugs.md`/`docs/features.md`) — also fixed on the same branch.
 
 #### Applying the Fix
 
 A maintainer with `workflows: write` access must:
 
 ```bash
-# Option A: Run the fix script
+# Run the fix script
+git fetch origin
+git checkout -b fix/apply-ci-fixes origin/main
 node scripts/fix-ci-node-version.mjs
-
-# Option B: Manual changes
-# In each file listed above, replace:
-#   node-version: "20"  →  node-version-file: ".node-version"
-#   node-version: 20    →  node-version-file: ".node-version"
-
-# Commit and push
 git add .github/workflows/
-git commit -m "fix(ci): update node-version from 20 to 22 across all workflows"
-git push origin HEAD:main
+git commit -m "fix(ci): apply BUG-014 (stale doc refs) and BUG-017 (hardcoded node-version)"
+git push origin fix/apply-ci-fixes
+# Create PR
 ```
 
 #### Related Issues
