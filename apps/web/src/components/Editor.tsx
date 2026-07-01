@@ -34,7 +34,13 @@ import { useEditorStore, resetAllStores, useToast } from "../store";
 import { useExportContext } from "../context/ExportContext";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
-import { EDITOR_FILENAMES, VIEW_MODES, UI_TIMING, type EditorTab } from "@blueprint/shared";
+import {
+  EDITOR_FILENAMES,
+  VIEW_MODES,
+  UI_TIMING,
+  SKELETON_DEFAULTS,
+  type EditorTab,
+} from "@blueprint/shared";
 import {
   TIMEOUTS,
   UI,
@@ -71,8 +77,7 @@ const VIEW_MODE_SHORTCUT_MAP: Record<string, ViewMode> = {
  * Uses the editor-skeleton CSS classes defined in index.css with skeleton-block
  * shimmer animation for the code lines.
  */
-const LINE_NUMBERS = Array.from({ length: 15 }, (_, i) => i + 1);
-const CODE_LINE_WIDTHS = [65, 80, 45, 70, 55, 85, 40, 60, 75, 50, 68, 58, 72, 48, 62];
+const LINE_NUMBERS = Array.from({ length: SKELETON_DEFAULTS.EDITOR_LINE_COUNT }, (_, i) => i + 1);
 
 function EditorSkeleton({ isVisible }: { isVisible: boolean }): JSX.Element | null {
   if (!isVisible) return null;
@@ -90,9 +95,16 @@ function EditorSkeleton({ isVisible }: { isVisible: boolean }): JSX.Element | nu
         ))}
       </div>
       <div className="editor-skeleton-code">
-        {CODE_LINE_WIDTHS.map((width, i) => (
+        {SKELETON_DEFAULTS.EDITOR_LINE_WIDTHS.map((widthPct, i) => (
           <div key={i} className="editor-skeleton-code-line">
-            <div className="skeleton-block" style={{ width: `${width}%`, height: "14px" }} />
+            <div
+              className="skeleton-block"
+              style={{
+                width: `${widthPct}%`,
+                height: `${SKELETON_DEFAULTS.EDITOR_LINE_HEIGHT_PX}px`,
+                marginLeft: `${(SKELETON_DEFAULTS.EDITOR_LINE_INDENTS[i] ?? 0) * SKELETON_DEFAULTS.EDITOR_INDENT_MULTIPLIER_PX}px`,
+              }}
+            />
           </div>
         ))}
       </div>
