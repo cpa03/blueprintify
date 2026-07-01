@@ -38,6 +38,14 @@ import { EDITOR_ANIMATION, HEADER_ANIMATION, Z_INDEX } from "../../config/theme"
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import clsx from "clsx";
 
+const STAT_COLORS = {
+  CHAR_BASE: "#818cf8" as const,
+  WORD_BASE: "#b8c0cc" as const, // dark-400 fallback (secondary not in Tailwind config)
+  LINE_BASE: "#10b981" as const,
+  READING_BASE: "#06b6d4" as const,
+  FLASH_GREEN: "#34d399" as const,
+} as const;
+
 interface EditorHeaderProps {
   activeTab: EditorTab;
   setActiveTab: (tab: EditorTab) => void;
@@ -173,6 +181,7 @@ const ContentStats = React.memo(function ContentStats({
     rawReadingTime < 1
       ? EDITOR_LABELS.CONTENT_STATS.LESS_THAN_ONE_MIN
       : `${Math.round(rawReadingTime)} ${EDITOR_LABELS.CONTENT_STATS.READING_TIME}`;
+
   return (
     <AnimatePresence>
       {content && (
@@ -219,9 +228,13 @@ const ContentStats = React.memo(function ContentStats({
             <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.CHARS}</span>
             <motion.span
               key={charCount}
-              className="tabular-nums text-primary-400"
-              initial={{ opacity: 0.6, y: -3 }}
-              animate={{ opacity: 1, y: 0 }}
+              className="tabular-nums"
+              initial={{
+                opacity: 0.6,
+                y: -3,
+                color: isGenerating ? STAT_COLORS.FLASH_GREEN : STAT_COLORS.CHAR_BASE,
+              }}
+              animate={{ opacity: 1, y: 0, color: STAT_COLORS.CHAR_BASE }}
               transition={{ duration: ANIMATION.QUICK_FADE, ease: "easeOut" }}
             >
               {charCount.toLocaleString()}
@@ -232,9 +245,13 @@ const ContentStats = React.memo(function ContentStats({
             <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.WORDS}</span>
             <motion.span
               key={wordCount}
-              className="tabular-nums text-secondary-400"
-              initial={{ opacity: 0.6, y: -3 }}
-              animate={{ opacity: 1, y: 0 }}
+              className="tabular-nums"
+              initial={{
+                opacity: 0.6,
+                y: -3,
+                color: isGenerating ? STAT_COLORS.FLASH_GREEN : STAT_COLORS.WORD_BASE,
+              }}
+              animate={{ opacity: 1, y: 0, color: STAT_COLORS.WORD_BASE }}
               transition={{ duration: ANIMATION.QUICK_FADE, ease: "easeOut" }}
             >
               {wordCount.toLocaleString()}
@@ -245,9 +262,13 @@ const ContentStats = React.memo(function ContentStats({
             <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.LINES}</span>
             <motion.span
               key={lineCount}
-              className="tabular-nums text-accent-emerald"
-              initial={{ opacity: 0.6, y: -3 }}
-              animate={{ opacity: 1, y: 0 }}
+              className="tabular-nums"
+              initial={{
+                opacity: 0.6,
+                y: -3,
+                color: isGenerating ? STAT_COLORS.FLASH_GREEN : STAT_COLORS.LINE_BASE,
+              }}
+              animate={{ opacity: 1, y: 0, color: STAT_COLORS.LINE_BASE }}
               transition={{ duration: ANIMATION.QUICK_FADE, ease: "easeOut" }}
             >
               {lineCount.toLocaleString()}
