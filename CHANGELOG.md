@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 176 — CHANGELOG gap fix (2 post-Cycle-175 commits: footer external links, BroCula Jul 1 Run 1), doc sync (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,718/1,718 ✅)
+- chore(brocula): hunt report 2026-07-01 Run 1 — LH **99-100-100-100**, 1718 tests ✅ (723 web + 438 API + 557 shared), clean
+- feat(footer): convert technology labels into external links
 - chore(repokeeper): Cycle 175 — redundant script removal (`scripts/fix-ci-node-version.sh` superseded by `.mjs`), CHANGELOG gap fix (4 post-Cycle-174 commits: BugFixer Run 5, flexy Iteration 85 animation delays, BroCula Run 6, temp script cleanup), doc sync
 - chore(brocula): remove temp audit scripts
 - chore(brocula): hunt report 2026-06-30 Run 6 — LH **99-100-100-100**, 1717 tests ✅ (723 web + 438 API + 557 shared), clean
