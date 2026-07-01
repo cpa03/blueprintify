@@ -31,6 +31,7 @@ import { useWizardStore, useEditorStore, useToast, useToastStore } from "./store
 import { useOnlineStatus } from "./hooks";
 import {
   UI_CONTENT,
+  EXTERNAL_URLS,
   NETWORK_MESSAGES,
   ENTRANCE_STAGGER,
   ACCESSIBILITY_LABELS,
@@ -453,7 +454,24 @@ function App(): JSX.Element {
         />
         <div className={`${LAYOUT.FOOTER_CONTAINER} animate-slide-up`}>
           <p className="text-dark-500 hover:text-dark-300 transition-colors duration-200 hover:scale-[1.02]">
-            {UI_CONTENT.FOOTER.BUILT_WITH}
+            Built with ⚡{" "}
+            <a
+              href={EXTERNAL_URLS.CLOUDFLARE_WORKERS}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 transition-all duration-200"
+            >
+              Cloudflare Workers
+            </a>{" "}
+            +{" "}
+            <a
+              href={EXTERNAL_URLS.REACT}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 transition-all duration-200"
+            >
+              React
+            </a>
           </p>
           <p className="text-dark-500">{UI_CONTENT.FOOTER.COPYRIGHT}</p>
         </div>

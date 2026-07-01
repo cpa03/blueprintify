@@ -53,7 +53,9 @@ export const GENERATION_MESSAGES = SHARED_GENERATION_MESSAGES;
 export const EXTERNAL_URLS = {
   GITHUB: ENV.GITHUB_URL,
   PROJECT_HOMEPAGE: ENV.PROJECT_HOMEPAGE_URL,
-};
+  CLOUDFLARE_WORKERS: "https://workers.cloudflare.com/",
+  REACT: "https://react.dev/",
+} as const;
 
 /**
  * Vercel deployment detection hostnames
