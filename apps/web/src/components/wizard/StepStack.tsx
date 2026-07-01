@@ -432,7 +432,7 @@ export const StepStack = memo(function StepStack({
                 d="M15 19l-7-7 7-7"
               />
             </svg>
-            {UI_CONTENT.BUTTONS.BACK}
+            {UI_CONTENT.BUTTONS.BACK_TO_INFO}
             <kbd
               className="px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
               aria-hidden="true"
