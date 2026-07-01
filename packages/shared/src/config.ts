@@ -1888,6 +1888,24 @@ export const SCROLL_THRESHOLD_DEFAULTS = {
 } as const;
 
 /**
+ * Scroll Progress Bar Defaults
+ * Centralized source of truth for scroll progress bar UI constants.
+ * Flexy says: No hardcoded 80/2/3 pixel values in progress bar components!
+ * Usage: import { SCROLL_PROGRESS_DEFAULTS } from "@blueprint/shared";
+ *        showAfter={SCROLL_PROGRESS_DEFAULTS.PAGE_PROGRESS_SHOW_AFTER_PX}
+ */
+export const SCROLL_PROGRESS_DEFAULTS = {
+  /** Scroll threshold before page-level progress bar appears (80px) */
+  PAGE_PROGRESS_SHOW_AFTER_PX: 80,
+  /** Height of the page-level progress bar in pixels (2px) */
+  PAGE_PROGRESS_BAR_HEIGHT_PX: 2,
+  /** Scroll threshold before editor-level progress bar appears (50px - same as HAS_SCROLLED_PX) */
+  EDITOR_PROGRESS_SHOW_AFTER_PX: 50,
+  /** Height of the editor-level progress bar in pixels (3px) */
+  EDITOR_PROGRESS_BAR_HEIGHT_PX: 3,
+} as const;
+
+/**
  * Textarea Dimension Defaults (pixels)
  * Centralized source of truth for textarea height constraints.
  * Flexy says: No hardcoded textarea pixel dimensions in components!

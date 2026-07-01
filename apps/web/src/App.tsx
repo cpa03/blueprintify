@@ -3,6 +3,7 @@ import {
   WIZARD_STEP_KEYS,
   SHORTCUT_DESCRIPTIONS,
   SCROLL_THRESHOLD_DEFAULTS,
+  SCROLL_PROGRESS_DEFAULTS,
   UI_TIMEOUTS,
 } from "@blueprint/shared";
 import { Header } from "./components/Header";
@@ -258,7 +259,10 @@ function App(): JSX.Element {
           out of the critical rendering path. Only mounts after 2s timeout. */}
       {deferMount && (
         <Suspense fallback={null}>
-          <PageScrollProgressBar showAfter={80} height={2} />
+          <PageScrollProgressBar
+            showAfter={SCROLL_PROGRESS_DEFAULTS.PAGE_PROGRESS_SHOW_AFTER_PX}
+            height={SCROLL_PROGRESS_DEFAULTS.PAGE_PROGRESS_BAR_HEIGHT_PX}
+          />
         </Suspense>
       )}
 
