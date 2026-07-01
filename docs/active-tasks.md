@@ -2,6 +2,25 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 176 — **CHANGELOG gap fix, doc sync** ✅
+
+### Task: Full repository audit, CHANGELOG gap fix (added 2 post-Cycle-175 commits: footer external links, BroCula Jul 1 Run 1 + Cycle 176 entry), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,718/1,718 ✅), PR creation
+
+- **Priority**: High
+- **Status**: ✅ Complete — PR created
+- **Objective**: Cycle 176 full repository audit — fix CHANGELOG gap (2 post-Cycle-175 commits: footer external links, BroCula Jul 1 Run 1 + Cycle 176 entry), sync docs (findings, active-tasks, knowledge-review, CHANGELOG), verify quality (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,718/1,718 ✅), create PR
+- **Actions**:
+  - [x] Full repository scan — no redundant/temp/unused source files found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK in non-test source code
+  - [x] **CHANGELOG gap fix**: Added 2 post-Cycle-175 commits (footer external links, BroCula Jul 1 Run 1) + Cycle 176 entry
+  - [x] **knowledge-review.md updated**: Last Review→Cycle 176, BroCula ref updated to Jul 1 Run 1 (LH 99-100-100-100, 1718 tests)
+  - [x] **findings.md updated**: Cycle 176 entry added
+  - [x] **active-tasks.md updated**: Cycle 176 entry added at top
+  - [x] **BUG-014/BUG-017 status verified**: Still present on main — same blocker as all prior 30+ cycles
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,718/1,718 ✅
+  - [x] PR created
+
 ## ✅ RepoKeeper Cycle 175 — **Redundant script removal, CHANGELOG gap fix, doc sync** ✅
 
 ### Task: Full repository audit, redundant `scripts/fix-ci-node-version.sh` removal (superseded by `scripts/fix-ci-node-version.mjs` — `.node-version` SSOT vs hardcoded "22", consistent with Cycle 169 cleanup), CHANGELOG gap fix (added 4 post-Cycle-174 commits: BugFixer Run 5, flexy Iteration 85 animation delays, BroCula Run 6, temp script cleanup + Cycle 175 entry), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,718/1,718 ✅), PR creation

@@ -3,6 +3,7 @@ import {
   WIZARD_STEP_KEYS,
   SHORTCUT_DESCRIPTIONS,
   SCROLL_THRESHOLD_DEFAULTS,
+  SCROLL_PROGRESS_DEFAULTS,
   UI_TIMEOUTS,
 } from "@blueprint/shared";
 import { Header } from "./components/Header";
@@ -182,6 +183,12 @@ function App(): JSX.Element {
   const handleHideEditorComplete = useCallback(() => {
     setShowEditor(false);
     setEditorExiting(false);
+    // After the editor panel unmounts and ShowEditorButton mounts,
+    // focus the toggle button so keyboard/screen-reader users don't
+    // lose their place in the document (WCAG 2.4.3 Focus Order).
+    requestAnimationFrame(() => {
+      document.querySelector<HTMLButtonElement>("[data-editor-toggle]")?.focus();
+    });
   }, []);
   const handleShowEditor = useCallback(() => setShowEditor(true), []);
   const handleShowShortcuts = useCallback(() => setShowShortcutsModal(true), []);
@@ -258,7 +265,10 @@ function App(): JSX.Element {
           out of the critical rendering path. Only mounts after 2s timeout. */}
       {deferMount && (
         <Suspense fallback={null}>
-          <PageScrollProgressBar showAfter={80} height={2} />
+          <PageScrollProgressBar
+            showAfter={SCROLL_PROGRESS_DEFAULTS.PAGE_PROGRESS_SHOW_AFTER_PX}
+            height={SCROLL_PROGRESS_DEFAULTS.PAGE_PROGRESS_BAR_HEIGHT_PX}
+          />
         </Suspense>
       )}
 
@@ -369,6 +379,7 @@ function App(): JSX.Element {
                     aria-label={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR}
                     title={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR_TITLE}
                     aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
+                    aria-controls="editor-panel"
                   >
                     <svg
                       className={`${ICON.LG} transition-transform duration-200 hover:rotate-90`}
@@ -398,6 +409,7 @@ function App(): JSX.Element {
                     aria-label={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR}
                     title={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR_TITLE}
                     aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
+                    aria-controls="editor-panel"
                   >
                     <svg
                       className={`${ICON.LG} transition-transform duration-200 hover:rotate-90`}

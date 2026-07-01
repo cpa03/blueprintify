@@ -34,6 +34,7 @@ import { useReducedMotion } from "../hooks/useReducedMotion";
 import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { ANIMATION } from "../config/constants";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
+import { SCROLL_PROGRESS_DEFAULTS } from "@blueprint/shared";
 
 interface PageScrollProgressBarProps {
   /**
@@ -59,8 +60,8 @@ interface PageScrollProgressBarProps {
  * @returns The rendered progress bar or null when not visible
  */
 function PageScrollProgressBarComponent({
-  showAfter = 80,
-  height = 2,
+  showAfter = SCROLL_PROGRESS_DEFAULTS.PAGE_PROGRESS_SHOW_AFTER_PX,
+  height = SCROLL_PROGRESS_DEFAULTS.PAGE_PROGRESS_BAR_HEIGHT_PX,
   className = "",
 }: PageScrollProgressBarProps): JSX.Element | null {
   const [scrollProgress, setScrollProgress] = useState(0);
