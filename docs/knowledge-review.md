@@ -12,21 +12,21 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-01 (RepoKeeper Cycle 175)
+**Last Review**: 2026-07-01 (RepoKeeper Cycle 176)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jun 30)` — matches latest audit `brocula-hunt-2026-06-30-run6.md` (BroCula Run 6 / LH **99-100-100-100**, 1717 tests ✅)
+- **README BroCula description verified**: `(Jun 17–Jul 1)` — matches latest audit `brocula-hunt-2026-07-01-run1.md` (BroCula Jul 1 Run 1 / LH **99-100-100-100**, 1718 tests ✅)
 - **Typecheck/Lint**: All clean (0 errors, 0 warnings)
 - **Build**: Clean ✅
 - **Tests**: **1,718/1,718 passing** (723 web + 438 API + 557 shared) ✅
 - **Secrets scan**: Clean ✅
 - **BUG-014/BUG-017 still present on main**: Workflow files unchanged — push blocked by `workflows: write` permission (same blocker as all prior 30+ cycles). Maintainer must run `scripts/fix-ci-node-version.mjs` or cherry-pick from branch.
-- **Redundant script removed**: `scripts/fix-ci-node-version.sh` deleted — superseded by `scripts/fix-ci-node-version.mjs` (`.node-version` SSOT vs hardcoded "22"). Consistent with Cycle 169 cleanup.
-- **CHANGELOG gap fix**: Added 4 post-Cycle-174 commits (BugFixer Run 5, flexy Iteration 85 animation delays, BroCula Run 6, temp script cleanup) + Cycle 175 entry.
+- **CHANGELOG gap fix**: Added 2 post-Cycle-175 commits (footer external links, BroCula Jul 1 Run 1) + Cycle 176 entry.
+- **Cycle 176**: Full repository audit, CHANGELOG gap fix (2 post-Cycle-175 commits: footer external links, BroCula Jul 1 Run 1), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,718/1,718 ✅), PR created.
 - **Cycle 175**: Full repository audit, redundant `scripts/fix-ci-node-version.sh` removed (superseded by `.mjs` version, consistent with Cycle 169 cleanup), CHANGELOG gap fix (4 post-Cycle-174 commits: BugFixer Run 5, flexy Iteration 85 animation delays, BroCula Run 6, temp script cleanup), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,718/1,718 ✅), PR created.
 - **Cycle 171**: Full repository audit, BUG-014/BUG-017 fixes prepared on branch (blocked by `workflows: write`), stale branch cleanup (`origin/fix/ci-node-version-22` deleted), CHANGELOG gap fix (3 post-Cycle-170 commits + Cycle 171 entry), README BroCula date drift fix, docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR created.
 - **Cycle 170**: Full repository audit, tracked `.patch` file removal (`docs/ci-workflow-fixes-cycle-jun-30-2026.patch`), CI workflow fixes prepared but blocked by `workflows: write` permission, CHANGELOG gap fix (added 4 post-Cycle-169 commits + Cycle 170 entry), ci-configuration.md updated, docs refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,701/1,701 ✅), PR created
