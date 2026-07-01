@@ -91,6 +91,7 @@ import {
   TOAST_STYLES,
   TOAST_DEFAULTS,
   SCROLL_THRESHOLD_DEFAULTS,
+  SCROLL_PROGRESS_DEFAULTS,
   TEXTAREA_DEFAULTS,
   TOOLTIP_DEFAULTS,
   UI_DEFAULTS,
@@ -2541,6 +2542,33 @@ describe("SCROLL_THRESHOLD_DEFAULTS", () => {
   it("should have SCROLL_TO_TOP greater than HEADER_SHADOW", () => {
     expect(SCROLL_THRESHOLD_DEFAULTS.SCROLL_TO_TOP_PX).toBeGreaterThan(
       SCROLL_THRESHOLD_DEFAULTS.HEADER_SHADOW_PX
+    );
+  });
+});
+
+describe("SCROLL_PROGRESS_DEFAULTS", () => {
+  it("should have all expected scroll progress values", () => {
+    expect(SCROLL_PROGRESS_DEFAULTS.PAGE_PROGRESS_SHOW_AFTER_PX).toBeGreaterThan(0);
+    expect(SCROLL_PROGRESS_DEFAULTS.PAGE_PROGRESS_BAR_HEIGHT_PX).toBeGreaterThan(0);
+    expect(SCROLL_PROGRESS_DEFAULTS.EDITOR_PROGRESS_SHOW_AFTER_PX).toBeGreaterThan(0);
+    expect(SCROLL_PROGRESS_DEFAULTS.EDITOR_PROGRESS_BAR_HEIGHT_PX).toBeGreaterThan(0);
+  });
+
+  it("should have all numeric values", () => {
+    const values = Object.values(SCROLL_PROGRESS_DEFAULTS);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(Number.isFinite(v)).toBe(true);
+    });
+  });
+
+  it("should have 4 entries", () => {
+    expect(Object.keys(SCROLL_PROGRESS_DEFAULTS).length).toBe(4);
+  });
+
+  it("should have PAGE_PROGRESS_SHOW_AFTER greater than EDITOR_PROGRESS_SHOW_AFTER", () => {
+    expect(SCROLL_PROGRESS_DEFAULTS.PAGE_PROGRESS_SHOW_AFTER_PX).toBeGreaterThan(
+      SCROLL_PROGRESS_DEFAULTS.EDITOR_PROGRESS_SHOW_AFTER_PX
     );
   });
 });

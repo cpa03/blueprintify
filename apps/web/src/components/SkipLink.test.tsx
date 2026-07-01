@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { SkipLink } from "./SkipLink";
+import { Z_INDEX } from "../config/theme";
 
 describe("SkipLink", () => {
   it("renders a link with correct href", () => {
@@ -43,6 +44,6 @@ describe("SkipLink", () => {
   it("has high z-index for focus state", () => {
     render(<SkipLink />);
     const link = screen.getByRole("link");
-    expect(link.className).toContain("z-[100]");
+    expect(link.style.zIndex).toBe(String(Z_INDEX.max));
   });
 });

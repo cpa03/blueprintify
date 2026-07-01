@@ -4,6 +4,7 @@ import { ANIMATION } from "../config/constants";
 import { SHADOWS, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
+import { SCROLL_PROGRESS_DEFAULTS } from "@blueprint/shared";
 import clsx from "clsx";
 
 interface ScrollProgressProps {
@@ -41,8 +42,8 @@ interface ScrollProgressProps {
  */
 export const ScrollProgress = memo(function ScrollProgress({
   scrollContainerRef,
-  showAfter = 50,
-  height = 3,
+  showAfter = SCROLL_PROGRESS_DEFAULTS.EDITOR_PROGRESS_SHOW_AFTER_PX,
+  height = SCROLL_PROGRESS_DEFAULTS.EDITOR_PROGRESS_BAR_HEIGHT_PX,
   className = "",
 }: ScrollProgressProps) {
   const [scrollProgress, setScrollProgress] = useState(0);

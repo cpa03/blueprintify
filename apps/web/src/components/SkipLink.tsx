@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { SKIP_LINK_ANIMATION } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { Z_INDEX } from "../config/theme";
 
 export const SkipLink = memo(function SkipLink(): JSX.Element {
   const shouldReduceMotion = useReducedMotion();
@@ -8,7 +9,7 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
   return (
     <a
       href="#main-content"
-      className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] 
+      className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4
                  focus:px-4 focus:py-2.5 focus:rounded-xl focus:font-medium
                  focus:outline-none focus:ring-2 focus:ring-primary-400/50 focus:ring-offset-2 focus:ring-offset-dark-950
                  group
@@ -21,6 +22,7 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
                  hover:scale-[1.02]"
       style={{
         willChange: shouldReduceMotion ? "auto" : "transform, opacity",
+        zIndex: Z_INDEX.max,
       }}
     >
       <span className="flex items-center gap-2">
