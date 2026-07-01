@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 175 — redundant script removal (`scripts/fix-ci-node-version.sh` superseded by `.mjs`), CHANGELOG gap fix (4 post-Cycle-174 commits: BugFixer Run 5, flexy Iteration 85 animation delays, BroCula Run 6, temp script cleanup), doc sync
+- chore(brocula): remove temp audit scripts
+- chore(brocula): hunt report 2026-06-30 Run 6 — LH **99-100-100-100**, 1717 tests ✅ (723 web + 438 API + 557 shared), clean
+- refactor(flexy): centralize remaining hardcoded animation delays and fill mode (Iteration 85)
+- docs(bugfixer): record BugFixer ULW Cycle Jun 30 2026 Run 5
 - docs(bugfixer): BugFixer Cycle Jun 30 2026 Run 4 — BUG-014/017 status update
 - chore(brocula): hunt report 2026-06-30 Run 5 — LH **98-100-100-100**, 1714 tests ✅ (723 web + 438 API + 553 shared), 1 test mock fix
 - feat(flexy): centralize scrollbar colors in shared config and CSS variables
