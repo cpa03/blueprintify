@@ -330,7 +330,7 @@ export const StepFeatures = memo(function StepFeatures({
         )}
 
         {/* Suggestions */}
-        {suggestedNotAdded.length > 0 && (
+        {(suggestedNotAdded.length > 0 || showAllAddedMsg) && (
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="label mb-0" id="suggestions-label">
@@ -339,31 +339,74 @@ export const StepFeatures = memo(function StepFeatures({
               <motion.button
                 type="button"
                 onClick={handleAddAllSuggestions}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+                disabled={showAllAddedMsg}
+                whileHover={showAllAddedMsg ? {} : { scale: 1.03 }}
+                whileTap={showAllAddedMsg ? {} : { scale: 0.97 }}
                 transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
-                className="text-xs text-primary-400 hover:text-primary-300
-                           focus-visible:outline-none focus-visible:ring-2
-                           focus-visible:ring-primary-500/50 rounded px-2 py-1
-                           transition-colors flex items-center gap-1
-                           bg-primary-500/10 hover:bg-primary-500/20"
-                aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_ALL_SUGGESTIONS}
+                className={`text-xs rounded px-2 py-1 transition-all duration-300 flex items-center gap-1 ${
+                  showAllAddedMsg
+                    ? "bg-accent-emerald/15 text-accent-emerald border border-accent-emerald/30"
+                    : "text-primary-400 hover:text-primary-300 bg-primary-500/10 hover:bg-primary-500/20"
+                } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50`}
+                aria-label={
+                  showAllAddedMsg
+                    ? ACCESSIBILITY_LABELS.WIZARD_FEATURES.ALL_SUGGESTIONS_ADDED
+                    : ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_ALL_SUGGESTIONS
+                }
               >
-                <svg
-                  className="w-3.5 h-3.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-                {UI_CONTENT.WIZARD.STEP_FEATURES.ADD_ALL_SUGGESTIONS}
+                <AnimatePresence mode="wait">
+                  {showAllAddedMsg ? (
+                    <motion.span
+                      key="checkmark"
+                      className="inline-flex items-center gap-1"
+                      initial={{ scale: 0.5, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.5, opacity: 0 }}
+                      transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK }}
+                    >
+                      <svg
+                        className="w-3.5 h-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      {UI_CONTENT.WIZARD.STEP_FEATURES.ALL_SUGGESTIONS_ADDED}
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="plus"
+                      className="inline-flex items-center gap-1"
+                      initial={{ scale: 0.5, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.5, opacity: 0 }}
+                      transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK }}
+                    >
+                      <svg
+                        className="w-3.5 h-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 4v16m8-8H4"
+                        />
+                      </svg>
+                      {UI_CONTENT.WIZARD.STEP_FEATURES.ADD_ALL_SUGGESTIONS}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </motion.button>
             </div>
             <div className="flex flex-wrap gap-2" role="group" aria-labelledby="suggestions-label">
