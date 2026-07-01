@@ -71,6 +71,9 @@ function ShowEditorButtonComponent({
           className={`${BUTTON.SHOW_EDITOR_FAB} ${hasContent || isGenerating ? "glow-pulse" : ""}`}
           aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
           title={buttonTitle}
+          data-editor-toggle="true"
+          aria-expanded={false}
+          aria-controls="editor-panel"
         >
           <span className="flex items-center">
             <svg
