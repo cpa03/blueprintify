@@ -237,7 +237,7 @@ export const ScrollProgressCompact = memo(function ScrollProgressCompact({
       {showPercentage && (
         <motion.span
           className={clsx(
-            "text-xs tabular-nums min-w-[2.5rem] text-right",
+            "text-xs tabular-nums min-w-2.5 text-right",
             scrollProgress > 75 && "text-accent-emerald",
             scrollProgress > 50 && scrollProgress <= 75 && "text-accent-purple",
             scrollProgress <= 50 && "text-dark-400"

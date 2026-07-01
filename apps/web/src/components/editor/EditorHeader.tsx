@@ -222,7 +222,7 @@ const ContentStats = React.memo(function ContentStats({
                   ...SPRING_CONFIG.SNAPPY,
                 }
           }
-          className="hidden md:flex items-center gap-3 text-[10px] uppercase tracking-wider font-bold text-dark-400 bg-dark-800/50 px-2 py-1 rounded-md border"
+          className="hidden md:flex items-center gap-3 text-2xs uppercase tracking-wider font-bold text-dark-400 bg-dark-800/50 px-2 py-1 rounded-md border"
         >
           <div className="flex items-center gap-1">
             <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.CHARS}</span>
@@ -302,7 +302,7 @@ const ContentStats = React.memo(function ContentStats({
             transition={{ duration: ANIMATION.QUICK_FADE, ease: "easeOut" }}
           >
             <kbd
-              className="px-1 py-0.5 bg-dark-700 rounded text-[9px] font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"
+              className="px-1 py-0.5 bg-dark-700 rounded text-3xs font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"
               aria-hidden="true"
             >
               ?

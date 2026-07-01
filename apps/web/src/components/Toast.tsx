@@ -232,7 +232,7 @@ const ToastItem = memo(
               exit: { opacity: 0, y: -20, scale: 0.9 },
               transition: defaultTransition,
             })}
-        className={`pointer-events-auto px-4 py-3 rounded-xl border backdrop-blur-sm shadow-lg flex items-center gap-3 min-w-[280px] max-w-md relative overflow-hidden group ${toastStyles[toast.type]}`}
+        className={`pointer-events-auto px-4 py-3 rounded-xl border backdrop-blur-sm shadow-lg flex items-center gap-3 min-w-70 max-w-md relative overflow-hidden group ${toastStyles[toast.type]}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onFocus={handleMouseEnter}

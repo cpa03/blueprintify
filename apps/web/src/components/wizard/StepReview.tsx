@@ -346,7 +346,7 @@ export const StepReview = memo(function StepReview({
               </svg>
               {UI_CONTENT.BUTTONS.BACK_TO_FEATURES}
               <kbd
-                className="px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none animate-fade-in"
+                className="px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none animate-fade-in"
                 style={{
                   animationDelay: `${ANIMATION_ENTRANCE_DELAYS.TWO_THIRDS}s`,
                   animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
@@ -426,7 +426,7 @@ export const StepReview = memo(function StepReview({
                   </svg>
                   Generate Blueprint
                   <kbd
-                    className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none animate-fade-in"
+                    className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none animate-fade-in"
                     style={{
                       animationDelay: `${ANIMATION_ENTRANCE_DELAYS.SEVEN_TENTHS}s`,
                       animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,

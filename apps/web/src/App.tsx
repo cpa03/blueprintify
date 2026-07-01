@@ -59,7 +59,7 @@ function TemplateGridSkeleton(): JSX.Element {
       <div className="h-5 w-80 bg-dark-700 rounded-lg mb-6 animate-pulse" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="glass-card p-5 min-h-[140px]">
+          <div key={i} className="glass-card p-5 min-h-35">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 bg-dark-700 rounded-lg animate-pulse flex-shrink-0" />
               <div className="flex-1 space-y-3">
@@ -430,7 +430,7 @@ function App(): JSX.Element {
 
                 <Suspense
                   fallback={
-                    <div className="h-full min-h-[400px] flex items-center justify-center text-dark-500">
+                    <div className="h-full min-h-100 flex items-center justify-center text-dark-500">
                       <div className="flex flex-col items-center gap-2">
                         <div className={SPINNER.DEFAULT}></div>
                         <span>{UI_CONTENT.EDITOR.LOADING}</span>

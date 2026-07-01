@@ -4,6 +4,29 @@ export default {
   darkMode: "class",
   theme: {
     extend: {
+      /** Flexy says: Font sizes centralized here, not as arbitrary values in components! */
+      fontSize: {
+        "3xs": ["9px", { lineHeight: "1rem" }],
+        "2xs": ["10px", { lineHeight: "1rem" }],
+        "sm-xs": ["11px", { lineHeight: "1.25rem" }],
+      },
+      /** Flexy says: Common dimension tokens to eliminate arbitrary min/max values */
+      minWidth: {
+        2.5: "2.5rem",
+        7: "28px",
+        11: "44px",
+        70: "280px",
+      },
+      minHeight: {
+        11: "44px",
+        35: "140px",
+        100: "400px",
+        150: "600px",
+      },
+      maxHeight: {
+        "50vh": "50vh",
+        "85vh": "85vh",
+      },
       colors: {
         // Premium dark theme palette
         dark: {

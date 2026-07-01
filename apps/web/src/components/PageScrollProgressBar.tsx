@@ -285,7 +285,7 @@ function PageScrollProgressBarComponent({
             transition={{ duration: ANIMATION.HOVER_POPUP, ease: "easeOut" }}
           >
             <div className="bg-dark-800/90 backdrop-blur-sm border border-dark-600/60 rounded-md px-1.5 py-0.5 shadow-lg shadow-dark-950/40">
-              <span className="text-[10px] font-semibold tabular-nums text-primary-300">
+              <span className="text-2xs font-semibold tabular-nums text-primary-300">
                 {hoverProgress}%
               </span>
             </div>

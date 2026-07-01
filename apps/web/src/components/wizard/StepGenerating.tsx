@@ -392,7 +392,7 @@ export const StepGenerating = memo(function StepGenerating({
                 </svg>
                 {WIZARD_GENERATING_LABELS.VIEW_IN_EDITOR}
                 <kbd
-                  className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                  className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
                   aria-hidden="true"
                 >
                   {getModifierLabel()}+E
@@ -426,7 +426,7 @@ export const StepGenerating = memo(function StepGenerating({
                 </svg>
                 {WIZARD_GENERATING_LABELS.BACK_TO_REVIEW}
                 <kbd
-                  className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                  className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
                   aria-hidden="true"
                 >
                   {getAltKeyLabel()}+←
@@ -507,7 +507,7 @@ export const StepGenerating = memo(function StepGenerating({
                 </svg>
                 {GENERATION_ERROR_LABELS.BACK_TO_REVIEW}
                 <kbd
-                  className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                  className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
                   aria-hidden="true"
                 >
                   {getAltKeyLabel()}+←
@@ -580,7 +580,7 @@ export const StepGenerating = memo(function StepGenerating({
                   </svg>
                   {WIZARD_GENERATING_LABELS.CANCEL_GENERATION}
                   <kbd
-                    className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                    className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
                     aria-hidden="true"
                   >
                     Esc
