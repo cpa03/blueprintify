@@ -35,6 +35,7 @@ import {
   ANIMATION,
   GENERATION_ESTIMATES,
   ACCESSIBILITY_LABELS,
+  UI_CONTENT,
   WIZARD_REVIEW_DESCRIPTIONS,
   WIZARD_REVIEW_EDIT_SHORTCUTS,
 } from "../../config/constants";
@@ -343,7 +344,7 @@ export const StepReview = memo(function StepReview({
                   d="M15 19l-7-7 7-7"
                 />
               </svg>
-              Back
+              {UI_CONTENT.BUTTONS.BACK_TO_FEATURES}
               <kbd
                 className="px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none animate-fade-in"
                 style={{
