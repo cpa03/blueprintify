@@ -183,6 +183,12 @@ function App(): JSX.Element {
   const handleHideEditorComplete = useCallback(() => {
     setShowEditor(false);
     setEditorExiting(false);
+    // After the editor panel unmounts and ShowEditorButton mounts,
+    // focus the toggle button so keyboard/screen-reader users don't
+    // lose their place in the document (WCAG 2.4.3 Focus Order).
+    requestAnimationFrame(() => {
+      document.querySelector<HTMLButtonElement>("[data-editor-toggle]")?.focus();
+    });
   }, []);
   const handleShowEditor = useCallback(() => setShowEditor(true), []);
   const handleShowShortcuts = useCallback(() => setShowShortcutsModal(true), []);
@@ -373,6 +379,7 @@ function App(): JSX.Element {
                     aria-label={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR}
                     title={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR_TITLE}
                     aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
+                    aria-controls="editor-panel"
                   >
                     <svg
                       className={`${ICON.LG} transition-transform duration-200 hover:rotate-90`}
@@ -402,6 +409,7 @@ function App(): JSX.Element {
                     aria-label={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR}
                     title={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR_TITLE}
                     aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
+                    aria-controls="editor-panel"
                   >
                     <svg
                       className={`${ICON.LG} transition-transform duration-200 hover:rotate-90`}
