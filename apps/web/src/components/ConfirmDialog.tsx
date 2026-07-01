@@ -222,14 +222,14 @@ export const ConfirmDialog = memo(function ConfirmDialog({
 
               {/* Keyboard shortcut hints */}
               <div className="flex items-center justify-center gap-4 mt-4 pt-3 border-t border-dark-700/50">
-                <span className="flex items-center gap-1.5 text-[11px] text-dark-500">
-                  <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-400 border border-dark-600/50 leading-none">
+                <span className="flex items-center gap-1.5 text-sm-xs text-dark-500">
+                  <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-400 border border-dark-600/50 leading-none">
                     {CONFIRM_DIALOG_HINTS.ENTER_KEY}
                   </kbd>
                   <span>{CONFIRM_DIALOG_HINTS.TO_CONFIRM}</span>
                 </span>
-                <span className="flex items-center gap-1.5 text-[11px] text-dark-500">
-                  <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-400 border border-dark-600/50 leading-none">
+                <span className="flex items-center gap-1.5 text-sm-xs text-dark-500">
+                  <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-400 border border-dark-600/50 leading-none">
                     {CONFIRM_DIALOG_HINTS.ESC_KEY}
                   </kbd>
                   <span>{CONFIRM_DIALOG_HINTS.TO_CANCEL}</span>

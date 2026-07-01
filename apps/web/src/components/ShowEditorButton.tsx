@@ -112,7 +112,7 @@ function ShowEditorButtonComponent({
               />
             )}
             <kbd
-              className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none animate-fade-in"
+              className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none animate-fade-in"
               style={{
                 animationDelay: `${ANIMATION_ENTRANCE_DELAYS.NEARLY_HALF}s`,
                 animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,

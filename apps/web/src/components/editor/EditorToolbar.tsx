@@ -162,7 +162,7 @@ function EditorToolbarComponent({
               role="radio"
               aria-checked={viewMode === mode}
               className={clsx(
-                "px-4 py-2 rounded text-xs font-medium transition-colors duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center relative z-10",
+                "px-4 py-2 rounded text-xs font-medium transition-colors duration-200 min-w-11 min-h-11 flex items-center justify-center relative z-10",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950",
                 viewMode === mode ? "text-white" : "text-dark-400 hover:text-white"
               )}
@@ -435,7 +435,7 @@ function EditorToolbarComponent({
           </motion.svg>
           New
           <kbd
-            className="ml-1.5 px-1 py-0.5 bg-dark-700/80 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none"
+            className="ml-1.5 px-1 py-0.5 bg-dark-700/80 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none"
             aria-hidden="true"
           >
             {getModifierLabel()}+N

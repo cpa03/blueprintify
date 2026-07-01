@@ -280,7 +280,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
           >
             <div
               ref={containerRef as React.RefObject<HTMLDivElement>}
-              className="glass-card w-full max-w-2xl max-h-[85vh] overflow-hidden pointer-events-auto shadow-2xl shadow-dark-950/50"
+              className="glass-card w-full max-w-2xl max-h-85vh overflow-hidden pointer-events-auto shadow-2xl shadow-dark-950/50"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between px-6 py-4 border-b border-dark-700/50">
@@ -380,7 +380,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                 </div>
               </div>
 
-              <div className="p-6 overflow-y-auto overscroll-contain max-h-[50vh] space-y-6">
+              <div className="p-6 overflow-y-auto overscroll-contain max-h-50vh space-y-6">
                 {hasResults ? (
                   entries.map(([category, categoryShortcuts], categoryIndex) => (
                     <motion.div
@@ -401,7 +401,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                         </h3>
                         <div className="flex-1 h-px bg-dark-700/50 ml-2" />
                         {searchQuery && (
-                          <span className="text-[10px] text-dark-500 tabular-nums">
+                          <span className="text-2xs text-dark-500 tabular-nums">
                             {categoryShortcuts.length}
                           </span>
                         )}
@@ -425,7 +425,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                             <div className="flex items-center gap-1">
                               {shortcut.keys.map((key, keyIndex) => (
                                 <span key={keyIndex} className="flex items-center">
-                                  <kbd className="px-2 py-1 bg-dark-700 border border-dark-600 rounded-lg text-xs font-mono text-white shadow-sm min-w-[28px] text-center">
+                                  <kbd className="px-2 py-1 bg-dark-700 border border-dark-600 rounded-lg text-xs font-mono text-white shadow-sm min-w-7 text-center">
                                     {key}
                                   </kbd>
                                   {keyIndex < shortcut.keys.length - 1 && (

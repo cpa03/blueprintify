@@ -546,7 +546,7 @@ export const StepFeatures = memo(function StepFeatures({
             </svg>
             {UI_CONTENT.BUTTONS.BACK_TO_STACK}
             <kbd
-              className="px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+              className="px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
               aria-hidden="true"
             >
               {getAltKeyLabel()}+←
@@ -565,7 +565,7 @@ export const StepFeatures = memo(function StepFeatures({
           >
             {UI_CONTENT.WIZARD.STEP_FEATURES.NEXT_BUTTON}
             <kbd
-              className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-[11px] font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+              className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
               aria-hidden="true"
             >
               {modifierKey}+↵

@@ -51,7 +51,7 @@ export const LAYOUT = {
   HERO_SECTION: "text-center mb-12",
   HERO_TITLE: "text-4xl sm:text-5xl font-bold text-white mb-4",
   HERO_SUBTITLE: "text-lg text-dark-400 max-w-2xl mx-auto",
-  SPLIT_PANE: "flex flex-col lg:flex-row gap-6 min-h-[600px]",
+  SPLIT_PANE: "flex flex-col lg:flex-row gap-6 min-h-150",
   /** Glass card with overflow hidden */
   GLASS_CARD: "glass-card overflow-hidden relative",
   /** Glass card with width transition */

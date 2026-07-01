@@ -87,7 +87,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
             >
               {tabEmojis[tab]}
             </motion.span>
-            <span className="text-[10px] text-dark-500 font-mono">{label}</span>
+            <span className="text-2xs text-dark-500 font-mono">{label}</span>
           </motion.div>
 
           {siblingTabHasContent && !isGenerating && (
@@ -195,11 +195,11 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
                 ...SPRING_CONFIG.SNAPPY,
               }}
             >
-              <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none">
+              <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
                 ←
               </kbd>
               <span className="text-dark-500">/</span>
-              <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none">
+              <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
                 →
               </kbd>
               <span>{EDITOR_LABELS.TAB_NAVIGATION.SWITCH_TABS}</span>

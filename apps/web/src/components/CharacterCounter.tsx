@@ -121,7 +121,7 @@ function CharacterCounterCompactComponent({
         />
       </div>
       <span
-        className={`text-[10px] tabular-nums ${
+        className={`text-2xs tabular-nums ${
           isDanger ? "text-accent-pink font-bold" : "text-dark-500"
         }`}
         aria-hidden="true"

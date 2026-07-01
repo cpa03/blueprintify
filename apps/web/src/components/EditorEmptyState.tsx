@@ -189,27 +189,27 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
         variants={fadeInUp}
       >
         <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-dark-800/50 border border-dark-700/50">
-          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none">
+          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
             ?
           </kbd>
           <span>Keyboard shortcuts</span>
         </span>
         <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-dark-800/50 border border-dark-700/50">
-          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none">
+          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
             {modifierKey}
           </kbd>
           <span className="text-dark-500">+</span>
-          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none">
+          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
             ↵
           </kbd>
           <span>Submit wizard</span>
         </span>
         <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-dark-800/50 border border-dark-700/50">
-          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none">
+          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
             {altKey}
           </kbd>
           <span className="text-dark-500">+</span>
-          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-[10px] font-mono text-dark-300 border border-dark-600/50 leading-none">
+          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
             →
           </kbd>
           <span>Next step</span>
