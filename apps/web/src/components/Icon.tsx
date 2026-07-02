@@ -40,6 +40,7 @@ const Icon = memo(function Icon({
       fill="none"
       stroke="currentColor"
       viewBox={icon.viewBox}
+      role={ariaLabel ? "img" : undefined}
       aria-hidden={!ariaLabel}
       aria-label={ariaLabel}
     >
