@@ -2,6 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 179 — **Full audit, CHANGELOG gap fix, BroCula ref drift fix (Run 3→Jul 2 Run 1), doc sync** ✅
+
+### Task: Full repository audit, CHANGELOG gap fix (added 5 post-Cycle-178 commits: footer external link indicators, config literal consolidation, BroCula Jul 2 Run 1, wrangler validation enhancement, auth privilege escalation fix + Cycle 179 entry), BroCula ref drift fix in knowledge-review.md (Jul 1 Run 3→Jul 2 Run 1 — latest: `brocula-hunt-2026-07-02-run1.md` / LH **99-100-100-100**, **1730 tests** ✅), test count correction (1,722→1,730 — shared +8: 561→569), README BroCula date drift fix (Jun 17–Jul 1 → Jun 17–Jul 2), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,730/1,730 ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 179 full repository audit — fix CHANGELOG gap (5 post-Cycle-178 commits: footer external links, config literal consolidation, BroCula Jul 2 Run 1, wrangler validation, auth privilege escalation fix + Cycle 179 entry), fix BroCula ref drift in knowledge-review.md (Jul 1 Run 3→Jul 2 Run 1 — latest: `brocula-hunt-2026-07-02-run1.md` / LH **99-100-100-100**, 1730 tests ✅), fix test count drift (1,722→1,730 — shared +8), fix README BroCula date drift (Jun 17–Jul 1 → Jun 17–Jul 2), sync docs (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), verify quality (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,730/1,730 ✅)
+- **Actions**:
+  - [x] Full repository scan — no redundant/temp/unused source files found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK in non-test source code
+  - [x] No stale merged remote branches — all have unique unmerged commits
+  - [x] **CHANGELOG gap fix**: Added 5 post-Cycle-178 commits (footer external links, config literal consolidation, BroCula Jul 2 Run 1, wrangler validation, auth privilege escalation fix) + Cycle 179 entry
+  - [x] **knowledge-review.md updated**: Last Review→Cycle 179, BroCula ref→Jul 2 Run 1 (LH 99-100-100-100, 1730 tests), README date→Jun 17–Jul 2
+  - [x] **README BroCula date drift fix**: `(Jun 17–Jul 1)` → `(Jun 17–Jul 2)`
+  - [x] **docs/audits/README.md updated**: Jul 2 Run 1 test count 1,722→1,730 (shared 561→569)
+  - [x] **findings.md updated**: Cycle 179 entry added
+  - [x] **active-tasks.md updated**: Cycle 179 entry added at top
+  - [x] **BUG-014/BUG-017 status verified**: Still present on main — same blocker as all prior 30+ cycles
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,730/1,730 ✅
+
 ## ✅ RepoKeeper Cycle 178 — **CHANGELOG gap fix, BroCula ref drift fix, doc sync** ✅
 
 ### Task: Full repository audit, CHANGELOG gap fix (added 2 post-Cycle-177 commits: BroCula Jul 1 Run 3, feat(features) confirmation animation + Cycle 178 entry), BroCula ref drift fix in knowledge-review.md (Run 2→Run 3 — latest: `brocula-hunt-2026-07-01-run3.md` / LH **98-100-100-100**, 1722 tests ✅), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,722/1,722 ✅)
