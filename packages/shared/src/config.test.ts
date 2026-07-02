@@ -113,6 +113,7 @@ import {
   SVG_TRANSITION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
   ANIMATION_ENTRANCE_DELAYS_MS,
+  hexToRgba,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -3113,5 +3114,42 @@ describe("SCROLLBAR_COLORS", () => {
 
   it("should have exactly 2 entries", () => {
     expect(Object.keys(SCROLLBAR_COLORS).length).toBe(2);
+  });
+});
+
+// ============================================================================
+// hexToRgba
+// ============================================================================
+describe("hexToRgba", () => {
+  it('should convert "#6366f1" with 0.1 opacity to correct rgba string', () => {
+    expect(hexToRgba("#6366f1", 0.1)).toBe("rgba(99, 102, 241, 0.1)");
+  });
+
+  it("should handle hex without # prefix", () => {
+    expect(hexToRgba("6366f1", 0.3)).toBe("rgba(99, 102, 241, 0.3)");
+  });
+
+  it("should handle 0 opacity", () => {
+    expect(hexToRgba("#6366f1", 0)).toBe("rgba(99, 102, 241, 0)");
+  });
+
+  it("should handle 1 opacity", () => {
+    expect(hexToRgba("#6366f1", 1)).toBe("rgba(99, 102, 241, 1)");
+  });
+
+  it("should handle accent purple hex", () => {
+    expect(hexToRgba("#8b5cf6", 0.4)).toBe("rgba(139, 92, 246, 0.4)");
+  });
+
+  it("should handle accent pink hex", () => {
+    expect(hexToRgba("#ec4899", 0.1)).toBe("rgba(236, 72, 153, 0.1)");
+  });
+
+  it("should handle black (#000000)", () => {
+    expect(hexToRgba("#000000", 0.5)).toBe("rgba(0, 0, 0, 0.5)");
+  });
+
+  it("should handle white (#ffffff)", () => {
+    expect(hexToRgba("#ffffff", 0.8)).toBe("rgba(255, 255, 255, 0.8)");
   });
 });

@@ -2377,3 +2377,21 @@ export const SCROLLBAR_COLORS = {
   /** Scrollbar track color — dark slate-900, subtle background for the scrollbar track */
   TRACK: "#0f172a",
 } as const;
+
+/**
+ * Hex Color to RGBA Helper
+ * Converts a hex color string (with or without # prefix) to a CSS rgba() string
+ * with the specified opacity. Ensures all rgba color references remain in sync
+ * with their source hex values — changing a single hex color auto-propagates.
+ * Flexy says: No hardcoded "rgba(99, 102, 241, 0.1)" duplicates of hex colors!
+ * Usage: import { hexToRgba } from "@blueprint/shared";
+ *        hexToRgba("#6366f1", 0.1) => "rgba(99, 102, 241, 0.1)"
+ *        hexToRgba(COLORS.primary[500], 0.3) => "rgba(99, 102, 241, 0.3)"
+ */
+export function hexToRgba(hex: string, opacity: number): string {
+  const cleanHex = hex.replace("#", "");
+  const r = Number.parseInt(cleanHex.substring(0, 2), 16);
+  const g = Number.parseInt(cleanHex.substring(2, 4), 16);
+  const b = Number.parseInt(cleanHex.substring(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}

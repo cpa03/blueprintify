@@ -180,6 +180,7 @@ export {
   SKELETON_DEFAULTS,
   ENTRANCE_STAGGER_DEFAULTS,
   SCROLLBAR_COLORS,
+  hexToRgba,
 } from "./config.js";
 
 export type { RetryOptions } from "./config.js";

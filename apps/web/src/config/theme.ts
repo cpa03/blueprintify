@@ -4,9 +4,18 @@
  * Flexy says: No hardcoded values - everything configurable!
  */
 
+import { hexToRgba } from "@blueprint/shared";
+
 // ============================================================================
 // Color Palette
 // ============================================================================
+
+// ============================================================================
+// Color Primitives — standalone values (extracted to break circular refs in gradients)
+// ============================================================================
+const _P500 = "#6366f1";
+const _APURPLE = "#8b5cf6";
+const _APINK = "#ec4899";
 
 export const COLORS = {
   // Primary brand colors
@@ -16,7 +25,7 @@ export const COLORS = {
     200: "#c7d2fe",
     300: "#a5b4fc",
     400: "#818cf8",
-    500: "#6366f1",
+    500: _P500,
     600: "#4f46e5",
     700: "#4338ca",
     800: "#3730a3",
@@ -42,8 +51,8 @@ export const COLORS = {
   // Accent colors
   accent: {
     cyan: "#06b6d4",
-    purple: "#8b5cf6",
-    pink: "#ec4899",
+    purple: _APURPLE,
+    pink: _APINK,
     emerald: "#10b981",
     yellow: "#eab308",
     violet: "#a855f7",
@@ -58,16 +67,16 @@ export const COLORS = {
     danger: "#f43f5e",
   },
 
-  // Gradient stops
+  // Gradient stops — derived from color primitives via hexToRgba()
   gradients: {
     primary: {
-      start: "rgba(99, 102, 241, 0.1)",
-      middle: "rgba(139, 92, 246, 0.1)",
-      end: "rgba(236, 72, 153, 0.1)",
+      start: hexToRgba(_P500, 0.1),
+      middle: hexToRgba(_APURPLE, 0.1),
+      end: hexToRgba(_APINK, 0.1),
     },
     glow: {
-      start: "rgba(99, 102, 241, 0.3)",
-      end: "rgba(99, 102, 241, 0.6)",
+      start: hexToRgba(_P500, 0.3),
+      end: hexToRgba(_P500, 0.6),
     },
   },
 
@@ -240,24 +249,25 @@ export const TYPOGRAPHY = {
 
 export const SHADOWS = {
   // Glow effects
+  // Flexy says: Use hexToRgba(COLORS.*, opacity) instead of hardcoded rgba strings!
   glow: {
     primary: {
-      start: "0 0 20px rgba(99, 102, 241, 0.3)",
-      end: "0 0 40px rgba(99, 102, 241, 0.6)",
+      start: `0 0 20px ${hexToRgba(COLORS.primary[500], 0.3)}`,
+      end: `0 0 40px ${hexToRgba(COLORS.primary[500], 0.6)}`,
     },
     /** Scroll progress bar glow variants */
     scroll: {
       /** Subtle primary glow */
-      SUBTLE: "0 0 8px rgba(99, 102, 241, 0.3)",
+      SUBTLE: `0 0 8px ${hexToRgba(COLORS.primary[500], 0.3)}`,
       /** Medium purple glow */
-      MEDIUM: "0 0 16px rgba(139, 92, 246, 0.4)",
+      MEDIUM: `0 0 16px ${hexToRgba(COLORS.accent.purple, 0.4)}`,
       /** No glow (zero opacity) */
-      NONE: "0 0 0px rgba(99, 102, 241, 0)",
+      NONE: `0 0 0px ${hexToRgba(COLORS.primary[500], 0)}`,
     },
   },
 
   /** Glow gradient for scroll progress bar */
-  SCROLL_GLOW_GRADIENT: "linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent)",
+  SCROLL_GLOW_GRADIENT: `linear-gradient(90deg, transparent, ${hexToRgba(COLORS.accent.purple, 0.3)}, transparent)`,
 
   // Box shadows
   box: {
