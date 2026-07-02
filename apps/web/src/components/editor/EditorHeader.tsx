@@ -34,16 +34,16 @@ import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { Icon } from "../Icon";
 import { LastSavedIndicator } from "../LastSavedIndicator";
 import { SPRING_CONFIG, EDITOR_LABELS, ANIMATION, EDITOR_TABS } from "../../config/constants";
-import { EDITOR_ANIMATION, HEADER_ANIMATION, Z_INDEX } from "../../config/theme";
+import { COLORS, EDITOR_ANIMATION, HEADER_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import clsx from "clsx";
 
 const STAT_COLORS = {
-  CHAR_BASE: "#818cf8" as const,
-  WORD_BASE: "#b8c0cc" as const, // dark-400 fallback (secondary not in Tailwind config)
-  LINE_BASE: "#10b981" as const,
-  READING_BASE: "#06b6d4" as const,
-  FLASH_GREEN: "#34d399" as const,
+  CHAR_BASE: COLORS.primary[400],
+  WORD_BASE: COLORS.dark[400],
+  LINE_BASE: COLORS.accent.emerald,
+  READING_BASE: COLORS.accent.cyan,
+  FLASH_GREEN: COLORS.celebration.emeraldLight,
 } as const;
 
 interface EditorHeaderProps {

@@ -1452,3 +1452,23 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run test:all` — 723 web + 438 api + 556 shared = 1,717 tests passing
 
 **PR:** [#2224](https://github.com/cpa03/blueprintify/pull/2224) — `feat/flexy-iteration-84-modularize-hardcoded`
+
+### ✅ Flexy Iteration 90: Eliminate Remaining Hardcoded rgba/hex Colors, Arbitrary Tailwind Values & Inline Animation
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/theme.ts` | Converted `SCROLL_SHADOW_TOP_GRADIENT`/`SCROLL_SHADOW_BOTTOM_GRADIENT` from hardcoded `rgba(2,6,23,*)` to `hexToRgba(COLORS.dark[950], *)` — single source of truth for scroll shadow color |
+| `apps/web/src/config/theme.ts` | Converted `STEP_CONNECTOR_COMPLETED_SHADOW` from hardcoded `rgba(16,185,129,0.4)` to `hexToRgba(COLORS.accent.emerald, 0.4)` — derives from shared color token |
+| `apps/web/src/components/editor/EditorHeader.tsx` | Replaced `STAT_COLORS` hardcoded hex values (`#818cf8`/`#b8c0cc`/`#10b981`/`#06b6d4`/`#34d399`) with `COLORS.primary[400]`/`COLORS.dark[400]`/`COLORS.accent.emerald`/`COLORS.accent.cyan`/`COLORS.celebration.emeraldLight` |
+| `apps/web/tailwind.config.js` | Added `scale: { 102: "1.02" }` token, `backdropBlur: { xs: "1px" }` token, and `animate-banner-enter` named animation replacing arbitrary inline animation |
+| `apps/web/src/components/PageScrollProgressBar.tsx` | Replaced `border-l-[4px] border-r-[4px] border-t-[4px]` with `border-4 border-transparent border-t-dark-600/60` |
+| `apps/web/src/components/TemplateGrid.tsx` | Replaced `backdrop-blur-[1px]` with `backdrop-blur-xs` |
+| `apps/web/src/App.tsx` | Replaced 2x `hover:scale-[1.02]` with `hover:scale-102` |
+| `apps/web/src/components/OfflineBanner.tsx` | Replaced `animate-[offline-banner-enter_0.4s_cubic-bezier(0.34,1.56,0.64,1)_forwards]` with `animate-banner-enter` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 723 web + 438 api + 569 shared = 1,730 tests passing across 84 files

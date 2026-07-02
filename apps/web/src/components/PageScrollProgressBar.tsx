@@ -291,7 +291,7 @@ function PageScrollProgressBarComponent({
             </div>
             {/* Small arrow pointing down to the bar */}
             <div className="flex justify-center -mt-px">
-              <div className="w-0 h-0 border-l-[4px] border-r-[4px] border-t-[4px] border-l-transparent border-r-transparent border-t-dark-600/60" />
+              <div className="w-0 h-0 border-4 border-transparent border-t-dark-600/60" />
             </div>
           </motion.div>
         )}

@@ -471,7 +471,7 @@ function App(): JSX.Element {
               href={EXTERNAL_URLS.CLOUDFLARE_WORKERS}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 transition-all duration-200 hover:scale-[1.02]"
+              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 transition-all duration-200 hover:scale-102"
               aria-label="Cloudflare Workers (opens in new tab)"
             >
               Cloudflare Workers
@@ -495,7 +495,7 @@ function App(): JSX.Element {
               href={EXTERNAL_URLS.REACT}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 transition-all duration-200 hover:scale-[1.02]"
+              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 transition-all duration-200 hover:scale-102"
               aria-label="React (opens in new tab)"
             >
               React
