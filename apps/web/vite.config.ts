@@ -142,7 +142,6 @@ export default defineConfig({
         manualChunks(id: string) {
           if (id.includes("node_modules/react-dom")) return "vendor";
           if (id.includes("node_modules/react/")) return "vendor";
-          if (id.includes("node_modules/framer-motion")) return "animation";
           if (id.includes("node_modules/zustand")) return "vendor";
           if (id.includes("node_modules/scheduler")) return "vendor";
         },
