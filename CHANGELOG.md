@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 180 — full repository audit, quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,730/1,730 ✅ format ✅), BroCula ref drift verification (Jul 2 Run 2 — latest: `brocula-hunt-2026-07-02-run2.md` / LH **99-100-100-100**, 1730 tests ✅), BUG-014/BUG-017 status verification (still present on main — same documented blocker), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), npm audit (17 moderate — BUG-013 upstream tooling)
 - chore(repokeeper): Cycle 179 — CHANGELOG gap fix (5 post-Cycle-178 commits: footer external link indicators, config literal consolidation, BroCula Jul 2 Run 1, wrangler validation enhancement, auth privilege escalation fix), BroCula ref drift fix (Jul 1 Run 3→Jul 2 Run 1 — latest: `brocula-hunt-2026-07-02-run1.md` / LH **99-100-100-100**, **1730 tests** ✅), test count correction (1,722→1,730 — shared +8), README BroCula date drift fix (Jun 17–Jul 1 → Jun 17–Jul 2), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,730/1,730 ✅)
 - fix(auth): remove client-controlled role assignment to prevent privilege escalation
 - fix(devops): enhance wrangler validation with Node.js check and summary mode
