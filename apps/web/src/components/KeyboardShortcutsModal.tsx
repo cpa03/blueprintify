@@ -477,9 +477,25 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
 
               <div className="px-6 py-4 border-t border-dark-700/50 bg-dark-800/30">
                 <p id="keyboard-shortcuts-tip" className="text-xs text-dark-500 text-center">
-                  {searchQuery
-                    ? `${filteredShortcuts.length} shortcut${filteredShortcuts.length !== 1 ? "s" : ""} found`
-                    : `Tip: Press ${modifierKey}+F to search shortcuts. Press ? or Esc to close this dialog.`}
+                  {searchQuery ? (
+                    <>
+                      <motion.span
+                        key={filteredShortcuts.length}
+                        className="tabular-nums inline-block"
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{
+                          type: "spring",
+                          ...SPRING_CONFIG.COUNTER_FLIP,
+                        }}
+                      >
+                        {filteredShortcuts.length}
+                      </motion.span>{" "}
+                      shortcut{filteredShortcuts.length !== 1 ? "s" : ""} found
+                    </>
+                  ) : (
+                    `Tip: Press ${modifierKey}+F to search shortcuts. Press ? or Esc to close this dialog.`
+                  )}
                 </p>
               </div>
             </div>
