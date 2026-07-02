@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 179 — CHANGELOG gap fix (5 post-Cycle-178 commits: footer external link indicators, config literal consolidation, BroCula Jul 2 Run 1, wrangler validation enhancement, auth privilege escalation fix), BroCula ref drift fix (Jul 1 Run 3→Jul 2 Run 1 — latest: `brocula-hunt-2026-07-02-run1.md` / LH **99-100-100-100**, **1730 tests** ✅), test count correction (1,722→1,730 — shared +8), README BroCula date drift fix (Jun 17–Jul 1 → Jun 17–Jul 2), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,730/1,730 ✅)
+- fix(auth): remove client-controlled role assignment to prevent privilege escalation
+- fix(devops): enhance wrangler validation with Node.js check and summary mode
+- chore(brocula): hunt report 2026-07-02 Run 1 — LH **99-100-100-100**, 1722 tests ✅ (723 web + 438 API + 561 shared), clean
+- refactor(storage,hooks): replace remaining hardcoded string literals with config constants
+- feat(web): add external link indicators with hover animation to footer links
 - chore(repokeeper): Cycle 178 — CHANGELOG gap fix (2 post-Cycle-177 commits: BroCula Jul 1 Run 3, feat(features) confirmation animation), BroCula ref drift fix (Run 2→Run 3 — latest: `brocula-hunt-2026-07-01-run3.md` / LH **98-100-100-100**, 1722 tests ✅), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,722/1,722 ✅)
 - chore(brocula): hunt report 2026-07-01 Run 3 — LH **98-100-100-100**, 1722 tests ✅ (723 web + 438 API + 561 shared), clean
 - feat(features): add confirmation animation on 'Add all suggestions'
