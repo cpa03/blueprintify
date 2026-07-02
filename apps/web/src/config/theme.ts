@@ -180,12 +180,10 @@ export const LAYOUT = {
   HEADER_HEIGHT_PX: 64,
   /** Wizard scroll shadow height (px) */
   SCROLL_SHADOW_HEIGHT_PX: 20,
-  /** Wizard scroll shadow gradient (top) — rgba(2,6,23) is the dark-950 base bg */
-  SCROLL_SHADOW_TOP_GRADIENT:
-    "linear-gradient(to bottom, rgba(2,6,23,0.85) 0%, rgba(2,6,23,0.5) 40%, transparent 100%)",
-  /** Wizard scroll shadow gradient (bottom) */
-  SCROLL_SHADOW_BOTTOM_GRADIENT:
-    "linear-gradient(to top, rgba(2,6,23,0.85) 0%, rgba(2,6,23,0.5) 40%, transparent 100%)",
+  /** Wizard scroll shadow gradient (top) — derived from COLORS.dark[950] via hexToRgba */
+  SCROLL_SHADOW_TOP_GRADIENT: `linear-gradient(to bottom, ${hexToRgba(COLORS.dark[950], 0.85)} 0%, ${hexToRgba(COLORS.dark[950], 0.5)} 40%, transparent 100%)`,
+  /** Wizard scroll shadow gradient (bottom) — derived from COLORS.dark[950] via hexToRgba */
+  SCROLL_SHADOW_BOTTOM_GRADIENT: `linear-gradient(to top, ${hexToRgba(COLORS.dark[950], 0.85)} 0%, ${hexToRgba(COLORS.dark[950], 0.5)} 40%, transparent 100%)`,
 } as const;
 
 // ============================================================================
@@ -539,7 +537,7 @@ export { THEME_PROGRESS_TRACK_COLOR };
  * Step connector completed shadow value.
  * Flexy says: No hardcoded rgba shadow strings in STEP_CONNECTOR!
  */
-export const STEP_CONNECTOR_COMPLETED_SHADOW = "0 0 6px rgba(16, 185, 129, 0.4)";
+export const STEP_CONNECTOR_COMPLETED_SHADOW = `0 0 6px ${hexToRgba(COLORS.accent.emerald, 0.4)}`;
 
 // ============================================================================
 // Utility Types

@@ -132,9 +132,7 @@ function OfflineBannerComponent(): JSX.Element | null {
         {isVisible && (
           <div
             className={`relative bg-gradient-to-r from-accent-pink/15 via-accent-pink/10 to-dark-900/80 border-b border-accent-pink/20 backdrop-blur-xl ${
-              shouldReduceMotion
-                ? ""
-                : "animate-[offline-banner-enter_0.4s_cubic-bezier(0.34,1.56,0.64,1)_forwards]"
+              shouldReduceMotion ? "" : "animate-banner-enter"
             }`}
           >
             {/* Gradient accent line */}

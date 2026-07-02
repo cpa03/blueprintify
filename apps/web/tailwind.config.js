@@ -67,12 +67,20 @@ export default {
         sans: ["Inter", "Inter Fallback", "system-ui", "sans-serif"],
         mono: ["JetBrains Mono", "Fira Code", "monospace"],
       },
+      /** Flexy says: Scale tokens to eliminate arbitrary hover:scale-[1.02] values */
+      scale: {
+        102: "1.02",
+      },
+      backdropBlur: {
+        xs: "1px",
+      },
       animation: {
         glow: "glow 2s ease-in-out infinite alternate",
         "slide-up": "slide-up 0.3s ease-out",
         "slide-down": "slide-down 0.3s ease-out",
         "fade-in": "fade-in 0.2s ease-out",
         "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "banner-enter": "banner-enter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
       },
       keyframes: {
         glow: {
@@ -90,6 +98,10 @@ export default {
         "fade-in": {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
+        },
+        "banner-enter": {
+          "0%": { transform: "scale(0.95)", opacity: "0" },
+          "100%": { transform: "scale(1)", opacity: "1" },
         },
       },
       backgroundImage: {

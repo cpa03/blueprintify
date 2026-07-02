@@ -207,7 +207,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
               {/* Loading overlay */}
               {isSelected && isLoading && (
                 <div
-                  className="absolute inset-0 flex items-center justify-center bg-dark-950/30 backdrop-blur-[1px] rounded-lg z-20 animate-fade-in"
+                  className="absolute inset-0 flex items-center justify-center bg-dark-950/30 backdrop-blur-xs rounded-lg z-20 animate-fade-in"
                   style={{ animationDuration: `${ANIMATION.LOADING_OVERLAY_S}s` }}
                 >
                   <div className={SPINNER.OVERLAY} />
