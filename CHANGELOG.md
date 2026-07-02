@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 178 — CHANGELOG gap fix (2 post-Cycle-177 commits: BroCula Jul 1 Run 3, feat(features) confirmation animation), BroCula ref drift fix (Run 2→Run 3 — latest: `brocula-hunt-2026-07-01-run3.md` / LH **98-100-100-100**, 1722 tests ✅), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,722/1,722 ✅)
+- chore(brocula): hunt report 2026-07-01 Run 3 — LH **98-100-100-100**, 1722 tests ✅ (723 web + 438 API + 561 shared), clean
+- feat(features): add confirmation animation on 'Add all suggestions'
 - chore(repokeeper): Cycle 177 — CHANGELOG gap fix (6 post-Cycle-176 commits: Back labels, BugFixer ULW cycle, flexy-86 scroll progress constants, BroCula Jul 1 Run 2, editor toggle focus management, BugFixer record), README BroCula date drift fix (Jun 17–Jun 30 → Jun 17–Jul 1), BroCula ref drift fix in knowledge-review.md (Run 1→Run 2 — latest: `brocula-hunt-2026-07-01-run2.md` / LH **98-100-100-100**, 1718 tests ✅), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,718/1,718 ✅)
 - docs(bugs): BugFixer ULW Cycle Jul 01 2026 — BUG-014 & BUG-017 fix record
 - fix: improve editor toggle focus management and WAI-ARIA linkage
