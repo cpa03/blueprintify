@@ -114,11 +114,10 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
     }
 
     const userId = c.req.header(API_HEADERS.CUSTOM.USER_ID) || AUTH_DEFAULTS.ANONYMOUS_USER_ID;
-    const userRoleHeader = c.req.header(API_HEADERS.CUSTOM.USER_ROLE);
-    const userRole: UserRole =
-      userRoleHeader === AUTH_DEFAULTS.ADMIN_ROLE || userRoleHeader === AUTH_DEFAULTS.DEFAULT_ROLE
-        ? userRoleHeader
-        : defaultRole;
+    // SECURITY: User role is assigned server-side only — never trust client-provided x-user-role.
+    // All authenticated users default to `defaultRole` (typically "user").
+    // Admin access must be configured via server-side mechanisms (env var, API key mapping).
+    const userRole: UserRole = defaultRole;
 
     const user: User = {
       id: userId,
