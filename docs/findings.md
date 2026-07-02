@@ -2,6 +2,65 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 180 (2026-07-02 — RepoKeeper: Full audit, doc refresh, quality verification)
+
+### Audit Scope
+
+Full repository audit covering quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,730/1,730 ✅), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), BroCula ref drift verification (Jul 2 Run 2 — latest: `brocula-hunt-2026-07-02-run2.md` / LH **99-100-100-100**, **1730 tests** ✅), BUG-014/BUG-017 status verification (still present on main — same documented blocker).
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build | ✅ Successful |
+| Secrets Scan | ✅ Clean |
+| Tests | ✅ **1,730/1,730 passing** (723 web + 438 API + 569 shared) |
+| @ts-ignore/as any | ✅ None in source code |
+| TODO/FIXME/HACK | ✅ None in non-test source code |
+| Redundant/temp files | ✅ None found |
+| Stale merged branches | ✅ None (all remote branches have unique unmerged commits) |
+| Format | ✅ All files Prettier-formatted |
+| npm audit | ⚠️ 17 moderate (BUG-013 — upstream lighthouse→@sentry/node→@opentelemetry/core, same blocker) |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Quality verification**: typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,730/1,730 ✅ format ✅.
+2. **BroCula ref drift verification**: Latest is Jul 2 Run 2 (`brocula-hunt-2026-07-02-run2.md` / LH **99-100-100-100**, 1730 tests ✅) — already referenced correctly in docs/audits/README.md. No drift detected.
+3. **BUG-014/BUG-017 status verified**: Both bugs still present on main. Workflow files unchanged. Blocker: GitHub App token lacks `workflows: write` permission (same blocker as all prior 30+ cycles). Maintainer must run `scripts/fix-ci-node-version.mjs` or cherry-pick from branch.
+4. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 180.
+5. **npm audit**: 17 moderate vulns — all in @opentelemetry/core via lighthouse→@sentry/node chain (BUG-013, upstream tooling dependency, same documented blocker). No fix within lighthouse 13.x without breaking changes.
+
+### Key Findings
+
+- **All quality checks passing**: typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,730/1,730 ✅ format ✅.
+- **No redundant/temp/unused source files found** — repo remains clean.
+- **No stale merged branches** — all remote branches have unique unmerged commits.
+- **BUG-014/BUG-017 still present on main** — workflow files unchanged. All prior fix attempts blocked by `workflows: write` permission (same blocker for 30+ cycles).
+- **Latest BroCula**: Jul 2 Run 2 — LH **99-100-100-100**, 1,730 tests ✅.
+- **npm audit**: 17 moderate vulns — BUG-013 (upstream tooling, no actionable fix).
+- **README BroCula date**: `(Jun 17–Jul 2)` — verified correct.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — clean ✅
+- [x] Secrets scan — clean ✅
+- [x] Tests — 1,730/1,730 passing (723 web + 438 API + 569 shared) ✅
+- [x] No @ts-ignore, @ts-expect-error, or as any in source code ✅
+- [x] No TODO/FIXME/HACK in non-test source code ✅
+- [x] Redundant/temp/unused files — none found ✅
+- [x] No stale merged branches ✅
+- [x] Format — all files Prettier-formatted ✅
+- [x] npm audit — 17 moderate (BUG-013, same blocker) ✅
+- [x] BUG-014/BUG-017 status verified — still present on main ✅
+- [x] BroCula ref verified: Jul 2 Run 2 (LH 99-100-100-100, 1730 tests) ✅
+- [x] README BroCula date verified: `(Jun 17–Jul 2)` ✅
+- [x] Documentation synced (findings, active-tasks, knowledge-review, CHANGELOG) ✅
+
 ## Cycle 179 (2026-07-02 — RepoKeeper: Full audit, CHANGELOG gap fix, BroCula ref drift fix (Run 3→Jul 2 Run 1), doc sync)
 
 ### Audit Scope

@@ -12,20 +12,22 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-02 (RepoKeeper Cycle 179)
+**Last Review**: 2026-07-02 (RepoKeeper Cycle 180)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jul 2)` — matches latest audit `brocula-hunt-2026-07-02-run1.md` (BroCula Jul 2 Run 1 / LH **99-100-100-100**, 1730 tests ✅)
+- **README BroCula description verified**: `(Jun 17–Jul 2)` — matches latest audit `brocula-hunt-2026-07-02-run2.md` (BroCula Jul 2 Run 2 / LH **99-100-100-100**, 1730 tests ✅)
 - **Typecheck/Lint**: All clean (0 errors, 0 warnings)
 - **Build**: Clean ✅
 - **Tests**: **1,730/1,730 passing** (723 web + 438 API + 569 shared) ✅
 - **Secrets scan**: Clean ✅
+- **Format**: All Prettier-formatted ✅
 - **BUG-014/BUG-017 still present on main**: Workflow files unchanged — push blocked by `workflows: write` permission (same blocker as all prior 30+ cycles). Maintainer must run `scripts/fix-ci-node-version.mjs` or cherry-pick from branch.
-- **CHANGELOG gap fix**: Added 5 post-Cycle-178 commits (footer external links, config literal consolidation, BroCula Jul 2 Run 1, wrangler validation, auth privilege escalation fix) + Cycle 179 entry.
+- **npm audit**: 17 moderate vulns — BUG-013 (upstream lighthouse→@sentry/node→@opentelemetry/core, same documented blocker).
+- **Cycle 180**: Full repository audit, quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,730/1,730 ✅ format ✅), BroCula ref drift verification (Jul 2 Run 2 — latest `brocula-hunt-2026-07-02-run2.md`), BUG-014/BUG-017 status verified (still present on main), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG).
 - **Cycle 179**: Full repository audit, CHANGELOG gap fix (5 post-Cycle-178 commits: footer external links, config literal consolidation, BroCula Jul 2 Run 1, wrangler validation, auth privilege escalation fix), BroCula ref drift fix (Jul 1 Run 3→Jul 2 Run 1 — latest: `brocula-hunt-2026-07-02-run1.md` / LH **99-100-100-100**, **1730 tests** ✅), test count correction (1,722→1,730 — shared +8), README BroCula date drift fix (Jun 17–Jul 1 → Jun 17–Jul 2), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,730/1,730 ✅).
 - **Cycle 178**: Full repository audit, CHANGELOG gap fix (2 post-Cycle-177 commits: BroCula Jul 1 Run 3, feat(features) confirmation animation), BroCula ref drift fix (Run 2→Run 3 — latest: `brocula-hunt-2026-07-01-run3.md` / LH **98-100-100-100**, 1722 tests ✅), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,722/1,722 ✅).
 - **Cycle 177**: Full repository audit, CHANGELOG gap fix (6 post-Cycle-176 commits: Back labels, BugFixer ULW cycle, flexy-86 scroll progress constants, BroCula Jul 1 Run 2, editor toggle focus management, BugFixer record), README BroCula date drift fix (Jun 17–Jun 30 → Jun 17–Jul 1), BroCula ref drift fix (Run 1→Run 2 — latest: `brocula-hunt-2026-07-01-run2.md` / LH **98-100-100-100**, 1718 tests ✅), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README), quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,718/1,718 ✅).
