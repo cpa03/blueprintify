@@ -121,8 +121,16 @@ export const StepFeatures = memo(function StepFeatures({
     const suggestionsToAdd = suggestedNotAdded;
     if (suggestionsToAdd.length === 0) return;
 
-    Promise.resolve().then(() => {
-      suggestionsToAdd.forEach((feature: string) => addFeature(feature));
+    suggestionsToAdd.forEach((feature: string) => addFeature(feature));
+
+    // Stagger justAdded animation across chips (120ms apart) so each
+    // suggestion gets individual visual feedback instead of disappearing
+    // silently — a cascade that confirms every item was added.
+    suggestionsToAdd.forEach((feature, index) => {
+      setTimeout(() => {
+        setJustAdded(feature);
+        setTimeout(() => setJustAdded(null), TIMEOUTS.TOAST_NOTIFICATION);
+      }, index * 120);
     });
 
     setShowAllAddedMsg(true);
