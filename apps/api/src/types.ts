@@ -11,7 +11,7 @@
 
 import type { Context } from "hono";
 import type { z } from "zod";
-import { AUTH_DEFAULTS } from "@blueprint/shared";
+import { AUTH_DEFAULTS, ENVIRONMENT_NAMES } from "@blueprint/shared";
 import type {
   BlueprintRequestSchema,
   RefineRequestSchema,
@@ -72,7 +72,7 @@ export interface Env {
 
   // API Configuration
   API_KEY?: string;
-  ENVIRONMENT?: "development" | "production" | "staging" | "test";
+  ENVIRONMENT?: Environment;
   API_VERSION?: string;
   CORS_ORIGIN?: string;
   CORS_MAX_AGE?: string;
@@ -134,6 +134,12 @@ export interface AppVariables {
   validatedData?: unknown;
   user?: User;
 }
+
+/**
+ * Environment type derived from shared ENVIRONMENT_NAMES config.
+ * Flexy says: No hardcoded "development" | "production" string unions!
+ */
+export type Environment = (typeof ENVIRONMENT_NAMES)[keyof typeof ENVIRONMENT_NAMES];
 
 /**
  * User role types for authorization.
