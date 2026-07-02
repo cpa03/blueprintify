@@ -465,24 +465,54 @@ function App(): JSX.Element {
           aria-hidden="true"
         />
         <div className={`${LAYOUT.FOOTER_CONTAINER} animate-slide-up`}>
-          <p className="text-dark-500 hover:text-dark-300 transition-colors duration-200 hover:scale-[1.02]">
+          <p className="text-dark-500 hover:text-dark-300 transition-colors duration-200">
             Built with ⚡{" "}
             <a
               href={EXTERNAL_URLS.CLOUDFLARE_WORKERS}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 transition-all duration-200"
+              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 transition-all duration-200 hover:scale-[1.02]"
+              aria-label="Cloudflare Workers (opens in new tab)"
             >
               Cloudflare Workers
+              <svg
+                className="w-3 h-3 opacity-0 group-hover:opacity-60 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6m4-3h6v6m-10 4L21 3"
+                />
+              </svg>
             </a>{" "}
             +{" "}
             <a
               href={EXTERNAL_URLS.REACT}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 transition-all duration-200"
+              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 transition-all duration-200 hover:scale-[1.02]"
+              aria-label="React (opens in new tab)"
             >
               React
+              <svg
+                className="w-3 h-3 opacity-0 group-hover:opacity-60 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6m4-3h6v6m-10 4L21 3"
+                />
+              </svg>
             </a>
           </p>
           <p className="text-dark-500">{UI_CONTENT.FOOTER.COPYRIGHT}</p>
