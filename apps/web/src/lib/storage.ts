@@ -440,11 +440,15 @@ export class StorageService<T = unknown> {
       this.health.operations.successful++;
     } catch (error) {
       this.handleError(STORAGE_OPERATIONS.DELETE, error);
-      throw this.createStorageError(STORAGE_ERROR_MESSAGES.REMOVE_FAILED, "BROWSER_UNSUPPORTED", {
-        key: this.config.key,
-        operation: STORAGE_OPERATIONS.DELETE,
-        originalError: error,
-      });
+      throw this.createStorageError(
+        STORAGE_ERROR_MESSAGES.REMOVE_FAILED,
+        STORAGE_ERROR_TYPE_VALUES.BROWSER_UNSUPPORTED,
+        {
+          key: this.config.key,
+          operation: STORAGE_OPERATIONS.DELETE,
+          originalError: error,
+        }
+      );
     } finally {
       this.health.operations.total++;
     }
@@ -467,11 +471,15 @@ export class StorageService<T = unknown> {
       this.health.operations.successful++;
     } catch (error) {
       this.handleError(STORAGE_OPERATIONS.CLEAR, error);
-      throw this.createStorageError(STORAGE_ERROR_MESSAGES.CLEAR_FAILED, "BROWSER_UNSUPPORTED", {
-        key: "*",
-        operation: STORAGE_OPERATIONS.CLEAR,
-        originalError: error,
-      });
+      throw this.createStorageError(
+        STORAGE_ERROR_MESSAGES.CLEAR_FAILED,
+        STORAGE_ERROR_TYPE_VALUES.BROWSER_UNSUPPORTED,
+        {
+          key: "*",
+          operation: STORAGE_OPERATIONS.CLEAR,
+          originalError: error,
+        }
+      );
     } finally {
       this.health.operations.total++;
     }
@@ -529,7 +537,7 @@ export class StorageService<T = unknown> {
       } catch (error) {
         throw this.createStorageError(
           `Migration failed from v${migration.fromVersion} to v${migration.toVersion}`,
-          "MIGRATION_ERROR",
+          STORAGE_ERROR_TYPE_VALUES.MIGRATION_ERROR,
           {
             key: this.config.key,
             operation: STORAGE_OPERATIONS.MIGRATE,

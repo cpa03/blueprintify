@@ -16,6 +16,7 @@ import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useAutoResizeTextarea } from "./useAutoResizeTextarea";
 import { TEXTAREA_CONFIG } from "../config/constants";
+import { SVG_TRANSITION_DEFAULTS } from "@blueprint/shared";
 
 /**
  * Creates a mock textarea element with configurable scrollHeight.
@@ -121,7 +122,7 @@ describe("useAutoResizeTextarea", () => {
       result.current.resize();
     });
 
-    expect(textarea.style.transition).toContain("ease-out");
+    expect(textarea.style.transition).toContain(SVG_TRANSITION_DEFAULTS.STROKE_TIMING);
   });
 
   it("should not apply transition when animate is false", () => {
