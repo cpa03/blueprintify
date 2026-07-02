@@ -32,6 +32,7 @@
     "db:rollback": "node scripts/migrate.ts rollback",
     "brocula": "node scripts/brocula-hunt.mjs",
     "validate:wrangler": "node scripts/validate-wrangler.mjs",
+    "validate:all": "npm run validate:wrangler && npm run scan:secrets && npm run audit",
     "predeploy:api": "npm run validate:wrangler",
     "audit": "npm audit --audit-level=high",
     "format": "prettier --write .",
