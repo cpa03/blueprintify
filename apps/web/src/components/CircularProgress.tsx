@@ -99,6 +99,24 @@ function CircularProgressComponent({
   const circumference = radius * 2 * Math.PI;
   const center = size / 2;
 
+  // One-shot celebration animation when progress first reaches 100%.
+  // The ref gates it so the satisfying scale-bounce only fires once per
+  // completion lifecycle, complementing the persistent circular-complete-glow.
+  const wasCompleteRef = useRef(false);
+  const [celebrating, setCelebrating] = useState(false);
+
+  useEffect(() => {
+    if (isComplete && !wasCompleteRef.current) {
+      wasCompleteRef.current = true;
+      setCelebrating(true);
+      const timer = setTimeout(() => setCelebrating(false), 700);
+      return () => clearTimeout(timer);
+    }
+    if (!isComplete) {
+      wasCompleteRef.current = false;
+    }
+  }, [isComplete]);
+
   // Mount draw-in animation: start at 0, then after delay, transition to the
   // real value via the CSS stroke-dashoffset transition. The ref gates the
   // delay so it only fires once on initial mount; subsequent value changes
@@ -128,7 +146,7 @@ function CircularProgressComponent({
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center ${isComplete ? "circular-complete-glow" : ""} ${className}`}
+      className={`relative inline-flex items-center justify-center ${isComplete ? "circular-complete-glow" : ""} ${celebrating ? "circular-complete-celebration" : ""} ${className}`}
       style={{ width: size, height: size, "--glow-color": color } as React.CSSProperties}
       role="progressbar"
       aria-valuenow={Math.round(animatedValue)}
