@@ -71,6 +71,7 @@ const ALLOWED_PATHS = [
   // Test files that intentionally contain mock/placeholder credentials
   "share.test.ts",
   "secureLog.test.ts",
+  "auth.test.ts",
 ];
 
 // ---------------------------------------------------------------------------
