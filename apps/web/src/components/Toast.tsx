@@ -31,10 +31,17 @@ import { useState, useRef, useCallback, useEffect, forwardRef, memo } from "reac
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
-import { TOAST_CONFIG, SPRING_CONFIG, ACCESSIBILITY_LABELS, ANIMATION } from "../config/constants";
+import {
+  TOAST_CONFIG,
+  SPRING_CONFIG,
+  ACCESSIBILITY_LABELS,
+  ANIMATION,
+  TOOLTIP_CONFIG,
+} from "../config/constants";
 import { TOAST_SPRING, TRANSFORMS } from "../config/theme";
 import { TOAST_TYPES, UI_TIMEOUTS, ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { SmartTooltip } from "./SmartTooltip";
 
 const toastIcons: Record<ToastType, string> = {
   [TOAST_TYPES.SUCCESS]: TOAST_CONFIG.ICONS.SUCCESS,
@@ -353,10 +360,53 @@ const ToastItem = memo(
             transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
             className="inline-flex"
           >
-            <button
+            <SmartTooltip
+              content={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
+              position="left"
+              delay={TOOLTIP_CONFIG.DEFAULT_SHOW_DELAY}
+            >
+              <button
+                onClick={() => onRemove(toast.id)}
+                className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
+                aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </SmartTooltip>
+          </motion.span>
+        ) : (
+          <SmartTooltip
+            content={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
+            position="left"
+            delay={TOOLTIP_CONFIG.DEFAULT_SHOW_DELAY}
+          >
+            <motion.button
               onClick={() => onRemove(toast.id)}
-              className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
+              className="flex-shrink-0 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
               aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 0.6, scale: 1 }}
+              transition={{
+                opacity: {
+                  duration: ANIMATION.NORMAL,
+                  ease: "easeOut",
+                  delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
+                },
+                scale: {
+                  type: "spring",
+                  ...TOAST_SPRING.DISMISS_BUTTON,
+                  delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
+                },
+              }}
+              whileHover={{ scale: 1.15, rotate: 90 }}
+              whileTap={{ scale: 0.9 }}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -366,39 +416,8 @@ const ToastItem = memo(
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
-            </button>
-          </motion.span>
-        ) : (
-          <motion.button
-            onClick={() => onRemove(toast.id)}
-            className="flex-shrink-0 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
-            aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 0.6, scale: 1 }}
-            transition={{
-              opacity: {
-                duration: ANIMATION.NORMAL,
-                ease: "easeOut",
-                delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
-              },
-              scale: {
-                type: "spring",
-                ...TOAST_SPRING.DISMISS_BUTTON,
-                delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
-              },
-            }}
-            whileHover={{ scale: 1.15, rotate: 90 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </motion.button>
+            </motion.button>
+          </SmartTooltip>
         )}
       </motion.div>
     );

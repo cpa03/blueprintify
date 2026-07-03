@@ -32,7 +32,13 @@ import { useState, useCallback, useEffect, useRef, memo } from "react";
 import { useOnlineStatus } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { STYLE_ID_STRINGS, UI_TIMEOUTS } from "@blueprint/shared";
-import { NETWORK_MESSAGES, ACCESSIBILITY_LABELS, OFFLINE_ANIMATION } from "../config/constants";
+import {
+  NETWORK_MESSAGES,
+  ACCESSIBILITY_LABELS,
+  OFFLINE_ANIMATION,
+  TOOLTIP_CONFIG,
+} from "../config/constants";
+import { SmartTooltip } from "./SmartTooltip";
 
 /**
  * CSS keyframes injected once for the pulse-ring animation
@@ -185,29 +191,35 @@ function OfflineBannerComponent(): JSX.Element | null {
                 </div>
               </div>
 
-              <button
-                onClick={handleDismiss}
-                className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-accent-pink/10
-                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50
-                           rounded-md p-1.5 transition-all duration-200 ease-out
-                           hover:scale-110 active:scale-95"
-                aria-label={ACCESSIBILITY_LABELS.OFFLINE_BANNER.DISMISS}
+              <SmartTooltip
+                content={ACCESSIBILITY_LABELS.OFFLINE_BANNER.DISMISS}
+                position="left"
+                delay={TOOLTIP_CONFIG.DEFAULT_SHOW_DELAY}
               >
-                <svg
-                  className="w-4 h-4 text-accent-pink"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
+                <button
+                  onClick={handleDismiss}
+                  className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-accent-pink/10
+                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50
+                             rounded-md p-1.5 transition-all duration-200 ease-out
+                             hover:scale-110 active:scale-95"
+                  aria-label={ACCESSIBILITY_LABELS.OFFLINE_BANNER.DISMISS}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
+                  <svg
+                    className="w-4 h-4 text-accent-pink"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </SmartTooltip>
             </div>
           </div>
         )}
