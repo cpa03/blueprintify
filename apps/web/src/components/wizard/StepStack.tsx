@@ -21,7 +21,8 @@
  * ```
  */
 
-import { motion, AnimatePresence } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import { useState, useCallback, useMemo, memo } from "react";
 import {
   TECH_STACK_OPTIONS,

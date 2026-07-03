@@ -12,7 +12,8 @@
  */
 
 import { useEffect, useCallback, useRef, useState, useMemo, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import {
   KEYBOARD_SHORTCUTS,
   SHORTCUT_CATEGORIES,

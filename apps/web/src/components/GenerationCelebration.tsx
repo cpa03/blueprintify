@@ -11,7 +11,8 @@
  */
 
 import { useEffect, useState, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
   CELEBRATION_COLORS,

@@ -11,7 +11,7 @@
  */
 
 import { memo } from "react";
-import { motion } from "framer-motion";
+import * as motion from "framer-motion/m";
 import { useWizardStore } from "../store";
 import { WIZARD_STEPS, UI_EMOJIS, EMPTY_STATE_CONFIG, ANIMATION } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";

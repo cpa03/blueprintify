@@ -28,7 +28,8 @@
  */
 
 import { useState, useRef, useCallback, useEffect, forwardRef, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import { useToastStore, type ToastType, type Toast } from "../store/toast";
 import { TOAST_CONFIG, SPRING_CONFIG, ACCESSIBILITY_LABELS, ANIMATION } from "../config/constants";
 import { TOAST_SPRING, TRANSFORMS } from "../config/theme";

@@ -28,7 +28,8 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
 } from "@blueprint/shared";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
 import {
   SUGGESTED_FEATURES,

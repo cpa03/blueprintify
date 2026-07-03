@@ -24,7 +24,8 @@
  */
 
 import { WIZARD_STEP_KEYS, UI_TIMING, ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
-import { motion, AnimatePresence } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import { memo, useCallback, useRef, useEffect } from "react";
 import { useEditorStore, useWizardStore, useToast } from "../../store";
 import {

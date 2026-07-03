@@ -26,7 +26,8 @@
 
 import React from "react";
 import clsx from "clsx";
-import { motion, AnimatePresence } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
 import {
   VIEW_MODES as SHARED_VIEW_MODES,
