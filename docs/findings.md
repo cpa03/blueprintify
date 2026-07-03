@@ -2,6 +2,58 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 185 (2026-07-03 — RepoKeeper: Tracked .patch cleanup (recurring), 5 stale merged branches deleted, README drift fix, quality verification, doc refresh)
+
+### Audit Scope
+
+Full repository audit covering tracked `.patch` file removal (`docs/ci-workflow-fixes-ulw-jul-03-2026.patch` — force-tracked despite `*.patch` in `.gitignore`, same recurring anti-pattern as Cycles 167, 170, 173, 175, 178, 183; added by commit `35248094`), stale merged remote branch cleanup (5 branches deleted: `chore/repokeeper-cycle-183`, `docs/bugfixer-cycle-jul-03-2026`, `feat/flexy-iteration-50-hardcoded-cleanup`, `fix/admin-api-key-authorization`, `fix/document-title-generation-complete` — all fully merged, 0 unmerged commits), README BroCula date drift fix (Jun 17–Jul 2 → Jun 17–Jul 3), README tree drift fix (added missing `docs/cloudflare-infrastructure.md` reference), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 empty catch blocks, 0 TODO/FIXME/HACK in source), docs refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), BroCula ref drift check (Jul 3 Run 2 — latest in docs/audits/: LH **99-100-100-100**, **1744 tests** ✅; current 1,745 — shared +1 — all clean), BUG-014/BUG-017 status verified (still present on main — `65d01cf5` claimed fix but only touched `docs/bugs.md`, workflow files unchanged).
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build (web) | ✅ Successful |
+| Tests | ✅ **1,745/1,745 passing** (723 web + 443 API + 579 shared) |
+| @ts-ignore/as any | ✅ None in source code |
+| TODO/FIXME/HACK | ✅ None in source code |
+| Empty catch blocks | ✅ None |
+| Format | ✅ All files Prettier-formatted |
+| Tracked .patch removed | ✅ 1 file removed from git tracking (`docs/ci-workflow-fixes-ulw-jul-03-2026.patch`) |
+| Stale merged branches | ✅ 5 branches deleted (repokeeper-cycle-183, bugfixer-cycle-jul-03-2026, flexy-iteration-50-hardcoded-cleanup, admin-api-key-authorization, document-title-generation-complete) |
+| README BroCula date | ✅ Fixed `(Jun 17–Jul 2)` → `(Jun 17–Jul 3)` |
+| README tree drift | ✅ Fixed — added `cloudflare-infrastructure.md` |
+| BUG-014 (stale doc refs) | 🔴 Still present on main (`docs/bug.md` in main.yml) — `workflows: write` blocker |
+| BUG-017 (hardcoded node-version) | 🔴 Still present on main (11 occurrences across 4 workflows) — `workflows: write` blocker |
+| npm audit | ⚠️ 17 moderate (BUG-013 — upstream lighthouse→@sentry/node→@opentelemetry/core, same blocker) |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Tracked .patch file removed**: `docs/ci-workflow-fixes-ulw-jul-03-2026.patch` — force-tracked despite `*.patch` in `.gitignore`. Same recurring cleanup pattern as Cycles 167, 170, 173, 175, 178, 183. Patch file documented CI fixes for BUG-014/BUG-017 which remain blocked by `workflows: write` permission.
+2. **Stale merged branches deleted**: 5 fully-merged remote branches cleaned up (`chore/repokeeper-cycle-183`, `docs/bugfixer-cycle-jul-03-2026`, `feat/flexy-iteration-50-hardcoded-cleanup`, `fix/admin-api-key-authorization`, `fix/document-title-generation-complete` — all with 0 unmerged commits).
+3. **README BroCula date drift fixed**: `(Jun 17–Jul 2)` → `(Jun 17–Jul 3)` — matches latest audit `brocula-hunt-2026-07-03-run2.md` (Jul 3 Run 2).
+4. **README tree drift fixed**: Added missing `docs/cloudflare-infrastructure.md` entry — file existed but was absent from both the ASCII tree and docs links section.
+5. **Test count updated**: 1,730 → **1,745** (shared +1 from flexy test additions).
+6. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅.
+7. **BUG-014/BUG-017 status verified**: Still present on main. Commit `65d01cf5` ("fix(ci): resolve BUG-014 and BUG-017") only touched `docs/bugs.md` — workflow files remain unchanged. Same documented `workflows: write` blocker.
+8. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README for Cycle 185.
+
+### Verification
+
+- [x] Tracked .patch file removed from git tracking ✅
+- [x] 5 stale merged branches deleted ✅
+- [x] README BroCula date fixed `(Jun 17–Jul 3)` ✅
+- [x] README tree: cloudflare-infrastructure.md added ✅
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — Successful ✅
+- [x] Tests — 1,745/1,745 passing ✅
+- [x] No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK ✅
+- [x] Documentation refreshed for Cycle 185 (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README) ✅
+- [x] BUG-014/BUG-017 status verified (still present on main) ✅
+
 ## Cycle 183 (2026-07-03 — RepoKeeper: Tracked .patch cleanup, quality verification, doc refresh)
 
 ### Audit Scope
