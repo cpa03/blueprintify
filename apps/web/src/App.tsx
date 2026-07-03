@@ -472,7 +472,7 @@ function App(): JSX.Element {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 transition-all duration-200 hover:scale-102"
-              aria-label="Cloudflare Workers (opens in new tab)"
+              aria-label={ACCESSIBILITY_LABELS.EXTERNAL_LINKS.CLOUDFLARE_WORKERS}
             >
               Cloudflare Workers
               <svg
@@ -496,7 +496,7 @@ function App(): JSX.Element {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 transition-all duration-200 hover:scale-102"
-              aria-label="React (opens in new tab)"
+              aria-label={ACCESSIBILITY_LABELS.EXTERNAL_LINKS.REACT}
             >
               React
               <svg

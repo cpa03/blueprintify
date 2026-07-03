@@ -19,6 +19,7 @@ import {
   ANIMATION,
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
+import { UI_TIMEOUTS } from "@blueprint/shared";
 import { TRANSFORMS, OPACITY } from "../config/theme";
 
 /**
@@ -109,7 +110,7 @@ function CircularProgressComponent({
     if (isComplete && !wasCompleteRef.current) {
       wasCompleteRef.current = true;
       setCelebrating(true);
-      const timer = setTimeout(() => setCelebrating(false), 700);
+      const timer = setTimeout(() => setCelebrating(false), UI_TIMEOUTS.CELEBRATION_DISMISS_MS);
       return () => clearTimeout(timer);
     }
     if (!isComplete) {
@@ -183,7 +184,7 @@ function CircularProgressComponent({
           style={{
             strokeDashoffset,
             transitionProperty: "stroke-dashoffset, stroke",
-            transitionDuration: `${SVG_TRANSITION.STROKE_DASHOFFSET_DURATION_MS}ms, 0.45s`,
+            transitionDuration: `${SVG_TRANSITION.STROKE_DASHOFFSET_DURATION_MS}ms, ${SVG_TRANSITION.STROKE_COLOR_TRANSITION_S}s`,
             transitionTimingFunction: SVG_TRANSITION.STROKE_TIMING,
           }}
         />

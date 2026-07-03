@@ -2293,11 +2293,12 @@ describe("UI_TIMEOUTS", () => {
     expect(UI_TIMEOUTS.TEMPLATES_EXIT).toBe(350);
     expect(UI_TIMEOUTS.DISMISS_ANNOUNCEMENT_CLEAR).toBe(3000);
     expect(UI_TIMEOUTS.OBSERVER_DISCONNECT).toBe(10000);
+    expect(UI_TIMEOUTS.CELEBRATION_DISMISS_MS).toBe(700);
   });
 
   it("should have all numeric values", () => {
     const values = Object.values(UI_TIMEOUTS);
-    expect(values.length).toBe(15);
+    expect(values.length).toBe(16);
     values.forEach((v) => {
       expect(typeof v).toBe("number");
       expect(v).toBeGreaterThan(0);
@@ -3019,8 +3020,13 @@ describe("SVG_TRANSITION_DEFAULTS", () => {
     expect(typeof SVG_TRANSITION_DEFAULTS.STROKE_TIMING).toBe("string");
   });
 
-  it("should have 2 entries", () => {
-    expect(Object.keys(SVG_TRANSITION_DEFAULTS).length).toBe(2);
+  it("should have positive stroke color transition duration", () => {
+    expect(SVG_TRANSITION_DEFAULTS.STROKE_COLOR_TRANSITION_S).toBeGreaterThan(0);
+    expect(typeof SVG_TRANSITION_DEFAULTS.STROKE_COLOR_TRANSITION_S).toBe("number");
+  });
+
+  it("should have 3 entries", () => {
+    expect(Object.keys(SVG_TRANSITION_DEFAULTS).length).toBe(3);
   });
 });
 
