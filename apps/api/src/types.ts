@@ -72,6 +72,7 @@ export interface Env {
 
   // API Configuration
   API_KEY?: string;
+  ADMIN_API_KEY?: string;
   ENVIRONMENT?: Environment;
   API_VERSION?: string;
   CORS_ORIGIN?: string;
