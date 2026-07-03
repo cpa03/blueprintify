@@ -60,6 +60,7 @@ const SCAN_EXTENSIONS = new Set([
 /** Known-safe file paths that may contain secret-like test data. */
 const ALLOWED_PATHS = [
   // Test files with mock/placeholder data
+  "auth.test.ts",
   "prompt-security.test.ts",
   "config/env.test.ts",
   ".dev.vars.example",
@@ -71,7 +72,6 @@ const ALLOWED_PATHS = [
   // Test files that intentionally contain mock/placeholder credentials
   "share.test.ts",
   "secureLog.test.ts",
-  "auth.test.ts",
 ];
 
 // ---------------------------------------------------------------------------
