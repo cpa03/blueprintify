@@ -108,6 +108,7 @@ tmp/
 temp/
 .sisyphus/
 .omo/
+.codegraph/
 
 # Large files that should be handled by Git LFS
 *.zip
