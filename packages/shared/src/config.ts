@@ -2395,3 +2395,33 @@ export function hexToRgba(hex: string, opacity: number): string {
   const b = Number.parseInt(cleanHex.substring(4, 6), 16);
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 }
+
+/**
+ * External Reference URLs
+ * Centralized source of truth for external website URLs referenced in the app.
+ * Flexy says: No hardcoded "https://workers.cloudflare.com/" in API config!
+ * Usage: import { EXTERNAL_REFERENCE_URLS } from "@blueprint/shared";
+ *        EXTERNAL_REFERENCE_URLS.CLOUDFLARE_WORKERS
+ */
+export const EXTERNAL_REFERENCE_URLS = {
+  /** Cloudflare Workers documentation homepage */
+  CLOUDFLARE_WORKERS: "https://workers.cloudflare.com/",
+  /** React documentation homepage */
+  REACT: "https://react.dev/",
+} as const;
+
+/**
+ * Hover Spring Animation Config
+ * Centralized source of truth for the spring animation used on the scroll
+ * progress bar hover thumb. Eliminates hardcoded stiffness/damping/mass values
+ * in component code.
+ * Flexy says: No hardcoded { stiffness: 400, damping: 20, mass: 0.3 } in components!
+ * Usage: import { SPRING_SCROLL_HOVER } from "@blueprint/shared";
+ *        transition={{ ...SPRING_SCROLL_HOVER }}
+ */
+export const SPRING_SCROLL_HOVER = {
+  type: "spring" as const,
+  stiffness: 400,
+  damping: 20,
+  mass: 0.3,
+} as const;

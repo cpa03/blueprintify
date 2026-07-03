@@ -114,6 +114,8 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   ANIMATION_ENTRANCE_DELAYS_MS,
   hexToRgba,
+  EXTERNAL_REFERENCE_URLS,
+  SPRING_SCROLL_HOVER,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -3151,5 +3153,54 @@ describe("hexToRgba", () => {
 
   it("should handle white (#ffffff)", () => {
     expect(hexToRgba("#ffffff", 0.8)).toBe("rgba(255, 255, 255, 0.8)");
+  });
+});
+
+// ============================================================================
+// EXTERNAL_REFERENCE_URLS
+// ============================================================================
+describe("EXTERNAL_REFERENCE_URLS", () => {
+  it("should have a CLOUDFLARE_WORKERS URL", () => {
+    expect(EXTERNAL_REFERENCE_URLS.CLOUDFLARE_WORKERS).toBe("https://workers.cloudflare.com/");
+  });
+
+  it("should have a REACT URL", () => {
+    expect(EXTERNAL_REFERENCE_URLS.REACT).toBe("https://react.dev/");
+  });
+
+  it("should have https protocol for all URLs", () => {
+    const values = Object.values(EXTERNAL_REFERENCE_URLS);
+    values.forEach((url) => {
+      expect(url).toMatch(/^https:\/\//);
+    });
+  });
+
+  it("should have exactly 2 entries", () => {
+    expect(Object.keys(EXTERNAL_REFERENCE_URLS).length).toBe(2);
+  });
+});
+
+// ============================================================================
+// SPRING_SCROLL_HOVER
+// ============================================================================
+describe("SPRING_SCROLL_HOVER", () => {
+  it("should be a spring type animation", () => {
+    expect(SPRING_SCROLL_HOVER.type).toBe("spring");
+  });
+
+  it("should have positive stiffness", () => {
+    expect(SPRING_SCROLL_HOVER.stiffness).toBeGreaterThan(0);
+  });
+
+  it("should have positive damping", () => {
+    expect(SPRING_SCROLL_HOVER.damping).toBeGreaterThan(0);
+  });
+
+  it("should have positive mass", () => {
+    expect(SPRING_SCROLL_HOVER.mass).toBeGreaterThan(0);
+  });
+
+  it("should have exactly 4 entries (type + 3 spring params)", () => {
+    expect(Object.keys(SPRING_SCROLL_HOVER).length).toBe(4);
   });
 });

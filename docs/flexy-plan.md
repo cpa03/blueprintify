@@ -4,6 +4,29 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 50: Centralize External Reference URLs & Spring Scroll Hover Config
+
+| File | Change |
+| ---- | ------ |
+| `packages/shared/src/config.ts` | Added `EXTERNAL_REFERENCE_URLS` (workers.cloudflare.com, react.dev) + `SPRING_SCROLL_HOVER` (spring config for scroll progress hover thumb) |
+| `packages/shared/src/index.ts` | Exported `EXTERNAL_REFERENCE_URLS`, `SPRING_SCROLL_HOVER` |
+| `packages/shared/src/config.test.ts` | Added 2 test blocks (9 tests) for new config constants |
+| `apps/web/src/config/constants/api.ts` | Replaced hardcoded `"https://workers.cloudflare.com/"` and `"https://react.dev/"` with `EXTERNAL_REFERENCE_URLS.*` |
+| `apps/web/src/components/PageScrollProgressBar.tsx` | Replaced hardcoded `{ type: "spring", stiffness: 400, damping: 20, mass: 0.3 }` with `SPRING_SCROLL_HOVER` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 723 web + 438 api + 578 shared = 1,739 tests passing across 62 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-50-hardcoded-cleanup` | feat(flexy): centralize external reference URLs and spring scroll hover config |
+
 ### ✅ Flexy Iteration 48: Centralize API Proxy Path & Security Error Categories
 
 | File | Change |

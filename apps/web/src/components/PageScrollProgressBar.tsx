@@ -35,7 +35,7 @@ import { useReducedMotion } from "../hooks/useReducedMotion";
 import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { ANIMATION } from "../config/constants";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
-import { SCROLL_PROGRESS_DEFAULTS } from "@blueprint/shared";
+import { SCROLL_PROGRESS_DEFAULTS, SPRING_SCROLL_HOVER } from "@blueprint/shared";
 
 interface PageScrollProgressBarProps {
   /**
@@ -251,12 +251,7 @@ function PageScrollProgressBarComponent({
             scale: isHovered && isVisible ? 1 : 0,
             opacity: isHovered && isVisible ? 1 : 0,
           }}
-          transition={{
-            type: "spring",
-            stiffness: 400,
-            damping: 20,
-            mass: 0.3,
-          }}
+          transition={SPRING_SCROLL_HOVER}
         />
 
         {/* Subtle trailing glow — a small gradient flare that follows the
