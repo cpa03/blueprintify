@@ -2,6 +2,30 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 181 — **Full audit, CHANGELOG gap fix, doc refresh, quality verification** ✅
+
+### Task: Full repository audit, quality verification (typecheck ✅ lint ✅ build ✅ tests 1,730/1,730 ✅ format ✅), CHANGELOG gap fix (added 2 post-Cycle-180 commits: stagger per-chip animation, flexy Iteration 90 hardcoded color elimination), BroCula ref drift verification (Jul 2 Run 2 — latest: `brocula-hunt-2026-07-02-run2.md` / LH **99-100-100-100**, 1730 tests ✅ — unchanged from Cycle 180), BUG-014/BUG-017 status verification (still present on main — same documented blocker), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 181 full repository audit — verify all quality checks (typecheck ✅ lint ✅ build ✅ tests 1,730/1,730 ✅ format ✅), fix CHANGELOG gap (2 post-Cycle-180 commits: stagger per-chip animation, flexy Iteration 90), verify BroCula ref (Jul 2 Run 2 — latest), verify BUG-014/BUG-017 status (still present on main), sync docs (findings, active-tasks, knowledge-review, CHANGELOG)
+- **Actions**:
+  - [x] Full repository scan — no redundant/temp/unused source files found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK in non-test source code
+  - [x] No stale merged remote branches — all have unique unmerged commits
+  - [x] Format — all files Prettier-formatted ✅
+  - [x] **CHANGELOG gap fix**: Added 2 post-Cycle-180 commits (stagger per-chip animation, flexy Iteration 90) + Cycle 181 entry
+  - [x] **BroCula ref verified**: Jul 2 Run 2 — latest, no drift detected
+  - [x] **BUG-014/BUG-017 status verified**: Still present on main — same documented blocker as all prior 30+ cycles
+  - [x] **README BroCula date verified**: `(Jun 17–Jul 2)` — correct
+  - [x] **knowledge-review.md updated**: Last Review→Cycle 181, BroCula ref→Jul 2 Run 2
+  - [x] **findings.md updated**: Cycle 181 entry added
+  - [x] **active-tasks.md updated**: Cycle 181 entry added at top
+  - [x] **CHANGELOG.md updated**: Cycle 181 entry + 2 post-Cycle-180 commits added
+  - [x] **npm audit**: 17 moderate (BUG-013 — upstream tooling, same blocker)
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,730/1,730 ✅
+
 ## ✅ RepoKeeper Cycle 180 — **Full audit, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit, quality verification (typecheck ✅ lint ✅ build ✅ secrets ✅ tests 1,730/1,730 ✅ format ✅), BroCula ref drift verification (Jul 2 Run 2 — latest: `brocula-hunt-2026-07-02-run2.md` / LH **99-100-100-100**, 1730 tests ✅), BUG-014/BUG-017 status verification (still present on main — same documented blocker), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG)
