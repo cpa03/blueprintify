@@ -1494,4 +1494,22 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
-- ✅ `npm run test:all` — 723 web + 438 api + 569 shared = 1,730 tests passing across 84 files
+- ✅ `npm run test:all` — 723 web + 443 api + 579 shared = 1,745 tests passing across 84 files
+
+### ✅ Flexy Iteration 91: Centralize CircularProgress Celebration Dismissal & External Link aria-labels
+
+| File | Change |
+| ---- | ------ |
+| `packages/shared/src/config.ts` | Added `CELEBRATION_DISMISS_MS: 700` to `UI_TIMEOUTS` + `STROKE_COLOR_TRANSITION_S: 0.45` to `SVG_TRANSITION_DEFAULTS` |
+| `packages/shared/src/config.test.ts` | Added 2 test blocks for new config values (3 assertions) |
+| `apps/web/src/config/constants/ui.ts` | Added `STROKE_COLOR_TRANSITION_S` to `SVG_TRANSITION` re-export |
+| `apps/web/src/config/constants/content.ts` | Added `EXTERNAL_LINKS.CLOUDFLARE_WORKERS`/`REACT` to `ACCESSIBILITY_LABELS` |
+| `apps/web/src/components/CircularProgress.tsx` | Replaced hardcoded `700` with `UI_TIMEOUTS.CELEBRATION_DISMISS_MS`; replaced hardcoded `0.45s` with `SVG_TRANSITION.STROKE_COLOR_TRANSITION_S` |
+| `apps/web/src/App.tsx` | Replaced 2 hardcoded `aria-label="Cloudflare Workers/React (opens in new tab)"` with `ACCESSIBILITY_LABELS.EXTERNAL_LINKS.*` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 723 web + 443 api + 579 shared = 1,745 tests passing across 84 files

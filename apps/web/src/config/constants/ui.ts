@@ -208,6 +208,8 @@ export const PROGRESS_TRACK_COLOR = THEME_PROGRESS_TRACK_COLOR;
 export const SVG_TRANSITION = {
   /** Duration in ms for stroke-dashoffset animation on circular progress */
   STROKE_DASHOFFSET_DURATION_MS: SHARED_SVG_TRANSITION_DEFAULTS.STROKE_DASHOFFSET_DURATION_MS,
+  /** Duration in seconds for stroke color transition on circular progress (0.45s) */
+  STROKE_COLOR_TRANSITION_S: SHARED_SVG_TRANSITION_DEFAULTS.STROKE_COLOR_TRANSITION_S,
   /** Timing function for stroke animations */
   STROKE_TIMING: SHARED_SVG_TRANSITION_DEFAULTS.STROKE_TIMING,
 } as const;

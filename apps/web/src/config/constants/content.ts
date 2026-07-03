@@ -244,6 +244,10 @@ export const ACCESSIBILITY_LABELS = {
     KEYBOARD_SHORTCUTS: "Keyboard shortcuts (?)",
     GITHUB: "View on GitHub (opens in new tab)",
   },
+  EXTERNAL_LINKS: {
+    CLOUDFLARE_WORKERS: "Cloudflare Workers (opens in new tab)",
+    REACT: "React (opens in new tab)",
+  },
   REVIEW: {
     GENERATE_DISABLED_TOOLTIP: "Add a project name and description to continue",
     GENERATE_DISABLED_ARIA:

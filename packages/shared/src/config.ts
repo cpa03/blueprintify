@@ -1706,6 +1706,8 @@ export const UI_TIMEOUTS = {
   DISMISS_ANNOUNCEMENT_CLEAR: 3000,
   /** Safety timeout for MutationObserver in Editor component — stops observing after 10s to prevent memory leaks */
   OBSERVER_DISCONNECT: 10000,
+  /** Duration to show CircularProgress celebration bounce animation before resetting (700ms) */
+  CELEBRATION_DISMISS_MS: 700,
 } as const;
 
 /**
@@ -2291,6 +2293,8 @@ export const SCROLL_PULSE_DEFAULTS = {
 export const SVG_TRANSITION_DEFAULTS = {
   /** Duration in ms for stroke-dashoffset animation on circular progress indicators */
   STROKE_DASHOFFSET_DURATION_MS: 700,
+  /** Duration in seconds for stroke color transition on circular progress indicators (0.45s) */
+  STROKE_COLOR_TRANSITION_S: 0.45,
   /** Timing function for SVG stroke animations */
   STROKE_TIMING: "ease-out",
 } as const;
