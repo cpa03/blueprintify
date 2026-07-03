@@ -9,7 +9,7 @@
  */
 
 import { memo } from "react";
-import { motion } from "framer-motion";
+import * as motion from "framer-motion/m";
 import type { EditorTab } from "@blueprint/shared";
 import { EDITOR_FILENAMES, ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";

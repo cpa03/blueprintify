@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, memo } from "react";
-import { motion, useSpring, useTransform } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { useSpring, useTransform } from "framer-motion";
 import { ANIMATION } from "../config/constants";
 import { SHADOWS, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";

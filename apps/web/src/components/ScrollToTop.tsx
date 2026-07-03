@@ -18,7 +18,8 @@
  */
 
 import { useState, useEffect, useCallback, memo, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { ANIMATION, SPRING_CONFIG, SCROLL_THRESHOLDS } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";

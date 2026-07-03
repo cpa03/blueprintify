@@ -20,7 +20,8 @@
  * @see {@link useLastSaved} for save state tracking
  */
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import type { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { LazyMarkdownRenderer } from "./LazyMarkdownRenderer";
 import { LazyCodeMirror } from "./LazyCodeMirror";

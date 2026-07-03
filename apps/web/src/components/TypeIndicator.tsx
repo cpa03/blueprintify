@@ -9,7 +9,8 @@
  */
 
 import { useState, useCallback, useRef, useEffect, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import { ANIMATION, ANIMATION_MS } from "../config/constants";
 import { ANIMATION_TIMING } from "../config/theme";
 import { TYPING } from "../config/styles";

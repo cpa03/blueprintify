@@ -29,7 +29,8 @@
  */
 
 import { useState, useEffect, useCallback, useRef, memo } from "react";
-import { motion, useSpring, useTransform } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { useSpring, useTransform } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { ANIMATION } from "../config/constants";

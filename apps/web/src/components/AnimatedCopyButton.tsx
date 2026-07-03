@@ -11,7 +11,8 @@
  */
 
 import React, { useState, useCallback, useRef, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import {
   CELEBRATION_COLORS,

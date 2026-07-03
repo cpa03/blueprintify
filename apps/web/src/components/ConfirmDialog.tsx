@@ -35,7 +35,8 @@
  */
 
 import { useEffect, useRef, useCallback, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import { ANIMATION_DEFAULTS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
 import { SPRING_CONFIG, ANIMATION, CONFIRM_DIALOG_HINTS } from "../config/constants";
 import { useFocusTrap, useScrollLock } from "../hooks";

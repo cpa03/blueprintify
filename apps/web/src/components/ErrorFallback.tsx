@@ -9,7 +9,7 @@
  */
 
 import { memo } from "react";
-import { motion } from "framer-motion";
+import * as motion from "framer-motion/m";
 import { FallbackProps } from "react-error-boundary";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { SPRING_CONFIG, ANIMATION } from "../config/constants";

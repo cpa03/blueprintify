@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback, memo } from "react";
-import { motion, useSpring, MotionValue } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { useSpring, MotionValue } from "framer-motion";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
 import { ANIMATION_COLORS, ANIMATION } from "../config/constants";
 import { COUNTER_ANIMATION } from "../config/theme";

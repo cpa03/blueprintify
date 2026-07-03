@@ -29,7 +29,8 @@
  */
 
 import { useState, useCallback, useRef, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import { generateSlug } from "../utils/slug";
 import { ANIMATION_DEFAULTS, TOOLTIP_LABELS, UI_TIMEOUTS } from "@blueprint/shared";
 import { ANIMATION, SPRING_CONFIG, ACCESSIBILITY_LABELS } from "../config/constants";

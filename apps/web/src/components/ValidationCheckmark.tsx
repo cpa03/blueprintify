@@ -1,5 +1,6 @@
 import { memo } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import { ANIMATION_TIMING } from "../config/theme";
 import { ANIMATION } from "../config/constants";
 import { VALIDATION_LABELS } from "../config/constants/validation";

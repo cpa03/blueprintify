@@ -11,7 +11,8 @@
  */
 
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import { SPRING_CONFIG, ANIMATION } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
 
