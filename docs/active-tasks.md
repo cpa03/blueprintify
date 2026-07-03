@@ -2,6 +2,34 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 185 — **Full audit, tracked .patch removal, stale branch cleanup (5 merged branches), README drift fix, doc refresh, quality verification** ✅
+
+### Task: Full repository audit, quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), tracked .patch removal (`docs/ci-workflow-fixes-ulw-jul-03-2026.patch` — force-tracked despite `*.patch` in .gitignore, recurring anti-pattern), stale merged branch cleanup (5 branches deleted: `chore/repokeeper-cycle-183`, `docs/bugfixer-cycle-jul-03-2026`, `feat/flexy-iteration-50-hardcoded-cleanup`, `fix/admin-api-key-authorization`, `fix/document-title-generation-complete` — all fully merged, 0 unmerged commits), README BroCula date drift fix (Jun 17–Jul 2 → Jun 17–Jul 3), README tree drift fix (added `docs/cloudflare-infrastructure.md` — was missing from README), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), npm audit (17 moderate — BUG-013 upstream tooling)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 185 full repository audit — verify quality (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), remove tracked .patch, delete 5 stale merged branches, fix README BroCula date and tree drift, sync docs
+- **Actions**:
+  - [x] Full repository scan — no redundant/temp/unused source files found (beyond the .patch removed)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK in non-test source code
+  - [x] **Tracked .patch removed**: `docs/ci-workflow-fixes-ulw-jul-03-2026.patch` — force-tracked despite `*.patch` in `.gitignore`. Same recurring cleanup anti-pattern as Cycles 167, 170, 173, 175, 178, 183. File added by `35248094` (fix(ci): verified patch for Node.js 22 migration).
+  - [x] **Stale merged branch cleanup**: Deleted 5 fully-merged remote branches (`chore/repokeeper-cycle-183`, `docs/bugfixer-cycle-jul-03-2026`, `feat/flexy-iteration-50-hardcoded-cleanup`, `fix/admin-api-key-authorization`, `fix/document-title-generation-complete` — 0 unmerged commits each)
+  - [x] **Format**: All files Prettier-formatted ✅
+  - [x] **CHANGELOG gap fix**: Added 6 post-Cycle-184 commits (flexy Iteration 91, BroCula Jul 3 audit, fix(web) heading anchors, fix(ci) BUG-014/017 docs, fix(ci) patch doc, docs(infra) Cloudflare guide) + Cycle 185 entry
+  - [x] **README BroCula date drift fix**: `(Jun 17–Jul 2)` → `(Jun 17–Jul 3)` — matches latest audit `brocula-hunt-2026-07-03-run2.md` (Jul 3 Run 2 / LH **99-100-100-100**, 1744 tests ✅)
+  - [x] **README tree drift fix**: Added `cloudflare-infrastructure.md` reference — was missing from README tree/docs links despite being added by commit `336c8853`
+  - [x] **BroCula ref verified**: Jul 3 Run 2 — latest (LH **99-100-100-100**, 1744 tests ✅ from original audit; current 1,745 — shared +1). No drift detected.
+  - [x] **BUG-014/BUG-017 status verified**: Still present on main. Commit `65d01cf5` claimed fix but only touched `docs/bugs.md` — workflow files unchanged. Same documented `workflows: write` blocker.
+  - [x] **Test count updated**: 1,730 → **1,745** (723 web + 443 API + 579 shared — shared +1 from flexy test additions)
+  - [x] **docs/audits/README.md updated**: Test count drift noted (1,744→1,745, shared +1)
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 185, test count → 1,745, BroCula ref → Jul 3 Run 2
+  - [x] **findings.md updated**: Cycle 185 entry added
+  - [x] **active-tasks.md updated**: Cycle 185 entry added at top
+  - [x] **CHANGELOG.md updated**: Cycle 185 entry + 6 post-Cycle-184 commits added
+  - [x] **npm audit**: 17 moderate (BUG-013 — upstream tooling, same blocker)
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅
+
 ## ✅ RepoKeeper Cycle 182 — **Full audit, stale branch cleanup, CHANGELOG gap fix, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit, quality verification (typecheck ✅ lint ✅ build ✅ tests 1,730/1,730 ✅ format ✅), CHANGELOG gap fix (added 1 post-Cycle-181 commit: BugFixer ULW Cycle Jul 02 2026), stale merged branch cleanup (`origin/fix/ci-node-version-22-v2` deleted — fully merged, no unique commits), doc refresh (findings, active-tasks, knowledge-review, bugs, CHANGELOG), npm audit (17 moderate — BUG-013 upstream tooling)
