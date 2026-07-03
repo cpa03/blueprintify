@@ -23,10 +23,11 @@ The API is built on Cloudflare Workers and uses `.dev.vars` for local developmen
 | `OPENAI_TIMEOUT_MS`  | No          | `60000`                     | Request timeout in milliseconds                                    |
 | `OPENAI_MAX_TOKENS`  | No          | `4000`                      | Maximum tokens per request                                         |
 | `OPENAI_TEMPERATURE` | No          | `0.7`                       | Sampling temperature (0-2)                                         |
+| `API_VERSION`        | No          | `1.0.0`                     | API version identifier returned in health check                    |
 | `CORS_ORIGIN`        | No          | `*`                         | Allowed CORS origins (comma-separated)                             |
 | `CORS_MAX_AGE`       | No          | `86400`                     | CORS preflight cache duration in seconds                           |
 | `API_KEY`            | Recommended | -                           | API authentication key. If not set, protected endpoints return 503 |
-| `ENVIRONMENT`        | No          | `development`               | Runtime environment (`development`, `staging`, `production`)       |
+| `NODE_ENV`           | No          | `development`               | Runtime environment (`development`, `test`, `production`)          |
 
 ### Rate Limiting
 
@@ -47,9 +48,10 @@ The API is built on Cloudflare Workers and uses `.dev.vars` for local developmen
 
 | Variable                              | Required | Default | Description                             |
 | ------------------------------------- | -------- | ------- | --------------------------------------- |
-| `CIRCUIT_BREAKER_FAILURE_THRESHOLD`   | No       | `5`     | Number of failures before circuit opens |
-| `CIRCUIT_BREAKER_RESET_TIMEOUT_MS`    | No       | `60000` | Time before attempting to close circuit |
-| `CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS` | No       | `3`     | Max calls in half-open state            |
+| `CIRCUIT_BREAKER_FAILURE_THRESHOLD`      | No       | `5`      | Number of failures before circuit opens |
+| `CIRCUIT_BREAKER_RESET_TIMEOUT_MS`       | No       | `60000`  | Time before attempting to close circuit |
+| `CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS`    | No       | `3`      | Max calls in half-open state            |
+| `CIRCUIT_BREAKER_COLD_START_WINDOW_MS`   | No       | `30000`  | Cold start window in ms before circuit breaker normal operation |
 
 ### Retry Configuration
 
@@ -199,19 +201,25 @@ npm run lint
 
 ### Development (default)
 
-- `ENVIRONMENT=development`
+- `NODE_ENV=development`
 - `CORS_ORIGIN=http://localhost:3000`
 - Rate limiting: 100 requests per window
 
+### Testing
+
+- `NODE_ENV=test`
+- Rate limiting disabled
+- Analytics disabled
+
 ### Staging
 
-- `ENVIRONMENT=staging`
+- `NODE_ENV=staging`
 - Custom domain: `api-staging.blueprintify.dev`
 - Production-like settings with test data
 
 ### Production
 
-- `ENVIRONMENT=production`
+- `NODE_ENV=production`
 - Custom domain: `api.blueprintify.dev`
 - Full rate limiting enabled
 - Analytics enabled
