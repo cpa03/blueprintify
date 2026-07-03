@@ -159,7 +159,7 @@ function StepIndicatorComponent(): JSX.Element {
               title={
                 isClickable
                   ? `${step.label} (Alt+${step.shortcut})`
-                  : "Complete previous steps to unlock"
+                  : TOAST_MESSAGES.STEP_LOCKED(step.label)
               }
               aria-keyshortcuts={isClickable ? `Alt+${step.shortcut}` : undefined}
               aria-current={isActive ? "step" : undefined}
@@ -173,7 +173,7 @@ function StepIndicatorComponent(): JSX.Element {
                       ? "bg-accent-emerald/20 border border-accent-emerald/50 text-accent-emerald focus-visible:ring-2 focus-visible:ring-accent-emerald/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                       : "bg-dark-800/50 border border-dark-700 text-dark-300 focus-visible:ring-2 focus-visible:ring-dark-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                 }
-                ${isClickable ? "cursor-pointer hover:bg-dark-700 hover:scale-[1.02] active:scale-[0.98]" : "cursor-default"}
+                ${isClickable ? "cursor-pointer hover:bg-dark-700 hover:scale-102 active:scale-98" : "cursor-default"}
                 ${isActive ? "animate-step-pulse" : ""}
                 ${isShaking ? "shake-animation" : ""}
                 ${justCompletedStep === step.key ? "step-complete-flash" : ""}
