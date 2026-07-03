@@ -91,6 +91,7 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
 
     const providedKey = c.req.header(apiKeyHeader);
     const validKey = c.env.API_KEY;
+    const adminKey = c.env.ADMIN_API_KEY;
 
     // SECURITY FIX: Reject requests when API_KEY is not configured instead of bypassing auth
     // This prevents unauthenticated access when the server is misconfigured
@@ -103,21 +104,31 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
       );
     }
 
-    // Use constant-time comparison to prevent timing attacks
-    if (!providedKey || !constantTimeCompare(providedKey, validKey)) {
+    // Determine user role based on which API key was used
+    // Priority: admin key > regular key
+    let userRole: UserRole;
+
+    if (adminKey && providedKey && constantTimeCompare(providedKey, adminKey)) {
+      // Admin API key provides admin role — allows access to admin-protected endpoints
+      userRole = AUTH_DEFAULTS.ADMIN_ROLE;
+    } else if (!providedKey || !constantTimeCompare(providedKey, validKey)) {
+      // Invalid or missing key
       return c.json(
         createErrorJson(ErrorType.AUTHENTICATION, ERROR_MESSAGES.AUTHENTICATION_INVALID_KEY, {
           code: ERROR_CODES.AUTHENTICATION_ERROR,
         }),
         HTTP_STATUS.UNAUTHORIZED
       );
+    } else {
+      // Regular API key provides default role
+      userRole = defaultRole;
     }
 
     const userId = c.req.header(API_HEADERS.CUSTOM.USER_ID) || AUTH_DEFAULTS.ANONYMOUS_USER_ID;
     // SECURITY: User role is assigned server-side only — never trust client-provided x-user-role.
     // All authenticated users default to `defaultRole` (typically "user").
-    // Admin access must be configured via server-side mechanisms (env var, API key mapping).
-    const userRole: UserRole = defaultRole;
+    // Admin access is granted via ADMIN_API_KEY environment variable.
+    // Admin key has higher priority: if both keys match, admin role takes precedence.
 
     const user: User = {
       id: userId,

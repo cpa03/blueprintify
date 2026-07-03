@@ -2,12 +2,20 @@ import { describe, it, expect } from "vitest";
 import { Hono } from "hono";
 import { apiKeyAuth } from "./auth";
 import { ERROR_CODES, API_HEADERS } from "../config/constants";
-import { ERROR_TYPES, HTTP_STATUS, RESPONSE_STATUS } from "@blueprint/shared";
+import {
+  ERROR_TYPES,
+  HTTP_STATUS,
+  RESPONSE_STATUS,
+  CONTEXT_KEYS,
+  AUTH_DEFAULTS,
+} from "@blueprint/shared";
 import type { ErrorResponse } from "../errors";
+import type { AppVariables, User } from "../types";
 import { TEST_API_KEY } from "../test-utils";
 
 /** Flexy says: Shared test constants - no hardcoded test-key strings! */
 const TEST_VALID_API_KEY = TEST_API_KEY;
+const TEST_ADMIN_API_KEY = "admin-secret-key-789";
 const TEST_CUSTOM_HEADER = "x-custom-auth";
 const TEST_CUSTOM_KEY = "my-custom-key";
 
@@ -210,6 +218,132 @@ describe("auth middleware", () => {
       expect(data.error).toHaveProperty("message");
       expect(data.error).toHaveProperty("code");
       expect(data.error).toHaveProperty("timestamp");
+    });
+  });
+
+  describe("admin API key authorization", () => {
+    it("should assign admin role when ADMIN_API_KEY matches", async () => {
+      const app = new Hono<{
+        Bindings: { API_KEY: string; ADMIN_API_KEY: string };
+        Variables: AppVariables;
+      }>();
+      app.use("*", async (c, next) => {
+        c.env = { API_KEY: validApiKey, ADMIN_API_KEY: TEST_ADMIN_API_KEY } as unknown as {
+          API_KEY: string;
+          ADMIN_API_KEY: string;
+        };
+        await next();
+      });
+      app.use("/", apiKeyAuth({ excludePaths: [] }));
+      app.get("/", (c) => {
+        const user = c.get(CONTEXT_KEYS.USER) as User;
+        return c.json({ success: true, role: user.role });
+      });
+
+      const res = await app.request("/", {
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: TEST_ADMIN_API_KEY },
+      });
+
+      expect(res.status).toBe(HTTP_STATUS.OK);
+      const data = (await res.json()) as { success: boolean; role: string };
+      expect(data.success).toBe(true);
+      expect(data.role).toBe(AUTH_DEFAULTS.ADMIN_ROLE);
+    });
+
+    it("should assign default role when regular API_KEY is used even if ADMIN_API_KEY is set", async () => {
+      const app = new Hono<{
+        Bindings: { API_KEY: string; ADMIN_API_KEY: string };
+        Variables: AppVariables;
+      }>();
+      app.use("*", async (c, next) => {
+        c.env = { API_KEY: validApiKey, ADMIN_API_KEY: TEST_ADMIN_API_KEY } as unknown as {
+          API_KEY: string;
+          ADMIN_API_KEY: string;
+        };
+        await next();
+      });
+      app.use("/", apiKeyAuth({ excludePaths: [] }));
+      app.get("/", (c) => {
+        const user = c.get(CONTEXT_KEYS.USER) as User;
+        return c.json({ success: true, role: user.role });
+      });
+
+      const res = await app.request("/", {
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: validApiKey },
+      });
+
+      expect(res.status).toBe(HTTP_STATUS.OK);
+      const data = (await res.json()) as { success: boolean; role: string };
+      expect(data.success).toBe(true);
+      expect(data.role).toBe(AUTH_DEFAULTS.DEFAULT_ROLE);
+    });
+
+    it("should respect defaultRole config even when ADMIN_API_KEY is set but regular key is used", async () => {
+      const app = new Hono<{
+        Bindings: { API_KEY: string; ADMIN_API_KEY: string };
+        Variables: AppVariables;
+      }>();
+      app.use("*", async (c, next) => {
+        c.env = { API_KEY: validApiKey, ADMIN_API_KEY: TEST_ADMIN_API_KEY } as unknown as {
+          API_KEY: string;
+          ADMIN_API_KEY: string;
+        };
+        await next();
+      });
+      app.use("/", apiKeyAuth({ excludePaths: [], defaultRole: "user" }));
+      app.get("/", (c) => {
+        const user = c.get(CONTEXT_KEYS.USER) as User;
+        return c.json({ success: true, role: user.role });
+      });
+
+      const res = await app.request("/", {
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: validApiKey },
+      });
+
+      expect(res.status).toBe(HTTP_STATUS.OK);
+      const data = (await res.json()) as { success: boolean; role: string };
+      expect(data.role).toBe("user");
+    });
+
+    it("should reject invalid admin API key like any other invalid key", async () => {
+      const app = new Hono<{ Bindings: { API_KEY: string; ADMIN_API_KEY: string } }>();
+      app.use("*", async (c, next) => {
+        c.env = { API_KEY: validApiKey, ADMIN_API_KEY: TEST_ADMIN_API_KEY } as unknown as {
+          API_KEY: string;
+          ADMIN_API_KEY: string;
+        };
+        await next();
+      });
+      app.use("/", apiKeyAuth({ excludePaths: [] }));
+      app.get("/", (c) => c.json({ success: true }));
+
+      const res = await app.request("/", {
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: "wrong-admin-key" },
+      });
+
+      expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
+    });
+
+    it("should handle case where ADMIN_API_KEY is not set (backward compatible)", async () => {
+      const app = new Hono<{ Bindings: { API_KEY: string }; Variables: AppVariables }>();
+      app.use("*", async (c, next) => {
+        c.env = { API_KEY: validApiKey } as unknown as { API_KEY: string };
+        await next();
+      });
+      app.use("/", apiKeyAuth({ excludePaths: [] }));
+      app.get("/", (c) => {
+        const user = c.get(CONTEXT_KEYS.USER) as User;
+        return c.json({ success: true, role: user.role });
+      });
+
+      const res = await app.request("/", {
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: validApiKey },
+      });
+
+      expect(res.status).toBe(HTTP_STATUS.OK);
+      const data = (await res.json()) as { success: boolean; role: string };
+      expect(data.success).toBe(true);
+      expect(data.role).toBe(AUTH_DEFAULTS.DEFAULT_ROLE);
     });
   });
 });
