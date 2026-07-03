@@ -33,7 +33,7 @@ import {
 } from "../config/constants";
 import { MARKDOWN, ICON } from "../config/styles";
 import { HeadingAnchor } from "./HeadingAnchor";
-import { childrenToText } from "../utils/slug";
+import { generateSlug, childrenToText } from "../utils/slug";
 import type { Components } from "react-markdown";
 
 /**
@@ -229,48 +229,54 @@ function MarkdownRendererComponent({ content, className }: MarkdownRendererProps
       },
       h1({ children }) {
         const text = childrenToText(children);
+        const slug = generateSlug(text);
         return (
-          <h1 className={MARKDOWN.H1}>
+          <h1 id={slug} className={MARKDOWN.H1}>
             <HeadingAnchor headingText={text}>{children}</HeadingAnchor>
           </h1>
         );
       },
       h2({ children }) {
         const text = childrenToText(children);
+        const slug = generateSlug(text);
         return (
-          <h2 className={MARKDOWN.H2}>
+          <h2 id={slug} className={MARKDOWN.H2}>
             <HeadingAnchor headingText={text}>{children}</HeadingAnchor>
           </h2>
         );
       },
       h3({ children }) {
         const text = childrenToText(children);
+        const slug = generateSlug(text);
         return (
-          <h3 className={MARKDOWN.H3}>
+          <h3 id={slug} className={MARKDOWN.H3}>
             <HeadingAnchor headingText={text}>{children}</HeadingAnchor>
           </h3>
         );
       },
       h4({ children }) {
         const text = childrenToText(children);
+        const slug = generateSlug(text);
         return (
-          <h4 className={MARKDOWN.H4}>
+          <h4 id={slug} className={MARKDOWN.H4}>
             <HeadingAnchor headingText={text}>{children}</HeadingAnchor>
           </h4>
         );
       },
       h5({ children }) {
         const text = childrenToText(children);
+        const slug = generateSlug(text);
         return (
-          <h5 className={MARKDOWN.H5}>
+          <h5 id={slug} className={MARKDOWN.H5}>
             <HeadingAnchor headingText={text}>{children}</HeadingAnchor>
           </h5>
         );
       },
       h6({ children }) {
         const text = childrenToText(children);
+        const slug = generateSlug(text);
         return (
-          <h6 className={MARKDOWN.H6}>
+          <h6 id={slug} className={MARKDOWN.H6}>
             <HeadingAnchor headingText={text}>{children}</HeadingAnchor>
           </h6>
         );

@@ -101,12 +101,12 @@ export const MARKDOWN = {
   /** Table row */
   TABLE_TR: "hover:bg-dark-800/50 transition-colors",
   /** Headings */
-  H1: "text-3xl font-bold text-white mb-4 mt-6 pb-2 border-b border-dark-700",
-  H2: "text-2xl font-bold text-white mb-3 mt-6",
-  H3: "text-xl font-semibold text-white mb-2 mt-5",
-  H4: "text-lg font-semibold text-white mb-2 mt-4",
-  H5: "text-base font-semibold text-white mb-2 mt-4",
-  H6: "text-sm font-semibold text-white mb-2 mt-4",
+  H1: "text-3xl font-bold text-white mb-4 mt-6 pb-2 border-b border-dark-700 scroll-mt-24",
+  H2: "text-2xl font-bold text-white mb-3 mt-6 scroll-mt-24",
+  H3: "text-xl font-semibold text-white mb-2 mt-5 scroll-mt-24",
+  H4: "text-lg font-semibold text-white mb-2 mt-4 scroll-mt-24",
+  H5: "text-base font-semibold text-white mb-2 mt-4 scroll-mt-24",
+  H6: "text-sm font-semibold text-white mb-2 mt-4 scroll-mt-24",
   /** Paragraph */
   PARAGRAPH: "text-dark-300 mb-4 leading-relaxed",
   /** Unordered list */
