@@ -1513,3 +1513,25 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 723 web + 443 api + 579 shared = 1,745 tests passing across 84 files
+
+### ✅ Flexy Iteration 92: Complete Scale Token Extraction — Replace Remaining Arbitrary Scale Values & Hardcoded StepIndicator String
+
+| File | Change |
+|------|--------|
+| `apps/web/tailwind.config.js` | Added `scale: { 98: "0.98" }` and `125: "1.25"` tokens to complement existing `102` token |
+| `apps/web/src/components/StepIndicator.tsx` | Replaced `hover:scale-[1.02]` → `hover:scale-102`; `active:scale-[0.98]` → `active:scale-98`; replaced hardcoded `"Complete previous steps to unlock"` with `TOAST_MESSAGES.STEP_LOCKED(step.label)` |
+| `apps/web/src/components/SkipLink.tsx` | Replaced `hover:scale-[1.02]` → `hover:scale-102` |
+| `apps/web/src/components/TemplateGrid.tsx` | Replaced `motion-safe:hover:scale-[1.02]` → `motion-safe:hover:scale-102`; `motion-safe:active:scale-[0.98]` → `motion-safe:active:scale-98`; standalone `scale-[0.98]` → `scale-98` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 84 files passing (51 web + 29 api + 4 shared)
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2299](https://github.com/cpa03/blueprintify/pull/2299) | `feat/flexy-iteration-92-scale-tokens` | refactor(flexy): replace remaining arbitrary scale values with tailwind tokens and fix hardcoded string in StepIndicator (Iteration 92) |
