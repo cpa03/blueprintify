@@ -19,7 +19,7 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
                  focus:opacity-100 focus:translate-y-0 focus:scale-100
                  opacity-0 -translate-y-5 scale-90
                  transition-all duration-300 ease-out
-                 hover:scale-[1.02]"
+                 hover:scale-102"
       style={{
         willChange: shouldReduceMotion ? "auto" : "transform, opacity",
         zIndex: Z_INDEX.max,

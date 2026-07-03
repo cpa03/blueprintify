@@ -162,11 +162,11 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                 will-change-transform
                 animate-fade-in
                 motion-safe:transition-all motion-safe:duration-200 motion-safe:ease-out
-                motion-safe:hover:scale-[1.02] motion-safe:hover:-translate-y-0.5
-                motion-safe:active:scale-[0.98]
+                motion-safe:hover:scale-102 motion-safe:hover:-translate-y-0.5
+                motion-safe:active:scale-98
                 ${
                   isSelected
-                    ? "border-accent-emerald/70 bg-accent-emerald/10 scale-[0.98]"
+                    ? "border-accent-emerald/70 bg-accent-emerald/10 scale-98"
                     : "hover:border-primary-500/50 cursor-pointer"
                 }
                 ${selectedId !== null && !isSelected ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
