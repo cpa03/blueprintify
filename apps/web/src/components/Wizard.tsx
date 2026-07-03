@@ -26,7 +26,7 @@ import { useEditorStore } from "../store";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useFocusOnStepChange, useStepAnnouncer } from "../hooks/useFocusOnStepChange";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { WIZARD_STEPS, STEP_TITLES } from "../config/constants";
+import { WIZARD_STEPS, STEP_TITLES, GENERATION_MESSAGES } from "../config/constants";
 import { SPINNER } from "../config/styles";
 import { WIZARD_STEP_KEYS, ANIMATION_DIRECTIONS } from "@blueprint/shared";
 import { LAYOUT } from "../config/theme";
@@ -161,10 +161,13 @@ function WizardComponent(): JSX.Element {
     };
   }, [handleCmdEnter, handleAltArrowLeft, handleAltArrowRight]);
 
+  const isComplete = !isGenerating && generationProgress === GENERATION_MESSAGES.COMPLETE;
   const documentTitle =
     isGenerating && generationProgress
       ? `⏳ ${generationProgress}`
-      : STEP_TITLES[currentStep] || "Project Wizard";
+      : isComplete
+        ? "✅ Generation Complete!"
+        : STEP_TITLES[currentStep] || "Project Wizard";
   useDocumentTitle(documentTitle);
 
   const renderStep = (): JSX.Element => {
