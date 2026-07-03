@@ -243,49 +243,30 @@ Optional configuration variables:
 
 ### Required Infrastructure
 
-Before deploying to Cloudflare Workers, the following resources must be created and their IDs must be set in `wrangler.toml`.
+Before deploying to Cloudflare Workers, real Cloudflare resources must be created and their IDs must be set in `wrangler.toml`.
 
-> ⚠️ **Warning**: `wrangler.toml` currently contains placeholder IDs (`local_database_id`, `cache_kv_namespace_id`, etc.). Real IDs must be substituted before production deployment. See the `TODO` comments and `# ⚠️ PLACEHOLDER` markers in the file.
+> ⚠️ **Warning**: `wrangler.toml` currently contains placeholder IDs (`local_database_id`, `cache_kv_namespace_id`, etc.). **Deployment will fail if these are not replaced.** See the `TODO` comments and `# ⚠️ PLACEHOLDER` markers in the file.
 
-#### 1. KV Namespace (for caching)
+Detailed setup instructions with all CLI commands and ID mapping tables are in **`docs/cloudflare-infrastructure.md`**.
 
-```bash
-# Create a KV namespace for each environment
-wrangler kv:namespace create "blueprint-cache"
-# → Returns an ID. Set it in wrangler.toml [[kv_namespaces]] id field.
+Quick reference:
 
-# Repeat for production (create with separate namespace)
-wrangler kv:namespace create "blueprint-cache-prod" --env production
-```
-
-#### 2. D1 Database (for blueprint storage)
+| Resource                      | Status                                         |
+| ----------------------------- | ---------------------------------------------- |
+| KV Namespace (caching)        | ⚠️ Placeholder IDs — create and replace        |
+| D1 Database (storage)         | ⚠️ Placeholder IDs — create and replace        |
+| Queue (background processing) | ✅ Queue names are real, but queues must exist |
+| Rate Limiting                 | ✅ Pre-configured, no action needed            |
 
 ```bash
-# Create a D1 database for each environment
-wrangler d1 create "blueprint-db"
-# → Returns a database_id. Set it in wrangler.toml [[d1_databases]] database_id field.
-
-wrangler d1 create "blueprint-db-prod" --env production
-wrangler d1 create "blueprint-db-staging" --env staging
+# Verify no placeholders remain after setup:
+grep -n "TODO\|PLACEHOLDER" apps/api/wrangler.toml
+# Expected output: (zero matches)
 ```
-
-#### 3. Queue (for background processing)
-
-The queue `background-processing` is referenced in `wrangler.toml`. Create it via:
-
-```bash
-wrangler queue create background-processing
-wrangler queue create background-processing-staging --env staging
-```
-
-#### 4. Rate Limiting
-
-The rate limiter namespace IDs (`1001`, `1002`, `1003` etc.) are pre-configured. No additional setup is needed for Cloudflare Native Rate Limiting.
-
-> **Tip**: Run `grep -n "TODO\|PLACEHOLDER" apps/api/wrangler.toml` after setup to verify all placeholders have been replaced.
 
 ## Related Documentation
 
 - [Main README](../../README.md)
 - [API Documentation](../../docs/api-documentation.md)
+- [Cloudflare Infrastructure Setup](../../docs/cloudflare-infrastructure.md) — Step-by-step resource creation guide
 - [M2 Technical Approach](../../docs/m2-technical-approach.md)
