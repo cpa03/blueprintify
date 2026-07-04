@@ -142,6 +142,12 @@ export const StepReview = memo(function StepReview({
                     />
                   </svg>
                   Edit
+                  <kbd
+                    className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                    aria-hidden="true"
+                  >
+                    {getAltKeyLabel()}+{WIZARD_REVIEW_EDIT_SHORTCUTS.INFO}
+                  </kbd>
                 </button>
               </KeyboardShortcutTooltip>
             </div>
@@ -199,6 +205,12 @@ export const StepReview = memo(function StepReview({
                     />
                   </svg>
                   Edit
+                  <kbd
+                    className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                    aria-hidden="true"
+                  >
+                    {getAltKeyLabel()}+{WIZARD_REVIEW_EDIT_SHORTCUTS.STACK}
+                  </kbd>
                 </button>
               </KeyboardShortcutTooltip>
             </div>
@@ -249,6 +261,12 @@ export const StepReview = memo(function StepReview({
                       />
                     </svg>
                     Edit
+                    <kbd
+                      className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                      aria-hidden="true"
+                    >
+                      {getAltKeyLabel()}+{WIZARD_REVIEW_EDIT_SHORTCUTS.FEATURES}
+                    </kbd>
                   </button>
                 </KeyboardShortcutTooltip>
               </div>
