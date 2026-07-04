@@ -50,7 +50,7 @@ export const logger = {
 
   info(message: string, ...args: unknown[]): void {
     if (!shouldLog("info")) return;
-    console.info(`${prefix("info")} ${message}`, ...args);
+    console.log(`${prefix("info")} ${message}`, ...args);
   },
 
   warn(message: string, ...args: unknown[]): void {
