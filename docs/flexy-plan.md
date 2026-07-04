@@ -1582,4 +1582,4 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD | `feat/flexy-iteration-94-rgb-colors` | refactor(flexy): eliminate remaining hardcoded rgb() strings in SHADOWS.box, BORDER_STATIC and THEME_PROGRESS_TRACK_COLOR (Iteration 94) |
+| [#2316](https://github.com/cpa03/blueprintify/pull/2316) | `feat/flexy-iteration-94-rgb-colors` | refactor(flexy): eliminate remaining hardcoded rgb() strings in SHADOWS.box, BORDER_STATIC and THEME_PROGRESS_TRACK_COLOR (Iteration 94) |
