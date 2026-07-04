@@ -12,22 +12,22 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-04 (RepoKeeper Cycle 187)
+**Last Review**: 2026-07-04 (RepoKeeper Cycle 188)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jul 3)` — matches latest audit `brocula-hunt-2026-07-03-run3.md` (BroCula Jul 3 Run 3 / LH **99-100-100-100**, 1745 tests ✅)
+- **README BroCula description verified**: `(Jun 17–Jul 4)` — matches latest audit `brocula-hunt-2026-07-04-run1.md` (BroCula Jul 4 Run 1 / LH **100-100-100-100**, 1745 tests ✅)
 - **Typecheck/Lint**: All clean (0 errors, 0 warnings)
 - **Build**: Clean ✅
 - **Tests**: **1,745/1,745 passing** (723 web + 443 API + 579 shared) ✅
 - **Format**: All Prettier-formatted ✅
 - **BUG-014/BUG-017 still present on main**: Workflow files unchanged — push blocked by `workflows: write` permission (same blocker as all prior 30+ cycles). Maintainer must run `scripts/fix-ci-node-version.mjs` or cherry-pick from branch.
 - **npm audit**: 17 moderate vulns — BUG-013 (upstream lighthouse→@sentry/node→@opentelemetry/core, same documented blocker).
-- **Stale tracked doc removed**: `docs/ci-workflow-fixes-jul-04.md` — already-applied CI fix diff for BUG-014/BUG-017 (node-version pinning, doc ref fixes). Same recurring anti-pattern as `docs/ci-workflow-fixes-jul-03.md` cleanup in Cycle 186 and `.patch` cleanups in Cycles 167/170/173/175/178/183/185.
-- **Stale tracked .patch removed**: `docs/ci-workflow-fixes-cycle-jul-04-2026.patch` — force-tracked despite `*.patch` in `.gitignore`. Same recurring anti-pattern as prior `.patch` cleanups.
+- **Stale tracked .patch removed**: `docs/ci-workflow-fixes-bugfixer-jul-04-2026.patch` — force-tracked despite `*.patch` in `.gitignore`. Same recurring anti-pattern as prior `.patch` cleanups in Cycles 167/170/173/175/178/183/185/187.
+- **Cycle 188**: Full repository audit, stale tracked `.patch` removal (`docs/ci-workflow-fixes-bugfixer-jul-04-2026.patch` — force-tracked despite `*.patch` in `.gitignore`, same recurring anti-pattern), CHANGELOG gap fix (5 post-Cycle-187 commits: feat(web) centralized frontend logger, feat(web) keyboard shortcut filter SR announcement, chore(brocula) Jul 4 Run 1, refactor(flexy) rgb→hexToRgba colors, docs(bugfixer) BUG-014/017 fix patch), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), BroCula ref verified (Jul 4 Run 1 — LH **100-100-100-100**, 1745 tests ✅), npm audit (17 moderate — BUG-013 upstream tooling).
 - **Cycle 187**: Full repository audit, stale tracked `docs/ci-workflow-fixes-jul-04.md` + `docs/ci-workflow-fixes-cycle-jul-04-2026.patch` removal (already-applied CI fix diff + tracked .patch), CHANGELOG gap fix (1 post-Cycle-186 commit: feat(web) screen reader announcement #2302), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling).
 - **Cycle 186**: Full repository audit, stale tracked `docs/ci-workflow-fixes-jul-03.md` removal (already-applied CI fix diff), CHANGELOG gap fix (3 post-Cycle-185 commits: SmartTooltip, fix(ci) BUG-014/BUG-017, ULW Loop bug log), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling).
 - **Cycle 185**: Full repository audit, tracked `.patch` removal (`docs/ci-workflow-fixes-ulw-jul-03-2026.patch` — force-tracked despite `*.patch` in `.gitignore`, same recurring anti-pattern as Cycles 167/170/173/175/178/183), stale merged branch cleanup (5 branches deleted), README BroCula date drift fix (Jun 17–Jul 2 → Jun 17–Jul 3), README tree drift fix (added `docs/cloudflare-infrastructure.md` reference), test count update (1,730→1,745 — shared +1), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling).
