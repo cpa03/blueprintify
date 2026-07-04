@@ -2,6 +2,28 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ BugFixer ULW Cycle Jul 04 2026 Run 2 — **BUG-014/017 fix, quality verification, doc refresh** ✅
+
+### Task: Full repository audit, BUG-014 fix (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), BUG-017 fix (hardcoded `node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), CHANGELOG gap fix (5 post-Cycle-188 commits + BugFixer cycle entry), doc refresh (bugs, active-tasks, findings, knowledge-review, CHANGELOG), npm audit (17 moderate — BUG-013 upstream tooling)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: BugFixer ULW Cycle Jul 04 2026 Run 2 — fix BUG-014 (stale doc refs) and BUG-017 (hardcoded node-version) on branch, verify quality, update docs, create PR
+- **Actions**:
+  - [x] Full repository scan — no redundant/temp/unused source files found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK in non-test source code
+  - [x] **BUG-014 — FIXED on local branch**: `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). Verified zero stale refs via grep.
+  - [x] **BUG-017 — FIXED on local branch**: `node-version: "20"`/`node-version: 20`→`node-version-file: ".node-version"` across iterate.yml (5), parallel.yml (4), on-pull.yml (1), pr-gatekeeper.yml (1). Verified zero hardcoded `node-version: "20"` via grep.
+  - [x] **Push blocked** by GitHub App token lacking `workflows: write` permission — same documented blocker as all 30+ prior cycles
+  - [x] **CHANGELOG gap fix**: Added 5 post-Cycle-188 commits (fix(scripts) BugFixer agent name, refactor(flexy) Iteration 94, chore(brocula) Jul 4 Run 1, docs BUG-017 audit, docs Cycle 189) + BugFixer cycle entry
+  - [x] **Format**: All files Prettier-formatted ✅
+  - [x] **knowledge-review.md updated**: Last Review → BugFixer ULW Cycle Jul 04 2026 Run 2
+  - [x] **findings.md updated**: BugFixer cycle entry added
+  - [x] **active-tasks.md updated**: BugFixer cycle entry added at top
+  - [x] **npm audit**: 17 moderate (BUG-013 — upstream tooling, same blocker)
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅
+
 ## ✅ RepoKeeper Cycle 188 — **Full audit, stale tracked .patch removal (BugFixer CI fix diff recurring), CHANGELOG gap fix, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit, quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), stale tracked .patch removal (`docs/ci-workflow-fixes-bugfixer-jul-04-2026.patch` — force-tracked despite `*.patch` in `.gitignore`, same recurring anti-pattern), CHANGELOG gap fix (5 post-Cycle-187 commits: feat(web) centralized frontend logger, feat(web) keyboard shortcut filter SR announcement, chore(brocula) Jul 4 Run 1, refactor(flexy) rgb→hexToRgba colors, docs(bugfixer) BUG-014/017 fix patch), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), npm audit (17 moderate — BUG-013 upstream tooling)

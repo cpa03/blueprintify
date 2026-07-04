@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- fix(bugfixer): BugFixer ULW Cycle Jul 04 2026 Run 2 — BUG-014 and BUG-017 fixed on branch `fix/bugfixer-cycle-jul-04-2026-run2` (push blocked by `workflows: write` permission), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅), doc refresh (bugs, active-tasks, findings, knowledge-review, CHANGELOG)
+- docs: record Cycle 189 — ULW Loop PR Handler (5 merged) and Issue Audit
+- docs: BUG-017 audit — Node.js 22 CI fix patch and issue normalization
+- chore(brocula): audit run 1 — LH 100-100-100-100, 1745 tests clean
+- refactor(flexy): eliminate remaining hardcoded rgb() strings in SHADOWS.box, BORDER_STATIC and THEME_PROGRESS_TRACK_COLOR (Iteration 94)
+- fix(scripts): update fix-ci-node-version.mjs to also fix BugFixer agent name
 - chore(repokeeper): Cycle 188 — full repository audit, stale tracked `.patch` removal (`docs/ci-workflow-fixes-bugfixer-jul-04-2026.patch` — force-tracked despite `*.patch` in `.gitignore`, same recurring anti-pattern as Cycles 167/170/173/175/178/183/185/187), CHANGELOG gap fix (5 post-Cycle-187 commits: feat(web) centralized frontend logger, feat(web) keyboard shortcut filter SR announcement, chore(brocula) Jul 4 Run 1, refactor(flexy) rgb→hexToRgba colors, docs(bugfixer) BUG-014/017 fix patch), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), BroCula ref verified (Jul 4 Run 1 — LH **100-100-100-100**, 1745 tests ✅), npm audit (17 moderate — BUG-013 upstream tooling)
 - feat(web): add centralized frontend logger utility
 - feat(web): announce keyboard shortcut filter results to screen readers
