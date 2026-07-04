@@ -63,12 +63,17 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
 }) {
   const [copied, setCopied] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [copyAnnouncement, setCopyAnnouncement] = useState("");
 
   const handleCopy = useCallback(async () => {
     const success = await copyToClipboard(code);
     if (success) {
       setCopied(true);
-      setTimeout(() => setCopied(false), TIMEOUTS.COPY_FEEDBACK);
+      setCopyAnnouncement("Copied to clipboard");
+      setTimeout(() => {
+        setCopied(false);
+        setCopyAnnouncement("");
+      }, TIMEOUTS.COPY_FEEDBACK);
     }
   }, [code]);
 
@@ -78,6 +83,13 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+      {/* Screen reader announcement for copy action — provides explicit
+          feedback so screen reader users know the code was successfully
+          copied to the clipboard. Without this, only visual users see the
+          "Copied!" feedback via the button text change. */}
+      <div className="sr-only" role="status" aria-live="assertive" aria-atomic="true">
+        {copyAnnouncement}
+      </div>
       <span className={MARKDOWN.CODE_LANGUAGE}>{language}</span>
       <motion.button
         onClick={handleCopy}
