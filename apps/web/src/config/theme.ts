@@ -268,12 +268,13 @@ export const SHADOWS = {
   SCROLL_GLOW_GRADIENT: `linear-gradient(90deg, transparent, ${hexToRgba(COLORS.accent.purple, 0.3)}, transparent)`,
 
   // Box shadows
+  // Flexy says: Use hexToRgba() instead of hardcoded rgb() strings!
   box: {
-    sm: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-    md: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-    lg: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
-    xl: "0 20px 25px -5px rgb(0 0 0 / 0.1)",
-    "2xl": "0 25px 50px -12px rgb(0 0 0 / 0.25)",
+    sm: `0 1px 2px 0 ${hexToRgba("#000000", 0.05)}`,
+    md: `0 4px 6px -1px ${hexToRgba("#000000", 0.1)}`,
+    lg: `0 10px 15px -3px ${hexToRgba("#000000", 0.1)}`,
+    xl: `0 20px 25px -5px ${hexToRgba("#000000", 0.1)}`,
+    "2xl": `0 25px 50px -12px ${hexToRgba("#000000", 0.25)}`,
   },
 } as const;
 
@@ -492,8 +493,8 @@ export const HEADER_ANIMATION = {
       hexToRgba(COLORS.accent.purple, 0.6),
       hexToRgba(COLORS.primary[500], 0.5),
     ] as const,
-    /** Static border color when not generating */
-    BORDER_STATIC: "rgb(55 65 81 / 0.5)",
+    /** Static border color when not generating — derived via hexToRgba to avoid hardcoded rgb() string */
+    BORDER_STATIC: hexToRgba("#374151", 0.5),
     /** Keyframe sequence for box-shadow during generation pulse */
     BOX_SHADOWS: [
       `0 0 0 0 ${hexToRgba(COLORS.primary[500], 0)}`,
@@ -530,7 +531,7 @@ export const TEMPLATE_GLOW_SHADOW = `0 0 8px ${hexToRgba(COLORS.primary[500], 0.
  * Flexy says: No hardcoded track color strings in CircularProgress!
  * Re-exported as PROGRESS_TRACK_COLOR from config/constants/ui.ts
  */
-const THEME_PROGRESS_TRACK_COLOR = "rgb(255_255_255/0.1)";
+const THEME_PROGRESS_TRACK_COLOR = hexToRgba("#ffffff", 0.1);
 export { THEME_PROGRESS_TRACK_COLOR };
 
 /**

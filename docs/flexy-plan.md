@@ -1557,3 +1557,29 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD | `feat/flexy-iteration-93-rgb-colors` | refactor(flexy): convert remaining hardcoded rgb() color strings to use hexToRgba() with COLORS references (Iteration 93) |
+
+### ✅ Flexy Iteration 94: Eliminate Remaining Hardcoded rgb() Strings in SHADOWS.box, BORDER_STATIC & THEME_PROGRESS_TRACK_COLOR
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/theme.ts` | Converted `SHADOWS.box` (5 values): `"0 1px 2px 0 rgb(0 0 0 / 0.05)"` etc. → template literals with `hexToRgba("#000000", ...)` — eliminates last hardcoded `rgb()` in shadow definitions |
+| `apps/web/src/config/theme.ts` | Converted `HEADER_ANIMATION.CONTENT_STATS.BORDER_STATIC`: `"rgb(55 65 81 / 0.5)"` → `hexToRgba("#374151", 0.5)` — eliminates hardcoded static border color |
+| `apps/web/src/config/theme.ts` | Converted `THEME_PROGRESS_TRACK_COLOR`: `"rgb(255_255_255/0.1)"` → `hexToRgba("#ffffff", 0.1)` — eliminates hardcoded progress track color |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ **All 84 test files pass** — 723 web + 443 api + 579 shared = 1,745 tests
+
+## Remaining
+
+- ✅ No more `"rgb(` strings remain in application source code (`apps/web/src/`, `apps/api/src/`)
+- CI workflow `node-version: "20"` → `22` (11 occurrences in `.github/workflows/*.yml`) — **blocked**: GitHub App token lacks `workflows` permission
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-94-rgb-colors` | refactor(flexy): eliminate remaining hardcoded rgb() strings in SHADOWS.box, BORDER_STATIC and THEME_PROGRESS_TRACK_COLOR (Iteration 94) |
