@@ -1583,3 +1583,23 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2316](https://github.com/cpa03/blueprintify/pull/2316) | `feat/flexy-iteration-94-rgb-colors` | refactor(flexy): eliminate remaining hardcoded rgb() strings in SHADOWS.box, BORDER_STATIC and THEME_PROGRESS_TRACK_COLOR (Iteration 94) |
+
+### ✅ Flexy Iteration 95: Extract Remaining Hardcoded CSS rgba() Shadows & Shimmer to CSS Custom Properties
+
+| File | Change |
+|------|--------|
+| `apps/web/src/index.css` | Added `--glass-card-shadow` (`0 8px 32px rgba(0, 0, 0, 0.3)`) CSS custom property to `:root` — centralizes the shared box-shadow used by `glass-card:hover` and `glass-card:focus-within` |
+| `apps/web/src/index.css` | Added `--shimmer-color-light` (`rgba(255, 255, 255, 0.08)`) and `--shimmer-color-mid` (`rgba(255, 255, 255, 0.18)`) CSS custom properties — centralizes progress shimmer gradient stop colors |
+| `apps/web/src/index.css` | Added `--glass-card-hover-offset` (`-1px`) CSS custom property — centralizes the glass-card hover translateY offset |
+| `apps/web/src/index.css` | Replaced 2x hardcoded `0 8px 32px rgba(0, 0, 0, 0.3)` in `glass-card:hover::after` and `glass-card:focus-within::after` with `var(--glass-card-shadow)` |
+| `apps/web/src/index.css` | Replaced 3 hardcoded `rgba(255, 255, 255, 0.08/0.18)` shimmer stop values with `var(--shimmer-color-light/mid)` |
+| `apps/web/src/index.css` | Replaced hardcoded `translateY(-1px)` in `glass-card:hover` with `translateY(var(--glass-card-hover-offset))` |
+
+**Summary**: Eliminates last 6 hardcoded `rgba()` value occurrences in `index.css` by extracting them into CSS custom properties defined in `:root`. No hardcoded `rgba()` values remain anywhere in the project.
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 723 web + 443 api + 579 shared = 1,745 tests passing
