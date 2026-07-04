@@ -12,21 +12,22 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-03 (RepoKeeper Cycle 185)
+**Last Review**: 2026-07-04 (RepoKeeper Cycle 186)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jul 3)` — matches latest audit `brocula-hunt-2026-07-03-run2.md` (BroCula Jul 3 Run 2 / LH **99-100-100-100**, 1744 tests ✅; current 1,745 — shared +1)
+- **README BroCula description verified**: `(Jun 17–Jul 3)` — matches latest audit `brocula-hunt-2026-07-03-run3.md` (BroCula Jul 3 Run 3 / LH **99-100-100-100**, 1745 tests ✅)
 - **Typecheck/Lint**: All clean (0 errors, 0 warnings)
 - **Build**: Clean ✅
 - **Tests**: **1,745/1,745 passing** (723 web + 443 API + 579 shared) ✅
 - **Format**: All Prettier-formatted ✅
 - **BUG-014/BUG-017 still present on main**: Workflow files unchanged — push blocked by `workflows: write` permission (same blocker as all prior 30+ cycles). Maintainer must run `scripts/fix-ci-node-version.mjs` or cherry-pick from branch.
 - **npm audit**: 17 moderate vulns — BUG-013 (upstream lighthouse→@sentry/node→@opentelemetry/core, same documented blocker).
-- **Stale merged branch cleanup**: 5 fully-merged branches deleted in Cycle 185 (`chore/repokeeper-cycle-183`, `docs/bugfixer-cycle-jul-03-2026`, `feat/flexy-iteration-50-hardcoded-cleanup`, `fix/admin-api-key-authorization`, `fix/document-title-generation-complete` — all fully merged, 0 unmerged commits).
+- **Stale tracked doc removed**: `docs/ci-workflow-fixes-jul-03.md` — already-applied CI fix diff for BUG-014/BUG-017 (node-version pinning, doc ref fixes). Same recurring anti-pattern as `.patch` cleanups in Cycles 167/170/173/175/178/183/185.
+- **Cycle 186**: Full repository audit, stale tracked `docs/ci-workflow-fixes-jul-03.md` removal (already-applied CI fix diff), CHANGELOG gap fix (3 post-Cycle-185 commits: SmartTooltip, fix(ci) BUG-014/BUG-017, ULW Loop bug log), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling).
 - **Cycle 185**: Full repository audit, tracked `.patch` removal (`docs/ci-workflow-fixes-ulw-jul-03-2026.patch` — force-tracked despite `*.patch` in `.gitignore`, same recurring anti-pattern as Cycles 167/170/173/175/178/183), stale merged branch cleanup (5 branches deleted), README BroCula date drift fix (Jun 17–Jul 2 → Jun 17–Jul 3), README tree drift fix (added `docs/cloudflare-infrastructure.md` reference), test count update (1,730→1,745 — shared +1), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling).
 - **Cycle 182**: Full repository audit, CHANGELOG gap fix (1 post-Cycle-181 commit: BugFixer ULW Cycle Jul 02 2026), stale merged branch cleanup (`origin/fix/ci-node-version-22-v2` deleted), doc refresh (findings, active-tasks, knowledge-review, bugs, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,730/1,730 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling).
 - **Cycle 181**: Full repository audit, CHANGELOG gap fix (2 post-Cycle-180 commits: stagger per-chip animation, flexy Iteration 90), BroCula ref drift verification (Jul 2 Run 2 — latest `brocula-hunt-2026-07-02-run2.md`), BUG-014/BUG-017 status verified (still present on main), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,730/1,730 ✅ format ✅).

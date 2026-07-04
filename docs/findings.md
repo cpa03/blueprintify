@@ -2,6 +2,53 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 186 (2026-07-04 — RepoKeeper: Stale tracked doc cleanup (CI fix diff), CHANGELOG gap fix, quality verification, doc refresh)
+
+### Audit Scope
+
+Full repository audit covering stale tracked document removal (`docs/ci-workflow-fixes-jul-03.md` — already-applied CI fix diff for BUG-014/BUG-017 node-version and doc-ref changes; same recurring pattern as previous `.patch` cleanups in Cycles 167/170/173/175/178/183/185), CHANGELOG gap fix (3 post-Cycle-185 commits: `feat(web): add SmartTooltip`, `fix(ci): resolve BUG-014 and BUG-017`, `docs: ULW Loop Jul 03 bug log`), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 empty catch blocks, 0 TODO/FIXME/HACK in source), BroCula ref drift check (Jul 3 Run 3 — latest in `docs/audits/`: `brocula-hunt-2026-07-03-run3.md` / LH **99-100-100-100**, **1745 tests** ✅), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG).
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build (web) | ✅ Successful |
+| Tests | ✅ **1,745/1,745 passing** (723 web + 443 API + 579 shared) |
+| @ts-ignore/as any | ✅ None in source code |
+| TODO/FIXME/HACK | ✅ None in source code |
+| Empty catch blocks | ✅ None |
+| Format | ✅ All files Prettier-formatted |
+| Stale tracked doc removed | ✅ 1 file removed (`docs/ci-workflow-fixes-jul-03.md`) |
+| BUG-014 (stale doc refs) | 🔴 Still present on main (`docs/bug.md` in main.yml) — `workflows: write` blocker |
+| BUG-017 (hardcoded node-version) | 🔴 Still present on main (11 occurrences across 4 workflows) — `workflows: write` blocker |
+| npm audit | ⚠️ 17 moderate (BUG-013 — upstream lighthouse→@sentry/node→@opentelemetry/core, same blocker) |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Stale tracked doc removed**: `docs/ci-workflow-fixes-jul-03.md` — tracked file containing already-applied CI fix diff for BUG-014/BUG-017 (node-version pinning and doc ref fixes). Same recurring cleanup pattern as `.patch` removals in Cycles 167, 170, 173, 175, 178, 183, 185.
+2. **CHANGELOG gap fix**: Added 3 post-Cycle-185 commits (SmartTooltip feat, CI fix, ULW bug log entry) + Cycle 186 entry.
+3. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅.
+4. **BroCula ref verified**: Jul 3 Run 3 — latest (LH **99-100-100-100**, 1745 tests ✅). No drift detected from Cycle 185.
+5. **BUG-014/BUG-017 status verified**: Still present on main. Commit `d0937cda` claimed fix but only touched `docs/bugs.md` — workflow files unchanged. Same documented `workflows: write` blocker.
+6. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 186.
+
+### Verification
+
+- [x] Stale tracked doc removed from git tracking ✅
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — successful ✅
+- [x] Tests — 1,745/1,745 passing ✅
+- [x] Format — all Prettier-formatted ✅
+- [x] BroCula ref — Jul 3 Run 3 (latest) ✅
+- [x] npm audit — 17 moderate (BUG-013, same documented blocker) ✅
+- [x] BUG-014/BUG-017 — verified status (still blocked) ✅
+
+---
+
 ## Cycle 185 (2026-07-03 — RepoKeeper: Tracked .patch cleanup (recurring), 5 stale merged branches deleted, README drift fix, quality verification, doc refresh)
 
 ### Audit Scope
