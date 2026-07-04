@@ -3,7 +3,7 @@
 /**
  * CI Workflow Fix Script
  *
- * Fixes two categories of issues in GitHub Actions workflow files:
+ * Fixes issues in GitHub Actions workflow files:
  *
  * BUG-014 — Stale doc references:
  *   Replaces legacy `docs/bug.md` and `docs/feature.md` with `docs/bugs.md` and `docs/features.md`.
@@ -11,6 +11,9 @@
  * BUG-017 — Hardcoded Node.js version:
  *   Replaces hardcoded node-version:"20" with node-version-file: ".node-version"
  *   Uses .node-version as single source of truth for Node.js version.
+ *
+ * BUG-FIXER — Wrong agent name in iterate.yml BugFixer job:
+ *   Changes `--agent RepoKeeper` to `--agent BugFixer` and fixes success echo message.
  *
  * Usage: node scripts/fix-ci-node-version.mjs
  */
@@ -41,13 +44,27 @@ for (const file of workflowFiles) {
   content = content.replace(/node-version:\s*"20"/g, 'node-version-file: ".node-version"');
   content = content.replace(/node-version:\s*20\b(?!")/g, 'node-version-file: ".node-version"');
 
+  // BUG-FIXER: Fix BugFixer job agent name in iterate.yml
+  // The BugFixer job was using `--agent RepoKeeper` instead of `--agent BugFixer`
+  if (file === "iterate.yml") {
+    content = content.replace(
+      /(--agent )RepoKeeper(\s*\\\s*\n\s+--model)/g,
+      "$1BugFixer$2",
+    );
+    content = content.replace(
+      /"✅ Architect work completed successfully"/g,
+      '"✅ BugFixer work completed successfully"',
+    );
+  }
+
   if (content !== original) {
     writeFileSync(filePath, content, "utf-8");
     const count =
       (original.match(/node-version:\s*"20"/g) || []).length +
       (original.match(/node-version:\s*20\b(?!")/g) || []).length +
       (original.match(/docs\/bug\.md/g) || []).length +
-      (original.match(/docs\/feature\.md/g) || []).length;
+      (original.match(/docs\/feature\.md/g) || []).length +
+      (original.match(/--agent RepoKeeper/g) || []).length;
     changed++;
     totalReplacements += count;
     console.log(`✓ ${file}: updated ${count} occurrence(s)`);
