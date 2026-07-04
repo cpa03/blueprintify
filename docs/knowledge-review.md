@@ -12,7 +12,7 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-04 (RepoKeeper Cycle 186)
+**Last Review**: 2026-07-04 (RepoKeeper Cycle 187)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
@@ -26,7 +26,9 @@ As of cycle refresh:
 - **Format**: All Prettier-formatted ✅
 - **BUG-014/BUG-017 still present on main**: Workflow files unchanged — push blocked by `workflows: write` permission (same blocker as all prior 30+ cycles). Maintainer must run `scripts/fix-ci-node-version.mjs` or cherry-pick from branch.
 - **npm audit**: 17 moderate vulns — BUG-013 (upstream lighthouse→@sentry/node→@opentelemetry/core, same documented blocker).
-- **Stale tracked doc removed**: `docs/ci-workflow-fixes-jul-03.md` — already-applied CI fix diff for BUG-014/BUG-017 (node-version pinning, doc ref fixes). Same recurring anti-pattern as `.patch` cleanups in Cycles 167/170/173/175/178/183/185.
+- **Stale tracked doc removed**: `docs/ci-workflow-fixes-jul-04.md` — already-applied CI fix diff for BUG-014/BUG-017 (node-version pinning, doc ref fixes). Same recurring anti-pattern as `docs/ci-workflow-fixes-jul-03.md` cleanup in Cycle 186 and `.patch` cleanups in Cycles 167/170/173/175/178/183/185.
+- **Stale tracked .patch removed**: `docs/ci-workflow-fixes-cycle-jul-04-2026.patch` — force-tracked despite `*.patch` in `.gitignore`. Same recurring anti-pattern as prior `.patch` cleanups.
+- **Cycle 187**: Full repository audit, stale tracked `docs/ci-workflow-fixes-jul-04.md` + `docs/ci-workflow-fixes-cycle-jul-04-2026.patch` removal (already-applied CI fix diff + tracked .patch), CHANGELOG gap fix (1 post-Cycle-186 commit: feat(web) screen reader announcement #2302), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling).
 - **Cycle 186**: Full repository audit, stale tracked `docs/ci-workflow-fixes-jul-03.md` removal (already-applied CI fix diff), CHANGELOG gap fix (3 post-Cycle-185 commits: SmartTooltip, fix(ci) BUG-014/BUG-017, ULW Loop bug log), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling).
 - **Cycle 185**: Full repository audit, tracked `.patch` removal (`docs/ci-workflow-fixes-ulw-jul-03-2026.patch` — force-tracked despite `*.patch` in `.gitignore`, same recurring anti-pattern as Cycles 167/170/173/175/178/183), stale merged branch cleanup (5 branches deleted), README BroCula date drift fix (Jun 17–Jul 2 → Jun 17–Jul 3), README tree drift fix (added `docs/cloudflare-infrastructure.md` reference), test count update (1,730→1,745 — shared +1), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling).
 - **Cycle 182**: Full repository audit, CHANGELOG gap fix (1 post-Cycle-181 commit: BugFixer ULW Cycle Jul 02 2026), stale merged branch cleanup (`origin/fix/ci-node-version-22-v2` deleted), doc refresh (findings, active-tasks, knowledge-review, bugs, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,730/1,730 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling).
