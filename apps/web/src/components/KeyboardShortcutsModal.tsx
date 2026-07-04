@@ -407,36 +407,41 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                           </span>
                         )}
                       </div>
-                      <div className="space-y-2">
-                        {categoryShortcuts.map((shortcut, index) => (
-                          <motion.div
-                            key={`${category}-${index}`}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{
-                              delay:
-                                categoryIndex * ANIMATION.STAGGER + (index * ANIMATION.STAGGER) / 2,
-                              duration: ANIMATION.NORMAL,
-                            }}
-                            className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-dark-800/50 transition-colors duration-200 group"
-                          >
-                            <span className="text-dark-300 group-hover:text-white transition-colors duration-200">
-                              {shortcut.description}
-                            </span>
-                            <div className="flex items-center gap-1">
-                              {shortcut.keys.map((key, keyIndex) => (
-                                <span key={keyIndex} className="flex items-center">
-                                  <kbd className="px-2 py-1 bg-dark-700 border border-dark-600 rounded-lg text-xs font-mono text-white shadow-sm min-w-7 text-center">
-                                    {key}
-                                  </kbd>
-                                  {keyIndex < shortcut.keys.length - 1 && (
-                                    <span className="mx-1.5 text-dark-500 text-xs">+</span>
-                                  )}
-                                </span>
-                              ))}
-                            </div>
-                          </motion.div>
-                        ))}
+                      <div className="flex flex-col">
+                        <AnimatePresence mode="popLayout">
+                          {categoryShortcuts.map((shortcut, index) => (
+                            <motion.div
+                              key={shortcut.description}
+                              layout
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              exit={{ opacity: 0, x: 10, scale: 0.95 }}
+                              transition={{
+                                delay:
+                                  categoryIndex * ANIMATION.STAGGER +
+                                  (index * ANIMATION.STAGGER) / 2,
+                                duration: ANIMATION.NORMAL,
+                              }}
+                              className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-dark-800/50 transition-colors duration-200 group"
+                            >
+                              <span className="text-dark-300 group-hover:text-white transition-colors duration-200">
+                                {shortcut.description}
+                              </span>
+                              <div className="flex items-center gap-1">
+                                {shortcut.keys.map((key, keyIndex) => (
+                                  <span key={keyIndex} className="flex items-center">
+                                    <kbd className="px-2 py-1 bg-dark-700 border border-dark-600 rounded-lg text-xs font-mono text-white shadow-sm min-w-7 text-center">
+                                      {key}
+                                    </kbd>
+                                    {keyIndex < shortcut.keys.length - 1 && (
+                                      <span className="mx-1.5 text-dark-500 text-xs">+</span>
+                                    )}
+                                  </span>
+                                ))}
+                              </div>
+                            </motion.div>
+                          ))}
+                        </AnimatePresence>
                       </div>
                     </motion.div>
                   ))
