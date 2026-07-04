@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 187 — full repository audit, stale tracked `docs/ci-workflow-fixes-jul-04.md` removal (already-applied CI fix diff for BUG-014/BUG-017, same recurring pattern as Cycle 186 `jul-03.md` removal and prior `.patch` cleanups), stale tracked `.patch` removal (`docs/ci-workflow-fixes-cycle-jul-04-2026.patch` — force-tracked despite `*.patch` in `.gitignore`, same recurring anti-pattern as Cycles 167/170/173/175/178/183/185), CHANGELOG gap fix (1 post-Cycle-186 commit: feat(web) screen reader announcement #2302), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling)
+- feat(web): add screen reader announcement for code block copy action (#2302)
 - chore(repokeeper): Cycle 186 — full repository audit, stale tracked `docs/ci-workflow-fixes-jul-03.md` removal (already-applied CI fix diff for BUG-014/BUG-017, same recurring pattern as prior `.patch` cleanups), CHANGELOG gap fix (3 post-Cycle-185 commits: SmartTooltip, fix(ci) BUG-014/BUG-017, ULW Loop bug log), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling)
 - docs: add Sisyphus ULW Loop Jul 03 bug log entry for BUG-017 fix attempt
 - fix(ci): resolve BUG-014 and BUG-017 — stale doc refs and node-version pinning

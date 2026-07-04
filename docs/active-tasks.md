@@ -2,13 +2,38 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 187 — **Full audit, stale tracked doc + .patch removal (CI fix diff recurring), CHANGELOG gap fix, doc refresh, quality verification** ✅
+
+### Task: Full repository audit, quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), stale tracked doc removal (`docs/ci-workflow-fixes-jul-04.md` — already-applied CI fix diff for BUG-014/BUG-017, same recurring pattern as Cycle 186 `jul-03.md` removal and prior `.patch` cleanups), stale tracked .patch removal (`docs/ci-workflow-fixes-cycle-jul-04-2026.patch` — force-tracked despite `*.patch` in `.gitignore`, same recurring anti-pattern), CHANGELOG gap fix (1 post-Cycle-186 commit: feat(web) screen reader announcement #2302), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), npm audit (17 moderate — BUG-013 upstream tooling)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 187 full repository audit — verify quality (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), remove stale tracked CI fix doc + .patch (2 files), fix CHANGELOG gap (1 post-Cycle-186 commit), sync docs
+- **Actions**:
+  - [x] Full repository scan — no redundant/temp/unused source files found (beyond the 2 stale files removed)
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK in non-test source code
+  - [x] **Stale tracked doc removed**: `docs/ci-workflow-fixes-jul-04.md` — already-applied CI fix diff for BUG-014/BUG-017. Same recurring cleanup anti-pattern as `docs/ci-workflow-fixes-jul-03.md` removal in Cycle 186.
+  - [x] **Stale tracked .patch removed**: `docs/ci-workflow-fixes-cycle-jul-04-2026.patch` — force-tracked despite `*.patch` in `.gitignore`. Same recurring anti-pattern as Cycles 167, 170, 173, 175, 178, 183, 185.
+  - [x] **Format**: All files Prettier-formatted ✅
+  - [x] **CHANGELOG gap fix**: Added 1 post-Cycle-186 commit (feat(web) screen reader announcement #2302) + Cycle 187 entry
+  - [x] **BroCula ref verified**: Jul 3 Run 3 — latest (`brocula-hunt-2026-07-03-run3.md` / LH **99-100-100-100**, 1745 tests ✅). No drift detected.
+  - [x] **BUG-014/BUG-017 status verified**: Still present on main. Commit `d0937cda` claimed fix but only touched `docs/bugs.md` — workflow files unchanged. Same documented `workflows: write` blocker.
+  - [x] **Test count verified**: 1,745 (723 web + 443 API + 579 shared) — unchanged from Cycle 186
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 187, BroCula ref → Jul 3 Run 3
+  - [x] **findings.md updated**: Cycle 187 entry added
+  - [x] **active-tasks.md updated**: Cycle 187 entry added at top
+  - [x] **CHANGELOG.md updated**: Cycle 187 entry + 1 post-Cycle-186 commit added
+  - [x] **npm audit**: 17 moderate (BUG-013 — upstream tooling, same blocker)
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅
+
 ## ✅ RepoKeeper Cycle 186 — **Full audit, stale tracked doc removal (CI fix diff), CHANGELOG gap fix, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit, quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), stale tracked doc removal (`docs/ci-workflow-fixes-jul-03.md` — already-applied CI fix diff for BUG-014/BUG-017, same recurring pattern as prior `.patch` cleanups), CHANGELOG gap fix (3 post-Cycle-185 commits: SmartTooltip, fix(ci) BUG-014/BUG-017, ULW Loop bug log), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), npm audit (17 moderate — BUG-013 upstream tooling)
 
 - **Priority**: High
 - **Status**: ✅ Complete
-- **Objective**: Cycle 186 full repository audit — verify quality (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), remove stale tracked CI diff doc, fix CHANGELOG gap (3 post-Cycle-185 commits), sync docs
+- **Objective**: Cycle 186 full repository audit — verify quality (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), remove stale tracked CI fix doc, fix CHANGELOG gap (3 post-Cycle-185 commits), sync docs
 - **Actions**:
   - [x] Full repository scan — no redundant/temp/unused source files found (beyond the stale doc removed)
   - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
