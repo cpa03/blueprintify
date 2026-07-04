@@ -477,7 +477,13 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
               </div>
 
               <div className="px-6 py-4 border-t border-dark-700/50 bg-dark-800/30">
-                <p id="keyboard-shortcuts-tip" className="text-xs text-dark-500 text-center">
+                <p
+                  id="keyboard-shortcuts-tip"
+                  className="text-xs text-dark-500 text-center"
+                  role="status"
+                  aria-live="polite"
+                  aria-atomic="true"
+                >
                   {searchQuery ? (
                     <>
                       <motion.span
