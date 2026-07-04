@@ -1535,3 +1535,25 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2299](https://github.com/cpa03/blueprintify/pull/2299) | `feat/flexy-iteration-92-scale-tokens` | refactor(flexy): replace remaining arbitrary scale values with tailwind tokens and fix hardcoded string in StepIndicator (Iteration 92) |
+
+### ✅ Flexy Iteration 93: Convert Remaining Hardcoded rgb() String Colors to hexToRgba() with COLORS References
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/theme.ts` | Converted `HEADER_ANIMATION.CONTENT_STATS.BORDER_COLORS` (4 values): `"rgb(99 102 241 / 0.5)"` → `hexToRgba(COLORS.primary[500], 0.5)`, `"rgb(139 92 246 / 0.6)"` → `hexToRgba(COLORS.accent.purple, 0.6)` |
+| `apps/web/src/config/theme.ts` | Converted `HEADER_ANIMATION.CONTENT_STATS.BOX_SHADOWS` (4 values): embedded `rgb()` → template literal with `hexToRgba(COLORS.primary[500], ...)` and `hexToRgba(COLORS.accent.purple, ...)` |
+| `apps/web/src/config/theme.ts` | Converted `COUNTER_ANIMATION.BOX_SHADOWS` (3 values): embedded `rgb()` → template literal with `hexToRgba(COLORS.primary[500], ...)` |
+| `apps/web/src/config/theme.ts` | Converted `TEMPLATE_GLOW_SHADOW`: `"0 0 8px rgb(99 102 241 / 0.3)"` → template literal with `hexToRgba(COLORS.primary[500], 0.3)` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 723 web + 443 api + 579 shared = 1,745 tests passing across 84 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-93-rgb-colors` | refactor(flexy): convert remaining hardcoded rgb() color strings to use hexToRgba() with COLORS references (Iteration 93) |
