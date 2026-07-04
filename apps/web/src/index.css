@@ -14,6 +14,16 @@
   --color-text-secondary: #94a3b8;
   --scrollbar-thumb: #4b5563;
   --scrollbar-track: #0f172a;
+
+  /* Glass-card shared shadow token — used by glass-card:hover and glass-card:focus-within */
+  --glass-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  /* Progress shimmer gradient tokens */
+  --shimmer-color-light: rgba(255, 255, 255, 0.08);
+  --shimmer-color-mid: rgba(255, 255, 255, 0.18);
+
+  /* Glass-card hover translate offset (px) */
+  --glass-card-hover-offset: -1px;
 }
 
 /* ===== Base Styles ===== */
@@ -89,14 +99,14 @@
   }
 
   .glass-card:hover {
-    transform: translateY(-1px);
+    transform: translateY(var(--glass-card-hover-offset));
   }
 
   .glass-card:hover::after {
     opacity: 1;
     border-color: color-mix(in srgb, var(--color-dark-600) 60%, transparent);
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.3),
+      var(--glass-card-shadow),
       0 0 0 1px color-mix(in srgb, var(--color-primary-500) 5%, transparent);
   }
 
@@ -112,7 +122,7 @@
     opacity: 1;
     border-color: transparent;
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.3),
+      var(--glass-card-shadow),
       0 0 0 1px color-mix(in srgb, var(--color-primary-500) 12%, transparent);
   }
 
@@ -249,9 +259,9 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.08) 40%,
-    rgba(255, 255, 255, 0.18) 50%,
-    rgba(255, 255, 255, 0.08) 60%,
+    var(--shimmer-color-light) 40%,
+    var(--shimmer-color-mid) 50%,
+    var(--shimmer-color-light) 60%,
     transparent 100%
   );
   animation: shimmer-sweep 1.8s ease-in-out infinite;
