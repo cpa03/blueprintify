@@ -363,6 +363,7 @@ function App(): JSX.Element {
             {/* Editor Panel */}
             {(showEditor || editorExiting) && (
               <div
+                id="editor-panel"
                 className={`${LAYOUT.HALF_WIDTH} ${LAYOUT.GLASS_CARD} ${
                   editorExiting ? "animate-slide-out-right" : "animate-slide-in-right"
                 }`}
