@@ -276,6 +276,8 @@ export const ACCESSIBILITY_LABELS = {
   ERROR_BOUNDARY: {
     TRY_AGAIN: "Try again",
     RELOAD_PAGE: "Reload page",
+    COPY_ERROR: "Copy error details to clipboard",
+    ERROR_COPIED: "Error details copied to clipboard",
   },
   TEMPLATES: {
     QUICK_START: "Quick start templates",
@@ -408,6 +410,8 @@ export const ERROR_BOUNDARY_TEXT = {
     "An unexpected error occurred. Your data is safely stored locally. You can try again or reload the page.",
   VIEW_DETAILS: "View error details",
   UNKNOWN_ERROR: "Unknown error",
+  COPY_ERROR: "Copy error details",
+  COPIED: "Copied!",
 } as const;
 
 // ============================================================================

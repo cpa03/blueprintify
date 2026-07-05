@@ -8,13 +8,15 @@
  * @module components/ErrorFallback
  */
 
-import { memo } from "react";
+import { memo, useState, useCallback } from "react";
 import * as motion from "framer-motion/m";
+import { AnimatePresence } from "framer-motion";
 import { FallbackProps } from "react-error-boundary";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { SPRING_CONFIG, ANIMATION } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
+import { copyToClipboard } from "../lib/clipboard";
 
 /**
  * Staggered entrance variants for the fallback UI elements.
@@ -52,12 +54,21 @@ export const ErrorFallback = memo(function ErrorFallback({
   resetErrorBoundary,
 }: FallbackProps): JSX.Element {
   const shouldReduceMotion = useReducedMotion();
+  const [isCopied, setIsCopied] = useState(false);
 
   const handleReload = (): void => {
     window.location.reload();
   };
 
   const errorMessage = error instanceof Error ? error.message : ERROR_BOUNDARY_TEXT.UNKNOWN_ERROR;
+
+  const handleCopyError = useCallback(async (): Promise<void> => {
+    const success = await copyToClipboard(errorMessage);
+    if (success) {
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    }
+  }, [errorMessage]);
 
   const cardSpring = shouldReduceMotion
     ? {
@@ -191,9 +202,87 @@ export const ErrorFallback = memo(function ErrorFallback({
               >
                 {ERROR_BOUNDARY_TEXT.VIEW_DETAILS}
               </summary>
-              <pre className="mt-2 p-3 bg-dark-800 rounded-lg text-xs text-dark-400 overflow-auto max-h-32 leading-relaxed">
-                {errorMessage}
-              </pre>
+              <div className="mt-2 relative">
+                <pre className="p-3 bg-dark-800 rounded-lg text-xs text-dark-400 overflow-auto max-h-32 leading-relaxed">
+                  {errorMessage}
+                </pre>
+                {/* Copy error details button — appears inside the details block so
+                    developers can quickly copy the error message to report or search.
+                    Uses spring animation matching the app's design language. */}
+                <motion.button
+                  onClick={handleCopyError}
+                  initial={false}
+                  animate={{
+                    opacity: isCopied ? 1 : 0.7,
+                    scale: isCopied ? 1.05 : 1,
+                  }}
+                  whileHover={{ opacity: 1, scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
+                  className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1
+                             rounded-md text-2xs font-medium
+                             bg-dark-700/80 hover:bg-dark-700
+                             text-dark-300 hover:text-white
+                             border border-dark-600/50 hover:border-dark-500
+                             focus-visible:outline-none focus-visible:ring-2
+                             focus-visible:ring-primary-500/50
+                             transition-colors duration-150"
+                  aria-label={ACCESSIBILITY_LABELS.ERROR_BOUNDARY.COPY_ERROR}
+                >
+                  {/* Clipboard icon */}
+                  <AnimatePresence mode="wait">
+                    {isCopied ? (
+                      <motion.span
+                        key="copied"
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        className="flex items-center gap-1 text-accent-emerald"
+                      >
+                        <svg
+                          className="w-3 h-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2.5}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        <span>{ERROR_BOUNDARY_TEXT.COPIED}</span>
+                      </motion.span>
+                    ) : (
+                      <motion.span
+                        key="copy"
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        className="flex items-center gap-1"
+                      >
+                        <svg
+                          className="w-3 h-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                        </svg>
+                        <span>{ERROR_BOUNDARY_TEXT.COPY_ERROR}</span>
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </motion.button>
+              </div>
+              {/* Screen reader announcement for copy action */}
+              <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+                {isCopied ? ACCESSIBILITY_LABELS.ERROR_BOUNDARY.ERROR_COPIED : ""}
+              </span>
             </motion.details>
           )}
 
