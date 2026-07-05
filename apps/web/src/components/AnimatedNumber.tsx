@@ -12,24 +12,10 @@ interface AnimatedNumberProps {
   format?: (value: number) => string;
 }
 
-/**
- * AnimatedNumber - A delightful number counter with spring physics
- *
- * Features:
- * - Smooth spring-based transitions between values
- * - Respects prefers-reduced-motion for accessibility
- * - Customizable formatting (currency, percentage, etc.)
- * - Direction-aware animations (count up vs count down)
- *
- * Micro-UX touches:
- * - Numbers "spring" to their new value naturally
- * - Reduced motion users see instant updates
- * - Tabular nums prevent layout shift during animation
- */
 function AnimatedNumberComponent({
   value,
   className = "",
-  duration = 0.8,
+  duration = ANIMATION.NUMBER_COUNTER,
   format = (v) => Math.round(v).toString(),
 }: AnimatedNumberProps) {
   const { shouldAnimate, getDuration } = useReducedMotionContext();
@@ -146,7 +132,7 @@ function AnimatedCounterComponent({
   valueClassName = "",
   labelClassName = "",
   format,
-  duration = 0.8,
+  duration = ANIMATION.NUMBER_COUNTER,
   icon,
 }: AnimatedCounterProps) {
   const { shouldAnimate } = useReducedMotionContext();
@@ -219,7 +205,7 @@ export function useAnimatedValue(
 ): MotionValue<number> {
   const { getDuration } = useReducedMotionContext();
   const springValue = useSpring(value, {
-    duration: getDuration((options.duration || 0.8) * 1000),
+    duration: getDuration((options.duration || ANIMATION.NUMBER_COUNTER) * 1000),
     bounce: options.bounce || 0,
   });
 
