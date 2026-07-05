@@ -339,3 +339,4 @@ _See `.opencode/skill/` directory for complete skill definitions._
 ## 📝 License
 
 MIT © 2026
+
