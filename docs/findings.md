@@ -2,6 +2,52 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 195 (2026-07-05 — RepoKeeper: stale merged branch cleanup, schema.sql path fix, doc refresh, quality verification)
+
+### Audit Scope
+
+Full repository cleanup and maintenance: deleted stale merged remote branch `origin/bugfix/jul-05-2026-cycle`; fixed `scripts/migrate.ts` `schema.sql` path (looked in `scripts/` but file is at root — `db:init` would fail with `Schema file not found`); documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK in source); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker); npm audit (17 moderate — BUG-013 upstream tooling).
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build (web) | ✅ Successful |
+| Tests | ✅ **1,745/1,745 passing** (723 web + 443 API + 579 shared) |
+| @ts-ignore/as any | ✅ None in source code |
+| TODO/FIXME/HACK | ✅ None in source code |
+| Empty catch blocks | ✅ None |
+| Format | ✅ All files Prettier-formatted |
+| Stale merged branches | ✅ `origin/bugfix/jul-05-2026-cycle` deleted |
+| schema.sql path | ✅ Fixed in `scripts/migrate.ts` (root→scripts resolution) |
+| BUG-014/BUG-017 | 🔴 Still present on main — `workflows: write` blocker |
+| npm audit | ⚠️ 17 moderate (BUG-013 — upstream tooling) |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Stale merged branch deleted**: `origin/bugfix/jul-05-2026-cycle` — fully merged into main, 0 unmerged commits.
+2. **schema.sql path fix**: `scripts/migrate.ts` `SCHEMA_FILE` path corrected from `join(__dirname, "schema.sql")` to `join(__dirname, "..", "schema.sql")` — file is at root, not in `scripts/`. The `db:init` command would have failed with `Schema file not found`.
+3. **Documentation refresh**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 195.
+4. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅.
+5. **BUG-014/BUG-017 status verified**: Still present on main. Same documented `workflows: write` blocker.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — successful ✅
+- [x] Tests — 1,745/1,745 passing ✅
+- [x] Format — all Prettier-formatted ✅
+- [x] No redundant/temp/unused source files — clean ✅
+- [x] Stale merged branches — `origin/bugfix/jul-05-2026-cycle` deleted ✅
+- [x] schema.sql path — fixed ✅
+- [x] findings.md — Cycle 195 entry added ✅
+- [x] npm audit — 17 moderate (BUG-013, same documented blocker) ✅
+- [x] BUG-014/BUG-017 — verified status (still blocked) ✅
+
 ## Cycle 194 (2026-07-05 — RepoKeeper: tracked .patch removal, doc refresh, quality verification)
 
 ### Audit Scope
