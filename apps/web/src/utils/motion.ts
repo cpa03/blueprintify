@@ -6,7 +6,7 @@
  */
 
 import type { Variants, Transition } from "framer-motion";
-import { SPRING_CONFIG, ANIMATION } from "../config/constants";
+import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
 import { ANIMATION_DIRECTIONS } from "@blueprint/shared";
 
 /**
@@ -14,9 +14,9 @@ import { ANIMATION_DIRECTIONS } from "@blueprint/shared";
  * Uses centralized SPRING_CONFIG and ANIMATION for spring and duration values
  */
 export const transitions = {
-  fast: { duration: ANIMATION.TOOLTIP_FADE, ease: "easeOut" } as Transition,
-  normal: { duration: ANIMATION.SUBTLE_MOVE, ease: "easeOut" } as Transition,
-  slow: { duration: ANIMATION.HALF_SECOND, ease: "easeOut" } as Transition,
+  fast: { duration: ANIMATION.TOOLTIP_FADE, ease: EASING.easeOut } as Transition,
+  normal: { duration: ANIMATION.SUBTLE_MOVE, ease: EASING.easeOut } as Transition,
+  slow: { duration: ANIMATION.HALF_SECOND, ease: EASING.easeOut } as Transition,
   spring: {
     type: "spring" as const,
     stiffness: SPRING_CONFIG.SNAPPY.stiffness,
@@ -112,7 +112,7 @@ export const floatingAnimation = {
   transition: {
     duration: ANIMATION.FLOATING_DURATION,
     repeat: Infinity,
-    ease: "easeInOut" as const,
+    ease: EASING.easeInOut,
   },
 };
 
@@ -126,7 +126,7 @@ export const pulseAnimation = {
   transition: {
     duration: ANIMATION.SLOW_PULSE,
     repeat: Infinity,
-    ease: "easeInOut" as const,
+    ease: EASING.easeInOut,
   },
 };
 
@@ -188,7 +188,7 @@ export function createFadeInUp(duration: number = ANIMATION.HALF_SECOND): Varian
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration, ease: "easeOut" },
+      transition: { duration, ease: EASING.easeOut },
     },
   };
 }

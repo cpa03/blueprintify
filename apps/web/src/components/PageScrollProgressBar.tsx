@@ -33,7 +33,7 @@ import * as motion from "framer-motion/m";
 import { useSpring, useTransform } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
-import { ANIMATION } from "../config/constants";
+import { ANIMATION, EASING } from "../config/constants";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 import { SCROLL_PROGRESS_DEFAULTS, SPRING_SCROLL_HOVER } from "@blueprint/shared";
 
@@ -193,7 +193,7 @@ function PageScrollProgressBarComponent({
       style={{ marginTop: `${LAYOUT.HEADER_HEIGHT_PX}px` }}
       initial={{ opacity: 0 }}
       animate={{ opacity: isVisible ? 1 : 0 }}
-      transition={{ duration: prefersReducedMotion ? 0 : 0.25, ease: "easeOut" }}
+      transition={{ duration: prefersReducedMotion ? 0 : 0.25, ease: EASING.easeOut }}
       role="progressbar"
       aria-valuenow={isVisible ? Math.round(scrollProgress) : undefined}
       aria-valuemin={0}
@@ -233,7 +233,7 @@ function PageScrollProgressBarComponent({
             opacity: {
               duration: ANIMATION.BREATH,
               repeat: Infinity,
-              ease: "easeInOut",
+              ease: EASING.easeInOut,
             },
           }}
         />
@@ -278,7 +278,7 @@ function PageScrollProgressBarComponent({
             style={{ left: `${hoverProgress}%` }}
             initial={{ opacity: 0, y: 4, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: ANIMATION.HOVER_POPUP, ease: "easeOut" }}
+            transition={{ duration: ANIMATION.HOVER_POPUP, ease: EASING.easeOut }}
           >
             <div className="bg-dark-800/90 backdrop-blur-sm border border-dark-600/60 rounded-md px-1.5 py-0.5 shadow-lg shadow-dark-950/40">
               <span className="text-2xs font-semibold tabular-nums text-primary-300">

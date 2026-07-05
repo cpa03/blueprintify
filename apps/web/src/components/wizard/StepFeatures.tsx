@@ -38,6 +38,7 @@ import {
   SPRING_CONFIG,
   UI_CONTENT,
   ANIMATION,
+  EASING,
 } from "../../config/constants";
 import { TRANSFORMS } from "../../config/theme";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
@@ -287,7 +288,7 @@ export const StepFeatures = memo(function StepFeatures({
                         opacity: 1,
                         scale: isJustAdded ? [1, 1.08, 1] : 1,
                         transition: isJustAdded
-                          ? { duration: ANIMATION.MEDIUM_SLOW, ease: "easeOut" }
+                          ? { duration: ANIMATION.MEDIUM_SLOW, ease: EASING.easeOut }
                           : {
                               type: "spring" as const,
                               ...SPRING_CONFIG.DEFAULT,
@@ -297,7 +298,7 @@ export const StepFeatures = memo(function StepFeatures({
                       exit={{
                         opacity: 0,
                         scale: 0.8,
-                        transition: { duration: ANIMATION.NORMAL, ease: "easeOut" },
+                        transition: { duration: ANIMATION.NORMAL, ease: EASING.easeOut },
                       }}
                       className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors duration-300 ${
                         isJustAdded
@@ -441,7 +442,7 @@ export const StepFeatures = memo(function StepFeatures({
                       isJustAdded
                         ? {
                             scale: [1, 1.12, 1],
-                            transition: { duration: ANIMATION.SEMI_SLOW, ease: "easeOut" },
+                            transition: { duration: ANIMATION.SEMI_SLOW, ease: EASING.easeOut },
                           }
                         : {}
                     }
@@ -452,7 +453,7 @@ export const StepFeatures = memo(function StepFeatures({
                           initial={{ scale: 0, opacity: 0.8 }}
                           animate={{ scale: 2.5, opacity: 0 }}
                           exit={{ opacity: 0 }}
-                          transition={{ duration: ANIMATION.SLOW, ease: "easeOut" }}
+                          transition={{ duration: ANIMATION.SLOW, ease: EASING.easeOut }}
                           className="absolute inset-0 rounded-full bg-accent-emerald/30 pointer-events-none"
                           style={{ transformOrigin: TRANSFORMS.ORIGIN_CENTER }}
                         />
@@ -464,7 +465,7 @@ export const StepFeatures = memo(function StepFeatures({
                           initial={{ scale: 0.8, opacity: 1 }}
                           animate={{ scale: 1.5, opacity: 0 }}
                           exit={{ opacity: 0 }}
-                          transition={{ duration: ANIMATION.MEDIUM_SLOW, ease: "easeOut" }}
+                          transition={{ duration: ANIMATION.MEDIUM_SLOW, ease: EASING.easeOut }}
                           className="absolute inset-0 rounded-full border-2 border-accent-emerald pointer-events-none"
                         />
                       )}
@@ -544,7 +545,7 @@ export const StepFeatures = memo(function StepFeatures({
               className="bg-accent-emerald/90 backdrop-blur-sm text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
               initial={showAllAddedMsg ? { scale: 0.9 } : undefined}
               animate={showAllAddedMsg ? { scale: [1, 1.05, 1] } : undefined}
-              transition={{ duration: ANIMATION.FADE_IN, ease: "easeOut" }}
+              transition={{ duration: ANIMATION.FADE_IN, ease: EASING.easeOut }}
             >
               <svg
                 className="w-4 h-4 flex-shrink-0"

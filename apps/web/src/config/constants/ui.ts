@@ -116,6 +116,17 @@ export const CELEBRATION_PARTICLE = {
 /**
  * Spring configurations for Framer Motion animations
  */
+/**
+ * Easing functions for Framer Motion transitions
+ * Flexy says: No more 60+ hardcoded 'easeOut' strings across components!
+ * Single source of truth for CSS easing keyword constants.
+ */
+export const EASING = {
+  easeOut: "easeOut" as const,
+  easeIn: "easeIn" as const,
+  easeInOut: "easeInOut" as const,
+} as const;
+
 export const SPRING_CONFIG = {
   DEFAULT: { stiffness: 400, damping: 25, mass: 0.8 },
   REDUCED_MOTION: { stiffness: 1000, damping: 100, mass: 0.1 },

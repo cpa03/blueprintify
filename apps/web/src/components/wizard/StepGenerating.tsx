@@ -30,6 +30,7 @@ import { memo, useCallback, useRef, useEffect } from "react";
 import { useEditorStore, useWizardStore, useToast } from "../../store";
 import {
   ANIMATION,
+  EASING,
   GENERATION_MESSAGES,
   TOAST_MESSAGES,
   SPRING_CONFIG,
@@ -254,7 +255,7 @@ export const StepGenerating = memo(function StepGenerating({
                 transition={{
                   duration: ANIMATION.SLOW_PULSE,
                   repeat: Infinity,
-                  ease: "easeInOut",
+                  ease: EASING.easeInOut,
                 }}
                 className="text-3xl"
               >
@@ -311,7 +312,7 @@ export const StepGenerating = memo(function StepGenerating({
               aria-live="polite"
               aria-atomic="true"
               animate={{ opacity: [1, 0.55, 1] }}
-              transition={{ duration: ANIMATION.DRIFT, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: ANIMATION.DRIFT, repeat: Infinity, ease: EASING.easeInOut }}
             >
               {progress || "Starting..."}
             </motion.p>

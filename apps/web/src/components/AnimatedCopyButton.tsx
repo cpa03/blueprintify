@@ -20,6 +20,7 @@ import {
   SPRING_CONFIG,
   PARTICLE_CONFIG,
   ANIMATION,
+  EASING,
   COPY_BUTTON_LABELS,
 } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
@@ -207,7 +208,7 @@ function AnimatedCopyButtonComponent({
             initial={{ scale: 0.8, opacity: 0.8 }}
             animate={{ scale: 1.3, opacity: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: ANIMATION.HALF_SECOND, ease: "easeOut" }}
+            transition={{ duration: ANIMATION.HALF_SECOND, ease: EASING.easeOut }}
           />
         )}
       </AnimatePresence>

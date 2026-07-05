@@ -34,7 +34,13 @@ import { EDITOR_FILENAMES } from "@blueprint/shared";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { Icon } from "../Icon";
 import { LastSavedIndicator } from "../LastSavedIndicator";
-import { SPRING_CONFIG, EDITOR_LABELS, ANIMATION, EDITOR_TABS } from "../../config/constants";
+import {
+  SPRING_CONFIG,
+  EDITOR_LABELS,
+  ANIMATION,
+  EASING,
+  EDITOR_TABS,
+} from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION, HEADER_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import clsx from "clsx";
@@ -155,7 +161,7 @@ const TabButton = React.memo(function TabButton({
             transition={{
               duration: ANIMATION.LIVE_INDICATOR,
               repeat: Infinity,
-              ease: "easeInOut",
+              ease: EASING.easeInOut,
             }}
             aria-label={ACCESSIBILITY_LABELS.EDITOR.STREAMING_CONTENT}
           />
@@ -207,12 +213,12 @@ const ContentStats = React.memo(function ContentStats({
                   borderColor: {
                     duration: ANIMATION.SLOW_PULSE,
                     repeat: Infinity,
-                    ease: "easeInOut",
+                    ease: EASING.easeInOut,
                   },
                   boxShadow: {
                     duration: ANIMATION.BREATH,
                     repeat: Infinity,
-                    ease: "easeInOut",
+                    ease: EASING.easeInOut,
                   },
                   opacity: { type: "spring", ...SPRING_CONFIG.SNAPPY },
                   y: { type: "spring", ...SPRING_CONFIG.SNAPPY },
@@ -236,7 +242,7 @@ const ContentStats = React.memo(function ContentStats({
                 color: isGenerating ? STAT_COLORS.FLASH_GREEN : STAT_COLORS.CHAR_BASE,
               }}
               animate={{ opacity: 1, y: 0, color: STAT_COLORS.CHAR_BASE }}
-              transition={{ duration: ANIMATION.QUICK_FADE, ease: "easeOut" }}
+              transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
             >
               {charCount.toLocaleString()}
             </motion.span>
@@ -253,7 +259,7 @@ const ContentStats = React.memo(function ContentStats({
                 color: isGenerating ? STAT_COLORS.FLASH_GREEN : STAT_COLORS.WORD_BASE,
               }}
               animate={{ opacity: 1, y: 0, color: STAT_COLORS.WORD_BASE }}
-              transition={{ duration: ANIMATION.QUICK_FADE, ease: "easeOut" }}
+              transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
             >
               {wordCount.toLocaleString()}
             </motion.span>
@@ -270,7 +276,7 @@ const ContentStats = React.memo(function ContentStats({
                 color: isGenerating ? STAT_COLORS.FLASH_GREEN : STAT_COLORS.LINE_BASE,
               }}
               animate={{ opacity: 1, y: 0, color: STAT_COLORS.LINE_BASE }}
-              transition={{ duration: ANIMATION.QUICK_FADE, ease: "easeOut" }}
+              transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
             >
               {lineCount.toLocaleString()}
             </motion.span>
@@ -283,7 +289,7 @@ const ContentStats = React.memo(function ContentStats({
               className="tabular-nums text-accent-cyan"
               initial={{ opacity: 0.6, y: -3 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: ANIMATION.QUICK_FADE, ease: "easeOut" }}
+              transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
             >
               {readingTimeDisplay}
             </motion.span>
@@ -300,7 +306,7 @@ const ContentStats = React.memo(function ContentStats({
             initial={{ opacity: 0, x: -4 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -4 }}
-            transition={{ duration: ANIMATION.QUICK_FADE, ease: "easeOut" }}
+            transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
           >
             <kbd
               className="px-1 py-0.5 bg-dark-700 rounded text-3xs font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"

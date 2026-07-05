@@ -32,6 +32,7 @@ import { FormEvent, useEffect, useRef, useState, memo, useMemo } from "react";
 import {
   FORM_LIMITS,
   ANIMATION,
+  EASING,
   ANIMATION_MS,
   TIMEOUTS,
   UI_CONTENT,
@@ -177,7 +178,7 @@ export const StepInfo = memo(function StepInfo({
                 className={`h-full bg-gradient-to-r from-primary-500 to-accent-emerald ${canProceed ? "progress-shimmer relative" : ""}`}
                 initial={{ width: 0 }}
                 animate={{ width: `${formProgress.percentage}%` }}
-                transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
+                transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
               />
             </div>
             <span
@@ -284,7 +285,7 @@ export const StepInfo = memo(function StepInfo({
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
+                  transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
                   className="text-xs text-accent-pink mt-1"
                 >
                   {VALIDATION_MESSAGES.APPROACHING_CHARACTER_LIMIT}
@@ -371,7 +372,7 @@ export const StepInfo = memo(function StepInfo({
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
+                  transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
                   className="text-xs text-yellow-500 mt-1"
                 >
                   {VALIDATION_MESSAGES.CHARACTERS_NEEDED(
@@ -388,7 +389,7 @@ export const StepInfo = memo(function StepInfo({
                 initial={{ opacity: 0, y: -4, x: -3 }}
                 animate={{ opacity: 1, y: 0, x: 0 }}
                 exit={{ opacity: 0, y: -4, x: -3 }}
-                transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
+                transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
                 className="text-xs text-accent-pink mt-1"
               >
                 {VALIDATION_MESSAGES.DESCRIPTION_MIN_LENGTH(FORM_LIMITS.DESCRIPTION.MIN)}

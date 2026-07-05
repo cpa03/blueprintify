@@ -20,6 +20,7 @@ import {
   EDITOR_TABS,
   EDITOR_LABELS,
   ANIMATION,
+  EASING,
   PREVIEW_EMPTY_LABELS,
 } from "../config/constants";
 
@@ -82,7 +83,11 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
             <motion.span
               className="text-3xl mb-1"
               animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: ANIMATION.SLOW_PULSE, repeat: Infinity, ease: "easeInOut" }}
+              transition={{
+                duration: ANIMATION.SLOW_PULSE,
+                repeat: Infinity,
+                ease: EASING.easeInOut,
+              }}
               aria-hidden="true"
             >
               {tabEmojis[tab]}
@@ -133,7 +138,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
             <motion.span
               className="inline-block"
               animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: ANIMATION.FLOAT, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: ANIMATION.FLOAT, repeat: Infinity, ease: EASING.easeInOut }}
             >
               ⏳
             </motion.span>{" "}

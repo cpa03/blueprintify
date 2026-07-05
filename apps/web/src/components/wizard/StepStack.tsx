@@ -37,6 +37,7 @@ import {
   CATEGORY_ICONS,
   MIN_REQUIREMENTS,
   ANIMATION,
+  EASING,
   TIMEOUTS,
   ANIMATION_MS,
   SPRING_CONFIG,
@@ -115,7 +116,7 @@ const TechChip = memo(function TechChip({
         isJustSelected
           ? {
               scale: [1, 1.15, 1],
-              transition: { duration: ANIMATION.SUBTLE_MOVE, ease: "easeOut" },
+              transition: { duration: ANIMATION.SUBTLE_MOVE, ease: EASING.easeOut },
             }
           : {}
       }
@@ -127,7 +128,7 @@ const TechChip = memo(function TechChip({
             initial={{ scale: 0, opacity: 0.8 }}
             animate={{ scale: 2.5, opacity: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: ANIMATION.HALF_SECOND, ease: "easeOut" }}
+            transition={{ duration: ANIMATION.HALF_SECOND, ease: EASING.easeOut }}
             className="absolute inset-0 rounded-full bg-accent-emerald/30 pointer-events-none"
             style={{ transformOrigin: TRANSFORMS.ORIGIN_CENTER }}
           />
@@ -140,7 +141,7 @@ const TechChip = memo(function TechChip({
             initial={{ scale: 0.8, opacity: 1 }}
             animate={{ scale: 1.5, opacity: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: ANIMATION.FADE_IN, ease: "easeOut" }}
+            transition={{ duration: ANIMATION.FADE_IN, ease: EASING.easeOut }}
             className="absolute inset-0 rounded-full border-2 border-accent-emerald pointer-events-none"
           />
         )}
@@ -286,7 +287,7 @@ export const StepStack = memo(function StepStack({
                 }`}
                 initial={{ width: 0 }}
                 animate={{ width: `${progressPercentage}%` }}
-                transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
+                transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
               />
             </div>
             <span
@@ -393,7 +394,7 @@ export const StepStack = memo(function StepStack({
             initial={{ opacity: 0, y: -6, x: -3 }}
             animate={{ opacity: 1, y: 0, x: 0 }}
             exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
+            transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
             className="text-sm text-accent-pink flex items-center gap-1.5"
           >
             <svg

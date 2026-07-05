@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, memo } from "react";
 import * as motion from "framer-motion/m";
 import { useSpring, useTransform } from "framer-motion";
-import { ANIMATION } from "../config/constants";
+import { ANIMATION, EASING } from "../config/constants";
 import { SHADOWS, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
@@ -103,7 +103,7 @@ export const ScrollProgress = memo(function ScrollProgress({
       className={`absolute top-0 left-0 right-0 z-10 pointer-events-none ${className}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: isVisible ? 1 : 0 }}
-      transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
+      transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
       aria-hidden="true"
     >
       <div className="w-full bg-dark-800/50 backdrop-blur-sm" style={{ height }}>
@@ -121,12 +121,12 @@ export const ScrollProgress = memo(function ScrollProgress({
             opacity: {
               duration: ANIMATION.SLOW_PULSE,
               repeat: Infinity,
-              ease: "easeInOut",
+              ease: EASING.easeInOut,
             },
             boxShadow: {
               duration: ANIMATION.SLOW_PULSE,
               repeat: Infinity,
-              ease: "easeInOut",
+              ease: EASING.easeInOut,
             },
           }}
         />
@@ -212,7 +212,7 @@ export const ScrollProgressCompact = memo(function ScrollProgressCompact({
       }}
       transition={{
         duration: prefersReducedMotion ? 0 : ANIMATION.NORMAL,
-        ease: "easeOut",
+        ease: EASING.easeOut,
       }}
     >
       <div
@@ -230,7 +230,7 @@ export const ScrollProgressCompact = memo(function ScrollProgressCompact({
           animate={{ width: `${scrollProgress}%` }}
           transition={{
             duration: prefersReducedMotion ? 0 : ANIMATION.FAST,
-            ease: "easeOut",
+            ease: EASING.easeOut,
           }}
         />
       </div>
