@@ -345,6 +345,22 @@ export const ACCESSIBILITY_LABELS = {
     EDIT_STACK: "Edit tech stack",
     EDIT_FEATURES: "Edit features",
   },
+  WIZARD: {
+    STEP_ARIA: (label: string) => `Wizard step: ${label}`,
+  },
+  SCROLL_POSITION: {
+    SCROLL_TO_TOP_ARIA: (key: string) => `Scroll to top (${key} key)`,
+    SCROLL_TO_BOTTOM_ARIA: (key: string) => `Scroll to bottom (${key} key)`,
+    SCROLL_TO_TOP_TOOLTIP: "Scroll to top",
+    SCROLL_TO_BOTTOM_TOOLTIP: "Scroll to bottom",
+  },
+  CHARACTER_COUNTER: {
+    LIMIT_REACHED: " — limit reached",
+    REMAINING: (count: number) => ` — ${count} remaining`,
+  },
+  TOAST_ANNOUNCER: {
+    DISMISSED_ALL: (count: number) => `Dismissed all ${count} notifications`,
+  },
 } as const;
 
 // ============================================================================

@@ -69,7 +69,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
     const success = await copyToClipboard(code);
     if (success) {
       setCopied(true);
-      setCopyAnnouncement("Copied to clipboard");
+      setCopyAnnouncement(ACCESSIBILITY_LABELS.MARKDOWN.COPIED);
       setTimeout(() => {
         setCopied(false);
         setCopyAnnouncement("");
