@@ -13,7 +13,7 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { FallbackProps } from "react-error-boundary";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { SPRING_CONFIG, ANIMATION, TIMEOUTS } from "../config/constants";
+import { SPRING_CONFIG, ANIMATION, EASING, TIMEOUTS } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
 import { copyToClipboard } from "../lib/clipboard";
@@ -121,7 +121,7 @@ export const ErrorFallback = memo(function ErrorFallback({
               transition={{
                 duration: ANIMATION.SLOW_PULSE,
                 repeat: Infinity,
-                ease: "easeInOut",
+                ease: EASING.easeInOut,
               }}
             >
               {/* Soft glow behind the icon */}
@@ -138,7 +138,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                 transition={{
                   duration: ANIMATION.BREATH,
                   repeat: Infinity,
-                  ease: "easeInOut",
+                  ease: EASING.easeInOut,
                 }}
                 aria-hidden="true"
               />
@@ -159,7 +159,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                   transition={{
                     pathLength: {
                       duration: ANIMATION.MEDIUM_SLOW,
-                      ease: "easeOut",
+                      ease: EASING.easeOut,
                       delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
                     },
                     opacity: {

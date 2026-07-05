@@ -36,6 +36,7 @@ import {
   SPRING_CONFIG,
   ACCESSIBILITY_LABELS,
   ANIMATION,
+  EASING,
   TOOLTIP_CONFIG,
 } from "../config/constants";
 import { TOAST_SPRING, TRANSFORMS } from "../config/theme";
@@ -213,7 +214,7 @@ const ToastItem = memo(
     const reducedTransition = {
       duration: ANIMATION.NORMAL,
       delay: staggerIndex * (TOAST_STAGGER_MS / 1000),
-      ease: "easeOut" as const,
+      ease: EASING.easeOut,
     };
 
     // For error/warning toasts, use role="alert" so screen readers announce
@@ -268,7 +269,7 @@ const ToastItem = memo(
             className="absolute inset-0 rounded-xl pointer-events-none"
             initial={{ opacity: 1 }}
             animate={{ opacity: 0 }}
-            transition={{ duration: ANIMATION.SLOW, ease: "easeOut" }}
+            transition={{ duration: ANIMATION.SLOW, ease: EASING.easeOut }}
             style={{
               boxShadow: `inset 0 0 40px 0 color-mix(in srgb, currentColor 18%, transparent)`,
             }}
@@ -357,7 +358,7 @@ const ToastItem = memo(
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
+            transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
             className="inline-flex"
           >
             <SmartTooltip
@@ -396,7 +397,7 @@ const ToastItem = memo(
               transition={{
                 opacity: {
                   duration: ANIMATION.NORMAL,
-                  ease: "easeOut",
+                  ease: EASING.easeOut,
                   delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
                 },
                 scale: {

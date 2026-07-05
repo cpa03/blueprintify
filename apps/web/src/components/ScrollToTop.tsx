@@ -23,6 +23,7 @@ import { AnimatePresence } from "framer-motion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import {
   ANIMATION,
+  EASING,
   SPRING_CONFIG,
   SCROLL_THRESHOLDS,
   ACCESSIBILITY_LABELS,
@@ -210,7 +211,7 @@ export const ScrollToPosition = memo(function ScrollToPosition({
               className="absolute inset-0 flex items-center justify-center pointer-events-none"
               initial={false}
               animate={{ opacity: [0.6, 0], scale: [0.85, 1.8] }}
-              transition={{ duration: ANIMATION.ENTRY_PULSE, ease: "easeOut" }}
+              transition={{ duration: ANIMATION.ENTRY_PULSE, ease: EASING.easeOut }}
               aria-hidden="true"
             >
               <div className="w-10 h-10 rounded-full bg-primary-500/25 blur-sm" />
@@ -246,7 +247,7 @@ export const ScrollToPosition = memo(function ScrollToPosition({
                 transition={{
                   duration: ANIMATION.FLOAT,
                   repeat: Infinity,
-                  ease: "easeInOut",
+                  ease: EASING.easeInOut,
                 }}
               >
                 {isToTop ? (

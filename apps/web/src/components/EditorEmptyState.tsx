@@ -13,7 +13,13 @@
 import { memo } from "react";
 import * as motion from "framer-motion/m";
 import { useWizardStore } from "../store";
-import { WIZARD_STEPS, UI_EMOJIS, EMPTY_STATE_CONFIG, ANIMATION } from "../config/constants";
+import {
+  WIZARD_STEPS,
+  UI_EMOJIS,
+  EMPTY_STATE_CONFIG,
+  ANIMATION,
+  EASING,
+} from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
 import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from "../utils/motion";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
@@ -85,7 +91,11 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               className="w-full h-1.5 bg-dark-600 rounded mb-2"
               initial={{ width: "30%" }}
               animate={{ width: ["30%", "80%", "30%"] }}
-              transition={{ duration: ANIMATION.SLOW_PULSE, repeat: Infinity, ease: "easeInOut" }}
+              transition={{
+                duration: ANIMATION.SLOW_PULSE,
+                repeat: Infinity,
+                ease: EASING.easeInOut,
+              }}
             />
             <motion.div
               className="w-full h-1 bg-dark-700 rounded mb-1.5"
@@ -94,7 +104,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               transition={{
                 duration: ANIMATION.BREATH,
                 repeat: Infinity,
-                ease: "easeInOut",
+                ease: EASING.easeInOut,
                 delay: ANIMATION_ENTRANCE_DELAYS.SLOW,
               }}
             />
@@ -105,7 +115,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               transition={{
                 duration: ANIMATION.DRIFT,
                 repeat: Infinity,
-                ease: "easeInOut",
+                ease: EASING.easeInOut,
                 delay: ANIMATION_ENTRANCE_DELAYS.SLOWEST,
               }}
             />
@@ -116,7 +126,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               transition={{
                 duration: ANIMATION.DRIFT_SLOW,
                 repeat: Infinity,
-                ease: "easeInOut",
+                ease: EASING.easeInOut,
                 delay: ANIMATION_ENTRANCE_DELAYS.THREE_QUARTER,
               }}
             />

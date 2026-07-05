@@ -13,7 +13,7 @@
 import React from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { SPRING_CONFIG, ANIMATION } from "../config/constants";
+import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
 
 /**
@@ -58,7 +58,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -5 }}
-          transition={{ duration: ANIMATION.NORMAL, ease: "easeOut" }}
+          transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
           className={`flex items-center gap-2 text-xs ${
             hasChanges ? "text-amber-400" : "text-dark-400"
           }`}
@@ -80,7 +80,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                   transition={{
                     duration: ANIMATION.GENTLE_PULSE,
                     repeat: Infinity,
-                    ease: "easeOut",
+                    ease: EASING.easeOut,
                   }}
                 />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
@@ -128,7 +128,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                 transition={{
                   duration: ANIMATION.NORMAL,
                   delay: ANIMATION_ENTRANCE_DELAYS.FAST,
-                  ease: "easeOut",
+                  ease: EASING.easeOut,
                 }}
               >
                 {text}

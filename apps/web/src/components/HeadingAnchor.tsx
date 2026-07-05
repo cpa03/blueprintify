@@ -33,7 +33,7 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { generateSlug } from "../utils/slug";
 import { ANIMATION_DEFAULTS, TOOLTIP_LABELS, UI_TIMEOUTS } from "@blueprint/shared";
-import { ANIMATION, SPRING_CONFIG, ACCESSIBILITY_LABELS } from "../config/constants";
+import { ANIMATION, EASING, SPRING_CONFIG, ACCESSIBILITY_LABELS } from "../config/constants";
 import { copyToClipboard } from "../lib/export";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -143,7 +143,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
               exit={{ opacity: 0, x: -4, scale: 0.9 }}
               transition={{
                 duration: shouldReduceMotion ? 0 : ANIMATION.FAST,
-                ease: "easeOut",
+                ease: EASING.easeOut,
               }}
               className="text-accent-emerald font-semibold whitespace-nowrap"
               aria-live="polite"

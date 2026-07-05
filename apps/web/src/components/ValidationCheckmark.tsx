@@ -2,7 +2,7 @@ import { memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { ANIMATION_TIMING } from "../config/theme";
-import { ANIMATION } from "../config/constants";
+import { ANIMATION, EASING } from "../config/constants";
 import { VALIDATION_LABELS } from "../config/constants/validation";
 
 interface ValidationCheckmarkProps {
@@ -77,9 +77,9 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
                 transition={{
                   pathLength: {
                     duration: ANIMATION.CHECKMARK_REVEAL,
-                    ease: "easeOut",
+                    ease: EASING.easeOut,
                   },
-                  opacity: { duration: ANIMATION.QUICK_FADE, ease: "easeOut" },
+                  opacity: { duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut },
                 }}
               />
             </svg>
@@ -95,9 +95,9 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
                 transition={{
                   pathLength: {
                     duration: ANIMATION.CHECKMARK_REVEAL,
-                    ease: "easeOut",
+                    ease: EASING.easeOut,
                   },
-                  opacity: { duration: ANIMATION.QUICK_FADE, ease: "easeOut" },
+                  opacity: { duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut },
                 }}
               />
             </svg>

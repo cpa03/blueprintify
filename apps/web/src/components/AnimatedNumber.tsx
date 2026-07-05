@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback, memo } from "react";
 import * as motion from "framer-motion/m";
 import { useSpring, MotionValue } from "framer-motion";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
-import { ANIMATION_COLORS, ANIMATION } from "../config/constants";
+import { ANIMATION_COLORS, ANIMATION, EASING } from "../config/constants";
 import { COUNTER_ANIMATION } from "../config/theme";
 
 interface AnimatedNumberProps {
@@ -110,7 +110,7 @@ function AnimatedNumberComponent({
       }
       transition={{
         duration: ANIMATION.MEDIUM,
-        ease: "easeOut",
+        ease: EASING.easeOut,
       }}
       aria-live="polite"
       aria-atomic="true"

@@ -44,6 +44,7 @@ import {
   SPRING_CONFIG,
   EDITOR_LABELS,
   ANIMATION,
+  EASING,
   VIEW_MODE_SHORTCUT_KEYS,
   VIEW_MODE_MODIFIER,
 } from "../../config/constants";
@@ -325,7 +326,7 @@ function EditorToolbarComponent({
                   transition={{
                     duration: ANIMATION.SPINNER_ROTATION + ANIMATION.NORMAL,
                     repeat: Infinity,
-                    ease: "easeInOut",
+                    ease: EASING.easeInOut,
                   }}
                 >
                   {EDITOR_LABELS.VIEW_MODES.GENERATING}

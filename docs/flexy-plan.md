@@ -1622,10 +1622,49 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 723 web + 443 api + 579 shared = 1,745 tests passing across 84 files
 
+### ✅ Flexy Iteration 98: Centralize Framer Motion Easing Constants — Eliminate 60+ Hardcoded ease Strings
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/ui.ts` | Added `EASING` config (easeOut/easeIn/easeInOut) — single source of truth for CSS easing keyword constants |
+| `apps/web/src/utils/motion.ts` | Replaced 5x `ease: "easeOut"` + 2x `ease: "easeInOut"` with `EASING.easeOut`/`EASING.easeInOut` |
+| `apps/web/src/components/ValidationCheckmark.tsx` | Replaced 4x `ease: "easeOut"` with `EASING.easeOut` |
+| `apps/web/src/components/Toast.tsx` | Replaced 4x `ease: "easeOut"` with `EASING.easeOut` |
+| `apps/web/src/components/LastSavedIndicator.tsx` | Replaced 3x `ease: "easeOut"` with `EASING.easeOut` |
+| `apps/web/src/components/ScrollProgress.tsx` | Replaced 2x `ease: "easeOut"` + 2x `ease: "easeInOut"` with `EASING.*` |
+| `apps/web/src/components/PageScrollProgressBar.tsx` | Replaced 2x `ease: "easeOut"` + 1x `ease: "easeInOut"` with `EASING.*` |
+| `apps/web/src/components/ErrorFallback.tsx` | Replaced 1x `ease: "easeOut"` + 2x `ease: "easeInOut"` with `EASING.*` |
+| `apps/web/src/components/AnimatedCopyButton.tsx` | Replaced 1x `ease: "easeOut"` with `EASING.easeOut` |
+| `apps/web/src/components/AnimatedNumber.tsx` | Replaced 1x `ease: "easeOut"` with `EASING.easeOut` |
+| `apps/web/src/components/ScrollToTop.tsx` | Replaced 1x `ease: "easeOut"` + 1x `ease: "easeInOut"` with `EASING.*` |
+| `apps/web/src/components/HeadingAnchor.tsx` | Replaced 1x `ease: "easeOut"` with `EASING.easeOut` |
+| `apps/web/src/components/PreviewEmptyState.tsx` | Replaced 2x `ease: "easeInOut"` with `EASING.easeInOut` |
+| `apps/web/src/components/EditorEmptyState.tsx` | Replaced 4x `ease: "easeInOut"` with `EASING.easeInOut` |
+| `apps/web/src/components/editor/EditorHeader.tsx` | Replaced 5x `ease: "easeOut"` + 3x `ease: "easeInOut"` with `EASING.*` |
+| `apps/web/src/components/editor/EditorToolbar.tsx` | Replaced 1x `ease: "easeInOut"` with `EASING.easeInOut` |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | Replaced 6x `ease: "easeOut"` with `EASING.easeOut` |
+| `apps/web/src/components/wizard/StepStack.tsx` | Replaced 5x `ease: "easeOut"` with `EASING.easeOut` |
+| `apps/web/src/components/wizard/StepInfo.tsx` | Replaced 4x `ease: "easeOut"` with `EASING.easeOut` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced 2x `ease: "easeInOut"` with `EASING.easeInOut` |
+
+**Total**: 60+ hardcoded `ease: "easeOut"`/`ease: "easeInOut"` CSS keyword strings eliminated across 20 files.
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 723 web + 443 api + 579 shared = 1,745 tests passing across 84 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2346](https://github.com/cpa03/blueprintify/pull/2346) | `feat/flexy-iteration-98-easing` | refactor(flexy): centralize framer-motion easing constants — eliminate 60+ hardcoded ease strings across 20 files (Iteration 98) |
+
 ## Remaining Hardcoded Values
 
-After 95+ Flexy iterations, the codebase is extremely clean. No remaining hardcoded values exist in application logic. Edge cases not addressed:
+After 98 Flexy iterations, the codebase is extremely clean. No remaining hardcoded values exist in application logic. Edge cases not addressed:
 - **Template generators** (`lib/templates/`): contain hardcoded CSS colors in template output — these emit **code for user projects**, not app code, so extraction would break the generated output
 - **Platform constants** (`lib/platform.ts`): OS-level key labels ("⌘", "Ctrl", "Meta") — inherently platform-defined, not application configuration
-- **Framer-motion easing** (`ease: "easeOut"` in 40+ transitions): uses the CSS keyword `"easeOut"` which is functionally identical to but more readable than the cubic-bezier array `[0, 0, 0.58, 1]` in `ANIMATION_TIMING.easing.easeOut`
 - **SVG path data** in icon components: inherently hardcoded geometry
