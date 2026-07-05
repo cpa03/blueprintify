@@ -2,11 +2,11 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Cycle 191 (2026-07-05 — RepoKeeper: Full audit, stale audit archive cleanup, BroCula ref drift fix, doc refresh, quality verification)
+## Cycle 191 (2026-07-05 — RepoKeeper: Full audit, stale audit archive cleanup, CHANGELOG gap fix (3 post-Cycle-190 commits), BroCula ref drift fix, doc refresh, quality verification)
 
 ### Audit Scope
 
-Full repository audit covering quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 empty catch blocks, 0 TODO/FIXME/HACK in source), stale BroCula audit archive cleanup (14 pre-Jul-4-Run-2 reports moved to archive/), BroCula ref drift fix (knowledge-review.md referenced Run 1 as latest — corrected to Run 2), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), npm audit (17 moderate — BUG-013 upstream tooling).
+Full repository audit covering quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 empty catch blocks, 0 TODO/FIXME/HACK in source), stale BroCula audit archive cleanup (14 pre-Jul-4-Run-2 reports moved to archive/), BroCula ref drift fix (knowledge-review.md referenced Run 1 as latest — corrected to Jul 4 Run 2), CHANGELOG gap fix (3 post-Cycle-190 commits: refactor(flexy) Iteration 95 CSS custom properties, chore(brocula) Jul 4 Run 2, feat(ui) exit transitions for keyboard shortcut filtering), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), npm audit (17 moderate — BUG-013 upstream tooling).
 
 ### Status Summary
 
@@ -32,9 +32,10 @@ Full repository audit covering quality verification (typecheck ✅ lint ✅ buil
 
 1. **Stale audit archive cleanup**: Moved 14 pre-Jul-4-Run-2 BroCula reports from `docs/audits/` to `docs/audits/archive/` via `git mv`.
 2. **BroCula ref drift fix**: `knowledge-review.md` referenced `brocula-hunt-2026-07-04-run1.md` as latest — corrected to `brocula-hunt-2026-07-04-run2.md` (Jul 4 Run 2 / LH **100-100-100-100**, **1745 tests** ✅).
-3. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅.
-4. **BUG-014/BUG-017 status verified**: Still present on main. Same documented `workflows: write` blocker.
-5. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 191.
+3. **CHANGELOG gap fix**: Added 3 post-Cycle-190 commits (flexy Iteration 95 CSS custom properties, BroCula Jul 4 Run 2, animated exit transitions for keyboard shortcut filtering) + Cycle 191 entry.
+4. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅.
+5. **BUG-014/BUG-017 status verified**: Still present on main. Same documented `workflows: write` blocker.
+6. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 191.
 
 ### Verification
 
@@ -47,6 +48,7 @@ Full repository audit covering quality verification (typecheck ✅ lint ✅ buil
 - [x] No tracked .patch files on main ✅
 - [x] No stale merged remote branches ✅
 - [x] Stale audit cleanup — 14 files archived ✅
+- [x] CHANGELOG gap fix — 3 post-Cycle-190 commits added ✅
 - [x] BroCula ref — Jul 4 Run 2 (latest) ✅
 - [x] npm audit — 17 moderate (BUG-013, same documented blocker) ✅
 - [x] BUG-014/BUG-017 — verified status (still blocked) ✅
