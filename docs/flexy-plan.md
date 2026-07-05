@@ -1597,6 +1597,17 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 
 **Summary**: Eliminates last 6 hardcoded `rgba()` value occurrences in `index.css` by extracting them into CSS custom properties defined in `:root`. No hardcoded `rgba()` values remain anywhere in the project.
 
+### ✅ Flexy Iteration 96: Eliminate Remaining Hardcoded Screen Reader & aria-label Strings in Components
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/content.ts` | Added `SCROLL_POSITION` (SCROLL_TO_TOP_ARIA, SCROLL_TO_BOTTOM_ARIA, SCROLL_TO_TOP_TOOLTIP, SCROLL_TO_BOTTOM_TOOLTIP), `WIZARD.STEP_ARIA`, `CHARACTER_COUNTER` (LIMIT_REACHED, REMAINING), `TOAST_ANNOUNCER.DISMISSED_ALL` to `ACCESSIBILITY_LABELS` |
+| `apps/web/src/components/ScrollToTop.tsx` | Replaced hardcoded `"Scroll to top"`/`"Scroll to bottom"` tooltip strings with `ACCESSIBILITY_LABELS.SCROLL_POSITION.*`; replaced hardcoded aria-label templates with config refs; replaced `"Home"`/`"End"` key strings with `KEYBOARD_SHORTCUTS.SCROLL_TO_TOP.KEY`/`SCROLL_TO_BOTTOM.KEY` |
+| `apps/web/src/components/MarkdownRenderer.tsx` | Replaced hardcoded `"Copied to clipboard"` screen reader announcement with `ACCESSIBILITY_LABELS.MARKDOWN.COPIED` |
+| `apps/web/src/components/Wizard.tsx` | Replaced hardcoded `` `Wizard step: ${currentStepLabel}` `` aria-label with `ACCESSIBILITY_LABELS.WIZARD.STEP_ARIA(currentStepLabel)` |
+| `apps/web/src/components/Toast.tsx` | Replaced hardcoded `` `Dismissed all ${count} notifications` `` announcement with `ACCESSIBILITY_LABELS.TOAST_ANNOUNCER.DISMISSED_ALL(count)` |
+| `apps/web/src/components/CharacterCounter.tsx` | Replaced hardcoded `" — limit reached"` / `` ` — ${remaining} remaining` `` format strings (2 occurrences) with `ACCESSIBILITY_LABELS.CHARACTER_COUNTER.*` refs |
+
 ## Verification
 
 - ✅ `npm run typecheck` — clean

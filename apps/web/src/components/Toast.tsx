@@ -435,7 +435,7 @@ function ToastContainerComponent(): JSX.Element {
   const handleClearAll = useCallback(() => {
     const count = toasts.length;
     clearAll();
-    setDismissAnnouncement(`Dismissed all ${count} notifications`);
+    setDismissAnnouncement(ACCESSIBILITY_LABELS.TOAST_ANNOUNCER.DISMISSED_ALL(count));
   }, [clearAll, toasts.length]);
 
   // Clear the dismiss announcement after screen readers have had time to
