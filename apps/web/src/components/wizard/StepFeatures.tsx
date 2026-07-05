@@ -223,11 +223,11 @@ export const StepFeatures = memo(function StepFeatures({
                 )}
               </AnimatePresence>
             </div>
-            <button
+            <RippleButton
               onClick={handleAddFeature}
               disabled={!newFeature.trim()}
               className="btn-primary px-4"
-              aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_FEATURE}
+              ariaLabel={ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_FEATURE}
             >
               <svg
                 className="w-5 h-5"
@@ -243,7 +243,7 @@ export const StepFeatures = memo(function StepFeatures({
                   d="M12 4v16m8-8H4"
                 />
               </svg>
-            </button>
+            </RippleButton>
           </div>
         </div>
 
