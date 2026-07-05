@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 192 — full repository audit, BroCula ref drift fix (Jul 4 Run 2 → Jul 5 Run 2 — latest: `brocula-hunt-2026-07-05-run2.md` / LH **98-100-100-100**, 1745 tests ✅), CHANGELOG gap fix (6 post-Cycle-191 commits: BugFixer Cycle Jul 05, feat(ui) copy error details button, feat(ui) external link keyboard focus, BugFixer ULW Cycle Jul 05, refactor(flexy) hardcoded a11y strings Iteration 96, BroCula audit Jul 5 Run 2), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK in source), npm audit (17 moderate — BUG-013 upstream tooling), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
+- docs(brocula): BroCula audit Jul 05 2026 Run 2 — LH 98-100-100-100, 1745 tests clean
+- refactor(flexy): eliminate remaining hardcoded a11y strings, scroll labels and format strings (Iteration 96)
+- docs(bugs): BugFixer ULW Cycle Jul 05 2026 — BUG-014/017 fixes
+- feat(ui): add copy error details button to ErrorFallback
+- feat(ui): show external link indicators on keyboard focus
+- docs(bugs): BugFixer Cycle Jul 05 2026 — BUG-014/017 fixes
 - chore(repokeeper): Cycle 191 — full repository audit, stale BroCula audit archive cleanup (14 pre-Jul-4-Run-2 reports moved from `docs/audits/` to `docs/audits/archive/`), BroCula ref drift fix (knowledge-review.md referenced Run 1 as latest — corrected to Jul 4 Run 2), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK in source), npm audit (17 moderate — BUG-013 upstream tooling), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
 - fix(bugfixer): BugFixer ULW Cycle Jul 04 2026 Run 2 — BUG-014 and BUG-017 fixed on branch `fix/bugfixer-cycle-jul-04-2026-run2` (push blocked by `workflows: write` permission), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅), doc refresh (bugs, active-tasks, findings, knowledge-review, CHANGELOG)
 - feat(ui): add animated exit transitions for keyboard shortcut search filtering — exit animations for search results when filtering shortcuts

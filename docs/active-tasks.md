@@ -2,6 +2,31 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 192 — **Full audit, BroCula ref drift fix (Jul 4 Run 2 → Jul 5 Run 2), CHANGELOG gap fix, doc refresh, quality verification** ✅
+
+### Task: Full repository audit, quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), BroCula ref drift fix (docs/audits/README.md and knowledge-review.md — Jul 4 Run 2 → Jul 5 Run 2: `brocula-hunt-2026-07-05-run2.md` / LH **98-100-100-100**, **1745 tests** ✅), CHANGELOG gap fix (6 post-Cycle-191 commits: BugFixer Cycle Jul 05, feat(ui) copy error details button, feat(ui) external link keyboard focus, BugFixer ULW Cycle Jul 05, refactor(flexy) hardcoded a11y strings Iteration 96, BroCula audit Jul 5 Run 2), README BroCula date drift fix (Jun 17–Jul 4 → Jun 17–Jul 5), npm audit (17 moderate — BUG-013 upstream tooling)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 192 full repository audit — fix BroCula ref drift (Jul 4 Run 2 → Jul 5 Run 2), fix CHANGELOG gap (6 post-Cycle-191 commits), fix README date drift, sync docs, verify quality
+- **Actions**:
+  - [x] Full repository scan — no redundant/temp/unused source files found, no tracked `.patch` files
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK in non-test source code
+  - [x] No stale merged remote branches found
+  - [x] **Format**: All files Prettier-formatted ✅
+  - [x] **BroCula ref drift fix**: docs/audits/README.md and knowledge-review.md → `brocula-hunt-2026-07-05-run2.md` (Jul 5 Run 2 / LH **98-100-100-100**, 1745 tests ✅)
+  - [x] **CHANGELOG gap fix**: Added 6 post-Cycle-191 commits + Cycle 192 entry
+  - [x] **README BroCula date drift fix**: `(Jun 17–Jul 4)` → `(Jun 17–Jul 5)`
+  - [x] **BUG-014/BUG-017 status verified**: Still present on main. Same documented `workflows: write` blocker.
+  - [x] **Test count verified**: 1,745 (723 web + 443 API + 579 shared) — unchanged
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 192, BroCula ref → Jul 5 Run 2
+  - [x] **findings.md updated**: Cycle 192 entry added
+  - [x] **active-tasks.md updated**: Cycle 192 entry added at top
+  - [x] **CHANGELOG.md updated**: Cycle 192 entry + 6 post-Cycle-191 commits added
+  - [x] **npm audit**: 17 moderate (BUG-013 — upstream tooling, same blocker)
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅
+
 ## ✅ RepoKeeper Cycle 191 — **Full audit, stale audit archive cleanup, CHANGELOG gap fix (3 post-Cycle-190 commits), BroCula ref drift fix, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit, quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK in source), stale BroCula audit archive cleanup (14 pre-Jul-4-Run-2 reports moved to archive/), BroCula ref drift fix (knowledge-review.md referenced Run 1 as latest — corrected to Jul 4 Run 2), CHANGELOG gap fix (3 post-Cycle-190 commits: refactor(flexy) Iteration 95 CSS custom properties, chore(brocula) Jul 4 Run 2, feat(ui) exit transitions for keyboard shortcut filtering), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), npm audit (17 moderate — BUG-013 upstream tooling)
