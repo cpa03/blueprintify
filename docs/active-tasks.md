@@ -2,6 +2,30 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 191 — **Full audit, stale audit archive cleanup, BroCula ref drift fix, doc refresh, quality verification** ✅
+
+### Task: Full repository audit, quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), stale BroCula audit archive cleanup (14 pre-Jul-4-Run-2 reports moved to archive/), BroCula ref drift fix (knowledge-review.md referenced Run 1 as latest — corrected to Run 2), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), npm audit (17 moderate — BUG-013 upstream tooling)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 191 full repository audit — archive stale audits, fix BroCula ref drift, sync docs, verify quality
+- **Actions**:
+  - [x] Full repository scan — no redundant/temp/unused source files found, no tracked `.patch` files
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK in non-test source code
+  - [x] No stale merged remote branches found
+  - [x] **Stale audit cleanup**: Moved 14 pre-Jul-4-Run-2 BroCula reports to archive/
+  - [x] **Format**: All files Prettier-formatted ✅
+  - [x] **BroCula ref drift fix**: knowledge-review.md → `brocula-hunt-2026-07-04-run2.md` (Jul 4 Run 2 / LH **100-100-100-100**, 1745 tests ✅)
+  - [x] **BUG-014/BUG-017 status verified**: Still present on main. Same documented `workflows: write` blocker.
+  - [x] **Test count verified**: 1,745 (723 web + 443 API + 579 shared) — unchanged
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 191
+  - [x] **findings.md updated**: Cycle 191 entry added
+  - [x] **active-tasks.md updated**: Cycle 191 entry added at top
+  - [x] **CHANGELOG.md updated**: Cycle 191 entry added
+  - [x] **npm audit**: 17 moderate (BUG-013 — upstream tooling, same blocker)
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅
+
 ## ✅ BugFixer ULW Cycle Jul 04 2026 Run 2 — **BUG-014/017 fix, quality verification, doc refresh** ✅
 
 ### Task: Full repository audit, BUG-014 fix (main.yml stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md`, 2 occurrences), BUG-017 fix (hardcoded `node-version: "20"`→`node-version-file: ".node-version"` across 4 workflow files — 11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), CHANGELOG gap fix (5 post-Cycle-188 commits + BugFixer cycle entry), doc refresh (bugs, active-tasks, findings, knowledge-review, CHANGELOG), npm audit (17 moderate — BUG-013 upstream tooling)

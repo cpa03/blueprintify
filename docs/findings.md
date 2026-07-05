@@ -2,11 +2,11 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Cycle 190 (2026-07-04 — RepoKeeper: Full audit, CHANGELOG gap fix (5 post-Cycle-188 commits), doc refresh, quality verification)
+## Cycle 191 (2026-07-05 — RepoKeeper: Full audit, stale audit archive cleanup, BroCula ref drift fix, doc refresh, quality verification)
 
 ### Audit Scope
 
-Full repository audit covering quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 empty catch blocks, 0 TODO/FIXME/HACK in source), CHANGELOG gap fix (5 post-Cycle-188 commits: fix(scripts) BugFixer agent name, flexy Iteration 94 hardcoded rgb strings, BroCula Jul 4 Run 1, BUG-017 audit, Cycle 189 record), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), npm audit (17 moderate — BUG-013 upstream tooling).
+Full repository audit covering quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 empty catch blocks, 0 TODO/FIXME/HACK in source), stale BroCula audit archive cleanup (14 pre-Jul-4-Run-2 reports moved to archive/), BroCula ref drift fix (knowledge-review.md referenced Run 1 as latest — corrected to Run 2), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), npm audit (17 moderate — BUG-013 upstream tooling).
 
 ### Status Summary
 
@@ -22,6 +22,7 @@ Full repository audit covering quality verification (typecheck ✅ lint ✅ buil
 | Format | ✅ All files Prettier-formatted |
 | Tracked .patch files | ✅ None found on main |
 | Stale merged branches | ✅ None found (all remote branches have unique unmerged commits) |
+| Stale audit reports in main dir | ✅ Cleaned — 14 files archived |
 | BUG-014 (stale doc refs) | 🔴 Still present on main (`docs/bug.md` in main.yml) — `workflows: write` blocker |
 | BUG-017 (hardcoded node-version) | 🔴 Still present on main (11 occurrences across 4 workflows) — `workflows: write` blocker |
 | npm audit | ⚠️ 17 moderate (BUG-013 — upstream lighthouse→@sentry/node→@opentelemetry/core, same blocker) |
@@ -29,11 +30,11 @@ Full repository audit covering quality verification (typecheck ✅ lint ✅ buil
 
 ### Actions Taken This Cycle
 
-1. **CHANGELOG gap fix**: Added 5 post-Cycle-188 commits (fix(scripts) BugFixer agent name, flexy Iteration 94 hardcoded rgb strings, BroCula Jul 4 Run 1, BUG-017 audit, Cycle 189 record) + Cycle 189 entry + Cycle 190 entry.
-2. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅.
-3. **BroCula ref verified**: Jul 4 Run 1 — latest (LH **100-100-100-100**, 1745 tests ✅). No drift detected from Cycle 189.
+1. **Stale audit archive cleanup**: Moved 14 pre-Jul-4-Run-2 BroCula reports from `docs/audits/` to `docs/audits/archive/` via `git mv`.
+2. **BroCula ref drift fix**: `knowledge-review.md` referenced `brocula-hunt-2026-07-04-run1.md` as latest — corrected to `brocula-hunt-2026-07-04-run2.md` (Jul 4 Run 2 / LH **100-100-100-100**, **1745 tests** ✅).
+3. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅.
 4. **BUG-014/BUG-017 status verified**: Still present on main. Same documented `workflows: write` blocker.
-5. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 190.
+5. **Documentation synced**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 191.
 
 ### Verification
 
@@ -45,7 +46,8 @@ Full repository audit covering quality verification (typecheck ✅ lint ✅ buil
 - [x] No redundant/temp/unused source files — clean ✅
 - [x] No tracked .patch files on main ✅
 - [x] No stale merged remote branches ✅
-- [x] BroCula ref — Jul 4 Run 1 (latest) ✅
+- [x] Stale audit cleanup — 14 files archived ✅
+- [x] BroCula ref — Jul 4 Run 2 (latest) ✅
 - [x] npm audit — 17 moderate (BUG-013, same documented blocker) ✅
 - [x] BUG-014/BUG-017 — verified status (still blocked) ✅
 
