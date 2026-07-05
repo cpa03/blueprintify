@@ -357,6 +357,7 @@ export const ACCESSIBILITY_LABELS = {
   CHARACTER_COUNTER: {
     LIMIT_REACHED: " — limit reached",
     REMAINING: (count: number) => ` — ${count} remaining`,
+    MINIMUM_MET: " — minimum requirement met",
   },
   TOAST_ANNOUNCER: {
     DISMISSED_ALL: (count: number) => `Dismissed all ${count} notifications`,
