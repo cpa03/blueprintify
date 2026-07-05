@@ -1660,7 +1660,7 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD | `feat/flexy-iteration-98-easing` | refactor(flexy): centralize framer-motion easing constants — eliminate 60+ hardcoded ease strings across 20 files (Iteration 98) |
+| [#2346](https://github.com/cpa03/blueprintify/pull/2346) | `feat/flexy-iteration-98-easing` | refactor(flexy): centralize framer-motion easing constants — eliminate 60+ hardcoded ease strings across 20 files (Iteration 98) |
 
 ## Remaining Hardcoded Values
 
