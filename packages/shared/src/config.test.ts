@@ -2845,8 +2845,8 @@ describe("ANIMATION_DURATION_S", () => {
     });
   });
 
-  it("should have 25 entries", () => {
-    expect(Object.keys(ANIMATION_DURATION_S).length).toBe(25);
+  it("should have 26 entries", () => {
+    expect(Object.keys(ANIMATION_DURATION_S).length).toBe(26);
   });
 
   it("should have values distributed across a range (not all identical)", () => {
@@ -2865,6 +2865,7 @@ describe("ANIMATION_DURATION_S", () => {
     expect(ANIMATION_DURATION_S.FLOATING_DURATION).toBe(3);
     expect(ANIMATION_DURATION_S.CARD_ENTRANCE_DELAY).toBe(0.05);
     expect(ANIMATION_DURATION_S.ENTRY_PULSE).toBe(0.8);
+    expect(ANIMATION_DURATION_S.NUMBER_COUNTER).toBe(0.8);
   });
 });
 

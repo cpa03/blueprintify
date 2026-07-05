@@ -2166,6 +2166,8 @@ export const ANIMATION_DURATION_S = {
   LOADING_OVERLAY_S: 0.15,
   /** Duration for scroll-to-top/scroll-to-bottom entry pulse ring animation (0.8s) */
   ENTRY_PULSE: 0.8,
+  /** Duration for animated number counter transitions (0.8s) */
+  NUMBER_COUNTER: 0.8,
 } as const;
 
 // ============================================================================
