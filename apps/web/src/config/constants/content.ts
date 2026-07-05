@@ -361,6 +361,9 @@ export const ACCESSIBILITY_LABELS = {
   TOAST_ANNOUNCER: {
     DISMISSED_ALL: (count: number) => `Dismissed all ${count} notifications`,
   },
+  NAV: {
+    MAIN: "Main navigation",
+  },
 } as const;
 
 // ============================================================================

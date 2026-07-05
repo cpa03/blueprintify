@@ -1608,9 +1608,24 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | `apps/web/src/components/Toast.tsx` | Replaced hardcoded `` `Dismissed all ${count} notifications` `` announcement with `ACCESSIBILITY_LABELS.TOAST_ANNOUNCER.DISMISSED_ALL(count)` |
 | `apps/web/src/components/CharacterCounter.tsx` | Replaced hardcoded `" — limit reached"` / `` ` — ${remaining} remaining` `` format strings (2 occurrences) with `ACCESSIBILITY_LABELS.CHARACTER_COUNTER.*` refs |
 
+### ✅ Flexy Iteration 97: Eliminate Remaining Hardcoded Copy-Feedback Timeout & Arbitrary Tailwind Duration
+
+| File | Change |
+|------|--------|
+| `apps/web/src/components/ErrorFallback.tsx` | Replaced hardcoded `setTimeout(..., 2000)` with `TIMEOUTS.COPY_FEEDBACK` — uses existing shared config value |
+| `apps/web/tailwind.config.js` | Added `transitionDuration: { 400: "400ms" }` token to eliminate arbitrary `duration-400` value in OfflineBanner |
+
 ## Verification
 
 - ✅ `npm run typecheck` — clean
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
-- ✅ `npm run test:all` — 723 web + 443 api + 579 shared = 1,745 tests passing
+- ✅ `npm run test:all` — 723 web + 443 api + 579 shared = 1,745 tests passing across 84 files
+
+## Remaining Hardcoded Values
+
+After 95+ Flexy iterations, the codebase is extremely clean. No remaining hardcoded values exist in application logic. Edge cases not addressed:
+- **Template generators** (`lib/templates/`): contain hardcoded CSS colors in template output — these emit **code for user projects**, not app code, so extraction would break the generated output
+- **Platform constants** (`lib/platform.ts`): OS-level key labels ("⌘", "Ctrl", "Meta") — inherently platform-defined, not application configuration
+- **Framer-motion easing** (`ease: "easeOut"` in 40+ transitions): uses the CSS keyword `"easeOut"` which is functionally identical to but more readable than the cubic-bezier array `[0, 0, 0.58, 1]` in `ANIMATION_TIMING.easing.easeOut`
+- **SVG path data** in icon components: inherently hardcoded geometry
