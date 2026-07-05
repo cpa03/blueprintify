@@ -45,12 +45,17 @@ function CharacterCounterComponent({
   }, [isAtLimit]);
 
   const [showCelebrate, setShowCelebrate] = useState(false);
+  const [showMinMetAnnouncement, setShowMinMetAnnouncement] = useState(false);
   const prevBelowMinRef = useRef(belowMin);
 
   useEffect(() => {
     if (!belowMin && prevBelowMinRef.current && min !== undefined) {
       setShowCelebrate(true);
-      const timer = setTimeout(() => setShowCelebrate(false), TIMEOUTS.SHAKE_ANIMATION);
+      setShowMinMetAnnouncement(true);
+      const timer = setTimeout(() => {
+        setShowCelebrate(false);
+        setShowMinMetAnnouncement(false);
+      }, TIMEOUTS.SHAKE_ANIMATION);
       return () => clearTimeout(timer);
     }
     prevBelowMinRef.current = belowMin;
@@ -93,6 +98,7 @@ function CharacterCounterComponent({
           : remaining <= 10
             ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.REMAINING(remaining)
             : ""}
+        {showMinMetAnnouncement ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.MINIMUM_MET : ""}
       </span>
     </>
   );
