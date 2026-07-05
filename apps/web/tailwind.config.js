@@ -76,6 +76,10 @@ export default {
       backdropBlur: {
         xs: "1px",
       },
+      /** Flexy says: Duration tokens to eliminate arbitrary duration-[400] values */
+      transitionDuration: {
+        400: "400ms",
+      },
       animation: {
         glow: "glow 2s ease-in-out infinite alternate",
         "slide-up": "slide-up 0.3s ease-out",

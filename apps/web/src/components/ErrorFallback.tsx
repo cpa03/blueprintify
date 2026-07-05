@@ -13,7 +13,7 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { FallbackProps } from "react-error-boundary";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { SPRING_CONFIG, ANIMATION } from "../config/constants";
+import { SPRING_CONFIG, ANIMATION, TIMEOUTS } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
 import { copyToClipboard } from "../lib/clipboard";
@@ -66,7 +66,7 @@ export const ErrorFallback = memo(function ErrorFallback({
     const success = await copyToClipboard(errorMessage);
     if (success) {
       setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
+      setTimeout(() => setIsCopied(false), TIMEOUTS.COPY_FEEDBACK);
     }
   }, [errorMessage]);
 
