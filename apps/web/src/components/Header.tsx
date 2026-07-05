@@ -108,7 +108,7 @@ function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
 
         <nav
           className="flex items-center gap-2 animate-slide-in-right"
-          aria-label="Main navigation"
+          aria-label={ACCESSIBILITY_LABELS.NAV.MAIN}
         >
           {onShowShortcuts && (
             <KeyboardShortcutTooltip
