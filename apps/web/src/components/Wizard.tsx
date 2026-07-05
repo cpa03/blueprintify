@@ -26,7 +26,12 @@ import { useEditorStore } from "../store";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useFocusOnStepChange, useStepAnnouncer } from "../hooks/useFocusOnStepChange";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { WIZARD_STEPS, STEP_TITLES, GENERATION_MESSAGES } from "../config/constants";
+import {
+  WIZARD_STEPS,
+  STEP_TITLES,
+  GENERATION_MESSAGES,
+  ACCESSIBILITY_LABELS,
+} from "../config/constants";
 import { SPINNER } from "../config/styles";
 import { WIZARD_STEP_KEYS, ANIMATION_DIRECTIONS } from "@blueprint/shared";
 import { LAYOUT } from "../config/theme";
@@ -223,7 +228,7 @@ function WizardComponent(): JSX.Element {
         onScroll={handleScroll}
         className="flex-1 overflow-y-auto overscroll-contain p-6"
         role="region"
-        aria-label={`Wizard step: ${currentStepLabel}`}
+        aria-label={ACCESSIBILITY_LABELS.WIZARD.STEP_ARIA(currentStepLabel)}
       >
         <StepTransition mode="wait">{renderStep()}</StepTransition>
       </div>
