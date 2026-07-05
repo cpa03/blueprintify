@@ -2,6 +2,29 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 195 — **Stale merged branch cleanup, schema.sql path fix, doc refresh, quality verification** ✅
+
+### Task: Full repository audit, stale merged branch cleanup (`origin/bugfix/jul-05-2026-cycle` deleted — fully merged), schema.sql path fix (`scripts/migrate.ts` looked in `scripts/` but file is at root — `db:init` would fail with `Schema file not found`), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK in source), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker), npm audit (17 moderate — BUG-013 upstream tooling)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 195 full repository audit — delete stale merged branch `origin/bugfix/jul-05-2026-cycle`, fix `schema.sql` path resolution in `scripts/migrate.ts`, sync docs (findings, active-tasks, knowledge-review, CHANGELOG), verify quality, create PR
+- **Actions**:
+  - [x] Full repository scan — no redundant/temp/unused source files found
+  - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
+  - [x] Verified no TODO/FIXME/HACK in non-test source code
+  - [x] **Stale merged branch deleted**: `origin/bugfix/jul-05-2026-cycle` — fully merged with 0 unmerged commits
+  - [x] **schema.sql path fix**: `scripts/migrate.ts` `SCHEMA_FILE` path corrected from `join(__dirname, "schema.sql")` to `join(__dirname, "..", "schema.sql")` — file is at root, not in `scripts/`. The `db:init` command would have failed with `Schema file not found`.
+  - [x] **Format**: All files Prettier-formatted ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 195
+  - [x] **findings.md updated**: Cycle 195 entry added
+  - [x] **active-tasks.md updated**: Cycle 195 entry added at top
+  - [x] **CHANGELOG.md updated**: Cycle 195 entry added
+  - [x] **BUG-014/BUG-017 status verified**: Still present on main. Same documented `workflows: write` blocker.
+  - [x] **Test count verified**: 1,745 (723 web + 443 API + 579 shared) — unchanged
+  - [x] **npm audit**: 17 moderate (BUG-013 — upstream tooling, same documented blocker)
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅
+
 ## ✅ RepoKeeper Cycle 194 — **Full audit, tracked .patch removal, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit, tracked `.patch` removal (`scripts/bugfixer-cycle-jul-05-2026-run3-workflow-fixes.patch` — force-tracked despite `*.patch` in `.gitignore`, same recurring anti-pattern), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK in source), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker), npm audit (17 moderate — BUG-013 upstream tooling)

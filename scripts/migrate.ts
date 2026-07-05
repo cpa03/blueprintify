@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const MIGRATIONS_DIR = join(__dirname, "migrations");
-const SCHEMA_FILE = join(__dirname, "schema.sql");
+const SCHEMA_FILE = join(__dirname, "..", "schema.sql");
 
 interface Migration {
   id: string;
