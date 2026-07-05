@@ -21,7 +21,13 @@ import { useState, useEffect, useCallback, memo, useRef } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
-import { ANIMATION, SPRING_CONFIG, SCROLL_THRESHOLDS } from "../config/constants";
+import {
+  ANIMATION,
+  SPRING_CONFIG,
+  SCROLL_THRESHOLDS,
+  ACCESSIBILITY_LABELS,
+  KEYBOARD_SHORTCUTS,
+} from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 type ScrollDirection = "top" | "bottom";
@@ -149,11 +155,13 @@ export const ScrollToPosition = memo(function ScrollToPosition({
     };
   }, [getScrollContainer, getScrollY, getMaxScroll, showAfter, isToTop]);
 
-  useEffect(() => {
-    const shortcutKey = isToTop ? "Home" : "End";
+  const shortCutKey = isToTop
+    ? KEYBOARD_SHORTCUTS.SCROLL_TO_TOP.KEY
+    : KEYBOARD_SHORTCUTS.SCROLL_TO_BOTTOM.KEY;
 
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === shortcutKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      if (e.key === shortCutKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
         const activeElement = document.activeElement;
         const isInputFocused =
           activeElement?.tagName === "INPUT" || activeElement?.tagName === "TEXTAREA";
@@ -167,13 +175,14 @@ export const ScrollToPosition = memo(function ScrollToPosition({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [scrollToTarget, hasScrolled, isToTop]);
+  }, [scrollToTarget, hasScrolled, isToTop, shortCutKey]);
 
-  const shortcutKey = isToTop ? "Home" : "End";
   const ariaLabel = isToTop
-    ? `Scroll to top (${shortcutKey} key)`
-    : `Scroll to bottom (${shortcutKey} key)`;
-  const tooltipDescription = isToTop ? "Scroll to top" : "Scroll to bottom";
+    ? ACCESSIBILITY_LABELS.SCROLL_POSITION.SCROLL_TO_TOP_ARIA(shortCutKey)
+    : ACCESSIBILITY_LABELS.SCROLL_POSITION.SCROLL_TO_BOTTOM_ARIA(shortCutKey);
+  const tooltipDescription = isToTop
+    ? ACCESSIBILITY_LABELS.SCROLL_POSITION.SCROLL_TO_TOP_TOOLTIP
+    : ACCESSIBILITY_LABELS.SCROLL_POSITION.SCROLL_TO_BOTTOM_TOOLTIP;
   const positionClass = isToTop
     ? "absolute bottom-4 right-4 z-20"
     : "absolute bottom-4 left-4 z-20";
@@ -209,7 +218,7 @@ export const ScrollToPosition = memo(function ScrollToPosition({
           )}
 
           <KeyboardShortcutTooltip
-            shortcut={shortcutKey}
+            shortcut={shortCutKey}
             description={tooltipDescription}
             position={tooltipPosition}
             modifier="none"

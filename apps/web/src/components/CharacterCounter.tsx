@@ -1,5 +1,5 @@
 import { memo, useMemo, useRef, useEffect, useState } from "react";
-import { TIMEOUTS } from "../config/constants";
+import { TIMEOUTS, ACCESSIBILITY_LABELS } from "../config/constants";
 
 interface CharacterCounterProps {
   current: number;
@@ -88,7 +88,11 @@ function CharacterCounterComponent({
       {/* Screen-reader-only announcement with descriptive label */}
       <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {current} of {max} character{max !== 1 ? "s" : ""} used
-        {remaining === 0 ? " — limit reached" : remaining <= 10 ? ` — ${remaining} remaining` : ""}
+        {remaining === 0
+          ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.LIMIT_REACHED
+          : remaining <= 10
+            ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.REMAINING(remaining)
+            : ""}
       </span>
     </>
   );
@@ -130,7 +134,11 @@ function CharacterCounterCompactComponent({
       </span>
       <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {current} of {max} character{max !== 1 ? "s" : ""} used
-        {remaining === 0 ? " — limit reached" : remaining <= 10 ? ` — ${remaining} remaining` : ""}
+        {remaining === 0
+          ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.LIMIT_REACHED
+          : remaining <= 10
+            ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.REMAINING(remaining)
+            : ""}
       </span>
     </div>
   );
