@@ -271,14 +271,16 @@
 /* ===== Utility Classes ===== */
 @layer utilities {
   /* Slow shifting gradient animation for hero text — complements ambient-glow */
-  /* Uses will-change + translateZ(0) to promote to compositor layer, minimizing paint cost */
+  /* Uses filter: hue-rotate() which IS GPU-composited in Chromium
+     (unlike background-position which triggers paint on every frame).
+     Combined with will-change + translateZ(0) for compositor layer promotion. */
   @keyframes gradient-shift {
     0%,
     100% {
-      background-position: 0% 50%;
+      filter: hue-rotate(0deg);
     }
     50% {
-      background-position: 100% 50%;
+      filter: hue-rotate(18deg);
     }
   }
 
@@ -287,7 +289,7 @@
     background-size: 200% 200%;
     animation: gradient-shift 6s ease-in-out infinite;
     transform: translateZ(0);
-    will-change: background-position, transform;
+    will-change: filter, transform;
   }
 
   /* Shake animation for disabled button feedback */
