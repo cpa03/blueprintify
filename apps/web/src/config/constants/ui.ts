@@ -21,6 +21,7 @@ import {
 import {
   ANIMATION_TIMING,
   COLORS,
+  EASING,
   THEME_PROGRESS_TRACK_COLOR,
   STEP_CONNECTOR_COMPLETED_SHADOW as THEME_STEP_CONNECTOR_COMPLETED_SHADOW,
 } from "../theme";
@@ -119,15 +120,11 @@ export const CELEBRATION_PARTICLE = {
  */
 /**
  * Easing functions for Framer Motion transitions
+ * Single source of truth lives in theme.ts
  * Flexy says: No more 60+ hardcoded 'easeOut' strings across components!
- * Single source of truth for CSS easing keyword constants.
  */
-export const EASING = {
-  easeOut: "easeOut" as const,
-  easeIn: "easeIn" as const,
-  easeInOut: "easeInOut" as const,
-  linear: "linear" as const,
-} as const;
+// Re-exported from theme.ts where EASING is defined alongside other animation configs
+export { EASING };
 
 export const SPRING_CONFIG = {
   DEFAULT: { stiffness: 400, damping: 25, mass: 0.8 },
