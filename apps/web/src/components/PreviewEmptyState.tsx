@@ -16,6 +16,7 @@ import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
 import {
   EMPTY_STATE_CONFIG,
   SPRING_CONFIG,
+  HOVER_SCALE,
   UI_CONTENT,
   EDITOR_TABS,
   EDITOR_LABELS,
@@ -191,7 +192,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
           {siblingTabHasContent ? (
             <motion.div
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-800/50 border border-dark-700"
-              whileHover={{ scale: 1.02 }}
+              whileHover={HOVER_SCALE.MICRO}
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -212,7 +213,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
           ) : (
             <motion.div
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-800/50 border border-dark-700"
-              whileHover={{ scale: 1.02 }}
+              whileHover={HOVER_SCALE.MICRO}
             >
               <span>💡</span>
               <span>

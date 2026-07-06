@@ -25,6 +25,8 @@ import {
   ANIMATION,
   EASING,
   SPRING_CONFIG,
+  HOVER_SCALE,
+  TAP_SCALE,
   SCROLL_THRESHOLDS,
   ACCESSIBILITY_LABELS,
   KEYBOARD_SHORTCUTS,
@@ -234,8 +236,8 @@ export const ScrollToPosition = memo(function ScrollToPosition({
                          shadow-lg shadow-primary-500/10
                          transition-colors duration-200"
               aria-label={ariaLabel}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={HOVER_SCALE.STRONG}
+              whileTap={TAP_SCALE.STANDARD}
             >
               <motion.svg
                 className="w-5 h-5"

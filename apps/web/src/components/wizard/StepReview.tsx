@@ -34,6 +34,8 @@ import { useBlueprintStream } from "../../hooks/useBlueprintStream";
 import {
   ANIMATION,
   GENERATION_ESTIMATES,
+  HOVER_SCALE,
+  TAP_SCALE,
   ACCESSIBILITY_LABELS,
   UI_CONTENT,
   WIZARD_REVIEW_DESCRIPTIONS,
@@ -429,8 +431,8 @@ export const StepReview = memo(function StepReview({
                 <RippleButton
                   onClick={startGeneration}
                   disabled={false}
-                  whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ ...HOVER_SCALE.STANDARD, filter: "brightness(1.1)" }}
+                  whileTap={TAP_SCALE.STANDARD}
                   className="btn-primary flex items-center gap-2 animate-glow animate-cta-ring"
                   aria-keyshortcuts={getAriaShortcutKey("Enter", "cmd")}
                 >

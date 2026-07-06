@@ -41,6 +41,8 @@ import {
   TIMEOUTS,
   ANIMATION_MS,
   SPRING_CONFIG,
+  HOVER_SCALE,
+  TAP_SCALE,
   UI_CONTENT,
   ACCESSIBILITY_LABELS,
   VALIDATION_MESSAGES,
@@ -110,8 +112,8 @@ const TechChip = memo(function TechChip({
         animationDelay: `${entranceIndex * ENTRANCE_STAGGER_DEFAULTS.CHIP_STAGGER_S}s`,
         animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
       }}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={HOVER_SCALE.STANDARD}
+      whileTap={TAP_SCALE.STANDARD}
       animate={
         isJustSelected
           ? {
