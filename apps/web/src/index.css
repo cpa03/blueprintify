@@ -670,6 +670,16 @@
     }
   }
 
+  @keyframes logo-breathe {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.06);
+    }
+  }
+
   .animate-fade-in {
     animation: fade-in 0.2s ease-out;
     will-change: opacity;
@@ -678,6 +688,11 @@
   .animate-fade-in-left {
     animation: fade-in-left 0.3s ease-out;
     will-change: transform, opacity;
+  }
+
+  .animate-logo-breathe {
+    animation: logo-breathe 4s ease-in-out infinite;
+    will-change: transform;
   }
 
   .animate-slide-in-right {
@@ -850,6 +865,7 @@
     .counter-celebrate-pop,
     .content-dot-breathe,
     .arrival-pop,
+    .animate-logo-breathe,
     .glass-card::after,
     .glass-card:focus-within::before,
     .text-gradient {
