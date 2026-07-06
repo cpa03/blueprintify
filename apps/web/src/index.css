@@ -271,6 +271,7 @@
 /* ===== Utility Classes ===== */
 @layer utilities {
   /* Slow shifting gradient animation for hero text — complements ambient-glow */
+  /* Uses will-change + translateZ(0) to promote to compositor layer, minimizing paint cost */
   @keyframes gradient-shift {
     0%,
     100% {
@@ -285,6 +286,8 @@
     @apply bg-gradient-to-r from-primary-400 via-accent-purple to-accent-pink bg-clip-text text-transparent;
     background-size: 200% 200%;
     animation: gradient-shift 6s ease-in-out infinite;
+    transform: translateZ(0);
+    will-change: background-position, transform;
   }
 
   /* Shake animation for disabled button feedback */
@@ -1046,40 +1049,58 @@
 
 /* ===== Discovery Glow ===== */
 /* Subtle one-shot attention pulse for discovery-oriented UI elements (keyboard
-   shortcuts button, etc.). Plays once on mount to hint at hidden functionality
-   without being distracting — uses composited opacity + box-shadow only.
+   shortcuts button, etc.). Uses only composited properties (opacity + transform)
+   to avoid paint cost. Renders via ::before pseudo to keep content opacity stable.
    Disabled via animation: none when prefers-reduced-motion is active. */
-@keyframes attention-glow {
-  0% {
-    box-shadow: 0 0 0 0 transparent;
-    opacity: 1;
-  }
-  15% {
-    box-shadow:
-      0 0 0 3px color-mix(in srgb, var(--color-primary-500) 20%, transparent),
-      0 0 16px 2px color-mix(in srgb, var(--color-primary-500) 12%, transparent);
-    opacity: 1;
-  }
-  30% {
-    box-shadow:
-      0 0 0 6px color-mix(in srgb, var(--color-primary-500) 8%, transparent),
-      0 0 24px 4px color-mix(in srgb, var(--color-primary-500) 6%, transparent);
-    opacity: 1;
-  }
-  100% {
-    box-shadow: 0 0 0 0 transparent;
-    opacity: 1;
-  }
+.attention-glow {
+  position: relative;
+  /* Static outward glow ring via box-shadow — painted once, not animated */
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--color-primary-500) 20%, transparent),
+    0 0 16px 2px color-mix(in srgb, var(--color-primary-500) 12%, transparent);
 }
 
-.attention-glow {
-  animation: attention-glow 2.2s ease-out 1;
-  will-change: box-shadow, opacity;
+.attention-glow::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: radial-gradient(
+    100% 100% at 50% 50%,
+    color-mix(in srgb, var(--color-primary-500) 15%, transparent) 0%,
+    transparent 100%
+  );
+  opacity: 0;
+  transform: scale(0.9);
+  animation: attention-glow-pulse 2.2s ease-out 1;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+@keyframes attention-glow-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  15% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  30% {
+    opacity: 0.8;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .attention-glow {
+  .attention-glow,
+  .attention-glow::before {
     animation: none;
+    opacity: 0;
   }
 }
 
