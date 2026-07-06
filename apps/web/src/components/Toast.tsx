@@ -515,6 +515,8 @@ function ToastContainerComponent(): JSX.Element {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.9 }}
               transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={handleClearAll}
               className="pointer-events-auto self-center mt-1 px-3 py-1.5 rounded-lg
                          text-xs font-medium text-dark-400
