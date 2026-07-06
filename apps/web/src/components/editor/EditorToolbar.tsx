@@ -289,7 +289,7 @@ function EditorToolbarComponent({
                   transition={{
                     duration: ANIMATION.GENTLE_PULSE,
                     repeat: Infinity,
-                    ease: "linear",
+                    ease: EASING.linear,
                   }}
                   aria-hidden="true"
                 >

@@ -126,6 +126,7 @@ export const EASING = {
   easeOut: "easeOut" as const,
   easeIn: "easeIn" as const,
   easeInOut: "easeInOut" as const,
+  linear: "linear" as const,
 } as const;
 
 export const SPRING_CONFIG = {
