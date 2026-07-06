@@ -273,6 +273,7 @@ export const StepGenerating = memo(function StepGenerating({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
+            transition={{ delay: ANIMATION_ENTRANCE_DELAYS.HALF_SECOND }}
             className="text-center"
           >
             <h2 className="text-xl font-bold text-white mb-2">Generation Complete!</h2>
@@ -364,7 +365,7 @@ export const StepGenerating = memo(function StepGenerating({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ delay: ANIMATION_ENTRANCE_DELAYS.SLOWER }}
+            transition={{ delay: ANIMATION_ENTRANCE_DELAYS.FULL_SECOND }}
             className="mt-8 flex flex-col items-center gap-3"
           >
             <KeyboardShortcutTooltip
