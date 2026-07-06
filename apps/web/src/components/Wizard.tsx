@@ -66,6 +66,7 @@ const StepGenerating = lazy(() =>
  */
 function WizardComponent(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
+  const projectName = useWizardStore((s) => s.projectName);
   const isGenerating = useEditorStore((s) => s.isGenerating);
   const generationProgress = useEditorStore((s) => s.generationProgress);
   const containerRef = useFocusOnStepChange(currentStep);
@@ -167,12 +168,12 @@ function WizardComponent(): JSX.Element {
   }, [handleCmdEnter, handleAltArrowLeft, handleAltArrowRight]);
 
   const isComplete = !isGenerating && generationProgress === GENERATION_MESSAGES.COMPLETE;
-  const documentTitle =
-    isGenerating && generationProgress
-      ? `⏳ ${generationProgress}`
-      : isComplete
-        ? "✅ Generation Complete!"
-        : STEP_TITLES[currentStep] || "Project Wizard";
+  const stepTitle = STEP_TITLES[currentStep] || "Project Wizard";
+  const documentTitle = (() => {
+    if (isGenerating && generationProgress) return `⏳ ${generationProgress}`;
+    if (isComplete) return "✅ Generation Complete!";
+    return projectName ? `${projectName} | ${stepTitle}` : stepTitle;
+  })();
   useDocumentTitle(documentTitle);
 
   const renderStep = (): JSX.Element => {
