@@ -1662,9 +1662,32 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | ---- | ------ | ----- |
 | [#2346](https://github.com/cpa03/blueprintify/pull/2346) | `feat/flexy-iteration-98-easing` | refactor(flexy): centralize framer-motion easing constants — eliminate 60+ hardcoded ease strings across 20 files (Iteration 98) |
 
+### ✅ Flexy Iteration 100: Move EASING to theme.ts — Eliminate Last Hardcoded "easeOut" String
+
+**Goal**: The `EASING` constants were defined in `constants/ui.ts`, but `theme.ts` had a hardcoded `EASE: "easeOut"` that couldn't reference `EASING.easeOut` due to circular dependency risk. Fixed by moving `EASING` to `theme.ts` (alongside other animation configs) and re-exporting from `constants/ui.ts`.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/theme.ts` | Added `EASING` export (easeOut/easeIn/easeInOut/linear) — single source of truth for CSS easing keyword constants |
+| `apps/web/src/config/theme.ts` | Replaced hardcoded `EASE: "easeOut"` with `EASE: EASING.easeOut` in `CELEBRATION_ANIMATION.RIPPLE` |
+| `apps/web/src/config/constants/ui.ts` | Removed local `EASING` definition; imports and re-exports `EASING` from `theme.ts` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npm run test:all` — 744 web + 443 api + 579 shared = 1,766 tests passing across 85 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-100-easing` | refactor(flexy): move EASING to theme.ts, eliminate last hardcoded "easeOut" string (Iteration 100) |
+
 ## Remaining Hardcoded Values
 
-After 98 Flexy iterations, the codebase is extremely clean. No remaining hardcoded values exist in application logic. Edge cases not addressed:
+After 100 Flexy iterations, the codebase is extremely clean. No remaining hardcoded values exist in application logic. Edge cases not addressed:
 - **Template generators** (`lib/templates/`): contain hardcoded CSS colors in template output — these emit **code for user projects**, not app code, so extraction would break the generated output
 - **Platform constants** (`lib/platform.ts`): OS-level key labels ("⌘", "Ctrl", "Meta") — inherently platform-defined, not application configuration
 - **SVG path data** in icon components: inherently hardcoded geometry

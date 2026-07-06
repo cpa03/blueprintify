@@ -387,6 +387,19 @@ export const tailwindTheme = {
 } as const;
 
 // ============================================================================
+// Easing Functions for Framer Motion Transitions
+// Single source of truth — eliminates 60+ hardcoded 'easeOut' strings
+// Flexy says: Import EASING from constants, never hardcode "easeOut"!
+// ============================================================================
+
+export const EASING = {
+  easeOut: "easeOut" as const,
+  easeIn: "easeIn" as const,
+  easeInOut: "easeInOut" as const,
+  linear: "linear" as const,
+} as const;
+
+// ============================================================================
 // Toast Component Animation Springs (extracted from Toast.tsx)
 // Flexy says: No hardcoded animation values - everything in config!
 // ============================================================================
@@ -421,7 +434,7 @@ export const CELEBRATION_ANIMATION = {
   /** Ripple ring animation durations */
   RIPPLE: {
     DURATION_S: 1,
-    EASE: "easeOut",
+    EASE: EASING.easeOut,
   } as const,
   /** Checkmark container spring */
   CHECKMARK_CONTAINER: { stiffness: 500, damping: 30 } as const,
