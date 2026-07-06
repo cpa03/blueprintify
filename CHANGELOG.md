@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 203 — full repository audit (zero redundant/temp/unused files, zero type suppressions, zero TODO/FIXME/HACK, zero tracked `.patch` files), CHANGELOG gap fix (2 missing commits after Cycle 202: feat(toast) spring hover/tap animations, fix(ci) regenerate package-lock.json with Node 22), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,766/1,766 ✅ format ✅ secrets ✅), npm audit (17 moderate — BUG-013 upstream tooling), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
+- feat(toast): add spring hover/tap animations to Dismiss All button
+- fix(ci): regenerate package-lock.json with Node 22 and fix CI node version
 - chore(repokeeper): Cycle 201 — missing `playwright`/`playwright-core` devDependencies added to root `package.json` (used by brocula scripts but only transitive before), `docs/active-tasks.md` trimmed from 2,353 to 33 lines (archived cycles older than Cycle 200 to git history, consistent with findings.md Cycle 193 precedent), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ tests 1,766/1,766 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
 - feat(ux): add staggered entrance delays to generation completion animation
 - fix(brocula): Jul 06 Run 3 — composited animations + LH 100-100-100-100-100
