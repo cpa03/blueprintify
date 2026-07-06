@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 200 — stale archive retention cleanup (5 files from Jun 5 removed from `docs/audits/archive/`), duplicate `docs/audits/brocula-jul-05-run2.md` removed, findings.md duplicate Cycle 194 heading fixed (ULW Issue Audit disambiguated), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, CONSOLIDATED-README), quality verification (typecheck ✅ lint ✅ build ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
+- refactor(flexy): add EASING.linear constant and replace remaining hardcoded ease strings (Iteration 99)
+- feat(ux): smooth progress message transitions in StepGenerating
+- docs(brocula): Jul 6 Run 1 audit — LH 100-100-100-100, 1766 tests, console clean
+- fix(lint): remove unused RIPPLE_CONFIG import in RippleButton test
+- test(ui): add comprehensive RippleButton component tests (21 tests) (#2355)
 - chore(repokeeper): Cycle 195 — stale merged branch cleanup (`origin/bugfix/jul-05-2026-cycle` deleted), `scripts/migrate.ts` schema.sql path fix (looked in `scripts/` but file is at root — `db:init` would fail), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK in source), npm audit (17 moderate — BUG-013 upstream tooling), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
 - chore(repokeeper): Cycle 194 — full repository audit, tracked `.patch` removal (`scripts/bugfixer-cycle-jul-05-2026-run3-workflow-fixes.patch` — force-tracked despite `*.patch` in `.gitignore`, same recurring anti-pattern as Cycles 167/170/173/175/178/183/185/187/188/193), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK in source), npm audit (17 moderate — BUG-013 upstream tooling), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
 - chore(repokeeper): Cycle 193 — findings.md trim (436KB→2KB), stale archive retention cleanup (4 Jun 1-4 BroCula audit files), merged branch cleanup (`origin/fix/ci-nodejs-22` deleted), CONSOLIDATED-README.md update, doc refresh, quality verification
