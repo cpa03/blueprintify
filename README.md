@@ -321,7 +321,6 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Flexy Plan](./docs/flexy-plan.md)** - Hardcoded value elimination and modularization plan
 - **[Known Bugs](./docs/bugs.md)** - Active bug tracking and known defects
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
-- **[Issue Audit Report (Jun 5)](./docs/audits/archive/issue-audit-report-2026-06-05.md)** - Issue label normalization and duplicate detection report (archived)
 - **[Issue Audit Report (Jun 7)](./docs/audits/archive/issue-audit-report-2026-06-07.md)** - ULW Loop issue audit with fix status tracking (archived)
 - **[Issue Audit Report (Jun 8)](./docs/audits/archive/issue-audit-report-2026-06-08.md)** - ULW Loop issue audit with fix status tracking (archived)
 
