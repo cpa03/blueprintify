@@ -237,7 +237,7 @@ export const StepGenerating = memo(function StepGenerating({
               transition={{
                 duration: ANIMATION.SPINNER_ROTATION,
                 repeat: Infinity,
-                ease: "linear",
+                ease: EASING.linear,
               }}
             />
             <div className="absolute inset-0 flex items-center justify-center">
