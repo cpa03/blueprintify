@@ -29,6 +29,8 @@ import {
   TIMEOUTS,
   ACCESSIBILITY_LABELS,
   SPRING_CONFIG,
+  HOVER_SCALE,
+  TAP_SCALE,
   MARKDOWN_COPY_LABELS,
 } from "../config/constants";
 import { MARKDOWN, ICON } from "../config/styles";
@@ -104,8 +106,8 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
         animate={{
           scale: 1,
         }}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
+        whileHover={HOVER_SCALE.MICRO}
+        whileTap={TAP_SCALE.MICRO}
         aria-label={
           copied ? ACCESSIBILITY_LABELS.MARKDOWN.COPIED : ACCESSIBILITY_LABELS.MARKDOWN.COPY_CODE
         }

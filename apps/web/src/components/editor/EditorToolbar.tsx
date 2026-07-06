@@ -45,6 +45,7 @@ import {
   EDITOR_LABELS,
   ANIMATION,
   EASING,
+  ROTATION,
   VIEW_MODE_SHORTCUT_KEYS,
   VIEW_MODE_MODIFIER,
 } from "../../config/constants";
@@ -425,7 +426,7 @@ function EditorToolbarComponent({
             stroke="currentColor"
             viewBox="0 0 24 24"
             aria-hidden="true"
-            whileHover={{ rotate: 180 }}
+            whileHover={ROTATION.HALF}
             transition={{ type: "spring", ...SPRING_CONFIG.REFRESH }}
           >
             <path

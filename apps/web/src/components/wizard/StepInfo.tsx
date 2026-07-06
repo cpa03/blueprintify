@@ -39,6 +39,8 @@ import {
   VALIDATION_MESSAGES,
   TEXTAREA_CONFIG,
   SPRING_CONFIG,
+  HOVER_SCALE,
+  TAP_SCALE,
 } from "../../config/constants";
 import { STEP_INFO_LABELS } from "../../config/constants/validation";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
@@ -518,8 +520,8 @@ export const StepInfo = memo(function StepInfo({
             <RippleButton
               type="submit"
               disabled={!canProceed}
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98, y: 0 }}
+              whileHover={{ ...HOVER_SCALE.MICRO, y: -2 }}
+              whileTap={{ ...TAP_SCALE.MICRO, y: 0 }}
               className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
               aria-keyshortcuts={getAriaShortcutKey("Enter", "cmd")}
             >

@@ -38,7 +38,13 @@ import { useEffect, useRef, useCallback, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { ANIMATION_DEFAULTS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
-import { SPRING_CONFIG, ANIMATION, CONFIRM_DIALOG_HINTS } from "../config/constants";
+import {
+  SPRING_CONFIG,
+  ANIMATION,
+  HOVER_SCALE,
+  TAP_SCALE,
+  CONFIRM_DIALOG_HINTS,
+} from "../config/constants";
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
@@ -194,8 +200,8 @@ export const ConfirmDialog = memo(function ConfirmDialog({
 
               <div className="flex justify-end gap-3 mt-6">
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={HOVER_SCALE.MICRO}
+                  whileTap={TAP_SCALE.MICRO}
                   onClick={onClose}
                   className="btn-ghost px-4 py-2 rounded-lg text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                   aria-keyshortcuts="Escape"
@@ -210,8 +216,8 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                 >
                   <motion.button
                     ref={confirmButtonRef}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={HOVER_SCALE.MICRO}
+                    whileTap={TAP_SCALE.MICRO}
                     onClick={handleConfirm}
                     className="bg-accent-pink hover:bg-accent-pink/80 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                     aria-keyshortcuts="Enter"

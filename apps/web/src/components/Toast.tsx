@@ -34,6 +34,9 @@ import { useToastStore, type ToastType, type Toast } from "../store/toast";
 import {
   TOAST_CONFIG,
   SPRING_CONFIG,
+  HOVER_SCALE,
+  TAP_SCALE,
+  ROTATION,
   ACCESSIBILITY_LABELS,
   ANIMATION,
   EASING,
@@ -406,8 +409,8 @@ const ToastItem = memo(
                   delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
                 },
               }}
-              whileHover={{ scale: 1.15, rotate: 90 }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={{ ...HOVER_SCALE.EXTRA, ...ROTATION.QUARTER }}
+              whileTap={TAP_SCALE.STRONG}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -515,8 +518,8 @@ function ToastContainerComponent(): JSX.Element {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.9 }}
               transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+              whileHover={HOVER_SCALE.GENTLE}
+              whileTap={TAP_SCALE.GENTLE}
               onClick={handleClearAll}
               className="pointer-events-auto self-center mt-1 px-3 py-1.5 rounded-lg
                          text-xs font-medium text-dark-400

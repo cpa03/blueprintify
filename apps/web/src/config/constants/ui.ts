@@ -246,6 +246,58 @@ export const SCROLL_THRESHOLDS = {
 } as const;
 
 // ============================================================================
+// Interaction Scale Presets (for framer-motion whileHover/whileTap)
+// ============================================================================
+
+/**
+ * Hover scale presets for framer-motion whileHover animations.
+ * Centralizes all hardcoded scale values so they stay consistent across components.
+ * Flexy says: No hardcoded scale: 1.02/1.03/1.05/1.1/1.15 values in components!
+ * Usage: whileHover={HOVER_SCALE.GENTLE}
+ */
+export const HOVER_SCALE = {
+  /** Micro hover: 1.02 — subtle scale-up for buttons, cards */
+  MICRO: { scale: 1.02 } as const,
+  /** Gentle hover: 1.03 — mild emphasis for interactive elements */
+  GENTLE: { scale: 1.03 } as const,
+  /** Standard hover: 1.05 — noticeable emphasis for primary actions */
+  STANDARD: { scale: 1.05 } as const,
+  /** Strong hover: 1.1 — prominent scale for special elements */
+  STRONG: { scale: 1.1 } as const,
+  /** Extra strong hover: 1.15 — maximum emphasis for dismiss/close buttons */
+  EXTRA: { scale: 1.15 } as const,
+} as const;
+
+/**
+ * Tap scale presets for framer-motion whileTap animations.
+ * Centralizes all hardcoded press-scale values for consistent micro-interactions.
+ * Flexy says: No hardcoded scale: 0.98/0.97/0.95/0.9 values in components!
+ * Usage: whileTap={TAP_SCALE.GENTLE}
+ */
+export const TAP_SCALE = {
+  /** Micro tap: 0.98 — subtle press for gentle feedback */
+  MICRO: { scale: 0.98 } as const,
+  /** Gentle tap: 0.97 — mild press for standard feedback */
+  GENTLE: { scale: 0.97 } as const,
+  /** Standard tap: 0.95 — noticeable press for primary actions */
+  STANDARD: { scale: 0.95 } as const,
+  /** Strong tap: 0.9 — deep press for dismiss/close buttons */
+  STRONG: { scale: 0.9 } as const,
+} as const;
+
+/**
+ * Rotation presets for framer-motion whileHover rotate animations.
+ * Flexy says: No hardcoded rotate: 90/180 values in components!
+ * Usage: whileHover={{ ...HOVER_SCALE.GENTLE, ...ROTATION.QUARTER }}
+ */
+export const ROTATION = {
+  /** Quarter turn: 90 degrees — for close/dismiss icon rotation */
+  QUARTER: { rotate: 90 } as const,
+  /** Half turn: 180 degrees — for expand/collapse icon rotation */
+  HALF: { rotate: 180 } as const,
+} as const;
+
+// ============================================================================
 // Textarea Configuration
 // ============================================================================
 

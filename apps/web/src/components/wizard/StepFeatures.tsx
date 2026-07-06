@@ -36,6 +36,8 @@ import {
   FORM_LIMITS,
   TIMEOUTS,
   SPRING_CONFIG,
+  HOVER_SCALE,
+  TAP_SCALE,
   UI_CONTENT,
   ANIMATION,
   EASING,
@@ -350,8 +352,8 @@ export const StepFeatures = memo(function StepFeatures({
                 type="button"
                 onClick={handleAddAllSuggestions}
                 disabled={showAllAddedMsg}
-                whileHover={showAllAddedMsg ? {} : { scale: 1.03 }}
-                whileTap={showAllAddedMsg ? {} : { scale: 0.97 }}
+                whileHover={showAllAddedMsg ? {} : HOVER_SCALE.GENTLE}
+                whileTap={showAllAddedMsg ? {} : TAP_SCALE.GENTLE}
                 transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
                 className={`text-xs rounded px-2 py-1 transition-all duration-300 flex items-center gap-1 ${
                   showAllAddedMsg
@@ -433,8 +435,8 @@ export const StepFeatures = memo(function StepFeatures({
                       }
                     }}
                     layout
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={HOVER_SCALE.STANDARD}
+                    whileTap={TAP_SCALE.STANDARD}
                     transition={{ type: "spring", ...SPRING_CONFIG.SUBTLE_BOUNCE }}
                     className="tech-chip relative overflow-hidden hover:border-accent-emerald/50"
                     aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_SUGGESTION(feature)}
