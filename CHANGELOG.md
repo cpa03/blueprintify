@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 201 — missing `playwright`/`playwright-core` devDependencies added to root `package.json` (used by brocula scripts but only transitive before), `docs/active-tasks.md` trimmed from 2,353 to 33 lines (archived cycles older than Cycle 200 to git history, consistent with findings.md Cycle 193 precedent), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ tests 1,766/1,766 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
 - chore(repokeeper): Cycle 200 — stale archive retention cleanup (5 files from Jun 5 removed from `docs/audits/archive/`), duplicate `docs/audits/brocula-jul-05-run2.md` removed, findings.md duplicate Cycle 194 heading fixed (ULW Issue Audit disambiguated), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, CONSOLIDATED-README), quality verification (typecheck ✅ lint ✅ build ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
 - refactor(flexy): add EASING.linear constant and replace remaining hardcoded ease strings (Iteration 99)
 - feat(ux): smooth progress message transitions in StepGenerating
