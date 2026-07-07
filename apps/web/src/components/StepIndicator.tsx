@@ -23,7 +23,7 @@
 
 import { useEffect, useCallback, useState, useRef, memo } from "react";
 import { type WizardStep, WIZARD_STEP_KEYS, ANIMATION_ENTRANCE_DELAYS_MS } from "@blueprint/shared";
-import { useWizardStore, useToast } from "../store";
+import { useWizardStore, useEditorStore, useToast } from "../store";
 import {
   WIZARD_STEPS,
   TIMEOUTS,
@@ -32,6 +32,7 @@ import {
   STEP_CONNECTOR,
   ENTRANCE_STAGGER,
   ACCESSIBILITY_LABELS,
+  GENERATION_MESSAGES,
 } from "../config/constants";
 import { CircularProgress } from "./CircularProgress";
 import { SmartTooltip } from "./SmartTooltip";
@@ -46,6 +47,8 @@ const STEPS: {
 function StepIndicatorComponent(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
   const setStep = useWizardStore((s) => s.setStep);
+  const isGenerating = useEditorStore((s) => s.isGenerating);
+  const generationProgress = useEditorStore((s) => s.generationProgress);
   const [shakingStep, setShakingStep] = useState<string | null>(null);
   const [justCompletedStep, setJustCompletedStep] = useState<string | null>(null);
   const [activatingStep, setActivatingStep] = useState<string | null>(null);
@@ -53,7 +56,17 @@ function StepIndicatorComponent(): JSX.Element {
   const toast = useToast();
 
   const currentIndex = STEPS.findIndex((s) => s.key === currentStep);
-  const progressPercentage = (currentIndex / (STEPS.length - 1)) * 100;
+  /** Whether the last wizard step (generating) has finished with a complete state */
+  const isGenerationComplete =
+    currentStep === WIZARD_STEP_KEYS.GENERATING &&
+    !isGenerating &&
+    generationProgress === GENERATION_MESSAGES.COMPLETE;
+
+  // When generation is complete, show full progress (100%) even though the
+  // wizard still considers the GENERATING step as "current." This gives users
+  // a clear visual cue that the pipeline has finished.
+  const effectiveIndex = isGenerationComplete ? STEPS.length - 1 : currentIndex;
+  const progressPercentage = (effectiveIndex / (STEPS.length - 1)) * 100;
   const currentStepLabel = WIZARD_STEPS.find((s) => s.key === currentStep)?.label || currentStep;
 
   // Detect forward step navigation and trigger a one-shot completion flash
@@ -121,7 +134,7 @@ function StepIndicatorComponent(): JSX.Element {
       <SmartTooltip
         content={ACCESSIBILITY_LABELS.PROGRESS.STEPS_COMPLETE(
           progressPercentage,
-          STEPS.length - 1 - currentIndex
+          STEPS.length - 1 - effectiveIndex
         )}
         position="left"
       >
@@ -131,23 +144,33 @@ function StepIndicatorComponent(): JSX.Element {
             size={36}
             strokeWidth={3}
             color={
-              currentIndex >= STEPS.length - 1 ? PROGRESS_COLORS.COMPLETED : PROGRESS_COLORS.ACTIVE
+              isGenerationComplete || effectiveIndex >= STEPS.length - 1
+                ? PROGRESS_COLORS.COMPLETED
+                : PROGRESS_COLORS.ACTIVE
             }
-            ariaLabel={`Step ${currentIndex + 1} of ${STEPS.length}: ${currentStepLabel}`}
+            ariaLabel={
+              isGenerationComplete
+                ? "All steps complete"
+                : `Step ${effectiveIndex + 1} of ${STEPS.length}: ${currentStepLabel}`
+            }
             animateOnMount
             mountAnimationDelayMs={ANIMATION_ENTRANCE_DELAYS_MS.STANDARD_MOUNT}
           />
           <div className="absolute inset-0 flex items-center justify-center transition-transform duration-200 hover:scale-110">
             <span key={currentStep} className="text-xs font-semibold step-count-pop">
-              {currentIndex >= STEPS.length - 1 ? "🎉" : `${currentIndex + 1}`}
+              {isGenerationComplete
+                ? "✓"
+                : effectiveIndex >= STEPS.length - 1
+                  ? "🎉"
+                  : `${effectiveIndex + 1}`}
             </span>
           </div>
         </div>
       </SmartTooltip>
 
       {STEPS.map((step, index) => {
-        const isActive = step.key === currentStep;
-        const isCompleted = index < currentIndex;
+        const isActive = step.key === currentStep && !isGenerationComplete;
+        const isCompleted = index < effectiveIndex;
         const isClickable = canNavigateTo(step.key);
         const isShaking = shakingStep === step.key;
 

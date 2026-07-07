@@ -2,12 +2,13 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";
 import { StepIndicator } from "./StepIndicator";
-import { useWizardStore } from "../store";
+import { useWizardStore, useEditorStore } from "../store";
 import { WIZARD_STEP_KEYS } from "@blueprint/shared";
 import type { WizardStore } from "../store/wizard";
 
 vi.mock("../store", () => ({
   useWizardStore: vi.fn(),
+  useEditorStore: vi.fn(),
   useToast: () => ({
     success: vi.fn(),
     info: vi.fn(),
@@ -105,6 +106,10 @@ describe("StepIndicator", () => {
     vi.clearAllMocks();
     (useWizardStore as unknown as Mock).mockImplementation(
       (selector: (state: WizardStore) => unknown) => selector(mockWizardStore)
+    );
+    (useEditorStore as unknown as Mock).mockImplementation(
+      (selector: (state: { isGenerating: boolean; generationProgress: string }) => unknown) =>
+        selector({ isGenerating: false, generationProgress: "" })
     );
   });
 
