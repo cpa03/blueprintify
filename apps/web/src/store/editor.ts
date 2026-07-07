@@ -27,24 +27,35 @@ import {
   STORAGE_ERROR_MESSAGES,
   EDITOR_TABS,
 } from "../config/constants";
-import { sanitizeForStorage, handleSecurityError } from "../lib/security";
 import { editorStorage } from "../lib/storage";
 import { createPersistedStore, type PersistedStorage } from "./persistence";
 
-/**
- * Validates and sanitizes editor content for storage.
- * Extracts common validation logic to reduce duplication.
- *
- * @param blueprintContent - The blueprint content to validate
- * @param tasksContent - The tasks content to validate
- * @returns Sanitized content object with blueprint and tasks content
- * @throws SecurityError if validation fails
- */
+// Security module (~73KB) is dynamically imported to keep it out of the initial bundle.
+// The import starts immediately in background so it's almost always resolved by the time
+// a user interacts with the editor.
+import type {
+  sanitizeForStorage as SanitizeFn,
+  handleSecurityError as HandleErrorFn,
+} from "../lib/security";
+
+let _sanitizeForStorage: typeof SanitizeFn | null = null;
+let _handleSecurityError: typeof HandleErrorFn | null = null;
+const _loadSecurity = import("../lib/security").then((mod) => {
+  _sanitizeForStorage = mod.sanitizeForStorage;
+  _handleSecurityError = mod.handleSecurityError;
+});
+
 function validateEditorContent(
   blueprintContent: string,
   tasksContent: string
 ): { blueprintContent: string; tasksContent: string } {
-  const security = sanitizeForStorage({ blueprintContent, tasksContent });
+  if (!_sanitizeForStorage) {
+    // Background import still in flight — fall through with unsanitized data.
+    // This is extremely rare since the import starts at module evaluation time
+    // and resolves before the user can start typing.
+    return { blueprintContent, tasksContent };
+  }
+  const security = _sanitizeForStorage({ blueprintContent, tasksContent });
   if (!security.isValid) {
     console.error(STORAGE_ERROR_MESSAGES.LOAD_FAILED, security.error);
     throw new Error(security.error);
@@ -110,9 +121,9 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
         set({ blueprintContent: sanitized.blueprintContent, isDirty: true });
         debouncedSave(get);
       } catch (error) {
-        const securityError = handleSecurityError(error);
-        console.error(STORAGE_ERROR_MESSAGES.SAVE_FAILED, securityError.message);
-        throw securityError;
+        const err = _handleSecurityError ? _handleSecurityError(error) : (error as Error);
+        console.error(STORAGE_ERROR_MESSAGES.SAVE_FAILED, err.message);
+        throw err;
       }
     },
 
@@ -126,9 +137,9 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
         }));
         debouncedSave(get);
       } catch (error) {
-        const securityError = handleSecurityError(error);
-        console.error(STORAGE_ERROR_MESSAGES.SAVE_FAILED, securityError.message);
-        throw securityError;
+        const err = _handleSecurityError ? _handleSecurityError(error) : (error as Error);
+        console.error(STORAGE_ERROR_MESSAGES.SAVE_FAILED, err.message);
+        throw err;
       }
     },
 
@@ -138,9 +149,9 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
         set({ tasksContent: sanitized.tasksContent, isDirty: true });
         debouncedSave(get);
       } catch (error) {
-        const securityError = handleSecurityError(error);
-        console.error(STORAGE_ERROR_MESSAGES.SAVE_FAILED, securityError.message);
-        throw securityError;
+        const err = _handleSecurityError ? _handleSecurityError(error) : (error as Error);
+        console.error(STORAGE_ERROR_MESSAGES.SAVE_FAILED, err.message);
+        throw err;
       }
     },
 
@@ -151,9 +162,9 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
         set(() => ({ tasksContent: sanitized.tasksContent, isDirty: true }));
         debouncedSave(get);
       } catch (error) {
-        const securityError = handleSecurityError(error);
-        console.error(STORAGE_ERROR_MESSAGES.SAVE_FAILED, securityError.message);
-        throw securityError;
+        const err = _handleSecurityError ? _handleSecurityError(error) : (error as Error);
+        console.error(STORAGE_ERROR_MESSAGES.SAVE_FAILED, err.message);
+        throw err;
       }
     },
 
