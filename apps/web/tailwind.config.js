@@ -89,10 +89,12 @@ export default {
         "banner-enter": "banner-enter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
       },
       keyframes: {
+        /** Flexy says: boxShadow values must stay in sync with theme.ts SHADOWS.glow.primary */
         glow: {
           "0%": { boxShadow: "0 0 20px rgba(99, 102, 241, 0.3)" },
           "100%": { boxShadow: "0 0 40px rgba(99, 102, 241, 0.6)" },
         },
+        /** Flexy says: translateY/opacity values must stay in sync with theme.ts animations */
         "slide-up": {
           "0%": { transform: "translateY(10px)", opacity: "0" },
           "100%": { transform: "translateY(0)", opacity: "1" },

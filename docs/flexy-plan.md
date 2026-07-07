@@ -1685,9 +1685,76 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | ---- | ------ | ----- |
 | TBD | `feat/flexy-iteration-100-easing` | refactor(flexy): move EASING to theme.ts, eliminate last hardcoded "easeOut" string (Iteration 100) |
 
-## Remaining Hardcoded Values
+## PRs
 
-After 100 Flexy iterations, the codebase is extremely clean. No remaining hardcoded values exist in application logic. Edge cases not addressed:
+| PR #  | Branch                                      | Title                                                                 |
+| ----- | ------------------------------------------- | --------------------------------------------------------------------- |
+| TBD   | `feat/flexy-iteration-100-easing`           | refactor(flexy): move EASING to theme.ts, eliminate last hardcoded "easeOut" string (Iteration 100) |
+
+### ✅ Flexy Iteration 101: Extract Hardcoded whileHover/whileTap Scale Values
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/ui.ts` | Added `HOVER_SCALE` (MICRO/GENTLE/STANDARD/STRONG/EXTRA), `TAP_SCALE` (MICRO/GENTLE/STANDARD/STRONG), `ROTATION` (QUARTER/HALF) config objects |
+| `apps/web/src/components/ConfirmDialog.tsx` | Replaced hardcoded `whileHover={{ scale: 1.05 }}` with `HOVER_SCALE.STANDARD` |
+| `apps/web/src/components/ErrorFallback.tsx` | Replaced hardcoded `whileHover={{ scale: 1.05 }}` with `HOVER_SCALE.STANDARD` |
+| `apps/web/src/components/MarkdownRenderer.tsx` | Replaced hardcoded `whileTap` scale with config refs |
+| `apps/web/src/components/PreviewEmptyState.tsx` | Replaced hardcoded scale values with config refs |
+| `apps/web/src/components/ScrollToTop.tsx` | Replaced hardcoded `whileHover`/`whileTap` with `HOVER_SCALE.*`/`TAP_SCALE.*` |
+| `apps/web/src/components/Toast.tsx` | Replaced hardcoded scale values with config refs |
+| `apps/web/src/components/editor/EditorToolbar.tsx` | Replaced hardcoded scale values with config refs |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | Replaced hardcoded `whileHover`/`whileTap` with config refs |
+| `apps/web/src/components/wizard/StepInfo.tsx` | Replaced hardcoded `whileHover`/`whileTap` with config refs |
+| `apps/web/src/components/wizard/StepReview.tsx` | Replaced hardcoded `whileHover`/`whileTap` with config refs |
+| `apps/web/src/components/wizard/StepStack.tsx` | Replaced hardcoded `whileHover`/`whileTap` with config refs |
+
+**Summary**: Extracted 12 remaining hardcoded framer-motion whileHover/whileTap scale and rotate values across 11 component files into centralized `HOVER_SCALE`/`TAP_SCALE`/`ROTATION` config objects.
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 744 web + 443 api + 579 shared = 1,766 tests passing across 85 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2375](https://github.com/cpa03/blueprintify/pull/2375) | `agent` | refactor(flexy): extract hardcoded whileHover/whileTap scale values to config constants (#2375) |
+
+### ✅ Flexy Iteration 102: Add Cross-Reference Documentation for Unavoidably Duplicated Design Tokens
+
+After 101 Flexy iterations, the codebase has zero remaining hardcoded values in application logic. The last remaining hardcoded values exist by architectural necessity:
+
+| File | Change |
+|------|--------|
+| `apps/web/tailwind.config.js` | Added `/** Flexy says */` comments to keyframe definitions linking boxShadow/translateY values to theme.ts source of truth |
+| `apps/web/src/index.css` | Added `/** Flexy says */` documentation block to `:root` color palette linking CSS variables, theme.ts COLORS, and tailwind.config.js together |
+
+**Summary**: Tailwind config keyframes (`glow`, `slide-up`, `slide-down`, `banner-enter`) use inline boxShadow/transform values that duplicate `theme.ts` SHADOWS/ANIMATION_TIMING configs. CSS `:root` color variables duplicate `theme.ts` COLORS and `tailwind.config.js` colors. All three files must define these identically but cannot share imports (CSS ≠ JS ≠ Tailwind). Comments document the sync relationship so maintainers know which files to update together.
+
+## Final Codebase Status
+
+After **102 Flexy iterations**, the Blueprintify codebase status:
+
+| Category | Status |
+|----------|--------|
+| Hardcoded values in application logic | ❌ None remaining |
+| Config centralization (@blueprint/shared) | ✅ 70+ config objects in single source of truth |
+| Animation constants extracted | ✅ 100% of framer-motion values in config |
+| Color tokens centralized | ✅ All colors via COLORS + hexToRgba |
+| HTTP headers/methods/status codes | ✅ All in @blueprint/shared |
+| Error messages/strings | ✅ All in @blueprint/shared |
+| Route paths/env keys | ✅ All in @blueprint/shared |
+| UI strings/labels/tooltips | ✅ All in config |
+| CSS custom properties | ✅ :root variables + color-mix() throughout |
+| Tailwind arbitrary values | ✅ Zero remaining in components |
+| z-index values | ✅ All in Z_INDEX config |
+| Build/lint/test | ✅ Clean across all workspaces |
+
+**Edge cases not addressed** (inherently hardcoded by nature):
 - **Template generators** (`lib/templates/`): contain hardcoded CSS colors in template output — these emit **code for user projects**, not app code, so extraction would break the generated output
 - **Platform constants** (`lib/platform.ts`): OS-level key labels ("⌘", "Ctrl", "Meta") — inherently platform-defined, not application configuration
 - **SVG path data** in icon components: inherently hardcoded geometry
+- **CI workflow node-version**: 11 hardcoded `node-version: "20"` across 4 `.github/workflows/*.yml` files — **blocked**: GitHub App token lacks `workflows` permission

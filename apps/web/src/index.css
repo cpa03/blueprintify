@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/**
+ * Flexy says: CSS custom properties are the CSS-side source of truth for the
+ * design token color palette. They must stay in sync with:
+ *   - apps/web/src/config/theme.ts  (COLORS export — JS/TS source of truth)
+ *   - apps/web/tailwind.config.js    (Tailwind theme extension — CSS utility source)
+ * When changing a color value, update ALL THREE files.
+ * The index.css values take precedence in CSS, theme.ts values in JS/TS code,
+ * and tailwind.config.js values in Tailwind utility classes.
+ */
 :root {
   --color-primary-500: #6366f1;
   --color-primary-400: #818cf8;
