@@ -170,8 +170,8 @@ function WizardComponent(): JSX.Element {
   const isComplete = !isGenerating && generationProgress === GENERATION_MESSAGES.COMPLETE;
   const stepTitle = STEP_TITLES[currentStep] || "Project Wizard";
   const documentTitle = (() => {
-    if (isGenerating && generationProgress) return `⏳ ${generationProgress}`;
-    if (isComplete) return "✅ Generation Complete!";
+    if (isGenerating && generationProgress) return `Generating: ${generationProgress}`;
+    if (isComplete) return "Generation Complete!";
     return projectName ? `${projectName} | ${stepTitle}` : stepTitle;
   })();
   useDocumentTitle(documentTitle);
