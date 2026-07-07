@@ -118,7 +118,10 @@ export const StepReview = memo(function StepReview({
           <div>
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                <span className="w-8 h-8 rounded-lg bg-primary-500/20 flex items-center justify-center text-primary-400">
+                <span
+                  className="w-8 h-8 rounded-lg bg-primary-500/20 flex items-center justify-center text-primary-400"
+                  aria-hidden="true"
+                >
                   📝
                 </span>
                 Project Information
@@ -181,7 +184,10 @@ export const StepReview = memo(function StepReview({
           <div>
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                <span className="w-8 h-8 rounded-lg bg-accent-cyan/20 flex items-center justify-center text-accent-cyan">
+                <span
+                  className="w-8 h-8 rounded-lg bg-accent-cyan/20 flex items-center justify-center text-accent-cyan"
+                  aria-hidden="true"
+                >
                   ⚙️
                 </span>
                 Tech Stack ({techStack.length})
@@ -234,7 +240,10 @@ export const StepReview = memo(function StepReview({
             <div>
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-lg bg-accent-emerald/20 flex items-center justify-center text-accent-emerald">
+                  <span
+                    className="w-8 h-8 rounded-lg bg-accent-emerald/20 flex items-center justify-center text-accent-emerald"
+                    aria-hidden="true"
+                  >
                     ✨
                   </span>
                   Features ({features.length})
