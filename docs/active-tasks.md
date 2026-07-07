@@ -2,6 +2,26 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 206 — **BroCula ref drift fix (Run 6→Run 7), CHANGELOG gap fix (4 commits), doc refresh, quality verification** ✅
+
+### Task: Full repository audit — BroCula ref drift fix (knowledge-review.md: Run 6→Run 7 — latest `brocula-hunt-2026-07-07-run7.md` / LH **100-100-100-100-100** 🏆🏆, 1766 tests ✅); CHANGELOG gap fix (4 post-Cycle-205 commits: feat(ux) character counter & maxLength (#2391), docs(bugs) BugFixer ULW Cycle Jul 07 Run 3 (#2392), docs(audit) BroCula Run 7 (#2393), fix(web) keyboard shortcuts double-toggle); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,766/1,766** ✅ — 744 web + 443 API + 579 shared — format ✅ secrets ✅); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 206 full repository audit — BroCula ref drift fix (Run 6→Run 7), CHANGELOG gap fix, doc refresh, quality verification
+- **Actions**:
+  - [x] **BroCula ref drift fix**: knowledge-review.md updated — Run 6→Run 7 (latest: `brocula-hunt-2026-07-07-run7.md` / LH **100-100-100-100-100** 🏆🏆, 1766 tests ✅)
+  - [x] **CHANGELOG gap fix**: Added 4 post-Cycle-205 commits — feat(ux) character counter & maxLength (#2391), docs(bugs) BugFixer ULW Cycle Jul 07 Run 3 (#2392), docs(audit) BroCula Run 7 (#2393), fix(web) keyboard shortcuts double-toggle
+  - [x] **Format**: All files Prettier-formatted ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 206, BroCula ref → Jul 07 Run 7
+  - [x] **findings.md updated**: Cycle 206 entry added
+  - [x] **active-tasks.md updated**: Cycle 206 entry added at top
+  - [x] **CHANGELOG.md updated**: Cycle 206 entry added, gap commits indexed
+  - [x] **BUG-014/BUG-017 status verified**: Still present on main. Same documented `workflows: write` blocker.
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,766/1,766 ✅
+
+> Older cycles (Cycle 1 through Cycle 205) are preserved in git history. Run `git log -- docs/active-tasks.md` to browse historical entries.
+
 ## ✅ RepoKeeper Cycle 205 — **Tracked `.patch` removal, BroCula ref drift fix, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — remove tracked `scripts/bugfixer-cycle-jul-07-2026-workflow-fixes.patch` from git tracking (force-tracked despite `*.patch` in `.gitignore`, recurring anti-pattern); BroCula ref drift fix (knowledge-review.md: Run 5→Run 6 — latest `brocula-hunt-2026-07-07-run6.md` / LH **100-100-100-100** 🏆, 1766 tests ✅); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,766/1,766** ✅ — 744 web + 443 API + 579 shared — format ✅ secrets ✅); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
@@ -139,5 +159,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-07-07 (RepoKeeper Cycle 204)  
+**Last Updated**: 2026-07-07 (RepoKeeper Cycle 206)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
