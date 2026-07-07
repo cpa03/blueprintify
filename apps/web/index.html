@@ -190,7 +190,8 @@
     <link rel="dns-prefetch" href="https://github.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" fetchpriority="high" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin fetchpriority="high" />
-    <link rel="preconnect" href="https://va.vercel-scripts.com" crossorigin />
+    <!-- Note: Vercel Analytics preconnect intentionally omitted - analytics is lazy-loaded,
+         so the preconnect would be unused on initial page load and waste connections. -->
 
     <!-- Async Inter font - Preload + media="print" onload trick for non-blocking CSS
          The preload tells the browser to start fetching the stylesheet early (before the
