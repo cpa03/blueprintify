@@ -2,6 +2,26 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 205 — **Tracked `.patch` removal, BroCula ref drift fix, doc refresh, quality verification** ✅
+
+### Task: Full repository audit — remove tracked `scripts/bugfixer-cycle-jul-07-2026-workflow-fixes.patch` from git tracking (force-tracked despite `*.patch` in `.gitignore`, recurring anti-pattern); BroCula ref drift fix (knowledge-review.md: Run 5→Run 6 — latest `brocula-hunt-2026-07-07-run6.md` / LH **100-100-100-100** 🏆, 1766 tests ✅); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,766/1,766** ✅ — 744 web + 443 API + 579 shared — format ✅ secrets ✅); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 205 full repository audit — tracked `.patch` removal, BroCula ref drift fix, doc refresh, quality verification
+- **Actions**:
+  - [x] **Tracked .patch removal**: `scripts/bugfixer-cycle-jul-07-2026-workflow-fixes.patch` removed from git tracking (recurring anti-pattern: force-tracked despite `*.patch` in `.gitignore`)
+  - [x] **BroCula ref drift fix**: knowledge-review.md updated — Run 5→Run 6 (latest: `brocula-hunt-2026-07-07-run6.md` / LH **100-100-100-100** 🏆, 1766 tests ✅)
+  - [x] **Format**: All files Prettier-formatted ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 205, BroCula ref → Jul 07 Run 6
+  - [x] **findings.md updated**: Cycle 205 entry added
+  - [x] **active-tasks.md updated**: Cycle 205 entry added at top
+  - [x] **CHANGELOG.md updated**: Cycle 205 entry added
+  - [x] **BUG-014/BUG-017 status verified**: Still present on main. Same documented `workflows: write` blocker.
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,766/1,766 ✅
+
+> Older cycles (Cycle 1 through Cycle 204) are preserved in git history. Run `git log -- docs/active-tasks.md` to browse historical entries.
+
 ## ✅ RepoKeeper Cycle 204 — **Full repository audit, stale archive retention cleanup (4 Jun 6 files), CHANGELOG gap fix (7 commits), doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — zero redundant/temp/unused files, zero type suppressions, zero TODO/FIXME/HACK, zero tracked `.patch` files; stale archive retention cleanup (4 Jun 6 BroCula audit files from `docs/audits/archive/` past 30-day retention removed); CHANGELOG gap fix (7 missing commits after Cycle 203: refactor(flexy) scale constants, fix(brocula) Jul 06 Run 4 (2x), fix(security) prompt injection validation #2381, docs(flexy) cross-reference comments, fix(accessibility) decorative emojis, docs(bugs) BugFixer ULW Cycle Jul 07, perf(brocula) Jul 07 Run 5); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README, CONSOLIDATED-README); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,766/1,766** ✅ — 744 web + 443 API + 579 shared — format ✅ secrets ✅); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
