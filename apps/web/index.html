@@ -48,9 +48,8 @@
 
     <title>Blueprint Generator - AI-Powered Project Architecture</title>
 
-    <!-- Critical CSS for LCP -->
+    <!-- Critical CSS for LCP & first paint - prevents FOUC/CLS while main CSS loads asynchronously -->
     <style>
-      /* Critical CSS - Above the fold content */
       html {
         background-color: #020617;
       }
@@ -68,11 +67,10 @@
         color: #f8fafc;
         min-height: 100vh;
       }
-      /* Ensure content is visible immediately for LCP */
       #root {
         min-height: 100vh;
       }
-      /* Preload critical font */
+      /* Font fallback - prevent FOUT/CLS while fonts load */
       @font-face {
         font-family: "Inter";
         font-style: normal;
@@ -80,7 +78,6 @@
         font-display: optional;
         src: local("Inter");
       }
-      /* Size-adjusted fallback using system-ui to match Inter metrics - prevents FOUT CLS */
       @font-face {
         font-family: "Inter Fallback";
         src: local("system-ui"), local("Arial"), local("sans-serif");
@@ -89,24 +86,7 @@
         descent-override: 24%;
         line-gap-override: 8%;
       }
-      /* LCP critical text styles - prevent FOUC while CSS loads */
-      .text-lg {
-        font-size: 1.125rem;
-        line-height: 1.75rem;
-      }
-      .max-w-2xl {
-        max-width: 42rem;
-      }
-      .mx-auto {
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .text-center {
-        text-align: center;
-      }
-      .mb-3 {
-        margin-bottom: 0.75rem;
-      }
+      /* Hero LCP text styles */
       .text-4xl {
         font-size: 2.25rem;
         line-height: 2.5rem;
@@ -120,10 +100,40 @@
       .mb-4 {
         margin-bottom: 1rem;
       }
+      .mb-12 {
+        margin-bottom: 3rem;
+      }
       .leading-tight {
         line-height: 1.25;
       }
-      /* Prevent layout shift from font loading - match Tailwind font-sans stack */
+      .text-lg {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+      }
+      .text-center {
+        text-align: center;
+      }
+      .text-dark-400 {
+        color: #b8c0cc;
+      }
+      .text-gradient {
+        background: linear-gradient(135deg, #818cf8, #8b5cf6, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .max-w-2xl {
+        max-width: 42rem;
+      }
+      .mx-auto {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      /* Hero entrance animations */
+      .animate-slide-up {
+        animation: slide-up 0.3s ease-out;
+      }
+      /* Prevent layout shift from font loading */
       .font-sans {
         font-family:
           "Inter Fallback",
@@ -134,7 +144,7 @@
           Roboto,
           sans-serif;
       }
-      /* Additional hero section critical styles */
+      /* UI component critical styles */
       .glass-card {
         background: rgba(26, 26, 30, 0.6);
         -webkit-backdrop-filter: blur(24px);
@@ -159,29 +169,22 @@
         opacity: 0.5;
         cursor: not-allowed;
       }
-      .input-field {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        background: rgba(67, 67, 72, 0.5);
-        border: 1px solid rgba(77, 77, 83, 1);
-        border-radius: 0.75rem;
-        color: #fff;
-        transition: all 0.2s;
-      }
-      .input-field::placeholder {
-        color: #5a5a62;
-      }
-      .text-dark-400 {
-        color: #b8c0cc;
-      }
       .text-dark-500 {
         color: #9ca3af;
       }
-      .text-gradient {
-        background: linear-gradient(135deg, #818cf8, #8b5cf6, #ec4899);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+      @keyframes slide-up {
+        0% {
+          transform: translateY(10px);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      @keyframes fade-in {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
       }
     </style>
 
@@ -237,60 +240,58 @@
     </noscript>
   </head>
   <body>
-    <!-- Skeleton header bar - fixed at top fades out after React mounts.
-         Hero content is directly in #root so the LCP element is visible immediately,
-         not blocked by an overlay skeleton. -->
-    <div
-      id="skeleton-loader"
-      fetchpriority="high"
-      style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 9999;
-        background: #020617;
-        opacity: 1;
-        transition: opacity 0.3s ease-out;
-        pointer-events: none;
-      "
-    >
-      <header
+      <!-- Skeleton header bar - fixed at top fades out after React mounts.
+           Hero content is directly in #root so the LCP element is visible immediately,
+           not blocked by an overlay skeleton. -->
+      <div
+        id="skeleton-loader"
         style="
-          border-bottom: 1px solid #1e293b;
-          background: rgba(2, 6, 23, 0.8);
-          backdrop-filter: blur(12px);
-          height: 65px;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 9999;
+          background: #020617;
+          opacity: 1;
+          transition: opacity 0.3s ease-out;
+          pointer-events: none;
         "
       >
-        <div
+        <header
           style="
-            max-width: 80rem;
-            margin: 0 auto;
-            padding: 1rem 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            border-bottom: 1px solid #1e293b;
+            background: #020617;
+            height: 65px;
           "
         >
-          <div style="display: flex; align-items: center; gap: 0.75rem">
-            <div
-              style="
-                width: 2.5rem;
-                height: 2.5rem;
-                border-radius: 0.75rem;
-                background: linear-gradient(135deg, #6366f1, #8b5cf6);
-              "
-            ></div>
-            <div>
-              <div style="font-weight: 700; font-size: 1.25rem; color: #fff">
-                Blueprint Generator
+          <div
+            style="
+              max-width: 80rem;
+              margin: 0 auto;
+              padding: 1rem 1.5rem;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <div style="display: flex; align-items: center; gap: 0.75rem">
+              <div
+                style="
+                  width: 2.5rem;
+                  height: 2.5rem;
+                  border-radius: 0.75rem;
+                  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                "
+              ></div>
+              <div>
+                <div style="font-weight: 700; font-size: 1.25rem; color: #fff">
+                  Blueprint Generator
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </header>
-    </div>
+        </header>
+      </div>
 
     <div id="root" style="position: relative; min-height: 100vh">
       <!-- LCP Critical Hero Content - visible immediately, not hidden behind skeleton overlay.
