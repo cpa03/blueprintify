@@ -91,6 +91,12 @@ function App(): JSX.Element {
   const [showEditor, setShowEditor] = useState(hasContent || isGenerating);
   const [editorExiting, setEditorExiting] = useState(false);
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
+  const showShortcutsModalRef = useRef(showShortcutsModal);
+  // Keep ref in sync so the global keydown handler reads the latest state
+  // without needing showShortcutsModal in its dependency array
+  useEffect(() => {
+    showShortcutsModalRef.current = showShortcutsModal;
+  }, [showShortcutsModal]);
   const [showCelebration, setShowCelebration] = useState(false);
   const [templatesExiting, setTemplatesExiting] = useState(false);
   // Defer framer-motion (45 KB) from initial load: only mount the Wizard
@@ -203,7 +209,13 @@ function App(): JSX.Element {
 
       if (e.key === "?" && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
-        setShowShortcutsModal((prev) => !prev);
+        // Only open from global handler — let the modal's own document-level
+        // listener handle closing (it also listens for '?'). This avoids a
+        // double-toggle race where the modal closes itself but the global
+        // handler immediately reopens it via the functional updater.
+        if (!showShortcutsModalRef.current) {
+          setShowShortcutsModal(true);
+        }
       }
 
       if ((e.metaKey || e.ctrlKey) && e.key === "e") {
