@@ -258,6 +258,7 @@ export const StepGenerating = memo(function StepGenerating({
                   ease: EASING.easeInOut,
                 }}
                 className="text-3xl"
+                aria-hidden="true"
               >
                 🚀
               </motion.div>
