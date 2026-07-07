@@ -12,24 +12,25 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-07 (RepoKeeper Cycle 204)
+**Last Review**: 2026-07-07 (RepoKeeper Cycle 205)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jul 7)` — latest: `docs/audits/brocula-hunt-2026-07-07-run1.md` (BroCula Jul 07 Run 1 / LH **99-100-100-100**, 1766 tests ✅) plus perf commit Jul 07 Run 5
+- **README BroCula description verified**: `(Jun 17–Jul 7)` — latest: `docs/audits/brocula-hunt-2026-07-07-run6.md` (BroCula Jul 07 Run 6 / LH **100-100-100-100** 🏆, 1766 tests ✅) plus perf commit Jul 07 Run 5
 - **Typecheck/Lint**: All clean (0 errors, 0 warnings)
 - **Build**: Clean ✅
 - **Tests**: **1,766/1,766 passing** (744 web + 443 API + 579 shared) ✅
 - **Format**: All Prettier-formatted ✅
 - **BUG-014/BUG-017 still present on main**: Workflow files unchanged — push blocked by `workflows: write` permission (same blocker as all prior 30+ cycles). Maintainer must run `scripts/fix-ci-node-version.mjs` or cherry-pick from branch.
 - **npm audit**: 17 moderate vulns — BUG-013 (upstream lighthouse→@sentry/node→@opentelemetry/core, same documented blocker).
-- **No tracked .patch files found on main after cleanup**: Recurring anti-pattern resolved since Cycle 194.
-- **BroCula Jul 07 Run 5**: Deferred security module, removed unused preconnect. LH **99-100-100-100**, 1766 tests ✅.
+- **No tracked .patch files found on main after cleanup**: Recurring anti-pattern resolved since Cycle 194. Cycle 205: removed `scripts/bugfixer-cycle-jul-07-2026-workflow-fixes.patch` from tracking.
+- **BroCula Jul 07 Run 6**: Latest BroCula audit — LH **100-100-100-100** 🏆, **1766 tests** ✅ (744 web + 443 API + 579 shared), clean. Preceded by Run 5 (deferred security module, removed unused preconnect).
 - **Stale archive retention cleanup**: 4 Jun 6 BroCula audit files removed from `docs/audits/archive/` (past 30-day retention).
 - **Cycle 204**: RepoKeeper full repository audit — full repository audit (zero redundant/temp/unused files, zero type suppressions, zero TODO/FIXME/HACK, zero tracked `.patch` files), stale archive retention cleanup (4 Jun 6 BroCula audit files past 30-day retention removed), CHANGELOG gap fix (7 post-Cycle-203 commits), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,766/1,766 ✅ format ✅ secrets ✅), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).
+- **Cycle 205**: RepoKeeper full repository audit — tracked `.patch` removal (`scripts/bugfixer-cycle-jul-07-2026-workflow-fixes.patch` — force-tracked despite `*.patch` in `.gitignore`, same recurring anti-pattern), BroCula ref drift fix (knowledge-review.md: Run 5 → Run 6 — latest `brocula-hunt-2026-07-07-run6.md` / LH **100-100-100-100** 🏆, 1766 tests ✅), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests ✅), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).
 - **Cycle 201**: RepoKeeper full repository audit — missing `playwright`/`playwright-core` devDependencies added to root `package.json` (used by brocula scripts but only transitive before), `docs/active-tasks.md` trimmed from 2,353 to 33 lines (archived cycles older than Cycle 200 to git history, consistent with findings.md Cycle 193 precedent), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ tests 1,766/1,766 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling), BUG-014/BUG-017 status verified (still present on main — `works: write` blocker).
 - **Cycle 195**: Full repository audit, stale merged branch cleanup (`origin/bugfix/jul-05-2026-cycle` deleted), `scripts/migrate.ts` `schema.sql` path fix (looked in `scripts/` but file is at root — `db:init` would fail with `Schema file not found`), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).
 - **Cycle 194**: Full repository audit, tracked `.patch` removal (`scripts/bugfixer-cycle-jul-05-2026-run3-workflow-fixes.patch` — recurring anti-pattern: force-tracked despite `*.patch` in `.gitignore`), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,745/1,745 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).
