@@ -1753,8 +1753,34 @@ After **102 Flexy iterations**, the Blueprintify codebase status:
 | z-index values | ✅ All in Z_INDEX config |
 | Build/lint/test | ✅ Clean across all workspaces |
 
+### ✅ Flexy Iteration 103: Eliminate Hardcoded CI Node Version — Use .node-version File
+
+| File | Occurrences | Change |
+| ---- | ----------- | ------ |
+| `.github/workflows/iterate.yml` | 5x | `node-version: "20"` → `node-version-file: ".node-version"` |
+| `.github/workflows/parallel.yml` | 4x | `node-version: "20"` → `node-version-file: ".node-version"` |
+| `.github/workflows/on-pull.yml` | 1x | `node-version: 20` → `node-version-file: ".node-version"` |
+| `.github/workflows/pr-gatekeeper.yml` | 1x | `node-version: "20"` → `node-version-file: ".node-version"` |
+
+**Total**: 11 occurrences across 4 files fixed.
+
+**Summary**: `.node-version` contains `22`, matching `engines.node >= 22` in package.json. All workflow files now reference this single source of truth.
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 744 web + 443 api + 579 shared = 1,766 tests passing across 85 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-103-ci-node-version` | feat(flexy): fix hardcoded CI node version — use .node-version file across all workflows |
+
 **Edge cases not addressed** (inherently hardcoded by nature):
 - **Template generators** (`lib/templates/`): contain hardcoded CSS colors in template output — these emit **code for user projects**, not app code, so extraction would break the generated output
 - **Platform constants** (`lib/platform.ts`): OS-level key labels ("⌘", "Ctrl", "Meta") — inherently platform-defined, not application configuration
 - **SVG path data** in icon components: inherently hardcoded geometry
-- **CI workflow node-version**: 11 hardcoded `node-version: "20"` across 4 `.github/workflows/*.yml` files — **blocked**: GitHub App token lacks `workflows` permission
+- ~~**CI workflow node-version**: 11 hardcoded `node-version: "20"` across 4 `.github/workflows/*.yml` files — **blocked**: GitHub App token lacks `workflows` permission~~ **(Fixed in Iteration 103)**
