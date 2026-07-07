@@ -402,11 +402,18 @@ export const StepInfo = memo(function StepInfo({
 
         {/* Target Audience (Optional) */}
         <div>
-          <label htmlFor="targetAudience" className="label flex items-center gap-2">
-            {UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL}{" "}
-            <span className="text-dark-500">(optional)</span>
-            <TypeIndicator isTyping={targetAudienceTyping.isTyping} />
-          </label>
+          <div className="flex items-center justify-between mb-2">
+            <label htmlFor="targetAudience" className="label mb-0 flex items-center gap-2">
+              {UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL}{" "}
+              <span className="text-dark-500">(optional)</span>
+              <TypeIndicator isTyping={targetAudienceTyping.isTyping} />
+            </label>
+            <CharacterCounter
+              current={targetAudience.length}
+              max={FORM_LIMITS.TARGET_AUDIENCE.MAX}
+              warningThreshold={Math.floor(FORM_LIMITS.TARGET_AUDIENCE.MAX * 0.85)}
+            />
+          </div>
           <div className="relative">
             <motion.input
               id="targetAudience"
@@ -422,6 +429,7 @@ export const StepInfo = memo(function StepInfo({
               onBlur={targetAudienceTyping.handleBlur}
               placeholder={UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_PLACEHOLDER}
               className="input-field pr-10"
+              maxLength={FORM_LIMITS.TARGET_AUDIENCE.MAX}
               animate={targetAudienceTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
               transition={{ duration: ANIMATION.FAST }}
             />
@@ -464,6 +472,7 @@ export const StepInfo = memo(function StepInfo({
               current={constraints.length}
               max={FORM_LIMITS.CONSTRAINTS.MAX}
               min={0}
+              warningThreshold={Math.floor(FORM_LIMITS.CONSTRAINTS.MAX * 0.85)}
             />
             <AnimatePresence>
               {constraints && (
@@ -505,6 +514,7 @@ export const StepInfo = memo(function StepInfo({
             onBlur={constraintsTyping.handleBlur}
             placeholder={UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_PLACEHOLDER}
             className="textarea-field"
+            maxLength={FORM_LIMITS.CONSTRAINTS.MAX}
             animate={constraintsTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
             transition={transitions.fast}
           />
