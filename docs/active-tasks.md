@@ -2,29 +2,32 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## ✅ RepoKeeper Cycle 203 — **Full repository audit, CHANGELOG gap fix (2 commits), doc refresh, quality verification** ✅
+## ✅ RepoKeeper Cycle 204 — **Full repository audit, stale archive retention cleanup (4 Jun 6 files), CHANGELOG gap fix (7 commits), doc refresh, quality verification** ✅
 
-### Task: Full repository audit — zero redundant/temp/unused files, zero type suppressions, zero TODO/FIXME/HACK, zero tracked `.patch` files; CHANGELOG gap fix (2 missing commits after Cycle 202: feat(toast) spring hover/tap animations, fix(ci) regenerate package-lock.json with Node 22); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,766/1,766** ✅ — 744 web + 443 API + 579 shared — format ✅ secrets ✅); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker); npm audit (17 moderate — BUG-013 upstream tooling)
+### Task: Full repository audit — zero redundant/temp/unused files, zero type suppressions, zero TODO/FIXME/HACK, zero tracked `.patch` files; stale archive retention cleanup (4 Jun 6 BroCula audit files from `docs/audits/archive/` past 30-day retention removed); CHANGELOG gap fix (7 missing commits after Cycle 203: refactor(flexy) scale constants, fix(brocula) Jul 06 Run 4 (2x), fix(security) prompt injection validation #2381, docs(flexy) cross-reference comments, fix(accessibility) decorative emojis, docs(bugs) BugFixer ULW Cycle Jul 07, perf(brocula) Jul 07 Run 5); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README, CONSOLIDATED-README); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,766/1,766** ✅ — 744 web + 443 API + 579 shared — format ✅ secrets ✅); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
 
 - **Priority**: High
 - **Status**: ✅ Complete
-- **Objective**: Cycle 203 full repository audit — verify no redundant/temp/unused files, fix CHANGELOG gap, doc refresh, quality verification
+- **Objective**: Cycle 204 full repository audit — verify no redundant/temp/unused files, stale archive retention cleanup, CHANGELOG gap fix, doc refresh, quality verification
 - **Actions**:
   - [x] Full repository scan — no redundant/temp/unused source files found
   - [x] Verified no `@ts-ignore`, `@ts-expect-error`, or `as any` in source code
   - [x] Verified no TODO/FIXME/HACK in non-test source code
   - [x] Verified no tracked `.patch` files (anti-pattern resolved since Cycle 194)
-  - [x] **CHANGELOG gap fix**: Added 2 missing commits after Cycle 202
+  - [x] **Stale archive retention cleanup**: Removed 4 Jun 6 BroCula audit files from archive/ (>30 days)
+  - [x] **CHANGELOG gap fix**: Added 7 missing commits after Cycle 203
   - [x] **Format**: All files Prettier-formatted ✅
-  - [x] **knowledge-review.md updated**: Last Review → Cycle 203, BroCula ref → Jul 6 Run 3 (latest)
-  - [x] **findings.md updated**: Cycle 203 entry added
-  - [x] **active-tasks.md updated**: Cycle 203 entry added at top
-  - [x] **CHANGELOG.md updated**: Cycle 203 entries added
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 204, BroCula ref → Jul 07 Run 5
+  - [x] **README.md updated**: BroCula date range → Jun 17–Jul 7
+  - [x] **docs/audits/README.md updated**: Jul 07 Run 5 as latest
+  - [x] **CONSOLIDATED-README.md updated**: Retention cleanup date → Cycle 204
+  - [x] **findings.md updated**: Cycle 204 entry added
+  - [x] **active-tasks.md updated**: Cycle 204 entry added at top
+  - [x] **CHANGELOG.md updated**: Cycle 204 entries added
   - [x] **BUG-014/BUG-017 status verified**: Still present on main. Same documented `workflows: write` blocker.
-  - [x] **npm audit**: 17 moderate (BUG-013 — upstream tooling, same documented blocker)
   - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,766/1,766 ✅
 
-> Older cycles (Cycle 1 through Cycle 202) are preserved in git history. Run `git log -- docs/active-tasks.md` to browse historical entries.
+> Older cycles (Cycle 1 through Cycle 203) are preserved in git history. Run `git log -- docs/active-tasks.md` to browse historical entries.
 
 ## ✅ RepoKeeper Cycle 202 — **README broken link fix, CHANGELOG gap fix, BroCula ref drift fix, doc refresh** ✅
 
@@ -116,5 +119,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-07-06 (RepoKeeper Cycle 202)  
+**Last Updated**: 2026-07-07 (RepoKeeper Cycle 204)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)

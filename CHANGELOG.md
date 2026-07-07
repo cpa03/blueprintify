@@ -9,10 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 204 — full repository audit (zero redundant/temp/unused files, zero type suppressions, zero TODO/FIXME/HACK, zero tracked `.patch` files), stale archive retention cleanup (4 Jun 6 BroCula audit files from `docs/audits/archive/` past 30-day retention), CHANGELOG gap fix (7 post-Cycle-203 commits: refactor(flexy) scale constants, fix(brocula) Jul 06 Run 4 (2x), fix(security) prompt injection validation (#2381), docs(flexy) cross-reference comments, fix(accessibility) decorative emojis, docs(bugs) BugFixer ULW Cycle Jul 07, perf(brocula) Jul 07 Run 5), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,766/1,766 ✅ format ✅ secrets ✅), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
+- perf(brocula): Jul 07 Run 5 — defer security module, remove unused preconnect
+- docs(bugs): record BugFixer ULW Cycle Jul 07 2026
+- fix(accessibility): hide decorative emojis from screen readers
+- docs(brocula): Jul 07 Run 1 — LH 99-100-100-100, 0 console errors, 1766 tests passing
+- docs(flexy): add cross-reference comments for unavoidably duplicated design tokens (Iteration 102)
+- fix(security): add prompt injection validation to export/import/share routes (#2381)
+- fix(brocula): Jul 06 Run 4 — zero non-composited animations, LH 100-100-100
+- fix(brocula): Jul 06 Run 4 — eliminate all non-composited animations, LH 100-100-100
+- refactor(flexy): extract hardcoded whileHover/whileTap scale values to config constants (#2375)
 - chore(repokeeper): Cycle 203 — full repository audit (zero redundant/temp/unused files, zero type suppressions, zero TODO/FIXME/HACK, zero tracked `.patch` files), CHANGELOG gap fix (2 missing commits after Cycle 202: feat(toast) spring hover/tap animations, fix(ci) regenerate package-lock.json with Node 22), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,766/1,766 ✅ format ✅ secrets ✅), npm audit (17 moderate — BUG-013 upstream tooling), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
 - feat(toast): add spring hover/tap animations to Dismiss All button
 - fix(ci): regenerate package-lock.json with Node 22 and fix CI node version
-- chore(repokeeper): Cycle 201 — missing `playwright`/`playwright-core` devDependencies added to root `package.json` (used by brocula scripts but only transitive before), `docs/active-tasks.md` trimmed from 2,353 to 33 lines (archived cycles older than Cycle 200 to git history, consistent with findings.md Cycle 193 precedent), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ tests 1,766/1,766 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
+- chore(repokeeper): Cycle 201 — missing `playwright`/`playwright-core` devDependencies added to root `package.json` (used by brocula scripts but only transitive before), `docs/active-tasks.md` trimmed from 2,353 to 33 lines (archived cycles older than Cycle 200 to git history, consistent with findings.md Cycle 193 precedent), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ tests 1,766/1,766 ✅ format ✅), npm audit (17 moderate — BUG-013 upstream tooling), BUG-014/BUG-017 status verified (still present on main — `works: write` blocker)
 - feat(ux): add staggered entrance delays to generation completion animation
 - fix(brocula): Jul 06 Run 3 — composited animations + LH 100-100-100-100-100
 - fix(brocula): fix non-composited attention-glow animation, promote text-gradient layer
