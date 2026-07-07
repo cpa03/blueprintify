@@ -9,7 +9,7 @@
  */
 
 import { Hono } from "hono";
-import { validateJson } from "../middleware/validator";
+import { validateJson, validatePromptInjection } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { authorize } from "../middleware/authorize";
 import type { Env } from "../types";
@@ -152,51 +152,60 @@ function getExpirationDate(): Date {
   return expiresAt;
 }
 
-app.post("/", rateLimit(rateLimitConfigs.standard), validateJson(CreateShareSchema), async (c) => {
-  try {
-    const { title, blueprint, metadata } = c.get(CONTEXT_KEYS.VALIDATED_DATA);
-    const shareId = generateShareId();
-    const now = new Date().toISOString();
-    const expiresAt = getExpirationDate();
-    const creatorId = await getCreatorId(c.env.API_KEY);
+app.post(
+  "/",
+  rateLimit(rateLimitConfigs.standard),
+  validateJson(CreateShareSchema),
+  validatePromptInjection([
+    { path: "title", label: "share title" },
+    { path: "blueprint", label: "blueprint content" },
+  ]),
+  async (c) => {
+    try {
+      const { title, blueprint, metadata } = c.get(CONTEXT_KEYS.VALIDATED_DATA);
+      const shareId = generateShareId();
+      const now = new Date().toISOString();
+      const expiresAt = getExpirationDate();
+      const creatorId = await getCreatorId(c.env.API_KEY);
 
-    const dbError = checkDbConfigured(c);
-    if (dbError) return dbError;
+      const dbError = checkDbConfigured(c);
+      if (dbError) return dbError;
 
-    // Store creator info in metadata for ownership validation on delete
-    const enrichedMetadata = {
-      ...(metadata || {}),
-      ...(creatorId ? { createdBy: creatorId } : {}),
-    };
-    const metadataJson =
-      Object.keys(enrichedMetadata).length > 0 ? JSON.stringify(enrichedMetadata) : null;
+      // Store creator info in metadata for ownership validation on delete
+      const enrichedMetadata = {
+        ...(metadata || {}),
+        ...(creatorId ? { createdBy: creatorId } : {}),
+      };
+      const metadataJson =
+        Object.keys(enrichedMetadata).length > 0 ? JSON.stringify(enrichedMetadata) : null;
 
-    await c.env.DB.prepare(
-      `INSERT INTO blueprint_shares (id, title, blueprint, metadata, created_at, expires_at)
+      await c.env.DB.prepare(
+        `INSERT INTO blueprint_shares (id, title, blueprint, metadata, created_at, expires_at)
          VALUES (?, ?, ?, ?, ?, ?)`
-    )
-      .bind(shareId, title, blueprint, metadataJson, now, expiresAt.toISOString())
-      .run();
+      )
+        .bind(shareId, title, blueprint, metadataJson, now, expiresAt.toISOString())
+        .run();
 
-    return c.json(
-      {
-        success: true,
-        data: {
-          id: shareId,
-          url: `${c.env.CORS_ORIGIN || ""}${ROUTE_PATHS.SHARE}/${shareId}`,
-          expiresAt: expiresAt.toISOString(),
+      return c.json(
+        {
+          success: true,
+          data: {
+            id: shareId,
+            url: `${c.env.CORS_ORIGIN || ""}${ROUTE_PATHS.SHARE}/${shareId}`,
+            expiresAt: expiresAt.toISOString(),
+          },
         },
-      },
-      HTTP_STATUS.OK
-    );
-  } catch (error) {
-    secureLogError("Share creation error", error);
-    return c.json(
-      withCtxError(c, ErrorType.INTERNAL, ERROR_MESSAGES.INTERNAL, ERROR_CODES.INTERNAL_ERROR),
-      HTTP_STATUS.INTERNAL_ERROR
-    );
+        HTTP_STATUS.OK
+      );
+    } catch (error) {
+      secureLogError("Share creation error", error);
+      return c.json(
+        withCtxError(c, ErrorType.INTERNAL, ERROR_MESSAGES.INTERNAL, ERROR_CODES.INTERNAL_ERROR),
+        HTTP_STATUS.INTERNAL_ERROR
+      );
+    }
   }
-});
+);
 
 app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
   try {
