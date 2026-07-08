@@ -12,25 +12,24 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-08 (RepoKeeper Cycle 208)
+**Last Review**: 2026-07-08 (RepoKeeper Cycle 209)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jul 7)` — latest: `docs/audits/brocula-hunt-2026-07-07-run7.md` (BroCula Jul 07 Run 7 / LH **100-100-100-100-100** 🏆🏆, 1766 tests ✅)
+- **README BroCula description verified**: `(Jun 17–Jul 8)` — latest: `docs/audits/brocula-hunt-2026-07-08.md` (BroCula Jul 08 / LH **98-100-100-100**, 1766 tests ✅)
 - **Typecheck/Lint**: All clean (0 errors, 0 warnings)
 - **Build**: Clean ✅
-- **Tests**: **1,766/1,766 passing** (744 web + 443 API + 579 shared) ✅
+- **Tests**: **1,774/1,774 passing** (744 web + 443 API + 587 shared) ✅
 - **Format**: All Prettier-formatted ✅
 - **BUG-014/BUG-017 still present on main**: Workflow files unchanged — push blocked by `workflows: write` permission (same blocker as all prior 30+ cycles). Maintainer must run `scripts/fix-ci-node-version.mjs` or cherry-pick from branch.
 - **npm audit**: 17 moderate vulns — BUG-013 (upstream lighthouse→@sentry/node→@opentelemetry/core, same documented blocker).
 - **No tracked .patch files found on main after cleanup**: Recurring anti-pattern resolved since Cycle 194. Cycle 205: removed `scripts/bugfixer-cycle-jul-07-2026-workflow-fixes.patch` from tracking.
-- **BroCula Jul 07 Run 7**: Latest BroCula audit — LH **100-100-100-100-100** 🏆🏆 (5/5 perfect — with Agentic Browsing), **1766 tests** ✅ (744 web + 443 API + 579 shared), clean. Preceded by Run 6 (LH 100-100-100-100, 1766 tests ✅).
-- **Stale archive retention cleanup**: 4 Jun 6 BroCula audit files removed from `docs/audits/archive/` (past 30-day retention).
-- **Cycle 204**: RepoKeeper full repository audit — full repository audit (zero redundant/temp/unused files, zero type suppressions, zero TODO/FIXME/HACK, zero tracked `.patch` files), stale archive retention cleanup (4 Jun 6 BroCula audit files past 30-day retention removed), CHANGELOG gap fix (7 post-Cycle-203 commits), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,766/1,766 ✅ format ✅ secrets ✅), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).
-- **Cycle 208**: RepoKeeper full repository audit — README broken link fix (`docs/audits/archive/issue-audit-report-2026-06-07.md` — removed in Cycle 207 stale archive retention cleanup but still referenced in README, same pattern as Cycle 202), CHANGELOG gap fix (4 post-Cycle-207 commits: fix(eslint) e2e/report ignore, palette(ux) LoadingFallback fade-in #2399, docs(audit) diagnostic scoring Jul 07, docs(bugs) BugFixer ULW Cycle Jul 07 Run 5), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,766/1,766** ✅ — 744 web + 443 API + 579 shared — format ✅ secrets ✅), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).
+- **BroCula Jul 08**: Latest BroCula audit — LH **98-100-100-100**, **1766 tests** ✅ (744 web + 443 API + 579 shared), clean. Preceded by Jul 07 Run 7 (LH 100-100-100-100-100 🏆🏆, 1766 tests ✅).
+- **Stale merged branch cleanup**: `origin/chore/repokeeper-cycle-209` deleted (fully merged, 0 unmerged commits).
+- **Cycle 209**: RepoKeeper full repository audit — stale merged branch cleanup, CHANGELOG gap fix (5 post-Cycle-208 commits: refactor(flexy) Iteration 105 text fade duration, fix(accessibility) external link keyboard focus (#2406), refactor(flexy) Iteration 106 LogLevel union, docs(audit) BroCula Jul 08, fix(accessibility) prefers-reduced-motion rAF skip), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,774/1,774** ✅ — 744 web + 443 API + 587 shared — format ✅ secrets ✅), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).
 - **Cycle 207**: RepoKeeper full repository audit — formatting fix (`apps/web/index.html` Prettier code style issue resolved), stale archive retention cleanup (6 Jun 7 BroCula audit files from `docs/audits/archive/` past 30-day retention removed), CHANGELOG gap fix (4 post-Cycle-206 commits: fix(accessibility) emoji icons #2394, docs(bugs) BugFixer ULW Cycle Jul 07 Run 4 #2395, docs(flexy) Iteration 103 CI node-version fix plan #2397, perf(web) optimize critical CSS #2398), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, CONSOLIDATED-README), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,766/1,766** ✅ — 744 web + 443 API + 579 shared — format ✅ secrets ✅), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).
 - **Cycle 206**: RepoKeeper full repository audit — BroCula ref drift fix (knowledge-review.md: Run 6 → Run 7 — latest `brocula-hunt-2026-07-07-run7.md` / LH **100-100-100-100-100** 🏆🏆, 1766 tests ✅), CHANGELOG gap fix (4 post-Cycle-205 commits: feat(ux) character counter & maxLength, docs(bugs) BugFixer ULW Cycle Jul 07 Run 3, docs(audit) BroCula Run 7, fix(web) keyboard shortcuts double-toggle), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,766/1,766** ✅ — 744 web + 443 API + 579 shared — format ✅ secrets ✅), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).
 - **Cycle 205**: RepoKeeper full repository audit — tracked `.patch` removal (`scripts/bugfixer-cycle-jul-07-2026-workflow-fixes.patch` — force-tracked despite `*.patch` in `.gitignore`, same recurring anti-pattern), BroCula ref drift fix (knowledge-review.md: Run 5 → Run 6 — latest `brocula-hunt-2026-07-07-run6.md` / LH **100-100-100-100** 🏆, 1766 tests ✅), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests ✅), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).

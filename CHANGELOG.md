@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 209 — stale merged branch cleanup (`origin/chore/repokeeper-cycle-209` deleted), CHANGELOG gap fix (5 post-Cycle-208 commits: refactor(flexy) Iteration 105 text fade duration, fix(accessibility) external link keyboard focus (#2406), refactor(flexy) Iteration 106 LogLevel union, docs(audit) BroCula Jul 08, fix(accessibility) prefers-reduced-motion rAF skip), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,774/1,774 ✅ — 744 web + 443 API + 587 shared — format ✅ secrets ✅), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
+- fix(accessibility): skip rAF progress animation in Toast when prefers-reduced-motion is active
+- docs(audit): BroCula ULW Cycle Jul 08 2026 — clean console, LH 98-100-100-100, 1766 tests passing
+- refactor(flexy): centralize hardcoded LogLevel union type into shared LOG_LEVELS config (Iteration 106)
+- fix(accessibility): show external link indicator on keyboard focus for GitHub button (#2406)
+- refactor(flexy): centralize hardcoded text swap duration into ANIMATION_DURATION_S.TEXT_FADE (Iteration 105) (#2407)
 - chore(repokeeper): Cycle 208 — README broken link fix (issue-audit-report-2026-06-07.md removed in Cycle 207 stale archive cleanup), CHANGELOG gap fix (4 post-Cycle-207 commits: fix(eslint) e2e/report ignore, palette(ux) LoadingFallback fade-in, docs(audit) diagnostic scoring Jul 07, docs(bugs) BugFixer ULW Cycle Jul 07 Run 5), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,766/1,766 ✅ format ✅)
 - docs(bugs): record BugFixer ULW Cycle Jul 07 2026 Run 5
 - docs(audit): add diagnostic scoring report July 07, 2026
