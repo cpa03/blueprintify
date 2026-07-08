@@ -36,6 +36,7 @@ import {
   GENERATION_ESTIMATES,
   HOVER_SCALE,
   TAP_SCALE,
+  SPRING_CONFIG,
   ACCESSIBILITY_LABELS,
   UI_CONTENT,
   WIZARD_REVIEW_DESCRIPTIONS,
@@ -222,17 +223,38 @@ export const StepReview = memo(function StepReview({
                 </button>
               </KeyboardShortcutTooltip>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <motion.div
+              className="flex flex-wrap gap-2"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.035,
+                    delayChildren: ANIMATION.SUBTLE_MOVE + 0.12,
+                  },
+                },
+              }}
+            >
               {techStack.map((tech) => (
-                <span
+                <motion.span
                   key={tech.name}
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.9 },
+                    visible: {
+                      opacity: 1,
+                      scale: 1,
+                      transition: { type: "spring", ...SPRING_CONFIG.SNAPPY },
+                    },
+                  }}
                   className="px-3 py-1.5 bg-dark-800 border border-dark-600 rounded-lg text-sm text-dark-200"
                 >
                   {tech.name}
                   <span className="text-dark-500 ml-1.5 text-xs">({tech.category})</span>
-                </span>
+                </motion.span>
               ))}
-            </div>
+            </motion.div>
           </div>
 
           {/* Features */}
@@ -281,9 +303,33 @@ export const StepReview = memo(function StepReview({
                   </button>
                 </KeyboardShortcutTooltip>
               </div>
-              <ul className="space-y-2">
+              <motion.ul
+                className="space-y-2"
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: {},
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.04,
+                      delayChildren: ANIMATION.SUBTLE_MOVE + 0.14,
+                    },
+                  },
+                }}
+              >
                 {features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-2 text-dark-200">
+                  <motion.li
+                    key={feature}
+                    variants={{
+                      hidden: { opacity: 0, x: -10 },
+                      visible: {
+                        opacity: 1,
+                        x: 0,
+                        transition: { type: "spring", ...SPRING_CONFIG.SNAPPY },
+                      },
+                    }}
+                    className="flex items-center gap-2 text-dark-200"
+                  >
                     <svg
                       className="w-4 h-4 text-accent-emerald"
                       fill="none"
@@ -298,9 +344,9 @@ export const StepReview = memo(function StepReview({
                       />
                     </svg>
                     {feature}
-                  </li>
+                  </motion.li>
                 ))}
-              </ul>
+              </motion.ul>
             </div>
           )}
         </div>
