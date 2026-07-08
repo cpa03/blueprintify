@@ -5,6 +5,7 @@ import {
   HTTP_HEADER_NAMES,
   HTTP_STATUS,
   TEMPLATE_NODE_PORT,
+  TEMPLATE_VERSIONS,
 } from "@blueprint/shared";
 import { PackageJson, generateProjectReadme } from "./shared";
 
@@ -32,24 +33,24 @@ export async function generateNodeProject(
     },
     dependencies: isHono
       ? {
-          hono: "^3.11.0",
+          hono: TEMPLATE_VERSIONS.HONO,
         }
       : isExpress
         ? {
-            express: "^4.18.2",
+            express: TEMPLATE_VERSIONS.EXPRESS,
           }
         : undefined,
     devDependencies: isTypeScript
       ? {
-          "@types/node": "^20.0.0",
-          tsx: "^4.6.0",
-          typescript: "^5.0.0",
-          jest: "^29.0.0",
-          "@types/jest": "^29.0.0",
+          "@types/node": TEMPLATE_VERSIONS.AT_TYPES_NODE,
+          tsx: TEMPLATE_VERSIONS.TSX,
+          typescript: TEMPLATE_VERSIONS.TYPESCRIPT,
+          jest: TEMPLATE_VERSIONS.JEST,
+          "@types/jest": TEMPLATE_VERSIONS.AT_TYPES_JEST,
         }
       : {
-          jest: "^29.0.0",
-          "@types/jest": "^29.0.0",
+          jest: TEMPLATE_VERSIONS.JEST,
+          "@types/jest": TEMPLATE_VERSIONS.AT_TYPES_JEST,
         },
   };
 

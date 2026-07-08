@@ -1,6 +1,6 @@
 import type JSZip from "jszip";
 import type { TechStackItemType } from "@blueprint/shared";
-import { PYTHON_DEV_DEFAULTS } from "@blueprint/shared";
+import { PYTHON_DEV_DEFAULTS, TEMPLATE_VERSIONS } from "@blueprint/shared";
 import { generateProjectReadme } from "./shared";
 
 export async function generatePythonProject(
@@ -14,10 +14,10 @@ export async function generatePythonProject(
   const isFlask = techStack.some((item) => item.name.toLowerCase() === "flask");
 
   const requirements = isDjango
-    ? "Django>=4.2.0\ndjangorestframework>=3.14.0\npython-decouple>=3.8"
+    ? `Django${TEMPLATE_VERSIONS.DJANGO}\ndjangorestframework${TEMPLATE_VERSIONS.DJANGO_REST}\npython-decouple>=3.8`
     : isFlask
-      ? "Flask>=2.3.0\nFlask-RESTful>=0.3.10\npython-decouple>=3.8"
-      : "fastapi>=0.104.0\nuvicorn>=0.24.0\npydantic>=2.5.0";
+      ? `Flask${TEMPLATE_VERSIONS.FLASK}\nFlask-RESTful${TEMPLATE_VERSIONS.FLASK_RESTFUL}\npython-decouple>=3.8`
+      : `fastapi${TEMPLATE_VERSIONS.FASTAPI}\nuvicorn${TEMPLATE_VERSIONS.UVICORN}\npydantic${TEMPLATE_VERSIONS.PYDANTIC}`;
 
   zip.file("requirements.txt", requirements);
 

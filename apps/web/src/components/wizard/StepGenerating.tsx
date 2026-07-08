@@ -23,7 +23,13 @@
  * ```
  */
 
-import { WIZARD_STEP_KEYS, UI_TIMING, ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
+import {
+  WIZARD_STEP_KEYS,
+  UI_TIMING,
+  ANIMATION_ENTRANCE_DELAYS,
+  GENERATION_ERROR_PREFIXES,
+  SHORTCUT_DESCRIPTIONS,
+} from "@blueprint/shared";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { memo, useCallback, useRef, useEffect } from "react";
@@ -40,7 +46,7 @@ import {
 import { COLORS } from "../../config/theme";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { getAltKeyLabel, getModifierLabel, getAriaShortcutKey } from "../../lib/platform";
-import { SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
+
 import { AnimatedNumber } from "../AnimatedNumber";
 import { RippleButton } from "../RippleButton";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
@@ -68,7 +74,8 @@ export const StepGenerating = memo(function StepGenerating({
   // Detect error state from the progress message. Both GENERATION_MESSAGES.ERROR
   // and GENERATION_MESSAGES.ERROR_TASKS produce strings starting with "Error",
   // which is the only terminal state that isn't "Complete!" after generation stops.
-  const isError = !isGenerating && !isComplete && progress.startsWith("Error");
+  const isError =
+    !isGenerating && !isComplete && progress.startsWith(GENERATION_ERROR_PREFIXES.GENERIC);
 
   const handleCancel = useCallback(() => {
     cancelGeneration();
@@ -291,7 +298,7 @@ export const StepGenerating = memo(function StepGenerating({
             className="text-center"
           >
             <h2 className="text-xl font-bold text-accent-pink mb-2">
-              {progress.startsWith("Error generating tasks")
+              {progress.startsWith(GENERATION_ERROR_PREFIXES.TASKS)
                 ? GENERATION_ERROR_LABELS.ERROR_TASKS_TITLE
                 : GENERATION_ERROR_LABELS.ERROR_TITLE}
             </h2>

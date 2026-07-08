@@ -2426,6 +2426,86 @@ export const LOG_LEVELS = {
 } as const;
 
 /**
+ * Template Package Versions
+ * Centralized source of truth for dependency version strings used in
+ * project template generators. Ensures generated projects use consistent
+ * version numbers and allows easy version bumps from a single location.
+ * Flexy says: No hardcoded "^18.2.0" dependency versions in template generators!
+ * Usage: import { TEMPLATE_VERSIONS } from "@blueprint/shared";
+ *        TEMPLATE_VERSIONS.REACT
+ */
+export const TEMPLATE_VERSIONS = {
+  /** React framework version */
+  REACT: "^18.2.0",
+  /** React DOM version */
+  REACT_DOM: "^18.2.0",
+  /** Next.js framework version */
+  NEXT: "14.0.0",
+  /** Vite build tool version */
+  VITE: "^5.0.8",
+  /** Vite React plugin version */
+  VITE_REACT_PLUGIN: "^4.2.1",
+  /** TypeScript (template) version */
+  TYPESCRIPT: "^5.0.0",
+  /** @types/node version for templates */
+  AT_TYPES_NODE: "^20.0.0",
+  /** @types/react version for templates */
+  AT_TYPES_REACT: "^18",
+  /** @types/react-dom version for templates */
+  AT_TYPES_REACT_DOM: "^18.2.17",
+  /** Tailwind CSS version for templates */
+  TAILWIND: "^3.3.0",
+  /** Autoprefixer version for templates */
+  AUTOPREFIXER: "^10.4.16",
+  /** PostCSS version for templates */
+  POSTCSS: "^8.4.32",
+  /** Express.js version for templates */
+  EXPRESS: "^4.18.2",
+  /** Hono framework version for templates */
+  HONO: "^3.11.0",
+  /** ESLint version for templates */
+  ESLINT: "^8.55.0",
+  /** eslint-config-next version for templates */
+  ESLINT_CONFIG_NEXT: "14.0.0",
+  /** tsx (TypeScript Execute) version for templates */
+  TSX: "^4.6.0",
+  /** Jest testing framework version for templates */
+  JEST: "^29.0.0",
+  /** @types/jest version for templates */
+  AT_TYPES_JEST: "^29.0.0",
+  /** Django framework version for Python templates */
+  DJANGO: ">=4.2.0",
+  /** Django REST framework version for Python templates */
+  DJANGO_REST: ">=3.14.0",
+  /** Flask framework version for Python templates */
+  FLASK: ">=2.3.0",
+  /** Flask-RESTful version for Python templates */
+  FLASK_RESTFUL: ">=0.3.10",
+  /** FastAPI version for Python templates */
+  FASTAPI: ">=0.104.0",
+  /** Uvicorn version for Python templates */
+  UVICORN: ">=0.24.0",
+  /** Pydantic version for Python templates */
+  PYDANTIC: ">=2.5.0",
+} as const;
+
+/**
+ * Generation Error Message Prefixes
+ * Centralized prefix strings used by GENERATION_MESSAGES template functions.
+ * Enables type-safe checks against the start of generated error messages
+ * without duplicating the prefix string.
+ * Flexy says: No hardcoded "Error" prefix checks in StepGenerating!
+ * Usage: import { GENERATION_ERROR_PREFIXES } from "@blueprint/shared";
+ *        progress.startsWith(GENERATION_ERROR_PREFIXES.GENERIC)
+ */
+export const GENERATION_ERROR_PREFIXES = {
+  /** Generic error prefix — common start of all GENERATION_MESSAGES error outputs */
+  GENERIC: "Error",
+  /** Tasks generation error prefix — matches GENERATION_MESSAGES.ERROR_TASKS("") output */
+  TASKS: "Error generating tasks: ",
+} as const;
+
+/**
  * External Reference URLs
  * Centralized source of truth for external website URLs referenced in the app.
  * Flexy says: No hardcoded "https://workers.cloudflare.com/" in API config!

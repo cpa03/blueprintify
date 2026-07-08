@@ -110,6 +110,8 @@ import {
   SKELETON_DEFAULTS,
   ENTRANCE_STAGGER_DEFAULTS,
   SCROLLBAR_COLORS,
+  TEMPLATE_VERSIONS,
+  GENERATION_ERROR_PREFIXES,
   SCROLL_PULSE_DEFAULTS,
   SVG_TRANSITION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
@@ -3255,5 +3257,92 @@ describe("SPRING_SCROLL_HOVER", () => {
 
   it("should have exactly 4 entries (type + 3 spring params)", () => {
     expect(Object.keys(SPRING_SCROLL_HOVER).length).toBe(4);
+  });
+});
+
+// ============================================================================
+// TEMPLATE_VERSIONS
+// ============================================================================
+describe("TEMPLATE_VERSIONS", () => {
+  it("should have REACT = '^18.2.0'", () => {
+    expect(TEMPLATE_VERSIONS.REACT).toBe("^18.2.0");
+  });
+
+  it("should have REACT_DOM = '^18.2.0'", () => {
+    expect(TEMPLATE_VERSIONS.REACT_DOM).toBe("^18.2.0");
+  });
+
+  it("should have NEXT = '14.0.0'", () => {
+    expect(TEMPLATE_VERSIONS.NEXT).toBe("14.0.0");
+  });
+
+  it("should have VITE = '^5.0.8'", () => {
+    expect(TEMPLATE_VERSIONS.VITE).toBe("^5.0.8");
+  });
+
+  it("should have EXPRESS = '^4.18.2'", () => {
+    expect(TEMPLATE_VERSIONS.EXPRESS).toBe("^4.18.2");
+  });
+
+  it("should have HONO = '^3.11.0'", () => {
+    expect(TEMPLATE_VERSIONS.HONO).toBe("^3.11.0");
+  });
+
+  it("should have DJANGO = '>=4.2.0'", () => {
+    expect(TEMPLATE_VERSIONS.DJANGO).toBe(">=4.2.0");
+  });
+
+  it("should have FLASK = '>=2.3.0'", () => {
+    expect(TEMPLATE_VERSIONS.FLASK).toBe(">=2.3.0");
+  });
+
+  it("should have FASTAPI = '>=0.104.0'", () => {
+    expect(TEMPLATE_VERSIONS.FASTAPI).toBe(">=0.104.0");
+  });
+
+  it("should have all version values start with ^, >=, or be a dotted number", () => {
+    const values = Object.values(TEMPLATE_VERSIONS);
+    values.forEach((value) => {
+      expect(value).toMatch(/^(\^|>=|\d)/);
+    });
+  });
+
+  it("should have exactly 26 entries", () => {
+    expect(Object.keys(TEMPLATE_VERSIONS).length).toBe(26);
+  });
+});
+
+// ============================================================================
+// GENERATION_ERROR_PREFIXES
+// ============================================================================
+describe("GENERATION_ERROR_PREFIXES", () => {
+  it("should have GENERIC = 'Error'", () => {
+    expect(GENERATION_ERROR_PREFIXES.GENERIC).toBe("Error");
+  });
+
+  it("should have TASKS = 'Error generating tasks: '", () => {
+    expect(GENERATION_ERROR_PREFIXES.TASKS).toBe("Error generating tasks: ");
+  });
+
+  it("should match GENERATION_MESSAGES.ERROR('') output prefix", () => {
+    expect(GENERATION_MESSAGES.ERROR("")).toContain(GENERATION_ERROR_PREFIXES.GENERIC);
+  });
+
+  it("should match GENERATION_MESSAGES.ERROR_TASKS('') output prefix", () => {
+    expect(GENERATION_MESSAGES.ERROR_TASKS("")).toContain(GENERATION_ERROR_PREFIXES.TASKS);
+  });
+
+  it("should have exactly 2 entries", () => {
+    expect(Object.keys(GENERATION_ERROR_PREFIXES).length).toBe(2);
+  });
+
+  it("should have unique values (no duplicates)", () => {
+    const values = Object.values(GENERATION_ERROR_PREFIXES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+
+  it("should have TASKS end with ': ' (prefix format)", () => {
+    expect(GENERATION_ERROR_PREFIXES.TASKS).toMatch(/: $/);
   });
 });
