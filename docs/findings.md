@@ -2,6 +2,61 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 209 (2026-07-08 — RepoKeeper: Stale merged branch cleanup, CHANGELOG gap fix (5 post-Cycle-208 commits), BroCula ref drift fix (Jul 07 Run 7 → Jul 08), doc refresh, quality verification)
+
+### Audit Scope
+
+Full repository cleanup and maintenance: stale merged branch cleanup (`origin/chore/repokeeper-cycle-209` — fully merged, 0 unmerged commits); CHANGELOG gap fix (5 post-Cycle-208 commits: refactor(flexy) Iteration 105 text fade duration #2407, fix(accessibility) external link keyboard focus #2406, refactor(flexy) Iteration 106 LogLevel union, docs(audit) BroCula Jul 08, fix(accessibility) prefers-reduced-motion rAF skip); BroCula ref drift fix (docs/audits/README.md still listed Jul 07 Run 7 as latest — updated to Jul 08: `brocula-hunt-2026-07-08.md` / LH **98-100-100-100**, **1766 tests** ✅); README BroCula date drift fix (Jun 17–Jul 7 → Jun 17–Jul 8); documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,774/1,774** ✅ — 744 web + 443 API + 587 shared — format ✅ secrets ✅); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).
+
+> Older cycles (Cycle 1 through Cycle 208) are preserved in git history. Run `git log -- docs/findings.md` to browse historical entries.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,774/1,774 passing** (744 web + 443 API + 587 shared) |
+| @ts-ignore/as any | ✅ None in source code |
+| TODO/FIXME/HACK | ✅ None in source code |
+| Empty catch blocks | ✅ None |
+| Format | ✅ All files Prettier-formatted |
+| Secrets scan | ✅ No secrets detected |
+| Redundant/temp/unused files | ✅ None found |
+| Tracked .patch files | ✅ None (recurring anti-pattern resolved) |
+| Stale merged branch cleanup | ✅ `origin/chore/repokeeper-cycle-209` deleted |
+| README BroCula date drift | ✅ Fixed (Jun 17–Jul 7 → Jun 17–Jul 8) |
+| BroCula ref drift | ✅ Fixed — Jul 07 Run 7 → Jul 08 (LH 98-100-100-100, 1766 tests ✅) |
+| BUG-014/BUG-017 | 🔴 Still present on main — `workflows: write` blocker |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Stale merged branch cleanup**: Deleted `origin/chore/repokeeper-cycle-209` — fully merged into main, 0 unmerged commits.
+2. **CHANGELOG gap fix**: Added 5 post-Cycle-208 commits — refactor(flexy) Iteration 105 text fade duration (#2407), fix(accessibility) external link keyboard focus (#2406), refactor(flexy) Iteration 106 LogLevel union, docs(audit) BroCula Jul 08, fix(accessibility) prefers-reduced-motion rAF skip.
+3. **BroCula ref drift fix**: docs/audits/README.md updated — Jul 07 Run 7 → Jul 08 (`brocula-hunt-2026-07-08.md` / LH **98-100-100-100**, 1766 tests ✅).
+4. **README BroCula date drift fix**: `(Jun 17–Jul 7)` → `(Jun 17–Jul 8)` — matches latest audit.
+5. **Documentation refresh**: Updated findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README for Cycle 209.
+6. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,774/1,774 ✅ format ✅ secrets ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — clean ✅
+- [x] Tests — 1,774/1,774 passing (744 web + 443 API + 587 shared) ✅
+- [x] Format — all Prettier-formatted ✅
+- [x] Secrets scan — clean ✅
+- [x] No redundant/temp/unused files — clean ✅
+- [x] No @ts-expect-error/@ts-ignore/as any in source ✅
+- [x] No TODO/FIXME/HACK in source ✅
+- [x] No tracked .patch files — clean ✅
+- [x] Stale merged branch cleanup — `origin/chore/repokeeper-cycle-209` deleted ✅
+- [x] README BroCula date — (Jun 17–Jul 8) ✅
+- [x] BroCula ref drift — Jul 08 indexed as latest ✅
+- [x] BUG-014/BUG-017 status verified — still blocked (`workflows: write`) 🔴
+- [x] findings.md — Cycle 209 entry added ✅
+
 ## Cycle 208 (2026-07-08 — RepoKeeper: README broken link fix (issue-audit-report-2026-06-07.md removed in Cycle 207 stale archive cleanup), CHANGELOG gap fix (4 commits), doc refresh, quality verification)
 
 ### Audit Scope
