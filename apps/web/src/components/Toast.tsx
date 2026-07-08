@@ -67,6 +67,11 @@ interface ProgressRingProps {
   size?: number;
   strokeWidth?: number;
   color?: string;
+  /** When true, removes the CSS transition on stroke-dashoffset so the ring
+   *  updates instantly rather than smoothly. Used when prefers-reduced-motion
+   *  is active, since frame-by-frame progress animation is unnecessary motion
+   *  that could cause discomfort for vestibular disorder users. */
+  noTransition?: boolean;
 }
 
 const ProgressRing = memo(function ProgressRing({
@@ -74,6 +79,7 @@ const ProgressRing = memo(function ProgressRing({
   size = TOAST_SPRING.PROGRESS_RING.SIZE_PX,
   strokeWidth = TOAST_SPRING.PROGRESS_RING.STROKE_WIDTH,
   color = "currentColor",
+  noTransition = false,
 }: ProgressRingProps) {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
@@ -107,7 +113,7 @@ const ProgressRing = memo(function ProgressRing({
         strokeDasharray={circumference}
         strokeDashoffset={strokeDashoffset}
         style={{
-          transition: TOAST_SPRING.PROGRESS_RING_TRANSITION,
+          transition: noTransition ? "none" : TOAST_SPRING.PROGRESS_RING_TRANSITION,
         }}
       />
     </svg>
@@ -162,22 +168,31 @@ const ToastItem = memo(
         const initialProgress = Math.round((remaining / originalDurationRef.current) * 100);
         setProgress(initialProgress);
 
-        const animateProgress = () => {
-          const elapsed = Date.now() - startTime;
-          const newProgress = Math.max(0, initialProgress * (1 - elapsed / remaining));
-          setProgress(newProgress);
+        if (!shouldReduceMotion) {
+          // Full motion: smooth rAF-driven progress animation that gives a
+          // polished countdown visual. Only runs when the user has not requested
+          // reduced motion, since frame-by-frame animation is unnecessary visual
+          // motion that can cause discomfort for vestibular disorder users.
+          const animateProgress = () => {
+            const elapsed = Date.now() - startTime;
+            const newProgress = Math.max(0, initialProgress * (1 - elapsed / remaining));
+            setProgress(newProgress);
 
-          if (newProgress > 0 && !isHovered) {
-            rafRef.current = requestAnimationFrame(animateProgress);
-          }
-        };
-        rafRef.current = requestAnimationFrame(animateProgress);
+            if (newProgress > 0 && !isHovered) {
+              rafRef.current = requestAnimationFrame(animateProgress);
+            }
+          };
+          rafRef.current = requestAnimationFrame(animateProgress);
+        }
+        // When shouldReduceMotion is true: no rAF loop — the progress ring
+        // shows the initial progress value without frame-by-frame updates.
+        // The toast still dismisses at the correct time via the timeout below.
 
         timeoutRef.current = setTimeout(() => {
           onRemove(toast.id);
         }, remaining);
       },
-      [toast.id, onRemove, isHovered, clearToastTimeout]
+      [toast.id, onRemove, isHovered, clearToastTimeout, shouldReduceMotion]
     );
 
     useEffect(() => {
@@ -336,7 +351,12 @@ const ToastItem = memo(
         )}
 
         <span className="relative flex-shrink-0 w-7 h-7 flex items-center justify-center">
-          <ProgressRing progress={progress} size={28} strokeWidth={2} />
+          <ProgressRing
+            progress={progress}
+            size={28}
+            strokeWidth={2}
+            noTransition={shouldReduceMotion}
+          />
           {shouldReduceMotion ? (
             <span className="w-6 h-6 rounded-full bg-current/20 flex items-center justify-center font-bold text-sm relative z-10">
               {toastIcons[toast.type]}
