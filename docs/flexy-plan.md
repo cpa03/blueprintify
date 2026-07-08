@@ -1779,6 +1779,29 @@ After **102 Flexy iterations**, the Blueprintify codebase status:
 | ---- | ------ | ----- |
 | TBD | `feat/flexy-iteration-103-ci-node-version` | feat(flexy): fix hardcoded CI node version — use .node-version file across all workflows |
 
+### ✅ Flexy Iteration 105: Centralize Hardcoded Text Swap Duration into ANIMATION_DURATION_S.TEXT_FADE
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config.ts` | Added `ANIMATION_DURATION_S.TEXT_FADE = 0.15` |
+| `packages/shared/src/config.test.ts` | Added test assertion for `TEXT_FADE` + count 26→27 |
+| `apps/web/src/config/constants/ui.ts` | Mapped `ANIMATION.TEXT_FADE` to shared config |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced `duration: 0.15` with `ANIMATION.TEXT_FADE` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 1,745 tests passing (723 web + 443 api + 579 shared)
+- ✅ `npm run scan:secrets` — clean
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2407](https://github.com/cpa03/blueprintify/pull/2407) | `feat/flexy-iteration-105-text-fade` | refactor(flexy): centralize hardcoded text swap duration into shared config (Iteration 105) |
+
 **Edge cases not addressed** (inherently hardcoded by nature):
 - **Template generators** (`lib/templates/`): contain hardcoded CSS colors in template output — these emit **code for user projects**, not app code, so extraction would break the generated output
 - **Platform constants** (`lib/platform.ts`): OS-level key labels ("⌘", "Ctrl", "Meta") — inherently platform-defined, not application configuration
