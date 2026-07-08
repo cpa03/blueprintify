@@ -13,6 +13,7 @@ export default [
       "scripts/**",
       "**/*.config.js",
       "**/*.config.ts",
+      "**/e2e/report/**",
       // Ignore compiled JavaScript files in source directories
       "apps/api/src/**/*.js",
       "apps/web/src/**/*.js",
