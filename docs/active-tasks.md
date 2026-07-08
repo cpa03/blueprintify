@@ -2,6 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 210 — **CHANGELOG gap fix (2 post-Cycle-209 commits), BroCula ref drift fix (Run 1 → Run 2), diagnostic scoring report indexing, doc refresh, quality verification** ✅
+
+### Task: Full repository audit — CHANGELOG gap fix (2 post-Cycle-209 commits: docs(flexy) Iteration 106 LOG_LEVELS centralization (#2413), docs(audit) diagnostic scoring report Jul 08); BroCula ref drift fix (knowledge-review.md: Run 1 → Run 2 — latest `brocula-hunt-2026-07-08-run2.md` / **1774 tests** ✅, **52ms FCP**, **0.009 CLS**, clean console); diagnostic scoring report indexed in `docs/audits/README.md` (Jul 08 added as latest); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README); quality verification (typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 210 full repository audit — CHANGELOG gap fix, BroCula ref drift fix, diagnostic scoring report indexing, doc refresh, quality verification
+- **Actions**:
+  - [x] **CHANGELOG gap fix**: Added 2 post-Cycle-209 commits — docs(flexy) Iteration 106 LOG_LEVELS centralization (#2413), docs(audit) diagnostic scoring report July 08 2026.
+  - [x] **BroCula ref drift fix**: knowledge-review.md updated — Jul 08 Run 1 → Jul 08 Run 2 (`brocula-hunt-2026-07-08-run2.md` / **1774 tests** ✅, **52ms FCP**, **0.009 CLS**, clean console).
+  - [x] **Diagnostic scoring report indexed**: Added `diagnostic-scoring-2026-07-08.md` and `diagnostic-scoring-2026-07-07.md` to `docs/audits/README.md` under new Diagnostic Scoring section.
+  - [x] **Format**: All files Prettier-formatted ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 210, BroCula ref → Jul 08 Run 2 (no drift)
+  - [x] **findings.md updated**: Cycle 210 entry added
+  - [x] **active-tasks.md updated**: Cycle 210 entry added at top
+  - [x] **CHANGELOG.md updated**: Cycle 210 gap commits indexed
+  - [x] **BUG-014/BUG-017 status verified**: Still present on main. Same documented `workflows: write` blocker.
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,774/1,774 ✅
+
+> Older cycles (Cycle 1 through Cycle 209) are preserved in git history. Run `git log -- docs/active-tasks.md` to browse historical entries.
+
 ## ✅ RepoKeeper Cycle 209 — **Stale merged branch cleanup, CHANGELOG gap fix (5 post-Cycle-208 commits), BroCula ref drift fix, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — stale merged branch cleanup (`origin/chore/repokeeper-cycle-209` — fully merged, 0 unmerged commits); CHANGELOG gap fix (5 post-Cycle-208 commits: refactor(flexy) Iteration 105 text fade duration #2407, fix(accessibility) external link keyboard focus #2406, refactor(flexy) Iteration 106 LogLevel union, docs(audit) BroCula Jul 08, fix(accessibility) prefers-reduced-motion rAF skip); BroCula ref drift fix (docs/audits/README.md: Jul 07 Run 7 → Jul 08 — `brocula-hunt-2026-07-08.md` / LH **98-100-100-100**, **1766 tests** ✅); README date drift fix (Jun 17–Jul 7 → Jun 17–Jul 8); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,774/1,774** ✅ — 744 web + 443 API + 587 shared — format ✅ secrets ✅); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
@@ -223,5 +244,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-07-08 (RepoKeeper Cycle 209)  
+**Last Updated**: 2026-07-08 (RepoKeeper Cycle 210)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
