@@ -2,11 +2,11 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Cycle 207 (2026-07-07 — RepoKeeper: Formatting fix, CHANGELOG gap fix (2 commits), doc refresh, quality verification)
+## Cycle 207 (2026-07-08 — RepoKeeper: Formatting fix, stale archive retention cleanup (6 Jun 7 files), CHANGELOG gap fix (4 commits), doc refresh, quality verification)
 
 ### Audit Scope
 
-Full repository cleanup and maintenance: formatting fix in `apps/web/index.html` (Prettier code style issue found and resolved); CHANGELOG gap fix (2 post-Cycle-206 commits: fix(accessibility) replace emoji icons in document title with descriptive text #2394, docs(bugs) record BugFixer ULW Cycle Jul 07 2026 Run 4 #2395); documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,766/1,766** ✅ — 744 web + 443 API + 579 shared — format ✅, secrets ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK in source); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).
+Full repository cleanup and maintenance: formatting fix in `apps/web/index.html` (Prettier code style issue found and resolved); stale archive retention cleanup (6 BroCula audit files from Jun 7 in `docs/audits/archive/` past 30-day retention removed); CHANGELOG gap fix (4 post-Cycle-206 commits: fix(accessibility) emoji icons #2394, docs(bugs) BugFixer ULW Cycle Jul 07 Run 4 #2395, docs(flexy) Iteration 103 CI node-version fix plan #2397, perf(web) optimize critical CSS #2398); documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, CONSOLIDATED-README); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,766/1,766** ✅ — 744 web + 443 API + 579 shared — format ✅, secrets ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK in source); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).
 
 > Older cycles (Cycle 1 through Cycle 206) are preserved in git history. Run `git log -- docs/findings.md` to browse historical entries.
 
@@ -24,15 +24,17 @@ Full repository cleanup and maintenance: formatting fix in `apps/web/index.html`
 | Secrets scan | ✅ No secrets detected |
 | Redundant/temp/unused files | ✅ None found |
 | Tracked .patch files | ✅ None (recurring anti-pattern resolved since Cycle 194) |
-| BroCula ref drift | ✅ No drift — Jul 07 Run 7 remains latest (LH 100-100-100-100-100 🏆🏆, 1766 tests ✅) |
+| Stale archive retention cleanup | ✅ 6 Jun 7 BroCula files removed (>30 days) |
+| CHANGELOG gap fix | ✅ 4 post-Cycle-206 commits added |
 | BUG-014/BUG-017 | 🔴 Still present on main — `workflows: write` blocker |
 | **Overall** | **✅ All quality checks passing** |
 
 ### Actions Taken This Cycle
 
 1. **Formatting fix**: `apps/web/index.html` had Prettier code style issues — fixed via `npx prettier --write`. All files now pass `format:check`.
-2. **CHANGELOG gap fix**: Added 2 post-Cycle-206 commits — fix(accessibility) emoji icons (#2394), docs(bugs) BugFixer ULW Cycle Jul 07 Run 4 (#2395).
-3. **Documentation refresh**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 207.
+2. **Stale archive retention cleanup**: Removed 6 BroCula audit files from Jun 7 in `docs/audits/archive/` (brocula-hunt-2026-06-07.md, brocula-hunt-2026-06-07-run2.md, brocula-hunt-2026-06-07-run3.md, brocula-hunt-2026-06-07-run4.md, diagnostic-scoring-2026-06-07.md, issue-audit-report-2026-06-07.md) — past 30-day retention. Consistent with Cycle 204 precedent (Jun 6 cleanup).
+3. **CHANGELOG gap fix**: Added 4 post-Cycle-206 commits — fix(accessibility) emoji icons (#2394), docs(bugs) BugFixer ULW Cycle Jul 07 Run 4 (#2395), docs(flexy) Iteration 103 CI node-version fix plan (#2397), perf(web) optimize critical CSS (#2398).
+4. **Documentation refresh**: Updated findings, active-tasks, knowledge-review, CHANGELOG, CONSOLIDATED-README for Cycle 207.
 4. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,766/1,766 ✅ format ✅ secrets ✅.
 
 ### Verification
@@ -47,7 +49,9 @@ Full repository cleanup and maintenance: formatting fix in `apps/web/index.html`
 - [x] No @ts-expect-error/@ts-ignore/as any in source ✅
 - [x] No TODO/FIXME/HACK in source ✅
 - [x] No tracked .patch files — clean ✅
-- [x] BroCula ref drift — Jul 07 Run 7 remains latest ✅
+- [x] Formatting fix — apps/web/index.html Prettier issue resolved ✅
+- [x] Stale archive retention cleanup — 6 Jun 7 files removed ✅
+- [x] CHANGELOG gap fix — 4 commits added ✅
 - [x] BUG-014/BUG-017 status verified — still blocked (`workflows: write`) 🔴
 - [x] findings.md — Cycle 207 entry added ✅
 

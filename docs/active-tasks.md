@@ -2,21 +2,23 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## ✅ RepoKeeper Cycle 207 — **Formatting fix, CHANGELOG gap fix (2 commits), doc refresh, quality verification** ✅
+## ✅ RepoKeeper Cycle 207 — **Formatting fix, stale archive retention cleanup (6 Jun 7 files), CHANGELOG gap fix (4 commits), doc refresh, quality verification** ✅
 
-### Task: Full repository audit — formatting fix in `apps/web/index.html` (Prettier code style issue resolved); CHANGELOG gap fix (2 post-Cycle-206 commits: fix(accessibility) replace emoji icons in document title with descriptive text #2394, docs(bugs) record BugFixer ULW Cycle Jul 07 2026 Run 4 #2395); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,766/1,766** ✅ — 744 web + 443 API + 579 shared — format ✅ secrets ✅); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
+### Task: Full repository audit — formatting fix in `apps/web/index.html` (Prettier code style issue resolved); stale archive retention cleanup (6 Jun 7 BroCula audit files from `docs/audits/archive/` past 30-day retention removed); CHANGELOG gap fix (4 post-Cycle-206 commits: fix(accessibility) emoji icons #2394, docs(bugs) BugFixer ULW Cycle Jul 07 Run 4 #2395, docs(flexy) Iteration 103 CI node-version fix plan #2397, perf(web) optimize critical CSS #2398); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, CONSOLIDATED-README); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,766/1,766** ✅ — 744 web + 443 API + 579 shared — format ✅ secrets ✅); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
 
 - **Priority**: High
 - **Status**: ✅ Complete
-- **Objective**: Cycle 207 full repository audit — formatting fix, CHANGELOG gap fix, doc refresh, quality verification
+- **Objective**: Cycle 207 full repository audit — formatting fix, stale archive retention cleanup, CHANGELOG gap fix, doc refresh, quality verification
 - **Actions**:
   - [x] **Formatting fix**: `apps/web/index.html` Prettier code style issue resolved via `npx prettier --write`. All files pass `format:check`.
-  - [x] **CHANGELOG gap fix**: Added 2 post-Cycle-206 commits — fix(accessibility) emoji icons (#2394), docs(bugs) BugFixer ULW Cycle Jul 07 Run 4 (#2395)
+  - [x] **Stale archive retention cleanup**: 6 Jun 7 BroCula audit files removed from `docs/audits/archive/` (past 30-day retention)
+  - [x] **CHANGELOG gap fix**: Added 4 post-Cycle-206 commits — fix(accessibility) emoji icons (#2394), docs(bugs) BugFixer ULW Cycle Jul 07 Run 4 (#2395), docs(flexy) Iteration 103 CI node-version fix plan (#2397), perf(web) optimize critical CSS (#2398)
   - [x] **Format**: All files Prettier-formatted ✅
-  - [x] **knowledge-review.md updated**: Last Review → Cycle 207, BroCula ref → Jul 07 Run 7
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 207, BroCula ref → Jul 07 Run 7 (no drift)
   - [x] **findings.md updated**: Cycle 207 entry added
   - [x] **active-tasks.md updated**: Cycle 207 entry added at top
   - [x] **CHANGELOG.md updated**: Cycle 207 entry added, gap commits indexed
+  - [x] **CONSOLIDATED-README.md updated**: Retention cleanup entry added
   - [x] **BUG-014/BUG-017 status verified**: Still present on main. Same documented `workflows: write` blocker.
   - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,766/1,766 ✅
 
