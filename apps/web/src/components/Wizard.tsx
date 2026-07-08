@@ -30,6 +30,7 @@ import {
   WIZARD_STEPS,
   STEP_TITLES,
   GENERATION_MESSAGES,
+  CELEBRATION_TEXT,
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
 import { SPINNER } from "../config/styles";
@@ -171,7 +172,7 @@ function WizardComponent(): JSX.Element {
   const stepTitle = STEP_TITLES[currentStep] || "Project Wizard";
   const documentTitle = (() => {
     if (isGenerating && generationProgress) return `Generating: ${generationProgress}`;
-    if (isComplete) return "Generation Complete!";
+    if (isComplete) return CELEBRATION_TEXT.COMPLETE;
     return projectName ? `${projectName} | ${stepTitle}` : stepTitle;
   })();
   useDocumentTitle(documentTitle);
