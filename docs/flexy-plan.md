@@ -1844,6 +1844,28 @@ After **106 Flexy iterations**, the Blueprintify codebase status:
 | Build/lint/test | ✅ Clean across all workspaces |
 | Log levels | ✅ Centralized LOG_LEVELS in shared config |
 
+### ✅ Flexy Iteration 107: Centralize OpenAI Message Roles into Shared OPENAI_ROLES Config
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config.ts` | Added `OPENAI_ROLES` config (SYSTEM/USER/ASSISTANT/TOOL) — single source of truth for OpenAI chat message role strings |
+| `packages/shared/src/index.ts` | Exported `OPENAI_ROLES` |
+| `packages/shared/src/config.test.ts` | Added 7 tests for `OPENAI_ROLES` (values, uniqueness, count, type check) |
+| `apps/api/src/services/openai.ts` | Added `OPENAI_ROLES` import; replaced 4 hardcoded `role: "system"`/`role: "user"` with `OPENAI_ROLES.SYSTEM`/`OPENAI_ROLES.USER` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 744 web + 443 api + 612 shared = 1,799 tests passing across 85 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-107-hardcoded-cleanup` | feat(flexy): centralize OpenAI message roles into shared OPENAI_ROLES config (Iteration 107) |
+
 **Edge cases not addressed** (inherently hardcoded by nature):
 - **Template generators** (`lib/templates/`): contain hardcoded CSS colors in template output — these emit **code for user projects**, not app code, so extraction would break the generated output
 - **Platform constants** (`lib/platform.ts`): OS-level key labels ("⌘", "Ctrl", "Meta") — inherently platform-defined, not application configuration

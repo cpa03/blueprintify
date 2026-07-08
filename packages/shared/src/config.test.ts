@@ -76,6 +76,7 @@ import {
   ENV_ERROR_MESSAGES,
   LOG_TYPE_STRINGS,
   LOG_LEVELS,
+  OPENAI_ROLES,
   STORAGE_KEY_PREFIXES,
   STORAGE_ERROR_TYPE_VALUES,
   TEST_SETUP_STRINGS,
@@ -3232,6 +3233,42 @@ describe("LOG_LEVELS", () => {
   it("should produce a type-safe LogLevel from values", () => {
     const level: string = LOG_LEVELS.WARN;
     expect(typeof level).toBe("string");
+  });
+});
+
+// ============================================================================
+// OPENAI_ROLES
+// ============================================================================
+describe("OPENAI_ROLES", () => {
+  it("should have SYSTEM = 'system'", () => {
+    expect(OPENAI_ROLES.SYSTEM).toBe("system");
+  });
+
+  it("should have USER = 'user'", () => {
+    expect(OPENAI_ROLES.USER).toBe("user");
+  });
+
+  it("should have ASSISTANT = 'assistant'", () => {
+    expect(OPENAI_ROLES.ASSISTANT).toBe("assistant");
+  });
+
+  it("should have TOOL = 'tool'", () => {
+    expect(OPENAI_ROLES.TOOL).toBe("tool");
+  });
+
+  it("should have unique values (no duplicates)", () => {
+    const values = Object.values(OPENAI_ROLES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+
+  it("should have exactly 4 entries", () => {
+    expect(Object.keys(OPENAI_ROLES).length).toBe(4);
+  });
+
+  it("should produce a type-safe OpenAIRole from values", () => {
+    const role: string = OPENAI_ROLES.SYSTEM;
+    expect(typeof role).toBe("string");
   });
 });
 

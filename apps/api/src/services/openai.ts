@@ -13,6 +13,7 @@ import {
   CircuitState,
 } from "../utils/circuitBreaker";
 import { AI_CONFIG, CIRCUIT_BREAKER_CONFIG, ERROR_MESSAGES } from "../config/constants";
+import { OPENAI_ROLES } from "@blueprint/shared";
 
 /**
  * Configuration options for AI client initialization
@@ -112,8 +113,8 @@ export async function* streamCompletion(
         client.chat.completions.create({
           model,
           messages: [
-            { role: "system", content: options.systemPrompt },
-            { role: "user", content: options.userPrompt },
+            { role: OPENAI_ROLES.SYSTEM, content: options.systemPrompt },
+            { role: OPENAI_ROLES.USER, content: options.userPrompt },
           ],
           stream: true,
           temperature: AI_CONFIG.DEFAULT_TEMPERATURE,
@@ -164,8 +165,8 @@ export async function generateCompletion(options: StreamOptions): Promise<string
         client.chat.completions.create({
           model,
           messages: [
-            { role: "system", content: options.systemPrompt },
-            { role: "user", content: options.userPrompt },
+            { role: OPENAI_ROLES.SYSTEM, content: options.systemPrompt },
+            { role: OPENAI_ROLES.USER, content: options.userPrompt },
           ],
           temperature: AI_CONFIG.DEFAULT_TEMPERATURE,
           max_tokens: AI_CONFIG.DEFAULT_MAX_TOKENS,
