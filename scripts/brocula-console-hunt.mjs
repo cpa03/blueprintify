@@ -30,8 +30,9 @@ async function hunt() {
     console.log('PAGE ERROR:', err.message);
   });
 
-  console.log('Navigating to http://localhost:4173...');
-  await page.goto('http://localhost:4173', { waitUntil: 'networkidle', timeout: 30000 });
+  const target = process.env.TARGET_URL || 'http://localhost:4173';
+  console.log(`Navigating to ${target}...`);
+  await page.goto(target, { waitUntil: 'networkidle', timeout: 30000 });
   console.log('Page loaded. Waiting for dynamic content...');
   await page.waitForTimeout(2000);
 
