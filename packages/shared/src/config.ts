@@ -2426,6 +2426,26 @@ export const LOG_LEVELS = {
 } as const;
 
 /**
+ * OpenAI Chat Message Roles
+ * Centralized source of truth for OpenAI chat completion message role strings.
+ * Used in the API service layer when constructing chat completion message arrays.
+ * Flexy says: No hardcoded "system" | "user" | "assistant" role strings in OpenAI service!
+ * Usage: import { OPENAI_ROLES } from "@blueprint/shared";
+ *        { role: OPENAI_ROLES.SYSTEM, content: systemPrompt }
+ *        type OpenAIRole = (typeof OPENAI_ROLES)[keyof typeof OPENAI_ROLES];
+ */
+export const OPENAI_ROLES = {
+  /** System message role — sets AI behavior and context */
+  SYSTEM: "system" as const,
+  /** User message role — contains the user's request/input */
+  USER: "user" as const,
+  /** Assistant message role — AI response messages */
+  ASSISTANT: "assistant" as const,
+  /** Tool/function message role — tool call results */
+  TOOL: "tool" as const,
+} as const;
+
+/**
  * Template Package Versions
  * Centralized source of truth for dependency version strings used in
  * project template generators. Ensures generated projects use consistent
