@@ -1,5 +1,6 @@
 import type JSZip from "jszip";
 import type { TechStackItemType } from "@blueprint/shared";
+import { TEMPLATE_VERSIONS } from "@blueprint/shared";
 import { PackageJson, generateProjectReadme } from "./shared";
 
 export async function generateReactProject(
@@ -34,36 +35,36 @@ export async function generateReactProject(
         },
     dependencies: isNextJS
       ? {
-          react: "^18.2.0",
-          "react-dom": "^18.2.0",
-          next: "14.0.0",
+          react: TEMPLATE_VERSIONS.REACT,
+          "react-dom": TEMPLATE_VERSIONS.REACT_DOM,
+          next: TEMPLATE_VERSIONS.NEXT,
         }
       : {
-          react: "^18.2.0",
-          "react-dom": "^18.2.0",
+          react: TEMPLATE_VERSIONS.REACT,
+          "react-dom": TEMPLATE_VERSIONS.REACT_DOM,
         },
     devDependencies: isNextJS
       ? {
-          "@types/node": "^20",
-          "@types/react": "^18",
-          "@types/react-dom": "^18",
-          autoprefixer: "^10.0.1",
-          eslint: "^8",
-          "eslint-config-next": "14.0.0",
-          postcss: "^8",
-          tailwindcss: "^3.3.0",
-          typescript: "^5",
+          "@types/node": TEMPLATE_VERSIONS.AT_TYPES_NODE,
+          "@types/react": TEMPLATE_VERSIONS.AT_TYPES_REACT,
+          "@types/react-dom": TEMPLATE_VERSIONS.AT_TYPES_REACT_DOM,
+          autoprefixer: TEMPLATE_VERSIONS.AUTOPREFIXER,
+          eslint: TEMPLATE_VERSIONS.ESLINT,
+          "eslint-config-next": TEMPLATE_VERSIONS.ESLINT_CONFIG_NEXT,
+          postcss: TEMPLATE_VERSIONS.POSTCSS,
+          tailwindcss: TEMPLATE_VERSIONS.TAILWIND,
+          typescript: TEMPLATE_VERSIONS.TYPESCRIPT,
         }
       : {
-          "@types/react": "^18.2.43",
-          "@types/react-dom": "^18.2.17",
-          "@vitejs/plugin-react": "^4.2.1",
-          eslint: "^8.55.0",
+          "@types/react": TEMPLATE_VERSIONS.AT_TYPES_REACT,
+          "@types/react-dom": TEMPLATE_VERSIONS.AT_TYPES_REACT_DOM,
+          "@vitejs/plugin-react": TEMPLATE_VERSIONS.VITE_REACT_PLUGIN,
+          eslint: TEMPLATE_VERSIONS.ESLINT,
           "eslint-plugin-react": "^7.33.2",
           "eslint-plugin-react-hooks": "^4.6.0",
           "eslint-plugin-react-refresh": "^0.4.5",
-          typescript: "^5.2.2",
-          vite: "^5.0.8",
+          typescript: TEMPLATE_VERSIONS.TYPESCRIPT,
+          vite: TEMPLATE_VERSIONS.VITE,
         },
   };
 
@@ -71,9 +72,9 @@ export async function generateReactProject(
     const currentDevDeps = packageJson.devDependencies ?? {};
     packageJson.devDependencies = {
       ...currentDevDeps,
-      tailwindcss: "^3.3.0",
-      autoprefixer: "^10.4.16",
-      postcss: "^8.4.32",
+      tailwindcss: TEMPLATE_VERSIONS.TAILWIND,
+      autoprefixer: TEMPLATE_VERSIONS.AUTOPREFIXER,
+      postcss: TEMPLATE_VERSIONS.POSTCSS,
     };
   }
 
