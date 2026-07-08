@@ -37,6 +37,9 @@ import { ErrorType, createErrorJson } from "../errors";
  * Uses SHA-256 hashing to avoid storing the raw API key.
  * Returns undefined if no API key is configured (allows backward compatibility).
  */
+/** Flexy says: Log context strings stay local — these are log identifiers, not app config */
+const LOG_CREATE_ERROR = "Share creation error";
+
 async function getCreatorId(apiKey: string | undefined): Promise<string | undefined> {
   if (!apiKey) return undefined;
   const encoder = new TextEncoder();
@@ -198,7 +201,7 @@ app.post(
         HTTP_STATUS.OK
       );
     } catch (error) {
-      secureLogError("Share creation error", error);
+      secureLogError(LOG_CREATE_ERROR, error);
       return c.json(
         withCtxError(c, ErrorType.INTERNAL, ERROR_MESSAGES.INTERNAL, ERROR_CODES.INTERNAL_ERROR),
         HTTP_STATUS.INTERNAL_ERROR

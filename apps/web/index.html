@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="preload" as="image" href="/favicon.svg" fetchpriority="low" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#0f172a" />
     <meta name="color-scheme" content="dark" />
@@ -183,8 +185,12 @@
         }
       }
       @keyframes fade-in {
-        0% { opacity: 0; }
-        100% { opacity: 1; }
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
       }
     </style>
 
@@ -240,58 +246,52 @@
     </noscript>
   </head>
   <body>
-      <!-- Skeleton header bar - fixed at top fades out after React mounts.
+    <!-- Skeleton header bar - fixed at top fades out after React mounts.
            Hero content is directly in #root so the LCP element is visible immediately,
            not blocked by an overlay skeleton. -->
-      <div
-        id="skeleton-loader"
-        style="
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          z-index: 9999;
-          background: #020617;
-          opacity: 1;
-          transition: opacity 0.3s ease-out;
-          pointer-events: none;
-        "
-      >
-        <header
+    <div
+      id="skeleton-loader"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+        background: #020617;
+        opacity: 1;
+        transition: opacity 0.3s ease-out;
+        pointer-events: none;
+      "
+    >
+      <header style="border-bottom: 1px solid #1e293b; background: #020617; height: 65px">
+        <div
           style="
-            border-bottom: 1px solid #1e293b;
-            background: #020617;
-            height: 65px;
+            max-width: 80rem;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
           "
         >
-          <div
-            style="
-              max-width: 80rem;
-              margin: 0 auto;
-              padding: 1rem 1.5rem;
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-            "
-          >
-            <div style="display: flex; align-items: center; gap: 0.75rem">
-              <div
-                style="
-                  width: 2.5rem;
-                  height: 2.5rem;
-                  border-radius: 0.75rem;
-                  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-                "
-              ></div>
-              <div>
-                <div style="font-weight: 700; font-size: 1.25rem; color: #fff">
-                  Blueprint Generator
-                </div>
+          <div style="display: flex; align-items: center; gap: 0.75rem">
+            <div
+              style="
+                width: 2.5rem;
+                height: 2.5rem;
+                border-radius: 0.75rem;
+                background: linear-gradient(135deg, #6366f1, #8b5cf6);
+              "
+            ></div>
+            <div>
+              <div style="font-weight: 700; font-size: 1.25rem; color: #fff">
+                Blueprint Generator
               </div>
             </div>
           </div>
-        </header>
-      </div>
+        </div>
+      </header>
+    </div>
 
     <div id="root" style="position: relative; min-height: 100vh">
       <!-- LCP Critical Hero Content - visible immediately, not hidden behind skeleton overlay.
