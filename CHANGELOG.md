@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- docs(audit): add diagnostic scoring report for July 08 2026
+- docs(flexy): document Iteration 106 — LOG_LEVELS centralization (#2413)
 - chore(repokeeper): Cycle 209 — stale merged branch cleanup (`origin/chore/repokeeper-cycle-209` deleted), CHANGELOG gap fix (5 post-Cycle-208 commits: refactor(flexy) Iteration 105 text fade duration, fix(accessibility) external link keyboard focus (#2406), refactor(flexy) Iteration 106 LogLevel union, docs(audit) BroCula Jul 08, fix(accessibility) prefers-reduced-motion rAF skip), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,774/1,774 ✅ — 744 web + 443 API + 587 shared — format ✅ secrets ✅), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
 - fix(accessibility): skip rAF progress animation in Toast when prefers-reduced-motion is active
 - docs(audit): BroCula ULW Cycle Jul 08 2026 — clean console, LH 98-100-100-100, 1766 tests passing
