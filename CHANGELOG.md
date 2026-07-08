@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 207 — formatting fix in apps/web/index.html, stale archive retention cleanup (6 Jun 7 BroCula audit files from `docs/audits/archive/` past 30-day retention), CHANGELOG gap fix (4 post-Cycle-206 commits: fix(accessibility) emoji icons #2394, docs(bugs) BugFixer ULW Cycle Jul 07 Run 4 #2395, docs(flexy) Iteration 103 CI node-version fix plan #2397, perf(web) optimize critical CSS #2398), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, CONSOLIDATED-README), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,766/1,766 ✅ format ✅ secrets ✅), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
+- perf(web): optimize critical CSS and remove backdrop-filter from skeleton loader (#2398)
+- docs(flexy): document Iteration 103 — CI node-version fix plan (#2397)
+- docs(bugs): record BugFixer ULW Cycle Jul 07 2026 Run 4 (#2395)
+- fix(accessibility): replace emoji icons in document title with descriptive text (#2394)
 - chore(repokeeper): Cycle 206 — BroCula ref drift fix (knowledge-review.md: Run 6→Run 7 — latest `brocula-hunt-2026-07-07-run7.md` / LH **100-100-100-100-100** 🏆🏆, 1766 tests ✅), CHANGELOG gap fix (4 post-Cycle-205 commits: feat(ux) character counter & maxLength, docs(bugs) BugFixer ULW Cycle Jul 07 Run 3, docs(audit) BroCula Run 7, fix(web) keyboard shortcuts double-toggle), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,766/1,766 ✅ format ✅ secrets ✅), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)
 - fix(web): prevent double-toggle of keyboard shortcuts modal on '?' key
 - docs(audit): BroCula Run 7 — perfect 100-100-100-100-100, 1766 tests ✅ (#2393)

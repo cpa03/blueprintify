@@ -42,7 +42,7 @@ interface ErrorBoundaryProps {
 function LoadingFallback(): JSX.Element {
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-dark-900 p-4"
+      className="min-h-screen flex items-center justify-center bg-dark-900 p-4 animate-fade-in"
       role="alert"
       aria-live="assertive"
     >
