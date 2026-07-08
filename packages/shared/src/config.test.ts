@@ -75,6 +75,7 @@ import {
   SECURITY_ERROR_CATEGORIES,
   ENV_ERROR_MESSAGES,
   LOG_TYPE_STRINGS,
+  LOG_LEVELS,
   STORAGE_KEY_PREFIXES,
   STORAGE_ERROR_TYPE_VALUES,
   TEST_SETUP_STRINGS,
@@ -3186,6 +3187,49 @@ describe("EXTERNAL_REFERENCE_URLS", () => {
 
   it("should have exactly 2 entries", () => {
     expect(Object.keys(EXTERNAL_REFERENCE_URLS).length).toBe(2);
+  });
+});
+
+// ============================================================================
+// LOG_LEVELS
+// ============================================================================
+describe("LOG_LEVELS", () => {
+  it("should have DEBUG = 'debug'", () => {
+    expect(LOG_LEVELS.DEBUG).toBe("debug");
+  });
+
+  it("should have INFO = 'info'", () => {
+    expect(LOG_LEVELS.INFO).toBe("info");
+  });
+
+  it("should have WARN = 'warn'", () => {
+    expect(LOG_LEVELS.WARN).toBe("warn");
+  });
+
+  it("should have ERROR = 'error'", () => {
+    expect(LOG_LEVELS.ERROR).toBe("error");
+  });
+
+  it("should have all keys be lowercase", () => {
+    const entries = Object.entries(LOG_LEVELS);
+    entries.forEach(([_key, value]) => {
+      expect(value).toBe(value.toLowerCase());
+    });
+  });
+
+  it("should have unique values (no duplicates)", () => {
+    const values = Object.values(LOG_LEVELS);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+
+  it("should have exactly 4 entries", () => {
+    expect(Object.keys(LOG_LEVELS).length).toBe(4);
+  });
+
+  it("should produce a type-safe LogLevel from values", () => {
+    const level: string = LOG_LEVELS.WARN;
+    expect(typeof level).toBe("string");
   });
 });
 

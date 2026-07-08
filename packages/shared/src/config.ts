@@ -2407,6 +2407,25 @@ export function hexToRgba(hex: string, opacity: number): string {
 }
 
 /**
+ * Log Level Identifiers
+ * Centralized source of truth for log level strings used in console output filtering.
+ * Flexy says: No hardcoded "debug" | "info" | "warn" | "error" union type in logger.ts!
+ * Usage: import { LOG_LEVELS } from "@blueprint/shared";
+ *        type LogLevel = (typeof LOG_LEVELS)[keyof typeof LOG_LEVELS];
+ *        level === LOG_LEVELS.WARN
+ */
+export const LOG_LEVELS = {
+  /** Debug log level — verbose development-only information */
+  DEBUG: "debug",
+  /** Info log level — general operational information */
+  INFO: "info",
+  /** Warning log level — potential issues that are not errors */
+  WARN: "warn",
+  /** Error log level — errors that need attention */
+  ERROR: "error",
+} as const;
+
+/**
  * External Reference URLs
  * Centralized source of truth for external website URLs referenced in the app.
  * Flexy says: No hardcoded "https://workers.cloudflare.com/" in API config!
