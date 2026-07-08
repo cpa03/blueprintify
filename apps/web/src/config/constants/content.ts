@@ -97,6 +97,7 @@ export const UI_CONTENT = {
         "Describe what your project does, its main purpose, and key functionality...",
       TARGET_AUDIENCE_LABEL: "Target Audience",
       TARGET_AUDIENCE_PLACEHOLDER: "e.g., Developers, Small businesses, Enterprise teams",
+      OPTIONAL_LABEL: "(optional)",
       CONSTRAINTS_LABEL: "Constraints or Requirements",
       CONSTRAINTS_PLACEHOLDER:
         "e.g., Must be serverless, needs to support 10k concurrent users, budget limitations...",
@@ -305,6 +306,7 @@ export const ACCESSIBILITY_LABELS = {
     PERCENT_COMPLETE: (pct: number) => `${Math.round(pct)}% complete`,
     STEPS_COMPLETE: (pct: number, remaining: number) =>
       `${Math.round(pct)}% complete - ${remaining} steps remaining`,
+    ALL_STEPS_COMPLETE: "All steps complete",
   },
   LAZY_CODEMIRROR: {
     LOADING: "Loading code editor",

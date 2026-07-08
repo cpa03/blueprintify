@@ -2,6 +2,59 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 207 (2026-07-08 — RepoKeeper: Formatting fix, stale archive retention cleanup (6 Jun 7 files), CHANGELOG gap fix (4 commits), doc refresh, quality verification)
+
+### Audit Scope
+
+Full repository cleanup and maintenance: formatting fix in `apps/web/index.html` (Prettier code style issue found and resolved); stale archive retention cleanup (6 BroCula audit files from Jun 7 in `docs/audits/archive/` past 30-day retention removed); CHANGELOG gap fix (4 post-Cycle-206 commits: fix(accessibility) emoji icons #2394, docs(bugs) BugFixer ULW Cycle Jul 07 Run 4 #2395, docs(flexy) Iteration 103 CI node-version fix plan #2397, perf(web) optimize critical CSS #2398); documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, CONSOLIDATED-README); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,766/1,766** ✅ — 744 web + 443 API + 579 shared — format ✅, secrets ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK in source); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).
+
+> Older cycles (Cycle 1 through Cycle 206) are preserved in git history. Run `git log -- docs/findings.md` to browse historical entries.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,766/1,766 passing** (744 web + 443 API + 579 shared) |
+| @ts-ignore/as any | ✅ None in source code |
+| TODO/FIXME/HACK | ✅ None in source code |
+| Empty catch blocks | ✅ None |
+| Format | ✅ All files Prettier-formatted (fixed apps/web/index.html) |
+| Secrets scan | ✅ No secrets detected |
+| Redundant/temp/unused files | ✅ None found |
+| Tracked .patch files | ✅ None (recurring anti-pattern resolved since Cycle 194) |
+| Stale archive retention cleanup | ✅ 6 Jun 7 BroCula files removed (>30 days) |
+| CHANGELOG gap fix | ✅ 4 post-Cycle-206 commits added |
+| BUG-014/BUG-017 | 🔴 Still present on main — `workflows: write` blocker |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Formatting fix**: `apps/web/index.html` had Prettier code style issues — fixed via `npx prettier --write`. All files now pass `format:check`.
+2. **Stale archive retention cleanup**: Removed 6 BroCula audit files from Jun 7 in `docs/audits/archive/` (brocula-hunt-2026-06-07.md, brocula-hunt-2026-06-07-run2.md, brocula-hunt-2026-06-07-run3.md, brocula-hunt-2026-06-07-run4.md, diagnostic-scoring-2026-06-07.md, issue-audit-report-2026-06-07.md) — past 30-day retention. Consistent with Cycle 204 precedent (Jun 6 cleanup).
+3. **CHANGELOG gap fix**: Added 4 post-Cycle-206 commits — fix(accessibility) emoji icons (#2394), docs(bugs) BugFixer ULW Cycle Jul 07 Run 4 (#2395), docs(flexy) Iteration 103 CI node-version fix plan (#2397), perf(web) optimize critical CSS (#2398).
+4. **Documentation refresh**: Updated findings, active-tasks, knowledge-review, CHANGELOG, CONSOLIDATED-README for Cycle 207.
+4. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,766/1,766 ✅ format ✅ secrets ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — clean ✅
+- [x] Tests — 1,766/1,766 passing (744 web + 443 API + 579 shared) ✅
+- [x] Format — all Prettier-formatted ✅
+- [x] Secrets scan — clean ✅
+- [x] No redundant/temp/unused files — clean ✅
+- [x] No @ts-expect-error/@ts-ignore/as any in source ✅
+- [x] No TODO/FIXME/HACK in source ✅
+- [x] No tracked .patch files — clean ✅
+- [x] Formatting fix — apps/web/index.html Prettier issue resolved ✅
+- [x] Stale archive retention cleanup — 6 Jun 7 files removed ✅
+- [x] CHANGELOG gap fix — 4 commits added ✅
+- [x] BUG-014/BUG-017 status verified — still blocked (`workflows: write`) 🔴
+- [x] findings.md — Cycle 207 entry added ✅
+
 ## Cycle 206 (2026-07-07 — RepoKeeper: BroCula ref drift fix (knowledge-review.md Run 6→Run 7), CHANGELOG gap fix, doc refresh, quality verification)
 
 ### Audit Scope
@@ -593,4 +646,55 @@ The following issues need standard labels added (requires `issues: write` permis
 - P priority: #1167, #1166, #1165, #1163, #1161, #1143, #1142, #1141, #1118, #1117, #1116, #1054, #1053, #1052, #1051, #1049, #1046, #1019, #1016, #1015 (add P3/P2 mapping)
 - Category: #1054 (chore), #1053 (test), #1052 (refactor), #1051 (refactor), #1049 (ci)
 
-> Older cycles (Cycle 1 through Cycle 193) are preserved in git history. Run `git log -- docs/findings.md` to browse historical entries.
+## Cycle 207 (2026-07-07 — ULW Loop: PR Handler + Issue Manager, CI fix created, infra blockers documented)
+
+### Audit Scope
+
+Full PR handler cycle across all 5 open PRs (#2399–#2403): checkout, rebase to main, build/lint/typecheck/test verification, label assignment, merge-blocker analysis. CI Node.js version mismatch root-caused and fix prepared.
+
+### Actions Taken
+
+1. **PR #2403** (chore/repokeeper-cycle-207): Verified clean — build ✅ lint ✅ typecheck ✅ tests 1,766/1,766 ✅ format ✅. Added labels: `chore`, `P3`. Blocked by Vercel/Workers infra failures.
+2. **PR #2402** (fix/eslint-ignore-e2e-report): Verified clean — single-line eslint config change. Build/lint/tests all pass. Added labels: `bug`, `P2`.
+3. **PR #2401** (palette: loading-fallback fade-in): Verified clean — single-line CSS class addition. Build/lint/tests all pass. Added labels: `enhancement`, `P3`.
+4. **PR #2400** (docs/diagnostic-scoring-jul-07): Verified clean — docs-only. Added labels: `docs`, `P3`.
+5. **PR #2399** (docs/bugfixer-cycle-jul-07-run5): Verified clean — docs-only. Added labels: `docs`, `P3`.
+6. **CI Node.js version fix**: Created branch `fix/ci-node-version-22` with all 11 occurrences of `node-version: 20` → `"22"` across 4 workflow files. **Push blocked** — GITHUB_TOKEN lacks `workflows: write` permission (same blocker as BUG-014/BUG-017).
+7. **Root cause identified**: All 5 PRs blocked by same pre-existing infra issue — GitHub Actions pinned to Node.js 20 but project requires >=22 (issue **#2253**). Workers Builds and Vercel deploy both fail as a result.
+
+### Status
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,766/1,766 passing** (744 web + 443 API + 579 shared) |
+| Build | ✅ Clean |
+| Format | ✅ All Prettier-formatted |
+| @ts-ignore/as any | ✅ None in source code |
+| Empty catch blocks | ✅ None |
+| PRs processed | ✅ 5/5 verified and labeled |
+| CI fix branch | ✅ `fix/ci-node-version-22` ready — **needs `workflows: write`** |
+
+### Blockers
+
+- **BUG-014/BUG-017**: `workflows: write` permission blocker — unchanged (prevents pushing CI fix and resolving stale doc refs)
+- **Issue #2253**: CI Node.js 20→22 fix ready but unpushable — blocks all PR merges
+- **Token limitations**: GITHUB_TOKEN lacks `issues: write` — cannot normalize labels on 20+ open issues
+
+### Full Issue Label Audit
+
+**20+ open issues need label normalization** (requires `issues: write` permission):
+- Old `priority:low` → `P3`: #1167, #1166, #1143, #1142, #1118, #1117, #1116, #1054, #1052, #1051, #1016, #958, #955, #924
+- Old `priority:medium` → `P2`: #1165, #1163, #1161, #1141, #1053, #1049, #1046, #1019, #1015, #974, #973, #954, #953, #934, #930, #927, #921, #920, #919, #918
+- Missing category label: #1054 (chore), #1053 (test), #1052 (refactor), #1051 (refactor), #1049 (ci), #954 (test), #953 (ci), #951 (test), #936 (test), #935 (test), #928 (security), #927 (enhancement), #924 (docs), #921 (refactor), #920 (enhancement), #919 (refactor), #918 (test)
+
+### Verification
+
+- [x] All 5 open PRs checked out, rebased, built, linted, tested — clean ✅
+- [x] Labels applied to all PRs: category + priority ✅
+- [x] CI fix branch created with 11/11 occurrences updated ✅
+- [x] Root cause of all PR blocks documented ✅
+- [x] Issue label normalization audit completed ✅
+
+> Older cycles (Cycle 1 through Cycle 206) are preserved in git history. Run `git log -- docs/findings.md` to browse historical entries.
