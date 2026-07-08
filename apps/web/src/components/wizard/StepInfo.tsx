@@ -405,7 +405,7 @@ export const StepInfo = memo(function StepInfo({
           <div className="flex items-center justify-between mb-2">
             <label htmlFor="targetAudience" className="label mb-0 flex items-center gap-2">
               {UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL}{" "}
-              <span className="text-dark-500">(optional)</span>
+              <span className="text-dark-500">{UI_CONTENT.WIZARD.STEP_INFO.OPTIONAL_LABEL}</span>
               <TypeIndicator isTyping={targetAudienceTyping.isTyping} />
             </label>
             <CharacterCounter
@@ -465,7 +465,7 @@ export const StepInfo = memo(function StepInfo({
           <div className="flex items-center justify-between mb-2">
             <label htmlFor="constraints" className="label mb-0 flex items-center gap-2">
               {UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_LABEL}{" "}
-              <span className="text-dark-500">(optional)</span>
+              <span className="text-dark-500">{UI_CONTENT.WIZARD.STEP_INFO.OPTIONAL_LABEL}</span>
               <TypeIndicator isTyping={constraintsTyping.isTyping} />
             </label>
             <CharacterCounter
