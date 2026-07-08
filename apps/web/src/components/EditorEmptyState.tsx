@@ -168,7 +168,15 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
         <span className="text-sm text-dark-300">
           Step {currentIndex + 1} of {WIZARD_STEPS.length}
         </span>
-        <span className="text-xs text-dark-500 tabular-nums">{Math.round(progress)}%</span>
+        <motion.span
+          key={Math.round(progress)}
+          className="text-xs text-dark-500 tabular-nums"
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
+        >
+          {Math.round(progress)}%
+        </motion.span>
       </motion.div>
 
       <motion.p
