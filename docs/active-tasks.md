@@ -2,6 +2,24 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ BugFixer ULW Cycle Jul 08 2026 — **Full audit, BUG-014/017 fixed on branch, push blocked by `workflows: write`** ✅
+
+### Task: Full repository audit and bug fix cycle — BUG-014 (stale doc refs in main.yml) and BUG-017 (hardcoded node-version: "20" in 4 workflow files, 11 occurrences) fixed on branch `fix/bugfixer-ulw-cycle-jul-08-2026`. Push rejected by GitHub App token lacking `workflows: write` permission — same documented blocker as all 30+ prior cycles. No new fixable bugs found in codebase. All quality checks passing.
+
+- **Priority**: High
+- **Status**: ✅ Complete (fix committed on branch, push blocked by token)
+- **Objective**: Jul 08 2026 full repository bug fix audit
+- **Actions**:
+  - [x] Full quality audit: typecheck ✅ lint ✅ build ✅ tests 1,792/1,792 ✅ format ✅ secrets ✅
+  - [x] Source code scan: 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 empty catch blocks, 0 TODO/FIXME/HACK
+  - [x] **BUG-014 — Fixed on local branch**: stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences)
+  - [x] **BUG-017 — Fixed on local branch**: replaced `node-version: "20"` with `node-version-file: ".node-version"` across 4 workflow files (11 occurrences)
+  - [x] Both fixes verified via grep: zero stale doc refs, zero hardcoded `node-version:` remaining
+  - [x] Commit `3fcb5c15` on branch `fix/bugfixer-ulw-cycle-jul-08-2026`
+  - [x] **Push rejected**: GitHub App token lacks `workflows: write` permission (same blocker as 30+ prior cycles)
+  - [x] Patch saved at `/tmp/bugfixer-cycle-jul-08-2026-workflow-fixes.patch`
+  - [x] Documentation updated: bugs.md, findings.md, active-tasks.md
+
 ## ✅ RepoKeeper Cycle 210 — **CHANGELOG gap fix (2 post-Cycle-209 commits), BroCula ref drift fix (Run 1 → Run 2), diagnostic scoring report indexing, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — CHANGELOG gap fix (2 post-Cycle-209 commits: docs(flexy) Iteration 106 LOG_LEVELS centralization (#2413), docs(audit) diagnostic scoring report Jul 08); BroCula ref drift fix (knowledge-review.md: Run 1 → Run 2 — latest `brocula-hunt-2026-07-08-run2.md` / **1774 tests** ✅, **52ms FCP**, **0.009 CLS**, clean console); diagnostic scoring report indexed in `docs/audits/README.md` (Jul 08 added as latest); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README); quality verification (typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker)

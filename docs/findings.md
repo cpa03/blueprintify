@@ -2,6 +2,55 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 211 (2026-07-08 — BugFixer ULW Cycle Jul 08 2026: Full audit, BUG-014/017 fixed on branch, push blocked by `workflows: write`)
+
+### Audit Scope
+
+Full repository audit and bug fix cycle. Typecheck ✅ lint ✅ build ✅ tests **1,792/1,792** ✅ (744 web + 443 api + 605 shared). Secrets scan ✅. Format ✅. 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. **BUG-014 — FIXED on local branch**: replaced stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). **BUG-017 — FIXED on local branch**: replaced all 11 occurrences of `node-version: "20"`/`node-version: 20` with `node-version-file: ".node-version"` across 4 workflow files — iterate.yml (5), parallel.yml (4), on-pull.yml (1), pr-gatekeeper.yml (1). Both fixes verified via grep: zero stale doc refs, zero hardcoded `node-version:` remaining. **Push rejected** by GitHub App token lacking `workflows: write` permission — same documented blocker as all 30+ prior cycles. Branch `fix/bugfixer-ulw-cycle-jul-08-2026` created with fixes committed at `3fcb5c15`. Patch saved at `/tmp/bugfixer-cycle-jul-08-2026-workflow-fixes.patch`. No new fixable bugs found in codebase. npm audit: 17 moderate vulns in `@opentelemetry/core` via `lighthouse`→`@sentry/node` — BUG-013 upstream tooling dependency, same documented blocker.
+
+> Older cycles (Cycle 1 through Cycle 210) are preserved in git history. Run `git log -- docs/findings.md` to browse historical entries.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **1,792/1,792 passing** (744 web + 443 api + 605 shared) |
+| @ts-ignore/as any | ✅ None in source code |
+| TODO/FIXME/HACK | ✅ None in source code |
+| Empty catch blocks | ✅ None |
+| Format | ✅ All files Prettier-formatted |
+| Secrets scan | ✅ No secrets detected |
+| Redundant/temp/unused files | ✅ None found |
+| BUG-014 | 🔴 Fixed on branch — push blocked (`workflows: write`) |
+| BUG-017 | 🔴 Fixed on branch — push blocked (`workflows: write`) |
+| BUG-013 | ⚠️ 17 moderate npm vulns (upstream tooling — unchanged) |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository audit**: Typecheck ✅ lint ✅ build ✅ tests 1,792/1,792 ✅ format ✅ secrets ✅
+2. **BUG-014 — Fixed on local branch**: Replaced stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). Fix verified via grep: zero stale doc refs remaining.
+3. **BUG-017 — Fixed on local branch**: Replaced all 11 occurrences of `node-version: "20"`/`node-version: 20` with `node-version-file: ".node-version"` across iterate.yml (5), parallel.yml (4), on-pull.yml (1), pr-gatekeeper.yml (1). Fix verified via grep: zero hardcoded `node-version:` remaining.
+4. **Source code scan**: Verified zero `@ts-expect-error`/`@ts-ignore`, zero `as any`, zero empty catch blocks, zero TODO/FIXME/HACK in source code.
+5. **Push attempted**: Rejected by GitHub App token lacking `workflows: write` permission — same documented blocker as all 30+ prior cycles. Branch `fix/bugfixer-ulw-cycle-jul-08-2026` with fixes committed at `3fcb5c15`. Patch saved at `/tmp/bugfixer-cycle-jul-08-2026-workflow-fixes.patch`.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — clean ✅
+- [x] Tests — 1,792/1,792 passing (744 web + 443 api + 605 shared) ✅
+- [x] Format — all Prettier-formatted ✅
+- [x] Secrets scan — clean ✅
+- [x] No redundant/temp/unused files — clean ✅
+- [x] No @ts-expect-error/@ts-ignore/as any in source ✅
+- [x] No TODO/FIXME/HACK in source ✅
+- [x] BUG-014 — zero stale doc refs on branch ✅ (push blocked 🔴)
+- [x] BUG-017 — zero hardcoded node-version on branch ✅ (push blocked 🔴)
+- [x] findings.md — Cycle 211 entry added ✅
+
 ## Cycle 210 (2026-07-08 — RepoKeeper: CHANGELOG gap fix (2 post-Cycle-209 commits), BroCula ref drift fix (Run 1 → Run 2), diagnostic scoring report indexing, doc refresh, quality verification)
 
 ### Audit Scope
