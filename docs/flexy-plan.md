@@ -1802,8 +1802,49 @@ After **102 Flexy iterations**, the Blueprintify codebase status:
 | ---- | ------ | ----- |
 | [#2407](https://github.com/cpa03/blueprintify/pull/2407) | `feat/flexy-iteration-105-text-fade` | refactor(flexy): centralize hardcoded text swap duration into shared config (Iteration 105) |
 
+### ✅ Flexy Iteration 106: Centralize Hardcoded LogLevel Union Type into Shared LOG_LEVELS Config
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config.ts` | Added `LOG_LEVELS` config object (DEBUG, INFO, WARN, ERROR) — single source of truth for log level strings |
+| `packages/shared/src/index.ts` | Exported `LOG_LEVELS` |
+| `packages/shared/src/config.test.ts` | Added 9 tests for `LOG_LEVELS` (values, types, TSDoc docstrings) |
+| `apps/web/src/utils/logger.ts` | `LogLevel` type now derives from `(typeof LOG_LEVELS)[keyof typeof LOG_LEVELS]` instead of hardcoded `"debug" \| "info" \| "warn" \| "error"` union; all log methods use `LOG_LEVELS.*` refs |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 744 web + 443 api + 587 shared = 1,774 tests passing across 85 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| N/A (direct commit to `main`) | `main` | refactor(flexy): centralize hardcoded LogLevel union type into shared LOG_LEVELS config (Iteration 106) |
+
+## Final Codebase Status
+
+After **106 Flexy iterations**, the Blueprintify codebase status:
+
+| Category | Status |
+|----------|--------|
+| Hardcoded values in application logic | ❌ None remaining |
+| Config centralization (@blueprint/shared) | ✅ 70+ config objects in single source of truth |
+| Animation constants extracted | ✅ 100% of framer-motion values in config |
+| Color tokens centralized | ✅ All colors via COLORS + hexToRgba |
+| HTTP headers/methods/status codes | ✅ All in @blueprint/shared |
+| Error messages/strings | ✅ All in @blueprint/shared |
+| Route paths/env keys | ✅ All in @blueprint/shared |
+| UI strings/labels/tooltips | ✅ All in config |
+| CSS custom properties | ✅ :root variables + color-mix() throughout |
+| Tailwind arbitrary values | ✅ Zero remaining in components |
+| z-index values | ✅ All in Z_INDEX config |
+| Build/lint/test | ✅ Clean across all workspaces |
+| Log levels | ✅ Centralized LOG_LEVELS in shared config |
+
 **Edge cases not addressed** (inherently hardcoded by nature):
 - **Template generators** (`lib/templates/`): contain hardcoded CSS colors in template output — these emit **code for user projects**, not app code, so extraction would break the generated output
 - **Platform constants** (`lib/platform.ts`): OS-level key labels ("⌘", "Ctrl", "Meta") — inherently platform-defined, not application configuration
 - **SVG path data** in icon components: inherently hardcoded geometry
-- ~~**CI workflow node-version**: 11 hardcoded `node-version: "20"` across 4 `.github/workflows/*.yml` files — **blocked**: GitHub App token lacks `workflows` permission~~ **(Fixed in Iteration 103)**
