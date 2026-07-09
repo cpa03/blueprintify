@@ -223,6 +223,8 @@ export const SVG_TRANSITION = {
   STROKE_COLOR_TRANSITION_S: SHARED_SVG_TRANSITION_DEFAULTS.STROKE_COLOR_TRANSITION_S,
   /** Timing function for stroke animations */
   STROKE_TIMING: SHARED_SVG_TRANSITION_DEFAULTS.STROKE_TIMING,
+  /** CSS transition-property value for stroke animations */
+  STROKE_PROPERTY: SHARED_SVG_TRANSITION_DEFAULTS.STROKE_PROPERTY,
 } as const;
 
 // ============================================================================
