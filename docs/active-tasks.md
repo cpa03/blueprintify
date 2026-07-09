@@ -2,6 +2,27 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 217 — **BroCula ref drift fix (Run 4→Run 5 Jul 09 — 1800 tests, LH 99-100-100-100), apps/web/index.html Prettier format fix, stale merged branch cleanup, doc refresh, quality verification** ✅
+
+### Task: Full repository audit — **BroCula ref drift fix** (knowledge-review.md: Jul 09 Run 4 → Jul 09 Run 5 — latest `brocula-hunt-2026-07-09-run5.md` / **1800 tests** ✅ (744 web + 443 API + 613 shared), LH **99-100-100-100** 🏆, clean console); **apps/web/index.html Prettier format fix** (recurring pattern — same file as Cycle 207); **stale merged branch cleanup** (`origin/docs/bugfixer-cycle-jul-09-2026` — fully merged into main, 0 unmerged commits); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,800/1,800** ✅ — 744 web + 443 API + 613 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 217 full repository audit — BroCula ref drift fix, Prettier format fix, stale merged branch cleanup, doc refresh, quality verification
+- **Actions**:
+  - [x] **BroCula ref drift fix**: knowledge-review.md updated — Jul 09 Run 4 → Jul 09 Run 5 (`brocula-hunt-2026-07-09-run5.md` / **1800 tests** ✅ (744 web + 443 API + 613 shared), LH **99-100-100-100** 🏆, clean console)
+  - [x] **apps/web/index.html Prettier format fix**: Fixed via `npx prettier --write` — same recurring pattern as Cycle 207
+  - [x] **Stale merged branch cleanup**: Deleted `origin/docs/bugfixer-cycle-jul-09-2026` — fully merged into main
+  - [x] **Format**: All files Prettier-formatted ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 217, BroCula ref → Jul 09 Run 5, test count → 1,800
+  - [x] **findings.md updated**: Cycle 217 entry added
+  - [x] **active-tasks.md updated**: Cycle 217 entry added at top
+  - [x] **CHANGELOG.md updated**: Cycle 217 entry added to Unreleased section
+  - [x] **BUG-013**: ✅ **RESOLVED since Cycle 216** (0 vulns)
+  - [x] **BUG-014**: ✅ **RESOLVED on main since Cycle 211**
+  - [x] **BUG-017**: ✅ **RESOLVED on main since Cycle 211**
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,800/1,800 ✅ npm audit 0 vulns ✅
+
 ## ✅ RepoKeeper Cycle 216 — **BUG-013 resolved (0 vulns), BroCula ref drift fix (Run 3→Run 4 Jul 09), CHANGELOG gap fix (2 post-Cycle-215 commits), doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — **BUG-013 RESOLVED** (`lighthouse` downgraded 13.4.0→12.6.1, **0 vulnerabilities** — was 17 moderate via `@sentry/node`→`@opentelemetry/core`); **BroCula ref drift fix** (knowledge-review.md: Jul 09 Run 3 → Jul 09 Run 4 — latest `brocula-hunt-2026-07-09-run4.md` / **1799 tests** ✅ (744 web + 443 API + 612 shared), LH **100-100-100-100** 🏆, clean console); **CHANGELOG gap fix** (2 post-Cycle-215 commits: feat(template-grid) +N overflow badge transition/selection styling, fix(bugfixer) BUG-013 resolved + bugs.md update); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,799/1,799** ✅ — 744 web + 443 API + 612 shared — format ✅); **All bugs resolved** ✅ — BUG-013 (0 vulns), BUG-014 (stale doc refs fixed on main), BUG-017 (node-version fixed on main)
