@@ -251,7 +251,18 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                       </span>
                     ))}
                     {template.techStack.length > 3 && (
-                      <span className="px-2 py-0.5 text-xs bg-dark-800 rounded text-dark-300">
+                      <span
+                        className={`
+                          px-2 py-0.5 text-xs rounded
+                          motion-safe:transition-all motion-safe:duration-150
+                          motion-safe:hover:scale-105
+                          ${
+                            isSelected
+                              ? "bg-accent-emerald/20 text-accent-emerald"
+                              : "bg-dark-800 text-dark-300"
+                          }
+                        `}
+                      >
                         +{template.techStack.length - 3}
                       </span>
                     )}
