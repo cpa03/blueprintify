@@ -318,7 +318,7 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `packages/shared/src/config.ts`  | Added `PREVIEW_DEFAULTS` (preview port/host/URL), `OBSERVABILITY_DEFAULTS` (sampling rates, CPU limit), `QUEUE_DEFAULTS` (batch size, timeout, retries), `PYTHON_DEV_DEFAULTS` (dev port/host), `CSP_CONNECT_DOMAINS` (known deployment domains) |
 | `packages/shared/src/index.ts`   | Exported 5 new config objects                                                                                                                                                                                                                    |
-| `scripts/brocula-lighthouse.mjs` | Replaced hardcoded `http://localhost:4173` with env vars + defaults (`PREVIEW_PORT`, `PREVIEW_HOST`, `PREVIEW_URL`)                                                                                                                              |
+| `scripts/brocula-hunt.mjs` | Replaced hardcoded `http://localhost:4173` with env vars + defaults (`PREVIEW_PORT`, `PREVIEW_HOST`, `PREVIEW_URL`) (supersedes removed `scripts/brocula-lighthouse.mjs`)                                                                                                                              |
 
 ## Verification
 
