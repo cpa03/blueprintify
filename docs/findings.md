@@ -2,6 +2,64 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 215 (2026-07-09 — RepoKeeper: tracked .patch removal, BroCula ref drift fix (Run 1→Run 3 Jul 09), CHANGELOG gap fix (8 post-Cycle-213 commits), doc refresh, quality verification ✅)
+
+### Audit Scope
+
+Full repository cleanup and maintenance: **tracked `.patch` removal** (`scripts/repokeeper-cycle-214-ci-fixes.patch` — force-tracked despite `*.patch` in `.gitignore`, same recurring anti-pattern as Cycles 167/170/173/175/178/183/185/187/188/193/194/205); **BroCula ref drift fix** (knowledge-review.md + docs/audits/README.md referenced Jul 09 Run 1 as latest — updated to Jul 09 Run 3: `brocula-hunt-2026-07-09-run3.md` / **1799 tests** ✅ (744 web + 443 API + 612 shared), LH **96-100-100-100**, clean console); **CHANGELOG gap fix** (8 post-Cycle-213 commits added: fix(api) per-share-ID rate limiting, feat(ui) progress glow animation, docs(bugs) BugFixer Jul 09 (2x), refactor(flexy) Iteration 109 (2x), docs(audit) BroCula Run 3, chore(repokeeper) Cycle 214); documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,799/1,799** ✅ — 744 web + 443 API + 612 shared — format ✅); BUG-014/BUG-017 still resolved ✅.
+
+> Older cycles (Cycle 1 through Cycle 214) are preserved in git history. Run `git log -- docs/findings.md` to browse historical entries.
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build | ✅ Clean |
+| Tests | ✅ **1,799/1,799 passing** (744 web + 443 API + 612 shared) |
+| @ts-ignore/as any | ✅ None in source code |
+| TODO/FIXME/HACK | ✅ None in source code |
+| Empty catch blocks | ✅ None |
+| Format | ✅ All files Prettier-formatted |
+| Secrets scan | ✅ No secrets detected |
+| Redundant/temp/unused files | ✅ None found |
+| Tracked .patch files | ✅ `scripts/repokeeper-cycle-214-ci-fixes.patch` removed from tracking (recurring anti-pattern resolved) |
+| BroCula ref drift | ✅ Fixed — Jul 09 Run 1 → Jul 09 Run 3 (1799 tests, LH 96-100-100-100) |
+| CHANGELOG gap fix | ✅ 8 post-Cycle-213 commits added |
+| README BroCula date | ✅ Updated (Jun 17–Jul 8 → Jun 17–Jul 9) |
+| BUG-014 | ✅ **RESOLVED on main since Cycle 211** |
+| BUG-017 | ✅ **RESOLVED on main since Cycle 211** |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Tracked .patch removal**: `scripts/repokeeper-cycle-214-ci-fixes.patch` removed from git tracking via `git rm --cached` — force-tracked despite `*.patch` in `.gitignore`. Same recurring anti-pattern as Cycles 167/170/173/175/178/183/185/187/188/193/194/205.
+2. **BroCula ref drift fix**: knowledge-review.md + docs/audits/README.md updated — Jul 09 Run 1 → Jul 09 Run 3 (`brocula-hunt-2026-07-09-run3.md` / **1799 tests** ✅ (744 web + 443 API + 612 shared), LH **96-100-100-100**, clean console). Added Run 2 and Run 3 to docs/audits/README.md table.
+3. **CHANGELOG gap fix**: Added 8 post-Cycle-213 commits — fix(api) per-share-ID rate limiting, feat(ui) progress glow animation, docs(bugs) BugFixer Jul 09 (2x), refactor(flexy) Iteration 109 (2x), docs(audit) BroCula Run 3, chore(repokeeper) Cycle 214.
+4. **README BroCula date drift fix**: `(Jun 17–Jul 8)` → `(Jun 17–Jul 9)` — matches latest audit.
+5. **Documentation refresh**: Updated findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README for Cycle 215.
+6. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,799/1,799 ✅ format ✅.
+7. **BUG-014/BUG-017 verified**: ✅ Still **RESOLVED on main since Cycle 211**.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — clean ✅
+- [x] Tests — 1,799/1,799 passing (744 web + 443 API + 612 shared) ✅
+- [x] Format — all Prettier-formatted ✅
+- [x] No redundant/temp/unused files — clean ✅
+- [x] No @ts-expect-error/@ts-ignore/as any in source ✅
+- [x] No TODO/FIXME/HACK in source ✅
+- [x] Tracked .patch — `scripts/repokeeper-cycle-214-ci-fixes.patch` removed from git tracking ✅
+- [x] BroCula ref drift — Jul 09 Run 3 indexed as latest ✅
+- [x] CHANGELOG gap fix — 8 post-Cycle-213 commits added ✅
+- [x] README BroCula date — (Jun 17–Jul 9) ✅
+- [x] BUG-014 — **RESOLVED on main since Cycle 211** ✅
+- [x] BUG-017 — **RESOLVED on main since Cycle 211** ✅
+- [x] findings.md — Cycle 215 entry added ✅
+
 ## Cycle 213 (2026-07-09 — RepoKeeper: remove 4 unreferenced BroCula scripts from scripts/; BroCula ref drift fix (Run 4→Run 1 Jul 09); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification ✅)
 
 ### Audit Scope

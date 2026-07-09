@@ -2,6 +2,26 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 215 — **Tracked .patch removal, BroCula ref drift fix (Run 1→Run 3 Jul 09), CHANGELOG gap fix (8 post-Cycle-213 commits), doc refresh, quality verification** ✅
+
+### Task: Full repository audit — **tracked `.patch` removal** (`scripts/repokeeper-cycle-214-ci-fixes.patch` — force-tracked despite `*.patch` in `.gitignore`, recurring anti-pattern); **BroCula ref drift fix** (knowledge-review.md + docs/audits/README.md: Jul 09 Run 1 → Jul 09 Run 3 — latest `brocula-hunt-2026-07-09-run3.md` / **1799 tests** ✅ (744 web + 443 API + 612 shared), LH **96-100-100-100**, clean console); **CHANGELOG gap fix** (8 post-Cycle-213 commits: fix(api) per-share-ID rate limiting, feat(ui) progress glow animation, docs(bugs) BugFixer Jul 09 (2x), refactor(flexy) Iteration 109 (2x), docs(audit) BroCula Run 3, chore(repokeeper) Cycle 214); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,799/1,799** ✅ — 744 web + 443 API + 612 shared — format ✅); BUG-014/BUG-017 still resolved ✅
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 215 full repository audit — tracked .patch removal, BroCula ref drift fix, CHANGELOG gap fix, doc refresh, quality verification
+- **Actions**:
+  - [x] **Tracked .patch removal**: `scripts/repokeeper-cycle-214-ci-fixes.patch` removed from git tracking via `git rm --cached` (recurring anti-pattern: force-tracked despite `*.patch` in `.gitignore`)
+  - [x] **BroCula ref drift fix**: knowledge-review.md + docs/audits/README.md updated — Jul 09 Run 1 → Jul 09 Run 3 (`brocula-hunt-2026-07-09-run3.md` / **1799 tests** ✅ (744 web + 443 API + 612 shared), LH **96-100-100-100**, clean console)
+  - [x] **CHANGELOG gap fix**: Added 8 post-Cycle-213 commits — fix(api) per-share-ID rate limiting, feat(ui) progress glow animation, docs(bugs) BugFixer Jul 09 (2x), refactor(flexy) Iteration 109 (2x), docs(audit) BroCula Run 3, chore(repokeeper) Cycle 214
+  - [x] **README BroCula date drift fix**: `(Jun 17–Jul 8)` → `(Jun 17–Jul 9)` — matches latest audit
+  - [x] **Format**: All files Prettier-formatted ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 215, BroCula ref → Jul 09 Run 3
+  - [x] **findings.md updated**: Cycle 215 entry added
+  - [x] **active-tasks.md updated**: Cycle 215 entry added at top
+  - [x] **CHANGELOG.md updated**: 8 post-Cycle-213 commits + Cycle 215 entry indexed
+  - [x] **BUG-014/BUG-017**: ✅ Still **RESOLVED on main since Cycle 211**
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,799/1,799 ✅
+
 ## ✅ BugFixer ULW Cycle Jul 09 2026 — **BUG-014/BUG-017 fixed on branch, push blocked by `workflows: write` permission** ✅
 
 ### Task: Full repository audit — BUG-014 (stale doc refs in main.yml) and BUG-017 (hardcoded node-version: "20" in 4 workflow files, 11 occurrences) both fixed on local branch; quality verification (typecheck ✅ lint ✅ build ✅ tests **1,799/1,799** ✅ — 744 web + 443 API + 612 shared); both fixes verified via grep (zero stale doc refs, zero hardcoded `node-version:` remaining); **Push rejected** by GitHub App token lacking `workflows: write` permission — same documented blocker as 30+ prior cycles; patch saved at `/tmp/bugfixer-cycle-jul-09-2026-workflow-fixes.patch`
@@ -270,5 +290,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-07-08 (RepoKeeper Cycle 210)  
+**Last Updated**: 2026-07-09 (RepoKeeper Cycle 215)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
