@@ -572,7 +572,7 @@ Full repository cleanup and maintenance: fixed README broken link (`docs/audits/
 
 ### Audit Scope
 
-Full repository cleanup and maintenance: added missing `playwright`/`playwright-core` devDependencies to root `package.json` (used by `scripts/brocula-console-check.mjs` and `scripts/brocula-console-hunt.mjs` but only available as transitive deps via `@playwright/test` — `depcheck` flagged as missing); trimmed bloated `docs/active-tasks.md` from 2,353 lines to 33 lines by archiving cycles older than Cycle 200 into git history (consistent with findings.md Cycle 193 precedent); documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ tests **1,766/1,766** ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK in source); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker); npm audit (17 moderate — BUG-013 upstream tooling).
+Full repository cleanup and maintenance: added missing `playwright`/`playwright-core` devDependencies to root `package.json` (used by `scripts/brocula-console-check.mjs` and `scripts/brocula-console-hunt.mjs` but only available as transitive deps via `@playwright/test` — `depcheck` flagged as missing; both scripts later removed as redundant — superseded by `scripts/brocula-hunt.mjs`); trimmed bloated `docs/active-tasks.md` from 2,353 lines to 33 lines by archiving cycles older than Cycle 200 into git history (consistent with findings.md Cycle 193 precedent); documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ tests **1,766/1,766** ✅ format ✅, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK in source); BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker); npm audit (17 moderate — BUG-013 upstream tooling).
 
 ### Status Summary
 
@@ -593,7 +593,7 @@ Full repository cleanup and maintenance: added missing `playwright`/`playwright-
 
 ### Actions Taken This Cycle
 
-1. **Missing playwright dependencies added**: `playwright@1.61.1` and `playwright-core@1.61.1` added to root `devDependencies` in `package.json`. These are used by `scripts/brocula-console-check.mjs` and `scripts/brocula-console-hunt.mjs` but were only transitively available via `@playwright/test`. `depcheck` flagged them as missing.
+1. **Missing playwright dependencies added**: `playwright@1.61.1` and `playwright-core@1.61.1` added to root `devDependencies` in `package.json`. These were used by `scripts/brocula-console-check.mjs` and `scripts/brocula-console-hunt.mjs` (both later removed as redundant — superseded by `scripts/brocula-hunt.mjs`) but were only transitively available via `@playwright/test`. `depcheck` flagged them as missing.
 2. **active-tasks.md trimmed**: Reduced from 2,353 lines to 33 lines — archived all cycles older than Cycle 200 into git history. Consistent with findings.md Cycle 193 precedent (99.5% reduction).
 3. **Documentation refresh**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 201.
 4. **Quality verification**: typecheck ✅ lint ✅ tests 1,766/1,766 ✅ format ✅.
