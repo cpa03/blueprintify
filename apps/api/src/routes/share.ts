@@ -28,6 +28,7 @@ import {
   SHARE_CONFIG,
   SHARE_ERROR_MESSAGES,
   CACHE_CONFIG,
+  RATE_LIMIT_CONSTANTS,
 } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
 import { ErrorType, createErrorJson } from "../errors";
@@ -210,7 +211,25 @@ app.post(
   }
 );
 
-app.get("/:id", rateLimit(rateLimitConfigs.standard), async (c) => {
+/**
+ * Rate limiter for share ID enumeration protection.
+ * Uses a combination of client IP and share ID as the rate limit key,
+ * preventing brute-force enumeration and DoS on specific share IDs.
+ * Stricter than standard because it targets enumeration attacks.
+ */
+const shareEnumerationRateLimit = rateLimit({
+  limiter: RATE_LIMIT_CONSTANTS.LIMITER_BINDINGS.STRICT as "STRICT_RATE_LIMITER",
+  keyGenerator: (c) => {
+    const ip =
+      c.req.header(API_HEADERS.CF_PROPERTIES.CONNECTING_IP) ||
+      c.req.header(API_HEADERS.REQUEST.FORWARDED_FOR) ||
+      RATE_LIMIT_CONSTANTS.ANONYMOUS_CLIENT_KEY;
+    const shareId = c.req.param("id") || "unknown";
+    return `share:${shareId}:${ip}`;
+  },
+});
+
+app.get("/:id", shareEnumerationRateLimit, async (c) => {
   try {
     const shareId = c.req.param("id") || "";
 
