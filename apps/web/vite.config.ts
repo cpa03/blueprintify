@@ -134,6 +134,7 @@ export default defineConfig({
       treeshake: {
         moduleSideEffects: false,
         propertyReadSideEffects: false,
+        annotations: true,
       },
       output: {
         // Note: CodeMirror, markdown, and syntaxHighlighter are intentionally NOT manually chunked
@@ -158,7 +159,16 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 600,
     cssCodeSplit: true,
-    minify: "esbuild",
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: false,
+        dead_code: true,
+        unused: true,
+        passes: 2,
+      },
+      mangle: true,
+    },
     cssMinify: true,
     reportCompressedSize: true,
     emptyOutDir: true,
