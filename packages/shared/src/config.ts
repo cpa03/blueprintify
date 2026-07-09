@@ -2301,6 +2301,8 @@ export const SVG_TRANSITION_DEFAULTS = {
   STROKE_COLOR_TRANSITION_S: 0.45,
   /** Timing function for SVG stroke animations */
   STROKE_TIMING: "ease-out",
+  /** CSS transition-property value for SVG stroke animations ("stroke-dashoffset, stroke") */
+  STROKE_PROPERTY: "stroke-dashoffset, stroke",
 } as const;
 
 /**

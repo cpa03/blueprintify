@@ -187,6 +187,15 @@ export const STEP_TITLES: Record<string, string> = {
 };
 
 /**
+ * Step indicator display characters
+ * Flexy says: No hardcoded step display characters - everything configurable!
+ */
+export const STEP_INDICATOR_CHARS = {
+  COMPLETE_CHECK: "✓",
+  ALL_COMPLETE_EMOJI: "🎉",
+} as const;
+
+/**
  * Celebration component text
  * Flexy says: No hardcoded celebration text - everything configurable!
  */

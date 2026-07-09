@@ -3031,8 +3031,14 @@ describe("SVG_TRANSITION_DEFAULTS", () => {
     expect(typeof SVG_TRANSITION_DEFAULTS.STROKE_COLOR_TRANSITION_S).toBe("number");
   });
 
-  it("should have 3 entries", () => {
-    expect(Object.keys(SVG_TRANSITION_DEFAULTS).length).toBe(3);
+  it("should have non-empty stroke property string", () => {
+    expect(SVG_TRANSITION_DEFAULTS.STROKE_PROPERTY.length).toBeGreaterThan(0);
+    expect(typeof SVG_TRANSITION_DEFAULTS.STROKE_PROPERTY).toBe("string");
+    expect(SVG_TRANSITION_DEFAULTS.STROKE_PROPERTY).toContain("stroke");
+  });
+
+  it("should have 4 entries", () => {
+    expect(Object.keys(SVG_TRANSITION_DEFAULTS).length).toBe(4);
   });
 });
 
