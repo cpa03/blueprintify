@@ -50,6 +50,22 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
   isVisible,
   hasChanges = false,
 }: LastSavedIndicatorProps) {
+  const [showSavedGlow, setShowSavedGlow] = React.useState(false);
+  const prevHasChangesRef = React.useRef(hasChanges);
+
+  // Trigger a brief green glow pulse when transitioning from unsaved→saved,
+  // giving users a satisfying "you're safe!" confirmation that auto-save
+  // has completed. The glow fires once per save cycle and auto-clears.
+  React.useEffect(() => {
+    if (prevHasChangesRef.current && !hasChanges) {
+      setShowSavedGlow(true);
+      const timer = setTimeout(() => setShowSavedGlow(false), 700);
+      prevHasChangesRef.current = hasChanges;
+      return () => clearTimeout(timer);
+    }
+    prevHasChangesRef.current = hasChanges;
+  }, [hasChanges]);
+
   return (
     <AnimatePresence mode="wait">
       {isVisible && (
@@ -89,39 +105,43 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
             </>
           ) : (
             <>
-              <motion.svg
-                className="w-3.5 h-3.5 text-accent-emerald"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{
-                  type: "spring",
-                  ...SPRING_CONFIG.CHECKMARK_ICON,
-                }}
+              <motion.span
+                className={`relative flex h-3.5 w-3.5 items-center justify-center flex-shrink-0 ${showSavedGlow ? "saved-celebration-glow" : ""}`}
               >
-                <motion.path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 1 }}
+                <motion.svg
+                  className="w-3.5 h-3.5 text-accent-emerald"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
                   transition={{
-                    pathLength: {
-                      type: "spring",
-                      ...SPRING_CONFIG.DEFAULT,
-                      delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
-                    },
-                    opacity: {
-                      duration: ANIMATION.QUICK_FADE,
-                      delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
-                    },
+                    type: "spring",
+                    ...SPRING_CONFIG.CHECKMARK_ICON,
                   }}
-                />
-              </motion.svg>
+                >
+                  <motion.path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 1 }}
+                    transition={{
+                      pathLength: {
+                        type: "spring",
+                        ...SPRING_CONFIG.DEFAULT,
+                        delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
+                      },
+                      opacity: {
+                        duration: ANIMATION.QUICK_FADE,
+                        delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
+                      },
+                    }}
+                  />
+                </motion.svg>
+              </motion.span>
               <motion.span
                 initial={{ opacity: 0, x: -4 }}
                 animate={{ opacity: 1, x: 0 }}
