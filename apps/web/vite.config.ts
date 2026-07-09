@@ -140,11 +140,16 @@ export default defineConfig({
         // Note: CodeMirror, markdown, and syntaxHighlighter are intentionally NOT manually chunked
         // to allow dynamic imports in LazyCodeMirror/LazyMarkdownRenderer to create
         // natural separate chunks for better lazy loading and smaller initial bundles
+        //
+        // Split vendor into per-package chunks so tree-shaking can eliminate unused code
+        // from each package independently and so cache invalidation is granular.
+        // react-dom has ~35% unused code in client-only usage — isolating it prevents
+        // that waste from bloating the other packages' cache keys.
         manualChunks(id: string) {
-          if (id.includes("node_modules/react-dom")) return "vendor";
-          if (id.includes("node_modules/react/")) return "vendor";
-          if (id.includes("node_modules/zustand")) return "vendor";
-          if (id.includes("node_modules/scheduler")) return "vendor";
+          if (id.includes("node_modules/react-dom")) return "vendor-react-dom";
+          if (id.includes("node_modules/react/")) return "vendor-react";
+          if (id.includes("node_modules/zustand")) return "vendor-zustand";
+          if (id.includes("node_modules/scheduler")) return "vendor-scheduler";
         },
         assetFileNames: (assetInfo) => {
           const name = assetInfo.name ?? "";
