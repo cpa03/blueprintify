@@ -67,10 +67,11 @@ export default {
         sans: ["Inter", "Inter Fallback", "system-ui", "sans-serif"],
         mono: ["JetBrains Mono", "Fira Code", "monospace"],
       },
-      /** Flexy says: Scale tokens to eliminate arbitrary scale-[1.02]/[0.98]/[1.25] values */
+      /** Flexy says: Scale tokens to eliminate arbitrary scale-[1.02]/[0.98]/[1.25]/[1.05] values */
       scale: {
         98: "0.98",
         102: "1.02",
+        105: "1.05",
         125: "1.25",
       },
       backdropBlur: {

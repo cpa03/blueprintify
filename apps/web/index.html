@@ -194,17 +194,17 @@
       /* Subtle pulse animation for skeleton logo — gives the initial
          loading state a gentle "alive" feel while React hydrates.
          A soft scale + glow that fades once per cycle, matching the
-         app's animated design language. */
+         app's animated design language.
+         Flexy says: Values must stay in sync with @blueprint/shared SKELETON_DEFAULTS! */
       @keyframes skeleton-pulse {
-        0%,
-        100% {
-          transform: scale(1);
-          opacity: 0.9;
+0%, 100% {
+           transform: scale(var(--skeleton-scale-rest, 1));
+           opacity: var(--skeleton-opacity-rest, 0.9);
         }
         50% {
-          transform: scale(1.04);
-          opacity: 1;
-          filter: brightness(1.15);
+          transform: scale(var(--skeleton-scale-peak, 1.04));
+          opacity: var(--skeleton-opacity-peak, 1);
+          filter: brightness(var(--skeleton-brightness-peak, 1.15));
         }
       }
     </style>

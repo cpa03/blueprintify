@@ -2172,6 +2172,52 @@ export const ANIMATION_DURATION_S = {
   NUMBER_COUNTER: 0.8,
 } as const;
 
+/**
+ * Skeleton Pulse Animation Defaults
+ * Centralized source of truth for the skeleton loader pulse animation timing
+ * and visual properties. Used in index.html critical CSS and any skeleton
+ * loading states throughout the app.
+ * Flexy says: No hardcoded skeleton-pulse keyframe values in index.html!
+ * Usage: import { SKELETON_PULSE_DEFAULTS } from "@blueprint/shared";
+ *        animation: skeleton-pulse ${SKELETON_PULSE_DEFAULTS.DURATION_S}s ease-in-out infinite
+ */
+export const SKELETON_PULSE_DEFAULTS = {
+  /** Duration of one full pulse cycle in seconds (2.5s) */
+  DURATION_S: 2.5,
+  /** Scale at rest (start/end of pulse) */
+  SCALE_REST: 1,
+  /** Scale at peak of pulse */
+  SCALE_PEAK: 1.04,
+  /** Opacity at rest (start/end of pulse) */
+  OPACITY_REST: 0.9,
+  /** Opacity at peak of pulse */
+  OPACITY_PEAK: 1,
+  /** Filter brightness at peak of pulse */
+  BRIGHTNESS_PEAK: 1.15,
+} as const;
+
+/**
+ * Build Tool Configuration Defaults
+ * Centralized source of truth for Vite build/minification options.
+ * Flexy says: No hardcoded terser options in vite.config.ts!
+ * Usage: import { BUILD_CONFIG } from "@blueprint/shared";
+ *        terserOptions: BUILD_CONFIG.TERSER_OPTIONS
+ */
+export const BUILD_CONFIG = {
+  /** Terser minification options for production builds */
+  TERSER_OPTIONS: {
+    compress: {
+      drop_console: false,
+      dead_code: true,
+      unused: true,
+      passes: 2,
+    },
+    mangle: true,
+  } as const,
+  /** Minifier to use for production builds */
+  MINIFIER: "terser" as const,
+} as const;
+
 // ============================================================================
 // Ripple Animation Defaults
 // ============================================================================

@@ -1,7 +1,7 @@
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import { compression } from "vite-plugin-compression2";
-import { DEV_DEFAULTS, BYTE_CONVERSION, API_PROXY_PATH } from "@blueprint/shared";
+import { DEV_DEFAULTS, BYTE_CONVERSION, API_PROXY_PATH, BUILD_CONFIG } from "@blueprint/shared";
 
 const DEV_SERVER_PORT = parseInt(
   process.env.VITE_DEV_SERVER_PORT || String(DEV_DEFAULTS.WEB_PORT),
@@ -164,16 +164,8 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 600,
     cssCodeSplit: true,
-    minify: "terser",
-    terserOptions: {
-      compress: {
-        drop_console: false,
-        dead_code: true,
-        unused: true,
-        passes: 2,
-      },
-      mangle: true,
-    },
+    minify: BUILD_CONFIG.MINIFIER,
+    terserOptions: BUILD_CONFIG.TERSER_OPTIONS,
     cssMinify: true,
     reportCompressedSize: true,
     emptyOutDir: true,
