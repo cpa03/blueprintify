@@ -1866,6 +1866,31 @@ After **106 Flexy iterations**, the Blueprintify codebase status:
 | ---- | ------ | ----- |
 | TBD | `feat/flexy-iteration-107-hardcoded-cleanup` | feat(flexy): centralize OpenAI message roles into shared OPENAI_ROLES config (Iteration 107) |
 
+### ✅ Flexy Iteration 110: Eliminate Remaining Hardcoded CSS Transition Property & Step Indicator Display Characters
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config.ts` | Added `STROKE_PROPERTY: "stroke-dashoffset, stroke"` to `SVG_TRANSITION_DEFAULTS` |
+| `packages/shared/src/config.test.ts` | Added 3 tests for `STROKE_PROPERTY` (type, non-empty, contains "stroke"); count 3→4 |
+| `apps/web/src/config/constants/ui.ts` | Added `STROKE_PROPERTY` re-export to `SVG_TRANSITION` config |
+| `apps/web/src/components/CircularProgress.tsx` | Replaced hardcoded `transitionProperty: "stroke-dashoffset, stroke"` with `SVG_TRANSITION.STROKE_PROPERTY` |
+| `apps/web/src/config/constants/content.ts` | Added `STEP_INDICATOR_CHARS` config (`COMPLETE_CHECK: "✓"`, `ALL_COMPLETE_EMOJI: "🎉"`) |
+| `apps/web/src/components/StepIndicator.tsx` | Replaced hardcoded `"✓"` / `"🎉"` with `STEP_INDICATOR_CHARS.COMPLETE_CHECK` / `STEP_INDICATOR_CHARS.ALL_COMPLETE_EMOJI` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npm run test:all` — all tests passing
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-110-remaining-hardcoded` | refactor(flexy): eliminate remaining hardcoded CSS transition property and step indicator display characters (Iteration 110) |
+
 **Edge cases not addressed** (inherently hardcoded by nature):
 - **Template generators** (`lib/templates/`): contain hardcoded CSS colors in template output — these emit **code for user projects**, not app code, so extraction would break the generated output
 - **Platform constants** (`lib/platform.ts`): OS-level key labels ("⌘", "Ctrl", "Meta") — inherently platform-defined, not application configuration

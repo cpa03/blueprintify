@@ -33,6 +33,7 @@ import {
   ENTRANCE_STAGGER,
   ACCESSIBILITY_LABELS,
   GENERATION_MESSAGES,
+  STEP_INDICATOR_CHARS,
 } from "../config/constants";
 import { CircularProgress } from "./CircularProgress";
 import { SmartTooltip } from "./SmartTooltip";
@@ -160,9 +161,9 @@ function StepIndicatorComponent(): JSX.Element {
           <div className="absolute inset-0 flex items-center justify-center transition-transform duration-200 hover:scale-110">
             <span key={currentStep} className="text-xs font-semibold step-count-pop">
               {isGenerationComplete
-                ? "✓"
+                ? STEP_INDICATOR_CHARS.COMPLETE_CHECK
                 : effectiveIndex >= STEPS.length - 1
-                  ? "🎉"
+                  ? STEP_INDICATOR_CHARS.ALL_COMPLETE_EMOJI
                   : `${effectiveIndex + 1}`}
             </span>
           </div>

@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- docs(bugs): BugFixer ULW Cycle Jul 09 2026 — BUG-014/017 status update
+- chore(repokeeper): Cycle 214 — CI node-version fixes, agent name corrections, redundant script cleanup, BroCula ref drift fix (Run 1 → Run 3 Jul 09), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,799/1,799 ✅)
+- refactor(flexy): eliminate hardcoded strings in rate limiting (Iteration 109)
+- docs(audit): BroCula ULW Cycle Jul 09 2026 Run 3 — 1799 tests green, LH 96-100-100-100, clean console
+- refactor(flexy): eliminate hardcoded strings and derive RateLimiterName from shared config
+- docs(bugs): BugFixer ULW Cycle Jul 09 2026 — BUG-014/017 fixed on branch, push blocked
+- feat(ui): add generating progress glow animation to CircularProgress
+- fix(api): add per-share-ID rate limiting to prevent share enumeration attacks
 - chore(repokeeper): Cycle 213 — 4 unreferenced BroCula scripts removed from scripts/ (brocula-audit.mjs, brocula-deep-check.mjs, brocula-lighthouse-details.mjs, brocula-strict-check.mjs), BroCula ref drift fix (Run 4 → Jul 09 Run 1), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,799/1,799 ✅)
 - docs(audit): BroCula ULW Cycle Jul 08 2026 Run 4 — LH 94-100-100-100, 1792 tests, clean console
 - feat(flexy): centralize OpenAI message roles into shared OPENAI_ROLES config (Iteration 107)
