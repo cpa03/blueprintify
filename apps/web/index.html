@@ -191,6 +191,21 @@
           opacity: 1;
         }
       }
+      /* Subtle pulse animation for skeleton logo — gives the initial
+         loading state a gentle "alive" feel while React hydrates.
+         A soft scale + glow that fades once per cycle, matching the
+         app's animated design language. */
+      @keyframes skeleton-pulse {
+        0%, 100% {
+          transform: scale(1);
+          opacity: 0.9;
+        }
+        50% {
+          transform: scale(1.04);
+          opacity: 1;
+          filter: brightness(1.15);
+        }
+      }
     </style>
 
     <!-- Preconnect + DNS prefetch for critical origins -->
@@ -280,6 +295,7 @@
                 height: 2.5rem;
                 border-radius: 0.75rem;
                 background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                animation: skeleton-pulse 2.5s ease-in-out infinite;
               "
             ></div>
             <div>
