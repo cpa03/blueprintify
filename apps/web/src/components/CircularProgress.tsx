@@ -50,6 +50,14 @@ interface CircularProgressProps {
    * @default 0
    */
   mountAnimationDelayMs?: number;
+  /**
+   * When true, applies a gentle breathing box-shadow glow to the ring,
+   * signaling that work is actively in progress (e.g., content generation).
+   * The animation automatically stops once the progress reaches 100% and
+   * circular-complete-glow takes over.
+   * @default false
+   */
+  isAnimating?: boolean;
 }
 
 /**
@@ -93,6 +101,7 @@ function CircularProgressComponent({
   ariaLabel,
   animateOnMount = false,
   mountAnimationDelayMs = 0,
+  isAnimating = false,
 }: CircularProgressProps): JSX.Element {
   const clampedValue = Math.max(0, Math.min(100, value));
   const isComplete = clampedValue >= 100;
@@ -147,7 +156,7 @@ function CircularProgressComponent({
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center ${isComplete ? "circular-complete-glow" : ""} ${celebrating ? "circular-complete-celebration" : ""} ${className}`}
+      className={`relative inline-flex items-center justify-center ${isComplete ? "circular-complete-glow" : isAnimating ? "generate-progress-glow" : ""} ${celebrating ? "circular-complete-celebration" : ""} ${className}`}
       style={{ width: size, height: size, "--glow-color": color } as React.CSSProperties}
       role="progressbar"
       aria-valuenow={Math.round(animatedValue)}
