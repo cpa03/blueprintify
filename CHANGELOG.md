@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- docs(audit): BroCula ULW Cycle Jul 08 2026 Run 4 — LH 94-100-100-100, 1792 tests, clean console
+- feat(flexy): centralize OpenAI message roles into shared OPENAI_ROLES config (Iteration 107)
+- chore(repokeeper): Cycle 211 — BUG-014/BUG-017 finally RESOLVED on main (stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml; all 11 `node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files — iterate.yml, on-pull.yml, parallel.yml, pr-gatekeeper.yml), BroCula ref drift fix (knowledge-review.md: Run 2 → Run 3 — latest `brocula-hunt-2026-07-08-run3.md` / **1774 tests** ✅, **48ms FCP**, LH **99-100-100-100**, clean console), test count update (1,774→1,792: 744 web + 443 API + 605 shared — shared +18 from new test additions), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅ tests 1,792/1,792 ✅)
+- docs(bugs): BugFixer ULW Cycle Jul 08 2026 — BUG-014/017 fixed on branch, push blocked
 - docs(audit): add diagnostic scoring report for July 08 2026
 - docs(flexy): document Iteration 106 — LOG_LEVELS centralization (#2413)
 - chore(repokeeper): Cycle 210 — BUG-014 and BUG-017 finally RESOLVED on main (stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml; all 11 `node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files — iterate.yml, on-pull.yml, parallel.yml, pr-gatekeeper.yml), BroCula ref drift fix (knowledge-review.md: Run 2 → Run 3 — latest `brocula-hunt-2026-07-08-run3.md` / **1774 tests** ✅, **48ms FCP**, LH **99-100-100-100**, clean console), test count update (1,774→1,792: 744 web + 443 API + 605 shared — shared +18 from new test additions), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅ tests 1,792/1,792 ✅)
