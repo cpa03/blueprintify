@@ -109,6 +109,8 @@ import {
   RIPPLE_DEFAULTS,
   PARTICLE_DEFAULTS,
   SKELETON_DEFAULTS,
+  SKELETON_PULSE_DEFAULTS,
+  BUILD_CONFIG,
   ENTRANCE_STAGGER_DEFAULTS,
   SCROLLBAR_COLORS,
   TEMPLATE_VERSIONS,
@@ -3387,5 +3389,68 @@ describe("GENERATION_ERROR_PREFIXES", () => {
 
   it("should have TASKS end with ': ' (prefix format)", () => {
     expect(GENERATION_ERROR_PREFIXES.TASKS).toMatch(/: $/);
+  });
+});
+
+// ============================================================================
+// SKELETON_PULSE_DEFAULTS
+// ============================================================================
+describe("SKELETON_PULSE_DEFAULTS", () => {
+  it("should have DURATION_S > 0", () => {
+    expect(SKELETON_PULSE_DEFAULTS.DURATION_S).toBeGreaterThan(0);
+  });
+
+  it("should have SCALE_REST equal to 1", () => {
+    expect(SKELETON_PULSE_DEFAULTS.SCALE_REST).toBe(1);
+  });
+
+  it("should have SCALE_PEAK > SCALE_REST", () => {
+    expect(SKELETON_PULSE_DEFAULTS.SCALE_PEAK).toBeGreaterThan(SKELETON_PULSE_DEFAULTS.SCALE_REST);
+  });
+
+  it("should have OPACITY_REST < OPACITY_PEAK", () => {
+    expect(SKELETON_PULSE_DEFAULTS.OPACITY_REST).toBeLessThan(SKELETON_PULSE_DEFAULTS.OPACITY_PEAK);
+  });
+
+  it("should have BRIGHTNESS_PEAK > 1", () => {
+    expect(SKELETON_PULSE_DEFAULTS.BRIGHTNESS_PEAK).toBeGreaterThan(1);
+  });
+
+  it("should have all values as numbers", () => {
+    const values = Object.values(SKELETON_PULSE_DEFAULTS);
+    values.forEach((v) => expect(typeof v).toBe("number"));
+  });
+
+  it("should have 6 properties", () => {
+    expect(Object.keys(SKELETON_PULSE_DEFAULTS).length).toBe(6);
+  });
+});
+
+// ============================================================================
+// BUILD_CONFIG
+// ============================================================================
+describe("BUILD_CONFIG", () => {
+  it("should have MINIFIER set to 'terser'", () => {
+    expect(BUILD_CONFIG.MINIFIER).toBe("terser");
+  });
+
+  it("should have TERSER_OPTIONS.compress.dead_code enabled", () => {
+    expect(BUILD_CONFIG.TERSER_OPTIONS.compress.dead_code).toBe(true);
+  });
+
+  it("should have TERSER_OPTIONS.compress.unused enabled", () => {
+    expect(BUILD_CONFIG.TERSER_OPTIONS.compress.unused).toBe(true);
+  });
+
+  it("should have TERSER_OPTIONS.compress.passes >= 1", () => {
+    expect(BUILD_CONFIG.TERSER_OPTIONS.compress.passes).toBeGreaterThanOrEqual(1);
+  });
+
+  it("should have TERSER_OPTIONS.mangle enabled", () => {
+    expect(BUILD_CONFIG.TERSER_OPTIONS.mangle).toBe(true);
+  });
+
+  it("should have 2 top-level properties", () => {
+    expect(Object.keys(BUILD_CONFIG).length).toBe(2);
   });
 });

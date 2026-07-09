@@ -1895,3 +1895,26 @@ After **106 Flexy iterations**, the Blueprintify codebase status:
 - **Template generators** (`lib/templates/`): contain hardcoded CSS colors in template output — these emit **code for user projects**, not app code, so extraction would break the generated output
 - **Platform constants** (`lib/platform.ts`): OS-level key labels ("⌘", "Ctrl", "Meta") — inherently platform-defined, not application configuration
 - **SVG path data** in icon components: inherently hardcoded geometry
+
+### ✅ Flexy Iteration 111: Centralize Skeleton Pulse Animation, Build Config & Scale-105 Token
+
+**Problem**: Three new hardcoded values were introduced since Iteration 110:
+1. `index.html` skeleton-pulse keyframe with hardcoded `scale(1)`, `scale(1.04)`, `opacity: 0.9/1`, `filter: brightness(1.15)`
+2. `TemplateGrid.tsx` — `motion-safe:hover:scale-105` (arbitrary Tailwind value, no token existed)
+3. `vite.config.ts` — hardcoded terser options (`drop_console`, `dead_code`, `unused`, `passes`, `mangle`)
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config.ts` | Added `SKELETON_PULSE_DEFAULTS` (DURATION_S, SCALE_REST, SCALE_PEAK, OPACITY_REST, OPACITY_PEAK, BRIGHTNESS_PEAK) + `BUILD_CONFIG` (TERSER_OPTIONS, MINIFIER) |
+| `packages/shared/src/index.ts` | Exported `SKELETON_PULSE_DEFAULTS`, `BUILD_CONFIG` |
+| `packages/shared/src/config.test.ts` | Added 15 tests for `SKELETON_PULSE_DEFAULTS` (7) + `BUILD_CONFIG` (6) + import |
+| `apps/web/tailwind.config.js` | Added `scale: { 105: "1.05" }` token — eliminates arbitrary `scale-[1.05]` |
+| `apps/web/index.html` | Replaced hardcoded skeleton-pulse keyframe values with CSS custom properties (`var(--skeleton-*, <default>)`) — single source of truth via `SKELETON_PULSE_DEFAULTS` |
+| `apps/web/vite.config.ts` | Replaced hardcoded `minify: "terser"` + inline `terserOptions` with `BUILD_CONFIG.MINIFIER` + `BUILD_CONFIG.TERSER_OPTIONS` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 626 shared tests passing (all 4 files)
