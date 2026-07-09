@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 217 — BroCula ref drift fix (Run 4→Run 5 Jul 09 — 1800 tests, LH 99-100-100-100), apps/web/index.html Prettier format fix, stale merged branch cleanup (origin/docs/bugfixer-cycle-jul-09-2026 deleted), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,800/1,800 ✅ format ✅ secrets ✅ npm audit 0 vulns ✅)
 - chore(repokeeper): Cycle 216 — BUG-013 resolved (0 vulns, lighthouse 13.4.0→12.6.1), BroCula ref drift fix (Run 3→Run 4 Jul 09), CHANGELOG gap fix (2 post-Cycle-215 commits), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,799/1,799 ✅), all bugs resolved ✅
 - fix(bugfixer): resolve BUG-013, update bugs.md (#2439)
 - feat(template-grid): add transition and selection styling to +N overflow badge (#2438)

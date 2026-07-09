@@ -2,6 +2,63 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 217 (2026-07-09 — RepoKeeper: BroCula ref drift fix (Run 4→Run 5 Jul 09 — 1800 tests, LH 99-100-100-100), apps/web/index.html Prettier format fix, stale merged branch cleanup, doc refresh, quality verification ✅)
+
+### Audit Scope
+
+Full repository cleanup and maintenance: **BroCula ref drift fix** (knowledge-review.md referenced Jul 09 Run 4 as latest — updated to Jul 09 Run 5: `brocula-hunt-2026-07-09-run5.md` / **1800 tests** ✅ (744 web + 443 API + 613 shared), LH **99-100-100-100** 🏆, clean console); **apps/web/index.html Prettier format fix** (recurring pattern — same file as Cycle 207); **stale merged branch cleanup** (`origin/docs/bugfixer-cycle-jul-09-2026` — fully merged into main, 0 unmerged commits); documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,800/1,800** ✅ — 744 web + 443 API + 613 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅).
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build | ✅ Clean |
+| Tests | ✅ **1,800/1,800 passing** (744 web + 443 API + 613 shared) |
+| @ts-ignore/as any | ✅ None in source code |
+| TODO/FIXME/HACK | ✅ None in source code |
+| Empty catch blocks | ✅ None |
+| Format | ✅ All files Prettier-formatted (fixed apps/web/index.html) |
+| Secrets scan | ✅ No secrets detected |
+| Redundant/temp/unused files | ✅ None found |
+| Tracked .patch files | ✅ None (recurring anti-pattern resolved) |
+| Stale merged branch cleanup | ✅ `origin/docs/bugfixer-cycle-jul-09-2026` deleted |
+| BroCula ref drift | ✅ Fixed — Jul 09 Run 4 → Jul 09 Run 5 (1800 tests, LH 99-100-100-100) |
+| BUG-013 | ✅ **RESOLVED since Cycle 216** — 0 vulns |
+| BUG-014 | ✅ **RESOLVED on main since Cycle 211** |
+| BUG-017 | ✅ **RESOLVED on main since Cycle 211** |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **BroCula ref drift fix**: knowledge-review.md updated — Jul 09 Run 4 → Jul 09 Run 5 (`brocula-hunt-2026-07-09-run5.md` / **1800 tests** ✅ (744 web + 443 API + 613 shared), LH **99-100-100-100** 🏆, clean console). Test count updated from 1,799 to 1,800 (shared +1 from terser minification).
+2. **apps/web/index.html Prettier format fix**: Same recurring pattern as Cycle 207 — `apps/web/index.html` had Prettier code style issues. Fixed via `npx prettier --write`. All files now pass `format:check`.
+3. **Stale merged branch cleanup**: Deleted `origin/docs/bugfixer-cycle-jul-09-2026` — fully merged into main, 0 unmerged commits.
+4. **Documentation refresh**: Updated findings, active-tasks, knowledge-review, CHANGELOG for Cycle 217.
+5. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,800/1,800 ✅ format ✅ secrets ✅ npm audit 0 vulns ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — clean ✅
+- [x] Tests — 1,800/1,800 passing (744 web + 443 API + 613 shared) ✅
+- [x] Format — all Prettier-formatted ✅
+- [x] Secrets scan — clean ✅
+- [x] No redundant/temp/unused files — clean ✅
+- [x] No @ts-expect-error/@ts-ignore/as any in source ✅
+- [x] No TODO/FIXME/HACK in source ✅
+- [x] No tracked .patch files — clean ✅
+- [x] Stale merged branch cleanup — `origin/docs/bugfixer-cycle-jul-09-2026` deleted ✅
+- [x] BroCula ref drift — Jul 09 Run 5 indexed as latest ✅
+- [x] apps/web/index.html — Prettier format fixed ✅
+- [x] BUG-013 — **RESOLVED since Cycle 216** (0 vulns) ✅
+- [x] BUG-014 — **RESOLVED on main since Cycle 211** ✅
+- [x] BUG-017 — **RESOLVED on main since Cycle 211** ✅
+- [x] npm audit — **0 vulnerabilities** ✅
+- [x] findings.md — Cycle 217 entry added ✅
+
 ## Cycle 216 (2026-07-09 — RepoKeeper: BUG-013 resolved (0 vulns), BroCula ref drift fix (Run 3→Run 4 Jul 09), CHANGELOG gap fix (2 post-Cycle-215 commits), doc refresh, quality verification ✅)
 
 ### Audit Scope
