@@ -153,6 +153,7 @@ function StepIndicatorComponent(): JSX.Element {
                 ? ACCESSIBILITY_LABELS.PROGRESS.ALL_STEPS_COMPLETE
                 : `Step ${effectiveIndex + 1} of ${STEPS.length}: ${currentStepLabel}`
             }
+            isAnimating={isGenerating}
             animateOnMount
             mountAnimationDelayMs={ANIMATION_ENTRANCE_DELAYS_MS.STANDARD_MOUNT}
           />
