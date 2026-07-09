@@ -1157,6 +1157,46 @@
   }
 }
 
+/* Saved celebration glow — a brief, satisfying green pulse that fires when
+   content transitions from "unsaved changes" (amber) to "saved" (green).
+   The glow emanates from the checkmark icon, giving users a subtle "you're
+   safe!" confirmation that auto-save has completed. Uses composited box-shadow
+   only (no layout thrashing). Disabled when prefers-reduced-motion is active. */
+@keyframes saved-celebration-glow {
+  0% {
+    box-shadow:
+      0 0 0 0 color-mix(in srgb, var(--color-accent-emerald) 40%, transparent),
+      0 0 0 0 color-mix(in srgb, var(--color-accent-emerald) 20%, transparent);
+  }
+  25% {
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--color-accent-emerald) 30%, transparent),
+      0 0 16px 2px color-mix(in srgb, var(--color-accent-emerald) 12%, transparent);
+  }
+  60% {
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--color-accent-emerald) 15%, transparent),
+      0 0 8px 1px color-mix(in srgb, var(--color-accent-emerald) 5%, transparent);
+  }
+  100% {
+    box-shadow:
+      0 0 0 0 transparent,
+      0 0 0 0 transparent;
+  }
+}
+
+.saved-celebration-glow {
+  animation: saved-celebration-glow 0.6s ease-out forwards;
+  border-radius: 9999px;
+  will-change: box-shadow;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .saved-celebration-glow {
+    animation: none;
+  }
+}
+
 /* ===== High Contrast Support ===== */
 @media (prefers-contrast: more) {
   .glass-card {
