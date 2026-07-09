@@ -290,7 +290,7 @@ describe("auth middleware", () => {
         };
         await next();
       });
-      app.use("/", apiKeyAuth({ excludePaths: [], defaultRole: "user" }));
+      app.use("/", apiKeyAuth({ excludePaths: [], defaultRole: AUTH_DEFAULTS.DEFAULT_ROLE }));
       app.get("/", (c) => {
         const user = c.get(CONTEXT_KEYS.USER) as User;
         return c.json({ success: true, role: user.role });
@@ -302,7 +302,7 @@ describe("auth middleware", () => {
 
       expect(res.status).toBe(HTTP_STATUS.OK);
       const data = (await res.json()) as { success: boolean; role: string };
-      expect(data.role).toBe("user");
+      expect(data.role).toBe(AUTH_DEFAULTS.DEFAULT_ROLE);
     });
 
     it("should reject invalid admin API key like any other invalid key", async () => {
