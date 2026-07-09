@@ -441,7 +441,7 @@ describe("StorageService", () => {
     it("AC: should identify storage errors correctly", () => {
       const storageError = new StorageError("test", "QUOTA_EXCEEDED", {
         key: "test",
-        operation: "write",
+        operation: STORAGE_OPERATIONS.WRITE,
       });
       const regularError = new Error("test");
 
