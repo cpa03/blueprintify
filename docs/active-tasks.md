@@ -2,30 +2,28 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## ✅ RepoKeeper Cycle 212 — **CHANGELOG gap fix (4 post-Cycle-210 commits), BroCula ref drift fix (Run 3→Run 4), test count update (1,792→1,799 — shared +7), doc refresh, quality verification** ✅
+## ✅ RepoKeeper Cycle 213 — **Remove 4 unreferenced BroCula scripts from scripts/; BroCula ref drift fix (Run 4→Run 1 Jul 09); doc refresh; quality verification** ✅
 
-### Task: Full repository audit — CHANGELOG gap fix (4 post-Cycle-210 commits: `docs(bugs) BugFixer ULW Cycle Jul 08 2026`, `chore(repokeeper) Cycle 211`, `feat(flexy) centralize OpenAI message roles into shared OPENAI_ROLES config (Iteration 107)`, `docs(audit) BroCula ULW Cycle Jul 08 2026 Run 4`); BroCula ref drift fix (knowledge-review.md: Run 3→Run 4 — latest `brocula-hunt-2026-07-08-run4.md` / **1792 tests** ✅, LH **94-100-100-100**, clean console); test count update (1,792→1,799 — shared +7 from 605→612); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ tests **1,799/1,799** ✅ — 744 web + 443 API + 612 shared — format ✅); BUG-014/BUG-017 status verified ✅ **RESOLVED on main since Cycle 211**
+### Task: Full repository audit — **4 unreferenced BroCula scripts removed** (`scripts/brocula-audit.mjs`, `scripts/brocula-deep-check.mjs`, `scripts/brocula-lighthouse-details.mjs`, `scripts/brocula-strict-check.mjs` — zero references in codebase); BroCula ref drift fix (knowledge-review.md + docs/audits/README.md: Jul 08 Run 4 → Jul 09 Run 1 — latest `brocula-hunt-2026-07-09-run1.md` / **744 web tests** ✅, LH **99-100-100-100**, clean console); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,799/1,799** ✅ — 744 web + 443 API + 612 shared — format ✅); BUG-014/BUG-017 still resolved ✅
 
 - **Priority**: High
 - **Status**: ✅ Complete
-- **Objective**: Cycle 212 full repository audit — CHANGELOG gap fix, BroCula ref drift fix, test count update, doc refresh, quality verification
+- **Objective**: Cycle 213 full repository audit — remove unreferenced scripts, BroCula ref drift fix, doc refresh, quality verification
 - **Actions**:
-  - [x] **Full repository scan**: No redundant/temp/unused files found ✅
+  - [x] **Full repository scan**: Found **4 unreferenced BroCula scripts** (`scripts/brocula-audit.mjs`, `scripts/brocula-deep-check.mjs`, `scripts/brocula-lighthouse-details.mjs`, `scripts/brocula-strict-check.mjs`) with zero codebase references — removed via `git rm` ✅
   - [x] **Verified no type suppressions**: No `@ts-ignore`, `@ts-expect-error`, or `as any` in source code ✅
   - [x] **Verified no TODO/FIXME/HACK**: None in non-test source code ✅
   - [x] **Verified no tracked .patch files**: None — recurring anti-pattern resolved since Cycle 194 ✅
-  - [x] **CHANGELOG gap fix**: Added 4 post-Cycle-210 commits — `docs(bugs) BugFixer ULW Cycle Jul 08 2026`, `chore(repokeeper) Cycle 211` (BUG-014/BUG-017 resolved), `feat(flexy) centralize OpenAI message roles (Iteration 107)`, `docs(audit) BroCula Jul 08 Run 4`.
-  - [x] **BroCula ref drift fix**: knowledge-review.md updated — Jul 08 Run 3 → Jul 08 Run 4 (`brocula-hunt-2026-07-08-run4.md` / **1792 tests** ✅, LH **94-100-100-100**, clean console).
-  - [x] **Test count update**: Updated from 1,792 to **1,799** (744 web + 443 API + 612 shared — shared +7 from new test suite additions).
+  - [x] **BroCula ref drift fix**: knowledge-review.md + docs/audits/README.md updated — Jul 08 Run 4 → Jul 09 Run 1 (`brocula-hunt-2026-07-09-run1.md` / **744 web tests** ✅, LH **99-100-100-100**, clean console).
   - [x] **Format**: All files Prettier-formatted ✅
-  - [x] **knowledge-review.md updated**: Last Review → Cycle 212, BroCula ref → Jul 08 Run 4, test count → 1,799
-  - [x] **findings.md updated**: Cycle 212 entry added
-  - [x] **active-tasks.md updated**: Cycle 212 entry added at top
-  - [x] **CHANGELOG.md updated**: Cycle 212 gap commits indexed
-  - [x] **BUG-014/BUG-017**: ✅ **RESOLVED on main since Cycle 211**
-  - [x] All quality checks verified: typecheck ✅ lint ✅ tests 1,799/1,799 ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 213, BroCula ref → Jul 09 Run 1
+  - [x] **findings.md updated**: Cycle 213 entry added
+  - [x] **active-tasks.md updated**: Cycle 213 entry added at top
+  - [x] **CHANGELOG.md updated**: Cycle 213 entry added
+  - [x] **BUG-014/BUG-017**: ✅ Still **RESOLVED on main since Cycle 211**
+  - [x] All quality checks verified: typecheck ✅ lint ✅ build ✅ tests 1,799/1,799 ✅
 
-> Older cycles (Cycle 1 through Cycle 211) are preserved in git history. Run `git log -- docs/active-tasks.md` to browse historical entries.
+> Older cycles (Cycle 1 through Cycle 212) are preserved in git history. Run `git log -- docs/active-tasks.md` to browse historical entries.
 
 ## ✅ RepoKeeper Cycle 211 — **BUG-014 and BUG-017 finally RESOLVED on main, BroCula ref drift fix (Run 2 → Run 3), test count update (1,774→1,792), CHANGELOG gap fix, doc refresh, quality verification** ✅
 
