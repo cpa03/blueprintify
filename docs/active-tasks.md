@@ -2,6 +2,28 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ BugFixer ULW Cycle Jul 09 2026 — **BUG-014/BUG-017 fixed on branch, push blocked by `workflows: write` permission** ✅
+
+### Task: Full repository audit — BUG-014 (stale doc refs in main.yml) and BUG-017 (hardcoded node-version: "20" in 4 workflow files, 11 occurrences) both fixed on local branch; quality verification (typecheck ✅ lint ✅ build ✅ tests **1,799/1,799** ✅ — 744 web + 443 API + 612 shared); both fixes verified via grep (zero stale doc refs, zero hardcoded `node-version:` remaining); **Push rejected** by GitHub App token lacking `workflows: write` permission — same documented blocker as 30+ prior cycles; patch saved at `/tmp/bugfixer-cycle-jul-09-2026-workflow-fixes.patch`
+
+- **Priority**: High
+- **Status**: ✅ Complete (push blocked)
+- **Objective**: Fix BUG-014 and BUG-017, verify all checks pass
+- **Actions**:
+  - [x] **BUG-014**: Replaced stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences) ✅
+  - [x] **BUG-017**: Replaced hardcoded `node-version: "20"`/`node-version: 20` with `node-version-file: ".node-version"` across 4 workflow files (11 occurrences) ✅
+  - [x] **iterate.yml**: 5 occurrences fixed ✅
+  - [x] **parallel.yml**: 4 occurrences fixed ✅
+  - [x] **on-pull.yml**: 1 occurrence fixed ✅
+  - [x] **pr-gatekeeper.yml**: 1 occurrence fixed ✅
+  - [x] **Verified fixes via grep**: zero stale doc refs, zero hardcoded `node-version:` remaining ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,799/1,799 ✅
+  - [x] **Push rejected**: GitHub App token lacks `workflows: write` permission — same blocker as 30+ prior cycles. Patch saved at `/tmp/bugfixer-cycle-jul-09-2026-workflow-fixes.patch` ✅
+  - [x] **docs/bugs.md updated**: New cycle entry added ✅
+  - [x] **No new fixable bugs found** in codebase ✅
+
+> Older cycles (Cycle 1 through Cycle 212) are preserved in git history. Run `git log -- docs/active-tasks.md` to browse historical entries.
+
 ## ✅ RepoKeeper Cycle 213 — **Remove 4 unreferenced BroCula scripts from scripts/; BroCula ref drift fix (Run 4→Run 1 Jul 09); doc refresh; quality verification** ✅
 
 ### Task: Full repository audit — **4 unreferenced BroCula scripts removed** (`scripts/brocula-audit.mjs`, `scripts/brocula-deep-check.mjs`, `scripts/brocula-lighthouse-details.mjs`, `scripts/brocula-strict-check.mjs` — zero references in codebase); BroCula ref drift fix (knowledge-review.md + docs/audits/README.md: Jul 08 Run 4 → Jul 09 Run 1 — latest `brocula-hunt-2026-07-09-run1.md` / **744 web tests** ✅, LH **99-100-100-100**, clean console); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,799/1,799** ✅ — 744 web + 443 API + 612 shared — format ✅); BUG-014/BUG-017 still resolved ✅
