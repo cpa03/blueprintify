@@ -12,25 +12,25 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-09 (RepoKeeper Cycle 212)
+**Last Review**: 2026-07-09 (RepoKeeper Cycle 213)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jul 8)` — latest: `docs/audits/brocula-hunt-2026-07-08-run4.md` (BroCula Jul 08 Run 4 / **1792 tests** ✅, LH **94-100-100-100**, clean console)
-- **Typecheck/Lint**: All clean (0 errors, 0 warnings)
-- **Build**: Clean ✅
+- **README BroCula description verified**: `(Jun 17–Jul 9)` — latest: `docs/audits/brocula-hunt-2026-07-09-run1.md` (BroCula Jul 09 Run 1 / **744 web tests** ✅, LH **99-100-100-100**, clean console)
+- **Typecheck/Lint/Build**: All clean (0 errors, 0 warnings)
 - **Tests**: **1,799/1,799 passing** (744 web + 443 API + 612 shared) ✅
 - **Format**: All Prettier-formatted ✅
 - **BUG-014/BUG-017**: ✅ **RESOLVED since Cycle 211** — stale doc refs and node-version hardcodes fixed on main.
 - **npm audit**: 17 moderate vulns — BUG-013 (upstream lighthouse→@sentry/node→@opentelemetry/core, same documented blocker).
 - **No tracked .patch files found on main after cleanup**: Recurring anti-pattern resolved since Cycle 194.
-- **BroCula Jul 08 Run 4**: Latest BroCula audit — **1792 tests** ✅ (744 web + 443 API + 605 shared), LH **94-100-100-100**, clean console. Preceded by Jul 08 Run 3 (**48ms FCP**, LH **99-100-100-100**, clean console).
-- **Test count update**: **1,799 total** (744 web + 443 API + 612 shared — shared +7 from 605→612 vs Cycle 211).
+- **BroCula Jul 09 Run 1**: Latest BroCula audit — **744 web tests** ✅, LH **99-100-100-100**, clean console.
+- **Test count stable**: **1,799 total** (744 web + 443 API + 612 shared).
+- **4 unreferenced scripts removed**: `scripts/brocula-audit.mjs`, `scripts/brocula-deep-check.mjs`, `scripts/brocula-lighthouse-details.mjs`, `scripts/brocula-strict-check.mjs` — zero references in codebase, removed in Cycle 213.
 - **Stale merged branch cleanup**: All stale remote branches assessed — none fully merged to main (all have unmerged commits).
-- **Cycle 212**: RepoKeeper full repository audit — CHANGELOG gap fix (4 post-Cycle-210 commits: BugFixer ULW Cycle Jul 08, Cycle 211, feat(flexy) Iteration 107 OPENAI_ROLES, BroCula Run 4), BroCula ref drift fix (Run 3 → Run 4), test count update (1,792→1,799 — shared +7), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ tests **1,799/1,799** ✅), BUG-014/BUG-017 verified ✅ **RESOLVED on main**.
+- **Cycle 213**: RepoKeeper full repository audit — 4 unreferenced BroCula scripts removed from scripts/, BroCula ref drift fix (Run 4 → Run 1 Jul 09), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,799/1,799** ✅), BUG-014/BUG-017 verified still resolved ✅.
 - **Cycle 211**: RepoKeeper full repository audit — BUG-014/BUG-017 finally RESOLVED on main (stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml; all 11 `node-version: "20"`→`node-version-file: ".node-version"` across 5 workflow files), BroCula ref drift fix (Run 2 → Run 3), test count update (1,774→1,792), CHANGELOG gap fix, doc refresh, quality verification (typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅ tests 1,792/1,792 ✅).
 - **Cycle 210**: RepoKeeper full repository audit — CHANGELOG gap fix (2 post-Cycle-209 commits: docs(flexy) Iteration 106 LOG_LEVELS centralization (#2413), docs(audit) diagnostic scoring report Jul 08), BroCula ref drift fix (Run 1 → Run 2), diagnostic scoring report indexed in docs/audits/README.md, doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).
 - **Cycle 209**: RepoKeeper full repository audit — stale merged branch cleanup, CHANGELOG gap fix (5 post-Cycle-208 commits: refactor(flexy) Iteration 105 text fade duration, fix(accessibility) external link keyboard focus (#2406), refactor(flexy) Iteration 106 LogLevel union, docs(audit) BroCula Jul 08, fix(accessibility) prefers-reduced-motion rAF skip), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,774/1,774** ✅ — 744 web + 443 API + 587 shared — format ✅ secrets ✅), BUG-014/BUG-017 status verified (still present on main — `workflows: write` blocker).
