@@ -8,11 +8,11 @@ import {
   ERROR_MESSAGES,
   API_HEADERS,
 } from "../config/constants";
-import { TIME_UNITS, ENVIRONMENT_NAMES } from "@blueprint/shared";
+import { TIME_UNITS, ENVIRONMENT_NAMES, RATE_LIMITER_BINDINGS } from "@blueprint/shared";
 import { ErrorType, createErrorJson } from "../errors";
 import { secureLogWarn, secureLogError } from "../utils/secureLog";
 
-type RateLimiterName = "STRICT_RATE_LIMITER" | "STANDARD_RATE_LIMITER" | "LENIENT_RATE_LIMITER";
+type RateLimiterName = (typeof RATE_LIMITER_BINDINGS)[keyof typeof RATE_LIMITER_BINDINGS];
 
 interface RateLimitConfig {
   limiter: RateLimiterName;

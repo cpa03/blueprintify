@@ -41,6 +41,8 @@ import { ErrorType, createErrorJson } from "../errors";
 /** Flexy says: Log context strings stay local — these are log identifiers, not app config */
 const LOG_CREATE_ERROR = "Share creation error";
 
+const UNKNOWN_SHARE_ID = "unknown";
+
 async function getCreatorId(apiKey: string | undefined): Promise<string | undefined> {
   if (!apiKey) return undefined;
   const encoder = new TextEncoder();
@@ -218,13 +220,13 @@ app.post(
  * Stricter than standard because it targets enumeration attacks.
  */
 const shareEnumerationRateLimit = rateLimit({
-  limiter: RATE_LIMIT_CONSTANTS.LIMITER_BINDINGS.STRICT as "STRICT_RATE_LIMITER",
+  limiter: RATE_LIMIT_CONSTANTS.LIMITER_BINDINGS.STRICT,
   keyGenerator: (c) => {
     const ip =
       c.req.header(API_HEADERS.CF_PROPERTIES.CONNECTING_IP) ||
       c.req.header(API_HEADERS.REQUEST.FORWARDED_FOR) ||
       RATE_LIMIT_CONSTANTS.ANONYMOUS_CLIENT_KEY;
-    const shareId = c.req.param("id") || "unknown";
+    const shareId = c.req.param("id") || UNKNOWN_SHARE_ID;
     return `share:${shareId}:${ip}`;
   },
 });
