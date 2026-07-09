@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 216 — BUG-013 resolved (0 vulns, lighthouse 13.4.0→12.6.1), BroCula ref drift fix (Run 3→Run 4 Jul 09), CHANGELOG gap fix (2 post-Cycle-215 commits), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,799/1,799 ✅), all bugs resolved ✅
+- fix(bugfixer): resolve BUG-013, update bugs.md (#2439)
+- feat(template-grid): add transition and selection styling to +N overflow badge (#2438)
 - docs(bugs): BugFixer ULW Cycle Jul 09 2026 — BUG-014/017 status update
 - chore(repokeeper): Cycle 214 — CI node-version fixes, agent name corrections, redundant script cleanup, BroCula ref drift fix (Run 1 → Run 3 Jul 09), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,799/1,799 ✅)
 - refactor(flexy): eliminate hardcoded strings in rate limiting (Iteration 109)
