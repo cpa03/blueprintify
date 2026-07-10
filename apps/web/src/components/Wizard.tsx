@@ -34,7 +34,12 @@ import {
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
 import { SPINNER } from "../config/styles";
-import { WIZARD_STEP_KEYS, ANIMATION_DIRECTIONS } from "@blueprint/shared";
+import {
+  WIZARD_STEP_KEYS,
+  ANIMATION_DIRECTIONS,
+  KEYBOARD_EVENT_KEYS,
+  UI_MESSAGES,
+} from "@blueprint/shared";
 import { LAYOUT } from "../config/theme";
 import type { AnimationDirection } from "../utils/motion";
 
@@ -109,7 +114,7 @@ function WizardComponent(): JSX.Element {
 
   const handleCmdEnter = useCallback(
     (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+      if ((e.metaKey || e.ctrlKey) && e.key === KEYBOARD_EVENT_KEYS.ENTER) {
         if (currentStep === WIZARD_STEP_KEYS.GENERATING) return;
         if (document.activeElement?.tagName === "TEXTAREA") return;
 
@@ -125,7 +130,7 @@ function WizardComponent(): JSX.Element {
 
   const handleAltArrowLeft = useCallback(
     (e: KeyboardEvent) => {
-      if (e.altKey && e.key === "ArrowLeft") {
+      if (e.altKey && e.key === KEYBOARD_EVENT_KEYS.ARROW_LEFT) {
         // Skip during generation — prevents navigating away mid-stream
         if (currentStep === WIZARD_STEP_KEYS.GENERATING) return;
         if (currentStep === WIZARD_STEP_KEYS.INFO) return; // Already at the first step
@@ -142,7 +147,7 @@ function WizardComponent(): JSX.Element {
 
   const handleAltArrowRight = useCallback(
     (e: KeyboardEvent) => {
-      if (e.altKey && e.key === "ArrowRight") {
+      if (e.altKey && e.key === KEYBOARD_EVENT_KEYS.ARROW_RIGHT) {
         // Skip during generation — prevents navigating away mid-stream
         if (currentStep === WIZARD_STEP_KEYS.GENERATING) return;
         if (currentStep === WIZARD_STEP_KEYS.REVIEW) return; // Review is the last step before generation
@@ -169,7 +174,7 @@ function WizardComponent(): JSX.Element {
   }, [handleCmdEnter, handleAltArrowLeft, handleAltArrowRight]);
 
   const isComplete = !isGenerating && generationProgress === GENERATION_MESSAGES.COMPLETE;
-  const stepTitle = STEP_TITLES[currentStep] || "Project Wizard";
+  const stepTitle = STEP_TITLES[currentStep] || UI_MESSAGES.PROJECT_WIZARD_FALLBACK;
   const documentTitle = (() => {
     if (isGenerating && generationProgress) return `Generating: ${generationProgress}`;
     if (isComplete) return CELEBRATION_TEXT.COMPLETE;

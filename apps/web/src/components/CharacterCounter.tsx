@@ -1,5 +1,6 @@
 import { memo, useMemo, useRef, useEffect, useState } from "react";
 import { TIMEOUTS, ACCESSIBILITY_LABELS } from "../config/constants";
+import { CHAR_COUNTER_THRESHOLDS } from "@blueprint/shared";
 
 interface CharacterCounterProps {
   current: number;
@@ -95,7 +96,7 @@ function CharacterCounterComponent({
         {current} of {max} character{max !== 1 ? "s" : ""} used
         {remaining === 0
           ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.LIMIT_REACHED
-          : remaining <= 10
+          : remaining <= CHAR_COUNTER_THRESHOLDS.NEAR_LIMIT
             ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.REMAINING(remaining)
             : ""}
         {showMinMetAnnouncement ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.MINIMUM_MET : ""}
@@ -115,8 +116,10 @@ function CharacterCounterCompactComponent({
   className = "",
 }: Omit<CharacterCounterProps, "min" | "warningThreshold">) {
   const percentage = (current / max) * 100;
-  const isWarning = percentage >= 80 && percentage < 100;
-  const isDanger = percentage >= 100;
+  const isWarning =
+    percentage >= CHAR_COUNTER_THRESHOLDS.WARNING_PERCENT &&
+    percentage < CHAR_COUNTER_THRESHOLDS.DANGER_PERCENT;
+  const isDanger = percentage >= CHAR_COUNTER_THRESHOLDS.DANGER_PERCENT;
 
   const remaining = max - current;
 
@@ -142,7 +145,7 @@ function CharacterCounterCompactComponent({
         {current} of {max} character{max !== 1 ? "s" : ""} used
         {remaining === 0
           ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.LIMIT_REACHED
-          : remaining <= 10
+          : remaining <= CHAR_COUNTER_THRESHOLDS.NEAR_LIMIT
             ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.REMAINING(remaining)
             : ""}
       </span>

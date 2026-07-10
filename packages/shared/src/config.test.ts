@@ -126,6 +126,9 @@ import {
   LOG_TIMESTAMP_SLICE,
   STORAGE_OPERATION_NAMES,
   CONTEXT_HOOK_ERRORS,
+  KEYBOARD_EVENT_KEYS,
+  BREAKPOINT_DEFAULTS,
+  CHAR_COUNTER_THRESHOLDS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -1334,9 +1337,17 @@ describe("UI_MESSAGES", () => {
     expect(UI_MESSAGES.TITLE_SEPARATOR).toBe(" | ");
   });
 
+  it("should have project wizard fallback", () => {
+    expect(UI_MESSAGES.PROJECT_WIZARD_FALLBACK).toBe("Project Wizard");
+  });
+
+  it("should have wizard step autosave message", () => {
+    expect(UI_MESSAGES.WIZARD_STEP_AUTOSAVE).toBe("Project info saved");
+  });
+
   it("should have all string values", () => {
     const values = Object.values(UI_MESSAGES);
-    expect(values.length).toBe(4);
+    expect(values.length).toBe(6);
     values.forEach((v) => {
       expect(typeof v).toBe("string");
       expect(v.length).toBeGreaterThan(0);
@@ -3570,5 +3581,130 @@ describe("CONTEXT_HOOK_ERRORS", () => {
   it("should have all values as strings", () => {
     const values = Object.values(CONTEXT_HOOK_ERRORS);
     values.forEach((v) => expect(typeof v).toBe("string"));
+  });
+});
+
+// ============================================================================
+// KEYBOARD_EVENT_KEYS
+// ============================================================================
+describe("KEYBOARD_EVENT_KEYS", () => {
+  it("should have ENTER key", () => {
+    expect(KEYBOARD_EVENT_KEYS.ENTER).toBe("Enter");
+  });
+
+  it("should have ESCAPE key", () => {
+    expect(KEYBOARD_EVENT_KEYS.ESCAPE).toBe("Escape");
+  });
+
+  it("should have SPACE key", () => {
+    expect(KEYBOARD_EVENT_KEYS.SPACE).toBe(" ");
+  });
+
+  it("should have ARROW_LEFT key", () => {
+    expect(KEYBOARD_EVENT_KEYS.ARROW_LEFT).toBe("ArrowLeft");
+  });
+
+  it("should have ARROW_RIGHT key", () => {
+    expect(KEYBOARD_EVENT_KEYS.ARROW_RIGHT).toBe("ArrowRight");
+  });
+
+  it("should have ARROW_UP key", () => {
+    expect(KEYBOARD_EVENT_KEYS.ARROW_UP).toBe("ArrowUp");
+  });
+
+  it("should have ARROW_DOWN key", () => {
+    expect(KEYBOARD_EVENT_KEYS.ARROW_DOWN).toBe("ArrowDown");
+  });
+
+  it("should have HOME key", () => {
+    expect(KEYBOARD_EVENT_KEYS.HOME).toBe("Home");
+  });
+
+  it("should have END key", () => {
+    expect(KEYBOARD_EVENT_KEYS.END).toBe("End");
+  });
+
+  it("should have QUESTION_MARK key", () => {
+    expect(KEYBOARD_EVENT_KEYS.QUESTION_MARK).toBe("?");
+  });
+
+  it("should have F key", () => {
+    expect(KEYBOARD_EVENT_KEYS.F).toBe("f");
+  });
+
+  it("should have N key", () => {
+    expect(KEYBOARD_EVENT_KEYS.N).toBe("n");
+  });
+
+  it("should have 12 properties", () => {
+    expect(Object.keys(KEYBOARD_EVENT_KEYS).length).toBe(12);
+  });
+
+  it("should have all values as strings", () => {
+    const values = Object.values(KEYBOARD_EVENT_KEYS);
+    values.forEach((v) => expect(typeof v).toBe("string"));
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(KEYBOARD_EVENT_KEYS);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+// ============================================================================
+// BREAKPOINT_DEFAULTS
+// ============================================================================
+describe("BREAKPOINT_DEFAULTS", () => {
+  it("should have MD breakpoint at 768px", () => {
+    expect(BREAKPOINT_DEFAULTS.MD).toBe(768);
+  });
+
+  it("should have LG breakpoint at 1024px", () => {
+    expect(BREAKPOINT_DEFAULTS.LG).toBe(1024);
+  });
+
+  it("should have LG greater than MD", () => {
+    expect(BREAKPOINT_DEFAULTS.LG).toBeGreaterThan(BREAKPOINT_DEFAULTS.MD);
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(BREAKPOINT_DEFAULTS).length).toBe(2);
+  });
+
+  it("should have both values as numbers", () => {
+    const values = Object.values(BREAKPOINT_DEFAULTS);
+    values.forEach((v) => expect(typeof v).toBe("number"));
+  });
+});
+
+// ============================================================================
+// CHAR_COUNTER_THRESHOLDS
+// ============================================================================
+describe("CHAR_COUNTER_THRESHOLDS", () => {
+  it("should have NEAR_LIMIT threshold of 10", () => {
+    expect(CHAR_COUNTER_THRESHOLDS.NEAR_LIMIT).toBe(10);
+  });
+
+  it("should have WARNING_PERCENT threshold of 80", () => {
+    expect(CHAR_COUNTER_THRESHOLDS.WARNING_PERCENT).toBe(80);
+  });
+
+  it("should have DANGER_PERCENT threshold of 100", () => {
+    expect(CHAR_COUNTER_THRESHOLDS.DANGER_PERCENT).toBe(100);
+  });
+
+  it("should have WARNING_PERCENT less than DANGER_PERCENT", () => {
+    expect(CHAR_COUNTER_THRESHOLDS.WARNING_PERCENT).toBeLessThan(
+      CHAR_COUNTER_THRESHOLDS.DANGER_PERCENT
+    );
+  });
+
+  it("should have 3 properties", () => {
+    expect(Object.keys(CHAR_COUNTER_THRESHOLDS).length).toBe(3);
+  });
+
+  it("should have all values as numbers", () => {
+    const values = Object.values(CHAR_COUNTER_THRESHOLDS);
+    values.forEach((v) => expect(typeof v).toBe("number"));
   });
 });

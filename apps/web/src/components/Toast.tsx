@@ -43,7 +43,12 @@ import {
   TOOLTIP_CONFIG,
 } from "../config/constants";
 import { TOAST_SPRING, TRANSFORMS } from "../config/theme";
-import { TOAST_TYPES, UI_TIMEOUTS, ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
+import {
+  TOAST_TYPES,
+  UI_TIMEOUTS,
+  ANIMATION_ENTRANCE_DELAYS,
+  KEYBOARD_EVENT_KEYS,
+} from "@blueprint/shared";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { SmartTooltip } from "./SmartTooltip";
 
@@ -465,7 +470,7 @@ function ToastContainerComponent(): JSX.Element {
     if (toasts.length === 0) return;
 
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === KEYBOARD_EVENT_KEYS.ESCAPE) {
         e.preventDefault();
         const lastToast = toasts[toasts.length - 1];
         if (lastToast) {

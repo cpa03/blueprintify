@@ -40,6 +40,7 @@ import {
   VIEW_MODES,
   UI_TIMING,
   SKELETON_DEFAULTS,
+  KEYBOARD_EVENT_KEYS,
   type EditorTab,
 } from "@blueprint/shared";
 import {
@@ -389,7 +390,7 @@ function EditorComponent(): JSX.Element {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "n") {
+      if ((e.metaKey || e.ctrlKey) && e.key === KEYBOARD_EVENT_KEYS.N) {
         e.preventDefault();
         handleNewProject();
       }

@@ -26,6 +26,7 @@ import {
   ANIMATION_DIRECTIONS,
   SHORTCUT_DESCRIPTIONS,
   ANIMATION_ENTRANCE_DELAYS,
+  KEYBOARD_EVENT_KEYS,
 } from "@blueprint/shared";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
@@ -95,7 +96,7 @@ export const StepFeatures = memo(function StepFeatures({
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (e.key === "Enter") {
+      if (e.key === KEYBOARD_EVENT_KEYS.ENTER) {
         e.preventDefault();
         handleAddFeature();
       }
@@ -429,7 +430,10 @@ export const StepFeatures = memo(function StepFeatures({
                     key={feature}
                     onClick={() => handleSuggestionAdd(feature)}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
+                      if (
+                        e.key === KEYBOARD_EVENT_KEYS.ENTER ||
+                        e.key === KEYBOARD_EVENT_KEYS.SPACE
+                      ) {
                         e.preventDefault();
                         handleSuggestionAdd(feature);
                       }

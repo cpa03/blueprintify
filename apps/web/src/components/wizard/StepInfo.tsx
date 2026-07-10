@@ -24,7 +24,7 @@
  * ```
  */
 
-import { ANIMATION_DIRECTIONS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
+import { ANIMATION_DIRECTIONS, SHORTCUT_DESCRIPTIONS, UI_MESSAGES } from "@blueprint/shared";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
@@ -86,7 +86,7 @@ export const StepInfo = memo(function StepInfo({
 
   useAutoSaveToast(
     [projectName, description, targetAudience, constraints],
-    "Project info saved",
+    UI_MESSAGES.WIZARD_STEP_AUTOSAVE,
     TIMEOUTS.COPY_FEEDBACK
   );
 

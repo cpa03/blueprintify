@@ -1003,6 +1003,10 @@ export const UI_MESSAGES = {
   COMPLETE: "Complete!",
   /** Document title separator */
   TITLE_SEPARATOR: " | ",
+  /** Fallback document title when wizard step label is undefined */
+  PROJECT_WIZARD_FALLBACK: "Project Wizard",
+  /** Auto-save notification for wizard step 1 (Project Info) */
+  WIZARD_STEP_AUTOSAVE: "Project info saved",
 } as const;
 
 /**
@@ -2664,4 +2668,72 @@ export const CONTEXT_HOOK_ERRORS = {
   EXPORT_CONTEXT: "useExportContext must be used within an ExportProvider",
   /** Error thrown when useReducedMotionContext is called outside ReducedMotionProvider */
   REDUCED_MOTION_CONTEXT: "useReducedMotionContext must be used within a ReducedMotionProvider",
+} as const;
+
+/**
+ * Keyboard Event Key Constants
+ * Centralized source of truth for DOM KeyboardEvent.key values used in
+ * keyboard navigation and shortcut handling. These are the standardized
+ * string values returned by `event.key` per the UI Events spec.
+ * Flexy says: No hardcoded "Enter" / "Escape" / "ArrowLeft" strings in components!
+ * Usage: import { KEYBOARD_EVENT_KEYS } from "@blueprint/shared";
+ *        if (e.key === KEYBOARD_EVENT_KEYS.ENTER) { ... }
+ */
+export const KEYBOARD_EVENT_KEYS = {
+  /** Enter/Return key */
+  ENTER: "Enter" as const,
+  /** Escape key */
+  ESCAPE: "Escape" as const,
+  /** Spacebar */
+  SPACE: " " as const,
+  /** Left arrow key */
+  ARROW_LEFT: "ArrowLeft" as const,
+  /** Right arrow key */
+  ARROW_RIGHT: "ArrowRight" as const,
+  /** Up arrow key */
+  ARROW_UP: "ArrowUp" as const,
+  /** Down arrow key */
+  ARROW_DOWN: "ArrowDown" as const,
+  /** Home key */
+  HOME: "Home" as const,
+  /** End key */
+  END: "End" as const,
+  /** Question mark / forward slash key (unshifted) */
+  QUESTION_MARK: "?" as const,
+  /** F key (for search/find shortcuts) */
+  F: "f" as const,
+  /** N key (for new project shortcut) */
+  N: "n" as const,
+} as const;
+
+/**
+ * Responsive Breakpoint Defaults (px)
+ * Standard viewport width breakpoints used for responsive layout calculations,
+ * corresponding to Tailwind's `md` (768px) and `lg` (1024px) breakpoints.
+ * Flexy says: No hardcoded "1024" / "768" magic breakpoint numbers in components!
+ * Usage: import { BREAKPOINT_DEFAULTS } from "@blueprint/shared";
+ *        if (width >= BREAKPOINT_DEFAULTS.LG) { ... }
+ */
+export const BREAKPOINT_DEFAULTS = {
+  /** Tailwind `md` breakpoint — tablet / small desktop */
+  MD: 768,
+  /** Tailwind `lg` breakpoint — desktop */
+  LG: 1024,
+} as const;
+
+/**
+ * Character Counter Threshold Defaults
+ * Threshold values used by character counter components for warning/danger states
+ * and screen-reader announcements.
+ * Flexy says: No hardcoded "10" near-limit or "80" warning threshold in character counters!
+ * Usage: import { CHAR_COUNTER_THRESHOLDS } from "@blueprint/shared";
+ *        if (remaining <= CHAR_COUNTER_THRESHOLDS.NEAR_LIMIT) { ... }
+ */
+export const CHAR_COUNTER_THRESHOLDS = {
+  /** Characters remaining before "near limit" screen-reader announcement */
+  NEAR_LIMIT: 10,
+  /** Percentage at which the counter switches from normal to warning state */
+  WARNING_PERCENT: 80,
+  /** Percentage at which the counter switches from warning to danger state */
+  DANGER_PERCENT: 100,
 } as const;
