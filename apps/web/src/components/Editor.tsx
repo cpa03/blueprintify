@@ -490,6 +490,7 @@ function EditorComponent(): JSX.Element {
                     id={activeTab === EDITOR_TABS.BLUEPRINT ? "blueprint-panel" : "tasks-panel"}
                     role="tabpanel"
                     aria-labelledby={`tab-${activeTab}`}
+                    aria-busy={isGenerating || undefined}
                     className="h-full flex flex-col lg:flex-row"
                   >
                     {/* Code Editor */}
