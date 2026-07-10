@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 219 — full repository audit, **critical merge conflict artifact fixed** (docs/active-tasks.md `>>>>>>> 7fb0eee9` removed), 9 post-Cycle-218 commits indexed, test count update (1,813→1,834), stale remote branch assessment, doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,834/1,834 ✅ — 744 web + 443 API + 647 shared — format ✅ secrets ✅ npm audit 0 vulns ✅)
+- fix(ci): add script to fix Node.js version across all workflows (#2439)
+- refactor(flexy): centralize storage operation names and context hook error messages (Iteration 113) (#2440)
+- feat(ux): animate streaming hint based on generation progress (#2441)
+- chore(repokeeper): fix findings.md merge conflict artifact, consolidate Cycle 218 entries (#2442)
+- feat(editor): add aria-busy to tabpanel during generation (#2443)
+- refactor(flexy): centralize auto-scroll thresholds and log timestamp slice config (Iteration 112) (#2444)
+- docs(brocula): Cycle 219 — browser console + Lighthouse audit, 0 errors, LH 100-100-100-100 (#2445)
+- perf(preload): add fetchpriority='high' to critical modulepreload links (#2446)
+- feat(web): dismiss toast notifications with Escape key (#2447)
 - chore(repokeeper): Cycle 218 — full repository audit, apps/web/index.html Prettier format fix (recurring), 3 post-Cycle-217 commits indexed, test count update (1,800→1,813), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,813/1,813 ✅ — 744 web + 443 API + 626 shared — format ✅ secrets ✅ npm audit 0 vulns ✅)
 - refactor(flexy): centralize skeleton pulse animation, build config and scale-105 token (Iteration 111) (#2450)
 - perf(vendor): split monolithic vendor chunk into per-package chunks (#2451)
