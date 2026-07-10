@@ -24,6 +24,7 @@ import {
   SPRING_CONFIG,
   ANIMATION,
 } from "../config/constants";
+import { KEYBOARD_EVENT_KEYS } from "@blueprint/shared";
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { Icon, type IconName } from "./Icon";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
@@ -184,8 +185,8 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "Escape" || e.key === "?") {
-        if (e.key === "Escape" && searchQuery) {
+      if (e.key === KEYBOARD_EVENT_KEYS.ESCAPE || e.key === KEYBOARD_EVENT_KEYS.QUESTION_MARK) {
+        if (e.key === KEYBOARD_EVENT_KEYS.ESCAPE && searchQuery) {
           // Clear search first, then close on second Escape
           setSearchQuery("");
           searchInputRef.current?.focus();
@@ -197,7 +198,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
       }
 
       // Ctrl/Cmd+F to focus search
-      if ((e.metaKey || e.ctrlKey) && e.key === "f") {
+      if ((e.metaKey || e.ctrlKey) && e.key === KEYBOARD_EVENT_KEYS.F) {
         e.preventDefault();
         searchInputRef.current?.focus();
       }

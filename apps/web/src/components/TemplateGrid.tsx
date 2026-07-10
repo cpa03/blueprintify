@@ -28,7 +28,7 @@
  */
 
 import { useState, memo, useCallback, useRef, useMemo } from "react";
-import { STARTER_TEMPLATES } from "@blueprint/shared";
+import { STARTER_TEMPLATES, KEYBOARD_EVENT_KEYS, BREAKPOINT_DEFAULTS } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { ANIMATION, TOAST_MESSAGES, ACCESSIBILITY_LABELS } from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
@@ -47,8 +47,8 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
   const gridColumns = useMemo(() => {
     if (typeof window === "undefined") return 1;
     const width = window.innerWidth;
-    if (width >= 1024) return 3;
-    if (width >= 768) return 2;
+    if (width >= BREAKPOINT_DEFAULTS.LG) return 3;
+    if (width >= BREAKPOINT_DEFAULTS.MD) return 2;
     return 1;
   }, []);
 
@@ -72,7 +72,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
   const handleCardKeyDown = useCallback(
     (e: React.KeyboardEvent, template: (typeof STARTER_TEMPLATES)[0], index: number) => {
       // Enter/Space to select the template
-      if (e.key === "Enter" || e.key === " ") {
+      if (e.key === KEYBOARD_EVENT_KEYS.ENTER || e.key === KEYBOARD_EVENT_KEYS.SPACE) {
         e.preventDefault();
         if (selectedId === null) {
           handleTemplateClick(template);
@@ -85,27 +85,27 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
       let nextIndex = -1;
 
       switch (e.key) {
-        case "ArrowRight":
+        case KEYBOARD_EVENT_KEYS.ARROW_RIGHT:
           e.preventDefault();
           nextIndex = Math.min(totalCards - 1, index + 1);
           break;
-        case "ArrowLeft":
+        case KEYBOARD_EVENT_KEYS.ARROW_LEFT:
           e.preventDefault();
           nextIndex = Math.max(0, index - 1);
           break;
-        case "ArrowDown":
+        case KEYBOARD_EVENT_KEYS.ARROW_DOWN:
           e.preventDefault();
           nextIndex = Math.min(totalCards - 1, index + gridColumns);
           break;
-        case "ArrowUp":
+        case KEYBOARD_EVENT_KEYS.ARROW_UP:
           e.preventDefault();
           nextIndex = Math.max(0, index - gridColumns);
           break;
-        case "Home":
+        case KEYBOARD_EVENT_KEYS.HOME:
           e.preventDefault();
           nextIndex = 0;
           break;
-        case "End":
+        case KEYBOARD_EVENT_KEYS.END:
           e.preventDefault();
           nextIndex = totalCards - 1;
           break;
