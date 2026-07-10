@@ -9,6 +9,7 @@
  */
 
 import { z } from "zod";
+import { STORAGE_OPERATION_NAMES } from "@blueprint/shared";
 import { STORAGE_KEYS, STORAGE_CONFIG, STORAGE_ERROR_MESSAGES } from "../config/constants";
 
 import { BACKUP_KEY_PREFIX, TEST_KEYS } from "../config/keys";
@@ -856,7 +857,7 @@ export async function withStorageRecovery<T>(operation: () => Promise<T>, fallba
   try {
     return await operation();
   } catch (error) {
-    console.error(STORAGE_ERROR_MESSAGES.OPERATION_FAILED("operation"), error);
+    console.error(STORAGE_ERROR_MESSAGES.OPERATION_FAILED(STORAGE_OPERATION_NAMES.GENERIC), error);
     return fallback;
   }
 }

@@ -5,6 +5,7 @@ import {
   getStorageErrorMessage,
   withStorageRecovery,
 } from "./storage";
+import { STORAGE_OPERATION_NAMES } from "@blueprint/shared";
 import { STORAGE_ERROR_MESSAGES } from "../config/constants";
 
 export function createTypedStorage<T>(storageService: StorageService<T>): {
@@ -18,7 +19,7 @@ export function createTypedStorage<T>(storageService: StorageService<T>): {
         return await storageService.get();
       } catch (error) {
         console.error(
-          STORAGE_ERROR_MESSAGES.OPERATION_FAILED("getItem"),
+          STORAGE_ERROR_MESSAGES.OPERATION_FAILED(STORAGE_OPERATION_NAMES.GET_ITEM),
           getStorageErrorMessage(error)
         );
         return null;
@@ -30,7 +31,7 @@ export function createTypedStorage<T>(storageService: StorageService<T>): {
         await storageService.set(value);
       } catch (error) {
         console.error(
-          STORAGE_ERROR_MESSAGES.OPERATION_FAILED("setItem"),
+          STORAGE_ERROR_MESSAGES.OPERATION_FAILED(STORAGE_OPERATION_NAMES.SET_ITEM),
           getStorageErrorMessage(error)
         );
         throw error;
@@ -42,7 +43,7 @@ export function createTypedStorage<T>(storageService: StorageService<T>): {
         await storageService.remove();
       } catch (error) {
         console.error(
-          STORAGE_ERROR_MESSAGES.OPERATION_FAILED("removeItem"),
+          STORAGE_ERROR_MESSAGES.OPERATION_FAILED(STORAGE_OPERATION_NAMES.REMOVE_ITEM),
           getStorageErrorMessage(error)
         );
         throw error;

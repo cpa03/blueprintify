@@ -2604,29 +2604,36 @@ export const SPRING_SCROLL_HOVER = {
 } as const;
 
 /**
- * Auto-Scroll Defaults
- * Centralized configuration for smart auto-scroll behavior during content generation.
- * Flexy says: No hardcoded magic number thresholds or throttle intervals in hooks!
- * Usage: import { AUTO_SCROLL_DEFAULTS } from "@blueprint/shared";
+ * Storage Operation Name Constants
+ * Centralized source of truth for storage adapter operation name strings
+ * used in error reporting and logging. Eliminates hardcoded "getItem"/
+ * "setItem"/"removeItem" strings in storage adapter code.
+ * Flexy says: No hardcoded "getItem" strings in storage adapter error messages!
+ * Usage: import { STORAGE_OPERATION_NAMES } from "@blueprint/shared";
+ *        console.error(STORAGE_ERROR_MESSAGES.OPERATION_FAILED(STORAGE_OPERATION_NAMES.GET_ITEM))
  */
-export const AUTO_SCROLL_DEFAULTS = {
-  /** Default threshold in pixels from bottom to consider the user "near bottom" */
-  NEAR_BOTTOM_THRESHOLD_PX: 80,
-  /** Throttle interval (ms) for scroll-to-bottom during rapid content streaming */
-  SCROLL_THROTTLE_MS: 100,
+export const STORAGE_OPERATION_NAMES = {
+  /** getItem operation — retrieving data from storage */
+  GET_ITEM: "getItem" as const,
+  /** setItem operation — persisting data to storage */
+  SET_ITEM: "setItem" as const,
+  /** removeItem operation — deleting data from storage */
+  REMOVE_ITEM: "removeItem" as const,
+  /** Generic operation fallback for logging when operation context is unknown */
+  GENERIC: "operation" as const,
 } as const;
 
 /**
- * Log Timestamp Slice Indices
- * Start/end indices for extracting time portion from ISO 8601 timestamp strings.
- * `new Date().toISOString()` produces "2026-07-10T12:34:56.789Z"
- * Slice(11, 23) extracts "12:34:56.789" (the HH:MM:SS.mmm portion).
- * Flexy says: No hardcoded "11" and "23" magic indices in logger!
- * Usage: import { LOG_TIMESTAMP_SLICE } from "@blueprint/shared";
+ * Context Hook Error Messages
+ * Centralized source of truth for React context hook "must be used within"
+ * error messages. Eliminates hardcoded error strings in context provider files.
+ * Flexy says: No hardcoded "must be used within" strings in context providers!
+ * Usage: import { CONTEXT_HOOK_ERRORS } from "@blueprint/shared";
+ *        throw new Error(CONTEXT_HOOK_ERRORS.EXPORT_CONTEXT)
  */
-export const LOG_TIMESTAMP_SLICE = {
-  /** Start index for time portion in ISO string (after "2026-07-10T") */
-  START: 11,
-  /** End index for time portion in ISO string (before "Z") */
-  END: 23,
+export const CONTEXT_HOOK_ERRORS = {
+  /** Error thrown when useExportContext is called outside ExportProvider */
+  EXPORT_CONTEXT: "useExportContext must be used within an ExportProvider",
+  /** Error thrown when useReducedMotionContext is called outside ReducedMotionProvider */
+  REDUCED_MOTION_CONTEXT: "useReducedMotionContext must be used within a ReducedMotionProvider",
 } as const;
