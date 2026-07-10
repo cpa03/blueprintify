@@ -79,9 +79,13 @@ const removeLazyPreloadPlugin = (): Plugin => ({
 const fetchPriorityPlugin = (): Plugin => ({
   name: "fetch-priority",
   transformIndexHtml(html) {
-    return html.replace(
+    const withScript = html.replace(
       /(<script[^>]*type="module"[^>]*crossorigin[^>]*)(><\/script>)/,
       '$1 fetchpriority="high"$2'
+    );
+    return withScript.replace(
+      /(<link rel="modulepreload"[^>]*href="[^"]*\.js"[^>]*)>/g,
+      '$1 fetchpriority="high">'
     );
   },
 });
