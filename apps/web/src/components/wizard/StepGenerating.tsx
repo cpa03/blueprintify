@@ -541,7 +541,7 @@ export const StepGenerating = memo(function StepGenerating({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {/* Live preview hint */}
+            {/* Live preview hint — adapts text once content starts streaming */}
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -562,7 +562,19 @@ export const StepGenerating = memo(function StepGenerating({
                   d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              {WIZARD_GENERATING_LABELS.STREAMING_HINT}
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={blueprintLines > 0 ? "streaming" : "empty"}
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: ANIMATION.TEXT_FADE }}
+                >
+                  {blueprintLines > 0
+                    ? WIZARD_GENERATING_LABELS.HINT_STREAMING
+                    : WIZARD_GENERATING_LABELS.HINT_EMPTY}
+                </motion.span>
+              </AnimatePresence>
             </motion.p>
 
             <motion.div
