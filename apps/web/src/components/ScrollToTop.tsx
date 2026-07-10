@@ -55,6 +55,15 @@ interface ScrollToPositionProps {
    * @default "top"
    */
   direction?: ScrollDirection;
+  /**
+   * When true, applies a subtle repeating pulse ring around the button
+   * while it is visible. Designed for the scroll-to-bottom button during
+   * content generation — draws the user's eye back to the bottom when
+   * new content is streaming in but they've scrolled up to read.
+   * Skipped when reduced motion is preferred.
+   * @default false
+   */
+  pulseWhenActive?: boolean;
 }
 
 /**
@@ -76,6 +85,7 @@ export const ScrollToPosition = memo(function ScrollToPosition({
   scrollContainerRef,
   showAfter = SCROLL_THRESHOLDS.SCROLL_TO_TOP,
   direction = "top",
+  pulseWhenActive = false,
 }: ScrollToPositionProps): JSX.Element | null {
   const [isVisible, setIsVisible] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -218,6 +228,34 @@ export const ScrollToPosition = memo(function ScrollToPosition({
               aria-hidden="true"
             >
               <div className="w-10 h-10 rounded-full bg-primary-500/25 blur-sm" />
+            </motion.div>
+          )}
+
+          {/* Streaming pulse ring — a repeating gentle glow that plays
+              continuously while content is actively generating and the user
+              has scrolled away from the bottom. This draws the eye back to
+              the scroll-to-bottom button, signaling "new content below"
+              without needing an obtrusive toast or banner. The ring uses
+              a slow breathe-in/breathe-out that subtly catches peripheral
+              attention without being distracting. The green accent color
+              semantically maps to "new content available" (like a green
+              notification dot). Skipped when reduced motion is preferred. */}
+          {!shouldReduceMotion && isVisible && pulseWhenActive && !isToTop && (
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+              initial={false}
+              animate={{
+                opacity: [0.5, 0.15, 0.5],
+                scale: [1, 1.3, 1],
+              }}
+              transition={{
+                duration: ANIMATION.BREATH,
+                repeat: Infinity,
+                ease: EASING.easeInOut,
+              }}
+              aria-hidden="true"
+            >
+              <div className="w-10 h-10 rounded-full bg-accent-emerald/25 blur-sm" />
             </motion.div>
           )}
 
