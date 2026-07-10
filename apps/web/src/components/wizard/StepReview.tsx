@@ -26,6 +26,7 @@ import {
   ANIMATION_DIRECTIONS,
   ANIMATION_ENTRANCE_DELAYS,
   ENTRANCE_STAGGER_DEFAULTS,
+  FRAMER_TYPE,
 } from "@blueprint/shared";
 import * as motion from "framer-motion/m";
 import { memo, useCallback, useEffect } from "react";
@@ -245,7 +246,7 @@ export const StepReview = memo(function StepReview({
                     visible: {
                       opacity: 1,
                       scale: 1,
-                      transition: { type: "spring", ...SPRING_CONFIG.SNAPPY },
+                      transition: { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY },
                     },
                   }}
                   className="px-3 py-1.5 bg-dark-800 border border-dark-600 rounded-lg text-sm text-dark-200"
@@ -325,7 +326,7 @@ export const StepReview = memo(function StepReview({
                       visible: {
                         opacity: 1,
                         x: 0,
-                        transition: { type: "spring", ...SPRING_CONFIG.SNAPPY },
+                        transition: { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY },
                       },
                     }}
                     className="flex items-center gap-2 text-dark-200"

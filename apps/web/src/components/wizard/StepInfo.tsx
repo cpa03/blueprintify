@@ -24,7 +24,12 @@
  * ```
  */
 
-import { ANIMATION_DIRECTIONS, SHORTCUT_DESCRIPTIONS, UI_MESSAGES } from "@blueprint/shared";
+import {
+  ANIMATION_DIRECTIONS,
+  SHORTCUT_DESCRIPTIONS,
+  UI_MESSAGES,
+  FRAMER_TYPE,
+} from "@blueprint/shared";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
@@ -195,7 +200,7 @@ export const StepInfo = memo(function StepInfo({
                 key={formProgress.completed}
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", ...SPRING_CONFIG.COUNTER_FLIP }}
+                transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.COUNTER_FLIP }}
                 className="tabular-nums"
               >
                 {formProgress.completed}

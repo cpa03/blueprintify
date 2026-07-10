@@ -37,7 +37,7 @@
 import { useEffect, useRef, useCallback, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { ANIMATION_DEFAULTS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
+import { ANIMATION_DEFAULTS, SHORTCUT_DESCRIPTIONS, FRAMER_TYPE } from "@blueprint/shared";
 import {
   SPRING_CONFIG,
   ANIMATION,
@@ -153,7 +153,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{
-              type: "spring",
+              type: FRAMER_TYPE.SPRING,
               ...SPRING_CONFIG.GENTLE,
             }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
@@ -177,7 +177,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                       shouldReduceMotion
                         ? ANIMATION_DEFAULTS.ZERO_DURATION
                         : {
-                            type: "spring",
+                            type: FRAMER_TYPE.SPRING,
                             ...SPRING_CONFIG.WARNING,
                           }
                     }

@@ -24,7 +24,7 @@ import {
   SPRING_CONFIG,
   ANIMATION,
 } from "../config/constants";
-import { KEYBOARD_EVENT_KEYS } from "@blueprint/shared";
+import { KEYBOARD_EVENT_KEYS, FRAMER_TYPE } from "@blueprint/shared";
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { Icon, type IconName } from "./Icon";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
@@ -271,7 +271,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{
-              type: "spring",
+              type: FRAMER_TYPE.SPRING,
               ...SPRING_CONFIG.GENTLE,
             }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
@@ -498,7 +498,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                         initial={{ scale: 0.5, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{
-                          type: "spring",
+                          type: FRAMER_TYPE.SPRING,
                           ...SPRING_CONFIG.COUNTER_FLIP,
                         }}
                       >

@@ -2737,3 +2737,16 @@ export const CHAR_COUNTER_THRESHOLDS = {
   /** Percentage at which the counter switches from warning to danger state */
   DANGER_PERCENT: 100,
 } as const;
+
+/**
+ * Framer Motion Type Constants
+ * Centralized source of truth for Framer Motion animation type strings used
+ * in `type` fields across transition/variant configurations.
+ * Flexy says: No hardcoded "spring" strings in animation transitions!
+ * Usage: import { FRAMER_TYPE } from "@blueprint/shared";
+ *        transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
+ */
+export const FRAMER_TYPE = {
+  /** Spring-based animation physics */
+  SPRING: "spring" as const,
+} as const;

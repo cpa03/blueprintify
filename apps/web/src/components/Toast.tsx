@@ -48,6 +48,7 @@ import {
   UI_TIMEOUTS,
   ANIMATION_ENTRANCE_DELAYS,
   KEYBOARD_EVENT_KEYS,
+  FRAMER_TYPE,
 } from "@blueprint/shared";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { SmartTooltip } from "./SmartTooltip";
@@ -229,7 +230,7 @@ const ToastItem = memo(
     };
 
     const defaultTransition = {
-      type: "spring" as const,
+      type: FRAMER_TYPE.SPRING,
       ...SPRING_CONFIG.DEFAULT,
       delay: staggerIndex * (TOAST_STAGGER_MS / 1000),
     };
@@ -337,7 +338,7 @@ const ToastItem = memo(
                 initial={{ opacity: 0, scale: 0.5, y: 5 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.5, y: 5 }}
-                transition={{ type: "spring", ...TOAST_SPRING.WARNING_ICON }}
+                transition={{ type: FRAMER_TYPE.SPRING, ...TOAST_SPRING.WARNING_ICON }}
                 className="absolute -top-1 -right-1 w-4 h-4 bg-current/20 rounded-full flex items-center justify-center"
                 aria-hidden="true"
               >
@@ -371,7 +372,7 @@ const ToastItem = memo(
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{
-                type: "spring",
+                type: FRAMER_TYPE.SPRING,
                 ...TOAST_SPRING.CHECKMARK,
                 delay: ANIMATION_ENTRANCE_DELAYS.VERY_MODERATE,
               }}
@@ -429,7 +430,7 @@ const ToastItem = memo(
                   delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
                 },
                 scale: {
-                  type: "spring",
+                  type: FRAMER_TYPE.SPRING,
                   ...TOAST_SPRING.DISMISS_BUTTON,
                   delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
                 },
@@ -511,7 +512,7 @@ function ToastContainerComponent(): JSX.Element {
     : {
         initial: { opacity: 0, y: 12 },
         animate: { opacity: 1, y: 0 },
-        transition: { type: "spring" as const, ...SPRING_CONFIG.SNAPPY },
+        transition: { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY },
       };
 
   return (
@@ -564,7 +565,7 @@ function ToastContainerComponent(): JSX.Element {
               initial={{ opacity: 0, y: -8, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.9 }}
-              transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
+              transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
               whileHover={HOVER_SCALE.GENTLE}
               whileTap={TAP_SCALE.GENTLE}
               onClick={handleClearAll}
@@ -597,7 +598,7 @@ function ToastContainerComponent(): JSX.Element {
                   className="tabular-nums"
                   initial={{ scale: 0.5, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  transition={{ type: "spring", ...SPRING_CONFIG.COUNTER_FLIP }}
+                  transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.COUNTER_FLIP }}
                   aria-hidden="true"
                 >
                   {toasts.length}

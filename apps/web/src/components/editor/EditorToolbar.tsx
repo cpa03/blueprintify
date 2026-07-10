@@ -36,6 +36,7 @@ import {
   SHORTCUT_LABELS,
   ANIMATION_ENTRANCE_DELAYS,
   VIEW_MODE_INDICATOR_POSITION,
+  FRAMER_TYPE,
 } from "@blueprint/shared";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
@@ -218,7 +219,7 @@ function EditorToolbarComponent({
                 : VIEW_MODE_INDICATOR_POSITION.SINGLE_WIDTH,
           }}
           transition={{
-            type: "spring",
+            type: FRAMER_TYPE.SPRING,
             ...EDITOR_ANIMATION.VIEW_MODE_INDICATOR,
           }}
           style={{
@@ -340,7 +341,7 @@ function EditorToolbarComponent({
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
+                transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
               >
                 <motion.svg
                   className="w-4 h-4 mr-1.5"
@@ -350,7 +351,7 @@ function EditorToolbarComponent({
                   aria-hidden="true"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK }}
+                  transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
                 >
                   <motion.path
                     strokeLinecap="round"
@@ -427,7 +428,7 @@ function EditorToolbarComponent({
             viewBox="0 0 24 24"
             aria-hidden="true"
             whileHover={ROTATION.HALF}
-            transition={{ type: "spring", ...SPRING_CONFIG.REFRESH }}
+            transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.REFRESH }}
           >
             <path
               strokeLinecap="round"
