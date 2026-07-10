@@ -40,6 +40,7 @@ import {
 } from "./config/constants";
 import { LAYOUT, BUTTON, ICON, SPINNER } from "./config/styles";
 import { getAriaShortcutKey } from "./lib/platform";
+import { Icon } from "./components/Icon";
 const GenerationCelebration = lazy(() =>
   import("./components/GenerationCelebration").then((m) => ({ default: m.GenerationCelebration }))
 );
@@ -483,7 +484,11 @@ function App(): JSX.Element {
         />
         <div className={`${LAYOUT.FOOTER_CONTAINER} animate-slide-up`}>
           <p className="text-dark-500 hover:text-dark-300 transition-colors duration-200">
-            Built with ⚡{" "}
+            <Icon
+              name="lightning"
+              className="w-4 h-4 inline-block mr-0.5 text-primary-400"
+              ariaLabel="Lightning bolt"
+            />{" "}
             <a
               href={EXTERNAL_URLS.CLOUDFLARE_WORKERS}
               target="_blank"
