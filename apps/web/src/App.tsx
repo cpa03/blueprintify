@@ -36,6 +36,7 @@ import {
   NETWORK_MESSAGES,
   ENTRANCE_STAGGER,
   ACCESSIBILITY_LABELS,
+  TOAST_MESSAGES,
 } from "./config/constants";
 import { LAYOUT, BUTTON, ICON, SPINNER } from "./config/styles";
 import { getAriaShortcutKey } from "./lib/platform";
@@ -82,6 +83,7 @@ function TemplateGridSkeleton(): JSX.Element {
 
 function App(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
+  const setStep = useWizardStore((s) => s.setStep);
   const hasContent = useEditorStore(
     (s) => s.blueprintContent.length > 0 || s.tasksContent.length > 0
   );
@@ -230,9 +232,11 @@ function App(): JSX.Element {
       if (e.key === "Escape" && isGenerating) {
         e.preventDefault();
         cancelGeneration();
+        setStep(WIZARD_STEP_KEYS.REVIEW);
+        toast.info(TOAST_MESSAGES.GENERATION_CANCELLED);
       }
     },
-    [isGenerating, cancelGeneration, showEditor, editorExiting]
+    [isGenerating, cancelGeneration, showEditor, editorExiting, toast, setStep]
   );
 
   useEffect(() => {
