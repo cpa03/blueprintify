@@ -1,6 +1,6 @@
 import { memo, useMemo, useRef, useEffect, useState } from "react";
 import { TIMEOUTS, ACCESSIBILITY_LABELS } from "../config/constants";
-import { CHAR_COUNTER_THRESHOLDS } from "@blueprint/shared";
+import { CHAR_COUNTER_THRESHOLDS, CHAR_COUNTER_COLORS } from "@blueprint/shared";
 
 interface CharacterCounterProps {
   current: number;
@@ -25,10 +25,10 @@ function CharacterCounterComponent({
   const shouldPulse = isWarning && !isAtLimit;
 
   const colorClass = useMemo(() => {
-    if (isAtLimit) return "text-accent-pink";
-    if (isWarning) return "text-yellow-500";
-    if (isValid && !isEmpty) return "text-accent-emerald";
-    return "text-dark-500";
+    if (isAtLimit) return CHAR_COUNTER_COLORS.AT_LIMIT;
+    if (isWarning) return CHAR_COUNTER_COLORS.WARNING;
+    if (isValid && !isEmpty) return CHAR_COUNTER_COLORS.VALID;
+    return CHAR_COUNTER_COLORS.DEFAULT;
   }, [isAtLimit, isWarning, isValid, isEmpty]);
 
   const remaining = max - current;

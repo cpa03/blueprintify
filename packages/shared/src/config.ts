@@ -2750,3 +2750,24 @@ export const FRAMER_TYPE = {
   /** Spring-based animation physics */
   SPRING: "spring" as const,
 } as const;
+
+/**
+ * Character Counter Color Classes
+ * Centralized source of truth for Tailwind CSS color class strings used by
+ * the CharacterCounter component to indicate validation state (at-limit,
+ * warning, valid, default). These classes reference design tokens defined
+ * in tailwind.config.js and map to semantic component states.
+ * Flexy says: No hardcoded "text-accent-pink" color class strings in CharacterCounter!
+ * Usage: import { CHAR_COUNTER_COLORS } from "@blueprint/shared";
+ *        className={CHAR_COUNTER_COLORS.AT_LIMIT}
+ */
+export const CHAR_COUNTER_COLORS = {
+  /** Color class when character limit is reached — pink/destructive */
+  AT_LIMIT: "text-accent-pink" as const,
+  /** Color class when approaching the character limit — yellow/warning */
+  WARNING: "text-yellow-500" as const,
+  /** Color class when input meets minimum requirement — emerald/success */
+  VALID: "text-accent-emerald" as const,
+  /** Color class for default/empty state — dark/subtle */
+  DEFAULT: "text-dark-500" as const,
+} as const;
