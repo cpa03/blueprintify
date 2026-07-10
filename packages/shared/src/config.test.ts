@@ -122,6 +122,8 @@ import {
   hexToRgba,
   EXTERNAL_REFERENCE_URLS,
   SPRING_SCROLL_HOVER,
+  AUTO_SCROLL_DEFAULTS,
+  LOG_TIMESTAMP_SLICE,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -3452,5 +3454,63 @@ describe("BUILD_CONFIG", () => {
 
   it("should have 2 top-level properties", () => {
     expect(Object.keys(BUILD_CONFIG).length).toBe(2);
+  });
+});
+
+// ============================================================================
+// AUTO_SCROLL_DEFAULTS
+// ============================================================================
+describe("AUTO_SCROLL_DEFAULTS", () => {
+  it("should have NEAR_BOTTOM_THRESHOLD_PX > 0", () => {
+    expect(AUTO_SCROLL_DEFAULTS.NEAR_BOTTOM_THRESHOLD_PX).toBeGreaterThan(0);
+  });
+
+  it("should have SCROLL_THROTTLE_MS > 0", () => {
+    expect(AUTO_SCROLL_DEFAULTS.SCROLL_THROTTLE_MS).toBeGreaterThan(0);
+  });
+
+  it("should have reasonable threshold (<= 200px)", () => {
+    expect(AUTO_SCROLL_DEFAULTS.NEAR_BOTTOM_THRESHOLD_PX).toBeLessThanOrEqual(200);
+  });
+
+  it("should have reasonable throttle (<= 500ms)", () => {
+    expect(AUTO_SCROLL_DEFAULTS.SCROLL_THROTTLE_MS).toBeLessThanOrEqual(500);
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(AUTO_SCROLL_DEFAULTS).length).toBe(2);
+  });
+});
+
+// ============================================================================
+// LOG_TIMESTAMP_SLICE
+// ============================================================================
+describe("LOG_TIMESTAMP_SLICE", () => {
+  it("should have START >= 0", () => {
+    expect(LOG_TIMESTAMP_SLICE.START).toBeGreaterThanOrEqual(0);
+  });
+
+  it("should have END > START", () => {
+    expect(LOG_TIMESTAMP_SLICE.END).toBeGreaterThan(LOG_TIMESTAMP_SLICE.START);
+  });
+
+  it("should have START = 11 for ISO 8601 format", () => {
+    expect(LOG_TIMESTAMP_SLICE.START).toBe(11);
+  });
+
+  it("should have END = 23 for ISO 8601 format", () => {
+    expect(LOG_TIMESTAMP_SLICE.END).toBe(23);
+  });
+
+  it("should extract valid time portion from ISO string", () => {
+    const iso = "2026-07-10T12:34:56.789Z";
+    const time = iso.slice(LOG_TIMESTAMP_SLICE.START, LOG_TIMESTAMP_SLICE.END);
+    expect(time).toBe("12:34:56.789");
+    // Verify it matches HH:MM:SS.mmm pattern
+    expect(time).toMatch(/^\d{2}:\d{2}:\d{2}\.\d{3}$/);
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(LOG_TIMESTAMP_SLICE).length).toBe(2);
   });
 });

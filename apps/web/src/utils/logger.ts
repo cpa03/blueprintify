@@ -17,7 +17,7 @@
  * ```
  */
 
-import { LOG_LEVELS } from "@blueprint/shared";
+import { LOG_LEVELS, LOG_TIMESTAMP_SLICE } from "@blueprint/shared";
 import { isDev } from "../config/env";
 
 type LogLevel = (typeof LOG_LEVELS)[keyof typeof LOG_LEVELS];
@@ -41,7 +41,9 @@ function shouldLog(level: LogLevel): boolean {
 }
 
 function prefix(level: LogLevel): string {
-  const timestamp = new Date().toISOString().slice(11, 23);
+  const timestamp = new Date()
+    .toISOString()
+    .slice(LOG_TIMESTAMP_SLICE.START, LOG_TIMESTAMP_SLICE.END);
   return `[${timestamp}] [${level.toUpperCase()}]`;
 }
 

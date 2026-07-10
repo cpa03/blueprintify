@@ -2602,3 +2602,31 @@ export const SPRING_SCROLL_HOVER = {
   damping: 20,
   mass: 0.3,
 } as const;
+
+/**
+ * Auto-Scroll Defaults
+ * Centralized configuration for smart auto-scroll behavior during content generation.
+ * Flexy says: No hardcoded magic number thresholds or throttle intervals in hooks!
+ * Usage: import { AUTO_SCROLL_DEFAULTS } from "@blueprint/shared";
+ */
+export const AUTO_SCROLL_DEFAULTS = {
+  /** Default threshold in pixels from bottom to consider the user "near bottom" */
+  NEAR_BOTTOM_THRESHOLD_PX: 80,
+  /** Throttle interval (ms) for scroll-to-bottom during rapid content streaming */
+  SCROLL_THROTTLE_MS: 100,
+} as const;
+
+/**
+ * Log Timestamp Slice Indices
+ * Start/end indices for extracting time portion from ISO 8601 timestamp strings.
+ * `new Date().toISOString()` produces "2026-07-10T12:34:56.789Z"
+ * Slice(11, 23) extracts "12:34:56.789" (the HH:MM:SS.mmm portion).
+ * Flexy says: No hardcoded "11" and "23" magic indices in logger!
+ * Usage: import { LOG_TIMESTAMP_SLICE } from "@blueprint/shared";
+ */
+export const LOG_TIMESTAMP_SLICE = {
+  /** Start index for time portion in ISO string (after "2026-07-10T") */
+  START: 11,
+  /** End index for time portion in ISO string (before "Z") */
+  END: 23,
+} as const;
