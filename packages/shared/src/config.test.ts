@@ -124,6 +124,8 @@ import {
   SPRING_SCROLL_HOVER,
   AUTO_SCROLL_DEFAULTS,
   LOG_TIMESTAMP_SLICE,
+  STORAGE_OPERATION_NAMES,
+  CONTEXT_HOOK_ERRORS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -3483,6 +3485,36 @@ describe("AUTO_SCROLL_DEFAULTS", () => {
 });
 
 // ============================================================================
+// STORAGE_OPERATION_NAMES
+// ============================================================================
+describe("STORAGE_OPERATION_NAMES", () => {
+  it("should have GET_ITEM = 'getItem'", () => {
+    expect(STORAGE_OPERATION_NAMES.GET_ITEM).toBe("getItem");
+  });
+
+  it("should have SET_ITEM = 'setItem'", () => {
+    expect(STORAGE_OPERATION_NAMES.SET_ITEM).toBe("setItem");
+  });
+
+  it("should have REMOVE_ITEM = 'removeItem'", () => {
+    expect(STORAGE_OPERATION_NAMES.REMOVE_ITEM).toBe("removeItem");
+  });
+
+  it("should have GENERIC = 'operation'", () => {
+    expect(STORAGE_OPERATION_NAMES.GENERIC).toBe("operation");
+  });
+
+  it("should have 4 properties", () => {
+    expect(Object.keys(STORAGE_OPERATION_NAMES).length).toBe(4);
+  });
+
+  it("should have all values as strings", () => {
+    const values = Object.values(STORAGE_OPERATION_NAMES);
+    values.forEach((v) => expect(typeof v).toBe("string"));
+  });
+});
+
+// ============================================================================
 // LOG_TIMESTAMP_SLICE
 // ============================================================================
 describe("LOG_TIMESTAMP_SLICE", () => {
@@ -3512,5 +3544,31 @@ describe("LOG_TIMESTAMP_SLICE", () => {
 
   it("should have 2 properties", () => {
     expect(Object.keys(LOG_TIMESTAMP_SLICE).length).toBe(2);
+  });
+});
+
+// ============================================================================
+// CONTEXT_HOOK_ERRORS
+// ============================================================================
+describe("CONTEXT_HOOK_ERRORS", () => {
+  it("should have EXPORT_CONTEXT error message", () => {
+    expect(CONTEXT_HOOK_ERRORS.EXPORT_CONTEXT).toBe(
+      "useExportContext must be used within an ExportProvider"
+    );
+  });
+
+  it("should have REDUCED_MOTION_CONTEXT error message", () => {
+    expect(CONTEXT_HOOK_ERRORS.REDUCED_MOTION_CONTEXT).toBe(
+      "useReducedMotionContext must be used within a ReducedMotionProvider"
+    );
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(CONTEXT_HOOK_ERRORS).length).toBe(2);
+  });
+
+  it("should have all values as strings", () => {
+    const values = Object.values(CONTEXT_HOOK_ERRORS);
+    values.forEach((v) => expect(typeof v).toBe("string"));
   });
 });

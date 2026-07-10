@@ -6,6 +6,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
+import { CONTEXT_HOOK_ERRORS } from "@blueprint/shared";
 import { STORAGE_KEYS } from "../config/keys";
 
 interface ReducedMotionContextType {
@@ -106,7 +107,7 @@ export function useReducedMotionContext(): ReducedMotionContextType {
   const context = useContext(ReducedMotionContext);
 
   if (context === undefined) {
-    throw new Error("useReducedMotionContext must be used within a ReducedMotionProvider");
+    throw new Error(CONTEXT_HOOK_ERRORS.REDUCED_MOTION_CONTEXT);
   }
 
   return context;
