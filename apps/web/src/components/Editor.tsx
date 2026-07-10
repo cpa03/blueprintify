@@ -657,6 +657,7 @@ function EditorComponent(): JSX.Element {
                         <ScrollToBottom
                           scrollContainerRef={previewRef}
                           showAfter={UI.SCROLL_TO_TOP_THRESHOLD}
+                          pulseWhenActive={isGenerating}
                         />
                       </div>
                     )}
