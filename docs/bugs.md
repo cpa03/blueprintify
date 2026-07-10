@@ -2,7 +2,10 @@
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
 
-## All Bugs Resolved ✅
+## Bug Status — Jul 10 2026
+
+> **BugFixer ULW Cycle Jul 10 2026 (2026-07-10 — fix/bugfixer-ulw-cycle-jul-10-2026)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **1,834/1,834** ✅ (744 web + 443 api + 647 shared). Secrets scan ✅. Format ✅. Audit: **0 vulnerabilities** ✅. 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. **BUG-014 — STILL PRESENT on main**: stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). **BUG-017 — STILL PRESENT on main**: hardcoded `node-version: "20"`/`node-version: 20` confirmed across 4 workflow files (11 occurrences: iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1). **Additional bug found**: BugFixer, Palette, Flexy, Brocula jobs in iterate.yml all incorrectly use `--agent RepoKeeper` instead of their respective agent names; success/error echo messages also wrong. All fixes applied and verified on local branch `fix/bugfixer-ulw-cycle-jul-10-2026`: zero stale doc refs, zero hardcoded `node-version:`, correct agent names. **Push rejected** by GitHub App token lacking `workflows: write` permission — same documented blocker as all 30+ prior cycles. Patch saved at `/tmp/bugfixer-cycle-jul-10-2026-fixes.patch`. Resolution requires a Personal Access Token with `workflows: write` scope.
+
 
 > **RepoKeeper Cycle 216 (2026-07-09)**: All bugs resolved on main. **BUG-013 — RESOLVED**: `lighthouse` downgraded 13.4.0→12.6.1 (0 moderate vulns remaining, was 17). **BUG-014 — RESOLVED on main**: stale doc refs `docs/bug.md`→`docs/bugs.md`, `docs/feature.md`→`docs/features.md` in main.yml (2 occurrences). **BUG-017 — RESOLVED on main**: all 11 occurrences of `node-version: "20"`/`node-version: 20` replaced with `node-version-file: ".node-version"` across 4 workflow files. Full verification: typecheck ✅ lint ✅ build ✅ tests 1,799/1,799 ✅ audit 0 vulns ✅.
 >
