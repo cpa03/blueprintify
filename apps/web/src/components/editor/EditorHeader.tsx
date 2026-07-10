@@ -30,7 +30,7 @@ import React, { useCallback } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared";
-import { EDITOR_FILENAMES } from "@blueprint/shared";
+import { EDITOR_FILENAMES, FRAMER_TYPE } from "@blueprint/shared";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { Icon } from "../Icon";
 import { LastSavedIndicator } from "../LastSavedIndicator";
@@ -114,7 +114,7 @@ const TabButton = React.memo(function TabButton({
           className="absolute inset-0 bg-primary-600 rounded-md"
           initial={false}
           transition={{
-            type: "spring",
+            type: FRAMER_TYPE.SPRING,
             ...EDITOR_ANIMATION.TAB_INDICATOR,
           }}
           style={{ zIndex: Z_INDEX.hide }}
@@ -140,7 +140,7 @@ const TabButton = React.memo(function TabButton({
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
               transition={{
-                type: "spring",
+                type: FRAMER_TYPE.SPRING,
                 ...EDITOR_ANIMATION.CONTENT_DOT,
               }}
               aria-label={ACCESSIBILITY_LABELS.EDITOR.CONTENT_AVAILABLE(
@@ -220,12 +220,12 @@ const ContentStats = React.memo(function ContentStats({
                     repeat: Infinity,
                     ease: EASING.easeInOut,
                   },
-                  opacity: { type: "spring", ...SPRING_CONFIG.SNAPPY },
-                  y: { type: "spring", ...SPRING_CONFIG.SNAPPY },
-                  scale: { type: "spring", ...SPRING_CONFIG.SNAPPY },
+                  opacity: { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY },
+                  y: { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY },
+                  scale: { type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY },
                 }
               : {
-                  type: "spring",
+                  type: FRAMER_TYPE.SPRING,
                   ...SPRING_CONFIG.SNAPPY,
                 }
           }

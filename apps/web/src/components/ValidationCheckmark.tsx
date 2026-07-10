@@ -1,6 +1,7 @@
 import { memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
+import { FRAMER_TYPE } from "@blueprint/shared";
 import { ANIMATION_TIMING } from "../config/theme";
 import { ANIMATION, EASING } from "../config/constants";
 import { VALIDATION_LABELS } from "../config/constants/validation";
@@ -58,7 +59,7 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}
           transition={{
-            type: "spring",
+            type: FRAMER_TYPE.SPRING,
             ...ANIMATION_TIMING.easing.spring,
           }}
           role="img"

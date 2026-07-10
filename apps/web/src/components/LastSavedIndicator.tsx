@@ -14,7 +14,7 @@ import React from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
-import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
+import { ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE } from "@blueprint/shared";
 
 /**
  * Props for the LastSavedIndicator component.
@@ -87,7 +87,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                 className="relative flex h-2 w-2"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
+                transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
               >
                 <motion.span
                   className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"
@@ -117,7 +117,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{
-                    type: "spring",
+                    type: FRAMER_TYPE.SPRING,
                     ...SPRING_CONFIG.CHECKMARK_ICON,
                   }}
                 >
@@ -130,7 +130,7 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
                     animate={{ pathLength: 1, opacity: 1 }}
                     transition={{
                       pathLength: {
-                        type: "spring",
+                        type: FRAMER_TYPE.SPRING,
                         ...SPRING_CONFIG.DEFAULT,
                         delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
                       },

@@ -195,6 +195,7 @@ export {
   KEYBOARD_EVENT_KEYS,
   BREAKPOINT_DEFAULTS,
   CHAR_COUNTER_THRESHOLDS,
+  FRAMER_TYPE,
   hexToRgba,
 } from "./config.js";
 

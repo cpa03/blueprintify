@@ -7,7 +7,7 @@
 
 import type { Variants, Transition } from "framer-motion";
 import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
-import { ANIMATION_DIRECTIONS } from "@blueprint/shared";
+import { ANIMATION_DIRECTIONS, FRAMER_TYPE } from "@blueprint/shared";
 
 /**
  * Common transition configurations
@@ -18,7 +18,7 @@ export const transitions = {
   normal: { duration: ANIMATION.SUBTLE_MOVE, ease: EASING.easeOut } as Transition,
   slow: { duration: ANIMATION.HALF_SECOND, ease: EASING.easeOut } as Transition,
   spring: {
-    type: "spring" as const,
+    type: FRAMER_TYPE.SPRING,
     stiffness: SPRING_CONFIG.SNAPPY.stiffness,
     damping: SPRING_CONFIG.SNAPPY.damping,
   },

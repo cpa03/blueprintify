@@ -22,6 +22,7 @@ import {
   CELEBRATION_PARTICLE_STYLE,
   SPRING_CONFIG,
 } from "../config/constants";
+import { FRAMER_TYPE } from "@blueprint/shared";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 
@@ -247,7 +248,7 @@ function GenerationCelebrationComponent({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{
-              type: "spring",
+              type: FRAMER_TYPE.SPRING,
               ...SPRING_CONFIG.DEFAULT,
             }}
           >
@@ -269,7 +270,7 @@ function GenerationCelebrationComponent({
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{
-                type: "spring",
+                type: FRAMER_TYPE.SPRING,
                 ...CELEBRATION_ANIMATION.CHECKMARK_CONTAINER,
                 delay: CELEBRATION_ANIMATION.CHECKMARK_DELAY_S,
               }}

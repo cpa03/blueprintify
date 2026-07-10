@@ -21,7 +21,7 @@ import {
   HOVER_SCALE,
   TAP_SCALE,
 } from "../config/constants";
-import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
+import { ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE } from "@blueprint/shared";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
 import { copyToClipboard } from "../lib/clipboard";
 
@@ -46,7 +46,7 @@ const itemVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring" as const,
+      type: FRAMER_TYPE.SPRING,
       ...SPRING_CONFIG.SNAPPY,
     },
   },
@@ -87,7 +87,7 @@ export const ErrorFallback = memo(function ErrorFallback({
         initial: { opacity: 0, scale: 0.95, y: 20 },
         animate: { opacity: 1, scale: 1, y: 0 },
         transition: {
-          type: "spring" as const,
+          type: FRAMER_TYPE.SPRING,
           ...SPRING_CONFIG.GENTLE,
         },
       };
@@ -225,7 +225,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                   }}
                   whileHover={{ ...HOVER_SCALE.STANDARD, opacity: 1 }}
                   whileTap={TAP_SCALE.STANDARD}
-                  transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
+                  transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
                   className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1
                              rounded-md text-2xs font-medium
                              bg-dark-700/80 hover:bg-dark-700
@@ -302,7 +302,7 @@ export const ErrorFallback = memo(function ErrorFallback({
               onClick={resetErrorBoundary}
               whileHover={shouldReduceMotion ? undefined : { ...HOVER_SCALE.GENTLE, y: -1 }}
               whileTap={shouldReduceMotion ? undefined : { ...TAP_SCALE.GENTLE, y: 0 }}
-              transition={{ type: "spring" as const, ...SPRING_CONFIG.SNAPPY }}
+              transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
               className="btn-primary px-6 py-2.5 rounded-lg font-medium"
               aria-label={ACCESSIBILITY_LABELS.ERROR_BOUNDARY.TRY_AGAIN}
             >
@@ -329,7 +329,7 @@ export const ErrorFallback = memo(function ErrorFallback({
               onClick={handleReload}
               whileHover={shouldReduceMotion ? undefined : { ...HOVER_SCALE.GENTLE, y: -1 }}
               whileTap={shouldReduceMotion ? undefined : { ...TAP_SCALE.GENTLE, y: 0 }}
-              transition={{ type: "spring" as const, ...SPRING_CONFIG.SNAPPY }}
+              transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
               className="btn-ghost px-6 py-2.5 rounded-lg font-medium"
               aria-label={ACCESSIBILITY_LABELS.ERROR_BOUNDARY.RELOAD_PAGE}
             >

@@ -32,7 +32,7 @@ import { useState, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { generateSlug } from "../utils/slug";
-import { ANIMATION_DEFAULTS, TOOLTIP_LABELS, UI_TIMEOUTS } from "@blueprint/shared";
+import { ANIMATION_DEFAULTS, TOOLTIP_LABELS, UI_TIMEOUTS, FRAMER_TYPE } from "@blueprint/shared";
 import { ANIMATION, EASING, SPRING_CONFIG, ACCESSIBILITY_LABELS } from "../config/constants";
 import { copyToClipboard } from "../lib/export";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -100,7 +100,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
           shouldReduceMotion
             ? ANIMATION_DEFAULTS.ZERO_DURATION
             : {
-                type: "spring",
+                type: FRAMER_TYPE.SPRING,
                 ...SPRING_CONFIG.SNAPPY,
               }
         }

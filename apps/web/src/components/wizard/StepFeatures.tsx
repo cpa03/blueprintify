@@ -27,6 +27,7 @@ import {
   SHORTCUT_DESCRIPTIONS,
   ANIMATION_ENTRANCE_DELAYS,
   KEYBOARD_EVENT_KEYS,
+  FRAMER_TYPE,
 } from "@blueprint/shared";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
@@ -153,7 +154,7 @@ export const StepFeatures = memo(function StepFeatures({
               className={`tabular-nums ${features.length === 0 ? "text-accent-pink" : "text-dark-400"}`}
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", ...SPRING_CONFIG.COUNTER_FLIP }}
+              transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.COUNTER_FLIP }}
             >
               {features.length}
             </motion.span>
@@ -293,7 +294,7 @@ export const StepFeatures = memo(function StepFeatures({
                         transition: isJustAdded
                           ? { duration: ANIMATION.MEDIUM_SLOW, ease: EASING.easeOut }
                           : {
-                              type: "spring" as const,
+                              type: FRAMER_TYPE.SPRING,
                               ...SPRING_CONFIG.DEFAULT,
                               delay: staggerDelay,
                             },
@@ -355,7 +356,7 @@ export const StepFeatures = memo(function StepFeatures({
                 disabled={showAllAddedMsg}
                 whileHover={showAllAddedMsg ? {} : HOVER_SCALE.GENTLE}
                 whileTap={showAllAddedMsg ? {} : TAP_SCALE.GENTLE}
-                transition={{ type: "spring", ...SPRING_CONFIG.SNAPPY }}
+                transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
                 className={`text-xs rounded px-2 py-1 transition-all duration-300 flex items-center gap-1 ${
                   showAllAddedMsg
                     ? "bg-accent-emerald/15 text-accent-emerald border border-accent-emerald/30"
@@ -375,7 +376,7 @@ export const StepFeatures = memo(function StepFeatures({
                       initial={{ scale: 0.5, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       exit={{ scale: 0.5, opacity: 0 }}
-                      transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK }}
+                      transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
                     >
                       <svg
                         className="w-3.5 h-3.5"
@@ -400,7 +401,7 @@ export const StepFeatures = memo(function StepFeatures({
                       initial={{ scale: 0.5, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       exit={{ scale: 0.5, opacity: 0 }}
-                      transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK }}
+                      transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
                     >
                       <svg
                         className="w-3.5 h-3.5"
@@ -441,7 +442,7 @@ export const StepFeatures = memo(function StepFeatures({
                     layout
                     whileHover={HOVER_SCALE.STANDARD}
                     whileTap={TAP_SCALE.STANDARD}
-                    transition={{ type: "spring", ...SPRING_CONFIG.SUBTLE_BOUNCE }}
+                    transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SUBTLE_BOUNCE }}
                     className="tech-chip relative overflow-hidden hover:border-accent-emerald/50"
                     aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_SUGGESTION(feature)}
                     animate={
@@ -489,7 +490,7 @@ export const StepFeatures = memo(function StepFeatures({
                             initial={{ scale: 0, rotate: -180 }}
                             animate={{ scale: 1, rotate: 0 }}
                             exit={{ scale: 0, rotate: 180 }}
-                            transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK }}
+                            transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
                           >
                             <motion.path
                               strokeLinecap="round"
@@ -515,7 +516,7 @@ export const StepFeatures = memo(function StepFeatures({
                             initial={{ scale: 0, rotate: 180 }}
                             animate={{ scale: 1, rotate: 0 }}
                             exit={{ scale: 0, rotate: -180 }}
-                            transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK }}
+                            transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
                           >
                             <path
                               strokeLinecap="round"

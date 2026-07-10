@@ -31,6 +31,7 @@ import {
   SHORTCUT_DESCRIPTIONS,
   ANIMATION_ENTRANCE_DELAYS,
   ENTRANCE_STAGGER_DEFAULTS,
+  FRAMER_TYPE,
 } from "@blueprint/shared";
 import { useWizardStore } from "../../store";
 import {
@@ -122,7 +123,7 @@ const TechChip = memo(function TechChip({
             }
           : {}
       }
-      transition={{ type: "spring", ...SPRING_CONFIG.SUBTLE_BOUNCE }}
+      transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SUBTLE_BOUNCE }}
     >
       <AnimatePresence>
         {isJustSelected && (
@@ -162,7 +163,7 @@ const TechChip = memo(function TechChip({
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
               exit={{ scale: 0, rotate: 180 }}
-              transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK }}
+              transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
             >
               <motion.path
                 strokeLinecap="round"
@@ -181,7 +182,7 @@ const TechChip = memo(function TechChip({
               initial={{ scale: 0, rotate: 180 }}
               animate={{ scale: 1, rotate: 0 }}
               exit={{ scale: 0, rotate: -180 }}
-              transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK }}
+              transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
             >
               +
             </motion.span>
@@ -353,7 +354,7 @@ export const StepStack = memo(function StepStack({
                     initial={{ opacity: 0, scale: 0.85 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.85 }}
-                    transition={{ type: "spring", ...SPRING_CONFIG.DEFAULT }}
+                    transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.DEFAULT }}
                     className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary-500/20 border border-primary-500/30 rounded-full text-sm text-primary-300"
                   >
                     {tech.name}

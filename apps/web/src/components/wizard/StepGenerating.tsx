@@ -29,6 +29,7 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   GENERATION_ERROR_PREFIXES,
   SHORTCUT_DESCRIPTIONS,
+  FRAMER_TYPE,
 } from "@blueprint/shared";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -149,7 +150,7 @@ export const StepGenerating = memo(function StepGenerating({
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{
-              type: "spring",
+              type: FRAMER_TYPE.SPRING,
               ...SPRING_CONFIG.SUCCESS,
             }}
             className="w-24 h-24 rounded-full bg-accent-emerald/20 flex items-center justify-center"
@@ -194,7 +195,7 @@ export const StepGenerating = memo(function StepGenerating({
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{
-              type: "spring",
+              type: FRAMER_TYPE.SPRING,
               ...SPRING_CONFIG.SUCCESS,
             }}
             className="w-24 h-24 rounded-full bg-accent-pink/20 flex items-center justify-center"

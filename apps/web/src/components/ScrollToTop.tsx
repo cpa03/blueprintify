@@ -31,6 +31,7 @@ import {
   ACCESSIBILITY_LABELS,
   KEYBOARD_SHORTCUTS,
 } from "../config/constants";
+import { FRAMER_TYPE } from "@blueprint/shared";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 type ScrollDirection = "top" | "bottom";
@@ -199,7 +200,7 @@ export const ScrollToPosition = memo(function ScrollToPosition({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.8, y: 20 }}
           transition={{
-            type: "spring",
+            type: FRAMER_TYPE.SPRING,
             ...SPRING_CONFIG.DEFAULT,
           }}
           className={positionClass}

@@ -25,6 +25,7 @@ import { AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { copyToClipboard } from "../lib/export";
 import { sanitizeHtml } from "../lib/security";
+import { FRAMER_TYPE } from "@blueprint/shared";
 import {
   TIMEOUTS,
   ACCESSIBILITY_LABELS,
@@ -128,7 +129,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK_ICON }}
+              transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK_ICON }}
             >
               <path
                 strokeLinecap="round"
@@ -147,7 +148,7 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              transition={{ type: "spring", ...SPRING_CONFIG.CHECKMARK_ICON }}
+              transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK_ICON }}
             >
               <path
                 strokeLinecap="round"

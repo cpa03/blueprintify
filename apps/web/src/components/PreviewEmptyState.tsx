@@ -11,7 +11,7 @@
 import { memo } from "react";
 import * as motion from "framer-motion/m";
 import type { EditorTab } from "@blueprint/shared";
-import { EDITOR_FILENAMES, ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
+import { EDITOR_FILENAMES, ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE } from "@blueprint/shared";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
 import {
   EMPTY_STATE_CONFIG,
@@ -103,7 +103,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               animate={{ scale: 1, opacity: 1 }}
               transition={{
                 delay: ANIMATION_ENTRANCE_DELAYS.SLOWEST,
-                type: "spring",
+                type: FRAMER_TYPE.SPRING,
                 ...SPRING_CONFIG.SMOOTH,
               }}
               aria-hidden="true"
@@ -154,7 +154,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{
-                type: "spring",
+                type: FRAMER_TYPE.SPRING,
                 ...SPRING_CONFIG.SNAPPY,
                 delay: ANIMATION_ENTRANCE_DELAYS.MODERATE,
               }}
@@ -197,7 +197,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 delay: ANIMATION_ENTRANCE_DELAYS.HALF_SECOND,
-                type: "spring",
+                type: FRAMER_TYPE.SPRING,
                 ...SPRING_CONFIG.SNAPPY,
               }}
             >

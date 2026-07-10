@@ -14,6 +14,7 @@ import React, { useState, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import clsx from "clsx";
+import { FRAMER_TYPE } from "@blueprint/shared";
 import {
   CELEBRATION_COLORS,
   ANIMATION_COLORS,
@@ -149,7 +150,7 @@ function AnimatedCopyButtonComponent({
         scale: isPressed ? 0.92 : 1,
       }}
       transition={{
-        type: "spring",
+        type: FRAMER_TYPE.SPRING,
         ...SPRING_CONFIG.DEFAULT,
       }}
       whileHover={
@@ -239,7 +240,7 @@ function AnimatedCopyButtonComponent({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.9 }}
               transition={{
-                type: "spring",
+                type: FRAMER_TYPE.SPRING,
                 ...SPRING_CONFIG.SNAPPY,
               }}
             >
@@ -251,7 +252,7 @@ function AnimatedCopyButtonComponent({
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{
-                  type: "spring",
+                  type: FRAMER_TYPE.SPRING,
                   ...SPRING_CONFIG.CHECKMARK,
                   delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
                 }}
