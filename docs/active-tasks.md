@@ -2,6 +2,24 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 223 — **Full repository audit, 18 stale audit reports archived (Jul 2–7 → archive/), 2 post-Cycle-219 commits indexed, doc refresh, quality verification** ✅
+
+### Task: Full repository audit — **18 stale audit reports archived** from `docs/audits/` to `docs/audits/archive/` (BroCula Jul 2–7, diagnostic-scoring Jul 07, issue-audit Jun 24); **2 post-Cycle-219 commits indexed** in CHANGELOG (fix(ux) navigate back to Review on Escape, docs(bugs) BugFixer Cycle Jul 10 2026); **audits/README.md trimmed** to current Jul 8–10 reports only; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README); quality verification (typecheck ✅ lint ✅ build ✅ tests **744/744** ✅ — format ✅ secrets ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 223 full repository audit — stale audit report archival, CHANGELOG gap fix, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks ✅
+  - [x] **18 stale audit reports archived**: Moved pre-Jul-8 reports from `docs/audits/` to `docs/audits/archive/` — BroCula Jul 2–7 (16 files), diagnostic-scoring-2026-07-07.md, issue-audit-report-2026-06-24.md
+  - [x] **audits/README.md trimmed**: Removed Jul 2–7 entries from current reports, removed diagnostic-scoring Jul 07 and issue-audit Jun 24 tables
+  - [x] **CHANGELOG gap fix**: Added 2 post-Cycle-219 commits — fix(ux) navigate back to Review on Escape (#2447), docs(bugs) BugFixer Cycle Jul 10 2026
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 223, BroCula ref → Jul 10 Run 2 (1834 tests, FCP 76ms, LCP 436ms, CLS 0.009)
+  - [x] **findings.md updated**: Cycle 223 entry added at top
+  - [x] **active-tasks.md updated**: Cycle 223 entry added at top
+  - [x] **CHANGELOG.md updated**: Cycle 223 entry indexed
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 744/744 ✅ format ✅ secrets ✅
+
 ## ✅ BroCula Cycle 218 — **Full browser console scan + Lighthouse audit, 0 console errors/warnings, LH 99-100-100-100, all quality checks passing** ✅
 
 ### Task: Full BroCula browser console scan and Lighthouse optimization audit — **Console scan**: Playwright automation across dev + production modes; 0 console errors, 0 warnings, 0 page errors, 0 failed requests; **Lighthouse**: Production build scored **99 Performance**, **100 Accessibility**, **100 Best Practices**, **100 SEO**; bfcache not actionable (Chrome headless env); **Bundle**: 216 KB total, 31 requests, 0 unused JS/CSS; all quality checks verified

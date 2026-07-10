@@ -12,26 +12,23 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-10 (RepoKeeper Cycle 219)
+**Last Review**: 2026-07-10 (RepoKeeper Cycle 223)
 **Status**: ✅ Up to date — fully synced
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state
 - No drift detected between docs/ and apps/ code
-- **README BroCula description verified**: `(Jun 17–Jul 9)` — latest: `docs/audits/brocula-hunt-2026-07-09-run5.md` (BroCula Jul 09 Run 5 / **1800 tests** ✅, LH **99-100-100-100** 🏆, clean console) — no new BroCula run since Cycle 217
+- **README BroCula description verified**: `(Jul 8–10)` — latest: `docs/audits/brocula-hunt-2026-07-10-run2.md` (BroCula Cycle 222 / **1834 tests** ✅, FCP **76ms** 🏆, LCP **436ms** 🏆, CLS **0.009** 🏆, clean console)
 - **Typecheck/Lint/Build**: All clean (0 errors, 0 warnings)
-- **Tests**: **1,834/1,834 passing** (744 web + 443 API + 647 shared) ✅
+- **Tests**: **744/744 passing** (web only) ✅
 - **Format**: All Prettier-formatted ✅
-- **BUG-013**: ✅ **RESOLVED** — `lighthouse` downgraded 13.4.0→12.6.1, **0 vulnerabilities** (was 17 moderate).
+- **BUG-013**: ✅ **RESOLVED** — `lighthouse` downgraded 13.4.0→12.6.1, **0 vulnerabilities**.
 - **BUG-014/BUG-017**: ✅ **RESOLVED since Cycle 211** — stale doc refs and node-version hardcodes fixed on main.
 - **npm audit**: **0 vulnerabilities** ✅ (BUG-013 resolved).
 - **No tracked .patch files found on main after cleanup**: Recurring anti-pattern resolved since Cycle 194.
-- **BroCula Jul 09 Run 5**: Latest BroCula audit — **1800 tests** ✅ (744 web + 443 API + 613 shared), LH **99-100-100-100** 🏆, clean console. No new BroCula run since Cycle 217.
-- **Test count**: **1,834 total** (744 web + 443 API + 647 shared) — shared +21 from new test additions in post-Cycle-218 commits.
-- **4 unreferenced scripts removed**: `scripts/brocula-audit.mjs`, `scripts/brocula-deep-check.mjs`, `scripts/brocula-lighthouse-details.mjs`, `scripts/brocula-strict-check.mjs` — zero references in codebase, removed in Cycle 213.
-- **Tracked .patch removed**: `scripts/repokeeper-cycle-214-ci-fixes.patch` removed from git tracking in Cycle 215.
-- **Stale merged branch cleanup**: All stale remote branches assessed — none fully merged to main (all have unmerged commits).
+- **18 stale audit reports archived**: BroCula hunt reports Jul 2–7 (16 files), diagnostic-scoring-2026-07-07.md, and issue-audit-report-2026-06-24.md moved to `docs/audits/archive/` in Cycle 223.
+- **Cycle 223**: RepoKeeper full repository audit — 18 stale audit reports archived (Jul 2–7 BroCula hunts + diagnostic-scoring Jul 07 + issue-audit Jun 24 → `docs/audits/archive/`), 2 post-Cycle-219 commits indexed (fix(ux) navigate back to Review on Escape, docs(bugs) BugFixer Cycle Jul 10 2026), doc refresh (findings, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests **744/744** ✅ — format ✅ secrets ✅).
 - **Cycle 219**: RepoKeeper full repository audit — **Critical merge conflict artifact fixed** in `docs/active-tasks.md` (leftover `>>>>>>> 7fb0eee9` from Cycle 218), 9 post-Cycle-218 commits indexed, test count update (1,813→1,834), stale remote branch assessment (45+ branches — none fully merged), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,834/1,834** ✅ — 744 web + 443 API + 647 shared — format ✅ secrets ✅ npm audit ✅ 0 vulns).
 - **Cycle 218**: RepoKeeper full repository audit — apps/web/index.html Prettier format fix (recurring — Cycles 207/217), 3 post-Cycle-217 commits indexed, test count update (1,800→1,813), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,813/1,813** ✅ — 744 web + 443 API + 626 shared — format ✅ secrets ✅ npm audit ✅ 0 vulns).
 - **Cycle 217**: RepoKeeper full repository audit — BroCula ref drift fix (Run 4 → Run 5 Jul 09 — 1800 tests, LH 99-100-100-100), apps/web/index.html Prettier format fix (recurring cycle 207 pattern), stale merged branch cleanup (origin/docs/bugfixer-cycle-jul-09-2026 deleted), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,800/1,800** ✅ — 744 web + 443 API + 613 shared — format ✅ secrets ✅ npm audit ✅ 0 vulns).

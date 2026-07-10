@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 223 — full repository audit, **18 stale audit reports archived** (Jul 2–7 BroCula hunts, diagnostic-scoring Jul 07, issue-audit Jun 24 → moved to `docs/audits/archive/`), CHANGELOG gap fix (2 post-Cycle-219 commits: fix(ux) navigate back to Review on Escape, docs(bugs) BugFixer Cycle Jul 10 2026), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests **744/744** ✅ — format ✅ secrets ✅)
 - chore(repokeeper): Cycle 219 — full repository audit, **critical merge conflict artifact fixed** (docs/active-tasks.md `>>>>>>> 7fb0eee9` removed), 9 post-Cycle-218 commits indexed, test count update (1,813→1,834), stale remote branch assessment, doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests 1,834/1,834 ✅ — 744 web + 443 API + 647 shared — format ✅ secrets ✅ npm audit 0 vulns ✅)
 - fix(ci): add script to fix Node.js version across all workflows (#2439)
 - refactor(flexy): centralize storage operation names and context hook error messages (Iteration 113) (#2440)
