@@ -28,12 +28,7 @@
  */
 
 import { useRef, useState, useCallback, useEffect } from "react";
-
-/** Default threshold (px from bottom) to consider the user "near bottom" */
-const NEAR_BOTTOM_THRESHOLD_PX = 80;
-
-/** Debounce interval for scroll-to-bottom during rapid content streaming */
-const SCROLL_RAF_THROTTLE_MS = 100;
+import { AUTO_SCROLL_DEFAULTS } from "@blueprint/shared";
 
 interface UseAutoScrollOptions {
   /** Ref to the scrollable container element */
@@ -42,7 +37,7 @@ interface UseAutoScrollOptions {
   enabled: boolean;
   /** Content value that triggers auto-scroll when it changes */
   trigger: string;
-  /** Threshold in pixels from bottom to consider "near bottom" (default: 80) */
+  /** Threshold in pixels from bottom to consider "near bottom" (default: AUTO_SCROLL_DEFAULTS.NEAR_BOTTOM_THRESHOLD_PX) */
   threshold?: number;
 }
 
@@ -70,7 +65,7 @@ export function useAutoScroll({
   scrollContainerRef,
   enabled,
   trigger,
-  threshold = NEAR_BOTTOM_THRESHOLD_PX,
+  threshold = AUTO_SCROLL_DEFAULTS.NEAR_BOTTOM_THRESHOLD_PX,
 }: UseAutoScrollOptions): UseAutoScrollReturn {
   const userScrolledAwayRef = useRef(false);
   const [isNearBottom, setIsNearBottom] = useState(true);
@@ -149,7 +144,7 @@ export function useAutoScroll({
 
     // Throttle scroll calls during rapid streaming
     const now = Date.now();
-    if (now - lastScrollTimeRef.current < SCROLL_RAF_THROTTLE_MS) {
+    if (now - lastScrollTimeRef.current < AUTO_SCROLL_DEFAULTS.SCROLL_THROTTLE_MS) {
       if (rafIdRef.current === null) {
         rafIdRef.current = requestAnimationFrame(() => {
           rafIdRef.current = null;

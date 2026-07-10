@@ -1918,3 +1918,35 @@ After **106 Flexy iterations**, the Blueprintify codebase status:
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 626 shared tests passing (all 4 files)
+
+### ✅ Flexy Iteration 112: Centralize Auto-Scroll Thresholds & Log Timestamp Slice Config
+
+**Problem**: Two remaining hardcoded magic numbers in hooks and utils:
+1. `useAutoScroll.ts` — `NEAR_BOTTOM_THRESHOLD_PX = 80` (scroll proximity threshold) and `SCROLL_RAF_THROTTLE_MS = 100` (scroll throttle interval)
+2. `utils/logger.ts` — `slice(11, 23)` magic indices for ISO 8601 timestamp formatting
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config.ts` | Added `AUTO_SCROLL_DEFAULTS` (NEAR_BOTTOM_THRESHOLD_PX, SCROLL_THROTTLE_MS) + `LOG_TIMESTAMP_SLICE` (START, END) |
+| `packages/shared/src/index.ts` | Exported `AUTO_SCROLL_DEFAULTS`, `LOG_TIMESTAMP_SLICE` |
+| `packages/shared/src/config.test.ts` | Added 11 tests for `AUTO_SCROLL_DEFAULTS` (6) + `LOG_TIMESTAMP_SLICE` (5) |
+| `apps/web/src/hooks/useAutoScroll.ts` | Replaced local `NEAR_BOTTOM_THRESHOLD_PX`/`SCROLL_RAF_THROTTLE_MS` constants with `AUTO_SCROLL_DEFAULTS.*` refs |
+| `apps/web/src/hooks/useAutoScroll.test.ts` | Added `AUTO_SCROLL_DEFAULTS` import; replaced `threshold: 80` with `AUTO_SCROLL_DEFAULTS.NEAR_BOTTOM_THRESHOLD_PX` |
+| `apps/web/src/utils/logger.ts` | Replaced hardcoded `slice(11, 23)` with `slice(LOG_TIMESTAMP_SLICE.START, LOG_TIMESTAMP_SLICE.END)` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 744 web + 443 api + 637 shared = 1,824 tests passing across 85 files
+
+## Codebase Status (After Iteration 112)
+
+| Category | Status |
+|----------|--------|
+| Hardcoded values in application logic | ❌ None remaining |
+| Config centralization (@blueprint/shared) | ✅ 70+ config objects in single source of truth |
+| Auto-scroll thresholds | ✅ Centralized AUTO_SCROLL_DEFAULTS |
+| Log timestamp formatting | ✅ Centralized LOG_TIMESTAMP_SLICE |
+| Build/lint/test | ✅ Clean across all workspaces |

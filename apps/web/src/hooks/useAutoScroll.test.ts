@@ -13,6 +13,7 @@
 
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
+import { AUTO_SCROLL_DEFAULTS } from "@blueprint/shared";
 import { useAutoScroll } from "./useAutoScroll";
 
 /**
@@ -57,7 +58,7 @@ describe("useAutoScroll", () => {
         scrollContainerRef,
         enabled: false,
         trigger: "hello",
-        threshold: 80,
+        threshold: AUTO_SCROLL_DEFAULTS.NEAR_BOTTOM_THRESHOLD_PX,
       })
     );
 
