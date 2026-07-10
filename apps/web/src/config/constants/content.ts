@@ -492,6 +492,10 @@ export const WIZARD_GENERATING_LABELS = {
   CANCEL_GENERATION_ARIA: "Cancel generation (Esc)",
   CONTENT_AVAILABLE: "Your generated content is available in the editor panel",
   STREAMING_HINT: "Content streams in real-time. View the editor panel to see progress.",
+  /** Shown before any content has streamed into the editor */
+  HINT_EMPTY: "Content will appear in the editor as it's generated",
+  /** Shown once content starts arriving — encourages users to peek at the live editor panel */
+  HINT_STREAMING: "Content streaming in the editor — scroll down to view",
 } as const;
 
 // ============================================================================
