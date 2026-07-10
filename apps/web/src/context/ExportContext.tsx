@@ -12,6 +12,7 @@
  */
 import { createContext, useContext, useCallback, type ReactNode } from "react";
 import type { TechStackItemType } from "@blueprint/shared";
+import { CONTEXT_HOOK_ERRORS } from "@blueprint/shared";
 import { useWizardStore } from "../store";
 import { DEFAULT_PROJECT_NAME } from "../config/constants";
 
@@ -106,7 +107,7 @@ export function useExportContext(): ExportContextType {
   const context = useContext(ExportContext);
 
   if (context === undefined) {
-    throw new Error("useExportContext must be used within an ExportProvider");
+    throw new Error(CONTEXT_HOOK_ERRORS.EXPORT_CONTEXT);
   }
 
   return context;
