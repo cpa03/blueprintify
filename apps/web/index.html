@@ -197,9 +197,10 @@
          app's animated design language.
          Flexy says: Values must stay in sync with @blueprint/shared SKELETON_DEFAULTS! */
       @keyframes skeleton-pulse {
-0%, 100% {
-           transform: scale(var(--skeleton-scale-rest, 1));
-           opacity: var(--skeleton-opacity-rest, 0.9);
+        0%,
+        100% {
+          transform: scale(var(--skeleton-scale-rest, 1));
+          opacity: var(--skeleton-opacity-rest, 0.9);
         }
         50% {
           transform: scale(var(--skeleton-scale-peak, 1.04));
