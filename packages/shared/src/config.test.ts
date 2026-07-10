@@ -129,6 +129,7 @@ import {
   KEYBOARD_EVENT_KEYS,
   BREAKPOINT_DEFAULTS,
   CHAR_COUNTER_THRESHOLDS,
+  CHAR_COUNTER_COLORS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -3706,5 +3707,33 @@ describe("CHAR_COUNTER_THRESHOLDS", () => {
   it("should have all values as numbers", () => {
     const values = Object.values(CHAR_COUNTER_THRESHOLDS);
     values.forEach((v) => expect(typeof v).toBe("number"));
+  });
+});
+
+// CHAR_COUNTER_COLORS
+describe("CHAR_COUNTER_COLORS", () => {
+  it("should have correct AT_LIMIT color class", () => {
+    expect(CHAR_COUNTER_COLORS.AT_LIMIT).toBe("text-accent-pink");
+  });
+
+  it("should have correct WARNING color class", () => {
+    expect(CHAR_COUNTER_COLORS.WARNING).toBe("text-yellow-500");
+  });
+
+  it("should have correct VALID color class", () => {
+    expect(CHAR_COUNTER_COLORS.VALID).toBe("text-accent-emerald");
+  });
+
+  it("should have correct DEFAULT color class", () => {
+    expect(CHAR_COUNTER_COLORS.DEFAULT).toBe("text-dark-500");
+  });
+
+  it("should have 4 properties", () => {
+    expect(Object.keys(CHAR_COUNTER_COLORS).length).toBe(4);
+  });
+
+  it("should have all values as strings", () => {
+    const values = Object.values(CHAR_COUNTER_COLORS);
+    values.forEach((v) => expect(typeof v).toBe("string"));
   });
 });
