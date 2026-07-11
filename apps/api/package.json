@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
+    "prebuild": "node -e \"const v=process.version.match(/v(\\d+)/)[1];if(+v<22){console.error('Error: Node.js >=22 required (found '+process.version+'). Use nvm install 22 && nvm use 22');process.exit(1)}\"",
     "build": "wrangler deploy --dry-run --outdir=dist --env=\"\"",
     "deploy": "node ../../scripts/validate-wrangler.mjs && wrangler deploy",
     "test": "vitest",
