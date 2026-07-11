@@ -10,7 +10,8 @@
 
 import { Hono } from "hono";
 import { CONTEXT_KEYS, ExportRequestSchema } from "@blueprint/shared";
-import { ErrorType } from "../errors";
+import { ErrorType, createErrorJson } from "../errors";
+import { ERROR_CODES } from "@blueprint/shared";
 import { validateJson, validatePromptInjection } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { secureLogError } from "../utils/secureLog";
@@ -88,27 +89,19 @@ app.post(
       }
 
       return c.json(
-        {
-          success: false,
-          error: {
-            type: ErrorType.VALIDATION,
-            message: EXPORT_ERROR_MESSAGES.UNSUPPORTED_FORMAT(format),
-            timestamp: new Date().toISOString(),
-          },
-        },
+        createErrorJson(ErrorType.VALIDATION, EXPORT_ERROR_MESSAGES.UNSUPPORTED_FORMAT(format), {
+          code: ERROR_CODES.VALIDATION_ERROR,
+        }),
         HTTP_STATUS.BAD_REQUEST
       );
     } catch (error) {
       secureLogError("Export error", error, { projectName, format });
       return c.json(
-        {
-          success: false,
-          error: {
-            type: ErrorType.INTERNAL,
-            message: error instanceof Error ? error.message : EXPORT_ERROR_MESSAGES.EXPORT_FAILED,
-            timestamp: new Date().toISOString(),
-          },
-        },
+        createErrorJson(
+          ErrorType.INTERNAL,
+          error instanceof Error ? error.message : EXPORT_ERROR_MESSAGES.EXPORT_FAILED,
+          { code: ERROR_CODES.INTERNAL_ERROR }
+        ),
         HTTP_STATUS.INTERNAL_ERROR
       );
     }
