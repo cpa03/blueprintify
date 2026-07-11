@@ -1527,11 +1527,18 @@ describe("SHARE_MESSAGES", () => {
     expect(SHARE_MESSAGES.NOT_FOUND_OR_EXPIRED).toBe("Shared blueprint not found or expired");
     expect(SHARE_MESSAGES.EXPIRED).toBe("Shared blueprint has expired");
     expect(SHARE_MESSAGES.DELETED_SUCCESSFULLY).toBe("Share deleted successfully");
+    expect(SHARE_MESSAGES.PASSPHRASE_REQUIRED).toBe(
+      "This shared blueprint is passphrase-protected"
+    );
+    expect(SHARE_MESSAGES.INVALID_PASSPHRASE).toBe("Invalid passphrase");
+    expect(SHARE_MESSAGES.PASSPHRASE_RATE_LIMIT).toBe(
+      "Too many passphrase attempts. Please try again later."
+    );
   });
 
   it("should have all string values", () => {
     const values = Object.values(SHARE_MESSAGES);
-    expect(values.length).toBe(5);
+    expect(values.length).toBe(8);
     values.forEach((v) => {
       expect(typeof v).toBe("string");
       expect(v.length).toBeGreaterThan(0);

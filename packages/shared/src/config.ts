@@ -1127,6 +1127,12 @@ export const SHARE_MESSAGES = {
   EXPIRED: "Shared blueprint has expired",
   /** Share deleted successfully */
   DELETED_SUCCESSFULLY: "Share deleted successfully",
+  /** Passphrase required to access this share */
+  PASSPHRASE_REQUIRED: "This shared blueprint is passphrase-protected",
+  /** Invalid passphrase error */
+  INVALID_PASSPHRASE: "Invalid passphrase",
+  /** Passphrase verification rate limit exceeded */
+  PASSPHRASE_RATE_LIMIT: "Too many passphrase attempts. Please try again later.",
 } as const;
 
 /**

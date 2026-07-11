@@ -158,6 +158,7 @@ CREATE TABLE IF NOT EXISTS blueprint_shares (
     title TEXT NOT NULL,
     blueprint TEXT NOT NULL, -- Full blueprint content
     metadata TEXT, -- JSON object with share metadata
+    passphrase_hash TEXT, -- SHA-256 hash for passphrase-protected shares (NULL = public)
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     expires_at DATETIME
 );

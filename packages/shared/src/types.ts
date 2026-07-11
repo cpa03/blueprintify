@@ -19,6 +19,7 @@ import {
   StorageClearRequestSchema,
   StorageReportRequestSchema,
   CreateShareSchema,
+  VerifySharePassphraseSchema,
 } from "./schema.js";
 
 // ===== Inferred Types from Zod Schemas =====
@@ -134,6 +135,7 @@ export type StorageReportRequest = z.infer<typeof StorageReportRequestSchema>;
  * Request payload for creating a shareable blueprint link.
  */
 export type CreateShareRequest = z.infer<typeof CreateShareSchema>;
+export type VerifySharePassphraseRequest = z.infer<typeof VerifySharePassphraseSchema>;
 
 // ===== Wizard Step Types =====
 

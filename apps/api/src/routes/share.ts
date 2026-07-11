@@ -18,6 +18,7 @@ import {
   AUTH_DEFAULTS,
   EXPORT_ERROR_STRINGS,
   CreateShareSchema,
+  VerifySharePassphraseSchema,
 } from "@blueprint/shared";
 import {
   API_HEADERS,
@@ -40,6 +41,7 @@ import { ErrorType, createErrorJson } from "../errors";
  */
 /** Flexy says: Log context strings stay local — these are log identifiers, not app config */
 const LOG_CREATE_ERROR = "Share creation error";
+const LOG_VERIFY_ERROR = "Share verify error";
 
 const UNKNOWN_SHARE_ID = "unknown";
 
@@ -158,6 +160,72 @@ function getExpirationDate(): Date {
   return expiresAt;
 }
 
+/**
+ * Generates a short-lived verify token for passphrase-protected shares.
+ * Uses HMAC-SHA256 to sign shareId + expiration, creating a stateless token
+ * that can be verified without a database lookup.
+ */
+async function generateVerifyToken(
+  shareId: string,
+  apiKey: string | undefined
+): Promise<string | undefined> {
+  if (!apiKey) return undefined;
+  const encoder = new TextEncoder();
+  const expiresAt = Math.floor(Date.now() / 1000) + 3600; // 1 hour
+  const payload = `${shareId}:${expiresAt}`;
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(apiKey),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(payload));
+  const signatureHex = Array.from(new Uint8Array(signature))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+  const payloadB64 = btoa(payload).replace(/=+$/, "").replace(/\+/g, "-").replace(/\//g, "_");
+  return `${payloadB64}.${signatureHex.slice(0, 16)}`;
+}
+
+/**
+ * Verifies a share access token without database lookup.
+ * Returns true if the token is valid and not expired.
+ */
+async function isValidVerifyToken(
+  token: string,
+  shareId: string,
+  apiKey: string | undefined
+): Promise<boolean> {
+  if (!apiKey) return false;
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 2) return false;
+    const payload = atob((parts[0] || "").replace(/-/g, "+").replace(/_/g, "/"));
+    const payloadParts = payload.split(":");
+    if (payloadParts.length !== 2) return false;
+    if (payloadParts[0] !== shareId) return false;
+    const expiresAt = parseInt(payloadParts[1] || "0", 10);
+    if (isNaN(expiresAt) || expiresAt < Math.floor(Date.now() / 1000)) return false;
+    const encoder = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+      "raw",
+      encoder.encode(apiKey),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"]
+    );
+    const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(payload));
+    const expectedSig = Array.from(new Uint8Array(signature))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("")
+      .slice(0, 16);
+    return parts[1] === expectedSig;
+  } catch {
+    return false;
+  }
+}
+
 app.post(
   "/",
   rateLimit(rateLimitConfigs.standard),
@@ -168,7 +236,12 @@ app.post(
   ]),
   async (c) => {
     try {
-      const { title, blueprint, metadata } = c.get(CONTEXT_KEYS.VALIDATED_DATA);
+      const { title, blueprint, metadata, passphraseHash } = c.get(CONTEXT_KEYS.VALIDATED_DATA) as {
+        title: string;
+        blueprint: string;
+        metadata?: Record<string, unknown>;
+        passphraseHash?: string;
+      };
       const shareId = generateShareId();
       const now = new Date().toISOString();
       const expiresAt = getExpirationDate();
@@ -186,10 +259,18 @@ app.post(
         Object.keys(enrichedMetadata).length > 0 ? JSON.stringify(enrichedMetadata) : null;
 
       await c.env.DB.prepare(
-        `INSERT INTO blueprint_shares (id, title, blueprint, metadata, created_at, expires_at)
-         VALUES (?, ?, ?, ?, ?, ?)`
+        `INSERT INTO blueprint_shares (id, title, blueprint, metadata, passphrase_hash, created_at, expires_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`
       )
-        .bind(shareId, title, blueprint, metadataJson, now, expiresAt.toISOString())
+        .bind(
+          shareId,
+          title,
+          blueprint,
+          metadataJson,
+          passphraseHash || null,
+          now,
+          expiresAt.toISOString()
+        )
         .run();
 
       return c.json(
@@ -199,6 +280,7 @@ app.post(
             id: shareId,
             url: `${c.env.CORS_ORIGIN || ""}${ROUTE_PATHS.SHARE}/${shareId}`,
             expiresAt: expiresAt.toISOString(),
+            passphraseRequired: !!passphraseHash,
           },
         },
         HTTP_STATUS.OK
@@ -251,12 +333,20 @@ app.get("/:id", shareEnumerationRateLimit, async (c) => {
     if (dbError) return dbError;
 
     const result = await c.env.DB.prepare(
-      `SELECT id, title, blueprint, metadata, created_at, expires_at
+      `SELECT id, title, blueprint, metadata, passphrase_hash, created_at, expires_at
          FROM blueprint_shares
          WHERE id = ?`
     )
       .bind(shareId)
-      .first();
+      .first<{
+        id: string;
+        title: string;
+        blueprint: string;
+        metadata: string | null;
+        passphrase_hash: string | null;
+        created_at: string;
+        expires_at: string;
+      }>();
 
     if (!result) {
       return c.json(
@@ -292,6 +382,29 @@ app.get("/:id", shareEnumerationRateLimit, async (c) => {
       }
     }
 
+    // Check passphrase protection
+    const isPassphraseProtected = !!result.passphrase_hash;
+    const token = c.req.query("token");
+    const hasValidToken = token ? await isValidVerifyToken(token, shareId, c.env.API_KEY) : false;
+
+    // If passphrase-protected and no valid token, hide blueprint content
+    if (isPassphraseProtected && !hasValidToken) {
+      return c.json(
+        {
+          success: true,
+          data: {
+            id: result.id,
+            title: result.title,
+            passphraseRequired: true,
+            metadata: parsedMetadata,
+            createdAt: result.created_at,
+            expiresAt: result.expires_at,
+          },
+        },
+        HTTP_STATUS.OK
+      );
+    }
+
     // Set cache headers for CDN caching - shared blueprints are immutable until expiration
     c.header(
       API_HEADERS.CACHE_CONTROL.HEADER_NAME,
@@ -312,6 +425,7 @@ app.get("/:id", shareEnumerationRateLimit, async (c) => {
           id: result.id,
           title: result.title,
           blueprint: result.blueprint,
+          passphraseRequired: isPassphraseProtected,
           metadata: parsedMetadata,
           createdAt: result.created_at,
           expiresAt: result.expires_at,
@@ -321,6 +435,161 @@ app.get("/:id", shareEnumerationRateLimit, async (c) => {
     );
   } catch (error) {
     secureLogError("Share retrieval error", error);
+    return c.json(
+      withCtxError(c, ErrorType.INTERNAL, ERROR_MESSAGES.INTERNAL, ERROR_CODES.INTERNAL_ERROR),
+      HTTP_STATUS.INTERNAL_ERROR
+    );
+  }
+});
+
+/**
+ * Rate limiter for passphrase verification endpoint.
+ * Stricter than standard to prevent brute-force attacks on passphrases.
+ * Uses share ID + IP as key to prevent cross-share brute-forcing.
+ */
+const shareVerifyRateLimit = rateLimit({
+  limiter: RATE_LIMIT_CONSTANTS.LIMITER_BINDINGS.STRICT,
+  keyGenerator: (c) => {
+    const ip =
+      c.req.header(API_HEADERS.CF_PROPERTIES.CONNECTING_IP) ||
+      c.req.header(API_HEADERS.REQUEST.FORWARDED_FOR) ||
+      RATE_LIMIT_CONSTANTS.ANONYMOUS_CLIENT_KEY;
+    const shareId = c.req.param("id") || UNKNOWN_SHARE_ID;
+    return `verify:${shareId}:${ip}`;
+  },
+});
+
+/**
+ * POST /share/:id/verify
+ *
+ * Verifies a passphrase for a passphrase-protected shared blueprint.
+ * On success, returns the full blueprint content and a short-lived verify token
+ * that can be used with GET /share/:id?token=xxx for subsequent access.
+ * Rate-limited per share ID + IP to prevent brute-force attacks.
+ */
+app.post("/:id/verify", shareVerifyRateLimit, async (c) => {
+  try {
+    const shareId = c.req.param("id") || "";
+
+    if (!isValidShareId(shareId)) {
+      return c.json(
+        withCtxError(
+          c,
+          ErrorType.VALIDATION,
+          SHARE_ERROR_MESSAGES.INVALID_SHARE_ID_FORMAT,
+          ERROR_CODES.VALIDATION_ERROR
+        ),
+        HTTP_STATUS.BAD_REQUEST
+      );
+    }
+
+    const dbError = checkDbConfigured(c);
+    if (dbError) return dbError;
+
+    // Parse and validate the request body
+    const body = await c.req.json().catch(() => ({}));
+    const parsed = VerifySharePassphraseSchema.safeParse(body);
+    if (!parsed.success) {
+      return c.json(
+        withCtxError(
+          c,
+          ErrorType.VALIDATION,
+          SHARE_ERROR_MESSAGES.INVALID_PASSPHRASE,
+          ERROR_CODES.VALIDATION_ERROR
+        ),
+        HTTP_STATUS.BAD_REQUEST
+      );
+    }
+
+    const { passphrase } = parsed.data;
+
+    // Fetch share with passphrase hash
+    const result = await c.env.DB.prepare(
+      `SELECT id, title, blueprint, metadata, passphrase_hash, created_at, expires_at
+         FROM blueprint_shares
+         WHERE id = ?`
+    )
+      .bind(shareId)
+      .first<{
+        id: string;
+        title: string;
+        blueprint: string;
+        metadata: string | null;
+        passphrase_hash: string | null;
+        created_at: string;
+        expires_at: string;
+      }>();
+
+    if (!result || !result.passphrase_hash) {
+      return c.json(
+        withCtxError(
+          c,
+          ErrorType.NOT_FOUND,
+          SHARE_ERROR_MESSAGES.SHARE_NOT_FOUND_OR_EXPIRED,
+          ERROR_CODES.NOT_FOUND_ERROR
+        ),
+        HTTP_STATUS.NOT_FOUND
+      );
+    }
+
+    const expirationDate = result.expires_at ? new Date(result.expires_at as string) : null;
+    if (expirationDate && expirationDate < new Date()) {
+      return c.json(
+        withCtxError(
+          c,
+          ErrorType.NOT_FOUND,
+          SHARE_ERROR_MESSAGES.SHARE_EXPIRED,
+          ERROR_CODES.NOT_FOUND_ERROR
+        ),
+        HTTP_STATUS.NOT_FOUND
+      );
+    }
+
+    // Hash the provided passphrase and compare with stored hash
+    const encoder = new TextEncoder();
+    const hashBuffer = await crypto.subtle.digest("SHA-256", encoder.encode(passphrase));
+    const hashHex = Array.from(new Uint8Array(hashBuffer))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+
+    if (hashHex !== result.passphrase_hash) {
+      return c.json(
+        withCtxError(
+          c,
+          ErrorType.AUTHORIZATION,
+          SHARE_ERROR_MESSAGES.INVALID_PASSPHRASE,
+          ERROR_CODES.AUTHORIZATION_ERROR
+        ),
+        HTTP_STATUS.FORBIDDEN
+      );
+    }
+
+    // Generate verify token for subsequent GET requests
+    const verifyToken = await generateVerifyToken(shareId, c.env.API_KEY);
+
+    // Parse metadata
+    let parsedMetadata: Record<string, unknown> | undefined;
+    if (result.metadata) {
+      parsedMetadata = parseMetadata(result.metadata);
+    }
+
+    return c.json(
+      {
+        success: true,
+        data: {
+          id: result.id,
+          title: result.title,
+          blueprint: result.blueprint,
+          metadata: parsedMetadata,
+          createdAt: result.created_at,
+          expiresAt: result.expires_at,
+          verifyToken,
+        },
+      },
+      HTTP_STATUS.OK
+    );
+  } catch (error) {
+    secureLogError(LOG_VERIFY_ERROR, error);
     return c.json(
       withCtxError(c, ErrorType.INTERNAL, ERROR_MESSAGES.INTERNAL, ERROR_CODES.INTERNAL_ERROR),
       HTTP_STATUS.INTERNAL_ERROR

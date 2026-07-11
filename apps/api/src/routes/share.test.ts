@@ -42,8 +42,9 @@ function createMockDB() {
               title: params[1],
               blueprint: params[2],
               metadata: params[3],
-              created_at: params[4],
-              expires_at: params[5],
+              passphrase_hash: params[4],
+              created_at: params[5],
+              expires_at: params[6],
             });
             return { success: true };
           }
@@ -51,7 +52,8 @@ function createMockDB() {
         }),
         first: vi.fn(async () => {
           if (query.includes("SELECT") && params[0]) {
-            return storedData.get(params[0] as string) || null;
+            const row = storedData.get(params[0] as string);
+            return row || null;
           }
           return null;
         }),

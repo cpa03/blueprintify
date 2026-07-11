@@ -20,6 +20,7 @@ export {
   StorageClearRequestSchema,
   StorageReportRequestSchema,
   CreateShareSchema,
+  VerifySharePassphraseSchema,
 } from "./schema.js";
 
 // ===== TypeScript Types =====
@@ -49,6 +50,7 @@ export type {
   StorageClearRequest,
   StorageReportRequest,
   CreateShareRequest,
+  VerifySharePassphraseRequest,
 } from "./types.js";
 
 // ===== Templates =====
