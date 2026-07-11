@@ -10,7 +10,8 @@
 
 import { Hono } from "hono";
 import { CONTEXT_KEYS, ImportRequestSchema } from "@blueprint/shared";
-import { ErrorType } from "../errors";
+import { ErrorType, createErrorJson } from "../errors";
+import { ERROR_CODES } from "@blueprint/shared";
 import { validateJson, validatePromptInjection } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { secureLogError } from "../utils/secureLog";
@@ -45,14 +46,9 @@ app.post(
 
           if (!parsed.projectName || !parsed.blueprint) {
             return c.json(
-              {
-                success: false,
-                error: {
-                  type: ErrorType.VALIDATION,
-                  message: IMPORT_ERROR_MESSAGES.MISSING_REQUIRED_FIELDS,
-                  timestamp: new Date().toISOString(),
-                },
-              },
+              createErrorJson(ErrorType.VALIDATION, IMPORT_ERROR_MESSAGES.MISSING_REQUIRED_FIELDS, {
+                code: ERROR_CODES.VALIDATION_ERROR,
+              }),
               HTTP_STATUS.BAD_REQUEST
             );
           }
@@ -76,15 +72,11 @@ app.post(
           });
         } catch (parseError) {
           return c.json(
-            {
-              success: false,
-              error: {
-                type: ErrorType.VALIDATION,
-                message: IMPORT_ERROR_MESSAGES.INVALID_JSON_FORMAT,
-                details: parseError instanceof Error ? parseError.message : undefined,
-                timestamp: new Date().toISOString(),
-              },
-            },
+            createErrorJson(ErrorType.VALIDATION, IMPORT_ERROR_MESSAGES.INVALID_JSON_FORMAT, {
+              code: ERROR_CODES.VALIDATION_ERROR,
+              details:
+                parseError instanceof Error ? { parseMessage: parseError.message } : undefined,
+            }),
             HTTP_STATUS.BAD_REQUEST
           );
         }
@@ -104,14 +96,9 @@ app.post(
 
         if (!blueprint) {
           return c.json(
-            {
-              success: false,
-              error: {
-                type: ErrorType.VALIDATION,
-                message: IMPORT_ERROR_MESSAGES.MISSING_BLUEPRINT_CONTENT,
-                timestamp: new Date().toISOString(),
-              },
-            },
+            createErrorJson(ErrorType.VALIDATION, IMPORT_ERROR_MESSAGES.MISSING_BLUEPRINT_CONTENT, {
+              code: ERROR_CODES.VALIDATION_ERROR,
+            }),
             HTTP_STATUS.BAD_REQUEST
           );
         }
@@ -130,27 +117,19 @@ app.post(
       }
 
       return c.json(
-        {
-          success: false,
-          error: {
-            type: ErrorType.VALIDATION,
-            message: IMPORT_ERROR_MESSAGES.UNSUPPORTED_FORMAT(format),
-            timestamp: new Date().toISOString(),
-          },
-        },
+        createErrorJson(ErrorType.VALIDATION, IMPORT_ERROR_MESSAGES.UNSUPPORTED_FORMAT(format), {
+          code: ERROR_CODES.VALIDATION_ERROR,
+        }),
         HTTP_STATUS.BAD_REQUEST
       );
     } catch (error) {
       secureLogError("Import error", error, { format, overwrite });
       return c.json(
-        {
-          success: false,
-          error: {
-            type: ErrorType.INTERNAL,
-            message: error instanceof Error ? error.message : IMPORT_ERROR_MESSAGES.IMPORT_FAILED,
-            timestamp: new Date().toISOString(),
-          },
-        },
+        createErrorJson(
+          ErrorType.INTERNAL,
+          error instanceof Error ? error.message : IMPORT_ERROR_MESSAGES.IMPORT_FAILED,
+          { code: ERROR_CODES.INTERNAL_ERROR }
+        ),
         HTTP_STATUS.INTERNAL_ERROR
       );
     }

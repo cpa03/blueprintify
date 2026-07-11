@@ -1587,4 +1587,96 @@ Full PR handler cycle across all 5 open PRs (#2399–#2403): checkout, rebase to
 - [x] Root cause of all PR blocks documented ✅
 - [x] Issue label normalization audit completed ✅
 
-> Older cycles (Cycle 1 through Cycle 206) are preserved in git history. Run `git log -- docs/findings.md` to browse historical entries.
+## Cycle 228 (2026-07-11 — ULW Loop: Issue manager normalization, Phase 1 diagnostic audit, export/import error standardization fix)
+
+### Issue Manager Mode — Normalization & Duplicate Detection
+
+**Issues with proper labels already:** Most of the ~108 open issues had category+priority labels already applied. 5 issues (#846-#850) had **zero labels** — manual label assignment needed (blocked by GITHUB_TOKEN scope).
+
+**Issue label normalization recommendations (cannot apply — token lacks `issues: write`):**
+
+| Issue | Recommended Category | Recommended Priority | Reason |
+|-------|---------------------|---------------------|--------|
+| #850 | enhancement | P2 | Add Dependabot for dependency scanning |
+| #849 | bug | P1 | Tests not running in PR gatekeeper |
+| #848 | security | P1 | CORS wildcard default allows all origins |
+| #847 | security | P0 | Authentication bypass when API_KEY not set |
+| #846 | security | P2 | Share routes missing rate limiting |
+
+**Duplicates identified:**
+
+| Duplicate | Canonical | Topic |
+|-----------|-----------|-------|
+| #2475, #2457 | #2253 | CI Node.js 20→22 version update |
+
+**Issues resolved in code but still open (cannot close — token lacks `issues: write`):**
+
+| Issue | Topic | Status Evidence |
+|-------|-------|-----------------|
+| #847 | Auth bypass when API_KEY not set | `auth.ts` lines 96-105 return 503 SERVICE_UNAVAILABLE |
+| #1077 | Prompt injection risk | `prompt-security.ts` has OWASP-based injection detection + `sanitizePromptInput()` |
+| #1166 | Add .nvmrc | `.nvmrc` and `.node-version` both exist with `22` |
+| #899 | Remove asyncHandler middleware | Already removed — zero matches in apps/ |
+| #908 | Max length validation on export/import | `ExportRequestSchema`/`ImportRequestSchema` have `.max(EXPORT_LIMITS.*)` |
+| #910 | Duplicate validation in share routes | Share routes use `validateJson(CreateShareSchema)` consistently |
+
+### Repair Mode — CI Node.js Version Attempt
+
+Branch: `fix/ci-node-version-22` — all 11 occurrences across 4 workflow files changed from `"20"` to `"22"`.
+**Blocked:** `git push` rejected — GITHUB_TOKEN lacks `workflows: write` permission. Requires manual PR creation by user with appropriate token.
+
+### Phase 1 — Comprehensive Diagnostic Scoring
+
+**Build:** ✅ PASS | **Lint:** ✅ 0 errors, 0 warnings | **Tests:** ✅ 1,890/1,890 passing (755 web + 443 API + 692 shared) | **TypeScript:** ✅ Clean | **npm audit:** ✅ 0 vulnerabilities
+
+#### A. CODE QUALITY: 85/100
+
+| Criterion | Weight | Score | Evidence |
+|-----------|--------|-------|----------|
+| Correctness | 15 | 90 | 1,890 tests pass; strict TypeScript |
+| Readability & Naming | 10 | 85 | JSDoc on all public functions, clear naming |
+| Simplicity | 10 | 80 | Some wizard store complexity |
+| Modularity & SRP | 15 | 85 | MVC-like structure; middleware/controller/service separation |
+| Consistency | 5 | 90 | Consistent patterns (factory functions, factory error pattern) |
+| Testability | 15 | 85 | 86 test files, 1,890 tests covering 169 source files |
+| Maintainability | 10 | 80 | Well-organized but some large files |
+| Error Handling | 10 | 85 | Standardized `createErrorJson()` pattern |
+| Dependency Discipline | 5 | 90 | Clean monorepo with shared package |
+| Determinism | 5 | 85 | Pure functions, constant-time compare |
+
+#### B. SYSTEM QUALITY: 82/100
+
+| Criterion | Weight | Score | Key Observations |
+|-----------|--------|-------|-----------------|
+| Stability | 20 | 90 | All tests pass; auth with constant-time compare |
+| Performance | 15 | 80 | Lazy loading, code splitting, memo usage |
+| Security | 20 | 85 | API key auth, injection detection, RBAC; placeholder IDs risk |
+| Scalability | 15 | 75 | Workers/D1 architecture scalable; placeholder IDs blocking deploy |
+| Resilience | 15 | 80 | Circuit breaker, retry, rate limiting configured |
+| Observability | 15 | 75 | Logging middleware, analytics engine; secure log utilities |
+
+#### C. EXPERIENCE QUALITY: 83/100
+
+- UX: Accessibility (85), User Flow (85), Feedback (80), Responsiveness (80)
+- DX: API Clarity (85), Local Setup (80), Documentation (85), Debuggability (75), Build/Test Loop (85)
+
+#### D. DELIVERY & EVOLUTION READINESS: 73/100
+
+Key weakness: **CI/CD Health (60)** — workflows pinned to Node 20, blocked by token permissions; **Release Safety (70)** — placeholder IDs prevent deployment.
+
+### Phase 2 — Feature Hardening
+
+**Fixed: #909 — Inconsistent error response format in export/import routes**
+- `apps/api/src/routes/export.ts`: Replaced 2 inline `{ success: false, error: { ... } }` with `createErrorJson()`
+- `apps/api/src/routes/import.ts`: Replaced 4 inline error objects with `createErrorJson()`
+- Added `code` field and `requestId` support to error responses
+- Verification: ✅ Build passes, ✅ All 443 API tests pass, ✅ All 755 web tests pass, ✅ Lint clean (0 errors, 0 warnings)
+
+### Next Steps
+
+1. Manual intervention needed: Create PR for CI Node.js version fix (requires token with `workflows: write`)
+2. Manual intervention needed: Close resolved issues (#847, #1077, #1166, #899, #908, #910)
+3. Manual intervention needed: Apply labels to unlabeled issues (#846-#850)
+4. Consider: Standardize remaining routes (generate, tasks, refine) to verify they also use `createErrorJson()`
+
+> Older cycles (Cycle 1 through Cycle 227) are preserved in git history. Run `git log -- docs/findings.md` to browse historical entries.
