@@ -2,6 +2,20 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 230 — **Full repository audit, 1 post-Cycle-229 commit indexed (Cycle 229b — Issue Manager analysis), doc refresh, quality verification, BUG-014/BUG-017 still present** ✅
+
+### Task: Full repository audit — **1 post-Cycle-229 commit indexed** (docs(findings) Cycle 229b — Issue Manager analysis and blocked actions); **BUG-014/BUG-017 verified still present on main** — stale doc refs `docs/bug.md`/`docs/feature.md` in main.yml (2 occurrences), 11 `node-version: "20"` hardcodes across 4 workflow files — same `workflows: write` blocker; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,890/1,890** ✅ — 755 web + 443 API + 692 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 230 full repository audit — CHANGELOG gap fix, BUG-014/BUG-017 status verification, doc refresh, quality verification
+- **Actions**:
+  - [x] **CHANGELOG gap fix**: Added 1 post-Cycle-229 commit — docs(findings) Cycle 229b — Issue Manager analysis and blocked actions (ca959b67) ✅
+  - [x] **BUG-014/BUG-017 verification**: stale doc refs `docs/bug.md`/`docs/feature.md` in main.yml (2 occurrences — lines 39, 263) and 11 `node-version: "20"` hardcodes across 4 workflow files confirmed — same `workflows: write` blocker as all prior cycles ⚠️
+  - [x] **findings.md updated**: Cycle 230 entry added at top ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 230, BUG-014/BUG-017 status → still present ⚠️
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,890/1,890 ✅ format ✅ secrets ✅ npm audit 0 vulns ✅
+
 ## ✅ RepoKeeper Cycle 229 — **Full repository audit, 2 post-Cycle-228 commits indexed, 14 stale audit archive files purged (June 8–10 — past 30-day retention), 4 stale remote branches assessed, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — **2 post-Cycle-228 commits indexed** (feat(ux) HeadingAnchor spring icon swap animation, fix(api) standardized error response format); **14 stale archive files purged** (June 8–10 BroCula hunt & issue audit reports — past 30-day retention policy); **4 stale remote branches assessed** (repokeeper cycles 147/160/166/178 — superseded, 300–510 commits behind main); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,890/1,890** ✅ — 755 web + 443 API + 692 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
