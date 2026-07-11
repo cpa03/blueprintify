@@ -29,7 +29,7 @@ import {
   SHORTCUT_DESCRIPTIONS,
   UI_MESSAGES,
   FRAMER_TYPE,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";

@@ -1,12 +1,12 @@
 import type JSZip from "jszip";
-import type { TechStackItemType } from "@blueprint/shared";
+import type { TechStackItemType } from "@blueprint/shared/types";
 import {
   HTTP_HEADERS,
   HTTP_HEADER_NAMES,
   HTTP_STATUS,
   TEMPLATE_NODE_PORT,
   TEMPLATE_VERSIONS,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 import { PackageJson, generateProjectReadme } from "./shared";
 
 export async function generateNodeProject(

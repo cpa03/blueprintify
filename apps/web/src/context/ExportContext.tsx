@@ -11,8 +11,8 @@
  * @see exportAsZip for the export function that consumes this data
  */
 import { createContext, useContext, useCallback, type ReactNode } from "react";
-import type { TechStackItemType } from "@blueprint/shared";
-import { CONTEXT_HOOK_ERRORS } from "@blueprint/shared";
+import type { TechStackItemType } from "@blueprint/shared/types";
+import { CONTEXT_HOOK_ERRORS } from "@blueprint/shared/config";
 import { useWizardStore } from "../store";
 import { DEFAULT_PROJECT_NAME } from "../config/constants";
 

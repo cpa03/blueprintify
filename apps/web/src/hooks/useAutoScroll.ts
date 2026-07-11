@@ -28,7 +28,7 @@
  */
 
 import { useRef, useState, useCallback, useEffect } from "react";
-import { AUTO_SCROLL_DEFAULTS } from "@blueprint/shared";
+import { AUTO_SCROLL_DEFAULTS } from "@blueprint/shared/config";
 
 interface UseAutoScrollOptions {
   /** Ref to the scrollable container element */

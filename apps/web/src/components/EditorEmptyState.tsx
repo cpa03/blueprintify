@@ -20,7 +20,7 @@ import {
   ANIMATION,
   EASING,
 } from "../config/constants";
-import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
+import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared/config";
 import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from "../utils/motion";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
 

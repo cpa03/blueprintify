@@ -10,7 +10,7 @@ import {
   PARTICLE_DEFAULTS as SHARED_PARTICLE_DEFAULTS,
   SKELETON_DEFAULTS as SHARED_SKELETON_DEFAULTS,
   ENTRANCE_STAGGER_DEFAULTS as SHARED_ENTRANCE_STAGGER_DEFAULTS,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 
 // ============================================================================
 // Ripple Animation

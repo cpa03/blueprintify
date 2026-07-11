@@ -25,13 +25,13 @@
  * ```
  */
 
-import { HTTP_HEADER_NAMES } from "@blueprint/shared";
+import { HTTP_HEADER_NAMES } from "@blueprint/shared/config";
 import type {
   BlueprintRequest,
   TaskGenerationRequest,
   RefineRequest,
   StreamChunk,
-} from "@blueprint/shared";
+} from "@blueprint/shared/types";
 import {
   API_ERROR_MESSAGES,
   SSE_CONFIG,

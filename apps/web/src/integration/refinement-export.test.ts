@@ -5,7 +5,7 @@ import {
   HTTP_STATUS,
   HTTP_HEADER_NAMES,
   EDITOR_FILENAMES,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 import { API_ENDPOINTS } from "../config/constants";
 import { API_BASE } from "../config/api-client";
 import {

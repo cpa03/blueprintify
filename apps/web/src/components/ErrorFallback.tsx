@@ -21,7 +21,7 @@ import {
   HOVER_SCALE,
   TAP_SCALE,
 } from "../config/constants";
-import { ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE } from "@blueprint/shared";
+import { ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE } from "@blueprint/shared/config";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
 import { copyToClipboard } from "../lib/clipboard";
 

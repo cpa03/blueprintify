@@ -13,7 +13,7 @@
 
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
-import { AUTO_SCROLL_DEFAULTS } from "@blueprint/shared";
+import { AUTO_SCROLL_DEFAULTS } from "@blueprint/shared/config";
 import { useAutoScroll } from "./useAutoScroll";
 
 /**

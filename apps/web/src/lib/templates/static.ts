@@ -1,5 +1,5 @@
 import type JSZip from "jszip";
-import type { TechStackItemType } from "@blueprint/shared";
+import type { TechStackItemType } from "@blueprint/shared/types";
 import { generateProjectReadme } from "./shared";
 
 export async function generateStaticProject(

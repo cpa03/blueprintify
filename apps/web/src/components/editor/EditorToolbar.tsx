@@ -28,7 +28,7 @@ import React from "react";
 import clsx from "clsx";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import type { EditorTab } from "@blueprint/shared";
+import type { EditorTab } from "@blueprint/shared/types";
 import {
   VIEW_MODES as SHARED_VIEW_MODES,
   TOOLTIP_LABELS,
@@ -37,7 +37,7 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   VIEW_MODE_INDICATOR_POSITION,
   FRAMER_TYPE,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
 import { AnimatedCopyButton } from "../AnimatedCopyButton";

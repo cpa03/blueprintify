@@ -25,7 +25,7 @@ import { AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { copyToClipboard } from "../lib/export";
 import { sanitizeHtml } from "../lib/security";
-import { FRAMER_TYPE } from "@blueprint/shared";
+import { FRAMER_TYPE } from "@blueprint/shared/config";
 import {
   TIMEOUTS,
   ACCESSIBILITY_LABELS,

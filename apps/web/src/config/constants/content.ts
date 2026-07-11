@@ -13,7 +13,7 @@ import {
   EXPORT_ERROR_STRINGS,
   NETWORK_DEFAULTS,
   SKELETON_DEFAULTS as SHARED_SKELETON_DEFAULTS,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 
 /**
  * Loading State Messages

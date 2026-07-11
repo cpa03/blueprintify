@@ -1,6 +1,6 @@
 import type JSZip from "jszip";
-import type { TechStackItemType } from "@blueprint/shared";
-import { PYTHON_DEV_DEFAULTS, TEMPLATE_VERSIONS } from "@blueprint/shared";
+import type { TechStackItemType } from "@blueprint/shared/types";
+import { PYTHON_DEV_DEFAULTS, TEMPLATE_VERSIONS } from "@blueprint/shared/config";
 import { generateProjectReadme } from "./shared";
 
 export async function generatePythonProject(

@@ -3,7 +3,7 @@
  * Source of truth for validation-related constants
  */
 
-import { VALIDATION_LIMITS, VALIDATION_LABELS } from "@blueprint/shared";
+import { VALIDATION_LIMITS, VALIDATION_LABELS } from "@blueprint/shared/config";
 
 export { VALIDATION_LIMITS, VALIDATION_LABELS };
 

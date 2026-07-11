@@ -7,7 +7,7 @@
 
 import type { Variants, Transition } from "framer-motion";
 import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
-import { ANIMATION_DIRECTIONS, FRAMER_TYPE } from "@blueprint/shared";
+import { ANIMATION_DIRECTIONS, FRAMER_TYPE } from "@blueprint/shared/config";
 
 /**
  * Common transition configurations

@@ -1,7 +1,7 @@
 import { memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { FRAMER_TYPE } from "@blueprint/shared";
+import { FRAMER_TYPE } from "@blueprint/shared/config";
 import { ANIMATION_TIMING } from "../config/theme";
 import { ANIMATION, EASING } from "../config/constants";
 import { VALIDATION_LABELS } from "../config/constants/validation";

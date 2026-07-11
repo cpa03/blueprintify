@@ -2,7 +2,7 @@ import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { useDocumentTitle } from "./useDocumentTitle";
 import { DOCUMENT_TITLE_CONFIG } from "../config/constants";
-import { SHARED_DEFAULTS } from "@blueprint/shared";
+import { SHARED_DEFAULTS } from "@blueprint/shared/config";
 
 describe("useDocumentTitle", () => {
   let originalTitle: string;

@@ -13,8 +13,8 @@
 import { useCallback } from "react";
 import { useWizardStore, useEditorStore } from "../store";
 import { generateBlueprint, generateTasks } from "../lib/api";
-import type { BlueprintRequest } from "@blueprint/shared";
-import { WIZARD_STEP_KEYS } from "@blueprint/shared";
+import type { BlueprintRequest } from "@blueprint/shared/types";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 import { GENERATION_MESSAGES } from "../config/constants";
 
 /**

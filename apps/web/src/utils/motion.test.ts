@@ -3,7 +3,7 @@
  * Unit tests for Framer Motion animation variants
  */
 
-import { ANIMATION_DIRECTIONS } from "@blueprint/shared";
+import { ANIMATION_DIRECTIONS } from "@blueprint/shared/config";
 import { describe, it, expect } from "vitest";
 import {
   transitions,

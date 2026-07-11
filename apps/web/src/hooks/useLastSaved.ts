@@ -10,7 +10,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import { TIME_UNITS } from "@blueprint/shared";
+import { TIME_UNITS } from "@blueprint/shared/config";
 import { TIMEOUTS, LAST_SAVED_MESSAGES } from "../config/constants";
 
 /**

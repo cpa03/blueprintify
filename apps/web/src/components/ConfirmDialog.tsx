@@ -37,7 +37,7 @@
 import { useEffect, useRef, useCallback, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { ANIMATION_DEFAULTS, SHORTCUT_DESCRIPTIONS, FRAMER_TYPE } from "@blueprint/shared";
+import { ANIMATION_DEFAULTS, SHORTCUT_DESCRIPTIONS, FRAMER_TYPE } from "@blueprint/shared/config";
 import {
   SPRING_CONFIG,
   ANIMATION,

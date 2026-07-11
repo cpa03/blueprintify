@@ -5,7 +5,7 @@ import {
   HTTP_HEADERS,
   HTTP_HEADER_NAMES,
   HTTP_STATUS,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 
 export interface TestBlueprint {
   projectName: string;

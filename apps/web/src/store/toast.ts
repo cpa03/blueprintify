@@ -17,7 +17,7 @@
 
 import { create } from "zustand";
 import { TOAST_CONFIG } from "../config/constants";
-import { ID_GENERATION_CONFIG, TOAST_TYPES } from "@blueprint/shared";
+import { ID_GENERATION_CONFIG, TOAST_TYPES } from "@blueprint/shared/config";
 
 const { RANDOM_STRING_START_INDEX, RANDOM_STRING_LENGTH, ALPHANUMERIC_RADIX } =
   ID_GENERATION_CONFIG;

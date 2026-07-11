@@ -15,7 +15,7 @@ import { useBlueprintStream } from "./useBlueprintStream";
 import { generateBlueprint, generateTasks } from "../lib/api";
 import { useWizardStore, useEditorStore } from "../store";
 import { EDITOR_TABS } from "../config/constants";
-import { WIZARD_STEP_KEYS } from "@blueprint/shared";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 
 // Mock the API module
 vi.mock("../lib/api", () => ({

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { StorageManager, StorageError } from "../lib/storage";
 import { createTestBlueprint } from "./factories";
-import { STORAGE_KEY_PREFIXES } from "@blueprint/shared";
+import { STORAGE_KEY_PREFIXES } from "@blueprint/shared/config";
 
 describe("Integration: Cross-Browser Storage Operations", () => {
   let manager: StorageManager;

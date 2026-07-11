@@ -1,5 +1,9 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { HTTP_HEADERS, SECURITY_ERROR_CATEGORIES, ERROR_CLASS_NAMES } from "@blueprint/shared";
+import {
+  HTTP_HEADERS,
+  SECURITY_ERROR_CATEGORIES,
+  ERROR_CLASS_NAMES,
+} from "@blueprint/shared/config";
 import {
   sanitizeHtml,
   sanitizeMarkdown,

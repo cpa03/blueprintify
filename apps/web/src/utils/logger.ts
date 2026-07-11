@@ -17,7 +17,7 @@
  * ```
  */
 
-import { LOG_LEVELS, LOG_TIMESTAMP_SLICE } from "@blueprint/shared";
+import { LOG_LEVELS, LOG_TIMESTAMP_SLICE } from "@blueprint/shared/config";
 import { isDev } from "../config/env";
 
 type LogLevel = (typeof LOG_LEVELS)[keyof typeof LOG_LEVELS];

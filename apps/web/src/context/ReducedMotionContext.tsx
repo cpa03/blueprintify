@@ -6,7 +6,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
-import { CONTEXT_HOOK_ERRORS } from "@blueprint/shared";
+import { CONTEXT_HOOK_ERRORS } from "@blueprint/shared/config";
 import { STORAGE_KEYS } from "../config/keys";
 
 interface ReducedMotionContextType {

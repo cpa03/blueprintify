@@ -1,5 +1,5 @@
 import type JSZip from "jszip";
-import { EXPORT_ERROR_STRINGS } from "@blueprint/shared";
+import { EXPORT_ERROR_STRINGS } from "@blueprint/shared/config";
 import {
   EXPORT_CONFIG,
   README_TEMPLATE,

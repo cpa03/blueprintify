@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import JSZip from "jszip";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
-import type { TechStackItemType } from "@blueprint/shared";
+import type { TechStackItemType } from "@blueprint/shared/types";
 
 // Mock JSZip
 vi.mock("jszip", () => {

@@ -41,8 +41,8 @@ import {
   UI_TIMING,
   SKELETON_DEFAULTS,
   KEYBOARD_EVENT_KEYS,
-  type EditorTab,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
+import type { EditorTab } from "@blueprint/shared/types";
 import {
   TIMEOUTS,
   UI,

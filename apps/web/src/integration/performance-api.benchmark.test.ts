@@ -5,7 +5,7 @@ import {
   HTTP_HEADERS,
   HTTP_STATUS,
   HTTP_HEADER_NAMES,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 import { API_ENDPOINTS } from "../config/constants";
 import { API_BASE } from "../config/api-client";
 import { createTestBlueprint, createLargeBlueprint, createMockResponse } from "./factories";

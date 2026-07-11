@@ -5,7 +5,7 @@ import {
   SCROLL_THRESHOLD_DEFAULTS,
   SCROLL_PROGRESS_DEFAULTS,
   UI_TIMEOUTS,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
 const ShowEditorButton = lazy(() =>

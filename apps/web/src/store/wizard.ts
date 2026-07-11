@@ -15,8 +15,8 @@
  */
 
 import { create } from "zustand";
-import type { WizardState, WizardStep, TechStackItemType } from "@blueprint/shared";
-import { WIZARD_STEP_KEYS } from "@blueprint/shared";
+import type { WizardState, WizardStep, TechStackItemType } from "@blueprint/shared/types";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 import { WIZARD_STEPS, DEBOUNCE_CONFIG } from "../config/constants";
 import { wizardStorage } from "../lib/storage";
 import { createPersistedStore, type PersistedStorage } from "./persistence";

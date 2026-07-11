@@ -1,4 +1,4 @@
-import { TOAST_TYPES } from "@blueprint/shared";
+import { TOAST_TYPES } from "@blueprint/shared/config";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ToastContainer } from "./Toast";

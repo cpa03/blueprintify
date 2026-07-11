@@ -6,7 +6,7 @@ import { useWizardStore, useEditorStore } from "../store";
 import type { WizardStore } from "../store/wizard";
 import type { EditorStore } from "../store/editor";
 import { EDITOR_TABS } from "../config/constants";
-import { WIZARD_STEP_KEYS } from "@blueprint/shared";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 
 vi.mock("../store", () => ({
   useWizardStore: vi.fn(),
