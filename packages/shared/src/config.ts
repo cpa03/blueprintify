@@ -465,6 +465,38 @@ export const SHARE_DEFAULTS = {
 } as const;
 
 /**
+ * Share Token & Verification Configuration
+ * Centralized defaults for passphrase-protected share verify tokens.
+ * Flexy says: No hardcoded 3600 token expiry magic numbers!
+ */
+export const SHARE_TOKEN_CONFIG = {
+  /** Verify token expiry duration in seconds (1 hour) */
+  TOKEN_EXPIRY_SECONDS: 3600,
+  /** HMAC algorithm used for token signing */
+  HMAC_ALGORITHM: "HMAC" as const,
+  /** Hash algorithm for HMAC token signing */
+  HMAC_HASH: "SHA-256" as const,
+  /** Signature hex length (first 16 chars of full SHA-256 HMAC) */
+  SIGNATURE_HEX_LENGTH: 16,
+  /** Payload base64 URL-safe padding replacement target — empty string */
+  BASE64_PADDING_REPLACEMENT: "" as const,
+} as const;
+
+/**
+ * Rate Limiter Key Prefixes
+ * Centralized source of truth for rate limiter cache key prefixes.
+ * Flexy says: No hardcoded "share:" or "verify:" strings in rate limiter key generators!
+ * Usage: import { RATE_LIMIT_KEY_PREFIXES } from "@blueprint/shared";
+ *        keyGenerator: (c) => `${RATE_LIMIT_KEY_PREFIXES.SHARE}${shareId}:${ip}`
+ */
+export const RATE_LIMIT_KEY_PREFIXES = {
+  /** Prefix for share endpoint rate limit keys */
+  SHARE: "share:" as const,
+  /** Prefix for verify endpoint rate limit keys */
+  VERIFY: "verify:" as const,
+} as const;
+
+/**
  * Body Size Limits
  * Centralized body size limits for request validation.
  * Flexy says: No hardcoded MB/KB magic numbers!

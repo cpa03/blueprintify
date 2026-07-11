@@ -130,6 +130,8 @@ import {
   BREAKPOINT_DEFAULTS,
   CHAR_COUNTER_THRESHOLDS,
   CHAR_COUNTER_COLORS,
+  SHARE_TOKEN_CONFIG,
+  RATE_LIMIT_KEY_PREFIXES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -3714,6 +3716,59 @@ describe("CHAR_COUNTER_THRESHOLDS", () => {
   it("should have all values as numbers", () => {
     const values = Object.values(CHAR_COUNTER_THRESHOLDS);
     values.forEach((v) => expect(typeof v).toBe("number"));
+  });
+});
+
+// SHARE_TOKEN_CONFIG
+describe("SHARE_TOKEN_CONFIG", () => {
+  it("should have TOKEN_EXPIRY_SECONDS = 3600 (1 hour)", () => {
+    expect(SHARE_TOKEN_CONFIG.TOKEN_EXPIRY_SECONDS).toBe(3600);
+  });
+
+  it("should have HMAC_ALGORITHM = 'HMAC'", () => {
+    expect(SHARE_TOKEN_CONFIG.HMAC_ALGORITHM).toBe("HMAC");
+  });
+
+  it("should have HMAC_HASH = 'SHA-256'", () => {
+    expect(SHARE_TOKEN_CONFIG.HMAC_HASH).toBe("SHA-256");
+  });
+
+  it("should have SIGNATURE_HEX_LENGTH = 16", () => {
+    expect(SHARE_TOKEN_CONFIG.SIGNATURE_HEX_LENGTH).toBe(16);
+  });
+
+  it("should have 5 properties", () => {
+    expect(Object.keys(SHARE_TOKEN_CONFIG).length).toBe(5);
+  });
+
+  it("should have TOKEN_EXPIRY_SECONDS as a positive number", () => {
+    expect(typeof SHARE_TOKEN_CONFIG.TOKEN_EXPIRY_SECONDS).toBe("number");
+    expect(SHARE_TOKEN_CONFIG.TOKEN_EXPIRY_SECONDS).toBeGreaterThan(0);
+  });
+});
+
+// RATE_LIMIT_KEY_PREFIXES
+describe("RATE_LIMIT_KEY_PREFIXES", () => {
+  it("should have SHARE prefix = 'share:'", () => {
+    expect(RATE_LIMIT_KEY_PREFIXES.SHARE).toBe("share:");
+  });
+
+  it("should have VERIFY prefix = 'verify:'", () => {
+    expect(RATE_LIMIT_KEY_PREFIXES.VERIFY).toBe("verify:");
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(RATE_LIMIT_KEY_PREFIXES).length).toBe(2);
+  });
+
+  it("should have all prefixes ending with colon", () => {
+    const values = Object.values(RATE_LIMIT_KEY_PREFIXES);
+    values.forEach((v) => expect(v.endsWith(":")).toBe(true));
+  });
+
+  it("should have all values as strings", () => {
+    const values = Object.values(RATE_LIMIT_KEY_PREFIXES);
+    values.forEach((v) => expect(typeof v).toBe("string"));
   });
 });
 
