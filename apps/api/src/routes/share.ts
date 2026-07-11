@@ -17,6 +17,8 @@ import {
   CONTEXT_KEYS,
   AUTH_DEFAULTS,
   EXPORT_ERROR_STRINGS,
+  SHARE_TOKEN_CONFIG,
+  RATE_LIMIT_KEY_PREFIXES,
   CreateShareSchema,
   VerifySharePassphraseSchema,
 } from "@blueprint/shared";
@@ -171,21 +173,25 @@ async function generateVerifyToken(
 ): Promise<string | undefined> {
   if (!apiKey) return undefined;
   const encoder = new TextEncoder();
-  const expiresAt = Math.floor(Date.now() / 1000) + 3600; // 1 hour
+  const expiresAt = Math.floor(Date.now() / 1000) + SHARE_TOKEN_CONFIG.TOKEN_EXPIRY_SECONDS;
   const payload = `${shareId}:${expiresAt}`;
   const key = await crypto.subtle.importKey(
     "raw",
     encoder.encode(apiKey),
-    { name: "HMAC", hash: "SHA-256" },
+    { name: SHARE_TOKEN_CONFIG.HMAC_ALGORITHM, hash: SHARE_TOKEN_CONFIG.HMAC_HASH },
     false,
     ["sign"]
   );
-  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(payload));
+  const signature = await crypto.subtle.sign(
+    SHARE_TOKEN_CONFIG.HMAC_ALGORITHM,
+    key,
+    encoder.encode(payload)
+  );
   const signatureHex = Array.from(new Uint8Array(signature))
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
   const payloadB64 = btoa(payload).replace(/=+$/, "").replace(/\+/g, "-").replace(/\//g, "_");
-  return `${payloadB64}.${signatureHex.slice(0, 16)}`;
+  return `${payloadB64}.${signatureHex.slice(0, SHARE_TOKEN_CONFIG.SIGNATURE_HEX_LENGTH)}`;
 }
 
 /**
@@ -211,15 +217,19 @@ async function isValidVerifyToken(
     const key = await crypto.subtle.importKey(
       "raw",
       encoder.encode(apiKey),
-      { name: "HMAC", hash: "SHA-256" },
+      { name: SHARE_TOKEN_CONFIG.HMAC_ALGORITHM, hash: SHARE_TOKEN_CONFIG.HMAC_HASH },
       false,
       ["sign"]
     );
-    const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(payload));
+    const signature = await crypto.subtle.sign(
+      SHARE_TOKEN_CONFIG.HMAC_ALGORITHM,
+      key,
+      encoder.encode(payload)
+    );
     const expectedSig = Array.from(new Uint8Array(signature))
       .map((b) => b.toString(16).padStart(2, "0"))
       .join("")
-      .slice(0, 16);
+      .slice(0, SHARE_TOKEN_CONFIG.SIGNATURE_HEX_LENGTH);
     return parts[1] === expectedSig;
   } catch {
     return false;
@@ -309,7 +319,7 @@ const shareEnumerationRateLimit = rateLimit({
       c.req.header(API_HEADERS.REQUEST.FORWARDED_FOR) ||
       RATE_LIMIT_CONSTANTS.ANONYMOUS_CLIENT_KEY;
     const shareId = c.req.param("id") || UNKNOWN_SHARE_ID;
-    return `share:${shareId}:${ip}`;
+    return `${RATE_LIMIT_KEY_PREFIXES.SHARE}${shareId}:${ip}`;
   },
 });
 
@@ -455,7 +465,7 @@ const shareVerifyRateLimit = rateLimit({
       c.req.header(API_HEADERS.REQUEST.FORWARDED_FOR) ||
       RATE_LIMIT_CONSTANTS.ANONYMOUS_CLIENT_KEY;
     const shareId = c.req.param("id") || UNKNOWN_SHARE_ID;
-    return `verify:${shareId}:${ip}`;
+    return `${RATE_LIMIT_KEY_PREFIXES.VERIFY}${shareId}:${ip}`;
   },
 });
 
