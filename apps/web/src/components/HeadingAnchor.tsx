@@ -34,6 +34,7 @@ import { AnimatePresence } from "framer-motion";
 import { generateSlug } from "../utils/slug";
 import {
   ANIMATION_DEFAULTS,
+  ANIMATION_ENTRANCE_DELAYS,
   TOOLTIP_LABELS,
   UI_TIMEOUTS,
   FRAMER_TYPE,
@@ -118,42 +119,105 @@ export const HeadingAnchor = memo(function HeadingAnchor({
           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
           transition-colors duration-150
           -translate-y-px
+          ${showCopied ? "!border-accent-emerald/50 !bg-accent-emerald/15" : ""}
         `}
-        aria-label={ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_ARIA(headingText)}
+        aria-label={
+          showCopied
+            ? ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_ARIA(headingText)
+            : ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_TITLE
+        }
         title={ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_TITLE}
         tabIndex={0}
       >
-        {/* Link icon */}
-        <svg
-          className="w-3.5 h-3.5 flex-shrink-0"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2.5}
-            d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-          />
-        </svg>
-
-        {/* "Copied!" feedback */}
-        <AnimatePresence>
-          {showCopied && (
+        <AnimatePresence mode="wait">
+          {showCopied ? (
+            /* Checkmark icon + "Copied!" — springs in replacing the link icon */
             <motion.span
-              initial={{ opacity: 0, x: -4, scale: 0.9 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: -4, scale: 0.9 }}
-              transition={{
-                duration: shouldReduceMotion ? 0 : ANIMATION.FAST,
-                ease: EASING.easeOut,
-              }}
-              className="text-accent-emerald font-semibold whitespace-nowrap"
-              aria-live="polite"
+              key="copied"
+              initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              exit={{ opacity: 0, scale: 0.5, rotate: 10 }}
+              transition={
+                shouldReduceMotion
+                  ? ANIMATION_DEFAULTS.ZERO_DURATION
+                  : {
+                      type: FRAMER_TYPE.SPRING,
+                      ...SPRING_CONFIG.SNAPPY,
+                    }
+              }
+              className="flex items-center gap-1"
             >
-              {TOOLTIP_LABELS.EDITOR.COPIED}
+              <svg
+                className="w-3.5 h-3.5 flex-shrink-0 text-accent-emerald"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <motion.path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M5 13l4 4L19 7"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{
+                    pathLength: {
+                      duration: ANIMATION.CHECKMARK_REVEAL,
+                      ease: EASING.easeOut,
+                      delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
+                    },
+                    opacity: {
+                      duration: ANIMATION.QUICK_FADE,
+                      delay: ANIMATION_ENTRANCE_DELAYS.VERY_FAST,
+                    },
+                  }}
+                />
+              </svg>
+              <motion.span
+                className="text-accent-emerald font-semibold whitespace-nowrap"
+                initial={{ opacity: 0, x: -4 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{
+                  duration: shouldReduceMotion ? 0 : ANIMATION.FAST,
+                  ease: EASING.easeOut,
+                  delay: ANIMATION_ENTRANCE_DELAYS.FAST,
+                }}
+                aria-live="polite"
+              >
+                {TOOLTIP_LABELS.EDITOR.COPIED}
+              </motion.span>
+            </motion.span>
+          ) : (
+            /* Link icon — springs back when copy feedback clears */
+            <motion.span
+              key="link"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={
+                shouldReduceMotion
+                  ? ANIMATION_DEFAULTS.ZERO_DURATION
+                  : {
+                      type: FRAMER_TYPE.SPRING,
+                      ...SPRING_CONFIG.SNAPPY,
+                    }
+              }
+            >
+              <svg
+                className="w-3.5 h-3.5 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                />
+              </svg>
             </motion.span>
           )}
         </AnimatePresence>
