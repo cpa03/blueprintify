@@ -1718,11 +1718,77 @@ Key weakness: **CI/CD Health (60)** — workflows pinned to Node 20, blocked by 
 - Added `code` field and `requestId` support to error responses
 - Verification: ✅ Build passes, ✅ All 443 API tests pass, ✅ All 755 web tests pass, ✅ Lint clean (0 errors, 0 warnings)
 
-### Next Steps
+## Cycle 229b — Issue Manager Analysis (2026-07-11 ULW Loop)
 
-1. Manual intervention needed: Create PR for CI Node.js version fix (requires token with `workflows: write`)
-2. Manual intervention needed: Close resolved issues (#847, #1077, #1166, #899, #908, #910)
-3. Manual intervention needed: Apply labels to unlabeled issues (#846-#850)
-4. Consider: Standardize remaining routes (generate, tasks, refine) to verify they also use `createErrorJson()`
+### Issue Normalization Results
 
-> Older cycles (Cycle 1 through Cycle 227) are preserved in git history. Run `git log -- docs/findings.md` to browse historical entries.
+| # | Title | Labels | Status | Action |
+|---|-------|--------|--------|--------|
+| 2475 | fix(ci): update node-version from 20 to 22 | bug, P1 | OPEN | 🔁 Duplicate of #2030 (closed in PR #2499) |
+| 2457 | fix(ci): update CI Node.js version from 20 to 22 | bug, P2 | OPEN | 🔁 Duplicate of #2030 (closed in PR #2499) |
+| 2253 | CI workflows pinned to Node.js 20 but requires >=22 | bug, P1, ci | OPEN | 🔁 Duplicate of #2030 (closed in PR #2499) |
+| 1167 | [Security] Implement localStorage encryption | priority:low, security | OPEN | Valid — security enhancement |
+| 1166 | [Infra] Add .nvmrc for Node version specification | priority:low, chore | OPEN | ❌ Already resolved (`.nvmrc` exists in root) — close as completed |
+| 1165 | [Infra] Replace placeholder Cloudflare resource IDs | priority:medium, chore | OPEN | Valid — infra task |
+| 1163 | [Refactor] Split large constants files | priority:medium, refactor | OPEN | Valid — modularity improvement |
+| 1161 | [Chore] Upgrade outdated dependencies | priority:medium, enhancement | OPEN | Valid — maintenance |
+| 1143 | INNOVATION-001: AI-Native Feature Enhancement | priority:low, enhancement | OPEN | Valid — strategic |
+| 1142 | DX-001: Developer Experience Enhancement | priority:low, enhancement | OPEN | Valid — DX improvement |
+| 1141 | TEST-001: Missing Test Coverage - API Utils & Services | priority:medium, test | OPEN | Valid — test coverage gap |
+| 1118 | [UX-001] Improve Accessibility - Keyboard Navigation | priority:low, enhancement | OPEN | Valid — accessibility |
+| 1117 | [DX-001] Improve Local Development Experience | priority:low, enhancement | OPEN | Valid — DX improvement |
+| 1116 | [INNOVATION-001] AI-Powered Blueprint Auto-Completion | priority:low, enhancement | OPEN | Valid — strategic |
+| 1090 | [INNOVATION] Real-Time Collaborative Editing | P3, enhancement | OPEN | Valid — strategic |
+| 1089 | [INNOVATION] AI-Powered Interactive Tutorial | P3, enhancement | OPEN | Valid — strategic |
+| 1088 | [DEVOPS] No Secrets Detection in CI | P2, security | OPEN | Valid — CI security gap |
+| 1086 | [FRONTEND] Editor-Wizard Tight Coupling During Export | P3, refactor | OPEN | Valid — architecture debt |
+| 1084 | [DEVOPS] No Dependency Vulnerability Scanning in CI | P2, security | OPEN | Valid — CI security gap |
+| 1082 | [TESTING] No React Hook Tests | P1, test | OPEN | Valid — critical test gap |
+
+### Duplicate Detection
+
+**Duplicate Set 1 — CI Node Version (BUG-017)**
+- Canonical: #2030 (CLOSED — fixed in PR #2499)
+- Duplicates: #2253, #2475, #2457, #2160 (CLOSED), #2248 (CLOSED)
+- Action: Close #2253, #2475, #2457 — all superseded by PR #2499
+
+**Outdated Issue #1166**
+- `.nvmrc` already exists at repository root
+- Action: Close as already completed
+
+### Label Standardization Needed
+
+Some issues use legacy label schema (`priority:low`, `area:frontend-engineer`) while others use the new schema (`P1`, `P2`, `P3`, `bug`, `enhancement`). The new label system requires exactly one category and one priority per issue.
+
+### Consolidated Findings Created (PHASE 1-3)
+
+Due to GitHub App token permissions (read-only for issues), the following issues could not be created/closed directly. They are documented here for maintainer action.
+
+**PHASE 1 — System Quality Findings (Diagnostic Scoring)**
+Build ✅ (0 errors), Lint ✅ (0 warnings), Tests ✅ (755/755), npm audit ✅ (0 vulns). Overall high quality. No scoring deductions triggered.
+
+**PHASE 2 — Feature Hardening Opportunities**
+- CI workflow files still hardcode `node-version: "20"` despite PR #2499's intent to fix (blocked by `workflows: write` permission). A maintainer with appropriate tokens needs to run `node scripts/fix-ci-node-version.mjs` and commit.
+- Two CI security gaps identified: #1088 (secrets detection) and #1084 (dependency scanning) remain unaddressed.
+
+**PHASE 3 — Strategic Expansion**
+- Multiple innovation issues filed (#1143, #1116, #1090, #1089) covering AI-native features, collaborative editing, and tutorials. No immediate implementation needed.
+
+### Blocked Actions
+
+| Action | Reason |
+|--------|--------|
+| Close duplicate issues #2253, #2475, #2457 | Token lacks `issues: write` |
+| Close outdated issue #1166 (.nvmrc exists) | Token lacks `issues: write` |
+| Create Phase 1-3 findings issues | Token lacks `issues: write` |
+| Push workflow file changes | Token lacks `workflows: write` |
+| Apply standardized labels | Token lacks `issues: write` |
+
+### Next Steps (Requires Maintainer with Full Permissions)
+
+1. **Close duplicates**: #2253, #2475, #2457 (duplicates of resolved #2030)
+2. **Close outdated**: #1166 (`.nvmrc` exists)
+3. **Apply workflow fix**: `node scripts/fix-ci-node-version.mjs` then commit to main
+4. **Issue label migration**: Standardize all issues to new label schema (P0-P3 + category)
+
+> Older cycles (Cycle 1 through Cycle 228) are preserved in git history. Run `git log -- docs/findings.md` to browse historical entries.
