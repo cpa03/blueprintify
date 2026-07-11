@@ -16,7 +16,7 @@ import {
   TOAST_ICONS,
   TOAST_STYLES,
   TOAST_DEFAULTS,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 import { ENV } from "../env";
 import { STORAGE_KEYS } from "../keys";
 

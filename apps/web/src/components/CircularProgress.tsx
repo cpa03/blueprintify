@@ -19,7 +19,7 @@ import {
   ANIMATION,
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
-import { UI_TIMEOUTS } from "@blueprint/shared";
+import { UI_TIMEOUTS } from "@blueprint/shared/config";
 import { TRANSFORMS, OPACITY } from "../config/theme";
 
 /**

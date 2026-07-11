@@ -28,7 +28,7 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   KEYBOARD_EVENT_KEYS,
   FRAMER_TYPE,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";

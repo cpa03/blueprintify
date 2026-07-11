@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";
 import { StepIndicator } from "./StepIndicator";
 import { useWizardStore, useEditorStore } from "../store";
-import { WIZARD_STEP_KEYS } from "@blueprint/shared";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 import type { WizardStore } from "../store/wizard";
 
 vi.mock("../store", () => ({

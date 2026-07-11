@@ -18,7 +18,11 @@
  * chunk from loading before user interaction.
  */
 import { memo, useState, useEffect, useRef } from "react";
-import { UI_TIMING, ANIMATION_ENTRANCE_DELAYS, ENTRANCE_STAGGER_DEFAULTS } from "@blueprint/shared";
+import {
+  UI_TIMING,
+  ANIMATION_ENTRANCE_DELAYS,
+  ENTRANCE_STAGGER_DEFAULTS,
+} from "@blueprint/shared/config";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
 import { BUTTON, ICON } from "../config/styles";

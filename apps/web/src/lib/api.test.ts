@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { checkHealth } from "./api";
-import { HTTP_STATUS } from "@blueprint/shared";
+import { HTTP_STATUS } from "@blueprint/shared/config";
 
 // Flexy: Mocks derive from @blueprint/shared via vi.importActual — single source of truth!
 // RETRY_CONFIG overridden for faster test execution; all other values come from actual shared config.

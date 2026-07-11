@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { TOAST_TYPES } from "@blueprint/shared";
+import { TOAST_TYPES } from "@blueprint/shared/config";
 import { useToastStore, useToast } from "./toast";
 
 // Mock constants

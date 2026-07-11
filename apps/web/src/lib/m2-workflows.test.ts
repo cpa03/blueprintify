@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { HTTP_METHODS, ROUTE_PATHS } from "@blueprint/shared";
+import { HTTP_METHODS, ROUTE_PATHS } from "@blueprint/shared/config";
 
 describe("M2 Integration Workflows", () => {
   describe("Complete M2 User Journey", () => {

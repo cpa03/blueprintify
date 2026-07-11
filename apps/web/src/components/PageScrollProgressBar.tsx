@@ -35,7 +35,7 @@ import { useReducedMotion } from "../hooks/useReducedMotion";
 import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { ANIMATION, EASING } from "../config/constants";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
-import { SCROLL_PROGRESS_DEFAULTS, SPRING_SCROLL_HOVER } from "@blueprint/shared";
+import { SCROLL_PROGRESS_DEFAULTS, SPRING_SCROLL_HOVER } from "@blueprint/shared/config";
 
 interface PageScrollProgressBarProps {
   /**

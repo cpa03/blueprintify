@@ -31,7 +31,7 @@
 import { useState, useCallback, useEffect, useRef, memo } from "react";
 import { useOnlineStatus } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { STYLE_ID_STRINGS, UI_TIMEOUTS } from "@blueprint/shared";
+import { STYLE_ID_STRINGS, UI_TIMEOUTS } from "@blueprint/shared/config";
 import {
   NETWORK_MESSAGES,
   ACCESSIBILITY_LABELS,

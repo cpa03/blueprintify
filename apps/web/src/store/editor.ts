@@ -20,7 +20,7 @@
  */
 
 import { create } from "zustand";
-import type { EditorTab } from "@blueprint/shared";
+import type { EditorTab } from "@blueprint/shared/types";
 import {
   GENERATION_MESSAGES,
   DEBOUNCE_CONFIG,

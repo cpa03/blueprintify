@@ -4,7 +4,7 @@
  * Flexy says: No hardcoded "blueprint" namespace!
  */
 
-import { SHARED_DEFAULTS, STORAGE_KEY_PREFIXES } from "@blueprint/shared";
+import { SHARED_DEFAULTS, STORAGE_KEY_PREFIXES } from "@blueprint/shared/config";
 
 const NAMESPACE = SHARED_DEFAULTS.STORAGE_NAMESPACE;
 

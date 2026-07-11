@@ -1,4 +1,9 @@
-import { DEFAULT_URLS, SHARED_DEFAULTS, ENV_VAR_KEYS, API_PROXY_PATH } from "@blueprint/shared";
+import {
+  DEFAULT_URLS,
+  SHARED_DEFAULTS,
+  ENV_VAR_KEYS,
+  API_PROXY_PATH,
+} from "@blueprint/shared/config";
 
 const { WEB: WEB_ENV } = ENV_VAR_KEYS;
 

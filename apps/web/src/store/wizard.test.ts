@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useWizardStore } from "./wizard";
-import type { WizardStep, TechStackItemType } from "@blueprint/shared";
-import { WIZARD_STEP_KEYS } from "@blueprint/shared";
+import type { WizardStep, TechStackItemType } from "@blueprint/shared/types";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 
 // Mock the storage module
 vi.mock("../lib/storage", () => ({

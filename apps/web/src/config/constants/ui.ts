@@ -17,7 +17,7 @@ import {
   UI_DEFAULTS,
   UI_ANIMATION_DEFAULTS,
   EMPTY_STATE_LAYOUT as SHARED_EMPTY_STATE_LAYOUT,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 import {
   ANIMATION_TIMING,
   COLORS,
@@ -28,7 +28,7 @@ import {
 import {
   SCROLL_PULSE_DEFAULTS as SHARED_SCROLL_PULSE_DEFAULTS,
   SVG_TRANSITION_DEFAULTS as SHARED_SVG_TRANSITION_DEFAULTS,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 
 // ============================================================================
 // Animation Durations

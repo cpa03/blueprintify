@@ -22,7 +22,7 @@ import {
   CELEBRATION_PARTICLE_STYLE,
   SPRING_CONFIG,
 } from "../config/constants";
-import { FRAMER_TYPE } from "@blueprint/shared";
+import { FRAMER_TYPE } from "@blueprint/shared/config";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 

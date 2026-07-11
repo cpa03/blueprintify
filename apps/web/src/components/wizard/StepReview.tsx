@@ -27,7 +27,7 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   ENTRANCE_STAGGER_DEFAULTS,
   FRAMER_TYPE,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { memo, useCallback, useEffect } from "react";
 import { useWizardStore } from "../../store";

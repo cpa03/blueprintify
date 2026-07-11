@@ -5,7 +5,7 @@ import {
   getStorageErrorMessage,
   withStorageRecovery,
 } from "./storage";
-import { STORAGE_OPERATION_NAMES } from "@blueprint/shared";
+import { STORAGE_OPERATION_NAMES } from "@blueprint/shared/config";
 import { STORAGE_ERROR_MESSAGES } from "../config/constants";
 
 export function createTypedStorage<T>(storageService: StorageService<T>): {

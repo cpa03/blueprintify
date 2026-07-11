@@ -10,8 +10,8 @@
 
 import { memo } from "react";
 import * as motion from "framer-motion/m";
-import type { EditorTab } from "@blueprint/shared";
-import { EDITOR_FILENAMES, ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE } from "@blueprint/shared";
+import type { EditorTab } from "@blueprint/shared/types";
+import { EDITOR_FILENAMES, ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE } from "@blueprint/shared/config";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
 import {
   EMPTY_STATE_CONFIG,

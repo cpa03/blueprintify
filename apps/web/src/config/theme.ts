@@ -4,7 +4,7 @@
  * Flexy says: No hardcoded values - everything configurable!
  */
 
-import { hexToRgba } from "@blueprint/shared";
+import { hexToRgba } from "@blueprint/shared/config";
 
 // ============================================================================
 // Color Palette

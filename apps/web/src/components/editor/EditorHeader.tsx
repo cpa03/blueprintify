@@ -29,8 +29,8 @@
 import React, { useCallback } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import type { EditorTab } from "@blueprint/shared";
-import { EDITOR_FILENAMES, FRAMER_TYPE } from "@blueprint/shared";
+import type { EditorTab } from "@blueprint/shared/types";
+import { EDITOR_FILENAMES, FRAMER_TYPE } from "@blueprint/shared/config";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { Icon } from "../Icon";
 import { LastSavedIndicator } from "../LastSavedIndicator";

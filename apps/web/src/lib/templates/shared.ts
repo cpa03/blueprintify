@@ -1,4 +1,4 @@
-import type { TechStackItemType } from "@blueprint/shared";
+import type { TechStackItemType } from "@blueprint/shared/types";
 
 export interface ExportFiles {
   blueprint: string;

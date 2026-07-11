@@ -22,7 +22,8 @@
  */
 
 import { useEffect, useCallback, useState, useRef, memo } from "react";
-import { type WizardStep, WIZARD_STEP_KEYS, ANIMATION_ENTRANCE_DELAYS_MS } from "@blueprint/shared";
+import { WIZARD_STEP_KEYS, ANIMATION_ENTRANCE_DELAYS_MS } from "@blueprint/shared/config";
+import type { WizardStep } from "@blueprint/shared/types";
 import { useWizardStore, useEditorStore, useToast } from "../store";
 import {
   WIZARD_STEPS,

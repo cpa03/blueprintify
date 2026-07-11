@@ -6,7 +6,7 @@ import {
   HTTP_STATUS,
   HTTP_HEADER_NAMES,
   EDITOR_FILENAMES,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 import { StorageManager } from "../lib/storage";
 import {
   createTestBlueprint,

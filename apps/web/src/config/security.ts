@@ -12,7 +12,7 @@ import {
   STORAGE_CONFIG,
   HTTP_HEADER_NAMES,
   SECURITY_VALUES,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 
 // ============================================================================
 // DOMPurify Configuration

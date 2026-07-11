@@ -14,7 +14,7 @@ import React, { useState, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import clsx from "clsx";
-import { FRAMER_TYPE } from "@blueprint/shared";
+import { FRAMER_TYPE } from "@blueprint/shared/config";
 import {
   CELEBRATION_COLORS,
   ANIMATION_COLORS,
@@ -24,7 +24,7 @@ import {
   EASING,
   COPY_BUTTON_LABELS,
 } from "../config/constants";
-import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared";
+import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared/config";
 
 interface Particle {
   id: number;

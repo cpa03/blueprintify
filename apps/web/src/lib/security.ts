@@ -19,7 +19,7 @@ import {
   BYTE_CONVERSION,
   SECURITY_ERROR_CATEGORIES,
   ERROR_CLASS_NAMES,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 import { SECURITY_CONFIG } from "../config/security";
 import { SECURITY_ERROR_MESSAGES } from "../config/constants";
 

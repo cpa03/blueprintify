@@ -49,7 +49,7 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   KEYBOARD_EVENT_KEYS,
   FRAMER_TYPE,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { SmartTooltip } from "./SmartTooltip";
 

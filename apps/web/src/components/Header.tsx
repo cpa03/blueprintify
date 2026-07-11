@@ -17,7 +17,7 @@
  */
 
 import { memo, useState, useEffect, useRef } from "react";
-import { UI_TIMING, SHORTCUT_LABELS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared";
+import { UI_TIMING, SHORTCUT_LABELS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared/config";
 import {
   UI_CONTENT,
   EXTERNAL_URLS,

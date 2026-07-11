@@ -30,7 +30,7 @@ import {
   GENERATION_ERROR_PREFIXES,
   SHORTCUT_DESCRIPTIONS,
   FRAMER_TYPE,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { memo, useCallback, useRef, useEffect } from "react";

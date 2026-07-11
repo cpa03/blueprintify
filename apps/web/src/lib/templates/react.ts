@@ -1,6 +1,6 @@
 import type JSZip from "jszip";
-import type { TechStackItemType } from "@blueprint/shared";
-import { TEMPLATE_VERSIONS } from "@blueprint/shared";
+import type { TechStackItemType } from "@blueprint/shared/types";
+import { TEMPLATE_VERSIONS } from "@blueprint/shared/config";
 import { PackageJson, generateProjectReadme } from "./shared";
 
 export async function generateReactProject(

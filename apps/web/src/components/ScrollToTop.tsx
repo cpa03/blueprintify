@@ -31,7 +31,7 @@ import {
   ACCESSIBILITY_LABELS,
   KEYBOARD_SHORTCUTS,
 } from "../config/constants";
-import { FRAMER_TYPE } from "@blueprint/shared";
+import { FRAMER_TYPE } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 type ScrollDirection = "top" | "bottom";

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { ENV } from "./env";
-import { SHARED_DEFAULTS, DEFAULT_URLS, API_PROXY_PATH } from "@blueprint/shared";
+import { SHARED_DEFAULTS, DEFAULT_URLS, API_PROXY_PATH } from "@blueprint/shared/config";
 
 describe("ENV Configuration", () => {
   beforeEach(() => {

@@ -24,15 +24,15 @@
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { useState, useCallback, useMemo, memo } from "react";
+import { TECH_STACK_OPTIONS } from "@blueprint/shared/schema";
 import {
-  TECH_STACK_OPTIONS,
   ANIMATION_DIRECTIONS,
   STYLE_ID_STRINGS,
   SHORTCUT_DESCRIPTIONS,
   ANIMATION_ENTRANCE_DELAYS,
   ENTRANCE_STAGGER_DEFAULTS,
   FRAMER_TYPE,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 import { useWizardStore } from "../../store";
 import {
   CATEGORY_ICONS,

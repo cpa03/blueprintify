@@ -1,6 +1,6 @@
 import { memo, useMemo, useRef, useEffect, useState } from "react";
 import { TIMEOUTS, ACCESSIBILITY_LABELS } from "../config/constants";
-import { CHAR_COUNTER_THRESHOLDS, CHAR_COUNTER_COLORS } from "@blueprint/shared";
+import { CHAR_COUNTER_THRESHOLDS, CHAR_COUNTER_COLORS } from "@blueprint/shared/config";
 
 interface CharacterCounterProps {
   current: number;

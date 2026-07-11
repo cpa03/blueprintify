@@ -12,8 +12,8 @@ import {
   HTTP_HEADERS,
   RETRYABLE_STATUS_CODES,
   HTTP_METHODS,
-} from "@blueprint/shared";
-import type { RetryOptions as SharedRetryOptions } from "@blueprint/shared";
+} from "@blueprint/shared/config";
+import type { RetryOptions as SharedRetryOptions } from "@blueprint/shared/config";
 import { TIMEOUTS } from "./constants";
 import { ENV } from "./env";
 

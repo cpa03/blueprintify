@@ -8,8 +8,7 @@
  * - Health monitoring and metrics
  */
 
-import { z } from "zod";
-import { STORAGE_OPERATION_NAMES } from "@blueprint/shared";
+import { STORAGE_OPERATION_NAMES } from "@blueprint/shared/config";
 import { STORAGE_KEYS, STORAGE_CONFIG, STORAGE_ERROR_MESSAGES } from "../config/constants";
 
 import { BACKUP_KEY_PREFIX, TEST_KEYS } from "../config/keys";
@@ -19,7 +18,7 @@ import {
   STORAGE_OPERATIONS,
   STORAGE_ERROR_TYPE_VALUES,
   ERROR_CLASS_NAMES,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 
 // ============================================================================
 // Storage Error Types
@@ -91,17 +90,19 @@ export interface StorageMetadata {
   checksum: string;
 }
 
-let _metadataSchema: ReturnType<typeof z.object> | null = null;
-function getMetadataSchema() {
-  if (!_metadataSchema) {
-    _metadataSchema = z.object({
-      version: z.number(),
-      createdAt: z.string().datetime(),
-      updatedAt: z.string().datetime(),
-      checksum: z.string(),
-    });
-  }
-  return _metadataSchema;
+/**
+ * Manually validates StorageMetadata shape without importing zod.
+ * Avoids pulling the entire zod library (~65 KB) into the eager bundle.
+ */
+function isStorageMetadata(obj: unknown): obj is StorageMetadata {
+  if (!obj || typeof obj !== "object") return false;
+  const m = obj as Record<string, unknown>;
+  return (
+    typeof m.version === "number" &&
+    typeof m.createdAt === "string" &&
+    typeof m.updatedAt === "string" &&
+    typeof m.checksum === "string"
+  );
 }
 
 export interface SchemaMigration<T = unknown> {
@@ -501,15 +502,13 @@ export class StorageService<T = unknown> {
 
     // Check if it has the new format with metadata
     if ("data" in obj && "metadata" in obj) {
-      const schema = getMetadataSchema();
-      const metadataResult = schema.safeParse(obj.metadata);
-      if (!metadataResult.success) {
+      if (!isStorageMetadata(obj.metadata)) {
         throw new Error(
-          `Invalid metadata structure for key "${this.config.key}": ${metadataResult.error.issues.map((e: { message: string }) => e.message).join(", ")}. The storage metadata may be corrupted.`
+          `Invalid metadata structure for key "${this.config.key}". The storage metadata may be corrupted.`
         );
       }
 
-      const metadata = metadataResult.data as unknown as StorageMetadata;
+      const metadata = obj.metadata as StorageMetadata;
 
       // Check if migration is needed
       if (metadata.version < this.config.currentVersion) {

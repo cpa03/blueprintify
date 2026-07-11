@@ -11,7 +11,7 @@ import {
   STORAGE_KEY_PREFIXES,
   STORAGE_OPERATIONS,
   STORAGE_ERROR_TYPE_VALUES,
-} from "@blueprint/shared";
+} from "@blueprint/shared/config";
 
 describe("StorageService", () => {
   let storage: StorageService<{ test: string }>;

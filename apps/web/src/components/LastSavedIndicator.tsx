@@ -14,7 +14,7 @@ import React from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
-import { ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE } from "@blueprint/shared";
+import { ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE } from "@blueprint/shared/config";
 
 /**
  * Props for the LastSavedIndicator component.
