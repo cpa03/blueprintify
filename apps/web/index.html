@@ -208,6 +208,15 @@
           filter: brightness(var(--skeleton-brightness-peak, 1.15));
         }
       }
+      /* Skeleton exit animation — auto-starts after 2s delay, fades out
+         in 0.3s, then stays hidden. No JS timer or rAF needed on the
+         critical rendering path — pure CSS animation. */
+      @keyframes skeleton-exit {
+        to {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
     </style>
 
     <!-- Preconnect + DNS prefetch for critical origins -->
@@ -274,8 +283,7 @@
         right: 0;
         z-index: 9999;
         background: #020617;
-        opacity: 1;
-        transition: opacity 0.3s ease-out;
+        animation: skeleton-exit 0.3s ease-out 2s forwards;
         pointer-events: none;
       "
     >
