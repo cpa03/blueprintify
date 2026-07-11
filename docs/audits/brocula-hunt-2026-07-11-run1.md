@@ -56,7 +56,7 @@ Converted skeleton-loader fadeout from JS-driven (`requestAnimationFrame` + `set
 - ✅ TypeScript: `tsc --noEmit` — clean
 - ✅ ESLint: clean (no warnings)
 - ✅ Build: production build successful
-- ✅ Tests: **1,868 passing** (744 web + 443 API + 681 shared)
+- ✅ Tests: **1,890 passing** (755 web + 443 API + 692 shared)
 - ✅ Console: 0 errors, 0 warnings
 - ✅ Lighthouse: 99-100-100-100 — no actionable optimization opportunities
 
@@ -77,4 +77,4 @@ Converted skeleton-loader fadeout from JS-driven (`requestAnimationFrame` + `set
 - No console errors or warnings found.
 - FCP improved 300ms by removing JS timer overhead from the critical rendering path.
 - Performance at 99/100 — next opportunity would be reducing initial JS bundle size further.
-- All 1,868 tests pass with zero issues.
+- All 1,890 tests pass with zero issues.
