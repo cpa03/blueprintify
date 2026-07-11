@@ -1950,3 +1950,47 @@ After **106 Flexy iterations**, the Blueprintify codebase status:
 | Auto-scroll thresholds | ✅ Centralized AUTO_SCROLL_DEFAULTS |
 | Log timestamp formatting | ✅ Centralized LOG_TIMESTAMP_SLICE |
 | Build/lint/test | ✅ Clean across all workspaces |
+
+### ✅ Flexy Iteration 115: Fix Hardcoded CI Node-Version Across All Workflows
+
+After 114 iterations, the application code is fully clean. The last remaining hardcoded values were in CI/CD workflow files — 11 occurrences of `node-version: "20"` that should reference `.node-version` (which specifies Node 22).
+
+| File | Occurrences | Change |
+| ---- | ----------- | ------ |
+| `.github/workflows/iterate.yml` | 5x | `node-version: "20"` → `node-version-file: ".node-version"` |
+| `.github/workflows/parallel.yml` | 4x | `node-version: "20"` → `node-version-file: ".node-version"` |
+| `.github/workflows/on-pull.yml` | 1x | `node-version: 20` → `node-version-file: ".node-version"` |
+| `.github/workflows/pr-gatekeeper.yml` | 1x | `node-version: "20"` → `node-version-file: ".node-version"` |
+
+**Total**: 11 occurrences across 4 files fixed.
+
+**Verification:**
+- `.node-version` contains `22`, matching `engines.node >= 22` in package.json
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 744 web + 443 api + 681 shared = 1,868 tests passing across 82 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-115` | feat(flexy): fix hardcoded CI node version — use .node-version file across all workflows (Iteration 115) |
+
+## Final Codebase Status (After Iteration 115)
+
+| Category | Status |
+|----------|--------|
+| Hardcoded values in application logic | ❌ None remaining |
+| Hardcoded CI node-version values | ❌ None remaining |
+| Config centralization (@blueprint/shared) | ✅ 70+ config objects in single source of truth |
+| Animation constants extracted | ✅ 100% of framer-motion values in config |
+| Color tokens centralized | ✅ All colors via COLORS + hexToRgba |
+| HTTP headers/methods/status codes | ✅ All in @blueprint/shared |
+| Error messages/strings | ✅ All in @blueprint/shared |
+| Route paths/env keys | ✅ All in @blueprint/shared |
+| UI strings/labels/tooltips | ✅ All in config |
+| CSS custom properties | ✅ :root variables + color-mix() throughout |
+| Tailwind arbitrary values | ✅ Zero remaining in components |
+| z-index values | ✅ All in Z_INDEX config |
+| Build/lint/test | ✅ Clean across all workspaces |
