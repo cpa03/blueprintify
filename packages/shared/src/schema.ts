@@ -359,6 +359,16 @@ export const CreateShareSchema = z.object({
       author: z.string().optional(),
     })
     .optional(),
+  /** SHA-256 hash of the passphrase for passphrase-protected shares */
+  passphraseHash: z.string().length(64).optional(),
+});
+
+/**
+ * Schema for verifying passphrase-protected shares.
+ */
+export const VerifySharePassphraseSchema = z.object({
+  /** The passphrase to verify (will be hashed server-side and compared to stored hash) */
+  passphrase: z.string().min(1).max(256),
 });
 
 // ===== Predefined Tech Stack Options =====
