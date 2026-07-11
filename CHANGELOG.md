@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- feat(share): add passphrase protection for shared blueprints
+- feat(ux): add Shift+Escape to dismiss all toasts
+- chore(repokeeper): Cycle 225 — full repository audit, **CI workflow config drift detection** (BUG-014/BUG-017 resurfaced — 11 node-version hardcodes, stale doc refs, agent name/echo message mismatches in iterate.yml), **all fixes prepared but push blocked** (GitHub App lacks `workflows: write` permission — recurring blocker since Cycle 150), **audits/README.md updated** with Jul 10 Run 4 as latest (LH **100-100-100-100** 🏆, FCP **1.3s**, LCP **1.3s**, CLS **0.007**, TBT **50ms**, clean console), doc refresh (findings, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests **744/744** ✅ — format ✅ secrets ✅)
 - chore(repokeeper): Cycle 224 — full repository audit, **BroCula ref drift fix** (Run 2→Run 3 Jul 10 — 1862 tests, LH 99-100-100-100), **test count update** (744→1,862 — 744 web + 443 API + 675 shared), **README BroCula date drift fix** (Jul 9→Jul 10), **stale merged branch cleanup** (4 branches deleted: `origin/brocula/cycle-223`, `origin/chore/repokeeper-cycle-223`, `origin/feat/flexy-iteration-115`, `origin/palette/streaming-pulse-scroll-button`), **redundant script removal** (`scripts/fix-ci-node-version.sh` superseded by `.mjs`), CHANGELOG gap fix (2 post-Cycle-223 commits), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,862/1,862** ✅ — format ✅ secrets ✅)
 - docs(brocula): Cycle 223 — browser console + performance audit, 0 errors, LH 99-100-100-100
 - docs(brocula): Cycle 223 — browser console + performance audit
