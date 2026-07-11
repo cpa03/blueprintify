@@ -2,6 +2,23 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 228 — **Full repository audit, BUG-014/BUG-017 resurfaced on main, 2 post-Cycle-227 commits indexed, doc refresh, quality verification** ✅
+
+### Task: Full repository audit — **BUG-014/BUG-017 resurfaced on main** — stale doc refs `docs/bug.md`/`docs/feature.md` in main.yml (2 occurrences) and 11 `node-version: "20"` hardcodes across 4 workflow files (iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1); **CHANGELOG gap fix** (2 post-Cycle-227 commits: docs(bugs) BugFixer Cycle Jul 11 2026 Run 2 agent name fixes, docs(flexy) Iteration 117 CI node-version fix identified); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,890/1,890** ✅ — 755 web + 443 API + 692 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 228 full repository audit — BUG-014/BUG-017 resurfaced, CHANGELOG gap fix, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks ✅
+  - [x] **BUG-014/BUG-017 resurfaced verification**: stale doc refs `docs/bug.md`/`docs/feature.md` in main.yml (2 occurrences) and 11 `node-version: "20"` hardcodes across 4 workflow files confirmed — same `workflows: write` blocker as 30+ prior cycles ⚠️
+  - [x] **CHANGELOG gap fix**: Added 2 post-Cycle-227 commits — docs(bugs) BugFixer Cycle Jul 11 Run 2 agent name fixes (#2491), docs(flexy) Iteration 117 CI node-version fix (#2490) ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 228, BUG-014/BUG-017 status → resurfaced on main ⚠️
+  - [x] **bugs.md updated**: Cycle 228 entry added — BUG-014/BUG-017 still present on main ⚠️
+  - [x] **findings.md updated**: Cycle 228 entry added at top ✅
+  - [x] **active-tasks.md updated**: Cycle 228 entry added at top ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,890/1,890 ✅ format ✅ secrets ✅ npm audit 0 vulns ✅
+
 ## ✅ RepoKeeper Cycle 227 — **Full repository audit, test count update (1,868→1,890), BroCula ref drift fix (Run 4→Jul 11 Run 1), CHANGELOG gap fix (4 post-Cycle-226 commits), doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — **test count update** (1,868→1,890 — 755 web + 443 API + 692 shared, web +11, shared +11); **BroCula ref drift fix** (knowledge-review.md: Jul 10 Run 4 → Jul 11 Run 1 — latest `brocula-hunt-2026-07-11-run1.md` / LH **99-100-100-100** 🏆, FCP **1.6s**, LCP **1.6s**, CLS **0.007**, TBT **44ms**, clean console); **BroCula audit test count fix** (Jul 11 Run 1 report: 1,868→1,890); **CHANGELOG gap fix** (4 post-Cycle-226 commits: perf(web) skeleton CSS fadeout, refactor(flexy) Iteration 116 share token config, docs(bugs) BugFixer Cycle Jul 11, test(web) PreviewEmptyState coverage); **audits/README.md update** (Jul 11 Run 1 test counts corrected to 755 web + 443 API + 692 shared); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,890/1,890** ✅ — 755 web + 443 API + 692 shared — format ✅ secrets ✅)
@@ -469,5 +486,5 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-07-10 (RepoKeeper Cycle 219)  
+**Last Updated**: 2026-07-11 (RepoKeeper Cycle 228)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
