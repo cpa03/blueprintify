@@ -462,27 +462,29 @@ function ToastContainerComponent(): JSX.Element {
   const shouldReduceMotion = useReducedMotion();
   const [dismissAnnouncement, setDismissAnnouncement] = useState("");
 
-  // Dismiss the most recent toast when Escape is pressed — a standard UX
-  // pattern (macOS notifications, VS Code, modern web apps) that lets
-  // keyboard users dismiss toasts without reaching for the mouse.
-  // Only fires when there is at least one toast visible, and dismisses
-  // the last (newest) toast which is typically the most relevant one.
+  // Dismiss the most recent toast (Escape) or all toasts (Shift+Escape).
   useEffect(() => {
     if (toasts.length === 0) return;
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === KEYBOARD_EVENT_KEYS.ESCAPE) {
         e.preventDefault();
-        const lastToast = toasts[toasts.length - 1];
-        if (lastToast) {
-          removeToast(lastToast.id);
+        if (e.shiftKey) {
+          const count = toasts.length;
+          clearAll();
+          setDismissAnnouncement(ACCESSIBILITY_LABELS.TOAST_ANNOUNCER.DISMISSED_ALL(count));
+        } else {
+          const lastToast = toasts[toasts.length - 1];
+          if (lastToast) {
+            removeToast(lastToast.id);
+          }
         }
       }
     };
 
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [toasts, removeToast]);
+  }, [toasts, removeToast, clearAll]);
 
   const handleClearAll = useCallback(() => {
     const count = toasts.length;
