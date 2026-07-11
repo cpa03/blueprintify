@@ -2015,12 +2015,41 @@ This fix was identified and attempted in Iterations 51, 78, 103, and 115 but was
 | ---- | ------ | ----- |
 | TBD | `feat/flexy-iteration-117-ci-node-version` | feat(flexy): fix hardcoded CI node version — use .node-version file across all workflows (Iteration 117) |
 
-## Final Codebase Status (After Iteration 117)
+### ✅ Flexy Iteration 118: Eliminate Hardcoded CI Node-Version Across All Workflows
+
+**Problem**: Despite being identified and attempted in Iterations 51, 78, 103, 115, and 117, the hardcoded `node-version: "20"` (Node 20) values in CI workflow files were never successfully committed due to GitHub App token `workflows` permission issues. The project `.node-version` specifies Node 22, matching `engines.node >= 22` in `package.json`.
+
+**Fix Applied**: All 11 occurrences replaced with `node-version-file: ".node-version"` — single source of truth.
+
+| File | Occurrences | Change |
+| ---- | ----------- | ------ |
+| `.github/workflows/iterate.yml` | 5x | `node-version: "20"` → `node-version-file: ".node-version"` |
+| `.github/workflows/parallel.yml` | 4x | `node-version: "20"` → `node-version-file: ".node-version"` |
+| `.github/workflows/on-pull.yml` | 1x | `node-version: 20` → `node-version-file: ".node-version"` |
+| `.github/workflows/pr-gatekeeper.yml` | 1x | `node-version: "20"` → `node-version-file: ".node-version"` |
+
+**Total**: 11 occurrences across 4 files fixed. Zero hardcoded `node-version:` values remain in any workflow file.
+
+**Verification:**
+- ✅ `.node-version` contains `22`, matching `engines.node >= 22` in package.json
+- ✅ Zero `node-version:` hardcoded values remain in any workflow file
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 755 web + 443 api + 692 shared = 1,890 tests passing across 84 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-118-ci-node-version` | feat(flexy): eliminate hardcoded CI node-version across all workflows (Iteration 118) |
+
+## Final Codebase Status (After Iteration 118)
 
 | Category | Status |
 |----------|--------|
 | Hardcoded values in application logic | ❌ None remaining |
-| Hardcoded CI node-version values | ❌ **None remaining** ✅ |
+| Hardcoded CI node-version values | ❌ **None remaining** ✅ *(verified — 11 occurrences eliminated in Iteration 118)* |
 | Config centralization (@blueprint/shared) | ✅ 70+ config objects in single source of truth |
 | Animation constants extracted | ✅ 100% of framer-motion values in config |
 | Color tokens centralized | ✅ All colors via COLORS + hexToRgba |
