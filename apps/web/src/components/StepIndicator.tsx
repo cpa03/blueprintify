@@ -25,6 +25,8 @@ import { useEffect, useCallback, useState, useRef, memo } from "react";
 import { WIZARD_STEP_KEYS, ANIMATION_ENTRANCE_DELAYS_MS } from "@blueprint/shared/config";
 import type { WizardStep } from "@blueprint/shared/types";
 import { useWizardStore, useEditorStore, useToast } from "../store";
+import { Icon } from "./Icon";
+import type { IconName } from "../config/icons";
 import {
   WIZARD_STEPS,
   TIMEOUTS,
@@ -42,7 +44,7 @@ import { SmartTooltip } from "./SmartTooltip";
 const STEPS: {
   key: WizardStep;
   label: string;
-  icon: string;
+  icon: IconName;
   shortcut: string;
 }[] = [...WIZARD_STEPS];
 
@@ -211,7 +213,7 @@ function StepIndicatorComponent(): JSX.Element {
               }}
             >
               <span className="inline-block transition-transform duration-200 hover:scale-125">
-                {step.icon}
+                <Icon name={step.icon} className="w-4 h-4" />
               </span>
               <span className="text-sm font-medium hidden sm:inline">{step.label}</span>
               {isClickable && (

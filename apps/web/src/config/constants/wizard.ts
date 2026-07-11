@@ -26,11 +26,16 @@ export const WIZARD_REVIEW_EDIT_SHORTCUTS = {
  * Flexy says: Step keys reference WIZARD_STEP_KEYS from @blueprint/shared!
  */
 export const WIZARD_STEPS = [
-  { key: WIZARD_STEP_KEYS.INFO, label: "Project Info", icon: "📝", shortcut: "1" },
-  { key: WIZARD_STEP_KEYS.STACK, label: "Tech Stack", icon: "⚙️", shortcut: "2" },
-  { key: WIZARD_STEP_KEYS.FEATURES, label: "Features", icon: "✨", shortcut: "3" },
-  { key: WIZARD_STEP_KEYS.REVIEW, label: "Review", icon: "👀", shortcut: "4" },
-  { key: WIZARD_STEP_KEYS.GENERATING, label: "Generate", icon: "🚀", shortcut: "5" },
+  { key: WIZARD_STEP_KEYS.INFO, label: "Project Info", icon: "document" as const, shortcut: "1" },
+  { key: WIZARD_STEP_KEYS.STACK, label: "Tech Stack", icon: "sliders" as const, shortcut: "2" },
+  { key: WIZARD_STEP_KEYS.FEATURES, label: "Features", icon: "sparkles" as const, shortcut: "3" },
+  { key: WIZARD_STEP_KEYS.REVIEW, label: "Review", icon: "eye" as const, shortcut: "4" },
+  {
+    key: WIZARD_STEP_KEYS.GENERATING,
+    label: "Generate",
+    icon: "lightning" as const,
+    shortcut: "5",
+  },
 ] as const;
 
 /**
