@@ -12,7 +12,7 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-11 (RepoKeeper Cycle 228)
+**Last Review**: 2026-07-11 (RepoKeeper Cycle 229)
 **Status**: ⚠️ BUG-014/BUG-017 resurfaced on main — see bugs.md
 
 As of cycle refresh:
@@ -27,6 +27,7 @@ As of cycle refresh:
 - **BUG-014/BUG-017**: ✅ **RESOLVED since Cycle 211** — stale doc refs and node-version hardcodes fixed on main.
 - **npm audit**: **0 vulnerabilities** ✅ (BUG-013 resolved).
 - **No tracked .patch files found on main after cleanup**: Recurring anti-pattern resolved since Cycle 194.
+- **14 stale archive files purged**: 13 BroCula hunt reports + 1 issue-audit report from June 8–10 removed in Cycle 229 (past 30-day retention policy).
 - **18 stale audit reports archived**: BroCula hunt reports Jul 2–7 (16 files), diagnostic-scoring-2026-07-07.md, and issue-audit-report-2026-06-24.md moved to `docs/audits/archive/` in Cycle 223.
 - **4 stale merged branches deleted**: `origin/brocula/cycle-223`, `origin/chore/repokeeper-cycle-223`, `origin/feat/flexy-iteration-115`, `origin/palette/streaming-pulse-scroll-button` — all fully merged into main.
 - **Cycle 228**: RepoKeeper full repository audit — **BUG-014/BUG-017 resurfaced on main** (stale doc refs `docs/bug.md`/`docs/feature.md` in main.yml — 2 occurrences; 11 `node-version: "20"` hardcodes across 4 workflow files — iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1), CHANGELOG gap fix (2 post-Cycle-227 commits: docs(bugs) BugFixer Cycle Jul 11 Run 2 agent name fixes #2491, docs(flexy) Iteration 117 CI node-version fix #2490), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,890/1,890** ✅ — 755 web + 443 API + 692 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅). BUG-014/BUG-017 workflow fixes blocked by `workflows: write` permission — same documented blocker as all prior cycles.
