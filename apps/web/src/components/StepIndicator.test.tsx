@@ -24,11 +24,11 @@ vi.mock("../config/constants", async (importOriginal) => {
     ...actual,
     // Override WIZARD_STEPS to match StepIndicator expectations
     WIZARD_STEPS: [
-      { key: WIZARD_STEP_KEYS.INFO, label: "Project Info", icon: "📋", shortcut: "1" },
-      { key: WIZARD_STEP_KEYS.STACK, label: "Tech Stack", icon: "🛠️", shortcut: "2" },
-      { key: WIZARD_STEP_KEYS.FEATURES, label: "Features", icon: "✨", shortcut: "3" },
-      { key: WIZARD_STEP_KEYS.REVIEW, label: "Review", icon: "👀", shortcut: "4" },
-      { key: WIZARD_STEP_KEYS.GENERATING, label: "Generating", icon: "⚡", shortcut: "5" },
+      { key: WIZARD_STEP_KEYS.INFO, label: "Project Info", icon: "document", shortcut: "1" },
+      { key: WIZARD_STEP_KEYS.STACK, label: "Tech Stack", icon: "sliders", shortcut: "2" },
+      { key: WIZARD_STEP_KEYS.FEATURES, label: "Features", icon: "sparkles", shortcut: "3" },
+      { key: WIZARD_STEP_KEYS.REVIEW, label: "Review", icon: "eye", shortcut: "4" },
+      { key: WIZARD_STEP_KEYS.GENERATING, label: "Generating", icon: "lightning", shortcut: "5" },
     ],
     // Use actual PROGRESS_COLORS, STEP_CONNECTOR, SVG_TRANSITION, etc. from shared config
     // via importOriginal to eliminate hardcoded hex/rgba values
@@ -123,14 +123,17 @@ describe("StepIndicator", () => {
     expect(screen.getByText("Generating")).toBeInTheDocument();
   });
 
-  it("displays step icons", () => {
+  it("renders SVG icons for each step", () => {
     render(<StepIndicator />);
 
-    expect(screen.getByText("📋")).toBeInTheDocument();
-    expect(screen.getByText("🛠️")).toBeInTheDocument();
-    expect(screen.getByText("✨")).toBeInTheDocument();
-    expect(screen.getByText("👀")).toBeInTheDocument();
-    expect(screen.getByText("⚡")).toBeInTheDocument();
+    const stepButtons = screen.getAllByRole("button");
+    // Each step button should contain an SVG icon element
+    stepButtons.forEach((button) => {
+      const svg = button.querySelector("svg");
+      expect(svg).toBeInTheDocument();
+      expect(svg).toHaveAttribute("fill", "none");
+      expect(svg).toHaveAttribute("stroke", "currentColor");
+    });
   });
 
   it("highlights current step as active", () => {

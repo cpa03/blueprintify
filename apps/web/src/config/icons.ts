@@ -75,6 +75,14 @@ export const ICONS = {
     viewBox: "0 0 24 24",
     path: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4",
   },
+  sparkles: {
+    viewBox: "0 0 24 24",
+    path: "M12 2 L13.5 7.5 L19 9 L14.5 12.5 L16.5 18 L12 14.5 L7.5 18 L9.5 12.5 L5 9 L10.5 7.5 Z M17 17 L17.5 18.5 L19 19 L17.5 19.5 L17 21 L16.5 19.5 L15 19 L16.5 18.5 Z",
+  },
+  sliders: {
+    viewBox: "0 0 24 24",
+    path: "M4 7 H20 M9 12 H21 M12 17 H16",
+  },
 } as const;
 
 export type IconName = keyof typeof ICONS;
