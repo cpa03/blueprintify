@@ -2,6 +2,77 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 225 (2026-07-11 — RepoKeeper: Full repository audit, CI workflow config drift detected (11 node-version hardcodes → file-based, 4 wrong agent names, 3 wrong echo messages, stale doc refs in main.yml), all workflow changes blocked by `workflows: write` permission, docs/audits/README.md updated with Jul 10 Run 4, findings recorded, quality verification ✅)
+
+### Audit Scope
+
+Full RepoKeeper repository maintenance audit: **CI workflow config drift detected — BUG-014/BUG-017 RESURFACED** (all 5 workflow files still have hardcoded `node-version: "20"` instead of `node-version-file: ".node-version"` despite being marked "resolved since Cycle 211"); **iterate.yml agent name mismatch** (BugFixer job uses `--agent RepoKeeper` instead of `--agent BugFixer`, same for Palette/Flexy/Brocula jobs — all incorrectly use `RepoKeeper`); **iterate.yml echo message mismatch** (BugFixer/Palette/Flexy/Brocula all echo "✅ Architect work completed successfully" instead of their own name); **main.yml stale doc refs** (still references `docs/bug.md` and `docs/feature.md` instead of `docs/bugs.md` and `docs/features.md`); **all fixes prepared but push rejected** (GitHub App lacks `workflows` permission — recurring blocker since Cycle 150); **audits/README.md updated** with Jul 10 Run 4 as latest (LH **100-100-100-100** 🏆); quality verification (typecheck ✅ lint ✅ build ✅ tests **744/744** ✅ — format ✅ secrets ✅).
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Redundant/temp/unused files | ✅ None found |
+| CI workflow config drift | ⚠️ **11 node-version: "20" hardcodes** across 5 workflow files (BUG-017) |
+| CI stale doc refs | ⚠️ **main.yml** still references `docs/bug.md`/`docs/feature.md` (BUG-014) |
+| CI wrong agent names | ⚠️ **4 jobs** in iterate.yml use `--agent RepoKeeper` instead of correct agent |
+| CI wrong echo messages | ⚠️ **4 jobs** in iterate.yml echo wrong agent name in success message |
+| Workflow push | ⛔ **Blocked** — GitHub App lacks `workflows: write` permission |
+| audits/README updated | ✅ Jul 10 Run 4 added as latest (LH 100-100-100-100) |
+| Tests | ✅ **744/744 passing** (web) |
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build | ✅ Clean |
+| Format | ✅ All files Prettier-formatted |
+| @ts-ignore/as any | ✅ None in source code |
+| TODO/FIXME/HACK | ✅ None in source code |
+| Secrets scan | ✅ No secrets detected |
+| **Overall** | **⚠️ CI workflow drift blocked from fix — requires manual intervention** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks, no tracked `.patch` files ✅.
+2. **CI workflow audit**: Detected pervasive config drift across all 5 workflow files:
+   - **BUG-014** (stale doc refs): `main.yml` still references non-existent `docs/bug.md` and `docs/feature.md` (should be `docs/bugs.md`, `docs/features.md`).
+   - **BUG-017** (node-version hardcodes): 11 occurrences of `node-version: "20"` across 5 files (iterate.yml ×5, parallel.yml ×4, on-pull.yml ×1, pr-gatekeeper.yml ×1) — should use `node-version-file: ".node-version"`.
+   - **iterate.yml agent name drift**: BugFixer, Palette, Flexy, Brocula jobs all use `--agent RepoKeeper` instead of their correct agent name.
+   - **iterate.yml echo message drift**: All 4 non-Architect jobs echo "✅ Architect work completed successfully" instead of their own name.
+   - **Fixed all 22+ issues** in local branch, but push rejected — GitHub App token lacks `workflows: write` permission (recurring blocker).
+3. **audits/README.md updated**: Added Jul 10 Run 4 as latest (LH **100-100-100-100** 🏆, FCP 1.3s, LCP 1.3s, CLS 0.007, TBT 50ms, clean console).
+4. **Documentation**: Updated findings.md for Cycle 225.
+
+### Fix Instructions (Manual — requires `workflows: write`)
+
+To apply the CI workflow fixes, run from a clone with appropriate permissions:
+
+```bash
+# Fix node-version hardcodes (11 occurrences → node-version-file)
+sed -i 's/node-version: "20"/node-version-file: ".node-version"/g' .github/workflows/*.yml
+sed -i 's/node-version: 20/node-version-file: ".node-version"/g' .github/workflows/*.yml
+
+# Fix main.yml stale doc refs
+sed -i 's/docs\/bug\.md/docs\/bugs.md/g; s/docs\/feature\.md/docs\/features.md/g' .github/workflows/main.yml
+
+# Fix iterate.yml agent names
+sed -i 's/--agent RepoKeeper \\/--agent BugFixer \\/4' .github/workflows/iterate.yml  # careful: 4 occurrences
+# Fix iterate.yml echo messages — manual per job
+```
+
+### Verification
+
+- [x] No redundant/temp/unused files found ✅
+- [x] All CI workflow issues identified and documented ✅
+- [x] Fixes prepared in local branch (blocked by permissions) ⚠️
+- [x] audits/README.md updated with Jul 10 Run 4 ✅
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Tests — 744/744 passing ✅
+- [x] Format — All Prettier-formatted ✅
+- [x] Build — Clean ✅
+- [x] Secrets — None detected ✅
+
+---
+
 ## Cycle 224 (2026-07-10 — RepoKeeper: Full repository audit, BroCula ref drift fix (Run 2→Run 3 — 1862 tests, LH 99-100-100-100), test count update (744→1,862), README BroCula date drift fix, stale merged branch cleanup (4 branches), redundant script removal, CHANGELOG gap fix (2 post-Cycle-223 commits), doc refresh, quality verification ✅)
 
 ### Audit Scope
