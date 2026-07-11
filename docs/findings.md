@@ -2,6 +2,54 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 228 (2026-07-11 — RepoKeeper: Full repository audit, BUG-014/BUG-017 resurfaced on main (11 node-version hardcodes, 2 stale doc refs in main.yml), 2 post-Cycle-227 commits indexed, doc refresh, quality verification ✅)
+
+### Audit Scope
+
+Full RepoKeeper repository maintenance audit: **BUG-014/BUG-017 RESURFACED ON MAIN** — stale doc refs `docs/bug.md`/`docs/feature.md` still present in `main.yml` (2 occurrences, lines 39 & 263); all 11 `node-version: "20"` hardcodes still present across 4 workflow files (iterate.yml 5, parallel.yml 4, on-pull.yml 1, pr-gatekeeper.yml 1); **CHANGELOG gap fix** — added 2 post-Cycle-227 commits (docs(bugs) BugFixer Cycle Jul 11 Run 2 agent name fixes, docs(flexy) Iteration 117 CI node-version fix identified); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,890/1,890** ✅ — 755 web + 443 API + 692 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅).
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Redundant/temp/unused files | ✅ None found |
+| BUG-014 stale doc refs in main.yml | ⚠️ **RESURFACED** — `docs/bug.md`/`docs/feature.md` (2 occurrences) — same blocker: `workflows: write` permission |
+| BUG-017 node-version hardcodes | ⚠️ **RESURFACED** — 11 occurrences across 4 workflow files — same blocker: `workflows: write` permission |
+| Tests | ✅ **1,890/1,890 passing** (755 web + 443 API + 692 shared) |
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Build | ✅ Clean |
+| Format | ✅ All files Prettier-formatted |
+| @ts-ignore/as any | ✅ None in source code |
+| TODO/FIXME/HACK | ✅ None in source code |
+| Secrets scan | ✅ No secrets detected |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013 resolved) |
+| **Overall** | **⚠️ BUG-014/BUG-017 resurfaced — workflow changes blocked by `workflows: write` permission** |
+
+### Actions Taken This Cycle
+
+1. **Full repository scan**: No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks ✅.
+2. **BUG-014/BUG-017 status verified**: Both bugs have resurfaced on main — stale doc refs `docs/bug.md`/`docs/feature.md` in main.yml (2 occurrences) and 11 `node-version: "20"` hardcodes across 4 workflow files. Same recurring blocker: GitHub App token lacks `workflows: write` permission.
+3. **CHANGELOG gap fix**: Added 2 post-Cycle-227 commits — docs(bugs) BugFixer Cycle Jul 11 2026 Run 2 — agent name fixes (#2491), docs(flexy) document Iteration 117 — CI node-version fix identified, push blocked by token permissions (#2490).
+4. **Documentation refresh**: Updated findings, active-tasks, knowledge-review, CHANGELOG, bugs for Cycle 228.
+5. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,890/1,890 ✅ format ✅ secrets ✅ npm audit 0 vulns ✅.
+
+### Verification
+
+- [x] No redundant/temp/unused files found ✅
+- [x] BUG-014 — still present on main (2 stale doc refs in main.yml) — blocked by `workflows: write` ⚠️
+- [x] BUG-017 — still present on main (11 node-version hardcodes) — blocked by `workflows: write` ⚠️
+- [x] CHANGELOG gap fix — 2 post-Cycle-227 commits added ✅
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Tests — 1,890/1,890 passing ✅
+- [x] Format — All Prettier-formatted ✅
+- [x] Build — Clean ✅
+- [x] Secrets — None detected ✅
+- [x] npm audit — 0 vulnerabilities ✅
+
+---
+
 ## Cycle 227 (2026-07-11 — RepoKeeper: Full repository audit, test count update (1,868→1,890), BroCula ref drift fix (Run 4→Run 01 Jul 11 — LH 99-100-100-100), CHANGELOG gap fix (4 post-Cycle-226 commits), doc refresh, quality verification ✅)
 
 ### Audit Scope
