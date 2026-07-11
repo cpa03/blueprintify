@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 229b — Issue Manager analysis and blocked actions (docs(findings) Cycle 229b — Issue Manager analysis and blocked actions)
 - chore(repokeeper): Cycle 229 — full repository audit, **2 post-Cycle-228 commits indexed** (feat(ux) HeadingAnchor spring icon swap animation, fix(api) standardized error response format), **14 stale audit archive files purged** (June 8–10 reports — past 30-day retention), **4 stale remote branches assessed** (repokeeper cycles 147/160/166/178 — superseded, behind main by 300–510 commits), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,890/1,890** ✅ — 755 web + 443 API + 692 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
 - feat(ux): upgrade HeadingAnchor copy feedback with spring icon swap animation
 - fix(api): standardize error response format in export/import routes
