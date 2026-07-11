@@ -4,7 +4,7 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ReducedMotionProvider } from "./context/ReducedMotionContext";
 import { ExportProvider } from "./context/ExportContext";
 import { MotionConfigWrapper } from "./components/MotionConfigWrapper";
-import { SKELETON_CONFIG, VERCEL_DOMAINS } from "./config/constants";
+import { VERCEL_DOMAINS } from "./config/constants";
 import { DEBUG_MESSAGES } from "./config/constants/content";
 import "./index.css";
 
@@ -32,15 +32,12 @@ if (!rootElement) {
 }
 
 const fadeOutAndRemoveSkeletonLoader = () => {
-  requestAnimationFrame(() => {
-    const skeleton = document.getElementById("skeleton-loader");
-    if (skeleton) {
-      skeleton.style.opacity = "0";
-      setTimeout(() => {
-        skeleton.remove();
-      }, SKELETON_CONFIG.FADEOUT_MS);
-    }
-  });
+  const skeleton = document.getElementById("skeleton-loader");
+  if (skeleton) {
+    // CSS animation handles the visual fadeout (2s delay + 0.3s fade).
+    // Remove from DOM after animation completes to keep the DOM clean.
+    skeleton.addEventListener("animationend", () => skeleton.remove(), { once: true });
+  }
 };
 
 // Lazy load Vercel Analytics — only loads on actual Vercel deployments, not localhost
