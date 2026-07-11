@@ -557,6 +557,12 @@ function ToastContainerComponent(): JSX.Element {
                 {toasts.length}
               </span>
               )
+              <kbd
+                className="ml-1.5 px-1 py-0.5 bg-dark-700/50 rounded text-2xs font-mono text-dark-500 border border-dark-600/30 leading-none"
+                aria-hidden="true"
+              >
+                Shift+Esc
+              </kbd>
             </span>
           </button>
         )
@@ -606,6 +612,12 @@ function ToastContainerComponent(): JSX.Element {
                   {toasts.length}
                 </motion.span>
                 )
+                <kbd
+                  className="ml-1.5 px-1 py-0.5 bg-dark-700/50 rounded text-2xs font-mono text-dark-500 border border-dark-600/30 leading-none"
+                  aria-hidden="true"
+                >
+                  Shift+Esc
+                </kbd>
               </span>
             </motion.button>
           )}
