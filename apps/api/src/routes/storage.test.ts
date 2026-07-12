@@ -205,15 +205,7 @@ describe("DELETE /storage/clear", () => {
 
   it("should return 400 if confirmation is missing", async () => {
     const mockEnv = createMockEnv();
-    const res = await app.request(
-      "/clear",
-      {
-        method: HTTP_METHODS.DELETE,
-        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
-        body: JSON.stringify({}),
-      },
-      mockEnv
-    );
+    const res = await app.request("/clear", { method: HTTP_METHODS.DELETE }, mockEnv);
 
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
@@ -223,15 +215,7 @@ describe("DELETE /storage/clear", () => {
 
   it("should return 400 if confirmation is false", async () => {
     const mockEnv = createMockEnv();
-    const res = await app.request(
-      "/clear",
-      {
-        method: HTTP_METHODS.DELETE,
-        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
-        body: JSON.stringify({ confirm: false }),
-      },
-      mockEnv
-    );
+    const res = await app.request("/clear?confirm=false", { method: HTTP_METHODS.DELETE }, mockEnv);
 
     expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
     const data = (await res.json()) as ErrorResponse;
@@ -249,15 +233,7 @@ describe("DELETE /storage/clear", () => {
     const mockEnv = createMockEnv({
       [STORAGE_KV_CONFIG.QUOTA_KEY]: JSON.stringify(storedData),
     });
-    const res = await app.request(
-      "/clear",
-      {
-        method: HTTP_METHODS.DELETE,
-        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
-        body: JSON.stringify({ confirm: true }),
-      },
-      mockEnv
-    );
+    const res = await app.request("/clear?confirm=true", { method: HTTP_METHODS.DELETE }, mockEnv);
 
     expect(res.status).toBe(HTTP_STATUS.OK);
     const data = (await res.json()) as {
