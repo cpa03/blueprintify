@@ -25,7 +25,7 @@
     "test:all": "npm run test --workspace=apps/web -- --run && npm run test --workspace=apps/api && npm run test --workspace=packages/shared",
     "typecheck": "tsc --noEmit",
     "scan:secrets": "node scripts/scan-secrets.mjs",
-    "check": "npm run typecheck && npm run lint && npm run scan:secrets && npm run test:all",
+    "check": "npm run typecheck && npm run lint && npm run scan:secrets && npm run audit && npm run test:all",
     "db:migrate": "node scripts/migrate.ts",
     "db:init": "node scripts/migrate.ts init",
     "db:status": "node scripts/migrate.ts status",
