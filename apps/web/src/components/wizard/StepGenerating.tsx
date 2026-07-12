@@ -102,6 +102,17 @@ export const StepGenerating = memo(function StepGenerating({
     wasComplete.current = isComplete;
   }, [isComplete]);
 
+  // Auto-focus "Try Again" button when generation transitions into the error state
+  // so keyboard users immediately know where to go next (same pattern as completion)
+  useEffect(() => {
+    if (isError && !wasError.current) {
+      requestAnimationFrame(() => {
+        const btn = document.querySelector<HTMLButtonElement>('[data-autofocus="error"]');
+        btn?.focus();
+      });
+    }
+  }, [isError]);
+
   // Fire a single error toast when generation transitions into the error state
   useEffect(() => {
     if (isError && !wasError.current && !errorShownRef.current) {
@@ -484,6 +495,7 @@ export const StepGenerating = memo(function StepGenerating({
               onClick={handleViewReview}
               className="btn-primary flex items-center gap-2"
               ariaLabel={GENERATION_ERROR_LABELS.TRY_AGAIN_ARIA}
+              data-autofocus="error"
             >
               <svg
                 className="w-5 h-5"
