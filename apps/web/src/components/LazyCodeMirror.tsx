@@ -90,19 +90,24 @@ const LazyCodeMirrorComponent = forwardRef<ReactCodeMirrorRef, LazyCodeMirrorPro
     }
 
     return (
-      <CodeMirrorComponent
-        ref={ref}
-        value={value}
-        onChange={onChange}
-        extensions={extensions}
-        theme={theme}
-        className={className}
-        basicSetup={{
-          lineNumbers: true,
-          foldGutter: true,
-          highlightActiveLine: true,
-        }}
-      />
+      <>
+        <div role="status" aria-live="polite" className="sr-only">
+          {ACCESSIBILITY_LABELS.LAZY_CODEMIRROR.READY}
+        </div>
+        <CodeMirrorComponent
+          ref={ref}
+          value={value}
+          onChange={onChange}
+          extensions={extensions}
+          theme={theme}
+          className={className}
+          basicSetup={{
+            lineNumbers: true,
+            foldGutter: true,
+            highlightActiveLine: true,
+          }}
+        />
+      </>
     );
   }
 );
