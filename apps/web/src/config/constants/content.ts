@@ -547,6 +547,31 @@ export const PREVIEW_EMPTY_LABELS = {
   COMPLETE: "Complete",
 } as const;
 
+// ============================================================================
+// Editor Empty State Labels
+// ============================================================================
+
+/**
+ * Labels for the EditorEmptyState component shown before any content is generated.
+ * Flexy says: No hardcoded empty state strings in components!
+ */
+export const EDITOR_EMPTY_STATE_LABELS = {
+  /** Primary heading encouraging users to generate their blueprint */
+  TITLE: "Your blueprint is waiting to be created",
+  /** Subtitle telling users to complete the wizard */
+  SUBTITLE: "Complete the wizard steps to generate your project documentation",
+  /** Prefix shown before the step number indicator (e.g. "Step 1 of 5") */
+  STEP_PREFIX: "Step",
+  /** Label shown before the current wizard step name */
+  CURRENTLY_ON: "Currently on:",
+  /** Hint badge — reveals keyboard shortcut modal trigger */
+  KEYBOARD_SHORTCUTS: "Keyboard shortcuts",
+  /** Hint badge — describes the submit wizard keyboard shortcut */
+  SUBMIT_WIZARD: "Submit wizard",
+  /** Hint badge — describes the next step keyboard shortcut */
+  NEXT_STEP: "Next step",
+} as const;
+
 export const SKELETON_LAYOUT = {
   /** Preview skeleton line widths (percentages) */
   PREVIEW_LINE_WIDTHS: SHARED_SKELETON_DEFAULTS.PREVIEW_LINE_WIDTHS,

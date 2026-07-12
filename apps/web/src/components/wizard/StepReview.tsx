@@ -27,6 +27,7 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   ENTRANCE_STAGGER_DEFAULTS,
   FRAMER_TYPE,
+  DISPLAY_SYMBOLS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { memo, useCallback, useEffect } from "react";
@@ -429,7 +430,7 @@ export const StepReview = memo(function StepReview({
                 }}
                 aria-hidden="true"
               >
-                {getAltKeyLabel()}+←
+                {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
               </kbd>
             </RippleButton>
           </KeyboardShortcutTooltip>
@@ -509,7 +510,7 @@ export const StepReview = memo(function StepReview({
                     }}
                     aria-hidden="true"
                   >
-                    {modifierKey}+↵
+                    {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
                   </kbd>
                 </RippleButton>
               </KeyboardShortcutTooltip>

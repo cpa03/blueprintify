@@ -30,6 +30,7 @@ import {
   GENERATION_ERROR_PREFIXES,
   SHORTCUT_DESCRIPTIONS,
   FRAMER_TYPE,
+  DISPLAY_SYMBOLS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -449,7 +450,7 @@ export const StepGenerating = memo(function StepGenerating({
                   className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
                   aria-hidden="true"
                 >
-                  {getAltKeyLabel()}+←
+                  {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
                 </kbd>
               </RippleButton>
             </KeyboardShortcutTooltip>
@@ -530,7 +531,7 @@ export const StepGenerating = memo(function StepGenerating({
                   className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
                   aria-hidden="true"
                 >
-                  {getAltKeyLabel()}+←
+                  {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
                 </kbd>
               </RippleButton>
             </KeyboardShortcutTooltip>

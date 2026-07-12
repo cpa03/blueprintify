@@ -32,6 +32,7 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   ENTRANCE_STAGGER_DEFAULTS,
   FRAMER_TYPE,
+  DISPLAY_SYMBOLS,
 } from "@blueprint/shared/config";
 import { useWizardStore } from "../../store";
 import {
@@ -449,7 +450,7 @@ export const StepStack = memo(function StepStack({
               className="px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
               aria-hidden="true"
             >
-              {getAltKeyLabel()}+←
+              {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
             </kbd>
           </RippleButton>
         </KeyboardShortcutTooltip>
@@ -469,7 +470,7 @@ export const StepStack = memo(function StepStack({
               className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
               aria-hidden="true"
             >
-              {modifierKey}+↵
+              {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
             </kbd>
             <svg
               className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5"
