@@ -2,6 +2,22 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 237 — **Full repository audit, 3 post-Cycle-236 commits indexed, doc refresh, quality verification** ✅
+
+### Task: Full repository audit — **3 post-Cycle-236 commits indexed** (refactor(flexy) replace hardcoded animationDelay with ENTRANCE_STAGGER.SHORT_DELAY_S constant Iteration 123; feat(step-generating) auto-focus 'Try Again' button on generation error; docs(findings) Cycle 236 — ULW Loop audit, P1 issue verification, label normalization analysis); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,932/1,932** ✅ — 789 web + 443 API + 700 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 237 full repository audit — index 3 post-Cycle-236 commits, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks ✅
+  - [x] **3 post-Cycle-236 commits indexed**: refactor(flexy) animationDelay constant (Iteration 123), feat(step-generating) auto-focus 'Try Again', docs(findings) Cycle 236 ULW Loop ✅
+  - [x] **findings.md updated**: Cycle 237 entry added at top ✅
+  - [x] **active-tasks.md updated**: Cycle 237 entry added at top ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 237 ✅
+  - [x] **CHANGELOG.md updated**: Cycle 237 entry added ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,932/1,932 ✅ format ✅ secrets ✅ npm audit 0 vulns ✅
+
 ## ✅ RepoKeeper Cycle 236 — **Full repository audit, 2 post-Cycle-235 commits indexed, BroCula ref drift fix (Run 1→Run 3), doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — **2 post-Cycle-235 commits indexed** (refactor(flexy) centralize hardcoded milestone pulse spring config into SPRING_CONFIG Iteration 122, docs(audits) BroCula Cycle 235 — Jul 12 Run 3); **BroCula ref drift fix** (knowledge-review.md: Run 1→Run 3 — latest `brocula-hunt-2026-07-12-run3.md` / LH **99-100-100-100** 🏆, clean console); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,932/1,932** ✅ — 789 web + 443 API + 700 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)

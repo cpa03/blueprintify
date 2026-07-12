@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 237 — full repository audit, **3 post-Cycle-236 commits indexed** (refactor(flexy) replace hardcoded animationDelay with ENTRANCE_STAGGER.SHORT_DELAY_S constant Iteration 123; feat(step-generating) auto-focus 'Try Again' button on generation error; docs(findings) Cycle 236 — ULW Loop audit, P1 issue verification, label normalization analysis), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,932/1,932** ✅ — 789 web + 443 API + 700 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
+- refactor(flexy): replace hardcoded animationDelay with ENTRANCE_STAGGER.SHORT_DELAY_S constant (Iteration 123)
+- feat(step-generating): auto-focus 'Try Again' button on generation error
+- docs(findings): Cycle 236 — ULW Loop audit, P1 issue verification, label normalization analysis
 - chore(repokeeper): Cycle 236 — full repository audit, **2 post-Cycle-235 commits indexed** (refactor(flexy) centralize milestone pulse spring config Iteration 122, docs(audits) BroCula Cycle 235 Jul 12 Run 3), **BroCula ref drift fix** (knowledge-review.md: Run 1→Run 3 — latest `brocula-hunt-2026-07-12-run3.md` / LH **99-100-100-100** 🏆, clean console), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,932/1,932** ✅ — 789 web + 443 API + 700 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
 - refactor(flexy): centralize hardcoded milestone pulse spring config into SPRING_CONFIG (Iteration 122)
 - docs(audits): BroCula Cycle 235 — Jul 12 Run 3 — Clean console ✅, LH **99-100-100-100** (prod), **0 errors/warnings**, all quality gates pass
