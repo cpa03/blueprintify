@@ -319,6 +319,8 @@ export const ACCESSIBILITY_LABELS = {
   },
   LAZY_CODEMIRROR: {
     LOADING: "Loading code editor",
+    /** Announced via sr-only region when CodeMirror is ready for input */
+    READY: "Code editor ready",
   },
   EDITOR: {
     STREAMING_CONTENT: "Streaming content in real-time",
