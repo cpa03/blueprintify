@@ -148,6 +148,8 @@ export const SPRING_CONFIG = {
   CHECKMARK_ICON: { stiffness: 500, damping: 20, mass: 0.5 },
   /** Counter/tab number flip spring - snappy bounce for animated counters */
   COUNTER_FLIP: { stiffness: 500, damping: 15, mass: 0.5 },
+  /** Milestone pulse spring - energetic bounce for threshold-reached animations */
+  MILESTONE_PULSE: { stiffness: 500, damping: 12, mass: 0.5 } as const,
 } as const;
 
 // ============================================================================

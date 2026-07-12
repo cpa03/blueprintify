@@ -2087,3 +2087,61 @@ After 118 iterations, all hardcoded values have been eliminated. This iteration 
 | Scroll thresholds / textarea / tooltip | ✅ All in config |
 | Log levels / OpenAI roles | ✅ Centralized LOG_LEVELS + OPENAI_ROLES |
 | Build/lint/test | ✅ **Clean across all workspaces — 1,890 tests passing** |
+
+
+
+### ✅ Flexy Iteration 120: Centralize Hardcoded Shift+Esc Toast Dismiss-All Shortcut Label
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config.ts` | Added `SHORTCUT_LABELS.DISMISS_ALL` for the Shift+Esc toast dismiss-all shortcut |
+| `apps/web/src/components/Toast.tsx` | Replaced hardcoded `"Shift+Esc"` string with `SHORTCUT_LABELS.DISMISS_ALL` |
+
+**Verification:** `npm run typecheck` — clean | `npm run lint` — zero warnings | `npm run build` — clean
+
+### ✅ Flexy Iteration 121: Centralize Hardcoded Keyboard Display Symbols and Editor Empty State Labels
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config.ts` | Added `DISPLAY_SYMBOLS` (ARROW_LEFT, ARROW_RIGHT, ENTER_KEY modifier display chars) |
+| `apps/web/src/config/constants/content.ts` | Added `EDITOR_EMPTY` labels to `ACCESSIBILITY_LABELS` |
+| `apps/web/src/components/EditorEmptyState.tsx` | Replaced hardcoded display strings with config refs |
+| `apps/web/src/components/wizard/StepStack.tsx` | Replaced hardcoded `←`/`Enter` display chars with `DISPLAY_SYMBOLS.*` |
+| `apps/web/src/components/wizard/StepReview.tsx` | Same — keyboard display symbols centralized |
+
+**Verification:** `npm run typecheck` — clean | `npm run lint` — zero warnings | `npm run build` — clean | All tests passing
+
+### ✅ Flexy Iteration 122: Centralize Inline Milestone Pulse Spring Config
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/ui.ts` | Added `MILESTONE_PULSE: { stiffness: 500, damping: 12, mass: 0.5 }` to `SPRING_CONFIG` |
+| `apps/web/src/components/wizard/StepStack.tsx` | Replaced inline `{ stiffness: 500, damping: 12, mass: 0.5 }` with `...SPRING_CONFIG.MILESTONE_PULSE` |
+
+**Verification:**
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 789 web tests passing
+
+**PR:** [#2524](https://github.com/cpa03/blueprintify/pull/2524) — `feat/flexy-iteration-122-milestone-pulse-spring`
+
+## Final Codebase Status (After Iteration 122)
+
+| Category | Status |
+|----------|--------|
+| Hardcoded values in application logic | ❌ None remaining ✅ |
+| Hardcoded CI node-version values | ❌ **None remaining** ✅ |
+| Inline spring configs in components | ❌ **None remaining** ✅ |
+| Config centralization (@blueprint/shared) | ✅ 80+ config objects in single source of truth |
+| Animation constants extracted | ✅ 100% of framer-motion values in config |
+| Color tokens centralized | ✅ All colors via COLORS + hexToRgba |
+| HTTP headers/methods/status codes | ✅ All in @blueprint/shared |
+| Error messages/strings | ✅ All in @blueprint/shared |
+| Route paths/env keys | ✅ All in @blueprint/shared |
+| UI strings/labels/tooltips | ✅ All in config |
+| CSS custom properties | ✅ `:root` variables + color-mix() throughout |
+| Tailwind arbitrary values | ✅ Zero remaining in components |
+| z-index values | ✅ All in Z_INDEX config |
+| Log levels / OpenAI roles / Display symbols | ✅ All centralized via shared config |
+| Build/lint/test | ✅ **Clean across all workspaces** |

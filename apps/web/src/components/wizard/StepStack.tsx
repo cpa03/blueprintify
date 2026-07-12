@@ -308,7 +308,7 @@ export const StepStack = memo(function StepStack({
             </div>
             <motion.span
               animate={showMilestone ? { scale: [1, 1.35, 1] } : { scale: 1 }}
-              transition={{ type: FRAMER_TYPE.SPRING, stiffness: 500, damping: 12, mass: 0.5 }}
+              transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.MILESTONE_PULSE }}
               className={`tabular-nums ${canProceed ? "text-accent-emerald" : "text-dark-400"}`}
             >
               {techStack.length}/{minRequired}
