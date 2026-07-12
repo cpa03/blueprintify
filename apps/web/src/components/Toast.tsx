@@ -49,6 +49,7 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   KEYBOARD_EVENT_KEYS,
   FRAMER_TYPE,
+  SHORTCUT_LABELS,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { SmartTooltip } from "./SmartTooltip";
@@ -561,7 +562,7 @@ function ToastContainerComponent(): JSX.Element {
                 className="ml-1.5 px-1 py-0.5 bg-dark-700/50 rounded text-2xs font-mono text-dark-500 border border-dark-600/30 leading-none"
                 aria-hidden="true"
               >
-                Shift+Esc
+                {SHORTCUT_LABELS.TOAST_DISMISS_ALL}
               </kbd>
             </span>
           </button>
@@ -616,7 +617,7 @@ function ToastContainerComponent(): JSX.Element {
                   className="ml-1.5 px-1 py-0.5 bg-dark-700/50 rounded text-2xs font-mono text-dark-500 border border-dark-600/30 leading-none"
                   aria-hidden="true"
                 >
-                  Shift+Esc
+                  {SHORTCUT_LABELS.TOAST_DISMISS_ALL}
                 </kbd>
               </span>
             </motion.button>
