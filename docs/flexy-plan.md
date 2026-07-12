@@ -2126,13 +2126,35 @@ After 118 iterations, all hardcoded values have been eliminated. This iteration 
 
 **PR:** [#2524](https://github.com/cpa03/blueprintify/pull/2524) — `feat/flexy-iteration-122-milestone-pulse-spring`
 
-## Final Codebase Status (After Iteration 122)
+### ✅ Flexy Iteration 123: Eliminate Hardcoded animationDelay in Staggered Editor Entrance
+
+**Problem**: A `feat(web): add staggered entrance animation for editor panel content` commit (c4cbf7ac) introduced a hardcoded `animationDelay: "0.1s"` inline style in `App.tsx` when wrapping the Editor Suspense in a staggered entrance div. The `ENTRANCE_STAGGER.SHORT_DELAY_S` constant (0.1s) from `@blueprint/shared` already existed but was not used.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/App.tsx` | Replaced hardcoded `animationDelay: "0.1s"` with `` animationDelay: `${ENTRANCE_STAGGER.SHORT_DELAY_S}s` `` — uses existing shared config constant |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 789 web + 443 api + 700 shared = **1,932 tests passing**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `feat/flexy-iteration-123-animation-delay` | refactor(flexy): replace hardcoded animationDelay with ENTRANCE_STAGGER.SHORT_DELAY_S constant (Iteration 123) |
+
+## Final Codebase Status (After Iteration 123)
 
 | Category | Status |
 |----------|--------|
 | Hardcoded values in application logic | ❌ None remaining ✅ |
 | Hardcoded CI node-version values | ❌ **None remaining** ✅ |
 | Inline spring configs in components | ❌ **None remaining** ✅ |
+| Inline animationDelay values | ❌ **None remaining** ✅ |
 | Config centralization (@blueprint/shared) | ✅ 80+ config objects in single source of truth |
 | Animation constants extracted | ✅ 100% of framer-motion values in config |
 | Color tokens centralized | ✅ All colors via COLORS + hexToRgba |
@@ -2144,4 +2166,4 @@ After 118 iterations, all hardcoded values have been eliminated. This iteration 
 | Tailwind arbitrary values | ✅ Zero remaining in components |
 | z-index values | ✅ All in Z_INDEX config |
 | Log levels / OpenAI roles / Display symbols | ✅ All centralized via shared config |
-| Build/lint/test | ✅ **Clean across all workspaces** |
+| Build/lint/test | ✅ **Clean across all workspaces — 1,932 tests passing** |
