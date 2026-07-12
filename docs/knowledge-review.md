@@ -12,21 +12,22 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-12 (RepoKeeper Cycle 232)
+**Last Review**: 2026-07-12 (RepoKeeper Cycle 233)
 **Status**: ✅ BUG-014/BUG-017 FIXED on main — all workflows clean
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state ✅
 - **BUG-014/BUG-017 — CONFIRMED FIXED on main**: zero stale doc refs (`docs/bug.md`/`docs/feature.md`) in CI workflows. All workflows use `node-version-file: ".node-version"` (zero hardcoded `node-version:`). PR #2507 resolved both permanently. ✅
-- **README BroCula description verified**: `(Jun 17–Jul 12)` — latest: `docs/audits/brocula-hunt-2026-07-12-run1.md` (BroCula Jul 12 Run 1 / **1,890 tests** ✅ — 755 web + 443 API + 692 shared, LH **100-100-100-100** 🏆, clean console)
+- **README BroCula description verified**: `(Jun 17–Jul 12)` — latest: `docs/audits/brocula-hunt-2026-07-12-run1.md` (BroCula Jul 12 Run 1 / **1,932 tests** ✅ — 789 web + 443 API + 700 shared, LH **100-100-100-100** 🏆, clean console)
 - **Typecheck/Lint/Build**: All clean (0 errors, 0 warnings)
-- **Tests**: **1,890/1,890 passing** ✅ (755 web + 443 API + 692 shared)
+- **Tests**: **1,932/1,932 passing** ✅ (789 web + 443 API + 700 shared)
 - **Format**: All Prettier-formatted ✅
 - **BUG-013**: ✅ **RESOLVED** — `lighthouse` downgraded 13.4.0→12.6.1, **0 vulnerabilities**.
 - **BUG-014/BUG-017**: ✅ **RESOLVED since Cycle 211** — stale doc refs and node-version hardcodes fixed on main.
 - **npm audit**: **0 vulnerabilities** ✅ (BUG-013 resolved).
 - **No tracked .patch files found on main after cleanup**: Recurring anti-pattern resolved since Cycle 194.
+- **Cycle 233**: RepoKeeper full repository audit — **2 post-Cycle-232 commits indexed** (test(wizard) StepFeatures comprehensive tests #2518, chore(deps) openai 6.45.0→6.46.0 #2519), **typecheck/lint regression fix** in StepFeatures.test.tsx (missing `afterEach` import, unused `waitFor`/`TIMEOUTS`), **test count update** 1,890→**1,932** (789 web + 443 API + 700 shared), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,932/1,932** ✅ — 789 web + 443 API + 700 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
 - **Cycle 232**: RepoKeeper full repository audit — **4 post-Cycle-231 commits indexed** (chore(audit) BroCula Jul 12 Run 1 LH 100-100-100-100 1,890 tests ✅, refactor(flexy) centralize hardcoded Shift+Esc toast dismiss-all shortcut label), **README BroCula date drift fix** (Jun 17–Jul 11 → Jun 17–Jul 12 — Jul 12 Run 1 now latest), **knowledge-review BroCula ref drift fix** (Jul 11 Run 1 → Jul 12 Run 1 — LH 100-100-100-100 🏆), **knowledge-review BUG-014/BUG-017 status corrected** (fixed on main via PR #2507 — all workflows use `node-version-file: ".node-version"`), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,890/1,890** ✅ — 755 web + 443 API + 692 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
 - **Cycle 231**: RepoKeeper full repository audit — **3 post-Cycle-230 commits indexed** (chore(deps) update deps to latest versions (#2506), chore(deps) update dependencies to latest compatible versions, fix(ci) update CI workflows with correct node-version/agent identities/doc references), **3 stale archive files purged** (June 11 BroCula hunt reports — past 30-day retention), **CHANGELOG gap fix** (Cycle 230 missing entry added), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, CONSOLIDATED-README), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,890/1,890** ✅ — 755 web + 443 API + 692 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅). BUG-014/BUG-017 still present on main — unchanged `workflows: write` blocker.
 - **Cycle 230**: RepoKeeper full repository audit — 1 post-Cycle-229 commit indexed (docs(findings) Cycle 229b — Issue Manager analysis and blocked actions), BUG-014/BUG-017 verified still present on main (stale doc refs in main.yml — 2 occurrences; 11 `node-version: "20"` hardcodes across 4 workflow files), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,890/1,890** ✅ — 755 web + 443 API + 692 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅).
