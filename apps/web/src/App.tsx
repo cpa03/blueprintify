@@ -446,18 +446,34 @@ function App(): JSX.Element {
                   </button>
                 </KeyboardShortcutTooltip>
 
-                <Suspense
-                  fallback={
-                    <div className="h-full min-h-100 flex items-center justify-center text-dark-500">
-                      <div className="flex flex-col items-center gap-2">
-                        <div className={SPINNER.DEFAULT}></div>
-                        <span>{UI_CONTENT.EDITOR.LOADING}</span>
-                      </div>
-                    </div>
-                  }
+                {/* Editor content with staggered entrance — fades in slightly
+                    after the panel finishes its slide-in, giving the close
+                    buttons a moment to appear first. A subtle @ 100ms delay
+                    creates a premium staggered feel without sacrificing
+                    accessibility (content is visible within 300ms of panel
+                    trigger). Respects prefers-reduced-motion: when active,
+                    the animation is skipped entirely via the animate-fade-in
+                    CSS media query. */}
+                <div
+                  className="animate-fade-in h-full flex flex-col"
+                  style={{
+                    animationDelay: "0.1s",
+                    animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
+                  }}
                 >
-                  <Editor />
-                </Suspense>
+                  <Suspense
+                    fallback={
+                      <div className="h-full min-h-100 flex items-center justify-center text-dark-500">
+                        <div className="flex flex-col items-center gap-2">
+                          <div className={SPINNER.DEFAULT}></div>
+                          <span>{UI_CONTENT.EDITOR.LOADING}</span>
+                        </div>
+                      </div>
+                    }
+                  >
+                    <Editor />
+                  </Suspense>
+                </div>
               </div>
             )}
           </div>
