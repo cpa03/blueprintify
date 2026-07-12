@@ -20,7 +20,8 @@ import {
   ANIMATION,
   EASING,
 } from "../config/constants";
-import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared/config";
+import { ANIMATION_ENTRANCE_DELAYS, DISPLAY_SYMBOLS } from "@blueprint/shared/config";
+import { EDITOR_EMPTY_STATE_LABELS } from "../config/constants/content";
 import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from "../utils/motion";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
 
@@ -135,11 +136,11 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
       </motion.div>
 
       <motion.h3 className="text-xl font-semibold text-white mb-2" variants={fadeInUp}>
-        Your blueprint is waiting to be created
+        {EDITOR_EMPTY_STATE_LABELS.TITLE}
       </motion.h3>
 
       <motion.p className="text-dark-400 mb-6" variants={fadeInUp}>
-        Complete the wizard steps to generate your project documentation
+        {EDITOR_EMPTY_STATE_LABELS.SUBTITLE}
       </motion.p>
 
       <motion.div
@@ -166,7 +167,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
           })}
         </div>
         <span className="text-sm text-dark-300">
-          Step {currentIndex + 1} of {WIZARD_STEPS.length}
+          {EDITOR_EMPTY_STATE_LABELS.STEP_PREFIX} {currentIndex + 1} of {WIZARD_STEPS.length}
         </span>
         <motion.span
           key={Math.round(progress)}
@@ -190,9 +191,9 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
           animate={{ x: [0, 4, 0] }}
           transition={{ duration: ANIMATION.FLOAT, repeat: Infinity }}
         >
-          →
+          {DISPLAY_SYMBOLS.ARROW_RIGHT}
         </motion.span>
-        Currently on:{" "}
+        {EDITOR_EMPTY_STATE_LABELS.CURRENTLY_ON}{" "}
         <span className="font-medium">
           {WIZARD_STEPS.find((s) => s.key === currentStep)?.label}
         </span>
@@ -213,9 +214,9 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               content: (
                 <>
                   <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-                    ?
+                    {DISPLAY_SYMBOLS.QUESTION_MARK}
                   </kbd>
-                  <span>Keyboard shortcuts</span>
+                  <span>{EDITOR_EMPTY_STATE_LABELS.KEYBOARD_SHORTCUTS}</span>
                 </>
               ),
             },
@@ -228,9 +229,9 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
                   </kbd>
                   <span className="text-dark-500">+</span>
                   <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-                    ↵
+                    {DISPLAY_SYMBOLS.ENTER_KEY}
                   </kbd>
-                  <span>Submit wizard</span>
+                  <span>{EDITOR_EMPTY_STATE_LABELS.SUBMIT_WIZARD}</span>
                 </>
               ),
             },
@@ -243,9 +244,9 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
                   </kbd>
                   <span className="text-dark-500">+</span>
                   <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-                    →
+                    {DISPLAY_SYMBOLS.ARROW_RIGHT}
                   </kbd>
-                  <span>Next step</span>
+                  <span>{EDITOR_EMPTY_STATE_LABELS.NEXT_STEP}</span>
                 </>
               ),
             },

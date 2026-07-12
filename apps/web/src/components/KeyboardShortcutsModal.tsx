@@ -24,7 +24,7 @@ import {
   SPRING_CONFIG,
   ANIMATION,
 } from "../config/constants";
-import { KEYBOARD_EVENT_KEYS, FRAMER_TYPE } from "@blueprint/shared/config";
+import { KEYBOARD_EVENT_KEYS, FRAMER_TYPE, DISPLAY_SYMBOLS } from "@blueprint/shared/config";
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { Icon, type IconName } from "./Icon";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
@@ -61,7 +61,7 @@ const getShortcutItems = (): ShortcutItem[] => {
       category: SHORTCUT_CATEGORIES.EDITOR,
     },
     {
-      keys: ["←", "→"],
+      keys: [DISPLAY_SYMBOLS.ARROW_LEFT, DISPLAY_SYMBOLS.ARROW_RIGHT],
       description: EDITOR_LABELS.TAB_NAVIGATION.SWITCH_TABS,
       category: SHORTCUT_CATEGORIES.EDITOR,
     },
@@ -111,12 +111,12 @@ const getShortcutItems = (): ShortcutItem[] => {
       category: SHORTCUT_CATEGORIES.NAVIGATION,
     },
     {
-      keys: [altKey, "←"],
+      keys: [altKey, DISPLAY_SYMBOLS.ARROW_LEFT],
       description: "Go to previous wizard step",
       category: SHORTCUT_CATEGORIES.NAVIGATION,
     },
     {
-      keys: [altKey, "→"],
+      keys: [altKey, DISPLAY_SYMBOLS.ARROW_RIGHT],
       description: "Go to next wizard step",
       category: SHORTCUT_CATEGORIES.NAVIGATION,
     },

@@ -28,6 +28,7 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   KEYBOARD_EVENT_KEYS,
   FRAMER_TYPE,
+  DISPLAY_SYMBOLS,
 } from "@blueprint/shared/config";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
@@ -609,7 +610,7 @@ export const StepFeatures = memo(function StepFeatures({
               className="px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
               aria-hidden="true"
             >
-              {getAltKeyLabel()}+←
+              {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
             </kbd>
           </RippleButton>
         </KeyboardShortcutTooltip>
@@ -628,7 +629,7 @@ export const StepFeatures = memo(function StepFeatures({
               className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
               aria-hidden="true"
             >
-              {modifierKey}+↵
+              {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
             </kbd>
             <svg
               className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5"

@@ -2747,6 +2747,26 @@ export const KEYBOARD_EVENT_KEYS = {
 } as const;
 
 /**
+ * Keyboard Display Symbols
+ * Centralized source of truth for keyboard display symbols (Unicode characters)
+ * used in keyboard shortcut hint labels, kbd elements, and navigation indicators.
+ * These are DISPLAY symbols (what users see), not event.key values.
+ * Flexy says: No hardcoded "↵" / "→" / "←" Unicode symbols in components!
+ * Usage: import { DISPLAY_SYMBOLS } from "@blueprint/shared";
+ *        <kbd>{DISPLAY_SYMBOLS.ENTER_KEY}</kbd>
+ */
+export const DISPLAY_SYMBOLS = {
+  /** Enter/Return key display symbol — line feed arrow with hooked shaft */
+  ENTER_KEY: "\u21B5" as const,
+  /** Right-pointing arrow — navigation forward, next step indicator */
+  ARROW_RIGHT: "\u2192" as const,
+  /** Left-pointing arrow — navigation backward, previous step indicator */
+  ARROW_LEFT: "\u2190" as const,
+  /** Question mark — keyboard shortcut modal toggle key */
+  QUESTION_MARK: "?" as const,
+} as const;
+
+/**
  * Responsive Breakpoint Defaults (px)
  * Standard viewport width breakpoints used for responsive layout calculations,
  * corresponding to Tailwind's `md` (768px) and `lg` (1024px) breakpoints.

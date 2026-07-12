@@ -127,6 +127,7 @@ import {
   STORAGE_OPERATION_NAMES,
   CONTEXT_HOOK_ERRORS,
   KEYBOARD_EVENT_KEYS,
+  DISPLAY_SYMBOLS,
   BREAKPOINT_DEFAULTS,
   CHAR_COUNTER_THRESHOLDS,
   CHAR_COUNTER_COLORS,
@@ -3659,6 +3660,46 @@ describe("KEYBOARD_EVENT_KEYS", () => {
   it("should have unique values", () => {
     const values = Object.values(KEYBOARD_EVENT_KEYS);
     expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+// ============================================================================
+// DISPLAY_SYMBOLS
+// ============================================================================
+describe("DISPLAY_SYMBOLS", () => {
+  it("should have ENTER_KEY symbol", () => {
+    expect(DISPLAY_SYMBOLS.ENTER_KEY).toBe("\u21B5");
+  });
+
+  it("should have ARROW_RIGHT symbol", () => {
+    expect(DISPLAY_SYMBOLS.ARROW_RIGHT).toBe("\u2192");
+  });
+
+  it("should have ARROW_LEFT symbol", () => {
+    expect(DISPLAY_SYMBOLS.ARROW_LEFT).toBe("\u2190");
+  });
+
+  it("should have QUESTION_MARK symbol", () => {
+    expect(DISPLAY_SYMBOLS.QUESTION_MARK).toBe("?");
+  });
+
+  it("should have 4 properties", () => {
+    expect(Object.keys(DISPLAY_SYMBOLS).length).toBe(4);
+  });
+
+  it("should have all values as strings", () => {
+    const values = Object.values(DISPLAY_SYMBOLS);
+    values.forEach((v) => expect(typeof v).toBe("string"));
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(DISPLAY_SYMBOLS);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should have non-empty string values", () => {
+    const values = Object.values(DISPLAY_SYMBOLS);
+    values.forEach((v) => expect(v.length).toBeGreaterThan(0));
   });
 });
 

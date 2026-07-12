@@ -11,7 +11,12 @@
 import { memo } from "react";
 import * as motion from "framer-motion/m";
 import type { EditorTab } from "@blueprint/shared/types";
-import { EDITOR_FILENAMES, ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE } from "@blueprint/shared/config";
+import {
+  EDITOR_FILENAMES,
+  ANIMATION_ENTRANCE_DELAYS,
+  DISPLAY_SYMBOLS,
+  FRAMER_TYPE,
+} from "@blueprint/shared/config";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
 import {
   EMPTY_STATE_CONFIG,
@@ -161,7 +166,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               className="inline-flex items-center gap-1.5 text-primary-400 hover:text-primary-300 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded px-1 -mx-1"
               aria-label={`Switch to ${tab === EDITOR_TABS.BLUEPRINT ? EDITOR_TABS.TASKS : EDITOR_TABS.BLUEPRINT} tab`}
             >
-              <span aria-hidden="true">←</span>
+              <span aria-hidden="true">{DISPLAY_SYMBOLS.ARROW_LEFT}</span>
               Switch to{" "}
               <strong>
                 {tab === EDITOR_TABS.BLUEPRINT ? (
@@ -202,11 +207,11 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               }}
             >
               <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-                ←
+                {DISPLAY_SYMBOLS.ARROW_LEFT}
               </kbd>
               <span className="text-dark-500">/</span>
               <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-                →
+                {DISPLAY_SYMBOLS.ARROW_RIGHT}
               </kbd>
               <span>{EDITOR_LABELS.TAB_NAVIGATION.SWITCH_TABS}</span>
             </motion.div>
