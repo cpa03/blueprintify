@@ -1,0 +1,29 @@
+#!/bin/sh
+# Pre-push hook — catches issues before CI blocks the PR.
+# Runs the full check suite: typecheck, lint, scan:secrets, audit, test:all
+# Skip with: git push --no-verify
+#
+# NOTE: The PR gatekeeper (.github/workflows/pr-gatekeeper.yml) is the
+# PRIMARY enforcement. This hook is for early feedback only.
+
+echo ""
+echo "🔍 Running pre-push validation (npm run check)..."
+echo "   (skip with: git push --no-verify)"
+echo ""
+
+npm run check
+EXIT_CODE=$?
+
+if [ $EXIT_CODE -ne 0 ]; then
+  echo ""
+  echo "╔══════════════════════════════════════════════════════════════╗"
+  echo "║  ❌ PRE-PUSH VALIDATION FAILED                              ║"
+  echo "║                                                              ║"
+  echo "║  Fix the errors above, or push with --no-verify to bypass.   ║"
+  echo "╚══════════════════════════════════════════════════════════════╝"
+  echo ""
+  exit $EXIT_CODE
+fi
+
+echo "✅ Pre-push validation passed."
+echo ""
