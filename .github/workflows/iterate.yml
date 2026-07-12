@@ -52,7 +52,7 @@ jobs:
         continue-on-error: true
         uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version-file: ".node-version"
       - name: Install Dependencies
         continue-on-error: true
         run: npm ci
@@ -75,7 +75,7 @@ jobs:
               --agent RepoKeeper \
               --model opencode/deepseek-v4-flash-free \
               --share false; then
-              echo "✅ Architect work completed successfully"
+              echo "✅ RepoKeeper work completed successfully"
               break
             else
               retry_count=$((retry_count + 1))
@@ -117,7 +117,7 @@ jobs:
         continue-on-error: true
         uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version-file: ".node-version"
       - name: Install Dependencies
         continue-on-error: true
         run: npm ci
@@ -137,10 +137,10 @@ jobs:
           while [ $retry_count -lt $max_retries ]; do
             echo "Attempt $((retry_count + 1)) of $max_retries"
             if opencode run /ulw-loop "Anda adalah BugFixer. Tugas anda adalah menjaga repositori bebas bug atau error. buat/update pr setelah selesai, pastikan branch up to date dengan main sebelum membuat pr. error/warning ketika build/lint adalah kegagalan fatal." \
-              --agent RepoKeeper \
+              --agent BugFixer \
               --model opencode/deepseek-v4-flash-free \
               --share false; then
-              echo "✅ Architect work completed successfully"
+              echo "✅ BugFixer work completed successfully"
               break
             else
               retry_count=$((retry_count + 1))
@@ -182,7 +182,7 @@ jobs:
         continue-on-error: true
         uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version-file: ".node-version"
       - name: Install Dependencies
         continue-on-error: true
         run: npm ci
@@ -202,10 +202,10 @@ jobs:
           while [ $retry_count -lt $max_retries ]; do
             echo "Attempt $((retry_count + 1)) of $max_retries"
             if opencode run /ulw-loop "Act as **Pallete**. You are "Palette" 🎨 - a UX-focused agent who adds small touches of delight and accessibility to the user interface. Your mission is to find and implement ONE micro-UX improvement that makes the interface more intuitive, accessible, or pleasant to use. buat/update pr setelah selesai, pastikan branch up to date dengan main sebelum membuat pr. error/warning ketika build/lint adalah kegagalan fatal." \
-              --agent RepoKeeper \
+              --agent Palette \
               --model opencode/deepseek-v4-flash-free \
               --share false; then
-              echo "✅ Architect work completed successfully"
+              echo "✅ Palette work completed successfully"
               break
             else
               retry_count=$((retry_count + 1))
@@ -247,7 +247,7 @@ jobs:
         continue-on-error: true
         uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version-file: ".node-version"
       - name: Install Dependencies
         continue-on-error: true
         run: npm ci
@@ -267,10 +267,10 @@ jobs:
           while [ $retry_count -lt $max_retries ]; do
             echo "Attempt $((retry_count + 1)) of $max_retries"
             if opencode run /ulw-loop "Act as **Flexy**. **Flexy** love modularity and hate hardcoded. **Flexy** mission is to eliminate hardcoded and make modular system. buat/update pr setelah selesai, pastikan branch up to date dengan main sebelum membuat pr. error/warning ketika build/lint adalah kegagalan fatal." \
-              --agent RepoKeeper \
+              --agent Flexy \
               --model opencode/deepseek-v4-flash-free \
               --share false; then
-              echo "✅ Architect work completed successfully"
+              echo "✅ Flexy work completed successfully"
               break
             else
               retry_count=$((retry_count + 1))
@@ -312,7 +312,7 @@ jobs:
         continue-on-error: true
         uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version-file: ".node-version"
       - name: Install Dependencies
         continue-on-error: true
         run: npm ci
@@ -332,10 +332,10 @@ jobs:
           while [ $retry_count -lt $max_retries ]; do
             echo "Attempt $((retry_count + 1)) of $max_retries"
             if opencode run /ulw-loop "Act as **BroCula**. BroCula love to work on browser console using mcp tool 'playwright' or 'chrome devtools'. He work on strict workflows: 1. find browser console errors/warnings, fix immediately. 2. find lighthouse optimization oportunity, optimize code based on it. buat/update pr setelah selesai, pastikan branch up to date dengan main sebelum membuat pr. error/warning ketika build/lint adalah kegagalan fatal." \
-              --agent RepoKeeper \
+              --agent BroCula \
               --model opencode/deepseek-v4-flash-free \
               --share false; then
-              echo "✅ Architect work completed successfully"
+              echo "✅ BroCula work completed successfully"
               break
             else
               retry_count=$((retry_count + 1))
