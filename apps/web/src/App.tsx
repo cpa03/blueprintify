@@ -457,7 +457,7 @@ function App(): JSX.Element {
                 <div
                   className="animate-fade-in h-full flex flex-col"
                   style={{
-                    animationDelay: "0.1s",
+                    animationDelay: `${ENTRANCE_STAGGER.SHORT_DELAY_S}s`,
                     animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
                   }}
                 >
