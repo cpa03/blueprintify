@@ -17,13 +17,13 @@
  * - Accessibility labels
  */
 
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent, act } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import type { Mock } from "vitest";
 import { StepFeatures } from "./StepFeatures";
 import { useWizardStore } from "../../store";
 import type { WizardStore } from "../../store/wizard";
-import { UI_CONTENT, FORM_LIMITS, SUGGESTED_FEATURES, TIMEOUTS } from "../../config/constants";
+import { UI_CONTENT, FORM_LIMITS, SUGGESTED_FEATURES } from "../../config/constants";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 
 // Mock framer-motion to render plain HTML elements
