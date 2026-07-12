@@ -2,6 +2,22 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 231 — **Full repository audit, 3 post-Cycle-230 commits indexed, 3 stale audit archive files purged (Jun 11 — past 30-day retention), CHANGELOG gap fix (Cycle 230 missing), doc refresh, quality verification** ✅
+
+### Task: Full repository audit — **3 post-Cycle-230 commits indexed** (chore(deps) update deps to latest versions (#2506), chore(deps) update dependencies to latest compatible versions, fix(ci) update CI workflows with correct node-version/agent identities/doc references); **3 stale archive files purged** (June 11 BroCula hunt reports — past 30-day retention); **CHANGELOG gap fix** (Cycle 230 entry missing); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, CONSOLIDATED-README); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,890/1,890** ✅ — 755 web + 443 API + 692 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 231 full repository audit — CHANGELOG gap fix, stale archive purge, 3 post-Cycle-230 commits indexed, doc refresh, quality verification
+- **Actions**:
+  - [x] **CHANGELOG gap fix**: Added missing Cycle 230 entry (5c331c2b) — 1 post-Cycle-229 commit indexed (docs(findings) Cycle 229b) ✅
+  - [x] **CHANGELOG Cycle 231 entry**: Added 3 post-Cycle-230 commits — chore(deps) #2506, chore(deps) deps update, fix(ci) workflows update ✅
+  - [x] **Stale archive purge**: 3 files removed (Jun 11) — 3 BroCula hunt reports past 30-day retention ✅
+  - [x] **findings.md updated**: Cycle 231 entry added at top ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 231, stale archive purge noted ✅
+  - [x] **CONSOLIDATED-README.md updated**: Retention cleanup date → Cycle 231 ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,890/1,890 ✅ format ✅ secrets ✅ npm audit 0 vulns ✅
+
 ## ✅ RepoKeeper Cycle 230 — **Full repository audit, 1 post-Cycle-229 commit indexed (Cycle 229b — Issue Manager analysis), doc refresh, quality verification, BUG-014/BUG-017 still present** ✅
 
 ### Task: Full repository audit — **1 post-Cycle-229 commit indexed** (docs(findings) Cycle 229b — Issue Manager analysis and blocked actions); **BUG-014/BUG-017 verified still present on main** — stale doc refs `docs/bug.md`/`docs/feature.md` in main.yml (2 occurrences), 11 `node-version: "20"` hardcodes across 4 workflow files — same `workflows: write` blocker; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,890/1,890** ✅ — 755 web + 443 API + 692 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
