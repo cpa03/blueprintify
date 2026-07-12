@@ -12,7 +12,7 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-11 (RepoKeeper Cycle 230)
+**Last Review**: 2026-07-12 (RepoKeeper Cycle 231)
 **Status**: ⚠️ BUG-014/BUG-017 resurfaced on main — see bugs.md
 
 As of cycle refresh:
@@ -27,6 +27,7 @@ As of cycle refresh:
 - **BUG-014/BUG-017**: ✅ **RESOLVED since Cycle 211** — stale doc refs and node-version hardcodes fixed on main.
 - **npm audit**: **0 vulnerabilities** ✅ (BUG-013 resolved).
 - **No tracked .patch files found on main after cleanup**: Recurring anti-pattern resolved since Cycle 194.
+- **Cycle 231**: RepoKeeper full repository audit — **3 post-Cycle-230 commits indexed** (chore(deps) update deps to latest versions (#2506), chore(deps) update dependencies to latest compatible versions, fix(ci) update CI workflows with correct node-version/agent identities/doc references), **3 stale archive files purged** (June 11 BroCula hunt reports — past 30-day retention), **CHANGELOG gap fix** (Cycle 230 missing entry added), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, CONSOLIDATED-README), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,890/1,890** ✅ — 755 web + 443 API + 692 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅). BUG-014/BUG-017 still present on main — unchanged `workflows: write` blocker.
 - **Cycle 230**: RepoKeeper full repository audit — 1 post-Cycle-229 commit indexed (docs(findings) Cycle 229b — Issue Manager analysis and blocked actions), BUG-014/BUG-017 verified still present on main (stale doc refs in main.yml — 2 occurrences; 11 `node-version: "20"` hardcodes across 4 workflow files), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,890/1,890** ✅ — 755 web + 443 API + 692 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅).
 - **14 stale archive files purged**: 13 BroCula hunt reports + 1 issue-audit report from June 8–10 removed in Cycle 229 (past 30-day retention policy).
 - **18 stale audit reports archived**: BroCula hunt reports Jul 2–7 (16 files), diagnostic-scoring-2026-07-07.md, and issue-audit-report-2026-06-24.md moved to `docs/audits/archive/` in Cycle 223.
