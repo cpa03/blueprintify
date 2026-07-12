@@ -2,6 +2,23 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 236 — **Full repository audit, 2 post-Cycle-235 commits indexed, BroCula ref drift fix (Run 1→Run 3), doc refresh, quality verification** ✅
+
+### Task: Full repository audit — **2 post-Cycle-235 commits indexed** (refactor(flexy) centralize hardcoded milestone pulse spring config into SPRING_CONFIG Iteration 122, docs(audits) BroCula Cycle 235 — Jul 12 Run 3); **BroCula ref drift fix** (knowledge-review.md: Run 1→Run 3 — latest `brocula-hunt-2026-07-12-run3.md` / LH **99-100-100-100** 🏆, clean console); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,932/1,932** ✅ — 789 web + 443 API + 700 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 236 full repository audit — index 2 post-Cycle-235 commits, BroCula ref drift fix, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks ✅
+  - [x] **2 post-Cycle-235 commits indexed**: refactor(flexy) milestone pulse spring config (Iteration 122), docs(audits) BroCula Jul 12 Run 3 ✅
+  - [x] **BroCula ref drift fix**: knowledge-review.md updated — Run 1→Run 3 (LH 99-100-100-100) ✅
+  - [x] **CHANGELOG.md updated**: Cycle 236 entry + 2 detailed commits indexed ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 236, BroCula ref → Jul 12 Run 3 ✅
+  - [x] **findings.md updated**: Cycle 236 entry added at top ✅
+  - [x] **active-tasks.md updated**: Cycle 236 entry added at top ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,932/1,932 ✅ format ✅ secrets ✅ npm audit 0 vulns ✅
+
 ## ✅ BugFixer Cycle 235 — **Full repository bug audit, all quality gates pass, zero bugs found, BUG-014/BUG-017 CONFIRMED FIXED, doc refresh, PR created** ✅
 
 ### Task: Full repository bug audit — **Typecheck ✅ lint ✅ build ✅ tests 1,932/1,932 ✅** (789 web + 443 API + 700 shared). Format ✅ secrets ✅ npm audit **0 vulns** ✅. **Code quality scan**: 0 `@ts-expect-error`/`@ts-ignore`/`as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK. 0 merge conflict artifacts. **BUG-014/BUG-017 CONFIRMED FIXED on main** — zero stale doc refs, all workflows use `node-version-file: ".node-version"`. No new fixable bugs found. All quality gates pass. PR created on branch `fix/bugfixer-ulw-cycle-jul-12-2026-r2`.
