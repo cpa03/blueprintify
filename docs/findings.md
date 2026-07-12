@@ -42,9 +42,34 @@
 | `.patch` files | ✅ **0** |
 | Empty directories | ✅ **0** |
 
+### Sub-cycle: ULW Loop — PR Handler + Issue Audit (2026-07-12 18:00 UTC)
+
+**PR Handler Mode — 4 PRs merged:**
+| PR | Branch | Title | Result |
+|----|--------|-------|--------|
+| #2532 | `chore/repokeeper-cycle-236` | Cycle 236 — full repo audit | ✅ Merged |
+| #2531 | `feat/flexy-iteration-123-animation-delay` | Replace hardcoded animationDelay constant | ✅ Merged |
+| #2530 | `palette/auto-focus-error-try-again` | Auto-focus 'Try Again' on generation error | ✅ Merged |
+| #2529 | `docs/ulw-cycle-236-audit` | Cycle 236 audit, P1 issue verification | ✅ Merged (resolved conflict) |
+
+**Issue Manager Mode — audit findings:**
+- **P1 issues resolved (code-verified):** #1077 (Prompt Injection), #1078 (Auth), #1082 (Hook Tests), #1014 (Component Coverage) — token lacks `issues:write` to close
+- **P1 still open:** #1045 (Infrastructure IDs) — requires Cloudflare resource creation
+- **P2 issues analyzed:** #1084 (npm audit in CI) — Dependabot exists, `npm audit` cannot be added to workflow (no `workflows` permission)
+- **P2 issues analyzed:** #1088 (Secrets detection) — security engineer step exists in pipeline
+- **Old issues (Feb 2026) already resolved:** #958 (console.log), #955 (CSP), #1163 (constants split), #1118 (partial a11y)
+- **Label normalization blocked** — GITHUB_TOKEN lacks `issues:write` permission
+- **Issue creation blocked** — GITHUB_TOKEN lacks `issues:write` permission
+
+**Token Limitations Encountered:**
+| Permission | Needed For | Status |
+|-----------|-----------|--------|
+| `issues: write` | Close/comment/label issues | ❌ Missing |
+| `workflows` | Modify `.github/workflows/` | ❌ Missing |
+
 ### Verdict
 
-**All quality gates pass. All P1 issues resolved (except #1045 — infrastructure blocker). Repository is exceptionally healthy.** ✅
+**All quality gates pass. All P1 issues resolved (except #1045 — infrastructure blocker). Repository is exceptionally healthy — 4 PRs merged, all 1,932 tests green, 0 vulnerabilities.** ✅
 
 ### Label Normalization Report (for next cycle with `issues: write`)
 
