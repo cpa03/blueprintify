@@ -201,38 +201,71 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
       {/* Keyboard shortcut discovery hints — helps users unlock power-user
           workflows without having to know about the `?` shortcuts modal.
           Shown as subtle, non-intrusive kbd badges at the bottom of the
-          empty state, following the same glass-card pattern used elsewhere. */}
-      <motion.div
-        className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs text-dark-500"
-        variants={fadeInUp}
-      >
-        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-dark-800/50 border border-dark-700/50">
-          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-            ?
-          </kbd>
-          <span>Keyboard shortcuts</span>
-        </span>
-        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-dark-800/50 border border-dark-700/50">
-          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-            {modifierKey}
-          </kbd>
-          <span className="text-dark-500">+</span>
-          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-            ↵
-          </kbd>
-          <span>Submit wizard</span>
-        </span>
-        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-dark-800/50 border border-dark-700/50">
-          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-            {altKey}
-          </kbd>
-          <span className="text-dark-500">+</span>
-          <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-            →
-          </kbd>
-          <span>Next step</span>
-        </span>
-      </motion.div>
+          empty state, following the same glass-card pattern used elsewhere.
+          Each badge cascades in with a staggered delay so the hints reveal
+          sequentially rather than all at once, giving a more polished
+          discovery moment that matches the app's staggered entrance pattern. */}
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs text-dark-500">
+        {(
+          [
+            {
+              key: "kb",
+              content: (
+                <>
+                  <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
+                    ?
+                  </kbd>
+                  <span>Keyboard shortcuts</span>
+                </>
+              ),
+            },
+            {
+              key: "submit",
+              content: (
+                <>
+                  <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
+                    {modifierKey}
+                  </kbd>
+                  <span className="text-dark-500">+</span>
+                  <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
+                    ↵
+                  </kbd>
+                  <span>Submit wizard</span>
+                </>
+              ),
+            },
+            {
+              key: "next",
+              content: (
+                <>
+                  <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
+                    {altKey}
+                  </kbd>
+                  <span className="text-dark-500">+</span>
+                  <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
+                    →
+                  </kbd>
+                  <span>Next step</span>
+                </>
+              ),
+            },
+          ] as const
+        ).map((item, index) => (
+          <motion.span
+            key={item.key}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              delay: index * ANIMATION.STAGGER,
+              duration: ANIMATION.SUBTLE_MOVE,
+              ease: EASING.easeOut,
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-dark-800/50 border border-dark-700/50"
+          >
+            {item.content}
+          </motion.span>
+        ))}
+      </div>
     </motion.div>
   );
 });
