@@ -23,7 +23,7 @@
 
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { useState, useCallback, useMemo, memo } from "react";
+import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared/schema";
 import {
   ANIMATION_DIRECTIONS,
@@ -228,6 +228,18 @@ export const StepStack = memo(function StepStack({
   }, [categories]);
 
   const canProceed = techStack.length >= MIN_REQUIREMENTS.TECH_STACK;
+  const prevCanProceedRef = useRef(canProceed);
+  const [showMilestone, setShowMilestone] = useState(false);
+
+  useEffect(() => {
+    if (canProceed && !prevCanProceedRef.current) {
+      setShowMilestone(true);
+      const timer = setTimeout(() => setShowMilestone(false), ANIMATION_MS.CHIP_SELECT_FEEDBACK);
+      prevCanProceedRef.current = true;
+      return () => clearTimeout(timer);
+    }
+    prevCanProceedRef.current = canProceed;
+  }, [canProceed]);
 
   const handleNextClick = () => {
     if (canProceed) {
@@ -294,11 +306,13 @@ export const StepStack = memo(function StepStack({
                 transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
               />
             </div>
-            <span
+            <motion.span
+              animate={showMilestone ? { scale: [1, 1.35, 1] } : { scale: 1 }}
+              transition={{ type: FRAMER_TYPE.SPRING, stiffness: 500, damping: 12, mass: 0.5 }}
               className={`tabular-nums ${canProceed ? "text-accent-emerald" : "text-dark-400"}`}
             >
               {techStack.length}/{minRequired}
-            </span>
+            </motion.span>
           </div>
         </div>
         <p className="text-dark-400">{UI_CONTENT.WIZARD.STEP_STACK.SUBTITLE}</p>
