@@ -12,7 +12,6 @@ import {
   CONTEXT_KEYS,
   AUTH_DEFAULTS,
   STORAGE_FALLBACK_MESSAGES,
-  StorageClearRequestSchema,
   StorageReportRequestSchema,
 } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
@@ -161,15 +160,17 @@ app.post(
 
 /**
  * Clear all stored data
- * DELETE /storage/clear
+ * DELETE /storage/clear?confirm=true
+ *
+ * Uses a query parameter for confirmation instead of a JSON body
+ * to comply with REST conventions (DELETE requests should not have bodies).
  */
 app.delete(
   "/clear",
   rateLimit(rateLimitConfigs.strict),
   authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
-  validateJson(StorageClearRequestSchema),
   async (c) => {
-    const { confirm } = c.get(CONTEXT_KEYS.VALIDATED_DATA);
+    const confirm = c.req.query("confirm") === "true";
 
     if (!confirm) {
       return c.json(

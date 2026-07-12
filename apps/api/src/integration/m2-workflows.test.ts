@@ -241,12 +241,8 @@ describe("Integration: End-to-End M2 Workflows", () => {
       expect(quotaData.data).toHaveProperty("total");
 
       const clearRes = await app.request(
-        `${ROUTE_PATHS.STORAGE}/clear`,
-        {
-          method: HTTP_METHODS.DELETE,
-          headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
-          body: JSON.stringify({ confirm: true }),
-        },
+        `${ROUTE_PATHS.STORAGE}/clear?confirm=true`,
+        { method: HTTP_METHODS.DELETE },
         MOCK_ENV
       );
 
