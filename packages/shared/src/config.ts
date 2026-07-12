@@ -1523,6 +1523,8 @@ export const SHORTCUT_LABELS = {
   NEW_PROJECT: "Ctrl+N",
   /** Keyboard shortcut modal trigger display */
   SHORTCUTS_MODAL: "?",
+  /** Dismiss all toast notifications keyboard shortcut display */
+  TOAST_DISMISS_ALL: "Shift+Esc",
 } as const;
 
 /**

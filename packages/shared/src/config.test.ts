@@ -2049,11 +2049,12 @@ describe("SHORTCUT_LABELS", () => {
     expect(SHORTCUT_LABELS.EXPORT).toBe("Ctrl+Shift+E");
     expect(SHORTCUT_LABELS.NEW_PROJECT).toBe("Ctrl+N");
     expect(SHORTCUT_LABELS.SHORTCUTS_MODAL).toBe("?");
+    expect(SHORTCUT_LABELS.TOAST_DISMISS_ALL).toBe("Shift+Esc");
   });
 
-  it("should have 4 shortcut labels", () => {
+  it("should have 5 shortcut labels", () => {
     const values = Object.values(SHORTCUT_LABELS);
-    expect(values.length).toBe(4);
+    expect(values.length).toBe(5);
   });
 
   it("should have all string values with length > 0", () => {
