@@ -36,9 +36,9 @@ jobs:
           IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
           opencode run \
-            "Baca docs/blueprint.md, docs/roadmap.md, docs/bug.md, docs/feature.md.
+            "Baca docs/blueprint.md, docs/roadmap.md, docs/bugs.md, docs/features.md.
              Evaluasi prioritas.
-             Update docs/task.md (OPEN / PRIORITY / ROLE / SCOPE).
+             Update docs/active-tasks.md (OPEN / PRIORITY / ROLE / SCOPE).
              Jangan coding." \
             --agent architect \
             --model opencode/deepseek-v4-flash-free \
@@ -64,7 +64,7 @@ jobs:
           IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
           opencode run \
-            "Baca docs/task.md.
+            "Baca docs/active-tasks.md.
              Ambil task OPEN prioritas HIGH/MEDIUM.
              Buat file docs/dispatch.json berisi role unik.
              Jangan coding." \
@@ -112,7 +112,7 @@ jobs:
           IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
           opencode run \
-            "Ambil SATU task OPEN dengan Role=${{ matrix.role }} dari docs/task.md.
+            "Ambil SATU task OPEN dengan Role=${{ matrix.role }} dari docs/active-tasks.md.
              Kerjakan sesuai scope.
              Buat branch + PR.
              Update task ke DONE.
@@ -260,7 +260,7 @@ jobs:
         run: |
           opencode run \
             "Scan log, PR, issue.
-             Catat bug baru ke docs/bug.md.
+             Catat bug baru ke docs/bugs.md.
              Jangan fix." \
             --agent reliability-engineer \
             --model opencode/deepseek-v4-flash-free \
