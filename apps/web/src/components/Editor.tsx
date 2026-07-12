@@ -505,6 +505,30 @@ function EditorComponent(): JSX.Element {
                             : "w-full"
                         )}
                       >
+                        {/* Pane label — only visible in split mode to identify each pane */}
+                        {viewMode === VIEW_MODES.SPLIT && (
+                          <div
+                            className="absolute top-2 left-3 z-10 flex items-center gap-1.5 px-2 py-1 rounded-md bg-dark-800/80 backdrop-blur-sm border border-dark-700/50 pointer-events-none select-none"
+                            aria-hidden="true"
+                          >
+                            <svg
+                              className="w-3.5 h-3.5 text-primary-400"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                              />
+                            </svg>
+                            <span className="text-2xs font-medium text-dark-400 uppercase tracking-wider">
+                              Editor
+                            </span>
+                          </div>
+                        )}
                         <AnimatePresence mode="wait">
                           {isGenerating && !currentContent ? (
                             <motion.div
@@ -585,6 +609,36 @@ function EditorComponent(): JSX.Element {
                           viewMode === VIEW_MODES.SPLIT ? "w-full lg:w-1/2" : "w-full"
                         )}
                       >
+                        {/* Pane label — only visible in split mode to identify each pane */}
+                        {viewMode === VIEW_MODES.SPLIT && (
+                          <div
+                            className="absolute top-2 left-3 z-10 flex items-center gap-1.5 px-2 py-1 rounded-md bg-dark-800/80 backdrop-blur-sm border border-dark-700/50 pointer-events-none select-none"
+                            aria-hidden="true"
+                          >
+                            <svg
+                              className="w-3.5 h-3.5 text-accent-cyan"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                              />
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                              />
+                            </svg>
+                            <span className="text-2xs font-medium text-dark-400 uppercase tracking-wider">
+                              Preview
+                            </span>
+                          </div>
+                        )}
                         <div
                           className="absolute top-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
                           style={{
