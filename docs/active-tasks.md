@@ -2,6 +2,25 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 241 — **Full repository audit, 7 post-Cycle-240 commits indexed, BUG-013 still fixed (0 vulns), test count unchanged 1,940, doc refresh, quality verification** ✅
+
+### Task: Full repository audit — **7 post-Cycle-240 commits indexed** (docs(bugs) BugFixer ULW Cycle Jul 13 2026 Run 3 — full audit clean `18f5b897`; docs(audits) BroCula Cycle 227 — Jul 13 Run 2 `90eb9f14`; docs(flexy) final comprehensive verification — hardcoded-value elimination mission complete (Iteration 126) `b5a180f2`; docs(flexy) final comprehensive verification — hardcoded-value elimination complete `18c0e213`; docs(audits) BroCula Cycle 227 — Jul 13 Run 2 `993ffae8`; fix: merge conflict in docs/bugs.md — keep both BugFixer Run 3 and RepoKeeper Cycle 240 entries `428794fe`; docs(bugs) BugFixer ULW Cycle Jul 13 2026 Run 3 — full audit clean `a935c365`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **test count unchanged** **1,940** (789 web + 443 API + 708 shared); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,940/1,940** ✅ — 789 web + 443 API + 708 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 241 full repository audit — index 7 post-Cycle-240 commits, verify BUG-013 still fixed, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks ✅
+  - [x] **7 post-Cycle-240 commits indexed**: BugFixer ULW Run 3, BroCula Cycle 227 Run 2, flexy final verification, merge conflict fix ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns (no re-bump) ✅
+  - [x] **Test count unchanged**: 1,940 (789 web + 443 API + 708 shared) ✅
+  - [x] **findings.md updated**: Cycle 241 entry added at top ✅
+  - [x] **active-tasks.md updated**: Cycle 241 entry added at top ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 241 ✅
+  - [x] **CHANGELOG.md updated**: Cycle 241 entry + 7 individual commits added ✅
+  - [x] **bugs.md updated**: Cycle 241 entry added ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,940/1,940 ✅ format ✅ secrets ✅ npm audit 0 vulns ✅
+
 ## ✅ RepoKeeper Cycle 240 — **Full repository audit, 4 post-Cycle-239 commits indexed, BUG-013 still fixed (0 vulns), test count unchanged 1,940, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — **4 post-Cycle-239 commits indexed** (feat(web) make keyboard shortcut hint glow persistent until first use `eecfc22e`; refactor(flexy) eliminate hardcoded SVG gradient colors in lightning icon and saved glow magic number (Iteration 125) `98782b53`; feat(brocula) Jul 13 browser console + Lighthouse audit — 0 errors LH 100-100-100-100 `0f8d67e2`; docs(bugs) BugFixer ULW Cycle Jul 13 2026 Run 2 — full audit clean `63bba48b`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **test count unchanged** **1,940** (789 web + 443 API + 708 shared); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,940/1,940** ✅ — 789 web + 443 API + 708 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
