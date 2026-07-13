@@ -4,6 +4,42 @@
 >
 > **Note 2026-07-12**: PR #2507 resolved BUG-014 (stale doc refs) and BUG-017 (hardcoded node-version) — all workflow files now use `node-version-file: ".node-version"` and agent identity strings are corrected. Token still lacks `workflows: write` for direct pushes but squash-merge via PR works.
 
+## Cycle 238 (2026-07-13 — RepoKeeper: full repository audit, 5 post-Cycle-237 commits indexed, BroCula ref drift fix, README date drift fix, doc refresh, quality verification ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files — none found. No `@ts-expect-error`/`@ts-ignore`/`as any`. No empty catch blocks. No TODO/FIXME/HACK in source. No merge conflict artifacts. No `.patch` files. No empty directories.
+2. **[5 Post-Cycle-237 Commits Indexed]** — fix(ci) add npm audit to check script for dependency vulnerability scanning (`b9b8cee7`); docs(audits) BroCula Cycle 236 — Jul 12 Run 4 (`cc1cfacf`); fix(ci) add pre-push validation hook for test, audit, and secrets checks (`f9aacda0`); fix(security) extend prompt injection validation to techStack arrays-of-objects (`63131465`); docs(audits) BroCula Cycle 237 — Jul 13 Run 1 (`53d9ad56`).
+3. **[BroCula Ref Drift Fix]** — knowledge-review.md updated: Jul 12 Run 3 → Jul 13 Run 1 — latest `brocula-hunt-2026-07-13-run1.md` / LH **99-100-100-100**, clean console.
+4. **[README BroCula Date Drift Fix]** — `(Jun 17–Jul 12)` → `(Jun 17–Jul 13)`.
+5. **[Doc Refresh]** — findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md, audits/README.md updated for Cycle 238.
+6. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **1,932/1,932** ✅ (789 web + 443 API + 700 shared). format ✅ secrets ✅ npm audit **0 vulns** ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **1,932/1,932** (789 web + 443 API + 700 shared) |
+| Format (Prettier) | ✅ All files formatted |
+| Secrets Scan | ✅ 0 secrets detected |
+| npm audit | ✅ **0 vulnerabilities** |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** in source |
+| `as any` | ✅ **0** in source |
+| Empty catch blocks | ✅ **0** in source |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| Merge conflict artifacts | ✅ **0** |
+| `.patch` files | ✅ **0** |
+| Empty directories | ✅ **0** |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 1,932 tests green, 0 vulnerabilities, 0 lint/type errors. 5 post-Cycle-237 commits indexed. BroCula ref and README date drift corrected.** ✅
+
+---
+
 ## Cycle 237 (2026-07-12 — RepoKeeper: full repository audit, 3 post-Cycle-236 commits indexed, doc refresh, quality verification ✅)
 
 ### Actions Taken
