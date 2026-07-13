@@ -463,6 +463,24 @@ function ToastContainerComponent(): JSX.Element {
   const shouldReduceMotion = useReducedMotion();
   const [dismissAnnouncement, setDismissAnnouncement] = useState("");
 
+  // Wrapped remove function that also announces the dismissal to screen readers.
+  // Without this, screen reader users hear the toast content when it appears
+  // (via role="alert"/"status") but get no feedback when it's dismissed —
+  // the removal from the DOM is silent. This fills that gap so SR users
+  // always know the notification was explicitly dismissed.
+  const handleRemoveToast = useCallback(
+    (id: string) => {
+      const toast = toasts.find((t) => t.id === id);
+      if (toast) {
+        setDismissAnnouncement(
+          ACCESSIBILITY_LABELS.TOAST_ANNOUNCER.DISMISSED_SINGLE(toast.message)
+        );
+      }
+      removeToast(id);
+    },
+    [removeToast, toasts]
+  );
+
   // Dismiss the most recent toast (Escape) or all toasts (Shift+Escape).
   useEffect(() => {
     if (toasts.length === 0) return;
@@ -477,7 +495,7 @@ function ToastContainerComponent(): JSX.Element {
         } else {
           const lastToast = toasts[toasts.length - 1];
           if (lastToast) {
-            removeToast(lastToast.id);
+            handleRemoveToast(lastToast.id);
           }
         }
       }
@@ -485,7 +503,7 @@ function ToastContainerComponent(): JSX.Element {
 
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [toasts, removeToast, clearAll]);
+  }, [toasts, removeToast, clearAll, handleRemoveToast]);
 
   const handleClearAll = useCallback(() => {
     const count = toasts.length;
@@ -522,7 +540,12 @@ function ToastContainerComponent(): JSX.Element {
     <motion.div className={TOAST_SPRING.CONTAINER_CLASSES} {...containerAnimation}>
       <AnimatePresence mode="popLayout">
         {toasts.map((toast, index) => (
-          <ToastItem key={toast.id} toast={toast} onRemove={removeToast} staggerIndex={index} />
+          <ToastItem
+            key={toast.id}
+            toast={toast}
+            onRemove={handleRemoveToast}
+            staggerIndex={index}
+          />
         ))}
       </AnimatePresence>
 
