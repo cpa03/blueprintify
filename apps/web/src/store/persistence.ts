@@ -76,7 +76,7 @@ export function createPersistedStore<T, S>(
   ) => Promise<void>;
   saveState: (get: () => S) => Promise<void>;
   debouncedSave: (get: () => S) => void;
-  flushSave: () => void;
+  flushSave: (get: () => S) => Promise<void>;
   cancelSave: () => void;
 } {
   const { storage, debounceDelay, getPersistData } = options;
@@ -117,10 +117,11 @@ export function createPersistedStore<T, S>(
     }, debounceDelay);
   };
 
-  const flushSave = (): void => {
+  const flushSave = async (get: () => S): Promise<void> => {
     if (timeoutId) {
       clearTimeout(timeoutId);
       timeoutId = null;
+      await saveState(get);
     }
   };
 

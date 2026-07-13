@@ -193,7 +193,7 @@ export const useEditorStore = create<EditorStore>()((set, get) => {
     },
 
     flushStorage: () => {
-      flushSave();
+      void flushSave(get);
     },
   };
 });

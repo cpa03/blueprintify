@@ -194,7 +194,7 @@ describe("createPersistedStore", () => {
       vi.restoreAllMocks();
     });
 
-    it("clears pending debounced save", () => {
+    it("saves pending data immediately and clears debounce timer", async () => {
       const { storage, setFn } = createMockStorage();
 
       const options = createTestOptions(storage);
@@ -209,10 +209,30 @@ describe("createPersistedStore", () => {
       debouncedSave(mockGet);
       expect(setFn).not.toHaveBeenCalled();
 
-      flushSave();
+      await flushSave(mockGet);
 
+      // flushSave should save immediately (only persist data fields)
+      expect(setFn).toHaveBeenCalledWith({ name: "Flush Test", count: 99 });
+
+      // Advancing timers should not trigger another save
+      setFn.mockClear();
       vi.advanceTimersByTime(200);
+      expect(setFn).not.toHaveBeenCalled();
+    });
 
+    it("does nothing when no debounced save is pending", async () => {
+      const { storage, setFn } = createMockStorage();
+
+      const options = createTestOptions(storage);
+      const { flushSave } = createPersistedStore(options);
+
+      const mockGet = vi.fn<() => TestStoreState>(() => ({
+        name: "No-op",
+        count: 0,
+        other: "",
+      }));
+
+      await flushSave(mockGet);
       expect(setFn).not.toHaveBeenCalled();
     });
   });
