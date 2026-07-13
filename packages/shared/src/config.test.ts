@@ -29,6 +29,8 @@ import {
   HTTP_METHODS,
   HTTP_HEADER_NAMES,
   VIEW_MODES,
+  VIEW_MODE_LABELS,
+  PANE_LABELS,
   EDITOR_FILENAMES,
   EXPORT_FILENAMES,
   TOOLTIP_LABELS,
@@ -1972,6 +1974,59 @@ describe("VIEW_MODES", () => {
 
   it("should have unique values", () => {
     const values = Object.values(VIEW_MODES);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("VIEW_MODE_LABELS", () => {
+  it("should have all expected view mode labels", () => {
+    expect(VIEW_MODE_LABELS.EDIT).toBe("Edit");
+    expect(VIEW_MODE_LABELS.SPLIT).toBe("Split");
+    expect(VIEW_MODE_LABELS.PREVIEW).toBe("Preview");
+  });
+
+  it("should have 3 view mode labels", () => {
+    const values = Object.values(VIEW_MODE_LABELS);
+    expect(values.length).toBe(3);
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(VIEW_MODE_LABELS);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(VIEW_MODE_LABELS);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
+  });
+});
+
+describe("PANE_LABELS", () => {
+  it("should have all expected pane labels", () => {
+    expect(PANE_LABELS.EDITOR).toBe("Editor");
+    expect(PANE_LABELS.PREVIEW).toBe("Preview");
+  });
+
+  it("should have 2 pane labels", () => {
+    const values = Object.values(PANE_LABELS);
+    expect(values.length).toBe(2);
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(PANE_LABELS);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(PANE_LABELS);
     const uniqueValues = new Set(values);
     expect(uniqueValues.size).toBe(values.length);
   });
