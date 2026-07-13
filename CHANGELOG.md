@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- chore(repokeeper): Cycle 238 — full repository audit, **5 post-Cycle-237 commits indexed** (fix(ci) add npm audit to check script for dependency vulnerability scanning `b9b8cee7`; docs(audits) BroCula Cycle 236 — Jul 12 Run 4 `cc1cfacf`; fix(ci) add pre-push validation hook for test, audit, and secrets checks `f9aacda0`; fix(security) extend prompt injection validation to techStack arrays-of-objects `63131465` (#2539); docs(audits) BroCula Cycle 237 — Jul 13 Run 1 `53d9ad56`), **BroCula ref drift fix** (Jul 12 Run 3 → Jul 13 Run 1 — LH **99-100-100-100** 🏆, clean console), **README BroCula date drift fix** (Jul 12→Jul 13), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,932/1,932** ✅ — 789 web + 443 API + 700 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
+- fix(ci): add npm audit to check script for dependency vulnerability scanning (`b9b8cee7`)
+- docs(audits): BroCula Cycle 236 — Jul 12 Run 4 — Clean console ✅, LH **100-100-100-100** (prod), **0 errors/warnings**, all quality gates pass (`cc1cfacf`)
+- fix(ci): add pre-push validation hook for test, audit, and secrets checks (`f9aacda0`)
+- fix(security): extend prompt injection validation to techStack arrays-of-objects (#2539) (`63131465`)
+- docs(audits): BroCula Cycle 237 — Jul 13 Run 1 — Clean console ✅, LH **99-100-100-100** (prod), **0 errors/warnings**, all quality gates pass (`53d9ad56`)
 - chore(repokeeper): Cycle 237 — full repository audit, **3 post-Cycle-236 commits indexed** (refactor(flexy) replace hardcoded animationDelay with ENTRANCE_STAGGER.SHORT_DELAY_S constant Iteration 123; feat(step-generating) auto-focus 'Try Again' button on generation error; docs(findings) Cycle 236 — ULW Loop audit, P1 issue verification, label normalization analysis), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,932/1,932** ✅ — 789 web + 443 API + 700 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
 - refactor(flexy): replace hardcoded animationDelay with ENTRANCE_STAGGER.SHORT_DELAY_S constant (Iteration 123)
 - feat(step-generating): auto-focus 'Try Again' button on generation error
