@@ -94,6 +94,7 @@ function App(): JSX.Element {
   const [showEditor, setShowEditor] = useState(hasContent || isGenerating);
   const [editorExiting, setEditorExiting] = useState(false);
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
+  const [shortcutsDiscovered, setShortcutsDiscovered] = useState(false);
   const showShortcutsModalRef = useRef(showShortcutsModal);
   // Keep ref in sync so the global keydown handler reads the latest state
   // without needing showShortcutsModal in its dependency array
@@ -200,7 +201,10 @@ function App(): JSX.Element {
     });
   }, []);
   const handleShowEditor = useCallback(() => setShowEditor(true), []);
-  const handleShowShortcuts = useCallback(() => setShowShortcutsModal(true), []);
+  const handleShowShortcuts = useCallback(() => {
+    setShortcutsDiscovered(true);
+    setShowShortcutsModal(true);
+  }, []);
   const handleHideShortcuts = useCallback(() => setShowShortcutsModal(false), []);
   const handleCelebrationComplete = useCallback(() => setShowCelebration(false), []);
 
@@ -273,7 +277,7 @@ function App(): JSX.Element {
       <div className="fixed inset-0 pointer-events-none z-0 ambient-glow" aria-hidden="true" />
 
       <SkipLink />
-      <Header onShowShortcuts={handleShowShortcuts} />
+      <Header onShowShortcuts={handleShowShortcuts} shortcutsDiscovered={shortcutsDiscovered} />
 
       {/* Offline banner - persistent connectivity status */}
       <OfflineBanner />

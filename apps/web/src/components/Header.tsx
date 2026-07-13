@@ -16,8 +16,8 @@
  * @module components/Header
  */
 
-import { memo, useState, useEffect, useRef } from "react";
-import { UI_TIMING, SHORTCUT_LABELS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared/config";
+import { memo, useState, useEffect } from "react";
+import { SHORTCUT_LABELS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared/config";
 import {
   UI_CONTENT,
   EXTERNAL_URLS,
@@ -33,6 +33,10 @@ import { KeyboardShortcutTooltip } from "./SmartTooltip";
 interface HeaderProps {
   /** Callback fired when keyboard shortcuts button is clicked. */
   onShowShortcuts?: () => void;
+  /** When false, the keyboard shortcut button shows an attention glow to
+   *  help first-time users discover it. Once the user opens the shortcuts
+   *  modal once, this becomes true and the glow stops permanently. */
+  shortcutsDiscovered?: boolean;
 }
 
 /**
@@ -48,10 +52,11 @@ interface HeaderProps {
  * // With shortcuts button
  * <Header onShowShortcuts={() => setShowShortcuts(true)} />
  */
-function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
+function HeaderComponent({
+  onShowShortcuts,
+  shortcutsDiscovered = false,
+}: HeaderProps): JSX.Element {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [showDiscoveryHint, setShowDiscoveryHint] = useState(true);
-  const hintShownRef = useRef(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,18 +67,6 @@ function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // One-shot discovery hint for the keyboard shortcuts button — a subtle glow
-  // pulse during the first few seconds after mount that helps users discover
-  // the keyboard shortcut modal. Only plays once per page load session.
-  useEffect(() => {
-    if (onShowShortcuts && !hintShownRef.current) {
-      hintShownRef.current = true;
-      const timer = setTimeout(() => setShowDiscoveryHint(false), UI_TIMING.DISCOVERY_HINT_MS);
-      return () => clearTimeout(timer);
-    }
-    return;
-  }, [onShowShortcuts]);
 
   return (
     <header
@@ -119,7 +112,7 @@ function HeaderComponent({ onShowShortcuts }: HeaderProps): JSX.Element {
             >
               <RippleButton
                 onClick={onShowShortcuts}
-                className={`btn-ghost flex items-center justify-center w-10 h-10 ${showDiscoveryHint ? "attention-glow" : ""}`}
+                className={`btn-ghost flex items-center justify-center w-10 h-10 ${!shortcutsDiscovered ? "attention-glow" : ""}`}
                 ariaLabel={ACCESSIBILITY_LABELS.HEADER.KEYBOARD_SHORTCUTS}
                 title={ACCESSIBILITY_LABELS.HEADER.KEYBOARD_SHORTCUTS}
                 aria-keyshortcuts={SHORTCUT_LABELS.SHORTCUTS_MODAL}
