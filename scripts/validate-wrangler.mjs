@@ -35,12 +35,12 @@ const MIN_NODE_MAJOR = 22;
 
 /** Placeholder patterns that MUST be replaced before deployment. */
 const PLACEHOLDER_PATTERNS = [
-  { pattern: /cache_kv_namespace_id/, label: "KV namespace ID (dev)" },
-  { pattern: /production_cache_kv_id/, label: "KV namespace ID (production)" },
-  { pattern: /staging_cache_kv_id/, label: "KV namespace ID (staging)" },
-  { pattern: /local_database_id/, label: "D1 database ID (dev)" },
-  { pattern: /production_database_id/, label: "D1 database ID (production)" },
-  { pattern: /staging_database_id/, label: "D1 database ID (staging)" },
+  { pattern: /cache_kv_namespace_id/, label: "KV namespace ID (dev)", createCmd: "wrangler kv:namespace create blueprint-cache" },
+  { pattern: /production_cache_kv_id/, label: "KV namespace ID (production)", createCmd: "wrangler kv:namespace create blueprint-cache --env production" },
+  { pattern: /staging_cache_kv_id/, label: "KV namespace ID (staging)", createCmd: "wrangler kv:namespace create blueprint-cache --env staging" },
+  { pattern: /local_database_id/, label: "D1 database ID (dev)", createCmd: "wrangler d1 create blueprint-db" },
+  { pattern: /production_database_id/, label: "D1 database ID (production)", createCmd: "wrangler d1 create blueprint-db-prod --env production" },
+  { pattern: /staging_database_id/, label: "D1 database ID (staging)", createCmd: "wrangler d1 create blueprint-db-staging --env staging" },
 ];
 
 // ---- Helpers ----
@@ -110,14 +110,14 @@ function checkPlaceholderIds() {
 
   const content = fs.readFileSync(WRANGLER_PATH, "utf-8");
   const lines = content.split("\n");
-  /** @type {Array<{ line: number; label: string }>} */
+  /** @type {Array<{ line: number; label: string; createCmd?: string }>} */
   const found = [];
 
   for (let i = 0; i < lines.length; i++) {
     const lineNum = i + 1;
-    for (const { pattern, label } of PLACEHOLDER_PATTERNS) {
+    for (const { pattern, label, createCmd } of PLACEHOLDER_PATTERNS) {
       if (pattern.test(lines[i])) {
-        found.push({ line: lineNum, label });
+        found.push({ line: lineNum, label, createCmd });
       }
     }
   }
@@ -132,14 +132,19 @@ function checkPlaceholderIds() {
   const results = [
     checkResult("fail", "Placeholder IDs", `${found.length} placeholder(s) found — deployment will fail`),
   ];
-  for (const { line, label } of found) {
+  const shownCommands = new Set();
+  for (const { line, label, createCmd } of found) {
     results.push(checkResult("fail", "Placeholder IDs", `  Line ${line}: ${label}`));
+    if (createCmd && !shownCommands.has(createCmd)) {
+      shownCommands.add(createCmd);
+      results.push(checkResult("warn", "Placeholder IDs", `    → Run: ${createCmd} then copy the returned id`));
+    }
   }
   results.push(
     checkResult(
       "warn",
       "Placeholder IDs",
-      "Run: wrangler kv:namespace create, wrangler d1 create, wrangler queue create per environment",
+      "After creating resources, update the id fields in wrangler.toml with the returned values",
     ),
   );
   return results;
