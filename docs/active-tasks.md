@@ -2,6 +2,25 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 238 — **Full repository audit, 5 post-Cycle-237 commits indexed, BroCula ref drift fix (Jul 12 Run 3→Jul 13 Run 1), README date drift fix (Jul 12→Jul 13), doc refresh, quality verification** ✅
+
+### Task: Full repository audit — **5 post-Cycle-237 commits indexed** (fix(ci) add npm audit to check script for dependency vulnerability scanning `b9b8cee7`; docs(audits) BroCula Cycle 236 — Jul 12 Run 4 `cc1cfacf`; fix(ci) add pre-push validation hook for test, audit, and secrets checks `f9aacda0`; fix(security) extend prompt injection validation to techStack arrays-of-objects `63131465` (#2539); docs(audits) BroCula Cycle 237 — Jul 13 Run 1 `53d9ad56`); **BroCula ref drift fix** (knowledge-review.md: Jul 12 Run 3 → Jul 13 Run 1 — latest `brocula-hunt-2026-07-13-run1.md` / LH **99-100-100-100** 🏆, clean console); **README BroCula date drift fix** (`(Jun 17–Jul 12)` → `(Jun 17–Jul 13)`); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,932/1,932** ✅ — 789 web + 443 API + 700 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 238 full repository audit — index 5 post-Cycle-237 commits, BroCula ref drift fix, README date drift fix, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks ✅
+  - [x] **5 post-Cycle-237 commits indexed**: fix(ci) npm audit scan, docs(audits) Jul 12 Run 4, fix(ci) pre-push hook, fix(security) prompt injection arrays-of-objects, docs(audits) Jul 13 Run 1 ✅
+  - [x] **BroCula ref drift fix**: knowledge-review.md updated — Jul 12 Run 3 → Jul 13 Run 1 (LH 99-100-100-100) ✅
+  - [x] **README BroCula date drift fix**: `(Jun 17–Jul 12)` → `(Jun 17–Jul 13)` ✅
+  - [x] **audits/README.md updated**: Jul 13 Run 1 added as **Latest** ✅
+  - [x] **findings.md updated**: Cycle 238 entry added at top ✅
+  - [x] **active-tasks.md updated**: Cycle 238 entry added at top ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 238 ✅
+  - [x] **CHANGELOG.md updated**: Cycle 238 entry + 5 individual commits added ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,932/1,932 ✅ format ✅ secrets ✅ npm audit 0 vulns ✅
+
 ## ✅ RepoKeeper Cycle 237 — **Full repository audit, 3 post-Cycle-236 commits indexed, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — **3 post-Cycle-236 commits indexed** (refactor(flexy) replace hardcoded animationDelay with ENTRANCE_STAGGER.SHORT_DELAY_S constant Iteration 123; feat(step-generating) auto-focus 'Try Again' button on generation error; docs(findings) Cycle 236 — ULW Loop audit, P1 issue verification, label normalization analysis); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,932/1,932** ✅ — 789 web + 443 API + 700 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
@@ -606,6 +625,6 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-07-11 (RepoKeeper Cycle 228)  
+**Last Updated**: 2026-07-13 (RepoKeeper Cycle 238)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
-[x] error [npm run check] pass with 755 web + 443 API + 692 shared tests. All pass, but recurring bugs remain in workflows.
+[x] error [npm run check] pass with 789 web + 443 API + 700 shared tests **(1,932 total)**. All quality gates pass. ✅

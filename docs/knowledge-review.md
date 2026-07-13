@@ -12,14 +12,14 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-12 (RepoKeeper Cycle 237)
+**Last Review**: 2026-07-13 (RepoKeeper Cycle 238)
 **Status**: ✅ BUG-014/BUG-017 FIXED on main — all workflows clean
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state ✅
 - **BUG-014/BUG-017 — CONFIRMED FIXED on main**: zero stale doc refs (`docs/bug.md`/`docs/feature.md`) in CI workflows. All workflows use `node-version-file: ".node-version"` (zero hardcoded `node-version:`). PR #2507 resolved both permanently. ✅
-- **README BroCula description verified**: `(Jun 17–Jul 12)` — latest: `docs/audits/brocula-hunt-2026-07-12-run3.md` (BroCula Jul 12 Run 3 / **1,932 tests** ✅ — 789 web + 443 API + 700 shared, LH **99-100-100-100** 🏆, clean console)
+- **README BroCula description verified**: `(Jun 17–Jul 13)` — latest: `docs/audits/brocula-hunt-2026-07-13-run1.md` (BroCula Jul 13 Run 1 / **1,932 tests** ✅ — 789 web + 443 API + 700 shared, LH **99-100-100-100** 🏆, clean console)
 - **Typecheck/Lint/Build**: All clean (0 errors, 0 warnings)
 - **Tests**: **1,932/1,932 passing** ✅ (789 web + 443 API + 700 shared)
 - **Format**: All Prettier-formatted ✅
@@ -27,6 +27,7 @@ As of cycle refresh:
 - **BUG-014/BUG-017**: ✅ **RESOLVED since Cycle 211** — stale doc refs and node-version hardcodes fixed on main.
 - **npm audit**: **0 vulnerabilities** ✅ (BUG-013 resolved).
 - **No tracked .patch files found on main after cleanup**: Recurring anti-pattern resolved since Cycle 194.
+- **Cycle 238 (RepoKeeper)**: Full repository audit — **5 post-Cycle-237 commits indexed** (fix(ci) add npm audit to check script for dependency vulnerability scanning `b9b8cee7`; docs(audits) BroCula Cycle 236 — Jul 12 Run 4 `cc1cfacf`; fix(ci) add pre-push validation hook for test, audit, and secrets checks `f9aacda0`; fix(security) extend prompt injection validation to techStack arrays-of-objects `63131465` (#2539); docs(audits) BroCula Cycle 237 — Jul 13 Run 1 `53d9ad56`), **BroCula ref drift fix** (Jul 12 Run 3 → Jul 13 Run 1 — LH **99-100-100-100** 🏆, clean console), **README BroCula date drift fix** (Jul 12→Jul 13), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,932/1,932** ✅ — 789 web + 443 API + 700 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
 - **Cycle 237 (RepoKeeper)**: Full repository audit — **3 post-Cycle-236 commits indexed** (refactor(flexy) replace hardcoded animationDelay with ENTRANCE_STAGGER.SHORT_DELAY_S constant Iteration 123; feat(step-generating) auto-focus 'Try Again' button on generation error; docs(findings) Cycle 236 — ULW Loop audit, P1 issue verification, label normalization analysis), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,932/1,932** ✅ — 789 web + 443 API + 700 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
 - **Cycle 236 (RepoKeeper)**: Full repository audit — **2 post-Cycle-235 commits indexed** (refactor(flexy) centralize milestone pulse spring config Iteration 122, docs(audits) BroCula Jul 12 Run 3), **BroCula ref drift fix** (Run 1→Run 3 — latest `brocula-hunt-2026-07-12-run3.md` / LH **99-100-100-100** 🏆, clean console), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,932/1,932** ✅ — 789 web + 443 API + 700 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
 - **Cycle 235 (BugFixer)**: Full repository bug audit — **all quality gates pass** ✅ (typecheck ✅ lint ✅ build ✅ tests **1,932/1,932** ✅ — 789 web + 443 API + 700 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅). **BUG-014/BUG-017 CONFIRMED FIXED on main**. 0 `@ts-expect-error`/`@ts-ignore`/`as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. No new fixable bugs found. Doc refresh. PR merged.

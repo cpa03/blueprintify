@@ -38,6 +38,7 @@ import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
 import {
   EDITOR_FILENAMES,
   VIEW_MODES,
+  PANE_LABELS,
   UI_TIMING,
   SKELETON_DEFAULTS,
   KEYBOARD_EVENT_KEYS,
@@ -525,7 +526,7 @@ function EditorComponent(): JSX.Element {
                               />
                             </svg>
                             <span className="text-2xs font-medium text-dark-400 uppercase tracking-wider">
-                              Editor
+                              {PANE_LABELS.EDITOR}
                             </span>
                           </div>
                         )}
@@ -635,7 +636,7 @@ function EditorComponent(): JSX.Element {
                               />
                             </svg>
                             <span className="text-2xs font-medium text-dark-400 uppercase tracking-wider">
-                              Preview
+                              {PANE_LABELS.PREVIEW}
                             </span>
                           </div>
                         )}
