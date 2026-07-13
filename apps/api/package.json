@@ -16,14 +16,14 @@
   },
   "dependencies": {
     "@blueprint/shared": "1.0.0",
-    "hono": "4.12.27",
+    "hono": "4.12.30",
     "openai": "6.46.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "0.18.0",
-    "@cloudflare/workers-types": "5.20260706.1",
+    "@cloudflare/vitest-pool-workers": "0.18.4",
+    "@cloudflare/workers-types": "5.20260713.1",
     "vitest": "^4.1.10",
-    "wrangler": "4.107.0"
+    "wrangler": "4.110.0"
   }
 }
