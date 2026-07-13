@@ -68,6 +68,7 @@ export const StepInfo = memo(function StepInfo({
   direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepInfoProps): JSX.Element {
   const projectNameInputRef = useRef<HTMLInputElement>(null);
+  const targetAudienceInputRef = useRef<HTMLInputElement>(null);
   const [isShaking, setIsShaking] = useState(false);
   const [invalidField, setInvalidField] = useState<string | null>(null);
   const { textareaRef: descriptionRef } = useAutoResizeTextarea({
@@ -422,6 +423,7 @@ export const StepInfo = memo(function StepInfo({
           </div>
           <div className="relative">
             <motion.input
+              ref={targetAudienceInputRef}
               id="targetAudience"
               name="targetAudience"
               type="text"
@@ -447,7 +449,10 @@ export const StepInfo = memo(function StepInfo({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: ANIMATION.FAST }}
-                  onClick={() => setTargetAudience("")}
+                  onClick={() => {
+                    setTargetAudience("");
+                    targetAudienceInputRef.current?.focus({ preventScroll: true });
+                  }}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors p-1 rounded-md hover:bg-dark-700/50"
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_TARGET_AUDIENCE}
                   title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_TARGET_AUDIENCE}
@@ -488,7 +493,10 @@ export const StepInfo = memo(function StepInfo({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: ANIMATION.FAST }}
-                  onClick={() => setConstraints("")}
+                  onClick={() => {
+                    setConstraints("");
+                    constraintsRef.current?.focus({ preventScroll: true });
+                  }}
                   className="text-xs text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors flex items-center gap-1 px-2 py-1 rounded-md hover:bg-dark-700/50"
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_CONSTRAINTS}
                   title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_CONSTRAINTS}
