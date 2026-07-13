@@ -277,10 +277,23 @@ export const StepGenerating = memo(function StepGenerating({
                   repeat: Infinity,
                   ease: EASING.easeInOut,
                 }}
-                className="text-3xl"
+                className="flex items-center justify-center"
                 aria-hidden="true"
               >
-                🚀
+                <svg className="w-9 h-9" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="gen-lightning-grad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="#818cf8" />
+                      <stop offset="50%" stopColor="#8b5cf6" />
+                      <stop offset="100%" stopColor="#ec4899" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"
+                    fill="url(#gen-lightning-grad)"
+                    stroke="none"
+                  />
+                </svg>
               </motion.div>
             </div>
           </>
