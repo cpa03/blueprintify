@@ -1449,6 +1449,37 @@ export const VIEW_MODES = {
 } as const;
 
 /**
+ * View Mode Display Labels
+ * Centralized source of truth for human-readable view mode button labels.
+ * Flexy says: No hardcoded "Edit"/"Split"/"Preview" in toolbar buttons!
+ * Usage: import { VIEW_MODE_LABELS } from "@blueprint/shared";
+ *        <span>{VIEW_MODE_LABELS.EDIT}</span>
+ */
+export const VIEW_MODE_LABELS = {
+  /** Label for the edit/full-width editor view mode button */
+  EDIT: "Edit" as const,
+  /** Label for the split/side-by-side view mode button */
+  SPLIT: "Split" as const,
+  /** Label for the preview/full-width preview view mode button */
+  PREVIEW: "Preview" as const,
+} as const;
+
+/**
+ * Split-Pane Display Labels
+ * Centralized source of truth for labels identifying editor and preview panes
+ * in split view mode.
+ * Flexy says: No hardcoded "Editor"/"Preview" pane labels in Editor.tsx!
+ * Usage: import { PANE_LABELS } from "@blueprint/shared";
+ *        <span>{PANE_LABELS.EDITOR}</span>
+ */
+export const PANE_LABELS = {
+  /** Label for the code editing pane */
+  EDITOR: "Editor" as const,
+  /** Label for the markdown preview pane */
+  PREVIEW: "Preview" as const,
+} as const;
+
+/**
  * Editor File Display Names
  * Centralized source of truth for editor tab filenames shown in UI.
  * Flexy says: No hardcoded "blueprint.md" or "task.md" in editor components!
