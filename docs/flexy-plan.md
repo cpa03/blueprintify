@@ -2171,7 +2171,7 @@ After 118 iterations, all hardcoded values have been eliminated. This iteration 
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD | `feat/flexy-iteration-125-svg-colors-saved-glow` | refactor(flexy): eliminate hardcoded SVG gradient colors in lightning icon and saved glow magic number (Iteration 125) |
+| [#2554](https://github.com/cpa03/blueprintify/pull/2554) | `feat/flexy-iteration-125-svg-colors-saved-glow` | refactor(flexy): eliminate hardcoded SVG gradient colors in lightning icon and saved glow magic number (Iteration 125) (#2554) |
 
 ## Final Codebase Status (After Iteration 125)
 
