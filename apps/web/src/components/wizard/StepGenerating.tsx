@@ -283,9 +283,9 @@ export const StepGenerating = memo(function StepGenerating({
                 <svg className="w-9 h-9" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <defs>
                     <linearGradient id="gen-lightning-grad" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="#818cf8" />
-                      <stop offset="50%" stopColor="#8b5cf6" />
-                      <stop offset="100%" stopColor="#ec4899" />
+                      <stop offset="0%" stopColor={COLORS.primary[400]} />
+                      <stop offset="50%" stopColor={COLORS.accent.purple} />
+                      <stop offset="100%" stopColor={COLORS.accent.pink} />
                     </linearGradient>
                   </defs>
                   <path
