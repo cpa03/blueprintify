@@ -31,6 +31,7 @@ import { AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
   VIEW_MODES as SHARED_VIEW_MODES,
+  VIEW_MODE_LABELS,
   TOOLTIP_LABELS,
   TOOLTIP_DEFAULTS,
   SHORTCUT_LABELS,
@@ -183,19 +184,19 @@ function EditorToolbarComponent({
                 {mode === SHARED_VIEW_MODES.EDIT && (
                   <>
                     <Icon name="edit" className="w-4 h-4" />
-                    <span className="hidden sm:inline">Edit</span>
+                    <span className="hidden sm:inline">{VIEW_MODE_LABELS.EDIT}</span>
                   </>
                 )}
                 {mode === SHARED_VIEW_MODES.SPLIT && (
                   <>
                     <Icon name="columns" className="w-4 h-4" />
-                    <span className="hidden sm:inline">Split</span>
+                    <span className="hidden sm:inline">{VIEW_MODE_LABELS.SPLIT}</span>
                   </>
                 )}
                 {mode === SHARED_VIEW_MODES.PREVIEW && (
                   <>
                     <Icon name="eye" className="w-4 h-4" />
-                    <span className="hidden sm:inline">Preview</span>
+                    <span className="hidden sm:inline">{VIEW_MODE_LABELS.PREVIEW}</span>
                   </>
                 )}
               </span>
