@@ -2147,7 +2147,33 @@ After 118 iterations, all hardcoded values have been eliminated. This iteration 
 | ---- | ------ | ----- |
 | TBD (this PR) | `feat/flexy-iteration-123-animation-delay` | refactor(flexy): replace hardcoded animationDelay with ENTRANCE_STAGGER.SHORT_DELAY_S constant (Iteration 123) |
 
-## Final Codebase Status (After Iteration 123)
+### ✅ Flexy Iteration 125: Eliminate Hardcoded SVG Gradient Colors in Lightning Icon & Saved Glow Magic Number
+
+**Problem**: A `feat(web): replace rocket emoji with SVG lightning icon` commit (b60ae3a4) introduced hardcoded hex colors (`#818cf8`/`#8b5cf6`/`#ec4899`) in the StepGenerating SVG gradient. Additionally, `LastSavedIndicator.tsx` had a hardcoded `700` ms magic number for the saved glow pulse duration.
+
+**Fix**: Replaced hardcoded hex colors with `COLORS.primary[400]`/`COLORS.accent.purple`/`COLORS.accent.pink` references (matching existing pattern in EditorToolbar.tsx). Added `SAVED_GLOW_MS: 700` to shared `UI_TIMEOUTS` config and used it in LastSavedIndicator.
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config.ts` | Added `SAVED_GLOW_MS: 700` to `UI_TIMEOUTS` — single source of truth for saved indicator glow duration |
+| `packages/shared/src/config.test.ts` | Added 1 assertion for `SAVED_GLOW_MS`; updated count 16→17 |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced 3 hardcoded hex colors with `COLORS.primary[400]`/`COLORS.accent.purple`/`COLORS.accent.pink` (consistent with EditorToolbar.tsx pattern) |
+| `apps/web/src/components/LastSavedIndicator.tsx` | Added `UI_TIMEOUTS` import; replaced hardcoded `700` with `UI_TIMEOUTS.SAVED_GLOW_MS` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 789 web + 443 api + 708 shared = **1,940 tests passing** across 87 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2554](https://github.com/cpa03/blueprintify/pull/2554) | `feat/flexy-iteration-125-svg-colors-saved-glow` | refactor(flexy): eliminate hardcoded SVG gradient colors in lightning icon and saved glow magic number (Iteration 125) (#2554) |
+
+## Final Codebase Status (After Iteration 125)
 
 | Category | Status |
 |----------|--------|
@@ -2155,6 +2181,8 @@ After 118 iterations, all hardcoded values have been eliminated. This iteration 
 | Hardcoded CI node-version values | ❌ **None remaining** ✅ |
 | Inline spring configs in components | ❌ **None remaining** ✅ |
 | Inline animationDelay values | ❌ **None remaining** ✅ |
+| Inline SVG color values in components | ❌ **None remaining** ✅ |
+| Hardcoded magic number timeouts | ❌ **None remaining** ✅ |
 | Config centralization (@blueprint/shared) | ✅ 80+ config objects in single source of truth |
 | Animation constants extracted | ✅ 100% of framer-motion values in config |
 | Color tokens centralized | ✅ All colors via COLORS + hexToRgba |
@@ -2166,4 +2194,4 @@ After 118 iterations, all hardcoded values have been eliminated. This iteration 
 | Tailwind arbitrary values | ✅ Zero remaining in components |
 | z-index values | ✅ All in Z_INDEX config |
 | Log levels / OpenAI roles / Display symbols | ✅ All centralized via shared config |
-| Build/lint/test | ✅ **Clean across all workspaces — 1,932 tests passing** |
+| Build/lint/test | ✅ **Clean across all workspaces — 1,940 tests passing** |

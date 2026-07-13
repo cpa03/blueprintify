@@ -1783,6 +1783,8 @@ export const UI_TIMEOUTS = {
   OBSERVER_DISCONNECT: 10000,
   /** Duration to show CircularProgress celebration bounce animation before resetting (700ms) */
   CELEBRATION_DISMISS_MS: 700,
+  /** Duration to show saved indicator green glow pulse before clearing (700ms) */
+  SAVED_GLOW_MS: 700,
 } as const;
 
 /**
