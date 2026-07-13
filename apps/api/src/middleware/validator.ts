@@ -138,20 +138,18 @@ export const validatePromptInjection = (fields: PromptInjectionField[]): Middlew
       }
       if (Array.isArray(value)) {
         for (const element of value) {
-          if (typeof element === "string" && element.length > 0) {
-            const detected = detectInjectionPatterns(element);
-            if (detected.length > 0) {
-              return c.json(
-                createErrorJson(ErrorType.VALIDATION, ERROR_MESSAGES.VALIDATION, {
-                  code: ERROR_CODES.VALIDATION_ERROR,
-                  details: {
-                    field: field.path,
-                    message: `Input in '${field.label}' contains potentially unsafe content. Please remove any instructions directed at the AI system and try again.`,
-                  },
-                }),
-                HTTP_STATUS.BAD_REQUEST
-              );
-            }
+          const injectionResult = checkValueForInjection(element);
+          if (injectionResult) {
+            return c.json(
+              createErrorJson(ErrorType.VALIDATION, ERROR_MESSAGES.VALIDATION, {
+                code: ERROR_CODES.VALIDATION_ERROR,
+                details: {
+                  field: field.path,
+                  message: `Input in '${field.label}' contains potentially unsafe content. Please remove any instructions directed at the AI system and try again.`,
+                },
+              }),
+              HTTP_STATUS.BAD_REQUEST
+            );
           }
         }
       }
@@ -168,4 +166,26 @@ function getNestedValue(obj: Record<string, unknown>, path: string): unknown {
     }
     return undefined;
   }, obj);
+}
+
+/**
+ * Checks a value for prompt injection patterns.
+ * Handles strings directly, and recursively checks all string
+ * values within objects — enabling array-of-objects validation.
+ *
+ * @param value - The value to check (string, object, or primitive)
+ * @returns The first detected pattern label, or null if clean
+ */
+function checkValueForInjection(value: unknown): string | null {
+  if (typeof value === "string" && value.length > 0) {
+    const detected = detectInjectionPatterns(value);
+    return detected.length > 0 ? (detected[0] ?? null) : null;
+  }
+  if (value && typeof value === "object" && !Array.isArray(value)) {
+    for (const val of Object.values(value as Record<string, unknown>)) {
+      const result = checkValueForInjection(val);
+      if (result) return result;
+    }
+  }
+  return null;
 }

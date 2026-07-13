@@ -23,5 +23,6 @@ export default createPostRoute(
     { path: "targetAudience", label: "target audience" },
     { path: "constraints", label: "constraints" },
     { path: "features", label: "features" },
+    { path: "techStack", label: "tech stack" },
   ]
 );
