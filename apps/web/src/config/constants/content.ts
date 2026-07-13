@@ -373,6 +373,7 @@ export const ACCESSIBILITY_LABELS = {
     MINIMUM_MET: " — minimum requirement met",
   },
   TOAST_ANNOUNCER: {
+    DISMISSED_SINGLE: (message: string) => `Dismissed: ${message}`,
     DISMISSED_ALL: (count: number) => `Dismissed all ${count} notifications`,
   },
   NAV: {
