@@ -48,6 +48,7 @@ import {
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
+import { Icon, type IconName } from "./Icon";
 
 /**
  * Props for the ConfirmDialog component.
@@ -67,8 +68,8 @@ interface ConfirmDialogProps {
   confirmLabel?: string;
   /** Label for the cancel button (default: "Cancel") */
   cancelLabel?: string;
-  /** Emoji icon to display (default: "⚠️") */
-  icon?: string;
+  /** Icon name from the design system to display (default: "warning") */
+  icon?: IconName;
 }
 
 /**
@@ -85,7 +86,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
   description,
   confirmLabel = "Confirm",
   cancelLabel = "Cancel",
-  icon = "⚠️",
+  icon = "warning",
 }: ConfirmDialogProps): JSX.Element {
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
   const shouldReduceMotion = useReducedMotion();
@@ -169,7 +170,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-accent-pink/20 flex items-center justify-center flex-shrink-0">
                   <motion.span
-                    className="text-2xl"
+                    className="text-accent-pink"
                     aria-hidden="true"
                     initial={shouldReduceMotion ? {} : { scale: 0, rotate: -15 }}
                     animate={{ scale: 1, rotate: 0 }}
@@ -182,7 +183,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                           }
                     }
                   >
-                    {icon}
+                    <Icon name={icon} className="w-6 h-6" />
                   </motion.span>
                 </div>
                 <div className="flex-1 min-w-0">
