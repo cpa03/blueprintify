@@ -241,7 +241,6 @@ export const CONFIRM_DIALOG = {
       "This will clear all your current blueprint and tasks content. This action cannot be undone.",
     CONFIRM_LABEL: "Start New",
     CANCEL_LABEL: "Cancel",
-    ICON: "🔄",
   },
 } as const;
 

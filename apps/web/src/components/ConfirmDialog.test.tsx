@@ -83,18 +83,19 @@ describe("ConfirmDialog", () => {
     expect(screen.getByText("Cancel")).toBeInTheDocument();
   });
 
-  it("renders default warning icon", () => {
-    render(<ConfirmDialog {...defaultProps} />);
+  it("renders default warning icon as SVG", () => {
+    const { container } = render(<ConfirmDialog {...defaultProps} />);
 
-    const icon = screen.getByText("⚠️");
-    expect(icon).toBeInTheDocument();
+    const svg = container.querySelector("svg");
+    expect(svg).toBeInTheDocument();
+    expect(svg).toHaveAttribute("aria-hidden", "true");
   });
 
   it("renders custom icon when provided", () => {
-    render(<ConfirmDialog {...defaultProps} icon="🚀" />);
+    const { container } = render(<ConfirmDialog {...defaultProps} icon="trash" />);
 
-    const icon = screen.getByText("🚀");
-    expect(icon).toBeInTheDocument();
+    const svg = container.querySelector("svg");
+    expect(svg).toBeInTheDocument();
   });
 
   it("has aria-labelledby pointing to title", () => {

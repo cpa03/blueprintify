@@ -733,7 +733,6 @@ function EditorComponent(): JSX.Element {
         description={CONFIRM_DIALOG.NEW_PROJECT.DESCRIPTION}
         confirmLabel={CONFIRM_DIALOG.NEW_PROJECT.CONFIRM_LABEL}
         cancelLabel={CONFIRM_DIALOG.NEW_PROJECT.CANCEL_LABEL}
-        icon={CONFIRM_DIALOG.NEW_PROJECT.ICON}
       />
 
       {/* Screen reader announcement when editor mounts — text frozen at mount
