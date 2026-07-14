@@ -34,6 +34,7 @@ import {
   RATE_LIMIT_CONSTANTS,
 } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
+import { sanitizeHtml } from "../utils/sanitize";
 import { ErrorType, createErrorJson } from "../errors";
 
 /**
@@ -252,6 +253,11 @@ app.post(
         metadata?: Record<string, unknown>;
         passphraseHash?: string;
       };
+
+      // Sanitize user-submitted content before storing to prevent stored XSS
+      const sanitizedTitle = sanitizeHtml(title);
+      const sanitizedBlueprint = sanitizeHtml(blueprint);
+
       const shareId = generateShareId();
       const now = new Date().toISOString();
       const expiresAt = getExpirationDate();
@@ -274,8 +280,8 @@ app.post(
       )
         .bind(
           shareId,
-          title,
-          blueprint,
+          sanitizedTitle,
+          sanitizedBlueprint,
           metadataJson,
           passphraseHash || null,
           now,

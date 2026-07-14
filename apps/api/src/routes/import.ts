@@ -15,6 +15,7 @@ import { ERROR_CODES } from "@blueprint/shared";
 import { validateJson, validatePromptInjection } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { secureLogError } from "../utils/secureLog";
+import { sanitizeHtml } from "../utils/sanitize";
 import {
   IMPORT_CONFIG,
   IMPORT_REGEX,
@@ -63,8 +64,8 @@ app.post(
             success: true,
             data: {
               projectName: parsed.projectName,
-              blueprint: parsed.blueprint,
-              tasks: parsed.tasks,
+              blueprint: sanitizeHtml(parsed.blueprint),
+              tasks: parsed.tasks ? sanitizeHtml(parsed.tasks) : undefined,
               importedAt: new Date().toISOString(),
               overwrite,
               warnings: warnings.length > 0 ? warnings : undefined,
@@ -107,8 +108,8 @@ app.post(
           success: true,
           data: {
             projectName,
-            blueprint,
-            tasks,
+            blueprint: sanitizeHtml(blueprint),
+            tasks: tasks ? sanitizeHtml(tasks) : undefined,
             importedAt: new Date().toISOString(),
             overwrite,
             warnings: warnings.length > 0 ? warnings : undefined,
