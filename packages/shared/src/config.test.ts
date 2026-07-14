@@ -135,6 +135,8 @@ import {
   CHAR_COUNTER_COLORS,
   SHARE_TOKEN_CONFIG,
   RATE_LIMIT_KEY_PREFIXES,
+  TEMPLATE_CSS_COLORS,
+  TEMPLATE_CSS_VALUES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -3895,5 +3897,76 @@ describe("CHAR_COUNTER_COLORS", () => {
   it("should have all values as strings", () => {
     const values = Object.values(CHAR_COUNTER_COLORS);
     values.forEach((v) => expect(typeof v).toBe("string"));
+  });
+});
+
+// ============================================================================
+// TEMPLATE_CSS_COLORS
+// ============================================================================
+describe("TEMPLATE_CSS_COLORS", () => {
+  it("should have correct BODY_TEXT = '#333'", () => {
+    expect(TEMPLATE_CSS_COLORS.BODY_TEXT).toBe("#333");
+  });
+
+  it("should have correct ACCENT_BLUE = '#2563eb'", () => {
+    expect(TEMPLATE_CSS_COLORS.ACCENT_BLUE).toBe("#2563eb");
+  });
+
+  it("should have correct HERO_GRADIENT_START = '#667eea'", () => {
+    expect(TEMPLATE_CSS_COLORS.HERO_GRADIENT_START).toBe("#667eea");
+  });
+
+  it("should have correct REACT_ROOT_TEXT as rgba string", () => {
+    expect(TEMPLATE_CSS_COLORS.REACT_ROOT_TEXT).toMatch(/^rgba\(/);
+  });
+
+  it("should have all values as strings", () => {
+    const values = Object.values(TEMPLATE_CSS_COLORS);
+    values.forEach((v) => expect(typeof v).toBe("string"));
+  });
+
+  it("should have all hex values start with #", () => {
+    const hexValues = Object.values(TEMPLATE_CSS_COLORS).filter((v) => v.startsWith("#"));
+    hexValues.forEach((v) =>
+      expect(v).toMatch(/^#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/)
+    );
+  });
+});
+
+// ============================================================================
+// TEMPLATE_CSS_VALUES
+// ============================================================================
+describe("TEMPLATE_CSS_VALUES", () => {
+  it("should have CONTAINER_MAX_WIDTH_PX > 0", () => {
+    expect(TEMPLATE_CSS_VALUES.CONTAINER_MAX_WIDTH_PX).toBeGreaterThan(0);
+  });
+
+  it("should have CARD_BORDER_RADIUS_PX >= 0", () => {
+    expect(TEMPLATE_CSS_VALUES.CARD_BORDER_RADIUS_PX).toBeGreaterThanOrEqual(0);
+  });
+
+  it("should have HEADER_Z_INDEX > 0", () => {
+    expect(TEMPLATE_CSS_VALUES.HEADER_Z_INDEX).toBeGreaterThan(0);
+  });
+
+  it("should have MOBILE_BREAKPOINT_PX > 0", () => {
+    expect(TEMPLATE_CSS_VALUES.MOBILE_BREAKPOINT_PX).toBeGreaterThan(0);
+  });
+
+  it("should have REACT_LOGO_SPIN_DURATION_S > 0", () => {
+    expect(TEMPLATE_CSS_VALUES.REACT_LOGO_SPIN_DURATION_S).toBeGreaterThan(0);
+  });
+
+  it("should have GRID_TEMPLATE_COLUMNS as string", () => {
+    expect(typeof TEMPLATE_CSS_VALUES.GRID_TEMPLATE_COLUMNS).toBe("string");
+  });
+
+  it("should have numeric values for all number properties", () => {
+    const values = Object.values(TEMPLATE_CSS_VALUES);
+    values.forEach((v) => {
+      if (typeof v === "number") {
+        expect(Number.isFinite(v)).toBe(true);
+      }
+    });
   });
 });
