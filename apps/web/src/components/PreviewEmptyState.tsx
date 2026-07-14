@@ -18,6 +18,7 @@ import {
   FRAMER_TYPE,
 } from "@blueprint/shared/config";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
   EMPTY_STATE_CONFIG,
   SPRING_CONFIG,
@@ -57,6 +58,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
   siblingTabHasContent = false,
   onSwitchTab,
 }: PreviewEmptyStateProps): JSX.Element {
+  const shouldReduceMotion = useReducedMotion();
   const content =
     tab === EDITOR_TABS.BLUEPRINT
       ? UI_CONTENT.PREVIEW_EMPTY.BLUEPRINT
@@ -166,7 +168,17 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               className="inline-flex items-center gap-1.5 text-primary-400 hover:text-primary-300 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded px-1 -mx-1"
               aria-label={`Switch to ${tab === EDITOR_TABS.BLUEPRINT ? EDITOR_TABS.TASKS : EDITOR_TABS.BLUEPRINT} tab`}
             >
-              <span aria-hidden="true">{DISPLAY_SYMBOLS.ARROW_LEFT}</span>
+              <motion.span
+                aria-hidden="true"
+                animate={shouldReduceMotion ? {} : { x: [0, -2, 0, 2, 0] }}
+                transition={{
+                  duration: ANIMATION.FLOATING_DURATION,
+                  repeat: Infinity,
+                  ease: EASING.easeInOut,
+                }}
+              >
+                {DISPLAY_SYMBOLS.ARROW_LEFT}
+              </motion.span>
               Switch to{" "}
               <strong>
                 {tab === EDITOR_TABS.BLUEPRINT ? (
