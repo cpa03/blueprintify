@@ -2,6 +2,25 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 247 — **Full repository audit, 3 post-Cycle-246 commits indexed, BUG-013 still fixed (0 vulns), test count update 1,941→1,993, doc refresh, quality verification** ✅
+
+### Task: Full repository audit — **3 post-Cycle-246 commits indexed** (feat(api) add backend XSS sanitization for imported/shared content `3f7b3108`; docs(bugs) BugFixer ULW Cycle Jul 14 2026 Run 5 — full audit clean `57e06ac2`; feat(web) replace emoji icons with SVG Icon component in ConfirmDialog `d9946761`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **test count update** 1,941→**1,993** (790 web + **495 API** + 708 shared — API +52 from new `sanitize.test.ts`); **no redundant/temp/unused files found**; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,993/1,993** ✅ — 790 web + 495 API + 708 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 247 full repository audit — index 3 post-Cycle-246 commits, verify BUG-013 still fixed, update test count to 1,993, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks ✅
+  - [x] **3 post-Cycle-246 commits indexed**: XSS sanitization, BugFixer Run 5, emoji→SVG icons ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns (no re-bump) ✅
+  - [x] **Test count updated**: 1,941→1,993 (790 web + 495 API + 708 shared — API +52) ✅
+  - [x] **findings.md updated**: Cycle 247 entry added at top ✅
+  - [x] **active-tasks.md updated**: Cycle 247 entry added at top ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 247, test count 1,993 ✅
+  - [x] **CHANGELOG.md updated**: Cycle 247 entry added ✅
+  - [x] **bugs.md updated**: Cycle 247 entry added ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 1,993/1,993 ✅ format ✅ secrets ✅ npm audit 0 vulns ✅
+
 ## ✅ RepoKeeper Cycle 246 — **Full repository audit, 5 post-Cycle-245 commits indexed, BUG-013 still fixed (0 vulns), test count unchanged 1,941, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — **5 post-Cycle-245 commits indexed** (docs(flexy) post-mission verification Iteration 127 `fcf60c51`; docs(bugs) BugFixer ULW Cycle Jul 14 2026 Run 3 — full audit clean `16d64bf7`; docs(bugs) BugFixer ULW Cycle Jul 14 2026 Run 4 — full audit clean `3d96c4f9`; docs(audits) BroCula ULW Cycle Jul 14 2026 Run 2 — LH 100-100-100-100 `649e34ea`; feat(web) add staggered entrance animation to suggestion chips `14383d7d`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **test count unchanged** **1,941** (790 web + 443 API + 708 shared); **no redundant/temp/unused files found**; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs); quality verification (typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅ npm audit **0 vulns** ✅)

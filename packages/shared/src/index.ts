@@ -204,6 +204,8 @@ export {
   CHAR_COUNTER_THRESHOLDS,
   CHAR_COUNTER_COLORS,
   FRAMER_TYPE,
+  TEMPLATE_CSS_COLORS,
+  TEMPLATE_CSS_VALUES,
   hexToRgba,
 } from "./config.js";
 
