@@ -34,7 +34,7 @@ import {
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { memo, useCallback, useRef, useEffect } from "react";
+import { memo, useCallback, useRef, useEffect, useState } from "react";
 import { useEditorStore, useWizardStore, useToast } from "../../store";
 import {
   ANIMATION,
@@ -88,6 +88,22 @@ export const StepGenerating = memo(function StepGenerating({
   const wasComplete = useRef(false);
   const wasError = useRef(false);
   const errorShownRef = useRef(false);
+
+  // Track when the cancel button's entrance animation completes so it can be
+  // made focusable only after it's visibly rendered. Prevents useFocusOnStepChange
+  // from landing keyboard focus on an invisible button (opacity: 0 during the
+  // 1-second entrance delay), which would confuse screen-reader users.
+  const [cancelButtonReady, setCancelButtonReady] = useState(false);
+  useEffect(() => {
+    if (!isGenerating || isComplete || isError) return;
+    const timer = setTimeout(
+      () => {
+        setCancelButtonReady(true);
+      },
+      ANIMATION.SLOW * 2 * 1000
+    );
+    return () => clearTimeout(timer);
+  }, [isGenerating, isComplete, isError]);
 
   // Auto-focus "View in Editor" button when generation completes
   // so keyboard users don't have to search for the new action
@@ -621,6 +637,7 @@ export const StepGenerating = memo(function StepGenerating({
                   className="btn-ghost text-dark-400 hover:text-accent-pink flex items-center gap-2"
                   ariaLabel={WIZARD_GENERATING_LABELS.CANCEL_GENERATION_ARIA}
                   aria-keyshortcuts="Escape"
+                  tabIndex={cancelButtonReady ? undefined : -1}
                 >
                   <svg
                     className="w-4 h-4"
