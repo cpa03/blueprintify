@@ -424,7 +424,22 @@ export const StepFeatures = memo(function StepFeatures({
                 </AnimatePresence>
               </motion.button>
             </div>
-            <div className="flex flex-wrap gap-2" role="group" aria-labelledby="suggestions-label">
+            <motion.div
+              className="flex flex-wrap gap-2"
+              role="group"
+              aria-labelledby="suggestions-label"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.04,
+                    delayChildren: ANIMATION.SUBTLE_MOVE,
+                  },
+                },
+              }}
+            >
               {suggestedNotAdded.map((feature) => {
                 const isJustAdded = justAdded === feature;
                 return (
@@ -441,9 +456,19 @@ export const StepFeatures = memo(function StepFeatures({
                       }
                     }}
                     layout
+                    variants={{
+                      hidden: { opacity: 0, scale: 0.85 },
+                      visible: {
+                        opacity: 1,
+                        scale: 1,
+                        transition: {
+                          type: FRAMER_TYPE.SPRING,
+                          ...SPRING_CONFIG.SUBTLE_BOUNCE,
+                        },
+                      },
+                    }}
                     whileHover={HOVER_SCALE.STANDARD}
                     whileTap={TAP_SCALE.STANDARD}
-                    transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SUBTLE_BOUNCE }}
                     className="tech-chip relative overflow-hidden hover:border-accent-emerald/50"
                     aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_SUGGESTION(feature)}
                     animate={
@@ -533,7 +558,7 @@ export const StepFeatures = memo(function StepFeatures({
                   </motion.button>
                 );
               })}
-            </div>
+            </motion.div>
           </div>
         )}
       </div>
