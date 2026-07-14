@@ -2262,4 +2262,4 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `feat/flexy-iteration-127-verification-1941` | docs(flexy): post-mission verification — test count 1,941, zero hardcoded-value regressions (Iteration 127) |
+| [#2577](https://github.com/cpa03/blueprintify/pull/2577) | `feat/flexy-iteration-127-verification-1941` | docs(flexy): post-mission verification — test count 1,941, zero hardcoded-value regressions (Iteration 127) |
