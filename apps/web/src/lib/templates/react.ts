@@ -1,7 +1,8 @@
 import type JSZip from "jszip";
 import type { TechStackItemType } from "@blueprint/shared/types";
-import { TEMPLATE_VERSIONS } from "@blueprint/shared/config";
-import { PackageJson, generateProjectReadme } from "./shared";
+import { TEMPLATE_CSS_COLORS, TEMPLATE_CSS_VALUES, TEMPLATE_VERSIONS } from "@blueprint/shared";
+import type { PackageJson } from "./shared";
+import { generateProjectReadme } from "./shared";
 
 export async function generateReactProject(
   zip: JSZip,
@@ -327,6 +328,9 @@ export default App`;
 }
 
 export function generateIndexCSS(isTailwind: boolean): string {
+  const C = TEMPLATE_CSS_COLORS;
+  const V = TEMPLATE_CSS_VALUES;
+
   if (isTailwind) {
     return `@tailwind base;
 @tailwind components;
@@ -338,8 +342,8 @@ export function generateIndexCSS(isTailwind: boolean): string {
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: ${C.REACT_ROOT_TEXT};
+  background-color: ${C.REACT_ROOT_BG};
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -350,41 +354,43 @@ export function generateIndexCSS(isTailwind: boolean): string {
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: ${C.REACT_LINK};
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: ${C.REACT_LINK_HOVER};
 }
 
 body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  min-width: ${V.REACT_BUTTON_MIN_WIDTH_PX}px;
+  min-height: ${V.REACT_BUTTON_MIN_HEIGHT_PX}vh;
 }
 
 #root {
-  max-width: 1280px;
+  max-width: ${V.REACT_ROOT_MAX_WIDTH_PX}px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: ${V.REACT_ROOT_PADDING_REM}rem;
   text-align: center;
 }`;
 }
 
 export function generateAppCSS(): string {
+  const C = TEMPLATE_CSS_COLORS;
+  const V = TEMPLATE_CSS_VALUES;
   return `.logo {
-  height: 6em;
-  padding: 1.5em;
+  height: ${V.REACT_LOGO_HEIGHT_EM}em;
+  padding: ${V.REACT_LOGO_PADDING_EM}em;
   will-change: filter;
-  transition: filter 300ms;
+  transition: filter ${V.REACT_LOGO_TRANSITION_MS}ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em ${C.REACT_LOGO_SHADOW});
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em ${C.REACT_REACT_LOGO_SHADOW});
 }
 
 @keyframes logo-spin {
@@ -398,16 +404,16 @@ export function generateAppCSS(): string {
 
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2).logo {
-    animation: logo-spin infinite 20s linear;
+    animation: logo-spin infinite ${V.REACT_LOGO_SPIN_DURATION_S}s linear;
   }
 }
 
 .card {
-  padding: 2em;
+  padding: ${V.REACT_CARD_PADDING_EM}em;
 }
 
 .read-the-docs {
-  color: #888;
+  color: ${C.REACT_MUTED_TEXT};
 }`;
 }
 
