@@ -147,19 +147,32 @@ export const StepGenerating = memo(function StepGenerating({
     if (editorPanel) {
       editorPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
-      const priorTabIndex = editorPanel.getAttribute("tabindex");
-      editorPanel.tabIndex = -1;
-      editorPanel.focus({ preventScroll: true });
+      // Focus the active tab button for an immediately interactive focus
+      // target with a visible focus ring, instead of the generic panel
+      // wrapper which needs tabIndex=-1 and provides no focus indicator.
+      // Falls back to the editor panel if the tab button isn't mounted yet.
+      const activeEditorTab = useEditorStore.getState().activeTab;
+      const tabButton = document.getElementById(`tab-${activeEditorTab}`);
+      const focusTarget = tabButton ?? editorPanel;
+
+      const priorTabIndex =
+        focusTarget === editorPanel ? editorPanel.getAttribute("tabindex") : null;
+      if (focusTarget === editorPanel) {
+        editorPanel.tabIndex = -1;
+      }
+      focusTarget.focus({ preventScroll: true });
 
       const editorContainer = editorPanel.closest(".glass-card");
       if (editorContainer instanceof HTMLElement) {
         editorContainer.classList.add("editor-focus-highlight");
         setTimeout(() => {
           editorContainer.classList.remove("editor-focus-highlight");
-          if (priorTabIndex === null) {
-            editorPanel.removeAttribute("tabindex");
-          } else {
-            editorPanel.setAttribute("tabindex", priorTabIndex);
+          if (focusTarget === editorPanel) {
+            if (priorTabIndex === null) {
+              editorPanel.removeAttribute("tabindex");
+            } else {
+              editorPanel.setAttribute("tabindex", priorTabIndex);
+            }
           }
         }, UI_TIMING.EDITOR_FOCUS_HIGHLIGHT_MS);
       }
