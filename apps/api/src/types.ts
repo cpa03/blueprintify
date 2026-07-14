@@ -153,7 +153,7 @@ export type UserRole = typeof AUTH_DEFAULTS.ADMIN_ROLE | typeof AUTH_DEFAULTS.DE
 /**
  * Authenticated user context extracted from request.
  *
- * @property id - Unique user identifier (derived from API key or X-User-Id header)
+ * @property id - Unique user identifier (derived from API key via SHA-256 hash)
  * @property role - Authorization role for permission checks
  */
 export interface User {

@@ -2,8 +2,8 @@
  * API Key Authentication Middleware
  *
  * Provides API key validation for protected routes with constant-time comparison
- * to prevent timing attacks. Also extracts user identity context from request headers
- * for downstream authorization checks.
+ * to prevent timing attacks. Derives user identity from the API key to prevent
+ * identity spoofing via client-controlled headers.
  *
  * @module middleware/auth
  */
@@ -57,11 +57,38 @@ function constantTimeCompare(a: string, b: string): boolean {
 }
 
 /**
+ * Derives a stable, non-reversible user identifier from an API key.
+ *
+ * Uses SHA-256 hashing to produce a deterministic user ID that:
+ * - Cannot be reversed to recover the original API key
+ * - Is stable across requests (same key → same userId)
+ * - Prevents client-side identity spoofing since the userId is
+ *   server-derived from the authenticated credential, not from
+ *   a client-controlled header
+ *
+ * @param apiKey - The API key to derive identity from
+ * @returns A hex-encoded user ID prefixed with "user_"
+ */
+async function deriveUserId(apiKey: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(apiKey);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  return `user_${hashHex.substring(0, 16)}`;
+}
+
+/**
  * Creates an API key authentication middleware for Hono applications.
  *
  * Validates API keys from request headers using constant-time comparison.
  * If no API_KEY environment variable is set, requests are rejected with 503.
  * Excluded paths (like health checks) skip authentication entirely.
+ *
+ * User identity is derived from the API key via SHA-256 hashing rather than
+ * trusting client-provided identity headers. This prevents:
+ * - Identity spoofing: clients cannot impersonate other users
+ * - Tampering: userId is server-determined and non-reversible
  *
  * @param config - Authentication configuration options
  * @returns Hono middleware handler
@@ -124,7 +151,12 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
       userRole = defaultRole;
     }
 
-    const userId = c.req.header(API_HEADERS.CUSTOM.USER_ID) || AUTH_DEFAULTS.ANONYMOUS_USER_ID;
+    // SECURITY: Derive userId from the authenticated API key via SHA-256 hash.
+    // This prevents identity spoofing — clients cannot control their userId
+    // by sending a custom x-user-id header. The userId is deterministic and
+    // non-reversible, providing a stable identity for audit logging and rate limiting.
+    // When no API key is available (key-matched but not exposed), fall back to anonymous.
+    const userId = providedKey ? await deriveUserId(providedKey) : AUTH_DEFAULTS.ANONYMOUS_USER_ID;
     // SECURITY: User role is assigned server-side only — never trust client-provided x-user-role.
     // All authenticated users default to `defaultRole` (typically "user").
     // Admin access is granted via ADMIN_API_KEY environment variable.

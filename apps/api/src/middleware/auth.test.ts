@@ -221,6 +221,110 @@ describe("auth middleware", () => {
     });
   });
 
+  describe("userId derivation", () => {
+    it("should derive deterministic userId from the same API key", async () => {
+      const app = new Hono<{ Bindings: { API_KEY: string }; Variables: AppVariables }>();
+      app.use("*", async (c, next) => {
+        c.env = { API_KEY: validApiKey } as unknown as { API_KEY: string };
+        await next();
+      });
+      app.use("/", apiKeyAuth({ excludePaths: [] }));
+      app.get("/", (c) => {
+        const user = c.get(CONTEXT_KEYS.USER) as User;
+        return c.json({ userId: user.id });
+      });
+
+      const res1 = await app.request("/", {
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: validApiKey },
+      });
+      const res2 = await app.request("/", {
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: validApiKey },
+      });
+      const data1 = (await res1.json()) as { userId: string };
+      const data2 = (await res2.json()) as { userId: string };
+
+      // Same API key should produce the same userId across requests
+      expect(data1.userId).toBe(data2.userId);
+      // userId should start with "user_" prefix
+      expect(data1.userId).toMatch(/^user_[a-f0-9]{16}$/);
+    });
+
+    it("should produce different userIds for different API keys", async () => {
+      const app = new Hono<{
+        Bindings: { API_KEY: string; ADMIN_API_KEY: string };
+        Variables: AppVariables;
+      }>();
+      app.use("*", async (c, next) => {
+        c.env = {
+          API_KEY: validApiKey,
+          ADMIN_API_KEY: TEST_ADMIN_API_KEY,
+        } as unknown as { API_KEY: string; ADMIN_API_KEY: string };
+        await next();
+      });
+      app.use("/", apiKeyAuth({ excludePaths: [] }));
+      app.get("/", (c) => {
+        const user = c.get(CONTEXT_KEYS.USER) as User;
+        return c.json({ userId: user.id });
+      });
+
+      const res1 = await app.request("/", {
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: validApiKey },
+      });
+      const res2 = await app.request("/", {
+        headers: { [API_HEADERS.CUSTOM.API_KEY]: TEST_ADMIN_API_KEY },
+      });
+      const data1 = (await res1.json()) as { userId: string };
+      const data2 = (await res2.json()) as { userId: string };
+
+      // Different keys should produce different userIds
+      expect(data1.userId).not.toBe(data2.userId);
+    });
+
+    it("should ignore client-provided x-user-id header", async () => {
+      const app = new Hono<{ Bindings: { API_KEY: string }; Variables: AppVariables }>();
+      app.use("*", async (c, next) => {
+        c.env = { API_KEY: validApiKey } as unknown as { API_KEY: string };
+        await next();
+      });
+      app.use("/", apiKeyAuth({ excludePaths: [] }));
+      app.get("/", (c) => {
+        const user = c.get(CONTEXT_KEYS.USER) as User;
+        return c.json({ userId: user.id });
+      });
+
+      const res = await app.request("/", {
+        headers: {
+          [API_HEADERS.CUSTOM.API_KEY]: validApiKey,
+          [API_HEADERS.CUSTOM.USER_ID]: "fake-user-123",
+        },
+      });
+
+      const data = (await res.json()) as { userId: string };
+      // The userId should NOT be "fake-user-123" — it must be derived from the API key
+      expect(data.userId).not.toBe("fake-user-123");
+      expect(data.userId).toMatch(/^user_[a-f0-9]{16}$/);
+    });
+
+    it("should use anonymous userId when request has no API key (excluded path)", async () => {
+      const app = new Hono<{ Bindings: { API_KEY: string }; Variables: AppVariables }>();
+      app.use("*", async (c, next) => {
+        c.env = { API_KEY: validApiKey } as unknown as { API_KEY: string };
+        await next();
+      });
+      app.use("/", apiKeyAuth({ excludePaths: ["/health"] }));
+      app.get("/health", (c) => {
+        const user = c.get(CONTEXT_KEYS.USER) as User;
+        return c.json({ userId: user?.id });
+      });
+
+      const res = await app.request("/health");
+      const data = (await res.json()) as { userId: string | undefined };
+
+      // Excluded path — no user context set
+      expect(data.userId).toBeUndefined();
+    });
+  });
+
   describe("admin API key authorization", () => {
     it("should assign admin role when ADMIN_API_KEY matches", async () => {
       const app = new Hono<{
