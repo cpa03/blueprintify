@@ -2237,3 +2237,29 @@ After **126 iterations**, Flexy has eliminated **all hardcoded values** from the
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD | `feat/flexy-iteration-126-final-verification` | docs(flexy): final comprehensive verification — hardcoded-value elimination mission complete (Iteration 126) |
+
+### ✅ Flexy Iteration 127: Post-Mission Verification — Test Count 1,941, Zero Regressions
+
+After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 14) updated test count from 1,940 → 1,941 (1 new test in `persistence.test.ts`). Full verification confirms zero regression:
+
+| Check | Result |
+|-------|--------|
+| Hardcoded `"easeOut"`/`"easeInOut"` in app source | ✅ Zero |
+| Hardcoded `"GET"`/`"POST"`/`"PUT"`/`"DELETE"`/`"PATCH"` in app source | ✅ Zero |
+| Hardcoded `"application/json"`/`"text/plain"`/`"text/event-stream"` | ✅ Zero |
+| Hardcoded hex/rgba/rgb colors in component logic | ✅ Zero |
+| `import.meta.env` direct access outside `env.ts` | ✅ Zero |
+| Hardcoded CSS arbitrary Tailwind values in components | ✅ Zero |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — **790 web + 443 api + 708 shared = 1,941 tests passing** across 87 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `feat/flexy-iteration-127-verification-1941` | docs(flexy): post-mission verification — test count 1,941, zero hardcoded-value regressions (Iteration 127) |
