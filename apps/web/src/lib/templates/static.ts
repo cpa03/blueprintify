@@ -1,5 +1,6 @@
 import type JSZip from "jszip";
 import type { TechStackItemType } from "@blueprint/shared/types";
+import { TEMPLATE_CSS_COLORS, TEMPLATE_CSS_VALUES } from "@blueprint/shared";
 import { generateProjectReadme } from "./shared";
 
 export async function generateStaticProject(
@@ -76,6 +77,9 @@ export function generateStaticHTML(
 }
 
 export function generateStaticCSS(): string {
+  const C = TEMPLATE_CSS_COLORS;
+  const V = TEMPLATE_CSS_VALUES;
+
   return `* {
     margin: 0;
     padding: 0;
@@ -85,96 +89,96 @@ export function generateStaticCSS(): string {
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
-    color: #333;
+    color: ${C.BODY_TEXT};
 }
 
 .container {
-    max-width: 1200px;
+    max-width: ${V.CONTAINER_MAX_WIDTH_PX}px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 ${V.CONTAINER_PADDING_X_PX}px;
 }
 
 header {
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background: ${C.HEADER_BG};
+    box-shadow: 0 ${V.HEADER_SHADOW_Y_PX}px ${V.HEADER_SHADOW_BLUR_PX}px rgba(0,0,0,${V.HEADER_SHADOW_OPACITY});
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: ${V.HEADER_Z_INDEX};
 }
 
 nav h1 {
     padding: 1rem 0;
-    color: #2563eb;
-    font-size: 1.5rem;
+    color: ${C.ACCENT_BLUE};
+    font-size: ${V.NAV_H1_FONT_SIZE_REM}rem;
 }
 
 .hero {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 4rem 0;
+    background: linear-gradient(135deg, ${C.HERO_GRADIENT_START} 0%, ${C.HERO_GRADIENT_END} 100%);
+    color: ${C.HERO_TEXT};
+    padding: ${V.SECTION_PADDING_Y_REM}rem 0;
     text-align: center;
 }
 
 .hero h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+    font-size: ${V.HERO_H2_FONT_SIZE_REM}rem;
+    margin-bottom: ${V.HEADING_MARGIN_BOTTOM_REM}rem;
 }
 
 .hero p {
-    font-size: 1.2rem;
-    opacity: 0.9;
+    font-size: ${V.HERO_P_FONT_SIZE_REM}rem;
+    opacity: ${V.HERO_P_OPACITY};
 }
 
 .features {
-    padding: 4rem 0;
-    background: #f8fafc;
+    padding: ${V.SECTION_PADDING_Y_REM}rem 0;
+    background: ${C.FEATURES_BG};
 }
 
 .features h3 {
     text-align: center;
-    font-size: 2rem;
-    margin-bottom: 3rem;
-    color: #1e293b;
+    font-size: ${V.SECTION_H3_FONT_SIZE_REM}rem;
+    margin-bottom: ${V.SECTION_HEADING_MARGIN_BOTTOM_REM}rem;
+    color: ${C.SECTION_HEADING};
 }
 
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: ${V.GRID_TEMPLATE_COLUMNS};
+    gap: ${V.GRID_GAP_REM}rem;
 }
 
 .feature-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
+    background: ${C.CARD_BG};
+    padding: ${V.CARD_PADDING_REM}rem;
+    border-radius: ${V.CARD_BORDER_RADIUS_PX}px;
+    box-shadow: ${V.CARD_SHADOW_X_PX} ${V.CARD_SHADOW_Y_PX}px ${V.CARD_SHADOW_BLUR_PX}px rgba(0,0,0,${V.CARD_SHADOW_OPACITY});
+    transition: transform ${V.CARD_HOVER_TRANSITION_S}s;
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(${V.CARD_HOVER_TRANSLATE_Y_PX}px);
 }
 
 .feature-card h4 {
-    color: #2563eb;
-    margin-bottom: 1rem;
-    font-size: 1.25rem;
+    color: ${C.ACCENT_BLUE};
+    margin-bottom: ${V.CARD_TITLE_MARGIN_BOTTOM_REM}rem;
+    font-size: ${V.CARD_TITLE_FONT_SIZE_REM}rem;
 }
 
 .feature-card p {
-    color: #64748b;
+    color: ${C.CARD_TEXT};
 }
 
 footer {
-    background: #1e293b;
-    color: white;
+    background: ${C.FOOTER_BG};
+    color: ${C.HERO_TEXT};
     text-align: center;
-    padding: 2rem 0;
+    padding: ${V.FOOTER_PADDING_Y_REM}rem 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: ${V.MOBILE_BREAKPOINT_PX}px) {
     .hero h2 {
-        font-size: 2rem;
+        font-size: ${V.HERO_MOBILE_H2_FONT_SIZE_REM}rem;
     }
     
     .feature-grid {
@@ -184,6 +188,7 @@ footer {
 }
 
 export function generateStaticJS(features: string[]): string {
+  const V = TEMPLATE_CSS_VALUES;
   return `document.addEventListener('DOMContentLoaded', function() {
     console.log('${features.length > 0 ? features[0] : "Project"} loaded successfully!');
     
@@ -200,8 +205,8 @@ export function generateStaticJS(features: string[]): string {
     });
 
     const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        threshold: ${V.INTERSECTION_THRESHOLD},
+        rootMargin: '0px 0px ${V.INTERSECTION_ROOT_MARGIN_PX}px 0px'
     };
 
     const observer = new IntersectionObserver(function(entries) {
@@ -215,8 +220,8 @@ export function generateStaticJS(features: string[]): string {
 
     document.querySelectorAll('.feature-card').forEach(card => {
         card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        card.style.transform = 'translateY(${V.SCROLL_INITIAL_OFFSET_PX}px)';
+        card.style.transition = 'opacity ${V.SCROLL_ANIMATION_DURATION_S}s ease, transform ${V.SCROLL_ANIMATION_DURATION_S}s ease';
         observer.observe(card);
     });
 });
