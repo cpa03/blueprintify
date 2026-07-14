@@ -162,22 +162,30 @@ export const StepReview = memo(function StepReview({
             <div className="bg-dark-800/50 rounded-xl p-4 space-y-3">
               <div>
                 <span className="text-sm text-dark-400">Name:</span>
-                <p className="text-white font-medium">{projectName}</p>
+                <p className="text-white font-medium" dir="auto">
+                  {projectName}
+                </p>
               </div>
               <div>
                 <span className="text-sm text-dark-400">Description:</span>
-                <p className="text-dark-200">{description}</p>
+                <p className="text-dark-200" dir="auto">
+                  {description}
+                </p>
               </div>
               {targetAudience && (
                 <div>
                   <span className="text-sm text-dark-400">Target Audience:</span>
-                  <p className="text-dark-200">{targetAudience}</p>
+                  <p className="text-dark-200" dir="auto">
+                    {targetAudience}
+                  </p>
                 </div>
               )}
               {constraints && (
                 <div>
                   <span className="text-sm text-dark-400">Constraints:</span>
-                  <p className="text-dark-200">{constraints}</p>
+                  <p className="text-dark-200" dir="auto">
+                    {constraints}
+                  </p>
                 </div>
               )}
             </div>
@@ -331,6 +339,7 @@ export const StepReview = memo(function StepReview({
                       },
                     }}
                     className="flex items-center gap-2 text-dark-200"
+                    dir="auto"
                   >
                     <svg
                       className="w-4 h-4 text-accent-emerald"
