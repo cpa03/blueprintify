@@ -12,21 +12,23 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-14 (RepoKeeper Cycle 247)
+**Last Review**: 2026-07-15 (RepoKeeper Cycle 248)
 **Status**: ✅ BUG-014/BUG-017 FIXED on main — all workflows clean
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state ✅
 - **BUG-014/BUG-017 — CONFIRMED FIXED on main**: zero stale doc refs (`docs/bug.md`/`docs/feature.md`) in CI workflows. All workflows use `node-version-file: ".node-version"` (zero hardcoded `node-version:`). PR #2507 resolved both permanently. ✅
-- **README BroCula description verified**: `(Jun 17–Jul 14)` — latest: `docs/audits/brocula-audit-2026-07-14-run2.md` (BroCula Jul 14 Run 2 / **1,993 tests** ✅ — 790 web + **495 API** + **708 shared**, LH **100-100-100-100** 🏆, clean console)
+- **README BroCula description verified**: `(Jun 17–Jul 15)` — latest: `docs/audits/brocula-audit-2026-07-14-run3.md` (BroCula Jul 14 Run 3 / **2,010 tests** ✅ — 790 web + **499 API** + **721 shared**, clean console)
 - **Typecheck/Lint/Build**: All clean (0 errors, 0 warnings)
-- **Tests**: **1,993/1,993 passing** ✅ (790 web + 495 API + 708 shared)
+- **Tests**: **2,010/2,010 passing** ✅ (790 web + 499 API + 721 shared)
 - **Format**: All Prettier-formatted ✅
 - **BUG-013**: ✅ **STILL FIXED** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities**. No re-bump occurred.
 - **BUG-014/BUG-017**: ✅ **RESOLVED since Cycle 211** — stale doc refs and node-version hardcodes fixed on main.
 - **npm audit**: **0 vulnerabilities** ✅ (BUG-013 still fixed).
 - **No tracked .patch files found on main after cleanup**: Recurring anti-pattern resolved since Cycle 194.
+- **Archive retention**: 30-day policy enforced — last cleanup Cycle 248 (removed 10 files from Jun 13–14).
+- **Cycle 248 (RepoKeeper)**: Full repository audit — **3 post-Cycle-247 commits indexed** (docs(audit) BroCula ULW Cycle Jul 14 2026 Run 3 — full audit clean `92fa53d8`; fix(bugs) BugFixer ULW Cycle Jul 14 2026 Run 6 — full audit clean `2d051ec4`; fix(api) derive userId from API key hash instead of trusting client header `9a9f6a6e`), **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns), **test count update** 1,993→**2,010** (790 web + **499 API** + **721 shared** — API +4, shared +13), **archive retention cleanup** (purged 10 stale files from Jun 13–14 past 30-day retention), **stale BugFixer report removed** (`docs/bugfixer-cycle-jul-14-2026-run4.md`), **README BroCula date drift fix** (Jul 14→Jul 15), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs), quality verification (typecheck ✅ lint ✅ build ✅ tests **2,010/2,010** ✅ — 790 web + 499 API + 721 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
 - **Cycle 247 (RepoKeeper)**: Full repository audit — **3 post-Cycle-246 commits indexed** (feat(api) add backend XSS sanitization for imported/shared content `3f7b3108`; docs(bugs) BugFixer ULW Cycle Jul 14 2026 Run 5 — full audit clean `57e06ac2`; feat(web) replace emoji icons with SVG Icon component in ConfirmDialog `d9946761`), **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns), **test count update** 1,941→**1,993** (790 web + **495 API** + 708 shared — API +52 from new `sanitize.test.ts`), **no redundant/temp/unused files found**, doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs), quality verification (typecheck ✅ lint ✅ build ✅ tests **1,993/1,993** ✅ — 790 web + 495 API + 708 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
 - **Cycle 246 (RepoKeeper)**: Full repository audit — **5 post-Cycle-245 commits indexed** (docs(flexy) post-mission verification Iteration 127 `fcf60c51`; docs(bugs) BugFixer ULW Cycle Jul 14 2026 Run 3 — full audit clean `16d64bf7`; docs(bugs) BugFixer ULW Cycle Jul 14 2026 Run 4 — full audit clean `3d96c4f9`; docs(audits) BroCula ULW Cycle Jul 14 2026 Run 2 — LH 100-100-100-100 `649e34ea`; feat(web) add staggered entrance animation to suggestion chips `14383d7d`), **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns), **test count unchanged** **1,941** (790 web + 443 API + 708 shared), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅ npm audit **0 vulns** ✅)
 - **Cycle 245 (RepoKeeper)**: Full repository audit — **2 post-Cycle-244 commits indexed** (docs(audits) BroCula ULW Cycle Jul 14 2026 — audit clean `5bb5610e`; docs(bugs) BugFixer ULW Cycle Jul 14 2026 Run 2 — full audit clean `391010c6`), **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns), **test count unchanged** **1,941** (790 web + 443 API + 708 shared), doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅ npm audit **0 vulns** ✅)
