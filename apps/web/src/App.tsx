@@ -261,6 +261,24 @@ function App(): JSX.Element {
       });
     }
 
+    // Auto-hide editor when stores are reset (e.g., New Project action clears both
+    // editor content and wizard state). Detecting this by watching for content
+    // cleared simultaneously with wizard back at the first step — the only
+    // scenario where both conditions hold simultaneously is a store reset.
+    // Guards against accidental close when user manually deletes editor content
+    // while staying on an active wizard step.
+    if (
+      hasContentChanged &&
+      !hasContent &&
+      useWizardStore.getState().currentStep === WIZARD_STEP_KEYS.INFO &&
+      showEditor &&
+      !editorExiting
+    ) {
+      queueMicrotask(() => {
+        setEditorExiting(true);
+      });
+    }
+
     if (wasGenerating && !isGenerating && hasContent) {
       queueMicrotask(() => {
         setShowCelebration(true);
@@ -269,7 +287,7 @@ function App(): JSX.Element {
 
     previousHasContentRef.current = hasContent;
     previousIsGeneratingRef.current = isGenerating;
-  }, [hasContent, isGenerating, showEditor]);
+  }, [hasContent, isGenerating, showEditor, editorExiting]);
 
   return (
     <div className={LAYOUT.PAGE_WRAPPER}>
