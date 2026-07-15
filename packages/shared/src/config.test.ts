@@ -137,6 +137,12 @@ import {
   RATE_LIMIT_KEY_PREFIXES,
   TEMPLATE_CSS_COLORS,
   TEMPLATE_CSS_VALUES,
+  SANITIZE_ALLOWED_TAGS,
+  SANITIZE_ALLOWED_ATTR,
+  SANITIZE_FORBIDDEN_TAG_NAMES,
+  SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES,
+  SANITIZE_REPLACEMENT_STRINGS,
+  SANITIZE_ERROR_STRINGS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -3968,5 +3974,123 @@ describe("TEMPLATE_CSS_VALUES", () => {
         expect(Number.isFinite(v)).toBe(true);
       }
     });
+  });
+});
+
+describe("SANITIZE_ALLOWED_TAGS", () => {
+  it("should have at least 10 allowed tags", () => {
+    expect(SANITIZE_ALLOWED_TAGS.length).toBeGreaterThanOrEqual(10);
+  });
+
+  it("should include common Markdown-safe tags", () => {
+    expect(SANITIZE_ALLOWED_TAGS).toContain("p");
+    expect(SANITIZE_ALLOWED_TAGS).toContain("strong");
+    expect(SANITIZE_ALLOWED_TAGS).toContain("em");
+    expect(SANITIZE_ALLOWED_TAGS).toContain("a");
+    expect(SANITIZE_ALLOWED_TAGS).toContain("img");
+    expect(SANITIZE_ALLOWED_TAGS).toContain("code");
+    expect(SANITIZE_ALLOWED_TAGS).toContain("pre");
+    expect(SANITIZE_ALLOWED_TAGS).toContain("table");
+  });
+
+  it("should have unique tag names", () => {
+    const unique = new Set(SANITIZE_ALLOWED_TAGS);
+    expect(unique.size).toBe(SANITIZE_ALLOWED_TAGS.length);
+  });
+
+  it("should have all lowercase tag names", () => {
+    SANITIZE_ALLOWED_TAGS.forEach((tag) => {
+      expect(tag).toBe(tag.toLowerCase());
+    });
+  });
+});
+
+describe("SANITIZE_ALLOWED_ATTR", () => {
+  it("should have href, title, alt, src, class, rel", () => {
+    expect(SANITIZE_ALLOWED_ATTR).toContain("href");
+    expect(SANITIZE_ALLOWED_ATTR).toContain("title");
+    expect(SANITIZE_ALLOWED_ATTR).toContain("alt");
+    expect(SANITIZE_ALLOWED_ATTR).toContain("src");
+    expect(SANITIZE_ALLOWED_ATTR).toContain("class");
+    expect(SANITIZE_ALLOWED_ATTR).toContain("rel");
+  });
+
+  it("should have unique attribute names", () => {
+    const unique = new Set(SANITIZE_ALLOWED_ATTR);
+    expect(unique.size).toBe(SANITIZE_ALLOWED_ATTR.length);
+  });
+
+  it("should have all lowercase attribute names", () => {
+    SANITIZE_ALLOWED_ATTR.forEach((attr) => {
+      expect(attr).toBe(attr.toLowerCase());
+    });
+  });
+});
+
+describe("SANITIZE_FORBIDDEN_TAG_NAMES", () => {
+  it("should include script and iframe", () => {
+    expect(SANITIZE_FORBIDDEN_TAG_NAMES).toContain("script");
+    expect(SANITIZE_FORBIDDEN_TAG_NAMES).toContain("iframe");
+    expect(SANITIZE_FORBIDDEN_TAG_NAMES).toContain("object");
+    expect(SANITIZE_FORBIDDEN_TAG_NAMES).toContain("embed");
+    expect(SANITIZE_FORBIDDEN_TAG_NAMES).toContain("form");
+  });
+
+  it("should have at least 15 forbidden tag names", () => {
+    expect(SANITIZE_FORBIDDEN_TAG_NAMES.length).toBeGreaterThanOrEqual(15);
+  });
+
+  it("should have unique tag names", () => {
+    const unique = new Set(SANITIZE_FORBIDDEN_TAG_NAMES);
+    expect(unique.size).toBe(SANITIZE_FORBIDDEN_TAG_NAMES.length);
+  });
+});
+
+describe("SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES", () => {
+  it("should include script, iframe, object, embed", () => {
+    expect(SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES).toContain("script");
+    expect(SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES).toContain("iframe");
+    expect(SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES).toContain("object");
+    expect(SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES).toContain("embed");
+  });
+
+  it("should be a subset of SANITIZE_FORBIDDEN_TAG_NAMES", () => {
+    SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES.forEach((tag) => {
+      expect(SANITIZE_FORBIDDEN_TAG_NAMES).toContain(tag);
+    });
+  });
+
+  it("should have unique tag names", () => {
+    const unique = new Set(SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES);
+    expect(unique.size).toBe(SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES.length);
+  });
+});
+
+describe("SANITIZE_REPLACEMENT_STRINGS", () => {
+  it("should have DANGEROUS_URL_PLACEHOLDER defined", () => {
+    expect(SANITIZE_REPLACEMENT_STRINGS.DANGEROUS_URL_PLACEHOLDER).toBe("#dangerous-url-removed");
+  });
+
+  it("should have CSS_ATTACK_BLOCKED_PREFIX defined", () => {
+    expect(SANITIZE_REPLACEMENT_STRINGS.CSS_ATTACK_BLOCKED_PREFIX).toBe("blocked_");
+  });
+});
+
+describe("SANITIZE_ERROR_STRINGS", () => {
+  it("should have all diagnostic labels defined", () => {
+    expect(SANITIZE_ERROR_STRINGS.SCRIPT_TAG).toBe("script tag");
+    expect(SANITIZE_ERROR_STRINGS.EVENT_HANDLER_ATTR).toBe("event handler attribute");
+    expect(SANITIZE_ERROR_STRINGS.JAVASCRIPT_URL).toBe("javascript: URL");
+    expect(SANITIZE_ERROR_STRINGS.DANGEROUS_HTML_TAG).toBe("dangerous HTML tag");
+  });
+
+  it("should have VALIDATION_ERROR message defined", () => {
+    expect(SANITIZE_ERROR_STRINGS.VALIDATION_ERROR).toBeTruthy();
+    expect(SANITIZE_ERROR_STRINGS.VALIDATION_ERROR.length).toBeGreaterThan(0);
+  });
+
+  it("should have REMOVAL_HINT defined", () => {
+    expect(SANITIZE_ERROR_STRINGS.REMOVAL_HINT).toBeTruthy();
+    expect(SANITIZE_ERROR_STRINGS.REMOVAL_HINT.length).toBeGreaterThan(0);
   });
 });
