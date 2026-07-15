@@ -2,6 +2,24 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 252 — **Full repository audit, 0 new post-Cycle-251 commits, BUG-013 still fixed (0 vulns), test count 2,028, 0 stale branches, archive retention cleanup (1 file purged Jun 14), doc refresh, quality verification** ✅
+
+### Task: Full repository audit — **0 new post-Cycle-251 commits to index** (last commit is still Cycle 251 `9a3aeb62`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-014/BUG-017 CONFIRMED FIXED on main** (zero stale doc refs, all workflows use `node-version-file: ".node-version"`); **test count unchanged** **2,028** (790 web + 499 API + 739 shared); **0 stale merged branches found** (all cleaned in Cycle 250); **archive retention cleanup** (purged 1 stale file from Jun 14 — `ulw-loop-phase1-audit-2026-06-14.md`, past 30-day retention); **no redundant/temp/unused files found**; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, CONSOLIDATED-README); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,028/2,028** ✅ — 790 web + 499 API + 739 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 252 full repository audit — index 0 new post-Cycle-251 commits, verify BUG-013 still fixed, verify BUG-014/BUG-017 fixed, archive retention cleanup, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files in source code, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks ✅
+  - [x] **0 new post-Cycle-251 commits to index** (last commit is Cycle 251 `9a3aeb62`) ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns (no re-bump) ✅
+  - [x] **BUG-014/BUG-017 verified**: zero stale doc refs, zero hardcoded node-version in workflows ✅
+  - [x] **Test count confirmed**: 2,028 (790 web + 499 API + 739 shared) ✅
+  - [x] **Stale merged branches**: 0 found (all cleaned in Cycle 250) ✅
+  - [x] **Archive retention cleanup**: Purged 1 stale file from Jun 14 — `ulw-loop-phase1-audit-2026-06-14.md` (past 30-day retention) ✅
+  - [x] **Doc refresh**: findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md, CONSOLIDATED-README.md updated ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 2,028/2,028 ✅ format ✅ secrets ✅ npm audit 0 vulns ✅
+
 ## ✅ RepoKeeper Cycle 251 — **Full repository audit, 1 post-Cycle-250 commit indexed, BugFixer Run 3 indexed, BUG-013 still fixed (0 vulns), test count 2,028, 0 stale branches, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — **1 post-Cycle-250 commit indexed** (docs(bugs) BugFixer ULW Cycle Jul 15 2026 Run 3 — full audit clean `fb3f959d`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-014/BUG-017 CONFIRMED FIXED on main** (zero stale doc refs, all workflows use `node-version-file: ".node-version"`); **test count unchanged** **2,028** (790 web + 499 API + 739 shared); **0 stale merged branches found** (all cleaned in Cycle 250); **no archive cleanup needed** (last cleanup Cycle 250); **no redundant/temp/unused files found**; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,028/2,028** ✅ — 790 web + 499 API + 739 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
