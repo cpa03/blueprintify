@@ -187,7 +187,7 @@ export const StepInfo = memo(function StepInfo({
                 className={`h-full bg-gradient-to-r from-primary-500 to-accent-emerald ${canProceed ? "progress-shimmer relative" : ""}`}
                 initial={{ width: 0 }}
                 animate={{ width: `${formProgress.percentage}%` }}
-                transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
+                transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SMOOTH }}
               />
             </div>
             <span
