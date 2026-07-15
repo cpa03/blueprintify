@@ -26,6 +26,7 @@
 import {
   WIZARD_STEP_KEYS,
   UI_TIMING,
+  UI_TIMEOUTS,
   ANIMATION_ENTRANCE_DELAYS,
   GENERATION_ERROR_PREFIXES,
   SHORTCUT_DESCRIPTIONS,
@@ -69,7 +70,7 @@ function LoadingDots({ active }: { active: boolean }): JSX.Element {
     if (!active) return;
     const intervalId = setInterval(() => {
       setDots((prev) => (prev.length >= 3 ? "" : prev + "."));
-    }, 500);
+    }, UI_TIMEOUTS.LOADING_DOTS_INTERVAL);
     return () => clearInterval(intervalId);
   }, [active]);
 

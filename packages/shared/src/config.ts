@@ -1785,6 +1785,8 @@ export const UI_TIMEOUTS = {
   CELEBRATION_DISMISS_MS: 700,
   /** Duration to show saved indicator green glow pulse before clearing (700ms) */
   SAVED_GLOW_MS: 700,
+  /** Interval for loading dots animation in StepGenerating (500ms) */
+  LOADING_DOTS_INTERVAL: 500,
 } as const;
 
 /**

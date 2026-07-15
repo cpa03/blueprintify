@@ -2319,4 +2319,45 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD | `feat/flexy-iteration-129-hardcoded-cleanup` | refactor(flexy): centralize StepGenerating strings & animation keyframes (Iteration 129) |
+| N/A | `committed to main` | refactor(flexy): centralize StepGenerating strings & animation keyframes (Iteration 129) |
+
+### ✅ Flexy Iteration 130: Centralize Hardcoded Loading Dots Interval into UI_TIMEOUTS
+
+**Problem**: A `LoadingDots` component in `StepGenerating.tsx` (introduced via `feat(web): add animated loading dots to generation title`) used `setInterval(..., 500)` — a hardcoded magic number for the loading dots animation interval.
+
+| Config Object | File | Change |
+|---|---|---|
+| `UI_TIMEOUTS.LOADING_DOTS_INTERVAL` | `packages/shared/src/config.ts` | Added `LOADING_DOTS_INTERVAL: 500` — single source of truth for loading dots tick interval |
+| `config.test.ts` | `packages/shared/src/config.test.ts` | Added value assertion for `LOADING_DOTS_INTERVAL`; updated count 17→18 |
+| `StepGenerating.tsx` | `apps/web/src/components/wizard/StepGenerating.tsx` | Added `UI_TIMEOUTS` import; replaced hardcoded `500` with `UI_TIMEOUTS.LOADING_DOTS_INTERVAL` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 790 web + 499 api + 739 shared = **2,028 tests passing** across 88 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `feat/flexy-iteration-130-loading-dots-interval` | refactor(flexy): centralize hardcoded loading dots interval into shared UI_TIMEOUTS config (Iteration 130) |
+
+## Final Codebase Status (After Iteration 130)
+
+| Category | Status |
+|----------|--------|
+| Hardcoded values in application logic | ❌ **None remaining** ✅ |
+| Config centralization (@blueprint/shared) | ✅ **80+ config objects** in single source of truth |
+| Animation constants extracted | ✅ 100% of framer-motion values in config |
+| Color tokens centralized | ✅ All colors via COLORS + hexToRgba |
+| HTTP headers/methods/status codes | ✅ All in @blueprint/shared |
+| Error messages/strings | ✅ All in @blueprint/shared |
+| Route paths/env keys | ✅ All in @blueprint/shared |
+| UI strings/labels/tooltips | ✅ All in config |
+| CSS custom properties | ✅ `:root` variables + color-mix() throughout |
+| Tailwind arbitrary values | ✅ Zero remaining in components |
+| z-index values | ✅ All in Z_INDEX config |
+| Loading dots interval | ✅ Centralized UI_TIMEOUTS.LOADING_DOTS_INTERVAL |
+| Build/lint/test | ✅ **Clean across all workspaces — 2,028 tests passing** |
