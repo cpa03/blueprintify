@@ -2,6 +2,29 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 248 — **Full repository audit, 3 post-Cycle-247 commits indexed, BUG-013 still fixed (0 vulns), test count update 1,993→2,010, archive retention cleanup (10 files purged Jun 13–14), stale BugFixer report removed, doc refresh, quality verification** ✅
+
+### Task: Full repository audit — **3 post-Cycle-247 commits indexed** (docs(audit) BroCula ULW Cycle Jul 14 2026 Run 3 — full audit clean `92fa53d8`; fix(bugs) BugFixer ULW Cycle Jul 14 2026 Run 6 — full audit clean `2d051ec4`; fix(api) derive userId from API key hash instead of trusting client header `9a9f6a6e`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **test count update** 1,993→**2,010** (790 web + **499 API** + **721 shared** — API +4, shared +13); **archive retention cleanup** (purged 10 stale files from Jun 13–14 — past 30-day retention); **stale BugFixer report removed** (`docs/bugfixer-cycle-jul-14-2026-run4.md` — content in bugs.md); **README BroCula date drift fix** (Jul 14→Jul 15); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,010/2,010** ✅ — 790 web + 499 API + 721 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 248 full repository audit — index 3 post-Cycle-247 commits, verify BUG-013 still fixed, update test count to 2,010, archive cleanup, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files in source code ✅
+  - [x] **3 post-Cycle-247 commits indexed**: BroCula Run 3, BugFixer Run 6, API key hash fix ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns (no re-bump) ✅
+  - [x] **Test count updated**: 1,993→2,010 (790 web + 499 API + 721 shared — API +4, shared +13) ✅
+  - [x] **10 stale archive files purged**: Jun 13–14 (past 30-day retention) ✅
+  - [x] **Stale BugFixer report removed**: `docs/bugfixer-cycle-jul-14-2026-run4.md` ✅
+  - [x] **README BroCula date drift fixed**: Jul 14→Jul 15 ✅
+  - [x] **CONSOLIDATED-README updated**: Latest cleanup entry ✅
+  - [x] **findings.md updated**: Cycle 248 entry added at top ✅
+  - [x] **active-tasks.md updated**: Cycle 248 entry added at top ✅
+  - [x] **knowledge-review.md updated**: Last Review → Cycle 248, test count 2,010 ✅
+  - [x] **CHANGELOG.md updated**: Cycle 248 entry added ✅
+  - [x] **bugs.md updated**: Cycle 248 status entry added ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 2,010/2,010 ✅ format ✅ secrets ✅ npm audit 0 vulns ✅
+
 ## ✅ RepoKeeper Cycle 247 — **Full repository audit, 3 post-Cycle-246 commits indexed, BUG-013 still fixed (0 vulns), test count update 1,941→1,993, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — **3 post-Cycle-246 commits indexed** (feat(api) add backend XSS sanitization for imported/shared content `3f7b3108`; docs(bugs) BugFixer ULW Cycle Jul 14 2026 Run 5 — full audit clean `57e06ac2`; feat(web) replace emoji icons with SVG Icon component in ConfirmDialog `d9946761`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **test count update** 1,941→**1,993** (790 web + **495 API** + 708 shared — API +52 from new `sanitize.test.ts`); **no redundant/temp/unused files found**; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs); quality verification (typecheck ✅ lint ✅ build ✅ tests **1,993/1,993** ✅ — 790 web + 495 API + 708 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
