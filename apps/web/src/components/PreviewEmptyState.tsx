@@ -11,6 +11,7 @@
 import { memo } from "react";
 import * as motion from "framer-motion/m";
 import type { EditorTab } from "@blueprint/shared/types";
+import { Icon } from "./Icon";
 import {
   EDITOR_FILENAMES,
   ANIMATION_ENTRANCE_DELAYS,
@@ -45,11 +46,6 @@ interface PreviewEmptyStateProps {
 const tabLabels: Record<EditorTab, string> = {
   [EDITOR_TABS.BLUEPRINT]: EDITOR_FILENAMES.BLUEPRINT,
   [EDITOR_TABS.TASKS]: EDITOR_FILENAMES.TASKS,
-};
-
-const tabEmojis: Record<EditorTab, string> = {
-  [EDITOR_TABS.BLUEPRINT]: "📘",
-  [EDITOR_TABS.TASKS]: "📋",
 };
 
 export const PreviewEmptyState = memo(function PreviewEmptyState({
@@ -89,7 +85,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
             animate={floatingAnimation}
           >
             <motion.span
-              className="text-3xl mb-1"
+              className="mb-1"
               animate={{ scale: [1, 1.1, 1] }}
               transition={{
                 duration: ANIMATION.SLOW_PULSE,
@@ -98,7 +94,10 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               }}
               aria-hidden="true"
             >
-              {tabEmojis[tab]}
+              <Icon
+                name={tab === EDITOR_TABS.BLUEPRINT ? "document" : "clipboard"}
+                className="w-8 h-8"
+              />
             </motion.span>
             <span className="text-2xs text-dark-500 font-mono">{label}</span>
           </motion.div>
@@ -144,11 +143,12 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
         {isGenerating ? (
           <>
             <motion.span
-              className="inline-block"
+              className="inline-flex"
               animate={{ opacity: [0.5, 1, 0.5] }}
               transition={{ duration: ANIMATION.FLOAT, repeat: Infinity, ease: EASING.easeInOut }}
+              aria-hidden="true"
             >
-              ⏳
+              <Icon name="sparkles" className="w-4 h-4" />
             </motion.span>{" "}
             {tab === EDITOR_TABS.TASKS
               ? UI_CONTENT.PREVIEW_EMPTY.GENERATING_TASKS
@@ -183,12 +183,12 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               <strong>
                 {tab === EDITOR_TABS.BLUEPRINT ? (
                   <>
-                    <span aria-hidden="true">{tabEmojis[EDITOR_TABS.TASKS]}</span>{" "}
+                    <Icon name="clipboard" className="w-4 h-4 inline-block" />{" "}
                     {tabLabels[EDITOR_TABS.TASKS]}
                   </>
                 ) : (
                   <>
-                    <span aria-hidden="true">{tabEmojis[EDITOR_TABS.BLUEPRINT]}</span>{" "}
+                    <Icon name="document" className="w-4 h-4 inline-block" />{" "}
                     {tabLabels[EDITOR_TABS.BLUEPRINT]}
                   </>
                 )}
@@ -232,7 +232,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-800/50 border border-dark-700"
               whileHover={HOVER_SCALE.MICRO}
             >
-              <span>💡</span>
+              <Icon name="lightbulb" className="w-3.5 h-3.5" />
               <span>
                 {tab === EDITOR_TABS.BLUEPRINT
                   ? PREVIEW_EMPTY_LABELS.START
