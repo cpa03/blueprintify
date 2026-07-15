@@ -83,6 +83,10 @@ export const ICONS = {
     viewBox: "0 0 24 24",
     path: "M4 7 H20 M9 12 H21 M12 17 H16",
   },
+  lightbulb: {
+    viewBox: "0 0 24 24",
+    path: "M12 2a7 7 0 00-7 7c0 2.4 1.19 4.5 3 5.69V17h8v-2.31c1.81-1.19 3-3.29 3-5.69a7 7 0 00-7-7zM9 17h6v2H9zM10 20h4v1h-4z",
+  },
 } as const;
 
 export type IconName = keyof typeof ICONS;
