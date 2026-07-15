@@ -369,7 +369,17 @@ export const StepGenerating = memo(function StepGenerating({
             exit={{ opacity: 0, y: -10 }}
             className="text-center"
           >
-            <h2 className="text-xl font-bold text-white mb-2">Generating Your Blueprint</h2>
+            <motion.h2
+              className="text-xl font-bold text-white mb-2"
+              animate={shouldReduceMotion ? {} : { opacity: [1, 0.7, 1] }}
+              transition={{
+                duration: ANIMATION.DRIFT,
+                repeat: Infinity,
+                ease: EASING.easeInOut,
+              }}
+            >
+              Generating Your Blueprint
+            </motion.h2>
             <p className="text-dark-400 mb-6" role="status" aria-live="polite" aria-atomic="true">
               <motion.span
                 animate={{ opacity: [1, 0.55, 1] }}
