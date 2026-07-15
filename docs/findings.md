@@ -4,20 +4,21 @@
 >
 > **Note 2026-07-12**: PR #2507 resolved BUG-014 (stale doc refs) and BUG-017 (hardcoded node-version) — all workflow files now use `node-version-file: ".node-version"` and agent identity strings are corrected. Token still lacks `workflows: write` for direct pushes but squash-merge via PR works.
 
-## Cycle 248 (2026-07-15 — RepoKeeper: full repository audit, 3 post-Cycle-247 commits indexed, BUG-013 still fixed (0 vulns), test count update 1,993→2,010, archive retention cleanup (10 files purged Jun 13–14), stale BugFixer report removed, doc refresh, quality verification ✅)
+## Cycle 248 / BugFixer Jul 15 2026 — Run 1 (2026-07-15 — RepoKeeper + BugFixer: full repository audit, 3 post-Cycle-247 commits indexed, BUG-013 still fixed (0 vulns), BUG-014/BUG-017 CONFIRMED FIXED on main, test count update 1,993→2,010, archive retention cleanup (10 files purged Jun 13–14), stale BugFixer report removed, doc refresh, quality verification ✅)
 
 ### Actions Taken
 
 1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files — none found in source code. No `@ts-expect-error`/`@ts-ignore`/`as any`. No empty catch blocks. No TODO/FIXME/HACK in source. No merge conflict artifacts. No `.patch` files. No empty directories.
 2. **[3 Post-Cycle-247 Commits Indexed]** — docs(audit) BroCula ULW Cycle Jul 14 2026 Run 3 — full audit clean (`92fa53d8`); fix(bugs) BugFixer ULW Cycle Jul 14 2026 Run 6 — full audit clean (`2d051ec4`); fix(api) derive userId from API key hash instead of trusting client header (`9a9f6a6e`).
 3. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities** (no re-bump occurred). All prior BUG-013 mitigations hold.
-4. **[Test Count Update]** — 1,993→**2,010** (790 web + **499 API** + **721 shared** — API +4, shared +13 from new tests).
-5. **[Archive Retention Cleanup]** — Purged 10 stale audit archive files from Jun 13–14 (past 30-day retention): 3 Jun 13 + 7 Jun 14 BroCula hunt reports.
-6. **[Stale BugFixer Report Removed]** — `docs/bugfixer-cycle-jul-14-2026-run4.md` removed (content already captured in bugs.md).
-7. **[README BroCula Date Drift Fix]** — `(Jun 17–Jul 14)` → `(Jun 17–Jul 15)`.
-8. **[CONSOLIDATED-README Updated]** — Latest cleanup entry and last cleanup date updated.
-9. **[Doc Refresh]** — findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md, bugs.md updated for Cycle 248.
-10. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,010/2,010** ✅ (790 web + 499 API + 721 shared). format ✅ secrets ✅ npm audit **0 vulns** ✅. All quality gates pass.
+4. **[BUG-014/BUG-017 Verification]** — CONFIRMED FIXED on main: zero stale doc refs in CI workflows. All workflows use `node-version-file: ".node-version"`. ✅
+5. **[Test Count Update]** — 1,993→**2,010** (790 web + **499 API** + **721 shared** — API +4, shared +13 from new tests).
+6. **[Archive Retention Cleanup]** — Purged 10 stale audit archive files from Jun 13–14 (past 30-day retention): 3 Jun 13 + 7 Jun 14 BroCula hunt reports.
+7. **[Stale BugFixer Report Removed]** — `docs/bugfixer-cycle-jul-14-2026-run4.md` removed (content already captured in bugs.md).
+8. **[README BroCula Date Drift Fix]** — `(Jun 17–Jul 14)` → `(Jun 17–Jul 15)`.
+9. **[CONSOLIDATED-README Updated]** — Latest cleanup entry and last cleanup date updated.
+10. **[Doc Refresh]** — findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md, bugs.md updated.
+11. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,010/2,010** ✅ (790 web + 499 API + 721 shared). format ✅ secrets ✅ npm audit **0 vulns** ✅. All quality gates pass.
 
 ### Quality Metrics
 
@@ -32,17 +33,17 @@
 | npm audit | ✅ **0 vulnerabilities** (BUG-013 still fixed) |
 | `@ts-expect-error`/`@ts-ignore` | ✅ **0** in source |
 | `as any` | ✅ **0** in source |
-| Empty catch blocks | ✅ **0** anti-patterns in source |
+| Empty catch blocks | ✅ **0** in source |
 | TODO/FIXME/HACK in source | ✅ **0** |
 | Merge conflict artifacts | ✅ **0** |
 | `.patch` files | ✅ **0** |
 | Empty directories | ✅ **0** |
-| Stale doc refs | ✅ **0** |
-| Hardcoded node-version | ✅ **0** |
+| Stale doc refs (BUG-014) | ✅ **0** in `.github/workflows/` |
+| Hardcoded node-version (BUG-017) | ✅ **0** in `.github/workflows/` |
 
 ### Verdict
 
-**All quality gates pass. Repository remains exceptionally healthy — 2,010 tests green, 0 vulnerabilities, 0 lint/type errors. 3 post-Cycle-247 commits indexed. 10 stale archive files purged. Stale BugFixer report removed. BUG-013 still fixed (lighthouse 12.6.1 maintained).** ✅
+**All quality gates pass. Repository remains exceptionally healthy — 2,010 tests green, 0 vulnerabilities, 0 lint/type errors. 3 post-Cycle-247 commits indexed. 10 stale archive files purged. Stale BugFixer report removed. BUG-013 still fixed (lighthouse 12.6.1 maintained). BUG-014/BUG-017 CONFIRMED FIXED on main.** ✅
 
 ---
 
