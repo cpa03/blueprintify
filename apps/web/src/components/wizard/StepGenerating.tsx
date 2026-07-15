@@ -58,6 +58,20 @@ interface StepGeneratingProps {
   direction?: AnimationDirection;
 }
 
+function LoadingDots({ active }: { active: boolean }): JSX.Element {
+  const [dots, setDots] = useState("");
+
+  useEffect(() => {
+    if (!active) return;
+    const intervalId = setInterval(() => {
+      setDots((prev) => (prev.length >= 3 ? "" : prev + "."));
+    }, 500);
+    return () => clearInterval(intervalId);
+  }, [active]);
+
+  return <span aria-hidden="true">{dots}</span>;
+}
+
 export const StepGenerating = memo(function StepGenerating({
   direction: _direction,
 }: StepGeneratingProps): JSX.Element {
@@ -379,6 +393,7 @@ export const StepGenerating = memo(function StepGenerating({
               }}
             >
               Generating Your Blueprint
+              <LoadingDots active={!shouldReduceMotion && isGenerating} />
             </motion.h2>
             <p className="text-dark-400 mb-6" role="status" aria-live="polite" aria-atomic="true">
               <motion.span
