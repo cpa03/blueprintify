@@ -2292,3 +2292,31 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2597](https://github.com/cpa03/blueprintify/pull/2597) | `feat/flexy-iteration-128-sanitize-config` | refactor(flexy): centralize XSS sanitization tag/attr lists and error strings into shared config (Iteration 128) |
+
+### ✅ Flexy Iteration 129: Centralize Hardcoded StepGenerating Strings & Animation Keyframes
+
+**Problem**: After Iteration 128, commit `315a6ffc` (`feat(web): Add subtle opacity breathing animation to generating title`) introduced new hardcoded opacity keyframes and heading text in `StepGenerating.tsx`. Several pre-existing hardcoded values (lightning icon animation keyframes, progress text opacity pulse, "Starting..." fallback) were also missed by prior iterations.
+
+| Config Object | File | Change |
+|---|---|---|
+| `WIZARD_GENERATING_LABELS.GENERATING_TITLE` | `apps/web/src/config/constants/content.ts` | Added `"Generating Your Blueprint"` — replaces hardcoded heading during generation |
+| `WIZARD_GENERATING_LABELS.STARTING_FALLBACK` | `apps/web/src/config/constants/content.ts` | Added `"Starting..."` — replaces hardcoded fallback when no progress message exists |
+| `WIZARD_GENERATING_LABELS.COMPLETE_DESCRIPTION` | `apps/web/src/config/constants/content.ts` | Added `"Your blueprint and tasks are ready to review in the editor"` — replaces hardcoded completion description |
+| `OPACITY_PULSE.GENTLE` | `apps/web/src/config/constants/ui.ts` | Added `[1, 0.85, 1]` — lightning icon breathing pulse |
+| `OPACITY_PULSE.SUBTLE` | `apps/web/src/config/constants/ui.ts` | Added `[1, 0.7, 1]` — heading breathing pulse |
+| `OPACITY_PULSE.STRONG` | `apps/web/src/config/constants/ui.ts` | Added `[1, 0.55, 1]` — progress text breathing pulse |
+| `SCALE_PULSE.GENTLE` | `apps/web/src/config/constants/ui.ts` | Added `[1, 1.08, 1]` — lightning icon scale pulse |
+| `Y_OFFSET.SUBTLE` | `apps/web/src/config/constants/ui.ts` | Added `[0, -3, 0]` — lightning icon y-offset float |
+| `StepGenerating.tsx` | `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced 4 hardcoded strings + 5 hardcoded animation keyframe arrays with config references; added imports for `CELEBRATION_TEXT`, `OPACITY_PULSE`, `SCALE_PULSE`, `Y_OFFSET` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-129-hardcoded-cleanup` | refactor(flexy): centralize StepGenerating strings & animation keyframes (Iteration 129) |

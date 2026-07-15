@@ -498,6 +498,12 @@ export const WIZARD_GENERATING_LABELS = {
   HINT_EMPTY: "Content will appear in the editor as it's generated",
   /** Shown once content starts arriving — encourages users to peek at the live editor panel */
   HINT_STREAMING: "Content streaming in the editor — scroll down to view",
+  /** Title shown during active blueprint generation */
+  GENERATING_TITLE: "Generating Your Blueprint",
+  /** Fallback text shown when no progress message is available yet */
+  STARTING_FALLBACK: "Starting...",
+  /** Description shown when generation is complete */
+  COMPLETE_DESCRIPTION: "Your blueprint and tasks are ready to review in the editor",
 } as const;
 
 // ============================================================================
