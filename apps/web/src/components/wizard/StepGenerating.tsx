@@ -44,6 +44,10 @@ import {
   SPRING_CONFIG,
   WIZARD_GENERATING_LABELS,
   GENERATION_ERROR_LABELS,
+  CELEBRATION_TEXT,
+  OPACITY_PULSE,
+  SCALE_PULSE,
+  Y_OFFSET,
 } from "../../config/constants";
 import { COLORS } from "../../config/theme";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
@@ -310,9 +314,9 @@ export const StepGenerating = memo(function StepGenerating({
                   shouldReduceMotion
                     ? { scale: 1, opacity: 1 }
                     : {
-                        scale: [1, 1.08, 1],
-                        y: [0, -3, 0],
-                        opacity: [1, 0.85, 1],
+                        scale: SCALE_PULSE.GENTLE,
+                        y: Y_OFFSET.SUBTLE,
+                        opacity: OPACITY_PULSE.GENTLE,
                       }
                 }
                 transition={{
@@ -353,10 +357,8 @@ export const StepGenerating = memo(function StepGenerating({
             transition={{ delay: ANIMATION_ENTRANCE_DELAYS.HALF_SECOND }}
             className="text-center"
           >
-            <h2 className="text-xl font-bold text-white mb-2">Generation Complete!</h2>
-            <p className="text-dark-400 mb-6">
-              Your blueprint and tasks are ready to review in the editor
-            </p>
+            <h2 className="text-xl font-bold text-white mb-2">{CELEBRATION_TEXT.COMPLETE}</h2>
+            <p className="text-dark-400 mb-6">{WIZARD_GENERATING_LABELS.COMPLETE_DESCRIPTION}</p>
           </motion.div>
         ) : isError ? (
           <motion.div
@@ -385,19 +387,19 @@ export const StepGenerating = memo(function StepGenerating({
           >
             <motion.h2
               className="text-xl font-bold text-white mb-2"
-              animate={shouldReduceMotion ? {} : { opacity: [1, 0.7, 1] }}
+              animate={shouldReduceMotion ? {} : { opacity: OPACITY_PULSE.SUBTLE }}
               transition={{
                 duration: ANIMATION.DRIFT,
                 repeat: Infinity,
                 ease: EASING.easeInOut,
               }}
             >
-              Generating Your Blueprint
+              {WIZARD_GENERATING_LABELS.GENERATING_TITLE}
               <LoadingDots active={!shouldReduceMotion && isGenerating} />
             </motion.h2>
             <p className="text-dark-400 mb-6" role="status" aria-live="polite" aria-atomic="true">
               <motion.span
-                animate={{ opacity: [1, 0.55, 1] }}
+                animate={{ opacity: OPACITY_PULSE.STRONG }}
                 transition={{ duration: ANIMATION.DRIFT, repeat: Infinity, ease: EASING.easeInOut }}
               >
                 <AnimatePresence mode="wait">
@@ -408,7 +410,7 @@ export const StepGenerating = memo(function StepGenerating({
                     exit={{ opacity: 0, y: -4 }}
                     transition={{ duration: ANIMATION.TEXT_FADE }}
                   >
-                    {progress || "Starting..."}
+                    {progress || WIZARD_GENERATING_LABELS.STARTING_FALLBACK}
                   </motion.span>
                 </AnimatePresence>
               </motion.span>

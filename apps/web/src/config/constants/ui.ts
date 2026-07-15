@@ -303,6 +303,43 @@ export const ROTATION = {
 } as const;
 
 // ============================================================================
+// Animation Keyframe Presets (for framer-motion animate keyframes)
+// ============================================================================
+
+/**
+ * Opacity keyframe pulse sequences for breathing/pulsing animations.
+ * Centralizes all hardcoded opacity arrays so values stay consistent.
+ * Flexy says: No hardcoded opacity: [1, 0.7, 1] values in components!
+ * Usage: animate={OPACITY_PULSE.SUBTLE}
+ */
+export const OPACITY_PULSE = {
+  /** Gentle pulse: 1 → 0.85 → 1 — for icons and decorative elements */
+  GENTLE: [1, 0.85, 1],
+  /** Subtle pulse: 1 → 0.7 → 1 — for headings and prominent text */
+  SUBTLE: [1, 0.7, 1],
+  /** Strong pulse: 1 → 0.55 → 1 — for emphasis and callouts */
+  STRONG: [1, 0.55, 1],
+};
+
+/**
+ * Scale keyframe pulse sequences for breathing scale animations.
+ * Flexy says: No hardcoded scale: [1, 1.08, 1] values in components!
+ */
+export const SCALE_PULSE = {
+  /** Gentle scale pulse: 1 → 1.08 → 1 — for icons and decorative elements */
+  GENTLE: [1, 1.08, 1],
+};
+
+/**
+ * Y-offset keyframe sequences for floating/bobbing animations.
+ * Flexy says: No hardcoded y: [0, -3, 0] values in components!
+ */
+export const Y_OFFSET = {
+  /** Subtle float: 0 → -3 → 0 — for icons and decorative elements */
+  SUBTLE: [0, -3, 0],
+};
+
+// ============================================================================
 // Textarea Configuration
 // ============================================================================
 
