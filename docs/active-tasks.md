@@ -2,6 +2,25 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 250 — **Full repository audit, 5 post-Cycle-249 commits indexed, BUG-013 still fixed (0 vulns), test count 2,028, 4 stale merged branches deleted, 4 stale archive files purged, BroCula ref drift fix, doc refresh, quality verification** ✅
+
+### Task: Full repository audit — **5 post-Cycle-249 commits indexed** (BugFixer ULW Cycle Jul 15 2026 Run 2 — test count 2,028 `7e7d3c10`; BugFixer ULW Cycle Jul 15 2026 Run 2 — all gates pass `8bce4fe8`; feat(web) add animated loading dots to generation title `536f2eff`; fix: resolve merge conflict in StepGenerating.tsx - combine LoadingDots with refactored constant `f4117407`; feat(web) add animated loading dots to generation title `4181d776`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-014/BUG-017 CONFIRMED FIXED on main** (zero stale doc refs, all workflows use `node-version-file: ".node-version"`); **test count unchanged** **2,028** (790 web + 499 API + 739 shared); **4 stale merged branches deleted** (`origin/brocula/cycle-227-jul-13-audit`, `origin/chore/repokeeper-cycle-240`, `origin/feat/flexy-iteration-126-final-verification`, `origin/fix/bugfixer-ulw-cycle-jul-13-2026-r3`); **archive retention cleanup** (purged 4 BroCula hunt reports from Jun 15 — past 30-day retention); **BroCula ref drift fix** (knowledge-review.md: Jul 14 Run 3 → Jul 15 — latest `brocula-audit-2026-07-15.md`); **no redundant/temp/unused files found**; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs, audits/README, CONSOLIDATED-README); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,028/2,028** ✅ — 790 web + 499 API + 739 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 250 full repository audit — index 5 post-Cycle-249 commits, verify BUG-013 still fixed, verify BUG-014/BUG-017 fixed, restore test count 2,028, stale branch cleanup, archive retention cleanup, BroCula ref drift fix, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files in source code, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks ✅
+  - [x] **5 post-Cycle-249 commits indexed**: BugFixer Run 2 (2x), animated loading dots (2x), merge conflict fix ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns (no re-bump) ✅
+  - [x] **BUG-014/BUG-017 verified**: zero stale doc refs, zero hardcoded node-version in workflows ✅
+  - [x] **Test count confirmed**: 2,028 (790 web + 499 API + 739 shared) ✅
+  - [x] **4 stale merged branches deleted**: `brocula/cycle-227`, `repokeeper-cycle-240`, `flexy-iteration-126`, `bugfixer-ulw-cycle-jul-13-2026-r3` ✅
+  - [x] **Archive retention cleanup**: Purged 4 BroCula hunt reports from Jun 15 (past 30-day retention) ✅
+  - [x] **BroCula ref drift fix**: knowledge-review.md updated — Jul 14 Run 3 → Jul 15 ✅
+  - [x] **Doc refresh**: findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md, bugs.md, audits/README.md, CONSOLIDATED-README.md updated ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 2,028/2,028 ✅ format ✅ secrets ✅ npm audit 0 vulns ✅
+
 ## ✅ RepoKeeper Cycle 249 — **Full repository audit, 2 post-Cycle-248 commits indexed, BUG-013 still fixed (0 vulns), test count update 2,010→2,028, 4 stale merged branches identified, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — **2 post-Cycle-248 commits indexed** (feat(web) Add subtle opacity breathing animation to generating title `315a6ffc` (#2595); docs(bugs) BugFixer ULW Cycle Jul 15 2026 Run 1 — full audit clean `798c3317` (#2594)); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-014/BUG-017 CONFIRMED FIXED on main** (zero stale doc refs, all workflows use `node-version-file: ".node-version"`); **test count update** 2,010→**2,028** (790 web + 499 API + **739 shared** — shared +18); **4 stale merged branches identified** (`origin/brocula/cycle-227-jul-13-audit`, `origin/chore/repokeeper-cycle-240`, `origin/feat/flexy-iteration-126-final-verification`, `origin/fix/bugfixer-ulw-cycle-jul-13-2026-r3`); **no redundant/temp/unused files found**; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,028/2,028** ✅ — 790 web + 499 API + 739 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
