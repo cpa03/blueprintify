@@ -2342,7 +2342,7 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `feat/flexy-iteration-130-loading-dots-interval` | refactor(flexy): centralize hardcoded loading dots interval into shared UI_TIMEOUTS config (Iteration 130) |
+| [#2610](https://github.com/cpa03/blueprintify/pull/2610) | `feat/flexy-iteration-130-loading-dots-interval` | refactor(flexy): centralize hardcoded loading dots interval into shared UI_TIMEOUTS config (Iteration 130) |
 
 ## Final Codebase Status (After Iteration 130)
 
