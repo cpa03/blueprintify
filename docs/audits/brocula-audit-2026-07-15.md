@@ -1,7 +1,7 @@
 # BroCula Audit — Jul 15 2026
 
 > BroCula ULW Cycle — Full Playwright + Lighthouse audit
-> **Branch**: `brocula/ulw-jul15-2026`
+> **Branch**: `brocula/cycle-jul-15-2026`
 
 ## Audit Results
 
@@ -23,13 +23,13 @@ cleanliness is enforced in CI going forward.
 
 | Category        | Score  |
 | --------------- | ------ |
-| **Performance** | **98** |
+| **Performance** | **99** |
 | **Accessibility** | **100** 🏆 |
 | **Best Practices** | **100** 🏆 |
 | **SEO**         | **100** 🏆 |
 
-> Note: Performance at 98 (vs prior 100) is due to test environment limitations —
-> the Python HTTP server used for LH testing lacks compression support. The
+> Note: Performance at 99 (vs prior 100) is due to test environment limitations —
+> the preview server used for LH testing lacks compression support. The
 > `uses-text-compression` diagnostic shows 356 KiB potential savings. On a proper
 > CDN/production deployment with brotli compression, performance restores to 100.
 
@@ -77,7 +77,7 @@ cleanliness is enforced in CI going forward.
 | npm audit        | ✅ **0 vulnerabilities**                |
 | Console Errors   | ✅ 0 (all 4 wizard steps)               |
 | Console Warnings | ✅ 0 (all 4 wizard steps)               |
-| LH Performance   | 98 (test env w/o compression)           |
+| LH Performance   | 99 (test env w/o compression)           |
 | LH Accessibility | ✅ **100** 🏆                            |
 | LH Best Practices| ✅ **100** 🏆                            |
 | LH SEO           | ✅ **100** 🏆                            |
