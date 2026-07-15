@@ -3028,3 +3028,157 @@ export const TEMPLATE_CSS_VALUES = {
   /** React template: logo spin animation duration in seconds */
   REACT_LOGO_SPIN_DURATION_S: 20,
 } as const;
+
+// ============================================================================
+// XSS Sanitization Configuration
+// Centralized tag allowlists, attribute allowlists, forbidden tag names, and
+// error strings used by the server-side HTML sanitizer (apps/api/src/utils/sanitize.ts).
+// Flexy says: No hardcoded HTML tag names or attribute strings in sanitization code!
+// Usage: import { SANITIZE_ALLOWED_TAGS, SANITIZE_ALLOWED_ATTR } from "@blueprint/shared";
+//        ALLOWED_TAGS.has(SANITIZE_ALLOWED_TAGS[0]) // Build Set at module init
+// ============================================================================
+
+/**
+ * Safe HTML Tag Allowlist
+ * Centralized list of HTML tags permitted in sanitized Markdown/HTML content.
+ * Only these tags survive the sanitization process — all others are stripped
+ * (keeping their inner text content).
+ * Flexy says: No hardcoded tag name arrays in sanitize.ts!
+ * Usage: import { SANITIZE_ALLOWED_TAGS } from "@blueprint/shared";
+ *        new Set(SANITIZE_ALLOWED_TAGS) // Build the Set once at module init
+ */
+export const SANITIZE_ALLOWED_TAGS = [
+  "p",
+  "br",
+  "strong",
+  "b",
+  "em",
+  "i",
+  "u",
+  "s",
+  "del",
+  "ins",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "ul",
+  "ol",
+  "li",
+  "dl",
+  "dt",
+  "dd",
+  "pre",
+  "code",
+  "blockquote",
+  "table",
+  "thead",
+  "tbody",
+  "tr",
+  "th",
+  "td",
+  "a",
+  "img",
+  "hr",
+] as const;
+
+/**
+ * Safe HTML Attribute Allowlist
+ * Centralized list of HTML attributes permitted on allowed tags after sanitization.
+ * All other attributes are stripped from the output.
+ * Flexy says: No hardcoded "href" or "class" strings in sanitization attribute filters!
+ */
+export const SANITIZE_ALLOWED_ATTR = ["href", "title", "alt", "src", "class", "rel"] as const;
+
+/**
+ * Forbidden HTML Tag Names
+ * Tags that are completely forbidden regardless of attributes or context.
+ * These represent active content / injection vectors that should never appear
+ * in sanitized content — even as self-closing tags.
+ * Flexy says: No hardcoded "script" or "iframe" in regex patterns!
+ */
+export const SANITIZE_FORBIDDEN_TAG_NAMES = [
+  "script",
+  "iframe",
+  "object",
+  "embed",
+  "form",
+  "input",
+  "button",
+  "svg",
+  "math",
+  "base",
+  "link",
+  "meta",
+  "noscript",
+  "template",
+  "style",
+  "applet",
+  "frame",
+  "frameset",
+  "textarea",
+  "select",
+  "option",
+  "optgroup",
+  "datalist",
+  "keygen",
+  "output",
+  "marquee",
+  "isindex",
+] as const;
+
+/**
+ * Dangerous Container Tag Names
+ * Tags for which BOTH the tag AND its inner content are completely removed
+ * during sanitization. Unlike SANITIZE_FORBIDDEN_TAG_NAMES (which strips
+ * just the tag but keeps text content), these tags are considered so
+ * dangerous that their content must also be eliminated.
+ * Flexy says: No hardcoded container tag lists in sanitize.ts regex!
+ */
+export const SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES = [
+  "script",
+  "iframe",
+  "object",
+  "embed",
+  "style",
+  "noscript",
+  "template",
+  "applet",
+  "frame",
+  "frameset",
+] as const;
+
+/**
+ * Sanitization Replacement Strings
+ * Centralized placeholder and replacement strings used during the sanitization
+ * process for neutralizing dangerous patterns.
+ * Flexy says: No hardcoded replacement strings in sanitize.ts!
+ */
+export const SANITIZE_REPLACEMENT_STRINGS = {
+  /** Replacement for dangerous URL scheme attribute values (e.g., javascript: URLs) */
+  DANGEROUS_URL_PLACEHOLDER: "#dangerous-url-removed" as const,
+  /** Replacement prefix for CSS expression/behavior attack patterns */
+  CSS_ATTACK_BLOCKED_PREFIX: "blocked_" as const,
+} as const;
+
+/**
+ * Sanitization Error Strings
+ * Centralized error/diagnostic message strings used in XSS validation.
+ * Flexy says: No hardcoded "script tag" or "dangerous HTML tag" in validation!
+ */
+export const SANITIZE_ERROR_STRINGS = {
+  /** Diagnostic label for script tag detection */
+  SCRIPT_TAG: "script tag",
+  /** Diagnostic label for event handler attribute detection */
+  EVENT_HANDLER_ATTR: "event handler attribute",
+  /** Diagnostic label for javascript: URL detection */
+  JAVASCRIPT_URL: "javascript: URL",
+  /** Diagnostic label for dangerous HTML tag detection */
+  DANGEROUS_HTML_TAG: "dangerous HTML tag",
+  /** Error message template for XSS validation failures */
+  VALIDATION_ERROR: "Content contains potentially unsafe HTML",
+  /** User-facing action hint appended to validation error */
+  REMOVAL_HINT: "Please remove embedded scripts or suspicious tags.",
+} as const;

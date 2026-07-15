@@ -2263,3 +2263,32 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2577](https://github.com/cpa03/blueprintify/pull/2577) | `feat/flexy-iteration-127-verification-1941` | docs(flexy): post-mission verification — test count 1,941, zero hardcoded-value regressions (Iteration 127) |
+
+### ✅ Flexy Iteration 128: Centralize XSS Sanitization Tag/Attr Lists & Error Strings into Shared Config
+
+**Problem**: After Iteration 127 declared mission complete, a new `apps/api/src/utils/sanitize.ts` file was introduced (via `feat(api): Add backend XSS sanitization for imported/shared content)` containing hardcoded HTML tag arrays, attribute lists, forbidden tag names, and error messages — all of which should be centralized in `@blueprint/shared` config.
+
+| Config Object | File | Change |
+|---|---|---|
+| `SANITIZE_ALLOWED_TAGS` | `packages/shared/src/config.ts` | Added 34 allowed HTML tag names as `as const` array — single source of truth for the sanitizer allowlist |
+| `SANITIZE_ALLOWED_ATTR` | `packages/shared/src/config.ts` | Added 6 allowed HTML attribute names as `as const` array |
+| `SANITIZE_FORBIDDEN_TAG_NAMES` | `packages/shared/src/config.ts` | Added 27 forbidden tag names (injection vectors) as `as const` array |
+| `SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES` | `packages/shared/src/config.ts` | Added 10 container tag names (removed with content) as `as const` array |
+| `SANITIZE_REPLACEMENT_STRINGS` | `packages/shared/src/config.ts` | Added `DANGEROUS_URL_PLACEHOLDER` + `CSS_ATTACK_BLOCKED_PREFIX` — centralized replacement strings |
+| `SANITIZE_ERROR_STRINGS` | `packages/shared/src/config.ts` | Added 6 sanitization error/diagnostic message strings |
+| Exports | `packages/shared/src/index.ts` | Added exports for all 6 new config objects |
+| `config.test.ts` | `packages/shared/src/config.test.ts` | Added 7 test blocks (24 assertions) for all new sanitize config objects |
+| `sanitize.ts` | `apps/api/src/utils/sanitize.ts` | Replaced hardcoded `ALLOWED_TAGS`/`ALLOWED_ATTR` Sets with `new Set<string>(SANITIZE_ALLOWED_*)`; replaced hardcoded forbidden/container regex patterns with dynamically-built patterns from config arrays; replaced hardcoded error/diagnostic strings with `SANITIZE_ERROR_STRINGS.*` refs; replaced hardcoded replacement strings with `SANITIZE_REPLACEMENT_STRINGS.*` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — **790 web + 499 api + 739 shared = 2,028 tests passing** across 88 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2597](https://github.com/cpa03/blueprintify/pull/2597) | `feat/flexy-iteration-128-sanitize-config` | refactor(flexy): centralize XSS sanitization tag/attr lists and error strings into shared config (Iteration 128) |
