@@ -2,6 +2,23 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 251 — **Full repository audit, 1 post-Cycle-250 commit indexed, BugFixer Run 3 indexed, BUG-013 still fixed (0 vulns), test count 2,028, 0 stale branches, doc refresh, quality verification** ✅
+
+### Task: Full repository audit — **1 post-Cycle-250 commit indexed** (docs(bugs) BugFixer ULW Cycle Jul 15 2026 Run 3 — full audit clean `fb3f959d`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-014/BUG-017 CONFIRMED FIXED on main** (zero stale doc refs, all workflows use `node-version-file: ".node-version"`); **test count unchanged** **2,028** (790 web + 499 API + 739 shared); **0 stale merged branches found** (all cleaned in Cycle 250); **no archive cleanup needed** (last cleanup Cycle 250); **no redundant/temp/unused files found**; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,028/2,028** ✅ — 790 web + 499 API + 739 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 251 full repository audit — index 1 post-Cycle-250 commit (BugFixer Run 3), verify BUG-013 still fixed, verify BUG-014/BUG-017 fixed, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files in source code, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks ✅
+  - [x] **1 post-Cycle-250 commit indexed**: BugFixer Run 3 (`fb3f959d`) ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns (no re-bump) ✅
+  - [x] **BUG-014/BUG-017 verified**: zero stale doc refs, zero hardcoded node-version in workflows ✅
+  - [x] **Test count confirmed**: 2,028 (790 web + 499 API + 739 shared) ✅
+  - [x] **Stale merged branches**: 0 found (all cleaned in Cycle 250) ✅
+  - [x] **Doc refresh**: findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md updated ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 2,028/2,028 ✅ format ✅ secrets ✅ npm audit 0 vulns ✅
+
 ## ✅ RepoKeeper Cycle 250 — **Full repository audit, 5 post-Cycle-249 commits indexed, BUG-013 still fixed (0 vulns), test count 2,028, 4 stale merged branches deleted, 4 stale archive files purged, BroCula ref drift fix, doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — **5 post-Cycle-249 commits indexed** (BugFixer ULW Cycle Jul 15 2026 Run 2 — test count 2,028 `7e7d3c10`; BugFixer ULW Cycle Jul 15 2026 Run 2 — all gates pass `8bce4fe8`; feat(web) add animated loading dots to generation title `536f2eff`; fix: resolve merge conflict in StepGenerating.tsx - combine LoadingDots with refactored constant `f4117407`; feat(web) add animated loading dots to generation title `4181d776`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-014/BUG-017 CONFIRMED FIXED on main** (zero stale doc refs, all workflows use `node-version-file: ".node-version"`); **test count unchanged** **2,028** (790 web + 499 API + 739 shared); **4 stale merged branches deleted** (`origin/brocula/cycle-227-jul-13-audit`, `origin/chore/repokeeper-cycle-240`, `origin/feat/flexy-iteration-126-final-verification`, `origin/fix/bugfixer-ulw-cycle-jul-13-2026-r3`); **archive retention cleanup** (purged 4 BroCula hunt reports from Jun 15 — past 30-day retention); **BroCula ref drift fix** (knowledge-review.md: Jul 14 Run 3 → Jul 15 — latest `brocula-audit-2026-07-15.md`); **no redundant/temp/unused files found**; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, bugs, audits/README, CONSOLIDATED-README); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,028/2,028** ✅ — 790 web + 499 API + 739 shared — format ✅ secrets ✅ npm audit **0 vulns** ✅)
