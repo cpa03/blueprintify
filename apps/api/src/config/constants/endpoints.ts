@@ -12,6 +12,14 @@ import {
   HTTP_METHODS as SHARED_HTTP_METHODS,
 } from "@blueprint/shared";
 
+export const ROUTE_SUB_PATHS = {
+  QUOTA: "/quota",
+  CLEAR: "/clear",
+  ID_PARAM: "/:id",
+  VERIFY: "/verify",
+  ROOT: "/",
+} as const;
+
 /**
  * API endpoint definitions with path, method, and description.
  * Uses shared ROUTE_PATHS as the single source of truth for paths.
@@ -44,12 +52,12 @@ export const API_ENDPOINTS = {
     description: "Import project",
   },
   STORAGE_QUOTA: {
-    path: `${SHARED_ROUTE_PATHS.STORAGE}/quota`,
+    path: `${SHARED_ROUTE_PATHS.STORAGE}${ROUTE_SUB_PATHS.QUOTA}`,
     method: SHARED_HTTP_METHODS.GET,
     description: "Get storage quota",
   },
   STORAGE_CLEAR: {
-    path: `${SHARED_ROUTE_PATHS.STORAGE}/clear`,
+    path: `${SHARED_ROUTE_PATHS.STORAGE}${ROUTE_SUB_PATHS.CLEAR}`,
     method: SHARED_HTTP_METHODS.DELETE,
     description: "Clear storage",
   },
@@ -59,12 +67,12 @@ export const API_ENDPOINTS = {
     description: "Create shareable blueprint link",
   },
   SHARE_GET: {
-    path: `${SHARED_ROUTE_PATHS.SHARE}/:id`,
+    path: `${SHARED_ROUTE_PATHS.SHARE}${ROUTE_SUB_PATHS.ID_PARAM}`,
     method: SHARED_HTTP_METHODS.GET,
     description: "Get shared blueprint by ID",
   },
   SHARE_DELETE: {
-    path: `${SHARED_ROUTE_PATHS.SHARE}/:id`,
+    path: `${SHARED_ROUTE_PATHS.SHARE}${ROUTE_SUB_PATHS.ID_PARAM}`,
     method: SHARED_HTTP_METHODS.DELETE,
     description: "Delete shared blueprint",
   },
