@@ -695,6 +695,26 @@
     }
   }
 
+  /* Card entrance animation — combines a subtle slide-up with fade-in for a
+     premium staggered reveal effect on template grid cards. Unlike fade-in
+     (opacity only), the vertical offset gives cards a gentle "rise up" feel
+     as they enter the viewport. Disabled when prefers-reduced-motion is active. */
+  @keyframes card-entrance {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-card-entrance {
+    animation: card-entrance 0.3s ease-out;
+    will-change: transform, opacity;
+  }
+
   @keyframes fade-in-left {
     from {
       opacity: 0;
@@ -894,6 +914,7 @@
     .animate-tooltip-in,
     .animate-slide-in-right,
     .animate-slide-out-right,
+    .animate-card-entrance,
     .animate-slide-up,
     .animate-fade-out,
     .animate-slide-out-up,
