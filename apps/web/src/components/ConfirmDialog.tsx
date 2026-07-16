@@ -187,19 +187,60 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                   </motion.span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h2 id="confirm-dialog-title" className="text-lg font-bold text-white mb-1">
-                    {title}
-                  </h2>
-                  <p
-                    id="confirm-dialog-description"
-                    className="text-sm text-dark-400 leading-relaxed"
+                  <motion.div
+                    initial={shouldReduceMotion ? {} : { opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={
+                      shouldReduceMotion
+                        ? ANIMATION_DEFAULTS.ZERO_DURATION
+                        : {
+                            duration: ANIMATION.MODAL_FADE,
+                            delay: ANIMATION.STAGGER,
+                            ease: "easeOut",
+                          }
+                    }
                   >
-                    {description}
-                  </p>
+                    <h2 id="confirm-dialog-title" className="text-lg font-bold text-white mb-1">
+                      {title}
+                    </h2>
+                  </motion.div>
+                  <motion.div
+                    initial={shouldReduceMotion ? {} : { opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={
+                      shouldReduceMotion
+                        ? ANIMATION_DEFAULTS.ZERO_DURATION
+                        : {
+                            duration: ANIMATION.MODAL_FADE,
+                            delay: ANIMATION.STAGGER * 2,
+                            ease: "easeOut",
+                          }
+                    }
+                  >
+                    <p
+                      id="confirm-dialog-description"
+                      className="text-sm text-dark-400 leading-relaxed"
+                    >
+                      {description}
+                    </p>
+                  </motion.div>
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 mt-6">
+              <motion.div
+                initial={shouldReduceMotion ? {} : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={
+                  shouldReduceMotion
+                    ? ANIMATION_DEFAULTS.ZERO_DURATION
+                    : {
+                        duration: ANIMATION.MODAL_FADE,
+                        delay: ANIMATION.STAGGER * 3,
+                        ease: "easeOut",
+                      }
+                }
+                className="flex justify-end gap-3 mt-6"
+              >
                 <motion.button
                   whileHover={HOVER_SCALE.MICRO}
                   whileTap={TAP_SCALE.MICRO}
@@ -226,10 +267,23 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                     {confirmLabel}
                   </motion.button>
                 </KeyboardShortcutTooltip>
-              </div>
+              </motion.div>
 
               {/* Keyboard shortcut hints */}
-              <div className="flex items-center justify-center gap-4 mt-4 pt-3 border-t border-dark-700/50">
+              <motion.div
+                initial={shouldReduceMotion ? {} : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={
+                  shouldReduceMotion
+                    ? ANIMATION_DEFAULTS.ZERO_DURATION
+                    : {
+                        duration: ANIMATION.MODAL_FADE,
+                        delay: ANIMATION.STAGGER * 4,
+                        ease: "easeOut",
+                      }
+                }
+                className="flex items-center justify-center gap-4 mt-4 pt-3 border-t border-dark-700/50"
+              >
                 <span className="flex items-center gap-1.5 text-sm-xs text-dark-500">
                   <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-400 border border-dark-600/50 leading-none">
                     {CONFIRM_DIALOG_HINTS.ENTER_KEY}
@@ -242,7 +296,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                   </kbd>
                   <span>{CONFIRM_DIALOG_HINTS.TO_CANCEL}</span>
                 </span>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </>
