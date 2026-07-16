@@ -162,7 +162,10 @@ function StepIndicatorComponent(): JSX.Element {
             mountAnimationDelayMs={ANIMATION_ENTRANCE_DELAYS_MS.STANDARD_MOUNT}
           />
           <div className="absolute inset-0 flex items-center justify-center transition-transform duration-200 hover:scale-110">
-            <span key={currentStep} className="text-xs font-semibold step-count-pop">
+            <span
+              key={`${currentStep}-${isGenerationComplete}`}
+              className="text-xs font-semibold step-count-pop"
+            >
               {isGenerationComplete
                 ? STEP_INDICATOR_CHARS.COMPLETE_CHECK
                 : effectiveIndex >= STEPS.length - 1
