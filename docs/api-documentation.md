@@ -422,13 +422,13 @@ curl -X POST http://localhost:8787/storage/report \
 
 Clear all stored data. Requires confirmation.
 
-#### Request Body
+#### Query Parameters
 
-```typescript
-interface StorageClearRequest {
-  confirm: boolean; // Must be true to confirm deletion
-}
-```
+| Parameter | Type    | Required | Description                              |
+| --------- | ------- | -------- | ---------------------------------------- |
+| `confirm` | boolean | Yes      | Must be `true` to confirm data clearance |
+
+Note: DELETE requests use a query parameter for confirmation instead of a JSON body to comply with REST conventions (DELETE requests should not have bodies).
 
 #### Response
 
@@ -446,9 +446,7 @@ interface StorageClearRequest {
 #### Example Request
 
 ```bash
-curl -X DELETE http://localhost:8787/storage/clear \
-  -H "Content-Type: application/json" \
-  -d '{"confirm": true}'
+curl -X DELETE 'http://localhost:8787/storage/clear?confirm=true'
 ```
 
 ### POST /share
@@ -671,7 +669,15 @@ The API supports detailed tech stack categorization for better project planning 
 
 ## Rate Limiting
 
-Currently, there are no explicit rate limits implemented. However, the OpenAI API has its own rate limits that may affect request processing.
+The API implements rate limiting using Cloudflare's Rate Limiting bindings with three tiers:
+
+| Tier     | Rate Limit          | Usage                        |
+| -------- | ------------------- | ---------------------------- |
+| Strict   | 10 requests/minute  | Share enumeration protection |
+| Standard | 60 requests/minute  | General API endpoints        |
+| Lenient  | 120 requests/minute | Health check and warmup      |
+
+Rate limits are applied globally with configurable windows and limits via environment variables (`RATE_LIMIT_WINDOW_MS`, `RATE_LIMIT_STRICT_MAX`, `RATE_LIMIT_STANDARD_MAX`, `RATE_LIMIT_LENIENT_MAX`). Additionally, the OpenAI API has its own rate limits that may affect request processing.
 
 ## SDK and Client Examples
 
