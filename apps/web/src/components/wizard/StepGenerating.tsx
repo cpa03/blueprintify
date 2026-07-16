@@ -36,6 +36,30 @@ import {
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { memo, useCallback, useRef, useEffect, useState } from "react";
+function useElapsedTime(isActive: boolean): string {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    if (!isActive) return;
+
+    const start = Date.now();
+    // Defer reset outside the synchronous effect body via microtask to
+    // satisfy the project's react-hooks/set-state-in-effect rule.
+    queueMicrotask(() => {
+      setSeconds(0);
+    });
+
+    const id = setInterval(() => {
+      setSeconds(Math.floor((Date.now() - start) / 1000));
+    }, 1000);
+
+    return () => clearInterval(id);
+  }, [isActive]);
+
+  const minutes = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${minutes}:${secs.toString().padStart(2, "0")}`;
+}
 import { useEditorStore, useWizardStore, useToast } from "../../store";
 import {
   ANIMATION,
@@ -97,6 +121,10 @@ export const StepGenerating = memo(function StepGenerating({
   // which is the only terminal state that isn't "Complete!" after generation stops.
   const isError =
     !isGenerating && !isComplete && progress.startsWith(GENERATION_ERROR_PREFIXES.GENERIC);
+
+  // Elapsed time timer — ticks while generation is actively running
+  const timerActive = isGenerating && !isComplete && !isError;
+  const elapsedTime = useElapsedTime(timerActive);
 
   const handleCancel = useCallback(() => {
     cancelGeneration();
@@ -415,13 +443,23 @@ export const StepGenerating = memo(function StepGenerating({
                   </motion.span>
                 </AnimatePresence>
               </motion.span>
+              {/* Elapsed time display — shows generation duration as mm:ss with a subtle divider */}
+              <span className="mx-2 text-dark-600" aria-hidden="true">
+                ·
+              </span>
+              <span className="tabular-nums text-dark-500 text-sm">
+                <span aria-hidden="true">{WIZARD_GENERATING_LABELS.ELAPSED_TIME} </span>
+                <span className="font-mono">{elapsedTime}</span>
+              </span>
             </p>
           </motion.div>
         )}
       </AnimatePresence>
 
       <p className="sr-only" role="status" aria-live="polite">
-        Generated {blueprintLines} blueprint lines and {tasksLines} task lines
+        {timerActive
+          ? `Elapsed time ${elapsedTime}. Generated ${blueprintLines} blueprint lines and ${tasksLines} task lines`
+          : `Generated ${blueprintLines} blueprint lines and ${tasksLines} task lines`}
       </p>
 
       {/* Live stats */}

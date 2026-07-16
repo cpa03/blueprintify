@@ -504,6 +504,8 @@ export const WIZARD_GENERATING_LABELS = {
   STARTING_FALLBACK: "Starting...",
   /** Description shown when generation is complete */
   COMPLETE_DESCRIPTION: "Your blueprint and tasks are ready to review in the editor",
+  /** Elapsed time label shown next to the timer during generation */
+  ELAPSED_TIME: "Elapsed",
 } as const;
 
 // ============================================================================
