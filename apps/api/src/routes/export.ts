@@ -1,13 +1,3 @@
-/**
- * Export Routes
- *
- * API endpoints for exporting project data in various formats.
- * Supports JSON, Markdown, and ZIP manifest exports with
- * structured response formats for client-side processing.
- *
- * @module routes/export
- */
-
 import { Hono } from "hono";
 import { CONTEXT_KEYS, ExportRequestSchema } from "@blueprint/shared";
 import { ErrorType, createErrorJson } from "../errors";
@@ -20,23 +10,20 @@ import {
   HTTP_STATUS,
   EXPORT_ERROR_MESSAGES,
   EXPORT_TEMPLATES,
+  INJECTION_FIELD_DEFINITIONS,
+  EXPORT_FORMATS,
+  FILENAME_PATTERNS,
+  LOG_CONTEXT,
 } from "../config/constants";
 import type { Env } from "../types";
 
 const app = new Hono<{ Bindings: Env }>();
 
-/**
- * Export project data in various formats (JSON, ZIP, Markdown)
- * POST /export
- */
 app.post(
   "/",
   rateLimit(rateLimitConfigs.standard),
   validateJson(ExportRequestSchema),
-  validatePromptInjection([
-    { path: "projectName", label: "project name" },
-    { path: "blueprint", label: "blueprint content" },
-  ]),
+  validatePromptInjection(INJECTION_FIELD_DEFINITIONS.EXPORT),
   async (c) => {
     const { projectName, blueprint, tasks, format } = c.get(CONTEXT_KEYS.VALIDATED_DATA);
 
@@ -51,15 +38,15 @@ app.post(
         format,
       };
 
-      if (format === "json") {
+      if (format === EXPORT_FORMATS.JSON) {
         return c.json({
           success: true,
           data: exportData,
-          filename: `${projectName.replace(/\s+/g, "_")}_export.json`,
+          filename: FILENAME_PATTERNS.EXPORT_JSON(projectName),
         });
       }
 
-      if (format === "markdown") {
+      if (format === EXPORT_FORMATS.MARKDOWN) {
         let markdown = EXPORT_TEMPLATES.MARKDOWN.HEADER(projectName);
         markdown += EXPORT_TEMPLATES.MARKDOWN.EXPORTED_LINE(timestamp);
         markdown += EXPORT_TEMPLATES.MARKDOWN.BLUEPRINT_SECTION(blueprint);
@@ -71,18 +58,17 @@ app.post(
           success: true,
           data: {
             content: markdown,
-            filename: `${projectName.replace(/\s+/g, "_")}.md`,
+            filename: FILENAME_PATTERNS.EXPORT_MARKDOWN(projectName),
           },
         });
       }
 
-      if (format === "zip") {
-        // For ZIP format, return a manifest that client can use
+      if (format === EXPORT_FORMATS.ZIP) {
         return c.json({
           success: true,
           data: {
             manifest: exportData,
-            filename: `${projectName.replace(/\s+/g, "_")}.zip`,
+            filename: FILENAME_PATTERNS.EXPORT_ZIP(projectName),
             note: "ZIP generation should be handled client-side or with additional service",
           },
         });
@@ -95,7 +81,7 @@ app.post(
         HTTP_STATUS.BAD_REQUEST
       );
     } catch (error) {
-      secureLogError("Export error", error, { projectName, format });
+      secureLogError(LOG_CONTEXT.EXPORT, error, { projectName, format });
       return c.json(
         createErrorJson(
           ErrorType.INTERNAL,
