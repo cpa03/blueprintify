@@ -39,6 +39,7 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { ANIMATION_DEFAULTS, SHORTCUT_DESCRIPTIONS, FRAMER_TYPE } from "@blueprint/shared/config";
 import {
+  EASING,
   SPRING_CONFIG,
   ANIMATION,
   HOVER_SCALE,
@@ -196,7 +197,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                         : {
                             duration: ANIMATION.MODAL_FADE,
                             delay: ANIMATION.STAGGER,
-                            ease: "easeOut",
+                            ease: EASING.easeOut,
                           }
                     }
                   >
@@ -213,7 +214,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                         : {
                             duration: ANIMATION.MODAL_FADE,
                             delay: ANIMATION.STAGGER * 2,
-                            ease: "easeOut",
+                            ease: EASING.easeOut,
                           }
                     }
                   >
@@ -236,7 +237,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                     : {
                         duration: ANIMATION.MODAL_FADE,
                         delay: ANIMATION.STAGGER * 3,
-                        ease: "easeOut",
+                        ease: EASING.easeOut,
                       }
                 }
                 className="flex justify-end gap-3 mt-6"
@@ -279,7 +280,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                     : {
                         duration: ANIMATION.MODAL_FADE,
                         delay: ANIMATION.STAGGER * 4,
-                        ease: "easeOut",
+                        ease: EASING.easeOut,
                       }
                 }
                 className="flex items-center justify-center gap-4 mt-4 pt-3 border-t border-dark-700/50"
