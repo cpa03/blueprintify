@@ -2397,3 +2397,25 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD | `feat/flexy-iteration-131-modularize-config` | refactor(flexy): modularize monolithic 3,186-line config.ts into 8 domain-specific sub-modules (Iteration 131) |
+
+### ✅ Flexy Iteration 132: Fix Hardcoded ease Regressions in ConfirmDialog Staggered Entrance Animation
+
+**Problem**: Commit `fd114657` (feat(web): add staggered entrance animations to ConfirmDialog) introduced 4 hardcoded `ease: "easeOut"` strings. The `EASING` config (defined in `theme.ts`, exported via `constants/ui.ts`) was available but not imported or used.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/components/ConfirmDialog.tsx` | Added `EASING` to import from `../config/constants` |
+| `apps/web/src/components/ConfirmDialog.tsx` | Replaced 4 hardcoded `ease: "easeOut"` with `ease: EASING.easeOut` (lines 199, 216, 239, 282) |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — **790 web + 499 api + 739 shared = 2,028 tests passing** across 88+ files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2629](https://github.com/cpa03/blueprintify/pull/2629) | `flexy/modularize-hardcoded` | refactor(flexy): fix hardcoded ease regression in ConfirmDialog staggered entrance animation (Iteration 132) |
