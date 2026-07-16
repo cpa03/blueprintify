@@ -154,13 +154,14 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                 {
                   animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY}s`,
                   animationDuration: `${ANIMATION.CARD_ENTRANCE_DURATION}s`,
+                  animationFillMode: "backwards",
                   "--tech-glow": TEMPLATE_GLOW_SHADOW,
                 } as React.CSSProperties
               }
               className={`
                 glass-card p-5 text-left relative group card-glow-hover
                 will-change-transform
-                animate-fade-in
+                animate-card-entrance
                 motion-safe:transition-all motion-safe:duration-200 motion-safe:ease-out
                 motion-safe:hover:scale-102 motion-safe:hover:-translate-y-0.5
                 motion-safe:active:scale-98
