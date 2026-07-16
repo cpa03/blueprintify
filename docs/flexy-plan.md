@@ -2397,3 +2397,26 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD | `feat/flexy-iteration-131-modularize-config` | refactor(flexy): modularize monolithic 3,186-line config.ts into 8 domain-specific sub-modules (Iteration 131) |
+
+### ✅ Flexy Iteration 132: Replace Hardcoded easeOut Regressions in ConfirmDialog
+
+**Problem**: Commit `fd114657` (staggered entrance animations for ConfirmDialog) introduced 4 new hardcoded `"easeOut"` animation easing strings that bypassed the centralized `EASING` config.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/components/ConfirmDialog.tsx` | Added `EASING` import from `../config/constants`; replaced 4x `ease: "easeOut"` with `ease: EASING.easeOut` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npm run audit` — 0 vulnerabilities
+- ✅ `npm run test:all` — **809 web + 499 api + 739 shared = 2,047 tests passing** across 89 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2635](https://github.com/cpa03/blueprintify/pull/2635) | `feat/flexy-iteration-132-easeout-regression` | refactor(flexy): replace hardcoded easeOut strings with EASING.easeOut in ConfirmDialog (Iteration 132) |
