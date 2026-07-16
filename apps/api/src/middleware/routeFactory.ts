@@ -38,7 +38,7 @@ export function createPostRoute<T extends z.ZodTypeAny>(
       Variables: { validatedData: z.infer<T> };
     }>
   ) => Response | Promise<Response>,
-  injectionFields?: PromptInjectionField[]
+  injectionFields?: readonly PromptInjectionField[]
 ): Hono<{ Bindings: Env }> {
   const app = new Hono<{ Bindings: Env }>();
 
