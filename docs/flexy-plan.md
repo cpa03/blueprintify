@@ -2361,3 +2361,39 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 | z-index values | ✅ All in Z_INDEX config |
 | Loading dots interval | ✅ Centralized UI_TIMEOUTS.LOADING_DOTS_INTERVAL |
 | Build/lint/test | ✅ **Clean across all workspaces — 2,028 tests passing** |
+
+### ✅ Flexy Iteration 131: Modularize Monolithic config.ts into Domain-Specific Sub-Modules
+
+**Problem**: At 3,186 lines with 158 exports, `packages/shared/src/config.ts` was the largest remaining monolithic file — the single source file violating modularity. Every change risked merge conflicts and review complexity.
+
+**Solution**: Split into 8 domain-specific sub-module files under `packages/shared/src/config/`, with the original `config.ts` becoming a barrel re-export:
+
+| Sub-Module | Exports | Purpose |
+|---|---|---|
+| `config/core.ts` | 25 | Foundation: TIME_UNITS, BYTE_CONVERSION, hexToRgba, IDs, routes, URLs, dev defaults, breakpoints, platform values |
+| `config/http.ts` | 14 | HTTP: status codes, methods, headers, SSE, CORS, retry, security headers, CSP |
+| `config/validation.ts` | 16 | Validation: limits, sanitization allowlists, char counters, scrollbar colors |
+| `config/storage.ts` | 20 | Storage: config, operations, KV keys, share, import/export, debounce |
+| `config/api.ts` | 29 | API: env vars, errors, auth, AI/generation, rate limits, circuit breaker |
+| `config/ui.ts` | 31 | UI: strings, toasts, tooltips, shortcuts, layout, keyboard keys, log/render strings |
+| `config/animation.ts` | 20 | Animation: durations, transitions, skeletons, scroll/progress effects, particles |
+| `config/templates.ts` | 3 | Templates: dependency versions, CSS colors, CSS sizing tokens |
+
+**Cross-module references** (2 total):
+- `api.ts` → `core.ts`: RATE_LIMIT_DEFAULTS, CIRCUIT_BREAKER_DEFAULTS use TIME_UNITS
+- `storage.ts` → `ui.ts`: EXPORT_FILENAMES references EDITOR_FILENAMES
+
+**Total**: 158 exports across 8 files + barrel — 100% coverage, zero duplicates.
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (shared, web, api)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean (shared with ESM fix, web, api)
+- ✅ `npm run test:all` — 1,238 tests passing across all workspaces
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-131-modularize-config` | refactor(flexy): modularize monolithic 3,186-line config.ts into 8 domain-specific sub-modules (Iteration 131) |
