@@ -2418,4 +2418,4 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD | `flexy/modularize-hardcoded` | refactor(flexy): fix hardcoded ease regression in ConfirmDialog staggered entrance animation (Iteration 132) |
+| [#2629](https://github.com/cpa03/blueprintify/pull/2629) | `flexy/modularize-hardcoded` | refactor(flexy): fix hardcoded ease regression in ConfirmDialog staggered entrance animation (Iteration 132) |
