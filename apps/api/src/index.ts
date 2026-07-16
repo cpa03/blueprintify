@@ -36,6 +36,7 @@ import {
   ROUTE_PATHS,
   CACHE_CONFIG,
   ERROR_MESSAGES,
+  ROUTE_PATH_ALL,
   setEnvConfig,
 } from "./config/constants";
 import { initializeContainer } from "./di";
@@ -46,9 +47,9 @@ initializeContainer();
 
 const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
 
-app.use("*", secureHeaders());
-app.use("*", etag());
-app.use("*", async (c, next) => {
+app.use(ROUTE_PATH_ALL, secureHeaders());
+app.use(ROUTE_PATH_ALL, etag());
+app.use(ROUTE_PATH_ALL, async (c, next) => {
   await next();
   c.res.headers.set(
     API_HEADERS.SECURITY.CROSS_ORIGIN_OPENER_POLICY,
@@ -60,11 +61,11 @@ app.use("*", async (c, next) => {
   );
 });
 app.use(
-  "*",
+  ROUTE_PATH_ALL,
   cors({
     origin: (origin) => {
       const allowedOrigin = CORS_CONFIG.ORIGIN;
-      if (!allowedOrigin || allowedOrigin === "*") return origin || "*";
+      if (!allowedOrigin || allowedOrigin === ROUTE_PATH_ALL) return origin || ROUTE_PATH_ALL;
       return allowedOrigin;
     },
     allowMethods: CORS_CONFIG.ALLOW_METHODS,
@@ -77,11 +78,11 @@ app.use(
     maxAge: CORS_CONFIG.MAX_AGE,
   })
 );
-app.use("*", prettyJSON());
-app.use("*", bodyLimit(bodyLimitConfigs.standard));
-app.use("*", requestLogger({ excludePaths: [ROUTE_PATHS.ROOT] }));
-app.use("*", apiKeyAuth({ excludePaths: [ROUTE_PATHS.ROOT, ROUTE_PATHS.WARMUP] }));
-app.use("*", rateLimit(rateLimitConfigs.standard));
+app.use(ROUTE_PATH_ALL, prettyJSON());
+app.use(ROUTE_PATH_ALL, bodyLimit(bodyLimitConfigs.standard));
+app.use(ROUTE_PATH_ALL, requestLogger({ excludePaths: [ROUTE_PATHS.ROOT] }));
+app.use(ROUTE_PATH_ALL, apiKeyAuth({ excludePaths: [ROUTE_PATHS.ROOT, ROUTE_PATHS.WARMUP] }));
+app.use(ROUTE_PATH_ALL, rateLimit(rateLimitConfigs.standard));
 
 app.get(ROUTE_PATHS.ROOT, (c) => {
   c.header(

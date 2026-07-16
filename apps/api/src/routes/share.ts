@@ -32,21 +32,18 @@ import {
   SHARE_ERROR_MESSAGES,
   CACHE_CONFIG,
   RATE_LIMIT_CONSTANTS,
+  ROUTE_SUB_PATHS,
+  INJECTION_FIELD_DEFINITIONS,
+  SQL_QUERIES,
+  LOG_CONTEXT,
 } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
 import { sanitizeHtml } from "../utils/sanitize";
 import { ErrorType, createErrorJson } from "../errors";
 
-/**
- * Derives a deterministic creator identifier from the API key.
- * Uses SHA-256 hashing to avoid storing the raw API key.
- * Returns undefined if no API key is configured (allows backward compatibility).
- */
-/** Flexy says: Log context strings stay local — these are log identifiers, not app config */
-const LOG_CREATE_ERROR = "Share creation error";
-const LOG_VERIFY_ERROR = "Share verify error";
-
-const UNKNOWN_SHARE_ID = "unknown";
+const LOG_CREATE_ERROR = LOG_CONTEXT.SHARE_CREATE;
+const LOG_VERIFY_ERROR = LOG_CONTEXT.SHARE_VERIFY;
+const UNKNOWN_SHARE_ID = LOG_CONTEXT.UNKNOWN_SHARE_ID;
 
 async function getCreatorId(apiKey: string | undefined): Promise<string | undefined> {
   if (!apiKey) return undefined;
@@ -241,10 +238,7 @@ app.post(
   "/",
   rateLimit(rateLimitConfigs.standard),
   validateJson(CreateShareSchema),
-  validatePromptInjection([
-    { path: "title", label: "share title" },
-    { path: "blueprint", label: "blueprint content" },
-  ]),
+  validatePromptInjection(INJECTION_FIELD_DEFINITIONS.SHARE_CREATE),
   async (c) => {
     try {
       const { title, blueprint, metadata, passphraseHash } = c.get(CONTEXT_KEYS.VALIDATED_DATA) as {
@@ -274,10 +268,7 @@ app.post(
       const metadataJson =
         Object.keys(enrichedMetadata).length > 0 ? JSON.stringify(enrichedMetadata) : null;
 
-      await c.env.DB.prepare(
-        `INSERT INTO blueprint_shares (id, title, blueprint, metadata, passphrase_hash, created_at, expires_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`
-      )
+      await c.env.DB.prepare(SQL_QUERIES.INSERT_SHARE)
         .bind(
           shareId,
           sanitizedTitle,
@@ -329,7 +320,7 @@ const shareEnumerationRateLimit = rateLimit({
   },
 });
 
-app.get("/:id", shareEnumerationRateLimit, async (c) => {
+app.get(ROUTE_SUB_PATHS.ID_PARAM, shareEnumerationRateLimit, async (c) => {
   try {
     const shareId = c.req.param("id") || "";
 
@@ -348,21 +339,15 @@ app.get("/:id", shareEnumerationRateLimit, async (c) => {
     const dbError = checkDbConfigured(c);
     if (dbError) return dbError;
 
-    const result = await c.env.DB.prepare(
-      `SELECT id, title, blueprint, metadata, passphrase_hash, created_at, expires_at
-         FROM blueprint_shares
-         WHERE id = ?`
-    )
-      .bind(shareId)
-      .first<{
-        id: string;
-        title: string;
-        blueprint: string;
-        metadata: string | null;
-        passphrase_hash: string | null;
-        created_at: string;
-        expires_at: string;
-      }>();
+    const result = await c.env.DB.prepare(SQL_QUERIES.SELECT_SHARE).bind(shareId).first<{
+      id: string;
+      title: string;
+      blueprint: string;
+      metadata: string | null;
+      passphrase_hash: string | null;
+      created_at: string;
+      expires_at: string;
+    }>();
 
     if (!result) {
       return c.json(
@@ -450,7 +435,7 @@ app.get("/:id", shareEnumerationRateLimit, async (c) => {
       HTTP_STATUS.OK
     );
   } catch (error) {
-    secureLogError("Share retrieval error", error);
+    secureLogError(LOG_CONTEXT.SHARE_RETRIEVAL, error);
     return c.json(
       withCtxError(c, ErrorType.INTERNAL, ERROR_MESSAGES.INTERNAL, ERROR_CODES.INTERNAL_ERROR),
       HTTP_STATUS.INTERNAL_ERROR
@@ -483,50 +468,47 @@ const shareVerifyRateLimit = rateLimit({
  * that can be used with GET /share/:id?token=xxx for subsequent access.
  * Rate-limited per share ID + IP to prevent brute-force attacks.
  */
-app.post("/:id/verify", shareVerifyRateLimit, async (c) => {
-  try {
-    const shareId = c.req.param("id") || "";
+app.post(
+  `${ROUTE_SUB_PATHS.ID_PARAM}${ROUTE_SUB_PATHS.VERIFY}`,
+  shareVerifyRateLimit,
+  async (c) => {
+    try {
+      const shareId = c.req.param("id") || "";
 
-    if (!isValidShareId(shareId)) {
-      return c.json(
-        withCtxError(
-          c,
-          ErrorType.VALIDATION,
-          SHARE_ERROR_MESSAGES.INVALID_SHARE_ID_FORMAT,
-          ERROR_CODES.VALIDATION_ERROR
-        ),
-        HTTP_STATUS.BAD_REQUEST
-      );
-    }
+      if (!isValidShareId(shareId)) {
+        return c.json(
+          withCtxError(
+            c,
+            ErrorType.VALIDATION,
+            SHARE_ERROR_MESSAGES.INVALID_SHARE_ID_FORMAT,
+            ERROR_CODES.VALIDATION_ERROR
+          ),
+          HTTP_STATUS.BAD_REQUEST
+        );
+      }
 
-    const dbError = checkDbConfigured(c);
-    if (dbError) return dbError;
+      const dbError = checkDbConfigured(c);
+      if (dbError) return dbError;
 
-    // Parse and validate the request body
-    const body = await c.req.json().catch(() => ({}));
-    const parsed = VerifySharePassphraseSchema.safeParse(body);
-    if (!parsed.success) {
-      return c.json(
-        withCtxError(
-          c,
-          ErrorType.VALIDATION,
-          SHARE_ERROR_MESSAGES.INVALID_PASSPHRASE,
-          ERROR_CODES.VALIDATION_ERROR
-        ),
-        HTTP_STATUS.BAD_REQUEST
-      );
-    }
+      // Parse and validate the request body
+      const body = await c.req.json().catch(() => ({}));
+      const parsed = VerifySharePassphraseSchema.safeParse(body);
+      if (!parsed.success) {
+        return c.json(
+          withCtxError(
+            c,
+            ErrorType.VALIDATION,
+            SHARE_ERROR_MESSAGES.INVALID_PASSPHRASE,
+            ERROR_CODES.VALIDATION_ERROR
+          ),
+          HTTP_STATUS.BAD_REQUEST
+        );
+      }
 
-    const { passphrase } = parsed.data;
+      const { passphrase } = parsed.data;
 
-    // Fetch share with passphrase hash
-    const result = await c.env.DB.prepare(
-      `SELECT id, title, blueprint, metadata, passphrase_hash, created_at, expires_at
-         FROM blueprint_shares
-         WHERE id = ?`
-    )
-      .bind(shareId)
-      .first<{
+      // Fetch share with passphrase hash
+      const result = await c.env.DB.prepare(SQL_QUERIES.SELECT_SHARE).bind(shareId).first<{
         id: string;
         title: string;
         blueprint: string;
@@ -536,85 +518,86 @@ app.post("/:id/verify", shareVerifyRateLimit, async (c) => {
         expires_at: string;
       }>();
 
-    if (!result || !result.passphrase_hash) {
+      if (!result || !result.passphrase_hash) {
+        return c.json(
+          withCtxError(
+            c,
+            ErrorType.NOT_FOUND,
+            SHARE_ERROR_MESSAGES.SHARE_NOT_FOUND_OR_EXPIRED,
+            ERROR_CODES.NOT_FOUND_ERROR
+          ),
+          HTTP_STATUS.NOT_FOUND
+        );
+      }
+
+      const expirationDate = result.expires_at ? new Date(result.expires_at as string) : null;
+      if (expirationDate && expirationDate < new Date()) {
+        return c.json(
+          withCtxError(
+            c,
+            ErrorType.NOT_FOUND,
+            SHARE_ERROR_MESSAGES.SHARE_EXPIRED,
+            ERROR_CODES.NOT_FOUND_ERROR
+          ),
+          HTTP_STATUS.NOT_FOUND
+        );
+      }
+
+      // Hash the provided passphrase and compare with stored hash
+      const encoder = new TextEncoder();
+      const hashBuffer = await crypto.subtle.digest("SHA-256", encoder.encode(passphrase));
+      const hashHex = Array.from(new Uint8Array(hashBuffer))
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
+
+      if (hashHex !== result.passphrase_hash) {
+        return c.json(
+          withCtxError(
+            c,
+            ErrorType.AUTHORIZATION,
+            SHARE_ERROR_MESSAGES.INVALID_PASSPHRASE,
+            ERROR_CODES.AUTHORIZATION_ERROR
+          ),
+          HTTP_STATUS.FORBIDDEN
+        );
+      }
+
+      // Generate verify token for subsequent GET requests
+      const verifyToken = await generateVerifyToken(shareId, c.env.API_KEY);
+
+      // Parse metadata
+      let parsedMetadata: Record<string, unknown> | undefined;
+      if (result.metadata) {
+        parsedMetadata = parseMetadata(result.metadata);
+      }
+
       return c.json(
-        withCtxError(
-          c,
-          ErrorType.NOT_FOUND,
-          SHARE_ERROR_MESSAGES.SHARE_NOT_FOUND_OR_EXPIRED,
-          ERROR_CODES.NOT_FOUND_ERROR
-        ),
-        HTTP_STATUS.NOT_FOUND
-      );
-    }
-
-    const expirationDate = result.expires_at ? new Date(result.expires_at as string) : null;
-    if (expirationDate && expirationDate < new Date()) {
-      return c.json(
-        withCtxError(
-          c,
-          ErrorType.NOT_FOUND,
-          SHARE_ERROR_MESSAGES.SHARE_EXPIRED,
-          ERROR_CODES.NOT_FOUND_ERROR
-        ),
-        HTTP_STATUS.NOT_FOUND
-      );
-    }
-
-    // Hash the provided passphrase and compare with stored hash
-    const encoder = new TextEncoder();
-    const hashBuffer = await crypto.subtle.digest("SHA-256", encoder.encode(passphrase));
-    const hashHex = Array.from(new Uint8Array(hashBuffer))
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
-
-    if (hashHex !== result.passphrase_hash) {
-      return c.json(
-        withCtxError(
-          c,
-          ErrorType.AUTHORIZATION,
-          SHARE_ERROR_MESSAGES.INVALID_PASSPHRASE,
-          ERROR_CODES.AUTHORIZATION_ERROR
-        ),
-        HTTP_STATUS.FORBIDDEN
-      );
-    }
-
-    // Generate verify token for subsequent GET requests
-    const verifyToken = await generateVerifyToken(shareId, c.env.API_KEY);
-
-    // Parse metadata
-    let parsedMetadata: Record<string, unknown> | undefined;
-    if (result.metadata) {
-      parsedMetadata = parseMetadata(result.metadata);
-    }
-
-    return c.json(
-      {
-        success: true,
-        data: {
-          id: result.id,
-          title: result.title,
-          blueprint: result.blueprint,
-          metadata: parsedMetadata,
-          createdAt: result.created_at,
-          expiresAt: result.expires_at,
-          verifyToken,
+        {
+          success: true,
+          data: {
+            id: result.id,
+            title: result.title,
+            blueprint: result.blueprint,
+            metadata: parsedMetadata,
+            createdAt: result.created_at,
+            expiresAt: result.expires_at,
+            verifyToken,
+          },
         },
-      },
-      HTTP_STATUS.OK
-    );
-  } catch (error) {
-    secureLogError(LOG_VERIFY_ERROR, error);
-    return c.json(
-      withCtxError(c, ErrorType.INTERNAL, ERROR_MESSAGES.INTERNAL, ERROR_CODES.INTERNAL_ERROR),
-      HTTP_STATUS.INTERNAL_ERROR
-    );
+        HTTP_STATUS.OK
+      );
+    } catch (error) {
+      secureLogError(LOG_VERIFY_ERROR, error);
+      return c.json(
+        withCtxError(c, ErrorType.INTERNAL, ERROR_MESSAGES.INTERNAL, ERROR_CODES.INTERNAL_ERROR),
+        HTTP_STATUS.INTERNAL_ERROR
+      );
+    }
   }
-});
+);
 
 app.delete(
-  "/:id",
+  ROUTE_SUB_PATHS.ID_PARAM,
   rateLimit(rateLimitConfigs.standard),
   authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
   async (c) => {
@@ -637,9 +620,7 @@ app.delete(
       if (dbError) return dbError;
 
       // Fetch share to verify ownership before deletion
-      const existing = await c.env.DB.prepare(
-        `SELECT id, metadata FROM blueprint_shares WHERE id = ?`
-      )
+      const existing = await c.env.DB.prepare(SQL_QUERIES.SELECT_SHARE_METADATA)
         .bind(shareId)
         .first<{ id: string; metadata: string | null }>();
 
@@ -674,7 +655,7 @@ app.delete(
         }
       }
 
-      await c.env.DB.prepare("DELETE FROM blueprint_shares WHERE id = ?").bind(shareId).run();
+      await c.env.DB.prepare(SQL_QUERIES.DELETE_SHARE).bind(shareId).run();
 
       return c.json(
         {
@@ -686,7 +667,7 @@ app.delete(
         HTTP_STATUS.OK
       );
     } catch (error) {
-      secureLogError("Share deletion error", error);
+      secureLogError(LOG_CONTEXT.SHARE_DELETION, error);
       return c.json(
         withCtxError(c, ErrorType.INTERNAL, ERROR_MESSAGES.INTERNAL, ERROR_CODES.INTERNAL_ERROR),
         HTTP_STATUS.INTERNAL_ERROR

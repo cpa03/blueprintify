@@ -14,6 +14,7 @@ import {
   VALIDATION_MESSAGES,
   ERROR_MESSAGES,
   ERROR_CODES,
+  CONTENT_TYPE_NONE,
 } from "../config/constants";
 import { detectInjectionPatterns } from "../config/prompt-security";
 
@@ -37,7 +38,10 @@ export const validateJson = <T extends z.ZodTypeAny>(
           `Content-Type must be ${HTTP_HEADERS.CONTENT_TYPE_JSON}`,
           {
             code: ERROR_CODES.VALIDATION_ERROR,
-            details: { expected: HTTP_HEADERS.CONTENT_TYPE_JSON, received: contentType || "none" },
+            details: {
+              expected: HTTP_HEADERS.CONTENT_TYPE_JSON,
+              received: contentType || CONTENT_TYPE_NONE,
+            },
           }
         ),
         HTTP_STATUS.BAD_REQUEST
@@ -111,7 +115,9 @@ export interface PromptInjectionField {
  * );
  * ```
  */
-export const validatePromptInjection = (fields: PromptInjectionField[]): MiddlewareHandler => {
+export const validatePromptInjection = (
+  fields: readonly PromptInjectionField[]
+): MiddlewareHandler => {
   return async (c, next) => {
     const data = c.get(CONTEXT_KEYS.VALIDATED_DATA) as Record<string, unknown>;
     if (!data) {
