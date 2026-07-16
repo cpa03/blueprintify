@@ -73,6 +73,7 @@ const StepGenerating = lazy(() =>
 function WizardComponent(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
   const projectName = useWizardStore((s) => s.projectName);
+  const setStep = useWizardStore((s) => s.setStep);
   const isGenerating = useEditorStore((s) => s.isGenerating);
   const generationProgress = useEditorStore((s) => s.generationProgress);
   const containerRef = useFocusOnStepChange(currentStep);
@@ -131,25 +132,31 @@ function WizardComponent(): JSX.Element {
   const handleAltArrowLeft = useCallback(
     (e: KeyboardEvent) => {
       if (e.altKey && e.key === KEYBOARD_EVENT_KEYS.ARROW_LEFT) {
-        // Skip during generation — prevents navigating away mid-stream
-        if (currentStep === WIZARD_STEP_KEYS.GENERATING) return;
+        // During active generation — prevents navigating away mid-stream
+        if (isGenerating) return;
         if (currentStep === WIZARD_STEP_KEYS.INFO) return; // Already at the first step
+
+        e.preventDefault();
+
+        if (currentStep === WIZARD_STEP_KEYS.GENERATING) {
+          setStep(WIZARD_STEP_KEYS.REVIEW);
+          return;
+        }
 
         const prevBtn = document.querySelector<HTMLButtonElement>(".btn-secondary:not(:disabled)");
         if (prevBtn) {
-          e.preventDefault();
           prevBtn.click();
         }
       }
     },
-    [currentStep]
+    [currentStep, isGenerating, setStep]
   );
 
   const handleAltArrowRight = useCallback(
     (e: KeyboardEvent) => {
       if (e.altKey && e.key === KEYBOARD_EVENT_KEYS.ARROW_RIGHT) {
-        // Skip during generation — prevents navigating away mid-stream
-        if (currentStep === WIZARD_STEP_KEYS.GENERATING) return;
+        // During active generation — prevents navigating away mid-stream
+        if (isGenerating) return;
         if (currentStep === WIZARD_STEP_KEYS.REVIEW) return; // Review is the last step before generation
 
         const nextBtn = document.querySelector<HTMLButtonElement>(".btn-primary:not(:disabled)");
@@ -159,7 +166,7 @@ function WizardComponent(): JSX.Element {
         }
       }
     },
-    [currentStep]
+    [currentStep, isGenerating]
   );
 
   useEffect(() => {
