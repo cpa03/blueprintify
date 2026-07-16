@@ -4,6 +4,22 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 133: Sync DOMPURIFY_CONFIG with Shared Sanitization Config
+
+| File | Change |
+| ---- | ------ |
+| `apps/web/src/config/security.ts` | Replaced hardcoded `ALLOWED_TAGS` array with `[...SANITIZE_ALLOWED_TAGS]` from `@blueprint/shared/config` |
+| `apps/web/src/config/security.ts` | Replaced hardcoded `ALLOWED_ATTR` array with `[...SANITIZE_ALLOWED_ATTR]` from `@blueprint/shared/config` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 809 web + 499 api + 739 shared = 2,047 tests passing across 89 files
+
+---
+
 ### ✅ Flexy Iteration 50: Centralize External Reference URLs & Spring Scroll Hover Config
 
 | File | Change |
