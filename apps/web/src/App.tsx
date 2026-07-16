@@ -8,14 +8,12 @@ import {
 } from "@blueprint/shared/config";
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
+import { TemplateGrid } from "./components/TemplateGrid";
 const ShowEditorButton = lazy(() =>
   import("./components/ShowEditorButton").then((m) => ({ default: m.ShowEditorButton }))
 );
 const ToastContainer = lazy(() =>
   import("./components/Toast").then((m) => ({ default: m.ToastContainer }))
-);
-const TemplateGrid = lazy(() =>
-  import("./components/TemplateGrid").then((m) => ({ default: m.TemplateGrid }))
 );
 const KeyboardShortcutsModal = lazy(() => import("./components/KeyboardShortcutsModal"));
 import { SkipLink } from "./components/SkipLink";
@@ -52,35 +50,6 @@ const Wizard = lazy(() => import("./components/Wizard").then((m) => ({ default: 
 const Editor = lazy(() =>
   import("./components/Editor").then((module) => ({ default: module.Editor }))
 );
-
-// Skeleton placeholder for lazy-loaded TemplateGrid - matches actual grid dimensions to prevent CLS
-function TemplateGridSkeleton(): JSX.Element {
-  return (
-    <section className="mb-12">
-      <div className="h-7 w-48 bg-dark-700 rounded-lg mb-2 animate-pulse" />
-      <div className="h-5 w-80 bg-dark-700 rounded-lg mb-6 animate-pulse" />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="glass-card p-5 min-h-35">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-dark-700 rounded-lg animate-pulse flex-shrink-0" />
-              <div className="flex-1 space-y-3">
-                <div className="h-5 w-32 bg-dark-700 rounded animate-pulse" />
-                <div className="h-4 w-full bg-dark-700 rounded animate-pulse" />
-                <div className="h-4 w-3/4 bg-dark-700 rounded animate-pulse" />
-                <div className="flex gap-2 mt-3">
-                  <div className="h-5 w-16 bg-dark-700 rounded-full animate-pulse" />
-                  <div className="h-5 w-20 bg-dark-700 rounded-full animate-pulse" />
-                  <div className="h-5 w-14 bg-dark-700 rounded-full animate-pulse" />
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
 
 function App(): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
@@ -344,9 +313,7 @@ function App(): JSX.Element {
               className={templatesExiting ? "animate-slide-out-up" : "animate-fade-in"}
               onAnimationEnd={templatesExiting ? handleTemplatesExitEnd : undefined}
             >
-              <Suspense fallback={<TemplateGridSkeleton />}>
-                <TemplateGrid onSelect={activateWizard} />
-              </Suspense>
+              <TemplateGrid onSelect={activateWizard} />
               <div className={LAYOUT.TEMPLATES_DIVIDER}>{UI_CONTENT.TEMPLATES_DIVIDER}</div>
             </div>
           )}
