@@ -464,7 +464,7 @@ export const StepGenerating = memo(function StepGenerating({
               </motion.span>
               {/* Elapsed time display — shows generation duration as mm:ss with a subtle divider */}
               <span className="mx-2 text-dark-600" aria-hidden="true">
-                ·
+                {DISPLAY_SYMBOLS.MIDDOT}
               </span>
               <span className="tabular-nums text-dark-500 text-sm">
                 <span aria-hidden="true">{WIZARD_GENERATING_LABELS.ELAPSED_TIME} </span>

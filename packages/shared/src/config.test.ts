@@ -3748,8 +3748,12 @@ describe("DISPLAY_SYMBOLS", () => {
     expect(DISPLAY_SYMBOLS.QUESTION_MARK).toBe("?");
   });
 
-  it("should have 4 properties", () => {
-    expect(Object.keys(DISPLAY_SYMBOLS).length).toBe(4);
+  it("should include MIDDOT display symbol", () => {
+    expect(DISPLAY_SYMBOLS.MIDDOT).toBe("\u00B7");
+  });
+
+  it("should have 5 properties", () => {
+    expect(Object.keys(DISPLAY_SYMBOLS).length).toBe(5);
   });
 
   it("should have all values as strings", () => {

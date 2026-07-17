@@ -30,7 +30,12 @@
 import { useState, memo, useCallback, useRef, useMemo } from "react";
 import { STARTER_TEMPLATES, KEYBOARD_EVENT_KEYS, BREAKPOINT_DEFAULTS } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
-import { ANIMATION, TOAST_MESSAGES, ACCESSIBILITY_LABELS } from "../config/constants";
+import {
+  ANIMATION,
+  TOAST_MESSAGES,
+  ACCESSIBILITY_LABELS,
+  ENTRANCE_STAGGER,
+} from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
 import { TEMPLATE_GLOW_SHADOW } from "../config/theme";
 
@@ -154,7 +159,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                 {
                   animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY}s`,
                   animationDuration: `${ANIMATION.CARD_ENTRANCE_DURATION}s`,
-                  animationFillMode: "backwards",
+                  animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
                   "--tech-glow": TEMPLATE_GLOW_SHADOW,
                 } as React.CSSProperties
               }
