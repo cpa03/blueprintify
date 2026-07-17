@@ -2482,3 +2482,32 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 809 web + 499 api + 739 shared = **2,047 tests passing** across 89 files
+
+---
+
+### ✅ Flexy Iteration 137: Eliminate Hardcoded Card-Entrance Animation Values, Middot Separator & Fill Mode String
+
+**Problem**: Three recent feature commits introduced hardcoded values:
+1. `feat(web): premium staggered card entrance with slide-up animation` — hardcoded `translateY(16px)`, `0.3s`, `ease-out` in CSS keyframe; hardcoded `"backwards"` in TemplateGrid.tsx
+2. `feat(web): add elapsed time counter during blueprint generation` — hardcoded `·` middot separator character in StepGenerating.tsx
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `MIDDOT` to `DISPLAY_SYMBOLS` — single source of truth for middot separator |
+| `packages/shared/src/config.test.ts` | Added MIDDOT value test; updated property count 4→5 |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced hardcoded `·` with `{DISPLAY_SYMBOLS.MIDDOT}` |
+| `apps/web/src/index.css` | Added `--card-entrance-translate-y`, `--card-entrance-duration`, `--card-entrance-easing` CSS custom properties to `:root`; keyframe uses `var(--card-entrance-translate-y)`; `.animate-card-entrance` uses longhand properties with `var()` |
+| `apps/web/src/components/TemplateGrid.tsx` | Imported `ENTRANCE_STAGGER`; replaced hardcoded `animationFillMode: "backwards"` with `ENTRANCE_STAGGER.FILL_MODE` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — **809 web + 499 api + 740 shared = 2,048 tests passing** across 89 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2659](https://github.com/cpa03/blueprintify/pull/2659) | `feat/flexy-iteration-137` | refactor(flexy): eliminate hardcoded animation values, middot separator and fill mode string (Iteration 137) |
