@@ -621,4 +621,6 @@ export const DISPLAY_SYMBOLS = {
   ARROW_LEFT: "\u2190" as const,
   /** Question mark — keyboard shortcut modal toggle key */
   QUESTION_MARK: "?" as const,
+  /** Middot — visual separator between elements (e.g. elapsed time label) */
+  MIDDOT: "\u00B7" as const,
 } as const;
