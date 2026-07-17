@@ -1,14 +1,20 @@
 #!/bin/sh
 # Pre-push hook — catches issues before CI blocks the PR.
 # Runs the full check suite: typecheck, lint, scan:secrets, audit, test:all
+# plus wrangler.toml validation for deployment readiness.
 # Skip with: git push --no-verify
 #
 # NOTE: The PR gatekeeper (.github/workflows/pr-gatekeeper.yml) is the
 # PRIMARY enforcement. This hook is for early feedback only.
 
 echo ""
-echo "🔍 Running pre-push validation (npm run check)..."
+echo "🔍 Running pre-push validation..."
 echo "   (skip with: git push --no-verify)"
+echo ""
+
+# Run wrangler validation in summary mode (non-blocking)
+# Warns about placeholder Cloudflare resource IDs before PR submission
+npm run validate:wrangler -- --summary
 echo ""
 
 npm run check
