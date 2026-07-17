@@ -509,6 +509,31 @@ export const WIZARD_GENERATING_LABELS = {
 } as const;
 
 // ============================================================================
+// Generation Phase Labels (progress bar)
+// ============================================================================
+
+/**
+ * Phase labels for the progress bar shown during blueprint generation.
+ * Flexy says: No hardcoded phase labels in StepGenerating.tsx!
+ */
+export const GENERATION_PHASE_LABELS = {
+  /** Shown when generation completes successfully */
+  COMPLETE: "Complete",
+  /** Shown when generation encounters an error */
+  ERROR: "Error",
+  /** Shown before any progress message is received */
+  STARTING: "Starting",
+  /** Shown during the active AI generation of blueprint content */
+  GENERATING_BLUEPRINT: "Generating blueprint",
+  /** Shown during the active AI generation of task content */
+  GENERATING_TASKS: "Generating tasks",
+  /** Shown for intermediate/retry progress states */
+  IN_PROGRESS: "In progress",
+  /** aria-label used for the progress bar when generation is complete */
+  COMPLETE_ARIA: "Generation complete",
+} as const;
+
+// ============================================================================
 // Generation Error Screen Labels
 // ============================================================================
 
