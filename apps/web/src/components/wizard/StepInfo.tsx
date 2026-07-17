@@ -87,6 +87,7 @@ export const StepInfo = memo(function StepInfo({
   const setDescription = useWizardStore((s) => s.setDescription);
   const setTargetAudience = useWizardStore((s) => s.setTargetAudience);
   const setConstraints = useWizardStore((s) => s.setConstraints);
+  const clearForm = useWizardStore((s) => s.clearForm);
   const nextStep = useWizardStore((s) => s.nextStep);
 
   const modifierKey = getModifierLabel();
@@ -113,6 +114,12 @@ export const StepInfo = memo(function StepInfo({
     delay: ANIMATION_MS.TYPING_INDICATOR_DELAY,
     minInputLength: 1,
   });
+
+  const hasAnyInput =
+    projectName.length > 0 ||
+    description.length > 0 ||
+    targetAudience.length > 0 ||
+    constraints.length > 0;
 
   const canProceed =
     projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN &&
@@ -182,6 +189,37 @@ export const StepInfo = memo(function StepInfo({
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-white">{UI_CONTENT.WIZARD.STEP_INFO.TITLE}</h2>
           <div className="flex items-center gap-2 text-sm">
+            <AnimatePresence>
+              {hasAnyInput && (
+                <motion.button
+                  type="button"
+                  onClick={clearForm}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: ANIMATION.FAST, ease: EASING.easeOut }}
+                  className="text-xs text-dark-500 hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded px-2 py-1 transition-colors flex items-center gap-1"
+                  aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_ALL_FIELDS}
+                  title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_ALL_FIELDS}
+                >
+                  <svg
+                    className="w-3.5 h-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
+                  Clear all
+                </motion.button>
+              )}
+            </AnimatePresence>
             <div className="w-24 h-2 bg-dark-700 rounded-full overflow-hidden relative">
               <motion.div
                 className={`h-full bg-gradient-to-r from-primary-500 to-accent-emerald ${canProceed ? "progress-shimmer relative" : ""}`}

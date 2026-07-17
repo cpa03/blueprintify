@@ -53,6 +53,7 @@ export interface WizardStore extends WizardState {
   addFeature: (feature: string) => void;
   removeFeature: (featureOrIndex: string | number) => void;
   clearFeatures: () => void;
+  clearForm: () => void;
   setTargetAudience: (audience: string) => void;
   setConstraints: (constraints: string) => void;
   reset: () => void;
@@ -175,6 +176,16 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
 
     clearFeatures: () => {
       set({ features: [] });
+      debouncedSave(get);
+    },
+
+    clearForm: () => {
+      set({
+        projectName: "",
+        description: "",
+        targetAudience: "",
+        constraints: "",
+      });
       debouncedSave(get);
     },
 

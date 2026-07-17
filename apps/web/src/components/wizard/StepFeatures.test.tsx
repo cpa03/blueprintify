@@ -111,6 +111,7 @@ const createMockStore = (overrides: Partial<WizardStore> = {}): WizardStore => {
     addFeature: vi.fn(),
     removeFeature: vi.fn(),
     clearFeatures: vi.fn(),
+    clearForm: vi.fn(),
     setTargetAudience: vi.fn(),
     setConstraints: vi.fn(),
     reset: vi.fn(),
