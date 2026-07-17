@@ -14,6 +14,7 @@ import {
   VALIDATION_MESSAGES,
   ERROR_MESSAGES,
   ERROR_CODES,
+  INJECTION_ERROR_MESSAGE,
   CONTENT_TYPE_NONE,
 } from "../config/constants";
 import { detectInjectionPatterns } from "../config/prompt-security";
@@ -135,7 +136,7 @@ export const validatePromptInjection = (
               code: ERROR_CODES.VALIDATION_ERROR,
               details: {
                 field: field.path,
-                message: `Input in '${field.label}' contains potentially unsafe content. Please remove any instructions directed at the AI system and try again.`,
+                message: INJECTION_ERROR_MESSAGE(field.label),
               },
             }),
             HTTP_STATUS.BAD_REQUEST
@@ -151,7 +152,7 @@ export const validatePromptInjection = (
                 code: ERROR_CODES.VALIDATION_ERROR,
                 details: {
                   field: field.path,
-                  message: `Input in '${field.label}' contains potentially unsafe content. Please remove any instructions directed at the AI system and try again.`,
+                  message: INJECTION_ERROR_MESSAGE(field.label),
                 },
               }),
               HTTP_STATUS.BAD_REQUEST

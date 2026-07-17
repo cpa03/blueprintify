@@ -2435,3 +2435,24 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2629](https://github.com/cpa03/blueprintify/pull/2629) | `flexy/modularize-hardcoded` | refactor(flexy): fix hardcoded ease regression in ConfirmDialog staggered entrance animation (Iteration 132) |
+
+### ✅ Flexy Iteration 135: Eliminate Hardcoded Injection Error Message in Validator Middleware
+
+**Problem**: `apps/api/src/middleware/validator.ts` had 2 hardcoded instances of the prompt injection error message string, while the `INJECTION_ERROR_MESSAGE` config constant in `validation.ts` was defined as a plain string (with literal `${label}` text) and was never imported/used anywhere — dead code.
+
+**Fix**: 
+1. Converted `INJECTION_ERROR_MESSAGE` from a plain string to a template function `(label: string) => string` — enables proper label interpolation
+2. Imported and used `INJECTION_ERROR_MESSAGE(field.label)` in `validator.ts` (2 occurrences) — eliminates hardcoded message strings
+3. The `PROMPT_INJECTION_ERROR_MESSAGE` in `prompt-security.ts` remains separate (different format — no `${label}` interpolation)
+
+| File | Change |
+| ---- | ------ |
+| `apps/api/src/config/constants/validation.ts` | `INJECTION_ERROR_MESSAGE` → template function `(label: string) => string` |
+| `apps/api/src/middleware/validator.ts` | Added `INJECTION_ERROR_MESSAGE` to import; replaced 2 hardcoded injection error messages with `INJECTION_ERROR_MESSAGE(field.label)` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 809 web + 499 api + 739 shared = **2,047 tests passing** across 89 files
