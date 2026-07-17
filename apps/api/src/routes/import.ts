@@ -1,9 +1,10 @@
 import { Hono } from "hono";
-import { CONTEXT_KEYS, ImportRequestSchema } from "@blueprint/shared";
+import { CONTEXT_KEYS, AUTH_DEFAULTS, ImportRequestSchema } from "@blueprint/shared";
 import { ErrorType, createErrorJson } from "../errors";
 import { ERROR_CODES } from "@blueprint/shared";
 import { validateJson, validatePromptInjection } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
+import { authorize } from "../middleware/authorize";
 import { secureLogError } from "../utils/secureLog";
 import { sanitizeHtml } from "../utils/sanitize";
 import {
@@ -24,6 +25,7 @@ app.post(
   rateLimit(rateLimitConfigs.standard),
   validateJson(ImportRequestSchema),
   validatePromptInjection(INJECTION_FIELD_DEFINITIONS.IMPORT),
+  authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
   async (c) => {
     const { data, format, overwrite } = c.get(CONTEXT_KEYS.VALIDATED_DATA);
 
