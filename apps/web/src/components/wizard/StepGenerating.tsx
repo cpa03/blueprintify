@@ -68,6 +68,7 @@ import {
   TOAST_MESSAGES,
   SPRING_CONFIG,
   WIZARD_GENERATING_LABELS,
+  GENERATION_PHASE_LABELS,
   GENERATION_ERROR_LABELS,
   CELEBRATION_TEXT,
   OPACITY_PULSE,
@@ -127,18 +128,17 @@ export const StepGenerating = memo(function StepGenerating({
   // users get an intuitive visual sense of progress beyond the text status.
   // The bar fills smoothly: 5% on start → 30% blueprint → 65% tasks → 100% complete.
   const generationPhase = useMemo<{ percent: number; label: string }>(() => {
-    if (isComplete) return { percent: 100, label: "Complete" };
-    if (isError) return { percent: 0, label: "Error" };
-    if (!progress) return { percent: 5, label: "Starting" };
+    if (isComplete) return { percent: 100, label: GENERATION_PHASE_LABELS.COMPLETE };
+    if (isError) return { percent: 0, label: GENERATION_PHASE_LABELS.ERROR };
+    if (!progress) return { percent: 5, label: GENERATION_PHASE_LABELS.STARTING };
 
     if (progress === GENERATION_MESSAGES.BLUEPRINT_START) {
-      return { percent: 30, label: "Generating blueprint" };
+      return { percent: 30, label: GENERATION_PHASE_LABELS.GENERATING_BLUEPRINT };
     }
     if (progress === GENERATION_MESSAGES.BLUEPRINT_COMPLETE) {
-      return { percent: 65, label: "Generating tasks" };
+      return { percent: 65, label: GENERATION_PHASE_LABELS.GENERATING_TASKS };
     }
-    // Retry or other intermediate messages
-    return { percent: 45, label: "In progress" };
+    return { percent: 45, label: GENERATION_PHASE_LABELS.IN_PROGRESS };
   }, [progress, isComplete, isError]);
 
   // Elapsed time timer — ticks while generation is actively running
@@ -488,7 +488,7 @@ export const StepGenerating = memo(function StepGenerating({
             aria-valuemax={100}
             aria-label={
               isComplete
-                ? "Generation complete"
+                ? GENERATION_PHASE_LABELS.COMPLETE_ARIA
                 : generationPhase.label + ": " + generationPhase.percent + "%"
             }
           >
@@ -507,11 +507,11 @@ export const StepGenerating = memo(function StepGenerating({
               transition={
                 isGenerating && generationPhase.percent < 100 && !shouldReduceMotion
                   ? {
-                      width: { duration: 0.6, ease: "easeOut" },
-                      opacity: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+                      width: { duration: 0.6, ease: EASING.easeOut },
+                      opacity: { duration: 2, repeat: Infinity, ease: EASING.easeInOut },
                     }
                   : {
-                      width: { duration: 0.6, ease: "easeOut" },
+                      width: { duration: 0.6, ease: EASING.easeOut },
                     }
               }
             />

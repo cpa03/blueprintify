@@ -2456,3 +2456,29 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 809 web + 499 api + 739 shared = **2,047 tests passing** across 89 files
+
+### ✅ Flexy Iteration 136: Eliminate Hardcoded Phase Progress Labels & Ease Strings in StepGenerating
+
+**Problem**: Recent `feat(web): add phase-based progress bar to generation step` and related commits introduced:
+1. 3 hardcoded `ease: "easeOut"`/`ease: "easeInOut"` strings in the progress bar transition — `EASING` config was already imported but unused
+2. 7 hardcoded phase label strings (`"Complete"`, `"Error"`, `"Starting"`, `"Generating blueprint"`, `"Generating tasks"`, `"In progress"`) in the `generationPhase` useMemo
+3. Hardcoded `"Generation complete"` aria-label on the progress bar
+
+**Fix**: 
+1. Replaced 3 hardcoded ease strings with `EASING.easeOut`/`EASING.easeInOut` (import already existed)
+2. Added `GENERATION_PHASE_LABELS` config object to `content.ts` with 8 label constants
+3. Replaced all 7 hardcoded phase labels + 1 aria-label with config references
+
+| File | Change |
+| ---- | ------ |
+| `apps/web/src/config/constants/content.ts` | Added `GENERATION_PHASE_LABELS` config (8 constants: COMPLETE, ERROR, STARTING, GENERATING_BLUEPRINT, GENERATING_TASKS, IN_PROGRESS, COMPLETE_ARIA) |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced 3 hardcoded `ease:"easeOut"/"easeInOut"` with `EASING.easeOut`/`EASING.easeInOut` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced 7 hardcoded phase label strings with `GENERATION_PHASE_LABELS.*` refs |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced hardcoded `"Generation complete"` aria-label with `GENERATION_PHASE_LABELS.COMPLETE_ARIA` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 809 web + 499 api + 739 shared = **2,047 tests passing** across 89 files
