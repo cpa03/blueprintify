@@ -981,7 +981,17 @@
    subtle "living atmosphere" behind the content. The glow gently shifts position
    and opacity over a 15-second cycle, adding premium depth to the dark theme
    without being distracting. Uses transform + opacity for GPU compositing.
-   Disabled when prefers-reduced-motion is active. */
+   Disabled when prefers-reduced-motion is active.
+
+   On page load the glow fades in over 1.2s (ambient-glow-enter) before the
+   looping drift begins, so the background doesn't pop in abruptly alongside
+   the hero content. The entrance delay is baked into the animation chain so
+   the staggered reveal of hero → subtitle → glow feels intentional. */
+@keyframes ambient-glow-enter {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
 @keyframes ambient-glow {
   0% {
     opacity: 0.5;
@@ -1009,8 +1019,15 @@
       color-mix(in srgb, var(--color-accent-purple) 12%, transparent) 0%,
       transparent 60%
     );
-  animation: ambient-glow 15s ease-in-out infinite alternate;
   will-change: transform, opacity;
+  /* Start invisible, fade in over 1.2s, then begin the looping drift.
+     The entrance fill-mode keeps opacity at 1 until the drift takes over,
+     while the drift animation's keyframes start at 0.5 — creating a smooth
+     visual handoff with no opacity jump at the transition boundary. */
+  opacity: 0;
+  animation:
+    ambient-glow-enter 1.2s ease-out forwards,
+    ambient-glow 15s ease-in-out 1.2s infinite alternate;
 }
 
 @media (prefers-reduced-motion: reduce) {
