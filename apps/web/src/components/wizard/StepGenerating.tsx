@@ -111,7 +111,7 @@ function LoadingDots({ active }: { active: boolean }): JSX.Element {
             scale: i < activeDots ? 1 : 0.3,
           }}
           transition={{
-            duration: 0.15,
+            duration: ANIMATION.TEXT_FADE,
             ease: EASING.easeOut,
           }}
         >
@@ -527,11 +527,15 @@ export const StepGenerating = memo(function StepGenerating({
               transition={
                 isGenerating && generationPhase.percent < 100 && !shouldReduceMotion
                   ? {
-                      width: { duration: 0.6, ease: EASING.easeOut },
-                      opacity: { duration: 2, repeat: Infinity, ease: EASING.easeInOut },
+                      width: { duration: ANIMATION.PULSE, ease: EASING.easeOut },
+                      opacity: {
+                        duration: ANIMATION.SLOW_PULSE,
+                        repeat: Infinity,
+                        ease: EASING.easeInOut,
+                      },
                     }
                   : {
-                      width: { duration: 0.6, ease: EASING.easeOut },
+                      width: { duration: ANIMATION.PULSE, ease: EASING.easeOut },
                     }
               }
             />
@@ -559,7 +563,11 @@ export const StepGenerating = memo(function StepGenerating({
           className="glass-card px-6 py-4"
         >
           <div className="text-2xl font-bold text-gradient">
-            <AnimatedNumber value={blueprintLines} duration={0.6} className="text-gradient" />
+            <AnimatedNumber
+              value={blueprintLines}
+              duration={ANIMATION.PULSE}
+              className="text-gradient"
+            />
           </div>
           <div className="text-sm text-dark-400">Blueprint Lines</div>
         </motion.div>
@@ -570,7 +578,11 @@ export const StepGenerating = memo(function StepGenerating({
           className="glass-card px-6 py-4"
         >
           <div className="text-2xl font-bold text-gradient">
-            <AnimatedNumber value={tasksLines} duration={0.6} className="text-gradient" />
+            <AnimatedNumber
+              value={tasksLines}
+              duration={ANIMATION.PULSE}
+              className="text-gradient"
+            />
           </div>
           <div className="text-sm text-dark-400">Task Lines</div>
         </motion.div>
