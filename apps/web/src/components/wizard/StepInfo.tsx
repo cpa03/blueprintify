@@ -313,6 +313,42 @@ export const StepInfo = memo(function StepInfo({
                 ? { "aria-describedby": "projectName-warning" }
                 : {})}
             />
+            {/* Clear button — appears when field has content */}
+            <AnimatePresence>
+              {projectName.length > 0 && (
+                <motion.button
+                  type="button"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: ANIMATION.FAST }}
+                  onClick={() => {
+                    setProjectName("");
+                    projectNameInputRef.current?.focus({ preventScroll: true });
+                  }}
+                  className={`absolute ${
+                    projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN ? "right-11" : "right-3"
+                  } top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors p-1 rounded-md hover:bg-dark-700/50`}
+                  aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_PROJECT_NAME}
+                  title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_PROJECT_NAME}
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </motion.button>
+              )}
+            </AnimatePresence>
             {projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN && (
               <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <ValidationCheckmark
@@ -400,6 +436,42 @@ export const StepInfo = memo(function StepInfo({
                   ? { "aria-describedby": "description-hint" }
                   : {})}
             />
+            {/* Clear button — appears when field has content */}
+            <AnimatePresence>
+              {description.length > 0 && (
+                <motion.button
+                  type="button"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: ANIMATION.FAST }}
+                  onClick={() => {
+                    setDescription("");
+                    descriptionRef.current?.focus({ preventScroll: true });
+                  }}
+                  className={`absolute ${
+                    description.length >= FORM_LIMITS.DESCRIPTION.MIN ? "right-11" : "right-3"
+                  } top-3 text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors p-1 rounded-md hover:bg-dark-700/50`}
+                  aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_DESCRIPTION}
+                  title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_DESCRIPTION}
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </motion.button>
+              )}
+            </AnimatePresence>
             {description.length >= FORM_LIMITS.DESCRIPTION.MIN && (
               <div className="absolute right-3 top-3 pointer-events-none">
                 <ValidationCheckmark
