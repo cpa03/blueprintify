@@ -89,17 +89,37 @@ interface StepGeneratingProps {
 }
 
 function LoadingDots({ active }: { active: boolean }): JSX.Element {
-  const [dots, setDots] = useState("");
+  const [activeDots, setActiveDots] = useState(0);
 
   useEffect(() => {
     if (!active) return;
     const intervalId = setInterval(() => {
-      setDots((prev) => (prev.length >= 3 ? "" : prev + "."));
+      setActiveDots((prev) => (prev >= 3 ? 0 : prev + 1));
     }, UI_TIMEOUTS.LOADING_DOTS_INTERVAL);
     return () => clearInterval(intervalId);
   }, [active]);
 
-  return <span aria-hidden="true">{dots}</span>;
+  return (
+    <span aria-hidden="true">
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="inline-block"
+          initial={{ opacity: 0, scale: 0.3 }}
+          animate={{
+            opacity: i < activeDots ? 1 : 0,
+            scale: i < activeDots ? 1 : 0.3,
+          }}
+          transition={{
+            duration: 0.15,
+            ease: EASING.easeOut,
+          }}
+        >
+          .
+        </motion.span>
+      ))}
+    </span>
+  );
 }
 
 export const StepGenerating = memo(function StepGenerating({
