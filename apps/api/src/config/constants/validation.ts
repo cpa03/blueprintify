@@ -68,8 +68,8 @@ export const INJECTION_FIELD_DEFINITIONS = {
   ],
 } as const;
 
-export const INJECTION_ERROR_MESSAGE =
-  "Input in '${label}' contains potentially unsafe content. Please remove any instructions directed at the AI system and try again.";
+export const INJECTION_ERROR_MESSAGE = (label: string): string =>
+  `Input in '${label}' contains potentially unsafe content. Please remove any instructions directed at the AI system and try again.`;
 
 export const ROUTE_PATH_ALL = "*";
 
