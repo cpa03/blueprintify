@@ -356,12 +356,12 @@ function App(): JSX.Element {
                 </Suspense>
               ) : (
                 <div className="p-6 space-y-4">
-                  <div className="h-5 w-36 bg-dark-700 rounded animate-pulse" />
-                  <div className="h-10 w-full bg-dark-700 rounded animate-pulse" />
-                  <div className="h-5 w-48 bg-dark-700 rounded animate-pulse" />
-                  <div className="h-24 w-full bg-dark-700 rounded animate-pulse" />
-                  <div className="h-5 w-32 bg-dark-700 rounded animate-pulse" />
-                  <div className="h-10 w-full bg-dark-700 rounded animate-pulse" />
+                  <div className="skeleton-block h-5 w-36" />
+                  <div className="skeleton-block h-10 w-full" />
+                  <div className="skeleton-block h-5 w-48" />
+                  <div className="skeleton-block h-24 w-full" />
+                  <div className="skeleton-block h-5 w-32" />
+                  <div className="skeleton-block h-10 w-full" />
                 </div>
               )}
             </div>
