@@ -35,7 +35,7 @@ import {
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { memo, useCallback, useRef, useEffect, useState } from "react";
+import { memo, useCallback, useRef, useEffect, useState, useMemo } from "react";
 function useElapsedTime(isActive: boolean): string {
   const [seconds, setSeconds] = useState(0);
 
@@ -121,6 +121,25 @@ export const StepGenerating = memo(function StepGenerating({
   // which is the only terminal state that isn't "Complete!" after generation stops.
   const isError =
     !isGenerating && !isComplete && progress.startsWith(GENERATION_ERROR_PREFIXES.GENERIC);
+
+  // Derive visual progress percentage from the generation phase string.
+  // Maps known progress messages to approximate completion percentages so
+  // users get an intuitive visual sense of progress beyond the text status.
+  // The bar fills smoothly: 5% on start → 30% blueprint → 65% tasks → 100% complete.
+  const generationPhase = useMemo<{ percent: number; label: string }>(() => {
+    if (isComplete) return { percent: 100, label: "Complete" };
+    if (isError) return { percent: 0, label: "Error" };
+    if (!progress) return { percent: 5, label: "Starting" };
+
+    if (progress === GENERATION_MESSAGES.BLUEPRINT_START) {
+      return { percent: 30, label: "Generating blueprint" };
+    }
+    if (progress === GENERATION_MESSAGES.BLUEPRINT_COMPLETE) {
+      return { percent: 65, label: "Generating tasks" };
+    }
+    // Retry or other intermediate messages
+    return { percent: 45, label: "In progress" };
+  }, [progress, isComplete, isError]);
 
   // Elapsed time timer — ticks while generation is actively running
   const timerActive = isGenerating && !isComplete && !isError;
@@ -456,10 +475,60 @@ export const StepGenerating = memo(function StepGenerating({
         )}
       </AnimatePresence>
 
+      {/* Phase progress bar — smooth gradient bar that fills as generation
+          progresses through its stages. Visible during active generation and
+          on completion; hidden on error. Respects prefers-reduced-motion. */}
+      {!isError && (isGenerating || isComplete) && (
+        <div className="w-full max-w-sm mx-auto mt-6 mb-2">
+          <div
+            className="w-full h-1.5 bg-dark-700/50 rounded-full overflow-hidden"
+            role="progressbar"
+            aria-valuenow={generationPhase.percent}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={
+              isComplete
+                ? "Generation complete"
+                : generationPhase.label + ": " + generationPhase.percent + "%"
+            }
+          >
+            <motion.div
+              className="h-full rounded-full bg-gradient-to-r from-primary-500 via-accent-purple to-accent-pink"
+              initial={{ width: 0 }}
+              animate={{
+                width: generationPhase.percent + "%",
+                opacity:
+                  isGenerating && generationPhase.percent < 100
+                    ? shouldReduceMotion
+                      ? 0.9
+                      : [0.85, 1, 0.85]
+                    : 1,
+              }}
+              transition={
+                isGenerating && generationPhase.percent < 100 && !shouldReduceMotion
+                  ? {
+                      width: { duration: 0.6, ease: "easeOut" },
+                      opacity: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+                    }
+                  : {
+                      width: { duration: 0.6, ease: "easeOut" },
+                    }
+              }
+            />
+          </div>
+        </div>
+      )}
+
       <p className="sr-only" role="status" aria-live="polite">
         {timerActive
-          ? `Elapsed time ${elapsedTime}. Generated ${blueprintLines} blueprint lines and ${tasksLines} task lines`
-          : `Generated ${blueprintLines} blueprint lines and ${tasksLines} task lines`}
+          ? "Elapsed time " +
+            elapsedTime +
+            ". Generated " +
+            blueprintLines +
+            " blueprint lines and " +
+            tasksLines +
+            " task lines"
+          : "Generated " + blueprintLines + " blueprint lines and " + tasksLines + " task lines"}
       </p>
 
       {/* Live stats */}
