@@ -344,6 +344,8 @@ export const ACCESSIBILITY_LABELS = {
   },
   WIZARD_INFO: {
     CLEAR_TARGET_AUDIENCE: "Clear target audience",
+    CLEAR_PROJECT_NAME: "Clear project name",
+    CLEAR_DESCRIPTION: "Clear description",
     CLEAR_CONSTRAINTS: "Clear constraints",
     CLEAR_ALL_FIELDS: "Clear all form fields",
     FIELDS_COMPLETED: (completed: number, total: number) =>
