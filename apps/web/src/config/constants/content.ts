@@ -83,6 +83,7 @@ export const UI_CONTENT = {
     BACK_TO_STACK: "Back to Stack",
     BACK_TO_FEATURES: "Back to Features",
     NEXT: "Next",
+    CLEAR: "Clear",
     CLEAR_ALL: "Clear all",
   },
   TEMPLATES_DIVIDER: "— or start from scratch —",

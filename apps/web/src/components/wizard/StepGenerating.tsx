@@ -605,9 +605,7 @@ export const StepGenerating = memo(function StepGenerating({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{
                 delay: ANIMATION_ENTRANCE_DELAYS.FULL_SECOND,
-                type: FRAMER_TYPE.SPRING,
-                stiffness: 200,
-                damping: 15,
+                ...SPRING_CONFIG.REFRESH,
               }}
             >
               <KeyboardShortcutTooltip

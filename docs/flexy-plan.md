@@ -2536,3 +2536,29 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2683](https://github.com/cpa03/blueprintify/pull/2683) | `feat/flexy-iteration-140-banner-exit-duration` | refactor(flexy): centralize hardcoded OfflineBanner exit animation duration into shared UI_TIMEOUTS config (Iteration 140) |
+
+### ✅ Flexy Iteration 141: Replace Inline Spring Config in StepGenerating & Hardcoded "Clear" Button Text in StepInfo
+
+**Problem**: Two hardcoded values in recent feature commits:
+
+1. `feat(step-generating): add staggered entrance animation to completion actions` introduced inline `stiffness: 200, damping: 15` spring config in `StepGenerating.tsx` — `SPRING_CONFIG.REFRESH` (same values) already existed in `ui.ts` but was not used.
+2. `feat(web): add Clear all button to StepInfo form` introduced hardcoded `"Clear"` text on the constraints clear button — no `UI_CONTENT.BUTTONS.CLEAR` constant existed.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced inline `stiffness: 200, damping: 15` with `...SPRING_CONFIG.REFRESH` — uses existing shared spring config |
+| `apps/web/src/config/constants/content.ts` | Added `BUTTONS.CLEAR: "Clear"` — single source of truth for clear button display text |
+| `apps/web/src/components/wizard/StepInfo.tsx` | Replaced hardcoded `"Clear"` with `{UI_CONTENT.BUTTONS.CLEAR}` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 837 web + 499 api + 740 shared = **2,076 tests passing** across 89+ files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `feat/flexy-iteration-141-spring-clear` | refactor(flexy): replace inline spring config and hardcoded Clear button text with shared constants (Iteration 141) |
