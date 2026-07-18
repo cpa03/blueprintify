@@ -28,7 +28,7 @@
  * ```
  */
 
-import { useState, useCallback, useEffect, useRef, memo } from "react";
+import { useState, useCallback, useEffect, useLayoutEffect, useRef, memo } from "react";
 import { useOnlineStatus } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { STYLE_ID_STRINGS, UI_TIMEOUTS } from "@blueprint/shared/config";
@@ -56,7 +56,12 @@ import { SmartTooltip } from "./SmartTooltip";
  *
  * Exit: smooth slide-up + fade for a clean dismissal, matching
  * the ease-out used throughout the rest of the app.
+ *
+ * The exit animation uses the Tailwind `animate-banner-exit` class
+ * which is defined in tailwind.config.js with 0.3s duration.
  */
+const BANNER_EXIT_DURATION_MS = 300;
+
 const pulseKeyframes = OFFLINE_ANIMATION.PULSE_RING_KEYFRAMES;
 const pulseScaleKeyframes = OFFLINE_ANIMATION.PULSE_SCALE_KEYFRAMES;
 const bannerEnterKeyframes = `@keyframes offline-banner-enter {
@@ -90,23 +95,32 @@ if (typeof document !== "undefined") {
 function OfflineBannerComponent(): JSX.Element | null {
   const { isOnline } = useOnlineStatus();
   const [isDismissed, setIsDismissed] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
+  const exitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const shouldReduceMotion = useReducedMotion();
   const prevOnlineRef = useRef(isOnline);
+  const prevVisibleRef = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [dismissAnnouncement, setDismissAnnouncement] = useState("");
 
   const isVisible = !isOnline && !isDismissed;
+  const shouldRender = isVisible || isExiting;
+  const shouldShowMaxHeight = isVisible || isExiting;
 
   const handleDismiss = useCallback(() => {
+    setIsExiting(true);
     setIsDismissed(true);
     setDismissAnnouncement(ACCESSIBILITY_LABELS.OFFLINE_BANNER.DISMISS_ANNOUNCEMENT);
     // Clear the dismiss announcement after screen readers have had time to announce it
     setTimeout(() => setDismissAnnouncement(""), UI_TIMEOUTS.DISMISS_ANNOUNCEMENT_CLEAR);
   }, []);
 
-  // Reset dismissed state when coming back online so banner can show again next time
-  useEffect(() => {
+  // Reset dismissed state when coming back online so banner can show again next time.
+  // Uses useLayoutEffect so isExiting is set synchronously before the browser paints,
+  // preventing a flash frame where the inner content unmounts before the exit animation.
+  useLayoutEffect(() => {
     if (isOnline && !prevOnlineRef.current) {
+      setIsExiting(true);
       setIsDismissed(false);
       // Announce connectivity was restored — the banner auto-hides so screen
       // reader users get explicit confirmation that they are back online
@@ -115,6 +129,35 @@ function OfflineBannerComponent(): JSX.Element | null {
     }
     prevOnlineRef.current = isOnline;
   }, [isOnline]);
+
+  // Animate exit when the banner transitions from visible to hidden (online or dismiss).
+  // Uses a timer matching the CSS exit animation duration (300ms) so the inner content
+  // stays mounted with the exit animation class long enough to play the slide-up + fade,
+  // then cleanly unmounts while the outer container finishes its max-height collapse.
+  useEffect(() => {
+    if (prevVisibleRef.current && !isVisible) {
+      setIsExiting(true);
+      exitTimerRef.current = setTimeout(() => {
+        setIsExiting(false);
+        exitTimerRef.current = null;
+      }, BANNER_EXIT_DURATION_MS);
+    } else if (!prevVisibleRef.current && isVisible) {
+      // Became visible mid-exit (rare race: offline toggled rapidly) — cancel exit
+      if (exitTimerRef.current) {
+        clearTimeout(exitTimerRef.current);
+        exitTimerRef.current = null;
+      }
+      setIsExiting(false);
+    }
+    prevVisibleRef.current = isVisible;
+
+    return () => {
+      if (exitTimerRef.current) {
+        clearTimeout(exitTimerRef.current);
+        exitTimerRef.current = null;
+      }
+    };
+  }, [isVisible]);
 
   return (
     <>
@@ -126,19 +169,21 @@ function OfflineBannerComponent(): JSX.Element | null {
         className={`overflow-hidden ${
           // Outer container handles layout space via max-height
           // while the inner banner slides with GPU-composited transform.
+          // Uses shouldShowMaxHeight (includes exit state) so the container
+          // stays open during the exit animation before cleanly collapsing.
           shouldReduceMotion
-            ? isVisible
+            ? shouldShowMaxHeight
               ? "max-h-16 opacity-100"
               : "max-h-0 opacity-0"
             : "transition-[max-height] duration-400 ease-out " +
-              (isVisible ? "max-h-16" : "max-h-0")
+              (shouldShowMaxHeight ? "max-h-16" : "max-h-0")
         }`}
-        aria-hidden={!isVisible}
+        aria-hidden={!shouldRender}
       >
-        {isVisible && (
+        {shouldRender && (
           <div
             className={`relative bg-gradient-to-r from-accent-pink/15 via-accent-pink/10 to-dark-900/80 border-b border-accent-pink/20 backdrop-blur-xl ${
-              shouldReduceMotion ? "" : "animate-banner-enter"
+              shouldReduceMotion ? "" : isVisible ? "animate-banner-enter" : "animate-banner-exit"
             }`}
           >
             {/* Gradient accent line */}
