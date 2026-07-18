@@ -127,7 +127,6 @@ Every significant feature must include:
 - Architecture: `docs/blueprint.md`
 - Active Tasks (entry point): `docs/active-tasks.md`
 - Completed Tasks: `docs/completed-tasks-YYYY-QX.md`
-- Completed Tasks: `docs/completed-tasks-YYYY-QX.md`
 - Features: `docs/features.md`
 
 ## Task Lifecycle Management

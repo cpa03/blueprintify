@@ -244,6 +244,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 | Method | Endpoint          | Description                                    |
 | ------ | ----------------- | ---------------------------------------------- |
 | GET    | `/`               | Health check                                   |
+| GET    | `/warmup`         | Pre-warm circuit breaker on worker startup     |
 | POST   | `/generate`       | Generate blueprint (SSE stream)                |
 | POST   | `/tasks`          | Generate tasks from blueprint (SSE stream)     |
 | POST   | `/refine`         | Refine content section (SSE stream)            |
