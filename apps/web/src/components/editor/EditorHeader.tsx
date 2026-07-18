@@ -294,6 +294,36 @@ const ContentStats = React.memo(function ContentStats({
               {readingTimeDisplay}
             </motion.span>
           </div>
+          {/* Tab navigation keyboard hint — persistent arrow key shortcut
+              showing that ←/→ switches between blueprint/tasks tabs. Only
+              shown when content exists (the ContentStats container is mounted
+              only when `content` is non-empty). Complements the `?` shortcuts
+              badge by exposing the most common editor navigation shortcut at
+              the point of use, rather than burying it in the modal. */}
+          <div className="w-px h-2 bg-dark-700" />
+          <motion.div
+            key="tab-nav-hint"
+            className="flex items-center gap-1"
+            initial={{ opacity: 0, x: -4 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -4 }}
+            transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
+          >
+            <kbd
+              className="px-1 py-0.5 bg-dark-700 rounded text-3xs font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"
+              aria-hidden="true"
+            >
+              ←
+            </kbd>
+            <span className="text-dark-500 text-3xs">/</span>
+            <kbd
+              className="px-1 py-0.5 bg-dark-700 rounded text-3xs font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"
+              aria-hidden="true"
+            >
+              →
+            </kbd>
+            <span className="text-dark-500">{EDITOR_LABELS.TAB_NAVIGATION.SWITCH_TABS}</span>
+          </motion.div>
           {/* Keyboard shortcut discovery badge — a persistent yet subtle hint that
               `?` opens the shortcuts modal, ensuring users can always discover
               power-user workflows even after the initial hint glow fades from
