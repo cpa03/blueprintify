@@ -28,6 +28,7 @@ import {
 import {
   SCROLL_PULSE_DEFAULTS as SHARED_SCROLL_PULSE_DEFAULTS,
   SVG_TRANSITION_DEFAULTS as SHARED_SVG_TRANSITION_DEFAULTS,
+  STAGGER_CONFIG as SHARED_STAGGER_CONFIG,
 } from "@blueprint/shared/config";
 
 // ============================================================================
@@ -311,6 +312,9 @@ export const ROTATION = {
  * Centralizes all hardcoded opacity arrays so values stay consistent.
  * Flexy says: No hardcoded opacity: [1, 0.7, 1] values in components!
  * Usage: animate={OPACITY_PULSE.SUBTLE}
+ *
+ * Extended by Flexy Iteration 142 with shared pulse presets from @blueprint/shared
+ * (GLOW, BREATHING, SOFT_BLINK, TYPING, HALF_BLINK).
  */
 export const OPACITY_PULSE = {
   /** Gentle pulse: 1 → 0.85 → 1 — for icons and decorative elements */
@@ -319,24 +323,55 @@ export const OPACITY_PULSE = {
   SUBTLE: [1, 0.7, 1],
   /** Strong pulse: 1 → 0.55 → 1 — for emphasis and callouts */
   STRONG: [1, 0.55, 1],
+  /** Gentle glow pulse: 0.4 → 0.7 → 0.4 — for soft glow/breathe effects behind icons */
+  GLOW: [0.4, 0.7, 0.4],
+  /** Breathing pulse: 1 → 0.35 → 1 — for content availability indicator dots */
+  BREATHING: [1, 0.35, 1],
+  /** Soft blink pulse: 0.8 → 1 → 0.8 — for subtle attention-seeking elements */
+  SOFT_BLINK: [0.8, 1, 0.8],
+  /** Typing indicator pulse: 0.4 → 1 → 0.4 — for live typing/streaming indicators */
+  TYPING: [0.4, 1, 0.4],
+  /** Half-opacity blink: 0.5 → 1 → 0.5 — for standard blinking/attention effects */
+  HALF_BLINK: [0.5, 1, 0.5],
 };
 
 /**
  * Scale keyframe pulse sequences for breathing scale animations.
  * Flexy says: No hardcoded scale: [1, 1.08, 1] values in components!
+ *
+ * Extended by Flexy Iteration 142 with shared pulse presets from @blueprint/shared
+ * (ERROR_ICON, GLOW, CONTENT_DOT, PARTICLE_BURST, SECTION_BADGE, MILESTONE, PARTICLE_RING).
  */
 export const SCALE_PULSE = {
   /** Gentle scale pulse: 1 → 1.08 → 1 — for icons and decorative elements */
   GENTLE: [1, 1.08, 1],
+  /** Gentle error icon pulse: 1 → 1.04 → 1 — for subtle emphasis on warning/error icons */
+  ERROR_ICON: [1, 1.04, 1],
+  /** Glow pulse: 1 → 1.15 → 1 — for soft glow rings behind interactive elements */
+  GLOW: [1, 1.15, 1],
+  /** Content dot pulse: 1 → 1.2 → 1 — for content availability indicator dots */
+  CONTENT_DOT: [1, 1.2, 1],
+  /** Particle burst: 0 → 1.2 → 0.8 — for celebration particle burst entrance */
+  PARTICLE_BURST: [0, 1.2, 0.8],
+  /** Section badge pulse: 1 → 1.12 → 1 — for section badge highlights */
+  SECTION_BADGE: [1, 1.12, 1],
+  /** Milestone pulse: 1 → 1.35 → 1 — for milestone/achievement reached animations */
+  MILESTONE: [1, 1.35, 1],
+  /** Particle fade-out: 0.5 → 1.2 → 1.5 — for celebration particle ring expansion */
+  PARTICLE_RING: [0.5, 1.2, 1.5],
 };
 
 /**
  * Y-offset keyframe sequences for floating/bobbing animations.
  * Flexy says: No hardcoded y: [0, -3, 0] values in components!
+ *
+ * Extended by Flexy Iteration 142 with TYPING preset from @blueprint/shared.
  */
 export const Y_OFFSET = {
   /** Subtle float: 0 → -3 → 0 — for icons and decorative elements */
   SUBTLE: [0, -3, 0],
+  /** Typing bobbing: 0 → -4 → 0 — for live typing/streaming indicator bobbing */
+  TYPING: [0, -4, 0],
 };
 
 // ============================================================================
@@ -381,6 +416,16 @@ export const EMPTY_STATE_CONFIG = {
     MARGIN_TOP_PX: SHARED_EMPTY_STATE_LAYOUT.PREVIEW_GLOW.MARGIN_TOP_PX,
   } as const,
 } as const;
+
+// ============================================================================
+// Staggered Entrance Animation Config
+// ============================================================================
+
+/**
+ * Staggered entrance animation timing configuration.
+ * Flexy says: Single source of truth in @blueprint/shared!
+ */
+export { SHARED_STAGGER_CONFIG as STAGGER_CONFIG };
 
 /** UI Fallback values for environment-dependent configs */
 export const UI_FALLBACKS = {

@@ -2557,8 +2557,39 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 837 web + 499 api + 740 shared = **2,076 tests passing** across 89+ files
 
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `feat/flexy-iteration-141-spring-clear` | refactor(flexy): replace inline spring config and hardcoded Clear button text with shared constants (Iteration 141) |
+
+### ✅ Flexy Iteration 142: Centralize Stagger Configs and Pulse Keyframe Arrays into Shared Config
+
+**Problem**: Components still had hardcoded `staggerChildren`/`delayChildren` values and inline opacity/scale/y-offset keyframe arrays:
+- `ErrorFallback`: `staggerChildren: 0.12`, `delayChildren: 0.1`, `scale: [1, 1.04, 1]`, `scale: [1, 1.15, 1]`, `opacity: [0.4, 0.7, 0.4]`
+- `EditorHeader`: `opacity: [1, 0.35, 1]`, `scale: [1, 1.2, 1]`
+- `EditorToolbar`: `opacity: [0.5, 1, 0.5]`
+- `StepFeatures`: `staggerChildren: 0.04`, `scale: [1, 1.12, 1]`, `scale: [1, 1.05, 1]`, `scale: [1, 1.08, 1]`
+- `StepReview`: `staggerChildren: 0.035`, `staggerChildren: 0.04`
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/animation.ts` | Added `STAGGER_CONFIG` (ERROR_FALLBACK, FEATURES_CHIP, REVIEW_SECTION, REVIEW_GROUP); expanded `OPACITY_PULSE` (GLOW, BREATHING, SOFT_BLINK, TYPING, HALF_BLINK); expanded `SCALE_PULSE` (ERROR_ICON, GLOW, CONTENT_DOT, PARTICLE_BURST, SECTION_BADGE, MILESTONE, PARTICLE_RING); expanded `Y_OFFSET` (TYPING) |
+| `apps/web/src/config/constants/ui.ts` | Added `STAGGER_CONFIG` re-export; merged shared `OPACITY_PULSE`/`SCALE_PULSE`/`Y_OFFSET` entries alongside local presets |
+| `apps/web/src/components/ErrorFallback.tsx` | Replaced inline stagger with `STAGGER_CONFIG.ERROR_FALLBACK.*`; replaced pulse arrays with `SCALE_PULSE.ERROR_ICON`/`.GLOW` and `OPACITY_PULSE.GLOW` |
+| `apps/web/src/components/editor/EditorHeader.tsx` | Replaced inline arrays with `OPACITY_PULSE.BREATHING` and `SCALE_PULSE.CONTENT_DOT` |
+| `apps/web/src/components/editor/EditorToolbar.tsx` | Replaced inline array with `OPACITY_PULSE.HALF_BLINK` |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | Replaced stagger with `STAGGER_CONFIG.FEATURES_CHIP.STAGGER_S`; replaced inline scale arrays with `SCALE_PULSE.SECTION_BADGE`/`.GENTLE` |
+| `apps/web/src/components/wizard/StepReview.tsx` | Replaced staggers with `STAGGER_CONFIG.REVIEW_SECTION.STAGGER_S` and `STAGGER_CONFIG.REVIEW_GROUP.STAGGER_S` |
+| `packages/shared/src/config.test.ts` | Added 5 describe blocks (STAGGER_CONFIG, OPACITY_PULSE, SCALE_PULSE, Y_OFFSET) with value and structural assertions |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 837 web + 499 api + 765 shared = **2,101 tests passing** across 91 files
+
 ## PR
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `feat/flexy-iteration-141-spring-clear` | refactor(flexy): replace inline spring config and hardcoded Clear button text with shared constants (Iteration 141) |
+| TBD (this PR) | `feat/flexy-iteration-142-pulse-stagger-config` | refactor(flexy): centralize stagger configs and pulse keyframe arrays into shared config (Iteration 142) |

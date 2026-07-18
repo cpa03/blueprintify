@@ -44,6 +44,8 @@ import {
   UI_CONTENT,
   ANIMATION,
   EASING,
+  STAGGER_CONFIG,
+  SCALE_PULSE,
 } from "../../config/constants";
 import { TRANSFORMS } from "../../config/theme";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
@@ -283,7 +285,7 @@ export const StepFeatures = memo(function StepFeatures({
               <AnimatePresence mode="popLayout">
                 {features.map((feature, index) => {
                   const isJustAdded = feature === justAdded;
-                  const staggerDelay = index * 0.04;
+                  const staggerDelay = index * STAGGER_CONFIG.FEATURES_CHIP.STAGGER_S;
                   return (
                     <motion.span
                       key={feature}
@@ -291,7 +293,7 @@ export const StepFeatures = memo(function StepFeatures({
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{
                         opacity: 1,
-                        scale: isJustAdded ? [1, 1.08, 1] : 1,
+                        scale: isJustAdded ? SCALE_PULSE.GENTLE : 1,
                         transition: isJustAdded
                           ? { duration: ANIMATION.MEDIUM_SLOW, ease: EASING.easeOut }
                           : {
@@ -434,7 +436,7 @@ export const StepFeatures = memo(function StepFeatures({
                 hidden: {},
                 visible: {
                   transition: {
-                    staggerChildren: 0.04,
+                    staggerChildren: STAGGER_CONFIG.FEATURES_CHIP.STAGGER_S,
                     delayChildren: ANIMATION.SUBTLE_MOVE,
                   },
                 },
@@ -474,7 +476,7 @@ export const StepFeatures = memo(function StepFeatures({
                     animate={
                       isJustAdded
                         ? {
-                            scale: [1, 1.12, 1],
+                            scale: SCALE_PULSE.SECTION_BADGE,
                             transition: { duration: ANIMATION.SEMI_SLOW, ease: EASING.easeOut },
                           }
                         : {}
@@ -577,7 +579,7 @@ export const StepFeatures = memo(function StepFeatures({
             <motion.div
               className="bg-accent-emerald/90 backdrop-blur-sm text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
               initial={showAllAddedMsg ? { scale: 0.9 } : undefined}
-              animate={showAllAddedMsg ? { scale: [1, 1.05, 1] } : undefined}
+              animate={showAllAddedMsg ? { scale: SCALE_PULSE.GENTLE } : undefined}
               transition={{ duration: ANIMATION.FADE_IN, ease: EASING.easeOut }}
             >
               <svg

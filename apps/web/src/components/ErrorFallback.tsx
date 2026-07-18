@@ -20,6 +20,9 @@ import {
   TIMEOUTS,
   HOVER_SCALE,
   TAP_SCALE,
+  STAGGER_CONFIG,
+  SCALE_PULSE,
+  OPACITY_PULSE,
 } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE } from "@blueprint/shared/config";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
@@ -34,8 +37,8 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.1,
+      staggerChildren: STAGGER_CONFIG.ERROR_FALLBACK.STAGGER_S,
+      delayChildren: STAGGER_CONFIG.ERROR_FALLBACK.DELAY_CHILDREN_S,
     },
   },
 };
@@ -122,7 +125,7 @@ export const ErrorFallback = memo(function ErrorFallback({
                 shouldReduceMotion
                   ? {}
                   : {
-                      scale: [1, 1.04, 1],
+                      scale: SCALE_PULSE.ERROR_ICON,
                     }
               }
               transition={{
@@ -138,8 +141,8 @@ export const ErrorFallback = memo(function ErrorFallback({
                   shouldReduceMotion
                     ? {}
                     : {
-                        scale: [1, 1.15, 1],
-                        opacity: [0.4, 0.7, 0.4],
+                        scale: SCALE_PULSE.GLOW,
+                        opacity: OPACITY_PULSE.GLOW,
                       }
                 }
                 transition={{
