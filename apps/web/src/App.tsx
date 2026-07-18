@@ -26,7 +26,7 @@ const ScrollToBottomLazy = lazy(() =>
   import("./components/ScrollToTop").then((m) => ({ default: m.ScrollToBottom }))
 );
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
-import { useWizardStore, useEditorStore, useToast, useToastStore } from "./store";
+import { useWizardStore, useEditorStore, useToast, useToastStore, resetAllStores } from "./store";
 import { useOnlineStatus } from "./hooks";
 import {
   UI_CONTENT,
@@ -35,12 +35,16 @@ import {
   ENTRANCE_STAGGER,
   ACCESSIBILITY_LABELS,
   TOAST_MESSAGES,
+  CONFIRM_DIALOG,
 } from "./config/constants";
 import { LAYOUT, BUTTON, ICON, SPINNER } from "./config/styles";
 import { getAriaShortcutKey } from "./lib/platform";
 import { Icon } from "./components/Icon";
 const GenerationCelebration = lazy(() =>
   import("./components/GenerationCelebration").then((m) => ({ default: m.GenerationCelebration }))
+);
+const ConfirmDialog = lazy(() =>
+  import("./components/ConfirmDialog").then((m) => ({ default: m.ConfirmDialog }))
 );
 
 // Lazy load Wizard to defer framer-motion and step components from initial bundle
@@ -71,6 +75,7 @@ function App(): JSX.Element {
     showShortcutsModalRef.current = showShortcutsModal;
   }, [showShortcutsModal]);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [templatesExiting, setTemplatesExiting] = useState(false);
   // Defer framer-motion (45 KB) from initial load: only mount the Wizard
   // after user interaction or a 3s fallback timeout. The flag is derived
@@ -177,6 +182,26 @@ function App(): JSX.Element {
   const handleHideShortcuts = useCallback(() => setShowShortcutsModal(false), []);
   const handleCelebrationComplete = useCallback(() => setShowCelebration(false), []);
 
+  const handleConfirmNewProject = useCallback(() => {
+    resetAllStores();
+    setShowEditor(false);
+    toast.info(TOAST_MESSAGES.NEW_PROJECT);
+  }, [toast]);
+
+  const handleNewProject = useCallback(() => {
+    const hasExistingContent =
+      useEditorStore.getState().blueprintContent.length > 0 ||
+      useEditorStore.getState().tasksContent.length > 0 ||
+      useWizardStore.getState().currentStep !== WIZARD_STEP_KEYS.INFO;
+
+    if (hasExistingContent) {
+      setShowConfirmDialog(true);
+    } else {
+      resetAllStores();
+      toast.info(TOAST_MESSAGES.NEW_PROJECT);
+    }
+  }, [toast]);
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
@@ -203,6 +228,13 @@ function App(): JSX.Element {
         }
       }
 
+      // Editor has its own Cmd/Ctrl+N handler when mounted — only handle
+      // globally when the editor panel is not visible to avoid double-fire.
+      if ((e.metaKey || e.ctrlKey) && e.key === "n" && !showEditor) {
+        e.preventDefault();
+        handleNewProject();
+      }
+
       if (e.key === "Escape" && isGenerating) {
         e.preventDefault();
         cancelGeneration();
@@ -210,7 +242,7 @@ function App(): JSX.Element {
         toast.info(TOAST_MESSAGES.GENERATION_CANCELLED);
       }
     },
-    [isGenerating, cancelGeneration, showEditor, editorExiting, toast, setStep]
+    [isGenerating, cancelGeneration, showEditor, editorExiting, toast, setStep, handleNewProject]
   );
 
   useEffect(() => {
@@ -565,6 +597,18 @@ function App(): JSX.Element {
         <GenerationCelebration
           isComplete={showCelebration}
           onComplete={handleCelebrationComplete}
+        />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <ConfirmDialog
+          isOpen={showConfirmDialog}
+          onClose={() => setShowConfirmDialog(false)}
+          onConfirm={handleConfirmNewProject}
+          title={CONFIRM_DIALOG.NEW_PROJECT.TITLE}
+          description={CONFIRM_DIALOG.NEW_PROJECT.DESCRIPTION}
+          confirmLabel={CONFIRM_DIALOG.NEW_PROJECT.CONFIRM_LABEL}
+          cancelLabel={CONFIRM_DIALOG.NEW_PROJECT.CANCEL_LABEL}
         />
       </Suspense>
 
