@@ -2511,3 +2511,28 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2659](https://github.com/cpa03/blueprintify/pull/2659) | `feat/flexy-iteration-137` | refactor(flexy): eliminate hardcoded animation values, middot separator and fill mode string (Iteration 137) |
+
+### ✅ Flexy Iteration 140: Centralize OfflineBanner Exit Animation Duration into Shared UI_TIMEOUTS Config
+
+**Problem**: A recent `feat(web): add smooth exit animation to OfflineBanner` commit introduced a hardcoded `const BANNER_EXIT_DURATION_MS = 300` local constant and a magic number `500` in the test's `waitFor` timeout.
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `UI_TIMEOUTS.BANNER_EXIT_DURATION_MS: 300` — single source of truth for banner exit animation duration |
+| `packages/shared/src/config.test.ts` | Added test assertion for `BANNER_EXIT_DURATION_MS`; updated count 18→19 |
+| `apps/web/src/components/OfflineBanner.tsx` | Removed local `const BANNER_EXIT_DURATION_MS = 300`; uses `UI_TIMEOUTS.BANNER_EXIT_DURATION_MS` instead |
+| `apps/web/src/components/OfflineBanner.test.tsx` | Replaced hardcoded `{ timeout: 500 }` with `{ timeout: UI_TIMEOUTS.BANNER_EXIT_DURATION_MS + 200 }` |
+| `apps/web/tailwind.config.js` | Added Flexy cross-reference comment linking `0.3s` CSS duration to `UI_TIMEOUTS.BANNER_EXIT_DURATION_MS` (300ms) |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 837 web + 499 api + 740 shared = **2,076 tests passing** across 89+ files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2683](https://github.com/cpa03/blueprintify/pull/2683) | `feat/flexy-iteration-140-banner-exit-duration` | refactor(flexy): centralize hardcoded OfflineBanner exit animation duration into shared UI_TIMEOUTS config (Iteration 140) |
