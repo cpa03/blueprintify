@@ -138,11 +138,16 @@ export const StepReview = memo(function StepReview({
               >
                 <button
                   onClick={handleEditInfo}
-                  className="btn-ghost btn-sm flex items-center gap-1 text-primary-400 hover:text-primary-300"
+                  className="btn-ghost btn-sm flex items-center gap-1 text-primary-400 hover:text-primary-300 group"
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_REVIEW.EDIT_INFO}
                   aria-keyshortcuts={getAriaShortcutKey(WIZARD_REVIEW_EDIT_SHORTCUTS.INFO, "alt")}
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-[8deg]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -212,11 +217,16 @@ export const StepReview = memo(function StepReview({
               >
                 <button
                   onClick={handleEditStack}
-                  className="btn-ghost btn-sm flex items-center gap-1 text-accent-cyan hover:text-accent-cyan/80"
+                  className="btn-ghost btn-sm flex items-center gap-1 text-accent-cyan hover:text-accent-cyan/80 group"
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_REVIEW.EDIT_STACK}
                   aria-keyshortcuts={getAriaShortcutKey(WIZARD_REVIEW_EDIT_SHORTCUTS.STACK, "alt")}
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-[8deg]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -289,14 +299,19 @@ export const StepReview = memo(function StepReview({
                 >
                   <button
                     onClick={handleEditFeatures}
-                    className="btn-ghost btn-sm flex items-center gap-1 text-accent-emerald hover:text-accent-emerald/80"
+                    className="btn-ghost btn-sm flex items-center gap-1 text-accent-emerald hover:text-accent-emerald/80 group"
                     aria-label={ACCESSIBILITY_LABELS.WIZARD_REVIEW.EDIT_FEATURES}
                     aria-keyshortcuts={getAriaShortcutKey(
                       WIZARD_REVIEW_EDIT_SHORTCUTS.FEATURES,
                       "alt"
                     )}
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg
+                      className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-[8deg]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
