@@ -43,6 +43,7 @@ import {
   UI_CONTENT,
   WIZARD_REVIEW_DESCRIPTIONS,
   WIZARD_REVIEW_EDIT_SHORTCUTS,
+  STAGGER_CONFIG,
 } from "../../config/constants";
 import { pageTransition, fadeInUp, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
@@ -241,7 +242,7 @@ export const StepReview = memo(function StepReview({
                 hidden: {},
                 visible: {
                   transition: {
-                    staggerChildren: 0.035,
+                    staggerChildren: STAGGER_CONFIG.REVIEW_SECTION.STAGGER_S,
                     delayChildren: ANIMATION.SUBTLE_MOVE + 0.12,
                   },
                 },
@@ -321,7 +322,7 @@ export const StepReview = memo(function StepReview({
                   hidden: {},
                   visible: {
                     transition: {
-                      staggerChildren: 0.04,
+                      staggerChildren: STAGGER_CONFIG.REVIEW_GROUP.STAGGER_S,
                       delayChildren: ANIMATION.SUBTLE_MOVE + 0.14,
                     },
                   },

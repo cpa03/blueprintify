@@ -143,6 +143,10 @@ import {
   SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES,
   SANITIZE_REPLACEMENT_STRINGS,
   SANITIZE_ERROR_STRINGS,
+  STAGGER_CONFIG,
+  OPACITY_PULSE,
+  SCALE_PULSE,
+  Y_OFFSET,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -4098,5 +4102,147 @@ describe("SANITIZE_ERROR_STRINGS", () => {
   it("should have REMOVAL_HINT defined", () => {
     expect(SANITIZE_ERROR_STRINGS.REMOVAL_HINT).toBeTruthy();
     expect(SANITIZE_ERROR_STRINGS.REMOVAL_HINT.length).toBeGreaterThan(0);
+  });
+});
+
+// ============================================================================
+// Flexy Iteration 142 — STAGGER_CONFIG, OPACITY_PULSE, SCALE_PULSE, Y_OFFSET
+// ============================================================================
+
+describe("STAGGER_CONFIG", () => {
+  it("should have ERROR_FALLBACK with STAGGER_S = 0.12", () => {
+    expect(STAGGER_CONFIG.ERROR_FALLBACK.STAGGER_S).toBe(0.12);
+  });
+
+  it("should have ERROR_FALLBACK with DELAY_CHILDREN_S = 0.1", () => {
+    expect(STAGGER_CONFIG.ERROR_FALLBACK.DELAY_CHILDREN_S).toBe(0.1);
+  });
+
+  it("should have FEATURES_CHIP with STAGGER_S = 0.04", () => {
+    expect(STAGGER_CONFIG.FEATURES_CHIP.STAGGER_S).toBe(0.04);
+  });
+
+  it("should have REVIEW_SECTION with STAGGER_S = 0.035", () => {
+    expect(STAGGER_CONFIG.REVIEW_SECTION.STAGGER_S).toBe(0.035);
+  });
+
+  it("should have REVIEW_GROUP with STAGGER_S = 0.04", () => {
+    expect(STAGGER_CONFIG.REVIEW_GROUP.STAGGER_S).toBe(0.04);
+  });
+
+  it("should have all stagger values as positive numbers", () => {
+    const staggerValues = [
+      STAGGER_CONFIG.ERROR_FALLBACK.STAGGER_S,
+      STAGGER_CONFIG.ERROR_FALLBACK.DELAY_CHILDREN_S,
+      STAGGER_CONFIG.FEATURES_CHIP.STAGGER_S,
+      STAGGER_CONFIG.REVIEW_SECTION.STAGGER_S,
+      STAGGER_CONFIG.REVIEW_GROUP.STAGGER_S,
+    ];
+    staggerValues.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(v).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have 4 sub-configs", () => {
+    expect(Object.keys(STAGGER_CONFIG).length).toBe(4);
+  });
+});
+
+describe("OPACITY_PULSE", () => {
+  it("should have GLOW = [0.4, 0.7, 0.4]", () => {
+    expect(OPACITY_PULSE.GLOW).toEqual([0.4, 0.7, 0.4]);
+  });
+
+  it("should have BREATHING = [1, 0.35, 1]", () => {
+    expect(OPACITY_PULSE.BREATHING).toEqual([1, 0.35, 1]);
+  });
+
+  it("should have SOFT_BLINK = [0.8, 1, 0.8]", () => {
+    expect(OPACITY_PULSE.SOFT_BLINK).toEqual([0.8, 1, 0.8]);
+  });
+
+  it("should have TYPING = [0.4, 1, 0.4]", () => {
+    expect(OPACITY_PULSE.TYPING).toEqual([0.4, 1, 0.4]);
+  });
+
+  it("should have HALF_BLINK = [0.5, 1, 0.5]", () => {
+    expect(OPACITY_PULSE.HALF_BLINK).toEqual([0.5, 1, 0.5]);
+  });
+
+  it("should have all entries as arrays of 3 numbers between 0 and 1", () => {
+    const values = Object.values(OPACITY_PULSE);
+    expect(values.length).toBe(5);
+    values.forEach((arr) => {
+      expect(Array.isArray(arr)).toBe(true);
+      expect(arr.length).toBe(3);
+      arr.forEach((v) => {
+        expect(typeof v).toBe("number");
+        expect(v).toBeGreaterThanOrEqual(0);
+        expect(v).toBeLessThanOrEqual(1);
+      });
+    });
+  });
+});
+
+describe("SCALE_PULSE", () => {
+  it("should have ERROR_ICON = [1, 1.04, 1]", () => {
+    expect(SCALE_PULSE.ERROR_ICON).toEqual([1, 1.04, 1]);
+  });
+
+  it("should have GLOW = [1, 1.15, 1]", () => {
+    expect(SCALE_PULSE.GLOW).toEqual([1, 1.15, 1]);
+  });
+
+  it("should have CONTENT_DOT = [1, 1.2, 1]", () => {
+    expect(SCALE_PULSE.CONTENT_DOT).toEqual([1, 1.2, 1]);
+  });
+
+  it("should have PARTICLE_BURST = [0, 1.2, 0.8]", () => {
+    expect(SCALE_PULSE.PARTICLE_BURST).toEqual([0, 1.2, 0.8]);
+  });
+
+  it("should have SECTION_BADGE = [1, 1.12, 1]", () => {
+    expect(SCALE_PULSE.SECTION_BADGE).toEqual([1, 1.12, 1]);
+  });
+
+  it("should have MILESTONE = [1, 1.35, 1]", () => {
+    expect(SCALE_PULSE.MILESTONE).toEqual([1, 1.35, 1]);
+  });
+
+  it("should have PARTICLE_RING = [0.5, 1.2, 1.5]", () => {
+    expect(SCALE_PULSE.PARTICLE_RING).toEqual([0.5, 1.2, 1.5]);
+  });
+
+  it("should have all entries as arrays of 3 positive numbers", () => {
+    const values = Object.values(SCALE_PULSE);
+    expect(values.length).toBe(7);
+    values.forEach((arr) => {
+      expect(Array.isArray(arr)).toBe(true);
+      expect(arr.length).toBe(3);
+    });
+  });
+});
+
+describe("Y_OFFSET", () => {
+  it("should have SUBTLE = [0, -3, 0]", () => {
+    expect(Y_OFFSET.SUBTLE).toEqual([0, -3, 0]);
+  });
+
+  it("should have TYPING = [0, -4, 0]", () => {
+    expect(Y_OFFSET.TYPING).toEqual([0, -4, 0]);
+  });
+
+  it("should have 2 entries", () => {
+    expect(Object.keys(Y_OFFSET).length).toBe(2);
+  });
+
+  it("should have all entries as arrays of 3 numbers", () => {
+    const values = Object.values(Y_OFFSET);
+    values.forEach((arr) => {
+      expect(Array.isArray(arr)).toBe(true);
+      expect(arr.length).toBe(3);
+      arr.forEach((v) => expect(typeof v).toBe("number"));
+    });
   });
 });

@@ -50,6 +50,7 @@ import {
   ROTATION,
   VIEW_MODE_SHORTCUT_KEYS,
   VIEW_MODE_MODIFIER,
+  OPACITY_PULSE,
 } from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
@@ -325,7 +326,7 @@ function EditorToolbarComponent({
                 </motion.svg>
                 <motion.span
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  animate={{ opacity: OPACITY_PULSE.HALF_BLINK }}
                   transition={{
                     duration: ANIMATION.SPINNER_ROTATION + ANIMATION.NORMAL,
                     repeat: Infinity,

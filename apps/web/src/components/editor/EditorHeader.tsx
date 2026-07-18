@@ -40,6 +40,8 @@ import {
   ANIMATION,
   EASING,
   EDITOR_TABS,
+  OPACITY_PULSE,
+  SCALE_PULSE,
 } from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION, HEADER_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
@@ -155,8 +157,8 @@ const TabButton = React.memo(function TabButton({
           <motion.span
             className="w-1.5 h-1.5 rounded-full bg-accent-emerald flex-shrink-0"
             animate={{
-              opacity: [1, 0.35, 1],
-              scale: [1, 1.2, 1],
+              opacity: OPACITY_PULSE.BREATHING,
+              scale: SCALE_PULSE.CONTENT_DOT,
             }}
             transition={{
               duration: ANIMATION.LIVE_INDICATOR,

@@ -358,6 +358,101 @@ export const SKELETON_DEFAULTS = {
 } as const;
 
 /**
+ * Staggered Entrance Animation Config
+ * Centralized source of truth for staggerChildren and delayChildren values
+ * used in framer-motion variant configurations. Eliminates hardcoded float
+ * magic numbers in component stagger configs.
+ * Flexy says: No hardcoded staggerChildren/delayChildren magic numbers in components!
+ * Usage: import { STAGGER_CONFIG } from "@blueprint/shared";
+ *        visible: { transition: { staggerChildren: STAGGER_CONFIG.ERROR_FALLBACK.STAGGER_S, ... } }
+ */
+export const STAGGER_CONFIG = {
+  /** Stagger config for ErrorFallback entrance cascade */
+  ERROR_FALLBACK: {
+    /** Delay (s) between each child element entrance in the error fallback cascade */
+    STAGGER_S: 0.12,
+    /** Initial delay (s) before the error fallback cascade begins */
+    DELAY_CHILDREN_S: 0.1,
+  } as const,
+  /** Stagger config for StepFeatures chip/suggestion entrance cascade */
+  FEATURES_CHIP: {
+    /** Delay (s) between each feature chip entrance */
+    STAGGER_S: 0.04,
+  } as const,
+  /** Stagger config for StepReview section-level entrance cascade */
+  REVIEW_SECTION: {
+    /** Delay (s) between each review section entrance */
+    STAGGER_S: 0.035,
+  } as const,
+  /** Stagger config for StepReview group-level entrance cascade */
+  REVIEW_GROUP: {
+    /** Delay (s) between each review group item entrance */
+    STAGGER_S: 0.04,
+  } as const,
+} as const;
+
+/**
+ * Opacity Keyframe Pulse Presets (for framer-motion animate keyframes)
+ * Centralized source of truth for opacity pulse keyframe arrays used
+ * in breathing/pulsing/attention animations across components.
+ * Flexy says: No hardcoded opacity: [1, 0.35, 1] arrays in component animation keyframes!
+ * Usage: import { OPACITY_PULSE } from "@blueprint/shared";
+ *        animate={{ opacity: OPACITY_PULSE.GLOW }}
+ */
+export const OPACITY_PULSE = {
+  /** Gentle glow pulse: 0.4 → 0.7 → 0.4 — for soft glow/breathe effects behind icons */
+  GLOW: [0.4, 0.7, 0.4] as const,
+  /** Breathing pulse: 1 → 0.35 → 1 — for content availability indicator dots */
+  BREATHING: [1, 0.35, 1] as const,
+  /** Soft blink pulse: 0.8 → 1 → 0.8 — for subtle attention-seeking elements */
+  SOFT_BLINK: [0.8, 1, 0.8] as const,
+  /** Typing indicator pulse: 0.4 → 1 → 0.4 — for live typing/streaming indicators */
+  TYPING: [0.4, 1, 0.4] as const,
+  /** Half-opacity blink: 0.5 → 1 → 0.5 — for standard blinking/attention effects */
+  HALF_BLINK: [0.5, 1, 0.5] as const,
+} as const;
+
+/**
+ * Scale Keyframe Pulse Presets (for framer-motion animate keyframes)
+ * Centralized source of truth for scale pulse keyframe arrays used
+ * in breathing/pulsing/attention animations across components.
+ * Flexy says: No hardcoded scale: [1, 1.04, 1] arrays in component animation keyframes!
+ * Usage: import { SCALE_PULSE } from "@blueprint/shared";
+ *        animate={{ scale: SCALE_PULSE.ERROR_ICON }}
+ */
+export const SCALE_PULSE = {
+  /** Gentle error icon pulse: 1 → 1.04 → 1 — for subtle emphasis on warning/error icons */
+  ERROR_ICON: [1, 1.04, 1] as const,
+  /** Glow pulse: 1 → 1.15 → 1 — for soft glow rings behind interactive elements */
+  GLOW: [1, 1.15, 1] as const,
+  /** Content dot pulse: 1 → 1.2 → 1 — for content availability indicator dots */
+  CONTENT_DOT: [1, 1.2, 1] as const,
+  /** Particle burst: 0 → 1.2 → 0.8 — for celebration particle burst entrance */
+  PARTICLE_BURST: [0, 1.2, 0.8] as const,
+  /** Section badge pulse: 1 → 1.12 → 1 — for section badge highlights */
+  SECTION_BADGE: [1, 1.12, 1] as const,
+  /** Milestone pulse: 1 → 1.35 → 1 — for milestone/achievement reached animations */
+  MILESTONE: [1, 1.35, 1] as const,
+  /** Particle fade-out: 0.5 → 1.2 → 1.5 — for celebration particle ring expansion */
+  PARTICLE_RING: [0.5, 1.2, 1.5] as const,
+} as const;
+
+/**
+ * Y-offset Keyframe Pulse Presets (for framer-motion animate keyframes)
+ * Centralized source of truth for y-offset keyframe arrays used
+ * in floating/bobbing animations across components.
+ * Flexy says: No hardcoded y: [0, -4, 0] arrays in component animation keyframes!
+ * Usage: import { Y_OFFSET } from "@blueprint/shared";
+ *        animate={{ y: Y_OFFSET.TYPING }}
+ */
+export const Y_OFFSET = {
+  /** Subtle float: 0 → -3 → 0 — for gentle floating icons and decorative elements */
+  SUBTLE: [0, -3, 0] as const,
+  /** Typing bobbing: 0 → -4 → 0 — for live typing/streaming indicator bobbing */
+  TYPING: [0, -4, 0] as const,
+} as const;
+
+/**
  * Skeleton Pulse Animation Defaults
  * Centralized source of truth for the skeleton loader pulse animation timing
  * and visual properties. Used in index.html critical CSS and any skeleton
