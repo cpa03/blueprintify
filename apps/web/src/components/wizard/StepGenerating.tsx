@@ -592,89 +592,127 @@ export const StepGenerating = memo(function StepGenerating({
         {isComplete ? (
           <motion.div
             key="complete-actions"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ delay: ANIMATION_ENTRANCE_DELAYS.FULL_SECOND }}
+            transition={{ duration: ANIMATION.NORMAL }}
             className="mt-8 flex flex-col items-center gap-3"
           >
-            <KeyboardShortcutTooltip
-              shortcut="e"
-              description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
-              position="right"
-              modifier="cmd"
+            {/* View in Editor — primary action enters with a gentle spring
+                bounce, giving the user a clear "first thing to do" cue. */}
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{
+                delay: ANIMATION_ENTRANCE_DELAYS.FULL_SECOND,
+                type: FRAMER_TYPE.SPRING,
+                stiffness: 200,
+                damping: 15,
+              }}
             >
-              <RippleButton
-                onClick={handleViewEditor}
-                className="btn-primary flex items-center gap-2 attention-glow"
-                ariaLabel={WIZARD_GENERATING_LABELS.VIEW_EDITOR_ARIA}
-                data-autofocus="complete"
-                aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
+              <KeyboardShortcutTooltip
+                shortcut="e"
+                description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
+                position="right"
+                modifier="cmd"
               >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
+                <RippleButton
+                  onClick={handleViewEditor}
+                  className="btn-primary flex items-center gap-2 attention-glow"
+                  ariaLabel={WIZARD_GENERATING_LABELS.VIEW_EDITOR_ARIA}
+                  data-autofocus="complete"
+                  aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                  />
-                </svg>
-                {WIZARD_GENERATING_LABELS.VIEW_IN_EDITOR}
-                <kbd
-                  className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
-                  aria-hidden="true"
-                >
-                  {getModifierLabel()}+E
-                </kbd>
-              </RippleButton>
-            </KeyboardShortcutTooltip>
-            <KeyboardShortcutTooltip
-              shortcut="←"
-              description={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_DESC}
-              position="left"
-              modifier="alt"
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                  {WIZARD_GENERATING_LABELS.VIEW_IN_EDITOR}
+                  <kbd
+                    className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                    aria-hidden="true"
+                  >
+                    {getModifierLabel()}+E
+                  </kbd>
+                </RippleButton>
+              </KeyboardShortcutTooltip>
+            </motion.div>
+            {/* Back to Review — secondary action enters a beat after the primary
+                button, creating a staggered hierarchy that guides the user's eye
+                to the more important action first. */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: ANIMATION_ENTRANCE_DELAYS.FULL_SECOND + ANIMATION.STAGGER,
+                duration: ANIMATION.NORMAL,
+                ease: EASING.easeOut,
+              }}
             >
-              <RippleButton
-                onClick={handleViewReview}
-                className="btn-ghost text-sm text-dark-400 hover:text-dark-200 flex items-center gap-1.5"
-                ariaLabel={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_ARIA}
+              <KeyboardShortcutTooltip
+                shortcut="←"
+                description={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_DESC}
+                position="left"
+                modifier="alt"
               >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
+                <RippleButton
+                  onClick={handleViewReview}
+                  className="btn-ghost text-sm text-dark-400 hover:text-dark-200 flex items-center gap-1.5"
+                  ariaLabel={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_ARIA}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-                {WIZARD_GENERATING_LABELS.BACK_TO_REVIEW}
-                <kbd
-                  className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
-                  aria-hidden="true"
-                >
-                  {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
-                </kbd>
-              </RippleButton>
-            </KeyboardShortcutTooltip>
-            <p className="text-sm text-dark-500 flex items-center gap-1.5">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                  {WIZARD_GENERATING_LABELS.BACK_TO_REVIEW}
+                  <kbd
+                    className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                    aria-hidden="true"
+                  >
+                    {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
+                  </kbd>
+                </RippleButton>
+              </KeyboardShortcutTooltip>
+            </motion.div>
+            {/* Content hint — tertiary info enters last, after the actions
+                have settled, keeping its emphasis as supplementary guidance
+                rather than competing with the primary call-to-action. */}
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: ANIMATION_ENTRANCE_DELAYS.FULL_SECOND + ANIMATION.STAGGER * 2,
+                duration: ANIMATION.NORMAL,
+                ease: EASING.easeOut,
+              }}
+              className="text-sm text-dark-500 flex items-center gap-1.5"
+            >
               <svg
                 className="w-4 h-4 flex-shrink-0"
                 fill="none"
@@ -690,7 +728,7 @@ export const StepGenerating = memo(function StepGenerating({
                 />
               </svg>
               {WIZARD_GENERATING_LABELS.CONTENT_AVAILABLE}
-            </p>
+            </motion.p>
           </motion.div>
         ) : isError ? (
           <motion.div
