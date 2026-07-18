@@ -619,7 +619,7 @@ export const StepInfo = memo(function StepInfo({
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
-                  Clear
+                  {UI_CONTENT.BUTTONS.CLEAR}
                 </motion.button>
               )}
             </AnimatePresence>
