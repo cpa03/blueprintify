@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { OfflineBanner } from "./OfflineBanner";
 import { NETWORK_MESSAGES, ACCESSIBILITY_LABELS } from "../config/constants";
@@ -30,7 +30,7 @@ describe("OfflineBanner", () => {
     expect(screen.getByText(NETWORK_MESSAGES.OFFLINE)).toBeInTheDocument();
   });
 
-  it("hides the banner when dismiss button is clicked", () => {
+  it("hides the banner when dismiss button is clicked", async () => {
     mockOnlineStatus.mockReturnValue(false);
     render(<OfflineBanner />);
 
@@ -39,7 +39,14 @@ describe("OfflineBanner", () => {
     });
     fireEvent.click(dismissButton);
 
-    expect(screen.queryByText(NETWORK_MESSAGES.OFFLINE)).not.toBeInTheDocument();
+    // Banner stays mounted during the 300ms exit animation (slide-up + fade),
+    // then cleanly unmounts once the animation completes.
+    await waitFor(
+      () => {
+        expect(screen.queryByText(NETWORK_MESSAGES.OFFLINE)).not.toBeInTheDocument();
+      },
+      { timeout: 500 }
+    );
   });
 
   it("renders description text when offline", () => {

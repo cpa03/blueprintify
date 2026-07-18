@@ -88,6 +88,7 @@ export default {
         "fade-in": "fade-in 0.2s ease-out",
         "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "banner-enter": "banner-enter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+        "banner-exit": "banner-exit 0.3s ease-out forwards",
       },
       keyframes: {
         /** Flexy says: boxShadow values must stay in sync with theme.ts SHADOWS.glow.primary */
@@ -111,6 +112,10 @@ export default {
         "banner-enter": {
           "0%": { transform: "scale(0.95)", opacity: "0" },
           "100%": { transform: "scale(1)", opacity: "1" },
+        },
+        "banner-exit": {
+          "0%": { transform: "translateY(0)", opacity: "1" },
+          "100%": { transform: "translateY(-100%)", opacity: "0" },
         },
       },
       backgroundImage: {
