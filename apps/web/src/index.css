@@ -988,8 +988,12 @@
    the hero content. The entrance delay is baked into the animation chain so
    the staggered reveal of hero → subtitle → glow feels intentional. */
 @keyframes ambient-glow-enter {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes ambient-glow {
