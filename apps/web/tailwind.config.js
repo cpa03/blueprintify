@@ -88,6 +88,7 @@ export default {
         "fade-in": "fade-in 0.2s ease-out",
         "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "banner-enter": "banner-enter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+        /** Flexy says: 0.3s must match UI_TIMEOUTS.BANNER_EXIT_DURATION_MS (300ms) in shared config */
         "banner-exit": "banner-exit 0.3s ease-out forwards",
       },
       keyframes: {

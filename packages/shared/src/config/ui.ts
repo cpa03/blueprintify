@@ -339,6 +339,8 @@ export const UI_TIMEOUTS = {
   SAVED_GLOW_MS: 700,
   /** Interval for loading dots animation in StepGenerating (500ms) */
   LOADING_DOTS_INTERVAL: 500,
+  /** Duration for OfflineBanner smooth exit animation (300ms) — must match CSS `banner-exit 0.3s` in tailwind.config.js */
+  BANNER_EXIT_DURATION_MS: 300,
 } as const;
 
 /**

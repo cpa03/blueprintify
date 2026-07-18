@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { OfflineBanner } from "./OfflineBanner";
 import { NETWORK_MESSAGES, ACCESSIBILITY_LABELS } from "../config/constants";
+import { UI_TIMEOUTS } from "@blueprint/shared/config";
 
 const mockOnlineStatus = vi.fn().mockReturnValue(true);
 
@@ -39,13 +40,13 @@ describe("OfflineBanner", () => {
     });
     fireEvent.click(dismissButton);
 
-    // Banner stays mounted during the 300ms exit animation (slide-up + fade),
+    // Banner stays mounted during the exit animation (BANNER_EXIT_DURATION_MS),
     // then cleanly unmounts once the animation completes.
     await waitFor(
       () => {
         expect(screen.queryByText(NETWORK_MESSAGES.OFFLINE)).not.toBeInTheDocument();
       },
-      { timeout: 500 }
+      { timeout: UI_TIMEOUTS.BANNER_EXIT_DURATION_MS + 200 }
     );
   });
 
