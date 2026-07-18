@@ -595,6 +595,26 @@ export const StepInfo = memo(function StepInfo({
               min={0}
               warningThreshold={Math.floor(FORM_LIMITS.CONSTRAINTS.MAX * 0.85)}
             />
+          </div>
+          <div className="relative">
+            <motion.textarea
+              ref={constraintsRef}
+              id="constraints"
+              name="constraints"
+              autoComplete="off"
+              dir="auto"
+              value={constraints}
+              onChange={(e) => {
+                constraintsTyping.handleTyping(e.target.value);
+                setConstraints(e.target.value);
+              }}
+              onBlur={constraintsTyping.handleBlur}
+              placeholder={UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_PLACEHOLDER}
+              className="textarea-field pr-10"
+              maxLength={FORM_LIMITS.CONSTRAINTS.MAX}
+              animate={constraintsTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
+              transition={transitions.fast}
+            />
             <AnimatePresence>
               {constraints && (
                 <motion.button
@@ -607,11 +627,17 @@ export const StepInfo = memo(function StepInfo({
                     setConstraints("");
                     constraintsRef.current?.focus({ preventScroll: true });
                   }}
-                  className="text-xs text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors flex items-center gap-1 px-2 py-1 rounded-md hover:bg-dark-700/50"
+                  className="absolute right-3 top-3 text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors p-1 rounded-md hover:bg-dark-700/50"
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_CONSTRAINTS}
                   title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_CONSTRAINTS}
                 >
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -619,29 +645,10 @@ export const StepInfo = memo(function StepInfo({
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
-                  {UI_CONTENT.BUTTONS.CLEAR}
                 </motion.button>
               )}
             </AnimatePresence>
           </div>
-          <motion.textarea
-            ref={constraintsRef}
-            id="constraints"
-            name="constraints"
-            autoComplete="off"
-            dir="auto"
-            value={constraints}
-            onChange={(e) => {
-              constraintsTyping.handleTyping(e.target.value);
-              setConstraints(e.target.value);
-            }}
-            onBlur={constraintsTyping.handleBlur}
-            placeholder={UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_PLACEHOLDER}
-            className="textarea-field"
-            maxLength={FORM_LIMITS.CONSTRAINTS.MAX}
-            animate={constraintsTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
-            transition={transitions.fast}
-          />
         </div>
 
         {/* Action Buttons */}
