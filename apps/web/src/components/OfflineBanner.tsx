@@ -60,7 +60,6 @@ import { SmartTooltip } from "./SmartTooltip";
  * The exit animation uses the Tailwind `animate-banner-exit` class
  * which is defined in tailwind.config.js with 0.3s duration.
  */
-const BANNER_EXIT_DURATION_MS = 300;
 
 const pulseKeyframes = OFFLINE_ANIMATION.PULSE_RING_KEYFRAMES;
 const pulseScaleKeyframes = OFFLINE_ANIMATION.PULSE_SCALE_KEYFRAMES;
@@ -140,7 +139,7 @@ function OfflineBannerComponent(): JSX.Element | null {
       exitTimerRef.current = setTimeout(() => {
         setIsExiting(false);
         exitTimerRef.current = null;
-      }, BANNER_EXIT_DURATION_MS);
+      }, UI_TIMEOUTS.BANNER_EXIT_DURATION_MS);
     } else if (!prevVisibleRef.current && isVisible) {
       // Became visible mid-exit (rare race: offline toggled rapidly) — cancel exit
       if (exitTimerRef.current) {
