@@ -104,18 +104,21 @@ export function buildBlueprintPrompt(request: BlueprintRequest): string {
     ? `\n## Constraints\n${sanitizePromptInput(request.constraints)}`
     : "";
 
-  return `Generate a comprehensive blueprint.md for the following project:
-
-# Project: ${sanitizePromptInput(request.projectName)}
+  // Wrap ALL user-provided content in XML-style delimiters to create a clear
+  // security boundary between system instructions and user data. This ensures
+  // that even if sanitization is bypassed, the AI system prompt instructs the
+  // model to treat delimited content as data, not instructions.
+  const userContent = `# Project: ${sanitizePromptInput(request.projectName)}
 
 ## Description
-${withUserDelimiters(sanitizePromptInput(request.description))}
+${sanitizePromptInput(request.description)}
 
 ## Tech Stack
-${techStackList}
-${featuresSection}
-${audienceSection}
-${constraintsSection}
+${techStackList}${featuresSection}${audienceSection}${constraintsSection}`;
+
+  return `Generate a comprehensive blueprint.md for the following project:
+
+${withUserDelimiters(userContent)}
 
 Create a production-ready architectural blueprint that an autonomous development agent can use to build this project from scratch. Be thorough and specific.`;
 }
@@ -128,11 +131,12 @@ Create a production-ready architectural blueprint that an autonomous development
  */
 export function buildTaskPrompt(blueprint: string, projectName: string): string {
   const sanitizedBlueprint = sanitizePromptInput(blueprint);
+  const sanitizedProjectName = sanitizePromptInput(projectName);
   return `Based on the following blueprint.md, generate a comprehensive task.md checklist:
 
-${withUserDelimiters(sanitizedBlueprint)}
+${withUserDelimiters(`${sanitizedBlueprint}\n\n## Project: ${sanitizedProjectName}`)}
 
-Create prioritized tasks (P0, P1, P2) for building "${sanitizePromptInput(projectName)}" from scratch. Each task should be:
+Create prioritized tasks (P0, P1, P2) for building the above project from scratch. Each task should be:
 - Atomic and clearly defined
 - Include file paths when applicable
 - Estimate complexity (S/M/L or story points)
