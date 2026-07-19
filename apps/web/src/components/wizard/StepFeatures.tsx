@@ -320,11 +320,11 @@ export const StepFeatures = memo(function StepFeatures({
                       {feature}
                       <button
                         onClick={() => removeFeature(feature)}
-                        className="hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors"
+                        className="hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors group"
                         aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.REMOVE_FEATURE(feature)}
                       >
                         <svg
-                          className="w-4 h-4"
+                          className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-90"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
