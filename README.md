@@ -335,6 +335,15 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[LocalStorage Schema](./docs/localstorage-schema.md)** - Storage persistence specifications
 - **[Export/Import Specs](./docs/export-import-specs.md)** - Data portability implementation details
 
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for:
+
+- Development setup and workflow
+- Code standards and conventions
+- Pull request process
+- Testing requirements
+
 ## 📝 License
 
 MIT © 2026
