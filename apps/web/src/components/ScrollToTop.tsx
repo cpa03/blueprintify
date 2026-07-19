@@ -132,18 +132,19 @@ export const ScrollToPosition = memo(function ScrollToPosition({
 
   const scrollToTarget = useCallback(() => {
     const target = isToTop ? 0 : getMaxScroll();
+    const behavior = shouldReduceMotion ? "auto" : "smooth";
     if (scrollContainerRef?.current) {
       scrollContainerRef.current.scrollTo({
         top: target,
-        behavior: "smooth",
+        behavior,
       });
     } else {
       window.scrollTo({
         top: target,
-        behavior: "smooth",
+        behavior,
       });
     }
-  }, [scrollContainerRef, isToTop, getMaxScroll]);
+  }, [scrollContainerRef, isToTop, getMaxScroll, shouldReduceMotion]);
 
   useEffect(() => {
     const handleScroll = () => {
