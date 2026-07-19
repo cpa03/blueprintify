@@ -10,9 +10,12 @@ import {
   HTTP_HEADERS,
   HTTP_HEADER_NAMES,
   ERROR_TYPES,
+  CONTEXT_KEYS,
+  AUTH_DEFAULTS,
 } from "@blueprint/shared";
 import { setDefaultContainer, resetContainer, createMockContainer } from "../di/container";
 import { ERROR_CODES, ERROR_MESSAGES } from "../config/constants";
+import type { User, AppVariables } from "../types";
 
 let originalConsoleError: typeof console.error;
 beforeAll(() => {
@@ -33,7 +36,16 @@ afterEach(() => {
 });
 
 describe("POST /generate", () => {
-  const app = new Hono<{ Bindings: { OPENAI_API_KEY: string } }>();
+  const app = new Hono<{
+    Bindings: { OPENAI_API_KEY: string };
+    Variables: AppVariables;
+  }>();
+  // Set user context for tests since route now requires authorization
+  app.use("*", async (c, next) => {
+    const user: User = { id: "test-user", role: AUTH_DEFAULTS.DEFAULT_ROLE };
+    c.set(CONTEXT_KEYS.USER, user);
+    await next();
+  });
   app.route("/", generateRoute);
   app.onError(errorHandler);
 

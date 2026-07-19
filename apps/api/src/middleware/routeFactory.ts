@@ -10,8 +10,10 @@
 
 import { Hono } from "hono";
 import type { z } from "zod";
+import { AUTH_DEFAULTS } from "@blueprint/shared";
 import { rateLimit, rateLimitConfigs } from "./rateLimit";
 import { validateJson, validatePromptInjection, type PromptInjectionField } from "./validator";
+import { authorize } from "./authorize";
 import type { Env } from "../types";
 
 /**
@@ -48,6 +50,7 @@ export function createPostRoute<T extends z.ZodTypeAny>(
       rateLimit(rateLimitConfigs.strict),
       validateJson(schema),
       validatePromptInjection(injectionFields),
+      authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
       (c) =>
         handler(
           c as unknown as import("hono").Context<{
@@ -57,13 +60,18 @@ export function createPostRoute<T extends z.ZodTypeAny>(
         )
     );
   } else {
-    app.post("/", rateLimit(rateLimitConfigs.strict), validateJson(schema), (c) =>
-      handler(
-        c as unknown as import("hono").Context<{
-          Bindings: Env;
-          Variables: { validatedData: z.infer<T> };
-        }>
-      )
+    app.post(
+      "/",
+      rateLimit(rateLimitConfigs.strict),
+      validateJson(schema),
+      authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
+      (c) =>
+        handler(
+          c as unknown as import("hono").Context<{
+            Bindings: Env;
+            Variables: { validatedData: z.infer<T> };
+          }>
+        )
     );
   }
 
