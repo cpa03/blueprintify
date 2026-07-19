@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "./useReducedMotion";
-import { ANIMATION, TEXTAREA_CONFIG } from "../config/constants";
+import { ANIMATION, TEXTAREA_CONFIG, CSS_VALUES } from "../config/constants";
 
 interface UseAutoResizeTextareaOptions {
   minHeight?: number;
@@ -47,14 +47,14 @@ export function useAutoResizeTextarea(
       const selectionEnd = textarea.selectionEnd;
 
       // Single write+read cycle to measure content height
-      textarea.style.height = "auto";
+      textarea.style.height = CSS_VALUES.AUTO;
       const scrollHeight = textarea.scrollHeight + extraPadding;
       const newHeight = Math.min(Math.max(scrollHeight, minHeight), maxHeight);
 
       if (animate && !prefersReducedMotion) {
         textarea.style.transition = `height ${ANIMATION.NORMAL}s ease-out`;
       } else {
-        textarea.style.transition = "none";
+        textarea.style.transition = CSS_VALUES.NONE;
       }
 
       textarea.style.height = `${newHeight}px`;

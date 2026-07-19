@@ -626,3 +626,75 @@ export const DISPLAY_SYMBOLS = {
   /** Middot — visual separator between elements (e.g. elapsed time label) */
   MIDDOT: "\u00B7" as const,
 } as const;
+
+/**
+ * Scroll Behavior Values
+ * Centralized source of truth for ScrollBehavior string values used in
+ * scrollTo/scrollIntoView calls. Ensures smooth-scroll behavior is consistent
+ * and respects accessibility preferences for reduced motion.
+ * Flexy says: No hardcoded "smooth" / "auto" / "instant" in scroll utilities!
+ * Usage: import { SCROLL_BEHAVIOR } from "@blueprint/shared";
+ *        element.scrollTo({ top: 0, behavior: SCROLL_BEHAVIOR.SMOOTH })
+ */
+export const SCROLL_BEHAVIOR = {
+  /** Smooth scrolling animation — default for non-reduced-motion users */
+  SMOOTH: "smooth" as const,
+  /** Instant jump without animation — used for reduced-motion or SSR fallback */
+  AUTO: "auto" as const,
+  /** Jump immediately without animation — explicit instant behavior for reduced motion */
+  INSTANT: "instant" as const,
+} as const;
+
+/**
+ * Scroll Into View Block Values
+ * Centralized source of truth for ScrollLogicalPosition string values used
+ * in scrollIntoView({ block }) calls.
+ * Flexy says: No hardcoded "nearest" / "center" / "start" / "end" in scroll utilities!
+ * Usage: import { SCROLL_INTO_VIEW_BLOCK } from "@blueprint/shared";
+ *        element.scrollIntoView({ behavior: ..., block: SCROLL_INTO_VIEW_BLOCK.NEAREST })
+ */
+export const SCROLL_INTO_VIEW_BLOCK = {
+  /** Scrolls the element to the nearest edge of the viewport */
+  NEAREST: "nearest" as const,
+  /** Scrolls the element to the center of the viewport */
+  CENTER: "center" as const,
+  /** Scrolls the element to the start/top of the viewport */
+  START: "start" as const,
+  /** Scrolls the element to the end/bottom of the viewport */
+  END: "end" as const,
+} as const;
+
+/**
+ * Direction Values
+ * Centralized source of truth for common direction indicator strings used
+ * in scroll direction, navigation direction, and animation direction props.
+ * Flexy says: No hardcoded "top" / "bottom" / "left" / "right" direction strings!
+ * Usage: import { DIRECTION } from "@blueprint/shared";
+ *        direction={DIRECTION.TOP}
+ */
+export const DIRECTION = {
+  /** Top/up direction */
+  TOP: "top" as const,
+  /** Bottom/down direction */
+  BOTTOM: "bottom" as const,
+  /** Left direction */
+  LEFT: "left" as const,
+  /** Right direction */
+  RIGHT: "right" as const,
+} as const;
+
+/**
+ * CSS Value Strings
+ * Centralized source of truth for commonly-used CSS property value strings
+ * used in JavaScript style manipulations. Eliminates hardcoded CSS value
+ * strings like "auto" in component logic.
+ * Flexy says: No hardcoded CSS value strings like "auto" in component logic!
+ * Usage: import { CSS_VALUES } from "@blueprint/shared";
+ *        textarea.style.height = CSS_VALUES.AUTO
+ */
+export const CSS_VALUES = {
+  /** CSS auto value — used for height, width, margin, etc. */
+  AUTO: "auto" as const,
+  /** CSS none value — used for transitions, animations, etc. */
+  NONE: "none" as const,
+} as const;

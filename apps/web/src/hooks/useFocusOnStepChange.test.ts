@@ -11,7 +11,7 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useFocusOnStepChange, useStepAnnouncer } from "./useFocusOnStepChange";
-import { TIMEOUTS, FOCUS_ANNOUNCER } from "../config/constants";
+import { TIMEOUTS, FOCUS_ANNOUNCER, SCROLL_BEHAVIOR } from "../config/constants";
 
 describe("useFocusOnStepChange", () => {
   beforeEach(() => {
@@ -93,7 +93,7 @@ describe("useFocusOnStepChange", () => {
 
     rerender("step-2");
 
-    expect(scrollToSpy).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
+    expect(scrollToSpy).toHaveBeenCalledWith({ top: 0, behavior: SCROLL_BEHAVIOR.SMOOTH });
   });
 
   it("should select input text when input has value", () => {
