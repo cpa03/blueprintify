@@ -9,7 +9,13 @@
  */
 
 import { useRef, useEffect, useCallback } from "react";
-import { TIMEOUTS, FOCUSABLE_SELECTOR_STRING, FOCUS_ANNOUNCER } from "../config/constants";
+import {
+  TIMEOUTS,
+  FOCUSABLE_SELECTOR_STRING,
+  FOCUS_ANNOUNCER,
+  SCROLL_BEHAVIOR,
+  SCROLL_INTO_VIEW_BLOCK,
+} from "../config/constants";
 
 /**
  * Returns the appropriate scroll behavior based on the user's motion preference.
@@ -20,9 +26,9 @@ import { TIMEOUTS, FOCUSABLE_SELECTOR_STRING, FOCUS_ANNOUNCER } from "../config/
  * (JS scroll calls bypass CSS scroll-behavior entirely in most browsers).
  */
 function getScrollBehavior(): ScrollBehavior {
-  if (typeof window === "undefined") return "auto";
+  if (typeof window === "undefined") return SCROLL_BEHAVIOR.AUTO;
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  return prefersReducedMotion ? "instant" : "smooth";
+  return prefersReducedMotion ? SCROLL_BEHAVIOR.INSTANT : SCROLL_BEHAVIOR.SMOOTH;
 }
 
 /** Configuration options for step change focus behavior */
@@ -81,7 +87,10 @@ export function useFocusOnStepChange(stepId: string, options: UseFocusOnStepChan
     const firstElement = focusableElements[0] as HTMLElement;
 
     setTimeout(() => {
-      firstElement.scrollIntoView({ behavior: getScrollBehavior(), block: "nearest" });
+      firstElement.scrollIntoView({
+        behavior: getScrollBehavior(),
+        block: SCROLL_INTO_VIEW_BLOCK.NEAREST,
+      });
       firstElement.focus({ preventScroll: true });
 
       const inputElement = firstElement as HTMLInputElement;

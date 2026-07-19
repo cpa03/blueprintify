@@ -216,6 +216,10 @@ export {
   LOG_LEVELS,
   LOG_TIMESTAMP_SLICE,
   TEST_SETUP_STRINGS,
+  SCROLL_BEHAVIOR,
+  SCROLL_INTO_VIEW_BLOCK,
+  DIRECTION,
+  CSS_VALUES,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";

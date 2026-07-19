@@ -427,6 +427,34 @@ export const EMPTY_STATE_CONFIG = {
  */
 export { SHARED_STAGGER_CONFIG as STAGGER_CONFIG };
 
+/**
+ * Scroll Behavior Values
+ * Flexy says: No hardcoded "smooth" / "auto" / "instant" in scroll utilities!
+ * Source of truth: @blueprint/shared/config/ui.ts
+ */
+export { SCROLL_BEHAVIOR } from "@blueprint/shared/config";
+
+/**
+ * Scroll-Into-View Block Position Values
+ * Flexy says: No hardcoded "nearest" / "center" / "start" / "end" in scroll utilities!
+ * Source of truth: @blueprint/shared/config/ui.ts
+ */
+export { SCROLL_INTO_VIEW_BLOCK } from "@blueprint/shared/config";
+
+/**
+ * Direction Values
+ * Flexy says: No hardcoded "top" / "bottom" / "left" / "right" direction strings!
+ * Source of truth: @blueprint/shared/config/ui.ts
+ */
+export { DIRECTION } from "@blueprint/shared/config";
+
+/**
+ * CSS Value Strings
+ * Flexy says: No hardcoded "auto" / "none" CSS value strings in component logic!
+ * Source of truth: @blueprint/shared/config/ui.ts
+ */
+export { CSS_VALUES } from "@blueprint/shared/config";
+
 /** UI Fallback values for environment-dependent configs */
 export const UI_FALLBACKS = {
   API_BASE: ENV.API_BASE_URL,

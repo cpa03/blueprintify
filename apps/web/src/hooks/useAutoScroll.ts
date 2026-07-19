@@ -28,7 +28,7 @@
  */
 
 import { useRef, useState, useCallback, useEffect } from "react";
-import { AUTO_SCROLL_DEFAULTS } from "@blueprint/shared/config";
+import { AUTO_SCROLL_DEFAULTS, SCROLL_BEHAVIOR } from "@blueprint/shared/config";
 
 interface UseAutoScrollOptions {
   /** Ref to the scrollable container element */
@@ -94,7 +94,7 @@ export function useAutoScroll({
 
     el.scrollTo({
       top: el.scrollHeight,
-      behavior: "smooth",
+      behavior: SCROLL_BEHAVIOR.SMOOTH,
     });
   }, [scrollContainerRef]);
 

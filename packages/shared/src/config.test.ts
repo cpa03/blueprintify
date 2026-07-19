@@ -147,6 +147,10 @@ import {
   OPACITY_PULSE,
   SCALE_PULSE,
   Y_OFFSET,
+  SCROLL_BEHAVIOR,
+  SCROLL_INTO_VIEW_BLOCK,
+  DIRECTION,
+  CSS_VALUES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -3774,6 +3778,134 @@ describe("DISPLAY_SYMBOLS", () => {
   it("should have non-empty string values", () => {
     const values = Object.values(DISPLAY_SYMBOLS);
     values.forEach((v) => expect(v.length).toBeGreaterThan(0));
+  });
+});
+
+// ============================================================================
+// SCROLL_BEHAVIOR
+// ============================================================================
+describe("SCROLL_BEHAVIOR", () => {
+  it("should have SMOOTH = 'smooth'", () => {
+    expect(SCROLL_BEHAVIOR.SMOOTH).toBe("smooth");
+  });
+
+  it("should have AUTO = 'auto'", () => {
+    expect(SCROLL_BEHAVIOR.AUTO).toBe("auto");
+  });
+
+  it("should have INSTANT = 'instant'", () => {
+    expect(SCROLL_BEHAVIOR.INSTANT).toBe("instant");
+  });
+
+  it("should have 3 properties", () => {
+    expect(Object.keys(SCROLL_BEHAVIOR).length).toBe(3);
+  });
+
+  it("should have all values as strings", () => {
+    const values = Object.values(SCROLL_BEHAVIOR);
+    values.forEach((v) => expect(typeof v).toBe("string"));
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(SCROLL_BEHAVIOR);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+// ============================================================================
+// SCROLL_INTO_VIEW_BLOCK
+// ============================================================================
+describe("SCROLL_INTO_VIEW_BLOCK", () => {
+  it("should have NEAREST = 'nearest'", () => {
+    expect(SCROLL_INTO_VIEW_BLOCK.NEAREST).toBe("nearest");
+  });
+
+  it("should have CENTER = 'center'", () => {
+    expect(SCROLL_INTO_VIEW_BLOCK.CENTER).toBe("center");
+  });
+
+  it("should have START = 'start'", () => {
+    expect(SCROLL_INTO_VIEW_BLOCK.START).toBe("start");
+  });
+
+  it("should have END = 'end'", () => {
+    expect(SCROLL_INTO_VIEW_BLOCK.END).toBe("end");
+  });
+
+  it("should have 4 properties", () => {
+    expect(Object.keys(SCROLL_INTO_VIEW_BLOCK).length).toBe(4);
+  });
+
+  it("should have all values as strings", () => {
+    const values = Object.values(SCROLL_INTO_VIEW_BLOCK);
+    values.forEach((v) => expect(typeof v).toBe("string"));
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(SCROLL_INTO_VIEW_BLOCK);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+// ============================================================================
+// DIRECTION
+// ============================================================================
+describe("DIRECTION", () => {
+  it("should have TOP = 'top'", () => {
+    expect(DIRECTION.TOP).toBe("top");
+  });
+
+  it("should have BOTTOM = 'bottom'", () => {
+    expect(DIRECTION.BOTTOM).toBe("bottom");
+  });
+
+  it("should have LEFT = 'left'", () => {
+    expect(DIRECTION.LEFT).toBe("left");
+  });
+
+  it("should have RIGHT = 'right'", () => {
+    expect(DIRECTION.RIGHT).toBe("right");
+  });
+
+  it("should have 4 properties", () => {
+    expect(Object.keys(DIRECTION).length).toBe(4);
+  });
+
+  it("should have all values as strings", () => {
+    const values = Object.values(DIRECTION);
+    values.forEach((v) => expect(typeof v).toBe("string"));
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(DIRECTION);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+// ============================================================================
+// CSS_VALUES
+// ============================================================================
+describe("CSS_VALUES", () => {
+  it("should have AUTO = 'auto'", () => {
+    expect(CSS_VALUES.AUTO).toBe("auto");
+  });
+
+  it("should have NONE = 'none'", () => {
+    expect(CSS_VALUES.NONE).toBe("none");
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(CSS_VALUES).length).toBe(2);
+  });
+
+  it("should have all values as strings", () => {
+    const values = Object.values(CSS_VALUES);
+    values.forEach((v) => expect(typeof v).toBe("string"));
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(CSS_VALUES);
+    expect(new Set(values).size).toBe(values.length);
   });
 });
 

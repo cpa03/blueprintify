@@ -30,6 +30,8 @@ import {
   SCROLL_THRESHOLDS,
   ACCESSIBILITY_LABELS,
   KEYBOARD_SHORTCUTS,
+  SCROLL_BEHAVIOR,
+  DIRECTION,
 } from "../config/constants";
 import { FRAMER_TYPE } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -84,7 +86,7 @@ interface ScrollToPositionProps {
 export const ScrollToPosition = memo(function ScrollToPosition({
   scrollContainerRef,
   showAfter = SCROLL_THRESHOLDS.SCROLL_TO_TOP,
-  direction = "top",
+  direction = DIRECTION.TOP,
   pulseWhenActive = false,
 }: ScrollToPositionProps): JSX.Element | null {
   const [isVisible, setIsVisible] = useState(false);
@@ -132,7 +134,7 @@ export const ScrollToPosition = memo(function ScrollToPosition({
 
   const scrollToTarget = useCallback(() => {
     const target = isToTop ? 0 : getMaxScroll();
-    const behavior = shouldReduceMotion ? "auto" : "smooth";
+    const behavior = shouldReduceMotion ? SCROLL_BEHAVIOR.AUTO : SCROLL_BEHAVIOR.SMOOTH;
     if (scrollContainerRef?.current) {
       scrollContainerRef.current.scrollTo({
         top: target,
@@ -326,7 +328,7 @@ export const ScrollToPosition = memo(function ScrollToPosition({
 export const ScrollToTop = memo(function ScrollToTop(
   props: Omit<ScrollToPositionProps, "direction">
 ): JSX.Element | null {
-  return <ScrollToPosition {...props} direction="top" />;
+  return <ScrollToPosition {...props} direction={DIRECTION.TOP} />;
 });
 
 /**
@@ -352,7 +354,7 @@ export const ScrollToTop = memo(function ScrollToTop(
 export const ScrollToBottom = memo(function ScrollToBottom(
   props: Omit<ScrollToPositionProps, "direction">
 ): JSX.Element | null {
-  return <ScrollToPosition {...props} direction="bottom" />;
+  return <ScrollToPosition {...props} direction={DIRECTION.BOTTOM} />;
 });
 
 export default ScrollToTop;

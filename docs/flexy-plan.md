@@ -2636,3 +2636,37 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD (this PR) | `feat/flexy-iteration-144-hardcoded-fade-duration` | refactor(flexy): replace hardcoded fade duration in PageScrollProgressBar with ANIMATION.MEDIUM config (Iteration 144) |
+
+### ✅ Flexy Iteration 145: Centralize Scroll Behavior, Direction, Scroll-Into-View-Block & CSS Value Strings
+
+**Problem**: Four categories of hardcoded CSS/scroll-related string values existed across multiple hook and component files:
+
+| Category | Examples | Files Using Hardcoded Values |
+|---|---|---|
+| Scroll behavior | `"smooth"`, `"auto"`, `"instant"` | `ScrollToTop.tsx`, `useAutoScroll.ts`, `useFocusOnStepChange.ts`, `useAutoScroll.test.ts`, `useFocusOnStepChange.test.ts` |
+| Direction | `"top"`, `"bottom"` | `ScrollToTop.tsx` |
+| Scroll-into-view-block | `"nearest"` | `useFocusOnStepChange.ts` |
+| CSS values | `"auto"`, `"none"` | `useAutoResizeTextarea.ts` |
+
+| Config Object | File | Change |
+|---|---|---|
+| `SCROLL_BEHAVIOR` | `packages/shared/src/config/ui.ts` | Added `SMOOTH: "smooth"`, `AUTO: "auto"`, `INSTANT: "instant"` — single source of truth for scroll behavior values |
+| `DIRECTION` | `packages/shared/src/config/ui.ts` | Added `TOP: "top"`, `BOTTOM: "bottom"`, `LEFT: "left"`, `RIGHT: "right"` — single source of truth for direction values |
+| `SCROLL_INTO_VIEW_BLOCK` | `packages/shared/src/config/ui.ts` | Added `NEAREST: "nearest"`, `CENTER: "center"`, `START: "start"`, `END: "end"` — single source of truth for scroll-into-view-block values |
+| `CSS_VALUES` | `packages/shared/src/config/ui.ts` | Added `AUTO: "auto"`, `NONE: "none"` — single source of truth for common CSS keyword values |
+| Exports | `packages/shared/src/index.ts` | Added exports for all 4 new config objects |
+| `config.test.ts` | `packages/shared/src/config.test.ts` | Added 4 test blocks (25 tests) for new config objects (value matching, string type checks, uniqueness) |
+| `ui.ts` (web) | `apps/web/src/config/constants/ui.ts` | Added re-exports for all 4 config objects from `@blueprint/shared/config` |
+| `ScrollToTop.tsx` | `apps/web/src/components/ScrollToTop.tsx` | Replaced `direction = "top"` with `DIRECTION.TOP`, JSX `direction="top"` with `{DIRECTION.TOP}`, `direction="bottom"` with `{DIRECTION.BOTTOM}`, `"auto"/"smooth"` with `SCROLL_BEHAVIOR.AUTO`/`SCROLL_BEHAVIOR.SMOOTH` |
+| `useAutoScroll.ts` | `apps/web/src/hooks/useAutoScroll.ts` | Replaced `behavior: "smooth"` with `SCROLL_BEHAVIOR.SMOOTH` |
+| `useFocusOnStepChange.ts` | `apps/web/src/hooks/useFocusOnStepChange.ts` | Replaced `"auto"` with `SCROLL_BEHAVIOR.AUTO`, `"instant"` with `SCROLL_BEHAVIOR.INSTANT`, `"smooth"` with `SCROLL_BEHAVIOR.SMOOTH`, `block: "nearest"` with `SCROLL_INTO_VIEW_BLOCK.NEAREST` |
+| `useAutoResizeTextarea.ts` | `apps/web/src/hooks/useAutoResizeTextarea.ts` | Replaced `"auto"` with `CSS_VALUES.AUTO`, `"none"` with `CSS_VALUES.NONE` |
+| `useAutoScroll.test.ts` | `apps/web/src/hooks/useAutoScroll.test.ts` | Added `SCROLL_BEHAVIOR` import; replaced 3x `behavior: "smooth"` with `behavior: SCROLL_BEHAVIOR.SMOOTH` |
+| `useFocusOnStepChange.test.ts` | `apps/web/src/hooks/useFocusOnStepChange.test.ts` | Added `SCROLL_BEHAVIOR` import; replaced `behavior: "smooth"` with `behavior: SCROLL_BEHAVIOR.SMOOTH` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 837 web + 499 api + 790 shared = **2,126 tests passing** across 91+ files

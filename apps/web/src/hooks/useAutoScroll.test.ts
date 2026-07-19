@@ -13,7 +13,7 @@
 
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
-import { AUTO_SCROLL_DEFAULTS } from "@blueprint/shared/config";
+import { AUTO_SCROLL_DEFAULTS, SCROLL_BEHAVIOR } from "@blueprint/shared/config";
 import { useAutoScroll } from "./useAutoScroll";
 
 /**
@@ -144,7 +144,7 @@ describe("useAutoScroll", () => {
 
     expect(mockScrollTo).toHaveBeenCalledWith({
       top: container.scrollHeight,
-      behavior: "smooth",
+      behavior: SCROLL_BEHAVIOR.SMOOTH,
     });
   });
 
@@ -219,7 +219,7 @@ describe("useAutoScroll", () => {
 
     expect(mockScrollTo).toHaveBeenCalledWith({
       top: container.scrollHeight,
-      behavior: "smooth",
+      behavior: SCROLL_BEHAVIOR.SMOOTH,
     });
   });
 
@@ -261,7 +261,7 @@ describe("useAutoScroll", () => {
 
     expect(mockScrollTo).toHaveBeenCalledWith({
       top: container.scrollHeight,
-      behavior: "smooth",
+      behavior: SCROLL_BEHAVIOR.SMOOTH,
     });
   });
 
