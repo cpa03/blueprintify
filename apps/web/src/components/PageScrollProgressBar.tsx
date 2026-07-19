@@ -266,7 +266,7 @@ function PageScrollProgressBarComponent({
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: isVisible ? 0.6 : 0 }}
-          transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
+          transition={{ duration: prefersReducedMotion ? 0 : ANIMATION.MEDIUM }}
         />
 
         {/* Hover scrub label — shows the scroll percentage at the cursor position
