@@ -2593,3 +2593,25 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD (this PR) | `feat/flexy-iteration-142-pulse-stagger-config` | refactor(flexy): centralize stagger configs and pulse keyframe arrays into shared config (Iteration 142) |
+
+### ✅ Flexy Iteration 143: Add Rotate-8 Token — Eliminate Arbitrary rotate-[8deg] in StepReview
+
+**Problem**: Commit `3a84730b` (`feat(ui): add hover rotation animation to StepReview edit button icons`) introduced 3 hardcoded `rotate-[8deg]` arbitrary Tailwind values in `StepReview.tsx`. No `rotate` custom token existed.
+
+| File | Change |
+|------|--------|
+| `apps/web/tailwind.config.js` | Added `rotate: { 8: "8deg" }` token — single source of truth for 8-degree rotation |
+| `apps/web/src/components/wizard/StepReview.tsx` | Replaced 3x hardcoded `motion-safe:group-hover:rotate-[8deg]` with `motion-safe:group-hover:rotate-8` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 837 web + 499 api + 765 shared = **2,101 tests passing** across 91 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2701](https://github.com/cpa03/blueprintify/pull/2701) | `feat/flexy-iteration-143-rotate-token` | refactor(flexy): add rotate-8 token to eliminate arbitrary rotate-[8deg] in StepReview (Iteration 143) |

@@ -143,7 +143,7 @@ export const StepReview = memo(function StepReview({
                   aria-keyshortcuts={getAriaShortcutKey(WIZARD_REVIEW_EDIT_SHORTCUTS.INFO, "alt")}
                 >
                   <svg
-                    className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-[8deg]"
+                    className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-8"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -222,7 +222,7 @@ export const StepReview = memo(function StepReview({
                   aria-keyshortcuts={getAriaShortcutKey(WIZARD_REVIEW_EDIT_SHORTCUTS.STACK, "alt")}
                 >
                   <svg
-                    className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-[8deg]"
+                    className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-8"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -307,7 +307,7 @@ export const StepReview = memo(function StepReview({
                     )}
                   >
                     <svg
-                      className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-[8deg]"
+                      className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-8"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

@@ -74,6 +74,10 @@ export default {
         105: "1.05",
         125: "1.25",
       },
+      /** Flexy says: Rotate tokens to eliminate arbitrary rotate-[8deg] values */
+      rotate: {
+        8: "8deg",
+      },
       backdropBlur: {
         xs: "1px",
       },
