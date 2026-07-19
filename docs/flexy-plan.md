@@ -2615,3 +2615,24 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2701](https://github.com/cpa03/blueprintify/pull/2701) | `feat/flexy-iteration-143-rotate-token` | refactor(flexy): add rotate-8 token to eliminate arbitrary rotate-[8deg] in StepReview (Iteration 143) |
+
+### ✅ Flexy Iteration 144: Replace Hardcoded Fade Duration in PageScrollProgressBar with ANIMATION.MEDIUM Config
+
+**Problem**: `apps/web/src/components/PageScrollProgressBar.tsx` had a hardcoded `0.3` magic number for the fade transition duration on the scroll progress bar glow element. The `ANIMATION` config was already imported but the value was hardcoded.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/components/PageScrollProgressBar.tsx` | Replaced hardcoded `duration: 0.3` with `ANIMATION.MEDIUM` — uses existing shared animation config (ANIMATION_TIMING.duration.medium = 0.3s) |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 837 web + 499 api + 765 shared = **2,101 tests passing** across 91+ files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `feat/flexy-iteration-144-hardcoded-fade-duration` | refactor(flexy): replace hardcoded fade duration in PageScrollProgressBar with ANIMATION.MEDIUM config (Iteration 144) |
