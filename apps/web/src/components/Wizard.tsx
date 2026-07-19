@@ -184,7 +184,7 @@ function WizardComponent(): JSX.Element {
   const stepTitle = STEP_TITLES[currentStep] || UI_MESSAGES.PROJECT_WIZARD_FALLBACK;
   const documentTitle = (() => {
     if (isGenerating && generationProgress) return `Generating: ${generationProgress}`;
-    if (isComplete) return CELEBRATION_TEXT.COMPLETE;
+    if (isComplete && currentStep === WIZARD_STEP_KEYS.GENERATING) return CELEBRATION_TEXT.COMPLETE;
     return projectName ? `${projectName} | ${stepTitle}` : stepTitle;
   })();
   useDocumentTitle(documentTitle);
