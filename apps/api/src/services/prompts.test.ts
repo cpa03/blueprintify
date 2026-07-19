@@ -217,7 +217,7 @@ describe("prompts service", () => {
 
       expect(prompt).toContain("Based on the following blueprint.md");
       expect(prompt).toContain(blueprint);
-      expect(prompt).toContain('"My Project"');
+      expect(prompt).toContain("## Project: My Project");
       expect(prompt).toContain("prioritized tasks (P0, P1, P2)");
     });
 
@@ -239,7 +239,7 @@ describe("prompts service", () => {
 
       const prompt = buildTaskPrompt(blueprint, projectName);
 
-      expect(prompt).toContain("Empty Project");
+      expect(prompt).toContain("## Project: Empty Project");
       expect(prompt).toBeDefined();
     });
   });
@@ -541,9 +541,11 @@ describe("prompts service", () => {
         techStack: [{ name: "React", category: "frontend" }],
       };
       const prompt = buildBlueprintPrompt(request);
-      // Verify system instruction boundaries exist
-      expect(prompt).toMatch(/## Description\n<user_input>\n[^<]*\n<\/user_input>/);
-      // Verify the prompt structure isolates user content
+      // Verify all user content is wrapped in a single delimiter block
+      expect(prompt).toMatch(
+        /<user_input>\n# Project: Test\n\n## Description\nBuild a web app[\s\S]*<\/user_input>/
+      );
+      // Verify the prompt structure isolates user content in one block
       const userInputMatches = prompt.match(/<user_input>/g);
       expect(userInputMatches).toHaveLength(1);
     });
