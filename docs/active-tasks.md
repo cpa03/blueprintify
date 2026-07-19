@@ -2,6 +2,29 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 274 — **Full repository audit, 0 new post-Cycle-273 commits to index (HEAD unchanged at `7560a96f`), 2 previously unindexed commits recorded (BroCula Jul 19 Run 8, flexy Iteration 145), test count drift fixed (shared 765→790, total 2,101→2,126), BroCula ref updated (Run 7→Run 8 — LH 99-100-100-100 ⭐), stale plan file removed, quality verification** ✅
+
+### Task: Full repository audit — **0 new post-Cycle-273 commits to index** (HEAD unchanged at Cycle 273 `7560a96f`); **2 previously unindexed commits recorded** (chore(brocula): Jul 19 Run 8 — LH 99-100-100-100, 0 console errors, 2,101/2,101 tests `35c9a87a`; refactor(flexy): centralize scroll behavior, direction, scroll-into-view-block & CSS value strings into shared config (Iteration 145) `e592fd43`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **test count drift fixed** (shared 765→**790**, total 2,101→**2,126** — 837 web + 499 API + 790 shared); **BroCula ref updated** (Run 7→Run 8 — `docs/audits/brocula-audit-2026-07-19-run8.md` / LH **99-100-100-100** ⭐, clean console ✅); **stale plan file removed** (`docs/plans/2026-07-16-repokeeper-cycle-258.md`); **archive retention** — no cleanup needed (all files within 30-day window; earliest archive Jun 19); **stale branches** — no action needed (squash-merge repo); **unused dep check** — @playwright/test/playwright-core/lint-staged all confirmed in use; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ format ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 274 full repository audit — index 0 new post-Cycle-273 commits (HEAD unchanged), record 2 previously unindexed commits (BroCula Run 8, flexy Iteration 145), fix test count drift (shared 765→790, total 2,101→2,126), update BroCula ref (Run 7→Run 8), remove stale plan file, verify BUG-013 still fixed, archive retention check, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: Stale plan file `docs/plans/2026-07-16-repokeeper-cycle-258.md` removed. No type suppressions, no TODO/FIXME/HACK, no empty catch blocks ✅
+  - [x] **0 new post-Cycle-273 commits to index**: HEAD unchanged at `7560a96f` ✅
+  - [x] **2 previously unindexed commits recorded**: BroCula Jul 19 Run 8 (`35c9a87a`), flexy Iteration 145 (`e592fd43`) ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns (no re-bump) ✅
+  - [x] **Test count drift fixed**: 2,101→**2,126** (837 web + 499 API + 790 shared — shared +25) ✅
+  - [x] **BroCula ref updated**: Run 7→Run 8 (`brocula-audit-2026-07-19-run8.md` / LH **99-100-100-100** ⭐) ✅
+  - [x] **Stale plan file removed**: `docs/plans/2026-07-16-repokeeper-cycle-258.md` deleted ✅
+  - [x] **Archive retention**: No cleanup needed (all within 30-day window; earliest archive Jun 19) ✅
+  - [x] **Stale branches**: No action needed (squash-merge repo) ✅
+  - [x] **Dep usage verified**: @playwright/test, playwright-core, lint-staged all confirmed in use ✅
+  - [x] **Doc refresh**: findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md updated ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ format ✅ npm audit **0 vulns** ✅
+
+---
+
 ## ✅ RepoKeeper Cycle 273 — **Full repository audit, 1 new post-Cycle-272 commit indexed (BugFixer ULW Cycle Jul 19 Run 3), BUG-013 still fixed (0 vulns), test count unchanged 2,101, BroCula ref updated (Run 6→Run 7 — LH 100-100-100-100 🏆), doc refresh, quality verification** ✅
 
 ### Task: Full repository audit — **1 new post-Cycle-272 commit indexed** (chore(bugfixer): ULW Cycle Jul 19 2026 Run 3 — full audit clean (#2712) `9bccc2fd`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **test count confirmed** 2,101 (837 web + 499 API + 765 shared — unchanged); **BroCula ref updated** (Run 6→Run 7 — `docs/audits/brocula-audit-2026-07-19-run7.md` / LH **100-100-100-100** 🏆, clean console ✅); **archive retention** — no cleanup needed (all files within 30-day window; earliest archive Jun 19); **stale branches** — no action needed (squash-merge repo); **unused dep check** — @playwright/test/playwright-core/lint-staged all confirmed in use; doc refresh (findings, active-tasks, knowledge-review, audits/README); quality verification (typecheck ✅ lint ✅ build ✅ format ✅ npm audit **0 vulns** ✅)

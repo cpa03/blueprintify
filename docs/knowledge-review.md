@@ -12,17 +12,18 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-19 (RepoKeeper Cycle 273 — chore/repokeeper-cycle-273)
+**Last Review**: 2026-07-19 (RepoKeeper Cycle 274 — chore/repokeeper-cycle-274)
 **Status**: ✅ BUG-014/BUG-017 FIXED on main — all workflows clean
 
 As of cycle refresh:
 
 - All documentation aligns with current codebase state ✅
 - **BUG-014/BUG-017 — CONFIRMED FIXED on main**: zero stale doc refs (`docs/bug.md`/`docs/feature.md`) in CI workflows. All workflows use `node-version-file: ".node-version"` (zero hardcoded `node-version:`). PR #2507 resolved both permanently. ✅
-- **README BroCula description verified**: `(Jun 17–Jul 19)` — latest: `docs/audits/brocula-audit-2026-07-19-run7.md` (BroCula Jul 19 2026 Run 7 / **2,101 tests** ✅ — 837 web + 499 API + **765 shared**, LH **100-100-100-100** 🏆, clean console)
+- **README BroCula description verified**: `(Jun 17–Jul 19)` — latest: `docs/audits/brocula-audit-2026-07-19-run8.md` (BroCula Jul 19 2026 Run 8 / **2,126 tests** ✅ — 837 web + 499 API + **790 shared**, LH **99-100-100-100** ⭐, clean console)
+- **Cycle 274 (RepoKeeper)**: Full repository audit — typecheck ✅ lint ✅ build ✅ tests **2,126/2,126** ✅ (837 web + 499 API + 790 shared — shared +25 drift corrected), format ✅ npm audit **0 vulns** ✅, BUG-013 still fixed (lighthouse 12.6.1 maintained), BUG-014/BUG-017 CONFIRMED FIXED on main, **0 new post-Cycle-273 commits to index** (HEAD unchanged at Cycle 273 `7560a96f`), **2 previously unindexed commits recorded** (BroCula Jul 19 Run 8 `35c9a87a`, flexy Iteration 145 `e592fd43`), **test count drift fixed** (shared 765→790, total 2,101→2,126), **BroCula ref updated** (Jul 19 Run 7→Run 8 — `brocula-audit-2026-07-19-run8.md` / LH **99-100-100-100** ⭐), **stale plan file removed** (`docs/plans/2026-07-16-repokeeper-cycle-258.md`), **archive retention** — no cleanup needed (all files within 30-day window; earliest archive Jun 19), **stale branches** — no action needed (squash-merge repo), **unused dep check** — @playwright/test/playwright-core/lint-staged all confirmed in use, doc refresh (findings, active-tasks, knowledge-review, CHANGELOG), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ npm audit **0 vulns** ✅)
 - **Cycle 273 (RepoKeeper)**: Full repository audit — typecheck ✅ lint ✅ build ✅ tests **2,101/2,101** ✅ (837 web + 499 API + 765 shared — unchanged), format ✅ npm audit **0 vulns** ✅, BUG-013 still fixed (lighthouse 12.6.1 maintained), BUG-014/BUG-017 CONFIRMED FIXED on main, **1 new post-Cycle-272 commit indexed** (BugFixer ULW Cycle Jul 19 Run 3 `9bccc2fd`), **test count unchanged** 2,101 (837 web + 499 API + 765 shared), **BroCula ref updated** (Jul 19 Run 6→Run 7 — `brocula-audit-2026-07-19-run7.md` / LH **100-100-100-100** 🏆), **archive retention** — no cleanup needed (all files within 30-day window; earliest archive Jun 19), **stale branches** — no action needed (squash-merge repo), **unused dep check** — @playwright/test/playwright-core/lint-staged all confirmed in use, doc refresh (findings, active-tasks, knowledge-review, audits/README), quality verification (typecheck ✅ lint ✅ build ✅ format ✅ npm audit **0 vulns** ✅)
 - **Typecheck/Lint/Build**: All clean (0 errors, 0 warnings)
-- **Tests**: **2,101/2,101 passing** ✅ (837 web + 499 API + 765 shared)
+- **Tests**: **2,126/2,126 passing** ✅ (837 web + 499 API + 790 shared)
 - **Format**: All Prettier-formatted ✅
 - **BUG-013**: ✅ **STILL FIXED** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities**. No re-bump occurred.
 - **BUG-014/BUG-017**: ✅ **RESOLVED since Cycle 211** — stale doc refs and node-version hardcodes fixed on main.
