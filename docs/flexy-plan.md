@@ -2614,4 +2614,4 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `feat/flexy-iteration-143-rotate-token` | refactor(flexy): add rotate-8 token to eliminate arbitrary rotate-[8deg] in StepReview (Iteration 143) |
+| [#2701](https://github.com/cpa03/blueprintify/pull/2701) | `feat/flexy-iteration-143-rotate-token` | refactor(flexy): add rotate-8 token to eliminate arbitrary rotate-[8deg] in StepReview (Iteration 143) |
