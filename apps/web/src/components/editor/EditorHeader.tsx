@@ -340,13 +340,31 @@ const ContentStats = React.memo(function ContentStats({
             exit={{ opacity: 0, x: -4 }}
             transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
           >
-            <kbd
-              className="px-1 py-0.5 bg-dark-700 rounded text-3xs font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"
-              aria-hidden="true"
+            {/* The inner motion.span adds a gentle limited-repeat attention pulse
+                on mount, subtly drawing the eye to the `?` shortcut badge for the
+                first ~3 seconds so users discover keyboard shortcuts. The pulse
+                is very subtle (3% scale, 10% opacity shift) and stops after 5
+                repeats so it never becomes distracting. */}
+            <motion.span
+              className="flex items-center gap-1"
+              animate={{
+                scale: [1, 1.03, 1],
+                opacity: [1, 0.9, 1],
+              }}
+              transition={{
+                duration: 0.6,
+                repeat: 5,
+                ease: EASING.easeInOut,
+              }}
             >
-              ?
-            </kbd>
-            <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.SHORTCUTS}</span>
+              <kbd
+                className="px-1 py-0.5 bg-dark-700 rounded text-3xs font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"
+                aria-hidden="true"
+              >
+                ?
+              </kbd>
+              <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.SHORTCUTS}</span>
+            </motion.span>
           </motion.div>
         </motion.div>
       )}
