@@ -23,6 +23,21 @@
   - [x] **Doc refresh**: findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md updated ✅
   - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ format ✅ npm audit **0 vulns** ✅
 
+## ✅ BugFixer ULW Cycle Jul 19 2026 Run 4 — **Full repository audit, 3 new post-Run-3 commits indexed (BroCula Run 8, flexy Iteration 145, RepoKeeper Cycle 273), test count update 2,101→2,126 (shared +25), quality verification** ✅
+
+### Task: Full repository audit — **3 new post-Run-3 commits indexed** (chore(brocula): Jul 19 Run 8 — LH 99-100-100-100, 0 console errors, 2,101/2,101 tests `35c9a87a`; refactor(flexy): centralize scroll behavior, direction, scroll-into-view-block & CSS value strings into shared config (Iteration 145) `e592fd43`; chore(repokeeper): Cycle 273 — full repository audit `7560a96f`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-014/BUG-017 CONFIRMED FIXED on main** (zero stale doc refs, all workflows use `node-version-file: ".node-version"`); **test count update** 2,101→**2,126** (837 web + 499 API + 790 shared — shared +25 from flexy Iteration 145); **BroCula ref updated** (Run 7→Run 8 — `docs/audits/brocula-audit-2026-07-19-run8.md` / LH **99-100-100-100** ⭐, clean console ✅); **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; **0 merge conflict artifacts**; quality verification (typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Run 4 full repository audit — index 3 post-Run-3 commits, verify BUG-013 still fixed, update test count 2,101→2,126, update BroCula ref Run 7→Run 8, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No `@ts-expect-error`/`@ts-ignore`/`as any`. No empty catch blocks. No TODO/FIXME/HACK. No merge conflict artifacts ✅
+  - [x] **3 new post-Run-3 commits indexed**: BroCula Run 8 (`35c9a87a`), flexy Iteration 145 (`e592fd43`), RepoKeeper Cycle 273 (`7560a96f`) ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns (no re-bump) ✅
+  - [x] **BUG-014/BUG-017 CONFIRMED FIXED on main**: zero stale doc refs, all workflows use `node-version-file: ".node-version"` ✅
+  - [x] **Test count update**: 2,101→**2,126** (837 web + 499 API + 790 shared — shared +25) ✅
+  - [x] **BroCula ref updated**: Run 7→Run 8 (`brocula-audit-2026-07-19-run8.md` / LH **99-100-100-100** ⭐) ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ format ✅ secrets ✅ npm audit **0 vulns** ✅
 ---
 
 ## ✅ RepoKeeper Cycle 273 — **Full repository audit, 1 new post-Cycle-272 commit indexed (BugFixer ULW Cycle Jul 19 Run 3), BUG-013 still fixed (0 vulns), test count unchanged 2,101, BroCula ref updated (Run 6→Run 7 — LH 100-100-100-100 🏆), doc refresh, quality verification** ✅
