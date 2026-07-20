@@ -25,6 +25,7 @@ import { useWizardStore } from "../../store";
 import type { WizardStore } from "../../store/wizard";
 import { UI_CONTENT, FORM_LIMITS, SUGGESTED_FEATURES } from "../../config/constants";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 
 // Mock framer-motion to render plain HTML elements
 vi.mock("framer-motion", () => ({
@@ -93,7 +94,7 @@ vi.mock("../../store", () => ({
 
 const createMockStore = (overrides: Partial<WizardStore> = {}): WizardStore => {
   const defaultStore: WizardStore = {
-    currentStep: "features",
+    currentStep: WIZARD_STEP_KEYS.FEATURES,
     projectName: "",
     description: "",
     techStack: [],
