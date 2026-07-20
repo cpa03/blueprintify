@@ -76,6 +76,7 @@ export const ANIMATION = {
   TEXT_FADE: ANIMATION_DURATION_S.TEXT_FADE,
   ENTRY_PULSE: ANIMATION_DURATION_S.ENTRY_PULSE,
   NUMBER_COUNTER: ANIMATION_DURATION_S.NUMBER_COUNTER,
+  ATTENTION_PULSE: ANIMATION_DURATION_S.ATTENTION_PULSE,
 } as const;
 
 /**
@@ -333,6 +334,8 @@ export const OPACITY_PULSE = {
   TYPING: [0.4, 1, 0.4],
   /** Half-opacity blink: 0.5 → 1 → 0.5 — for standard blinking/attention effects */
   HALF_BLINK: [0.5, 1, 0.5],
+  /** Attention pulse: 1 → 0.9 → 1 — subtle 10% opacity dip for attention-seeking badge animations */
+  ATTENTION: [1, 0.9, 1],
 };
 
 /**
@@ -357,6 +360,8 @@ export const SCALE_PULSE = {
   SECTION_BADGE: [1, 1.12, 1],
   /** Milestone pulse: 1 → 1.35 → 1 — for milestone/achievement reached animations */
   MILESTONE: [1, 1.35, 1],
+  /** Attention pulse: 1 → 1.03 → 1 — subtle 3% scale pulse for attention-seeking badge animations */
+  ATTENTION: [1, 1.03, 1],
   /** Particle fade-out: 0.5 → 1.2 → 1.5 — for celebration particle ring expansion */
   PARTICLE_RING: [0.5, 1.2, 1.5],
 };
@@ -373,6 +378,16 @@ export const Y_OFFSET = {
   /** Typing bobbing: 0 → -4 → 0 — for live typing/streaming indicator bobbing */
   TYPING: [0, -4, 0],
 };
+
+/**
+ * Animation Repeat Counts
+ * Centralized source of truth for framer-motion animation repeat counts.
+ * Flexy says: No hardcoded repeat: 5 in component transition configs!
+ */
+export const ANIMATION_REPEAT = {
+  /** Number of attention-pulse badge animation cycles (5 repeats ≈ 3s total) */
+  ATTENTION_PULSE: 5,
+} as const;
 
 // ============================================================================
 // Textarea Configuration
