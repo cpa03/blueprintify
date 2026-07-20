@@ -2,9 +2,17 @@
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
 
-## Bug Status — Jul 20 2026 (Run 1)
+## Bug Status — Jul 20 2026 (Run 2)
 
-> **BugFixer ULW Cycle Jul 20 2026 Run 1 (2026-07-20 — fix/bugfixer-ulw-cycle-jul-20-2026)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,126/2,126** ✅ (837 web + 499 API + 790 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. **BUG-013 — STILL FIXED**: `lighthouse` 12.6.1 maintained — 0 moderate vulns (no re-bump occurred). **BUG-014/BUG-017 — CONFIRMED FIXED on main**: zero stale doc refs, all workflows use `node-version-file: ".node-version"`. **Test count unchanged**: 2,126 (837 web + 499 API + 790 shared). **0 post-Run-4 commits indexed** (HEAD is BugFixer Run 4 merge `e3f63196`). Branch up to date with main (origin/main at same commit). **No new fixable bugs found in codebase. All quality gates pass.** Branch created.
+> **BugFixer ULW Cycle Jul 20 2026 Run 2 (2026-07-20 — fix/bugfixer-ulw-cycle-jul-20-2026)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,131/2,131** ✅ (837 web + 499 API + 795 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
+> 
+> **BUG-025 — FIXED**: TypeScript 6.0.3 internal error `TS2321: Excessive stack depth comparing types` in `apps/web/vite.config.ts:93`. Root cause: TypeScript 6.0.3 hits recursion limit when deeply comparing the inline Vite config object with Vite's `UserConfig` type (deeply nested type hierarchy with many conditional/extending interfaces). Fix: added `as UserConfig` cast on the `defineConfig()` argument, which bypasses the deep structural type comparison. Verified: typecheck ✅ lint ✅ build ✅ tests 2,131/2,131 ✅ audit 0 vulns ✅. All quality gates pass.
+> 
+> **BUG-013 — STILL FIXED**: `lighthouse` 12.6.1 maintained — 0 moderate vulns (no re-bump occurred).
+> **BUG-014/BUG-017 — CONFIRMED FIXED on main**: zero stale doc refs, all workflows use `node-version-file: ".node-version"`.
+> **Test count update**: 2,126→2,131 (shared +5 from prior flexy iteration tests).
+> **3 post-Run-1 commits indexed**: flexy Iteration 146 hardcoded cleanup (`cd20a9de`), RepoKeeper Cycle 275 (`5195c434`), a11y motion-safe hover transforms (`4617e2af`), deps bumps (`08c7d600`, `f85db3c3`, `6048e28f`), BroCula Jul 20 (`3b908260`), docs flexy Iteration 146 (`2de9b883`).
+> Branch up to date with main. Fix committed, PR created.
 
 ## Bug Status — Jul 19 2026 (Run 4)
 
