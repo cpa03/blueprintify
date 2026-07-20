@@ -5,6 +5,7 @@ import { EditorEmptyState } from "./EditorEmptyState";
 import { useWizardStore } from "../store";
 import type { WizardStore } from "../store/wizard";
 import { WIZARD_STEPS } from "../config/constants";
+import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 
 vi.mock("../store", () => ({
   useWizardStore: vi.fn(),
@@ -39,7 +40,7 @@ vi.mock(import("framer-motion/m"), async (importOriginal) => {
 });
 
 const mockWizardStore: WizardStore = {
-  currentStep: "info",
+  currentStep: WIZARD_STEP_KEYS.INFO,
   projectName: "",
   description: "",
   targetAudience: "",
@@ -118,7 +119,7 @@ describe("EditorEmptyState", () => {
   it("renders without crashing when currentStep is the last step", () => {
     (useWizardStore as unknown as Mock).mockImplementation(
       (selector: (state: WizardStore) => unknown) =>
-        selector({ ...mockWizardStore, currentStep: "generating" })
+        selector({ ...mockWizardStore, currentStep: WIZARD_STEP_KEYS.GENERATING })
     );
     render(<EditorEmptyState />);
     expect(screen.getByText("Your blueprint is waiting to be created")).toBeInTheDocument();
