@@ -2,6 +2,24 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 275 — **Full repository audit, 2 new post-Cycle-274 commits indexed (keyboard shortcut badge animation, BugFixer ULW Cycle Jul 19 Run 4), BUG-013 still fixed (0 vulns), test count unchanged 2,126 (837 web + 499 API + 790 shared), archive retention cleanup (1 stale file purged from Jun 19), 1 stale merged branch deleted, quality verification** ✅
+
+### Task: Full repository audit — **2 new post-Cycle-274 commits indexed** (feat(ux): add attention-pulse animation on keyboard shortcut badge (#2721) `e62008f2`; chore(bugfixer): ULW Cycle Jul 19 2026 Run 4 — full audit clean (#2720) `e3f63196`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-014/BUG-017 CONFIRMED FIXED on main** (zero stale doc refs, all workflows use `node-version-file: ".node-version"`); **test count confirmed** 2,126 (837 web + 499 API + 790 shared — unchanged); **archive retention cleanup** (purged 1 stale file from Jun 19 — `docs/audits/archive/brocula-hunt-2026-06-19-run1.md`, past 30-day retention); **1 stale merged branch deleted** (`origin/fix/ci-security-scanning`); **0 redundant/temp/unused files found**; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README); quality verification (typecheck ✅ lint ✅ build ✅ format ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 275 full repository audit — index 2 post-Cycle-274 commits, verify BUG-013 still fixed, verify BUG-014/BUG-017 fixed, archive retention cleanup, stale merged branch deletion, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files in source code, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks ✅
+  - [x] **2 new post-Cycle-274 commits indexed**: keyboard shortcut badge animation (`e62008f2`), BugFixer ULW Cycle Jul 19 Run 4 (`e3f63196`) ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns (no re-bump) ✅
+  - [x] **BUG-014/BUG-017 verified**: zero stale doc refs, zero hardcoded node-version in workflows ✅
+  - [x] **Test count confirmed**: 2,126 (837 web + 499 API + 790 shared — unchanged) ✅
+  - [x] **Archive retention cleanup**: Purged 1 stale file from Jun 19 (`brocula-hunt-2026-06-19-run1.md`, past 30-day retention) ✅
+  - [x] **Stale merged branch deleted**: `origin/fix/ci-security-scanning` ✅
+  - [x] **Doc refresh**: findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md, README.md updated ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ format ✅ npm audit **0 vulns** ✅
+
 ## ✅ RepoKeeper Cycle 274 — **Full repository audit, 0 new post-Cycle-273 commits to index (HEAD unchanged at `7560a96f`), 2 previously unindexed commits recorded (BroCula Jul 19 Run 8, flexy Iteration 145), test count drift fixed (shared 765→790, total 2,101→2,126), BroCula ref updated (Run 7→Run 8 — LH 99-100-100-100 ⭐), stale plan file removed, quality verification** ✅
 
 ### Task: Full repository audit — **0 new post-Cycle-273 commits to index** (HEAD unchanged at Cycle 273 `7560a96f`); **2 previously unindexed commits recorded** (chore(brocula): Jul 19 Run 8 — LH 99-100-100-100, 0 console errors, 2,101/2,101 tests `35c9a87a`; refactor(flexy): centralize scroll behavior, direction, scroll-into-view-block & CSS value strings into shared config (Iteration 145) `e592fd43`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **test count drift fixed** (shared 765→**790**, total 2,101→**2,126** — 837 web + 499 API + 790 shared); **BroCula ref updated** (Run 7→Run 8 — `docs/audits/brocula-audit-2026-07-19-run8.md` / LH **99-100-100-100** ⭐, clean console ✅); **stale plan file removed** (`docs/plans/2026-07-16-repokeeper-cycle-258.md`); **archive retention** — no cleanup needed (all files within 30-day window; earliest archive Jun 19); **stale branches** — no action needed (squash-merge repo); **unused dep check** — @playwright/test/playwright-core/lint-staged all confirmed in use; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ format ✅ npm audit **0 vulns** ✅)

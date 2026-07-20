@@ -161,7 +161,7 @@ function StepIndicatorComponent(): JSX.Element {
             animateOnMount
             mountAnimationDelayMs={ANIMATION_ENTRANCE_DELAYS_MS.STANDARD_MOUNT}
           />
-          <div className="absolute inset-0 flex items-center justify-center transition-transform duration-200 hover:scale-110">
+          <div className="absolute inset-0 flex items-center justify-center motion-safe:transition-transform motion-safe:duration-200 motion-safe:hover:scale-110">
             <span
               key={`${currentStep}-${isGenerationComplete}`}
               className="text-xs font-semibold step-count-pop"
@@ -204,7 +204,7 @@ function StepIndicatorComponent(): JSX.Element {
                       ? "bg-accent-emerald/20 border border-accent-emerald/50 text-accent-emerald focus-visible:ring-2 focus-visible:ring-accent-emerald/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                       : "bg-dark-800/50 border border-dark-700 text-dark-300 focus-visible:ring-2 focus-visible:ring-dark-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                 }
-                ${isClickable ? "cursor-pointer hover:bg-dark-700 hover:scale-102 active:scale-98" : "cursor-default"}
+                ${isClickable ? "cursor-pointer hover:bg-dark-700 motion-safe:hover:scale-102 motion-safe:active:scale-98" : "cursor-default"}
                 ${isActive ? "animate-step-pulse" : ""}
                 ${isShaking ? "shake-animation" : ""}
                 ${justCompletedStep === step.key ? "step-complete-flash" : ""}
@@ -215,7 +215,7 @@ function StepIndicatorComponent(): JSX.Element {
                 animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
               }}
             >
-              <span className="inline-block transition-transform duration-200 hover:scale-125">
+              <span className="inline-block motion-safe:transition-transform motion-safe:duration-200 motion-safe:hover:scale-125">
                 <Icon name={step.icon} className="w-4 h-4" />
               </span>
               <span className="text-sm font-medium hidden sm:inline">{step.label}</span>
