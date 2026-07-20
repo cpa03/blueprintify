@@ -349,6 +349,7 @@ export const ACCESSIBILITY_LABELS = {
     CLEAR_DESCRIPTION: "Clear description",
     CLEAR_CONSTRAINTS: "Clear constraints",
     CLEAR_ALL_FIELDS: "Clear all form fields",
+    CLEAR_ALL_ANNOUNCEMENT: "All form fields cleared",
     FIELDS_COMPLETED: (completed: number, total: number) =>
       `${completed} of ${total} fields completed`,
   },

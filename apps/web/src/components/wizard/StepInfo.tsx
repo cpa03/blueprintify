@@ -92,6 +92,7 @@ export const StepInfo = memo(function StepInfo({
   const storeClearForm = useWizardStore((s) => s.clearForm);
   const nextStep = useWizardStore((s) => s.nextStep);
   const [clearAnimation, setClearAnimation] = useState(false);
+  const [clearAnnouncement, setClearAnnouncement] = useState("");
 
   const modifierKey = getModifierLabel();
 
@@ -156,9 +157,18 @@ export const StepInfo = memo(function StepInfo({
     if (hasAnyInput) {
       storeClearForm();
       setClearAnimation(true);
+      setClearAnnouncement(ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_ALL_ANNOUNCEMENT);
       setTimeout(() => setClearAnimation(false), TIMEOUTS.SHAKE_ANIMATION);
     }
   }, [storeClearForm, hasAnyInput]);
+
+  // Clear the announcement after screen readers have had time to announce it,
+  // preventing stale text from accumulating in the live region.
+  useEffect(() => {
+    if (!clearAnnouncement) return;
+    const timer = setTimeout(() => setClearAnnouncement(""), TIMEOUTS.LIVE_REGION_CLEAR);
+    return () => clearTimeout(timer);
+  }, [clearAnnouncement]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -706,6 +716,13 @@ export const StepInfo = memo(function StepInfo({
           </KeyboardShortcutTooltip>
         </div>
       </form>
+
+      {/* Screen reader announcement for form clear action — provides explicit
+          feedback so screen reader users know the form was cleared, since the
+          clear-all button unmounts from the DOM without a visible confirmation. */}
+      <div className="sr-only" role="status" aria-live="assertive" aria-atomic="true">
+        {clearAnnouncement}
+      </div>
     </motion.div>
   );
 });
