@@ -1,6 +1,33 @@
 # Findings
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
+
+## Security Audit: Dependabot `actions/setup-node` v6→v7 (2026-07-20)
+
+### Scope
+PR updating `actions/setup-node` from `@v6` to `@v7` across 4 workflow files:
+- `.github/workflows/iterate.yml` (5 occurrences)
+- `.github/workflows/on-pull.yml` (1 occurrence)
+- `.github/workflows/parallel.yml` (4 occurrences)
+- `.github/workflows/pr-gatekeeper.yml` (1 occurrence)
+
+### Security Analysis
+
+| Check | Result |
+|-------|--------|
+| **Hardcoded secrets introduced?** | ✅ **None** — all secrets use `${{ secrets.XXX }}` syntax |
+| **Vulnerabilities introduced?** | ✅ **None** — `actions/setup-node@v7` is valid (tags: `v7`, `v7.0.0`) |
+| **Deprecated functions introduced?** | ✅ **None** — v7 is the latest stable release |
+| **Known CVEs in target version?** | ✅ **None** — v7 includes dependency upgrades and security fixes |
+| **Command injection risk?** | ✅ **None** — all expressions use safe GitHub Actions template syntax |
+
+### v7 Security Improvements Over v6
+- **Removed dummy `NODE_AUTH_TOKEN` export** — eliminates potential token leakage
+- **Dependency upgrades** — all runtime dependencies bumped to latest
+- **Improved caching documentation** — mitigates cache poisoning risks
+
+### Verdict
+**PR is clean.** No introduced vulnerabilities, secrets, or deprecated function usage. The version bump from v6→v7 is a **security-positive upgrade** that should be merged.
 >
 > **Note 2026-07-12**: PR #2507 resolved BUG-014 (stale doc refs) and BUG-017 (hardcoded node-version) — all workflow files now use `node-version-file: ".node-version"` and agent identity strings are corrected. Token still lacks `workflows: write` for direct pushes but squash-merge via PR works.
 
