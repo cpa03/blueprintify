@@ -107,6 +107,7 @@ import {
   STORAGE_LOCAL_DEFAULTS,
   UI_ANIMATION_DEFAULTS,
   ANIMATION_DURATION_S,
+  ANIMATION_REPEAT,
   VIEW_MODE_INDICATOR_POSITION,
   RIPPLE_DEFAULTS,
   PARTICLE_DEFAULTS,
@@ -2952,8 +2953,8 @@ describe("ANIMATION_DURATION_S", () => {
     });
   });
 
-  it("should have 27 entries", () => {
-    expect(Object.keys(ANIMATION_DURATION_S).length).toBe(27);
+  it("should have 28 entries", () => {
+    expect(Object.keys(ANIMATION_DURATION_S).length).toBe(28);
   });
 
   it("should have values distributed across a range (not all identical)", () => {
@@ -2974,6 +2975,25 @@ describe("ANIMATION_DURATION_S", () => {
     expect(ANIMATION_DURATION_S.ENTRY_PULSE).toBe(0.8);
     expect(ANIMATION_DURATION_S.NUMBER_COUNTER).toBe(0.8);
     expect(ANIMATION_DURATION_S.TEXT_FADE).toBe(0.15);
+    expect(ANIMATION_DURATION_S.ATTENTION_PULSE).toBe(0.6);
+  });
+});
+
+describe("ANIMATION_REPEAT", () => {
+  it("should have ATTENTION_PULSE = 5", () => {
+    expect(ANIMATION_REPEAT.ATTENTION_PULSE).toBe(5);
+  });
+
+  it("should have positive integer values", () => {
+    const values = Object.values(ANIMATION_REPEAT);
+    values.forEach((v) => {
+      expect(Number.isInteger(v)).toBe(true);
+      expect(v).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have 1 entry", () => {
+    expect(Object.keys(ANIMATION_REPEAT).length).toBe(1);
   });
 });
 
@@ -4302,9 +4322,13 @@ describe("OPACITY_PULSE", () => {
     expect(OPACITY_PULSE.HALF_BLINK).toEqual([0.5, 1, 0.5]);
   });
 
+  it("should have ATTENTION = [1, 0.9, 1]", () => {
+    expect(OPACITY_PULSE.ATTENTION).toEqual([1, 0.9, 1]);
+  });
+
   it("should have all entries as arrays of 3 numbers between 0 and 1", () => {
     const values = Object.values(OPACITY_PULSE);
-    expect(values.length).toBe(5);
+    expect(values.length).toBe(6);
     values.forEach((arr) => {
       expect(Array.isArray(arr)).toBe(true);
       expect(arr.length).toBe(3);
@@ -4346,9 +4370,13 @@ describe("SCALE_PULSE", () => {
     expect(SCALE_PULSE.PARTICLE_RING).toEqual([0.5, 1.2, 1.5]);
   });
 
+  it("should have ATTENTION = [1, 1.03, 1]", () => {
+    expect(SCALE_PULSE.ATTENTION).toEqual([1, 1.03, 1]);
+  });
+
   it("should have all entries as arrays of 3 positive numbers", () => {
     const values = Object.values(SCALE_PULSE);
-    expect(values.length).toBe(7);
+    expect(values.length).toBe(8);
     values.forEach((arr) => {
       expect(Array.isArray(arr)).toBe(true);
       expect(arr.length).toBe(3);

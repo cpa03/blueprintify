@@ -54,6 +54,7 @@ import {
   EDITOR_TABS,
   DEBUG_MESSAGES,
   VIEW_MODE_SHORTCUT_KEYS,
+  SCROLL_BEHAVIOR,
 } from "../config/constants";
 import { ANIMATION_TIMING, LAYOUT } from "../config/theme";
 import { isDev } from "../config/env";
@@ -423,7 +424,7 @@ function EditorComponent(): JSX.Element {
     // Scroll markdown preview pane
     const previewEl = previewRef.current;
     if (previewEl && typeof previewEl.scrollTo === "function") {
-      previewEl.scrollTo({ top: 0, behavior: "smooth" });
+      previewEl.scrollTo({ top: 0, behavior: SCROLL_BEHAVIOR.SMOOTH });
     }
     // Scroll CodeMirror editor to top for visual consistency with preview pane
     const scroller = editorWrapperRef.current?.querySelector<HTMLElement>(".cm-scroller");
