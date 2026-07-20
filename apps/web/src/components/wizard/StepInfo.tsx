@@ -159,6 +159,7 @@ export const StepInfo = memo(function StepInfo({
       setClearAnimation(true);
       setClearAnnouncement(ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_ALL_ANNOUNCEMENT);
       setTimeout(() => setClearAnimation(false), TIMEOUTS.SHAKE_ANIMATION);
+      projectNameInputRef.current?.focus({ preventScroll: true });
     }
   }, [storeClearForm, hasAnyInput]);
 
