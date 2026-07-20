@@ -74,6 +74,8 @@ import {
   OPACITY_PULSE,
   SCALE_PULSE,
   Y_OFFSET,
+  SCROLL_BEHAVIOR,
+  SCROLL_INTO_VIEW_BLOCK,
 } from "../../config/constants";
 import { COLORS } from "../../config/theme";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
@@ -231,7 +233,10 @@ export const StepGenerating = memo(function StepGenerating({
   const handleViewEditor = useCallback(() => {
     const editorPanel = document.querySelector<HTMLElement>('[id$="-panel"]');
     if (editorPanel) {
-      editorPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      editorPanel.scrollIntoView({
+        behavior: SCROLL_BEHAVIOR.SMOOTH,
+        block: SCROLL_INTO_VIEW_BLOCK.NEAREST,
+      });
 
       // Focus the active tab button for an immediately interactive focus
       // target with a visible focus ring, instead of the generic panel

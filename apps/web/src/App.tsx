@@ -530,7 +530,7 @@ function App(): JSX.Element {
               href={EXTERNAL_URLS.CLOUDFLARE_WORKERS}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 transition-all duration-200 hover:scale-102"
+              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 motion-safe:transition-all motion-safe:duration-200 motion-safe:hover:scale-102"
               aria-label={ACCESSIBILITY_LABELS.EXTERNAL_LINKS.CLOUDFLARE_WORKERS}
             >
               Cloudflare Workers
@@ -554,7 +554,7 @@ function App(): JSX.Element {
               href={EXTERNAL_URLS.REACT}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 transition-all duration-200 hover:scale-102"
+              className="inline-flex items-center gap-0.5 group underline decoration-primary-500/30 hover:decoration-primary-500 underline-offset-2 motion-safe:transition-all motion-safe:duration-200 motion-safe:hover:scale-102"
               aria-label={ACCESSIBILITY_LABELS.EXTERNAL_LINKS.REACT}
             >
               React

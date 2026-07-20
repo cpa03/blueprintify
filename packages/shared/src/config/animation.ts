@@ -100,6 +100,8 @@ export const ANIMATION_DURATION_S = {
   ENTRY_PULSE: 0.8,
   /** Duration for animated number counter transitions (0.8s) */
   NUMBER_COUNTER: 0.8,
+  /** Duration for attention-pulse badge animation cycle (0.6s) */
+  ATTENTION_PULSE: 0.6,
 } as const;
 
 /**
@@ -112,6 +114,19 @@ export const ANIMATION_DURATION_S = {
 export const ANIMATION_DEFAULTS = {
   /** Zero-duration transition for instant/no-animation state changes */
   ZERO_DURATION: { duration: 0 } as const,
+} as const;
+
+/**
+ * Animation Repeat Counts
+ * Centralized source of truth for framer-motion animation repeat count
+ * magic numbers used in component transition configs.
+ * Flexy says: No hardcoded repeat: 5 in component transition configs!
+ * Usage: import { ANIMATION_REPEAT } from "@blueprint/shared";
+ *        transition={{ repeat: ANIMATION_REPEAT.ATTENTION_PULSE }}
+ */
+export const ANIMATION_REPEAT = {
+  /** Number of attention-pulse badge animation cycles (5 repeats ≈ 3s total) */
+  ATTENTION_PULSE: 5,
 } as const;
 
 /**
@@ -410,6 +425,8 @@ export const OPACITY_PULSE = {
   TYPING: [0.4, 1, 0.4] as const,
   /** Half-opacity blink: 0.5 → 1 → 0.5 — for standard blinking/attention effects */
   HALF_BLINK: [0.5, 1, 0.5] as const,
+  /** Attention pulse: 1 → 0.9 → 1 — subtle 10% opacity dip for attention-seeking badge animations */
+  ATTENTION: [1, 0.9, 1] as const,
 } as const;
 
 /**
@@ -435,6 +452,8 @@ export const SCALE_PULSE = {
   MILESTONE: [1, 1.35, 1] as const,
   /** Particle fade-out: 0.5 → 1.2 → 1.5 — for celebration particle ring expansion */
   PARTICLE_RING: [0.5, 1.2, 1.5] as const,
+  /** Attention pulse: 1 → 1.03 → 1 — subtle 3% scale pulse for attention-seeking badge animations */
+  ATTENTION: [1, 1.03, 1] as const,
 } as const;
 
 /**
