@@ -908,7 +908,8 @@
   }
 
   .form-ready-pulse {
-    animation: form-ready-pulse var(--form-ready-pulse-duration) var(--form-ready-pulse-easing) forwards;
+    animation: form-ready-pulse var(--form-ready-pulse-duration) var(--form-ready-pulse-easing)
+      forwards;
     will-change: box-shadow;
   }
 

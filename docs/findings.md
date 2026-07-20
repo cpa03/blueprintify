@@ -2,21 +2,22 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Cycle 277 (2026-07-20 — RepoKeeper: full repository audit, 3 new post-Cycle-276 commits indexed (form-ready pulse animation, vite TS2321 fix, missing useCallback import), BUG-013 still fixed (0 vulns), BUG-025 FIXED (TS2321 excessive stack depth), test count unchanged 2,131 (837 web + 499 API + 795 shared), all quality gates pass ✅)
+## Cycle 278 (2026-07-20 — RepoKeeper: full repository audit, 5 new post-Cycle-277 commits indexed (flexy Iteration 148 form-ready-pulse CSS custom properties, BroCula Jul 20 Run 3), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), test count unchanged 2,131 (837 web + 499 API + 795 shared), BroCula ref updated (Run 2→Run 3 — LH 100-100-100-100 🏆), Prettier format drift fixed (apps/web/src/index.css), all quality gates pass ✅)
 
 ### Actions Taken
 
 1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: no type suppressions. No TODO/FIXME/HACK in source. No merge conflict artifacts. No empty directories. No `.patch` files.
-2. **[3 New Post-Cycle-276 Commits Indexed]** — 3 commits landed since Cycle 276 (`a4304284`): feat(ux): add form-ready pulse animation on clear all in StepInfo (`0411cd96`); fix(vite): resolve TS2321 excessive stack depth in defineConfig with UserConfig cast (`dfdd1a8e`); fix(web): add missing useCallback import in StepInfo (`707f8f4f`).
+2. **[5 New Post-Cycle-277 Commits Indexed]** — 5 commits landed since Cycle 277 (`c03015b4`): refactor(flexy): centralize form-ready-pulse animation duration and easing into CSS custom properties (Iteration 148) (`6c162620`); docs(flexy): add Iteration 148 entry for form-ready-pulse CSS custom properties (`3f9beb1c`); refactor(flexy): centralize form-ready-pulse animation into CSS custom properties (Iteration 148) (`4ce4ba47`); chore(brocula): ULW Cycle Jul 20 2026 Run 3 — full audit clean, perfect Lighthouse 100-100-100-100 (`52b08be2`); chore(brocula): ULW Cycle Jul 20 2026 Run 3 — audit clean, LH 100-100-100-100 (`460a7d60`).
 3. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities** (no re-bump occurred).
 4. **[BUG-014/BUG-017 Verification]** — CONFIRMED FIXED on main: zero stale doc refs, all workflows use `node-version-file: ".node-version"`. ✅
-5. **[BUG-025 FIXED]** — TS2321: excessive stack depth comparing types in `apps/web/vite.config.ts:93`. Root cause: TypeScript 6.0.3 hits recursion limit on deeply nested Vite `UserConfig` type. Fix: added `as UserConfig` cast. Verified: typecheck ✅ lint ✅ build ✅ tests 2,131/2,131 ✅.
-6. **[Test Count Confirmed]** — **2,131** (837 web + 499 API + 795 shared — unchanged from Cycle 276).
-7. **[BroCula Ref Verified]** — Still at Jul 20 Run 2 — `docs/audits/brocula-audit-2026-07-20-run2.md` / LH **99-100-100-100** ⭐, 0 console errors ✅.
-8. **[Archive Retention]** — No cleanup needed (all files within 30-day window; earliest archive Jun 20).
-9. **[Stale Merged Branches]** — No fully-merged remote branches found (squash-merge repo).
-10. **[Doc Refresh]** — findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md, README.md updated.
-11. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,131/2,131** ✅, format ✅ npm audit **0 vulns** ✅. All quality gates pass.
+5. **[BUG-025 Still Fixed]** — TS2321 excessive stack depth fix (`as UserConfig` cast in vite.config.ts) holds. Verified: typecheck ✅ lint ✅ build ✅ tests 2,131/2,131 ✅.
+6. **[Test Count Confirmed]** — **2,131** (837 web + 499 API + 795 shared — unchanged from Cycle 277).
+7. **[BroCula Ref Updated]** — Jul 20 Run 2 → **Jul 20 Run 3** — `docs/audits/brocula-hunt-2026-07-20-run-14-11.md` / LH **100-100-100-100** 🏆, 0 console errors ✅.
+8. **[Prettier Format Drift Fixed]** — `apps/web/src/index.css` formatting drift detected and fixed via Prettier.
+9. **[Archive Retention]** — No cleanup needed (all files within 30-day window; earliest archive Jun 20).
+10. **[Stale Merged Branches]** — No fully-merged remote branches found (squash-merge repo).
+11. **[Doc Refresh]** — findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md, README.md updated.
+12. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,131/2,131** ✅, format ✅ npm audit **0 vulns** ✅. All quality gates pass.
 
 ### Quality Metrics
 
@@ -26,7 +27,7 @@
 | Lint | ✅ 0 errors, 0 warnings |
 | Build | ✅ 0 errors |
 | Tests | ✅ **2,131/2,131** (837 web + 499 API + **795 shared**) |
-| Format (Prettier) | ✅ All files formatted |
+| Format (Prettier) | ✅ All files formatted (1 drift fixed: apps/web/src/index.css) |
 | npm audit | ✅ **0 vulnerabilities** (BUG-013 still fixed) |
 | `@ts-expect-error`/`@ts-ignore` | ✅ **0** in source |
 | `as any` | ✅ **0** in source |
@@ -40,13 +41,13 @@
 | Archive retention | ✅ No cleanup needed (all within 30-day window) |
 | Stale merged branches | ✅ **0** |
 | Stale plan files | ✅ **0** |
-| BUG-025 (TS2321) | ✅ **FIXED** (as UserConfig cast) |
+| BUG-025 (TS2321) | ✅ **STILL FIXED** (as UserConfig cast) |
 
 ### Verdict
 
-**All quality gates pass. Repository remains exceptionally healthy — 2,131 tests green, 0 vulnerabilities, 0 lint/type errors. 3 new post-Cycle-276 commits indexed (form-ready pulse animation, vite TS2321 fix, useCallback import). BUG-025 FIXED (TS2321 excessive stack depth). BUG-013 still fixed (lighthouse 12.6.1 maintained). BUG-014/BUG-017 CONFIRMED FIXED on main. No archive cleanup needed. No stale merged branches.** ✅
+**All quality gates pass. Repository remains exceptionally healthy — 2,131 tests green, 0 vulnerabilities, 0 lint/type errors. 5 new post-Cycle-277 commits indexed (flexy Iteration 148 form-ready-pulse CSS custom properties, BroCula Jul 20 Run 3). BUG-025 still fixed (TS2321). BUG-013 still fixed (lighthouse 12.6.1 maintained). BUG-014/BUG-017 CONFIRMED FIXED on main. BroCula ref updated to Jul 20 Run 3 (LH **100-100-100-100** 🏆). Prettier format drift fixed (apps/web/src/index.css). No archive cleanup needed. No stale merged branches.** ✅
 
-## Security Audit: Dependabot `actions/setup-node` v6→v7 (2026-07-20)
+## Cycle 277 (2026-07-20 — RepoKeeper: full repository audit, 3 new post-Cycle-276 commits indexed (form-ready pulse animation, vite TS2321 fix, missing useCallback import), BUG-013 still fixed (0 vulns), BUG-025 FIXED (TS2321 excessive stack depth), test count unchanged 2,131 (837 web + 499 API + 795 shared), all quality gates pass ✅)
 
 ### Scope
 PR updating `actions/setup-node` from `@v6` to `@v7` across 4 workflow files:
