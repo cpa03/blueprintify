@@ -23,7 +23,7 @@
     "test": "npm run test --workspace=apps/web",
     "test:api": "npm run test --workspace=apps/api",
     "test:all": "npm run test --workspace=apps/web -- --run && npm run test --workspace=apps/api && npm run test --workspace=packages/shared",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "npm run typecheck --workspaces --if-present",
     "scan:secrets": "node scripts/scan-secrets.mjs",
     "check": "npm run typecheck && npm run lint && npm run scan:secrets && npm run audit && npm run test:all",
     "db:migrate": "node scripts/migrate.ts",

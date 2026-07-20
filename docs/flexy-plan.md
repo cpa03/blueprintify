@@ -2695,3 +2695,28 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 837 web + 499 api + 795 shared = **2,131 tests passing** across 91+ files
+
+### ✅ Flexy Iteration 147: Fix Root `npm run typecheck` — Use Workspace-Level Typechecking
+
+**Problem**: The root `npm run typecheck` (`tsc --noEmit` with root `tsconfig.json`) was permanently broken — it crashed with a TypeScript 6.0.3 ICE (Internal Compiler Error: `Debug Failure. False expression: parameter should have errors when reporting errors` at `checkExportAssignment`). Additionally, the root tsconfig had no `include`/`exclude`/`references` fields, causing it to attempt typechecking ALL workspace files without proper type resolution, resulting in hundreds of `Cannot find module 'react'`/`Cannot find module 'vitest'` errors.
+
+**Root Cause**: The root `tsconfig.json` served as a base config with `paths` for `@blueprint/shared` but was never intended for direct `tsc --noEmit` invocation. Each workspace has its own properly configured `tsconfig.json` (with `types`, `lib`, `composite` etc.) extending the root.
+
+**Fix**:
+| File | Change |
+| ---- | ------ |
+| `package.json` | `typecheck: "tsc --noEmit"` → `"npm run typecheck --workspaces --if-present"` — delegates to each workspace's own typecheck script |
+| `tsconfig.json` | Added `"include": []` + `"references"` pointing to all 3 workspaces — properly supports `tsc -b` build mode |
+| `apps/web/vitest.config.ts` | Added `"dist/"` to `exclude` array — prevents vitest from picking up compiled test files in dist/ after build |
+| `apps/api/vitest.config.ts` | Added `"dist/"` to `exclude` array — same fix for API workspace |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (3 workspaces pass individually)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npm run audit` — 0 vulnerabilities
+- ✅ `npm run test:all` — 837 web + 499 api + 795 shared = **2,131 tests passing** across 91 files
+- ✅ `npm run check` — clean (full pipeline: typecheck → lint → scan → audit → test:all)
+- ✅ `npx tsc -b` — clean (build mode with project references works)
