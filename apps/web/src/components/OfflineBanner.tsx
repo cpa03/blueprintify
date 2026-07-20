@@ -244,8 +244,8 @@ function OfflineBannerComponent(): JSX.Element | null {
                   onClick={handleDismiss}
                   className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-accent-pink/10
                              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50
-                             rounded-md p-1.5 transition-all duration-200 ease-out
-                             hover:scale-110 active:scale-95"
+                             rounded-md p-1.5 motion-safe:transition-all motion-safe:duration-200 motion-safe:ease-out
+                             motion-safe:hover:scale-110 motion-safe:active:scale-95"
                   aria-label={ACCESSIBILITY_LABELS.OFFLINE_BANNER.DISMISS}
                 >
                   <svg
