@@ -33,7 +33,7 @@ import * as motion from "framer-motion/m";
 import { useSpring, useTransform } from "framer-motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
-import { ANIMATION, EASING } from "../config/constants";
+import { ANIMATION, EASING, SCROLL_BEHAVIOR } from "../config/constants";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 import { SCROLL_PROGRESS_DEFAULTS, SPRING_SCROLL_HOVER } from "@blueprint/shared/config";
 
@@ -144,7 +144,7 @@ function PageScrollProgressBarComponent({
             return;
         }
 
-        window.scrollTo({ top: targetScroll, behavior: "smooth" });
+        window.scrollTo({ top: targetScroll, behavior: SCROLL_BEHAVIOR.SMOOTH });
         return;
       }
 
@@ -152,7 +152,7 @@ function PageScrollProgressBarComponent({
       if (scrollHeight <= 0) return;
 
       const targetScroll = clickRatio * scrollHeight;
-      window.scrollTo({ top: targetScroll, behavior: "smooth" });
+      window.scrollTo({ top: targetScroll, behavior: SCROLL_BEHAVIOR.SMOOTH });
     },
     []
   );

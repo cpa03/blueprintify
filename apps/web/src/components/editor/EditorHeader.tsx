@@ -38,6 +38,7 @@ import {
   SPRING_CONFIG,
   EDITOR_LABELS,
   ANIMATION,
+  ANIMATION_REPEAT,
   EASING,
   EDITOR_TABS,
   OPACITY_PULSE,
@@ -348,12 +349,12 @@ const ContentStats = React.memo(function ContentStats({
             <motion.span
               className="flex items-center gap-1"
               animate={{
-                scale: [1, 1.03, 1],
-                opacity: [1, 0.9, 1],
+                scale: SCALE_PULSE.ATTENTION,
+                opacity: OPACITY_PULSE.ATTENTION,
               }}
               transition={{
-                duration: 0.6,
-                repeat: 5,
+                duration: ANIMATION.ATTENTION_PULSE,
+                repeat: ANIMATION_REPEAT.ATTENTION_PULSE,
                 ease: EASING.easeInOut,
               }}
             >

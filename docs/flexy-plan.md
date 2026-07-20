@@ -2670,3 +2670,28 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 837 web + 499 api + 790 shared = **2,126 tests passing** across 91+ files
+
+---
+
+### ✅ Flexy Iteration 146: Add attention-pulse config & replace hardcoded scroll/animation values
+
+| Config Object | File | Change |
+|---|---|---|
+| `OPACITY_PULSE.ATTENTION` | `packages/shared/src/config/animation.ts` | Added `[1, 0.9, 1] as const` — attention-grabbing opacity pulse |
+| `SCALE_PULSE.ATTENTION` | `packages/shared/src/config/animation.ts` | Added `[1, 1.03, 1] as const` — subtle attention scale pulse |
+| `ANIMATION_DURATION_S.ATTENTION_PULSE` | `packages/shared/src/config/animation.ts` | Added `0.6` — duration for attention pulse cycle |
+| `ANIMATION_REPEAT` | `packages/shared/src/config/animation.ts` | Added `{ ATTENTION_PULSE: 5 } as const` — repeat count for attention pulse |
+| Exports | `apps/web/src/config/constants/ui.ts` | Added re-exports for all 4 new config values from `@blueprint/shared/config` |
+| `EditorHeader.tsx` | `apps/web/src/components/editor/EditorHeader.tsx` | Replaced hardcoded `[1, 0.9, 1]`, `[1, 1.03, 1]`, `0.6`, `5` with config refs |
+| `StepInfo.tsx` | `apps/web/src/components/wizard/StepInfo.tsx` | Replaced `behavior: "smooth"` with `SCROLL_BEHAVIOR.SMOOTH`, `block: "nearest"` with `SCROLL_INTO_VIEW_BLOCK.NEAREST` |
+| `Editor.tsx` | `apps/web/src/components/Editor.tsx` | Replaced `behavior: "smooth"` with `SCROLL_BEHAVIOR.SMOOTH` |
+| `PageScrollProgressBar.tsx` | `apps/web/src/components/PageScrollProgressBar.tsx` | Replaced 2x `behavior: "smooth"` with `SCROLL_BEHAVIOR.SMOOTH` |
+| `StepGenerating.tsx` | `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced `behavior: "smooth"` with `SCROLL_BEHAVIOR.SMOOTH`, `block: "nearest"` with `SCROLL_INTO_VIEW_BLOCK.NEAREST` |
+| `config.test.ts` | `packages/shared/src/config.test.ts` | Added 3 value tests + updated 3 count assertions for new entries |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 837 web + 499 api + 795 shared = **2,131 tests passing** across 91+ files
