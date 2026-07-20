@@ -2720,3 +2720,25 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 - ✅ `npm run test:all` — 837 web + 499 api + 795 shared = **2,131 tests passing** across 91 files
 - ✅ `npm run check` — clean (full pipeline: typecheck → lint → scan → audit → test:all)
 - ✅ `npx tsc -b` — clean (build mode with project references works)
+
+### ✅ Flexy Iteration 148: Centralize Form-Ready-Pulse Animation Duration & Easing into CSS Custom Properties
+
+**Problem**: Commit `0411cd96` (`feat(ux): add form-ready pulse animation on clear all in StepInfo`) introduced hardcoded `0.5s` and `ease-out` values in the `.form-ready-pulse` CSS animation shorthand — bypassing CSS custom properties and the shared config single-source-of-truth pattern.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/index.css` | Added `--form-ready-pulse-duration: 0.5s` and `--form-ready-pulse-easing: ease-out` CSS custom properties to `:root` with Flexy cross-reference comment linking to `ANIMATION_DURATION_S.HALF_SECOND` |
+| `apps/web/src/index.css` | Replaced hardcoded `0.5s ease-out` with `var(--form-ready-pulse-duration) var(--form-ready-pulse-easing)` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 837 web + 499 api + 795 shared = **2,131 tests passing** across 91 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2740](https://github.com/cpa03/blueprintify/pull/2740) | `feat/flexy-iteration-148-form-ready-pulse-css-vars` | refactor(flexy): centralize form-ready-pulse animation duration and easing into CSS custom properties (Iteration 148) |

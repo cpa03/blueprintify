@@ -27,6 +27,12 @@
   /* Glass-card shared shadow token — used by glass-card:hover and glass-card:focus-within */
   --glass-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 
+  /* Form-ready pulse animation for the "Clear All" button in StepInfo.
+     0.5s must match ANIMATION_DURATION_S.HALF_SECOND (0.5) / ANIMATION.HALF_SECOND in @blueprint/shared.
+     ease-out is the standard CSS easing keyword. */
+  --form-ready-pulse-duration: 0.5s;
+  --form-ready-pulse-easing: ease-out;
+
   /* Progress shimmer gradient tokens */
   --shimmer-color-light: rgba(255, 255, 255, 0.08);
   --shimmer-color-mid: rgba(255, 255, 255, 0.18);
@@ -902,7 +908,7 @@
   }
 
   .form-ready-pulse {
-    animation: form-ready-pulse 0.5s ease-out forwards;
+    animation: form-ready-pulse var(--form-ready-pulse-duration) var(--form-ready-pulse-easing) forwards;
     will-change: box-shadow;
   }
 
