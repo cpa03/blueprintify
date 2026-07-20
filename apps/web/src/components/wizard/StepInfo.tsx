@@ -34,7 +34,7 @@ import {
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
-import { FormEvent, useEffect, useRef, useState, memo, useMemo } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState, memo, useMemo } from "react";
 import {
   FORM_LIMITS,
   ANIMATION,
