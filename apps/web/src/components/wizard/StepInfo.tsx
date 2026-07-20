@@ -89,8 +89,9 @@ export const StepInfo = memo(function StepInfo({
   const setDescription = useWizardStore((s) => s.setDescription);
   const setTargetAudience = useWizardStore((s) => s.setTargetAudience);
   const setConstraints = useWizardStore((s) => s.setConstraints);
-  const clearForm = useWizardStore((s) => s.clearForm);
+  const storeClearForm = useWizardStore((s) => s.clearForm);
   const nextStep = useWizardStore((s) => s.nextStep);
+  const [clearAnimation, setClearAnimation] = useState(false);
 
   const modifierKey = getModifierLabel();
 
@@ -150,6 +151,15 @@ export const StepInfo = memo(function StepInfo({
     };
   }, [projectName.length, description.length, targetAudience.length, constraints.length]);
 
+  const handleClearForm = useCallback(() => {
+    // Only animate if there's actually content to clear
+    if (hasAnyInput) {
+      storeClearForm();
+      setClearAnimation(true);
+      setTimeout(() => setClearAnimation(false), TIMEOUTS.SHAKE_ANIMATION);
+    }
+  }, [storeClearForm, hasAnyInput]);
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (canProceed) {
@@ -195,7 +205,7 @@ export const StepInfo = memo(function StepInfo({
               {hasAnyInput && (
                 <motion.button
                   type="button"
-                  onClick={clearForm}
+                  onClick={handleClearForm}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
@@ -254,7 +264,10 @@ export const StepInfo = memo(function StepInfo({
         <p className="text-dark-400">{UI_CONTENT.WIZARD.STEP_INFO.SUBTITLE}</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="glass-card p-6 space-y-5">
+      <form
+        onSubmit={handleSubmit}
+        className={`glass-card p-6 space-y-5 ${clearAnimation ? "form-ready-pulse" : ""}`}
+      >
         {/* Project Name */}
         <div>
           <div className="flex justify-between items-center">

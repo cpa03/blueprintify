@@ -878,6 +878,34 @@
     will-change: transform;
   }
 
+  /* Subtle full-form pulse when the "Clear All" button is clicked in StepInfo.
+     Creates a brief "ready for fresh input" moment — the glass card emits a
+     gentle gradient glow ring that fades out, signaling all fields have been
+     cleared and are ready for new content. Complements the auto-focus that
+     lands on the project name input after clearing. */
+  @keyframes form-ready-pulse {
+    0% {
+      box-shadow:
+        0 0 0 0 color-mix(in srgb, var(--color-primary-500) 30%, transparent),
+        0 0 0 0 color-mix(in srgb, var(--color-accent-emerald) 20%, transparent);
+    }
+    30% {
+      box-shadow:
+        0 0 0 3px color-mix(in srgb, var(--color-primary-500) 25%, transparent),
+        0 0 18px -4px color-mix(in srgb, var(--color-accent-emerald) 15%, transparent);
+    }
+    100% {
+      box-shadow:
+        0 0 0 6px color-mix(in srgb, var(--color-primary-500) 0%, transparent),
+        0 0 28px -8px color-mix(in srgb, var(--color-accent-emerald) 0%, transparent);
+    }
+  }
+
+  .form-ready-pulse {
+    animation: form-ready-pulse 0.5s ease-out forwards;
+    will-change: box-shadow;
+  }
+
   /* Gentle breathing animation for content availability dots on editor tab
      buttons — a slow, subtle opacity pulse draws the user's eye to discover
      content in the sibling tab without being distracting. Designed to start
@@ -931,6 +959,7 @@
     .counter-celebrate-pop,
     .content-dot-breathe,
     .arrival-pop,
+    .form-ready-pulse,
     .animate-logo-breathe,
     .glass-card::after,
     .glass-card:focus-within::before,
