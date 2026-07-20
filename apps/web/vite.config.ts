@@ -1,4 +1,4 @@
-import { defineConfig, type Plugin } from "vite";
+import { defineConfig, type Plugin, type UserConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { compression } from "vite-plugin-compression2";
 import { DEV_DEFAULTS, BYTE_CONVERSION, API_PROXY_PATH, BUILD_CONFIG } from "@blueprint/shared";
@@ -179,4 +179,4 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
   },
-});
+} as UserConfig);
