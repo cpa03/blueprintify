@@ -2,6 +2,50 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 277 (2026-07-20 — RepoKeeper: full repository audit, 3 new post-Cycle-276 commits indexed (form-ready pulse animation, vite TS2321 fix, missing useCallback import), BUG-013 still fixed (0 vulns), BUG-025 FIXED (TS2321 excessive stack depth), test count unchanged 2,131 (837 web + 499 API + 795 shared), all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: no type suppressions. No TODO/FIXME/HACK in source. No merge conflict artifacts. No empty directories. No `.patch` files.
+2. **[3 New Post-Cycle-276 Commits Indexed]** — 3 commits landed since Cycle 276 (`a4304284`): feat(ux): add form-ready pulse animation on clear all in StepInfo (`0411cd96`); fix(vite): resolve TS2321 excessive stack depth in defineConfig with UserConfig cast (`dfdd1a8e`); fix(web): add missing useCallback import in StepInfo (`707f8f4f`).
+3. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities** (no re-bump occurred).
+4. **[BUG-014/BUG-017 Verification]** — CONFIRMED FIXED on main: zero stale doc refs, all workflows use `node-version-file: ".node-version"`. ✅
+5. **[BUG-025 FIXED]** — TS2321: excessive stack depth comparing types in `apps/web/vite.config.ts:93`. Root cause: TypeScript 6.0.3 hits recursion limit on deeply nested Vite `UserConfig` type. Fix: added `as UserConfig` cast. Verified: typecheck ✅ lint ✅ build ✅ tests 2,131/2,131 ✅.
+6. **[Test Count Confirmed]** — **2,131** (837 web + 499 API + 795 shared — unchanged from Cycle 276).
+7. **[BroCula Ref Verified]** — Still at Jul 20 Run 2 — `docs/audits/brocula-audit-2026-07-20-run2.md` / LH **99-100-100-100** ⭐, 0 console errors ✅.
+8. **[Archive Retention]** — No cleanup needed (all files within 30-day window; earliest archive Jun 20).
+9. **[Stale Merged Branches]** — No fully-merged remote branches found (squash-merge repo).
+10. **[Doc Refresh]** — findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md, README.md updated.
+11. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,131/2,131** ✅, format ✅ npm audit **0 vulns** ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,131/2,131** (837 web + 499 API + **795 shared**) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013 still fixed) |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** in source |
+| `as any` | ✅ **0** in source |
+| Empty catch blocks | ✅ **0** in source |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| Merge conflict artifacts | ✅ **0** |
+| `.patch` files | ✅ **0** |
+| Empty directories | ✅ **0** |
+| Stale doc refs (BUG-014) | ✅ **0** in `.github/workflows/` |
+| Hardcoded node-version (BUG-017) | ✅ **0** in `.github/workflows/` |
+| Archive retention | ✅ No cleanup needed (all within 30-day window) |
+| Stale merged branches | ✅ **0** |
+| Stale plan files | ✅ **0** |
+| BUG-025 (TS2321) | ✅ **FIXED** (as UserConfig cast) |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,131 tests green, 0 vulnerabilities, 0 lint/type errors. 3 new post-Cycle-276 commits indexed (form-ready pulse animation, vite TS2321 fix, useCallback import). BUG-025 FIXED (TS2321 excessive stack depth). BUG-013 still fixed (lighthouse 12.6.1 maintained). BUG-014/BUG-017 CONFIRMED FIXED on main. No archive cleanup needed. No stale merged branches.** ✅
+
 ## Security Audit: Dependabot `actions/setup-node` v6→v7 (2026-07-20)
 
 ### Scope
