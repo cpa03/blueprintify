@@ -31,6 +31,45 @@ PR updating `actions/setup-node` from `@v6` to `@v7` across 4 workflow files:
 >
 > **Note 2026-07-12**: PR #2507 resolved BUG-014 (stale doc refs) and BUG-017 (hardcoded node-version) — all workflow files now use `node-version-file: ".node-version"` and agent identity strings are corrected. Token still lacks `workflows: write` for direct pushes but squash-merge via PR works.
 
+## Cycle 275 (2026-07-20 — RepoKeeper: full repository audit, 2 new post-Cycle-274 commits indexed (keyboard shortcut badge animation `e62008f2`, BugFixer ULW Cycle Jul 19 Run 4 `e3f63196`), BUG-013 still fixed (lighthouse 12.6.1 maintained — 0 vulns), test count unchanged 2,126 (837 web + 499 API + 790 shared), archive retention cleanup (1 stale file purged from Jun 19 — past 30-day retention), 1 stale merged branch deleted (`origin/fix/ci-security-scanning`), all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: no type suppressions. No TODO/FIXME/HACK in source. No merge conflict artifacts. No empty directories.
+2. **[2 New Post-Cycle-274 Commits Indexed]** — 2 commits landed since Cycle 274 (`302e08e6`): feat(ux): add attention-pulse animation on keyboard shortcut badge (#2721) (`e62008f2`); chore(bugfixer): ULW Cycle Jul 19 2026 Run 4 — full audit clean (#2720) (`e3f63196`).
+3. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities** (no re-bump occurred).
+4. **[BUG-014/BUG-017 Verification]** — CONFIRMED FIXED on main: zero stale doc refs, all workflows use `node-version-file: ".node-version"`. ✅
+5. **[Test Count Confirmed]** — **2,126** (837 web + 499 API + 790 shared — unchanged from Cycle 274).
+6. **[Archive Retention Cleanup]** — Purged 1 stale file from Jun 19 (past 30-day retention): `docs/audits/archive/brocula-hunt-2026-06-19-run1.md`.
+7. **[Stale Merged Branch Deleted]** — `origin/fix/ci-security-scanning` deleted (fully merged into main).
+8. **[Doc Refresh]** — findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md, README.md updated.
+9. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ format ✅ npm audit **0 vulns** ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,126/2,126** (837 web + 499 API + 790 shared) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013 still fixed) |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** in source |
+| `as any` | ✅ **0** in source |
+| Empty catch blocks | ✅ **0** in source |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| Merge conflict artifacts | ✅ **0** |
+| Empty directories | ✅ **0** |
+| Stale doc refs (BUG-014) | ✅ **0** in `.github/workflows/` |
+| Hardcoded node-version (BUG-017) | ✅ **0** in `.github/workflows/` |
+| Archive retention | ✅ Purged 1 stale file from Jun 19 |
+| Stale merged branches | ✅ **1 deleted** (`origin/fix/ci-security-scanning`) |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,126 tests green, 0 vulnerabilities, 0 lint/type errors. 2 new post-Cycle-274 commits indexed (keyboard shortcut badge animation, BugFixer ULW Cycle Jul 19 Run 4). Test count unchanged at 2,126 (837 web + 499 API + 790 shared). Archive retention: 1 stale file purged from Jun 19 (past 30-day retention). 1 stale merged branch deleted. BUG-013 still fixed (lighthouse 12.6.1 maintained). BUG-014/BUG-017 CONFIRMED FIXED on main.** ✅
+
 ## Cycle 274 (2026-07-19 — RepoKeeper: full repository audit, 0 new post-Cycle-273 commits to index (HEAD unchanged at `7560a96f`), 2 previously unindexed commits recorded (BroCula Jul 19 Run 8 `35c9a87a`, flexy Iteration 145 `e592fd43`), test count drift fixed (shared 765→790, total 2,101→2,126), BroCula ref updated (Run 7→Run 8 — LH 99-100-100-100 ⭐), stale plan file removed, quality verification ✅)
 
 ### Actions Taken
