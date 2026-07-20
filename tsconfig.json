@@ -18,5 +18,11 @@
       "@blueprint/shared": ["./packages/shared/src/index.ts"],
       "@blueprint/shared/*": ["./packages/shared/src/*"]
     }
-  }
+  },
+  "include": [],
+  "references": [
+    { "path": "./packages/shared" },
+    { "path": "./apps/api" },
+    { "path": "./apps/web" }
+  ]
 }

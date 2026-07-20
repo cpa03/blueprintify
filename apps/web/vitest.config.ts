@@ -11,7 +11,7 @@ export default defineConfig({
     setupFiles: ["./src/test/setup.ts"],
     isolate: true,
     pool: "forks",
-    exclude: ["node_modules/", "e2e/"],
+    exclude: ["node_modules/", "e2e/", "dist/"],
     coverage: {
       provider: "v8",
       reporter: ["text", "html", "lcov"],
