@@ -3120,8 +3120,8 @@ describe("SKELETON_DEFAULTS", () => {
     });
   });
 
-  it("should have 8 entries", () => {
-    expect(Object.keys(SKELETON_DEFAULTS).length).toBe(8);
+  it("should have 9 entries", () => {
+    expect(Object.keys(SKELETON_DEFAULTS).length).toBe(9);
   });
 });
 
@@ -4296,8 +4296,8 @@ describe("STAGGER_CONFIG", () => {
     });
   });
 
-  it("should have 4 sub-configs", () => {
-    expect(Object.keys(STAGGER_CONFIG).length).toBe(4);
+  it("should have 5 sub-configs", () => {
+    expect(Object.keys(STAGGER_CONFIG).length).toBe(5);
   });
 });
 

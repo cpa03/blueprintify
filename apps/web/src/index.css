@@ -45,6 +45,15 @@
   --card-entrance-translate-y: 16px;
   --card-entrance-duration: 0.3s;
   --card-entrance-easing: ease-out;
+
+  /* Tag cascade entrance animation tokens — used by the tech-tag-entrance keyframe
+     and .animate-tag-entrance class for tech stack tag reveals within template cards.
+     0.25s matches ANIMATION_DURATION_S.CHECKMARK_REVEAL (0.25) in @blueprint/shared.
+     cubic-bezier matches the spring-like overshoot easing used in card-entrance. */
+  --tag-entrance-duration: 0.25s;
+  --tag-entrance-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --tag-entrance-translate-y: 4px;
+  --tag-entrance-scale-from: 0.95;
 }
 
 /* ===== Base Styles ===== */
@@ -734,11 +743,12 @@
      has finished its entrance animation, creating a polished cascading reveal
      that draws the eye to the technology choices. Uses a spring-like cubic
      easing (overshoot) for a premium feel that matches the app's animation
-     language. Disabled when prefers-reduced-motion is active. */
+     language. Disabled when prefers-reduced-motion is active.
+     Flexy says: CSS custom properties link duration/easing to @blueprint/shared ANIMATION config. */
   @keyframes tech-tag-entrance {
     from {
       opacity: 0;
-      transform: translateY(4px) scale(0.95);
+      transform: translateY(var(--tag-entrance-translate-y, 4px)) scale(var(--tag-entrance-scale-from, 0.95));
     }
     to {
       opacity: 1;
@@ -747,7 +757,7 @@
   }
 
   .animate-tag-entrance {
-    animation: tech-tag-entrance 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    animation: tech-tag-entrance var(--tag-entrance-duration, 0.25s) var(--tag-entrance-easing, cubic-bezier(0.34, 1.56, 0.64, 1)) backwards;
     will-change: transform, opacity;
   }
 

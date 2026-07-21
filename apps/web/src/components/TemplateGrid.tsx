@@ -35,6 +35,7 @@ import {
   TOAST_MESSAGES,
   ACCESSIBILITY_LABELS,
   ENTRANCE_STAGGER,
+  STAGGER_CONFIG,
 } from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
 import { TEMPLATE_GLOW_SHADOW } from "../config/theme";
@@ -244,7 +245,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                       <span
                         key={tech.name}
                         style={{
-                          animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY + ANIMATION.CARD_ENTRANCE_DURATION + tagIndex * 0.05}s`,
+                          animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY + ANIMATION.CARD_ENTRANCE_DURATION + tagIndex * STAGGER_CONFIG.TAG_ENTRANCE.STAGGER_S}s`,
                         }}
                         className={`
                           px-2 py-0.5 text-xs rounded motion-safe:transition-all motion-safe:duration-150
@@ -263,7 +264,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                     {template.techStack.length > 3 && (
                       <span
                         style={{
-                          animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY + ANIMATION.CARD_ENTRANCE_DURATION + 3 * 0.05}s`,
+                          animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY + ANIMATION.CARD_ENTRANCE_DURATION + 3 * STAGGER_CONFIG.TAG_ENTRANCE.STAGGER_S}s`,
                         }}
                         className={`
                           px-2 py-0.5 text-xs rounded

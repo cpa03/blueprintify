@@ -618,6 +618,8 @@ export const SKELETON_LAYOUT = {
   PREVIEW_LINE_WIDTHS: SHARED_SKELETON_DEFAULTS.PREVIEW_LINE_WIDTHS,
   /** Preview skeleton code block width (percentage) */
   PREVIEW_CODE_WIDTH: SHARED_SKELETON_DEFAULTS.PREVIEW_CODE_WIDTH,
+  /** Extra preview skeleton line widths after the main mapped lines (percentages) */
+  PREVIEW_EXTRA_WIDTHS: SHARED_SKELETON_DEFAULTS.PREVIEW_EXTRA_WIDTHS,
   /** Number of lines in editor skeleton */
   EDITOR_LINE_COUNT: SHARED_SKELETON_DEFAULTS.EDITOR_LINE_COUNT,
   /** Editor skeleton line widths (percentages) */

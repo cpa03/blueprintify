@@ -2742,3 +2742,30 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2740](https://github.com/cpa03/blueprintify/pull/2740) | `feat/flexy-iteration-148-form-ready-pulse-css-vars` | refactor(flexy): centralize form-ready-pulse animation duration and easing into CSS custom properties (Iteration 148) |
+
+### ✅ Flexy Iteration 150: Extract Hardcoded Tag-Entrance Stagger & Preview Skeleton Extra Widths
+
+**Problem**: Two recent feature commits introduced hardcoded values:
+1. `feat(ui): add staggered cascade entrance animation to template tech stack tags` (17cff206) — hardcoded `0.05` stagger delay in TemplateGrid.tsx and hardcoded `0.25s`, `cubic-bezier(0.34, 1.56, 0.64, 1)`, `translateY(4px)`, `scale(0.95)` in index.css tag-entrance keyframe
+2. `feat(ui): add markdown preview skeleton during content generation` (ffdadd3b) — hardcoded `"85%"`, `"67%"`, `"73%"` skeleton line widths in Editor.tsx PreviewSkeleton
+
+**Fix**:
+- Added `STAGGER_CONFIG.TAG_ENTRANCE` (STAGGER_S: 0.05) to shared `animation.ts` — single source of truth for tag cascade stagger interval
+- Added `SKELETON_DEFAULTS.PREVIEW_EXTRA_WIDTHS` (["85%", "67%", "73%"]) to shared `animation.ts` — single source of truth for extra preview skeleton lines
+- Added `--tag-entrance-*` CSS custom properties to `:root` in index.css — centralizes duration, easing, translateY, scale-from for the tag-entrance keyframe
+- Updated `TemplateGrid.tsx` — replaced hardcoded `0.05` and `3 * 0.05` with `STAGGER_CONFIG.TAG_ENTRANCE.STAGGER_S`
+- Updated `Editor.tsx` — replaced hardcoded width strings with `SKELETON_LAYOUT.PREVIEW_EXTRA_WIDTHS` map
+- Updated `SKELETON_LAYOUT` in content.ts — re-exports new `PREVIEW_EXTRA_WIDTHS` from shared
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 837 web + 502 api + 795 shared = **2,134 tests passing** across 91 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2760](https://github.com/cpa03/blueprintify/pull/2760) | `feat/flexy-iteration-150-tag-entrance-stagger-and-skeleton-widths` | refactor(flexy): extract hardcoded tag-entrance stagger and preview skeleton extra widths into shared config (Iteration 150) |

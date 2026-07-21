@@ -370,6 +370,8 @@ export const SKELETON_DEFAULTS = {
   EDITOR_LINE_HEIGHT_PX: 14,
   /** Editor skeleton indent multiplier (px per indent level) */
   EDITOR_INDENT_MULTIPLIER_PX: 12,
+  /** Extra preview skeleton line widths after the main mapped lines (percentages) */
+  PREVIEW_EXTRA_WIDTHS: ["85%", "67%", "73%"] as const,
 } as const;
 
 /**
@@ -403,6 +405,11 @@ export const STAGGER_CONFIG = {
   REVIEW_GROUP: {
     /** Delay (s) between each review group item entrance */
     STAGGER_S: 0.04,
+  } as const,
+  /** Stagger config for tech-stack tag cascade entrance within template cards */
+  TAG_ENTRANCE: {
+    /** Delay (s) between each tech-stack tag entrance in the cascade (0.05s) */
+    STAGGER_S: 0.05,
   } as const,
 } as const;
 
