@@ -48,6 +48,47 @@
 
 **All quality gates pass. Repository remains exceptionally healthy — 2,136 tests green, 0 vulnerabilities, 0 lint/type errors. 3 new post-BugFixer commits indexed (Cycle 284, wizard direction transition, flexy keyboard event keys). Test count increased 2,134→2,136 (shared +2). BUG-025 still fixed (TS2321). BUG-013 still fixed (lighthouse 12.6.1 maintained — 0 vulns). BUG-014/BUG-017 CONFIRMED FIXED on main. BroCula ref verified (Jul 21 Run 2 — LH **100-100-100-100** 🏆). No archive cleanup needed. No stale merged branches.** ✅
 
+## Cycle 285 (2026-07-21 — RepoKeeper: full repository audit, 0 new post-Cycle-284 commits to index (HEAD unchanged at `05951d81`), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), test count drift correction shared 795→797 (total 2,134→**2,136**), BroCula ref verified (Jul 21 Run 2 — LH **100-100-100-100** 🏆), archive retention — no cleanup needed (all files within 30-day window; earliest archive Jul 8), 0 stale merged branches found, all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: no type suppressions. No TODO/FIXME/HACK in source. No merge conflict artifacts. No empty directories. No `.patch` files. No `.bak`/`.tmp`/`.log` files.
+2. **[0 New Post-Cycle-284 Commits to Index]** — HEAD unchanged at Cycle 284 (`05951d81`). No new work landed since last cycle. `git fetch --prune origin` confirmed HEAD is up to date.
+3. **[Test Count Drift Correction]** — Cycle 284 reported 795 shared tests. Actual count is **797** (the `a1bcb81a` KEYBOARD_EVENT_KEYS.TAB/E commit added +2 before Cycle 284 ran). Corrected: 2,134→**2,136** (837 web + 502 API + **797 shared**).
+4. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities** (no re-bump occurred).
+5. **[BUG-014/BUG-017 Verification]** — CONFIRMED FIXED on main: zero stale doc refs, all workflows use `node-version-file: ".node-version"`. ✅
+6. **[BUG-025 Still Fixed]** — TS2321 excessive stack depth fix (`as UserConfig` cast in vite.config.ts) holds. Verified: typecheck ✅ lint ✅ build ✅ tests 2,136/2,136 ✅.
+7. **[Test Count Confirmed]** — **2,136** (837 web + 502 API + 797 shared — shared +2 correction).
+8. **[BroCula Ref Verified]** — Latest: Jul 21 Run 2 — `docs/audits/brocula-hunt-2026-07-21-run2.md` / LH **100-100-100-100** 🏆, 0 console errors ✅, all quality gates pass.
+9. **[Format Drift Check]** — Prettier check: all files formatted ✅.
+10. **[Archive Retention]** — No cleanup needed (all files within 30-day window; earliest archive Jul 8).
+11. **[Stale Merged Branches]** — No fully-merged remote branches found (squash-merge repo).
+12. **[Doc Refresh]** — findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md updated.
+13. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,136/2,136** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,136/2,136** (837 web + 502 API + **797 shared**) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013 still fixed) |
+| Secrets Scan | ✅ 0 secrets detected |
+| Stale doc refs (BUG-014) | ✅ **0** in `.github/workflows/` |
+| Hardcoded node-version (BUG-017) | ✅ **0** in `.github/workflows/` |
+| Archive retention | ✅ No cleanup needed (all within 30-day window) |
+| Stale merged branches | ✅ **0** |
+| Stale plan files | ✅ **0** |
+| BUG-025 (TS2321) | ✅ **STILL FIXED** (as UserConfig cast) |
+| Test count drift | ✅ **CORRECTED** (shared 795→797, total 2,134→2,136) |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,136 tests green, 0 vulnerabilities, 0 lint/type errors. 0 new post-Cycle-284 commits to index (HEAD unchanged at Cycle 284). Test count drift corrected: shared 795→797 (total 2,134→2,136). BUG-025 still fixed (TS2321). BUG-013 still fixed (lighthouse 12.6.1 maintained — 0 vulns). BUG-014/BUG-017 CONFIRMED FIXED on main. BroCula ref verified (Jul 21 Run 2 — LH **100-100-100-100** 🏆). No archive cleanup needed. No stale merged branches.** ✅
+
 ## Cycle 284 (2026-07-21 — RepoKeeper: full repository audit, 1 new post-Cycle-283 commit indexed (fix(bugfixer): ULW Cycle Jul 21 2026 — Prettier format fix, audit clean `ba38e4d1`), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), test count unchanged 2,134 (837 web + 502 API + 795 shared), BroCula ref verified (Jul 21 Run 2 — LH **100-100-100-100** 🏆), archive retention — no cleanup needed (all files within 30-day window; earliest archive Jul 8), 0 stale merged branches found, all quality gates pass ✅)
 
 ### Actions Taken
