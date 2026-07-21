@@ -55,6 +55,7 @@ import {
   DEBUG_MESSAGES,
   VIEW_MODE_SHORTCUT_KEYS,
   SCROLL_BEHAVIOR,
+  SKELETON_LAYOUT,
 } from "../config/constants";
 import { ANIMATION_TIMING, LAYOUT } from "../config/theme";
 import { isDev } from "../config/env";
@@ -112,6 +113,36 @@ function EditorSkeleton({ isVisible }: { isVisible: boolean }): JSX.Element | nu
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+/**
+ * PreviewSkeleton - Loading skeleton that mimics rendered markdown layout during generation.
+ *
+ * Shows a heading bar, paragraph lines of varying widths, a subheading, more text lines,
+ * and a code block placeholder — giving users a visual preview of what rendered markdown
+ * will look like once generation completes. Mirrors the EditorSkeleton pattern on the
+ * editor side for visual parity between panes.
+ *
+ * Uses the preview-skeleton CSS classes defined in index.css with skeleton-block
+ * shimmer animation for the content placeholders.
+ */
+function PreviewSkeleton(): JSX.Element {
+  return (
+    <div className="preview-skeleton" role="status" aria-label="Preview content is being generated">
+      <div className="skeleton-block preview-skeleton-heading" />
+      {SKELETON_LAYOUT.PREVIEW_LINE_WIDTHS.map((w, i) => (
+        <div key={i} className="skeleton-block preview-skeleton-line" style={{ width: w }} />
+      ))}
+      <div className="skeleton-block preview-skeleton-subheading" />
+      <div className="skeleton-block preview-skeleton-line" style={{ width: "85%" }} />
+      <div className="skeleton-block preview-skeleton-line" style={{ width: "67%" }} />
+      <div className="skeleton-block preview-skeleton-line" style={{ width: "73%" }} />
+      <div
+        className="skeleton-block preview-skeleton-code-block"
+        style={{ width: SKELETON_LAYOUT.PREVIEW_CODE_WIDTH }}
+      />
     </div>
   );
 }
@@ -674,6 +705,20 @@ function EditorComponent(): JSX.Element {
                               className="min-h-full"
                             >
                               <LazyMarkdownRenderer content={currentContent} />
+                            </motion.div>
+                          ) : isGenerating ? (
+                            <motion.div
+                              key="preview-skeleton"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{
+                                duration: ANIMATION.NORMAL,
+                                ease: ANIMATION_TIMING.easing.easeOut,
+                              }}
+                              className="min-h-full"
+                            >
+                              <PreviewSkeleton />
                             </motion.div>
                           ) : (
                             <motion.div
