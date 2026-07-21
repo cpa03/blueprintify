@@ -65,7 +65,8 @@
   },
   "overrides": {
     "undici": "7.28.0",
-    "ws": "8.21.0"
+    "ws": "8.21.0",
+    "shell-quote": "1.10.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

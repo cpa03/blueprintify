@@ -2,6 +2,28 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 280 — **Full repository audit, 1 new post-Cycle-279 commit indexed (flexy Iteration 149 hardcoded step keys), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), test count unchanged 2,131, BroCula ref verified (Jul 20 Run 3 — LH 100-100-100-100 🏆), npm audit vulnerability fixed (shell-quote 1.8.4→1.10.0), stale archive retention cleanup (6 files from Jun 19-20 purged), quality verification** ✅
+
+### Task: Full repository audit — **1 new post-Cycle-279 commit indexed** (refactor(flexy): eliminate remaining hardcoded wizard step key strings in test files (Iteration 149) `ad8b6c83`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-014/BUG-017 CONFIRMED FIXED on main** (zero stale doc refs, all workflows use `node-version-file: ".node-version"`); **BUG-025 still fixed** (TS2321 excessive stack depth — `as UserConfig` cast holds); **test count confirmed** 2,131 (837 web + 499 API + 795 shared — unchanged); **BroCula ref verified** (Jul 20 Run 3 — `docs/audits/brocula-hunt-2026-07-20-run-14-11.md` / LH **100-100-100-100** 🏆); **archive retention** — 6 stale files purged from archive (Jun 19-20, past 30-day window); **npm audit vulnerability fixed** (shell-quote 1.8.4→1.10.0 override — CWE-407 DoS); **0 stale merged branches** found; **0 stale plan files** found; **0 redundant/temp/unused files found**; doc refresh (findings, active-tasks, CHANGELOG, audits/README); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,131/2,131** ✅, format ✅, npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 280 full repository audit — index 1 post-Cycle-279 commit (flexy Iteration 149), verify BUG-013/BUG-014/BUG-017/BUG-025, BroCula ref verification, archive retention cleanup, npm audit vulnerability fix, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files in source code, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks, no merge conflict artifacts, no `.patch` files ✅
+  - [x] **1 new post-Cycle-279 commit indexed**: flexy Iteration 149 — hardcoded wizard step key strings eliminated (`ad8b6c83`) ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns (no re-bump) ✅
+  - [x] **BUG-014/BUG-017 verified**: zero stale doc refs, zero hardcoded node-version in workflows ✅
+  - [x] **BUG-025 still fixed**: TS2321 excessive stack depth — `as UserConfig` cast holds ✅
+  - [x] **Test count confirmed**: 2,131 (837 web + 499 API + 795 shared — unchanged) ✅
+  - [x] **BroCula ref verified**: Jul 20 Run 3 (`brocula-hunt-2026-07-20-run-14-11.md` / LH **100-100-100-100** 🏆) ✅
+  - [x] **Archive retention cleanup**: 6 stale files purged from archive (Jun 19-20, past 30-day window) ✅
+  - [x] **npm audit vulnerability fixed**: shell-quote 1.8.4→1.10.0 override (CWE-407 DoS) ✅
+  - [x] **Stale branches**: No fully-merged remote branches found (squash-merge repo) ✅
+  - [x] **Stale plan files**: No stale plan files found ✅
+  - [x] **Doc refresh**: findings.md, active-tasks.md, CHANGELOG.md, audits/README.md updated ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests **2,131/2,131** ✅, format ✅, npm audit **0 vulns** ✅
+
 ## ✅ RepoKeeper Cycle 279 — **Full repository audit, 1 new post-Cycle-278 commit indexed (BugFixer ULW Cycle Jul 20 Run 3 — Prettier format fix), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), test count unchanged 2,131, BroCula ref verified (Jul 20 Run 3 — LH 100-100-100-100 🏆), quality verification** ✅
 
 ### Task: Full repository audit — **1 new post-Cycle-278 commit indexed** (fix(bugfixer): ULW Cycle Jul 20 2026 Run 3 — Prettier format fix `64688176`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-014/BUG-017 CONFIRMED FIXED on main** (zero stale doc refs, all workflows use `node-version-file: ".node-version"`); **BUG-025 still fixed** (TS2321 excessive stack depth — `as UserConfig` cast holds); **test count confirmed** 2,131 (837 web + 499 API + 795 shared — unchanged); **BroCula ref verified** (Jul 20 Run 3 — `docs/audits/brocula-hunt-2026-07-20-run-14-11.md` / LH **100-100-100-100** 🏆); **archive retention** — no cleanup needed (all files within 30-day window; earliest archive Jun 20); **0 stale merged branches** found; **0 stale plan files** found; **0 redundant/temp/unused files found**; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG, README); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,131/2,131** ✅, format ✅, npm audit **0 vulns** ✅)
