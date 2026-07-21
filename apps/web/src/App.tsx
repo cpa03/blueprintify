@@ -5,6 +5,7 @@ import {
   SCROLL_THRESHOLD_DEFAULTS,
   SCROLL_PROGRESS_DEFAULTS,
   UI_TIMEOUTS,
+  KEYBOARD_EVENT_KEYS,
 } from "@blueprint/shared/config";
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
@@ -208,7 +209,7 @@ function App(): JSX.Element {
         return;
       }
 
-      if (e.key === "?" && !e.metaKey && !e.ctrlKey) {
+      if (e.key === KEYBOARD_EVENT_KEYS.QUESTION_MARK && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
         // Only open from global handler — let the modal's own document-level
         // listener handle closing (it also listens for '?'). This avoids a
@@ -219,7 +220,7 @@ function App(): JSX.Element {
         }
       }
 
-      if ((e.metaKey || e.ctrlKey) && e.key === "e") {
+      if ((e.metaKey || e.ctrlKey) && e.key === KEYBOARD_EVENT_KEYS.E) {
         e.preventDefault();
         if (showEditor || editorExiting) {
           setEditorExiting(true);
@@ -230,12 +231,12 @@ function App(): JSX.Element {
 
       // Editor has its own Cmd/Ctrl+N handler when mounted — only handle
       // globally when the editor panel is not visible to avoid double-fire.
-      if ((e.metaKey || e.ctrlKey) && e.key === "n" && !showEditor) {
+      if ((e.metaKey || e.ctrlKey) && e.key === KEYBOARD_EVENT_KEYS.N && !showEditor) {
         e.preventDefault();
         handleNewProject();
       }
 
-      if (e.key === "Escape" && isGenerating) {
+      if (e.key === KEYBOARD_EVENT_KEYS.ESCAPE && isGenerating) {
         e.preventDefault();
         cancelGeneration();
         setStep(WIZARD_STEP_KEYS.REVIEW);

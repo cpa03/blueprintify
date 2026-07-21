@@ -603,6 +603,10 @@ export const KEYBOARD_EVENT_KEYS = {
   F: "f" as const,
   /** N key (for new project shortcut) */
   N: "n" as const,
+  /** E key (for toggle editor shortcut) */
+  E: "e" as const,
+  /** Tab key (for focus trap and keyboard navigation) */
+  TAB: "Tab" as const,
 } as const;
 
 /**
