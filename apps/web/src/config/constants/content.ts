@@ -262,6 +262,7 @@ export const ACCESSIBILITY_LABELS = {
     GENERATE_DISABLED_TOOLTIP: "Add a project name and description to continue",
     GENERATE_DISABLED_ARIA:
       "Generate Blueprint button is disabled. Fill in project name and description first.",
+    GENERATING_IN_PROGRESS_ARIA: "Generating blueprint, please wait",
   },
   MARKDOWN: {
     COPY_CODE: "Copy code to clipboard",

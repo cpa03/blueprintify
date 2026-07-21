@@ -42,6 +42,8 @@ interface RippleButtonProps extends Omit<
   whileHover?: TransformStyle;
   whileTap?: TransformStyle;
   "data-autofocus"?: string;
+  /** When true, sets aria-busy on the button for screen reader loading announcements */
+  isLoading?: boolean;
 }
 
 function toTransformString(s?: TransformStyle): string {
@@ -57,6 +59,7 @@ function RippleButtonComponent({
   onClick,
   className = "",
   disabled = false,
+  isLoading = false,
   type = "button",
   ariaLabel,
   title,
@@ -142,6 +145,7 @@ function RippleButtonComponent({
       className={`relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 transition-transform duration-150 ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`}
       style={{ transform: hoverTransform || undefined }}
       aria-label={ariaLabel}
+      aria-busy={isLoading ? "true" : undefined}
       title={title}
       data-autofocus={dataAutofocus}
       {...rest}
