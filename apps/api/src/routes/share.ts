@@ -88,11 +88,16 @@ function withCtxError(
 }
 
 /**
- * Validates that a share ID has the expected length.
+ * Validates that a share ID has the expected length and contains only
+ * alphanumeric characters (URL-safe, no injection risk).
  * Returns true if valid, false otherwise.
  */
 function isValidShareId(id: string | undefined): id is string {
-  return typeof id === "string" && id.length === SHARE_CONFIG.ID_LENGTH;
+  return (
+    typeof id === "string" &&
+    id.length === SHARE_CONFIG.ID_LENGTH &&
+    SHARE_CONFIG.ID_PATTERN.test(id)
+  );
 }
 
 /**
