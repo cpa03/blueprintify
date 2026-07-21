@@ -175,7 +175,7 @@ describe("GET /share/:id", () => {
     expect(data.error.message).toContain(SHARE_MESSAGES.INVALID_SHARE_ID_FORMAT);
   });
 
-  it("should return 404 for non-existent share", async () => {
+  it("should return 404 for non-existent share with valid ID format", async () => {
     const env = createMockEnv();
     const res = await app.request("/ABC123def456", {}, env);
 
@@ -184,6 +184,28 @@ describe("GET /share/:id", () => {
     expect(data.success).toBe(false);
     expect(data.error.type).toBe(ERROR_TYPES.NOT_FOUND);
     expect(data.error.code).toBe(ERROR_CODES.NOT_FOUND_ERROR);
+  });
+
+  it("should return 400 for share ID with invalid characters (special chars, injection)", async () => {
+    const env = createMockEnv();
+    // ID with correct length but contains special characters
+    const res = await app.request("/abc-def-gh-ij", {}, env);
+
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
+    const data = (await res.json()) as ErrorResponse;
+    expect(data.success).toBe(false);
+    expect(data.error.type).toBe(ERROR_TYPES.VALIDATION);
+    expect(data.error.message).toContain(SHARE_MESSAGES.INVALID_SHARE_ID_FORMAT);
+  });
+
+  it("should return 400 for share ID with SQL injection attempt", async () => {
+    const env = createMockEnv();
+    const res = await app.request("/DROP TABLE--", {}, env);
+
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
+    const data = (await res.json()) as ErrorResponse;
+    expect(data.success).toBe(false);
+    expect(data.error.type).toBe(ERROR_TYPES.VALIDATION);
   });
 
   it("should return share with metadata parsed correctly", async () => {
@@ -319,6 +341,16 @@ describe("DELETE /share/:id", () => {
     expect(data.success).toBe(false);
     expect(data.error.type).toBe(ERROR_TYPES.AUTHORIZATION);
     expect(data.error.code).toBe(ERROR_CODES.AUTHORIZATION_ERROR);
+  });
+
+  it("should return 400 for share ID with invalid characters on delete", async () => {
+    const env = createMockEnv("test-api-key");
+    const res = await app.request("/abc-def-gh-ij", { method: HTTP_METHODS.DELETE }, env);
+
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
+    const data = (await res.json()) as ErrorResponse;
+    expect(data.success).toBe(false);
+    expect(data.error.type).toBe(ERROR_TYPES.VALIDATION);
   });
 
   it("should allow deletion without API key", async () => {
