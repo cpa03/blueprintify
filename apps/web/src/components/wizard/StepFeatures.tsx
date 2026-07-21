@@ -74,8 +74,10 @@ export const StepFeatures = memo(function StepFeatures({
   const prevStep = useWizardStore((s) => s.prevStep);
   const modifierKey = getModifierLabel();
 
+  const isAtMaxCount = features.length >= FORM_LIMITS.FEATURE.MAX_COUNT;
+
   const handleAddFeature = useCallback(() => {
-    if (newFeature.trim()) {
+    if (newFeature.trim() && !isAtMaxCount) {
       const trimmed = newFeature.trim();
       addFeature(trimmed);
       setNewFeature("");
@@ -87,7 +89,7 @@ export const StepFeatures = memo(function StepFeatures({
         featureInputRef.current?.focus();
       });
     }
-  }, [newFeature, addFeature]);
+  }, [newFeature, addFeature, isAtMaxCount]);
 
   const handleSuggestionAdd = useCallback(
     (feature: string) => {
@@ -199,11 +201,17 @@ export const StepFeatures = memo(function StepFeatures({
                 value={newFeature}
                 onChange={(e) => setNewFeature(e.target.value.slice(0, FORM_LIMITS.FEATURE.MAX))}
                 onKeyDown={handleKeyDown}
-                placeholder={UI_CONTENT.WIZARD.STEP_FEATURES.ADD_FEATURE_PLACEHOLDER}
-                className={`input-field w-full pr-10 ${newFeature.length >= FORM_LIMITS.FEATURE.MAX ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20" : ""}`}
+                placeholder={
+                  isAtMaxCount
+                    ? UI_CONTENT.WIZARD.STEP_FEATURES.MAX_FEATURES_REACHED
+                    : UI_CONTENT.WIZARD.STEP_FEATURES.ADD_FEATURE_PLACEHOLDER
+                }
+                className={`input-field w-full pr-10 ${isAtMaxCount ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20 opacity-60 cursor-not-allowed" : newFeature.length >= FORM_LIMITS.FEATURE.MAX ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20" : ""}`}
                 aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.NEW_FEATURE_NAME}
                 aria-describedby="feature-input-hint"
                 maxLength={FORM_LIMITS.FEATURE.MAX}
+                readOnly={isAtMaxCount}
+                tabIndex={isAtMaxCount ? -1 : 0}
               />
               <AnimatePresence>
                 {newFeature && (
@@ -232,7 +240,7 @@ export const StepFeatures = memo(function StepFeatures({
             </div>
             <RippleButton
               onClick={handleAddFeature}
-              disabled={!newFeature.trim()}
+              disabled={!newFeature.trim() || isAtMaxCount}
               className="btn-primary px-4"
               ariaLabel={ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_FEATURE}
             >
@@ -252,6 +260,35 @@ export const StepFeatures = memo(function StepFeatures({
               </svg>
             </RippleButton>
           </div>
+          {/* Max count reached warning */}
+          <AnimatePresence>
+            {isAtMaxCount && (
+              <motion.p
+                role="status"
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
+                className="text-xs text-accent-pink mt-1 flex items-center gap-1"
+              >
+                <svg
+                  className="w-3.5 h-3.5 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+                {UI_CONTENT.WIZARD.STEP_FEATURES.MAX_FEATURES_REACHED}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Added features */}
@@ -346,8 +383,8 @@ export const StepFeatures = memo(function StepFeatures({
           </div>
         )}
 
-        {/* Suggestions */}
-        {(suggestedNotAdded.length > 0 || showAllAddedMsg) && (
+        {/* Suggestions — hidden when at max count to avoid showing "add" actions that can't be used */}
+        {!isAtMaxCount && (suggestedNotAdded.length > 0 || showAllAddedMsg) && (
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="label mb-0" id="suggestions-label">
@@ -356,9 +393,9 @@ export const StepFeatures = memo(function StepFeatures({
               <motion.button
                 type="button"
                 onClick={handleAddAllSuggestions}
-                disabled={showAllAddedMsg}
-                whileHover={showAllAddedMsg ? {} : HOVER_SCALE.GENTLE}
-                whileTap={showAllAddedMsg ? {} : TAP_SCALE.GENTLE}
+                disabled={showAllAddedMsg || isAtMaxCount}
+                whileHover={showAllAddedMsg || isAtMaxCount ? {} : HOVER_SCALE.GENTLE}
+                whileTap={showAllAddedMsg || isAtMaxCount ? {} : TAP_SCALE.GENTLE}
                 transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
                 className={`text-xs rounded px-2 py-1 transition-all duration-300 flex items-center gap-1 ${
                   showAllAddedMsg
