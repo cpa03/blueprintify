@@ -2,6 +2,52 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 281 (2026-07-21 — RepoKeeper: full repository audit, 4 new post-Cycle-280 commits indexed (security alphanumeric-only share route validation, markdown preview skeleton UI, BroCula Jul 21 Run 1 — LH 100-100-100-100 🏆, shell-quote CVE fix), duplicate shell-quote override fixed in package.json, 1 stale merged branch deleted, BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), test count update 2,131→2,134 (API +3), BroCula ref updated (Jul 20 Run 3 → Jul 21 Run 1 — LH 100-100-100-100 🏆), all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: no type suppressions. No TODO/FIXME/HACK in source. No merge conflict artifacts. No empty directories. No `.patch` files.
+2. **[4 New Post-Cycle-280 Commits Indexed]** — 4 commits landed since Cycle 280 (`14ef6d49`): fix(security): add alphanumeric-only validation for share route IDs (`c4fa0079`); feat(ui): add markdown preview skeleton during content generation (`ffdadd3b`); chore(brocula): ULW Cycle Jul 21 2026 — audit clean, LH 100-100-100-100 (`66464511`); fix(deps): override shell-quote to 1.10.0 to resolve CVE-2025-43740 (`61302da1`).
+3. **[Duplicate shell-quote Override Fixed]** — `package.json` had `shell-quote` appearing twice in `overrides` (lines 67 and 70). Deduplicated to single entry.
+4. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities** (no re-bump occurred).
+5. **[BUG-014/BUG-017 Verification]** — CONFIRMED FIXED on main: zero stale doc refs, all workflows use `node-version-file: ".node-version"`. ✅
+6. **[BUG-025 Still Fixed]** — TS2321 excessive stack depth fix (`as UserConfig` cast in vite.config.ts) holds. Verified: typecheck ✅ lint ✅ build ✅ tests 2,134/2,134 ✅.
+7. **[Test Count Update]** — **2,134** (837 web + **502 API** + 795 shared — API +3 from new security/UI tests).
+8. **[BroCula Ref Updated]** — Jul 20 Run 3 → **Jul 21 Run 1** — `docs/audits/brocula-hunt-2026-07-21-run1.md` / LH **100-100-100-100** 🏆, 0 console errors ✅.
+9. **[Archive Retention]** — No cleanup needed (all files within 30-day window; earliest archive Jun 21 — exactly 30 days, retained per policy).
+10. **[Stale Merged Branch Deleted]** — `origin/brocula/ulw-cycle-jul-20-run-5` deleted (fully merged into main).
+11. **[Doc Refresh]** — findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md, README.md updated.
+12. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,134/2,134** ✅, format ✅ npm audit **0 vulns** ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,134/2,134** (837 web + **502 API** + 795 shared) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013 still fixed) |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** in source |
+| `as any` | ✅ **0** in source |
+| Empty catch blocks | ✅ **0** in source |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| Merge conflict artifacts | ✅ **0** |
+| `.patch` files | ✅ **0** |
+| Empty directories | ✅ **0** |
+| Stale doc refs (BUG-014) | ✅ **0** in `.github/workflows/` |
+| Hardcoded node-version (BUG-017) | ✅ **0** in `.github/workflows/` |
+| Archive retention | ✅ No cleanup needed (all within 30-day window) |
+| Stale merged branches | ✅ **1 deleted** |
+| Stale plan files | ✅ **0** |
+| BUG-025 (TS2321) | ✅ **STILL FIXED** (as UserConfig cast) |
+| Duplicate overrides | ✅ **Fixed** (shell-quote deduplicated) |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,134 tests green, 0 vulnerabilities, 0 lint/type errors. 4 new post-Cycle-280 commits indexed (security alphanumeric validation, markdown preview skeleton UI, BroCula Jul 21 Run 1, shell-quote CVE fix). shell-quote duplicate override fixed. 1 stale merged branch deleted. BUG-025 still fixed (TS2321). BUG-013 still fixed (lighthouse 12.6.1 maintained). BUG-014/BUG-017 CONFIRMED FIXED on main. BroCula ref updated to Jul 21 Run 1 (LH **100-100-100-100** 🏆). No archive cleanup needed.** ✅
+
 ## Cycle 278 (2026-07-20 — RepoKeeper: full repository audit, 5 new post-Cycle-277 commits indexed (flexy Iteration 148 form-ready-pulse CSS custom properties, BroCula Jul 20 Run 3), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), test count unchanged 2,131 (837 web + 499 API + 795 shared), BroCula ref updated (Run 2→Run 3 — LH 100-100-100-100 🏆), Prettier format drift fixed (apps/web/src/index.css), all quality gates pass ✅)
 
 ### Actions Taken
