@@ -27,6 +27,7 @@ import {
   WIZARD_STEP_KEYS,
   UI_TIMING,
   UI_TIMEOUTS,
+  ANIMATION_DIRECTIONS,
   ANIMATION_ENTRANCE_DELAYS,
   GENERATION_ERROR_PREFIXES,
   SHORTCUT_DESCRIPTIONS,
@@ -85,7 +86,7 @@ import { getAltKeyLabel, getModifierLabel, getAriaShortcutKey } from "../../lib/
 import { AnimatedNumber } from "../AnimatedNumber";
 import { RippleButton } from "../RippleButton";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
-import type { AnimationDirection } from "../../utils/motion";
+import { pageTransition, type AnimationDirection } from "../../utils/motion";
 
 interface StepGeneratingProps {
   direction?: AnimationDirection;
@@ -126,7 +127,7 @@ function LoadingDots({ active }: { active: boolean }): JSX.Element {
 }
 
 export const StepGenerating = memo(function StepGenerating({
-  direction: _direction,
+  direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepGeneratingProps): JSX.Element {
   const progress = useEditorStore((s) => s.generationProgress);
   const isGenerating = useEditorStore((s) => s.isGenerating);
@@ -273,8 +274,7 @@ export const StepGenerating = memo(function StepGenerating({
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
+      {...pageTransition(direction)}
       className="flex flex-col items-center justify-center py-12"
     >
       <div className="relative mb-8">
