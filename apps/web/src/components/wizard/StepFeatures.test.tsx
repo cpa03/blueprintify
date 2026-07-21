@@ -47,6 +47,7 @@ vi.mock("framer-motion/m", () => ({
   button: vi.fn(({ children, whileHover: _w1, whileTap: _w2, animate: _a, ...props }) => (
     <button {...props}>{children}</button>
   )),
+  p: vi.fn(({ children, ...props }) => <p {...props}>{children}</p>),
   svg: vi.fn(({ children, ...props }) => <svg {...props}>{children}</svg>),
   path: vi.fn(({ children, ...props }) => <path {...props}>{children}</path>),
 }));

@@ -122,6 +122,7 @@ export const UI_CONTENT = {
       YOUR_FEATURES_LABEL: "Your features",
       QUICK_ADD_LABEL: "Quick add suggestions",
       ADD_ALL_SUGGESTIONS: "Add all suggestions",
+      MAX_FEATURES_REACHED: "Maximum features reached",
       ALL_SUGGESTIONS_ADDED: "All added!",
       ADDED_MESSAGE: (feature: string) => `Added "${feature}"`,
       ADD_ALL_MESSAGE: "Added all suggestions!",
@@ -343,6 +344,7 @@ export const ACCESSIBILITY_LABELS = {
     ADD_SUGGESTION: (feature: string) => `Add suggestion: ${feature}`,
     ADD_ALL_SUGGESTIONS: "Add all suggested features at once",
     ALL_SUGGESTIONS_ADDED: "All suggestions added",
+    MAX_FEATURES_REACHED_ARIA: "Maximum features reached. Remove a feature to add more.",
   },
   WIZARD_INFO: {
     CLEAR_TARGET_AUDIENCE: "Clear target audience",
