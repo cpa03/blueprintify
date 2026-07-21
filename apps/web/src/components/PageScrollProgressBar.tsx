@@ -35,7 +35,11 @@ import { useReducedMotion } from "../hooks/useReducedMotion";
 import { LAYOUT, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { ANIMATION, EASING, SCROLL_BEHAVIOR } from "../config/constants";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
-import { SCROLL_PROGRESS_DEFAULTS, SPRING_SCROLL_HOVER } from "@blueprint/shared/config";
+import {
+  SCROLL_PROGRESS_DEFAULTS,
+  SPRING_SCROLL_HOVER,
+  KEYBOARD_EVENT_KEYS,
+} from "@blueprint/shared/config";
 
 interface PageScrollProgressBarProps {
   /**
@@ -120,23 +124,23 @@ function PageScrollProgressBarComponent({
         let targetScroll = currentScroll;
 
         switch (e.key) {
-          case "Enter":
-          case " ":
-          case "ArrowRight":
-          case "ArrowDown":
+          case KEYBOARD_EVENT_KEYS.ENTER:
+          case KEYBOARD_EVENT_KEYS.SPACE:
+          case KEYBOARD_EVENT_KEYS.ARROW_RIGHT:
+          case KEYBOARD_EVENT_KEYS.ARROW_DOWN:
             e.preventDefault();
             targetScroll = Math.min(scrollHeight, currentScroll + step);
             break;
-          case "ArrowLeft":
-          case "ArrowUp":
+          case KEYBOARD_EVENT_KEYS.ARROW_LEFT:
+          case KEYBOARD_EVENT_KEYS.ARROW_UP:
             e.preventDefault();
             targetScroll = Math.max(0, currentScroll - step);
             break;
-          case "Home":
+          case KEYBOARD_EVENT_KEYS.HOME:
             e.preventDefault();
             targetScroll = 0;
             break;
-          case "End":
+          case KEYBOARD_EVENT_KEYS.END:
             e.preventDefault();
             targetScroll = scrollHeight;
             break;

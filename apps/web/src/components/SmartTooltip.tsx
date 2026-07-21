@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback, memo, ReactNode, useId } from "react";
+import { KEYBOARD_EVENT_KEYS } from "@blueprint/shared/config";
 import { TOOLTIP_CONFIG } from "../config/constants";
 import { formatShortcut } from "../lib/platform";
 
@@ -219,7 +220,7 @@ function SmartTooltipComponent({
     if (!dismissOnEscape || !isVisible) return;
 
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === KEYBOARD_EVENT_KEYS.ESCAPE) {
         setIsVisible(false);
         triggerRef.current?.focus();
       }

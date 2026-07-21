@@ -33,6 +33,7 @@ import {
   ENTRANCE_STAGGER_DEFAULTS,
   FRAMER_TYPE,
   DISPLAY_SYMBOLS,
+  KEYBOARD_EVENT_KEYS,
 } from "@blueprint/shared/config";
 import { useWizardStore } from "../../store";
 import {
@@ -99,7 +100,7 @@ const TechChip = memo(function TechChip({
       key={tech.name}
       onClick={() => onToggle(tech)}
       onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
+        if (e.key === KEYBOARD_EVENT_KEYS.ENTER || e.key === KEYBOARD_EVENT_KEYS.SPACE) {
           e.preventDefault();
           onToggle(tech);
         }
@@ -444,7 +445,7 @@ export const StepStack = memo(function StepStack({
           <RippleButton
             onClick={prevStep}
             className="btn-secondary flex items-center gap-2 group"
-            aria-keyshortcuts={getAriaShortcutKey("ArrowLeft", "alt")}
+            aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ARROW_LEFT, "alt")}
           >
             <svg
               className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5"
@@ -469,7 +470,7 @@ export const StepStack = memo(function StepStack({
           </RippleButton>
         </KeyboardShortcutTooltip>
         <KeyboardShortcutTooltip
-          shortcut="Enter"
+          shortcut={KEYBOARD_EVENT_KEYS.ENTER}
           description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
           position="left"
         >
@@ -477,7 +478,7 @@ export const StepStack = memo(function StepStack({
             onClick={handleNextClick}
             disabled={!canProceed}
             className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
-            aria-keyshortcuts={getAriaShortcutKey("Enter", "cmd")}
+            aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, "cmd")}
           >
             {UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON}
             <kbd

@@ -30,6 +30,7 @@ import {
   UI_MESSAGES,
   FRAMER_TYPE,
   DISPLAY_SYMBOLS,
+  KEYBOARD_EVENT_KEYS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -680,7 +681,7 @@ export const StepInfo = memo(function StepInfo({
         {/* Action Buttons */}
         <div className="flex justify-end pt-4">
           <KeyboardShortcutTooltip
-            shortcut="Enter"
+            shortcut={KEYBOARD_EVENT_KEYS.ENTER}
             description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
             position="left"
           >
@@ -690,7 +691,7 @@ export const StepInfo = memo(function StepInfo({
               whileHover={{ ...HOVER_SCALE.MICRO, y: -2 }}
               whileTap={{ ...TAP_SCALE.MICRO, y: 0 }}
               className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
-              aria-keyshortcuts={getAriaShortcutKey("Enter", "cmd")}
+              aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, "cmd")}
             >
               {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
               <kbd

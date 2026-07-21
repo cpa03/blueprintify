@@ -617,7 +617,7 @@ export const StepFeatures = memo(function StepFeatures({
           <RippleButton
             onClick={prevStep}
             className="btn-secondary flex items-center gap-2 group"
-            aria-keyshortcuts={getAriaShortcutKey("ArrowLeft", "alt")}
+            aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ARROW_LEFT, "alt")}
           >
             <svg
               className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5"
@@ -642,14 +642,14 @@ export const StepFeatures = memo(function StepFeatures({
           </RippleButton>
         </KeyboardShortcutTooltip>
         <KeyboardShortcutTooltip
-          shortcut="Enter"
+          shortcut={KEYBOARD_EVENT_KEYS.ENTER}
           description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
           position="left"
         >
           <RippleButton
             onClick={nextStep}
             className="btn-primary flex items-center gap-2 group animate-glow"
-            aria-keyshortcuts={getAriaShortcutKey("Enter", "cmd")}
+            aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, "cmd")}
           >
             {UI_CONTENT.WIZARD.STEP_FEATURES.NEXT_BUTTON}
             <kbd
