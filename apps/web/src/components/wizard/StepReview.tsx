@@ -474,10 +474,15 @@ export const StepReview = memo(function StepReview({
                 <RippleButton
                   onClick={startGeneration}
                   disabled={true}
+                  isLoading={isGenerating}
                   whileHover={undefined}
                   whileTap={undefined}
                   className="btn-primary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                  aria-label={ACCESSIBILITY_LABELS.REVIEW.GENERATE_DISABLED_ARIA}
+                  aria-label={
+                    isGenerating
+                      ? ACCESSIBILITY_LABELS.REVIEW.GENERATING_IN_PROGRESS_ARIA
+                      : ACCESSIBILITY_LABELS.REVIEW.GENERATE_DISABLED_ARIA
+                  }
                   aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, "cmd")}
                 >
                   {isGenerating ? (
@@ -546,6 +551,9 @@ export const StepReview = memo(function StepReview({
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-xs text-primary-400 flex items-center gap-1.5"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
               >
                 <span className="w-1.5 h-1.5 bg-primary-400 rounded-full animate-pulse" />
                 {progress}
