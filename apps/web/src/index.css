@@ -729,6 +729,28 @@
     will-change: transform, opacity;
   }
 
+  /* Tag cascade entrance — staggered fade-in + slide-up for tech stack tags
+     within each template card. Tags appear sequentially after the parent card
+     has finished its entrance animation, creating a polished cascading reveal
+     that draws the eye to the technology choices. Uses a spring-like cubic
+     easing (overshoot) for a premium feel that matches the app's animation
+     language. Disabled when prefers-reduced-motion is active. */
+  @keyframes tech-tag-entrance {
+    from {
+      opacity: 0;
+      transform: translateY(4px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .animate-tag-entrance {
+    animation: tech-tag-entrance 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    will-change: transform, opacity;
+  }
+
   @keyframes fade-in-left {
     from {
       opacity: 0;
@@ -958,6 +980,7 @@
     .animate-slide-in-right,
     .animate-slide-out-right,
     .animate-card-entrance,
+    .animate-tag-entrance,
     .animate-slide-up,
     .animate-fade-out,
     .animate-slide-out-up,

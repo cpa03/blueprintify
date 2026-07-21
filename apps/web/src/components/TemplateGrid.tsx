@@ -240,12 +240,16 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                   </h3>
                   <p className="text-sm text-dark-400 mt-1 line-clamp-2">{template.description}</p>
                   <div className="flex flex-wrap gap-1.5 mt-3">
-                    {template.techStack.slice(0, 3).map((tech) => (
+                    {template.techStack.slice(0, 3).map((tech, tagIndex) => (
                       <span
                         key={tech.name}
+                        style={{
+                          animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY + ANIMATION.CARD_ENTRANCE_DURATION + tagIndex * 0.05}s`,
+                        }}
                         className={`
                           px-2 py-0.5 text-xs rounded motion-safe:transition-all motion-safe:duration-150
                           motion-safe:hover:scale-105
+                          animate-tag-entrance
                           ${
                             isSelected
                               ? "bg-accent-emerald/20 text-accent-emerald"
@@ -258,10 +262,14 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                     ))}
                     {template.techStack.length > 3 && (
                       <span
+                        style={{
+                          animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY + ANIMATION.CARD_ENTRANCE_DURATION + 3 * 0.05}s`,
+                        }}
                         className={`
                           px-2 py-0.5 text-xs rounded
                           motion-safe:transition-all motion-safe:duration-150
                           motion-safe:hover:scale-105
+                          animate-tag-entrance
                           ${
                             isSelected
                               ? "bg-accent-emerald/20 text-accent-emerald"
