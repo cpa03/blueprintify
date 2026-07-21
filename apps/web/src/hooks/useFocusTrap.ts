@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback, type RefObject } from "react";
+import { KEYBOARD_EVENT_KEYS } from "@blueprint/shared/config";
 import { FOCUSABLE_SELECTOR_STRING } from "../config/constants";
 
 /**
@@ -137,7 +138,7 @@ export function useFocusTrap(options: UseFocusTrapOptions): UseFocusTrapReturn {
     if (!isActive || !containerRef.current) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key !== "Tab" || !containerRef.current) return;
+      if (e.key !== KEYBOARD_EVENT_KEYS.TAB || !containerRef.current) return;
 
       const focusableElements = getFocusableElements();
       if (focusableElements.length === 0) return;

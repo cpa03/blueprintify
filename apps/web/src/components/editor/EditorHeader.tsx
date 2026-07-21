@@ -30,7 +30,7 @@ import React, { useCallback } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared/types";
-import { EDITOR_FILENAMES, FRAMER_TYPE } from "@blueprint/shared/config";
+import { EDITOR_FILENAMES, FRAMER_TYPE, KEYBOARD_EVENT_KEYS } from "@blueprint/shared/config";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { Icon } from "../Icon";
 import { LastSavedIndicator } from "../LastSavedIndicator";
@@ -398,16 +398,16 @@ function EditorHeaderComponent({
       let nextIndex: number | null = null;
 
       switch (e.key) {
-        case "ArrowRight":
+        case KEYBOARD_EVENT_KEYS.ARROW_RIGHT:
           nextIndex = (currentIndex + 1) % TAB_IDS.length;
           break;
-        case "ArrowLeft":
+        case KEYBOARD_EVENT_KEYS.ARROW_LEFT:
           nextIndex = (currentIndex - 1 + TAB_IDS.length) % TAB_IDS.length;
           break;
-        case "Home":
+        case KEYBOARD_EVENT_KEYS.HOME:
           nextIndex = 0;
           break;
-        case "End":
+        case KEYBOARD_EVENT_KEYS.END:
           nextIndex = TAB_IDS.length - 1;
           break;
         default:

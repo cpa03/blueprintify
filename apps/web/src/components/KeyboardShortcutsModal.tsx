@@ -51,7 +51,7 @@ const getShortcutItems = (): ShortcutItem[] => {
 
   return [
     {
-      keys: ["?"],
+      keys: [KEYBOARD_EVENT_KEYS.QUESTION_MARK],
       description: "Show/hide keyboard shortcuts",
       category: SHORTCUT_CATEGORIES.GENERAL,
     },
@@ -66,7 +66,7 @@ const getShortcutItems = (): ShortcutItem[] => {
       category: SHORTCUT_CATEGORIES.EDITOR,
     },
     {
-      keys: ["Home", "End"],
+      keys: [KEYBOARD_EVENT_KEYS.HOME, KEYBOARD_EVENT_KEYS.END],
       description: "Jump to first/last editor tab",
       category: SHORTCUT_CATEGORIES.EDITOR,
     },
