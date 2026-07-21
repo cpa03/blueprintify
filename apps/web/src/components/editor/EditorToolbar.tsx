@@ -38,6 +38,7 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   VIEW_MODE_INDICATOR_POSITION,
   FRAMER_TYPE,
+  KEYBOARD_EVENT_KEYS,
 } from "@blueprint/shared/config";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
@@ -71,16 +72,16 @@ function computeNextViewIndex(
 ): number | null {
   const currentIndex = modes.indexOf(currentMode);
   switch (e.key) {
-    case "ArrowRight":
+    case KEYBOARD_EVENT_KEYS.ARROW_RIGHT:
       e.preventDefault();
       return (currentIndex + 1) % modes.length;
-    case "ArrowLeft":
+    case KEYBOARD_EVENT_KEYS.ARROW_LEFT:
       e.preventDefault();
       return (currentIndex - 1 + modes.length) % modes.length;
-    case "Home":
+    case KEYBOARD_EVENT_KEYS.HOME:
       e.preventDefault();
       return 0;
-    case "End":
+    case KEYBOARD_EVENT_KEYS.END:
       e.preventDefault();
       return modes.length - 1;
     default:

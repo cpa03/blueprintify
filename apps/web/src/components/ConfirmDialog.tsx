@@ -37,7 +37,12 @@
 import { useEffect, useRef, useCallback, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { ANIMATION_DEFAULTS, SHORTCUT_DESCRIPTIONS, FRAMER_TYPE } from "@blueprint/shared/config";
+import {
+  ANIMATION_DEFAULTS,
+  SHORTCUT_DESCRIPTIONS,
+  FRAMER_TYPE,
+  KEYBOARD_EVENT_KEYS,
+} from "@blueprint/shared/config";
 import {
   EASING,
   SPRING_CONFIG,
@@ -114,9 +119,15 @@ export const ConfirmDialog = memo(function ConfirmDialog({
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === KEYBOARD_EVENT_KEYS.ESCAPE) {
         onClose();
-      } else if (e.key === "Enter" && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      } else if (
+        e.key === KEYBOARD_EVENT_KEYS.ENTER &&
+        !e.shiftKey &&
+        !e.ctrlKey &&
+        !e.metaKey &&
+        !e.altKey
+      ) {
         e.preventDefault();
         handleConfirm();
       }
@@ -247,12 +258,12 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                   whileTap={TAP_SCALE.MICRO}
                   onClick={onClose}
                   className="btn-ghost px-4 py-2 rounded-lg text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
-                  aria-keyshortcuts="Escape"
+                  aria-keyshortcuts={KEYBOARD_EVENT_KEYS.ESCAPE}
                 >
                   {cancelLabel}
                 </motion.button>
                 <KeyboardShortcutTooltip
-                  shortcut="Enter"
+                  shortcut={KEYBOARD_EVENT_KEYS.ENTER}
                   description={SHORTCUT_DESCRIPTIONS.CONFIRM_ACTION}
                   position="left"
                   modifier="none"
@@ -263,7 +274,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                     whileTap={TAP_SCALE.MICRO}
                     onClick={handleConfirm}
                     className="bg-accent-pink hover:bg-accent-pink/80 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
-                    aria-keyshortcuts="Enter"
+                    aria-keyshortcuts={KEYBOARD_EVENT_KEYS.ENTER}
                   >
                     {confirmLabel}
                   </motion.button>

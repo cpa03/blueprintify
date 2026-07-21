@@ -32,6 +32,7 @@ import {
   SHORTCUT_DESCRIPTIONS,
   FRAMER_TYPE,
   DISPLAY_SYMBOLS,
+  KEYBOARD_EVENT_KEYS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -857,7 +858,7 @@ export const StepGenerating = memo(function StepGenerating({
                   onClick={handleCancel}
                   className="btn-ghost text-dark-400 hover:text-accent-pink flex items-center gap-2"
                   ariaLabel={WIZARD_GENERATING_LABELS.CANCEL_GENERATION_ARIA}
-                  aria-keyshortcuts="Escape"
+                  aria-keyshortcuts={KEYBOARD_EVENT_KEYS.ESCAPE}
                   tabIndex={cancelButtonReady ? undefined : -1}
                 >
                   <svg
