@@ -2768,4 +2768,4 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `feat/flexy-iteration-150-tag-entrance-stagger-and-skeleton-widths` | refactor(flexy): extract hardcoded tag-entrance stagger and preview skeleton extra widths into shared config (Iteration 150) |
+| [#2760](https://github.com/cpa03/blueprintify/pull/2760) | `feat/flexy-iteration-150-tag-entrance-stagger-and-skeleton-widths` | refactor(flexy): extract hardcoded tag-entrance stagger and preview skeleton extra widths into shared config (Iteration 150) |
