@@ -14,20 +14,20 @@
 - **2026-07-13** — RepoKeeper Cycle 242: Retention cleanup (removed 2 files from Jun 12, >30 days old)
 - **2026-07-15** — RepoKeeper Cycle 250: Retention cleanup (removed 4 files from Jun 15, >30 days old)
 - **2026-07-15** — RepoKeeper Cycle 252: Retention cleanup (removed 1 file from Jun 14 — `ulw-loop-phase1-audit-2026-06-14.md`, >30 days old)
+- **2026-07-21** — RepoKeeper Cycle 280: Retention cleanup (removed 6 files from Jun 19-20 — `brocula-hunt-2026-06-20-run{2,3,4,5}.md`, `ulw-loop-audit-2026-06-20.md`, `issue-audit-report-2026-06-19.md`, >30 days old)
 
 ## What's Here
 
 These files are retained for historical reference only. Current archive contents:
 
-### BroCula Hunt Reports (Jun 16 - Jul 7, 2026)
+### BroCula Hunt Reports (Jun 21 - Jul 7, 2026)
 - Daily brocula-hunt run reports covering browser console error detection and Lighthouse audit optimization
 - Each file represents one run cycle from the CI pipeline
 
-### Issue Audit Reports (Jun 19, Jun 22, Jun 24)
+### Issue Audit Reports (Jun 22, Jun 24)
 - Issue label normalization and duplicate detection audits
-- ULW Loop issue audit with fix status tracking
 
 ## Retention Policy
 
 Archive files are kept for 30 days from creation, then eligible for deletion.
-Last cleanup: 2026-07-15 (RepoKeeper Cycle 252 — removed 1 file from Jun 14, past 30-day retention).
+Last cleanup: 2026-07-21 (RepoKeeper Cycle 280 — removed 6 files from Jun 19-20, past 30-day retention).
