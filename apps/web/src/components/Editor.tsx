@@ -136,9 +136,13 @@ function PreviewSkeleton(): JSX.Element {
         <div key={i} className="skeleton-block preview-skeleton-line" style={{ width: w }} />
       ))}
       <div className="skeleton-block preview-skeleton-subheading" />
-      <div className="skeleton-block preview-skeleton-line" style={{ width: "85%" }} />
-      <div className="skeleton-block preview-skeleton-line" style={{ width: "67%" }} />
-      <div className="skeleton-block preview-skeleton-line" style={{ width: "73%" }} />
+      {SKELETON_LAYOUT.PREVIEW_EXTRA_WIDTHS.map((w, i) => (
+        <div
+          key={`extra-${i}`}
+          className="skeleton-block preview-skeleton-line"
+          style={{ width: w }}
+        />
+      ))}
       <div
         className="skeleton-block preview-skeleton-code-block"
         style={{ width: SKELETON_LAYOUT.PREVIEW_CODE_WIDTH }}
