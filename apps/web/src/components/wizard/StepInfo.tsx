@@ -134,6 +134,24 @@ export const StepInfo = memo(function StepInfo({
   const isDescriptionInvalid =
     description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN;
 
+  // One-shot pulse on the Next button when form becomes valid; skip initial mount
+  const prevCanProceed = useRef<boolean | null>(null);
+  const [showReadyPulse, setShowReadyPulse] = useState(false);
+
+  useEffect(() => {
+    if (prevCanProceed.current === null) {
+      prevCanProceed.current = canProceed;
+      return;
+    }
+    if (canProceed && !prevCanProceed.current) {
+      setShowReadyPulse(true);
+      const timer = setTimeout(() => setShowReadyPulse(false), 600);
+      prevCanProceed.current = canProceed;
+      return () => clearTimeout(timer);
+    }
+    prevCanProceed.current = canProceed;
+  }, [canProceed]);
+
   const formProgress = useMemo(() => {
     const requiredFields = [
       projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN,
@@ -680,42 +698,48 @@ export const StepInfo = memo(function StepInfo({
 
         {/* Action Buttons */}
         <div className="flex justify-end pt-4">
-          <KeyboardShortcutTooltip
-            shortcut={KEYBOARD_EVENT_KEYS.ENTER}
-            description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
-            position="left"
+          <motion.span
+            animate={showReadyPulse ? { scale: [1, 1.04, 1] } : { scale: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="inline-flex"
           >
-            <RippleButton
-              type="submit"
-              disabled={!canProceed}
-              whileHover={{ ...HOVER_SCALE.MICRO, y: -2 }}
-              whileTap={{ ...TAP_SCALE.MICRO, y: 0 }}
-              className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
-              aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, "cmd")}
+            <KeyboardShortcutTooltip
+              shortcut={KEYBOARD_EVENT_KEYS.ENTER}
+              description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
+              position="left"
             >
-              {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
-              <kbd
-                className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
-                aria-hidden="true"
+              <RippleButton
+                type="submit"
+                disabled={!canProceed}
+                whileHover={{ ...HOVER_SCALE.MICRO, y: -2 }}
+                whileTap={{ ...TAP_SCALE.MICRO, y: 0 }}
+                className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
+                aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, "cmd")}
               >
-                {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
-              </kbd>
-              <svg
-                className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </RippleButton>
-          </KeyboardShortcutTooltip>
+                {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
+                <kbd
+                  className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
+                  aria-hidden="true"
+                >
+                  {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
+                </kbd>
+                <svg
+                  className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </RippleButton>
+            </KeyboardShortcutTooltip>
+          </motion.span>
         </div>
       </form>
 
