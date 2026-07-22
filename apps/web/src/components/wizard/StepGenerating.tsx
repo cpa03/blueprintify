@@ -140,6 +140,11 @@ export const StepGenerating = memo(function StepGenerating({
   const shouldReduceMotion = useReducedMotion();
   const blueprintLines = blueprintContent?.split("\n").length ?? 0;
   const tasksLines = tasksContent?.split("\n").length ?? 0;
+  // When generation is active but no content has streamed in yet, show
+  // "—" in the stat cards to communicate the awaiting state rather than
+  // an ambiguous "0" which could be mistaken for "generated nothing".
+  const awaitingContent =
+    isGenerating && (blueprintContent?.length ?? 0) === 0 && (tasksContent?.length ?? 0) === 0;
   const isComplete = !isGenerating && progress === GENERATION_MESSAGES.COMPLETE;
   // Detect error state from the progress message. Both GENERATION_MESSAGES.ERROR
   // and GENERATION_MESSAGES.ERROR_TASKS produce strings starting with "Error",
@@ -561,7 +566,7 @@ export const StepGenerating = memo(function StepGenerating({
           : "Generated " + blueprintLines + " blueprint lines and " + tasksLines + " task lines"}
       </p>
 
-      {/* Live stats */}
+      {/* Live stats — show "—" while awaiting first content, then animated counts */}
       <div className="flex gap-8 text-center">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -569,11 +574,17 @@ export const StepGenerating = memo(function StepGenerating({
           className="glass-card px-6 py-4"
         >
           <div className="text-2xl font-bold text-gradient">
-            <AnimatedNumber
-              value={blueprintLines}
-              duration={ANIMATION.PULSE}
-              className="text-gradient"
-            />
+            {awaitingContent ? (
+              <span className="tabular-nums text-dark-500" aria-label="Awaiting blueprint content">
+                —
+              </span>
+            ) : (
+              <AnimatedNumber
+                value={blueprintLines}
+                duration={ANIMATION.PULSE}
+                className="text-gradient"
+              />
+            )}
           </div>
           <div className="text-sm text-dark-400">Blueprint Lines</div>
         </motion.div>
@@ -584,11 +595,17 @@ export const StepGenerating = memo(function StepGenerating({
           className="glass-card px-6 py-4"
         >
           <div className="text-2xl font-bold text-gradient">
-            <AnimatedNumber
-              value={tasksLines}
-              duration={ANIMATION.PULSE}
-              className="text-gradient"
-            />
+            {awaitingContent ? (
+              <span className="tabular-nums text-dark-500" aria-label="Awaiting task content">
+                —
+              </span>
+            ) : (
+              <AnimatedNumber
+                value={tasksLines}
+                duration={ANIMATION.PULSE}
+                className="text-gradient"
+              />
+            )}
           </div>
           <div className="text-sm text-dark-400">Task Lines</div>
         </motion.div>
