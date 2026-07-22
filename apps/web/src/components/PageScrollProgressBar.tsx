@@ -197,7 +197,10 @@ function PageScrollProgressBarComponent({
       style={{ marginTop: `${LAYOUT.HEADER_HEIGHT_PX}px` }}
       initial={{ opacity: 0 }}
       animate={{ opacity: isVisible ? 1 : 0 }}
-      transition={{ duration: prefersReducedMotion ? 0 : 0.25, ease: EASING.easeOut }}
+      transition={{
+        duration: prefersReducedMotion ? 0 : ANIMATION.CHECKMARK_REVEAL,
+        ease: EASING.easeOut,
+      }}
       role="progressbar"
       aria-valuenow={isVisible ? Math.round(scrollProgress) : undefined}
       aria-valuemin={0}
