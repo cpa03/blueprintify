@@ -2,6 +2,52 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 291 (2026-07-22 — Full repository audit, 0 new post-Cycle-290 commits indexed (HEAD unchanged), test count **2,160/2,160** (860 web + 502 API + 798 shared), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-030 still fixed (sharp 0.35.3 override — 0 vulns), BroCula ref updated (Jul 22 Run 3 — LH **100-100-100-100** 🏆), **2 unreferenced BroCula scripts removed** (`scripts/brocula-audit.mjs`, `scripts/brocula-run.mjs`), archive retention — no cleanup needed, 0 stale merged branches found, all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: 0 type suppressions. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. 0 empty directories. 0 `.patch` files.
+2. **[0 New Post-Cycle-290 Commits to Index]** — HEAD unchanged at `fc71af43`. No new work landed since Cycle 290. `git fetch --prune origin` confirmed HEAD is up to date.
+3. **[2 Unreferenced BroCula Scripts Removed]** — `scripts/brocula-audit.mjs` and `scripts/brocula-run.mjs` removed — both are unreferenced in any npm script, GitHub Actions workflow, or active configuration (only historical docs references exist). The active BroCula entry point is `scripts/brocula-hunt.mjs` (referenced by `npm run brocula`).
+4. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities** (no re-bump occurred).
+5. **[BUG-025 Still Fixed]** — TS2321 excessive stack depth fix (`as UserConfig` cast in vite.config.ts) holds. Verified: typecheck ✅ lint ✅ build ✅ tests 2,160/2,160 ✅.
+6. **[BUG-030 Still Fixed]** — 4 high-severity CVEs in `sharp` (<0.35.0) remain resolved with override `0.35.3`. Verified: npm audit **0 vulns** ✅.
+7. **[Test Count Unchanged]** — **2,160** (860 web + 502 API + 798 shared — unchanged from Cycle 290).
+8. **[BroCula Ref Updated]** — Latest: Jul 22 Run 3 — `docs/audits/brocula-audit-2026-07-22-run3.md` / LH **100-100-100-100** 🏆, 0 console errors ✅.
+9. **[Format Drift Check]** — Prettier check: all files formatted ✅.
+10. **[Archive Retention]** — No cleanup needed (all files within 30-day window; earliest archive Jun 22).
+11. **[Stale Merged Branches]** — No fully-merged remote branches found (squash-merge repo).
+12. **[Stale Plan Files]** — No stale plan files found.
+13. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,160/2,160** ✅, format ✅, npm audit **0 vulns** ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,160/2,160** (860 web + 502 API + **798 shared**) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013/BUG-030 STILL FIXED) |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** in source |
+| `as any` | ✅ **0** in source |
+| Empty catch blocks | ✅ **0** in source |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| Merge conflict artifacts | ✅ **0** |
+| `.patch` files | ✅ **0** |
+| Empty directories | ✅ **0** |
+| Archive retention | ✅ No cleanup needed (all within 30-day window) |
+| Stale merged branches | ✅ **0** |
+| Stale plan files | ✅ **0** |
+| Unreferenced scripts removed | ✅ **2** (`scripts/brocula-audit.mjs`, `scripts/brocula-run.mjs`) |
+| BUG-025 (TS2321) | ✅ **STILL FIXED** (as UserConfig cast) |
+| BUG-030 (sharp CVEs) | ✅ **STILL FIXED** (npm override to 0.35.3) |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,160 tests green, 0 vulnerabilities, 0 lint/type errors. 0 new post-Cycle-290 commits to index (HEAD unchanged at Cycle 290). 2 unreferenced BroCula scripts removed (`scripts/brocula-audit.mjs`, `scripts/brocula-run.mjs`). BUG-025 still fixed (TS2321). BUG-013 still fixed (lighthouse 12.6.1 maintained — 0 vulns). BUG-030 still fixed (sharp 0.35.3 override — 0 vulns). BroCula ref updated (Jul 22 Run 3 — LH **100-100-100-100** 🏆). No archive cleanup needed. No stale merged branches.** ✅
+
 ## Cycle 290 (2026-07-22 — Full repository audit, 3 new post-Cycle-289 commits indexed (flexy Iteration 152 hardcoded shortcut keys/em-dash/aria-labels, BugFixer ULW Cycle Jul 22 clean, feat(web) stat card crossfade from awaiting dash to animated count), test count **2,160/2,160** (860 web + 502 API + **798 shared** — shared +1), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-030 still fixed (sharp 0.35.3 override — 0 vulns), BroCula ref updated (Jul 22 Run 2 — LH **100-100-100-100** 🏆), archive retention — no cleanup needed, 0 stale merged branches found, all quality gates pass ✅)
 
 ### Actions Taken
