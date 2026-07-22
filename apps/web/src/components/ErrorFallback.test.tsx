@@ -170,9 +170,7 @@ describe("ErrorFallback", () => {
 
   it("reloads the page when reload button is clicked", () => {
     const reloadMock = vi.fn();
-    const origLocation = window.location;
-    delete (window as any).location;
-    window.location = { ...origLocation, reload: reloadMock } as unknown as Location;
+    vi.stubGlobal("location", { reload: reloadMock });
 
     render(<ErrorFallback error={defaultError} resetErrorBoundary={mockReset} />);
     const reloadBtn = screen.getByLabelText(ACCESSIBILITY_LABELS.ERROR_BOUNDARY.RELOAD_PAGE);
@@ -180,7 +178,7 @@ describe("ErrorFallback", () => {
 
     expect(reloadMock).toHaveBeenCalledTimes(1);
 
-    window.location = origLocation;
+    vi.unstubAllGlobals();
   });
 
   // ---- Accessibility ----
