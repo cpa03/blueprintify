@@ -6,7 +6,7 @@
  */
 
 import type { Variants, Transition } from "framer-motion";
-import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
+import { SPRING_CONFIG, ANIMATION, EASING, MOTION_OFFSETS } from "../config/constants";
 import { ANIMATION_DIRECTIONS, FRAMER_TYPE } from "@blueprint/shared/config";
 
 /**
@@ -29,7 +29,7 @@ export const transitions = {
  * Use for elements that should appear with a subtle upward motion
  */
 export const fadeInUp: Variants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: MOTION_OFFSETS.FADE_IN_Y_PX },
   visible: {
     opacity: 1,
     y: 0,
@@ -69,7 +69,7 @@ export const fadeIn: Variants = {
  * Use for elements that should grow into view
  */
 export const scaleIn: Variants = {
-  hidden: { opacity: 0, scale: 0.8 },
+  hidden: { opacity: 0, scale: MOTION_OFFSETS.SCALE_INITIAL },
   visible: {
     opacity: 1,
     scale: 1,
@@ -82,7 +82,7 @@ export const scaleIn: Variants = {
  * Use for panels or modals entering from the right
  */
 export const slideInRight: Variants = {
-  hidden: { opacity: 0, x: 20 },
+  hidden: { opacity: 0, x: MOTION_OFFSETS.SLIDE_RIGHT_X_PX },
   visible: {
     opacity: 1,
     x: 0,
@@ -95,7 +95,7 @@ export const slideInRight: Variants = {
  * Use for panels or modals entering from the left
  */
 export const slideInLeft: Variants = {
-  hidden: { opacity: 0, x: -20 },
+  hidden: { opacity: 0, x: MOTION_OFFSETS.SLIDE_LEFT_X_PX },
   visible: {
     opacity: 1,
     x: 0,
@@ -108,7 +108,7 @@ export const slideInLeft: Variants = {
  * Creates a gentle up/down bobbing motion
  */
 export const floatingAnimation = {
-  y: [-8, 8, -8],
+  y: MOTION_OFFSETS.FLOAT_Y_RANGE,
   transition: {
     duration: ANIMATION.FLOATING_DURATION,
     repeat: Infinity,
@@ -121,8 +121,8 @@ export const floatingAnimation = {
  * Creates a subtle scale and opacity pulse
  */
 export const pulseAnimation = {
-  scale: [1, 1.05, 1],
-  opacity: [0.5, 0.8, 0.5],
+  scale: MOTION_OFFSETS.PULSE_SCALE_RANGE,
+  opacity: MOTION_OFFSETS.PULSE_OPACITY_RANGE,
   transition: {
     duration: ANIMATION.SLOW_PULSE,
     repeat: Infinity,
@@ -150,10 +150,11 @@ export type AnimationDirection = (typeof ANIMATION_DIRECTIONS)[keyof typeof ANIM
  * <motion.div {...pageTransition("backward")}>
  */
 export function pageTransition(direction: AnimationDirection = ANIMATION_DIRECTIONS.FORWARD) {
+  const OFFSET = MOTION_OFFSETS.PAGE_TRANSITION_Y_PX;
   return {
-    initial: { opacity: 0, y: direction === ANIMATION_DIRECTIONS.FORWARD ? 20 : -20 },
+    initial: { opacity: 0, y: direction === ANIMATION_DIRECTIONS.FORWARD ? OFFSET : -OFFSET },
     animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: direction === ANIMATION_DIRECTIONS.FORWARD ? -20 : 20 },
+    exit: { opacity: 0, y: direction === ANIMATION_DIRECTIONS.FORWARD ? -OFFSET : OFFSET },
   };
 }
 
@@ -184,7 +185,7 @@ export function createStaggerContainer(
  */
 export function createFadeInUp(duration: number = ANIMATION.HALF_SECOND): Variants {
   return {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: MOTION_OFFSETS.FADE_IN_Y_PX },
     visible: {
       opacity: 1,
       y: 0,

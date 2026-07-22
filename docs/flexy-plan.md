@@ -4,6 +4,24 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 151: Centralize Framer Motion Variant Pixel/Scale Offsets
+
+| File | Change |
+| --- | --- |
+| `apps/web/src/config/theme.ts` | Added `MOTION_OFFSETS` config object with `FADE_IN_Y_PX`, `SCALE_INITIAL`, `SLIDE_RIGHT_X_PX`, `SLIDE_LEFT_X_PX`, `FLOAT_Y_RANGE`, `PULSE_SCALE_RANGE`, `PULSE_OPACITY_RANGE`, `PAGE_TRANSITION_Y_PX` |
+| `apps/web/src/config/constants/ui.ts` | Added re-export of `MOTION_OFFSETS` from theme |
+| `apps/web/src/utils/motion.ts` | Replaced 9 hardcoded `y: 20`/`y: -20`/`x: 20`/`x: -20`/`scale: 0.8`/`[-8, 8, -8]`/`[1, 1.05, 1]`/`[0.5, 0.8, 0.5]` literals with `MOTION_OFFSETS.*` references |
+| `apps/web/src/utils/motion.test.ts` | Added 8 value-verification tests asserting each variant references `MOTION_OFFSETS.*`; updated `pageTransition` tests to use `MOTION_OFFSETS.PAGE_TRANSITION_Y_PX` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 843 web tests passing across 57 files
+
+---
+
 ### ✅ Flexy Iteration 133: Sync DOMPURIFY_CONFIG with Shared Sanitization Config
 
 | File | Change |
