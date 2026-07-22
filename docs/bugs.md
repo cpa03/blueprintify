@@ -6,7 +6,9 @@
 
 > **BugFixer ULW Cycle Jul 22 2026 (2026-07-22 — fix/bugfix-cycle-001)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,159/2,159** ✅ (860 web + 502 API + 797 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
 >
-> **No new fixable bugs found**. All quality gates pass. Branch up to date with main. No fixes needed.
+> **BUG-030 — FIXED**: 4 high-severity CVEs in `sharp` (<0.35.0, transitive via `miniflare`→`@cloudflare/vitest-pool-workers`) — CVE-2026-33327, CVE-2026-33328, CVE-2026-35590, CVE-2026-35591. Fixed by adding `sharp` override `0.35.3` and nested `miniflare→sharp` override in `package.json`. Verified: typecheck ✅ lint ✅ build ✅ tests 2,159/2,159 ✅ audit 0 vulns ✅.
+> 
+> **No other fixable bugs found**. All quality gates pass. Branch up to date with main.
 
 ## Bug Status — Jul 22 2026 (Cycle 287)
 
