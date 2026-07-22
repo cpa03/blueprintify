@@ -54,6 +54,16 @@
   --tag-entrance-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
   --tag-entrance-translate-y: 4px;
   --tag-entrance-scale-from: 0.95;
+
+  /* Compact character counter pop animation tokens — used by the compact-counter-pop
+     keyframe and .animate-compact-counter-pop class for the brief scale pop when
+     the character count changes in constrained inputs.
+     0.3s matches ANIMATION_DURATION_S.MEDIUM (0.3) / ANIMATION.MEDIUM in @blueprint/shared.
+     ease-out is the standard CSS easing keyword.
+     scale(1.1) is the peak scale during the pop animation. */
+  --compact-counter-pop-duration: 0.3s;
+  --compact-counter-pop-easing: ease-out;
+  --compact-counter-pop-scale: 1.1;
 }
 
 /* ===== Base Styles ===== */
@@ -927,7 +937,7 @@
       transform: scale(1);
     }
     50% {
-      transform: scale(1.1);
+      transform: scale(var(--compact-counter-pop-scale));
     }
     100% {
       transform: scale(1);
@@ -935,7 +945,7 @@
   }
 
   .animate-compact-counter-pop {
-    animation: compact-counter-pop 0.3s ease-out;
+    animation: compact-counter-pop var(--compact-counter-pop-duration) var(--compact-counter-pop-easing);
     will-change: transform;
   }
 
