@@ -39,6 +39,7 @@ import {
   CONFIRM_DIALOG,
 } from "./config/constants";
 import { LAYOUT, BUTTON, ICON, SPINNER } from "./config/styles";
+import { KEYBOARD_SHORTCUTS } from "./config/constants/keyboard";
 import { getAriaShortcutKey } from "./lib/platform";
 import { Icon } from "./components/Icon";
 const GenerationCelebration = lazy(() =>
@@ -409,7 +410,7 @@ function App(): JSX.Element {
                 onAnimationEnd={editorExiting ? handleHideEditorComplete : undefined}
               >
                 <KeyboardShortcutTooltip
-                  shortcut="e"
+                  shortcut={KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY}
                   description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
                   position="left"
                 >
@@ -418,7 +419,10 @@ function App(): JSX.Element {
                     className={`${BUTTON.HIDE_EDITOR_DESKTOP} transition-transform duration-150 active:scale-90 hover:scale-110`}
                     aria-label={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR}
                     title={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR_TITLE}
-                    aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
+                    aria-keyshortcuts={getAriaShortcutKey(
+                      KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY,
+                      "cmd"
+                    )}
                     aria-controls="editor-panel"
                   >
                     <svg
@@ -439,7 +443,7 @@ function App(): JSX.Element {
                 </KeyboardShortcutTooltip>
 
                 <KeyboardShortcutTooltip
-                  shortcut="e"
+                  shortcut={KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY}
                   description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
                   position="left"
                 >
@@ -448,7 +452,10 @@ function App(): JSX.Element {
                     className={`${BUTTON.HIDE_EDITOR_MOBILE} transition-transform duration-150 active:scale-90 hover:scale-110`}
                     aria-label={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR}
                     title={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR_TITLE}
-                    aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
+                    aria-keyshortcuts={getAriaShortcutKey(
+                      KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY,
+                      "cmd"
+                    )}
                     aria-controls="editor-panel"
                   >
                     <svg
@@ -513,12 +520,16 @@ function App(): JSX.Element {
 
           {/* New Project — fixed below ShowEditorButton when editor hidden + content exists */}
           {!showEditor && hasContent && !isGenerating && (
-            <KeyboardShortcutTooltip shortcut="n" description="Start a new project" position="left">
+            <KeyboardShortcutTooltip
+              shortcut={KEYBOARD_SHORTCUTS.NEW_PROJECT.KEY}
+              description={KEYBOARD_SHORTCUTS.NEW_PROJECT.DESCRIPTION}
+              position="left"
+            >
               <button
                 onClick={handleNewProject}
                 className="fixed bottom-14 right-6 z-20 flex items-center gap-1.5 text-xs text-dark-500 hover:text-accent-pink transition-colors px-3 py-1.5 rounded-lg bg-dark-800/60 backdrop-blur-sm border border-dark-700/50 hover:border-accent-pink/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 animate-slide-up"
                 aria-label={ACCESSIBILITY_LABELS.EDITOR.START_NEW_PROJECT}
-                aria-keyshortcuts={getAriaShortcutKey("n", "cmd")}
+                aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_SHORTCUTS.NEW_PROJECT.KEY, "cmd")}
               >
                 <svg
                   className="w-3.5 h-3.5"
