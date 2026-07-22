@@ -945,7 +945,8 @@
   }
 
   .animate-compact-counter-pop {
-    animation: compact-counter-pop var(--compact-counter-pop-duration) var(--compact-counter-pop-easing);
+    animation: compact-counter-pop var(--compact-counter-pop-duration)
+      var(--compact-counter-pop-easing);
     will-change: transform;
   }
 
@@ -1477,7 +1478,7 @@
 }
 
 .skeleton-block::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
