@@ -22,6 +22,7 @@ import {
   ANIMATION_TIMING,
   COLORS,
   EASING,
+  MOTION_OFFSETS as THEME_MOTION_OFFSETS,
   THEME_PROGRESS_TRACK_COLOR,
   STEP_CONNECTOR_COMPLETED_SHADOW as THEME_STEP_CONNECTOR_COMPLETED_SHADOW,
 } from "../theme";
@@ -128,6 +129,13 @@ export const CELEBRATION_PARTICLE = {
  */
 // Re-exported from theme.ts where EASING is defined alongside other animation configs
 export { EASING };
+
+/**
+ * Framer Motion variant offset values (y, x, scale, keyframe arrays)
+ * Single source of truth lives in theme.ts
+ * Flexy says: No hardcoded y:20 / x:20 / scale:0.8 values in motion.ts!
+ */
+export const MOTION_OFFSETS = THEME_MOTION_OFFSETS;
 
 export const SPRING_CONFIG = {
   DEFAULT: { stiffness: 400, damping: 25, mass: 0.8 },

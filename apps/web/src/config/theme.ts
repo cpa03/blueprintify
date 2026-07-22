@@ -489,6 +489,36 @@ export const SCROLL_PROGRESS_SPRING = {
 } as const;
 
 // ============================================================================
+// Framer Motion Variant Offsets
+// Flexy says: No hardcoded y/x/scale/opacity values in motion.ts variants!
+// ============================================================================
+
+/**
+ * Pixel and scale offsets for shared framer-motion animation variants in
+ * apps/web/src/utils/motion.ts.  Centralizes all hardcoded numeric values that
+ * control initial/exit positions and keyframe ranges so they stay consistent
+ * across all wizard steps and UI components.
+ */
+export const MOTION_OFFSETS = {
+  /** Initial y-offset (px) for fade-in-up animation variants (fadeInUp, createFadeInUp) */
+  FADE_IN_Y_PX: 20,
+  /** Initial scale for scale-in animation variant */
+  SCALE_INITIAL: 0.8,
+  /** Initial x-offset (px) for slide-in-right animation variant */
+  SLIDE_RIGHT_X_PX: 20,
+  /** Initial x-offset (px) for slide-in-left animation variant */
+  SLIDE_LEFT_X_PX: -20,
+  /** Y keyframe range (px) for floating/bobbing animation (mutable to match framer-motion expectations) */
+  FLOAT_Y_RANGE: [-8, 8, -8],
+  /** Scale keyframe range for pulse animation (mutable to match framer-motion expectations) */
+  PULSE_SCALE_RANGE: [1, 1.05, 1],
+  /** Opacity keyframe range for pulse animation (mutable to match framer-motion expectations) */
+  PULSE_OPACITY_RANGE: [0.5, 0.8, 0.5],
+  /** Y-offset (px) for direction-aware page/step transitions */
+  PAGE_TRANSITION_Y_PX: 20,
+};
+
+// ============================================================================
 // Animation Color Presets
 // ============================================================================
 

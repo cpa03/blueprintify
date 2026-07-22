@@ -5,6 +5,7 @@
 
 import { ANIMATION_DIRECTIONS } from "@blueprint/shared/config";
 import { describe, it, expect } from "vitest";
+import { MOTION_OFFSETS } from "../config/constants";
 import {
   transitions,
   fadeInUp,
@@ -46,6 +47,10 @@ describe("Motion Utilities", () => {
       expect(fadeInUp.hidden).toBeDefined();
       expect(fadeInUp.visible).toBeDefined();
     });
+
+    it("should use MOTION_OFFSETS.FADE_IN_Y_PX for hidden y-offset", () => {
+      expect(fadeInUp.hidden).toEqual({ opacity: 0, y: MOTION_OFFSETS.FADE_IN_Y_PX });
+    });
   });
 
   describe("staggerContainer", () => {
@@ -82,6 +87,10 @@ describe("Motion Utilities", () => {
       expect(scaleIn.hidden).toBeDefined();
       expect(scaleIn.visible).toBeDefined();
     });
+
+    it("should use MOTION_OFFSETS.SCALE_INITIAL for hidden scale", () => {
+      expect(scaleIn.hidden).toEqual({ opacity: 0, scale: MOTION_OFFSETS.SCALE_INITIAL });
+    });
   });
 
   describe("slideInRight", () => {
@@ -93,6 +102,10 @@ describe("Motion Utilities", () => {
     it("should have hidden and visible states", () => {
       expect(slideInRight.hidden).toBeDefined();
       expect(slideInRight.visible).toBeDefined();
+    });
+
+    it("should use MOTION_OFFSETS.SLIDE_RIGHT_X_PX for hidden x-offset", () => {
+      expect(slideInRight.hidden).toEqual({ opacity: 0, x: MOTION_OFFSETS.SLIDE_RIGHT_X_PX });
     });
   });
 
@@ -106,6 +119,10 @@ describe("Motion Utilities", () => {
       expect(slideInLeft.hidden).toBeDefined();
       expect(slideInLeft.visible).toBeDefined();
     });
+
+    it("should use MOTION_OFFSETS.SLIDE_LEFT_X_PX for hidden x-offset", () => {
+      expect(slideInLeft.hidden).toEqual({ opacity: 0, x: MOTION_OFFSETS.SLIDE_LEFT_X_PX });
+    });
   });
 
   describe("floatingAnimation", () => {
@@ -114,9 +131,8 @@ describe("Motion Utilities", () => {
       expect(typeof floatingAnimation).toBe("object");
     });
 
-    it("should have y animation property", () => {
-      expect(floatingAnimation.y).toBeDefined();
-      expect(Array.isArray(floatingAnimation.y)).toBe(true);
+    it("should use MOTION_OFFSETS.FLOAT_Y_RANGE for y keyframes", () => {
+      expect(floatingAnimation.y).toEqual(MOTION_OFFSETS.FLOAT_Y_RANGE);
     });
 
     it("should have transition with infinite repeat", () => {
@@ -131,9 +147,12 @@ describe("Motion Utilities", () => {
       expect(typeof pulseAnimation).toBe("object");
     });
 
-    it("should have scale animation property", () => {
-      expect(pulseAnimation.scale).toBeDefined();
-      expect(Array.isArray(pulseAnimation.scale)).toBe(true);
+    it("should use MOTION_OFFSETS.PULSE_SCALE_RANGE for scale keyframes", () => {
+      expect(pulseAnimation.scale).toEqual(MOTION_OFFSETS.PULSE_SCALE_RANGE);
+    });
+
+    it("should use MOTION_OFFSETS.PULSE_OPACITY_RANGE for opacity keyframes", () => {
+      expect(pulseAnimation.opacity).toEqual(MOTION_OFFSETS.PULSE_OPACITY_RANGE);
     });
 
     it("should have transition with infinite repeat", () => {
@@ -153,10 +172,10 @@ describe("Motion Utilities", () => {
       expect(transition.initial).toBeDefined();
       expect(transition.animate).toBeDefined();
       expect(transition.exit).toBeDefined();
-      // forward: enters from below (y:20), exits upward (y:-20)
-      expect(transition.initial).toEqual({ opacity: 0, y: 20 });
+      // forward: enters from below, exits upward
+      expect(transition.initial).toEqual({ opacity: 0, y: MOTION_OFFSETS.PAGE_TRANSITION_Y_PX });
       expect(transition.animate).toEqual({ opacity: 1, y: 0 });
-      expect(transition.exit).toEqual({ opacity: 0, y: -20 });
+      expect(transition.exit).toEqual({ opacity: 0, y: -MOTION_OFFSETS.PAGE_TRANSITION_Y_PX });
     });
 
     it("should return backward variant when direction is backward", () => {
@@ -164,17 +183,17 @@ describe("Motion Utilities", () => {
       expect(transition.initial).toBeDefined();
       expect(transition.animate).toBeDefined();
       expect(transition.exit).toBeDefined();
-      // backward: enters from above (y:-20), exits downward (y:20)
-      expect(transition.initial).toEqual({ opacity: 0, y: -20 });
+      // backward: enters from above, exits downward
+      expect(transition.initial).toEqual({ opacity: 0, y: -MOTION_OFFSETS.PAGE_TRANSITION_Y_PX });
       expect(transition.animate).toEqual({ opacity: 1, y: 0 });
-      expect(transition.exit).toEqual({ opacity: 0, y: 20 });
+      expect(transition.exit).toEqual({ opacity: 0, y: MOTION_OFFSETS.PAGE_TRANSITION_Y_PX });
     });
 
     it("should return forward variant when direction is forward", () => {
       const transition = pageTransition(ANIMATION_DIRECTIONS.FORWARD);
-      expect(transition.initial).toEqual({ opacity: 0, y: 20 });
+      expect(transition.initial).toEqual({ opacity: 0, y: MOTION_OFFSETS.PAGE_TRANSITION_Y_PX });
       expect(transition.animate).toEqual({ opacity: 1, y: 0 });
-      expect(transition.exit).toEqual({ opacity: 0, y: -20 });
+      expect(transition.exit).toEqual({ opacity: 0, y: -MOTION_OFFSETS.PAGE_TRANSITION_Y_PX });
     });
   });
 
@@ -209,6 +228,11 @@ describe("Motion Utilities", () => {
       expect(variants).toBeDefined();
       expect(variants.hidden).toBeDefined();
       expect(variants.visible).toBeDefined();
+    });
+
+    it("should use MOTION_OFFSETS.FADE_IN_Y_PX for hidden y-offset", () => {
+      const variants = createFadeInUp();
+      expect(variants.hidden).toEqual({ opacity: 0, y: MOTION_OFFSETS.FADE_IN_Y_PX });
     });
 
     it("should create variants with custom duration", () => {
