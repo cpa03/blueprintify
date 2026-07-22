@@ -510,6 +510,34 @@ function App(): JSX.Element {
               />
             </Suspense>
           )}
+
+          {/* New Project — fixed below ShowEditorButton when editor hidden + content exists */}
+          {!showEditor && hasContent && !isGenerating && (
+            <KeyboardShortcutTooltip shortcut="n" description="Start a new project" position="left">
+              <button
+                onClick={handleNewProject}
+                className="fixed bottom-14 right-6 z-20 flex items-center gap-1.5 text-xs text-dark-500 hover:text-accent-pink transition-colors px-3 py-1.5 rounded-lg bg-dark-800/60 backdrop-blur-sm border border-dark-700/50 hover:border-accent-pink/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 animate-slide-up"
+                aria-label={ACCESSIBILITY_LABELS.EDITOR.START_NEW_PROJECT}
+                aria-keyshortcuts={getAriaShortcutKey("n", "cmd")}
+              >
+                <svg
+                  className="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+                {UI_CONTENT.BUTTONS.NEW_PROJECT}
+              </button>
+            </KeyboardShortcutTooltip>
+          )}
         </div>
       </main>
 
