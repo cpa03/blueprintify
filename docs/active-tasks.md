@@ -2,6 +2,29 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 288 — **Full repository audit, 1 new post-Cycle-287 commit indexed (feat(web): New Project button `23c93f44`), BUG-026 FIXED (sharp 0.34.5→0.35.3 — 4 high CVEs), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), test count unchanged 2,159 (860 web + 502 API + 797 shared), Prettier format drift fixed (apps/web/src/index.css), archive retention cleanup (3 stale files purged from Jun 21), quality verification** ✅
+
+### Task: Full repository audit — **1 new post-Cycle-287 commit indexed** (feat(web): add New Project button when editor hidden and content exists `23c93f44`); **BUG-026 FIXED** (4 high CVEs in sharp 0.34.5 — overridden to 0.35.3, `npm audit fix` applied); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-014/BUG-017 CONFIRMED FIXED on main** (zero stale doc refs, all workflows use `node-version-file: ".node-version"`); **BUG-025 still fixed** (TS2321 excessive stack depth — `as UserConfig` cast holds); **test count unchanged** 2,159 (860 web + **502 API** + 797 shared); **BroCula ref verified** (Jul 21 Run 4 — LH **99-100-100-100** ⭐); **Prettier format drift fixed** (`apps/web/src/index.css`); **archive retention cleanup** (3 stale files purged from Jun 21, past 30-day window); **0 stale merged branches** found; **0 stale plan files** found; **0 redundant/temp/unused files found**; doc refresh (bugs, findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,159/2,159** ✅, format ✅, npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 288 full repository audit — index 1 post-Cycle-287 commit, fix BUG-026 (sharp CVEs), verify BUG-013/BUG-014/BUG-017/BUG-025, Prettier format fix, archive retention cleanup, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files in source code, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks, no merge conflict artifacts, no `.patch` files, no `.bak`/`.tmp`/`.log` files ✅
+  - [x] **1 new post-Cycle-287 commit indexed**: feat(web): New Project button (`23c93f44`) ✅
+  - [x] **BUG-026 FIXED**: 4 high CVEs in sharp 0.34.5 — overridden to 0.35.3 via package.json override + `npm audit fix` ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns (no re-bump) ✅
+  - [x] **BUG-014/BUG-017 verified**: zero stale doc refs, zero hardcoded node-version in workflows ✅
+  - [x] **BUG-025 still fixed**: TS2321 excessive stack depth — `as UserConfig` cast holds ✅
+  - [x] **Test count confirmed**: 2,159 (860 web + 502 API + 797 shared — unchanged) ✅
+  - [x] **BroCula ref verified**: Jul 21 Run 4 (`brocula-hunt-2026-07-21-run4.md` / LH **99-100-100-100** ⭐) ✅
+  - [x] **Prettier format drift fixed**: `apps/web/src/index.css` ✅
+  - [x] **Archive retention cleanup**: 3 stale files purged from Jun 21 (past 30-day window) ✅
+  - [x] **Stale branches**: No fully-merged remote branches found (squash-merge repo) ✅
+  - [x] **Stale plan files**: No stale plan files found ✅
+  - [x] **Doc refresh**: bugs.md, findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md updated ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests **2,159/2,159** ✅, format ✅, npm audit **0 vulns** ✅
+
 ## ✅ RepoKeeper Cycle 287 — **Full repository audit, 6 new post-Cycle-286 commits indexed (feat(flexy) MOTION_OFFSETS, perf(skeleton) composited shimmer, feat(web) scale-pop animation, test(web) ErrorFallback coverage, fix(test) location.reload mock + deps bump, chore(deps) wrangler/vitest-pool-workers), typecheck error fixed (ErrorFallback.test.tsx — read-only Location assignment), test count update 2,136→2,159 (860 web + 502 API + 797 shared), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BroCula ref verified (Jul 21 Run 4 — LH **99-100-100-100** ⭐), archive retention — no cleanup needed, 0 stale merged branches found, quality verification** ✅
 
 ### Task: Full repository audit — **6 new post-Cycle-286 commits indexed** (`7e2e405b` feat(flexy) MOTION_OFFSETS, `e775724a` perf(skeleton) composited shimmer, `0f017c7f` feat(web) scale-pop animation, `ce6e6111` test(web) ErrorFallback coverage, `86b52565` fix(test) location.reload mock + deps bump, `3287980a` chore(deps) wrangler/vitest-pool-workers); **typecheck error fixed** (ErrorFallback.test.tsx — TS2322 Location not assignable, lint `as any` warning — fixed with `Object.defineProperty`, no suppressions); **test count update** 2,136→**2,159** (860 web + 502 API + **797 shared** — web +23); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-014/BUG-017 CONFIRMED FIXED on main** (zero stale doc refs, all workflows use `node-version-file: ".node-version"`); **BUG-025 still fixed** (TS2321 excessive stack depth — `as UserConfig` cast holds); **BroCula ref verified** (Jul 21 Run 4 — LH **99-100-100-100** ⭐); **archive retention** — no cleanup needed (all files within 30-day window; earliest archive Jul 8); **0 stale merged branches** found; **0 stale plan files** found; **0 redundant/temp/unused files found**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; **0 merge conflict artifacts**; doc refresh (bugs, findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,159/2,159** ✅, format ✅, npm audit **0 vulns** ✅)
