@@ -170,11 +170,12 @@ describe("ErrorFallback", () => {
 
   it("reloads the page when reload button is clicked", () => {
     const reloadMock = vi.fn();
-    const origLocation = window.location;
-    delete (window as unknown as Record<string, unknown>).location;
-    Object.defineProperty(window, "location", {
-      value: { ...origLocation, reload: reloadMock },
-      writable: true,
+    // Use stubGlobal to replace location.reload without triggering
+    // jsdom teardown issues (delete + defineProperty pattern causes
+    // "Cannot delete property 'location'" during vitest cleanup).
+    vi.stubGlobal("location", {
+      ...window.location,
+      reload: reloadMock,
     });
 
     render(<ErrorFallback error={defaultError} resetErrorBoundary={mockReset} />);
@@ -182,11 +183,6 @@ describe("ErrorFallback", () => {
     fireEvent.click(reloadBtn);
 
     expect(reloadMock).toHaveBeenCalledTimes(1);
-
-    Object.defineProperty(window, "location", {
-      value: origLocation,
-      writable: true,
-    });
   });
 
   // ---- Accessibility ----
