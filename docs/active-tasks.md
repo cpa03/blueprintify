@@ -2,6 +2,28 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 290 — **Full repository audit, 3 new post-Cycle-289 commits indexed (flexy Iteration 152 hardcoded shortcut keys/em-dash/aria-labels `94550b3c`, BugFixer ULW Cycle Jul 22 clean `75c041f5`, feat(web) stat card crossfade `dbaf187c`), test count update 2,159→2,160 (shared +1: 860 web + 502 API + **798 shared**), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-030 still fixed (sharp 0.35.3 — 0 vulns), BroCula ref updated (Jul 22 Run 2 — LH **100-100-100-100** 🏆), quality verification** ✅
+
+### Task: Full repository audit — **3 new post-Cycle-289 commits indexed** (refactor(flexy): eliminate hardcoded shortcut keys, em-dash, and awaiting content aria-labels (Iteration 152) `94550b3c`; fix(bugfixer): ULW Cycle Jul 22 2026 — full audit clean, no new bugs found `75c041f5`; feat(web): smooth crossfade from awaiting dash to animated count on generation stat cards `dbaf187c`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-025 still fixed** (TS2321 excessive stack depth — `as UserConfig` cast holds); **BUG-030 still fixed** (sharp 0.35.3 override — 0 vulns); **test count update** 2,159→**2,160** (860 web + 502 API + **798 shared** — shared +1); **BroCula ref updated** (Jul 22 Run 2 — `docs/audits/brocula-audit-2026-07-22-run2.md` / LH **100-100-100-100** 🏆); **0 stale merged branches** found; **0 stale plan files** found; **0 redundant/temp/unused files found**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,160/2,160** ✅, format ✅, npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 290 full repository audit — index 3 post-Cycle-289 commits (flexy Iteration 152, BugFixer Jul 22, feat(web) stat card crossfade), verify BUG-013/BUG-025/BUG-030, update BroCula ref, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files in source code, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks, no `.patch` files ✅
+  - [x] **3 new post-Cycle-289 commits indexed**: flexy Iteration 152 (`94550b3c`), BugFixer ULW Cycle Jul 22 (`75c041f5`), feat(web) stat card crossfade (`dbaf187c`) ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns (no re-bump) ✅
+  - [x] **BUG-025 still fixed**: TS2321 excessive stack depth — `as UserConfig` cast holds ✅
+  - [x] **BUG-030 still fixed**: sharp 0.35.3 override — 0 vulns (npm audit) ✅
+  - [x] **Test count update**: 2,159→**2,160** (860 web + 502 API + **798 shared** — shared +1) ✅
+  - [x] **BroCula ref updated**: Jul 22 Run 2 (`brocula-audit-2026-07-22-run2.md` / LH **100-100-100-100** 🏆) ✅
+  - [x] **Format drift check**: All files Prettier-formatted ✅
+  - [x] **Archive retention**: No cleanup needed (all within 30-day window; earliest archive Jun 22) ✅
+  - [x] **Stale branches**: No fully-merged remote branches found (squash-merge repo) ✅
+  - [x] **Stale plan files**: No stale plan files found ✅
+  - [x] **Doc refresh**: findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md updated ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests **2,160/2,160** ✅, format ✅, npm audit **0 vulns** ✅
+
 ## ✅ RepoKeeper Cycle 289 — **Full repository audit, 3 new post-Cycle-288 commits indexed (BroCula Cycle 290 `8591ecf2`, feat(web) awaiting indicator `61355d64`, BUG-030 sharp fix `7c76bb3b`), merge conflict artifact FIXED in findings.md, BUG-030 CONFIRMED FIXED (sharp 0.35.3 — 0 vulns), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), test count unchanged 2,159 (860 web + 502 API + 797 shared), BroCula ref updated (Jul 22 — LH **99-100-100-100** ⭐), quality verification** ✅
 
 ### Task: Full repository audit — **3 new post-Cycle-288 commits indexed** (chore(brocula): Cycle 290 — full browser audit (Jul 22) `8591ecf2`; feat(web): show awaiting indicator in generation stats before content arrives `61355d64`; fix(deps): BUG-030 — override sharp to 0.35.3 for 4 high-severity CVEs `7c76bb3b`); **merge conflict artifact FIXED** (`docs/findings.md` — leftover `>>>>>>> 34b1bde5` from bad merge in Cycle 288); **BUG-030 CONFIRMED FIXED** (sharp 0.35.3 override — 4 high CVEs resolved, npm audit 0 vulns); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-025 still fixed** (TS2321 excessive stack depth — `as UserConfig` cast holds); **test count unchanged** 2,159 (860 web + 502 API + 797 shared); **BroCula ref updated** (Jul 22 — `docs/audits/brocula-audit-2026-07-22.md` / LH **99-100-100-100** ⭐); **0 stale merged branches** found; **0 stale plan files** found; **0 redundant/temp/unused files found**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; doc refresh (bugs, findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,159/2,159** ✅, format ✅, npm audit **0 vulns** ✅)
