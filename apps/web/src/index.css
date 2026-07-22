@@ -918,6 +918,27 @@
     will-change: transform;
   }
 
+  /* Brief scale pop on the compact character counter when the value changes —
+     gives a subtle "yes, I registered that keystroke" feeling as the user types
+     in constrained inputs (feature names, tags, etc.). A one-shot 1->1.1->1
+     scale over 300ms that triggers via React key remount on value change. */
+  @keyframes compact-counter-pop {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .animate-compact-counter-pop {
+    animation: compact-counter-pop 0.3s ease-out;
+    will-change: transform;
+  }
+
   /* Subtle full-form pulse when the "Clear All" button is clicked in StepInfo.
      Creates a brief "ready for fresh input" moment — the glass card emits a
      gentle gradient glow ring that fades out, signaling all fields have been
@@ -999,6 +1020,7 @@
     .animate-pulse-scale,
     .animate-warning-icon,
     .counter-celebrate-pop,
+    .animate-compact-counter-pop,
     .content-dot-breathe,
     .arrival-pop,
     .form-ready-pulse,

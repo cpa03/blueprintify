@@ -134,7 +134,8 @@ function CharacterCounterCompactComponent({
         />
       </div>
       <span
-        className={`text-2xs tabular-nums ${
+        key={`compact-count-${current}`}
+        className={`text-2xs tabular-nums inline-block animate-compact-counter-pop ${
           isDanger ? "text-accent-pink font-bold" : "text-dark-500"
         }`}
         aria-hidden="true"
