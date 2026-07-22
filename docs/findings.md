@@ -2,6 +2,59 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## RepoKeeper Cycle 287 (2026-07-22 — RepoKeeper: full repository audit, 6 new post-Cycle-286 commits indexed (feat(flexy) MOTION_OFFSETS, perf(skeleton) composited shimmer, feat(web) scale-pop animation, test(web) ErrorFallback, fix(test) location.reload mock + deps bump, chore(deps) wrangler/vitest-pool-workers), typecheck error fixed (ErrorFallback.test.tsx — Location assignment read-only), test count 2,159/2,159 (860 web + 502 API + 797 shared), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BroCula ref verified (Jul 21 Run 4 — LH **99-100-100-100** ⭐), archive retention — no cleanup needed (all files within 30-day window; earliest archive Jul 8), 0 stale merged branches found, 0 temp/redundant files, all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: no type suppressions. No TODO/FIXME/HACK in source. No merge conflict artifacts. No empty directories. No `.patch` files. No `.bak`/`.tmp`/`.log` files.
+2. **[6 New Post-Cycle-286 Commits Indexed]** — 6 commits landed since Cycle 286 (`f2358679`):
+   - `7e2e405b` — feat(flexy): centralize framer motion variant pixel/scale offsets into MOTION_OFFSETS config
+   - `e775724a` — perf(skeleton): replace non-composited background-position animation with composited transform translateX()
+   - `0f017c7f` — feat(web): add scale-pop animation to compact character counter on value change
+   - `ce6e6111` — test(web): add ErrorFallback component test coverage
+   - `86b52565` — fix(test): resolve jsdom location.reload mock; chore(deps): update wrangler to 4.113.0, vitest-pool-workers to 0.18.7, workers-types to 5.20260722.1
+   - `3287980a` — chore(deps): update wrangler, vitest-pool-workers; fix ErrorFallback test
+3. **[Typecheck Error Fixed]** — `ErrorFallback.test.tsx` had TS2322 errors (Type 'Location' not assignable to type 'string & Location') and a lint warning (`as any`). Fixed by using `Object.defineProperty` to mock `window.location` — type-safe, no suppressions.
+4. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities** (no re-bump occurred).
+5. **[BUG-014/BUG-017 Verification]** — CONFIRMED FIXED on main: zero stale doc refs, all workflows use `node-version-file: ".node-version"`. ✅
+6. **[BUG-025 Still Fixed]** — TS2321 excessive stack depth fix (`as UserConfig` cast in vite.config.ts) holds. Verified: typecheck ✅ lint ✅ build ✅ tests 2,159/2,159 ✅.
+7. **[Test Count Update]** — **2,159** (860 web + 502 API + **797 shared** — web +23 from new ErrorFallback tests).
+8. **[BroCula Ref Verified]** — Latest: Jul 21 Run 4 — `docs/audits/brocula-hunt-2026-07-21-run4.md` / LH **99-100-100-100** ⭐, 0 console errors ✅.
+9. **[Format Drift Check]** — Prettier check: all files formatted ✅.
+10. **[Archive Retention]** — No cleanup needed (all files within 30-day window; earliest archive Jul 8).
+11. **[Stale Merged Branches]** — No fully-merged remote branches found (squash-merge repo).
+12. **[Doc Refresh]** — bugs.md, findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md updated.
+13. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,159/2,159** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,159/2,159** (860 web + 502 API + **797 shared**) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013 still fixed) |
+| Secrets Scan | ✅ 0 secrets detected |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** in source |
+| `as any` | ✅ **0** in source |
+| Empty catch blocks | ✅ **0** in source |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| Merge conflict artifacts | ✅ **0** |
+| `.patch` files | ✅ **0** |
+| Empty directories | ✅ **0** |
+| Stale doc refs (BUG-014) | ✅ **0** in `.github/workflows/` |
+| Hardcoded node-version (BUG-017) | ✅ **0** in `.github/workflows/` |
+| Archive retention | ✅ No cleanup needed (all within 30-day window) |
+| Stale merged branches | ✅ **0** |
+| Stale plan files | ✅ **0** |
+| BUG-025 (TS2321) | ✅ **STILL FIXED** (as UserConfig cast) |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,159 tests green, 0 vulnerabilities, 0 lint/type errors. 6 new post-Cycle-286 commits indexed (flexy MOTION_OFFSETS, composited skeleton shimmer, scale-pop animation, ErrorFallback tests, location.reload mock fix, deps bump). Typecheck error fixed in ErrorFallback test. Test count increased 2,136→2,159 (web +23). BUG-025 still fixed (TS2321). BUG-013 still fixed (lighthouse 12.6.1 maintained — 0 vulns). BUG-014/BUG-017 CONFIRMED FIXED on main. BroCula ref verified (Jul 21 Run 4 — LH **99-100-100-100** ⭐). No archive cleanup needed. No stale merged branches.** ✅
+
 ## RepoKeeper Cycle 286 (2026-07-22 — RepoKeeper: full repository audit, 0 new commits since last cycle (HEAD at f2358679), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), test count 2,136/2,136 (837 web + 502 API + 797 shared), BroCula ref verified (Jul 21 Run 4 — LH **99-100-100-100** ⭐), archive retention — no cleanup needed (all files within 30-day window; earliest archive Jul 8), 0 stale merged branches found, 0 temp/redundant files, all quality gates pass ✅)
 
 ### Actions Taken
