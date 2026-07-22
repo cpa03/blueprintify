@@ -27,6 +27,7 @@ import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
 import { BUTTON, ICON } from "../config/styles";
 import { UI_CONTENT, SHORTCUT_DESCRIPTIONS } from "../config/constants";
+import { KEYBOARD_SHORTCUTS } from "../config/constants/keyboard";
 import { getModifierLabel, getAriaShortcutKey } from "../lib/platform";
 
 interface ShowEditorButtonProps {
@@ -63,7 +64,7 @@ function ShowEditorButtonComponent({
 
   return (
     <KeyboardShortcutTooltip
-      shortcut="e"
+      shortcut={KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY}
       description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
       position="left"
     >
@@ -73,7 +74,7 @@ function ShowEditorButtonComponent({
         <RippleButton
           onClick={onClick}
           className={`${BUTTON.SHOW_EDITOR_FAB} ${hasContent || isGenerating ? "glow-pulse" : ""}`}
-          aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
+          aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY, "cmd")}
           title={buttonTitle}
           data-editor-toggle="true"
           aria-expanded={false}

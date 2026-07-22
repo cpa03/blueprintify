@@ -3789,8 +3789,12 @@ describe("DISPLAY_SYMBOLS", () => {
     expect(DISPLAY_SYMBOLS.MIDDOT).toBe("\u00B7");
   });
 
-  it("should have 5 properties", () => {
-    expect(Object.keys(DISPLAY_SYMBOLS).length).toBe(5);
+  it("should include EM_DASH display symbol", () => {
+    expect(DISPLAY_SYMBOLS.EM_DASH).toBe("\u2014");
+  });
+
+  it("should have 6 properties", () => {
+    expect(Object.keys(DISPLAY_SYMBOLS).length).toBe(6);
   });
 
   it("should have all values as strings", () => {

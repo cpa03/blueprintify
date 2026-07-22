@@ -78,7 +78,9 @@ import {
   Y_OFFSET,
   SCROLL_BEHAVIOR,
   SCROLL_INTO_VIEW_BLOCK,
+  ACCESSIBILITY_LABELS,
 } from "../../config/constants";
+import { KEYBOARD_SHORTCUTS } from "../../config/constants/keyboard";
 import { COLORS } from "../../config/theme";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { getAltKeyLabel, getModifierLabel, getAriaShortcutKey } from "../../lib/platform";
@@ -586,9 +588,9 @@ export const StepGenerating = memo(function StepGenerating({
                   exit={{ opacity: 0, scale: 0.8, y: -4 }}
                   transition={{ duration: ANIMATION.TEXT_FADE, ease: EASING.easeOut }}
                   className="tabular-nums text-dark-500 inline-block"
-                  aria-label="Awaiting blueprint content"
+                  aria-label={ACCESSIBILITY_LABELS.GENERATION_STATS.AWAITING_BLUEPRINT}
                 >
-                  —
+                  {DISPLAY_SYMBOLS.EM_DASH}
                 </motion.span>
               ) : (
                 <motion.span
@@ -626,9 +628,9 @@ export const StepGenerating = memo(function StepGenerating({
                   exit={{ opacity: 0, scale: 0.8, y: -4 }}
                   transition={{ duration: ANIMATION.TEXT_FADE, ease: EASING.easeOut }}
                   className="tabular-nums text-dark-500 inline-block"
-                  aria-label="Awaiting task content"
+                  aria-label={ACCESSIBILITY_LABELS.GENERATION_STATS.AWAITING_TASKS}
                 >
-                  —
+                  {DISPLAY_SYMBOLS.EM_DASH}
                 </motion.span>
               ) : (
                 <motion.span
@@ -673,7 +675,7 @@ export const StepGenerating = memo(function StepGenerating({
               }}
             >
               <KeyboardShortcutTooltip
-                shortcut="e"
+                shortcut={KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY}
                 description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
                 position="right"
                 modifier="cmd"
