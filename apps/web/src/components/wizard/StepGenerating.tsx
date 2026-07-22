@@ -568,28 +568,47 @@ export const StepGenerating = memo(function StepGenerating({
           : "Generated " + blueprintLines + " blueprint lines and " + tasksLines + " task lines"}
       </p>
 
-      {/* Live stats — show "—" while awaiting first content, then animated counts */}
+      {/* Live stats — show "—" while awaiting first content, then animated counts.
+          Uses AnimatePresence mode="wait" to crossfade the awaiting dash into the
+          counting number, making the first content arrival feel polished rather
+          than abruptly swapping out the dash. */}
       <div className="flex gap-8 text-center">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className="glass-card px-6 py-4"
         >
-          <div className="text-2xl font-bold text-gradient">
-            {awaitingContent ? (
-              <span
-                className="tabular-nums text-dark-500"
-                aria-label={ACCESSIBILITY_LABELS.GENERATION_STATS.AWAITING_BLUEPRINT}
-              >
-                {DISPLAY_SYMBOLS.EM_DASH}
-              </span>
-            ) : (
-              <AnimatedNumber
-                value={blueprintLines}
-                duration={ANIMATION.PULSE}
-                className="text-gradient"
-              />
-            )}
+          <div className="text-2xl font-bold text-gradient relative">
+            <AnimatePresence mode="wait">
+              {awaitingContent ? (
+                <motion.span
+                  key="awaiting-blueprint"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8, y: -4 }}
+                  transition={{ duration: ANIMATION.TEXT_FADE, ease: EASING.easeOut }}
+                  className="tabular-nums text-dark-500 inline-block"
+                  aria-label={ACCESSIBILITY_LABELS.GENERATION_STATS.AWAITING_BLUEPRINT}
+                >
+                  {DISPLAY_SYMBOLS.EM_DASH}
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="count-blueprint"
+                  initial={{ opacity: 0, scale: 0.8, y: 4 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: ANIMATION.TEXT_FADE, ease: EASING.easeOut }}
+                  className="inline-block"
+                >
+                  <AnimatedNumber
+                    value={blueprintLines}
+                    duration={ANIMATION.PULSE}
+                    className="text-gradient"
+                  />
+                </motion.span>
+              )}
+            </AnimatePresence>
           </div>
           <div className="text-sm text-dark-400">Blueprint Lines</div>
         </motion.div>
@@ -599,21 +618,37 @@ export const StepGenerating = memo(function StepGenerating({
           transition={{ delay: ANIMATION.STAGGER }}
           className="glass-card px-6 py-4"
         >
-          <div className="text-2xl font-bold text-gradient">
-            {awaitingContent ? (
-              <span
-                className="tabular-nums text-dark-500"
-                aria-label={ACCESSIBILITY_LABELS.GENERATION_STATS.AWAITING_TASKS}
-              >
-                {DISPLAY_SYMBOLS.EM_DASH}
-              </span>
-            ) : (
-              <AnimatedNumber
-                value={tasksLines}
-                duration={ANIMATION.PULSE}
-                className="text-gradient"
-              />
-            )}
+          <div className="text-2xl font-bold text-gradient relative">
+            <AnimatePresence mode="wait">
+              {awaitingContent ? (
+                <motion.span
+                  key="awaiting-tasks"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8, y: -4 }}
+                  transition={{ duration: ANIMATION.TEXT_FADE, ease: EASING.easeOut }}
+                  className="tabular-nums text-dark-500 inline-block"
+                  aria-label={ACCESSIBILITY_LABELS.GENERATION_STATS.AWAITING_TASKS}
+                >
+                  {DISPLAY_SYMBOLS.EM_DASH}
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="count-tasks"
+                  initial={{ opacity: 0, scale: 0.8, y: 4 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: ANIMATION.TEXT_FADE, ease: EASING.easeOut }}
+                  className="inline-block"
+                >
+                  <AnimatedNumber
+                    value={tasksLines}
+                    duration={ANIMATION.PULSE}
+                    className="text-gradient"
+                  />
+                </motion.span>
+              )}
+            </AnimatePresence>
           </div>
           <div className="text-sm text-dark-400">Task Lines</div>
         </motion.div>
