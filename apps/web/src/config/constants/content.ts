@@ -324,6 +324,10 @@ export const ACCESSIBILITY_LABELS = {
     /** Announced via sr-only region when CodeMirror is ready for input */
     READY: "Code editor ready",
   },
+  GENERATION_STATS: {
+    AWAITING_BLUEPRINT: "Awaiting blueprint content",
+    AWAITING_TASKS: "Awaiting task content",
+  },
   EDITOR: {
     STREAMING_CONTENT: "Streaming content in real-time",
     DOCUMENT_TABS: "Document tabs",

@@ -78,7 +78,9 @@ import {
   Y_OFFSET,
   SCROLL_BEHAVIOR,
   SCROLL_INTO_VIEW_BLOCK,
+  ACCESSIBILITY_LABELS,
 } from "../../config/constants";
+import { KEYBOARD_SHORTCUTS } from "../../config/constants/keyboard";
 import { COLORS } from "../../config/theme";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { getAltKeyLabel, getModifierLabel, getAriaShortcutKey } from "../../lib/platform";
@@ -575,8 +577,11 @@ export const StepGenerating = memo(function StepGenerating({
         >
           <div className="text-2xl font-bold text-gradient">
             {awaitingContent ? (
-              <span className="tabular-nums text-dark-500" aria-label="Awaiting blueprint content">
-                —
+              <span
+                className="tabular-nums text-dark-500"
+                aria-label={ACCESSIBILITY_LABELS.GENERATION_STATS.AWAITING_BLUEPRINT}
+              >
+                {DISPLAY_SYMBOLS.EM_DASH}
               </span>
             ) : (
               <AnimatedNumber
@@ -596,8 +601,11 @@ export const StepGenerating = memo(function StepGenerating({
         >
           <div className="text-2xl font-bold text-gradient">
             {awaitingContent ? (
-              <span className="tabular-nums text-dark-500" aria-label="Awaiting task content">
-                —
+              <span
+                className="tabular-nums text-dark-500"
+                aria-label={ACCESSIBILITY_LABELS.GENERATION_STATS.AWAITING_TASKS}
+              >
+                {DISPLAY_SYMBOLS.EM_DASH}
               </span>
             ) : (
               <AnimatedNumber
@@ -632,7 +640,7 @@ export const StepGenerating = memo(function StepGenerating({
               }}
             >
               <KeyboardShortcutTooltip
-                shortcut="e"
+                shortcut={KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY}
                 description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
                 position="right"
                 modifier="cmd"

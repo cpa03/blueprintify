@@ -629,6 +629,8 @@ export const DISPLAY_SYMBOLS = {
   QUESTION_MARK: "?" as const,
   /** Middot — visual separator between elements (e.g. elapsed time label) */
   MIDDOT: "\u00B7" as const,
+  /** Em dash — used in awaiting indicators and visual separators */
+  EM_DASH: "\u2014" as const,
 } as const;
 
 /**
