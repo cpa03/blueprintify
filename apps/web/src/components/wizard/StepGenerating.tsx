@@ -382,7 +382,10 @@ export const StepGenerating = memo(function StepGenerating({
           <>
             <motion.div
               className="w-24 h-24 rounded-full border-4 border-dark-700"
-              style={{ borderTopColor: COLORS.primary[500] }}
+              style={{
+                borderTopColor: COLORS.primary[500],
+                borderRightColor: COLORS.primary[500],
+              }}
               animate={{ rotate: 360 }}
               transition={{
                 duration: ANIMATION.SPINNER_ROTATION,
