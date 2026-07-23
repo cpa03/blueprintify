@@ -702,7 +702,7 @@ export const StepInfo = memo(function StepInfo({
         <div className="flex justify-end pt-4">
           <motion.span
             animate={showReadyPulse ? { scale: [1, 1.04, 1] } : { scale: 1 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+            transition={{ duration: ANIMATION.HALF_SECOND, ease: EASING.easeOut }}
             className="inline-flex"
           >
             <KeyboardShortcutTooltip
