@@ -578,6 +578,19 @@ export const HEADER_ANIMATION = {
     /** Static shadow when not generating */
     SHADOW_STATIC: "0 0 0 0 transparent",
   } as const,
+
+  /** Active tab indicator glow keyframe sequence during content generation.
+   *  Subtle pulsing box-shadow that signals "this tab is where the action is"
+   *  while streaming content. */
+  TAB_GLOW: {
+    /** Keyframe sequence for box-shadow during generation pulse */
+    BOX_SHADOWS: [
+      `0 0 0px 0px ${hexToRgba(COLORS.primary[500], 0)}`,
+      `0 0 14px 4px ${hexToRgba(COLORS.primary[500], 0.25)}`,
+      `0 0 22px 6px ${hexToRgba(COLORS.accent.purple, 0.12)}`,
+      `0 0 0px 0px ${hexToRgba(COLORS.primary[500], 0)}`,
+    ] as const,
+  } as const,
 } as const;
 
 /**
