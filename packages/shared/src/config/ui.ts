@@ -341,6 +341,8 @@ export const UI_TIMEOUTS = {
   LOADING_DOTS_INTERVAL: 500,
   /** Duration for OfflineBanner smooth exit animation (300ms) — must match CSS `banner-exit 0.3s` in tailwind.config.js */
   BANNER_EXIT_DURATION_MS: 300,
+  /** Duration for form-ready pulse animation on submit buttons (600ms) */
+  READY_PULSE_MS: 600,
 } as const;
 
 /**
@@ -702,5 +704,25 @@ export const CSS_VALUES = {
   /** CSS auto value — used for height, width, margin, etc. */
   AUTO: "auto" as const,
   /** CSS none value — used for transitions, animations, etc. */
+  NONE: "none" as const,
+} as const;
+
+/**
+ * Keyboard Modifier Keys
+ * Centralized source of truth for keyboard modifier key identifiers used in
+ * keyboard shortcut handling and accessibility (aria-keyshortcuts).
+ * Flexy says: No hardcoded "cmd" / "ctrl" / "alt" / "none" strings in components!
+ * Usage: import { MODIFIER_KEYS } from "@blueprint/shared";
+ *        getAriaShortcutKey(key, MODIFIER_KEYS.CMD)
+ *        modifier={MODIFIER_KEYS.CMD}
+ */
+export const MODIFIER_KEYS = {
+  /** Command/Meta modifier — auto-detects ⌘ (Mac) or Ctrl (others) */
+  CMD: "cmd" as const,
+  /** Control modifier — always Control key */
+  CTRL: "ctrl" as const,
+  /** Alt modifier — always Alt key */
+  ALT: "alt" as const,
+  /** No modifier — raw key press without modifiers */
   NONE: "none" as const,
 } as const;

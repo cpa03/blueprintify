@@ -31,6 +31,8 @@ import {
   FRAMER_TYPE,
   DISPLAY_SYMBOLS,
   KEYBOARD_EVENT_KEYS,
+  MODIFIER_KEYS,
+  UI_TIMEOUTS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -145,7 +147,7 @@ export const StepInfo = memo(function StepInfo({
     }
     if (canProceed && !prevCanProceed.current) {
       setShowReadyPulse(true);
-      const timer = setTimeout(() => setShowReadyPulse(false), 600);
+      const timer = setTimeout(() => setShowReadyPulse(false), UI_TIMEOUTS.READY_PULSE_MS);
       prevCanProceed.current = canProceed;
       return () => clearTimeout(timer);
     }
@@ -714,7 +716,7 @@ export const StepInfo = memo(function StepInfo({
                 whileHover={{ ...HOVER_SCALE.MICRO, y: -2 }}
                 whileTap={{ ...TAP_SCALE.MICRO, y: 0 }}
                 className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
-                aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, "cmd")}
+                aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
               >
                 {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
                 <kbd

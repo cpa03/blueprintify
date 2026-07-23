@@ -22,6 +22,7 @@ import {
   UI_TIMING,
   ANIMATION_ENTRANCE_DELAYS,
   ENTRANCE_STAGGER_DEFAULTS,
+  MODIFIER_KEYS,
 } from "@blueprint/shared/config";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
@@ -74,7 +75,10 @@ function ShowEditorButtonComponent({
         <RippleButton
           onClick={onClick}
           className={`${BUTTON.SHOW_EDITOR_FAB} ${hasContent || isGenerating ? "glow-pulse" : ""}`}
-          aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY, "cmd")}
+          aria-keyshortcuts={getAriaShortcutKey(
+            KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY,
+            MODIFIER_KEYS.CMD
+          )}
           title={buttonTitle}
           data-editor-toggle="true"
           aria-expanded={false}

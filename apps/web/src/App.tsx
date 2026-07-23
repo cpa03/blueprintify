@@ -6,6 +6,7 @@ import {
   SCROLL_PROGRESS_DEFAULTS,
   UI_TIMEOUTS,
   KEYBOARD_EVENT_KEYS,
+  MODIFIER_KEYS,
 } from "@blueprint/shared/config";
 import { Header } from "./components/Header";
 import { StepIndicator } from "./components/StepIndicator";
@@ -421,7 +422,7 @@ function App(): JSX.Element {
                     title={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR_TITLE}
                     aria-keyshortcuts={getAriaShortcutKey(
                       KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY,
-                      "cmd"
+                      MODIFIER_KEYS.CMD
                     )}
                     aria-controls="editor-panel"
                   >
@@ -454,7 +455,7 @@ function App(): JSX.Element {
                     title={ACCESSIBILITY_LABELS.EDITOR.HIDE_EDITOR_TITLE}
                     aria-keyshortcuts={getAriaShortcutKey(
                       KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY,
-                      "cmd"
+                      MODIFIER_KEYS.CMD
                     )}
                     aria-controls="editor-panel"
                   >
@@ -529,7 +530,10 @@ function App(): JSX.Element {
                 onClick={handleNewProject}
                 className="fixed bottom-14 right-6 z-20 flex items-center gap-1.5 text-xs text-dark-500 hover:text-accent-pink transition-colors px-3 py-1.5 rounded-lg bg-dark-800/60 backdrop-blur-sm border border-dark-700/50 hover:border-accent-pink/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 animate-slide-up"
                 aria-label={ACCESSIBILITY_LABELS.EDITOR.START_NEW_PROJECT}
-                aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_SHORTCUTS.NEW_PROJECT.KEY, "cmd")}
+                aria-keyshortcuts={getAriaShortcutKey(
+                  KEYBOARD_SHORTCUTS.NEW_PROJECT.KEY,
+                  MODIFIER_KEYS.CMD
+                )}
               >
                 <svg
                   className="w-3.5 h-3.5"

@@ -220,6 +220,7 @@ export {
   SCROLL_INTO_VIEW_BLOCK,
   DIRECTION,
   CSS_VALUES,
+  MODIFIER_KEYS,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";

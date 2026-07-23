@@ -34,6 +34,7 @@ import {
   FRAMER_TYPE,
   DISPLAY_SYMBOLS,
   KEYBOARD_EVENT_KEYS,
+  MODIFIER_KEYS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -678,14 +679,17 @@ export const StepGenerating = memo(function StepGenerating({
                 shortcut={KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY}
                 description={SHORTCUT_DESCRIPTIONS.TOGGLE_EDITOR}
                 position="right"
-                modifier="cmd"
+                modifier={MODIFIER_KEYS.CMD}
               >
                 <RippleButton
                   onClick={handleViewEditor}
                   className="btn-primary flex items-center gap-2 attention-glow"
                   ariaLabel={WIZARD_GENERATING_LABELS.VIEW_EDITOR_ARIA}
                   data-autofocus="complete"
-                  aria-keyshortcuts={getAriaShortcutKey("e", "cmd")}
+                  aria-keyshortcuts={getAriaShortcutKey(
+                    KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY,
+                    MODIFIER_KEYS.CMD
+                  )}
                 >
                   <svg
                     className="w-5 h-5"
