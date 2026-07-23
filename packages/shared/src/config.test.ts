@@ -152,6 +152,7 @@ import {
   SCROLL_INTO_VIEW_BLOCK,
   DIRECTION,
   CSS_VALUES,
+  MODIFIER_KEYS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -2402,11 +2403,12 @@ describe("UI_TIMEOUTS", () => {
     expect(UI_TIMEOUTS.SAVED_GLOW_MS).toBe(700);
     expect(UI_TIMEOUTS.LOADING_DOTS_INTERVAL).toBe(500);
     expect(UI_TIMEOUTS.BANNER_EXIT_DURATION_MS).toBe(300);
+    expect(UI_TIMEOUTS.READY_PULSE_MS).toBe(600);
   });
 
   it("should have all numeric values", () => {
     const values = Object.values(UI_TIMEOUTS);
-    expect(values.length).toBe(19);
+    expect(values.length).toBe(20);
     values.forEach((v) => {
       expect(typeof v).toBe("number");
       expect(v).toBeGreaterThan(0);
@@ -3937,6 +3939,41 @@ describe("CSS_VALUES", () => {
 
   it("should have unique values", () => {
     const values = Object.values(CSS_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+// ============================================================================
+// MODIFIER_KEYS
+// ============================================================================
+describe("MODIFIER_KEYS", () => {
+  it("should have CMD = 'cmd'", () => {
+    expect(MODIFIER_KEYS.CMD).toBe("cmd");
+  });
+
+  it("should have CTRL = 'ctrl'", () => {
+    expect(MODIFIER_KEYS.CTRL).toBe("ctrl");
+  });
+
+  it("should have ALT = 'alt'", () => {
+    expect(MODIFIER_KEYS.ALT).toBe("alt");
+  });
+
+  it("should have NONE = 'none'", () => {
+    expect(MODIFIER_KEYS.NONE).toBe("none");
+  });
+
+  it("should have 4 properties", () => {
+    expect(Object.keys(MODIFIER_KEYS).length).toBe(4);
+  });
+
+  it("should have all values as strings", () => {
+    const values = Object.values(MODIFIER_KEYS);
+    values.forEach((v) => expect(typeof v).toBe("string"));
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(MODIFIER_KEYS);
     expect(new Set(values).size).toBe(values.length);
   });
 });

@@ -27,6 +27,7 @@ import {
   SHORTCUT_DESCRIPTIONS,
   ANIMATION_ENTRANCE_DELAYS,
   KEYBOARD_EVENT_KEYS,
+  MODIFIER_KEYS,
   FRAMER_TYPE,
   DISPLAY_SYMBOLS,
 } from "@blueprint/shared/config";
@@ -686,7 +687,7 @@ export const StepFeatures = memo(function StepFeatures({
           <RippleButton
             onClick={nextStep}
             className="btn-primary flex items-center gap-2 group animate-glow"
-            aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, "cmd")}
+            aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
           >
             {UI_CONTENT.WIZARD.STEP_FEATURES.NEXT_BUTTON}
             <kbd

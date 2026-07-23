@@ -2787,3 +2787,23 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2760](https://github.com/cpa03/blueprintify/pull/2760) | `feat/flexy-iteration-150-tag-entrance-stagger-and-skeleton-widths` | refactor(flexy): extract hardcoded tag-entrance stagger and preview skeleton extra widths into shared config (Iteration 150) |
+
+---
+
+### ✅ Flexy Iteration 153: Centralize Modifier Key Constants + Form Ready-Pulse Duration
+
+| File | Change |
+| --- | --- |
+| `packages/shared/src/config/ui.ts` | Added `MODIFIER_KEYS` config object (`CMD`, `CTRL`, `ALT`, `NONE`) + `UI_TIMEOUTS.READY_PULSE_MS` (600ms) |
+| `packages/shared/src/index.ts` | Added `MODIFIER_KEYS` re-export |
+| `packages/shared/src/config.test.ts` | Added 7 MODIFIER_KEYS value tests; added READY_PULSE_MS value assertion; updated UI_TIMEOUTS length from 19→20 |
+| `apps/web/src/components/wizard/StepInfo.tsx` | Replaced hardcoded `600` with `UI_TIMEOUTS.READY_PULSE_MS`; replaced `"cmd"` with `MODIFIER_KEYS.CMD` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced hardcoded `"e"` with `KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY`; replaced `"cmd"` with `MODIFIER_KEYS.CMD` |
+| `apps/web/src/App.tsx` | Replaced 3 hardcoded `"cmd"` with `MODIFIER_KEYS.CMD` |
+| `apps/web/src/components/wizard/StepStack.tsx` | Replaced hardcoded `"cmd"` with `MODIFIER_KEYS.CMD` |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | Replaced hardcoded `"cmd"` with `MODIFIER_KEYS.CMD` |
+| `apps/web/src/components/wizard/StepReview.tsx` | Replaced 2 hardcoded `"cmd"` with `MODIFIER_KEYS.CMD` |
+| `apps/web/src/components/ShowEditorButton.tsx` | Replaced hardcoded `"cmd"` with `MODIFIER_KEYS.CMD` |
+| `apps/web/src/components/SmartTooltip.tsx` | Replaced hardcoded default `"cmd"` with `MODIFIER_KEYS.CMD` |
+
+## Verification
