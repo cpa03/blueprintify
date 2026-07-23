@@ -82,7 +82,7 @@ import {
   ACCESSIBILITY_LABELS,
 } from "../../config/constants";
 import { KEYBOARD_SHORTCUTS } from "../../config/constants/keyboard";
-import { COLORS } from "../../config/theme";
+import { COLORS, HEADER_ANIMATION } from "../../config/theme";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { getAltKeyLabel, getModifierLabel, getAriaShortcutKey } from "../../lib/platform";
 
@@ -576,7 +576,32 @@ export const StepGenerating = memo(function StepGenerating({
       <div className="flex gap-8 text-center">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            borderColor: isGenerating
+              ? [...HEADER_ANIMATION.CONTENT_STATS.BORDER_COLORS]
+              : HEADER_ANIMATION.CONTENT_STATS.BORDER_STATIC,
+            boxShadow: isGenerating
+              ? [...HEADER_ANIMATION.CONTENT_STATS.BOX_SHADOWS]
+              : HEADER_ANIMATION.CONTENT_STATS.SHADOW_STATIC,
+          }}
+          transition={{
+            borderColor: isGenerating
+              ? {
+                  duration: ANIMATION.SLOW_PULSE,
+                  repeat: Infinity,
+                  ease: EASING.easeInOut,
+                }
+              : undefined,
+            boxShadow: isGenerating
+              ? {
+                  duration: ANIMATION.BREATH,
+                  repeat: Infinity,
+                  ease: EASING.easeInOut,
+                }
+              : undefined,
+          }}
           className="glass-card px-6 py-4"
         >
           <div className="text-2xl font-bold text-gradient relative">
@@ -615,8 +640,35 @@ export const StepGenerating = memo(function StepGenerating({
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: ANIMATION.STAGGER }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            borderColor: isGenerating
+              ? [...HEADER_ANIMATION.CONTENT_STATS.BORDER_COLORS]
+              : HEADER_ANIMATION.CONTENT_STATS.BORDER_STATIC,
+            boxShadow: isGenerating
+              ? [...HEADER_ANIMATION.CONTENT_STATS.BOX_SHADOWS]
+              : HEADER_ANIMATION.CONTENT_STATS.SHADOW_STATIC,
+          }}
+          transition={{
+            delay: ANIMATION.STAGGER,
+            borderColor: isGenerating
+              ? {
+                  duration: ANIMATION.SLOW_PULSE,
+                  repeat: Infinity,
+                  ease: EASING.easeInOut,
+                  delay: ANIMATION.STAGGER,
+                }
+              : undefined,
+            boxShadow: isGenerating
+              ? {
+                  duration: ANIMATION.BREATH,
+                  repeat: Infinity,
+                  ease: EASING.easeInOut,
+                  delay: ANIMATION.STAGGER,
+                }
+              : undefined,
+          }}
           className="glass-card px-6 py-4"
         >
           <div className="text-2xl font-bold text-gradient relative">
