@@ -2831,3 +2831,25 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 - ✅ `npm run test:all` — 860 web + 502 api + 805 shared = **2,167 tests passing** across 92 files
 
 ## PR
+
+### ✅ Flexy Iteration 157: Centralize Remaining Hardcoded CSS Class Name Strings into CSS_CLASSES Config
+
+**Problem**: `StepGenerating.tsx` used 3 hardcoded string literals for CSS class operations:
+1. `".glass-card"` in `closest()` selector — should derive from `CSS_CLASSES.GLASS_CARD`
+2. `"editor-focus-highlight"` (×2) in `classList.add()`/`classList.remove()` — should use `CSS_CLASSES.EDITOR_FOCUS_HIGHLIGHT`
+
+While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FOCUS_HIGHLIGHT` was missing.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/accessibility.ts` | Added `CSS_CLASSES.EDITOR_FOCUS_HIGHLIGHT: "editor-focus-highlight"` — single source of truth for the editor focus highlight CSS class |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Added `CSS_CLASSES` to import from `../../config/constants` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced hardcoded `".glass-card"` with `` `.${CSS_CLASSES.GLASS_CARD}` `` — derives selector from existing config constant |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced 2x hardcoded `"editor-focus-highlight"` with `CSS_CLASSES.EDITOR_FOCUS_HIGHLIGHT` — single source of truth |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 860 web + 502 api + 805 shared = **2,167 tests passing** across 92 files

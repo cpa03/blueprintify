@@ -15,6 +15,7 @@ export const CSS_CLASSES = {
   BTN_GHOST: "btn-ghost",
   TEXT_GRADIENT: "text-gradient",
   ANIMATED_SPINNER: "animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500",
+  EDITOR_FOCUS_HIGHLIGHT: "editor-focus-highlight",
 } as const;
 
 // ============================================================================
