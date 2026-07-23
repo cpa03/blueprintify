@@ -80,6 +80,7 @@ import {
   SCROLL_BEHAVIOR,
   SCROLL_INTO_VIEW_BLOCK,
   ACCESSIBILITY_LABELS,
+  CSS_CLASSES,
 } from "../../config/constants";
 import { KEYBOARD_SHORTCUTS } from "../../config/constants/keyboard";
 import { COLORS, HEADER_ANIMATION } from "../../config/theme";
@@ -263,11 +264,11 @@ export const StepGenerating = memo(function StepGenerating({
       }
       focusTarget.focus({ preventScroll: true });
 
-      const editorContainer = editorPanel.closest(".glass-card");
+      const editorContainer = editorPanel.closest(`.${CSS_CLASSES.GLASS_CARD}`);
       if (editorContainer instanceof HTMLElement) {
-        editorContainer.classList.add("editor-focus-highlight");
+        editorContainer.classList.add(CSS_CLASSES.EDITOR_FOCUS_HIGHLIGHT);
         setTimeout(() => {
-          editorContainer.classList.remove("editor-focus-highlight");
+          editorContainer.classList.remove(CSS_CLASSES.EDITOR_FOCUS_HIGHLIGHT);
           if (focusTarget === editorPanel) {
             if (priorTabIndex === null) {
               editorPanel.removeAttribute("tabindex");
