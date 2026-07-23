@@ -2,7 +2,52 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Cycle 291 (2026-07-22 — Full repository audit, 0 new post-Cycle-290 commits indexed (HEAD unchanged), test count **2,160/2,160** (860 web + 502 API + 798 shared), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-030 still fixed (sharp 0.35.3 override — 0 vulns), BroCula ref updated (Jul 22 Run 3 — LH **100-100-100-100** 🏆), **2 unreferenced BroCula scripts removed** (`scripts/brocula-audit.mjs`, `scripts/brocula-run.mjs`), archive retention — no cleanup needed, 0 stale merged branches found, all quality gates pass ✅)
+## Cycle 292 (2026-07-23 — Full repository audit, 0 new post-Cycle-291 commits indexed (HEAD unchanged at `606b1271`), test count **2,160/2,160** (860 web + 502 API + 798 shared — unchanged), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-030 still fixed (sharp 0.35.3 override — 0 vulns), BroCula ref updated (Jul 22 Run 4 — LH **99-100-100-100** ⭐), **2 stale `.omo/run-continuation/` session files removed**, **3 archive files from Jun 22 purged** (past 30-day retention), 0 stale merged branches found, all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: 0 type suppressions. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. 0 empty directories. 0 `.patch` files.
+2. **[0 New Post-Cycle-291 Commits to Index]** — HEAD unchanged at `606b1271`. No new work landed since Cycle 291. `git fetch --prune origin` confirmed HEAD is up to date.
+3. **[2 Stale `.omo/run-continuation/` Session Files Removed]** — `ses_0731cab5cffel3IFDy9i0be3CP.json` and `ses_0731cfe79ffeKHDbmxgwEAYzpp.json` removed — both were leftover session continuation artifacts from previous agent runs. `.omo/` is already gitignored, so these were untracked runtime debris.
+4. **[3 Archive Files Purged (30-Day Retention)]** — `brocula-hunt-2026-06-22-run1.md`, `brocula-hunt-2026-06-22-run2.md`, `issue-audit-report-2026-06-22.md` removed — all past the 30-day retention window (Jun 22 → Jul 23 = 31 days).
+5. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities** (no re-bump occurred).
+6. **[BUG-025 Still Fixed]** — TS2321 excessive stack depth fix (`as UserConfig` cast in vite.config.ts) holds. Verified: typecheck ✅ lint ✅ build ✅ tests 2,160/2,160 ✅.
+7. **[BUG-030 Still Fixed]** — 4 high-severity CVEs in `sharp` (<0.35.0) remain resolved with override `0.35.3`. Verified: npm audit **0 vulns** ✅.
+8. **[Test Count Unchanged]** — **2,160** (860 web + 502 API + 798 shared — unchanged from Cycle 291).
+9. **[BroCula Ref Updated]** — Latest: Jul 22 Run 4 — `docs/audits/brocula-audit-2026-07-22-run4.md` / LH **99-100-100-100** ⭐, 0 console errors ✅.
+10. **[Format Drift Check]** — Prettier check: all files formatted ✅.
+11. **[Archive Retention]** — 3 files from Jun 22 purged (past 30-day window). Remaining archive: Jun 23 onward — all within retention.
+12. **[Stale Merged Branches]** — No fully-merged remote branches found (squash-merge repo).
+13. **[Stale Plan Files]** — No stale plan files found.
+14. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,160/2,160** ✅, format ✅, npm audit **0 vulns** ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,160/2,160** (860 web + 502 API + **798 shared**) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013/BUG-030 STILL FIXED) |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** in source |
+| `as any` | ✅ **0** in source |
+| Empty catch blocks | ✅ **0** in source |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| Merge conflict artifacts | ✅ **0** |
+| `.patch` files | ✅ **0** |
+| Empty directories | ✅ **0** |
+| Archive retention | ✅ 3 files purged from Jun 22 (past 30-day window) |
+| Stale merged branches | ✅ **0** |
+| Stale plan files | ✅ **0** |
+| `.omo/run-continuation/` stale files | ✅ **2 removed** |
+| BUG-025 (TS2321) | ✅ **STILL FIXED** (as UserConfig cast) |
+| BUG-030 (sharp CVEs) | ✅ **STILL FIXED** (npm override to 0.35.3) |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,160 tests green, 0 vulnerabilities, 0 lint/type errors. 0 new post-Cycle-291 commits to index (HEAD unchanged at Cycle 291). 2 stale `.omo/run-continuation/` session files removed. 3 archive files from Jun 22 purged (past 30-day retention). BUG-025 still fixed (TS2321). BUG-013 still fixed (lighthouse 12.6.1 maintained — 0 vulns). BUG-030 still fixed (sharp 0.35.3 override — 0 vulns). BroCula ref updated (Jul 22 Run 4 — LH **99-100-100-100** ⭐). No stale merged branches.** ✅
 
 ### Actions Taken
 
