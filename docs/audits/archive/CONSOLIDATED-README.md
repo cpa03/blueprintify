@@ -30,4 +30,4 @@ These files are retained for historical reference only. Current archive contents
 ## Retention Policy
 
 Archive files are kept for 30 days from creation, then eligible for deletion.
-Last cleanup: 2026-07-21 (RepoKeeper Cycle 280 — removed 6 files from Jun 19-20, past 30-day retention).
+Last cleanup: 2026-07-23 (RepoKeeper Cycle 292 — removed 3 files from Jun 22 — `brocula-hunt-2026-06-22-run1.md`, `brocula-hunt-2026-06-22-run2.md`, `issue-audit-report-2026-06-22.md`, past 30-day retention).

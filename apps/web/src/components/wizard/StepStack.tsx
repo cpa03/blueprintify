@@ -34,6 +34,7 @@ import {
   FRAMER_TYPE,
   DISPLAY_SYMBOLS,
   KEYBOARD_EVENT_KEYS,
+  MODIFIER_KEYS,
 } from "@blueprint/shared/config";
 import { useWizardStore } from "../../store";
 import {
@@ -478,7 +479,7 @@ export const StepStack = memo(function StepStack({
             onClick={handleNextClick}
             disabled={!canProceed}
             className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
-            aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, "cmd")}
+            aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
           >
             {UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON}
             <kbd

@@ -10,9 +10,17 @@
 > **5 post-BugFixer commits indexed**: chore(repokeeper) Cycle 291 (`606b1271`), chore(brocula) Cycle 293 (`78398210`), ux(web) pulse Next button (`8b1fe8cf`), feat(web) crossfade stat cards (`dbaf187c`), chore(repokeeper) Cycle 290 (`fc71af43`).
 > **No new fixable bugs found in codebase. All quality gates pass.** Branch up to date with main.
 
-## Bug Status — Jul 22 2026 (Cycle 289)
+## Bug Status — Jul 23 2026 (Cycle 292)
 
-> **RepoKeeper Cycle 289 (2026-07-22 — chore/repokeeper-cycle-289)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,159/2,159** ✅ (860 web + 502 API + 797 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed; BUG-030 FIXED). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source.
+> **RepoKeeper Cycle 292 (2026-07-23 — chore/repokeeper-cycle-292)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,160/2,160** ✅ (860 web + 502 API + 798 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed; BUG-030 still fixed). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source.
+>
+> **2 stale `.omo/run-continuation/` session files removed** (leftover session continuation artifacts).
+> **3 archive files from Jun 22 purged** (past 30-day retention window).
+> **BUG-013 — STILL FIXED**: `lighthouse` 12.6.1 maintained — 0 vulns (no re-bump occurred).
+> **BUG-025 — STILL FIXED**: TS2321 excessive stack depth fix (`as UserConfig` cast in vite.config.ts) holds.
+> **BUG-030 — STILL FIXED**: 4 high-severity CVEs in `sharp` (<0.35.0) remain resolved with override `0.35.3`. Verified: npm audit **0 vulnerabilities** ✅.
+> **BroCula ref updated**: Jul 22 Run 4 (`brocula-audit-2026-07-22-run4.md` / LH **99-100-100-100** ⭐).
+> **0 stale merged branches**. **0 stale plan files**. **Archive retention**: 3 files from Jun 22 purged. All quality gates pass. Branch up to date with main.
 >
 > **Merge conflict artifact FIXED**: `docs/findings.md` had a leftover `>>>>>>> 34b1bde5` marker and duplicate Verdict section from a bad merge in Cycle 288. Cleaned up.
 > **BUG-030 — CONFIRMED FIXED**: 4 high-severity CVEs in `sharp` (<0.35.0, transitive via `miniflare`→`@cloudflare/vitest-pool-workers`) — CVE-2026-33327, CVE-2026-33328, CVE-2026-35590, CVE-2026-35591. Fixed with `sharp` override `0.35.3` in package.json. Verified: npm audit **0 vulnerabilities** ✅.

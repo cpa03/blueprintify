@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback, memo, ReactNode, useId } from "react";
-import { KEYBOARD_EVENT_KEYS } from "@blueprint/shared/config";
+import { KEYBOARD_EVENT_KEYS, MODIFIER_KEYS } from "@blueprint/shared/config";
 import { TOOLTIP_CONFIG } from "../config/constants";
 import { formatShortcut } from "../lib/platform";
 
@@ -297,7 +297,7 @@ function KeyboardShortcutTooltipComponent({
   shortcut,
   description,
   position = "top",
-  modifier = "cmd",
+  modifier = MODIFIER_KEYS.CMD,
 }: KeyboardShortcutTooltipProps) {
   const fullShortcut = formatShortcut(shortcut, modifier);
 

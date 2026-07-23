@@ -29,6 +29,7 @@ import {
   FRAMER_TYPE,
   DISPLAY_SYMBOLS,
   KEYBOARD_EVENT_KEYS,
+  MODIFIER_KEYS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { memo, useCallback, useEffect } from "react";
@@ -483,7 +484,10 @@ export const StepReview = memo(function StepReview({
                       ? ACCESSIBILITY_LABELS.REVIEW.GENERATING_IN_PROGRESS_ARIA
                       : ACCESSIBILITY_LABELS.REVIEW.GENERATE_DISABLED_ARIA
                   }
-                  aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, "cmd")}
+                  aria-keyshortcuts={getAriaShortcutKey(
+                    KEYBOARD_EVENT_KEYS.ENTER,
+                    MODIFIER_KEYS.CMD
+                  )}
                 >
                   {isGenerating ? (
                     <>
@@ -522,7 +526,10 @@ export const StepReview = memo(function StepReview({
                   whileHover={{ ...HOVER_SCALE.STANDARD, filter: "brightness(1.1)" }}
                   whileTap={TAP_SCALE.STANDARD}
                   className="btn-primary flex items-center gap-2 animate-glow animate-cta-ring"
-                  aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, "cmd")}
+                  aria-keyshortcuts={getAriaShortcutKey(
+                    KEYBOARD_EVENT_KEYS.ENTER,
+                    MODIFIER_KEYS.CMD
+                  )}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
