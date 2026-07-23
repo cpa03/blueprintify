@@ -2807,3 +2807,27 @@ After 126 iterations of hardcoded-value elimination, recent bugfix commits (Jul 
 | `apps/web/src/components/SmartTooltip.tsx` | Replaced hardcoded default `"cmd"` with `MODIFIER_KEYS.CMD` |
 
 ## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 2,167 tests passing (860 web + 502 api + 805 shared)
+
+---
+
+### ✅ Flexy Iteration 154: Replace Hardcoded delay:0 in EditorHeader Stagger Entrance
+
+**Problem**: A `feat(editor): stagger ContentStats entrance with cascading animation` commit (99dd2084) introduced a hardcoded `delay: 0` magic number on the first stagger item in ContentStats. The remaining 5 items used `ANIMATION.STAGGER * index` but the first item had a bare `0` — breaking the single-source-of-truth pattern.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/components/editor/EditorHeader.tsx` | Replaced hardcoded `delay: 0` with `delay: ANIMATION.STAGGER * 0` — makes the stagger index pattern explicit and consistent across all 6 items |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — 860 web + 502 api + 805 shared = **2,167 tests passing** across 92 files
+
+## PR

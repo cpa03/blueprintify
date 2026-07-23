@@ -238,7 +238,11 @@ const ContentStats = React.memo(function ContentStats({
           <motion.span
             initial={{ opacity: 0, x: -6 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut, delay: 0 }}
+            transition={{
+              duration: ANIMATION.QUICK_FADE,
+              ease: EASING.easeOut,
+              delay: ANIMATION.STAGGER * 0,
+            }}
             className="flex items-center gap-3"
           >
             <span className="flex items-center gap-1">
