@@ -2,6 +2,28 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 295 — **Full repository audit, 2 new post-Cycle-294 commits indexed (refactor(flexy) EditorHeader stagger ANIMATION.STAGGER * 0 Iteration 154 `de5aee21`, feat(web) stagger New Project button entrance `c2def9c2`), test count unchanged **2,167/2,167** (860 web + 502 API + 805 shared), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-030 still fixed (sharp 0.35.3 — 0 vulns), BroCula ref unchanged (Jul 23 Run 2 — LH **100-100-100-100** 🏆), all quality gates pass** ✅
+
+### Task: Full repository audit — **2 new post-Cycle-294 commits indexed** (refactor(flexy): replace hardcoded delay:0 in EditorHeader stagger entrance with ANIMATION.STAGGER * 0 (Iteration 154) `de5aee21`; feat(web): stagger entrance of New Project button after ShowEditorButton for visual hierarchy `c2def9c2`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-025 still fixed** (TS2321 excessive stack depth — `as UserConfig` cast holds); **BUG-030 still fixed** (sharp 0.35.3 override — 0 vulns); **test count unchanged** 2,167 (860 web + 502 API + **805 shared**); **BroCula ref unchanged** (Jul 23 Run 2 — `docs/audits/brocula-audit-2026-07-23-run2.md` / LH **100-100-100-100** 🏆); **0 stale merged branches** found; **0 stale plan files** found; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,167/2,167** ✅, format ✅, npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 295 full repository audit — index 2 post-Cycle-294 commits (flexy Iteration 154 ANIMATION.STAGGER * 0, feat(web) New Project button stagger), verify BUG-013/BUG-025/BUG-030, update BroCula ref, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files in source code, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks, no `.patch` files ✅
+  - [x] **2 new post-Cycle-294 commits indexed**: flexy Iteration 154 (`de5aee21`), feat(web) stagger New Project button (`c2def9c2`) ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns (no re-bump) ✅
+  - [x] **BUG-025 still fixed**: TS2321 excessive stack depth — `as UserConfig` cast holds ✅
+  - [x] **BUG-030 still fixed**: sharp 0.35.3 override — 0 vulns (npm audit) ✅
+  - [x] **Test count verified**: 2,167 (860 web + 502 API + 805 shared — unchanged) ✅
+  - [x] **BroCula ref unchanged**: Jul 23 Run 2 (`brocula-audit-2026-07-23-run2.md` / LH **100-100-100-100** 🏆) ✅
+  - [x] **Format drift check**: All files Prettier-formatted ✅
+  - [x] **Archive retention**: No cleanup needed (all within 30-day window; earliest Jul 2) ✅
+  - [x] **Stale branches**: No fully-merged remote branches found (squash-merge repo) ✅
+  - [x] **Stale plan files**: No stale plan files found ✅
+  - [x] **Doc refresh**: findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md updated ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests **2,167/2,167** ✅, format ✅, npm audit **0 vulns** ✅
+
 ## ✅ RepoKeeper Cycle 292 — **Full repository audit, 0 new post-Cycle-291 commits indexed (HEAD unchanged at `606b1271`), test count **2,160/2,160** (860 web + 502 API + 798 shared — unchanged), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-030 still fixed (sharp 0.35.3 — 0 vulns), BroCula ref updated (Jul 22 Run 4 — LH **99-100-100-100** ⭐), **2 stale `.omo/run-continuation/` session files removed**, **3 archive files from Jun 22 purged** (past 30-day retention), quality verification** ✅
 
 ### Task: Full repository audit — **0 new post-Cycle-291 commits indexed** (HEAD unchanged at `606b1271`); **2 stale `.omo/run-continuation/` session files removed** (`ses_0731cab5cffel3IFDy9i0be3CP.json`, `ses_0731cfe79ffeKHDbmxgwEAYzpp.json`); **3 archive files from Jun 22 purged** (past 30-day retention — `brocula-hunt-2026-06-22-run1.md`, `brocula-hunt-2026-06-22-run2.md`, `issue-audit-report-2026-06-22.md`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-025 still fixed** (TS2321 excessive stack depth — `as UserConfig` cast holds); **BUG-030 still fixed** (sharp 0.35.3 override — 0 vulns); **test count unchanged** 2,160 (860 web + 502 API + 798 shared); **BroCula ref updated** (Jul 22 Run 4 — `docs/audits/brocula-audit-2026-07-22-run4.md` / LH **99-100-100-100** ⭐); **0 stale merged branches** found; **0 stale plan files** found; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; doc refresh (findings, active-tasks, bugs, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,160/2,160** ✅, format ✅, npm audit **0 vulns** ✅)
