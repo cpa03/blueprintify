@@ -23,6 +23,8 @@ import {
   COLORS,
   EASING,
   MOTION_OFFSETS as THEME_MOTION_OFFSETS,
+  ENTRANCE_OFFSETS as THEME_ENTRANCE_OFFSETS,
+  OPACITY as THEME_OPACITY,
   THEME_PROGRESS_TRACK_COLOR,
   STEP_CONNECTOR_COMPLETED_SHADOW as THEME_STEP_CONNECTOR_COMPLETED_SHADOW,
 } from "../theme";
@@ -136,6 +138,21 @@ export { EASING };
  * Flexy says: No hardcoded y:20 / x:20 / scale:0.8 values in motion.ts!
  */
 export const MOTION_OFFSETS = THEME_MOTION_OFFSETS;
+
+/**
+ * Entrance animation pixel and opacity offsets for component-level initial/exit
+ * positions.  Single source of truth lives in theme.ts
+ * Flexy says: No hardcoded y:-3 / x:16 / opacity:0.6 values in component JSX!
+ */
+export const ENTRANCE_OFFSETS = THEME_ENTRANCE_OFFSETS;
+
+/**
+ * Common opacity values for framer-motion and CSS.
+ * Single source of truth lives in theme.ts
+ * Flexy says: No hardcoded opacity:0.6 / opacity:0.3 in component props!
+ * Usage: initial={{ opacity: OPACITY[60] }}
+ */
+export const OPACITY = THEME_OPACITY;
 
 export const SPRING_CONFIG = {
   DEFAULT: { stiffness: 400, damping: 25, mass: 0.8 },

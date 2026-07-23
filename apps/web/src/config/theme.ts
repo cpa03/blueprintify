@@ -519,6 +519,36 @@ export const MOTION_OFFSETS = {
 };
 
 // ============================================================================
+// Entrance Animation Offsets
+// Flexy says: No hardcoded y:-3 / x:16 / opacity:0.6 values in component JSX!
+// ============================================================================
+
+/**
+ * Entrance animation pixel and opacity offsets for component-level initial/exit
+ * positions used directly in framer-motion initial/animate props (not in motion.ts
+ * variants).  Complements MOTION_OFFSETS which drives the shared motion.ts variant
+ * functions.
+ *
+ * Usage:
+ *   initial={{ y: ENTRANCE_OFFSETS.STAT_ENTRY_Y_PX, opacity: ENTRANCE_OFFSETS.STAT_ENTRY_OPACITY }}
+ *   whileHover={{ ...HOVER_SCALE.GENTLE, y: ENTRANCE_OFFSETS.HOVER_LIFT_Y_PX }}
+ */
+export const ENTRANCE_OFFSETS = {
+  /** Stat counter initial entry y-offset (px) — used in EditorHeader content stats
+   *  (charCount, wordCount, lineCount, readingTime all enter from y:-3) */
+  STAT_ENTRY_Y_PX: -3,
+  /** Stat counter initial entry opacity — used in EditorHeader content stats */
+  STAT_ENTRY_OPACITY: 0.6,
+  /** Tab slide x-offset magnitude (px) — used in Editor tab content slide
+   *  (tab direction * 16px gives the signed x offset) */
+  TAB_SLIDE_X_PX: 16,
+  /** Subtle hover lift y-offset (px) — used in whileHover for button hover effects */
+  HOVER_LIFT_Y_PX: -1,
+  /** Tap press y-offset (px) — used in whileTap to reset y position on press */
+  TAP_PRESS_Y_PX: 0,
+} as const;
+
+// ============================================================================
 // Animation Color Presets
 // ============================================================================
 
