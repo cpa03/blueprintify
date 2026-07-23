@@ -57,7 +57,7 @@ import {
   SCROLL_BEHAVIOR,
   SKELETON_LAYOUT,
 } from "../config/constants";
-import { ANIMATION_TIMING, LAYOUT } from "../config/theme";
+import { ANIMATION_TIMING, LAYOUT, ENTRANCE_OFFSETS } from "../config/theme";
 import { isDev } from "../config/env";
 import { useLastSaved } from "../hooks/useLastSaved";
 import { useAutoScroll } from "../hooks/useAutoScroll";
@@ -518,9 +518,9 @@ function EditorComponent(): JSX.Element {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeTab}
-                    initial={{ opacity: 0, x: tabDirection * 16 }}
+                    initial={{ opacity: 0, x: tabDirection * ENTRANCE_OFFSETS.TAB_SLIDE_X_PX }}
                     animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: tabDirection * -16 }}
+                    exit={{ opacity: 0, x: tabDirection * -ENTRANCE_OFFSETS.TAB_SLIDE_X_PX }}
                     transition={{
                       duration: ANIMATION.NORMAL,
                       ease: ANIMATION_TIMING.easing.easeOut,

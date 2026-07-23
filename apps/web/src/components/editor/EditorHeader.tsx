@@ -43,6 +43,8 @@ import {
   EDITOR_TABS,
   OPACITY_PULSE,
   SCALE_PULSE,
+  OPACITY,
+  ENTRANCE_OFFSETS,
 } from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION, HEADER_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
@@ -251,8 +253,8 @@ const ContentStats = React.memo(function ContentStats({
                 key={charCount}
                 className="tabular-nums"
                 initial={{
-                  opacity: 0.6,
-                  y: -3,
+                  opacity: OPACITY[60],
+                  y: ENTRANCE_OFFSETS.STAT_ENTRY_Y_PX,
                   color: isGenerating ? STAT_COLORS.FLASH_GREEN : STAT_COLORS.CHAR_BASE,
                 }}
                 animate={{ opacity: 1, y: 0, color: STAT_COLORS.CHAR_BASE }}
@@ -281,8 +283,8 @@ const ContentStats = React.memo(function ContentStats({
                 key={wordCount}
                 className="tabular-nums"
                 initial={{
-                  opacity: 0.6,
-                  y: -3,
+                  opacity: OPACITY[60],
+                  y: ENTRANCE_OFFSETS.STAT_ENTRY_Y_PX,
                   color: isGenerating ? STAT_COLORS.FLASH_GREEN : STAT_COLORS.WORD_BASE,
                 }}
                 animate={{ opacity: 1, y: 0, color: STAT_COLORS.WORD_BASE }}
@@ -311,8 +313,8 @@ const ContentStats = React.memo(function ContentStats({
                 key={lineCount}
                 className="tabular-nums"
                 initial={{
-                  opacity: 0.6,
-                  y: -3,
+                  opacity: OPACITY[60],
+                  y: ENTRANCE_OFFSETS.STAT_ENTRY_Y_PX,
                   color: isGenerating ? STAT_COLORS.FLASH_GREEN : STAT_COLORS.LINE_BASE,
                 }}
                 animate={{ opacity: 1, y: 0, color: STAT_COLORS.LINE_BASE }}
@@ -340,7 +342,7 @@ const ContentStats = React.memo(function ContentStats({
               <motion.span
                 key={readingTimeDisplay}
                 className="tabular-nums text-accent-cyan"
-                initial={{ opacity: 0.6, y: -3 }}
+                initial={{ opacity: OPACITY[60], y: ENTRANCE_OFFSETS.STAT_ENTRY_Y_PX }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
               >

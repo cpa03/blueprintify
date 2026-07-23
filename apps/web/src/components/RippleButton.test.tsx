@@ -21,6 +21,7 @@ vi.mock("../hooks/useReducedMotion", () => ({
 
 // Import for typing
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { HOVER_SCALE, TAP_SCALE, ENTRANCE_OFFSETS } from "../config/constants";
 
 describe("RippleButton", () => {
   afterEach(() => {
@@ -108,16 +109,16 @@ describe("RippleButton", () => {
   });
 
   it("applies hover transform on mouse enter", () => {
-    render(<RippleButton whileHover={{ scale: 1.05 }}>Test</RippleButton>);
+    render(<RippleButton whileHover={HOVER_SCALE.STANDARD}>Test</RippleButton>);
     const button = screen.getByRole("button");
 
     fireEvent.mouseEnter(button);
 
-    expect(button.style.transform).toBe("scale(1.05)");
+    expect(button.style.transform).toBe(`scale(${HOVER_SCALE.STANDARD.scale})`);
   });
 
   it("clears hover transform on mouse leave", () => {
-    render(<RippleButton whileHover={{ scale: 1.05 }}>Test</RippleButton>);
+    render(<RippleButton whileHover={HOVER_SCALE.STANDARD}>Test</RippleButton>);
     const button = screen.getByRole("button");
 
     fireEvent.mouseEnter(button);
@@ -127,17 +128,17 @@ describe("RippleButton", () => {
   });
 
   it("applies tap transform on mouse down", () => {
-    render(<RippleButton whileTap={{ scale: 0.95 }}>Test</RippleButton>);
+    render(<RippleButton whileTap={TAP_SCALE.STANDARD}>Test</RippleButton>);
     const button = screen.getByRole("button");
 
     fireEvent.mouseDown(button);
 
-    expect(button.style.transform).toBe("scale(0.95)");
+    expect(button.style.transform).toBe(`scale(${TAP_SCALE.STANDARD.scale})`);
   });
 
   it("restores hover transform on mouse up after tap", () => {
     render(
-      <RippleButton whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <RippleButton whileHover={HOVER_SCALE.STANDARD} whileTap={TAP_SCALE.STANDARD}>
         Test
       </RippleButton>
     );
@@ -145,13 +146,14 @@ describe("RippleButton", () => {
 
     fireEvent.mouseEnter(button);
     fireEvent.mouseDown(button);
-    expect(button.style.transform).toBe("scale(0.95)");
+    expect(button.style.transform).toBe(`scale(${TAP_SCALE.STANDARD.scale})`);
 
     fireEvent.mouseUp(button);
-    expect(button.style.transform).toBe("scale(1.05)");
+    expect(button.style.transform).toBe(`scale(${HOVER_SCALE.STANDARD.scale})`);
   });
 
   it("applies translateY transform correctly", () => {
+    // y: -2 is an arbitrary test value for transform behavior, not a design token
     render(<RippleButton whileHover={{ y: -2 }}>Test</RippleButton>);
     const button = screen.getByRole("button");
 
@@ -161,12 +163,20 @@ describe("RippleButton", () => {
   });
 
   it("applies combined scale and translateY transform", () => {
-    render(<RippleButton whileHover={{ scale: 1.03, y: -1 }}>Test</RippleButton>);
+    render(
+      <RippleButton
+        whileHover={{ scale: HOVER_SCALE.GENTLE.scale, y: ENTRANCE_OFFSETS.HOVER_LIFT_Y_PX }}
+      >
+        Test
+      </RippleButton>
+    );
     const button = screen.getByRole("button");
 
     fireEvent.mouseEnter(button);
 
-    expect(button.style.transform).toBe("scale(1.03) translateY(-1px)");
+    expect(button.style.transform).toBe(
+      `scale(${HOVER_SCALE.GENTLE.scale}) translateY(${ENTRANCE_OFFSETS.HOVER_LIFT_Y_PX}px)`
+    );
   });
 
   it("supports submit type", () => {

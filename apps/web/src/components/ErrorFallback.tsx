@@ -23,6 +23,7 @@ import {
   STAGGER_CONFIG,
   SCALE_PULSE,
   OPACITY_PULSE,
+  ENTRANCE_OFFSETS,
 } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE } from "@blueprint/shared/config";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
@@ -303,8 +304,16 @@ export const ErrorFallback = memo(function ErrorFallback({
           >
             <motion.button
               onClick={resetErrorBoundary}
-              whileHover={shouldReduceMotion ? undefined : { ...HOVER_SCALE.GENTLE, y: -1 }}
-              whileTap={shouldReduceMotion ? undefined : { ...TAP_SCALE.GENTLE, y: 0 }}
+              whileHover={
+                shouldReduceMotion
+                  ? undefined
+                  : { ...HOVER_SCALE.GENTLE, y: ENTRANCE_OFFSETS.HOVER_LIFT_Y_PX }
+              }
+              whileTap={
+                shouldReduceMotion
+                  ? undefined
+                  : { ...TAP_SCALE.GENTLE, y: ENTRANCE_OFFSETS.TAP_PRESS_Y_PX }
+              }
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
               className="btn-primary px-6 py-2.5 rounded-lg font-medium"
               aria-label={ACCESSIBILITY_LABELS.ERROR_BOUNDARY.TRY_AGAIN}
@@ -330,8 +339,16 @@ export const ErrorFallback = memo(function ErrorFallback({
 
             <motion.button
               onClick={handleReload}
-              whileHover={shouldReduceMotion ? undefined : { ...HOVER_SCALE.GENTLE, y: -1 }}
-              whileTap={shouldReduceMotion ? undefined : { ...TAP_SCALE.GENTLE, y: 0 }}
+              whileHover={
+                shouldReduceMotion
+                  ? undefined
+                  : { ...HOVER_SCALE.GENTLE, y: ENTRANCE_OFFSETS.HOVER_LIFT_Y_PX }
+              }
+              whileTap={
+                shouldReduceMotion
+                  ? undefined
+                  : { ...TAP_SCALE.GENTLE, y: ENTRANCE_OFFSETS.TAP_PRESS_Y_PX }
+              }
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.SNAPPY }}
               className="btn-ghost px-6 py-2.5 rounded-lg font-medium"
               aria-label={ACCESSIBILITY_LABELS.ERROR_BOUNDARY.RELOAD_PAGE}
