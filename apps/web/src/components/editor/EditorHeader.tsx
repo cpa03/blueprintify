@@ -234,139 +234,201 @@ const ContentStats = React.memo(function ContentStats({
           }
           className="hidden md:flex items-center gap-3 text-2xs uppercase tracking-wider font-bold text-dark-400 bg-dark-800/50 px-2 py-1 rounded-md border"
         >
-          <div className="flex items-center gap-1">
-            <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.CHARS}</span>
-            <motion.span
-              key={charCount}
-              className="tabular-nums"
-              initial={{
-                opacity: 0.6,
-                y: -3,
-                color: isGenerating ? STAT_COLORS.FLASH_GREEN : STAT_COLORS.CHAR_BASE,
-              }}
-              animate={{ opacity: 1, y: 0, color: STAT_COLORS.CHAR_BASE }}
-              transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
-            >
-              {charCount.toLocaleString()}
-            </motion.span>
-          </div>
-          <div className="w-px h-2 bg-dark-700" />
-          <div className="flex items-center gap-1">
-            <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.WORDS}</span>
-            <motion.span
-              key={wordCount}
-              className="tabular-nums"
-              initial={{
-                opacity: 0.6,
-                y: -3,
-                color: isGenerating ? STAT_COLORS.FLASH_GREEN : STAT_COLORS.WORD_BASE,
-              }}
-              animate={{ opacity: 1, y: 0, color: STAT_COLORS.WORD_BASE }}
-              transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
-            >
-              {wordCount.toLocaleString()}
-            </motion.span>
-          </div>
-          <div className="w-px h-2 bg-dark-700" />
-          <div className="flex items-center gap-1">
-            <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.LINES}</span>
-            <motion.span
-              key={lineCount}
-              className="tabular-nums"
-              initial={{
-                opacity: 0.6,
-                y: -3,
-                color: isGenerating ? STAT_COLORS.FLASH_GREEN : STAT_COLORS.LINE_BASE,
-              }}
-              animate={{ opacity: 1, y: 0, color: STAT_COLORS.LINE_BASE }}
-              transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
-            >
-              {lineCount.toLocaleString()}
-            </motion.span>
-          </div>
-          <div className="w-px h-2 bg-dark-700" />
-          <div className="flex items-center gap-1">
-            <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.READING_TIME}</span>
-            <motion.span
-              key={readingTimeDisplay}
-              className="tabular-nums text-accent-cyan"
-              initial={{ opacity: 0.6, y: -3 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
-            >
-              {readingTimeDisplay}
-            </motion.span>
-          </div>
-          {/* Tab navigation keyboard hint — persistent arrow key shortcut
-              showing that ←/→ switches between blueprint/tasks tabs. Only
-              shown when content exists (the ContentStats container is mounted
-              only when `content` is non-empty). Complements the `?` shortcuts
-              badge by exposing the most common editor navigation shortcut at
-              the point of use, rather than burying it in the modal. */}
-          <div className="w-px h-2 bg-dark-700" />
-          <motion.div
-            key="tab-nav-hint"
-            className="flex items-center gap-1"
-            initial={{ opacity: 0, x: -4 }}
+          {/* Char count — staggers in first */}
+          <motion.span
+            initial={{ opacity: 0, x: -6 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -4 }}
-            transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
+            transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut, delay: 0 }}
+            className="flex items-center gap-3"
           >
-            <kbd
-              className="px-1 py-0.5 bg-dark-700 rounded text-3xs font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"
-              aria-hidden="true"
-            >
-              ←
-            </kbd>
-            <span className="text-dark-500 text-3xs">/</span>
-            <kbd
-              className="px-1 py-0.5 bg-dark-700 rounded text-3xs font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"
-              aria-hidden="true"
-            >
-              →
-            </kbd>
-            <span className="text-dark-500">{EDITOR_LABELS.TAB_NAVIGATION.SWITCH_TABS}</span>
-          </motion.div>
-          {/* Keyboard shortcut discovery badge — a persistent yet subtle hint that
-              `?` opens the shortcuts modal, ensuring users can always discover
-              power-user workflows even after the initial hint glow fades from
-              the header button. Shown alongside content stats since both are
-              status/utility information about the current editor state. */}
-          <div className="w-px h-2 bg-dark-700" />
-          <motion.div
-            key="shortcut-hint"
-            className="flex items-center gap-1"
-            initial={{ opacity: 0, x: -4 }}
+            <span className="flex items-center gap-1">
+              <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.CHARS}</span>
+              <motion.span
+                key={charCount}
+                className="tabular-nums"
+                initial={{
+                  opacity: 0.6,
+                  y: -3,
+                  color: isGenerating ? STAT_COLORS.FLASH_GREEN : STAT_COLORS.CHAR_BASE,
+                }}
+                animate={{ opacity: 1, y: 0, color: STAT_COLORS.CHAR_BASE }}
+                transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
+              >
+                {charCount.toLocaleString()}
+              </motion.span>
+            </span>
+            <span className="w-px h-2 bg-dark-700" aria-hidden="true" />
+          </motion.span>
+
+          {/* Word count — staggers in second */}
+          <motion.span
+            initial={{ opacity: 0, x: -6 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -4 }}
-            transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
+            transition={{
+              duration: ANIMATION.QUICK_FADE,
+              ease: EASING.easeOut,
+              delay: ANIMATION.STAGGER,
+            }}
+            className="flex items-center gap-3"
           >
-            {/* The inner motion.span adds a gentle limited-repeat attention pulse
-                on mount, subtly drawing the eye to the `?` shortcut badge for the
-                first ~3 seconds so users discover keyboard shortcuts. The pulse
-                is very subtle (3% scale, 10% opacity shift) and stops after 5
-                repeats so it never becomes distracting. */}
-            <motion.span
+            <span className="flex items-center gap-1">
+              <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.WORDS}</span>
+              <motion.span
+                key={wordCount}
+                className="tabular-nums"
+                initial={{
+                  opacity: 0.6,
+                  y: -3,
+                  color: isGenerating ? STAT_COLORS.FLASH_GREEN : STAT_COLORS.WORD_BASE,
+                }}
+                animate={{ opacity: 1, y: 0, color: STAT_COLORS.WORD_BASE }}
+                transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
+              >
+                {wordCount.toLocaleString()}
+              </motion.span>
+            </span>
+            <span className="w-px h-2 bg-dark-700" aria-hidden="true" />
+          </motion.span>
+
+          {/* Line count — staggers in third */}
+          <motion.span
+            initial={{ opacity: 0, x: -6 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              duration: ANIMATION.QUICK_FADE,
+              ease: EASING.easeOut,
+              delay: ANIMATION.STAGGER * 2,
+            }}
+            className="flex items-center gap-3"
+          >
+            <span className="flex items-center gap-1">
+              <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.LINES}</span>
+              <motion.span
+                key={lineCount}
+                className="tabular-nums"
+                initial={{
+                  opacity: 0.6,
+                  y: -3,
+                  color: isGenerating ? STAT_COLORS.FLASH_GREEN : STAT_COLORS.LINE_BASE,
+                }}
+                animate={{ opacity: 1, y: 0, color: STAT_COLORS.LINE_BASE }}
+                transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
+              >
+                {lineCount.toLocaleString()}
+              </motion.span>
+            </span>
+            <span className="w-px h-2 bg-dark-700" aria-hidden="true" />
+          </motion.span>
+
+          {/* Reading time — staggers in fourth */}
+          <motion.span
+            initial={{ opacity: 0, x: -6 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              duration: ANIMATION.QUICK_FADE,
+              ease: EASING.easeOut,
+              delay: ANIMATION.STAGGER * 3,
+            }}
+            className="flex items-center gap-3"
+          >
+            <span className="flex items-center gap-1">
+              <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.READING_TIME}</span>
+              <motion.span
+                key={readingTimeDisplay}
+                className="tabular-nums text-accent-cyan"
+                initial={{ opacity: 0.6, y: -3 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
+              >
+                {readingTimeDisplay}
+              </motion.span>
+            </span>
+            <span className="w-px h-2 bg-dark-700" aria-hidden="true" />
+          </motion.span>
+
+          {/* Tab navigation keyboard hint — staggers in fifth */}
+          <motion.span
+            initial={{ opacity: 0, x: -6 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              duration: ANIMATION.QUICK_FADE,
+              ease: EASING.easeOut,
+              delay: ANIMATION.STAGGER * 4,
+            }}
+            className="flex items-center gap-3"
+          >
+            <motion.div
+              key="tab-nav-hint"
               className="flex items-center gap-1"
-              animate={{
-                scale: SCALE_PULSE.ATTENTION,
-                opacity: OPACITY_PULSE.ATTENTION,
-              }}
-              transition={{
-                duration: ANIMATION.ATTENTION_PULSE,
-                repeat: ANIMATION_REPEAT.ATTENTION_PULSE,
-                ease: EASING.easeInOut,
-              }}
+              initial={{ opacity: 0, x: -4 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -4 }}
+              transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
             >
               <kbd
                 className="px-1 py-0.5 bg-dark-700 rounded text-3xs font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"
                 aria-hidden="true"
               >
-                ?
+                ←
               </kbd>
-              <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.SHORTCUTS}</span>
-            </motion.span>
-          </motion.div>
+              <span className="text-dark-500 text-3xs">/</span>
+              <kbd
+                className="px-1 py-0.5 bg-dark-700 rounded text-3xs font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"
+                aria-hidden="true"
+              >
+                →
+              </kbd>
+              <span className="text-dark-500">{EDITOR_LABELS.TAB_NAVIGATION.SWITCH_TABS}</span>
+            </motion.div>
+            <span className="w-px h-2 bg-dark-700" aria-hidden="true" />
+          </motion.span>
+
+          {/* Shortcut hint badge — staggers in sixth */}
+          <motion.span
+            initial={{ opacity: 0, x: -6 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              duration: ANIMATION.QUICK_FADE,
+              ease: EASING.easeOut,
+              delay: ANIMATION.STAGGER * 5,
+            }}
+            className="flex items-center gap-3"
+          >
+            <motion.div
+              key="shortcut-hint"
+              className="flex items-center gap-1"
+              initial={{ opacity: 0, x: -4 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -4 }}
+              transition={{ duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut }}
+            >
+              {/* The inner motion.span adds a gentle limited-repeat attention pulse
+                  on mount, subtly drawing the eye to the `?` shortcut badge for the
+                  first ~3 seconds so users discover keyboard shortcuts. The pulse
+                  is very subtle (3% scale, 10% opacity shift) and stops after 5
+                  repeats so it never becomes distracting. */}
+              <motion.span
+                className="flex items-center gap-1"
+                animate={{
+                  scale: SCALE_PULSE.ATTENTION,
+                  opacity: OPACITY_PULSE.ATTENTION,
+                }}
+                transition={{
+                  duration: ANIMATION.ATTENTION_PULSE,
+                  repeat: ANIMATION_REPEAT.ATTENTION_PULSE,
+                  ease: EASING.easeInOut,
+                }}
+              >
+                <kbd
+                  className="px-1 py-0.5 bg-dark-700 rounded text-3xs font-mono text-dark-300 border border-dark-600/50 leading-none cursor-default"
+                  aria-hidden="true"
+                >
+                  ?
+                </kbd>
+                <span className="text-dark-500">{EDITOR_LABELS.CONTENT_STATS.SHORTCUTS}</span>
+              </motion.span>
+            </motion.div>
+          </motion.span>
         </motion.div>
       )}
     </AnimatePresence>
