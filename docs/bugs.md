@@ -2,13 +2,15 @@
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
 
-## Bug Status — Jul 23 2026 (Cycle 291)
+## Bug Status — Jul 23 2026 (Cycle 293)
 
-> **BugFixer ULW Cycle Jul 23 2026 (2026-07-23 — fix/bugfixer-ulw-cycle-jul-23-2026)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,160/2,160** ✅ (860 web + 502 API + 798 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed; BUG-030 still fixed). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
+> **BugFixer ULW Cycle Jul 23 2026 (2026-07-23 — fix/bugfixer-ulw-cycle-jul-23-2026-v2)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,167/2,167** ✅ (860 web + 502 API + 805 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed; BUG-030 still fixed). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
 >
-> **Test count update**: 2,159→2,160 (shared +1 since last BugFixer run).
-> **5 post-BugFixer commits indexed**: chore(repokeeper) Cycle 291 (`606b1271`), chore(brocula) Cycle 293 (`78398210`), ux(web) pulse Next button (`8b1fe8cf`), feat(web) crossfade stat cards (`dbaf187c`), chore(repokeeper) Cycle 290 (`fc71af43`).
+> **Test count update**: 2,160→2,167 (shared +7 since last BugFixer run).
+> **0 post-BugFixer commits to index** (HEAD is BugFixer Cycle 291—`fef73d74`).
 > **No new fixable bugs found in codebase. All quality gates pass.** Branch up to date with main.
+
+## Bug Status — Jul 23 2026 (Cycle 291)
 
 ## Bug Status — Jul 23 2026 (Cycle 292)
 
