@@ -116,10 +116,27 @@ const TabButton = React.memo(function TabButton({
           layoutId="activeTabIndicator"
           className="absolute inset-0 bg-primary-600 rounded-md"
           initial={false}
-          transition={{
-            type: FRAMER_TYPE.SPRING,
-            ...EDITOR_ANIMATION.TAB_INDICATOR,
-          }}
+          animate={
+            isGenerating
+              ? { boxShadow: [...HEADER_ANIMATION.TAB_GLOW.BOX_SHADOWS] }
+              : { boxShadow: "none" }
+          }
+          transition={
+            isGenerating
+              ? {
+                  type: FRAMER_TYPE.SPRING,
+                  ...EDITOR_ANIMATION.TAB_INDICATOR,
+                  boxShadow: {
+                    duration: ANIMATION.SLOW_PULSE,
+                    repeat: Infinity,
+                    ease: EASING.easeInOut,
+                  },
+                }
+              : {
+                  type: FRAMER_TYPE.SPRING,
+                  ...EDITOR_ANIMATION.TAB_INDICATOR,
+                }
+          }
           style={{ zIndex: Z_INDEX.hide }}
         />
       )}
