@@ -155,6 +155,7 @@ export function pageTransition(direction: AnimationDirection = ANIMATION_DIRECTI
     initial: { opacity: 0, y: direction === ANIMATION_DIRECTIONS.FORWARD ? OFFSET : -OFFSET },
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: direction === ANIMATION_DIRECTIONS.FORWARD ? -OFFSET : OFFSET },
+    transition: transitions.spring,
   };
 }
 
