@@ -39,6 +39,7 @@ import {
   VIEW_MODE_INDICATOR_POSITION,
   FRAMER_TYPE,
   KEYBOARD_EVENT_KEYS,
+  MODIFIER_KEYS,
 } from "@blueprint/shared/config";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
@@ -424,7 +425,10 @@ function EditorToolbarComponent({
           onClick={onNew}
           className="btn-ghost text-sm flex items-center gap-1.5"
           aria-label={ACCESSIBILITY_LABELS.EDITOR.START_NEW_PROJECT}
-          aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_SHORTCUTS.NEW_PROJECT.KEY, "cmd")}
+          aria-keyshortcuts={getAriaShortcutKey(
+            KEYBOARD_SHORTCUTS.NEW_PROJECT.KEY,
+            MODIFIER_KEYS.CMD
+          )}
         >
           <motion.svg
             className="w-4 h-4"
