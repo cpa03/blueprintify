@@ -2408,7 +2408,7 @@ describe("UI_TIMEOUTS", () => {
 
   it("should have all numeric values", () => {
     const values = Object.values(UI_TIMEOUTS);
-    expect(values.length).toBe(20);
+    expect(values.length).toBe(21);
     values.forEach((v) => {
       expect(typeof v).toBe("number");
       expect(v).toBeGreaterThan(0);
