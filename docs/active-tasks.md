@@ -2,6 +2,48 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 299 — **Full repository audit, 1 new post-Cycle-298 commit indexed (feat(web): add aria-keyshortcuts to New Project button `45dcab20`), test count update 2,167→2,170 (863 web + 502 API + 805 shared), all quality gates pass, doc gap fixed (Cycle 298 missing active-tasks.md/CHANGELOG.md — caught and updated)** ✅
+
+### Task: Full repository audit — **1 new post-Cycle-298 commit indexed** (feat(web): add aria-keyshortcuts to New Project button `45dcab20`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-025 still fixed** (TS2321 excessive stack depth — `as UserConfig` cast holds); **BUG-030 still fixed** (sharp 0.35.3 override — 0 vulns); **test count update** 2,167→**2,170** (863 web + 502 API + **805 shared** — web +3); **0 stale merged branches** found; **0 stale plan files** found; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; **doc gap fixed** (Cycle 298 had missed active-tasks.md/CHANGELOG.md — both now updated); documentation spot-check (API docs, env vars, README — all accurate); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,170/2,170** ✅, format ✅, npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 299 full repository audit — index 1 post-Cycle-298 commit (feat(web) aria-keyshortcuts), fix doc gap from Cycle 298, verify BUG-013/BUG-025/BUG-030, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files in source code, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks, no `.patch` files ✅
+  - [x] **1 new post-Cycle-298 commit indexed**: feat(web) aria-keyshortcuts (`45dcab20`) ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns (no re-bump) ✅
+  - [x] **BUG-025 still fixed**: TS2321 excessive stack depth — `as UserConfig` cast holds ✅
+  - [x] **BUG-030 still fixed**: sharp 0.35.3 override — 0 vulns (npm audit) ✅
+  - [x] **Test count update**: 2,167→**2,170** (863 web + 502 API + 805 shared — web +3) ✅
+  - [x] **Doc gap fix**: Cycle 298 had missed updating active-tasks.md and CHANGELOG.md — both entries now added ✅
+  - [x] **Format drift check**: All files Prettier-formatted ✅
+  - [x] **Archive retention**: No cleanup needed (all within 30-day window; earliest Jul 13) ✅
+  - [x] **Stale branches**: No fully-merged remote branches found (squash-merge repo) ✅
+  - [x] **Stale plan files**: No stale plan files found ✅
+  - [x] **Documentation verification**: Spot-checked API docs, env vars, README against code — accurate ✅
+  - [x] **Doc refresh**: findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md updated ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests **2,170/2,170** ✅, format ✅, npm audit **0 vulns** ✅
+
+## ✅ RepoKeeper Cycle 298 — **Full repository audit, 4 new post-Cycle-293 commits indexed (ShowEditorButton glow-pulse, playwright E2E config, spinner arc 180°, BugFixer ULW Cycle), archive retention cleanup (12 stale files purged from Jun 23-24), 56 stale audit reports moved to archive (Jul 8-19), doc refresh (audits/README, CONSOLIDATED-README, findings), all quality gates pass** ✅
+
+### Task: Full repository audit — **4 new post-Cycle-293 commits indexed** (feat(web): auto-fade glow-pulse on ShowEditorButton after 8s timeout `672c5b8e`; test(web): add playwright.config.ts for E2E testing setup `96af3a12`; feat(web): extend spinner arc to 180° for wider visual sweep during generation `a7fc32fa`; fix(bugfixer): ULW Cycle Jul 24 2026 — full audit clean `6d6c2b31`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-025 still fixed** (TS2321 excessive stack depth — `as UserConfig` cast holds); **BUG-030 still fixed** (sharp 0.35.3 override — 0 vulns); **archive cleanup** — 12 stale Jun 23-24 files purged, 56 reports moved to archive, 15 current reports kept; **0 stale merged branches** found; **0 stale plan files** found; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; doc refresh (findings, audits/README, CONSOLIDATED-README); quality verification (typecheck ✅ lint ✅ build ✅ format ✅ npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 298 full repository audit — index 4 post-Cycle-293 commits, archive retention cleanup, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK, no merge conflicts ✅
+  - [x] **4 new post-Cycle-293 commits indexed**: ShowEditorButton glow-pulse, playwright config, spinner arc, BugFixer ULW Cycle ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns ✅
+  - [x] **BUG-025 still fixed**: TS2321 excessive stack depth ✅
+  - [x] **BUG-030 still fixed**: sharp 0.35.3 override — 0 vulns ✅
+  - [x] **Archive retention cleanup**: 12 stale Jun 23-24 files purged ✅
+  - [x] **Audit report archival**: 56 stale reports moved to archive (Jul 8-19), 15 current kept ✅
+  - [x] **Doc refresh**: audits/README, CONSOLIDATED-README, findings.md updated ✅
+  - [x] **Format drift check**: All files Prettier-formatted ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ format ✅ npm audit **0 vulns** ✅
+
 ## ✅ RepoKeeper Cycle 297 — **Full repository audit, 2 new post-Cycle-296 commits indexed (feat(web) extend spinner arc `a7fc32fa`, test(web) playwright.config.ts for E2E testing `96af3a12`), test count unchanged **2,167/2,167** (860 web + 502 API + 805 shared), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-030 still fixed (sharp 0.35.3 — 0 vulns), BroCula ref unchanged (Jul 23 Run 3 — LH **98-100-100-100** ⭐), all quality gates pass** ✅
 
 ### Task: Full repository audit — **2 new post-Cycle-296 commits indexed** (feat(web): extend spinner arc to 180° for wider visual sweep during generation `a7fc32fa`; test(web): add playwright.config.ts for E2E testing setup `96af3a12`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-025 still fixed** (TS2321 excessive stack depth — `as UserConfig` cast holds); **BUG-030 still fixed** (sharp 0.35.3 override — 0 vulns); **test count unchanged** 2,167 (860 web + 502 API + **805 shared**); **BroCula ref unchanged** (Jul 23 Run 3 — `docs/audits/brocula-audit-2026-07-23-run3.md` / LH **98-100-100-100** ⭐); **0 stale merged branches** found; **0 stale plan files** found; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; documentation spot-check (API docs, env vars, README — all accurate); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,167/2,167** ✅, format ✅, npm audit **0 vulns** ✅)
@@ -1739,6 +1781,6 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-07-17 (BugFixer ULW Cycle Jul 17 Run 5)  
+**Last Updated**: 2026-07-24 (RepoKeeper Cycle 299)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
-[x] error [npm run check] pass with 789 web + 443 API + 700 shared tests **(1,932 total)**. All quality gates pass. ✅
+[x] error [npm run check] pass with 863 web + 502 API + 805 shared tests **(2,170 total)**. All quality gates pass. ✅
