@@ -4,6 +4,29 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 159: Replace Hardcoded "cmd" with MODIFIER_KEYS.CMD in EditorToolbar
+
+**Problem**: Commit `45dcab20` (`feat(web): add aria-keyshortcuts to New Project button`) introduced a hardcoded `"cmd"` string for the New Project button's `aria-keyshortcuts` attribute in `EditorToolbar.tsx`. The `MODIFIER_KEYS.CMD` constant (from `@blueprint/shared/config`) was already the standard across the codebase (used in App.tsx, StepInfo, StepStack, StepFeatures, StepReview, StepGenerating, ShowEditorButton, SmartTooltip) but was not used for this new shortcut.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/components/editor/EditorToolbar.tsx` | Added `MODIFIER_KEYS` to import from `@blueprint/shared/config` |
+| `apps/web/src/components/editor/EditorToolbar.tsx` | Replaced hardcoded `"cmd"` with `MODIFIER_KEYS.CMD` in `aria-keyshortcuts` prop on New Project button |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npm run test:all` — **863 web + 502 api + 805 shared = 2,170 tests passing** across 92 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `feat/flexy-iteration-159-cmd-constant` | refactor(flexy): replace hardcoded "cmd" with MODIFIER_KEYS.CMD in EditorToolbar aria-keyshortcuts (Iteration 159) |
+
 ### ✅ Flexy Iteration 151: Centralize Framer Motion Variant Pixel/Scale Offsets
 
 | File | Change |
