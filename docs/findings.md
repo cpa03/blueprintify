@@ -4791,6 +4791,54 @@ All PRs verified: build ✅ lint ✅ tests 1,940/1,940 ✅ (789 web + 443 API + 
 
 ---
 
+## Cycle 298 (2026-07-24 — RepoKeeper: full repository audit, 1 new commit indexed (ShowEditorButton glow-pulse + E2E config + spinner arc + BugFixer ULW Cycle), archive retention cleanup (12 stale files from Jun 23-24 purged), 56 stale audit reports moved to archive (Jul 8-19), doc refresh (README.md + CONSOLIDATED-README.md), typecheck/lint/build ✅, **no code changes** ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. 0 `.patch` files. 0 empty directories. 0 large untracked files.
+2. **[4 New Post-Cycle-293 Commits Indexed]** — HEAD at `672c5b8e`:
+   - `feat(web): auto-fade glow-pulse on ShowEditorButton after 8s timeout`
+   - `test(web): add playwright.config.ts for E2E testing setup`
+   - `feat(web): extend spinner arc to 180° for wider visual sweep during generation`
+   - `fix(bugfixer): ULW Cycle Jul 24 2026 — full audit clean`
+3. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities** (no re-bump occurred).
+4. **[BUG-025 Still Fixed]** — TS2321 excessive stack depth fix (`as UserConfig` cast in vite.config.ts) holds.
+5. **[BUG-030 Still Fixed]** — 4 high-severity CVEs in `sharp` (<0.35.0) remain resolved with override `0.35.3`.
+6. **[Archive Retention Cleanup]** — Removed 12 stale archive files from Jun 23-24 (`brocula-hunt-2026-06-23-run{1..5}.md`, `brocula-hunt-2026-06-24-run{1..6}.md`, `issue-audit-report-2026-06-24.md`), past 30-day retention.
+7. **[Audit Report Archival]** — Moved 56 stale audit reports from Jul 8-19 from `docs/audits/` to `docs/audits/archive/`. Kept 15 current reports (Jul 20-23) in main directory.
+8. **[Doc Refresh]** — Updated `docs/audits/README.md` (trimmed archived entries). Updated `docs/audits/archive/CONSOLIDATED-README.md` (added consolidation + retention cleanup entries).
+9. **[Format Drift Check]** — Prettier check: all files formatted ✅.
+10. **[Stale Merged Branches]** — None found (squash-merge repo) ✅.
+11. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ format ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013/BUG-030 STILL FIXED) |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** in source |
+| `as any` | ✅ **0** in source |
+| Empty catch blocks | ✅ **0** in source |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| Merge conflict artifacts | ✅ **0** |
+| `.patch` files | ✅ **0** |
+| Empty directories | ✅ **0** |
+| Archive retention | ✅ Stale Jun 23-24 files purged, current window clean (Jun 25-Jul 19 archived, Jul 20-23 current) |
+| Stale merged branches | ✅ **0** (squash-merge repo) |
+| Stale `.omo/run-continuation/` files | ✅ **0** |
+| BUG-025 (TS2321) | ✅ **STILL FIXED** |
+| BUG-030 (sharp CVEs) | ✅ **STILL FIXED** |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy. 4 new post-Cycle-293 commits indexed. 12 stale archive files purged (past 30-day retention). 56 stale audit reports archived (Jul 8-19). 15 current reports kept (Jul 20-23). Doc refresh complete. 0 code changes. 0 stale files remaining. All bugs still fixed. BUG-013/BUG-025/BUG-030 still fixed. PR created for audit trail.** ✅
+
+---
+
 ## Cycle 293 (2026-07-23 — RepoKeeper: full repository audit, 2 new post-Cycle-292 commits indexed (editor stagger animation + BugFixer ULW Cycle), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-030 still fixed (sharp 0.35.3 override — 0 vulns), test count **2,167/2,167** (860 web + 502 API + **805 shared** — +7 shared tests), BroCula ref updated (Jul 23 — LH 100-100-100-100 🏆), all quality gates pass, 0 stale files found, 0 cleanup actions needed ✅)
 
 ### Actions Taken
