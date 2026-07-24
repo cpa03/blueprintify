@@ -1,7 +1,8 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ShowEditorButton } from "./ShowEditorButton";
 import { UI_CONTENT } from "../config/constants";
+import { UI_TIMEOUTS } from "@blueprint/shared/config";
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -86,6 +87,43 @@ describe("ShowEditorButton", () => {
 
     const button = screen.getByRole("button");
     expect(button.className).not.toContain("glow-pulse");
+  });
+
+  it("applies glow-pulse class when isGenerating is true even without content", () => {
+    render(<ShowEditorButton {...defaultProps} isGenerating={true} hasContent={false} />);
+
+    const button = screen.getByRole("button");
+    expect(button.className).toContain("glow-pulse");
+  });
+
+  it("clears glow-pulse after GLOW_DURATION_MS when content exists but not generating", () => {
+    vi.useFakeTimers();
+    render(<ShowEditorButton {...defaultProps} hasContent={true} isGenerating={false} />);
+
+    const button = screen.getByRole("button");
+    expect(button.className).toContain("glow-pulse");
+
+    act(() => {
+      vi.advanceTimersByTime(UI_TIMEOUTS.GLOW_DURATION_MS + 1);
+    });
+
+    expect(button.className).not.toContain("glow-pulse");
+    vi.useRealTimers();
+  });
+
+  it("keeps glow-pulse during active generation regardless of timer", () => {
+    vi.useFakeTimers();
+    render(<ShowEditorButton {...defaultProps} isGenerating={true} hasContent={true} />);
+
+    const button = screen.getByRole("button");
+    expect(button.className).toContain("glow-pulse");
+
+    act(() => {
+      vi.advanceTimersByTime(UI_TIMEOUTS.GLOW_DURATION_MS * 2);
+    });
+
+    expect(button.className).toContain("glow-pulse");
+    vi.useRealTimers();
   });
 
   it("has aria-keyshortcuts attribute", () => {

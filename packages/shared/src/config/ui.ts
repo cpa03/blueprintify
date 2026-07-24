@@ -343,6 +343,10 @@ export const UI_TIMEOUTS = {
   BANNER_EXIT_DURATION_MS: 300,
   /** Duration for form-ready pulse animation on submit buttons (600ms) */
   READY_PULSE_MS: 600,
+  /** Duration to show glow-pulse animation on ShowEditorButton before fading (8s).
+   * Prevents perpetual pulse distraction — glow draws attention to new content,
+   * then settles to a static state after this duration. */
+  GLOW_DURATION_MS: 8000,
 } as const;
 
 /**

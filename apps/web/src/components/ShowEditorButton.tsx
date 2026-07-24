@@ -20,6 +20,7 @@
 import { memo, useState, useEffect, useRef } from "react";
 import {
   UI_TIMING,
+  UI_TIMEOUTS,
   ANIMATION_ENTRANCE_DELAYS,
   ENTRANCE_STAGGER_DEFAULTS,
   MODIFIER_KEYS,
@@ -59,6 +60,41 @@ function ShowEditorButtonComponent({
     prevIsGenerating.current = isGenerating;
   }, [isGenerating, hasContent]);
 
+  // Timed glow: pulse is attention-seeking, not perpetual.
+  // Active generation keeps the glow on. When content exists but generation is
+  // idle, the glow auto-fades after GLOW_DURATION_MS to avoid distraction.
+  const [showGlow, setShowGlow] = useState(false);
+  const glowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    const clearTimer = () => {
+      if (glowTimerRef.current !== null) {
+        clearTimeout(glowTimerRef.current);
+        glowTimerRef.current = null;
+      }
+    };
+
+    if (isGenerating) {
+      clearTimer();
+      setShowGlow(true);
+      return clearTimer;
+    }
+
+    if (hasContent) {
+      setShowGlow(true);
+      glowTimerRef.current = setTimeout(() => {
+        setShowGlow(false);
+      }, UI_TIMEOUTS.GLOW_DURATION_MS);
+    } else {
+      clearTimer();
+      setShowGlow(false);
+    }
+
+    return clearTimer;
+  }, [hasContent, isGenerating]);
+  /* eslint-enable react-hooks/set-state-in-effect */
+
   const buttonTitle = hasContent
     ? UI_CONTENT.EDITOR.VIEW_BLUEPRINT_BUTTON
     : UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON;
@@ -74,7 +110,7 @@ function ShowEditorButtonComponent({
       >
         <RippleButton
           onClick={onClick}
-          className={`${BUTTON.SHOW_EDITOR_FAB} ${hasContent || isGenerating ? "glow-pulse" : ""}`}
+          className={`${BUTTON.SHOW_EDITOR_FAB} ${showGlow ? "glow-pulse" : ""}`}
           aria-keyshortcuts={getAriaShortcutKey(
             KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY,
             MODIFIER_KEYS.CMD
