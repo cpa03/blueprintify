@@ -2,6 +2,29 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 297 — **Full repository audit, 2 new post-Cycle-296 commits indexed (feat(web) extend spinner arc `a7fc32fa`, test(web) playwright.config.ts for E2E testing `96af3a12`), test count unchanged **2,167/2,167** (860 web + 502 API + 805 shared), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-030 still fixed (sharp 0.35.3 — 0 vulns), BroCula ref unchanged (Jul 23 Run 3 — LH **98-100-100-100** ⭐), all quality gates pass** ✅
+
+### Task: Full repository audit — **2 new post-Cycle-296 commits indexed** (feat(web): extend spinner arc to 180° for wider visual sweep during generation `a7fc32fa`; test(web): add playwright.config.ts for E2E testing setup `96af3a12`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-025 still fixed** (TS2321 excessive stack depth — `as UserConfig` cast holds); **BUG-030 still fixed** (sharp 0.35.3 override — 0 vulns); **test count unchanged** 2,167 (860 web + 502 API + **805 shared**); **BroCula ref unchanged** (Jul 23 Run 3 — `docs/audits/brocula-audit-2026-07-23-run3.md` / LH **98-100-100-100** ⭐); **0 stale merged branches** found; **0 stale plan files** found; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; documentation spot-check (API docs, env vars, README — all accurate); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,167/2,167** ✅, format ✅, npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: Cycle 297 full repository audit — index 2 post-Cycle-296 commits (feat(web) spinner arc 180°, test(web) playwright E2E config), verify BUG-013/BUG-025/BUG-030, doc refresh, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files in source code, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks, no `.patch` files ✅
+  - [x] **2 new post-Cycle-296 commits indexed**: feat(web) spinner arc (`a7fc32fa`), test(web) playwright E2E config (`96af3a12`) ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns (no re-bump) ✅
+  - [x] **BUG-025 still fixed**: TS2321 excessive stack depth — `as UserConfig` cast holds ✅
+  - [x] **BUG-030 still fixed**: sharp 0.35.3 override — 0 vulns (npm audit) ✅
+  - [x] **Test count verified**: 2,167 (860 web + 502 API + 805 shared — unchanged) ✅
+  - [x] **BroCula ref unchanged**: Jul 23 Run 3 (`brocula-audit-2026-07-23-run3.md` / LH **98-100-100-100** ⭐) ✅
+  - [x] **Format drift check**: All files Prettier-formatted ✅
+  - [x] **Archive retention**: No cleanup needed (all within 30-day window; earliest Jul 2) ✅
+  - [x] **Stale branches**: No fully-merged remote branches found (squash-merge repo) ✅
+  - [x] **Stale plan files**: No stale plan files found ✅
+  - [x] **Documentation verification**: Spot-checked API docs, env vars, README against code — accurate ✅
+  - [x] **Doc refresh**: findings.md, active-tasks.md, knowledge-review.md, CHANGELOG.md updated ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests **2,167/2,167** ✅, format ✅, npm audit **0 vulns** ✅
+
 ## ✅ RepoKeeper Cycle 296 — **Full repository audit, 5 new post-Cycle-295 commits indexed (refactor(flexy) Iteration 155 shared ANIMATION/EASING config `894c9bb8`, feat(ux) spring transition `0c0c8c69`, feat(ux) pulsing tab glow `9126b47c`, refactor(flexy) Iteration 156 shared ENTRANCE_OFFSETS/OPACITY `41118d3d`, test(web) hook test coverage `b85fe6c3`), test count unchanged **2,167/2,167** (860 web + 502 API + **805 shared**), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-030 still fixed (sharp 0.35.3 — 0 vulns), BroCula ref updated (Jul 23 Run 3 — LH **98-100-100-100** ⭐), all quality gates pass** ✅
 
 ### Task: Full repository audit — **5 new post-Cycle-295 commits indexed** (refactor(flexy): replace hardcoded duration:0.5 and ease:easeOut with shared ANIMATION and EASING config (Iteration 155) `894c9bb8`; feat(ux): add spring transition to wizard step changes `0c0c8c69`; feat(ux): add pulsing tab glow during content generation `9126b47c`; refactor(flexy): replace hardcoded entrance offsets with shared ENTRANCE_OFFSETS and OPACITY config (Iteration 156) `41118d3d`; test(web): verify hook test coverage for issue #1082 `b85fe6c3`); **BUG-013 still fixed** (lighthouse 12.6.1 maintained — 0 vulns); **BUG-025 still fixed** (TS2321 excessive stack depth — `as UserConfig` cast holds); **BUG-030 still fixed** (sharp 0.35.3 override — 0 vulns); **test count unchanged** 2,167 (860 web + 502 API + **805 shared**); **BroCula ref updated** (Jul 23 Run 3 — `docs/audits/brocula-audit-2026-07-23-run3.md` / LH **98-100-100-100** ⭐); **0 stale merged branches** found; **0 stale plan files** found; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,167/2,167** ✅, format ✅, npm audit **0 vulns** ✅)
