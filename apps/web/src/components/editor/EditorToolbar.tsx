@@ -52,6 +52,7 @@ import {
   VIEW_MODE_SHORTCUT_KEYS,
   VIEW_MODE_MODIFIER,
   OPACITY_PULSE,
+  KEYBOARD_SHORTCUTS,
 } from "../../config/constants";
 import { COLORS, EDITOR_ANIMATION, Z_INDEX } from "../../config/theme";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
@@ -423,6 +424,7 @@ function EditorToolbarComponent({
           onClick={onNew}
           className="btn-ghost text-sm flex items-center gap-1.5"
           aria-label={ACCESSIBILITY_LABELS.EDITOR.START_NEW_PROJECT}
+          aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_SHORTCUTS.NEW_PROJECT.KEY, "cmd")}
         >
           <motion.svg
             className="w-4 h-4"
