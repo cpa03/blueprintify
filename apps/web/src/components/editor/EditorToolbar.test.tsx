@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { EditorToolbar, type ViewMode } from "./EditorToolbar";
+import { EditorToolbar } from "./EditorToolbar";
 
 // ---------------------------------------------------------------------------
 // Mocks
