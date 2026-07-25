@@ -2,6 +2,15 @@
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
 
+## Bug Status — Jul 25 2026 (RepoKeeper Cycle 304)
+
+> **RepoKeeper Cycle 304 (2026-07-25 — chore/repokeeper-cycle-304)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,196/2,196** ✅ (884 web + 502 API + 810 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
+>
+> **2 new post-Cycle-303 commits indexed**: BroCula Run 5 (`214d9ce5` — LH 99-100-100-100), flexy HOVER_SCALE.MICRO (`64bc3621`).
+> **Test count stable**: **2,196** (884 web + 502 API + 810 shared — unchanged).
+> **Archive retention OK**: oldest files Jun 26 (29 days, within 30-day window).
+> **No new fixable bugs found in codebase. All quality gates pass.** Branch created.
+
 ## Bug Status — Jul 25 2026 (RepoKeeper Cycle 303)
 
 > **RepoKeeper Cycle 303 (2026-07-25 — chore/repokeeper-cycle-303)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,196/2,196** ✅ (884 web + 502 API + 810 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed; BUG-030 still fixed; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.

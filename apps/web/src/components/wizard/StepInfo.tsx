@@ -375,12 +375,12 @@ export const StepInfo = memo(function StepInfo({
                   }}
                   className={`absolute ${
                     projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN ? "right-11" : "right-3"
-                  } top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors p-1 rounded-md hover:bg-dark-700/50`}
+                  } top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors p-1 rounded-md hover:bg-dark-700/50 group`}
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_PROJECT_NAME}
                   title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_PROJECT_NAME}
                 >
                   <svg
-                    className="w-4 h-4"
+                    className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-90"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -610,11 +610,16 @@ export const StepInfo = memo(function StepInfo({
                     setTargetAudience("");
                     targetAudienceInputRef.current?.focus({ preventScroll: true });
                   }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors p-1 rounded-md hover:bg-dark-700/50"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-500 hover:text-dark-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 transition-colors p-1 rounded-md hover:bg-dark-700/50 group"
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_TARGET_AUDIENCE}
                   title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_TARGET_AUDIENCE}
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-90"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"

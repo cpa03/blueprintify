@@ -4,6 +4,36 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 163: Replace Remaining Hardcoded Modifier Key Strings Across All Components
+
+**Problem**: 12 hardcoded `modifier="alt"`/`modifier="none"` prop values and 4 hardcoded `getAriaShortcutKey(key, "alt")` second arguments existed across 7 components. The `MODIFIER_KEYS` constant (from `@blueprint/shared/config`) was already defined and imported in some files but not consistently used. Flexy says: No hardcoded modifier strings anywhere!
+
+| File | Change |
+|------|--------|
+| `apps/web/src/components/wizard/StepStack.tsx` | Replaced `modifier="alt"` + `getAriaShortcutKey(..., "alt")` with `MODIFIER_KEYS.ALT` (2 occurrences) |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | Replaced `modifier="alt"` + `getAriaShortcutKey(..., "alt")` with `MODIFIER_KEYS.ALT` (2 occurrences) |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced 2x `modifier="alt"` with `MODIFIER_KEYS.ALT` and 1x `modifier="none"` with `MODIFIER_KEYS.NONE` |
+| `apps/web/src/components/wizard/StepReview.tsx` | Replaced 4x `modifier="alt"` + 4x `getAriaShortcutKey(..., "alt")` with `MODIFIER_KEYS.ALT` (8 occurrences) |
+| `apps/web/src/components/Header.tsx` | Added `MODIFIER_KEYS` to import; replaced `modifier="none"` with `MODIFIER_KEYS.NONE` |
+| `apps/web/src/components/ConfirmDialog.tsx` | Added `MODIFIER_KEYS` to import; replaced `modifier="none"` with `MODIFIER_KEYS.NONE` |
+| `apps/web/src/components/ScrollToTop.tsx` | Added `MODIFIER_KEYS` to import; replaced `modifier="none"` with `MODIFIER_KEYS.NONE` |
+| `apps/web/src/components/editor/EditorToolbar.test.tsx` | Expanded `MODIFIER_KEYS` mock from `{CMD: "cmd"}` to all 4 keys for future-proofing |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — **884 web + 502 api + 810 shared = 2,196 tests passing** across 93 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2863](https://github.com/cpa03/blueprintify/pull/2863) | `feat/flexy-iteration-163-hardcoded-modifiers` | refactor(flexy): eliminate all remaining hardcoded modifier key strings across 7 components (Iteration 163) |
+
+---
+
 ### ✅ Flexy Iteration 159: Replace Hardcoded "cmd" with MODIFIER_KEYS.CMD in EditorToolbar
 
 **Problem**: Commit `45dcab20` (`feat(web): add aria-keyshortcuts to New Project button`) introduced a hardcoded `"cmd"` string for the New Project button's `aria-keyshortcuts` attribute in `EditorToolbar.tsx`. The `MODIFIER_KEYS.CMD` constant (from `@blueprint/shared/config`) was already the standard across the codebase (used in App.tsx, StepInfo, StepStack, StepFeatures, StepReview, StepGenerating, ShowEditorButton, SmartTooltip) but was not used for this new shortcut.

@@ -42,6 +42,7 @@ import {
   SHORTCUT_DESCRIPTIONS,
   FRAMER_TYPE,
   KEYBOARD_EVENT_KEYS,
+  MODIFIER_KEYS,
 } from "@blueprint/shared/config";
 import {
   EASING,
@@ -266,7 +267,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                   shortcut={KEYBOARD_EVENT_KEYS.ENTER}
                   description={SHORTCUT_DESCRIPTIONS.CONFIRM_ACTION}
                   position="left"
-                  modifier="none"
+                  modifier={MODIFIER_KEYS.NONE}
                 >
                   <motion.button
                     ref={confirmButtonRef}
