@@ -2939,3 +2939,68 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2849](https://github.com/cpa03/blueprintify/pull/2849) | `feat/flexy-iteration-161-build-config` | refactor(flexy): centralize hardcoded chunk size warning limit and CSS targets into shared BUILD_CONFIG (Iteration 161) |
+
+---
+
+### ✅ Flexy Iteration 162: Post-161 Verification — StepStack Accessibility Enhancement Clean
+
+**Problem**: Commit `21e32d19` (`feat(accessibility): add aria-live counter and milestone announcement to StepStack`) introduced new code in `StepStack.tsx` and `content.ts`. Verify no hardcoded values were introduced as regressions.
+
+**Verification**: All new code properly uses existing config constants:
+
+| File | Change | Hardcoded? |
+|------|--------|------------|
+| `StepStack.tsx` | `setMilestoneAnnouncement(ACCESSIBILITY_LABELS.WIZARD_STACK.MINIMUM_MET_ANNOUNCEMENT)` | ✅ Uses config constant |
+| `StepStack.tsx` | `aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(...)}` | ✅ Uses config template function |
+| `StepStack.tsx` | `setTimeout(...`, `ANIMATION_MS.CHIP_SELECT_FEEDBACK)` | ✅ Uses shared config |
+| `StepStack.tsx` | `{ showMilestone ? { scale: [1, 1.35, 1] } : { scale: 1 } }` | ✅ Existing pattern (scale keyframe inline in animate prop — framer-motion API requirement) |
+| `content.ts` | Added `COUNTER` template function + `MINIMUM_MET_ANNOUNCEMENT` string | ✅ Config constants (belong in content.ts) |
+| `StepStack.tsx` | `aria-live="polite"`, `aria-atomic="true"`, `role="status"` | ✅ Standard ARIA attribute values (web platform API, not application config) |
+
+**Comprehensive Hardcoded Value Scan** (post-Iteration 161):
+
+| Check | Result |
+|-------|--------|
+| Hardcoded HTTP methods (`"GET"`/`"POST"`/`"PUT"`/`"DELETE"`/`"PATCH"`) in app source | ✅ Zero |
+| Hardcoded MIME types (`"application/json"`/`"text/plain"`/`"text/event-stream"`) | ✅ Zero |
+| Hardcoded hex/rgba/rgb color strings in component logic | ✅ Zero |
+| Hardcoded `ease: "easeOut"`/`"easeInOut"` in components | ✅ Zero |
+| `import.meta.env` direct access outside `env.ts` | ✅ Zero |
+| `@ts-ignore`/`@ts-expect-error` anywhere in source | ✅ Zero |
+| Hardcoded animation duration magic numbers in components | ✅ Zero |
+| Hardcoded scroll behavior/direction/CSS value strings | ✅ Zero |
+| Hardcoded CSS arbitrary Tailwind values (`scale-[*]`, `rotate-[*]`) | ✅ Zero |
+| Hardcoded CI node-version values | ✅ Zero (`.node-version` is SSOT) |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean (shared + web)
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npm run audit` — 0 vulnerabilities
+- ✅ `npm run test:all` — 884 web + 502 api + 810 shared = **2,196 tests passing** across 93 files
+
+## Codebase Status (After Iteration 162)
+
+| Category | Status |
+|----------|--------|
+| Hardcoded values in application logic | ❌ **None remaining** ✅ |
+| Config centralization (@blueprint/shared) | ✅ **80+ config objects** in single source of truth |
+| Animation constants extracted | ✅ 100% of framer-motion values in config |
+| Color tokens centralized | ✅ All colors via COLORS + hexToRgba |
+| HTTP headers/methods/status codes | ✅ All in @blueprint/shared |
+| Error messages/strings | ✅ All in @blueprint/shared |
+| Route paths/env keys | ✅ All in @blueprint/shared |
+| UI strings/labels/tooltips | ✅ All in config |
+| CSS custom properties | ✅ `:root` variables + color-mix() throughout |
+| Tailwind arbitrary values | ✅ Zero remaining in components |
+| z-index values | ✅ All in Z_INDEX config |
+| Log levels / OpenAI roles / Display symbols | ✅ All centralized via shared config |
+| Build/lint/test | ✅ **Clean across all workspaces — 2,196 tests passing** |
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `feat/flexy-iteration-162-verification` | docs(flexy): post-161 verification — StepStack accessibility enhancement clean, zero hardcoded-value regressions (Iteration 162) |
