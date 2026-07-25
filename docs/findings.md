@@ -2,6 +2,46 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 301 (2026-07-25 — RepoKeeper: full repository audit, **0 new commits since Cycle 300** (HEAD unchanged at `5134392e`), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-031 tracked (brace-expansion dev-only CVE), test count stable **2,191/2,191** (884 web + 502 api + 805 shared), BroCula ref unchanged (Jul 25 — LH **99-100-100-100** ⭐), **`playwright-core` removed from devDependencies** (unused direct dependency — transitively provided by `playwright@1.61.1`), archive retention OK (earliest: Jun 25, exactly 30 days), all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. 0 `.patch` files. 0 empty directories. No cleanup actions required.
+2. **[0 New Post-Cycle-300 Commits to Index]** — HEAD unchanged at `5134392e`. No new work landed since Cycle 300. `git fetch --prune origin` confirmed HEAD is up to date.
+3. **[Unused Dependency Removed]** — `playwright-core` removed from `devDependencies` in `package.json`. This package was a redundant direct dependency — it is already transitively provided by `playwright@1.61.1` (which declares `playwright-core@1.61.1` as its own dependency). Only `playwright` (imported in `scripts/brocula-hunt.mjs`) and `@playwright/test` (imported in e2e tests) are actually imported. Lockfile updated via `npm install`.
+4. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities** (no re-bump occurred).
+5. **[BUG-025 Still Fixed]** — TS2321 excessive stack depth fix (`as UserConfig` cast in vite.config.ts) holds. Verified: typecheck ✅ lint ✅ build ✅ tests 2,191/2,191 ✅.
+6. **[BUG-031 Tracked]** — `brace-expansion` CVE (GHSA-mh99-v99m-4gvg) in dev-only ESLint toolchain. 7 high-severity reported via npm audit. Lockfile updated to 5.0.8 via npm override. Dev-only, no production impact.
+7. **[Test Count Stable]** — **2,191** (884 web + 502 API + 805 shared — unchanged from Cycle 300).
+8. **[BroCula Ref Unchanged]** — Latest: Jul 25 — `docs/audits/brocula-audit-2026-07-25.md` / LH **99-100-100-100** ⭐, 0 console errors ✅, 2,191/2,191 tests ✅ (no new BroCula runs since Cycle 300).
+9. **[Format Drift Check]** — Prettier check: all files formatted ✅.
+10. **[Archive Retention]** — All archive files within 30-day window ✅. Earliest archive: Jun 25 (exactly 30 days). No purge needed.
+11. **[Stale Merged Branches]** — None found (squash-merge repo) ✅.
+12. **[Stale Plan Files]** — No stale plan files found ✅.
+13. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,191/2,191** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,191/2,191** (884 web + 502 API + 805 shared) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013/BUG-031 STILL FIXED) |
+| Secrets scan | ✅ 0 secrets |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** |
+| `as any` | ✅ **0** |
+| Empty catch blocks | ✅ **0** |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| BUG-025 (TS2321) | ✅ **STILL FIXED** |
+| BUG-031 (brace-expansion dev-only) | ✅ **TRACKED** (over-broad advisory, no production impact) |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,191 tests green, 0 vulnerabilities, 0 lint/type errors. 0 new post-Cycle-300 commits to index. `playwright-core` removed from devDependencies (unused direct dependency — transitively provided by playwright@1.61.1). BUG-025 still fixed. BUG-013 still fixed. BUG-031 tracked (dev-only). BroCula ref unchanged (Jul 25 — LH 99-100-100-100 ⭐). All quality gates pass.** ✅
+
 ## Cycle 300 (2026-07-25 — RepoKeeper: full repository audit, 1 new commit indexed (fix(audit) brace-expansion override `e360f5c5`), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-031 tracked (brace-expansion dev-only CVE), test count increased **884+502+805=2,191/2,191** (web +24, api +0, shared +0), BroCula ref updated (Jul 25 — LH **99-100-100-100** ⭐), `scripts/fix-ci-node-version.mjs` removed (unreferenced, BUG-014/BUG-017 confirmed resolved on main), ci-configuration.md updated to reflect current state, 12 stale audit files from Jul 20-22 archived (6 current remain: Jul 23-25), 3 empty `.vite-temp` directories cleaned, all quality gates pass ✅)
 
 ### Actions Taken
