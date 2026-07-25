@@ -22,6 +22,7 @@ import {
   PARTICLE_CONFIG,
   ANIMATION,
   EASING,
+  HOVER_SCALE,
   COPY_BUTTON_LABELS,
 } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared/config";
@@ -153,13 +154,7 @@ function AnimatedCopyButtonComponent({
         type: FRAMER_TYPE.SPRING,
         ...SPRING_CONFIG.DEFAULT,
       }}
-      whileHover={
-        hasContent
-          ? {
-              scale: 1.02,
-            }
-          : undefined
-      }
+      whileHover={hasContent ? { ...HOVER_SCALE.MICRO } : undefined}
     >
       <AnimatePresence>
         {particles.map((particle) => {
