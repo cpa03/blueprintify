@@ -20,7 +20,7 @@ All CI workflow files use `node-version-file: ".node-version"` across all 4 work
 - ✅ Typecheck: clean
 - ✅ Lint: 0 errors, 0 warnings
 - ✅ Build: clean
-- ✅ Tests: 2,191/2,191 passed (884 web + 502 api + 805 shared)
+- ✅ Tests: 2,196/2,196 passed (884 web + 502 api + 810 shared)
 - ✅ npm audit: 0 vulnerabilities
 - ✅ Secrets scan: clean
 
