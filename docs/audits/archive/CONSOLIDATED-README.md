@@ -21,7 +21,7 @@
 
 These files are retained for historical reference only. Current archive contents:
 
-### BroCula / BroCula-Audit Reports (Jun 25 - Jul 19, 2026)
+### BroCula / BroCula-Audit Reports (Jun 26 - Jul 19, 2026)
 - Daily brocula-hunt and brocula-audit run reports covering browser console error detection and Lighthouse audit optimization
 - Each file represents one run cycle from the CI pipeline
 
@@ -34,4 +34,4 @@ These files are retained for historical reference only. Current archive contents
 ## Retention Policy
 
 Archive files are kept for 30 days from creation, then eligible for deletion.
-Last cleanup: 2026-07-24 (RepoKeeper Cycle 298 — removed 12 stale archive files, moved 56 stale audit reports).
+Last cleanup: 2026-07-25 (RepoKeeper Cycle 303 — removed 3 stale archive files from Jun 25, past 30-day retention).
