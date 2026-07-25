@@ -7,40 +7,22 @@
 The project requires Node.js 22+ (see `.nvmrc`, `.node-version`, `package.json` `engines`).
 Wrangler 4.x requires Node.js >=22 — the API build (`npm run build:api`) fails with Node 20.
 
-### ⚠️ Workflow Node Version: FIX APPLIED (BugFixer Jul 11 2026)
+### ✅ Workflow Node Version: FIXED ON MAIN
 
-All CI workflow files have been updated from hardcoded `node-version: "20"` to `node-version: "22"` across all 4 workflow files (11 occurrences total). This matches the project's Node.js 22+ requirement (see `.nvmrc`, `.node-version`).
+All CI workflow files use `node-version-file: ".node-version"` across all 4 workflow files (11 occurrences total). This matches the project's Node.js 22+ requirement (see `.nvmrc`, `.node-version`).
 
-**BUG-017 — RESOLVED on branch `fix/bugfixer-node-version-jul-11-2026`**:
-- `iterate.yml`: 5 occurrences `"20"` → `"22"`
-- `parallel.yml`: 4 occurrences `"20"` → `"22"`
-- `on-pull.yml`: 1 occurrence `20` → `"22"`
-- `pr-gatekeeper.yml`: 1 occurrence `"20"` → `"22"`
+**BUG-017 — RESOLVED on `main`**:
+- `node-version-file: ".node-version"` is the single source of truth
+- All 4 workflows (iterate.yml, parallel.yml, on-pull.yml, pr-gatekeeper.yml) use it
+- No hardcoded versions remain
 
-**Verification results with fix applied (Node 22.23.1):**
+**Current verifications (Jul 25 2026):**
 - ✅ Typecheck: clean
 - ✅ Lint: 0 errors, 0 warnings
-- ✅ Build (web): clean
-- ✅ Build (api): clean
-- ✅ Tests: 1,890/1,890 passed (755 web + 443 api + 692 shared)
+- ✅ Build: clean
+- ✅ Tests: 2,191/2,191 passed (884 web + 502 api + 805 shared)
+- ✅ npm audit: 0 vulnerabilities
 - ✅ Secrets scan: clean
-- ⚠️ **Push blocked**: GitHub App token lacks `workflows: write` permission (known blocker — 30+ cycles). PR created with fix instructions.
-- ✅ **Prebuild check added**: `apps/api/package.json` now validates Node.js >=22 before `build` runs.
-- ✅ **Local fix**: nvm installs Node 22.23.1 (`nvm install 22 && nvm use 22`)
-
-#### Applying the Fix (manual, if PR merge is blocked)
-
-A maintainer with `workflows: write` access can run:
-
-```bash
-nvm install 22 && nvm use 22
-node scripts/fix-ci-node-version.mjs
-git add .github/workflows/
-git commit -m "fix(ci): bump node-version from 20 to 22 across all workflows"
-git push origin HEAD
-```
-
-The `scripts/fix-ci-node-version.mjs` script handles all 11 occurrences across 4 files.
 
 #### Related Issues
 
