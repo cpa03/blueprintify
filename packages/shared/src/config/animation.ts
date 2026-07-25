@@ -552,7 +552,7 @@ export const AUTO_SCROLL_DEFAULTS = {
 /**
  * Build Tool Configuration Defaults
  * Centralized source of truth for Vite build/minification options.
- * Flexy says: No hardcoded terser options in vite.config.ts!
+ * Flexy says: No hardcoded terser options, chunk warning limits, or CSS targets in vite.config.ts!
  * Usage: import { BUILD_CONFIG } from "@blueprint/shared";
  *        terserOptions: BUILD_CONFIG.TERSER_OPTIONS
  */
@@ -569,4 +569,14 @@ export const BUILD_CONFIG = {
   } as const,
   /** Minifier to use for production builds */
   MINIFIER: "terser" as const,
+  /** Chunk size warning limit in KB — triggers warning when a chunk exceeds this size.
+   *  Prevents accidentally bloated bundles from going unnoticed. */
+  CHUNK_SIZE_WARNING_LIMIT_KB: 600,
+  /** CSS browser targets for Vite build output.
+   *  Matches modern browsers that support CSS nesting and other CSS 2023+ features.
+   *  Single source of truth — keeps build config consistent with project browser support. */
+  CSS_TARGET: ["chrome111", "firefox114", "safari16.4", "edge111"] as const,
+  /** JavaScript build target — modern ES version for optimized output.
+   *  ES2022 supports native class fields, private members, and static initialization blocks. */
+  BUILD_TARGET: "ES2022" as const,
 } as const;
