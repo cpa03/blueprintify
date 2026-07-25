@@ -3003,4 +3003,4 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `feat/flexy-iteration-162-verification` | docs(flexy): post-161 verification — StepStack accessibility enhancement clean, zero hardcoded-value regressions (Iteration 162) |
+| [#2855](https://github.com/cpa03/blueprintify/pull/2855) | `feat/flexy-iteration-162-verification` | docs(flexy): post-161 verification — StepStack accessibility enhancement clean, zero hardcoded-value regressions (Iteration 162) |
