@@ -449,12 +449,15 @@ export const StepStack = memo(function StepStack({
           shortcut="←"
           description={SHORTCUT_DESCRIPTIONS.GO_BACK}
           position="right"
-          modifier="alt"
+          modifier={MODIFIER_KEYS.ALT}
         >
           <RippleButton
             onClick={prevStep}
             className="btn-secondary flex items-center gap-2 group"
-            aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ARROW_LEFT, "alt")}
+            aria-keyshortcuts={getAriaShortcutKey(
+              KEYBOARD_EVENT_KEYS.ARROW_LEFT,
+              MODIFIER_KEYS.ALT
+            )}
           >
             <svg
               className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5"

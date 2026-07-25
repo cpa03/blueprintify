@@ -136,13 +136,16 @@ export const StepReview = memo(function StepReview({
                 shortcut={WIZARD_REVIEW_EDIT_SHORTCUTS.INFO}
                 description={WIZARD_REVIEW_DESCRIPTIONS.EDIT_INFO}
                 position="left"
-                modifier="alt"
+                modifier={MODIFIER_KEYS.ALT}
               >
                 <button
                   onClick={handleEditInfo}
                   className="btn-ghost btn-sm flex items-center gap-1 text-primary-400 hover:text-primary-300 group"
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_REVIEW.EDIT_INFO}
-                  aria-keyshortcuts={getAriaShortcutKey(WIZARD_REVIEW_EDIT_SHORTCUTS.INFO, "alt")}
+                  aria-keyshortcuts={getAriaShortcutKey(
+                    WIZARD_REVIEW_EDIT_SHORTCUTS.INFO,
+                    MODIFIER_KEYS.ALT
+                  )}
                 >
                   <svg
                     className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-8"
@@ -215,13 +218,16 @@ export const StepReview = memo(function StepReview({
                 shortcut={WIZARD_REVIEW_EDIT_SHORTCUTS.STACK}
                 description={WIZARD_REVIEW_DESCRIPTIONS.EDIT_STACK}
                 position="left"
-                modifier="alt"
+                modifier={MODIFIER_KEYS.ALT}
               >
                 <button
                   onClick={handleEditStack}
                   className="btn-ghost btn-sm flex items-center gap-1 text-accent-cyan hover:text-accent-cyan/80 group"
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_REVIEW.EDIT_STACK}
-                  aria-keyshortcuts={getAriaShortcutKey(WIZARD_REVIEW_EDIT_SHORTCUTS.STACK, "alt")}
+                  aria-keyshortcuts={getAriaShortcutKey(
+                    WIZARD_REVIEW_EDIT_SHORTCUTS.STACK,
+                    MODIFIER_KEYS.ALT
+                  )}
                 >
                   <svg
                     className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-8"
@@ -297,7 +303,7 @@ export const StepReview = memo(function StepReview({
                   shortcut={WIZARD_REVIEW_EDIT_SHORTCUTS.FEATURES}
                   description={WIZARD_REVIEW_DESCRIPTIONS.EDIT_FEATURES}
                   position="left"
-                  modifier="alt"
+                  modifier={MODIFIER_KEYS.ALT}
                 >
                   <button
                     onClick={handleEditFeatures}
@@ -305,7 +311,7 @@ export const StepReview = memo(function StepReview({
                     aria-label={ACCESSIBILITY_LABELS.WIZARD_REVIEW.EDIT_FEATURES}
                     aria-keyshortcuts={getAriaShortcutKey(
                       WIZARD_REVIEW_EDIT_SHORTCUTS.FEATURES,
-                      "alt"
+                      MODIFIER_KEYS.ALT
                     )}
                   >
                     <svg
@@ -438,7 +444,10 @@ export const StepReview = memo(function StepReview({
               onClick={handleEditFeatures}
               className="btn-secondary flex items-center gap-2"
               disabled={isGenerating}
-              aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ARROW_LEFT, "alt")}
+              aria-keyshortcuts={getAriaShortcutKey(
+                KEYBOARD_EVENT_KEYS.ARROW_LEFT,
+                MODIFIER_KEYS.ALT
+              )}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path

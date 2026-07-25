@@ -793,7 +793,7 @@ export const StepGenerating = memo(function StepGenerating({
                 shortcut="←"
                 description={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_DESC}
                 position="left"
-                modifier="alt"
+                modifier={MODIFIER_KEYS.ALT}
               >
                 <RippleButton
                   onClick={handleViewReview}
@@ -888,7 +888,7 @@ export const StepGenerating = memo(function StepGenerating({
               shortcut="←"
               description={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_DESC}
               position="left"
-              modifier="alt"
+              modifier={MODIFIER_KEYS.ALT}
             >
               <RippleButton
                 onClick={handleViewReview}
@@ -972,7 +972,7 @@ export const StepGenerating = memo(function StepGenerating({
                 shortcut="Esc"
                 description={WIZARD_GENERATING_LABELS.CANCEL_GENERATION_DESC}
                 position="top"
-                modifier="none"
+                modifier={MODIFIER_KEYS.NONE}
               >
                 <RippleButton
                   onClick={handleCancel}
