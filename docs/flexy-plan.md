@@ -2906,4 +2906,4 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `feat/flexy-iteration-160-test-mock-refactor` | refactor(flexy): replace hardcoded "New" button text and eliminate hardcoded tab strings in EditorToolbar test (Iteration 160) |
+| [#2845](https://github.com/cpa03/blueprintify/pull/2845) | `feat/flexy-iteration-160-test-mock-refactor` | refactor(flexy): replace hardcoded "New" button text and eliminate hardcoded tab strings in EditorToolbar test (Iteration 160) |
