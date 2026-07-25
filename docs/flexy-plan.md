@@ -2907,3 +2907,35 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2845](https://github.com/cpa03/blueprintify/pull/2845) | `feat/flexy-iteration-160-test-mock-refactor` | refactor(flexy): replace hardcoded "New" button text and eliminate hardcoded tab strings in EditorToolbar test (Iteration 160) |
+
+---
+
+### ✅ Flexy Iteration 161: Centralize Hardcoded Build Config Magic Numbers into Shared BUILD_CONFIG
+
+**Problem**: `apps/web/vite.config.ts` contained 3 hardcoded build configuration values that were not centralized in the shared `@blueprint/shared` config:
+1. `chunkSizeWarningLimit: 600` — magic number for Vite chunk size warning threshold
+2. `cssTarget: ["chrome111", "firefox114", "safari16.4", "edge111"]` — hardcoded browser target array
+3. `target: "ES2022"` — hardcoded JS build target string
+
+| Config Object | File | Change |
+|---|---|---|
+| `CHUNK_SIZE_WARNING_LIMIT_KB` | `packages/shared/src/config/animation.ts` | Added `600` to `BUILD_CONFIG` — single source of truth for chunk warning threshold |
+| `CSS_TARGET` | `packages/shared/src/config/animation.ts` | Added browser target array to `BUILD_CONFIG` — single source of truth for CSS browser targets |
+| `BUILD_TARGET` | `packages/shared/src/config/animation.ts` | Added `"ES2022"` to `BUILD_CONFIG` — single source of truth for JS build target |
+| `config.test.ts` | `packages/shared/src/config.test.ts` | Added 5 tests for new `BUILD_CONFIG` fields (value + type + count assertions; count 2→5) |
+| `vite.config.ts` | `apps/web/vite.config.ts` | Replaced all 3 hardcoded values with `BUILD_CONFIG.*` references |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean (shared + web)
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npm run audit` — 0 vulnerabilities
+- ✅ `npm run test:all` — **884 web + 502 api + 810 shared = 2,196 tests passing** across 93 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2849](https://github.com/cpa03/blueprintify/pull/2849) | `feat/flexy-iteration-161-build-config` | refactor(flexy): centralize hardcoded chunk size warning limit and CSS targets into shared BUILD_CONFIG (Iteration 161) |
