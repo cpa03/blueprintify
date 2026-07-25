@@ -2876,3 +2876,34 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — 860 web + 502 api + 805 shared = **2,167 tests passing** across 92 files
+
+---
+
+### ✅ Flexy Iteration 160: Replace Hardcoded "New" Button Text & Eliminate Hardcoded Tab Strings in EditorToolbar Test
+
+**Problem**: Two hardcoded values remained in the EditorToolbar component and its test suite:
+1. `apps/web/src/components/editor/EditorToolbar.tsx` line 449 — hardcoded `New` button display text. The `EDITOR_LABELS.BUTTONS.NEW_PROJECT` constant (defined in `content.ts` as `"New"`) existed but was not used.
+2. `apps/web/src/components/editor/EditorToolbar.test.tsx` — 2 hardcoded `"blueprint"`/`"tasks"` tab strings in test assertions (render prop + copied state assertions) that should reference `EDITOR_TABS.BLUEPRINT`/`EDITOR_TABS.TASKS` from `@blueprint/shared`.
+3. `apps/web/src/components/editor/EditorToolbar.test.tsx` — `vi.mock("../../config/constants")` mock object was missing `EDITOR_LABELS.BUTTONS.NEW_PROJECT` key.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/components/editor/EditorToolbar.tsx` | Replaced hardcoded `New` with `{EDITOR_LABELS.BUTTONS.NEW_PROJECT}` — uses existing config constant |
+| `apps/web/src/components/editor/EditorToolbar.test.tsx` | Added `EDITOR_TABS` import from `@blueprint/shared` |
+| `apps/web/src/components/editor/EditorToolbar.test.tsx` | Added `NEW_PROJECT: "New"` to `vi.mock`'s `EDITOR_LABELS.BUTTONS` |
+| `apps/web/src/components/editor/EditorToolbar.test.tsx` | Replaced `activeTab="blueprint"` with `activeTab={EDITOR_TABS.BLUEPRINT}` in `renderToolbar` |
+| `apps/web/src/components/editor/EditorToolbar.test.tsx` | Replaced 2x hardcoded `copied: "blueprint"`/`copied: "tasks"` with `EDITOR_TABS.BLUEPRINT`/`EDITOR_TABS.TASKS` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean (shared + web)
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npm run test:all` — **884 web + 502 api + 805 shared = 2,191 tests passing** across 91 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2845](https://github.com/cpa03/blueprintify/pull/2845) | `feat/flexy-iteration-160-test-mock-refactor` | refactor(flexy): replace hardcoded "New" button text and eliminate hardcoded tab strings in EditorToolbar test (Iteration 160) |

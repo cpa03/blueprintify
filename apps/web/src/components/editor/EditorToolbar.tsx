@@ -446,7 +446,7 @@ function EditorToolbarComponent({
               d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
             />
           </motion.svg>
-          New
+          {EDITOR_LABELS.BUTTONS.NEW_PROJECT}
           <kbd
             className="ml-1.5 px-1 py-0.5 bg-dark-700/80 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none"
             aria-hidden="true"

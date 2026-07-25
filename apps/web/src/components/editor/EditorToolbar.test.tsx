@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { EditorToolbar } from "./EditorToolbar";
+import { EDITOR_TABS } from "@blueprint/shared";
 
 // ---------------------------------------------------------------------------
 // Mocks
@@ -118,6 +119,7 @@ vi.mock("../../config/constants", () => ({
       EXPORT_ZIP: "Export .zip",
       EXPORT_ARIA_LABEL: "Export as ZIP",
       EXPORT_SUCCESS_ARIA: "Export successful",
+      NEW_PROJECT: "New",
     },
   },
   ANIMATION: { GENTLE_PULSE: 1, SPINNER_ROTATION: 1, NORMAL: 0.2, CHECKMARK_REVEAL: 0.3 },
@@ -175,7 +177,7 @@ vi.mock("../../config/theme", () => ({
 function renderToolbar(props: Partial<Parameters<typeof EditorToolbar>[0]> = {}) {
   return render(
     <EditorToolbar
-      activeTab="blueprint"
+      activeTab={EDITOR_TABS.BLUEPRINT}
       viewMode="split"
       setViewMode={vi.fn()}
       onCopy={vi.fn()}
@@ -280,12 +282,12 @@ describe("EditorToolbar", () => {
     });
 
     it("shows copied state when copied matches activeTab", () => {
-      renderToolbar({ copied: "blueprint", activeTab: "blueprint" });
+      renderToolbar({ copied: EDITOR_TABS.BLUEPRINT, activeTab: EDITOR_TABS.BLUEPRINT });
       expect(screen.getByTestId("copy-button")).toHaveAttribute("data-copied", "true");
     });
 
     it("shows non-copied state otherwise", () => {
-      renderToolbar({ copied: "tasks", activeTab: "blueprint" });
+      renderToolbar({ copied: EDITOR_TABS.TASKS, activeTab: EDITOR_TABS.BLUEPRINT });
       expect(screen.getByTestId("copy-button")).toHaveAttribute("data-copied", "false");
     });
   });
