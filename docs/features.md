@@ -1,7 +1,7 @@
 # Feature Specifications
 
 **Status**: Active
-**Last Updated**: 2026-06-19 (Cycle 122)
+**Last Updated**: 2026-07-25 (RepoKeeper Cycle 302)
 
 ## [FEAT-01] Project Initialization Wizard ✅ COMPLETED
 
@@ -403,3 +403,22 @@ As a user, I want to edit, save, and refine my generated blueprints, so that I c
 - Zustand store integration for confirmation dialog state
 - Global error event listeners for unhandled promise rejections
 - Resource limits and scaling configurations
+
+### Accessibility Enhancements ✅ COMPLETED
+
+**Completion Date**: 2026-07-25  
+**Issues**: Accessibility improvements
+
+**Delivered Functionality**:
+
+- ✅ **ARIA live region counter** — Real-time tech stack counter announces `"{selected} of at least {min} technologies selected"` via `aria-live="polite"` region, ensuring screen readers announce changes as the user selects/deselects technologies
+- ✅ **Minimum requirement milestone announcement** — When minimum tech stack threshold is met, a `role="status"` region with `aria-live="assertive"` announces "Minimum tech stack requirement met", providing explicit feedback since the milestone pulse animation is purely visual
+- ✅ **Proper ARIA labeling on counter element** — `aria-label` and `aria-atomic="true"` on the stack counter `<span>` for accurate screen reader context
+
+**Technical Implementation**:
+
+- React state-driven `aria-live` regions with `sr-only` CSS utility for screen-reader-only announcements
+- `aria-live="polite"` for counter changes (non-intrusive)
+- `aria-live="assertive"` for milestone achievement (immediate notification)
+- `aria-atomic="true"` ensures the entire content is read as a single unit
+- Timer cleanup on unmount via `useEffect` return
