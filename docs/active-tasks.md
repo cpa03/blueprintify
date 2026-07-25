@@ -2,6 +2,25 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 303 — **Full repository audit, 5 new post-Cycle-302 commits indexed (BroCula Run 4 `baadcd1e`, fix(accessibility) skip-link focus ring `a3fc85d7`, BugFixer ULW Run 2 `c9dc90ab`, flexy Iteration 162 docs `4abe8ba7`/`c2d0b2eb`), 2 raw JSON audit artifacts removed, 2 stale archive files from Jun 25 purged, audits/README updated, test count stable 2,196/2,196, all quality gates pass** ✅
+
+### Task: Full repository audit — **5 new post-Cycle-302 commits indexed** (chore(brocula): BroCula ULW Loop Jul 25 2026 Run 4 — LH 99-100-100-100 `baadcd1e`; fix(accessibility): add visible focus ring to main content area for skip-link target `a3fc85d7`; fix(bugfixer): ULW Cycle Jul 25 2026 Run 2 — full audit clean, 2,196/2,196 tests `c9dc90ab`; docs(flexy): post-161 verification — StepStack accessibility enhancement clean, zero hardcoded-value regressions (Iteration 162) `4abe8ba7`; docs(flexy): update Iteration 162 PR reference to #2855 `c2d0b2eb`); **2 raw JSON audit artifacts removed** (`docs/audits/brocula-hunt-2026-07-25-console.json`, `docs/audits/brocula-lighthouse-2026-07-25.json`); **2 stale archive files from Jun 25 purged** (past 30-day retention — `brocula-hunt-2026-06-25-run1.md`, `brocula-hunt-2026-06-25-run2.md`); **BUG-013 still fixed** (lighthouse 12.6.1 — 0 vulns); **BUG-025 still fixed** (TS2321 — `as UserConfig` cast holds); **BUG-031 tracked** (brace-expansion dev-only CVE — override 5.0.8 holds); **test count stable** **2,196/2,196** (884 web + 502 API + **810 shared** — unchanged); **BroCula Run 4 indexed** (LH 99-100-100-100); **0 stale merged branches**; **0 stale plan files**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; **0 merge conflict artifacts**; **documentation updates**: audits/README.md (Run 4 added, test count fields removed), bugs.md (Cycle 303 entry), active-tasks.md (this entry), findings.md (Cycle 303 entry); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,196/2,196** ✅, format ✅, npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: RepoKeeper Cycle 303 — full repository audit, index 5 post-Cycle-302 commits, remove raw JSON artifacts, purge stale archive files (Jun 25), update audits/README with BroCula Run 4, verify BUG-013/BUG-025/BUG-031, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks, no `.patch` files ✅
+  - [x] **5 new post-Cycle-302 commits indexed**: BroCula Run 4 (`baadcd1e`), fix(accessibility) skip-link focus ring (`a3fc85d7`), BugFixer ULW Run 2 (`c9dc90ab`), flexy Iteration 162 docs (`4abe8ba7`, `c2d0b2eb`) ✅
+  - [x] **2 raw JSON audit artifacts removed**: brocula-hunt/brocula-lighthouse .json files ✅
+  - [x] **2 stale archive files purged (30-day retention)**: Jun 25 files ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns ✅
+  - [x] **BUG-025 still fixed**: TS2321 — `as UserConfig` cast holds ✅
+  - [x] **BUG-031 tracked**: brace-expansion CVE — override 5.0.8, dev-only ✅
+  - [x] **BroCula Run 4 indexed**: LH 99-100-100-100 ⭐ ✅
+  - [x] **Documentation updates**: audits/README.md, bugs.md, active-tasks.md, findings.md ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ tests **2,196/2,196** ✅, format ✅, secrets scan ✅, npm audit **0 vulns** ✅
+
 ## ✅ RepoKeeper Cycle 302 — **Full repository audit, 2 new post-Cycle-301 commits indexed (feat(accessibility) aria-live counter/milestone announcement `21e32d19`, fix(bugfixer) ULW Cycle `74e21919`) + BroCula Run 3 `2613f7d2` indexed (LH 100-100-100-100 PERFECT), test count correction: 2,191→2,196 (884 web + 502 API + 810 shared), documentation drift fixes (ci-configuration, active-tasks, bugs, features), all quality gates pass** ✅
 
 ### Task: Full repository audit — **2 new post-Cycle-301 commits indexed** (feat(accessibility) aria-live counter/milestone announcement `21e32d19`; fix(bugfixer) ULW Cycle `74e21919`); **BroCula Run 3 `2613f7d2` indexed** (LH **100-100-100-100** PERFECT — ran between Cycle 300–301, previously unrecorded in findings); **BUG-013 still fixed** (lighthouse 12.6.1 — 0 vulns); **BUG-025 still fixed** (TS2321 — `as UserConfig` cast holds); **BUG-031 tracked** (brace-expansion dev-only CVE — override 5.0.8 holds); **test count correction** 2,191→**2,196** (884 web + 502 API + **810 shared** — shared +5 from flexy Iteration 161 `e2fa72b8`, undercounted in Cycle 301); **0 stale merged branches**; **0 stale plan files**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; **0 merge conflict artifacts**; **documentation drift fixes**: ci-configuration.md, active-tasks.md, bugs.md, features.md; quality verification (typecheck ✅ lint ✅ build ✅ tests **2,196/2,196** ✅, format ✅, npm audit **0 vulns** ✅)
