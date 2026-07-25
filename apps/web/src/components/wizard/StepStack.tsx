@@ -232,11 +232,16 @@ export const StepStack = memo(function StepStack({
   const canProceed = techStack.length >= MIN_REQUIREMENTS.TECH_STACK;
   const prevCanProceedRef = useRef(canProceed);
   const [showMilestone, setShowMilestone] = useState(false);
+  const [milestoneAnnouncement, setMilestoneAnnouncement] = useState("");
 
   useEffect(() => {
     if (canProceed && !prevCanProceedRef.current) {
       setShowMilestone(true);
-      const timer = setTimeout(() => setShowMilestone(false), ANIMATION_MS.CHIP_SELECT_FEEDBACK);
+      setMilestoneAnnouncement(ACCESSIBILITY_LABELS.WIZARD_STACK.MINIMUM_MET_ANNOUNCEMENT);
+      const timer = setTimeout(() => {
+        setShowMilestone(false);
+        setMilestoneAnnouncement("");
+      }, ANIMATION_MS.CHIP_SELECT_FEEDBACK);
       prevCanProceedRef.current = true;
       return () => clearTimeout(timer);
     }
@@ -312,6 +317,9 @@ export const StepStack = memo(function StepStack({
               animate={showMilestone ? { scale: [1, 1.35, 1] } : { scale: 1 }}
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.MILESTONE_PULSE }}
               className={`tabular-nums ${canProceed ? "text-accent-emerald" : "text-dark-400"}`}
+              aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(techStack.length, minRequired)}
+              aria-live="polite"
+              aria-atomic="true"
             >
               {techStack.length}/{minRequired}
             </motion.span>
@@ -498,6 +506,12 @@ export const StepStack = memo(function StepStack({
             </svg>
           </RippleButton>
         </KeyboardShortcutTooltip>
+      </div>
+
+      {/* Screen reader announcement when minimum tech stack requirement is met
+          — provides explicit feedback since the milestone pulse is purely visual. */}
+      <div className="sr-only" role="status" aria-live="assertive" aria-atomic="true">
+        {milestoneAnnouncement}
       </div>
     </motion.div>
   );

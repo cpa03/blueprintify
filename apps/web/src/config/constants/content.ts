@@ -363,6 +363,9 @@ export const ACCESSIBILITY_LABELS = {
   WIZARD_STACK: {
     TECH_STACK_SELECTION: "Tech Stack Selection",
     REMOVE_TECH: (tech: string) => `Remove ${tech}`,
+    COUNTER: (selected: number, min: number) =>
+      `${selected} of at least ${min} technologies selected`,
+    MINIMUM_MET_ANNOUNCEMENT: "Minimum tech stack requirement met",
   },
   WIZARD_REVIEW: {
     EDIT_INFO: "Edit project information",
