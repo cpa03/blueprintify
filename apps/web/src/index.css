@@ -252,7 +252,7 @@
 
   /* Label styles */
   .label {
-    @apply block text-sm font-medium text-dark-300 mb-2;
+    @apply block text-sm font-medium text-dark-300 mb-2 cursor-pointer;
   }
 
   /* Tech chip */
