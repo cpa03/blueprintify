@@ -3573,8 +3573,29 @@ describe("BUILD_CONFIG", () => {
     expect(BUILD_CONFIG.TERSER_OPTIONS.mangle).toBe(true);
   });
 
-  it("should have 2 top-level properties", () => {
-    expect(Object.keys(BUILD_CONFIG).length).toBe(2);
+  it("should have CHUNK_SIZE_WARNING_LIMIT_KB > 0", () => {
+    expect(BUILD_CONFIG.CHUNK_SIZE_WARNING_LIMIT_KB).toBeGreaterThan(0);
+  });
+
+  it("should have CHUNK_SIZE_WARNING_LIMIT_KB set to 600", () => {
+    expect(BUILD_CONFIG.CHUNK_SIZE_WARNING_LIMIT_KB).toBe(600);
+  });
+
+  it("should have CSS_TARGET as non-empty array", () => {
+    expect(Array.isArray(BUILD_CONFIG.CSS_TARGET)).toBe(true);
+    expect(BUILD_CONFIG.CSS_TARGET.length).toBeGreaterThan(0);
+  });
+
+  it("should have CSS_TARGET containing chrome111", () => {
+    expect(BUILD_CONFIG.CSS_TARGET).toContain("chrome111");
+  });
+
+  it("should have BUILD_TARGET set to ES2022", () => {
+    expect(BUILD_CONFIG.BUILD_TARGET).toBe("ES2022");
+  });
+
+  it("should have 5 top-level properties", () => {
+    expect(Object.keys(BUILD_CONFIG).length).toBe(5);
   });
 });
 
