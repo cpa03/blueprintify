@@ -69,11 +69,7 @@ export interface CreatePersistedStoreOptions<T, S> {
 export function createPersistedStore<T, S>(
   options: CreatePersistedStoreOptions<T, S>
 ): {
-  loadState: (
-    set:
-      | ((partial: Partial<S> | ((state: S) => Partial<S>) | S, replace?: false) => void)
-      | ((state: S | ((state: S) => S), replace: true) => void)
-  ) => Promise<void>;
+  loadState: (set: StoreApi<S>["setState"]) => Promise<void>;
   saveState: (get: () => S) => Promise<void>;
   debouncedSave: (get: () => S) => void;
   flushSave: (get: () => S) => Promise<void>;
