@@ -14,16 +14,17 @@
 
 ## Bug Status — Jul 25 2026 (BroCula ULW Loop)
 
-> **BroCula ULW Loop Jul 25 2026 (2026-07-25 — brocula/loop-2026-07-25)**: Full BroCula audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,191/2,191** ✅ (884 web + 502 API + 805 shared). Format ✅. Lighthouse **99-100-100-100** ⭐🏆. **0 console errors/warnings**. **0 optimization opportunities**. Audit: **7 high vulnerabilities** (BUG-031 — new brace-expansion CVE, dev-only toolchain). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK.
+> **BroCula ULW Loop Jul 25 2026 (2026-07-25 — brocula/loop-2026-07-25)**: Full BroCula audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,196/2,196** ✅ (884 web + 502 API + 810 shared). Format ✅. Lighthouse **99-100-100-100** ⭐🏆. **0 console errors/warnings**. **0 optimization opportunities**. Audit: **7 high vulnerabilities** (BUG-031 — new brace-expansion CVE, dev-only toolchain). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK.
 
 > **BUG-031 — NEW**: `brace-expansion` CVE (GHSA-mh99-v99m-4gvg, DoS via unbounded expansion) in ESLint dev toolchain. All versions ≤5.0.7 flagged. Lockfile updated to 5.0.8 for `typescript-eslint` path. `brace-expansion@1.1.16` (used by `eslint-plugin-jsx-a11y` via `minimatch@3.x`) includes the 1.1.12 fix but caught by over-broad advisory range. Dev-only, no production impact. Fix requires upstream dependency updates.
 
-## Bug Status — Jul 25 2026 (BugFixer ULW Cycle)
+## Bug Status — Jul 25 2026 (BugFixer ULW Cycle — Run 2)
 
-> **BugFixer ULW Cycle Jul 25 2026 (2026-07-25 — fix/bugfixer-ulw-cycle-jul-25-2026)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,191/2,191** ✅ (884 web + 502 API + 805 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed; BUG-030 still fixed; BUG-031 — brace-expansion CVE override pushed by fix(audit) `e360f5c5`). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
+> **BugFixer ULW Cycle Jul 25 2026 Run 2 (2026-07-25 — fix/bugfixer-ulw-cycle-jul-25-2026)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,196/2,196** ✅ (884 web + 502 API + 810 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed; BUG-030 still fixed; BUG-031 — brace-expansion CVE override tracked). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
 >
-> **Test count unchanged**: 2,191 (884 web + 502 API + 805 shared — unchanged from BugFixer Jul 24).
-> **5 post-BugFixer commits indexed**: BroCula ULW Loop Jul 25 (`96ea0e6c`), fix(audit) brace-expansion override (`e360f5c5`), flexy Iteration 160 hardcoded button/tab strings (`19f0c708`), BroCula ULW Jul 25 Run 2 (`f2ccb92e`), RepoKeeper Cycle 300 (`5134392e`).
+> **Test count correction**: shared 805→810 (actual test count at HEAD `74e21919`). Total now **2,196** (884 web + 502 API + 810 shared).
+> **0 new post-BugFixer commits indexed** — HEAD unchanged at `74e21919`.
+> **3 empty `.vite-temp` directories cleaned** (leftover vitest runtime artifacts).
 > **No new fixable bugs found in codebase. All quality gates pass.** Branch up to date with main.
 
 ## Bug Status — Jul 24 2026 (BugFixer ULW Cycle)
