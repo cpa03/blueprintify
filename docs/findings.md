@@ -2,6 +2,41 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 304 (2026-07-25 — RepoKeeper: full repository audit, **2 new post-Cycle-303 commits indexed** (BroCula Run 5 `214d9ce5` — LH 99-100-100-100, flexy Iteration `64bc3621` — HOVER_SCALE.MICRO), BUG-013 still fixed (0 vulns), BUG-031 tracked (brace-expansion dev-only CVE), test count stable **2,196/2,196** (884 web + 502 API + 810 shared), archive retention OK (oldest Jun 26 — 29 days), audits/README updated with BroCula Run 5, knowledge-review/CHANGELOG refreshed, all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. 0 `.patch` files. 0 empty directories. No cleanup actions required.
+2. **[2 New Post-Cycle-303 Commits Indexed]** — Since Cycle 303 (`9a92995f`):
+   - `214d9ce5` — `chore(brocula): BroCula ULW Loop Jul 25 2026 Run 5 — LH 99-100-100-100`
+   - `64bc3621` — `refactor(flexy): replace hardcoded scale with HOVER_SCALE.MICRO in AnimatedCopyButton`
+3. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities** (no re-bump occurred).
+4. **[BUG-031 Still Tracked]** — `brace-expansion` CVE (GHSA-mh99-v99m-4gvg, dev-only ESLint toolchain, over-broad advisory range). Lockfile at 5.0.8. No production impact.
+5. **[Test Count Stable]** — **2,196** (884 web + 502 API + 810 shared — unchanged from Cycle 303).
+6. **[BroCula Run 5 Indexed]** — `214d9ce5` — BroCula ULW Loop Jul 25 2026 Run 5 — LH **99-100-100-100** ⭐, 0 console errors/warnings. audits/README table updated with Run 5 as latest.
+7. **[Archive Retention OK]** — Oldest archive files from Jun 26 (29 days, within 30-day window). No purge needed.
+8. **[Stale Merged Branches]** — None found (squash-merge repo) ✅.
+9. **[Stale Plan Files]** — No stale plan files found ✅.
+10. **[Documentation Drift Fixes]** — audits/README.md (BroCula Run 5 added as latest), bugs.md (Cycle 304 entry), active-tasks.md (Cycle 304 entry), findings.md (this entry), knowledge-review.md (refreshed with Cycle 304 state), CHANGELOG.md (Cycle 304 entry).
+11. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,196/2,196** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,196/2,196** (884 web + 502 API + 810 shared) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013/BUG-031 STILL FIXED) |
+| Secrets scan | ✅ 0 secrets |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** |
+| `as any` | ✅ **0** |
+| Empty catch blocks | ✅ **0** |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| BUG-031 (brace-expansion dev-only) | ✅ **TRACKED** (over-broad advisory, no production impact) |
+
 ## Cycle 303 (2026-07-25 — RepoKeeper: full repository audit, **5 new post-Cycle-302 commits indexed** (BroCula Run 4 `baadcd1e`, fix(accessibility) skip-link focus ring `a3fc85d7`, BugFixer ULW Cycle Run 2 `c9dc90ab`, flexy Iteration 162 verifications `4abe8ba7`/`c2d0b2eb`), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-031 tracked (brace-expansion dev-only CVE), test count stable **2,196/2,196** (884 web + 502 API + 810 shared), **2 raw JSON audit artifacts removed** (brocula-hunt/brocula-lighthouse .json files tracked in git), **2 stale archive files from Jun 25 purged** (past 30-day retention), audits/README updated with BroCula Run 4, all quality gates pass ✅)
 
 ### Actions Taken

@@ -161,7 +161,7 @@ vi.mock("../../config/constants", () => ({
     HOME: "Home",
     END: "End",
   },
-  MODIFIER_KEYS: { CMD: "cmd" },
+  MODIFIER_KEYS: { CMD: "cmd", CTRL: "ctrl", ALT: "alt", NONE: "none" },
 }));
 
 vi.mock("../../config/theme", () => ({
