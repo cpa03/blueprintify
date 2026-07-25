@@ -3029,4 +3029,4 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `feat/flexy-iteration-163-hardcoded-scale` | refactor(flexy): replace hardcoded scale: 1.02 with HOVER_SCALE.MICRO in AnimatedCopyButton (Iteration 163) |
+| [#2860](https://github.com/cpa03/blueprintify/pull/2860) | `feat/flexy-iteration-163-hardcoded-scale` | refactor(flexy): replace hardcoded scale: 1.02 with HOVER_SCALE.MICRO in AnimatedCopyButton (Iteration 163) |
