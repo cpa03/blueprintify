@@ -3004,3 +3004,29 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2855](https://github.com/cpa03/blueprintify/pull/2855) | `feat/flexy-iteration-162-verification` | docs(flexy): post-161 verification — StepStack accessibility enhancement clean, zero hardcoded-value regressions (Iteration 162) |
+
+---
+
+### ✅ Flexy Iteration 163: Replace Hardcoded scale: 1.02 with HOVER_SCALE.MICRO in AnimatedCopyButton
+
+**Problem**: `apps/web/src/components/AnimatedCopyButton.tsx` line 159 had a hardcoded `scale: 1.02` in the `whileHover` prop. The `HOVER_SCALE.MICRO` constant (exactly `{ scale: 1.02 }`) from `@blueprint/shared/config/ui.ts` already existed but was not imported or used.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/components/AnimatedCopyButton.tsx` | Added `HOVER_SCALE` to import from `../config/constants` |
+| `apps/web/src/components/AnimatedCopyButton.tsx` | Replaced hardcoded `{ scale: 1.02 }` with `{ ...HOVER_SCALE.MICRO }` in `whileHover` prop |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npm run audit` — 0 vulnerabilities
+- ✅ `npm run test:all` — **884 web + 502 api + 810 shared = 2,196 tests passing** across 93 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2860](https://github.com/cpa03/blueprintify/pull/2860) | `feat/flexy-iteration-163-hardcoded-scale` | refactor(flexy): replace hardcoded scale: 1.02 with HOVER_SCALE.MICRO in AnimatedCopyButton (Iteration 163) |
