@@ -2,6 +2,47 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## BugFixer ULW Cycle Jul 25 2026 (2026-07-25 — fix/bugfixer-ulw-cycle-jul-25-2026)
+
+> **BugFixer ULW Cycle Jul 25 2026**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,196/2,196** ✅ (884 web + 502 API + 810 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed; BUG-030 still fixed; BUG-031 — brace-expansion CVE override tracked). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for type errors, lint warnings, test failures, vulnerabilities, format drift, stale files, merge artifacts. All clean.
+2. **[0 New Post-Last-BugFixer Commits Indexed]** — HEAD unchanged at `74e21919` (previous BugFixer commit). No new code changes since last cycle. `git fetch --prune origin` confirmed main is up to date.
+3. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities** (no re-bump occurred).
+4. **[BUG-025 Still Fixed]** — TS2321 excessive stack depth fix (`as UserConfig` cast in vite.config.ts) holds.
+5. **[BUG-030 Still Fixed]** — sharp 0.35.3 override — 0 vulns (npm audit).
+6. **[BUG-031 Tracked]** — `brace-expansion` CVE (GHSA-mh99-v99m-4gvg, dev-only ESLint toolchain, over-broad advisory range). Lockfile at 5.0.8. No production impact.
+7. **[Test Count Update]** — **2,196** (884 web + 502 API + 810 shared — shared +5 from previous documented count 805; actual test count corrected).
+8. **[Empty Temp Dirs Cleaned]** — 3 empty `.vite-temp` directories removed (`apps/api/node_modules/.vite-temp`, `apps/web/node_modules/.vite-temp`, `packages/shared/node_modules/.vite-temp`).
+9. **[Format Drift Check]** — Prettier: all files formatted ✅.
+10. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,196/2,196** ✅, format ✅, npm audit **0 vulns** ✅.
+
+### Quality Metrics
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,196/2,196** (884 web + 502 API + **810 shared**) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013/BUG-030 STILL FIXED) |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** in source |
+| `as any` | ✅ **0** in source |
+| Empty catch blocks | ✅ **0** in source |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| Merge conflict artifacts | ✅ **0** |
+| BUG-025 (TS2321) | ✅ **STILL FIXED** (as UserConfig cast) |
+| BUG-030 (sharp CVEs) | ✅ **STILL FIXED** (npm override to 0.35.3) |
+| BUG-031 (brace-expansion) | ✅ **TRACKED** (dev-only, no production impact) |
+| Empty `.vite-temp` dirs | ✅ **3 cleaned** |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,196 tests green, 0 vulnerabilities, 0 lint/type errors. 0 new post-BugFixer commits to index (HEAD unchanged). Test count corrected: shared 805→810 (actual). 3 empty `.vite-temp` directories cleaned. BUG-013/BUG-025/BUG-030 still fixed. BUG-031 tracked (dev-only). All quality gates pass.** ✅
+
 ## Cycle 301 (2026-07-25 — RepoKeeper: full repository audit, **0 new commits since Cycle 300** (HEAD unchanged at `5134392e`), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-031 tracked (brace-expansion dev-only CVE), test count stable **2,191/2,191** (884 web + 502 api + 805 shared), BroCula ref unchanged (Jul 25 — LH **99-100-100-100** ⭐), **`playwright-core` removed from devDependencies** (unused direct dependency — transitively provided by `playwright@1.61.1`), archive retention OK (earliest: Jun 25, exactly 30 days), all quality gates pass ✅)
 
 ### Actions Taken
@@ -41,6 +82,48 @@
 ### Verdict
 
 **All quality gates pass. Repository remains exceptionally healthy — 2,191 tests green, 0 vulnerabilities, 0 lint/type errors. 0 new post-Cycle-300 commits to index. `playwright-core` removed from devDependencies (unused direct dependency — transitively provided by playwright@1.61.1). BUG-025 still fixed. BUG-013 still fixed. BUG-031 tracked (dev-only). BroCula ref unchanged (Jul 25 — LH 99-100-100-100 ⭐). All quality gates pass.** ✅
+
+## Cycle 302 (2026-07-25 — RepoKeeper: full repository audit, **2 new post-Cycle-301 commits indexed** (feat(accessibility) aria-live counter/milestone announcement `21e32d19`, fix(bugfixer) ULW Cycle `74e21919`) + BroCula Run 3 `2613f7d2` indexed (LH **100-100-100-100** PERFECT ⭐, ran between Cycle 300–301 and previously unrecorded in findings), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-031 tracked (brace-expansion dev-only CVE), test count correction from Cycle 301: **2,191→2,196** (884 web + 502 API + **810 shared** — shared +5 from flexy Iteration 161 `e2fa72b8` but undercounted as 805 in Cycle 301), all BroCula refs updated, all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. 0 `.patch` files. 0 empty directories. No cleanup actions required.
+2. **[2 New Post-Cycle-301 Commits Indexed]** — Since Cycle 301 (`93b2e3aa`):
+   - `21e32d19` — `feat(accessibility): add aria-live counter and milestone announcement to StepStack`
+   - `74e21919` — `fix(bugfixer): ULW Cycle Jul 25 2026 — full audit clean`
+3. **[BroCula Run 3 Indexed]** — `2613f7d2` — BroCula ULW Loop Jul 25 2026 Run 3 — LH **100-100-100-100** 🏆 PERFECT (ran between Cycle 300–301, previously unrecorded in findings). BroCula ref updated: Cycle 301 mentioned LH 99-100-100-100; current ref is **100-100-100-100**.
+4. **[Test Count Corrected]** — **2,196** (884 web + 502 API + **810 shared**). Cycle 301 recorded "805 shared" — the 5-test increase came from `e2fa72b8` (flexy Iteration 161 which added 5 `BUILD_CONFIG` tests) that ran between Cycle 300–301 but was undercounted in the Cycle 301 findings entry.
+5. **[Documentation Drift Fixes]** — ci-configuration.md test count 2,191→2,196; active-tasks.md refreshed with Cycle 302 entry; bugs.md new Bug Status entry (Jul 25); features.md updated with latest accessibility feat.
+6. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities**.
+7. **[BUG-025 Still Fixed]** — TS2321 excessive stack depth fix (`as UserConfig` cast) holds. Verified: typecheck ✅ lint ✅ build ✅.
+8. **[BUG-031 Tracked]** — `brace-expansion` CVE in dev-only ESLint toolchain. Override to 5.0.8 holds. No production impact.
+9. **[Format Drift Check]** — Prettier check: all files formatted ✅.
+10. **[Archive Retention]** — All archive files within 30-day window ✅. Earliest: Jun 25 (30 days). No purge needed.
+11. **[Stale Merged Branches]** — None found (squash-merge repo) ✅.
+12. **[Stale Plan Files]** — No stale plan files found ✅.
+13. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,196/2,196** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,196/2,196** (884 web + 502 API + 810 shared) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013/BUG-031 STILL FIXED) |
+| Secrets scan | ✅ 0 secrets |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** |
+| `as any` | ✅ **0** |
+| Empty catch blocks | ✅ **0** |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| BUG-025 (TS2321) | ✅ **STILL FIXED** |
+| BUG-031 (brace-expansion dev-only) | ✅ **TRACKED** (over-broad advisory, no production impact) |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,196 tests green, 0 vulnerabilities, 0 lint/type errors. 2 new post-Cycle-301 commits indexed + BroCula Run 3 (LH 100-100-100-100 PERFECT). Test count corrected: 2,191→2,196 (shared +5 from flexy Iteration 161, undercounted in Cycle 301). Documentation drift fixed in 4 files (ci-configuration, active-tasks, bugs, features). BUG-025 still fixed. BUG-013 still fixed. BUG-031 tracked (dev-only). All quality gates pass.** ✅
 
 ## Cycle 300 (2026-07-25 — RepoKeeper: full repository audit, 1 new commit indexed (fix(audit) brace-expansion override `e360f5c5`), BUG-013 still fixed (0 vulns), BUG-025 still fixed (TS2321), BUG-031 tracked (brace-expansion dev-only CVE), test count increased **884+502+805=2,191/2,191** (web +24, api +0, shared +0), BroCula ref updated (Jul 25 — LH **99-100-100-100** ⭐), `scripts/fix-ci-node-version.mjs` removed (unreferenced, BUG-014/BUG-017 confirmed resolved on main), ci-configuration.md updated to reflect current state, 12 stale audit files from Jul 20-22 archived (6 current remain: Jul 23-25), 3 empty `.vite-temp` directories cleaned, all quality gates pass ✅)
 
