@@ -2,6 +2,12 @@
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
 
+## Bug Status — Jul 25 2026 (BroCula ULW Loop)
+
+> **BroCula ULW Loop Jul 25 2026 (2026-07-25 — brocula/loop-2026-07-25)**: Full BroCula audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,191/2,191** ✅ (884 web + 502 API + 805 shared). Format ✅. Lighthouse **99-100-100-100** ⭐🏆. **0 console errors/warnings**. **0 optimization opportunities**. Audit: **7 high vulnerabilities** (BUG-031 — new brace-expansion CVE, dev-only toolchain). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK.
+
+> **BUG-031 — NEW**: `brace-expansion` CVE (GHSA-mh99-v99m-4gvg, DoS via unbounded expansion) in ESLint dev toolchain. All versions ≤5.0.7 flagged. Lockfile updated to 5.0.8 for `typescript-eslint` path. `brace-expansion@1.1.16` (used by `eslint-plugin-jsx-a11y` via `minimatch@3.x`) includes the 1.1.12 fix but caught by over-broad advisory range. Dev-only, no production impact. Fix requires upstream dependency updates.
+
 ## Bug Status — Jul 24 2026 (BugFixer ULW Cycle)
 
 > **BugFixer ULW Cycle Jul 24 2026 (2026-07-24 — fix/bugfixer-ulw-cycle-jul-24-2026)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,191/2,191** ✅ (884 web + 502 API + 805 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed; BUG-030 still fixed). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.

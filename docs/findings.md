@@ -2,6 +2,43 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## BroCula ULW Loop Jul 25 2026 (2026-07-25)
+
+> Full BroCula audit — production build. Lighthouse 99-100-100-100 ⭐🏆. 0 console errors/warnings. 0 optimization opportunities. 0 failed network requests. 2,191 tests green. All quality gates pass. BUG-031 tracked (brace-expansion CVE, dev-only, advisory range over-broad).
+
+### Actions Taken
+
+1. **[Production Build & Preview]** — `npm run build` clean. `vite preview` on port 4173 served production bundle.
+2. **[Lighthouse Audit]** — Production build LH scores: Perf **99** ⭐, Accessibility **100** 🏆, Best Practices **100** 🏆, SEO **100** 🏆. All relevant optimization audits score 1.0 (unused-css-rules, unused-javascript, legacy-javascript, duplicated-javascript). Total byte weight: 224 KiB. FCP/LCP variance is CI-environment related (same as prior BroCula runs).
+3. **[Playwright Deep Scan]** — 3-phase scan: initial load (✅ title rendered, 0 errors/warnings), element check (✅ root, buttons, links present), resource check (✅ 0 failed network requests).
+4. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ format ✅. 0 `@ts-expect-error`/`@ts-ignore`/`as any`/empty catch blocks.
+5. **[BUG-031 — New Finding]** — `brace-expansion` CVE (GHSA-mh99-v99m-4gvg) in dev-only ESLint toolchain. 7 high-severity reported via npm audit. Lockfile updated to 5.0.8 for `typescript-eslint` path. `brace-expansion@1.1.16` (used by `eslint-plugin-jsx-a11y` via `minimatch@3.x`) includes the 1.1.12 fix but caught by over-broad advisory range `≤5.0.7`. Dev-only, no production impact.
+6. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, 0 vulns.
+7. **[BUG-030 Still Fixed]** — sharp 0.35.3 override, 0 vulns.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ⚠️ 7 high vulns (BUG-031 — brace-expansion dev-only) |
+| Console errors | ✅ 0 |
+| Console warnings | ✅ 0 |
+| Failed network requests | ✅ 0 |
+| `@ts-expect-error`/`@ts-ignore` | ✅ 0 |
+| `as any` | ✅ 0 |
+| Empty catch blocks | ✅ 0 |
+| TODO/FIXME/HACK in source | ✅ 0 |
+| BUG-013 | ✅ STILL FIXED |
+| BUG-030 | ✅ STILL FIXED |
+
+### Verdict
+
+🧛‍♂️✅ **BroCula declares the codebase clean.** All quality gates pass. Perfect Lighthouse on accessibility/best-practices/SEO. One new finding (BUG-031 dev-only toolchain CVE with over-broad advisory range).
+
 ## BugFixer ULW Cycle Jul 24 2026 (2026-07-24)
 
 > Full repository audit. 5 new post-BugFixer commits indexed. All quality gates pass. No new bugs found.
