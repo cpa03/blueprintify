@@ -26,6 +26,12 @@ Eliminate hardcoded values and build a modular, single-source-of-truth system.
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — **884 web + 502 api + 810 shared = 2,196 tests passing** across 93 files
 
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2863](https://github.com/cpa03/blueprintify/pull/2863) | `feat/flexy-iteration-163-hardcoded-modifiers` | refactor(flexy): eliminate all remaining hardcoded modifier key strings across 7 components (Iteration 163) |
+
 ---
 
 ### ✅ Flexy Iteration 159: Replace Hardcoded "cmd" with MODIFIER_KEYS.CMD in EditorToolbar
