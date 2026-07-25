@@ -17,7 +17,7 @@
  */
 
 import { memo, useState, useEffect } from "react";
-import { SHORTCUT_LABELS, SHORTCUT_DESCRIPTIONS } from "@blueprint/shared/config";
+import { SHORTCUT_LABELS, SHORTCUT_DESCRIPTIONS, MODIFIER_KEYS } from "@blueprint/shared/config";
 import {
   UI_CONTENT,
   EXTERNAL_URLS,
@@ -108,7 +108,7 @@ function HeaderComponent({
               shortcut={SHORTCUT_LABELS.SHORTCUTS_MODAL}
               description={SHORTCUT_DESCRIPTIONS.SHOW_KEYBOARD_SHORTCUTS}
               position="bottom"
-              modifier="none"
+              modifier={MODIFIER_KEYS.NONE}
             >
               <RippleButton
                 onClick={onShowShortcuts}

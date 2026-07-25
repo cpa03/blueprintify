@@ -33,7 +33,7 @@ import {
   SCROLL_BEHAVIOR,
   DIRECTION,
 } from "../config/constants";
-import { FRAMER_TYPE } from "@blueprint/shared/config";
+import { FRAMER_TYPE, MODIFIER_KEYS } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 type ScrollDirection = "top" | "bottom";
@@ -266,7 +266,7 @@ export const ScrollToPosition = memo(function ScrollToPosition({
             shortcut={shortCutKey}
             description={tooltipDescription}
             position={tooltipPosition}
-            modifier="none"
+            modifier={MODIFIER_KEYS.NONE}
           >
             <motion.button
               onClick={scrollToTarget}
