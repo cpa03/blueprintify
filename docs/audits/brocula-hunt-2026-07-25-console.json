@@ -1,0 +1,12 @@
+{
+  "date": "2026-07-25",
+  "baseUrl": "http://localhost:4173",
+  "consoleErrors": [],
+  "consoleWarnings": [],
+  "failedRequests": [],
+  "summary": {
+    "consoleErrors": 0,
+    "consoleWarnings": 0,
+    "failedRequests": 0
+  }
+}
