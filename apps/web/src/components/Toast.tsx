@@ -41,6 +41,7 @@ import {
   ANIMATION,
   EASING,
   TOOLTIP_CONFIG,
+  TOAST_DISPLAY,
 } from "../config/constants";
 import { TOAST_SPRING, TRANSFORMS } from "../config/theme";
 import {
@@ -581,11 +582,11 @@ function ToastContainerComponent(): JSX.Element {
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
-              Dismiss all (
+              {TOAST_DISPLAY.DISMISS_ALL_PREFIX}
               <span className="tabular-nums" aria-hidden="true">
                 {toasts.length}
               </span>
-              )
+              {TOAST_DISPLAY.DISMISS_ALL_SUFFIX}
               <kbd
                 className="ml-1.5 px-1 py-0.5 bg-dark-700/50 rounded text-2xs font-mono text-dark-500 border border-dark-600/30 leading-none"
                 aria-hidden="true"
@@ -629,7 +630,7 @@ function ToastContainerComponent(): JSX.Element {
                     d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
-                Dismiss all (
+                {TOAST_DISPLAY.DISMISS_ALL_PREFIX}
                 <motion.span
                   key={toasts.length}
                   className="tabular-nums"
@@ -640,7 +641,7 @@ function ToastContainerComponent(): JSX.Element {
                 >
                   {toasts.length}
                 </motion.span>
-                )
+                {TOAST_DISPLAY.DISMISS_ALL_SUFFIX}
                 <kbd
                   className="ml-1.5 px-1 py-0.5 bg-dark-700/50 rounded text-2xs font-mono text-dark-500 border border-dark-600/30 leading-none"
                   aria-hidden="true"

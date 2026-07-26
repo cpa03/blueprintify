@@ -81,6 +81,9 @@ import {
   SCROLL_INTO_VIEW_BLOCK,
   ACCESSIBILITY_LABELS,
   CSS_CLASSES,
+  GENERATION_STAT_LABELS,
+  GENERATION_ANNOUNCER,
+  KEY_DISPLAY,
 } from "../../config/constants";
 import { KEYBOARD_SHORTCUTS } from "../../config/constants/keyboard";
 import { COLORS, HEADER_ANIMATION } from "../../config/theme";
@@ -563,14 +566,8 @@ export const StepGenerating = memo(function StepGenerating({
 
       <p className="sr-only" role="status" aria-live="polite">
         {timerActive
-          ? "Elapsed time " +
-            elapsedTime +
-            ". Generated " +
-            blueprintLines +
-            " blueprint lines and " +
-            tasksLines +
-            " task lines"
-          : "Generated " + blueprintLines + " blueprint lines and " + tasksLines + " task lines"}
+          ? GENERATION_ANNOUNCER.ELAPSED(elapsedTime, blueprintLines, tasksLines)
+          : GENERATION_ANNOUNCER.GENERATED(blueprintLines, tasksLines)}
       </p>
 
       {/* Live stats — show "—" while awaiting first content, then animated counts.
@@ -640,7 +637,7 @@ export const StepGenerating = memo(function StepGenerating({
               )}
             </AnimatePresence>
           </div>
-          <div className="text-sm text-dark-400">Blueprint Lines</div>
+          <div className="text-sm text-dark-400">{GENERATION_STAT_LABELS.BLUEPRINT_LINES}</div>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -707,7 +704,7 @@ export const StepGenerating = memo(function StepGenerating({
               )}
             </AnimatePresence>
           </div>
-          <div className="text-sm text-dark-400">Task Lines</div>
+          <div className="text-sm text-dark-400">{GENERATION_STAT_LABELS.TASKS_LINES}</div>
         </motion.div>
       </div>
 
@@ -969,7 +966,7 @@ export const StepGenerating = memo(function StepGenerating({
               className="mt-8"
             >
               <KeyboardShortcutTooltip
-                shortcut="Esc"
+                shortcut={KEY_DISPLAY.ESC}
                 description={WIZARD_GENERATING_LABELS.CANCEL_GENERATION_DESC}
                 position="top"
                 modifier={MODIFIER_KEYS.NONE}
@@ -1000,7 +997,7 @@ export const StepGenerating = memo(function StepGenerating({
                     className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
                     aria-hidden="true"
                   >
-                    Esc
+                    {KEY_DISPLAY.ESC}
                   </kbd>
                 </RippleButton>
               </KeyboardShortcutTooltip>
