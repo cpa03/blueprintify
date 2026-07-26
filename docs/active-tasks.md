@@ -2,22 +2,23 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
-## ✅ RepoKeeper Cycle 304 — **Full repository audit, 2 new post-Cycle-303 commits indexed (BroCula Run 5 `214d9ce5` — LH 99-100-100-100, flexy Iteration `64bc3621` — HOVER_SCALE.MICRO), BroCula Run 5 added to audits/README, knowledge-review/CHANGELOG refreshed, test count stable 2,196/2,196, all quality gates pass** ✅
+## ✅ RepoKeeper Cycle 305 — **Full repository audit, 4 new post-Cycle-304 commits indexed (flexy Iteration 163 `4eb78e9c`, BroCula Run 6 `b1ea5119` — LH 100-100-100-100 🏆, zustand 4.5.7→5.0.14 `c92ed1b3`, MotionConfigWrapper tests `b08bd0e4`), test count 2,202/2,202 (890 web + 502 API + 810 shared — web +6), BUG-013 still fixed, BUG-031 tracked, 2 stale archive files from Jun 26 purged, all quality gates pass** ✅
 
-### Task: Full repository audit — **2 new post-Cycle-303 commits indexed** since `9a92995f`: chore(brocula): BroCula ULW Loop Jul 25 2026 Run 5 — LH 99-100-100-100 (`214d9ce5`); refactor(flexy): replace hardcoded scale with HOVER_SCALE.MICRO in AnimatedCopyButton (`64bc3621`); **BUG-013 still fixed** (lighthouse 12.6.1 — 0 vulns); **BUG-031 tracked** (brace-expansion dev-only CVE — override 5.0.8 holds); **test count stable** **2,196/2,196** (884 web + 502 API + **810 shared** — unchanged); **BroCula Run 5 indexed** (LH 99-100-100-100); **0 stale merged branches**; **0 stale plan files**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; **0 merge conflict artifacts**; **archive retention OK** (oldest files Jun 26 — 29 days, within 30-day window); **documentation updates**: audits/README.md (Run 5 added as latest), bugs.md (Cycle 304 entry), active-tasks.md (this entry), findings.md (Cycle 304 entry), knowledge-review.md (refreshed), CHANGELOG.md (Cycle 304 entry); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,196/2,196** ✅, format ✅, npm audit **0 vulns** ✅)
+### Task: Full repository audit — **4 new post-Cycle-304 commits indexed** since `83e2d6e8`: refactor(flexy): eliminate all remaining hardcoded modifier key strings across 7 components — Iteration 163 (`4eb78e9c`); chore(brocula): BroCula ULW Loop Jul 25 2026 Run 6 — LH **100-100-100-100** 🏆 **PERFECT** (`b1ea5119`); chore(deps): upgrade zustand from 4.5.7 to 5.0.14 (`c92ed1b3`); test(web): add MotionConfigWrapper component tests (`b08bd0e4`); **test count update** **2,196→2,202** (890 web + 502 API + **810 shared** — web +6); **BUG-013 still fixed** (lighthouse 12.6.1 — 0 vulns); **BUG-031 tracked** (brace-expansion dev-only CVE — override 5.0.8 holds); **BroCula Run 6 indexed** (LH **100-100-100-100** 🏆); **zestand upgrade verified** (StoreApi.setState type simplified in persistence.ts, no breaking changes); **2 stale archive files purged** (Jun 26, past 30-day retention); **0 stale merged branches**; **0 stale plan files**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; **0 merge conflict artifacts**; **documentation updates**: findings.md (Cycle 305 entry), active-tasks.md (this entry), bugs.md (Cycle 305 entry), knowledge-review.md (refreshed), CHANGELOG.md (Cycle 305 entry); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,202/2,202** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅)
 
 - **Priority**: High
 - **Status**: ✅ Complete
-- **Objective**: RepoKeeper Cycle 304 — full repository audit, index 2 post-Cycle-303 commits, add BroCula Run 5 to audits/README, refresh knowledge-review/CHANGELOG, verify BUG-013/BUG-031, quality verification
+- **Objective**: RepoKeeper Cycle 305 — full repository audit, index 4 post-Cycle-304 commits, purge stale archive files (Jun 26), verify zustand upgrade, verify BUG-013/BUG-031, quality verification
 - **Actions**:
   - [x] **Full repository scan**: No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks, no `.patch` files ✅
-  - [x] **2 new post-Cycle-303 commits indexed**: BroCula Run 5 (`214d9ce5` — LH 99-100-100-100), flexy HOVER_SCALE.MICRO (`64bc3621`) ✅
+  - [x] **4 new post-Cycle-304 commits indexed**: flexy Iteration 163 (`4eb78e9c`), BroCula Run 6 (`b1ea5119` — LH 100-100-100-100 🏆), zustand 5.0.14 upgrade (`c92ed1b3`), MotionConfigWrapper tests (`b08bd0e4`) ✅
   - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns ✅
   - [x] **BUG-031 tracked**: brace-expansion CVE — override 5.0.8, dev-only ✅
-  - [x] **BroCula Run 5 indexed**: LH 99-100-100-100 ⭐ ✅
-  - [x] **Archive retention OK**: oldest files Jun 26 (29 days, within 30-day window) ✅
-  - [x] **Documentation updates**: audits/README.md, bugs.md, active-tasks.md, findings.md, knowledge-review.md, CHANGELOG.md ✅
-  - [x] **Quality verification**: typecheck ✅ lint ✅ tests **2,196/2,196** ✅, format ✅, secrets scan ✅, npm audit **0 vulns** ✅
+  - [x] **Zustand upgrade verified**: 4.5.7→5.0.14 — StoreApi.setState type migration clean, build passes ✅
+  - [x] **BroCula Run 6 indexed**: LH 100-100-100-100 🏆 ✅
+  - [x] **Stale archive files purged**: 2 Jun 26 files (past 30-day retention) ✅
+  - [x] **Documentation updates**: findings.md, active-tasks.md, bugs.md, knowledge-review.md, CHANGELOG.md ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests **2,202/2,202** ✅, format ✅, secrets scan ✅, npm audit **0 vulns** ✅
 
 ## ✅ RepoKeeper Cycle 303 — **Full repository audit, 5 new post-Cycle-302 commits indexed (BroCula Run 4 `baadcd1e`, fix(accessibility) skip-link focus ring `a3fc85d7`, BugFixer ULW Run 2 `c9dc90ab`, flexy Iteration 162 docs `4abe8ba7`/`c2d0b2eb`), 2 raw JSON audit artifacts removed, 2 stale archive files from Jun 25 purged, audits/README updated, test count stable 2,196/2,196, all quality gates pass** ✅
 
