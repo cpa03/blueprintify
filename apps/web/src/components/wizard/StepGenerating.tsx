@@ -80,6 +80,7 @@ import {
   SCROLL_BEHAVIOR,
   SCROLL_INTO_VIEW_BLOCK,
   ACCESSIBILITY_LABELS,
+  AUTOFOCUS_VALUES,
   CSS_CLASSES,
   GENERATION_STAT_LABELS,
   GENERATION_ANNOUNCER,
@@ -213,7 +214,9 @@ export const StepGenerating = memo(function StepGenerating({
     if (isComplete && !wasComplete.current) {
       // Small delay to let the spring animation settle before focusing
       requestAnimationFrame(() => {
-        const btn = document.querySelector<HTMLButtonElement>('[data-autofocus="complete"]');
+        const btn = document.querySelector<HTMLButtonElement>(
+          `[data-autofocus="${AUTOFOCUS_VALUES.COMPLETE}"]`
+        );
         btn?.focus();
       });
     }
@@ -225,7 +228,9 @@ export const StepGenerating = memo(function StepGenerating({
   useEffect(() => {
     if (isError && !wasError.current) {
       requestAnimationFrame(() => {
-        const btn = document.querySelector<HTMLButtonElement>('[data-autofocus="error"]');
+        const btn = document.querySelector<HTMLButtonElement>(
+          `[data-autofocus="${AUTOFOCUS_VALUES.ERROR}"]`
+        );
         btn?.focus();
       });
     }
@@ -738,7 +743,7 @@ export const StepGenerating = memo(function StepGenerating({
                   onClick={handleViewEditor}
                   className="btn-primary flex items-center gap-2 attention-glow"
                   ariaLabel={WIZARD_GENERATING_LABELS.VIEW_EDITOR_ARIA}
-                  data-autofocus="complete"
+                  data-autofocus={AUTOFOCUS_VALUES.COMPLETE}
                   aria-keyshortcuts={getAriaShortcutKey(
                     KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY,
                     MODIFIER_KEYS.CMD
@@ -863,7 +868,7 @@ export const StepGenerating = memo(function StepGenerating({
               onClick={handleViewReview}
               className="btn-primary flex items-center gap-2"
               ariaLabel={GENERATION_ERROR_LABELS.TRY_AGAIN_ARIA}
-              data-autofocus="error"
+              data-autofocus={AUTOFOCUS_VALUES.ERROR}
             >
               <svg
                 className="w-5 h-5"

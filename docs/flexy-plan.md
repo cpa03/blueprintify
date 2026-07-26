@@ -3171,3 +3171,28 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — **890 web + 502 api + 810 shared = 2,202 tests passing** across 94 files
+
+---
+
+### ✅ Flexy Iteration 169: Centralize Hardcoded CSS Class Selectors & Data Attribute Values
+
+**Problem**: After 168 iterations, 3 hardcoded CSS class selector strings and 4 hardcoded `data-autofocus` attribute values/selectors remained in component querySelector calls:
+1. `Wizard.tsx` — `".btn-primary:not(:disabled)"` (×2) and `".btn-secondary:not(:disabled)"` — `BTN_SECONDARY` was missing from `CSS_CLASSES`
+2. `StepGenerating.tsx` — `'[data-autofocus="complete"]'` / `'[data-autofocus="error"]'` in querySelector (×2) and JSX attribute values (×2)
+
+| Config Object | File | Change |
+|---|---|---|
+| `CSS_CLASSES.BTN_SECONDARY` | `apps/web/src/config/constants/accessibility.ts` | Added `"btn-secondary"` — single source of truth for secondary button CSS class |
+| `AUTOFOCUS_VALUES` | `apps/web/src/config/constants/accessibility.ts` | **NEW** config: `COMPLETE: "complete"`, `ERROR: "error"` — single source of truth for data-autofocus attribute values |
+
+| File | Change |
+|---|---|
+| `Wizard.tsx` | Added `CSS_CLASSES` import; replaced 3 hardcoded querySelector strings with computed template literals using `CSS_CLASSES.BTN_PRIMARY`/`BTN_SECONDARY` |
+| `StepGenerating.tsx` | Added `AUTOFOCUS_VALUES` to import; replaced 2 querySelector strings + 2 JSX `data-autofocus` attribute values with `AUTOFOCUS_VALUES.COMPLETE`/`ERROR` refs |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean (shared + web)
+- ✅ `npm run test:all` — **912 web + 502 api + 810 shared = 2,224 tests passing** across 98 files
