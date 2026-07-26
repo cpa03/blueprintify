@@ -547,7 +547,7 @@ function App(): JSX.Element {
             >
               <button
                 onClick={handleNewProject}
-                className={`fixed bottom-14 right-6 z-20 flex items-center gap-1.5 text-xs text-dark-500 hover:text-accent-pink transition-colors px-3 py-1.5 rounded-lg bg-dark-800/60 backdrop-blur-sm border border-dark-700/50 hover:border-accent-pink/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 animate-slide-up${showNewProjectArrival ? ` ${CSS_CLASSES.ARRIVAL_POP}` : ""}`}
+                className={`fixed bottom-14 right-6 z-20 flex items-center gap-1.5 text-xs text-dark-500 hover:text-accent-pink transition-colors px-3 py-1.5 rounded-lg bg-dark-800/60 backdrop-blur-sm border border-dark-700/50 hover:border-accent-pink/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 animate-slide-up group${showNewProjectArrival ? ` ${CSS_CLASSES.ARRIVAL_POP}` : ""}`}
                 style={{
                   animationDelay: `${ANIMATION_ENTRANCE_DELAYS.SLOWER}s`,
                   animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
@@ -559,7 +559,7 @@ function App(): JSX.Element {
                 )}
               >
                 <svg
-                  className="w-3.5 h-3.5"
+                  className="w-3.5 h-3.5 motion-safe:group-hover:rotate-90 transition-transform duration-200"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
