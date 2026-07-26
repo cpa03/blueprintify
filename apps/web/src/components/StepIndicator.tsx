@@ -155,7 +155,11 @@ function StepIndicatorComponent(): JSX.Element {
             ariaLabel={
               isGenerationComplete
                 ? ACCESSIBILITY_LABELS.PROGRESS.ALL_STEPS_COMPLETE
-                : `Step ${effectiveIndex + 1} of ${STEPS.length}: ${currentStepLabel}`
+                : ACCESSIBILITY_LABELS.PROGRESS.STEP_OF_ARIA(
+                    effectiveIndex + 1,
+                    STEPS.length,
+                    currentStepLabel
+                  )
             }
             isAnimating={isGenerating}
             animateOnMount
