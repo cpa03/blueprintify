@@ -3152,3 +3152,22 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — **890 web + 502 api + 810 shared = 2,202 tests passing** across 94 files
+
+---
+
+### ✅ Flexy Iteration 168: Centralize Hardcoded "arrival-pop" CSS Class Name into CSS_CLASSES Config
+
+**Problem**: Recent `feat(ux): add arrival pop animation to New Project button` (75a8db93) and the existing ShowEditorButton both used a hardcoded `" arrival-pop"` string literal in their className template literals. The `CSS_CLASSES` config (in `accessibility.ts`) already existed for CSS class name constants but `ARRIVAL_POP` was missing.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/accessibility.ts` | Added `CSS_CLASSES.ARRIVAL_POP: "arrival-pop"` — single source of truth for the arrival-pop CSS animation class |
+| `apps/web/src/App.tsx` | Added `CSS_CLASSES` import from `./config/constants`; replaced `" arrival-pop"` with `` ` ${CSS_CLASSES.ARRIVAL_POP}` `` in New Project button className |
+| `apps/web/src/components/ShowEditorButton.tsx` | Added `CSS_CLASSES` to import from `../config/constants`; replaced `" arrival-pop"` with `` ` ${CSS_CLASSES.ARRIVAL_POP}` `` |
+
+**Verification**:
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — **890 web + 502 api + 810 shared = 2,202 tests passing** across 94 files
