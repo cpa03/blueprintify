@@ -597,7 +597,7 @@ function App(): JSX.Element {
             <Icon
               name="lightning"
               className="w-4 h-4 inline-block mr-0.5 text-primary-400"
-              ariaLabel="Lightning bolt"
+              ariaLabel={ACCESSIBILITY_LABELS.ICONS.LIGHTNING_BOLT}
             />{" "}
             <a
               href={EXTERNAL_URLS.CLOUDFLARE_WORKERS}

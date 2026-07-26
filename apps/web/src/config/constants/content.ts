@@ -319,6 +319,8 @@ export const ACCESSIBILITY_LABELS = {
     STEPS_COMPLETE: (pct: number, remaining: number) =>
       `${Math.round(pct)}% complete - ${remaining} steps remaining`,
     ALL_STEPS_COMPLETE: "All steps complete",
+    STEP_OF_ARIA: (index: number, total: number, label: string) =>
+      `Step ${index} of ${total}: ${label}`,
   },
   LAZY_CODEMIRROR: {
     LOADING: "Loading code editor",
@@ -393,6 +395,9 @@ export const ACCESSIBILITY_LABELS = {
   },
   NAV: {
     MAIN: "Main navigation",
+  },
+  ICONS: {
+    LIGHTNING_BOLT: "Lightning bolt",
   },
 } as const;
 

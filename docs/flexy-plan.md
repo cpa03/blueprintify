@@ -3124,3 +3124,31 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2877](https://github.com/cpa03/blueprintify/pull/2877) | `feat/flexy-iteration-166-hardcoded-cleanup` | refactor(flexy): eliminate remaining hardcoded stat labels, sr text, Esc display, and dismiss-all strings (Iteration 166) |
+| PR # | `flexy/iteration-167` | refactor(flexy): modularize remaining hardcoded aria-label strings (Iteration 167) |
+
+---
+
+## Iteration 167 — Modularize remaining hardcoded aria-label strings
+
+**Theme**: Two hardcoded aria-label strings found in production code after 166 iterations. Both are now config-driven.
+
+**Findings** (manual scan after full verification baseline):
+
+1. `apps/web/src/App.tsx:583` — hardcoded `ariaLabel="Lightning bolt"` on Icon component
+2. `apps/web/src/components/StepIndicator.tsx:158` — hardcoded template `\`Step \${effectiveIndex + 1} of \${STEPS.length}: \${currentStepLabel}\`` for CircularProgress aria-label
+
+**Changes**:
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/content.ts` | Added `ACCESSIBILITY_LABELS.ICONS.LIGHTNING_BOLT` string, `ACCESSIBILITY_LABELS.PROGRESS.STEP_OF_ARIA` template function |
+| `apps/web/src/App.tsx` | Replaced `ariaLabel="Lightning bolt"` with `ariaLabel={ACCESSIBILITY_LABELS.ICONS.LIGHTNING_BOLT}` |
+| `apps/web/src/components/StepIndicator.tsx` | Replaced template literal with `ACCESSIBILITY_LABELS.PROGRESS.STEP_OF_ARIA(effectiveIndex + 1, STEPS.length, currentStepLabel)` |
+| `apps/web/src/components/StepIndicator.test.tsx` | Updated mock to include `STEP_OF_ARIA` |
+
+**Verification**:
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — **890 web + 502 api + 810 shared = 2,202 tests passing** across 94 files
