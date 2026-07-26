@@ -275,6 +275,7 @@ export const ACCESSIBILITY_LABELS = {
     OPENS_IN_NEW_TAB: "(opens in new tab)",
   },
   TOAST: {
+    REGION: "Notifications",
     DISMISS: (type: string) => `Dismiss ${type} notification`,
     DISMISS_ALL: (count: number) => `Dismiss all ${count} notifications`,
   },
