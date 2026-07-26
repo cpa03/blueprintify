@@ -586,6 +586,66 @@ export const WIZARD_REVIEW_DESCRIPTIONS = {
 } as const;
 
 // ============================================================================
+// Generation Stat Card Labels
+// ============================================================================
+
+/**
+ * Labels for the stat cards shown during blueprint generation.
+ * Flexy says: No hardcoded "Blueprint Lines" / "Task Lines" in components!
+ */
+export const GENERATION_STAT_LABELS = {
+  BLUEPRINT_LINES: "Blueprint Lines",
+  TASKS_LINES: "Task Lines",
+} as const;
+
+// ============================================================================
+// Generation Screen Reader Announcer
+// ============================================================================
+
+/**
+ * Screen reader announcement templates for the generation progress area.
+ * Flexy says: No hardcoded sr-only text concatenation in StepGenerating!
+ */
+export const GENERATION_ANNOUNCER = {
+  ELAPSED: (time: string, bpLines: number, tLines: number): string =>
+    `Elapsed time ${time}. Generated ${bpLines} blueprint lines and ${tLines} task lines`,
+  GENERATED: (bpLines: number, tLines: number): string =>
+    `Generated ${bpLines} blueprint lines and ${tLines} task lines`,
+} as const;
+
+// ============================================================================
+// Key Display Labels
+// ============================================================================
+
+/**
+ * Human-readable keyboard key display labels for kbd elements and shortcut
+ * display. Flexy says: No hardcoded "Esc" / "Enter" in components!
+ */
+export const KEY_DISPLAY = {
+  ESC: "Esc",
+  ENTER: "Enter",
+  TAB: "Tab",
+  SPACE: "Space",
+  HOME: "Home",
+  END: "End",
+} as const;
+
+// ============================================================================
+// Toast Display Labels
+// ============================================================================
+
+/**
+ * Toast component display text (visible UI text, not aria-labels).
+ * Flexy says: No hardcoded "Dismiss all (" display strings in Toast!
+ */
+export const TOAST_DISPLAY = {
+  /** Prefix before the dismiss-all count badge (JSX wraps the count between prefix/suffix) */
+  DISMISS_ALL_PREFIX: "Dismiss all (",
+  /** Suffix after the dismiss-all count badge */
+  DISMISS_ALL_SUFFIX: ")",
+} as const;
+
+// ============================================================================
 // Preview Empty State Labels
 // ============================================================================
 

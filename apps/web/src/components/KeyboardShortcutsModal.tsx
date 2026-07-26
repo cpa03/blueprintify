@@ -28,7 +28,7 @@ import { KEYBOARD_EVENT_KEYS, FRAMER_TYPE, DISPLAY_SYMBOLS } from "@blueprint/sh
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { Icon, type IconName } from "./Icon";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
-import { ACCESSIBILITY_LABELS } from "../config/constants/content";
+import { ACCESSIBILITY_LABELS, KEY_DISPLAY } from "../config/constants/content";
 
 /**
  * Props for the KeyboardShortcutsModal component.
@@ -91,7 +91,7 @@ const getShortcutItems = (): ShortcutItem[] => {
       category: SHORTCUT_CATEGORIES.GENERAL,
     },
     {
-      keys: ["Esc"],
+      keys: [KEY_DISPLAY.ESC],
       description: KEYBOARD_SHORTCUTS.CANCEL_GENERATION.DESCRIPTION,
       category: SHORTCUT_CATEGORIES.GENERATION,
     },
