@@ -2,6 +2,46 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 307 (2026-07-26 — RepoKeeper: full repository audit, **0 new post-Cycle-306 commits** (HEAD unchanged at `46ee2123`), test count unchanged **2,202/2,202** (890 web + 502 API + 810 shared), BUG-013 still fixed (0 vulns), BUG-031 tracked (brace-expansion dev-only CVE), archive retention OK (oldest Jun 27 — 29 days, within 30-day window), **0 stale `.omo/run-continuation/` session files from prior cycles**, BroCula Run 8 indexed (LH **98-100-100-100** ⭐), all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. 0 `.patch` files. 0 empty directories (excluding `node_modules`). No cleanup actions required.
+2. **[0 New Post-Cycle-306 Commits to Index]** — HEAD unchanged at `46ee2123` (chore(repokeeper): Cycle 306). No new work landed since Cycle 306.
+3. **[Test Count Unchanged]** — **2,202** (890 web + 502 API + 810 shared — unchanged from Cycle 306).
+4. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities** (no re-bump occurred).
+5. **[BUG-031 Still Tracked]** — `brace-expansion` CVE (GHSA-mh99-v99m-4gvg, dev-only ESLint toolchain, over-broad advisory range). Lockfile at 5.0.8. No production impact.
+6. **[BroCula Run 8 Indexed]** — `docs/audits/brocula-audit-2026-07-26-run8.md` — BroCula ULW Loop Jul 26 2026 Run 8 — LH **98-100-100-100** ⭐, **0 console errors/warnings**, **0 optimization opportunities**, all **2,202 tests pass**, all quality gates pass 🧛‍♂️⭐. audits/README already updated with Run 8 entry.
+7. **[Archive Retention OK]** — Oldest archive files from Jun 27 (29 days, within 30-day window). No purge needed.
+8. **[Stale `.omo/run-continuation/` Session Files]** — 0 from prior cycles ✅.
+9. **[Stale Merged Branches]** — None found (squash-merge repo) ✅.
+10. **[Stale Plan Files]** — No stale plan files found ✅.
+11. **[Documentation Drift Fixes]** — findings.md (this entry), active-tasks.md (Cycle 307 entry), bugs.md (Cycle 307 entry), knowledge-review.md (refreshed with Cycle 307 state), CHANGELOG.md (Cycle 307 entry).
+12. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,202/2,202** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,202/2,202** (890 web + 502 API + 810 shared) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013/BUG-031 STILL FIXED) |
+| Secrets scan | ✅ 0 secrets |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** |
+| `as any` | ✅ **0** |
+| Empty catch blocks | ✅ **0** (2 intentional `.catch(() => ({}))` patterns — noop error suppression) |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| BUG-031 (brace-expansion dev-only) | ✅ **TRACKED** (over-broad advisory, no production impact) |
+| Archive retention | ✅ All within 30-day window (Jun 27 onward) |
+| Stale `.omo/run-continuation/` files | ✅ **0** from prior cycles |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,202 tests green, 0 vulnerabilities, 0 lint/type errors. 0 new post-Cycle-306 commits to index — HEAD unchanged. BroCula Run 8 indexed (LH 98-100-100-100 ⭐, 0 console errors/warnings). Archive retention OK (oldest Jun 27 — 29 days). No stale files found. BUG-013 still fixed. BUG-031 tracked (dev-only). All quality gates pass.** ✅
+
 ## Cycle 306 (2026-07-26 — RepoKeeper: full repository audit, **3 new post-Cycle-305 commits indexed** (flexy Iteration 165 `84218e32`, docs flexy PR #2873 `653d9a1a`, feat(a11y) Toast landmark region `fd123141`), test count unchanged **2,202/2,202** (890 web + 502 API + 810 shared), BUG-013 still fixed (0 vulns), BUG-031 tracked (brace-expansion dev-only CVE), archive retention OK (oldest Jun 27 — 29 days, within 30-day window), **0 stale `.omo/run-continuation/` session files from prior cycles**, all quality gates pass ✅)
 
 ### Actions Taken
