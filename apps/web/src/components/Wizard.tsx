@@ -32,6 +32,7 @@ import {
   GENERATION_MESSAGES,
   CELEBRATION_TEXT,
   ACCESSIBILITY_LABELS,
+  CSS_CLASSES,
 } from "../config/constants";
 import { SPINNER } from "../config/styles";
 import {
@@ -119,7 +120,9 @@ function WizardComponent(): JSX.Element {
         if (currentStep === WIZARD_STEP_KEYS.GENERATING) return;
         if (document.activeElement?.tagName === "TEXTAREA") return;
 
-        const primaryBtn = document.querySelector<HTMLButtonElement>(".btn-primary:not(:disabled)");
+        const primaryBtn = document.querySelector<HTMLButtonElement>(
+          `.${CSS_CLASSES.BTN_PRIMARY}:not(:disabled)`
+        );
         if (primaryBtn) {
           e.preventDefault();
           primaryBtn.click();
@@ -143,7 +146,9 @@ function WizardComponent(): JSX.Element {
           return;
         }
 
-        const prevBtn = document.querySelector<HTMLButtonElement>(".btn-secondary:not(:disabled)");
+        const prevBtn = document.querySelector<HTMLButtonElement>(
+          `.${CSS_CLASSES.BTN_SECONDARY}:not(:disabled)`
+        );
         if (prevBtn) {
           prevBtn.click();
         }
@@ -159,7 +164,9 @@ function WizardComponent(): JSX.Element {
         if (isGenerating) return;
         if (currentStep === WIZARD_STEP_KEYS.REVIEW) return; // Review is the last step before generation
 
-        const nextBtn = document.querySelector<HTMLButtonElement>(".btn-primary:not(:disabled)");
+        const nextBtn = document.querySelector<HTMLButtonElement>(
+          `.${CSS_CLASSES.BTN_PRIMARY}:not(:disabled)`
+        );
         if (nextBtn) {
           e.preventDefault();
           nextBtn.click();

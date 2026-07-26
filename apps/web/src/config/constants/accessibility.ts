@@ -12,11 +12,26 @@
 export const CSS_CLASSES = {
   GLASS_CARD: "glass-card",
   BTN_PRIMARY: "btn-primary",
+  BTN_SECONDARY: "btn-secondary",
   BTN_GHOST: "btn-ghost",
   TEXT_GRADIENT: "text-gradient",
   ANIMATED_SPINNER: "animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500",
   EDITOR_FOCUS_HIGHLIGHT: "editor-focus-highlight",
   ARRIVAL_POP: "arrival-pop",
+} as const;
+
+// ============================================================================
+// Data Attribute Selectors
+// ============================================================================
+
+/**
+ * Autofocus data attribute values used for programmatic focus management.
+ * These pair with RippleButton's data-autofocus prop to enable keyboard-friendly
+ * auto-focus on completion/error states without hardcoded selector strings.
+ */
+export const AUTOFOCUS_VALUES = {
+  COMPLETE: "complete",
+  ERROR: "error",
 } as const;
 
 // ============================================================================
