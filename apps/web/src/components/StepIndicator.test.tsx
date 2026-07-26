@@ -35,6 +35,7 @@ vi.mock("../config/constants", async (importOriginal) => {
     ACCESSIBILITY_LABELS: {
       PROGRESS: {
         STEPS_COMPLETE: (_pct: number, _remaining: number) => `Steps complete`,
+        STEP_OF_ARIA: (_index: number, _total: number, label: string) => `${label}`,
       },
     },
   };
