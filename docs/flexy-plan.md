@@ -3123,4 +3123,4 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD | `feat/flexy-iteration-166-hardcoded-cleanup` | refactor(flexy): eliminate remaining hardcoded stat labels, sr text, Esc display, and dismiss-all strings (Iteration 166) |
+| [#2877](https://github.com/cpa03/blueprintify/pull/2877) | `feat/flexy-iteration-166-hardcoded-cleanup` | refactor(flexy): eliminate remaining hardcoded stat labels, sr text, Esc display, and dismiss-all strings (Iteration 166) |
