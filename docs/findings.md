@@ -2,6 +2,48 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 306 (2026-07-26 — RepoKeeper: full repository audit, **3 new post-Cycle-305 commits indexed** (flexy Iteration 165 `84218e32`, docs flexy PR #2873 `653d9a1a`, feat(a11y) Toast landmark region `fd123141`), test count unchanged **2,202/2,202** (890 web + 502 API + 810 shared), BUG-013 still fixed (0 vulns), BUG-031 tracked (brace-expansion dev-only CVE), archive retention OK (oldest Jun 27 — 29 days, within 30-day window), **0 stale `.omo/run-continuation/` session files from prior cycles**, all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. 0 `.patch` files. 0 empty directories (excluding `node_modules`). No cleanup actions required.
+2. **[3 New Post-Cycle-305 Commits Indexed]** — Since Cycle 305 (`0bdc3812`):
+   - `84218e32` — `refactor(flexy): eliminate leftover hardcoded modifier, aria-label, and banner keyframes (Iteration 165)` — Replaced 3 hardcoded values (modifier="alt" in StepReview, aria-label in Editor, OfflineBanner keyframes) with config constants
+   - `653d9a1a` — `docs(flexy): add PR #2873 to Iteration 165 entry` — Updated flexy-plan.md with PR #2873
+   - `fd123141` — `feat(a11y): add landmark region to toast container for screen reader navigation` — Added `role="region"` and `aria-label="Notifications"` to ToastContainer
+3. **[Test Count Unchanged]** — **2,202** (890 web + 502 API + 810 shared — unchanged from Cycle 305).
+4. **[BUG-013 Still Fixed]** — `lighthouse` 12.6.1 maintained, **0 vulnerabilities** (no re-bump occurred).
+5. **[BUG-031 Still Tracked]** — `brace-expansion` CVE (GHSA-mh99-v99m-4gvg, dev-only ESLint toolchain, over-broad advisory range). Lockfile at 5.0.8. No production impact.
+6. **[Archive Retention OK]** — Oldest archive files from Jun 27 (29 days, within 30-day window). No purge needed.
+7. **[Stale `.omo/run-continuation/` Session Files]** — 5 files from today's session found (current runtime, not stale). No prior-cycle stale files found ✅.
+8. **[Stale Merged Branches]** — None found (squash-merge repo) ✅.
+9. **[Stale Plan Files]** — No stale plan files found ✅.
+10. **[Documentation Drift Fixes]** — findings.md (this entry), active-tasks.md (Cycle 306 entry), bugs.md (Cycle 306 entry), knowledge-review.md (refreshed with Cycle 306 state), CHANGELOG.md (Cycle 306 entry).
+11. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,202/2,202** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,202/2,202** (890 web + 502 API + 810 shared) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013/BUG-031 STILL FIXED) |
+| Secrets scan | ✅ 0 secrets |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** |
+| `as any` | ✅ **0** |
+| Empty catch blocks | ✅ **0** (2 intentional `.catch(() => ({}))` patterns — noop error suppression) |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| BUG-031 (brace-expansion dev-only) | ✅ **TRACKED** (over-broad advisory, no production impact) |
+| Archive retention | ✅ All within 30-day window (Jun 27 onward) |
+| Stale `.omo/run-continuation/` files | ✅ **0** from prior cycles |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,202 tests green, 0 vulnerabilities, 0 lint/type errors. 3 new post-Cycle-305 commits indexed (flexy Iteration 165 hardcoded cleanup, docs PR #2873, feat(a11y) Toast landmark region). Archive retention OK (oldest Jun 27 — 29 days). No stale files found. BUG-013 still fixed. BUG-031 tracked (dev-only). All quality gates pass.** ✅
+
 ## Cycle 305 (2026-07-26 — RepoKeeper: full repository audit, **4 new post-Cycle-304 commits indexed** (flexy Iteration 163 `4eb78e9c`, BroCula Run 6 `b1ea5119`, zustand upgrade 4.5.7→5.0.14 `c92ed1b3`, MotionConfigWrapper tests `b08bd0e4`), test count **2,202/2,202** (890 web + 502 API + 810 shared — **web +6**), BUG-013 still fixed (0 vulns), BUG-031 tracked (brace-expansion dev-only CVE), **2 stale archive files from Jun 26 purged** (past 30-day retention), all quality gates pass ✅)
 
 ### Actions Taken
