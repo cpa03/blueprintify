@@ -563,9 +563,16 @@ function App(): JSX.Element {
 
       {/* Footer */}
       <footer className={LAYOUT.FOOTER}>
-        {/* Gradient accent divider for visual delight */}
+        {/* Gradient accent divider — fades in with a slight stagger after
+            the footer content starts its slide-up entrance, creating a polished
+            layered reveal. The divider draws in first, then the content finishes
+            its rise, guiding the eye from the accent line down to the text. */}
         <div
-          className="h-px bg-gradient-to-r from-transparent via-primary-500/50 via-accent-purple/40 to-transparent"
+          className="h-px bg-gradient-to-r from-transparent via-primary-500/50 via-accent-purple/40 to-transparent animate-fade-in"
+          style={{
+            animationDelay: `${ANIMATION_ENTRANCE_DELAYS.FAST}s`,
+            animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
+          }}
           aria-hidden="true"
         />
         <div className={`${LAYOUT.FOOTER_CONTAINER} animate-slide-up`}>
