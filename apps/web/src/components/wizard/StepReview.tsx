@@ -438,7 +438,7 @@ export const StepReview = memo(function StepReview({
             shortcut="←"
             description={WIZARD_REVIEW_DESCRIPTIONS.GO_BACK}
             position="right"
-            modifier="alt"
+            modifier={MODIFIER_KEYS.ALT}
           >
             <RippleButton
               onClick={handleEditFeatures}

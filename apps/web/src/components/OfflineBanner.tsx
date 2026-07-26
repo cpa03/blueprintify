@@ -63,17 +63,8 @@ import { SmartTooltip } from "./SmartTooltip";
 
 const pulseKeyframes = OFFLINE_ANIMATION.PULSE_RING_KEYFRAMES;
 const pulseScaleKeyframes = OFFLINE_ANIMATION.PULSE_SCALE_KEYFRAMES;
-const bannerEnterKeyframes = `@keyframes offline-banner-enter {
-  0% { transform: translateY(-100%); opacity: 0; }
-  55% { transform: translateY(4px); opacity: 1; }
-  75% { transform: translateY(-2px); opacity: 1; }
-  90% { transform: translateY(1px); opacity: 1; }
-  100% { transform: translateY(0); opacity: 1; }
-}`;
-const bannerExitKeyframes = `@keyframes offline-banner-exit {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-100%); opacity: 0; }
-}`;
+const bannerEnterKeyframes = OFFLINE_ANIMATION.BANNER_ENTER_KEYFRAMES;
+const bannerExitKeyframes = OFFLINE_ANIMATION.BANNER_EXIT_KEYFRAMES;
 
 // Inject keyframes only once
 if (typeof document !== "undefined") {
