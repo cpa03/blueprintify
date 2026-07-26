@@ -1,0 +1,109 @@
+/**
+ * @fileoverview Tests for AnimatedNumber and AnimatedCounter components
+ *
+ * Tests cover the animated number display:
+ * - Renders initial value
+ * - Uses custom format function
+ * - Applies custom className
+ * - AnimatedCounter renders with icon and label
+ * - Respects reduced motion
+ */
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { AnimatedNumber, AnimatedCounter } from "./AnimatedNumber";
+
+// Mock the ReducedMotionContext
+vi.mock("../context/ReducedMotionContext", () => ({
+  useReducedMotionContext: vi.fn(() => ({
+    shouldAnimate: false,
+    getDuration: vi.fn((d: number) => d),
+  })),
+}));
+
+describe("AnimatedNumber", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("renders initial value", () => {
+    render(<AnimatedNumber value={42} />);
+
+    expect(screen.getByText("42")).toBeInTheDocument();
+  });
+
+  it("renders zero value", () => {
+    render(<AnimatedNumber value={0} />);
+
+    expect(screen.getByText("0")).toBeInTheDocument();
+  });
+
+  it("uses custom format function", () => {
+    render(<AnimatedNumber value={1234} format={(v) => `${Math.round(v).toLocaleString()}`} />);
+
+    expect(screen.getByText("1,234")).toBeInTheDocument();
+  });
+
+  it("formats decimal values with Math.round by default", () => {
+    render(<AnimatedNumber value={99.7} />);
+
+    expect(screen.getByText("100")).toBeInTheDocument();
+  });
+
+  it("applies custom className", () => {
+    render(<AnimatedNumber value={10} className="text-lg font-bold" />);
+
+    const span = screen.getByText("10");
+    expect(span.className).toContain("tabular-nums");
+    expect(span.className).toContain("text-lg");
+    expect(span.className).toContain("font-bold");
+  });
+
+  it("has accessible aria-live region", () => {
+    render(<AnimatedNumber value={42} />);
+
+    const span = screen.getByText("42");
+    expect(span).toHaveAttribute("aria-live", "polite");
+    expect(span).toHaveAttribute("aria-atomic", "true");
+  });
+});
+
+describe("AnimatedCounter", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("renders value and label", () => {
+    render(<AnimatedCounter value={42} label="Projects" />);
+
+    expect(screen.getByText("42")).toBeInTheDocument();
+    expect(screen.getByText("Projects")).toBeInTheDocument();
+  });
+
+  it("renders with icon", () => {
+    render(<AnimatedCounter value={10} label="Stars" icon={<span data-testid="icon">★</span>} />);
+
+    expect(screen.getByTestId("icon")).toBeInTheDocument();
+    expect(screen.getByText("Stars")).toBeInTheDocument();
+  });
+
+  it("renders without label", () => {
+    render(<AnimatedCounter value={100} />);
+
+    expect(screen.getByText("100")).toBeInTheDocument();
+  });
+
+  it("applies custom classNames", () => {
+    render(
+      <AnimatedCounter
+        value={50}
+        label="Tasks"
+        className="p-8"
+        valueClassName="text-3xl"
+        labelClassName="uppercase"
+      />
+    );
+
+    expect(screen.getByText("50")).toBeInTheDocument();
+    expect(screen.getByText("Tasks")).toBeInTheDocument();
+  });
+});
