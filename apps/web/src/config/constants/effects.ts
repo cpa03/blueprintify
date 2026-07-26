@@ -110,6 +110,19 @@ export const OFFLINE_ANIMATION = {
   PULSE_RING_KEYFRAMES: `@keyframes offline-pulse { 0%,100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.6); opacity: 0; } }`,
   /** Keyframe definition for offline pulse scale animation */
   PULSE_SCALE_KEYFRAMES: `@keyframes offline-pulse-scale { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }`,
+  /** Keyframe definition for banner slide-in entrance animation */
+  BANNER_ENTER_KEYFRAMES: `@keyframes offline-banner-enter {
+  0% { transform: translateY(-100%); opacity: 0; }
+  55% { transform: translateY(4px); opacity: 1; }
+  75% { transform: translateY(-2px); opacity: 1; }
+  90% { transform: translateY(1px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}`,
+  /** Keyframe definition for banner slide-out exit animation */
+  BANNER_EXIT_KEYFRAMES: `@keyframes offline-banner-exit {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100%); opacity: 0; }
+}`,
 } as const;
 
 // ============================================================================

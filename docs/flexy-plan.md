@@ -3060,3 +3060,33 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2860](https://github.com/cpa03/blueprintify/pull/2860) | `feat/flexy-iteration-163-hardcoded-scale` | refactor(flexy): replace hardcoded scale: 1.02 with HOVER_SCALE.MICRO in AnimatedCopyButton (Iteration 163) |
+
+---
+
+### ✅ Flexy Iteration 165: Eliminate Leftover Hardcoded modifier="alt", aria-label, and OfflineBanner Keyframes
+
+**Problem**: Three hardcoded values survived in `main`:
+1. `apps/web/src/components/wizard/StepReview.tsx` — leftover `modifier="alt"` string instead of `MODIFIER_KEYS.ALT`
+2. `apps/web/src/components/Editor.tsx` — hardcoded `aria-label="Preview content is being generated"` instead of `EDITOR_ANNOUNCER.PREVIEW_SKELETON_GENERATING`
+3. `apps/web/src/components/OfflineBanner.tsx` — inline `bannerEnterKeyframes`/`bannerExitKeyframes` template literals instead of `OFFLINE_ANIMATION.BANNER_ENTER_KEYFRAMES`/`BANNER_EXIT_KEYFRAMES`
+
+| File | Change |
+|------|--------|
+| `apps/web/src/components/wizard/StepReview.tsx` | Replaced leftover `modifier="alt"` with `modifier={MODIFIER_KEYS.ALT}` |
+| `apps/web/src/components/Editor.tsx` | Replaced hardcoded `aria-label="Preview content is being generated"` with `aria-label={EDITOR_ANNOUNCER.PREVIEW_SKELETON_GENERATING}` |
+| `apps/web/src/config/constants/accessibility.ts` | Added `PREVIEW_SKELETON_GENERATING: "Preview content is being generated"` to `EDITOR_ANNOUNCER` |
+| `apps/web/src/components/OfflineBanner.tsx` | Replaced inline banner enter/exit keyframe template literals with `OFFLINE_ANIMATION.BANNER_ENTER_KEYFRAMES`/`BANNER_EXIT_KEYFRAMES` |
+| `apps/web/src/config/constants/effects.ts` | Added `BANNER_ENTER_KEYFRAMES` and `BANNER_EXIT_KEYFRAMES` to `OFFLINE_ANIMATION` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npm run audit` — 0 vulnerabilities
+- ✅ `npm run test:all` — **890 web + 502 api + 810 shared = 2,202 tests passing** across 94 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |

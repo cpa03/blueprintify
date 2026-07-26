@@ -130,7 +130,11 @@ function EditorSkeleton({ isVisible }: { isVisible: boolean }): JSX.Element | nu
  */
 function PreviewSkeleton(): JSX.Element {
   return (
-    <div className="preview-skeleton" role="status" aria-label="Preview content is being generated">
+    <div
+      className="preview-skeleton"
+      role="status"
+      aria-label={EDITOR_ANNOUNCER.PREVIEW_SKELETON_GENERATING}
+    >
       <div className="skeleton-block preview-skeleton-heading" />
       {SKELETON_LAYOUT.PREVIEW_LINE_WIDTHS.map((w, i) => (
         <div key={i} className="skeleton-block preview-skeleton-line" style={{ width: w }} />
