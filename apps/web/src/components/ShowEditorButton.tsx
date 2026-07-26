@@ -28,7 +28,7 @@ import {
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
 import { BUTTON, ICON } from "../config/styles";
-import { UI_CONTENT, SHORTCUT_DESCRIPTIONS } from "../config/constants";
+import { UI_CONTENT, SHORTCUT_DESCRIPTIONS, CSS_CLASSES } from "../config/constants";
 import { KEYBOARD_SHORTCUTS } from "../config/constants/keyboard";
 import { getModifierLabel, getAriaShortcutKey } from "../lib/platform";
 
@@ -106,7 +106,7 @@ function ShowEditorButtonComponent({
       position="left"
     >
       <div
-        className={`group animate-slide-up will-change-transform motion-safe:transition-transform motion-safe:duration-150 motion-safe:hover:scale-105 motion-safe:active:scale-95${showArrival ? " arrival-pop" : ""}`}
+        className={`group animate-slide-up will-change-transform motion-safe:transition-transform motion-safe:duration-150 motion-safe:hover:scale-105 motion-safe:active:scale-95${showArrival ? ` ${CSS_CLASSES.ARRIVAL_POP}` : ""}`}
       >
         <RippleButton
           onClick={onClick}
