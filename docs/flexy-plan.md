@@ -3091,3 +3091,36 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2873](https://github.com/cpa03/blueprintify/pull/2873) | `feat/flexy-iteration-165-hardcoded-cleanup` | refactor(flexy): eliminate leftover hardcoded modifier, aria-label, and banner keyframes (Iteration 165) |
+
+---
+
+### ✅ Flexy Iteration 166: Eliminate Remaining Hardcoded Stat Labels, Screen Reader Text, Esc Display & Dismiss-All Strings
+
+**Problem**: Four categories of hardcoded strings survived in components:
+
+1. `apps/web/src/components/wizard/StepGenerating.tsx` — hardcoded `"Blueprint Lines"`/`"Task Lines"` stat card labels
+2. `apps/web/src/components/wizard/StepGenerating.tsx` — hardcoded string concatenation in sr-only announcer (`"Elapsed time " + ... + " blueprint lines and " + ...`)
+3. `apps/web/src/components/wizard/StepGenerating.tsx` + `apps/web/src/components/KeyboardShortcutsModal.tsx` — hardcoded `"Esc"` display strings
+4. `apps/web/src/components/Toast.tsx` — hardcoded `"Dismiss all ("` / `")"` display text
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/content.ts` | Added `GENERATION_STAT_LABELS` (BLUEPRINT_LINES, TASKS_LINES), `GENERATION_ANNOUNCER` (ELAPSED, GENERATED template functions), `KEY_DISPLAY` (ESC, ENTER, TAB, SPACE, HOME, END), `TOAST_DISPLAY` (DISMISS_ALL_PREFIX, DISMISS_ALL_SUFFIX) |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced `"Blueprint Lines"` with `{GENERATION_STAT_LABELS.BLUEPRINT_LINES}`, `"Task Lines"` with `{GENERATION_STAT_LABELS.TASKS_LINES}` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced sr-only concatenation with `GENERATION_ANNOUNCER.ELAPSED()` / `GENERATION_ANNOUNCER.GENERATED()` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced `shortcut="Esc"` / `<kbd>Esc</kbd>` with `{KEY_DISPLAY.ESC}` |
+| `apps/web/src/components/KeyboardShortcutsModal.tsx` | Replaced `["Esc"]` with `[KEY_DISPLAY.ESC]` |
+| `apps/web/src/components/Toast.tsx` | Replaced hardcoded `"Dismiss all ("` / `")"` with `{TOAST_DISPLAY.DISMISS_ALL_PREFIX}` / `{TOAST_DISPLAY.DISMISS_ALL_SUFFIX}` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — **890 web + 502 api + 810 shared = 2,202 tests passing** across 94 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD | `feat/flexy-iteration-166-hardcoded-cleanup` | refactor(flexy): eliminate remaining hardcoded stat labels, sr text, Esc display, and dismiss-all strings (Iteration 166) |
