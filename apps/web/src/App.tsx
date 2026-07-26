@@ -5,6 +5,7 @@ import {
   SCROLL_THRESHOLD_DEFAULTS,
   SCROLL_PROGRESS_DEFAULTS,
   UI_TIMEOUTS,
+  UI_TIMING,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   ANIMATION_ENTRANCE_DELAYS,
@@ -81,6 +82,8 @@ function App(): JSX.Element {
   const [showCelebration, setShowCelebration] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [templatesExiting, setTemplatesExiting] = useState(false);
+  const [showNewProjectArrival, setShowNewProjectArrival] = useState(false);
+  const prevNewProjectVisibleRef = useRef(false);
   // Defer framer-motion (45 KB) from initial load: only mount the Wizard
   // after user interaction or a 3s fallback timeout. The flag is derived
   // from store conditions + user interaction, avoiding setState-in-effect.
@@ -293,6 +296,20 @@ function App(): JSX.Element {
     previousHasContentRef.current = hasContent;
     previousIsGeneratingRef.current = isGenerating;
   }, [hasContent, isGenerating, showEditor, editorExiting]);
+
+  useEffect(() => {
+    const newProjectVisible = !showEditor && hasContent && !isGenerating;
+    if (newProjectVisible && !prevNewProjectVisibleRef.current) {
+      setShowNewProjectArrival(true);
+      const timer = setTimeout(
+        () => setShowNewProjectArrival(false),
+        UI_TIMING.ARRIVAL_POP_DISPLAY_MS
+      );
+      prevNewProjectVisibleRef.current = true;
+      return () => clearTimeout(timer);
+    }
+    prevNewProjectVisibleRef.current = newProjectVisible;
+  }, [showEditor, hasContent, isGenerating]);
 
   return (
     <div className={LAYOUT.PAGE_WRAPPER}>
@@ -529,7 +546,7 @@ function App(): JSX.Element {
             >
               <button
                 onClick={handleNewProject}
-                className="fixed bottom-14 right-6 z-20 flex items-center gap-1.5 text-xs text-dark-500 hover:text-accent-pink transition-colors px-3 py-1.5 rounded-lg bg-dark-800/60 backdrop-blur-sm border border-dark-700/50 hover:border-accent-pink/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 animate-slide-up"
+                className={`fixed bottom-14 right-6 z-20 flex items-center gap-1.5 text-xs text-dark-500 hover:text-accent-pink transition-colors px-3 py-1.5 rounded-lg bg-dark-800/60 backdrop-blur-sm border border-dark-700/50 hover:border-accent-pink/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 animate-slide-up${showNewProjectArrival ? " arrival-pop" : ""}`}
                 style={{
                   animationDelay: `${ANIMATION_ENTRANCE_DELAYS.SLOWER}s`,
                   animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
