@@ -3060,3 +3060,33 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2860](https://github.com/cpa03/blueprintify/pull/2860) | `feat/flexy-iteration-163-hardcoded-scale` | refactor(flexy): replace hardcoded scale: 1.02 with HOVER_SCALE.MICRO in AnimatedCopyButton (Iteration 163) |
+
+---
+
+### ✅ Flexy Iteration 164: Eliminate Leftover Hardcoded Modifier Key, Preview Skeleton aria-label & Offline Banner Keyframes
+
+**Problem**: Three hardcoded values remained after Iteration 163:
+1. **StepReview.tsx** line 441 — `modifier="alt"` was missed in the Iteration 163 modifier key sweep (all 6 other `KeyboardShortcutTooltip` `modifier` props were fixed, but one remained)
+2. **Editor.tsx** PreviewSkeleton line 133 — `aria-label="Preview content is being generated"` was hardcoded. The existing `EDITOR_ANNOUNCER.SKELETON_GENERATING` ("Content is being generated") covered the CodeMirror skeleton but the PreviewSkeleton had a separate hardcoded string
+3. **OfflineBanner.tsx** lines 66-76 — `bannerEnterKeyframes` and `bannerExitKeyframes` CSS keyframe template literals were defined inline with hardcoded `translateY()` values. The `OFFLINE_ANIMATION` config already had `PULSE_RING_KEYFRAMES`/`PULSE_SCALE_KEYFRAMES` as keyframe strings, but the banner entrance/exit keyframes were still inline
+
+| File | Change |
+|------|--------|
+| `apps/web/src/components/wizard/StepReview.tsx` | Replaced leftover `modifier="alt"` with `modifier={MODIFIER_KEYS.ALT}` — MODIFIER_KEYS import already existed |
+| `apps/web/src/config/constants/accessibility.ts` | Added `EDITOR_ANNOUNCER.PREVIEW_SKELETON_GENERATING: "Preview content is being generated"` — single source of truth for preview skeleton aria-label |
+| `apps/web/src/components/Editor.tsx` | Replaced hardcoded `aria-label="Preview content is being generated"` with `aria-label={EDITOR_ANNOUNCER.PREVIEW_SKELETON_GENERATING}` |
+| `apps/web/src/config/constants/effects.ts` | Added `OFFLINE_ANIMATION.BANNER_ENTER_KEYFRAMES` and `OFFLINE_ANIMATION.BANNER_EXIT_KEYFRAMES` — moves CSS keyframes from component into config (following `PULSE_RING_KEYFRAMES`/`PULSE_SCALE_KEYFRAMES` pattern) |
+| `apps/web/src/components/OfflineBanner.tsx` | Replaced inline `bannerEnterKeyframes`/`bannerExitKeyframes` template literals with `OFFLINE_ANIMATION.BANNER_ENTER_KEYFRAMES`/`OFFLINE_ANIMATION.BANNER_EXIT_KEYFRAMES` references |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean (shared + web)
+- ✅ `npm run test:all` — **890 web + 502 api + 810 shared = 2,202 tests passing** across 94 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `feat/flexy-iteration-164-leftover-hardcoded-cleanup` | refactor(flexy): eliminate leftover hardcoded modifier key, preview skeleton aria-label and offline banner keyframes (Iteration 164) |

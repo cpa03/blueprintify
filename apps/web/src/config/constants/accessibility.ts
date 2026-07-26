@@ -82,4 +82,6 @@ export const EDITOR_ANNOUNCER = {
     `Editor opened with ${tabName} content ready for review and editing`,
   /** Screen reader label shown while content is being generated via SSE */
   SKELETON_GENERATING: "Content is being generated",
+  /** Screen reader label shown on the preview skeleton while content is being generated */
+  PREVIEW_SKELETON_GENERATING: "Preview content is being generated",
 } as const;
