@@ -2,7 +2,7 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Cycle 304 (2026-07-25 — RepoKeeper: full repository audit, **2 new post-Cycle-303 commits indexed** (BroCula Run 5 `214d9ce5` — LH 99-100-100-100, flexy Iteration `64bc3621` — HOVER_SCALE.MICRO), BUG-013 still fixed (0 vulns), BUG-031 tracked (brace-expansion dev-only CVE), test count stable **2,196/2,196** (884 web + 502 API + 810 shared), archive retention OK (oldest Jun 26 — 29 days), audits/README updated with BroCula Run 5, knowledge-review/CHANGELOG refreshed, all quality gates pass ✅)
+## Cycle 305 (2026-07-26 — RepoKeeper: full repository audit, **4 new post-Cycle-304 commits indexed** (flexy Iteration 163 `4eb78e9c` — eliminated all remaining hardcoded modifier key strings across 7 components; BroCula Run 6 `b1ea5119` — LH 100-100-100-100; zustand upgrade 4.5.7→5.0.14 `c92ed1b3`; MotionConfigWrapper tests `b08bd0e4`), **7 unreferenced icon PNGs removed** from apps/web/public/, BUG-013 still fixed (0 vulns), BUG-031 tracked (brace-expansion dev-only CVE), test count **2,202/2,202** (890 web + 502 API + 810 shared — web +6 from MotionConfigWrapper tests), archive retention OK (oldest Jun 26 — 30 days, at boundary), BroCula Run 6 indexed (LH 100-100-100-100 ⭐), all quality gates pass ✅)
 
 ### Actions Taken
 

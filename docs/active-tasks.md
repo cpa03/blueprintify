@@ -2,6 +2,25 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 305 — **Full repository audit, 4 new post-Cycle-304 commits indexed (flexy Iteration 163 `4eb78e9c`, BroCula Run 6 `b1ea5119` — LH 100-100-100-100, zustand upgrade 4.5.7→5.0.14 `c92ed1b3`, MotionConfigWrapper tests `b08bd0e4`), 7 unreferenced icon PNGs removed, BroCula Run 6 indexed, test count 2,202/2,202, all quality gates pass** ✅
+
+### Task: Full repository audit — **4 new post-Cycle-304 commits indexed** since `83e2d6e8`: refactor(flexy): eliminate all remaining hardcoded modifier key strings across 7 components (Iteration 163) (`4eb78e9c`); chore(brocula): BroCula ULW Loop Run 6 — LH 100-100-100-100, 0 console errors, all 2,196 tests pass (`b1ea5119`); chore(deps): upgrade zustand from 4.5.7 to 5.0.14 (`c92ed1b3`); test(web): add MotionConfigWrapper component tests (#2867) (`b08bd0e4`); **7 unreferenced icon PNGs removed** from `apps/web/public/` (icon-128, icon-144, icon-152, icon-256, icon-48, icon-72, icon-96); **BUG-013 still fixed** (lighthouse 12.6.1 — 0 vulns); **BUG-031 tracked** (brace-expansion dev-only CVE — override 5.0.8 holds); **test count update** **2,202/2,202** (890 web + 502 API + **810 shared** — web +6 from MotionConfigWrapper tests); **BroCula Run 6 indexed** (LH 100-100-100-100 ⭐); **0 stale merged branches**; **0 stale plan files**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; **0 merge conflict artifacts**; **archive retention OK** (oldest files Jun 26 — 30 days, at retention boundary); **documentation updates**: findings.md, bugs.md, active-tasks.md, features.md, knowledge-review.md, CHANGELOG.md; quality verification (typecheck ✅ lint ✅ build ✅ tests **2,202/2,202** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: RepoKeeper Cycle 305 — full repository audit, index 4 post-Cycle-304 commits, remove 7 unreferenced icon PNGs, update docs, verify BUG-013/BUG-031, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: 7 unreferenced icon PNGs removed, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks, no `.patch` files ✅
+  - [x] **4 new post-Cycle-304 commits indexed**: flexy Iteration 163 (`4eb78e9c`), BroCula Run 6 (`b1ea5119` — LH 100-100-100-100), zustand upgrade (`c92ed1b3`), MotionConfigWrapper tests (`b08bd0e4`) ✅
+  - [x] **7 unreferenced icon PNGs removed**: icon-128, icon-144, icon-152, icon-256, icon-48, icon-72, icon-96 ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 12.6.1 — 0 vulns ✅
+  - [x] **BUG-031 tracked**: brace-expansion CVE — override 5.0.8, dev-only ✅
+  - [x] **BroCula Run 6 indexed**: LH 100-100-100-100 ⭐ ✅
+  - [x] **Test count update**: 2,196→**2,202** (890 web + 502 API + 810 shared — web +6) ✅
+  - [x] **Archive retention OK**: oldest files Jun 26 (30 days, at retention boundary) ✅
+  - [x] **Documentation updates**: findings.md, bugs.md, active-tasks.md, features.md, knowledge-review.md, CHANGELOG.md ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ tests **2,202/2,202** ✅, format ✅, secrets scan ✅, npm audit **0 vulns** ✅
+
 ## ✅ RepoKeeper Cycle 304 — **Full repository audit, 2 new post-Cycle-303 commits indexed (BroCula Run 5 `214d9ce5` — LH 99-100-100-100, flexy Iteration `64bc3621` — HOVER_SCALE.MICRO), BroCula Run 5 added to audits/README, knowledge-review/CHANGELOG refreshed, test count stable 2,196/2,196, all quality gates pass** ✅
 
 ### Task: Full repository audit — **2 new post-Cycle-303 commits indexed** since `9a92995f`: chore(brocula): BroCula ULW Loop Jul 25 2026 Run 5 — LH 99-100-100-100 (`214d9ce5`); refactor(flexy): replace hardcoded scale with HOVER_SCALE.MICRO in AnimatedCopyButton (`64bc3621`); **BUG-013 still fixed** (lighthouse 12.6.1 — 0 vulns); **BUG-031 tracked** (brace-expansion dev-only CVE — override 5.0.8 holds); **test count stable** **2,196/2,196** (884 web + 502 API + **810 shared** — unchanged); **BroCula Run 5 indexed** (LH 99-100-100-100); **0 stale merged branches**; **0 stale plan files**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; **0 merge conflict artifacts**; **archive retention OK** (oldest files Jun 26 — 29 days, within 30-day window); **documentation updates**: audits/README.md (Run 5 added as latest), bugs.md (Cycle 304 entry), active-tasks.md (this entry), findings.md (Cycle 304 entry), knowledge-review.md (refreshed), CHANGELOG.md (Cycle 304 entry); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,196/2,196** ✅, format ✅, npm audit **0 vulns** ✅)

@@ -2,6 +2,16 @@
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
 
+## Bug Status — Jul 26 2026 (RepoKeeper Cycle 305)
+
+> **RepoKeeper Cycle 305 (2026-07-26 — chore/repokeeper-cycle-305)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,202/2,202** ✅ (890 web + 502 API + 810 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
+>
+> **4 new post-Cycle-304 commits indexed**: flexy Iteration 163 (`4eb78e9c` — eliminated all remaining hardcoded modifier key strings across 7 components); BroCula Run 6 (`b1ea5119` — LH 100-100-100-100); zustand upgrade 4.5.7→5.0.14 (`c92ed1b3`); MotionConfigWrapper tests (`b08bd0e4`).
+> **7 unreferenced icon PNGs removed** from apps/web/public/ (icon-128, icon-144, icon-152, icon-256, icon-48, icon-72, icon-96).
+> **Test count update**: **2,202** (890 web + 502 API + 810 shared — web +6 from MotionConfigWrapper tests).
+> **Archive retention OK**: oldest files Jun 26 (30 days, at retention boundary).
+> **No new fixable bugs found in codebase. All quality gates pass.** Branch created.
+
 ## Bug Status — Jul 25 2026 (RepoKeeper Cycle 304)
 
 > **RepoKeeper Cycle 304 (2026-07-25 — chore/repokeeper-cycle-304)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,196/2,196** ✅ (884 web + 502 API + 810 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
