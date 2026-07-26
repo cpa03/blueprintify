@@ -537,7 +537,12 @@ function ToastContainerComponent(): JSX.Element {
       };
 
   return (
-    <motion.div className={TOAST_SPRING.CONTAINER_CLASSES} {...containerAnimation}>
+    <motion.div
+      role="region"
+      aria-label={ACCESSIBILITY_LABELS.TOAST.REGION_LABEL}
+      className={TOAST_SPRING.CONTAINER_CLASSES}
+      {...containerAnimation}
+    >
       <AnimatePresence mode="popLayout">
         {toasts.map((toast, index) => (
           <ToastItem
