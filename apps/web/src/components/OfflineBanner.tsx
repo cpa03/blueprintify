@@ -31,7 +31,13 @@
 import { useState, useCallback, useEffect, useLayoutEffect, useRef, memo } from "react";
 import { useOnlineStatus } from "../hooks";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { STYLE_ID_STRINGS, UI_TIMEOUTS } from "@blueprint/shared/config";
+import { useToastStore } from "../store";
+import {
+  STYLE_ID_STRINGS,
+  UI_TIMEOUTS,
+  NETWORK_DEFAULTS,
+  TOAST_TYPES,
+} from "@blueprint/shared/config";
 import {
   NETWORK_MESSAGES,
   ACCESSIBILITY_LABELS,
@@ -112,6 +118,15 @@ function OfflineBannerComponent(): JSX.Element | null {
     if (isOnline && !prevOnlineRef.current) {
       setIsExiting(true);
       setIsDismissed(false);
+      // Show a brief success toast so sighted users get positive confirmation
+      // that connectivity was restored — the banner simply slides away otherwise.
+      useToastStore
+        .getState()
+        .addToast(
+          NETWORK_MESSAGES.ONLINE,
+          TOAST_TYPES.SUCCESS,
+          NETWORK_DEFAULTS.ONLINE_DURATION_MS
+        );
       // Announce connectivity was restored — the banner auto-hides so screen
       // reader users get explicit confirmation that they are back online
       setDismissAnnouncement(ACCESSIBILITY_LABELS.OFFLINE_BANNER.ONLINE_ANNOUNCEMENT);
