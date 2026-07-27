@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@blueprint/shared": "1.0.0",
-    "hono": "4.12.31",
-    "openai": "6.48.0",
+    "hono": "4.12.32",
+    "openai": "6.49.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
