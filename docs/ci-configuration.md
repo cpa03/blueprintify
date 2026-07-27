@@ -16,11 +16,11 @@ All CI workflow files use `node-version-file: ".node-version"` across all 4 work
 - All 4 workflows (iterate.yml, parallel.yml, on-pull.yml, pr-gatekeeper.yml) use it
 - No hardcoded versions remain
 
-**Current verifications (Jul 25 2026):**
+**Current verifications (Jul 27 2026):**
 - ✅ Typecheck: clean
 - ✅ Lint: 0 errors, 0 warnings
 - ✅ Build: clean
-- ✅ Tests: 2,196/2,196 passed (884 web + 502 api + 810 shared)
+- ✅ Tests: 2,224/2,224 passed (912 web + 502 api + 810 shared)
 - ✅ npm audit: 0 vulnerabilities
 - ✅ Secrets scan: clean
 
