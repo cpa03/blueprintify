@@ -2,6 +2,25 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 312 — **Full repository audit, 0 new post-Cycle-311 commits indexed (HEAD unchanged at `09f06e0a` — BroCula Jul 27 Run 4), test count unchanged 2,224/2,224 (912 web + 502 API + 810 shared), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE), 5 stale audit reports from Jul 23-24 archived, `.codegraph/` cleaned (16MB temp artifact), 0 stale merged branches, all quality gates pass** ✅
+
+### Task: Full repository audit — **0 new post-Cycle-311 commits to index** — HEAD unchanged at `09f06e0a` (docs(audits): BroCula Jul 27 run 4); **test count unchanged** **2,224/2,224** (912 web + **502 API** + **810 shared** — unchanged from Cycle 311); **BUG-013 still fixed** (lighthouse 13.4.1 — 0 vulns); **BUG-031 tracked** (brace-expansion dev-only CVE — override 5.0.8 holds); **5 audit reports archived** (Jul 23-24 — moved to archive/ per retention policy); **`.codegraph/` cleaned** (16MB temp artifact removed); **0 stale `.omo/run-continuation/` files from prior cycles**; **0 stale merged branches**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; **0 merge conflict artifacts**; **documentation updates**: findings.md (Cycle 312 entry), active-tasks.md (this entry), bugs.md (Cycle 312 entry), knowledge-review.md (refreshed), CHANGELOG.md (Cycle 312 entry), audits/README.md (Jul 23-24 entries removed); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,224/2,224** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: RepoKeeper Cycle 312 — full repository audit, index 0 post-Cycle-311 commits (HEAD unchanged), archive 5 stale audit reports from Jul 23-24, clean `.codegraph/` temp artifact, verify BUG-013/BUG-031, fix documentation drift, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks, no `.patch` files ✅
+  - [x] **0 new post-Cycle-311 commits to index**: HEAD unchanged at `09f06e0a` ✅
+  - [x] **Test count unchanged**: **2,224/2,224** (912 web + 502 API + 810 shared) ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 13.4.1 — 0 vulns ✅
+  - [x] **BUG-031 tracked**: brace-expansion CVE — override 5.0.8, dev-only ✅
+  - [x] **5 audit reports archived (retention policy)**: Jul 23-24 moved to archive/ ✅
+  - [x] **`.codegraph/` cleaned**: 16MB temp artifact removed ✅
+  - [x] **No stale `.omo/run-continuation/` files**: 0 from prior cycles ✅
+  - [x] **Documentation drift fixes**: findings.md, active-tasks.md, bugs.md, knowledge-review.md, CHANGELOG.md, audits/README.md ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests **2,224/2,224** ✅, format ✅, secrets scan ✅, npm audit **0 vulns** ✅
+
 ## ✅ RepoKeeper Cycle 311 — **Full repository audit, 0 new post-Cycle-310 commits indexed (HEAD unchanged at `367b6564`), test count unchanged 2,224/2,224 (912 web + 502 API + 810 shared), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE), 6 stale archive files from Jun 27 purged (past 30-day retention), 0 stale merged branches, all quality gates pass** ✅
 
 ### Task: Full repository audit — **0 new post-Cycle-310 commits to index** — HEAD unchanged at `367b6564` (chore(repokeeper): Cycle 310 — `4d1b0b6f`, `5eeb1686`, `796ce6dd`, `3cae9c94`, `aa2b70d1` commits already indexed in Cycle 310); **test count unchanged** **2,224/2,224** (912 web + **502 API** + **810 shared** — unchanged from Cycle 310); **BUG-013 still fixed** (lighthouse 13.4.1 — 0 vulns); **BUG-031 tracked** (brace-expansion dev-only CVE — override 5.0.8 holds); **6 stale archive files purged** (Jun 27 — past 30-day retention); **0 stale `.omo/run-continuation/` files from prior cycles**; **0 stale merged branches**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; **0 merge conflict artifacts**; **documentation updates**: findings.md (Cycle 311 entry), active-tasks.md (this entry), bugs.md (Cycle 311 entry), knowledge-review.md (refreshed), CHANGELOG.md (Cycle 311 entry); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,224/2,224** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅)
