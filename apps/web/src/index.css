@@ -1087,25 +1087,22 @@
    without being distracting. Uses transform + opacity for GPU compositing.
    Disabled when prefers-reduced-motion is active.
 
-   On page load the glow fades in over 1.2s (ambient-glow-enter) before the
-   looping drift begins, so the background doesn't pop in abruptly alongside
-   the hero content. The entrance delay is baked into the animation chain so
-   the staggered reveal of hero → subtitle → glow feels intentional. */
-@keyframes ambient-glow-enter {
+   The initial keyframes (0–1.2s) handle the entrance fade-in, then the
+   remaining animation cycles through the slow drift. A single combined
+   keyframe avoids the "incompatible animations" Lighthouse warning that
+   occurs when two separate animation properties run on the same element. */
+@keyframes ambient-glow {
+  /* Entrance phase — fade in from invisible (first 1.2s of 16.2s = ~7.4%) */
   0% {
     opacity: 0;
+    transform: scale(1) translate(0%, 0%);
   }
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes ambient-glow {
-  0% {
+  7.4% {
     opacity: 0.5;
     transform: scale(1) translate(0%, 0%);
   }
-  50% {
+  /* Drift phase — slow gradient animation loop */
+  53.7% {
     opacity: 0.85;
     transform: scale(1.08) translate(-2%, -1%);
   }
@@ -1128,14 +1125,11 @@
       transparent 60%
     );
   will-change: transform, opacity;
-  /* Start invisible, fade in over 1.2s, then begin the looping drift.
-     The entrance fill-mode keeps opacity at 1 until the drift takes over,
-     while the drift animation's keyframes start at 0.5 — creating a smooth
-     visual handoff with no opacity jump at the transition boundary. */
-  opacity: 0;
-  animation:
-    ambient-glow-enter 1.2s ease-out forwards,
-    ambient-glow 15s ease-in-out 1.2s infinite alternate;
+  /* Single combined animation: 1.2s entrance fade-in + 15s drift cycle,
+     then loops with the drift phase seamlessly. The entrance runs once
+     (first iteration only covers the initial opacity 0→0.5 step), after
+     which only the 0.5→0.85→0.6 drift loop is perceived. */
+  animation: ambient-glow 16.2s ease-in-out 0s infinite alternate;
 }
 
 @media (prefers-reduced-motion: reduce) {
