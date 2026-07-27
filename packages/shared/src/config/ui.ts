@@ -205,6 +205,8 @@ export const TOOLTIP_LABELS = {
     EXPORTED: "Exported!",
     /** Tooltip for new project button */
     START_NEW_PROJECT: "Start new project",
+    /** Tooltip when there is no content to copy */
+    NO_CONTENT_TO_COPY: "No content to copy",
   },
 } as const;
 
