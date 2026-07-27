@@ -44,6 +44,51 @@
 
 **All quality gates pass. Repository remains exceptionally healthy — 2,224 tests green, 0 vulnerabilities, 0 lint/type errors. 2 new post-Cycle-308 commits indexed (feat(web) hover rotate micro-interaction, docs(bugfixer) ULW Run 3). Test count unchanged at 2,224. BroCula Run 11 indexed (Jul 26 — LH 98-100-100-100). Archive retention OK (oldest Jul 11 — 16 days). BUG-013 still fixed. BUG-031 tracked (dev-only). All quality gates pass.** ✅
 
+## Cycle 310 (2026-07-27 — RepoKeeper: full repository audit, **5 new post-Cycle-309 commits indexed** (5× dependency bumps: development-dependencies group +11, @testing-library/jest-dom 6→7, eslint 9→10, jsdom 29→30, lighthouse 12→13), **npm install regression FIXED** (legacy-peer-deps=true added to .npmrc for eslint 10 + eslint-plugin-jsx-a11y incompatibility), test count unchanged **2,224/2,224** (912 web + 502 API + 810 shared), BUG-013 still fixed (0 vulns), BUG-031 tracked (brace-expansion dev-only CVE), BroCula Run 2 indexed (Jul 27 — LH **98-100-100-100** ⭐), archive retention OK (oldest Jun 27 — 30 days, borderline — next cycle may need purge), 0 stale merged branches, all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. 0 `.patch` files. 0 empty directories (excluding `node_modules`). No cleanup actions required.
+2. **[5 New Post-Cycle-309 Commits Indexed]** — Since Cycle 309 (`fab8654b`):
+   - `7a3c8578` — chore(deps-dev): bump lighthouse from 12.6.1 to 13.4.1
+   - `fe15db6e` — chore(deps-dev): bump jsdom from 29.1.1 to 30.0.0
+   - `c5cc63ed` — chore(deps-dev): bump eslint from 9.39.4 to 10.8.0
+   - `a267e38d` — chore(deps-dev): bump @testing-library/jest-dom from 6.9.1 to 7.0.0
+   - `8e87a7c7` — chore(deps-dev): bump the development-dependencies group with 11 updates
+3. **[npm Install Regression — FIXED]** — 5 dependency bump commits (especially eslint 9→10) broke `npm install` for fresh clones: `eslint-plugin-jsx-a11y@6.10.2` requires `eslint@"^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9"` but `eslint@10.8.0` is now installed. **Fix**: Added `legacy-peer-deps=true` to `.npmrc` with explanatory comment. Fresh `npm install` now succeeds. The upstream issue is tracked — `eslint-plugin-jsx-a11y` has not yet released a version compatible with eslint 10.
+4. **[Test Count Unchanged]** — **2,224** (912 web + 502 API + 810 shared — unchanged from Cycle 309).
+5. **[BUG-013 Still Fixed]** — `lighthouse` 13.4.1, **0 vulnerabilities** (lighthouse bump 12→13 verified: no CVE reversion).
+6. **[BUG-031 Still Tracked]** — `brace-expansion` CVE (GHSA-mh99-v99m-4gvg, dev-only ESLint toolchain, over-broad advisory range). Lockfile at 5.0.8. No production impact.
+7. **[BroCula Run 2 Indexed]** — `docs/audits/brocula-audit-2026-07-27-run2.md` — BroCula ULW Loop Jul 27 Run 2 — LH **98-100-100-100** ⭐, **0 console errors/warnings**, **0 optimization opportunities**, all **2,224 tests pass**, all quality gates pass 🧛‍♂️⭐. audits/README updated with Run 2 entry.
+8. **[Archive Retention OK]** — Oldest archive files from Jun 27 (exactly 30 days today — Jul 27). On the boundary. Will need purging next cycle if retention policy is strictly <30 days. Current files: `brocula-hunt-2026-06-27-run1.md`, `brocula-hunt-2026-06-27-run2.md`.
+9. **[Stale `.omo/run-continuation/` Session Files]** — 0 from prior cycles ✅ (directory does not exist).
+10. **[Documentation Drift Fixes]** — findings.md (this entry), active-tasks.md (Cycle 310 entry), bugs.md (Cycle 310 entry), knowledge-review.md (refreshed with Cycle 310 state), CHANGELOG.md (Cycle 310 entry), audits/README.md (BroCula Run 2 added as latest), .npmrc (legacy-peer-deps=true added).
+11. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,224/2,224** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,224/2,224** (912 web + 502 API + 810 shared) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013/BUG-031 STILL FIXED/TRACKED) |
+| Secrets scan | ✅ 0 secrets |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** |
+| `as any` | ✅ **0** |
+| Empty catch blocks | ✅ **0** |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| BUG-031 (brace-expansion dev-only) | ✅ **TRACKED** (over-broad advisory, no production impact) |
+| npm install regression | ✅ **FIXED** (legacy-peer-deps=true in .npmrc) |
+| Archive retention | ✅ All within 30-day window (Jun 27 onward — borderline) |
+| Stale merged branches | ✅ **0** |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,224 tests green, 0 vulnerabilities, 0 lint/type errors. 5 new post-Cycle-309 commits indexed (5× dependency bumps). npm install regression FIXED (legacy-peer-deps=true). BroCula Run 2 indexed (Jul 27 — LH 98-100-100-100 ⭐). Archive retention OK (oldest Jun 27 — 30 days, borderline). BUG-013 still fixed (lighthouse 12→13 bump clean). BUG-031 tracked (dev-only). All quality gates pass.** ✅
+
 ## Cycle 308 (2026-07-26 — RepoKeeper: full repository audit, **8 new post-Cycle-307 commits indexed** (BugFixer Run 1/2, BroCula Run 9 docs, feat(ux) arrival pop animation, flexy Iteration 167/168, BroCula Run 10 docs, test(web) component tests #2887), test count **2,224/2,224** (912 web + 502 API + 810 shared — **web +22**), BUG-013 still fixed (0 vulns), BUG-031 tracked (brace-expansion dev-only CVE), archive retention OK (oldest Jun 27 — 29 days, within 30-day window), **1 stale merged branch deleted** (`origin/bugfixer/ulw-cycle-jul-26-2026`), all quality gates pass ✅)
 
 ### Actions Taken
