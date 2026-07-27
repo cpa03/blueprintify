@@ -211,12 +211,13 @@
         }
       }
       /* Skeleton exit animation — auto-starts after 2s delay, fades out
-         in 0.3s, then stays hidden. No JS timer or rAF needed on the
-         critical rendering path — pure CSS animation. */
+         in 0.3s, then stays hidden. Uses opacity only (GPU-composited)
+         so no paint or layout triggered. When opacity reaches 0 the
+         pointer-events:none on the parent ensures it's uninteractive,
+         and the 0-size animated properties keep it from affecting layout. */
       @keyframes skeleton-exit {
         to {
           opacity: 0;
-          visibility: hidden;
         }
       }
     </style>
