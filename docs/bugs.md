@@ -1,6 +1,18 @@
 # Bug Log: Known Defects
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
+## Bug Status — Jul 27 2026 (BugFixer ULW Cycle)
+
+> **BugFixer ULW Cycle Jul 27 2026 (2026-07-27 — fix/bugfixer-ulw-cycle-jul-27-2026)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,224/2,224** ✅ (912 web + 502 API + 810 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 — lighthouse bumped to 13.4.1, still 0 vulns; BUG-031 — brace-expansion CVE override 5.0.8 holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
+>
+> **5 new post-Cycle-309 commits indexed**: chore(deps-dev): bump lighthouse 12.6.1→13.4.1 (`7a3c8578`), jsdom 29.1.1→30.0.0 (`fe15db6e`), eslint 9.39.4→10.8.0 (`c5cc63ed`), @testing-library/jest-dom 6.9.1→7.0.0 (`a267e38d`); chore(deps-dev): bump development-dependencies group with 11 updates (`8e87a7c7`).
+> **Test count unchanged**: **2,224** (912 web + 502 API + 810 shared — unchanged from Cycle 309).
+> **npm install required --legacy-peer-deps**: eslint 10.8.0 breaks peer dep contract of eslint-plugin-jsx-a11y@6.10.2 (requires eslint@^9). Install succeeds with `--legacy-peer-deps` and lint passes cleanly, but this is a latent issue.
+> **BUG-030 note**: `sharp` override in package.json is `0.35.3` but installed version is `0.35.2` (lockfile resolved before override took effect). npm audit shows **0 vulnerabilities** — CVE threshold was <0.35.0, so 0.35.2 is safe.
+> **Archive retention OK**: oldest files Jul 11 (16 days, within 30-day window).
+> **0 stale `.omo/run-continuation/` files. 0 stale merged branches.**
+> **No new fixable bugs found in codebase. All quality gates pass.** Branch created.
+
 ## Bug Status — Jul 27 2026 (RepoKeeper Cycle 309)
 
 > **RepoKeeper Cycle 309 (2026-07-27 — chore/repokeeper-cycle-309)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,224/2,224** ✅ (912 web + 502 API + 810 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
