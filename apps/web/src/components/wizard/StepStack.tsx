@@ -47,6 +47,7 @@ import {
   SPRING_CONFIG,
   HOVER_SCALE,
   TAP_SCALE,
+  SCALE_PULSE,
   UI_CONTENT,
   ACCESSIBILITY_LABELS,
   VALIDATION_MESSAGES,
@@ -122,7 +123,7 @@ const TechChip = memo(function TechChip({
       animate={
         isJustSelected
           ? {
-              scale: [1, 1.15, 1],
+              scale: SCALE_PULSE.GLOW,
               transition: { duration: ANIMATION.SUBTLE_MOVE, ease: EASING.easeOut },
             }
           : {}

@@ -3196,3 +3196,27 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean (shared + web)
 - ✅ `npm run test:all` — **912 web + 502 api + 810 shared = 2,224 tests passing** across 98 files
+
+---
+
+### ✅ Flexy Iteration 171: Replace Hardcoded scale: [1, 1.15, 1] in StepStack with SCALE_PULSE.GLOW
+
+**Problem**: `apps/web/src/components/wizard/StepStack.tsx` line 125 had a hardcoded `scale: [1, 1.15, 1]` keyframe array in the chip selection feedback animation. The `SCALE_PULSE.GLOW` constant (exactly `[1, 1.15, 1]`) from `@blueprint/shared/config/animation.ts` already existed but was not imported or used.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/components/wizard/StepStack.tsx` | Added `SCALE_PULSE` to import from `../../config/constants` |
+| `apps/web/src/components/wizard/StepStack.tsx` | Replaced hardcoded `scale: [1, 1.15, 1]` with `scale: SCALE_PULSE.GLOW` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — **912 web + 502 api + 810 shared = 2,224 tests passing** across 98 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `feat/flexy-iteration-171-stepstack-scale-pulse` | refactor(flexy): replace hardcoded scale keyframe in StepStack with SCALE_PULSE.GLOW (Iteration 171) |
