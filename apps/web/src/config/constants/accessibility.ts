@@ -18,6 +18,10 @@ export const CSS_CLASSES = {
   ANIMATED_SPINNER: "animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500",
   EDITOR_FOCUS_HIGHLIGHT: "editor-focus-highlight",
   ARRIVAL_POP: "arrival-pop",
+  /** Keyboard shortcut display styling — used in 15+ places across wizard components.
+   * Flexy says: No hardcoded kbd class strings! */
+  KBD_SHORTCUT:
+    "px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none",
 } as const;
 
 // ============================================================================

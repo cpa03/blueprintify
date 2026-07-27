@@ -770,10 +770,7 @@ export const StepGenerating = memo(function StepGenerating({
                     />
                   </svg>
                   {WIZARD_GENERATING_LABELS.VIEW_IN_EDITOR}
-                  <kbd
-                    className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
-                    aria-hidden="true"
-                  >
+                  <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
                     {getModifierLabel()}+E
                   </kbd>
                 </RippleButton>
@@ -817,10 +814,7 @@ export const StepGenerating = memo(function StepGenerating({
                     />
                   </svg>
                   {WIZARD_GENERATING_LABELS.BACK_TO_REVIEW}
-                  <kbd
-                    className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
-                    aria-hidden="true"
-                  >
+                  <kbd className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
                     {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
                   </kbd>
                 </RippleButton>
@@ -912,10 +906,7 @@ export const StepGenerating = memo(function StepGenerating({
                   />
                 </svg>
                 {GENERATION_ERROR_LABELS.BACK_TO_REVIEW}
-                <kbd
-                  className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
-                  aria-hidden="true"
-                >
+                <kbd className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
                   {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
                 </kbd>
               </RippleButton>
@@ -998,10 +989,7 @@ export const StepGenerating = memo(function StepGenerating({
                     />
                   </svg>
                   {WIZARD_GENERATING_LABELS.CANCEL_GENERATION}
-                  <kbd
-                    className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
-                    aria-hidden="true"
-                  >
+                  <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
                     {KEY_DISPLAY.ESC}
                   </kbd>
                 </RippleButton>

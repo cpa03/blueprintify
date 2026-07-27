@@ -46,6 +46,7 @@ import {
   WIZARD_REVIEW_DESCRIPTIONS,
   WIZARD_REVIEW_EDIT_SHORTCUTS,
   STAGGER_CONFIG,
+  CSS_CLASSES,
 } from "../../config/constants";
 import { pageTransition, fadeInUp, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
@@ -161,10 +162,7 @@ export const StepReview = memo(function StepReview({
                     />
                   </svg>
                   Edit
-                  <kbd
-                    className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
-                    aria-hidden="true"
-                  >
+                  <kbd className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
                     {getAltKeyLabel()}+{WIZARD_REVIEW_EDIT_SHORTCUTS.INFO}
                   </kbd>
                 </button>
@@ -243,10 +241,7 @@ export const StepReview = memo(function StepReview({
                     />
                   </svg>
                   Edit
-                  <kbd
-                    className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
-                    aria-hidden="true"
-                  >
+                  <kbd className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
                     {getAltKeyLabel()}+{WIZARD_REVIEW_EDIT_SHORTCUTS.STACK}
                   </kbd>
                 </button>
@@ -328,10 +323,7 @@ export const StepReview = memo(function StepReview({
                       />
                     </svg>
                     Edit
-                    <kbd
-                      className="ml-1.5 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
-                      aria-hidden="true"
-                    >
+                    <kbd className={`ml-1.5 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
                       {getAltKeyLabel()}+{WIZARD_REVIEW_EDIT_SHORTCUTS.FEATURES}
                     </kbd>
                   </button>
@@ -459,7 +451,7 @@ export const StepReview = memo(function StepReview({
               </svg>
               {UI_CONTENT.BUTTONS.BACK_TO_FEATURES}
               <kbd
-                className="px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none animate-fade-in"
+                className={`${CSS_CLASSES.KBD_SHORTCUT} animate-fade-in`}
                 style={{
                   animationDelay: `${ANIMATION_ENTRANCE_DELAYS.TWO_THIRDS}s`,
                   animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
@@ -550,7 +542,7 @@ export const StepReview = memo(function StepReview({
                   </svg>
                   Generate Blueprint
                   <kbd
-                    className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none animate-fade-in"
+                    className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT} animate-fade-in`}
                     style={{
                       animationDelay: `${ANIMATION_ENTRANCE_DELAYS.SEVEN_TENTHS}s`,
                       animationFillMode: ENTRANCE_STAGGER_DEFAULTS.FILL_MODE,
