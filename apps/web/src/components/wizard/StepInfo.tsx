@@ -52,6 +52,7 @@ import {
   TAP_SCALE,
   SCROLL_BEHAVIOR,
   SCROLL_INTO_VIEW_BLOCK,
+  CSS_CLASSES,
 } from "../../config/constants";
 import { STEP_INFO_LABELS } from "../../config/constants/validation";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
@@ -724,10 +725,7 @@ export const StepInfo = memo(function StepInfo({
                 aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
               >
                 {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
-                <kbd
-                  className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
-                  aria-hidden="true"
-                >
+                <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
                   {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
                 </kbd>
                 <svg

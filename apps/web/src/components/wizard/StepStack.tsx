@@ -50,6 +50,7 @@ import {
   UI_CONTENT,
   ACCESSIBILITY_LABELS,
   VALIDATION_MESSAGES,
+  CSS_CLASSES,
 } from "../../config/constants";
 import { TRANSFORMS } from "../../config/theme";
 import { pageTransition, type AnimationDirection } from "../../utils/motion";
@@ -473,10 +474,7 @@ export const StepStack = memo(function StepStack({
               />
             </svg>
             {UI_CONTENT.BUTTONS.BACK_TO_INFO}
-            <kbd
-              className="px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
-              aria-hidden="true"
-            >
+            <kbd className={CSS_CLASSES.KBD_SHORTCUT} aria-hidden="true">
               {getAltKeyLabel()}+{DISPLAY_SYMBOLS.ARROW_LEFT}
             </kbd>
           </RippleButton>
@@ -493,10 +491,7 @@ export const StepStack = memo(function StepStack({
             aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
           >
             {UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON}
-            <kbd
-              className="ml-2 px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none"
-              aria-hidden="true"
-            >
+            <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
               {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
             </kbd>
             <svg
