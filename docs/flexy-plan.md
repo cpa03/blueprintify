@@ -3219,4 +3219,4 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `feat/flexy-iteration-171-stepstack-scale-pulse` | refactor(flexy): replace hardcoded scale keyframe in StepStack with SCALE_PULSE.GLOW (Iteration 171) |
+| [#2911](https://github.com/cpa03/blueprintify/pull/2911) | `feat/flexy-iteration-171-stepstack-scale-pulse` | refactor(flexy): replace hardcoded scale keyframe in StepStack with SCALE_PULSE.GLOW (Iteration 171) |
