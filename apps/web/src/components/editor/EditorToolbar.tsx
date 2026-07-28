@@ -237,7 +237,11 @@ function EditorToolbarComponent({
         content={
           <div className="flex items-center gap-2">
             <span>
-              {isCopied ? TOOLTIP_LABELS.EDITOR.COPIED : TOOLTIP_LABELS.EDITOR.COPY_TO_CLIPBOARD}
+              {isCopied
+                ? TOOLTIP_LABELS.EDITOR.COPIED
+                : hasContent && !!activeTab
+                  ? TOOLTIP_LABELS.EDITOR.COPY_TO_CLIPBOARD
+                  : TOOLTIP_LABELS.EDITOR.NO_CONTENT_TO_COPY}
             </span>
             <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-xs font-mono text-dark-300">
               {SHORTCUT_LABELS.COPY}
