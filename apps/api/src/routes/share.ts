@@ -12,7 +12,7 @@ import { Hono } from "hono";
 import { validateJson, validatePromptInjection } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
 import { authorize } from "../middleware/authorize";
-import type { Env } from "../types";
+import type { Env, AppVariables } from "../types";
 import {
   CONTEXT_KEYS,
   AUTH_DEFAULTS,
@@ -45,19 +45,7 @@ const LOG_CREATE_ERROR = LOG_CONTEXT.SHARE_CREATE;
 const LOG_VERIFY_ERROR = LOG_CONTEXT.SHARE_VERIFY;
 const UNKNOWN_SHARE_ID = LOG_CONTEXT.UNKNOWN_SHARE_ID;
 
-async function getCreatorId(apiKey: string | undefined): Promise<string | undefined> {
-  if (!apiKey) return undefined;
-  const encoder = new TextEncoder();
-  const data = encoder.encode(apiKey);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("")
-    .slice(0, 16);
-}
-
-const app = new Hono<{ Bindings: Env }>();
+const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
 
 /**
  * Minimal interface for Hono context operations used by internal helpers.
@@ -241,6 +229,7 @@ async function isValidVerifyToken(
 
 app.post(
   "/",
+  authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
   rateLimit(rateLimitConfigs.standard),
   validateJson(CreateShareSchema),
   validatePromptInjection(INJECTION_FIELD_DEFINITIONS.SHARE_CREATE),
@@ -260,7 +249,8 @@ app.post(
       const shareId = generateShareId();
       const now = new Date().toISOString();
       const expiresAt = getExpirationDate();
-      const creatorId = await getCreatorId(c.env.API_KEY);
+      const user = c.get(CONTEXT_KEYS.USER);
+      const creatorId = user?.id;
 
       const dbError = checkDbConfigured(c);
       if (dbError) return dbError;
@@ -643,7 +633,8 @@ app.delete(
       }
 
       // Validate ownership: if the share has a creatorId, the request must match
-      const creatorId = await getCreatorId(c.env.API_KEY);
+      const delUser = c.get(CONTEXT_KEYS.USER);
+      const creatorId = delUser?.id;
       if (creatorId && existing.metadata) {
         const parsedMetadata = parseMetadata(existing.metadata) ?? {};
         const shareCreatorId = parsedMetadata.createdBy as string | undefined;
