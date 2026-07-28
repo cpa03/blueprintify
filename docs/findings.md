@@ -2,21 +2,19 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Cycle 315 (2026-07-28 — BugFixer ULW Cycle 2: full repository audit, **0 new post-Cycle-314 commits indexed** (HEAD unchanged at `1d37d3e9` — fix(bugfixer): Cycle 314 — BugFixer ULW full repository audit), test count unchanged **2,224/2,224** (912 web + 502 API + 810 shared), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE — override 5.0.8 holds), **archive retention OK** (oldest Jul 14 — 14 days, within 30-day window), **0 stale merged branches**, **0 stale `.omo/run-continuation/` files** from prior cycles, all quality gates pass ✅)
-
-
+## Cycle 316 (2026-07-28 — BugFixer ULW: full repository audit, **4 new post-Cycle-315 commits indexed** (HEAD at `d7fb7677` — docs(findings): Cycle 315 — ULW Loop full cycle (#2916), all docs/chore — 0 code changes), test count unchanged **2,224/2,224** (912 web + 502 API + 810 shared), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE — override 5.0.8 holds), **archive retention OK** (oldest Jul 13 — 15 days, within 30-day window), **0 stale merged branches**, **0 stale `.omo/run-continuation/` files** from prior cycles, all quality gates pass ✅)
 
 ### Actions Taken
 
 1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. 0 `.patch` files. 0 empty directories (excluding `node_modules`).
-2. **[0 New Post-Cycle-314 Commits Indexed]** — HEAD unchanged at `1d37d3e9` (fix(bugfixer): Cycle 314 — BugFixer ULW full repository audit). No new work landed since Cycle 314.
-3. **[Test Count Unchanged]** — **2,224** (912 web + 502 API + 810 shared — unchanged from Cycle 314).
+2. **[4 New Post-Cycle-315 Commits Indexed]** — HEAD at `d7fb7677` (docs(findings): Cycle 315 — ULW Loop full cycle (#2916)). All docs/chore — 0 code changes.
+3. **[Test Count Unchanged]** — **2,224** (912 web + 502 API + 810 shared — unchanged from Cycle 315).
 4. **[BUG-013 Still Fixed]** — `lighthouse` 13.4.1 — **0 vulnerabilities** (no re-bump occurred).
 5. **[BUG-031 Still Tracked]** — `brace-expansion` CVE (GHSA-mh99-v99m-4gvg, dev-only ESLint toolchain, over-broad advisory range). Lockfile at 5.0.8. No production impact.
-6. **[Archive Retention OK]** — Oldest files Jul 14 (14 days, within 30-day window). No purge needed.
+6. **[Archive Retention OK]** — Oldest files Jul 13 (15 days, within 30-day window). No purge needed.
 7. **[Stale `.omo/run-continuation/` Session Files]** — 0 from prior cycles ✅ (directory does not exist).
 8. **[Stale Merged Branches]** — None found (squash-merge repo) ✅.
-9. **[Documentation Drift Fixes]** — findings.md (this entry), active-tasks.md (Cycle 315 entry), bugs.md (Cycle 315 entry), knowledge-review.md (refreshed with Cycle 315 state).
+9. **[Documentation Drift Fixes]** — findings.md (this entry), active-tasks.md (Cycle 316 entry), bugs.md (Cycle 316 entry), knowledge-review.md (refreshed with Cycle 316 state).
 10. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,224/2,224** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅. All quality gates pass.
 
 ### Quality Metrics
@@ -35,12 +33,12 @@
 | Empty catch blocks | ✅ **0** |
 | TODO/FIXME/HACK in source | ✅ **0** |
 | BUG-031 (brace-expansion dev-only) | ✅ **TRACKED** (over-broad advisory, no production impact) |
-| Archive retention | ✅ OK (oldest Jul 14 — 14 days, within 30-day window) |
+| Archive retention | ✅ OK (oldest Jul 13 — 15 days, within 30-day window) |
 | Stale merged branches | ✅ **0** |
 
 ### Verdict
 
-**All quality gates pass. Repository remains exceptionally healthy — 2,224 tests green, 0 vulnerabilities, 0 lint/type errors. 0 new post-Cycle-314 commits indexed — HEAD unchanged at `1d37d3e9` (Cycle 314 BugFixer audit). Archive retention OK (oldest Jul 14 — 14 days). BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns). BUG-031 tracked (dev-only). All quality gates pass.** ✅
+**All quality gates pass. Repository remains exceptionally healthy — 2,224 tests green, 0 vulnerabilities, 0 lint/type errors. 4 new post-Cycle-315 commits indexed — HEAD at `d7fb7677` (docs(findings): Cycle 315 — ULW Loop full cycle (#2916), all docs/chore — 0 code changes). Archive retention OK (oldest Jul 13 — 15 days). BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns). BUG-031 tracked (dev-only). All quality gates pass.** ✅
 
 ## Cycle 315 (2026-07-28 — ULW Loop full cycle: PR handler merged 2 PRs (#2915 docs(audits), #2914 fix(bugfixer)), issue normalization (20 open issues — 3× P1, 7× P2, 10× P3), #1082 verified resolved (12/12 hooks have tests), comprehensive scoring **Overall 82.6/100** (Code Quality 86.0, System 81.0, UX/DX 83.0, Delivery 80.4), all quality gates pass ✅)
 
