@@ -2,6 +2,24 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ BugFixer ULW Cycle 314 — **Full repository audit, 1 new post-Cycle-313 commit indexed (HEAD at `5e0247ef` — Cycle 313 ULW Loop audit), test count unchanged 2,224/2,224 (912 web + 502 API + 810 shared), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE), archive retention OK (oldest Jul 14 — 14 days), 0 stale merged branches, all quality gates pass** ✅
+
+### Task: Full repository audit — **1 new post-Cycle-313 commit indexed** — HEAD at `5e0247ef` (docs(findings): Cycle 313 — ULW Loop full cycle audit); **test count unchanged** **2,224/2,224** (912 web + **502 API** + **810 shared** — unchanged from Cycle 313); **BUG-013 still fixed** (lighthouse 13.4.1 — 0 vulns); **BUG-031 tracked** (brace-expansion dev-only CVE — override 5.0.8 holds); **archive retention OK** (oldest Jul 14 — 14 days, within 30-day window); **0 stale `.omo/run-continuation/` files from prior cycles**; **0 stale merged branches**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; **0 merge conflict artifacts**; **documentation updates**: findings.md (Cycle 314 entry), active-tasks.md (this entry), bugs.md (Cycle 314 entry), knowledge-review.md (refreshed), CHANGELOG.md (Cycle 314 entry); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,224/2,224** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: BugFixer ULW Cycle 314 — full repository audit, index 1 post-Cycle-313 commit (HEAD `5e0247ef`), verify BUG-013/BUG-031, archive retention check, fix documentation drift, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks, no `.patch` files ✅
+  - [x] **1 new post-Cycle-313 commit indexed**: HEAD at `5e0247ef` (Cycle 313 ULW Loop audit) ✅
+  - [x] **Test count unchanged**: **2,224/2,224** (912 web + 502 API + 810 shared) ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 13.4.1 — 0 vulns ✅
+  - [x] **BUG-031 tracked**: brace-expansion CVE — override 5.0.8, dev-only ✅
+  - [x] **Archive retention OK**: Oldest Jul 14 (14 days, within 30-day window) ✅
+  - [x] **No stale `.omo/run-continuation/` files**: 0 from prior cycles ✅
+  - [x] **Documentation drift fixes**: findings.md, active-tasks.md, bugs.md, knowledge-review.md, CHANGELOG.md ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ tests **2,224/2,224** ✅, format ✅, secrets scan ✅, npm audit **0 vulns** ✅
+
 ## ✅ RepoKeeper Cycle 312 — **Full repository audit, 0 new post-Cycle-311 commits indexed (HEAD unchanged at `09f06e0a` — BroCula Jul 27 Run 4), test count unchanged 2,224/2,224 (912 web + 502 API + 810 shared), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE), 5 stale audit reports from Jul 23-24 archived, `.codegraph/` cleaned (16MB temp artifact), 0 stale merged branches, all quality gates pass** ✅
 
 ### Task: Full repository audit — **0 new post-Cycle-311 commits to index** — HEAD unchanged at `09f06e0a` (docs(audits): BroCula Jul 27 run 4); **test count unchanged** **2,224/2,224** (912 web + **502 API** + **810 shared** — unchanged from Cycle 311); **BUG-013 still fixed** (lighthouse 13.4.1 — 0 vulns); **BUG-031 tracked** (brace-expansion dev-only CVE — override 5.0.8 holds); **5 audit reports archived** (Jul 23-24 — moved to archive/ per retention policy); **`.codegraph/` cleaned** (16MB temp artifact removed); **0 stale `.omo/run-continuation/` files from prior cycles**; **0 stale merged branches**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; **0 merge conflict artifacts**; **documentation updates**: findings.md (Cycle 312 entry), active-tasks.md (this entry), bugs.md (Cycle 312 entry), knowledge-review.md (refreshed), CHANGELOG.md (Cycle 312 entry), audits/README.md (Jul 23-24 entries removed); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,224/2,224** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅)
