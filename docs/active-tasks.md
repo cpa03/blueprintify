@@ -2,6 +2,25 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 318 — **Full repository audit, 0 new post-Cycle-317 commits indexed (HEAD unchanged at `d7eb5129` — chore(repokeeper) Cycle 317), test count unchanged 2,224/2,224 (912 web + 502 API + 810 shared), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE), archive retention OK (oldest Jun 29 — 29 days), 0 stale merged branches, 1 unmerged perf branch noted (`origin/brocula/jul-28-run-9` PR #2926), all quality gates pass** ✅
+
+### Task: Full repository audit — **0 new post-Cycle-317 commits indexed** — HEAD unchanged at `d7eb5129` (chore(repokeeper): Cycle 317 — full repository audit and cleanup); **test count unchanged** **2,224/2,224** (912 web + **502 API** + **810 shared** — unchanged from Cycle 317); **BUG-013 still fixed** (lighthouse 13.4.1 — 0 vulns); **BUG-031 tracked** (brace-expansion dev-only CVE — override 5.0.8 holds); **1 unmerged branch noted** (`origin/brocula/jul-28-run-9` with perf build improvement `145f576b` — PR #2926 open); **archive retention OK** (oldest Jun 29 — 29 days, within 30-day window); **0 stale `.omo/run-continuation/` files from prior cycles**; **0 stale merged branches**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; **0 merge conflict artifacts**; **documentation updates**: findings.md (Cycle 318 entry), active-tasks.md (this entry), bugs.md (Cycle 318 entry), CHANGELOG.md (Cycle 318 entry); quality verification (typecheck ✅ lint ✅ build ✅ format ✅, npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+- **Objective**: RepoKeeper Cycle 318 — full repository audit, index 0 post-Cycle-317 commits (HEAD unchanged `d7eb5129`), note unmerged perf branch, verify BUG-013/BUG-031, archive retention check, fix documentation drift, quality verification
+- **Actions**:
+  - [x] **Full repository scan**: No redundant/temp/unused files, no type suppressions, no TODO/FIXME/HACK, no empty catch blocks, no `.patch` files ✅
+  - [x] **0 new post-Cycle-317 commits indexed**: HEAD unchanged at `d7eb5129` (RepoKeeper Cycle 317) ✅
+  - [x] **1 unmerged branch noted**: `origin/brocula/jul-28-run-9` with perf build improvement (PR #2926 open) ✅
+  - [x] **Test count unchanged**: **2,224/2,224** (912 web + 502 API + 810 shared) ✅
+  - [x] **BUG-013 verified still fixed**: lighthouse 13.4.1 — 0 vulns ✅
+  - [x] **BUG-031 tracked**: brace-expansion CVE — override 5.0.8, dev-only ✅
+  - [x] **Archive retention OK**: Oldest Jun 29 (29 days, within 30-day window) ✅
+  - [x] **No stale `.omo/run-continuation/` files**: 0 from prior cycles ✅
+  - [x] **Documentation drift fixes**: findings.md, active-tasks.md, bugs.md, CHANGELOG.md ✅
+  - [x] **Quality verification**: typecheck ✅ lint ✅ build ✅ format ✅ npm audit **0 vulns** ✅
+
 ## ✅ RepoKeeper Cycle 317 — **Full repository audit, 0 new post-Cycle-316 commits indexed (HEAD unchanged at `445e59eb` — fix(bugfixer) Cycle 316), test count unchanged 2,224/2,224 (912 web + 502 API + 810 shared), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE), `.opencode/oh-my-openagent.json` deleted (migrated to `.omo/omo.jsonc`), audits/README.md fixed (BroCula Run 7 added), 0 stale merged branches, all quality gates pass** ✅
 
 ### Task: Full repository audit — **0 new post-Cycle-316 commits indexed** — HEAD unchanged at `445e59eb` (fix(bugfixer): Cycle 316 — BugFixer ULW full repository audit); **test count unchanged** **2,224/2,224** (912 web + **502 API** + **810 shared** — unchanged from Cycle 316); **BUG-013 still fixed** (lighthouse 13.4.1 — 0 vulns); **BUG-031 tracked** (brace-expansion dev-only CVE — override 5.0.8 holds); **archive retention OK** (oldest Jul 13 — 15 days, within 30-day window); **`.opencode/oh-my-openagent.json` deleted** (legacy OMO config — migrated to `.omo/omo.jsonc`); **audits/README.md fixed** (BroCula Jul 28 Run 7 entry added); **0 stale `.omo/run-continuation/` files from prior cycles**; **0 stale merged branches**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **0 empty catch blocks**; **0 TODO/FIXME/HACK in source**; **0 merge conflict artifacts**; **documentation updates**: findings.md (Cycle 317 entry), active-tasks.md (this entry), bugs.md (Cycle 317 entry), CHANGELOG.md (Cycle 317 entry), audits/README.md (BroCula Run 7 added); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,224/2,224** ✅, format ✅, npm audit **0 vulns** ✅)

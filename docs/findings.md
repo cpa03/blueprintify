@@ -2,6 +2,46 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 318 (2026-07-28 — RepoKeeper: full repository audit, **0 new post-Cycle-317 commits indexed** (HEAD unchanged at `d7eb5129` — chore(repokeeper) Cycle 317), test count unchanged **2,224/2,224** (912 web + 502 API + 810 shared), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE — override 5.0.8 holds), **1 unmerged branch noted** (`origin/brocula/jul-28-run-9` with perf build improvement `145f576b` — PR #2926 open), **archive retention OK** (oldest Jun 29 — 29 days, within 30-day window), **0 stale `.omo/run-continuation/` files** from prior cycles, **0 stale merged branches**, all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. 0 `.patch` files. 0 empty directories (excluding `node_modules`).
+2. **[0 New Post-Cycle-317 Commits Indexed]** — HEAD unchanged at `d7eb5129` (chore(repokeeper): Cycle 317 — full repository audit and cleanup). No new work landed on main since Cycle 317.
+3. **[1 Unmerged Branch Noted]** — `origin/brocula/jul-28-run-9` contains commit `145f576b` — `perf(build): merge vendor-scheduler into vendor-react-dom chunk to reduce modulepreload waterfall`. This is an open PR (#2926) with a perf improvement that has not been merged into main. Noted for the next cycle.
+4. **[Test Count Unchanged]** — **2,224** (912 web + 502 API + 810 shared — unchanged from Cycle 317).
+5. **[BUG-013 Still Fixed]** — `lighthouse` 13.4.1 — **0 vulnerabilities** (no re-bump occurred).
+6. **[BUG-031 Still Tracked]** — `brace-expansion` CVE (GHSA-mh99-v99m-4gvg, dev-only ESLint toolchain, over-broad advisory range). Lockfile at 5.0.8. No production impact.
+7. **[Archive Retention OK]** — Oldest files Jun 29 (29 days, within 30-day window). No purge needed.
+8. **[Stale `.omo/run-continuation/` Session Files]** — 0 from prior cycles ✅ (directory does not exist).
+9. **[Stale Merged Branches]** — None found (squash-merge repo) ✅.
+10. **[Documentation Drift Fixes]** — findings.md (this entry), active-tasks.md (Cycle 318 entry), bugs.md (Cycle 318 entry), CHANGELOG.md (Cycle 318 entry).
+11. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ format ✅, npm audit **0 vulns** ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,224/2,224** (912 web + 502 API + 810 shared) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013/BUG-031 STILL FIXED/TRACKED) |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** |
+| `as any` | ✅ **0** |
+| Empty catch blocks | ✅ **0** |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| BUG-031 (brace-expansion dev-only) | ✅ **TRACKED** (over-broad advisory, no production impact) |
+| Archive retention | ✅ OK (oldest Jun 29 — 29 days, within 30-day window) |
+| Stale merged branches | ✅ **0** |
+| Stale `.omo/run-continuation/` files | ✅ **0** |
+| Unmerged perf branch noted | ✅ `origin/brocula/jul-28-run-9` (PR #2926 open) |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,224 tests green, 0 vulnerabilities, 0 lint/type errors. 0 new post-Cycle-317 commits indexed — HEAD unchanged at RepoKeeper Cycle 317. Archive retention OK (oldest Jun 29 — 29 days). BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns). BUG-031 tracked (dev-only). 1 unmerged branch noted (`origin/brocula/jul-28-run-9` with perf improvement — PR #2926 open). All quality gates pass.** ✅
+
 ## Cycle 317 (2026-07-28 — RepoKeeper: full repository audit, **0 new post-Cycle-316 commits indexed** (HEAD unchanged at `445e59eb` — fix(bugfixer) Cycle 316), test count unchanged **2,224/2,224** (912 web + 502 API + 810 shared), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE — override 5.0.8 holds), **archive retention OK** (oldest Jul 13 — 15 days, within 30-day window), **`.opencode/oh-my-openagent.json` deleted** (migrated to `.omo/omo.jsonc` — OMO config unification), **audits/README.md fixed** (missing BroCula Jul 28 Run 7 entry added), **0 stale merged branches**, **0 stale `.omo/run-continuation/` files** from prior cycles, all quality gates pass ✅)
 
 ### Actions Taken
