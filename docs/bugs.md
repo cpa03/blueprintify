@@ -13,6 +13,16 @@
 > **No stale `.omo/run-continuation/` files** from prior cycles.
 > **No new fixable bugs found in codebase. All quality gates pass.** Branch created.
 
+## Bug Status — Jul 28 2026 (BugFixer ULW Cycle 317)
+
+> **BugFixer ULW Cycle 317 (2026-07-28 — fix/bugfixer-ulw-cycle-jul-28-2026-cycle-317)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,224/2,224** ✅ (912 web + 502 API + 810 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
+>
+> **BUG-032 — FIXED**: `npm ls` reported invalid version mismatches in workspace dependencies — `@cloudflare/workers-types@5.20260722.1` installed vs `5.20260727.1` in package.json; `@vitejs/plugin-react@6.0.3` installed vs `6.0.4` in package.json. Root cause: lockfile drift after prior npm install cycles — workspace node_modules had stale versions that did not match package.json specs. Fix: removed stale workspace node_modules and reinstalled correct versions via `npm install`. Verified: `npm ls` now clean, no invalid markers.
+>
+> **0 new post-Cycle-316 commits indexed** — HEAD unchanged at `445e59eb` (fix(bugfixer) Cycle 316).
+> **Test count unchanged**: **2,224** (912 web + 502 API + 810 shared — unchanged from Cycle 316).
+> **BUG-032 — CONFIRMED FIXED**: `npm install @cloudflare/workers-types@5.20260727.1 --install-strategy=nested` and `npm install @vitejs/plugin-react@6.0.4 --install-strategy=nested` resolved version mismatches. Full quality gates pass. Branch created.
+
 ## Bug Status — Jul 28 2026 (BugFixer ULW Cycle 316)
 
 > **BugFixer ULW Cycle 316 (2026-07-28 — fix/bugfixer-ulw-cycle-jul-28-2026)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,224/2,224** ✅ (912 web + 502 API + 810 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
