@@ -2,6 +2,46 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 312 (2026-07-27 — RepoKeeper: full repository audit, **0 new post-Cycle-311 commits indexed** (HEAD unchanged at `09f06e0a` — docs(audits) BroCula Jul 27 Run 4 / LH **100-100-100-100** 🏆), test count unchanged **2,224/2,224** (912 web + 502 API + 810 shared), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE — override 5.0.8 holds), **5 stale audit reports from Jul 23-24 archived** (moved to archive/ per retention policy), **`.codegraph/` cleaned** (16MB temp artifact removed — not tracked), **0 stale `.omo/run-continuation/` files** from prior cycles, **0 stale merged branches** (squash-merge repo — no `--merged` branches detected), all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. 0 `.patch` files. 0 empty directories (excluding `node_modules`).
+2. **[0 New Post-Cycle-311 Commits to Index]** — HEAD unchanged at `09f06e0a` (docs(audits): BroCula Jul 27 run 4). No new work landed since Cycle 311.
+3. **[Test Count Unchanged]** — **2,224** (912 web + 502 API + 810 shared — unchanged from Cycle 311).
+4. **[BUG-013 Still Fixed]** — `lighthouse` 13.4.1 — **0 vulnerabilities** (no re-bump occurred).
+5. **[BUG-031 Still Tracked]** — `brace-expansion` CVE (GHSA-mh99-v99m-4gvg, dev-only ESLint toolchain, over-broad advisory range). Lockfile at 5.0.8. No production impact.
+6. **[Audit Reports Archived — 5 Files Moved]** — `docs/audits/brocula-audit-2026-07-23.md`, `brocula-audit-2026-07-23-run2.md`, `brocula-audit-2026-07-23-run3.md`, `brocula-audit-2026-07-24.md`, `brocula-audit-2026-07-24-run2.md` — moved to `archive/` (4+ days old, per retention policy).
+7. **[`.codegraph/` Temp Artifact Cleaned]** — 16MB `codegraph.db` removed (gitignored tool cache).
+8. **[Stale `.omo/run-continuation/` Session Files]** — 0 from prior cycles ✅ (directory does not exist).
+9. **[Stale Merged Branches]** — None found (squash-merge repo) ✅.
+10. **[Documentation Drift Fixes]** — findings.md (this entry), active-tasks.md (Cycle 312 entry), bugs.md (Cycle 312 entry), knowledge-review.md (refreshed with Cycle 312 state), CHANGELOG.md (Cycle 312 entry), audits/README.md (Jul 23-24 entries removed).
+11. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,224/2,224** ✅, format ✅, npm audit **0 vulns** ✅, secrets scan ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,224/2,224** (912 web + 502 API + 810 shared) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013/BUG-031 STILL FIXED/TRACKED) |
+| Secrets scan | ✅ 0 secrets |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** |
+| `as any` | ✅ **0** |
+| Empty catch blocks | ✅ **0** |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| BUG-031 (brace-expansion dev-only) | ✅ **TRACKED** (over-broad advisory, no production impact) |
+| Audit reports archived | ✅ **5** (Jul 23-24, past retention) |
+| Temp artifacts cleaned | ✅ `.codegraph/` (16MB) |
+| Stale merged branches | ✅ **0** |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,224 tests green, 0 vulnerabilities, 0 lint/type errors. 0 new post-Cycle-311 commits to index — HEAD unchanged at BroCula Jul 27 Run 4. 5 stale audit reports from Jul 23-24 archived. `.codegraph/` temp artifact cleaned (16MB). BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns). BUG-031 tracked (dev-only). All quality gates pass.** ✅
+
 ## Cycle 311 (2026-07-27 — RepoKeeper: full repository audit, **0 new post-Cycle-310 commits indexed** (HEAD unchanged at `367b6564` — chore(repokeeper) Cycle 310), test count unchanged **2,224/2,224** (912 web + 502 API + 810 shared), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE — override 5.0.8 holds), **6 stale archive files from Jun 27 purged** (past 30-day retention), **0 stale `.omo/run-continuation/` files** from prior cycles, **0 stale merged branches**, all quality gates pass ✅)
 
 ### Actions Taken
