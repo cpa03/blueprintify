@@ -72,7 +72,13 @@ function createMockEnv(apiKey?: string) {
 }
 
 describe("POST /share", () => {
-  const app = new Hono<{ Bindings: ReturnType<typeof createMockEnv> }>();
+  const app = new Hono<{ Bindings: ReturnType<typeof createMockEnv>; Variables: AppVariables }>();
+  // Set user context for tests since POST route now requires authorization
+  app.use("*", async (c, next) => {
+    const user: User = { id: "test-user", role: AUTH_DEFAULTS.DEFAULT_ROLE };
+    c.set(CONTEXT_KEYS.USER, user);
+    await next();
+  });
   app.route("/", shareRoute);
   app.onError(errorHandler);
 
@@ -159,7 +165,13 @@ describe("POST /share", () => {
 });
 
 describe("GET /share/:id", () => {
-  const app = new Hono<{ Bindings: ReturnType<typeof createMockEnv> }>();
+  const app = new Hono<{ Bindings: ReturnType<typeof createMockEnv>; Variables: AppVariables }>();
+  // Set user context for tests since POST inside some test cases requires authorization
+  app.use("*", async (c, next) => {
+    const user: User = { id: "test-user", role: AUTH_DEFAULTS.DEFAULT_ROLE };
+    c.set(CONTEXT_KEYS.USER, user);
+    await next();
+  });
   app.route("/", shareRoute);
   app.onError(errorHandler);
 
@@ -253,9 +265,10 @@ describe("GET /share/:id", () => {
 
 describe("DELETE /share/:id", () => {
   const app = new Hono<{ Bindings: ReturnType<typeof createMockEnv>; Variables: AppVariables }>();
-  // Set user context for tests since DELETE route now requires authorization
+  // Derive user ID from env API key so "matching key" vs "mismatched key" tests work
   app.use("*", async (c, next) => {
-    const user: User = { id: "test-user", role: AUTH_DEFAULTS.DEFAULT_ROLE };
+    const userId = c.env.API_KEY ? `user_${c.env.API_KEY}` : AUTH_DEFAULTS.ANONYMOUS_USER_ID;
+    const user: User = { id: userId, role: AUTH_DEFAULTS.DEFAULT_ROLE };
     c.set(CONTEXT_KEYS.USER, user);
     await next();
   });
