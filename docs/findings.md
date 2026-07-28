@@ -2,6 +2,46 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 317 (2026-07-28 — RepoKeeper: full repository audit, **0 new post-Cycle-316 commits indexed** (HEAD unchanged at `445e59eb` — fix(bugfixer) Cycle 316), test count unchanged **2,224/2,224** (912 web + 502 API + 810 shared), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE — override 5.0.8 holds), **archive retention OK** (oldest Jul 13 — 15 days, within 30-day window), **`.opencode/oh-my-openagent.json` deleted** (migrated to `.omo/omo.jsonc` — OMO config unification), **audits/README.md fixed** (missing BroCula Jul 28 Run 7 entry added), **0 stale merged branches**, **0 stale `.omo/run-continuation/` files** from prior cycles, all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. 0 `.patch` files. 0 empty directories (excluding `node_modules`).
+2. **[0 New Post-Cycle-316 Commits Indexed]** — HEAD unchanged at `445e59eb` (fix(bugfixer): Cycle 316 — BugFixer ULW full repository audit). No new work landed since Cycle 316.
+3. **[Test Count Unchanged]** — **2,224** (912 web + 502 API + 810 shared — unchanged from Cycle 316).
+4. **[BUG-013 Still Fixed]** — `lighthouse` 13.4.1 — **0 vulnerabilities** (no re-bump occurred).
+5. **[BUG-031 Still Tracked]** — `brace-expansion` CVE (GHSA-mh99-v99m-4gvg, dev-only ESLint toolchain, over-broad advisory range). Lockfile at 5.0.8. No production impact.
+6. **[Archive Retention OK]** — Oldest files Jul 13 (15 days, within 30-day window). No purge needed.
+7. **[`.opencode/oh-my-openagent.json` Deleted]** — File removed from git tracking. This was the legacy OMO configuration file, superseded by `.omo/omo.jsonc` as part of the opencode config unification migration.
+8. **[audits/README.md Fixed]** — Missing BroCula Jul 28 Run 7 entry added to the current reports table (LH **100-100-100-100**, 5th consecutive perfect).
+9. **[Stale `.omo/run-continuation/` Session Files]** — 0 from prior cycles ✅ (directory does not exist).
+10. **[Stale Merged Branches]** — None found (squash-merge repo) ✅.
+11. **[Documentation Drift Fixes]** — findings.md (this entry), active-tasks.md (Cycle 317 entry), bugs.md (Cycle 317 entry), CHANGELOG.md (Cycle 317 entry), audits/README.md (BroCula Run 7 added).
+12. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ format ✅, npm audit **0 vulns** ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,224/2,224** (912 web + 502 API + 810 shared) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013/BUG-031 STILL FIXED/TRACKED) |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** |
+| `as any` | ✅ **0** |
+| Empty catch blocks | ✅ **0** |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| BUG-031 (brace-expansion dev-only) | ✅ **TRACKED** (over-broad advisory, no production impact) |
+| Archive retention | ✅ OK (oldest Jul 13 — 15 days, within 30-day window) |
+| Stale merged branches | ✅ **0** |
+| Stale `.omo/run-continuation/` files | ✅ **0** |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,224 tests green, 0 vulnerabilities, 0 lint/type errors. 0 new post-Cycle-316 commits indexed — HEAD unchanged at BugFixer Cycle 316. `.opencode/oh-my-openagent.json` deleted (migrated to `.omo/omo.jsonc`). audits/README.md fixed (BroCula Run 7 added). Archive retention OK (oldest Jul 13 — 15 days). BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns). BUG-031 tracked (dev-only). All quality gates pass.** ✅
+
 ## Cycle 316 (2026-07-28 — BugFixer ULW: full repository audit, **4 new post-Cycle-315 commits indexed** (HEAD at `d7fb7677` — docs(findings): Cycle 315 — ULW Loop full cycle (#2916), all docs/chore — 0 code changes), test count unchanged **2,224/2,224** (912 web + 502 API + 810 shared), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE — override 5.0.8 holds), **archive retention OK** (oldest Jul 13 — 15 days, within 30-day window), **0 stale merged branches**, **0 stale `.omo/run-continuation/` files** from prior cycles, all quality gates pass ✅)
 
 ### Actions Taken
