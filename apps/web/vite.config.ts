@@ -150,10 +150,13 @@ export default defineConfig({
         // react-dom has ~35% unused code in client-only usage — isolating it prevents
         // that waste from bloating the other packages' cache keys.
         manualChunks(id: string) {
-          if (id.includes("node_modules/react-dom")) return "vendor-react-dom";
+          // Merge small vendor modules into react-dom chunk to reduce
+          // modulepreload waterfall — scheduler (~0B after tree-shake)
+          // and react-dom are always loaded together.
+          if (id.includes("node_modules/react-dom") || id.includes("node_modules/scheduler"))
+            return "vendor-react-dom";
           if (id.includes("node_modules/react/")) return "vendor-react";
           if (id.includes("node_modules/zustand")) return "vendor-zustand";
-          if (id.includes("node_modules/scheduler")) return "vendor-scheduler";
         },
         assetFileNames: (assetInfo) => {
           const name = assetInfo.name ?? "";
