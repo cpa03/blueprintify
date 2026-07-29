@@ -22,6 +22,30 @@ export const CSS_CLASSES = {
    * Flexy says: No hardcoded kbd class strings! */
   KBD_SHORTCUT:
     "px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none",
+
+  /** Disabled element visual state — lower opacity and not-allowed cursor.
+   * Used in RippleButton (disabled prop), TemplateGrid (unselected templates), and
+   * StepFeatures (max-count reached). Single source of truth for disabled styling.
+   * Flexy says: No hardcoded "opacity-50 cursor-not-allowed" in components! */
+  DISABLED_STATE: "opacity-50 cursor-not-allowed" as const,
+
+  /** Loading dim state for children content during async operations.
+   * Used in RippleButton when isLoading is true — dims button text/icons
+   * so the spinner overlay is clearly visible while maintaining layout.
+   * Flexy says: No hardcoded "opacity-40 pointer-events-none" in components! */
+  LOADING_CHILDREN: "opacity-40 pointer-events-none" as const,
+
+  /** Loading spinner overlay container — covers the entire button area to center
+   * the spinner above dimmed children. Uses z-20 to layer above the z-10 children.
+   * Flexy says: No hardcoded spinner overlay classes in components! */
+  SPINNER_OVERLAY:
+    "absolute inset-0 flex items-center justify-center pointer-events-none z-20" as const,
+
+  /** Small inline loading spinner element for button loading states.
+   * Uses a minimal border-based spinner (h-4 w-4) distinct from the larger
+   * ANIMATED_SPINNER (h-8 w-8, border-b-2) which is used for standalone loading states.
+   * Flexy says: No hardcoded spinner Tailwind classes in components! */
+  LOADING_SPINNER: "h-4 w-4 border-2 border-primary-500 border-t-transparent rounded-full" as const,
 } as const;
 
 // ============================================================================

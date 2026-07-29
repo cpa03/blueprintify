@@ -21,7 +21,7 @@ vi.mock("../hooks/useReducedMotion", () => ({
 
 // Import for typing
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { HOVER_SCALE, TAP_SCALE, ENTRANCE_OFFSETS } from "../config/constants";
+import { HOVER_SCALE, TAP_SCALE, ENTRANCE_OFFSETS, CSS_CLASSES } from "../config/constants";
 
 describe("RippleButton", () => {
   afterEach(() => {
@@ -187,6 +187,30 @@ describe("RippleButton", () => {
   it("forwards data-autofocus attribute", () => {
     render(<RippleButton data-autofocus="true">Test</RippleButton>);
     expect(screen.getByRole("button")).toHaveAttribute("data-autofocus", "true");
+  });
+
+  it("renders loading spinner when isLoading is true", () => {
+    render(<RippleButton isLoading>Test</RippleButton>);
+    const button = screen.getByRole("button");
+    const overlay = button.querySelector(`.${CSS_CLASSES.SPINNER_OVERLAY.split(" ")[0]}`);
+    expect(overlay).toBeInTheDocument();
+    expect(button).toHaveAttribute("aria-busy", "true");
+  });
+
+  it("does not render loading spinner when isLoading is false", () => {
+    render(<RippleButton>Test</RippleButton>);
+    const button = screen.getByRole("button");
+    const overlay = button.querySelector(`.${CSS_CLASSES.SPINNER_OVERLAY.split(" ")[0]}`);
+    expect(overlay).not.toBeInTheDocument();
+    expect(button).not.toHaveAttribute("aria-busy");
+  });
+
+  it("dims children content when isLoading is true", () => {
+    render(<RippleButton isLoading>Test</RippleButton>);
+    const button = screen.getByRole("button");
+    const childrenSpan = button.querySelector("span.relative");
+    expect(childrenSpan).toHaveClass("opacity-40");
+    expect(childrenSpan).toHaveClass("pointer-events-none");
   });
 });
 

@@ -7,7 +7,7 @@ import {
   type ButtonHTMLAttributes,
 } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { RIPPLE_CONFIG } from "../config/constants";
+import { RIPPLE_CONFIG, CSS_CLASSES } from "../config/constants";
 
 interface Ripple {
   id: number;
@@ -142,7 +142,7 @@ function RippleButtonComponent({
       onMouseLeave={handleMouseLeave}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      className={`relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 transition-transform duration-150 ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`}
+      className={`relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 transition-transform duration-150 ${disabled ? CSS_CLASSES.DISABLED_STATE : ""} ${className}`}
       style={{ transform: hoverTransform || undefined }}
       aria-label={ariaLabel}
       aria-busy={isLoading ? "true" : undefined}
@@ -151,7 +151,7 @@ function RippleButtonComponent({
       {...rest}
     >
       <span
-        className={`relative z-10 inline-flex items-center gap-2 ${isLoading ? "opacity-40 pointer-events-none" : ""}`}
+        className={`relative z-10 inline-flex items-center gap-2 ${isLoading ? CSS_CLASSES.LOADING_CHILDREN : ""}`}
       >
         {children}
       </span>
@@ -161,12 +161,9 @@ function RippleButtonComponent({
           design language. When reduced motion is preferred, the spinner
           is shown statically without the spin animation. */}
       {isLoading && (
-        <span
-          className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
-          aria-hidden="true"
-        >
+        <span className={CSS_CLASSES.SPINNER_OVERLAY} aria-hidden="true">
           <span
-            className={`${shouldReduceMotion ? "" : "animate-spin"} h-4 w-4 border-2 border-primary-500 border-t-transparent rounded-full`}
+            className={`${shouldReduceMotion ? "" : "animate-spin"} ${CSS_CLASSES.LOADING_SPINNER}`}
           />
         </span>
       )}
