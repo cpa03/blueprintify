@@ -3278,3 +3278,66 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD (this PR) | `feat/flexy-iteration-172-regression-verification` | docs(flexy): full regression verification — zero hardcoded values confirmed after 172 iterations |
+
+---
+
+### ✅ Flexy Iteration 173: Full Regression Verification — Zero Hardcoded Values Confirmed (Maintained)
+
+**Problem**: After 172 iterations of hardcoded-value elimination (confirmed zero as of Iteration 172), verify that 9 subsequent commits (1 code change — `03931ef8` perf build in `vite.config.ts`, 8 docs/chores) have not reintroduced any hardcoded values.
+
+**Verification Scope**:
+
+| Check | Result |
+|-------|--------|
+| Hardcoded `"easeOut"`/`"easeInOut"`/`"easeIn"`/`"linear"` in app source | ✅ Zero |
+| Hardcoded HTTP status codes (`.status(200)`/`.status(400)`/`.status(500)`) in app source | ✅ Zero |
+| Hardcoded hex/rgba/rgb color strings in component logic | ✅ Zero |
+| Hardcoded HTTP methods (`"GET"`/`"POST"`/`"PUT"`/`"DELETE"`/`"PATCH"`) in app source | ✅ Zero |
+| Hardcoded MIME types (`"application/json"`/`"text/plain"`/`"text/event-stream"`) | ✅ Zero |
+| `import.meta.env` direct access outside `env.ts` | ✅ Zero |
+| Hardcoded CSS arbitrary values in components | ✅ Zero |
+| Hardcoded localStorage/sessionStorage keys (non-config) | ✅ Zero (all via STORAGE_KEYS) |
+| Hardcoded route path strings (`"/api"`/`"/generate"`/etc.) | ✅ Zero |
+| Hardcoded file/folder names (`"blueprint.md"`/`"docs/"`) | ✅ Zero |
+| Hardcoded CI node-version values | ✅ Zero (`.node-version` is SSOT) |
+| `@ts-expect-error`/`@ts-ignore`/`as any` | ✅ Zero |
+| `npm run lint` | ✅ Zero warnings |
+| `npm run typecheck` (all 3 workspaces) | ✅ Clean |
+| `npm run build` (shared + web) | ✅ Clean |
+| `npm run scan:secrets` | ✅ Clean |
+| `npm run audit` | ✅ 0 vulnerabilities |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npm run audit` — 0 vulnerabilities
+- ✅ `npm run test:all` — **912 web + 502 api + 810 shared = 2,224 tests passing** across 98 files
+
+## Codebase Status (After Iteration 173)
+
+| Category | Status |
+|----------|--------|
+| Hardcoded values in application logic | ❌ **None remaining** ✅ |
+| Hardcoded CSS arbitrary values | ❌ **None remaining** ✅ |
+| Hardcoded CI node-version values | ❌ **None remaining** ✅ |
+| Config centralization (@blueprint/shared) | ✅ **80+ config objects** in single source of truth |
+| Animation constants extracted | ✅ 100% of framer-motion values in config |
+| Color tokens centralized | ✅ All colors via COLORS + hexToRgba |
+| HTTP headers/methods/status codes | ✅ All in @blueprint/shared |
+| Error messages/strings | ✅ All in @blueprint/shared |
+| Route paths/env keys | ✅ All in @blueprint/shared |
+| UI strings/labels/tooltips | ✅ All in config |
+| CSS custom properties | ✅ `:root` variables + color-mix() throughout |
+| Tailwind arbitrary values | ✅ Zero remaining in components |
+| z-index values | ✅ All in Z_INDEX config |
+| Type suppressions | ✅ Zero @ts-expect-error/@ts-ignore/as any |
+| Build/lint/test | ✅ **Clean across all workspaces — 2,224 tests passing** |
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `feat/flexy-iteration-173-regression-verification` | docs(flexy): full regression verification — zero hardcoded values confirmed maintained (Iteration 173) |
