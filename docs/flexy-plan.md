@@ -3360,3 +3360,9 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 - ✅ `npm run lint` — zero warnings
 - ✅ `npm run build` — clean
 - ✅ `npm run test:all` — **912 web + 502 api + 810 shared = 2,224 tests passing** across 98 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2933](https://github.com/cpa03/blueprintify/pull/2933) | `feat/flexy-iteration-174-step-announcer` | refactor(flexy): replace hardcoded step transition screen reader announcement with ACCESSIBILITY_LABELS config (Iteration 174) |
