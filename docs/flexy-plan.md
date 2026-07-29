@@ -3422,4 +3422,4 @@ Also lacked test coverage for the `isLoading` prop — no spinner rendering veri
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `feat/flexy-iteration-176-spinner-classes` | refactor(flexy): centralize RippleButton loading spinner & shared disabled state into CSS_CLASSES config (Iteration 176) |
+| [#2941](https://github.com/cpa03/blueprintify/pull/2941) | `feat/flexy-iteration-176-spinner-classes` | refactor(flexy): centralize RippleButton loading spinner & shared disabled state into CSS_CLASSES config (Iteration 176) |
