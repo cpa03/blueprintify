@@ -397,6 +397,8 @@ export const EASING = {
   easeIn: "easeIn" as const,
   easeInOut: "easeInOut" as const,
   linear: "linear" as const,
+  /** Custom cubic-bezier for particle burst overshoot effect — ease-out-back style */
+  PARTICLE_BURST: [0.23, 1, 0.32, 1] as const,
 } as const;
 
 // ============================================================================
