@@ -59,6 +59,12 @@ function StepIndicatorComponent(): JSX.Element {
   const prevStepRef = useRef(currentStep);
   const toast = useToast();
 
+  // Screen reader announcement for step transitions — announces the completed
+  // step and the newly activated step so screen reader users receive the same
+  // context that sighted users perceive through the step-complete-flash and
+  // step-activate animations. The text is rendered in an sr-only live region.
+  const [stepAnnouncement, setStepAnnouncement] = useState("");
+
   const currentIndex = STEPS.findIndex((s) => s.key === currentStep);
   /** Whether the last wizard step (generating) has finished with a complete state */
   const isGenerationComplete =
@@ -84,6 +90,11 @@ function StepIndicatorComponent(): JSX.Element {
       const activatedKey = currentStep;
       setJustCompletedStep(completedKey);
       setActivatingStep(activatedKey);
+
+      const completedLabel = STEPS.find((s) => s.key === completedKey)?.label ?? "";
+      const activatedLabel = STEPS.find((s) => s.key === activatedKey)?.label ?? "";
+      setStepAnnouncement(`Step ${completedLabel} complete, now on Step ${activatedLabel}`);
+
       const timer = setTimeout(() => {
         setJustCompletedStep(null);
         setActivatingStep(null);
@@ -243,6 +254,13 @@ function StepIndicatorComponent(): JSX.Element {
           </div>
         );
       })}
+
+      {/* Screen reader announcement for step transitions — announces step
+          completion and activation so screen reader users perceive the same
+          context as sighted users who see the flash/glow animations. */}
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {stepAnnouncement}
+      </div>
     </div>
   );
 }
