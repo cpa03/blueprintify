@@ -190,7 +190,7 @@ function AnimatedCopyButtonComponent({
               }}
               transition={{
                 duration: particle.duration / 1000,
-                ease: [0.23, 1, 0.32, 1],
+                ease: EASING.PARTICLE_BURST,
               }}
             />
           );
