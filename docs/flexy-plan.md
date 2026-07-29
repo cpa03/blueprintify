@@ -3366,3 +3366,60 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2933](https://github.com/cpa03/blueprintify/pull/2933) | `feat/flexy-iteration-174-step-announcer` | refactor(flexy): replace hardcoded step transition screen reader announcement with ACCESSIBILITY_LABELS config (Iteration 174) |
+
+---
+
+### ✅ Flexy Iteration 175: Centralize Hardcoded Particle Burst Cubic-Bezier Easing into EASING Config
+
+**Problem**: Commit `6f52ccd1` (`feat(heading-anchor): add particle burst celebration on copy`) and the existing `AnimatedCopyButton.tsx` both used a hardcoded `ease: [0.23, 1, 0.32, 1]` cubic-bezier array for particle burst animations. The `EASING` config in `theme.ts` had common easing names (`easeOut`, `easeIn`, etc.) but no named constant for the particle burst overshoot curve.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/theme.ts` | Added `EASING.PARTICLE_BURST` constant — `[0.23, 1, 0.32, 1]` — single source of truth for the particle burst overshoot easing curve |
+| `apps/web/src/components/HeadingAnchor.tsx` | Replaced hardcoded `ease: [0.23, 1, 0.32, 1]` with `ease: EASING.PARTICLE_BURST` in particle transition |
+| `apps/web/src/components/AnimatedCopyButton.tsx` | Replaced hardcoded `ease: [0.23, 1, 0.32, 1]` with `ease: EASING.PARTICLE_BURST` in particle transition |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — **914 web + 502 api + 810 shared = 2,226 tests passing** across 98 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (committed to main) | `committed to main` | refactor(flexy): centralize hardcoded particle burst cubic-bezier easing into EASING config (Iteration 175) |
+
+---
+
+### ✅ Flexy Iteration 176: Centralize RippleButton Loading Spinner & Shared Disabled State into CSS_CLASSES
+
+**Problem**: Commit `045dbdec` (`feat(ripple-button): add visual loading spinner for isLoading state`) introduced several hardcoded Tailwind class strings in `RippleButton.tsx`:
+1. Loading spinner overlay container classes (`"absolute inset-0 flex items-center justify-center pointer-events-none z-20"`)
+2. Loading spinner element classes (`"h-4 w-4 border-2 border-primary-500 border-t-transparent rounded-full"`)
+3. Loading children dim classes (`"opacity-40 pointer-events-none"`) — new pattern
+4. The disabled state (`"opacity-50 cursor-not-allowed"`) was duplicated in both `RippleButton.tsx` and `TemplateGrid.tsx` with no shared source of truth
+
+Also lacked test coverage for the `isLoading` prop — no spinner rendering verification, no `aria-busy` assertion, no children-dim assertion.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/accessibility.ts` | Added 4 new `CSS_CLASSES` entries: `DISABLED_STATE`, `LOADING_CHILDREN`, `SPINNER_OVERLAY`, `LOADING_SPINNER` — single source of truth for spinner and disabled-state Tailwind class combinations |
+| `apps/web/src/components/RippleButton.tsx` | Replaced 4 hardcoded className strings with `CSS_CLASSES.*` references (`DISABLED_STATE`, `LOADING_CHILDREN`, `SPINNER_OVERLAY`, `LOADING_SPINNER`) |
+| `apps/web/src/components/TemplateGrid.tsx` | Replaced duplicate `"opacity-50 cursor-not-allowed"` with shared `CSS_CLASSES.DISABLED_STATE` |
+| `apps/web/src/components/RippleButton.test.tsx` | Added 3 new test cases: `renders loading spinner when isLoading is true`, `does not render loading spinner when isLoading is false`, `dims children content when isLoading is true` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — (verified in Iteration 176 PR)
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2941](https://github.com/cpa03/blueprintify/pull/2941) | `feat/flexy-iteration-176-spinner-classes` | refactor(flexy): centralize RippleButton loading spinner & shared disabled state into CSS_CLASSES config (Iteration 176) |

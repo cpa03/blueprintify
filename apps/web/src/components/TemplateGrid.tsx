@@ -36,6 +36,7 @@ import {
   ACCESSIBILITY_LABELS,
   ENTRANCE_STAGGER,
   STAGGER_CONFIG,
+  CSS_CLASSES,
 } from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
 import { TEMPLATE_GLOW_SHADOW } from "../config/theme";
@@ -176,7 +177,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                     ? "border-accent-emerald/70 bg-accent-emerald/10 scale-98"
                     : "hover:border-primary-500/50 cursor-pointer"
                 }
-                ${selectedId !== null && !isSelected ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+                ${selectedId !== null && !isSelected ? CSS_CLASSES.DISABLED_STATE : "cursor-pointer"}
                 ${FOCUS_VISIBLE_RING_CARD}
               `}
             >
