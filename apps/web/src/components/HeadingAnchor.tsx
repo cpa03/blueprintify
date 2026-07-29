@@ -28,7 +28,7 @@
  * ```
  */
 
-import { useState, useCallback, useRef, memo } from "react";
+import React, { useState, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { generateSlug } from "../utils/slug";
@@ -39,9 +39,27 @@ import {
   UI_TIMEOUTS,
   FRAMER_TYPE,
 } from "@blueprint/shared/config";
-import { ANIMATION, EASING, SPRING_CONFIG, ACCESSIBILITY_LABELS } from "../config/constants";
+import {
+  ANIMATION,
+  EASING,
+  SPRING_CONFIG,
+  ACCESSIBILITY_LABELS,
+  PARTICLE_CONFIG,
+  CELEBRATION_COLORS,
+} from "../config/constants";
 import { copyToClipboard } from "../lib/export";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+
+interface Particle {
+  id: number;
+  x: number;
+  y: number;
+  angle: number;
+  distance: number;
+  color: string;
+  size: number;
+  duration: number;
+}
 
 interface HeadingAnchorProps {
   /** Text content of the heading (used to generate the slug) */
@@ -57,10 +75,50 @@ export const HeadingAnchor = memo(function HeadingAnchor({
   const [showCopied, setShowCopied] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [particles, setParticles] = useState<Particle[]>([]);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const particleIdRef = useRef(0);
   const shouldReduceMotion = useReducedMotion();
 
   const slug = generateSlug(headingText);
+
+  const createParticles = useCallback(() => {
+    if (!buttonRef.current || shouldReduceMotion) return;
+
+    const rect = buttonRef.current.getBoundingClientRect();
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const newParticles: Particle[] = [];
+
+    for (let i = 0; i < PARTICLE_CONFIG.COUNT; i++) {
+      const angle = (i / PARTICLE_CONFIG.COUNT) * Math.PI * 2;
+      const distance =
+        PARTICLE_CONFIG.BASE_DISTANCE_PX + Math.random() * PARTICLE_CONFIG.RANDOM_DISTANCE_PX;
+      const color =
+        CELEBRATION_COLORS[Math.floor(Math.random() * CELEBRATION_COLORS.length)] ?? "#34d399";
+      const size = PARTICLE_CONFIG.BASE_SIZE_PX + Math.random() * PARTICLE_CONFIG.RANDOM_SIZE_PX;
+      const duration =
+        PARTICLE_CONFIG.BASE_DURATION_MS + Math.random() * PARTICLE_CONFIG.RANDOM_DURATION_MS;
+
+      newParticles.push({
+        id: particleIdRef.current++,
+        x: centerX,
+        y: centerY,
+        angle,
+        distance,
+        color,
+        size,
+        duration,
+      });
+    }
+
+    setParticles(newParticles);
+
+    setTimeout(() => {
+      setParticles([]);
+    }, PARTICLE_CONFIG.CLEANUP_DELAY_MS);
+  }, [shouldReduceMotion]);
 
   const handleCopyLink = useCallback(async () => {
     const url = new URL(window.location.href);
@@ -71,6 +129,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
+      createParticles();
       setShowCopied(true);
       timeoutRef.current = setTimeout(() => {
         setShowCopied(false);
@@ -79,7 +138,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
       // Update URL hash without scrolling
       history.replaceState(null, "", url.toString());
     }
-  }, [slug]);
+  }, [slug, createParticles]);
 
   const isVisible = isHovered || isFocused || showCopied;
 
@@ -95,6 +154,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
 
       {/* Anchor link button — visible on hover/focus/active */}
       <motion.button
+        ref={buttonRef}
         onClick={handleCopyLink}
         initial={false}
         animate={{
@@ -119,6 +179,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
           transition-colors duration-150
           -translate-y-px
+          relative overflow-hidden
           ${showCopied ? "!border-accent-emerald/50 !bg-accent-emerald/15" : ""}
         `}
         aria-label={
@@ -220,6 +281,48 @@ export const HeadingAnchor = memo(function HeadingAnchor({
               </svg>
             </motion.span>
           )}
+        </AnimatePresence>
+
+        {/* Particle burst on copy — subtle celebration effect */}
+        <AnimatePresence>
+          {particles.map((particle) => {
+            const endX = particle.x + Math.cos(particle.angle) * particle.distance;
+            const endY = particle.y + Math.sin(particle.angle) * particle.distance;
+
+            return (
+              <motion.span
+                key={particle.id}
+                className="absolute rounded-full pointer-events-none"
+                style={{
+                  left: particle.x,
+                  top: particle.y,
+                  width: particle.size,
+                  height: particle.size,
+                  backgroundColor: particle.color,
+                  boxShadow: `0 0 ${particle.size * 2}px ${particle.color}`,
+                }}
+                initial={{
+                  x: 0,
+                  y: 0,
+                  opacity: 1,
+                  scale: 0,
+                }}
+                animate={{
+                  x: endX - particle.x,
+                  y: endY - particle.y,
+                  opacity: 0,
+                  scale: [0, 1.5, 0.5],
+                }}
+                exit={{
+                  opacity: 0,
+                }}
+                transition={{
+                  duration: particle.duration / 1000,
+                  ease: [0.23, 1, 0.32, 1],
+                }}
+              />
+            );
+          })}
         </AnimatePresence>
       </motion.button>
     </span>
