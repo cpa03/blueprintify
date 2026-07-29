@@ -47,6 +47,7 @@ import {
   PARTICLE_CONFIG,
   CELEBRATION_COLORS,
 } from "../config/constants";
+import { COLORS } from "../config/theme";
 import { copyToClipboard } from "../lib/export";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -96,7 +97,8 @@ export const HeadingAnchor = memo(function HeadingAnchor({
       const distance =
         PARTICLE_CONFIG.BASE_DISTANCE_PX + Math.random() * PARTICLE_CONFIG.RANDOM_DISTANCE_PX;
       const color =
-        CELEBRATION_COLORS[Math.floor(Math.random() * CELEBRATION_COLORS.length)] ?? "#34d399";
+        CELEBRATION_COLORS[Math.floor(Math.random() * CELEBRATION_COLORS.length)] ??
+        COLORS.celebration.emeraldLight;
       const size = PARTICLE_CONFIG.BASE_SIZE_PX + Math.random() * PARTICLE_CONFIG.RANDOM_SIZE_PX;
       const duration =
         PARTICLE_CONFIG.BASE_DURATION_MS + Math.random() * PARTICLE_CONFIG.RANDOM_DURATION_MS;
