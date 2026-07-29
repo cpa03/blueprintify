@@ -2,6 +2,44 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 321 (2026-07-29 — RepoKeeper: full repository audit, **3 new post-Cycle-320 commits indexed** (HEAD at `f33e4419` — docs(audits): BroCula ULW Loop — Jul 29 Run 14 (LH 100-100-100-100, 12th consecutive perfect) (#2944)), test count **2,264/2,264** (952 web + 502 API + 810 shared — **unchanged**), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE — override 5.0.8 holds), **archive retention OK** (oldest Jun 30 — 29 days, within 30-day window), **0 stale merged branches**, **0 stale `.omo/run-continuation/` files** from prior cycles, all quality gates pass ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files: 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. 0 `.patch` files. 0 empty directories (excluding `node_modules`).
+2. **[3 New Post-Cycle-320 Commits Indexed]** — HEAD at `f33e4419` (docs(audits): BroCula ULW Loop — Jul 29 Run 14 (LH 100-100-100-100, 12th consecutive perfect) (#2944)). Commits since Cycle 320: feat(ux) cursor-pointer btn-* classes `96c11b12`, refactor(flexy) Iteration 177 HeadingAnchor COLORS config `45963f83`, docs(audits) BroCula Run 14 `f33e4419`.
+3. **[Test Count Update]** — **2,264** (952 web + 502 API + 810 shared — **unchanged** from Cycle 320).
+4. **[BUG-013 Still Fixed]** — `lighthouse` 13.4.1 — **0 vulnerabilities** (no re-bump occurred).
+5. **[BUG-031 Still Tracked]** — `brace-expansion` CVE (GHSA-mh99-v99m-4gvg, dev-only ESLint toolchain, over-broad advisory range). Lockfile at 5.0.8. No production impact.
+6. **[Archive Retention OK]** — Oldest archive files from Jun 30 (29 days, within 30-day window). No purge needed.
+7. **[Stale Merged Branches]** — 0 stale merged branches found ✅.
+8. **[Stale `.omo/run-continuation/` Session Files]** — 0 from prior cycles ✅ (directory does not exist).
+9. **[Documentation Drift Fixes]** — findings.md (this entry), active-tasks.md (Cycle 321 entry), bugs.md (Cycle 321 entry), knowledge-review.md (refreshed with Cycle 321 state), CHANGELOG.md (Cycle 321 entry).
+10. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,264/2,264** ✅, format ✅, npm audit **0 vulns** ✅. All quality gates pass.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,264/2,264** (952 web + 502 API + 810 shared) |
+| Format (Prettier) | ✅ All files formatted |
+| npm audit | ✅ **0 vulnerabilities** (BUG-013/BUG-031 STILL FIXED/TRACKED) |
+| `@ts-expect-error`/`@ts-ignore` | ✅ **0** |
+| `as any` | ✅ **0** |
+| Empty catch blocks | ✅ **0** |
+| TODO/FIXME/HACK in source | ✅ **0** |
+| BUG-031 (brace-expansion dev-only) | ✅ **TRACKED** (over-broad advisory, no production impact) |
+| Archive retention | ✅ Oldest now Jun 30 (29 days, within 30-day window) |
+| Stale merged branches | ✅ **0** |
+| Stale `.omo/run-continuation/` files | ✅ **0** |
+
+### Verdict
+
+**All quality gates pass. Repository remains exceptionally healthy — 2,264 tests green, 0 vulnerabilities, 0 lint/type errors. 3 new post-Cycle-320 commits indexed — HEAD at `f33e4419` (BroCula Jul 29 Run 14 — LH 100-100-100-100, 12th consecutive perfect). Test count unchanged at 2,264 (952 web + 502 API + 810 shared). Archive retention OK (oldest Jun 30 — 29 days). BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns). BUG-031 tracked (dev-only). All quality gates pass.** ✅
+
 ## Cycle 320 (2026-07-29 — RepoKeeper: full repository audit, **2 new post-Cycle-319 commits indexed** (HEAD at `2f2fb7db` — test(wizard): add comprehensive StepInfo test suite (#1014)), test count **2,264/2,264** (952 web + 502 API + 810 shared — **web +38** from StepInfo test suite), BUG-013 still fixed (lighthouse 13.4.1 — 0 vulns), BUG-031 tracked (brace-expansion dev-only CVE — override 5.0.8 holds), **archive retention OK** (oldest Jun 30 — 29 days, within 30-day window), **69 stale merged branches deleted** (confirmed merged via PRs), **0 stale `.omo/run-continuation/` files** from prior cycles, all quality gates pass ✅)
 
 ### Actions Taken
