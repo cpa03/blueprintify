@@ -93,7 +93,9 @@ function StepIndicatorComponent(): JSX.Element {
 
       const completedLabel = STEPS.find((s) => s.key === completedKey)?.label ?? "";
       const activatedLabel = STEPS.find((s) => s.key === activatedKey)?.label ?? "";
-      setStepAnnouncement(`Step ${completedLabel} complete, now on Step ${activatedLabel}`);
+      setStepAnnouncement(
+        ACCESSIBILITY_LABELS.STEP_ANNOUNCER.STEP_TRANSITION(completedLabel, activatedLabel)
+      );
 
       const timer = setTimeout(() => {
         setJustCompletedStep(null);

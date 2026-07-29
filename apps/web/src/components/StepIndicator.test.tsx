@@ -37,6 +37,10 @@ vi.mock("../config/constants", async (importOriginal) => {
         STEPS_COMPLETE: (_pct: number, _remaining: number) => `Steps complete`,
         STEP_OF_ARIA: (_index: number, _total: number, label: string) => `${label}`,
       },
+      STEP_ANNOUNCER: {
+        STEP_TRANSITION: (completedLabel: string, activatedLabel: string) =>
+          `Step ${completedLabel} complete, now on Step ${activatedLabel}`,
+      },
     },
   };
 });
