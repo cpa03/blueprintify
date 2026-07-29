@@ -150,7 +150,27 @@ function RippleButtonComponent({
       data-autofocus={dataAutofocus}
       {...rest}
     >
-      <span className="relative z-10">{children}</span>
+      <span
+        className={`relative z-10 inline-flex items-center gap-2 ${isLoading ? "opacity-40 pointer-events-none" : ""}`}
+      >
+        {children}
+      </span>
+
+      {/* Loading spinner overlay — appears when isLoading is true.
+          Uses a minimal border-based spinner that matches the app's
+          design language. When reduced motion is preferred, the spinner
+          is shown statically without the spin animation. */}
+      {isLoading && (
+        <span
+          className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
+          aria-hidden="true"
+        >
+          <span
+            className={`${shouldReduceMotion ? "" : "animate-spin"} h-4 w-4 border-2 border-primary-500 border-t-transparent rounded-full`}
+          />
+        </span>
+      )}
+
       {ripples.map((ripple) => (
         <span
           key={ripple.id}
