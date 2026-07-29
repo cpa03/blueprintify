@@ -34,7 +34,12 @@ if (!rootElement) {
 const fadeOutAndRemoveSkeletonLoader = () => {
   const skeleton = document.getElementById("skeleton-loader");
   if (skeleton) {
-    // CSS animation handles the visual fadeout (2s delay + 0.3s fade).
+    // Override the 2s CSS delay on React mount so the skeleton fades out
+    // immediately when React hydrates, instead of waiting the full 2.3s
+    // fixed duration. On fast connections this makes the perceived load
+    // time match actual readiness — the skeleton disappears as soon as
+    // the UI is interactive rather than lingering unnecessarily.
+    skeleton.style.animation = "skeleton-exit 0.3s ease-out 0s forwards";
     // Remove from DOM after animation completes to keep the DOM clean.
     skeleton.addEventListener("animationend", () => skeleton.remove(), { once: true });
   }
