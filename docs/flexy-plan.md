@@ -3341,3 +3341,22 @@ While `CSS_CLASSES.GLASS_CARD` already existed in `accessibility.ts`, `EDITOR_FO
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD (this PR) | `feat/flexy-iteration-173-regression-verification` | docs(flexy): full regression verification — zero hardcoded values confirmed maintained (Iteration 173) |
+
+---
+
+### ✅ Flexy Iteration 174: Eliminate Hardcoded Step Transition Screen Reader Announcement
+
+**Problem**: Commit `1d6c2487` (`feat(accessibility): add screen reader announcement for wizard step transitions`) introduced a hardcoded template literal `` `Step ${completedLabel} complete, now on Step ${activatedLabel}` `` in `StepIndicator.tsx` line 96. The `ACCESSIBILITY_LABELS` config already existed for wizard step labels (`PROGRESS.STEP_OF_ARIA`, `PROGRESS.STEPS_COMPLETE`) but did not include a `STEP_ANNOUNCER` section for step transition announcements.
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/content.ts` | Added `ACCESSIBILITY_LABELS.STEP_ANNOUNCER.STEP_TRANSITION` template function — single source of truth for the step transition screen reader announcement |
+| `apps/web/src/components/StepIndicator.tsx` | Replaced hardcoded template literal with `ACCESSIBILITY_LABELS.STEP_ANNOUNCER.STEP_TRANSITION(completedLabel, activatedLabel)` |
+| `apps/web/src/components/StepIndicator.test.tsx` | Added `STEP_ANNOUNCER` mock entry to match updated `ACCESSIBILITY_LABELS` shape |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — **912 web + 502 api + 810 shared = 2,224 tests passing** across 98 files

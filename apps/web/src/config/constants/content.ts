@@ -322,6 +322,11 @@ export const ACCESSIBILITY_LABELS = {
     STEP_OF_ARIA: (index: number, total: number, label: string) =>
       `Step ${index} of ${total}: ${label}`,
   },
+  /** Screen reader announcement for step transitions during wizard navigation */
+  STEP_ANNOUNCER: {
+    STEP_TRANSITION: (completedLabel: string, activatedLabel: string) =>
+      `Step ${completedLabel} complete, now on Step ${activatedLabel}`,
+  },
   LAZY_CODEMIRROR: {
     LOADING: "Loading code editor",
     /** Announced via sr-only region when CodeMirror is ready for input */
