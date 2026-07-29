@@ -15,6 +15,7 @@ vi.mock("../hooks/useReducedMotion", () => ({
 }));
 
 import { copyToClipboard } from "../lib/export";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 describe("HeadingAnchor", () => {
   beforeEach(() => {
@@ -78,5 +79,31 @@ describe("HeadingAnchor", () => {
     });
     const expectedUrl = `${window.location.origin}${window.location.pathname}#getting-started`;
     expect(copyToClipboard).toHaveBeenCalledWith(expectedUrl);
+  });
+
+  it("creates particle burst on successful copy", async () => {
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByTitle("Copy anchor link");
+
+    await act(async () => {
+      fireEvent.click(button);
+    });
+
+    const particles = document.querySelectorAll(".absolute.rounded-full.pointer-events-none");
+    expect(particles.length).toBeGreaterThan(0);
+  });
+
+  it("does not create particles when reduced motion is preferred", async () => {
+    vi.mocked(useReducedMotion).mockReturnValueOnce(true);
+
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByTitle("Copy anchor link");
+
+    await act(async () => {
+      fireEvent.click(button);
+    });
+
+    const particles = document.querySelectorAll(".absolute.rounded-full.pointer-events-none");
+    expect(particles.length).toBe(0);
   });
 });
