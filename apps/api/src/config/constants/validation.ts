@@ -91,6 +91,8 @@ export const IMPORT_FORMATS = {
 } as const;
 
 export const LOG_CONTEXT = {
+  /** Audit trail identifier for successful authentication events */
+  AUTHENTICATION: "Authentication success",
   SHARE_CREATE: "Share creation error",
   SHARE_VERIFY: "Share verify error",
   SHARE_RETRIEVAL: "Share retrieval error",

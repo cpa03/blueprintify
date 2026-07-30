@@ -8,6 +8,7 @@
  */
 
 import type { Context, MiddlewareHandler, Next } from "hono";
+import type { User } from "../types";
 import { HTTP_METHODS, CONTEXT_KEYS, LOG_TYPE_STRINGS } from "@blueprint/shared";
 import { LOGGER_CONFIG, API_HEADERS } from "../config/constants";
 import { timestamp } from "../errors";
@@ -87,6 +88,7 @@ interface ResponseLog {
   timestamp: string;
   body?: unknown;
   cfRay?: string;
+  userId?: string;
 }
 
 /**
@@ -226,11 +228,15 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
       c.header(API_HEADERS.RESPONSE.CF_RAY, cfMetadata.rayId);
     }
 
+    // Extract user identity from context for audit trail correlation
+    const user = c.get(CONTEXT_KEYS.USER) as User | undefined;
+
     const responseLog: ResponseLog = {
       requestId,
       status,
       duration,
       timestamp: timestamp(),
+      userId: user?.id,
     };
 
     if (cfMetadata.rayId) {
