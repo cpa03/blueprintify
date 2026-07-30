@@ -90,11 +90,11 @@ function HeaderComponent({
         <button
           onClick={scrollToTop}
           className="flex items-center gap-3 animate-fade-in-left cursor-pointer
-                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
-                     focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded-xl
-                     motion-safe:transition-transform motion-safe:duration-150
-                     motion-safe:hover:scale-102 motion-safe:active:scale-98"
-          aria-label={ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP}
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
+                       focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded-xl
+                       motion-safe:transition-transform motion-safe:duration-150
+                       motion-safe:hover:scale-102 motion-safe:active:scale-98"
+          title={ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP}
         >
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center animate-logo-breathe pointer-events-none">
             <svg

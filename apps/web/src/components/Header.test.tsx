@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Header } from "./Header";
-import { UI_CONTENT, ACCESSIBILITY_LABELS } from "../config/constants";
+import { UI_CONTENT } from "../config/constants";
 
 vi.mock("../hooks/useReducedMotion", () => ({
   useReducedMotion: vi.fn(() => false),
@@ -101,11 +101,11 @@ describe("Header", () => {
     expect(nav).toHaveClass("flex", "items-center", "gap-2");
   });
 
-  it("renders the brand button with scroll-to-top aria label", () => {
+  it("renders the brand button with visible text as accessible name", () => {
     render(<Header />);
 
     const brandButton = screen.getByRole("button", {
-      name: ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP,
+      name: `${UI_CONTENT.APP.NAME} AI-Powered Project Architecture`,
     });
     expect(brandButton).toBeInTheDocument();
     expect(brandButton).toHaveClass("cursor-pointer");
@@ -120,7 +120,7 @@ describe("Header", () => {
     render(<Header />);
 
     const brandButton = screen.getByRole("button", {
-      name: ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP,
+      name: `${UI_CONTENT.APP.NAME} AI-Powered Project Architecture`,
     });
 
     await user.click(brandButton);
@@ -145,7 +145,7 @@ describe("Header", () => {
     render(<Header />);
 
     const brandButton = screen.getByRole("button", {
-      name: ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP,
+      name: `${UI_CONTENT.APP.NAME} AI-Powered Project Architecture`,
     });
 
     await user.click(brandButton);
