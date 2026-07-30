@@ -254,7 +254,7 @@ export const ACCESSIBILITY_LABELS = {
   HEADER: {
     KEYBOARD_SHORTCUTS: "Keyboard shortcuts (?)",
     GITHUB: "View on GitHub (opens in new tab)",
-    BRAND_SCROLL_TO_TOP: "Blueprintify — scroll to top",
+    BRAND_SCROLL_TO_TOP: "Blueprintify AI-Powered Project Architecture — scroll to top",
   },
   EXTERNAL_LINKS: {
     CLOUDFLARE_WORKERS: "Cloudflare Workers (opens in new tab)",
