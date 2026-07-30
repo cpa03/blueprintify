@@ -16,14 +16,16 @@
  * @module components/Header
  */
 
-import { memo, useState, useEffect } from "react";
+import { memo, useState, useEffect, useCallback } from "react";
 import { SHORTCUT_LABELS, SHORTCUT_DESCRIPTIONS, MODIFIER_KEYS } from "@blueprint/shared/config";
+import { SCROLL_BEHAVIOR } from "@blueprint/shared/config";
 import {
   UI_CONTENT,
   EXTERNAL_URLS,
   SCROLL_THRESHOLDS,
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import { RippleButton } from "./RippleButton";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 
@@ -57,6 +59,14 @@ function HeaderComponent({
   shortcutsDiscovered = false,
 }: HeaderProps): JSX.Element {
   const [isScrolled, setIsScrolled] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: shouldReduceMotion ? SCROLL_BEHAVIOR.AUTO : SCROLL_BEHAVIOR.SMOOTH,
+    });
+  }, [shouldReduceMotion]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -77,8 +87,16 @@ function HeaderComponent({
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3 animate-fade-in-left">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center animate-logo-breathe">
+        <button
+          onClick={scrollToTop}
+          className="flex items-center gap-3 animate-fade-in-left cursor-pointer
+                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50
+                     focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded-xl
+                     motion-safe:transition-transform motion-safe:duration-150
+                     motion-safe:hover:scale-102 motion-safe:active:scale-98"
+          aria-label={ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP}
+        >
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-purple flex items-center justify-center animate-logo-breathe pointer-events-none">
             <svg
               className="w-6 h-6 text-white"
               viewBox="0 0 24 24"
@@ -93,11 +111,11 @@ function HeaderComponent({
               />
             </svg>
           </div>
-          <div>
+          <div className="pointer-events-none">
             <div className="text-xl font-bold text-white">{UI_CONTENT.APP.NAME}</div>
             <p className="text-xs text-dark-400">{UI_CONTENT.APP.TAGLINE}</p>
           </div>
-        </div>
+        </button>
 
         <nav
           className="flex items-center gap-2 animate-slide-in-right"
