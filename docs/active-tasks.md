@@ -2,6 +2,13 @@
 
 > Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
 
+## ✅ RepoKeeper Cycle 324 — **Full repository audit, empty vite-temp dir removed, npm dedupe clean, audits/README updated with Jul 30 Run 17, BUG-014/BUG-017 confirmed fixed on main, all quality gates pass** ✅
+
+### Task: Full repository audit — **0 redundant/temp/unused source files found**; **1 empty directory removed** (`apps/web/node_modules/.vite-temp`); **npm dedupe** (0 vulns ✅); **audits/README.md updated** (Jul 30 Run 17 indexed as latest — LH **100-100-100-100** 🏆, **2,267 tests** — 955 web + 502 api + 810 shared); **BUG-014/BUG-017 confirmed FIXED on main** — zero stale `docs/bug.md`/`docs/feature.md` refs, all workflows use `node-version-file: ".node-version"`; **0 stale merged branches**; **0 stale doc refs**; **documentation updates**: findings.md (Cycle 324 entry), active-tasks.md (this entry), knowledge-review.md (refreshed), CHANGELOG.md, audits/README.md; quality verification (typecheck ✅ lint ✅ build ✅ format ✅, npm audit **0 vulns** ✅)
+
+- **Priority**: High
+- **Status**: ✅ Complete
+
 ## ✅ RepoKeeper Cycle 323 — **Full repository audit, 2 redundant scripts removed, 10 stale `docs/task.md` refs fixed, BUG-014/BUG-017 confirmed fixed on main, archive retention OK, all quality gates pass** ✅
 
 ### Task: Full repository audit — **2 redundant scripts removed** (`scripts/brocula-audit-run14.mjs`, `scripts/brocula-run15-full.mjs` — run-specific audit scripts; generic `brocula-hunt.mjs` is canonical and referenced in package.json); **10 stale `docs/task.md` references updated** → `docs/active-tasks.md` across `docs/ai-agent-usage-guide.md` (8 refs) and `docs/development-workflow.md` (2 refs); **BUG-014/BUG-017 confirmed fixed on main** — zero stale `docs/bug.md`/`docs/feature.md` refs, all workflows use `node-version-file: ".node-version"`; **archive retention OK** (oldest Jul 11 — 19 days, within 30-day window — no purge needed); **0 stale merged branches**; **0 stale `.omo/run-continuation/` files**; **0 `@ts-expect-error`/`@ts-ignore`/`as any`**; **documentation updates**: findings.md (Cycle 323 entry), active-tasks.md (this entry), knowledge-review.md (refreshed with Cycle 323 state); quality verification (typecheck ✅ lint ✅ build ✅ format ✅, npm audit **0 vulns** ✅)

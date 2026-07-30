@@ -12,7 +12,7 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State
 
-**Last Review**: 2026-07-30 (RepoKeeper Cycle 323 — chore/repokeeper-cycle-323)
+**Last Review**: 2026-07-30 (RepoKeeper Cycle 324 — chore/repokeeper-cycle-324)
 **Status**: ✅ BUG-014/BUG-017 FIXED on main — all workflows clean
 
 As of cycle refresh:
