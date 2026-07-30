@@ -16,9 +16,11 @@ import {
   ERROR_MESSAGES,
   API_HEADERS,
   ROUTE_PATHS,
+  LOG_CONTEXT,
 } from "../config/constants";
 import { AUTH_DEFAULTS, CONTEXT_KEYS } from "@blueprint/shared";
 import { ErrorType, createErrorJson } from "../errors";
+import { secureLogInfo } from "../utils/secureLog";
 
 /**
  * Configuration options for API key authentication middleware.
@@ -167,6 +169,15 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
       role: userRole,
     };
     c.set(CONTEXT_KEYS.USER, user);
+
+    // Audit trail: log authenticated user identity for action tracking
+    // This creates an audit log entry that can be correlated with subsequent
+    // request logs via requestId for full action tracing per user
+    secureLogInfo(LOG_CONTEXT.AUTHENTICATION, "User authenticated", {
+      userId,
+      role: userRole,
+      requestId: c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined,
+    });
 
     await next();
   };
