@@ -54,7 +54,7 @@ function useElapsedTime(isActive: boolean): string {
 
     const id = setInterval(() => {
       setSeconds(Math.floor((Date.now() - start) / 1000));
-    }, 1000);
+    }, UI_TIMEOUTS.ELAPSED_TIMER_INTERVAL_MS);
 
     return () => clearInterval(id);
   }, [isActive]);

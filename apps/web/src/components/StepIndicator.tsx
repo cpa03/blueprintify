@@ -206,9 +206,10 @@ function StepIndicatorComponent(): JSX.Element {
               disabled={!isClickable}
               title={
                 isClickable
-                  ? `${step.label} (Alt+${step.shortcut})`
+                  ? ACCESSIBILITY_LABELS.STEP.SHORTCUT_FORMAT(step.label, step.shortcut)
                   : TOAST_MESSAGES.STEP_LOCKED(step.label)
               }
+
               aria-keyshortcuts={isClickable ? `Alt+${step.shortcut}` : undefined}
               aria-current={isActive ? "step" : undefined}
               className={`

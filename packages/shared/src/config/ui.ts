@@ -349,6 +349,9 @@ export const UI_TIMEOUTS = {
    * Prevents perpetual pulse distraction — glow draws attention to new content,
    * then settles to a static state after this duration. */
   GLOW_DURATION_MS: 8000,
+  /** Interval for elapsed time counter tick in StepGenerating (1s).
+   * Used as the setInterval period for the MM:SS elapsed time display during AI generation. */
+  ELAPSED_TIMER_INTERVAL_MS: 1000,
 } as const;
 
 /**
