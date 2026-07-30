@@ -17,7 +17,7 @@ The Blueprintify project follows an AI-driven development workflow that combines
 - **Process**:
   - Reviews `docs/blueprint.md`, `docs/roadmap.md`, `docs/bugs.md`, `docs/features.md`
   - Evaluates task priorities
-  - Updates `docs/task.md` with OPEN/PRIORITY/ROLE/SCOPE
+  - Updates `docs/active-tasks.md` with OPEN/PRIORITY/ROLE/SCOPE
   - Creates/updates task assignments
 
 #### Task Dispatch
@@ -25,7 +25,7 @@ The Blueprintify project follows an AI-driven development workflow that combines
 - **Trigger**: After architect review
 - **Agent**: Dispatcher
 - **Process**:
-  - Reads `docs/task.md`
+  - Reads `docs/active-tasks.md`
   - Selects OPEN tasks with HIGH/MEDIUM priority
   - Creates `docs/dispatch.json` with unique role assignments
   - Ensures no duplicate role assignments
