@@ -30,10 +30,16 @@ import React, { useCallback } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared/types";
-import { EDITOR_FILENAMES, FRAMER_TYPE, KEYBOARD_EVENT_KEYS } from "@blueprint/shared/config";
+import {
+  EDITOR_FILENAMES,
+  FRAMER_TYPE,
+  KEYBOARD_EVENT_KEYS,
+  MODIFIER_KEYS,
+} from "@blueprint/shared/config";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { Icon } from "../Icon";
 import { LastSavedIndicator } from "../LastSavedIndicator";
+import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import {
   SPRING_CONFIG,
   EDITOR_LABELS,
@@ -517,31 +523,46 @@ function EditorHeaderComponent({
           className="flex gap-1 bg-dark-800 p-1 rounded-lg"
           role="tablist"
           aria-label={ACCESSIBILITY_LABELS.EDITOR.DOCUMENT_TABS}
+          aria-keyshortcuts="ArrowLeft ArrowRight Home End"
           id="editor-tabs"
           onKeyDown={handleTabKeyDown}
         >
-          <TabButton
-            id={EDITOR_TABS.BLUEPRINT}
-            isActive={activeTab === EDITOR_TABS.BLUEPRINT}
-            isGenerating={isGenerating}
-            onClick={() => setActiveTab(EDITOR_TABS.BLUEPRINT)}
-            hasContent={hasContent}
-            contentAvailable={blueprintHasContent}
+          <KeyboardShortcutTooltip
+            shortcut={KEYBOARD_EVENT_KEYS.ARROW_LEFT}
+            description={EDITOR_LABELS.TAB_NAVIGATION.PREVIOUS}
+            position="bottom"
+            modifier={MODIFIER_KEYS.NONE}
           >
-            <Icon name="document" className="w-4 h-4 mr-1.5" />
-            {EDITOR_FILENAMES.BLUEPRINT}
-          </TabButton>
-          <TabButton
-            id={EDITOR_TABS.TASKS}
-            isActive={activeTab === EDITOR_TABS.TASKS}
-            isGenerating={isGenerating}
-            onClick={() => setActiveTab(EDITOR_TABS.TASKS)}
-            hasContent={hasContent}
-            contentAvailable={tasksHasContent}
+            <TabButton
+              id={EDITOR_TABS.BLUEPRINT}
+              isActive={activeTab === EDITOR_TABS.BLUEPRINT}
+              isGenerating={isGenerating}
+              onClick={() => setActiveTab(EDITOR_TABS.BLUEPRINT)}
+              hasContent={hasContent}
+              contentAvailable={blueprintHasContent}
+            >
+              <Icon name="document" className="w-4 h-4 mr-1.5" />
+              {EDITOR_FILENAMES.BLUEPRINT}
+            </TabButton>
+          </KeyboardShortcutTooltip>
+          <KeyboardShortcutTooltip
+            shortcut={KEYBOARD_EVENT_KEYS.ARROW_RIGHT}
+            description={EDITOR_LABELS.TAB_NAVIGATION.NEXT}
+            position="bottom"
+            modifier={MODIFIER_KEYS.NONE}
           >
-            <Icon name="clipboard" className="w-4 h-4 mr-1.5" />
-            {EDITOR_FILENAMES.TASKS}
-          </TabButton>
+            <TabButton
+              id={EDITOR_TABS.TASKS}
+              isActive={activeTab === EDITOR_TABS.TASKS}
+              isGenerating={isGenerating}
+              onClick={() => setActiveTab(EDITOR_TABS.TASKS)}
+              hasContent={hasContent}
+              contentAvailable={tasksHasContent}
+            >
+              <Icon name="clipboard" className="w-4 h-4 mr-1.5" />
+              {EDITOR_FILENAMES.TASKS}
+            </TabButton>
+          </KeyboardShortcutTooltip>
         </div>
         <div className="flex items-center gap-3">
           <LastSavedIndicator
