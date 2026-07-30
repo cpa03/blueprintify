@@ -31,7 +31,7 @@ GitHub Actions Workflow
 
 - Evaluates project documentation (`docs/blueprint.md`, `docs/roadmap.md`, `docs/bugs.md`, `docs/features.md`)
 - Sets task priorities (HIGH, MEDIUM, LOW)
-- Creates and updates `docs/task.md` with role assignments
+- Creates and updates `docs/active-tasks.md` with role assignments
 - Ensures tasks are properly scoped
 - Maintains architectural consistency
 
@@ -39,7 +39,7 @@ GitHub Actions Workflow
 
 **Key Outputs**:
 
-- Updated `docs/task.md` with task assignments
+- Updated `docs/active-tasks.md` with task assignments
 - Priority evaluations
 - Scope definitions
 
@@ -49,7 +49,7 @@ GitHub Actions Workflow
 
 **Responsibilities**:
 
-- Reads `docs/task.md` for available tasks
+- Reads `docs/active-tasks.md` for available tasks
 - Selects OPEN tasks with HIGH/MEDIUM priority
 - Creates `docs/dispatch.json` with unique role assignments
 - Ensures no duplicate role assignments
@@ -81,7 +81,7 @@ GitHub Actions Workflow
 3. Creates feature branch (`agent/[role-name]`)
 4. Implements solution following project standards
 5. Creates pull request with task ID reference
-6. Updates task status to DONE in `docs/task.md`
+6. Updates task status to DONE in `docs/active-tasks.md`
 
 ### 4. QA Engineer
 
@@ -288,7 +288,7 @@ Standard documentation updates and maintenance
 
 ### Task Format
 
-Tasks in `docs/task.md` follow this structure:
+Tasks in `docs/active-tasks.md` follow this structure:
 
 ```yaml
 ---
@@ -388,7 +388,7 @@ concurrency:
 1. **Manual Task Creation**:
 
    ```markdown
-   # Add to docs/task.md
+   # Add to docs/active-tasks.md
 
    - id: TASK-004
      title: "Your task title"

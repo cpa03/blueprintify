@@ -6119,4 +6119,35 @@ All PRs verified: build ✅ lint ✅ tests 1,940/1,940 ✅ (789 web + 443 API + 
 
 ---
 
+## Cycle 323 (2026-07-30 — RepoKeeper: full repository audit, redundant scripts removed, stale doc refs fixed ✅)
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Scanned for redundant/temp/unused files:
+   - **2 redundant scripts deleted**: `scripts/brocula-audit-run14.mjs` and `scripts/brocula-run15-full.mjs` (run-specific audit scripts; generic `brocula-hunt.mjs` is canonical and referenced in package.json)
+   - 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. 0 empty directories.
+
+2. **[Stale Doc Reference Fix]** — Updated 10 occurrences of `docs/task.md` → `docs/active-tasks.md`:
+   - `docs/ai-agent-usage-guide.md`: 8 references (6 inline + 1 code block + 1 header) fixed
+   - `docs/development-workflow.md`: 2 references fixed
+   - `docs/task.md` was removed in prior cycles; `docs/active-tasks.md` is the current file.
+
+3. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ (verified all pass clean)
+4. **[BUG-014/BUG-017 Verified]** — Already FIXED on main: zero stale `docs/bug.md`/`docs/feature.md` refs, all workflows use `node-version-file: ".node-version"`. ✅
+5. **[Audit Archive Retention]** — 30-day window OK (oldest from Jul 11 — 19 days). No purge needed.
+6. **[0 Stale Merged Branches]** — No cleanup needed.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Stale `docs/task.md` refs | ✅ All 10 occurrences updated to `docs/active-tasks.md` |
+| Redundant scripts | ✅ 2 removed |
+| BUG-014/BUG-017 | ✅ Both confirmed fixed on main |
+
+---
+
 > Older cycles (Cycle 1 through Cycle 298) are preserved in git history. Run `git log -- docs/findings.md` to browse historical entries.
