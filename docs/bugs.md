@@ -1,14 +1,14 @@
 # Bug Log: Known Defects
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
-## Bug Status — Jul 29 2026 (RepoKeeper Cycle 321)
+## Bug Status — Jul 30 2026 (RepoKeeper Cycle 322)
 
-> **RepoKeeper Cycle 321 (2026-07-29 — chore/repokeeper-cycle-321)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,264/2,264** ✅ (952 web + 502 API + 810 shared). Format ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
+> **RepoKeeper Cycle 322 (2026-07-30 — chore/repokeeper-cycle-322)**: Full repository audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,264/2,264** ✅ (952 web + 502 API + 810 shared). Format ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
 >
-> **3 new post-Cycle-320 commits indexed** — HEAD at `f33e4419` (docs(audits): BroCula ULW Loop — Jul 29 Run 14 (LH 100-100-100-100, 12th consecutive perfect) (#2944)).
-> **Commits**: feat(ux) cursor-pointer btn-* classes `96c11b12` (#2946), refactor(flexy) Iteration 177 HeadingAnchor COLORS config `45963f83` (#2945), docs(audits) BroCula Run 14 `f33e4419` (#2944).
-> **Test count unchanged**: **2,264** (952 web + 502 API + 810 shared — unchanged from Cycle 320).
-> **Archive retention**: OK (oldest Jun 30 — 29 days, within 30-day window — no purge needed).
+> **2 new post-Cycle-321 commits indexed** — HEAD at `709ec935` (chore(bugfixer): Cycle 1 — full BugFixer audit, zero bugs found).
+> **Commits**: feat(web) skip skeleton loader fixed 2s delay on React hydration `d9d9c854`, chore(bugfixer) Cycle 1 BugFixer audit `709ec935`.
+> **Test count unchanged**: **2,264** (952 web + 502 API + 810 shared — unchanged from Cycle 321).
+> **Archive retention**: OK (oldest Jul 11 — 19 days, within 30-day window — no purge needed).
 > **Stale merged branches**: **0** (no stale merged branches found).
 > **No stale `.omo/run-continuation/` files** from prior cycles.
 > **No new fixable bugs found in codebase. All quality gates pass.** Branch created.
