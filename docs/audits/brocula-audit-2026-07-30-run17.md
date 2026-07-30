@@ -1,6 +1,6 @@
 # BroCula Audit — 2026-07-30 Run 17
 
-**Branch**: `brocula/fix-wcag-253-step-indicator-accessibility`
+**Branch**: `brocula/loop-2026-07-30-run17`
 **Date**: 2026-07-30
 **Mode**: Production build (`vite build`) + Preview server verification
 
@@ -11,36 +11,32 @@
 | Console Errors | **0** ✅ |
 | Console Warnings | **0** ✅ |
 | Failed Requests | **0** ✅ |
-| LH Performance (Prod) | **99** ⭐ |
+| LH Performance (Prod) | **100** 🏆 |
 | LH Accessibility | **100** 🏆 |
 | LH Best Practices | **100** 🏆 |
 | LH SEO | **100** 🏆 |
 | Optimization Opportunities | **0 actionable** ✅ |
-| Tests | **2,264 pass** (952 web + 502 api + 810 shared) ✅ |
+| Tests | **2,267 pass** (955 web + 502 api + 810 shared) ✅ |
 | Quality Gates | All pass ✅ |
 
-## Fixes Applied
+## Changes in This Run
 
-### WCAG 2.5.3 — label-content-name-mismatch (StepIndicator)
-
-**Issue**: Step indicator buttons in the wizard had `aria-label="Project Info"` but the visible text included keyboard shortcut indicator `Alt+1`. The accessible name did not contain the visible shortcut text, causing a WCAG 2.5.3 (Label in Name) violation.
-
-**Fix**: Updated `aria-label` to include the keyboard shortcut when the step is clickable: `aria-label={isClickable ? `${step.label} (Alt+${step.shortcut})` : step.label}`. Now the accessible name matches the visible text content, satisfying the containment requirement.
-
-**File**: `apps/web/src/components/StepIndicator.tsx`
+- **Fix**: Updated `BRAND_SCROLL_TO_TOP` aria-label in `content.ts` to include the visible tagline text "AI-Powered Project Architecture" — satisfies WCAG 2.5.3 (Label in Name) so the accessible name now contains all visible text content inside the brand button
 
 ## Lighthouse Diagnostics (Preview Server)
 
+Production build on preview server:
+
 | Metric | Value | Score |
 |---|---|---|
-| First Contentful Paint | 1.8s | 95 |
-| Largest Contentful Paint | 1.8s | 99 |
+| First Contentful Paint | 1.5s | 96 |
+| Largest Contentful Paint | 1.5s | 100 |
 | Total Blocking Time | 60ms | 100 |
 | Cumulative Layout Shift | 0.007 | 100 |
-| Speed Index | 1.8s | 100 |
-| Time to Interactive | 2.6s | 98 |
+| Speed Index | 1.5s | 100 |
+| Time to Interactive | 2.4s | 98 |
 
-**Performance: 99/100** ⭐ — Consistent FCP variance from local preview server overhead. No actionable code-level optimization opportunities.
+**Performance: 100/100** 🏆 — Improved from 99 in Run 16.
 
 ### Diagnostics
 
@@ -48,8 +44,10 @@
 |---|---|
 | DOM Size | excellent |
 | JavaScript execution time | ~0.38s |
-| Main-thread work | ~1.83s |
-| Total network payload | 230 KiB |
+| Main-thread work | ~1.7s |
+| Total network payload | 222 KiB |
+| Network RTT | 0ms |
+| Server latency | 0ms |
 
 ## Console Findings
 
@@ -59,12 +57,12 @@
 
 ## Optimization Opportunities
 
-**None.** All Lighthouse audits scored at or above threshold (excluding non-actionable diagnostics).
+**None.** All scored Lighthouse audits at or above threshold.
 
 | Lighthouse Category | Score | Notes |
 |---|---|---|
-| Performance | 99 ⭐ | FCP 1.8s (local preview variance) |
-| Accessibility | 100 🏆 | WCAG 2.5.3 fixed — all ARIA labels match visible text |
+| Performance | 100 🏆 | FCP 1.5s, LCP 1.5s, CLS 0.007 |
+| Accessibility | 100 🏆 | Proper ARIA labels, contrast, semantic HTML, WCAG 2.5.3 fix applied |
 | Best Practices | 100 🏆 | HTTPS, no deprecated APIs, no known security issues |
 | SEO | 100 🏆 | Meta tags, viewport, robots, descriptive links |
 
@@ -76,10 +74,10 @@
 - Typecheck (web) ✅
 - Lint ✅
 - Secrets scan ✅
-- Test (web) — 952 passed ✅
+- Test (web) — 955 passed ✅
 - Test (api) — 502 passed ✅
 - Test (shared) — 810 passed ✅
 
 ## Verdict
 
-**🧛‍♂️⭐ All clear.** One WCAG 2.5.3 accessibility issue fixed. Zero console errors, zero warnings, zero regressions. All quality gates pass. Accessibility maintains 100/100.
+**🧛‍♂️🏆 Perfect 100s across all categories.** Zero console errors, zero warnings, zero regressions. One WCAG 2.5.3 accessibility fix applied (brand button aria-label now includes visible tagline text). All quality gates pass. Performance improved to 100 from 99 in Run 16.
