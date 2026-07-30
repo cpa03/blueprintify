@@ -205,7 +205,7 @@ const ContentStats = React.memo(function ContentStats({
   const charCount = content.length;
   const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
   const lineCount = content ? content.split("\n").length : 0;
-  const rawReadingTime = wordCount / 200;
+  const rawReadingTime = wordCount / EDITOR_LABELS.CONTENT_STATS.READING_SPEED_WPM;
   const readingTimeDisplay =
     rawReadingTime < 1
       ? EDITOR_LABELS.CONTENT_STATS.LESS_THAN_ONE_MIN

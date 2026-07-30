@@ -149,6 +149,9 @@ export const EDITOR_LABELS = {
     READING_TIME: "min read",
     LESS_THAN_ONE_MIN: "<1 min",
     SHORTCUTS: "Shortcuts",
+    /** Average adult reading speed in words per minute for reading time estimation.
+     * 200 WPM is the standard reference used by readability formulas and publishing. */
+    READING_SPEED_WPM: 200,
   },
   TAB_NAVIGATION: {
     SWITCH_TABS: "Switch between blueprint and tasks tabs",
@@ -327,6 +330,10 @@ export const ACCESSIBILITY_LABELS = {
   STEP_ANNOUNCER: {
     STEP_TRANSITION: (completedLabel: string, activatedLabel: string) =>
       `Step ${completedLabel} complete, now on Step ${activatedLabel}`,
+  },
+  /** Step indicator aria-label format for keyboard shortcut display */
+  STEP: {
+    SHORTCUT_FORMAT: (label: string, shortcut: string) => `${label} (Alt+${shortcut})`,
   },
   LAZY_CODEMIRROR: {
     LOADING: "Loading code editor",

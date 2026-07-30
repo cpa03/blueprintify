@@ -41,6 +41,9 @@ vi.mock("../config/constants", async (importOriginal) => {
         STEP_TRANSITION: (completedLabel: string, activatedLabel: string) =>
           `Step ${completedLabel} complete, now on Step ${activatedLabel}`,
       },
+      STEP: {
+        SHORTCUT_FORMAT: (label: string, shortcut: string) => `${label} (Alt+${shortcut})`,
+      },
     },
   };
 });
