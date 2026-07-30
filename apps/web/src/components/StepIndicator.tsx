@@ -209,6 +209,7 @@ function StepIndicatorComponent(): JSX.Element {
                   ? `${step.label} (Alt+${step.shortcut})`
                   : TOAST_MESSAGES.STEP_LOCKED(step.label)
               }
+              aria-label={step.label}
               aria-keyshortcuts={isClickable ? `Alt+${step.shortcut}` : undefined}
               aria-current={isActive ? "step" : undefined}
               className={`
