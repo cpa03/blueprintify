@@ -1,7 +1,12 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Header } from "./Header";
-import { UI_CONTENT } from "../config/constants";
+import { UI_CONTENT, ACCESSIBILITY_LABELS } from "../config/constants";
+
+vi.mock("../hooks/useReducedMotion", () => ({
+  useReducedMotion: vi.fn(() => false),
+}));
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -94,5 +99,62 @@ describe("Header", () => {
 
     const nav = container.querySelector("nav");
     expect(nav).toHaveClass("flex", "items-center", "gap-2");
+  });
+
+  it("renders the brand button with scroll-to-top aria label", () => {
+    render(<Header />);
+
+    const brandButton = screen.getByRole("button", {
+      name: ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP,
+    });
+    expect(brandButton).toBeInTheDocument();
+    expect(brandButton).toHaveClass("cursor-pointer");
+  });
+
+  it("scrolls to top when brand button is clicked", async () => {
+    const scrollToSpy = vi.fn();
+    window.scrollTo = scrollToSpy;
+    Object.defineProperty(window, "scrollY", { value: 500, writable: true });
+
+    const user = userEvent.setup();
+    render(<Header />);
+
+    const brandButton = screen.getByRole("button", {
+      name: ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP,
+    });
+
+    await user.click(brandButton);
+
+    expect(scrollToSpy).toHaveBeenCalledWith({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
+
+  it("scrolls to top with auto behavior when reduced motion is preferred", async () => {
+    const useReducedMotionMock = vi.mocked(
+      (await import("../hooks/useReducedMotion")).useReducedMotion
+    );
+    useReducedMotionMock.mockReturnValue(true);
+
+    const scrollToSpy = vi.fn();
+    window.scrollTo = scrollToSpy;
+    Object.defineProperty(window, "scrollY", { value: 300, writable: true });
+
+    const user = userEvent.setup();
+    render(<Header />);
+
+    const brandButton = screen.getByRole("button", {
+      name: ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP,
+    });
+
+    await user.click(brandButton);
+
+    expect(scrollToSpy).toHaveBeenCalledWith({
+      top: 0,
+      behavior: "auto",
+    });
+
+    useReducedMotionMock.mockReturnValue(false);
   });
 });
