@@ -4322,6 +4322,52 @@ Full repository cleanup and maintenance: **tracked `.patch` removal** (`scripts/
 - [x] BUG-017 — **RESOLVED on main since Cycle 211** ✅
 - [x] findings.md — Cycle 215 entry added ✅
 
+ ## Cycle 324 (2026-07-30 — RepoKeeper: Full repository audit, empty vite-temp dir removed, audits/README updated with Jul 30 Run 17, doc refresh, quality verification)
+
+### Audit Scope
+
+Full repository cleanup and maintenance: **0 redundant/temp/unused source files found**; **1 empty directory removed** (`apps/web/node_modules/.vite-temp`); **npm dedupe clean** (0 vulns); **audits/README.md updated** (Jul 30 Run 17 indexed as latest — LH **100-100-100-100** 🏆, **2,267 tests** ✅ — 955 web + 502 api + 810 shared); **BUG-014/BUG-017 confirmed FIXED on main** — zero stale `docs/bug.md`/`docs/feature.md` refs, all workflows use `node-version-file: ".node-version"`; **0 stale merged branches**; **0 stale doc refs** in active docs; documentation refresh (findings, active-tasks, knowledge-review, CHANGELOG, audits/README); quality verification (typecheck ✅ lint ✅ build ✅ tests **2,267/2,267** ✅ format ✅ npm audit **0 vulns** ✅).
+
+### Status Summary
+
+| Check | Result |
+|-------|--------|
+| Typecheck | ✅ Clean (0 errors) |
+| Lint | ✅ Clean (0 warnings/errors) |
+| Tests | ✅ **2,267/2,267 passing** (955 web + 502 API + 810 shared) |
+| @ts-ignore/as any | ✅ None in source code |
+| TODO/FIXME/HACK | ✅ None in source code |
+| Empty catch blocks | ✅ None |
+| Format | ✅ All files Prettier-formatted |
+| npm audit | ✅ **0 vulns** |
+| Redundant/temp/unused files | ✅ 1 empty dir removed (`.vite-temp`) |
+| BUG-014/BUG-017 | ✅ **FIXED** on main — verified clean |
+| **Overall** | **✅ All quality checks passing** |
+
+### Actions Taken This Cycle
+
+1. **Full repository audit**: Scanned for redundant/temp/unused files — 0 found. 1 empty directory `apps/web/node_modules/.vite-temp` removed.
+2. **npm dedupe**: Ran clean — 0 vulnerabilities.
+3. **audits/README.md updated**: Jul 30 Run 17 indexed as latest — LH **100-100-100-100** 🏆, 2,267 tests, WCAG 2.5.3 fix applied.
+4. **Documentation refresh**: Updated findings, active-tasks, knowledge-review, CHANGELOG, audits/README for Cycle 324.
+5. **Quality verification**: typecheck ✅ lint ✅ build ✅ tests 2,267/2,267 ✅ format ✅ npm audit 0 vulns ✅.
+
+### Verification
+
+- [x] Typecheck — 0 errors ✅
+- [x] Lint — 0 errors/warnings ✅
+- [x] Build — clean ✅
+- [x] Tests — 2,267/2,267 passing (955 web + 502 API + 810 shared) ✅
+- [x] Format — all Prettier-formatted ✅
+- [x] npm audit — 0 vulns ✅
+- [x] No redundant/temp/unused files — clean ✅ (1 empty dir removed)
+- [x] No @ts-expect-error/@ts-ignore/as any in source ✅
+- [x] No TODO/FIXME/HACK in source ✅
+- [x] BUG-014/BUG-017 — confirmed FIXED on main ✅
+- [x] audits/README.md — Jul 30 Run 17 indexed as latest ✅
+- [x] Doc refresh — findings, active-tasks, knowledge-review, CHANGELOG, audits/README ✅
+- [x] findings.md — Cycle 324 entry added ✅
+
 ## Cycle 213 (2026-07-09 — RepoKeeper: remove 4 unreferenced BroCula scripts from scripts/; BroCula ref drift fix (Run 4→Run 1 Jul 09); doc refresh (findings, active-tasks, knowledge-review, CHANGELOG); quality verification ✅)
 
 ### Audit Scope
