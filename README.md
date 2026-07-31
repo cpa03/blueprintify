@@ -29,7 +29,7 @@ blueprintify/
 │   ├── agent/           # Agent definitions (technical-writer, etc.)
 │   ├── skill/           # Reusable skills (docs-update, etc.)
 │   ├── command/         # Custom commands
-│   └── plugin/          # Plugins and hooks
+│   └── memory/          # Agent memory and patterns
 ├── packages/
 │   └── shared/          # Zod schemas & TypeScript types
 ├── apps/
@@ -220,12 +220,17 @@ The system includes 25+ reusable skills for common tasks:
 
 **Advanced Skills:**
 
-- Systematic debugging strategies
-- Test-driven development workflows
-- Git worktree management
-- Context engineering and memory systems
-- Brainstorming and idea generation
-- Agentic QE skill building
+- `obra-superpowers-systematic-debugging` - Structured 4-phase root cause analysis
+- `obra-superpowers-test-driven-development` - TDD workflow for features and bugfixes
+- `obra-superpowers-using-git-worktrees` - Isolated git worktree management
+- `obra-superpowers-writing-plans` - Write decision-complete implementation plans
+- `obra-superpowers-brainstorming` - Requirements and design exploration
+- `madappgang-claude-code-debugging-strategies` - Language-agnostic debugging methodology
+- `maxritter-claude-codepro-backend-models-standards` - Backend design and review standards
+- `modu-ai-moai-adk-moai-tool-opencode` - Multi-agent orchestration with MoAI
+- `muratcankoylan-agent-skills-for-context-engineering-memory-systems` - Context engineering and memory systems
+- `professor-for-testing-agentic-qe-skill-builder` - Comprehensive testing skill construction
+- `vasilyu1983-ai-agents-public-git-commit-message` - Conventional commit message generation
 
 _See `.opencode/skill/` directory for complete skill definitions._
 
@@ -241,21 +246,22 @@ _See `.opencode/skill/` directory for complete skill definitions._
 
 ## 📡 API Endpoints
 
-| Method | Endpoint          | Description                                    |
-| ------ | ----------------- | ---------------------------------------------- |
-| GET    | `/`               | Health check                                   |
-| GET    | `/warmup`         | Pre-warm circuit breaker on worker startup     |
-| POST   | `/generate`       | Generate blueprint (SSE stream)                |
-| POST   | `/tasks`          | Generate tasks from blueprint (SSE stream)     |
-| POST   | `/refine`         | Refine content section (SSE stream)            |
-| POST   | `/export`         | Export project as ZIP/JSON/Markdown            |
-| POST   | `/import`         | Import project with validation                 |
-| GET    | `/storage/quota`  | Check storage usage                            |
-| POST   | `/storage/report` | Report client storage usage for quota tracking |
-| DELETE | `/storage/clear`  | Clear stored data                              |
-| POST   | `/share`          | Create shareable blueprint link                |
-| GET    | `/share/:id`      | Retrieve shared blueprint                      |
-| DELETE | `/share/:id`      | Delete shared blueprint                        |
+| Method | Endpoint            | Description                                      |
+| ------ | ------------------- | ------------------------------------------------ |
+| GET    | `/`                 | Health check                                     |
+| GET    | `/warmup`           | Pre-warm circuit breaker on worker startup       |
+| POST   | `/generate`         | Generate blueprint (SSE stream)                  |
+| POST   | `/tasks`            | Generate tasks from blueprint (SSE stream)       |
+| POST   | `/refine`           | Refine content section (SSE stream)              |
+| POST   | `/export`           | Export project as ZIP/JSON/Markdown              |
+| POST   | `/import`           | Import project with validation                   |
+| GET    | `/storage/quota`    | Check storage usage                              |
+| POST   | `/storage/report`   | Report client storage usage for quota tracking   |
+| DELETE | `/storage/clear`    | Clear stored data                                |
+| POST   | `/share`            | Create shareable blueprint link                  |
+| GET    | `/share/:id`        | Retrieve shared blueprint                        |
+| POST   | `/share/:id/verify` | Verify passphrase for protected shared blueprint |
+| DELETE | `/share/:id`        | Delete shared blueprint                          |
 
 ## 🛠️ Tech Stack
 
@@ -322,9 +328,9 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Flexy Plan](./docs/flexy-plan.md)** - Hardcoded value elimination and modularization plan
 - **[Known Bugs](./docs/bugs.md)** - Active bug tracking and known defects
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
-- **[Issue Audit Report (Jun 8)](./docs/audits/archive/issue-audit-report-2026-06-08.md)** - ULW Loop issue audit with fix status tracking (archived)
+- **[Issue Audit Report](./docs/audits/archive/issue-audit-report-2026-07-15.md)** - ULW Loop issue audit with fix status tracking (archived)
 
-- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jun 17–Jul 30)
+- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jun 17–Jul 31)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 - **[Roadmap M3 Proposal](./docs/roadmap-m3-proposal.md)** - M3 strategic expansion proposal
 
