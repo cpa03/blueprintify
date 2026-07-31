@@ -39,6 +39,7 @@ import {
   SCROLL_PROGRESS_DEFAULTS,
   SPRING_SCROLL_HOVER,
   KEYBOARD_EVENT_KEYS,
+  PERCENT_SCALE,
 } from "@blueprint/shared/config";
 
 interface PageScrollProgressBarProps {
@@ -96,7 +97,7 @@ function PageScrollProgressBarComponent({
     if (!bar) return;
     const rect = bar.getBoundingClientRect();
     const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-    setHoverProgress(Math.round(ratio * 100));
+    setHoverProgress(Math.round(ratio * PERCENT_SCALE));
   }, []);
 
   const handleBarHoverEnd = useCallback(() => {

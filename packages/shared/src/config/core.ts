@@ -35,6 +35,15 @@ export const TIME_UNITS = {
 } as const;
 
 /**
+ * Percent Conversion Constants
+ * Centralized scale for converting ratios to percentage values.
+ * Flexy says: No hardcoded "* 100" percent-conversion multipliers in components!
+ * Usage: import { PERCENT_SCALE } from "@blueprint/shared";
+ *        const percent = Math.round(ratio * PERCENT_SCALE);
+ */
+export const PERCENT_SCALE = 100;
+
+/**
  * ID Generation Configuration
  * Centralized settings for generating unique identifiers
  */

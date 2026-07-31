@@ -3481,3 +3481,37 @@ Also lacked test coverage for the `isLoading` prop — no spinner rendering veri
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD (this PR) | `feat/flexy-iteration-178-keyboard-shortcuts` | refactor(flexy): centralize keyboard shortcut literals into ARIA_KEYSHORTCUTS + DISPLAY_SYMBOLS (Iteration 178) |
+
+---
+
+### ✅ Flexy Iteration 179: Eliminate Remaining Hardcoded Unit-Conversion Literals (ms↔seconds, Percent Scale, Loading Dots Count)
+
+**Problem**: Although `TIME_UNITS.MS_PER_SECOND` already existed as the single source of truth in shared config (used by `apps/api/src/config`, `apps/web/src/config/constants/storage.ts`), 8 component call sites still passed the raw `1000` literal when converting between milliseconds and seconds (elapsed timer, framer-motion `duration`/`delay` fields). Additionally, 3 call sites multiplied ratios by raw `100` to produce percentages, and the `StepGenerating` loading-dots indicator hardcoded its dot count as `3` / `[0, 1, 2]`. Flexy says: No hardcoded unit-conversion literals in components!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | Added `PERCENT_SCALE` (100) — centralized ratio→percentage conversion multiplier, alongside `TIME_UNITS` |
+| `packages/shared/src/config/ui.ts` | Added `LOADING_DOTS_COUNT` (3) — single source of truth for the StepGenerating loading-dots indicator |
+| `packages/shared/src/index.ts` | Exported `PERCENT_SCALE` + `LOADING_DOTS_COUNT` from the root barrel |
+| `packages/shared/src/config.test.ts` | Added 3 tests: `PERCENT_SCALE` value + `LOADING_DOTS_COUNT` value/integer checks |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced `/ 1000` (elapsed timer), `* 1000` (cancel-button delay), `prev >= 3` and `[0, 1, 2]` (loading dots) with `TIME_UNITS.MS_PER_SECOND` + `LOADING_DOTS_COUNT` |
+| `apps/web/src/components/wizard/StepGenerating.test.tsx` | Replaced `* 1000` in `advanceTimersByTime` with `TIME_UNITS.MS_PER_SECOND` |
+| `apps/web/src/components/Toast.tsx` | Replaced `* 100` (progress ring) with `PERCENT_SCALE` and 2x `TOAST_STAGGER_MS / 1000` with `/ TIME_UNITS.MS_PER_SECOND` |
+| `apps/web/src/components/HeadingAnchor.tsx` | Replaced `particle.duration / 1000` with `/ TIME_UNITS.MS_PER_SECOND` |
+| `apps/web/src/components/AnimatedCopyButton.tsx` | Replaced `particle.duration / 1000` with `/ TIME_UNITS.MS_PER_SECOND` |
+| `apps/web/src/components/AnimatedNumber.tsx` | Replaced 2x `duration * 1000` (s→ms for framer-motion) with `* TIME_UNITS.MS_PER_SECOND` |
+| `apps/web/src/components/PageScrollProgressBar.tsx` | Replaced `ratio * 100` with `* PERCENT_SCALE` |
+| `apps/api/src/routes/storage.ts` | Replaced `(used / total) * 100` with `* PERCENT_SCALE` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — **960 web + 502 api + 816 shared = 2,278 tests passing**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `feat/flexy-iteration-179-unit-conversion-literals` | refactor(flexy): centralize ms↔seconds, percent-scale, and loading-dots-count literals (Iteration 179) |

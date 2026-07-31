@@ -14,7 +14,7 @@ import React, { useState, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import clsx from "clsx";
-import { FRAMER_TYPE } from "@blueprint/shared/config";
+import { FRAMER_TYPE, TIME_UNITS } from "@blueprint/shared/config";
 import {
   CELEBRATION_COLORS,
   ANIMATION_COLORS,
@@ -189,7 +189,7 @@ function AnimatedCopyButtonComponent({
                 opacity: 0,
               }}
               transition={{
-                duration: particle.duration / 1000,
+                duration: particle.duration / TIME_UNITS.MS_PER_SECOND,
                 ease: EASING.PARTICLE_BURST,
               }}
             />

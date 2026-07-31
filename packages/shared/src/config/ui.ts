@@ -355,6 +355,16 @@ export const UI_TIMEOUTS = {
 } as const;
 
 /**
+ * Loading Dots Display Config
+ * Centralized count of loading indicator dots in StepGenerating.
+ * Flexy says: No hardcoded "3" / "[0, 1, 2]" dot arrays in components!
+ * Usage: import { LOADING_DOTS_COUNT } from "@blueprint/shared";
+ *        prev >= LOADING_DOTS_COUNT ? 0 : prev + 1
+ *        Array.from({ length: LOADING_DOTS_COUNT }, (_, i) => i)
+ */
+export const LOADING_DOTS_COUNT = 3;
+
+/**
  * Toast Icon Display Characters
  * Centralized source of truth for toast notification icon symbols.
  * Flexy says: No hardcoded "✓" / "✕" icon strings in toast config!
