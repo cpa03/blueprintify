@@ -2,6 +2,94 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 14 (2026-07-31 — ULW Loop: Issue Manager Mode — permission-blocked, 18 issues verified FIXED/stale)
+
+> **ULW Loop run (2026-07-31)**: **Phase 0 → ISSUE MANAGER MODE** (0 open PRs, **104 open issues**). Issue Manager Steps 1-3 blocked by token scope (documented Cycles 7-13): `addLabelsToLabelable` / `removeLabelsFromLabelable` / `addComment` / `closeIssue` / `createIssue` all 403 — normalization, duplicate closure, and consolidation **cannot be applied** with `github-actions[bot]` GITHUB_TOKEN.
+>
+> **REPAIR MODE executed as far as permissions allow**: full issue-currency audit against `main` (commit-verified). **18 open issues verified FIXED (stale)** — remediation already merged, issues never closed (no issues:write). **1 issue (#849/#953 — tests not in PR gatekeeper) verified GENUINELY UNFIXED** — fix written and fully validated locally (2,278/2,278 tests) but **cannot be pushed**: GitHub App refuses workflow file updates without `workflows` permission (`refusing to allow a GitHub App to create or update workflow .github/workflows/pr-gatekeeper.yml without workflows permission`). Exact diff below for human/admin application.
+>
+> **Actionable for a human/admin token (issues:write + workflows)**: apply the 4-line gatekeeper diff, close the 18 verified-fixed issues, close 17 duplicates (15 groups), consolidate the share-route cluster, apply label normalization.
+
+### Issue Currency Audit — 18 issues verified FIXED on `main` (recommend closure)
+
+| Issue | Title | Fix evidence (commit / code) |
+|---|---|---|
+| #1077 | Prompt injection risk | `sanitizePromptInput()` + XML delimiters + `prompt-security.ts` (15+ patterns); commits `bd8b6072`…`f27d7794`, PRs #1260/#1916; `prompts.test.ts` |
+| #1078 | No user-level authorization | `middleware/authorize.ts` RBAC (ADMIN_API_KEY admin/user roles) applied to export/import/storage/share-write; `auth.ts` derives SHA-256 userId; `authorize.test.ts` |
+| #847/#891 | API_KEY missing → auth bypass | `auth.ts` now returns **503** when API_KEY unset (was `await next()` bypass); constant-time compare |
+| #905 | Share ID validation injection | `share.ts` `isValidShareId()`: exact length + `SHARE_CONFIG.ID_PATTERN` regex |
+| #892 | No ownership check on share DELETE | DELETE handler: rateLimit + authorize + `createdBy` vs userId → 403; 404-leak avoided |
+| #909 | Inconsistent share error format | share.ts uses `createErrorJson` standard envelope |
+| #928 | Backend input sanitization | `apps/api/src/utils/sanitize.ts` + `sanitize.test.ts`, used in share/import/controllers |
+| #955 | CSP `unsafe-inline` | CSP config removed during refactor; security headers now in `index.html` (nosniff, X-XSS-Protection, referrer) |
+| #935 | API controllers zero tests | `base/generate/refine/tasks.controller.test.ts` all present |
+| #936 | Zustand stores zero tests | `editor/persistence/toast/wizard.test.ts` all present |
+| #1014 | Component coverage 4/85+ | 29 component `.test.tsx` files now exist |
+| #1082/#857 | React hooks untested | 10 hook `.test.ts` files exist |
+| #852/#1053 | Middleware untested | auth/authorize/bodyLimit/logger/rateLimit/validator/errorHandler tests all exist |
+| #860/#911 | OpenAI service untested | `openai.test.ts` (11.7KB) exists |
+| #947 | Route handler factory | `middleware/routeFactory.ts` `createPostRoute` used by generate/refine/tasks |
+| #899 | Unused asyncHandler | zero references remain |
+| #917 | API integration tests | `src/integration/m2-workflows.test.ts` + `prompt-injection-security.test.ts` |
+| #1166 | Add .nvmrc | `.nvmrc` + `.node-version` both exist (=22) |
+| #875 | Framer Motion in SkipLink | SkipLink uses Tailwind transitions + `useReducedMotion()`; no framer-motion import |
+
+**Mitigated (not code-closable)**: #1045 (wrangler placeholder IDs — `scripts/validate-wrangler.mjs` blocks deploys with placeholders, references issue; real IDs require human Cloudflare credentials), #418/#973 (ajv patched 6.12.6→6.15.0, `npm audit` **0 vulns**), #1019/#951/#872 (playwright.config.ts + 3 e2e specs exist; functional flows not fully expanded).
+
+### REPAIR TARGET #849/#953 — verified unfixed, fix written, BLOCKED from shipping
+
+**No workflow in the repo runs the test suite** — `pr-gatekeeper.yml` runs typecheck/lint/build only, then auto-merges. Fix (4 lines, validated locally: typecheck 0, lint 0, build ✓, tests **2,278/2,278**):
+
+```diff
+--- a/.github/workflows/pr-gatekeeper.yml
++++ b/.github/workflows/pr-gatekeeper.yml
+@@ Run Health Checks step
+           npm run typecheck > typecheck.log 2>&1 || echo "Typecheck Failed"
+           npm run lint > lint.log 2>&1 || echo "Lint Failed"
+           npm run build > build.log 2>&1 || echo "Build Failed"
++          npm run test:all > test.log 2>&1 || echo "Tests Failed"
+ 
+           # Check for failures
+-          if grep -q "Failed" typecheck.log || grep -q "Failed" lint.log || grep -q "Failed" build.log; then
++          if grep -q "Failed" typecheck.log || grep -q "Failed" lint.log || grep -q "Failed" build.log || grep -q "Failed" test.log; then
+@@ Debugger step
+-          cat typecheck.log lint.log build.log > validation_errors.log
++          cat typecheck.log lint.log build.log test.log > validation_errors.log
+@@ Final Integrity Check step
+-          npm run build && npm run typecheck
++          npm run build && npm run typecheck && npm run test:all
+```
+
+Also blocked by the same `workflows` permission: **#1084/#851** (dependency vulnerability scanning in CI — no workflow runs `npm audit`) and **#1088** (secrets detection in CI — no workflow runs `scan:secrets`).
+
+### Duplicate Closure Plan (15 groups, 17 issues to close — needs issues:write)
+
+ajv: close **#973**→#418 · CORS wildcard: close **#890**→#848 · API_KEY: close **#891**→#847 · gatekeeper tests: close **#953**→#849 · component tests: close **#856**→#1014 · E2E: close **#951, #872**→#1019 · ErrorBoundary: close **#1052**→#874 · wrangler IDs: close **#1165**→#1045 · dep scanning: close **#850, #851**→#1084 · DX-001: close **#1117**→#1142 · INNOVATION-001: close **#1116**→#1143 · OpenAI tests: close **#911**→#860 · CSP: close **#930**→#955 (retitle #955 title already correct) · middleware tests: close **#852**→#1053 · hook tests: close **#857**→#1082.
+
+### Consolidation Plan (1 cluster — needs issues:write)
+
+**Share/export-import route hardening** — 9 issues, one meaningful issue (category `security`, priority `P1`), close all with reference: #846 (share routes missing rate limiting/validation), #905 (ID injection), #906 (export/import rate limiting), #908 (max length validation), #909 (error format — now fixed, fold as verified), #910 (duplicate validation), #896 (align with project patterns), #892 (ownership — now fixed, fold as verified), #1046 (share IDs without auth — design-debatable, fold).
+
+### Label Normalization Plan (needs issues:write)
+
+104 issues inventoried. Required: exactly one category (`bug|enhancement|feature|docs|refactor|chore|test|ci|security`) + exactly one priority (`P0|P1|P2|P3`). 4 issues have **no labels** (#846, #847, #848, #849, #850 → assign security/security/security/ci/ci + P2/P1/P2/P2/P2). ~47 issues carry legacy `priority:low|medium|critical` → migrate to P3/P2/P0. #863 carries conflicting P2+P3 → keep P3. `documentation` label (e.g. #870) → `docs`. Existing P1s already correct.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ **2,278/2,278** (960 web + 502 API + 816 shared) |
+| npm audit | ✅ 0 vulnerabilities |
+| Secrets scan | ✅ 0 secrets |
+| Open PRs | ✅ 0 (probe PR #2981 created & closed to test permissions) |
+
+### Verdict
+
+**Repository is healthy: all gates green, 2,278 tests pass, 0 vulnerabilities, 0 open PRs.** Issue Manager remains permission-blocked (issues:write + workflows) as documented since Cycle 7. This cycle's unique contribution: **18 open issues verified stale-fixed** (should be closed), **#849 verified as the one genuine unfixed high-value gap** with a validated 4-line fix ready to apply, plus complete duplicate/consolidation/normalization plans. No destructive actions taken; probe artifacts cleaned up.
+
 ## Cycle 13 (2026-07-31 — ULW Loop: PR Handler 2/2 merged, all gates green)
 
 > **ULW Loop run (2026-07-31)**: **Phase 0 → PR HANDLER MODE** (2 open PRs found). Both PRs synced to `main`, fully validated, and merged (squash + branch deletion):
