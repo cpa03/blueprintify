@@ -1,6 +1,19 @@
 # Bug Log: Known Defects
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
+## Bug Status — Jul 31 2026 (BugFixer Cycle 7)
+
+> **BugFixer Cycle 7 (2026-07-31 — fix/bugfixer-cycle-7-jul-31-2026)**: Full BugFixer audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,267/2,267** ✅ (955 web + 502 API + 810 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
+>
+> **BUG-032 — RECURRED & FIXED**: `npm ls` reported `@cloudflare/workers-types@5.20260722.1 invalid: "5.20260727.1" from apps/api` — lockfile drift: `apps/api/package.json` declares `5.20260727.1` and `package-lock.json`'s workspace spec agrees, but the lockfile's **resolved** `apps/api/node_modules/@cloudflare/workers-types` entry pinned the stale `5.20260722.1`. Root cause: prior `npm install` cycles left the resolved entry at an older version than the declared spec. Fix: repaired the lockfile resolved entry (`version`/`resolved`/`integrity` → `5.20260727.1`, integrity `sha512-b/wT+LMZz0oELzxibww0ujFz5BD8NRz9WJ+xd+JNZJUMXgh8IHjpibKdGDvtkbotmihWUknP5tBPUU8KluLxxA==`) and reinstalled the workspace package. Verified: `npm ls` clean — **0 invalid/missing/extraneous**, exit 0.
+>
+> **1 new post-Cycle-6 commit indexed** — HEAD at `71e04de5` (docs(findings): record ULW Loop Cycle 7 — PR #2968 merged, Issue Manager blocked by missing issues:write permission).
+> **Test count unchanged**: **2,267** (955 web + 502 API + 810 shared — unchanged from Cycle 6).
+> **Archive retention**: OK (oldest Jul 11 — 20 days, within 30-day window — no purge needed).
+> **Stale merged branches**: **0**.
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **BUG-032 fix is the only code change; all other quality gates pass.** Branch created.
+
 ## Bug Status — Jul 31 2026 (BugFixer Cycle 6)
 
 > **BugFixer Cycle 6 (2026-07-31 — fix/bugfixer-cycle-6-jul-31-2026)**: Full BugFixer audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,267/2,267** ✅ (955 web + 502 API + 810 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
