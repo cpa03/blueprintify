@@ -2,6 +2,48 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 8 (2026-07-31 — BugFixer: full BugFixer audit, **BUG-032 RECURRED & FIXED** — `@cloudflare/workers-types` lockfile drift repaired)
+
+> **BugFixer Cycle 7 run (2026-07-31)**: **Phase 1 → AUDIT MODE** (no open PRs, BugFixer mandate). Full audit of HEAD `71e04de5`: typecheck ✅ lint ✅ build ✅ tests **2,267/2,267** ✅ (955 web + 502 API + 810 shared) format ✅ secrets scan ✅ npm audit **0 vulns** ✅.
+>
+> **BUG-032 — RECURRED & FIXED**: `npm ls` flagged `@cloudflare/workers-types@5.20260722.1 invalid: "5.20260727.1" from apps/api`. Root cause: lockfile drift — `package.json` declares `5.20260727.1` (lockfile workspace spec agrees, line 48) but the lockfile's resolved `apps/api/node_modules/@cloudflare/workers-types` entry pinned stale `5.20260722.1`. This breaks `npm ci` determinism (installs older types package than declared). Fix: repaired the resolved lockfile entry (`version`/`resolved`/`integrity` → `5.20260727.1` with registry integrity `sha512-b/wT+LMZz0oELzxibww0ujFz5BD8NRz9WJ+xd+JNZJUMXgh8IHjpibKdGDvtkbotmihWUknP5tBPUU8KluLxxA==`), reinstalled the workspace package (`npm install`), verified `npm ls` **0 invalid/missing/extraneous** and installed version now `5.20260727.1`. Minimal 3-line lockfile diff.
+>
+> **Verification after fix**: typecheck ✅ lint ✅ build ✅ tests **2,267/2,267** ✅ format ✅ secrets ✅ npm audit **0 vulns** ✅ `npm ls` clean ✅.
+>
+> **BroCula environment note**: `npm run brocula` browser check unavailable in this runner (Playwright browsers not installed: `chromium_headless_shell` missing) — environmental, not a code defect; CI installs browsers via Playwright.
+>
+> **Wrangler validation note**: `npm run validate:wrangler` exits 1 on **6 placeholder Cloudflare resource IDs** in `apps/api/wrangler.toml` (KV ×3, D1 ×3) — pre-existing infra requirement, already tracked as issues #1045/#1165; requires real Cloudflare resources, not a code bug.
+
+### Actions Taken
+
+1. **[Full Repository Audit]** — Ran all quality gates on current HEAD `71e04de5`. Scanned for bug markers: 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
+2. **[BUG-032 — RECURRED & FIXED]** — Repaired `package-lock.json` resolved entry for `@cloudflare/workers-types` (`5.20260722.1` → `5.20260727.1` with correct integrity), reinstalled workspace package, verified `npm ls` clean (0 invalid/missing/extraneous).
+3. **[1 New Post-Cycle-6 Commit Indexed]** — `71e04de5` (docs(findings): ULW Loop Cycle 7 record — PR #2968 merged, Issue Manager blocked by missing `issues: write`).
+4. **[Test Count]** — **2,267/2,267** (955 web + 502 API + 810 shared — **unchanged** from Cycle 6).
+5. **[BUG-013 Still Fixed]** — `lighthouse` 13.4.1 — **0 vulnerabilities**.
+6. **[BUG-031 Still Tracked]** — `brace-expansion` CVE (GHSA-mh99-v99m-4gvg, dev-only ESLint toolchain). Lockfile at 5.0.8. No production impact.
+7. **[Archive Retention OK]** — Oldest archive files from Jul 11 (20 days, within 30-day window). No purge needed.
+8. **[Stale Merged Branches]** — 0 stale merged branches found ✅.
+9. **[Documentation Drift Fixes]** — findings.md (this entry), active-tasks.md (Cycle 7 entry), bugs.md (Cycle 7 entry).
+10. **[Quality Verification]** — typecheck ✅ lint ✅ build ✅ tests **2,267/2,267** ✅, format ✅, secrets scan ✅, npm audit **0 vulns** ✅, `npm ls` clean ✅.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors (web + api dry-run) |
+| Tests | ✅ **2,267/2,267** (955 web + 502 API + 810 shared) |
+| Format (Prettier) | ✅ All files formatted |
+| Secrets scan | ✅ No secrets detected |
+| npm audit | ✅ **0 vulnerabilities** |
+| `npm ls` | ✅ **0 invalid / 0 missing / 0 extraneous** (BUG-032 fixed) |
+
+### Verdict
+
+**Full BugFixer audit complete. One real bug found and fixed: BUG-032 recurred (lockfile drift — `@cloudflare/workers-types` resolved entry pinned `5.20260722.1` vs declared `5.20260727.1`); lockfile repaired and verified. All other quality gates pass with zero errors/warnings. Tests 2,267/2,267. Branch created, PR submitted.**
+
 ## Cycle 7 (2026-07-31 — ULW Loop: PR Handler merged PR #2968, Issue Manager **BLOCKED** — token lacks `issues: write`)
 
 > **ULW Loop run (2026-07-31)**: **Phase 0 → PR HANDLER MODE** — PR #2968 (`fix/bugfixer-cycle-6-jul-31-2026`, docs-only BugFixer Cycle 6 audit) processed: branch synced with main (merge-base `59d4bb26` = main HEAD, 1 commit ahead, MERGEABLE), all local quality gates green (typecheck ✅ lint ✅ build ✅ tests **2,267/2,267** ✅ format ✅ secrets ✅ npm audit **0 vulns** ✅), labels added (`docs` + `P3`), merged via squash as `ff8c97f7`, remote branch deleted. Vercel/Workers check failures confirmed **pre-existing infra issues** (identical failures on all recently merged PRs #2963–2967: Vercel build rate limit + Workers build failure). **Root cause of Workers failure**: 6 placeholder Cloudflare resource IDs in `apps/api/wrangler.toml` (already tracked as #1045/#1165).
