@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { DEV_DEFAULTS, TIME_UNITS, AI_DEFAULTS } from "@blueprint/shared";
+import { DEV_DEFAULTS, TIME_UNITS, AI_DEFAULTS, ENVIRONMENT_NAMES } from "@blueprint/shared";
 import { loadConfig, DEFAULTS, getConfig, initializeConfig, resetConfig } from "./env";
 import { setEnvConfig } from "./constants";
 import { MOCK_ENV } from "../test-utils";
@@ -41,6 +41,43 @@ describe("Environment Configuration", () => {
         CORS_ORIGIN: "https://example.com",
       });
       expect(config.CORS_ORIGIN).toBe("https://example.com");
+    });
+
+    it("should throw when CORS_ORIGIN is wildcard with ENVIRONMENT=production", () => {
+      expect(() =>
+        loadConfig({
+          OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
+          CORS_ORIGIN: "*",
+          ENVIRONMENT: ENVIRONMENT_NAMES.PRODUCTION,
+        })
+      ).toThrow("Refusing to start");
+    });
+
+    it("should throw when CORS_ORIGIN is wildcard with NODE_ENV=production", () => {
+      expect(() =>
+        loadConfig({
+          OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
+          CORS_ORIGIN: "*",
+          NODE_ENV: ENVIRONMENT_NAMES.PRODUCTION,
+        })
+      ).toThrow("Refusing to start");
+    });
+
+    it("should allow wildcard CORS_ORIGIN in development", () => {
+      const config = loadConfig({
+        OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
+        CORS_ORIGIN: "*",
+      });
+      expect(config.CORS_ORIGIN).toBe("*");
+    });
+
+    it("should allow explicit CORS_ORIGIN in production", () => {
+      const config = loadConfig({
+        OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY,
+        CORS_ORIGIN: "https://blueprintify.dev",
+        ENVIRONMENT: ENVIRONMENT_NAMES.PRODUCTION,
+      });
+      expect(config.CORS_ORIGIN).toBe("https://blueprintify.dev");
     });
 
     it("should use default values when env vars not set (except CORS_ORIGIN)", () => {

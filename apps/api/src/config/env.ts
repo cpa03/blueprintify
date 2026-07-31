@@ -106,7 +106,15 @@ export function loadConfig(env: Record<string, string | undefined>): EnvConfig {
     throw new Error(ENV_ERROR_MESSAGES.REQUIRED_CANNOT_BE_EMPTY(ENV_VAR_KEYS.API.CORS_ORIGIN));
   }
 
-  if (corsOrigin === "*" && env.NODE_ENV === ENVIRONMENT_NAMES.PRODUCTION) {
+  // Fail closed: wildcard CORS + credentialed requests lets any site call the API.
+  // Production detection uses ENVIRONMENT (wrangler.toml) because CF Workers never sets NODE_ENV.
+  const isProduction =
+    env.ENVIRONMENT === ENVIRONMENT_NAMES.PRODUCTION ||
+    env.NODE_ENV === ENVIRONMENT_NAMES.PRODUCTION;
+  if (corsOrigin === "*" && isProduction) {
+    throw new Error(ENV_ERROR_MESSAGES.CORS_WILDCARD_PRODUCTION(ENV_VAR_KEYS.API.CORS_ORIGIN));
+  }
+  if (corsOrigin === "*") {
     console.warn(ENV_ERROR_MESSAGES.CORS_WILDCARD_WARNING(ENV_VAR_KEYS.API.CORS_ORIGIN));
   }
 

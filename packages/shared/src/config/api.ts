@@ -422,9 +422,12 @@ export const ENV_ERROR_MESSAGES = {
   REQUIRED_NOT_SET: (key: string): string => `${key} is required but not set in environment.`,
   /** Template for required env var that is empty */
   REQUIRED_CANNOT_BE_EMPTY: (key: string): string => `${key} is required and cannot be empty.`,
-  /** Template for CORS wildcard warning in production */
+  /** Template for CORS wildcard warning in non-production environments */
   CORS_WILDCARD_WARNING: (key: string): string =>
     `WARNING: ${key} is set to '*' (allow all). This is a security risk in production.`,
+  /** Template for CORS wildcard rejection in production (fail closed) */
+  CORS_WILDCARD_PRODUCTION: (key: string): string =>
+    `${key} is set to '*' (allow all). Refusing to start: set an explicit origin (e.g. https://app.example.com) for production.`,
 } as const;
 
 /**

@@ -2196,10 +2196,15 @@ describe("UI_TIMING", () => {
 });
 
 describe("ENV_ERROR_MESSAGES", () => {
-  const expectedKeys = ["REQUIRED_NOT_SET", "REQUIRED_CANNOT_BE_EMPTY", "CORS_WILDCARD_WARNING"];
+  const expectedKeys = [
+    "REQUIRED_NOT_SET",
+    "REQUIRED_CANNOT_BE_EMPTY",
+    "CORS_WILDCARD_WARNING",
+    "CORS_WILDCARD_PRODUCTION",
+  ];
 
-  it("should have 3 error message templates", () => {
-    expect(Object.keys(ENV_ERROR_MESSAGES).length).toBe(3);
+  it("should have 4 error message templates", () => {
+    expect(Object.keys(ENV_ERROR_MESSAGES).length).toBe(4);
   });
 
   it("should have all expected keys", () => {
@@ -2222,6 +2227,13 @@ describe("ENV_ERROR_MESSAGES", () => {
     const result = ENV_ERROR_MESSAGES.CORS_WILDCARD_WARNING("CORS_ORIGIN");
     expect(result).toBe(
       "WARNING: CORS_ORIGIN is set to '*' (allow all). This is a security risk in production."
+    );
+  });
+
+  it("CORS_WILDCARD_PRODUCTION should format correctly", () => {
+    const result = ENV_ERROR_MESSAGES.CORS_WILDCARD_PRODUCTION("CORS_ORIGIN");
+    expect(result).toBe(
+      "CORS_ORIGIN is set to '*' (allow all). Refusing to start: set an explicit origin (e.g. https://app.example.com) for production."
     );
   });
 });
