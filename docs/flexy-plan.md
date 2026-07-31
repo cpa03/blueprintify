@@ -3423,3 +3423,61 @@ Also lacked test coverage for the `isLoading` prop — no spinner rendering veri
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | [#2941](https://github.com/cpa03/blueprintify/pull/2941) | `feat/flexy-iteration-176-spinner-classes` | refactor(flexy): centralize RippleButton loading spinner & shared disabled state into CSS_CLASSES config (Iteration 176) |
+
+---
+
+### ✅ Flexy Iteration 177: Eliminate 3 Hardcoded Values (Elapsed Timer, Reading Speed, Shortcut Format)
+
+**Problem**: Three hardcoded values slipped in across web components — the elapsed timer interval (`1000` in `StepGenerating.tsx`), the average reading speed (`200` WPM in `EditorHeader.tsx`), and the `(Alt+...)` shortcut display format in `StepIndicator.tsx` (title + aria-label).
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `UI_TIMEOUTS.ELAPSED_TIMER_INTERVAL_MS` (1000) |
+| `apps/web/src/config/constants/content.ts` | Added `EDITOR_LABELS.CONTENT_STATS.READING_SPEED_WPM` (200) + `ACCESSIBILITY_LABELS.STEP.SHORTCUT_FORMAT` `(Alt+...)` pattern |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced hardcoded `1000` with `UI_TIMEOUTS.ELAPSED_TIMER_INTERVAL_MS` |
+| `apps/web/src/components/editor/EditorHeader.tsx` | Replaced hardcoded `200` with `EDITOR_LABELS.CONTENT_STATS.READING_SPEED_WPM` |
+| `apps/web/src/components/StepIndicator.tsx` | Replaced hardcoded `(Alt+...)` format with `ACCESSIBILITY_LABELS.STEP.SHORTCUT_FORMAT` (title + aria-label) |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run test:all` — **884 web + 502 api + 810 shared = 2,196 tests passing** across 93 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| [#2966](https://github.com/cpa03/blueprintify/pull/2966) | `feat/flexy-iteration-177` | feat(web,shared): Flexy Iteration 177 — eliminate 3 hardcoded values |
+
+---
+
+### ✅ Flexy Iteration 178: Centralize Keyboard Shortcut Literals into ARIA_KEYSHORTCUTS + DISPLAY_SYMBOLS
+
+**Problem**: Commit `f3d602d9` (`feat(web): add keyboard shortcut tooltips and aria-keyshortcuts to editor tablist`) introduced a hardcoded `aria-keyshortcuts="ArrowLeft ArrowRight Home End"` multi-key string in `EditorHeader.tsx` — even though `KEYBOARD_EVENT_KEYS.ARROW_LEFT/ARROW_RIGHT/HOME/END` already existed as the single source of truth in shared config. Additionally, 5 wizard components (`StepReview`, `StepFeatures`, `StepGenerating` ×2, `StepStack`) passed the hardcoded display symbol `shortcut="←"` to `KeyboardShortcutTooltip` instead of the existing `DISPLAY_SYMBOLS.ARROW_LEFT` constant. Flexy says: No hardcoded keyboard strings anywhere!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `ARIA_KEYSHORTCUTS.EDITOR_TABS` — derived from `KEYBOARD_EVENT_KEYS` (`ArrowLeft ArrowRight Home End`) via template literal, single source of truth for the tablist `aria-keyshortcuts` value |
+| `packages/shared/src/index.ts` | Exported `ARIA_KEYSHORTCUTS` |
+| `packages/shared/src/config.test.ts` | Added 3 tests: exact value, derivation from `KEYBOARD_EVENT_KEYS`, property count |
+| `apps/web/src/components/editor/EditorHeader.tsx` | Replaced hardcoded `aria-keyshortcuts="ArrowLeft ArrowRight Home End"` with `ARIA_KEYSHORTCUTS.EDITOR_TABS` |
+| `apps/web/src/components/wizard/StepReview.tsx` | Replaced `shortcut="←"` with `DISPLAY_SYMBOLS.ARROW_LEFT` |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | Replaced `shortcut="←"` with `DISPLAY_SYMBOLS.ARROW_LEFT` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | Replaced 2x `shortcut="←"` with `DISPLAY_SYMBOLS.ARROW_LEFT` |
+| `apps/web/src/components/wizard/StepStack.tsx` | Replaced `shortcut="←"` with `DISPLAY_SYMBOLS.ARROW_LEFT` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings
+- ✅ `npm run build` — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npm run test:all` — **955 web + 502 api + 813 shared = 2,270 tests passing** across 99 files
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `feat/flexy-iteration-178-keyboard-shortcuts` | refactor(flexy): centralize keyboard shortcut literals into ARIA_KEYSHORTCUTS + DISPLAY_SYMBOLS (Iteration 178) |

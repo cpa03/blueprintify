@@ -131,6 +131,7 @@ import {
   CONTEXT_HOOK_ERRORS,
   KEYBOARD_EVENT_KEYS,
   DISPLAY_SYMBOLS,
+  ARIA_KEYSHORTCUTS,
   BREAKPOINT_DEFAULTS,
   CHAR_COUNTER_THRESHOLDS,
   CHAR_COUNTER_COLORS,
@@ -3834,6 +3835,30 @@ describe("DISPLAY_SYMBOLS", () => {
   it("should have non-empty string values", () => {
     const values = Object.values(DISPLAY_SYMBOLS);
     values.forEach((v) => expect(v.length).toBeGreaterThan(0));
+  });
+});
+
+// ============================================================================
+// ARIA_KEYSHORTCUTS
+// ============================================================================
+describe("ARIA_KEYSHORTCUTS", () => {
+  it("should have EDITOR_TABS = 'ArrowLeft ArrowRight Home End'", () => {
+    expect(ARIA_KEYSHORTCUTS.EDITOR_TABS).toBe("ArrowLeft ArrowRight Home End");
+  });
+
+  it("should derive EDITOR_TABS from KEYBOARD_EVENT_KEYS constants", () => {
+    expect(ARIA_KEYSHORTCUTS.EDITOR_TABS).toBe(
+      [
+        KEYBOARD_EVENT_KEYS.ARROW_LEFT,
+        KEYBOARD_EVENT_KEYS.ARROW_RIGHT,
+        KEYBOARD_EVENT_KEYS.HOME,
+        KEYBOARD_EVENT_KEYS.END,
+      ].join(" ")
+    );
+  });
+
+  it("should have 1 property", () => {
+    expect(Object.keys(ARIA_KEYSHORTCUTS).length).toBe(1);
   });
 });
 

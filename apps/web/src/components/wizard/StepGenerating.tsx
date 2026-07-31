@@ -789,7 +789,7 @@ export const StepGenerating = memo(function StepGenerating({
               }}
             >
               <KeyboardShortcutTooltip
-                shortcut="←"
+                shortcut={DISPLAY_SYMBOLS.ARROW_LEFT}
                 description={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_DESC}
                 position="left"
                 modifier={MODIFIER_KEYS.ALT}
@@ -881,7 +881,7 @@ export const StepGenerating = memo(function StepGenerating({
               {GENERATION_ERROR_LABELS.TRY_AGAIN}
             </RippleButton>
             <KeyboardShortcutTooltip
-              shortcut="←"
+              shortcut={DISPLAY_SYMBOLS.ARROW_LEFT}
               description={WIZARD_GENERATING_LABELS.BACK_TO_REVIEW_DESC}
               position="left"
               modifier={MODIFIER_KEYS.ALT}

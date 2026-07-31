@@ -648,7 +648,7 @@ export const StepFeatures = memo(function StepFeatures({
 
       <div className="flex justify-between">
         <KeyboardShortcutTooltip
-          shortcut="←"
+          shortcut={DISPLAY_SYMBOLS.ARROW_LEFT}
           description={SHORTCUT_DESCRIPTIONS.GO_BACK}
           position="right"
           modifier={MODIFIER_KEYS.ALT}

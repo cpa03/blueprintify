@@ -31,6 +31,7 @@ import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
+  ARIA_KEYSHORTCUTS,
   EDITOR_FILENAMES,
   FRAMER_TYPE,
   KEYBOARD_EVENT_KEYS,
@@ -523,7 +524,7 @@ function EditorHeaderComponent({
           className="flex gap-1 bg-dark-800 p-1 rounded-lg"
           role="tablist"
           aria-label={ACCESSIBILITY_LABELS.EDITOR.DOCUMENT_TABS}
-          aria-keyshortcuts="ArrowLeft ArrowRight Home End"
+          aria-keyshortcuts={ARIA_KEYSHORTCUTS.EDITOR_TABS}
           id="editor-tabs"
           onKeyDown={handleTabKeyDown}
         >
