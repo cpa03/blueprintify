@@ -182,11 +182,19 @@ export const StepGenerating = memo(function StepGenerating({
   const timerActive = isGenerating && !isComplete && !isError;
   const elapsedTime = useElapsedTime(timerActive);
 
+  // Synchronous guard so rapid double-clicks or Escape+click during the
+  // step-exit transition can't fire cancellation (and its toast) twice.
+  const cancelGuardRef = useRef(false);
+  const [isCancelling, setIsCancelling] = useState(false);
+
   const handleCancel = useCallback(() => {
+    if (cancelGuardRef.current || !isGenerating) return;
+    cancelGuardRef.current = true;
+    setIsCancelling(true);
     cancelGeneration();
     toast.info(TOAST_MESSAGES.GENERATION_CANCELLED);
     setStep(WIZARD_STEP_KEYS.REVIEW);
-  }, [cancelGeneration, setStep, toast]);
+  }, [isGenerating, cancelGeneration, setStep, toast]);
 
   const wasComplete = useRef(false);
   const wasError = useRef(false);
@@ -970,28 +978,46 @@ export const StepGenerating = memo(function StepGenerating({
                 <RippleButton
                   onClick={handleCancel}
                   className="btn-ghost text-dark-400 hover:text-accent-pink flex items-center gap-2"
-                  ariaLabel={WIZARD_GENERATING_LABELS.CANCEL_GENERATION_ARIA}
+                  ariaLabel={
+                    isCancelling
+                      ? WIZARD_GENERATING_LABELS.CANCELLING_GENERATION_ARIA
+                      : WIZARD_GENERATING_LABELS.CANCEL_GENERATION_ARIA
+                  }
                   aria-keyshortcuts={KEYBOARD_EVENT_KEYS.ESCAPE}
                   tabIndex={cancelButtonReady ? undefined : -1}
+                  disabled={isCancelling}
+                  isLoading={isCancelling}
                 >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                  {WIZARD_GENERATING_LABELS.CANCEL_GENERATION}
-                  <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
-                    {KEY_DISPLAY.ESC}
-                  </kbd>
+                  {isCancelling ? (
+                    <>
+                      <div
+                        className="w-4 h-4 border-2 border-dark-400/30 border-t-dark-400 rounded-full animate-spin"
+                        aria-hidden="true"
+                      ></div>
+                      {WIZARD_GENERATING_LABELS.CANCELLING_GENERATION}
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                      {WIZARD_GENERATING_LABELS.CANCEL_GENERATION}
+                      <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+                        {KEY_DISPLAY.ESC}
+                      </kbd>
+                    </>
+                  )}
                 </RippleButton>
               </KeyboardShortcutTooltip>
             </motion.div>
