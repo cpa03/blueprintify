@@ -1,6 +1,23 @@
 # Bug Log: Known Defects
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
+## Bug Status — Jul 31 2026 (BugFixer Cycle 8)
+
+> **BugFixer Cycle 8 (2026-07-31 — fix/bugfixer-cycle-8-jul-31-2026)**: Full BugFixer audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,275/2,275** ✅ (960 web + 502 API + 813 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
+>
+> **BUG-033 — NEW — FIXED**: `npm ls` reported `eslint@10.8.0 invalid: "^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9" from node_modules/eslint-plugin-jsx-a11y, "^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7" from node_modules/eslint-plugin-react`. Root cause: dependabot major bump `c5cc63ed` (2026-07-27) upgraded eslint 9.39.4 → 10.8.0, but `eslint-plugin-jsx-a11y@6.10.2` and `eslint-plugin-react@7.37.5` — both at their latest versions — cap the peer range at eslint `^9`. The invalid peer breaks `npm ls` (exit 1) and `npm ci` determinism. Fix: downgraded eslint to **9.39.5** (latest 9.x — consistent with the already-pinned `@eslint/js@9.39.5`). Flat config (`eslint.config.js`) is version-agnostic; lint output identical. Verified: `npm ls` clean — **0 invalid/missing/extraneous**, exit 0; all quality gates green.
+>
+> **BUG-034 — NEW — FIXED**: `npm ls` reported `missing: @emnapi/core@^1.7.1 || ^2.0.0-alpha.3, required by @napi-rs/wasm-runtime@1.2.1`. `@napi-rs/wasm-runtime` (peer of `@rolldown/binding-wasm32-wasi` — rolldown's WASM fallback binding, optional) had its `@emnapi/core` peer resolved only nested under `node_modules/vite/node_modules/`, not visible from the root-level `@napi-rs/wasm-runtime`. Fix: reinstall re-resolved the tree — `@emnapi/core@2.0.0-alpha.3` is now hoisted to root alongside the nested copy. Verified: `npm ls` clean, exit 0.
+>
+> **4 new post-Cycle-7 commits indexed** — HEAD at `28fdc818` (docs(findings): record ULW Loop Cycle 9 — 3 PRs merged, Issue Manager blocked by issues:write/workflows permissions).
+> **Commits**: `15c20295` feat(web) cancelling feedback + double-fire guard, `a08a96a2` refactor(flexy) ARIA_KEYSHORTCUTS Iteration 178, `c59723ce` fix(bugfixer) Cycle 7 BUG-032 lockfile drift, `28fdc818` docs(findings) ULW Loop Cycle 9.
+> **Test count**: **2,275** (960 web — **+5** from new commits; 502 API; 813 shared — **+3** from Iteration 178).
+> **BUG-032 still fixed**: `npm ls` clean for `@cloudflare/workers-types@5.20260727.1` — no recurrence.
+> **Archive retention**: OK (oldest Jul 11 — 20 days, within 30-day window — no purge needed).
+> **Stale merged branches**: **0**.
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **Bugs fixed this cycle: BUG-033 (eslint 10.8.0 peer invalid) + BUG-034 (@emnapi/core missing). Branch created.**
+
 ## Bug Status — Jul 31 2026 (BugFixer Cycle 7)
 
 > **BugFixer Cycle 7 (2026-07-31 — fix/bugfixer-cycle-7-jul-31-2026)**: Full BugFixer audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,267/2,267** ✅ (955 web + 502 API + 810 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.
