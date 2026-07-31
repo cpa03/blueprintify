@@ -1,6 +1,23 @@
 # Bug Log: Known Defects
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
+## Bug Status — Jul 31 2026 (BugFixer Cycle 9)
+
+> **BugFixer Cycle 9 (2026-07-31 — fix/bugfixer-cycle-9-jul-31-2026)**: Full BugFixer audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,278/2,278** ✅ (960 web + 502 API + 816 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (workspace deps + versions in sync). `npm ls` clean.
+>
+> **BUG-035 — NEW — FIXED**: stale `docs/task.md` references in **`.opencode/agent/`** — the file was renamed to `docs/active-tasks.md` long ago, and Cycle 323 (RepoKeeper) fixed the 10 occurrences under `docs/` but **missed 5 in the agent definitions**: `.opencode/agent/cmz.md` (1 — Phase 0 System Assessment step 3) and `.opencode/agent/software-architect.md` (4 — Operational Control Plane doc list, scope-control rule, STEP 0 Situational Awareness read list, STEP 1 Reflect new items). Same bug class as BUG-014 (stale doc refs). Fix: all 5 → `docs/active-tasks.md`. Verified: zero `docs/task.md` refs remain outside historical cycle logs (CHANGELOG/findings/bugs/knowledge-review entries describing past cycles are archival records, intentionally preserved).
+>
+> **3 new post-Cycle-8 commits indexed** — HEAD at `00f3830e` (docs(findings): record ULW Loop Cycle 10 — 3 PRs merged, all gates green).
+> **Commits**: `c2a97ae9` refactor(flexy) Iteration 179 centralize ms/seconds/percent/loading-dots literals, `6b10f869` fix(bugfixer) Cycle 8 BUG-033/034, `00f3830e` docs(findings) ULW Loop Cycle 10.
+> **Test count**: **2,278** (960 web + 502 API + **816 shared** — **+3** from Iteration 179 config tests).
+> **BUG-032 still fixed**: `npm ls` clean for `@cloudflare/workers-types@5.20260727.1` — no recurrence.
+> **BUG-033/034 still fixed**: `npm ls` exit 0 — 0 invalid/missing/extraneous.
+> **Archive retention**: OK (oldest Jul 11 — 20 days, within 30-day window — no purge needed).
+> **Stale merged branches**: **0**.
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **Wrangler placeholder IDs** (6 in `apps/api/wrangler.toml`): pre-existing, tracked as #1045/#1165 — local-dev setup, not a code defect.
+> **Bugs fixed this cycle: BUG-035 (stale `docs/task.md` refs in `.opencode/agent/`). Branch created.**
+
 ## Bug Status — Jul 31 2026 (BugFixer Cycle 8)
 
 > **BugFixer Cycle 8 (2026-07-31 — fix/bugfixer-cycle-8-jul-31-2026)**: Full BugFixer audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,275/2,275** ✅ (960 web + 502 API + 813 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts.

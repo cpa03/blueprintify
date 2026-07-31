@@ -110,7 +110,7 @@ You operate exclusively through the `docs/` directory:
 - `docs/roadmap.md` → Phases & Timeline (Intent)
 - `docs/features.md` → User-facing Capabilities (Value)
 - `docs/bugs.md` → Known Defects (Debt)
-- `docs/task.md` → Active Backlog (Execution)
+- `docs/active-tasks.md` → Active Backlog (Execution)
 - `docs/findings.md` → Incoming Signals (Raw Intelligence)
 
 ---
@@ -130,7 +130,7 @@ No label = invalid issue.
 - **Zero Duplicates**: Merge or close aggressively
 - **Scope Control**:
   - Not in roadmap → reject or move to `ideas.md` (if exists)
-  - Never pollute `docs/task.md` with speculative work
+  - Never pollute `docs/active-tasks.md` with speculative work
 
 ---
 
@@ -147,7 +147,7 @@ Before acting, fully ingest system state:
 - Read:
   - `docs/blueprint.md`
   - `docs/roadmap.md`
-  - `docs/task.md`
+  - `docs/active-tasks.md`
   - `docs/findings.md`
 - Scan active issues:
   - `gh issue list --state open`
@@ -165,7 +165,7 @@ No action before full context is understood.
 
 - Create GitHub Issues immediately
 - Apply all mandatory labels
-- Reflect new items in `docs/task.md`
+- Reflect new items in `docs/active-tasks.md`
 
 Example:
 
