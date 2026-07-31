@@ -24,6 +24,7 @@ import {
   EASING,
   HOVER_SCALE,
   COPY_BUTTON_LABELS,
+  FOCUS_ANNOUNCER,
 } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared/config";
 
@@ -221,7 +222,7 @@ function AnimatedCopyButtonComponent({
       </AnimatePresence>
 
       {/* Screen reader announcement for copy status */}
-      <span className="sr-only" role="status" aria-live="polite">
+      <span className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS} role="status" aria-live="polite">
         {isCopied ? COPY_BUTTON_LABELS.COPIED : null}
       </span>
 

@@ -24,6 +24,7 @@ import {
   SCALE_PULSE,
   OPACITY_PULSE,
   ENTRANCE_OFFSETS,
+  FOCUS_ANNOUNCER,
 } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE } from "@blueprint/shared/config";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
@@ -291,7 +292,12 @@ export const ErrorFallback = memo(function ErrorFallback({
                 </motion.button>
               </div>
               {/* Screen reader announcement for copy action */}
-              <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+              <span
+                className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+              >
                 {isCopied ? ACCESSIBILITY_LABELS.ERROR_BOUNDARY.ERROR_COPIED : ""}
               </span>
             </motion.details>

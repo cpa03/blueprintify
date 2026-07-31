@@ -56,6 +56,7 @@ import {
   VIEW_MODE_SHORTCUT_KEYS,
   SCROLL_BEHAVIOR,
   SKELETON_LAYOUT,
+  FOCUS_ANNOUNCER,
 } from "../config/constants";
 import { ANIMATION_TIMING, LAYOUT, ENTRANCE_OFFSETS } from "../config/theme";
 import { isDev } from "../config/env";
@@ -791,7 +792,12 @@ function EditorComponent(): JSX.Element {
 
       {/* Screen reader announcement when editor mounts — text frozen at mount
           via useRef to prevent re-announcement on re-renders */}
-      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         {mountAnnouncement}
       </div>
     </>

@@ -18,7 +18,7 @@ import {
   ROUTE_PATHS,
   LOG_CONTEXT,
 } from "../config/constants";
-import { AUTH_DEFAULTS, CONTEXT_KEYS } from "@blueprint/shared";
+import { AUTH_DEFAULTS, CONTEXT_KEYS, CRYPTO_CONFIG, DB_ID_PREFIXES } from "@blueprint/shared";
 import { ErrorType, createErrorJson } from "../errors";
 import { secureLogInfo } from "../utils/secureLog";
 
@@ -74,10 +74,12 @@ function constantTimeCompare(a: string, b: string): boolean {
 async function deriveUserId(apiKey: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(apiKey);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashBuffer = await crypto.subtle.digest(CRYPTO_CONFIG.HASH_ALGORITHM, data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-  return `user_${hashHex.substring(0, 16)}`;
+  const hashHex = hashArray
+    .map((b) => b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0"))
+    .join("");
+  return `${DB_ID_PREFIXES.USER}_${hashHex.substring(0, CRYPTO_CONFIG.USER_ID_HASH_LENGTH)}`;
 }
 
 /**

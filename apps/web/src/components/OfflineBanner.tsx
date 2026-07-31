@@ -43,6 +43,7 @@ import {
   ACCESSIBILITY_LABELS,
   OFFLINE_ANIMATION,
   TOOLTIP_CONFIG,
+  FOCUS_ANNOUNCER,
 } from "../config/constants";
 import { SmartTooltip } from "./SmartTooltip";
 
@@ -279,7 +280,12 @@ function OfflineBannerComponent(): JSX.Element | null {
           provides explicit feedback so screen reader users know the offline
           notice was dismissed or that connectivity was restored, since the
           banner auto-hides without a user-facing confirmation. */}
-      <div className="sr-only" role="status" aria-live="assertive" aria-atomic="true">
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role="status"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
         {dismissAnnouncement}
       </div>
     </>

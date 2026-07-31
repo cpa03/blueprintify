@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback, memo } from "react";
 import * as motion from "framer-motion/m";
 import { useSpring, MotionValue } from "framer-motion";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
-import { ANIMATION_COLORS, ANIMATION, EASING } from "../config/constants";
+import { ANIMATION_COLORS, ANIMATION, EASING, CSS_CLASSES } from "../config/constants";
 import { TIME_UNITS } from "@blueprint/shared/config";
 import { COUNTER_ANIMATION } from "../config/theme";
 
@@ -182,7 +182,7 @@ function AnimatedCounterComponent({
           </motion.div>
         )}
         <div className="text-center">
-          <div className={`text-2xl font-bold text-gradient ${valueClassName}`}>
+          <div className={`text-2xl font-bold ${CSS_CLASSES.TEXT_GRADIENT} ${valueClassName}`}>
             <AnimatedNumber value={value} format={format} duration={duration} />
           </div>
           {label && <div className={`text-sm text-dark-400 ${labelClassName}`}>{label}</div>}

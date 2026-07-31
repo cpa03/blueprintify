@@ -15,6 +15,9 @@ export const CSS_CLASSES = {
   BTN_SECONDARY: "btn-secondary",
   BTN_GHOST: "btn-ghost",
   TEXT_GRADIENT: "text-gradient",
+  /** Error shake animation for invalid input feedback.
+   * Flexy says: No hardcoded "shake-animation" in components! */
+  SHAKE_ANIMATION: "shake-animation" as const,
   ANIMATED_SPINNER: "animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500",
   EDITOR_FOCUS_HIGHLIGHT: "editor-focus-highlight",
   ARRIVAL_POP: "arrival-pop",

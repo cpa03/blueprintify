@@ -344,9 +344,13 @@ function App(): JSX.Element {
             <div className={templatesExiting ? "animate-slide-out-up" : LAYOUT.HERO_SECTION}>
               <h1 className={LAYOUT.HERO_TITLE}>
                 {UI_CONTENT.HERO.TITLE_1}
-                <span className="text-gradient">{UI_CONTENT.HERO.TITLE_HIGHLIGHT_1}</span>
+                <span className={CSS_CLASSES.TEXT_GRADIENT}>
+                  {UI_CONTENT.HERO.TITLE_HIGHLIGHT_1}
+                </span>
                 {UI_CONTENT.HERO.TITLE_2}
-                <span className="text-gradient">{UI_CONTENT.HERO.TITLE_HIGHLIGHT_2}</span>
+                <span className={CSS_CLASSES.TEXT_GRADIENT}>
+                  {UI_CONTENT.HERO.TITLE_HIGHLIGHT_2}
+                </span>
                 {UI_CONTENT.HERO.TITLE_3}
               </h1>
               <p
