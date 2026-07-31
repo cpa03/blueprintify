@@ -2,6 +2,41 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 9 (2026-07-31 — ULW Loop: PR Handler 3/3 merged, Issue Manager blocked by `issues:write`/`workflows` permissions)
+
+> **ULW Loop run (2026-07-31)**: **Phase 0 → PR HANDLER MODE** (3 open PRs found). All 3 PRs synced to `main`, fully validated, and merged:
+>
+> - **PR #2972** `feat(web): add cancelling feedback and double-fire guard to generation cancel button` — merged `15c20295`. Validation: typecheck ✅ lint ✅ build ✅ tests **2,272/2,272** ✅ (960 web + 502 API + 810 shared). Added re-entry guard (`cancelGuardRef`) + `isCancelling` feedback state + 5 new component tests.
+> - **PR #2971** `refactor(flexy): centralize keyboard shortcut literals into ARIA_KEYSHORTCUTS + DISPLAY_SYMBOLS (Iteration 178)` — merged after main-sync merge commit. Validation: typecheck ✅ lint ✅ build ✅ tests **2,275/2,275** ✅ (3 new shared tests). Required rebuilding `@blueprint/shared` dist locally (stale gitignored artifacts — not a PR defect).
+> - **PR #2970** `fix(bugfixer): Cycle 7 — BUG-032 lockfile drift repaired (@cloudflare/workers-types 5.20260727.1)` — merged `2ad7eb35`. Validation: typecheck ✅ lint ✅ build ✅ tests **2,272/2,272** ✅ npm audit **0 vulns** ✅.
+>
+> **Deployment check note**: All 3 PRs (and the prior 5 merged PRs) show `Vercel` FAILURE + `Workers Builds: blueprintify` FAILURE — systemic external deployment-infra failures, not PR-caused. These checks are non-required (`mergeStateStatus: UNSTABLE`, not BLOCKED); local CI equivalent (typecheck/lint/build/tests) is the authoritative gate and passed for all 3.
+>
+> **GitHub Actions runs note**: Workflow runs on PR branches stuck in `action_required` (0 jobs) — `ubuntu-24.04-arm` runners awaiting approval. Systemic runner-approval issue, not code-related.
+
+### Actions Taken
+
+1. **[PR Handler — 3/3 merged]** — Processed PRs #2972, #2971, #2970 (newest-first): fetched `main`, synced PR branches (merge, 0 conflicts), ran full validation, pushed sync commits, merged with squash + branch deletion.
+2. **[Issue Manager — BLOCKED]** — Entered after 0 open PRs remained. STEP 1–3 (normalization / duplicate detection / consolidation) **blocked**: `GITHUB_TOKEN` lacks `issues:write` (verified: `addLabelsToLabelable` and `createIssue` both return `Resource not accessible by integration`). Same blocker as prior cycles.
+3. **[REPAIR MODE — CI gatekeeper fix blocked by `workflows` permission]** — Selected highest-value code-fixable gap: PR gatekeeper runs typecheck/lint/build but **no tests, no secrets scan, no dependency audit** (open issues #849, #953, #851, #1084, #1088). Prepared minimal fix on `fix/ci-gatekeeper-tests-audit-secrets` (add `npm run test:all` to health checks, add `scan:secrets` + `audit` stages, extend Final Integrity Check) — **push REJECTED**: GitHub App token lacks `workflows` permission to modify `.github/workflows/*`. Fix verified locally (`npm run check` fully green); ready to apply once a token with `workflows` permission is available.
+4. **[P1/P2 Issue Validity Audit]** — Verified current code state for high-priority open issues:
+   - **#1077 Prompt Injection — RESOLVED**: `apps/api/src/config/prompt-security.ts` (injection patterns + `validatePromptInput`) + `sanitizePromptInput()`/`withUserDelimiters()` in `services/prompts.ts` + integration test `prompt-injection-security.test.ts`. Issue is stale.
+   - **#1078 No User-Level Authorization — SUBSTANTIALLY RESOLVED**: auth middleware derives per-key SHA-256 user identity, admin/user roles, `authorize()` middleware on routes. Issue is stale.
+   - **#1082 No React Hook Tests — RESOLVED**: all critical hooks now have `.test.ts` (useBlueprintStream, usePersistedStore, useAutoSaveToast, etc.).
+   - **#1014 Insufficient Component Tests — PARTIALLY RESOLVED**: 33 component test files (up from 4); `playwright.config.ts` exists. Residual gap is expansion, not a defect.
+   - **#1045/#1165 Placeholder Infra IDs — VALID but blocked**: 6 placeholder IDs remain in `wrangler.toml`; requires real Cloudflare resources (account access), not a code fix. `validate:wrangler` guards deploys.
+   - **#930/#890 CORS wildcard — RESOLVED**: env validation rejects empty `CORS_ORIGIN`, warns on `*` in production.
+   - **#1046 Share auth — RESOLVED**: `authorize(AUTH_DEFAULTS.DEFAULT_ROLE)` on share routes. **#905 Share ID validation — RESOLVED**: `isValidShareId` enforces length + pattern. **#906 Rate limiting — RESOLVED**: standard + enumeration + verify rate limits on share routes. **#973 ajv vulns — RESOLVED**: `npm audit` 0 vulnerabilities. **#1166 .nvmrc — RESOLVED**: `.nvmrc` + `.node-version` + `engines` all present.
+5. **[Quality Verification]** — Full `npm run check` on `main` post-merge: typecheck ✅ lint ✅ build ✅ tests **2,275/2,275** ✅ secrets scan ✅ npm audit **0 vulns** ✅.
+
+### Final State
+
+- **Active phase**: PR Handler Mode → Issue Manager Mode
+- **Result**: PR Handler 3/3 merged; Issue Manager normalization/duplication/consolidation **blocked** (no `issues:write`); REPAIR MODE CI gatekeeper fix **blocked** (no `workflows` permission — fix prepared and locally verified)
+- **State**: `waiting for human review` — requires a token with `issues:write` + `workflows` permissions to close stale issues and land the gatekeeper hardening
+
+---
+
 ## Cycle 8 (2026-07-31 — BugFixer: full BugFixer audit, **BUG-032 RECURRED & FIXED** — `@cloudflare/workers-types` lockfile drift repaired)
 
 > **BugFixer Cycle 7 run (2026-07-31)**: **Phase 1 → AUDIT MODE** (no open PRs, BugFixer mandate). Full audit of HEAD `71e04de5`: typecheck ✅ lint ✅ build ✅ tests **2,267/2,267** ✅ (955 web + 502 API + 810 shared) format ✅ secrets scan ✅ npm audit **0 vulns** ✅.
