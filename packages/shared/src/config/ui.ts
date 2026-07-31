@@ -621,6 +621,21 @@ export const KEYBOARD_EVENT_KEYS = {
 } as const;
 
 /**
+ * ARIA Keyboard Shortcuts
+ * Centralized source of truth for `aria-keyshortcuts` attribute values.
+ * Derived from KEYBOARD_EVENT_KEYS so the WAI-ARIA key names always stay
+ * in sync with the event.key constants — single source of truth.
+ * Flexy says: No hardcoded "ArrowLeft ArrowRight Home End" strings in components!
+ * Usage: import { ARIA_KEYSHORTCUTS } from "@blueprint/shared";
+ *        <div role="tablist" aria-keyshortcuts={ARIA_KEYSHORTCUTS.EDITOR_TABS}>
+ */
+export const ARIA_KEYSHORTCUTS = {
+  /** Editor document tablist — ArrowLeft/ArrowRight cycle tabs, Home/End jump to first/last */
+  EDITOR_TABS:
+    `${KEYBOARD_EVENT_KEYS.ARROW_LEFT} ${KEYBOARD_EVENT_KEYS.ARROW_RIGHT} ${KEYBOARD_EVENT_KEYS.HOME} ${KEYBOARD_EVENT_KEYS.END}` as const,
+} as const;
+
+/**
  * Keyboard Display Symbols
  * Centralized source of truth for keyboard display symbols (Unicode characters)
  * used in keyboard shortcut hint labels, kbd elements, and navigation indicators.
