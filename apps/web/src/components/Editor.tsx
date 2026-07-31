@@ -437,6 +437,23 @@ function EditorComponent(): JSX.Element {
         handleNewProject();
       }
 
+      // Ctrl/Cmd+Shift+E to export the project as a ZIP.
+      // The Export button tooltip advertises this shortcut (SHORTCUT_LABELS.EXPORT),
+      // making it functional gives power users the keyboard-driven workflow they expect.
+      // e.key is "E" (uppercase) when Shift is held, so compare case-insensitively.
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === KEYBOARD_EVENT_KEYS.E) {
+        // Skip when user is typing in an input or textarea to avoid
+        // hijacking the key combination while editing content.
+        if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+          return;
+        }
+        if (!hasContent || isExporting) {
+          return;
+        }
+        e.preventDefault();
+        handleExport();
+      }
+
       // Ctrl/Cmd+1/2/3 to switch editor view mode
       // Tooltips already display these shortcuts, making them functional
       // gives power users the keyboard-driven workflow they expect.
@@ -456,7 +473,7 @@ function EditorComponent(): JSX.Element {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleNewProject, setViewMode]);
+  }, [handleNewProject, handleExport, hasContent, isExporting, setViewMode]);
 
   // Smooth-scroll both preview pane and CodeMirror editor to top when switching tabs
   // Prevents disorientation when content changes but scroll stays mid-content
