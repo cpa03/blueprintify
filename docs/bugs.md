@@ -1,6 +1,22 @@
 # Bug Log: Known Defects
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
+## Bug Status — Jul 31 2026 (BugFixer Cycle 10)
+
+> **BugFixer Cycle 10 (2026-07-31 — fix/bugfixer-cycle-10-jul-31-2026)**: Full BugFixer audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,278/2,278** ✅ (960 web + 502 API + 816 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (workspace deps + versions in sync). `npm ls` clean — exit 0.
+>
+> **BUG-036 — NEW — FIXED**: `npm ls --all` reported `missing: @emnapi/core@^1.7.1 || ^2.0.0-alpha.3, required by @napi-rs/wasm-runtime@1.2.1` — **BUG-034-class recurrence** (fixed in Cycle 8 by reinstall, re-broken by later dependency resolution). **Reproduced with a fresh `npm ci`** — deterministic; CI itself would fail `npm ls` on every clean install. Root cause: `@napi-rs/wasm-runtime@1.2.1` (hoisted to root, serving both `@rolldown/binding-wasm32-wasi@1.1.5` under root vite@8.1.5 and `1.2.1` nested under vite@8.2.0) requires peer `@emnapi/core@^1.7.1 || ^2.0.0-alpha.3` resolvable from root `node_modules/@emnapi/core`, but npm's tree-pruning dropped that package — lockfile pinned it as `optional: true` and it was only reachable through the optional WASM-binding chain. Fix: declared **`@emnapi/core@1.11.1` as an explicit root devDependency** (exact pin — matches the root binding's exact dep `1.11.1` and satisfies the peer range `^1.7.1`); lockfile flipped `optional: true` → non-optional devDep for `@emnapi/core` + `@emnapi/runtime`. Verified: fresh `npm ci` materializes `node_modules/@emnapi/core`, `npm ls --all` exit 0 — **0 invalid/missing/extraneous**.
+>
+> **3 new post-Cycle-9 commits indexed** — HEAD at `345fd2cf` (docs(findings): record ULW Loop Cycle 13 — 2 PRs merged, all gates green).
+> **Commits**: `cf068813` docs(audits) BroCula Run 19 (LH 100-100-100-100, 2,278 tests), `0c375197` fix(bugfixer) Cycle 9 (BUG-035), `345fd2cf` docs(findings) ULW Loop Cycle 13.
+> **Test count**: **2,278/2,278** (960 web + 502 API + 816 shared — unchanged).
+> **BUG-014/017 still fixed**: zero stale `docs/bug.md`/`docs/feature.md` refs outside historical logs; zero hardcoded `node-version:` in workflows.
+> **BUG-032/033/034/035 still fixed**: `npm ls` clean; eslint 9.39.5; `@cloudflare/workers-types@5.20260727.1` in sync; zero `docs/task.md` refs outside archival logs.
+> **Archive retention**: OK (oldest Jul 11 — 20 days, within 30-day window — no purge needed).
+> **Stale merged branches**: **0**.
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **Bugs fixed this cycle: BUG-036 (`@emnapi/core` missing — npm ci reproducible). Branch created.**
+
 ## Bug Status — Jul 31 2026 (BugFixer Cycle 9)
 
 > **BugFixer Cycle 9 (2026-07-31 — fix/bugfixer-cycle-9-jul-31-2026)**: Full BugFixer audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,278/2,278** ✅ (960 web + 502 API + 816 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (workspace deps + versions in sync). `npm ls` clean.

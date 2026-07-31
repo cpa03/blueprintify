@@ -73,7 +73,30 @@ ajv: close **#973**→#418 · CORS wildcard: close **#890**→#848 · API_KEY: c
 ### Label Normalization Plan (needs issues:write)
 
 104 issues inventoried. Required: exactly one category (`bug|enhancement|feature|docs|refactor|chore|test|ci|security`) + exactly one priority (`P0|P1|P2|P3`). 4 issues have **no labels** (#846, #847, #848, #849, #850 → assign security/security/security/ci/ci + P2/P1/P2/P2/P2). ~47 issues carry legacy `priority:low|medium|critical` → migrate to P3/P2/P0. #863 carries conflicting P2+P3 → keep P3. `documentation` label (e.g. #870) → `docs`. Existing P1s already correct.
+## Cycle 15 (2026-07-31 — BugFixer: full BugFixer audit, **BUG-036 FIXED** — `@emnapi/core` missing (npm ci reproducible), `npm ls` clean, test count **2,278/2,278** (960 web + 502 API + 816 shared))
 
+> **BugFixer Cycle 10 run (2026-07-31)**: **Phase 1 → AUDIT MODE** (no open PRs, BugFixer mandate). Full audit of HEAD `345fd2cf`: typecheck ✅ lint ✅ build ✅ tests **2,278/2,278** ✅ (960 web + 502 API + 816 shared) format ✅ secrets scan ✅ npm audit **0 vulns** ✅.
+>
+> **BUG-036 — NEW — FIXED**: `npm ls --all` exit 1 — `missing: @emnapi/core@^1.7.1 || ^2.0.0-alpha.3, required by @napi-rs/wasm-runtime@1.2.1` — **recurrence of the BUG-034 class** (fixed Cycle 8 by reinstall, re-broken by later dependency resolution). Reproduced with a **fresh `npm ci`** — a deterministic defect that CI itself would hit on every clean install. Root cause: `@napi-rs/wasm-runtime@1.2.1` (hoisted to root, serving both `@rolldown/binding-wasm32-wasi@1.1.5` under root vite@8.1.5 and `1.2.1` nested under vite@8.2.0) declares peer `@emnapi/core@^1.7.1 || ^2.0.0-alpha.3`, which must resolve from root `node_modules/@emnapi/core`; npm's tree-pruning drops that package because it is only reachable through the optional WASM-binding chain (lockfile pinned it as `optional: true`), even though the installed (non-pruned) `@napi-rs/wasm-runtime` requires it as a peer — leaving `npm ls` permanently broken after every clean install. Fix: declared `@emnapi/core@1.11.1` as an **explicit root devDependency** (exact pin — matches the root binding's exact dep `1.11.1` and satisfies the peer range `^1.7.1`); lockfile entry flipped from `optional: true` to a direct non-optional devDep. Verified: fresh `npm ci` now materializes `node_modules/@emnapi/core` (+ `@emnapi/runtime`, `@emnapi/wasi-threads`), `npm ls --all` exit 0 — **0 invalid/missing/extraneous**.
+>
+> **3 new post-Cycle-9 commits indexed** — HEAD at `345fd2cf` (docs(findings): record ULW Loop Cycle 13 — 2 PRs merged, all gates green).
+> **Commits**: `cf068813` docs(audits) BroCula Run 19 (LH 100-100-100-100, 2,278 tests), `0c375197` fix(bugfixer) Cycle 9 (BUG-035 stale docs/task.md refs), `345fd2cf` docs(findings) ULW Loop Cycle 13.
+> **Test count**: **2,278/2,278** (960 web + 502 API + 816 shared — unchanged).
+> **BUG-013 still fixed** (lighthouse 13.4.1 — 0 vulns). **BUG-031 tracked** (brace-expansion dev-only CVE — override 5.0.8 holds).
+> **BUG-014/017 still fixed**: zero stale `docs/bug.md`/`docs/feature.md` refs outside historical cycle logs; zero hardcoded `node-version:` in workflows (all `node-version-file`).
+> **BUG-032/033/034/035 still fixed**: `npm ls` exit 0; eslint 9.39.5 peer range respected; `@cloudflare/workers-types@5.20260727.1` in sync; zero `docs/task.md` refs outside archival logs.
+> **Archive retention**: OK (oldest Jul 11 — 20 days, within 30-day window — no purge needed). **0 stale merged branches**. **0 stale `.omo/run-continuation/` files**.
+> **Sweep results**: 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK in source, 0 empty catch blocks, 0 merge conflict artifacts, format ✅, lockfile drift check clean.
+>
+> **Bugs fixed this cycle: BUG-036 (`@emnapi/core` missing — npm ci reproducible). Branch created.** **Rebase + merge**: rebased onto `a6a9ac3c` (ULW Loop Cycle 14 record), conflict on `docs/findings.md` resolved per Cycle 12 precedent — this entry renumbered **Cycle 14 → Cycle 15**, ULW Loop Cycle 14 entry kept as peer; merged via PR #2982 (`--admin --squash --delete-branch`).
+
+### Actions Taken
+
+1. **[Full Audit]** — All quality gates on HEAD `345fd2cf`: typecheck ✅ lint ✅ build (web) ✅ build:api (dry-run) ✅ tests **2,278/2,278** ✅ format ✅ secrets scan ✅ npm audit **0 vulns** ✅.
+2. **[BUG-036 Root Cause]** — `npm ls --all` flagged missing `@emnapi/core` peer of `@napi-rs/wasm-runtime@1.2.1`; reproduced with a fresh `npm ci` (deterministic — CI would hit it too). Lockfile pinned root `node_modules/@emnapi/core@1.11.1` as `optional: true` but npm's tree-pruning skipped materializing it (only reachable via the optional WASM-binding chain) — a lockfile/tree self-inconsistency.
+3. **[Fix]** — Declared `@emnapi/core@1.11.1` as an explicit root devDependency (`package.json` +1 line; lockfile: root devDeps entry added, `optional: true` removed from `@emnapi/core` and `@emnapi/runtime` — now non-optional). Verified with a fresh `npm ci`: `@emnapi/core` materialized, `npm ls --all` exit 0, **0 invalid/missing/extraneous**.
+4. **[Regression Gates]** — Re-ran full suite on the clean-installed tree: typecheck ✅ lint ✅ build ✅ tests **2,278/2,278** ✅ format ✅ secrets scan ✅ npm audit **0 vulns** ✅.
+5. **[Sweeps]** — 0 type suppressions, 0 `as any`, 0 TODO/FIXME/HACK, 0 empty catch blocks, 0 conflict artifacts, 0 stale doc refs (BUG-014/017 clean), lockfile drift clean, 0 stale merged branches, 0 stale `.omo/run-continuation/` files, archive retention OK.
 ### Quality Metrics
 
 | Check | Result |
@@ -90,6 +113,21 @@ ajv: close **#973**→#418 · CORS wildcard: close **#890**→#848 · API_KEY: c
 
 **Repository is healthy: all gates green, 2,278 tests pass, 0 vulnerabilities, 0 open PRs.** Issue Manager remains permission-blocked (issues:write + workflows) as documented since Cycle 7. This cycle's unique contribution: **18 open issues verified stale-fixed** (should be closed), **#849 verified as the one genuine unfixed high-value gap** with a validated 4-line fix ready to apply, plus complete duplicate/consolidation/normalization plans. No destructive actions taken; probe artifacts cleaned up.
 
+### Quality Metrics
+
+| Typecheck | ✅ 0 errors (all 3 workspaces) |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors (web + shared + api dry-run) |
+| Tests | ✅ **2,278/2,278** (960 web + 502 API + 816 shared) |
+| Format | ✅ Prettier clean |
+| Secrets scan | ✅ No secrets detected (304 files) |
+| npm audit | ✅ **0 vulnerabilities** |
+| `npm ls --all` | ✅ exit 0 — **0 invalid/missing/extraneous** (after BUG-036 fix) |
+| Lockfile drift | ✅ clean (workspace deps + versions in sync) |
+
+### Verdict
+
+**1 bug found and fixed: BUG-036 — `@emnapi/core` missing (BUG-034-class recurrence, deterministic from lockfile — fresh `npm ci` reproduced it). Fixed by declaring `@emnapi/core@1.11.1` as an explicit root devDependency; verified with a fresh `npm ci` — `npm ls` exit 0, all quality gates green. Repository otherwise healthy: 0 open PRs, tests 2,278/2,278.**
 ## Cycle 13 (2026-07-31 — ULW Loop: PR Handler 2/2 merged, all gates green)
 
 > **ULW Loop run (2026-07-31)**: **Phase 0 → PR HANDLER MODE** (2 open PRs found). Both PRs synced to `main`, fully validated, and merged (squash + branch deletion):
