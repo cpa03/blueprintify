@@ -51,6 +51,8 @@ import {
   KEYBOARD_EVENT_KEYS,
   FRAMER_TYPE,
   SHORTCUT_LABELS,
+  PERCENT_SCALE,
+  TIME_UNITS,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { SmartTooltip } from "./SmartTooltip";
@@ -173,7 +175,9 @@ const ToastItem = memo(
         // Calculate the correct initial progress relative to the original duration.
         // When resuming after hover-pause, this prevents the ring from jumping
         // back to 100% — it smoothly continues from where it paused.
-        const initialProgress = Math.round((remaining / originalDurationRef.current) * 100);
+        const initialProgress = Math.round(
+          (remaining / originalDurationRef.current) * PERCENT_SCALE
+        );
         setProgress(initialProgress);
 
         if (!shouldReduceMotion) {
@@ -234,12 +238,12 @@ const ToastItem = memo(
     const defaultTransition = {
       type: FRAMER_TYPE.SPRING,
       ...SPRING_CONFIG.DEFAULT,
-      delay: staggerIndex * (TOAST_STAGGER_MS / 1000),
+      delay: staggerIndex * (TOAST_STAGGER_MS / TIME_UNITS.MS_PER_SECOND),
     };
 
     const reducedTransition = {
       duration: ANIMATION.NORMAL,
-      delay: staggerIndex * (TOAST_STAGGER_MS / 1000),
+      delay: staggerIndex * (TOAST_STAGGER_MS / TIME_UNITS.MS_PER_SECOND),
       ease: EASING.easeOut,
     };
 

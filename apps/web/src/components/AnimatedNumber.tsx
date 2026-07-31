@@ -3,6 +3,7 @@ import * as motion from "framer-motion/m";
 import { useSpring, MotionValue } from "framer-motion";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
 import { ANIMATION_COLORS, ANIMATION, EASING } from "../config/constants";
+import { TIME_UNITS } from "@blueprint/shared/config";
 import { COUNTER_ANIMATION } from "../config/theme";
 
 interface AnimatedNumberProps {
@@ -49,7 +50,7 @@ function AnimatedNumberComponent({
     const startValue = displayValueRef.current;
     const endValue = value;
     const startTime = performance.now();
-    const adjustedDuration = getDuration(duration * 1000);
+    const adjustedDuration = getDuration(duration * TIME_UNITS.MS_PER_SECOND);
 
     if (adjustedDuration === 0) {
       displayValueRef.current = endValue;
@@ -205,7 +206,9 @@ export function useAnimatedValue(
 ): MotionValue<number> {
   const { getDuration } = useReducedMotionContext();
   const springValue = useSpring(value, {
-    duration: getDuration((options.duration || ANIMATION.NUMBER_COUNTER) * 1000),
+    duration: getDuration(
+      (options.duration || ANIMATION.NUMBER_COUNTER) * TIME_UNITS.MS_PER_SECOND
+    ),
     bounce: options.bounce || 0,
   });
 

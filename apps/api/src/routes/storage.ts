@@ -10,6 +10,7 @@
 import { Hono } from "hono";
 import {
   CONTEXT_KEYS,
+  PERCENT_SCALE,
   AUTH_DEFAULTS,
   STORAGE_FALLBACK_MESSAGES,
   StorageReportRequestSchema,
@@ -71,7 +72,7 @@ app.get("/quota", rateLimit(rateLimitConfigs.standard), async (c) => {
     const used = storedQuota?.used ?? 0;
     const total = storedQuota?.total ?? STORAGE_CONFIG.QUOTA_BYTES;
     const projects = storedQuota?.projects ?? 0;
-    const percentage = total > 0 ? Math.round((used / total) * 100) : 0;
+    const percentage = total > 0 ? Math.round((used / total) * PERCENT_SCALE) : 0;
 
     // Cache quota response - this data rarely changes
     c.header(

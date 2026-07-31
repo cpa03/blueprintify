@@ -21,7 +21,7 @@ import {
   TOAST_MESSAGES,
   WIZARD_GENERATING_LABELS,
 } from "../../config/constants";
-import { KEYBOARD_EVENT_KEYS, WIZARD_STEP_KEYS } from "@blueprint/shared/config";
+import { KEYBOARD_EVENT_KEYS, TIME_UNITS, WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 
 // Mock framer-motion to render plain HTML elements
 vi.mock("framer-motion", () => ({
@@ -161,7 +161,7 @@ describe("StepGenerating", () => {
   // clickable — advancing timers just mirrors the production focusability.
   const advanceToCancelButtonReady = () => {
     act(() => {
-      vi.advanceTimersByTime(ANIMATION.SLOW * 2 * 1000);
+      vi.advanceTimersByTime(ANIMATION.SLOW * 2 * TIME_UNITS.MS_PER_SECOND);
     });
   };
 

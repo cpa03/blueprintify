@@ -34,7 +34,9 @@ import {
   FRAMER_TYPE,
   DISPLAY_SYMBOLS,
   KEYBOARD_EVENT_KEYS,
+  LOADING_DOTS_COUNT,
   MODIFIER_KEYS,
+  TIME_UNITS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -53,7 +55,7 @@ function useElapsedTime(isActive: boolean): string {
     });
 
     const id = setInterval(() => {
-      setSeconds(Math.floor((Date.now() - start) / 1000));
+      setSeconds(Math.floor((Date.now() - start) / TIME_UNITS.MS_PER_SECOND));
     }, UI_TIMEOUTS.ELAPSED_TIMER_INTERVAL_MS);
 
     return () => clearInterval(id);
@@ -106,14 +108,14 @@ function LoadingDots({ active }: { active: boolean }): JSX.Element {
   useEffect(() => {
     if (!active) return;
     const intervalId = setInterval(() => {
-      setActiveDots((prev) => (prev >= 3 ? 0 : prev + 1));
+      setActiveDots((prev) => (prev >= LOADING_DOTS_COUNT ? 0 : prev + 1));
     }, UI_TIMEOUTS.LOADING_DOTS_INTERVAL);
     return () => clearInterval(intervalId);
   }, [active]);
 
   return (
     <span aria-hidden="true">
-      {[0, 1, 2].map((i) => (
+      {Array.from({ length: LOADING_DOTS_COUNT }, (_, i) => i).map((i) => (
         <motion.span
           key={i}
           className="inline-block"
@@ -211,7 +213,7 @@ export const StepGenerating = memo(function StepGenerating({
       () => {
         setCancelButtonReady(true);
       },
-      ANIMATION.SLOW * 2 * 1000
+      ANIMATION.SLOW * 2 * TIME_UNITS.MS_PER_SECOND
     );
     return () => clearTimeout(timer);
   }, [isGenerating, isComplete, isError]);

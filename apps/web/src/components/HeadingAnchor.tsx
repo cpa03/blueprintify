@@ -36,6 +36,7 @@ import {
   ANIMATION_DEFAULTS,
   ANIMATION_ENTRANCE_DELAYS,
   TOOLTIP_LABELS,
+  TIME_UNITS,
   UI_TIMEOUTS,
   FRAMER_TYPE,
 } from "@blueprint/shared/config";
@@ -319,7 +320,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
                   opacity: 0,
                 }}
                 transition={{
-                  duration: particle.duration / 1000,
+                  duration: particle.duration / TIME_UNITS.MS_PER_SECOND,
                   ease: EASING.PARTICLE_BURST,
                 }}
               />

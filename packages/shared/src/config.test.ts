@@ -13,6 +13,7 @@ import {
   ID_GENERATION_CONFIG,
   ID_CHARS,
   TIME_UNITS,
+  PERCENT_SCALE,
   HTTP_STATUS,
   ROUTE_PATHS,
   DEFAULT_URLS,
@@ -86,6 +87,7 @@ import {
   ERROR_CLASS_NAMES,
   API_NAME,
   UI_TIMEOUTS,
+  LOADING_DOTS_COUNT,
   API_ERROR_MESSAGES,
   GENERATION_MESSAGES,
   GENERATION_ESTIMATES,
@@ -413,6 +415,12 @@ describe("TIME_UNITS", () => {
   it("should have consistent time calculations", () => {
     expect(TIME_UNITS.SECONDS_PER_HOUR).toBe(TIME_UNITS.SECONDS_PER_MINUTE * 60);
     expect(TIME_UNITS.SECONDS_PER_DAY).toBe(TIME_UNITS.SECONDS_PER_HOUR * 24);
+  });
+});
+
+describe("PERCENT_SCALE", () => {
+  it("should have correct percent scale", () => {
+    expect(PERCENT_SCALE).toBe(100);
   });
 });
 
@@ -2423,6 +2431,17 @@ describe("UI_TIMEOUTS", () => {
       expect(Number.isInteger(v)).toBe(true);
       expect(v).toBeGreaterThan(0);
     });
+  });
+});
+
+describe("LOADING_DOTS_COUNT", () => {
+  it("should have the correct number of loading dots", () => {
+    expect(LOADING_DOTS_COUNT).toBe(3);
+  });
+
+  it("should be a positive integer", () => {
+    expect(Number.isInteger(LOADING_DOTS_COUNT)).toBe(true);
+    expect(LOADING_DOTS_COUNT).toBeGreaterThan(0);
   });
 });
 
