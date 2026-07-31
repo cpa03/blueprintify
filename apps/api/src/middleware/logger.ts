@@ -9,7 +9,12 @@
 
 import type { Context, MiddlewareHandler, Next } from "hono";
 import type { User } from "../types";
-import { HTTP_METHODS, CONTEXT_KEYS, LOG_TYPE_STRINGS } from "@blueprint/shared";
+import {
+  HTTP_METHODS,
+  CONTEXT_KEYS,
+  LOG_TYPE_STRINGS,
+  ID_GENERATION_CONFIG,
+} from "@blueprint/shared";
 import { LOGGER_CONFIG, API_HEADERS } from "../config/constants";
 import { timestamp } from "../errors";
 
@@ -97,12 +102,12 @@ interface ResponseLog {
  * @returns A unique request ID in format `{timestamp}-{random}{random4}`
  */
 const generateRequestId = (): string => {
-  const randomValues = new Uint32Array(2);
+  const randomValues = new Uint32Array(ID_GENERATION_CONFIG.RANDOM_VALUES_COUNT);
   crypto.getRandomValues(randomValues);
   const timestamp = Date.now();
-  const random = (randomValues[0] ?? 0).toString(36);
+  const random = (randomValues[0] ?? 0).toString(ID_GENERATION_CONFIG.ALPHANUMERIC_RADIX);
   const random2 = (randomValues[1] ?? 0)
-    .toString(36)
+    .toString(ID_GENERATION_CONFIG.ALPHANUMERIC_RADIX)
     .slice(0, LOGGER_CONFIG.REQUEST_ID_SUFFIX_LENGTH);
   return `${timestamp}-${random}${random2}`;
 };

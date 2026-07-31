@@ -37,6 +37,8 @@ import {
   ACCESSIBILITY_LABELS,
   GENERATION_MESSAGES,
   STEP_INDICATOR_CHARS,
+  CSS_CLASSES,
+  FOCUS_ANNOUNCER,
 } from "../config/constants";
 import { CircularProgress } from "./CircularProgress";
 import { SmartTooltip } from "./SmartTooltip";
@@ -224,7 +226,7 @@ function StepIndicatorComponent(): JSX.Element {
                 }
                 ${isClickable ? "cursor-pointer hover:bg-dark-700 motion-safe:hover:scale-102 motion-safe:active:scale-98" : "cursor-default"}
                 ${isActive ? "animate-step-pulse" : ""}
-                ${isShaking ? "shake-animation" : ""}
+                ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}
                 ${justCompletedStep === step.key ? "step-complete-flash" : ""}
                 ${activatingStep === step.key ? "step-activate" : ""}
               `}
@@ -261,7 +263,12 @@ function StepIndicatorComponent(): JSX.Element {
       {/* Screen reader announcement for step transitions — announces step
           completion and activation so screen reader users perceive the same
           context as sighted users who see the flash/glow animations. */}
-      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         {stepAnnouncement}
       </div>
     </div>

@@ -3,6 +3,7 @@ import type { Extension } from "@codemirror/state";
 import type { ReactCodeMirrorProps, ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { isDev } from "../config/env";
 import { ACCESSIBILITY_LABELS, DEBUG_MESSAGES, SKELETON_LAYOUT } from "../config/constants/content";
+import { FOCUS_ANNOUNCER } from "../config/constants/accessibility";
 
 interface LazyCodeMirrorProps {
   value: string;
@@ -91,7 +92,7 @@ const LazyCodeMirrorComponent = forwardRef<ReactCodeMirrorRef, LazyCodeMirrorPro
 
     return (
       <>
-        <div role="status" aria-live="polite" className="sr-only">
+        <div role="status" aria-live="polite" className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}>
           {ACCESSIBILITY_LABELS.LAZY_CODEMIRROR.READY}
         </div>
         <CodeMirrorComponent

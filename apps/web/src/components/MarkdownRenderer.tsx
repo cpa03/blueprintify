@@ -33,6 +33,7 @@ import {
   HOVER_SCALE,
   TAP_SCALE,
   MARKDOWN_COPY_LABELS,
+  FOCUS_ANNOUNCER,
 } from "../config/constants";
 import { MARKDOWN, ICON } from "../config/styles";
 import { HeadingAnchor } from "./HeadingAnchor";
@@ -90,7 +91,12 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
           feedback so screen reader users know the code was successfully
           copied to the clipboard. Without this, only visual users see the
           "Copied!" feedback via the button text change. */}
-      <div className="sr-only" role="status" aria-live="assertive" aria-atomic="true">
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role="status"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
         {copyAnnouncement}
       </div>
       <span className={MARKDOWN.CODE_LANGUAGE}>{language}</span>
@@ -317,7 +323,9 @@ function MarkdownRendererComponent({ content, className }: MarkdownRendererProps
             rel="noopener noreferrer"
           >
             {children}
-            <span className="sr-only">{ACCESSIBILITY_LABELS.MARKDOWN.OPENS_IN_NEW_TAB}</span>
+            <span className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}>
+              {ACCESSIBILITY_LABELS.MARKDOWN.OPENS_IN_NEW_TAB}
+            </span>
             {/* External link indicator — visible on hover/focus to signal the
                 link opens in a new tab, matching the Header pattern. */}
             <svg

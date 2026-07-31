@@ -1,5 +1,5 @@
 import { memo, useMemo, useRef, useEffect, useState } from "react";
-import { TIMEOUTS, ACCESSIBILITY_LABELS } from "../config/constants";
+import { TIMEOUTS, ACCESSIBILITY_LABELS, CSS_CLASSES, FOCUS_ANNOUNCER } from "../config/constants";
 import { CHAR_COUNTER_THRESHOLDS, CHAR_COUNTER_COLORS } from "@blueprint/shared/config";
 
 interface CharacterCounterProps {
@@ -62,7 +62,7 @@ function CharacterCounterComponent({
     prevBelowMinRef.current = belowMin;
   }, [belowMin, min]);
 
-  const shakeClass = showLimitShake ? "shake-animation" : "";
+  const shakeClass = showLimitShake ? CSS_CLASSES.SHAKE_ANIMATION : "";
   const pulseClass = shouldPulse && !showLimitShake ? "animate-pulse-scale" : "";
   const celebrateClass = showCelebrate ? "counter-celebrate-pop" : "";
 
@@ -92,7 +92,12 @@ function CharacterCounterComponent({
         )}
       </span>
       {/* Screen-reader-only announcement with descriptive label */}
-      <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+      <span
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         {current} of {max} character{max !== 1 ? "s" : ""} used
         {remaining === 0
           ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.LIMIT_REACHED
@@ -142,7 +147,12 @@ function CharacterCounterCompactComponent({
       >
         {current}/{max}
       </span>
-      <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+      <span
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         {current} of {max} character{max !== 1 ? "s" : ""} used
         {remaining === 0
           ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.LIMIT_REACHED

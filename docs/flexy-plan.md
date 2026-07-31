@@ -3515,3 +3515,35 @@ Also lacked test coverage for the `isLoading` prop — no spinner rendering veri
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD (this PR) | `feat/flexy-iteration-179-unit-conversion-literals` | refactor(flexy): centralize ms↔seconds, percent-scale, and loading-dots-count literals (Iteration 179) |
+
+---
+
+### ✅ Flexy Iteration 180: Centralize Hardcoded Crypto/Encoding Literals and CSS Class Strings
+
+**Problem**: The API repeated raw crypto/encoding literals — `"SHA-256"`, `toString(16)`, `padStart(2, "0")`, `substring(0, 16)`, `Uint32Array(2)`, `toString(36)`, and `Math.floor(Date.now() / 1000)` — across `auth.ts`, `logger.ts`, and `share.ts` despite shared config already holding `TIME_UNITS` and `ID_GENERATION_CONFIG`. Meanwhile the web app inlined CSS class strings `"sr-only"` (12 components), `"shake-animation"` (4 components), and `"text-gradient"` (3 components) even though `CSS_CLASSES.TEXT_GRADIENT` and `FOCUS_ANNOUNCER.LIVE_REGION_CLASS` already existed. Flexy says: No hardcoded crypto/encoding literals or CSS class strings in components!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | Added `CRYPTO_CONFIG` (`HASH_ALGORITHM: "SHA-256"`, `HEX_RADIX: 16`, `HEX_PADDING_WIDTH: 2`, `USER_ID_HASH_LENGTH: 16`) + `ID_GENERATION_CONFIG.RANDOM_VALUES_COUNT: 2` |
+| `packages/shared/src/index.ts` | Exported `CRYPTO_CONFIG` from the root barrel |
+| `packages/shared/src/config.test.ts` | Added 6 tests: `CRYPTO_CONFIG` values (algorithm/radix/padding/hash length) + `RANDOM_VALUES_COUNT` value/integer checks |
+| `apps/api/src/middleware/auth.ts` | `deriveUserId`: replaced `"SHA-256"`, `toString(16)`, `padStart(2, "0")`, `substring(0, 16)`, and `` `user_` `` with `CRYPTO_CONFIG.*` + `DB_ID_PREFIXES.USER` |
+| `apps/api/src/middleware/logger.ts` | `generateRequestId`: replaced `Uint32Array(2)` with `ID_GENERATION_CONFIG.RANDOM_VALUES_COUNT` and `toString(36)` with `ID_GENERATION_CONFIG.ALPHANUMERIC_RADIX` |
+| `apps/api/src/routes/share.ts` | Replaced 3x `Date.now() / 1000` with `TIME_UNITS.MS_PER_SECOND`, 2x signature hex + 1x passphrase hash (`toString(16)`, `padStart(2)`, `"SHA-256"`) with `CRYPTO_CONFIG.*` |
+| `apps/web/src/config/constants/accessibility.ts` | Added `CSS_CLASSES.SHAKE_ANIMATION: "shake-animation"` |
+| `apps/web/src/components/*` (12 files) | Replaced inline `"sr-only"` with `FOCUS_ANNOUNCER.LIVE_REGION_CLASS` (CharacterCounter, StepIndicator, StepInfo, StepStack, StepGenerating, Editor, ErrorFallback, AnimatedCopyButton, MarkdownRenderer, OfflineBanner, Toast, LazyCodeMirror) |
+| `apps/web/src/components/*` (4 files) | Replaced inline `"shake-animation"` with `CSS_CLASSES.SHAKE_ANIMATION` (CharacterCounter, StepIndicator, StepInfo, StepStack) |
+| `apps/web/src/components/*` + `App.tsx` (3 files) | Replaced inline `"text-gradient"` with `CSS_CLASSES.TEXT_GRADIENT` (StepGenerating, AnimatedNumber, App) |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings (api + web)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run test:all` — **960 web + 506 api + 824 shared = 2,290 tests passing**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `feat/flexy-iteration-180-hardcoded-cleanup` | refactor(flexy): centralize crypto/encoding literals and CSS class strings (Iteration 180) |

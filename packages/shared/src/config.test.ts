@@ -11,6 +11,7 @@ import {
   SSE_HEADERS,
   HTTP_HEADERS,
   ID_GENERATION_CONFIG,
+  CRYPTO_CONFIG,
   ID_CHARS,
   TIME_UNITS,
   PERCENT_SCALE,
@@ -392,6 +393,36 @@ describe("ID_GENERATION_CONFIG", () => {
   it("should have reasonable values", () => {
     expect(ID_GENERATION_CONFIG.RANDOM_STRING_LENGTH).toBeLessThanOrEqual(20);
     expect(ID_GENERATION_CONFIG.ALPHANUMERIC_RADIX).toBeLessThanOrEqual(36);
+  });
+
+  it("should have positive random values count", () => {
+    expect(ID_GENERATION_CONFIG.RANDOM_VALUES_COUNT).toBeGreaterThan(0);
+  });
+
+  it("should have random values count of 2", () => {
+    expect(ID_GENERATION_CONFIG.RANDOM_VALUES_COUNT).toBe(2);
+  });
+});
+
+describe("CRYPTO_CONFIG", () => {
+  it("should use SHA-256 as the hash algorithm", () => {
+    expect(CRYPTO_CONFIG.HASH_ALGORITHM).toBe("SHA-256");
+  });
+
+  it("should have hex radix of 16", () => {
+    expect(CRYPTO_CONFIG.HEX_RADIX).toBe(16);
+  });
+
+  it("should have hex padding width of 2", () => {
+    expect(CRYPTO_CONFIG.HEX_PADDING_WIDTH).toBe(2);
+  });
+
+  it("should have positive user id hash length", () => {
+    expect(CRYPTO_CONFIG.USER_ID_HASH_LENGTH).toBeGreaterThan(0);
+  });
+
+  it("should have user id hash length of 16", () => {
+    expect(CRYPTO_CONFIG.USER_ID_HASH_LENGTH).toBe(16);
   });
 });
 

@@ -19,6 +19,8 @@ import {
   EXPORT_ERROR_STRINGS,
   SHARE_TOKEN_CONFIG,
   RATE_LIMIT_KEY_PREFIXES,
+  TIME_UNITS,
+  CRYPTO_CONFIG,
   CreateShareSchema,
   VerifySharePassphraseSchema,
 } from "@blueprint/shared";
@@ -164,7 +166,8 @@ async function generateVerifyToken(
 ): Promise<string | undefined> {
   if (!apiKey) return undefined;
   const encoder = new TextEncoder();
-  const expiresAt = Math.floor(Date.now() / 1000) + SHARE_TOKEN_CONFIG.TOKEN_EXPIRY_SECONDS;
+  const expiresAt =
+    Math.floor(Date.now() / TIME_UNITS.MS_PER_SECOND) + SHARE_TOKEN_CONFIG.TOKEN_EXPIRY_SECONDS;
   const payload = `${shareId}:${expiresAt}`;
   const key = await crypto.subtle.importKey(
     "raw",
@@ -179,7 +182,7 @@ async function generateVerifyToken(
     encoder.encode(payload)
   );
   const signatureHex = Array.from(new Uint8Array(signature))
-    .map((b) => b.toString(16).padStart(2, "0"))
+    .map((b) => b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0"))
     .join("");
   const payloadB64 = btoa(payload).replace(/=+$/, "").replace(/\+/g, "-").replace(/\//g, "_");
   return `${payloadB64}.${signatureHex.slice(0, SHARE_TOKEN_CONFIG.SIGNATURE_HEX_LENGTH)}`;
@@ -203,7 +206,8 @@ async function isValidVerifyToken(
     if (payloadParts.length !== 2) return false;
     if (payloadParts[0] !== shareId) return false;
     const expiresAt = parseInt(payloadParts[1] || "0", 10);
-    if (isNaN(expiresAt) || expiresAt < Math.floor(Date.now() / 1000)) return false;
+    if (isNaN(expiresAt) || expiresAt < Math.floor(Date.now() / TIME_UNITS.MS_PER_SECOND))
+      return false;
     const encoder = new TextEncoder();
     const key = await crypto.subtle.importKey(
       "raw",
@@ -218,7 +222,9 @@ async function isValidVerifyToken(
       encoder.encode(payload)
     );
     const expectedSig = Array.from(new Uint8Array(signature))
-      .map((b) => b.toString(16).padStart(2, "0"))
+      .map((b) =>
+        b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0")
+      )
       .join("")
       .slice(0, SHARE_TOKEN_CONFIG.SIGNATURE_HEX_LENGTH);
     return parts[1] === expectedSig;
@@ -540,9 +546,14 @@ app.post(
 
       // Hash the provided passphrase and compare with stored hash
       const encoder = new TextEncoder();
-      const hashBuffer = await crypto.subtle.digest("SHA-256", encoder.encode(passphrase));
+      const hashBuffer = await crypto.subtle.digest(
+        CRYPTO_CONFIG.HASH_ALGORITHM,
+        encoder.encode(passphrase)
+      );
       const hashHex = Array.from(new Uint8Array(hashBuffer))
-        .map((b) => b.toString(16).padStart(2, "0"))
+        .map((b) =>
+          b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0")
+        )
         .join("");
 
       if (hashHex !== result.passphrase_hash) {

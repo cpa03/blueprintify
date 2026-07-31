@@ -53,6 +53,7 @@ import {
   SCROLL_BEHAVIOR,
   SCROLL_INTO_VIEW_BLOCK,
   CSS_CLASSES,
+  FOCUS_ANNOUNCER,
 } from "../../config/constants";
 import { STEP_INFO_LABELS } from "../../config/constants/validation";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
@@ -721,7 +722,7 @@ export const StepInfo = memo(function StepInfo({
                 disabled={!canProceed}
                 whileHover={{ ...HOVER_SCALE.MICRO, y: -2 }}
                 whileTap={{ ...TAP_SCALE.MICRO, y: 0 }}
-                className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
+                className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}`}
                 aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
               >
                 {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
@@ -751,7 +752,12 @@ export const StepInfo = memo(function StepInfo({
       {/* Screen reader announcement for form clear action — provides explicit
           feedback so screen reader users know the form was cleared, since the
           clear-all button unmounts from the DOM without a visible confirmation. */}
-      <div className="sr-only" role="status" aria-live="assertive" aria-atomic="true">
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role="status"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
         {clearAnnouncement}
       </div>
     </motion.div>

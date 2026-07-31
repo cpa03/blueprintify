@@ -54,6 +54,27 @@ export const ID_GENERATION_CONFIG = {
   RANDOM_STRING_LENGTH: 9,
   /** Radix for Math.random().toString() to produce alphanumeric characters */
   ALPHANUMERIC_RADIX: 36,
+  /** Number of random uint32 values generated for request-ID entropy */
+  RANDOM_VALUES_COUNT: 2,
+} as const;
+
+/**
+ * Cryptographic Configuration
+ * Centralized constants for hashing and hex-encoding operations.
+ * Flexy says: No hardcoded "SHA-256" / toString(16) / padStart(2) literals!
+ * Usage: import { CRYPTO_CONFIG } from "@blueprint/shared";
+ *        crypto.subtle.digest(CRYPTO_CONFIG.HASH_ALGORITHM, data)
+ *        b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0")
+ */
+export const CRYPTO_CONFIG = {
+  /** Hash algorithm used for password hashing and identity derivation */
+  HASH_ALGORITHM: "SHA-256" as const,
+  /** Radix used to convert bytes to hexadecimal strings */
+  HEX_RADIX: 16,
+  /** Minimum width for zero-padded hex byte output */
+  HEX_PADDING_WIDTH: 2,
+  /** Length of the derived user-ID hash (hex chars kept from the full digest) */
+  USER_ID_HASH_LENGTH: 16,
 } as const;
 
 /**

@@ -52,6 +52,7 @@ import {
   ACCESSIBILITY_LABELS,
   VALIDATION_MESSAGES,
   CSS_CLASSES,
+  FOCUS_ANNOUNCER,
 } from "../../config/constants";
 import { TRANSFORMS } from "../../config/theme";
 import { pageTransition, type AnimationDirection } from "../../utils/motion";
@@ -488,7 +489,7 @@ export const StepStack = memo(function StepStack({
           <RippleButton
             onClick={handleNextClick}
             disabled={!canProceed}
-            className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? "shake-animation" : ""}`}
+            className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}`}
             aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
           >
             {UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON}
@@ -509,7 +510,12 @@ export const StepStack = memo(function StepStack({
 
       {/* Screen reader announcement when minimum tech stack requirement is met
           — provides explicit feedback since the milestone pulse is purely visual. */}
-      <div className="sr-only" role="status" aria-live="assertive" aria-atomic="true">
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role="status"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
         {milestoneAnnouncement}
       </div>
     </motion.div>

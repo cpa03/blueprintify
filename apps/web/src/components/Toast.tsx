@@ -42,6 +42,7 @@ import {
   EASING,
   TOOLTIP_CONFIG,
   TOAST_DISPLAY,
+  FOCUS_ANNOUNCER,
 } from "../config/constants";
 import { TOAST_SPRING, TRANSFORMS } from "../config/theme";
 import {
@@ -662,7 +663,12 @@ function ToastContainerComponent(): JSX.Element {
           clear feedback that all notifications were dismissed. Without this,
           screen reader users only hear individual toast removals without
           context that a batch dismiss occurred. */}
-      <div className="sr-only" role="status" aria-live="assertive" aria-atomic="true">
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role="status"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
         {dismissAnnouncement}
       </div>
     </motion.div>

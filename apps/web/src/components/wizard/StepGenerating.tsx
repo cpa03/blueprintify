@@ -87,6 +87,7 @@ import {
   GENERATION_STAT_LABELS,
   GENERATION_ANNOUNCER,
   KEY_DISPLAY,
+  FOCUS_ANNOUNCER,
 } from "../../config/constants";
 import { KEYBOARD_SHORTCUTS } from "../../config/constants/keyboard";
 import { COLORS, HEADER_ANIMATION } from "../../config/theme";
@@ -579,7 +580,7 @@ export const StepGenerating = memo(function StepGenerating({
         </div>
       )}
 
-      <p className="sr-only" role="status" aria-live="polite">
+      <p className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS} role="status" aria-live="polite">
         {timerActive
           ? GENERATION_ANNOUNCER.ELAPSED(elapsedTime, blueprintLines, tasksLines)
           : GENERATION_ANNOUNCER.GENERATED(blueprintLines, tasksLines)}
@@ -620,7 +621,7 @@ export const StepGenerating = memo(function StepGenerating({
           }}
           className="glass-card px-6 py-4"
         >
-          <div className="text-2xl font-bold text-gradient relative">
+          <div className={`text-2xl font-bold ${CSS_CLASSES.TEXT_GRADIENT} relative`}>
             <AnimatePresence mode="wait">
               {awaitingContent ? (
                 <motion.span
@@ -646,7 +647,7 @@ export const StepGenerating = memo(function StepGenerating({
                   <AnimatedNumber
                     value={blueprintLines}
                     duration={ANIMATION.PULSE}
-                    className="text-gradient"
+                    className={CSS_CLASSES.TEXT_GRADIENT}
                   />
                 </motion.span>
               )}
@@ -687,7 +688,7 @@ export const StepGenerating = memo(function StepGenerating({
           }}
           className="glass-card px-6 py-4"
         >
-          <div className="text-2xl font-bold text-gradient relative">
+          <div className={`text-2xl font-bold ${CSS_CLASSES.TEXT_GRADIENT} relative`}>
             <AnimatePresence mode="wait">
               {awaitingContent ? (
                 <motion.span
@@ -713,7 +714,7 @@ export const StepGenerating = memo(function StepGenerating({
                   <AnimatedNumber
                     value={tasksLines}
                     duration={ANIMATION.PULSE}
-                    className="text-gradient"
+                    className={CSS_CLASSES.TEXT_GRADIENT}
                   />
                 </motion.span>
               )}
