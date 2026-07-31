@@ -47,6 +47,10 @@ Health check endpoint to verify the API is running and provide API metadata.
   "name": "Blueprint Generator API",
   "version": "1.0.0",
   "status": "healthy",
+  "runtime": {
+    "platform": "cloudflare",
+    "region": "LHR"
+  },
   "endpoints": {
     "generate": "POST /generate",
     "tasks": "POST /tasks",
@@ -522,6 +526,51 @@ Retrieve a shared blueprint by ID.
 
 ```bash
 curl http://localhost:8787/share/abc123def456
+```
+
+### POST /share/:id/verify
+
+Verify a passphrase for a passphrase-protected shared blueprint. On success, returns the full blueprint content and a short-lived verify token for subsequent access via `GET /share/:id?token=xxx`. Rate-limited per share ID + IP to prevent brute-force attacks.
+
+#### Request Body
+
+```json
+{
+  "passphrase": "your-secret-passphrase"
+}
+```
+
+#### Response
+
+```json
+{
+  "id": "abc123def456",
+  "title": "My Project Blueprint",
+  "blueprint": "# Project: My App\n\n## Overview\n...",
+  "metadata": {
+    "projectName": "My App",
+    "techStack": ["React", "TypeScript"],
+    "author": "Developer"
+  },
+  "createdAt": "2026-02-18T10:00:00.000Z",
+  "expiresAt": "2026-03-20T10:00:00.000Z",
+  "verifyToken": "short-lived-token"
+}
+```
+
+#### Error Responses
+
+- **400 Bad Request**: Invalid share ID format or invalid passphrase
+- **401 Unauthorized**: Incorrect passphrase
+- **404 Not Found**: Share not found or has expired
+- **503 Service Unavailable**: Database not configured
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost:8787/share/abc123def456/verify \
+  -H "Content-Type: application/json" \
+  -d '{"passphrase": "your-secret-passphrase"}'
 ```
 
 ### DELETE /share/:id

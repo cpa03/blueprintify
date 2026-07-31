@@ -25,7 +25,7 @@ Blueprint Generator is a web application that helps developers and architects cr
 
 ## Tech Stack
 
-- Frontend: React 19, Vite 7, Tailwind CSS 3, TypeScript 6
+- Frontend: React 19, Vite 8, Tailwind CSS 3, TypeScript 6
 - Backend: Hono, Cloudflare Workers
 - State: Zustand
 - Editing: CodeMirror
@@ -34,12 +34,19 @@ Blueprint Generator is a web application that helps developers and architects cr
 ## API Endpoints
 
 - GET / - Health check
+- GET /warmup - Pre-warm circuit breaker on worker startup
 - POST /generate - Generate blueprint (SSE stream)
-- POST /tasks - Generate tasks from blueprint
-- POST /refine - Refine content section
-- POST /export - Export project files
+- POST /tasks - Generate tasks from blueprint (SSE stream)
+- POST /refine - Refine content section (SSE stream)
+- POST /export - Export project as ZIP/JSON/Markdown
 - POST /import - Import project with validation
+- GET /storage/quota - Check storage usage
+- POST /storage/report - Report client storage usage for quota tracking
+- DELETE /storage/clear - Clear stored data
 - POST /share - Create shareable blueprint link
+- GET /share/:id - Retrieve shared blueprint
+- POST /share/:id/verify - Verify passphrase for protected shared blueprint
+- DELETE /share/:id - Delete shared blueprint
 
 ## Documentation
 

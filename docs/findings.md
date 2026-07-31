@@ -2,6 +2,35 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 16 (2026-07-31 — RepoKeeper: Repo hygiene audit, docs/code sync, archive retention cleanup)
+
+> **RepoKeeper run (2026-07-31)**: Full repository audit for hygiene: redundant/temporary files, documentation drift, dead references. Baseline gates all green (typecheck 0 errors, lint 0 errors/warnings, build ✓). Findings and fixes below.
+
+### Actions Taken
+
+1. **[Archive retention cleanup]** — Purged 6 stale archive files from Jun 30 (`docs/audits/archive/brocula-hunt-2026-06-30-run{1,2,3,4,5,6}.md`, >30-day retention window; oldest remaining archive file is now Jul 1). Updated `docs/audits/archive/CONSOLIDATED-README.md` (cleanup log + date range + last-cleanup stamp).
+2. **[README.md drift fixes]** — Removed non-existent `.opencode/plugin/` from architecture tree (directory does not exist; replaced with actual `memory/` dir); fixed broken link `docs/audits/archive/issue-audit-report-2026-06-08.md` → `issue-audit-report-2026-07-15.md` (actual file); updated BroCula audits date range `(Jun 17–Jul 30)` → `(Jun 17–Jul 31)` (Run 18-20 exist); completed skill list (11 skills were missing: obra-superpowers-*, madappgang-, maxritter-, modu-ai-, muratcankoylan-, professor-for-testing-, vasilyu1983-); added `POST /share/:id/verify` to API endpoints table.
+3. **[llms.txt drift fixes]** — Corrected `Vite 7` → `Vite 8` (actual: `vite@8.1.5` in apps/web); completed API endpoint list (added `/warmup`, `/storage/quota`, `/storage/report`, `/storage/clear`, `/share/:id` GET, `/share/:id/verify`, `/share/:id` DELETE).
+4. **[api-documentation.md drift fixes]** — Added `runtime: { platform, region }` to `GET /` health check response (present in code, missing in docs); documented `POST /share/:id/verify` endpoint (exists in code at `apps/api/src/routes/share.ts`, was undocumented) with request/response/error examples.
+5. **[Branch hygiene check]** — Flagged stale divergent branches for cleanup: `origin/agent/janitor` (90 behind / 6 ahead — obsolete changes incl. deletion of still-referenced `scripts/migrate.ts`), `origin/agent/security-engineer` (94 behind / 7 ahead), `origin/test/permissions-check` (1070 behind / 1 ahead). Not deleted (unmerged, per precedent).
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors |
+| Tests | ✅ run during final verification |
+| Format | ✅ Prettier clean |
+| npm audit | ✅ 0 vulnerabilities |
+| Archive files purged | ✅ 6 (Jun 30, >30 days old) |
+| Docs/code drift fixed | ✅ README.md, llms.txt, api-documentation.md, CONSOLIDATED-README.md |
+
+### Verdict
+
+**Repository hygiene improved: 6 stale archive files purged; 4 documentation files brought in sync with actual code (README tree/link/skills/endpoints, llms.txt Vite version + endpoints, API docs runtime field + verify endpoint); 3 stale divergent branches flagged for cleanup (not deleted — unmerged).** All local quality gates pass; no logic changes made (docs-only + archive purge, per Janitor constraints).
+
 ## Cycle 15 (2026-07-31 — ULW Loop: Issue Manager Mode — REPAIR MODE shipped #890/#930 CORS fix, merged via PR #2986)
 
 > **ULW Loop run (2026-07-31)**: **Phase 0 → ISSUE MANAGER MODE** (0 open PRs, **99 open issues**). Issue Manager Steps 1-3 remain permission-blocked (documented Cycles 7-14): `addLabelsToLabelable` / `removeLabelsFromLabelable` / `addComment` / `closeIssue` / `createIssue` all 403 with `github-actions[bot]` GITHUB_TOKEN — normalization, duplicate closure, consolidation **cannot be applied**; even `Closes #890` in a merged PR body does not auto-close (needs issues:write).
