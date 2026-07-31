@@ -649,6 +649,7 @@ export const KEY_DISPLAY = {
   SPACE: "Space",
   HOME: "Home",
   END: "End",
+  SHIFT: "Shift",
 } as const;
 
 // ============================================================================

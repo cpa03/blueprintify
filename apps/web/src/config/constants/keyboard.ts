@@ -95,6 +95,11 @@ export const KEYBOARD_SHORTCUTS = {
     MODIFIER: "ctrl/cmd",
     DESCRIPTION: "Switch editor to Preview view",
   },
+  EXPORT_PROJECT: {
+    KEY: "e",
+    MODIFIER: "ctrl/cmd+shift",
+    DESCRIPTION: "Export project as ZIP",
+  },
   SEARCH_SHORTCUTS: {
     KEY: "f",
     MODIFIER: "ctrl/cmd",

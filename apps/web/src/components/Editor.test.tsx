@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";
 import { Editor } from "./Editor";
 import { useEditorStore, useWizardStore } from "../store";
 import { ExportProvider } from "../context/ExportContext";
+import { exportAsZip } from "../lib/export";
 import type { EditorStore } from "../store/editor";
 import type { WizardStore } from "../store/wizard";
 import type { TechStackItemType } from "@blueprint/shared/types";
@@ -209,5 +210,73 @@ describe("Editor", () => {
 
     const editorContainer = container.firstChild;
     expect(editorContainer).toHaveClass("h-full", "flex", "flex-col");
+  });
+
+  describe("Ctrl/Cmd+Shift+E export shortcut", () => {
+    beforeEach(() => {
+      mockEditorStore.blueprintContent = "# Test Content";
+      mockEditorStore.tasksContent = "";
+      mockEditorStore.activeTab = EDITOR_TABS.BLUEPRINT;
+    });
+
+    it("exports the project when content exists", async () => {
+      render(
+        <ExportProvider>
+          <Editor />
+        </ExportProvider>
+      );
+
+      fireEvent.keyDown(window, { key: "E", ctrlKey: true, shiftKey: true });
+
+      await waitFor(() => expect(exportAsZip).toHaveBeenCalledTimes(1));
+      expect(exportAsZip).toHaveBeenCalledWith(
+        expect.objectContaining({
+          blueprint: "# Test Content",
+          projectName: "Test Project",
+        })
+      );
+    });
+
+    it("does not export when there is no content", () => {
+      mockEditorStore.blueprintContent = "";
+      mockEditorStore.tasksContent = "";
+      render(
+        <ExportProvider>
+          <Editor />
+        </ExportProvider>
+      );
+
+      fireEvent.keyDown(window, { key: "E", ctrlKey: true, shiftKey: true });
+
+      expect(exportAsZip).not.toHaveBeenCalled();
+    });
+
+    it("does not export while typing in an input or textarea", () => {
+      render(
+        <ExportProvider>
+          <Editor />
+        </ExportProvider>
+      );
+
+      fireEvent.keyDown(screen.getByTestId("codemirror"), {
+        key: "E",
+        ctrlKey: true,
+        shiftKey: true,
+      });
+
+      expect(exportAsZip).not.toHaveBeenCalled();
+    });
+
+    it("does not export with Ctrl/Cmd+E without Shift", () => {
+      render(
+        <ExportProvider>
+          <Editor />
+        </ExportProvider>
+      );
+
+      fireEvent.keyDown(window, { key: "e", ctrlKey: true, shiftKey: false });
+
+      expect(exportAsZip).not.toHaveBeenCalled();
+    });
   });
 });
