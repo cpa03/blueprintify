@@ -39,6 +39,48 @@
 
 **Code is clean — no changes required.** Perfect Lighthouse scores sustained (3rd consecutive 100-100-100-100), zero console issues across all interactive flows, zero optimization opportunities, all quality gates green. Audit record added to `docs/audits/`.
 
+## Cycle 12 (2026-07-31 — BugFixer: full BugFixer audit, **BUG-035 FIXED** — 5 stale `docs/task.md` refs in `.opencode/agent/`, test count **2,278/2,278** (960 web + 502 API + 816 shared))
+
+> **BugFixer Cycle 9 run (2026-07-31)**: **Phase 1 → AUDIT MODE** (no open PRs, BugFixer mandate). Full audit of HEAD `00f3830e`: typecheck ✅ lint ✅ build ✅ tests **2,278/2,278** ✅ (960 web + 502 API + 816 shared) format ✅ secrets scan ✅ npm audit **0 vulns** ✅ `npm ls` clean ✅ lockfile drift check clean ✅.
+>
+> **BUG-035 — NEW — FIXED**: stale `docs/task.md` references in **`.opencode/agent/`** — `docs/task.md` was renamed to `docs/active-tasks.md` long ago; Cycle 323 (RepoKeeper) fixed 10 occurrences under `docs/` but **missed 5 in the agent definition files**: `.opencode/agent/cmz.md` line 152 (Phase 0 System Assessment step 3) + `.opencode/agent/software-architect.md` lines 113/133/150/168 (Operational Control Plane doc list, scope-control rule, STEP 0 read list, STEP 1 "reflect new items"). Same bug class as BUG-014 (stale doc refs). Fixed: all 5 → `docs/active-tasks.md`. Verified via repo-wide grep: zero `docs/task.md` refs remain outside historical cycle logs (CHANGELOG/findings/bugs/knowledge-review archival entries — intentionally preserved).
+>
+> **3 new post-Cycle-8 commits indexed** — HEAD at `00f3830e` (docs(findings): record ULW Loop Cycle 10 — 3 PRs merged, all gates green).
+> **Commits**: `c2a97ae9` refactor(flexy) Iteration 179 (centralize ms↔seconds, percent-scale, loading-dots-count literals), `6b10f869` fix(bugfixer) Cycle 8 (BUG-033 eslint peer invalid + BUG-034 @emnapi/core missing), `00f3830e` docs(findings) ULW Loop Cycle 10.
+> **Test count**: **2,278/2,278** (960 web + **502 API** + **816 shared** — **+3** shared config tests from Iteration 179).
+> **BUG-032/033/034 still fixed**: `npm ls` exit 0 — 0 invalid/missing/extraneous.
+> **BUG-013 still fixed** (lighthouse 13.4.1 — 0 vulns). **BUG-031 tracked** (brace-expansion dev-only CVE — override 5.0.8 holds).
+> **Archive retention**: OK (oldest Jul 11 — 20 days, within 30-day window — no purge needed). **0 stale merged branches**. **0 stale `.omo/run-continuation/` files**.
+> **Wrangler placeholder IDs** (6 in `apps/api/wrangler.toml`): pre-existing local-dev setup, tracked as #1045/#1165 — not a code defect.
+> **Sweep results**: 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK in source, 0 empty catch blocks, 0 merge conflict artifacts, console statements all intentional (centralized logger/constants/templates).
+>
+> **Bugs fixed this cycle: BUG-035 (stale `docs/task.md` refs in `.opencode/agent/`). Branch created.**
+
+### Actions Taken
+
+1. **[Full Audit]** — Ran all quality gates on HEAD `00f3830e`: typecheck ✅ lint ✅ build (web) ✅ build:api (dry-run) ✅ tests **2,278/2,278** ✅ format ✅ secrets scan ✅ npm audit **0 vulns** ✅.
+2. **[Lockfile Drift Check]** — Programmatic workspace-vs-lockfile comparison: root deps, workspace versions, and dependency specs all in sync — **no drift** (BUG-032 class recurrence ruled out).
+3. **[Stale Doc Ref Sweep]** — Repo-wide grep for `docs/task.md` (renamed → `docs/active-tasks.md`): found 5 active refs in `.opencode/agent/` (cmz.md ×1, software-architect.md ×4) — **missed by Cycle 323** which only fixed `docs/` files. All 5 fixed. Remaining matches are historical cycle logs (archival, preserved by design).
+4. **[Code Smell Sweep]** — 0 type suppressions, 0 `as any`, 0 TODO/FIXME/HACK, 0 empty catch blocks, 0 conflict artifacts, no lockfile drift, no redundant scripts (scripts/ = 4 canonical files, all referenced).
+5. **[Documentation Updates]** — findings.md (this entry), active-tasks.md (Cycle 9 entry), bugs.md (BUG-035 + Cycle 9 status), knowledge-review.md (refreshed), CHANGELOG.md (Cycle 9 entry).
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors (all 3 workspaces) |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build | ✅ 0 errors (web + shared; api dry-run) |
+| Tests | ✅ **2,278/2,278** (960 web + 502 API + 816 shared) |
+| `npm ls` | ✅ exit 0 — 0 invalid / 0 missing / 0 extraneous (BUG-032/033/034 fixed) |
+| Lockfile drift | ✅ none (workspace deps + versions in sync) |
+| Secrets scan | ✅ No secrets detected (304 files) |
+| npm audit | ✅ **0 vulnerabilities** |
+| Format | ✅ All files Prettier-clean |
+
+### Verdict
+
+**BUG-035 fixed (5 stale `docs/task.md` refs in `.opencode/agent/` — the class of bug BUG-014 documented, missed by Cycle 323's docs-only sweep). All quality gates green, 2,278/2,278 tests passing, 0 vulnerabilities, lockfile in sync. Repository healthy — no other fixable bugs found.**
 
 ## Cycle 10 (2026-07-31 — ULW Loop: PR Handler 3/3 merged, all gates green)
 

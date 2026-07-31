@@ -149,7 +149,7 @@ CMZ leverages the following specialized skills for deep technical operations:
 ```
 1. Read docs/blueprint.md - understand architecture
 2. Read docs/roadmap.md - know current phase
-3. Read docs/task.md - active work items
+3. Read docs/active-tasks.md - active work items
 4. Check GitHub issues - current problems
 5. Review recent CI/CD runs - detect failures
 6. Assess agent and skill configurations
