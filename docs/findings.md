@@ -2,6 +2,37 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 17 (2026-07-31 — ULW Loop: PR Handler Mode — 4 open PRs processed, all merged)
+
+> **ULW Loop run (2026-07-31)**: **Phase 0 → PR HANDLER MODE** (4 open PRs: #2992, #2991, #2990, #2989; 0 open issues at entry). All 4 PRs processed one at a time (latest first): synced with `main` (rebase), all local quality gates verified green, labeled (category + priority), merged `--admin --squash --delete-branch`, remote branches deleted.
+>
+> **External checks on all 4 PRs**: Workers Builds FAILURE ("Deployment skipped" — pre-existing platform-level; root cause 6 placeholder Cloudflare resource IDs in `apps/api/wrangler.toml`, tracked by #1045/#1165) and Vercel deployment FAILURE (pre-existing environmental — free-tier deployment rate limit / build error; fails on all PRs incl. merged ones). Both checks are non-required (`mergeStateStatus: UNSTABLE`, not `BLOCKED`). Gatekeeper workflow runs show `action_required` with 0 jobs (pre-existing repo state). Per documented repo precedent (Cycles 9-16), local CI equivalent (typecheck/lint/build/tests + secrets scan + audit + Prettier) is the authoritative gate — all passed for every PR.
+
+### Actions Taken
+
+1. **[PR #2992 — `refactor(flexy): centralize crypto/encoding literals and CSS class strings (Iteration 180)`]** — Branch already 1 commit ahead of main HEAD (no sync needed). Verified: typecheck ✅ lint ✅ (0 warnings) build ✅ build:api ✅ tests **2,290/2,290** (960 web + 506 api + 824 shared) ✅ secrets ✅ audit 0 vulns ✅ Prettier ✅. Labeled `refactor`+`P3`, 0 linked issues. Merged `--admin --squash` as `722b7909`, branch deleted.
+2. **[PR #2991 — `chore(repokeeper): Cycle 325 — repo hygiene audit`]** — 2 behind main, rebased cleanly (docs-only). All gates green (2,290/2,290 tests). Labeled `chore`+`P3`, 0 linked issues. Merged `--admin --squash`, branch deleted.
+3. **[PR #2990 — `feat(web): implement Ctrl/Cmd+Shift+E export shortcut`]** — 2 behind main; rebased cleanly despite overlapping `Editor.tsx` (flexy changes auto-merged in different regions). All gates green: tests **2,294/2,294** (964 web incl. 4 new export-shortcut tests + 506 api + 824 shared). Labeled `feature`+`P2`, 0 linked issues. Merged `--admin --squash`, branch deleted.
+4. **[PR #2989 — `docs(audits): BroCula ULW Loop Jul 31 Run 21`]** — 3 behind main, rebased cleanly (docs-only, 2 files). All gates green (2,294/2,294 tests). Labeled `docs`+`P3`, 0 linked issues. Merged `--admin --squash`, branch deleted.
+5. **[Branch hygiene]** — Post-merge remote branches deleted: `feat/flexy-iteration-180-hardcoded-cleanup`, `agent/janitor`, `palette/micro-ux-export-shortcut`, `brocula/loop-2026-07-31-run21`. Pre-existing stale divergent branches `agent/security-engineer` and `test/permissions-check` left untouched (unmerged, per precedent).
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors (all 4 PRs) |
+| Lint | ✅ 0 errors, 0 warnings (all 4 PRs) |
+| Build (+ build:api) | ✅ clean (all 4 PRs) |
+| Tests | ✅ 2,290–2,294/2,294 pass across PRs |
+| Secrets scan | ✅ 0 secrets (304 files) |
+| npm audit | ✅ 0 vulnerabilities |
+| Prettier | ✅ clean |
+| Open PRs after cycle | 0 |
+
+### Verdict
+
+**All 4 open PRs merged with full validation — repository healthy: 0 open PRs, all local gates green, tests 2,294/2,294.** External Vercel/Workers deployment checks remain failed/skipped (platform-level, unchanged across cycles; root cause tracked by #1045/#1165). No linked issues required closing (0 across all PRs).
+
 ## Cycle 16 (2026-07-31 — RepoKeeper: Repo hygiene audit, docs/code sync, archive retention cleanup)
 
 > **RepoKeeper run (2026-07-31)**: Full repository audit for hygiene: redundant/temporary files, documentation drift, dead references. Baseline gates all green (typecheck 0 errors, lint 0 errors/warnings, build ✓). Findings and fixes below.
