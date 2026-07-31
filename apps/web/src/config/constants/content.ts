@@ -526,6 +526,9 @@ export const WIZARD_GENERATING_LABELS = {
   CANCEL_GENERATION: "Cancel Generation",
   CANCEL_GENERATION_DESC: "Cancel generation",
   CANCEL_GENERATION_ARIA: "Cancel generation (Esc)",
+  /** Shown on the Cancel button while cancellation is in flight */
+  CANCELLING_GENERATION: "Cancelling...",
+  CANCELLING_GENERATION_ARIA: "Cancelling generation",
   CONTENT_AVAILABLE: "Your generated content is available in the editor panel",
   STREAMING_HINT: "Content streams in real-time. View the editor panel to see progress.",
   /** Shown before any content has streamed into the editor */
