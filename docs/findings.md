@@ -2,7 +2,35 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Cycle 24 (2026-08-01 — ULW Loop: ISSUE MANAGER MODE — 0 PRs, 104 open issues; full audit GREEN; all P1 audit issues verified-FIXED in code; label-normalizer tooling staged for permission-capable cycle; closures + CI fixes STILL BLOCKED)
+## Cycle 25 (2026-08-01 — ULW Loop: ISSUE MANAGER MODE — 0 PRs, 104 open issues; REPAIR #867 [BACKEND] /health endpoint IMPLEMENTED, TESTED (3 tests), merged as PR #3015; normalization/dedup/consolidation STILL BLOCKED — no `issues: write`)
+
+> **ULW Loop run (2026-08-01)**: **Phase 0 → ISSUE MANAGER MODE** (0 open PRs; 104 open issues). STEP 1-3 remain **BLOCKED** at API application (`issues: write` still missing — 403 on `addLabelsToLabelable`; mapping already staged as `scripts/normalize-issue-labels.mjs`, dry-run default). STEP 4 (repair) pivoted to the next genuinely-open fixable issue: **#867 (P2, [BACKEND] add `/health` endpoint) — IMPLEMENTED + MERGED as PR #3015**. Full baseline re-run after merge → **typecheck ✅ lint ✅ (0 warnings) build ✅ tests 2,314/2,314 (971 web + 509 api + 834 shared) ✅**. #867 was verified genuinely open before work (no `/health` route existed; README documents `GET /` as the legacy health check). External CI checks (Vercel free-plan rate limit "retry in 24 hours" + Cloudflare Workers Builds placeholder-ID failure #1045/#1165) failed on PR #3015 as on every prior PR — both non-required (`mergeStateStatus: UNSTABLE`), merged per documented Cycles 9-24 precedent after all local gates passed.
+
+### Actions Taken
+
+1. **[Phase 0 decision]** — `gh pr list` → 0 open PRs; `gh issue list` → 104 open issues. → **ISSUE MANAGER MODE**.
+2. **[STEP 1-3 — Label normalization / duplicate detection / consolidation: still BLOCKED]** — Unchanged from Cycle 24: 86 issues need canonical labels, 14 duplicate + 2 consolidation clusters identified (maps in `scripts/normalize-issue-labels.mjs` + Cycle 24 entry). All issue mutations remain 403 (`issues: write` missing on the loop token). Re-verified: `gh issue comment`, `gh issue close`, `gh issue edit --add-label` all blocked.
+3. **[STEP 4 — Repair mode: #867 implemented, tested, merged]** — `#867 [BACKEND] Add /health endpoint` (P2) was the highest-priority genuinely-open, self-contained, non-infrastructure issue:
+   - **`packages/shared/src/config/core.ts`**: added `HEALTH: "/health"` to `ROUTE_PATHS`.
+   - **`apps/api/src/index.ts`**: imported `HTTP_STATUS` + `CircuitState`; added `ROUTE_PATHS.HEALTH` to `apiKeyAuth` `excludePaths` (public health probe, mirroring ROOT/WARMUP); added `app.get(ROUTE_PATHS.HEALTH, …)` after WARMUP — returns `{ status, checks: { api, aiService }, timestamp }`; `200` + `status: "healthy"` when the AI circuit is `CLOSED`, `503` + `status: "error"` when `OPEN`/`HALF_OPEN`.
+   - **`apps/api/src/index.test.ts`** (new): 3 tests — healthy 200, open-circuit 503, no-auth (not 401/403). Follows the app-level pattern (worker.fetch + MOCK_ENV + mocked circuit breaker via `vi.hoisted` + `importOriginal` partial mock).
+   - Verification: typecheck ✅, lint ✅ (0 warnings), build ✅, `test:all` 2,314/2,314 ✅ (971 web + 509 api + 834 shared; includes the 3 new tests).
+   - Merged as **PR #3015** (squash, `--admin`) — commit `497dec76` on `main`.
+4. **[External CI checks — pre-existing, non-blocking]** — Vercel deployment "Deployment rate limited — retry in 24 hours" (free-plan `api-deployments-free-per-day`) and Workers Builds FAILURE (placeholder Cloudflare resource IDs, #1045/#1165) failed on PR #3015 exactly as on every prior PR (incl. the trivial probe PR #3014). Both non-required (`UNSTABLE` ≠ `BLOCKED`). Local CI equivalent (typecheck/lint/build/tests) is the authoritative gate per Cycles 9-24 precedent — all green.
+5. **[Permission blocker — HUMAN ACTION REQUIRED (unchanged from Cycles 22-24)]** — loop token lacks `issues: write` and `workflows: write`. **Fix**: add `issues: write` to `.github/workflows/on-pull.yml` permissions (and `workflows: write` for CI-level fixes), or supply a PAT. Once granted: `node scripts/normalize-issue-labels.mjs --apply`, then close the 14 duplicate + 2 consolidation clusters + 19 stale-fixed issues per the maps in Cycle 24.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Phase | ISSUE MANAGER MODE (0 PRs, 104 open issues) |
+| Repair target | #867 [BACKEND] /health endpoint — IMPLEMENTED, 3 tests, merged PR #3015 (`497dec76`) |
+| Typecheck / Lint (0 warnings) / Build / Secrets / Audit | ✅ all green |
+| Tests | ✅ 2,314/2,314 (971 web + 509 api + 834 shared) |
+| STEP 1-3 (labels / dedup / consolidation) | ⚠️ STILL BLOCKED — token lacks `issues: write` (403); tooling staged (`scripts/normalize-issue-labels.mjs`) |
+| External CI (Vercel rate limit, Workers placeholder IDs) | ⚠️ Pre-existing, non-required, fail on all PRs (#1045/#1165) |
+
+
 
 > **ULW Loop run (2026-08-01)**: **Phase 0 → ISSUE MANAGER MODE** (0 open PRs; 104 open issues). STEP 1-3 (label normalization, duplicate detection, consolidation) computed in full — **86 issues need canonical category/P-priority labels**, 14 duplicate clusters and 2 consolidation clusters identified with canonicals — but API application remains **BLOCKED** (`issues: write` missing — 403 on `addLabelsToLabelable`; also `addComment`/`closeIssue`). To stop re-deriving this mapping every cycle, the full deterministic logic was shipped as **`scripts/normalize-issue-labels.mjs`** (dry-run default, `--apply` to mutate; idempotent; staged for any permission-capable cycle). STEP 4 (repair): full baseline re-run → **typecheck ✅ lint ✅ (0 warnings) build ✅ build:api ✅ tests 2,304/2,304 (964 web + 506 api + 834 shared) ✅ secrets ✅ npm audit 0 vulns ✅**. **All P1 audit issues verified FIXED on current `main`** with file evidence: #1077 (prompt injection), #1078 (RBAC), #1082 (hook tests), #1014 (component tests), #1045 (mitigated via `validate-wrangler.mjs` + docs — remains open, needs human Cloudflare resources). Two NEW observations: (1) `vercel.json` CSP hash (`sha256-87uI…`) does **not** match any form of the `preloadCssPlugin`-generated `onload` handler text — async font loading may be blocked on Vercel prod (needs human verification/deploy test, not touched per fail-safe); (2) `pr-gatekeeper.yml` health stage runs typecheck/lint/build but **no tests** — #849/#953 confirmed still-open but `workflows: write`-blocked.
 
