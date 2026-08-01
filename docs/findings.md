@@ -2,6 +2,31 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 19 (2026-08-01 — ULW Loop: Flexy Iteration 181 — storage/export encoding literals + FAB class centralized)
+
+> **Flexy Iteration 181** (commit `de42294f`, fix #2995, introduced a hardcoded New Project FAB className in `App.tsx:557` + the storage layer still repeated raw encoding literals). Centralized 8 new shared constants and eliminated 10+ hardcoded literals across 8 files.
+
+### Actions Taken
+
+1. **[`packages/shared` — new constants]** — `BYTE_CONVERSION.UTF16_BYTES_PER_CHAR: 2` (core.ts); `STORAGE_CONFIG.CURRENT_SCHEMA_VERSION: 1` + `LEGACY_SCHEMA_VERSION: 1` + `EXPORT_DEFAULTS.JSON_INDENT: 2` + `ZIP_COMPRESSION: "DEFLATE"` (storage.ts); `SECURITY_LIMITS.FILE_NAME_MIN_LENGTH: 1` + `FILE_NAME_MAX_LENGTH: 255` (validation.ts). Exported via existing config barrels; 10 new config tests added (2,304 total now passing).
+2. **[`apps/web/src/lib/storage.ts`]** — `hash.toString(16)` → `CRYPTO_CONFIG.HEX_RADIX`; 3x `key.length * 2` UTF-16 byte math → `BYTE_CONVERSION.UTF16_BYTES_PER_CHAR`; `(used / total) * 100` → `PERCENT_SCALE`; `migrateData(parsed as T, 1)` → `STORAGE_CONFIG.LEGACY_SCHEMA_VERSION`; `wizardStorage`/`editorStorage` `currentVersion: 1` + `maxRetries: 3` → `STORAGE_CONFIG.CURRENT_SCHEMA_VERSION` + `DEFAULT_MAX_RETRIES`.
+3. **[`apps/web/src/lib/security.ts`]** — filename zod limits `min(1).max(255)` → `SECURITY_LIMITS.FILE_NAME_MIN_LENGTH`/`FILE_NAME_MAX_LENGTH`; UTF-16 byte math → `BYTE_CONVERSION.UTF16_BYTES_PER_CHAR`.
+4. **[`apps/web/src/lib/export.ts`]** — `JSON.stringify(metadata, null, 2)` → `EXPORT_CONFIG.JSON_INDENT`; `compression: "DEFLATE"` → `EXPORT_CONFIG.ZIP_COMPRESSION`.
+5. **[`apps/web/src/App.tsx` + `config/styles.ts`]** — the FAB className introduced by `de42294f` (#2995) moved to `BUTTON.NEW_PROJECT_FAB`; call site now composes `${BUTTON.NEW_PROJECT_FAB}` + dynamic arrival class.
+6. **[Web config re-exports]** — `STORAGE_CONFIG` (constants/storage.ts) re-exports `CURRENT_SCHEMA_VERSION` + `LEGACY_SCHEMA_VERSION`; `EXPORT_CONFIG` (constants/wizard.ts) adds `JSON_INDENT` + `ZIP_COMPRESSION`.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors (all 3 workspaces) |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build (+ build:api) | ✅ clean |
+| Tests | ✅ 2,304/2,304 (964 web + 506 api + 834 shared) |
+| Secrets scan | ✅ 0 secrets (308 files) |
+| npm audit | ✅ 0 vulnerabilities |
+| Prettier | ✅ clean |
+
 ## Cycle 18 (2026-08-01 — ULW Loop: PR Handler Mode — 3 open PRs processed, all merged)
 
 > **ULW Loop run (2026-08-01)**: **Phase 0 → PR HANDLER MODE** (3 open PRs: #2996, #2995, #2994; no open issues queried — PRs take precedence). All 3 PRs processed one at a time (latest first): checked out each branch, verified sync with `main` (all initially based on `a03674ee`), rebased onto updated `main` where needed (2 trivial, conflict-free rebases), all local quality gates verified green, labeled (category + priority per contract), merged `--admin --squash --delete-branch`, remote branches deleted.

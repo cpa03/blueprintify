@@ -88,7 +88,10 @@ let _fileSchema: ReturnType<typeof z.object> | null = null;
 function getFileSchema() {
   if (!_fileSchema) {
     _fileSchema = z.object({
-      name: z.string().min(1).max(255),
+      name: z
+        .string()
+        .min(SECURITY_LIMITS.FILE_NAME_MIN_LENGTH)
+        .max(SECURITY_LIMITS.FILE_NAME_MAX_LENGTH),
       size: z.number().max(SECURITY_CONFIG.MAX_FILE_SIZE),
       type: z.string(),
       content: z.string().max(SECURITY_CONFIG.MAX_CONTENT_LENGTH),
@@ -378,8 +381,10 @@ function estimateLocalStorageBytes(): number {
       const key = localStorage.key(i);
       if (key !== null) {
         const value = localStorage.getItem(key);
-        // Use * 2 for UTF-16 encoding (JS strings are stored as UTF-16)
-        total += key.length * 2 + (value ? value.length * 2 : 0);
+        // Use UTF16_BYTES_PER_CHAR for UTF-16 encoding (JS strings are stored as UTF-16)
+        total +=
+          key.length * BYTE_CONVERSION.UTF16_BYTES_PER_CHAR +
+          (value ? value.length * BYTE_CONVERSION.UTF16_BYTES_PER_CHAR : 0);
       }
     }
     return total;

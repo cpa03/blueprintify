@@ -15,6 +15,8 @@ import { BACKUP_KEY_PREFIX, TEST_KEYS } from "../config/keys";
 import {
   STORAGE_CONFIG as SHARED_STORAGE_CONFIG,
   BYTE_CONVERSION,
+  CRYPTO_CONFIG,
+  PERCENT_SCALE,
   STORAGE_OPERATIONS,
   STORAGE_ERROR_TYPE_VALUES,
   ERROR_CLASS_NAMES,
@@ -155,7 +157,7 @@ function generateChecksum(data: string): string {
     hash = (hash << 5) - hash + char;
     hash = hash & hash;
   }
-  return hash.toString(16);
+  return hash.toString(CRYPTO_CONFIG.HEX_RADIX);
 }
 
 // ============================================================================
@@ -184,7 +186,9 @@ function calculateTotalBytes(): number {
       const key = localStorage.key(i);
       if (key !== null) {
         const value = localStorage.getItem(key);
-        total += key.length * 2 + (value ? value.length * 2 : 0);
+        total +=
+          key.length * BYTE_CONVERSION.UTF16_BYTES_PER_CHAR +
+          (value ? value.length * BYTE_CONVERSION.UTF16_BYTES_PER_CHAR : 0);
       }
     }
     return total;
@@ -214,7 +218,7 @@ function getStorageQuota(): QuotaInfo {
   const total = SHARED_STORAGE_CONFIG.QUOTA_BYTES;
   const used = Math.max(0, runningBytesUsed);
   const remaining = Math.max(0, total - used);
-  const percentage = total > 0 ? (used / total) * 100 : 0;
+  const percentage = total > 0 ? (used / total) * PERCENT_SCALE : 0;
 
   return { used, total, remaining, percentage };
 }
@@ -229,10 +233,14 @@ function updateQuotaEstimate(
   newValue: string | null
 ): void {
   if (previousValue !== null) {
-    runningBytesUsed -= key.length * 2 + previousValue.length * 2;
+    runningBytesUsed -=
+      key.length * BYTE_CONVERSION.UTF16_BYTES_PER_CHAR +
+      previousValue.length * BYTE_CONVERSION.UTF16_BYTES_PER_CHAR;
   }
   if (newValue !== null) {
-    runningBytesUsed += key.length * 2 + newValue.length * 2;
+    runningBytesUsed +=
+      key.length * BYTE_CONVERSION.UTF16_BYTES_PER_CHAR +
+      newValue.length * BYTE_CONVERSION.UTF16_BYTES_PER_CHAR;
   }
   // Clamp to prevent negative from cross-tab interference
   if (runningBytesUsed < 0) {
@@ -519,7 +527,7 @@ export class StorageService<T = unknown> {
     }
 
     // Legacy format - assume version 1
-    return this.migrateData(parsed as T, 1);
+    return this.migrateData(parsed as T, STORAGE_CONFIG.LEGACY_SCHEMA_VERSION);
   }
 
   private migrateData(data: T, fromVersion: number): T {
@@ -809,17 +817,17 @@ export const storageManager = new StorageManager();
 // Wizard storage with reliability features
 export const wizardStorage = storageManager.create({
   key: STORAGE_KEYS.WIZARD,
-  currentVersion: 1,
+  currentVersion: STORAGE_CONFIG.CURRENT_SCHEMA_VERSION,
   enableBackup: true,
-  maxRetries: 3,
+  maxRetries: STORAGE_CONFIG.DEFAULT_MAX_RETRIES,
 });
 
 // Editor storage with reliability features
 export const editorStorage = storageManager.create({
   key: STORAGE_KEYS.EDITOR,
-  currentVersion: 1,
+  currentVersion: STORAGE_CONFIG.CURRENT_SCHEMA_VERSION,
   enableBackup: true,
-  maxRetries: 3,
+  maxRetries: STORAGE_CONFIG.DEFAULT_MAX_RETRIES,
 });
 
 // ============================================================================
