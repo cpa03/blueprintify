@@ -6,15 +6,19 @@ import { useWizardStore, useEditorStore } from "../store";
 import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 import type { WizardStore } from "../store/wizard";
 
-vi.mock("../store", () => ({
-  useWizardStore: vi.fn(),
-  useEditorStore: vi.fn(),
-  useToast: () => ({
+const { toast } = vi.hoisted(() => ({
+  toast: {
     success: vi.fn(),
     info: vi.fn(),
     warning: vi.fn(),
     error: vi.fn(),
-  }),
+  },
+}));
+
+vi.mock("../store", () => ({
+  useWizardStore: vi.fn(),
+  useEditorStore: vi.fn(),
+  useToast: () => toast,
 }));
 
 vi.mock("../config/constants", async (importOriginal) => {
@@ -195,20 +199,50 @@ describe("StepIndicator", () => {
     const stackButton = screen.getByText("Tech Stack").closest("button");
     const featuresButton = screen.getByText("Features").closest("button");
 
-    expect(infoButton).not.toBeDisabled();
-    expect(stackButton).not.toBeDisabled();
-    expect(featuresButton).not.toBeDisabled();
+    expect(infoButton).not.toHaveAttribute("aria-disabled", "true");
+    expect(stackButton).not.toHaveAttribute("aria-disabled", "true");
+    expect(featuresButton).not.toHaveAttribute("aria-disabled", "true");
   });
 
-  it("disables navigation to future steps", () => {
+  it("marks future steps as aria-disabled but keeps them focusable", () => {
     mockWizardStore.currentStep = WIZARD_STEP_KEYS.FEATURES;
     render(<StepIndicator />);
 
     const reviewButton = screen.getByText("Review").closest("button");
     const generatingButton = screen.getByText("Generating").closest("button");
 
-    expect(reviewButton).toBeDisabled();
-    expect(generatingButton).toBeDisabled();
+    // Locked steps must remain focusable (not natively disabled) so the
+    // lock explanation is discoverable by keyboard and screen reader users.
+    expect(reviewButton).not.toBeDisabled();
+    expect(generatingButton).not.toBeDisabled();
+    expect(reviewButton).toHaveAttribute("aria-disabled", "true");
+    expect(generatingButton).toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("exposes the lock reason via aria-describedby sr-only hint", () => {
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.FEATURES;
+    render(<StepIndicator />);
+
+    const reviewButton = screen.getByText("Review").closest("button");
+    const describedBy = reviewButton?.getAttribute("aria-describedby");
+    expect(describedBy).toBeDefined();
+
+    const hint = document.getElementById(describedBy!);
+    expect(hint).toBeInTheDocument();
+    expect(hint).toHaveClass("sr-only");
+    expect(hint).toHaveTextContent('Complete previous steps to unlock "Review"');
+  });
+
+  it("gives feedback when a locked step is activated", () => {
+    mockWizardStore.currentStep = WIZARD_STEP_KEYS.FEATURES;
+    render(<StepIndicator />);
+
+    const reviewButton = screen.getByText("Review").closest("button");
+    fireEvent.click(reviewButton!);
+
+    // Locked steps must not navigate, but should inform the user why.
+    expect(mockWizardStore.setStep).not.toHaveBeenCalled();
+    expect(toast.info).toHaveBeenCalledWith('Complete previous steps to unlock "Review"');
   });
 
   it("calls setStep when clicking on a clickable step", () => {
@@ -226,7 +260,7 @@ describe("StepIndicator", () => {
     render(<StepIndicator />);
 
     const generatingButton = screen.getByText("Generating").closest("button");
-    expect(generatingButton).toBeDisabled();
+    expect(generatingButton).toHaveAttribute("aria-disabled", "true");
   });
 
   it("shows keyboard shortcuts for clickable steps", () => {

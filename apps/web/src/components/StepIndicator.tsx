@@ -205,13 +205,17 @@ function StepIndicatorComponent(): JSX.Element {
           <div key={step.key} className="flex items-center">
             <button
               onClick={() => handleStepClick(step.key, step.label)}
-              disabled={!isClickable}
+              // aria-disabled keeps locked steps focusable so keyboard, touch,
+              // and screen reader users can discover WHY the step is locked via
+              // the aria-describedby hint (a native `disabled` attribute removes
+              // the button from the tab order and silences the explanation).
+              aria-disabled={!isClickable}
               title={
                 isClickable
                   ? ACCESSIBILITY_LABELS.STEP.SHORTCUT_FORMAT(step.label, step.shortcut)
                   : TOAST_MESSAGES.STEP_LOCKED(step.label)
               }
-
+              aria-describedby={!isClickable ? `${step.key}-locked-hint` : undefined}
               aria-keyshortcuts={isClickable ? `Alt+${step.shortcut}` : undefined}
               aria-current={isActive ? "step" : undefined}
               className={`
@@ -243,6 +247,12 @@ function StepIndicatorComponent(): JSX.Element {
                 <span className="text-xs opacity-70 font-mono">Alt+{step.shortcut}</span>
               )}
             </button>
+
+            {!isClickable && (
+              <span id={`${step.key}-locked-hint`} className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}>
+                {TOAST_MESSAGES.STEP_LOCKED(step.label)}
+              </span>
+            )}
 
             {index < STEPS.length - 1 && (
               <div
