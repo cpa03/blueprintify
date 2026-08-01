@@ -8,7 +8,7 @@
  * Features:
  * - Grid display of available templates
  * - Template preview on hover/focus
- * - Keyboard navigation support
+ * - Keyboard navigation support (roving tabindex: single tab stop + arrow keys)
  * - Loading state with animation
  * - Toast notification on template selection
  *
@@ -47,7 +47,10 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const [focusIndex, setFocusIndex] = useState<number>(-1);
+  // Roving tabindex: single tab stop (first card by default), arrow keys move
+  // focus. Starting at 0 keeps tab order stable instead of every card being
+  // tabbable then flipping to roving mode after the first arrow press (ARIA listbox).
+  const [focusIndex, setFocusIndex] = useState<number>(0);
 
   // Estimate grid columns based on viewport — used for ArrowUp/ArrowDown navigation.
   // Defaults to 1 for mobile, detects 2 at md breakpoint (768px), 3 at lg (1024px).
@@ -156,7 +159,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
               aria-busy={isSelected && isLoading}
               aria-selected={isSelected}
               role="option"
-              tabIndex={focusIndex >= 0 ? (focusIndex === index ? 0 : -1) : 0}
+              tabIndex={focusIndex === index ? 0 : -1}
               style={
                 {
                   animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY}s`,

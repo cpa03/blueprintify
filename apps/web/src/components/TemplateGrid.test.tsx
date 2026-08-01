@@ -154,4 +154,40 @@ describe("TemplateGrid", () => {
     vi.advanceTimersByTime(300);
     expect(mockLoadTemplate).toHaveBeenCalled();
   });
+
+  it("keeps a single initial tab stop (roving tabindex)", () => {
+    render(<TemplateGrid />);
+
+    const cards = screen.getAllByRole("option");
+    expect(cards).toHaveLength(2);
+    expect(cards[0]!).toHaveAttribute("tabindex", "0");
+    expect(cards[1]!).toHaveAttribute("tabindex", "-1");
+  });
+
+  it("moves the tab stop and focus with arrow keys", () => {
+    render(<TemplateGrid />);
+
+    const cards = screen.getAllByRole("option");
+
+    fireEvent.keyDown(cards[0]!, { key: "ArrowRight" });
+
+    expect(cards[1]).toHaveFocus();
+    expect(cards[0]!).toHaveAttribute("tabindex", "-1");
+    expect(cards[1]!).toHaveAttribute("tabindex", "0");
+  });
+
+  it("moves focus to first and last card with Home and End keys", () => {
+    render(<TemplateGrid />);
+
+    const cards = screen.getAllByRole("option");
+
+    fireEvent.keyDown(cards[0]!, { key: "End" });
+    expect(cards[1]).toHaveFocus();
+    expect(cards[1]!).toHaveAttribute("tabindex", "0");
+
+    fireEvent.keyDown(cards[1]!, { key: "Home" });
+    expect(cards[0]).toHaveFocus();
+    expect(cards[0]!).toHaveAttribute("tabindex", "0");
+    expect(cards[1]!).toHaveAttribute("tabindex", "-1");
+  });
 });
