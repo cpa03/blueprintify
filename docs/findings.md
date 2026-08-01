@@ -2,6 +2,38 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 326 (2026-08-01 — RepoKeeper: repo hygiene audit, duplicate removal, docs/code sync)
+
+> **RepoKeeper run (2026-08-01)**: Full repository audit for hygiene: redundant/temporary files, documentation drift, dead references. Baseline gates verified (typecheck/lint/build all green at entry). Findings and fixes below.
+
+### Actions Taken
+
+1. **[Duplicate removal — 5 files]** — Removed 5 byte-identical duplicate files that existed BOTH in `docs/audits/` and `docs/audits/archive/`: `brocula-audit-2026-07-23.md`, `-run2.md`, `-run3.md`, `brocula-audit-2026-07-24.md`, `-run2.md`. Cycle 312 claimed to have "moved 5 current audit reports from Jul 23-24 to archive" but they were copied, not moved — root copies were never removed and were not indexed in `docs/audits/README.md` (table starts at Jul 25 Run 2). Kept canonical archive copies.
+2. **[Archive retention cleanup]** — Purged 3 stale archive files from Jul 1 (`docs/audits/archive/brocula-hunt-2026-07-01-run{1,2,3}.md`, >30-day retention window; oldest remaining archive file is now Jul 2, which is exactly at the 30-day boundary and deferred to next cycle). Updated `docs/audits/archive/CONSOLIDATED-README.md` (cleanup log + date range Jul 2–Jul 24 + last-cleanup stamp).
+3. **[api-documentation.md drift fixes — 8 items]** — Corrected rate-limit table (`Lenient` tier removed — `rateLimitConfigs.lenient` is never used in production code; `apps/api/src/index.ts:85` applies `standard` globally; Strict broadened to include generate/tasks/refine + storage/clear); SSE stream format examples now show JSON-wrapped payloads `{"type":"content","content":...}` + `{"type":"done"}` (actual `apps/api/src/utils/stream.ts:87-99`); POST /share request body now includes `passphraseHash` and response wrapped in `{success,data:{...,passphraseRequired}}`; GET /share/:id response wrapped in `{success,data}` with protected-share partial response documented; POST /share/:id/verify error corrected `401` → `403 Forbidden` (actual `share.ts:559-568`); DELETE /share/:id response wrapped in `{success,data}`; Error Types table gained `service_unavailable` row (exists in `ERROR_TYPES`, `packages/shared/src/config/api.ts:261`); GET /warmup response example gained `recommendation` field.
+4. **[README drift fixes]** — Removed **Radix UI** from root `README.md:284` tech stack (zero `@radix-ui` references in any package.json/package-lock.json/imports). `apps/web/README.md`: removed same Radix UI claim, removed non-existent `npm run analyze` build script (not in `apps/web/package.json`), corrected `config/keys.ts` description (it defines localStorage/sessionStorage keys, NOT keyboard shortcuts — those live in `config/constants/keyboard.ts`), added `config/constants/` dir to tree.
+5. **[release-process.md drift fixes]** — Corrected non-existent scripts: `npm run deploy:production` → `cd apps/api && npm run deploy` (web has no deploy script; Vercel deploy via `vercel deploy --prod`), `npm run migrate:production` → `npm run db:migrate`, `npm run migrate:status` → `npm run db:status`, `curl .../health` → `curl .../` (API has no `/health` route; health check is `GET /`).
+6. **[features.md gap]** — Documented the previously-undocumented **share-links feature** (FEAT-07: POST/GET/DELETE `/share`, `/:id/verify`, passphrase protection) — implemented in code (`apps/api/src/routes/share.ts`) but absent from features.md. Updated Last Updated stamp.
+7. **[Verified clean]** — llms.txt ✅ (versions/endpoints/features all accurate), ci-configuration.md ✅ (4 workflows, 11 `node-version-file` occurrences, `.nvmrc`/`.node-version` = 22), roadmap.md ✅, README tree/links ✅, all 28 agents + 25 skills exist ✅, 0 orphan scripts (all 4 in scripts/ referenced by package.json) ✅, 0 temp/junk/untracked files ✅, 0 empty tracked dirs ✅, `docs/dispatch.json` reference is a transient workflow artifact (dispatcher job still produces it) — left as-is.
+8. **[Branch hygiene]** — Pre-existing stale divergent branches `agent/security-engineer` and `test/permissions-check` left untouched (unmerged, per precedent).
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors |
+| Lint | ✅ 0 errors, 0 warnings |
+| Build (+ build:api) | ✅ clean |
+| Format (Prettier) | ✅ clean |
+| Redundant files removed | ✅ 8 (5 duplicates + 3 stale archives) |
+| Doc drift fixed | ✅ 8 api-doc items + 3 README items + 4 release-process items + 1 features gap |
+
+### Verdict
+
+**Repository healthy — 8 redundant files removed, 16 doc/code drift items corrected, all quality gates green.** No code changes (docs + cleanup only). No open PRs at entry.
+
+---
+
 ## Cycle 19 (2026-08-01 — ULW Loop: Flexy Iteration 181 — storage/export encoding literals + FAB class centralized)
 
 > **Flexy Iteration 181** (commit `de42294f`, fix #2995, introduced a hardcoded New Project FAB className in `App.tsx:557` + the storage layer still repeated raw encoding literals). Centralized 8 new shared constants and eliminated 10+ hardcoded literals across 8 files.

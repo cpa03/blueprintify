@@ -281,7 +281,6 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **Zustand** - State management
 - **CodeMirror** - Code editor (via @uiw/react-codemirror)
 - **CSS Animations** - Animations (spring, transition)
-- **Radix UI** - Accessible components
 - **React Markdown** - Markdown rendering
 - **JSZip** - File compression for exports
 

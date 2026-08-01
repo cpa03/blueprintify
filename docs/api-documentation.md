@@ -82,7 +82,8 @@ Endpoint for pre-warming the circuit breaker on worker startup. Initializes the 
     "successes": 0,
     "isColdStart": true,
     "coldStartRemainingMs": 30000
-  }
+  },
+  "recommendation": "Warming up, deployment is in cold start"
 }
 ```
 
@@ -140,13 +141,12 @@ Streams `blueprint.md` content line by line via SSE.
 
 **Event Stream Format:**
 
+Every SSE message carries a JSON-encoded `data` payload. Content chunks use `type: "content"`, and the stream terminates with `type: "done"`:
+
 ```
-data: # Project: [project-name]
+data: {"type":"content","content":"# Project: [project-name]\n\n## Overview\n[Generated content...]"}
 
-data: ## Overview
-data: [Generated content...]
-
-data: DONE
+data: {"type":"done"}
 ```
 
 #### Example Request
@@ -468,6 +468,7 @@ interface ShareCreateRequest {
     techStack?: string[];
     author?: string;
   };
+  passphraseHash?: string; // Optional SHA-256 hex hash of passphrase to protect the share
 }
 ```
 
@@ -475,9 +476,13 @@ interface ShareCreateRequest {
 
 ```json
 {
-  "id": "abc123def456",
-  "url": "https://your-domain.com/share/abc123def456",
-  "expiresAt": "2026-03-20T10:00:00.000Z"
+  "success": true,
+  "data": {
+    "id": "abc123def456",
+    "url": "https://your-domain.com/share/abc123def456",
+    "expiresAt": "2026-03-20T10:00:00.000Z",
+    "passphraseRequired": false
+  }
 }
 ```
 
@@ -503,18 +508,44 @@ Retrieve a shared blueprint by ID.
 
 #### Response
 
+For unprotected shares, the full blueprint is returned:
+
 ```json
 {
-  "id": "abc123def456",
-  "title": "My Project Blueprint",
-  "blueprint": "# Project: My App\n\n## Overview\n...",
-  "metadata": {
-    "projectName": "My App",
-    "techStack": ["React", "TypeScript"],
-    "author": "Developer"
-  },
-  "createdAt": "2026-02-18T10:00:00.000Z",
-  "expiresAt": "2026-03-20T10:00:00.000Z"
+  "success": true,
+  "data": {
+    "id": "abc123def456",
+    "title": "My Project Blueprint",
+    "blueprint": "# Project: My App\n\n## Overview\n...",
+    "passphraseRequired": false,
+    "metadata": {
+      "projectName": "My App",
+      "techStack": ["React", "TypeScript"],
+      "author": "Developer"
+    },
+    "createdAt": "2026-02-18T10:00:00.000Z",
+    "expiresAt": "2026-03-20T10:00:00.000Z"
+  }
+}
+```
+
+For passphrase-protected shares without a valid `?token=xxx`, the blueprint content is hidden:
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "abc123def456",
+    "title": "My Project Blueprint",
+    "passphraseRequired": true,
+    "metadata": {
+      "projectName": "My App",
+      "techStack": ["React", "TypeScript"],
+      "author": "Developer"
+    },
+    "createdAt": "2026-02-18T10:00:00.000Z",
+    "expiresAt": "2026-03-20T10:00:00.000Z"
+  }
 }
 ```
 
@@ -544,24 +575,28 @@ Verify a passphrase for a passphrase-protected shared blueprint. On success, ret
 
 ```json
 {
-  "id": "abc123def456",
-  "title": "My Project Blueprint",
-  "blueprint": "# Project: My App\n\n## Overview\n...",
-  "metadata": {
-    "projectName": "My App",
-    "techStack": ["React", "TypeScript"],
-    "author": "Developer"
-  },
-  "createdAt": "2026-02-18T10:00:00.000Z",
-  "expiresAt": "2026-03-20T10:00:00.000Z",
-  "verifyToken": "short-lived-token"
+  "success": true,
+  "data": {
+    "id": "abc123def456",
+    "title": "My Project Blueprint",
+    "blueprint": "# Project: My App\n\n## Overview\n...",
+    "passphraseRequired": true,
+    "metadata": {
+      "projectName": "My App",
+      "techStack": ["React", "TypeScript"],
+      "author": "Developer"
+    },
+    "createdAt": "2026-02-18T10:00:00.000Z",
+    "expiresAt": "2026-03-20T10:00:00.000Z",
+    "verifyToken": "short-lived-token"
+  }
 }
 ```
 
 #### Error Responses
 
 - **400 Bad Request**: Invalid share ID format or invalid passphrase
-- **401 Unauthorized**: Incorrect passphrase
+- **403 Forbidden**: Incorrect passphrase
 - **404 Not Found**: Share not found or has expired
 - **503 Service Unavailable**: Database not configured
 
@@ -581,7 +616,10 @@ Delete a shared blueprint.
 
 ```json
 {
-  "message": "Share deleted successfully"
+  "success": true,
+  "data": {
+    "message": "Share deleted successfully"
+  }
 }
 ```
 
@@ -615,16 +653,17 @@ The `requestId` field provides a unique identifier for each request, enabling ef
 
 ### Error Types
 
-| Type             | Description                                         | HTTP Status |
-| ---------------- | --------------------------------------------------- | ----------- |
-| `validation`     | Request validation failed                           | 400         |
-| `authentication` | Authentication required                             | 401         |
-| `authorization`  | Insufficient permissions                            | 403         |
-| `not_found`      | Resource not found                                  | 404         |
-| `configuration`  | Service configuration error (e.g., missing API key) | 503         |
-| `network`        | Network error occurred                              | 500         |
-| `ai_service`     | AI service error                                    | 503         |
-| `internal`       | Internal server error                               | 500         |
+| Type                  | Description                                         | HTTP Status |
+| --------------------- | --------------------------------------------------- | ----------- |
+| `validation`          | Request validation failed                           | 400         |
+| `authentication`      | Authentication required                             | 401         |
+| `authorization`       | Insufficient permissions                            | 403         |
+| `not_found`           | Resource not found                                  | 404         |
+| `configuration`       | Service configuration error (e.g., missing API key) | 503         |
+| `network`             | Network error occurred                              | 500         |
+| `ai_service`          | AI service error                                    | 503         |
+| `service_unavailable` | Service temporarily unavailable                     | 503         |
+| `internal`            | Internal server error                               | 500         |
 
 ### Common Error Scenarios
 
@@ -718,13 +757,12 @@ The API supports detailed tech stack categorization for better project planning 
 
 ## Rate Limiting
 
-The API implements rate limiting using Cloudflare's Rate Limiting bindings with three tiers:
+The API implements rate limiting using Cloudflare's Rate Limiting bindings with two active tiers:
 
-| Tier     | Rate Limit          | Usage                        |
-| -------- | ------------------- | ---------------------------- |
-| Strict   | 10 requests/minute  | Share enumeration protection |
-| Standard | 60 requests/minute  | General API endpoints        |
-| Lenient  | 120 requests/minute | Health check and warmup      |
+| Tier     | Rate Limit         | Usage                                                                 |
+| -------- | ------------------ | --------------------------------------------------------------------- |
+| Strict   | 10 requests/minute | Share enumeration protection, blueprint generation, task generation, refinement, and storage clear |
+| Standard | 60 requests/minute | General API endpoints (health check, warmup, export, import, share, storage) |
 
 Rate limits are applied globally with configurable windows and limits via environment variables (`RATE_LIMIT_WINDOW_MS`, `RATE_LIMIT_STRICT_MAX`, `RATE_LIMIT_STANDARD_MAX`, `RATE_LIMIT_LENIENT_MAX`). Additionally, the OpenAI API has its own rate limits that may affect request processing.
 
@@ -931,12 +969,12 @@ The following features are planned for future releases:
 
 ## SSE Stream Format
 
-All streaming endpoints use Server-Sent Events with the following format:
+All streaming endpoints use Server-Sent Events with the following format. Each event's `data` field contains a JSON object:
 
 ```
-data: [content line]
-data: [another content line]
-data: DONE
+data: {"type":"content","content":"[content chunk]"}
+data: {"type":"content","content":"[another content chunk]"}
+data: {"type":"done"}
 ```
 
 **Event Types:**

@@ -203,7 +203,8 @@ If issues arise, rollback using:
 
 ```bash
 git checkout v1.1.0
-npm run deploy:production
+cd apps/api
+npm run deploy
 ```
 ````
 
@@ -228,7 +229,7 @@ npm run deploy
 wrangler tail --format=json
 
 # Test production endpoint
-curl https://api.blueprintify.dev/health
+curl https://api.blueprintify.dev/
 ````
 
 #### 2. Frontend Deployment
@@ -238,21 +239,21 @@ curl https://api.blueprintify.dev/health
 cd apps/web
 npm run build
 
-# Deploy to production
-npm run deploy:production
+# Deploy to production (Vercel)
+vercel deploy --prod
 
 # Verify deployment
-curl https://blueprintify.dev/health
+curl https://blueprintify.dev/
 ```
 
 #### 3. Database Migrations
 
 ```bash
 # Run database migrations
-npm run migrate:production
+npm run db:migrate
 
 # Verify migration status
-npm run migrate:status
+npm run db:status
 ```
 
 ## 🔍 Quality Gates
@@ -274,7 +275,7 @@ const preDeployChecks: PreDeployCheck[] = [
     name: "API Health Check",
     critical: true,
     check: async () => {
-      const response = await fetch(`${process.env.API_URL}/health`);
+      const response = await fetch(`${process.env.API_URL}/`);
       return response.ok;
     },
   },
@@ -529,7 +530,7 @@ class RollbackManager {
 
   private async rollbackFrontend(): Promise<void> {
     const previousVersion = await this.getPreviousFrontendVersion();
-    execSync(`git checkout ${previousVersion} && npm run deploy:production`);
+    execSync(`git checkout ${previousVersion} && npm run build`);
   }
 }
 ```
@@ -548,11 +549,11 @@ wrangler rollback --compatibility-date 2023-05-18
 cd apps/web
 git checkout <previous-stable-commit>
 npm run build
-npm run deploy:production
+vercel deploy --prod
 
 # 4. Verify rollback
-curl -f https://api.blueprintify.dev/health
-curl -f https://blueprintify.dev/health
+curl -f https://api.blueprintify.dev/
+curl -f https://blueprintify.dev/
 ```
 
 ### Post-Incident Analysis

@@ -15,7 +15,6 @@ The web application is a React 19 SPA built with Vite. It provides a wizard inte
 - **Code Editor**: [CodeMirror](https://codemirror.net/) (via @uiw/react-codemirror)
 - **Markdown**: [React Markdown](https://remarkjs.github.io/react-markdown/) + [rehype](https://github.com/rehypejs/rehype)
 - **Animations**: CSS spring/transition utility classes
-- **Components**: [Radix UI](https://www.radix-ui.com/) (accessible primitives)
 - **Testing**: [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/)
 - **Analytics**: [Vercel Analytics](https://vercel.com/analytics) + [Speed Insights](https://vercel.com/speed-insights)
 
@@ -65,9 +64,6 @@ npm run typecheck
 ```bash
 # Production build
 npm run build
-
-# Build with bundle analysis
-npm run analyze
 ```
 
 ## Project Structure
@@ -95,9 +91,10 @@ apps/web/
 │   │   └── ... (40+ components)
 │   ├── config/            # Configuration
 │   │   ├── constants.ts    # UI strings and constants
+│   │   ├── constants/      # Constants (keyboard shortcuts, icons, styles)
 │   │   ├── env.ts         # Environment variables
 │   │   ├── icons.ts       # SVG icon components
-│   │   ├── keys.ts        # Keyboard shortcut definitions
+│   │   ├── keys.ts        # localStorage/sessionStorage key definitions
 │   │   └── theme.ts       # Theme configuration
 │   ├── context/           # React contexts
 │   │   └── ReducedMotionContext.tsx
