@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";
@@ -11,33 +12,73 @@ vi.mock("../store", () => ({
   useWizardStore: vi.fn(),
 }));
 
+vi.mock("../hooks/useReducedMotion", () => ({
+  useReducedMotion: vi.fn(() => false),
+}));
+
+import { useReducedMotion } from "../hooks/useReducedMotion";
+
+const capturedAnimateProps = vi.hoisted(() => [] as unknown[]);
+
 // Framer motion subpath mock (framer-motion/m exports motion components)
-vi.mock(import("framer-motion/m"), async (importOriginal) => {
-  const Actual = await importOriginal();
-  return {
-    ...Actual,
-    motion: new Proxy(
-      {},
-      {
-        get: (_target, prop) => {
-          const component = prop as string;
-          const ActualMotion = (Actual as unknown as Record<string, unknown>).motion as Record<
-            string,
-            unknown
-          >;
-          if (ActualMotion && typeof ActualMotion[component] === "function") {
-            return ActualMotion[component];
-          }
-          return vi.fn(({ children, ...props }) => (
-            <div data-motion-component={component} data-testid={`motion-${component}`} {...props}>
-              {children}
-            </div>
-          ));
-        },
-      }
-    ),
-  };
-});
+vi.mock("framer-motion/m", () => ({
+  div: vi.fn(
+    ({
+      children,
+      animate,
+      ...props
+    }: {
+      children?: ReactNode;
+      animate?: unknown;
+      [key: string]: unknown;
+    }) => {
+      capturedAnimateProps.push(animate);
+      return <div {...props}>{children}</div>;
+    }
+  ),
+  span: vi.fn(
+    ({
+      children,
+      animate,
+      ...props
+    }: {
+      children?: ReactNode;
+      animate?: unknown;
+      [key: string]: unknown;
+    }) => {
+      capturedAnimateProps.push(animate);
+      return <span {...props}>{children}</span>;
+    }
+  ),
+  p: vi.fn(
+    ({
+      children,
+      animate,
+      ...props
+    }: {
+      children?: ReactNode;
+      animate?: unknown;
+      [key: string]: unknown;
+    }) => {
+      capturedAnimateProps.push(animate);
+      return <p {...props}>{children}</p>;
+    }
+  ),
+  h3: vi.fn(
+    ({
+      children,
+      animate,
+      ...props
+    }: {
+      children?: ReactNode;
+      animate?: unknown;
+      [key: string]: unknown;
+    }) => {
+      capturedAnimateProps.push(animate);
+      return <h3 {...props}>{children}</h3>;
+    }
+  ),
+}));
 
 const mockWizardStore: WizardStore = {
   currentStep: WIZARD_STEP_KEYS.INFO,
@@ -68,6 +109,7 @@ const mockWizardStore: WizardStore = {
 describe("EditorEmptyState", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    capturedAnimateProps.length = 0;
     (useWizardStore as unknown as Mock).mockImplementation(
       (selector: (state: WizardStore) => unknown) => selector(mockWizardStore)
     );
@@ -123,5 +165,35 @@ describe("EditorEmptyState", () => {
     );
     render(<EditorEmptyState />);
     expect(screen.getByText("Your blueprint is waiting to be created")).toBeInTheDocument();
+  });
+
+  it("passes no keyframe animations when reduced motion is preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    render(<EditorEmptyState />);
+
+    const keyframeAnims = capturedAnimateProps.filter(
+      (animate) =>
+        typeof animate === "object" &&
+        animate !== null &&
+        Object.values(animate as Record<string, unknown>).some((value) => Array.isArray(value))
+    );
+    expect(keyframeAnims).toHaveLength(0);
+
+    vi.mocked(useReducedMotion).mockReturnValue(false);
+  });
+
+  it("passes keyframe animations when motion is allowed", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(false);
+    render(<EditorEmptyState />);
+
+    const keyframeAnims = capturedAnimateProps.filter(
+      (animate) =>
+        typeof animate === "object" &&
+        animate !== null &&
+        Object.values(animate as Record<string, unknown>).some((value) => Array.isArray(value))
+    );
+    expect(keyframeAnims.length).toBeGreaterThan(0);
+
+    vi.mocked(useReducedMotion).mockReturnValue(false);
   });
 });

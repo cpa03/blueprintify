@@ -24,6 +24,7 @@ import { ANIMATION_ENTRANCE_DELAYS, DISPLAY_SYMBOLS } from "@blueprint/shared/co
 import { EDITOR_EMPTY_STATE_LABELS } from "../config/constants/content";
 import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from "../utils/motion";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 /**
  * Empty state display shown in the editor when no content has been generated.
@@ -41,6 +42,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
   const progress = ((currentIndex + 1) / WIZARD_STEPS.length) * 100;
   const modifierKey = getModifierLabel();
   const altKey = getAltKeyLabel();
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <motion.div
@@ -52,7 +54,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
       <motion.div className="relative mb-8" variants={fadeInUp}>
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-primary-500/20 via-accent-purple/20 to-accent-pink/20 blur-3xl"
-          animate={pulseAnimation}
+          animate={shouldReduceMotion ? {} : pulseAnimation}
           style={{
             width: EMPTY_STATE_CONFIG.EDITOR_GLOW.WIDTH_PX,
             height: EMPTY_STATE_CONFIG.EDITOR_GLOW.HEIGHT_PX,
@@ -64,10 +66,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
         <div className="relative">
           <motion.div
             className="absolute -top-2 -right-4 w-20 h-24 glass-card rounded-lg border-2 border-dashed border-dark-600 flex items-center justify-center"
-            animate={{
-              ...floatingAnimation,
-              y: [-6, 6, -6],
-            }}
+            animate={shouldReduceMotion ? {} : { ...floatingAnimation, y: [-6, 6, -6] }}
             transition={{ ...floatingAnimation.transition, delay: ANIMATION_ENTRANCE_DELAYS.SLOW }}
           >
             <span className="text-2xl opacity-50">{UI_EMOJIS.DOCUMENT_BLANK}</span>
@@ -75,10 +74,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
 
           <motion.div
             className="absolute -top-1 -right-2 w-20 h-24 glass-card rounded-lg border-2 border-dashed border-dark-500 flex items-center justify-center"
-            animate={{
-              ...floatingAnimation,
-              y: [-4, 8, -4],
-            }}
+            animate={shouldReduceMotion ? {} : { ...floatingAnimation, y: [-4, 8, -4] }}
             transition={{ ...floatingAnimation.transition, delay: ANIMATION_ENTRANCE_DELAYS.FAST }}
           >
             <span className="text-2xl opacity-70">{UI_EMOJIS.DOCUMENT}</span>
@@ -86,12 +82,12 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
 
           <motion.div
             className="relative w-20 h-24 glass-card rounded-lg border border-dark-400 flex flex-col items-center justify-center p-3"
-            animate={floatingAnimation}
+            animate={shouldReduceMotion ? {} : floatingAnimation}
           >
             <motion.div
               className="w-full h-1.5 bg-dark-600 rounded mb-2"
               initial={{ width: "30%" }}
-              animate={{ width: ["30%", "80%", "30%"] }}
+              animate={shouldReduceMotion ? {} : { width: ["30%", "80%", "30%"] }}
               transition={{
                 duration: ANIMATION.SLOW_PULSE,
                 repeat: Infinity,
@@ -101,7 +97,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
             <motion.div
               className="w-full h-1 bg-dark-700 rounded mb-1.5"
               initial={{ width: "60%" }}
-              animate={{ width: ["60%", "40%", "60%"] }}
+              animate={shouldReduceMotion ? {} : { width: ["60%", "40%", "60%"] }}
               transition={{
                 duration: ANIMATION.BREATH,
                 repeat: Infinity,
@@ -112,7 +108,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
             <motion.div
               className="w-full h-1 bg-dark-700 rounded mb-1.5"
               initial={{ width: "80%" }}
-              animate={{ width: ["80%", "50%", "80%"] }}
+              animate={shouldReduceMotion ? {} : { width: ["80%", "50%", "80%"] }}
               transition={{
                 duration: ANIMATION.DRIFT,
                 repeat: Infinity,
@@ -123,7 +119,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
             <motion.div
               className="w-full h-1 bg-dark-700 rounded"
               initial={{ width: "40%" }}
-              animate={{ width: ["40%", "70%", "40%"] }}
+              animate={shouldReduceMotion ? {} : { width: ["40%", "70%", "40%"] }}
               transition={{
                 duration: ANIMATION.DRIFT_SLOW,
                 repeat: Infinity,
@@ -160,7 +156,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
                 className={`w-2 h-2 rounded-full transition-colors duration-300 ${
                   isCompleted ? "bg-accent-emerald" : isCurrent ? "bg-primary-500" : "bg-dark-600"
                 }`}
-                animate={isCurrent ? { scale: [1, 1.3, 1] } : {}}
+                animate={!shouldReduceMotion && isCurrent ? { scale: [1, 1.3, 1] } : {}}
                 transition={{ duration: ANIMATION.GENTLE_PULSE, repeat: Infinity }}
               />
             );
@@ -188,7 +184,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
         transition={{ delay: ANIMATION_ENTRANCE_DELAYS.FULL_SECOND }}
       >
         <motion.span
-          animate={{ x: [0, 4, 0] }}
+          animate={shouldReduceMotion ? {} : { x: [0, 4, 0] }}
           transition={{ duration: ANIMATION.FLOAT, repeat: Infinity }}
         >
           {DISPLAY_SYMBOLS.ARROW_RIGHT}
