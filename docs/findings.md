@@ -2,6 +2,36 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 18 (2026-08-01 — ULW Loop: PR Handler Mode — 3 open PRs processed, all merged)
+
+> **ULW Loop run (2026-08-01)**: **Phase 0 → PR HANDLER MODE** (3 open PRs: #2996, #2995, #2994; no open issues queried — PRs take precedence). All 3 PRs processed one at a time (latest first): checked out each branch, verified sync with `main` (all initially based on `a03674ee`), rebased onto updated `main` where needed (2 trivial, conflict-free rebases), all local quality gates verified green, labeled (category + priority per contract), merged `--admin --squash --delete-branch`, remote branches deleted.
+>
+> **External checks on all 3 PRs**: Workers Builds FAILURE (pre-existing platform-level — 6 placeholder Cloudflare resource IDs in `apps/api/wrangler.toml`, tracked by #1045/#1165; fails on all PRs incl. merged ones) and Vercel deployment FAILURE ("Deployment rate limited — retry in 24 hours" / build error — pre-existing environmental; fails on all PRs incl. merged ones). Both checks are non-required (`mergeStateStatus: UNSTABLE`, not `BLOCKED`). Per documented repo precedent (Cycles 9-17), local CI equivalent (typecheck/lint/build + build:api/tests + secrets scan + audit + Prettier) is the authoritative gate — all passed for every PR.
+
+### Actions Taken
+
+1. **[PR #2996 — `docs(audits): BroCula ULW Loop Aug 1 Run 22`]** — Docs-only (2 files: audit report + README index). Already synced (1 ahead / 0 behind). Verified: typecheck ✅ lint ✅ (0 warnings) build ✅ build:api ✅ tests **2,294/2,294** (964 web + 506 api + 824 shared) ✅ secrets ✅ (304 files) audit 0 vulns ✅ Prettier ✅. Labeled `docs`+`P3` (was unlabeled). Merged `--admin --squash` as `ccf42586`, branch deleted.
+2. **[PR #2995 — `fix(web): stack New Project button above View Blueprint FAB`]** — Real bug fix (1 file, +5/−2): New Project button moved `bottom-24` → `bottom-40` so its `z-20` overlay no longer covers the `SHOW_EDITOR_FAB` (`fixed bottom-24 right-6`, no z-index) when editor hidden with content. Root cause verified against `apps/web/src/config/styles.ts:151` + `ShowEditorButton.tsx:113`. Rebased onto updated main (1 behind after #2996 merge; clean). All gates green (2,294/2,294; pre-push hook ran full `check`). Already labeled `bug`+`P2`+`area:frontend-engineer`. Merged `--admin --squash` as `de42294f`, branch deleted.
+3. **[PR #2994 — `fix(bugfixer): Cycle 12 — full BugFixer audit, zero bugs found`]** — Docs-only (docs/bugs.md, +14). Rebased onto updated main (2 behind after #2996+#2995; clean). All gates green (2,294/2,294). Labeled `chore`+`P3` (was unlabeled). Merged `--admin --squash` as `f5bf728c`, branch deleted.
+4. **[Branch hygiene]** — Post-merge remote branches deleted: `brocula/loop-2026-08-01-run22`, `palette/micro-ux-new-project-fab-stack`, `agent/bugfixer`. Pre-existing stale divergent branches `agent/security-engineer` and `test/permissions-check` left untouched (unmerged, per precedent).
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors (all 3 PRs) |
+| Lint | ✅ 0 errors, 0 warnings (all 3 PRs) |
+| Build (+ build:api) | ✅ clean (all 3 PRs) |
+| Tests | ✅ 2,294/2,294 pass across PRs |
+| Secrets scan | ✅ 0 secrets (304 files) |
+| npm audit | ✅ 0 vulnerabilities |
+| Prettier | ✅ clean |
+| Open PRs after cycle | 0 |
+
+### Verdict
+
+**All 3 open PRs merged with full validation — repository healthy: 0 open PRs, all local gates green, tests 2,294/2,294.** External Vercel/Workers deployment checks remain failed (platform-level: rate limit + placeholder CF IDs tracked by #1045/#1165; unchanged across cycles). No linked issues required closing (0 across all PRs). No destructive actions taken.
+
 ## Cycle 17 (2026-07-31 — ULW Loop: PR Handler Mode — 4 open PRs processed, all merged)
 
 > **ULW Loop run (2026-07-31)**: **Phase 0 → PR HANDLER MODE** (4 open PRs: #2992, #2991, #2990, #2989; 0 open issues at entry). All 4 PRs processed one at a time (latest first): synced with `main` (rebase), all local quality gates verified green, labeled (category + priority), merged `--admin --squash --delete-branch`, remote branches deleted.
