@@ -1,6 +1,21 @@
 # Bug Log: Known Defects
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
+## Bug Status — Aug 1 2026 (BugFixer Cycle 16)
+
+> **BugFixer Cycle 16 (2026-08-01 — agent/bugfixer-cycle-16)**: Full BugFixer audit complete — **zero bugs found**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web + api) tests **2,309/2,309** ✅ (969 web + 506 api + 834 shared). Format ✅. Secrets scan ✅ (305 files). Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source (only wrangler placeholder IDs — pre-existing, tracked as #1045/#1165, not a code defect). 0 merge conflict artifacts. Lockfile: **no drift** (workspace deps + versions in sync). `npm ls` clean — exit 0. All relative imports resolve.
+>
+> **7 new post-Cycle-15 commits indexed** — HEAD at `13212e47` (Merge PR #3010 — docs(findings) ULW Loop Cycle 23 record). Prior: `a6640c61` (docs(findings) Cycle 23 — 2 PRs merged #3007/#3006, #918 fixed via jest-axe a11y tests), `47306b13` (test(web) jest-axe a11y tests for core components (#918)), `9db8baac` (Merge PR #3006 — agent/bugfixer-cycle-15), `550e471a` (Merge PR #3007 — agent/ui-ux-engineer), `fa7c306c` (Merge PR #3008 — brocula/loop-2026-08-01-run25), `400960cb` (feat(ux) make locked wizard steps focusable with aria-disabled lock explanation).
+> **Test count**: **2,309** (969 web + 506 api + 834 shared — **+5 web** from PR #3009 jest-axe a11y tests (#918)).
+> **BUG-037 still fixed**: archive retention scan covers **all** dated `docs/audits/archive/*.md` files (audit + hunt families); oldest remaining Jul 13 (19 days, within 30-day window — no purge needed).
+> **BUG-036 still fixed**: `npm ls --all` exit 0, 0 invalid/missing/extraneous.
+> **BUG-014/017/032/033/034/035 still fixed**: zero stale `docs/bug.md`/`docs/feature.md`/`docs/task.md` refs outside historical logs; zero hardcoded `node-version:` in workflows (all use `node-version-file: ".node-version"`); eslint 9.39.5; `@cloudflare/workers-types` in sync.
+> **Archive retention**: OK (oldest Jul 13 — 19 days, within 30-day window — no purge needed).
+> **Stale merged branches**: **1** (`origin/brocula/loop-2026-08-01-run25` merged via PR #3008 but remote ref still present — flagged for RepoKeeper). `agent/security-engineer` and `test/permissions-check` remain unmerged divergent branches (pre-existing). `agent/issue-manager-cycle-24` has open PR #3011 (not BugFixer scope).
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **`validate:wrangler`**: fails on 6 placeholder Cloudflare IDs — pre-existing documented TODO (commit `b45bb4dc`), not a code defect; real IDs provisioned at deploy time.
+> **All quality gates pass. Zero bugs found.** Branch created.
+
 ## Bug Status — Aug 1 2026 (BugFixer Cycle 15)
 
 > **BugFixer Cycle 15 (2026-08-01 — agent/bugfixer-cycle-15)**: Full BugFixer audit complete — **zero bugs found**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web + api) tests **2,304/2,304** ✅ (964 web + 506 api + 834 shared). Format ✅. Secrets scan ✅ (304 files). Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source (only wrangler placeholder IDs — pre-existing, tracked as #1045/#1165, not a code defect). 0 merge conflict artifacts. Lockfile: **no drift** (workspace deps + versions in sync). `npm ls` clean — exit 0.
