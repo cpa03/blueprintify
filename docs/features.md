@@ -1,7 +1,7 @@
 # Feature Specifications
 
 **Status**: Active
-**Last Updated**: 2026-07-25 (RepoKeeper Cycle 302)
+**Last Updated**: 2026-08-01 (RepoKeeper Cycle 326)
 
 ## [FEAT-01] Project Initialization Wizard ✅ COMPLETED
 
@@ -422,3 +422,41 @@ As a user, I want to edit, save, and refine my generated blueprints, so that I c
 - `aria-live="assertive"` for milestone achievement (immediate notification)
 - `aria-atomic="true"` ensures the entire content is read as a single unit
 - Timer cleanup on unmount via `useEffect` return
+
+---
+
+## [FEAT-07] Shareable Blueprint Links ✅ COMPLETED
+
+**Status**: Complete
+**Priority**: P2 (Medium)
+
+### User Story
+
+As a user, I want to share my generated blueprint via a link, so that collaborators can view it without an account.
+
+### Acceptance Criteria
+
+- [x] Create shareable blueprint links with optional passphrase protection
+- [x] Retrieve shared blueprints by ID (public, immutable until expiration)
+- [x] Passphrase-protected shares hide blueprint content until verified
+- [x] Verify passphrase endpoint issues short-lived token for subsequent access
+- [x] Delete owned shares (creator-only via authorization token)
+- [x] 30-day expiration and CDN caching headers for shared content
+
+### Delivered Features
+
+#### Share Creation & Retrieval ✅
+
+- **POST `/share`** — Creates a share with optional `passphraseHash` (SHA-256). Response includes `id`, `url`, `expiresAt`, and `passphraseRequired` (API: `apps/api/src/routes/share.ts`)
+- **GET `/share/:id`** — Public retrieval with CDN cache headers; passphrase-protected shares return metadata only unless a valid `?token=xxx` is provided
+- **POST `/share/:id/verify`** — Verifies a passphrase and returns a short-lived verify token (403 on incorrect passphrase; rate-limited per share ID + IP to prevent brute force)
+- **DELETE `/share/:id`** — Deletes a share; creator-only when share ownership is stored
+
+#### Security & Reliability ✅
+
+- Stored XSS protection via DOMPurify sanitization of title/blueprint before persistence
+- SHA-256 passphrase hashing (never stored in plaintext)
+- Strict rate limiting (10 req/min) on share enumeration and verify endpoints
+- 30-day expiration with `Cache-Control`/`CDN-Cache-Control` revalidation headers
+
+---
