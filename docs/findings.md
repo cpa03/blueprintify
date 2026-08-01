@@ -2,6 +2,63 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 24 (2026-08-01 — ULW Loop: ISSUE MANAGER MODE — 0 PRs, 104 open issues; full audit GREEN; all P1 audit issues verified-FIXED in code; label-normalizer tooling staged for permission-capable cycle; closures + CI fixes STILL BLOCKED)
+
+> **ULW Loop run (2026-08-01)**: **Phase 0 → ISSUE MANAGER MODE** (0 open PRs; 104 open issues). STEP 1-3 (label normalization, duplicate detection, consolidation) computed in full — **86 issues need canonical category/P-priority labels**, 14 duplicate clusters and 2 consolidation clusters identified with canonicals — but API application remains **BLOCKED** (`issues: write` missing — 403 on `addLabelsToLabelable`; also `addComment`/`closeIssue`). To stop re-deriving this mapping every cycle, the full deterministic logic was shipped as **`scripts/normalize-issue-labels.mjs`** (dry-run default, `--apply` to mutate; idempotent; staged for any permission-capable cycle). STEP 4 (repair): full baseline re-run → **typecheck ✅ lint ✅ (0 warnings) build ✅ build:api ✅ tests 2,304/2,304 (964 web + 506 api + 834 shared) ✅ secrets ✅ npm audit 0 vulns ✅**. **All P1 audit issues verified FIXED on current `main`** with file evidence: #1077 (prompt injection), #1078 (RBAC), #1082 (hook tests), #1014 (component tests), #1045 (mitigated via `validate-wrangler.mjs` + docs — remains open, needs human Cloudflare resources). Two NEW observations: (1) `vercel.json` CSP hash (`sha256-87uI…`) does **not** match any form of the `preloadCssPlugin`-generated `onload` handler text — async font loading may be blocked on Vercel prod (needs human verification/deploy test, not touched per fail-safe); (2) `pr-gatekeeper.yml` health stage runs typecheck/lint/build but **no tests** — #849/#953 confirmed still-open but `workflows: write`-blocked.
+
+### Actions Taken
+
+1. **[Phase 0 decision]** — `gh pr list` → 0 open PRs; `gh issue list` → 104 open issues. → **ISSUE MANAGER MODE** (per state machine, PRs take precedence; none existed).
+2. **[STEP 1 — Label normalization: computed, application BLOCKED]** — Deterministic category+priority mapping generated for all 104 open issues → **86 need changes** (e.g. #846/#847/#848 +security, #849 +ci/P2, #880 +refactor/P2, #1014 -enhancement keep test, #1084/#1088 -enhancement keep security; P-labels missing on ~40 issues). Multi-label conflicts resolved by specificity (bug > security > test > ci > refactor > docs > chore > feature > enhancement) and severity (P0>P1>P2>P3). All `gh issue edit --add-label` attempts → `GraphQL: Resource not accessible by integration`. **Deliverable**: `scripts/normalize-issue-labels.mjs` — reusable, idempotent, dry-run by default; run with `--apply` once a permission-capable token exists.
+3. **[STEP 2 — Duplicate detection: 14 clusters, closure BLOCKED]** — Canonicals selected (older/more-complete/more-severe; info preserved by reference):
+   - **#973 → #418** (ajv 9 moderate vulns — `npm audit` now 0)
+   - **#848, #930 → #890** (CORS wildcard → explicit origin validation; `env.ts` rejects `*` in prod)
+   - **#856 → #1014** (component test coverage — 30 test files now)
+   - **#857 → #1082** (React hook tests — 14 hook test files)
+   - **#1053 → #852** (API middleware tests — auth/logger/bodyLimit/rateLimit/validator/errorHandler/authorize tests exist)
+   - **#911 → #860** (OpenAI service tests — `openai.test.ts` exists)
+   - **#1052 → #874** (ErrorBoundary modernization — already a functional component)
+   - **#1165 → #1045** (placeholder wrangler IDs — keep #1045, needs human Cloudflare resources)
+   - **#953 → #849** (CI gatekeeper tests — both genuinely open, workflows-blocked)
+   - **#1051 → #858** (validation standardization — `validator.ts` + `validateJson`/`validatePromptInjection` in use)
+   - **#1117 → #1142** (DX-001)
+   - **#851, #850 → #1084** (dependency vuln scanning in CI — npm audit/dependabot; workflows-blocked)
+   - **#872, #951 → #1019** (E2E coverage — playwright.config.ts + e2e specs exist)
+   - **#1015 → stale-fixed** (playwright.config.ts exists at repo root)
+4. **[STEP 3 — Consolidation: 2 clusters, closure BLOCKED]** — Similar small issues grouped into meaningful canonicals (no info loss — specifics folded into canonical):
+   - **Share/export route hardening → #846**: fold #905 (share ID validation injection), #906 (export/import rate limiting), #908 (max length validation), #909 (inconsistent error format), #910 (duplicate validation), #896 (align with project validation patterns). **All verified FIXED in code**: share.ts applies `rateLimit` (standard + dedicated share-enumeration + share-verify limits), `sanitizeHtml` on title/blueprint, `validateJson` + `validatePromptInjection`, `authorize` on create/delete; export/import aligned via `routeFactory`.
+   - **API test coverage → #935**: fold #954 (critical untested files), #1141 (API utils & services), #917 (API route integration). Controller tests exist (generate/tasks/refine/base) + 7 route test files.
+5. **[STEP 4 — Repair mode: baseline GREEN; highest-priority issues verified FIXED; #1045 human-blocked]** —
+   - `npm run check` (typecheck + lint + scan:secrets + audit + test:all) → **exit 0, 2,304/2,304 tests**.
+   - **#1077 (P1 security, prompt injection) — FIXED**: `prompts.ts` sanitizes every user field via `sanitizePromptInput` (injection-pattern redaction, control-char filter, length cap) + wraps all user content in XML delimiters (`withUserDelimiters`); `prompt-security.ts` provides `validatePromptInput`/`isPromptInjectionClean` for Zod refinement; tests: `prompts.test.ts`, `prompt-injection-security.test.ts`, `prompt-security.test.ts`.
+   - **#1078 (P1 security, no user-level authorization) — FIXED**: `apiKeyAuth` derives server-side userId (SHA-256, non-spoofable) + role from key (`ADMIN_API_KEY` → admin); `authorize()` RBAC middleware wired into all protected routes (import/export/storage/share ×2/routeFactory); `authorize.test.ts` + `auth.test.ts` cover it.
+   - **#1082 (P1 testing, no hook tests) — FIXED**: all 13 hooks have test files incl. `useBlueprintStream.test.ts`, `usePersistedStore.test.ts`.
+   - **#1014 (P1 testing, 4 component tests) — FIXED**: 30 component test files now (~66 total web test files).
+   - **#1045 (P1 bug, placeholder wrangler IDs) — OPEN, human-blocked**: cannot fabricate real Cloudflare resource IDs; risk already mitigated by `scripts/validate-wrangler.mjs` (fail-closed predeploy gate) + `docs/cloudflare-infrastructure.md` setup guide. Needs a repo admin to create KV/D1 resources and fill IDs.
+   - Also verified-fixed this cycle: #864 (sourcemap:false), #899 (asyncHandler removed), #955 (CSP present in `vercel.json` — strict, no `unsafe-inline`), #958 (only intentional logger/error console calls), #880 (only legitimate test `as unknown as` casts), #900 (2 `z.unknown()` uses are intentional generic envelopes), #873/#1163/#1166/#885 (config already modular/current), #1161 (no semver action available — all deps at pinned latest).
+6. **[NEW observation — CSP hash mismatch]** — `vercel.json` CSP `script-src … 'sha256-87uI7LZJ8azkq44HKb4qqF/0VgaCUXD27d5/XHXT3yQ='` matches **none** of: the authored `index.html` onload handlers, the `preloadCssPlugin`-generated `onload="this.media='all';this.onload=null"`, or single-line variants. Likely the hash is stale vs. the served HTML → the two font `onload` handlers are **blocked on Vercel production**, degrading async font loading (fallback fonts still render; not a functional break). **Not touched** (fail-safe: cannot verify without deploying). Human action: recompute the hash from the built `dist/index.html` and update `vercel.json`, or switch font loading to the external module approach.
+7. **[NEW observation — gatekeeper runs no tests]** — `pr-gatekeeper.yml` STAGE 1 runs typecheck/lint/build only. #849/#953 (tests not running in PR gatekeeper) are **genuinely still open**; fix requires editing the workflow → **BLOCKED** (`workflows: write`).
+8. **[Permission blocker — HUMAN ACTION REQUIRED (unchanged from Cycles 22-23)]** — the loop's workflow token lacks `issues: write` (all issue mutations 403) and `workflows: write` (workflow-file pushes rejected). **Fix**: add `issues: write` to `.github/workflows/on-pull.yml` permissions (and `workflows: write` if CI-level fixes are desired), or supply a PAT with those scopes. Once granted: run `node scripts/normalize-issue-labels.mjs --apply`, then close the 14 duplicate + 2 consolidation clusters + 19 stale-fixed issues per the maps above.
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Phase | ISSUE MANAGER MODE (0 PRs, 104 open issues) |
+| Typecheck / Lint (0 warnings) / Build / build:api / Secrets / Audit | ✅ all green (2,304/2,304 tests; 0 vulns) |
+| P1 audit issues (#1077/#1078/#1082/#1014) | ✅ verified FIXED in code on current `main` |
+| #1045 placeholder IDs | ⚠️ Open — mitigated (validate-wrangler.mjs + docs); needs human Cloudflare resources |
+| #849/#953 gatekeeper tests | ⚠️ Open — gatekeeper runs no tests; `workflows: write` blocked |
+| Label normalization | ❌ BLOCKED (86 issues mapped; `scripts/normalize-issue-labels.mjs` staged) |
+| Duplicate/consolidation closures | ❌ BLOCKED (14 dup clusters + 2 consolidation clusters mapped) |
+| Issue mutations (labels/comments/close) | ❌ BLOCKED — token lacks `issues: write` |
+| Workflow file push | ❌ BLOCKED — token lacks `workflows: write` |
+| NEW: vercel.json CSP hash | ⚠️ Likely stale vs. plugin-generated onload handler — font loading degraded on prod; needs human verification |
+| NEW: gatekeeper test gap | ⚠️ #849/#953 confirmed open (no `npm test` in pr-gatekeeper.yml) |
+| Deliverables | `scripts/normalize-issue-labels.mjs` + this cycle report (PR #3011) |
+
+---
+
 ## Cycle 23 (2026-08-01 — ULW Loop: PR HANDLER → ISSUE MANAGER MODE — 2 PRs merged; 19 stale/duplicate/consolidated issues identified, closure still BLOCKED; #918 fixed)
 
 > **ULW Loop run (2026-08-01)**: **Phase 0 → PR HANDLER MODE** (2 open PRs), then **ISSUE MANAGER MODE** (0 PRs, 45 open issues). PRs #3007 + #3006 merged after full local verification. Issue normalization/dedup/consolidation remains **BLOCKED** by the known token permission gap (`issues: write` missing — 403 on `addLabelsToLabelable`, `addComment`, `closeIssue`, `createIssue`). **Critical correction**: Cycle 22's "10 stale-fixed issues closed via commit keywords" **did NOT take effect** — all targeted issues (#905/#847/#890/#848/#1077/#1078/#930/#935/#936/#1082/#1014) are empirically **still OPEN** on `main` (commit ac1f788e `Closes #N` keywords on the default branch did not auto-close them). 19 issues were verified-fixed/duplicate/consolidated this cycle with direct file evidence, but closure via the API is impossible with the current token; they remain open for a permission-capable cycle (list below). Repair Mode: attempted #1088 (secrets scan in CI) — **BLOCKED** (push of `.github/workflows/*` rejected: GitHub App lacks `workflows` permission); pivoted to **#918 (jest-axe a11y tests) — FIXED, merged as PR #3009** (969/969 web tests).
