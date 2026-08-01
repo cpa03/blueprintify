@@ -1,6 +1,20 @@
 # Bug Log: Known Defects
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
+## Bug Status — Aug 1 2026 (BugFixer Cycle 12)
+
+> **BugFixer Cycle 12 (2026-08-01 — fix/bugfixer-cycle-12-aug-1-2026)**: Full BugFixer audit complete. Typecheck ✅ lint ✅ build ✅ (web + api) tests **2,294/2,294** ✅ (964 web + 506 api + 824 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source (only wrangler placeholder IDs — pre-existing, tracked as #1045/#1165, not a code defect). 0 merge conflict artifacts. Lockfile: **no drift** (workspace deps + versions in sync). `npm ls` clean — exit 0.
+>
+> **4 new post-Cycle-11 commits indexed** — HEAD at `a03674ee` (docs(findings): record ULW Loop Cycle 17 — PR Handler Mode, 4 PRs merged (#2992, #2991, #2990, #2989) (#2993)).
+> **Commits**: `97b423df` feat(web) Ctrl/Cmd+Shift+E export shortcut (#2990), `1770d439` chore(repokeeper) Cycle 325 — repo hygiene audit, `722b7909` refactor(flexy) Iteration 180 — centralize crypto/encoding literals + CSS class strings (#2992), `640110b1` docs(audits) BroCula ULW Loop Jul 31 Run 21 (LH 100-100-100-100) (#2989), `a03674ee` docs(findings) ULW Loop Cycle 17 (#2993).
+> **Test count**: **2,294** (964 web + 506 api + 824 shared — **+11** from the export shortcut + Iteration 180 config tests).
+> **BUG-036 still fixed**: fresh `npm ci` materializes `node_modules/@emnapi/core` — `npm ls --all` exit 0, 0 invalid/missing/extraneous.
+> **BUG-014/017/032/033/034/035 still fixed**: zero stale `docs/bug.md`/`docs/feature.md`/`docs/task.md` refs outside historical logs; zero hardcoded `node-version:` in workflows; eslint 9.39.5; `@cloudflare/workers-types` in sync.
+> **Archive retention**: OK (oldest Jul 8 — 24 days, within 30-day window — no purge needed).
+> **Stale merged branches**: **0** (`agent/security-engineer` and `test/permissions-check` are unmerged divergent branches — pre-existing, flagged for RepoKeeper).
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **No new fixable bugs found in codebase. All quality gates pass.** Branch created.
+
 ## Bug Status — Jul 31 2026 (BugFixer Cycle 11)
 
 > **BugFixer Cycle 11 (2026-07-31 — fix/bugfixer-cycle-11-jul-31-2026)**: Full BugFixer audit complete. Typecheck ✅ lint ✅ build ✅ tests **2,283/2,283** ✅ (960 web + 506 api + 817 shared). Format ✅. Secrets scan ✅. Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source (only wrangler placeholder IDs — pre-existing, tracked as #1045/#1165, not a code defect). 0 merge conflict artifacts. Lockfile: **no drift** (workspace deps + versions in sync). `npm ls` clean — exit 0.
