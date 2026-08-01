@@ -542,7 +542,10 @@ function App(): JSX.Element {
             </Suspense>
           )}
 
-          {/* New Project — fixed below ShowEditorButton when editor hidden + content exists */}
+          {/* New Project — fixed above ShowEditorButton when editor hidden + content exists.
+              Positioned at bottom-40 (above the FAB at bottom-24) so both floating
+              actions remain visible and clickable; stacking them at the same
+              coordinate would let the z-20 New Project button cover the FAB. */}
           {!showEditor && hasContent && !isGenerating && (
             <KeyboardShortcutTooltip
               shortcut={KEYBOARD_SHORTCUTS.NEW_PROJECT.KEY}
@@ -551,7 +554,7 @@ function App(): JSX.Element {
             >
               <button
                 onClick={handleNewProject}
-                className={`fixed bottom-24 right-6 z-20 flex items-center gap-1.5 text-xs text-dark-500 hover:text-accent-pink transition-colors px-3 py-1.5 rounded-lg bg-dark-800/60 backdrop-blur-sm border border-dark-700/50 hover:border-accent-pink/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 animate-slide-up group${showNewProjectArrival ? ` ${CSS_CLASSES.ARRIVAL_POP}` : ""}`}
+                className={`fixed bottom-40 right-6 z-20 flex items-center gap-1.5 text-xs text-dark-500 hover:text-accent-pink transition-colors px-3 py-1.5 rounded-lg bg-dark-800/60 backdrop-blur-sm border border-dark-700/50 hover:border-accent-pink/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 animate-slide-up group${showNewProjectArrival ? ` ${CSS_CLASSES.ARRIVAL_POP}` : ""}`}
                 style={{
                   animationDelay: `${ANIMATION_ENTRANCE_DELAYS.SLOWER}s`,
                   animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
