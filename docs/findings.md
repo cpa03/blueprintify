@@ -2,6 +2,37 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 20 (2026-08-01 — ULW Loop: PR Handler Mode — 4 open PRs processed, all merged)
+
+> **ULW Loop run (2026-08-01)**: **Phase 0 → PR HANDLER MODE** (4 open PRs: #3001, #3000, #2999, #2998; PRs take precedence over issues). All 4 PRs processed one at a time (latest first): checked out each branch, verified sync with `main`, rebased onto updated `main` where needed (2 clean rebases, 2 with deterministic docs-only conflict resolutions), all local quality gates verified green, labeled (category + priority per contract), merged `--admin --squash --delete-branch`, remote branches deleted.
+>
+> **External checks on all 4 PRs**: Workers Builds FAILURE and Vercel deployment FAILURE ("Deployment rate limited — retry in 24 hours", free-plan `api-deployments-free-per-day`) — pre-existing platform-level/environmental; fail on all PRs incl. merged ones. Gatekeeper workflow runs show `action_required` with 0 jobs (pre-existing repo state — approval-gated on `secrets.OPENCODE_API_KEY`). Both external checks are non-required (`mergeStateStatus: UNSTABLE`, not `BLOCKED`). Per documented repo precedent (Cycles 9-19), local CI equivalent (typecheck/lint/build + build:api/tests + secrets scan + audit + Prettier) is the authoritative gate — all passed for every PR.
+
+### Actions Taken
+
+1. **[PR #3001 — `docs(audits): BroCula ULW Loop Aug 1 Run 23`]** — Docs-only (2 files: audit report + README index). Already synced (0 behind at entry). Verified: typecheck ✅ lint ✅ (0 warnings) build ✅ build:api ✅ tests **2,294/2,294** (964 web + 506 api + 824 shared) ✅ secrets ✅ (304 files) audit 0 vulns ✅ Prettier ✅. Labeled `docs`+`P3` (was unlabeled). Merged `--admin --squash` as `d3356692`, branch deleted.
+2. **[PR #3000 — `refactor(flexy): centralize storage/export encoding literals and FAB positioning class (Iteration 181)`]** — Real refactor (13 files, +158/−18): 8 new shared config constants (BYTE_CONVERSION, STORAGE_CONFIG, EXPORT_DEFAULTS, SECURITY_LIMITS) + 10 hardcoded literals eliminated across storage/security/export + FAB class moved to `BUTTON.NEW_PROJECT_FAB`. Rebased onto updated main (1 behind after #3001 merge; clean). Rebuilt shared package locally (gitignored `dist/` was stale from pre-branch `npm ci` — not a code failure). All gates green: tests **2,304/2,304** (964 web + 506 api + 834 shared incl. 10 new config tests). Already labeled `refactor`+`P3`. Merged `--admin --squash` as `8502dadb`, branch deleted.
+3. **[PR #2999 — `chore(repokeeper): Cycle 326 — repo hygiene audit, duplicate removal, docs/code sync`]** — Docs-only + cleanup (16 files, +181/−642): 8 redundant audit files removed (5 byte-identical duplicates + 3 stale >30-day archives), 16 doc/code drift items fixed. Rebased onto updated main (2 behind after #3001+#3000 merges); **conflict resolved in `docs/findings.md`** (both #2999 and #3000 appended cycle logs at top — resolved deterministically preserving BOTH entries: RepoKeeper Cycle 326 above Flexy Cycle 19). All gates green (2,304/2,304). Labeled `chore`+`P3` (was unlabeled). Merged `--admin --squash` as `aea46298`, branch deleted.
+4. **[PR #2998 — `fix(bugfixer): Cycle 13 — BUG-037 stale archive files past 30-day retention purged`]** — Docs-only (7 files at entry; 3 of the 4 archive-file deletions became no-ops after #2999 merged first — BUG-037's Jul 1 purges were already applied by RepoKeeper Cycle 326). Rebased onto updated main (3 behind); **conflict resolved in `docs/audits/archive/CONSOLIDATED-README.md`** (both #2999 and #2998 logged the same Jul 1 retention cleanup — resolved deterministically preserving BOTH entries + root-cause note). Remaining diff docs-only (CHANGELOG, active-tasks, bugs.md, CONSOLIDATED-README). All gates green (2,304/2,304). Labeled `bug`+`P3` (was unlabeled; repo has no `fix` label — `bug` is the contract category). Merged `--admin --squash` as `ccb0b120`, branch deleted.
+5. **[Branch hygiene]** — Post-merge remote branches deleted (4): `brocula/loop-2026-08-01-run23`, `feat/flexy-iteration-181-centralize-storage-encoding`, `agent/repokeeper-cycle-326`, `fix/bugfixer-cycle-13-aug-1-2026`. Pre-existing stale divergent branches `agent/security-engineer` and `test/permissions-check` left untouched (unmerged, per precedent).
+
+### Quality Metrics
+
+| Check | Result |
+|---|---|
+| Typecheck | ✅ 0 errors (all 3 workspaces, all 4 PRs) |
+| Lint | ✅ 0 errors, 0 warnings (all 4 PRs) |
+| Build (+ build:api) | ✅ clean (all 4 PRs) |
+| Tests | ✅ 2,294–2,304/2,304 pass across PRs |
+| Secrets scan | ✅ 0 secrets (304 files) |
+| npm audit | ✅ 0 vulnerabilities |
+| Prettier | ✅ clean |
+| Open PRs after cycle | 0 |
+
+### Verdict
+
+**All 4 open PRs merged with full validation — repository healthy: 0 open PRs, all local gates green, tests 2,304/2,304.** External Vercel/Workers deployment checks remain failed (platform-level: free-plan rate limit + Workers deployment failure; unchanged across cycles; tracked by #1045/#1165). No linked issues required closing (0 across all PRs). No destructive actions taken beyond the PRs' own documented doc/archive cleanups (merged as-is per contract). Skills used: `git-commit-standard` (conventional commit verification), `docs-update` (findings log); no subagent delegation required — all 4 PRs processed directly (each was a small, well-scoped bot PR).
+
 ## Cycle 326 (2026-08-01 — RepoKeeper: repo hygiene audit, duplicate removal, docs/code sync)
 
 > **RepoKeeper run (2026-08-01)**: Full repository audit for hygiene: redundant/temporary files, documentation drift, dead references. Baseline gates verified (typecheck/lint/build all green at entry). Findings and fixes below.
