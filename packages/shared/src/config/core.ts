@@ -119,6 +119,7 @@ export const ROUTE_PATHS = {
   STORAGE: "/storage",
   SHARE: "/share",
   WARMUP: "/warmup",
+  HEALTH: "/health",
 } as const;
 
 // Shared default URLs used by both API and Web

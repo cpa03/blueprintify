@@ -36,12 +36,14 @@ import {
   ROUTE_PATHS,
   CACHE_CONFIG,
   ERROR_MESSAGES,
+  HTTP_STATUS,
   ROUTE_PATH_ALL,
   setEnvConfig,
 } from "./config/constants";
 import { initializeContainer } from "./di";
 import { initializeCircuitBreaker } from "./services/openai";
 import { timestamp } from "./errors";
+import { CircuitState } from "./utils/circuitBreaker";
 
 initializeContainer();
 
@@ -81,7 +83,10 @@ app.use(
 app.use(ROUTE_PATH_ALL, prettyJSON());
 app.use(ROUTE_PATH_ALL, bodyLimit(bodyLimitConfigs.standard));
 app.use(ROUTE_PATH_ALL, requestLogger({ excludePaths: [ROUTE_PATHS.ROOT] }));
-app.use(ROUTE_PATH_ALL, apiKeyAuth({ excludePaths: [ROUTE_PATHS.ROOT, ROUTE_PATHS.WARMUP] }));
+app.use(
+  ROUTE_PATH_ALL,
+  apiKeyAuth({ excludePaths: [ROUTE_PATHS.ROOT, ROUTE_PATHS.WARMUP, ROUTE_PATHS.HEALTH] })
+);
 app.use(ROUTE_PATH_ALL, rateLimit(rateLimitConfigs.standard));
 
 app.get(ROUTE_PATHS.ROOT, (c) => {
@@ -142,6 +147,25 @@ app.get(ROUTE_PATHS.WARMUP, (c) => {
     },
     recommendation: metrics.isColdStart ? COLD_START_MESSAGES.ACTIVE : COLD_START_MESSAGES.INACTIVE,
   });
+});
+
+app.get(ROUTE_PATHS.HEALTH, (c) => {
+  const cb = initializeCircuitBreaker();
+  const metrics = cb.getState();
+  const aiServiceHealthy = metrics.state === CircuitState.CLOSED;
+  const checks = {
+    api: API_METADATA.STATUS,
+    aiService: aiServiceHealthy ? API_METADATA.STATUS : RESPONSE_STATUS.ERROR,
+  };
+  const healthy = aiServiceHealthy;
+  return c.json(
+    {
+      status: healthy ? API_METADATA.STATUS : RESPONSE_STATUS.ERROR,
+      checks,
+      timestamp: timestamp(),
+    },
+    healthy ? HTTP_STATUS.OK : HTTP_STATUS.SERVICE_UNAVAILABLE
+  );
 });
 
 app.route(ROUTE_PATHS.GENERATE, generateRoute);
