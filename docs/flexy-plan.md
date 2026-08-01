@@ -3547,3 +3547,39 @@ Also lacked test coverage for the `isLoading` prop — no spinner rendering veri
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD (this PR) | `feat/flexy-iteration-180-hardcoded-cleanup` | refactor(flexy): centralize crypto/encoding literals and CSS class strings (Iteration 180) |
+
+---
+
+### ✅ Flexy Iteration 181: Centralize Storage/Export Encoding Literals and FAB Positioning Class
+
+**Problem**: The web storage layer repeated raw encoding literals — `toString(16)` (checksum hex), `* 2` UTF-16 byte math (3 call sites in `storage.ts` + 1 in `security.ts`), `* 100` percent conversion, and `migrateData(parsed as T, 1)` legacy schema version — despite shared config already holding `CRYPTO_CONFIG.HEX_RADIX`, `PERCENT_SCALE`, and `BYTE_CONVERSION`. The `wizardStorage`/`editorStorage` services hardcoded `currentVersion: 1` and `maxRetries: 3` even though `STORAGE_CONFIG.DEFAULT_MAX_RETRIES` existed. Export repeated `JSON.stringify(metadata, null, 2)` and `compression: "DEFLATE"` inline, and `security.ts` hardcoded filename limits `min(1).max(255)` despite `SECURITY_LIMITS`. Finally, the New Project floating button (introduced in `de42294f`, fix #2995) inlined a full `fixed bottom-40 right-6 z-20 ...` className. Flexy says: No hardcoded encoding/unit literals, schema versions, or CSS class strings!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | Added `BYTE_CONVERSION.UTF16_BYTES_PER_CHAR: 2` — single source of truth for UTF-16 localStorage byte math |
+| `packages/shared/src/config/storage.ts` | Added `STORAGE_CONFIG.CURRENT_SCHEMA_VERSION: 1` + `LEGACY_SCHEMA_VERSION: 1`; added `EXPORT_DEFAULTS.JSON_INDENT: 2` + `ZIP_COMPRESSION: "DEFLATE"` |
+| `packages/shared/src/config/validation.ts` | Added `SECURITY_LIMITS.FILE_NAME_MIN_LENGTH: 1` + `FILE_NAME_MAX_LENGTH: 255` |
+| `packages/shared/src/config.test.ts` | Added 10 tests covering all 8 new constants (values, ranges, consistency) |
+| `apps/web/src/config/constants/storage.ts` | Re-exported `CURRENT_SCHEMA_VERSION` + `LEGACY_SCHEMA_VERSION` in web `STORAGE_CONFIG` |
+| `apps/web/src/config/constants/wizard.ts` | Added `JSON_INDENT` + `ZIP_COMPRESSION` to web `EXPORT_CONFIG` |
+| `apps/web/src/config/styles.ts` | Added `BUTTON.NEW_PROJECT_FAB` — centralized the New Project floating-button className |
+| `apps/web/src/lib/storage.ts` | `hash.toString(16)` → `CRYPTO_CONFIG.HEX_RADIX`; 3x `key.length * 2` UTF-16 math → `BYTE_CONVERSION.UTF16_BYTES_PER_CHAR`; `(used / total) * 100` → `PERCENT_SCALE`; `migrateData(parsed as T, 1)` → `STORAGE_CONFIG.LEGACY_SCHEMA_VERSION`; `wizardStorage`/`editorStorage` `currentVersion: 1` + `maxRetries: 3` → `STORAGE_CONFIG.CURRENT_SCHEMA_VERSION` + `DEFAULT_MAX_RETRIES` |
+| `apps/web/src/lib/security.ts` | `z.string().min(1).max(255)` → `SECURITY_LIMITS.FILE_NAME_MIN_LENGTH`/`FILE_NAME_MAX_LENGTH`; UTF-16 byte math → `BYTE_CONVERSION.UTF16_BYTES_PER_CHAR` |
+| `apps/web/src/lib/export.ts` | `JSON.stringify(metadata, null, 2)` → `EXPORT_CONFIG.JSON_INDENT`; `compression: "DEFLATE"` → `EXPORT_CONFIG.ZIP_COMPRESSION` |
+| `apps/web/src/App.tsx` | Replaced inline New Project FAB className with `BUTTON.NEW_PROJECT_FAB` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero warnings (api + web)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run test:all` — **964 web + 506 api + 834 shared = 2,304 tests passing**
+- ✅ `npm run scan:secrets` — clean (308 files)
+- ✅ `npm audit` — 0 vulnerabilities
+- ✅ `prettier --check` — clean
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `feat/flexy-iteration-181-centralize-storage-encoding` | refactor(flexy): centralize storage/export encoding literals and FAB positioning class (Iteration 181) |

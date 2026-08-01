@@ -241,6 +241,20 @@ describe("STORAGE_CONFIG", () => {
     expect(STORAGE_CONFIG.QUOTA_BYTES).toBeGreaterThanOrEqual(minQuota);
     expect(STORAGE_CONFIG.QUOTA_BYTES).toBeLessThanOrEqual(maxQuota);
   });
+
+  it("should have positive CURRENT_SCHEMA_VERSION", () => {
+    expect(STORAGE_CONFIG.CURRENT_SCHEMA_VERSION).toBeGreaterThan(0);
+  });
+
+  it("should have positive LEGACY_SCHEMA_VERSION", () => {
+    expect(STORAGE_CONFIG.LEGACY_SCHEMA_VERSION).toBeGreaterThan(0);
+  });
+
+  it("should have LEGACY_SCHEMA_VERSION not exceeding CURRENT_SCHEMA_VERSION", () => {
+    expect(STORAGE_CONFIG.LEGACY_SCHEMA_VERSION).toBeLessThanOrEqual(
+      STORAGE_CONFIG.CURRENT_SCHEMA_VERSION
+    );
+  });
 });
 
 describe("DEBOUNCE_CONFIG", () => {
@@ -279,6 +293,20 @@ describe("SECURITY_LIMITS", () => {
     SECURITY_LIMITS.ALLOWED_FILE_TYPES.forEach((type) => {
       expect(type).toMatch(/^\.\w+$/);
     });
+  });
+
+  it("should have positive FILE_NAME_MIN_LENGTH", () => {
+    expect(SECURITY_LIMITS.FILE_NAME_MIN_LENGTH).toBeGreaterThan(0);
+  });
+
+  it("should have positive FILE_NAME_MAX_LENGTH", () => {
+    expect(SECURITY_LIMITS.FILE_NAME_MAX_LENGTH).toBeGreaterThan(0);
+  });
+
+  it("should have FILE_NAME_MAX_LENGTH exceeding FILE_NAME_MIN_LENGTH", () => {
+    expect(SECURITY_LIMITS.FILE_NAME_MAX_LENGTH).toBeGreaterThan(
+      SECURITY_LIMITS.FILE_NAME_MIN_LENGTH
+    );
   });
 
   it("should have reasonable limits", () => {
@@ -653,6 +681,10 @@ describe("BYTE_CONVERSION", () => {
 
   it("should have consistent byte conversions (GB = MB * KB)", () => {
     expect(BYTE_CONVERSION.GB).toBe(BYTE_CONVERSION.MB * BYTE_CONVERSION.KB);
+  });
+
+  it("should have UTF16_BYTES_PER_CHAR as 2 (bytes per UTF-16 code unit)", () => {
+    expect(BYTE_CONVERSION.UTF16_BYTES_PER_CHAR).toBe(2);
   });
 });
 
@@ -2955,8 +2987,20 @@ describe("EXPORT_DEFAULTS", () => {
     expect(EXPORT_DEFAULTS.COPY_TEXTAREA_OFFSET_PX).toBeLessThan(0);
   });
 
-  it("should have 7 entries", () => {
-    expect(Object.keys(EXPORT_DEFAULTS).length).toBe(7);
+  it("should have valid ZIP_COMPRESSION algorithm", () => {
+    expect(EXPORT_DEFAULTS.ZIP_COMPRESSION).toMatch(/^(STORE|DEFLATE)$/);
+  });
+
+  it("should have positive JSON_INDENT", () => {
+    expect(EXPORT_DEFAULTS.JSON_INDENT).toBeGreaterThan(0);
+  });
+
+  it("should have reasonable JSON_INDENT (max 4 spaces)", () => {
+    expect(EXPORT_DEFAULTS.JSON_INDENT).toBeLessThanOrEqual(4);
+  });
+
+  it("should have 9 entries", () => {
+    expect(Object.keys(EXPORT_DEFAULTS).length).toBe(9);
   });
 });
 

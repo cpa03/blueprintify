@@ -56,13 +56,16 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
     generatedAt: new Date().toISOString(),
     version: EXPORT_CONFIG.METADATA_VERSION,
   };
-  docsFolder.file(EXPORT_CONFIG.METADATA_FILENAME, JSON.stringify(metadata, null, 2));
+  docsFolder.file(
+    EXPORT_CONFIG.METADATA_FILENAME,
+    JSON.stringify(metadata, null, EXPORT_CONFIG.JSON_INDENT)
+  );
 
   docsFolder.file(EXPORT_CONFIG.README_FILENAME, README_TEMPLATE(projectName));
 
   const blob = await zip.generateAsync({
     type: "blob",
-    compression: "DEFLATE",
+    compression: EXPORT_CONFIG.ZIP_COMPRESSION,
     compressionOptions: { level: EXPORT_CONFIG.ZIP_COMPRESSION_LEVEL },
   });
 

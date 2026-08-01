@@ -154,4 +154,7 @@ export const BUTTON = {
   /** Hide editor button (mobile) */
   HIDE_EDITOR_MOBILE:
     "lg:hidden absolute top-4 right-4 z-10 btn-ghost bg-dark-800/90 backdrop-blur-sm",
+  /** New Project floating button — positioned above SHOW_EDITOR_FAB (bottom-24) so both stay visible */
+  NEW_PROJECT_FAB:
+    "fixed bottom-40 right-6 z-20 flex items-center gap-1.5 text-xs text-dark-500 hover:text-accent-pink transition-colors px-3 py-1.5 rounded-lg bg-dark-800/60 backdrop-blur-sm border border-dark-700/50 hover:border-accent-pink/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 animate-slide-up group",
 } as const;

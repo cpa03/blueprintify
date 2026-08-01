@@ -7,6 +7,10 @@ export const STORAGE_CONFIG = {
   QUOTA_BYTES: 5 * 1024 * 1024,
   // Warning threshold at 90% capacity
   WARNING_THRESHOLD_PERCENT: 90,
+  /** Current schema version for persisted storage payloads */
+  CURRENT_SCHEMA_VERSION: 1,
+  /** Schema version assumed for legacy (pre-metadata) storage payloads */
+  LEGACY_SCHEMA_VERSION: 1,
 } as const;
 
 /**
@@ -321,6 +325,10 @@ export const STORAGE_OPERATION_ERROR_STRINGS = {
 export const EXPORT_DEFAULTS = {
   /** ZIP compression level (0-9, where 0=no compression, 9=maximum) */
   ZIP_COMPRESSION_LEVEL: 6,
+  /** ZIP compression algorithm used by JSZip ("STORE" | "DEFLATE") */
+  ZIP_COMPRESSION: "DEFLATE",
+  /** JSON indentation for pretty-printed export metadata */
+  JSON_INDENT: 2,
   /** Name of the docs folder inside the ZIP archive */
   DOCS_FOLDER: ".docs" as const,
   /** Filename for the generated README inside the docs folder */

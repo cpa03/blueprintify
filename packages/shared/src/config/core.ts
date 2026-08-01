@@ -170,6 +170,8 @@ export const BYTE_CONVERSION = {
   KB: 1024,
   MB: 1024 * 1024,
   GB: 1024 * 1024 * 1024,
+  /** Bytes per character for UTF-16 encoded strings (JS strings in localStorage) */
+  UTF16_BYTES_PER_CHAR: 2,
 } as const;
 
 /**
