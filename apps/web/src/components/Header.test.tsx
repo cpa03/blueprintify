@@ -1,11 +1,21 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Header } from "./Header";
 import { UI_CONTENT } from "../config/constants";
 
+const { useReducedMotionContextMock, setUserOverrideMock } = vi.hoisted(() => ({
+  useReducedMotionContextMock: vi.fn(),
+  setUserOverrideMock: vi.fn(),
+}));
+
 vi.mock("../hooks/useReducedMotion", () => ({
   useReducedMotion: vi.fn(() => false),
+}));
+
+vi.mock("../context/ReducedMotionContext", () => ({
+  useReducedMotionContext: (...args: unknown[]) => useReducedMotionContextMock(...args),
 }));
 
 vi.mock("framer-motion", () => ({
@@ -20,9 +30,28 @@ vi.mock("framer-motion", () => ({
   AnimatePresence: vi.fn(({ children }) => <>{children}</>),
 }));
 
+// jsdom cannot compute real colors, so the color-contrast rule is always
+// "incomplete" there; disable it to focus on structural accessibility.
+const AXE_CONFIG = {
+  rules: { "color-contrast": { enabled: false } },
+};
+
+function mockReducedMotionContext(prefersReducedMotion: boolean): void {
+  useReducedMotionContextMock.mockReturnValue({
+    prefersReducedMotion,
+    isLoading: false,
+    userOverride: null,
+    setUserOverride: setUserOverrideMock,
+    resetToSystemPreference: vi.fn(),
+    getDuration: (d: number) => d,
+    shouldAnimate: !prefersReducedMotion,
+  });
+}
+
 describe("Header", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockReducedMotionContext(false);
   });
 
   it("renders the header with proper structure", () => {
@@ -61,7 +90,10 @@ describe("Header", () => {
   it("renders GitHub icon", () => {
     render(<Header />);
 
-    const githubIcon = document.querySelectorAll("svg")[1];
+    const githubButton = screen.getByRole("button", {
+      name: /view on github/i,
+    });
+    const githubIcon = githubButton.querySelector("svg");
     expect(githubIcon).toBeInTheDocument();
     expect(githubIcon).toHaveAttribute("fill", "currentColor");
   });
@@ -156,5 +188,56 @@ describe("Header", () => {
     });
 
     useReducedMotionMock.mockReturnValue(false);
+  });
+});
+
+describe("Header reduce motion toggle", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockReducedMotionContext(false);
+  });
+
+  it("renders a reduce motion toggle button that reflects the off state", () => {
+    render(<Header />);
+
+    const toggle = screen.getByRole("button", { name: "Reduce motion" });
+    expect(toggle).toBeInTheDocument();
+    expect(toggle).toHaveAttribute("aria-pressed", "false");
+  });
+
+  it("marks the toggle pressed with active styling when reduced motion is on", () => {
+    mockReducedMotionContext(true);
+    render(<Header />);
+
+    const toggle = screen.getByRole("button", { name: "Reduce motion" });
+    expect(toggle).toHaveAttribute("aria-pressed", "true");
+    expect(toggle).toHaveClass("bg-primary-500/20", "border-primary-500/50", "text-primary-300");
+  });
+
+  it("enables reduced motion when toggled while off", async () => {
+    const user = userEvent.setup();
+    render(<Header />);
+
+    const toggle = screen.getByRole("button", { name: "Reduce motion" });
+    await user.click(toggle);
+
+    expect(setUserOverrideMock).toHaveBeenCalledWith(true);
+  });
+
+  it("disables reduced motion when toggled while on", async () => {
+    mockReducedMotionContext(true);
+    const user = userEvent.setup();
+    render(<Header />);
+
+    const toggle = screen.getByRole("button", { name: "Reduce motion" });
+    await user.click(toggle);
+
+    expect(setUserOverrideMock).toHaveBeenCalledWith(false);
+  });
+
+  it("has no accessibility violations", async () => {
+    const { container } = render(<Header />);
+    const results = await axe(container, AXE_CONFIG);
+    expect(results.violations).toHaveLength(0);
   });
 });

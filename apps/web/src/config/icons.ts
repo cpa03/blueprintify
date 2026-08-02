@@ -95,6 +95,10 @@ export const ICONS = {
     viewBox: "0 0 24 24",
     path: "M12 2a7 7 0 00-7 7c0 2.4 1.19 4.5 3 5.69V17h8v-2.31c1.81-1.19 3-3.29 3-5.69a7 7 0 00-7-7zM9 17h6v2H9zM10 20h4v1h-4z",
   },
+  wind: {
+    viewBox: "0 0 24 24",
+    path: "M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2",
+  },
 } as const;
 
 export type IconName = keyof typeof ICONS;
