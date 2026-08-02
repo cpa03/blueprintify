@@ -56,6 +56,7 @@ import {
   TIME_UNITS,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { Icon } from "./Icon";
 import { SmartTooltip } from "./SmartTooltip";
 
 const toastIcons: Record<ToastType, string> = {
@@ -407,14 +408,7 @@ const ToastItem = memo(
                 className="flex-shrink-0 opacity-60 hover:opacity-100 hover:bg-current/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/50 rounded p-1 transition-colors"
                 aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS(toast.type)}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                <Icon name="close" className="w-4 h-4" />
               </button>
             </SmartTooltip>
           </motion.span>
@@ -445,14 +439,7 @@ const ToastItem = memo(
               whileHover={{ ...HOVER_SCALE.EXTRA, ...ROTATION.QUARTER }}
               whileTap={TAP_SCALE.STRONG}
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              <Icon name="close" className="w-4 h-4" />
             </motion.button>
           </SmartTooltip>
         )}
@@ -573,20 +560,7 @@ function ToastContainerComponent(): JSX.Element {
             aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS_ALL(toasts.length)}
           >
             <span className="flex items-center gap-1.5">
-              <svg
-                className="w-3.5 h-3.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              <Icon name="close" className="w-3.5 h-3.5" />
               {TOAST_DISPLAY.DISMISS_ALL_PREFIX}
               <span className="tabular-nums" aria-hidden="true">
                 {toasts.length}
@@ -621,20 +595,7 @@ function ToastContainerComponent(): JSX.Element {
               aria-label={ACCESSIBILITY_LABELS.TOAST.DISMISS_ALL(toasts.length)}
             >
               <span className="flex items-center gap-1.5">
-                <svg
-                  className="w-3.5 h-3.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                <Icon name="close" className="w-3.5 h-3.5" />
                 {TOAST_DISPLAY.DISMISS_ALL_PREFIX}
                 <motion.span
                   key={toasts.length}

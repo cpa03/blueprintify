@@ -57,6 +57,7 @@ import {
 import { TRANSFORMS } from "../../config/theme";
 import { pageTransition, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
+import { Icon } from "../Icon";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
 import clsx from "clsx";
@@ -391,20 +392,7 @@ export const StepStack = memo(function StepStack({
                       className="hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors"
                       aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.REMOVE_TECH(tech.name)}
                     >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
+                      <Icon name="close" className="w-4 h-4" />
                     </button>
                   </motion.li>
                 ))}

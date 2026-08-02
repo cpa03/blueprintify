@@ -36,6 +36,7 @@ import {
   TOOLTIP_DEFAULTS,
   SHORTCUT_LABELS,
   ANIMATION_ENTRANCE_DELAYS,
+  CIRCLE_GEOMETRY,
   VIEW_MODE_INDICATOR_POSITION,
   FRAMER_TYPE,
   KEYBOARD_EVENT_KEYS,
@@ -311,24 +312,24 @@ function EditorToolbarComponent({
                     </linearGradient>
                   </defs>
                   <circle
-                    cx="12"
-                    cy="12"
-                    r="10"
+                    cx={CIRCLE_GEOMETRY.CENTER_X}
+                    cy={CIRCLE_GEOMETRY.CENTER_Y}
+                    r={CIRCLE_GEOMETRY.RADIUS}
                     stroke="currentColor"
                     strokeWidth="3"
                     strokeOpacity={0.15}
                     fill="none"
                   />
                   <motion.circle
-                    cx="12"
-                    cy="12"
-                    r="10"
+                    cx={CIRCLE_GEOMETRY.CENTER_X}
+                    cy={CIRCLE_GEOMETRY.CENTER_Y}
+                    r={CIRCLE_GEOMETRY.RADIUS}
                     stroke="url(#toolbar-export-spinner-grad)"
                     strokeWidth="3"
                     strokeLinecap="round"
                     fill="none"
-                    strokeDasharray={2 * Math.PI * 10}
-                    strokeDashoffset={2 * Math.PI * 10 * 0.75}
+                    strokeDasharray={CIRCLE_GEOMETRY.CIRCUMFERENCE}
+                    strokeDashoffset={CIRCLE_GEOMETRY.STROKE_DASHOFFSET}
                   />
                 </motion.svg>
                 <motion.span

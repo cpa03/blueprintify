@@ -44,6 +44,48 @@ export const TIME_UNITS = {
 export const PERCENT_SCALE = 100;
 
 /**
+ * Ratio Limits
+ * Centralized proportional-ratio constants to eliminate magic numbers in
+ * threshold and geometry calculations.
+ * Flexy says: No hardcoded 0.8 / 0.85 / 0.75 / 0.1 / 0.5 ratio literals in components!
+ * Usage: import { RATIO_LIMITS } from "@blueprint/shared";
+ *        warningThreshold = Math.floor(max * RATIO_LIMITS.WARNING);
+ */
+export const RATIO_LIMITS = {
+  /** Default character-counter warning threshold (80% of max) */
+  WARNING: 0.8,
+  /** Form-field warning threshold (85% of max) */
+  FORM_WARNING: 0.85,
+  /** Progress-ring completion fraction (270° / 360°) */
+  RING_COMPLETION: 0.75,
+  /** Scroll progress step ratio (10% of scrollable height) */
+  SCROLL_STEP: 0.1,
+  /** Half ratio for random/size scaling (50%) */
+  HALF: 0.5,
+} as const;
+
+/**
+ * SVG Circle Geometry
+ * Centralized viewBox circle geometry for SVG progress rings and spinners.
+ * Flexy says: No hardcoded cx/cy/r or 2 * Math.PI * 10 circumference math in components!
+ * Usage: import { CIRCLE_GEOMETRY } from "@blueprint/shared";
+ *        <circle cx={CIRCLE_GEOMETRY.CENTER_X} cy={CIRCLE_GEOMETRY.CENTER_Y} r={CIRCLE_GEOMETRY.RADIUS} />
+ *        strokeDasharray={CIRCLE_GEOMETRY.CIRCUMFERENCE}
+ */
+export const CIRCLE_GEOMETRY = {
+  /** X coordinate of the circle center */
+  CENTER_X: 12,
+  /** Y coordinate of the circle center */
+  CENTER_Y: 12,
+  /** Circle radius */
+  RADIUS: 10,
+  /** Full circumference (2 * PI * RADIUS) for stroke-dasharray */
+  CIRCUMFERENCE: 2 * Math.PI * 10,
+  /** Dash offset for the completed ring segment (circumference * 0.75) */
+  STROKE_DASHOFFSET: 2 * Math.PI * 10 * 0.75,
+} as const;
+
+/**
  * ID Generation Configuration
  * Centralized settings for generating unique identifiers
  */

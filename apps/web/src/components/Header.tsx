@@ -26,6 +26,7 @@ import {
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { Icon } from "./Icon";
 import { RippleButton } from "./RippleButton";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 
@@ -158,20 +159,10 @@ function HeaderComponent({
             {/* External link indicator — appears on hover to signal the link
                 opens in a new tab, providing a visual cue that complements
                 the "opens in new tab" text in the aria-label for screen readers. */}
-            <svg
+            <Icon
+              name="externalLink"
               className="w-3 h-3 opacity-0 group-hover:opacity-60 group-focus-visible:opacity-60 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6m4-3h6v6m-10 4L21 3"
-              />
-            </svg>
+            />
           </RippleButton>
         </nav>
       </div>

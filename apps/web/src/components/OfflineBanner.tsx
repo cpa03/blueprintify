@@ -45,6 +45,7 @@ import {
   TOOLTIP_CONFIG,
   FOCUS_ANNOUNCER,
 } from "../config/constants";
+import { Icon } from "./Icon";
 import { SmartTooltip } from "./SmartTooltip";
 
 /**
@@ -255,20 +256,7 @@ function OfflineBannerComponent(): JSX.Element | null {
                              motion-safe:hover:scale-110 motion-safe:active:scale-95"
                   aria-label={ACCESSIBILITY_LABELS.OFFLINE_BANNER.DISMISS}
                 >
-                  <svg
-                    className="w-4 h-4 text-accent-pink"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
+                  <Icon name="close" className="w-4 h-4 text-accent-pink" />
                 </button>
               </SmartTooltip>
             </div>

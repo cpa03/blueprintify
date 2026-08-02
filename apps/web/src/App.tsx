@@ -449,20 +449,10 @@ function App(): JSX.Element {
                     )}
                     aria-controls="editor-panel"
                   >
-                    <svg
+                    <Icon
+                      name="close"
                       className={`${ICON.LG} transition-transform duration-200 hover:rotate-90`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
+                    />
                   </button>
                 </KeyboardShortcutTooltip>
 
@@ -482,20 +472,10 @@ function App(): JSX.Element {
                     )}
                     aria-controls="editor-panel"
                   >
-                    <svg
+                    <Icon
+                      name="close"
                       className={`${ICON.LG} transition-transform duration-200 hover:rotate-90`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
+                    />
                   </button>
                 </KeyboardShortcutTooltip>
 
@@ -565,20 +545,10 @@ function App(): JSX.Element {
                   MODIFIER_KEYS.CMD
                 )}
               >
-                <svg
+                <Icon
+                  name="plus"
                   className="w-3.5 h-3.5 motion-safe:group-hover:rotate-90 transition-transform duration-200"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
+                />
                 {UI_CONTENT.BUTTONS.NEW_PROJECT}
               </button>
             </KeyboardShortcutTooltip>
@@ -615,20 +585,10 @@ function App(): JSX.Element {
               aria-label={ACCESSIBILITY_LABELS.EXTERNAL_LINKS.CLOUDFLARE_WORKERS}
             >
               Cloudflare Workers
-              <svg
+              <Icon
+                name="externalLink"
                 className="w-3 h-3 opacity-0 group-hover:opacity-60 group-focus-visible:opacity-60 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6m4-3h6v6m-10 4L21 3"
-                />
-              </svg>
+              />
             </a>{" "}
             +{" "}
             <a
@@ -639,20 +599,10 @@ function App(): JSX.Element {
               aria-label={ACCESSIBILITY_LABELS.EXTERNAL_LINKS.REACT}
             >
               React
-              <svg
+              <Icon
+                name="externalLink"
                 className="w-3 h-3 opacity-0 group-hover:opacity-60 group-focus-visible:opacity-60 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6m4-3h6v6m-10 4L21 3"
-                />
-              </svg>
+              />
             </a>
           </p>
           <p className="text-dark-500">{UI_CONTENT.FOOTER.COPYRIGHT}</p>

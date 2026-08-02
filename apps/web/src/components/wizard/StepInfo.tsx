@@ -32,6 +32,7 @@ import {
   DISPLAY_SYMBOLS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
+  RATIO_LIMITS,
   UI_TIMEOUTS,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
@@ -61,6 +62,7 @@ import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
 import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
 import { RippleButton } from "../RippleButton";
 import { CharacterCounter } from "../CharacterCounter";
+import { Icon } from "../Icon";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
@@ -381,20 +383,10 @@ export const StepInfo = memo(function StepInfo({
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_PROJECT_NAME}
                   title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_PROJECT_NAME}
                 >
-                  <svg
+                  <Icon
+                    name="close"
                     className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-90"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
+                  />
                 </motion.button>
               )}
             </AnimatePresence>
@@ -504,20 +496,10 @@ export const StepInfo = memo(function StepInfo({
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_DESCRIPTION}
                   title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_DESCRIPTION}
                 >
-                  <svg
+                  <Icon
+                    name="close"
                     className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-90"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
+                  />
                 </motion.button>
               )}
             </AnimatePresence>
@@ -577,7 +559,9 @@ export const StepInfo = memo(function StepInfo({
             <CharacterCounter
               current={targetAudience.length}
               max={FORM_LIMITS.TARGET_AUDIENCE.MAX}
-              warningThreshold={Math.floor(FORM_LIMITS.TARGET_AUDIENCE.MAX * 0.85)}
+              warningThreshold={Math.floor(
+                FORM_LIMITS.TARGET_AUDIENCE.MAX * RATIO_LIMITS.FORM_WARNING
+              )}
             />
           </div>
           <div className="relative">
@@ -616,19 +600,10 @@ export const StepInfo = memo(function StepInfo({
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_TARGET_AUDIENCE}
                   title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_TARGET_AUDIENCE}
                 >
-                  <svg
+                  <Icon
+                    name="close"
                     className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-90"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
+                  />
                 </motion.button>
               )}
             </AnimatePresence>
@@ -647,7 +622,7 @@ export const StepInfo = memo(function StepInfo({
               current={constraints.length}
               max={FORM_LIMITS.CONSTRAINTS.MAX}
               min={0}
-              warningThreshold={Math.floor(FORM_LIMITS.CONSTRAINTS.MAX * 0.85)}
+              warningThreshold={Math.floor(FORM_LIMITS.CONSTRAINTS.MAX * RATIO_LIMITS.FORM_WARNING)}
             />
           </div>
           <div className="relative">
@@ -685,20 +660,10 @@ export const StepInfo = memo(function StepInfo({
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_CONSTRAINTS}
                   title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_CONSTRAINTS}
                 >
-                  <svg
+                  <Icon
+                    name="close"
                     className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-90"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
+                  />
                 </motion.button>
               )}
             </AnimatePresence>

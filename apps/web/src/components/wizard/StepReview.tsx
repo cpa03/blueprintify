@@ -51,6 +51,7 @@ import {
 import { pageTransition, fadeInUp, type AnimationDirection } from "../../utils/motion";
 import { RippleButton } from "../RippleButton";
 import { SmartTooltip, KeyboardShortcutTooltip } from "../SmartTooltip";
+import { Icon } from "../Icon";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
 
 interface StepReviewProps {
@@ -389,19 +390,7 @@ export const StepReview = memo(function StepReview({
         <div className="bg-gradient-to-r from-primary-500/10 to-accent-purple/10 border border-primary-500/20 rounded-xl p-4">
           <div className="flex items-start gap-3">
             <div className="w-10 h-10 rounded-full bg-primary-500/20 flex items-center justify-center flex-shrink-0">
-              <svg
-                className="w-5 h-5 text-primary-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
+              <Icon name="helpCircleOutline" className="w-5 h-5 text-primary-400" />
             </div>
             <div>
               <h4 className="font-medium text-white">

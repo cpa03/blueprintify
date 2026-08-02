@@ -15,6 +15,8 @@ import {
   ID_CHARS,
   TIME_UNITS,
   PERCENT_SCALE,
+  RATIO_LIMITS,
+  CIRCLE_GEOMETRY,
   HTTP_STATUS,
   ROUTE_PATHS,
   DEFAULT_URLS,
@@ -480,6 +482,60 @@ describe("TIME_UNITS", () => {
 describe("PERCENT_SCALE", () => {
   it("should have correct percent scale", () => {
     expect(PERCENT_SCALE).toBe(100);
+  });
+});
+
+describe("RATIO_LIMITS", () => {
+  it("should have WARNING = 0.8", () => {
+    expect(RATIO_LIMITS.WARNING).toBe(0.8);
+  });
+
+  it("should have FORM_WARNING = 0.85", () => {
+    expect(RATIO_LIMITS.FORM_WARNING).toBe(0.85);
+  });
+
+  it("should have RING_COMPLETION = 0.75", () => {
+    expect(RATIO_LIMITS.RING_COMPLETION).toBe(0.75);
+  });
+
+  it("should have SCROLL_STEP = 0.1", () => {
+    expect(RATIO_LIMITS.SCROLL_STEP).toBe(0.1);
+  });
+
+  it("should have HALF = 0.5", () => {
+    expect(RATIO_LIMITS.HALF).toBe(0.5);
+  });
+
+  it("should have all entries as numbers between 0 and 1 exclusive", () => {
+    const values = Object.values(RATIO_LIMITS);
+    expect(values.length).toBe(5);
+    values.forEach((v) => {
+      expect(typeof v).toBe("number");
+      expect(v).toBeGreaterThan(0);
+      expect(v).toBeLessThan(1);
+    });
+  });
+});
+
+describe("CIRCLE_GEOMETRY", () => {
+  it("should have CENTER_X = 12", () => {
+    expect(CIRCLE_GEOMETRY.CENTER_X).toBe(12);
+  });
+
+  it("should have CENTER_Y = 12", () => {
+    expect(CIRCLE_GEOMETRY.CENTER_Y).toBe(12);
+  });
+
+  it("should have RADIUS = 10", () => {
+    expect(CIRCLE_GEOMETRY.RADIUS).toBe(10);
+  });
+
+  it("should have CIRCUMFERENCE = 2 * PI * RADIUS", () => {
+    expect(CIRCLE_GEOMETRY.CIRCUMFERENCE).toBeCloseTo(2 * Math.PI * 10);
+  });
+
+  it("should have STROKE_DASHOFFSET = CIRCUMFERENCE * 0.75", () => {
+    expect(CIRCLE_GEOMETRY.STROKE_DASHOFFSET).toBeCloseTo(CIRCLE_GEOMETRY.CIRCUMFERENCE * 0.75);
   });
 });
 

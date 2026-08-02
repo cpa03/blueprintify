@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import { DEV_DEFAULTS } from "@blueprint/shared";
 
 /**
  * Playwright configuration for Blueprintify E2E tests.
@@ -13,7 +14,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? "github" : "list",
   use: {
-    baseURL: process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000",
+    baseURL: process.env.PLAYWRIGHT_BASE_URL ?? DEV_DEFAULTS.PLAYWRIGHT_TEST_URL,
     trace: process.env.CI ? "on-first-retry" : "on",
   },
   projects: [
@@ -25,7 +26,7 @@ export default defineConfig({
   webServer: process.env.CI
     ? {
         command: "npm run dev --workspace=apps/web",
-        url: "http://localhost:3000",
+        url: DEV_DEFAULTS.PLAYWRIGHT_TEST_URL,
         reuseExistingServer: !process.env.CI,
         timeout: 30_000,
       }

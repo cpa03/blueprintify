@@ -3583,3 +3583,42 @@ Also lacked test coverage for the `isLoading` prop — no spinner rendering veri
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD (this PR) | `feat/flexy-iteration-181-centralize-storage-encoding` | refactor(flexy): centralize storage/export encoding literals and FAB positioning class (Iteration 181) |
+
+---
+
+### ✅ Flexy Iteration 182: Deduplicate Inline SVG Icons and Centralize Ratio/Geometry Constants
+
+**Problem**: The web app repeated raw SVG path literals (18 occurrences across 10 components — close X, plus, external-link, help-circle) despite the `Icon` component and `ICONS` registry already existing, so any icon change meant editing multiple files. Components also inlined magic ratio/geometry numbers: `Math.floor(max * 0.8)` (CharacterCounter), `* 0.85` form-warning thresholds (StepInfo), `scrollHeight * 0.1` (PageScrollProgressBar), `2 * Math.PI * 10 * 0.75` ring geometry (EditorToolbar), and `* 0.5` particle math (GenerationCelebration). Playwright config and integration tests hardcoded `http://localhost:3000` and raw `/storage/*` paths despite `DEV_DEFAULTS` and `ROUTE_PATHS`/`API_ENDPOINTS` existing. Flexy says: No duplicated SVG path literals or magic ratio/geometry numbers in components!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | Added `RATIO_LIMITS` (`WARNING: 0.8`, `FORM_WARNING: 0.85`, `RING_COMPLETION: 0.75`, `SCROLL_STEP: 0.1`, `HALF: 0.5`) and `CIRCLE_GEOMETRY` (`CENTER_X: 12`, `CENTER_Y: 12`, `RADIUS: 10`, `CIRCUMFERENCE: 2 * Math.PI * 10`, `STROKE_DASHOFFSET: 2 * Math.PI * 10 * 0.75`) |
+| `packages/shared/src/index.ts` | Exported `RATIO_LIMITS` + `CIRCLE_GEOMETRY` |
+| `packages/shared/src/config.test.ts` | Added 11 tests covering all ratio + geometry constants (values, consistency, math) |
+| `apps/web/src/config/icons.ts` | Added `externalLink` + `helpCircleOutline` entries to the `ICONS` registry |
+| `apps/web/src/App.tsx` | Replaced 2 close + 1 plus + 2 external-link inline SVGs with `<Icon />` |
+| `apps/web/src/components/*` (10 files) | Replaced 18 inline SVG path literals with `<Icon name="..." />` (Toast 4 close, KeyboardShortcutsModal 2 close, StepStack 1 close, OfflineBanner 1 close, ValidationCheckmark 1 close, MarkdownRenderer 1 externalLink, Header 1 externalLink, SmartTooltip 1 helpCircleOutline, StepReview 1 helpCircleOutline) |
+| `apps/web/src/components/wizard/StepInfo.tsx` | 4 close icons → `<Icon />`; `* 0.85` thresholds → `RATIO_LIMITS.FORM_WARNING` with `FORM_LIMITS.*.MAX` |
+| `apps/web/src/components/wizard/StepFeatures.tsx` | 2 close + 3 plus icons → `<Icon />` |
+| `apps/web/src/components/wizard/StepGenerating.tsx` | 2 helpCircleOutline + 1 close → `<Icon />`; `seconds / 60` → `TIME_UNITS.SECONDS_PER_MINUTE` |
+| `apps/web/src/components/CharacterCounter.tsx` | `Math.floor(max * 0.8)` → `RATIO_LIMITS.WARNING` |
+| `apps/web/src/components/editor/EditorToolbar.tsx` | Ring `cx/cy/r` + `dasharray`/`dashoffset` → `CIRCLE_GEOMETRY.*` |
+| `apps/web/src/components/PageScrollProgressBar.tsx` | `scrollHeight * 0.1` → `RATIO_LIMITS.SCROLL_STEP` |
+| `apps/web/src/components/GenerationCelebration.tsx` | 2× `* 0.5` particle math → `RATIO_LIMITS.HALF` |
+| `playwright.config.ts` | `baseURL` + webServer url → `DEV_DEFAULTS.PLAYWRIGHT_TEST_URL` |
+| `apps/web/src/config/constants/api.ts` | Added `STORAGE_QUOTA: \`${ROUTE_PATHS.STORAGE}/quota\`` |
+| `apps/web/src/integration/api-flows.test.ts` + `performance-api.benchmark.test.ts` | Real `/storage/quota` → `API_ENDPOINTS.STORAGE_QUOTA`; mock-only paths → local `MOCK_*` fixtures |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero errors, zero warnings (api + web)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run test:all` — **974 web + 509 api + 845 shared = 2,328 tests passing**
+- ✅ `npm run scan:secrets` — clean (314 files)
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-182-icon-dedup-ratios` | refactor(flexy): deduplicate inline SVG icons and centralize ratio/geometry constants (Iteration 182) |

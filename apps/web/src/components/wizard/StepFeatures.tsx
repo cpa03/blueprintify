@@ -54,6 +54,7 @@ import { pageTransition, transitions, type AnimationDirection } from "../../util
 import { RippleButton } from "../RippleButton";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { CharacterCounterCompact } from "../CharacterCounter";
+import { Icon } from "../Icon";
 import { getModifierLabel, getAltKeyLabel, getAriaShortcutKey } from "../../lib/platform";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 
@@ -228,14 +229,7 @@ export const StepFeatures = memo(function StepFeatures({
                     aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.CLEAR_FEATURE_INPUT}
                     title={ACCESSIBILITY_LABELS.WIZARD_FEATURES.CLEAR_FEATURE_INPUT}
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
+                    <Icon name="close" className="w-4 h-4" />
                   </motion.button>
                 )}
               </AnimatePresence>
@@ -246,20 +240,7 @@ export const StepFeatures = memo(function StepFeatures({
               className="btn-primary px-4"
               ariaLabel={ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_FEATURE}
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
+              <Icon name="plus" className="w-5 h-5" />
             </RippleButton>
           </div>
           {/* Max count reached warning */}
@@ -362,20 +343,10 @@ export const StepFeatures = memo(function StepFeatures({
                         className="hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors group"
                         aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.REMOVE_FEATURE(feature)}
                       >
-                        <svg
+                        <Icon
+                          name="close"
                           className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-90"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          aria-hidden="true"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
+                        />
                       </button>
                     </motion.span>
                   );
@@ -445,20 +416,7 @@ export const StepFeatures = memo(function StepFeatures({
                       exit={{ scale: 0.5, opacity: 0 }}
                       transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
                     >
-                      <svg
-                        className="w-3.5 h-3.5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 4v16m8-8H4"
-                        />
-                      </svg>
+                      <Icon name="plus" className="w-3.5 h-3.5" />
                       {UI_CONTENT.WIZARD.STEP_FEATURES.ADD_ALL_SUGGESTIONS}
                     </motion.span>
                   )}
@@ -573,25 +531,7 @@ export const StepFeatures = memo(function StepFeatures({
                             />
                           </motion.svg>
                         ) : (
-                          <motion.svg
-                            key="plus"
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                            initial={{ scale: 0, rotate: 180 }}
-                            animate={{ scale: 1, rotate: 0 }}
-                            exit={{ scale: 0, rotate: -180 }}
-                            transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.CHECKMARK }}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 4v16m8-8H4"
-                            />
-                          </motion.svg>
+                          <Icon key="plus" name="plus" className="w-4 h-4" />
                         )}
                       </AnimatePresence>
                       <span>{feature}</span>
