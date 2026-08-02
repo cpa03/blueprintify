@@ -107,3 +107,20 @@ export const EXPORT_TEMPLATES = {
     TASKS_SECTION: (tasks: string): string => `## Tasks\n\n${tasks}\n\n`,
   },
 } as const;
+
+/**
+ * Export template notes.
+ * Flexy says: no hardcoded notes in routes!
+ */
+export const EXPORT_NOTES = {
+  ZIP_CLIENT_SIDE: "ZIP generation should be handled client-side or with additional service",
+} as const;
+
+/**
+ * Import warning messages.
+ * Flexy says: no hardcoded warning templates in routes!
+ */
+export const IMPORT_WARNINGS = {
+  VERSION_MISMATCH: (expected: string, got: string): string =>
+    `Version mismatch: expected ${expected}, got ${got}`,
+} as const;

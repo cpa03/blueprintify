@@ -41,7 +41,7 @@ import {
 } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
 import { sanitizeHtml } from "../utils/sanitize";
-import { ErrorType, createErrorJson } from "../errors";
+import { ErrorType, createErrorJson, timestamp } from "../errors";
 
 const LOG_CREATE_ERROR = LOG_CONTEXT.SHARE_CREATE;
 const LOG_VERIFY_ERROR = LOG_CONTEXT.SHARE_VERIFY;
@@ -253,7 +253,7 @@ app.post(
       const sanitizedBlueprint = sanitizeHtml(blueprint);
 
       const shareId = generateShareId();
-      const now = new Date().toISOString();
+      const now = timestamp();
       const expiresAt = getExpirationDate();
       const user = c.get(CONTEXT_KEYS.USER);
       const creatorId = user?.id;
@@ -643,13 +643,15 @@ app.delete(
         );
       }
 
-      // Validate ownership: if the share has a creatorId, the request must match
+      // Fail-closed ownership: an authenticated user may only delete a share
+      // whose recorded creator matches their identity. Legacy shares without
+      // creator metadata cannot be verified, so deletion is denied.
       const delUser = c.get(CONTEXT_KEYS.USER);
       const creatorId = delUser?.id;
-      if (creatorId && existing.metadata) {
-        const parsedMetadata = parseMetadata(existing.metadata) ?? {};
+      if (creatorId) {
+        const parsedMetadata = existing.metadata ? (parseMetadata(existing.metadata) ?? {}) : {};
         const shareCreatorId = parsedMetadata.createdBy as string | undefined;
-        if (shareCreatorId && shareCreatorId !== creatorId) {
+        if (!shareCreatorId || shareCreatorId !== creatorId) {
           return c.json(
             withCtxError(
               c,

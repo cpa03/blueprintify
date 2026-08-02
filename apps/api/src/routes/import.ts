@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { CONTEXT_KEYS, AUTH_DEFAULTS, ImportRequestSchema } from "@blueprint/shared";
-import { ErrorType, createErrorJson } from "../errors";
+import { ErrorType, createErrorJson, timestamp } from "../errors";
 import { ERROR_CODES } from "@blueprint/shared";
 import { validateJson, validatePromptInjection } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
@@ -15,6 +15,7 @@ import {
   INJECTION_FIELD_DEFINITIONS,
   IMPORT_FORMATS,
   LOG_CONTEXT,
+  IMPORT_WARNINGS,
 } from "../config/constants";
 import type { Env } from "../types";
 
@@ -47,7 +48,7 @@ app.post(
 
           if (parsed.version && parsed.version !== IMPORT_CONFIG.EXPECTED_VERSION) {
             warnings.push(
-              `Version mismatch: expected ${IMPORT_CONFIG.EXPECTED_VERSION}, got ${parsed.version}`
+              IMPORT_WARNINGS.VERSION_MISMATCH(IMPORT_CONFIG.EXPECTED_VERSION, parsed.version)
             );
           }
 
@@ -57,7 +58,7 @@ app.post(
               projectName: parsed.projectName,
               blueprint: sanitizeHtml(parsed.blueprint),
               tasks: parsed.tasks ? sanitizeHtml(parsed.tasks) : undefined,
-              importedAt: new Date().toISOString(),
+              importedAt: timestamp(),
               overwrite,
               warnings: warnings.length > 0 ? warnings : undefined,
             },
@@ -99,7 +100,7 @@ app.post(
             projectName,
             blueprint: sanitizeHtml(blueprint),
             tasks: tasks ? sanitizeHtml(tasks) : undefined,
-            importedAt: new Date().toISOString(),
+            importedAt: timestamp(),
             overwrite,
             warnings: warnings.length > 0 ? warnings : undefined,
           },
