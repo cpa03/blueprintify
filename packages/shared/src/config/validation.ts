@@ -323,6 +323,8 @@ export const SANITIZE_REPLACEMENT_STRINGS = {
   DANGEROUS_URL_PLACEHOLDER: "#dangerous-url-removed" as const,
   /** Replacement prefix for CSS expression/behavior attack patterns */
   CSS_ATTACK_BLOCKED_PREFIX: "blocked_" as const,
+  /** Replacement string for prompt injection patterns removed from user input */
+  PROMPT_INJECTION_REDACTED: "[redacted]" as const,
 } as const;
 
 /**

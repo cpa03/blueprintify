@@ -14,6 +14,7 @@ import {
 
 export const ROUTE_SUB_PATHS = {
   QUOTA: "/quota",
+  REPORT: "/report",
   CLEAR: "/clear",
   ID_PARAM: "/:id",
   VERIFY: "/verify",

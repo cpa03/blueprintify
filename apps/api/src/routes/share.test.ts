@@ -388,4 +388,29 @@ describe("DELETE /share/:id", () => {
     expect(delBody.success).toBe(true);
     expect(delBody.data.message).toBe(SHARE_MESSAGES.DELETED_SUCCESSFULLY);
   });
+
+  it("should reject deletion of a legacy share without creator metadata (fail-closed)", async () => {
+    const db = createMockDB();
+    await db
+      .prepare("INSERT INTO shares")
+      .bind(
+        "legacyshare1",
+        "Legacy Blueprint",
+        "# Legacy",
+        JSON.stringify({ projectName: "Legacy" }),
+        null,
+        new Date().toISOString(),
+        null
+      )
+      .run();
+
+    const env = { ...createMockEnv("test-api-key"), DB: db };
+    const res = await app.request("/legacyshare1", { method: HTTP_METHODS.DELETE }, env);
+
+    expect(res.status).toBe(HTTP_STATUS.FORBIDDEN);
+    const data = (await res.json()) as ErrorResponse;
+    expect(data.success).toBe(false);
+    expect(data.error.type).toBe(ERROR_TYPES.AUTHORIZATION);
+    expect(data.error.code).toBe(ERROR_CODES.AUTHORIZATION_ERROR);
+  });
 });
