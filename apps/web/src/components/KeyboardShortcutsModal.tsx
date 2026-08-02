@@ -190,8 +190,16 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === KEYBOARD_EVENT_KEYS.ESCAPE || e.key === KEYBOARD_EVENT_KEYS.QUESTION_MARK) {
-        if (e.key === KEYBOARD_EVENT_KEYS.ESCAPE && searchQuery) {
+      const isTypingInField =
+        e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement;
+
+      if (e.key === KEYBOARD_EVENT_KEYS.QUESTION_MARK && !isTypingInField) {
+        onClose();
+        return;
+      }
+
+      if (e.key === KEYBOARD_EVENT_KEYS.ESCAPE) {
+        if (searchQuery) {
           // Clear search first, then close on second Escape
           setSearchQuery("");
           searchInputRef.current?.focus();
