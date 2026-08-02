@@ -12,7 +12,7 @@ https://blueprintify-api.your-domain.workers.dev
 
 ## Authentication
 
-The API uses API key authentication via the `x-api-key` header. All endpoints except the health check (`GET /`) and warmup (`GET /warmup`) require a valid API key.
+The API uses API key authentication via the `x-api-key` header. All endpoints except the health check (`GET /health`), warmup (`GET /warmup`), and API metadata (`GET /`) require a valid API key.
 
 The `API_KEY` environment variable must be configured server-side (set via `.dev.vars` locally or `wrangler secret put API_KEY` in production). If `API_KEY` is not configured, protected endpoints return `503 Service Unavailable`.
 
@@ -38,7 +38,7 @@ Authentication uses constant-time string comparison to prevent timing attacks.
 
 ### GET /
 
-Health check endpoint to verify the API is running and provide API metadata.
+API metadata endpoint - provides service identity, version, runtime information, and the list of available endpoints. Returns `200 OK` with `status: "healthy"` when the service is up.
 
 #### Response
 
@@ -63,6 +63,25 @@ Health check endpoint to verify the API is running and provide API metadata.
     "shareGet": "GET /share/:id",
     "shareDelete": "DELETE /share/:id"
   }
+}
+```
+
+### GET /health
+
+Health check endpoint to verify the API is running and that the AI service circuit breaker is healthy. Does not require an API key.
+
+#### Response
+
+Returns `200 OK` with `status: "healthy"` when the AI service circuit is `CLOSED`; returns `503 Service Unavailable` with `status: "error"` when the circuit is `OPEN` or `HALF_OPEN`.
+
+```json
+{
+  "status": "healthy",
+  "checks": {
+    "api": "healthy",
+    "aiService": "healthy"
+  },
+  "timestamp": 1716825600000
 }
 ```
 
@@ -878,7 +897,7 @@ blueprint = client.generate_blueprint({
 
 ```bash
 # Test health check
-curl http://localhost:8787
+curl http://localhost:8787/health
 
 # Test blueprint generation
 curl -X POST http://localhost:8787/generate \
