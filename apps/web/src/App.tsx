@@ -31,6 +31,7 @@ const ScrollToBottomLazy = lazy(() =>
 );
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 import { useWizardStore, useEditorStore, useToast, useToastStore, resetAllStores } from "./store";
+import { STORAGE_KEYS } from "./config/keys";
 import { useOnlineStatus } from "./hooks";
 import {
   UI_CONTENT,
@@ -73,7 +74,12 @@ function App(): JSX.Element {
   const [showEditor, setShowEditor] = useState(hasContent || isGenerating);
   const [editorExiting, setEditorExiting] = useState(false);
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
-  const [shortcutsDiscovered, setShortcutsDiscovered] = useState(false);
+  // Persisted so the header's one-shot attention-glow only fires for genuine
+  // first-time visitors, not on every page load for returning users.
+  const [shortcutsDiscovered, setShortcutsDiscovered] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED) === "true";
+  });
   const showShortcutsModalRef = useRef(showShortcutsModal);
   // Keep ref in sync so the global keydown handler reads the latest state
   // without needing showShortcutsModal in its dependency array
@@ -185,6 +191,9 @@ function App(): JSX.Element {
   const handleShowEditor = useCallback(() => setShowEditor(true), []);
   const handleShowShortcuts = useCallback(() => {
     setShortcutsDiscovered(true);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED, "true");
+    }
     setShowShortcutsModal(true);
   }, []);
   const handleHideShortcuts = useCallback(() => setShowShortcutsModal(false), []);

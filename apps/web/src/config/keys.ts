@@ -19,6 +19,7 @@ export const STORAGE_KEYS = {
   LAST_VISITED: createKey("last-visited"),
   ONBOARDING_COMPLETED: createKey("onboarding-completed"),
   RECENT_TEMPLATES: createKey("recent-templates"),
+  SHORTCUTS_DISCOVERED: createKey("shortcuts-discovered"),
 } as const;
 
 export const SESSION_KEYS = {
