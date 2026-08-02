@@ -16,6 +16,8 @@ The API uses API key authentication via the `x-api-key` header. All endpoints ex
 
 The `API_KEY` environment variable must be configured server-side (set via `.dev.vars` locally or `wrangler secret put API_KEY` in production). If `API_KEY` is not configured, protected endpoints return `503 Service Unavailable`.
 
+Role-based access control (RBAC) is enforced via `authorize()` middleware on protected routes. Requests authenticated with the optional `ADMIN_API_KEY` (set via `.dev.vars` locally or `wrangler secret put ADMIN_API_KEY` in production) receive the `admin` role, which grants access to admin-protected endpoints. When both keys are configured, `ADMIN_API_KEY` takes precedence over `API_KEY`.
+
 Authentication uses constant-time string comparison to prevent timing attacks.
 
 ## Environment Variables
