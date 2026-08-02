@@ -1,6 +1,21 @@
 # Bug Log: Known Defects
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
+## Bug Status — Aug 2 2026 (BugFixer Cycle 18)
+
+> **BugFixer Cycle 18 (2026-08-02 — agent/bugfixer-cycle-18)**: Full BugFixer audit complete — **zero bugs found**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web + api) tests **2,394/2,394** ✅ (1040 web + 509 api + 845 shared). Format ✅ (prettier clean). Secrets scan ✅ (311 files). Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (workspace deps + versions in sync). `npm ls` clean — exit 0. All relative imports resolve.
+>
+> **5 new post-Cycle-17 commits indexed** — HEAD at `30b95b62` (fix(web): keep shortcuts modal open when typing "?" in search (#3024)). Prior commits: `96cdd8ca` (docs(findings): finalize Cycle 331 state — PR #3025 and #3026 merged to main), `216be3e8` (docs(findings): record ULW Loop Cycle 331 — ISSUE MANAGER MODE → REPAIR MODE, #1014 repaired — 52 tests, PR #3025 (#3026)), `cb8c94af` (test(web): add real tests for StepStack, StepReview, and EditorHeader (#3025)), `8b61560a` (docs(findings): record ULW Loop Cycle 330 — PR HANDLER MODE, 3 PRs merged (#3022 #3021 #3020) (#3023)).
+> **Test count**: **2,394** (1040 web + 509 api + 845 shared — **+66 web** from PR #3024 KeyboardShortcutsModal tests + PR #3025 StepStack/StepReview/EditorHeader tests).
+> **BUG-037 still fixed**: archive retention scan covers **all** dated `docs/audits/archive/*.md` files (audit + hunt families); oldest remaining Jul 3 (30 days, at 30-day window boundary — no purge needed today).
+> **BUG-036 still fixed**: `npm ls --all` exit 0, 0 invalid/missing/extraneous.
+> **BUG-014/017/032/033/034/035 still fixed**: zero stale `docs/bug.md`/`docs/feature.md`/`docs/task.md` refs outside historical logs; zero hardcoded `node-version:` in workflows (all use `node-version-file: ".node-version"`); eslint 9.39.5; `@cloudflare/workers-types` in sync.
+> **Archive retention**: OK (oldest Jul 3 — 30 days, at window boundary — no purge needed).
+> **Stale merged branches**: **0** (`origin/agent/security-engineer` unmerged divergent — pre-existing, flagged for RepoKeeper).
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **`validate:wrangler`**: fails on 6 placeholder Cloudflare IDs — pre-existing documented TODO (commit `b45bb4dc`), not a code defect; real IDs provisioned at deploy time. `.dev.vars` absent — expected (must be copied from `.dev.vars.example` with real API keys).
+> **All quality gates pass. Zero bugs found.** Branch created.
+
 ## Bug Status — Aug 2 2026 (BugFixer Cycle 17)
 
 > **BugFixer Cycle 17 (2026-08-02 — agent/bugfixer-cycle-17)**: Full BugFixer audit complete — **zero bugs found**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web + api) tests **2,328/2,328** ✅ (974 web + 509 api + 845 shared). Format ✅ (prettier clean). Secrets scan ✅ (307 files). Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (workspace deps + versions in sync). `npm ls` clean — exit 0. All relative imports resolve.
