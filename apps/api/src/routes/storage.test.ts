@@ -55,7 +55,14 @@ const createMockEnv = (cacheData?: Record<string, string>) => ({
 describe("GET /storage/quota", () => {
   const app = new Hono<{
     Bindings: { OPENAI_API_KEY: string; CACHE: ReturnType<typeof createMockCache> };
+    Variables: AppVariables;
   }>();
+  // Set user context for tests since GET /quota requires authorization (#1078)
+  app.use("*", async (c, next) => {
+    const user: User = { id: "test-user", role: AUTH_DEFAULTS.DEFAULT_ROLE };
+    c.set(CONTEXT_KEYS.USER, user);
+    await next();
+  });
   app.route("/", storageRoute);
   app.onError(errorHandler);
 
@@ -90,7 +97,7 @@ describe("GET /storage/quota", () => {
       updatedAt: new Date().toISOString(),
     };
     const mockEnv = createMockEnv({
-      [STORAGE_KV_CONFIG.QUOTA_KEY]: JSON.stringify(storedData),
+      [`${STORAGE_KV_CONFIG.QUOTA_KEY}:test-user`]: JSON.stringify(storedData),
     });
     const res = await app.request("/quota", {}, mockEnv);
 
@@ -111,14 +118,124 @@ describe("GET /storage/quota", () => {
     expect(data.data).toHaveProperty("percentage", 20);
     expect(data.data).toHaveProperty("projects", 3);
   });
+
+  it("should return 401 when no user context is present", async () => {
+    const unauthApp = new Hono<{
+      Bindings: { OPENAI_API_KEY: string; CACHE: ReturnType<typeof createMockCache> };
+      Variables: AppVariables;
+    }>();
+    unauthApp.route("/", storageRoute);
+    unauthApp.onError(errorHandler);
+
+    const mockEnv = createMockEnv();
+    const res = await unauthApp.request("/quota", {}, mockEnv);
+
+    expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
+    const data = (await res.json()) as ErrorResponse;
+    expect(data).toHaveProperty("success", false);
+    expect(data.error).toHaveProperty("type", ERROR_TYPES.AUTHENTICATION);
+  });
+
+  it("should not publicly cache per-user quota responses", async () => {
+    const mockEnv = createMockEnv();
+    const res = await app.request("/quota", {}, mockEnv);
+
+    expect(res.status).toBe(HTTP_STATUS.OK);
+    const cacheControl = res.headers.get(HTTP_HEADER_NAMES.CACHE_CONTROL) ?? "";
+    expect(cacheControl).not.toContain("public");
+    expect(cacheControl).toContain("private");
+  });
+
+  it("should isolate quota data per user", async () => {
+    const cache = createMockCache();
+    const env = { ...MOCK_ENV, CACHE: cache };
+
+    const makeUserApp = (userId: string) => {
+      const userApp = new Hono<{
+        Bindings: { OPENAI_API_KEY: string; CACHE: ReturnType<typeof createMockCache> };
+        Variables: AppVariables;
+      }>();
+      userApp.use("*", async (c, next) => {
+        const user: User = { id: userId, role: AUTH_DEFAULTS.DEFAULT_ROLE };
+        c.set(CONTEXT_KEYS.USER, user);
+        await next();
+      });
+      userApp.route("/", storageRoute);
+      userApp.onError(errorHandler);
+      return userApp;
+    };
+    const appA = makeUserApp("user-a");
+    const appB = makeUserApp("user-b");
+
+    const reportRes = await appA.request(
+      "/report",
+      {
+        method: HTTP_METHODS.POST,
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
+        body: JSON.stringify({
+          used: BYTE_CONVERSION.MB * 2,
+          total: STORAGE_CONFIG.QUOTA_BYTES,
+          projects: 2,
+        }),
+      },
+      env
+    );
+    expect(reportRes.status).toBe(HTTP_STATUS.OK);
+
+    const quotaResB = await appB.request("/quota", {}, env);
+    expect(quotaResB.status).toBe(HTTP_STATUS.OK);
+    const bodyB = (await quotaResB.json()) as { data: { used: number } };
+    expect(bodyB.data.used).toBe(0);
+
+    const quotaResA = await appA.request("/quota", {}, env);
+    expect(quotaResA.status).toBe(HTTP_STATUS.OK);
+    const bodyA = (await quotaResA.json()) as { data: { used: number } };
+    expect(bodyA.data.used).toBe(BYTE_CONVERSION.MB * 2);
+  });
 });
 
 describe("POST /storage/report", () => {
   const app = new Hono<{
     Bindings: { OPENAI_API_KEY: string; CACHE: ReturnType<typeof createMockCache> };
+    Variables: AppVariables;
   }>();
+  // Set user context for tests since POST /report requires authorization (#1078)
+  app.use("*", async (c, next) => {
+    const user: User = { id: "test-user", role: AUTH_DEFAULTS.DEFAULT_ROLE };
+    c.set(CONTEXT_KEYS.USER, user);
+    await next();
+  });
   app.route("/", storageRoute);
   app.onError(errorHandler);
+
+  it("should return 401 when no user context is present", async () => {
+    const unauthApp = new Hono<{
+      Bindings: { OPENAI_API_KEY: string; CACHE: ReturnType<typeof createMockCache> };
+      Variables: AppVariables;
+    }>();
+    unauthApp.route("/", storageRoute);
+    unauthApp.onError(errorHandler);
+
+    const mockEnv = createMockEnv();
+    const res = await unauthApp.request(
+      "/report",
+      {
+        method: HTTP_METHODS.POST,
+        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
+        body: JSON.stringify({
+          used: BYTE_CONVERSION.MB,
+          total: STORAGE_CONFIG.QUOTA_BYTES,
+          projects: 1,
+        }),
+      },
+      mockEnv
+    );
+
+    expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
+    const data = (await res.json()) as ErrorResponse;
+    expect(data).toHaveProperty("success", false);
+    expect(data.error).toHaveProperty("type", ERROR_TYPES.AUTHENTICATION);
+  });
 
   it("should report storage usage successfully", async () => {
     const mockEnv = createMockEnv();
@@ -231,7 +348,7 @@ describe("DELETE /storage/clear", () => {
       updatedAt: new Date().toISOString(),
     };
     const mockEnv = createMockEnv({
-      [STORAGE_KV_CONFIG.QUOTA_KEY]: JSON.stringify(storedData),
+      [`${STORAGE_KV_CONFIG.QUOTA_KEY}:test-user`]: JSON.stringify(storedData),
     });
     const res = await app.request("/clear?confirm=true", { method: HTTP_METHODS.DELETE }, mockEnv);
 
@@ -248,5 +365,37 @@ describe("DELETE /storage/clear", () => {
     expect(data.data).toHaveProperty("cleared", true);
     expect(data.data).toHaveProperty("timestamp");
     expect(data.data).toHaveProperty("message");
+  });
+
+  it("should clear only the calling user's quota data", async () => {
+    const cache = createMockCache({
+      [`${STORAGE_KV_CONFIG.QUOTA_KEY}:user-a`]: JSON.stringify({ used: BYTE_CONVERSION.MB }),
+      [`${STORAGE_KV_CONFIG.QUOTA_KEY}:user-b`]: JSON.stringify({ used: BYTE_CONVERSION.MB * 2 }),
+    });
+    const env = { ...MOCK_ENV, CACHE: cache };
+
+    const makeUserApp = (userId: string) => {
+      const userApp = new Hono<{
+        Bindings: { OPENAI_API_KEY: string; CACHE: ReturnType<typeof createMockCache> };
+        Variables: AppVariables;
+      }>();
+      userApp.use("*", async (c, next) => {
+        const user: User = { id: userId, role: AUTH_DEFAULTS.DEFAULT_ROLE };
+        c.set(CONTEXT_KEYS.USER, user);
+        await next();
+      });
+      userApp.route("/", storageRoute);
+      userApp.onError(errorHandler);
+      return userApp;
+    };
+    const appA = makeUserApp("user-a");
+
+    const res = await appA.request("/clear?confirm=true", { method: HTTP_METHODS.DELETE }, env);
+    expect(res.status).toBe(HTTP_STATUS.OK);
+
+    const cleared = await env.CACHE.get(`${STORAGE_KV_CONFIG.QUOTA_KEY}:user-a`);
+    expect(cleared).toBeNull();
+    const untouched = await env.CACHE.get(`${STORAGE_KV_CONFIG.QUOTA_KEY}:user-b`);
+    expect(untouched).not.toBeNull();
   });
 });
