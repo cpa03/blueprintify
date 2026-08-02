@@ -84,7 +84,8 @@ npm run deploy
 
 | Method | Endpoint          | Description                                    |
 | ------ | ----------------- | ---------------------------------------------- |
-| GET    | `/`               | Health check - returns API metadata            |
+| GET    | `/`               | API metadata                                   |
+| GET    | `/health`         | Health check - circuit-breaker aware           |
 | GET    | `/warmup`         | Pre-warm circuit breaker on worker startup     |
 | POST   | `/generate`       | Generate blueprint from project config (SSE)   |
 | POST   | `/tasks`          | Generate tasks from blueprint content (SSE)    |

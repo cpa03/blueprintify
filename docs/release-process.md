@@ -243,7 +243,7 @@ npm run build
 vercel deploy --prod
 
 # Verify deployment
-curl https://blueprintify.dev/
+curl https://blueprintify.dev/health
 ```
 
 #### 3. Database Migrations
@@ -275,7 +275,7 @@ const preDeployChecks: PreDeployCheck[] = [
     name: "API Health Check",
     critical: true,
     check: async () => {
-      const response = await fetch(`${process.env.API_URL}/`);
+      const response = await fetch(`${process.env.API_URL}/health`);
       return response.ok;
     },
   },

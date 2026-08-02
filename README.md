@@ -248,7 +248,8 @@ _See `.opencode/skill/` directory for complete skill definitions._
 
 | Method | Endpoint            | Description                                      |
 | ------ | ------------------- | ------------------------------------------------ |
-| GET    | `/`                 | Health check                                     |
+| GET    | `/`                 | API metadata                                     |
+| GET    | `/health`           | Health check (circuit-breaker aware)             |
 | GET    | `/warmup`           | Pre-warm circuit breaker on worker startup       |
 | POST   | `/generate`         | Generate blueprint (SSE stream)                  |
 | POST   | `/tasks`            | Generate tasks from blueprint (SSE stream)       |
@@ -329,7 +330,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
 - **[Issue Audit Report](./docs/audits/archive/issue-audit-report-2026-07-15.md)** - ULW Loop issue audit with fix status tracking (archived)
 
-- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jun 17–Jul 31)
+- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jun 17–Aug 1)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 - **[Roadmap M3 Proposal](./docs/roadmap-m3-proposal.md)** - M3 strategic expansion proposal
 
