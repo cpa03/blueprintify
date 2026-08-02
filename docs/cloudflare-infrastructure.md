@@ -80,9 +80,18 @@ The following must be set via `wrangler secret put`:
 ```bash
 # Production
 wrangler secret put OPENAI_API_KEY --env production
+wrangler secret put API_KEY --env production
 
 # Staging
 wrangler secret put OPENAI_API_KEY --env staging
+wrangler secret put API_KEY --env staging
+```
+
+`API_KEY` is required for authentication — protected endpoints return `503 Service Unavailable` when it is not set. Optional `ADMIN_API_KEY` grants the `admin` role via RBAC and takes precedence over `API_KEY`:
+
+```bash
+wrangler secret put ADMIN_API_KEY --env production
+wrangler secret put ADMIN_API_KEY --env staging
 ```
 
 Additional optional secrets (commented out in `wrangler.toml`):

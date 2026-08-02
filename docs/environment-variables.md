@@ -27,6 +27,7 @@ The API is built on Cloudflare Workers and uses `.dev.vars` for local developmen
 | `CORS_ORIGIN`        | No          | `*`                         | Allowed CORS origins (comma-separated)                             |
 | `CORS_MAX_AGE`       | No          | `86400`                     | CORS preflight cache duration in seconds                           |
 | `API_KEY`            | Recommended | -                           | API authentication key. If not set, protected endpoints return 503 |
+| `ADMIN_API_KEY`      | No          | -                           | Admin API key granting the `admin` role (RBAC). Takes precedence over `API_KEY` for admin-protected endpoints |
 | `NODE_ENV`           | No          | `development`               | Runtime environment (`development`, `test`, `production`)          |
 
 ### Rate Limiting
@@ -151,6 +152,8 @@ Example `.dev.vars`:
 ```bash
 OPENAI_API_KEY=sk-xxxxx
 API_KEY=your-secure-api-key
+# Optional: admin key for RBAC admin role (takes precedence over API_KEY)
+# ADMIN_API_KEY=your-admin-api-key
 CORS_ORIGIN=http://localhost:3000
 ```
 
