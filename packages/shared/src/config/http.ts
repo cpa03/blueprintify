@@ -21,6 +21,9 @@ export const RETRYABLE_STATUS_CODES = [408, 429, 500, 502, 503, 504] as const;
  */
 export const SSE_CONFIG = {
   DATA_PREFIX: "data: ",
+  EVENT_PREFIX: "event: " as const,
+  ID_PREFIX: "id: " as const,
+  LINE_BREAK: "\n" as const,
   EVENT_SEPARATOR: "\n\n",
   EVENT_TYPES: {
     CONTENT: "content",
