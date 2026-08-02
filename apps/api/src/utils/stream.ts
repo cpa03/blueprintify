@@ -34,18 +34,16 @@ export function formatSSE(message: SSEMessage): string {
   let result = "";
 
   if (message.event) {
-    result += `event: ${message.event}\n`;
+    result += `${SSE_CONFIG.EVENT_PREFIX}${message.event}${SSE_CONFIG.LINE_BREAK}`;
   }
   if (message.id) {
-    result += `id: ${message.id}\n`;
+    result += `${SSE_CONFIG.ID_PREFIX}${message.id}${SSE_CONFIG.LINE_BREAK}`;
   }
 
   const lines = message.data.split("\n");
-  for (const line of lines) {
-    result += `data: ${line}\n`;
-  }
+  result += lines.map((line) => `${SSE_CONFIG.DATA_PREFIX}${line}`).join(SSE_CONFIG.LINE_BREAK);
 
-  result += "\n";
+  result += SSE_CONFIG.EVENT_SEPARATOR;
   return result;
 }
 

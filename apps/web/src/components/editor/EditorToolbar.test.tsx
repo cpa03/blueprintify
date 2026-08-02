@@ -227,6 +227,36 @@ describe("EditorToolbar", () => {
       renderToolbar();
       expect(screen.getByRole("radiogroup")).toBeInTheDocument();
     });
+
+    it("keeps only the checked radio in the tab order (roving tabindex)", () => {
+      renderToolbar({ viewMode: "split" });
+      const edit = screen.getByRole("radio", { name: /edit/i });
+      const split = screen.getByRole("radio", { name: /split/i });
+      const preview = screen.getByRole("radio", { name: /preview/i });
+      expect(split).toHaveAttribute("tabindex", "0");
+      expect(edit).toHaveAttribute("tabindex", "-1");
+      expect(preview).toHaveAttribute("tabindex", "-1");
+    });
+
+    it("moves the tab stop to the newly checked radio after arrow navigation", () => {
+      const setViewMode = vi.fn();
+      const { rerender } = renderToolbar({ setViewMode, viewMode: "edit" });
+      fireEvent.keyDown(screen.getByRole("radiogroup"), { key: "ArrowRight" });
+      rerender(
+        <EditorToolbar
+          activeTab={EDITOR_TABS.BLUEPRINT}
+          viewMode="split"
+          setViewMode={setViewMode}
+          onCopy={vi.fn()}
+          onExport={vi.fn()}
+          onNew={vi.fn()}
+          hasContent={true}
+          copied={null}
+        />
+      );
+      expect(screen.getByRole("radio", { name: /split/i })).toHaveAttribute("tabindex", "0");
+      expect(screen.getByRole("radio", { name: /edit/i })).toHaveAttribute("tabindex", "-1");
+    });
   });
 
   describe("Keyboard Navigation", () => {

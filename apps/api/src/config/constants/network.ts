@@ -55,6 +55,8 @@ export const API_HEADERS = {
     /** Public cache directive with max-age and stale-while-revalidate */
     PUBLIC_WITH_REVALIDATE: (maxAge: number, staleWhileRevalidate: number): string =>
       `public, max-age=${maxAge}, stale-while-revalidate=${staleWhileRevalidate}`,
+    /** Private cache directive - per-user responses must not be cached in shared caches */
+    PRIVATE_NO_STORE: "private, no-store",
   },
   /** CDN-specific cache headers */
   CDN: {

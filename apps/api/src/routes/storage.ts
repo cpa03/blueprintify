@@ -21,30 +21,42 @@ import { authorize } from "../middleware/authorize";
 import {
   API_HEADERS,
   STORAGE_CONFIG,
-  CACHE_CONFIG,
   HTTP_STATUS,
   STORAGE_MESSAGES,
   STORAGE_KV_CONFIG,
+  ROUTE_SUB_PATHS,
+  STORAGE_QUERY_PARAMS,
 } from "../config/constants";
-import { ErrorType } from "../errors";
-import type { Env } from "../types";
+import { ErrorType, timestamp } from "../errors";
+import type { AppVariables, Env, User } from "../types";
 
-const app = new Hono<{ Bindings: Env }>();
+const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
 
-// KV key for storing storage quota data
-const STORAGE_QUOTA_KEY = STORAGE_KV_CONFIG.QUOTA_KEY;
+/**
+ * Compute the per-user KV key for storage quota data.
+ * Scoping by user prevents one authenticated user from reading or
+ * overwriting another user's reported storage usage.
+ */
+function getQuotaKey(c: { get: (key: string) => unknown }): string {
+  const user = c.get(CONTEXT_KEYS.USER) as User | undefined;
+  const userId = user?.id ?? AUTH_DEFAULTS.ANONYMOUS_USER_ID;
+  return `${STORAGE_KV_CONFIG.QUOTA_KEY}:${userId}`;
+}
 
 /**
  * Parse stored quota data from KV
  */
-async function getStoredQuota(c: { env: Env }): Promise<{
+async function getStoredQuota(
+  c: { env: Env },
+  quotaKey: string
+): Promise<{
   used: number;
   total: number;
   projects: number;
   updatedAt: string;
 } | null> {
   try {
-    const stored = await c.env.CACHE?.get(STORAGE_QUOTA_KEY, "json");
+    const stored = await c.env.CACHE?.get(quotaKey, "json");
     if (stored) {
       return stored as {
         used: number;
@@ -63,50 +75,50 @@ async function getStoredQuota(c: { env: Env }): Promise<{
  * Get storage quota information
  * GET /storage/quota
  */
-app.get("/quota", rateLimit(rateLimitConfigs.standard), async (c) => {
-  try {
-    // Try to get stored quota from KV
-    const storedQuota = await getStoredQuota(c);
+app.get(
+  ROUTE_SUB_PATHS.QUOTA,
+  rateLimit(rateLimitConfigs.standard),
+  authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
+  async (c) => {
+    try {
+      const quotaKey = getQuotaKey(c);
+      // Try to get stored quota from KV
+      const storedQuota = await getStoredQuota(c, quotaKey);
 
-    // Calculate values - use stored or defaults
-    const used = storedQuota?.used ?? 0;
-    const total = storedQuota?.total ?? STORAGE_CONFIG.QUOTA_BYTES;
-    const projects = storedQuota?.projects ?? 0;
-    const percentage = total > 0 ? Math.round((used / total) * PERCENT_SCALE) : 0;
+      // Calculate values - use stored or defaults
+      const used = storedQuota?.used ?? 0;
+      const total = storedQuota?.total ?? STORAGE_CONFIG.QUOTA_BYTES;
+      const projects = storedQuota?.projects ?? 0;
+      const percentage = total > 0 ? Math.round((used / total) * PERCENT_SCALE) : 0;
 
-    // Cache quota response - this data rarely changes
-    c.header(
-      API_HEADERS.CACHE_CONTROL.HEADER_NAME,
-      API_HEADERS.CACHE_CONTROL.PUBLIC_WITH_REVALIDATE(
-        CACHE_CONFIG.ROOT_MAX_AGE,
-        CACHE_CONFIG.ROOT_STALE_WHILE_REVALIDATE
-      )
-    );
+      // Per-user data must not be cached in shared caches
+      c.header(API_HEADERS.CACHE_CONTROL.HEADER_NAME, API_HEADERS.CACHE_CONTROL.PRIVATE_NO_STORE);
 
-    return c.json({
-      success: true,
-      data: {
-        used,
-        total,
-        percentage,
-        projects,
-        note: STORAGE_MESSAGES.QUOTA_NOTE,
-      },
-    });
-  } catch (error) {
-    return c.json(
-      {
-        success: false,
-        error: {
-          type: ErrorType.INTERNAL,
-          message: error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.QUOTA_GET,
-          timestamp: new Date().toISOString(),
+      return c.json({
+        success: true,
+        data: {
+          used,
+          total,
+          percentage,
+          projects,
+          note: STORAGE_MESSAGES.QUOTA_NOTE,
         },
-      },
-      HTTP_STATUS.INTERNAL_ERROR
-    );
+      });
+    } catch (error) {
+      return c.json(
+        {
+          success: false,
+          error: {
+            type: ErrorType.INTERNAL,
+            message: error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.QUOTA_GET,
+            timestamp: timestamp(),
+          },
+        },
+        HTTP_STATUS.INTERNAL_ERROR
+      );
+    }
   }
-});
+);
 
 /**
  * Report client storage usage
@@ -116,21 +128,23 @@ app.get("/quota", rateLimit(rateLimitConfigs.standard), async (c) => {
  * This allows the server to provide accurate quota information.
  */
 app.post(
-  "/report",
+  ROUTE_SUB_PATHS.REPORT,
   rateLimit(rateLimitConfigs.standard),
+  authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
   validateJson(StorageReportRequestSchema),
   async (c) => {
     const { used, total, projects } = c.get(CONTEXT_KEYS.VALIDATED_DATA);
 
     try {
+      const quotaKey = getQuotaKey(c);
       // Store the reported quota data in KV
       await c.env.CACHE?.put(
-        STORAGE_QUOTA_KEY,
+        quotaKey,
         JSON.stringify({
           used,
           total,
           projects,
-          updatedAt: new Date().toISOString(),
+          updatedAt: timestamp(),
         }),
         { expirationTtl: STORAGE_KV_CONFIG.REPORT_TTL_SECONDS }
       );
@@ -139,7 +153,7 @@ app.post(
         success: true,
         data: {
           stored: true,
-          timestamp: new Date().toISOString(),
+          timestamp: timestamp(),
         },
       });
     } catch (error) {
@@ -150,7 +164,7 @@ app.post(
             type: ErrorType.INTERNAL,
             message:
               error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.REPORT_USAGE,
-            timestamp: new Date().toISOString(),
+            timestamp: timestamp(),
           },
         },
         HTTP_STATUS.INTERNAL_ERROR
@@ -167,11 +181,11 @@ app.post(
  * to comply with REST conventions (DELETE requests should not have bodies).
  */
 app.delete(
-  "/clear",
+  ROUTE_SUB_PATHS.CLEAR,
   rateLimit(rateLimitConfigs.strict),
   authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
   async (c) => {
-    const confirm = c.req.query("confirm") === "true";
+    const confirm = c.req.query(STORAGE_QUERY_PARAMS.CONFIRM) === STORAGE_QUERY_PARAMS.CONFIRM_TRUE;
 
     if (!confirm) {
       return c.json(
@@ -180,7 +194,7 @@ app.delete(
           error: {
             type: ErrorType.VALIDATION,
             message: STORAGE_MESSAGES.CONFIRMATION_REQUIRED,
-            timestamp: new Date().toISOString(),
+            timestamp: timestamp(),
           },
         },
         HTTP_STATUS.BAD_REQUEST
@@ -188,15 +202,15 @@ app.delete(
     }
 
     try {
-      // Clear stored quota data
-      await c.env.CACHE?.delete(STORAGE_QUOTA_KEY);
+      const quotaKey = getQuotaKey(c);
+      await c.env.CACHE?.delete(quotaKey);
 
       return c.json({
         success: true,
         data: {
           cleared: true,
           message: STORAGE_MESSAGES.CLEAR_SUCCESS,
-          timestamp: new Date().toISOString(),
+          timestamp: timestamp(),
         },
       });
     } catch (error) {
@@ -207,7 +221,7 @@ app.delete(
             type: ErrorType.INTERNAL,
             message:
               error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.CLEAR_STORAGE,
-            timestamp: new Date().toISOString(),
+            timestamp: timestamp(),
           },
         },
         HTTP_STATUS.INTERNAL_ERROR
