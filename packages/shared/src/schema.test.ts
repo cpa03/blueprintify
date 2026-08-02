@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { z } from "zod";
 import {
   TechStackCategory,
   DatabaseSubcategory,
@@ -13,6 +14,7 @@ import {
   ImportRequestSchema,
   StorageClearRequestSchema,
   SuccessResponseSchema,
+  createSuccessResponseSchema,
 } from "./schema.js";
 import { EXPORT_LIMITS } from "./config.js";
 
@@ -346,5 +348,29 @@ describe("SuccessResponseSchema", () => {
     };
     const result = SuccessResponseSchema.safeParse(response);
     expect(result.success).toBe(true);
+  });
+});
+
+describe("createSuccessResponseSchema", () => {
+  it("should create a typed success response schema", () => {
+    const ShareResponseSchema = createSuccessResponseSchema(
+      z.object({ id: z.string(), url: z.string() })
+    );
+    const result = ShareResponseSchema.safeParse({
+      success: true,
+      data: { id: "share_123", url: "https://example.com/s/123" },
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("should reject data that does not match the data schema", () => {
+    const ShareResponseSchema = createSuccessResponseSchema(
+      z.object({ id: z.string(), url: z.string() })
+    );
+    const result = ShareResponseSchema.safeParse({
+      success: true,
+      data: { id: 42 },
+    });
+    expect(result.success).toBe(false);
   });
 });
