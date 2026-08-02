@@ -26,9 +26,10 @@ import {
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { useReducedMotionContext } from "../context/ReducedMotionContext";
 import { Icon } from "./Icon";
 import { RippleButton } from "./RippleButton";
-import { KeyboardShortcutTooltip } from "./SmartTooltip";
+import { SmartTooltip, KeyboardShortcutTooltip } from "./SmartTooltip";
 
 /**
  * Props for the Header component.
@@ -61,6 +62,11 @@ function HeaderComponent({
 }: HeaderProps): JSX.Element {
   const [isScrolled, setIsScrolled] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const { prefersReducedMotion, setUserOverride } = useReducedMotionContext();
+
+  const toggleReducedMotion = useCallback(() => {
+    setUserOverride(!prefersReducedMotion);
+  }, [prefersReducedMotion, setUserOverride]);
 
   const scrollToTop = useCallback(() => {
     window.scrollTo({
@@ -122,6 +128,28 @@ function HeaderComponent({
           className="flex items-center gap-2 animate-slide-in-right"
           aria-label={ACCESSIBILITY_LABELS.NAV.MAIN}
         >
+          <SmartTooltip
+            content={
+              prefersReducedMotion
+                ? ACCESSIBILITY_LABELS.HEADER.REDUCE_MOTION_ON
+                : ACCESSIBILITY_LABELS.HEADER.REDUCE_MOTION_OFF
+            }
+            position="bottom"
+          >
+            <RippleButton
+              onClick={toggleReducedMotion}
+              className={`btn-ghost flex items-center justify-center w-10 h-10 ${
+                prefersReducedMotion
+                  ? "bg-primary-500/20 border border-primary-500/50 text-primary-300"
+                  : ""
+              }`}
+              ariaLabel={ACCESSIBILITY_LABELS.HEADER.REDUCE_MOTION}
+              title={ACCESSIBILITY_LABELS.HEADER.REDUCE_MOTION}
+              aria-pressed={prefersReducedMotion}
+            >
+              <Icon name="wind" className="w-5 h-5" />
+            </RippleButton>
+          </SmartTooltip>
           {onShowShortcuts && (
             <KeyboardShortcutTooltip
               shortcut={SHORTCUT_LABELS.SHORTCUTS_MODAL}
