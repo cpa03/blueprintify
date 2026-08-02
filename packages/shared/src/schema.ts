@@ -203,7 +203,7 @@ export const ErrorDetailSchema = z.object({
   type: ErrorTypeSchema,
   message: z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX),
   code: z.string().max(VALIDATION_LIMITS.PROJECT_NAME.MAX).optional(),
-  details: z.record(z.unknown()).optional(),
+  details: z.record(z.union([z.string(), z.number(), z.boolean(), z.array(z.string())])).optional(),
   timestamp: z.string(),
   requestId: z.string().max(VALIDATION_LIMITS.PROJECT_NAME.MAX).optional(),
 });
@@ -241,12 +241,36 @@ export const GenerationResultSchema = z.object({
 // ===== Success Response Schema =====
 
 /**
- * Generic success response schema.
+ * Factory for creating a typed success response schema.
+ *
+ * Accepts a Zod schema describing the `data` payload so that consumers
+ * get compile-time type safety instead of an untyped `unknown` value.
+ *
+ * @param dataSchema - Zod schema describing the success response payload
+ * @returns A success response schema with typed data
+ *
+ * @example
+ * ```typescript
+ * const ShareCreatedResponseSchema = createSuccessResponseSchema(
+ *   z.object({ id: z.string(), url: z.string() })
+ * );
+ * ```
  */
-export const SuccessResponseSchema = z.object({
-  success: z.literal(true),
-  data: z.unknown(),
-});
+export const createSuccessResponseSchema = <T extends z.ZodTypeAny>(dataSchema: T) =>
+  z.object({
+    success: z.literal(true),
+    data: dataSchema,
+  });
+
+/**
+ * Default success response schema.
+ *
+ * Kept for backward compatibility. New consumers should use the
+ * `createSuccessResponseSchema` factory to get a typed `data` payload.
+ */
+export const SuccessResponseSchema = createSuccessResponseSchema(
+  z.record(z.union([z.string(), z.number(), z.boolean(), z.array(z.string())]))
+);
 
 // ===== Export/Import Schemas (M2) =====
 
