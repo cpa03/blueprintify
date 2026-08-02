@@ -5,6 +5,7 @@ import { FRAMER_TYPE } from "@blueprint/shared/config";
 import { ANIMATION_TIMING } from "../config/theme";
 import { ANIMATION, EASING } from "../config/constants";
 import { VALIDATION_LABELS } from "../config/constants/validation";
+import { Icon } from "./Icon";
 
 interface ValidationCheckmarkProps {
   isValid: boolean;
@@ -85,23 +86,7 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
               />
             </svg>
           ) : (
-            <svg className={iconSize} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <motion.path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={strokeWidth}
-                d="M6 18L18 6M6 6l12 12"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{
-                  pathLength: {
-                    duration: ANIMATION.CHECKMARK_REVEAL,
-                    ease: EASING.easeOut,
-                  },
-                  opacity: { duration: ANIMATION.QUICK_FADE, ease: EASING.easeOut },
-                }}
-              />
-            </svg>
+            <Icon name="close" className={iconSize} strokeWidth={strokeWidth} />
           )}
         </motion.span>
       )}

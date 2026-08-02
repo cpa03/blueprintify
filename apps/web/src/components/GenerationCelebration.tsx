@@ -22,7 +22,7 @@ import {
   CELEBRATION_PARTICLE_STYLE,
   SPRING_CONFIG,
 } from "../config/constants";
-import { FRAMER_TYPE } from "@blueprint/shared/config";
+import { FRAMER_TYPE, RATIO_LIMITS } from "@blueprint/shared/config";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 
@@ -54,7 +54,8 @@ function generateParticles(centerX: number, centerY: number): Particle[] {
   const particles: Particle[] = [];
 
   for (let i = 0; i < CELEBRATION_PARTICLE.COUNT; i++) {
-    const angle = (i / CELEBRATION_PARTICLE.COUNT) * Math.PI * 2 + Math.random() * 0.5;
+    const angle =
+      (i / CELEBRATION_PARTICLE.COUNT) * Math.PI * 2 + Math.random() * RATIO_LIMITS.HALF;
     const distance =
       CELEBRATION_PARTICLE.BASE_DISTANCE_PX +
       Math.random() * CELEBRATION_PARTICLE.RANDOM_DISTANCE_PX;
@@ -125,7 +126,7 @@ const ParticleShape = memo(function ParticleShape({
       viewBox="0 0 24 24"
       fill={color}
       style={{
-        filter: `drop-shadow(0 0 ${size * 0.5}px ${color})`,
+        filter: `drop-shadow(0 0 ${size * RATIO_LIMITS.HALF}px ${color})`,
       }}
     >
       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />

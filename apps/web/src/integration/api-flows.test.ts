@@ -34,6 +34,11 @@ interface QuotaResponse {
 }
 
 describe("Integration: Frontend-Backend API Flow", () => {
+  // Mock-only test fixture paths (no real backend routes)
+  const MOCK_SYNC_PATH = "/storage/sync";
+  const MOCK_SESSION_INIT_PATH = "/session/init";
+  const MOCK_STORAGE_ITEM_PATH = "/storage";
+
   let fetchMock: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
@@ -295,7 +300,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
       await sessionStorage.set(mockStorageData.session);
 
-      const syncResponse = await fetch(`${API_BASE}/storage/sync`, {
+      const syncResponse = await fetch(`${API_BASE}${MOCK_SYNC_PATH}`, {
         method: HTTP_METHODS.POST,
         headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
         body: JSON.stringify({
@@ -306,7 +311,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
 
       expect(syncResponse.status).toBe(HTTP_STATUS.OK);
 
-      const quotaResponse = await fetch(`${API_BASE}/storage/quota`);
+      const quotaResponse = await fetch(`${API_BASE}${API_ENDPOINTS.STORAGE_QUOTA}`);
       const quotaData = (await quotaResponse.json()) as {
         quota: QuotaResponse;
       };
@@ -370,12 +375,12 @@ describe("Integration: Frontend-Backend API Flow", () => {
         .mockResolvedValueOnce(createMockResponse({ success: true }))
         .mockResolvedValueOnce(createMockResponse({ data: testData }));
 
-      await fetch(`${API_BASE}/session/init`, {
+      await fetch(`${API_BASE}${MOCK_SESSION_INIT_PATH}`, {
         method: HTTP_METHODS.POST,
         body: JSON.stringify({ projectName: testData.projectName }),
       });
 
-      await fetch(`${API_BASE}/storage`, {
+      await fetch(`${API_BASE}${API_ENDPOINTS.STORAGE}`, {
         method: HTTP_METHODS.POST,
         body: JSON.stringify({
           key: sessionId,
@@ -383,7 +388,7 @@ describe("Integration: Frontend-Backend API Flow", () => {
         }),
       });
 
-      const response = await fetch(`${API_BASE}/storage?key=${sessionId}`);
+      const response = await fetch(`${API_BASE}${MOCK_STORAGE_ITEM_PATH}?key=${sessionId}`);
       expect(response.status).toBe(HTTP_STATUS.OK);
     });
   });

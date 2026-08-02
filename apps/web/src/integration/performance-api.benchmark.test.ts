@@ -18,6 +18,8 @@ async function measureAsync<T>(fn: () => Promise<T>): Promise<{ result: T; durat
 }
 
 describe("Performance Benchmarks: API Integration", () => {
+  const MOCK_SYNC_PATH = "/storage/sync";
+
   let fetchMock: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
@@ -234,7 +236,9 @@ describe("Performance Benchmarks: API Integration", () => {
         })
       );
 
-      const { duration } = await measureAsync(() => fetch(`${API_BASE}/storage/quota`));
+      const { duration } = await measureAsync(() =>
+        fetch(`${API_BASE}${API_ENDPOINTS.STORAGE_QUOTA}`)
+      );
 
       expect(duration).toBeLessThan(100);
     });
@@ -243,7 +247,7 @@ describe("Performance Benchmarks: API Integration", () => {
       fetchMock.mockResolvedValueOnce(createMockResponse({ success: true }));
 
       const { duration } = await measureAsync(() =>
-        fetch(`${API_BASE}/storage/sync`, {
+        fetch(`${API_BASE}${MOCK_SYNC_PATH}`, {
           method: HTTP_METHODS.POST,
           headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON },
           body: JSON.stringify({
@@ -306,7 +310,7 @@ describe("Performance Benchmarks: API Integration", () => {
       const startTime = performance.now();
 
       for (let i = 0; i < iterations; i++) {
-        await fetch(`${API_BASE}/storage/quota`);
+        await fetch(`${API_BASE}${API_ENDPOINTS.STORAGE_QUOTA}`);
       }
 
       const totalDuration = performance.now() - startTime;

@@ -312,14 +312,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                   className="p-2 text-dark-400 hover:text-white hover:bg-dark-700/50 rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50"
                   aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.CLOSE}
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
+                  <Icon name="close" className="w-5 h-5" />
                 </button>
               </div>
 
@@ -368,19 +361,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                                    hover:bg-dark-700/50 rounded-md p-1 transition-colors duration-150"
                         aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.CLEAR_SEARCH}
                       >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
+                        <Icon name="close" className="w-4 h-4" />
                       </motion.button>
                     )}
                   </AnimatePresence>

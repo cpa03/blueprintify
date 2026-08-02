@@ -40,6 +40,7 @@ import {
   SPRING_SCROLL_HOVER,
   KEYBOARD_EVENT_KEYS,
   PERCENT_SCALE,
+  RATIO_LIMITS,
 } from "@blueprint/shared/config";
 
 interface PageScrollProgressBarProps {
@@ -121,7 +122,7 @@ function PageScrollProgressBarComponent({
         if (scrollHeight <= 0) return;
 
         const currentScroll = window.scrollY;
-        const step = scrollHeight * 0.1;
+        const step = scrollHeight * RATIO_LIMITS.SCROLL_STEP;
         let targetScroll = currentScroll;
 
         switch (e.key) {

@@ -61,7 +61,7 @@ function useElapsedTime(isActive: boolean): string {
     return () => clearInterval(id);
   }, [isActive]);
 
-  const minutes = Math.floor(seconds / 60);
+  const minutes = Math.floor(seconds / TIME_UNITS.SECONDS_PER_MINUTE);
   const secs = seconds % 60;
   return `${minutes}:${secs.toString().padStart(2, "0")}`;
 }
@@ -92,6 +92,7 @@ import {
 import { KEYBOARD_SHORTCUTS } from "../../config/constants/keyboard";
 import { COLORS, HEADER_ANIMATION } from "../../config/theme";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
+import { Icon } from "../Icon";
 import { getAltKeyLabel, getModifierLabel, getAriaShortcutKey } from "../../lib/platform";
 
 import { AnimatedNumber } from "../AnimatedNumber";
@@ -844,20 +845,7 @@ export const StepGenerating = memo(function StepGenerating({
               }}
               className="text-sm text-dark-500 flex items-center gap-1.5"
             >
-              <svg
-                className="w-4 h-4 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
+              <Icon name="helpCircleOutline" className="w-4 h-4 flex-shrink-0" />
               {WIZARD_GENERATING_LABELS.CONTENT_AVAILABLE}
             </motion.p>
           </motion.div>
@@ -937,20 +925,7 @@ export const StepGenerating = memo(function StepGenerating({
               transition={{ delay: ANIMATION.SLOW }}
               className="text-sm text-dark-500 mt-8 flex items-center gap-1.5"
             >
-              <svg
-                className="w-4 h-4 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
+              <Icon name="helpCircleOutline" className="w-4 h-4 flex-shrink-0" />
               <AnimatePresence mode="wait">
                 <motion.span
                   key={blueprintLines > 0 ? "streaming" : "empty"}
@@ -1001,20 +976,7 @@ export const StepGenerating = memo(function StepGenerating({
                     </>
                   ) : (
                     <>
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
+                      <Icon name="close" className="w-4 h-4" />
                       {WIZARD_GENERATING_LABELS.CANCEL_GENERATION}
                       <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
                         {KEY_DISPLAY.ESC}

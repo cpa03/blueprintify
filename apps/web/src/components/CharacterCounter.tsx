@@ -1,6 +1,10 @@
 import { memo, useMemo, useRef, useEffect, useState } from "react";
 import { TIMEOUTS, ACCESSIBILITY_LABELS, CSS_CLASSES, FOCUS_ANNOUNCER } from "../config/constants";
-import { CHAR_COUNTER_THRESHOLDS, CHAR_COUNTER_COLORS } from "@blueprint/shared/config";
+import {
+  CHAR_COUNTER_THRESHOLDS,
+  CHAR_COUNTER_COLORS,
+  RATIO_LIMITS,
+} from "@blueprint/shared/config";
 
 interface CharacterCounterProps {
   current: number;
@@ -14,7 +18,7 @@ function CharacterCounterComponent({
   current,
   max,
   min,
-  warningThreshold = Math.floor(max * 0.8),
+  warningThreshold = Math.floor(max * RATIO_LIMITS.WARNING),
   className = "",
 }: CharacterCounterProps) {
   const isAtLimit = current >= max;
