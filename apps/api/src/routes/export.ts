@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { CONTEXT_KEYS, AUTH_DEFAULTS, ExportRequestSchema } from "@blueprint/shared";
-import { ErrorType, createErrorJson } from "../errors";
+import { ErrorType, createErrorJson, timestamp } from "../errors";
 import { ERROR_CODES } from "@blueprint/shared";
 import { validateJson, validatePromptInjection } from "../middleware/validator";
 import { rateLimit, rateLimitConfigs } from "../middleware/rateLimit";
@@ -15,6 +15,7 @@ import {
   EXPORT_FORMATS,
   FILENAME_PATTERNS,
   LOG_CONTEXT,
+  EXPORT_NOTES,
 } from "../config/constants";
 import type { Env } from "../types";
 
@@ -30,12 +31,12 @@ app.post(
     const { projectName, blueprint, tasks, format } = c.get(CONTEXT_KEYS.VALIDATED_DATA);
 
     try {
-      const timestamp = new Date().toISOString();
+      const exportedAt = timestamp();
       const exportData = {
         projectName,
         blueprint,
         tasks,
-        exportedAt: timestamp,
+        exportedAt: exportedAt,
         version: API_METADATA.VERSION,
         format,
       };
@@ -50,7 +51,7 @@ app.post(
 
       if (format === EXPORT_FORMATS.MARKDOWN) {
         let markdown = EXPORT_TEMPLATES.MARKDOWN.HEADER(projectName);
-        markdown += EXPORT_TEMPLATES.MARKDOWN.EXPORTED_LINE(timestamp);
+        markdown += EXPORT_TEMPLATES.MARKDOWN.EXPORTED_LINE(exportedAt);
         markdown += EXPORT_TEMPLATES.MARKDOWN.BLUEPRINT_SECTION(blueprint);
         if (tasks) {
           markdown += EXPORT_TEMPLATES.MARKDOWN.TASKS_SECTION(tasks);
@@ -71,7 +72,7 @@ app.post(
           data: {
             manifest: exportData,
             filename: FILENAME_PATTERNS.EXPORT_ZIP(projectName),
-            note: "ZIP generation should be handled client-side or with additional service",
+            note: EXPORT_NOTES.ZIP_CLIENT_SIDE,
           },
         });
       }

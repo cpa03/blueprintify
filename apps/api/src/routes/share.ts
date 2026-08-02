@@ -41,7 +41,7 @@ import {
 } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
 import { sanitizeHtml } from "../utils/sanitize";
-import { ErrorType, createErrorJson } from "../errors";
+import { ErrorType, createErrorJson, timestamp } from "../errors";
 
 const LOG_CREATE_ERROR = LOG_CONTEXT.SHARE_CREATE;
 const LOG_VERIFY_ERROR = LOG_CONTEXT.SHARE_VERIFY;
@@ -253,7 +253,7 @@ app.post(
       const sanitizedBlueprint = sanitizeHtml(blueprint);
 
       const shareId = generateShareId();
-      const now = new Date().toISOString();
+      const now = timestamp();
       const expiresAt = getExpirationDate();
       const user = c.get(CONTEXT_KEYS.USER);
       const creatorId = user?.id;

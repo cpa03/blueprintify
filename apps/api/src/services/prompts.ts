@@ -8,6 +8,7 @@
  */
 
 import type { BlueprintRequest, RefineRequest } from "@blueprint/shared";
+import { SANITIZE_REPLACEMENT_STRINGS } from "@blueprint/shared";
 import { PROMPT_CONFIG, PROMPT_INPUT_CONFIG } from "../config/constants";
 import {
   INJECTION_PATTERNS,
@@ -51,7 +52,7 @@ export function sanitizePromptInput(input: string): string {
   let sanitized = input;
 
   for (const pattern of INJECTION_PATTERNS) {
-    sanitized = sanitized.replace(pattern, "[redacted]");
+    sanitized = sanitized.replace(pattern, SANITIZE_REPLACEMENT_STRINGS.PROMPT_INJECTION_REDACTED);
   }
 
   sanitized = Array.from(sanitized)

@@ -80,3 +80,12 @@ export const BODY_SIZE_MAX = {
   STRICT: BODY_SIZE_LIMITS.STRICT_KB * KB,
   LENIENT: BODY_SIZE_LIMITS.LENIENT_MB * MB,
 } as const;
+
+/**
+ * Storage route query parameters.
+ * Flexy says: no hardcoded query param strings!
+ */
+export const STORAGE_QUERY_PARAMS = {
+  CONFIRM: "confirm",
+  CONFIRM_TRUE: "true",
+} as const;

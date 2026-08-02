@@ -4,6 +4,39 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 183: Eliminate Remaining Hardcoded API Route Literals into Shared Config
+
+**Problem**: API routes still contained raw literals — 11× `new Date().toISOString()` bypassing the existing `timestamp()` helper, storage route path strings (`/quota`, `/report`, `/clear`) ignoring `ROUTE_SUB_PATHS`, hardcoded query params (`confirm`/`true`), the `"[redacted]"` prompt-injection replacement string (a cross-file contract asserted in ~28 tests), raw SSE framing literals despite `SSE_CONFIG` existing, and inline export/import message templates. Flexy says: no hardcoded strings in routes!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/validation.ts` | Added `SANITIZE_REPLACEMENT_STRINGS.PROMPT_INJECTION_REDACTED` (`"[redacted]"`) — single source of truth for prompt-injection redaction |
+| `packages/shared/src/config/http.ts` | Added `SSE_CONFIG.EVENT_PREFIX` (`"event: "`), `ID_PREFIX` (`"id: "`), `LINE_BREAK` (`"\n"`) |
+| `apps/api/src/routes/storage.ts` | Replaced 7× `new Date().toISOString()` with `timestamp()`; route paths → `ROUTE_SUB_PATHS.QUOTA/REPORT/CLEAR`; query param → `STORAGE_QUERY_PARAMS.CONFIRM/CONFIRM_TRUE` |
+| `apps/api/src/routes/import.ts` | 2× `new Date().toISOString()` → `timestamp()`; version-mismatch template → `IMPORT_WARNINGS.VERSION_MISMATCH` |
+| `apps/api/src/routes/export.ts` | `new Date().toISOString()` → `timestamp()` (local var renamed `exportedAt` to avoid shadowing); ZIP note → `EXPORT_NOTES.ZIP_CLIENT_SIDE` |
+| `apps/api/src/routes/share.ts` | `new Date().toISOString()` → `timestamp()` |
+| `apps/api/src/services/prompts.ts` | Literal `"[redacted]"` → `SANITIZE_REPLACEMENT_STRINGS.PROMPT_INJECTION_REDACTED` |
+| `apps/api/src/utils/stream.ts` | `formatSSE` framing → `SSE_CONFIG.EVENT_PREFIX/ID_PREFIX/DATA_PREFIX/LINE_BREAK/EVENT_SEPARATOR` (byte-identical output) |
+| `apps/api/src/config/constants/endpoints.ts` | Added `ROUTE_SUB_PATHS.REPORT` (`"/report"`) |
+| `apps/api/src/config/constants/storage.ts` | Added `STORAGE_QUERY_PARAMS` |
+| `apps/api/src/config/constants/share.ts` | Added `EXPORT_NOTES`, `IMPORT_WARNINGS` |
+| `apps/api/src/config/constants.ts` + `constants/index.ts` | Re-exported new constants (`STORAGE_QUERY_PARAMS`, `EXPORT_NOTES`, `IMPORT_WARNINGS`) |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run lint` — zero errors, zero warnings
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npm run test:all` — **1,041 web + 509 api + 845 shared = 2,395 tests passing**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-183-api-hardcoded` | refactor(flexy): eliminate remaining hardcoded API literals into shared config (Iteration 183) |
+
 ### ✅ Flexy Iteration 163: Replace Remaining Hardcoded Modifier Key Strings Across All Components
 
 **Problem**: 12 hardcoded `modifier="alt"`/`modifier="none"` prop values and 4 hardcoded `getAriaShortcutKey(key, "alt")` second arguments existed across 7 components. The `MODIFIER_KEYS` constant (from `@blueprint/shared/config`) was already defined and imported in some files but not consistently used. Flexy says: No hardcoded modifier strings anywhere!

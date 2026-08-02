@@ -24,8 +24,10 @@ import {
   HTTP_STATUS,
   STORAGE_MESSAGES,
   STORAGE_KV_CONFIG,
+  ROUTE_SUB_PATHS,
+  STORAGE_QUERY_PARAMS,
 } from "../config/constants";
-import { ErrorType } from "../errors";
+import { ErrorType, timestamp } from "../errors";
 import type { AppVariables, Env, User } from "../types";
 
 const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
@@ -74,7 +76,7 @@ async function getStoredQuota(
  * GET /storage/quota
  */
 app.get(
-  "/quota",
+  ROUTE_SUB_PATHS.QUOTA,
   rateLimit(rateLimitConfigs.standard),
   authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
   async (c) => {
@@ -109,7 +111,7 @@ app.get(
           error: {
             type: ErrorType.INTERNAL,
             message: error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.QUOTA_GET,
-            timestamp: new Date().toISOString(),
+            timestamp: timestamp(),
           },
         },
         HTTP_STATUS.INTERNAL_ERROR
@@ -126,7 +128,7 @@ app.get(
  * This allows the server to provide accurate quota information.
  */
 app.post(
-  "/report",
+  ROUTE_SUB_PATHS.REPORT,
   rateLimit(rateLimitConfigs.standard),
   authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
   validateJson(StorageReportRequestSchema),
@@ -142,7 +144,7 @@ app.post(
           used,
           total,
           projects,
-          updatedAt: new Date().toISOString(),
+          updatedAt: timestamp(),
         }),
         { expirationTtl: STORAGE_KV_CONFIG.REPORT_TTL_SECONDS }
       );
@@ -151,7 +153,7 @@ app.post(
         success: true,
         data: {
           stored: true,
-          timestamp: new Date().toISOString(),
+          timestamp: timestamp(),
         },
       });
     } catch (error) {
@@ -162,7 +164,7 @@ app.post(
             type: ErrorType.INTERNAL,
             message:
               error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.REPORT_USAGE,
-            timestamp: new Date().toISOString(),
+            timestamp: timestamp(),
           },
         },
         HTTP_STATUS.INTERNAL_ERROR
@@ -179,11 +181,11 @@ app.post(
  * to comply with REST conventions (DELETE requests should not have bodies).
  */
 app.delete(
-  "/clear",
+  ROUTE_SUB_PATHS.CLEAR,
   rateLimit(rateLimitConfigs.strict),
   authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
   async (c) => {
-    const confirm = c.req.query("confirm") === "true";
+    const confirm = c.req.query(STORAGE_QUERY_PARAMS.CONFIRM) === STORAGE_QUERY_PARAMS.CONFIRM_TRUE;
 
     if (!confirm) {
       return c.json(
@@ -192,7 +194,7 @@ app.delete(
           error: {
             type: ErrorType.VALIDATION,
             message: STORAGE_MESSAGES.CONFIRMATION_REQUIRED,
-            timestamp: new Date().toISOString(),
+            timestamp: timestamp(),
           },
         },
         HTTP_STATUS.BAD_REQUEST
@@ -208,7 +210,7 @@ app.delete(
         data: {
           cleared: true,
           message: STORAGE_MESSAGES.CLEAR_SUCCESS,
-          timestamp: new Date().toISOString(),
+          timestamp: timestamp(),
         },
       });
     } catch (error) {
@@ -219,7 +221,7 @@ app.delete(
             type: ErrorType.INTERNAL,
             message:
               error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.CLEAR_STORAGE,
-            timestamp: new Date().toISOString(),
+            timestamp: timestamp(),
           },
         },
         HTTP_STATUS.INTERNAL_ERROR
