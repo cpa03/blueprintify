@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Header } from "./Header";
-import { UI_CONTENT } from "../config/constants";
+import { UI_CONTENT, ACCESSIBILITY_LABELS } from "../config/constants";
 
 const { useReducedMotionContextMock, setUserOverrideMock } = vi.hoisted(() => ({
   useReducedMotionContextMock: vi.fn(),
@@ -141,6 +141,19 @@ describe("Header", () => {
     });
     expect(brandButton).toBeInTheDocument();
     expect(brandButton).toHaveClass("cursor-pointer");
+  });
+
+  it("exposes the scroll-to-top action via description for assistive technology", () => {
+    render(<Header />);
+
+    const brandButton = screen.getByRole("button", {
+      name: `${UI_CONTENT.APP.NAME} AI-Powered Project Architecture`,
+    });
+    expect(brandButton).toHaveAttribute(
+      "aria-description",
+      ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP
+    );
+    expect(brandButton).toHaveAttribute("title", ACCESSIBILITY_LABELS.HEADER.BRAND_SCROLL_TO_TOP);
   });
 
   it("scrolls to top when brand button is clicked", async () => {

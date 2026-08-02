@@ -257,7 +257,7 @@ export const ACCESSIBILITY_LABELS = {
   HEADER: {
     KEYBOARD_SHORTCUTS: "Keyboard shortcuts (?)",
     GITHUB: "View on GitHub (opens in new tab)",
-    BRAND_SCROLL_TO_TOP: "Blueprintify AI-Powered Project Architecture",
+    BRAND_SCROLL_TO_TOP: "Scroll to top",
     REDUCE_MOTION: "Reduce motion",
     REDUCE_MOTION_ON: "Reduce motion is on",
     REDUCE_MOTION_OFF: "Reduce motion is off",
