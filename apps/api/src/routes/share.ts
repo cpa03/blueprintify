@@ -643,13 +643,15 @@ app.delete(
         );
       }
 
-      // Validate ownership: if the share has a creatorId, the request must match
+      // Fail-closed ownership: an authenticated user may only delete a share
+      // whose recorded creator matches their identity. Legacy shares without
+      // creator metadata cannot be verified, so deletion is denied.
       const delUser = c.get(CONTEXT_KEYS.USER);
       const creatorId = delUser?.id;
-      if (creatorId && existing.metadata) {
-        const parsedMetadata = parseMetadata(existing.metadata) ?? {};
+      if (creatorId) {
+        const parsedMetadata = existing.metadata ? (parseMetadata(existing.metadata) ?? {}) : {};
         const shareCreatorId = parsedMetadata.createdBy as string | undefined;
-        if (shareCreatorId && shareCreatorId !== creatorId) {
+        if (!shareCreatorId || shareCreatorId !== creatorId) {
           return c.json(
             withCtxError(
               c,
