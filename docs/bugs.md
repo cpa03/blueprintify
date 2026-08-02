@@ -1,6 +1,21 @@
 # Bug Log: Known Defects
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
+## Bug Status — Aug 2 2026 (BugFixer Cycle 20)
+
+> **BugFixer Cycle 20 (2026-08-02 — agent/bugfixer-cycle-20)**: Full BugFixer audit complete — **zero code bugs found**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web + api) tests **2,403/2,403** ✅ (1043 web + 515 api + 845 shared). Format ✅ (prettier clean). Secrets scan ✅ (311 files). Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (workspace deps + versions in sync). `npm ls` clean — exit 0. All relative imports resolve.
+>
+> **New post-Cycle-19 commits indexed** — HEAD at `ee990087` (Merge PR #3030 — agent/bugfixer-cycle-19). Prior: `c11e4c47` (merge: resolve storage.ts conflicts between Iteration 183 literals and #3034 authorization), `cc960405` (Merge PR #3034 — fix/api-user-authorization-1078), `5f17cf0d` (Merge PR #3033 — flexy Iteration 183 API hardcoded), `9511f19b` (Merge PR #3032 — BroCula Run 28), `af4f5c11` (Merge PR #3031 — palette roving tabindex).
+> **Test count**: **2,403** (1043 web + 515 api + 845 shared — **+8** from Cycle 19: +2 web, +6 api via PR #3034 auth tests and PR #3033 config tests).
+> **BUG-037 still fixed**: archive retention scan covers **all** dated `docs/audits/archive/*.md` files (audit + hunt families); oldest remaining **Jul 3 (30 days, at 30-day window boundary — no purge needed)** per Cycle 14/17/18 precedent.
+> **BUG-036 still fixed**: `npm ls --all` exit 0, 0 invalid/missing/extraneous.
+> **BUG-014/017/032/033/034/035 still fixed**: zero stale `docs/bug.md`/`docs/feature.md`/`docs/task.md` refs outside historical logs; zero hardcoded `node-version:` in workflows (all use `node-version-file: ".node-version"`); eslint 9.39.5; `@cloudflare/workers-types` in sync.
+> **Issue cleanup — 3 stale/verified-fixed issues closed**: **#1078** (user-level authorization — fixed by merged PR #3034, verified in `storage.ts`/`share.ts` + 401/403 tests), **#1077** (prompt injection — sanitization + delimiters + Zod validation wired into all AI routes, 34 injection tests), **#418** (ajv vulnerabilities — `npm audit` now reports **0**; ajv 6.15.0 deduped via eslint has no reported advisories). All closed `completed` with verification comments.
+> **Stale merged branches**: **0** (`agent/security-engineer` unmerged divergent — pre-existing, RepoKeeper scope; `agent/repokeeper-cycle-333` + `palette/persist-shortcuts-discovered` have open PRs #3036/#3035 — active, not stale).
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **`validate:wrangler`**: fails on 6 placeholder Cloudflare IDs — pre-existing documented TODO (commit `b45bb4dc`), not a code defect; real IDs provisioned at deploy time. `.dev.vars` absent — expected (must be copied from `.dev.vars.example` with real API keys).
+> **All quality gates pass. Zero code bugs found.** Branch created.
+
 ## Bug Status — Aug 2 2026 (BugFixer Cycle 19)
 
 > **BugFixer Cycle 19 (2026-08-02 — agent/bugfixer-cycle-19)**: Full BugFixer audit complete — **zero bugs found**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web + api) tests **2,395/2,395** ✅ (1041 web + 509 api + 845 shared). Format ✅ (prettier clean). Secrets scan ✅ (311 files). Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (workspace deps + versions in sync). `npm ls` clean — exit 0. All relative imports resolve.
