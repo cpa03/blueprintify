@@ -82,22 +82,23 @@ npm run deploy
 
 ## API Endpoints
 
-| Method | Endpoint          | Description                                    |
-| ------ | ----------------- | ---------------------------------------------- |
-| GET    | `/`               | API metadata                                   |
-| GET    | `/health`         | Health check - circuit-breaker aware           |
-| GET    | `/warmup`         | Pre-warm circuit breaker on worker startup     |
-| POST   | `/generate`       | Generate blueprint from project config (SSE)   |
-| POST   | `/tasks`          | Generate tasks from blueprint content (SSE)    |
-| POST   | `/refine`         | Refine specific content sections (SSE)         |
-| POST   | `/export`         | Export project data (ZIP/JSON/Markdown)        |
-| POST   | `/import`         | Import project data with validation            |
-| GET    | `/storage/quota`  | Check storage usage                            |
-| POST   | `/storage/report` | Report client storage usage for quota tracking |
-| DELETE | `/storage/clear`  | Clear stored data                              |
-| POST   | `/share`          | Create shareable blueprint link                |
-| GET    | `/share/:id`      | Retrieve shared blueprint                      |
-| DELETE | `/share/:id`      | Delete shared blueprint                        |
+| Method | Endpoint            | Description                                      |
+| ------ | ------------------- | ------------------------------------------------ |
+| GET    | `/`                 | API metadata                                     |
+| GET    | `/health`           | Health check - circuit-breaker aware             |
+| GET    | `/warmup`           | Pre-warm circuit breaker on worker startup       |
+| POST   | `/generate`         | Generate blueprint from project config (SSE)     |
+| POST   | `/tasks`            | Generate tasks from blueprint content (SSE)      |
+| POST   | `/refine`           | Refine specific content sections (SSE)           |
+| POST   | `/export`           | Export project data (ZIP/JSON/Markdown)          |
+| POST   | `/import`           | Import project data with validation              |
+| GET    | `/storage/quota`    | Check storage usage                              |
+| POST   | `/storage/report`   | Report client storage usage for quota tracking   |
+| DELETE | `/storage/clear`    | Clear stored data                                |
+| POST   | `/share`            | Create shareable blueprint link                  |
+| GET    | `/share/:id`        | Retrieve shared blueprint                        |
+| POST   | `/share/:id/verify` | Verify passphrase for protected shared blueprint |
+| DELETE | `/share/:id`        | Delete shared blueprint                          |
 
 ## Project Structure
 
@@ -237,11 +238,13 @@ wrangler secret put OPENAI_API_KEY
 
 Optional configuration variables:
 
-| Variable          | Default        | Description         |
-| ----------------- | -------------- | ------------------- |
-| `OPENAI_BASE_URL` | OpenAI default | Custom API endpoint |
-| `OPENAI_MODEL`    | gpt-4o-mini    | Model to use        |
-| `CORS_ORIGIN`     | \*             | Allowed CORS origin |
+| Variable          | Default        | Description                                                                      |
+| ----------------- | -------------- | -------------------------------------------------------------------------------- |
+| `OPENAI_BASE_URL` | OpenAI default | Custom API endpoint                                                              |
+| `OPENAI_MODEL`    | gpt-4o-mini    | Model to use                                                                     |
+| `CORS_ORIGIN`     | \*             | Allowed CORS origin                                                              |
+| `API_KEY`         | -              | API authentication key (recommended — protected endpoints return 503 when unset) |
+| `ADMIN_API_KEY`   | -              | Admin key granting `admin` role via RBAC (takes precedence over `API_KEY`)       |
 
 ### Required Infrastructure
 
