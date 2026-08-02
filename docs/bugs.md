@@ -1,6 +1,21 @@
 # Bug Log: Known Defects
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
+## Bug Status — Aug 2 2026 (BugFixer Cycle 17)
+
+> **BugFixer Cycle 17 (2026-08-02 — agent/bugfixer-cycle-17)**: Full BugFixer audit complete — **zero bugs found**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web + api) tests **2,328/2,328** ✅ (974 web + 509 api + 845 shared). Format ✅ (prettier clean). Secrets scan ✅ (307 files). Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (workspace deps + versions in sync). `npm ls` clean — exit 0. All relative imports resolve.
+>
+> **1 new post-Cycle-16 commit indexed** — HEAD at `7ccceaaa` (docs(findings): record ULW Loop Cycle 328 — PR HANDLER MODE, PR #3019 merged to main (#3019)). Prior commit `dd460085` (refactor(flexy): deduplicate inline SVG icons and centralize ratio/geometry constants — Iteration 182, PR #3019).
+> **Test count**: **2,328** (974 web + 509 api + 845 shared — **+19** from PR #3019 Iteration 182 flexy refactor config tests).
+> **BUG-037 still fixed**: archive retention scan covers **all** dated `docs/audits/archive/*.md` files (audit + hunt families); oldest remaining Jul 3 (30 days, at 30-day window boundary — no purge needed today).
+> **BUG-036 still fixed**: `npm ls --all` exit 0, 0 invalid/missing/extraneous.
+> **BUG-014/017/032/033/034/035 still fixed**: zero stale `docs/bug.md`/`docs/feature.md`/`docs/task.md` refs outside historical logs; zero hardcoded `node-version:` in workflows (all use `node-version-file: ".node-version"`); eslint 9.39.5; `@cloudflare/workers-types` in sync.
+> **Archive retention**: OK (oldest Jul 3 — 30 days, at window boundary — no purge needed).
+> **Stale merged branches**: **2** (`origin/brocula/loop-2026-08-01-run25` + `agent/security-engineer` unmerged divergent — flagged for RepoKeeper). `agent/issue-manager-cycle-24` still has open PR #3011 (not BugFixer scope).
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **`validate:wrangler`**: fails on 6 placeholder Cloudflare IDs — pre-existing documented TODO (commit `b45bb4dc`), not a code defect; real IDs provisioned at deploy time. `.dev.vars` absent — expected (must be copied from `.dev.vars.example` with real API keys).
+> **All quality gates pass. Zero bugs found.** Branch created.
+
 ## Bug Status — Aug 1 2026 (BugFixer Cycle 16)
 
 > **BugFixer Cycle 16 (2026-08-01 — agent/bugfixer-cycle-16)**: Full BugFixer audit complete — **zero bugs found**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web + api) tests **2,309/2,309** ✅ (969 web + 506 api + 834 shared). Format ✅. Secrets scan ✅ (305 files). Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source (only wrangler placeholder IDs — pre-existing, tracked as #1045/#1165, not a code defect). 0 merge conflict artifacts. Lockfile: **no drift** (workspace deps + versions in sync). `npm ls` clean — exit 0. All relative imports resolve.
