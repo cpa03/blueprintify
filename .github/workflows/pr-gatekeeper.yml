@@ -58,9 +58,11 @@ jobs:
           npm run typecheck > typecheck.log 2>&1 || echo "Typecheck Failed"
           npm run lint > lint.log 2>&1 || echo "Lint Failed"
           npm run build > build.log 2>&1 || echo "Build Failed"
+          # Test suite with coverage gate (thresholds enforced by vitest config)
+          npm run test:coverage --workspace=apps/web -- --run > test.log 2>&1 || echo "Test Failed"
 
           # Check for failures
-          if grep -q "Failed" typecheck.log || grep -q "Failed" lint.log || grep -q "Failed" build.log; then
+          if grep -q "Failed" typecheck.log || grep -q "Failed" lint.log || grep -q "Failed" build.log || grep -q "Failed" test.log; then
              echo "Health check failed. Engaging Debugger."
              echo "status=fail" >> $GITHUB_OUTPUT
              exit 1
@@ -75,7 +77,7 @@ jobs:
         timeout-minutes: 30 # Increased buffer to prevent waste
         run: |
           echo "Health check failed. Asking Debugger to fix..."
-          cat typecheck.log lint.log build.log > validation_errors.log
+          cat typecheck.log lint.log build.log test.log > validation_errors.log
 
           opencode run --agent debugger \
              "The active PR failed validation checks. Analyze the logs in validation_errors.log and FIX the code errors to make the build pass. Focus ONLY on fixing errors." \

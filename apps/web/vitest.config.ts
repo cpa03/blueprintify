@@ -17,6 +17,14 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "html", "lcov"],
       exclude: ["node_modules/", "src/test/", "e2e/", "**/*.d.ts", "**/*.config.*"],
+      // Coverage gate: floors set below 2026-08-03 baselines (statements 78.5%,
+      // branches 67.4%, functions 78.4%, lines 79.8%) to avoid flaky CI.
+      thresholds: {
+        statements: 75,
+        branches: 60,
+        functions: 75,
+        lines: 75,
+      },
     },
   },
   resolve: {
