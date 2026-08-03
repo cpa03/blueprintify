@@ -41,7 +41,7 @@ workers_dev = false
 logpush = true
 minify = true
 upload_source_maps = false
-vars = { ENVIRONMENT = "production", CORS_ORIGIN = "https://blueprintify.dev", RATE_LIMIT_REQUESTS = "60", RATE_LIMIT_WINDOW = "60" }
+vars = { ENVIRONMENT = "production", CORS_ORIGIN = "https://blueprintify.dev" }
 routes = [
   { pattern = "api.blueprintify.dev/*", zone_name = "blueprintify.dev" }
 ]
@@ -93,7 +93,7 @@ name = "blueprintify-staging"
 workers_dev = false
 logpush = true
 minify = true
-vars = { ENVIRONMENT = "staging", CORS_ORIGIN = "https://staging.blueprintify.dev", RATE_LIMIT_REQUESTS = "100", RATE_LIMIT_WINDOW = "60" }
+vars = { ENVIRONMENT = "staging", CORS_ORIGIN = "https://staging.blueprintify.dev" }
 routes = [
   { pattern = "api-staging.blueprintify.dev/*", zone_name = "blueprintify.dev" }
 ]
@@ -144,8 +144,6 @@ period = 60
 [vars]
 ENVIRONMENT = "development"
 CORS_ORIGIN = "http://localhost:3000"
-RATE_LIMIT_REQUESTS = "100"
-RATE_LIMIT_WINDOW = "60"
 
 # Production secrets (set via wrangler secret put)
 # [env.production.secrets]

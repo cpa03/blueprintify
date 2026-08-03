@@ -180,9 +180,9 @@ while (true) {
 
 ### Rate Limiting
 
-- Standard endpoints: 100 requests/minute
-- Strict endpoints: 30 requests/minute
-- Lenient endpoints: 300 requests/minute
+- Standard endpoints: 60 requests/minute
+- Strict endpoints: 10 requests/minute
+- Lenient endpoints: 120 requests/minute
 
 ### Error Handling
 

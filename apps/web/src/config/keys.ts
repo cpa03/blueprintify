@@ -22,30 +22,9 @@ export const STORAGE_KEYS = {
   SHORTCUTS_DISCOVERED: createKey("shortcuts-discovered"),
 } as const;
 
-export const SESSION_KEYS = {
-  SESSION_ID: createKey("session-id"),
-  GENERATION_PROGRESS: createKey("generation-progress"),
-  TEMP_FORM_DATA: createKey("temp-form-data"),
-} as const;
-
-export const COOKIE_KEYS = {
-  ANALYTICS_CONSENT: `${NAMESPACE}_analytics_consent`,
-  COOKIE_CONSENT: `${NAMESPACE}_cookie_consent`,
-} as const;
-
 export const TEST_KEYS = {
   STORAGE_TEST: STORAGE_KEY_PREFIXES.STORAGE_TEST,
   PRIVACY_TEST: STORAGE_KEY_PREFIXES.PRIVACY_TEST,
 } as const;
 
 export const BACKUP_KEY_PREFIX = STORAGE_KEY_PREFIXES.BACKUP;
-
-export const createBackupKey = (key: string): string => `${BACKUP_KEY_PREFIX}${key}`;
-
-export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];
-export type SessionKey = (typeof SESSION_KEYS)[keyof typeof SESSION_KEYS];
-export type CookieKey = (typeof COOKIE_KEYS)[keyof typeof COOKIE_KEYS];
-
-export const getAllStorageKeys = (): string[] => Object.values(STORAGE_KEYS);
-export const getAllSessionKeys = (): string[] => Object.values(SESSION_KEYS);
-export const isAppStorageKey = (key: string): boolean => key.startsWith(NAMESPACE);

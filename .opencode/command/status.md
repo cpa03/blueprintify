@@ -26,8 +26,8 @@ Run these commands in sequence:
 
 ## Context
 
-@task.md
-@blueprint.md
+@docs/active-tasks.md
+@docs/blueprint.md
 
 ## Instructions
 

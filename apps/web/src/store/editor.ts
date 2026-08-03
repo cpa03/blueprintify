@@ -40,7 +40,7 @@ import type {
 
 let _sanitizeForStorage: typeof SanitizeFn | null = null;
 let _handleSecurityError: typeof HandleErrorFn | null = null;
-const _loadSecurity = import("../lib/security").then((mod) => {
+void import("../lib/security").then((mod) => {
   _sanitizeForStorage = mod.sanitizeForStorage;
   _handleSecurityError = mod.handleSecurityError;
 });
