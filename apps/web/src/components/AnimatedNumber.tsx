@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useCallback, memo } from "react";
 import * as motion from "framer-motion/m";
-import { useSpring, MotionValue } from "framer-motion";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
 import { ANIMATION_COLORS, ANIMATION, EASING, CSS_CLASSES } from "../config/constants";
 import { TIME_UNITS } from "@blueprint/shared/config";
@@ -193,30 +192,5 @@ function AnimatedCounterComponent({
 }
 
 export const AnimatedCounter = memo(AnimatedCounterComponent);
-
-/**
- * useAnimatedValue - Hook for tracking animated values
- *
- * Returns a MotionValue that can be used with other framer-motion
- * components for complex animations.
- */
-export function useAnimatedValue(
-  value: number,
-  options: { duration?: number; bounce?: number } = {}
-): MotionValue<number> {
-  const { getDuration } = useReducedMotionContext();
-  const springValue = useSpring(value, {
-    duration: getDuration(
-      (options.duration || ANIMATION.NUMBER_COUNTER) * TIME_UNITS.MS_PER_SECOND
-    ),
-    bounce: options.bounce || 0,
-  });
-
-  useEffect(() => {
-    springValue.set(value);
-  }, [value, springValue]);
-
-  return springValue;
-}
 
 export default AnimatedNumber;

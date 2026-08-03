@@ -28,6 +28,7 @@ The API is built on Cloudflare Workers and uses `.dev.vars` for local developmen
 | `CORS_MAX_AGE`       | No          | `86400`                     | CORS preflight cache duration in seconds                           |
 | `API_KEY`            | Recommended | -                           | API authentication key. If not set, protected endpoints return 503 |
 | `ADMIN_API_KEY`      | No          | -                           | Admin API key granting the `admin` role (RBAC). Takes precedence over `API_KEY` for admin-protected endpoints |
+| `ENVIRONMENT`        | No          | `development`               | Runtime environment (`development`, `staging`, `production`). Production detection uses this because CF Workers never sets `NODE_ENV` |
 | `NODE_ENV`           | No          | `development`               | Runtime environment (`development`, `test`, `production`)          |
 
 ### Rate Limiting
@@ -204,9 +205,10 @@ npm run lint
 
 ### Development (default)
 
+- `ENVIRONMENT=development`
 - `NODE_ENV=development`
 - `CORS_ORIGIN=http://localhost:3000`
-- Rate limiting: 100 requests per window
+- Rate limiting: 60 requests per minute (standard tier)
 
 ### Testing
 

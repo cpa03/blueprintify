@@ -9,9 +9,6 @@
 // ============================================================================
 // Focus visible ring pattern - used across interactive elements
 // ============================================================================
-export const FOCUS_VISIBLE_RING =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 rounded px-1";
-
 export const FOCUS_VISIBLE_RING_CARD =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950";
 

@@ -19,6 +19,7 @@ OPENAI_API_KEY=your_openai_api_key_here
 # OPENAI_TEMPERATURE=0.7
 
 # API Configuration (defaults from @blueprint/shared SHARED_DEFAULTS)
+# ENVIRONMENT=development
 # API_VERSION=1.0.0
 # CORS_ORIGIN=http://localhost:3000
 # CORS_MAX_AGE=86400
@@ -36,6 +37,7 @@ OPENAI_API_KEY=your_openai_api_key_here
 # CIRCUIT_BREAKER_FAILURE_THRESHOLD=5
 # CIRCUIT_BREAKER_RESET_TIMEOUT_MS=60000
 # CIRCUIT_BREAKER_HALF_OPEN_MAX_CALLS=3
+# CIRCUIT_BREAKER_COLD_START_WINDOW_MS=30000
 
 # Retry Configuration (defaults from @blueprint/shared RETRY_CONFIG)
 # RETRY_MAX_RETRIES=3

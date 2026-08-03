@@ -41,14 +41,6 @@ export const SHORTCUT_CATEGORY_ICONS: Record<ShortcutCategory, string> = {
   [SHORTCUT_CATEGORIES.GENERATION]: "lightning",
 };
 
-/** All shortcut category values as an array */
-export const SHORTCUT_CATEGORIES_LIST: readonly ShortcutCategory[] = [
-  SHORTCUT_CATEGORIES.GENERAL,
-  SHORTCUT_CATEGORIES.EDITOR,
-  SHORTCUT_CATEGORIES.NAVIGATION,
-  SHORTCUT_CATEGORIES.GENERATION,
-] as const;
-
 // Keyboard shortcuts
 export const KEYBOARD_SHORTCUTS = {
   TOGGLE_EDITOR: {

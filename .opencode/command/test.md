@@ -16,8 +16,8 @@ Run project tests with optional filter.
 
 ## Context
 
-@blueprint.md
-@task.md
+@docs/blueprint.md
+@docs/active-tasks.md
 
 ## Instructions
 
