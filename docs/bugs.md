@@ -1,6 +1,21 @@
 # Bug Log: Known Defects
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
+## Bug Status — Aug 3 2026 (BugFixer Cycle 21)
+
+> **BugFixer Cycle 21 (2026-08-03 — agent/bugfixer-cycle-21)**: Full BugFixer audit complete — **zero code bugs found**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web + api) tests **2,405/2,405** ✅ (1043 web + 515 api + 847 shared). Coverage gate ✅ (statements 78.67% vs 75% floor, per vitest thresholds from #3041). Format ✅ (prettier clean). Secrets scan ✅ (311 files). Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (workspace deps + versions in sync). `npm ls` clean — exit 0. All relative imports resolve.
+>
+> **8 new post-Cycle-20 commits indexed** — HEAD at `69d775ef` (chore(deps): bump framer-motion in the production-dependencies group (#3044)). Prior: `0010f151` (chore(repokeeper): Cycle 335 — repo hygiene audit (#3043)), `d5e6cf4f` (docs(findings): record ULW Loop Cycle 334 (#3042)), `3a0d4ece` (test: enforce test coverage gate via vitest thresholds (#1014) (#3041)), `695dd724` (feat(ux): premium spring scale-up tooltip micro-ux (#3040)), `13841e16` (refactor(shared): replace z.unknown() with typed schemas (#3039)), `0cfcfcea` (feat(ux): persist keyboard-shortcuts discoverability flag (#3035)), `ba3871ab` (chore(repokeeper): Cycle 333 — remove deprecated @types/dompurify (#3036)).
+> **Test count**: **2,405** (1043 web + 515 api + 847 shared — **+2** from Cycle 20: +2 shared via PR #3039 typed-schema tests).
+> **BUG-037 still fixed**: archive retention scan covers **all** dated `docs/audits/archive/*.md` files (audit + hunt families); oldest remaining **Jul 4 (30 days, at 30-day window boundary — no purge needed)** per Cycle 14/17/18/20 precedent.
+> **BUG-036 still fixed**: `npm ls --all` exit 0, 0 invalid/missing/extraneous.
+> **BUG-014/017/032/033/034/035 still fixed**: zero stale `docs/bug.md`/`docs/feature.md`/`docs/task.md` refs outside historical logs; zero hardcoded `node-version:` in workflows (all use `node-version-file: ".node-version"`); eslint 9.39.5; `@cloudflare/workers-types` in sync.
+> **Coverage gate active**: vitest thresholds (statements 75 / branches 60 / functions 75 / lines 75) enforced in `apps/web/vitest.config.ts` per #3041 — current baseline **78.67% / 67.56% / 78.91% / 79.82%**, all above floors.
+> **Stale merged branches**: **0** (`agent/security-engineer` unmerged divergent — pre-existing, RepoKeeper scope).
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **`validate:wrangler`**: fails on 6 placeholder Cloudflare IDs — pre-existing documented TODO (commit `b45bb4dc`), not a code defect; real IDs provisioned at deploy time. `.dev.vars` absent — expected (must be copied from `.dev.vars.example` with real API keys).
+> **All quality gates pass. Zero code bugs found.** Branch created.
+
 ## Bug Status — Aug 2 2026 (BugFixer Cycle 20)
 
 > **BugFixer Cycle 20 (2026-08-02 — agent/bugfixer-cycle-20)**: Full BugFixer audit complete — **zero code bugs found**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web + api) tests **2,403/2,403** ✅ (1043 web + 515 api + 845 shared). Format ✅ (prettier clean). Secrets scan ✅ (311 files). Audit: **0 vulnerabilities** ✅ (BUG-013 still fixed — lighthouse 13.4.1 — 0 vulns; BUG-031 — brace-expansion CVE override holds). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (workspace deps + versions in sync). `npm ls` clean — exit 0. All relative imports resolve.
