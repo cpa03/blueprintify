@@ -98,8 +98,13 @@ function AnimatedNumberComponent({
         duration: ANIMATION.MEDIUM,
         ease: EASING.easeOut,
       }}
-      aria-live="polite"
-      aria-atomic="true"
+      // The count-up is a purely visual flourish: its text is rewritten on every
+      // animation frame (~60 updates/sec), so exposing it as an aria-live region
+      // would make screen readers announce a stream of intermediate values (or
+      // garble the announcement entirely). The authoritative value is announced
+      // once via the dedicated role="status" announcer in StepGenerating, so this
+      // animated span is hidden from assistive technology.
+      aria-hidden="true"
     >
       {format(displayValue)}
     </motion.span>
