@@ -58,12 +58,17 @@ describe("AnimatedNumber", () => {
     expect(span.className).toContain("font-bold");
   });
 
-  it("has accessible aria-live region", () => {
+  it("is decorative for assistive tech rather than a chatty live region", () => {
     render(<AnimatedNumber value={42} />);
 
+    // The count-up animation rewrites this span's text every animation frame;
+    // exposing it as aria-live would spam screen readers with intermediate
+    // values. The authoritative value is announced via the dedicated
+    // role="status" announcer in StepGenerating.
     const span = screen.getByText("42");
-    expect(span).toHaveAttribute("aria-live", "polite");
-    expect(span).toHaveAttribute("aria-atomic", "true");
+    expect(span).toHaveAttribute("aria-hidden", "true");
+    expect(span).not.toHaveAttribute("aria-live");
+    expect(span).not.toHaveAttribute("aria-atomic");
   });
 });
 

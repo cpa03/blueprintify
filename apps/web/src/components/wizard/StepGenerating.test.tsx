@@ -87,6 +87,15 @@ vi.mock("../../hooks/useReducedMotion", () => ({
   useReducedMotion: () => false,
 }));
 
+// Mock the reduced-motion context consumed by AnimatedNumber so the stat
+// counters render without a provider wrapper in unit tests.
+vi.mock("../../context/ReducedMotionContext", () => ({
+  useReducedMotionContext: vi.fn(() => ({
+    shouldAnimate: false,
+    getDuration: vi.fn((d: number) => d),
+  })),
+}));
+
 const createMockEditorStore = (overrides: Partial<EditorStore> = {}): EditorStore => ({
   activeTab: EDITOR_TABS.BLUEPRINT,
   blueprintContent: "",
@@ -228,5 +237,20 @@ describe("StepGenerating", () => {
   it("reflects the Escape shortcut in the aria-keyshortcuts attribute", () => {
     renderGenerating();
     expect(getCancelButton()).toHaveAttribute("aria-keyshortcuts", KEYBOARD_EVENT_KEYS.ESCAPE);
+  });
+
+  it("announces generated line counts via the dedicated role=status announcer", () => {
+    // The AnimatedNumber stat counters are decorative (aria-hidden) because their
+    // text rewrites every animation frame; the sr-only role=status region below
+    // is the authoritative screen-reader announcement for the same counts.
+    mockEditorStore.blueprintContent = "line1\nline2\nline3";
+    mockEditorStore.tasksContent = "task1\ntask2";
+    renderGenerating();
+
+    const statusRegions = screen.getAllByRole("status");
+    const announcer = statusRegions.find((el) => el.textContent?.includes("blueprint lines"));
+    expect(announcer).toBeDefined();
+    // While generating, the announcer uses the ELAPSED template (timerActive).
+    expect(announcer?.textContent).toContain("3 blueprint lines and 2 task lines");
   });
 });
