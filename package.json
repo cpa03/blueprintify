@@ -41,7 +41,7 @@
     "clean": "npm run clean --workspaces --if-present",
     "clean:dist": "rm -rf apps/*/dist packages/*/dist",
     "reset": "npm run clean && rm -rf node_modules apps/*/node_modules packages/*/node_modules",
-    "test:coverage": "npm run test:all",
+    "test:coverage": "npm run test:coverage --workspace=apps/web -- --run && npm run test --workspace=apps/api && npm run test --workspace=packages/shared",
     "preview": "npm run build && npm run dev:all"
   },
   "devDependencies": {
