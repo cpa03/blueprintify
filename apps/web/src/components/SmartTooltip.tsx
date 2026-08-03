@@ -26,22 +26,22 @@ interface PositionStyles {
 
 const positionClasses: Record<Position, PositionStyles> = {
   top: {
-    container: "bottom-full left-1/2 -translate-x-1/2 mb-2",
+    container: "bottom-full left-1/2 -translate-x-1/2 mb-2 origin-bottom",
     arrow:
       "top-full left-1/2 -translate-x-1/2 -mt-1 border-l-transparent border-r-transparent border-b-transparent",
   },
   bottom: {
-    container: "top-full left-1/2 -translate-x-1/2 mt-2",
+    container: "top-full left-1/2 -translate-x-1/2 mt-2 origin-top",
     arrow:
       "bottom-full left-1/2 -translate-x-1/2 -mb-1 border-l-transparent border-r-transparent border-t-transparent",
   },
   left: {
-    container: "right-full top-1/2 -translate-y-1/2 mr-2",
+    container: "right-full top-1/2 -translate-y-1/2 mr-2 origin-right",
     arrow:
       "left-full top-1/2 -translate-y-1/2 -ml-1 border-t-transparent border-b-transparent border-r-transparent",
   },
   right: {
-    container: "left-full top-1/2 -translate-y-1/2 ml-2",
+    container: "left-full top-1/2 -translate-y-1/2 ml-2 origin-left",
     arrow:
       "right-full top-1/2 -translate-y-1/2 -mr-1 border-t-transparent border-b-transparent border-l-transparent",
   },
