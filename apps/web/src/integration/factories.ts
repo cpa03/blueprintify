@@ -1,4 +1,3 @@
-import { vi } from "vitest";
 import {
   SSE_HEADERS,
   SHARED_DEFAULTS,
@@ -7,7 +6,7 @@ import {
   HTTP_STATUS,
 } from "@blueprint/shared/config";
 
-export interface TestBlueprint {
+interface TestBlueprint {
   projectName: string;
   description: string;
   blueprint: string;
@@ -19,7 +18,7 @@ export interface TestBlueprint {
   };
 }
 
-export interface TestProjectData {
+interface TestProjectData {
   projectName: string;
   description: string;
   blueprint: string;
@@ -60,24 +59,12 @@ export function createTestProjectData(overrides?: Partial<TestProjectData>): Tes
   };
 }
 
-export function createInvalidBlueprint(): Record<string, unknown> {
-  return {
-    projectName: "",
-    description: 123,
-    blueprint: null,
-  };
-}
-
 export function createLargeBlueprint(sizeInKB: number): TestBlueprint {
   const largeContent = "x".repeat(sizeInKB * 1024);
   return createTestBlueprint({
     projectName: "Large Test Project",
     description: largeContent,
   });
-}
-
-export function createMalformedData(): unknown {
-  return "invalid json structure {{{{";
 }
 
 export const mockStorageData = {
@@ -93,12 +80,6 @@ export const mockStorageData = {
     version: SHARED_DEFAULTS.API_VERSION,
   },
 };
-
-export function setupFetchMock(response: Response | Promise<Response>) {
-  const mockFetch = vi.fn().mockResolvedValue(response);
-  global.fetch = mockFetch;
-  return mockFetch;
-}
 
 export function createMockResponse(data: unknown, status: number = HTTP_STATUS.OK) {
   return new Response(JSON.stringify(data), {
@@ -125,30 +106,3 @@ export function createMockStreamResponse(chunks: string[]) {
     },
   });
 }
-
-export const testScenarios = {
-  validGeneration: {
-    projectName: "E-commerce Platform",
-    description: "A full-stack e-commerce platform with React frontend and Node.js backend",
-  },
-  emptyProjectName: {
-    projectName: "",
-    description: "Valid description",
-  },
-  emptyDescription: {
-    projectName: "Test Project",
-    description: "",
-  },
-  specialCharacters: {
-    projectName: "Project!@#$%^&*()",
-    description: "Description with <script>alert('xss')</script>",
-  },
-  unicodeContent: {
-    projectName: "プロジェクト 项目 프로젝트",
-    description: "Testing unicode support: 你好世界 🌍 مرحبا",
-  },
-  veryLongDescription: {
-    projectName: "Long Description Test",
-    description: "x".repeat(10000),
-  },
-};

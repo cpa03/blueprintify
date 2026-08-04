@@ -20,7 +20,7 @@ import { DEFAULT_PROJECT_NAME } from "../config/constants";
  * Interface representing project metadata needed for export operations.
  * This is the shape of data provided by the ExportContext.
  */
-export interface ExportMetadata {
+interface ExportMetadata {
   projectName: string;
   description: string;
   techStack: TechStackItemType[];

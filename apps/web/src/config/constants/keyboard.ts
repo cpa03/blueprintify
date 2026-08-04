@@ -23,7 +23,7 @@ export const SHORTCUT_CATEGORIES = {
   GENERATION: "generation" as const,
 } as const;
 
-export type ShortcutCategory = (typeof SHORTCUT_CATEGORIES)[keyof typeof SHORTCUT_CATEGORIES];
+type ShortcutCategory = (typeof SHORTCUT_CATEGORIES)[keyof typeof SHORTCUT_CATEGORIES];
 
 /** Display labels for each shortcut category */
 export const SHORTCUT_CATEGORY_LABELS: Record<ShortcutCategory, string> = {
