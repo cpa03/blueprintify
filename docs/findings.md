@@ -7276,3 +7276,15 @@ All PRs verified: build ✅ lint ✅ tests 1,940/1,940 ✅ (789 web + 443 API + 
 ---
 
 > Older cycles (Cycle 1 through Cycle 298) are preserved in git history. Run `git log -- docs/findings.md` to browse historical entries.
+
+---
+
+## Security Finding — Staging Worker Name Collision (PR agent-8119952459590434890)
+
+**Severity: Critical (Availability / Integrity)**
+
+**Summary:** Commit `aa6fc92f` changed `[env.staging] name` in `apps/api/wrangler.toml` from `blueprintify-staging` to `blueprintify`. This collides with the production worker name (`[env.production] name = "blueprintify"` and the top-level `name = "blueprintify"`). A `wrangler deploy --env staging` would target a worker literally named `blueprintify` — the same worker as production — so a staging deployment could overwrite the production API worker.
+
+**Resolution:** Reverted staging to its unique `blueprintify-staging` name (commit `6bc37db4`). The branch was also merged with `origin/main` to pick up the ConfirmDialog Enter-key guard fix (#3055) and the hono CORS ReDoS fix (#3056).
+
+**Verification:** `npm audit` 0 vulnerabilities; web typecheck clean; ConfirmDialog tests 15/15 passing; no secrets in changed files.
