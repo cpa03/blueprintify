@@ -89,7 +89,7 @@ limit = 120
 period = 60
 
 [env.staging]
-name = "blueprintify"
+name = "blueprintify-staging"
 workers_dev = false
 logpush = true
 minify = true
