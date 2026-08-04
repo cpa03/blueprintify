@@ -149,7 +149,7 @@ export const SECURITY_ERROR_MESSAGES = {
  * Content Security Policy directives
  * Modular - easily add/remove CSP directives
  */
-export const CSP_DIRECTIVES = {
+const CSP_DIRECTIVES = {
   DEFAULT_SRC: ["'self'"],
   SCRIPT_SRC: [
     "'self'",
@@ -214,5 +214,3 @@ export const SECURITY_CONFIG = {
   CSP_DIRECTIVES,
   SECURITY_HEADERS,
 } as const;
-
-export type SecurityConfig = typeof SECURITY_CONFIG;

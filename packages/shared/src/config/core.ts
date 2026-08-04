@@ -1,5 +1,3 @@
-import { RETRY_CONFIG } from "./http.js";
-
 /**
  * Type for retry options
  */
@@ -9,11 +7,6 @@ export interface RetryOptions {
   backoffFactor?: number;
   maxDelay?: number;
 }
-
-/**
- * Type guards for config values
- */
-export type RetryConfigValues = typeof RETRY_CONFIG;
 
 /**
  * Time Units Constants
