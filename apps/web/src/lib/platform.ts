@@ -87,7 +87,7 @@ export function getAltKeyLabel(): string {
  * const shortcut = `${getAriaModifier()}+E`;
  * ```
  */
-export function getAriaModifier(): string {
+function getAriaModifier(): string {
   return isMacOS() ? "Meta" : "Control";
 }
 

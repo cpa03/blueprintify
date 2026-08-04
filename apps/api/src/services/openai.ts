@@ -118,7 +118,7 @@ export async function* streamCompletion(
           ],
           stream: true,
           temperature: AI_CONFIG.DEFAULT_TEMPERATURE,
-          max_tokens: AI_CONFIG.DEFAULT_MAX_TOKENS,
+          max_completion_tokens: AI_CONFIG.DEFAULT_MAX_TOKENS,
         })
       )
     );
@@ -169,7 +169,7 @@ export async function generateCompletion(options: StreamOptions): Promise<string
             { role: OPENAI_ROLES.USER, content: options.userPrompt },
           ],
           temperature: AI_CONFIG.DEFAULT_TEMPERATURE,
-          max_tokens: AI_CONFIG.DEFAULT_MAX_TOKENS,
+          max_completion_tokens: AI_CONFIG.DEFAULT_MAX_TOKENS,
         })
       )
     );

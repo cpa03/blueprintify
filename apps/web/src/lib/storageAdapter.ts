@@ -52,9 +52,6 @@ export function createTypedStorage<T>(storageService: StorageService<T>): {
   };
 }
 
-export const wizardZustandStorage = createTypedStorage(wizardStorage);
-export const editorZustandStorage = createTypedStorage(editorStorage);
-
 export async function checkStorageHealth(): Promise<{
   wizard: ReturnType<typeof wizardStorage.getHealth>;
   editor: ReturnType<typeof editorStorage.getHealth>;
