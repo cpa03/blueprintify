@@ -129,6 +129,14 @@ export const ConfirmDialog = memo(function ConfirmDialog({
         !e.metaKey &&
         !e.altKey
       ) {
+        // If a dialog button already has focus (e.g. the user tabbed to
+        // "Cancel"), let the browser's native Enter activation fire that
+        // button's click handler. Intercepting here would override the
+        // focused button and run the destructive confirm action instead —
+        // a surprising and dangerous outcome for keyboard users.
+        if (e.target instanceof Element && e.target.closest("button")) {
+          return;
+        }
         e.preventDefault();
         handleConfirm();
       }

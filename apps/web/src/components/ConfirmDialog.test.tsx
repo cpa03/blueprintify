@@ -140,4 +140,19 @@ describe("ConfirmDialog", () => {
 
     expect(onConfirm).not.toHaveBeenCalled();
   });
+
+  it("does not confirm when Enter is pressed while the Cancel button has focus", () => {
+    const onConfirm = vi.fn();
+    const onClose = vi.fn();
+    render(<ConfirmDialog {...defaultProps} onConfirm={onConfirm} onClose={onClose} />);
+
+    // Keyboard user tabs to Cancel and presses Enter — the native button
+    // activation (simulated as a click) must cancel, not confirm.
+    const cancelButton = screen.getByText("Cancel");
+    fireEvent.keyDown(cancelButton, { key: "Enter" });
+    fireEvent.click(cancelButton);
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(onConfirm).not.toHaveBeenCalled();
+  });
 });
