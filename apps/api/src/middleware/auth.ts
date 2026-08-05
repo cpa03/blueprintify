@@ -20,7 +20,7 @@ import {
 } from "../config/constants";
 import { AUTH_DEFAULTS, CONTEXT_KEYS, CRYPTO_CONFIG, DB_ID_PREFIXES } from "@blueprint/shared";
 import { ErrorType, createErrorJson } from "../errors";
-import { secureLogInfo } from "../utils/secureLog";
+import { secureLogInfo, secureLogWarn } from "../utils/secureLog";
 
 /**
  * Configuration options for API key authentication middleware.
@@ -127,6 +127,12 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
     // SECURITY FIX: Reject requests when API_KEY is not configured instead of bypassing auth
     // This prevents unauthenticated access when the server is misconfigured
     if (!validKey) {
+      // SECURITY: alert operators via secure logging that all protected routes are locked down
+      secureLogWarn("AuthenticationConfig", ERROR_MESSAGES.AUTHENTICATION_MISSING_CONFIG, {
+        environment: c.env.ENVIRONMENT,
+        path,
+        requestId: c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined,
+      });
       return c.json(
         createErrorJson(ErrorType.CONFIGURATION, ERROR_MESSAGES.AUTHENTICATION_MISSING_CONFIG, {
           code: ERROR_CODES.CONFIGURATION_ERROR,

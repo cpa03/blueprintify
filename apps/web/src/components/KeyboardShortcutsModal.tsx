@@ -354,6 +354,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                     aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.SEARCH}
                     role="searchbox"
                     autoComplete="off"
+                    enterKeyHint="search"
                     spellCheck={false}
                   />
                   {/* Clear button */}

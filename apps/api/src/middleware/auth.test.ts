@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { Hono } from "hono";
 import { apiKeyAuth } from "./auth";
 import { ERROR_CODES, API_HEADERS } from "../config/constants";
@@ -21,6 +21,10 @@ const TEST_CUSTOM_KEY = "my-custom-key";
 
 describe("auth middleware", () => {
   const validApiKey = TEST_VALID_API_KEY;
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
   describe("apiKeyAuth", () => {
     it("should allow requests with valid API key", async () => {
@@ -88,6 +92,8 @@ describe("auth middleware", () => {
       app.use("/", apiKeyAuth({ excludePaths: [] }));
       app.get("/", (c) => c.json({ success: true }));
 
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
       const res = await app.request("/", {
         headers: { [API_HEADERS.CUSTOM.API_KEY]: validApiKey },
       });
@@ -97,6 +103,11 @@ describe("auth middleware", () => {
       expect(data.success).toBe(false);
       expect(data.error.code).toBe(ERROR_CODES.CONFIGURATION_ERROR);
       expect(data.error.message).toContain("API_KEY is not configured");
+
+      // AC #3: a warning is logged when API_KEY is missing so operators notice the lockout
+      expect(warnSpy).toHaveBeenCalledTimes(1);
+      expect(warnSpy.mock.calls[0]?.[0]).toContain("API_KEY is not configured");
+      warnSpy.mockRestore();
     });
 
     it("should allow excluded paths without authentication", async () => {

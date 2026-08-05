@@ -50,8 +50,8 @@ API metadata endpoint - provides service identity, version, runtime information,
   "version": "1.0.0",
   "status": "healthy",
   "runtime": {
-    "platform": "cloudflare",
-    "region": "LHR"
+    "platform": "cloudflare-workers",
+    "region": "US"
   },
   "endpoints": {
     "generate": "POST /generate",
@@ -104,7 +104,7 @@ Endpoint for pre-warming the circuit breaker on worker startup. Initializes the 
     "isColdStart": true,
     "coldStartRemainingMs": 30000
   },
-  "recommendation": "Warming up, deployment is in cold start"
+  "recommendation": "Circuit breaker is in cold start window — reduced failure threshold active"
 }
 ```
 
@@ -208,9 +208,21 @@ curl -X POST http://localhost:8787/generate \
 
 ```json
 {
-  "error": "Invalid request body",
-  "details": {
-    "projectName": ["Project name is required"]
+  "success": false,
+  "error": {
+    "type": "validation",
+    "message": "Request validation failed",
+    "code": "VALIDATION_ERROR",
+    "details": {
+      "issues": [
+        {
+          "path": "projectName",
+          "message": "Project name is required"
+        }
+      ]
+    },
+    "timestamp": "<ISO-8601>",
+    "requestId": "<uuid>"
   }
 }
 ```
@@ -619,7 +631,7 @@ Verify a passphrase for a passphrase-protected shared blueprint. On success, ret
 - **400 Bad Request**: Invalid share ID format or invalid passphrase
 - **403 Forbidden**: Incorrect passphrase
 - **404 Not Found**: Share not found or has expired
-- **503 Service Unavailable**: Database not configured
+- **500 Internal Server Error**: Database not configured
 
 #### Example Request
 
@@ -697,8 +709,10 @@ The `requestId` field provides a unique identifier for each request, enabling ef
     "type": "validation",
     "message": "Request validation failed",
     "details": {
-      "projectName": ["Project name is required"],
-      "description": ["Description must be at least 10 characters"]
+      "issues": [
+        { "path": "projectName", "message": "Project name is required" },
+        { "path": "description", "message": "Description must be at least 10 characters" }
+      ]
     },
     "timestamp": "2026-02-11T20:00:00.000Z"
   }
@@ -778,7 +792,7 @@ The API supports detailed tech stack categorization for better project planning 
 
 ## Rate Limiting
 
-The API implements rate limiting using Cloudflare's Rate Limiting bindings with two active tiers:
+The API implements rate limiting using Cloudflare's Rate Limiting bindings with three configured tiers (the lenient tier is currently used only in tests):
 
 | Tier     | Rate Limit         | Usage                                                                 |
 | -------- | ------------------ | --------------------------------------------------------------------- |
@@ -825,11 +839,14 @@ class BlueprintifyClient {
         for (const line of lines) {
           if (line.startsWith("data: ")) {
             const data = line.slice(6);
-            if (data === "DONE") {
+            if (!data) continue;
+
+            const event = JSON.parse(data);
+            if (event.type === "done") {
               return blueprint;
             }
-            if (data) {
-              blueprint += data + "\n";
+            if (event.type === "content") {
+              blueprint += event.content;
             }
           }
         }
@@ -876,10 +893,13 @@ class BlueprintifyClient:
                 decoded = line.decode('utf-8')
                 if decoded.startswith('data: '):
                     data = decoded[6:]
-                    if data == 'DONE':
+                    if not data:
+                        continue
+                    event = json.loads(data)
+                    if event['type'] == 'done':
                         break
-                    if data:
-                        blueprint += data + '\n'
+                    if event['type'] == 'content':
+                        blueprint += event['content']
 
         return blueprint
 
@@ -915,25 +935,48 @@ curl -X POST http://localhost:8787/generate \
 ### Testing with EventSource (Browser)
 
 ```javascript
-const generateBlueprint = (data) => {
-  const eventSource = new EventSource("/generate", {
+const generateBlueprint = async (data) => {
+  const response = await fetch("/generate", {
     method: "POST",
-    body: JSON.stringify(data),
     headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
   });
 
-  eventSource.onmessage = (event) => {
-    if (event.data === "DONE") {
-      eventSource.close();
-      return;
-    }
-    console.log("Received:", event.data);
-  };
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
 
-  eventSource.onerror = (error) => {
-    console.error("EventSource failed:", error);
-    eventSource.close();
-  };
+  const reader = response.body?.getReader();
+  const decoder = new TextDecoder();
+  let blueprint = "";
+
+  if (reader) {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const chunk = decoder.decode(value);
+      const lines = chunk.split("\n");
+
+      for (const line of lines) {
+        if (line.startsWith("data: ")) {
+          const data = line.slice(6);
+          if (!data) continue;
+
+          const event = JSON.parse(data);
+          if (event.type === "done") {
+            reader.cancel();
+            return blueprint;
+          }
+          if (event.type === "content") {
+            blueprint += event.content;
+          }
+        }
+      }
+    }
+  }
+
+  return blueprint;
 };
 ```
 

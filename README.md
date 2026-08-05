@@ -104,7 +104,7 @@ Wizard Generation → Split-Pane Editor → Refinement Workflow → Export/Impor
 ### Prerequisites
 
 - Node.js 22+
-- npm 8+ (with workspaces support)
+- npm 8+ (with workspaces support) — Node 22+ required
 - OpenAI API key (or compatible provider)
 
 ### Installation
@@ -137,7 +137,7 @@ npm run dev:api    # API only (port 8787)
 ### Quality Assurance
 
 ```bash
-# Run all quality checks (typecheck + lint + test)
+# Run all quality checks (typecheck + lint + secrets scan + npm audit + tests)
 npm run check
 
 # Or run individually:
@@ -330,7 +330,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
 - **[Issue Audit Report](./docs/audits/archive/issue-audit-report-2026-07-15.md)** - ULW Loop issue audit with fix status tracking (archived)
 
-- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jun 17–Aug 2)
+- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jun 17–Aug 3)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 - **[Roadmap M3 Proposal](./docs/roadmap-m3-proposal.md)** - M3 strategic expansion proposal
 

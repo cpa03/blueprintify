@@ -14,6 +14,7 @@ import { AnimatePresence } from "framer-motion";
 import { ANIMATION, ANIMATION_MS } from "../config/constants";
 import { ANIMATION_TIMING } from "../config/theme";
 import { TYPING } from "../config/styles";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 /**
  * Props for the TypeIndicator component.
@@ -49,6 +50,8 @@ export const TypeIndicator = memo(function TypeIndicator({
   position = "right",
   className = "",
 }: TypeIndicatorProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <AnimatePresence>
       {isTyping && (
@@ -71,16 +74,24 @@ export const TypeIndicator = memo(function TypeIndicator({
             <motion.span
               key={`typing-dot-${index}`}
               className={TYPING.DOT}
-              animate={{
-                y: [0, -4, 0],
-                opacity: [0.4, 1, 0.4],
-              }}
-              transition={{
-                duration: ANIMATION.SLOW,
-                repeat: Infinity,
-                delay: index * ANIMATION.STAGGER,
-                ease: ANIMATION_TIMING.easing.easeInOut,
-              }}
+              animate={
+                shouldReduceMotion
+                  ? {}
+                  : {
+                      y: [0, -4, 0],
+                      opacity: [0.4, 1, 0.4],
+                    }
+              }
+              transition={
+                shouldReduceMotion
+                  ? { duration: 0 }
+                  : {
+                      duration: ANIMATION.SLOW,
+                      repeat: Infinity,
+                      delay: index * ANIMATION.STAGGER,
+                      ease: ANIMATION_TIMING.easing.easeInOut,
+                    }
+              }
             />
           ))}
         </motion.div>

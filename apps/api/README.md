@@ -106,12 +106,27 @@ npm run deploy
 apps/api/
 ├── src/
 │   ├── config/          # Environment and constants configuration
-│   │   ├── constants.ts # API endpoints, error codes, prompt templates
+│   │   ├── constants.ts # Re-export hub for config/constants modules
+│   │   ├── constants/   # Per-domain constant modules
+│   │   │   ├── ai.ts
+│   │   │   ├── endpoints.ts
+│   │   │   ├── env.ts
+│   │   │   ├── errors.ts
+│   │   │   ├── external.ts
+│   │   │   ├── logger.ts
+│   │   │   ├── network.ts
+│   │   │   ├── prompts.ts
+│   │   │   ├── ratelimit.ts
+│   │   │   ├── resilience.ts
+│   │   │   ├── share.ts
+│   │   │   ├── storage.ts
+│   │   │   └── validation.ts
 │   │   ├── env.ts       # Environment variable loading
 │   │   ├── env.test.ts  # Environment variable tests
 │   │   ├── prompt-security.ts # Prompt security validation
 │   │   └── prompts/     # AI system prompt templates (.ts)
 │   │       ├── architect.ts
+│   │       ├── index.ts
 │   │       ├── refiner.ts
 │   │       └── task-splitter.ts
 │   ├── controllers/     # Request handlers
@@ -190,10 +205,21 @@ All errors return consistent JSON responses:
 
 ```json
 {
+  "success": false,
   "error": {
-    "code": "VALIDATION_ERROR",
+    "type": "validation",
     "message": "Request validation failed",
-    "details": [...]
+    "code": "VALIDATION_ERROR",
+    "details": {
+      "issues": [
+        {
+          "path": "projectName",
+          "message": "Project name is required"
+        }
+      ]
+    },
+    "timestamp": "<ISO-8601>",
+    "requestId": "<uuid>"
   }
 }
 ```

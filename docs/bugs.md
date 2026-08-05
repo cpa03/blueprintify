@@ -1,6 +1,114 @@
 # Bug Log: Known Defects
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
+## Bug Status — Aug 5 2026 (BugFixer Cycle 29)
+
+> **BugFixer Cycle 29 (2026-08-05 — agent/bugfixer-cycle-29)**: Full BugFixer audit complete — **zero code defects**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web) tests **2,421/2,421** ✅ (1059 web + 515 api + 847 shared). Coverage gate ✅ (statements 78.05% vs 75% floor, branches 67.2%, functions 78.98%, lines 79.2% — all above vitest floors from #3041). Format ✅ (prettier clean). Secrets scan ✅ (312 files). Audit: **0 vulnerabilities** ✅ (BUG-040 still fixed — hono 4.12.34; BUG-013 still fixed — lighthouse 13.4.1; BUG-038 still fixed — brace-expansion 5.0.9 override). 0 `@ts-expect-error`/`@ts-ignore` in source. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (`npm ls --all` exit 0 — 0 invalid/missing/extraneous).
+>
+> **1 new post-Cycle-28 commit indexed** — HEAD at `dfb2a650` (Merge PR #3075); prior: `29404e1c` (fix(security): log warning when API_KEY is not configured (#3070)) — reviewed in full, sound (fail-closed 503 preserved, `secureLogWarn` sanitizes output, warning asserted in tests).
+> **Test count**: **2,421** (1059 web + 515 api + 847 shared — unchanged from Cycle 28 baseline).
+> **BUG-040 still fixed**: hono pinned at 4.12.34 — CORS ReDoS GHSA-8j4g-w8fx-2239 patched; `npm audit` 0 vulns.
+> **BUG-041 still fixed**: `@img/sharp-wasm32@0.35.3` explicit root devDependency — `npm ls --all` exit 0, **0 invalid/missing/extraneous**.
+> **BUG-043 still fixed**: archive retention re-verified from the *actual* oldest dated `docs/audits/archive/*.md` (audit + hunt + diagnostic families); oldest remaining **Jul 6 (30 days, at window boundary — no purge needed)** per Cycle 14/17/18/20/21/22/25/27/28 precedent.
+> **BUG-039/BUG-042 still fixed**: `npm ls --all` exit 0 — 0 invalid/missing/extraneous; retention scan covers all dated archive report families.
+> **BUG-038 still fixed**: brace-expansion override holds at 5.0.9 — 0 high-severity advisories.
+> **BUG-014/017/032/033/034/035 still fixed**: zero stale `docs/bug.md`/`docs/feature.md`/`docs/task.md` refs outside historical logs; zero hardcoded `node-version:` in workflows (all use `node-version-file: ".node-version"`); eslint 9.39.5; `@cloudflare/workers-types` in sync.
+> **Coverage gate active**: vitest thresholds (statements 75 / branches 60 / functions 75 / lines 75) enforced in `apps/web/vitest.config.ts` per #3041 — current baseline **78.05% / 67.2% / 78.98% / 79.2%**, all above floors.
+> **Stale merged branches**: **0** (`agent/security-engineer` + `agent/janitor` + `agent-8119952459590434890` pre-existing divergent — RepoKeeper scope).
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **`validate:wrangler`**: fails on 6 placeholder Cloudflare IDs + missing `.dev.vars` — pre-existing documented TODO (commit `b45bb4dc`), not a code defect; real IDs provisioned at deploy time, `.dev.vars` must be copied from `.dev.vars.example`.
+> **CI workflows conform to mandates**: all 5 workflows (`iterate.yml`, `main.yml`, `on-pull.yml`, `parallel.yml`, `pr-gatekeeper.yml`) use `ubuntu-24.04-arm` + `opencode/deepseek-v4-flash-free`.
+> **All quality gates pass. Zero code defects. No fixes required.** Branch created.
+
+## Bug Status — Aug 5 2026 (BugFixer Cycle 28)
+
+> **BugFixer Cycle 28 (2026-08-05 — agent/bugfixer-cycle-28)**: Full BugFixer audit complete — **zero code defects**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web) build:api ✅ (wrangler dry-run exit 0) tests **2,421/2,421** ✅ (1059 web + 515 api + 847 shared). Coverage gate ✅ (statements 78.07% vs 75% floor, branches 67.24%, functions 78.98%, lines 79.23% — all above vitest floors from #3041). Format ✅ (prettier clean). Secrets scan ✅ (311 files). Audit: **0 vulnerabilities** ✅ (BUG-040 still fixed — hono 4.12.34; BUG-013 still fixed — lighthouse 13.4.1; BUG-038 still fixed — brace-expansion 5.0.9 override). 0 `@ts-expect-error`/`@ts-ignore` in source (2 hits are 3rd-party `node_modules/@vercel/analytics`, not ours). 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts (22 "=====" hits all decorative comment banners — verified). Lockfile: **no drift** (`npm ls --all` exit 0 — 0 invalid/missing/extraneous after the 0-vuln audit).
+>
+> **1 new post-Cycle-27 commit indexed** — HEAD at `533deaef` (feat(ux): gate scroll progress bar fill pulse behind prefers-reduced-motion (#3067)).
+> **Test count**: **2,421** (1059 web + 515 api + 847 shared — **+8 web** from the post-Cycle-27 prefers-reduced-motion scroll-progress UX commit #3067).
+> **BUG-040 still fixed**: hono pinned at 4.12.34 — CORS ReDoS GHSA-8j4g-w8fx-2239 patched; `npm audit` 0 vulns.
+> **BUG-041 still fixed**: `@img/sharp-wasm32@0.35.3` explicit root devDependency — `npm ls --all` exit 0, **0 invalid/missing/extraneous**.
+> **BUG-043 still fixed**: archive retention now re-verified from the *actual* oldest dated `docs/audits/archive/*.md` each cycle (audit + hunt + diagnostic families); oldest remaining **Jul 6 (30 days, at window boundary — no purge needed)** per Cycle 14/17/18/20/21/22/25/27 precedent. No Jul 5 files remain (BUG-043 fix held).
+> **BUG-039/BUG-042 still fixed**: `npm ls --all` exit 0 — 0 invalid/missing/extraneous; retention scan covers all dated archive report families.
+> **BUG-038 still fixed**: brace-expansion override holds at 5.0.9 — 0 high-severity advisories.
+> **BUG-014/017/032/033/034/035 still fixed**: zero stale `docs/bug.md`/`docs/feature.md`/`docs/task.md` refs outside historical logs; zero hardcoded `node-version:` in workflows (all use `node-version-file: ".node-version"`); eslint 9.39.5; `@cloudflare/workers-types` in sync.
+> **Coverage gate active**: vitest thresholds (statements 75 / branches 60 / functions 75 / lines 75) enforced in `apps/web/vitest.config.ts` per #3041 — current baseline **78.07% / 67.24% / 78.98% / 79.23%**, all above floors.
+> **Stale merged branches**: **0** (`origin/agent/security-auth-warn-log` divergent with open PR #3070, `agent/security-engineer` + `agent/janitor` + `agent-8119952459590434890` pre-existing divergent — RepoKeeper scope).
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **`validate:wrangler`**: fails on 6 placeholder Cloudflare IDs + missing `.dev.vars` — pre-existing documented TODO (commit `b45bb4dc`), not a code defect; real IDs provisioned at deploy time, `.dev.vars` must be copied from `.dev.vars.example`.
+> **All quality gates pass. Zero code defects. No fixes required.** Branch created.
+
+## Bug Status — Aug 5 2026 (BugFixer Cycle 27)
+
+> **BugFixer Cycle 27 (2026-08-05 — agent/bugfixer-cycle-27)**: Full BugFixer audit complete — **1 bug found and FIXED (BUG-043 archive retention)**; **zero code defects**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web) build:api ✅ (wrangler dry-run exit 0) tests **2,413/2,413** ✅ (1051 web + 515 api + 847 shared). Coverage gate ✅ (statements 78.81% vs 75% floor, per vitest thresholds from #3041). Format ✅ (prettier clean). Secrets scan ✅ (312 files). Audit: **0 vulnerabilities** ✅ (BUG-040 still fixed — hono 4.12.34; BUG-013 still fixed — lighthouse 13.4.1; BUG-038 still fixed — brace-expansion 5.0.9 override). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (`npm ls --all` exit 0 — 0 invalid/missing/extraneous).
+>
+> **0 new post-Cycle-26 commits on `main`** — HEAD at `c6a993f5` (docs(bugfixer): Cycle 26 (#3065), the head of this audit's baseline).
+> **Test count**: **2,413** (1051 web + 515 api + 847 shared — **+2** web from post-Cycle-339 UX commits #3060/#3063/#3066 landed before Cycle 26; baseline re-measured this cycle).
+> **BUG-043 — NEW — FIXED**: **3 stale archive files past 30-day retention** — `docs/audits/archive/brocula-hunt-2026-07-05-run{1,2,3}.md` were **31 days old** (created Jul 5, today Aug 5) yet still present. Cycle 26 misreported "oldest remaining Jul 10" — its retention scan is dated and missed the Jul 5 hunt files still lingering (same blind spot class as BUG-042 in Cycle 25 / BUG-037 in Cycle 13; retention scans must re-verify the *actual* oldest dated `archive/*.md` each cycle, not carry forward prior readouts). Fixed: purged all 3 (git rm). New oldest remaining: **Jul 6 (30 days, at window boundary — no purge needed)** per Cycle 14/17/18/20/21/22/25 precedent.
+> **BUG-040 still fixed**: hono pinned at 4.12.34 — CORS ReDoS GHSA-8j4g-w8fx-2239 patched; `npm audit` 0 vulns.
+> **BUG-041 still fixed**: `@img/sharp-wasm32@0.35.3` explicit root devDependency — `npm ls --all` exit 0, **0 invalid/missing/extraneous**.
+> **BUG-039/BUG-042 still fixed**: `npm ls --all` exit 0 — 0 invalid/missing/extraneous (BUG-039/041); archive retention now covers **all** dated `docs/audits/archive/*.md` (audit + hunt families) and is re-verified from the actual archive each cycle (BUG-042).
+> **BUG-038 still fixed**: brace-expansion override holds at 5.0.9 — 0 high-severity advisories.
+> **BUG-014/017/032/033/034/035 still fixed**: zero stale `docs/bug.md`/`docs/feature.md`/`docs/task.md` refs outside historical logs; zero hardcoded `node-version:` in workflows (all use `node-version-file: ".node-version"`); eslint 9.39.5; `@cloudflare/workers-types` in sync.
+> **Coverage gate active**: vitest thresholds (statements 75 / branches 60 / functions 75 / lines 75) enforced in `apps/web/vitest.config.ts` per #3041 — current baseline **78.81% / 67.78% / 79.26% / 79.98%**, all above floors.
+> **Stale merged branches**: **0** (`origin/agent/security-fix-hono-cors-ghsa-8j4g` is merged ancestor; `agent/security-engineer` etc. pre-existing divergent — RepoKeeper scope).
+> **`validate:wrangler`**: fails on 6 placeholder Cloudflare IDs — pre-existing documented TODO (commit `b45bb4dc`), not a code defect; real IDs provisioned at deploy time. `.dev.vars` absent — expected (must be copied from `.dev.vars.example` with real API keys).
+> **All quality gates pass. Zero code defects. 1 retention cleanup made.** Branch created.
+
+## Bug Status — Aug 4 2026 (BugFixer Cycle 26)
+
+> **BugFixer Cycle 26 (2026-08-04 — agent/bugfixer-cycle-26)**: Full BugFixer audit complete — **zero code bugs found**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web) build:api ✅ (wrangler dry-run exit 0) tests **2,411/2,411** ✅ (1049 web + 515 api + 847 shared). Coverage gate ✅ (statements 78.8% vs 75% floor, per vitest thresholds from #3041). Format ✅ (prettier clean). Secrets scan ✅ (312 files). Audit: **0 vulnerabilities** ✅ (BUG-040 still fixed — hono 4.12.34; BUG-013 still fixed — lighthouse 13.4.1; BUG-038 still fixed — brace-expansion 5.0.9 override). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (`npm ls --all` exit 0 — 0 invalid/missing/extraneous).
+>
+> **1 new post-Cycle-25 commit indexed** — HEAD at `f2d819ef` (chore(repokeeper): Cycle 339 — repo hygiene audit (staging worker name fix, openai v7 deprecation, dead code cleanup, docs drift) (#3064)).
+> **Test count**: **2,411** (1049 web + 515 api + 847 shared — unchanged from Cycle 339 baseline; **+3** from Cycle 25's 2,408 via RepoKeeper Cycle 339 web tests).
+> **BUG-040 still fixed**: hono pinned at 4.12.34 — CORS ReDoS GHSA-8j4g-w8fx-2239 patched; `npm audit` 0 vulns.
+> **BUG-041 still fixed**: `@img/sharp-wasm32@0.35.3` explicit root devDependency — `npm ls --all` exit 0, **0 invalid/missing/extraneous**.
+> **BUG-042 still fixed**: archive retention scan covers **all** dated `docs/audits/archive/*.md` files (audit + hunt families); oldest dated report **Jul 10 (25 days, within 30-day window — no purge needed)**. `CONSOLIDATED-README.md` (48 days) is the permanent archive index, not a dated run report — historically retained (never purged across Cycles 8–26), not a retention violation.
+> **BUG-039 still fixed**: `npm ls --all` exit 0 — 0 invalid/missing/extraneous; lockfile deterministic.
+> **BUG-038 still fixed**: brace-expansion override holds at 5.0.9 — 0 high-severity advisories.
+> **BUG-014/017/032/033/034/035 still fixed**: zero stale `docs/bug.md`/`docs/feature.md`/`docs/task.md` refs outside historical logs; zero hardcoded `node-version:` in workflows (all use `node-version-file: ".node-version"`); eslint 9.39.5; `@cloudflare/workers-types` in sync.
+> **Coverage gate active**: vitest thresholds (statements 75 / branches 60 / functions 75 / lines 75) enforced in `apps/web/vitest.config.ts` per #3041 — current baseline **78.8% / 67.75% / 79.26% / 79.97%**, all above floors.
+> **Stale merged branches**: **0** (`agent/security-engineer` + `agent/security-fix-hono-cors-ghsa-8j4g` unmerged/merged divergent refs — pre-existing, RepoKeeper scope).
+> **`validate:wrangler`**: fails on 6 placeholder Cloudflare IDs — pre-existing documented TODO (commit `b45bb4dc`), not a code defect; real IDs provisioned at deploy time. `.dev.vars` absent — expected (must be copied from `.dev.vars.example` with real API keys).
+> **All quality gates pass. Zero code bugs found.** Branch created.
+
+## Bug Status — Aug 4 2026 (BugFixer Cycle 25)
+
+> **BugFixer Cycle 25 (2026-08-04 — agent/bugfixer-cycle-25)**: Full BugFixer audit complete — **2 bugs found and FIXED**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web + api) tests **2,408/2,408** ✅ (1046 web + 515 api + 847 shared). Coverage gate ✅ (statements 78.71% vs 75% floor, per vitest thresholds from #3041). Format ✅ (prettier clean). Secrets scan ✅ (312 files). Audit: **0 vulnerabilities** ✅ (BUG-040 still fixed — hono 4.12.34; BUG-013 still fixed — lighthouse 13.4.1; BUG-038 still fixed — brace-expansion 5.0.9 override). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (`npm ls --all` exit 0 — 0 invalid/missing/extraneous after **fresh `npm ci`** — deterministic).
+>
+> **1 new post-Cycle-24 commit indexed** — HEAD at `f7081d2f` (feat(ux): add enterKeyHint mobile keyboard hints to wizard and modal inputs (#3060)).
+> **Test count**: **2,408** (1046 web + 515 api + 847 shared — unchanged from Cycle 24).
+> **BUG-041 — NEW — FIXED**: `npm ls --all` reported `@img/sharp-wasm32@0.35.3 extraneous` — **BUG-039-class recurrence**. Cycle 22 fixed the same orphaned WASM binding at 0.35.2 but only physically removed it from `node_modules`; the lockfile still materializes it on any fresh `npm ci` (reproduced deterministically: `npm ci` → `@img/sharp-wasm32@0.35.3 extraneous`). Root cause: `@img/sharp-wasm32` is the WASM fallback binding pulled in via sharp's optional platform chain (`@img/sharp-freebsd-wasm32` / `@img/sharp-webcontainers-wasm32`, both os/cpu-constrained to non-linux-x64 targets) — on linux-x64/aarch64 it has no live dependent so npm flags it extraneous. Fix (BUG-036 precedent): declared **`@img/sharp-wasm32@0.35.3` as an explicit root devDependency** (exact pin) so the tree is deterministic. Verified: fresh `npm ci` → `npm ls --all` exit 0 — **0 invalid/missing/extraneous**, 0 ELSPROBLEMS.
+> **BUG-042 — NEW — FIXED**: **2 stale archive files past 30-day retention** — `docs/audits/archive/brocula-hunt-2026-07-04-run{1,2}.md` were **31 days old** (created Jul 4, today Aug 4) yet still present. Cycle 24 misreported "oldest remaining Jul 13" — its retention scan missed the Jul 4 hunt files (same blind spot class as BUG-037 in Cycle 13, which only widened the glob to all dated `archive/*.md` families — the Jul 4 files predate the Cycle 13 fix and were never re-scanned). Fixed: purged both (git rm). New oldest remaining: **Jul 5 (30 days, at window boundary — no purge needed)** per Cycle 14/17/18/20/21/22 precedent.
+> **BUG-040 still fixed**: hono pinned at 4.12.34 — CORS ReDoS GHSA-8j4g-w8fx-2239 patched; `npm audit` 0 vulns.
+> **BUG-039 still fixed**: `npm ls --all` exit 0 — 0 invalid/missing/extraneous; lockfile deterministic (fresh `npm ci` verified this cycle).
+> **BUG-038 still fixed**: brace-expansion override holds at 5.0.9 — 0 high-severity advisories.
+> **BUG-037 still fixed**: archive retention scan covers **all** dated `docs/audits/archive/*.md` files (audit + hunt families); oldest remaining **Jul 5 (30 days, at window boundary — no purge needed)**.
+> **BUG-014/017/032/033/034/035 still fixed**: zero stale `docs/bug.md`/`docs/feature.md`/`docs/task.md` refs outside historical logs; zero hardcoded `node-version:` in workflows (all use `node-version-file: ".node-version"`); eslint 9.39.5; `@cloudflare/workers-types` in sync.
+> **Coverage gate active**: vitest thresholds (statements 75 / branches 60 / functions 75 / lines 75) enforced in `apps/web/vitest.config.ts` per #3041 — current baseline **78.71% / 67.70% / 79.01% / 79.86%**, all above floors.
+> **Stale merged branches**: **0** (`agent/security-engineer` + `agent/security-fix-hono-cors-ghsa-8j4g` unmerged/merged divergent refs — pre-existing, RepoKeeper scope).
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **`validate:wrangler`**: fails on 6 placeholder Cloudflare IDs — pre-existing documented TODO (commit `b45bb4dc`), not a code defect; real IDs provisioned at deploy time. `.dev.vars` absent — expected (must be copied from `.dev.vars.example` with real API keys).
+> **BroCula runtime hunt**: run this cycle (chromium installed) — 0 console errors/warnings, Lighthouse **100-100-100-100**, no optimization opportunities.
+> **Bugs fixed this cycle: BUG-041 (orphaned `@img/sharp-wasm32` — deterministic lockfile fix) + BUG-042 (2 stale archive files past retention). All quality gates pass.** Branch created.
+
+## Bug Status — Aug 4 2026 (BugFixer Cycle 24)
+
+> **BugFixer Cycle 24 (2026-08-04 — agent/bugfixer-cycle-24)**: Full BugFixer audit complete — **zero code bugs found**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web + api) tests **2,408/2,408** ✅ (1046 web + 515 api + 847 shared). Coverage gate ✅ (statements 78.71% vs 75% floor, per vitest thresholds from #3041). Format ✅ (prettier clean). Secrets scan ✅ (311 files). Audit: **0 vulnerabilities** ✅ (BUG-040 still fixed — hono 4.12.34; BUG-013 still fixed — lighthouse 13.4.1; BUG-038 still fixed — brace-expansion 5.0.9 override). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (`npm ls --all` exit 0 — 0 invalid/missing/extraneous).
+>
+> **2 new post-Cycle-23 commits indexed** — HEAD at `faac3105` (Complete maintenance and verification loop (#3058)); prior: `e1d3f430` (fix(ux): let native button activation handle Enter over confirm dialog Cancel (#3055)).
+> **Test count**: **2,408** (1046 web + 515 api + 847 shared — **+1** from Cycle 23: +1 web).
+> **BUG-040 still fixed**: hono pinned at 4.12.34 (upgraded in Cycle 23 + PR #3057) — CORS ReDoS GHSA-8j4g-w8fx-2239 patched; `npm audit` 0 vulns.
+> **BUG-039 still fixed**: `npm ls --all` exit 0 — 0 invalid/missing/extraneous; lockfile deterministic.
+> **BUG-038 still fixed**: brace-expansion override holds at 5.0.9 — 0 high-severity advisories.
+> **BUG-037 still fixed**: archive retention scan covers **all** dated `docs/audits/archive/*.md` files (audit + hunt families); oldest remaining **Jul 13 (22 days, within 30-day window — no purge needed)**.
+> **BUG-014/017/032/033/034/035 still fixed**: zero stale `docs/bug.md`/`docs/feature.md`/`docs/task.md` refs outside historical logs; zero hardcoded `node-version:` in workflows (all use `node-version-file: ".node-version"`); eslint 9.39.5; `@cloudflare/workers-types` in sync.
+> **Coverage gate active**: vitest thresholds (statements 75 / branches 60 / functions 75 / lines 75) enforced in `apps/web/vitest.config.ts` per #3041 — current baseline **78.71% / 67.70% / 79.01% / 79.86%**, all above floors.
+> **Stale merged branches**: **0** (`agent/security-engineer` unmerged divergent — pre-existing, RepoKeeper scope).
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **`validate:wrangler`**: fails on 6 placeholder Cloudflare IDs — pre-existing documented TODO (commit `b45bb4dc`), not a code defect; real IDs provisioned at deploy time. `.dev.vars` absent — expected (must be copied from `.dev.vars.example` with real API keys).
+> **All quality gates pass. Zero code bugs found.** Branch created.
+
 ## Bug Status — Aug 3 2026 (BugFixer Cycle 23)
 
 > **BugFixer Cycle 23 (2026-08-03 — agent/bugfixer-cycle-23)**: Full BugFixer audit complete — **1 bug found and FIXED**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web + api) tests **2,407/2,407** ✅ (1045 web + 515 api + 847 shared). Format ✅ (prettier clean). Secrets scan ✅ (311 files). Audit: **0 vulnerabilities** ✅ (**BUG-040 FIXED** — hono `4.12.32` → `4.12.34`; advisory `GHSA-8j4g-w8fx-2239` (ReDoS in CORS middleware via `Access-Control-Request-Headers`) covers `hono < 4.12.34` — the pinned 4.12.32 was vulnerable and the API uses `hono/cors` in `apps/api/src/index.ts`, so the vulnerable path was reachable; `npm audit` reported 1 moderate → **0**). 0 `@ts-expect-error`/`@ts-ignore`. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (`npm ls --all` exit 0 — 0 invalid/missing/extraneous; hono re-resolved to `apps/api/node_modules/hono@4.12.34`).

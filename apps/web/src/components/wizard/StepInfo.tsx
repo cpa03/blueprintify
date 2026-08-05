@@ -336,6 +336,7 @@ export const StepInfo = memo(function StepInfo({
               name="projectName"
               type="text"
               autoComplete="off"
+              enterKeyHint="next"
               dir="auto"
               value={projectName}
               onChange={(e) => {
@@ -571,6 +572,7 @@ export const StepInfo = memo(function StepInfo({
               name="targetAudience"
               type="text"
               autoComplete="off"
+              enterKeyHint="next"
               dir="auto"
               value={targetAudience}
               onChange={(e) => {

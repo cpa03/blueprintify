@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { TypeIndicator, useTypingIndicator } from "./TypeIndicator";
 import { act } from "react";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 // ---------------------------------------------------------------------------
 // useTypingIndicator hook tests
@@ -172,16 +173,22 @@ describe("useTypingIndicator", () => {
 // TypeIndicator component tests
 // ---------------------------------------------------------------------------
 
+let capturedDotAnimations: { animate: unknown; transition: unknown }[] = [];
+
+vi.mock("framer-motion/m", () => ({
+  div: vi.fn(({ children, ...props }) => <div {...props}>{children}</div>),
+  span: vi.fn(({ children, animate, transition, ...props }: Record<string, unknown>) => {
+    capturedDotAnimations.push({ animate, transition });
+    return <span {...props}>{children as React.ReactNode}</span>;
+  }),
+}));
+
 vi.mock("framer-motion", () => ({
-  motion: {
-    div: vi.fn(({ children, animate: _a, initial: _i, exit: _e, transition: _t, ...props }) => (
-      <div {...props}>{children}</div>
-    )),
-    span: vi.fn(({ children, animate: _a, transition: _t, ...props }) => (
-      <span {...props}>{children}</span>
-    )),
-  },
   AnimatePresence: vi.fn(({ children }) => <>{children}</>),
+}));
+
+vi.mock("../hooks/useReducedMotion", () => ({
+  useReducedMotion: vi.fn(() => false),
 }));
 
 describe("TypeIndicator", () => {
@@ -238,5 +245,40 @@ describe("TypeIndicator", () => {
 
     const wrapper = container.firstChild as HTMLElement;
     expect(wrapper?.className).toContain("mt-4");
+  });
+
+  describe("reduced motion", () => {
+    beforeEach(() => {
+      capturedDotAnimations = [];
+      vi.mocked(useReducedMotion).mockReset();
+      vi.mocked(useReducedMotion).mockReturnValue(false);
+    });
+
+    it("animates three dots with an infinite bounce by default", () => {
+      render(<TypeIndicator isTyping={true} />);
+
+      expect(capturedDotAnimations).toHaveLength(3);
+      const transition = capturedDotAnimations[0]?.transition as { repeat?: number } | undefined;
+      expect(transition?.repeat).toBe(Infinity);
+    });
+
+    it("disables the infinite dot bounce when reduced motion is preferred", () => {
+      vi.mocked(useReducedMotion).mockReturnValue(true);
+      render(<TypeIndicator isTyping={true} />);
+
+      expect(capturedDotAnimations).toHaveLength(3);
+      capturedDotAnimations.forEach(({ animate, transition }) => {
+        expect(animate).toEqual({});
+        const t = transition as { repeat?: number } | undefined;
+        expect(t?.repeat).toBeUndefined();
+      });
+    });
+
+    it("keeps the typing announcement for screen readers when reduced motion is preferred", () => {
+      vi.mocked(useReducedMotion).mockReturnValue(true);
+      render(<TypeIndicator isTyping={true} />);
+
+      expect(screen.getByText("Typing")).toBeInTheDocument();
+    });
   });
 });

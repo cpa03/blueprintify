@@ -110,24 +110,39 @@ export const ScrollProgress = memo(function ScrollProgress({
           className="h-full bg-gradient-to-r from-primary-500 via-accent-purple to-accent-pink"
           style={{ width }}
           initial={{ opacity: 0.8 }}
-          animate={{
-            opacity: isVisible ? [0.8, 1, 0.8] : 0.8,
-            boxShadow: isVisible
-              ? [SHADOWS.glow.scroll.SUBTLE, SHADOWS.glow.scroll.MEDIUM, SHADOWS.glow.scroll.SUBTLE]
-              : SHADOWS.glow.scroll.NONE,
-          }}
-          transition={{
-            opacity: {
-              duration: ANIMATION.SLOW_PULSE,
-              repeat: Infinity,
-              ease: EASING.easeInOut,
-            },
-            boxShadow: {
-              duration: ANIMATION.SLOW_PULSE,
-              repeat: Infinity,
-              ease: EASING.easeInOut,
-            },
-          }}
+          animate={
+            prefersReducedMotion
+              ? {
+                  opacity: isVisible ? 0.9 : 0.8,
+                  boxShadow: isVisible ? SHADOWS.glow.scroll.MEDIUM : SHADOWS.glow.scroll.NONE,
+                }
+              : {
+                  opacity: isVisible ? [0.8, 1, 0.8] : 0.8,
+                  boxShadow: isVisible
+                    ? [
+                        SHADOWS.glow.scroll.SUBTLE,
+                        SHADOWS.glow.scroll.MEDIUM,
+                        SHADOWS.glow.scroll.SUBTLE,
+                      ]
+                    : SHADOWS.glow.scroll.NONE,
+                }
+          }
+          transition={
+            prefersReducedMotion
+              ? { duration: ANIMATION.NORMAL, ease: EASING.easeOut }
+              : {
+                  opacity: {
+                    duration: ANIMATION.SLOW_PULSE,
+                    repeat: Infinity,
+                    ease: EASING.easeInOut,
+                  },
+                  boxShadow: {
+                    duration: ANIMATION.SLOW_PULSE,
+                    repeat: Infinity,
+                    ease: EASING.easeInOut,
+                  },
+                }
+          }
         />
       </div>
 

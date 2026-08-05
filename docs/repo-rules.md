@@ -7,7 +7,7 @@
 ### 1. Pull Request Requirements
 
 - **All PRs must be linked to an issue** or have a clear justification in the description
-- **Branch naming convention**: `type/scope-description` (e.g., `feat/split-pane-editor`, `fix/api-validation`)
+- **Branch naming convention**: `agent/<role>` or `agent/<scope>` (e.g., `agent/security-engineer`, `agent/security-fix-hono-cors-ghsa-8j4g`) — feature branches use the `agent/` prefix
 - **Commit message format**: Follow Conventional Commits specification
 
   ```
