@@ -32,7 +32,7 @@ export interface AIConfig {
 /**
  * Options for streaming and non-streaming completions
  */
-export interface StreamOptions {
+interface StreamOptions {
   /** System prompt to set AI behavior */
   systemPrompt: string;
   /** User prompt for the specific request */

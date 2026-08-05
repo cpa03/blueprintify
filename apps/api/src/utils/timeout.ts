@@ -13,7 +13,7 @@ import { RETRY_CONFIG, ERROR_MESSAGES } from "../config/constants";
 /**
  * Configuration options for timeout behavior
  */
-export interface TimeoutOptions {
+interface TimeoutOptions {
   /** Timeout duration in milliseconds */
   timeoutMs: number;
   /** Custom error message for timeout */
@@ -131,7 +131,7 @@ export function createTimeoutWrapper<T = unknown>(
  * @param options - Combined timeout and retry options
  * @returns Promise resolving to the operation result
  */
-export interface TimeoutRetryOptions extends TimeoutOptions {
+interface TimeoutRetryOptions extends TimeoutOptions {
   /** Maximum number of retry attempts */
   retries?: number;
   /** Delay between retries in milliseconds */
