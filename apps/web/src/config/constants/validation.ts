@@ -33,6 +33,7 @@ export const FORM_LIMITS = {
 // Validation messages
 export const VALIDATION_MESSAGES = {
   DESCRIPTION_MIN_LENGTH: (min: number) => `Description must be at least ${min} characters`,
+  PROJECT_NAME_MIN_LENGTH: (min: number) => `Project name must be at least ${min} characters`,
   APPROACHING_CHARACTER_LIMIT: "Approaching character limit",
   CHARACTERS_NEEDED: (count: number) => `${count} more characters needed`,
   TECH_STACK_MIN: (min: number) =>
