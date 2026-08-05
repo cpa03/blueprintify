@@ -31,7 +31,7 @@ As a user starting a new project, I want to input my project name, description, 
 - **Validation**: Real-time Zod schema validation with visual feedback
 - **Components**: StepInfo, StepStack, StepFeatures, StepReview, StepGenerating
 - **API Integration**: Full integration with streaming generation endpoint
-- **Accessibility**: ARIA labels, keyboard navigation (Alt+1-5)
+- **Accessibility**: ARIA labels, keyboard navigation (Ctrl/Cmd+1/2/3, Ctrl/Cmd+E, Escape)
 - **Responsive Design**: Mobile-friendly with glassmorphism effects
 
 ### Delivered Features
@@ -440,7 +440,7 @@ As a user, I want to share my generated blueprint via a link, so that collaborat
 - [x] Retrieve shared blueprints by ID (public, immutable until expiration)
 - [x] Passphrase-protected shares hide blueprint content until verified
 - [x] Verify passphrase endpoint issues short-lived token for subsequent access
-- [x] Delete owned shares (creator-only via authorization token)
+- [x] Delete owned shares (creator-only via API-key-derived identity)
 - [x] 30-day expiration and CDN caching headers for shared content
 
 ### Delivered Features
@@ -448,7 +448,7 @@ As a user, I want to share my generated blueprint via a link, so that collaborat
 #### Share Creation & Retrieval ✅
 
 - **POST `/share`** — Creates a share with optional `passphraseHash` (SHA-256). Response includes `id`, `url`, `expiresAt`, and `passphraseRequired` (API: `apps/api/src/routes/share.ts`)
-- **GET `/share/:id`** — Public retrieval with CDN cache headers; passphrase-protected shares return metadata only unless a valid `?token=xxx` is provided
+- **GET `/share/:id`** — Retrieval (API-key gate applies when configured) with CDN cache headers; passphrase-protected shares return metadata only unless a valid `?token=xxx` is provided
 - **POST `/share/:id/verify`** — Verifies a passphrase and returns a short-lived verify token (403 on incorrect passphrase; rate-limited per share ID + IP to prevent brute force)
 - **DELETE `/share/:id`** — Deletes a share; creator-only when share ownership is stored
 

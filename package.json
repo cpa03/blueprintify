@@ -31,6 +31,7 @@
     "db:status": "node scripts/migrate.ts status",
     "db:rollback": "node scripts/migrate.ts rollback",
     "brocula": "node scripts/brocula-hunt.mjs",
+    "normalize:issues": "node scripts/normalize-issue-labels.mjs",
     "validate:wrangler": "node scripts/validate-wrangler.mjs",
     "validate:all": "npm run validate:wrangler && npm run scan:secrets && npm run audit",
     "predeploy:api": "npm run validate:wrangler",

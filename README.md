@@ -104,7 +104,7 @@ Wizard Generation → Split-Pane Editor → Refinement Workflow → Export/Impor
 ### Prerequisites
 
 - Node.js 22+
-- npm 8+ (with workspaces support)
+- npm 8+ (with workspaces support) — Node 22+ required
 - OpenAI API key (or compatible provider)
 
 ### Installation
@@ -137,7 +137,7 @@ npm run dev:api    # API only (port 8787)
 ### Quality Assurance
 
 ```bash
-# Run all quality checks (typecheck + lint + test)
+# Run all quality checks (typecheck + lint + secrets scan + npm audit + tests)
 npm run check
 
 # Or run individually:
