@@ -243,14 +243,14 @@ export type ExportContext = ValidatedContext<typeof ExportRequestSchema>;
  * Provides typed access to validated import parameters
  * including data, format, and overwrite flag.
  */
-export type ImportContext = ValidatedContext<typeof ImportRequestSchema>;
+type ImportContext = ValidatedContext<typeof ImportRequestSchema>;
 
 /**
  * Context type for storage quota requests.
  *
  * Provides typed access to storage quota query parameters.
  */
-export type StorageQuotaContext = ValidatedContext<typeof StorageQuotaSchema>;
+type StorageQuotaContext = ValidatedContext<typeof StorageQuotaSchema>;
 
 /**
  * Context type for storage clear requests.
@@ -258,7 +258,7 @@ export type StorageQuotaContext = ValidatedContext<typeof StorageQuotaSchema>;
  * Provides typed access to validated storage clear parameters
  * including the confirmation flag.
  */
-export type StorageClearContext = ValidatedContext<typeof StorageClearRequestSchema>;
+type StorageClearContext = ValidatedContext<typeof StorageClearRequestSchema>;
 
 /**
  * Union type for all controller context types.

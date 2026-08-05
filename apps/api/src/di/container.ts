@@ -4,7 +4,7 @@ import { API_HEADERS, SSE_HEADERS, ERROR_MESSAGES } from "../config/constants";
  * Interface for AI service implementations.
  * Defines the contract for streaming AI completions.
  */
-export interface AIService {
+interface AIService {
   streamCompletion: (options: {
     systemPrompt: string;
     userPrompt: string;
@@ -20,7 +20,7 @@ export interface AIService {
  * Interface for stream utility implementations.
  * Provides methods for creating SSE streams and responses.
  */
-export interface StreamUtils {
+interface StreamUtils {
   createStreamFromGenerator: (
     generator: AsyncGenerator<string, void, unknown>,
     onComplete?: () => void

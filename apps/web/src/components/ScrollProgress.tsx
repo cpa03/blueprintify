@@ -4,9 +4,7 @@ import { useSpring, useTransform } from "framer-motion";
 import { ANIMATION, EASING } from "../config/constants";
 import { SHADOWS, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 import { SCROLL_PROGRESS_DEFAULTS } from "@blueprint/shared/config";
-import clsx from "clsx";
 
 interface ScrollProgressProps {
   scrollContainerRef: React.RefObject<HTMLElement | null>;
@@ -157,119 +155,6 @@ export const ScrollProgress = memo(function ScrollProgress({
         animate={{ opacity: isVisible ? 1 : 0 }}
         transition={{ duration: ANIMATION.FAST }}
       />
-    </motion.div>
-  );
-});
-
-/**
- * ScrollProgressCompact - A minimal version with percentage display
- * Perfect for showing exact reading progress
- */
-interface ScrollProgressCompactProps extends ScrollProgressProps {
-  /**
-   * Show percentage text
-   * @default true
-   */
-  showPercentage?: boolean;
-}
-
-export const ScrollProgressCompact = memo(function ScrollProgressCompact({
-  scrollContainerRef,
-  showAfter = 50,
-  height = 2,
-  showPercentage = true,
-  className = "",
-}: ScrollProgressCompactProps) {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-  const prefersReducedMotion = useReducedMotion();
-
-  const calculateProgress = useCallback(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return 0;
-
-    const scrollTop = container.scrollTop;
-    const scrollHeight = container.scrollHeight - container.clientHeight;
-
-    if (scrollHeight <= 0) return 0;
-
-    const progress = (scrollTop / scrollHeight) * 100;
-    return Math.min(Math.max(progress, 0), 100);
-  }, [scrollContainerRef]);
-
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
-    const handleScroll = () => {
-      const progress = calculateProgress();
-      const scrollTop = container.scrollTop;
-
-      setScrollProgress(progress);
-      setIsVisible(scrollTop > showAfter && progress < 100);
-    };
-
-    container.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-
-    return () => {
-      container.removeEventListener("scroll", handleScroll);
-    };
-  }, [scrollContainerRef, calculateProgress, showAfter]);
-
-  return (
-    <motion.div
-      className={`flex items-center gap-2 ${className}`}
-      initial={{ opacity: 0, y: -10 }}
-      animate={{
-        opacity: isVisible ? 1 : 0,
-        y: isVisible ? 0 : -10,
-      }}
-      transition={{
-        duration: prefersReducedMotion ? 0 : ANIMATION.NORMAL,
-        ease: EASING.easeOut,
-      }}
-    >
-      <div
-        className="flex-1 bg-dark-700/50 rounded-full overflow-hidden"
-        style={{ height }}
-        role="progressbar"
-        aria-valuenow={Math.round(scrollProgress)}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-label={ACCESSIBILITY_LABELS.SCROLL_PROGRESS.READING}
-      >
-        <motion.div
-          className="h-full bg-gradient-to-r from-primary-500 to-accent-purple rounded-full"
-          initial={false}
-          animate={{ width: `${scrollProgress}%` }}
-          transition={{
-            duration: prefersReducedMotion ? 0 : ANIMATION.FAST,
-            ease: EASING.easeOut,
-          }}
-        />
-      </div>
-
-      {showPercentage && (
-        <motion.span
-          className={clsx(
-            "text-xs tabular-nums min-w-2.5 text-right",
-            scrollProgress > 75 && "text-accent-emerald",
-            scrollProgress > 50 && scrollProgress <= 75 && "text-accent-purple",
-            scrollProgress <= 50 && "text-dark-400"
-          )}
-          initial={false}
-          animate={{
-            scale: [1, 1.05, 1],
-          }}
-          transition={{
-            duration: ANIMATION.SUBTLE_MOVE,
-            repeat: 0,
-          }}
-        >
-          {Math.round(scrollProgress)}%
-        </motion.span>
-      )}
     </motion.div>
   );
 });
