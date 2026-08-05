@@ -2,6 +2,29 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 343 (2026-08-05 — ULW Loop: ISSUE MANAGER MODE — 101 open issues triaged; all P0/P1 code paths verified GREEN; issue/workflow mutations permission-BLOCKED; documented per FAIL-SAFE)
+
+> **Entry decision**: Phase 0 — **0 open PRs**, **101 open issues** detected → ISSUE MANAGER MODE descended; PR handler and Phases 1–3 suppressed. **Token census**: `github-actions[bot]` (GITHUB_TOKEN) — `git push` of non-workflow files + `gh pr create` ✅ (empirically verified via a throwaway probe branch/PR, since reverted); **`issues: write` and `workflows: write` are 403-BLOCKED** (verified: `addLabelsToLabelable`, `addComment`, `createIssue`, and pushing to `.github/workflows/` all return *Resource not accessible by integration*).
+>
+> **STEP 1 – Label normalization** — `scripts/normalize-issue-labels.mjs` (repo's deterministic normalizer) dry-run: **86 issues** need changes (missing category/priority). Applied-set cannot be pushed (403), so the mapping stays compliant in tooling. Engineered category+priority draft for every mislabeled issue kept decision-ready for a permission-capable run.
+>
+> **STEP 2/3 – Duplicate & consolidation triage** — Upstream Cycle 22–24 clusters independently reconfirmed: CORS `[930,890,848]`, API_KEY auth `[891,847]`, component/hook tests `[1014,856]/[1082,857]`, dependency & secrets scanning CI `[1084,851,850]/[1088,915,850,851]`, E2E/Playwright `[1019,915,875,872,851]`, ErrorBoundary `[1052,874]`, rate limiting `[906,846]`, share security `[1046,910,905,896,892,906,846]`, split-files `[1163,865]`, wrangler placeholder IDs `[1165,1045]`, controller/store tests `[936,935]`. No *new* duplicates introduced. Closure is token-blocked (403).
+>
+> **STEP 4 – Repair triage (evidence-backed)** — baseline re-run green on `main`:
+>
+> | Check | Result |
+> |---|---|
+> | typecheck | ✅ 0 errors (shared+api+web) |
+> | lint | ✅ 0 errors, 0 warnings |
+> | build (web) | ✅ exit 0 |
+> | build:api (wrangler dry-run) | ✅ exit 0 |
+> | test:all | ✅ **2,421/2,421** (1,059 web + 515 api + 847 shared) |
+> | npm audit | ✅ 0 vulnerabilities |
+>
+> Highest-priority bug (#1045, placeholder Cloudflare IDs): **NOT safely fixable autonomously** — assembling; deployments require real CF resource IDs created by a human (mitigation already shipped: fail-closed `scripts/validate-wrangler.mjs` predeploy gate + `docs/cloudflare-infrastructure.md`). Wiring that gate into a CI workflow is **workflow-push-blocked**. #849/#953 (gatekeeper runs no tests) likewise **workflow-blocked**; #1082/#935/#936/#1014 (hook/controller/store/component tests) **verified resolved** on main; #1167 (localStorage encryption) requires a human security-reasoning decision (client-side key ≈ no added assurance against the identical read path) — **not guessed**.
+>
+> **Conscious non-actions (FAIL-SAFE)**: no fabricated infra IDs; no file deletions; no unverified refactors; no merges. Deliverable for this cycle is the accurate findings record + decision-ready triage, ready for a permission-capable run.
+
 ## Cycle 342 (2026-08-05 — BugFixer Cycle 28: zero code bugs found; test count **2,421/2,421** (1059 web + 515 api + 847 shared); all quality gates pass ✅; coverage gate verified active (78.07% stmts vs 75% floor))
 
 > **BugFixer Cycle 28 (2026-08-05 — agent/bugfixer-cycle-28)**: Full BugFixer audit — **zero code defects**. **Baseline on clean `main`** (HEAD `533deaef`): typecheck ✅ 0 errors (shared + api + web); lint ✅ 0 errors, 0 warnings; build ✅ (web — rolldown/vite, exit 0); build:api ✅ (wrangler dry-run exit 0 — 3 KV + queue + D1 + analytics + AI + 3 rate limiters + env bindings valid); tests **2,421/2,421** ✅ (1059 web + 515 api + 847 shared); coverage gate ✅ (web statements 78.07% / branches 67.24% / functions 78.98% / lines 79.23% — all above vitest thresholds 75/60/75/75 from #3041); format ✅ (prettier clean); secrets scan ✅ (311 files); npm audit **0 vulnerabilities** ✅ (BUG-040 still fixed — hono 4.12.34 (CORS ReDoS GHSA-8j4g-w8fx-2239); BUG-013 still fixed — lighthouse 13.4.1; BUG-038 still fixed — brace-expansion 5.0.9 override); `npm ls --all` exit 0 — **0 invalid/missing/extraneous** (BUG-039/041 still fixed); 0 `@ts-expect-error`/`@ts-ignore` in source (2 hits are 3rd-party `node_modules/@vercel/analytics`); 0 `as any`; 0 empty catch blocks; 0 TODO/FIXME/HACK in source; 0 merge conflict artifacts (22 "=====" hits verified as decorative comment banners); lockfile: no drift (workspace deps + versions in sync). **1 new post-Cycle-27 commit indexed** — HEAD `533deaef` (feat(ux): gate scroll progress bar fill pulse behind prefers-reduced-motion (#3067)) — **+8 web tests**. **BUG-043 still fixed**: oldest dated `docs/audits/archive/*.md` is **Jul 6 — 30 days, at boundary — no purge needed** (re-verified from actual oldest archive file each cycle, per BUG-042/043 blind-spot lesson; no Jul 5 files remain). **BUG-014/017/032/033/034/035 still fixed**: zero stale `docs/bug.md`/`docs/feature.md`/`docs/task.md` refs outside historical logs; zero hardcoded `node-version:` in workflows (all `node-version-file: ".node-version"`); eslint 9.39.5; `@cloudflare/workers-types` in sync. **Stale merged branches**: **0** (`origin/agent/security-auth-warn-log` divergent with open PR #3070; other divergent refs pre-existing, RepoKeeper scope). **`validate:wrangler`**: fails on 6 placeholder Cloudflare IDs + missing `.dev.vars` — pre-existing documented TODO (commit `b45bb4dc`), not a code defect. **All quality gates pass. Zero code defects. No fixes required.** PR opened on `agent/bugfixer-cycle-28`.
