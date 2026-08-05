@@ -80,6 +80,8 @@ export const StepInfo = memo(function StepInfo({
   const targetAudienceInputRef = useRef<HTMLInputElement>(null);
   const [isShaking, setIsShaking] = useState(false);
   const [invalidField, setInvalidField] = useState<string | null>(null);
+  // Persists past the 400ms shake so the error stays visible while invalid.
+  const [projectNameErrorShown, setProjectNameErrorShown] = useState(false);
   const { textareaRef: descriptionRef } = useAutoResizeTextarea({
     minHeight: TEXTAREA_CONFIG.STEP_INFO_MIN_HEIGHT_PX,
     maxHeight: TEXTAREA_CONFIG.STEP_INFO_MAX_HEIGHT_PX,
@@ -139,6 +141,10 @@ export const StepInfo = memo(function StepInfo({
     projectName.length > 0 && projectName.length < FORM_LIMITS.PROJECT_NAME.MIN;
   const isDescriptionInvalid =
     description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN;
+  // Error persists (unlike the transient invalidField shake) while the field
+  // remains below minimum length after a failed submit attempt.
+  const projectNameErrorVisible =
+    projectNameErrorShown && projectName.length < FORM_LIMITS.PROJECT_NAME.MIN;
 
   // One-shot pulse on the Next button when form becomes valid; skip initial mount
   const prevCanProceed = useRef<boolean | null>(null);
@@ -183,6 +189,7 @@ export const StepInfo = memo(function StepInfo({
       storeClearForm();
       setClearAnimation(true);
       setClearAnnouncement(ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_ALL_ANNOUNCEMENT);
+      setProjectNameErrorShown(false);
       setTimeout(() => setClearAnimation(false), TIMEOUTS.SHAKE_ANIMATION);
       projectNameInputRef.current?.focus({ preventScroll: true });
     }
@@ -219,6 +226,9 @@ export const StepInfo = memo(function StepInfo({
       }
       if (fieldId) {
         setInvalidField(fieldId);
+        if (fieldId === "projectName") {
+          setProjectNameErrorShown(true);
+        }
         setTimeout(() => setInvalidField(null), TIMEOUTS.SHAKE_ANIMATION);
       }
       // Trigger shake animation for visual feedback
@@ -359,9 +369,9 @@ export const StepInfo = memo(function StepInfo({
               aria-required="true"
               animate={projectNameTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
               transition={{ duration: ANIMATION.FAST }}
-              aria-invalid={isProjectNameInvalid || invalidField === "projectName" || undefined}
+              aria-invalid={isProjectNameInvalid || projectNameErrorVisible || undefined}
               aria-describedby={
-                invalidField === "projectName"
+                projectNameErrorVisible
                   ? "projectName-error"
                   : projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
                       projectName.length < FORM_LIMITS.PROJECT_NAME.MAX
@@ -380,6 +390,7 @@ export const StepInfo = memo(function StepInfo({
                   transition={{ duration: ANIMATION.FAST }}
                   onClick={() => {
                     setProjectName("");
+                    setProjectNameErrorShown(false);
                     projectNameInputRef.current?.focus({ preventScroll: true });
                   }}
                   className={`absolute ${
@@ -422,7 +433,7 @@ export const StepInfo = memo(function StepInfo({
               )}
           </AnimatePresence>
           <AnimatePresence>
-            {invalidField === "projectName" && (
+            {projectNameErrorVisible && (
               <motion.p
                 id="projectName-error"
                 role="alert"

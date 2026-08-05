@@ -11,7 +11,7 @@
  * - Clear all form functionality
  * - Accessibility labels
  */
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import type { Mock } from "vitest";
 import { StepInfo } from "./StepInfo";
@@ -429,6 +429,60 @@ describe("StepInfo", () => {
 
   it("does not show project name error before submit attempt", () => {
     render(<StepInfo />);
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
+  it("keeps project name error visible after the shake animation ends", () => {
+    render(<StepInfo />);
+    const form = document.querySelector("form");
+    if (form) {
+      fireEvent.submit(form);
+    }
+    const error = screen.getByRole("alert");
+    expect(error).toHaveTextContent(
+      VALIDATION_MESSAGES.PROJECT_NAME_MIN_LENGTH(FORM_LIMITS.PROJECT_NAME.MIN)
+    );
+    // Regression: error must persist past the 400ms shake (BUG-044).
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      VALIDATION_MESSAGES.PROJECT_NAME_MIN_LENGTH(FORM_LIMITS.PROJECT_NAME.MIN)
+    );
+    expect(screen.getByLabelText(/Project Name/i)).toHaveAttribute("aria-invalid", "true");
+  });
+
+  it("hides project name error once the field becomes valid", () => {
+    render(<StepInfo />);
+    const form = document.querySelector("form");
+    if (form) {
+      fireEvent.submit(form);
+    }
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+    mockStore.projectName = "valid-project";
+    // Advance timers so the shake state change re-renders with the new value.
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
+  it("does not re-show project name error after the field is cleared", () => {
+    render(<StepInfo />);
+    const form = document.querySelector("form");
+    if (form) {
+      fireEvent.submit(form);
+    }
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+    // User types a valid name (error hides), then clears the field.
+    mockStore.projectName = "ab";
+    act(() => {
+      vi.advanceTimersByTime(400);
+    });
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    mockStore.projectName = "";
+    const clearButton = screen.getByLabelText(ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_PROJECT_NAME);
+    fireEvent.click(clearButton);
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 
