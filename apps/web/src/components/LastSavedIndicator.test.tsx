@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { LastSavedIndicator } from "./LastSavedIndicator";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -10,6 +11,10 @@ vi.mock("framer-motion", () => ({
     path: vi.fn(({ children, ...props }) => <path {...props}>{children}</path>),
   },
   AnimatePresence: vi.fn(({ children }) => <>{children}</>),
+}));
+
+vi.mock("../hooks/useReducedMotion", () => ({
+  useReducedMotion: vi.fn(() => false),
 }));
 
 describe("LastSavedIndicator", () => {
@@ -74,6 +79,26 @@ describe("LastSavedIndicator", () => {
 
     const pingEl = container.querySelector(".animate-ping");
     expect(pingEl).toBeInTheDocument();
+  });
+
+  it("removes the infinite ping ring when reduced motion is preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    const { container } = render(
+      <LastSavedIndicator text="Saved" isVisible={true} hasChanges={true} />
+    );
+
+    expect(container.querySelector(".animate-ping")).not.toBeInTheDocument();
+    expect(screen.getByText("Unsaved changes")).toBeInTheDocument();
+    expect(container.querySelector(".bg-amber-500")).toBeInTheDocument();
+  });
+
+  it("keeps the unsaved-changes announcement for screen readers when reduced motion is preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    render(<LastSavedIndicator text="Saved" isVisible={true} hasChanges={true} />);
+
+    const region = screen.getByText("Unsaved changes").closest("[aria-live]");
+    expect(region).toHaveAttribute("aria-live", "polite");
+    expect(region).toHaveAttribute("aria-atomic", "true");
   });
 
   it("accepts custom text prop", () => {
