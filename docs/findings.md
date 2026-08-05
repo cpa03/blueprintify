@@ -2,6 +2,19 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## PR Security Audit — `agent/palette-project-name-error` (2026-08-05)
+
+**PR**: `feat(ux): announce project name validation error on invalid submit` (`9a1d6e2f`) — adds a `role="alert"` project-name error message and wires `aria-invalid`/`aria-describedby` on submit failure.
+
+**Audit result — CLEAN, no vulnerabilities, secrets, or deprecated functions introduced.**
+
+- **Changed files**: `apps/web/src/components/wizard/StepInfo.tsx`, `apps/web/src/components/wizard/StepInfo.test.tsx`, `apps/web/src/config/constants/validation.ts`.
+- **Secrets scan**: No API keys, tokens, `.env`/`.dev.vars` contents, or private key material in the diff.
+- **XSS / injection**: The new error message renders a static constant (`VALIDATION_MESSAGES.PROJECT_NAME_MIN_LENGTH`); no user-controlled input is interpolated into HTML or attributes. No `dangerouslySetInnerHTML`, `eval`, `innerHTML`, or `document.write` introduced.
+- **Deprecated functions**: No `String.prototype.substr`, `Math.random` in security context, `ReactDOM.render`, legacy lifecycle (`componentWill*`/`UNSAFE_*`), `findDOMNode`, `isMounted`, or deprecated testing-library APIs in the changed lines.
+- **Verification**: `npm audit` 0 vulnerabilities; ESLint 0 errors; `tsc --noEmit` 0 errors; StepInfo test suite 37/37 passing.
+- **Observation (non-security, a11y)**: `invalidField` is cleared after `TIMEOUTS.SHAKE_ANIMATION` (400 ms), so the `role="alert"` message and `aria-invalid` flash briefly before reverting to the persistent `isProjectNameInvalid` state. Acceptable for the announced UX intent; not a security concern.
+
 ## Cycle 344 (2026-08-05 — ULW Loop: PR HANDLER MODE → ISSUE MANAGER MODE — PR #3077 merged (`52d9104b`); 101 open issues re-triaged; all P0/P1/P2 code paths verified GREEN on new `main`; issue/workflow mutations still permission-BLOCKED; documented per FAIL-SAFE)
 
 > **Entry decision**: Phase 0 — **1 open PR (#3077) + 101 open issues** detected → **PR HANDLER MODE** descended (PRs take precedence; issues untouched until PR work complete).
