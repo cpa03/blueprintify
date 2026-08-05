@@ -44,8 +44,7 @@ blueprintify/
 ├── .opencode/
 │   ├── agent/        # Agent definitions
 │   ├── skill/        # Reusable skills
-│   ├── command/      # Custom commands
-│   └── plugin/       # Plugins (hooks)
+│   └── command/      # Custom commands
 └── docs/             # Documentation
 ```
 
@@ -125,7 +124,7 @@ blueprintify/
 ### Git Workflow
 
 - Work on `agent` branch for specialized tasks
-- Work on `orchestrator` branch for management operations
+- `main` is the integration branch; management operations target `main`
 - PR requires passing CI checks
 
 ## API Design
@@ -134,7 +133,7 @@ blueprintify/
 
 - `POST /generate` - Generate blueprint with streaming
 - `POST /refine` - Refine existing blueprint
-- `GET /tasks/{id}` - Get task status
+- `POST /tasks` - Generate tasks with streaming
 
 ### Error Handling
 
