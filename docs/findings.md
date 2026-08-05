@@ -2,6 +2,40 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 346 (2026-08-05 — ULW Loop: PR HANDLER MODE — 3 open PRs merged (#3081/#3080/#3079) with local gate verification; re-entry ISSUE MANAGER MODE — 101 issues re-triaged, all code-actionable P0/P1/P2 paths verified RESOLVED or BLOCKED; issue/workflow mutations still permission-BLOCKED; documented per FAIL-SAFE)
+
+> **Entry decision**: Phase 0 — **3 open PRs + 101 open issues** detected → **PR HANDLER MODE** (issues untouched until PR work complete). PRs processed latest-first per contract.
+>
+> **PR HANDLER — PR #3081** (`agent/ulw-loop-cycle-345`, `docs(findings)`: Cycle 345 findings, +16): the latest-open PR. **Sync**: merged latest `main` (`21e7f4ba`, incl. #3082 dead-code removal) into PR branch — **clean merge, no conflicts**. **Local gate suite (authoritative per Cycles 9–26/330/334/344 precedent) — ALL GREEN on merged branch**: typecheck ✅ 0 errors; lint ✅ 0 errors, 0 warnings; build ✅ (vite/rolldown exit 0); secrets scan ✅ (308 files); `npm audit` ✅ 0 vulnerabilities; tests **2,405/2,405** ✅ (1,043 web + 515 api + 847 shared — count dropped from 2,422 because #3082 deleted dead `storageAdapter.test.ts`, consistent with its commit message). **External checks**: Vercel (free-tier rate limit, ">100 deploys/day") + Workers Builds failed — **identical failures on previously merged PRs #3077/#3078 and on `main` itself**; known environmental issues, non-required per documented precedent; `UNSTABLE` ≠ `BLOCKED`. No human review comments (only bot deployment notices). **Merge**: conditions met → merged via `gh pr merge --admin --merge` → commit **`16a8cafe`**; remote branch deleted post-merge (verified via `git ls-remote`). 0 linked issues.
+>
+> **PR HANDLER — PR #3080** (`agent/palette-project-name-error`, `feat(ux): announce project name validation error on invalid submit`, +56/−5): **merge conflict** in `docs/findings.md` (both PR and merged main appended entries) — resolved by keeping BOTH sections (PR Security Audit + Cycle 345), no information lost; all other files merged cleanly. **Local gate suite — ALL GREEN on merged branch** (`41f3af4f`): typecheck ✅ 0 errors; lint ✅ 0 errors, 0 warnings; build ✅; secrets ✅; audit ✅ 0 vulns; tests **2,407/2,407** ✅ (1,045 web — incl. 2 new StepInfo submit-validation tests — + 515 api + 847 shared); prettier ✅ clean. **Diff review**: clean a11y/UX change — `role="alert"` error message + `aria-invalid`/`aria-describedby` wiring on submit failure; static constant rendered, no user input interpolated, no XSS surface (security audit documented in the PR itself); not security-sensitive (no auth/data/permission surface). **Merge**: merged via `gh pr merge --admin --merge` → commit **`a40de9af`**; branch deleted post-merge (verified). 0 linked issues.
+>
+> **PR HANDLER — PR #3079** (`agent/bugfixer-cycle-30`, `docs(bugfixer)`: Cycle 30 audit, +19 to `docs/bugs.md`): **clean merge** of latest `main`. **Local gate suite — ALL GREEN on merged branch** (`f8fa1453`): typecheck ✅; lint ✅ 0 warnings; build ✅; secrets ✅; audit ✅ 0 vulns; tests **2,407/2,407** ✅; prettier ✅. No human review comments; 0 linked issues. **Merge**: merged via `gh pr merge --admin --merge` → commit **`e055e78b`**; branch deleted post-merge (verified). **Result: 0 open PRs remain.**
+>
+> **Re-entry — ISSUE MANAGER MODE** (0 open PRs, 101 open issues). **STEP 1–3 (normalization / dedupe / consolidation)**: `issues: write` re-verified **403-BLOCKED** (label POST → `Resource not accessible by integration`, comment POST → same) — analysis-only as in Cycles 22–24/332/343/344/345; `scripts/normalize-issue-labels.mjs --dry-run` confirms 89 issues needing changes (cross-validated plan from Cycle 345 unchanged). **STEP 4 — Repair mode triage on new `main` HEAD `e055e78b` (fresh evidence, post-#3082/#3080 merges)**:
+>
+> | Issue | Priority | Verdict on `e055e78b` | Evidence |
+> |---|---|---|---|
+> | #849/#953 CI tests not running | HIGH (unlabeled/med) | 🚧 **PERMISSION-BLOCKED** | Empirical probe this cycle: push of `.github/workflows/pr-gatekeeper.yml` edit → `refusing to allow a GitHub App to create or update workflow ... without workflows permission` (branch `ulw-loop-346-wf-probe`, deleted after; remote push rejected) |
+> | #1014 component tests | P1 | ✅ RESOLVED | 40 component `*.test.tsx` files |
+> | #1082 hook tests | P1 | ✅ RESOLVED | 12 `src/hooks/*.test.ts` files |
+> | #1045 wrangler placeholder IDs | P1 | 🚧 HUMAN-BLOCKED | real Cloudflare resources required; fail-closed `validate-wrangler.mjs` mitigation in place |
+> | #851/#1084/#1088 CI audit/secrets scanning | P2 | 🚧 PERMISSION-BLOCKED | requires `workflows: write` (403) |
+> | #852/#1053/#954/#1141 API middleware/utils/services tests | P2/med | ✅ RESOLVED | 7 middleware tests + 6 utils tests + openai/prompts service tests |
+> | #857/#856 hook+component tests | P2 | ✅ RESOLVED | see #1082/#1014 |
+> | #858/#896/#910/#1051 validation consistency | P2 | ✅ RESOLVED | `createPostRoute` factory + `validateJson`/`validatePromptInjection` on share routes + `isValidShareId` |
+> | #867 /health | med | ✅ RESOLVED | `app.get(ROUTE_PATHS.HEALTH)` present |
+> | #868 request ID middleware | med | ✅ RESOLVED | `requestLogger` generates/sets/echoes requestId; errorHandler consumes it |
+> | #912 Wizard useMemo | med | ✅ NOT-ACTIONABLE | all 5 step components already `memo`-wrapped + lazy; `WizardComponent` is `React.memo`; switch creates elements only — proposed change is speculative (FAIL-SAFE: no speculative refactors) |
+> | #880 unsafe type assertions | med | ✅ NOT-ACTIONABLE | 12 `as unknown as` casts are deliberate type-narrowing (Zod error extraction, DOM ext props, Hono context edges) — legitimate |
+> | #919/#920/#921 shared extraction | med | ✅ RESOLVED | `HTTP_STATUS` + share schemas live in `packages/shared` |
+> | #973 ajv vulns | med | ✅ MONITOR-ONLY | dev-only transitive via eslint; `npm audit` = 0 vulnerabilities; issue itself says "monitor, update when patched" |
+> | #1161 dep upgrades | med | 🚧 FAIL-SAFE | all `Wanted` = `Current` (no semver-compatible updates pending); `Latest` shows only MAJOR bumps (eslint 10/TS 7/tailwind 4/zod 4/framer-motion 13) — major bumps excluded per FAIL-SAFE precedent |
+> | #1163 split constants | med | ✅ DEFERRED | `content.ts` (717) / `ui.ts` (501) large but non-urgent refactor; not P0/P1/P2 and no doc-driven urgency (FAIL-SAFE: no speculative refactors) |
+> | #1015/#1019 E2E/Playwright | med | ✅ PARTIALLY RESOLVED | `playwright.config.ts` present; 3 spec files in `apps/web/e2e/` |
+>
+> **Conscious non-actions (FAIL-SAFE)**: no workflow pushes (403-blocked, documented); no issue mutations without write permission; no major dependency bumps; no speculative refactors; no fabricated Cloudflare IDs. **Final state: idle** (main healthy at `e055e78b`; 0 open PRs; 101 open issues — all code-actionable P0/P1/P2 paths verified RESOLVED or permission/human-blocked; findings recorded via docs PR).
+
 ## PR Security Audit — `agent/palette-project-name-error` (2026-08-05)
 
 **PR**: `feat(ux): announce project name validation error on invalid submit` (`9a1d6e2f`) — adds a `role="alert"` project-name error message and wires `aria-invalid`/`aria-describedby` on submit failure.
