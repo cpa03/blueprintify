@@ -70,6 +70,17 @@ function CharacterCounterComponent({
   const pulseClass = shouldPulse && !showLimitShake ? "animate-pulse-scale" : "";
   const celebrateClass = showCelebrate ? "counter-celebrate-pop" : "";
 
+  // Intentionally empty during normal typing: a live region that changes on
+  // every keystroke makes screen readers announce each character typed.
+  const countLabel = `${current} of ${max} character${max !== 1 ? "s" : ""} used`;
+  const announcement = showMinMetAnnouncement
+    ? `${countLabel}${ACCESSIBILITY_LABELS.CHARACTER_COUNTER.MINIMUM_MET}`
+    : isAtLimit
+      ? `${countLabel}${ACCESSIBILITY_LABELS.CHARACTER_COUNTER.LIMIT_REACHED}`
+      : remaining <= CHAR_COUNTER_THRESHOLDS.NEAR_LIMIT
+        ? `${countLabel}${ACCESSIBILITY_LABELS.CHARACTER_COUNTER.REMAINING(remaining)}`
+        : "";
+
   return (
     <>
       {/* Visual counter — hidden from screen readers */}
@@ -102,13 +113,7 @@ function CharacterCounterComponent({
         aria-live="polite"
         aria-atomic="true"
       >
-        {current} of {max} character{max !== 1 ? "s" : ""} used
-        {remaining === 0
-          ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.LIMIT_REACHED
-          : remaining <= CHAR_COUNTER_THRESHOLDS.NEAR_LIMIT
-            ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.REMAINING(remaining)
-            : ""}
-        {showMinMetAnnouncement ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.MINIMUM_MET : ""}
+        {announcement}
       </span>
     </>
   );
@@ -131,6 +136,15 @@ function CharacterCounterCompactComponent({
   const isDanger = percentage >= CHAR_COUNTER_THRESHOLDS.DANGER_PERCENT;
 
   const remaining = max - current;
+
+  // Mirrors the main counter's threshold-only announcement policy (see above).
+  const compactCountLabel = `${current} of ${max} character${max !== 1 ? "s" : ""} used`;
+  const compactAnnouncement =
+    remaining === 0
+      ? `${compactCountLabel}${ACCESSIBILITY_LABELS.CHARACTER_COUNTER.LIMIT_REACHED}`
+      : remaining <= CHAR_COUNTER_THRESHOLDS.NEAR_LIMIT
+        ? `${compactCountLabel}${ACCESSIBILITY_LABELS.CHARACTER_COUNTER.REMAINING(remaining)}`
+        : "";
 
   return (
     <div className={`flex items-center gap-1.5 ${className}`}>
@@ -157,12 +171,7 @@ function CharacterCounterCompactComponent({
         aria-live="polite"
         aria-atomic="true"
       >
-        {current} of {max} character{max !== 1 ? "s" : ""} used
-        {remaining === 0
-          ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.LIMIT_REACHED
-          : remaining <= CHAR_COUNTER_THRESHOLDS.NEAR_LIMIT
-            ? ACCESSIBILITY_LABELS.CHARACTER_COUNTER.REMAINING(remaining)
-            : ""}
+        {compactAnnouncement}
       </span>
     </div>
   );

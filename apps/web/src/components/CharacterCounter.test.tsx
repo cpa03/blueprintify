@@ -20,25 +20,32 @@ describe("CharacterCounter", () => {
     expect(screen.getByText("/100")).toBeInTheDocument();
   });
 
-  it("renders screen reader status with descriptive label", () => {
+  it("keeps the live region silent during normal typing", () => {
     render(<CharacterCounter current={5} max={100} />);
     const srStatus = screen.getByRole("status");
     expect(srStatus).toHaveClass("sr-only");
     expect(srStatus).toHaveAttribute("aria-live", "polite");
     expect(srStatus).toHaveAttribute("aria-atomic", "true");
-    expect(srStatus).toHaveTextContent("5 of 100 characters used");
+    expect(srStatus).toBeEmptyDOMElement();
   });
 
-  it("shows remaining count in sr text when 10 or fewer characters remain", () => {
+  it("announces remaining count in sr text when 10 or fewer characters remain", () => {
     render(<CharacterCounter current={95} max={100} />);
     const srStatus = screen.getByRole("status");
-    expect(srStatus).toHaveTextContent("5 remaining");
+    expect(srStatus).toHaveTextContent("95 of 100 characters used — 5 remaining");
   });
 
-  it("shows limit reached message in sr text when at max", () => {
+  it("announces limit reached in sr text when at max", () => {
     render(<CharacterCounter current={100} max={100} />);
     const srStatus = screen.getByRole("status");
-    expect(srStatus).toHaveTextContent("limit reached");
+    expect(srStatus).toHaveTextContent("100 of 100 characters used — limit reached");
+  });
+
+  it("announces minimum met in sr text when minimum is satisfied", () => {
+    const { rerender } = render(<CharacterCounter current={5} max={100} min={10} />);
+    rerender(<CharacterCounter current={15} max={100} min={10} />);
+    const srStatus = screen.getByRole("status");
+    expect(srStatus).toHaveTextContent("15 of 100 characters used — minimum requirement met");
   });
 
   it("applies warning color class on the outer container", () => {
@@ -92,9 +99,21 @@ describe("CharacterCounterCompact", () => {
     expect(progressBar).toBeInTheDocument();
   });
 
-  it("renders screen reader status", () => {
+  it("keeps the live region silent during normal typing", () => {
     render(<CharacterCounterCompact current={5} max={100} />);
     const srStatus = screen.getByRole("status");
-    expect(srStatus).toHaveTextContent("5 of 100 characters used");
+    expect(srStatus).toBeEmptyDOMElement();
+  });
+
+  it("announces remaining count in sr text when near limit", () => {
+    render(<CharacterCounterCompact current={95} max={100} />);
+    const srStatus = screen.getByRole("status");
+    expect(srStatus).toHaveTextContent("95 of 100 characters used — 5 remaining");
+  });
+
+  it("announces limit reached in sr text when at max", () => {
+    render(<CharacterCounterCompact current={100} max={100} />);
+    const srStatus = screen.getByRole("status");
+    expect(srStatus).toHaveTextContent("100 of 100 characters used — limit reached");
   });
 });
