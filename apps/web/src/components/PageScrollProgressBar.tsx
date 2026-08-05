@@ -232,19 +232,23 @@ function PageScrollProgressBarComponent({
           style={{ width }}
           initial={{ opacity: 0.8 }}
           animate={
-            isVisible
-              ? {
-                  opacity: [0.8, 1, 0.8],
-                }
-              : { opacity: 0.8 }
+            prefersReducedMotion
+              ? { opacity: isVisible ? 0.9 : 0.8 }
+              : isVisible
+                ? { opacity: [0.8, 1, 0.8] }
+                : { opacity: 0.8 }
           }
-          transition={{
-            opacity: {
-              duration: ANIMATION.BREATH,
-              repeat: Infinity,
-              ease: EASING.easeInOut,
-            },
-          }}
+          transition={
+            prefersReducedMotion
+              ? { duration: ANIMATION.NORMAL, ease: EASING.easeOut }
+              : {
+                  opacity: {
+                    duration: ANIMATION.BREATH,
+                    repeat: Infinity,
+                    ease: EASING.easeInOut,
+                  },
+                }
+          }
         />
 
         {/* Hover thumb — a small dot at the leading edge that appears on hover
