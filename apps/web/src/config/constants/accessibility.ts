@@ -70,7 +70,7 @@ export const AUTOFOCUS_VALUES = {
 // ============================================================================
 
 /** Focusable element selectors for accessibility */
-export const FOCUSABLE_SELECTORS = [
+const FOCUSABLE_SELECTORS = [
   'button:not([disabled]):not([aria-hidden="true"])',
   'a[href]:not([aria-hidden="true"])',
   'input:not([disabled]):not([type="hidden"]):not([aria-hidden="true"])',

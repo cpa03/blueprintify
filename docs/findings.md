@@ -15,6 +15,22 @@
 - **Verification**: `npm audit` 0 vulnerabilities; ESLint 0 errors; `tsc --noEmit` 0 errors; StepInfo test suite 37/37 passing.
 - **Observation (non-security, a11y)**: `invalidField` is cleared after `TIMEOUTS.SHAKE_ANIMATION` (400 ms), so the `role="alert"` message and `aria-invalid` flash briefly before reverting to the persistent `isProjectNameInvalid` state. Acceptable for the announced UX intent; not a security concern.
 
+## Cycle 345 (2026-08-05 — ULW Loop: ISSUE MANAGER MODE — 101 open issues re-triaged; label normalization plan (89 issues) cross-validated against `scripts/normalize-issue-labels.mjs` (86 issues); repair attempt on #849/#953 (tests absent from PR gatekeeper) verified **workflows:write 403-BLOCKED** via empirical push rejection; all P0/P1/P2 code paths verified GREEN on `main` `cfd88cc5`; issue mutations documented per FAIL-SAFE)
+
+> **Entry decision**: Phase 0 — **0 open PRs + 101 open issues** detected → **ISSUE MANAGER MODE** (PR handler and all lower phases skipped).
+>
+> **Token census (re-verified this cycle)**: `github-actions[bot]` (GITHUB_TOKEN, `pull` workflow / schedule event). `git push` of non-workflow files ✅ (probe branch `ulw-loop-345-token-probe` pushed + deleted cleanly); **`issues: write` 403-BLOCKED** (label edit → `GraphQL: Resource not accessible by integration (addLabelsToLabelable)`, comment → `(addComment)`, close → `(closeIssue)`); **`workflows: write` 403-BLOCKED** — verified EMPIRICALLY this cycle: `git push` of a branch modifying `.github/workflows/pr-gatekeeper.yml` was rejected with `refusing to allow a GitHub App to create or update workflow ... without workflows permission`. STEP 1–3 issue mutations (labels/comments/closure) therefore remain analysis-only, as in Cycles 22–24/332/343/344.
+>
+> **STEP 1 — Label normalization (analysis complete, apply blocked)**: Independent plan built for all 101 issues (canonical category bug|enhancement|feature|docs|refactor|chore|test|ci|security + priority P0–P3, legacy `priority:low|medium|critical` → P3/P2/P0, legacy `type:*`/`documentation` → canonical category) — **89 issues require changes**. Cross-validated against the repo's own `scripts/normalize-issue-labels.mjs` dry run (86 issues). Documented deltas are judgment calls: #849 (`ci/P1` — broken gatekeeper, vs script `P2`), #848 (`security/P1` auth-adjacent, vs `P2`), #905 (`security/P1` injection, vs `P3`), #928 (`security/P1` XSS-surface sanitization, vs `P3`), #893 (`feature/P1` production persistence, vs `P3`), #891 (`security/P2`, vs `P3`), #850/#853 (category `ci`/`test` from title, vs heuristic), #1051/#1052/#1053/#1161/#958/#1015/#1118/#1142/#877/#885/#909/#910/#919/#921/#953 (title-driven category/priority refinements). Ready-to-run when a permission-capable token exists: `node scripts/normalize-issue-labels.mjs --apply` (idempotent).
+>
+> **STEP 2/3 — Duplicate detection & consolidation (analysis complete, closure blocked)**: duplicate clusters from Cycles 22–24/334/343/344 reconfirmed against current titles/labels: CORS `[930,890,848]` ✅ code-resolved (see below), API_KEY auth `[891,847]` ✅ code-resolved, component/hook tests `[1014,856]/[1082,857]` ✅ resolved, dep+secrets scanning CI `[1084,851,850]/[1088,915,851,850]`, E2E/Playwright `[1019,1015,951,877,872]`, ErrorBoundary `[1052,874]` ✅ resolved, share security `[1046,910,905,896,892,906,846]` ✅ code-resolved, split-files `[1163,865]`, wrangler IDs `[1165,1045]` (human-blocked), controller/store tests `[936,935]` ✅ resolved, **#849 ≈ #953 same root cause** (no test execution in CI). Canonical issue selection and closure recommendations recorded for a permission-capable run.
+>
+> **STEP 4 — Repair mode**: highest-priority code-actionable P1 selected: **#849/#953 — no workflow executes the test suite** (verified: zero `test`/`vitest` references across all 5 workflows, while 2,422 tests pass locally). Fix prepared on branch `fix/pr-gatekeeper-tests-849` (commit `265c36d5`): add `npm run test:all` to `pr-gatekeeper.yml` Stage 1 health check, wire `test.log` into failure detection and Debugger handoff (3 insertions, 2 deletions, YAML-validated, follows existing per-check pattern). **Push REJECTED** — `workflows: write` permission missing (GitHub App refusal, see token census). Branch deleted, working tree clean. **Verdict: permission-blocked, not code-blocked — diff preserved above for a permission-capable cycle.** All other P1s triaged: #1045 (wrangler placeholder IDs) **human-blocked** (needs real Cloudflare resources; `validate-wrangler.mjs` fail-closed mitigation in place); #1082 (hook tests) ✅ RESOLVED (12 `hooks/*.test.ts`); #1014 (component coverage) ✅ RESOLVED (40 component test files + coverage gate); #893 (D1 Database Service) **substantially addressed** — D1 in active use (`c.env.DB` + `SQL_QUERIES` in `config/constants/validation.ts` + root `schema.sql` + `DB_ID_PREFIXES`); #847 (auth bypass when API_KEY unset) ✅ RESOLVED — `auth.ts` fail-closed: returns 503 + `secureLogWarn` when `API_KEY` missing.
+>
+> **Fresh verifications on `main` `cfd88cc5`**: share/export/import security cluster **all green** — `isValidShareId` length+alphanumeric gate (#905), `authorize` on create/delete + fail-closed ownership via `createdBy` match with legacy-denied (#892), `rateLimit` on create/enumeration/verify/delete + export/import (#846/#906), `validateJson`+`validatePromptInjection` on all routes (#910/#908), `withCtxError` consistent error shape (#909); CORS **fail-closed in production** — `loadConfig` hard-throws on `CORS_ORIGIN === "*"` in prod, dev default `"*"` only (#848/#930/#890); DOMPurify-based sanitization in web render path (#928). Gate suite: typecheck ✅ 0 errors; lint ✅ 0 errors, 0 warnings; build ✅ (vite/rolldown exit 0); tests **2,422/2,422** ✅ (1,060 web + 515 api + 847 shared); `npm audit` ✅ 0 vulnerabilities; `npm ci` clean (898 packages).
+>
+> **Conscious non-actions (FAIL-SAFE)**: no fabricated Cloudflare IDs; no speculative refactors; no dependency major bumps; no workflow pushes (blocked, documented); no issue mutations without write permission; label plan delivered as executable command rather than guessed. **Final state: idle** (main healthy at `cfd88cc5`; 0 open PRs; 101 open issues — all code-actionable P0/P1/P2 paths verified GREEN or human/permission-blocked; findings recorded via docs PR).
+
 ## Cycle 344 (2026-08-05 — ULW Loop: PR HANDLER MODE → ISSUE MANAGER MODE — PR #3077 merged (`52d9104b`); 101 open issues re-triaged; all P0/P1/P2 code paths verified GREEN on new `main`; issue/workflow mutations still permission-BLOCKED; documented per FAIL-SAFE)
 
 > **Entry decision**: Phase 0 — **1 open PR (#3077) + 101 open issues** detected → **PR HANDLER MODE** descended (PRs take precedence; issues untouched until PR work complete).
@@ -7425,3 +7441,34 @@ All PRs verified: build ✅ lint ✅ tests 1,940/1,940 ✅ (789 web + 443 API + 
 ---
 
 > Older cycles (Cycle 1 through Cycle 298) are preserved in git history. Run `git log -- docs/findings.md` to browse historical entries.
+
+---
+
+## Janitor Cleanup (2026-08-05 — Dead code, unused exports, commented-out code scan)
+
+**Scope**: `apps/web`, `apps/api`, `packages/shared` (source + tests + docs). Quality gates green after cleanup: typecheck ✅, lint ✅ 0 warnings, build ✅, tests ✅ (1,043 web + 515 api + 847 shared = 2,405).
+
+### Removed
+
+1. **`apps/web/src/utils/logger.ts`** — dead module, zero consumers (no imports anywhere in prod or tests; only its own doc comment referenced it).
+2. **`apps/web/src/lib/storageAdapter.ts` + `storageAdapter.test.ts`** — dead wrapper module; exported functions (`createTypedStorage`, `checkStorageHealth`, `getStorageMetrics`, `clearAllStorage`) used nowhere in production, only referenced by its own test.
+3. **`packages/shared/src/schema.ts`** — removed dead exports `ErrorTypeSchema`, `ErrorDetailSchema`, `ErrorResponseSchema` (zero consumers, not re-exported via `index.ts`).
+4. **`apps/web/src/lib/storage.ts`** — de-exported 5 internal-only types (`StorageErrorDetails`, `StorageMetadata`, `SchemaMigration`, `StorageConfig`, `QuotaInfo`); zero external references.
+5. **`apps/web/src/components/ScrollProgress.tsx`** — removed unused `ACCESSIBILITY_LABELS` import (lint warning).
+
+### Verified clean (no action needed)
+
+- No commented-out code blocks found (only legitimate JSDoc/doc comments).
+- All `console.log` occurrences are intentional (logger implementations, generated template code, doc examples).
+- `build.log`/`lint.log`/`typecheck.log` are gitignored, not tracked.
+- `apps/web/src/integration/factories.ts` and `test/setup.ts` are legit test infrastructure.
+- Integration tests under `src/integration/` and `lib/m2-workflows.test.ts` are standalone, not orphans.
+
+### Structural findings (recommended for future work, not removed)
+
+- **`apps/web/src/hooks/useReducedMotion.ts`** exports 4 functions used only by their own tests (no prod consumers): `useAccessibleAnimation`, `useAccessibilityPreferences`, `getAnimationDuration`, `getSpringConfig`. They are part of the documented barrel API (`hooks/index.ts`) and fully tested — kept, but candidates for removal or promotion to `packages/shared` if unused by the next feature.
+- **`apps/web/src/lib/debounce.test.ts`** lives in `lib/` but tests `createDebouncedSaver` from `@blueprint/shared` — misplaced test file, harmless.
+- **`apps/web/src/store/index.ts`** re-exports `useShallow` from zustand with zero consumers — documented convenience re-export, kept.
+- **Duplicate util surface**: `packages/shared/src/utils/debounce.ts` (`createDebouncedSaver`) is the single source of truth; web has no local duplicate. `ScrollProgress` (editor container) and `PageScrollProgressBar` (window) are distinct, both used — not duplicates.
+- **`apps/web/README.md`** referenced the deleted `storageAdapter.ts` — updated.
+
