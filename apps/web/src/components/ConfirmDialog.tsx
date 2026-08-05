@@ -96,6 +96,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
   icon = "warning",
 }: ConfirmDialogProps): JSX.Element {
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
+  const cancelButtonRef = useRef<HTMLButtonElement>(null);
   const shouldReduceMotion = useReducedMotion();
 
   const { containerRef } = useFocusTrap({
@@ -108,9 +109,11 @@ export const ConfirmDialog = memo(function ConfirmDialog({
     onClose();
   }, [onConfirm, onClose]);
 
+  // Destructive confirmation (clears project content): initial focus lands
+  // on the safe Cancel action so an accidental Enter/Space can't trigger it.
   useEffect(() => {
     if (isOpen) {
-      confirmButtonRef.current?.focus();
+      cancelButtonRef.current?.focus();
     }
   }, [isOpen]);
 
@@ -263,6 +266,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
                 className="flex justify-end gap-3 mt-6"
               >
                 <motion.button
+                  ref={cancelButtonRef}
                   whileHover={HOVER_SCALE.MICRO}
                   whileTap={TAP_SCALE.MICRO}
                   onClick={onClose}
