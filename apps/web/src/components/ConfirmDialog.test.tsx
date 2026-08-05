@@ -69,6 +69,15 @@ describe("ConfirmDialog", () => {
     expect(dialog).toHaveAttribute("aria-modal", "true");
   });
 
+  it("places initial focus on the safe Cancel action, not the destructive Confirm", () => {
+    render(<ConfirmDialog {...defaultProps} />);
+
+    // Destructive confirmations auto-focus the safe action to avoid
+    // accidental Enter/Space activation of the destructive button.
+    expect(screen.getByText("Cancel")).toHaveFocus();
+    expect(screen.getByText("Confirm")).not.toHaveFocus();
+  });
+
   it("uses custom confirmLabel and cancelLabel when provided", () => {
     render(<ConfirmDialog {...defaultProps} confirmLabel="Delete" cancelLabel="Keep" />);
 
