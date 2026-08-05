@@ -1,6 +1,25 @@
 # Bug Log: Known Defects
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
+## Bug Status — Aug 5 2026 (BugFixer Cycle 30)
+
+> **BugFixer Cycle 30 (2026-08-05 — agent/bugfixer-cycle-30)**: Full BugFixer audit complete — **zero code defects**. Typecheck ✅ (exit 0, all 3 workspaces) lint ✅ (0 errors, 0 warnings) build ✅ (web) build:api ✅ (wrangler dry-run exit 0) tests **2,422/2,422** ✅ (1060 web + 515 api + 847 shared). Coverage gate ✅ (statements 78.05% vs 75% floor, branches 67.2%, functions 78.98%, lines 79.21% — all above vitest floors from #3041). Format ✅ (prettier clean). Secrets scan ✅ (311 files). Audit: **0 vulnerabilities** ✅ (BUG-040 still fixed — hono 4.12.34; BUG-013 still fixed — lighthouse 13.4.1; BUG-038 still fixed — brace-expansion 5.0.9 override). 0 `@ts-expect-error`/`@ts-ignore` in source. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (`npm ls --all` exit 0 — 0 invalid/missing/extraneous; UNMET entries are optional esbuild platform binaries, expected).
+>
+> **1 code + 1 docs commit indexed since Cycle 29** — HEAD at `cfd88cc5` (Merge PR #3078); `8996e415` (feat(ux): focus safe Cancel action on destructive ConfirmDialog open (#3077)) — reviewed in full, sound (Cancel button always rendered, ref attached to motion.button, test asserts initial focus on Cancel; destructive Enter-path preserved). `01c691be` (docs(findings): Cycle 344) — docs only.
+> **Test count**: **2,422** (1060 web + 515 api + 847 shared — **+1 web** from #3077's new Cancel-focus assertion).
+> **BUG-040 still fixed**: hono pinned at 4.12.34 — CORS ReDoS GHSA-8j4g-w8fx-2239 patched; `npm audit` 0 vulns.
+> **BUG-041 still fixed**: `@img/sharp-wasm32@0.35.3` explicit root devDependency — `npm ls --all` exit 0, **0 invalid/missing/extraneous**.
+> **BUG-043 still fixed**: archive retention re-verified from the *actual* oldest dated `docs/audits/archive/*.md`; oldest remaining **Jul 7 (29 days — within window, no purge needed)** per Cycle 14/17/18/20/21/22/25/27/28/29 precedent.
+> **BUG-039/BUG-042 still fixed**: `npm ls --all` exit 0 — 0 invalid/missing/extraneous; retention scan covers all dated archive report families.
+> **BUG-038 still fixed**: brace-expansion override holds at 5.0.9 — 0 high-severity advisories.
+> **BUG-014/017/032/033/034/035 still fixed**: zero stale `docs/bug.md`/`docs/feature.md`/`docs/task.md` refs outside historical logs; zero hardcoded `node-version:` in workflows (all use `node-version-file: ".node-version"`); eslint 9.39.5; `@cloudflare/workers-types` in sync.
+> **Coverage gate active**: vitest thresholds (statements 75 / branches 60 / functions 75 / lines 75) enforced in `apps/web/vitest.config.ts` per #3041 — current baseline **78.05% / 67.2% / 78.98% / 79.21%**, all above floors.
+> **Stale merged branches**: `agent/bugfixer-cycle-29` merged into main (PR #3076) — cleanup RepoKeeper scope (`agent/security-engineer` + `agent/janitor` + `agent-8119952459590434890` pre-existing divergent — RepoKeeper scope).
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **`validate:wrangler`**: fails on 6 placeholder Cloudflare IDs + missing `.dev.vars` — pre-existing documented TODO (commit `b45bb4dc`), not a code defect; real IDs provisioned at deploy time, `.dev.vars` must be copied from `.dev.vars.example`.
+> **CI workflows conform to mandates**: all 5 workflows (`iterate.yml`, `main.yml`, `on-pull.yml`, `parallel.yml`, `pr-gatekeeper.yml`) use `ubuntu-24.04-arm` + `opencode/deepseek-v4-flash-free`.
+> **All quality gates pass. Zero code defects. No fixes required.** Branch created.
+
 ## Bug Status — Aug 5 2026 (BugFixer Cycle 29)
 
 > **BugFixer Cycle 29 (2026-08-05 — agent/bugfixer-cycle-29)**: Full BugFixer audit complete — **zero code defects**. Typecheck ✅ lint ✅ (0 errors, 0 warnings) build ✅ (web) tests **2,421/2,421** ✅ (1059 web + 515 api + 847 shared). Coverage gate ✅ (statements 78.05% vs 75% floor, branches 67.2%, functions 78.98%, lines 79.2% — all above vitest floors from #3041). Format ✅ (prettier clean). Secrets scan ✅ (312 files). Audit: **0 vulnerabilities** ✅ (BUG-040 still fixed — hono 4.12.34; BUG-013 still fixed — lighthouse 13.4.1; BUG-038 still fixed — brace-expansion 5.0.9 override). 0 `@ts-expect-error`/`@ts-ignore` in source. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (`npm ls --all` exit 0 — 0 invalid/missing/extraneous).
