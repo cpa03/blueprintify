@@ -7412,3 +7412,34 @@ All PRs verified: build ✅ lint ✅ tests 1,940/1,940 ✅ (789 web + 443 API + 
 ---
 
 > Older cycles (Cycle 1 through Cycle 298) are preserved in git history. Run `git log -- docs/findings.md` to browse historical entries.
+
+---
+
+## Janitor Cleanup (2026-08-05 — Dead code, unused exports, commented-out code scan)
+
+**Scope**: `apps/web`, `apps/api`, `packages/shared` (source + tests + docs). Quality gates green after cleanup: typecheck ✅, lint ✅ 0 warnings, build ✅, tests ✅ (1,043 web + 515 api + 847 shared = 2,405).
+
+### Removed
+
+1. **`apps/web/src/utils/logger.ts`** — dead module, zero consumers (no imports anywhere in prod or tests; only its own doc comment referenced it).
+2. **`apps/web/src/lib/storageAdapter.ts` + `storageAdapter.test.ts`** — dead wrapper module; exported functions (`createTypedStorage`, `checkStorageHealth`, `getStorageMetrics`, `clearAllStorage`) used nowhere in production, only referenced by its own test.
+3. **`packages/shared/src/schema.ts`** — removed dead exports `ErrorTypeSchema`, `ErrorDetailSchema`, `ErrorResponseSchema` (zero consumers, not re-exported via `index.ts`).
+4. **`apps/web/src/lib/storage.ts`** — de-exported 5 internal-only types (`StorageErrorDetails`, `StorageMetadata`, `SchemaMigration`, `StorageConfig`, `QuotaInfo`); zero external references.
+5. **`apps/web/src/components/ScrollProgress.tsx`** — removed unused `ACCESSIBILITY_LABELS` import (lint warning).
+
+### Verified clean (no action needed)
+
+- No commented-out code blocks found (only legitimate JSDoc/doc comments).
+- All `console.log` occurrences are intentional (logger implementations, generated template code, doc examples).
+- `build.log`/`lint.log`/`typecheck.log` are gitignored, not tracked.
+- `apps/web/src/integration/factories.ts` and `test/setup.ts` are legit test infrastructure.
+- Integration tests under `src/integration/` and `lib/m2-workflows.test.ts` are standalone, not orphans.
+
+### Structural findings (recommended for future work, not removed)
+
+- **`apps/web/src/hooks/useReducedMotion.ts`** exports 4 functions used only by their own tests (no prod consumers): `useAccessibleAnimation`, `useAccessibilityPreferences`, `getAnimationDuration`, `getSpringConfig`. They are part of the documented barrel API (`hooks/index.ts`) and fully tested — kept, but candidates for removal or promotion to `packages/shared` if unused by the next feature.
+- **`apps/web/src/lib/debounce.test.ts`** lives in `lib/` but tests `createDebouncedSaver` from `@blueprint/shared` — misplaced test file, harmless.
+- **`apps/web/src/store/index.ts`** re-exports `useShallow` from zustand with zero consumers — documented convenience re-export, kept.
+- **Duplicate util surface**: `packages/shared/src/utils/debounce.ts` (`createDebouncedSaver`) is the single source of truth; web has no local duplicate. `ScrollProgress` (editor container) and `PageScrollProgressBar` (window) are distinct, both used — not duplicates.
+- **`apps/web/README.md`** referenced the deleted `storageAdapter.ts` — updated.
+

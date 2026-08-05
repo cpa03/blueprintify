@@ -25,6 +25,11 @@ Scan the blueprintify monorepo (apps/web, apps/api, packages/shared) for redunda
 ## Decisions Made
 
 - Working branch: agent/janitor (merged with origin/main)
+- Deleted dead modules: `apps/web/src/utils/logger.ts` (0 consumers), `apps/web/src/lib/storageAdapter.ts` + test (only self-test)
+- Removed dead exports: `ErrorTypeSchema`, `ErrorDetailSchema`, `ErrorResponseSchema` from shared schema.ts (0 consumers)
+- De-exported 5 internal-only types in storage.ts (0 external refs)
+- Removed unused import in ScrollProgress.tsx (lint warning)
+- Kept tested public barrel exports (useAccessibleAnimation etc.) — reported in findings instead
 
 ## Errors Encountered
 
@@ -32,4 +37,4 @@ Scan the blueprintify monorepo (apps/web, apps/api, packages/shared) for redunda
 
 ## Status
 
-**Currently in Phase 1** - Branch synced, memory ingested. Starting scan.
+**Currently in Phase 7/8** - Findings written. Diff reviewed, committing + opening PR.

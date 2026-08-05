@@ -29,7 +29,7 @@ import {
 export type StorageErrorType =
   (typeof STORAGE_ERROR_TYPE_VALUES)[keyof typeof STORAGE_ERROR_TYPE_VALUES];
 
-export interface StorageErrorDetails {
+interface StorageErrorDetails {
   key: string;
   operation: (typeof STORAGE_OPERATIONS)[keyof typeof STORAGE_OPERATIONS];
   originalError?: unknown;
@@ -85,7 +85,7 @@ export interface StorageMetrics {
 // Schema Versioning and Migration
 // ============================================================================
 
-export interface StorageMetadata {
+interface StorageMetadata {
   version: number;
   createdAt: string;
   updatedAt: string;
@@ -107,7 +107,7 @@ function isStorageMetadata(obj: unknown): obj is StorageMetadata {
   );
 }
 
-export interface SchemaMigration<T = unknown> {
+interface SchemaMigration<T = unknown> {
   fromVersion: number;
   toVersion: number;
   migrate: (data: unknown) => T;
@@ -117,7 +117,7 @@ export interface SchemaMigration<T = unknown> {
 // Storage Configuration
 // ============================================================================
 
-export interface StorageConfig {
+interface StorageConfig {
   key: string;
   currentVersion: number;
   migrations?: SchemaMigration[];
@@ -164,7 +164,7 @@ function generateChecksum(data: string): string {
 // Storage Quota Management (incremental tracking)
 // ============================================================================
 
-export interface QuotaInfo {
+interface QuotaInfo {
   used: number;
   total: number;
   remaining: number;

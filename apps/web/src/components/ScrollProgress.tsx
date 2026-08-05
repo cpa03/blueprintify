@@ -4,7 +4,6 @@ import { useSpring, useTransform } from "framer-motion";
 import { ANIMATION, EASING } from "../config/constants";
 import { SHADOWS, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 import { SCROLL_PROGRESS_DEFAULTS } from "@blueprint/shared/config";
 
 interface ScrollProgressProps {
