@@ -357,13 +357,17 @@ export const StepInfo = memo(function StepInfo({
               maxLength={FORM_LIMITS.PROJECT_NAME.MAX}
               required
               aria-required="true"
-              aria-invalid={isProjectNameInvalid || undefined}
               animate={projectNameTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
               transition={{ duration: ANIMATION.FAST }}
-              {...(projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
-              projectName.length < FORM_LIMITS.PROJECT_NAME.MAX
-                ? { "aria-describedby": "projectName-warning" }
-                : {})}
+              aria-invalid={isProjectNameInvalid || invalidField === "projectName" || undefined}
+              aria-describedby={
+                invalidField === "projectName"
+                  ? "projectName-error"
+                  : projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD &&
+                      projectName.length < FORM_LIMITS.PROJECT_NAME.MAX
+                    ? "projectName-warning"
+                    : undefined
+              }
             />
             {/* Clear button — appears when field has content */}
             <AnimatePresence>
@@ -416,6 +420,21 @@ export const StepInfo = memo(function StepInfo({
                   {VALIDATION_MESSAGES.APPROACHING_CHARACTER_LIMIT}
                 </motion.p>
               )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {invalidField === "projectName" && (
+              <motion.p
+                id="projectName-error"
+                role="alert"
+                initial={{ opacity: 0, y: -4, x: -3 }}
+                animate={{ opacity: 1, y: 0, x: 0 }}
+                exit={{ opacity: 0, y: -4, x: -3 }}
+                transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
+                className="text-xs text-accent-pink mt-1"
+              >
+                {VALIDATION_MESSAGES.PROJECT_NAME_MIN_LENGTH(FORM_LIMITS.PROJECT_NAME.MIN)}
+              </motion.p>
+            )}
           </AnimatePresence>
         </div>
 

@@ -83,7 +83,7 @@ interface ScrollToPositionProps {
  * <ScrollToPosition direction="bottom" scrollContainerRef={containerRef} showAfter={200} />
  * ```
  */
-export const ScrollToPosition = memo(function ScrollToPosition({
+const ScrollToPosition = memo(function ScrollToPosition({
   scrollContainerRef,
   showAfter = SCROLL_THRESHOLDS.SCROLL_TO_TOP,
   direction = DIRECTION.TOP,

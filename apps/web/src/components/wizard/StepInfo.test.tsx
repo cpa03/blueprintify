@@ -414,6 +414,24 @@ describe("StepInfo", () => {
     ).toBeInTheDocument();
   });
 
+  it("shows error message and announces it when project name is invalid on submit", () => {
+    render(<StepInfo />);
+    const form = document.querySelector("form");
+    if (form) {
+      fireEvent.submit(form);
+    }
+    const error = screen.getByRole("alert");
+    expect(error).toHaveTextContent(
+      VALIDATION_MESSAGES.PROJECT_NAME_MIN_LENGTH(FORM_LIMITS.PROJECT_NAME.MIN)
+    );
+    expect(screen.getByLabelText(/Project Name/i)).toHaveAttribute("aria-invalid", "true");
+  });
+
+  it("does not show project name error before submit attempt", () => {
+    render(<StepInfo />);
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
   // ======== Screen Reader ========
 
   it("has live region for clear announcements", () => {

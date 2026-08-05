@@ -176,46 +176,6 @@ export const TemplateSchema = z.object({
   features: z.array(z.string().min(1).max(VALIDATION_LIMITS.FEATURE.MAX)),
 });
 
-// ===== Error Response Schemas =====
-
-/**
- * Error type enumeration.
- * Values: validation, authentication, authorization, not_found, configuration, network, ai_service, internal, server_configuration, service_unavailable
- */
-export const ErrorTypeSchema = z.enum([
-  "validation",
-  "authentication",
-  "authorization",
-  "not_found",
-  "configuration",
-  "network",
-  "ai_service",
-  "internal",
-  "server_configuration",
-  "service_unavailable",
-]);
-
-/**
- * Detailed error information schema.
- * Contains error type, message, optional code, details, timestamp, and request ID.
- */
-export const ErrorDetailSchema = z.object({
-  type: ErrorTypeSchema,
-  message: z.string().max(VALIDATION_LIMITS.DESCRIPTION.MAX),
-  code: z.string().max(VALIDATION_LIMITS.PROJECT_NAME.MAX).optional(),
-  details: z.record(z.union([z.string(), z.number(), z.boolean(), z.array(z.string())])).optional(),
-  timestamp: z.string(),
-  requestId: z.string().max(VALIDATION_LIMITS.PROJECT_NAME.MAX).optional(),
-});
-
-/**
- * Error response schema for failed API requests.
- */
-export const ErrorResponseSchema = z.object({
-  success: z.literal(false),
-  error: ErrorDetailSchema,
-});
-
 // ===== API Response Schemas =====
 
 /**

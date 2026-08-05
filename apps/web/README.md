@@ -110,7 +110,7 @@ apps/web/
 │   │   ├── export.ts           # Export utilities
 │   │   ├── security.ts         # XSS protection (DOMPurify)
 │   │   ├── storage.ts          # LocalStorage wrapper
-│   │   └── storageAdapter.ts   # Storage quota management
+│   │   └── templates/          # Starter template definitions
 │   ├── store/             # Zustand stores
 │   │   ├── wizard.ts      # Wizard state
 │   │   ├── editor.ts      # Editor state

@@ -6,7 +6,7 @@ import {
   HTTP_STATUS,
 } from "@blueprint/shared/config";
 
-export interface TestBlueprint {
+interface TestBlueprint {
   projectName: string;
   description: string;
   blueprint: string;
@@ -18,7 +18,7 @@ export interface TestBlueprint {
   };
 }
 
-export interface TestProjectData {
+interface TestProjectData {
   projectName: string;
   description: string;
   blueprint: string;
