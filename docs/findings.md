@@ -2,15 +2,58 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Cycle 347 (2026-08-05 — ULW Loop: BroCula browser-console + Lighthouse audit — LH **100-100-100-100** (18th consecutive), 0 console errors/warnings, 0 failed non-API requests, 0 optimization opportunities, all 2,407 tests pass, all quality gates green, no code changes required)
+## Cycle 348 (2026-08-05 — ULW Loop: BroCula browser-console + Lighthouse audit — LH **100-100-100-100** (18th consecutive), 0 console errors/warnings, 0 failed non-API requests, 0 optimization opportunities, all 2,407 tests pass, all quality gates green, no code changes required)
 
-> **Entry decision**: Phase 0 — clean `main` (`ff42a47a`), 0 open PRs, working tree clean → **BROCULA MODE** (browser console + Lighthouse optimization loop). Branch `agent/ulw-loop-cycle-347` created off latest `main`.
+> **Entry decision**: Phase 0 — clean `main` (`ff42a47a`), 0 open PRs, working tree clean → **BROCULA MODE** (browser console + Lighthouse optimization loop). Branch `agent/ulw-loop-cycle-348` created off latest `main`.
 >
 > **STEP 1 — Browser console hunt**: production build (`vite build`, exit 0) served on preview (port 4173). Standard `npm run brocula` hunt: **0 console errors / 0 warnings / 0 failed requests** on landing. **Deep interactive Playwright sweep** (via CDP, full Chromium) across template auto-load (`Next.js SaaS Boilerplate` → Review, Generate enabled), manual wizard path (Info fill `brocula-test-app` → Tech Stack → Features → Review via exact Next buttons), tech-stack chip toggle round-trip (React chip `aria-pressed` false→true→false, counter 5/1→6/1→5/1), keyboard nav (`?` shortcuts modal open + Escape close clean), reload persistence (localStorage `blueprint-wizard` retains `brocula-test-app`; landing restored with stored data intact — interaction-driven activation contract verified), editor panel toggle (Ctrl+E / Show Editor → tabs + view-mode radiogroup render clean; hide clean), and generate error path (POST `/api/generate` fails at network layer 502/`ERR_CONNECTION_REFUSED` — environmental, API Worker not running in preview; app retries with backoff 1s→2s→4s, surfaces **"Generation Failed"** with **Try Again** + **Back to Review** recovery buttons, recovery returns cleanly; **no pageerror, no React boundary trip**) — **15/15 assertions passed, 0 non-API console errors / 0 warnings / 0 failed non-API requests** (all 52 static + font requests HTTP 200).
 >
 > **STEP 2 — Lighthouse optimization**: first pass 95 (Speed Index 5.1s, FCP 1.7s) = **cold-start variance on freshly installed Playwright headless-shell** (this run's environment had no pre-cached Chromium; `npx playwright install chromium` required before first audit). Warm re-verification with full Chromium: **100-100-100-100** (FCP 1.0s, SI 1.2s). **0 audits with `overallSavingsMs > 0`, 0 failed binary audits**; `unused-javascript`, `unused-css-rules`, `render-blocking-resources`, `server-response-time`, `total-byte-weight` all score 1; ~224 KiB payload. **0 actionable optimization opportunities**.
 >
-> **Quality gates (fatal on error/warning)**: typecheck (shared/api/web) ✅ 0 errors; lint ✅ 0 errors, **0 warnings**; build ✅ exit 0; tests **2,407/2,407** ✅ (1,045 web + 515 api + 847 shared — web count 1,045 vs Run 33's 1,059 reflects test files removed by #3082 dead-code cleanup, consistent with prior documented deltas). **Result: no code changes required** — audit report `docs/audits/brocula-audit-2026-08-05-run34.md` + README table updated. PR opened from `agent/ulw-loop-cycle-347` (docs-only).
+> **Quality gates (fatal on error/warning)**: typecheck (shared/api/web) ✅ 0 errors; lint ✅ 0 errors, **0 warnings**; build ✅ exit 0; tests **2,407/2,407** ✅ (1,045 web + 515 api + 847 shared — web count 1,045 vs Run 33's 1,059 reflects test files removed by #3082 dead-code cleanup, consistent with prior documented deltas). **Result: no code changes required** — audit report `docs/audits/brocula-audit-2026-08-05-run34.md` + README table updated. PR opened from `agent/ulw-loop-cycle-348` (docs-only).
+
+## Cycle 347 (2026-08-05 — ULW Loop: ISSUE MANAGER MODE — 0 open PRs, 101 open issues; STEP 1–3 analysis re-confirmed (normalizer: 86 issues need label changes), mutations re-verified 403-BLOCKED; STEP 4 baseline on `main` `ff42a47a` ALL GREEN — typecheck ✅ lint ✅ 0 warnings build ✅ build:api ✅ tests **2,407/2,407** ✅ secrets ✅ audit 0 vulns ✅; all code-actionable P0/P1/P2 issue paths verified RESOLVED or BLOCKED (fresh evidence); documented per FAIL-SAFE)
+
+> **Entry decision**: Phase 0 — **0 open PRs + 101 open issues** detected → **ISSUE MANAGER MODE** (PR Handler skipped per contract: no PRs exist). Nothing new merged since Cycle 346 (`e055e78b` → `ff42a47a` is only the Cycle 346 findings merge #3083; working tree clean on `main`).
+>
+> **STEP 1 — Issue normalization**: `scripts/normalize-issue-labels.mjs --dry-run` re-run on current data → **86 issues need label changes** (add/remove canonical category + P0–P3 priority labels; e.g. #846/#847/#848 need `security` + P-level, #1116/#1117/#1118/#1141/#1142/#1143/#1161/#1163/#1165/#1166/#1167 need P-level, #1084/#1088 need `enhancement` removed for exactly-one-category). Plan unchanged from Cycles 24/345/346. **Mutations remain 403-BLOCKED** — re-verified this cycle: `gh issue edit --add-label` → `GraphQL: Resource not accessible by integration (addLabelsToLabelable)`. Analysis-only per FAIL-SAFE.
+>
+> **STEP 2 — Duplicate detection** (analysis complete, closure blocked): duplicate clusters from Cycles 22–24/334/343/344/345/346 reconfirmed against current titles/labels — CORS `[930,890,848]` ✅ code-resolved; API_KEY auth `[891,847]` ✅ code-resolved; component/hook tests `[1014,856]/[1082,857]` ✅ resolved; dep+secrets scanning CI `[1084,851,850]/[1088,915,851,850]` 🚧 workflows-blocked; E2E/Playwright `[1019,1015,951,877,872]` ✅ partially resolved; ErrorBoundary `[1052,874]` ✅ resolved; share security `[1046,910,905,896,892,906,846]` ✅ code-resolved; split-files `[1163,865]` deferred; wrangler IDs `[1165,1045]` human-blocked; controller/store tests `[936,935]` ✅ resolved; **#849 ≈ #953** same root cause (no test execution in CI gatekeeper) 🚧 workflows-blocked. Canonical selection + closure recommendations recorded for a permission-capable run.
+>
+> **STEP 3 — Consolidation** (analysis complete, blocked): small-issue clusters identified for grouping — CI security scanning (#851 npm audit + #1084 dependency vuln scanning + #1088 secrets detection + #915 CodeQL → one "CI security scanning" umbrella), E2E coverage (#1019 + #951 + #872 → one "E2E coverage" umbrella). Grouping requires `issues: write` (403) — documented for later.
+>
+> **STEP 4 — Repair mode triage on `main` HEAD `ff42a47a` (fresh evidence)**:
+>
+> | Issue | Priority | Verdict on `ff42a47a` | Evidence |
+> |---|---|---|---|
+> | #849/#953 CI tests not running in gatekeeper | HIGH/med | 🚧 **PERMISSION-BLOCKED** | `pr-gatekeeper.yml` still runs **no test step** (typecheck/lint/build only); fix requires `workflows: write` (empirically rejected Cycles 345/346) |
+> | #1014 component test coverage | P1 | ✅ RESOLVED | **40** component `*.test.tsx` files (43 component tsx total) |
+> | #1082 React hook tests | P1 | ✅ RESOLVED | **12** `src/hooks/*.test.ts` files; hook suite **133/133** passing this cycle |
+> | #1045 wrangler placeholder IDs | P1 | 🚧 HUMAN-BLOCKED | `validate-wrangler.mjs` still flags 6 placeholders (fail-closed predeploy gate); real Cloudflare resources required — cannot fabricate IDs |
+> | #1166 .nvmrc | chore/low | ✅ RESOLVED | `.nvmrc` = `22` + `.node-version` = `22` present |
+> | #1015 playwright.config.ts | med | ✅ RESOLVED | `playwright.config.ts` present; **3** e2e spec files |
+> | #862 Prettier | P3 | ✅ RESOLVED | `.prettierrc` + `.prettierignore` + `format`/`format:check` scripts |
+> | #850 Dependabot | unlabeled | ✅ RESOLVED | `.github/dependabot.yml` present |
+> | #851/#1084/#1088 CI audit/secrets scanning | P2/med | 🚧 **PERMISSION-BLOCKED** | grep across all workflows: **no** `npm run audit`/`scan:secrets`/`gitleaks`/`codeql` step (only a comment match); fix requires `workflows: write` |
+> | #852/#1053/#954/#1141 API middleware/utils/services tests | P2/med | ✅ RESOLVED | 8 middleware test files (auth, bodyLimit, logger, rateLimit, validator, authorize, errorHandler) + 6 utils tests (secureLog, stream, circuitBreaker, retry, sanitize, timeout) + openai/prompts service tests |
+> | #857/#856 hook+component tests | P2 | ✅ RESOLVED | see #1082/#1014 |
+> | #858/#896/#910/#1051 validation consistency | P2 | ✅ RESOLVED | `createPostRoute` factory + `validateJson`/`validatePromptInjection` on share routes + `isValidShareId` |
+> | #867 /health | med | ✅ RESOLVED | `app.get(ROUTE_PATHS.HEALTH, …)` present |
+> | #868 request ID middleware | med | ✅ RESOLVED | `requestLogger` generates/sets/echoes `requestId`; `errorHandler` consumes it |
+> | #912 Wizard useMemo | med | ✅ NOT-ACTIONABLE | step components `memo`-wrapped + lazy; `WizardComponent` `React.memo`; speculative (FAIL-SAFE) |
+> | #880 unsafe type assertions | med | ✅ NOT-ACTIONABLE | deliberate type-narrowing casts (Zod error extraction, DOM ext props, Hono edges) |
+> | #919/#920/#921 shared extraction | med | ✅ RESOLVED | `HTTP_STATUS` + share schemas in `packages/shared` |
+> | #973 ajv vulns | med | ✅ MONITOR-ONLY | dev-only transitive via eslint; `npm audit` = 0 vulnerabilities |
+> | #1161 dep upgrades | med | 🚧 FAIL-SAFE | no semver-compatible updates pending; only MAJOR bumps (eslint 10/TS 7/zod 4/…) excluded per precedent |
+> | #1163 split constants | med | ✅ DEFERRED | large but non-urgent; no doc-driven urgency (FAIL-SAFE) |
+> | #1019/#951/#872 E2E coverage | med | ✅ PARTIALLY RESOLVED | `playwright.config.ts` + 3 spec files; expansion deferred |
+> | CORS `[930,890,848]` | med | ✅ RESOLVED | `index.ts` `cors({ origin: … })` explicit origin from `CORS_CONFIG.ORIGIN` (env-driven), not wildcard |
+> | Share security `[1046,905,892,906,846]` | med | ✅ RESOLVED | `authorize(AUTH_DEFAULTS.DEFAULT_ROLE)` on share routes + `isValidShareId` + ownership checks |
+> | #936/#935 Zustand/controller tests | HIGH | ✅ RESOLVED | store tests + controller tests present (web 1,045 / api 515 passing) |
+>
+> **Authoritative baseline this cycle — ALL GREEN on `main` `ff42a47a`**: typecheck ✅ 0 errors; lint ✅ 0 errors, 0 warnings; build ✅ (vite/rolldown exit 0, no warnings); build:api ✅ (wrangler dry-run exit 0); tests **2,407/2,407** ✅ (1,045 web + 515 api + 847 shared); secrets scan ✅ (308 files); `npm audit` ✅ 0 vulnerabilities. Working tree clean.
+>
+> **Conscious non-actions (FAIL-SAFE)**: no workflow pushes (403-blocked, documented); no issue mutations without write permission; no major dependency bumps; no speculative refactors; no fabricated Cloudflare IDs. **Final state: idle** (main healthy at `ff42a47a`; 0 open PRs; 101 open issues — all code-actionable P0/P1/P2 paths verified RESOLVED or permission/human-blocked; findings recorded via docs PR).
 
 ## Cycle 346 (2026-08-05 — ULW Loop: PR HANDLER MODE — 3 open PRs merged (#3081/#3080/#3079) with local gate verification; re-entry ISSUE MANAGER MODE — 101 issues re-triaged, all code-actionable P0/P1/P2 paths verified RESOLVED or BLOCKED; issue/workflow mutations still permission-BLOCKED; documented per FAIL-SAFE)
 
