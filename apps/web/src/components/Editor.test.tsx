@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";
+import { axe } from "jest-axe";
 import { Editor } from "./Editor";
 import { useEditorStore, useWizardStore } from "../store";
 import { ExportProvider } from "../context/ExportContext";
@@ -10,6 +11,13 @@ import type { WizardStore } from "../store/wizard";
 import type { TechStackItemType } from "@blueprint/shared/types";
 import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 import { EDITOR_TABS } from "../config/constants";
+
+// jsdom cannot compute real colors, so the color-contrast rule is always
+// "incomplete" there; disable it to focus on structural accessibility.
+// Matches the Header.test.tsx and accessibility.test.tsx axe setup.
+const AXE_CONFIG = {
+  rules: { "color-contrast": { enabled: false } },
+};
 
 vi.mock("../store", () => ({
   useEditorStore: vi.fn(),
@@ -35,7 +43,7 @@ vi.mock("./editor/EditorHeader", () => ({
 
 vi.mock("./LazyCodeMirror", () => ({
   LazyCodeMirror: vi.fn(({ value }: { value: string }) => (
-    <textarea data-testid="codemirror" value={value} readOnly />
+    <textarea data-testid="codemirror" aria-label="Blueprint editor" value={value} readOnly />
   )),
 }));
 
@@ -210,6 +218,18 @@ describe("Editor", () => {
 
     const editorContainer = container.firstChild;
     expect(editorContainer).toHaveClass("h-full", "flex", "flex-col");
+  });
+
+  it("has no accessibility violations", async () => {
+    mockEditorStore.blueprintContent = "# Test Content";
+    const { container } = render(
+      <ExportProvider>
+        <Editor />
+      </ExportProvider>
+    );
+
+    const results = await axe(container, AXE_CONFIG);
+    expect(results.violations).toHaveLength(0);
   });
 
   describe("Ctrl/Cmd+Shift+E export shortcut", () => {

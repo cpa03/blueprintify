@@ -1,12 +1,20 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";
+import { axe } from "jest-axe";
 import { Wizard } from "./Wizard";
 import { useWizardStore, useEditorStore } from "../store";
 import type { WizardStore } from "../store/wizard";
 import type { EditorStore } from "../store/editor";
 import { EDITOR_TABS } from "../config/constants";
 import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
+
+// jsdom cannot compute real colors, so the color-contrast rule is always
+// "incomplete" there; disable it to focus on structural accessibility.
+// Matches the Header.test.tsx and accessibility.test.tsx axe setup.
+const AXE_CONFIG = {
+  rules: { "color-contrast": { enabled: false } },
+};
 
 vi.mock("../store", () => ({
   useWizardStore: vi.fn(),
@@ -162,5 +170,11 @@ describe("Wizard", () => {
     expect(wizardWrapper).toHaveClass("relative", "flex", "h-full");
     const scrollContainer = wizardWrapper?.childNodes[1];
     expect(scrollContainer).toHaveClass("flex-1", "overflow-y-auto", "p-6");
+  });
+
+  it("has no accessibility violations", async () => {
+    const { container } = render(<Wizard />);
+    const results = await axe(container, AXE_CONFIG);
+    expect(results.violations).toHaveLength(0);
   });
 });
