@@ -110,6 +110,10 @@ temp/
 .omo/
 .codegraph/
 
+# Transient planning artifacts (agents are instructed to create task_plan.md;
+# it must never be committed — see RepoKeeper Cycle 352)
+task_plan.md
+
 # Large files that should be handled by Git LFS
 *.zip
 *.tar.gz
