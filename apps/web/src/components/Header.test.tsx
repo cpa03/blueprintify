@@ -248,6 +248,37 @@ describe("Header reduce motion toggle", () => {
     expect(setUserOverrideMock).toHaveBeenCalledWith(false);
   });
 
+  it("renders an empty live region before any toggle", () => {
+    render(<Header />);
+
+    expect(screen.getByRole("status")).toHaveTextContent("");
+  });
+
+  it("announces that reduced motion is on when toggled from off", async () => {
+    const user = userEvent.setup();
+    render(<Header />);
+
+    const toggle = screen.getByRole("button", { name: "Reduce motion" });
+    await user.click(toggle);
+
+    expect(screen.getByRole("status")).toHaveTextContent(
+      ACCESSIBILITY_LABELS.HEADER.REDUCE_MOTION_ON
+    );
+  });
+
+  it("announces that reduced motion is off when toggled from on", async () => {
+    mockReducedMotionContext(true);
+    const user = userEvent.setup();
+    render(<Header />);
+
+    const toggle = screen.getByRole("button", { name: "Reduce motion" });
+    await user.click(toggle);
+
+    expect(screen.getByRole("status")).toHaveTextContent(
+      ACCESSIBILITY_LABELS.HEADER.REDUCE_MOTION_OFF
+    );
+  });
+
   it("has no accessibility violations", async () => {
     const { container } = render(<Header />);
     const results = await axe(container, AXE_CONFIG);
