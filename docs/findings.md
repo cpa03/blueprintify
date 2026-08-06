@@ -2,6 +2,22 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 352 (2026-08-06 — RepoKeeper: full repository hygiene audit on `main` `97c868ad`; baseline GREEN; **1 redundant temp file removed** (`task_plan.md` — recurrence root-caused, now gitignored); **1 stale merged branch deleted** (`origin/agent/bugfixer-cycle-29`); **1 doc drift fixed** (README BroCula audit date range `Jun 17–Aug 5` → `Jun 17–Aug 6`); archive retention OK (oldest Jul 7 = 30 days, boundary — no purge); test count **2,416/2,416** ✅)
+
+> **Baseline on `main` `97c868ad` (clean tree) — ALL GREEN**: typecheck ✅ 0 errors (shared+api+web); lint ✅ 0 errors, 0 warnings; build ✅ (web — rolldown/vite exit 0, plugin timings note only); build:api ✅ (wrangler dry-run exit 0 — 3 KV + queue + D1 + analytics + AI + 3 rate limiters + env bindings valid); tests **2,416/2,416** ✅ (web **1,054** + api **515** + shared **847**); secrets scan ✅ (308 files); npm audit **0 vulnerabilities** ✅.
+>
+> **Redundant/temp/unused file scan — 1 REMOVED**: `task_plan.md` (root) — leftover planning artifact from the #3082 Janitor Cleanup cycle (status "Complete"; zero references outside `docs/active-tasks.md`/`docs/findings.md`/`CHANGELOG.md` historical entries). First removed in Cycle 276 but recreated by agents — **root cause identified: 7 `.opencode/agent/*.md` definitions (`cmz`, `database-architect`, `technical-writer`, `synthesizer`, `system-improver`, `integrator`, `planner`) + `docs/ai-agent-usage-guide.md` instruct "Create `task_plan.md` immediately"**. Removed with `git rm`; **`task_plan.md` added to `.gitignore`** (Temporary folders section) so the artifact can never be committed again. Cycle 350 reported "0 redundant files" — this one was missed; now fixed durably.
+>
+> **Stale merged branch — 1 DELETED**: `origin/agent/bugfixer-cycle-29` — verified MERGED ancestor of main (`git merge-base --is-ancestor`), flagged "RepoKeeper scope" by BugFixer Cycle 32 (#3090) and missed by Cycle 350 — deleted + pruned. Remaining divergent unmerged branches **kept per precedent** (flagged, not deleted): `origin/agent-8119952459590434890` (unique infra-scope content — `apps/api/.node-version` + `.nvmrc` for CF Workers Build, per Cycle 339) and `origin/agent/security-engineer` (unique content — `.opencode/memory/security.md` + doc entries; openai 7.2.0 + `max_completion_tokens` already on main via Cycle 339).
+>
+> **Docs/code sync (1)**: README.md BroCula audit date range `Jun 17–Aug 5` → `Jun 17–Aug 6` (latest run is Aug 06 Run 35 per `docs/audits/README.md` — same drift class as Cycle 350's fix).
+>
+> **Archive retention**: oldest dated `docs/audits/archive/*.md` **Jul 7 — exactly 30 days, at window boundary — no purge** (per BUG-042/043/045 precedent; Cycle 32 purged the 31-day Jul 6 hunt files). `CONSOLIDATED-README.md` permanent index retained.
+>
+> **Verified clean**: 0 tracked build artifacts/logs/backups in `git ls-files`; 0 `@ts-expect-error`/`@ts-ignore` in source (only 3rd-party `node_modules/@vercel/analytics` hits, gitignored); 0 `as any`; 0 TODO/FIXME/HACK in source; 0 commented-out dead code; zero stale `docs/task.md`/`docs/bug.md`/`docs/feature.md` refs outside historical logs; 0 merge conflict artifacts.
+>
+> **Quality verification**: typecheck ✅ lint ✅ build ✅ build:api ✅ tests **2,416/2,416** ✅ secrets ✅ npm audit 0 vulns ✅
+
 ## Cycle 351 (2026-08-06 — ULW Loop: PR HANDLER MODE — 4 open PRs merged (#3093/#3092/#3091/#3090) with real local gate verification + main re-sync/conflict resolution; baseline ALL GREEN **2,413/2,413**)
 
 > **Entry decision**: Phase 0 — **4 open PRs** detected (#3093, #3092, #3091, #3090) → **PR HANDLER MODE** (issues untouched until PR work complete; all other phases skipped). Default branch auto-detected: `main`. Processed latest-first per contract, re-syncing each branch with fresh `origin/main` and resolving trivial `docs/findings.md` stacking conflicts between them.
