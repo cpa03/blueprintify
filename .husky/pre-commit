@@ -1,1 +1,13 @@
+#!/bin/sh
+# Pre-commit hook — secrets scan before anything is committed.
+# Prevents accidental secret commits at the earliest point (pre-push + CI are
+# secondary enforcement per .husky/pre-push and pr-gatekeeper.yml).
+# Skip with: git commit --no-verify
+
+npm run scan:secrets || {
+  echo "❌ SECRETS SCAN FAILED — refusing to commit."
+  echo "   Remove the detected secret, or commit with --no-verify to bypass."
+  exit 1
+}
+
 npx lint-staged
