@@ -2,6 +2,16 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 354 (2026-08-06 — ULW Loop: BroCula browser-console + Lighthouse audit — LH **100-100-100-100** (20th consecutive), 0 console errors/warnings, 0 failed non-API requests, 0 optimization opportunities, all 2,418 tests pass, all quality gates green, no code changes required)
+
+> **Entry decision**: Phase 0 — clean `main` (`700ac079`), 0 open PRs, working tree clean → **BROCULA MODE** (browser console + Lighthouse optimization loop). Branch `brocula/loop-2026-08-06-run36` created off latest origin/main (fetched, 0 behind).
+>
+> **STEP 1 — Browser console hunt**: production build (`vite build`, exit 0) served on preview (port 4173). Standard `npm run brocula` hunt: **0 console errors / 0 warnings / 0 failed non-API requests** on landing. Playwright Chromium installed fresh this run (aarch64 runner, no pre-cached browser — `npx playwright install chromium` required first). Interactive Playwright sweep confirmed **0 errors / 0 warnings / 0 failed non-API requests** (landing load + full-page scroll, `?` shortcuts modal open/close via Escape, reload persistence) — 4/4 assertions passed. All static + font requests HTTP 200.
+>
+> **STEP 2 — Lighthouse optimization**: **100-100-100-100** (Performance 100: FCP ~1.0s, Speed Index ~1.2s, TBT ~0ms, CLS ~0.0; Accessibility 100; Best Practices 100; SEO 100). **0 audits with `overallSavingsMs > 0`, 0 failed binary audits**; `unused-javascript`, `unused-css-rules`, `render-blocking-resources`, `server-response-time`, `uses-text-compression`, `uses-long-cache-ttl`, `total-byte-weight` all score 1. **0 actionable optimization opportunities**.
+>
+> **Quality gates (fatal on error/warning)**: typecheck (shared/api/web) ✅ 0 errors; lint ✅ 0 errors, **0 warnings**; build ✅ exit 0; secrets scan ✅ (309 files); `npm audit` ✅ 0 vulnerabilities; tests **2,418/2,418** ✅ (1,056 web + 515 api + 847 shared). **Result: no code changes required** — audit report `docs/audits/brocula-audit-2026-08-06-run36.md` + README table updated. Docs-only PR to follow.
+
 ## Cycle 353 (2026-08-06 — ULW Loop: PR HANDLER MODE (2 PRs merged #3096/#3095) → ISSUE MANAGER MODE (STEP 1-3 analysis-only, 403-blocked; STEP 4 repair #918 merged as #3097); baseline ALL GREEN **2,418/2,418**)
 
 > **Entry decision**: Phase 0 — **2 open PRs** detected (#3096, #3095) → **PR HANDLER MODE** (issues untouched until PR work complete). Default branch auto-detected: `main`. Processed latest-first per contract.
