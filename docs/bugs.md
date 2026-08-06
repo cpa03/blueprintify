@@ -1,6 +1,25 @@
 # Bug Log: Known Defects
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
+## Bug Status — Aug 6 2026 (BugFixer Cycle 35)
+
+> **BugFixer Cycle 35 (2026-08-06 — agent/bugfixer-cycle-35)**: Full BugFixer audit complete — **zero code defects**; **no fixes required**. Typecheck ✅ (exit 0, all 3 workspaces) lint ✅ (0 errors, 0 warnings) build ✅ (web, vite/rolldown exit 0) build:api ✅ (wrangler dry-run exit 0 — bindings valid) tests **2,418/2,418** ✅ (1056 web + 515 api + 847 shared — unchanged from Cycle 34 baseline). Coverage gate ✅ (vitest thresholds 75/60/75/75 from #3041 active in `apps/web/vitest.config.ts` — baseline above floors per `test:all`). Format ✅ (prettier clean). Secrets scan ✅ (308 files). Audit: **0 vulnerabilities** ✅ (BUG-040 still fixed — hono 4.12.34; BUG-013 still fixed — lighthouse 13.4.1; BUG-038 still fixed — brace-expansion 5.0.9 override). 0 `@ts-expect-error`/`@ts-ignore` in source. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (`npm ls --all` exit 0 — 0 invalid/missing/extraneous; `npm ci --dry-run` exit 0 — deterministic).
+>
+> **Commits indexed since Cycle 34** — HEAD at `2c5e4baa` (docs(findings) Cycle 355, PR Handler merged #3100/#3099/#3098). Cycle-34 baseline `9309fb02` (Merge PR #3098). Commits reviewed: `2c5e4baa` (docs(findings) Cycle 355 — PR Handler merged #3100 BroCula run 36, #3099 RepoKeeper Cycle 354, #3098 BugFixer Cycle 34; docs only, 1 file, no source changes) — no source regressions since Cycle 34.
+> **Test count**: **2,418** (1056 web + 515 api + 847 shared — unchanged; Cycle 34 baseline 2,418).
+> **BUG-045 still fixed**: archive retention re-verified from the *actual* oldest dated `docs/audits/archive/*.md`; oldest remaining **Jul 7 (30 days, at window boundary — no purge needed)** per Cycle 14/17/18/20/21/22/25/27/28/29/30/31/32/33/34 precedent.
+> **BUG-040 still fixed**: hono pinned at 4.12.34 — CORS ReDoS GHSA-8j4g-w8fx-2239 patched; `npm audit` 0 vulns.
+> **BUG-041 still fixed**: `@img/sharp-wasm32@0.35.3` explicit root devDependency — `npm ls --all` exit 0, **0 invalid/missing/extraneous**.
+> **BUG-039/BUG-042 still fixed**: `npm ls --all` exit 0 — 0 invalid/missing/extraneous; `npm ci --dry-run` exit 0 — lockfile deterministic.
+> **BUG-038 still fixed**: brace-expansion override holds at 5.0.9 — 0 high-severity advisories.
+> **BUG-014/017/032/033/034/035 still fixed**: zero stale `docs/bug.md`/`docs/feature.md`/`docs/task.md` refs outside historical logs; zero hardcoded `node-version:` in workflows (all use `node-version-file: ".node-version"`); eslint 9.39.5; `@cloudflare/workers-types` in sync.
+> **Coverage gate active**: vitest thresholds (statements 75 / branches 60 / functions 75 / lines 75) enforced in `apps/web/vitest.config.ts` per #3041 — baseline above all floors.
+> **Stale merged branches**: **0** (`origin/agent-8119952459590434890`, `origin/agent/security-engineer` pre-existing divergent refs — RepoKeeper scope, as documented in prior cycles).
+> **No stale `.omo/run-continuation/` files** from prior cycles.
+> **CI workflows conform to mandates**: all 5 workflows (`iterate.yml`, `main.yml`, `on-pull.yml`, `parallel.yml`, `pr-gatekeeper.yml`) use `ubuntu-24.04-arm` + `opencode/deepseek-v4-flash-free`; no hardcoded `node-version:` (all `node-version-file: ".node-version"`, `.node-version` = `22`).
+> **`validate:wrangler`**: fails on 6 placeholder Cloudflare IDs + missing `.dev.vars` — pre-existing documented TODO (commit `b45bb4dc`), not a code defect; real IDs provisioned at deploy time, `.dev.vars` must be copied from `.dev.vars.example`.
+> **All quality gates pass. Zero code defects. No fixes required.** Branch created.
+
 ## Bug Status — Aug 6 2026 (BugFixer Cycle 34)
 
 > **BugFixer Cycle 34 (2026-08-06 — agent/bugfixer-cycle-34)**: Full BugFixer audit complete — **zero code defects**; **no fixes required**. Typecheck ✅ (exit 0, all 3 workspaces) lint ✅ (0 errors, 0 warnings) build ✅ (web, vite/rolldown exit 0) build:api ✅ (wrangler dry-run exit 0 — bindings valid) tests **2,418/2,418** ✅ (1056 web + 515 api + 847 shared — **+2 web** from #3097 jest-axe Wizard/Editor accessibility tests). Coverage gate ✅ (vitest thresholds 75/60/75/75 from #3041 active in `apps/web/vitest.config.ts` — baseline above floors per `test:all`). Format ✅ (prettier clean). Secrets scan ✅ (308 files). Audit: **0 vulnerabilities** ✅ (BUG-040 still fixed — hono 4.12.34; BUG-013 still fixed — lighthouse 13.4.1; BUG-038 still fixed — brace-expansion 5.0.9 override). 0 `@ts-expect-error`/`@ts-ignore` in source. 0 `as any`. 0 empty catch blocks. 0 TODO/FIXME/HACK in source. 0 merge conflict artifacts. Lockfile: **no drift** (`npm ls --all` exit 0 — 0 invalid/missing/extraneous; `npm ci --dry-run` exit 0 — deterministic).
