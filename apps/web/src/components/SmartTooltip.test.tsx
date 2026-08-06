@@ -151,23 +151,28 @@ describe("SmartTooltip", () => {
       </SmartTooltip>
     );
 
-    const container = screen.getByRole("button", { name: "ARIA test" }).parentElement!;
+    const trigger = screen.getByRole("button", { name: "ARIA test" });
+    const wrapper = trigger.parentElement!;
 
-    // Before visible
-    expect(container).not.toHaveAttribute("aria-describedby");
+    // Before visible - no association on the trigger
+    expect(trigger).not.toHaveAttribute("aria-describedby");
 
     // Show tooltip
-    fireEvent.mouseEnter(container);
+    fireEvent.mouseEnter(wrapper);
     act(() => {
       vi.advanceTimersByTime(500);
     });
 
-    // After visible - tooltip should have role and id
+    // After visible - the tooltip is associated with the focusable trigger
     const tooltip = screen.getByRole("tooltip");
     expect(tooltip).toBeInTheDocument();
     expect(tooltip).toHaveAttribute("id");
     const tooltipId = tooltip.getAttribute("id");
-    expect(container.getAttribute("aria-describedby")).toBe(tooltipId);
+    expect(trigger.getAttribute("aria-describedby")).toBe(tooltipId);
+
+    // The non-semantic wrapper must not carry the association - it is never
+    // focused, so screen readers would ignore it
+    expect(wrapper).not.toHaveAttribute("aria-describedby");
   });
 
   it("dismisses on Escape key", () => {
