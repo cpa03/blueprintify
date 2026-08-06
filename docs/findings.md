@@ -2,6 +2,16 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 356 (2026-08-06 — ULW Loop: BroCula browser-console + Lighthouse audit — LH **100-100-100-100** (21st consecutive), 0 console errors/warnings, 0 failed non-API requests, 0 optimization opportunities, all 2,418 tests pass, all quality gates green, no code changes required)
+
+> **Entry decision**: Phase 0 — clean `main` (`2c5e4baa`), 0 open PRs, working tree clean → **BROCULA MODE** (browser console + Lighthouse optimization loop). Branch `brocula/loop-2026-08-06-run37` created off latest origin/main (fetched, 0 behind).
+>
+> **STEP 1 — Browser console hunt**: production build (`vite build`, exit 0) served on preview (port 4173). Standard `npm run brocula` hunt: **0 console errors / 0 warnings / 0 failed non-API requests** on landing. Playwright Chromium installed fresh this run (`npx playwright install chromium` required first on aarch64 runner). Interactive Playwright sweep confirmed **0 errors / 0 warnings / 0 failed non-API requests** (landing load + full-page scroll, `?` shortcuts modal open/close via Escape, keyboard navigation, reload persistence) — **8/8 assertions passed**. All static + font requests HTTP 200.
+>
+> **STEP 2 — Lighthouse optimization**: **100-100-100-100** (Performance 100: FCP ~0.9s, Speed Index ~1.1s, TBT ~50ms, CLS ~0.007; Accessibility 100; Best Practices 100; SEO 100). **0 audits with `overallSavingsMs > 0`, 0 failed binary audits**; `unused-javascript`, `unused-css-rules`, `render-blocking-resources`, `server-response-time`, `uses-text-compression`, `uses-long-cache-ttl`, `total-byte-weight` all score 1. **0 actionable optimization opportunities**.
+>
+> **Quality gates (fatal on error/warning)**: typecheck (shared/api/web) ✅ 0 errors; lint ✅ 0 errors, **0 warnings**; format ✅ prettier clean; build ✅ exit 0; build:api ✅ wrangler dry-run exit 0; secrets scan ✅ (311 files); `npm audit` ✅ 0 vulnerabilities; tests **2,418/2,418** ✅ (1,056 web + 515 api + 847 shared). **Result: no code changes required** — audit report `docs/audits/brocula-audit-2026-08-06-run37.md` + README table updated. Docs-only PR to follow.
+
 ## Cycle 355 (2026-08-06 — ULW Loop: PR HANDLER MODE — 3 open PRs merged (#3100/#3099/#3098) with real local gate verification + main re-sync/conflict resolution; baseline ALL GREEN **2,418/2,418**)
 
 > **Entry decision**: Phase 0 — **3 open PRs** detected (#3100, #3099, #3098) → **PR HANDLER MODE** (issues untouched until PR work complete; all other phases skipped). Default branch auto-detected: `main`. Processed latest-first per contract, re-syncing each branch with fresh `origin/main` and resolving trivial `docs/findings.md` stacking conflicts between them.
