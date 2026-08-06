@@ -24,6 +24,8 @@ import {
   EXTERNAL_URLS,
   SCROLL_THRESHOLDS,
   ACCESSIBILITY_LABELS,
+  FOCUS_ANNOUNCER,
+  TIMEOUTS,
 } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
@@ -63,9 +65,27 @@ function HeaderComponent({
   const [isScrolled, setIsScrolled] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   const { prefersReducedMotion, setUserOverride } = useReducedMotionContext();
+  const [motionAnnouncement, setMotionAnnouncement] = useState("");
+
+  // Empty the live region after announcers have read it, so stale text
+  // doesn't accumulate (matches the OfflineBanner live-region pattern).
+  useEffect(() => {
+    if (!motionAnnouncement) return;
+    const timer = setTimeout(() => setMotionAnnouncement(""), TIMEOUTS.LIVE_REGION_CLEAR);
+    return () => clearTimeout(timer);
+  }, [motionAnnouncement]);
 
   const toggleReducedMotion = useCallback(() => {
-    setUserOverride(!prefersReducedMotion);
+    const next = !prefersReducedMotion;
+    setUserOverride(next);
+    // This preference flips animation behavior app-wide; announce the change
+    // via a live region so screen-reader users get audible confirmation the
+    // global setting took effect (aria-pressed alone is not sufficient).
+    setMotionAnnouncement(
+      next
+        ? ACCESSIBILITY_LABELS.HEADER.REDUCE_MOTION_ON
+        : ACCESSIBILITY_LABELS.HEADER.REDUCE_MOTION_OFF
+    );
   }, [prefersReducedMotion, setUserOverride]);
 
   const scrollToTop = useCallback(() => {
@@ -194,6 +214,16 @@ function HeaderComponent({
             />
           </RippleButton>
         </nav>
+      </div>
+
+      {/* Live region announcing the reduce-motion preference toggle */}
+      <div
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {motionAnnouncement}
       </div>
     </header>
   );
