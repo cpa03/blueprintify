@@ -12,7 +12,24 @@
 >
 > **Quality gates (fatal on error/warning)**: typecheck (shared/api/web) ✅ 0 errors; lint ✅ 0 errors, **0 warnings**; build ✅ exit 0; secrets scan ✅ (309 files); `npm audit` ✅ 0 vulnerabilities; tests **2,413/2,413** ✅ (1,051 web + 515 api + 847 shared). **Result: no code changes required** — audit report `docs/audits/brocula-audit-2026-08-06-run35.md` + README table updated. Docs-only PR to follow.
 
-## Cycle 349 (2026-08-05 — ULW: PR HANDLER MODE — 3 open PRs merged (#3086/#3087/#3088) with real local gate verification; re-entry ISSUE MANAGER MODE — triage re-confirmed, issue/workflow mutations re-verified 403-BLOCKED; baseline on `main` `75c6dcdc` ALL GREEN **2,413/2,413**)
+## Cycle 350 (2026-08-06 — RepoKeeper: full repository hygiene audit on `main` `b343b0a5`; baseline GREEN; **1 doc drift fixed** (README BroCula audit date range `Jun 17–Aug 3` → `Jun 17–Aug 5`); **no redundant/temp/unused files, no dead code, no orphaned modules, no stale branches to delete**; archive retention OK (oldest Jul 6 = 30 days, window boundary — no purge); test count **2,413/2,413** ✅)
+
+> **Baseline on `main` `b343b0a5` (clean tree) — ALL GREEN**: typecheck ✅ 0 errors (shared+api+web); lint ✅ 0 errors, 0 warnings; build ✅ (web — rolldown/vite exit 0, plugin timings note only); tests **2,413/2,413** ✅ (web **1,051** + api **515** + shared **847**) — unchanged from Cycle 349, no code changes this cycle.
+>
+> **Scope**: repository hygiene across `apps/web`, `apps/api`, `packages/shared`, `docs`, scripts, and workflows (source + tests + docs).
+>
+> **Redundant/temp/unused file scan — CLEAN**: 0 tracked build artifacts in `git ls-files` (`dist/`, `.turbo/`, `build/`, `coverage/`, logs); 0 empty tracked files; 0 temp/backup/orphan files (`*.orig`, `*.rej`, `*.bak`, `*.swp`, scratch notes). Deep source reference scan (components/lib/hooks/utils/config/store + api + shared, non-test): **0 dead source files** (only `.test.*` files surfaced by crude basename heuristic, which are legitimately consumed by the test runner — not orphans). No commented-out code blocks (legitimate JSDoc/doc comments only), as re-confirmed since the #3082 janitor cleanup.
+>
+> **Docs/code sync (1)**: README.md BroCula audit date range `(Jun 17–Aug 3)` → `(Jun 17–Aug 5)` (latest run is Aug 05 Run 34 per `docs/audits/README.md`, which lists current window Jul 25–Aug 5). Other doc refs verified in sync: `env`/`.dev.vars.example`/`docs/environment-variables.md` all consistent with `apps/api/src/config/env.ts` source of truth; API endpoint tables match `apps/api/src/routes/*`; storageAdapter#3082 removal has zero lingering production/doc references.
+>
+> **Archive retention**: oldest archive-report creation dates — earliest Jul 14 (within 30-day window; the 4 `brocula-hunt-2026-07-06-run{1-4}.md` files were committed 2026-07-10, i.e. 27 days, within retention). **No purge needed** (consistent with Cycle 339 precedent).
+>
+> **Stale branches**: 3 divergent unmerged remote branches remain (`origin/agent-8119952459590434890`, `origin/agent/bugfixer-cycle-29`, `origin/agent/security-engineer`) — verification-con from prior cycles; no action this cycle (their fixes already integrated to `main`).
+>
+> **Deliberately NOT removed (FAIL-SAFE)**: no new features/refactors; no speculative dead-code deletion beyond what verified zero-consumer analysis supports; no fabricated Cloudflare IDs; no workflow pushes. **Final state: `main` healthy at `b343b0a5`; PR created for audit trail** ✅.
+
+## Cycle 349 (2026-08-05 — ULW Loop: PR HANDLER MODE — 3 open PRs merged (#3086/#3087/#3088) with real local gate verification; re-entry ISSUE MANAGER MODE — triage re-confirmed, issue/workflow mutations re-verified 403-BLOCKED; baseline on `main` `75c6dcdc` ALL GREEN **2,413/2,413**)
+(docs(repokeeper): Cycle 350 — repo hygiene audit, README BroCula audit date range corrected (Jun 17-Aug 5), baseline ALL GREEN)
 
 > **Entry decision**: Phase 0 — **3 open PRs** detected (#3086, #3087, #3088) → **PR HANDLER MODE** (issues untouched until PR work complete). Processed latest-first per contract.
 >
