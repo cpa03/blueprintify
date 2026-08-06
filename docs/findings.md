@@ -2,6 +2,23 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 354 (2026-08-06 — RepoKeeper: full repository hygiene audit on `main` `700ac079`; baseline ALL GREEN; **0 redundant/temp/unused files**; **1 doc drift fixed** (active-tasks.md stale `Last Updated` footer); archive retention OK (no purge); 0 stale branches to delete; test count **2,418/2,418** ✅)
+
+> **Baseline on `main` `700ac079` (clean tree) — ALL GREEN**: typecheck ✅ 0 errors (shared+api+web); lint ✅ 0 errors, 0 warnings; build ✅ (web — rolldown/vite exit 0); build:api ✅ (wrangler dry-run exit 0 — 3 KV + queue + D1 + analytics + AI + 3 rate limiters + env bindings valid); tests **2,418/2,418** ✅ (web **1,056** + api **515** + shared **847**); secrets scan ✅ (308 files); npm audit **0 vulnerabilities** ✅.
+>
+> **Redundant/temp/unused file scan — 0 REMOVED**: `git ls-files` scanned for tracked build artifacts/logs/backups/orphan files — 0 tracked `*.tsbuildinfo`, `*/dist/*`, `*.log`, `*.bak`, `*.patch`; 0 zero-size tracked files; `apps/api/.wrangler/tmp` is a gitignored local runtime dir (not tracked) — clean. Deep source reference scan across web/api/shared: 0 dead source files, 0 orphaned modules, 0 commented-out code blocks (only legitimate JSDoc/comments), 0 `console.log` in production code (intentional wrappers only).
+>
+> **Code-cleanliness verification — clean**: 0 `@ts-expect-error`/`@ts-ignore`; 0 `as any`; 0 TODO/FIXME/HACK; 0 empty catch blocks; 0 merge conflict artifacts. All match the Janitor-clean baseline (Cycle 33 / #3082 precedent).
+>
+> **Docs/code sync (1 FIXED)**: `docs/active-tasks.md` — `Last Updated` footer was stale at `2026-07-25 (RepoKeeper Cycle 302)` (50+ cycles behind the file's actual routine maintenance). Updated → `2026-08-06 (RepoKeeper Cycle 354)`; footer stamp and `Maintainer` now reflect the current cycle.
+>
+> **Verified in-sync (no drift — kept)**: README.md BroCula audit date range `Jun 17–Aug 6` matches `docs/audits/README.md` (Aug 06 Run 35) ✅; `docs/dispatch.json` refs in `ai-agent-usage-guide.md`/`development-workflow.md` are **transient artifacts of the active `dispatcher` job in `main.yml`** (lines 50–87 still produce/consume it) — NOT stale, per Cycle 347 precedent ✅; `scripts/{generate-changelog,pre-deploy-check,post-deploy-check,release-scheduler,rollback}.ts` refs in `release-process.md` are **illustrative code examples inside fenced blocks** (design guidance, not orphaned-file links) ✅; `.dev.vars.example` vs `apps/api/src/config/env.ts` source-of-truth consistent ✅; all 4 scripts in `scripts/` referenced by `package.json` (0 orphans) ✅; 28 agents + 25 skills all exist ✅.
+>
+> **Archive retention — OK, no purge**: oldest formally-dated `docs/audits/archive/*.md` is Jul **13 — 24 days**, comfortably within the 30-day window (per BUG-042/043/045 precedent; no Jul-12-or-earlier files remain). `CONSOLIDATED-README.md` permanent index retained.
+>
+> **Branches — 0 stale/merged branches to delete**: all remote branches are either `origin/main` or the 2 preserved divergent unmerged branches — `agent-8119952459590434890` (4 ahead / 57 behind; unique infra `.node-version`/`.nvmrc` + staging-worker-name content — kept per Cycle 339 precedent) and `agent/security-engineer` (10 ahead / 70 behind; unique memory/doc + `max_completion_tokens` content — kept per precedent). Both verified DIVERGENT (not mergeable stale ancestors). No other remote branches present.
+- **Quality verification**: typecheck ✅ 0 errors; lint ✅ 0 errors, 0 warnings; build ✅ exit 0; build:api ✅ exit 0; tests **2,418/2,418** ✅; secrets ✅; npm audit **0 vulns** ✅. Single branch, docs-only change; no merge conflicts.
+
 ## Cycle 353 (2026-08-06 — ULW Loop: PR HANDLER MODE (2 PRs merged #3096/#3095) → ISSUE MANAGER MODE (STEP 1-3 analysis-only, 403-blocked; STEP 4 repair #918 merged as #3097); baseline ALL GREEN **2,418/2,418**)
 
 > **Entry decision**: Phase 0 — **2 open PRs** detected (#3096, #3095) → **PR HANDLER MODE** (issues untouched until PR work complete). Default branch auto-detected: `main`. Processed latest-first per contract.
