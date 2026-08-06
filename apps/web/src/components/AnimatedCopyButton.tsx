@@ -48,6 +48,7 @@ interface AnimatedCopyButtonProps {
   isCopied: boolean;
   hasContent: boolean;
   className?: string;
+  "aria-describedby"?: string;
 }
 
 /**
@@ -74,6 +75,7 @@ function AnimatedCopyButtonComponent({
   isCopied,
   hasContent,
   className = "",
+  "aria-describedby": ariaDescribedby,
 }: AnimatedCopyButtonProps) {
   const [particles, setParticles] = useState<Particle[]>([]);
   const [isPressed, setIsPressed] = useState(false);
@@ -139,6 +141,7 @@ function AnimatedCopyButtonComponent({
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
       disabled={!hasContent}
+      aria-describedby={ariaDescribedby}
       className={clsx(
         "relative text-sm px-4 py-2 rounded-lg transition-all duration-300 overflow-hidden",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50",

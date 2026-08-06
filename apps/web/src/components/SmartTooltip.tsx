@@ -1,4 +1,16 @@
-import { useState, useRef, useEffect, useCallback, memo, ReactNode, useId } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  memo,
+  ReactNode,
+  useId,
+  Children,
+  cloneElement,
+  isValidElement,
+  type ReactElement,
+} from "react";
 import { KEYBOARD_EVENT_KEYS, MODIFIER_KEYS } from "@blueprint/shared/config";
 import { TOOLTIP_CONFIG } from "../config/constants";
 import { formatShortcut } from "../lib/platform";
@@ -240,6 +252,21 @@ function SmartTooltipComponent({
     };
   }, [clearTimeouts]);
 
+  // The wrapper div is never focused, so aria-describedby on it is ignored by
+  // screen readers — inject the association onto the actual trigger element
+  // (WCAG 1.3.1 / 4.1.2) by cloning the single child. Fall back to unmodified
+  // children for multi-child or non-element triggers.
+  const triggerChildren = Children.toArray(children);
+  const singleElementChild =
+    triggerChildren.length === 1 && isValidElement(triggerChildren[0])
+      ? (triggerChildren[0] as ReactElement<Record<string, unknown>>)
+      : null;
+  const triggerWithDescription = singleElementChild
+    ? cloneElement(singleElementChild, {
+        "aria-describedby": isVisible ? tooltipId : undefined,
+      })
+    : children;
+
   const positionStyle = positionClasses[computedPosition];
 
   return (
@@ -251,9 +278,8 @@ function SmartTooltipComponent({
       onFocus={handleFocus}
       onBlur={handleBlur}
       onClick={handleTriggerClick}
-      aria-describedby={isVisible ? tooltipId : undefined}
     >
-      {children}
+      {triggerWithDescription}
 
       {isVisible && isPositioned && (
         <div
