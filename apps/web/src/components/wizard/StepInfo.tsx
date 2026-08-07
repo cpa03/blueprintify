@@ -51,11 +51,11 @@ import {
   SPRING_CONFIG,
   HOVER_SCALE,
   TAP_SCALE,
-  SCROLL_BEHAVIOR,
   SCROLL_INTO_VIEW_BLOCK,
   CSS_CLASSES,
   FOCUS_ANNOUNCER,
 } from "../../config/constants";
+import { getScrollBehavior } from "../../utils/scroll";
 import { STEP_INFO_LABELS } from "../../config/constants/validation";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 import { useAutoSaveToast } from "../../hooks/useAutoSaveToast";
@@ -212,14 +212,14 @@ export const StepInfo = memo(function StepInfo({
       if (projectName.length < FORM_LIMITS.PROJECT_NAME.MIN) {
         projectNameInputRef.current?.focus({ preventScroll: true });
         projectNameInputRef.current?.scrollIntoView({
-          behavior: SCROLL_BEHAVIOR.SMOOTH,
+          behavior: getScrollBehavior(),
           block: SCROLL_INTO_VIEW_BLOCK.NEAREST,
         });
         fieldId = "projectName";
       } else if (description.length < FORM_LIMITS.DESCRIPTION.MIN) {
         descriptionRef.current?.focus({ preventScroll: true });
         descriptionRef.current?.scrollIntoView({
-          behavior: SCROLL_BEHAVIOR.SMOOTH,
+          behavior: getScrollBehavior(),
           block: SCROLL_INTO_VIEW_BLOCK.NEAREST,
         });
         fieldId = "description";
