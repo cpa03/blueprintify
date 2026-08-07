@@ -41,29 +41,61 @@ import {
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { memo, useCallback, useRef, useEffect, useState, useMemo } from "react";
-function useElapsedTime(isActive: boolean): string {
+interface ElapsedTime {
+  /** Per-second MM:SS for the on-screen ticking timer */
+  display: string;
+  /** Throttled MM:SS for the assistive-tech live region (see ELAPSED_ANNOUNCEMENT_INTERVAL_MS) */
+  announced: string;
+}
+
+function formatElapsed(totalSeconds: number): string {
+  const minutes = Math.floor(totalSeconds / TIME_UNITS.SECONDS_PER_MINUTE);
+  const secs = totalSeconds % TIME_UNITS.SECONDS_PER_MINUTE;
+  return `${minutes}:${secs.toString().padStart(2, "0")}`;
+}
+
+function useElapsedTime(isActive: boolean): ElapsedTime {
   const [seconds, setSeconds] = useState(0);
+  const [announcedSeconds, setAnnouncedSeconds] = useState(0);
 
   useEffect(() => {
     if (!isActive) return;
 
     const start = Date.now();
-    // Defer reset outside the synchronous effect body via microtask to
+    // Defer resets outside the synchronous effect body via microtask to
     // satisfy the project's react-hooks/set-state-in-effect rule.
     queueMicrotask(() => {
       setSeconds(0);
+      setAnnouncedSeconds(0);
     });
 
-    const id = setInterval(() => {
+    // On-screen timer ticks every second.
+    const tickId = setInterval(() => {
       setSeconds(Math.floor((Date.now() - start) / TIME_UNITS.MS_PER_SECOND));
     }, UI_TIMEOUTS.ELAPSED_TIMER_INTERVAL_MS);
 
-    return () => clearInterval(id);
+    // Assistive-tech announcements advance at a coarse cadence so the live
+    // region is not re-announced on every second boundary. The announced value
+    // is snapshotted to the most recent announcement bucket (e.g. every 30s)
+    // so the SR text only changes when a whole bucket has elapsed.
+    const announceBucketSeconds = ELAPSED_ANNOUNCEMENT_INTERVAL_MS / TIME_UNITS.MS_PER_SECOND;
+    const announceId = setInterval(() => {
+      const elapsedSeconds = Math.floor((Date.now() - start) / TIME_UNITS.MS_PER_SECOND);
+      setAnnouncedSeconds(
+        Math.floor(elapsedSeconds / announceBucketSeconds) * announceBucketSeconds
+      );
+    }, ELAPSED_ANNOUNCEMENT_INTERVAL_MS);
+
+    return () => {
+      clearInterval(tickId);
+      clearInterval(announceId);
+    };
   }, [isActive]);
 
-  const minutes = Math.floor(seconds / TIME_UNITS.SECONDS_PER_MINUTE);
-  const secs = seconds % 60;
-  return `${minutes}:${secs.toString().padStart(2, "0")}`;
+  return {
+    display: formatElapsed(seconds),
+    announced: formatElapsed(announcedSeconds),
+  };
 }
 import { useEditorStore, useWizardStore, useToast } from "../../store";
 import {
@@ -87,6 +119,7 @@ import {
   GENERATION_ANNOUNCER,
   KEY_DISPLAY,
   FOCUS_ANNOUNCER,
+  ELAPSED_ANNOUNCEMENT_INTERVAL_MS,
 } from "../../config/constants";
 import { KEYBOARD_SHORTCUTS } from "../../config/constants/keyboard";
 import { COLORS, HEADER_ANIMATION } from "../../config/theme";
@@ -182,9 +215,11 @@ export const StepGenerating = memo(function StepGenerating({
     return { percent: 45, label: GENERATION_PHASE_LABELS.IN_PROGRESS };
   }, [progress, isComplete, isError]);
 
-  // Elapsed time timer — ticks while generation is actively running
+  // Elapsed time timer — ticks while generation is actively running.
+  // `display` is the per-second on-screen value; `announced` is the throttled
+  // value used by the assistive-tech live region (see ELAPSED_ANNOUNCEMENT_INTERVAL_MS).
   const timerActive = isGenerating && !isComplete && !isError;
-  const elapsedTime = useElapsedTime(timerActive);
+  const { display: elapsedDisplay, announced: announcedElapsed } = useElapsedTime(timerActive);
 
   // Synchronous guard so rapid double-clicks or Escape+click during the
   // step-exit transition can't fire cancellation (and its toast) twice.
@@ -520,13 +555,16 @@ export const StepGenerating = memo(function StepGenerating({
                   </motion.span>
                 </AnimatePresence>
               </motion.span>
-              {/* Elapsed time display — shows generation duration as mm:ss with a subtle divider */}
+              {/* Elapsed time display — shows generation duration as mm:ss with a subtle divider.
+                  The visible per-second value is aria-hidden: it sits inside an aria-atomic
+                  role=status region, so without hiding it the screen reader would re-announce
+                  the whole region on every second boundary (chronometer spam). Assistive-tech
+                  users get the throttled elapsed time from the dedicated live region below. */}
               <span className="mx-2 text-dark-600" aria-hidden="true">
                 {DISPLAY_SYMBOLS.MIDDOT}
               </span>
-              <span className="tabular-nums text-dark-500 text-sm">
-                <span aria-hidden="true">{WIZARD_GENERATING_LABELS.ELAPSED_TIME} </span>
-                <span className="font-mono">{elapsedTime}</span>
+              <span className="tabular-nums text-dark-500 text-sm" aria-hidden="true">
+                {WIZARD_GENERATING_LABELS.ELAPSED_TIME} {elapsedDisplay}
               </span>
             </p>
           </motion.div>
@@ -583,7 +621,7 @@ export const StepGenerating = memo(function StepGenerating({
 
       <p className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS} role="status" aria-live="polite">
         {timerActive
-          ? GENERATION_ANNOUNCER.ELAPSED(elapsedTime, blueprintLines, tasksLines)
+          ? GENERATION_ANNOUNCER.ELAPSED(announcedElapsed, blueprintLines, tasksLines)
           : GENERATION_ANNOUNCER.GENERATED(blueprintLines, tasksLines)}
       </p>
 

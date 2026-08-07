@@ -48,6 +48,29 @@
 >
 > **Security Engineer review (2026-08-07)**: Scan of PR diff (`git diff origin/main`) — **CLEAN**. No introduced vulnerabilities (npm audit **0 vulns**; docs-only diff, no code/dep changes), no introduced secrets (pattern scan of all added lines: OpenAI/AWS/GitHub/private-key/api-key patterns — zero matches), no introduced deprecated functions (diff removes stale references: Node `20`→`22` in troubleshooting.md, phantom `.opencode/plugin/` dir refs, stale `Alt+1..5` shortcuts). All corrected doc claims verified against code (`?` modal App.tsx:228, Ctrl/Cmd+1/2/3 VIEW_MODE_SHORTCUT_KEYS, Alt+Arrow Wizard.tsx:135-162, Ctrl/Cmd+Shift+E Editor.tsx:444, framer-motion@12.43.0 in package.json). No action required.
 
+## Cycle 372 (2026-08-07 — ULW Loop: ISSUE MANAGER MODE (101 issues, 0 PRs) — Steps 1–3 token-blocked (`issues:write` absent: createIssue/addComment/addLabelsToLabelable/addLabels all 403 re-verified REST+GraphQL this cycle); Step 4 Repair re-verified all P1s + P2 security routes code-resolved (auth fail-closed 503, CORS prod explicit, /health present, requestId in context, share/export/import hardened — rate-limit + Zod + sanitize + strict ID regex + ownership check); only genuine gap #849/#953 gatekeeper no-`test:all` — fix local-green but push `workflows`-BLOCKED (branch reverted, zero residue); baseline ALL GREEN 2,460/2,460)
+
+> **Entry decision**: Phase 0 — **0 open PRs**, **101 open issues** → **ISSUE MANAGER MODE**. Default branch auto-detected: `main`.
+>
+> **Steps 1–3 (Normalization / Duplicate / Consolidation)**: **BLOCKED** — `issues:write` absent. Re-verified this cycle on both GraphQL and REST: `gh issue create` → 403 `createIssue`; `gh issue comment` → 403 `addComment`; `gh issue edit --add-label` → 403 `addLabelsToLabelable`; `gh issue close` → 403 `updateIssue`; REST `POST /issues/{n}/labels` → 403. Only repo-level `label create` and ref/PR creation succeed. 101 open issues cannot be mutated (normalized / deduped / consolidated) without this permission — deferred to a permission-capable token (Cycles 24/360/364–371 precedent). Full 100-issue label + 16 duplicate-cluster + 10 consolidation-candidate plan remains in `docs/issue-manager-plan-cycle-368.md`.
+>
+> **Step 4 (Repair Mode)**: No P0/P1 actionable (all code-resolved or human-blocked, unclosable) → ELSE-branch: re-verified the previously-shipped P1 fixes still hold on `main` and audited the highest-priority security surfaces for any NEW genuine code gap:
+> - **#847** (auth bypass when API_KEY unset): `auth.ts` fail-closed — returns 503 `CONFIGURATION_ERROR` via `secureLogWarn` when `API_KEY` missing. **Code-resolved.**
+> - **#848/#890/#930** (CORS wildcard): `env.ts` throws `CORS_WILDCARD_PRODUCTION` in production, warns on wildcard in dev; default `CORS_ORIGIN_DEV`. **Code-resolved.**
+> - **#867** (/health), **#868** (requestId traceability): `/health` present with circuit-breaker AI check; `requestId` generated in `logger.ts` and set on Hono context (`CONTEXT_KEYS.REQUEST_ID`) consumed by auth/errorHandler. **Code-resolved.**
+> - **#905** (share ID injection), **#892/#1046** (share ownership/authz): `isValidShareId` strict length+alphanumeric regex fail-closed; delete is fail-closed on `createdBy` ownership; GET/verify have enumeration + brute-force rate limiters; passphrase verify uses HMAC token. **Code-resolved.**
+> - **#906/#908** (export/import rate-limit + max-length): both routes mount `rateLimit(rateLimitConfigs.standard)` + Zod schema validation. **Code-resolved.**
+> - **#973** (ajv moderate vulns): ajv is transitive (eslint only), not a direct dep; `npm audit` **0 vulns**. **Code-resolved.**
+> - **#1014/#1082/#935/#936** (test coverage P1s): 44 component test files, 12/12 hook tests, 4 controller test files, zustand store tests — baseline 2,460/2,460 green. **Code-resolved.**
+> - **#1045/#1165** (wrangler placeholder IDs): `validate-wrangler.mjs` fail-closed + `docs/cloudflare-infrastructure.md` documents required resources — **human-blocked** (requires real CF resource provisioning).
+> - **#1166** (.nvmrc), **#1015** (playwright.config.ts), **#1016** (eslint config), **#1161** (deps — shipped Cycle 371 as #3136): all files present / already shipped. **Code-resolved.**
+>
+> **Only remaining genuine gap — #849/#953** (ci/P1, duplicate): `pr-gatekeeper.yml` Health Checks + Final Integrity still run `typecheck`/`lint`/`build` but **never `npm run test:all`**, so failing-test PRs can auto-merge. Fix re-verified this cycle (add `test:all` + `Test Failed` grep + debugger log aggregate + integrity), YAML-validated (`python3 yaml.safe_load` ✅), local gate green — **push REJECTED**: `refusing to allow a GitHub App to create or update workflow .github/workflows/pr-gatekeeper.yml without workflows permission` (Cycles 24/360/365/367/368/369/370/371 precedent). Branch reverted, zero residue. **Deferred to a `workflows: write`-capable token.**
+>
+> **Baseline (fresh `npm ci`, 899 pkgs)**: typecheck ✅ lint ✅ **0 warnings** ✅ build ✅ tests **2,460/2,460** ✅ (1,084 web + 525 api + 851 shared) `npm audit` **0 vulns** ✅.
+>
+> **Final state**: **idle for code** (baseline ALL GREEN). Issue mutations + workflow fix deferred — token lacks `issues:write` and `workflows` permissions. Deliverable: Cycle 372 record (findings, active-tasks, CHANGELOG) via docs PR.
+
 ## Cycle 371 (2026-08-07 — ULW Loop: ISSUE MANAGER MODE (101 issues, 0 PRs) — Steps 1–3 token-blocked (`issues:write` absent: createIssue/addComment/addLabels all 403 re-verified REST+GraphQL); Step 4 Repair shipped **#1161 chore(deps) as PR #3136 merged via `--admin`** (7 safe patch/minor bumps, major jumps deferred); P1s + P2s re-verified code-resolved; only genuine gap #849/#953 gatekeeper no-`test:all` — fix local-green but push `workflows`-BLOCKED; baseline ALL GREEN 2,460/2,460)
 
 > **Entry decision**: Phase 0 — **0 open PRs**, **101 open issues** → **ISSUE MANAGER MODE**. Default branch auto-detected: `main`.

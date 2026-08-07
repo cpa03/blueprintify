@@ -191,6 +191,17 @@ export const UI = {
   SCROLL_TO_TOP_THRESHOLD: UI_DEFAULTS.SCROLL_TO_TOP_THRESHOLD_PX,
 } as const;
 
+/**
+ * Elapsed time — coarse announcement cadence
+ * During generation, screen-reader announcements of the elapsed MM:SS counter
+ * are throttled to this interval instead of firing every second. Announcing a
+ * ticking timer every tick is an accessibility anti-pattern (a "chronometer
+ * spam" live region) — screen readers would re-read the whole region each
+ * second. The visible on-screen timer still ticks at ELAPSED_TIMER_INTERVAL_MS;
+ * only the assistive-tech announcement is throttled.
+ */
+export const ELAPSED_ANNOUNCEMENT_INTERVAL_MS = 30000;
+
 /** Tooltip configuration */
 export const TOOLTIP_CONFIG = {
   DEFAULT_DELAY: UI_DEFAULTS.TOOLTIP_DELAY_MS,
