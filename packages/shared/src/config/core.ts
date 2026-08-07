@@ -110,6 +110,13 @@ export const CRYPTO_CONFIG = {
   HEX_PADDING_WIDTH: 2,
   /** Length of the derived user-ID hash (hex chars kept from the full digest) */
   USER_ID_HASH_LENGTH: 16,
+  /** WebCrypto key import format for raw key material */
+  KEY_FORMAT: "raw" as const,
+  /** WebCrypto key usages permitted for imported/signed keys */
+  KEY_USAGES: {
+    /** Sign-only key usage for HMAC token signing */
+    SIGN: "sign",
+  } as const,
 } as const;
 
 /**

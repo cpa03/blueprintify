@@ -4,6 +4,33 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 184: Consolidate WebCrypto Key Literals & KV Read Format into Shared Config
+
+**Problem**: API routes still contained raw browser/Worker literals — `crypto.subtle.importKey` called with the raw format string `"raw"` and the sign-only usage array `["sign"]`, plus a KV `.get()` read pinned to the string `"json"`. Flexy says: no hardcoded WebCrypto or KV literals in routes!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | Added `CRYPTO_CONFIG.KEY_FORMAT` (`"raw"`) + `CRYPTO_CONFIG.KEY_USAGES.SIGN` (`"sign"`) — single source of truth for WebCrypto key import format/usages |
+| `packages/shared/src/config/storage.ts` | Added `KV_READ_FORMAT.JSON` (`"json"`) — single source of truth for KV `.get()` deserialization format |
+| `packages/shared/src/index.ts` | Re-exported `KV_READ_FORMAT` on the root export |
+| `apps/api/src/routes/share.ts` | Replaced 2× hardcoded `"raw"` + `["sign"]` in `crypto.subtle.importKey` with `CRYPTO_CONFIG.KEY_FORMAT` / `[CRYPTO_CONFIG.KEY_USAGES.SIGN]` |
+| `apps/api/src/routes/storage.ts` | Replaced hardcoded `CACHE.get(quotaKey, "json")` with `CACHE.get(quotaKey, KV_READ_FORMAT.JSON)` |
+| `packages/shared/src/config.test.ts` | Added tests asserting `CRYPTO_CONFIG.KEY_FORMAT`, `CRYPTO_CONFIG.KEY_USAGES.SIGN`, and `KV_READ_FORMAT.JSON` values |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean
+- ✅ `npm run test:all` — **1,076 web + 525 api + 851 shared = 2,452 tests passing**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-184-wcrypto-kv` | refactor(flexy): consolidate WebCrypto key literals & KV read format into shared config (Iteration 184) |
+
 ### ✅ Flexy Iteration 183: Eliminate Remaining Hardcoded API Route Literals into Shared Config
 
 **Problem**: API routes still contained raw literals — 11× `new Date().toISOString()` bypassing the existing `timestamp()` helper, storage route path strings (`/quota`, `/report`, `/clear`) ignoring `ROUTE_SUB_PATHS`, hardcoded query params (`confirm`/`true`), the `"[redacted]"` prompt-injection replacement string (a cross-file contract asserted in ~28 tests), raw SSE framing literals despite `SSE_CONFIG` existing, and inline export/import message templates. Flexy says: no hardcoded strings in routes!

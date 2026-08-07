@@ -62,6 +62,7 @@ import {
   STORAGE_OPERATIONS,
   API_MESSAGES,
   KV_STORAGE_KEYS,
+  KV_READ_FORMAT,
   SHARE_MESSAGES,
   STORAGE_ROUTE_MESSAGES,
   IMPORT_DEFAULTS,
@@ -453,6 +454,14 @@ describe("CRYPTO_CONFIG", () => {
 
   it("should have user id hash length of 16", () => {
     expect(CRYPTO_CONFIG.USER_ID_HASH_LENGTH).toBe(16);
+  });
+
+  it("should use raw key format for WebCrypto import", () => {
+    expect(CRYPTO_CONFIG.KEY_FORMAT).toBe("raw");
+  });
+
+  it("should expose sign key usage for HMAC token signing", () => {
+    expect(CRYPTO_CONFIG.KEY_USAGES.SIGN).toBe("sign");
   });
 });
 
@@ -1663,6 +1672,21 @@ describe("KV_STORAGE_KEYS", () => {
 
   it("should have all string values", () => {
     const values = Object.values(KV_STORAGE_KEYS);
+    expect(values.length).toBe(1);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe("KV_READ_FORMAT", () => {
+  it("should expose JSON deserialization format", () => {
+    expect(KV_READ_FORMAT.JSON).toBe("json");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(KV_READ_FORMAT);
     expect(values.length).toBe(1);
     values.forEach((v) => {
       expect(typeof v).toBe("string");

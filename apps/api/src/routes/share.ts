@@ -170,11 +170,11 @@ async function generateVerifyToken(
     Math.floor(Date.now() / TIME_UNITS.MS_PER_SECOND) + SHARE_TOKEN_CONFIG.TOKEN_EXPIRY_SECONDS;
   const payload = `${shareId}:${expiresAt}`;
   const key = await crypto.subtle.importKey(
-    "raw",
+    CRYPTO_CONFIG.KEY_FORMAT,
     encoder.encode(apiKey),
     { name: SHARE_TOKEN_CONFIG.HMAC_ALGORITHM, hash: SHARE_TOKEN_CONFIG.HMAC_HASH },
     false,
-    ["sign"]
+    [CRYPTO_CONFIG.KEY_USAGES.SIGN]
   );
   const signature = await crypto.subtle.sign(
     SHARE_TOKEN_CONFIG.HMAC_ALGORITHM,
@@ -210,11 +210,11 @@ async function isValidVerifyToken(
       return false;
     const encoder = new TextEncoder();
     const key = await crypto.subtle.importKey(
-      "raw",
+      CRYPTO_CONFIG.KEY_FORMAT,
       encoder.encode(apiKey),
       { name: SHARE_TOKEN_CONFIG.HMAC_ALGORITHM, hash: SHARE_TOKEN_CONFIG.HMAC_HASH },
       false,
-      ["sign"]
+      [CRYPTO_CONFIG.KEY_USAGES.SIGN]
     );
     const signature = await crypto.subtle.sign(
       SHARE_TOKEN_CONFIG.HMAC_ALGORITHM,
