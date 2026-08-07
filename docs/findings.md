@@ -12,7 +12,7 @@
 > - **7 safe patch/minor bumps**: hono 4.12.34→4.13.1, openai 7.2.0→7.4.0, @cloudflare/workers-types 5.20260731.1→5.20260804.1, @codemirror/lang-markdown 6.5.1→6.5.2, @testing-library/user-event 14.6.1→14.6.3, cssnano 8.0.2→8.0.4, postcss 8.5.25→8.5.26.
 > - **Major jumps intentionally deferred** (breaking-change risk, "never introduce unstable changes"): eslint 9→10, @eslint/js 9→10, tailwindcss 3→4, framer-motion 12→13, @vercel/analytics 1→2, @cloudflare/vitest-pool-workers 0.19.1→0.20.3 (test-infra minor, skipped for determinism).
 > - **Original #1161 targets already met** by prior cycles: zustand 4.4.7→5.0.14, framer-motion 10→12.43.0, openai 4.20.0→7.2.0.
-> - Verification on fresh `npm ci` (898 pkgs): typecheck ✅ lint ✅ 0 warnings ✅ build ✅ tests **2,460/2,460** ✅ (1,084 web + 525 api + 851 shared) scan:secrets ✅ npm audit **0 vulns** ✅. Merged `51dac088`, branch deleted, #1161 auto-closed (`Closes #1161`).
+> - Verification on fresh `npm ci` (898 pkgs): typecheck ✅ lint ✅ 0 warnings ✅ build ✅ tests **2,460/2,460** ✅ (1,084 web + 525 api + 851 shared) scan:secrets ✅ npm audit **0 vulns** ✅. Merged `51dac088`, branch deleted. **#1161 auto-close did NOT fire** — the `Closes #1161` keyword requires `issues:write` on the merging token; the cross-reference is recorded (commit `51dac088` references #1161) so a permission-capable token can close it in one click (same gap as Steps 1–3).
 >
 > **P1 re-verification** (all code-resolved, unclosable — issue mutations blocked):
 > - **#1082** (hook tests): 12/12 hook test files ship — **code-resolved**.
