@@ -1,6 +1,10 @@
-# Active Tasks
+# Active Tasks  <a name="top-badges"></a>
 
-> Current active work items and priorities. Historical completed cycles are preserved in git history — see `git log` for archival reference.
+> Current active work items and pending. Historical completed cycles are preserved in git history — see `git log` for archival reference.
+
+## ✅ ULW Loop Cycle 366 — **PR HANDLER merged 2 PRs (#3126 reduced-motion AnimatedCopyButton feature + #3125 BugFixer Cycle 39 docs) via `--admin` — external deploy-fixture rate-limits only; baseline ALL GREEN 2,457/2,457** ✅
+
+### Task: ULW Loop execution — **PR Handler Mode** (2 open PRs → latest first by created time): **#3126** `feat(web)` respect `prefers-reduced-motion` in `AnimatedCopyButton` (2 files: component + tests; 6 new reduced-motion tests; gates WCAG 2.3.3 for the last animated component — particles/press-scale/hover transforms skipped only for vestibular-sensitive users). Branch-based 0-behind main (exact base `1cb48a73`), MERGEABLE, comments only external deploy-bots (Vercel/CF rate limits). Local gate after fresh `npm ci`: typecheck ✅ 0 errors · lint ✅ 0 errors/0 warnings · build ✅ · tests **2,457/2,457** ✅ (1,081 web + 525 api + 851 shared) · npm audit ✅ 0 vulns → **MERGED `98aa385f` via `--admin`** (external deploy fixtures rate-limited, non-code, 30+ cycle precedent), branch deleted, no linked issues. **#3125** `docs(bugfixer)` Cycle 39 record (4 docs files): was behind by #3126 merge → **rebased cleanly onto latest main** (docs vs web, no overlap), re-verified typecheck ✅ lint ✅ prettier ✅ build ✅ tests **2457/2457** ✅ → **MERGED `8dba34a0` via `--admin`**, branch deleted. Quality: typecheck ✅ lint ✅ 0 warnings ✅ build ✅ tests **2,457/2,457** ✅ secrets ✅ npm audit **0 vulns** ✅.
 
 ## ✅ BugFixer Cycle 39 — **full BugFixer audit on `main` `99ca6073` — baseline ALL GREEN (typecheck ✅ lint ✅ 0 warnings build ✅ build:api ✅ tests **2,452/2,452** ✅ secrets ✅ npm audit 0 vulns ✅ format ✅); zero bugs found; zero code defects; no fixes required; archive retention at 30-day boundary (oldest Jul 8 — no purge); lockfile no drift; 0 stale merged branches** ✅
 
@@ -2317,5 +2321,9 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 ---
 
-**Last Updated**: 2026-08-07 (ULW Loop Cycle 363)  
+- Status: ✅ Complete
+
+> **Last Updated**: 2026-08-07 (ULW Loop Cycle 366)
+
+> **Last Updated**: 2026-08-07 (ULW Loop Cycle 366)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
