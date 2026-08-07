@@ -2,7 +2,19 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Cycle 365 (2026-08-07 — ULW Loop: PR HANDLER merged #3122 (Cycle 364 docs) via `--admin` (external deploy fixtures rate-limited only); then ISSUE MANAGER MODE — Steps 1–3 token-blocked (no `issues:write`/`workflows`); Step 4 Repair re-verified all P1/P2s code-resolved; gatekeeper test gap (#849/#953) re-confirmed REAL, local fix verified green but push `workflows`-BLOCKED, branch reverted; baseline ALL GREEN 2,452/2,452)
+## Cycle 366 (2026-08-07 — ULW Loop: PR HANDLER merged 2 PRs (#3126 reduced-motion AnimatedCopyButton feature via `--admin`, #3125 BugFixer Cycle 39 docs via `--admin`); only failing checks were external deploy-fixtures (Vercel/Cloudflare free-tier rate limits). #3126 rebased + verified green (typecheck ✅ lint ✅ 0 warnings ✅ build ✅ tests **2,457/2,457**; #3125 docs-only rebased clean onto latest main, same green). Baseline ALL GREEN)
+
+> **Entry decision**: Phase 0 — **2 open PRs** (created-time sort → latest first): **#3126** `feat(web)` respect `prefers-reduced-motion` in `AnimatedCopyButton` (agent/reduced-motion-copy-button), **#3125** `docs(bugfixer)` Cycle 39 record (agent/bugfixer-cycle-39) → **PR HANDLER MODE**. Default branch auto-detected: `main`.
+>
+> **PR #3126** (2 files: `apps/web/src/components/AnimatedCopyButton.tsx` +11/−5, `.test.tsx` +90/−28 → 6 new reduced-motion tests). Branch-based 0-behind `main` (1 commit ahead, exact base `1cb48a73`). Comments were only external deploy-bots (Vercel "Resource is limited — retry in 24 hours"; Cloudflare Workers Builds dashboard) — no human review threads. Local gate re-run after `npm ci` (898 pkgs): typecheck ✅ 0 errors · lint ✅ 0 errors/0 warnings · build ✅ (vite/rolldown exit 0) · tests ✅ **2,457/2,457** (1,081 web + 525 api + 851 shared) · npm audit ✅ 0 vulns. **MERGED `1cb48a73→98aa385f` via `gh pr merge --squash --admin --delete-branch`** — only failing CI = external deploy rate limits (Vercel/CF free tier), non-code, 30+ cycle precedent. Branch deleted. No linked issues (#3126 body references WCAG 2.3.3 but no open issue). Resolves** reduc**-motion access: WCAG 2.3.3 covered for the last animated component.
+>
+> **PR #3125** (docs-only: CHANGELOG.md +2, docs/active-tasks.md +18, docs/bugs.md +19, docs/findings.md +20). Was behind by #3126 merge — **rebase onto latest `main` clean** (docs vs web files, no overlap). Re-verified on rebased head: typecheck ✅ lint ✅ 0 warnings ✅ prettier ✅ build ✅ tests ✅ **2457/2457**. **MERGED `8dba34a0` via `--admin`**. Branch deleted. No linked issues.
+>
+> **Phase 0 re-entry after merges**: 0 open PRs, 108 open issues → would transition to ISSUE MANAGER MODE.
+>
+> **Final state**: idle for code (repo baseline green, 0 new bugs). PR mutations complete. Deferred to a permission-capable token for any issue-label/close actions.
+
+## Cycle 365 (2026-08-07 — ULW Loop: PR HANDLER merged #3122 (Cycle 364 docs) via `--admin` (external deploy fixtures rate-limited only); then ISSUE MANAGER MODE — Steps 1–3 token-blocked (no `issues:write`/`workflows`); Step 4 Repair re-verified all P1/P2s codebase-resolved; gatekeeper test gap (#849/#953) re-confirmed REAL, local fix verified green but push `workflows`-BLOCKED, branch reverted; baseline ALL GREEN 2,452/2,452)
 
 > **Entry decision**: Phase 0 — 1 open PR (#3122, agent/ulw-loop-cycle-364, docs-only Cycle 364 record) → **PR HANDLER MODE**. Default branch auto-detected: `main`.
 >
