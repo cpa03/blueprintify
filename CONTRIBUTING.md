@@ -53,7 +53,7 @@ blueprintify/
 │   ├── agent/           # Agent definitions (technical-writer, etc.)
 │   ├── skill/           # Reusable skills (docs-update, etc.)
 │   ├── command/         # Custom commands
-│   └── plugin/          # Plugins and hooks
+│   └── memory/          # Agent memory and patterns
 ├── packages/
 │   └── shared/          # Zod schemas & TypeScript types
 ├── apps/

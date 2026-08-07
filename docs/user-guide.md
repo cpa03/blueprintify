@@ -417,12 +417,12 @@ The refinement workflow allows you to selectively improve and enhance specific s
 
 ## Keyboard Shortcuts
 
-- **Alt + 1** - Jump to Step 1 (Project Details)
-- **Alt + 2** - Jump to Step 2 (Tech Stack)
-- **Alt + 3** - Jump to Step 3 (Features)
-- **Alt + 4** - Jump to Step 4 (Review)
-- **Alt + 5** - Jump to Step 5 (Generation)
-- **Ctrl/Cmd + E** - Toggle Editor (when available)
+- **`?`** - Show keyboard shortcuts modal
+- **Ctrl/Cmd + 1/2/3** - Switch editor to Edit/Split/Preview view
+- **Alt + ArrowLeft / ArrowRight** - Navigate between wizard steps
+- **Ctrl/Cmd + E** - Toggle Editor
+- **Ctrl/Cmd + Enter** - Submit current wizard step
+- **Ctrl/Cmd + Shift + E** - Export project as ZIP
 - **Escape** - Cancel generation (when in progress)
 
 ## Advanced Features

@@ -45,7 +45,7 @@
 │   ├── agent/        # Agent definitions
 │   ├── skill/        # Reusable skills
 │   ├── command/      # Custom commands
-│   └── plugin/       # Plugins (hooks)
+│   └── memory/       # Agent memory and patterns
 └── docs/             # Documentation
 ```
 
