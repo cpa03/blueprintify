@@ -21,6 +21,8 @@
 > **Known blockers (unchanged, permission-bound)**: `issues:write` absent (101 issues can't be normalized/closed — plan in `docs/issue-manager-plan-cycle-368.md`); `workflows: write` absent (#849/#953 gatekeeper `test:all` gap fix written + YAML-valid + local-green but unpushable — Cycles 24/360/365/367/368/369/370/371 precedent).
 >
 > **Quality re-verification after edits**: typecheck ✅ lint ✅ 0 errors/0 warnings ✅ format ✅ prettier clean ✅ (docs-only PR; tests not re-run as no source changed — baseline 2,460/2,460 holds).
+>
+> **Security Engineer review (2026-08-07)**: Scan of PR diff (`git diff origin/main`) — **CLEAN**. No introduced vulnerabilities (npm audit **0 vulns**; docs-only diff, no code/dep changes), no introduced secrets (pattern scan of all added lines: OpenAI/AWS/GitHub/private-key/api-key patterns — zero matches), no introduced deprecated functions (diff removes stale references: Node `20`→`22` in troubleshooting.md, phantom `.opencode/plugin/` dir refs, stale `Alt+1..5` shortcuts). All corrected doc claims verified against code (`?` modal App.tsx:228, Ctrl/Cmd+1/2/3 VIEW_MODE_SHORTCUT_KEYS, Alt+Arrow Wizard.tsx:135-162, Ctrl/Cmd+Shift+E Editor.tsx:444, framer-motion@12.43.0 in package.json). No action required.
 
 ## Cycle 371 (2026-08-07 — ULW Loop: ISSUE MANAGER MODE (101 issues, 0 PRs) — Steps 1–3 token-blocked (`issues:write` absent: createIssue/addComment/addLabels all 403 re-verified REST+GraphQL); Step 4 Repair shipped **#1161 chore(deps) as PR #3136 merged via `--admin`** (7 safe patch/minor bumps, major jumps deferred); P1s + P2s re-verified code-resolved; only genuine gap #849/#953 gatekeeper no-`test:all` — fix local-green but push `workflows`-BLOCKED; baseline ALL GREEN 2,460/2,460)
 
