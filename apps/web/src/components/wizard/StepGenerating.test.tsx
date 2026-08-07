@@ -20,6 +20,7 @@ import {
   EDITOR_TABS,
   TOAST_MESSAGES,
   WIZARD_GENERATING_LABELS,
+  ELAPSED_ANNOUNCEMENT_INTERVAL_MS,
 } from "../../config/constants";
 import { KEYBOARD_EVENT_KEYS, TIME_UNITS, WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 
@@ -252,5 +253,34 @@ describe("StepGenerating", () => {
     expect(announcer).toBeDefined();
     // While generating, the announcer uses the ELAPSED template (timerActive).
     expect(announcer?.textContent).toContain("3 blueprint lines and 2 task lines");
+  });
+
+  it("throttles elapsed-time announcements instead of re-announcing every second", () => {
+    // Without throttling, the sr-only live region's text would change on every
+    // second boundary as the MM:SS counter ticks, causing the screen reader to
+    // re-announce the whole region once per second (chronometer spam). The fix
+    // snapshots the elapsed time to a coarse bucket (ELAPSED_ANNOUNCEMENT_INTERVAL_MS)
+    // so the announcer text is stable across sub-bucket ticks.
+    renderGenerating();
+
+    const statusRegions = screen.getAllByRole("status");
+    const announcer = statusRegions.find((el) => el.textContent?.includes("blueprint lines"));
+    expect(announcer).toBeDefined();
+    const initial = announcer?.textContent;
+
+    // `renderGenerating()` already advanced the fake clock by the cancel-button
+    // readiness delay (ANIMATION.SLOW * 2s ≈ 1000ms). Advance a handful of on-screen
+    // seconds that stay comfortably within the same 30s announcement bucket: the
+    // on-screen timer ticks, but the SR announcer text must NOT change.
+    act(() => {
+      vi.advanceTimersByTime(TIME_UNITS.MS_PER_SECOND * 5);
+    });
+    expect(announcer?.textContent).toBe(initial);
+
+    // Crossing the full bucket boundary updates the announced elapsed time.
+    act(() => {
+      vi.advanceTimersByTime(ELAPSED_ANNOUNCEMENT_INTERVAL_MS);
+    });
+    expect(announcer?.textContent).not.toBe(initial);
   });
 });
