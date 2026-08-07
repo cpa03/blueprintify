@@ -41,6 +41,16 @@
 >
 > **Deliverables**: findings Cycle 364 entry + active-tasks + CHANGELOG (docs-only, `contents:write`-safe). No issue label/close mutations possible (perm holds). Final state: blocked for issue/workflow mutations pending a permission-capable token; idle for code (repo green).
 
+## Cycle 364 (2026-08-07 — BroCula: browser-console + Lighthouse audit — LH **100-100-100-100** (23rd consecutive), 0 console errors/warnings, 0 failed non-API requests, 0 optimization opportunities, all 2,452 tests pass, all quality gates green, no code changes required)
+
+> **Entry decision**: Phase 0 — clean `main` (`99ca6073`), working tree clean → **BROCULA MODE** (browser console + Lighthouse optimization loop). Branch `brocula/loop-2026-08-07-run39` created off latest origin/main.
+>
+> **STEP 1 — Browser console hunt**: production build (`vite build`, exit 0) served on preview (port 4173). Standard `npm run brocula` hunt: **0 console errors / 0 warnings / 0 failed non-API requests** on landing. Playwright Chromium re-installed this run (full `chromium-1234` + headless shell on aarch64 runner). Interactive Playwright sweep confirmed **0 errors / 0 warnings / 0 failed non-API requests** (landing load + full-page scroll, `?` shortcuts dialog open/close via Escape, keyboard navigation, reload persistence) — **5/5 assertions passed**. All static + font requests HTTP 200.
+>
+> **STEP 2 — Lighthouse optimization**: **100-100-100-100** (Performance 100: FCP ~0.6s, Speed Index ~1.9s, TBT ~80ms, CLS ~0.007; Accessibility 100; Best Practices 100; SEO 100). First pass 98 = cold-start variance on fresh headless-shell install; full-Chrome warm re-verification **100** (same documented pattern as Runs 30/33/34). **0 audits with `overallSavingsMs > 0`, 0 scored-below-1 relevant audits**; `unused-javascript`, `unused-css-rules`, `render-blocking-resources`, `server-response-time`, `uses-text-compression`, `uses-long-cache-ttl`, `total-byte-weight` all score 1. **0 actionable optimization opportunities**.
+>
+> **Quality gates (fatal on error/warning)**: typecheck (shared/api/web) ✅ 0 errors; lint ✅ 0 errors, **0 warnings**; secrets scan ✅ (314 files); `npm audit` ✅ 0 vulnerabilities; tests **2,452/2,452** ✅ (1,076 web + 525 api + 851 shared — +4 shared vs Run 38 baseline from merged Flexy #3120 config value-assertion tests). **Result: no code changes required** — audit report `docs/audits/brocula-audit-2026-08-07-run39.md` + README table updated. Docs-only PR to follow.
+
 ## Cycle 363 (2026-08-07 — ULW Loop: PR HANDLER merged 2 PRs (#3120 Flexy refactor via `--admin`, #3119 BroCula Run 38 docs via `--admin`; external deploy fixtures only rate-limited); ISSUE MANAGER Steps 1–3 token-blocked; Repair re-verified all P1s code-resolved; baseline ALL GREEN 2,452/2,452)
 
 > **Entry decision**: Phase 0 — **2 open PRs** (#3120 flexy/iteration-184 refactor, #3119 brocula/loop run38 docs) → **PR HANDLER MODE**. Default branch auto-detected: `main`. Latest open PR first per created time.
