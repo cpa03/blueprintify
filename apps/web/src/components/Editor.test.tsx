@@ -10,7 +10,7 @@ import type { EditorStore } from "../store/editor";
 import type { WizardStore } from "../store/wizard";
 import type { TechStackItemType } from "@blueprint/shared/types";
 import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
-import { EDITOR_TABS } from "../config/constants";
+import { EDITOR_TABS, SCROLL_BEHAVIOR } from "../config/constants";
 
 // jsdom cannot compute real colors, so the color-contrast rule is always
 // "incomplete" there; disable it to focus on structural accessibility.
@@ -297,6 +297,68 @@ describe("Editor", () => {
       fireEvent.keyDown(window, { key: "e", ctrlKey: true, shiftKey: false });
 
       expect(exportAsZip).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("tab-switch scroll respects prefers-reduced-motion", () => {
+    // jsdom does not reliably implement Element#scrollTo; provide a spy on the
+    // prototype so the editor's tab-switch effect is observable. Restored in afterEach.
+    const originalScrollTo = HTMLElement.prototype.scrollTo;
+    let scrollToMock: Mock;
+
+    function stubReducedMotion(matches: boolean): void {
+      const mql = {
+        matches,
+        media: "(prefers-reduced-motion: reduce)",
+        onchange: null,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      } as unknown as MediaQueryList;
+      vi.stubGlobal("matchMedia", vi.fn().mockReturnValue(mql));
+    }
+
+    beforeEach(() => {
+      mockEditorStore.blueprintContent = "# Test Content";
+      mockEditorStore.tasksContent = "";
+      mockEditorStore.activeTab = EDITOR_TABS.BLUEPRINT;
+      scrollToMock = vi.fn();
+      Object.defineProperty(HTMLElement.prototype, "scrollTo", {
+        configurable: true,
+        writable: true,
+        value: scrollToMock,
+      });
+    });
+
+    afterEach(() => {
+      vi.unstubAllGlobals();
+      Object.defineProperty(HTMLElement.prototype, "scrollTo", {
+        configurable: true,
+        writable: true,
+        value: originalScrollTo,
+      });
+    });
+
+    it("smooth-scrolls the preview to top when motion reduction is not preferred", () => {
+      stubReducedMotion(false);
+      render(
+        <ExportProvider>
+          <Editor />
+        </ExportProvider>
+      );
+      expect(scrollToMock).toHaveBeenCalledWith({ top: 0, behavior: SCROLL_BEHAVIOR.SMOOTH });
+    });
+
+    it("instantly scrolls the preview to top when reduced motion is preferred", () => {
+      stubReducedMotion(true);
+      render(
+        <ExportProvider>
+          <Editor />
+        </ExportProvider>
+      );
+      expect(scrollToMock).toHaveBeenCalledWith({ top: 0, behavior: SCROLL_BEHAVIOR.AUTO });
     });
   });
 });
