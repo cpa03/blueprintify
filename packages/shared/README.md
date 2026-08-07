@@ -146,10 +146,16 @@ import { createDebouncedSaver } from "@blueprint/shared";
 ```
 packages/shared/
 ├── src/
-│   ├── config.ts        # Configuration constants
+│   ├── config/          # Modular configuration constants (api, core, http, etc.)
+│   ├── config.ts        # Configuration re-exports
+│   ├── index.ts         # Public package entry point
 │   ├── schema.ts        # Zod schemas and types
+│   ├── schema.test.ts   # Schema tests
 │   ├── templates.ts     # Predefined project templates
+│   ├── templates.test.ts # Template tests
 │   ├── types.ts         # Additional TypeScript types
+│   ├── types.test.ts    # Type tests
+│   ├── config.test.ts   # Config tests
 │   └── utils/
 │       └── debounce.ts  # Debounce utility
 ├── tsconfig.json

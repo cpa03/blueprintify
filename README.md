@@ -330,7 +330,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
 - **[Issue Audit Report](./docs/audits/archive/issue-audit-report-2026-07-15.md)** - ULW Loop issue audit with fix status tracking (archived)
 
-- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jun 17–Aug 6)
+- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jun 17–Aug 7)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 - **[Roadmap M3 Proposal](./docs/roadmap-m3-proposal.md)** - M3 strategic expansion proposal
 
