@@ -475,20 +475,21 @@ function EditorComponent(): JSX.Element {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleNewProject, handleExport, hasContent, isExporting, setViewMode]);
 
-  // Smooth-scroll both preview pane and CodeMirror editor to top when switching tabs
-  // Prevents disorientation when content changes but scroll stays mid-content
+  // Smooth-scroll both panes to top when switching tabs to avoid mid-content
+  // disorientation. Instant when prefers-reduced-motion, matching Header/ScrollToTop.
   useEffect(() => {
+    const behavior = shouldReduceMotion ? SCROLL_BEHAVIOR.AUTO : SCROLL_BEHAVIOR.SMOOTH;
     // Scroll markdown preview pane
     const previewEl = previewRef.current;
     if (previewEl && typeof previewEl.scrollTo === "function") {
-      previewEl.scrollTo({ top: 0, behavior: SCROLL_BEHAVIOR.SMOOTH });
+      previewEl.scrollTo({ top: 0, behavior });
     }
     // Scroll CodeMirror editor to top for visual consistency with preview pane
     const scroller = editorWrapperRef.current?.querySelector<HTMLElement>(".cm-scroller");
     if (scroller) {
       scroller.scrollTop = 0;
     }
-  }, [activeTab]);
+  }, [activeTab, shouldReduceMotion]);
 
   return (
     <>
