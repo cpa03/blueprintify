@@ -27,6 +27,7 @@ import {
   FOCUS_ANNOUNCER,
 } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared/config";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 interface Particle {
   id: number;
@@ -81,9 +82,14 @@ function AnimatedCopyButtonComponent({
   const [isPressed, setIsPressed] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const particleIdRef = useRef(0);
+  // Respect the user's prefers-reduced-motion preference: the particle burst
+  // and springy hover/press transforms are purely decorative, so they are
+  // skipped entirely for vestibular-sensitive users (WCAG 2.3.3). The copy
+  // action itself and the Copied/Copy label swap remain fully functional.
+  const shouldReduceMotion = useReducedMotion();
 
   const createParticles = useCallback(() => {
-    if (!buttonRef.current) return;
+    if (shouldReduceMotion || !buttonRef.current) return;
 
     const rect = buttonRef.current.getBoundingClientRect();
     const centerX = rect.width / 2;
@@ -118,7 +124,7 @@ function AnimatedCopyButtonComponent({
     setTimeout(() => {
       setParticles([]);
     }, PARTICLE_CONFIG.CLEANUP_DELAY_MS);
-  }, []);
+  }, [shouldReduceMotion]);
 
   const handleClick = useCallback(
     (_e: React.MouseEvent<HTMLButtonElement>) => {
@@ -152,13 +158,13 @@ function AnimatedCopyButtonComponent({
       )}
       aria-label={isCopied ? COPY_BUTTON_LABELS.COPIED : COPY_BUTTON_LABELS.COPY}
       animate={{
-        scale: isPressed ? 0.92 : 1,
+        scale: shouldReduceMotion ? 1 : isPressed ? 0.92 : 1,
       }}
       transition={{
         type: FRAMER_TYPE.SPRING,
         ...SPRING_CONFIG.DEFAULT,
       }}
-      whileHover={hasContent ? { ...HOVER_SCALE.MICRO } : undefined}
+      whileHover={!shouldReduceMotion && hasContent ? { ...HOVER_SCALE.MICRO } : undefined}
     >
       <AnimatePresence>
         {particles.map((particle) => {
@@ -298,7 +304,7 @@ function AnimatedCopyButtonComponent({
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 whileHover={
-                  hasContent
+                  !shouldReduceMotion && hasContent
                     ? {
                         rotate: [0, -10, 10, -5, 5, 0],
                         transition: { duration: ANIMATION.HALF_SECOND },
