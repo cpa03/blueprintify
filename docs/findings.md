@@ -2,6 +2,22 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 359 (2026-08-07 — RepoKeeper: repo hygiene audit — baseline ALL GREEN 2,436/2,436; 0 redundant/temp/unused files; 0 dead code; 1 doc drift fixed (active-tasks.md stale `Last Updated` footer Cycle 354 → Cycle 359); archive retention OK; 0 stale merged branches)
+
+> **Full repository hygiene audit on `main` `cb348252`** (Cycle 358 tip).
+>
+> **Baseline GREEN**: typecheck ✅ 0 errors; lint ✅ 0 errors, 0 warnings; build ✅ (web, exit 0); build:api ✅ (wrangler dry-run, exit 0); tests **2,436/2,436** ✅ (1,074 web + 515 api + 847 shared); secrets scan ✅ (312 files); `npm audit` ✅ 0 vulnerabilities.
+>
+> **Cleanup (0)**: `git ls-files` scan — 0 tracked build artifacts (`tsbuildinfo`/`dist`/`.log`/`.bak`/`*.patch`/`.wrangler`), 0 zero-size files, 0 ignored-but-tracked files (`apps/api/.wrangler/tmp` and `.codegraph` are gitignored local-only); deep source reference scan across web/api/shared — 0 dead code, 0 `@ts-expect-error`/`@ts-ignore`, 0 `as any`, 0 TODO/FIXME/HACK, 0 commented-out dead code, 0 merge conflict artifacts, 0 empty catch blocks; all `console.warn`/`console.log` hits verified intentional (logger calls, doc examples, generated template code).
+>
+> **Docs/code sync (1)**: `docs/active-tasks.md` footer `Last Updated: 2026-08-06 (RepoKeeper Cycle 354)` → `2026-08-07 (RepoKeeper Cycle 359)` (stale since Cycle 354 — recurring footer-lag pattern previously root-caused in Cycle 354). Verified non-drift: README BroCula date range `Jun 17–Aug 6` in sync with `docs/audits/README.md` (Aug 06 Run 37); frontend dev port `3000` matches `DEV_DEFAULTS.WEB_PORT` in `packages/shared/src/config/core.ts`; API endpoint table mirrors `apps/api/src/routes/*`; `.dev.vars.example` + `docs/environment-variables.md` consistent with shared-config/env source of truth (`RATE_LIMIT_*` 60/10/120, `ADMIN_API_KEY`, `CIRCUIT_BREAKER_COLD_START_WINDOW_MS` present); `storageAdapter.ts` refs only in archival logs; archive retention OK (oldest `brocula-*` series created Jul 10 = 28 days, within 30-day window — no purge; `CONSOLIDATED-README.md` is a deliberate archive index, kept).
+>
+> **Branches**: 0 stale merged branches to delete; 2 divergent unmerged branches kept per precedent (`agent-8119952459590434890` 4 ahead/83 behind; `agent/security-engineer` 10 ahead/96 behind — both carry unique infra/security content).
+>
+> **PR**: `agent/repokeeper-cycle-359` → `main`.
+
+---
+
 ## Cycle 358 (2026-08-07 — ULW Loop: ISSUE MANAGER MODE — 101 issues, 0 PRs; Steps 1–3 token-blocked; Repair Mode resolved #1014 (component coverage) + fixed CVE-2026-59870; PR #3106 merged; baseline ALL GREEN 2,463/2,463)
 
 > **Entry decision**: Phase 0 — **0 open PRs** → **ISSUE MANAGER MODE** (101 open issues). Default branch auto-detected: `main`.
