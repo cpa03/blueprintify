@@ -281,8 +281,8 @@ Standard documentation updates and maintenance
 4. **security-audit**: Security vulnerability analysis
 5. **test-suite-create**: Comprehensive test creation
 6. **dependency-audit**: Package dependency analysis
-7. **performance-analysis**: Performance optimization
-8. **accessibility-audit**: Accessibility compliance
+7. **code-review-checklist**: Systematic code review process
+8. **resilience-check**: System resilience validation
 
 ## 📋 Task Management
 
