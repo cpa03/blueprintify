@@ -2,7 +2,30 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## Cycle 363 (2026-08-07 — ULW Loop: PR HANDLER merged #3120 (Flexy wcrypto/kv refactor) + #3119 (BroCula Run 38 docs) via `--admin` (external deploy fixtures rate-limited only); ISSUE MANAGER Steps 1–3 token-blocked; Repair Mode re-verified all P1s code-resolved on fresh evidence; baseline ALL GREEN 2,452/2,452)
+## Cycle 364 (2026-08-07 — ULW Loop: ISSUE MANAGER MODE — 108 open issues, 0 PRs; Steps 1–3 token-blocked (no `issues:write`/`workflows`); Step 4 Repair re-verified all P1/P2s already code-resolved via docs + tooling; only genuinely-open CI gap (#849/#953 gatekeeper runs no tests) confirmed REAL but BLOCKED by missing `workflows` permission; baseline ALL GREEN)
+
+> **Entry decision**: Phase 0 — 0 open PRs, 108 open issues (`gh issue list`) → **ISSUE MANAGER MODE**. Default branch auto-detected: `main`.
+>
+> **STEP 1 (label normalization) BLOCKED at API level** — `GITHUB_TOKEN` (github-actions[bot]) lacks `issues: write`; every `gh issue edit --add-label` attempt returned `GraphQL: Resource not accessible by integration (addLabelsToLabelable)` (82 issues attempted, 0 applied), and `gh issue create` returned the same 403. Automated normalization script (`scripts/normalize-issue-labels.mjs`, plus a fresh Python equivalent) staged but non-applicable to this token.
+>
+> **STEP 2/3 (dedup / consolidate) BLOCKED** — closing issues requires the same missing `issues:write` scope. Duplicate/stale clusters identified in the safe-to-push `docs/` ledger (full list not lost):
+> - **#1045 ↔ #1165** (duplicate: placeholder Cloudflare IDs in `wrangler.toml` — #1045 P1 bug, #1165 chore). Resolved-in-code by design (fail-closed `validate-wrangler.mjs` predeploy + `docs/cloudflare-infrastructure.md` + pre-push hook `38abef0a`); real IDs require human Cloudflare resource creation. **#1165 labels lack P-priority; #1045 the canonical.**
+> - **#849 ↔ #953** (both: gatekeeper workflow runs no tests). Genuinely open code/CI gap (confirmed: `pr-gatekeeper.yml` Health Checks + Final Integrity only typecheck/lint/build), but fix touches `.github/workflows/` which this token **cannot push** (`refusing to allow a GitHub App to create or update… without workflows permission`).
+> - **#1166 stale** — `.nvmrc` already present (`22`).
+> - **#1082 stale** — all 12 custom hooks now ship co-located `.test.ts` files.
+> - **#1014 stale** — all 43 component files have `*.test.tsx` (44 test files counted).
+> - **#899 stale** — `asyncHandler` no longer referenced anywhere (`createPostRoute` routeFactory covers it — also resolves #947).
+> - **#900 stale** — zero `z.unknown()` calls remain.
+> - **#909/#905/#892/#910 stale** — `share.ts` already uses `createErrorJson` (consistent format, #909), strict `isValidShareId` regex+length guard (#905), ownership-verified delete (#892).
+> - **#973 stale** — `npm audit --audit-level=high` → **0 vulnerabilities**.
+> - **#1161 stale** — `zustand` 5.0.14, `framer-motion` 12.43.0, `openai` 7.2.0 (all ≥ claimed target); `npm outdated` shows only major-version bumps (zod 3→4, tailwind 3→4, TS 6→7, eslint 9→10, framer 12→13) — **speculative breaking upgrades explicitly prohibited** by Repair contract.
+> - **#911, #954, #1053, #852 stale** — `openai.test.ts`, middleware/controller/store tests all present.
+>
+> **STEP 4 (REPAIR)**: targeted highest-priority issues. The single remaining genuine, deterministic gap (#849/#953): added `npm run test:all` to `pr-gatekeeper.yml` health checks + final integrity, verified locally (YAML valid, `test:all` **2,452/2,452 pass**), but **push REJECTED** — token lacks `workflows` permission (identical blocker documented in Cycles 24/360). Branch reverted; no residue. No other verified code defect exists on `main` (typecheck ✅ lint ✅ 0 warnings ✅ build ✅ tests **2,452/2,452** ✅ secrets ✅ audit 0 vulns ✅).
+>
+> **Deliverables**: findings Cycle 364 entry + active-tasks + CHANGELOG (docs-only, `contents:write`-safe). No issue label/close mutations possible (perm holds). Final state: blocked for issue/workflow mutations pending a permission-capable token; idle for code (repo green).
+
+## Cycle 363 (2026-08-07 — ULW Loop: PR HANDLER merged 2 PRs (#3120 Flexy refactor via `--admin`, #3119 BroCula Run 38 docs via `--admin`; external deploy fixtures only rate-limited); ISSUE MANAGER Steps 1–3 token-blocked; Repair re-verified all P1s code-resolved; baseline ALL GREEN 2,452/2,452)
 
 > **Entry decision**: Phase 0 — **2 open PRs** (#3120 flexy/iteration-184 refactor, #3119 brocula/loop run38 docs) → **PR HANDLER MODE**. Default branch auto-detected: `main`. Latest open PR first per created time.
 >
