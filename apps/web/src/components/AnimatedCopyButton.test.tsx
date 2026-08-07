@@ -1,36 +1,54 @@
+/**
+ * @fileoverview Tests for AnimatedCopyButton component
+ *
+ * Tests cover the animated copy button behavior:
+ * - Rendering with default state
+ * - Click handling and particle celebration
+ * - Disabled state interaction
+ * - Accessibility features (ARIA labels, live region)
+ * - Copied state styling
+ * - Reduced motion behavior (particles and hover transforms disabled)
+ */
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { COPY_BUTTON_LABELS } from "../config/constants";
+import { COPY_BUTTON_LABELS, PARTICLE_CONFIG, HOVER_SCALE } from "../config/constants";
 import { AnimatedCopyButton } from "./AnimatedCopyButton";
+import { useReducedMotion } from "../hooks/useReducedMotion";
+import * as motion from "framer-motion/m";
+
+vi.mock("../hooks/useReducedMotion", () => ({
+  useReducedMotion: vi.fn(() => false),
+}));
+
+vi.mock("framer-motion/m", () => ({
+  button: vi.fn(({ children, whileHover: _w1, whileTap: _w2, animate: _a, ...props }) => (
+    <button {...props}>{children}</button>
+  )),
+  span: vi.fn(({ children, whileHover: _w1, whileTap: _w2, ...props }) => (
+    <span {...props}>{children}</span>
+  )),
+  div: vi.fn(
+    ({
+      children,
+      whileHover: _w1,
+      whileTap: _w2,
+      animate: _a,
+      initial: _i,
+      exit: _e,
+      ...props
+    }) => <div {...props}>{children}</div>
+  ),
+  svg: vi.fn(
+    ({ children, whileHover: _w1, initial: _i, animate: _a, transition: _t, ...props }) => (
+      <svg {...props}>{children}</svg>
+    )
+  ),
+  path: vi.fn(({ children, initial: _i, animate: _a, transition: _t, ...props }) => (
+    <path {...props}>{children}</path>
+  )),
+}));
 
 vi.mock("framer-motion", () => ({
-  motion: {
-    button: vi.fn(({ children, whileHover: _w1, whileTap: _w2, animate: _a, ...props }) => (
-      <button {...props}>{children}</button>
-    )),
-    span: vi.fn(({ children, whileHover: _w1, whileTap: _w2, ...props }) => (
-      <span {...props}>{children}</span>
-    )),
-    div: vi.fn(
-      ({
-        children,
-        whileHover: _w1,
-        whileTap: _w2,
-        animate: _a,
-        initial: _i,
-        exit: _e,
-        ...props
-      }) => <div {...props}>{children}</div>
-    ),
-    svg: vi.fn(
-      ({ children, whileHover: _w1, initial: _i, animate: _a, transition: _t, ...props }) => (
-        <svg {...props}>{children}</svg>
-      )
-    ),
-    path: vi.fn(({ children, initial: _i, animate: _a, transition: _t, ...props }) => (
-      <path {...props}>{children}</path>
-    )),
-  },
   AnimatePresence: vi.fn(({ children }) => <>{children}</>),
 }));
 
@@ -43,6 +61,7 @@ describe("AnimatedCopyButton", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(useReducedMotion).mockReturnValue(false);
   });
 
   it("renders copy button with 'Copy' label", () => {
@@ -124,5 +143,48 @@ describe("AnimatedCopyButton", () => {
 
     const button = screen.getByRole("button");
     expect(button.className).toContain("ml-2");
+  });
+
+  it("spawns celebratory particles on click by default", () => {
+    const { container } = render(<AnimatedCopyButton {...defaultProps} />);
+
+    fireEvent.click(screen.getByRole("button"));
+
+    const particles = container.querySelectorAll(".absolute.rounded-full.pointer-events-none");
+    expect(particles.length).toBe(PARTICLE_CONFIG.COUNT);
+  });
+
+  it("skips particle burst when reduced motion is preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    const { container } = render(<AnimatedCopyButton {...defaultProps} />);
+
+    fireEvent.click(screen.getByRole("button"));
+
+    expect(defaultProps.onCopy).toHaveBeenCalledTimes(1);
+    const particles = container.querySelectorAll(".absolute.rounded-full.pointer-events-none");
+    expect(particles.length).toBe(0);
+  });
+
+  it("omits button hover transform when reduced motion is preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    render(<AnimatedCopyButton {...defaultProps} hasContent={true} />);
+
+    const buttonCall = vi.mocked(motion.button).mock.calls.at(-1)?.[0];
+    expect(buttonCall?.whileHover).toBeUndefined();
+  });
+
+  it("applies button hover transform by default", () => {
+    render(<AnimatedCopyButton {...defaultProps} hasContent={true} />);
+
+    const buttonCall = vi.mocked(motion.button).mock.calls.at(-1)?.[0];
+    expect(buttonCall?.whileHover).toEqual({ ...HOVER_SCALE.MICRO });
+  });
+
+  it("omits copy icon rotation when reduced motion is preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    render(<AnimatedCopyButton {...defaultProps} hasContent={true} />);
+
+    const copyIconCall = vi.mocked(motion.svg).mock.calls.at(-1)?.[0];
+    expect(copyIconCall?.whileHover).toBeUndefined();
   });
 });
