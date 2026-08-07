@@ -379,11 +379,11 @@ cat apps/api/.dev.vars
 node --version
 
 # Use nvm to switch
-nvm install 20
-nvm use 20
+nvm install 22
+nvm use 22
 
 # Or use n
-n 20
+n 22
 ```
 
 ## Cloudflare Workers Issues

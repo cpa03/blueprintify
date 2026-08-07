@@ -431,9 +431,6 @@ export function sanitizeForStorage(data: unknown): {
     sanitized: validation.sanitizedContent,
   };
 }
-export function getContentSecurityHeaders(): Record<string, string> {
-  return { ...SECURITY_CONFIG.SECURITY_HEADERS };
-}
 
 export class SecurityError extends Error {
   constructor(

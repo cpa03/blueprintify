@@ -73,16 +73,16 @@ apps/web/
 ├── src/
 │   ├── components/         # React components
 │   │   ├── editor/         # Editor-related components
-│   │   │   ├── Editor.tsx         # Split-pane markdown editor
 │   │   │   ├── EditorHeader.tsx  # Editor toolbar
 │   │   │   └── EditorToolbar.tsx # Editor actions
 │   │   ├── wizard/         # Wizard step components
-│   │   │   ├── Wizard.tsx        # Main wizard container
 │   │   │   ├── StepInfo.tsx      # Project info step
 │   │   │   ├── StepStack.tsx     # Tech stack selection
 │   │   │   ├── StepFeatures.tsx  # Features selection
 │   │   │   ├── StepReview.tsx    # Review step
 │   │   │   └── StepGenerating.tsx # Generation in progress
+│   │   ├── Editor.tsx      # Split-pane markdown editor
+│   │   ├── Wizard.tsx      # Main wizard container
 │   │   ├── Header.tsx
 │   │   ├── StepIndicator.tsx
 │   │   ├── TemplateGrid.tsx

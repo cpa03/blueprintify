@@ -26,12 +26,7 @@
  */
 
 import { HTTP_HEADER_NAMES } from "@blueprint/shared/config";
-import type {
-  BlueprintRequest,
-  TaskGenerationRequest,
-  RefineRequest,
-  StreamChunk,
-} from "@blueprint/shared/types";
+import type { BlueprintRequest, TaskGenerationRequest, StreamChunk } from "@blueprint/shared/types";
 import {
   API_ERROR_MESSAGES,
   SSE_CONFIG,
@@ -224,29 +219,6 @@ export async function generateTasks(
     handlers,
     retryOptions,
     API_ERROR_MESSAGES.TASK_GENERATION_FAILED
-  );
-}
-
-/**
- * Refine blueprint content via AI
- *
- * Streams content refinement via SSE with automatic retry on transient failures.
- *
- * @param request - Refinement request with content and refinement instructions
- * @param handlers - Stream event handlers for chunk, error, and done events
- * @param retryOptions - Optional retry configuration
- */
-export async function refineContent(
-  request: RefineRequest,
-  handlers: StreamEventHandlers,
-  retryOptions: RetryOptions = {}
-): Promise<void> {
-  return apiCallWithRetry(
-    API_ENDPOINTS.REFINE,
-    request,
-    handlers,
-    retryOptions,
-    API_ERROR_MESSAGES.REFINEMENT_FAILED
   );
 }
 

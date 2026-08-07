@@ -1,4 +1,4 @@
-export type { ExportFiles, ImportFile, PackageJson } from "./shared";
+export type { ExportFiles, PackageJson } from "./shared";
 export { generateProjectReadme } from "./shared";
 
 export {

@@ -2,6 +2,75 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Janitor Cleanup (2026-08-07 — Dead code, unused exports scan on `agent/repokeeper-cycle-372`)
+
+**Scope**: `apps/web` source. Quality gates green after cleanup: typecheck ✅ 0 errors, lint ✅ 0 warnings, build ✅, tests ✅ (1,084 web + 525 api + 851 shared = **2,460/2,460**).
+
+### Removed
+
+1. **`apps/web/src/lib/api.ts`** — removed dead export `refineContent()` (zero consumers in prod, tests, docs; the only other `refineContent` hits are the API-side controller method). Also dropped now-unused `RefineRequest` type import.
+2. **`apps/web/src/lib/export.ts`** — removed dead export `importFile()` (zero consumers anywhere; web has no import UI wired to it). Pruned `validateAndSanitizeFileContent`/`handleSecurityError` imports left unused by the deletion.
+3. **`apps/web/src/lib/templates/shared.ts` + `templates/index.ts`** — removed `ImportFile` interface and its barrel re-export (only consumer was the deleted `importFile()`).
+4. **`apps/web/src/lib/security.ts`** — removed dead export `getContentSecurityHeaders()` (zero consumers).
+5. **`apps/web/src/config/security.ts`** — fixed stale doc comment referencing the deleted `getContentSecurityHeaders()`.
+
+### Verified clean (no action needed)
+
+- **No orphaned files**: script-based import-graph scan of `apps/web`, `apps/api`, `packages/shared` found **0 files with zero importers** (excluding entry points/tests). All config constants barrels re-export correctly.
+- **No commented-out dead code**: only legitimate JSDoc/explanation comments exist (e.g. `App.tsx` reset-detection note, `OfflineBanner` transform note). The `console.log` occurrences in `secureLog.ts`/`logger.ts` are intentional logging implementations; `lib/api.ts` ones are JSDoc examples.
+- **No duplicate modules**: shared `createDebouncedSaver` remains single source of truth; no local `logger`/`debounce` duplicates.
+- `checkHealth()` kept — has test consumers (`lib/api.test.ts`), matches project convention of keeping tested exports.
+
+### Structural findings (recommended for future work, not removed)
+
+- **Tested-but-unused exports** (only consumed by their own test files; candidates for removal or promotion): `motion.ts` variants (`fadeIn`, `scaleIn`, `slideInLeft`, `slideInRight`, `createStaggerContainer`, `createFadeInUp`), `theme.ts` tokens (`BREAKPOINTS`, `SPACING`, `TYPOGRAPHY`, `tailwindTheme`), `timeout.ts` (`createTimeoutWrapper`, `withTimeoutAndRetry`), `secureLog.ts` (`secureLogDebug`), `openai.ts` (`createAIClient`, `generateCompletion`), `sanitize.ts` (`isXssSafe`, `validateXssSafe`), `storage.ts` (`getStorageErrorMessage`, `withStorageRecovery`), `useReducedMotion.ts` (4 exports, previously documented), `useShallow` re-export in `store/index.ts` (documented convenience, kept).
+- **`apps/web/src/lib/api.ts`** — `checkHealth()` is tested but has no production consumer; candidate if the health-check UI feature never lands.
+
+## Cycle 372 (2026-08-07 — RepoKeeper: repo hygiene audit on `main`; baseline ALL GREEN 2,460/2,460; 6 doc-drift fixes shipped (`.opencode/plugin/` phantom refs ×2, troubleshooting Node 20→22, web README structure tree Editor/Wizard placement, user-guide keyboard shortcuts, README Framer Motion tech stack); 0 dead code, 0 redundant tracked files, archive retention at 30-day boundary, CI workflows compliant)
+
+> **Entry decision**: Phase 0 — **0 open PRs** → **REPOKEEPER HYGIENE MODE** (per role mandate: keep repo efficient/organized, clean redundant/temp/unused files, keep docs in sync with code, PR after finishing with branch up to date with main; build/lint errors/warnings are fatal). Default branch auto-detected: `main`.
+>
+> **Baseline gate** (fresh `main`, clean tree): typecheck ✅ 0 errors · lint ✅ 0 errors/0 warnings · format ✅ prettier clean · build ✅ (vite/rolldown exit 0) · tests **2,460/2,460** ✅ (1,084 web + 525 api + 851 shared) · scan:secrets ✅ 316 files · npm audit ✅ **0 vulns**. CI workflows 5/5 compliant (`ubuntu-24.04-arm` + `opencode/deepseek-v4-flash-free`, zero hardcoded `node-version:`). Archive retention at boundary (oldest dated `docs/audits/archive/` = Jul 8 = 30 days — no purge per precedent).
+>
+> **Redundancy audit (2 parallel explore agents)**: **0 dead source files** — every tracked .ts/.tsx/.mjs/.js in apps/packages/scripts is imported, a tool entry point (main.tsx/index.html/vite/vitest/playwright/tailwind/postcss configs), an ambient `.d.ts`, a vitest glob test, or a barrel-exported module (shared `src/config/*` + `src/utils/debounce.ts` reachable via `config.ts`/`index.ts` barrels). **0 tracked backup/temp artifacts** (`*.bak`/`*.orig`/`*.tmp`/`~`/`.DS_Store`/`.eslintcache`/`*.tsbuildinfo`/coverage/`.patch` — none tracked; `.gitignore` fully respected; only `.env.example` tracked, intentional). On-disk build/tool artifacts (`.codegraph/`, `.omo/`, `.husky/_/`, `apps/web/dist/`, `packages/shared/dist/`, `*.tsbuildinfo` ×3) are all already gitignored/untracked — no git action. Duplicate pair `.node-version`/`.nvmrc` (byte-identical "22") deliberately kept — `.nvmrc` read by `doctor` script + nvm tooling, `.node-version` read by node-version-file workflows + fnm/mise; both are tool entry points, removing either breaks tooling.
+>
+> **Docs/code sync (6 fixed)**:
+> 1. `AGENTS.md` + `CONTRIBUTING.md` — Project Structure trees listed `.opencode/plugin/` (phantom; dir does not exist) → replaced with actual `memory/` (matches README.md tree + real dir).
+> 2. `docs/troubleshooting.md` — "Wrong Node.js version" section contradicted its own `requires 22+` by suggesting `nvm install 20`/`n 20` → corrected to 22.
+> 3. `apps/web/README.md` — Project Structure tree misplaced `Editor.tsx` under `editor/` and `Wizard.tsx` under `wizard/` (both actually at `components/` root; `editor/` holds EditorHeader/EditorToolbar, `wizard/` holds Step* components) → tree rebuilt to match reality.
+> 4. `docs/user-guide.md` — Keyboard Shortcuts listed stale `Alt + 1..5` (no such navigation; code uses `Alt+ArrowLeft/ArrowRight` for wizard steps via Wizard.tsx, `Ctrl/Cmd+1/2/3` for view modes via keyboard.ts VIEW_MODE_SHORTCUT_KEYS, `?` for shortcuts modal via App.tsx QUESTION_MARK) → replaced with actual shortcut set from `apps/web/src/config/constants/keyboard.ts`.
+> 5. `README.md` — Frontend tech stack said `CSS Animations` but the app uses `framer-motion@12.43.0` (verified 20+ component imports) → corrected to **Framer Motion**.
+> 6. **Verified NOT drift** (checked, no change): web README shortcut table (`?`/Ctrl+E/Escape/Ctrl+Enter all match App.tsx/keyboard.ts); features.md shortcut claims (Ctrl/Cmd+1/2/3 ✓); API endpoint table (15/15 match routes); docs/ci-configuration.md "4 workflows use node-version-file, 11 occurrences" (exact count verified: iterate 5 + parallel 4 + on-pull 1 + pr-gatekeeper 1 = 11; main.yml has none — it bootstraps opencode via curl, no Node setup); release-process.md illustrative script snippets (`scripts/generate-changelog.ts` etc.) are intentional reference examples, not claims of shipped files.
+>
+> **Known blockers (unchanged, permission-bound)**: `issues:write` absent (101 issues can't be normalized/closed — plan in `docs/issue-manager-plan-cycle-368.md`); `workflows: write` absent (#849/#953 gatekeeper `test:all` gap fix written + YAML-valid + local-green but unpushable — Cycles 24/360/365/367/368/369/370/371 precedent).
+>
+> **Quality re-verification after edits**: typecheck ✅ lint ✅ 0 errors/0 warnings ✅ format ✅ prettier clean ✅ (docs-only PR; tests not re-run as no source changed — baseline 2,460/2,460 holds).
+>
+> **Security Engineer review (2026-08-07)**: Scan of PR diff (`git diff origin/main`) — **CLEAN**. No introduced vulnerabilities (npm audit **0 vulns**; docs-only diff, no code/dep changes), no introduced secrets (pattern scan of all added lines: OpenAI/AWS/GitHub/private-key/api-key patterns — zero matches), no introduced deprecated functions (diff removes stale references: Node `20`→`22` in troubleshooting.md, phantom `.opencode/plugin/` dir refs, stale `Alt+1..5` shortcuts). All corrected doc claims verified against code (`?` modal App.tsx:228, Ctrl/Cmd+1/2/3 VIEW_MODE_SHORTCUT_KEYS, Alt+Arrow Wizard.tsx:135-162, Ctrl/Cmd+Shift+E Editor.tsx:444, framer-motion@12.43.0 in package.json). No action required.
+
+## Cycle 372 (2026-08-07 — ULW Loop: ISSUE MANAGER MODE (101 issues, 0 PRs) — Steps 1–3 token-blocked (`issues:write` absent: createIssue/addComment/addLabelsToLabelable/addLabels all 403 re-verified REST+GraphQL this cycle); Step 4 Repair re-verified all P1s + P2 security routes code-resolved (auth fail-closed 503, CORS prod explicit, /health present, requestId in context, share/export/import hardened — rate-limit + Zod + sanitize + strict ID regex + ownership check); only genuine gap #849/#953 gatekeeper no-`test:all` — fix local-green but push `workflows`-BLOCKED (branch reverted, zero residue); baseline ALL GREEN 2,460/2,460)
+
+> **Entry decision**: Phase 0 — **0 open PRs**, **101 open issues** → **ISSUE MANAGER MODE**. Default branch auto-detected: `main`.
+>
+> **Steps 1–3 (Normalization / Duplicate / Consolidation)**: **BLOCKED** — `issues:write` absent. Re-verified this cycle on both GraphQL and REST: `gh issue create` → 403 `createIssue`; `gh issue comment` → 403 `addComment`; `gh issue edit --add-label` → 403 `addLabelsToLabelable`; `gh issue close` → 403 `updateIssue`; REST `POST /issues/{n}/labels` → 403. Only repo-level `label create` and ref/PR creation succeed. 101 open issues cannot be mutated (normalized / deduped / consolidated) without this permission — deferred to a permission-capable token (Cycles 24/360/364–371 precedent). Full 100-issue label + 16 duplicate-cluster + 10 consolidation-candidate plan remains in `docs/issue-manager-plan-cycle-368.md`.
+>
+> **Step 4 (Repair Mode)**: No P0/P1 actionable (all code-resolved or human-blocked, unclosable) → ELSE-branch: re-verified the previously-shipped P1 fixes still hold on `main` and audited the highest-priority security surfaces for any NEW genuine code gap:
+> - **#847** (auth bypass when API_KEY unset): `auth.ts` fail-closed — returns 503 `CONFIGURATION_ERROR` via `secureLogWarn` when `API_KEY` missing. **Code-resolved.**
+> - **#848/#890/#930** (CORS wildcard): `env.ts` throws `CORS_WILDCARD_PRODUCTION` in production, warns on wildcard in dev; default `CORS_ORIGIN_DEV`. **Code-resolved.**
+> - **#867** (/health), **#868** (requestId traceability): `/health` present with circuit-breaker AI check; `requestId` generated in `logger.ts` and set on Hono context (`CONTEXT_KEYS.REQUEST_ID`) consumed by auth/errorHandler. **Code-resolved.**
+> - **#905** (share ID injection), **#892/#1046** (share ownership/authz): `isValidShareId` strict length+alphanumeric regex fail-closed; delete is fail-closed on `createdBy` ownership; GET/verify have enumeration + brute-force rate limiters; passphrase verify uses HMAC token. **Code-resolved.**
+> - **#906/#908** (export/import rate-limit + max-length): both routes mount `rateLimit(rateLimitConfigs.standard)` + Zod schema validation. **Code-resolved.**
+> - **#973** (ajv moderate vulns): ajv is transitive (eslint only), not a direct dep; `npm audit` **0 vulns**. **Code-resolved.**
+> - **#1014/#1082/#935/#936** (test coverage P1s): 44 component test files, 12/12 hook tests, 4 controller test files, zustand store tests — baseline 2,460/2,460 green. **Code-resolved.**
+> - **#1045/#1165** (wrangler placeholder IDs): `validate-wrangler.mjs` fail-closed + `docs/cloudflare-infrastructure.md` documents required resources — **human-blocked** (requires real CF resource provisioning).
+> - **#1166** (.nvmrc), **#1015** (playwright.config.ts), **#1016** (eslint config), **#1161** (deps — shipped Cycle 371 as #3136): all files present / already shipped. **Code-resolved.**
+>
+> **Only remaining genuine gap — #849/#953** (ci/P1, duplicate): `pr-gatekeeper.yml` Health Checks + Final Integrity still run `typecheck`/`lint`/`build` but **never `npm run test:all`**, so failing-test PRs can auto-merge. Fix re-verified this cycle (add `test:all` + `Test Failed` grep + debugger log aggregate + integrity), YAML-validated (`python3 yaml.safe_load` ✅), local gate green — **push REJECTED**: `refusing to allow a GitHub App to create or update workflow .github/workflows/pr-gatekeeper.yml without workflows permission` (Cycles 24/360/365/367/368/369/370/371 precedent). Branch reverted, zero residue. **Deferred to a `workflows: write`-capable token.**
+>
+> **Baseline (fresh `npm ci`, 899 pkgs)**: typecheck ✅ lint ✅ **0 warnings** ✅ build ✅ tests **2,460/2,460** ✅ (1,084 web + 525 api + 851 shared) `npm audit` **0 vulns** ✅.
+>
+> **Final state**: **idle for code** (baseline ALL GREEN). Issue mutations + workflow fix deferred — token lacks `issues:write` and `workflows` permissions. Deliverable: Cycle 372 record (findings, active-tasks, CHANGELOG) via docs PR.
+
 ## Cycle 371 (2026-08-07 — ULW Loop: ISSUE MANAGER MODE (101 issues, 0 PRs) — Steps 1–3 token-blocked (`issues:write` absent: createIssue/addComment/addLabels all 403 re-verified REST+GraphQL); Step 4 Repair shipped **#1161 chore(deps) as PR #3136 merged via `--admin`** (7 safe patch/minor bumps, major jumps deferred); P1s + P2s re-verified code-resolved; only genuine gap #849/#953 gatekeeper no-`test:all` — fix local-green but push `workflows`-BLOCKED; baseline ALL GREEN 2,460/2,460)
 
 > **Entry decision**: Phase 0 — **0 open PRs**, **101 open issues** → **ISSUE MANAGER MODE**. Default branch auto-detected: `main`.
