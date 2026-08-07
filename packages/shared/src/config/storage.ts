@@ -90,6 +90,18 @@ export const KV_STORAGE_KEYS = {
 } as const;
 
 /**
+ * KV Read Format Values
+ * Centralized source of truth for Cloudflare Workers KV `.get()` deserialization formats.
+ * Flexy says: No hardcoded "json" format strings in KV reads!
+ * Usage: import { KV_READ_FORMAT } from "@blueprint/shared";
+ *        await c.env.CACHE?.get(key, KV_READ_FORMAT.JSON)
+ */
+export const KV_READ_FORMAT = {
+  /** Deserialize KV value as JSON */
+  JSON: "json",
+} as const;
+
+/**
  * Share Route Messages
  * Centralized source of truth for share route response messages.
  * Flexy says: No hardcoded "Share deleted successfully" in route handlers!
