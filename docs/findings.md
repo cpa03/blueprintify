@@ -2,6 +2,24 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 361 (2026-08-07 — RepoKeeper: repo hygiene audit — baseline ALL GREEN 2,440/2,440; 1 redundant archive file purged; 1 doc artifact removed; 0 dead code; archive retention OK; 0 stale merged branches)
+
+> **Full repository hygiene audit on `main` `45d25e02`** (Cycle 360 tip, clean tree).
+>
+> **Baseline GREEN**: typecheck ✅ 0 errors; lint ✅ 0 errors, 0 warnings; build ✅ (web, exit 0); build:api ✅ (wrangler dry-run, exit 0); tests **2,440/2,440** ✅ (1,076 web + 517 api + 847 shared); secrets scan ✅ (312 files); `npm audit` ✅ 0 vulnerabilities.
+>
+> **Cleanup (2)**: (1) purged `docs/audits/archive/brocula-hunt-2026-07-08.md` — true creation date **2026-07-04** (34 days, past 30-day retention; verified via `git log --follow --diff-filter=A`) but the file is titled `-07-08` so **BugFixer Cycle 36's title-date retention scan missed it** (exact same blind-spot class root-caused in RepoKeeper Cycle 327 — retention must be dated by *creation*, not *title*; BugFixer purged the `-07-07*` set on that premise, and this `-07-08`-titled-but-Jul-4-created straggler crossed retention the same day); remaining `brocula-*-2026-07-08*` siblings (`-run2/-run3/-run4`, `diagnostic-scoring-2026-07-08`) are genuinely created Jul 8 = 30 days, at the boundary → kept; `CONSOLIDATED-README.md` is a deliberate archive index → kept. (2) removed stray checklist line (`[x] error [npm run check] pass with 884 web + 502 API + 810 shared tests (2,196 total)...`) that had been accidentally pasted *past* the `Last Updated` footer in `docs/active-tasks.md` during a much earlier cycle — it was orphaned text with no active purpose.
+>
+> **Docs/code sync (0 drift found)**: README BroCula date range `Jun 17–Aug 6` ✅ matches `docs/audits/README.md` (Aug 06 Run 37 — latest); frontend dev port `3000` ✅ matches `DEV_DEFAULTS.WEB_PORT` in `packages/shared/src/config/core.ts`; README API endpoint table ✅ mirrors `apps/api/src/routes/*`; `.dev.vars.example` + `docs/environment-variables.md` ✅ consistent with shared-config/env source of truth (rate limits 60/10/120, `ADMIN_API_KEY`, `CIRCUIT_BREAKER_COLD_START_WINDOW_MS` all present, verified via `test-utils.ts`); `storageAdapter.ts` live refs ✅ zero (only archival findings/bugs logs).
+>
+> **Retention**: oldest remaining archive file now created Jul 8 = 30 days, at the 30-day window boundary → no further purge.
+>
+> **Branches**: 0 stale merged branches to delete; 2 divergent unmerged kept per precedent (`agent-8119952459590434890` 4 ahead/93 behind; `agent/security-engineer` 10 ahead/106 behind — both carry unique infra/security content); `test-pr-perm` is a deliberately-reused throwaway PR-permission probe (closed PRs #3112/#2668/#2313) — kept; `agent/bugfixer-cycle-37` has an **OPEN in-flight PR #3113** — kept.
+>
+> **PR**: `agent/repokeeper-cycle-361` → `main`.
+
+---
+
 ## Cycle 360 (2026-08-07 — ULW Loop: PR HANDLER merged 3 PRs (3109, 3108, 3107) + ISSUE MANAGER Repair Mode added CORS security tests (#930); 1 CI security-gap finding BLOCKED by `workflows` permission)
 
 > **Entry decision**: Phase 0 — **3 open PRs** (3109 reduced-motion, 3108 repokeeper hygiene, 3107 bugfixer archive purge) → **PR HANDLER MODE**. Default branch auto-detected: `main`.
