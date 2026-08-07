@@ -23,7 +23,7 @@
     "@vercel/analytics": "^1.6.1",
     "@vercel/speed-insights": "2.0.0",
     "clsx": "2.1.1",
-    "dompurify": "3.4.12",
+    "dompurify": "3.4.13",
     "framer-motion": "12.43.0",
     "jszip": "3.10.1",
     "react": "19.2.8",
