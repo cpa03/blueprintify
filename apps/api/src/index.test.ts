@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { MOCK_ENV } from "./test-utils";
 import { API_METADATA } from "./config/constants";
 import { RESPONSE_STATUS, ROUTE_PATHS, HTTP_STATUS, HTTP_METHODS } from "@blueprint/shared";
+import { DEV_DEFAULTS } from "@blueprint/shared";
 
 /**
  * Hoisted mock breaker so the /health endpoint's unhealthy (503) path is
@@ -122,5 +123,31 @@ describe("GET /health endpoint", () => {
 
     expect(res.status).not.toBe(HTTP_STATUS.UNAUTHORIZED);
     expect(res.status).not.toBe(HTTP_STATUS.FORBIDDEN);
+  });
+});
+
+describe("CORS origin handling (security regression for #930)", () => {
+  const configuredOrigin = DEV_DEFAULTS.PLAYWRIGHT_TEST_URL;
+
+  const fetchWithOrigin = (origin: string, path = ROUTE_PATHS.ROOT): Promise<Response> =>
+    worker.fetch(
+      new Request(`https://api.example.com${path}`, {
+        method: HTTP_METHODS.GET,
+        headers: { Origin: origin },
+      }),
+      MOCK_ENV as unknown as Env,
+      mockCtx
+    );
+
+  it("reflects the configured CORS_ORIGIN, never an arbitrary attacker origin", async () => {
+    const res = await fetchWithOrigin("https://evil.example.com");
+    const acao = res.headers.get("access-control-allow-origin");
+    expect(acao).toBe(configuredOrigin);
+    expect(acao).not.toBe("https://evil.example.com");
+  });
+
+  it("never echoes an untrusted Origin header back to the caller", async () => {
+    const res = await fetchWithOrigin("https://untrusted.invalid");
+    expect(res.headers.get("access-control-allow-origin")).not.toBe("https://untrusted.invalid");
   });
 });
