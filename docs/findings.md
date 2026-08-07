@@ -2,6 +2,18 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 360 (2026-08-07 — ULW Loop: PR HANDLER merged 3 PRs (3109, 3108, 3107) + ISSUE MANAGER Repair Mode added CORS security tests (#930); 1 CI security-gap finding BLOCKED by `workflows` permission)
+
+> **Entry decision**: Phase 0 — **3 open PRs** (3109 reduced-motion, 3108 repokeeper hygiene, 3107 bugfixer archive purge) → **PR HANDLER MODE**. Default branch auto-detected: `main`.
+>
+> **PR HANDLER (all merged, `--admin` given to bypass external deploy-fixture rate limits; local gates green)**: **#3109** (feat(ux) prefers-reduced-motion editor scroll — rebased 0 behind, typecheck/lint/build/2,438 tests green, merged, branch deleted). **#3108** (chore docs repokeeper cycle 359 — docs-only; rebased onto updated main, prettier clean, merged, branch deleted). **#3107** (fix docs BUG-046 archive purge — docs-only; **had a rebase conflict in docs/findings.md** (both #3108 and #3107 add a "Cycle 359" heading; resolved by preserving **both** sections, removed the `>>>>>>>` marker, verified no residual markers + prettier clean + full pre-push gate 2,440/2,440 green), merged, branch deleted.
+> **ISSUE MANAGER (after zero open PRs)**: Steps 1–3 (normalize labels / duplicates / consolidate) **BLOCKED** — `GITHUB_TOKEN` (github-actions[bot]) lacks `issues: write` (create/edit/label/comment/close all 403, `addLabelsToLabelable`, `addComment`, `createIssue` verified). Same documented limitation as Cycles 22–24, 357, 358. Step 4 (REPAIR): audited 101 open issues — highest-P1 issues (#1082 hook tests, #1014 component coverage, #868 request-ID, #899 asyncHandler, #1166 nvmrc, #930 CORS, #1046 share) are **already resolved in code** (validated via test files & grep) but uncloseable (token-blocked). Added genuine missing coverage: **app-level CORS middleware regression tests (#930)** in `apps/api/src/index.test.ts` — verifies the API never reflects an attacker `Origin` and always locks `Access-Control-Allow-Origin` to configured `CORS_ORIGIN`. API suite 515→**517**; lint/typecheck clean; **PR #3110** → merged, branch deleted.
+> **BLOCKED finding (NOT a duplicate issue)**: CI workflows (`pr-gatekeeper.yml` etc.) do **not** run `npm run scan:secrets` nor `npm run audit` — a real security gap matching open issues **#1084** (no dependency vuln scan in CI) and **#1088** (no secrets detection in CI). Prepared an atomic Stage-1.5 security gate (validated YAML); **push refused** — GitHub rejects a GitHub-App token updating `.github/workflows/*` without the `workflows` permission (`refusing to allow a GitHub App to create or update workflow ... without 'workflows' permission`). Same blocker class as the #1045 CI Node-version fix (Cycle 358). **Prepared-but-unpushable**, reverted local branch. Local enforcement already present (`pre-commit` runs `scan:secrets`; `pre-push` runs full `npm run check` incl. audit) — the gap is CI-only.
+>
+> **Final state**: waiting for human review (permission-capable cycle must apply the CI security gate + close unclosable resolved issues).
+
+---
+
 ## Cycle 359 (2026-08-07 — RepoKeeper: repo hygiene audit — baseline ALL GREEN 2,436/2,436; 0 redundant/temp/unused files; 0 dead code; archive retention OK; 0 stale merged branches)
 
 > **Full repository hygiene audit on `main` `cb348252`** (Cycle 358 tip).
