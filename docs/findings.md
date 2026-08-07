@@ -18,6 +18,20 @@
 >
 > **PR**: `agent/repokeeper-cycle-361` → `main`.
 
+## Cycle 361 (2026-08-07 — ULW Loop: ISSUE MANAGER MODE — 101 issues, 0 PRs; Steps 1–3 token-blocked; Repair Mode added createPostRoute middleware tests (#1053/#852); PR #3115 open)
+
+> **Entry decision**: Phase 0 — **0 open PRs** → **ISSUE MANAGER MODE** (101 open issues). Default branch auto-detected: `main`.
+>
+> **STEP 1 normalization**: 83 issues need canonical category labels / P0–P3 priority labels → **ALL mutations BLOCKED** — `GITHUB_TOKEN` (`github-actions[bot]`) lacks `issues: write` (`addLabelsToLabelable` verified 403). Same documented limitation as Cycles 22–24, 357, 358, 360. Label plan prepared in-session (`/tmp/opencode/normalize.py`) but not applied.
+>
+> **STEP 2 duplicate detection**: semantic scan of 101 issues — CORS cluster (#848/#890/#930), share-route auth cluster (#846/#905/#906), validation clusters (#908/#910/#909/#896) overlap; closure token-blocked.
+>
+> **STEP 3 consolidation**: small related issues (e.g. #873 bench warnings, #875 SkipLink framer, #874/#1052 ErrorBoundary) identified as consolidatable — token-blocked.
+>
+> **STEP 4 REPAIR MODE** — selected **#1053/#852 (API middleware coverage)**: `apps/api/src/middleware/routeFactory.ts` (`createPostRoute` factory) was the **only untested middleware module** (7/8 had tests). Added `routeFactory.test.ts` with **8 tests** covering the full middleware chain: valid-body → handler + `validatedData` (200); missing fields → 400 `VALIDATION_ERROR`; empty body → 400; prompt-injection clean pass (200); injection payload rejected (400); unauthenticated → 401; insufficient role → 403; rate-limit exceeded → 429. TDD-verified: vitest 8/8 ✅, tsc --noEmit 0 errors, eslint 0 errors **0 warnings**, full gate **2,448/2,448** green (web 1076 + api **525** (+8) + shared 847), build ✅, scan:secrets ✅. Branch `agent/middleware-routefactory-1053` (synced to `main` tip before push) → **PR #3115** (labeled `test` + `P2` per contract) — **open** (merge pending; PR-merge token scope was verified working in Cycle 360, issue-scope mutations remain blocked).
+>
+> **Final state**: PR #3115 awaiting merge; Steps 1–3 remain token-blocked (waiting for human review / permission-capable cycle).
+
 ---
 
 ## Cycle 360 (2026-08-07 — ULW Loop: PR HANDLER merged 3 PRs (3109, 3108, 3107) + ISSUE MANAGER Repair Mode added CORS security tests (#930); 1 CI security-gap finding BLOCKED by `workflows` permission)
