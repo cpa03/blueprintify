@@ -2,6 +2,29 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Cycle 374 (2026-08-07 — ULW Loop: ISSUE MANAGER MODE — Steps 1–3 token-blocked (`issues:write` 403 re-verified); Step 4 Repair re-verified P1s #1082/#1014/#1045 code-resolved (12 hook test files, coverage thresholds enforced, wrangler human-blocked); #849/#953 gatekeeper `test:all` gap confirmed REAL — fix applied + YAML-valid + local-green but push REJECTED (`workflows` permission absent, re-affirmed empirically), zero residue; baseline ALL GREEN 2,461/2,461)
+
+> **Entry decision**: Phase 0 — **0 open PRs** + **101 open issues** → **ISSUE MANAGER MODE** (PR Handler skipped; all lower phases STOP). Default branch auto-detected: `main`.
+>
+> **Steps 1–3 (Normalize / Dedup / Consolidate)**: **BLOCKED** — `github-actions[bot]` token lacks `issues: write`; re-verified REST `PATCH /issues/849` → **403 "Resource not accessible by integration"** (create/comment/add-label all 403 in prior cycles). Analysis-only for the permission-capable token: **56/101 issues** missing canonical category label (bug|enhancement|feature|docs|refactor|chore|test|ci|security), **82/101 missing `P0`–`P3` priority** (legacy `priority:low|medium|high` or none). Duplicate clusters from Cycle 332 triage remain (API middleware tests [1053, 852], CORS [930, 890, 848], component coverage [1014, 856], dependency scanning [1084, 851, 850], E2E [1019, 1015, 951, 877, 872], ErrorBoundary [1052, 874], hook tests [1082, 857], security scanning CI [1086, 915], share security [1046, 905, 892], wrangler IDs [1165, 1045]).
+>
+> **Step 4 (Repair – selection)**: No P0. Highest-priority un-resolved item is **P1**-class. All P1 candidates re-verified **code-resolved on `main`** with fresh `npm ci` baseline:
+> - **#1082 hooks** — 13 hook source files, 12 dedicated `*.test.ts` files (useAutoResizeTextarea/useAutoSaveToast/useAutoScroll/useBlueprintStream/useDocumentTitle/useFocusOnStepChange/useFocusTrap/useLastSaved/useOnlineStatus/usePersistedStore/useReducedMotion/useScrollLock) ✅
+> - **#1014 component coverage** — vitest `thresholds: statements 75 / branches 60 / functions 75 / lines 75` enforced; no enforcement failures ✅
+> - **#1045 wrangler placeholder IDs** — `scripts/validate-wrangler.mjs` fail-closed (placeholder patterns flagged, deploy blocked), requires **human Cloudflare resource provisioning** (KV/D1 namespace creation) → **human-blocked** ✅
+>
+> **Repair attempt (the genuine gap #849/#953)**: `pr-gatekeeper.yml` Health Checks + Final Integrity run typecheck/lint/build but **never `npm run test:all`** → failing-test PRs can auto-merge. Applied minimal atomic fix (add `test:all` capture + `Test Failed` grep + integrity check + debugger log aggregation), YAML-validated (`python -m yaml` clean), but **push REJECTED** — root cause confirmed empirically this cycle:
+>
+> ```
+> ! [remote rejected] HEAD -> agent/ulw-loop-cycle-374-test (refusing to allow a GitHub App to create or update workflow `.github/workflows/pr-gatekeeper.yml` without `workflows` permission)
+> ```
+>
+> Workflow-file write requires `workflows:` write scope on the installing PAT/App — the loop's GITHUB_TOKEN lacks it (Cycles 364–373 precedent). Branch reverted to identical `main` state (net-zero diff verified), tested permission branch deleted. **Deferred to a `workflows: write`-capable token.**
+>
+> **Baseline (fresh `npm ci`, 898 packages)**: `npm run check`-equivalent ALL GREEN — typecheck ✅ (0 errors) · lint ✅ (0 errors, 0 warnings) · build ✅ (`vite` exit 0) · web 1,085/1,085 ✅ · api 525/525 ✅ · shared 851/851 ✅ = **2,461/2,461** · `npm audit` **0 vulnerabilities** ✅ · scan:secrets ✅ 315 files.
+>
+> **Final state**: **idle for code on `main`** (baseline ALL GREEN, no non-mutation work remains). Issue mutations **blocked** by missing `issues:write`; workflow update **blocked** by missing `workflows:` write. Deliverable: Cycle 374 record (findings/active-tasks/CHANGELOG) as docs commit.
+
 ## Cycle 373 (2026-08-07 — ULW Loop: PR HANDLER merged 4 PRs via `--admin` (external Vercel/Workers deploy-fixture rate-limits only); then ISSUE MANAGER MODE — Steps 1–3 token-blocked (`issues:write` absent re-verified); Step 4 Repair re-verified P1s #1082/#1014/#1045 + security routes code-resolved; only genuine gap #849/#953 gatekeeper no-`test:all` — push `workflows`-BLOCKED; baseline ALL GREEN 2,461/2,461)
 
 > **Entry decision**: Phase 0 — **4 open PRs** (#3142/#3140/#3139/#3138) → **PR HANDLER MODE** per state machine (all lower phases STOP). Default branch auto-detected: `main`.
