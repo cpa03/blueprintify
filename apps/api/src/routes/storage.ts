@@ -13,6 +13,7 @@ import {
   PERCENT_SCALE,
   AUTH_DEFAULTS,
   STORAGE_FALLBACK_MESSAGES,
+  KV_READ_FORMAT,
   StorageReportRequestSchema,
 } from "@blueprint/shared";
 import { validateJson } from "../middleware/validator";
@@ -56,7 +57,7 @@ async function getStoredQuota(
   updatedAt: string;
 } | null> {
   try {
-    const stored = await c.env.CACHE?.get(quotaKey, "json");
+    const stored = await c.env.CACHE?.get(quotaKey, KV_READ_FORMAT.JSON);
     if (stored) {
       return stored as {
         used: number;
