@@ -13,23 +13,9 @@ import {
   TIMEOUTS,
   FOCUSABLE_SELECTOR_STRING,
   FOCUS_ANNOUNCER,
-  SCROLL_BEHAVIOR,
   SCROLL_INTO_VIEW_BLOCK,
 } from "../config/constants";
-
-/**
- * Returns the appropriate scroll behavior based on the user's motion preference.
- * When prefers-reduced-motion is active, returns "instant" to prevent unwanted
- * smooth-scroll animations. This ensures programmatic scrollTo/scrollIntoView
- * calls respect the user's accessibility settings, even when the CSS
- * scroll-behavior: smooth is overridden by the reduced-motion media query
- * (JS scroll calls bypass CSS scroll-behavior entirely in most browsers).
- */
-function getScrollBehavior(): ScrollBehavior {
-  if (typeof window === "undefined") return SCROLL_BEHAVIOR.AUTO;
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  return prefersReducedMotion ? SCROLL_BEHAVIOR.INSTANT : SCROLL_BEHAVIOR.SMOOTH;
-}
+import { getScrollBehavior } from "../utils/scroll";
 
 /** Configuration options for step change focus behavior */
 interface UseFocusOnStepChangeOptions {

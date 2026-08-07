@@ -79,7 +79,6 @@ import {
   OPACITY_PULSE,
   SCALE_PULSE,
   Y_OFFSET,
-  SCROLL_BEHAVIOR,
   SCROLL_INTO_VIEW_BLOCK,
   ACCESSIBILITY_LABELS,
   AUTOFOCUS_VALUES,
@@ -99,6 +98,7 @@ import { AnimatedNumber } from "../AnimatedNumber";
 import { RippleButton } from "../RippleButton";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { pageTransition, type AnimationDirection } from "../../utils/motion";
+import { getScrollBehavior } from "../../utils/scroll";
 
 interface StepGeneratingProps {
   direction?: AnimationDirection;
@@ -265,7 +265,7 @@ export const StepGenerating = memo(function StepGenerating({
     const editorPanel = document.querySelector<HTMLElement>('[id$="-panel"]');
     if (editorPanel) {
       editorPanel.scrollIntoView({
-        behavior: SCROLL_BEHAVIOR.SMOOTH,
+        behavior: getScrollBehavior(),
         block: SCROLL_INTO_VIEW_BLOCK.NEAREST,
       });
 
