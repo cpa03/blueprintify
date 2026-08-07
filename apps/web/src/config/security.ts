@@ -168,7 +168,7 @@ const CSP_DIRECTIVES = {
 
 /**
  * Standard security headers
- * Used by getContentSecurityHeaders() and API responses
+ * Used by API responses
  */
 export const SECURITY_HEADERS = {
   [HTTP_HEADER_NAMES.CONTENT_SECURITY_POLICY]: Object.entries(CSP_DIRECTIVES)

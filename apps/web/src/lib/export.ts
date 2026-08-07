@@ -6,7 +6,7 @@ import {
   DEFAULT_PROJECT_NAME,
   TECH_STACK_DETECTION,
 } from "../config/constants";
-import { sanitizeMarkdown, validateAndSanitizeFileContent, handleSecurityError } from "./security";
+import { sanitizeMarkdown } from "./security";
 
 import {
   generateReactProject,
@@ -14,7 +14,7 @@ import {
   generatePythonProject,
   generateStaticProject,
 } from "./templates";
-import type { ExportFiles, ImportFile } from "./templates";
+import type { ExportFiles } from "./templates";
 
 export async function exportAsZip(files: ExportFiles): Promise<void> {
   // Lazy load JSZip to reduce initial bundle size
@@ -77,21 +77,6 @@ export async function exportAsZip(files: ExportFiles): Promise<void> {
   link.click();
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
-}
-
-export async function importFile({ file, onImport, onError }: ImportFile): Promise<void> {
-  try {
-    const validation = await validateAndSanitizeFileContent(file);
-    if (!validation.isValid) {
-      onError(validation.error || EXPORT_ERROR_STRINGS.FILE_VALIDATION_FAILED);
-      return;
-    }
-
-    onImport(validation.content || "");
-  } catch (error) {
-    const securityError = handleSecurityError(error);
-    onError(securityError.message);
-  }
 }
 
 async function generateProjectStructure(zip: JSZip, files: ExportFiles): Promise<void> {

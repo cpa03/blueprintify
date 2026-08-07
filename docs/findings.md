@@ -2,6 +2,30 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Janitor Cleanup (2026-08-07 — Dead code, unused exports scan on `agent/repokeeper-cycle-372`)
+
+**Scope**: `apps/web` source. Quality gates green after cleanup: typecheck ✅ 0 errors, lint ✅ 0 warnings, build ✅, tests ✅ (1,084 web + 525 api + 851 shared = **2,460/2,460**).
+
+### Removed
+
+1. **`apps/web/src/lib/api.ts`** — removed dead export `refineContent()` (zero consumers in prod, tests, docs; the only other `refineContent` hits are the API-side controller method). Also dropped now-unused `RefineRequest` type import.
+2. **`apps/web/src/lib/export.ts`** — removed dead export `importFile()` (zero consumers anywhere; web has no import UI wired to it). Pruned `validateAndSanitizeFileContent`/`handleSecurityError` imports left unused by the deletion.
+3. **`apps/web/src/lib/templates/shared.ts` + `templates/index.ts`** — removed `ImportFile` interface and its barrel re-export (only consumer was the deleted `importFile()`).
+4. **`apps/web/src/lib/security.ts`** — removed dead export `getContentSecurityHeaders()` (zero consumers).
+5. **`apps/web/src/config/security.ts`** — fixed stale doc comment referencing the deleted `getContentSecurityHeaders()`.
+
+### Verified clean (no action needed)
+
+- **No orphaned files**: script-based import-graph scan of `apps/web`, `apps/api`, `packages/shared` found **0 files with zero importers** (excluding entry points/tests). All config constants barrels re-export correctly.
+- **No commented-out dead code**: only legitimate JSDoc/explanation comments exist (e.g. `App.tsx` reset-detection note, `OfflineBanner` transform note). The `console.log` occurrences in `secureLog.ts`/`logger.ts` are intentional logging implementations; `lib/api.ts` ones are JSDoc examples.
+- **No duplicate modules**: shared `createDebouncedSaver` remains single source of truth; no local `logger`/`debounce` duplicates.
+- `checkHealth()` kept — has test consumers (`lib/api.test.ts`), matches project convention of keeping tested exports.
+
+### Structural findings (recommended for future work, not removed)
+
+- **Tested-but-unused exports** (only consumed by their own test files; candidates for removal or promotion): `motion.ts` variants (`fadeIn`, `scaleIn`, `slideInLeft`, `slideInRight`, `createStaggerContainer`, `createFadeInUp`), `theme.ts` tokens (`BREAKPOINTS`, `SPACING`, `TYPOGRAPHY`, `tailwindTheme`), `timeout.ts` (`createTimeoutWrapper`, `withTimeoutAndRetry`), `secureLog.ts` (`secureLogDebug`), `openai.ts` (`createAIClient`, `generateCompletion`), `sanitize.ts` (`isXssSafe`, `validateXssSafe`), `storage.ts` (`getStorageErrorMessage`, `withStorageRecovery`), `useReducedMotion.ts` (4 exports, previously documented), `useShallow` re-export in `store/index.ts` (documented convenience, kept).
+- **`apps/web/src/lib/api.ts`** — `checkHealth()` is tested but has no production consumer; candidate if the health-check UI feature never lands.
+
 ## Cycle 372 (2026-08-07 — RepoKeeper: repo hygiene audit on `main`; baseline ALL GREEN 2,460/2,460; 6 doc-drift fixes shipped (`.opencode/plugin/` phantom refs ×2, troubleshooting Node 20→22, web README structure tree Editor/Wizard placement, user-guide keyboard shortcuts, README Framer Motion tech stack); 0 dead code, 0 redundant tracked files, archive retention at 30-day boundary, CI workflows compliant)
 
 > **Entry decision**: Phase 0 — **0 open PRs** → **REPOKEEPER HYGIENE MODE** (per role mandate: keep repo efficient/organized, clean redundant/temp/unused files, keep docs in sync with code, PR after finishing with branch up to date with main; build/lint errors/warnings are fatal). Default branch auto-detected: `main`.

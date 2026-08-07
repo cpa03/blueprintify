@@ -9,12 +9,6 @@ export interface ExportFiles {
   features: string[];
 }
 
-export interface ImportFile {
-  file: File;
-  onImport: (content: string) => void;
-  onError: (error: string) => void;
-}
-
 export interface PackageJson {
   name: string;
   version: string;
