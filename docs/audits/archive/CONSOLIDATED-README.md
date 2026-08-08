@@ -21,12 +21,13 @@
 - **2026-08-01** — RepoKeeper Cycle 326: Retention cleanup (removed 3 files from Jul 1 — `brocula-hunt-2026-07-01-run{1,2,3}.md`, >30 days old); duplicate removal (5 root copies of Jul 23-24 audit reports that had been moved to archive in Cycle 312)
 - **2026-08-01** — BugFixer Cycle 13 (BUG-037): Retention cleanup (removed 3 files from Jul 1 — `brocula-hunt-2026-07-01-run{1,2,3}.md`, >30 days old; prior cycles' retention checks only scanned `brocula-audit-*` and missed the `brocula-hunt-*` series)
 - **2026-08-02** — RepoKeeper Cycle 327: Retention cleanup (removed 3 files from Jul 2 — `brocula-hunt-2026-07-02-run{1,2,3}.md`, >30 days old; BugFixer Cycle 16 audit misreported "oldest Jul 13" — these Jul 2 files had been missed because the retention scan used the audit-run date in the report title instead of the file's creation date; verified via `git log --follow` that they date from Jul 2, 31 days old)
+- **2026-08-08** — RepoKeeper Cycle 378: Retention cleanup (removed 4 files from Jul 8 — `brocula-hunt-2026-07-08-run{2,3,4}.md`, `diagnostic-scoring-2026-07-08.md`, >30 days old; BugFixer Cycle 41 had misreported "oldest Jul 13" — the Jul 8 `brocula-hunt-*`/`diagnostic-*` files were missed by the retention scan, same `brocula-audit-*`-only scan gap as BugFixer Cycle 16; verified via `git log --follow` that they date from Jul 8, 31 days old)
 
 ## What's Here
 
 These files are retained for historical reference only. Current archive contents:
 
-### BroCula / BroCula-Audit Reports (Jul 2 - Jul 24, 2026)
+### BroCula / BroCula-Audit Reports (Jul 9 - Jul 24, 2026)
 - Daily brocula-hunt and brocula-audit run reports covering browser console error detection and Lighthouse audit optimization
 - Each file represents one run cycle from the CI pipeline
 
@@ -39,4 +40,4 @@ These files are retained for historical reference only. Current archive contents
 ## Retention Policy
 
 Archive files are kept for 30 days from creation, then eligible for deletion.
-Last cleanup: 2026-08-02 (RepoKeeper Cycle 327 — removed 3 files from Jul 2 — `brocula-hunt-2026-07-02-run{1,2,3}.md`, >30 days old. BugFixer Cycle 16's "oldest Jul 13" claim was wrong: those Jul 2 files had escaped the retention scan, which dated files by report-title audit-run date rather than file creation date; `git log --follow` confirmed Jul 2 creation — 31 days old at purge).
+Last cleanup: 2026-08-08 (RepoKeeper Cycle 378 — removed 4 files from Jul 8 — `brocula-hunt-2026-07-08-run{2,3,4}.md`, `diagnostic-scoring-2026-07-08.md`, >30 days old. BugFixer Cycle 41's "oldest Jul 13" claim was wrong: those Jul 8 files had escaped the retention scan, which dated files by report-title audit-run date rather than file creation date; `git log --follow` confirmed Jul 8 creation — 31 days old at purge. Oldest remaining archive files now date from Jul 9 = 30 days, at boundary — no further purge needed).

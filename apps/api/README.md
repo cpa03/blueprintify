@@ -106,6 +106,7 @@ npm run deploy
 apps/api/
 ├── src/
 │   ├── config/          # Environment and constants configuration
+│   │   ├── config-types.ts # EnvConfig type definitions
 │   │   ├── constants.ts # Re-export hub for config/constants modules
 │   │   ├── constants/   # Per-domain constant modules
 │   │   │   ├── ai.ts
@@ -133,17 +134,23 @@ apps/api/
 │   │   ├── base.controller.ts
 │   │   ├── generate.controller.ts
 │   │   ├── tasks.controller.ts
-│   │   └── refine.controller.ts
+│   │   ├── refine.controller.ts
+│   │   └── index.ts
 │   ├── di/             # Dependency injection container
 │   │   ├── container.ts
 │   │   └── index.ts
 │   ├── errors.ts       # Custom error classes
+│   ├── global.d.ts     # Global type declarations
+│   ├── index.test.ts   # Main entry point tests
+│   ├── integration/    # Integration tests
 │   ├── middleware/     # Hono middleware
 │   │   ├── auth.ts         # API key authentication
+│   │   ├── authorize.ts    # Role-based authorization (RBAC)
 │   │   ├── bodyLimit.ts    # Request body size limits
 │   │   ├── errorHandler.ts # Global error handling
 │   │   ├── logger.ts      # Request logging
 │   │   ├── rateLimit.ts   # Rate limiting
+│   │   ├── routeFactory.ts # Route handler factory
 │   │   └── validator.ts   # Zod validation middleware
 │   ├── routes/         # Route definitions
 │   │   ├── generate.ts
@@ -159,10 +166,13 @@ apps/api/
 │   ├── utils/          # Utility functions
 │   │   ├── circuitBreaker.ts
 │   │   ├── retry.ts
+│   │   ├── sanitize.ts
 │   │   ├── secureLog.ts
 │   │   ├── stream.ts   # SSE utilities
 │   │   └── timeout.ts
 │   ├── index.ts        # Main entry point
+│   ├── test-setup.ts   # Test setup configuration
+│   ├── test-utils.ts   # Test utilities
 │   └── types.ts        # TypeScript type definitions
 ├── wrangler.toml       # Cloudflare Workers configuration
 ├── vitest.config.ts    # Test configuration
@@ -226,7 +236,7 @@ All errors return consistent JSON responses:
 
 ### Security
 
-- API key authentication (except health check)
+- API key authentication on all routes except the public endpoints (`/`, `/health`, `/warmup`)
 - Request body size limits
 - CORS configuration
 - Input validation with Zod

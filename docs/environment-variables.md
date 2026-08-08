@@ -145,7 +145,7 @@ cd apps/api
 cp .dev.vars.example .dev.vars
 
 # Edit .dev.vars with your actual values
-# Required: OPENAI_API_KEY and API_KEY
+# Required: OPENAI_API_KEY (Recommended: API_KEY — protected endpoints return 503 when unset)
 ```
 
 Example `.dev.vars`:

@@ -22,14 +22,14 @@ Enter the basic information about your project.
   - Use a descriptive name for your project
   - Example: "Task Management System", "E-commerce Platform"
 
-- **Project Description** (1-1000 characters)
+- **Project Description** (10-2000 characters)
   - Provide a clear overview of what your project does
   - Include main purpose and key features
   - Example: "A web-based task management application that helps teams organize and track their work"
 
 #### Optional Fields
 
-- **Target Audience** (1-500 characters)
+- **Target Audience** (up to 200 characters)
   - Describe who will use this project
   - Examples: "Individual users", "Small businesses", "Enterprise teams"
 
@@ -138,7 +138,7 @@ Review your complete project configuration before generating the blueprint.
 #### Editing Options
 
 - **Edit Buttons** - Click "Edit" next to any section to go back and modify
-- **Quick Navigation** - Use keyboard shortcuts (Alt+1-4) to jump to any step
+- **Quick Navigation** - Use keyboard shortcuts (Alt+1/2/3) on the review step to jump to the Project Info, Tech Stack, or Features edit views
 - **Back Navigation** - Use the back button to go to previous steps
 
 #### Generation Process
@@ -198,7 +198,6 @@ The application automatically saves your work to browser localStorage, ensuring 
 - **Wizard Progress** - All form data from steps 1-3
 - **Generated Content** - blueprint.md and task.md files
 - **Editor Changes** - All modifications made in the split-pane editor
-- **Refinement History** - Track of AI-assisted improvements
 
 #### Storage Management
 
@@ -267,39 +266,28 @@ After generation, you'll have access to a split-pane editor where you can:
 - **XSS Protection** - All content sanitized before rendering
 - **Safe Preview** - Markdown preview with security filtering
 - **Input Validation** - Real-time validation of user input
-- **Secure Storage** - Encrypted localStorage for sensitive content
+- **Storage Persistence** - Plain JSON saved to browser localStorage
 
 #### Refinement Workflow
 
-The refinement workflow allows you to selectively improve and enhance specific sections of your generated content.
+Content refinement is available through the API only — there is no in-editor refinement UI in the web application.
 
 **How to Use Refinement**
 
-1. **Select Section** - Click on any section heading in the editor to target it
-2. **Choose Refinement Type** - Select from various refinement options:
-   - **Enhance** - Improve existing content with more detail
-   - **Expand** - Add comprehensive information and examples
-   - **Simplify** - Make content more concise and clear
-   - **Fix** - Correct errors or inconsistencies
-   - **Custom** - Provide your own refinement instructions
-3. **Add Instructions** - Enter specific guidance for the AI (optional)
-4. **Process** - Watch as the AI refines your content in real-time
-5. **Review** - Accept or refine further as needed
+1. **Call the API** - Send a POST request to `/api/refine` with the content to refine and your instructions
+2. **Authenticate** - The request requires an API key
+3. **Stream Results** - Refined content is returned in real-time via an SSE stream
+4. **Use the Output** - Apply the refined content to your generated documents
 
 **Refinement Features**
 
-- **Section Targeting** - Refine specific sections without affecting others
-- **Edit Preservation** - Your manual edits are preserved during refinement
-- **Real-time Streaming** - See improvements as they're generated
-- **Undo/Redo Support** - Revert changes if needed
-- **Context Awareness** - AI maintains project context for relevant improvements
+- **API-only Access** - No in-editor refinement controls; use the `/refine` endpoint directly
+- **Real-time Streaming** - Improvements are streamed back as they're generated
 
 **Best Practices**
 
 - Be specific with refinement instructions
-- Use refinement to add technical details or examples
-- Preserve important manual edits
-- Review refined content for accuracy
+- Review refined content for accuracy before use
 
 ### Export Options
 
@@ -347,7 +335,6 @@ The refinement workflow allows you to selectively improve and enhance specific s
 - `.zip` - Complete project archives with metadata
 - `.json` - Structured data format
 - `.md` - Individual markdown files
-- `.blueprint` - Native blueprint format
 
 **Best Practices**
 
