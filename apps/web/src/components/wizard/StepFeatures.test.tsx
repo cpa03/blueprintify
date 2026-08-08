@@ -386,6 +386,32 @@ describe("StepFeatures", () => {
     expect(mockStore.addFeature).toHaveBeenCalledWith(SUGGESTED_FEATURES[0]);
   });
 
+  it("restores focus to the added feature's remove button after activating a suggestion", () => {
+    mockStore.features = [];
+    mockStore.addFeature = vi.fn((feature: string) => {
+      mockStore.features = [...mockStore.features, feature];
+    });
+    render(<StepFeatures />);
+    const suggestionButton = screen.getByLabelText(
+      ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_SUGGESTION(SUGGESTED_FEATURES[0])
+    );
+    suggestionButton.focus();
+    fireEvent.keyDown(suggestionButton, { key: "Enter" });
+    act(() => {
+      vi.runAllTimers();
+    });
+    expect(
+      screen.queryByLabelText(
+        ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_SUGGESTION(SUGGESTED_FEATURES[0])
+      )
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByLabelText(
+        ACCESSIBILITY_LABELS.WIZARD_FEATURES.REMOVE_FEATURE(SUGGESTED_FEATURES[0])
+      )
+    ).toHaveFocus();
+  });
+
   // ======== Add All Suggestions ========
 
   it("calls addFeature for all remaining suggestions when 'Add all' is clicked", () => {
