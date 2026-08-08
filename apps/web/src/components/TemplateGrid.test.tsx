@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { TemplateGrid } from "./TemplateGrid";
 
@@ -123,19 +123,55 @@ describe("TemplateGrid", () => {
     expect(mockLoadTemplate).toHaveBeenCalled();
   });
 
-  it("disables all templates after one is selected", () => {
+  it("marks all templates aria-disabled after one is selected", () => {
     render(<TemplateGrid />);
 
     const webAppButton = screen.getByText("Web Application").closest("button")!;
     const mobileAppButton = screen.getByText("Mobile App").closest("button")!;
 
-    expect(webAppButton).not.toBeDisabled();
-    expect(mobileAppButton).not.toBeDisabled();
+    expect(webAppButton).toBeEnabled();
+    expect(mobileAppButton).toBeEnabled();
 
     fireEvent.click(webAppButton);
 
-    // Both should be disabled after click
-    expect(webAppButton).toBeDisabled();
+    // Blocks re-selection without the native disabled attribute, which would
+    // drop keyboard focus to <body> the moment the focused card is disabled
+    expect(webAppButton).toHaveAttribute("aria-disabled", "true");
+    expect(mobileAppButton).toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("keeps focus on the selected card during load (WCAG 2.4.3)", () => {
+    render(<TemplateGrid />);
+
+    const webAppButton = screen.getByText("Web Application").closest("button")!;
+    webAppButton.focus();
+    fireEvent.click(webAppButton);
+
+    expect(webAppButton).toHaveFocus();
+  });
+
+  it("announces loading state to screen readers", () => {
+    render(<TemplateGrid />);
+
+    const webAppButton = screen.getByText("Web Application").closest("button")!;
+    fireEvent.click(webAppButton);
+
+    const announcer = screen.getByRole("status");
+    expect(announcer).toHaveTextContent("Loading Web Application template");
+  });
+
+  it("clears the loading announcement after load completes", async () => {
+    render(<TemplateGrid />);
+
+    const webAppButton = screen.getByText("Web Application").closest("button")!;
+    fireEvent.click(webAppButton);
+
+    await act(async () => {
+      vi.advanceTimersByTime(300);
+    });
+
+    const announcer = screen.getByRole("status");
+    expect(announcer).toBeEmptyDOMElement();
   });
 
   it("renders template emoji icons", () => {
