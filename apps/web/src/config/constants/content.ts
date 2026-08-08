@@ -290,6 +290,8 @@ export const ACCESSIBILITY_LABELS = {
   },
   TEMPLATES: {
     QUICK_START: "Quick start templates",
+    /** Screen reader announcement while a template is being loaded */
+    LOADING: (name: string) => `Loading ${name} template`,
   },
   HEADING_ANCHOR: {
     COPY_LINK_TITLE: "Copy anchor link",

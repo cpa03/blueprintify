@@ -37,6 +37,7 @@ import {
   ENTRANCE_STAGGER,
   STAGGER_CONFIG,
   CSS_CLASSES,
+  FOCUS_ANNOUNCER,
 } from "../config/constants";
 import { FORM, FOCUS_VISIBLE_RING_CARD, ICON, SPINNER } from "../config/styles";
 import { TEMPLATE_GLOW_SHADOW } from "../config/theme";
@@ -155,7 +156,12 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
               }}
               onClick={() => handleTemplateClick(template)}
               onKeyDown={(e) => handleCardKeyDown(e, template, index)}
-              disabled={selectedId !== null}
+              // aria-disabled (not the native attribute): the native disabled
+              // attribute drops focus to <body> the instant the focused card
+              // becomes disabled on selection (WCAG 2.4.3), leaving keyboard
+              // users stranded during the load. The click/key guards below
+              // already block re-selection, so focus stays put.
+              aria-disabled={selectedId !== null}
               aria-busy={isSelected && isLoading}
               aria-selected={isSelected}
               role="option"
@@ -292,6 +298,20 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
           );
         })}
       </div>
+
+      {/* Intentionally blank when idle — live region for loading announcements */}
+      <span
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {isLoading && selectedId
+          ? ACCESSIBILITY_LABELS.TEMPLATES.LOADING(
+              STARTER_TEMPLATES.find((template) => template.id === selectedId)?.name ?? ""
+            )
+          : ""}
+      </span>
     </section>
   );
 }
