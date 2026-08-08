@@ -8,7 +8,7 @@
 - CI/CD security: Standardized runner versions (`ubuntu-24.04-arm`) and action versions across all workflows.
 - Regular security audits (monthly recommended).
 
-## Current Security Status (2026-06-08)
+## Current Security Status (2026-08-08)
 
 | Control             | Status                                                |
 | ------------------- | ----------------------------------------------------- |
@@ -24,8 +24,9 @@
 | HTML Sanitization   | ✅ DOMPurify configured (SVG/math blocked)            |
 | Rate Limiting       | ✅ Cloudflare rate limiter                            |
 | CI Runner           | ✅ All workflows use ubuntu-24.04-arm                 |
-| CI Actions          | ⚠️ main.yml uses invalid @v5 (blocked by #743)        |
-| npm audit           | ✅ **0 vulnerabilities** — Clean                      |
+| CI Actions          | ✅ All workflows use actions/checkout@v7              |
+| npm audit           | ✅ **0 vulnerabilities** — Clean (openai 7.4.0)       |
+| Deprecated API usage| ✅ max_tokens → max_completion_tokens (openai v7)    |
 | .dev.vars gitignore  | ✅ Added to prevent credential commits               |
 
 ## Lessons Learned
@@ -150,6 +151,15 @@
 - **Risk Assessment**: LOW - development-only dependency, not in production bundle
 - **Resolution**: Risk accepted, documented in `docs/security/assessment-ajv-vulnerabilities.md`
 - **Lesson**: Always assess actual exploitability before panic-fixing dependency vulnerabilities
+
+### 2026-07-27 09:26 UTC: Security Engineer Audit — PR jsdom 29→30, OfflineBanner Component
+
+- **Finding**: PR upgrades `jsdom` from `29.1.1` to `30.0.0` (dev dependency) and adds `OfflineBanner.tsx` component. No introduced vulnerabilities, secrets, or deprecated functions.
+- **Code Scanned**: `apps/web/package.json`, `apps/web/src/components/OfflineBanner.tsx`, `package-lock.json`
+- **Scans performed**: npm audit (0 vulns ✅), secrets scan (none found ✅), XSS vector scan (no dangerous patterns ✅), deprecated API scan (none in new/changed code ✅), DOM manipulation audit (CSS injection uses static constants only ✅)
+- **Pre-existing Issue Fixed**: `package-lock.json` had `openai@6.48.0` while `apps/api/package.json` specified `"openai": "6.49.0"` — ran `npm install` to sync lockfile with manifest.
+- **Verification**: TypeScript clean, npm audit 0 vulns, 893 packages audited.
+- **Lesson**: Static CSS keyframe injection via `document.createElement('style')` is safe when content comes from constants files, not user input. Lockfile/manifest version mismatches should be caught and fixed proactively.
 
 ### 2026-06-08: Security Engineer Audit — Dependency Downgrade Regression Fixed
 
