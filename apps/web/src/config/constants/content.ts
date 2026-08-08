@@ -308,7 +308,8 @@ export const ACCESSIBILITY_LABELS = {
   },
   SCROLL_PROGRESS: {
     READING: "Reading progress",
-    PAGE_SCROLL_POSITION: "Page scroll position — click to navigate",
+    PAGE_SCROLL_POSITION: "Page scroll position — click or use arrow keys to navigate",
+    PAGE_SCROLL_PERCENT: (pct: number) => `${Math.round(pct)}% of page`,
   },
   PROGRESS: {
     PERCENT_COMPLETE: (pct: number) => `${Math.round(pct)}% complete`,
