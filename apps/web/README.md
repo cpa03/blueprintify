@@ -181,7 +181,7 @@ The frontend communicates with the API via fetch:
 
 ```typescript
 // Streaming generation
-const response = await fetch("/generate", {
+const response = await fetch("/api/generate", {
   method: "POST",
   body: JSON.stringify(wizardState),
 });

@@ -238,11 +238,17 @@ _See `.opencode/skill/` directory for complete skill definitions._
 
 ### API Environment Variables
 
-| Variable          | Required | Description                         |
-| ----------------- | -------- | ----------------------------------- |
-| `OPENAI_API_KEY`  | Yes      | Your OpenAI API key                 |
-| `OPENAI_BASE_URL` | No       | Custom API base URL                 |
-| `OPENAI_MODEL`    | No       | Model to use (default: gpt-4o-mini) |
+| Variable          | Required    | Description                                                        |
+| ----------------- | ----------- | ------------------------------------------------------------------ |
+| `OPENAI_API_KEY`  | Yes         | Your OpenAI API key                                                |
+| `OPENAI_BASE_URL` | No          | Custom API base URL                                                |
+| `OPENAI_MODEL`    | No          | Model to use (default: gpt-4o-mini)                                |
+| `API_KEY`         | Recommended | API authentication key — protected endpoints return 503 when unset |
+| `ADMIN_API_KEY`   | No          | Admin API key granting the `admin` role (RBAC)                     |
+| `CORS_ORIGIN`     | No          | Allowed CORS origins (default: http://localhost:3000)              |
+| `ENVIRONMENT`     | No          | Runtime environment (default: development)                         |
+
+See [docs/environment-variables.md](./docs/environment-variables.md) for the full reference.
 
 ## 📡 API Endpoints
 
