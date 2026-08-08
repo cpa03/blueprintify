@@ -235,7 +235,7 @@ function WizardComponent(): JSX.Element {
       {/* Top scroll shadow — fades in when wizard content is scrolled down,
           providing a subtle spatial cue that content is hidden above. */}
       <div
-        className="absolute top-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
+        className={CSS_CLASSES.SCROLL_SHADOW_TOP}
         style={{
           opacity: shadowOpacity ?? (scrollState.isTop ? 0 : 1),
           height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
@@ -257,7 +257,7 @@ function WizardComponent(): JSX.Element {
       {/* Bottom scroll shadow — fades in when there's more wizard content
           below the visible area, hinting the user to keep scrolling. */}
       <div
-        className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
+        className={CSS_CLASSES.SCROLL_SHADOW_BOTTOM}
         style={{
           opacity: shadowOpacity ?? (scrollState.isBottom ? 0 : 1),
           height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,

@@ -30,6 +30,7 @@ import {
   ANIMATION,
   EASING,
   PREVIEW_EMPTY_LABELS,
+  CSS_CLASSES,
 } from "../config/constants";
 
 interface PreviewEmptyStateProps {
@@ -218,13 +219,9 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
                 ...SPRING_CONFIG.SNAPPY,
               }}
             >
-              <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-                {DISPLAY_SYMBOLS.ARROW_LEFT}
-              </kbd>
+              <kbd className={CSS_CLASSES.KEYCAP}>{DISPLAY_SYMBOLS.ARROW_LEFT}</kbd>
               <span className="text-dark-500">/</span>
-              <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-                {DISPLAY_SYMBOLS.ARROW_RIGHT}
-              </kbd>
+              <kbd className={CSS_CLASSES.KEYCAP}>{DISPLAY_SYMBOLS.ARROW_RIGHT}</kbd>
               <span>{EDITOR_LABELS.TAB_NAVIGATION.SWITCH_TABS}</span>
             </motion.div>
           ) : (

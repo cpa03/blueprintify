@@ -150,7 +150,7 @@ export const StepReview = memo(function StepReview({
                   )}
                 >
                   <svg
-                    className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-8"
+                    className={CSS_CLASSES.ICON_HOVER_ROTATE_8}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -229,7 +229,7 @@ export const StepReview = memo(function StepReview({
                   )}
                 >
                   <svg
-                    className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-8"
+                    className={CSS_CLASSES.ICON_HOVER_ROTATE_8}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -311,7 +311,7 @@ export const StepReview = memo(function StepReview({
                     )}
                   >
                     <svg
-                      className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-8"
+                      className={CSS_CLASSES.ICON_HOVER_ROTATE_8}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

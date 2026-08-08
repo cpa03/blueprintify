@@ -19,6 +19,7 @@ import {
   EMPTY_STATE_CONFIG,
   ANIMATION,
   EASING,
+  CSS_CLASSES,
 } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS, DISPLAY_SYMBOLS } from "@blueprint/shared/config";
 import { EDITOR_EMPTY_STATE_LABELS } from "../config/constants/content";
@@ -209,9 +210,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               key: "kb",
               content: (
                 <>
-                  <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-                    {DISPLAY_SYMBOLS.QUESTION_MARK}
-                  </kbd>
+                  <kbd className={CSS_CLASSES.KEYCAP}>{DISPLAY_SYMBOLS.QUESTION_MARK}</kbd>
                   <span>{EDITOR_EMPTY_STATE_LABELS.KEYBOARD_SHORTCUTS}</span>
                 </>
               ),
@@ -220,13 +219,9 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               key: "submit",
               content: (
                 <>
-                  <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-                    {modifierKey}
-                  </kbd>
+                  <kbd className={CSS_CLASSES.KEYCAP}>{modifierKey}</kbd>
                   <span className="text-dark-500">+</span>
-                  <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-                    {DISPLAY_SYMBOLS.ENTER_KEY}
-                  </kbd>
+                  <kbd className={CSS_CLASSES.KEYCAP}>{DISPLAY_SYMBOLS.ENTER_KEY}</kbd>
                   <span>{EDITOR_EMPTY_STATE_LABELS.SUBMIT_WIZARD}</span>
                 </>
               ),
@@ -235,13 +230,9 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               key: "next",
               content: (
                 <>
-                  <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-                    {altKey}
-                  </kbd>
+                  <kbd className={CSS_CLASSES.KEYCAP}>{altKey}</kbd>
                   <span className="text-dark-500">+</span>
-                  <kbd className="px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none">
-                    {DISPLAY_SYMBOLS.ARROW_RIGHT}
-                  </kbd>
+                  <kbd className={CSS_CLASSES.KEYCAP}>{DISPLAY_SYMBOLS.ARROW_RIGHT}</kbd>
                   <span>{EDITOR_EMPTY_STATE_LABELS.NEXT_STEP}</span>
                 </>
               ),

@@ -4,6 +4,45 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 185: Centralize CSS Class Combinations, Log Contexts & API Micro-Literals
+
+**Problem**: Remaining hardcoded values were scattered across two fronts. Web: 6× scroll-shadow overlay class strings (Editor/Wizard), 11× icon hover-rotation class strings (4 wizard steps), 7× empty-state keycap class strings, and the "Skip to main content" label — all bypassing `CSS_CLASSES`. API: 6× secure-log context/message strings bypassing `LOG_CONTEXT`, the share verify `"token"` query param bypassing the `STORAGE_QUERY_PARAMS` pattern, an inline Content-Type mismatch message, the Server-Timing `"app"`/`0` literals, a `Date.now()` bypassing the `timestamp()` helper, and a raw `"ms"` suffix. Flexy says: no hardcoded class strings, log contexts, or micro-literals!
+
+| File | Change |
+|------|--------|
+| `apps/web/src/config/constants/accessibility.ts` | Added `CSS_CLASSES.KEYCAP`, `CSS_CLASSES.SCROLL_SHADOW_TOP`, `CSS_CLASSES.SCROLL_SHADOW_BOTTOM`, `CSS_CLASSES.ICON_HOVER_ROTATE_90`, `CSS_CLASSES.ICON_HOVER_ROTATE_8`, `CSS_CLASSES.ICON_HOVER_SHIFT` + `ACCESSIBILITY_LABELS_SKIP.SKIP_TO_MAIN_CONTENT` |
+| `apps/web/src/components/Editor.tsx` + `Wizard.tsx` | Replaced 6× hardcoded scroll-shadow overlay class strings with `CSS_CLASSES.SCROLL_SHADOW_TOP/BOTTOM` |
+| `apps/web/src/components/wizard/StepInfo.tsx` + `StepFeatures.tsx` + `StepReview.tsx` + `StepStack.tsx` | Replaced 11× hardcoded icon hover-rotation class strings with `CSS_CLASSES.ICON_HOVER_ROTATE_90/ROTATE_8/SHIFT` |
+| `apps/web/src/components/EditorEmptyState.tsx` + `PreviewEmptyState.tsx` | Replaced 7× hardcoded `<kbd>` keycap class strings with `CSS_CLASSES.KEYCAP` |
+| `apps/web/src/components/SkipLink.tsx` | Replaced hardcoded `"Skip to main content"` with `ACCESSIBILITY_LABELS_SKIP.SKIP_TO_MAIN_CONTENT` |
+| `apps/api/src/config/constants/validation.ts` | Added `LOG_CONTEXT.RATE_LIMITER` / `RATE_LIMIT` / `API_ERROR` / `AUTH_CONFIG` / `AUTH_USER_AUTHENTICATED` / `PROMPT_INJECTION` |
+| `apps/api/src/middleware/rateLimit.ts` + `errorHandler.ts` + `auth.ts` + `services/prompts.ts` | Replaced 6× hardcoded secure-log context/message strings with `LOG_CONTEXT.*` refs (value-preserving) |
+| `apps/api/src/config/constants/share.ts` | Added `SHARE_QUERY_PARAMS.TOKEN` (`"token"`) |
+| `apps/api/src/routes/share.ts` | Replaced `c.req.query("token")` with `c.req.query(SHARE_QUERY_PARAMS.TOKEN)` |
+| `apps/api/src/config/constants/errors.ts` | Added `VALIDATION_MESSAGES.CONTENT_TYPE_MISMATCH(expected)` factory |
+| `apps/api/src/middleware/validator.ts` | Replaced inline Content-Type mismatch template with `VALIDATION_MESSAGES.CONTENT_TYPE_MISMATCH(...)` |
+| `apps/api/src/config/constants/ai.ts` | Added `API_METADATA.SERVER_TIMING_NAME` (`"app"`) + `SERVER_TIMING_ZERO_DURATION` (`0`) |
+| `apps/api/src/index.ts` | Server-Timing entry uses `API_METADATA.SERVER_TIMING_*`; warmup `Date.now()` → `timestamp()` helper |
+| `apps/api/src/config/constants/network.ts` | Added `API_HEADERS.RESPONSE.RESPONSE_TIME_SUFFIX` (`"ms"`) |
+| `apps/api/src/middleware/logger.ts` | Replaced `` `${duration}ms` `` with `` `${duration}${API_HEADERS.RESPONSE.RESPONSE_TIME_SUFFIX}` `` |
+| `apps/web/src/config/constants/accessibility.test.ts` | NEW — 7 tests asserting new `CSS_CLASSES` + `ACCESSIBILITY_LABELS_SKIP` values |
+| `apps/api/src/config/constants/config-iteration-185.test.ts` | NEW — 9 tests asserting new `LOG_CONTEXT`, `VALIDATION_MESSAGES`, `SHARE_QUERY_PARAMS` values |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (322 files)
+- ✅ `npx prettier --check .` — clean
+- ✅ `npm run test:all` — **1,128 web + 534 api + 851 shared = 2,513 tests passing**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-185-hardcoded-cleanup` | refactor(flexy): centralize CSS class combos, log contexts & API micro-literals into config (Iteration 185) |
+
 ### ✅ Flexy Iteration 184: Consolidate WebCrypto Key Literals & KV Read Format into Shared Config
 
 **Problem**: API routes still contained raw browser/Worker literals — `crypto.subtle.importKey` called with the raw format string `"raw"` and the sign-only usage array `["sign"]`, plus a KV `.get()` read pinned to the string `"json"`. Flexy says: no hardcoded WebCrypto or KV literals in routes!

@@ -36,7 +36,7 @@ export const validateJson = <T extends z.ZodTypeAny>(
       return c.json(
         createErrorJson(
           ErrorType.VALIDATION,
-          `Content-Type must be ${HTTP_HEADERS.CONTENT_TYPE_JSON}`,
+          VALIDATION_MESSAGES.CONTENT_TYPE_MISMATCH(HTTP_HEADERS.CONTENT_TYPE_JSON),
           {
             code: ERROR_CODES.VALIDATION_ERROR,
             details: {

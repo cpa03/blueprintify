@@ -9,7 +9,7 @@
 
 import type { BlueprintRequest, RefineRequest } from "@blueprint/shared";
 import { SANITIZE_REPLACEMENT_STRINGS } from "@blueprint/shared";
-import { PROMPT_CONFIG, PROMPT_INPUT_CONFIG } from "../config/constants";
+import { PROMPT_CONFIG, PROMPT_INPUT_CONFIG, LOG_CONTEXT } from "../config/constants";
 import {
   INJECTION_PATTERNS,
   MAX_INPUT_LENGTH,
@@ -44,7 +44,7 @@ export function sanitizePromptInput(input: string): string {
 
   // Log injection attempts for security observability (before sanitization)
   if (hasInjectionPattern(input)) {
-    secureLogWarn("PromptInjection", "Injection pattern detected and sanitized", {
+    secureLogWarn(LOG_CONTEXT.PROMPT_INJECTION, "Injection pattern detected and sanitized", {
       inputLength: input.length,
     });
   }

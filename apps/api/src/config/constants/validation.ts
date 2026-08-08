@@ -93,6 +93,18 @@ export const IMPORT_FORMATS = {
 export const LOG_CONTEXT = {
   /** Audit trail identifier for successful authentication events */
   AUTHENTICATION: "Authentication success",
+  /** Audit trail identifier for rate limiter configuration warnings */
+  RATE_LIMITER: "RateLimiter",
+  /** Audit trail identifier for rate limit enforcement blocks */
+  RATE_LIMIT: "RateLimit",
+  /** Audit trail identifier for uncaught API error handling */
+  API_ERROR: "API Error",
+  /** Audit trail identifier for authentication configuration warnings */
+  AUTH_CONFIG: "AuthenticationConfig",
+  /** Audit trail identifier for successful user authentication */
+  AUTH_USER_AUTHENTICATED: "User authenticated",
+  /** Audit trail identifier for prompt injection detection */
+  PROMPT_INJECTION: "PromptInjection",
   SHARE_CREATE: "Share creation error",
   SHARE_VERIFY: "Share verify error",
   SHARE_RETRIEVAL: "Share retrieval error",

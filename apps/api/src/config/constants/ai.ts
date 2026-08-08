@@ -32,6 +32,10 @@ export const AI_CONFIG = {
  */
 export const API_METADATA = {
   NAME: API_NAME,
+  /** Server-Timing entry name for the root endpoint */
+  SERVER_TIMING_NAME: "app",
+  /** Server-Timing duration for non-measured static routes */
+  SERVER_TIMING_ZERO_DURATION: 0,
   get VERSION(): string {
     return getEnvConfig().API_VERSION;
   },

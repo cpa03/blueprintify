@@ -128,7 +128,7 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
     // This prevents unauthenticated access when the server is misconfigured
     if (!validKey) {
       // SECURITY: alert operators via secure logging that all protected routes are locked down
-      secureLogWarn("AuthenticationConfig", ERROR_MESSAGES.AUTHENTICATION_MISSING_CONFIG, {
+      secureLogWarn(LOG_CONTEXT.AUTH_CONFIG, ERROR_MESSAGES.AUTHENTICATION_MISSING_CONFIG, {
         environment: c.env.ENVIRONMENT,
         path,
         requestId: c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined,
@@ -181,7 +181,7 @@ export const apiKeyAuth = (config: AuthConfig = {}): MiddlewareHandler => {
     // Audit trail: log authenticated user identity for action tracking
     // This creates an audit log entry that can be correlated with subsequent
     // request logs via requestId for full action tracing per user
-    secureLogInfo(LOG_CONTEXT.AUTHENTICATION, "User authenticated", {
+    secureLogInfo(LOG_CONTEXT.AUTHENTICATION, LOG_CONTEXT.AUTH_USER_AUTHENTICATED, {
       userId,
       role: userRole,
       requestId: c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined,

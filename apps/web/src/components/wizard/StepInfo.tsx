@@ -399,10 +399,7 @@ export const StepInfo = memo(function StepInfo({
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_PROJECT_NAME}
                   title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_PROJECT_NAME}
                 >
-                  <Icon
-                    name="close"
-                    className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-90"
-                  />
+                  <Icon name="close" className={CSS_CLASSES.ICON_HOVER_ROTATE_90} />
                 </motion.button>
               )}
             </AnimatePresence>
@@ -527,10 +524,7 @@ export const StepInfo = memo(function StepInfo({
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_DESCRIPTION}
                   title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_DESCRIPTION}
                 >
-                  <Icon
-                    name="close"
-                    className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-90"
-                  />
+                  <Icon name="close" className={CSS_CLASSES.ICON_HOVER_ROTATE_90} />
                 </motion.button>
               )}
             </AnimatePresence>
@@ -632,10 +626,7 @@ export const StepInfo = memo(function StepInfo({
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_TARGET_AUDIENCE}
                   title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_TARGET_AUDIENCE}
                 >
-                  <Icon
-                    name="close"
-                    className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-90"
-                  />
+                  <Icon name="close" className={CSS_CLASSES.ICON_HOVER_ROTATE_90} />
                 </motion.button>
               )}
             </AnimatePresence>
@@ -692,10 +683,7 @@ export const StepInfo = memo(function StepInfo({
                   aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_CONSTRAINTS}
                   title={ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_CONSTRAINTS}
                 >
-                  <Icon
-                    name="close"
-                    className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-90"
-                  />
+                  <Icon name="close" className={CSS_CLASSES.ICON_HOVER_ROTATE_90} />
                 </motion.button>
               )}
             </AnimatePresence>
@@ -727,7 +715,7 @@ export const StepInfo = memo(function StepInfo({
                   {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
                 </kbd>
                 <svg
-                  className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5"
+                  className={CSS_CLASSES.ICON_HOVER_SHIFT}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"

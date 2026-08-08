@@ -227,7 +227,10 @@ export const requestLogger = (config: LoggerConfig = {}): MiddlewareHandler => {
     const status = c.res.status;
 
     c.header(API_HEADERS.RESPONSE.REQUEST_ID, requestId);
-    c.header(API_HEADERS.RESPONSE.RESPONSE_TIME, `${duration}ms`);
+    c.header(
+      API_HEADERS.RESPONSE.RESPONSE_TIME,
+      `${duration}${API_HEADERS.RESPONSE.RESPONSE_TIME_SUFFIX}`
+    );
 
     if (cfMetadata.rayId) {
       c.header(API_HEADERS.RESPONSE.CF_RAY, cfMetadata.rayId);
