@@ -12,7 +12,8 @@
  * Interactive features:
  * - Click/tap anywhere on the bar to jump to that scroll position
  * - Hover reveals a thumb indicator for discoverability
- * - Keyboard accessible with proper ARIA progressbar role
+ * - Keyboard accessible with proper ARIA slider role
+ * - Visible focus indicator for keyboard users (WCAG 2.4.7)
  * - Smooth spring-based scroll animation
  * - Window scroll detection (no container ref needed)
  * - Gradient progress bar matching the app's design language
@@ -74,6 +75,7 @@ function PageScrollProgressBarComponent({
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const [hoverProgress, setHoverProgress] = useState<number | null>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -195,7 +197,17 @@ function PageScrollProgressBarComponent({
 
   return (
     <motion.div
-      className={`fixed top-0 left-0 right-0 z-40 ${className}`}
+      role="slider"
+      aria-orientation="horizontal"
+      aria-valuenow={Math.round(scrollProgress)}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuetext={ACCESSIBILITY_LABELS.SCROLL_PROGRESS.PAGE_SCROLL_PERCENT(scrollProgress)}
+      aria-label={ACCESSIBILITY_LABELS.SCROLL_PROGRESS.PAGE_SCROLL_POSITION}
+      tabIndex={isVisible ? 0 : -1}
+      onKeyDown={isVisible ? handleBarClick : undefined}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       style={{ marginTop: `${LAYOUT.HEADER_HEIGHT_PX}px` }}
       initial={{ opacity: 0 }}
       animate={{ opacity: isVisible ? 1 : 0 }}
@@ -203,18 +215,12 @@ function PageScrollProgressBarComponent({
         duration: prefersReducedMotion ? 0 : ANIMATION.CHECKMARK_REVEAL,
         ease: EASING.easeOut,
       }}
-      role="progressbar"
-      aria-valuenow={isVisible ? Math.round(scrollProgress) : undefined}
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-label={ACCESSIBILITY_LABELS.SCROLL_PROGRESS.PAGE_SCROLL_POSITION}
-      tabIndex={isVisible ? 0 : -1}
-      onKeyDown={isVisible ? handleBarClick : undefined}
+      className={`fixed top-0 left-0 right-0 z-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 ${className}`}
     >
       <div
         ref={barRef}
         className="relative w-full cursor-pointer group"
-        style={{ height: `${height + (isHovered ? 6 : 0)}px` }}
+        style={{ height: `${height + (isHovered || isFocused ? 6 : 0)}px` }}
         onClick={isVisible ? handleBarClick : undefined}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => {
@@ -251,9 +257,9 @@ function PageScrollProgressBarComponent({
           }
         />
 
-        {/* Hover thumb — a small dot at the leading edge that appears on hover
-            to signal the bar is interactive and clickable. Uses a spring pop
-            for a tactile feel. */}
+        {/* Hover/focus thumb — a small dot at the leading edge that appears on
+            hover or keyboard focus to signal the bar is interactive and
+            clickable. Uses a spring pop for a tactile feel. */}
         <motion.div
           className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-white shadow-lg shadow-primary-500/40 border-2 border-primary-400 pointer-events-none"
           style={{
@@ -261,8 +267,8 @@ function PageScrollProgressBarComponent({
           }}
           initial={false}
           animate={{
-            scale: isHovered && isVisible ? 1 : 0,
-            opacity: isHovered && isVisible ? 1 : 0,
+            scale: (isHovered || isFocused) && isVisible ? 1 : 0,
+            opacity: (isHovered || isFocused) && isVisible ? 1 : 0,
           }}
           transition={SPRING_SCROLL_HOVER}
         />
