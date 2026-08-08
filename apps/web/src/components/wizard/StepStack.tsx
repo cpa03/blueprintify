@@ -485,7 +485,7 @@ export const StepStack = memo(function StepStack({
               {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
             </kbd>
             <svg
-              className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5"
+              className={CSS_CLASSES.ICON_HOVER_SHIFT}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

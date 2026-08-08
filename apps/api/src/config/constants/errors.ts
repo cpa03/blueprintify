@@ -83,6 +83,8 @@ export const VALIDATION_MESSAGES = {
   INVALID_JSON_BODY: API_VALIDATION_MESSAGES.INVALID_JSON_BODY,
   VALIDATION_ERROR: API_VALIDATION_MESSAGES.VALIDATION_ERROR,
   BODY_TOO_LARGE: API_VALIDATION_MESSAGES.BODY_TOO_LARGE,
+  /** Content-Type mismatch error message (dynamic — embeds expected type) */
+  CONTENT_TYPE_MISMATCH: (expected: string): string => `Content-Type must be ${expected}`,
 } as const;
 
 /**

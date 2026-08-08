@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { SKIP_LINK_ANIMATION } from "../config/constants";
+import { SKIP_LINK_ANIMATION, ACCESSIBILITY_LABELS_SKIP } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Z_INDEX } from "../config/theme";
 
@@ -42,7 +42,7 @@ export const SkipLink = memo(function SkipLink(): JSX.Element {
             d="M13 7l5 5m0 0l-5 5m5-5H6"
           />
         </svg>
-        <span>Skip to main content</span>
+        <span>{ACCESSIBILITY_LABELS_SKIP.SKIP_TO_MAIN_CONTENT}</span>
       </span>
       <span
         className="absolute inset-0 rounded-xl bg-primary-400/20 blur-md -z-10"

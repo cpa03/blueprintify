@@ -99,7 +99,11 @@ app.get(ROUTE_PATHS.ROOT, (c) => {
   );
   c.header(
     API_HEADERS.SERVER_TIMING.HEADER,
-    API_HEADERS.SERVER_TIMING.ENTRY("app", API_METADATA.NAME, 0)
+    API_HEADERS.SERVER_TIMING.ENTRY(
+      API_METADATA.SERVER_TIMING_NAME,
+      API_METADATA.NAME,
+      API_METADATA.SERVER_TIMING_ZERO_DURATION
+    )
   );
   c.header(
     API_HEADERS.CDN.CDN_CACHE_CONTROL,
@@ -137,7 +141,7 @@ app.get(ROUTE_PATHS.WARMUP, (c) => {
   const metrics = cb.getState();
   return c.json({
     status: RESPONSE_STATUS.OK,
-    timestamp: Date.now(),
+    timestamp: timestamp(),
     circuitBreaker: {
       state: metrics.state,
       failures: metrics.failures,

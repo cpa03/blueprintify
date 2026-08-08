@@ -7,6 +7,7 @@ import {
   RATE_LIMIT_CONSTANTS,
   ERROR_MESSAGES,
   API_HEADERS,
+  LOG_CONTEXT,
 } from "../config/constants";
 import { TIME_UNITS, ENVIRONMENT_NAMES, RATE_LIMITER_BINDINGS } from "@blueprint/shared";
 import { ErrorType, createErrorJson } from "../errors";
@@ -98,10 +99,14 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
     if (!rateLimiter) {
       // Security: Reject requests when rate limiter is not configured
       // This prevents accidental security misconfigurations in production
-      secureLogWarn("RateLimiter", `Rate limiter '${limiter}' not configured - rejecting request`, {
-        endpoint: c.req.path,
-        method: c.req.method,
-      });
+      secureLogWarn(
+        LOG_CONTEXT.RATE_LIMITER,
+        `Rate limiter '${limiter}' not configured - rejecting request`,
+        {
+          endpoint: c.req.path,
+          method: c.req.method,
+        }
+      );
       return c.json(
         createErrorJson(ErrorType.CONFIGURATION, ERROR_MESSAGES.RATE_LIMITER_NOT_CONFIGURED, {
           code: ERROR_CODES.CONFIGURATION_ERROR,
@@ -132,7 +137,7 @@ export const rateLimit = (config: RateLimitConfig): MiddlewareHandler => {
       c.header(API_HEADERS.RATE_LIMIT.RETRY_AFTER, String(retryAfterSeconds));
 
       // Log rate limit block for security monitoring
-      secureLogError("RateLimit", "Request blocked by rate limiter", {
+      secureLogError(LOG_CONTEXT.RATE_LIMIT, "Request blocked by rate limiter", {
         endpoint: c.req.path,
         method: c.req.method,
         clientKey: key,

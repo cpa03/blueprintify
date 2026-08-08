@@ -124,6 +124,8 @@ export const API_HEADERS = {
     REQUEST_ID: HTTP_HEADER_NAMES.X_REQUEST_ID,
     /** Response time in milliseconds (from shared config) */
     RESPONSE_TIME: HTTP_HEADER_NAMES.X_RESPONSE_TIME,
+    /** Unit suffix appended to response-time duration values */
+    RESPONSE_TIME_SUFFIX: "ms",
     /** Cloudflare Ray ID response header (from shared config) */
     CF_RAY: HTTP_HEADER_NAMES.CF_RAY,
   },

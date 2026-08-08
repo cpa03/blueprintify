@@ -365,10 +365,7 @@ export const StepFeatures = memo(function StepFeatures({
                         className="hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors group"
                         aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.REMOVE_FEATURE(feature)}
                       >
-                        <Icon
-                          name="close"
-                          className="w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-90"
-                        />
+                        <Icon name="close" className={CSS_CLASSES.ICON_HOVER_ROTATE_90} />
                       </button>
                     </motion.span>
                   );
@@ -657,7 +654,7 @@ export const StepFeatures = memo(function StepFeatures({
               {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
             </kbd>
             <svg
-              className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5"
+              className={CSS_CLASSES.ICON_HOVER_SHIFT}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

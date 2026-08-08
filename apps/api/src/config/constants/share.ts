@@ -32,6 +32,14 @@ export const SHARE_CONFIG = {
 } as const;
 
 /**
+ * Share route query parameters.
+ * Flexy says: no hardcoded query param strings!
+ */
+export const SHARE_QUERY_PARAMS = {
+  TOKEN: "token",
+} as const;
+
+/**
  * Share route error messages.
  * Flexy says: References shared SHARE_MESSAGES — single source of truth!
  */

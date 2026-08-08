@@ -57,6 +57,7 @@ import {
   SCROLL_BEHAVIOR,
   SKELETON_LAYOUT,
   FOCUS_ANNOUNCER,
+  CSS_CLASSES,
 } from "../config/constants";
 import { ANIMATION_TIMING, LAYOUT, ENTRANCE_OFFSETS } from "../config/theme";
 import { isDev } from "../config/env";
@@ -628,7 +629,7 @@ function EditorComponent(): JSX.Element {
                         {/* Top scroll shadow — only visible when CodeMirror
                             is rendered and scrolled; hidden during skeleton. */}
                         <div
-                          className="absolute top-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
+                          className={CSS_CLASSES.SCROLL_SHADOW_TOP}
                           style={{
                             opacity:
                               shouldReduceMotion || (isGenerating && !currentContent)
@@ -643,7 +644,7 @@ function EditorComponent(): JSX.Element {
                         />
                         {/* Bottom scroll shadow */}
                         <div
-                          className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
+                          className={CSS_CLASSES.SCROLL_SHADOW_BOTTOM}
                           style={{
                             opacity:
                               shouldReduceMotion || (isGenerating && !currentContent)
@@ -700,7 +701,7 @@ function EditorComponent(): JSX.Element {
                           </div>
                         )}
                         <div
-                          className="absolute top-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
+                          className={CSS_CLASSES.SCROLL_SHADOW_TOP}
                           style={{
                             opacity: shouldReduceMotion ? 0 : previewScrollState.isTop ? 0 : 1,
                             height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,
@@ -709,7 +710,7 @@ function EditorComponent(): JSX.Element {
                           aria-hidden="true"
                         />
                         <div
-                          className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200"
+                          className={CSS_CLASSES.SCROLL_SHADOW_BOTTOM}
                           style={{
                             opacity: shouldReduceMotion ? 0 : previewScrollState.isBottom ? 0 : 1,
                             height: `${LAYOUT.SCROLL_SHADOW_HEIGHT_PX}px`,

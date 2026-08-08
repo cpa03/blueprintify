@@ -26,6 +26,36 @@ export const CSS_CLASSES = {
   KBD_SHORTCUT:
     "px-1.5 py-0.5 bg-dark-700/80 rounded text-sm-xs font-mono text-dark-200 border border-dark-600/50 shadow-inner leading-none",
 
+  /** Compact keyboard keycap display styling — used in empty-state shortcut lists.
+   * Flexy says: No hardcoded kbd keycap class strings! */
+  KEYCAP:
+    "px-1.5 py-0.5 bg-dark-700 rounded text-2xs font-mono text-dark-300 border border-dark-600/50 leading-none" as const,
+
+  /** Top edge scroll shadow overlay for scrollable panes (editor/wizard).
+   * Flexy says: No hardcoded scroll shadow overlay class strings! */
+  SCROLL_SHADOW_TOP:
+    "absolute top-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200" as const,
+
+  /** Bottom edge scroll shadow overlay for scrollable panes (editor/wizard).
+   * Flexy says: No hardcoded scroll shadow overlay class strings! */
+  SCROLL_SHADOW_BOTTOM:
+    "absolute bottom-0 left-0 right-0 z-10 pointer-events-none transition-opacity duration-200" as const,
+
+  /** Icon hover rotate-90 transition used across wizard steps.
+   * Flexy says: No hardcoded icon hover rotation class strings! */
+  ICON_HOVER_ROTATE_90:
+    "w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-90" as const,
+
+  /** Icon hover rotate-8 transition used in StepReview chevrons.
+   * Flexy says: No hardcoded icon hover rotation class strings! */
+  ICON_HOVER_ROTATE_8:
+    "w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-8" as const,
+
+  /** Icon hover horizontal shift transition used across wizard steps.
+   * Flexy says: No hardcoded icon hover shift class strings! */
+  ICON_HOVER_SHIFT:
+    "w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5" as const,
+
   /** Disabled element visual state — lower opacity and not-allowed cursor.
    * Used in RippleButton (disabled prop), TemplateGrid (unselected templates), and
    * StepFeatures (max-count reached). Single source of truth for disabled styling.
@@ -82,6 +112,18 @@ const FOCUSABLE_SELECTORS = [
 
 /** Combined selector string for querySelector usage */
 export const FOCUSABLE_SELECTOR_STRING = FOCUSABLE_SELECTORS.join(", ");
+
+// ============================================================================
+// Screen Reader / Accessibility Labels
+// ============================================================================
+
+/**
+ * Static accessibility label strings for screen readers.
+ * Flexy says: No hardcoded accessibility labels in components!
+ */
+export const ACCESSIBILITY_LABELS_SKIP = {
+  SKIP_TO_MAIN_CONTENT: "Skip to main content",
+} as const;
 
 // ============================================================================
 // Last Saved Display Messages

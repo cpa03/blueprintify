@@ -31,6 +31,7 @@ import {
   ERROR_MESSAGES,
   ROUTE_PATHS,
   SHARE_CONFIG,
+  SHARE_QUERY_PARAMS,
   SHARE_ERROR_MESSAGES,
   CACHE_CONFIG,
   RATE_LIMIT_CONSTANTS,
@@ -386,7 +387,7 @@ app.get(ROUTE_SUB_PATHS.ID_PARAM, shareEnumerationRateLimit, async (c) => {
 
     // Check passphrase protection
     const isPassphraseProtected = !!result.passphrase_hash;
-    const token = c.req.query("token");
+    const token = c.req.query(SHARE_QUERY_PARAMS.TOKEN);
     const hasValidToken = token ? await isValidVerifyToken(token, shareId, c.env.API_KEY) : false;
 
     // If passphrase-protected and no valid token, hide blueprint content

@@ -5,7 +5,13 @@ import type { ErrorResponse } from "../errors";
 import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 import { TimeoutError } from "../utils/timeout";
 import { CONTEXT_KEYS } from "@blueprint/shared";
-import { ERROR_CODES, ERROR_MESSAGES, HTTP_STATUS, VALIDATION_MESSAGES } from "../config/constants";
+import {
+  ERROR_CODES,
+  ERROR_MESSAGES,
+  HTTP_STATUS,
+  VALIDATION_MESSAGES,
+  LOG_CONTEXT,
+} from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
 
 /**
@@ -28,7 +34,7 @@ import { secureLogError } from "../utils/secureLog";
 export const errorHandler = (err: unknown, c: Context): Response => {
   const requestId = c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined;
 
-  secureLogError("API Error", err, {
+  secureLogError(LOG_CONTEXT.API_ERROR, err, {
     path: c.req.path,
     method: c.req.method,
     requestId,
