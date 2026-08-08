@@ -69,6 +69,11 @@ export const StepFeatures = memo(function StepFeatures({
   const [justAdded, setJustAdded] = useState<string | null>(null);
   const [showAllAddedMsg, setShowAllAddedMsg] = useState(false);
   const featureInputRef = useRef<HTMLInputElement>(null);
+  // Maps each added feature to its remove button so focus can be restored after
+  // a suggestion chip is activated. The activated chip unmounts immediately
+  // (it's filtered out of `suggestedNotAdded`), which would otherwise silently
+  // drop keyboard focus to <body> (WCAG 2.4.3 Focus Order).
+  const removeFeatureButtonRefs = useRef(new Map<string, HTMLButtonElement>());
   const features = useWizardStore((s) => s.features);
   const addFeature = useWizardStore((s) => s.addFeature);
   const removeFeature = useWizardStore((s) => s.removeFeature);
@@ -99,6 +104,14 @@ export const StepFeatures = memo(function StepFeatures({
       addFeature(feature);
       setJustAdded(feature);
       setTimeout(() => setJustAdded(null), TIMEOUTS.TOAST_NOTIFICATION);
+      // The activated suggestion chip unmounts as soon as the feature is added
+      // (it's filtered out of `suggestedNotAdded`), which would silently drop
+      // keyboard focus to <body>. Restore focus to the newly-added feature's
+      // remove button so keyboard and screen-reader users keep their place
+      // (WCAG 2.4.3 Focus Order) and can immediately undo the addition.
+      requestAnimationFrame(() => {
+        removeFeatureButtonRefs.current.get(feature)?.focus();
+      });
     },
     [addFeature]
   );
@@ -341,6 +354,13 @@ export const StepFeatures = memo(function StepFeatures({
                       </span>
                       {feature}
                       <button
+                        ref={(el) => {
+                          if (el) {
+                            removeFeatureButtonRefs.current.set(feature, el);
+                          } else {
+                            removeFeatureButtonRefs.current.delete(feature);
+                          }
+                        }}
                         onClick={() => removeFeature(feature)}
                         className="hover:text-accent-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-pink/50 rounded transition-colors group"
                         aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.REMOVE_FEATURE(feature)}
