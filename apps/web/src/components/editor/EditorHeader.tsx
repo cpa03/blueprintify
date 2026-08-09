@@ -162,7 +162,13 @@ const TabButton = React.memo(function TabButton({
               className="absolute inset-0 rounded-full bg-accent-emerald content-dot-breathe"
               aria-hidden="true"
             />
-            {/* Core dot with spring entrance */}
+            {/* Core dot with spring entrance. role="status" makes the
+                sibling-tab content-availability cue audible: the green dot is
+                decorative to sighted users, but without a live region the
+                aria-label on a plain span is never announced by screen
+                readers, so keyboard-only users had no way to discover content
+                in the inactive tab. Mirrors the polite live-region pattern
+                used by the wizard step-loading announcement (#3185). */}
             <motion.span
               className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent-emerald"
               initial={{ scale: 0, opacity: 0 }}
@@ -172,6 +178,7 @@ const TabButton = React.memo(function TabButton({
                 type: FRAMER_TYPE.SPRING,
                 ...EDITOR_ANIMATION.CONTENT_DOT,
               }}
+              role="status"
               aria-label={ACCESSIBILITY_LABELS.EDITOR.CONTENT_AVAILABLE(
                 id === EDITOR_TABS.BLUEPRINT
                   ? EDITOR_FILENAMES.BLUEPRINT_DISPLAY
@@ -192,6 +199,7 @@ const TabButton = React.memo(function TabButton({
               repeat: Infinity,
               ease: EASING.easeInOut,
             }}
+            role="status"
             aria-label={ACCESSIBILITY_LABELS.EDITOR.STREAMING_CONTENT}
           />
         )}
