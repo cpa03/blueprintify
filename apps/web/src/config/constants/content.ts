@@ -385,6 +385,8 @@ export const ACCESSIBILITY_LABELS = {
   },
   WIZARD: {
     STEP_ARIA: (label: string) => `Wizard step: ${label}`,
+    /** Announced via a status live region while a step's lazy chunk is loading */
+    LOADING_STEP: "Loading wizard step",
   },
   SCROLL_POSITION: {
     SCROLL_TO_TOP_ARIA: (key: string) => `Scroll to top (${key} key)`,

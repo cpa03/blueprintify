@@ -217,8 +217,13 @@ function WizardComponent(): JSX.Element {
     return (
       <Suspense
         fallback={
-          <div className="flex items-center justify-center py-16">
-            <div className={SPINNER.DEFAULT}></div>
+          <div
+            className="flex items-center justify-center py-16"
+            role="status"
+            aria-live="polite"
+            aria-label={ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP}
+          >
+            <div className={SPINNER.DEFAULT} aria-hidden="true"></div>
           </div>
         }
       >
