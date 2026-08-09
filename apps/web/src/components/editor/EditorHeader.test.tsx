@@ -10,14 +10,14 @@
  * - Last saved indicator visibility
  */
 
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";
 import { EditorHeader } from "./EditorHeader";
 import { EditorToolbar } from "./EditorToolbar";
-import { LastSavedIndicator } from "../LastSavedIndicator";
 import { EDITOR_TABS, EDITOR_FILENAMES } from "@blueprint/shared/config";
 import { EDITOR_LABELS } from "../../config/constants";
+import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 
 // Mock framer-motion to render plain HTML elements
 vi.mock("framer-motion", () => ({
@@ -199,11 +199,35 @@ describe("EditorHeader", () => {
     expect(screen.getByTestId("last-saved")).toHaveAttribute("data-visible", "false");
   });
 
-  it("renders a content dot on inactive tabs when content is available", () => {
+  // ======== Content Availability Live Region ========
+
+  it("renders a status live region on inactive tabs when sibling content is available", () => {
     render(<EditorHeader {...defaultProps} tasksHasContent={true} />);
-    expect(LastSavedIndicator).toHaveBeenCalled();
-    expect(
-      screen.getByRole("tab", { name: new RegExp(EDITOR_FILENAMES.TASKS) })
-    ).toBeInTheDocument();
+    const tasksTab = screen.getByRole("tab", { name: new RegExp(EDITOR_FILENAMES.TASKS) });
+    const status = within(tasksTab).getByRole("status");
+    expect(status).toHaveAttribute(
+      "aria-label",
+      ACCESSIBILITY_LABELS.EDITOR.CONTENT_AVAILABLE(EDITOR_FILENAMES.TASKS_DISPLAY)
+    );
+  });
+
+  it("does not render a content-available live region when sibling content is absent", () => {
+    const { container } = render(<EditorHeader {...defaultProps} />);
+    expect(container.querySelector('[role="status"]')).not.toBeInTheDocument();
+  });
+
+  it("does not show a content-available dot on the active tab", () => {
+    render(<EditorHeader {...defaultProps} blueprintHasContent={true} />);
+    const blueprintTab = screen.getByRole("tab", { name: new RegExp(EDITOR_FILENAMES.BLUEPRINT) });
+    expect(within(blueprintTab).queryByRole("status")).not.toBeInTheDocument();
+  });
+
+  it("announces streaming content via a status live region while generating", () => {
+    const { container } = render(<EditorHeader {...defaultProps} isGenerating={true} />);
+    const streamStatus = container.querySelector('[role="status"]');
+    expect(streamStatus).toHaveAttribute(
+      "aria-label",
+      ACCESSIBILITY_LABELS.EDITOR.STREAMING_CONTENT
+    );
   });
 });
