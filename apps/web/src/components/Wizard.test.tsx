@@ -6,7 +6,7 @@ import { Wizard } from "./Wizard";
 import { useWizardStore, useEditorStore } from "../store";
 import type { WizardStore } from "../store/wizard";
 import type { EditorStore } from "../store/editor";
-import { EDITOR_TABS } from "../config/constants";
+import { EDITOR_TABS, ACCESSIBILITY_LABELS } from "../config/constants";
 import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 
 // jsdom cannot compute real colors, so the color-contrast rule is always
@@ -15,6 +15,10 @@ import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
 const AXE_CONFIG = {
   rules: { "color-contrast": { enabled: false } },
 };
+
+const { mockSuspendingStepChunk } = vi.hoisted(() => ({
+  mockSuspendingStepChunk: new Promise<void>(() => {}),
+}));
 
 vi.mock("../store", () => ({
   useWizardStore: vi.fn(),
@@ -31,7 +35,9 @@ vi.mock("./wizard/StepInfo", () => ({
 }));
 
 vi.mock("./wizard/StepStack", () => ({
-  StepStack: () => <div data-testid="step-stack">Step Stack</div>,
+  StepStack: () => {
+    throw mockSuspendingStepChunk;
+  },
 }));
 
 vi.mock("./wizard/StepFeatures", () => ({
@@ -55,7 +61,9 @@ vi.mock("../wizard/StepInfo", () => ({
 }));
 
 vi.mock("../wizard/StepStack", () => ({
-  StepStack: () => <div data-testid="step-stack">Step Stack</div>,
+  StepStack: () => {
+    throw mockSuspendingStepChunk;
+  },
 }));
 
 vi.mock("../wizard/StepFeatures", () => ({
@@ -133,10 +141,14 @@ describe("Wizard", () => {
     expect(screen.queryByTestId("step-stack")).not.toBeInTheDocument();
   });
 
-  it("renders StepStack when currentStep is stack", async () => {
+  it("announces loading via a status live region while a step chunk is suspended", async () => {
     mockWizardStore.currentStep = WIZARD_STEP_KEYS.STACK;
     render(<Wizard />);
-    expect(await screen.findByTestId("step-stack")).toBeInTheDocument();
+    const loadingRegion = await screen.findByRole("status", {
+      name: ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP,
+    });
+    expect(loadingRegion).toHaveAttribute("aria-live", "polite");
+    expect(loadingRegion.querySelector('[aria-hidden="true"]')).not.toBeNull();
     expect(screen.queryByTestId("step-info")).not.toBeInTheDocument();
   });
 
