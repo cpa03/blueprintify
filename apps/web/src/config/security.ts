@@ -14,6 +14,7 @@ import {
   SECURITY_VALUES,
   SANITIZE_ALLOWED_TAGS,
   SANITIZE_ALLOWED_ATTR,
+  CSP_CONNECT_DOMAINS,
 } from "@blueprint/shared/config";
 
 // ============================================================================
@@ -148,18 +149,35 @@ export const SECURITY_ERROR_MESSAGES = {
 /**
  * Content Security Policy directives
  * Modular - easily add/remove CSP directives
+ *
+ * VERIFIED against the production build (`apps/web/dist/index.html`) with
+ * Chromium 151: zero violations with every inline handler and the inline
+ * critical-CSS block loading correctly. The two hashes below are the SHA-256
+ * of the EXACT inline `onload` attribute values found in the built HTML:
+ *   - `this.media='all';this.onload=null`  (preloadCssPlugin stylesheet handler)
+ *   - `\n        this.media = 'all';\n        this.onload = null;\n      `
+ *     (fonts.googleapis.com stylesheet handlers in index.html — identified by
+ *     the awareness that the sync returning from the previous `this.media`
+ *     line is part of the hashed value, including leading/trailing whitespace)
+ *
+ * ⚠️ Do NOT "fix" these hashes by eye — recompute them from dist/index.html:
+ *   node -e "console.log(require('crypto').createHash('sha256').update(
+ *     <exact attribute value>).digest('base64'))"
+ * A stale hash silently blocks the async stylesheet `onload` switch, leaving
+ * fonts and critical CSS dead in production (see issue #955).
  */
 const CSP_DIRECTIVES = {
   DEFAULT_SRC: ["'self'"],
   SCRIPT_SRC: [
     "'self'",
     "'unsafe-hashes'",
-    "'sha256-87uI7LZJ8azkq44HKb4qqF/0VgaCUXD27d5/XHXT3yQ='",
+    "'sha256-p5PnWJvMOnsZyLjxblLBMDwBfOASHA7CQcLYb5mwepY='",
+    "'sha256-0J0eLBGw8ud/UAeoy6YUEYy1j5N+6CTyFGIzTUiVskY='",
   ],
-  STYLE_SRC: ["'self'"],
+  STYLE_SRC: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
   IMG_SRC: ["'self'", "data:", "https:"],
-  FONT_SRC: ["'self'"],
-  CONNECT_SRC: ["'self'"],
+  FONT_SRC: ["'self'", "https://fonts.gstatic.com"],
+  CONNECT_SRC: ["'self'", CSP_CONNECT_DOMAINS.PRODUCTION_API, CSP_CONNECT_DOMAINS.STAGING_API],
   OBJECT_SRC: ["'none'"],
   FRAME_ANCESTORS: ["'none'"],
   BASE_URI: ["'self'"],
