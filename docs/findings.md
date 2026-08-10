@@ -2,6 +2,20 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## Security Audit — Dependabot dev-dependency PR (`dependabot/npm_and_yarn/development-dependencies-27c35382c6`)
+
+**Scope**: `apps/api/package.json`, `apps/web/package.json`, `package.json`, `package-lock.json` (dev-dependency bumps only; no source code changed).
+
+**Vulnerability found & fixed**:
+- **High severity — undici (7.0.0–7.28.0) via miniflare → wrangler / @cloudflare/vitest-pool-workers** (GHSA-8xcm-r25x-g524, GHSA-4cwx-7wf7-3272, GHSA-m8rv-5g2x-5cg5, GHSA-jr45-8vmc-qm54, GHSA-v3r7-h72x-cjcm): downstream response desynchronization, cross-user info disclosure, CRLF injection, cache-control parsing issues.
+  - The PR as opened bumped `@cloudflare/vitest-pool-workers` 0.19.1→0.20.2 and `wrangler` 4.116.0→4.119.0, both still in the vulnerable range.
+  - **Fix applied**: bumped to `@cloudflare/vitest-pool-workers@0.20.3` and `wrangler@4.120.0` → resolves `miniflare@5.20260801.1-alpha` → `undici@7.29.0` (fixed).
+- **Verified clean after fix**: `npm audit` **0 vulnerabilities** (was 1 high + 3 moderate); `scan:secrets` ✅ 319 files; typecheck ✅; API tests **534/534** ✅; web tests **1,135/1,135** ✅.
+- No secrets or hardcoded credentials introduced (lockfile grep for key/secret/token/password returned only package names like `keyv`/`visitor-keys` and integrity hashes).
+- No deprecated function usage introduced — the changed files are manifests/lockfile only; the bumps are patch/minor within supported major versions.
+
+**Recommendation**: merge with the fixed versions so the audit stays clean; do not ship `wrangler@4.119.0` / `@cloudflare/vitest-pool-workers@0.20.2`.
+
 ## Security Audit (2026-08-10 — Dependabot PR: framer-motion 12.43.0 → 13.0.0)
 
 **Scope**: `apps/web/package.json` + `package-lock.json` (dependency bump only, no source changes).
