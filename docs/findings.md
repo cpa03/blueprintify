@@ -2,28 +2,27 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
-## RepoKeeper Cleanup (2026-08-11 — repository hygiene audit)
+## RepoKeeper Cleanup (2026-08-11 — Cycle 432: repository hygiene audit)
 
-**Scope**: repo-wide scan for redundant/temporary/unused tracked files + documentation drift check. Baseline gate before changes: typecheck ✅ (exit 0, all 3 workspaces) · lint ✅ 0 errors, 0 warnings ✅.
-
-### Cleaned
-
-1. **`probe.txt` (repo root)** — removed. Leftover temporary probe artifact containing only `# probe`, last committed in `09711194` `chore: probe token permissions (#3181)` (2026-08-09) to empirically probe token permissions. Its purpose is served; prior repo precedent removes probe files after use (`Revert "chore: probe (#3014)"` `f985e108`). Zero code/docs references to it remain (only the historical mention in an old Chart-of-Cycles note).
+**Scope**: repo-wide scan for redundant/temporary/unused tracked files + documentation drift check. Baseline: clean tree at `534b4f30` (Cycle 431 record), `node_modules` present.
 
 ### Doc drift fixed
 
-- **`README.md`** — BroCula audits date range `(Jun 17–Aug 7)` → `(Jun 17–Aug 10)` to match latest run `docs/audits/brocula-audit-2026-08-10-run51.md` (Run 51). Same drift class corrected by RepoKeeper Cycle 327.
+- **`docs/audits/README.md`** — re-inserted the missing **BroCula Run 47 index row** (`brocula-audit-2026-08-09-run47.md`, 2026-08-09, LH 100-100-100-100 31st consecutive, 2,517 tests). Root cause traced via `git log -S run47`: PR #3190 (`88e1db96`, Run 48) **replaced** the Run 47 row (which was marked `**Latest**`) with a Run 48 row instead of appending a new one, permanently dropping Run 47 from the index; Runs 49–52 subsequently never re-inserted it. Restored the original row content from `36decfff` (Run 47's own commit), `**Latest**` badge removed (Run 52 is current latest). Same doc-drift class previously corrected by RepoKeeper Cycle 327 / PR #3204.
 
 ### Verified clean (no action needed)
 
-- No `.tmp` / `.bak` / `.orig` / `.swp` / `*.log` / `task_plan.md` / merge-conflict artifacts tracked.
-- No secrets: only `apps/api/.dev.vars.example` + `apps/web/.env.example` tracked (correct — no real `.env`/`.dev.vars`).
-- All 25+ README-referenced docs exist; API endpoint table mirrors `apps/api/src/routes/*`; `.dev.vars.example` present.
-- `.codegraph` symlink is gitignored (not tracked), `node_modules` gitignored — neither committed.
+- No `.tmp` / `.bak` / `.orig` / `.swp` / `*.log` / `task_plan.md` / `*.patch` / merge-conflict artifacts tracked.
+- No empty tracked files; no leftover probe artifacts (prior `probe.txt` removal from PR #3204 holds).
+- No secrets: only `.example` env files tracked (correct).
+- No broken relative markdown links (76 docs links checked; `release-process.md` `../../pull/123–128` refs are illustrative release-note templates, not broken links).
+- No unused deps: `depcheck` flagged `@emnapi/core`, `@img/sharp-wasm32`, `@types/jest-axe`, `jest-axe` — all false positives (`jest-axe` + `@types/jest-axe` required by 4 a11y test files; `@emnapi/core`/`@img/sharp-wasm32` are `sharp` platform deps pinned via `overrides`).
+- No dead code/TODO/FIXME in source; remaining `console.log` occurrences are logger implementations, generated template code, or doc examples.
+- No stale remote branches (`git ls-remote` → `refs/heads/main` only).
 
 ### Quality verification after changes
 
-typecheck ✅ exit 0 · lint ✅ **0 errors, 0 warnings** ✅ · tests ✅ (baseline) · npm audit ✅ 0 vulns · scan:secrets ✅ · format ✅.
+typecheck ✅ · lint ✅ **0 errors, 0 warnings** ✅ · build ✅ · tests ✅ · npm audit ✅ 0 vulns · scan:secrets ✅ · format ✅.
 
 ## Security Audit — Dependabot dev-dependency PR (`dependabot/npm_and_yarn/development-dependencies-27c35382c6`)
 
