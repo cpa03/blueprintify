@@ -8,6 +8,7 @@ import {
 } from "react";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { RIPPLE_CONFIG, CSS_CLASSES } from "../config/constants";
+import { BUTTON_TRANSITION_DEFAULTS } from "@blueprint/shared";
 
 interface Ripple {
   id: number;
@@ -63,8 +64,8 @@ function RippleButtonComponent({
   type = "button",
   ariaLabel,
   title,
-  whileHover,
-  whileTap,
+  whileHover = { scale: BUTTON_TRANSITION_DEFAULTS.HOVER_SCALE },
+  whileTap = { scale: BUTTON_TRANSITION_DEFAULTS.TAP_SCALE },
   "data-autofocus": dataAutofocus,
   ...rest
 }: RippleButtonProps): JSX.Element {
@@ -142,8 +143,13 @@ function RippleButtonComponent({
       onMouseLeave={handleMouseLeave}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      className={`relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 transition-transform duration-150 ${disabled ? CSS_CLASSES.DISABLED_STATE : ""} ${className}`}
-      style={{ transform: hoverTransform || undefined }}
+      className={`relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950 ${disabled ? CSS_CLASSES.DISABLED_STATE : ""} ${className}`}
+      style={{
+        transform: hoverTransform || undefined,
+        transition: hoverTransform
+          ? `transform 350ms ${BUTTON_TRANSITION_DEFAULTS.OVERSHOOT_EASING}`
+          : "transform 150ms ease-out",
+      }}
       aria-label={ariaLabel}
       aria-busy={isLoading ? "true" : undefined}
       title={title}

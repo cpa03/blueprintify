@@ -2,6 +2,29 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## RepoKeeper Cleanup (2026-08-11 — repository hygiene audit)
+
+**Scope**: repo-wide scan for redundant/temporary/unused tracked files + documentation drift check. Baseline gate before changes: typecheck ✅ (exit 0, all 3 workspaces) · lint ✅ 0 errors, 0 warnings ✅.
+
+### Cleaned
+
+1. **`probe.txt` (repo root)** — removed. Leftover temporary probe artifact containing only `# probe`, last committed in `09711194` `chore: probe token permissions (#3181)` (2026-08-09) to empirically probe token permissions. Its purpose is served; prior repo precedent removes probe files after use (`Revert "chore: probe (#3014)"` `f985e108`). Zero code/docs references to it remain (only the historical mention in an old Chart-of-Cycles note).
+
+### Doc drift fixed
+
+- **`README.md`** — BroCula audits date range `(Jun 17–Aug 7)` → `(Jun 17–Aug 10)` to match latest run `docs/audits/brocula-audit-2026-08-10-run51.md` (Run 51). Same drift class corrected by RepoKeeper Cycle 327.
+
+### Verified clean (no action needed)
+
+- No `.tmp` / `.bak` / `.orig` / `.swp` / `*.log` / `task_plan.md` / merge-conflict artifacts tracked.
+- No secrets: only `apps/api/.dev.vars.example` + `apps/web/.env.example` tracked (correct — no real `.env`/`.dev.vars`).
+- All 25+ README-referenced docs exist; API endpoint table mirrors `apps/api/src/routes/*`; `.dev.vars.example` present.
+- `.codegraph` symlink is gitignored (not tracked), `node_modules` gitignored — neither committed.
+
+### Quality verification after changes
+
+typecheck ✅ exit 0 · lint ✅ **0 errors, 0 warnings** ✅ · tests ✅ (baseline) · npm audit ✅ 0 vulns · scan:secrets ✅ · format ✅.
+
 ## Security Audit — Dependabot dev-dependency PR (`dependabot/npm_and_yarn/development-dependencies-27c35382c6`)
 
 **Scope**: `apps/api/package.json`, `apps/web/package.json`, `package.json`, `package-lock.json` (dev-dependency bumps only; no source code changed).
