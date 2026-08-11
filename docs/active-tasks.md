@@ -2568,7 +2568,7 @@ See [bugs.md](./bugs.md) for detailed bug information.
 
 - Status: ✅ Complete
 
-> **Last Updated**: 2026-08-08 (ULW Loop Cycle 394)
+> **Last Updated**: 2026-08-11 (RepoKeeper Cleanup — repo hygiene + doc drift fix)
 
-> **Last Updated**: 2026-08-08 (ULW Loop Cycle 394)  
+> **Last Updated**: 2026-08-11 (RepoKeeper Cleanup — repo hygiene + doc drift fix)  
 **Maintainer**: RepoKeeper (Ultrawork Loop)
