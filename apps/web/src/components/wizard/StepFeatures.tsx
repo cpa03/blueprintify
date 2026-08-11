@@ -487,7 +487,7 @@ export const StepFeatures = memo(function StepFeatures({
                     }}
                     whileHover={HOVER_SCALE.STANDARD}
                     whileTap={TAP_SCALE.STANDARD}
-                    className="tech-chip relative overflow-hidden hover:border-accent-emerald/50"
+                    className="tech-chip relative overflow-hidden hover:border-accent-emerald/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
                     aria-label={ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_SUGGESTION(feature)}
                     animate={
                       isJustAdded

@@ -339,6 +339,19 @@ describe("StepFeatures", () => {
     }
   });
 
+  it("renders suggestion chips with a visible keyboard focus ring", () => {
+    mockStore.features = [];
+    render(<StepFeatures />);
+    const suggestionButton = screen.getByLabelText(
+      ACCESSIBILITY_LABELS.WIZARD_FEATURES.ADD_SUGGESTION(SUGGESTED_FEATURES[0])
+    );
+    expect(suggestionButton).toHaveClass("focus-visible:outline-none");
+    expect(suggestionButton).toHaveClass("focus-visible:ring-2");
+    expect(suggestionButton).toHaveClass("focus-visible:ring-primary-500/60");
+    expect(suggestionButton).toHaveClass("focus-visible:ring-offset-2");
+    expect(suggestionButton).toHaveClass("focus-visible:ring-offset-dark-950");
+  });
+
   it("hides suggestions that have already been added", () => {
     mockStore.features = ["User authentication"];
     render(<StepFeatures />);
