@@ -580,3 +580,14 @@ export const BUILD_CONFIG = {
    *  ES2022 supports native class fields, private members, and static initialization blocks. */
   BUILD_TARGET: "ES2022" as const,
 } as const;
+
+/**
+ * Button Transition Defaults
+ * Centralized overshoot spring-like cubic-bezier(0.34, 1.56, 0.64, 1) and scale factors
+ * for premium, tactile button hover and tap CSS transition transforms.
+ */
+export const BUTTON_TRANSITION_DEFAULTS = {
+  OVERSHOOT_EASING: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+  HOVER_SCALE: 1.02,
+  TAP_SCALE: 0.98,
+} as const;
