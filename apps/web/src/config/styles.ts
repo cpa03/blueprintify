@@ -114,7 +114,7 @@ export const MARKDOWN = {
   /** List item */
   LI: "leading-relaxed",
   /** Anchor / link */
-  LINK: "text-primary-400 hover:text-purple-400 transition-colors underline decoration-2 underline-offset-2",
+  LINK: "text-primary-400 hover:text-purple-400 transition-colors underline decoration-2 underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950",
   /** Image */
   IMAGE: "max-w-full h-auto rounded-lg shadow-lg my-4",
   /** Horizontal rule */
