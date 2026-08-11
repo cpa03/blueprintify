@@ -33,7 +33,8 @@ Blueprint Generator is a web application that helps developers and architects cr
 
 ## API Endpoints
 
-- GET / - Health check
+- GET / - API metadata
+- GET /health - Health check (circuit-breaker aware)
 - GET /warmup - Pre-warm circuit breaker on worker startup
 - POST /generate - Generate blueprint (SSE stream)
 - POST /tasks - Generate tasks from blueprint (SSE stream)
