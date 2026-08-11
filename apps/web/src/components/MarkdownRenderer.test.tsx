@@ -79,6 +79,14 @@ describe("MarkdownRenderer", () => {
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
 
+    it("renders links with a themed focus-visible ring for keyboard users", () => {
+      render(<MarkdownRenderer content="[Example](https://example.com)" />);
+      const link = screen.getByRole("link");
+      expect(link).toHaveClass("focus-visible:outline-none");
+      expect(link).toHaveClass("focus-visible:ring-2");
+      expect(link).toHaveClass("focus-visible:ring-primary-500/50");
+    });
+
     it("renders images with lazy loading", () => {
       render(<MarkdownRenderer content="![alt text](image.jpg)" />);
       const img = screen.getByRole("img");
