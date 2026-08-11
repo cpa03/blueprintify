@@ -2,6 +2,30 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## RepoKeeper Cleanup (2026-08-11 — Cycle 437: repository hygiene audit)
+
+**Scope**: repo-wide scan for redundant/temporary/unused tracked files + documentation drift check. Baseline: clean tree at `468a9dec` (Cycle 436 record), `node_modules` present.
+
+### Doc drift fixed
+
+- **`apps/web/public/llms.txt`** — API endpoint list mislabeled `GET /` as "Health check" and omitted the separate `GET /health` route. Corrected per `apps/api/src/index.ts`: `GET /` (L92) serves **API metadata** (`name`/`version`/`status`/`runtime`/`endpoints` map), while `GET /health` (L156) is the **health check** (circuit-breaker aware, `checks.api`/`checks.aiService`, 503 on open circuit). Added `GET /health — Health check (circuit-breaker aware)` line; consistent with `README.md` L257–258 and `docs/api-documentation.md` L41/L71.
+- **`apps/web/public/sitemap.xml`** — `lastmod` stale (`2026-07-08` >1 month old vs latest commit `468a9dec` on 2026-08-11). Updated to `2026-08-11` to match current head.
+
+### Verified clean (no action needed)
+
+- No `.tmp` / `.bak` / `.orig` / `.swp` / `*.log` / `task_plan.md` / `*.patch` / merge-conflict artifacts tracked (initial `temp` pattern matches were all `templates` false positives).
+- No empty tracked files; no leftover probe artifacts.
+- No secrets: only `.example` env files tracked (correct); `npm run scan:secrets` ✅ 320 files.
+- No broken relative markdown links (docs/ root + docs/audits/ + README + CONTRIBUTING all checked clean; `release-process.md` `../../pull/123–128` refs are illustrative templates per prior cycles).
+- No unused deps: `depcheck` not installed but prior cycle (432) verified all flagged packages (`@emnapi/core`, `@img/sharp-wasm32`, `@types/jest-axe`, `jest-axe`) are false positives; no dependency changes since.
+- No dead code/TODO/FIXME/HACK in source; remaining `console.log` occurrences are logger implementations (`secureLog.ts`/`logger.ts`), CLI scripts (`migrate.ts`), generated template code, and doc examples — all legitimate.
+- No stale remote branches (`git ls-remote` → `refs/heads/main` only).
+- `docs/audits/README.md` index complete — all 63 audit files on disk indexed (Run 47 re-insert from Cycle 432 holds; files without `runN` suffix — `brocula-audit-2026-07-25.md` Run 1, `brocula-audit-2026-07-28.md` Run 6 — are indexed under their displayed Run names).
+
+### Quality verification after changes
+
+typecheck ✅ · lint ✅ **0 errors, 0 warnings** ✅ · build ✅ · build:api ✅ · tests **2,530/2,530** ✅ (1,145 web + 534 api + 851 shared) · npm audit ✅ 0 vulns · scan:secrets ✅ 320 files · prettier ✅.
+
 ## RepoKeeper Cleanup (2026-08-11 — Cycle 432: repository hygiene audit)
 
 **Scope**: repo-wide scan for redundant/temporary/unused tracked files + documentation drift check. Baseline: clean tree at `534b4f30` (Cycle 431 record), `node_modules` present.
