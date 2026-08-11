@@ -2,6 +2,22 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## ULW Loop Cycle 438 (2026-08-11 — ISSUE MANAGER MODE)
+
+**Phase 0**: `gh pr list --state open` → `[]` (0 open PRs) + **101 open issues** → **ISSUE MANAGER MODE**. Default branch auto-detected `main` (HEAD `406c302e` = Cycle 437 amended record, clean tree). `node_modules` absent at start → `npm ci` (0 vulns).
+
+**Steps 1–3 (Normalize / Dedup / Consolidate) BLOCKED — `issues: write` absent**: re-verified THIS cycle with 1 real mutation probe — `gh issue edit 850 --add-label ci` → GraphQL `addLabelsToLabelable` 403 "Resource not accessible by integration" — zero residue (#850 labels `[]`). Label audit (analysis-only dry-run `npm run normalize:issues`): **86/101 issues need canonical category + `P0–P3` label changes** (mapping per `docs/issue-manager-plan-cycle-368.md`; `--apply` NOT run — dry-run only). Duplicate/similarity clusters identified (report-only, close/comment blocked): #849≈#953, #1045≈#1165, #857≈#1082, #856≈#1014, #852≈#1053, #860≈#911, #848≈#890≈#930, #874≈#1052, #850≈#1084, #865≈#1163, #906≈#846≈#905, #910≈#858≈#1051, #951≈#954≈#1019, #872≈#1015, #866≈#947, #1054≈#1117, #1142≈#1117≈#863≈#862.
+
+**Step 4 (Repair)**: no P0 exists (0 P0; 3 open P1s: #1045, #1082, #1014) — ALL re-verified **code-resolved or human-blocked on `main`** THIS cycle:
+- **#1082** — 12/12 hook test files (`apps/web/src/hooks/*.test.ts`, recounted live).
+- **#1014** — 44 component `*.test.tsx` (recursive `find apps/web/src`) + vitest thresholds **75/60/75/75** (`apps/web/vitest.config.ts`).
+- **#935** — 4/4 controller test suites (`base/generate/refine/tasks.controller.test.ts`). **#936** — 4/4 store test suites (`wizard/persistence/toast/editor.test.ts` + `usePersistedStore.test.ts`).
+- **#1045/#1165** — wrangler placeholder IDs (KV/D1) fail-closed: `node scripts/validate-wrangler.mjs` **REAL EXIT: 1** → **human-blocked** (real Cloudflare resources required).
+
+**Only genuine gap — #849/#953 gatekeeper no-`test:all`**: verified **0 `test:all` refs in ALL 5 workflows** (`.github/workflows/{pr-gatekeeper,main,iterate,parallel,on-pull}.yml` — `grep -c test:all` → 0 each; `pr-gatekeeper.yml` Health Checks L58–60 run typecheck/lint/build only, Final Integrity `npm run build && npm run typecheck` no tests → failing-test PRs can auto-merge). Minimal atomic 4-hunk fix re-derived via **`ci-pipeline-update` skill**: Health Checks append `npm run test:all > test.log 2>&1 || echo "Tests Failed"` + failure grep `|| grep -q "Failed" test.log`; Debugger aggregation `cat typecheck.log lint.log build.log test.log > validation_errors.log`; Final Integrity `npm run build && npm run typecheck && npm run test:all` — **applied + YAML-validated ✅ (pyyaml safe_load: 2 steps reference `test:all`) + committed `4de2da2b` on probe branch `agent/repair-849-cycle-438`** — **push REJECTED empirically**: `refusing to allow a GitHub App to create or update workflow .github/workflows/pr-gatekeeper.yml without workflows permission` (**53rd consecutive issue-manager cycle**, Cycles 360–437 precedent). Probe branch deleted locally, remote ref never created (`git ls-remote` → `refs/heads/main` only), **zero residue**.
+
+**No doc drift** (Cycle 437 record `406c302e` verified in `git log`); **no stale branches**. Baseline ALL GREEN **2,531/2,531 CONFIRMED LIVE** THIS cycle on fresh `npm ci`: typecheck ✅ exit 0 · lint ✅ **0 errors/0 warnings** ✅ · build ✅ · build:api ✅ wrangler `--dry-run` exit 0 · tests **2,531/2,531** ✅ (web 1,146/81 + api 534/33 + shared 851/4) · npm audit **0 vulns** ✅ · scan:secrets ✅ 320 files · validate:wrangler exit 1 expected (placeholder IDs human-blocked). **Final state: idle.**
+
 ## ULW Loop Cycle 437 (2026-08-11 — PR HANDLER MODE)
 
 **Phase 0**: 0 PRs + 101 open issues → Issue Manager Mode entered first; Steps 1–3 re-verified `issues: write` blocked (3 real mutation probes → GraphQL 403 `addLabelsToLabelable`/`addComment`/`createIssue`, zero residue). **Mid-cycle phase shift**: 4 bot-agent PRs queued and merged sequentially, each synced to latest `origin/main` with zero conflicts and gates verified LIVE per branch:
