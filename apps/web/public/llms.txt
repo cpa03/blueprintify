@@ -9,8 +9,6 @@ Blueprint Generator is a web application that helps developers and architects cr
 ## Key Pages
 
 - [Homepage](https://blueprintify.dev) - Main application entry point
-- [API Documentation](https://blueprintify.dev/api) - REST API reference
-- [User Guide](https://blueprintify.dev/docs/user-guide) - Complete usage guide
 - [GitHub Repository](https://github.com/cpa03/blueprintify) - Source code and issue tracking
 
 ## Features

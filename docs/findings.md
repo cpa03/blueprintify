@@ -2,6 +2,24 @@
 
 > **Incoming signals and observations** — cleared after each orchestration cycle. Historical cycles are preserved in git history.
 
+## ULW Loop Cycle 440 (2026-08-12 — REPOKEEPER MODE)
+
+**Phase 0**: `gh pr list --state open` → `[]` (0 open PRs) + **101 open issues** → initial ISSUE MANAGER entry, but user mandate explicitly **REPOKEEPER** (repo hygiene + doc-sync + PR delivery; build/lint errors or warnings = fatal). Default branch auto-detected `main` (HEAD `b8bc4d81` = Cycle 439 record, clean tree). `node_modules` present at start (no `npm ci` needed).
+
+**Hygiene audit (immutable-verification, no speculative cleanup)**: **0 redundant/temp/unused tracked files** — no `*.tmp`/`*.bak`/`*.orig`/`*.rej`/`*~`/`*.log`/`*.swp`/probe artifacts, 0 empty dirs, 0 tracked `dist/`/`build/`/`coverage/` artifacts; **0 deleted-unsafe files** — reachability graph from app entries (`apps/web/src/main.tsx`, `apps/api/src/index.ts`, `packages/shared/src/index.ts`) confirms **no orphaned source modules** (all reachable; controllers/config/prompts/templates barrels re-export correctly); **0 dead code/TODO/FIXME/HACK in source** (case-insensitive sweep — only legitimate `TaskStatus` Zod `"todo"` enum value + test fixture); **0 unused deps** (depcheck flags `@types/jest-axe`/`jest-axe`/`@emnapi/core`/`@img/sharp-wasm32` — documented false positives: jest-axe usage via test imports, emnapi/sharp are transitive platform pins; zero dependency churn); **0 stale branches** (`git ls-remote` → `refs/heads/main` only + immutable `refs/pull/*`); **0 secrets** (scan ✅ 323 files); no `.env` read.
+
+**Doc-sync audit → 4 CONFIRMED defects fixed**:
+1. **`docs/audits/README.md` Jul 27 rows out of sequence** — order was Run 4, Run 5, Run 2, Run 3; corrected to newest-first Run 5, Run 4, Run 3, Run 2 (L59–62).
+2. **`docs/audits/README.md` Jul 25 Run 1/Run 2 swapped** — Run 2 (`brocula-audit-2026-07-25-run2.md`) now precedes Run 1 (L71–72).
+3. **`README.md` L339 stale audit date range** — `Jun 17–Aug 11` → `Jul 9–Aug 11` (earliest on-disk audit file anywhere is `docs/audits/archive/brocula-hunt-2026-07-09-run1.md`; 0 `2026-06*` files exist; current reports span Jul 25–Aug 11).
+4. **`apps/web/public/llms.txt` 2 stale "Key Pages" bullets** — removed `https://blueprintify.dev/api` + `https://blueprintify.dev/docs/user-guide`: SPA has **no client-side router** (0 `react-router`/`BrowserRouter`/`createBrowserRouter` refs in `apps/web/src` + `apps/web/package.json`) and **no `/api` rewrite** in `apps/web/vercel.json` (Vercel rewrites `/:path*` → `/index.html` — both URLs serve the SPA shell, not real pages); llms.txt API endpoint list itself verified accurate (15/15 match `apps/api/src/index.ts` L92–181).
+
+**Verification of clean areas (no drift)**: audits index complete (64 on-disk files ↔ 64 rows, no missing/broken/duplicate, single `**Latest**` on Run 55); API surface — all 15 routes in code match README table + `api-documentation.md` 1:1; package.json scripts — all gate scripts documented, `deploy` correctly invoked via workspace; README links — 32/32 resolve; features.md FEAT-01..07 implementations all present (templates ×4, CodeMirror editor, 5MB quota, 30-day share expiry match code); `.nvmrc`/`.node-version` duplicate pair = deliberate (documented `docs/findings.md` prior cycle; both tool entry points — nvm/fnm read `.nvmrc`, CI reads `.node-version`) — kept.
+
+**SUSPECTED (not actionable — no spec/CI owner)**: E2E suite (`playwright.config.ts` + `apps/web/e2e/*.spec.ts` ×3) has 0 npm script + 0 CI job references and `toHaveScreenshot` baseline dir absent — wiring or removal needs a human/planning decision, NOT blind deletion (BroCula iterate workflow may expect it); flagged for team, zero changes.
+
+**Gates on branch (docs-only changes)**: typecheck ✅ exit 0 · lint ✅ **0 errors/0 warnings** ✅ · build ✅ · build:api ✅ wrangler `--dry-run` exit 0 · tests **2,531/2,531** ✅ (1,146 web/81 + 534 api/33 + 851 shared/4) · npm audit **0 vulns** ✅ · scan:secrets ✅ 323 files · prettier ✅ (`format:check` exit 0 on changed .md). **PR**: branch `agent/repokeeper-cycle-440` synced to latest `origin/main`, pushed, PR opened. Baseline ALL GREEN, final state idle.
+
 ## ULW Loop Cycle 439 (2026-08-11 — ISSUE MANAGER MODE)
 
 **Phase 0**: `gh pr list --state open` → `[]` (0 open PRs) + **101 open issues** → **ISSUE MANAGER MODE**. Default branch auto-detected `main` (HEAD `d2964c0f` = Cycle 438 record, clean tree). `node_modules` absent at start → `npm ci` (0 vulns).
