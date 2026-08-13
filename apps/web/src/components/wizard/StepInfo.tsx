@@ -82,6 +82,9 @@ export const StepInfo = memo(function StepInfo({
   const [invalidField, setInvalidField] = useState<string | null>(null);
   // Persists past the 400ms shake so the error stays visible while invalid.
   const [projectNameErrorShown, setProjectNameErrorShown] = useState(false);
+  // Mirrors projectNameErrorShown: description error appears only after a failed
+  // submit attempt, not assertively on every keystroke while the user types.
+  const [descriptionErrorShown, setDescriptionErrorShown] = useState(false);
   const { textareaRef: descriptionRef } = useAutoResizeTextarea({
     minHeight: TEXTAREA_CONFIG.STEP_INFO_MIN_HEIGHT_PX,
     maxHeight: TEXTAREA_CONFIG.STEP_INFO_MAX_HEIGHT_PX,
@@ -145,6 +148,8 @@ export const StepInfo = memo(function StepInfo({
   // remains below minimum length after a failed submit attempt.
   const projectNameErrorVisible =
     projectNameErrorShown && projectName.length < FORM_LIMITS.PROJECT_NAME.MIN;
+  const descriptionErrorVisible =
+    descriptionErrorShown && description.length < FORM_LIMITS.DESCRIPTION.MIN;
 
   // One-shot pulse on the Next button when form becomes valid; skip initial mount
   const prevCanProceed = useRef<boolean | null>(null);
@@ -190,6 +195,7 @@ export const StepInfo = memo(function StepInfo({
       setClearAnimation(true);
       setClearAnnouncement(ACCESSIBILITY_LABELS.WIZARD_INFO.CLEAR_ALL_ANNOUNCEMENT);
       setProjectNameErrorShown(false);
+      setDescriptionErrorShown(false);
       setTimeout(() => setClearAnimation(false), TIMEOUTS.SHAKE_ANIMATION);
       projectNameInputRef.current?.focus({ preventScroll: true });
     }
@@ -228,6 +234,8 @@ export const StepInfo = memo(function StepInfo({
         setInvalidField(fieldId);
         if (fieldId === "projectName") {
           setProjectNameErrorShown(true);
+        } else if (fieldId === "description") {
+          setDescriptionErrorShown(true);
         }
         setTimeout(() => setInvalidField(null), TIMEOUTS.SHAKE_ANIMATION);
       }
@@ -487,7 +495,7 @@ export const StepInfo = memo(function StepInfo({
               className={`textarea-field transition-all duration-200 ${
                 description.length >= FORM_LIMITS.DESCRIPTION.MIN
                   ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20 pr-12"
-                  : isDescriptionInvalid
+                  : descriptionErrorVisible
                     ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20"
                     : description.length > 0
                       ? "border-yellow-500/50 focus:border-yellow-500 focus:ring-yellow-500/20"
@@ -496,10 +504,10 @@ export const StepInfo = memo(function StepInfo({
               maxLength={FORM_LIMITS.DESCRIPTION.MAX}
               required
               aria-required="true"
-              aria-invalid={isDescriptionInvalid}
+              aria-invalid={isDescriptionInvalid || descriptionErrorVisible || undefined}
               animate={descriptionTyping.isTyping ? { scale: 1.002 } : { scale: 1 }}
               transition={{ duration: ANIMATION.FAST }}
-              {...(isDescriptionInvalid
+              {...(descriptionErrorVisible
                 ? { "aria-describedby": "description-error" }
                 : description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN
                   ? { "aria-describedby": "description-hint" }
@@ -516,6 +524,7 @@ export const StepInfo = memo(function StepInfo({
                   transition={{ duration: ANIMATION.FAST }}
                   onClick={() => {
                     setDescription("");
+                    setDescriptionErrorShown(false);
                     descriptionRef.current?.focus({ preventScroll: true });
                   }}
                   className={`absolute ${
@@ -539,9 +548,9 @@ export const StepInfo = memo(function StepInfo({
             )}
           </div>
           <AnimatePresence>
-            {!isDescriptionInvalid &&
-              description.length > 0 &&
-              description.length < FORM_LIMITS.DESCRIPTION.MIN && (
+            {description.length > 0 &&
+              description.length < FORM_LIMITS.DESCRIPTION.MIN &&
+              !descriptionErrorVisible && (
                 <motion.p
                   id="description-hint"
                   initial={{ opacity: 0, y: -4 }}
@@ -557,7 +566,7 @@ export const StepInfo = memo(function StepInfo({
               )}
           </AnimatePresence>
           <AnimatePresence>
-            {isDescriptionInvalid && (
+            {descriptionErrorVisible && (
               <motion.p
                 id="description-error"
                 role="alert"

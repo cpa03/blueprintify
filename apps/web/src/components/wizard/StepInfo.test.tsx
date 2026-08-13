@@ -406,12 +406,58 @@ describe("StepInfo", () => {
     expect(screen.getByText(VALIDATION_MESSAGES.APPROACHING_CHARACTER_LIMIT)).toBeInTheDocument();
   });
 
-  it("shows minimum length error for short descriptions", () => {
-    mockStore.description = "Short";
+  it("shows character hint for short descriptions while typing", () => {
+    mockStore.description = "Short"; // Below FORM_LIMITS.DESCRIPTION.MIN
     render(<StepInfo />);
     expect(
-      screen.getByText(VALIDATION_MESSAGES.DESCRIPTION_MIN_LENGTH(FORM_LIMITS.DESCRIPTION.MIN))
+      screen.getByText(
+        VALIDATION_MESSAGES.CHARACTERS_NEEDED(FORM_LIMITS.DESCRIPTION.MIN - "Short".length)
+      )
     ).toBeInTheDocument();
+    // The assertive error must not fire while the user is still typing.
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
+  it("does not show description error before submit attempt", () => {
+    mockStore.description = "Short";
+    render(<StepInfo />);
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(screen.getByText(VALIDATION_MESSAGES.CHARACTERS_NEEDED(5))).toBeInTheDocument();
+  });
+
+  it("shows minimum length error for short descriptions after submit attempt", () => {
+    mockStore.projectName = "My Project"; // Keep project name valid so description is the failing field
+    mockStore.description = "Short";
+    render(<StepInfo />);
+    const form = document.querySelector("form");
+    if (form) {
+      fireEvent.submit(form);
+    }
+    const error = screen.getByRole("alert");
+    expect(error).toHaveTextContent(
+      VALIDATION_MESSAGES.DESCRIPTION_MIN_LENGTH(FORM_LIMITS.DESCRIPTION.MIN)
+    );
+    expect(screen.getByRole("textbox", { name: /Description/i })).toHaveAttribute(
+      "aria-invalid",
+      "true"
+    );
+  });
+
+  it("hides description error once the description becomes valid", () => {
+    mockStore.projectName = "My Project"; // Keep project name valid so description is the failing field
+    mockStore.description = "Short";
+    render(<StepInfo />);
+    const form = document.querySelector("form");
+    if (form) {
+      fireEvent.submit(form);
+    }
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+    mockStore.description = "A valid description that is long enough";
+    // Advance timers so the shake state change re-renders with the new value.
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 
   it("shows error message and announces it when project name is invalid on submit", () => {
