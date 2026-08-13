@@ -31,7 +31,7 @@ import { PreviewEmptyState } from "./PreviewEmptyState";
 import { ScrollToTop, ScrollToBottom } from "./ScrollToTop";
 import { ScrollProgress } from "./ScrollProgress";
 import { ConfirmDialog } from "./ConfirmDialog";
-import { useEditorStore, resetAllStores, useToast } from "../store";
+import { useEditorStore, useWizardStore, resetAllStores, useToast } from "../store";
 import { useExportContext } from "../context/ExportContext";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
@@ -433,6 +433,18 @@ function EditorComponent(): JSX.Element {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Ctrl/Cmd+S to save now — flush any pending debounced auto-saves for
+      // both editor content and wizard form, and confirm with a toast.
+      // Deliberately NOT skipped for input/textarea targets so the shortcut
+      // works while typing in the CodeMirror editor.
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === KEYBOARD_EVENT_KEYS.S) {
+        e.preventDefault();
+        useEditorStore.getState().flushStorage();
+        useWizardStore.getState().flushStorage();
+        toast.success(TOAST_MESSAGES.SAVED);
+        return;
+      }
+
       if ((e.metaKey || e.ctrlKey) && e.key === KEYBOARD_EVENT_KEYS.N) {
         e.preventDefault();
         handleNewProject();
@@ -474,7 +486,7 @@ function EditorComponent(): JSX.Element {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleNewProject, handleExport, hasContent, isExporting, setViewMode]);
+  }, [handleNewProject, handleExport, hasContent, isExporting, setViewMode, toast]);
 
   // Smooth-scroll both panes to top when switching tabs to avoid mid-content
   // disorientation. Instant when prefers-reduced-motion, matching Header/ScrollToTop.

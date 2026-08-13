@@ -62,6 +62,11 @@ export const KEYBOARD_SHORTCUTS = {
     MODIFIER: "ctrl/cmd",
     DESCRIPTION: "Start a new project",
   },
+  SAVE_NOW: {
+    KEY: "s",
+    MODIFIER: "ctrl/cmd",
+    DESCRIPTION: "Save content now",
+  },
   SCROLL_TO_TOP: {
     KEY: "Home",
     MODIFIER: "none",

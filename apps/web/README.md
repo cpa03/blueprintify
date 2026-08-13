@@ -222,6 +222,7 @@ npm run test -- src/integration/
 | ------------------ | ----------------------------- |
 | `?`                | Show keyboard shortcuts modal |
 | `Cmd/Ctrl + E`     | Toggle editor panel           |
+| `Cmd/Ctrl + S`     | Save content now              |
 | `Escape`           | Cancel generation             |
 | `Cmd/Ctrl + Enter` | Submit wizard                 |
 

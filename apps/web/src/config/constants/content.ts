@@ -206,6 +206,7 @@ export const TOAST_MESSAGES = {
   EXPORT_SUCCESS: "Project exported successfully!",
   EXPORT_FAILURE: EXPORT_ERROR_STRINGS.EXPORT_FAILED,
   NEW_PROJECT: "Started new project",
+  SAVED: UI_MESSAGES.CHANGES_SAVED,
   GENERATION_CANCELLED: UI_MESSAGES.GENERATION_CANCELLED,
   SECURITY_VALIDATION_FAILED: "Security validation failed",
   TEMPLATE_LOADED: (name: string) => `${name} template loaded`,

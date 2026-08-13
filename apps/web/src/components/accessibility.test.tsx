@@ -111,6 +111,7 @@ const mockWizardStore: WizardStore = {
   setConstraints: vi.fn(),
   reset: vi.fn(),
   loadTemplate: vi.fn(),
+  flushStorage: vi.fn(),
 };
 
 // jsdom cannot compute real colors, so the color-contrast rule is always

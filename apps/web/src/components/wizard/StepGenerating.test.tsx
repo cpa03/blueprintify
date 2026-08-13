@@ -142,6 +142,7 @@ const createMockWizardStore = (overrides: Partial<WizardStore> = {}): WizardStor
   setConstraints: vi.fn(),
   reset: vi.fn(),
   loadTemplate: vi.fn(),
+  flushStorage: vi.fn(),
   ...overrides,
 });
 

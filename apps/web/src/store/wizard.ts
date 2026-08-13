@@ -63,6 +63,7 @@ export interface WizardStore extends WizardState {
     techStack: TechStackItemType[];
     features: string[];
   }) => void;
+  flushStorage: () => void; // Flush pending storage writes
 }
 
 const STEPS: WizardStep[] = WIZARD_STEPS.map((s) => s.key);
@@ -84,7 +85,7 @@ type PersistedWizardData = Pick<
 
 export const useWizardStore = create<WizardStore>()((set, get) => {
   // Use shared persistence utility
-  const { loadState, debouncedSave, cancelSave } = createPersistedStore<
+  const { loadState, debouncedSave, flushSave, cancelSave } = createPersistedStore<
     PersistedWizardData,
     WizardStore
   >({
@@ -215,6 +216,10 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
       };
       set(newState);
       void wizardStorage.set(newState);
+    },
+
+    flushStorage: () => {
+      void flushSave(get);
     },
   };
 });

@@ -626,6 +626,8 @@ export const KEYBOARD_EVENT_KEYS = {
   N: "n" as const,
   /** E key (for toggle editor shortcut) */
   E: "e" as const,
+  /** S key (for save-now shortcut) */
+  S: "s" as const,
   /** Tab key (for focus trap and keyboard navigation) */
   TAB: "Tab" as const,
 } as const;

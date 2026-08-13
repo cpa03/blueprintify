@@ -319,4 +319,18 @@ describe("wizard store", () => {
       expect(state.currentStep).toBe(WIZARD_STEP_KEYS.REVIEW);
     });
   });
+
+  describe("flushStorage", () => {
+    it("should have flushStorage method", () => {
+      const { flushStorage } = useWizardStore.getState();
+
+      expect(typeof flushStorage).toBe("function");
+    });
+
+    it("should not throw when called", () => {
+      const { flushStorage } = useWizardStore.getState();
+
+      expect(() => flushStorage()).not.toThrow();
+    });
+  });
 });

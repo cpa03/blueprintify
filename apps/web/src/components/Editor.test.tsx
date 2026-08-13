@@ -19,16 +19,20 @@ const AXE_CONFIG = {
   rules: { "color-contrast": { enabled: false } },
 };
 
-vi.mock("../store", () => ({
-  useEditorStore: vi.fn(),
-  useWizardStore: vi.fn(),
-  resetAllStores: vi.fn(),
-  useToast: vi.fn(() => ({
+const { mockToast } = vi.hoisted(() => ({
+  mockToast: {
     success: vi.fn(),
     info: vi.fn(),
     warning: vi.fn(),
     error: vi.fn(),
-  })),
+  },
+}));
+
+vi.mock("../store", () => ({
+  useEditorStore: vi.fn(),
+  useWizardStore: vi.fn(),
+  resetAllStores: vi.fn(),
+  useToast: vi.fn(() => mockToast),
 }));
 
 vi.mock("./editor/EditorHeader", () => ({
@@ -146,17 +150,22 @@ const mockWizardStore: WizardStore = {
   setConstraints: vi.fn(),
   reset: vi.fn(),
   loadTemplate: vi.fn(),
+  flushStorage: vi.fn(),
 };
 
 describe("Editor", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (useEditorStore as unknown as Mock).mockImplementation(
+    (useEditorStore as unknown as Mock & { getState: () => EditorStore }).mockImplementation(
       (selector: (state: EditorStore) => unknown) => selector(mockEditorStore)
     );
-    (useWizardStore as unknown as Mock).mockImplementation(
+    (useEditorStore as unknown as Mock & { getState: () => EditorStore }).getState = () =>
+      mockEditorStore;
+    (useWizardStore as unknown as Mock & { getState: () => WizardStore }).mockImplementation(
       (selector: (state: WizardStore) => unknown) => selector(mockWizardStore)
     );
+    (useWizardStore as unknown as Mock & { getState: () => WizardStore }).getState = () =>
+      mockWizardStore;
   });
 
   it("renders empty state when no content and not generating", () => {
@@ -297,6 +306,67 @@ describe("Editor", () => {
       fireEvent.keyDown(window, { key: "e", ctrlKey: true, shiftKey: false });
 
       expect(exportAsZip).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Ctrl/Cmd+S save-now shortcut", () => {
+    beforeEach(() => {
+      mockEditorStore.blueprintContent = "# Test Content";
+      mockEditorStore.tasksContent = "";
+      mockEditorStore.activeTab = EDITOR_TABS.BLUEPRINT;
+    });
+
+    it("flushes editor and wizard storage and shows a saved toast", () => {
+      render(
+        <ExportProvider>
+          <Editor />
+        </ExportProvider>
+      );
+
+      fireEvent.keyDown(window, { key: "s", ctrlKey: true });
+
+      expect(mockEditorStore.flushStorage).toHaveBeenCalledTimes(1);
+      expect(mockWizardStore.flushStorage).toHaveBeenCalledTimes(1);
+      expect(mockToast.success).toHaveBeenCalledWith("Changes saved");
+    });
+
+    it("works with Cmd modifier", () => {
+      render(
+        <ExportProvider>
+          <Editor />
+        </ExportProvider>
+      );
+
+      fireEvent.keyDown(window, { key: "s", metaKey: true });
+
+      expect(mockEditorStore.flushStorage).toHaveBeenCalledTimes(1);
+      expect(mockToast.success).toHaveBeenCalled();
+    });
+
+    it("fires even while typing in the editor textarea", () => {
+      render(
+        <ExportProvider>
+          <Editor />
+        </ExportProvider>
+      );
+
+      fireEvent.keyDown(screen.getByTestId("codemirror"), { key: "s", ctrlKey: true });
+
+      expect(mockEditorStore.flushStorage).toHaveBeenCalledTimes(1);
+      expect(mockWizardStore.flushStorage).toHaveBeenCalledTimes(1);
+    });
+
+    it("does not flush on plain S without modifier", () => {
+      render(
+        <ExportProvider>
+          <Editor />
+        </ExportProvider>
+      );
+
+      fireEvent.keyDown(window, { key: "s", ctrlKey: false, metaKey: false });
+
+      expect(mockEditorStore.flushStorage).not.toHaveBeenCalled();
+      expect(mockToast.success).not.toHaveBeenCalled();
     });
   });
 
