@@ -3957,12 +3957,16 @@ describe("KEYBOARD_EVENT_KEYS", () => {
     expect(KEYBOARD_EVENT_KEYS.E).toBe("e");
   });
 
+  it("should have S key", () => {
+    expect(KEYBOARD_EVENT_KEYS.S).toBe("s");
+  });
+
   it("should have TAB key", () => {
     expect(KEYBOARD_EVENT_KEYS.TAB).toBe("Tab");
   });
 
-  it("should have 14 properties", () => {
-    expect(Object.keys(KEYBOARD_EVENT_KEYS).length).toBe(14);
+  it("should have 15 properties", () => {
+    expect(Object.keys(KEYBOARD_EVENT_KEYS).length).toBe(15);
   });
 
   it("should have all values as strings", () => {

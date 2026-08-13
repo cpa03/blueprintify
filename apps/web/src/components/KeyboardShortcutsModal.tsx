@@ -91,6 +91,11 @@ const getShortcutItems = (): ShortcutItem[] => {
       category: SHORTCUT_CATEGORIES.EDITOR,
     },
     {
+      keys: [modifier, "S"],
+      description: KEYBOARD_SHORTCUTS.SAVE_NOW.DESCRIPTION,
+      category: SHORTCUT_CATEGORIES.EDITOR,
+    },
+    {
       keys: [modifier, "Enter"],
       description: KEYBOARD_SHORTCUTS.SUBMIT_WIZARD.DESCRIPTION,
       category: SHORTCUT_CATEGORIES.GENERAL,

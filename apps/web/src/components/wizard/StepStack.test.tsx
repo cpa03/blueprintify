@@ -109,6 +109,7 @@ const createMockStore = (overrides: Partial<WizardStore> = {}): WizardStore => {
     setConstraints: vi.fn(),
     reset: vi.fn(),
     loadTemplate: vi.fn(),
+    flushStorage: vi.fn(),
     ...overrides,
   };
   return defaultStore;

@@ -410,6 +410,7 @@ Content refinement is available through the API only — there is no in-editor r
 - **Ctrl/Cmd + E** - Toggle Editor
 - **Ctrl/Cmd + Enter** - Submit current wizard step
 - **Ctrl/Cmd + Shift + E** - Export project as ZIP
+- **Ctrl/Cmd + S** - Save content now (flush pending auto-saves)
 - **Escape** - Cancel generation (when in progress)
 
 ## Advanced Features

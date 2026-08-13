@@ -102,6 +102,7 @@ const mockWizardStore: WizardStore = {
   setConstraints: vi.fn(),
   reset: vi.fn(),
   loadTemplate: vi.fn(),
+  flushStorage: vi.fn(),
 };
 
 const mockEditorStore: EditorStore = {

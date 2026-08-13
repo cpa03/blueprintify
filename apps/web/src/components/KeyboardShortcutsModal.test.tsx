@@ -116,4 +116,10 @@ describe("KeyboardShortcutsModal", () => {
 
     expect(search).toHaveFocus();
   });
+
+  it("lists the Ctrl/Cmd+S save-now shortcut", () => {
+    render(<KeyboardShortcutsModal {...defaultProps} />);
+
+    expect(screen.getByText("Save content now")).toBeInTheDocument();
+  });
 });

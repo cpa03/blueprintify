@@ -104,6 +104,7 @@ const mockWizardStore: WizardStore = {
   prevStep: vi.fn(),
   reset: vi.fn(),
   loadTemplate: vi.fn(),
+  flushStorage: vi.fn(),
 };
 
 describe("EditorEmptyState", () => {
