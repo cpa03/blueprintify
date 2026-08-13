@@ -91,6 +91,7 @@ The application implements the following security measures:
 
 | Date       | Scope                               | Result                                            |
 | ---------- | ----------------------------------- | ------------------------------------------------- |
+| 2026-08-13 | Recurring gate (ULW Loop Cycle 451) | `npm audit` 0 vulns · `scan:secrets` ✅ 322 files |
 | 2026-08-13 | Recurring gate (ULW Loop Cycle 449) | `npm audit` 0 vulns · `scan:secrets` ✅ 323 files |
 | 2026-08-13 | Recurring gate (ULW Loop Cycle 448) | `npm audit` 0 vulns · `scan:secrets` ✅ 320 files |
 | 2026-02-19 | Full codebase audit                 | All checks passed                                 |
