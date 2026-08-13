@@ -9,18 +9,18 @@ Wrangler 4.x requires Node.js >=22 — the API build (`npm run build:api`) fails
 
 ### ✅ Workflow Node Version: FIXED ON MAIN
 
-All CI workflow files use `node-version-file: ".node-version"` across all 4 workflow files (11 occurrences total). This matches the project's Node.js 22+ requirement (see `.nvmrc`, `.node-version`).
+All CI workflow files use `node-version-file: ".node-version"` across 4 of 5 workflow files (11 occurrences total — iterate 5, parallel 4, on-pull 1, pr-gatekeeper 1). `main.yml` is the sole exception (0 occurrences — it does not use `setup-node`). This matches the project's Node.js 22+ requirement (see `.nvmrc`, `.node-version`).
 
 **BUG-017 — RESOLVED on `main`**:
 - `node-version-file: ".node-version"` is the single source of truth
-- All 4 workflows (iterate.yml, parallel.yml, on-pull.yml, pr-gatekeeper.yml) use it
+- 4 of 5 workflows (iterate.yml, parallel.yml, on-pull.yml, pr-gatekeeper.yml) use it; `main.yml` has no `setup-node` step
 - No hardcoded versions remain
 
-**Current verifications (Jul 27 2026):**
+**Current verifications (Aug 13 2026):**
 - ✅ Typecheck: clean
 - ✅ Lint: 0 errors, 0 warnings
 - ✅ Build: clean
-- ✅ Tests: 2,224/2,224 passed (912 web + 502 api + 810 shared)
+- ✅ Tests: 2,531/2,531 passed (1,146 web + 534 api + 851 shared)
 - ✅ npm audit: 0 vulnerabilities
 - ✅ Secrets scan: clean
 
