@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from "vitest";
 import { MarkdownRenderer } from "./MarkdownRenderer";
 import { ensureDOMPurifyLoaded } from "../lib/security";
@@ -85,6 +85,40 @@ describe("MarkdownRenderer", () => {
       expect(link).toHaveClass("focus-visible:outline-none");
       expect(link).toHaveClass("focus-visible:ring-2");
       expect(link).toHaveClass("focus-visible:ring-primary-500/50");
+    });
+
+    it("renders external links with an opens-in-new-tab announcement", () => {
+      render(<MarkdownRenderer content="[Example](https://example.com)" />);
+      expect(screen.getByText("(opens in new tab)")).toBeInTheDocument();
+    });
+
+    it("renders internal #hash anchor links without target=_blank or new-tab announcement", () => {
+      render(<MarkdownRenderer content="[Jump to section](#installation)" />);
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("href", "#installation");
+      expect(link).not.toHaveAttribute("target");
+      expect(link).not.toHaveAttribute("rel");
+      expect(link).not.toHaveTextContent("(opens in new tab)");
+      expect(link).not.toHaveTextContent("opens in new tab");
+    });
+
+    it("smooth-scrolls to the target heading when an internal anchor link is clicked", () => {
+      const scrollIntoViewSpy = vi.fn();
+      Element.prototype.scrollIntoView = scrollIntoViewSpy;
+
+      render(<MarkdownRenderer content={"# Installation\n\n[Jump to section](#installation)"} />);
+      const heading = screen.getByRole("heading", { level: 1 });
+      expect(heading).toHaveAttribute("id", "installation");
+
+      const link = screen.getByRole("link");
+      fireEvent.click(link);
+
+      expect(scrollIntoViewSpy).toHaveBeenCalledTimes(1);
+      expect(scrollIntoViewSpy).toHaveBeenCalledWith({
+        behavior: "smooth",
+        block: "start",
+      });
+      expect(heading).toHaveFocus();
     });
 
     it("renders images with lazy loading", () => {
