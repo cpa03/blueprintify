@@ -39,6 +39,7 @@ import { MARKDOWN, ICON } from "../config/styles";
 import { HeadingAnchor } from "./HeadingAnchor";
 import { Icon } from "./Icon";
 import { generateSlug, childrenToText } from "../utils/slug";
+import { getScrollBehavior } from "../utils/scroll";
 import type { Components } from "react-markdown";
 
 /**
@@ -316,6 +317,31 @@ function MarkdownRendererComponent({ content, className }: MarkdownRendererProps
         return <li className={MARKDOWN.LI}>{children}</li>;
       },
       a({ children, href }) {
+        // Internal #hash anchors link to in-document headings (slugged by
+        // HeadingAnchor); opening them in a new tab would duplicate the page.
+        if (typeof href === "string" && href.startsWith("#")) {
+          return (
+            <a
+              href={href}
+              className={MARKDOWN.LINK}
+              onClick={(e) => {
+                e.preventDefault();
+                const target = document.getElementById(href.slice(1));
+                if (!target) return;
+                target.scrollIntoView({
+                  behavior: getScrollBehavior(),
+                  block: "start",
+                });
+                // tabIndex -1 keeps it out of tab order while allowing focus.
+                target.tabIndex = -1;
+                target.focus({ preventScroll: true });
+              }}
+            >
+              {children}
+            </a>
+          );
+        }
+
         return (
           <a
             href={href}
