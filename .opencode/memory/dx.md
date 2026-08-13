@@ -6,7 +6,7 @@
 
 Blueprintify is an AI-powered project architecture documentation generator built with:
 
-- **Frontend**: React 18 + Vite + Tailwind CSS + Zustand
+- **Frontend**: React 19 + Vite + Tailwind CSS + Zustand
 - **Backend**: Hono on Cloudflare Workers
 - **Shared**: TypeScript types and Zod schemas
 
