@@ -52,6 +52,19 @@ vi.mock("@blueprint/shared", async (importOriginal) => {
           { name: "Firebase", category: "backend" },
         ],
       },
+      {
+        id: "api-service",
+        name: "API Service",
+        description: "Scalable API service with container orchestration",
+        icon: "\u{2699}\u{FE0F}",
+        techStack: [
+          { name: "Go", category: "backend" },
+          { name: "Redis", category: "database" },
+          { name: "Docker", category: "deployment" },
+          { name: "Kubernetes", category: "deployment" },
+          { name: "Terraform", category: "infrastructure" },
+        ],
+      },
     ],
   };
 });
@@ -77,6 +90,7 @@ describe("TemplateGrid", () => {
 
     expect(screen.getByText("Web Application")).toBeInTheDocument();
     expect(screen.getByText("Mobile App")).toBeInTheDocument();
+    expect(screen.getByText("API Service")).toBeInTheDocument();
   });
 
   it("renders template descriptions", () => {
@@ -84,6 +98,9 @@ describe("TemplateGrid", () => {
 
     expect(screen.getByText("Full-stack web application with React")).toBeInTheDocument();
     expect(screen.getByText("Cross-platform mobile application")).toBeInTheDocument();
+    expect(
+      screen.getByText("Scalable API service with container orchestration")
+    ).toBeInTheDocument();
   });
 
   it("renders tech stack badges", () => {
@@ -97,16 +114,40 @@ describe("TemplateGrid", () => {
   it("limits tech badges shown to 3 items per template", () => {
     render(<TemplateGrid />);
 
-    // The mock has Web App with 3 tech items (React, Node.js, PostgreSQL)
-    // and Mobile App with 2 tech items (React Native, Firebase)
-    // Verify no +N badge since no template exceeds 3 items
-    const plusBadges = screen.queryByText(/^\+/, { selector: "span" });
-    expect(plusBadges).toBeNull();
-    // Templates in mock have 2-3 items each, so no +N badge expected
-    expect(plusBadges).not.toBeInTheDocument();
-    expect(screen.getByText("React")).toBeInTheDocument();
-    expect(screen.getByText("Node.js")).toBeInTheDocument();
-    expect(screen.getByText("PostgreSQL")).toBeInTheDocument();
+    // Web App has 3 tech items (React, Node.js, PostgreSQL) and Mobile App has
+    // 2 (React Native, Firebase) — neither exceeds the 3-item limit. API Service
+    // has 5 items (Go, Redis, Docker, Kubernetes, Terraform), so only the first
+    // 3 render as badges and the remaining 2 collapse into a "+2" badge.
+    expect(screen.getByText("Go")).toBeInTheDocument();
+    expect(screen.getByText("Redis")).toBeInTheDocument();
+    expect(screen.getByText("Docker")).toBeInTheDocument();
+    expect(screen.queryByText("Kubernetes")).not.toBeInTheDocument();
+    expect(screen.queryByText("Terraform")).not.toBeInTheDocument();
+    expect(screen.getByText("+2")).toBeInTheDocument();
+  });
+
+  it("exposes the hidden tech items to screen readers via sr-only text", () => {
+    render(<TemplateGrid />);
+
+    const srText = screen.getByText("more: Kubernetes, Terraform");
+    expect(srText).toHaveClass("sr-only");
+  });
+
+  it("renders a CSS tooltip with the hidden tech items on the +N badge", () => {
+    render(<TemplateGrid />);
+
+    const plusBadge = screen.getByText("+2");
+    expect(plusBadge).toHaveClass("group/overflow");
+    expect(plusBadge).toHaveClass("relative");
+
+    const tooltip = screen.getByText("Kubernetes, Terraform", {
+      selector: '[aria-hidden="true"]',
+    });
+    expect(tooltip).toHaveClass("hidden");
+    expect(tooltip).toHaveClass("group-hover/overflow:block");
+    expect(tooltip).toHaveClass("animate-tooltip-in");
+    expect(tooltip).toHaveClass("glass-card");
+    expect(tooltip).toHaveTextContent("Kubernetes, Terraform");
   });
 
   it("calls loadTemplate when a template is clicked", () => {
@@ -195,7 +236,7 @@ describe("TemplateGrid", () => {
     render(<TemplateGrid />);
 
     const cards = screen.getAllByRole("option");
-    expect(cards).toHaveLength(2);
+    expect(cards).toHaveLength(3);
     expect(cards[0]!).toHaveAttribute("tabindex", "0");
     expect(cards[1]!).toHaveAttribute("tabindex", "-1");
   });
@@ -218,10 +259,10 @@ describe("TemplateGrid", () => {
     const cards = screen.getAllByRole("option");
 
     fireEvent.keyDown(cards[0]!, { key: "End" });
-    expect(cards[1]).toHaveFocus();
-    expect(cards[1]!).toHaveAttribute("tabindex", "0");
+    expect(cards[2]).toHaveFocus();
+    expect(cards[2]!).toHaveAttribute("tabindex", "0");
 
-    fireEvent.keyDown(cards[1]!, { key: "Home" });
+    fireEvent.keyDown(cards[2]!, { key: "Home" });
     expect(cards[0]).toHaveFocus();
     expect(cards[0]!).toHaveAttribute("tabindex", "0");
     expect(cards[1]!).toHaveAttribute("tabindex", "-1");
