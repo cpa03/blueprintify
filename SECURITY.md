@@ -89,10 +89,12 @@ The application implements the following security measures:
 
 ## Security Audit History
 
-| Date       | Scope               | Result                            |
-| ---------- | ------------------- | --------------------------------- |
-| 2026-02-19 | Full codebase audit | All checks passed                 |
-| 2026-02-18 | CI/CD security      | Workflow issues identified (#743) |
+| Date       | Scope                               | Result                                            |
+| ---------- | ----------------------------------- | ------------------------------------------------- |
+| 2026-08-13 | Recurring gate (ULW Loop Cycle 449) | `npm audit` 0 vulns · `scan:secrets` ✅ 323 files |
+| 2026-08-13 | Recurring gate (ULW Loop Cycle 448) | `npm audit` 0 vulns · `scan:secrets` ✅ 320 files |
+| 2026-02-19 | Full codebase audit                 | All checks passed                                 |
+| 2026-02-18 | CI/CD security                      | Workflow issues identified (#743)                 |
 
 ## Contact
 
@@ -103,5 +105,5 @@ For security-related questions or concerns:
 
 ---
 
-**Last Updated**: 2026-02-22  
+**Last Updated**: 2026-08-13  
 **Policy Version**: 1.0.0
