@@ -147,6 +147,10 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
       >
         {STARTER_TEMPLATES.map((template, index) => {
           const isSelected = selectedId === template.id;
+          const hiddenTechNames = template.techStack
+            .slice(3)
+            .map((tech) => tech.name)
+            .join(", ");
 
           return (
             <button
@@ -277,7 +281,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                           animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY + ANIMATION.CARD_ENTRANCE_DURATION + 3 * STAGGER_CONFIG.TAG_ENTRANCE.STAGGER_S}s`,
                         }}
                         className={`
-                          px-2 py-0.5 text-xs rounded
+                          group/overflow relative px-2 py-0.5 text-xs rounded
                           motion-safe:transition-all motion-safe:duration-150
                           motion-safe:hover:scale-105
                           animate-tag-entrance
@@ -289,6 +293,15 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                         `}
                       >
                         +{template.techStack.length - 3}
+                        <span className="sr-only">
+                          {ACCESSIBILITY_LABELS.TEMPLATES.MORE_TECH(hiddenTechNames)}
+                        </span>
+                        <span
+                          aria-hidden="true"
+                          className="absolute bottom-full left-0 mb-2 z-10 hidden group-hover/overflow:block group-focus-within:block animate-tooltip-in glass-card px-3 py-2 text-xs text-dark-300 shadow-xl whitespace-nowrap pointer-events-none"
+                        >
+                          {hiddenTechNames}
+                        </span>
                       </span>
                     )}
                   </div>

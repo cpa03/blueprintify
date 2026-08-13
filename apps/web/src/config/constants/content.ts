@@ -292,6 +292,8 @@ export const ACCESSIBILITY_LABELS = {
     QUICK_START: "Quick start templates",
     /** Screen reader announcement while a template is being loaded */
     LOADING: (name: string) => `Loading ${name} template`,
+    /** Screen reader label for the +N overflow badge revealing the hidden tech stack items */
+    MORE_TECH: (names: string) => `more: ${names}`,
   },
   HEADING_ANCHOR: {
     COPY_LINK_TITLE: "Copy anchor link",
