@@ -169,18 +169,18 @@ function generateChangelog(fromTag: string, toTag: string): string {
 
 ## 🚀 Features
 
-- **Feature description** ([PR #123](../../pull/123))
-- **Another feature** ([PR #124](../../pull/124))
+- **Feature description** ([PR #123](https://github.com/cpa03/blueprintify/pull/123))
+- **Another feature** ([PR #124](https://github.com/cpa03/blueprintify/pull/124))
 
 ## 🐛 Bug Fixes
 
-- **Critical bug fix** ([PR #125](../../pull/125))
-- **Minor bug fix** ([PR #126](../../pull/126))
+- **Critical bug fix** ([PR #125](https://github.com/cpa03/blueprintify/pull/125))
+- **Minor bug fix** ([PR #126](https://github.com/cpa03/blueprintify/pull/126))
 
 ## 🔧 Improvements
 
-- **Performance improvement** ([PR #127](../../pull/127))
-- **Code refactoring** ([PR #128](../../pull/128))
+- **Performance improvement** ([PR #127](https://github.com/cpa03/blueprintify/pull/127))
+- **Code refactoring** ([PR #128](https://github.com/cpa03/blueprintify/pull/128))
 
 ## ⚠️ Breaking Changes
 

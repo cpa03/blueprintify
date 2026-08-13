@@ -54,6 +54,7 @@ blueprintify/
 │   ├── features.md
 │   ├── findings.md
 │   ├── flexy-plan.md
+│   ├── issue-manager-plan-cycle-368.md
 │   ├── knowledge-review.md
 │   ├── localstorage-schema.md
 │   ├── m2-technical-approach.md
@@ -245,7 +246,7 @@ _See `.opencode/skill/` directory for complete skill definitions._
 | `OPENAI_MODEL`    | No          | Model to use (default: gpt-4o-mini)                                |
 | `API_KEY`         | Recommended | API authentication key — protected endpoints return 503 when unset |
 | `ADMIN_API_KEY`   | No          | Admin API key granting the `admin` role (RBAC)                     |
-| `CORS_ORIGIN`     | No          | Allowed CORS origins (default: http://localhost:3000)              |
+| `CORS_ORIGIN`     | No          | Allowed CORS origins (default: `*`)                                |
 | `ENVIRONMENT`     | No          | Runtime environment (default: development)                         |
 
 See [docs/environment-variables.md](./docs/environment-variables.md) for the full reference.
@@ -336,7 +337,7 @@ See [docs/environment-variables.md](./docs/environment-variables.md) for the ful
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
 - **[Issue Audit Report](./docs/audits/archive/issue-audit-report-2026-07-15.md)** - ULW Loop issue audit with fix status tracking (archived)
 
-- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jul 9–Aug 12)
+- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jul 14–Aug 13)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 - **[Roadmap M3 Proposal](./docs/roadmap-m3-proposal.md)** - M3 strategic expansion proposal
 
