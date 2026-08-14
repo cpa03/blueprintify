@@ -27,8 +27,9 @@ import {
   STORAGE_KV_CONFIG,
   ROUTE_SUB_PATHS,
   STORAGE_QUERY_PARAMS,
+  ERROR_CODES,
 } from "../config/constants";
-import { ErrorType, timestamp } from "../errors";
+import { ErrorType, createErrorJson, timestamp } from "../errors";
 import type { AppVariables, Env, User } from "../types";
 
 const app = new Hono<{ Bindings: Env; Variables: AppVariables }>();
@@ -107,14 +108,14 @@ app.get(
       });
     } catch (error) {
       return c.json(
-        {
-          success: false,
-          error: {
-            type: ErrorType.INTERNAL,
-            message: error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.QUOTA_GET,
-            timestamp: timestamp(),
-          },
-        },
+        createErrorJson(
+          ErrorType.INTERNAL,
+          error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.QUOTA_GET,
+          {
+            code: ERROR_CODES.INTERNAL_ERROR,
+            requestId: c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined,
+          }
+        ),
         HTTP_STATUS.INTERNAL_ERROR
       );
     }
@@ -159,15 +160,14 @@ app.post(
       });
     } catch (error) {
       return c.json(
-        {
-          success: false,
-          error: {
-            type: ErrorType.INTERNAL,
-            message:
-              error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.REPORT_USAGE,
-            timestamp: timestamp(),
-          },
-        },
+        createErrorJson(
+          ErrorType.INTERNAL,
+          error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.REPORT_USAGE,
+          {
+            code: ERROR_CODES.INTERNAL_ERROR,
+            requestId: c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined,
+          }
+        ),
         HTTP_STATUS.INTERNAL_ERROR
       );
     }
@@ -190,14 +190,10 @@ app.delete(
 
     if (!confirm) {
       return c.json(
-        {
-          success: false,
-          error: {
-            type: ErrorType.VALIDATION,
-            message: STORAGE_MESSAGES.CONFIRMATION_REQUIRED,
-            timestamp: timestamp(),
-          },
-        },
+        createErrorJson(ErrorType.VALIDATION, STORAGE_MESSAGES.CONFIRMATION_REQUIRED, {
+          code: ERROR_CODES.VALIDATION_ERROR,
+          requestId: c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined,
+        }),
         HTTP_STATUS.BAD_REQUEST
       );
     }
@@ -216,15 +212,14 @@ app.delete(
       });
     } catch (error) {
       return c.json(
-        {
-          success: false,
-          error: {
-            type: ErrorType.INTERNAL,
-            message:
-              error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.CLEAR_STORAGE,
-            timestamp: timestamp(),
-          },
-        },
+        createErrorJson(
+          ErrorType.INTERNAL,
+          error instanceof Error ? error.message : STORAGE_FALLBACK_MESSAGES.CLEAR_STORAGE,
+          {
+            code: ERROR_CODES.INTERNAL_ERROR,
+            requestId: c.get(CONTEXT_KEYS.REQUEST_ID) as string | undefined,
+          }
+        ),
         HTTP_STATUS.INTERNAL_ERROR
       );
     }
