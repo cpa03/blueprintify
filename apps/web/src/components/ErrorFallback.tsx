@@ -67,6 +67,7 @@ export const ErrorFallback = memo(function ErrorFallback({
 }: FallbackProps): JSX.Element {
   const shouldReduceMotion = useReducedMotion();
   const [isCopied, setIsCopied] = useState(false);
+  const [copyFailed, setIsCopyFailed] = useState(false);
 
   const handleReload = (): void => {
     window.location.reload();
@@ -79,6 +80,9 @@ export const ErrorFallback = memo(function ErrorFallback({
     if (success) {
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), TIMEOUTS.COPY_FEEDBACK);
+    } else {
+      setIsCopyFailed(true);
+      setTimeout(() => setIsCopyFailed(false), TIMEOUTS.COPY_FEEDBACK);
     }
   }, [errorMessage]);
 
@@ -267,6 +271,30 @@ export const ErrorFallback = memo(function ErrorFallback({
                         </svg>
                         <span>{ERROR_BOUNDARY_TEXT.COPIED}</span>
                       </motion.span>
+                    ) : copyFailed ? (
+                      <motion.span
+                        key="failed"
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        className="flex items-center gap-1 text-red-400"
+                      >
+                        <svg
+                          className="w-3 h-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2.5}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                        <span>{ERROR_BOUNDARY_TEXT.COPY_FAILED}</span>
+                      </motion.span>
                     ) : (
                       <motion.span
                         key="copy"
@@ -298,7 +326,11 @@ export const ErrorFallback = memo(function ErrorFallback({
                 aria-live="polite"
                 aria-atomic="true"
               >
-                {isCopied ? ACCESSIBILITY_LABELS.ERROR_BOUNDARY.ERROR_COPIED : ""}
+                {copyFailed
+                  ? ACCESSIBILITY_LABELS.ERROR_BOUNDARY.ERROR_COPY_FAILED
+                  : isCopied
+                    ? ACCESSIBILITY_LABELS.ERROR_BOUNDARY.ERROR_COPIED
+                    : ""}
               </span>
             </motion.details>
           )}
