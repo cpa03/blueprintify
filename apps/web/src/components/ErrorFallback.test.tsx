@@ -136,19 +136,31 @@ describe("ErrorFallback", () => {
     });
   });
 
-  it("does not show copied state when copy fails", async () => {
+  it("shows transient failure feedback when copy fails", async () => {
     vi.mocked(clipboard.copyToClipboard).mockResolvedValue(false);
     render(<ErrorFallback error={defaultError} resetErrorBoundary={mockReset} />);
     const copyBtn = screen.getByLabelText(ACCESSIBILITY_LABELS.ERROR_BOUNDARY.COPY_ERROR);
     fireEvent.click(copyBtn);
 
-    // Wait for the async handler, then verify copy error label is still visible
+    // Wait for the async handler, then verify the failure feedback is shown
     await waitFor(() => {
       expect(clipboard.copyToClipboard).toHaveBeenCalled();
     });
 
-    expect(screen.getByText(ERROR_BOUNDARY_TEXT.COPY_ERROR)).toBeInTheDocument();
+    expect(screen.getByText(ERROR_BOUNDARY_TEXT.COPY_FAILED)).toBeInTheDocument();
     expect(screen.queryByText(ERROR_BOUNDARY_TEXT.COPIED)).not.toBeInTheDocument();
+  });
+
+  it("announces copy failure to screen readers", async () => {
+    vi.mocked(clipboard.copyToClipboard).mockResolvedValue(false);
+    render(<ErrorFallback error={defaultError} resetErrorBoundary={mockReset} />);
+    const copyBtn = screen.getByLabelText(ACCESSIBILITY_LABELS.ERROR_BOUNDARY.COPY_ERROR);
+    fireEvent.click(copyBtn);
+
+    await waitFor(() => {
+      const statusRegion = screen.getByRole("status");
+      expect(statusRegion.textContent).toBe(ACCESSIBILITY_LABELS.ERROR_BOUNDARY.ERROR_COPY_FAILED);
+    });
   });
 
   // ---- Action buttons ----
