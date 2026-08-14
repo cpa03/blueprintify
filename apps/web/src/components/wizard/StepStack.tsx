@@ -258,9 +258,9 @@ export const StepStack = memo(function StepStack({
     } else {
       setIsShaking(true);
       setInvalidField(true);
+      // Shake is transient; the error persists until cleared in toggleTech.
       setTimeout(() => {
         setIsShaking(false);
-        setInvalidField(false);
       }, TIMEOUTS.SHAKE_ANIMATION);
     }
   };
@@ -291,6 +291,8 @@ export const StepStack = memo(function StepStack({
         setJustSelected(tech.name);
         setTimeout(() => setJustSelected(null), ANIMATION_MS.CHIP_SELECT_FEEDBACK);
       }
+      // User responded to the validation error by making a selection — clear it.
+      setInvalidField(false);
     },
     [isSelected, addTechStack, removeTechStack]
   );
@@ -476,7 +478,6 @@ export const StepStack = memo(function StepStack({
         >
           <RippleButton
             onClick={handleNextClick}
-            disabled={!canProceed}
             className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}`}
             aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
           >
