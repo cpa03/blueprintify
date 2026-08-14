@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";
 import { axe } from "jest-axe";
@@ -20,6 +20,10 @@ const { mockSuspendingStepChunk } = vi.hoisted(() => ({
   mockSuspendingStepChunk: new Promise<void>(() => {}),
 }));
 
+const { stepInfoRenderCount } = vi.hoisted(() => ({
+  stepInfoRenderCount: { value: 0 },
+}));
+
 vi.mock("../store", () => ({
   useWizardStore: vi.fn(),
   useEditorStore: vi.fn(),
@@ -31,7 +35,10 @@ vi.mock("./hooks/useDocumentTitle", () => ({
 }));
 
 vi.mock("./wizard/StepInfo", () => ({
-  StepInfo: () => <div data-testid="step-info">Step Info</div>,
+  StepInfo: () => {
+    stepInfoRenderCount.value += 1;
+    return <div data-testid="step-info">Step Info</div>;
+  },
 }));
 
 vi.mock("./wizard/StepStack", () => ({
@@ -175,6 +182,29 @@ describe("Wizard", () => {
     mockWizardStore.currentStep = "unknown" as WizardStore["currentStep"];
     render(<Wizard />);
     expect(await screen.findByTestId("step-info")).toBeInTheDocument();
+  });
+
+  it("does not re-render the active step when scroll shadow state changes", async () => {
+    const { container } = render(<Wizard />);
+    await screen.findByTestId("step-info");
+
+    // Given: the active step rendered at least once
+    const rendersAfterMount = stepInfoRenderCount.value;
+    expect(rendersAfterMount).toBeGreaterThan(0);
+
+    // Given: not scrolled to the bottom, so the bottom shadow is visible
+    const bottomShadow = container.querySelectorAll('[aria-hidden="true"]')[1] as HTMLElement;
+    expect(bottomShadow).toHaveStyle({ opacity: "1" });
+
+    // When: scrolling updates scroll shadow state, re-rendering the Wizard
+    const scrollRegion = screen.getByRole("region");
+    fireEvent.scroll(scrollRegion);
+
+    // Then: the re-render happened (bottom shadow is now hidden)
+    expect(bottomShadow).toHaveStyle({ opacity: "0" });
+
+    // Then: the memoized active step did not re-render
+    expect(stepInfoRenderCount.value).toBe(rendersAfterMount);
   });
 
   it("has proper styling classes", () => {
