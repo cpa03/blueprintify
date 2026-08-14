@@ -20,7 +20,12 @@ import type { WizardStore } from "../../store/wizard";
 import { TECH_STACK_OPTIONS } from "@blueprint/shared/schema";
 import type { TechStackItemType } from "@blueprint/shared/types";
 import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
-import { UI_CONTENT, MIN_REQUIREMENTS } from "../../config/constants";
+import {
+  UI_CONTENT,
+  MIN_REQUIREMENTS,
+  VALIDATION_MESSAGES,
+  TIMEOUTS,
+} from "../../config/constants";
 import { ACCESSIBILITY_LABELS } from "../../config/constants/content";
 
 // Mock framer-motion to render plain HTML elements
@@ -34,6 +39,7 @@ vi.mock("framer-motion", () => ({
     li: vi.fn(({ children, ...props }) => <li {...props}>{children}</li>),
     svg: vi.fn(({ children, ...props }) => <svg {...props}>{children}</svg>),
     path: vi.fn(({ children, ...props }) => <path {...props}>{children}</path>),
+    p: vi.fn(({ children, ...props }) => <p {...props}>{children}</p>),
   },
   AnimatePresence: vi.fn(({ children }) => <>{children}</>),
 }));
@@ -47,6 +53,7 @@ vi.mock("framer-motion/m", () => ({
   li: vi.fn(({ children, ...props }) => <li {...props}>{children}</li>),
   svg: vi.fn(({ children, ...props }) => <svg {...props}>{children}</svg>),
   path: vi.fn(({ children, ...props }) => <path {...props}>{children}</path>),
+  p: vi.fn(({ children, ...props }) => <p {...props}>{children}</p>),
 }));
 
 // Mock platform utilities
@@ -177,10 +184,10 @@ describe("StepStack", () => {
 
   // ======== Selection Behavior ========
 
-  it("disables the next button when no tech is selected", () => {
+  it("keeps the next button enabled when no tech is selected", () => {
     render(<StepStack />);
     const nextButton = screen.getByText(UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON);
-    expect(nextButton).toBeDisabled();
+    expect(nextButton).toBeEnabled();
   });
 
   it("calls addTechStack when an unselected chip is clicked", () => {
@@ -256,10 +263,31 @@ describe("StepStack", () => {
     expect(mockStore.nextStep).toHaveBeenCalledTimes(1);
   });
 
-  it("does not advance when the disabled next button is clicked without a selection", () => {
+  it("does not advance when next is clicked without a selection and shows the validation error", () => {
     render(<StepStack />);
     fireEvent.click(screen.getByText(UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON));
     expect(mockStore.nextStep).not.toHaveBeenCalled();
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      VALIDATION_MESSAGES.TECH_STACK_MIN(MIN_REQUIREMENTS.TECH_STACK)
+    );
+  });
+
+  it("persists the validation error until a tech is selected", () => {
+    render(<StepStack />);
+    fireEvent.click(screen.getByText(UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON));
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+    act(() => {
+      vi.advanceTimersByTime(TIMEOUTS.SHAKE_ANIMATION);
+    });
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+  });
+
+  it("clears the validation error once a tech is selected", () => {
+    render(<StepStack />);
+    fireEvent.click(screen.getByText(UI_CONTENT.WIZARD.STEP_STACK.NEXT_BUTTON));
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+    fireEvent.click(screen.getByText("React"));
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 
   it("calls prevStep when the back button is clicked", () => {
