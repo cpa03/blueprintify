@@ -19,7 +19,7 @@
  * @see {@link useEditorStore} - Generation state tracking
  */
 
-import React, { Suspense, lazy, useState, useEffect, useRef, useCallback } from "react";
+import React, { Suspense, lazy, useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { StepTransition } from "./StepTransition";
 import { useWizardStore } from "../store";
 import { useEditorStore } from "../store";
@@ -196,41 +196,41 @@ function WizardComponent(): JSX.Element {
   })();
   useDocumentTitle(documentTitle);
 
-  const renderStep = (): JSX.Element => {
-    const stepElement = (() => {
-      switch (currentStep) {
-        case WIZARD_STEP_KEYS.INFO:
-          return <StepInfo key={WIZARD_STEP_KEYS.INFO} direction={direction} />;
-        case WIZARD_STEP_KEYS.STACK:
-          return <StepStack key={WIZARD_STEP_KEYS.STACK} direction={direction} />;
-        case WIZARD_STEP_KEYS.FEATURES:
-          return <StepFeatures key={WIZARD_STEP_KEYS.FEATURES} direction={direction} />;
-        case WIZARD_STEP_KEYS.REVIEW:
-          return <StepReview key={WIZARD_STEP_KEYS.REVIEW} direction={direction} />;
-        case WIZARD_STEP_KEYS.GENERATING:
-          return <StepGenerating key={WIZARD_STEP_KEYS.GENERATING} direction={direction} />;
-        default:
-          return <StepInfo key="default" direction={direction} />;
-      }
-    })();
+  // Memoize the active step element so unrelated Wizard re-renders (e.g. scroll
+  // shadow state updates) don't re-create the step subtree.
+  const stepElement = useMemo(() => {
+    switch (currentStep) {
+      case WIZARD_STEP_KEYS.INFO:
+        return <StepInfo key={WIZARD_STEP_KEYS.INFO} direction={direction} />;
+      case WIZARD_STEP_KEYS.STACK:
+        return <StepStack key={WIZARD_STEP_KEYS.STACK} direction={direction} />;
+      case WIZARD_STEP_KEYS.FEATURES:
+        return <StepFeatures key={WIZARD_STEP_KEYS.FEATURES} direction={direction} />;
+      case WIZARD_STEP_KEYS.REVIEW:
+        return <StepReview key={WIZARD_STEP_KEYS.REVIEW} direction={direction} />;
+      case WIZARD_STEP_KEYS.GENERATING:
+        return <StepGenerating key={WIZARD_STEP_KEYS.GENERATING} direction={direction} />;
+      default:
+        return <StepInfo key="default" direction={direction} />;
+    }
+  }, [currentStep, direction]);
 
-    return (
-      <Suspense
-        fallback={
-          <div
-            className="flex items-center justify-center py-16"
-            role="status"
-            aria-live="polite"
-            aria-label={ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP}
-          >
-            <div className={SPINNER.DEFAULT} aria-hidden="true"></div>
-          </div>
-        }
-      >
-        {stepElement}
-      </Suspense>
-    );
-  };
+  const renderStep = (): JSX.Element => (
+    <Suspense
+      fallback={
+        <div
+          className="flex items-center justify-center py-16"
+          role="status"
+          aria-live="polite"
+          aria-label={ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP}
+        >
+          <div className={SPINNER.DEFAULT} aria-hidden="true"></div>
+        </div>
+      }
+    >
+      {stepElement}
+    </Suspense>
+  );
 
   const scrollShadowVisible = !shouldReduceMotion;
   const shadowOpacity = scrollShadowVisible ? undefined : 0;
