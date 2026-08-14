@@ -553,6 +553,47 @@ describe("StepInfo", () => {
     ).toBeInTheDocument();
   });
 
+  // ======== Enter-to-Advance ========
+
+  it("moves focus from project name to description on Enter when form not submittable", () => {
+    mockStore.projectName = "My Project";
+    mockStore.description = ""; // Required field empty → form cannot submit
+    render(<StepInfo />);
+    const input = screen.getByLabelText(new RegExp(UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL));
+    const description = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_LABEL)
+    );
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(description).toHaveFocus();
+  });
+
+  it("moves focus from target audience to constraints on Enter when form not submittable", () => {
+    mockStore.projectName = "My Project";
+    mockStore.description = ""; // Required field empty → form cannot submit
+    render(<StepInfo />);
+    const input = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.TARGET_AUDIENCE_LABEL)
+    );
+    const constraints = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.CONSTRAINTS_LABEL)
+    );
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(constraints).toHaveFocus();
+  });
+
+  it("does not move focus on Enter when the form is submittable", () => {
+    mockStore.projectName = "My Project";
+    mockStore.description =
+      "A valid project description that meets the minimum length requirement.";
+    render(<StepInfo />);
+    const input = screen.getByLabelText(new RegExp(UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_LABEL));
+    const description = screen.getByLabelText(
+      new RegExp(UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_LABEL)
+    );
+    fireEvent.keyDown(input, { key: "Enter" });
+    expect(description).not.toHaveFocus();
+  });
+
   // ======== Edge Cases ========
 
   it("handles empty state gracefully", () => {

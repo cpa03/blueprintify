@@ -38,7 +38,16 @@ import {
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { useWizardStore } from "../../store";
-import { FormEvent, useCallback, useEffect, useRef, useState, memo, useMemo } from "react";
+import {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  memo,
+  useMemo,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from "react";
 import {
   FORM_LIMITS,
   ANIMATION,
@@ -245,6 +254,28 @@ export const StepInfo = memo(function StepInfo({
     }
   };
 
+  // Enter-to-advance: honors enterKeyHint="next". While the form cannot be
+  // submitted yet (submit button disabled), Enter would otherwise do nothing,
+  // stranding keyboard/mobile users on the same field — so Enter advances to
+  // the next field instead. When submittable, Enter keeps default submit.
+  const handleProjectNameKeyDown = useCallback(
+    (e: ReactKeyboardEvent<HTMLInputElement>) => {
+      if (e.key !== KEYBOARD_EVENT_KEYS.ENTER || canProceed) return;
+      e.preventDefault();
+      descriptionRef.current?.focus({ preventScroll: true });
+    },
+    [canProceed, descriptionRef]
+  );
+
+  const handleTargetAudienceKeyDown = useCallback(
+    (e: ReactKeyboardEvent<HTMLInputElement>) => {
+      if (e.key !== KEYBOARD_EVENT_KEYS.ENTER || canProceed) return;
+      e.preventDefault();
+      constraintsRef.current?.focus({ preventScroll: true });
+    },
+    [canProceed, constraintsRef]
+  );
+
   useEffect(() => {
     projectNameInputRef.current?.focus({ preventScroll: true });
   }, []);
@@ -357,6 +388,7 @@ export const StepInfo = memo(function StepInfo({
               enterKeyHint="next"
               dir="auto"
               value={projectName}
+              onKeyDown={handleProjectNameKeyDown}
               onChange={(e) => {
                 projectNameTyping.handleTyping(e.target.value);
                 setProjectName(e.target.value);
@@ -608,6 +640,7 @@ export const StepInfo = memo(function StepInfo({
               enterKeyHint="next"
               dir="auto"
               value={targetAudience}
+              onKeyDown={handleTargetAudienceKeyDown}
               onChange={(e) => {
                 targetAudienceTyping.handleTyping(e.target.value);
                 setTargetAudience(e.target.value);
