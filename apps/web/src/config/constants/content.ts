@@ -288,6 +288,8 @@ export const ACCESSIBILITY_LABELS = {
     RELOAD_PAGE: "Reload page",
     COPY_ERROR: "Copy error details to clipboard",
     ERROR_COPIED: "Error details copied to clipboard",
+    /** Screen reader announcement when copying the error details fails */
+    ERROR_COPY_FAILED: "Failed to copy error details to clipboard",
   },
   TEMPLATES: {
     QUICK_START: "Quick start templates",
@@ -479,6 +481,7 @@ export const ERROR_BOUNDARY_TEXT = {
   UNKNOWN_ERROR: "Unknown error",
   COPY_ERROR: "Copy error details",
   COPIED: "Copied!",
+  COPY_FAILED: "Copy failed",
 } as const;
 
 // ============================================================================
