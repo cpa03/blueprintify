@@ -340,6 +340,19 @@ describe("DELETE /storage/clear", () => {
     expect(data.error.message).toBeDefined();
   });
 
+  it("should return validation errors in the standard API error format", async () => {
+    const mockEnv = createMockEnv();
+    const res = await app.request("/clear", { method: HTTP_METHODS.DELETE }, mockEnv);
+
+    expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
+    const data = (await res.json()) as ErrorResponse;
+    expect(data).toHaveProperty("success", false);
+    expect(data.error).toHaveProperty("type");
+    expect(data.error).toHaveProperty("message");
+    expect(data.error).toHaveProperty("code");
+    expect(data.error).toHaveProperty("timestamp");
+  });
+
   it("should clear storage with valid confirmation", async () => {
     const storedData = {
       used: BYTE_CONVERSION.MB,
