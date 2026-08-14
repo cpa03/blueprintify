@@ -337,7 +337,7 @@ See [docs/environment-variables.md](./docs/environment-variables.md) for the ful
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
 - **[Issue Audit Report](./docs/audits/archive/issue-audit-report-2026-07-15.md)** - ULW Loop issue audit with fix status tracking (archived)
 
-- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jul 15–Aug 13)
+- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jul 15–Aug 14)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 - **[Roadmap M3 Proposal](./docs/roadmap-m3-proposal.md)** - M3 strategic expansion proposal
 
