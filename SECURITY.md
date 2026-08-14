@@ -91,6 +91,7 @@ The application implements the following security measures:
 
 | Date       | Scope                               | Result                                                                               |
 | ---------- | ----------------------------------- | ------------------------------------------------------------------------------------ |
+| 2026-08-14 | Recurring gate (ULW Loop Cycle 464) | `npm audit` 0 vulns · `scan:secrets` ✅ 322 files · repo hygiene audit 0 defects     |
 | 2026-08-14 | Recurring gate (ULW Loop Cycle 463) | `npm audit` 0 vulns · `scan:secrets` ✅ 322 files · 3/3 PRs merged (1 code + 2 docs) |
 | 2026-08-14 | Recurring gate (ULW Loop Cycle 462) | `npm audit` 0 vulns · `scan:secrets` ✅ 322 files                                    |
 | 2026-08-14 | Recurring gate (ULW Loop Cycle 461) | `npm audit` 0 vulns · `scan:secrets` ✅ 322 files                                    |
