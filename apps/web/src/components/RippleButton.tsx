@@ -111,28 +111,28 @@ function RippleButtonComponent({
   );
 
   const handleMouseEnter = useCallback(() => {
-    if (!disabled && whileHover) {
+    if (!disabled && whileHover && !shouldReduceMotion) {
       setHoverTransform(toTransformString(whileHover));
     }
-  }, [disabled, whileHover]);
+  }, [disabled, whileHover, shouldReduceMotion]);
 
   const handleMouseLeave = useCallback(() => {
     setHoverTransform("");
   }, []);
 
   const handleMouseDown = useCallback(() => {
-    if (!disabled && whileTap) {
+    if (!disabled && whileTap && !shouldReduceMotion) {
       setHoverTransform(toTransformString(whileTap));
     }
-  }, [disabled, whileTap]);
+  }, [disabled, whileTap, shouldReduceMotion]);
 
   const handleMouseUp = useCallback(() => {
-    if (!disabled && whileHover) {
+    if (!disabled && whileHover && !shouldReduceMotion) {
       setHoverTransform(toTransformString(whileHover));
     } else {
       setHoverTransform("");
     }
-  }, [disabled, whileHover]);
+  }, [disabled, whileHover, shouldReduceMotion]);
 
   return (
     <button
@@ -147,8 +147,8 @@ function RippleButtonComponent({
       style={{
         transform: hoverTransform || undefined,
         transition: hoverTransform
-          ? `transform 350ms ${BUTTON_TRANSITION_DEFAULTS.OVERSHOOT_EASING}`
-          : "transform 150ms ease-out",
+          ? `transform ${BUTTON_TRANSITION_DEFAULTS.TRANSITION_OVERSHOOT_MS}ms ${BUTTON_TRANSITION_DEFAULTS.OVERSHOOT_EASING}`
+          : `transform ${BUTTON_TRANSITION_DEFAULTS.TRANSITION_RESTORE_MS}ms ease-out`,
       }}
       aria-label={ariaLabel}
       aria-busy={isLoading ? "true" : undefined}

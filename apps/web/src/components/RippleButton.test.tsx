@@ -26,6 +26,7 @@ import { HOVER_SCALE, TAP_SCALE, ENTRANCE_OFFSETS, CSS_CLASSES } from "../config
 describe("RippleButton", () => {
   afterEach(() => {
     vi.clearAllMocks();
+    vi.mocked(useReducedMotion).mockReturnValue(false);
   });
 
   it("renders children correctly", () => {
@@ -106,6 +107,17 @@ describe("RippleButton", () => {
 
     const ripple = button.querySelector(".animate-ripple");
     expect(ripple).not.toBeInTheDocument();
+  });
+
+  it("skips hover transform when reduced motion is enabled", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+
+    render(<RippleButton whileHover={HOVER_SCALE.STANDARD}>Test</RippleButton>);
+    const button = screen.getByRole("button");
+
+    fireEvent.mouseEnter(button);
+
+    expect(button.style.transform).toBe("");
   });
 
   it("applies hover transform on mouse enter", () => {
