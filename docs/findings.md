@@ -2,6 +2,23 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## ULW Loop Cycle 470 (2026-08-15 — PR HANDLER MODE)
+
+**Phase 0**: `gh pr list --state open` → **1 open PR (#3270)** → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `6e694729` = #3269 Cycle 468 record).
+
+**PR #3270 handled & MERGED**: `docs/ulw-loop-cycle-469` — docs-only (1 file, +14 to `docs/findings.md`), author `github-actions[bot]`, **MERGEABLE**, exactly 1 commit ahead of `origin/main` (parent = main HEAD, no sync needed). Checkout + verification on PR head `d6e49905`: `npm ci` (**0 vulnerabilities**) → `npm run check` **EXIT 0**: typecheck ✅ · lint ✅ 0 errors/0 warnings · scan:secrets ✅ · audit 0 vulns ✅ · tests **2,570/2,570** ✅ (web 1,183/83 + api 535/33 + shared 852/4). **Check failures = pre-existing environmental, NOT PR-caused**: Vercel "Deployment rate limited — try again in 24 hours (free-tier daily quota)" + Workers Builds fail — identical on #3269 and every recent merged record PR; no unresolved human comments (only bot deploy notifications); 0 review requests. **Labels added** (PR was unlabeled — contract requires category+priority): `docs` + `P3`. **Merged `gh pr merge --admin --squash --delete-branch`** → `5047b9d2` (#3270). Remote branch deleted, 0 linked issues.
+
+**Phase 0 re-run**: 0 open PRs + **101 open issues** → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases).
+
+**Steps 1–3 (Normalize/Dedup/Consolidate) BLOCKED** — `issues: write` absent; re-verified THIS cycle with live mutation probes, zero residue: `gh issue edit 1082 --add-label test` → GraphQL **403 addLabelsToLabelable**; `gh issue comment 1082` → GraphQL **403 addComment** (`GITHUB_TOKEN` = `github-actions[bot]`) — **50th consecutive block** (Cycles 421–469). Label/duplicate clusters unchanged from Cycle 469 (86/101 issues need canonical labels; 16 duplicate clusters documented in `docs/issue-manager-plan-cycle-368.md`).
+
+**Step 4 (Repair) — P1 selection**: no P0 exists (0 issues carry `P0`). All 3 open P1s re-verified via live reads on `main`:
+- **#1082 [TESTING] HIGH: No React Hook Tests — RESOLVED IN CODE** (unchanged): **12/12 hooks in `apps/web/src/hooks/` have substantive `*.test.ts` suites** (incl. `useBlueprintStream` 11 tests, `usePersistedStore` 14 tests, `useAutoSaveToast` 9 tests). Definition of Done met → **close as completed** (close blocked by token; recorded for permission-capable cycle).
+- **#1045 [DEVOPS] HIGH: Placeholder Infra IDs — human-blocked** (unchanged): `apps/api/wrangler.toml` L166–193 confirmed live, 6× `TODO: Replace` (`cache_kv_namespace_id`, `production_cache_kv_id`, `staging_cache_kv_id`, `local_database_id`, `production_database_id`, `staging_database_id`). Requires real Cloudflare KV/D1 provisioning; **#1165 duplicate** (same fix domain).
+- **#1014 [HIGH] Component Coverage — 3/4 criteria met** (unchanged): 39+ component `*.test.tsx` suites present, coverage floors hold; only unmet criterion = **CI coverage gate in `pr-gatekeeper.yml`** → `workflows: write` absent → **76th deferral**.
+
+**Baseline ALL GREEN 2,570/2,570 RECONFIRMED LIVE THIS CYCLE** (`npm ci` + `npm run check`, EXIT 0) on PR head before merge. **Skills used**: `docs-update` (cycle-record append procedure, applied to `docs/findings.md`). **Subagents used**: none required — all verifications are deterministic CLI probes (gh API + grep + live source reads); prior-cycle analysis (16 duplicate clusters, 10 consolidation candidates) documented in `docs/issue-manager-plan-cycle-368.md` and unchanged. **Final state: blocked** — Steps 1–3 mutations blocked (`issues: write`, 50th block), Step 4 P1s code-resolved (close blocked) or human/workflow-blocked (#1045 Cloudflare provisioning, #1014/#849/#953 `workflows: write`); audit delta recorded here for human/permission-capable execution.
+
 ## ULW Loop Cycle 469 (2026-08-14 — ISSUE MANAGER MODE)
 
 **Phase 0**: `gh pr list --state open` → `[]` (0 PRs) + **101 open issues** → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `6e694729` = #3269 Cycle 468 record; 0-behind/0-ahead `origin/main`; clean tree). `node_modules` absent → `npm ci` (**0 vulnerabilities**).
