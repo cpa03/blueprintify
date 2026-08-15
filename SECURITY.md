@@ -91,6 +91,9 @@ The application implements the following security measures:
 
 | Date       | Scope                               | Result                                                                                                                           |
 | ---------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-08-15 | Recurring gate (ULW Loop Cycle 469) | `npm audit` 0 vulns · `scan:secrets` ✅ 322 files · REPOKEEPER hygiene 0 defects + ISSUE MANAGER P1s code-resolved/human-blocked |
+| 2026-08-14 | Recurring gate (ULW Loop Cycle 468) | `npm audit` 0 vulns · `scan:secrets` ✅ 322 files · PR HANDLER merged #3268 + issue-manager findings-only (backfilled)           |
+| 2026-08-14 | Recurring gate (ULW Loop Cycle 467) | `npm audit` 0 vulns · `scan:secrets` ✅ 322 files · issue-manager findings-only (backfilled)                                     |
 | 2026-08-14 | Recurring gate (ULW Loop Cycle 466) | `npm audit` 0 vulns · `scan:secrets` ✅ 322 files · ISSUE MANAGER P1s code-resolved/human-blocked + REPOKEEPER hygiene 0 defects |
 | 2026-08-14 | Recurring gate (ULW Loop Cycle 465) | `npm audit` 0 vulns · `scan:secrets` ✅ 322 files · issue-manager records-only (backfilled)                                      |
 | 2026-08-14 | Recurring gate (ULW Loop Cycle 464) | `npm audit` 0 vulns · `scan:secrets` ✅ 322 files · repo hygiene audit 0 defects                                                 |
@@ -121,5 +124,5 @@ For security-related questions or concerns:
 
 ---
 
-**Last Updated**: 2026-08-14  
+**Last Updated**: 2026-08-15  
 **Policy Version**: 1.0.0
