@@ -2,6 +2,26 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## ULW Loop Cycle 472 (2026-08-15 — PR HANDLER MODE 1/1 MERGED → ISSUE MANAGER MODE)
+
+**Phase 0**: `gh pr list --state open` → **1 open PR (#3276)** → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `79af0399` = #3271 Cycle 470 record). This run = `pull` job of `on-pull.yml` (Active PR Gatekeeper), `GITHUB_TOKEN` = `github-actions[bot]`.
+
+**PR HANDLER — 1/1 PR merged**:
+- **#3276** `docs/ulw-loop-cycle-471` (**docs-only** 1 file +24: Cycle 471 record in `docs/findings.md`) — 1-ahead of `origin/main` (no sync needed, 0 conflicts, MERGEABLE) → gates LIVE on merged tree: typecheck ✅ exit 0 · lint ✅ **0 errors/0 warnings** ✅ · build ✅ (9.0s, informational `PLUGIN_TIMINGS` only) · build:api ✅ (wrangler `--dry-run` exit 0) · tests **2,571/2,571** ✅ (web **1,184**/83 + api 535/33 + shared 852/4) · scan:secrets ✅ 322 files · audit **0 vulns** ✅ · prettier ✅ (docs/findings.md clean) → **✅ Merged `448e6fab`** `--squash --admin`. Comments = 2 bot-only (Vercel free-tier rate-limit `api-deployments-free-per-day` + Cloudflare Workers Builds failed) — no actionable threads; 0 review requests, 0 reviews. Branch deleted, 0 linked issues. Failing checks = **documented external deploy fixtures** (identical on prior merged PRs #3270/#3268/#3259 precedent), not code-caused.
+
+**Merge conditions met**: no conflicts · build ✅ · lint 0/0 (no warnings) · tests 2,571/2,571 ✅ · comments bot-only/resolved · no security-sensitive change without review (docs-only). Merged via `--admin` per contract.
+
+**Phase 0 re-run**: 0 open PRs + **100 open issues** → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases).
+
+**Steps 1–3 (Normalize/Dedup/Consolidate) BLOCKED** — `issues: write` absent; re-verified THIS cycle with **2 live mutation probes, zero residue**: `gh issue edit 1016 --add-label ci` → GraphQL **403 addLabelsToLabelable "Resource not accessible by integration"**; `gh issue comment 1016` → GraphQL **403 addComment** (`GITHUB_TOKEN` = `github-actions[bot]`, collaborator permission = `none`) — **52nd consecutive block** (Cycles 421–472). #1016 labels/title verified unchanged post-probe (zero residue).
+
+**Step 4 (Repair) — P1 selection**: no P0 exists (0 issues carry `P0`). All 3 open P1s re-verified via live reads on `main` (`448e6fab`):
+- **#1082 [TESTING] HIGH: No React Hook Tests — RESOLVED IN CODE** (unchanged): **12/12 hooks** in `apps/web/src/hooks/` have substantive `*.test.ts` suites (verified: 12 test files cover all 12 hook modules incl. `useReducedMotion`/`useScrollLock`; `index.ts` is a barrel file, not a hook). Definition of Done met → **close as completed** (close blocked by token; recorded for permission-capable cycle).
+- **#1045 [DEVOPS] HIGH: Placeholder Infra IDs — human-blocked** (unchanged): `apps/api/wrangler.toml` L166–193 confirmed live, 6× placeholder IDs (KV `cache_kv_namespace_id`/`production_cache_kv_id`/`staging_cache_kv_id` + D1 `local_database_id`/`production_database_id`/`staging_database_id`); `validate:wrangler` exit 1. Requires real Cloudflare KV/D1 provisioning (human/environment step); **#1165 duplicate** (same fix domain).
+- **#1014 [HIGH] Component Coverage — 3/4 criteria met** (unchanged): **44 component `*.test.tsx` suites** under `apps/web/src/components/` (recursive: 37 direct + 5 wizard + 2 editor) + 2 context suites (46 total) + coverage floors in `apps/web/vitest.config.ts` (statements 75/branches 60/functions 70/lines 75 configured); only unmet criterion = **CI coverage gate in `pr-gatekeeper.yml`** → `workflows: write` absent → **78th deferral** (0 `test:all` refs in gatekeeper — Health Checks runs typecheck/lint/build only).
+
+**Baseline ALL GREEN 2,571/2,571 CONFIRMED LIVE THIS CYCLE** (web 1,184/83 + api 535/33 + shared 852/4; typecheck ✅ · lint ✅ **0 errors/0 warnings** ✅ · build ✅ · build:api ✅ · audit **0 vulns** ✅ · secrets ✅ 322 files · prettier ✅). **Skills used**: `code-review-checklist` (PR analysis procedure — applied to #3276 diff review + merge-condition verification). **Subagents used**: none — all operations are deterministic CLI probes (gh API + git merge/verify + live gate runs); PR HANDLER is strictly sequential per contract (one PR at a time) and only 1 PR was open this cycle. **Final state: idle** — PR HANDLER 1/1 merged; Steps 1–3 mutations blocked (`issues: write`, 52nd block), Step 4 P1s code-resolved (close blocked) or human/workflow-blocked (#1045 Cloudflare provisioning, #1014/#849/#953 `workflows: write`); baseline ALL GREEN.
+
 ## ULW Loop Cycle 471 (2026-08-15 — PR HANDLER MODE 5/5 MERGED → ISSUE MANAGER MODE)
 
 **Phase 0**: `gh pr list --state open` → **5 open PRs (#3271–#3275)** → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `5047b9d2` = #3270 Cycle 469 record). This run = `pull` job (run 31857435141) of `on-pull.yml` (Active PR Gatekeeper), `GITHUB_TOKEN` = `github-actions[bot]`.
