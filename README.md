@@ -336,7 +336,7 @@ See [docs/environment-variables.md](./docs/environment-variables.md) for the ful
 - **[Known Bugs](./docs/bugs.md)** - Active bug tracking and known defects
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
 
-- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jul 16–Aug 15)
+- **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jul 16–Aug 16)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 - **[Roadmap M3 Proposal](./docs/roadmap-m3-proposal.md)** - M3 strategic expansion proposal
 
