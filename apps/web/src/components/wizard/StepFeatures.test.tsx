@@ -515,6 +515,37 @@ describe("StepFeatures", () => {
     expect(mockStore.nextStep).toHaveBeenCalledTimes(1);
   });
 
+  // ======== Max Count Reached ========
+
+  it("shows the max-count warning and announces the actionable message to screen readers", () => {
+    mockStore.features = Array.from(
+      { length: FORM_LIMITS.FEATURE.MAX_COUNT },
+      (_, i) => `Feature ${i}`
+    );
+    render(<StepFeatures />);
+
+    // Visible terse warning still rendered for sighted users
+    expect(
+      screen.getByText(UI_CONTENT.WIZARD.STEP_FEATURES.MAX_FEATURES_REACHED)
+    ).toBeInTheDocument();
+
+    // Status live region carries the richer actionable message via sr-only text
+    const statusRegion = screen.getByRole("status");
+    const srAnnouncement = screen.getByText(
+      ACCESSIBILITY_LABELS.WIZARD_FEATURES.MAX_FEATURES_REACHED_ARIA
+    );
+    expect(srAnnouncement).toHaveClass("sr-only");
+    expect(statusRegion).toContainElement(srAnnouncement);
+  });
+
+  it("does not announce the max-count message when below the limit", () => {
+    mockStore.features = ["Auth", "API"];
+    render(<StepFeatures />);
+    expect(
+      screen.queryByText(ACCESSIBILITY_LABELS.WIZARD_FEATURES.MAX_FEATURES_REACHED_ARIA)
+    ).not.toBeInTheDocument();
+  });
+
   // ======== Edge Cases ========
 
   it("handles many features gracefully", () => {
