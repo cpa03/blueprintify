@@ -2,6 +2,30 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## ULW Loop Cycle 509 (2026-08-16 — PR HANDLER MODE → ISSUE MANAGER MODE)
+
+**Phase 0**: `gh pr list --state open` → **3 open PRs** (#3338, #3337, #3336) → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `e7eedae2` = #3335 Cycle 507 record; clean tree; `node_modules` absent → resolved via `npm ci` 894 pkgs **0 vulns**). Only-failing checks on all 3 = **documented external deploy fixtures** (Vercel free-tier rate limit `api-deployments-free-per-day` "Deployment rate limited — retry in 24 hours" + Workers Builds per #1045/#1165, 70+ cycle precedent; `mergeStateStatus` UNSTABLE = mergeable, non-required checks).
+
+**PR HANDLER — 3/3 merged, newest-first:**
+- **#3338** `agent/repokeeper-cycle-507` (docs-only 5 files +16/−1 — Cycle 507 REPOKEEPER record) — 0-behind, merge clean; gates LIVE: typecheck ✅ · lint ✅ **0 errors/0 warnings** ✅ · build ✅ · build:api ✅ · tests **2,573/2,573** ✅ · scan:secrets ✅ 322 files · audit **0 vulns** ✅ · prettier ✅; labels `docs`+`P3` present → **✅ Merged `cf4c5e64`** `--admin --squash --delete-branch`.
+- **#3337** `agent/bugfixer-cycle-87` (docs-only `docs/bugs.md` +17 — Cycle 87 audit record) — 1-behind after #3338 → `git merge origin/main` clean (0 conflicts) → pushed → gates LIVE: typecheck ✅ · lint ✅ **0/0** ✅ · format ✅ · tests **2,573/2,573** ✅ · build ✅ · scan:secrets ✅ · audit **0 vulns** ✅; labels `docs`+`P3` added (missing) → **✅ Merged `0da7ed02`** `--admin --squash --delete-branch`.
+- **#3336** `agent/ulw-loop-cycle-508` (docs-only 5 files +18/−1 — Cycle 508 record) — 2-behind after #3337 → `git merge origin/main` → **3 trivial doc-record conflicts** (CHANGELOG.md, SECURITY.md, docs/knowledge-review.md — both branches appended same-cycle rows; resolved preserve-both newest-first, zero content loss) → pushed `1fd848d1` → gates LIVE: typecheck ✅ · lint ✅ **0/0** ✅ · format ✅ · tests **2,573/2,573** ✅ · build ✅ · build:api ✅ · scan:secrets ✅ · audit **0 vulns** ✅; labels `docs`+`P3` present, MERGEABLE → **✅ Merged `1824ae36`** `--admin --squash --delete-branch`.
+
+All 3 remote branches verified deleted (`git ls-remote` → `refs/heads/main` + `agent/janitor` only); 0 linked issues on all 3; 2 bot-only deploy-fixture comments each (Vercel rate limit + Workers Builds — no actionable threads).
+
+**Post-merge Phase 0 re-check → ISSUE MANAGER MODE** (0 PRs + **101 open issues**):
+- **Steps 1–3 (Normalize/Dedup/Consolidate) BLOCKED** — `issues: write` absent (**88th consecutive block**; re-verified THIS cycle with **3 real mutation probes, zero residue**: `gh issue edit 1167 --add-label chore` → GraphQL **403 addLabelsToLabelable**, `POST /repos/cpa03/blueprintify/issues/1167/comments` → HTTP **403 addComment**, `gh issue close 1082` → GraphQL **403 closeIssue** — all "Resource not accessible by integration"; #1167 labels verified unchanged `[area:frontend-engineer, priority:low, security]`, comments 0, #1082 still OPEN).
+- **Label audit** dry-run `npm run normalize:issues -- --dry-run` → **86/101 need canonical labels** (unchanged, mapping per `docs/issue-manager-plan-cycle-368.md`).
+- **Duplicate clusters** report-only (16 canonical clusters, member issues all OPEN; close/comment blocked).
+- **Step 4 (Repair)**: no P0; P1s re-verified **code-resolved or human-blocked on `main`** — #1082 **12/12** hook `*.test.*` suites (`ls apps/web/src/hooks/*.test.*` → 12 files) → code-resolved (close blocked by token); #1014 **44** component `*.test.*` suites (`find apps/web/src/components -name "*.test.*"` → 44) + coverage config (`apps/web/vitest.config.ts` thresholds 75/60/75/75; CI gate = #849/#953, workflow-blocked) → code-resolved (close blocked by token); #1045/#1165 wrangler `⚠️ PLACEHOLDER` markers (`apps/api/wrangler.toml` L161 KV/L177 D1) fail-closed `validate-wrangler` (**REAL EXIT 1**) — human-blocked (Cloudflare provisioning).
+- **#849/#953** gatekeeper `test:all` gap (0 refs in `pr-gatekeeper.yml` — Health Checks runs typecheck/lint/build only; grep 0 refs in all 5 workflows) → **114th deferral** (`workflows: write` absent).
+- **Stray `agent/janitor` branch — FAIL-SAFE disposition MAINTAINED** (`2f2f5891`, 3 unmerged commits, no open PR; not merged/not deleted — human disposition pending).
+- **Doc-sync — 0 CONFIRMED defects** (README L339 BroCula range `(Jul 16–Aug 16)` current — latest = Run 70 Aug 16; `apps/web/public/sitemap.xml` `lastmod` already `2026-08-16` — no bump). All five tracked records current through Cycle 509.
+
+**Baseline ALL GREEN 2,573/2,573 CONFIRMED LIVE** (typecheck ✅ exit 0 · lint ✅ **0 errors/0 warnings** ✅ · build ✅ · build:api ✅ · tests **2,573/2,573** ✅ web **1,186**/83 + api 535/33 + shared 852/4 · audit **0 vulns** ✅ · scan:secrets ✅ 322 files · prettier ✅ · validate:wrangler exit 1 expected — human-blocked #1045/#1165).
+
+**Final state: idle** — 3/3 PRs merged, Steps 1–3 token-blocked (88th), P1s code-resolved (close blocked) or human-blocked (#1045/#1165 Cloudflare provisioning), #849/#953 114th deferral, janitor branch FAIL-SAFE maintained, baseline ALL GREEN.
+
 ## ULW Loop Cycle 508 (2026-08-16 — PR HANDLER → ISSUE MANAGER MODE)
 
 **Phase 0**: `gh pr list --state open` → **1 open PR** (#3335) → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `cbc52909` = #3334 Cycle 506 record; clean tree; `node_modules` absent → resolved via `npm ci` 894 pkgs **0 vulns**). Only-failing checks = **documented external deploy fixtures** (Vercel free-tier rate limit `api-deployments-free-per-day` "Deployment rate limited — retry in 24 hours" + Workers Builds per #1045/#1165, 70+ cycle precedent; `mergeStateStatus` UNSTABLE = mergeable, non-required checks).
