@@ -51,7 +51,7 @@ export class StorageError extends Error {
 // Storage Health Metrics
 // ============================================================================
 
-export interface StorageHealth {
+interface StorageHealth {
   isHealthy: boolean;
   quota: {
     used: number;
@@ -68,7 +68,7 @@ export interface StorageHealth {
   lastCheck: Date;
 }
 
-export interface StorageMetrics {
+interface StorageMetrics {
   readLatency: number[];
   writeLatency: number[];
   errorCount: number;
