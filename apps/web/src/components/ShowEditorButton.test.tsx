@@ -126,11 +126,12 @@ describe("ShowEditorButton", () => {
     vi.useRealTimers();
   });
 
-  it("has aria-keyshortcuts attribute", () => {
+  it("has aria-keyshortcuts and explicit aria-label attributes", () => {
     render(<ShowEditorButton {...defaultProps} />);
 
     const button = screen.getByRole("button");
     expect(button).toHaveAttribute("aria-keyshortcuts", "Ctrl+E");
+    expect(button).toHaveAttribute("aria-label", UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON);
   });
 
   it("renders SVG icon for the edit action", () => {
