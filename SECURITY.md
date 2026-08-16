@@ -91,6 +91,7 @@ The application implements the following security measures:
 
 | Date       | Scope                               | Result                                                                                                                                               |
 | ---------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-08-16 | Recurring gate (ULW Loop Cycle 491) | `npm audit` 0 vulns · `scan:secrets` ✅ 322 files · ISSUE MANAGER P1s code-resolved/human-blocked (#1014 96th deferral) + doc-sync 0 defects         |
 | 2026-08-15 | Recurring gate (ULW Loop Cycle 490) | `npm audit` 0 vulns · `scan:secrets` ✅ 322 files · ISSUE MANAGER P1s code-resolved/human-blocked (#1014 95th deferral) + doc-sync 12-cycle backfill |
 | 2026-08-15 | Recurring gate (ULW Loop Cycle 489) | `npm audit` 0 vulns · `scan:secrets` ✅ 322 files · PR HANDLER merged #3305 + issue-manager findings-only (backfilled)                               |
 | 2026-08-15 | Recurring gate (ULW Loop Cycle 488) | `npm audit` 0 vulns · `scan:secrets` ✅ 322 files · PR HANDLER merged #3304 (BroCula Run 67) + #3303 (BugFixer 82) + findings-only (backfilled)      |
@@ -145,5 +146,5 @@ For security-related questions or concerns:
 
 ---
 
-**Last Updated**: 2026-08-15  
+**Last Updated**: 2026-08-16  
 **Policy Version**: 1.0.0
