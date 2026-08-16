@@ -115,6 +115,7 @@ function ShowEditorButtonComponent({
             KEYBOARD_SHORTCUTS.TOGGLE_EDITOR.KEY,
             MODIFIER_KEYS.CMD
           )}
+          aria-label={buttonTitle}
           title={buttonTitle}
           data-editor-toggle="true"
           aria-expanded={false}
