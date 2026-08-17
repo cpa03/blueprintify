@@ -12,7 +12,7 @@
 
 **#849/#953** gatekeeper `test:all` gap (0 refs in `pr-gatekeeper.yml` — Health Checks runs typecheck/lint/build only, live-verified; grep 0 refs in all 5 workflows) → **129th deferral** (`workflows: write` absent — 128 prior verbatim push-probe evidence unchanged, not re-pushed this cycle).
 
-**Stray `agent/janitor` branch — FAIL-SAFE disposition MAINTAINED (state unchanged)**: remote branch still present, HEAD **unchanged** at `68fadb6b` (**5 unmerged commits** — same set as Cycle 516/517/518/519/520/521/522/523, no new since Cycle 516), no open PR — not merged, not deleted per FAIL-SAFE (Cycle 494 worktree evidence: zero consumers + gates green), flagged for human disposition.
+**Stray `agent/janitor` branch — FAIL-SAFE disposition MAINTAINED (state ADVANCED this cycle)**: remote branch still present, HEAD **advanced** `68fadb6b` → `f2d88233` (**7 unmerged commits** — 2 new THIS cycle: `930c7056` merge of `origin/main` + `f2d88233` gatekeeper auto-fix adding new `scripts/janitor-scan.mjs` **240 lines, NOT present on main**; prior 5 = same set as Cycle 516/517/518/519/520/521/522/523), no open PR — not merged, not deleted per FAIL-SAFE (Cycle 494 worktree evidence: zero consumers + gates green), flagged for human disposition.
 
 **Doc-sync — 0 CONFIRMED defects pre-edit** (all five tracked records current through Cycle 523: active-tasks top = Cycle 523, CHANGELOG top = Cycle 523, SECURITY.md rows through Cycle 523, knowledge-review Last Review = Cycle 523, findings top = eslint 9→10 security audit record merged via #3364 — current; README L339 BroCula range `(Jul 16–Aug 17)` current — latest = Run 73 Aug 17; `sitemap.xml` `lastmod` stays `2026-08-16` — no bump (Cycle 514 precedent)). This entry appends Cycle 524.
 
@@ -20,7 +20,7 @@
 
 **Skills used**: `docs-update` loaded per contract (docs record append). **Subagents used**: none — deterministic CLI probes per contract; no parallel exploration needed (all targets are known-file live reads).
 
-**Final state: idle** — Steps 1–3 token-blocked (103rd, 86/101 label changes pending), P1s code-resolved (close blocked) or human-blocked (#1045/#1165 Cloudflare provisioning), #849/#953 129th deferral (workflow-blocked), janitor branch FAIL-SAFE disposition maintained (not merged/not deleted, 5 commits unchanged — human disposition pending), doc-sync 0 defects, baseline ALL GREEN.
+**Final state: idle** — Steps 1–3 token-blocked (103rd, 86/101 label changes pending), P1s code-resolved (close blocked) or human-blocked (#1045/#1165 Cloudflare provisioning), #849/#953 129th deferral (workflow-blocked), janitor branch FAIL-SAFE disposition maintained (not merged/not deleted, ADVANCED to 7 commits incl. new `scripts/janitor-scan.mjs` — human disposition pending), doc-sync 0 defects, baseline ALL GREEN.
 
 ## Security Audit — dependabot eslint 9→10 bump (2026-08-17, PR `dependabot/npm_and_yarn/eslint-10.8.1`)
 
