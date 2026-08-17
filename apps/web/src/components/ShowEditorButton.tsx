@@ -145,11 +145,13 @@ function ShowEditorButtonComponent({
             {hasContent
               ? UI_CONTENT.EDITOR.VIEW_BLUEPRINT_BUTTON
               : UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON}
-            {/* Direction arrow — subtle chevron that glides right on hover,
-                visually hinting that clicking reveals the editor panel from
-                the right side of the layout. */}
+            {/* Direction arrow — subtle chevron that glides right on hover or
+                keyboard focus, visually hinting that clicking reveals the
+                editor panel from the right side of the layout. The focus-visible
+                variant mirrors the hover effect so keyboard users get the same
+                directional affordance cue as mouse users. */}
             <svg
-              className="w-4 h-4 ml-1.5 -mr-1 transition-transform motion-safe:group-hover:translate-x-0.5 opacity-60 group-hover:opacity-100"
+              className="w-4 h-4 ml-1.5 -mr-1 transition-transform motion-safe:group-hover:translate-x-0.5 motion-safe:group-focus-visible:translate-x-0.5 opacity-60 group-hover:opacity-100 group-focus-visible:opacity-100"
               style={{ transitionDuration: `${BUTTON_TRANSITION_DEFAULTS.CHEVRON_DURATION_MS}ms` }}
               fill="none"
               stroke="currentColor"

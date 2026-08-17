@@ -34,7 +34,7 @@ describe("CSS_CLASSES — Iteration 185 additions", () => {
 
   it("defines ICON_HOVER_SHIFT for wizard step arrow icons", () => {
     expect(CSS_CLASSES.ICON_HOVER_SHIFT).toBe(
-      "w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5"
+      "w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5"
     );
   });
 });

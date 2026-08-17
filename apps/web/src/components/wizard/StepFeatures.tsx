@@ -629,7 +629,7 @@ export const StepFeatures = memo(function StepFeatures({
             )}
           >
             <svg
-              className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5"
+              className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5 group-focus-visible:-translate-x-0.5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

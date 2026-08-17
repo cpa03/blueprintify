@@ -52,9 +52,11 @@ export const CSS_CLASSES = {
     "w-4 h-4 transition-transform duration-200 motion-safe:group-hover:rotate-8" as const,
 
   /** Icon hover horizontal shift transition used across wizard steps.
+   * Also shifts on keyboard focus (group-focus-visible) so keyboard users
+   * receive the same directional affordance cue as mouse users.
    * Flexy says: No hardcoded icon hover shift class strings! */
   ICON_HOVER_SHIFT:
-    "w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5" as const,
+    "w-5 h-5 transition-transform duration-200 group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5" as const,
 
   /** Disabled element visual state — lower opacity and not-allowed cursor.
    * Used in RippleButton (disabled prop), TemplateGrid (unselected templates), and
