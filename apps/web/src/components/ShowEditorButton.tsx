@@ -29,7 +29,12 @@ import {
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
 import { BUTTON, ICON } from "../config/styles";
-import { UI_CONTENT, SHORTCUT_DESCRIPTIONS, CSS_CLASSES, EDITOR_ANNOUNCER } from "../config/constants";
+import {
+  UI_CONTENT,
+  SHORTCUT_DESCRIPTIONS,
+  CSS_CLASSES,
+  EDITOR_ANNOUNCER,
+} from "../config/constants";
 import { KEYBOARD_SHORTCUTS } from "../config/constants/keyboard";
 import { getModifierLabel, getAriaShortcutKey } from "../lib/platform";
 
