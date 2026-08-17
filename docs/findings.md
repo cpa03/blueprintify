@@ -2,6 +2,17 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — dependabot eslint 9→10 bump (2026-08-17, PR `dependabot/npm_and_yarn/eslint-10.8.1`)
+
+**Scope**: `git diff --name-only origin/main` → `package.json` + `package-lock.json` only (eslint `9.39.5` → `10.8.1` plus transitive `@eslint/*` internals).
+
+**Result: NO introduced vulnerabilities, NO secrets, NO deprecated function usage — no code changes required.**
+
+- **Secrets**: diff grep for `api[_-]?key|secret|password|token|BEGIN (RSA|OPENSSH|PRIVATE)|AKIA` → 0 hits. `npm run scan:secrets` → ✅ 323 files clean. All lockfile `resolved` URLs point to `https://registry.npmjs.org` only.
+- **Vulnerabilities**: `npm audit` (full + `--audit-level=high`) → **0 vulnerabilities**. ESLint 10.8.1 is current/latest (not deprecated; `npm view eslint@10.8.1 deprecated` → empty).
+- **Deprecated functions/APIs**: `usedDeprecatedRules: []` on real files. ESLint flat config (`eslint.config.js`) loads cleanly under v10; `--ext` flag (used by `npm run lint`) still supported in v10. Runtime probes confirmed plugin rules still fire under ESLint 10: `react/jsx-key` (missing-key error), `react-hooks/exhaustive-deps` + `set-state-in-effect` (real violation), `jsx-a11y/alt-text` (img without alt). Full repo lint: 296 files, 0 issues, exit 0.
+- **Peer-dep metadata lag (informational, pre-existing)**: `npm ls` flags eslint@10.8.1 as `invalid` peer for `eslint-plugin-react@7.37.5` and `eslint-plugin-jsx-a11y@6.10.2` — their published peer ranges still cap at `^9` (latest versions unchanged). Repo already mitigates via `.npmrc` `legacy-peer-deps=true` (committed in `main`, not part of this diff). Verified functionally harmless: clean-room `npm ci --ignore-scripts` succeeds on this lockfile; plugins demonstrably operate correctly under v10. Recommend re-checking when upstream plugins widen peer ranges to `^10`.
+
 ## ULW Loop Cycle 522 (2026-08-17 — REPOKEEPER MODE)
 
 **Phase 0**: `gh pr list --state open` → `[]` (0 PRs) + **101 open issues** → user mandate explicitly **REPOKEEPER** (repo hygiene + doc-sync + PR delivery; build/lint errors or warnings = fatal). Default branch auto-detected `main` (HEAD `d6f85458` = #3359 Cycle 521 record; 0-behind/0-ahead `origin/main`, clean tree; `node_modules` present). Branch `agent/repokeeper-cycle-522` created from latest `origin/main`.
