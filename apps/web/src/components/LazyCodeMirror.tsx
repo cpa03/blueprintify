@@ -1,5 +1,6 @@
 import { useState, useEffect, memo, forwardRef } from "react";
 import type { Extension } from "@codemirror/state";
+import { EditorView } from "@codemirror/view";
 import type { ReactCodeMirrorProps, ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { isDev } from "../config/env";
 import { ACCESSIBILITY_LABELS, DEBUG_MESSAGES, SKELETON_LAYOUT } from "../config/constants/content";
@@ -9,6 +10,9 @@ interface LazyCodeMirrorProps {
   value: string;
   onChange: (value: string) => void;
   className?: string;
+  /** Accessible name for the editor's contenteditable region (WCAG 4.1.2).
+   *  Without it, screen readers announce an unlabeled text editor. */
+  ariaLabel?: string;
 }
 
 type CodeMirrorComponent = React.ForwardRefExoticComponent<
@@ -51,7 +55,7 @@ function EditorSkeleton(): JSX.Element {
 }
 
 const LazyCodeMirrorComponent = forwardRef<ReactCodeMirrorRef, LazyCodeMirrorProps>(
-  function LazyCodeMirrorComponent({ value, onChange, className }, ref) {
+  function LazyCodeMirrorComponent({ value, onChange, className, ariaLabel }, ref) {
     const [CodeMirrorComponent, setCodeMirrorComponent] = useState<CodeMirrorComponent>(null);
     const [extensions, setExtensions] = useState<Extension[]>([]);
     const [theme, setTheme] = useState<Extension | undefined>(undefined);
@@ -69,7 +73,12 @@ const LazyCodeMirrorComponent = forwardRef<ReactCodeMirrorRef, LazyCodeMirrorPro
 
           if (isMounted) {
             setCodeMirrorComponent(CodeMirror as unknown as CodeMirrorComponent);
-            setExtensions([markdown()]);
+            setExtensions([
+              markdown(),
+              // Name the editor's contenteditable for screen readers; without
+              // this CodeMirror announces an unlabeled text editor.
+              ...(ariaLabel ? [EditorView.contentAttributes.of({ "aria-label": ariaLabel })] : []),
+            ]);
             setTheme(oneDark);
           }
         } catch (error) {
@@ -84,7 +93,7 @@ const LazyCodeMirrorComponent = forwardRef<ReactCodeMirrorRef, LazyCodeMirrorPro
       return () => {
         isMounted = false;
       };
-    }, []);
+    }, [ariaLabel]);
 
     if (!CodeMirrorComponent) {
       return <EditorSkeleton />;
