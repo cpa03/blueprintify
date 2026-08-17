@@ -24,6 +24,7 @@ import { StepTransition } from "./StepTransition";
 import { useWizardStore } from "../store";
 import { useEditorStore } from "../store";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import { useFaviconStatus } from "../hooks/useFaviconStatus";
 import { useFocusOnStepChange, useStepAnnouncer } from "../hooks/useFocusOnStepChange";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
@@ -195,6 +196,7 @@ function WizardComponent(): JSX.Element {
     return projectName ? `${projectName} | ${stepTitle}` : stepTitle;
   })();
   useDocumentTitle(documentTitle);
+  useFaviconStatus();
 
   // Memoize the active step element so unrelated Wizard re-renders (e.g. scroll
   // shadow state updates) don't re-create the step subtree.
