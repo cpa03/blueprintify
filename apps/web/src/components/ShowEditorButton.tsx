@@ -24,11 +24,17 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   ENTRANCE_STAGGER_DEFAULTS,
   MODIFIER_KEYS,
+  BUTTON_TRANSITION_DEFAULTS,
 } from "@blueprint/shared/config";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
 import { BUTTON, ICON } from "../config/styles";
-import { UI_CONTENT, SHORTCUT_DESCRIPTIONS, CSS_CLASSES } from "../config/constants";
+import {
+  UI_CONTENT,
+  SHORTCUT_DESCRIPTIONS,
+  CSS_CLASSES,
+  EDITOR_ANNOUNCER,
+} from "../config/constants";
 import { KEYBOARD_SHORTCUTS } from "../config/constants/keyboard";
 import { getModifierLabel, getAriaShortcutKey } from "../lib/platform";
 
@@ -143,7 +149,8 @@ function ShowEditorButtonComponent({
                 visually hinting that clicking reveals the editor panel from
                 the right side of the layout. */}
             <svg
-              className="w-4 h-4 ml-1.5 -mr-1 transition-transform duration-200 motion-safe:group-hover:translate-x-0.5 opacity-60 group-hover:opacity-100"
+              className="w-4 h-4 ml-1.5 -mr-1 transition-transform motion-safe:group-hover:translate-x-0.5 opacity-60 group-hover:opacity-100"
+              style={{ transitionDuration: `${BUTTON_TRANSITION_DEFAULTS.CHEVRON_DURATION_MS}ms` }}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -152,10 +159,15 @@ function ShowEditorButtonComponent({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
             {isGenerating && (
-              <span
-                className="ml-1.5 w-2 h-2 rounded-full bg-accent-emerald motion-safe:animate-pulse"
-                aria-hidden="true"
-              />
+              <>
+                <span
+                  className="ml-1.5 w-2 h-2 rounded-full bg-accent-emerald motion-safe:animate-pulse"
+                  aria-hidden="true"
+                />
+                <span className="sr-only" aria-live="polite">
+                  {EDITOR_ANNOUNCER.GENERATING_IN_BACKGROUND}
+                </span>
+              </>
             )}
             <kbd
               className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT} animate-fade-in`}

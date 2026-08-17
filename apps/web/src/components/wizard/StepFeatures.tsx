@@ -283,7 +283,15 @@ export const StepFeatures = memo(function StepFeatures({
                     d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
                   />
                 </svg>
-                {UI_CONTENT.WIZARD.STEP_FEATURES.MAX_FEATURES_REACHED}
+                {/* Visible terse message. The richer actionable message is
+                    announced to screen readers via the sr-only span below,
+                    without duplicating the terse prefix. */}
+                <span aria-hidden="true">
+                  {UI_CONTENT.WIZARD.STEP_FEATURES.MAX_FEATURES_REACHED}
+                </span>
+                <span className="sr-only">
+                  {ACCESSIBILITY_LABELS.WIZARD_FEATURES.MAX_FEATURES_REACHED_ARIA}
+                </span>
               </motion.p>
             )}
           </AnimatePresence>
