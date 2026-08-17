@@ -2,6 +2,24 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## ULW Loop Cycle 515 (2026-08-17 — ISSUE MANAGER MODE)
+
+**Phase 0**: `gh pr list --state open` → `[]` (0 PRs) + **101 open issues** → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `93028b5f` = #3352 Cycle 514 addendum 2; 0-behind/0-ahead `origin/main`, clean tree; `node_modules` absent → resolved via `npm ci` 894 pkgs **0 vulns**).
+
+**Steps 1–3 (Normalize/Dedup/Consolidate) BLOCKED** — `issues: write` absent; re-verified THIS cycle with **3 real mutation probes, zero residue** (GraphQL `addLabelsToLabelable` on #1167 → **403 FORBIDDEN** "Resource not accessible by integration", GraphQL `closeIssue` on #1167 → **403 FORBIDDEN** same, GraphQL `addComment` on #1167 → **403 FORBIDDEN** same — **94th consecutive block**; #1167 labels verified unchanged `[area:frontend-engineer, priority:low, security]`, comments 0, #1082 still OPEN). Canonical `npm run normalize:issues -- --dry-run` → **86/101 need canonical labels** (unchanged, mapping per `docs/issue-manager-plan-cycle-368.md`). 16 duplicate clusters report-only (member issues all OPEN).
+
+**Step 4 (Repair)**: no P0. P1s re-verified **code-resolved or human-blocked on `main`** via live reads — #1082 **12/12** hook `*.test.*` suites (`ls apps/web/src/hooks` → 12 test files, 13th file = `index.ts` barrel, untested by design) → code-resolved (close blocked by token); #1014 **44** component `*.test.*` suites (`find apps/web/src/components` → 44) + coverage config present (`apps/web/vitest.config.ts`; CI gate = #849/#953, workflow-blocked) → code-resolved (close blocked by token); #1045/#1165 2× wrangler `⚠️ PLACEHOLDER` markers (`apps/api/wrangler.toml` L161 KV/L177 D1) fail-closed `validate-wrangler` (**REAL EXIT 1**) — human-blocked (Cloudflare provisioning).
+
+**#849/#953** gatekeeper `test:all` gap (0 refs in `pr-gatekeeper.yml` — Health Checks runs typecheck/lint/build only, live-verified; grep 0 refs in all 5 workflows) → **120th deferral** (`workflows: write` absent — 119 prior verbatim push-probe evidence unchanged, not re-pushed this cycle).
+
+**Stray `agent/janitor` branch — FAIL-SAFE disposition MAINTAINED**: remote branch still present (`2f2f5891`, **3 unmerged commits**, no open PR) — not merged, not deleted per FAIL-SAFE (Cycle 494 worktree evidence: zero consumers + gates green), flagged for human disposition.
+
+**Doc-sync — 1 CONFIRMED defect FIXED**: **README L339 BroCula range stale** `(Jul 16–Aug 16)` → **`(Jul 16–Aug 17)`** — Run 72 (Aug 17) merged via #3351 before Cycle 514 addendum 2, but addendum only touched `docs/findings.md`; `docs/audits/README.md` L9 already lists Run 72 as **Latest** (root README lagged). `apps/web/public/sitemap.xml` `lastmod` stays `2026-08-16` — no bump (last content change 08-16, Cycle 514 precedent). All five tracked records current (this entry appends Cycle 515).
+
+Baseline ALL GREEN **2,573/2,573 CONFIRMED LIVE** (typecheck ✅ exit 0 · lint ✅ **0 errors/0 warnings** ✅ · build ✅ · build:api ✅ · tests **2,573/2,573** ✅ web **1,186**/83 + api 535/33 + shared 852/4 · audit **0 vulns** ✅ · scan:secrets ✅ 323 files · prettier ✅ · validate:wrangler exit 1 expected — human-blocked #1045/#1165).
+
+Skills used: `docs-update` loaded per contract (docs record append + README range fix). Subagents used: none — deterministic CLI probes per contract; no parallel exploration needed (all targets are known-file live reads). **Final state: idle** — Steps 1–3 token-blocked (94th, 86/101 label changes pending), P1s code-resolved (close blocked) or human-blocked (#1045/#1165 Cloudflare provisioning), #849/#953 120th deferral (workflow-blocked), janitor branch FAIL-SAFE disposition maintained (not merged/not deleted), doc-sync 1 defect fixed (README L339), baseline ALL GREEN.
+
 ## ULW Loop Cycle 514 (2026-08-17 — ISSUE MANAGER MODE)
 
 **Phase 0**: `gh pr list --state open` → `[]` (0 PRs) + **101 open issues** → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `c49ec169` = #3346 Cycle 513 record; 0-behind/0-ahead `origin/main`, clean tree; `node_modules` absent → resolved via `npm ci` 894 pkgs **0 vulns**).
