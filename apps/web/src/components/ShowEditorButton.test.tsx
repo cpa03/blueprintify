@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ShowEditorButton } from "./ShowEditorButton";
-import { UI_CONTENT } from "../config/constants";
+import { UI_CONTENT, EDITOR_ANNOUNCER } from "../config/constants";
 import { UI_TIMEOUTS } from "@blueprint/shared/config";
 
 vi.mock("framer-motion", () => ({
@@ -53,12 +53,17 @@ describe("ShowEditorButton", () => {
     expect(screen.getByText("Ctrl+E")).toBeInTheDocument();
   });
 
-  it("shows pulsing indicator when isGenerating is true", () => {
+  it("shows pulsing indicator and screen reader polite announcement when isGenerating is true", () => {
     const { container } = render(<ShowEditorButton {...defaultProps} isGenerating={true} />);
 
     const pulseDot = container.querySelector("span.w-2.h-2");
     expect(pulseDot).toBeInTheDocument();
     expect(pulseDot?.className).toContain("animate-pulse");
+
+    const srAnnouncement = screen.getByText(EDITOR_ANNOUNCER.GENERATING_IN_BACKGROUND);
+    expect(srAnnouncement).toBeInTheDocument();
+    expect(srAnnouncement).toHaveAttribute("aria-live", "polite");
+    expect(srAnnouncement.className).toContain("sr-only");
   });
 
   it("does not show pulsing indicator when isGenerating is false", () => {
