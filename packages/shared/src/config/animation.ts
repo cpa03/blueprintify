@@ -592,4 +592,6 @@ export const BUTTON_TRANSITION_DEFAULTS = {
   TAP_SCALE: 0.98,
   TRANSITION_OVERSHOOT_MS: 350,
   TRANSITION_RESTORE_MS: 150,
+  /** Transition duration for directional icon chevrons in buttons (ms) */
+  CHEVRON_DURATION_MS: 200,
 } as const;
