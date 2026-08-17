@@ -58,6 +58,7 @@ import {
   SKELETON_LAYOUT,
   FOCUS_ANNOUNCER,
   CSS_CLASSES,
+  ACCESSIBILITY_LABELS,
 } from "../config/constants";
 import { ANIMATION_TIMING, LAYOUT, ENTRANCE_OFFSETS } from "../config/theme";
 import { isDev } from "../config/env";
@@ -634,6 +635,11 @@ function EditorComponent(): JSX.Element {
                                 value={currentContent}
                                 onChange={setCurrentContent}
                                 className="h-full"
+                                ariaLabel={ACCESSIBILITY_LABELS.LAZY_CODEMIRROR.CONTENT_ARIA_LABEL(
+                                  activeTab === EDITOR_TABS.BLUEPRINT
+                                    ? EDITOR_FILENAMES.BLUEPRINT_DISPLAY
+                                    : EDITOR_FILENAMES.TASKS_DISPLAY
+                                )}
                               />
                             </motion.div>
                           )}

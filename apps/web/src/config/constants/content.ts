@@ -339,6 +339,10 @@ export const ACCESSIBILITY_LABELS = {
     LOADING: "Loading code editor",
     /** Announced via sr-only region when CodeMirror is ready for input */
     READY: "Code editor ready",
+    /** Accessible name for the CodeMirror editable region — CodeMirror's
+     *  contenteditable is unnamed, so screen readers announce a generic
+     *  editor without this (WCAG 4.1.2). Per-tab, e.g. "Blueprint markdown editor". */
+    CONTENT_ARIA_LABEL: (tabName: string) => `${tabName} markdown editor`,
   },
   GENERATION_STATS: {
     AWAITING_BLUEPRINT: "Awaiting blueprint content",
