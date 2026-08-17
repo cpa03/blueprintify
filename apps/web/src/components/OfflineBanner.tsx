@@ -281,5 +281,3 @@ function OfflineBannerComponent(): JSX.Element | null {
 }
 
 export const OfflineBanner = memo(OfflineBannerComponent);
-
-export default OfflineBanner;

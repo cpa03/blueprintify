@@ -35,5 +35,3 @@ export function getScrollBehavior(): ScrollBehavior {
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   return prefersReducedMotion ? SCROLL_BEHAVIOR.INSTANT : SCROLL_BEHAVIOR.SMOOTH;
 }
-
-export default getScrollBehavior;

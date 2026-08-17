@@ -171,5 +171,3 @@ export function useTypingIndicator(options: UseTypingIndicatorOptions = {}) {
     handleBlur,
   };
 }
-
-export default TypeIndicator;

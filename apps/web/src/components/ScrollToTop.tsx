@@ -356,5 +356,3 @@ export const ScrollToBottom = memo(function ScrollToBottom(
 ): JSX.Element | null {
   return <ScrollToPosition {...props} direction={DIRECTION.BOTTOM} />;
 });
-
-export default ScrollToTop;

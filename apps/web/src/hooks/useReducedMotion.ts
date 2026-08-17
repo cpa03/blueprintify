@@ -161,5 +161,3 @@ export function useAccessibilityPreferences(): {
     [prefersReducedMotion, prefersHighContrast]
   );
 }
-
-export default useReducedMotion;
