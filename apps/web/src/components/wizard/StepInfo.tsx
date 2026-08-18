@@ -72,7 +72,7 @@ import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
 import { RippleButton } from "../RippleButton";
 import { CharacterCounter } from "../CharacterCounter";
 import { Icon } from "../Icon";
-import { KeyboardShortcutTooltip } from "../SmartTooltip";
+import { KeyboardShortcutTooltip, SmartTooltip } from "../SmartTooltip";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
 import { ValidationCheckmark } from "../ValidationCheckmark";
@@ -284,6 +284,32 @@ export const StepInfo = memo(function StepInfo({
   useEffect(() => {
     projectNameInputRef.current?.focus({ preventScroll: true });
   }, []);
+
+  const nextButton = (
+    <RippleButton
+      type="submit"
+      disabled={!canProceed}
+      aria-label={canProceed ? undefined : ACCESSIBILITY_LABELS.WIZARD_INFO.NEXT_DISABLED_ARIA}
+      whileHover={{ ...HOVER_SCALE.MICRO, y: -2 }}
+      whileTap={{ ...TAP_SCALE.MICRO, y: 0 }}
+      className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}`}
+      aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
+    >
+      {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
+      <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+        {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
+      </kbd>
+      <svg
+        className={CSS_CLASSES.ICON_HOVER_SHIFT}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+      </svg>
+    </RippleButton>
+  );
 
   return (
     <motion.div {...pageTransition(direction)} className="space-y-6">
@@ -768,39 +794,23 @@ export const StepInfo = memo(function StepInfo({
             transition={{ duration: ANIMATION.HALF_SECOND, ease: EASING.easeOut }}
             className="inline-flex"
           >
-            <KeyboardShortcutTooltip
-              shortcut={KEYBOARD_EVENT_KEYS.ENTER}
-              description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
-              position="left"
-            >
-              <RippleButton
-                type="submit"
-                disabled={!canProceed}
-                whileHover={{ ...HOVER_SCALE.MICRO, y: -2 }}
-                whileTap={{ ...TAP_SCALE.MICRO, y: 0 }}
-                className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}`}
-                aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
+            {canProceed ? (
+              <KeyboardShortcutTooltip
+                shortcut={KEYBOARD_EVENT_KEYS.ENTER}
+                description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
+                position="left"
               >
-                {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
-                <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
-                  {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
-                </kbd>
-                <svg
-                  className={CSS_CLASSES.ICON_HOVER_SHIFT}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </RippleButton>
-            </KeyboardShortcutTooltip>
+                {nextButton}
+              </KeyboardShortcutTooltip>
+            ) : (
+              <SmartTooltip
+                content={ACCESSIBILITY_LABELS.WIZARD_INFO.NEXT_DISABLED_TOOLTIP}
+                position="left"
+                delay={0}
+              >
+                {nextButton}
+              </SmartTooltip>
+            )}
           </motion.span>
         </div>
       </form>
