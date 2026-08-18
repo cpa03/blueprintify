@@ -82,6 +82,11 @@ interface StepInfoProps {
   direction?: AnimationDirection;
 }
 
+// Yellow means "approaching limit" form-wide; the below-min hint stays neutral.
+const DESCRIPTION_WARNING_THRESHOLD = Math.floor(
+  FORM_LIMITS.DESCRIPTION.MAX * RATIO_LIMITS.FORM_WARNING
+);
+
 export const StepInfo = memo(function StepInfo({
   direction = ANIMATION_DIRECTIONS.FORWARD,
 }: StepInfoProps): JSX.Element {
@@ -396,12 +401,12 @@ export const StepInfo = memo(function StepInfo({
               onBlur={projectNameTyping.handleBlur}
               placeholder={UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_PLACEHOLDER}
               className={`input-field transition-all duration-200 ${
-                projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN
-                  ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20"
-                  : projectName.length >= FORM_LIMITS.PROJECT_NAME.MAX
-                    ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20"
-                    : projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD
-                      ? "border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20"
+                projectName.length >= FORM_LIMITS.PROJECT_NAME.MAX
+                  ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20"
+                  : projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD
+                    ? "border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20"
+                    : projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN
+                      ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20"
                       : ""
               }`}
               maxLength={FORM_LIMITS.PROJECT_NAME.MAX}
@@ -506,6 +511,7 @@ export const StepInfo = memo(function StepInfo({
               current={description.length}
               max={FORM_LIMITS.DESCRIPTION.MAX}
               min={FORM_LIMITS.DESCRIPTION.MIN}
+              warningThreshold={DESCRIPTION_WARNING_THRESHOLD}
             />
           </div>
           <div
@@ -525,13 +531,17 @@ export const StepInfo = memo(function StepInfo({
               onBlur={descriptionTyping.handleBlur}
               placeholder={UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_PLACEHOLDER}
               className={`textarea-field transition-all duration-200 ${
-                description.length >= FORM_LIMITS.DESCRIPTION.MIN
-                  ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20 pr-12"
-                  : descriptionErrorVisible
-                    ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20"
-                    : description.length > 0
-                      ? "border-yellow-500/50 focus:border-yellow-500 focus:ring-yellow-500/20"
-                      : ""
+                description.length >= FORM_LIMITS.DESCRIPTION.MAX
+                  ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20 pr-12"
+                  : description.length >= DESCRIPTION_WARNING_THRESHOLD
+                    ? "border-yellow-500/50 focus:border-yellow-500 focus:ring-yellow-500/20 pr-12"
+                    : description.length >= FORM_LIMITS.DESCRIPTION.MIN
+                      ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20 pr-12"
+                      : descriptionErrorVisible
+                        ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20"
+                        : description.length > 0
+                          ? "border-dark-500/50 focus:border-dark-400 focus:ring-dark-500/20"
+                          : ""
               }`}
               maxLength={FORM_LIMITS.DESCRIPTION.MAX}
               required
@@ -541,9 +551,12 @@ export const StepInfo = memo(function StepInfo({
               transition={{ duration: ANIMATION.FAST }}
               {...(descriptionErrorVisible
                 ? { "aria-describedby": "description-error" }
-                : description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN
-                  ? { "aria-describedby": "description-hint" }
-                  : {})}
+                : description.length >= DESCRIPTION_WARNING_THRESHOLD &&
+                    description.length < FORM_LIMITS.DESCRIPTION.MAX
+                  ? { "aria-describedby": "description-warning" }
+                  : description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN
+                    ? { "aria-describedby": "description-hint" }
+                    : {})}
             />
             {/* Clear button — appears when field has content */}
             <AnimatePresence>
@@ -589,11 +602,27 @@ export const StepInfo = memo(function StepInfo({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
-                  className="text-xs text-yellow-500 mt-1"
+                  className="text-xs text-dark-400 mt-1"
                 >
                   {VALIDATION_MESSAGES.CHARACTERS_NEEDED(
                     FORM_LIMITS.DESCRIPTION.MIN - description.length
                   )}
+                </motion.p>
+              )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {description.length >= DESCRIPTION_WARNING_THRESHOLD &&
+              description.length < FORM_LIMITS.DESCRIPTION.MAX && (
+                <motion.p
+                  id="description-warning"
+                  role="status"
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
+                  className="text-xs text-accent-pink mt-1"
+                >
+                  {VALIDATION_MESSAGES.APPROACHING_CHARACTER_LIMIT}
                 </motion.p>
               )}
           </AnimatePresence>
