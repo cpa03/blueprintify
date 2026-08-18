@@ -2,6 +2,37 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## ULW Loop Cycle 543 (2026-08-18 — PR HANDLER → ISSUE MANAGER MODE)
+
+**Phase 0**: `gh pr list --state open` → **1 PR — #3400** `docs(ulw-loop): Cycle 542 record — PR HANDLER MODE` (bot, created 10:00:39Z, base `main`, head `agent/ulw-loop-cycle-542`, labels `docs`+`P3` present, `MERGEABLE`/`UNSTABLE`, +66/−35, 5 files) → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `8178fb1a` = #3397 bugfixer Cycle 97 record, clean tree); `node_modules` absent → `npm ci` 883 pkgs **0 vulns**.
+
+**#3400 PROCESSED & MERGED**: branch **0-behind/1-ahead** vs `origin/main` (merge-base `8178fb1a` = main HEAD — already synced, no rebase needed). Docs-only diff 5 files +66/−35 — CHANGELOG/SECURITY/active-tasks/findings/knowledge-review (Cycle 542 record: PR HANDLER 3/3 merged #3399+#3398+#3397). Labels `docs`+`P3` present ✅. Comments = 2 bot deploy-failure notifications (Vercel + Workers Builds) — external infra, human-blocked #1045/#1165 precedent #3364. Checks = Workers Builds FAILURE + Vercel FAILURE (documented external deploy fixtures) + Vercel Preview Comments pass; no human comments/reviews; no security-sensitive change (docs-only). Gates LIVE-verified: typecheck ✅ exit 0 · lint ✅ 0/0 (`--max-warnings 0` exit 0) · build ✅ (`PLUGIN_TIMINGS` informational) · scan:secrets ✅ 326 files · audit **0 vulns** · tests **2,590/2,590** ✅ (web 1,203/84 + api 535/33 + shared 852/4). → **`gh pr merge 3400 --squash --admin` ✅ MERGED `63346588`**, remote branch `agent/ulw-loop-cycle-542` verified deleted, `main` synced; **0 linked issues**.
+
+**Re-entry Phase 0**: 0 PRs + 100+ open issues → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases).
+
+**Steps 1–3 (Normalize/Dedup/Consolidate) BLOCKED** — `issues: write` absent (**112th consecutive block**; re-verified THIS cycle with **2 real mutation probes, zero residue**: `gh api -X POST /repos/cpa03/blueprintify/issues/1167/labels -f labels[]=P3` → HTTP **403 addLabelsToLabelable** "Resource not accessible by integration"; `gh issue comment 849` → GraphQL **403 addComment** — #1167 labels verified unchanged `[area:frontend-engineer, priority:low, security]`, comments 0). **Root cause now precisely identified**: runner = `pull` workflow (`.github/workflows/on-pull.yml` L11–16) whose `permissions:` block omits `issues: write` — only `contents/pull-requests/actions/repository-projects/id-token: write`. Canonical `npm run normalize:issues -- --dry-run` → unchanged (**86/101 need canonical labels**). **Duplicate cluster report-only**: #849/#953 (both: gatekeeper does not run tests; cannot close — token-blocked).
+
+**Step 4 (Repair)** — no P0; P1s re-verified **code-resolved or human-blocked on `main`** via live reads:
+- #1082 **13/13** hook `*.test.*` suites (`find apps/web/src/hooks` → 13) → code-resolved (close blocked by token)
+- #1014 **44** component suites (`find apps/web/src/components` → 44) → code-resolved (close blocked by token)
+- #1045/#1165 wrangler **6 placeholder IDs** fail-closed `validate-wrangler` (**REAL EXIT 1**) → human-blocked (Cloudflare provisioning)
+- #973 ajv — `npm audit` 0 vulns → resolved
+- **#849/#953** gatekeeper `test:all` gap (0 refs in `pr-gatekeeper.yml`; grep 0 refs in all 5 workflows) → **145th deferral** (`workflows: write` absent — GITHUB_TOKEN platform limitation; `on-pull.yml` permissions block verified)
+
+**P2 audit findings**:
+- #1084/#1088 (no dependency-vuln / no secrets scanning wired in ANY workflow — grep 0 refs) → **workflow-blocked** (same `workflows: write` cause; `scan:secrets` + `audit` scripts exist and pass locally but CI wiring impossible under current token)
+- #1015 playwright.config.ts **EXISTS** → resolved
+- #1053 all 7 middleware modules have co-located `*.test.ts` → resolved
+- #1141 33 API test files (from "missing coverage") → substantially resolved
+- #1019 3 E2E specs (visual-regression + brocula-console-audit + brocula-console-check) → partially addressed
+- #1046 share-auth: GET /share/:id is **intentional public share-link design** (crypto-random IDs, passphrase protection with HMAC verify tokens, strict enumeration rate limiting, ownership-verified delete) — unilateral auth enforcement would break the documented share feature → **FAIL-SAFE: no change, no guessing**
+
+**Stray branches — FAIL-SAFE MAINTAINED (state UNCHANGED)**: `agent/janitor` HEAD `f9f39681` (**8 unmerged commits**, no open PR), `feat/wizard-arrow-focus-parity` HEAD `ccac48c8` (1 commit, **NO open PR**), `agent/repokeeper-cycle-530` HEAD `a043b9d4` (report-only) — not merged, not deleted, human disposition pending.
+
+**Doc-sync — 0 CONFIRMED defects pre-edit**: all five tracked records current through Cycle 542; README L339 BroCula range `(Jul 19–Aug 18)` current (latest = Run 77 Aug 18 — exactly 1 `**Latest**` marker); `sitemap.xml` `lastmod` stays `2026-08-16` — no bump (Cycle 514 precedent); this entry appends Cycle 543 to all five files — no backfill needed.
+
+**Baseline ALL GREEN 2,590/2,590 CONFIRMED LIVE** (typecheck ✅ exit 0 · lint ✅ 0 errors/0 warnings ✅ · build ✅ · tests **2,590/2,590** ✅ web **1,203**/84 + api 535/33 + shared 852/4 · audit **0 vulns** ✅ · scan:secrets ✅ 326 files · prettier ✅ · validate:wrangler ❌ expected REAL EXIT 1 — human-blocked #1045/#1165).
+
 ## ULW Loop Cycle 542 (2026-08-18 — PR HANDLER MODE)
 
 **Phase 0**: `gh pr list --state open` → **3 PRs — #3399** `feat(ux): make yellow mean approaching-limit consistently in wizard info form` (bot, created 08:53:19Z, base `main`, head `agent/palette-ux`, labels `feature`+`P3` present, +79/−17), **#3398** `docs(repokeeper): Cycle 541 — retention purge (6× Jul 18 archive files) + hygiene audit CLEAN + doc-sync 0 defects, baseline ALL GREEN 2,586/2,586` (bot, created 08:50:41Z, head `agent/repokeeper-cycle-541`, labels `docs`+`P3` present, +21/−679), **#3397** `docs(bugfixer): Cycle 97 — 0 code defects, 0 doc-drift, baseline ALL GREEN 2,586/2,586` (bot, created 08:47:05Z, head `agent/bugfixer-cycle-97`, labels `docs`+`P3` present, +19) → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `a0a145fd` = #3396 Cycle 540 record, clean tree); `node_modules` absent → `npm ci` **0 vulns**.
