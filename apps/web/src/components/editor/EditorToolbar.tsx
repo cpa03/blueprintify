@@ -150,6 +150,11 @@ function EditorToolbarComponent({
         className="flex bg-dark-800 p-1 rounded-lg relative"
         role="radiogroup"
         aria-label={EDITOR_LABELS.VIEW_MODES_ARIA_LABEL}
+        // Horizontal orientation: the view-mode radios are arranged in a row
+        // and navigated with ArrowLeft/ArrowRight (see handleViewModeKeyDown).
+        // Without the explicit attribute the group may be announced as
+        // vertical by screen readers, implying wrong arrow-key navigation.
+        aria-orientation="horizontal"
         onKeyDown={handleViewModeKeyDown}
       >
         {VIEW_MODES.map((mode) => (
