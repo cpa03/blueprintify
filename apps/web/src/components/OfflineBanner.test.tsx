@@ -50,10 +50,15 @@ describe("OfflineBanner", () => {
     );
   });
 
-  it("renders description text when offline", () => {
+  it("renders description text when offline and links dismiss button via aria-describedby", () => {
     mockOnlineStatus.mockReturnValue(false);
     render(<OfflineBanner />);
     expect(screen.getByText(ACCESSIBILITY_LABELS.OFFLINE_BANNER.DESCRIPTION)).toBeInTheDocument();
+
+    const dismissButton = screen.getByRole("button", {
+      name: ACCESSIBILITY_LABELS.OFFLINE_BANNER.DISMISS,
+    });
+    expect(dismissButton).toHaveAttribute("aria-describedby", "offline-banner-desc");
   });
 
   it("sets role=status with aria-live when visible", () => {
