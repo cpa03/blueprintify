@@ -379,6 +379,8 @@ export const ACCESSIBILITY_LABELS = {
     CLEAR_ALL_ANNOUNCEMENT: "All form fields cleared",
     FIELDS_COMPLETED: (completed: number, total: number) =>
       `${completed} of ${total} fields completed`,
+    NEXT_DISABLED_TOOLTIP: "Fill in the project name and description to continue",
+    NEXT_DISABLED_ARIA: "Next button is disabled. Fill in the project name and description first.",
   },
   WIZARD_STACK: {
     TECH_STACK_SELECTION: "Tech Stack Selection",

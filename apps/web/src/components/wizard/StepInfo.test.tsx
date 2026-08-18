@@ -67,6 +67,12 @@ vi.mock("../SmartTooltip", () => ({
   KeyboardShortcutTooltip: vi.fn(({ children, shortcut: _s, description: _d, position: _p }) => (
     <>{children}</>
   )),
+  SmartTooltip: vi.fn(({ children, content }) => (
+    <>
+      {children}
+      <span data-testid="disabled-tooltip">{content}</span>
+    </>
+  )),
 }));
 
 vi.mock("../CharacterCounter", () => ({
@@ -198,6 +204,31 @@ describe("StepInfo", () => {
     render(<StepInfo />);
     const nextButton = screen.getByText(UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON).closest("button");
     expect(nextButton).toBeDisabled();
+  });
+
+  it("explains why the next button is disabled via aria-label", () => {
+    render(<StepInfo />);
+    const nextButton = screen.getByText(UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON).closest("button");
+    expect(nextButton).toHaveAttribute(
+      "aria-label",
+      ACCESSIBILITY_LABELS.WIZARD_INFO.NEXT_DISABLED_ARIA
+    );
+  });
+
+  it("shows the disabled-explanation tooltip when the form is incomplete", () => {
+    render(<StepInfo />);
+    expect(screen.getByTestId("disabled-tooltip")).toHaveTextContent(
+      ACCESSIBILITY_LABELS.WIZARD_INFO.NEXT_DISABLED_TOOLTIP
+    );
+  });
+
+  it("omits the disabled-explanation aria-label when the form is valid", () => {
+    mockStore.projectName = "My Project";
+    mockStore.description = "A sufficiently long description";
+    render(<StepInfo />);
+    const nextButton = screen.getByText(UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON).closest("button");
+    expect(nextButton).not.toBeDisabled();
+    expect(nextButton).not.toHaveAttribute("aria-label");
   });
 
   it("shows progress counter at 0/2 initially", () => {
@@ -504,7 +535,10 @@ describe("StepInfo", () => {
     expect(error).toHaveTextContent(
       VALIDATION_MESSAGES.PROJECT_NAME_MIN_LENGTH(FORM_LIMITS.PROJECT_NAME.MIN)
     );
-    expect(screen.getByLabelText(/Project Name/i)).toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByRole("textbox", { name: /Project Name/i })).toHaveAttribute(
+      "aria-invalid",
+      "true"
+    );
   });
 
   it("does not show project name error before submit attempt", () => {
@@ -529,7 +563,10 @@ describe("StepInfo", () => {
     expect(screen.getByRole("alert")).toHaveTextContent(
       VALIDATION_MESSAGES.PROJECT_NAME_MIN_LENGTH(FORM_LIMITS.PROJECT_NAME.MIN)
     );
-    expect(screen.getByLabelText(/Project Name/i)).toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByRole("textbox", { name: /Project Name/i })).toHaveAttribute(
+      "aria-invalid",
+      "true"
+    );
   });
 
   it("hides project name error once the field becomes valid", () => {
