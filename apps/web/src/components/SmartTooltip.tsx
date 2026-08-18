@@ -261,9 +261,16 @@ function SmartTooltipComponent({
     triggerChildren.length === 1 && isValidElement(triggerChildren[0])
       ? (triggerChildren[0] as ReactElement<Record<string, unknown>>)
       : null;
+  const existingDescribedBy = (singleElementChild?.props as Record<string, unknown>)?.[
+    "aria-describedby"
+  ] as string | undefined;
+  const combinedDescribedBy = [existingDescribedBy, isVisible ? tooltipId : undefined]
+    .filter(Boolean)
+    .join(" ");
+
   const triggerWithDescription = singleElementChild
     ? cloneElement(singleElementChild, {
-        "aria-describedby": isVisible ? tooltipId : undefined,
+        "aria-describedby": combinedDescribedBy || undefined,
       })
     : children;
 
