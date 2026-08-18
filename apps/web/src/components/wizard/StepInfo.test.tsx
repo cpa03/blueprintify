@@ -407,6 +407,39 @@ describe("StepInfo", () => {
     expect(screen.getByText(VALIDATION_MESSAGES.APPROACHING_CHARACTER_LIMIT)).toBeInTheDocument();
   });
 
+  it("turns project name border yellow when approaching the character limit", () => {
+    mockStore.projectName = "A".repeat(FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD + 1);
+    render(<StepInfo />);
+    const input = screen.getByRole("textbox", { name: /Project Name/i });
+    expect(input.className).toContain("border-yellow-500");
+  });
+
+  it("shows approaching limit warning for long descriptions", () => {
+    mockStore.description = "A".repeat(FORM_LIMITS.DESCRIPTION.MAX - 1);
+    render(<StepInfo />);
+    expect(screen.getByText(VALIDATION_MESSAGES.APPROACHING_CHARACTER_LIMIT)).toBeInTheDocument();
+  });
+
+  it("turns description border yellow when approaching the character limit", () => {
+    mockStore.description = "A".repeat(FORM_LIMITS.DESCRIPTION.MAX - 1);
+    render(<StepInfo />);
+    const textarea = screen.getByRole("textbox", { name: /Description/i });
+    expect(textarea.className).toContain("border-yellow-500");
+    expect(textarea).toHaveAttribute("aria-describedby", "description-warning");
+  });
+
+  it("keeps below-minimum description hint neutral instead of warning yellow", () => {
+    mockStore.description = "Short"; // Below FORM_LIMITS.DESCRIPTION.MIN
+    render(<StepInfo />);
+    const hint = screen.getByText(
+      VALIDATION_MESSAGES.CHARACTERS_NEEDED(FORM_LIMITS.DESCRIPTION.MIN - "Short".length)
+    );
+    expect(hint.className).toContain("text-dark-400");
+    expect(hint.className).not.toContain("text-yellow-500");
+    const textarea = screen.getByRole("textbox", { name: /Description/i });
+    expect(textarea.className).not.toContain("border-yellow-500");
+  });
+
   it("shows character hint for short descriptions while typing", () => {
     mockStore.description = "Short"; // Below FORM_LIMITS.DESCRIPTION.MIN
     render(<StepInfo />);
