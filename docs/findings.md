@@ -2,6 +2,29 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## ULW Loop Cycle 550 (2026-08-18 — ISSUE MANAGER MODE)
+
+**Phase 0**: `gh pr list --state open` → `[]` (**0 PRs**) + **101 open issues** GraphQL count → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `e9561297` = #3410 Cycle 549 record, clean tree); `node_modules` absent → `npm ci` 883 pkgs **0 vulns**.
+
+**Steps 1–3 (Normalize/Dedup/Consolidate) BLOCKED** — `issues: write` absent (**119th consecutive block**; re-verified THIS cycle via the canonical normalization path — 159 `gh issue edit` add/remove label ops generated from the repo's own OVERRIDES mapping → **ALL** failed HTTP **403 addLabelsToLabelable/removeLabelsFromLabelable** "Resource not accessible by integration"; zero residue — canonical `npm run normalize:issues -- --dry-run` unchanged **86/101 need canonical labels**, mapping per `docs/issue-manager-plan-cycle-368.md`). Root cause: runner = `pull` workflow (`.github/workflows/on-pull.yml` permissions block) whose `permissions:` omit `issues: write` (only `contents/pull-requests/actions/repository-projects/id-token: write`).
+
+**NEW observation — label-filter queries unreliable**: `gh issue list --label <L>` and REST `?labels=<L>` return `[]` even for issues live-verified to carry that label (`gh issue list --label bug` → [] while #1045 has `bug`+`P1`; `--label P1` → [] while #1045/#1014/#1082 carry `P1`; REST `labels=P1` → [] while issue 1045 view shows the label). Authoritative label state therefore taken from `gh issue list --json number,title,labels` dumps (this cycle: 0 P0, 3 P1 — #1045/#1014/#1082).
+
+**Step 4 (Repair)** — no P0 (0 issues with P0 label in full JSON dump); P1s re-verified **code-resolved or human-blocked on `main`** via live reads:
+- #1082 **13/13** hook `*.test.*` suites (`ls apps/web/src/hooks/*.test.*` → 13) → code-resolved (close blocked by token)
+- #1014 **44** component suites (`find apps/web/src/components` → 44) + `playwright.config.ts` at repo root → code-resolved (close blocked by token)
+- #1045/#1165 wrangler **6 placeholder IDs** (KV L166/170/174 + D1 L183/188/193) fail-closed `validate-wrangler` (**❌ Validation failed**) → human-blocked (Cloudflare provisioning)
+- **#847** auth bypass — fails closed (`apps/api/src/middleware/auth.test.ts` asserts "rejects requests when API_KEY is not configured", 503 + operator warning) → code-resolved (new spot-verification this cycle)
+- **#848** CORS wildcard — fail-closed in `apps/api/src/config/env.ts` (production wildcard + empty origin both throw) → code-resolved (new spot-verification this cycle)
+- #973 ajv — audit 0 vulns → resolved
+- **#849/#953** gatekeeper `test:all` gap (0 refs in `pr-gatekeeper.yml`; grep 0 refs in all 5 workflows) → **152nd deferral** (`workflows: write` absent — GITHUB_TOKEN platform limitation)
+
+**Stray branches — FAIL-SAFE MAINTAINED (state UNCHANGED)**: `agent/janitor` HEAD `f9f39681` (**8 unmerged commits**, no open PR), `feat/wizard-arrow-focus-parity` HEAD `ccac48c8` (1 commit, **NO open PR**), `agent/repokeeper-cycle-530` HEAD `a043b9d4` (report-only) — not merged, not deleted, human disposition pending.
+
+**Doc-sync — 0 CONFIRMED defects pre-edit**: all five tracked records current through Cycle 549; README L339 BroCula range `(Jul 19–Aug 18)` current (latest = Run 78 Aug 18 — `docs/audits/README.md` L9 = **Latest** Run 78, exactly 1 `**Latest**` marker); `sitemap.xml` `lastmod` stays `2026-08-16` — no bump (Cycle 514 precedent); this entry appends Cycle 550 to all five files — no backfill needed.
+
+**Baseline ALL GREEN 2,596/2,596 CONFIRMED LIVE** (typecheck ✅ exit 0 · lint ✅ 0 errors/0 warnings ✅ · build ✅ (`PLUGIN_TIMINGS` informational) · tests **2,596/2,596** ✅ web **1,209**/84 + api 535/33 + shared 852/4 — advanced from tracked 2,593/2,593 (web +3 since Cycle 549) · audit **0 vulns** ✅ · scan:secrets ✅ 326 files · prettier ✅ · validate:wrangler ❌ expected ❌ Validation failed — human-blocked #1045/#1165).
+
 ## ULW Loop Cycle 549 (2026-08-18 — PR HANDLER → ISSUE MANAGER MODE)
 
 **Phase 0**: `gh pr list --state open` → **1 PR — #3409** `docs(ulw-loop): Cycle 548 record — PR HANDLER → ISSUE MANAGER MODE` (bot, created 15:43:10Z, base `main`, head `agent/ulw-loop-cycle-548`, labels `docs`+`P3` present, `MERGEABLE`/`UNSTABLE`, +28/−1, 5 files) → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `94785bd0` = #3408 Cycle 547 record, clean tree); `node_modules` absent → `npm ci` 883 pkgs **0 vulns**.
