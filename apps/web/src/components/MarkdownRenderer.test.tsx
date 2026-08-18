@@ -127,6 +127,27 @@ describe("MarkdownRenderer", () => {
       expect(img).toHaveAttribute("alt", "alt text");
       expect(img).toHaveAttribute("loading", "lazy");
     });
+
+    it("falls back to the title attribute when alt text is missing", () => {
+      render(<MarkdownRenderer content='![](image.jpg "Project architecture")' />);
+      const img = screen.getByRole("img");
+      expect(img).toHaveAttribute("alt", "Project architecture");
+      expect(img).toHaveAttribute("title", "Project architecture");
+    });
+
+    it("derives a humanized filename when both alt and title are missing", () => {
+      render(<MarkdownRenderer content="![](architecture-diagram.png)" />);
+      expect(screen.getByRole("img")).toHaveAttribute("alt", "architecture diagram");
+    });
+
+    it("keeps empty alt text for data URIs (nothing derivable)", () => {
+      const { container } = render(
+        <MarkdownRenderer content="![](data:image/png;base64,iVBORw0KGgo=)" />
+      );
+      const img = container.querySelector("img");
+      expect(img).not.toBeNull();
+      expect(img).toHaveAttribute("alt", "");
+    });
   });
 
   describe("Tables", () => {
