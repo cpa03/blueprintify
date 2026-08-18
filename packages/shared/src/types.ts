@@ -18,8 +18,6 @@ import {
   StorageQuotaSchema,
   StorageClearRequestSchema,
   StorageReportRequestSchema,
-  CreateShareSchema,
-  VerifySharePassphraseSchema,
 } from "./schema.js";
 
 // ===== Inferred Types from Zod Schemas =====
@@ -129,14 +127,6 @@ export type StorageClearRequest = z.infer<typeof StorageClearRequestSchema>;
  */
 export type StorageReportRequest = z.infer<typeof StorageReportRequestSchema>;
 
-// ===== Share Types =====
-
-/**
- * Request payload for creating a shareable blueprint link.
- */
-export type CreateShareRequest = z.infer<typeof CreateShareSchema>;
-export type VerifySharePassphraseRequest = z.infer<typeof VerifySharePassphraseSchema>;
-
 // ===== Wizard Step Types =====
 
 /**
@@ -172,19 +162,6 @@ export interface Session {
   generatedTasks: string | null;
   createdAt: string;
   updatedAt: string;
-}
-
-// ===== API Client Types =====
-
-/**
- * Callback handlers for streaming AI responses.
- * Used with SSE (Server-Sent Events) for real-time content generation.
- */
-export interface StreamCallbacks {
-  onChunk: (chunk: string) => void;
-  onError: (error: string) => void;
-  onDone: () => void;
-  onRetry?: (attempt: number, maxRetries: number) => void;
 }
 
 // ===== Editor Types =====

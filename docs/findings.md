@@ -2,6 +2,31 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-08-18 — Dead code, unused exports, commented-out code scan)
+
+**Scope**: `agent/janitor` branch. Scanned the codebase for redundant files, unused exports, and commented-out dead code before merge.
+
+### Removed
+
+- `packages/shared/src/types.ts`: removed dead exports `StreamCallbacks` (interface), `VerifySharePassphraseRequest` (type), `CreateShareRequest` (type) — zero references in code, tests, docs, or scripts (verified via repo-wide grep; schemas `CreateShareSchema`/`VerifySharePassphraseSchema` remain exported and are consumed by `apps/api/src/routes/share.ts`).
+- `packages/shared/src/index.ts`: removed the three re-exports of the above types.
+- `packages/shared/src/types.ts`: removed now-unused `CreateShareSchema`/`VerifySharePassphraseSchema` imports.
+
+Build/typecheck verified green after removal.
+
+### Verified clean (no action needed)
+
+- **No orphaned source files**: all flagged "orphan" candidates are test/e2e files (`*.test.ts`/`*.test.tsx`, `apps/web/e2e/*.spec.ts`) that are actively discovered by `vitest` (`apps/api/vitest.config.ts`, `apps/web/vitest.config.ts`, `packages/shared/vitest.config.ts`) and `playwright.config.ts` (`testDir: apps/web/e2e`).
+- **No commented-out dead code**: no blocks of disabled code found; all `//` and `/* */` hits are legitimate explanatory comments or JSDoc (including test files).
+- **No redundant files**: barrel files (`apps/api/src/config/constants.ts`, `apps/web/src/config/constants.ts`, `packages/shared/src/config.ts`) are intentional re-export hubs; `scripts/brocula-sweep.mjs` intentionally committed (documented in audit records); `scripts/janitor-scan.mjs` is the analysis tool itself.
+- **All ~91 exports flagged by `scripts/janitor-scan.mjs` were false positives**: alias re-exports (`export { SHARED_X as X }`), barrel re-exports, internal same-file usage, `import * as ns` consumers, or template-string content (e.g. `metadata` in `apps/web/src/lib/templates/react.ts`).
+
+### Structural findings (recommended for future work, not removed)
+
+- `PREVIEW_DEFAULTS`, `OBSERVABILITY_DEFAULTS`, `QUEUE_DEFAULTS` in `packages/shared/src/config/core.ts` have **zero code consumers** but are the documented single source of truth for `apps/api/wrangler.toml` (header comment references shared config; values match: `max_batch_size=10`, `max_batch_timeout=30`, `head_sampling_rate=0.1`). Keep — they are documentation-as-code; consider adding a test asserting parity with wrangler.toml.
+- Shared type exports `GenerationResult`, `ImportResult`, `StorageReportRequest`, `ExportRequest`, `ImportRequest` have zero live consumers in apps but are referenced in `docs/findings.md`/`packages/shared/README.md` as documented API surface. Keep.
+- Root devDependency `@emnapi/core` (1.11.3) has no code references and no dependents in `package-lock.json` beyond the root entry, but `@img/sharp-wasm32` (used for ARM CI sharp support) pulls in `@emnapi/runtime`. Verify on `ubuntu-24.04-arm` CI before removing; flagged for human disposition.
+
 ## ULW Loop Cycle 522 (2026-08-17 — REPOKEEPER MODE)
 
 **Phase 0**: `gh pr list --state open` → `[]` (0 PRs) + **101 open issues** → user mandate explicitly **REPOKEEPER** (repo hygiene + doc-sync + PR delivery; build/lint errors or warnings = fatal). Default branch auto-detected `main` (HEAD `d6f85458` = #3359 Cycle 521 record; 0-behind/0-ahead `origin/main`, clean tree; `node_modules` present). Branch `agent/repokeeper-cycle-522` created from latest `origin/main`.
