@@ -17,6 +17,51 @@
 **Baseline ALL GREEN 2,596/2,596 CONFIRMED LIVE**: typecheck ✅ exit 0 · lint ✅ **0 errors/0 warnings** (`--format json` errorCount 0 warningCount 0, 298 files) · build ✅ 9.07s (`PLUGIN_TIMINGS` informational) · tests **2,596/2,596** ✅ web **1,209**/84 + api 535/33 + shared 852/4 · audit **0 vulns** ✅ · scan:secrets ✅ 326 files · prettier ✅ · validate:wrangler ❌ expected (**REAL EXIT 1**) — 2 `⚠️ PLACEHOLDER` markers L160/L176 + 6 placeholder IDs, human-blocked #1045/#1165.
 
 **Final state: PR pending** — this record appends Cycle 563 to all five files; PR creation with labels `docs`+`P3` + branch sync follows.
+## ULW Loop Cycle 563 (2026-08-19 — PR HANDLER → ISSUE MANAGER MODE)
+
+**Phase 0**: `gh pr list --state open` → **1 PR — #3433** `docs(ulw-loop): Cycle 562 record — PR HANDLER → ISSUE MANAGER MODE` (bot, head `agent/ulw-loop-cycle-562`, labels `docs`+`P3` present) → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `1e4f560a` = #3432 Cycle 561 record, clean tree); `npm ci` **0 vulns**.
+
+**#3433 PROCESSED & MERGED**:
+
+- Branch **0-behind/1-ahead** vs `origin/main` (merge-base = main HEAD `1e4f560a` — already synced, no rebase needed); docs-only 5 files +105/−53 (CHANGELOG +1, SECURITY audit row, active-tasks +1, findings +44, knowledge-review +5); labels `docs`+`P3` ✅ present; comments = 2 bot deploy-failure notifications only (Vercel FAILURE + Workers Builds FAILURE — documented external deploy fixtures, precedent #3364); no human comments/reviews; no security-sensitive change (docs-only) → **gates LIVE-verified on branch**: typecheck ✅ exit 0 · lint ✅ **0 errors/0 warnings** (`--max-warnings 0` exit 0, 298 files) · build ✅ exit 0 · tests **2,596/2,596** ✅ web **1,209**/84 + api 535/33 + shared 852/4 · audit **0 vulns** ✅ · scan:secrets ✅ 326 files · prettier ✅ → merge conditions met (MERGEABLE · docs-only · no human comments · only external deploy fixtures failing) → **`gh pr merge 3433 --squash --admin --delete-branch` ✅ MERGED** (08:41:57Z, merge commit `ce689677`), remote branch `agent/ulw-loop-cycle-562` deleted post-merge (verified `ls-remote` 0 refs), `main` synced; **0 linked issues**.
+
+**Re-entry Phase 0 post-merge**: `gh pr list --state open` → `[]` (**0 PRs**) + **101 open issues** GraphQL `issues(states:OPEN){totalCount}` → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases).
+
+**Steps 1–3 (Normalize/Dedup/Consolidate) BLOCKED** — `issues: write` absent (**130th consecutive block**; re-verified THIS cycle with real mutation probes, zero residue: `gh api -X POST repos/cpa03/blueprintify/issues/1014/labels -f labels[]=probe-cycle-563` → REST HTTP **403 addLabelsToLabelable** "Resource not accessible by integration"; #1014 labels verified unchanged `[enhancement,area:quality-assurance,P1,test]`; `gh issue create` → GraphQL **403 createIssue**; root cause: `pull` workflow `on-pull.yml` permissions omit `issues: write`); canonical `npm run normalize:issues -- --dry-run` unchanged (**86/101 need canonical labels**, mapping per `docs/issue-manager-plan-cycle-368.md`); duplicate/consolidation clusters report-only (close blocked by token).
+
+**Step 4 (Repair)**: no P0 (0 P0 live-verified via GraphQL label enumeration); P1s re-verified **code-resolved or human-blocked on `main`** via live reads — #1045/#1165 wrangler **2 `⚠️ PLACEHOLDER` markers** (`apps/api/wrangler.toml` L160 KV comment/L176 D1 comment) + **6 placeholder IDs** KV L165/169/173 + D1 L182/187/192 fail-closed `validate-wrangler` (**REAL EXIT 1** live-run this cycle) → **human-blocked** (Cloudflare provisioning); #1082 **13/13** hook `*.test.*` suites → code-resolved (close blocked by token); #1014 **44** component suites + root `playwright.config.ts` → code-resolved (close blocked).
+
+**EXTENDED P2/P3 SWEEP this cycle — additional verifications**:
+
+- **#1088/#1084** CI security gates — `scan:secrets` + `audit` scripts exist (package.json) but **not wired into any of the 5 workflows** (grep 0 refs in `iterate.yml`/`main.yml`/`on-pull.yml`/`parallel.yml`/`pr-gatekeeper.yml`) → **workflow-blocked** (`workflows: write` absent — verified via real push-rejection probe on throwaway branch `agent/ulw-loop-cycle-561-fix` + `perm-test.yml`); **local mitigation active** (`.husky/pre-commit` + `.husky/pre-push` committed `ef356e4a` — scan:secrets on commit, full `npm run check` on push).
+- **#1166 `.nvmrc` TRACKED with content `22`** → **code-resolved** (NEW this cycle).
+- **#863** issue/PR templates — `.github/ISSUE_TEMPLATE/bug_report.md` + `feature_request.md` + `PULL_REQUEST_TEMPLATE.md` all tracked → **code-resolved**.
+- **#864** source maps — `upload_source_maps = false` (wrangler.toml L42) → **code-resolved**.
+- **#905** share ID injection — `SHARE_CONFIG.ID_PATTERN` regex + `isValidShareId` → **code-resolved**.
+- **#908** export/import max length — `EXPORT_LIMITS` max in `ExportRequestSchema`/`ImportRequestSchema` + tests → **code-resolved**.
+- **#909** consistent error format — `withCtxError` standard shape → **code-resolved**.
+- **#910** duplicate validation — unified `validateJson` (`middleware/validator.ts`) → **code-resolved**.
+- **#1046** share auth — HMAC verify token + expiration → **code-resolved**.
+- **#1053** middleware tests — 8 `.test.ts` suites → **code-resolved**.
+- **#917** route integration tests — 7 route `.test.ts` suites → **code-resolved**.
+- **#918** a11y — `accessibility.test.tsx` (jest-axe) → **code-resolved**.
+- **#955** CSP — `unsafe-inline` removed from SCRIPT_SRC, hashes used (security.ts L171-175) → **code-resolved**.
+- **#1016** eslint config — verified covers all dirs, lint 0/0 → **code-resolved**.
+- **#1141** api utils/services tests — all utils + services tested → **code-resolved**.
+- **Duplicate clusters identified (close blocked)**: #851≈#1084 (npm audit in CI), #857≈#1082, #856≈#1014, #1165≈#1045.
+
+**#849/#953** gatekeeper `test:all` gap (0 refs in `pr-gatekeeper.yml` L54–70) → **163rd deferral** (`workflows: write` absent — GITHUB_TOKEN platform limitation; Cycle 551 ready-to-land patch `fix/pr-gatekeeper-tests` @ `af4ed52f` retained, `main` untouched).
+
+**Stray branches — FAIL-SAFE MAINTAINED (state UNCHANGED)**: `agent/janitor` HEAD `f9f39681` (**8 unmerged commits**, no open PR), `feat/wizard-arrow-focus-parity` HEAD `ccac48c8` (1 commit, **NO open PR**), `agent/repokeeper-cycle-530` HEAD `a043b9d4` (report-only) — not merged, not deleted, human disposition pending; processed branch `agent/ulw-loop-cycle-562` verified deleted post-merge.
+
+**Doc-sync — 0 CONFIRMED defects pre-edit**: all five tracked records current through Cycle 562; README L339 BroCula range `(Jul 20–Aug 19)` current — latest = Run 82 Aug 19; exactly 1 `**Latest**` marker; audits index **91 rows ↔ 91 on-disk reports** (92 `.md` on-disk includes README.md itself; 18 archived excluded by design); llms.txt 15 endpoints match code routes; web README `Cmd/Ctrl + S` present; `sitemap.xml` `lastmod` stays `2026-08-16` — no bump, Cycle 514 precedent; 0 TODO/FIXME/HACK in project source; 0 commented-out code blocks; console.log/error only intentional.
+
+**Archive retention — NO PURGE**: oldest remaining archive files Jul 20 = **30d, at boundary** (repokeeper Cycle 557 purged Jul 19; "next purge when Jul 20 files exceed boundary", due Aug 20+ per Cycle 557/559 flag).
+
+**Baseline ALL GREEN 2,596/2,596 CONFIRMED LIVE**: typecheck ✅ exit 0 · lint ✅ **0 errors/0 warnings** (`--max-warnings 0` exit 0) · build ✅ exit 0 · tests **2,596/2,596** ✅ web **1,209**/84 + api 535/33 + shared 852/4 · audit **0 vulns** ✅ · scan:secrets ✅ 326 files · prettier ✅ · validate:wrangler ❌ expected (**REAL EXIT 1**) — human-blocked #1045/#1165.
+
+Skills used: `docs-update` loaded per contract (docs record append). Subagents used: none — deterministic CLI probes + direct PR handling per contract. **Final state: PR pending** — this record appends Cycle 563 to all five files; PR creation with labels `docs`+`P3` + branch sync follows.
+
 ## ULW Loop Cycle 562 (2026-08-19 — PR HANDLER → ISSUE MANAGER MODE)
 
 **Phase 0**: `gh pr list --state open` → **1 PR — #3432** `docs(ulw-loop): Cycle 561 record — PR HANDLER → ISSUE MANAGER MODE` (bot, head `agent/ulw-loop-cycle-561`, labels `docs`+`P3` present) → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `92716e4b` = #3431 Cycle 561 record, clean tree).
