@@ -5,7 +5,6 @@ name = "blueprintify"
 main = "src/index.ts"
 compatibility_date = "2026-02-19"
 compatibility_flags = ["nodejs_compat"]
-tsconfig = "./tsconfig.json"
 
 # Preserve environment variables during deployments
 # https://developers.cloudflare.com/workers/configuration/migrating-to-module-workers/#settings-inheritance
