@@ -25,6 +25,7 @@ import {
   HOVER_SCALE,
   COPY_BUTTON_LABELS,
   FOCUS_ANNOUNCER,
+  CSS_CLASSES,
 } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -154,6 +155,7 @@ function AnimatedCopyButtonComponent({
         isCopied
           ? "bg-accent-emerald/20 text-accent-emerald border border-accent-emerald/50"
           : "btn-ghost text-dark-300 hover:text-white hover:bg-dark-800/50",
+        !hasContent ? CSS_CLASSES.DISABLED_BUTTON_STATE : "",
         className
       )}
       aria-label={isCopied ? COPY_BUTTON_LABELS.COPIED : COPY_BUTTON_LABELS.COPY}

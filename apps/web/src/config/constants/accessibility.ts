@@ -62,6 +62,16 @@ export const CSS_CLASSES = {
    * Flexy says: No hardcoded "opacity-50 cursor-not-allowed" in components! */
   DISABLED_STATE: "opacity-50 cursor-not-allowed" as const,
 
+  /** Disabled button visual state for components whose base class (btn-ghost)
+   * bakes in interactive hover feedback. Uses disabled: variants so the dimmed
+   * opacity, not-allowed cursor, and hover suppression always win over the
+   * base hover styles regardless of CSS order. Without this, a disabled copy
+   * button still lights up on hover — misleading affordance that suggests it
+   * is clickable when it is not.
+   * Flexy says: No hardcoded "disabled:opacity-50 cursor-not-allowed" in components! */
+  DISABLED_BUTTON_STATE:
+    "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-dark-300 disabled:hover:bg-transparent" as const,
+
   /** Loading dim state for children content during async operations.
    * Used in RippleButton when isLoading is true — dims button text/icons
    * so the spinner overlay is clearly visible while maintaining layout.
