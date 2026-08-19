@@ -28,6 +28,7 @@ import { KEYBOARD_EVENT_KEYS, FRAMER_TYPE, DISPLAY_SYMBOLS } from "@blueprint/sh
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { Icon, type IconName } from "./Icon";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
+import { isEditableField } from "../lib/dom";
 import { ACCESSIBILITY_LABELS, KEY_DISPLAY } from "../config/constants/content";
 
 /**
@@ -195,8 +196,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      const isTypingInField =
-        e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement;
+      const isTypingInField = isEditableField(e.target);
 
       if (e.key === KEYBOARD_EVENT_KEYS.QUESTION_MARK && !isTypingInField) {
         onClose();

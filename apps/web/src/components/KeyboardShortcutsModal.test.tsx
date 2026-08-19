@@ -62,6 +62,19 @@ describe("KeyboardShortcutsModal", () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
+  it("keeps the modal open when '?' is typed in a contenteditable field", () => {
+    const onClose = vi.fn();
+    render(<KeyboardShortcutsModal isOpen onClose={onClose} />);
+
+    const contentEditable = document.createElement("div");
+    contentEditable.setAttribute("contenteditable", "true");
+    document.body.appendChild(contentEditable);
+    fireEvent.keyDown(contentEditable, { key: "?" });
+
+    expect(onClose).not.toHaveBeenCalled();
+    document.body.removeChild(contentEditable);
+  });
+
   it("filters shortcuts as the query is typed", () => {
     render(<KeyboardShortcutsModal {...defaultProps} />);
 
