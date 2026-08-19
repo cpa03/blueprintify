@@ -3,6 +3,30 @@
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
 
+## ULW Loop Cycle 567 (2026-08-19 — PR HANDLER → ISSUE MANAGER MODE)
+
+**Phase 0**: `gh pr list --state open` → **1 PR — #3441** `docs(ulw-loop): Cycle 566 record — PR HANDLER → ISSUE MANAGER MODE` (bot, head `agent/ulw-loop-cycle-566`) → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `fb5a3c05` = #3440 Cycle 565 record, clean tree); `npm ci` 883 pkgs **0 vulns**.
+
+**#3441 PROCESSED & MERGED**: branch **0-behind/1-ahead** (merge-base = main HEAD — already synced, no rebase); docs-only 5 files +35/−0; labels `docs`+`P3` ✅; comments = 2 bot deploy-failure notifications only (Vercel + Workers Builds — external infra precedent #3364); no human comments; no security-sensitive change → **gates LIVE ALL GREEN** (typecheck ✅ lint ✅ **0 errors/0 warnings** 298 files build ✅ tests **2,598/2,598** ✅ web 1,211/84 + api 535/33 + shared 852/4 audit **0 vulns** ✅ scan:secrets ✅ 326 files prettier ✅) → **`gh pr merge 3441 --squash --admin` ✅ MERGED** (12:52:38Z, merge commit `7c2d59ca`), branch deleted post-merge (verified `ls-remote` 0 refs), **0 linked issues**.
+
+**Re-entry Phase 0**: `gh pr list --state open` → `[]` (**0 PRs**) + **101 open issues** GraphQL count → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases).
+
+**Steps 1–3 (Normalize/Dedup/Consolidate) BLOCKED** — `issues: write` absent (**134th consecutive block**; re-verified THIS cycle with **1 real mutation probe, zero residue**: REST label POST `issues/1014/labels -f labels[]=probe-cycle-567` → HTTP **403 addLabelsToLabelable** "Resource not accessible by integration"; #1014 labels verified unchanged `[enhancement,area:quality-assurance,P1,test]`; root cause: `pull` workflow `on-pull.yml` permissions omit `issues: write`); canonical `npm run normalize:issues -- --dry-run` unchanged (**86/101 need canonical labels**, mapping per `docs/issue-manager-plan-cycle-368.md`); duplicate/consolidation clusters report-only (close blocked by token).
+
+**Step 4 (Repair)**: no P0 (0 P0 live-verified via label enumeration); P1s re-verified **code-resolved or human-blocked on `main`** via live reads — #1045/#1165 wrangler **2 `⚠️ PLACEHOLDER` markers** (`apps/api/wrangler.toml` L160 KV comment/L176 D1 comment + **6 placeholder IDs**) fail-closed `validate-wrangler` → **human-blocked** (Cloudflare provisioning — fail-safe: no fabricated IDs); #1082 **13/13** hook `*.test.*` suites (`ls apps/web/src/hooks/*.test.*` → 13) → **code-resolved** (close blocked by token); #1014 **44** component suites (`find apps/web/src/components` → 44) + root `playwright.config.ts` → **code-resolved** (close blocked).
+
+**#849/#953** gatekeeper `test:all` gap (0 refs in `pr-gatekeeper.yml`; grep 0 refs in all 5 workflows) → **167th deferral** (`workflows: write` absent — GITHUB_TOKEN platform limitation; Cycle 551 ready-to-land patch `fix/pr-gatekeeper-tests` @ `af4ed52f` retained, `main` untouched).
+
+**Stray branches — FAIL-SAFE MAINTAINED (state UNCHANGED)**: `agent/janitor` HEAD `f9f39681` (**8 unmerged commits**, no open PR), `feat/wizard-arrow-focus-parity` HEAD `ccac48c8` (1 commit, **NO open PR**), `agent/repokeeper-cycle-530` HEAD `a043b9d4` (report-only) — not merged, not deleted, human disposition pending (all 3 verified present via `ls-remote`); processed branch `agent/ulw-loop-cycle-566` verified deleted post-merge.
+
+**Doc-sync — 0 CONFIRMED defects pre-edit**: all five tracked records current through Cycle 566; README L339 BroCula range `(Jul 20–Aug 19)` current — latest = Run 83 (`docs/audits/README.md` top row = **Latest**, exactly 1 `**Latest**` marker); audits index **91 ↔ 91**; llms.txt 15 endpoints match code routes; `sitemap.xml` `lastmod` stays `2026-08-16` — no bump, Cycle 514 precedent; 0 TODO/FIXME/HACK in project source; 0 commented-out code blocks; console.log/error only intentional.
+
+**Archive retention — NO PURGE**: oldest remaining archive files Jul 20 = **30d, at boundary** (purge due Aug 20+ per Cycle 557/559 flag).
+
+**Baseline ALL GREEN 2,598/2,598 CONFIRMED LIVE**: typecheck ✅ exit 0 · lint ✅ **0 errors/0 warnings** (`--format json` errorCount 0 warningCount 0, 298 files) · build ✅ (`PLUGIN_TIMINGS` informational) · tests **2,598/2,598** ✅ web **1,211**/84 + api 535/33 + shared 852/4 · audit **0 vulns** ✅ · scan:secrets ✅ 326 files · prettier ✅ · validate:wrangler ❌ expected (**REAL EXIT 1**) — human-blocked #1045/#1165.
+
+**Final state: PR pending** — this record appends Cycle 567 to all five files; PR creation with labels `docs`+`P3` + branch sync follows.
+
 ## ULW Loop Cycle 566 (2026-08-19 — PR HANDLER → ISSUE MANAGER MODE)
 
 **Phase 0**: `gh pr list --state open` → **1 PR — #3440** `docs(ulw-loop): Cycle 565 record — PR HANDLER → ISSUE MANAGER MODE` (bot, head `agent/ulw-loop-cycle-565`) → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `b38f956a` = #3439 Cycle 564 record, clean tree); `npm ci` 883 pkgs **0 vulns**.
