@@ -2,6 +2,22 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## ULW Loop Cycle 559 (2026-08-19 — REPOKEEPER MODE)
+
+**Phase 0**: `gh pr list --state open` → `[]` (**0 PRs**) → user mandate explicitly REPOKEEPER (repo hygiene + doc-sync + PR delivery; build/lint errors or warnings = fatal) → **REPOKEEPER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `fc62c4ef` = #3427 Cycle 558 record, 0-behind/0-ahead `origin/main`, clean tree); branch `agent/repokeeper-cycle-559` created from `origin/main`.
+
+**Hygiene audit CLEAN** — 591 tracked files; 0 redundant/temp/unused (temp-artifact grep empty); 0 empty tracked dirs; 0 tracked build artifacts; scripts all wired 7/7 (`brocula-hunt.mjs`↔`brocula`, `migrate.ts`↔`db:*`, `normalize-issue-labels.mjs`↔`normalize:issues`, `scan-secrets.mjs`↔`scan:secrets`, `validate-wrangler.mjs`↔`validate:wrangler`; `brocula-sweep.mjs`+`lh-warm.mjs` intentionally committed/documented — not orphaned); 28/28 agents + 25/25 skills + 8/8 commands cross-checked 1:1; 5/5 workflows `ubuntu-24.04-arm`, `node-version-file` ×11 (main.yml 0 = OpenCode curl install, no npm — intentional); audits index **90 top-level on-disk ↔ 90 rows** (18 archived on-disk excluded by design), exactly 1 `**Latest**` marker (Run 81).
+
+**Retention — NO PURGE**: oldest remaining archive files Jul 20 = **30d, at boundary** (Cycle 557 purged 4× Jul 19 files; "next purge when Jul 20 files exceed boundary", due Aug 20+); CONSOLIDATED-README current.
+
+**Stray branches — FAIL-SAFE MAINTAINED (state UNCHANGED)**: `agent/janitor` HEAD `f9f39681` (**8 unmerged commits**, no open PR), `feat/wizard-arrow-focus-parity` HEAD `ccac48c8` (1 commit, **NO open PR**), `agent/repokeeper-cycle-530` HEAD `a043b9d4` (report-only) — not merged, not deleted, human disposition pending; `agent/bugfixer-cycle-100` verified deleted (post-#3422 cleanup complete — `ls-remote` 0 refs).
+
+**Doc-sync — 0 CONFIRMED defects pre-edit**: all five tracked records current through Cycle 558; README L339 BroCula range `(Jul 20–Aug 19)` current — latest = Run 81 Aug 19 (`docs/audits/README.md` top row = **Latest**, exactly 1 `**Latest**` marker); README counts exact — 28 agents / 25 skills; all 29 README docs links resolve (28 unique targets — environment-variables.md duplicated); llms.txt 15 endpoints match code routes (`ROUTE_PATHS` in `packages/shared/src/config/core.ts`); web README `Cmd/Ctrl + S` present; `sitemap.xml` `lastmod` stays `2026-08-16` — no bump, Cycle 514 precedent; 0 TODO/FIXME/HACK in project source; 0 commented-out code blocks; console.log/error only intentional (DEBUG_MESSAGES constants, e2e specs, logger/secureLog, storage error messages).
+
+**Baseline ALL GREEN 2,596/2,596 CONFIRMED LIVE**: typecheck ✅ exit 0 · lint ✅ **0 errors/0 warnings** (`--format json` errorCount 0 warningCount 0, 298 files) · build ✅ 10.5s (`PLUGIN_TIMINGS` informational) · tests **2,596/2,596** ✅ web **1,209**/84 + api 535/33 + shared 852/4 · audit **0 vulns** ✅ · scan:secrets ✅ 326 files · prettier ✅ · validate:wrangler ❌ expected (**REAL EXIT 1**) — human-blocked #1045/#1165.
+
+**Final state: PR pending** — this record appends Cycle 559 to all five files; PR creation with labels `docs`+`P3` + branch sync follows.
+
 ## ULW Loop Cycle 558 (2026-08-19 — ISSUE MANAGER MODE)
 
 **Phase 0**: `gh pr list --state open` → `[]` (**0 PRs**) + **101 open issues** GraphQL `issues(states:OPEN){totalCount}` → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `de6c8653` = #3422 bugfixer Cycle 100 record, clean tree); `node_modules` absent → `npm ci` **0 vulns**.
