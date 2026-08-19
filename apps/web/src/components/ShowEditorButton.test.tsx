@@ -78,6 +78,7 @@ describe("ShowEditorButton", () => {
 
     expect(screen.getByText(UI_CONTENT.EDITOR.VIEW_BLUEPRINT_BUTTON)).toBeInTheDocument();
     expect(screen.queryByText(UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON)).not.toBeInTheDocument();
+    expect(screen.getByRole("button")).toHaveAttribute("data-has-content", "true");
   });
 
   it("applies glow-pulse class when hasContent is true", () => {

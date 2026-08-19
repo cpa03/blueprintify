@@ -124,6 +124,7 @@ function ShowEditorButtonComponent({
           aria-label={buttonTitle}
           title={buttonTitle}
           data-editor-toggle="true"
+          data-has-content={hasContent}
           aria-expanded={false}
           aria-controls="editor-panel"
         >
