@@ -46,6 +46,7 @@ import {
 import { LAYOUT, BUTTON, ICON, SPINNER } from "./config/styles";
 import { KEYBOARD_SHORTCUTS } from "./config/constants/keyboard";
 import { getAriaShortcutKey } from "./lib/platform";
+import { isEditableField } from "./lib/dom";
 import { Icon } from "./components/Icon";
 const GenerationCelebration = lazy(() =>
   import("./components/GenerationCelebration").then((m) => ({ default: m.GenerationCelebration }))
@@ -221,7 +222,10 @@ function App(): JSX.Element {
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+      // Skip while typing in any text-editing surface (input, textarea, or
+      // contenteditable such as the CodeMirror markdown editor) so printable
+      // keys like '?' are never hijacked by global shortcuts.
+      if (isEditableField(e.target)) {
         return;
       }
 
