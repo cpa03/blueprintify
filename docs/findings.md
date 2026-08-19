@@ -3,6 +3,26 @@
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
 
+## ULW Loop Cycle 568 (2026-08-19 — ISSUE MANAGER MODE)
+
+**Phase 0**: `gh pr list --state open` → `[]` (**0 PRs**) + **101 open issues** GraphQL count → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `fb6710fb` = #3442 bugfixer Cycle 103 record, clean tree); `npm ci` 883 pkgs **0 vulns**.
+
+**Steps 1–3 (Normalize/Dedup/Consolidate) BLOCKED** — `issues: write` absent (**135th consecutive block**; re-verified THIS cycle with **1 real mutation probe, zero residue**: `gh issue edit 1167 --add-label probe-label-x` → GraphQL **403 addLabelsToLabelable** "Resource not accessible by integration"; #1167 labels verified unchanged `[area:frontend-engineer, priority:low, security]`; root cause: `pull` workflow `on-pull.yml` permissions omit `issues: write`); canonical `npm run normalize:issues -- --dry-run` unchanged (**86/101 need canonical labels**); duplicate/consolidation clusters report-only (close blocked by token).
+
+**Step 4 (Repair)**: no P0 (0 P0 live-verified); P1s re-verified **code-resolved or human-blocked on `main`** via live reads — #1045/#1165 wrangler **2 `⚠️ PLACEHOLDER` markers** (`apps/api/wrangler.toml` L160 KV comment/L176 D1 comment + **6 placeholder IDs** KV L165/169/173 + D1 L182/187/192) fail-closed `validate-wrangler` → **human-blocked** (Cloudflare provisioning — fail-safe: no fabricated IDs); #1082 **13/13** hook `*.test.*` suites → **code-resolved** (close blocked by token); #1014 **44** component suites + root `playwright.config.ts` → **code-resolved** (close blocked). **#849/#953** gatekeeper `test:all` gap → **168th deferral** (`workflows: write` absent; Cycle 551 ready-to-land patch `fix/pr-gatekeeper-tests` @ `af4ed52f` retained, `main` untouched).
+
+**Stray branches — FAIL-SAFE MAINTAINED (state UNCHANGED)**: `agent/janitor` HEAD `f9f39681` (**8 unmerged commits**, no open PR), `feat/wizard-arrow-focus-parity` HEAD `ccac48c8` (1 commit, **NO open PR**), `agent/repokeeper-cycle-530` HEAD `a043b9d4` (report-only) — not merged, not deleted, human disposition pending (all 3 verified present via `ls-remote`).
+
+**Doc-sync — 1 CONFIRMED defect pre-edit, FIXED THIS CYCLE**: **`docs/audits/README.md` index missing Run 82 row** (index jumped Run 83 → Run 81 while `brocula-audit-2026-08-19-run82.md` exists on disk) → **Run 82 row INSERTED** (index now **93 ↔ 93** reports); all five tracked records current through Cycle 567; README L339 BroCula range `(Jul 20–Aug 19)` current — latest = Run 84 (`docs/audits/README.md` top row = **Latest**, exactly 1 `**Latest**` marker); llms.txt 15 endpoints match code routes; `sitemap.xml` `lastmod` stays `2026-08-16` — no bump, Cycle 514 precedent; 0 TODO/FIXME/HACK in project source; 0 commented-out code blocks; console.log/error only intentional.
+
+**Archive retention — NO PURGE**: oldest remaining archive files Jul 20 = **30d, at boundary** (purge due Aug 20+ per Cycle 557/559 flag).
+
+**Baseline ALL GREEN 2,598/2,598 CONFIRMED LIVE**: typecheck ✅ exit 0 · lint ✅ **0 errors/0 warnings** (`--format json` errorCount 0 warningCount 0, 298 files) · build ✅ exit 0 (`PLUGIN_TIMINGS` informational) · tests **2,598/2,598** ✅ web **1,211**/84 + api 535/33 + shared 852/4 · audit **0 vulns** ✅ · scan:secrets ✅ 326 files · prettier ✅ · validate:wrangler ❌ expected (**REAL EXIT 1**) — human-blocked #1045/#1165.
+
+Skills used: `docs-update` loaded per contract (docs record append + audits index Run 82 row fix). Subagents used: none — deterministic CLI probes + direct PR handling per contract.
+
+**Final state: PR pending** — this record appends Cycle 568 to all five files; PR creation with labels `docs`+`P3` + branch sync follows.
+
 ## ULW Loop Cycle 567 (2026-08-19 — PR HANDLER → ISSUE MANAGER MODE)
 
 **Phase 0**: `gh pr list --state open` → **1 PR — #3441** `docs(ulw-loop): Cycle 566 record — PR HANDLER → ISSUE MANAGER MODE` (bot, head `agent/ulw-loop-cycle-566`) → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `fb5a3c05` = #3440 Cycle 565 record, clean tree); `npm ci` 883 pkgs **0 vulns**.
