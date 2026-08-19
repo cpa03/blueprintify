@@ -11,7 +11,7 @@
  */
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { COPY_BUTTON_LABELS, PARTICLE_CONFIG, HOVER_SCALE } from "../config/constants";
+import { COPY_BUTTON_LABELS, PARTICLE_CONFIG, HOVER_SCALE, CSS_CLASSES } from "../config/constants";
 import { AnimatedCopyButton } from "./AnimatedCopyButton";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import * as motion from "framer-motion/m";
@@ -89,6 +89,20 @@ describe("AnimatedCopyButton", () => {
     render(<AnimatedCopyButton {...defaultProps} hasContent={false} />);
 
     expect(screen.getByRole("button")).toBeDisabled();
+  });
+
+  it("applies the disabled visual state when hasContent is false", () => {
+    render(<AnimatedCopyButton {...defaultProps} hasContent={false} />);
+
+    const button = screen.getByRole("button");
+    expect(button.className).toContain(CSS_CLASSES.DISABLED_BUTTON_STATE);
+  });
+
+  it("omits the disabled visual state when hasContent is true", () => {
+    render(<AnimatedCopyButton {...defaultProps} hasContent={true} />);
+
+    const button = screen.getByRole("button");
+    expect(button.className).not.toContain(CSS_CLASSES.DISABLED_BUTTON_STATE);
   });
 
   it("does not call onCopy when disabled", () => {
