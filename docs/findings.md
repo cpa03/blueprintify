@@ -3,6 +3,28 @@
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
 
+## ULW Loop Cycle 597 (2026-08-20 — PR HANDLER → ISSUE MANAGER MODE)
+
+**Phase 0**: `gh pr list --state open` → **1 PR — #3498** `docs(ulw-loop): Cycle 596 record — PR HANDLER → ISSUE MANAGER MODE` (bot, head `agent/ulw-loop-cycle-596`, created 21:49:16Z) → Step 0.1 → **PR HANDLER MODE** (STOP all other phases); default branch `main` HEAD `1130abf6`, clean tree; `npm ci` 894 pkgs **0 vulns**.
+
+**#3498 PROCESSED & MERGED**: 0-behind (merge-base = main HEAD `1130abf6` — already synced, no rebase); docs-only 5 files +33/−2 (CHANGELOG.md + SECURITY.md + docs/active-tasks.md + docs/findings.md + docs/knowledge-review.md — Cycle 596 PR HANDLER record); labels `docs`+`P3` ✅; comments = 2 bot deploy-failure notifications only (Vercel FAILURE `api-deployments-free-per-day` rate limit + Workers Builds FAILURE — external infra precedent #3458/#3364); no human comments/reviews; no security-sensitive change (docs-only); gates LIVE ALL GREEN (typecheck ✅ lint ✅ **0 errors/0 warnings** `--format json` errorCount 0 warningCount 0 across 302 files · build ✅ exit 0 (`PLUGIN_TIMINGS` informational) · tests **2,621/2,621** ✅ web 1,234/86 + api 535/33 + shared 852/4 · audit **0 vulns** ✅ · scan:secrets ✅ **330 files** · prettier ✅ 5 changed files) → merge conditions met (MERGEABLE · docs-only · no human comments · only external deploy fixtures failing) → **`gh pr merge 3498 --admin --squash --delete-branch` ✅ MERGED** (`aed2c7c4`), branch deleted (verified `ls-remote` 0 refs), **0 linked issues**.
+
+**Re-entry Phase 0**: `gh pr list --state open` → `[]` (**0 PRs**) + **101 open issues** GraphQL count → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases).
+
+**Steps 1–3 (Normalize/Dedup/Consolidate) BLOCKED** — `issues: write` absent (**163rd consecutive block**; live mutation probe `gh issue edit 1167 --add-label chore` → GraphQL **403 addLabelsToLabelable** "Resource not accessible by integration"; #1167 labels verified unchanged `[area:frontend-engineer, priority:low, security]` — zero residue; root cause `on-pull.yml` omits `issues: write`); duplicate/consolidation clusters report-only (close blocked).
+
+**Step 4 (Repair)**: no P0 — **GraphQL authoritative check** (direct REST `labels=P1` → `[]` is the known CLI label-filter quirk — false negative): **3 open P1s (#1082/#1014/#1045)** re-verified on `main` (`aed2c7c4`): **#1045** wrangler **2 `⚠️ PLACEHOLDER` markers** L160/L176 fail-closed `validate:wrangler` REAL EXIT 1 → **human-blocked** Cloudflare provisioning, fail-safe no fabricated IDs; **#1082** **14** hook suites → **code-resolved**; **#1014** **44** component test files in `components/` (≥44 target) + coverage thresholds → **code-resolved**; → **no actionable P1** → no repair executed, consistent with minimal/atomic constraint.
+
+**Extended P2/P3 spot-checks**: **#1046** share IDs accessible without auth → **code-resolved** (`crypto.getRandomValues()` secure share IDs + `shareEnumerationRateLimit` + `authorize()` middleware in `apps/api/src/routes/share.ts`); **#1167** localStorage encryption → **genuinely OPEN** (P3 security; 0 `encrypt`/`subtle`/`CryptoKey` in `lib/storage.ts`) — not actionable under P1 rule; **#1088/#1084** (P2: no secrets scan / no dep-vuln scan in CI) → **OPEN** — `pr-gatekeeper.yml` runs typecheck/lint/build only (0 `test:all`/`npm audit`/`scan:secrets` matches); fixes require `workflows: write` absent (**196th deferral** for #849/#953 gatekeeper `test:all` gap; GITHUB_TOKEN platform limitation).
+
+**Stray branches FAIL-SAFE MAINTAINED (state UNCHANGED)**: janitor `f9f39681` (8 unmerged, no PR), wizard-parity `ccac48c8` (1 commit, NO PR), repokeeper-530 `a043b9d4`, repokeeper-567 `c48abe2c` — human disposition pending; processed branch `agent/ulw-loop-cycle-596` verified deleted post-merge.
+
+**Baseline ALL GREEN 2,621/2,621 CONFIRMED LIVE** (typecheck ✅ · lint ✅ **0 errors/0 warnings** · build ✅ · tests **2,621/2,621** ✅ web 1,234/86 + api 535/33 + shared 852/4 · audit **0 vulns** ✅ · scan:secrets ✅ 330 files · prettier ✅ · validate:wrangler ❌ expected REAL EXIT 1 — human-blocked #1045/#1165).
+
+Skills used: `docs-update` loaded per contract (docs record append). Subagents used: none — deterministic CLI probes + direct PR handling per contract (all targets known-file reads; no parallel exploration needed).
+
+**Final state: PR pending** — Cycle 597 record appended to all five files; PR creation with labels `docs`+`P3` + branch sync follows.
+
 ## ULW Loop Cycle 596 (2026-08-20 — PR HANDLER → ISSUE MANAGER MODE)
 
 **Phase 0**: `gh pr list --state open` → **4 PRs — #3497** repokeeper-cycle-595 + **#3496** feat/leave-guard-beforeunload + **#3495** bugfixer-cycle-110 + **#3494** ulw-loop-cycle-595 → Step 0.1 → **PR HANDLER MODE** (STOP all other phases); default branch `main` HEAD `1130abf6`, clean tree; `npm ci` 894 pkgs **0 vulns**.
