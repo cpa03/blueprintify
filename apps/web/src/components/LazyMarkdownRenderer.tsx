@@ -1,7 +1,8 @@
 import React, { useState, useEffect, memo } from "react";
 import type { MarkdownRendererProps } from "./MarkdownRenderer";
 import { isDev } from "../config/env";
-import { DEBUG_MESSAGES, SKELETON_LAYOUT } from "../config/constants/content";
+import { ACCESSIBILITY_LABELS, DEBUG_MESSAGES, SKELETON_LAYOUT } from "../config/constants/content";
+import { FOCUS_ANNOUNCER } from "../config/constants/accessibility";
 
 interface LazyMarkdownRendererProps extends MarkdownRendererProps {
   fallback?: React.ReactNode;
@@ -9,14 +10,25 @@ interface LazyMarkdownRendererProps extends MarkdownRendererProps {
 
 function MarkdownPreviewSkeleton(): JSX.Element {
   return (
-    <div className="preview-skeleton" aria-hidden="true">
-      <div className="skeleton-block preview-skeleton-heading" />
+    <div
+      className="preview-skeleton"
+      role="status"
+      aria-live="polite"
+      aria-label={ACCESSIBILITY_LABELS.LAZY_MARKDOWN_RENDERER.LOADING}
+    >
+      <div className="skeleton-block preview-skeleton-heading" aria-hidden="true" />
       {SKELETON_LAYOUT.PREVIEW_LINE_WIDTHS.map((w, i) => (
-        <div key={i} className="skeleton-block preview-skeleton-line" style={{ width: w }} />
+        <div
+          key={i}
+          className="skeleton-block preview-skeleton-line"
+          style={{ width: w }}
+          aria-hidden="true"
+        />
       ))}
       <div
         className="skeleton-block preview-skeleton-code-block"
         style={{ width: SKELETON_LAYOUT.PREVIEW_CODE_WIDTH }}
+        aria-hidden="true"
       />
     </div>
   );
@@ -62,7 +74,14 @@ function LazyMarkdownRendererComponent({
     return fallback ? <>{fallback}</> : <MarkdownPreviewSkeleton />;
   }
 
-  return <MarkdownComponent content={content} className={className} />;
+  return (
+    <>
+      <div role="status" aria-live="polite" className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}>
+        {ACCESSIBILITY_LABELS.LAZY_MARKDOWN_RENDERER.READY}
+      </div>
+      <MarkdownComponent content={content} className={className} />
+    </>
+  );
 }
 
 export const LazyMarkdownRenderer = memo(LazyMarkdownRendererComponent);
