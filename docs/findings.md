@@ -3,6 +3,27 @@
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
 
+## ULW Loop Cycle 583 (2026-08-20 — ISSUE MANAGER MODE)
+
+**Phase 0**: `gh pr list --state open` → `[]` (**0 PRs**) + **101 open issues** GraphQL count → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `5ddf8f34` = #3473 Cycle 582 record; clean tree; `npm ci` 894 pkgs **0 vulns**).
+
+**Steps 1–3 (Normalize/Dedup/Consolidate) BLOCKED — 149th consecutive block**: `issues: write` absent for `github-actions[bot]` GITHUB_TOKEN. Live probe THIS cycle: `gh issue edit 847 --add-label security,P1` → GraphQL **403 addLabelsToLabelable** ("Resource not accessible by integration"), zero residue (#847 labels unchanged `[]`). Root cause: `on-pull.yml` omits `issues: write`. Canonical `npm run normalize:issues -- --dry-run` unchanged (**86/101 need canonical labels**). All 16 duplicate clusters from the Cycle 368 plan re-verified still open & intact (CORS #848↔#890/#930; auth #847↔#891; middleware tests #852↔#1053; hooks #857↔#1082; components #856↔#1014; OpenAI #860↔#911; E2E #872↔#951/#1019; ErrorBoundary #874↔#1052; validation #896↔#858/#909/#910/#1051; npm audit #851↔#1084; wrangler #1045↔#1165; gatekeeper #849↔#953; DX #1117↔#1142; INNOVATION #1116↔#1143; share ownership #892↔#1046; #935 vs #936 distinct — keep both). No mutation possible this cycle.
+
+**Step 4 (Repair) — P1 selection**: no P0 exists (0 issues carry `P0`); P1s re-verified via live file reads on `main` (`5ddf8f34`):
+- **#1045/#1165 [DEVOPS] HIGH: Placeholder Infra IDs — HUMAN-BLOCKED**: `apps/api/wrangler.toml` **2 `⚠️ PLACEHOLDER` markers** L160/L176 + **6 placeholder IDs** (KV L165/169/173 + D1 L182/187/192) fail-closed `validate-wrangler` (**REAL EXIT 1**) — real Cloudflare resource provisioning requires human → fail-safe: no fabricated IDs.
+- **#1082 [TESTING] HIGH: No React Hook Tests — RESOLVED IN CODE**: **13/13** hook `*.test.*` suites live-verified (`ls apps/web/src/hooks/*.test.*` → 13) → close as completed (close blocked by token).
+- **#1014 [HIGH] Component Coverage — 3/4 criteria met, 4th workflow-blocked**: **44** component `*.test.*` suites live-verified (`find apps/web/src/components` → 44) + coverage floors in `apps/web/vitest.config.ts` (thresholds live-verified 75/60/75/75); only unmet criterion = CI coverage gate — `pr-gatekeeper.yml` runs typecheck/lint/build only (0 `test:all` refs) → workflow-blocked.
+- **Extended spot-check #847 (auth bypass) — RESOLVED IN CODE**: `apps/api/src/middleware/auth.ts` L127-142 fail-closed **503** when `c.env.API_KEY` unset (commit `aaa88767`, PR #976), asserted by `auth.test.ts` L86-111 — verified via `explore` subagent auth-flow mapping.
+- **#1167 (localStorage encryption) — GENUINELY OPEN** (P3 security; 0 `encrypt`/`subtle`/`CryptoKey` in `lib/storage.ts` — grep clean) → not actionable under P1 selection rule.
+
+**#849/#953 gatekeeper `test:all` gap — 182nd deferral**: `workflows: write` absent — GITHUB_TOKEN platform limitation (`pr-gatekeeper.yml` 0 refs to `test:all`; patch `fix/pr-gatekeeper-tests` **DOES NOT EXIST** — `git ls-remote` 0 refs; must be **RECREATED** when granted).
+
+**Stray branches — FAIL-SAFE MAINTAINED (state UNCHANGED)**: `agent/janitor` HEAD `f9f39681` (**8 unmerged commits**, no open PR), `feat/wizard-arrow-focus-parity` HEAD `ccac48c8` (1 commit, **NO open PR**), `agent/repokeeper-cycle-530` HEAD `a043b9d4`, `agent/repokeeper-cycle-567` HEAD `c48abe2c` — not merged, not deleted, human disposition pending (all 4 verified present via `ls-remote`).
+
+**Doc-sync — 0 CONFIRMED defects pre-edit**: five tracked records current through Cycle 582. **Archive retention NO PURGE** — oldest remaining Jul 21 = **30d, at boundary** (purge due Aug 21+ per Cycle 557/559 flag; Jul 20 files purged Cycle 577).
+
+**Baseline ALL GREEN 2,607/2,607 CONFIRMED LIVE**: typecheck ✅ exit 0 · lint ✅ **0 errors/0 warnings** · build ✅ exit 0 · tests **2,607/2,607** ✅ (web **1,220**/85 + api 535/33 + shared 852/4) · audit **0 vulns** ✅ · scan:secrets ✅ 330 files · prettier ✅ · validate:wrangler ❌ expected (**REAL EXIT 1**) — human-blocked #1045/#1165. **Skills used**: `docs-update` (docs record append). **Subagents used**: 1 × `explore` (auth-flow map for #847 verification — confirmed fail-closed fix in place). **Final state: PR pending** — Cycle 583 record appended to all five files; PR creation with labels `docs`+`P3` + branch sync follows.
+
 ## ULW Loop Cycle 582 (2026-08-20 — PR HANDLER → ISSUE MANAGER MODE)
 
 **Phase 0**: `gh pr list --state open` → **4 PRs — #3472** `docs(brocula): Run 87 audit record` (bot, head `brocula/loop-2026-08-20-run-87`, created 04:55:12Z) + **#3471** `feat(web): gate CircularProgress animations on prefers-reduced-motion` (bot, head `agent/palette-circular-progress-reduced-motion`, 04:54:38Z) + **#3469** `docs(bugfixer): Cycle 107 record` (bot, head `agent/bugfixer-cycle-107`, 04:47:33Z) + **#3468** `docs(ulw-loop): Cycle 581 record — PR HANDLER → ISSUE MANAGER MODE` (bot, head `agent/ulw-loop-cycle-581`, 04:46:35Z) → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `b6450678`, clean tree; `npm ci` 894 pkgs **0 vulns**).
