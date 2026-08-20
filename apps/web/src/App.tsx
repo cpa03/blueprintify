@@ -32,7 +32,7 @@ const ScrollToBottomLazy = lazy(() =>
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 import { useWizardStore, useEditorStore, useToast, useToastStore, resetAllStores } from "./store";
 import { STORAGE_KEYS } from "./config/keys";
-import { useOnlineStatus } from "./hooks";
+import { useOnlineStatus, useBeforeUnload } from "./hooks";
 import {
   UI_CONTENT,
   EXTERNAL_URLS,
@@ -127,6 +127,7 @@ function App(): JSX.Element {
   const prevShowTemplatesRef = useRef(currentStep === WIZARD_STEP_KEYS.INFO && !hasContent);
 
   const { isOnline } = useOnlineStatus();
+  useBeforeUnload(isGenerating);
   const toast = useToast();
   const prevOnlineRef = useRef(isOnline);
   const toastCount = useToastStore((s) => s.toasts.length);
