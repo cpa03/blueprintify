@@ -23,6 +23,7 @@ vi.mock("./MarkdownRenderer", () => ({
 }));
 
 import { LazyMarkdownRenderer } from "./LazyMarkdownRenderer";
+import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 
 describe("LazyMarkdownRenderer", () => {
   beforeEach(() => {
@@ -34,6 +35,16 @@ describe("LazyMarkdownRenderer", () => {
     render(<LazyMarkdownRenderer content="## Title" />);
 
     expect(document.querySelector(".preview-skeleton")).toBeInTheDocument();
+  });
+
+  it("announces the preview loading state through a polite status region", () => {
+    render(<LazyMarkdownRenderer content="## Title" />);
+
+    const skeleton = screen.getByRole("status");
+    expect(skeleton).toHaveAttribute(
+      "aria-label",
+      ACCESSIBILITY_LABELS.LAZY_MARKDOWN_RENDERER.LOADING
+    );
   });
 
   it("renders a custom fallback instead of the skeleton when provided", () => {
@@ -53,5 +64,15 @@ describe("LazyMarkdownRenderer", () => {
 
     expect(markdownContent).toBe("# Hi");
     expect(markdownClassName).toBe("preview");
+  });
+
+  it("announces readiness once the renderer is available", async () => {
+    render(<LazyMarkdownRenderer content="# Hi" />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("markdown-renderer")).toBeInTheDocument();
+    });
+
+    expect(screen.getByText(ACCESSIBILITY_LABELS.LAZY_MARKDOWN_RENDERER.READY)).toBeDefined();
   });
 });
