@@ -344,6 +344,14 @@ export const ACCESSIBILITY_LABELS = {
      *  editor without this (WCAG 4.1.2). Per-tab, e.g. "Blueprint markdown editor". */
     CONTENT_ARIA_LABEL: (tabName: string) => `${tabName} markdown editor`,
   },
+  LAZY_MARKDOWN_RENDERER: {
+    /** Status-region label announced while the markdown renderer chunk loads.
+     *  Mirrors LAZY_CODEMIRROR.LOADING so screen reader users get the same
+     *  loading feedback in the preview pane (WCAG 4.1.3 status messages). */
+    LOADING: "Loading markdown preview",
+    /** Announced via sr-only region when the markdown renderer is ready */
+    READY: "Markdown preview ready",
+  },
   GENERATION_STATS: {
     AWAITING_BLUEPRINT: "Awaiting blueprint content",
     AWAITING_TASKS: "Awaiting task content",
