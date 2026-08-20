@@ -2,6 +2,19 @@
 
 ## Evolution History
 
+### 2026-08-20 - Palette micro-UX Cycle — Reduced-motion toggle app-wide parity
+
+**Type**: Accessibility micro-UX improvement
+**Changes**:
+- The Header "Reduce Motion" toggle (`Header.tsx` `toggleReducedMotion` → `setUserOverride`) wrote `STORAGE_KEYS.REDUCED_MOTION` to localStorage, but only `ReducedMotionContext` consumers (`AnimatedNumber`, `Header`) honored it — the ~25 components using `useReducedMotion()` read only the OS `prefers-reduced-motion` media query, so the in-app toggle announced "reduce motion on" while most animations kept running.
+- `useReducedMotion()` (`apps/web/src/hooks/useReducedMotion.ts`) now reads the localStorage override first (try/catch-guarded for privacy mode) and falls back to the media query; its subscription also listens for the new `ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE` window event so hook consumers re-render same-tab when the override changes (localStorage `storage` events do not fire same-tab). `useAccessibilityPreferences()` inherits the fix automatically.
+- `ReducedMotionContext` dispatches the new window event from `setUserOverride` (both set/clear branches) and `resetToSystemPreference`; public API and matchMedia subscription unchanged.
+- Added `ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE` to `apps/web/src/config/constants/accessibility.ts`.
+- +6 tests (4 hook: override wins over media query both directions, event-driven re-render, listener cleanup; 2 context: event dispatch on setUserOverride/resetToSystemPreference) — 38 passing in the two affected suites.
+- Verified 0 lint errors/warnings, typecheck, build, and full 2,615/2,615 test suite pass.
+
+**Rationale**: The in-app toggle promised app-wide reduced motion but was a silent no-op for most animated components — a genuine WCAG 2.3.3 defect. The hook and context now share one override source of truth.
+
 ### 2026-08-20 - Palette micro-UX Cycle — LazyMarkdownRenderer loading announcements
 
 **Type**: Accessibility micro-UX improvement

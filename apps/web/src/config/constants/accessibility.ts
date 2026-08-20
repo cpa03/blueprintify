@@ -186,3 +186,17 @@ export const EDITOR_ANNOUNCER = {
   /** Screen reader label announced when background generation is actively running while editor is hidden */
   GENERATING_IN_BACKGROUND: "Generation is currently running in the background",
 } as const;
+
+// ============================================================================
+// Accessibility Events
+// ============================================================================
+
+/**
+ * Custom window event names for cross-component accessibility coordination.
+ * Used to notify useReducedMotion hook consumers when the in-app reduced
+ * motion override changes (localStorage "storage" events do not fire in the
+ * same tab that made the change).
+ */
+export const ACCESSIBILITY_EVENTS = {
+  REDUCED_MOTION_CHANGE: "blueprintify:reduced-motion-change",
+} as const;
