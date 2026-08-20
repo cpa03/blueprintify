@@ -2,6 +2,18 @@
 
 ## Evolution History
 
+### 2026-08-20 - Palette micro-UX Cycle — LazyMarkdownRenderer loading announcements
+
+**Type**: Accessibility micro-UX improvement
+**Changes**:
+- Added `LAZY_MARKDOWN_RENDERER.LOADING` / `.READY` labels to `ACCESSIBILITY_LABELS` in `apps/web/src/config/constants/content.ts`.
+- Gave `MarkdownPreviewSkeleton` a `role="status"` + `aria-live="polite"` region with a `LOADING` aria-label, moving `aria-hidden` down to the decorative skeleton blocks — screen readers now announce the preview is loading instead of silence (WCAG 4.1.3 status messages).
+- Added an sr-only `READY` announcer once the markdown renderer chunk mounts, mirroring `LazyCodeMirror`.
+- Added 2 assertions to `LazyMarkdownRenderer.test.tsx` (5/5 tests passing; full web suite green).
+- Verified 0 lint errors/warnings, typecheck, build and full test suite pass.
+
+**Rationale**: `LazyCodeMirror` already announced loading/ready via live regions; `LazyMarkdownRenderer`'s skeleton was fully `aria-hidden` — the split-pane preview pane was the remaining silent lazy-loader gap.
+
 ### 2026-08-20 - Palette micro-UX Cycle — CircularProgress reduced-motion gating
 
 **Type**: Accessibility micro-UX improvement
