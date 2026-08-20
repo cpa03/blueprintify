@@ -3,6 +3,26 @@
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
 
+## ULW Loop Cycle 586 (2026-08-20 — PR HANDLER → ISSUE MANAGER MODE)
+
+**Phase 0**: `gh pr list --state open` → **1 PR — #3479** `docs(ulw-loop): Cycle 585 record — PR HANDLER → ISSUE MANAGER MODE` (bot, head `agent/ulw-loop-cycle-585`, created 09:48:59Z) → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `6d9fcaca` = #3475 bugfixer Cycle 108 record; clean tree; `npm ci` 894 pkgs **0 vulns**).
+
+**#3479 PROCESSED & MERGED**:
+- **#3479** (`agent/ulw-loop-cycle-585`): 0-behind (merge-base = main HEAD — already synced, no rebase). Docs-only 5 files +33/−1 (Cycle 585 PR HANDLER record). Labels `docs`+`P3` ✅. Comments = 2 bot deploy-failure notifications only (Vercel rate-limited `api-deployments-free-per-day` + Workers Builds FAILURE — external infra precedent #3458/#3364). No human comments/reviews. No security-sensitive change (docs-only). Gates LIVE-verified: typecheck ✅ · lint ✅ **0 errors/0 warnings** · build ✅ · tests **2,607/2,607** ✅ (web 1,220/85 + api 535/33 + shared 852/4) · audit 0 vulns ✅ · scan:secrets ✅ 328 files · prettier ✅ → merge conditions met (MERGEABLE · docs-only · no human comments · only external deploy fixtures failing) → `gh pr merge 3479 --admin --merge` ✅ MERGED (10:35:27Z, `91525f15`), branch deleted (verified `ls-remote` 0 refs), 0 linked issues.
+
+**Re-entry Phase 0 post-merge**: `gh pr list --state open` → `[]` (**0 PRs**) + **open issues** → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases).
+
+**Steps 1–3 (Normalize/Dedup/Consolidate) BLOCKED — 152nd consecutive block**: `issues: write` absent for `github-actions[bot]` GITHUB_TOKEN. Verified via `gh api user` → **403** "Resource not accessible by integration". Root cause `on-pull.yml` permissions block = contents/pull-requests/actions/repository-projects/id-token — omits `issues: write`. `normalize:issues --dry-run` unchanged (56/101 missing category + 82/101 missing P0–P3 priority). Duplicate/consolidation clusters report-only (close blocked).
+
+**Step 4 (Repair)**: **0 open P0/P1** (`gh issue list` label query → 0 P0/P1). P1s re-verified **code-resolved or human-blocked on `main`** (#1045/#1165 wrangler **2 `⚠️ PLACEHOLDER` markers** L160/L176 + **6 placeholder IDs** L165/169/173/182/187/192 fail-closed `validate-wrangler` REAL EXIT 1 → **human-blocked** Cloudflare provisioning, fail-safe no fabricated IDs; #1082 **13/13** hook suites → **code-resolved**; #1014 **44** component suites + coverage thresholds 75/60/75/75 → **code-resolved**).
+
+**Extended P2/P3 spot-checks NEW this cycle — all code-resolved**: **#1141** TEST-001 → secureLog/stream/openai `*.test.ts` live-verified + all 9 web hook suites present (useBlueprintStream/useAutoSaveToast/usePersistedStore/useLastSaved/useFocusTrap/useAutoResizeTextarea/useDocumentTitle/useFocusOnStepChange/useReducedMotion) · **#1163** constants split → web `config/constants/` 10 modules + api split hub (files 32/90 lines vs 565/401 claimed in issue) · **#1161** deps upgrade → zustand **5.0.15** ✅ framer-motion **13.1.0** ✅ openai **7.4.0** ✅ (all past issue targets). **#1167** localStorage encryption → **genuinely OPEN** (P3 security; 0 `encrypt`/`subtle`/`CryptoKey` in `lib/storage.ts`) — not actionable under P1 selection rule (full encryption implementation violates minimal/atomic repair constraint).
+
+**#849/#953** gatekeeper `test:all` gap → **185th deferral** (`workflows: write` absent — GITHUB_TOKEN platform limitation; patch `fix/pr-gatekeeper-tests` DOES NOT EXIST — `ls-remote` 0 refs; must be RE-CREATED when granted).
+
+**Stray branches FAIL-SAFE MAINTAINED (state UNCHANGED)**: janitor `f9f39681` (8 unmerged, no PR), wizard-parity `ccac48c8` (1 commit, NO PR), repokeeper-530 `a043b9d4`, repokeeper-567 `c48abe2c` — human disposition pending; processed branch `agent/ulw-loop-cycle-585` verified deleted post-merge.
+
+**Baseline ALL GREEN 2,607/2,607 CONFIRMED LIVE** (typecheck ✅ · lint ✅ **0 errors/0 warnings** 300 files · build ✅ · tests **2,607/2,607** ✅ web 1,220/85 + api 535/33 + shared 852/4 · audit **0 vulns** ✅ · scan:secrets ✅ 328 files · prettier ✅ · validate:wrangler ❌ expected REAL EXIT 1 — human-blocked #1045/#1165). Skills used: `docs-update` loaded per contract (docs record append). Subagents used: none — deterministic CLI probes + direct PR handling per contract (all targets known-file reads; no parallel exploration needed). **Final state: PR pending** — Cycle 586 record appended to all five files; PR creation with labels `docs`+`P3` + branch sync follows.
 ## ULW Loop Cycle 585 (2026-08-20 — PR HANDLER → ISSUE MANAGER MODE)
 
 **Phase 0**: `gh pr list --state open` → **3 PRs** (#3478 ulw-loop Cycle 584 · #3476 repokeeper Cycle 584 · #3475 bugfixer Cycle 108) → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `7237d692` = #3474 Cycle 583 record; clean tree; `npm ci` 894 pkgs **0 vulns**).
