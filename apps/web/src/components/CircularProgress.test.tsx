@@ -20,6 +20,11 @@ import { render, screen, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { CircularProgress, CircularProgressCompact } from "./CircularProgress";
 import { UI_TIMEOUTS } from "@blueprint/shared/config";
+import { useReducedMotion } from "../hooks/useReducedMotion";
+
+vi.mock("../hooks/useReducedMotion", () => ({
+  useReducedMotion: vi.fn(() => false),
+}));
 
 describe("CircularProgress", () => {
   beforeEach(() => {
@@ -149,6 +154,20 @@ describe("CircularProgress", () => {
     render(<CircularProgress value={50} showPercentage={true} />);
     const percentageSpan = screen.getByText("50%");
     expect(percentageSpan).toHaveAttribute("aria-hidden", "true");
+  });
+
+  it("applies the animated stroke transition by default", () => {
+    const { container } = render(<CircularProgress value={50} />);
+    const progressCircle = container.querySelectorAll("circle")[1] as SVGElement;
+    expect(progressCircle.style.transitionProperty).toContain("stroke-dashoffset");
+  });
+
+  it("omits the stroke transition when reduced motion is preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    const { container } = render(<CircularProgress value={50} />);
+    const progressCircle = container.querySelectorAll("circle")[1] as SVGElement;
+    expect(progressCircle.style.transition).toBe("none");
+    expect(progressCircle.style.transitionProperty).toBe("");
   });
 });
 

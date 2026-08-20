@@ -2,6 +2,17 @@
 
 ## Evolution History
 
+### 2026-08-20 - Palette micro-UX Cycle — CircularProgress reduced-motion gating
+
+**Type**: Accessibility micro-UX improvement
+**Changes**:
+- Added `.circular-complete-celebration` to the `prefers-reduced-motion` kill-list in `apps/web/src/index.css` — the celebration scale-bounce was the only animated class missing from the reduced-motion block.
+- Gated the inline `stroke-dashoffset` transition in `CircularProgress.tsx` via `useReducedMotion()` — inline styles are invisible to the CSS media-query kill-list, so the ring now snaps instantly instead of animating for vestibular-sensitive users (WCAG 2.3.3).
+- Added 2 reduced-motion assertions to `CircularProgress.test.tsx` (21/21 tests passing).
+- Verified all 2,607 tests pass across all 3 workspaces (web, api, shared); 0 lint errors/warnings; 0 secret scan violations; 0 vulnerabilities.
+
+**Rationale**: Consistent reduced-motion support — every other animated component in the codebase respects `prefers-reduced-motion`; CircularProgress was the remaining gap.
+
 ### 2026-08-20 - Cycle 106 / Cycle 577 Verification Loop
 
 **Type**: Maintenance & Quality Verification
