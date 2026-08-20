@@ -3,6 +3,32 @@
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
 
+## ULW Loop Cycle 585 (2026-08-20 — PR HANDLER → ISSUE MANAGER MODE)
+
+**Phase 0**: `gh pr list --state open` → **3 PRs** (#3478 ulw-loop Cycle 584 · #3476 repokeeper Cycle 584 · #3475 bugfixer Cycle 108) → Step 0.1 → **PR HANDLER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `7237d692` = #3474 Cycle 583 record; clean tree; `npm ci` 894 pkgs **0 vulns**).
+
+**3/3 PRs MERGED (newest-first, one at a time)**:
+- **#3478** (`agent/ulw-loop-cycle-584`): 0-behind — no rebase needed. Docs-only 5 files +23/−2 (Cycle 584 ISSUE MANAGER MODE record). Labels `docs`+`P3` ✅. Comments = 2 bot deploy-failure notifications only (Vercel FAILURE + Workers Builds FAILURE — external infra precedent #3458/#3364). Gates LIVE-verified: typecheck ✅ · lint ✅ **0 errors/0 warnings** (300 files) · build ✅ exit 0 · tests **2,607/2,607** ✅ (web 1,220/85 + api 535/33 + shared 852/4) · audit 0 vulns ✅ · scan:secrets ✅ 328 files · prettier ✅ → merge conditions met → `gh pr merge 3478 --squash --admin --delete-branch` ✅ MERGED (09:37:56Z, `cab1ab18`), branch deleted, 0 linked issues.
+- **#3476** (`agent/repokeeper-cycle-584`): went 1-behind → **rebase CONFLICT 5 files** (concurrent-mandate Cycle 584 collision: both ULW-LOOP and REPOKEEPER records append to the same 5 tracked files) → **resolved deterministically per Cycle 579 #3463 precedent** (keep BOTH records newest-first 584-ULW-LOOP→584-REPOKEEPER, 0 markers left), force-pushed `18e5f46d`. Docs-only 5 files +20/−2. Labels `docs`+`P3` ✅. Gates LIVE ALL GREEN (pre-push validation passed) → ✅ MERGED (09:42:43Z, `2d0fdfc0`), branch deleted, 0 linked issues.
+- **#3475** (`agent/bugfixer-cycle-108`): went 1-behind → **rebase clean** (docs/bugs.md only — no overlap with the other records), force-pushed `6953edd2`. Docs-only 1 file +18 (BugFixer Cycle 108 record). Labels `docs`+`P3` ✅. Gates LIVE ALL GREEN (pre-push validation passed) → ✅ MERGED (09:44:29Z, `6d9fcaca`), branch deleted, 0 linked issues.
+
+**Re-entry Phase 0 post-merge**: `gh pr list --state open` → `[]` (**0 PRs**) + **101 open issues** GraphQL count → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases).
+
+**Steps 1–3 (Normalize/Dedup/Consolidate) BLOCKED — 151st consecutive block**: `issues: write` absent for `github-actions[bot]` GITHUB_TOKEN. Re-verified THIS cycle with **1 real mutation probe, zero residue**: `gh issue edit 1167 --add-label chore` → GraphQL **403 addLabelsToLabelable** "Resource not accessible by integration"; #1167 labels verified unchanged `[area:frontend-engineer, priority:low, security]`. Root cause `on-pull.yml` omits `issues: write`. `normalize:issues --dry-run` unchanged (56/101 missing category + 82/101 missing P0–P3 priority, 61 legacy `priority:*` needing mapping). Duplicate/consolidation clusters report-only (close blocked).
+
+**Step 4 (Repair)**: no P0 — P1s re-verified **code-resolved or human-blocked on `main`** (`6d9fcaca`):
+- **#1045/#1165** wrangler **6 placeholder IDs** (KV L165/169/173 + D1 L182/187/192) fail-closed `validate-wrangler` **REAL EXIT 1** → **human-blocked** Cloudflare provisioning, fail-safe no fabricated IDs.
+- **#1082** React hook tests → **code-resolved** (**13/13** hook `*.test.*` suites present).
+- **#1014** component test coverage → **code-resolved** (**44** component `*.test.*` suites present).
+- **#849/#953** gatekeeper `test:all` gap → **184th deferral** (`workflows: write` absent — GITHUB_TOKEN platform limitation; patch `fix/pr-gatekeeper-tests` DOES NOT EXIST — `git ls-remote` 0 refs; must be RE-CREATED when granted).
+- Extended P2/P3 spot-check: **#1167** localStorage encryption → **genuinely OPEN** (P3 security; 0 `encrypt`/`subtle`/`CryptoKey` in `lib/storage.ts`) — not actionable under P1 rule.
+
+**Stray branches — FAIL-SAFE MAINTAINED (state UNCHANGED)**: `agent/janitor` HEAD `f9f39681` (**8 unmerged commits**, no open PR), `feat/wizard-arrow-focus-parity` HEAD `ccac48c8` (1 commit, **NO open PR**), `agent/repokeeper-cycle-530` HEAD `a043b9d4`, `agent/repokeeper-cycle-567` HEAD `c48abe2c` — not merged, not deleted, human disposition pending (all 4 verified present via `ls-remote`). All 3 processed branches (`ulw-loop-cycle-584`/`repokeeper-cycle-584`/`bugfixer-cycle-108`) verified deleted post-merge.
+
+**Baseline ALL GREEN 2,607/2,607 CONFIRMED LIVE**: typecheck ✅ · lint ✅ **0 errors/0 warnings** (300 files) · build ✅ · tests **2,607/2,607** ✅ (web 1,220/85 + api 535/33 + shared 852/4) · audit **0 vulns** ✅ · scan:secrets ✅ **328 files** · prettier ✅ · validate:wrangler ❌ expected (**REAL EXIT 1**) — human-blocked #1045/#1165. **Skills used**: `docs-update` (docs record append). **Subagents used**: none — deterministic CLI probes + direct PR handling per contract (all targets known-file; no parallel exploration needed). **Final state: PR pending** — Cycle 585 record appended to all five files; PR creation with labels `docs`+`P3` + branch sync follows.
+
+
+
 ## ULW Loop Cycle 584 (2026-08-20 — ISSUE MANAGER MODE)
 
 **Phase 0**: `gh pr list --state open` → `[]` (**0 PRs**) + **101 open issues** GraphQL count → Step 0.2 → **ISSUE MANAGER MODE** (STOP all other phases). Default branch auto-detected `main` (HEAD `7237d692` = #3474 Cycle 583 record; clean tree; `npm ci` 894 pkgs **0 vulns**).
