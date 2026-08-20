@@ -28,12 +28,13 @@
 - **2026-08-17** — RepoKeeper Cycle 522: Retention cleanup (removed 7 files from Jul 16–17 — `brocula-audit-2026-07-16{,-run2,-run3,-run5}.md`, `brocula-audit-2026-07-17{,-run2,-run3}.md`, 31–32 days old by strict calendar, past 30-day policy — "next purge due Aug 17+" per Cycle 495 flag ("next when Jul 16 files exceed boundary"); titles date them Jul 16–17 and `git log --follow` confirms all moved-to-archive together 2026-07-24 under their run-date filenames, consistent with prior title-date retention scans; oldest remaining now Jul 18 = 30 days, at boundary)
 - **2026-08-18** — RepoKeeper Cycle 541: Retention cleanup (removed 6 files from Jul 18 — `brocula-audit-2026-07-18-run{1,2,3,4}.md`, `phase1-diagnostic-2026-07-18.md`, `ulw-loop-audit-2026-07-18.md`, 31 days old by strict calendar, past 30-day policy — "next purge due Aug 18+" per Cycle 522 flag ("next when Jul 18 files exceed boundary"); titles date them Jul 18 and `git log --follow` confirms all moved-to-archive together 2026-07-24 under their run-date filenames, consistent with prior title-date retention scans; oldest remaining now Jul 19 = 30 days, at boundary)
 - **2026-08-19** — RepoKeeper Cycle 557: Retention cleanup (removed 4 files from Jul 19 — `brocula-audit-2026-07-19-run{5,6,7,8}.md`, 31 days old by strict calendar, past 30-day policy — "next purge due Aug 19+" per Cycle 541 flag ("next when Jul 19 files exceed boundary"); titles date them Jul 19 and `git log --follow` confirms moved-to-archive together 2026-07-24 under their run-date filenames (earliest commits Jul 17–19 `de29f282`/`ca67df27`, consistent with prior title-date retention scans); oldest remaining now Jul 20 = 30 days, at boundary)
+- **2026-08-20** — RepoKeeper Cycle 577: Retention cleanup (removed 4 files from Jul 20 — `brocula-audit-2026-07-20{,-run2}.md`, `brocula-hunt-2026-07-20-run4.md`, `brocula-hunt-2026-07-20-run-14-11.md`, 31–38 days old by strict calendar, past 30-day policy — "next purge due Aug 20+" per Cycle 557/559 flag ("next when Jul 20 files exceed boundary"); titles date them Jul 20 (1 file — `brocula-hunt-2026-07-20-run-14-11.md` `0f8d67e2` — actually originated Jul 13, 38 days old, past policy regardless); oldest remaining now Jul 21 = 30 days, at boundary)
 
 ## What's Here
 
 These files are retained for historical reference only. Current archive contents:
 
-### BroCula / BroCula-Audit Reports (Jul 20 - Jul 24, 2026)
+### BroCula / BroCula-Audit Reports (Jul 21 - Jul 24, 2026)
 - Daily brocula-hunt and brocula-audit run reports covering browser console error detection and Lighthouse audit optimization
 - Each file represents one run cycle from the CI pipeline
 
@@ -46,4 +47,4 @@ These files are retained for historical reference only. Current archive contents
 ## Retention Policy
 
 Archive files are kept for 30 days from creation, then eligible for deletion.
-Last cleanup: 2026-08-19 (RepoKeeper Cycle 557 — removed 4 files from Jul 19 — `brocula-audit-2026-07-19-run{5,6,7,8}.md`, 31 days old by strict calendar, past 30-day policy — "next purge due Aug 19+" per Cycle 541 flag; titles date them Jul 19, `git log --follow` confirms all moved-to-archive together 2026-07-24 under their run-date filenames. Oldest remaining archive files now date from Jul 20 = 30 days, at boundary — no further purge needed).
+Last cleanup: 2026-08-20 (RepoKeeper Cycle 577 — removed 4 files from Jul 20 — `brocula-audit-2026-07-20{,-run2}.md`, `brocula-hunt-2026-07-20-run4.md`, `brocula-hunt-2026-07-20-run-14-11.md`, 31–38 days old by strict calendar, past 30-day policy — "next purge due Aug 20+" per Cycle 557/559 flag; titles date them Jul 20, `git log --follow` confirms `brocula-hunt-2026-07-20-run-14-11.md` actually originated Jul 13 (38 days, past policy regardless). Oldest remaining archive files now date from Jul 21 = 30 days, at boundary — no further purge needed).
