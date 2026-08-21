@@ -185,6 +185,8 @@ export const EDITOR_ANNOUNCER = {
   PREVIEW_SKELETON_GENERATING: "Preview content is being generated",
   /** Screen reader label announced when background generation is actively running while editor is hidden */
   GENERATING_IN_BACKGROUND: "Generation is currently running in the background",
+  /** Screen reader label announced when generated content is ready to view */
+  CONTENT_READY: "Generated content is ready to view",
 } as const;
 
 // ============================================================================

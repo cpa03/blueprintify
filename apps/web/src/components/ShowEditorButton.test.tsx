@@ -79,6 +79,19 @@ describe("ShowEditorButton", () => {
     expect(screen.getByText(UI_CONTENT.EDITOR.VIEW_BLUEPRINT_BUTTON)).toBeInTheDocument();
     expect(screen.queryByText(UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON)).not.toBeInTheDocument();
     expect(screen.getByRole("button")).toHaveAttribute("data-has-content", "true");
+    expect(screen.getByRole("button")).toHaveAttribute("data-state", "content-ready");
+
+    const srAnnouncement = screen.getByText(EDITOR_ANNOUNCER.CONTENT_READY);
+    expect(srAnnouncement).toBeInTheDocument();
+    expect(srAnnouncement).toHaveAttribute("aria-live", "polite");
+  });
+
+  it("sets data-state to idle when hasContent is false and sets data-is-generating attribute", () => {
+    render(<ShowEditorButton {...defaultProps} hasContent={false} isGenerating={true} />);
+
+    const button = screen.getByRole("button");
+    expect(button).toHaveAttribute("data-state", "idle");
+    expect(button).toHaveAttribute("data-is-generating", "true");
   });
 
   it("applies glow-pulse class when hasContent is true", () => {

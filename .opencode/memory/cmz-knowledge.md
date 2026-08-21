@@ -88,3 +88,8 @@
 - Store knowledge in .opencode/memory/
 - Categorize by type (issues, patterns, solutions)
 - Update after every significant operation
+
+### CMZ Orchestration Cycle 2026-08-21
+- Verified `ShowEditorButton.tsx` micro-UX attributes `data-state` and `data-is-generating`.
+- Verified `EDITOR_ANNOUNCER.CONTENT_READY` constant placement in `accessibility.ts`.
+- Verified all 25 agent skills in `.opencode/skill` including `madappgang-claude-code-debugging-strategies` and `vasilyu1983-ai-agents-public-git-commit-message`.
