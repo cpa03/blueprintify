@@ -1,5 +1,10 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## [STRENGTHEN] ShowEditorButton Accessibility & State Tracking
+- Integrated `EDITOR_ANNOUNCER.CONTENT_READY` polite screen-reader status announcement when content is ready in `ShowEditorButton.tsx`.
+- Connected `data-state` and `data-is-generating` DOM attributes to reflect component state for UI hooks.
+
+
 > Append-only cycle record of current active work and completed orchestration cycles. Historical completed cycles are preserved here and in git history — see `git log` for archival reference.
 
 
