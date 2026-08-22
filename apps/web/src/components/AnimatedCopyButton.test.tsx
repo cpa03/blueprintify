@@ -11,6 +11,7 @@
  */
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { COPY_STATE_VALUES } from "@blueprint/shared";
 import { COPY_BUTTON_LABELS, PARTICLE_CONFIG, HOVER_SCALE, CSS_CLASSES } from "../config/constants";
 import { AnimatedCopyButton } from "./AnimatedCopyButton";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -123,6 +124,17 @@ describe("AnimatedCopyButton", () => {
     render(<AnimatedCopyButton {...defaultProps} isCopied={true} />);
 
     expect(screen.getByRole("button")).toHaveAttribute("aria-label", COPY_BUTTON_LABELS.COPIED);
+  });
+
+  it("sets data-state and title attributes for micro-UX state tracking", () => {
+    const { rerender } = render(<AnimatedCopyButton {...defaultProps} isCopied={false} />);
+    const button = screen.getByRole("button");
+    expect(button).toHaveAttribute("data-state", COPY_STATE_VALUES.IDLE);
+    expect(button).toHaveAttribute("title", COPY_BUTTON_LABELS.COPY);
+
+    rerender(<AnimatedCopyButton {...defaultProps} isCopied={true} />);
+    expect(button).toHaveAttribute("data-state", COPY_STATE_VALUES.COPIED);
+    expect(button).toHaveAttribute("title", COPY_BUTTON_LABELS.COPIED);
   });
 
   it("has a screen reader live region for copy announcements", () => {
