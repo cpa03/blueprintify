@@ -229,6 +229,7 @@ export {
   DIRECTION,
   CSS_VALUES,
   MODIFIER_KEYS,
+  COPY_STATE_VALUES,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";

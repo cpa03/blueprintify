@@ -762,3 +762,17 @@ export const MODIFIER_KEYS = {
   /** No modifier — raw key press without modifiers */
   NONE: "none" as const,
 } as const;
+
+/**
+ * Copy State Values
+ * Centralized state tracking values for copy-to-clipboard interactions.
+ * Flexy says: No hardcoded "copied"/"idle" strings in copy button components!
+ * Usage: import { COPY_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isCopied ? COPY_STATE_VALUES.COPIED : COPY_STATE_VALUES.IDLE}
+ */
+export const COPY_STATE_VALUES = {
+  /** Copied state identifier */
+  COPIED: "copied" as const,
+  /** Idle / ready to copy state identifier */
+  IDLE: "idle" as const,
+} as const;
