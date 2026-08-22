@@ -1,5 +1,12 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ ULW Loop Cycle 597 — **BugLover Audit & Workflow Phase Verification**
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,621/2,621 passing.
+- [CONNECT] Connected `COPY_STATE_VALUES` shared config to `AnimatedCopyButton` for unified UI status tracking.
+- [STRENGTHEN] Strengthened `AnimatedCopyButton` accessibility with `data-state` and native `title` tooltip.
+- [CONSOLIDATE] Consolidated copy-to-clipboard state constants into `@blueprint/shared` config export.
+- [REMOVE] Removed raw string literals for copy status tracking in frontend components.
+
 ## [STRENGTHEN] ShowEditorButton Accessibility & State Tracking
 - Integrated `EDITOR_ANNOUNCER.CONTENT_READY` polite screen-reader status announcement when content is ready in `ShowEditorButton.tsx`.
 - Connected `data-state` and `data-is-generating` DOM attributes to reflect component state for UI hooks.
