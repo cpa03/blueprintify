@@ -776,3 +776,17 @@ export const COPY_STATE_VALUES = {
   /** Idle / ready to copy state identifier */
   IDLE: "idle" as const,
 } as const;
+
+/**
+ * Validation State Values
+ * Centralized state tracking values for field validation indicators.
+ * Flexy says: No hardcoded "valid"/"invalid" strings in validation checkmark components!
+ * Usage: import { VALIDATION_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isValid ? VALIDATION_STATE_VALUES.VALID : VALIDATION_STATE_VALUES.INVALID}
+ */
+export const VALIDATION_STATE_VALUES = {
+  /** Valid state identifier */
+  VALID: "valid" as const,
+  /** Invalid state identifier */
+  INVALID: "invalid" as const,
+} as const;

@@ -22,6 +22,8 @@ describe("ValidationCheckmark", () => {
     const icon = screen.getByRole("img");
     expect(icon).toBeInTheDocument();
     expect(icon).toHaveAttribute("aria-label", VALIDATION_LABELS.FIELD_VALID);
+    expect(icon).toHaveAttribute("data-state", "valid");
+    expect(icon).toHaveAttribute("title", VALIDATION_LABELS.FIELD_VALID);
   });
 
   it("renders invalid indicator when showInvalid and not valid", () => {
@@ -30,6 +32,8 @@ describe("ValidationCheckmark", () => {
     const icon = screen.getByRole("img");
     expect(icon).toBeInTheDocument();
     expect(icon).toHaveAttribute("aria-label", VALIDATION_LABELS.FIELD_INVALID);
+    expect(icon).toHaveAttribute("data-state", "invalid");
+    expect(icon).toHaveAttribute("title", VALIDATION_LABELS.FIELD_INVALID);
   });
 
   it("does not render when isValid is false and showInvalid is false", () => {
