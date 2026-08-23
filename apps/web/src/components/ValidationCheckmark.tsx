@@ -1,7 +1,7 @@
 import { memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { FRAMER_TYPE } from "@blueprint/shared/config";
+import { FRAMER_TYPE, VALIDATION_STATE_VALUES } from "@blueprint/shared";
 import { ANIMATION_TIMING } from "../config/theme";
 import { ANIMATION, EASING } from "../config/constants";
 import { VALIDATION_LABELS } from "../config/constants/validation";
@@ -55,7 +55,7 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
     <AnimatePresence>
       {shouldShow && (
         <motion.span
-          key={isValid ? "valid" : "invalid"}
+          key={isValid ? VALIDATION_STATE_VALUES.VALID : VALIDATION_STATE_VALUES.INVALID}
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}
@@ -66,6 +66,8 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
           role="img"
           className={`${containerClasses} ${isValid ? validClasses : invalidClasses} ${className}`}
           aria-label={isValid ? ariaLabel : invalidAriaLabel}
+          data-state={isValid ? VALIDATION_STATE_VALUES.VALID : VALIDATION_STATE_VALUES.INVALID}
+          title={isValid ? ariaLabel : invalidAriaLabel}
         >
           {isValid ? (
             <svg className={iconSize} fill="none" stroke="currentColor" viewBox="0 0 24 24">
