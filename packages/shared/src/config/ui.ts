@@ -790,3 +790,21 @@ export const VALIDATION_STATE_VALUES = {
   /** Invalid state identifier */
   INVALID: "invalid" as const,
 } as const;
+
+/**
+ * Banner Display State Values
+ * Centralized state tracking values for banner indicators (e.g. OfflineBanner).
+ * Flexy says: No hardcoded "visible"/"hidden"/"online"/"offline" strings in banner components!
+ * Usage: import { BANNER_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
+ */
+export const BANNER_STATE_VALUES = {
+  /** Visible state identifier */
+  VISIBLE: "visible" as const,
+  /** Hidden state identifier */
+  HIDDEN: "hidden" as const,
+  /** Online network state identifier */
+  ONLINE: "online" as const,
+  /** Offline network state identifier */
+  OFFLINE: "offline" as const,
+} as const;
