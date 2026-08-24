@@ -160,6 +160,9 @@ import {
   DIRECTION,
   CSS_VALUES,
   MODIFIER_KEYS,
+  COPY_STATE_VALUES,
+  VALIDATION_STATE_VALUES,
+  BANNER_STATE_VALUES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -2013,6 +2016,46 @@ describe("STORAGE_FALLBACK_MESSAGES", () => {
   });
   it("should have unique values", () => {
     const values = Object.values(STORAGE_FALLBACK_MESSAGES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
+describe("COPY_STATE_VALUES", () => {
+  it("should have COPIED and IDLE states", () => {
+    expect(COPY_STATE_VALUES.COPIED).toBe("copied");
+    expect(COPY_STATE_VALUES.IDLE).toBe("idle");
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(COPY_STATE_VALUES).length).toBe(2);
+  });
+});
+
+describe("VALIDATION_STATE_VALUES", () => {
+  it("should have VALID and INVALID states", () => {
+    expect(VALIDATION_STATE_VALUES.VALID).toBe("valid");
+    expect(VALIDATION_STATE_VALUES.INVALID).toBe("invalid");
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(VALIDATION_STATE_VALUES).length).toBe(2);
+  });
+});
+
+describe("BANNER_STATE_VALUES", () => {
+  it("should have VISIBLE, HIDDEN, ONLINE, OFFLINE states", () => {
+    expect(BANNER_STATE_VALUES.VISIBLE).toBe("visible");
+    expect(BANNER_STATE_VALUES.HIDDEN).toBe("hidden");
+    expect(BANNER_STATE_VALUES.ONLINE).toBe("online");
+    expect(BANNER_STATE_VALUES.OFFLINE).toBe("offline");
+  });
+
+  it("should have 4 properties", () => {
+    expect(Object.keys(BANNER_STATE_VALUES).length).toBe(4);
+  });
+
+  it("should have unique state values", () => {
+    const values = Object.values(BANNER_STATE_VALUES);
     expect(new Set(values).size).toBe(values.length);
   });
 });
