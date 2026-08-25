@@ -808,3 +808,17 @@ export const BANNER_STATE_VALUES = {
   /** Offline network state identifier */
   OFFLINE: "offline" as const,
 } as const;
+
+/**
+ * Typing Indicator State Values
+ * Centralized state tracking values for typing / generating indicator states.
+ * Flexy says: No hardcoded "typing"/"idle" strings in TypeIndicator components!
+ * Usage: import { TYPING_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isTyping ? TYPING_STATE_VALUES.TYPING : TYPING_STATE_VALUES.IDLE}
+ */
+export const TYPING_STATE_VALUES = {
+  /** Typing / active generation state identifier */
+  TYPING: "typing" as const,
+  /** Idle state identifier */
+  IDLE: "idle" as const,
+} as const;
