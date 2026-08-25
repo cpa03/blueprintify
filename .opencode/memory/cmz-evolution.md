@@ -2,6 +2,18 @@
 
 ## Evolution History
 
+### 2026-08-25 - TypeIndicator State & Shared Config Consolidation
+
+**Type**: Micro-UX, Modularity, and State Tracking Consolidation
+**Changes**:
+- Defined and exported `TYPING_STATE_VALUES` (`TYPING: "typing"`, `IDLE: "idle"`) in `packages/shared/src/config/ui.ts` and `@blueprint/shared`.
+- Enhanced `TypeIndicator` component in `apps/web/src/components/TypeIndicator.tsx` with `data-state` and `data-position` semantic DOM attributes for UI state inspection.
+- Modularized `TypeIndicator` dot array rendering by replacing hardcoded `[0, 1, 2]` with centralized `LOADING_DOTS_COUNT` from `@blueprint/shared`.
+- Added unit test assertions in `TypeIndicator.test.tsx` for `data-state` and `data-position` attributes. All 19 tests pass.
+- Verified 0 lint errors/warnings, typecheck, build, and full 2,631/2,631 test suite pass.
+
+**Rationale**: Centralized source of truth for component state tracking across shared and web packages, eliminating hardcoded array literals.
+
 ### 2026-08-20 - Palette micro-UX Cycle — Reduced-motion toggle app-wide parity
 
 **Type**: Accessibility micro-UX improvement

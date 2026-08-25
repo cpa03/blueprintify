@@ -231,6 +231,8 @@ export {
   MODIFIER_KEYS,
   COPY_STATE_VALUES,
   VALIDATION_STATE_VALUES,
+  BANNER_STATE_VALUES,
+  TYPING_STATE_VALUES,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";
