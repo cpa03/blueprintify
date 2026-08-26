@@ -1,5 +1,11 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **LastSavedIndicator Micro-UX & State Inspection**
+- [CONNECT] Connected `data-state` ("saved"/"unsaved") and `data-has-changes` DOM attributes to `LastSavedIndicator` status container.
+- [STRENGTHEN] Strengthened `LastSavedIndicator` tooltip accessibility with `title` attribute matching current status text.
+- [CONSOLIDATE] Consolidated status text resolution in `LastSavedIndicator`.
+- [REMOVE] Removed raw un-inspected container states for automated UI inspection.
+
 ## ✅ BugLover Audit — **Phase 1 Complete (Aug 25 2026)**
 - [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,623/2,623 passing.
 
