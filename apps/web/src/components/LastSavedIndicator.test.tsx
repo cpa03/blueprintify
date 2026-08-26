@@ -51,18 +51,24 @@ describe("LastSavedIndicator", () => {
     expect(region).toHaveAttribute("aria-atomic", "true");
   });
 
-  it("applies amber styling for unsaved changes", () => {
+  it("applies amber styling for unsaved changes and sets semantic state data attributes", () => {
     render(<LastSavedIndicator text="Saved" isVisible={true} hasChanges={true} />);
 
     const container = screen.getByText("Unsaved changes").closest("div");
     expect(container?.className).toContain("text-amber-400");
+    expect(container).toHaveAttribute("data-state", "unsaved");
+    expect(container).toHaveAttribute("data-has-changes", "true");
+    expect(container).toHaveAttribute("title", "Unsaved changes");
   });
 
-  it("applies dark-400 styling for saved state", () => {
+  it("applies dark-400 styling for saved state and sets semantic state data attributes", () => {
     render(<LastSavedIndicator text="Saved" isVisible={true} />);
 
     const container = screen.getByText("Saved").closest("div");
     expect(container?.className).toContain("text-dark-400");
+    expect(container).toHaveAttribute("data-state", "saved");
+    expect(container).toHaveAttribute("data-has-changes", "false");
+    expect(container).toHaveAttribute("title", "Saved");
   });
 
   it("renders checkmark SVG in saved state", () => {

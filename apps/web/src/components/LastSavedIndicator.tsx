@@ -68,6 +68,8 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
     prevHasChangesRef.current = hasChanges;
   }, [hasChanges]);
 
+  const statusText = hasChanges ? "Unsaved changes" : text;
+
   return (
     <AnimatePresence mode="wait">
       {isVisible && (
@@ -82,6 +84,9 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
           }`}
           aria-live="polite"
           aria-atomic="true"
+          data-state={hasChanges ? "unsaved" : "saved"}
+          data-has-changes={hasChanges}
+          title={statusText}
         >
           {hasChanges ? (
             <>
