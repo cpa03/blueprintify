@@ -80,10 +80,22 @@ describe("CharacterCounter", () => {
     expect(outerSpan?.className).toContain("text-dark-500");
   });
 
-  it("marks visual counter as aria-hidden", () => {
-    const { container } = render(<CharacterCounter current={5} max={100} />);
+  it("marks visual counter as aria-hidden and includes micro-UX data attributes", () => {
+    const { container } = render(<CharacterCounter current={5} max={100} min={2} />);
     const visualParent = container.querySelector("[aria-hidden]");
     expect(visualParent).toHaveAttribute("aria-hidden", "true");
+    expect(visualParent).toHaveAttribute("data-state", "valid");
+    expect(visualParent).toHaveAttribute("data-has-min", "true");
+  });
+
+  it("sets correct data-state attribute for warning and limit states", () => {
+    const { container, rerender } = render(<CharacterCounter current={85} max={100} />);
+    let visualParent = container.querySelector("[aria-hidden]");
+    expect(visualParent).toHaveAttribute("data-state", "warning");
+
+    rerender(<CharacterCounter current={100} max={100} />);
+    visualParent = container.querySelector("[aria-hidden]");
+    expect(visualParent).toHaveAttribute("data-state", "at-limit");
   });
 });
 
@@ -115,5 +127,15 @@ describe("CharacterCounterCompact", () => {
     render(<CharacterCounterCompact current={100} max={100} />);
     const srStatus = screen.getByRole("status");
     expect(srStatus).toHaveTextContent("100 of 100 characters used — limit reached");
+  });
+
+  it("sets data-state attribute on compact container", () => {
+    const { container, rerender } = render(<CharacterCounterCompact current={90} max={100} />);
+    let compactContainer = container.firstElementChild;
+    expect(compactContainer).toHaveAttribute("data-state", "warning");
+
+    rerender(<CharacterCounterCompact current={100} max={100} />);
+    compactContainer = container.firstElementChild;
+    expect(compactContainer).toHaveAttribute("data-state", "at-limit");
   });
 });

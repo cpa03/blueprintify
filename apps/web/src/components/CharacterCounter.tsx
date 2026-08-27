@@ -3,6 +3,7 @@ import { TIMEOUTS, ACCESSIBILITY_LABELS, CSS_CLASSES, FOCUS_ANNOUNCER } from "..
 import {
   CHAR_COUNTER_THRESHOLDS,
   CHAR_COUNTER_COLORS,
+  CHAR_COUNTER_STATE_VALUES,
   RATIO_LIMITS,
 } from "@blueprint/shared/config";
 
@@ -27,6 +28,13 @@ function CharacterCounterComponent({
   const isEmpty = current === 0;
   const belowMin = min !== undefined && current < min;
   const shouldPulse = isWarning && !isAtLimit;
+
+  const stateValue = useMemo(() => {
+    if (isAtLimit) return CHAR_COUNTER_STATE_VALUES.AT_LIMIT;
+    if (isWarning) return CHAR_COUNTER_STATE_VALUES.WARNING;
+    if (isValid && !isEmpty) return CHAR_COUNTER_STATE_VALUES.VALID;
+    return CHAR_COUNTER_STATE_VALUES.DEFAULT;
+  }, [isAtLimit, isWarning, isValid, isEmpty]);
 
   const colorClass = useMemo(() => {
     if (isAtLimit) return CHAR_COUNTER_COLORS.AT_LIMIT;
@@ -87,6 +95,8 @@ function CharacterCounterComponent({
       <span
         className={`text-xs tabular-nums transition-colors duration-200 inline-flex items-center ${colorClass} ${shakeClass} ${pulseClass} ${celebrateClass} ${className}`}
         aria-hidden="true"
+        data-state={stateValue}
+        data-has-min={min !== undefined ? "true" : "false"}
       >
         <span className={isAtLimit ? "font-bold" : ""}>{current}</span>
         <span className="text-dark-600">/{max}</span>
@@ -136,6 +146,15 @@ function CharacterCounterCompactComponent({
   const isDanger = percentage >= CHAR_COUNTER_THRESHOLDS.DANGER_PERCENT;
 
   const remaining = max - current;
+  const isAtLimit = current >= max;
+
+  const compactStateValue = isAtLimit
+    ? CHAR_COUNTER_STATE_VALUES.AT_LIMIT
+    : isDanger
+      ? CHAR_COUNTER_STATE_VALUES.AT_LIMIT
+      : isWarning
+        ? CHAR_COUNTER_STATE_VALUES.WARNING
+        : CHAR_COUNTER_STATE_VALUES.DEFAULT;
 
   // Mirrors the main counter's threshold-only announcement policy (see above).
   const compactCountLabel = `${current} of ${max} character${max !== 1 ? "s" : ""} used`;
@@ -147,7 +166,10 @@ function CharacterCounterCompactComponent({
         : "";
 
   return (
-    <div className={`flex items-center gap-1.5 ${className}`}>
+    <div
+      className={`flex items-center gap-1.5 ${className}`}
+      data-state={compactStateValue}
+    >
       <div className="w-12 h-1.5 bg-dark-700 rounded-full overflow-hidden" aria-hidden="true">
         <div
           className={`h-full rounded-full transition-all duration-300 ease-out ${

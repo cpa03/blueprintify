@@ -822,3 +822,21 @@ export const TYPING_STATE_VALUES = {
   /** Idle state identifier */
   IDLE: "idle" as const,
 } as const;
+
+/**
+ * Character Counter State Values
+ * Centralized state tracking values for character limit indicators.
+ * Flexy says: No hardcoded "at-limit"/"warning"/"valid"/"default" strings in CharacterCounter components!
+ * Usage: import { CHAR_COUNTER_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isAtLimit ? CHAR_COUNTER_STATE_VALUES.AT_LIMIT : ...}
+ */
+export const CHAR_COUNTER_STATE_VALUES = {
+  /** At maximum character limit state */
+  AT_LIMIT: "at-limit" as const,
+  /** Near maximum character limit warning state */
+  WARNING: "warning" as const,
+  /** Valid input satisfied state */
+  VALID: "valid" as const,
+  /** Default normal input state */
+  DEFAULT: "default" as const,
+} as const;
