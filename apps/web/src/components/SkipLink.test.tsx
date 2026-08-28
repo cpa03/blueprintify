@@ -4,10 +4,11 @@ import { SkipLink } from "./SkipLink";
 import { Z_INDEX } from "../config/theme";
 
 describe("SkipLink", () => {
-  it("renders a link with correct href", () => {
+  it("renders a link with correct href and target attribute", () => {
     render(<SkipLink />);
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("href", "#main-content");
+    expect(link).toHaveAttribute("data-target", "main-content");
   });
 
   it("renders skip link text", () => {
