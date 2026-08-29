@@ -40,11 +40,34 @@ describe("HeadingAnchor", () => {
     expect(screen.getByText("Reference")).toBeInTheDocument();
   });
 
-  it("renders anchor button with initial opacity 0", () => {
+  it("renders anchor button with initial opacity 0 and state data attributes", () => {
     render(<HeadingAnchor headingText="Getting Started">Getting Started</HeadingAnchor>);
     const button = screen.getByTitle("Copy anchor link");
     expect(button).toBeInTheDocument();
     expect(button).toHaveStyle("opacity: 0");
+    expect(button).toHaveAttribute("data-state", "hidden");
+    expect(button).toHaveAttribute("data-copied-state", "idle");
+    expect(button).toHaveAttribute("data-slug", "getting-started");
+  });
+
+  it("updates data-copied-state and data-state when clicked", async () => {
+    vi.useFakeTimers();
+    render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
+    const button = screen.getByTitle("Copy anchor link");
+    expect(button).toHaveAttribute("data-copied-state", "idle");
+
+    await act(async () => {
+      fireEvent.click(button);
+    });
+
+    expect(button).toHaveAttribute("data-copied-state", "copied");
+    expect(button).toHaveAttribute("data-state", "visible");
+
+    act(() => {
+      vi.runAllTimers();
+    });
+
+    expect(button).toHaveAttribute("data-copied-state", "idle");
   });
 
   it("copies link to clipboard when clicked", async () => {
