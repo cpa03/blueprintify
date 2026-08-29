@@ -1,5 +1,14 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **HeadingAnchor Micro-UX & State Inspection**
+- [CONNECT] Connected `COPY_STATE_VALUES` shared config from `@blueprint/shared` to `HeadingAnchor` component.
+- [STRENGTHEN] Strengthened `HeadingAnchor` DOM inspection with `data-state` ("visible"/"hidden"), `data-copied-state` ("copied"/"idle"), and `data-slug` attributes.
+- [CONSOLIDATE] Consolidated copy-to-clipboard DOM state attributes for automated UI test fixtures in `HeadingAnchor.test.tsx`.
+- [REMOVE] Removed un-inspected DOM state for heading anchor links in automated test runs.
+
+## ✅ BugLover Audit — **Phase 1 Complete (Aug 29 2026)**
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,623/2,623 passing.
+
 ## ✅ StorX — **SkipLink Micro-UX & State Inspection**
 - [CONNECT] Connected `data-target` DOM attribute ("main-content") to `SkipLink` component for automated UI inspection.
 - [STRENGTHEN] Strengthened `SkipLink` unit testing and accessibility verification in `SkipLink.test.tsx`.
