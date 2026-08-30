@@ -1,5 +1,14 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **ConfirmDialog Micro-UX & State Inspection**
+- [CONNECT] Connected `DIALOG_STATE_VALUES` shared config from `@blueprint/shared` to `ConfirmDialog` component.
+- [STRENGTHEN] Strengthened `ConfirmDialog` DOM state inspection with `data-state` ("open"/"closed") and `data-icon` attributes.
+- [CONSOLIDATE] Consolidated dialog display state values in `packages/shared/src/config/ui.ts` and exported in `@blueprint/shared`.
+- [REMOVE] Removed un-inspected DOM state for confirmation modal dialogs in test fixtures.
+
+## ✅ BugLover Audit — **Phase 1 Complete (Aug 30 2026)**
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,623/2,623 passing.
+
 ## ✅ StorX — **HeadingAnchor Micro-UX & State Inspection**
 - [CONNECT] Connected `COPY_STATE_VALUES` shared config from `@blueprint/shared` to `HeadingAnchor` component.
 - [STRENGTHEN] Strengthened `HeadingAnchor` DOM inspection with `data-state` ("visible"/"hidden"), `data-copied-state` ("copied"/"idle"), and `data-slug` attributes.
