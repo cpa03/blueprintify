@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { DIALOG_STATE_VALUES } from "@blueprint/shared";
 import { ConfirmDialog } from "./ConfirmDialog";
 
 vi.mock("framer-motion", () => ({
@@ -61,12 +62,14 @@ describe("ConfirmDialog", () => {
     expect(defaultProps.onConfirm).not.toHaveBeenCalled();
   });
 
-  it("has role='dialog' and aria-modal='true'", () => {
-    render(<ConfirmDialog {...defaultProps} />);
+  it("has role='dialog', aria-modal='true', and data-state/data-icon DOM inspection attributes", () => {
+    render(<ConfirmDialog {...defaultProps} icon="trash" />);
 
     const dialog = screen.getByRole("dialog");
     expect(dialog).toBeInTheDocument();
     expect(dialog).toHaveAttribute("aria-modal", "true");
+    expect(dialog).toHaveAttribute("data-state", DIALOG_STATE_VALUES.OPEN);
+    expect(dialog).toHaveAttribute("data-icon", "trash");
   });
 
   it("places initial focus on the safe Cancel action, not the destructive Confirm", () => {

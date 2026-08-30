@@ -840,3 +840,17 @@ export const CHAR_COUNTER_STATE_VALUES = {
   /** Default normal input state */
   DEFAULT: "default" as const,
 } as const;
+
+/**
+ * Dialog Display State Values
+ * Centralized state tracking values for modal dialogs (e.g. ConfirmDialog).
+ * Flexy says: No hardcoded "open"/"closed" strings in dialog components!
+ * Usage: import { DIALOG_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isOpen ? DIALOG_STATE_VALUES.OPEN : DIALOG_STATE_VALUES.CLOSED}
+ */
+export const DIALOG_STATE_VALUES = {
+  /** Open modal state identifier */
+  OPEN: "open" as const,
+  /** Closed modal state identifier */
+  CLOSED: "closed" as const,
+} as const;
