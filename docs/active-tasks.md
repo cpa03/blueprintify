@@ -1,5 +1,11 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **ScrollToTop Micro-UX & Constant Consolidation**
+- [CONNECT] Connected `SCROLL_THRESHOLDS.ENTRY_PULSE_MS` and shared animation constants to `ScrollToTop`.
+- [STRENGTHEN] Strengthened `ScrollToTop` focus visibility and aria key shortcut hints for keyboard navigation.
+- [CONSOLIDATE] Consolidated scroll pulse timing constants in `@blueprint/shared/config`.
+- [REMOVE] Removed redundant scroll offset calculation logic in frontend components.
+
 ## ✅ StorX — **ConfirmDialog Micro-UX & State Inspection**
 - [CONNECT] Connected `DIALOG_STATE_VALUES` shared config from `@blueprint/shared` to `ConfirmDialog` component.
 - [STRENGTHEN] Strengthened `ConfirmDialog` DOM state inspection with `data-state` ("open"/"closed") and `data-icon` attributes.
