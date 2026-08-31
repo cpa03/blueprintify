@@ -2,6 +2,14 @@
 
 > **Tracking known bugs and defects** for Blueprintify with status and priority information.
 
+## Bug Status — Aug 31 2026 (CI Infrastructure & Run Audit)
+
+> **CI Failure Analysis (2026-08-31)**: Evaluated CI failure logs for `pull` workflow and `Workers Builds: blueprintify`.
+> - `pull` job failed at step `opencode run /ulw-loop`: Server returned `UnknownError` (`Unexpected server error. Check server logs for details. ref: err_e6029ad5`) from upstream OpenCode AI platform API.
+> - Workers Builds status reflects external Cloudflare dashboard deployment infrastructure limits (`api-deployments-free-per-day`).
+> - Local build and quality gates pass cleanly (typecheck ✅, lint 0/0 ✅, secrets ✅, all 2,623+ tests passing ✅).
+> [x] bug Documented CI infrastructure error logs and verified local project integrity.
+
 ## Bug Status — Aug 30 2026 (BugLover Audit)
 
 > **BugLover Audit (2026-08-30 — agent)**: Full BugLover audit complete — zero code defects; zero console errors; zero doc drift. All quality gates pass (typecheck ✅, lint **0 errors, 0 warnings** ✅, build ✅, tests **2,623/2,623** ✅, audit 0 vulns ✅, scan:secrets ✅).
