@@ -1,5 +1,11 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **SmartTooltip Micro-UX & Direction Constant Consolidation**
+- [CONNECT] Connected `DIRECTION` shared config from `@blueprint/shared` to `SmartTooltip`.
+- [STRENGTHEN] Strengthened `SmartTooltip` DOM state inspection with `data-state` ("visible"/"hidden") and `data-position` attributes.
+- [CONSOLIDATE] Consolidated tooltip position configuration using centralized `DIRECTION` constants in `@blueprint/shared`.
+- [REMOVE] Removed hardcoded position string literals ("top", "bottom", "left", "right") in `SmartTooltip` component logic.
+
 ## ✅ StorX — **ScrollToTop Micro-UX & Constant Consolidation**
 - [CONNECT] Connected `SCROLL_THRESHOLDS.ENTRY_PULSE_MS` and shared animation constants to `ScrollToTop`.
 - [STRENGTHEN] Strengthened `ScrollToTop` focus visibility and aria key shortcut hints for keyboard navigation.
