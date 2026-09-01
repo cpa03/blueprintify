@@ -11,12 +11,12 @@ import {
   isValidElement,
   type ReactElement,
 } from "react";
-import { KEYBOARD_EVENT_KEYS, MODIFIER_KEYS } from "@blueprint/shared/config";
+import { KEYBOARD_EVENT_KEYS, MODIFIER_KEYS, DIRECTION } from "@blueprint/shared";
 import { TOOLTIP_CONFIG } from "../config/constants";
 import { formatShortcut } from "../lib/platform";
 import { Icon } from "./Icon";
 
-type Position = "top" | "bottom" | "left" | "right";
+type Position = (typeof DIRECTION)[keyof typeof DIRECTION];
 
 interface SmartTooltipProps {
   children: ReactNode;
@@ -37,22 +37,22 @@ interface PositionStyles {
 }
 
 const positionClasses: Record<Position, PositionStyles> = {
-  top: {
+  [DIRECTION.TOP]: {
     container: "bottom-full left-1/2 -translate-x-1/2 mb-2 origin-bottom",
     arrow:
       "top-full left-1/2 -translate-x-1/2 -mt-1 border-l-transparent border-r-transparent border-b-transparent",
   },
-  bottom: {
+  [DIRECTION.BOTTOM]: {
     container: "top-full left-1/2 -translate-x-1/2 mt-2 origin-top",
     arrow:
       "bottom-full left-1/2 -translate-x-1/2 -mb-1 border-l-transparent border-r-transparent border-t-transparent",
   },
-  left: {
+  [DIRECTION.LEFT]: {
     container: "right-full top-1/2 -translate-y-1/2 mr-2 origin-right",
     arrow:
       "left-full top-1/2 -translate-y-1/2 -ml-1 border-t-transparent border-b-transparent border-r-transparent",
   },
-  right: {
+  [DIRECTION.RIGHT]: {
     container: "left-full top-1/2 -translate-y-1/2 ml-2 origin-left",
     arrow:
       "right-full top-1/2 -translate-y-1/2 -mr-1 border-t-transparent border-b-transparent border-l-transparent",
@@ -71,7 +71,7 @@ const positionClasses: Record<Position, PositionStyles> = {
 function SmartTooltipComponent({
   children,
   content,
-  position = "top",
+  position = DIRECTION.TOP,
   delay = TOOLTIP_CONFIG.DEFAULT_SHOW_DELAY,
   hideDelay = TOOLTIP_CONFIG.DEFAULT_HIDE_DELAY,
   maxWidth = TOOLTIP_CONFIG.DEFAULT_MAX_WIDTH,
@@ -118,18 +118,18 @@ function SmartTooltipComponent({
     };
 
     const fits = {
-      top: triggerRect.top >= tooltipHeight + padding,
-      bottom: viewport.height - triggerRect.bottom >= tooltipHeight + padding,
-      left: triggerRect.left >= tooltipWidth + padding,
-      right: viewport.width - triggerRect.right >= tooltipWidth + padding,
+      [DIRECTION.TOP]: triggerRect.top >= tooltipHeight + padding,
+      [DIRECTION.BOTTOM]: viewport.height - triggerRect.bottom >= tooltipHeight + padding,
+      [DIRECTION.LEFT]: triggerRect.left >= tooltipWidth + padding,
+      [DIRECTION.RIGHT]: viewport.width - triggerRect.right >= tooltipWidth + padding,
     };
 
     if (fits[position]) return position;
 
-    const positions: Position[] = ["top", "bottom", "left", "right"];
+    const positions: Position[] = [DIRECTION.TOP, DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT];
     const fittingPosition = positions.find((pos) => fits[pos]);
 
-    return fittingPosition || "top";
+    return fittingPosition || DIRECTION.TOP;
   }, [position, maxWidth]);
 
   const showTooltipImmediate = useCallback(() => {
@@ -280,6 +280,8 @@ function SmartTooltipComponent({
     <div
       ref={triggerRef}
       className="relative inline-flex"
+      data-state={isVisible ? "visible" : "hidden"}
+      data-position={computedPosition}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onFocus={handleFocus}
@@ -293,6 +295,8 @@ function SmartTooltipComponent({
           ref={tooltipRef}
           id={tooltipId}
           role="tooltip"
+          data-state="visible"
+          data-position={computedPosition}
           className={`absolute ${positionStyle.container} z-50 pointer-events-none animate-tooltip-in ${className}`}
           style={{ maxWidth }}
         >
@@ -330,7 +334,7 @@ function KeyboardShortcutTooltipComponent({
   children,
   shortcut,
   description,
-  position = "top",
+  position = DIRECTION.TOP,
   modifier = MODIFIER_KEYS.CMD,
 }: KeyboardShortcutTooltipProps) {
   const fullShortcut = formatShortcut(shortcut, modifier);
@@ -372,7 +376,7 @@ interface InfoTooltipProps {
 function InfoTooltipComponent({
   children,
   content,
-  position = "top",
+  position = DIRECTION.TOP,
   showInfoIcon = true,
 }: InfoTooltipProps) {
   return (
