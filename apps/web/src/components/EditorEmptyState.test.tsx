@@ -6,7 +6,7 @@ import { EditorEmptyState } from "./EditorEmptyState";
 import { useWizardStore } from "../store";
 import type { WizardStore } from "../store/wizard";
 import { WIZARD_STEPS } from "../config/constants";
-import { WIZARD_STEP_KEYS } from "@blueprint/shared/config";
+import { WIZARD_STEP_KEYS, EMPTY_STATE_VALUES } from "@blueprint/shared/config";
 
 vi.mock("../store", () => ({
   useWizardStore: vi.fn(),
@@ -157,6 +157,14 @@ describe("EditorEmptyState", () => {
     render(<EditorEmptyState />);
     const percentText = screen.getByText(/%/);
     expect(percentText).toBeInTheDocument();
+  });
+
+  it("attaches data-state, data-step, and data-progress DOM attributes to container", () => {
+    const { container } = render(<EditorEmptyState />);
+    const emptyStateElement = container.firstElementChild;
+    expect(emptyStateElement).toHaveAttribute("data-state", EMPTY_STATE_VALUES.WAITING);
+    expect(emptyStateElement).toHaveAttribute("data-step", WIZARD_STEP_KEYS.INFO);
+    expect(emptyStateElement).toHaveAttribute("data-progress", "20");
   });
 
   it("renders without crashing when currentStep is the last step", () => {

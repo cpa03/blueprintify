@@ -21,7 +21,11 @@ import {
   EASING,
   CSS_CLASSES,
 } from "../config/constants";
-import { ANIMATION_ENTRANCE_DELAYS, DISPLAY_SYMBOLS } from "@blueprint/shared/config";
+import {
+  ANIMATION_ENTRANCE_DELAYS,
+  DISPLAY_SYMBOLS,
+  EMPTY_STATE_VALUES,
+} from "@blueprint/shared/config";
 import { EDITOR_EMPTY_STATE_LABELS } from "../config/constants/content";
 import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from "../utils/motion";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
@@ -51,6 +55,9 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
       variants={staggerContainer}
       initial="hidden"
       animate="visible"
+      data-state={EMPTY_STATE_VALUES.WAITING}
+      data-step={currentStep}
+      data-progress={Math.round(progress)}
     >
       <motion.div className="relative mb-8" variants={fadeInUp}>
         <motion.div

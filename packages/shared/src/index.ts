@@ -236,6 +236,7 @@ export {
   TYPING_STATE_VALUES,
   CHAR_COUNTER_STATE_VALUES,
   DIALOG_STATE_VALUES,
+  EMPTY_STATE_VALUES,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";
