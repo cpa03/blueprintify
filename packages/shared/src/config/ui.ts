@@ -854,3 +854,17 @@ export const DIALOG_STATE_VALUES = {
   /** Closed modal state identifier */
   CLOSED: "closed" as const,
 } as const;
+
+/**
+ * Empty State Display State Values
+ * Centralized state tracking values for empty state components (e.g. EditorEmptyState).
+ * Flexy says: No hardcoded "empty"/"waiting" strings in empty state components!
+ * Usage: import { EMPTY_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={EMPTY_STATE_VALUES.WAITING}
+ */
+export const EMPTY_STATE_VALUES = {
+  /** Empty content state identifier */
+  EMPTY: "empty" as const,
+  /** Waiting / initial wizard state identifier */
+  WAITING: "waiting" as const,
+} as const;
