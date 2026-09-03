@@ -17,6 +17,7 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   DISPLAY_SYMBOLS,
   FRAMER_TYPE,
+  EMPTY_STATE_VALUES,
 } from "@blueprint/shared/config";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -68,6 +69,8 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
       variants={staggerContainer}
       initial="hidden"
       animate="visible"
+      data-state={isGenerating ? EMPTY_STATE_VALUES.WAITING : EMPTY_STATE_VALUES.EMPTY}
+      data-tab={tab}
     >
       <motion.div className="relative mb-6" variants={fadeInUp}>
         <motion.div
