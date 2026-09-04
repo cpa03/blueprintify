@@ -160,6 +160,8 @@ describe("StepIndicator", () => {
       "border-primary-500/50",
       "text-primary-300"
     );
+    expect(stackButton).toHaveAttribute("data-active", "true");
+    expect(stackButton).toHaveAttribute("data-clickable", "true");
   });
 
   it("marks completed steps as completed", () => {

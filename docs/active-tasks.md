@@ -1,5 +1,14 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **StepIndicator Micro-UX & State Inspection**
+- [CONNECT] Connected wizard step data state attributes to `StepIndicator` buttons for automated DOM testing.
+- [STRENGTHEN] Strengthened `StepIndicator` DOM inspection with `data-step-index`, `data-step-key`, `data-active`, `data-completed`, and `data-clickable` attributes.
+- [CONSOLIDATE] Consolidated step button DOM attributes with centralized shared config from `@blueprint/shared`.
+- [REMOVE] Removed raw literal string dependencies in StepIndicator DOM attribute state assertions.
+
+## ✅ BugLover Audit — **Phase 1 Complete (Sep 04 2026)**
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,635/2,635 passing.
+
 ## ✅ BugLover Audit — **Phase 1 Complete (Sep 03 2026)**
 - [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,635/2,635 passing.
 
