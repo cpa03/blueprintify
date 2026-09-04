@@ -205,6 +205,11 @@ function StepIndicatorComponent(): JSX.Element {
           <div key={step.key} className="flex items-center">
             <button
               onClick={() => handleStepClick(step.key, step.label)}
+              data-step-index={index}
+              data-step-key={step.key}
+              data-active={isActive ? "true" : "false"}
+              data-completed={isCompleted ? "true" : "false"}
+              data-clickable={isClickable ? "true" : "false"}
               // aria-disabled keeps locked steps focusable so keyboard, touch,
               // and screen reader users can discover WHY the step is locked via
               // the aria-describedby hint (a native `disabled` attribute removes
