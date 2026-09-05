@@ -67,10 +67,12 @@ export const TypeIndicator = memo(function TypeIndicator({
           className={`inline-flex items-center gap-1 ${
             position === "left" ? "mr-2" : "ml-2"
           } ${className}`}
+          role="status"
           aria-live="polite"
           aria-atomic="true"
           data-state={isTyping ? TYPING_STATE_VALUES.TYPING : TYPING_STATE_VALUES.IDLE}
           data-position={position}
+          data-dots-count={LOADING_DOTS_COUNT}
         >
           <span className={TYPING.SR_ONLY}>Typing</span>
           {Array.from({ length: LOADING_DOTS_COUNT }, (_, index) => (
