@@ -3,6 +3,7 @@ import * as motion from "framer-motion/m";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
 import { ANIMATION_COLORS, ANIMATION, EASING, CSS_CLASSES } from "../config/constants";
 import { TIME_UNITS } from "@blueprint/shared/config";
+import { COUNTER_DIRECTION_VALUES } from "@blueprint/shared";
 import { COUNTER_ANIMATION } from "../config/theme";
 
 interface AnimatedNumberProps {
@@ -11,6 +12,8 @@ interface AnimatedNumberProps {
   duration?: number;
   format?: (value: number) => string;
 }
+
+type CounterDirection = (typeof COUNTER_DIRECTION_VALUES)[keyof typeof COUNTER_DIRECTION_VALUES];
 
 function AnimatedNumberComponent({
   value,
@@ -22,14 +25,14 @@ function AnimatedNumberComponent({
   const [displayValue, setDisplayValue] = useState(value);
   const displayValueRef = useRef(value);
   const previousValueRef = useRef(value);
-  const [direction, setDirection] = useState<"up" | "down" | null>(null);
+  const [direction, setDirection] = useState<CounterDirection>(COUNTER_DIRECTION_VALUES.IDLE);
 
   // Calculate animation direction - stored in state to allow render-time access
   useEffect(() => {
     if (value > previousValueRef.current) {
-      setDirection("up");
+      setDirection(COUNTER_DIRECTION_VALUES.UP);
     } else if (value < previousValueRef.current) {
-      setDirection("down");
+      setDirection(COUNTER_DIRECTION_VALUES.DOWN);
     }
     previousValueRef.current = value;
   }, [value]);
@@ -82,13 +85,15 @@ function AnimatedNumberComponent({
   return (
     <motion.span
       className={`tabular-nums ${className}`}
+      data-direction={direction}
+      data-value={value}
       initial={false}
       animate={
-        shouldAnimate && direction
+        shouldAnimate && direction !== COUNTER_DIRECTION_VALUES.IDLE
           ? {
               scale: [1, 1.1, 1],
               color:
-                direction === "up"
+                direction === COUNTER_DIRECTION_VALUES.UP
                   ? ["inherit", ANIMATION_COLORS.POSITIVE, "inherit"]
                   : ["inherit", ANIMATION_COLORS.NEGATIVE, "inherit"],
             }
@@ -164,6 +169,8 @@ function AnimatedCounterComponent({
     <motion.div
       key={pulseKey}
       className={`glass-card px-6 py-4 ${className}`}
+      data-state={pulseKey > 0 ? "active" : "idle"}
+      data-value={value}
       initial={false}
       animate={
         shouldAnimate && pulseKey > 0

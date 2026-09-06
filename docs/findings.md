@@ -3,6 +3,16 @@
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
 
+## Orchestration Cycle 600 (2026-09-06 — PALETTE, FLEXY & STORX ENHANCEMENTS)
+
+**Phase 0**: On `agent` branch; working tree clean and synced with `origin/main`.
+**Phase 1 (BugLover)**: Full BugLover audit clean — zero code defects, zero console errors (`npm run brocula` clean), all 2,635 tests passing.
+**Phase 2 (Palette)**: Enhanced `AnimatedNumber` and `AnimatedCounter` with DOM inspection attributes (`data-direction`, `data-value`, `data-state`).
+**Phase 3 (Flexy)**: Centralized `COUNTER_DIRECTION_VALUES` in `packages/shared/src/config/ui.ts` and `@blueprint/shared` export. Removed hardcoded direction string literals in `AnimatedNumber.tsx`.
+**Phase 4 (TestGuard)**: Updated `AnimatedNumber.test.tsx` with DOM attribute state assertions (`data-direction`, `data-value`, `data-state`). Verified all tests pass.
+**Phase 5 (StorX)**: Consolidated counter animation state tracking in `@blueprint/shared` and updated `docs/active-tasks.md` with categorised tasks.
+
+
 ## ULW Loop Cycle 597 (2026-08-20 — PALETTE, FLEXY & STORX ENHANCEMENTS)
 
 **Phase 0**: On `agent` branch; verified working tree status.

@@ -868,3 +868,19 @@ export const EMPTY_STATE_VALUES = {
   /** Waiting / initial wizard state identifier */
   WAITING: "waiting" as const,
 } as const;
+
+/**
+ * Counter Direction Values
+ * Centralized state tracking values for animated counter/number directional changes.
+ * Flexy says: No hardcoded "up"/"down"/"idle" strings in AnimatedNumber components!
+ * Usage: import { COUNTER_DIRECTION_VALUES } from "@blueprint/shared";
+ *        data-direction={direction || COUNTER_DIRECTION_VALUES.IDLE}
+ */
+export const COUNTER_DIRECTION_VALUES = {
+  /** Value increased direction */
+  UP: "up" as const,
+  /** Value decreased direction */
+  DOWN: "down" as const,
+  /** Idle / steady value direction */
+  IDLE: "idle" as const,
+} as const;
