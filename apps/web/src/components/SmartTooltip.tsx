@@ -126,7 +126,12 @@ function SmartTooltipComponent({
 
     if (fits[position]) return position;
 
-    const positions: Position[] = [DIRECTION.TOP, DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT];
+    const positions: Position[] = [
+      DIRECTION.TOP,
+      DIRECTION.BOTTOM,
+      DIRECTION.LEFT,
+      DIRECTION.RIGHT,
+    ];
     const fittingPosition = positions.find((pos) => fits[pos]);
 
     return fittingPosition || DIRECTION.TOP;
