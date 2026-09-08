@@ -1,5 +1,14 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **Toast & ToastContainer Micro-UX & State Inspection**
+- [CONNECT] Connected `data-toast-type`, `data-hovered`, and `data-is-alert` state inspection attributes to `ToastItem`.
+- [STRENGTHEN] Strengthened `ToastContainer` accessibility and testing inspection with `data-count` and `data-has-toasts` attributes.
+- [CONSOLIDATE] Consolidated toast notification state inspection attributes across web components.
+- [REMOVE] Removed un-inspected container and item DOM states in Toast component test fixtures.
+
+## ✅ BugLover Audit — **Phase 1 Complete (Sep 08 2026)**
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,635/2,635 passing.
+
 ## ✅ StorX — **CharacterCounter & SmartTooltip Micro-UX & State Inspection**
 - [CONNECT] Connected `CHAR_COUNTER_STATE_VALUES` and `DIRECTION` shared config from `@blueprint/shared` to `CharacterCounter` and `SmartTooltip`.
 - [STRENGTHEN] Strengthened `CharacterCounter` and `SmartTooltip` DOM state inspection with `data-state`, `data-position`, and `data-has-min` attributes.
