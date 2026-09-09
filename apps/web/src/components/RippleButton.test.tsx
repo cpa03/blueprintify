@@ -44,11 +44,12 @@ describe("RippleButton", () => {
     expect(screen.getByRole("button")).toHaveClass("custom-class");
   });
 
-  it("renders disabled state", () => {
+  it("renders disabled state and sets data-disabled attribute", () => {
     render(<RippleButton disabled>Test</RippleButton>);
     const button = screen.getByRole("button");
     expect(button).toBeDisabled();
     expect(button).toHaveClass("cursor-not-allowed");
+    expect(button).toHaveAttribute("data-disabled", "true");
   });
 
   it("calls onClick handler when clicked", () => {
@@ -201,20 +202,23 @@ describe("RippleButton", () => {
     expect(screen.getByRole("button")).toHaveAttribute("data-autofocus", "true");
   });
 
-  it("renders loading spinner when isLoading is true", () => {
+  it("renders loading spinner and sets data-loading attribute when isLoading is true", () => {
     render(<RippleButton isLoading>Test</RippleButton>);
     const button = screen.getByRole("button");
     const overlay = button.querySelector(`.${CSS_CLASSES.SPINNER_OVERLAY.split(" ")[0]}`);
     expect(overlay).toBeInTheDocument();
     expect(button).toHaveAttribute("aria-busy", "true");
+    expect(button).toHaveAttribute("data-loading", "true");
   });
 
-  it("does not render loading spinner when isLoading is false", () => {
+  it("does not render loading spinner and sets data-loading to false when isLoading is false", () => {
     render(<RippleButton>Test</RippleButton>);
     const button = screen.getByRole("button");
     const overlay = button.querySelector(`.${CSS_CLASSES.SPINNER_OVERLAY.split(" ")[0]}`);
     expect(overlay).not.toBeInTheDocument();
     expect(button).not.toHaveAttribute("aria-busy");
+    expect(button).toHaveAttribute("data-loading", "false");
+    expect(button).toHaveAttribute("data-disabled", "false");
   });
 
   it("dims children content when isLoading is true", () => {
