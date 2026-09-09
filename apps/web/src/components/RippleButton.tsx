@@ -153,6 +153,8 @@ function RippleButtonComponent({
       aria-label={ariaLabel}
       aria-busy={isLoading ? "true" : undefined}
       title={title}
+      data-loading={isLoading ? "true" : "false"}
+      data-disabled={disabled ? "true" : "false"}
       data-autofocus={dataAutofocus}
       {...rest}
     >
