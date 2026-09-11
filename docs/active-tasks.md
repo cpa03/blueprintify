@@ -1,5 +1,14 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **ScrollProgress Micro-UX & State Inspection**
+- [CONNECT] Connected `BANNER_STATE_VALUES` shared config from `@blueprint/shared` to `ScrollProgress`.
+- [STRENGTHEN] Strengthened `ScrollProgress` DOM state inspection with `data-state` ("visible"/"hidden") and `data-progress` attributes.
+- [CONSOLIDATE] Consolidated reading progress state inspection attributes across UI components in `apps/web/src/components/`.
+- [REMOVE] Removed un-inspected DOM state for scroll reading progress indicators in test fixtures (`ScrollProgress.test.tsx`).
+
+## ✅ BugLover Audit — **Phase 1 Complete (Sep 11 2026)**
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,635/2,635 passing.
+
 ## ✅ StorX — **RippleButton Micro-UX & State Inspection**
 - [CONNECT] Connected `data-loading` and `data-disabled` state inspection attributes to `RippleButton`.
 - [STRENGTHEN] Strengthened `RippleButton` accessibility and testing inspection with explicit DOM state tracking attributes.
