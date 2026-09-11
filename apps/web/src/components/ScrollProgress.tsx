@@ -4,6 +4,7 @@ import { useSpring, useTransform } from "framer-motion";
 import { ANIMATION, EASING } from "../config/constants";
 import { SHADOWS, SCROLL_PROGRESS_SPRING } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { BANNER_STATE_VALUES } from "@blueprint/shared";
 import { SCROLL_PROGRESS_DEFAULTS } from "@blueprint/shared/config";
 
 interface ScrollProgressProps {
@@ -103,6 +104,8 @@ export const ScrollProgress = memo(function ScrollProgress({
       animate={{ opacity: isVisible ? 1 : 0 }}
       transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
       aria-hidden="true"
+      data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
+      data-progress={Math.round(scrollProgress)}
     >
       <div className="w-full bg-dark-800/50 backdrop-blur-sm" style={{ height }}>
         <motion.div

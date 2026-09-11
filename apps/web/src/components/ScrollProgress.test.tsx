@@ -13,6 +13,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { createRef } from "react";
 import { ScrollProgress } from "./ScrollProgress";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { BANNER_STATE_VALUES } from "@blueprint/shared";
 
 // Capture props passed to motion.div so tests can assert on the animation config
 let capturedDivProps: Array<Record<string, unknown>> = [];
@@ -50,6 +51,13 @@ function getFillProps(): Record<string, unknown> | undefined {
   return capturedDivProps.find((p) => {
     const className = p.className;
     return typeof className === "string" && className.includes("h-full bg-gradient-to-r");
+  });
+}
+
+/** The container is the outer motion.div holding data-state and data-progress */
+function getContainerProps(): Record<string, unknown> | undefined {
+  return capturedDivProps.find((p) => {
+    return p["data-state"] !== undefined;
   });
 }
 
@@ -100,5 +108,14 @@ describe("ScrollProgress", () => {
     renderScrollProgress();
 
     expect(getFillProps()).toBeDefined();
+  });
+
+  it("sets data-state and data-progress attributes on the container", () => {
+    renderScrollProgress();
+
+    const container = getContainerProps();
+    expect(container).toBeDefined();
+    expect(container?.["data-state"]).toBe(BANNER_STATE_VALUES.HIDDEN);
+    expect(container?.["data-progress"]).toBe(0);
   });
 });
