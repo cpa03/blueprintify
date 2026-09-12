@@ -25,6 +25,7 @@ import {
   ENTRANCE_STAGGER_DEFAULTS,
   MODIFIER_KEYS,
   BUTTON_TRANSITION_DEFAULTS,
+  EDITOR_BUTTON_STATE_VALUES,
 } from "@blueprint/shared/config";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
@@ -125,7 +126,10 @@ function ShowEditorButtonComponent({
           title={buttonTitle}
           data-editor-toggle="true"
           data-has-content={hasContent}
-          data-state={hasContent ? "content-ready" : "idle"}
+          data-state={
+            hasContent ? EDITOR_BUTTON_STATE_VALUES.CONTENT_READY : EDITOR_BUTTON_STATE_VALUES.IDLE
+          }
+          data-glow-active={showGlow}
           data-is-generating={isGenerating}
           aria-expanded={false}
           aria-controls="editor-panel"
