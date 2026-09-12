@@ -238,6 +238,7 @@ export {
   DIALOG_STATE_VALUES,
   EMPTY_STATE_VALUES,
   COUNTER_DIRECTION_VALUES,
+  EDITOR_BUTTON_STATE_VALUES,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";

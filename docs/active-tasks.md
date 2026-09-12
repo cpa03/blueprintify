@@ -1,5 +1,11 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **ShowEditorButton Micro-UX & State Inspection**
+- [CONNECT] Connected `EDITOR_BUTTON_STATE_VALUES` shared config export from `@blueprint/shared` to `ShowEditorButton.tsx`.
+- [STRENGTHEN] Strengthened `ShowEditorButton` DOM state inspection with `data-glow-active` and `data-state` attributes.
+- [CONSOLIDATE] Consolidated editor toggle button state inspection in `packages/shared/src/config/ui.ts` and `@blueprint/shared`.
+- [REMOVE] Removed hardcoded string literals for editor button `data-state` attribute in `ShowEditorButton.tsx`.
+
 ## ✅ StorX — **ScrollProgress Micro-UX & State Inspection**
 - [CONNECT] Connected `BANNER_STATE_VALUES` shared config from `@blueprint/shared` to `ScrollProgress`.
 - [STRENGTHEN] Strengthened `ScrollProgress` DOM state inspection with `data-state` ("visible"/"hidden") and `data-progress` attributes.

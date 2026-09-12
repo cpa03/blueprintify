@@ -884,3 +884,17 @@ export const COUNTER_DIRECTION_VALUES = {
   /** Idle / steady value direction */
   IDLE: "idle" as const,
 } as const;
+
+/**
+ * Editor Button Display State Values
+ * Centralized state tracking values for editor toggle button (ShowEditorButton).
+ * Flexy says: No hardcoded "content-ready"/"idle" strings in ShowEditorButton!
+ * Usage: import { EDITOR_BUTTON_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={hasContent ? EDITOR_BUTTON_STATE_VALUES.CONTENT_READY : EDITOR_BUTTON_STATE_VALUES.IDLE}
+ */
+export const EDITOR_BUTTON_STATE_VALUES = {
+  /** Content ready state identifier */
+  CONTENT_READY: "content-ready" as const,
+  /** Idle state identifier */
+  IDLE: "idle" as const,
+} as const;

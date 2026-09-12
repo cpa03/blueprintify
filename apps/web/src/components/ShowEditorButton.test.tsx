@@ -94,18 +94,20 @@ describe("ShowEditorButton", () => {
     expect(button).toHaveAttribute("data-is-generating", "true");
   });
 
-  it("applies glow-pulse class when hasContent is true", () => {
+  it("applies glow-pulse class and data-glow-active='true' when hasContent is true", () => {
     render(<ShowEditorButton {...defaultProps} hasContent={true} />);
 
     const button = screen.getByRole("button");
     expect(button.className).toContain("glow-pulse");
+    expect(button).toHaveAttribute("data-glow-active", "true");
   });
 
-  it("does not apply glow-pulse class when hasContent is false and not generating", () => {
+  it("does not apply glow-pulse class and sets data-glow-active='false' when hasContent is false and not generating", () => {
     render(<ShowEditorButton {...defaultProps} hasContent={false} isGenerating={false} />);
 
     const button = screen.getByRole("button");
     expect(button.className).not.toContain("glow-pulse");
+    expect(button).toHaveAttribute("data-glow-active", "false");
   });
 
   it("applies glow-pulse class when isGenerating is true even without content", () => {
@@ -115,18 +117,20 @@ describe("ShowEditorButton", () => {
     expect(button.className).toContain("glow-pulse");
   });
 
-  it("clears glow-pulse after GLOW_DURATION_MS when content exists but not generating", () => {
+  it("clears glow-pulse and updates data-glow-active to 'false' after GLOW_DURATION_MS when content exists but not generating", () => {
     vi.useFakeTimers();
     render(<ShowEditorButton {...defaultProps} hasContent={true} isGenerating={false} />);
 
     const button = screen.getByRole("button");
     expect(button.className).toContain("glow-pulse");
+    expect(button).toHaveAttribute("data-glow-active", "true");
 
     act(() => {
       vi.advanceTimersByTime(UI_TIMEOUTS.GLOW_DURATION_MS + 1);
     });
 
     expect(button.className).not.toContain("glow-pulse");
+    expect(button).toHaveAttribute("data-glow-active", "false");
     vi.useRealTimers();
   });
 
