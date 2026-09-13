@@ -1,14 +1,36 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
+import { SKIP_LINK_STATE_VALUES } from "@blueprint/shared";
 import { SkipLink } from "./SkipLink";
 import { Z_INDEX } from "../config/theme";
 
 describe("SkipLink", () => {
-  it("renders a link with correct href and target attribute", () => {
+  it("renders a link with correct href, target attribute, and default idle state", () => {
     render(<SkipLink />);
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("href", "#main-content");
     expect(link).toHaveAttribute("data-target", "main-content");
+    expect(link).toHaveAttribute("data-state", SKIP_LINK_STATE_VALUES.IDLE);
+    expect(link).toHaveAttribute("data-visible", "false");
+  });
+
+  it("updates data-state and data-visible on focus and blur", () => {
+    render(<SkipLink />);
+    const link = screen.getByRole("link");
+    expect(link).toHaveAttribute("data-state", SKIP_LINK_STATE_VALUES.IDLE);
+    expect(link).toHaveAttribute("data-visible", "false");
+
+    act(() => {
+      fireEvent.focus(link);
+    });
+    expect(link).toHaveAttribute("data-state", SKIP_LINK_STATE_VALUES.FOCUSED);
+    expect(link).toHaveAttribute("data-visible", "true");
+
+    act(() => {
+      fireEvent.blur(link);
+    });
+    expect(link).toHaveAttribute("data-state", SKIP_LINK_STATE_VALUES.IDLE);
+    expect(link).toHaveAttribute("data-visible", "false");
   });
 
   it("renders skip link text", () => {
