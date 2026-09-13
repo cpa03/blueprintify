@@ -1,15 +1,21 @@
-import { memo } from "react";
+import { memo, useState } from "react";
+import { SKIP_LINK_STATE_VALUES } from "@blueprint/shared";
 import { SKIP_LINK_ANIMATION, ACCESSIBILITY_LABELS_SKIP } from "../config/constants";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Z_INDEX } from "../config/theme";
 
 export const SkipLink = memo(function SkipLink(): JSX.Element {
   const shouldReduceMotion = useReducedMotion();
+  const [isFocused, setIsFocused] = useState(false);
 
   return (
     <a
       href="#main-content"
       data-target="main-content"
+      data-state={isFocused ? SKIP_LINK_STATE_VALUES.FOCUSED : SKIP_LINK_STATE_VALUES.IDLE}
+      data-visible={isFocused}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4
                  focus:px-4 focus:py-2.5 focus:rounded-xl focus:font-medium
                  focus:outline-none focus:ring-2 focus:ring-primary-400/50 focus:ring-offset-2 focus:ring-offset-dark-950
