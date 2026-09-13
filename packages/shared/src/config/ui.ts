@@ -824,6 +824,20 @@ export const TYPING_STATE_VALUES = {
 } as const;
 
 /**
+ * Skip Link Display State Values
+ * Centralized state tracking values for skip-to-content navigation (SkipLink).
+ * Flexy says: No hardcoded "focused"/"idle" strings in SkipLink!
+ * Usage: import { SKIP_LINK_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isFocused ? SKIP_LINK_STATE_VALUES.FOCUSED : SKIP_LINK_STATE_VALUES.IDLE}
+ */
+export const SKIP_LINK_STATE_VALUES = {
+  /** Focused state identifier */
+  FOCUSED: "focused" as const,
+  /** Idle state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
  * Character Counter State Values
  * Centralized state tracking values for character limit indicators.
  * Flexy says: No hardcoded "at-limit"/"warning"/"valid"/"default" strings in CharacterCounter components!

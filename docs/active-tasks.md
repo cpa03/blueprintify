@@ -1,5 +1,11 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **SkipLink Micro-UX & State Inspection**
+- [CONNECT] Connected `SKIP_LINK_STATE_VALUES` shared config export from `@blueprint/shared` to `SkipLink.tsx`.
+- [STRENGTHEN] Strengthened `SkipLink` DOM state inspection with `data-state` ("focused"/"idle") and `data-visible` attributes.
+- [CONSOLIDATE] Consolidated skip-to-content anchor navigation state inspection in `packages/shared/src/config/ui.ts` and `@blueprint/shared`.
+- [REMOVE] Removed raw literal string values for skip link focus states in `SkipLink.tsx` and `SkipLink.test.tsx`.
+
 ## ✅ StorX — **ShowEditorButton Micro-UX & State Inspection**
 - [CONNECT] Connected `EDITOR_BUTTON_STATE_VALUES` shared config export from `@blueprint/shared` to `ShowEditorButton.tsx`.
 - [STRENGTHEN] Strengthened `ShowEditorButton` DOM state inspection with `data-glow-active` and `data-state` attributes.
