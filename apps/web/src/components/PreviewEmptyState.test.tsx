@@ -145,16 +145,28 @@ describe("PreviewEmptyState", () => {
     expect(screen.getByText("task.md")).toBeInTheDocument();
   });
 
-  it("sets data-state and data-tab attributes correctly", () => {
+  it("sets data-state, data-tab, and data-has-sibling-content attributes correctly", () => {
     const { container, rerender } = render(
-      <PreviewEmptyState tab={EDITOR_TABS.BLUEPRINT} isGenerating={false} />
+      <PreviewEmptyState
+        tab={EDITOR_TABS.BLUEPRINT}
+        isGenerating={false}
+        siblingTabHasContent={true}
+      />
     );
     const rootElement = container.firstChild as HTMLElement;
     expect(rootElement).toHaveAttribute("data-state", EMPTY_STATE_VALUES.EMPTY);
     expect(rootElement).toHaveAttribute("data-tab", EDITOR_TABS.BLUEPRINT);
+    expect(rootElement).toHaveAttribute("data-has-sibling-content", "true");
 
-    rerender(<PreviewEmptyState tab={EDITOR_TABS.TASKS} isGenerating={true} />);
+    rerender(
+      <PreviewEmptyState
+        tab={EDITOR_TABS.TASKS}
+        isGenerating={true}
+        siblingTabHasContent={false}
+      />
+    );
     expect(rootElement).toHaveAttribute("data-state", EMPTY_STATE_VALUES.WAITING);
     expect(rootElement).toHaveAttribute("data-tab", EDITOR_TABS.TASKS);
+    expect(rootElement).toHaveAttribute("data-has-sibling-content", "false");
   });
 });

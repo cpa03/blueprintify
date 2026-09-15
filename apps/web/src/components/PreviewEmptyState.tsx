@@ -71,6 +71,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
       animate="visible"
       data-state={isGenerating ? EMPTY_STATE_VALUES.WAITING : EMPTY_STATE_VALUES.EMPTY}
       data-tab={tab}
+      data-has-sibling-content={siblingTabHasContent}
     >
       <motion.div className="relative mb-6" variants={fadeInUp}>
         <motion.div
