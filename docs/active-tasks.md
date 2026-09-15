@@ -1,5 +1,14 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **PreviewEmptyState Micro-UX & State Inspection**
+- [CONNECT] Connected `data-has-sibling-content` state inspection attribute to `PreviewEmptyState`.
+- [STRENGTHEN] Strengthened `PreviewEmptyState` DOM state inspection and accessibility testing verification.
+- [CONSOLIDATE] Consolidated empty state DOM tracking attributes across markdown preview components.
+- [REMOVE] Removed un-inspected DOM state for empty markdown preview tabs in test fixtures.
+
+## ✅ BugLover Audit — **Phase 1 Complete (Sep 15 2026)**
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,635/2,635 passing.
+
 ## ✅ StorX — **SkipLink Micro-UX & State Inspection**
 - [CONNECT] Connected `SKIP_LINK_STATE_VALUES` shared config export from `@blueprint/shared` to `SkipLink.tsx`.
 - [STRENGTHEN] Strengthened `SkipLink` DOM state inspection with `data-state` ("focused"/"idle") and `data-visible` attributes.
