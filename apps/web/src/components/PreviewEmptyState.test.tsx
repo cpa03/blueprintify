@@ -145,7 +145,7 @@ describe("PreviewEmptyState", () => {
     expect(screen.getByText("task.md")).toBeInTheDocument();
   });
 
-  it("sets data-state, data-tab, and data-has-sibling-content attributes correctly", () => {
+  it("sets data-state, data-tab, data-has-sibling-content, role, and aria-live attributes correctly", () => {
     const { container, rerender } = render(
       <PreviewEmptyState
         tab={EDITOR_TABS.BLUEPRINT}
@@ -157,6 +157,8 @@ describe("PreviewEmptyState", () => {
     expect(rootElement).toHaveAttribute("data-state", EMPTY_STATE_VALUES.EMPTY);
     expect(rootElement).toHaveAttribute("data-tab", EDITOR_TABS.BLUEPRINT);
     expect(rootElement).toHaveAttribute("data-has-sibling-content", "true");
+    expect(rootElement).toHaveAttribute("role", "status");
+    expect(rootElement).toHaveAttribute("aria-live", "polite");
 
     rerender(
       <PreviewEmptyState
