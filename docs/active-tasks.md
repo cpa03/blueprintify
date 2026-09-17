@@ -1,5 +1,11 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **PageScrollProgressBar Micro-UX & State Inspection**
+- [CONNECT] Connected `BANNER_STATE_VALUES` shared config export from `@blueprint/shared` to `PageScrollProgressBar.tsx`.
+- [STRENGTHEN] Strengthened `PageScrollProgressBar` DOM state inspection with `data-state` ("visible"/"hidden"), `data-progress`, `data-hovered`, and `data-focused` attributes.
+- [CONSOLIDATE] Consolidated reading progress state inspection attributes across page and editor scroll components.
+- [REMOVE] Removed un-inspected DOM state for page scroll reading progress indicators in test fixtures (`PageScrollProgressBar.test.tsx`).
+
 ## ✅ StorX — **PreviewEmptyState Micro-UX & State Inspection**
 - [CONNECT] Connected `data-has-sibling-content` state inspection attribute to `PreviewEmptyState`.
 - [STRENGTHEN] Strengthened `PreviewEmptyState` DOM state inspection and accessibility testing verification.
