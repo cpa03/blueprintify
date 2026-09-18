@@ -49,15 +49,55 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
   const altKey = getAltKeyLabel();
   const shouldReduceMotion = useReducedMotion();
 
+  const isLastStep = currentIndex === WIZARD_STEPS.length - 1;
+  const shortcutItems = [
+    {
+      key: "kb",
+      content: (
+        <>
+          <kbd className={CSS_CLASSES.KEYCAP}>{DISPLAY_SYMBOLS.QUESTION_MARK}</kbd>
+          <span>{EDITOR_EMPTY_STATE_LABELS.KEYBOARD_SHORTCUTS}</span>
+        </>
+      ),
+    },
+    {
+      key: "submit",
+      content: (
+        <>
+          <kbd className={CSS_CLASSES.KEYCAP}>{modifierKey}</kbd>
+          <span className="text-dark-500">+</span>
+          <kbd className={CSS_CLASSES.KEYCAP}>{DISPLAY_SYMBOLS.ENTER_KEY}</kbd>
+          <span>{EDITOR_EMPTY_STATE_LABELS.SUBMIT_WIZARD}</span>
+        </>
+      ),
+    },
+    {
+      key: "next",
+      content: (
+        <>
+          <kbd className={CSS_CLASSES.KEYCAP}>{altKey}</kbd>
+          <span className="text-dark-500">+</span>
+          <kbd className={CSS_CLASSES.KEYCAP}>{DISPLAY_SYMBOLS.ARROW_RIGHT}</kbd>
+          <span>{EDITOR_EMPTY_STATE_LABELS.NEXT_STEP}</span>
+        </>
+      ),
+    },
+  ] as const;
+
   return (
     <motion.div
       className="h-full flex flex-col items-center justify-center text-dark-500"
       variants={staggerContainer}
       initial="hidden"
       animate="visible"
+      role="status"
+      aria-label="Editor empty state"
       data-state={EMPTY_STATE_VALUES.WAITING}
       data-step={currentStep}
       data-progress={Math.round(progress)}
+      data-reduced-motion={shouldReduceMotion}
+      data-is-last-step={isLastStep}
+      data-shortcut-count={shortcutItems.length}
     >
       <motion.div className="relative mb-8" variants={fadeInUp}>
         <motion.div
@@ -211,41 +251,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
           sequentially rather than all at once, giving a more polished
           discovery moment that matches the app's staggered entrance pattern. */}
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs text-dark-500">
-        {(
-          [
-            {
-              key: "kb",
-              content: (
-                <>
-                  <kbd className={CSS_CLASSES.KEYCAP}>{DISPLAY_SYMBOLS.QUESTION_MARK}</kbd>
-                  <span>{EDITOR_EMPTY_STATE_LABELS.KEYBOARD_SHORTCUTS}</span>
-                </>
-              ),
-            },
-            {
-              key: "submit",
-              content: (
-                <>
-                  <kbd className={CSS_CLASSES.KEYCAP}>{modifierKey}</kbd>
-                  <span className="text-dark-500">+</span>
-                  <kbd className={CSS_CLASSES.KEYCAP}>{DISPLAY_SYMBOLS.ENTER_KEY}</kbd>
-                  <span>{EDITOR_EMPTY_STATE_LABELS.SUBMIT_WIZARD}</span>
-                </>
-              ),
-            },
-            {
-              key: "next",
-              content: (
-                <>
-                  <kbd className={CSS_CLASSES.KEYCAP}>{altKey}</kbd>
-                  <span className="text-dark-500">+</span>
-                  <kbd className={CSS_CLASSES.KEYCAP}>{DISPLAY_SYMBOLS.ARROW_RIGHT}</kbd>
-                  <span>{EDITOR_EMPTY_STATE_LABELS.NEXT_STEP}</span>
-                </>
-              ),
-            },
-          ] as const
-        ).map((item, index) => (
+        {shortcutItems.map((item, index) => (
           <motion.span
             key={item.key}
             initial={{ opacity: 0, y: 8 }}
@@ -255,6 +261,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
               duration: ANIMATION.SUBTLE_MOVE,
               ease: EASING.easeOut,
             }}
+            data-shortcut-key={item.key}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-dark-800/50 border border-dark-700/50"
           >
             {item.content}
