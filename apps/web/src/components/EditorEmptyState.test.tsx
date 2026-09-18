@@ -159,12 +159,26 @@ describe("EditorEmptyState", () => {
     expect(percentText).toBeInTheDocument();
   });
 
-  it("attaches data-state, data-step, and data-progress DOM attributes to container", () => {
+  it("attaches data-state, data-step, data-progress, and micro-UX DOM inspection attributes to container", () => {
     const { container } = render(<EditorEmptyState />);
     const emptyStateElement = container.firstElementChild;
+    expect(emptyStateElement).toHaveAttribute("role", "status");
+    expect(emptyStateElement).toHaveAttribute("aria-label", "Editor empty state");
     expect(emptyStateElement).toHaveAttribute("data-state", EMPTY_STATE_VALUES.WAITING);
     expect(emptyStateElement).toHaveAttribute("data-step", WIZARD_STEP_KEYS.INFO);
     expect(emptyStateElement).toHaveAttribute("data-progress", "20");
+    expect(emptyStateElement).toHaveAttribute("data-reduced-motion", "false");
+    expect(emptyStateElement).toHaveAttribute("data-is-last-step", "false");
+    expect(emptyStateElement).toHaveAttribute("data-shortcut-count", "3");
+  });
+
+  it("attaches data-shortcut-key attributes to shortcut hint badges", () => {
+    const { container } = render(<EditorEmptyState />);
+    const shortcutBadges = container.querySelectorAll("[data-shortcut-key]");
+    expect(shortcutBadges).toHaveLength(3);
+    expect(shortcutBadges[0]).toHaveAttribute("data-shortcut-key", "kb");
+    expect(shortcutBadges[1]).toHaveAttribute("data-shortcut-key", "submit");
+    expect(shortcutBadges[2]).toHaveAttribute("data-shortcut-key", "next");
   });
 
   it("renders without crashing when currentStep is the last step", () => {

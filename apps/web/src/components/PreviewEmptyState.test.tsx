@@ -161,11 +161,7 @@ describe("PreviewEmptyState", () => {
     expect(rootElement).toHaveAttribute("aria-live", "polite");
 
     rerender(
-      <PreviewEmptyState
-        tab={EDITOR_TABS.TASKS}
-        isGenerating={true}
-        siblingTabHasContent={false}
-      />
+      <PreviewEmptyState tab={EDITOR_TABS.TASKS} isGenerating={true} siblingTabHasContent={false} />
     );
     expect(rootElement).toHaveAttribute("data-state", EMPTY_STATE_VALUES.WAITING);
     expect(rootElement).toHaveAttribute("data-tab", EDITOR_TABS.TASKS);
