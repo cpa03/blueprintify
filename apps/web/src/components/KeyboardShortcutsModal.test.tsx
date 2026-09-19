@@ -27,11 +27,28 @@ describe("KeyboardShortcutsModal", () => {
   it("renders dialog and search box when isOpen is true", () => {
     render(<KeyboardShortcutsModal {...defaultProps} />);
 
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    const dialog = screen.getByRole("dialog");
+    expect(dialog).toBeInTheDocument();
+    expect(dialog).toHaveAttribute("data-state", "open");
+    expect(dialog).toHaveAttribute("data-has-query", "false");
+    expect(dialog.getAttribute("data-results-count")).not.toBeNull();
+
     expect(screen.getByRole("searchbox")).toBeInTheDocument();
     expect(
       screen.getByLabelText(ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.CLOSE)
     ).toBeInTheDocument();
+  });
+
+  it("updates data-has-query and data-results-count attributes when filtering", () => {
+    render(<KeyboardShortcutsModal {...defaultProps} />);
+
+    const dialog = screen.getByRole("dialog");
+    const search = screen.getByRole("searchbox");
+
+    fireEvent.change(search, { target: { value: "Save" } });
+
+    expect(dialog).toHaveAttribute("data-has-query", "true");
+    expect(Number(dialog.getAttribute("data-results-count"))).toBeGreaterThan(0);
   });
 
   it("does not render when isOpen is false", () => {
