@@ -24,7 +24,7 @@ import {
   SPRING_CONFIG,
   ANIMATION,
 } from "../config/constants";
-import { KEYBOARD_EVENT_KEYS, FRAMER_TYPE, DISPLAY_SYMBOLS } from "@blueprint/shared/config";
+import { KEYBOARD_EVENT_KEYS, FRAMER_TYPE, DISPLAY_SYMBOLS, DIALOG_STATE_VALUES } from "@blueprint/shared";
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { Icon, type IconName } from "./Icon";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
@@ -297,6 +297,10 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
             aria-modal="true"
             aria-labelledby="keyboard-shortcuts-title"
             aria-describedby="keyboard-shortcuts-tip"
+            data-state={isOpen ? DIALOG_STATE_VALUES.OPEN : DIALOG_STATE_VALUES.CLOSED}
+            data-has-query={Boolean(searchQuery)}
+            data-results-count={filteredShortcuts.length}
+            data-category-count={entries.length}
           >
             <div
               ref={containerRef as React.RefObject<HTMLDivElement>}

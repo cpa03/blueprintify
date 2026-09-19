@@ -1,5 +1,14 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **KeyboardShortcutsModal Micro-UX & State Inspection**
+- [CONNECT] Connected `DIALOG_STATE_VALUES` shared config export from `@blueprint/shared` to `KeyboardShortcutsModal.tsx`.
+- [STRENGTHEN] Strengthened `KeyboardShortcutsModal` DOM state inspection with `data-state` ("open"/"closed"), `data-has-query`, `data-results-count`, and `data-category-count` attributes.
+- [CONSOLIDATE] Consolidated modal dialog display state inspection across web components.
+- [REMOVE] Removed un-inspected DOM state for keyboard shortcut dialog searching in test fixtures (`KeyboardShortcutsModal.test.tsx`).
+
+## ✅ BugLover Audit — **Phase 1 Complete (Sep 19 2026)**
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,635/2,635 passing.
+
 ## ✅ BugLover Audit — **Phase 1 Complete (Sep 18 2026)**
 - [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,635/2,635 passing.
 
