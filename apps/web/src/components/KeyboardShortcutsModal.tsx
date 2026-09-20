@@ -24,7 +24,12 @@ import {
   SPRING_CONFIG,
   ANIMATION,
 } from "../config/constants";
-import { KEYBOARD_EVENT_KEYS, FRAMER_TYPE, DISPLAY_SYMBOLS, DIALOG_STATE_VALUES } from "@blueprint/shared";
+import {
+  KEYBOARD_EVENT_KEYS,
+  FRAMER_TYPE,
+  DISPLAY_SYMBOLS,
+  DIALOG_STATE_VALUES,
+} from "@blueprint/shared";
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { Icon, type IconName } from "./Icon";
 import { getModifierLabel, getAltKeyLabel } from "../lib/platform";
