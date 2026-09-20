@@ -3,6 +3,16 @@
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
 
+## Orchestration Cycle 601 (2026-09-06 — ERRORFALLBACK MICRO-UX & DOM STATE TRACKING)
+
+**Phase 0**: Local `agent` branch checked out; synced with `origin/main`. Working tree clean.
+**Phase 1 (BugLover)**: Full BugLover audit clean — Prettier formatting drift in `KeyboardShortcutsModal.tsx` detected and resolved. Typecheck, lint, build, and unit tests (2,635+ tests) pass cleanly.
+**Phase 2 (Palette)**: Enhanced `ErrorFallback` UI with state inspection attributes (`data-has-error`, `data-reduced-motion`, `data-has-details`, `data-copy-state`) to support automated DOM testing and accessibility inspection.
+**Phase 3 (Flexy)**: Connected `COPY_STATE_VALUES` from `@blueprint/shared/config` to `ErrorFallback.tsx` to eliminate hardcoded copy state strings.
+**Phase 4 (TestGuard)**: Updated `ErrorFallback.test.tsx` with DOM attribute assertions verifying `data-has-error`, `data-reduced-motion`, `data-has-details`, and `data-copy-state`. Verified all 18 component tests pass.
+**Phase 5 (StorX)**: Strengthened `ErrorFallback` component logic and updated `docs/active-tasks.md` with categorized task records (`[CONNECT]`, `[STRENGTHEN]`, `[CONSOLIDATE]`, `[REMOVE]`).
+
+
 ## Orchestration Cycle 600 (2026-09-06 — PALETTE, FLEXY & STORX ENHANCEMENTS)
 
 **Phase 0**: On `agent` branch; working tree clean and synced with `origin/main`.
