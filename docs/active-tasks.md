@@ -1,5 +1,14 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **ErrorFallback Micro-UX & State Inspection**
+- [CONNECT] Connected `COPY_STATE_VALUES` shared config export from `@blueprint/shared` to `ErrorFallback.tsx`.
+- [STRENGTHEN] Strengthened `ErrorFallback` DOM state inspection with `data-has-error`, `data-copy-state`, `data-reduced-motion`, and `data-has-details` attributes.
+- [CONSOLIDATE] Consolidated error fallback DOM tracking and copy-to-clipboard state inspection across web components.
+- [REMOVE] Removed un-inspected DOM state for error fallback card in test fixtures (`ErrorFallback.test.tsx`).
+
+## ✅ BugLover Audit — **Phase 1 Complete (Sep 20 2026)**
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,635/2,635 passing.
+
 ## ✅ StorX — **KeyboardShortcutsModal Micro-UX & State Inspection**
 - [CONNECT] Connected `DIALOG_STATE_VALUES` shared config export from `@blueprint/shared` to `KeyboardShortcutsModal.tsx`.
 - [STRENGTHEN] Strengthened `KeyboardShortcutsModal` DOM state inspection with `data-state` ("open"/"closed"), `data-has-query`, `data-results-count`, and `data-category-count` attributes.
