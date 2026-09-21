@@ -40,6 +40,7 @@ import {
   UI_TIMEOUTS,
   FRAMER_TYPE,
   COPY_STATE_VALUES,
+  BANNER_STATE_VALUES,
 } from "@blueprint/shared/config";
 import {
   ANIMATION,
@@ -186,7 +187,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
           relative overflow-hidden
           ${showCopied ? "!border-accent-emerald/50 !bg-accent-emerald/15" : ""}
         `}
-        data-state={isVisible ? "visible" : "hidden"}
+        data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
         data-copied-state={showCopied ? COPY_STATE_VALUES.COPIED : COPY_STATE_VALUES.IDLE}
         data-slug={slug}
         aria-label={
