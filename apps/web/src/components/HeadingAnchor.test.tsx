@@ -16,6 +16,7 @@ vi.mock("../hooks/useReducedMotion", () => ({
 
 import { copyToClipboard } from "../lib/export";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { BANNER_STATE_VALUES, COPY_STATE_VALUES } from "@blueprint/shared/config";
 
 describe("HeadingAnchor", () => {
   beforeEach(() => {
@@ -45,8 +46,8 @@ describe("HeadingAnchor", () => {
     const button = screen.getByTitle("Copy anchor link");
     expect(button).toBeInTheDocument();
     expect(button).toHaveStyle("opacity: 0");
-    expect(button).toHaveAttribute("data-state", "hidden");
-    expect(button).toHaveAttribute("data-copied-state", "idle");
+    expect(button).toHaveAttribute("data-state", BANNER_STATE_VALUES.HIDDEN);
+    expect(button).toHaveAttribute("data-copied-state", COPY_STATE_VALUES.IDLE);
     expect(button).toHaveAttribute("data-slug", "getting-started");
   });
 
@@ -54,20 +55,20 @@ describe("HeadingAnchor", () => {
     vi.useFakeTimers();
     render(<HeadingAnchor headingText="Installation">Installation</HeadingAnchor>);
     const button = screen.getByTitle("Copy anchor link");
-    expect(button).toHaveAttribute("data-copied-state", "idle");
+    expect(button).toHaveAttribute("data-copied-state", COPY_STATE_VALUES.IDLE);
 
     await act(async () => {
       fireEvent.click(button);
     });
 
-    expect(button).toHaveAttribute("data-copied-state", "copied");
-    expect(button).toHaveAttribute("data-state", "visible");
+    expect(button).toHaveAttribute("data-copied-state", COPY_STATE_VALUES.COPIED);
+    expect(button).toHaveAttribute("data-state", BANNER_STATE_VALUES.VISIBLE);
 
     act(() => {
       vi.runAllTimers();
     });
 
-    expect(button).toHaveAttribute("data-copied-state", "idle");
+    expect(button).toHaveAttribute("data-copied-state", COPY_STATE_VALUES.IDLE);
   });
 
   it("copies link to clipboard when clicked", async () => {

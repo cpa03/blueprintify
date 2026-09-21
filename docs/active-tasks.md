@@ -1,5 +1,14 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **HeadingAnchor Micro-UX & State Inspection**
+- [CONNECT] Connected `BANNER_STATE_VALUES` shared config export from `@blueprint/shared` to `HeadingAnchor.tsx`.
+- [STRENGTHEN] Strengthened `HeadingAnchor` DOM state inspection with `data-state` ("visible"/"hidden"), `data-copied-state` ("copied"/"idle"), and `data-slug` attributes.
+- [CONSOLIDATE] Consolidated heading anchor link visibility and copy state tracking in `@blueprint/shared`.
+- [REMOVE] Removed raw string literals for heading anchor visibility state tracking in `HeadingAnchor.tsx` and `HeadingAnchor.test.tsx`.
+
+## ✅ BugLover Audit — **Phase 1 Complete (Sep 21 2026)**
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,635/2,635 passing.
+
 ## ✅ StorX — **ErrorFallback Micro-UX & State Inspection**
 - [CONNECT] Connected `COPY_STATE_VALUES` shared config export from `@blueprint/shared` to `ErrorFallback.tsx`.
 - [STRENGTHEN] Strengthened `ErrorFallback` DOM state inspection with `data-has-error`, `data-copy-state`, `data-reduced-motion`, and `data-has-details` attributes.
