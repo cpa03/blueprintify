@@ -67,6 +67,8 @@ export const ValidationCheckmark = memo(function ValidationCheckmark({
           className={`${containerClasses} ${isValid ? validClasses : invalidClasses} ${className}`}
           aria-label={isValid ? ariaLabel : invalidAriaLabel}
           data-state={isValid ? VALIDATION_STATE_VALUES.VALID : VALIDATION_STATE_VALUES.INVALID}
+          data-size={size}
+          data-show-invalid={showInvalid}
           title={isValid ? ariaLabel : invalidAriaLabel}
         >
           {isValid ? (
