@@ -1,5 +1,14 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **ValidationCheckmark Micro-UX & State Inspection**
+- [CONNECT] Connected `VALIDATION_STATE_VALUES` shared config export from `@blueprint/shared` to `ValidationCheckmark.tsx`.
+- [STRENGTHEN] Strengthened `ValidationCheckmark` DOM state inspection with `data-state`, `data-size` ("inline"/"input"), and `data-show-invalid` attributes.
+- [CONSOLIDATE] Consolidated field validation DOM state tracking across web components.
+- [REMOVE] Removed un-inspected DOM state for validation indicators in test fixtures (`ValidationCheckmark.test.tsx`).
+
+## ✅ BugLover Audit — **Phase 1 Complete (Sep 22 2026)**
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,635/2,635 passing.
+
 ## ✅ StorX — **HeadingAnchor Micro-UX & State Inspection**
 - [CONNECT] Connected `BANNER_STATE_VALUES` shared config export from `@blueprint/shared` to `HeadingAnchor.tsx`.
 - [STRENGTHEN] Strengthened `HeadingAnchor` DOM state inspection with `data-state` ("visible"/"hidden"), `data-copied-state` ("copied"/"idle"), and `data-slug` attributes.
