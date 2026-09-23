@@ -1,5 +1,11 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **TypeIndicator Micro-UX & Reduced Motion Inspection**
+- [CONNECT] Connected `TypeIndicator` component to `shouldReduceMotion` hook and shared loading state configuration.
+- [STRENGTHEN] Strengthened `TypeIndicator` DOM state inspection with `data-reduced-motion` ("true"/"false") attribute for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated reduced motion DOM state tracking across interactive web components.
+- [REMOVE] Removed un-inspected DOM state for typing indicators in test fixtures.
+
 ## ✅ StorX — **ValidationCheckmark Micro-UX & State Inspection**
 - [CONNECT] Connected `VALIDATION_STATE_VALUES` shared config export from `@blueprint/shared` to `ValidationCheckmark.tsx`.
 - [STRENGTHEN] Strengthened `ValidationCheckmark` DOM state inspection with `data-state`, `data-size` ("inline"/"input"), and `data-show-invalid` attributes.

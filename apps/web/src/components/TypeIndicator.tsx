@@ -73,6 +73,7 @@ export const TypeIndicator = memo(function TypeIndicator({
           data-state={isTyping ? TYPING_STATE_VALUES.TYPING : TYPING_STATE_VALUES.IDLE}
           data-position={position}
           data-dots-count={LOADING_DOTS_COUNT}
+          data-reduced-motion={shouldReduceMotion ? "true" : "false"}
         >
           <span className={TYPING.SR_ONLY}>Typing</span>
           {Array.from({ length: LOADING_DOTS_COUNT }, (_, index) => (
