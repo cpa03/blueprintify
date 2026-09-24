@@ -240,6 +240,7 @@ export {
   COUNTER_DIRECTION_VALUES,
   EDITOR_BUTTON_STATE_VALUES,
   SKIP_LINK_STATE_VALUES,
+  SAVE_STATE_VALUES,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";
