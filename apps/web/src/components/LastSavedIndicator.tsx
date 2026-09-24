@@ -14,7 +14,7 @@ import React from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
-import { ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE, UI_TIMEOUTS } from "@blueprint/shared/config";
+import { ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE, UI_TIMEOUTS, SAVE_STATE_VALUES } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 /**
@@ -84,8 +84,9 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
           }`}
           aria-live="polite"
           aria-atomic="true"
-          data-state={hasChanges ? "unsaved" : "saved"}
+          data-state={hasChanges ? SAVE_STATE_VALUES.UNSAVED : SAVE_STATE_VALUES.SAVED}
           data-has-changes={hasChanges}
+          data-reduced-motion={shouldReduceMotion}
           title={statusText}
         >
           {hasChanges ? (
