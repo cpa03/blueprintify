@@ -824,6 +824,20 @@ export const TYPING_STATE_VALUES = {
 } as const;
 
 /**
+ * Save State Display Values
+ * Centralized state tracking values for save status indicators (e.g. LastSavedIndicator).
+ * Flexy says: No hardcoded "saved"/"unsaved" strings in LastSavedIndicator!
+ * Usage: import { SAVE_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={hasChanges ? SAVE_STATE_VALUES.UNSAVED : SAVE_STATE_VALUES.SAVED}
+ */
+export const SAVE_STATE_VALUES = {
+  /** Saved state identifier */
+  SAVED: "saved" as const,
+  /** Unsaved state identifier */
+  UNSAVED: "unsaved" as const,
+} as const;
+
+/**
  * Skip Link Display State Values
  * Centralized state tracking values for skip-to-content navigation (SkipLink).
  * Flexy says: No hardcoded "focused"/"idle" strings in SkipLink!
