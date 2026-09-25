@@ -1,5 +1,14 @@
 # Active Tasks  <a name="top-badges"></a>
 
+## ✅ StorX — **OfflineBanner Micro-UX & State Inspection**
+- [CONNECT] Connected `useReducedMotion` hook and `BANNER_STATE_VALUES` shared config export to `OfflineBanner.tsx`.
+- [STRENGTHEN] Strengthened `OfflineBanner` DOM state inspection with `data-reduced-motion` ("true"/"false") attribute for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated `OfflineBanner` network and reduced motion DOM state tracking across web components.
+- [REMOVE] Removed un-inspected DOM state for offline notification banner in test fixtures (`OfflineBanner.test.tsx`).
+
+## ✅ BugLover Audit — **Phase 1 Complete (Sep 25 2026)**
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,635/2,635 passing.
+
 ## ✅ StorX — **LastSavedIndicator Micro-UX & State Inspection**
 - [CONNECT] Connected `SAVE_STATE_VALUES` shared config export from `@blueprint/shared` to `LastSavedIndicator.tsx`.
 - [STRENGTHEN] Strengthened `LastSavedIndicator` DOM state inspection with `data-state` ("saved"/"unsaved"), `data-has-changes`, and `data-reduced-motion` ("true"/"false") attributes.
