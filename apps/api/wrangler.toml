@@ -15,13 +15,6 @@ keep_vars = true
 [placement]
 mode = "smart"
 
-# TypeScript module rules for optimal bundling
-# https://developers.cloudflare.com/workers/wrangler/configuration/#rules
-[[rules]]
-type = "ESModule"
-globs = ["**/*.ts", "**/*.tsx"]
-fallthrough = true
-
 # Cloudflare Workers AI binding for future AI features
 # https://developers.cloudflare.com/workers-ai/
 [ai]
