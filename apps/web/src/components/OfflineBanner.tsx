@@ -176,6 +176,7 @@ function OfflineBannerComponent(): JSX.Element | null {
         aria-atomic={isVisible ? "true" : undefined}
         data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
         data-online-status={isOnline ? BANNER_STATE_VALUES.ONLINE : BANNER_STATE_VALUES.OFFLINE}
+        data-reduced-motion={shouldReduceMotion ? "true" : "false"}
         className={`overflow-hidden ${
           // Outer container handles layout space via max-height
           // while the inner banner slides with GPU-composited transform.

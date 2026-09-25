@@ -25,7 +25,7 @@ describe("OfflineBanner", () => {
     expect(screen.queryByText(NETWORK_MESSAGES.OFFLINE)).not.toBeInTheDocument();
   });
 
-  it("renders offline message when offline with data-state and data-online-status attributes", () => {
+  it("renders offline message when offline with data-state, data-online-status, and data-reduced-motion attributes", () => {
     mockOnlineStatus.mockReturnValue(false);
     render(<OfflineBanner />);
     expect(screen.getByText(NETWORK_MESSAGES.OFFLINE)).toBeInTheDocument();
@@ -34,6 +34,7 @@ describe("OfflineBanner", () => {
     const banner = banners.find((b) => b.getAttribute("aria-live") === "polite");
     expect(banner).toHaveAttribute("data-state", "visible");
     expect(banner).toHaveAttribute("data-online-status", "offline");
+    expect(banner).toHaveAttribute("data-reduced-motion", "false");
   });
 
   it("hides the banner when dismiss button is clicked", async () => {
