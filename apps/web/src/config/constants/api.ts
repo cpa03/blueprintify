@@ -10,7 +10,6 @@ import {
   SSE_CONFIG,
   HTTP_STATUS,
   ERROR_STRINGS,
-  DEV_DOMAIN_DEFAULTS,
   API_ERROR_MESSAGES as SHARED_API_ERROR_MESSAGES,
   GENERATION_MESSAGES as SHARED_GENERATION_MESSAGES,
   GENERATION_ESTIMATES as SHARED_GENERATION_ESTIMATES,
@@ -58,14 +57,6 @@ export const EXTERNAL_URLS = {
   CLOUDFLARE_WORKERS: EXTERNAL_REFERENCE_URLS.CLOUDFLARE_WORKERS,
   REACT: EXTERNAL_REFERENCE_URLS.REACT,
 } as const;
-
-/**
- * Vercel deployment detection hostnames
- * Flexy says: No hardcoded hostnames - everything in config!
- */
-export const VERCEL_DOMAINS = {
-  LOCAL: DEV_DOMAIN_DEFAULTS.LOCAL_HOSTNAMES,
-};
 
 /** Frontend-specific error messages (supplemental) */
 export const FRONTEND_ERROR_MESSAGES = {

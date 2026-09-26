@@ -4,7 +4,6 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ReducedMotionProvider } from "./context/ReducedMotionContext";
 import { ExportProvider } from "./context/ExportContext";
 import { MotionConfigWrapper } from "./components/MotionConfigWrapper";
-import { VERCEL_DOMAINS } from "./config/constants";
 import { DEBUG_MESSAGES } from "./config/constants/content";
 import "./index.css";
 
@@ -45,15 +44,7 @@ const fadeOutAndRemoveSkeletonLoader = () => {
   }
 };
 
-// Lazy load Vercel Analytics — only loads on actual Vercel deployments, not localhost
-const VercelAnalyticsComponent = React.lazy(() =>
-  import("./components/VercelAnalytics").then((m) => ({ default: m.VercelAnalytics }))
-);
-
 function Root(): JSX.Element {
-  const isVercel =
-    typeof window !== "undefined" && !VERCEL_DOMAINS.LOCAL.includes(window.location.hostname);
-
   return (
     <React.StrictMode>
       <ErrorBoundary>
@@ -64,11 +55,6 @@ function Root(): JSX.Element {
             </MotionConfigWrapper>
           </ExportProvider>
         </ReducedMotionProvider>
-        {isVercel && (
-          <React.Suspense fallback={null}>
-            <VercelAnalyticsComponent />
-          </React.Suspense>
-        )}
       </ErrorBoundary>
     </React.StrictMode>
   );
