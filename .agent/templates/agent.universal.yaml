@@ -1,0 +1,93 @@
+---
+# Universal Agent Template
+# Compatible with: OpenCode, Claude Code, Cursor, Continue, Custom agents
+# Usage: Copy this template, fill in fields, save as {name}.agent.yaml or {name}.md
+
+name: "" # Required: unique identifier (kebab-case)
+display_name: "" # Required: human-readable name
+description: "" # Required: one-line description of agent's purpose
+version: "1.0.0" # Semantic version
+author: "" # Author/organization
+license: "MIT" # License for the agent definition
+
+# Capabilities - what this agent can do
+capabilities:
+  - "read" # File reading
+  - "write" # File writing/creation
+  - "edit" # File editing/patching
+  - "bash" # Shell command execution
+  - "grep" # Content search
+  - "glob" # File pattern matching
+  - "skill" # Can load/use skills
+  - "websearch" # Web search (optional)
+  - "webfetch" # Web page fetching (optional)
+  - "vision" # Image analysis (optional)
+
+# Model configuration - abstracted for portability
+model:
+  provider: "" # e.g., "openai", "anthropic", "google", "local"
+  model_id: "" # e.g., "gpt-4o", "claude-3.5-sonnet", "deepseek-v4"
+  temperature: 0.1 # Default temperature
+  max_tokens: 8192 # Default max tokens
+  # Allow override via environment: AGENT_MODEL_PROVIDER, AGENT_MODEL_ID, etc.
+
+# Permissions - fine-grained access control
+permissions:
+  bash:
+    allow: [] # List of allowed command patterns (globs)
+    deny: [] # List of denied command patterns
+  write:
+    allow: [] # File paths/patterns allowed to write
+    deny: [] # File paths/patterns denied
+  read:
+    allow: [] # File paths/patterns allowed to read
+    deny: [] # File paths/patterns denied
+  network:
+    allow: [] # Domains/URLs allowed for web access
+    deny: [] # Domains/URLs denied
+
+# Memory & Knowledge - portable references
+memory:
+  - path: "{project_root}/.agent/memory/{domain}.md"
+    description: ""
+    required: false
+  # Variables: {project_root}, {workspace}, {home}, {agent_dir}
+
+# Skills - reusable capability packs this agent can use
+skills:
+  - name: "" # Skill name (matches skill registry)
+    version: "" # Version constraint (semver)
+    required: false
+    config: {} # Skill-specific configuration
+
+# System prompt / instructions - the agent's "brain"
+instructions: |
+  # Agent Identity
+
+  You are {display_name}. {description}
+
+  # Core Responsibilities
+
+  1. ...
+  2. ...
+
+  # Operational Workflow
+
+  ## 1. Setup & Sync
+  ...
+
+  ## 2. Analysis & Planning
+  ...
+
+  ## 3. Execution
+  ...
+
+  ## 4. Review & Deliver
+  ...
+
+# Metadata for discovery and composition
+tags: [] # e.g., ["backend", "api", "database"]
+category: "" # e.g., "engineering", "analysis", "operations"
+maturity: "stable" # "experimental", "beta", "stable", "deprecated"
+dependencies: [] # Other agents this agent depends on
+provides: [] # Capabilities this agent provides to others
