@@ -43,25 +43,28 @@ interface StreamOptions {
 
 /**
  * Singleton circuit breaker instance for AI service resilience.
- * Eagerly initialized at module load to eliminate cold-start gap
- * where burst traffic could bypass protection.
+ * Lazy-initialized on first access to avoid module-load dependency
+ * on environment configuration (which is set at request time).
  * Uses a 30-second cold start window so the first requests after a
  * cold start are met with a more sensitive (halved) failure threshold.
  */
-const circuitBreaker: CircuitBreaker = createCircuitBreaker({
-  failureThreshold: CIRCUIT_BREAKER_CONFIG.DEFAULT_FAILURE_THRESHOLD,
-  resetTimeoutMs: CIRCUIT_BREAKER_CONFIG.DEFAULT_RESET_TIMEOUT_MS,
-  halfOpenMaxCalls: CIRCUIT_BREAKER_CONFIG.DEFAULT_HALF_OPEN_MAX_CALLS,
-  coldStartWindowMs: CIRCUIT_BREAKER_CONFIG.DEFAULT_COLD_START_WINDOW_MS,
-});
+let circuitBreaker: CircuitBreaker | null = null;
 
 /**
  * Returns the singleton circuit breaker instance.
- * Initialized at module load — no lazy init needed.
+ * Initializes on first access with current environment config.
  *
  * @returns The shared CircuitBreaker instance
  */
 export function initializeCircuitBreaker(): CircuitBreaker {
+  if (!circuitBreaker) {
+    circuitBreaker = createCircuitBreaker({
+      failureThreshold: CIRCUIT_BREAKER_CONFIG.DEFAULT_FAILURE_THRESHOLD,
+      resetTimeoutMs: CIRCUIT_BREAKER_CONFIG.DEFAULT_RESET_TIMEOUT_MS,
+      halfOpenMaxCalls: CIRCUIT_BREAKER_CONFIG.DEFAULT_HALF_OPEN_MAX_CALLS,
+      coldStartWindowMs: CIRCUIT_BREAKER_CONFIG.DEFAULT_COLD_START_WINDOW_MS,
+    });
+  }
   return circuitBreaker;
 }
 
