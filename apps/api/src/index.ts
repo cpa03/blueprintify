@@ -188,16 +188,40 @@ export default {
     const config = loadConfig(env as unknown as Record<string, string | undefined>);
     setEnvConfig(config);
 
-    if (env.ANALYTICS) {
-      ctx.waitUntil(
-        Promise.resolve(
-          env.ANALYTICS.writeDataPoint({
-            blobs: [request.url, request.method, timestamp()],
-          })
-        )
-      );
+    // Route: API endpoints under /api/*
+    const url = new URL(request.url);
+    const isApiRoute =
+      url.pathname.startsWith("/api/") ||
+      url.pathname === "/api" ||
+      url.pathname === "/generate" ||
+      url.pathname === "/tasks" ||
+      url.pathname === "/refine" ||
+      url.pathname === "/export" ||
+      url.pathname === "/import" ||
+      url.pathname === "/storage" ||
+      url.pathname === "/share" ||
+      url.pathname === "/health" ||
+      url.pathname === "/warmup";
+
+    if (isApiRoute) {
+      if (env.ANALYTICS) {
+        ctx.waitUntil(
+          Promise.resolve(
+            env.ANALYTICS.writeDataPoint({
+              blobs: [request.url, request.method, timestamp()],
+            })
+          )
+        );
+      }
+      return app.fetch(request, env, ctx);
     }
 
-    return app.fetch(request, env, ctx);
+    // Non-API routes: serve frontend assets
+    if (env.ASSETS) {
+      return env.ASSETS.fetch(request);
+    }
+
+    // Fallback
+    return new Response("Not found", { status: 404 });
   },
 };

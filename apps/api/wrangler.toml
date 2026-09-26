@@ -19,6 +19,9 @@ binding = "AI"
 ENVIRONMENT = "production"
 CORS_ORIGIN = "https://blueprintify.cpa03-cmz.workers.dev"
 
+# Assets binding (Free Tier: included) - serves frontend from apps/web/dist
+assets = { directory = "../../apps/web/dist", binding = "ASSETS" }
+
 # KV namespaces for caching (Free Tier: 1GB storage, 100k reads/day, 1k writes/day)
 [[kv_namespaces]]
 binding = "CACHE"
