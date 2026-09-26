@@ -162,15 +162,15 @@ CORS_ORIGIN = "http://localhost:3000"
 #    Then set the returned ID here for each environment.
 [[kv_namespaces]]
 binding = "CACHE"
-id = "cache_kv_namespace_id"               # TODO: Replace with actual dev KV namespace ID
+id = "c55ed3885e8440338c5066ea4f310cc3"
 
 [[env.production.kv_namespaces]]
 binding = "CACHE"
-id = "production_cache_kv_id"              # TODO: Replace with actual production KV namespace ID
+id = "de496fb94f6b4e98be76a6aff5a767db"
 
 [[env.staging.kv_namespaces]]
 binding = "CACHE"
-id = "staging_cache_kv_id"                 # TODO: Replace with actual staging KV namespace ID
+id = "17d72197156e4705b6850e731883d6fb"
 
 # D1 database bindings
 # ⚠️ PLACEHOLDER: Replace with real D1 database IDs before deployment.
@@ -179,17 +179,17 @@ id = "staging_cache_kv_id"                 # TODO: Replace with actual staging K
 [[d1_databases]]
 binding = "DB"
 database_name = "blueprint-db"
-database_id = "local_database_id"          # TODO: Replace with actual dev D1 database ID
+database_id = "49d9b895-9f4e-4b91-989c-8bfeb0bc2d50"
 
 [[env.production.d1_databases]]
 binding = "DB"
 database_name = "blueprint-db-prod"
-database_id = "production_database_id"     # TODO: Replace with actual production D1 database ID
+database_id = "b0285cac-fb50-40ba-91ef-e743daf043a1"
 
 [[env.staging.d1_databases]]
 binding = "DB"
 database_name = "blueprint-db-staging"
-database_id = "staging_database_id"        # TODO: Replace with actual staging D1 database ID
+database_id = "7c22c4e8-3451-4cf5-945c-92eb1fb466b4"
 
 # Queue for background processing
 # Flexy says: Default values match @blueprint/shared QUEUE_DEFAULTS
