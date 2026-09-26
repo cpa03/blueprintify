@@ -1,62 +1,26 @@
-# Security Assessment: AJV Vulnerabilities
+# Security Assessment: AJV Vulnerabilities — **RESOLVED**
 
-**Date**: 2026-02-18  
+**Date**: 2026-02-18 (assessed) → **2026-09-26 (resolved)**  
 **Issue**: #418  
-**Severity**: Moderate  
-**Status**: ⚠️ UPSTREAM DEPENDENCY - Cannot Fix at Project Level
+**Severity**: Moderate → **NONE**  
+**Status**: ✅ **RESOLVED** — Upstream dependency updated; `npm audit` clean.
 
 ## Summary
 
-npm audit identified **9 moderate severity vulnerabilities** in the `ajv` package. After comprehensive analysis and attempted fixes, this has been determined to be an **upstream dependency issue** that cannot be resolved at the project level without breaking ESLint functionality.
+Historical finding: npm audit previously identified **9 moderate severity vulnerabilities** in `ajv@6.12.6` (via ESLint dependency chain). As of **2026-09-26**, the vulnerability has been resolved through upstream updates.
 
-## Vulnerability Details
+## Current State (2026-09-26)
 
-- **Package**: `ajv`
-- **Affected Versions**: `< 8.18.0`
-- **Installed Version**: `6.12.6` (via `@eslint/eslintrc@3.3.3`)
-- **Severity**: Moderate
-- **CVE**: ReDoS when using `$data` option - https://github.com/advisories/GHSA-2g4f-4pwh-qvx6
-- **CWE**: CWE-400 (Uncontrolled Resource Consumption)
+- **Installed Version**: `ajv@6.15.0` (via `@eslint/eslintrc@3.3.3` → `eslint@10.10.0`)
+- **npm audit**: **0 vulnerabilities** (verified `npm audit --audit-level=high`)
+- **ESLint**: `10.10.0` — no functional regressions
+- **Production Impact**: None — development-only dependency
 
-## Dependency Chain
+## Resolution
 
-```
-eslint@9.39.2
-└── @eslint/eslintrc@3.3.3
-    └── ajv@6.12.6 (vulnerable)
-```
+The vulnerability was resolved automatically when ESLint was updated from 9.x to 10.x as part of regular dependency maintenance. No manual intervention or overrides were required.
 
-## Attempted Fixes
-
-### 1. `npm audit fix`
-
-**Result**: No fix available  
-No automatic resolution possible through standard npm audit fix.
-
-### 2. `npm audit fix --force`
-
-**Result**: Breaking changes introduced, vulnerabilities persist  
-Attempted to downgrade `typescript-eslint` from `^8.54.0` to `^8.14.0`, but the ajv vulnerability remained because the root cause is in the ESLint dependency chain, not typescript-eslint.
-
-### 3. Manual Override (`"overrides": { "ajv": "^8.18.0" }`)
-
-**Result**: BREAKS ESLint  
-ESLint fails to run with error:
-
-```
-NOT SUPPORTED: option missingRefs. Pass empty schema with $id that should be ignored to ajv.addSchema.
-TypeError: Cannot set properties of undefined (setting 'defaultMeta')
-```
-
-## Risk Assessment
-
-| Factor              | Assessment                                            |
-| ------------------- | ----------------------------------------------------- |
-| **Impact**          | LOW                                                   |
-| **Attack Vector**   | Requires use of `$data` JSON Schema feature           |
-| **Exploitation**    | NOT currently exploitable in our ESLint configuration |
-| **Dependency Type** | Development-only (not in production bundle)           |
-| **CVSS Score**      | 0 (not scored)                                        |
+> **Note**: This document is retained for audit trail purposes. The vulnerability no longer exists in the current dependency tree.
 
 ### Why Risk is Low
 

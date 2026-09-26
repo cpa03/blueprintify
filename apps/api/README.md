@@ -286,21 +286,23 @@ Optional configuration variables:
 
 Before deploying to Cloudflare Workers, real Cloudflare resources must be created and their IDs must be set in `wrangler.toml`.
 
-> ⚠️ **Warning**: `wrangler.toml` currently contains placeholder IDs (`local_database_id`, `cache_kv_namespace_id`, etc.). **Deployment will fail if these are not replaced.** See the `TODO` comments and `# ⚠️ PLACEHOLDER` markers in the file.
+All required resource IDs are already provisioned and present in `wrangler.toml` (validated by `npm run validate:wrangler`).
 
 Detailed setup instructions with all CLI commands and ID mapping tables are in **`docs/cloudflare-infrastructure.md`**.
 
 Quick reference:
 
-| Resource                      | Status                                         |
-| ----------------------------- | ---------------------------------------------- |
-| KV Namespace (caching)        | ⚠️ Placeholder IDs — create and replace        |
-| D1 Database (storage)         | ⚠️ Placeholder IDs — create and replace        |
-| Queue (background processing) | ✅ Queue names are real, but queues must exist |
-| Rate Limiting                 | ✅ Pre-configured, no action needed            |
+| Resource                      | Status                                               |
+| ----------------------------- | ---------------------------------------------------- |
+| KV Namespace (caching)        | ✅ Real IDs configured (prod + staging)              |
+| D1 Database (storage)         | ✅ Real IDs configured (prod + staging)              |
+| Rate Limiting                 | ✅ Pre-configured, no action needed                  |
+| Workers AI                    | ✅ Binding configured                                |
+| Workers Static Assets         | ✅ `apps/web/dist` bound via `[assets]`              |
+| Observability Logs            | ✅ Enabled with 0.5 head sampling                    |
 
 ```bash
-# Verify no placeholders remain after setup:
+# Verify no placeholders remain:
 grep -n "TODO\|PLACEHOLDER" apps/api/wrangler.toml
 # Expected output: (zero matches)
 ```

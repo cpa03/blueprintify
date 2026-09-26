@@ -419,7 +419,7 @@ export CLOUDFLARE_API_TOKEN=your_token
 cat apps/api/wrangler.toml
 
 # Create KV namespace if needed
-npx wrangler kv:namespace create BLUEPRINTS
+npx wrangler kv:namespace create CACHE
 ```
 
 ## Performance Issues

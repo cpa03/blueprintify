@@ -111,12 +111,6 @@ The API uses Cloudflare Workers bindings for various services.
 | ------- | ---------- | -------------------------------------- |
 | `AI`    | Workers AI | AI binding for server-side AI features |
 
-### Queues
-
-| Binding            | Type  | Description                         |
-| ------------------ | ----- | ----------------------------------- |
-| `BACKGROUND_QUEUE` | Queue | Queue for background job processing |
-
 ### Rate Limiting
 
 | Binding                 | Type       | Description             |
@@ -125,11 +119,16 @@ The API uses Cloudflare Workers bindings for various services.
 | `STANDARD_RATE_LIMITER` | Rate Limit | 60 requests per minute  |
 | `LENIENT_RATE_LIMITER`  | Rate Limit | 120 requests per minute |
 
-### Analytics
+### Free Tier Limitations
 
-| Binding     | Type             | Description                   |
-| ----------- | ---------------- | ----------------------------- |
-| `ANALYTICS` | Analytics Engine | Production metrics collection |
+The following bindings are **intentionally omitted** from `wrangler.toml` due to Cloudflare Free Tier constraints:
+
+| Feature | Status | Reason |
+|---------|--------|--------|
+| Queues (`BACKGROUND_QUEUE`) | ❌ Disabled | Free Tier does not support Queues |
+| Analytics Engine (`ANALYTICS`) | ❌ Disabled | Free Tier returns error 10089 |
+
+Background processing runs inline (synchronously) instead of via Queues. Metrics are collected via Workers Observability Logs (`[observability.logs]` in `wrangler.toml`).
 
 ---
 
