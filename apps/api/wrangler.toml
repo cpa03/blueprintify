@@ -17,7 +17,7 @@ binding = "AI"
 # Default environment: production (top-level)
 [vars]
 ENVIRONMENT = "production"
-CORS_ORIGIN = "*"
+CORS_ORIGIN = "https://blueprintify.cpa03-cmz.workers.dev"
 
 # KV namespaces for caching (Free Tier: 1GB storage, 100k reads/day, 1k writes/day)
 [[kv_namespaces]]

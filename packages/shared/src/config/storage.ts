@@ -3,13 +3,15 @@
  * Centralized storage limits and settings
  */
 export const STORAGE_CONFIG = {
-  // 5MB quota (typical browser localStorage limit)
+  // 5 MiB quota (typical browser localStorage limit)
   QUOTA_BYTES: 5 * 1024 * 1024,
   // Warning threshold at 90% capacity
   WARNING_THRESHOLD_PERCENT: 90,
   /** Current schema version for persisted storage payloads */
   CURRENT_SCHEMA_VERSION: 1,
-  /** Schema version assumed for legacy (pre-metadata) storage payloads */
+  /** Schema version assumed for legacy (pre-metadata) storage payloads.
+   * Kept separate from CURRENT_SCHEMA_VERSION to allow future divergence
+   * without breaking backward compatibility. */
   LEGACY_SCHEMA_VERSION: 1,
 } as const;
 

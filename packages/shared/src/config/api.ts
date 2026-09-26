@@ -42,7 +42,7 @@ export const RATE_LIMIT_DEFAULTS = {
 export const CIRCUIT_BREAKER_DEFAULTS = {
   /** Number of consecutive failures before circuit opens */
   FAILURE_THRESHOLD: 5,
-  /** Time in ms before circuit attempts half-open state (30 seconds) */
+  /** Time in ms before circuit attempts half-open state (60 seconds / 1 minute) */
   RESET_TIMEOUT_MS: TIME_UNITS.MS_PER_SECOND * TIME_UNITS.SECONDS_PER_MINUTE,
   /** Max test calls allowed in half-open state */
   HALF_OPEN_MAX_CALLS: 3,

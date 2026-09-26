@@ -21,6 +21,17 @@
   --color-bg-base: #020617;
   --color-text-primary: #f8fafc;
   --color-text-secondary: #94a3b8;
+  --color-dark-50: #f7f7f8;
+  --color-dark-100: #ececee;
+  --color-dark-200: #d5d5d9;
+  --color-dark-300: #b0b0b8;
+  --color-dark-400: #b8c0cc;
+  --color-dark-500: #9ca3af;
+  --color-dark-600: #5a5a62;
+  --color-dark-700: #4d4d53;
+  --color-dark-800: #434348;
+  --color-dark-900: #1a1a1e;
+  --color-dark-950: #0d0d0f;
   --scrollbar-thumb: #4b5563;
   --scrollbar-track: #0f172a;
 
@@ -1037,10 +1048,17 @@
     .arrival-pop,
     .form-ready-pulse,
     .animate-logo-breathe,
+    .step-complete-flash,
+    .invalid-field-flash,
+    .skip-highlight,
     .glass-card::after,
     .glass-card:focus-within::before,
     .text-gradient {
       animation: none !important;
+    }
+
+    .content-dot-breathe {
+      opacity: 1 !important;
     }
 
     /* Disable hover/glow transforms + transitions for reduced motion */
@@ -1299,7 +1317,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .attention-glow,
   .attention-glow::before {
     animation: none;
     opacity: 0;
