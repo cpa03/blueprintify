@@ -188,40 +188,38 @@ export default {
     const config = loadConfig(env as unknown as Record<string, string | undefined>);
     setEnvConfig(config);
 
-    // Route: API endpoints under /api/*
+    // Static assets (CSS, JS, images, fonts) - check first for performance
     const url = new URL(request.url);
-    const isApiRoute =
-      url.pathname.startsWith("/api/") ||
-      url.pathname === "/api" ||
-      url.pathname === "/generate" ||
-      url.pathname === "/tasks" ||
-      url.pathname === "/refine" ||
-      url.pathname === "/export" ||
-      url.pathname === "/import" ||
-      url.pathname === "/storage" ||
-      url.pathname === "/share" ||
-      url.pathname === "/health" ||
-      url.pathname === "/warmup";
+    const acceptHeader = request.headers.get("Accept") || "";
+    const isBrowserHtmlRequest = acceptHeader.includes("text/html");
+    const isStaticAsset =
+      url.pathname.startsWith("/assets/") ||
+      (url.pathname.includes(".") && !url.pathname.startsWith("/api/"));
 
-    if (isApiRoute) {
-      if (env.ANALYTICS) {
-        ctx.waitUntil(
-          Promise.resolve(
-            env.ANALYTICS.writeDataPoint({
-              blobs: [request.url, request.method, timestamp()],
-            })
-          )
-        );
+    if (env.ASSETS && (isStaticAsset || (url.pathname === "/" && isBrowserHtmlRequest))) {
+      const assetResponse = await env.ASSETS.fetch(request);
+      if (assetResponse.status !== 404) {
+        return assetResponse;
       }
-      return app.fetch(request, env, ctx);
     }
 
-    // Non-API routes: serve frontend assets
-    if (env.ASSETS) {
+    if (env.ANALYTICS) {
+      ctx.waitUntil(
+        Promise.resolve(
+          env.ANALYTICS.writeDataPoint({
+            blobs: [request.url, request.method, timestamp()],
+          })
+        )
+      );
+    }
+
+    const response = await app.fetch(request, env, ctx);
+
+    // If API returned 404 and ASSETS binding exists, fallback to ASSETS (SPA routing)
+    if (response.status === 404 && env.ASSETS && !url.pathname.startsWith("/api/")) {
       return env.ASSETS.fetch(request);
     }
 
-    // Fallback
-    return new Response("Not found", { status: 404 });
+    return response;
   },
 };
