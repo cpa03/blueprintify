@@ -62,7 +62,7 @@ describe("ConfirmDialog", () => {
     expect(defaultProps.onConfirm).not.toHaveBeenCalled();
   });
 
-  it("has role='dialog', aria-modal='true', and data-state/data-icon DOM inspection attributes", () => {
+  it("has role='dialog', aria-modal='true', and data-state/data-icon/data-reduced-motion DOM inspection attributes", () => {
     render(<ConfirmDialog {...defaultProps} icon="trash" />);
 
     const dialog = screen.getByRole("dialog");
@@ -70,6 +70,7 @@ describe("ConfirmDialog", () => {
     expect(dialog).toHaveAttribute("aria-modal", "true");
     expect(dialog).toHaveAttribute("data-state", DIALOG_STATE_VALUES.OPEN);
     expect(dialog).toHaveAttribute("data-icon", "trash");
+    expect(dialog).toHaveAttribute("data-reduced-motion", "false");
   });
 
   it("places initial focus on the safe Cancel action, not the destructive Confirm", () => {
