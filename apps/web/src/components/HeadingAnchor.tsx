@@ -81,9 +81,21 @@ export const HeadingAnchor = memo(function HeadingAnchor({
   const [isFocused, setIsFocused] = useState(false);
   const [particles, setParticles] = useState<Particle[]>([]);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const particleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const particleIdRef = useRef(0);
   const shouldReduceMotion = useReducedMotion();
+
+  React.useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      if (particleTimeoutRef.current) {
+        clearTimeout(particleTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const slug = generateSlug(headingText);
 
@@ -120,7 +132,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
 
     setParticles(newParticles);
 
-    setTimeout(() => {
+    particleTimeoutRef.current = setTimeout(() => {
       setParticles([]);
     }, PARTICLE_CONFIG.CLEANUP_DELAY_MS);
   }, [shouldReduceMotion]);
@@ -190,11 +202,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
         data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
         data-copied-state={showCopied ? COPY_STATE_VALUES.COPIED : COPY_STATE_VALUES.IDLE}
         data-slug={slug}
-        aria-label={
-          showCopied
-            ? ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_ARIA(headingText)
-            : ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_TITLE
-        }
+        aria-label={ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_ARIA(headingText)}
         title={ACCESSIBILITY_LABELS.HEADING_ANCHOR.COPY_LINK_TITLE}
         tabIndex={0}
       >
