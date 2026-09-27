@@ -560,6 +560,10 @@ export const WIZARD_GENERATING_LABELS = {
   COMPLETE_DESCRIPTION: "Your blueprint and tasks are ready to review in the editor",
   /** Elapsed time label shown next to the timer during generation */
   ELAPSED_TIME: "Elapsed",
+  /** Pro tip toast shown once after first successful generation */
+  PRO_TIP_TITLE: "Pro Tip",
+  PRO_TIP_MESSAGE: "Press ? anytime to see all keyboard shortcuts and power-user workflows",
+  PRO_TIP_ARIA: "Pro tip: Press question mark to open keyboard shortcuts reference",
 } as const;
 
 // ============================================================================
