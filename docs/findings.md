@@ -11675,3 +11675,26 @@ workflows preserve `--share false/disabled` + secrets usage · opencode-run.sh `
 44/44 vitest pass) · source typecheck 0 errors (test-file jest-dom matcher errors
 pre-existing on main).
 **Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code fixes required.
+
+## Security Audit — PR hardcoded-secret removal vs origin/main (2026-09-27)
+
+**Scope**: 22 changed files vs origin/main. Headline change is secret hardening:
+`apps/api/wrangler.toml` drops hardcoded `API_KEY = "blueprintify-public-access-2026"`
+(prod + staging → `wrangler secret put` comments); `apps/web/src/config/env.ts`
+drops the same hardcoded `VITE_API_KEY` fallback (now returns `""` when unset).
+Remainder is toast options→duration refactor + callers, pro-tip removal, StepIndicator
+class simplification, debounce retype, 2 new devDeps (@emnapi/core 1.11.3,
+@img/sharp-wasm32 0.35.4), plus docs/table formatting (SECURITY.md, README, CHANGELOG).
+**Scans**: added-lines secret grep CLEAN (only removed `-` lines matched) ·
+`scan:secrets` ✅ 334 files · added-lines XSS/injection grep CLEAN
+(no dangerouslySetInnerHTML/innerHTML/eval/Function) · deprecated grep CLEAN in
+changed files · `npm audit` ✅ 0 vulns · `.gitignore` covers `.dev.vars` + `.env*` ·
+fail-closed verified: frontend omits `x-api-key` header when empty
+(`api.ts` conditional spread), backend `apiKeyAuth` 503s when unset (auth.ts + test) ·
+toast refactor complete (44/44 vitest: toast/store/autosave/StepIndicator pass,
+0 stale options-object callers) · web source typecheck 0 non-test errors, shared
+typecheck clean (API controller + web jest-dom matcher errors pre-existing on main).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. The PR *removes*
+a hardcoded credential — no rotation needed (public dev fallback, never a real secret),
+no code fixes required. Note: `toast.ts` `Math.random()` ID generation is pre-existing
+and non-security-sensitive (ephemeral UI IDs), left untouched.

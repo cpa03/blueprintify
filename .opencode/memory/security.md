@@ -92,6 +92,12 @@
 - **Verification**: No code fixes required; audit recorded in `docs/findings.md`.
 - **Lesson**: Shell fallback wrappers that interpolate a user-passed `--model` must quote the expansion and strip the original flag first, otherwise argument injection reorders the fallback chain. Verified pattern: strip `--model`/`-m` during arg parse, then append `--model "$model"` quoted per attempt.
 
+### 2026-09-27 05:15 UTC: Security Engineer Audit — Hardcoded-Secret Removal Verified (22 files vs origin/main)
+
+- **Finding**: PR removes hardcoded credential `blueprintify-public-access-2026` from `apps/api/wrangler.toml` (prod + staging → `wrangler secret put` comments) and `apps/web/src/config/env.ts` (fallback → `""` when unset). No introduced vulnerabilities, secrets, or deprecated usage in the 22-file diff.
+- **Verification**: Added-lines secret/XSS/deprecated greps CLEAN; `scan:secrets` ✅ 334 files; `npm audit` ✅ 0 vulns; fail-closed confirmed (frontend omits `x-api-key` when empty, backend 503s when unset); toast tests 44/44 pass; web source + shared typecheck clean.
+- **Lesson**: Removing a hardcoded *fallback* credential is only safe when both sides fail closed — verify the client omits the header on empty and the server rejects (not bypasses) on unset before approving. No rotation needed for a public dev fallback that was never a real secret.
+
 ### 2026-05-25 21:00 UTC: Security Engineer Audit - Lighthouse Dependency Upgrade
 
 - **Finding**: PR upgraded `lighthouse` from `^12.8.2` to `^13.3.0` (dev dependency). No introduced vulnerabilities, secrets, or deprecated functions.
