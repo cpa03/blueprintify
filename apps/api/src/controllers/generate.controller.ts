@@ -2,6 +2,7 @@ import { BaseController } from "./base.controller";
 import { getContainer } from "../di/container";
 import { ARCHITECT_SYSTEM_PROMPT, buildBlueprintPrompt } from "../services/prompts";
 import type { BlueprintContext } from "../types";
+import { BlueprintRequestSchema } from "@blueprint/shared";
 
 /**
  * Controller for blueprint generation endpoints.
@@ -16,7 +17,7 @@ export class GenerateController extends BaseController {
    */
   async generateBlueprint(c: BlueprintContext): Promise<Response> {
     this.validateEnvironment(c);
-    const request = this.getValidatedData(c);
+    const request = this.getValidatedData<typeof BlueprintRequestSchema>(c);
     const config = this.createAIConfig(c);
 
     const userPrompt = buildBlueprintPrompt(request);

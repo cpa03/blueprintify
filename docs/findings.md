@@ -3,6 +3,16 @@
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
 
+## RepoKeeper Cycle 2026-09-27 (fatal typecheck failures fixed, docs tree synced)
+
+**Hygiene audit**: 0 redundant/temp/unused tracked files (temp-artifact grep empty); 0 tracked build artifacts; git status clean; audits index in sync (98 rows ↔ 98 audit files + README); scripts all wired; 5/5 workflows `ubuntu-24.04-arm`.
+**Fatal fixes (typecheck was red on main)**:
+- `apps/web/src/test/setup.ts`: `import "@testing-library/jest-dom"` → `"@testing-library/jest-dom/vitest"` — restores Vitest matcher augmentation (750 TS2339 errors → 0; per jest-dom docs, Vitest requires the `/vitest` entry).
+- `apps/api` Zod 4 variance: `BaseController.getValidatedData<T extends z.ZodSchema>` → `T extends z.ZodTypeAny` + explicit schema generics at 3 call sites (`generate`/`refine`/`tasks` controllers) — 6 TS2345/TS2339 errors → 0.
+**Docs sync**: README architecture tree now lists `functions/` (Pages proxy, added #3610), `docs/issues/`, `docs/ocr-review-summary-2026-09-26.md` — previously on disk but unlisted.
+**Gates**: typecheck ✅ (all workspaces) · lint ✅ 0/0 · build ✅ · build:api ✅ (wrangler dry-run). Web vitest spot-check 10/10 ✅. API vitest pool **blocked pre-existing**: `vitest@5.0.1` vs `@cloudflare/vitest-pool-workers` (supports `vitest ^4.1.0` only) — dependabot #3547 major bump; needs human/BugFixer decision (downgrade vitest vs upgrade pool), left untouched.
+**Final state**: branch `agent/repokeeper-cleanup-20260927-060000`, PR for merge.
+
 ## Orchestration Cycle 601 (2026-09-06 — ERRORFALLBACK MICRO-UX & DOM STATE TRACKING)
 
 **Phase 0**: Local `agent` branch checked out; synced with `origin/main`. Working tree clean.
