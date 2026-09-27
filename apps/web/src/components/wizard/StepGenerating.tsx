@@ -41,6 +41,7 @@ import {
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { memo, useCallback, useRef, useEffect, useState, useMemo } from "react";
+import { STORAGE_KEYS } from "../../config/keys";
 interface ElapsedTime {
   /** Per-second MM:SS for the on-screen ticking timer */
   display: string;
@@ -120,8 +121,8 @@ import {
   KEY_DISPLAY,
   FOCUS_ANNOUNCER,
   ELAPSED_ANNOUNCEMENT_INTERVAL_MS,
+  KEYBOARD_SHORTCUTS,
 } from "../../config/constants";
-import { KEYBOARD_SHORTCUTS } from "../../config/constants/keyboard";
 import { COLORS, HEADER_ANIMATION } from "../../config/theme";
 import { KeyboardShortcutTooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
@@ -291,6 +292,24 @@ export const StepGenerating = memo(function StepGenerating({
     }
     wasError.current = isError;
   }, [isError, toast]);
+
+  // Show pro tip toast once after first successful generation
+  // Appears at a moment of success to teach the ? shortcut for keyboard shortcuts
+  const proTipShownRef = useRef(false);
+  useEffect(() => {
+    if (isComplete && !wasComplete.current && !proTipShownRef.current) {
+      const shown = localStorage.getItem(STORAGE_KEYS.PRO_TIP_SHOWN);
+      if (!shown) {
+        localStorage.setItem(STORAGE_KEYS.PRO_TIP_SHOWN, "true");
+        proTipShownRef.current = true;
+        toast.info(WIZARD_GENERATING_LABELS.PRO_TIP_MESSAGE, {
+          title: WIZARD_GENERATING_LABELS.PRO_TIP_TITLE,
+          ariaLabel: WIZARD_GENERATING_LABELS.PRO_TIP_ARIA,
+        });
+      }
+    }
+    wasComplete.current = isComplete;
+  }, [isComplete, toast]);
 
   const handleViewReview = useCallback(() => {
     setStep(WIZARD_STEP_KEYS.REVIEW);

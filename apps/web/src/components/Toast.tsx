@@ -252,9 +252,10 @@ const ToastItem = memo(
     // For error/warning toasts, use role="alert" so screen readers announce
     // them immediately. Success/info toasts keep role="status" with polite
     // announcements — advisory information that isn't time-sensitive.
+    // Custom ariaLabel (e.g., for pro tips) overrides the default role/announcement.
     const isAlert = toast.type === TOAST_TYPES.ERROR || toast.type === TOAST_TYPES.WARNING;
-    const toastRole = isAlert ? "alert" : "status";
-    const toastAriaLive = isAlert ? undefined : "polite";
+    const toastRole = toast.ariaLabel ? "status" : isAlert ? "alert" : "status";
+    const toastAriaLive = toast.ariaLabel ? "polite" : isAlert ? undefined : "polite";
 
     return (
       <motion.div
@@ -280,6 +281,7 @@ const ToastItem = memo(
         onBlur={handleMouseLeave}
         role={toastRole}
         aria-live={toastAriaLive}
+        aria-label={toast.ariaLabel}
         data-toast-type={toast.type}
         data-hovered={isHovered ? "true" : "false"}
         data-is-alert={isAlert ? "true" : "false"}
@@ -393,7 +395,16 @@ const ToastItem = memo(
             </motion.span>
           )}
         </span>
-        <p className="text-sm font-medium flex-1">{toast.message}</p>
+        <div className="flex-1 min-w-0">
+          {toast.title && (
+            <p className="text-xs font-semibold text-current/80 mb-0.5 tracking-wider uppercase">
+              {toast.title}
+            </p>
+          )}
+          <p className="text-sm font-medium" aria-label={toast.ariaLabel}>
+            {toast.message}
+          </p>
+        </div>
         {shouldReduceMotion ? (
           <motion.span
             initial={{ opacity: 0 }}
