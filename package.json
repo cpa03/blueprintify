@@ -46,9 +46,7 @@
     "preview": "npm run build && npm run dev:all"
   },
   "devDependencies": {
-    "@emnapi/core": "1.11.3",
     "@eslint/js": "9.39.5",
-    "@img/sharp-wasm32": "0.35.4",
     "@playwright/test": "1.63.0",
     "@types/jest-axe": "3.5.9",
     "@types/node": "26.6.1",
