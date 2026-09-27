@@ -89,13 +89,13 @@ The application implements the following security measures:
 
 ## Security Audit Summary
 
-| Date | Scope | Key Findings |
-|------|-------|--------------|
+| Date           | Scope                              | Key Findings                                                                                    |
+| -------------- | ---------------------------------- | ----------------------------------------------------------------------------------------------- |
 | **2026-09-26** | Comprehensive doc & security audit | Stale AJV assessment marked resolved; Cloudflare placeholder warning updated; 0 vulnerabilities |
-| **2026-08-20** | Recurring gate (Cycle 596) | `npm audit` 0 vulns · `scan:secrets` ✅ 328 files · all quality gates pass |
-| **2026-08-19** | Recurring gate (Cycle 577) | `npm audit` 0 vulns · `scan:secrets` ✅ 328 files · all quality gates pass |
-| **2026-02-18** | CI/CD security review | Workflow permission gaps identified (#743) |
-| **2026-02-18** | Initial security assessment | 9 vulnerabilities identified in `ajv@6.12.6` (RESOLVED Sep 2026) |
+| **2026-08-20** | Recurring gate (Cycle 596)         | `npm audit` 0 vulns · `scan:secrets` ✅ 328 files · all quality gates pass                      |
+| **2026-08-19** | Recurring gate (Cycle 577)         | `npm audit` 0 vulns · `scan:secrets` ✅ 328 files · all quality gates pass                      |
+| **2026-02-18** | CI/CD security review              | Workflow permission gaps identified (#743)                                                      |
+| **2026-02-18** | Initial security assessment        | 9 vulnerabilities identified in `ajv@6.12.6` (RESOLVED Sep 2026)                                |
 
 > **Full historical audit trail** (280+ recurring cycle records) is preserved in [`docs/findings.md`](./docs/findings.md) and in git history: `git log -- SECURITY.md`.
 

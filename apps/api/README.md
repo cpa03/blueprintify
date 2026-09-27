@@ -292,14 +292,14 @@ Detailed setup instructions with all CLI commands and ID mapping tables are in *
 
 Quick reference:
 
-| Resource                      | Status                                               |
-| ----------------------------- | ---------------------------------------------------- |
-| KV Namespace (caching)        | ✅ Real IDs configured (prod + staging)              |
-| D1 Database (storage)         | ✅ Real IDs configured (prod + staging)              |
-| Rate Limiting                 | ✅ Pre-configured, no action needed                  |
-| Workers AI                    | ✅ Binding configured                                |
-| Workers Static Assets         | ✅ `apps/web/dist` bound via `[assets]`              |
-| Observability Logs            | ✅ Enabled with 0.5 head sampling                    |
+| Resource               | Status                                  |
+| ---------------------- | --------------------------------------- |
+| KV Namespace (caching) | ✅ Real IDs configured (prod + staging) |
+| D1 Database (storage)  | ✅ Real IDs configured (prod + staging) |
+| Rate Limiting          | ✅ Pre-configured, no action needed     |
+| Workers AI             | ✅ Binding configured                   |
+| Workers Static Assets  | ✅ `apps/web/dist` bound via `[assets]` |
+| Observability Logs     | ✅ Enabled with 0.5 head sampling       |
 
 ```bash
 # Verify no placeholders remain:
