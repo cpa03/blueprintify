@@ -42,6 +42,7 @@ import {
   sleep,
   isRetryableError,
 } from "../config/api-client";
+import { ENV } from "../config/env";
 import type { StreamEventHandlers, RetryOptions } from "../config/api-client";
 
 /**
@@ -136,7 +137,10 @@ async function apiCallWithRetry(
     try {
       const response = await fetch(`${API_BASE}${endpoint}`, {
         method: API_CALL_CONFIG.METHOD,
-        headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: API_CALL_CONFIG.CONTENT_TYPE },
+        headers: {
+          [HTTP_HEADER_NAMES.CONTENT_TYPE]: API_CALL_CONFIG.CONTENT_TYPE,
+          ...(ENV.API_KEY ? { [HTTP_HEADER_NAMES.X_API_KEY]: ENV.API_KEY } : {}),
+        },
         body: JSON.stringify(requestBody),
         signal: controller.signal,
       });
@@ -144,10 +148,27 @@ async function apiCallWithRetry(
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        const errorData = (await response.json().catch(() => ({ error: errorMessageDefault }))) as {
-          error?: string;
-        };
-        const errorMessage = errorData.error || errorMessageDefault;
+        let serverError: string | undefined;
+        try {
+          const errorData = (await response.json()) as {
+            error?: string | { message?: string };
+            message?: string;
+          };
+          if (typeof errorData?.error === "string") {
+            serverError = errorData.error;
+          } else if (typeof errorData?.error?.message === "string") {
+            serverError = errorData.error.message;
+          } else if (typeof errorData?.message === "string") {
+            serverError = errorData.message;
+          }
+        } catch {
+          if (response.status === 405) {
+            serverError = `API endpoint unavailable (405 Method Not Allowed). Please ensure backend is reachable.`;
+          } else if (response.status >= 500) {
+            serverError = `Server error (${response.status}). Service temporarily unavailable.`;
+          }
+        }
+        const errorMessage = serverError || errorMessageDefault;
 
         if (isRetryableError(errorMessage, response) && attempt < opts.maxRetries) {
           lastError = new Error(errorMessage);
