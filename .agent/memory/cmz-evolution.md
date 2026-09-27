@@ -72,10 +72,10 @@
 **Changes**:
 
 - Created CMZ agent with self-heal, self-learning, self-evolve capabilities
-- Configured model: `${AGENT_MODEL:-nemotron-3-ultra-free}` (per AGENTS.md mandate)
+- Configured model: `${AGENT_MODEL:-muse-spark-1.3-contributor-free (fallback: mimo-v2.6-flash-free, nemotron-3-ultra-free)}` (per AGENTS.md mandate)
 - Integrated with existing agent ecosystem
 
-> **Note**: Fallback models were initially configured but later removed per AGENTS.md mandate requiring exclusive use of `${AGENT_MODEL:-nemotron-3-ultra-free}`.
+> **Note**: Fallback models were initially configured but later removed per AGENTS.md mandate requiring exclusive use of `${AGENT_MODEL:-muse-spark-1.3-contributor-free (fallback: mimo-v2.6-flash-free, nemotron-3-ultra-free)}`.
 
 **Rationale**: Maximize system potential through autonomous management
 
@@ -115,7 +115,7 @@
 
 **After**:
 
-- All agents use `${AGENT_MODEL:-nemotron-3-ultra-free}` exclusively per AGENTS.md mandate
+- All agents use `${AGENT_MODEL:-muse-spark-1.3-contributor-free (fallback: mimo-v2.6-flash-free, nemotron-3-ultra-free)}` exclusively per AGENTS.md mandate
 - CI pipeline stabilized
 
 **Rationale**: Prevent CI failures through proper model configuration

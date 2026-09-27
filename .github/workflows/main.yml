@@ -35,13 +35,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
-          opencode run \
+          ./scripts/opencode-run.sh \
             "Baca docs/blueprint.md, docs/roadmap.md, docs/bugs.md, docs/features.md.
              Evaluasi prioritas.
              Update docs/active-tasks.md (OPEN / PRIORITY / ROLE / SCOPE).
              Jangan coding." \
             --agent architect \
-            --model opencode/nemotron-3-ultra-free \
             --share false
 
 # ==================================================
@@ -63,13 +62,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
-          opencode run \
+          ./scripts/opencode-run.sh \
             "Baca docs/active-tasks.md.
              Ambil task OPEN prioritas HIGH/MEDIUM.
              Buat file docs/dispatch.json berisi role unik.
              Jangan coding." \
             --agent dispatcher \
-            --model opencode/nemotron-3-ultra-free \
             --share false
   
       - name: Commit Dispatch Plan
@@ -111,14 +109,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
-          opencode run \
+          ./scripts/opencode-run.sh \
             "Ambil SATU task OPEN dengan Role=${{ matrix.role }} dari docs/active-tasks.md.
              Kerjakan sesuai scope.
              Buat branch + PR.
              Update task ke DONE.
              Dilarang nambah file / scope." \
             --agent ${{ matrix.role }} \
-            --model opencode/nemotron-3-ultra-free \
             --share false
 
 # ==================================================
@@ -136,12 +133,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
-          opencode run \
+          ./scripts/opencode-run.sh \
             "Review PR berdasarkan task.md & blueprint.md.
              Tambah test bila perlu.
              Update task: QA PASS / FAIL." \
             --agent qa-engineer \
-            --model opencode/nemotron-3-ultra-free \
             --share false
 
 # ==================================================
@@ -159,12 +155,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
-          opencode run \
+          ./scripts/opencode-run.sh \
             "Audit PR prioritas HIGH / CRITICAL.
              Cocokkan dengan blueprint.md.
              Update task: SECURITY PASS / FAIL." \
             --agent security-engineer \
-            --model opencode/nemotron-3-ultra-free \
             --share false
 
 # ==================================================
@@ -182,7 +177,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
-          opencode run \
+          ./scripts/opencode-run.sh \
             "Review semua PR.
              Tolak jika:
              - File di luar scope task
@@ -191,7 +186,6 @@ jobs:
              Rujuk docs/repo-rules.md.
              Comment jika reject." \
             --agent repo-guardian \
-            --model opencode/nemotron-3-ultra-free \
             --share false
 
 # ==================================================
@@ -209,7 +203,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
-          opencode run \
+          ./scripts/opencode-run.sh \
             "Merge PR satu per satu jika:
              - Ada Task ID
              - QA PASS
@@ -217,7 +211,6 @@ jobs:
              - Repo Guardian OK
              Jika gagal, comment." \
             --agent integrator \
-            --model opencode/nemotron-3-ultra-free \
             --share false
 
 # ==================================================
@@ -235,12 +228,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
-          opencode run \
+          ./scripts/opencode-run.sh \
             "Review konsistensi blueprint.md, roadmap.md, task.md dengan hasil merge.
              Catat drift / rekomendasi ke docs/knowledge-review.md.
              Jangan coding." \
             --agent knowledge-steward \
-            --model opencode/nemotron-3-ultra-free \
             --share false
 
 # ==================================================
@@ -258,10 +250,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
         run: |
-          opencode run \
+          ./scripts/opencode-run.sh \
             "Scan log, PR, issue.
              Catat bug baru ke docs/bugs.md.
              Jangan fix." \
             --agent reliability-engineer \
-            --model opencode/nemotron-3-ultra-free \
             --share false

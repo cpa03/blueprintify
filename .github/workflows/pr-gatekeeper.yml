@@ -77,9 +77,8 @@ jobs:
           echo "Health check failed. Asking Debugger to fix..."
           cat typecheck.log lint.log build.log > validation_errors.log
 
-          opencode run --agent debugger \
+          ./scripts/opencode-run.sh --agent debugger \
              "The active PR failed validation checks. Analyze the logs in validation_errors.log and FIX the code errors to make the build pass. Focus ONLY on fixing errors." \
-             --model opencode/nemotron-3-ultra-free \
              --share disabled
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
@@ -89,9 +88,8 @@ jobs:
         continue-on-error: true
         timeout-minutes: 20
         run: |
-          opencode run --agent security-engineer \
+          ./scripts/opencode-run.sh --agent security-engineer \
              "Scan the changed files in this PR (git diff --name-only origin/${{ github.base_ref }}). Remove any introduced vulnerabilities, secrets, or usage of deprecated functions." \
-             --model opencode/nemotron-3-ultra-free \
              --share disabled
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
@@ -101,9 +99,8 @@ jobs:
         continue-on-error: true
         timeout-minutes: 20
         run: |
-          opencode run --agent janitor \
+          ./scripts/opencode-run.sh --agent janitor \
              "Scan the codebase for redundant file, unused exports, and commented-out dead code. Remove them to clean up before merge." \
-             --model opencode/nemotron-3-ultra-free \
              --share disabled
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}

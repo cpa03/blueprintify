@@ -2,7 +2,10 @@
 description: CMZ - Cognitive Multi-Agent System with Self-Heal, Self-Learning, Self-Evolve
 code: CMZ
 mode: primary
-model: opencode/nemotron-3-ultra-free
+model: opencode/muse-spark-1.3-contributor-free
+fallback_models:
+  - opencode/mimo-v2.6-flash-free
+  - opencode/nemotron-3-ultra-free
 temperature: 0.1
 tools:
   write: true

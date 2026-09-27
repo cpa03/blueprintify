@@ -4,7 +4,10 @@
 
 ## Core Constraints
 
-1. **Model Mandate**: All agents MUST use `opencode/nemotron-3-ultra-free` exclusively
+1. **Model Hierarchy**: All agents prioritize `opencode/muse-spark-1.3-contributor-free` with automatic fallback:
+   - Primary: `opencode/muse-spark-1.3-contributor-free`
+   - Fallback 1: `opencode/mimo-v2.6-flash-free`
+   - Fallback 2: `opencode/nemotron-3-ultra-free`
 2. **CI Runner**: GitHub Actions MUST use `ubuntu-24.04-arm`
 3. **Never expose secrets**: API keys, tokens, and `.env` contents must never be logged or committed
 
