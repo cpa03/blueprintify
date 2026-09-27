@@ -12,7 +12,7 @@ capabilities:
   - skill
   - webfetch
 model:
-  default: deepseek-v4-flash-free
+  default: nemotron-3-ultra-free
   temperature: 0.2
 permissions:
   bash:

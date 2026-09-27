@@ -432,5 +432,5 @@ jobs:
           END OF PROMPT
           PROMPT
           )" \
-            --model opencode/deepseek-v4-flash-free \
+            --model opencode/nemotron-3-ultra-free \
             --share false \

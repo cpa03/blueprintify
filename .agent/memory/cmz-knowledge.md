@@ -9,7 +9,7 @@
 **Root Cause**: Using unsupported provider/model combination
 **Solution**: Use only approved model:
 
-- `${AGENT_MODEL:-deepseek-v4-flash-free}` (exclusive per AGENTS.md mandate)
+- `${AGENT_MODEL:-nemotron-3-ultra-free}` (exclusive per AGENTS.md mandate)
   **Prevention**: Validate model names in all agent configs
 
 ### Issue: Context Hooks Error (big-pickle)
@@ -27,7 +27,7 @@
 **Pattern**: Model configuration errors
 **Solution**:
 
-1. Standardize on `${AGENT_MODEL:-deepseek-v4-flash-free}` exclusively
+1. Standardize on `${AGENT_MODEL:-nemotron-3-ultra-free}` exclusively
 2. Validate configuration before runs
    **Status**: Fixed via agent configuration updates
 
@@ -38,7 +38,7 @@
 **When to use**: All agent configurations
 **Implementation**:
 
-- **Mandatory**: Use `${AGENT_MODEL:-deepseek-v4-flash-free}` exclusively per AGENTS.md mandate
+- **Mandatory**: Use `${AGENT_MODEL:-nemotron-3-ultra-free}` exclusively per AGENTS.md mandate
 - **NO fallback models** - AGENTS.md mandates exclusive use of single model
 - Validate all agent configurations use the correct model
   **Result**: Consistent behavior, reduced CI failures, compliance with project standards
@@ -73,8 +73,8 @@
 
 ### Agent Models
 
-- Always use `${AGENT_MODEL:-deepseek-v4-flash-free}` exclusively per AGENTS.md mandate
-- **NO fallback models allowed** - AGENTS.md mandates exclusive use of `${AGENT_MODEL:-deepseek-v4-flash-free}`
+- Always use `${AGENT_MODEL:-nemotron-3-ultra-free}` exclusively per AGENTS.md mandate
+- **NO fallback models allowed** - AGENTS.md mandates exclusive use of `${AGENT_MODEL:-nemotron-3-ultra-free}`
 - Test in CI before production deployment
 
 ### Skill Installation
