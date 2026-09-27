@@ -1,4 +1,5 @@
 import type { TechStackItemType } from "@blueprint/shared/types";
+import { TEMPLATE_README_DEFAULTS } from "@blueprint/shared/config";
 
 export interface ExportFiles {
   blueprint: string;
@@ -42,50 +43,39 @@ ${features.map((feature) => `- ${feature}`).join("\n")}
 
 ### Prerequisites
 
-- Node.js 18+ (for JavaScript/TypeScript projects)
-- Python 3.8+ (for Python projects)
+- ${TEMPLATE_README_DEFAULTS.NODE_VERSION} (for JavaScript/TypeScript projects)
+- ${TEMPLATE_README_DEFAULTS.PYTHON_VERSION} (for Python projects)
 
 ### Installation
 
 \`\`\`bash
-npm install  # or: yarn install
-pip install -r requirements.txt
+${TEMPLATE_README_DEFAULTS.INSTALL_COMMANDS}
 \`\`\`
 
 ### Development
 
 \`\`\`bash
-npm run dev  # or: yarn dev
-python src/main.py  # or: python manage.py runserver (Django)
+${TEMPLATE_README_DEFAULTS.DEV_COMMANDS}
 \`\`\`
 
 ### Build
 
 \`\`\`bash
-npm run build  # or: yarn build
+${TEMPLATE_README_DEFAULTS.BUILD_COMMANDS}
 \`\`\`
 
 ## Project Structure
 
 \`\`\`
-.
-├── src/                 # Source code
-├── public/              # Static assets (if applicable)
-├── tests/               # Test files
-├── docs/                # Documentation
-└── README.md            # This file
+${TEMPLATE_README_DEFAULTS.PROJECT_STRUCTURE}
 \`\`\`
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+${TEMPLATE_README_DEFAULTS.CONTRIBUTING_GUIDELINES}
 
 ## License
 
-MIT License - see LICENSE file for details.
+${TEMPLATE_README_DEFAULTS.LICENSE}
 `;
 }

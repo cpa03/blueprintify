@@ -213,3 +213,42 @@ export const TEMPLATE_CSS_VALUES = {
   /** React template: logo spin animation duration in seconds */
   REACT_LOGO_SPIN_DURATION_S: 20,
 } as const;
+
+/**
+ * Template README Defaults
+ * Centralized source of truth for README template content used in
+ * project template generators. Eliminates hardcoded version requirements,
+ * license text, project structure, and contributing guidelines.
+ * Flexy says: No hardcoded "Node.js 18+" or "MIT License" in template generators!
+ * Usage: import { TEMPLATE_README_DEFAULTS } from "@blueprint/shared";
+ *        `### Prerequisites\n\n- ${TEMPLATE_README_DEFAULTS.NODE_VERSION} (for JavaScript/TypeScript projects)`
+ */
+export const TEMPLATE_README_DEFAULTS = {
+  /** Minimum Node.js version for JavaScript/TypeScript templates */
+  NODE_VERSION: "Node.js 18+" as const,
+  /** Minimum Python version for Python templates */
+  PYTHON_VERSION: "Python 3.8+" as const,
+  /** Default license text for generated projects */
+  LICENSE: "MIT License - see LICENSE file for details." as const,
+  /** Default project structure documentation */
+  PROJECT_STRUCTURE: `.
+├── src/                 # Source code
+├── public/              # Static assets (if applicable)
+├── tests/               # Test files
+├── docs/                # Documentation
+└── README.md            # This file` as const,
+  /** Installation commands template */
+  INSTALL_COMMANDS: `npm install  # or: yarn install
+pip install -r requirements.txt` as const,
+  /** Development commands template */
+  DEV_COMMANDS: `npm run dev  # or: yarn dev
+python src/main.py  # or: python manage.py runserver (Django)` as const,
+  /** Build commands template */
+  BUILD_COMMANDS: `npm run build  # or: yarn build` as const,
+  /** Contributing guidelines template */
+  CONTRIBUTING_GUIDELINES: `1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request` as const,
+} as const;

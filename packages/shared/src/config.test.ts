@@ -145,6 +145,7 @@ import {
   RATE_LIMIT_KEY_PREFIXES,
   TEMPLATE_CSS_COLORS,
   TEMPLATE_CSS_VALUES,
+  TEMPLATE_README_DEFAULTS,
   SANITIZE_ALLOWED_TAGS,
   SANITIZE_ALLOWED_ATTR,
   SANITIZE_FORBIDDEN_TAG_NAMES,
@@ -4733,5 +4734,62 @@ describe("Y_OFFSET", () => {
       expect(arr.length).toBe(3);
       arr.forEach((v) => expect(typeof v).toBe("number"));
     });
+  });
+});
+
+// ============================================================================
+// TEMPLATE_README_DEFAULTS (Flexy Iteration 43)
+// ============================================================================
+
+describe("TEMPLATE_README_DEFAULTS", () => {
+  it("should have NODE_VERSION defined", () => {
+    expect(TEMPLATE_README_DEFAULTS.NODE_VERSION).toBe("Node.js 18+");
+  });
+
+  it("should have PYTHON_VERSION defined", () => {
+    expect(TEMPLATE_README_DEFAULTS.PYTHON_VERSION).toBe("Python 3.8+");
+  });
+
+  it("should have LICENSE defined", () => {
+    expect(TEMPLATE_README_DEFAULTS.LICENSE).toBe("MIT License - see LICENSE file for details.");
+  });
+
+  it("should have PROJECT_STRUCTURE defined", () => {
+    expect(TEMPLATE_README_DEFAULTS.PROJECT_STRUCTURE).toContain("src/");
+    expect(TEMPLATE_README_DEFAULTS.PROJECT_STRUCTURE).toContain("README.md");
+  });
+
+  it("should have INSTALL_COMMANDS defined", () => {
+    expect(TEMPLATE_README_DEFAULTS.INSTALL_COMMANDS).toContain("npm install");
+    expect(TEMPLATE_README_DEFAULTS.INSTALL_COMMANDS).toContain("pip install");
+  });
+
+  it("should have DEV_COMMANDS defined", () => {
+    expect(TEMPLATE_README_DEFAULTS.DEV_COMMANDS).toContain("npm run dev");
+    expect(TEMPLATE_README_DEFAULTS.DEV_COMMANDS).toContain("python src/main.py");
+  });
+
+  it("should have BUILD_COMMANDS defined", () => {
+    expect(TEMPLATE_README_DEFAULTS.BUILD_COMMANDS).toContain("npm run build");
+  });
+
+  it("should have CONTRIBUTING_GUIDELINES defined", () => {
+    expect(TEMPLATE_README_DEFAULTS.CONTRIBUTING_GUIDELINES).toContain("Fork the repository");
+    expect(TEMPLATE_README_DEFAULTS.CONTRIBUTING_GUIDELINES).toContain("pull request");
+  });
+
+  it("should have all string values", () => {
+    const values = Object.values(TEMPLATE_README_DEFAULTS);
+    expect(values.length).toBe(8);
+    values.forEach((v) => {
+      expect(typeof v).toBe("string");
+      expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(TEMPLATE_README_DEFAULTS);
+    const uniqueValues = new Set(values);
+    expect(uniqueValues.size).toBe(values.length);
   });
 });
