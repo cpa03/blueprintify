@@ -37,7 +37,7 @@ Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `flexy/iteration-186-hardcoded-cleanup` | refactor(flexy): centralize time helpers, token codec literals, hex pad char & empty-state aria-label (Iteration 186) |
+| #3632 | `flexy/iteration-186-hardcoded-cleanup` | refactor(flexy): centralize time helpers, token codec literals, hex pad char & empty-state aria-label (Iteration 186) |
 
 ### ✅ Flexy Iteration 185: Centralize CSS Class Combinations, Log Contexts & API Micro-Literals
 
