@@ -53,7 +53,7 @@ export abstract class BaseController {
    * @returns The validated and typed request data
    * @throws {Error} When validated data is not found in context
    */
-  public getValidatedData<T extends z.ZodSchema>(c: ValidatedContext<T>): z.infer<T> {
+  public getValidatedData<T extends z.ZodTypeAny>(c: ValidatedContext<T>): z.infer<T> {
     const data = c.get(CONTEXT_KEYS.VALIDATED_DATA);
     if (!data) {
       throw new Error(CONFIG_MESSAGES.VALIDATED_DATA_NOT_FOUND);

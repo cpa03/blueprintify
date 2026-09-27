@@ -2,6 +2,7 @@ import { BaseController } from "./base.controller";
 import { getContainer } from "../di/container";
 import { TASK_SPLITTER_SYSTEM_PROMPT, buildTaskPrompt } from "../services/prompts";
 import type { TasksContext } from "../types";
+import { TaskGenerationRequestSchema } from "@blueprint/shared";
 
 /**
  * Controller for task generation endpoints.
@@ -16,7 +17,7 @@ export class TasksController extends BaseController {
    */
   async generateTasks(c: TasksContext): Promise<Response> {
     this.validateEnvironment(c);
-    const { blueprint, projectName } = this.getValidatedData(c);
+    const { blueprint, projectName } = this.getValidatedData<typeof TaskGenerationRequestSchema>(c);
     const config = this.createAIConfig(c);
 
     const userPrompt = buildTaskPrompt(blueprint, projectName);
