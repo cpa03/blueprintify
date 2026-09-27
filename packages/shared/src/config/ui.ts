@@ -838,6 +838,22 @@ export const SAVE_STATE_VALUES = {
 } as const;
 
 /**
+ * Progress Display State Values
+ * Centralized state tracking values for progress indicators (e.g. CircularProgress).
+ * Flexy says: No hardcoded "complete"/"animating"/"idle" strings in progress components!
+ * Usage: import { PROGRESS_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isComplete ? PROGRESS_STATE_VALUES.COMPLETE : ...}
+ */
+export const PROGRESS_STATE_VALUES = {
+  /** Complete state identifier */
+  COMPLETE: "complete" as const,
+  /** Animating state identifier */
+  ANIMATING: "animating" as const,
+  /** Idle state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
  * Skip Link Display State Values
  * Centralized state tracking values for skip-to-content navigation (SkipLink).
  * Flexy says: No hardcoded "focused"/"idle" strings in SkipLink!

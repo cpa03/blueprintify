@@ -19,7 +19,7 @@ import {
   ANIMATION,
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
-import { UI_TIMEOUTS } from "@blueprint/shared/config";
+import { UI_TIMEOUTS, PROGRESS_STATE_VALUES } from "@blueprint/shared";
 import { TRANSFORMS, OPACITY } from "../config/theme";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -169,6 +169,16 @@ function CircularProgressComponent({
       aria-valuemin={0}
       aria-valuemax={100}
       aria-label={ariaLabel ?? ACCESSIBILITY_LABELS.PROGRESS.PERCENT_COMPLETE(clampedValue)}
+      data-state={
+        isComplete
+          ? PROGRESS_STATE_VALUES.COMPLETE
+          : isAnimating
+            ? PROGRESS_STATE_VALUES.ANIMATING
+            : PROGRESS_STATE_VALUES.IDLE
+      }
+      data-complete={isComplete ? "true" : "false"}
+      data-animating={isAnimating ? "true" : "false"}
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
     >
       <svg
         width={size}

@@ -19,7 +19,7 @@
 import { render, screen, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { CircularProgress, CircularProgressCompact } from "./CircularProgress";
-import { UI_TIMEOUTS } from "@blueprint/shared/config";
+import { UI_TIMEOUTS, PROGRESS_STATE_VALUES } from "@blueprint/shared";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 vi.mock("../hooks/useReducedMotion", () => ({
@@ -74,10 +74,12 @@ describe("CircularProgress", () => {
     expect(progressbar).toHaveAttribute("aria-valuenow", "0");
   });
 
-  it("applies circular-complete-glow class at 100%", () => {
+  it("applies circular-complete-glow class and data-state at 100%", () => {
     const { container } = render(<CircularProgress value={100} />);
     const outerDiv = container.firstChild as HTMLElement;
     expect(outerDiv.className).toContain("circular-complete-glow");
+    expect(outerDiv).toHaveAttribute("data-state", PROGRESS_STATE_VALUES.COMPLETE);
+    expect(outerDiv).toHaveAttribute("data-complete", "true");
   });
 
   it("does not apply complete glow class below 100%", () => {
@@ -86,10 +88,19 @@ describe("CircularProgress", () => {
     expect(outerDiv.className).not.toContain("circular-complete-glow");
   });
 
-  it("applies generate-progress-glow class when isAnimating is true", () => {
+  it("applies generate-progress-glow class and data-state when isAnimating is true", () => {
     const { container } = render(<CircularProgress value={50} isAnimating={true} />);
     const outerDiv = container.firstChild as HTMLElement;
     expect(outerDiv.className).toContain("generate-progress-glow");
+    expect(outerDiv).toHaveAttribute("data-state", PROGRESS_STATE_VALUES.ANIMATING);
+    expect(outerDiv).toHaveAttribute("data-animating", "true");
+  });
+
+  it("applies idle data-state and reduced motion attributes correctly", () => {
+    const { container } = render(<CircularProgress value={50} />);
+    const outerDiv = container.firstChild as HTMLElement;
+    expect(outerDiv).toHaveAttribute("data-state", PROGRESS_STATE_VALUES.IDLE);
+    expect(outerDiv).toHaveAttribute("data-reduced-motion", "false");
   });
 
   it("applies circular-complete-celebration class temporarily on reaching 100%", () => {
