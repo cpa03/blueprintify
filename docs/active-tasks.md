@@ -2,6 +2,12 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **CircularProgress Micro-UX & State Inspection**
+- [CONNECT] Connected `PROGRESS_STATE_VALUES` shared config export from `@blueprint/shared` to `CircularProgress.tsx`.
+- [STRENGTHEN] Strengthened `CircularProgress` DOM state inspection with `data-state` ("complete"/"animating"/"idle"), `data-complete`, `data-animating`, and `data-reduced-motion` ("true"/"false") attributes.
+- [CONSOLIDATE] Consolidated progress indicator state tracking in `packages/shared/src/config/ui.ts` and `@blueprint/shared`.
+- [REMOVE] Removed hardcoded "complete", "animating", and "idle" string literals in `CircularProgress.tsx` and `CircularProgress.test.tsx`.
+
 ## ✅ StorX — **ConfirmDialog Micro-UX & State Inspection**
 - [CONNECT] Connected `useReducedMotion` hook and `DIALOG_STATE_VALUES` shared config export to `ConfirmDialog.tsx`.
 - [STRENGTHEN] Strengthened `ConfirmDialog` DOM state inspection with `data-reduced-motion` ("true"/"false") attribute for state inspection and accessibility testing.
