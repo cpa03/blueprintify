@@ -11738,3 +11738,42 @@ all test-infra factories.
 **Structural findings (not actioned — report only)**: `.agent/` duplicates `.opencode/` agent system;
 4 parallel utils/lib folders (`apps/api/src/utils`, `apps/web/src/utils`, `apps/web/src/lib`, `packages/shared/src/utils`);
 root `tui.json` byte-identical to `.opencode/tui.json`.
+
+## [Janitor] Pre-merge dead-code cleanup, pass 2 (2026-09-27, branch `agent/janitor`)
+
+**Scan**: `node scripts/janitor-scan.mjs` (127 orphan files + 90 unused exports) with
+manual grep verification of EVERY candidate (aliases, property access, barrel
+re-exports, framework conventions, root-config consumers, same-file use).
+No commented-out dead code; no prod `console.log`; no unused deps
+(`playwright`+`@playwright/test`, `lighthouse`/`chrome-launcher`/`jest-axe` all live);
+no duplicate files (prior pass removed root `functions/` dupe).
+
+**Removed 4 dead exports + 1 stale test-mock key** (zero consumers in src/tests/e2e/scripts):
+- `apps/api/src/config/constants/ratelimit.ts`: `RATE_LIMIT_CONFIG` (live code uses
+  `RATE_LIMIT_CONSTANTS`; also dropped now-unused `getEnvConfig` import) + hub re-export
+- `apps/api/src/config/constants/storage.ts`: `DB_ID_CONFIG` (also dropped now-unused
+  `ID_GENERATION_CONFIG`/`ID_CHARS`/`DB_ID_PREFIXES`/`API_CONFIG_DEFAULTS` imports),
+  `KB`/`MB` aliases (inlined `BYTE_CONVERSION.KB/MB` into `BODY_SIZE_MAX`) + hub re-exports
+- `apps/web/src/config/constants/ui.ts`: `UI_FALLBACKS` (only a stale mock key referenced it;
+  also dropped now-unused `ENV` import)
+- `apps/web/src/lib/api.test.ts`: stale `UI_FALLBACKS` key in `../config/constants` mock
+
+**Verification**: `npm run build` passes; eslint clean on all 5 touched files;
+web `lib/api.test.ts` 5/5 pass; API typecheck 7 errors before = 7 after and web
+typecheck errors all pre-existing jest-dom matcher noise (zero in touched files,
+verified via `git stash` baseline); API workers-pool vitest cannot start in this
+environment (pre-existing workerd failure, verified on untouched file too).
+
+**Deliberately KEPT (scanner false positives, verified live)**: Pages Function
+`apps/web/functions/api/[[path]].ts` (`onRequest`, file-based routing — deleting breaks
+prod `/api/*` proxy); `scripts/migrate.ts`; all `packages/shared` exports (public API);
+`SHARED_SSE_CONFIG/SHARED_SSE_HEADERS` (aliased live re-exports), `SHARED_STAGGER_CONFIG`,
+`FIELD_LABELS/FIELD_PATHS` (compose live exports), `APIError`/`InternalServerError`
+(base class + thrown), `Container`, `PromptInjectionField`, `Environment`/`ExportContext`
+(local use), template granular fns (internal calls + barrel API), `metadata` (inside
+template string), `ViewMode`, toast/theme/hook/storage types (local or barrel use).
+**Structural findings (report only)**: `config-iteration-185.test.ts` is valid but named
+after an iteration — recommend rename to `constants-regression.test.ts`;
+`apps/web/functions/api/[[path]].ts` hardcodes `https://blueprintify.cpa03-cmz.workers.dev`
+— recommend env-var-izing; `janitor-scan.mjs` misses import aliases, property access,
+and root-config consumers — its output must stay manually verified.

@@ -5,7 +5,6 @@
  * Flexy says: No hardcoded UI values - everything configurable!
  */
 
-import { ENV } from "../env";
 import {
   VALIDATION_LIMITS,
   ANIMATION_DURATION_MS as SHARED_ANIMATION_DURATION_MS,
@@ -505,8 +504,3 @@ export { DIRECTION } from "@blueprint/shared/config";
  * Source of truth: @blueprint/shared/config/ui.ts
  */
 export { CSS_VALUES } from "@blueprint/shared/config";
-
-/** UI Fallback values for environment-dependent configs */
-export const UI_FALLBACKS = {
-  API_BASE: ENV.API_BASE_URL,
-};

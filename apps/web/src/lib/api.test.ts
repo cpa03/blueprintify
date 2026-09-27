@@ -46,9 +46,6 @@ vi.mock("../config/constants", async () => {
       REFINEMENT_FAILED: "Refinement failed",
     },
     SSE_CONFIG: shared.SSE_CONFIG,
-    UI_FALLBACKS: {
-      API_BASE: shared.DEV_DEFAULTS.API_PROXY_TARGET,
-    },
     TIMEOUTS: {
       API_CONNECTION: 30000,
       API_HEALTH_CHECK: 5000,

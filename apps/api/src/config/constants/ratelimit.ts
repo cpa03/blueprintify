@@ -8,25 +8,6 @@
  */
 
 import { AUTH_DEFAULTS, RATE_LIMITER_BINDINGS } from "@blueprint/shared";
-import { getEnvConfig } from "./env";
-
-/**
- * Rate limiting configuration with env-based thresholds.
- */
-export const RATE_LIMIT_CONFIG = {
-  get WINDOW_MS(): number {
-    return getEnvConfig().RATE_LIMIT_WINDOW_MS;
-  },
-  get STRICT_MAX(): number {
-    return getEnvConfig().RATE_LIMIT_STRICT_MAX;
-  },
-  get STANDARD_MAX(): number {
-    return getEnvConfig().RATE_LIMIT_STANDARD_MAX;
-  },
-  get LENIENT_MAX(): number {
-    return getEnvConfig().RATE_LIMIT_LENIENT_MAX;
-  },
-};
 
 /**
  * Rate limiter binding constants.
