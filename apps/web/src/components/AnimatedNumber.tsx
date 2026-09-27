@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback, memo } from "react";
+import { useEffect, useRef, useState, memo } from "react";
 import * as motion from "framer-motion/m";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
 import { ANIMATION_COLORS, ANIMATION, EASING, CSS_CLASSES } from "../config/constants";
@@ -41,11 +41,8 @@ function AnimatedNumberComponent({
   useEffect(() => {
     if (!shouldAnimate) {
       displayValueRef.current = value;
-      // Defer state update to avoid cascading renders per React docs
-      const rafId = requestAnimationFrame(() => {
-        setDisplayValue(value);
-      });
-      return () => cancelAnimationFrame(rafId);
+      setTimeout(() => setDisplayValue(value), 0);
+      return;
     }
 
     // Simple interpolation for animated version
@@ -56,10 +53,8 @@ function AnimatedNumberComponent({
 
     if (adjustedDuration === 0) {
       displayValueRef.current = endValue;
-      const rafId = requestAnimationFrame(() => {
-        setDisplayValue(endValue);
-      });
-      return () => cancelAnimationFrame(rafId);
+      setTimeout(() => setDisplayValue(endValue), 0);
+      return;
     }
 
     const animate = (currentTime: number) => {
@@ -75,6 +70,8 @@ function AnimatedNumberComponent({
 
       if (progress < 1) {
         requestAnimationFrame(animate);
+      } else {
+        setDirection(COUNTER_DIRECTION_VALUES.IDLE);
       }
     };
 
@@ -149,21 +146,14 @@ function AnimatedCounterComponent({
   const previousValueRef = useRef(value);
   const [pulseKey, setPulseKey] = useState(0);
 
-  // Use callback to handle value changes without synchronous setState in effect
-  const handleValueChange = useCallback(() => {
+  useEffect(() => {
     if (value !== previousValueRef.current) {
       previousValueRef.current = value;
       if (shouldAnimate) {
-        setPulseKey((prev) => prev + 1);
+        setTimeout(() => setPulseKey((prev) => prev + 1), 0);
       }
     }
   }, [value, shouldAnimate]);
-
-  // Schedule the value change check
-  useEffect(() => {
-    const timeoutId = setTimeout(handleValueChange, 0);
-    return () => clearTimeout(timeoutId);
-  }, [handleValueChange]);
 
   return (
     <motion.div
