@@ -1,7 +1,7 @@
 ---
 description: User Story Engineer - Implements small, incremental improvements from user stories and issues
 mode: primary
-model: opencode/deepseek-v4-flash-free
+model: opencode/nemotron-3-ultra-free
 temperature: 0.0
 tools:
   write: true

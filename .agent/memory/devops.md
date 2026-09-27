@@ -88,7 +88,7 @@ npm run deploy --workspace=apps/api -- --env production
 ## Project Standards (from AGENTS.md)
 
 - **CI Runner**: MUST use `ubuntu-24.04-arm`
-- **Model**: MUST use `${AGENT_MODEL:-deepseek-v4-flash-free}`
+- **Model**: MUST use `${AGENT_MODEL:-nemotron-3-ultra-free}`
 - **Secrets**: NEVER expose in logs or commits
 
 ## CI/CD Best Practices

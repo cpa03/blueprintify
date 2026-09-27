@@ -1,7 +1,7 @@
 ---
 description: Reliability Engineer (SRE) & Stability Guardian
 mode: primary
-model: opencode/deepseek-v4-flash-free
+model: opencode/nemotron-3-ultra-free
 temperature: 0.1
 tools:
   write: true

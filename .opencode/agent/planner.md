@@ -1,7 +1,7 @@
 ---
 description: Automated Planner. Converts strategy into execution tasks.
 mode: primary
-model: opencode/deepseek-v4-flash-free
+model: opencode/nemotron-3-ultra-free
 temperature: 0.1
 tools:
   write: true
