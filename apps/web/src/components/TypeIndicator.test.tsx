@@ -247,6 +247,17 @@ describe("TypeIndicator", () => {
     expect(wrapper?.className).toContain("mt-4");
   });
 
+  it("applies role='status', data-state, data-position, data-dots-count, and data-reduced-motion attributes for state tracking and accessibility", () => {
+    const { container } = render(<TypeIndicator isTyping={true} position="left" />);
+
+    const wrapper = container.firstChild as HTMLElement;
+    expect(wrapper).toHaveAttribute("role", "status");
+    expect(wrapper).toHaveAttribute("data-state", "typing");
+    expect(wrapper).toHaveAttribute("data-position", "left");
+    expect(wrapper).toHaveAttribute("data-dots-count", "3");
+    expect(wrapper).toHaveAttribute("data-reduced-motion", "false");
+  });
+
   describe("reduced motion", () => {
     beforeEach(() => {
       capturedDotAnimations = [];

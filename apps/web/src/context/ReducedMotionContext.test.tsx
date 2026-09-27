@@ -14,6 +14,7 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { ReducedMotionProvider, useReducedMotionContext } from "./ReducedMotionContext";
+import { ACCESSIBILITY_EVENTS } from "../config/constants";
 import { STORAGE_KEYS } from "../config/keys";
 
 /**
@@ -171,6 +172,35 @@ describe("ReducedMotionContext", () => {
     expect(result.current.userOverride).toBeNull();
     expect(result.current.prefersReducedMotion).toBe(false);
     expect(localStorage.getItem(STORAGE_KEYS.REDUCED_MOTION)).toBeNull();
+  });
+
+  it("should dispatch the reduced motion change event when setUserOverride is called", () => {
+    const dispatchEventSpy = vi.spyOn(window, "dispatchEvent");
+    const { result } = renderWithProvider();
+
+    act(() => {
+      result.current.setUserOverride(true);
+    });
+
+    expect(dispatchEventSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ type: ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE })
+    );
+  });
+
+  it("should dispatch the reduced motion change event when resetToSystemPreference is called", () => {
+    const dispatchEventSpy = vi.spyOn(window, "dispatchEvent");
+    const { result } = renderWithProvider();
+
+    act(() => {
+      result.current.setUserOverride(true);
+    });
+    act(() => {
+      result.current.resetToSystemPreference();
+    });
+
+    expect(dispatchEventSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ type: ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE })
+    );
   });
 
   it("should react to system media-query changes", () => {

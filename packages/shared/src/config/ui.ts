@@ -179,7 +179,7 @@ export const EDITOR_FILENAMES = {
   /** Screen reader announcement text for blueprint tab */
   BLUEPRINT_ANNOUNCE: "blueprint.md" as const,
   /** Screen reader announcement text for tasks tab */
-  TASKS_ANNOUNCE: "tasks.md" as const,
+  TASKS_ANNOUNCE: "task.md" as const,
   /** Human-readable display name for the blueprint tab (capitalized, no extension) */
   BLUEPRINT_DISPLAY: "Blueprint" as const,
   /** Human-readable display name for the tasks tab (capitalized, no extension) */
@@ -309,8 +309,8 @@ export const UI_TIMEOUTS = {
   COPY_FEEDBACK: 2000,
   /** Duration for shake animation feedback (400ms) */
   SHAKE_ANIMATION: 400,
-  /** Duration to show toast notifications (1.5s) */
-  TOAST_NOTIFICATION: 1500,
+  /** Duration to show toast notifications (3s, matches TOAST_DEFAULTS.DEFAULT_DURATION_MS) */
+  TOAST_NOTIFICATION: 3000,
   /** Delay before focusing element after step change (100ms) */
   FOCUS_DELAY: 100,
   /** Delay before clearing screen-reader live region (1s) */
@@ -761,4 +761,184 @@ export const MODIFIER_KEYS = {
   ALT: "alt" as const,
   /** No modifier — raw key press without modifiers */
   NONE: "none" as const,
+} as const;
+
+/**
+ * Copy State Values
+ * Centralized state tracking values for copy-to-clipboard interactions.
+ * Flexy says: No hardcoded "copied"/"idle" strings in copy button components!
+ * Usage: import { COPY_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isCopied ? COPY_STATE_VALUES.COPIED : COPY_STATE_VALUES.IDLE}
+ */
+export const COPY_STATE_VALUES = {
+  /** Copied state identifier */
+  COPIED: "copied" as const,
+  /** Idle / ready to copy state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
+ * Validation State Values
+ * Centralized state tracking values for field validation indicators.
+ * Flexy says: No hardcoded "valid"/"invalid" strings in validation checkmark components!
+ * Usage: import { VALIDATION_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isValid ? VALIDATION_STATE_VALUES.VALID : VALIDATION_STATE_VALUES.INVALID}
+ */
+export const VALIDATION_STATE_VALUES = {
+  /** Valid state identifier */
+  VALID: "valid" as const,
+  /** Invalid state identifier */
+  INVALID: "invalid" as const,
+} as const;
+
+/**
+ * Banner Display State Values
+ * Centralized state tracking values for banner indicators (e.g. OfflineBanner).
+ * Flexy says: No hardcoded "visible"/"hidden"/"online"/"offline" strings in banner components!
+ * Usage: import { BANNER_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
+ */
+export const BANNER_STATE_VALUES = {
+  /** Visible state identifier */
+  VISIBLE: "visible" as const,
+  /** Hidden state identifier */
+  HIDDEN: "hidden" as const,
+  /** Online network state identifier */
+  ONLINE: "online" as const,
+  /** Offline network state identifier */
+  OFFLINE: "offline" as const,
+} as const;
+
+/**
+ * Typing Indicator State Values
+ * Centralized state tracking values for typing / generating indicator states.
+ * Flexy says: No hardcoded "typing"/"idle" strings in TypeIndicator components!
+ * Usage: import { TYPING_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isTyping ? TYPING_STATE_VALUES.TYPING : TYPING_STATE_VALUES.IDLE}
+ */
+export const TYPING_STATE_VALUES = {
+  /** Typing / active generation state identifier */
+  TYPING: "typing" as const,
+  /** Idle state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
+ * Save State Display Values
+ * Centralized state tracking values for save status indicators (e.g. LastSavedIndicator).
+ * Flexy says: No hardcoded "saved"/"unsaved" strings in LastSavedIndicator!
+ * Usage: import { SAVE_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={hasChanges ? SAVE_STATE_VALUES.UNSAVED : SAVE_STATE_VALUES.SAVED}
+ */
+export const SAVE_STATE_VALUES = {
+  /** Saved state identifier */
+  SAVED: "saved" as const,
+  /** Unsaved state identifier */
+  UNSAVED: "unsaved" as const,
+} as const;
+
+/**
+ * Progress Display State Values
+ * Centralized state tracking values for progress indicators (e.g. CircularProgress).
+ * Flexy says: No hardcoded "complete"/"animating"/"idle" strings in progress components!
+ * Usage: import { PROGRESS_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isComplete ? PROGRESS_STATE_VALUES.COMPLETE : ...}
+ */
+export const PROGRESS_STATE_VALUES = {
+  /** Complete state identifier */
+  COMPLETE: "complete" as const,
+  /** Animating state identifier */
+  ANIMATING: "animating" as const,
+  /** Idle state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
+ * Skip Link Display State Values
+ * Centralized state tracking values for skip-to-content navigation (SkipLink).
+ * Flexy says: No hardcoded "focused"/"idle" strings in SkipLink!
+ * Usage: import { SKIP_LINK_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isFocused ? SKIP_LINK_STATE_VALUES.FOCUSED : SKIP_LINK_STATE_VALUES.IDLE}
+ */
+export const SKIP_LINK_STATE_VALUES = {
+  /** Focused state identifier */
+  FOCUSED: "focused" as const,
+  /** Idle state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
+ * Character Counter State Values
+ * Centralized state tracking values for character limit indicators.
+ * Flexy says: No hardcoded "at-limit"/"warning"/"valid"/"default" strings in CharacterCounter components!
+ * Usage: import { CHAR_COUNTER_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isAtLimit ? CHAR_COUNTER_STATE_VALUES.AT_LIMIT : ...}
+ */
+export const CHAR_COUNTER_STATE_VALUES = {
+  /** At maximum character limit state */
+  AT_LIMIT: "at-limit" as const,
+  /** Near maximum character limit warning state */
+  WARNING: "warning" as const,
+  /** Valid input satisfied state */
+  VALID: "valid" as const,
+  /** Default normal input state */
+  DEFAULT: "default" as const,
+} as const;
+
+/**
+ * Dialog Display State Values
+ * Centralized state tracking values for modal dialogs (e.g. ConfirmDialog).
+ * Flexy says: No hardcoded "open"/"closed" strings in dialog components!
+ * Usage: import { DIALOG_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isOpen ? DIALOG_STATE_VALUES.OPEN : DIALOG_STATE_VALUES.CLOSED}
+ */
+export const DIALOG_STATE_VALUES = {
+  /** Open modal state identifier */
+  OPEN: "open" as const,
+  /** Closed modal state identifier */
+  CLOSED: "closed" as const,
+} as const;
+
+/**
+ * Empty State Display State Values
+ * Centralized state tracking values for empty state components (e.g. EditorEmptyState).
+ * Flexy says: No hardcoded "empty"/"waiting" strings in empty state components!
+ * Usage: import { EMPTY_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={EMPTY_STATE_VALUES.WAITING}
+ */
+export const EMPTY_STATE_VALUES = {
+  /** Empty content state identifier */
+  EMPTY: "empty" as const,
+  /** Waiting / initial wizard state identifier */
+  WAITING: "waiting" as const,
+} as const;
+
+/**
+ * Counter Direction Values
+ * Centralized state tracking values for animated counter/number directional changes.
+ * Flexy says: No hardcoded "up"/"down"/"idle" strings in AnimatedNumber components!
+ * Usage: import { COUNTER_DIRECTION_VALUES } from "@blueprint/shared";
+ *        data-direction={direction || COUNTER_DIRECTION_VALUES.IDLE}
+ */
+export const COUNTER_DIRECTION_VALUES = {
+  /** Value increased direction */
+  UP: "up" as const,
+  /** Value decreased direction */
+  DOWN: "down" as const,
+  /** Idle / steady value direction */
+  IDLE: "idle" as const,
+} as const;
+
+/**
+ * Editor Button Display State Values
+ * Centralized state tracking values for editor toggle button (ShowEditorButton).
+ * Flexy says: No hardcoded "content-ready"/"idle" strings in ShowEditorButton!
+ * Usage: import { EDITOR_BUTTON_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={hasContent ? EDITOR_BUTTON_STATE_VALUES.CONTENT_READY : EDITOR_BUTTON_STATE_VALUES.IDLE}
+ */
+export const EDITOR_BUTTON_STATE_VALUES = {
+  /** Content ready state identifier */
+  CONTENT_READY: "content-ready" as const,
+  /** Idle state identifier */
+  IDLE: "idle" as const,
 } as const;

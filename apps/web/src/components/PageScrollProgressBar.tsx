@@ -42,6 +42,7 @@ import {
   KEYBOARD_EVENT_KEYS,
   PERCENT_SCALE,
   RATIO_LIMITS,
+  BANNER_STATE_VALUES,
 } from "@blueprint/shared/config";
 
 interface PageScrollProgressBarProps {
@@ -216,6 +217,10 @@ function PageScrollProgressBarComponent({
         ease: EASING.easeOut,
       }}
       className={`fixed top-0 left-0 right-0 z-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60 ${className}`}
+      data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
+      data-progress={Math.round(scrollProgress)}
+      data-hovered={isHovered}
+      data-focused={isFocused}
     >
       <div
         ref={barRef}

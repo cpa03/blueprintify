@@ -25,6 +25,7 @@ import {
   ENTRANCE_STAGGER_DEFAULTS,
   MODIFIER_KEYS,
   BUTTON_TRANSITION_DEFAULTS,
+  EDITOR_BUTTON_STATE_VALUES,
 } from "@blueprint/shared/config";
 import { KeyboardShortcutTooltip } from "./SmartTooltip";
 import { RippleButton } from "./RippleButton";
@@ -124,6 +125,12 @@ function ShowEditorButtonComponent({
           aria-label={buttonTitle}
           title={buttonTitle}
           data-editor-toggle="true"
+          data-has-content={hasContent}
+          data-state={
+            hasContent ? EDITOR_BUTTON_STATE_VALUES.CONTENT_READY : EDITOR_BUTTON_STATE_VALUES.IDLE
+          }
+          data-glow-active={showGlow}
+          data-is-generating={isGenerating}
           aria-expanded={false}
           aria-controls="editor-panel"
         >
@@ -168,6 +175,11 @@ function ShowEditorButtonComponent({
                   {EDITOR_ANNOUNCER.GENERATING_IN_BACKGROUND}
                 </span>
               </>
+            )}
+            {hasContent && !isGenerating && (
+              <span className="sr-only" aria-live="polite">
+                {EDITOR_ANNOUNCER.CONTENT_READY}
+              </span>
             )}
             <kbd
               className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT} animate-fade-in`}

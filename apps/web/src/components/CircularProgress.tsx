@@ -19,8 +19,9 @@ import {
   ANIMATION,
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
-import { UI_TIMEOUTS } from "@blueprint/shared/config";
+import { UI_TIMEOUTS, PROGRESS_STATE_VALUES } from "@blueprint/shared";
 import { TRANSFORMS, OPACITY } from "../config/theme";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 
 /**
  * Props for the CircularProgress component.
@@ -109,6 +110,11 @@ function CircularProgressComponent({
   const circumference = radius * 2 * Math.PI;
   const center = size / 2;
 
+  // Respect prefers-reduced-motion: the stroke transition is inline-styled,
+  // so it is invisible to the CSS media-query kill-list and must be gated here
+  // (WCAG 2.3.3) — the ring snaps instantly instead of animating.
+  const shouldReduceMotion = useReducedMotion();
+
   // One-shot celebration animation when progress first reaches 100%.
   // The ref gates it so the satisfying scale-bounce only fires once per
   // completion lifecycle, complementing the persistent circular-complete-glow.
@@ -163,6 +169,16 @@ function CircularProgressComponent({
       aria-valuemin={0}
       aria-valuemax={100}
       aria-label={ariaLabel ?? ACCESSIBILITY_LABELS.PROGRESS.PERCENT_COMPLETE(clampedValue)}
+      data-state={
+        isComplete
+          ? PROGRESS_STATE_VALUES.COMPLETE
+          : isAnimating
+            ? PROGRESS_STATE_VALUES.ANIMATING
+            : PROGRESS_STATE_VALUES.IDLE
+      }
+      data-complete={isComplete ? "true" : "false"}
+      data-animating={isAnimating ? "true" : "false"}
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
     >
       <svg
         width={size}
@@ -190,12 +206,16 @@ function CircularProgressComponent({
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}
-          style={{
-            strokeDashoffset,
-            transitionProperty: SVG_TRANSITION.STROKE_PROPERTY,
-            transitionDuration: `${SVG_TRANSITION.STROKE_DASHOFFSET_DURATION_MS}ms, ${SVG_TRANSITION.STROKE_COLOR_TRANSITION_S}s`,
-            transitionTimingFunction: SVG_TRANSITION.STROKE_TIMING,
-          }}
+          style={
+            shouldReduceMotion
+              ? { strokeDashoffset, transition: "none" }
+              : {
+                  strokeDashoffset,
+                  transitionProperty: SVG_TRANSITION.STROKE_PROPERTY,
+                  transitionDuration: `${SVG_TRANSITION.STROKE_DASHOFFSET_DURATION_MS}ms, ${SVG_TRANSITION.STROKE_COLOR_TRANSITION_S}s`,
+                  transitionTimingFunction: SVG_TRANSITION.STROKE_TIMING,
+                }
+          }
         />
       </svg>
 

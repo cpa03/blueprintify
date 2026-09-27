@@ -19,6 +19,9 @@ export default [
       "apps/web/src/**/*.js",
       "packages/shared/src/**/*.js",
       "packages/shared/fix-esm.mjs",
+      // Ignore Wrangler temporary build artifacts
+      "apps/api/.wrangler/**",
+      "**/.wrangler/**",
     ],
   },
   js.configs.recommended,

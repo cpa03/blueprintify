@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";
 import { axe } from "jest-axe";
 import { Editor } from "./Editor";
+import { LazyCodeMirror } from "./LazyCodeMirror";
 import { useEditorStore, useWizardStore } from "../store";
 import { ExportProvider } from "../context/ExportContext";
 import { exportAsZip } from "../lib/export";
@@ -215,6 +216,32 @@ describe("Editor", () => {
     );
 
     expect(screen.getByDisplayValue("# Tasks Content")).toBeInTheDocument();
+  });
+
+  it("passes a per-tab accessible name to the markdown editor", () => {
+    mockEditorStore.blueprintContent = "# Test Content";
+    mockEditorStore.activeTab = EDITOR_TABS.BLUEPRINT;
+    const { unmount } = render(
+      <ExportProvider>
+        <Editor />
+      </ExportProvider>
+    );
+
+    const blueprintCall = (LazyCodeMirror as unknown as Mock).mock.calls.at(-1)?.[0];
+    expect(blueprintCall).toMatchObject({ ariaLabel: "Blueprint markdown editor" });
+
+    unmount();
+
+    mockEditorStore.activeTab = EDITOR_TABS.TASKS;
+    mockEditorStore.tasksContent = "# Tasks Content";
+    render(
+      <ExportProvider>
+        <Editor />
+      </ExportProvider>
+    );
+
+    const tasksCall = (LazyCodeMirror as unknown as Mock).mock.calls.at(-1)?.[0];
+    expect(tasksCall).toMatchObject({ ariaLabel: "Tasks markdown editor" });
   });
 
   it("has proper styling classes", () => {

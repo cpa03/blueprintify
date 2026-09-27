@@ -278,6 +278,8 @@ const ScrollToPosition = memo(function ScrollToPosition({
                          shadow-lg shadow-primary-500/10
                          transition-colors duration-200"
               aria-label={ariaLabel}
+              aria-keyshortcuts={shortCutKey}
+              data-direction={direction}
               whileHover={HOVER_SCALE.STRONG}
               whileTap={TAP_SCALE.STANDARD}
             >

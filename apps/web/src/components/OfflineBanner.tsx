@@ -37,6 +37,7 @@ import {
   UI_TIMEOUTS,
   NETWORK_DEFAULTS,
   TOAST_TYPES,
+  BANNER_STATE_VALUES,
 } from "@blueprint/shared/config";
 import {
   NETWORK_MESSAGES,
@@ -173,6 +174,9 @@ function OfflineBannerComponent(): JSX.Element | null {
         role={isVisible ? "status" : undefined}
         aria-live={isVisible ? "polite" : undefined}
         aria-atomic={isVisible ? "true" : undefined}
+        data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
+        data-online-status={isOnline ? BANNER_STATE_VALUES.ONLINE : BANNER_STATE_VALUES.OFFLINE}
+        data-reduced-motion={shouldReduceMotion ? "true" : "false"}
         className={`overflow-hidden ${
           // Outer container handles layout space via max-height
           // while the inner banner slides with GPU-composited transform.
@@ -237,7 +241,10 @@ function OfflineBannerComponent(): JSX.Element | null {
                   <span className="text-sm font-semibold text-accent-pink whitespace-nowrap">
                     {NETWORK_MESSAGES.OFFLINE}
                   </span>
-                  <span className="text-xs text-dark-400 hidden sm:inline truncate">
+                  <span
+                    id="offline-banner-desc"
+                    className="text-xs text-dark-400 hidden sm:inline truncate"
+                  >
                     {ACCESSIBILITY_LABELS.OFFLINE_BANNER.DESCRIPTION}
                   </span>
                 </div>
@@ -255,6 +262,7 @@ function OfflineBannerComponent(): JSX.Element | null {
                              rounded-md p-1.5 motion-safe:transition-all motion-safe:duration-200 motion-safe:ease-out
                              motion-safe:hover:scale-110 motion-safe:active:scale-95"
                   aria-label={ACCESSIBILITY_LABELS.OFFLINE_BANNER.DISMISS}
+                  aria-describedby="offline-banner-desc"
                 >
                   <Icon name="close" className="w-4 h-4 text-accent-pink" />
                 </button>

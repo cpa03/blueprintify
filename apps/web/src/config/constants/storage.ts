@@ -115,6 +115,22 @@ export const DOCUMENT_TITLE_CONFIG = {
 };
 
 // ============================================================================
+// Favicon Status Configuration
+// ============================================================================
+
+// Favicon hrefs swapped by useFaviconStatus to mirror generation state in the
+// browser tab — the visual counterpart to the live document-title updates.
+// The loading glyph is a static spinner arc on purpose: SMIL animation inside
+// favicons is unreliable outside Firefox, so an animated spinner would only
+// spin for a subset of browsers.
+export const FAVICON_CONFIG = {
+  DEFAULT_HREF: "/favicon.svg",
+  LOADING_HREF: "/favicon-loading.svg",
+  COMPLETE_HREF: "/favicon-done.svg",
+  LINK_SELECTOR: 'link[rel="icon"][type="image/svg+xml"]',
+} as const;
+
+// ============================================================================
 // Storage Error Messages
 // ============================================================================
 

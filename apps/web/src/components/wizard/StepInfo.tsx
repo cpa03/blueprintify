@@ -72,7 +72,7 @@ import { useAutoResizeTextarea } from "../../hooks/useAutoResizeTextarea";
 import { RippleButton } from "../RippleButton";
 import { CharacterCounter } from "../CharacterCounter";
 import { Icon } from "../Icon";
-import { KeyboardShortcutTooltip } from "../SmartTooltip";
+import { KeyboardShortcutTooltip, SmartTooltip } from "../SmartTooltip";
 import { pageTransition, transitions, type AnimationDirection } from "../../utils/motion";
 import { TypeIndicator, useTypingIndicator } from "../TypeIndicator";
 import { ValidationCheckmark } from "../ValidationCheckmark";
@@ -81,6 +81,11 @@ import { getModifierLabel, getAriaShortcutKey } from "../../lib/platform";
 interface StepInfoProps {
   direction?: AnimationDirection;
 }
+
+// Yellow means "approaching limit" form-wide; the below-min hint stays neutral.
+const DESCRIPTION_WARNING_THRESHOLD = Math.floor(
+  FORM_LIMITS.DESCRIPTION.MAX * RATIO_LIMITS.FORM_WARNING
+);
 
 export const StepInfo = memo(function StepInfo({
   direction = ANIMATION_DIRECTIONS.FORWARD,
@@ -280,6 +285,32 @@ export const StepInfo = memo(function StepInfo({
     projectNameInputRef.current?.focus({ preventScroll: true });
   }, []);
 
+  const nextButton = (
+    <RippleButton
+      type="submit"
+      disabled={!canProceed}
+      aria-label={canProceed ? undefined : ACCESSIBILITY_LABELS.WIZARD_INFO.NEXT_DISABLED_ARIA}
+      whileHover={{ ...HOVER_SCALE.MICRO, y: -2 }}
+      whileTap={{ ...TAP_SCALE.MICRO, y: 0 }}
+      className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}`}
+      aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
+    >
+      {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
+      <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
+        {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
+      </kbd>
+      <svg
+        className={CSS_CLASSES.ICON_HOVER_SHIFT}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+      </svg>
+    </RippleButton>
+  );
+
   return (
     <motion.div {...pageTransition(direction)} className="space-y-6">
       <div>
@@ -396,12 +427,12 @@ export const StepInfo = memo(function StepInfo({
               onBlur={projectNameTyping.handleBlur}
               placeholder={UI_CONTENT.WIZARD.STEP_INFO.PROJECT_NAME_PLACEHOLDER}
               className={`input-field transition-all duration-200 ${
-                projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN
-                  ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20"
-                  : projectName.length >= FORM_LIMITS.PROJECT_NAME.MAX
-                    ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20"
-                    : projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD
-                      ? "border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20"
+                projectName.length >= FORM_LIMITS.PROJECT_NAME.MAX
+                  ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20"
+                  : projectName.length > FORM_LIMITS.PROJECT_NAME.WARNING_THRESHOLD
+                    ? "border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500/20"
+                    : projectName.length >= FORM_LIMITS.PROJECT_NAME.MIN
+                      ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20"
                       : ""
               }`}
               maxLength={FORM_LIMITS.PROJECT_NAME.MAX}
@@ -506,6 +537,7 @@ export const StepInfo = memo(function StepInfo({
               current={description.length}
               max={FORM_LIMITS.DESCRIPTION.MAX}
               min={FORM_LIMITS.DESCRIPTION.MIN}
+              warningThreshold={DESCRIPTION_WARNING_THRESHOLD}
             />
           </div>
           <div
@@ -525,13 +557,17 @@ export const StepInfo = memo(function StepInfo({
               onBlur={descriptionTyping.handleBlur}
               placeholder={UI_CONTENT.WIZARD.STEP_INFO.DESCRIPTION_PLACEHOLDER}
               className={`textarea-field transition-all duration-200 ${
-                description.length >= FORM_LIMITS.DESCRIPTION.MIN
-                  ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20 pr-12"
-                  : descriptionErrorVisible
-                    ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20"
-                    : description.length > 0
-                      ? "border-yellow-500/50 focus:border-yellow-500 focus:ring-yellow-500/20"
-                      : ""
+                description.length >= FORM_LIMITS.DESCRIPTION.MAX
+                  ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20 pr-12"
+                  : description.length >= DESCRIPTION_WARNING_THRESHOLD
+                    ? "border-yellow-500/50 focus:border-yellow-500 focus:ring-yellow-500/20 pr-12"
+                    : description.length >= FORM_LIMITS.DESCRIPTION.MIN
+                      ? "border-accent-emerald/50 focus:border-accent-emerald focus:ring-accent-emerald/20 pr-12"
+                      : descriptionErrorVisible
+                        ? "border-accent-pink focus:border-accent-pink focus:ring-accent-pink/20"
+                        : description.length > 0
+                          ? "border-dark-500/50 focus:border-dark-400 focus:ring-dark-500/20"
+                          : ""
               }`}
               maxLength={FORM_LIMITS.DESCRIPTION.MAX}
               required
@@ -541,9 +577,12 @@ export const StepInfo = memo(function StepInfo({
               transition={{ duration: ANIMATION.FAST }}
               {...(descriptionErrorVisible
                 ? { "aria-describedby": "description-error" }
-                : description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN
-                  ? { "aria-describedby": "description-hint" }
-                  : {})}
+                : description.length >= DESCRIPTION_WARNING_THRESHOLD &&
+                    description.length < FORM_LIMITS.DESCRIPTION.MAX
+                  ? { "aria-describedby": "description-warning" }
+                  : description.length > 0 && description.length < FORM_LIMITS.DESCRIPTION.MIN
+                    ? { "aria-describedby": "description-hint" }
+                    : {})}
             />
             {/* Clear button — appears when field has content */}
             <AnimatePresence>
@@ -589,11 +628,27 @@ export const StepInfo = memo(function StepInfo({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
-                  className="text-xs text-yellow-500 mt-1"
+                  className="text-xs text-dark-400 mt-1"
                 >
                   {VALIDATION_MESSAGES.CHARACTERS_NEEDED(
                     FORM_LIMITS.DESCRIPTION.MIN - description.length
                   )}
+                </motion.p>
+              )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {description.length >= DESCRIPTION_WARNING_THRESHOLD &&
+              description.length < FORM_LIMITS.DESCRIPTION.MAX && (
+                <motion.p
+                  id="description-warning"
+                  role="status"
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: ANIMATION.NORMAL, ease: EASING.easeOut }}
+                  className="text-xs text-accent-pink mt-1"
+                >
+                  {VALIDATION_MESSAGES.APPROACHING_CHARACTER_LIMIT}
                 </motion.p>
               )}
           </AnimatePresence>
@@ -739,39 +794,23 @@ export const StepInfo = memo(function StepInfo({
             transition={{ duration: ANIMATION.HALF_SECOND, ease: EASING.easeOut }}
             className="inline-flex"
           >
-            <KeyboardShortcutTooltip
-              shortcut={KEYBOARD_EVENT_KEYS.ENTER}
-              description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
-              position="left"
-            >
-              <RippleButton
-                type="submit"
-                disabled={!canProceed}
-                whileHover={{ ...HOVER_SCALE.MICRO, y: -2 }}
-                whileTap={{ ...TAP_SCALE.MICRO, y: 0 }}
-                className={`btn-primary flex items-center gap-2 group ${canProceed ? "animate-glow" : ""} ${isShaking ? CSS_CLASSES.SHAKE_ANIMATION : ""}`}
-                aria-keyshortcuts={getAriaShortcutKey(KEYBOARD_EVENT_KEYS.ENTER, MODIFIER_KEYS.CMD)}
+            {canProceed ? (
+              <KeyboardShortcutTooltip
+                shortcut={KEYBOARD_EVENT_KEYS.ENTER}
+                description={SHORTCUT_DESCRIPTIONS.CONTINUE_NEXT_STEP}
+                position="left"
               >
-                {UI_CONTENT.WIZARD.STEP_INFO.NEXT_BUTTON}
-                <kbd className={`ml-2 ${CSS_CLASSES.KBD_SHORTCUT}`} aria-hidden="true">
-                  {modifierKey}+{DISPLAY_SYMBOLS.ENTER_KEY}
-                </kbd>
-                <svg
-                  className={CSS_CLASSES.ICON_HOVER_SHIFT}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </RippleButton>
-            </KeyboardShortcutTooltip>
+                {nextButton}
+              </KeyboardShortcutTooltip>
+            ) : (
+              <SmartTooltip
+                content={ACCESSIBILITY_LABELS.WIZARD_INFO.NEXT_DISABLED_TOOLTIP}
+                position="left"
+                delay={0}
+              >
+                {nextButton}
+              </SmartTooltip>
+            )}
           </motion.span>
         </div>
       </form>

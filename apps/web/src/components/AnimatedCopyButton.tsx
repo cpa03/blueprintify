@@ -14,7 +14,7 @@ import React, { useState, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import clsx from "clsx";
-import { FRAMER_TYPE, TIME_UNITS } from "@blueprint/shared/config";
+import { FRAMER_TYPE, TIME_UNITS, COPY_STATE_VALUES } from "@blueprint/shared";
 import {
   CELEBRATION_COLORS,
   ANIMATION_COLORS,
@@ -25,6 +25,7 @@ import {
   HOVER_SCALE,
   COPY_BUTTON_LABELS,
   FOCUS_ANNOUNCER,
+  CSS_CLASSES,
 } from "../config/constants";
 import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -154,8 +155,11 @@ function AnimatedCopyButtonComponent({
         isCopied
           ? "bg-accent-emerald/20 text-accent-emerald border border-accent-emerald/50"
           : "btn-ghost text-dark-300 hover:text-white hover:bg-dark-800/50",
+        !hasContent ? CSS_CLASSES.DISABLED_BUTTON_STATE : "",
         className
       )}
+      data-state={isCopied ? COPY_STATE_VALUES.COPIED : COPY_STATE_VALUES.IDLE}
+      title={isCopied ? COPY_BUTTON_LABELS.COPIED : COPY_BUTTON_LABELS.COPY}
       aria-label={isCopied ? COPY_BUTTON_LABELS.COPIED : COPY_BUTTON_LABELS.COPY}
       animate={{
         scale: shouldReduceMotion ? 1 : isPressed ? 0.92 : 1,

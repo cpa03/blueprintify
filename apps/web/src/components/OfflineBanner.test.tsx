@@ -25,10 +25,16 @@ describe("OfflineBanner", () => {
     expect(screen.queryByText(NETWORK_MESSAGES.OFFLINE)).not.toBeInTheDocument();
   });
 
-  it("renders offline message when offline", () => {
+  it("renders offline message when offline with data-state, data-online-status, and data-reduced-motion attributes", () => {
     mockOnlineStatus.mockReturnValue(false);
     render(<OfflineBanner />);
     expect(screen.getByText(NETWORK_MESSAGES.OFFLINE)).toBeInTheDocument();
+
+    const banners = screen.getAllByRole("status");
+    const banner = banners.find((b) => b.getAttribute("aria-live") === "polite");
+    expect(banner).toHaveAttribute("data-state", "visible");
+    expect(banner).toHaveAttribute("data-online-status", "offline");
+    expect(banner).toHaveAttribute("data-reduced-motion", "false");
   });
 
   it("hides the banner when dismiss button is clicked", async () => {
@@ -50,10 +56,15 @@ describe("OfflineBanner", () => {
     );
   });
 
-  it("renders description text when offline", () => {
+  it("renders description text when offline and links dismiss button via aria-describedby", () => {
     mockOnlineStatus.mockReturnValue(false);
     render(<OfflineBanner />);
     expect(screen.getByText(ACCESSIBILITY_LABELS.OFFLINE_BANNER.DESCRIPTION)).toBeInTheDocument();
+
+    const dismissButton = screen.getByRole("button", {
+      name: ACCESSIBILITY_LABELS.OFFLINE_BANNER.DISMISS,
+    });
+    expect(dismissButton).toHaveAttribute("aria-describedby", "offline-banner-desc");
   });
 
   it("sets role=status with aria-live when visible", () => {

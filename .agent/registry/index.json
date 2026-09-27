@@ -1,0 +1,462 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-09-26",
+  "agents": [
+    {
+      "id": "ai-agent-engineer",
+      "display_name": "AI Agent System Engineer",
+      "description": "AI Agent System Engineer - Maintains and improves the AI agent infrastructure",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/ai-agent-engineer.md"
+    },
+    {
+      "id": "api-specialist",
+      "display_name": "API Specialist",
+      "description": "API & Integration Specialist",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/api-specialist.md"
+    },
+    {
+      "id": "backend-engineer",
+      "display_name": "Backend Engineer",
+      "description": "Backend Engineer (API/DB/Logic)",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/backend-engineer.md"
+    },
+    {
+      "id": "cmz",
+      "display_name": "CMZ",
+      "description": "CMZ - Cognitive Multi-Agent System with Self-Heal, Self-Learning, Self-Evolve",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill", "websearch", "webfetch"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/cmz.md"
+    },
+    {
+      "id": "code-reviewer",
+      "display_name": "Code Reviewer",
+      "description": "Code Reviewer & Refactoring Specialist",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/code-reviewer.md"
+    },
+    {
+      "id": "coder",
+      "display_name": "Coder",
+      "description": "Autonomous Implementation Agent. Writes code, fixes bugs, and refactors without user interaction.",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/coder.md"
+    },
+    {
+      "id": "database-architect",
+      "display_name": "Database Architect",
+      "description": "Database Architect & Data Engineer",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/database-architect.md"
+    },
+    {
+      "id": "debugger",
+      "display_name": "Debugger",
+      "description": "Autonomous Debugger & Bug Patcher",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/debugger.md"
+    },
+    {
+      "id": "devops-engineer",
+      "display_name": "DevOps Engineer",
+      "description": "DevOps Engineer & Infrastructure Architect",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/devops-engineer.md"
+    },
+    {
+      "id": "dx-engineer",
+      "display_name": "DX Engineer",
+      "description": "Developer Experience Engineer & DX Specialist",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/dx-engineer.md"
+    },
+    {
+      "id": "frontend-engineer",
+      "display_name": "Frontend Engineer",
+      "description": "Frontend Engineer (React/Tailwind/UX)",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/frontend-engineer.md"
+    },
+    {
+      "id": "integration-engineer",
+      "display_name": "Integration Engineer",
+      "description": "Integration Engineer & API Specialist",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/integration-engineer.md"
+    },
+    {
+      "id": "integrator",
+      "display_name": "Integrator",
+      "description": "Pull Request Integrator & Merge Gatekeeper",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/integrator.md"
+    },
+    {
+      "id": "janitor",
+      "display_name": "Janitor",
+      "description": "Codebase Janitor & Cleanup Specialist",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/janitor.md"
+    },
+    {
+      "id": "modularity-engineer",
+      "display_name": "Modularity Engineer",
+      "description": "Modularity Engineer - Code Structure & Architecture Improvement Specialist",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill", "websearch"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/modularity-engineer.md"
+    },
+    {
+      "id": "performance-engineer",
+      "display_name": "Performance Engineer",
+      "description": "High-Performance Systems Engineer & Optimization Specialist",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/performance-engineer.md"
+    },
+    {
+      "id": "planner",
+      "display_name": "Planner",
+      "description": "Automated Planner. Converts strategy into execution tasks.",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/planner.md"
+    },
+    {
+      "id": "product-strategist",
+      "display_name": "Product Strategist",
+      "description": "Automated Product Strategist. Updates project plans.",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill", "webfetch"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/product-strategist.md"
+    },
+    {
+      "id": "quality-assurance",
+      "display_name": "Quality Assurance Engineer",
+      "description": "Quality Assurance Engineer & Test Analyst",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/quality-assurance.md"
+    },
+    {
+      "id": "reliability-engineer",
+      "display_name": "Reliability Engineer",
+      "description": "Reliability Engineer (SRE) & Stability Guardian",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/reliability-engineer.md"
+    },
+    {
+      "id": "researcher",
+      "display_name": "Researcher",
+      "description": "Automated Researcher. Synthesizes info into reports.",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill", "webfetch"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/researcher.md"
+    },
+    {
+      "id": "security-engineer",
+      "display_name": "Security Engineer",
+      "description": "Security Engineer & DevSecOps Specialist",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/security-engineer.md"
+    },
+    {
+      "id": "software-architect",
+      "display_name": "Software Architect",
+      "description": "Software Architect & System Orchestrator",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/software-architect.md"
+    },
+    {
+      "id": "synthesizer",
+      "display_name": "Synthesizer",
+      "description": "Automated Synthesizer. Aggregates findings into a cohesive plan.",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/synthesizer.md"
+    },
+    {
+      "id": "system-improver",
+      "display_name": "System Improver",
+      "description": "System Improver & Pattern Analyzer",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/system-improver.md"
+    },
+    {
+      "id": "technical-writer",
+      "display_name": "Technical Writer",
+      "description": "Technical Writer & Documentation Architect",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/technical-writer.md"
+    },
+    {
+      "id": "ui-ux-engineer",
+      "display_name": "UI/UX Engineer",
+      "description": "UI/UX Engineer & Design Specialist",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/ui-ux-engineer.md"
+    },
+    {
+      "id": "user-story-engineer",
+      "display_name": "User Story Engineer",
+      "description": "User Story Engineer - Implements small, incremental improvements from user stories and issues",
+      "capabilities": ["read", "write", "edit", "bash", "search", "skill"],
+      "tags": [],
+      "category": "engineering",
+      "path": "agents/user-story-engineer.md"
+    }
+  ],
+  "skills": [
+    {
+      "name": "api-endpoint-create",
+      "description": "Standard procedure for creating robust API endpoints",
+      "path": "skills/api-endpoint-create/SKILL.md"
+    },
+    {
+      "name": "obra-superpowers-brainstorming",
+      "description": "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation.",
+      "path": "skills/obra-superpowers-brainstorming/SKILL.md"
+    },
+    {
+      "name": "planning-with-files",
+      "description": "Transforms workflow to use Manus-style persistent markdown files for planning, progress tracking, and knowledge storage. Use when starting complex tasks, multi-step projects, research tasks, or when the user mentions planning, organizing work, tracking progress, or wants structured output.",
+      "path": "skills/planning-with-files/SKILL.md"
+    },
+    {
+      "name": "ci-pipeline-update",
+      "description": "Updates CI/CD pipelines for DevOps Engineer",
+      "path": "skills/ci-pipeline-update/SKILL.md"
+    },
+    {
+      "name": "professor-for-testing-agentic-qe-skill-builder",
+      "description": "Build comprehensive testing skills with TDD, quality engineering, and automated test generation. Use when creating test suites or improving testing practices.",
+      "path": "skills/professor-for-testing-agentic-qe-skill-builder/SKILL.md"
+    },
+    {
+      "name": "obra-superpowers-test-driven-development",
+      "description": "Use when implementing any feature or bugfix, before writing implementation code",
+      "path": "skills/obra-superpowers-test-driven-development/SKILL.md"
+    },
+    {
+      "name": "git-commit-message",
+      "description": "Auto-generates conventional commit messages from git diffs with tiered format enforcement. Analyzes staged changes to produce meaningful commit messages following Conventional Commits specification.",
+      "path": "skills/vasilyu1983-ai-agents-public-git-commit-message/SKILL.md"
+    },
+    {
+      "name": "maxritter-claude-codepro-backend-models-standards",
+      "description": "Backend development standards and best practices for API design, database, security, and performance. Use when designing or reviewing backend systems.",
+      "path": "skills/maxritter-claude-codepro-backend-models-standards/SKILL.md"
+    },
+    {
+      "name": "react-component-create",
+      "description": "Create new React components following project patterns and best practices. Includes proper typing, testing, and documentation.",
+      "path": "skills/react-component-create/SKILL.md"
+    },
+    {
+      "name": "typescript-refactor",
+      "description": "Safely refactor TypeScript code while maintaining type safety and test coverage. Includes verification steps.",
+      "path": "skills/typescript-refactor/SKILL.md"
+    },
+    {
+      "name": "dependency-audit",
+      "description": "Audit npm dependencies for security vulnerabilities, outdated packages, and license compliance.",
+      "path": "skills/dependency-audit/SKILL.md"
+    },
+    {
+      "name": "modu-ai-moai-adk-moai-tool-opencode",
+      "description": "Multi-agent orchestration using MoAI framework for complex task coordination. Use when orchestrating multiple agents or building multi-agent workflows.",
+      "path": "skills/modu-ai-moai-adk-moai-tool-opencode/SKILL.md"
+    },
+    {
+      "name": "obra-superpowers-systematic-debugging",
+      "description": "Systematic debugging approach with 4-phase root cause analysis. Use when troubleshooting complex bugs, identifying root causes, or following structured debugging methodology.",
+      "path": "skills/obra-superpowers-systematic-debugging/SKILL.md"
+    },
+    {
+      "name": "pattern-extraction",
+      "description": "Extracts reusable patterns from code changes",
+      "path": "skills/pattern-extraction/SKILL.md"
+    },
+    {
+      "name": "resilience-check",
+      "description": "Checklist for reliability engineering",
+      "path": "skills/resilience-check/SKILL.md"
+    },
+    {
+      "name": "database-migration-create",
+      "description": "Safely creates database migrations",
+      "path": "skills/database-migration-create/SKILL.md"
+    },
+    {
+      "name": "code-review-checklist",
+      "description": "Generates a code review checklist for the Code Reviewer agent",
+      "path": "skills/code-review-checklist/SKILL.md"
+    },
+    {
+      "name": "madappgang-claude-code-debugging-strategies",
+      "description": "Universal debugging strategies and techniques applicable across all technology stacks. Use when approaching unknown bugs or need language-agnostic debugging methodology.",
+      "path": "skills/madappgang-claude-code-debugging-strategies/SKILL.md"
+    },
+    {
+      "name": "obra-superpowers-using-git-worktrees",
+      "description": "Use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated git worktrees with smart directory selection and safety verification",
+      "path": "skills/obra-superpowers-using-git-worktrees/SKILL.md"
+    },
+    {
+      "name": "docs-update",
+      "description": "Standard procedure for updating documentation",
+      "path": "skills/docs-update/SKILL.md"
+    },
+    {
+      "name": "muratcankoylan-agent-skills-for-context-engineering-memory-systems",
+      "description": "Context management and persistent memory systems for AI agents. Use when optimizing context windows or building agent memory systems.",
+      "path": "skills/muratcankoylan-agent-skills-for-context-engineering-memory-systems/SKILL.md"
+    },
+    {
+      "name": "security-audit",
+      "description": "Procedure for analyzing code or dependencies for vulnerabilities",
+      "path": "skills/security-audit/SKILL.md"
+    },
+    {
+      "name": "obra-superpowers-writing-plans",
+      "description": "Use when you have a spec or requirements for a multi-step task, before touching code",
+      "path": "skills/obra-superpowers-writing-plans/SKILL.md"
+    },
+    {
+      "name": "git-commit-standard",
+      "description": "Generates conventional commits based on file changes. Analyzes diffs and creates properly formatted commit messages.",
+      "path": "skills/git-commit-standard/SKILL.md"
+    },
+    {
+      "name": "test-suite-create",
+      "description": "Creates a comprehensive test suite for a feature",
+      "path": "skills/test-suite-create/SKILL.md"
+    }
+  ],
+  "commands": [
+    {
+      "name": "build",
+      "display_name": "Build Command",
+      "description": "Execution command for build",
+      "path": "commands/build.md"
+    },
+    {
+      "name": "commit",
+      "display_name": "Commit Command",
+      "description": "Execution command for commit",
+      "path": "commands/commit.md"
+    },
+    {
+      "name": "execute-specialist",
+      "display_name": "Specialist Execution Routine",
+      "description": "Execution command for execute-specialist",
+      "path": "commands/execute-specialist.md"
+    },
+    {
+      "name": "fix",
+      "display_name": "Fix Command",
+      "description": "Execution command for fix",
+      "path": "commands/fix.md"
+    },
+    {
+      "name": "integrate-queue",
+      "display_name": "Integrate-Queue",
+      "description": "Execution command for integrate-queue",
+      "path": "commands/integrate-queue.md"
+    },
+    {
+      "name": "on-pull",
+      "display_name": "On-Pull",
+      "description": "Execution command for on-pull",
+      "path": "commands/on-pull.md"
+    },
+    {
+      "name": "status",
+      "display_name": "Status Command",
+      "description": "Execution command for status",
+      "path": "commands/status.md"
+    },
+    {
+      "name": "test",
+      "display_name": "Test Command",
+      "description": "Execution command for test",
+      "path": "commands/test.md"
+    }
+  ],
+  "memory": [
+    "memory/PATTERNS.md",
+    "memory/api.md",
+    "memory/backend.md",
+    "memory/cmz-evolution.md",
+    "memory/cmz-issues.md",
+    "memory/cmz-knowledge.md",
+    "memory/database.md",
+    "memory/debugger.md",
+    "memory/devops.md",
+    "memory/dx.md",
+    "memory/frontend.md",
+    "memory/integration.md",
+    "memory/janitor.md",
+    "memory/performance.md",
+    "memory/qa.md",
+    "memory/reliability.md",
+    "memory/reviewer.md",
+    "memory/security.md"
+  ],
+  "paths": {
+    "agents": ".agent/agents",
+    "skills": ".agent/skills",
+    "commands": ".agent/commands",
+    "memory": ".agent/memory",
+    "templates": ".agent/templates"
+  }
+}

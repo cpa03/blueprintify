@@ -129,7 +129,7 @@ describe("ToastContainer", () => {
     expect(screen.queryByText(/dismiss all/i)).not.toBeInTheDocument();
   });
 
-  it("renders toast with role='status' and aria-live='polite'", () => {
+  it("renders toast with role='status', aria-live='polite', and state inspection attributes", () => {
     mockToasts.push({
       id: "toast-1",
       message: "Accessible toast",
@@ -145,6 +145,22 @@ describe("ToastContainer", () => {
     const toastStatus = statusElements.find((el) => el.getAttribute("aria-live") === "polite");
     expect(toastStatus).toBeInTheDocument();
     expect(toastStatus).toHaveAttribute("aria-live", "polite");
+    expect(toastStatus).toHaveAttribute("data-toast-type", TOAST_TYPES.SUCCESS);
+    expect(toastStatus).toHaveAttribute("data-is-alert", "false");
+  });
+
+  it("sets container state inspection attributes based on toast count", () => {
+    mockToasts.push({
+      id: "toast-1",
+      message: "Counted toast",
+      type: TOAST_TYPES.INFO,
+    });
+
+    render(<ToastContainer />);
+
+    const region = screen.getByRole("region");
+    expect(region).toHaveAttribute("data-count", "1");
+    expect(region).toHaveAttribute("data-has-toasts", "true");
   });
 
   it("renders different toast types correctly", () => {

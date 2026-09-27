@@ -202,8 +202,11 @@ describe("Environment Configuration", () => {
   });
 
   describe("getConfig", () => {
-    it("should throw when config not set", () => {
-      expect(() => getConfig()).toThrow();
+    it("should return default config when not set", () => {
+      const config = getConfig();
+      expect(config.OPENAI_API_KEY).toBe("");
+      expect(config.CORS_ORIGIN).toBe("*");
+      expect(config.API_VERSION).toBe("1.0.0");
     });
 
     it("should return config when set", () => {
@@ -217,11 +220,13 @@ describe("Environment Configuration", () => {
   });
 
   describe("resetConfig", () => {
-    it("should clear the config", () => {
+    it("should reset config to defaults", () => {
       initializeConfig({ OPENAI_API_KEY: MOCK_ENV.OPENAI_API_KEY, CORS_ORIGIN: TEST_CORS_ORIGIN });
       expect(getConfig().OPENAI_API_KEY).toBe("test-key");
       resetConfig();
-      expect(() => getConfig()).toThrow();
+      const config = getConfig();
+      expect(config.OPENAI_API_KEY).toBe("");
+      expect(config.CORS_ORIGIN).toBe("*");
     });
   });
 

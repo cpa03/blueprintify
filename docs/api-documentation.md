@@ -5,10 +5,11 @@ This document provides comprehensive API documentation for the Blueprintify back
 ## Base URL
 
 ```
-https://blueprintify-api.your-domain.workers.dev
+https://blueprintify.cpa03-cmz.workers.dev
 ```
 
-\*For local development: `http://localhost:8787`
+* For local development: `http://localhost:8787` (API directly) or `http://localhost:3000` (web frontend with `/api` proxy)
+* In the single-worker architecture, the worker serves both the frontend static assets and backend API endpoints under `/api/*` or at root.
 
 ## Authentication
 
@@ -22,11 +23,13 @@ Authentication uses constant-time string comparison to prevent timing attacks.
 
 ## Environment Variables
 
+The full environment-variable reference lives in [`docs/environment-variables.md`](./environment-variables.md). Only the core OpenAI variables are listed here:
+
 | Variable          | Required | Default                     | Description                                  |
 | ----------------- | -------- | --------------------------- | -------------------------------------------- |
 | `OPENAI_API_KEY`  | Yes      | -                           | Your OpenAI API key (starts with `sk-`)      |
 | `OPENAI_BASE_URL` | No       | `https://api.openai.com/v1` | Custom API base URL for compatible providers |
-| `OPENAI_MODEL`    | No       | `gpt-4o-mini`               | Model to use for generations                 |
+| `OPENAI_MODEL`    | No       | `gpt-4o-mini`               | Model to use for completions                 |
 
 ## API Metadata
 

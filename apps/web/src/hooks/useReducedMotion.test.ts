@@ -20,7 +20,8 @@ import {
   useAccessibleAnimation,
   useAccessibilityPreferences,
 } from "./useReducedMotion";
-import { SPRING_CONFIG } from "../config/constants";
+import { ACCESSIBILITY_EVENTS, SPRING_CONFIG } from "../config/constants";
+import { STORAGE_KEYS } from "../config/keys";
 
 /**
  * Creates a mock matchMedia implementation that allows changing matches.
@@ -63,6 +64,7 @@ describe("useReducedMotion", () => {
   let matchMediaMock: ReturnType<typeof createMatchMediaMock>;
 
   beforeEach(() => {
+    localStorage.clear();
     matchMediaMock = createMatchMediaMock(false);
     vi.spyOn(window, "matchMedia").mockImplementation(
       (_query: string) => matchMediaMock as unknown as MediaQueryList
@@ -71,6 +73,7 @@ describe("useReducedMotion", () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+    localStorage.clear();
   });
 
   it("should return false when prefers-reduced-motion is not set", () => {
@@ -117,6 +120,48 @@ describe("useReducedMotion", () => {
     unmount();
 
     expect(removeEventListenerSpy).toHaveBeenCalledWith("change", expect.any(Function));
+  });
+
+  it("should return true when localStorage override is set to true even if the system does not prefer reduced motion", () => {
+    localStorage.setItem(STORAGE_KEYS.REDUCED_MOTION, "true");
+
+    const { result } = renderHook(() => useReducedMotion());
+
+    expect(result.current).toBe(true);
+  });
+
+  it("should return false when localStorage override is set to false even if the system prefers reduced motion", () => {
+    matchMediaMock._setMatches(true);
+    localStorage.setItem(STORAGE_KEYS.REDUCED_MOTION, "false");
+
+    const { result } = renderHook(() => useReducedMotion());
+
+    expect(result.current).toBe(false);
+  });
+
+  it("should re-render when the reduced motion change event is dispatched after the stored value changes", () => {
+    const { result } = renderHook(() => useReducedMotion());
+    expect(result.current).toBe(false);
+
+    act(() => {
+      localStorage.setItem(STORAGE_KEYS.REDUCED_MOTION, "true");
+      window.dispatchEvent(new Event(ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE));
+    });
+
+    expect(result.current).toBe(true);
+  });
+
+  it("should remove the window event listener on unmount", () => {
+    const removeEventListenerSpy = vi.spyOn(window, "removeEventListener");
+
+    const { unmount } = renderHook(() => useReducedMotion());
+
+    unmount();
+
+    expect(removeEventListenerSpy).toHaveBeenCalledWith(
+      ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE,
+      expect.any(Function)
+    );
   });
 });
 

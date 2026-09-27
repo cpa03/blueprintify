@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { LastSavedIndicator } from "./LastSavedIndicator";
 import { useReducedMotion } from "../hooks/useReducedMotion";
+import { SAVE_STATE_VALUES } from "@blueprint/shared/config";
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -51,18 +52,26 @@ describe("LastSavedIndicator", () => {
     expect(region).toHaveAttribute("aria-atomic", "true");
   });
 
-  it("applies amber styling for unsaved changes", () => {
+  it("applies amber styling for unsaved changes and sets semantic state data attributes", () => {
     render(<LastSavedIndicator text="Saved" isVisible={true} hasChanges={true} />);
 
     const container = screen.getByText("Unsaved changes").closest("div");
     expect(container?.className).toContain("text-amber-400");
+    expect(container).toHaveAttribute("data-state", SAVE_STATE_VALUES.UNSAVED);
+    expect(container).toHaveAttribute("data-has-changes", "true");
+    expect(container).toHaveAttribute("data-reduced-motion", "false");
+    expect(container).toHaveAttribute("title", "Unsaved changes");
   });
 
-  it("applies dark-400 styling for saved state", () => {
+  it("applies dark-400 styling for saved state and sets semantic state data attributes", () => {
     render(<LastSavedIndicator text="Saved" isVisible={true} />);
 
     const container = screen.getByText("Saved").closest("div");
     expect(container?.className).toContain("text-dark-400");
+    expect(container).toHaveAttribute("data-state", SAVE_STATE_VALUES.SAVED);
+    expect(container).toHaveAttribute("data-has-changes", "false");
+    expect(container).toHaveAttribute("data-reduced-motion", "false");
+    expect(container).toHaveAttribute("title", "Saved");
   });
 
   it("renders checkmark SVG in saved state", () => {
@@ -90,6 +99,7 @@ describe("LastSavedIndicator", () => {
     expect(container.querySelector(".animate-ping")).not.toBeInTheDocument();
     expect(screen.getByText("Unsaved changes")).toBeInTheDocument();
     expect(container.querySelector(".bg-amber-500")).toBeInTheDocument();
+    expect(container.querySelector("div")).toHaveAttribute("data-reduced-motion", "true");
   });
 
   it("keeps the unsaved-changes announcement for screen readers when reduced motion is preferred", () => {

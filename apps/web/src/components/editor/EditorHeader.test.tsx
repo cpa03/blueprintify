@@ -145,6 +145,11 @@ describe("EditorHeader", () => {
     expect(defaultProps.setActiveTab).not.toHaveBeenCalled();
   });
 
+  it("announces horizontal orientation on the tablist", () => {
+    render(<EditorHeader {...defaultProps} />);
+    expect(screen.getByRole("tablist")).toHaveAttribute("aria-orientation", "horizontal");
+  });
+
   // ======== Content Stats ========
 
   it("renders content stats when content is provided", () => {

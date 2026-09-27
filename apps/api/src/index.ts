@@ -188,6 +188,21 @@ export default {
     const config = loadConfig(env as unknown as Record<string, string | undefined>);
     setEnvConfig(config);
 
+    // Static assets (CSS, JS, images, fonts) - check first for performance
+    const url = new URL(request.url);
+    const acceptHeader = request.headers.get("Accept") || "";
+    const isBrowserHtmlRequest = acceptHeader.includes("text/html");
+    const isStaticAsset =
+      url.pathname.startsWith("/assets/") ||
+      (url.pathname.includes(".") && !url.pathname.startsWith("/api/"));
+
+    if (env.ASSETS && (isStaticAsset || (url.pathname === "/" && isBrowserHtmlRequest))) {
+      const assetResponse = await env.ASSETS.fetch(request);
+      if (assetResponse.status !== 404) {
+        return assetResponse;
+      }
+    }
+
     if (env.ANALYTICS) {
       ctx.waitUntil(
         Promise.resolve(
@@ -198,6 +213,13 @@ export default {
       );
     }
 
-    return app.fetch(request, env, ctx);
+    const response = await app.fetch(request, env, ctx);
+
+    // If API returned 404 and ASSETS binding exists, fallback to ASSETS (SPA routing)
+    if (response.status === 404 && env.ASSETS && !url.pathname.startsWith("/api/")) {
+      return env.ASSETS.fetch(request);
+    }
+
+    return response;
   },
 };

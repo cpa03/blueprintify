@@ -160,6 +160,9 @@ import {
   DIRECTION,
   CSS_VALUES,
   MODIFIER_KEYS,
+  COPY_STATE_VALUES,
+  VALIDATION_STATE_VALUES,
+  BANNER_STATE_VALUES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -2017,6 +2020,46 @@ describe("STORAGE_FALLBACK_MESSAGES", () => {
   });
 });
 
+describe("COPY_STATE_VALUES", () => {
+  it("should have COPIED and IDLE states", () => {
+    expect(COPY_STATE_VALUES.COPIED).toBe("copied");
+    expect(COPY_STATE_VALUES.IDLE).toBe("idle");
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(COPY_STATE_VALUES).length).toBe(2);
+  });
+});
+
+describe("VALIDATION_STATE_VALUES", () => {
+  it("should have VALID and INVALID states", () => {
+    expect(VALIDATION_STATE_VALUES.VALID).toBe("valid");
+    expect(VALIDATION_STATE_VALUES.INVALID).toBe("invalid");
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(VALIDATION_STATE_VALUES).length).toBe(2);
+  });
+});
+
+describe("BANNER_STATE_VALUES", () => {
+  it("should have VISIBLE, HIDDEN, ONLINE, OFFLINE states", () => {
+    expect(BANNER_STATE_VALUES.VISIBLE).toBe("visible");
+    expect(BANNER_STATE_VALUES.HIDDEN).toBe("hidden");
+    expect(BANNER_STATE_VALUES.ONLINE).toBe("online");
+    expect(BANNER_STATE_VALUES.OFFLINE).toBe("offline");
+  });
+
+  it("should have 4 properties", () => {
+    expect(Object.keys(BANNER_STATE_VALUES).length).toBe(4);
+  });
+
+  it("should have unique state values", () => {
+    const values = Object.values(BANNER_STATE_VALUES);
+    expect(new Set(values).size).toBe(values.length);
+  });
+});
+
 describe("EXPORT_ERROR_STRINGS", () => {
   it("should have zip folder failed message", () => {
     expect(EXPORT_ERROR_STRINGS.ZIP_FOLDER_FAILED).toContain("Failed to create .docs folder");
@@ -2207,7 +2250,7 @@ describe("EDITOR_FILENAMES", () => {
     expect(EDITOR_FILENAMES.BLUEPRINT).toBe("blueprint.md");
     expect(EDITOR_FILENAMES.TASKS).toBe("task.md");
     expect(EDITOR_FILENAMES.BLUEPRINT_ANNOUNCE).toBe("blueprint.md");
-    expect(EDITOR_FILENAMES.TASKS_ANNOUNCE).toBe("tasks.md");
+    expect(EDITOR_FILENAMES.TASKS_ANNOUNCE).toBe("task.md");
     expect(EDITOR_FILENAMES.BLUEPRINT_DISPLAY).toBe("Blueprint");
     expect(EDITOR_FILENAMES.TASKS_DISPLAY).toBe("Tasks");
   });
@@ -2551,7 +2594,7 @@ describe("UI_TIMEOUTS", () => {
   it("should have all expected timeout values", () => {
     expect(UI_TIMEOUTS.COPY_FEEDBACK).toBe(2000);
     expect(UI_TIMEOUTS.SHAKE_ANIMATION).toBe(400);
-    expect(UI_TIMEOUTS.TOAST_NOTIFICATION).toBe(1500);
+    expect(UI_TIMEOUTS.TOAST_NOTIFICATION).toBe(3000);
     expect(UI_TIMEOUTS.FOCUS_DELAY).toBe(100);
     expect(UI_TIMEOUTS.LIVE_REGION_CLEAR).toBe(1000);
     expect(UI_TIMEOUTS.API_HEALTH_CHECK).toBe(5000);

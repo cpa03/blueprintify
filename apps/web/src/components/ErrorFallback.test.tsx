@@ -75,10 +75,13 @@ describe("ErrorFallback", () => {
     expect(screen.getByText(ERROR_BOUNDARY_TEXT.DESCRIPTION)).toBeInTheDocument();
   });
 
-  it('sets role="alert" and aria-live="assertive" on the container', () => {
+  it('sets role="alert" and aria-live="assertive" and state inspection attributes on container', () => {
     render(<ErrorFallback error={defaultError} resetErrorBoundary={mockReset} />);
     const alert = screen.getByRole("alert");
     expect(alert).toHaveAttribute("aria-live", "assertive");
+    expect(alert).toHaveAttribute("data-has-error", "true");
+    expect(alert).toHaveAttribute("data-has-details", "true");
+    expect(alert).toHaveAttribute("data-reduced-motion");
   });
 
   // ---- Error message display ----
@@ -116,13 +119,16 @@ describe("ErrorFallback", () => {
     ).toBeInTheDocument();
   });
 
-  it("copies error message to clipboard when copy button is clicked", async () => {
+  it("copies error message to clipboard when copy button is clicked and updates data-copy-state", async () => {
     render(<ErrorFallback error={defaultError} resetErrorBoundary={mockReset} />);
     const copyBtn = screen.getByLabelText(ACCESSIBILITY_LABELS.ERROR_BOUNDARY.COPY_ERROR);
+    expect(copyBtn).toHaveAttribute("data-copy-state", "idle");
+
     fireEvent.click(copyBtn);
 
     await waitFor(() => {
       expect(clipboard.copyToClipboard).toHaveBeenCalledWith("Test error message");
+      expect(copyBtn).toHaveAttribute("data-copy-state", "copied");
     });
   });
 
@@ -136,7 +142,7 @@ describe("ErrorFallback", () => {
     });
   });
 
-  it("shows transient failure feedback when copy fails", async () => {
+  it("shows transient failure feedback when copy fails and updates data-copy-state to failed", async () => {
     vi.mocked(clipboard.copyToClipboard).mockResolvedValue(false);
     render(<ErrorFallback error={defaultError} resetErrorBoundary={mockReset} />);
     const copyBtn = screen.getByLabelText(ACCESSIBILITY_LABELS.ERROR_BOUNDARY.COPY_ERROR);
@@ -145,6 +151,7 @@ describe("ErrorFallback", () => {
     // Wait for the async handler, then verify the failure feedback is shown
     await waitFor(() => {
       expect(clipboard.copyToClipboard).toHaveBeenCalled();
+      expect(copyBtn).toHaveAttribute("data-copy-state", "failed");
     });
 
     expect(screen.getByText(ERROR_BOUNDARY_TEXT.COPY_FAILED)).toBeInTheDocument();
@@ -227,9 +234,12 @@ describe("ErrorFallback", () => {
 
   // ---- Edge cases ----
 
-  it("does not render error details when error is undefined", () => {
+  it("does not render error details when error is undefined and sets data-has-details to false", () => {
     // The component checks `error !== undefined` before rendering <details>
     render(<ErrorFallback error={undefined} resetErrorBoundary={mockReset} />);
     expect(screen.queryByText(ERROR_BOUNDARY_TEXT.VIEW_DETAILS)).not.toBeInTheDocument();
+    const alert = screen.getByRole("alert");
+    expect(alert).toHaveAttribute("data-has-error", "false");
+    expect(alert).toHaveAttribute("data-has-details", "false");
   });
 });

@@ -532,6 +532,11 @@ function EditorHeaderComponent({
           className="flex gap-1 bg-dark-800 p-1 rounded-lg"
           role="tablist"
           aria-label={ACCESSIBILITY_LABELS.EDITOR.DOCUMENT_TABS}
+          // Horizontal orientation: tabs are arranged in a row and navigated
+          // with ArrowLeft/ArrowRight (see handleTabKeyDown). Matches the
+          // explicit orientation used by the other horizontal groups in the
+          // app (TemplateGrid listbox, PageScrollProgressBar).
+          aria-orientation="horizontal"
           aria-keyshortcuts={ARIA_KEYSHORTCUTS.EDITOR_TABS}
           id="editor-tabs"
           onKeyDown={handleTabKeyDown}

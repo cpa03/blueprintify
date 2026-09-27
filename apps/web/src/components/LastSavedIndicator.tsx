@@ -14,7 +14,12 @@ import React from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import { SPRING_CONFIG, ANIMATION, EASING } from "../config/constants";
-import { ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE, UI_TIMEOUTS } from "@blueprint/shared/config";
+import {
+  ANIMATION_ENTRANCE_DELAYS,
+  FRAMER_TYPE,
+  UI_TIMEOUTS,
+  SAVE_STATE_VALUES,
+} from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 /**
@@ -59,14 +64,17 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
   // giving users a satisfying "you're safe!" confirmation that auto-save
   // has completed. The glow fires once per save cycle and auto-clears.
   React.useEffect(() => {
-    if (prevHasChangesRef.current && !hasChanges) {
+    const prevHasChanges = prevHasChangesRef.current;
+    prevHasChangesRef.current = hasChanges;
+
+    if (prevHasChanges && !hasChanges) {
       setShowSavedGlow(true);
       const timer = setTimeout(() => setShowSavedGlow(false), UI_TIMEOUTS.SAVED_GLOW_MS);
-      prevHasChangesRef.current = hasChanges;
       return () => clearTimeout(timer);
     }
-    prevHasChangesRef.current = hasChanges;
   }, [hasChanges]);
+
+  const statusText = hasChanges ? "Unsaved changes" : text;
 
   return (
     <AnimatePresence mode="wait">
@@ -82,6 +90,10 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
           }`}
           aria-live="polite"
           aria-atomic="true"
+          data-state={hasChanges ? SAVE_STATE_VALUES.UNSAVED : SAVE_STATE_VALUES.SAVED}
+          data-has-changes={hasChanges}
+          data-reduced-motion={shouldReduceMotion}
+          title={statusText}
         >
           {hasChanges ? (
             <>

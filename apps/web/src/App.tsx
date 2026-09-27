@@ -32,7 +32,7 @@ const ScrollToBottomLazy = lazy(() =>
 import { KeyboardShortcutTooltip } from "./components/SmartTooltip";
 import { useWizardStore, useEditorStore, useToast, useToastStore, resetAllStores } from "./store";
 import { STORAGE_KEYS } from "./config/keys";
-import { useOnlineStatus } from "./hooks";
+import { useOnlineStatus, useBeforeUnload } from "./hooks";
 import {
   UI_CONTENT,
   EXTERNAL_URLS,
@@ -46,6 +46,7 @@ import {
 import { LAYOUT, BUTTON, ICON, SPINNER } from "./config/styles";
 import { KEYBOARD_SHORTCUTS } from "./config/constants/keyboard";
 import { getAriaShortcutKey } from "./lib/platform";
+import { isEditableField } from "./lib/dom";
 import { Icon } from "./components/Icon";
 const GenerationCelebration = lazy(() =>
   import("./components/GenerationCelebration").then((m) => ({ default: m.GenerationCelebration }))
@@ -126,6 +127,7 @@ function App(): JSX.Element {
   const prevShowTemplatesRef = useRef(currentStep === WIZARD_STEP_KEYS.INFO && !hasContent);
 
   const { isOnline } = useOnlineStatus();
+  useBeforeUnload(isGenerating);
   const toast = useToast();
   const prevOnlineRef = useRef(isOnline);
   const toastCount = useToastStore((s) => s.toasts.length);
@@ -221,7 +223,10 @@ function App(): JSX.Element {
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+      // Skip while typing in any text-editing surface (input, textarea, or
+      // contenteditable such as the CodeMirror markdown editor) so printable
+      // keys like '?' are never hijacked by global shortcuts.
+      if (isEditableField(e.target)) {
         return;
       }
 

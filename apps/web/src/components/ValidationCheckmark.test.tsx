@@ -22,6 +22,10 @@ describe("ValidationCheckmark", () => {
     const icon = screen.getByRole("img");
     expect(icon).toBeInTheDocument();
     expect(icon).toHaveAttribute("aria-label", VALIDATION_LABELS.FIELD_VALID);
+    expect(icon).toHaveAttribute("data-state", "valid");
+    expect(icon).toHaveAttribute("data-size", "inline");
+    expect(icon).toHaveAttribute("data-show-invalid", "false");
+    expect(icon).toHaveAttribute("title", VALIDATION_LABELS.FIELD_VALID);
   });
 
   it("renders invalid indicator when showInvalid and not valid", () => {
@@ -30,6 +34,10 @@ describe("ValidationCheckmark", () => {
     const icon = screen.getByRole("img");
     expect(icon).toBeInTheDocument();
     expect(icon).toHaveAttribute("aria-label", VALIDATION_LABELS.FIELD_INVALID);
+    expect(icon).toHaveAttribute("data-state", "invalid");
+    expect(icon).toHaveAttribute("data-size", "inline");
+    expect(icon).toHaveAttribute("data-show-invalid", "true");
+    expect(icon).toHaveAttribute("title", VALIDATION_LABELS.FIELD_INVALID);
   });
 
   it("does not render when isValid is false and showInvalid is false", () => {
@@ -91,6 +99,7 @@ describe("ValidationCheckmark", () => {
 
     const icon = container.querySelector("[role='img']");
     expect(icon?.className).toContain("w-5");
+    expect(icon).toHaveAttribute("data-size", "inline");
   });
 
   it("uses larger size for input variant", () => {
@@ -98,6 +107,7 @@ describe("ValidationCheckmark", () => {
 
     const icon = container.querySelector("[role='img']");
     expect(icon?.className).toContain("w-6");
+    expect(icon).toHaveAttribute("data-size", "input");
   });
 
   it("applies custom className", () => {

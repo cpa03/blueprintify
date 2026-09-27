@@ -13,6 +13,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { PreviewEmptyState } from "./PreviewEmptyState";
 import { EDITOR_TABS } from "../config/constants";
+import { EMPTY_STATE_VALUES } from "@blueprint/shared/config";
 
 // Mock framer-motion to render children without animations.
 // PreviewEmptyState uses `import * as motion from "framer-motion/m"` (namespace import),
@@ -142,5 +143,28 @@ describe("PreviewEmptyState", () => {
 
     rerender(<PreviewEmptyState tab={EDITOR_TABS.TASKS} />);
     expect(screen.getByText("task.md")).toBeInTheDocument();
+  });
+
+  it("sets data-state, data-tab, data-has-sibling-content, role, and aria-live attributes correctly", () => {
+    const { container, rerender } = render(
+      <PreviewEmptyState
+        tab={EDITOR_TABS.BLUEPRINT}
+        isGenerating={false}
+        siblingTabHasContent={true}
+      />
+    );
+    const rootElement = container.firstChild as HTMLElement;
+    expect(rootElement).toHaveAttribute("data-state", EMPTY_STATE_VALUES.EMPTY);
+    expect(rootElement).toHaveAttribute("data-tab", EDITOR_TABS.BLUEPRINT);
+    expect(rootElement).toHaveAttribute("data-has-sibling-content", "true");
+    expect(rootElement).toHaveAttribute("role", "status");
+    expect(rootElement).toHaveAttribute("aria-live", "polite");
+
+    rerender(
+      <PreviewEmptyState tab={EDITOR_TABS.TASKS} isGenerating={true} siblingTabHasContent={false} />
+    );
+    expect(rootElement).toHaveAttribute("data-state", EMPTY_STATE_VALUES.WAITING);
+    expect(rootElement).toHaveAttribute("data-tab", EDITOR_TABS.TASKS);
+    expect(rootElement).toHaveAttribute("data-has-sibling-content", "false");
   });
 });

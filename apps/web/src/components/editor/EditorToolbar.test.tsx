@@ -366,6 +366,11 @@ describe("EditorToolbar", () => {
       expect(screen.getByRole("radiogroup")).toHaveAttribute("aria-label");
     });
 
+    it("announces horizontal orientation on the radiogroup", () => {
+      renderToolbar();
+      expect(screen.getByRole("radiogroup")).toHaveAttribute("aria-orientation", "horizontal");
+    });
+
     it("renders New button with accessible label", () => {
       renderToolbar();
       expect(screen.getByLabelText("Start new project")).toBeInTheDocument();

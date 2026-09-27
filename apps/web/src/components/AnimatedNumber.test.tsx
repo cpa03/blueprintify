@@ -11,6 +11,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { AnimatedNumber, AnimatedCounter } from "./AnimatedNumber";
+import { COUNTER_DIRECTION_VALUES } from "@blueprint/shared";
 
 // Mock the ReducedMotionContext
 vi.mock("../context/ReducedMotionContext", () => ({
@@ -25,10 +26,13 @@ describe("AnimatedNumber", () => {
     vi.clearAllMocks();
   });
 
-  it("renders initial value", () => {
+  it("renders initial value and inspection attributes", () => {
     render(<AnimatedNumber value={42} />);
 
-    expect(screen.getByText("42")).toBeInTheDocument();
+    const span = screen.getByText("42");
+    expect(span).toBeInTheDocument();
+    expect(span).toHaveAttribute("data-direction", COUNTER_DIRECTION_VALUES.IDLE);
+    expect(span).toHaveAttribute("data-value", "42");
   });
 
   it("renders zero value", () => {
@@ -77,11 +81,14 @@ describe("AnimatedCounter", () => {
     vi.clearAllMocks();
   });
 
-  it("renders value and label", () => {
+  it("renders value and label with inspection attributes", () => {
     render(<AnimatedCounter value={42} label="Projects" />);
 
     expect(screen.getByText("42")).toBeInTheDocument();
     expect(screen.getByText("Projects")).toBeInTheDocument();
+    const counterCard = screen.getByText("Projects").closest("[data-state]");
+    expect(counterCard).toHaveAttribute("data-state", "idle");
+    expect(counterCard).toHaveAttribute("data-value", "42");
   });
 
   it("renders with icon", () => {

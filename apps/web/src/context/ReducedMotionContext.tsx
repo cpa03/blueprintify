@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from "react";
 import { CONTEXT_HOOK_ERRORS } from "@blueprint/shared/config";
+import { ACCESSIBILITY_EVENTS } from "../config/constants";
 import { STORAGE_KEYS } from "../config/keys";
 
 interface ReducedMotionContextType {
@@ -69,8 +70,10 @@ export function ReducedMotionProvider({
     setUserOverrideState(value);
     if (value !== null && typeof window !== "undefined") {
       localStorage.setItem(STORAGE_KEYS.REDUCED_MOTION, String(value));
+      window.dispatchEvent(new Event(ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE));
     } else if (value === null && typeof window !== "undefined") {
       localStorage.removeItem(STORAGE_KEYS.REDUCED_MOTION);
+      window.dispatchEvent(new Event(ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE));
     }
   }, []);
 
@@ -78,6 +81,7 @@ export function ReducedMotionProvider({
     setUserOverrideState(null);
     if (typeof window !== "undefined") {
       localStorage.removeItem(STORAGE_KEYS.REDUCED_MOTION);
+      window.dispatchEvent(new Event(ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE));
     }
   }, []);
 

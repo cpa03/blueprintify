@@ -116,7 +116,10 @@ export interface Env {
   AI: Ai;
 
   // Analytics Engine
-  ANALYTICS: AnalyticsEngineDataset;
+  ANALYTICS?: AnalyticsEngineDataset;
+
+  // Static Assets Binding for serving frontend
+  ASSETS?: Fetcher;
 }
 
 /**

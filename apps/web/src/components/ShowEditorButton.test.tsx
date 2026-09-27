@@ -78,20 +78,36 @@ describe("ShowEditorButton", () => {
 
     expect(screen.getByText(UI_CONTENT.EDITOR.VIEW_BLUEPRINT_BUTTON)).toBeInTheDocument();
     expect(screen.queryByText(UI_CONTENT.EDITOR.SHOW_EDITOR_BUTTON)).not.toBeInTheDocument();
+    expect(screen.getByRole("button")).toHaveAttribute("data-has-content", "true");
+    expect(screen.getByRole("button")).toHaveAttribute("data-state", "content-ready");
+
+    const srAnnouncement = screen.getByText(EDITOR_ANNOUNCER.CONTENT_READY);
+    expect(srAnnouncement).toBeInTheDocument();
+    expect(srAnnouncement).toHaveAttribute("aria-live", "polite");
   });
 
-  it("applies glow-pulse class when hasContent is true", () => {
+  it("sets data-state to idle when hasContent is false and sets data-is-generating attribute", () => {
+    render(<ShowEditorButton {...defaultProps} hasContent={false} isGenerating={true} />);
+
+    const button = screen.getByRole("button");
+    expect(button).toHaveAttribute("data-state", "idle");
+    expect(button).toHaveAttribute("data-is-generating", "true");
+  });
+
+  it("applies glow-pulse class and data-glow-active='true' when hasContent is true", () => {
     render(<ShowEditorButton {...defaultProps} hasContent={true} />);
 
     const button = screen.getByRole("button");
     expect(button.className).toContain("glow-pulse");
+    expect(button).toHaveAttribute("data-glow-active", "true");
   });
 
-  it("does not apply glow-pulse class when hasContent is false and not generating", () => {
+  it("does not apply glow-pulse class and sets data-glow-active='false' when hasContent is false and not generating", () => {
     render(<ShowEditorButton {...defaultProps} hasContent={false} isGenerating={false} />);
 
     const button = screen.getByRole("button");
     expect(button.className).not.toContain("glow-pulse");
+    expect(button).toHaveAttribute("data-glow-active", "false");
   });
 
   it("applies glow-pulse class when isGenerating is true even without content", () => {
@@ -101,18 +117,20 @@ describe("ShowEditorButton", () => {
     expect(button.className).toContain("glow-pulse");
   });
 
-  it("clears glow-pulse after GLOW_DURATION_MS when content exists but not generating", () => {
+  it("clears glow-pulse and updates data-glow-active to 'false' after GLOW_DURATION_MS when content exists but not generating", () => {
     vi.useFakeTimers();
     render(<ShowEditorButton {...defaultProps} hasContent={true} isGenerating={false} />);
 
     const button = screen.getByRole("button");
     expect(button.className).toContain("glow-pulse");
+    expect(button).toHaveAttribute("data-glow-active", "true");
 
     act(() => {
       vi.advanceTimersByTime(UI_TIMEOUTS.GLOW_DURATION_MS + 1);
     });
 
     expect(button.className).not.toContain("glow-pulse");
+    expect(button).toHaveAttribute("data-glow-active", "false");
     vi.useRealTimers();
   });
 

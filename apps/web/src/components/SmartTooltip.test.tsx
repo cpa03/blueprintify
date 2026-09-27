@@ -40,13 +40,16 @@ describe("SmartTooltip", () => {
     expect(screen.getByText("Hover me")).toBeInTheDocument();
   });
 
-  it("does not show tooltip by default", () => {
+  it("does not show tooltip by default and sets container data-state to hidden", () => {
     render(
       <SmartTooltip content="Tooltip text">
         <button>Hover me</button>
       </SmartTooltip>
     );
 
+    const triggerContainer = screen.getByRole("button").parentElement!;
+    expect(triggerContainer).toHaveAttribute("data-state", "hidden");
+    expect(triggerContainer).toHaveAttribute("data-position", "top");
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
   });
 
@@ -71,7 +74,11 @@ describe("SmartTooltip", () => {
       vi.advanceTimersByTime(600);
     });
 
-    expect(screen.getByRole("tooltip")).toBeInTheDocument();
+    const tooltip = screen.getByRole("tooltip");
+    expect(tooltip).toBeInTheDocument();
+    expect(tooltip).toHaveAttribute("data-state", "visible");
+    expect(tooltip).toHaveAttribute("data-position");
+    expect(triggerWrapper).toHaveAttribute("data-state", "visible");
     expect(screen.getByText("Tooltip text")).toBeInTheDocument();
   });
 

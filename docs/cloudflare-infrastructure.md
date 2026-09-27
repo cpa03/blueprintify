@@ -1,79 +1,93 @@
 # Cloudflare Infrastructure Setup
 
-> **Status**: ⚠️ Placeholder IDs present — real Cloudflare resources must be created before production deployment.
+> **Status**: ✅ **All resources provisioned with real IDs** — validated by `npm run validate:wrangler` (zero placeholders detected).
 
 ## Overview
 
-Blueprintify uses several Cloudflare resources that require real IDs before deployment works. The configuration lives in `apps/api/wrangler.toml` with annotated `TODO` and `⚠️ PLACEHOLDER` markers at each placeholder.
+Blueprintify uses several Cloudflare resources. All required resources have been created and configured with real IDs in `apps/api/wrangler.toml`.
 
-## Required Resources
+The configuration is validated automatically by `npm run validate:wrangler` which checks for placeholder patterns.
+
+## Configured Resources (Live IDs in wrangler.toml)
 
 ### 1. KV Namespace (Caching)
 
 Used for caching blueprint data and session state.
 
-**Create:**
-```bash
-# Development
-wrangler kv:namespace create "blueprint-cache"
-
-# Production
-wrangler kv:namespace create "blueprint-cache-prod" --env production
-
-# Staging
-wrangler kv:namespace create "blueprint-cache-staging" --env staging
-```
-
-**Update in `apps/api/wrangler.toml`:**
-| Section | Field | Current Placeholder | Replace With |
-|---------|-------|-------------------|--------------|
-| `[[kv_namespaces]]` (dev) | `id` | `cache_kv_namespace_id` | Real KV ID |
-| `[[env.production.kv_namespaces]]` | `id` | `production_cache_kv_id` | Real KV ID |
-| `[[env.staging.kv_namespaces]]` | `id` | `staging_cache_kv_id` | Real KV ID |
+| Environment | Binding | Namespace ID |
+|-------------|---------|--------------|
+| Production  | `CACHE` | `c55ed3885e8440338c5066ea4f310cc3` |
+| Staging     | `CACHE` | `17d72197156e4705b6850e731883d6fb` |
+| Development | `CACHE` | (uses Production binding locally via `.dev.vars`) |
 
 ### 2. D1 Database (Blueprint Storage)
 
 Used for persistent blueprint storage.
 
-**Create:**
-```bash
-# Development
-wrangler d1 create "blueprint-db"
+| Environment | Binding | Database ID |
+|-------------|---------|-------------|
+| Production  | `DB` | `49d9b895-9f4e-4b91-989c-8bfeb0bc2d50` |
+| Staging     | `DB` | `7c22c4e8-3451-4cf5-945c-92eb1fb466b4` |
+| Development | `DB` | (uses Production binding locally via `.dev.vars`) |
 
-# Production
-wrangler d1 create "blueprint-db-prod" --env production
+### 3. Rate Limiters
 
-# Staging
-wrangler d1 create "blueprint-db-staging" --env staging
+Three tiered rate limiters using native Cloudflare rate limiting:
+
+| Name | Namespace ID (Prod) | Namespace ID (Staging) | Limit | Period |
+|------|---------------------|------------------------|-------|--------|
+| `STRICT_RATE_LIMITER` | `1001` | `3001` | 10 req | 60s |
+| `STANDARD_RATE_LIMITER` | `1002` | `3002` | 60 req | 60s |
+| `LENIENT_RATE_LIMITER` | `1003` | `3003` | 120 req | 60s |
+
+### 4. Assets Binding (Workers Static Assets)
+
+Frontend assets served from `apps/web/dist`:
+
+```toml
+[assets]
+directory = "../../apps/web/dist"
+binding = "ASSETS"
+not_found_handling = "none"
 ```
 
-**Update in `apps/api/wrangler.toml`:**
-| Section | Field | Current Placeholder | Replace With |
-|---------|-------|-------------------|--------------|
-| `[[d1_databases]]` (dev) | `database_id` | `local_database_id` | Real D1 ID |
-| `[[env.production.d1_databases]]` | `database_id` | `production_database_id` | Real D1 ID |
-| `[[env.staging.d1_databases]]` | `database_id` | `staging_database_id` | Real D1 ID |
+### 5. Workers AI
 
-### 3. Queue (Background Processing)
-
-Used for async tasks like report generation.
-
-**Create:**
-```bash
-# Development (uses same name as production by default)
-wrangler queue create background-processing
-
-# Staging
-wrangler queue create background-processing-staging --env staging
+```toml
+[ai]
+binding = "AI"
 ```
 
-The queue names in `wrangler.toml` (`background-processing`, `background-processing-staging`) are actual names. These are not placeholder values but the queues must still exist.
+### 6. Observability
 
-### 4. Rate Limiting
+```toml
+[observability]
+enabled = true
+[observability.logs]
+enabled = true
+head_sampling_rate = 0.5
+```
 
-The rate limiter namespace IDs (`1001`–`1003` for dev, `2001`–`2003` for production, `3001`–`3003` for staging) are pre-configured and functional. Cloudflare Native Rate Limiting does not require additional resource creation — the namespace IDs are provisioned automatically.
+## Free Tier Constraints
 
-### 5. Secrets
+The following Cloudflare features are **explicitly disabled** due to Free Tier limitations:
+- **Analytics Engine** (error 10089 on Free Tier)
+- **Queues** — no queue bindings in `wrangler.toml`; background processing runs inline
+
+## Validation
+
+Run validation locally:
+
+```bash
+npm run validate:wrangler
+```
+
+This checks:
+- ✅ All resource IDs present (no placeholder patterns)
+- ✅ Node.js ≥22 requirement
+- ✅ `.dev.vars.example` exists
+
+## Secrets
 
 The following must be set via `wrangler secret put`:
 
@@ -94,7 +108,7 @@ wrangler secret put ADMIN_API_KEY --env production
 wrangler secret put ADMIN_API_KEY --env staging
 ```
 
-Additional optional secrets (commented out in `wrangler.toml`):
+Additional optional secrets (not currently configured):
 - `DATABASE_URL`
 - `SENTRY_DSN`
 
@@ -114,14 +128,13 @@ npm run build:api
 
 ## Quick Reference
 
-| Resource | Dev ID Field | Prod ID Field | Staging ID Field |
-|----------|-------------|---------------|------------------|
-| KV Cache | `[[kv_namespaces]]` → `id` | `[[env.production.kv_namespaces]]` → `id` | `[[env.staging.kv_namespaces]]` → `id` |
-| D1 DB | `[[d1_databases]]` → `database_id` | `[[env.production.d1_databases]]` → `database_id` | `[[env.staging.d1_databases]]` → `database_id` |
-| Queue | `[[queues.producers]]` → `queue` | `[[env.production.queues.producers]]` → `queue` | `[[env.staging.queues.producers]]` → `queue` |
+| Resource | Prod ID Field | Staging ID Field |
+|----------|---------------|------------------|
+| KV Cache | `[[kv_namespaces]]` → `id` | `[[env.staging.kv_namespaces]]` → `id` |
+| D1 DB | `[[d1_databases]]` → `database_id` | `[[env.staging.d1_databases]]` → `database_id` |
 
 ## Related
 
 - [API README](../apps/api/README.md) — Development and deployment guide
 - [Environment Variables](./environment-variables.md) — Runtime configuration reference
-- [wrangler.toml](../apps/api/wrangler.toml) — Worker configuration with placeholder IDs
+- [wrangler.toml](../apps/api/wrangler.toml) — Worker configuration with real IDs

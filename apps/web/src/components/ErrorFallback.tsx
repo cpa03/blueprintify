@@ -26,7 +26,11 @@ import {
   ENTRANCE_OFFSETS,
   FOCUS_ANNOUNCER,
 } from "../config/constants";
-import { ANIMATION_ENTRANCE_DELAYS, FRAMER_TYPE } from "@blueprint/shared/config";
+import {
+  ANIMATION_ENTRANCE_DELAYS,
+  COPY_STATE_VALUES,
+  FRAMER_TYPE,
+} from "@blueprint/shared/config";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
 import { copyToClipboard } from "../lib/clipboard";
 
@@ -106,6 +110,9 @@ export const ErrorFallback = memo(function ErrorFallback({
       className="min-h-screen flex items-center justify-center bg-dark-900 p-4"
       role="alert"
       aria-live="assertive"
+      data-has-error={error !== undefined ? "true" : "false"}
+      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-has-details={error !== undefined ? "true" : "false"}
     >
       <motion.div
         className="glass-card p-8 max-w-md w-full text-center relative overflow-hidden"
@@ -244,6 +251,13 @@ export const ErrorFallback = memo(function ErrorFallback({
                              focus-visible:ring-primary-500/50
                              transition-colors duration-150"
                   aria-label={ACCESSIBILITY_LABELS.ERROR_BOUNDARY.COPY_ERROR}
+                  data-copy-state={
+                    isCopied
+                      ? COPY_STATE_VALUES.COPIED
+                      : copyFailed
+                        ? "failed"
+                        : COPY_STATE_VALUES.IDLE
+                  }
                 >
                   {/* Clipboard icon */}
                   <AnimatePresence mode="wait">

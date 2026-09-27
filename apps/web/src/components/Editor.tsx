@@ -35,6 +35,7 @@ import { useEditorStore, useWizardStore, resetAllStores, useToast } from "../sto
 import { useExportContext } from "../context/ExportContext";
 import { exportAsZip, copyToClipboard, formatForIDE } from "../lib/export";
 import { sanitizeMarkdown, handleSecurityError } from "../lib/security";
+import { isEditableField } from "../lib/dom";
 import {
   EDITOR_FILENAMES,
   VIEW_MODES,
@@ -58,6 +59,7 @@ import {
   SKELETON_LAYOUT,
   FOCUS_ANNOUNCER,
   CSS_CLASSES,
+  ACCESSIBILITY_LABELS,
 } from "../config/constants";
 import { ANIMATION_TIMING, LAYOUT, ENTRANCE_OFFSETS } from "../config/theme";
 import { isDev } from "../config/env";
@@ -455,9 +457,9 @@ function EditorComponent(): JSX.Element {
       // making it functional gives power users the keyboard-driven workflow they expect.
       // e.key is "E" (uppercase) when Shift is held, so compare case-insensitively.
       if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === KEYBOARD_EVENT_KEYS.E) {
-        // Skip when user is typing in an input or textarea to avoid
-        // hijacking the key combination while editing content.
-        if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        // Skip when user is typing in an editable field (input, textarea, or
+        // contenteditable) to avoid hijacking the key combination while editing.
+        if (isEditableField(e.target)) {
           return;
         }
         if (!hasContent || isExporting) {
@@ -471,9 +473,9 @@ function EditorComponent(): JSX.Element {
       // Tooltips already display these shortcuts, making them functional
       // gives power users the keyboard-driven workflow they expect.
       if ((e.metaKey || e.ctrlKey) && e.key in VIEW_MODE_SHORTCUT_MAP) {
-        // Skip when user is typing in an input or textarea to avoid
+        // Skip when user is typing in an editable field to avoid
         // accidentally switching views while trying to type numbers.
-        if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        if (isEditableField(e.target)) {
           return;
         }
         e.preventDefault();
@@ -634,6 +636,11 @@ function EditorComponent(): JSX.Element {
                                 value={currentContent}
                                 onChange={setCurrentContent}
                                 className="h-full"
+                                ariaLabel={ACCESSIBILITY_LABELS.LAZY_CODEMIRROR.CONTENT_ARIA_LABEL(
+                                  activeTab === EDITOR_TABS.BLUEPRINT
+                                    ? EDITOR_FILENAMES.BLUEPRINT_DISPLAY
+                                    : EDITOR_FILENAMES.TASKS_DISPLAY
+                                )}
                               />
                             </motion.div>
                           )}

@@ -1,20 +1,42 @@
 import { useSyncExternalStore, useMemo } from "react";
-import { SPRING_CONFIG } from "../config/constants";
+import { ACCESSIBILITY_EVENTS, SPRING_CONFIG } from "../config/constants";
+import { STORAGE_KEYS } from "../config/keys";
 
 function subscribeToReducedMotion(callback: () => void): () => void {
   const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+  let unsubscribeFromMediaQuery: () => void;
   if (mediaQuery.addEventListener) {
     mediaQuery.addEventListener("change", callback);
-    return () => mediaQuery.removeEventListener("change", callback);
+    unsubscribeFromMediaQuery = () => mediaQuery.removeEventListener("change", callback);
   } else {
     mediaQuery.addListener(callback);
-    return () => mediaQuery.removeListener(callback);
+    unsubscribeFromMediaQuery = () => mediaQuery.removeListener(callback);
   }
+
+  window.addEventListener(ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE, callback);
+
+  return () => {
+    unsubscribeFromMediaQuery();
+    window.removeEventListener(ACCESSIBILITY_EVENTS.REDUCED_MOTION_CHANGE, callback);
+  };
 }
 
 function getReducedMotionSnapshot(): boolean {
   if (typeof window === "undefined") return false;
+
+  let stored: string | null = null;
+  try {
+    stored = localStorage.getItem(STORAGE_KEYS.REDUCED_MOTION);
+  } catch {
+    // localStorage can throw in privacy mode — treat as no override.
+    stored = null;
+  }
+
+  if (stored !== null) {
+    return stored === "true";
+  }
+
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 

@@ -61,7 +61,6 @@ const removeLazyPreloadPlugin = (): Plugin => ({
       "PageScrollProgressBar",
       "ScrollToTop",
       "GenerationCelebration",
-      "VercelAnalytics",
       "lazyLoad",
     ];
     if (!lazyChunks.length) return html;

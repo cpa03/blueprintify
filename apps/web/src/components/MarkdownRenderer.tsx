@@ -174,6 +174,25 @@ const CodeBlockHeader = memo(function CodeBlockHeader({
 });
 
 /**
+ * Accessible name for markdown images, which are content in generated docs.
+ * Falls back from alt text to the markdown title, then to a humanized
+ * filename (e.g. `architecture-diagram.png` → "architecture diagram").
+ * Deliberately not `alt=""` — that marks images decorative and hides them
+ * from screen readers.
+ */
+function getImageAccessibleName(src: string, alt: string, title: string): string {
+  if (alt.trim()) return alt;
+  if (title.trim()) return title;
+  if (!src || src.startsWith("data:")) return "";
+  const basename = src.split(/[\\/]/).pop() ?? "";
+  const name = basename
+    .replace(/\.[a-z0-9]+$/i, "")
+    .replace(/[-_]+/g, " ")
+    .trim();
+  return name;
+}
+
+/**
  * Main markdown renderer component with custom styling and syntax highlighting.
  *
  * Features:
@@ -362,11 +381,12 @@ function MarkdownRendererComponent({ content, className }: MarkdownRendererProps
           </a>
         );
       },
-      img({ src, alt }) {
+      img({ src, alt, title }) {
         return (
           <img
             src={src}
-            alt={alt ?? ""}
+            alt={getImageAccessibleName(src ?? "", alt ?? "", title ?? "")}
+            title={title}
             className={MARKDOWN.IMAGE}
             loading="lazy"
             decoding="async"

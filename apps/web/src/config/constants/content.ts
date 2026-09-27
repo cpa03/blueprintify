@@ -339,6 +339,18 @@ export const ACCESSIBILITY_LABELS = {
     LOADING: "Loading code editor",
     /** Announced via sr-only region when CodeMirror is ready for input */
     READY: "Code editor ready",
+    /** Accessible name for the CodeMirror editable region — CodeMirror's
+     *  contenteditable is unnamed, so screen readers announce a generic
+     *  editor without this (WCAG 4.1.2). Per-tab, e.g. "Blueprint markdown editor". */
+    CONTENT_ARIA_LABEL: (tabName: string) => `${tabName} markdown editor`,
+  },
+  LAZY_MARKDOWN_RENDERER: {
+    /** Status-region label announced while the markdown renderer chunk loads.
+     *  Mirrors LAZY_CODEMIRROR.LOADING so screen reader users get the same
+     *  loading feedback in the preview pane (WCAG 4.1.3 status messages). */
+    LOADING: "Loading markdown preview",
+    /** Announced via sr-only region when the markdown renderer is ready */
+    READY: "Markdown preview ready",
   },
   GENERATION_STATS: {
     AWAITING_BLUEPRINT: "Awaiting blueprint content",
@@ -375,6 +387,8 @@ export const ACCESSIBILITY_LABELS = {
     CLEAR_ALL_ANNOUNCEMENT: "All form fields cleared",
     FIELDS_COMPLETED: (completed: number, total: number) =>
       `${completed} of ${total} fields completed`,
+    NEXT_DISABLED_TOOLTIP: "Fill in the project name and description to continue",
+    NEXT_DISABLED_ARIA: "Next button is disabled. Fill in the project name and description first.",
   },
   WIZARD_STACK: {
     TECH_STACK_SELECTION: "Tech Stack Selection",

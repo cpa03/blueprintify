@@ -88,8 +88,8 @@ export const TaskGenerationRequestSchema = z.object({
     .string()
     .min(1, "Blueprint content is required")
     .max(
-      VALIDATION_LIMITS.DESCRIPTION.MAX,
-      `Blueprint must not exceed ${VALIDATION_LIMITS.DESCRIPTION.MAX} characters`
+      EXPORT_LIMITS.MAX_BLUEPRINT_LENGTH,
+      `Blueprint must not exceed ${EXPORT_LIMITS.MAX_BLUEPRINT_LENGTH} characters`
     ),
   projectName: z
     .string()
@@ -344,7 +344,10 @@ export const CreateShareSchema = z.object({
     })
     .optional(),
   /** SHA-256 hash of the passphrase for passphrase-protected shares */
-  passphraseHash: z.string().length(64).optional(),
+  passphraseHash: z
+    .string()
+    .regex(/^[a-fA-F0-9]{64}$/)
+    .optional(),
 });
 
 /**

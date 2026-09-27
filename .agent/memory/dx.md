@@ -1,0 +1,271 @@
+# DX (Developer Experience) Memory
+
+> This file contains DX-related knowledge, patterns, and improvements for the Blueprintify project.
+
+## Project Overview
+
+Blueprintify is an AI-powered project architecture documentation generator built with:
+
+- **Frontend**: React 19 + Vite + Tailwind CSS + Zustand
+- **Backend**: Hono on Cloudflare Workers
+- **Shared**: TypeScript types and Zod schemas
+
+## Key DX Principles
+
+### 1. Quick Start Experience
+
+- `npm install` should just work
+- `npm run dev:all` starts both frontend and API
+- Environment setup is minimal (just OpenAI API key)
+
+### 2. Code Quality Gates
+
+- TypeScript strict mode enabled
+- ESLint for code quality
+- Vitest for testing
+- All checks must pass before merge
+
+### 3. Documentation Standards
+
+- README.md for quick start
+- CONTRIBUTING.md for contribution guidelines
+- docs/ for detailed documentation
+- AGENTS.md for AI agent rules
+
+## Common DX Issues & Solutions
+
+### Issue: Port Already in Use
+
+```bash
+# Kill processes on ports 3000 and 8787
+lsof -ti:3000 | xargs kill -9
+lsof -ti:8787 | xargs kill -9
+```
+
+### Issue: Dependencies Issues
+
+```bash
+# Clear npm cache and reinstall
+npm cache clean --force
+rm -rf node_modules apps/*/node_modules
+npm install
+```
+
+### Issue: TypeScript Errors
+
+```bash
+# Check TypeScript configuration
+npm run typecheck
+# Ensure all dependencies are installed
+npm install
+```
+
+## DX Improvement Opportunities
+
+### Completed
+
+- [x] Created DX-engineer agent definition
+- [x] Created DX memory file
+- [x] Add editorconfig for consistent coding style (`.editorconfig` exists)
+- [x] Create troubleshooting guide (`docs/troubleshooting.md`)
+- [x] Enhanced API error messages with helpful context (2026-02-20)
+- [x] Improved error messages with contextual information (2026-02-20)
+  - Database errors now include entity IDs for easier debugging
+  - Storage errors include key names and recovery suggestions
+  - Security errors explain what patterns were detected
+  - Config errors include setup instructions
+- [x] Add JSDoc documentation to wizard.ts store (2026-02-20)
+  - Module-level documentation with feature overview
+  - Interface documentation for 15+ public methods
+  - Persistence layer documentation explaining schema migration
+  - Performance optimization comments for debounced saves
+- [x] Add JSDoc documentation to hooks/ directory (2026-02-21)
+  - `useLastSaved.ts` - Save state tracking with relative time display
+  - `useFocusTrap.ts` - Accessible focus trap for modal dialogs
+  - `useFocusOnStepChange.ts` - Focus management for wizard navigation
+  - `useStepAnnouncer` - Screen reader announcements for step changes
+- [x] Add JSDoc documentation to editor.ts store (2026-02-21)
+  - Module-level documentation with feature overview
+  - Documented EditorStore interface with all actions
+  - Added @see references to related modules
+- [x] Add JSDoc documentation to store/index.ts (2026-02-21)
+  - Module-level documentation for store exports
+  - Documented resetAllStores utility function with examples
+- [x] Add JSDoc documentation to Editor.tsx (2026-02-22)
+  - Module-level documentation with feature overview
+  - Component documentation with @returns and @example
+  - Handler function documentation (setCurrentContent, handleCopy, handleExport, handleNewProject)
+  - Export documentation for memoized component
+- [x] Add JSDoc documentation to MarkdownRenderer.tsx (2026-02-22)
+  - Module-level documentation with feature overview
+  - Interface documentation with property descriptions
+  - CodeBlockHeader component documentation
+  - Main component documentation with @param and @returns
+  - Export documentation for memoized component
+- [x] Add JSDoc documentation to Wizard.tsx (2026-02-22)
+  - Module-level documentation with 5-step wizard flow explanation
+  - Component documentation with accessibility features
+  - STEP_TITLES constant documentation
+  - Export documentation for memoized component
+- [x] Add JSDoc documentation to Header.tsx (2026-02-22)
+  - Module-level documentation with component overview
+  - Props interface documentation
+  - Component documentation with @param, @returns, @example
+  - Export documentation for memoized component
+- [x] Add JSDoc documentation to Toast.tsx (2026-02-22)
+  - Module-level documentation with feature overview
+  - Auto-dismiss, progress ring, pause-on-hover features documented
+  - Accessibility features (ARIA live regions) documented
+  - @see references to toast store and config constants
+- [x] Add JSDoc documentation to StepIndicator.tsx (2026-02-22)
+  - Module-level documentation with wizard navigation overview
+  - Progress ring, keyboard shortcuts, accessibility documented
+  - @see references to wizard store and config constants
+- [x] Add JSDoc documentation to api.ts (2026-02-22)
+  - Module-level documentation with API client overview
+  - SSE streaming, retry logic, timeouts documented
+  - @see references to backend API and shared types
+    MY|### Completed
+    HP|
+    RB|- [x] Fix TypeScript syntax errors in circuitBreaker.test.ts (2026-02-25)
+    SJ| - Removed incorrect closing brace prematurely closing createCircuitBreaker
+    VY| - Added missing closing brace for HALF_OPEN state describe block
+    PR| - Added missing closing brace for createCircuitBreaker
+    HT| - Fixed vi.setSystemTime() calls to use new Date(0)
+    VT| - Typecheck now passes
+    NQ|
+    TH|- [x] Fix TypeScript errors in toast.test.ts and wizard.test.ts (2026-02-26)
+    JK| - Removed unused imports (Toast, ToastType) from toast.test.ts
+    QW| - Fixed timer type issues using proper type casting with unknown intermediate
+    SP| - Fixed possibly undefined array access using optional chaining
+    BP| - Fixed category type in wizard.test.ts using const assertion
+    MZ| - Typecheck now passes with 0 errors
+    KD|
+    VY|### Pending
+
+### Pending
+
+- [ ] Fix CI workflow configuration issues (Issue #743) - **BLOCKED** by GitHub App permission restrictions
+
+## Workflow Configuration Notes
+
+### CI/CD Requirements
+
+- Runner: `ubuntu-24.04-arm` (per AGENTS.md)
+- Action versions: `actions/checkout@v4`, `actions/setup-node@v4`
+- Line endings: LF (per .gitattributes)
+
+### Branch Naming Conventions
+
+- Agent branches: `agent/[role-name]`
+- DX improvements: `DX-engineer`
+- Feature branches: `feature/[feature-name]`
+- Bugfix branches: `bugfix/[issue-description]`
+
+## Testing Commands
+
+````bash
+# Run all quality checks
+npm run check
+
+# Individual commands
+npm run typecheck  # TypeScript check
+npm run lint       # ESLint check
+npm run test:all   # All tests
+npm run build      # Production build
+## Known Limitations
+
+1. **Workflow Permissions**: GitHub App cannot create/update workflow files without `workflows` permission
+   - Issue #743 (CI workflow fixes) is blocked until permission is granted or manual fix is applied
+   - Required fixes: rename `on pull.yml` to `on-pull.yml`, normalize CRLF→LF, update runner to `ubuntu-24.04-arm`, fix action versions from `@v5` to `@v4`
+   - Workaround: Manual PR from human contributor with workflow permissions, or repo admin must grant `workflows` permission to GitHub App
+
+2. **CRLF Line Endings**: Some files in the repo (particularly `.github/workflows/*.yml`) were committed with CRLF
+   - `.gitattributes` with `* text=auto` will auto-convert to LF on checkout
+   - This causes "modified" status even after `git reset --hard` due to working directory normalization
+3. **Security Vulnerabilities**: ajv package has known vulnerabilities (upstream fix required)
+4. **Lint Warnings**: 8 unused type imports in db test file (PR #575 addresses this)
+## Recently Completed (2026-02-27)
+
+- [x] Documented GitHub Actions Invalid Versions issue (#1180)
+  - Required fix: Update `main.yml` and `iterate.yml` to use `@v4` instead of `@v5`
+  - Cannot apply fix directly - GitHub App lacks `workflows` permission
+  - Needs human intervention or permission grant to merge fix
+
+## Troubleshooting Guide
+
+### Common Issues
+
+#### 1. npm install fails with permission errors
+
+```bash
+# Clear npm cache and reinstall
+npm cache clean --force
+rm -rf node_modules apps/*/node_modules packages/*/node_modules
+npm install
+````
+
+#### 2. TypeScript errors about missing modules
+
+```bash
+# Ensure dependencies are installed
+npm install
+# Check TypeScript
+npm run typecheck
+```
+
+#### 3. Tests fail with timeout errors
+
+- Check if API is running (for integration tests)
+- Ensure ports 3000 and 8787 are available
+- Run tests with increased timeout: `npm run test:all -- --testTimeout=30000`
+
+#### 4. Build fails with out-of-memory
+
+```bash
+# Increase Node memory limit
+export NODE_OPTIONS="--max-old-space-size=4096"
+npm run build
+```
+
+#### 5. Lint errors about unreachable code
+
+- Check for unreachable `return` statements after early returns
+- Run `npm run lint` to see specific files and lines
+
+NP|---
+
+## Vitest Fake Timer Issues
+
+### Issue: Tests using Date.now() with fake timers fail
+
+**Problem**: Tests using `vi.setSystemTime(Date.now() + X)` or `vi.advanceTimersByTime()` fail because `Date.now()` returns real time, not fake time.
+
+**Root Cause**: In vitest with `vi.useFakeTimers()`:
+
+- `vi.advanceTimersByTime(X)` advances fake time for timers but NOT for `Date.now()`
+- `vi.setSystemTime(Date.now() + X)` uses real `Date.now()` value, not fake time
+
+**Solution**:
+
+1. Use absolute values with `vi.setSystemTime(absolute_time)` instead of offsets
+2. Ensure `vi.useFakeTimers()` is called before setting system time
+3. For tests that need `Date.now()` to respond to fake timers, use `vi.setSystemTime()` with absolute values
+
+**Example**:
+
+```typescript
+// BAD - Date.now() returns real time
+vi.setSystemTime(Date.now() + 1000);
+
+// GOOD - Use absolute value
+vi.setSystemTime(1000);
+```
+
+---
+
+_Last updated: 2026-02-25_
+
+_Last updated: 2026-02-22_
+
+> **Note**: For comprehensive troubleshooting, see [docs/troubleshooting.md](../docs/troubleshooting.md)

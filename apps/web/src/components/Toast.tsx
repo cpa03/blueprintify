@@ -280,6 +280,9 @@ const ToastItem = memo(
         onBlur={handleMouseLeave}
         role={toastRole}
         aria-live={toastAriaLive}
+        data-toast-type={toast.type}
+        data-hovered={isHovered ? "true" : "false"}
+        data-is-alert={isAlert ? "true" : "false"}
       >
         <div
           className="absolute bottom-0 left-0 h-0.5 bg-current opacity-30"
@@ -534,6 +537,8 @@ function ToastContainerComponent(): JSX.Element {
       className={TOAST_SPRING.CONTAINER_CLASSES}
       role="region"
       aria-label={ACCESSIBILITY_LABELS.TOAST.REGION}
+      data-count={toasts.length}
+      data-has-toasts={toasts.length > 0 ? "true" : "false"}
       {...containerAnimation}
     >
       <AnimatePresence mode="popLayout">

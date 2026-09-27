@@ -170,4 +170,21 @@ describe("PageScrollProgressBar", () => {
     expect(animate.scale).toBe(0);
     expect(animate.opacity).toBe(0);
   });
+
+  it("exposes data-state, data-progress, data-hovered, and data-focused DOM inspection attributes", () => {
+    mockScrolledPage();
+    renderPageProgressBar();
+
+    const slider = screen.getByRole("slider");
+    expect(slider.getAttribute("data-state")).toBe("visible");
+    expect(slider.getAttribute("data-progress")).toBe("41");
+    expect(slider.getAttribute("data-hovered")).toBe("false");
+    expect(slider.getAttribute("data-focused")).toBe("false");
+
+    fireEvent.focus(slider);
+    expect(slider.getAttribute("data-focused")).toBe("true");
+
+    fireEvent.blur(slider);
+    expect(slider.getAttribute("data-focused")).toBe("false");
+  });
 });
