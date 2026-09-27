@@ -1,7 +1,7 @@
 ---
 description: Developer Experience Engineer & DX Specialist
 mode: primary
-model: opencode/deepseek-v4-flash-free
+model: opencode/nemotron-3-ultra-free
 temperature: 0.1
 tools:
   write: true

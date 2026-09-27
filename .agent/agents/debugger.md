@@ -11,7 +11,7 @@ capabilities:
   - search
   - skill
 model:
-  default: deepseek-v4-flash-free
+  default: nemotron-3-ultra-free
   temperature: 0.0
 permissions:
   bash:

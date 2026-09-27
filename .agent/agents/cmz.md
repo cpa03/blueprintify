@@ -13,7 +13,7 @@ capabilities:
   - websearch
   - webfetch
 model:
-  default: deepseek-v4-flash-free
+  default: nemotron-3-ultra-free
   temperature: 0.1
 permissions:
   bash:
@@ -249,7 +249,7 @@ When integrating external repositories:
 
 All agents MUST use:
 
-- `${AGENT_MODEL:-deepseek-v4-flash-free}` (per AGENTS.md mandate)
+- `${AGENT_MODEL:-nemotron-3-ultra-free}` (per AGENTS.md mandate)
 
 **Never use**: `iflowcn/glm-4.7`, `opencode/big-pickle` (known to cause failures)
 

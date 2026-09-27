@@ -1,7 +1,7 @@
 ---
 description: Automated Researcher. Synthesizes info into reports.
 mode: primary
-model: opencode/deepseek-v4-flash-free
+model: opencode/nemotron-3-ultra-free
 temperature: 0.2
 tools:
   write: true
