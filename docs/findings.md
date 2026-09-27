@@ -11706,3 +11706,35 @@ All PRs verified: build ✅ lint ✅ tests 1,940/1,940 ✅ (789 web + 443 API + 
 **Doc-sync — 1 CONFIRMED defect fixed**: **SECURITY.md audit-history missing Cycle 478–489 recurring-gate rows** (Cycles 478–489 records were findings-only per `git show --stat` — only `docs/findings.md` touched each cycle) → **backfilled** (precedent Cycles 448/449/451/454/458/466/469/474/477) + Cycle 490 row appended; **`docs/knowledge-review.md` Last Review stayed at Cycle 477** → backfilled Cycle 478–489 entries + refreshed to Cycle 490; **`docs/active-tasks.md` + `CHANGELOG.md` top entries stayed at Cycle 477** → Cycle 490 records appended (Cycles 478–489 findings-only, matching SECURITY backfill precedent). All other tracked records current (findings top = Cycle 489 ✅ — this entry appends 490; README L340 BroCula range `(Jul 15–Aug 15)` matches archives latest Run 67 Aug 15 — no bump; `sitemap.xml` `lastmod` already `2026-08-15` matches this cycle's commit date — no bump).
 
 **Baseline ALL GREEN 2,571/2,571 CONFIRMED LIVE THIS CYCLE** (web 1,184/83 + api 535/33 + shared 852/4; typecheck ✅ exit 0 · lint ✅ **0 errors, 0 warnings** ✅ · build ✅ (`PLUGIN_TIMINGS` informational) · build:api ✅ (wrangler `--dry-run` exit 0) · tests 2,571/2,571 ✅ · scan:secrets ✅ 322 files · audit **0 vulns** ✅ · prettier ✅). **Skills used**: none loaded this cycle — all operations are deterministic CLI probes + live gate runs per contract (label audit via `scripts/normalize-issue-labels.mjs --dry-run` — the deterministic label mapper; permission probes; P1 live re-verification — all known-file reads; scoring is evidence-based read-only analysis). **Subagents used**: none — deterministic CLI probes per contract; no parallel exploration needed (all targets are known-file live reads). **Final state: idle** — Phase 0 → ISSUE MANAGER MODE (0 PRs + 101 open issues); Steps 1–3 mutations blocked (`issues: write`, 69th block); Step 4 P1s code/docs-resolved (close blocked) or workflow-blocked (#1014 CI gate / #849/#953, 95th deferral — workflow-file push LIVE-verified rejected, zero residue); Phase 1 scoring → lowest domain D (Delivery 73.5), lowest criterion CI/CD Health (55) → workflow-blocked (95th); doc-sync 12-cycle backfill executed; no code-actionable work this cycle; baseline ALL GREEN.
+
+## [Janitor] Pre-merge dead-code cleanup (2026-09-27, branch `agent/janitor`)
+
+**Scan**: full-repo grep verification (every candidate checked for prod/internal/barrel/test consumers).
+ESLint zero unused warnings; no commented-out code blocks; `console.log` only in legitimate
+logger/build-script/e2e/template-string contexts (no action); `sanitizeHtml` web-vs-api duplication
+is intentional (DOMPurify vs Workers-regex runtimes) — NOT consolidated.
+
+**Removed 16 unused exports + their test blocks** (zero production consumers, no keep-record):
+- `apps/web/src/utils/motion.ts`: `fadeIn`, `scaleIn`, `slideInRight`, `slideInLeft`, `createStaggerContainer`
+- `apps/api/src/utils/sanitize.ts`: `validateXssSafe`, `isXssSafe` (+ dropped now-unused `SANITIZE_ERROR_STRINGS` import)
+- `apps/api/src/utils/timeout.ts`: `createTimeoutWrapper`, `withTimeoutAndRetry` (+ now-unused `RETRY_CONFIG` import; kept `withTimeout` core primitive + live `TimeoutError`)
+- `apps/api/src/services/openai.ts`: `generateCompletion` (routes use streaming `streamCompletion` only)
+- `apps/api/src/utils/secureLog.ts`: `secureLogDebug`
+- `apps/web/src/lib/storage.ts`: `getStorageErrorMessage`, `withStorageRecovery` (+ now-unused `STORAGE_OPERATION_NAMES` import; kept `isStorageError`, used internally)
+- `apps/web/src/components/RippleButton.tsx`: `useRipple` (duplicated ripple logic already inside `RippleButtonComponent`)
+- `apps/web/src/components/CircularProgress.tsx`: `CircularProgressCompact` (+ now-unused `ANIMATION` import)
+- Docs synced: `docs/localstorage-schema.md`, `docs/flexy-plan.md` (Iteration 62 row annotated).
+
+**Verification**: web touched-file tests 105/105 pass; eslint clean on all 16 touched files;
+API typecheck 7 errors before = 7 after (all pre-existing controller errors, none in touched files);
+web typecheck 750 errors before → 743 after (all pre-existing jest-dom matcher typing noise, minus 7 in deleted blocks);
+`npm run build` passes. API workers-pool vitest cannot start in this environment (pre-existing workerd failure, verified on stashed baseline).
+
+**Deliberately KEPT (maintainer decision needed to remove)**: `UI_FALLBACKS` + `useShallow` re-export
+(explicit keep-record); `AnimatedCounter` (feature-documented); theme.ts tokens + a11y hook helpers
+(`getAnimationDuration`, `getSpringConfig`, `useAccessibleAnimation`, `useAccessibilityPreferences` —
+coherent public API surfaces, promote-or-remove is a product call); `withTimeout`, `ensureDOMPurifyLoaded`,
+all test-infra factories.
+**Structural findings (not actioned — report only)**: `.agent/` duplicates `.opencode/` agent system;
+4 parallel utils/lib folders (`apps/api/src/utils`, `apps/web/src/utils`, `apps/web/src/lib`, `packages/shared/src/utils`);
+root `tui.json` byte-identical to `.opencode/tui.json`.

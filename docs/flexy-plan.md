@@ -1402,7 +1402,7 @@ Changed `node-version: "20"` → `node-version-file: ".node-version"` in all 4 w
 
 | File | Change |
 | ---- | ------ |
-| `apps/web/src/lib/storage.ts` | 5 hardcoded error type strings in `createStorageError` calls replaced with `STORAGE_ERROR_TYPE_VALUES.*` refs; 6 switch/case labels in `getStorageErrorMessage` replaced with `STORAGE_ERROR_TYPE_VALUES.*` refs |
+| `apps/web/src/lib/storage.ts` | 5 hardcoded error type strings in `createStorageError` calls replaced with `STORAGE_ERROR_TYPE_VALUES.*` refs; 6 switch/case labels in `getStorageErrorMessage` replaced with `STORAGE_ERROR_TYPE_VALUES.*` refs (helper later removed in pre-merge janitor cleanup as an unused export) |
 | `apps/web/src/lib/storage.test.ts` | 13 hardcoded error type strings replaced with `STORAGE_ERROR_TYPE_VALUES.*` refs; 9 hardcoded `operation: "write"/"read"` strings replaced with `STORAGE_OPERATIONS.WRITE`/`STORAGE_OPERATIONS.READ`; added `STORAGE_OPERATIONS`, `STORAGE_ERROR_TYPE_VALUES` imports |
 
 ## Verification

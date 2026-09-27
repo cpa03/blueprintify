@@ -12,7 +12,7 @@
  */
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, expect, it, vi, afterEach } from "vitest";
-import { RippleButton, useRipple } from "./RippleButton";
+import { RippleButton } from "./RippleButton";
 
 // Mock the useReducedMotion hook
 vi.mock("../hooks/useReducedMotion", () => ({
@@ -242,24 +242,5 @@ describe("RippleButton keyboard accessibility", () => {
     });
 
     fireEvent.click(button, { clientX: 0, clientY: 0 });
-  });
-});
-
-describe("useRipple hook", () => {
-  it("returns initial empty state", () => {
-    function TestComponent() {
-      const { createRipple, RippleOverlay, ripples } = useRipple();
-      return (
-        <div>
-          <span data-testid="ripple-count">{ripples.length}</span>
-          <span data-testid="has-create">{typeof createRipple === "function" ? "yes" : "no"}</span>
-          <RippleOverlay />
-        </div>
-      );
-    }
-
-    const { container } = render(<TestComponent />);
-    expect(container.querySelector('[data-testid="ripple-count"]')).toHaveTextContent("0");
-    expect(container.querySelector('[data-testid="has-create"]')).toHaveTextContent("yes");
   });
 });

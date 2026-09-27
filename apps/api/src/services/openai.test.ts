@@ -91,12 +91,7 @@ vi.mock("../utils/circuitBreaker", () => ({
 }));
 
 // ---- target module (imported after mocks) ----
-import {
-  createAIClient,
-  initializeCircuitBreaker,
-  streamCompletion,
-  generateCompletion,
-} from "./openai";
+import { createAIClient, initializeCircuitBreaker, streamCompletion } from "./openai";
 import { CircuitBreakerOpenError } from "../utils/circuitBreaker";
 
 // ===========================================================================
@@ -251,88 +246,6 @@ describe("OpenAI Service", () => {
       }
 
       expect(chunks).toEqual(["data"]);
-    });
-  });
-
-  // -------------------------------------------------------------------------
-  // generateCompletion – async function returning full text
-  // -------------------------------------------------------------------------
-  describe("generateCompletion", () => {
-    const defaultOptions = {
-      systemPrompt: "You are a helpful assistant",
-      userPrompt: "Summarize this",
-      config: { apiKey: "sk-test" },
-    };
-
-    it("should return the full text when OpenAI responds", async () => {
-      mockOpenAIInstance.chat.completions.create.mockResolvedValue({
-        choices: [{ message: { content: "Full response text" } }],
-      });
-
-      const result = await generateCompletion(defaultOptions);
-
-      expect(result).toBe("Full response text");
-      expect(mockBreaker.execute).toHaveBeenCalled();
-    });
-
-    it("should return empty string when choices are empty", async () => {
-      mockOpenAIInstance.chat.completions.create.mockResolvedValue({ choices: [] });
-
-      const result = await generateCompletion(defaultOptions);
-      expect(result).toBe("");
-    });
-
-    it("should return empty string when first choice has no content", async () => {
-      mockOpenAIInstance.chat.completions.create.mockResolvedValue({
-        choices: [{ message: {} }],
-      });
-
-      const result = await generateCompletion(defaultOptions);
-      expect(result).toBe("");
-    });
-
-    it("should throw CircuitBreakerOpenError when circuit breaker is OPEN", async () => {
-      mockBreaker.getState.mockReturnValue({
-        state: "OPEN" as const,
-        failures: 3,
-        successes: 0,
-        lastFailureTime: Date.now(),
-      });
-
-      await expect(generateCompletion(defaultOptions)).rejects.toThrow(CircuitBreakerOpenError);
-    });
-
-    it("should wrap non-circuit-breaker errors with AI_SERVICE_FAILURE message", async () => {
-      mockBreaker.execute.mockRejectedValue(new Error("API timeout"));
-
-      await expect(generateCompletion(defaultOptions)).rejects.toThrow(
-        "AI service error: API timeout"
-      );
-    });
-
-    it("should re-throw CircuitBreakerOpenError directly (not wrap it)", async () => {
-      mockBreaker.execute.mockRejectedValue(
-        new CircuitBreakerOpenError("AI service temporarily unavailable")
-      );
-
-      await expect(generateCompletion(defaultOptions)).rejects.toThrow(CircuitBreakerOpenError);
-    });
-
-    it("should handle unknown error type gracefully", async () => {
-      mockBreaker.execute.mockRejectedValue(null);
-
-      await expect(generateCompletion(defaultOptions)).rejects.toThrow(
-        "AI service error: Unknown error"
-      );
-    });
-
-    it("should use DEFAULT_MODEL when no model specified in config", async () => {
-      mockOpenAIInstance.chat.completions.create.mockResolvedValue({
-        choices: [{ message: { content: "result" } }],
-      });
-
-      const result = await generateCompletion(defaultOptions);
-      expect(result).toBe("result");
     });
   });
 });

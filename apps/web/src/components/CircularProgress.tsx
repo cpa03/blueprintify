@@ -16,7 +16,6 @@ import {
   PROGRESS_COLORS,
   PROGRESS_TRACK_COLOR,
   SVG_TRANSITION,
-  ANIMATION,
   ACCESSIBILITY_LABELS,
 } from "../config/constants";
 import { UI_TIMEOUTS, PROGRESS_STATE_VALUES } from "@blueprint/shared";
@@ -233,25 +232,3 @@ function CircularProgressComponent({
 }
 
 export const CircularProgress = memo(CircularProgressComponent);
-
-function CircularProgressCompactComponent({
-  value,
-  size = 16,
-  strokeWidth = 2,
-  color = PROGRESS_COLORS.ACTIVE,
-  className = "",
-}: Omit<CircularProgressProps, "showPercentage" | "animationDuration" | "ariaLabel">): JSX.Element {
-  return (
-    <CircularProgress
-      value={value}
-      size={size}
-      strokeWidth={strokeWidth}
-      color={color}
-      className={className}
-      showPercentage={false}
-      animationDuration={ANIMATION.MEDIUM_SLOW}
-    />
-  );
-}
-
-export const CircularProgressCompact = memo(CircularProgressCompactComponent);

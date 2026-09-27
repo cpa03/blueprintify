@@ -6,7 +6,6 @@ import {
   secureLogError,
   secureLogWarn,
   secureLogInfo,
-  secureLogDebug,
 } from "./secureLog";
 
 describe("SecureLog Utilities", () => {
@@ -271,54 +270,6 @@ describe("SecureLog Utilities", () => {
 
       expect(parsed.context).toBe("Test");
       expect(parsed.message).toBe("Info message");
-    });
-  });
-
-  describe("secureLogDebug", () => {
-    it("should log debug message to console.log", () => {
-      secureLogDebug("OpenAI", "API response received", { tokens: 150 });
-
-      expect(consoleLogSpy).toHaveBeenCalledTimes(1);
-      const callArgs = consoleLogSpy.mock.calls[0];
-      expect(callArgs).toBeDefined();
-      const loggedContent = callArgs![0] as string;
-      const parsed = JSON.parse(loggedContent) as {
-        context: string;
-        message: string;
-        tokens: number;
-      };
-
-      expect(parsed.context).toBe("OpenAI");
-      expect(parsed.message).toBe("API response received");
-      expect(parsed.tokens).toBe(150);
-    });
-
-    it("should sanitize sensitive data in debug logs", () => {
-      secureLogDebug("DB", "Query result from mongodb://localhost");
-
-      expect(consoleLogSpy).toHaveBeenCalledTimes(1);
-      const callArgs = consoleLogSpy.mock.calls[0];
-      expect(callArgs).toBeDefined();
-      const loggedContent = callArgs![0] as string;
-      const parsed = JSON.parse(loggedContent) as { message: string };
-
-      expect(parsed.message).toContain("[REDACTED]");
-    });
-
-    it("should handle missing additionalInfo", () => {
-      secureLogDebug("Test", "Debug message");
-
-      expect(consoleLogSpy).toHaveBeenCalledTimes(1);
-      const callArgs = consoleLogSpy.mock.calls[0];
-      expect(callArgs).toBeDefined();
-      const loggedContent = callArgs![0] as string;
-      const parsed = JSON.parse(loggedContent) as {
-        context: string;
-        message: string;
-      };
-
-      expect(parsed.context).toBe("Test");
-      expect(parsed.message).toBe("Debug message");
     });
   });
 });

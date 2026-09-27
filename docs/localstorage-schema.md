@@ -172,7 +172,7 @@ Before any editor content is persisted (or appended), `validateEditorContent` ru
 - All `StorageService` operations run through error boundaries that record metrics (`StorageMetrics`) and health state, and wrap failures in a typed `StorageError` with an error type from `STORAGE_ERROR_TYPE_VALUES` (e.g. `BROWSER_UNSUPPORTED`, `PRIVACY_MODE`, `QUOTA_EXCEEDED`, `CORRUPTED_DATA`, `MIGRATION_ERROR`).
 - Write operations retry transient failures up to `DEFAULT_MAX_RETRIES` (3) with linear backoff (`DEFAULT_RETRY_DELAY_MS = 100` ms, `delay * attempt`).
 - Startup checks probe browser support (`isLocalStorageSupported`) and private-browsing mode (`isPrivacyMode`) using the test keys; both throw typed errors when unavailable.
-- `getStorageErrorMessage` maps `StorageError` types to user-facing messages (`STORAGE_ERROR_MESSAGES`); `withStorageRecovery` provides a fallback wrapper for callers.
+- `StorageError` types map to user-facing messages via `STORAGE_ERROR_MESSAGES` (see `isStorageError` type guard in `apps/web/src/lib/storage.ts`). Note: the former `getStorageErrorMessage`/`withStorageRecovery` helpers were removed in the pre-merge janitor cleanup (unused exports); callers should switch on `error.type` directly.
 
 ## Security Considerations
 

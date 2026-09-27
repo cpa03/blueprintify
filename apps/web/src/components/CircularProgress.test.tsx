@@ -1,5 +1,5 @@
 /**
- * Tests for CircularProgress and CircularProgressCompact
+ * Tests for CircularProgress
  *
  * Covers:
  * - Renders SVG progress ring with correct ARIA role
@@ -13,12 +13,11 @@
  * - Custom aria label overrides default
  * - Custom size and stroke width
  * - Handles edge case of value=0
- * - CircularProgressCompact renders at compact size
  */
 
 import { render, screen, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { CircularProgress, CircularProgressCompact } from "./CircularProgress";
+import { CircularProgress } from "./CircularProgress";
 import { UI_TIMEOUTS, PROGRESS_STATE_VALUES } from "@blueprint/shared";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -179,26 +178,5 @@ describe("CircularProgress", () => {
     const progressCircle = container.querySelectorAll("circle")[1] as SVGElement;
     expect(progressCircle.style.transition).toBe("none");
     expect(progressCircle.style.transitionProperty).toBe("");
-  });
-});
-
-describe("CircularProgressCompact", () => {
-  it("renders a compact progress indicator", () => {
-    render(<CircularProgressCompact value={50} />);
-    const progressbar = screen.getByRole("progressbar");
-    expect(progressbar).toBeInTheDocument();
-    expect(progressbar).toHaveAttribute("aria-valuenow", "50");
-  });
-
-  it("does not show percentage text", () => {
-    render(<CircularProgressCompact value={50} />);
-    expect(screen.queryByText("50%")).not.toBeInTheDocument();
-  });
-
-  it("renders at compact default size of 16", () => {
-    const { container: cmpContainer } = render(<CircularProgressCompact value={50} />);
-    const svg = cmpContainer.querySelector("svg");
-    expect(svg).toHaveAttribute("width", "16");
-    expect(svg).toHaveAttribute("height", "16");
   });
 });

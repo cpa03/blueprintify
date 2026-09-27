@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { ERROR_CLASS_NAMES } from "@blueprint/shared";
-import { withTimeout, TimeoutError, createTimeoutWrapper, withTimeoutAndRetry } from "./timeout";
+import { withTimeout, TimeoutError } from "./timeout";
 
 describe("Timeout Utilities", () => {
   beforeEach(() => {
@@ -98,119 +98,6 @@ describe("Timeout Utilities", () => {
       await withTimeout(operation, { timeoutMs: 5000 }).catch(() => {});
 
       expect(clearTimeoutSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe("createTimeoutWrapper", () => {
-    beforeEach(() => {
-      vi.useFakeTimers();
-    });
-
-    afterEach(async () => {
-      vi.useRealTimers();
-      // Add delay to allow async tasks to settle and prevent unhandled rejection warnings
-      await new Promise((resolve) => setTimeout(resolve, 100));
-    });
-
-    it("should create wrapper with pre-configured timeout", async () => {
-      const wrapper = createTimeoutWrapper({ timeoutMs: 3000 });
-      const operation = vi.fn().mockResolvedValue("result");
-
-      const result = await wrapper(operation);
-      expect(result).toBe("result");
-    });
-
-    it("should use default error message", async () => {
-      const wrapper = createTimeoutWrapper({
-        timeoutMs: 50,
-        errorMessage: "Wrapper timeout",
-      });
-      const operation = vi.fn().mockImplementation(
-        () =>
-          new Promise((resolve) => {
-            setTimeout(resolve, 5000);
-          })
-      );
-
-      const promise = wrapper(operation);
-      vi.advanceTimersByTime(51);
-
-      await expect(promise).rejects.toThrow("Wrapper timeout");
-    });
-  });
-
-  describe("withTimeoutAndRetry", () => {
-    beforeEach(() => {
-      vi.useFakeTimers();
-    });
-
-    afterEach(async () => {
-      vi.useRealTimers();
-      // Add delay to allow async tasks to settle and prevent unhandled rejection warnings
-      await new Promise((resolve) => setTimeout(resolve, 100));
-    });
-
-    it("should succeed on first attempt", async () => {
-      const operation = vi.fn().mockResolvedValue("success");
-
-      const result = await withTimeoutAndRetry(operation, {
-        timeoutMs: 5000,
-        retries: 2,
-      });
-      expect(result).toBe("success");
-      expect(operation).toHaveBeenCalledTimes(1);
-    });
-
-    it("should retry on failure", async () => {
-      const operation = vi
-        .fn()
-        .mockRejectedValueOnce(new Error("fail 1"))
-        .mockResolvedValueOnce("success");
-
-      const promise = withTimeoutAndRetry(operation, {
-        timeoutMs: 5000,
-        retries: 1,
-        retryDelayMs: 10,
-      });
-
-      await vi.runAllTimersAsync();
-
-      const result = await promise;
-
-      expect(result).toBe("success");
-      expect(operation).toHaveBeenCalledTimes(2);
-    });
-
-    it("should throw after max retries exceeded", async () => {
-      const operation = vi.fn().mockRejectedValue(new Error("always fails"));
-
-      const promise = withTimeoutAndRetry(operation, {
-        timeoutMs: 5000,
-        retries: 2,
-        retryDelayMs: 10,
-      });
-
-      await vi.runAllTimersAsync();
-      await expect(promise).rejects.toThrow("always fails");
-      expect(operation).toHaveBeenCalledTimes(3);
-    });
-
-    it("should throw TimeoutError when operation times out", async () => {
-      const operation = vi.fn().mockImplementation(
-        () =>
-          new Promise((resolve) => {
-            setTimeout(resolve, 10000);
-          })
-      );
-
-      const promise = withTimeoutAndRetry(operation, {
-        timeoutMs: 50,
-        retries: 0,
-      });
-
-      vi.advanceTimersByTime(51);
-
-      await expect(promise).rejects.toThrow(TimeoutError);
     });
   });
 });

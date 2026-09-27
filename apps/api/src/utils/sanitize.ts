@@ -18,7 +18,6 @@ import {
   SANITIZE_FORBIDDEN_TAG_NAMES,
   SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES,
   SANITIZE_REPLACEMENT_STRINGS,
-  SANITIZE_ERROR_STRINGS,
 } from "@blueprint/shared";
 
 // ===== Safe HTML Tag Allowlist (built from shared config) =====
@@ -108,51 +107,4 @@ export function sanitizeHtml(input: string): string {
   sanitized = sanitized.replace(/  +/g, " ");
 
   return sanitized.trim();
-}
-
-/**
- * Validates that content does not contain XSS attack vectors.
- * Throws an error if dangerous patterns are detected.
- */
-export function validateXssSafe(input: string, fieldName?: string): void {
-  if (!input) return;
-
-  const dangerousIndicators: string[] = [];
-
-  if (/<\s*script\b[^>]*>/i.test(input)) {
-    dangerousIndicators.push(SANITIZE_ERROR_STRINGS.SCRIPT_TAG);
-  }
-
-  if (/\s+on\w+\s*=/i.test(input)) {
-    dangerousIndicators.push(SANITIZE_ERROR_STRINGS.EVENT_HANDLER_ATTR);
-  }
-
-  if (/javascript:/i.test(input)) {
-    dangerousIndicators.push(SANITIZE_ERROR_STRINGS.JAVASCRIPT_URL);
-  }
-
-  if (/<\s*(iframe|object|embed|base|link)\b[^>]*>/i.test(input)) {
-    dangerousIndicators.push(SANITIZE_ERROR_STRINGS.DANGEROUS_HTML_TAG);
-  }
-
-  if (dangerousIndicators.length > 0) {
-    const context = fieldName ? ` in field '${fieldName}'` : "";
-    throw new Error(
-      `${SANITIZE_ERROR_STRINGS.VALIDATION_ERROR}${context}: ${dangerousIndicators.join(", ")}. ` +
-        SANITIZE_ERROR_STRINGS.REMOVAL_HINT
-    );
-  }
-}
-
-/**
- * Zod refinement function for XSS-safe content validation.
- * Returns true if the content has no XSS attack vectors.
- */
-export function isXssSafe(input: string): boolean {
-  try {
-    validateXssSafe(input);
-    return true;
-  } catch {
-    return false;
-  }
 }

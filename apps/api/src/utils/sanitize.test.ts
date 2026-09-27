@@ -8,7 +8,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { sanitizeHtml, validateXssSafe, isXssSafe } from "./sanitize";
+import { sanitizeHtml } from "./sanitize";
 
 // =======================================================================
 // sanitizeHtml — Core Sanitization Function
@@ -253,65 +253,5 @@ describe("sanitizeHtml", () => {
   it("removes behavior binding (IE attack)", () => {
     const result = sanitizeHtml('<div style="behavior: url(xss.htc)">text</div>');
     expect(result).toBe("text");
-  });
-});
-
-// =======================================================================
-// validateXssSafe — Validation Function
-// =======================================================================
-
-describe("validateXssSafe", () => {
-  it("passes clean content", () => {
-    expect(() => validateXssSafe("Hello World")).not.toThrow();
-  });
-
-  it("passes markdown content", () => {
-    expect(() => validateXssSafe("# Header\n\nContent")).not.toThrow();
-  });
-
-  it("throws on script tags", () => {
-    expect(() => validateXssSafe("<script>alert(1)</script>")).toThrow("script tag");
-  });
-
-  it("throws on event handlers", () => {
-    expect(() => validateXssSafe('<p onclick="x()">click</p>')).toThrow("event handler attribute");
-  });
-
-  it("throws on javascript: URLs", () => {
-    expect(() => validateXssSafe('<a href="javascript:void(0)">link</a>')).toThrow(
-      "javascript: URL"
-    );
-  });
-
-  it("throws on iframe tags", () => {
-    expect(() => validateXssSafe("<iframe src='evil'></iframe>")).toThrow("dangerous HTML tag");
-  });
-
-  it("includes field name in error", () => {
-    expect(() => validateXssSafe("<script>evil()</script>", "blueprint")).toThrow(
-      "in field 'blueprint'"
-    );
-  });
-
-  it("handles empty input without throwing", () => {
-    expect(() => validateXssSafe("")).not.toThrow();
-  });
-});
-
-// =======================================================================
-// isXssSafe — Zod Refinement Function
-// =======================================================================
-
-describe("isXssSafe", () => {
-  it("returns true for clean content", () => {
-    expect(isXssSafe("Hello World")).toBe(true);
-  });
-
-  it("returns false for content with script tags", () => {
-    expect(isXssSafe("<script>alert(1)</script>")).toBe(false);
-  });
-
-  it("returns false for content with event handlers", () => {
-    expect(isXssSafe('<p onclick="x()">click</p>')).toBe(false);
   });
 });

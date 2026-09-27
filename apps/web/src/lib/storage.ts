@@ -8,7 +8,6 @@
  * - Health monitoring and metrics
  */
 
-import { STORAGE_OPERATION_NAMES } from "@blueprint/shared/config";
 import { STORAGE_KEYS, STORAGE_CONFIG, STORAGE_ERROR_MESSAGES } from "../config/constants";
 
 import { BACKUP_KEY_PREFIX, TEST_KEYS } from "../config/keys";
@@ -836,35 +835,4 @@ export const editorStorage = storageManager.create({
 
 export function isStorageError(error: unknown): error is StorageError {
   return error instanceof StorageError;
-}
-
-export function getStorageErrorMessage(error: unknown): string {
-  if (isStorageError(error)) {
-    switch (error.type) {
-      case STORAGE_ERROR_TYPE_VALUES.QUOTA_EXCEEDED:
-        return STORAGE_ERROR_MESSAGES.STORAGE_FULL;
-      case STORAGE_ERROR_TYPE_VALUES.CORRUPTED_DATA:
-        return STORAGE_ERROR_MESSAGES.DATA_CORRUPTED;
-      case STORAGE_ERROR_TYPE_VALUES.BROWSER_UNSUPPORTED:
-        return STORAGE_ERROR_MESSAGES.BROWSER_UNSUPPORTED;
-      case STORAGE_ERROR_TYPE_VALUES.PRIVACY_MODE:
-        return STORAGE_ERROR_MESSAGES.PRIVACY_MODE;
-      case STORAGE_ERROR_TYPE_VALUES.VALIDATION_ERROR:
-        return STORAGE_ERROR_MESSAGES.VALIDATION_FAILED;
-      case STORAGE_ERROR_TYPE_VALUES.MIGRATION_ERROR:
-        return STORAGE_ERROR_MESSAGES.MIGRATION_FAILED;
-      default:
-        return error.message;
-    }
-  }
-  return STORAGE_ERROR_MESSAGES.UNEXPECTED_ERROR;
-}
-
-export async function withStorageRecovery<T>(operation: () => Promise<T>, fallback: T): Promise<T> {
-  try {
-    return await operation();
-  } catch (error) {
-    console.error(STORAGE_ERROR_MESSAGES.OPERATION_FAILED(STORAGE_OPERATION_NAMES.GENERIC), error);
-    return fallback;
-  }
 }

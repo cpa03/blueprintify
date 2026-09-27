@@ -255,33 +255,3 @@ export function secureLogInfo(
   };
   console.log(JSON.stringify(logEntry));
 }
-
-/**
- * Secure debug logging wrapper that sanitizes output.
- *
- * Use this instead of console.debug for verbose debugging information.
- * In development, debug logs are output to console.debug. In production
- * Workers, they can be filtered by log level in the Cloudflare dashboard.
- *
- * @param context - A string describing the context for the debug message
- * @param message - The debug message (will be sanitized)
- * @param additionalInfo - Optional additional information to include in the log
- *
- * @example
- * ```typescript
- * secureLogDebug('OpenAI', 'API response received', { tokens: 150 });
- * ```
- */
-export function secureLogDebug(
-  context: string,
-  message: string,
-  additionalInfo?: Record<string, unknown>
-): void {
-  const logEntry = {
-    context,
-    message: sanitizeString(message),
-    timestamp: timestamp(),
-    ...additionalInfo,
-  };
-  console.log(JSON.stringify(logEntry));
-}

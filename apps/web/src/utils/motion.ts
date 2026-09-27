@@ -53,57 +53,6 @@ export const staggerContainer: Variants = {
 };
 
 /**
- * Simple fade animation variant
- * Use for elements that should appear without motion
- */
-export const fadeIn: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: transitions.normal,
-  },
-};
-
-/**
- * Scale up animation variant
- * Use for elements that should grow into view
- */
-export const scaleIn: Variants = {
-  hidden: { opacity: 0, scale: MOTION_OFFSETS.SCALE_INITIAL },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: transitions.spring,
-  },
-};
-
-/**
- * Slide in from right animation variant
- * Use for panels or modals entering from the right
- */
-export const slideInRight: Variants = {
-  hidden: { opacity: 0, x: MOTION_OFFSETS.SLIDE_RIGHT_X_PX },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: transitions.normal,
-  },
-};
-
-/**
- * Slide in from left animation variant
- * Use for panels or modals entering from the left
- */
-export const slideInLeft: Variants = {
-  hidden: { opacity: 0, x: MOTION_OFFSETS.SLIDE_LEFT_X_PX },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: transitions.normal,
-  },
-};
-
-/**
  * Floating animation for decorative elements
  * Creates a gentle up/down bobbing motion
  */
@@ -156,27 +105,6 @@ export function pageTransition(direction: AnimationDirection = ANIMATION_DIRECTI
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: direction === ANIMATION_DIRECTIONS.FORWARD ? -OFFSET : OFFSET },
     transition: transitions.spring,
-  };
-}
-
-/**
- * Creates a staggered container with custom timing
- * @param staggerChildren - Delay between each child animation
- * @param delayChildren - Initial delay before children start animating
- */
-export function createStaggerContainer(
-  staggerChildren: number = ANIMATION.STAGGER,
-  delayChildren: number = ANIMATION.NORMAL
-): Variants {
-  return {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren,
-        delayChildren,
-      },
-    },
   };
 }
 

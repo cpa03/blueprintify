@@ -8,7 +8,7 @@
  */
 
 import { ERROR_CLASS_NAMES } from "@blueprint/shared";
-import { RETRY_CONFIG, ERROR_MESSAGES } from "../config/constants";
+import { ERROR_MESSAGES } from "../config/constants";
 
 /**
  * Configuration options for timeout behavior
@@ -99,75 +99,4 @@ export async function withTimeout<T>(
       }
     );
   });
-}
-
-/**
- * Creates a timeout wrapper with pre-configured options.
- * Useful for creating consistent timeout behavior across multiple operations.
- *
- * @typeParam T - The return type of the wrapped operation
- * @param defaultOptions - Default timeout options to use
- * @returns A function that wraps operations with the configured timeout
- *
- * @example
- * ```typescript
- * const withApiTimeout = createTimeoutWrapper({ timeoutMs: 5000 });
- *
- * // All operations will use 5s timeout with preserved type inference
- * const result = await withApiTimeout(() => fetchData()); // result is typed
- * ```
- */
-export function createTimeoutWrapper<T = unknown>(
-  defaultOptions: Omit<TimeoutOptions, "timeoutMs"> & { timeoutMs: number }
-): (operation: (signal?: AbortSignal) => Promise<T>) => Promise<T> {
-  return (operation) => withTimeout(operation, defaultOptions);
-}
-
-/**
- * Combines timeout with retry logic for resilient operations.
- * Each retry attempt is subject to the timeout.
- *
- * @param operation - Async function to execute
- * @param options - Combined timeout and retry options
- * @returns Promise resolving to the operation result
- */
-interface TimeoutRetryOptions extends TimeoutOptions {
-  /** Maximum number of retry attempts */
-  retries?: number;
-  /** Delay between retries in milliseconds */
-  retryDelayMs?: number;
-}
-
-export async function withTimeoutAndRetry<T>(
-  operation: (signal?: AbortSignal) => Promise<T>,
-  options: TimeoutRetryOptions
-): Promise<T> {
-  const {
-    timeoutMs,
-    errorMessage,
-    retries = 0,
-    retryDelayMs = RETRY_CONFIG.DEFAULT_INITIAL_DELAY,
-  } = options;
-
-  let lastError: unknown;
-
-  for (let attempt = 0; attempt <= retries; attempt++) {
-    try {
-      return await withTimeout(operation, { timeoutMs, errorMessage });
-    } catch (error) {
-      lastError = error;
-
-      // Don't retry on timeout errors if we have no retries left
-      if (attempt === retries) {
-        break;
-      }
-
-      // Wait before retrying
-      if (retryDelayMs > 0) {
-        await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
-      }
-    }
-  }
-
-  throw lastError;
 }

@@ -10,14 +10,9 @@ import {
   transitions,
   fadeInUp,
   staggerContainer,
-  fadeIn,
-  scaleIn,
-  slideInRight,
-  slideInLeft,
   floatingAnimation,
   pulseAnimation,
   pageTransition,
-  createStaggerContainer,
   createFadeInUp,
 } from "./motion";
 
@@ -62,66 +57,6 @@ describe("Motion Utilities", () => {
     it("should have hidden and visible states", () => {
       expect(staggerContainer.hidden).toBeDefined();
       expect(staggerContainer.visible).toBeDefined();
-    });
-  });
-
-  describe("fadeIn", () => {
-    it("should export fadeIn variant", () => {
-      expect(fadeIn).toBeDefined();
-      expect(typeof fadeIn).toBe("object");
-    });
-
-    it("should have hidden and visible states", () => {
-      expect(fadeIn.hidden).toBeDefined();
-      expect(fadeIn.visible).toBeDefined();
-    });
-  });
-
-  describe("scaleIn", () => {
-    it("should export scaleIn variant", () => {
-      expect(scaleIn).toBeDefined();
-      expect(typeof scaleIn).toBe("object");
-    });
-
-    it("should have hidden and visible states", () => {
-      expect(scaleIn.hidden).toBeDefined();
-      expect(scaleIn.visible).toBeDefined();
-    });
-
-    it("should use MOTION_OFFSETS.SCALE_INITIAL for hidden scale", () => {
-      expect(scaleIn.hidden).toEqual({ opacity: 0, scale: MOTION_OFFSETS.SCALE_INITIAL });
-    });
-  });
-
-  describe("slideInRight", () => {
-    it("should export slideInRight variant", () => {
-      expect(slideInRight).toBeDefined();
-      expect(typeof slideInRight).toBe("object");
-    });
-
-    it("should have hidden and visible states", () => {
-      expect(slideInRight.hidden).toBeDefined();
-      expect(slideInRight.visible).toBeDefined();
-    });
-
-    it("should use MOTION_OFFSETS.SLIDE_RIGHT_X_PX for hidden x-offset", () => {
-      expect(slideInRight.hidden).toEqual({ opacity: 0, x: MOTION_OFFSETS.SLIDE_RIGHT_X_PX });
-    });
-  });
-
-  describe("slideInLeft", () => {
-    it("should export slideInLeft variant", () => {
-      expect(slideInLeft).toBeDefined();
-      expect(typeof slideInLeft).toBe("object");
-    });
-
-    it("should have hidden and visible states", () => {
-      expect(slideInLeft.hidden).toBeDefined();
-      expect(slideInLeft.visible).toBeDefined();
-    });
-
-    it("should use MOTION_OFFSETS.SLIDE_LEFT_X_PX for hidden x-offset", () => {
-      expect(slideInLeft.hidden).toEqual({ opacity: 0, x: MOTION_OFFSETS.SLIDE_LEFT_X_PX });
     });
   });
 
@@ -194,26 +129,6 @@ describe("Motion Utilities", () => {
       expect(transition.initial).toEqual({ opacity: 0, y: MOTION_OFFSETS.PAGE_TRANSITION_Y_PX });
       expect(transition.animate).toEqual({ opacity: 1, y: 0 });
       expect(transition.exit).toEqual({ opacity: 0, y: -MOTION_OFFSETS.PAGE_TRANSITION_Y_PX });
-    });
-  });
-
-  describe("createStaggerContainer", () => {
-    it("should be a function", () => {
-      expect(createStaggerContainer).toBeDefined();
-      expect(typeof createStaggerContainer).toBe("function");
-    });
-
-    it("should create variants with default values", () => {
-      const variants = createStaggerContainer();
-      expect(variants).toBeDefined();
-      expect(variants.hidden).toBeDefined();
-      expect(variants.visible).toBeDefined();
-    });
-
-    it("should create variants with custom stagger values", () => {
-      const variants = createStaggerContainer(0.05, 0.1);
-      expect(variants).toBeDefined();
-      expect(variants.visible).toBeDefined();
     });
   });
 
