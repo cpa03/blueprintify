@@ -11661,3 +11661,17 @@ All PRs verified: build ✅ lint ✅ tests 1,940/1,940 ✅ (789 web + 443 API + 
 **Doc-sync — 1 CONFIRMED defect fixed**: **SECURITY.md audit-history missing Cycle 478–489 recurring-gate rows** (Cycles 478–489 records were findings-only per `git show --stat` — only `docs/findings.md` touched each cycle) → **backfilled** (precedent Cycles 448/449/451/454/458/466/469/474/477) + Cycle 490 row appended; **`docs/knowledge-review.md` Last Review stayed at Cycle 477** → backfilled Cycle 478–489 entries + refreshed to Cycle 490; **`docs/active-tasks.md` + `CHANGELOG.md` top entries stayed at Cycle 477** → Cycle 490 records appended (Cycles 478–489 findings-only, matching SECURITY backfill precedent). All other tracked records current (findings top = Cycle 489 ✅ — this entry appends 490; README L340 BroCula range `(Jul 15–Aug 15)` matches archives latest Run 67 Aug 15 — no bump; `sitemap.xml` `lastmod` already `2026-08-15` matches this cycle's commit date — no bump).
 
 **Baseline ALL GREEN 2,571/2,571 CONFIRMED LIVE THIS CYCLE** (web 1,184/83 + api 535/33 + shared 852/4; typecheck ✅ exit 0 · lint ✅ **0 errors, 0 warnings** ✅ · build ✅ (`PLUGIN_TIMINGS` informational) · build:api ✅ (wrangler `--dry-run` exit 0) · tests 2,571/2,571 ✅ · scan:secrets ✅ 322 files · audit **0 vulns** ✅ · prettier ✅). **Skills used**: none loaded this cycle — all operations are deterministic CLI probes + live gate runs per contract (label audit via `scripts/normalize-issue-labels.mjs --dry-run` — the deterministic label mapper; permission probes; P1 live re-verification — all known-file reads; scoring is evidence-based read-only analysis). **Subagents used**: none — deterministic CLI probes per contract; no parallel exploration needed (all targets are known-file live reads). **Final state: idle** — Phase 0 → ISSUE MANAGER MODE (0 PRs + 101 open issues); Steps 1–3 mutations blocked (`issues: write`, 69th block); Step 4 P1s code/docs-resolved (close blocked) or workflow-blocked (#1014 CI gate / #849/#953, 95th deferral — workflow-file push LIVE-verified rejected, zero residue); Phase 1 scoring → lowest domain D (Delivery 73.5), lowest criterion CI/CD Health (55) → workflow-blocked (95th); doc-sync 12-cycle backfill executed; no code-actionable work this cycle; baseline ALL GREEN.
+
+## Security Audit — PR model-fallback-hierarchy vs origin/main (2026-09-27)
+
+**Scope**: 90 changed files. Code/config: toast API refactor (options→duration), pro-tip
+removal, StepIndicator responsive-class removal, debounce retype, opencode.json model
+hierarchy, 2 new dev deps (@emnapi/core 1.11.3, @img/sharp-wasm32 0.35.4), new
+scripts/opencode-run.sh (multi-model fallback), 5 workflows migrated to it.
+**Scans**: diff secret grep CLEAN · `scan:secrets` ✅ 332 files · diff XSS/injection grep
+CLEAN · diff deprecated-API grep CLEAN · `npm audit` ✅ 0 vulns (incl. new deps) ·
+workflows preserve `--share false/disabled` + secrets usage · opencode-run.sh `bash -n` OK,
+0755, fully quoted, no eval/curl/secrets · toast refactor complete (0 old-API callers,
+44/44 vitest pass) · source typecheck 0 errors (test-file jest-dom matcher errors
+pre-existing on main).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code fixes required.

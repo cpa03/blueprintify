@@ -85,6 +85,13 @@
 - **Fix**: Updated runner to `ubuntu-24.04-arm`, actions/checkout and actions/setup-node to `@v4`
 - **Lesson**: CI workflows should be audited regularly for version consistency and security compliance per AGENTS.md standards
 
+### 2026-09-27 04:00 UTC: Security Engineer Audit — Model Fallback Hierarchy PR
+
+- **Finding**: PR (90 files: toast options→duration refactor, pro-tip removal, debounce retype, opencode.json model hierarchy, 2 new dev deps, new scripts/opencode-run.sh, 5 workflows migrated to wrapper). No introduced vulnerabilities, secrets, or deprecated functions.
+- **Code Scanned**: All code/config diffs; secret/XSS/deprecated greps on added lines clean; `scan:secrets` ✅ 332 files; `npm audit` ✅ 0 vulns (incl. @emnapi/core 1.11.3, @img/sharp-wasm32 0.35.4); opencode-run.sh bash -n OK, 0755, fully quoted, no eval/curl/secrets; toast refactor complete (44/44 vitest pass); source typecheck 0 errors.
+- **Verification**: No code fixes required; audit recorded in `docs/findings.md`.
+- **Lesson**: Shell fallback wrappers that interpolate a user-passed `--model` must quote the expansion and strip the original flag first, otherwise argument injection reorders the fallback chain. Verified pattern: strip `--model`/`-m` during arg parse, then append `--model "$model"` quoted per attempt.
+
 ### 2026-05-25 21:00 UTC: Security Engineer Audit - Lighthouse Dependency Upgrade
 
 - **Finding**: PR upgraded `lighthouse` from `^12.8.2` to `^13.3.0` (dev dependency). No introduced vulnerabilities, secrets, or deprecated functions.
