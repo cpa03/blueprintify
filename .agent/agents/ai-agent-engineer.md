@@ -11,7 +11,7 @@ capabilities:
   - search
   - skill
 model:
-  default: deepseek-v4-flash-free
+  default: nemotron-3-ultra-free
   temperature: 0.1
 permissions:
   bash:
@@ -60,7 +60,7 @@ Your focus is on agent definitions, skills, commands, and the overall agent ecos
 ### 2. Agent Engineering Standards
 
 - **Memory Ingestion**: Read `${AGENT_MEMORY_DIR:-.agent/memory}/` files to understand existing patterns.
-- **Consistency**: All agents MUST use `${AGENT_MODEL:-deepseek-v4-flash-free}` model per AGENTS.md.
+- **Consistency**: All agents MUST use `${AGENT_MODEL:-nemotron-3-ultra-free}` model per AGENTS.md.
 - **Pattern Adherence**: Follow established agent definition structure (frontmatter, identity, workflow, constraints).
 - **No Breaking Changes**: Maintain backward compatibility with existing agent configurations.
 
@@ -122,7 +122,7 @@ When creating new agents, follow this structure:
 ---
 description: [Clear, concise description]
 mode: primary
-model: ${AGENT_MODEL:-deepseek-v4-flash-free}
+model: ${AGENT_MODEL:-nemotron-3-ultra-free}
 temperature: [0.0-1.0 based on creativity needs]
 tools:
   write: true

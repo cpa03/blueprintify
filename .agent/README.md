@@ -47,7 +47,7 @@ Koleksi definisi agent, skills, workflows/commands, dan memory yang dirancang **
 
 | Aspek               | Format Sebelumnya (Terkunci ke OpenCode)                        | Format Universal / Portable Baru (.agent)                                     |
 | ------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| **Model Mandate**   | `model: opencode/deepseek-v4-flash-free` di-hardcode            | `${AGENT_MODEL:-deepseek-v4-flash-free}` atau configurable via frontmatter    |
+| **Model Mandate**   | `model: opencode/nemotron-3-ultra-free` di-hardcode             | `${AGENT_MODEL:-nemotron-3-ultra-free}` atau configurable via frontmatter     |
 | **Path Dependensi** | Hardcoded path `.opencode/memory/`, `.opencode/agent/`          | Dynamic variables `${AGENT_MEMORY_DIR:-.agent/memory}/`, `${AGENT_DIR}`       |
 | **Tool Names**      | OpenCode internal tools: `find_by_name`, `grep_search`, `skill` | Abstract capabilities: `search`, `read`, `write`, `edit`, `bash`, `skill`     |
 | **Command Syntax**  | `!npm run test $ARGUMENTS`, `@blueprint.md`                     | Standard markdown, shell blocks, parameter `<args>`, referensi berkas standar |
