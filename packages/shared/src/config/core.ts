@@ -117,6 +117,9 @@ export const CRYPTO_CONFIG = {
     /** Sign-only key usage for HMAC token signing */
     SIGN: "sign",
   } as const,
+  /** Pad character for zero-padded hex byte output.
+   * Flexy says: No hardcoded "0" pad chars in hex encoding! */
+  HEX_PAD_CHAR: "0" as const,
 } as const;
 
 /**

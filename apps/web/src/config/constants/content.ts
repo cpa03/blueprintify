@@ -710,6 +710,8 @@ export const PREVIEW_EMPTY_LABELS = {
  * Flexy says: No hardcoded empty state strings in components!
  */
 export const EDITOR_EMPTY_STATE_LABELS = {
+  /** Accessible name for the empty-state status region */
+  ARIA_LABEL: "Editor empty state",
   /** Primary heading encouraging users to generate their blueprint */
   TITLE: "Your blueprint is waiting to be created",
   /** Subtitle telling users to complete the wizard */

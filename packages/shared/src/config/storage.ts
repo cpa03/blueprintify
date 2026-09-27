@@ -59,6 +59,36 @@ export const SHARE_TOKEN_CONFIG = {
 } as const;
 
 /**
+ * Share Token Codec Constants
+ * Centralized delimiters and radix for passphrase-protected share verify tokens.
+ * Flexy says: No hardcoded ".", ":", parseInt radix or base64url literals in routes!
+ * Usage: import { SHARE_TOKEN_CODEC } from "@blueprint/shared";
+ *        token.split(SHARE_TOKEN_CODEC.PAYLOAD_SEPARATOR)
+ */
+export const SHARE_TOKEN_CODEC = {
+  /** Separator between base64url payload and hex signature */
+  PAYLOAD_SEPARATOR: "." as const,
+  /** Separator between shareId and expiry inside the payload */
+  FIELD_SEPARATOR: ":" as const,
+  /** Radix for parsing the expiry timestamp */
+  EXPIRY_RADIX: 10,
+  /** Fallback string when a token part is missing */
+  MISSING_PART_FALLBACK: "" as const,
+  /** Fallback expiry string when payload part is missing */
+  MISSING_EXPIRY_FALLBACK: "0" as const,
+  /** Regex stripping base64 padding */
+  BASE64_PADDING_PATTERN: /=+$/,
+  /** Standard base64 char replaced during url-safe encoding */
+  BASE64_PLUS: "+" as const,
+  /** URL-safe replacement for "+" */
+  BASE64URL_DASH: "-" as const,
+  /** Standard base64 char replaced during url-safe encoding */
+  BASE64_SLASH: "/" as const,
+  /** URL-safe replacement for "/" */
+  BASE64URL_UNDERSCORE: "_" as const,
+} as const;
+
+/**
  * Storage Operation Type Constants
  * Centralized source of truth for storage adapter operation type strings.
  * Flexy says: No hardcoded "read"/"write"/"delete" strings in storage code!
