@@ -197,6 +197,8 @@ export const ENV_VAR_KEYS = {
   WEB: {
     /** API base URL for web client */
     VITE_API_BASE_URL: "VITE_API_BASE_URL",
+    /** Public API key sent as x-api-key header by the web client */
+    VITE_API_KEY: "VITE_API_KEY",
     /** Enable analytics tracking */
     VITE_ENABLE_ANALYTICS: "VITE_ENABLE_ANALYTICS",
     /** Project homepage URL */
@@ -548,6 +550,31 @@ export const OPENAI_ROLES = {
   ASSISTANT: "assistant" as const,
   /** Tool/function message role — tool call results */
   TOOL: "tool" as const,
+} as const;
+
+/**
+ * Web Client Key Defaults
+ * Centralized default for the public web API key.
+ * Flexy says: No hardcoded "blueprintify-public-access-2026" in env.ts!
+ */
+export const WEB_KEY_DEFAULTS = {
+  /** Default public access key used when VITE_API_KEY is unset */
+  PUBLIC_ACCESS_KEY: "blueprintify-public-access-2026",
+} as const;
+
+/**
+ * API Fallback Error Messages
+ * Centralized user-facing messages for non-JSON HTTP error responses
+ * (e.g. 405 from a stale proxy, 5xx from an unavailable backend).
+ * Flexy says: No hardcoded "API endpoint unavailable" strings in api.ts!
+ */
+export const API_FALLBACK_MESSAGES = {
+  /** Shown when the backend rejects the method (405 with empty body) */
+  ENDPOINT_UNAVAILABLE:
+    "API endpoint unavailable (405 Method Not Allowed). Please ensure backend is reachable.",
+  /** Template shown for 5xx responses with empty body */
+  SERVER_ERROR: (status: number): string =>
+    `Server error (${status}). Service temporarily unavailable.`,
 } as const;
 
 /**
