@@ -2,14 +2,14 @@
  * Shared debounce utilities
  */
 
-export function createDebouncedSaver<T extends (...args: unknown[]) => void>(
-  fn: T,
+export function createDebouncedSaver<TArgs extends unknown[], TReturn>(
+  fn: (...args: TArgs) => TReturn,
   delay: number
-): { debounced: T; flush: () => void; cancel: () => void } {
+): { debounced: (...args: TArgs) => TReturn; flush: () => void; cancel: () => void } {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
-  let lastArgs: unknown[] | null = null;
+  let lastArgs: TArgs | null = null;
 
-  const debounced = ((...args: unknown[]) => {
+  const debounced = ((...args: TArgs) => {
     lastArgs = args;
     if (timeoutId) {
       clearTimeout(timeoutId);
@@ -18,9 +18,11 @@ export function createDebouncedSaver<T extends (...args: unknown[]) => void>(
       timeoutId = null;
       const argsToCall = lastArgs;
       lastArgs = null;
-      fn(...(argsToCall ?? []));
+      if (argsToCall) {
+        fn(...argsToCall);
+      }
     }, delay);
-  }) as T;
+  }) as (...args: TArgs) => TReturn;
 
   const flush = (): void => {
     if (timeoutId) {
