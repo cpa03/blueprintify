@@ -249,17 +249,11 @@
       "
     />
 
-    <!-- JetBrains Mono (code font) - async non-blocking load, not needed for initial render -->
-    <link
-      id="font-mono"
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=optional"
-      media="print"
-      onload="
-        this.media = 'all';
-        this.onload = null;
-      "
-    />
+    <!-- JetBrains Mono (code font) - deferred via JS (see main.tsx loadMonoFont).
+         Only needed for Editor/code surfaces which are lazy-loaded, so keep it
+         out of the initial waterfall to save ~32 KiB (CSS + woff2) on first paint.
+         font-mono falls back to system monospace until the webfont arrives.
+         display=optional ensures no layout shift if the font loads late. -->
     <noscript>
       <link
         rel="stylesheet"
