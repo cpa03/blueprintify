@@ -40,6 +40,16 @@ export const SHARE_QUERY_PARAMS = {
 } as const;
 
 /**
+ * Share route path parameters.
+ * Flexy says: no hardcoded `c.req.param("id")` strings!
+ * Single source of truth for the `:id` segment used by
+ * GET /share/:id, POST /share/:id/verify and DELETE /share/:id.
+ */
+export const SHARE_ROUTE_PARAMS = {
+  ID: "id",
+} as const;
+
+/**
  * Share route error messages.
  * Flexy says: References shared SHARE_MESSAGES — single source of truth!
  */

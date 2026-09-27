@@ -1,8 +1,14 @@
 import type { AIConfig } from "../services/openai";
 import { getContainer } from "../di/container";
 import { ConfigurationError } from "../errors";
-import type { ValidatedContext, ControllerContext, AppContext } from "../types";
-import type { z } from "zod";
+import type {
+  ControllerContext,
+  AppContext,
+  BlueprintContext,
+  RefineContext,
+  TasksContext,
+} from "../types";
+import type { BlueprintRequest, RefineRequest, TaskGenerationRequest } from "@blueprint/shared";
 import { CONTEXT_KEYS } from "@blueprint/shared";
 import { CONFIG_MESSAGES, ERROR_MESSAGES, AI_CONFIG } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
@@ -49,12 +55,20 @@ export abstract class BaseController {
 
   /**
    * Retrieves validated request data from the context.
+   * Overloads derive the return type from the concrete context so call sites
+   * stay typed without passing schemas around. The implementation only uses
+   * `c.get()` (covariant) to avoid Hono Context invariance issues that broke
+   * under Zod v4 generic inference.
    * @param c - Validated context containing parsed request data
    * @returns The validated and typed request data
    * @throws {Error} When validated data is not found in context
    */
-  public getValidatedData<T extends z.ZodSchema>(c: ValidatedContext<T>): z.infer<T> {
-    const data = c.get(CONTEXT_KEYS.VALIDATED_DATA);
+  public getValidatedData(c: BlueprintContext): BlueprintRequest;
+  public getValidatedData(c: RefineContext): RefineRequest;
+  public getValidatedData(c: TasksContext): TaskGenerationRequest;
+  public getValidatedData(c: ControllerContext | AppContext): unknown;
+  public getValidatedData(c: ControllerContext | AppContext): unknown {
+    const data: unknown = (c as AppContext).get(CONTEXT_KEYS.VALIDATED_DATA);
     if (!data) {
       throw new Error(CONFIG_MESSAGES.VALIDATED_DATA_NOT_FOUND);
     }

@@ -39,6 +39,7 @@ import {
   INJECTION_FIELD_DEFINITIONS,
   SQL_QUERIES,
   LOG_CONTEXT,
+  SHARE_ROUTE_PARAMS,
 } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
 import { sanitizeHtml } from "../utils/sanitize";
@@ -317,14 +318,14 @@ const shareEnumerationRateLimit = rateLimit({
       c.req.header(API_HEADERS.CF_PROPERTIES.CONNECTING_IP) ||
       c.req.header(API_HEADERS.REQUEST.FORWARDED_FOR) ||
       RATE_LIMIT_CONSTANTS.ANONYMOUS_CLIENT_KEY;
-    const shareId = c.req.param("id") || UNKNOWN_SHARE_ID;
+    const shareId = c.req.param(SHARE_ROUTE_PARAMS.ID) || UNKNOWN_SHARE_ID;
     return `${RATE_LIMIT_KEY_PREFIXES.SHARE}${shareId}:${ip}`;
   },
 });
 
 app.get(ROUTE_SUB_PATHS.ID_PARAM, shareEnumerationRateLimit, async (c) => {
   try {
-    const shareId = c.req.param("id") || "";
+    const shareId = c.req.param(SHARE_ROUTE_PARAMS.ID) || "";
 
     if (!isValidShareId(shareId)) {
       return c.json(
@@ -457,7 +458,7 @@ const shareVerifyRateLimit = rateLimit({
       c.req.header(API_HEADERS.CF_PROPERTIES.CONNECTING_IP) ||
       c.req.header(API_HEADERS.REQUEST.FORWARDED_FOR) ||
       RATE_LIMIT_CONSTANTS.ANONYMOUS_CLIENT_KEY;
-    const shareId = c.req.param("id") || UNKNOWN_SHARE_ID;
+    const shareId = c.req.param(SHARE_ROUTE_PARAMS.ID) || UNKNOWN_SHARE_ID;
     return `${RATE_LIMIT_KEY_PREFIXES.VERIFY}${shareId}:${ip}`;
   },
 });
@@ -475,7 +476,7 @@ app.post(
   shareVerifyRateLimit,
   async (c) => {
     try {
-      const shareId = c.req.param("id") || "";
+      const shareId = c.req.param(SHARE_ROUTE_PARAMS.ID) || "";
 
       if (!isValidShareId(shareId)) {
         return c.json(
@@ -609,7 +610,7 @@ app.delete(
   authorize(AUTH_DEFAULTS.DEFAULT_ROLE),
   async (c) => {
     try {
-      const shareId = c.req.param("id") || "";
+      const shareId = c.req.param(SHARE_ROUTE_PARAMS.ID) || "";
 
       if (!isValidShareId(shareId)) {
         return c.json(

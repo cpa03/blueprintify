@@ -4,6 +4,33 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 186: Centralize Share Route Param Key + Fix Zod v4 / jest-dom v7 Type Breakage
+
+**Problem**: `apps/api/src/routes/share.ts` contained 5× hardcoded `c.req.param("id")` route-param keys, bypassing config — the same class of literal Iteration 185 eliminated for the `"token"` query param. Separately, `main` had fatal type breakage: Zod 3→4 upgrade broke `BaseController.getValidatedData<T extends z.ZodSchema>` generic inference (Hono Context invariance → `ValidatedContext` mismatch on all 3 controllers), and `@testing-library/jest-dom` v7 no longer augments vitest matchers via the bare import (hundreds of TS2339 `toBeInTheDocument`/`toHaveAttribute` errors). Flexy says: no hardcoded param keys, and no broken gates!
+
+| File | Change |
+|------|--------|
+| `apps/api/src/config/constants/share.ts` | Added `SHARE_ROUTE_PARAMS.ID` (`"id"`) — single source of truth for the `:id` segment |
+| `apps/api/src/config/constants.ts` | Re-exported `SHARE_ROUTE_PARAMS` on the hub |
+| `apps/api/src/routes/share.ts` | Replaced 5× `c.req.param("id")` with `c.req.param(SHARE_ROUTE_PARAMS.ID)` (value-preserving) |
+| `apps/api/src/config/constants/config-iteration-186.test.ts` | NEW — asserts `SHARE_ROUTE_PARAMS.ID` value |
+| `apps/api/src/controllers/base.controller.ts` | Replaced invariant `getValidatedData<T extends z.ZodSchema>(c: ValidatedContext<T>)` with overloads returning shared `BlueprintRequest`/`RefineRequest`/`TaskGenerationRequest`; impl only uses covariant `c.get()` — Zod v4 compatible, call sites unchanged |
+| `apps/web/src/test/setup.ts` | `import "@testing-library/jest-dom"` → `import "@testing-library/jest-dom/vitest"` (v7 vitest matcher types) |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (shared / api / web; was fatally broken on main)
+- ✅ `npm run lint` — zero errors, zero warnings
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ shared tests — 859 passing; web sample (`CharacterCounter`) — 18 passing
+- ⚠️ api `vitest` runner fails to start `workerd` pool on this ARM runner (pre-existing infra issue — fails identically on untouched `config-iteration-185.test.ts`)
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-186-typefix-modular` | fix(flexy): centralize share route param key + fix Zod v4 / jest-dom v7 type breakage (Iteration 186) |
+
 ### ✅ Flexy Iteration 185: Centralize CSS Class Combinations, Log Contexts & API Micro-Literals
 
 **Problem**: Remaining hardcoded values were scattered across two fronts. Web: 6× scroll-shadow overlay class strings (Editor/Wizard), 11× icon hover-rotation class strings (4 wizard steps), 7× empty-state keycap class strings, and the "Skip to main content" label — all bypassing `CSS_CLASSES`. API: 6× secure-log context/message strings bypassing `LOG_CONTEXT`, the share verify `"token"` query param bypassing the `STORAGE_QUERY_PARAMS` pattern, an inline Content-Type mismatch message, the Server-Timing `"app"`/`0` literals, a `Date.now()` bypassing the `timestamp()` helper, and a raw `"ms"` suffix. Flexy says: no hardcoded class strings, log contexts, or micro-literals!
