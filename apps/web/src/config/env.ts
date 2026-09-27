@@ -26,7 +26,7 @@ export const ENV = {
   },
 
   get API_KEY(): string {
-    return getEnvVar("VITE_API_KEY", "blueprintify-public-access-2026");
+    return getEnvVar("VITE_API_KEY");
   },
 
   // Feature Flags
