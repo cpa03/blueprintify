@@ -18,8 +18,8 @@ import {
   AUTH_DEFAULTS,
   EXPORT_ERROR_STRINGS,
   SHARE_TOKEN_CONFIG,
+  SHARE_TOKEN_CODEC,
   RATE_LIMIT_KEY_PREFIXES,
-  TIME_UNITS,
   CRYPTO_CONFIG,
   CreateShareSchema,
   VerifySharePassphraseSchema,
@@ -42,7 +42,7 @@ import {
 } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
 import { sanitizeHtml } from "../utils/sanitize";
-import { ErrorType, createErrorJson, timestamp } from "../errors";
+import { ErrorType, createErrorJson, timestamp, nowSeconds } from "../errors";
 
 const LOG_CREATE_ERROR = LOG_CONTEXT.SHARE_CREATE;
 const LOG_VERIFY_ERROR = LOG_CONTEXT.SHARE_VERIFY;
@@ -167,9 +167,8 @@ async function generateVerifyToken(
 ): Promise<string | undefined> {
   if (!apiKey) return undefined;
   const encoder = new TextEncoder();
-  const expiresAt =
-    Math.floor(Date.now() / TIME_UNITS.MS_PER_SECOND) + SHARE_TOKEN_CONFIG.TOKEN_EXPIRY_SECONDS;
-  const payload = `${shareId}:${expiresAt}`;
+  const expiresAt = nowSeconds() + SHARE_TOKEN_CONFIG.TOKEN_EXPIRY_SECONDS;
+  const payload = `${shareId}${SHARE_TOKEN_CODEC.FIELD_SEPARATOR}${expiresAt}`;
   const key = await crypto.subtle.importKey(
     CRYPTO_CONFIG.KEY_FORMAT,
     encoder.encode(apiKey),
@@ -183,10 +182,20 @@ async function generateVerifyToken(
     encoder.encode(payload)
   );
   const signatureHex = Array.from(new Uint8Array(signature))
-    .map((b) => b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0"))
+    .map((b) =>
+      b
+        .toString(CRYPTO_CONFIG.HEX_RADIX)
+        .padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, CRYPTO_CONFIG.HEX_PAD_CHAR)
+    )
     .join("");
-  const payloadB64 = btoa(payload).replace(/=+$/, "").replace(/\+/g, "-").replace(/\//g, "_");
-  return `${payloadB64}.${signatureHex.slice(0, SHARE_TOKEN_CONFIG.SIGNATURE_HEX_LENGTH)}`;
+  const payloadB64 = btoa(payload)
+    .replace(
+      SHARE_TOKEN_CODEC.BASE64_PADDING_PATTERN,
+      SHARE_TOKEN_CONFIG.BASE64_PADDING_REPLACEMENT
+    )
+    .replace(/\+/g, SHARE_TOKEN_CODEC.BASE64URL_DASH)
+    .replace(/\//g, SHARE_TOKEN_CODEC.BASE64URL_UNDERSCORE);
+  return `${payloadB64}${SHARE_TOKEN_CODEC.PAYLOAD_SEPARATOR}${signatureHex.slice(0, SHARE_TOKEN_CONFIG.SIGNATURE_HEX_LENGTH)}`;
 }
 
 /**
@@ -200,15 +209,21 @@ async function isValidVerifyToken(
 ): Promise<boolean> {
   if (!apiKey) return false;
   try {
-    const parts = token.split(".");
+    const parts = token.split(SHARE_TOKEN_CODEC.PAYLOAD_SEPARATOR);
     if (parts.length !== 2) return false;
-    const payload = atob((parts[0] || "").replace(/-/g, "+").replace(/_/g, "/"));
-    const payloadParts = payload.split(":");
+    const payload = atob(
+      (parts[0] || SHARE_TOKEN_CODEC.MISSING_PART_FALLBACK)
+        .replace(/-/g, SHARE_TOKEN_CODEC.BASE64_PLUS)
+        .replace(/_/g, SHARE_TOKEN_CODEC.BASE64_SLASH)
+    );
+    const payloadParts = payload.split(SHARE_TOKEN_CODEC.FIELD_SEPARATOR);
     if (payloadParts.length !== 2) return false;
     if (payloadParts[0] !== shareId) return false;
-    const expiresAt = parseInt(payloadParts[1] || "0", 10);
-    if (isNaN(expiresAt) || expiresAt < Math.floor(Date.now() / TIME_UNITS.MS_PER_SECOND))
-      return false;
+    const expiresAt = parseInt(
+      payloadParts[1] || SHARE_TOKEN_CODEC.MISSING_EXPIRY_FALLBACK,
+      SHARE_TOKEN_CODEC.EXPIRY_RADIX
+    );
+    if (isNaN(expiresAt) || expiresAt < nowSeconds()) return false;
     const encoder = new TextEncoder();
     const key = await crypto.subtle.importKey(
       CRYPTO_CONFIG.KEY_FORMAT,
@@ -224,7 +239,9 @@ async function isValidVerifyToken(
     );
     const expectedSig = Array.from(new Uint8Array(signature))
       .map((b) =>
-        b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0")
+        b
+          .toString(CRYPTO_CONFIG.HEX_RADIX)
+          .padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, CRYPTO_CONFIG.HEX_PAD_CHAR)
       )
       .join("")
       .slice(0, SHARE_TOKEN_CONFIG.SIGNATURE_HEX_LENGTH);
@@ -553,7 +570,9 @@ app.post(
       );
       const hashHex = Array.from(new Uint8Array(hashBuffer))
         .map((b) =>
-          b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0")
+          b
+            .toString(CRYPTO_CONFIG.HEX_RADIX)
+            .padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, CRYPTO_CONFIG.HEX_PAD_CHAR)
         )
         .join("");
 

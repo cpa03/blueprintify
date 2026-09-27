@@ -142,6 +142,7 @@ import {
   CHAR_COUNTER_THRESHOLDS,
   CHAR_COUNTER_COLORS,
   SHARE_TOKEN_CONFIG,
+  SHARE_TOKEN_CODEC,
   RATE_LIMIT_KEY_PREFIXES,
   TEMPLATE_CSS_COLORS,
   TEMPLATE_CSS_VALUES,
@@ -4341,6 +4342,43 @@ describe("SHARE_TOKEN_CONFIG", () => {
   it("should have TOKEN_EXPIRY_SECONDS as a positive number", () => {
     expect(typeof SHARE_TOKEN_CONFIG.TOKEN_EXPIRY_SECONDS).toBe("number");
     expect(SHARE_TOKEN_CONFIG.TOKEN_EXPIRY_SECONDS).toBeGreaterThan(0);
+  });
+});
+
+// SHARE_TOKEN_CODEC
+describe("SHARE_TOKEN_CODEC", () => {
+  it("should have PAYLOAD_SEPARATOR = '.'", () => {
+    expect(SHARE_TOKEN_CODEC.PAYLOAD_SEPARATOR).toBe(".");
+  });
+
+  it("should have FIELD_SEPARATOR = ':'", () => {
+    expect(SHARE_TOKEN_CODEC.FIELD_SEPARATOR).toBe(":");
+  });
+
+  it("should have EXPIRY_RADIX = 10", () => {
+    expect(SHARE_TOKEN_CODEC.EXPIRY_RADIX).toBe(10);
+  });
+
+  it("should have MISSING_PART_FALLBACK = ''", () => {
+    expect(SHARE_TOKEN_CODEC.MISSING_PART_FALLBACK).toBe("");
+  });
+
+  it("should have MISSING_EXPIRY_FALLBACK = '0'", () => {
+    expect(SHARE_TOKEN_CODEC.MISSING_EXPIRY_FALLBACK).toBe("0");
+  });
+
+  it("should have base64url char mapping", () => {
+    expect(SHARE_TOKEN_CODEC.BASE64_PLUS).toBe("+");
+    expect(SHARE_TOKEN_CODEC.BASE64URL_DASH).toBe("-");
+    expect(SHARE_TOKEN_CODEC.BASE64_SLASH).toBe("/");
+    expect(SHARE_TOKEN_CODEC.BASE64URL_UNDERSCORE).toBe("_");
+  });
+});
+
+// CRYPTO_CONFIG HEX_PAD_CHAR
+describe("CRYPTO_CONFIG HEX_PAD_CHAR", () => {
+  it("should have HEX_PAD_CHAR = '0'", () => {
+    expect(CRYPTO_CONFIG.HEX_PAD_CHAR).toBe("0");
   });
 });
 
