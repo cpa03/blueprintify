@@ -289,12 +289,23 @@ const ScrollToPosition = memo(function ScrollToPosition({
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 initial={false}
-                animate={isToTop ? { y: [2, -2, 2] } : { y: [-2, 2, -2] }}
-                transition={{
-                  duration: ANIMATION.FLOAT,
-                  repeat: Infinity,
-                  ease: EASING.easeInOut,
-                }}
+                // Respect prefers-reduced-motion (WCAG 2.3.3): the gentle
+                // floating arrow loop is purely decorative, so it stays
+                // static for vestibular-sensitive users while remaining
+                // fully functional. Other pulses in this file already guard
+                // on shouldReduceMotion — this was the one missed loop.
+                animate={
+                  shouldReduceMotion ? { y: 0 } : isToTop ? { y: [2, -2, 2] } : { y: [-2, 2, -2] }
+                }
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0 }
+                    : {
+                        duration: ANIMATION.FLOAT,
+                        repeat: Infinity,
+                        ease: EASING.easeInOut,
+                      }
+                }
               >
                 {isToTop ? (
                   <path
