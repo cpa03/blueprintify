@@ -88,7 +88,7 @@ npm run deploy --workspace=apps/api -- --env production
 ## Project Standards (from AGENTS.md)
 
 - **CI Runner**: MUST use `ubuntu-24.04-arm`
-- **Model**: MUST use `${AGENT_MODEL:-nemotron-3-ultra-free}`
+- **Model**: MUST use `${AGENT_MODEL:-muse-spark-1.3-contributor-free (fallback: mimo-v2.6-flash-free, nemotron-3-ultra-free)}`
 - **Secrets**: NEVER expose in logs or commits
 
 ## CI/CD Best Practices

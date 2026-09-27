@@ -9,7 +9,7 @@
 **Root Cause**: Using unsupported provider/model combination
 **Solution**: Use only approved model:
 
-- `opencode/nemotron-3-ultra-free` (exclusive per AGENTS.md mandate)
+- `opencode/muse-spark-1.3-contributor-free (fallback: mimo-v2.6-flash-free, nemotron-3-ultra-free)` (exclusive per AGENTS.md mandate)
   **Prevention**: Validate model names in all agent configs
 
 ### Issue: Context Hooks Error (big-pickle)
@@ -27,7 +27,7 @@
 **Pattern**: Model configuration errors
 **Solution**:
 
-1. Standardize on `opencode/nemotron-3-ultra-free` exclusively
+1. Standardize on `opencode/muse-spark-1.3-contributor-free (fallback: mimo-v2.6-flash-free, nemotron-3-ultra-free)` exclusively
 2. Validate configuration before runs
    **Status**: Fixed via agent configuration updates
 
@@ -38,7 +38,7 @@
 **When to use**: All agent configurations
 **Implementation**:
 
-- **Mandatory**: Use `opencode/nemotron-3-ultra-free` exclusively per AGENTS.md mandate
+- **Mandatory**: Use `opencode/muse-spark-1.3-contributor-free (fallback: mimo-v2.6-flash-free, nemotron-3-ultra-free)` exclusively per AGENTS.md mandate
 - **NO fallback models** - AGENTS.md mandates exclusive use of single model
 - Validate all agent configurations use the correct model
   **Result**: Consistent behavior, reduced CI failures, compliance with project standards
@@ -73,8 +73,8 @@
 
 ### Agent Models
 
-- Always use `opencode/nemotron-3-ultra-free` exclusively per AGENTS.md mandate
-- **NO fallback models allowed** - AGENTS.md mandates exclusive use of `opencode/nemotron-3-ultra-free`
+- Always use `opencode/muse-spark-1.3-contributor-free (fallback: mimo-v2.6-flash-free, nemotron-3-ultra-free)` exclusively per AGENTS.md mandate
+- **NO fallback models allowed** - AGENTS.md mandates exclusive use of `opencode/muse-spark-1.3-contributor-free (fallback: mimo-v2.6-flash-free, nemotron-3-ultra-free)`
 - Test in CI before production deployment
 
 ### Skill Installation
