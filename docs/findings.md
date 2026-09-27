@@ -11777,3 +11777,20 @@ after an iteration — recommend rename to `constants-regression.test.ts`;
 `apps/web/functions/api/[[path]].ts` hardcodes `https://blueprintify.cpa03-cmz.workers.dev`
 — recommend env-var-izing; `janitor-scan.mjs` misses import aliases, property access,
 and root-config consumers — its output must stay manually verified.
+
+---
+## [Janitor] Pre-merge dead-code sweep — 2026-09-27 (`agent/janitor`)
+
+**Cleanup (0 tracked source changes)**: full sweep — 0 commented-out dead code
+(only `// ====` section dividers, intentional `eslint-disable`, doc examples),
+0 `TODO/FIXME/HACK` / `@ts-ignore` / `@ts-expect-error` / `as any` / empty-catch /
+merge markers in `apps/*` + `packages/*`, 0 tracked `*.log|*.bak|*.orig|*.tmp|*.patch`,
+0 zero-size tracked files, 0 duplicate `formatDate`, no duplicate `utils` folders
+(`api/utils`, `web/lib`+`utils`, `shared/utils` is domain separation).
+All `console.log` hits verified intentional (request logger, `secureLog`, e2e specs,
+generated template strings, JSDoc examples).
+**Deliberately KEPT (verified live)**: `m2-workflows.test.ts` (self-contained spec),
+`debounce.test.ts` (covers shared `createDebouncedSaver`), `jest-axe` (depcheck false
+positive — imported by `Header.test.tsx` + `accessibility.test.tsx`).
+**Workspace-only**: deleted untracked root `build.log` / `lint.log` / `typecheck.log`
+(CI artifacts, never tracked). No source diff — build safety trivially preserved.
