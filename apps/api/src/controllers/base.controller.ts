@@ -1,8 +1,7 @@
 import type { AIConfig } from "../services/openai";
 import { getContainer } from "../di/container";
 import { ConfigurationError } from "../errors";
-import type { ValidatedContext, ControllerContext, AppContext } from "../types";
-import type { z } from "zod";
+import type { ControllerContext, AppContext } from "../types";
 import { CONTEXT_KEYS } from "@blueprint/shared";
 import { CONFIG_MESSAGES, ERROR_MESSAGES, AI_CONFIG } from "../config/constants";
 import { secureLogError } from "../utils/secureLog";
@@ -49,12 +48,16 @@ export abstract class BaseController {
 
   /**
    * Retrieves validated request data from the context.
+   * Accepts unknown to avoid Hono Context invariance with Zod v4 schemas
+   * (ValidatedContext<Specific> is not assignable to ValidatedContext<Generic>
+   * due to Context.set invariance). Callers provide explicit output type.
    * @param c - Validated context containing parsed request data
    * @returns The validated and typed request data
    * @throws {Error} When validated data is not found in context
    */
-  public getValidatedData<T extends z.ZodSchema>(c: ValidatedContext<T>): z.infer<T> {
-    const data = c.get(CONTEXT_KEYS.VALIDATED_DATA);
+  public getValidatedData<T>(c: unknown): T {
+    const ctx = c as { get: (key: string) => T | undefined };
+    const data = ctx.get(CONTEXT_KEYS.VALIDATED_DATA);
     if (!data) {
       throw new Error(CONFIG_MESSAGES.VALIDATED_DATA_NOT_FOUND);
     }
