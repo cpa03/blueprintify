@@ -149,7 +149,7 @@ function StepIndicatorComponent(): JSX.Element {
   }, [setStep, canNavigateTo]);
 
   return (
-    <div className="flex items-center justify-center gap-3 mb-8">
+    <div className="flex items-center justify-center gap-3 mb-8 max-w-full overflow-x-auto scrollbar-none py-1">
       <SmartTooltip
         content={ACCESSIBILITY_LABELS.PROGRESS.STEPS_COMPLETE(
           progressPercentage,
@@ -157,7 +157,7 @@ function StepIndicatorComponent(): JSX.Element {
         )}
         position="left"
       >
-        <div className="relative group animate-fade-in">
+        <div className="relative group animate-fade-in shrink-0">
           <CircularProgress
             value={progressPercentage}
             size={36}
@@ -202,7 +202,7 @@ function StepIndicatorComponent(): JSX.Element {
         const isShaking = shakingStep === step.key;
 
         return (
-          <div key={step.key} className="flex items-center">
+          <div key={step.key} className="flex items-center shrink-0">
             <button
               onClick={() => handleStepClick(step.key, step.label)}
               data-step-index={index}
@@ -224,8 +224,8 @@ function StepIndicatorComponent(): JSX.Element {
               aria-keyshortcuts={isClickable ? `Alt+${step.shortcut}` : undefined}
               aria-current={isActive ? "step" : undefined}
               className={`
-                flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300
-                outline-none animate-fade-in
+                flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full transition-all duration-300
+                outline-none animate-fade-in shrink-0
                 ${
                   isActive
                     ? "bg-primary-500/20 border border-primary-500/50 text-primary-300 focus-visible:ring-2 focus-visible:ring-primary-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-950"
@@ -249,7 +249,9 @@ function StepIndicatorComponent(): JSX.Element {
               </span>
               <span className="text-sm font-medium hidden sm:inline">{step.label}</span>
               {isClickable && (
-                <span className="text-xs opacity-70 font-mono">Alt+{step.shortcut}</span>
+                <span className="text-xs opacity-70 font-mono hidden sm:inline">
+                  Alt+{step.shortcut}
+                </span>
               )}
             </button>
 
@@ -261,7 +263,7 @@ function StepIndicatorComponent(): JSX.Element {
 
             {index < STEPS.length - 1 && (
               <div
-                className={`w-8 h-0.5 mx-2 rounded-full transition-all duration-500 ease-in-out animate-fade-in ${
+                className={`w-3 sm:w-8 h-0.5 mx-1 sm:mx-2 shrink-0 rounded-full transition-all duration-500 ease-in-out animate-fade-in ${
                   isCompleted ? "bg-accent-emerald" : "bg-dark-700"
                 } ${justCompletedStep === step.key ? "connector-flash" : ""}`}
                 style={{
