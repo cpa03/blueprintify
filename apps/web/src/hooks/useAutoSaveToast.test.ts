@@ -59,10 +59,9 @@ describe("useAutoSaveToast", () => {
     });
 
     expect(mockSuccess).toHaveBeenCalledTimes(1);
-    expect(mockSuccess).toHaveBeenCalledWith(
-      AUTO_SAVE_CONFIG.DEFAULT_MESSAGE,
-      TOAST_CONFIG.AUTO_SAVE_DURATION
-    );
+    expect(mockSuccess).toHaveBeenCalledWith(AUTO_SAVE_CONFIG.DEFAULT_MESSAGE, {
+      duration: TOAST_CONFIG.AUTO_SAVE_DURATION,
+    });
   });
 
   it("should debounce rapid dependency changes", () => {
@@ -94,7 +93,9 @@ describe("useAutoSaveToast", () => {
       vi.advanceTimersByTime(AUTO_SAVE_CONFIG.DEFAULT_DELAY);
     });
 
-    expect(mockSuccess).toHaveBeenCalledWith("Custom saved!", TOAST_CONFIG.AUTO_SAVE_DURATION);
+    expect(mockSuccess).toHaveBeenCalledWith("Custom saved!", {
+      duration: TOAST_CONFIG.AUTO_SAVE_DURATION,
+    });
   });
 
   it("should use custom delay when provided", () => {

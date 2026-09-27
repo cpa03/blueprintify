@@ -38,7 +38,7 @@ export function useAutoSaveToast(
     }
 
     timeoutRef.current = setTimeout(() => {
-      toast.success(message, TOAST_CONFIG.AUTO_SAVE_DURATION);
+      toast.success(message, { duration: TOAST_CONFIG.AUTO_SAVE_DURATION });
     }, delay);
 
     return () => {

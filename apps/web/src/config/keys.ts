@@ -20,6 +20,7 @@ export const STORAGE_KEYS = {
   ONBOARDING_COMPLETED: createKey("onboarding-completed"),
   RECENT_TEMPLATES: createKey("recent-templates"),
   SHORTCUTS_DISCOVERED: createKey("shortcuts-discovered"),
+  PRO_TIP_SHOWN: createKey("pro-tip-shown"),
 } as const;
 
 export const TEST_KEYS = {
