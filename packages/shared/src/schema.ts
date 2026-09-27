@@ -229,7 +229,7 @@ export const createSuccessResponseSchema = <T extends z.ZodTypeAny>(dataSchema: 
  * `createSuccessResponseSchema` factory to get a typed `data` payload.
  */
 export const SuccessResponseSchema = createSuccessResponseSchema(
-  z.record(z.union([z.string(), z.number(), z.boolean(), z.array(z.string())]))
+  z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.array(z.string())]))
 );
 
 // ===== Export/Import Schemas (M2) =====
