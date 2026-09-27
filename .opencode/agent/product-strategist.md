@@ -1,7 +1,10 @@
 ---
 description: Automated Product Strategist. Updates project plans.
 mode: primary
-model: opencode/nemotron-3-ultra-free
+model: opencode/muse-spark-1.3-contributor-free
+fallback_models:
+  - opencode/mimo-v2.6-flash-free
+  - opencode/nemotron-3-ultra-free
 temperature: 0.5
 tools:
   write: true

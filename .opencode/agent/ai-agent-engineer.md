@@ -1,7 +1,10 @@
 ---
 description: AI Agent System Engineer - Maintains and improves the AI agent infrastructure
 mode: primary
-model: opencode/nemotron-3-ultra-free
+model: opencode/muse-spark-1.3-contributor-free
+fallback_models:
+  - opencode/mimo-v2.6-flash-free
+  - opencode/nemotron-3-ultra-free
 temperature: 0.1
 tools:
   write: true
@@ -120,7 +123,10 @@ When creating new agents, follow this structure:
 ---
 description: [Clear, concise description]
 mode: primary
-model: opencode/nemotron-3-ultra-free
+model: opencode/muse-spark-1.3-contributor-free
+fallback_models:
+  - opencode/mimo-v2.6-flash-free
+  - opencode/nemotron-3-ultra-free
 temperature: [0.0-1.0 based on creativity needs]
 tools:
   write: true

@@ -11,7 +11,10 @@ capabilities:
   - search
   - skill
 model:
-  default: nemotron-3-ultra-free
+  default: muse-spark-1.3-contributor-free
+  fallback_models:
+    - mimo-v2.6-flash-free
+    - nemotron-3-ultra-free
   temperature: 0.0
 permissions:
   bash:
