@@ -40,12 +40,16 @@ export type ToastType = (typeof TOAST_TYPES)[keyof typeof TOAST_TYPES];
  * @property message - The display message content
  * @property type - The toast type determining styling and icon
  * @property duration - Optional custom duration in milliseconds (defaults to TOAST_CONFIG.DEFAULT_DURATION)
+ * @property title - Optional title displayed above the message (for pro tips, etc.)
+ * @property ariaLabel - Optional custom aria-label for accessibility
  */
 export interface Toast {
   id: string;
   message: string;
   type: ToastType;
   duration?: number;
+  title?: string;
+  ariaLabel?: string;
 }
 
 /**
@@ -64,7 +68,11 @@ interface ToastState {
  * @property clearAll - Remove all active toasts immediately
  */
 interface ToastStore extends ToastState {
-  addToast: (message: string, type: ToastType, duration?: number) => void;
+  addToast: (
+    message: string,
+    type: ToastType,
+    options?: { duration?: number; title?: string; ariaLabel?: string }
+  ) => void;
   removeToast: (id: string) => void;
   clearAll: () => void;
 }
@@ -78,11 +86,23 @@ export const useToastStore = create<ToastStore>()((set, get) => ({
    *
    * @param message - The notification message to display
    * @param type - The toast type (success, info, warning, error)
-   * @param duration - Optional duration in milliseconds (defaults to TOAST_CONFIG.DEFAULT_DURATION)
+   * @param options - Optional configuration: duration, title, ariaLabel
    */
-  addToast: (message: string, type: ToastType, duration = TOAST_CONFIG.DEFAULT_DURATION) => {
+  addToast: (
+    message: string,
+    type: ToastType,
+    options?: { duration?: number; title?: string; ariaLabel?: string }
+  ) => {
+    const duration = options?.duration ?? TOAST_CONFIG.DEFAULT_DURATION;
     const id = `toast-${Date.now()}-${Math.random().toString(ALPHANUMERIC_RADIX).substring(RANDOM_STRING_START_INDEX, END_INDEX)}`;
-    const toast: Toast = { id, message, type, duration };
+    const toast: Toast = {
+      id,
+      message,
+      type,
+      duration,
+      title: options?.title,
+      ariaLabel: options?.ariaLabel,
+    };
 
     set((state) => ({
       toasts: [...state.toasts, toast],
@@ -124,11 +144,17 @@ export const useToast = () => {
   const addToast = useToastStore((state) => state.addToast);
 
   return {
-    success: (message: string, duration?: number) =>
-      addToast(message, TOAST_TYPES.SUCCESS, duration),
-    info: (message: string, duration?: number) => addToast(message, TOAST_TYPES.INFO, duration),
-    warning: (message: string, duration?: number) =>
-      addToast(message, TOAST_TYPES.WARNING, duration),
-    error: (message: string, duration?: number) => addToast(message, TOAST_TYPES.ERROR, duration),
+    success: (
+      message: string,
+      options?: { duration?: number; title?: string; ariaLabel?: string }
+    ) => addToast(message, TOAST_TYPES.SUCCESS, options),
+    info: (message: string, options?: { duration?: number; title?: string; ariaLabel?: string }) =>
+      addToast(message, TOAST_TYPES.INFO, options),
+    warning: (
+      message: string,
+      options?: { duration?: number; title?: string; ariaLabel?: string }
+    ) => addToast(message, TOAST_TYPES.WARNING, options),
+    error: (message: string, options?: { duration?: number; title?: string; ariaLabel?: string }) =>
+      addToast(message, TOAST_TYPES.ERROR, options),
   };
 };

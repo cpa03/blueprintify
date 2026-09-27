@@ -1,7 +1,7 @@
 ---
 description: Modularity Engineer - Code Structure & Architecture Improvement Specialist
 mode: primary
-model: opencode/deepseek-v4-flash-free
+model: opencode/nemotron-3-ultra-free
 temperature: 0.2
 tools:
   write: true

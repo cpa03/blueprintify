@@ -1,7 +1,7 @@
 ---
 description: Autonomous Implementation Agent. Writes code, fixes bugs, and refactors without user interaction.
 mode: primary
-model: opencode/deepseek-v4-flash-free
+model: opencode/nemotron-3-ultra-free
 temperature: 0.0
 tools:
   write: true

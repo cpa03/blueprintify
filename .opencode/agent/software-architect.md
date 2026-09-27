@@ -1,7 +1,7 @@
 ---
 description: Software Architect & System Orchestrator
 mode: primary
-model: opencode/deepseek-v4-flash-free
+model: opencode/nemotron-3-ultra-free
 temperature: 0.5
 tools:
   write: true

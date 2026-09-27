@@ -110,7 +110,7 @@ blueprintify/
 
 ### Technical Constraints
 
-- **Model**: Use `opencode/deepseek-v4-flash-free` exclusively for all AI agents
+- **Model**: Use `opencode/nemotron-3-ultra-free` exclusively for all AI agents
 - **Platform**: Must deploy to Cloudflare Workers
 - **Environment**: CI runners must use `ubuntu-24.04-arm`
 
