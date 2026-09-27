@@ -68,6 +68,15 @@ app.use(
     origin: (origin) => {
       const allowedOrigin = CORS_CONFIG.ORIGIN;
       if (!allowedOrigin || allowedOrigin === ROUTE_PATH_ALL) return origin || ROUTE_PATH_ALL;
+      if (
+        origin === allowedOrigin ||
+        origin === "https://blueprintify.pages.dev" ||
+        origin?.endsWith(".blueprintify.pages.dev") ||
+        origin === "https://blueprintify.cpa03-cmz.workers.dev" ||
+        origin?.startsWith("http://localhost:")
+      ) {
+        return origin;
+      }
       return allowedOrigin;
     },
     allowMethods: CORS_CONFIG.ALLOW_METHODS,
@@ -213,7 +222,15 @@ export default {
       );
     }
 
-    const response = await app.fetch(request, env, ctx);
+    // Rewrite /api/* to /* so API routes match both /api/... and /...
+    let req = request;
+    if (url.pathname.startsWith("/api/")) {
+      const rewrittenUrl = new URL(request.url);
+      rewrittenUrl.pathname = url.pathname.replace(/^\/api/, "");
+      req = new Request(rewrittenUrl.toString(), request);
+    }
+
+    const response = await app.fetch(req, env, ctx);
 
     // If API returned 404 and ASSETS binding exists, fallback to ASSETS (SPA routing)
     if (response.status === 404 && env.ASSETS && !url.pathname.startsWith("/api/")) {
