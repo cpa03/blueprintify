@@ -25,6 +25,10 @@ export const ENV = {
     return getEnvVar(WEB_ENV.VITE_API_BASE_URL, API_PROXY_PATH);
   },
 
+  get API_KEY(): string {
+    return getEnvVar("VITE_API_KEY", "blueprintify-public-access-2026");
+  },
+
   // Feature Flags
   get ENABLE_ANALYTICS(): boolean {
     return getEnvVar(WEB_ENV.VITE_ENABLE_ANALYTICS, "false") === "true";
