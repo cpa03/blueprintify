@@ -21,6 +21,10 @@ export {
   StorageReportRequestSchema,
   CreateShareSchema,
   VerifySharePassphraseSchema,
+  GenerationResultSchema,
+  StreamChunkSchema,
+  SuccessResponseSchema,
+  createSuccessResponseSchema,
 } from "./schema.js";
 
 // ===== TypeScript Types =====

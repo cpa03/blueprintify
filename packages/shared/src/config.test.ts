@@ -2250,7 +2250,7 @@ describe("EDITOR_FILENAMES", () => {
     expect(EDITOR_FILENAMES.BLUEPRINT).toBe("blueprint.md");
     expect(EDITOR_FILENAMES.TASKS).toBe("task.md");
     expect(EDITOR_FILENAMES.BLUEPRINT_ANNOUNCE).toBe("blueprint.md");
-    expect(EDITOR_FILENAMES.TASKS_ANNOUNCE).toBe("tasks.md");
+    expect(EDITOR_FILENAMES.TASKS_ANNOUNCE).toBe("task.md");
     expect(EDITOR_FILENAMES.BLUEPRINT_DISPLAY).toBe("Blueprint");
     expect(EDITOR_FILENAMES.TASKS_DISPLAY).toBe("Tasks");
   });
@@ -2594,7 +2594,7 @@ describe("UI_TIMEOUTS", () => {
   it("should have all expected timeout values", () => {
     expect(UI_TIMEOUTS.COPY_FEEDBACK).toBe(2000);
     expect(UI_TIMEOUTS.SHAKE_ANIMATION).toBe(400);
-    expect(UI_TIMEOUTS.TOAST_NOTIFICATION).toBe(1500);
+    expect(UI_TIMEOUTS.TOAST_NOTIFICATION).toBe(3000);
     expect(UI_TIMEOUTS.FOCUS_DELAY).toBe(100);
     expect(UI_TIMEOUTS.LIVE_REGION_CLEAR).toBe(1000);
     expect(UI_TIMEOUTS.API_HEALTH_CHECK).toBe(5000);

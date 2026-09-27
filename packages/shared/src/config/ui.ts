@@ -179,7 +179,7 @@ export const EDITOR_FILENAMES = {
   /** Screen reader announcement text for blueprint tab */
   BLUEPRINT_ANNOUNCE: "blueprint.md" as const,
   /** Screen reader announcement text for tasks tab */
-  TASKS_ANNOUNCE: "tasks.md" as const,
+  TASKS_ANNOUNCE: "task.md" as const,
   /** Human-readable display name for the blueprint tab (capitalized, no extension) */
   BLUEPRINT_DISPLAY: "Blueprint" as const,
   /** Human-readable display name for the tasks tab (capitalized, no extension) */
@@ -309,8 +309,8 @@ export const UI_TIMEOUTS = {
   COPY_FEEDBACK: 2000,
   /** Duration for shake animation feedback (400ms) */
   SHAKE_ANIMATION: 400,
-  /** Duration to show toast notifications (1.5s) */
-  TOAST_NOTIFICATION: 1500,
+  /** Duration to show toast notifications (3s, matches TOAST_DEFAULTS.DEFAULT_DURATION_MS) */
+  TOAST_NOTIFICATION: 3000,
   /** Delay before focusing element after step change (100ms) */
   FOCUS_DELAY: 100,
   /** Delay before clearing screen-reader live region (1s) */
