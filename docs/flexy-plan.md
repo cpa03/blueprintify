@@ -4,6 +4,37 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 187: Centralize Deployment Origins, Proxy-Path Literals & API Fallback Errors
+
+**Problem**: The live-generate proxy fix (`c4e95857`) introduced fresh hardcoded values. API: 4× deployment origin literals (`https://blueprintify.pages.dev`, `.blueprintify.pages.dev` suffix, workers.dev URL, `http://localhost:` prefix) in the CORS allow-list, 3× `"/api/"` startsWith + `/^\/api/` replace literals, `"/assets/"`, `"Accept"`/`"text/html"`, and 2× raw `404` status checks in `fetch()`. Web: `getEnvVar("VITE_API_KEY", "blueprintify-public-access-2026")` bypassing `ENV_VAR_KEYS`, plus raw `405`/`>= 500` checks with inline fallback message templates in `lib/api.ts`. Both Pages Function proxies duplicated the workers.dev URL, `/^\/api/` regex, and `"GET"`/`"HEAD"` literals. Flexy says: no hardcoded deployment origins, proxy paths, or fallback messages!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | Added `DEPLOYMENT_DOMAINS` (PAGES_DEV / PAGES_SUFFIX / WORKERS_DEV / LOCALHOST_PREFIX) + `PROXY_PATHS` (PREFIX / STRIP_PATTERN / ASSETS_PREFIX) |
+| `packages/shared/src/config/http.ts` | Added `HTTP_STATUS.METHOD_NOT_ALLOWED` (405) + `HTTP_METHODS.HEAD` / `OPTIONS` |
+| `packages/shared/src/config/api.ts` | Added `ENV_VAR_KEYS.WEB.VITE_API_KEY` + `WEB_KEY_DEFAULTS.PUBLIC_ACCESS_KEY` + `API_FALLBACK_MESSAGES` (ENDPOINT_UNAVAILABLE / SERVER_ERROR(status)) |
+| `packages/shared/src/index.ts` | Exported `DEPLOYMENT_DOMAINS`, `PROXY_PATHS`, `WEB_KEY_DEFAULTS`, `API_FALLBACK_MESSAGES` |
+| `packages/shared/src/config.test.ts` | Added 6 tests asserting new deployment/proxy/fallback constant values |
+| `apps/api/src/index.ts` | CORS origins, asset/proxy path checks, Accept header, HTML match, and 404 checks now reference shared constants |
+| `apps/web/src/config/env.ts` | `API_KEY` uses `WEB_ENV.VITE_API_KEY` + `WEB_KEY_DEFAULTS.PUBLIC_ACCESS_KEY` |
+| `apps/web/src/lib/api.ts` | 405/5xx fallback uses `HTTP_STATUS` + `API_FALLBACK_MESSAGES` refs |
+| `functions/api/[[path]].ts` + `apps/web/functions/api/[[path]].ts` | Hardcoded worker URL, strip regex, GET/HEAD literals replaced with local Flexy-mirror constants linked to shared source of truth |
+
+## Verification
+
+- ✅ `npm run typecheck` — zero NEW errors (shared 0; api 7 + web 750 pre-existing on main, byte-identical before/after)
+- ✅ `npx eslint` on all touched files — zero errors, zero warnings
+- ✅ `npm run build` + `npm run build:api` + shared build — clean
+- ✅ `npm run scan:secrets` — clean (renamed to `PUBLIC_ACCESS_KEY` to avoid generic-key false positive)
+- ✅ `npx prettier --check` on touched files — clean
+- ✅ shared `config.test.ts` — 791 passing (incl. 6 new); web `api.test.ts` + `env.test.ts` — 25 passing; api workers-pool runner infra-broken pre-existing
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-187-deploy-proxy-errors` | refactor(flexy): centralize deployment origins, proxy-path literals & API fallback errors into config (Iteration 187) |
+
 ### ✅ Flexy Iteration 185: Centralize CSS Class Combinations, Log Contexts & API Micro-Literals
 
 **Problem**: Remaining hardcoded values were scattered across two fronts. Web: 6× scroll-shadow overlay class strings (Editor/Wizard), 11× icon hover-rotation class strings (4 wizard steps), 7× empty-state keycap class strings, and the "Skip to main content" label — all bypassing `CSS_CLASSES`. API: 6× secure-log context/message strings bypassing `LOG_CONTEXT`, the share verify `"token"` query param bypassing the `STORAGE_QUERY_PARAMS` pattern, an inline Content-Type mismatch message, the Server-Timing `"app"`/`0` literals, a `Date.now()` bypassing the `timestamp()` helper, and a raw `"ms"` suffix. Flexy says: no hardcoded class strings, log contexts, or micro-literals!

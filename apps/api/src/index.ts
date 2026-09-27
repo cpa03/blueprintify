@@ -29,6 +29,12 @@ import type { Env, AppVariables } from "./types";
 import { loadConfig } from "./config/env";
 import { COLD_START_MESSAGES, RESPONSE_STATUS } from "@blueprint/shared";
 import {
+  DEPLOYMENT_DOMAINS,
+  PROXY_PATHS,
+  HTTP_HEADERS as SHARED_HTTP_HEADERS,
+  HTTP_HEADER_NAMES,
+} from "@blueprint/shared";
+import {
   API_METADATA,
   API_ENDPOINTS,
   API_HEADERS,
@@ -70,10 +76,10 @@ app.use(
       if (!allowedOrigin || allowedOrigin === ROUTE_PATH_ALL) return origin || ROUTE_PATH_ALL;
       if (
         origin === allowedOrigin ||
-        origin === "https://blueprintify.pages.dev" ||
-        origin?.endsWith(".blueprintify.pages.dev") ||
-        origin === "https://blueprintify.cpa03-cmz.workers.dev" ||
-        origin?.startsWith("http://localhost:")
+        origin === DEPLOYMENT_DOMAINS.PAGES_DEV ||
+        origin?.endsWith(DEPLOYMENT_DOMAINS.PAGES_SUFFIX) ||
+        origin === DEPLOYMENT_DOMAINS.WORKERS_DEV ||
+        origin?.startsWith(DEPLOYMENT_DOMAINS.LOCALHOST_PREFIX)
       ) {
         return origin;
       }
@@ -199,15 +205,18 @@ export default {
 
     // Static assets (CSS, JS, images, fonts) - check first for performance
     const url = new URL(request.url);
-    const acceptHeader = request.headers.get("Accept") || "";
-    const isBrowserHtmlRequest = acceptHeader.includes("text/html");
+    const acceptHeader = request.headers.get(HTTP_HEADER_NAMES.ACCEPT) || "";
+    const isBrowserHtmlRequest = acceptHeader.includes(SHARED_HTTP_HEADERS.CONTENT_TYPE_HTML);
     const isStaticAsset =
-      url.pathname.startsWith("/assets/") ||
-      (url.pathname.includes(".") && !url.pathname.startsWith("/api/"));
+      url.pathname.startsWith(PROXY_PATHS.ASSETS_PREFIX) ||
+      (url.pathname.includes(".") && !url.pathname.startsWith(PROXY_PATHS.PREFIX));
 
-    if (env.ASSETS && (isStaticAsset || (url.pathname === "/" && isBrowserHtmlRequest))) {
+    if (
+      env.ASSETS &&
+      (isStaticAsset || (url.pathname === ROUTE_PATHS.ROOT && isBrowserHtmlRequest))
+    ) {
       const assetResponse = await env.ASSETS.fetch(request);
-      if (assetResponse.status !== 404) {
+      if (assetResponse.status !== HTTP_STATUS.NOT_FOUND) {
         return assetResponse;
       }
     }
@@ -224,16 +233,20 @@ export default {
 
     // Rewrite /api/* to /* so API routes match both /api/... and /...
     let req = request;
-    if (url.pathname.startsWith("/api/")) {
+    if (url.pathname.startsWith(PROXY_PATHS.PREFIX)) {
       const rewrittenUrl = new URL(request.url);
-      rewrittenUrl.pathname = url.pathname.replace(/^\/api/, "");
+      rewrittenUrl.pathname = url.pathname.replace(PROXY_PATHS.STRIP_PATTERN, "");
       req = new Request(rewrittenUrl.toString(), request);
     }
 
     const response = await app.fetch(req, env, ctx);
 
     // If API returned 404 and ASSETS binding exists, fallback to ASSETS (SPA routing)
-    if (response.status === 404 && env.ASSETS && !url.pathname.startsWith("/api/")) {
+    if (
+      response.status === HTTP_STATUS.NOT_FOUND &&
+      env.ASSETS &&
+      !url.pathname.startsWith(PROXY_PATHS.PREFIX)
+    ) {
       return env.ASSETS.fetch(request);
     }
 

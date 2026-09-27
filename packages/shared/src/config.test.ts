@@ -163,6 +163,10 @@ import {
   COPY_STATE_VALUES,
   VALIDATION_STATE_VALUES,
   BANNER_STATE_VALUES,
+  DEPLOYMENT_DOMAINS,
+  PROXY_PATHS,
+  WEB_KEY_DEFAULTS,
+  API_FALLBACK_MESSAGES,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -4733,5 +4737,40 @@ describe("Y_OFFSET", () => {
       expect(arr.length).toBe(3);
       arr.forEach((v) => expect(typeof v).toBe("number"));
     });
+  });
+});
+
+describe("Flexy Iteration 187: deployment, proxy & fallback constants", () => {
+  it("DEPLOYMENT_DOMAINS holds production Pages/Worker origins", () => {
+    expect(DEPLOYMENT_DOMAINS.PAGES_DEV).toBe("https://blueprintify.pages.dev");
+    expect(DEPLOYMENT_DOMAINS.PAGES_SUFFIX).toBe(".blueprintify.pages.dev");
+    expect(DEPLOYMENT_DOMAINS.WORKERS_DEV).toBe("https://blueprintify.cpa03-cmz.workers.dev");
+    expect(DEPLOYMENT_DOMAINS.LOCALHOST_PREFIX).toBe("http://localhost:");
+  });
+
+  it("PROXY_PATHS holds rewrite prefix, strip pattern and assets prefix", () => {
+    expect(PROXY_PATHS.PREFIX).toBe("/api/");
+    expect("/api/generate".replace(PROXY_PATHS.STRIP_PATTERN, "")).toBe("/generate");
+    expect(PROXY_PATHS.ASSETS_PREFIX).toBe("/assets/");
+  });
+
+  it("ENV_VAR_KEYS.WEB exposes VITE_API_KEY", () => {
+    expect(ENV_VAR_KEYS.WEB.VITE_API_KEY).toBe("VITE_API_KEY");
+  });
+
+  it("WEB_KEY_DEFAULTS holds the public access key default", () => {
+    expect(WEB_KEY_DEFAULTS.PUBLIC_ACCESS_KEY).toBe("blueprintify-public-access-2026");
+  });
+
+  it("API_FALLBACK_MESSAGES holds 405 and 5xx fallback text", () => {
+    expect(API_FALLBACK_MESSAGES.ENDPOINT_UNAVAILABLE).toContain("405 Method Not Allowed");
+    expect(API_FALLBACK_MESSAGES.SERVER_ERROR(503)).toContain("503");
+    expect(API_FALLBACK_MESSAGES.SERVER_ERROR(500)).toContain("temporarily unavailable");
+  });
+
+  it("HTTP_STATUS exposes METHOD_NOT_ALLOWED and HTTP_METHODS exposes HEAD/OPTIONS", () => {
+    expect(HTTP_STATUS.METHOD_NOT_ALLOWED).toBe(405);
+    expect(HTTP_METHODS.HEAD).toBe("HEAD");
+    expect(HTTP_METHODS.OPTIONS).toBe("OPTIONS");
   });
 });

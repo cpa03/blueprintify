@@ -380,6 +380,42 @@ export const EXTERNAL_REFERENCE_URLS = {
 } as const;
 
 /**
+ * Deployment Domains
+ * Centralized source of truth for production deployment origins used in
+ * CORS allow-lists and Pages Function proxy targets.
+ * Flexy says: No hardcoded "blueprintify.pages.dev" origins in index.ts!
+ * Usage: import { DEPLOYMENT_DOMAINS } from "@blueprint/shared";
+ *        origin === DEPLOYMENT_DOMAINS.PAGES_DEV
+ */
+export const DEPLOYMENT_DOMAINS = {
+  /** Production Cloudflare Pages origin */
+  PAGES_DEV: "https://blueprintify.pages.dev",
+  /** Suffix for Pages preview deployments (*.blueprintify.pages.dev) */
+  PAGES_SUFFIX: ".blueprintify.pages.dev",
+  /** Production Cloudflare Worker origin (Pages Function proxy target) */
+  WORKERS_DEV: "https://blueprintify.cpa03-cmz.workers.dev",
+  /** Prefix for local development origins (http://localhost:<port>) */
+  LOCALHOST_PREFIX: "http://localhost:",
+} as const;
+
+/**
+ * Proxy & Static Asset Path Prefixes
+ * Centralized source of truth for /api rewrite and static-asset detection
+ * in Workers fetch handlers and Pages Functions.
+ * Flexy says: No hardcoded "/api/" startsWith or /^\/api/ replace in fetch()!
+ * Usage: import { PROXY_PATHS } from "@blueprint/shared";
+ *        url.pathname.startsWith(PROXY_PATHS.PREFIX)
+ */
+export const PROXY_PATHS = {
+  /** API prefix with trailing slash for startsWith checks */
+  PREFIX: "/api/",
+  /** Pattern stripping the leading /api segment for route rewrite */
+  STRIP_PATTERN: /^\/api/,
+  /** Static asset directory prefix for ASSETS binding fast-path */
+  ASSETS_PREFIX: "/assets/",
+} as const;
+
+/**
  * Responsive Breakpoint Defaults (px)
  * Standard viewport width breakpoints used for responsive layout calculations,
  * corresponding to Tailwind's `md` (768px) and `lg` (1024px) breakpoints.
