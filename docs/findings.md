@@ -11698,3 +11698,20 @@ typecheck clean (API controller + web jest-dom matcher errors pre-existing on ma
 a hardcoded credential — no rotation needed (public dev fallback, never a real secret),
 no code fixes required. Note: `toast.ts` `Math.random()` ID generation is pre-existing
 and non-security-sensitive (ephemeral UI IDs), left untouched.
+
+## Security Audit — PR re-verification vs origin/main (2026-09-28)
+
+**Scope**: Same 22-file diff vs origin/main (secret-removal + toast refactor +
+pro-tip removal + StepIndicator + debounce + 2 devDeps + docs). Re-ran full gate.
+**Scans**: added-lines secret grep CLEAN (only benign `wrangler secret put`
+comments + `getEnvVar("VITE_API_KEY")` ref) · `scan:secrets` ✅ 334 files ·
+added-lines XSS/injection grep CLEAN · deprecated grep CLEAN · `npm audit` ✅
+0 vulns · no sensitive filenames in diff · `.gitignore` covers `.dev.vars` + `.env*` ·
+fail-closed re-verified (env `""` when unset, api.ts omits `x-api-key` when empty,
+auth.ts 503s when unset) · toast refactor complete (44/44 vitest pass, 0 stale
+options-object callers — remaining `{ duration:` hits are framer-motion props) ·
+shared typecheck clean, web 0 source errors (test-file jest-dom matcher errors
+pre-existing on main).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code
+fixes required — nothing to remove. `toast.ts` `Math.random()` UI IDs left
+untouched (pre-existing, non-security-sensitive).
