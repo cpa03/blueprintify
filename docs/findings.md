@@ -27,6 +27,29 @@
 
 - [Janitor] `scripts/janitor-scan.mjs` exists only on `agent/janitor` (added in `f2d88233`, never on `main`, unreferenced by any npm script). Keep or delete before merge? Precedent from 2026-09-27 is keep as scan tool, but merging it adds ~240 lines against the leaner-before-merge goal. **Recommend human decides: promote to `npm run scan:janitor` or drop from the branch before merge.**
 
+## Janitor Cleanup (2026-09-28 — Pre-merge remainder scan)
+
+**Scope**: `agent/janitor` branch (synced to `origin/main`; branch already holds 40 files −1087/+397 vs main from prior removals). Re-scan for remainder; ran `scripts/janitor-scan.mjs` (127 orphan candidates, 81 unused-export candidates) plus manual comment/`console.log`/duplicate/focused-test/TODO sweeps with repo-wide grep verification of every candidate.
+
+### Removed
+
+- None. No safe deletions this cycle — every candidate verified as live code or intentionally kept (see below). Zero source changes; no build rerun needed (prior HEAD `05600f3c` verified green).
+
+### Verified clean (no action needed)
+
+- **No orphaned source files**: ~124/127 "orphan" hits are test/e2e files discovered by vitest/playwright configs; `scripts/migrate.ts` is wired via `db:*` npm scripts; `apps/web/functions/api/[[path]].ts` is a deploy entry point (not imported by design).
+- **No dead unused exports**: all 81 candidates are false positives — alias re-exports (`SHARED_ROUTE_PATHS`, `SHARED_SSE_*`, `SHARED_STAGGER_CONFIG`, `FIELD_LABELS/PATHS` barrel), inline-`type` imports the scanner misses (`Toast`/`ToastType`, `ViewMode`, `PersistedStorage`, `PromptInjectionField`, theme types), same-file usage (`APIError`, `Container`, `storageManager`, `MigrationRunner`, `StorageErrorType`, security constants via `SECURITY_CONFIG`), registry composition (granular `generate*` template fns composed into project generators consumed by `lib/export.ts`), intentional config/API surface (`PREVIEW/OBSERVABILITY/QUEUE_DEFAULTS`, `PLAYWRIGHT_CONFIG`, shared result/request types, worker `Environment`/`ExportContext` types). `ExportContext.tsx: that` is a scanner artifact from a prose comment.
+- **No commented-out dead code**: single prose hit (`App.tsx:101`); rest are JSDoc/template strings.
+- **No production `console.log`**: all hits intentional (logging middleware/utils, JSDoc examples, template-generator output strings).
+- **No duplicate utilities**: web `debounce.test.ts` tests shared `createDebouncedSaver` — consolidated, no own implementation.
+- **Hygiene clean**: no focused tests (`.only`), no TODO/FIXME/HACK in source, no empty dirs, no tracked build artifacts.
+- **Prior branch deletions verified consistent**: trimmed `motion.ts`, `secureLog`, `sanitize`, `timeout` files all retain live importers; no dangling references.
+
+### Structural findings (recommended for future work, not removed)
+
+- RESOLVED: prior duplicate `functions/api/[[path]].ts` (repo root) vs `apps/web/functions/api/[[path]].ts` — root copy deleted in `9ecfb9d2`; only the deploy entry point remains.
+- No new structural mess found this cycle (no duplicate `utils` folders, no repeated `formatDate`-style logic).
+
 ## Janitor Cleanup (2026-09-27 — Dead code, unused exports, commented-out code scan)
 
 **Scope**: `agent/janitor` branch (synced to `origin/main` @ `41ea4748`). Re-scan following the 2026-08-18 cleanup; ran `scripts/janitor-scan.mjs` (127 orphan candidates, 90 unused-export candidates) plus manual comment/`console.log`/duplicate sweeps.
