@@ -4,6 +4,37 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 186: Centralize Agent Model Fallback Hierarchy into Single Source of Truth
+
+**Problem**: Agent model fallback hierarchy (`opencode/muse-spark-1.3-contributor-free` → `mimo-v2.6-flash-free` → `nemotron-3-ultra-free`) was hardcoded in 60+ places: `scripts/opencode-run.sh` MODELS array, 28× `.opencode/agent/*.md` frontmatter, 28× `.agent/agents/*.md` frontmatter, `AGENTS.md`, `opencode.json`. No single source, no sync validation. Flexy says: no hardcoded model strings in scripts!
+
+| File | Change |
+|------|--------|
+| `config/agent-models.json` | NEW — canonical single source: `primary` + `fallbacks[]` + `shortNames` |
+| `packages/shared/src/config/ai-models.ts` | NEW — TS mirror: `AGENT_MODEL_IDS`, `AGENT_MODEL_HIERARCHY`, `AGENT_MODEL_SHORT_NAMES`, `getAgentModelFallbackList(explicit?)` |
+| `packages/shared/src/config.ts` + `src/index.ts` | Re-exported new model constants |
+| `packages/shared/src/config/ai-models.test.ts` | NEW — 6 tests: order, single-source values, suffix match, fallback-list behavior |
+| `scripts/opencode-run.sh` | Removed hardcoded MODELS array; loads from `config/agent-models.json` via python3/node/jq, fail-closed if missing; `AGENT_MODELS_CONFIG` override |
+| `scripts/validate-models.mjs` | NEW — validates JSON ↔ TS mirror ↔ opencode.json ↔ 56 agent files |
+| `package.json` | Added `validate:models` script; wired into `validate:all` |
+
+## Verification
+
+- ✅ `npm run typecheck --workspace=@blueprint/shared` — clean
+- ✅ `npx eslint` on changed TS files — zero errors, zero warnings
+- ✅ `npx prettier --check` on changed files — clean
+- ✅ `npm run build --workspace=@blueprint/shared` — clean
+- ✅ `node scripts/validate-models.mjs` — 56 agent files in sync
+- ✅ `bash -n scripts/opencode-run.sh` — syntax OK
+- ✅ `npm run test --workspace=@blueprint/shared` — 791 tests passing (incl. 6 new)
+- ⚠️ Pre-existing failures on main (unrelated, not touched): `apps/web` jest-dom matcher types, `apps/api` Zod v4 controller types
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-186-agent-models-modular` | refactor(flexy): centralize agent model fallback hierarchy into single source (Iteration 186) |
+
 ### ✅ Flexy Iteration 185: Centralize CSS Class Combinations, Log Contexts & API Micro-Literals
 
 **Problem**: Remaining hardcoded values were scattered across two fronts. Web: 6× scroll-shadow overlay class strings (Editor/Wizard), 11× icon hover-rotation class strings (4 wizard steps), 7× empty-state keycap class strings, and the "Skip to main content" label — all bypassing `CSS_CLASSES`. API: 6× secure-log context/message strings bypassing `LOG_CONTEXT`, the share verify `"token"` query param bypassing the `STORAGE_QUERY_PARAMS` pattern, an inline Content-Type mismatch message, the Server-Timing `"app"`/`0` literals, a `Date.now()` bypassing the `timestamp()` helper, and a raw `"ms"` suffix. Flexy says: no hardcoded class strings, log contexts, or micro-literals!
