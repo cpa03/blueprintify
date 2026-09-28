@@ -36,8 +36,8 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
-    "eslint": "10.10.0",
+    "eslint": "10.11.0",
     "typescript": "6.0.3",
-    "vitest": "^5.0.1"
+    "vitest": "^5.0.2"
   }
 }
