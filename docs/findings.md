@@ -3,6 +3,16 @@
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
 
+## ULW Loop Cycle 20260928 (2026-09-28 — REPOKEEPER MODE)
+
+**Phase 0**: Branch `agent/repokeeper-cleanup-20260928` from `origin/main` (`c03cffd3`, post-#3624/#3625). Open-PRs triage: **#3643** (same-day RepoKeeper findings record), **#3644** + **#3652** (competing typecheck fixes touching the same files) → anti-duplication verdict: locally verified-green code fixes reverted; this cycle keeps unique hygiene + records only. Stray branches FAIL-SAFE UNCHANGED (janitor `009dbb7e`, repokeeper-530 `a043b9d4`, repokeeper-567 `c48abe2c`, wizard-parity `ccac48c8` — verified via `ls-remote`).
+**Phase 1 (Hygiene)**: 697 tracked files; temp-artifact grep CLEAN; 0 empty tracked dirs; 0 tracked build artifacts; scripts 8/8 wired (incl. `opencode-run.sh`↔workflows); 28/28 agents + 25/25 skills + 8/8 commands 1:1 vs README; 5/5 workflows `ubuntu-24.04-arm`; audits index 92 rows ↔ 92 reports (+README = 93 `.md`), exactly 1 `**Latest**` (Run 89, Aug 20).
+**Phase 2 (Retention)**: Archived 6× Jul 25 reports (65d > 30d policy) via `git mv` → `docs/audits/archive/` (now 20 files); README index 98→92 rows; CONSOLIDATED-README entry added. No permanent deletes.
+**Phase 3 (Doc-sync)**: 0 defects — README agent/skill counts exact; endpoint table (15 rows) matches `ROUTE_PATHS`; env table matches `env.ts`; 0 TODO/FIXME/HACK in source; console.* only intentional (logger/secureLog/env-warning/e2e).
+**Phase 4 (Gates — pre-existing state of main)**: lint ✅ 0 errors/0 warnings · build (web vite) ✅ · shared typecheck/build ✅ · secrets ✅ 340 files · prettier ✅ · audit 0 vulns ✅ · web tests 1248/1248 ✅ · shared tests 859/859 ✅ · typecheck web 750 + api 7 ❌ (root-caused: jest-dom v7 root import lacks vitest type augmentation; `getValidatedData` generic inference failure on zod4-era types; verified-green fix 757→0 achieved then reverted as duplicate of in-flight #3644/#3652 — replay notes in `.omo/ulw-execute/ledger.jsonl`) · api vitest ❌ environmental (workerd/miniflare pool `SyntaxError: Unexpected identifier 'file'`, 0 tests ran — identical on untouched files).
+**Infra note**: subagent delegation infra down (`ProviderModelNotFoundError: sabila/cmz` ×5: 3× explore + 2× category) → direct execution with ledger record. No `as any`/suppressions added; no secrets touched; `.omo/` untracked per `.gitignore`.
+
+
 ## Orchestration Cycle 601 (2026-09-06 — ERRORFALLBACK MICRO-UX & DOM STATE TRACKING)
 
 **Phase 0**: Local `agent` branch checked out; synced with `origin/main`. Working tree clean.
