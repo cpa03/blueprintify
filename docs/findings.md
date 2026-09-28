@@ -27,7 +27,27 @@
 
 - [Janitor] `scripts/janitor-scan.mjs` exists only on `agent/janitor` (added in `f2d88233`, never on `main`, unreferenced by any npm script). Keep or delete before merge? Precedent from 2026-09-27 is keep as scan tool, but merging it adds ~240 lines against the leaner-before-merge goal. **Recommend human decides: promote to `npm run scan:janitor` or drop from the branch before merge.**
 
-## Janitor Cleanup (2026-09-28 — Pre-merge remainder scan)
+## Janitor Cleanup (2026-09-28 — Pre-merge scan, build verified)
+
+**Scope**: `agent/janitor` branch (synced to `origin/main` @ `c03cffd3`). Re-scan following the 2026-09-27 cleanup; ran `scripts/janitor-scan.mjs` plus manual comment/`console.log`/duplicate sweeps. `npm run build` verified green (9.16s).
+
+### Removed
+
+- None. No safe source deletions this cycle — every candidate verified as live code or intentionally kept (see below). Workspace-only hygiene: deleted gitignored `build.log`/`lint.log`/`typecheck.log` leftovers from local runs (untracked, not part of PR diff).
+
+### Verified clean (no action needed)
+
+- **No orphaned source files**: all `janitor-scan.mjs` "orphan" hits are test/e2e files discovered by vitest/playwright configs; `scripts/migrate.ts` is wired via `db:*` npm scripts; `apps/web/functions/api/[[path]].ts` is a deploy entry point (not imported by design). Duplicate `functions/api/[[path]].ts` (repo root) reported on 2026-09-27 is now gone — only `apps/web/functions/api/[[path]].ts` remains (resolved in `9ecfb9d2`).
+- **No commented-out dead code**: repo-wide grep for `// <code-keyword>` and block-comment code hits only `node_modules` (ignored) — zero hits in `apps/`/`packages/`/`scripts/` prod sources.
+- **No production `console.log`**: all hits are intentional (logging utils `apps/api/src/middleware/logger.ts`/`apps/api/src/utils/secureLog.ts`, e2e spec output, JSDoc examples, `console.log` text inside template-generator output strings in `node.ts`/`static.ts`).
+- **Spot-verified unused-export false positives**: `FIELD_LABELS`/`FIELD_PATHS` (used intra-file in `validation.ts` to build field lists), `Container` (module consumed via `getContainer`/`initializeContainer`), `APIError` (consumed via `isAPIError` type-guard), `storageManager` (singleton backing `wizardStorage`/`editorStorage`), `ViewMode` (type-imported by `EditorHeader.tsx`), template generators (consumed via registry).
+- **No duplicate files by checksum**: `md5sum` sweep over `apps`/`packages`/`functions`/`scripts` (excl. `node_modules`/`dist`) found zero byte-identical pairs.
+
+### Structural findings (recommended for future work, not removed)
+
+- [Janitor] Config/utils fragmentation: 3× `utils/` (`apps/api/src/utils`, `apps/web/src/utils`, `packages/shared/src/utils`) + 3× `config/` (`apps/api/src/config`, `apps/web/src/config`, `packages/shared/src/config`) + 2× `config/constants/` (api, web). No copy-pasted `formatDate`-style logic found, so no DRY merge proposed — but recommend unifying only via `packages/shared` for genuinely shared helpers on a future cycle, not a bulk move.
+
+## Janitor Cleanup (2026-09-28 — Parallel scan, zero safe deletions)
 
 **Scope**: `agent/janitor` branch (synced to `origin/main`; branch already holds 40 files −1087/+397 vs main from prior removals). Re-scan for remainder; ran `scripts/janitor-scan.mjs` (127 orphan candidates, 81 unused-export candidates) plus manual comment/`console.log`/duplicate/focused-test/TODO sweeps with repo-wide grep verification of every candidate.
 
@@ -1734,7 +1754,6 @@ Skills used: `docs-update` loaded per contract (docs record append). Subagents u
 - **Vulnerabilities**: `npm audit` (full + `--audit-level=high`) → **0 vulnerabilities**. ESLint 10.8.1 is current/latest (not deprecated; `npm view eslint@10.8.1 deprecated` → empty).
 - **Deprecated functions/APIs**: `usedDeprecatedRules: []` on real files. ESLint flat config (`eslint.config.js`) loads cleanly under v10; `--ext` flag (used by `npm run lint`) still supported in v10. Runtime probes confirmed plugin rules still fire under ESLint 10: `react/jsx-key` (missing-key error), `react-hooks/exhaustive-deps` + `set-state-in-effect` (real violation), `jsx-a11y/alt-text` (img without alt). Full repo lint: 296 files, 0 issues, exit 0.
 - **Peer-dep metadata lag (informational, pre-existing)**: `npm ls` flags eslint@10.8.1 as `invalid` peer for `eslint-plugin-react@7.37.5` and `eslint-plugin-jsx-a11y@6.10.2` — their published peer ranges still cap at `^9` (latest versions unchanged). Repo already mitigates via `.npmrc` `legacy-peer-deps=true` (committed in `main`, not part of this diff). Verified functionally harmless: clean-room `npm ci --ignore-scripts` succeeds on this lockfile; plugins demonstrably operate correctly under v10. Recommend re-checking when upstream plugins widen peer ranges to `^10`.
->>>>>>> origin/main
 
 ## ULW Loop Cycle 522 (2026-08-17 — REPOKEEPER MODE)
 
