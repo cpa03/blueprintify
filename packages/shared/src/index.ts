@@ -192,6 +192,10 @@ export {
   SANITIZE_DANGEROUS_CONTAINER_TAG_NAMES,
   SANITIZE_REPLACEMENT_STRINGS,
   SANITIZE_ERROR_STRINGS,
+  AGENT_MODEL_IDS,
+  AGENT_MODEL_HIERARCHY,
+  AGENT_MODEL_SHORT_NAMES,
+  getAgentModelFallbackList,
 } from "./config.js";
 
 // ===== UI / Display Configuration =====

@@ -2,19 +2,50 @@
 # ==============================================================================
 # opencode-run.sh — Multi-Model Fallback Runner for OpenCode CLI
 #
-# Execution hierarchy:
-#   1. opencode/muse-spark-1.3-contributor-free  (Primary)
-#   2. opencode/mimo-v2.6-flash-free             (Fallback 1)
-#   3. opencode/nemotron-3-ultra-free            (Fallback 2)
+# Model hierarchy is NOT hardcoded here.
+# Single source of truth: config/agent-models.json
+# TS mirror: packages/shared/src/config/ai-models.ts
+# Override config path via AGENT_MODELS_CONFIG env var.
+# Flexy says: no hardcoded model strings in scripts!
 # ==============================================================================
 
 set -u
+set -e
 
-MODELS=(
-  "opencode/muse-spark-1.3-contributor-free"
-  "opencode/mimo-v2.6-flash-free"
-  "opencode/nemotron-3-ultra-free"
-)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+CONFIG_FILE="${AGENT_MODELS_CONFIG:-${PROJECT_ROOT}/config/agent-models.json}"
+
+load_models_from_config() {
+  local config_path="$1"
+  if command -v python3 >/dev/null 2>&1; then
+    python3 -c "import json,sys; d=json.load(open(sys.argv[1])); print(d['primary']); [print(m) for m in d.get('fallbacks',[])]" "$config_path"
+    return 0
+  fi
+  if command -v node >/dev/null 2>&1; then
+    node -e "const d=require(process.argv[1]); console.log(d.primary); (d.fallbacks||[]).forEach((m)=>console.log(m));" "$config_path"
+    return 0
+  fi
+  if command -v jq >/dev/null 2>&1; then
+    jq -r '.primary, (.fallbacks[]?)' "$config_path"
+    return 0
+  fi
+  return 1
+}
+
+if [[ ! -f "$CONFIG_FILE" ]]; then
+  echo "❌ [opencode-run] Model config not found: $CONFIG_FILE" >&2
+  echo "   Expected single source of truth at config/agent-models.json." >&2
+  exit 1
+fi
+
+mapfile -t MODELS < <(load_models_from_config "$CONFIG_FILE" || true)
+
+if [[ "${#MODELS[@]}" -eq 0 ]]; then
+  echo "❌ [opencode-run] Failed to load models from: $CONFIG_FILE" >&2
+  echo "   Requires python3, node, or jq to parse JSON." >&2
+  exit 1
+fi
 
 # Parse incoming arguments, stripping any existing --model / -m flags so we control the fallback order
 ARGS=()
