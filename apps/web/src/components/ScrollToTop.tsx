@@ -289,12 +289,18 @@ const ScrollToPosition = memo(function ScrollToPosition({
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 initial={false}
-                animate={isToTop ? { y: [2, -2, 2] } : { y: [-2, 2, -2] }}
-                transition={{
-                  duration: ANIMATION.FLOAT,
-                  repeat: Infinity,
-                  ease: EASING.easeInOut,
-                }}
+                // Reduced-motion guard: MotionConfig was removed, so this
+                // infinite float must bail out explicitly like the pulses above.
+                animate={shouldReduceMotion ? {} : isToTop ? { y: [2, -2, 2] } : { y: [-2, 2, -2] }}
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0 }
+                    : {
+                        duration: ANIMATION.FLOAT,
+                        repeat: Infinity,
+                        ease: EASING.easeInOut,
+                      }
+                }
               >
                 {isToTop ? (
                   <path
