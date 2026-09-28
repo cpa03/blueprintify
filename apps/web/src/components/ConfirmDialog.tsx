@@ -44,6 +44,7 @@ import {
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   DIALOG_STATE_VALUES,
+  ARIA_ROLES,
 } from "@blueprint/shared";
 import {
   EASING,
@@ -183,7 +184,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
               ...SPRING_CONFIG.GENTLE,
             }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
-            role="dialog"
+            role={ARIA_ROLES.DIALOG}
             aria-modal="true"
             aria-labelledby="confirm-dialog-title"
             aria-describedby="confirm-dialog-description"

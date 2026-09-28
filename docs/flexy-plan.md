@@ -4,6 +4,34 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 188: Centralize WAI-ARIA Role Literals into Shared Config
+
+**Problem**: 31 web components contained 73 hardcoded WAI-ARIA `role="..."` attribute literals (`status` ×41, `alert` ×10, `dialog` ×6, `img`/`group` ×3, `region`/`progressbar` ×2, plus 11 single-use widget/document roles) bypassing any shared source of truth. Flexy says: no hardcoded role strings!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `ARIA_ROLES` (19 roles: STATUS/ALERT/DIALOG/IMG/GROUP/REGION/PROGRESSBAR/TOOLTIP/TABPANEL/TABLIST/TAB/SLIDER/SEARCHBOX/RADIOGROUP/RADIO/OPTION/LISTITEM/LISTBOX/LIST) |
+| `packages/shared/src/index.ts` | Exported `ARIA_ROLES` on the root export |
+| `packages/shared/src/config.test.ts` | Added 7 tests asserting `ARIA_ROLES` values, count (19), string types, uniqueness |
+| `apps/web/src/components/*.tsx` (31 files) | Replaced 73 hardcoded `role="..."` with `role={ARIA_ROLES.*}` refs (value-preserving; rendered output byte-identical) |
+
+Out of scope (intentionally untouched): `role="..."` inside code comments/JSDoc, `lib/templates/react.ts` SVG template string (generated-project output content, not app UI), `hooks/` doc examples.
+
+## Verification
+
+- ✅ `npm run build --workspace=@blueprint/shared` — clean
+- ✅ `npm run typecheck` — zero NEW errors (shared clean; web non-test files clean; api Zod-v4 + web jest-dom matcher errors pre-existing on main, untouched files only)
+- ✅ `npx eslint` on all 34 touched files — zero errors, zero warnings
+- ✅ `npm run build --workspace=apps/web` + `apps/api` — clean
+- ✅ `npx prettier --check` on touched files — clean
+- ✅ shared tests — 866 passing (incl. 7 new); web tests — 1,248 passing; api tests — workerd-pool infra-broken pre-existing (zero api files touched)
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-188-aria-roles` | refactor(flexy): centralize WAI-ARIA role literals into shared config (Iteration 188) |
+
 ### ✅ Flexy Iteration 185: Centralize CSS Class Combinations, Log Contexts & API Micro-Literals
 
 **Problem**: Remaining hardcoded values were scattered across two fronts. Web: 6× scroll-shadow overlay class strings (Editor/Wizard), 11× icon hover-rotation class strings (4 wizard steps), 7× empty-state keycap class strings, and the "Skip to main content" label — all bypassing `CSS_CLASSES`. API: 6× secure-log context/message strings bypassing `LOG_CONTEXT`, the share verify `"token"` query param bypassing the `STORAGE_QUERY_PARAMS` pattern, an inline Content-Type mismatch message, the Server-Timing `"app"`/`0` literals, a `Date.now()` bypassing the `timestamp()` helper, and a raw `"ms"` suffix. Flexy says: no hardcoded class strings, log contexts, or micro-literals!

@@ -41,6 +41,7 @@ import {
   ANIMATION_DIRECTIONS,
   KEYBOARD_EVENT_KEYS,
   UI_MESSAGES,
+  ARIA_ROLES,
 } from "@blueprint/shared";
 import { LAYOUT } from "../config/theme";
 import type { AnimationDirection } from "../utils/motion";
@@ -222,7 +223,7 @@ function WizardComponent(): JSX.Element {
       fallback={
         <div
           className="flex items-center justify-center py-16"
-          role="status"
+          role={ARIA_ROLES.STATUS}
           aria-live="polite"
           aria-label={ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP}
         >
@@ -255,7 +256,7 @@ function WizardComponent(): JSX.Element {
         ref={containerRef}
         onScroll={handleScroll}
         className="flex-1 overflow-y-auto overscroll-contain p-6"
-        role="region"
+        role={ARIA_ROLES.REGION}
         aria-label={ACCESSIBILITY_LABELS.WIZARD.STEP_ARIA(currentStepLabel)}
       >
         <StepTransition mode="wait">{renderStep()}</StepTransition>

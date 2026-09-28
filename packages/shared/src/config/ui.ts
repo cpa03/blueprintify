@@ -648,6 +648,56 @@ export const ARIA_KEYSHORTCUTS = {
 } as const;
 
 /**
+ * ARIA Role Values
+ * Centralized source of truth for WAI-ARIA `role` attribute values used
+ * across web components (live regions, dialogs, widgets, document structure).
+ * Keeps role semantics consistent and greppable from a single location.
+ * Flexy says: No hardcoded "status" / "alert" / "dialog" role strings in components!
+ * Usage: import { ARIA_ROLES } from "@blueprint/shared";
+ *        <div role={ARIA_ROLES.STATUS} aria-live="polite">
+ */
+export const ARIA_ROLES = {
+  /** Live-region status updates (loading indicators, progress, announcements) */
+  STATUS: "status" as const,
+  /** Assertive live-region alerts (errors, validation failures) */
+  ALERT: "alert" as const,
+  /** Modal/non-modal dialog containers */
+  DIALOG: "dialog" as const,
+  /** Image with accessible name (SVG icons, illustrations) */
+  IMG: "img" as const,
+  /** Nameless grouping container for related widgets */
+  GROUP: "group" as const,
+  /** Named landmark section of the page */
+  REGION: "region" as const,
+  /** Determinate/indeterminate progress indicator */
+  PROGRESSBAR: "progressbar" as const,
+  /** Contextual tooltip container */
+  TOOLTIP: "tooltip" as const,
+  /** Tab content panel */
+  TABPANEL: "tabpanel" as const,
+  /** Tab list container */
+  TABLIST: "tablist" as const,
+  /** Individual tab control */
+  TAB: "tab" as const,
+  /** Slider input (e.g. reading-progress bar) */
+  SLIDER: "slider" as const,
+  /** Search input combobox */
+  SEARCHBOX: "searchbox" as const,
+  /** Radio option group container */
+  RADIOGROUP: "radiogroup" as const,
+  /** Individual radio option */
+  RADIO: "radio" as const,
+  /** Listbox option row */
+  OPTION: "option" as const,
+  /** List item container */
+  LISTITEM: "listitem" as const,
+  /** Listbox popup container */
+  LISTBOX: "listbox" as const,
+  /** List container */
+  LIST: "list" as const,
+} as const;
+
+/**
  * Keyboard Display Symbols
  * Centralized source of truth for keyboard display symbols (Unicode characters)
  * used in keyboard shortcut hint labels, kbd elements, and navigation indicators.

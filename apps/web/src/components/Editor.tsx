@@ -43,6 +43,7 @@ import {
   UI_TIMING,
   SKELETON_DEFAULTS,
   KEYBOARD_EVENT_KEYS,
+  ARIA_ROLES,
 } from "@blueprint/shared/config";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
@@ -93,7 +94,7 @@ function EditorSkeleton({ isVisible }: { isVisible: boolean }): JSX.Element | nu
   return (
     <div
       className="editor-skeleton"
-      role="status"
+      role={ARIA_ROLES.STATUS}
       aria-label={EDITOR_ANNOUNCER.SKELETON_GENERATING}
     >
       <div className="editor-skeleton-gutter">
@@ -136,7 +137,7 @@ function PreviewSkeleton(): JSX.Element {
   return (
     <div
       className="preview-skeleton"
-      role="status"
+      role={ARIA_ROLES.STATUS}
       aria-label={EDITOR_ANNOUNCER.PREVIEW_SKELETON_GENERATING}
     >
       <div className="skeleton-block preview-skeleton-heading" />
@@ -564,7 +565,7 @@ function EditorComponent(): JSX.Element {
                       ease: ANIMATION_TIMING.easing.easeOut,
                     }}
                     id={activeTab === EDITOR_TABS.BLUEPRINT ? "blueprint-panel" : "tasks-panel"}
-                    role="tabpanel"
+                    role={ARIA_ROLES.TABPANEL}
                     aria-labelledby={`tab-${activeTab}`}
                     aria-busy={isGenerating || undefined}
                     className="h-full flex flex-col lg:flex-row"
@@ -832,7 +833,7 @@ function EditorComponent(): JSX.Element {
           via useRef to prevent re-announcement on re-renders */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
+        role={ARIA_ROLES.STATUS}
         aria-live="polite"
         aria-atomic="true"
       >

@@ -22,7 +22,11 @@
  */
 
 import { useEffect, useCallback, useState, useRef, memo } from "react";
-import { WIZARD_STEP_KEYS, ANIMATION_ENTRANCE_DELAYS_MS } from "@blueprint/shared/config";
+import {
+  WIZARD_STEP_KEYS,
+  ANIMATION_ENTRANCE_DELAYS_MS,
+  ARIA_ROLES,
+} from "@blueprint/shared/config";
 import type { WizardStep } from "@blueprint/shared/types";
 import { useWizardStore, useEditorStore, useToast } from "../store";
 import { Icon } from "./Icon";
@@ -282,7 +286,7 @@ function StepIndicatorComponent(): JSX.Element {
           context as sighted users who see the flash/glow animations. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
+        role={ARIA_ROLES.STATUS}
         aria-live="polite"
         aria-atomic="true"
       >

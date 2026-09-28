@@ -138,6 +138,7 @@ import {
   KEYBOARD_EVENT_KEYS,
   DISPLAY_SYMBOLS,
   ARIA_KEYSHORTCUTS,
+  ARIA_ROLES,
   BREAKPOINT_DEFAULTS,
   CHAR_COUNTER_THRESHOLDS,
   CHAR_COUNTER_COLORS,
@@ -4092,6 +4093,56 @@ describe("ARIA_KEYSHORTCUTS", () => {
 
   it("should have 1 property", () => {
     expect(Object.keys(ARIA_KEYSHORTCUTS).length).toBe(1);
+  });
+});
+
+// ============================================================================
+// ARIA_ROLES
+// ============================================================================
+describe("ARIA_ROLES", () => {
+  it("should have live-region roles", () => {
+    expect(ARIA_ROLES.STATUS).toBe("status");
+    expect(ARIA_ROLES.ALERT).toBe("alert");
+  });
+
+  it("should have dialog and structural roles", () => {
+    expect(ARIA_ROLES.DIALOG).toBe("dialog");
+    expect(ARIA_ROLES.IMG).toBe("img");
+    expect(ARIA_ROLES.GROUP).toBe("group");
+    expect(ARIA_ROLES.REGION).toBe("region");
+  });
+
+  it("should have widget roles", () => {
+    expect(ARIA_ROLES.PROGRESSBAR).toBe("progressbar");
+    expect(ARIA_ROLES.TOOLTIP).toBe("tooltip");
+    expect(ARIA_ROLES.SLIDER).toBe("slider");
+    expect(ARIA_ROLES.SEARCHBOX).toBe("searchbox");
+    expect(ARIA_ROLES.RADIOGROUP).toBe("radiogroup");
+    expect(ARIA_ROLES.RADIO).toBe("radio");
+  });
+
+  it("should have tab and list roles", () => {
+    expect(ARIA_ROLES.TABPANEL).toBe("tabpanel");
+    expect(ARIA_ROLES.TABLIST).toBe("tablist");
+    expect(ARIA_ROLES.TAB).toBe("tab");
+    expect(ARIA_ROLES.OPTION).toBe("option");
+    expect(ARIA_ROLES.LISTITEM).toBe("listitem");
+    expect(ARIA_ROLES.LISTBOX).toBe("listbox");
+    expect(ARIA_ROLES.LIST).toBe("list");
+  });
+
+  it("should have 19 properties", () => {
+    expect(Object.keys(ARIA_ROLES).length).toBe(19);
+  });
+
+  it("should have all values as strings", () => {
+    const values = Object.values(ARIA_ROLES);
+    values.forEach((v) => expect(typeof v).toBe("string"));
+  });
+
+  it("should have unique values", () => {
+    const values = Object.values(ARIA_ROLES);
+    expect(new Set(values).size).toBe(values.length);
   });
 });
 

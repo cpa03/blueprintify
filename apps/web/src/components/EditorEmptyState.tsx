@@ -25,6 +25,7 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   DISPLAY_SYMBOLS,
   EMPTY_STATE_VALUES,
+  ARIA_ROLES,
 } from "@blueprint/shared/config";
 import { EDITOR_EMPTY_STATE_LABELS } from "../config/constants/content";
 import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from "../utils/motion";
@@ -90,7 +91,7 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
       variants={staggerContainer}
       initial="hidden"
       animate="visible"
-      role="status"
+      role={ARIA_ROLES.STATUS}
       aria-label="Editor empty state"
       data-state={EMPTY_STATE_VALUES.WAITING}
       data-step={currentStep}

@@ -11,7 +11,7 @@
 import { useState, useCallback, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { TYPING_STATE_VALUES, LOADING_DOTS_COUNT } from "@blueprint/shared";
+import { TYPING_STATE_VALUES, LOADING_DOTS_COUNT, ARIA_ROLES } from "@blueprint/shared";
 import { ANIMATION, ANIMATION_MS } from "../config/constants";
 import { ANIMATION_TIMING } from "../config/theme";
 import { TYPING } from "../config/styles";
@@ -67,7 +67,7 @@ export const TypeIndicator = memo(function TypeIndicator({
           className={`inline-flex items-center gap-1 ${
             position === "left" ? "mr-2" : "ml-2"
           } ${className}`}
-          role="status"
+          role={ARIA_ROLES.STATUS}
           aria-live="polite"
           aria-atomic="true"
           data-state={isTyping ? TYPING_STATE_VALUES.TYPING : TYPING_STATE_VALUES.IDLE}

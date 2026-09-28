@@ -54,6 +54,7 @@ import {
   SHORTCUT_LABELS,
   PERCENT_SCALE,
   TIME_UNITS,
+  ARIA_ROLES,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
@@ -546,7 +547,7 @@ function ToastContainerComponent(): JSX.Element {
   return (
     <motion.div
       className={TOAST_SPRING.CONTAINER_CLASSES}
-      role="region"
+      role={ARIA_ROLES.REGION}
       aria-label={ACCESSIBILITY_LABELS.TOAST.REGION}
       data-count={toasts.length}
       data-has-toasts={toasts.length > 0 ? "true" : "false"}
@@ -642,7 +643,7 @@ function ToastContainerComponent(): JSX.Element {
           context that a batch dismiss occurred. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
+        role={ARIA_ROLES.STATUS}
         aria-live="assertive"
         aria-atomic="true"
       >

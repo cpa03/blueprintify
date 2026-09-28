@@ -29,6 +29,7 @@ import {
   FRAMER_TYPE,
   DISPLAY_SYMBOLS,
   DIALOG_STATE_VALUES,
+  ARIA_ROLES,
 } from "@blueprint/shared";
 import { useFocusTrap, useScrollLock } from "../hooks";
 import { Icon, type IconName } from "./Icon";
@@ -298,7 +299,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
               ...SPRING_CONFIG.GENTLE,
             }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
-            role="dialog"
+            role={ARIA_ROLES.DIALOG}
             aria-modal="true"
             aria-labelledby="keyboard-shortcuts-title"
             aria-describedby="keyboard-shortcuts-tip"
@@ -366,7 +367,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                                focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50
                                transition-all duration-200"
                     aria-label={ACCESSIBILITY_LABELS.KEYBOARD_SHORTCUTS.SEARCH}
-                    role="searchbox"
+                    role={ARIA_ROLES.SEARCHBOX}
                     autoComplete="off"
                     enterKeyHint="search"
                     spellCheck={false}
@@ -495,7 +496,7 @@ function KeyboardShortcutsModalComponent({ isOpen, onClose }: KeyboardShortcutsM
                 <p
                   id="keyboard-shortcuts-tip"
                   className="text-xs text-dark-500 text-center"
-                  role="status"
+                  role={ARIA_ROLES.STATUS}
                   aria-live="polite"
                   aria-atomic="true"
                 >

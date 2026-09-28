@@ -41,6 +41,7 @@ import {
   FRAMER_TYPE,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
+  ARIA_ROLES,
 } from "@blueprint/shared/config";
 import { SmartTooltip as Tooltip } from "../SmartTooltip";
 import { Icon } from "../Icon";
@@ -148,7 +149,7 @@ function EditorToolbarComponent({
     <div className="flex items-center gap-2">
       <div
         className="flex bg-dark-800 p-1 rounded-lg relative"
-        role="radiogroup"
+        role={ARIA_ROLES.RADIOGROUP}
         aria-label={EDITOR_LABELS.VIEW_MODES_ARIA_LABEL}
         // Horizontal orientation: the view-mode radios are arranged in a row
         // and navigated with ArrowLeft/ArrowRight (see handleViewModeKeyDown).
@@ -174,7 +175,7 @@ function EditorToolbarComponent({
             <button
               onClick={() => setViewMode(mode)}
               data-view-mode={mode}
-              role="radio"
+              role={ARIA_ROLES.RADIO}
               aria-checked={viewMode === mode}
               // Roving tabindex (ARIA radio-group pattern): only the checked
               // radio stays in the tab order; arrow keys move between options.
