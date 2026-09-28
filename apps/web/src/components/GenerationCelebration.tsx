@@ -22,7 +22,7 @@ import {
   CELEBRATION_PARTICLE_STYLE,
   SPRING_CONFIG,
 } from "../config/constants";
-import { FRAMER_TYPE, RATIO_LIMITS } from "@blueprint/shared/config";
+import { FRAMER_TYPE, RATIO_LIMITS, ARIA_ROLES } from "@blueprint/shared/config";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 
@@ -202,7 +202,7 @@ function GenerationCelebrationComponent({
   return (
     <div
       className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center"
-      role="status"
+      role={ARIA_ROLES.STATUS}
       aria-live="polite"
       aria-label={ACCESSIBILITY_LABELS.CELEBRATION.COMPLETE}
     >

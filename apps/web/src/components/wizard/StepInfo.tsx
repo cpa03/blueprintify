@@ -34,6 +34,7 @@ import {
   MODIFIER_KEYS,
   RATIO_LIMITS,
   UI_TIMEOUTS,
+  ARIA_ROLES,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -489,7 +490,7 @@ export const StepInfo = memo(function StepInfo({
               projectName.length < FORM_LIMITS.PROJECT_NAME.MAX && (
                 <motion.p
                   id="projectName-warning"
-                  role="status"
+                  role={ARIA_ROLES.STATUS}
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
@@ -504,7 +505,7 @@ export const StepInfo = memo(function StepInfo({
             {projectNameErrorVisible && (
               <motion.p
                 id="projectName-error"
-                role="alert"
+                role={ARIA_ROLES.ALERT}
                 initial={{ opacity: 0, y: -4, x: -3 }}
                 animate={{ opacity: 1, y: 0, x: 0 }}
                 exit={{ opacity: 0, y: -4, x: -3 }}
@@ -641,7 +642,7 @@ export const StepInfo = memo(function StepInfo({
               description.length < FORM_LIMITS.DESCRIPTION.MAX && (
                 <motion.p
                   id="description-warning"
-                  role="status"
+                  role={ARIA_ROLES.STATUS}
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
@@ -656,7 +657,7 @@ export const StepInfo = memo(function StepInfo({
             {descriptionErrorVisible && (
               <motion.p
                 id="description-error"
-                role="alert"
+                role={ARIA_ROLES.ALERT}
                 initial={{ opacity: 0, y: -4, x: -3 }}
                 animate={{ opacity: 1, y: 0, x: 0 }}
                 exit={{ opacity: 0, y: -4, x: -3 }}
@@ -820,7 +821,7 @@ export const StepInfo = memo(function StepInfo({
           clear-all button unmounts from the DOM without a visible confirmation. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
+        role={ARIA_ROLES.STATUS}
         aria-live="assertive"
         aria-atomic="true"
       >

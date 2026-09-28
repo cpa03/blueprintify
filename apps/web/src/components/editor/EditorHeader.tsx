@@ -36,6 +36,7 @@ import {
   FRAMER_TYPE,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
+  ARIA_ROLES,
 } from "@blueprint/shared/config";
 import { EditorToolbar, type ViewMode } from "./EditorToolbar";
 import { Icon } from "../Icon";
@@ -108,7 +109,7 @@ const TabButton = React.memo(function TabButton({
 }) {
   return (
     <button
-      role="tab"
+      role={ARIA_ROLES.TAB}
       aria-selected={isActive}
       aria-controls={hasContent ? `${id}-panel` : undefined}
       id={`tab-${id}`}
@@ -178,7 +179,7 @@ const TabButton = React.memo(function TabButton({
                 type: FRAMER_TYPE.SPRING,
                 ...EDITOR_ANIMATION.CONTENT_DOT,
               }}
-              role="status"
+              role={ARIA_ROLES.STATUS}
               aria-label={ACCESSIBILITY_LABELS.EDITOR.CONTENT_AVAILABLE(
                 id === EDITOR_TABS.BLUEPRINT
                   ? EDITOR_FILENAMES.BLUEPRINT_DISPLAY
@@ -199,7 +200,7 @@ const TabButton = React.memo(function TabButton({
               repeat: Infinity,
               ease: EASING.easeInOut,
             }}
-            role="status"
+            role={ARIA_ROLES.STATUS}
             aria-label={ACCESSIBILITY_LABELS.EDITOR.STREAMING_CONTENT}
           />
         )}
@@ -530,7 +531,7 @@ function EditorHeaderComponent({
       <div className="flex items-center gap-6">
         <div
           className="flex gap-1 bg-dark-800 p-1 rounded-lg"
-          role="tablist"
+          role={ARIA_ROLES.TABLIST}
           aria-label={ACCESSIBILITY_LABELS.EDITOR.DOCUMENT_TABS}
           // Horizontal orientation: tabs are arranged in a row and navigated
           // with ArrowLeft/ArrowRight (see handleTabKeyDown). Matches the

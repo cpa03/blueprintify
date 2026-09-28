@@ -38,6 +38,7 @@ import {
   NETWORK_DEFAULTS,
   TOAST_TYPES,
   BANNER_STATE_VALUES,
+  ARIA_ROLES,
 } from "@blueprint/shared/config";
 import {
   NETWORK_MESSAGES,
@@ -274,7 +275,7 @@ function OfflineBannerComponent(): JSX.Element | null {
           banner auto-hides without a user-facing confirmation. */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
+        role={ARIA_ROLES.STATUS}
         aria-live="assertive"
         aria-atomic="true"
       >

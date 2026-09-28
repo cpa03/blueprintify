@@ -28,7 +28,12 @@
  */
 
 import { useState, memo, useCallback, useRef, useMemo } from "react";
-import { STARTER_TEMPLATES, KEYBOARD_EVENT_KEYS, BREAKPOINT_DEFAULTS } from "@blueprint/shared";
+import {
+  STARTER_TEMPLATES,
+  KEYBOARD_EVENT_KEYS,
+  BREAKPOINT_DEFAULTS,
+  ARIA_ROLES,
+} from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import {
   ANIMATION,
@@ -141,7 +146,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
 
       <div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-        role="listbox"
+        role={ARIA_ROLES.LISTBOX}
         aria-label={ACCESSIBILITY_LABELS.TEMPLATES.QUICK_START}
         aria-orientation="horizontal"
       >
@@ -168,7 +173,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
               aria-disabled={selectedId !== null}
               aria-busy={isSelected && isLoading}
               aria-selected={isSelected}
-              role="option"
+              role={ARIA_ROLES.OPTION}
               tabIndex={focusIndex === index ? 0 : -1}
               style={
                 {
@@ -315,7 +320,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
       {/* Intentionally blank when idle — live region for loading announcements */}
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
+        role={ARIA_ROLES.STATUS}
         aria-live="polite"
         aria-atomic="true"
       >

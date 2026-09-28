@@ -14,7 +14,7 @@ import React, { useState, useCallback, useRef, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
 import clsx from "clsx";
-import { FRAMER_TYPE, TIME_UNITS, COPY_STATE_VALUES } from "@blueprint/shared";
+import { FRAMER_TYPE, TIME_UNITS, COPY_STATE_VALUES, ARIA_ROLES } from "@blueprint/shared";
 import {
   CELEBRATION_COLORS,
   ANIMATION_COLORS,
@@ -235,7 +235,11 @@ function AnimatedCopyButtonComponent({
       </AnimatePresence>
 
       {/* Screen reader announcement for copy status */}
-      <span className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS} role="status" aria-live="polite">
+      <span
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role={ARIA_ROLES.STATUS}
+        aria-live="polite"
+      >
         {isCopied ? COPY_BUTTON_LABELS.COPIED : null}
       </span>
 

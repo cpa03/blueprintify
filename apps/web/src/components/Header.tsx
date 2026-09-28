@@ -17,7 +17,12 @@
  */
 
 import { memo, useState, useEffect, useCallback } from "react";
-import { SHORTCUT_LABELS, SHORTCUT_DESCRIPTIONS, MODIFIER_KEYS } from "@blueprint/shared/config";
+import {
+  SHORTCUT_LABELS,
+  SHORTCUT_DESCRIPTIONS,
+  MODIFIER_KEYS,
+  ARIA_ROLES,
+} from "@blueprint/shared/config";
 import { SCROLL_BEHAVIOR } from "@blueprint/shared/config";
 import {
   UI_CONTENT,
@@ -219,7 +224,7 @@ function HeaderComponent({
       {/* Live region announcing the reduce-motion preference toggle */}
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
-        role="status"
+        role={ARIA_ROLES.STATUS}
         aria-live="polite"
         aria-atomic="true"
       >

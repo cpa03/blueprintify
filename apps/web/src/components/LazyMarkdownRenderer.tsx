@@ -3,6 +3,7 @@ import type { MarkdownRendererProps } from "./MarkdownRenderer";
 import { isDev } from "../config/env";
 import { ACCESSIBILITY_LABELS, DEBUG_MESSAGES, SKELETON_LAYOUT } from "../config/constants/content";
 import { FOCUS_ANNOUNCER } from "../config/constants/accessibility";
+import { ARIA_ROLES } from "@blueprint/shared";
 
 interface LazyMarkdownRendererProps extends MarkdownRendererProps {
   fallback?: React.ReactNode;
@@ -12,7 +13,7 @@ function MarkdownPreviewSkeleton(): JSX.Element {
   return (
     <div
       className="preview-skeleton"
-      role="status"
+      role={ARIA_ROLES.STATUS}
       aria-live="polite"
       aria-label={ACCESSIBILITY_LABELS.LAZY_MARKDOWN_RENDERER.LOADING}
     >
@@ -76,7 +77,11 @@ function LazyMarkdownRendererComponent({
 
   return (
     <>
-      <div role="status" aria-live="polite" className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}>
+      <div
+        role={ARIA_ROLES.STATUS}
+        aria-live="polite"
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+      >
         {ACCESSIBILITY_LABELS.LAZY_MARKDOWN_RENDERER.READY}
       </div>
       <MarkdownComponent content={content} className={className} />

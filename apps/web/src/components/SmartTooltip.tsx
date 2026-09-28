@@ -11,7 +11,7 @@ import {
   isValidElement,
   type ReactElement,
 } from "react";
-import { KEYBOARD_EVENT_KEYS, MODIFIER_KEYS, DIRECTION } from "@blueprint/shared";
+import { KEYBOARD_EVENT_KEYS, MODIFIER_KEYS, DIRECTION, ARIA_ROLES } from "@blueprint/shared";
 import { TOOLTIP_CONFIG } from "../config/constants";
 import { formatShortcut } from "../lib/platform";
 import { Icon } from "./Icon";
@@ -299,7 +299,7 @@ function SmartTooltipComponent({
         <div
           ref={tooltipRef}
           id={tooltipId}
-          role="tooltip"
+          role={ARIA_ROLES.TOOLTIP}
           data-state="visible"
           data-position={computedPosition}
           className={`absolute ${positionStyle.container} z-50 pointer-events-none animate-tooltip-in ${className}`}

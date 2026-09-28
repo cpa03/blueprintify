@@ -37,6 +37,7 @@ import {
   LOADING_DOTS_COUNT,
   MODIFIER_KEYS,
   TIME_UNITS,
+  ARIA_ROLES,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -422,7 +423,7 @@ export const StepGenerating = memo(function StepGenerating({
               viewBox="0 0 48 48"
               fill="none"
               className="text-accent-pink"
-              role="img"
+              role={ARIA_ROLES.IMG}
               aria-label={GENERATION_ERROR_LABELS.ERROR_ICON_ARIA}
             >
               <motion.circle
@@ -533,7 +534,12 @@ export const StepGenerating = memo(function StepGenerating({
                 ? GENERATION_ERROR_LABELS.ERROR_TASKS_TITLE
                 : GENERATION_ERROR_LABELS.ERROR_TITLE}
             </h2>
-            <p className="text-dark-400 mb-6" role="alert" aria-live="assertive" aria-atomic="true">
+            <p
+              className="text-dark-400 mb-6"
+              role={ARIA_ROLES.ALERT}
+              aria-live="assertive"
+              aria-atomic="true"
+            >
               {progress}
             </p>
           </motion.div>
@@ -557,7 +563,12 @@ export const StepGenerating = memo(function StepGenerating({
               {WIZARD_GENERATING_LABELS.GENERATING_TITLE}
               <LoadingDots active={!shouldReduceMotion && isGenerating} />
             </motion.h2>
-            <p className="text-dark-400 mb-6" role="status" aria-live="polite" aria-atomic="true">
+            <p
+              className="text-dark-400 mb-6"
+              role={ARIA_ROLES.STATUS}
+              aria-live="polite"
+              aria-atomic="true"
+            >
               <motion.span
                 animate={{ opacity: OPACITY_PULSE.STRONG }}
                 transition={{ duration: ANIMATION.DRIFT, repeat: Infinity, ease: EASING.easeInOut }}
@@ -597,7 +608,7 @@ export const StepGenerating = memo(function StepGenerating({
         <div className="w-full max-w-sm mx-auto mt-6 mb-2">
           <div
             className="w-full h-1.5 bg-dark-700/50 rounded-full overflow-hidden"
-            role="progressbar"
+            role={ARIA_ROLES.PROGRESSBAR}
             aria-valuenow={generationPhase.percent}
             aria-valuemin={0}
             aria-valuemax={100}
@@ -638,7 +649,7 @@ export const StepGenerating = memo(function StepGenerating({
         </div>
       )}
 
-      <p className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS} role="status" aria-live="polite">
+      <p className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS} role={ARIA_ROLES.STATUS} aria-live="polite">
         {timerActive
           ? GENERATION_ANNOUNCER.ELAPSED(announcedElapsed, blueprintLines, tasksLines)
           : GENERATION_ANNOUNCER.GENERATED(blueprintLines, tasksLines)}
