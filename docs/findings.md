@@ -2,6 +2,26 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-09-28 — Dead code, unused exports, commented-out code scan)
+
+**Scope**: `agent/janitor` branch (synced to `origin/main` @ `c03cffd3`). Re-scan following the 2026-09-27 cleanup; ran `scripts/janitor-scan.mjs` plus manual comment/`console.log`/duplicate sweeps. `npm run build` verified green (9.16s).
+
+### Removed
+
+- None. No safe source deletions this cycle — every candidate verified as live code or intentionally kept (see below). Workspace-only hygiene: deleted gitignored `build.log`/`lint.log`/`typecheck.log` leftovers from local runs (untracked, not part of PR diff).
+
+### Verified clean (no action needed)
+
+- **No orphaned source files**: all `janitor-scan.mjs` "orphan" hits are test/e2e files discovered by vitest/playwright configs; `scripts/migrate.ts` is wired via `db:*` npm scripts; `apps/web/functions/api/[[path]].ts` is a deploy entry point (not imported by design). Duplicate `functions/api/[[path]].ts` (repo root) reported on 2026-09-27 is now gone — only `apps/web/functions/api/[[path]].ts` remains (resolved in `9ecfb9d2`).
+- **No commented-out dead code**: repo-wide grep for `// <code-keyword>` and block-comment code hits only `node_modules` (ignored) — zero hits in `apps/`/`packages/`/`scripts/` prod sources.
+- **No production `console.log`**: all hits are intentional (logging utils `apps/api/src/middleware/logger.ts`/`apps/api/src/utils/secureLog.ts`, e2e spec output, JSDoc examples, `console.log` text inside template-generator output strings in `node.ts`/`static.ts`).
+- **Spot-verified unused-export false positives**: `FIELD_LABELS`/`FIELD_PATHS` (used intra-file in `validation.ts` to build field lists), `Container` (module consumed via `getContainer`/`initializeContainer`), `APIError` (consumed via `isAPIError` type-guard), `storageManager` (singleton backing `wizardStorage`/`editorStorage`), `ViewMode` (type-imported by `EditorHeader.tsx`), template generators (consumed via registry).
+- **No duplicate files by checksum**: `md5sum` sweep over `apps`/`packages`/`functions`/`scripts` (excl. `node_modules`/`dist`) found zero byte-identical pairs.
+
+### Structural findings (recommended for future work, not removed)
+
+- [Janitor] Config/utils fragmentation: 3× `utils/` (`apps/api/src/utils`, `apps/web/src/utils`, `packages/shared/src/utils`) + 3× `config/` (`apps/api/src/config`, `apps/web/src/config`, `packages/shared/src/config`) + 2× `config/constants/` (api, web). No copy-pasted `formatDate`-style logic found, so no DRY merge proposed — but recommend unifying only via `packages/shared` for genuinely shared helpers on a future cycle, not a bulk move.
+
 ## Janitor Cleanup (2026-09-27 — Dead code, unused exports, commented-out code scan)
 
 **Scope**: `agent/janitor` branch (synced to `origin/main` @ `41ea4748`). Re-scan following the 2026-08-18 cleanup; ran `scripts/janitor-scan.mjs` (127 orphan candidates, 90 unused-export candidates) plus manual comment/`console.log`/duplicate sweeps.
