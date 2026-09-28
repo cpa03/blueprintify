@@ -2,6 +2,31 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-09-28 — Dead code, unused exports, commented-out code scan)
+
+**Scope**: `agent/janitor` branch (synced to `origin/main` @ `c03cffd3`). Re-scan following the 2026-09-27 cleanup; ran `scripts/janitor-scan.mjs` (127 orphan candidates, 81 unused-export candidates — down from 90, prior removals held) plus manual comment/`console.log`/duplicate/dependency sweeps.
+
+### Removed
+
+- None. No safe deletions this cycle — every candidate verified as live code or intentionally kept (see below). No source changes; workspace hygiene only (untracked planner notes + ignored `*.log` removed locally, untracked by git).
+
+**Verification**: `prettier --check docs/findings.md` ✅. `npm run typecheck` ❌ — but failures are pre-existing, not caused by this cycle: errors are jest-dom matcher types (`toBeInTheDocument`, `toHaveTextContent`, `toBeEnabled`) in `apps/web` test files (e.g. `StepStack.test.tsx`) that are byte-identical to `origin/main` (this cycle touched only `docs/findings.md`). Out of Janitor scope (no logic changes) — flagged for owner/CI instead.
+
+### Verified clean (no action needed)
+
+- **No orphaned source files**: all 127 "orphan" hits are test/e2e files discovered by vitest/playwright configs; `scripts/migrate.ts` is wired via `db:*` npm scripts; `apps/web/functions/api/[[path]].ts` is a deploy entry point (not imported by design).
+- **No commented-out dead code**: only prose/JSDoc hits and `// =====` separator comments (false positives on merge-marker/`;`-terminated-comment patterns).
+- **No production `console.log`**: all hits intentional (logging utils `logger.ts`/`secureLog.ts`, e2e spec output, JSDoc examples, `console.log` text inside template-generator output strings).
+- **No type-unsafety markers**: 0 `as any`, 0 `@ts-ignore`/`@ts-expect-error`, 0 empty catch blocks, 0 merge conflict artifacts in source.
+- **Spot-verified unused-export false positives**: `GenerationResult` (barrel type), `storageManager` (same-file consumers), `generateHonoIndex` (same-file + registry), `FIELD_LABELS` (same-file), `APIError` (18 refs), `Container` (14), `ViewMode` (18), `ToastType` (8), `ExportContext` (16), `ReducedMotionContext` (18), `MigrationRunner` (CLI + same-file), `onRequest` (Pages entry, 1 ref by design), `useShallow` re-export (new on main, documented `import { useShallow } from '../store'` pattern — 0 consumers yet, intentional API surface), `PREVIEW_DEFAULTS`/`OBSERVABILITY_DEFAULTS`/`QUEUE_DEFAULTS`/`PLAYWRIGHT_CONFIG` (barrel config surface, kept per `UI_FALLBACKS` documentation-as-code precedent).
+- **No duplicate utilities**: `apps/api/src/utils`, `apps/web/src/utils`, `apps/web/src/lib`, `packages/shared/src/utils` are distinct domains; no repeated `formatDate`-style logic found.
+- **No unused dependencies**: all root/workspace deps referenced (`clsx`/`jszip`/`framer-motion`/`zustand`/`dompurify` in source; `chrome-launcher`+`lighthouse` in brocula scripts; `concurrently` in `dev:all`). `depcheck` unavailable offline — verified via manual grep.
+- **New main changes reviewed** (since `8144a647`): lazy-load `default` exports on components/hooks, `store` `useShallow` re-export, shared `CreateShareRequest`/`VerifySharePassphraseRequest`/`StreamCallbacks` re-adds (share feature resurrected after `f9f39681` removal — kept; proves premature-removal risk on shared config surface).
+
+### Structural findings (recommended for future work, not removed)
+
+- [Janitor] `scripts/janitor-scan.mjs` exists only on `agent/janitor` (added in `f2d88233`, never on `main`, unreferenced by any npm script). Keep or delete before merge? Precedent from 2026-09-27 is keep as scan tool, but merging it adds ~240 lines against the leaner-before-merge goal. **Recommend human decides: promote to `npm run scan:janitor` or drop from the branch before merge.**
+
 ## Janitor Cleanup (2026-09-27 — Dead code, unused exports, commented-out code scan)
 
 **Scope**: `agent/janitor` branch (synced to `origin/main` @ `41ea4748`). Re-scan following the 2026-08-18 cleanup; ran `scripts/janitor-scan.mjs` (127 orphan candidates, 90 unused-export candidates) plus manual comment/`console.log`/duplicate sweeps.
