@@ -1729,7 +1729,6 @@ Skills used: `docs-update` loaded per contract (docs record append). Subagents u
 - **Vulnerabilities**: `npm audit` (full + `--audit-level=high`) → **0 vulnerabilities**. ESLint 10.8.1 is current/latest (not deprecated; `npm view eslint@10.8.1 deprecated` → empty).
 - **Deprecated functions/APIs**: `usedDeprecatedRules: []` on real files. ESLint flat config (`eslint.config.js`) loads cleanly under v10; `--ext` flag (used by `npm run lint`) still supported in v10. Runtime probes confirmed plugin rules still fire under ESLint 10: `react/jsx-key` (missing-key error), `react-hooks/exhaustive-deps` + `set-state-in-effect` (real violation), `jsx-a11y/alt-text` (img without alt). Full repo lint: 296 files, 0 issues, exit 0.
 - **Peer-dep metadata lag (informational, pre-existing)**: `npm ls` flags eslint@10.8.1 as `invalid` peer for `eslint-plugin-react@7.37.5` and `eslint-plugin-jsx-a11y@6.10.2` — their published peer ranges still cap at `^9` (latest versions unchanged). Repo already mitigates via `.npmrc` `legacy-peer-deps=true` (committed in `main`, not part of this diff). Verified functionally harmless: clean-room `npm ci --ignore-scripts` succeeds on this lockfile; plugins demonstrably operate correctly under v10. Recommend re-checking when upstream plugins widen peer ranges to `^10`.
->>>>>>> origin/main
 
 ## ULW Loop Cycle 522 (2026-08-17 — REPOKEEPER MODE)
 
