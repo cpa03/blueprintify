@@ -166,7 +166,15 @@ function CharacterCounterCompactComponent({
         : "";
 
   return (
-    <div className={`flex items-center gap-1.5 ${className}`} data-state={compactStateValue}>
+    <div
+      className={`flex items-center gap-1.5 ${className}`}
+      data-state={compactStateValue}
+      role="progressbar"
+      aria-label={compactCountLabel}
+      aria-valuemin={0}
+      aria-valuemax={max}
+      aria-valuenow={Math.min(current, max)}
+    >
       <div className="w-12 h-1.5 bg-dark-700 rounded-full overflow-hidden" aria-hidden="true">
         <div
           className={`h-full rounded-full transition-all duration-300 ease-out ${
