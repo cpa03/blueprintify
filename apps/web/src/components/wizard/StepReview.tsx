@@ -30,6 +30,8 @@ import {
   DISPLAY_SYMBOLS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { memo, useCallback, useEffect } from "react";
@@ -549,8 +551,8 @@ export const StepReview = memo(function StepReview({
                 animate={{ opacity: 1, y: 0 }}
                 className="text-xs text-primary-400 flex items-center gap-1.5"
                 role="status"
-                aria-live="polite"
-                aria-atomic="true"
+                aria-live={ARIA_LIVE_VALUES.POLITE}
+                aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
               >
                 <span className="w-1.5 h-1.5 bg-primary-400 rounded-full animate-pulse" />
                 {progress}

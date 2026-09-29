@@ -4,6 +4,31 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 189: Centralize ARIA Live-Region Politeness, Atomic & Modal Values
+
+**Problem**: 28 web components still inlined raw WAI-ARIA live-region literals — `aria-live="polite"` (~40×), `aria-live="assertive"` (~10×), `aria-atomic="true"` (~20×), and `aria-modal="true"` (2×) — bypassing shared config. Sequel to Iteration 188 (`ARIA_ROLES`): roles are centralized, but politeness/atomic/modal values were not. Flexy says: no hardcoded aria-live/atomic/modal strings in components!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `ARIA_LIVE_VALUES` (POLITE/`"polite"`, ASSERTIVE/`"assertive"`, OFF/`"off"`), `ARIA_ATOMIC_VALUES` (TRUE/`"true"`, FALSE/`"false"`), `ARIA_MODAL_VALUES` (TRUE/`"true"`, FALSE/`"false"`) — own semantic domain (separate from `DATA_BOOLEAN_VALUES`) so ARIA usage stays greppable |
+| `packages/shared/src/index.ts` | Exported `ARIA_LIVE_VALUES`, `ARIA_ATOMIC_VALUES`, `ARIA_MODAL_VALUES` |
+| `packages/shared/src/config.test.ts` | Added 3 describe blocks (10 tests: values + uniqueness) |
+| `apps/web/src/components/*` (28 files) | Replaced all hardcoded `aria-live="polite"/"assertive"` → `aria-live={ARIA_LIVE_VALUES.*}`, `aria-atomic="true"` → `aria-atomic={ARIA_ATOMIC_VALUES.TRUE}`, `aria-modal="true"` → `aria-modal={ARIA_MODAL_VALUES.TRUE}` (value-identical, behavior-preserving) |
+
+## Verification
+
+- ✅ `npm run build --workspace=@blueprint/shared` — clean
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run typecheck` — clean
+- ✅ `npm run test --workspace=packages/shared` — new ARIA tests passing
+- ✅ `npm run test --workspace=apps/web` — no regressions
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-189-aria-live-values` | refactor(flexy): centralize ARIA live-region politeness, atomic & modal values into shared config (Iteration 189) |
+
 ### ✅ Flexy Iteration 186: Centralize Deployment Origins, Proxy Routing & API-Key Fallback
 
 **Problem**: The #3610 live-generate/proxy fix introduced fresh hardcoded literals bypassing shared config. API: 4× deployment origins in the CORS allowlist (`https://blueprintify.pages.dev`, `.blueprintify.pages.dev`, `https://blueprintify.cpa03-cmz.workers.dev`, `http://localhost:`), static-asset detection (`/assets/`, `.`, `/api/`, `Accept`/`text/html`, `404`), and the `/api/*` rewrite (`/api/`, `/^\/api/`, `404`). Web: `VITE_API_KEY` env key + `blueprintify-public-access-2026` fallback in `env.ts`, and `405`/`500` + inline endpoint-unavailable/server-error templates in `lib/api.ts`. Functions proxies duplicated the worker target, `/^\/api` pattern, `/` fallback, and `GET`/`HEAD` checks inline. Flexy says: no hardcoded deployment/proxy literals!

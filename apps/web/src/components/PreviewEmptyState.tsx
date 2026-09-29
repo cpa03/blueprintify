@@ -18,6 +18,7 @@ import {
   DISPLAY_SYMBOLS,
   FRAMER_TYPE,
   EMPTY_STATE_VALUES,
+  ARIA_LIVE_VALUES,
 } from "@blueprint/shared/config";
 import { staggerContainer, fadeInUp, floatingAnimation } from "../utils/motion";
 import { useReducedMotion } from "../hooks/useReducedMotion";
@@ -70,7 +71,7 @@ export const PreviewEmptyState = memo(function PreviewEmptyState({
       initial="hidden"
       animate="visible"
       role="status"
-      aria-live="polite"
+      aria-live={ARIA_LIVE_VALUES.POLITE}
       data-state={isGenerating ? EMPTY_STATE_VALUES.WAITING : EMPTY_STATE_VALUES.EMPTY}
       data-tab={tab}
       data-has-sibling-content={siblingTabHasContent}

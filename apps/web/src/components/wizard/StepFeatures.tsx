@@ -30,6 +30,7 @@ import {
   MODIFIER_KEYS,
   FRAMER_TYPE,
   DISPLAY_SYMBOLS,
+  ARIA_LIVE_VALUES,
 } from "@blueprint/shared/config";
 import { useState, useCallback, useMemo, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
@@ -576,7 +577,7 @@ export const StepFeatures = memo(function StepFeatures({
         {(justAdded || showAllAddedMsg) && (
           <motion.div
             role="alert"
-            aria-live="assertive"
+            aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.9 }}

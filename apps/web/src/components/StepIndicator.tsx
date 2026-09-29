@@ -22,7 +22,12 @@
  */
 
 import { useEffect, useCallback, useState, useRef, memo } from "react";
-import { WIZARD_STEP_KEYS, ANIMATION_ENTRANCE_DELAYS_MS } from "@blueprint/shared/config";
+import {
+  WIZARD_STEP_KEYS,
+  ANIMATION_ENTRANCE_DELAYS_MS,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
+} from "@blueprint/shared/config";
 import type { WizardStep } from "@blueprint/shared/types";
 import { useWizardStore, useEditorStore, useToast } from "../store";
 import { Icon } from "./Icon";
@@ -283,8 +288,8 @@ function StepIndicatorComponent(): JSX.Element {
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
         role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {stepAnnouncement}
       </div>

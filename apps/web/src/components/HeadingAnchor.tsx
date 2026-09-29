@@ -41,6 +41,7 @@ import {
   FRAMER_TYPE,
   COPY_STATE_VALUES,
   BANNER_STATE_VALUES,
+  ARIA_LIVE_VALUES,
 } from "@blueprint/shared/config";
 import {
   ANIMATION,
@@ -260,7 +261,7 @@ export const HeadingAnchor = memo(function HeadingAnchor({
                   ease: EASING.easeOut,
                   delay: ANIMATION_ENTRANCE_DELAYS.FAST,
                 }}
-                aria-live="polite"
+                aria-live={ARIA_LIVE_VALUES.POLITE}
               >
                 {TOOLTIP_LABELS.EDITOR.COPIED}
               </motion.span>

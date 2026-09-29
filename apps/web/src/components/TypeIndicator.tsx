@@ -11,7 +11,12 @@
 import { useState, useCallback, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { TYPING_STATE_VALUES, LOADING_DOTS_COUNT } from "@blueprint/shared";
+import {
+  TYPING_STATE_VALUES,
+  LOADING_DOTS_COUNT,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
+} from "@blueprint/shared";
 import { ANIMATION, ANIMATION_MS } from "../config/constants";
 import { ANIMATION_TIMING } from "../config/theme";
 import { TYPING } from "../config/styles";
@@ -68,8 +73,8 @@ export const TypeIndicator = memo(function TypeIndicator({
             position === "left" ? "mr-2" : "ml-2"
           } ${className}`}
           role="status"
-          aria-live="polite"
-          aria-atomic="true"
+          aria-live={ARIA_LIVE_VALUES.POLITE}
+          aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
           data-state={isTyping ? TYPING_STATE_VALUES.TYPING : TYPING_STATE_VALUES.IDLE}
           data-position={position}
           data-dots-count={LOADING_DOTS_COUNT}

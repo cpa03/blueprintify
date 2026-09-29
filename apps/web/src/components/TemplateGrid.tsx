@@ -28,7 +28,14 @@
  */
 
 import { useState, memo, useCallback, useRef, useMemo } from "react";
-import { STARTER_TEMPLATES, KEYBOARD_EVENT_KEYS, BREAKPOINT_DEFAULTS, TEMPLATE_STATE_VALUES } from "@blueprint/shared";
+import {
+  STARTER_TEMPLATES,
+  KEYBOARD_EVENT_KEYS,
+  BREAKPOINT_DEFAULTS,
+  TEMPLATE_STATE_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
+} from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
@@ -322,8 +329,8 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
         role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {isLoading && selectedId
           ? ACCESSIBILITY_LABELS.TEMPLATES.LOADING(

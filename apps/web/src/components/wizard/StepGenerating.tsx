@@ -37,6 +37,8 @@ import {
   LOADING_DOTS_COUNT,
   MODIFIER_KEYS,
   TIME_UNITS,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -533,7 +535,12 @@ export const StepGenerating = memo(function StepGenerating({
                 ? GENERATION_ERROR_LABELS.ERROR_TASKS_TITLE
                 : GENERATION_ERROR_LABELS.ERROR_TITLE}
             </h2>
-            <p className="text-dark-400 mb-6" role="alert" aria-live="assertive" aria-atomic="true">
+            <p
+              className="text-dark-400 mb-6"
+              role="alert"
+              aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+              aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
+            >
               {progress}
             </p>
           </motion.div>
@@ -557,7 +564,12 @@ export const StepGenerating = memo(function StepGenerating({
               {WIZARD_GENERATING_LABELS.GENERATING_TITLE}
               <LoadingDots active={!shouldReduceMotion && isGenerating} />
             </motion.h2>
-            <p className="text-dark-400 mb-6" role="status" aria-live="polite" aria-atomic="true">
+            <p
+              className="text-dark-400 mb-6"
+              role="status"
+              aria-live={ARIA_LIVE_VALUES.POLITE}
+              aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
+            >
               <motion.span
                 animate={{ opacity: OPACITY_PULSE.STRONG }}
                 transition={{ duration: ANIMATION.DRIFT, repeat: Infinity, ease: EASING.easeInOut }}
@@ -638,7 +650,11 @@ export const StepGenerating = memo(function StepGenerating({
         </div>
       )}
 
-      <p className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS} role="status" aria-live="polite">
+      <p
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role="status"
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+      >
         {timerActive
           ? GENERATION_ANNOUNCER.ELAPSED(announcedElapsed, blueprintLines, tasksLines)
           : GENERATION_ANNOUNCER.GENERATED(blueprintLines, tasksLines)}

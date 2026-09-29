@@ -956,3 +956,55 @@ export const EDITOR_BUTTON_STATE_VALUES = {
   /** Idle state identifier */
   IDLE: "idle" as const,
 } as const;
+
+/**
+ * ARIA Live Region Politeness Values
+ * Centralized source of truth for WAI-ARIA `aria-live` attribute values used
+ * across web components (status announcers, error alerts, progress indicators).
+ * Sequel to ARIA_ROLES — keeps live-region politeness consistent and greppable.
+ * Flexy says: No hardcoded "polite" / "assertive" aria-live strings in components!
+ * Usage: import { ARIA_LIVE_VALUES } from "@blueprint/shared";
+ *        <div role="status" aria-live={ARIA_LIVE_VALUES.POLITE}>
+ */
+export const ARIA_LIVE_VALUES = {
+  /** Polite live region — screen reader announces when idle (status updates, progress) */
+  POLITE: "polite" as const,
+  /** Assertive live region — screen reader interrupts immediately (errors, validation failures) */
+  ASSERTIVE: "assertive" as const,
+  /** Off — disables live-region announcements for this subtree */
+  OFF: "off" as const,
+} as const;
+
+/**
+ * ARIA Atomic Values
+ * Centralized source of truth for WAI-ARIA `aria-atomic` attribute values.
+ * `aria-atomic="true"` tells assistive tech to announce the entire live region
+ * on change rather than just the changed node. Kept as its own semantic domain
+ * (separate from DATA_BOOLEAN_VALUES) so ARIA usage stays greppable in one place.
+ * Flexy says: No hardcoded "true" aria-atomic strings in components!
+ * Usage: import { ARIA_ATOMIC_VALUES } from "@blueprint/shared";
+ *        <div aria-live={ARIA_LIVE_VALUES.POLITE} aria-atomic={ARIA_ATOMIC_VALUES.TRUE}>
+ */
+export const ARIA_ATOMIC_VALUES = {
+  /** Announce the entire live region as a whole on change */
+  TRUE: "true" as const,
+  /** Announce only the changed node (default behavior) */
+  FALSE: "false" as const,
+} as const;
+
+/**
+ * ARIA Modal Values
+ * Centralized source of truth for WAI-ARIA `aria-modal` attribute values.
+ * `aria-modal="true"` tells assistive tech the dialog traps focus modally.
+ * Kept as its own semantic domain (separate from DATA_BOOLEAN_VALUES) so ARIA
+ * usage stays greppable in one place.
+ * Flexy says: No hardcoded "true" aria-modal strings in components!
+ * Usage: import { ARIA_MODAL_VALUES } from "@blueprint/shared";
+ *        <div role="dialog" aria-modal={ARIA_MODAL_VALUES.TRUE}>
+ */
+export const ARIA_MODAL_VALUES = {
+  /** Modal dialog — focus is trapped inside while open */
+  TRUE: "true" as const,
+  /** Non-modal dialog — focus may move outside while open */
+  FALSE: "false" as const,
+} as const;

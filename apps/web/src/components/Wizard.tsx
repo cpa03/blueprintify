@@ -41,6 +41,7 @@ import {
   ANIMATION_DIRECTIONS,
   KEYBOARD_EVENT_KEYS,
   UI_MESSAGES,
+  ARIA_LIVE_VALUES,
 } from "@blueprint/shared";
 import { LAYOUT } from "../config/theme";
 import type { AnimationDirection } from "../utils/motion";
@@ -223,7 +224,7 @@ function WizardComponent(): JSX.Element {
         <div
           className="flex items-center justify-center py-16"
           role="status"
-          aria-live="polite"
+          aria-live={ARIA_LIVE_VALUES.POLITE}
           aria-label={ACCESSIBILITY_LABELS.WIZARD.LOADING_STEP}
         >
           <div className={SPINNER.DEFAULT} aria-hidden="true"></div>

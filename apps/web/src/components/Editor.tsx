@@ -43,6 +43,8 @@ import {
   UI_TIMING,
   SKELETON_DEFAULTS,
   KEYBOARD_EVENT_KEYS,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
 } from "@blueprint/shared/config";
 import type { EditorTab } from "@blueprint/shared/types";
 import {
@@ -833,8 +835,8 @@ function EditorComponent(): JSX.Element {
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
         role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {mountAnnouncement}
       </div>

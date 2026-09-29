@@ -17,7 +17,13 @@
  */
 
 import { memo, useState, useEffect, useCallback } from "react";
-import { SHORTCUT_LABELS, SHORTCUT_DESCRIPTIONS, MODIFIER_KEYS } from "@blueprint/shared/config";
+import {
+  SHORTCUT_LABELS,
+  SHORTCUT_DESCRIPTIONS,
+  MODIFIER_KEYS,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
+} from "@blueprint/shared/config";
 import { SCROLL_BEHAVIOR } from "@blueprint/shared/config";
 import {
   UI_CONTENT,
@@ -220,8 +226,8 @@ function HeaderComponent({
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
         role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {motionAnnouncement}
       </div>

@@ -22,7 +22,7 @@ import {
   CELEBRATION_PARTICLE_STYLE,
   SPRING_CONFIG,
 } from "../config/constants";
-import { FRAMER_TYPE, RATIO_LIMITS } from "@blueprint/shared/config";
+import { FRAMER_TYPE, RATIO_LIMITS, ARIA_LIVE_VALUES } from "@blueprint/shared/config";
 import { CELEBRATION_ANIMATION } from "../config/theme";
 import { ACCESSIBILITY_LABELS } from "../config/constants/content";
 
@@ -203,7 +203,7 @@ function GenerationCelebrationComponent({
     <div
       className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center"
       role="status"
-      aria-live="polite"
+      aria-live={ARIA_LIVE_VALUES.POLITE}
       aria-label={ACCESSIBILITY_LABELS.CELEBRATION.COMPLETE}
     >
       <AnimatePresence>

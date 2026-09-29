@@ -35,6 +35,8 @@ import {
   DISPLAY_SYMBOLS,
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
 } from "@blueprint/shared/config";
 import { useWizardStore } from "../../store";
 import {
@@ -324,8 +326,8 @@ export const StepStack = memo(function StepStack({
               transition={{ type: FRAMER_TYPE.SPRING, ...SPRING_CONFIG.MILESTONE_PULSE }}
               className={`tabular-nums ${canProceed ? "text-accent-emerald" : "text-dark-400"}`}
               aria-label={ACCESSIBILITY_LABELS.WIZARD_STACK.COUNTER(techStack.length, minRequired)}
-              aria-live="polite"
-              aria-atomic="true"
+              aria-live={ARIA_LIVE_VALUES.POLITE}
+              aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
             >
               {techStack.length}/{minRequired}
             </motion.span>
@@ -502,8 +504,8 @@ export const StepStack = memo(function StepStack({
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
         role="status"
-        aria-live="assertive"
-        aria-atomic="true"
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {milestoneAnnouncement}
       </div>

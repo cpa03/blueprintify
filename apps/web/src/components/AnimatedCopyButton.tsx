@@ -27,7 +27,7 @@ import {
   FOCUS_ANNOUNCER,
   CSS_CLASSES,
 } from "../config/constants";
-import { ANIMATION_ENTRANCE_DELAYS } from "@blueprint/shared/config";
+import { ANIMATION_ENTRANCE_DELAYS, ARIA_LIVE_VALUES } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
 interface Particle {
@@ -235,7 +235,11 @@ function AnimatedCopyButtonComponent({
       </AnimatePresence>
 
       {/* Screen reader announcement for copy status */}
-      <span className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS} role="status" aria-live="polite">
+      <span
+        className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
+        role="status"
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+      >
         {isCopied ? COPY_BUTTON_LABELS.COPIED : null}
       </span>
 
