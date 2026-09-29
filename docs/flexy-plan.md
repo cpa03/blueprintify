@@ -35,7 +35,7 @@ Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `flexy/iteration-186-deploy-proxy-modularize` | refactor(flexy): centralize deployment origins, proxy routing & API-key fallback into shared config (Iteration 186) |
+| #3659 | `flexy/iteration-186-deploy-proxy-modularize` | refactor(flexy): centralize deployment origins, proxy routing & API-key fallback into shared config (Iteration 186) |
 
 ### ✅ Flexy Iteration 185: Centralize CSS Class Combinations, Log Contexts & API Micro-Literals
 
