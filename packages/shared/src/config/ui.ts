@@ -956,3 +956,58 @@ export const EDITOR_BUTTON_STATE_VALUES = {
   /** Idle state identifier */
   IDLE: "idle" as const,
 } as const;
+
+/**
+ * Data Boolean Display Values
+ * Centralized source of truth for data-* boolean attribute strings used in
+ * DOM inspection attributes (data-loading, data-reduced-motion, data-active, etc.).
+ * Flexy says: No hardcoded ? "true" : "false" ternaries in components!
+ * Usage: import { DATA_BOOLEAN_VALUES } from "@blueprint/shared";
+ *        data-loading={isLoading ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+ */
+export const DATA_BOOLEAN_VALUES = {
+  /** True boolean attribute value */
+  TRUE: "true" as const,
+  /** False boolean attribute value */
+  FALSE: "false" as const,
+} as const;
+
+/**
+ * Tooltip Display State Values
+ * Centralized state tracking values for tooltip visibility (SmartTooltip).
+ * Flexy says: No hardcoded "visible"/"hidden" strings in SmartTooltip!
+ * Usage: import { TOOLTIP_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isVisible ? TOOLTIP_STATE_VALUES.VISIBLE : TOOLTIP_STATE_VALUES.HIDDEN}
+ */
+export const TOOLTIP_STATE_VALUES = {
+  /** Visible state identifier */
+  VISIBLE: "visible" as const,
+  /** Hidden state identifier */
+  HIDDEN: "hidden" as const,
+} as const;
+
+/**
+ * Counter Display State Values
+ * Centralized state tracking values for animated counter pulse state (AnimatedNumber).
+ * Flexy says: No hardcoded "active"/"idle" strings in AnimatedNumber!
+ * Usage: import { COUNTER_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={pulseKey > 0 ? COUNTER_STATE_VALUES.ACTIVE : COUNTER_STATE_VALUES.IDLE}
+ */
+export const COUNTER_STATE_VALUES = {
+  /** Active / pulsing state identifier */
+  ACTIVE: "active" as const,
+  /** Idle state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
+ * Template Grid Display Defaults
+ * Centralized source of truth for TemplateGrid layout magic numbers.
+ * Flexy says: No hardcoded slice(0, 3) / length - 3 tech counts in TemplateGrid!
+ * Usage: import { TEMPLATE_GRID_DEFAULTS } from "@blueprint/shared";
+ *        template.techStack.slice(0, TEMPLATE_GRID_DEFAULTS.VISIBLE_TECH_COUNT)
+ */
+export const TEMPLATE_GRID_DEFAULTS = {
+  /** Number of tech stack tags shown inline before the "+N more" overflow */
+  VISIBLE_TECH_COUNT: 3,
+} as const;

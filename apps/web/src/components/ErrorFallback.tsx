@@ -30,6 +30,7 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   COPY_STATE_VALUES,
   FRAMER_TYPE,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import { ACCESSIBILITY_LABELS, ERROR_BOUNDARY_TEXT } from "../config/constants/content";
 import { copyToClipboard } from "../lib/clipboard";
@@ -110,9 +111,11 @@ export const ErrorFallback = memo(function ErrorFallback({
       className="min-h-screen flex items-center justify-center bg-dark-900 p-4"
       role="alert"
       aria-live="assertive"
-      data-has-error={error !== undefined ? "true" : "false"}
-      data-reduced-motion={shouldReduceMotion ? "true" : "false"}
-      data-has-details={error !== undefined ? "true" : "false"}
+      data-has-error={error !== undefined ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+      data-reduced-motion={
+        shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+      }
+      data-has-details={error !== undefined ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
     >
       <motion.div
         className="glass-card p-8 max-w-md w-full text-center relative overflow-hidden"

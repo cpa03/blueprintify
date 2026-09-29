@@ -38,6 +38,7 @@ import {
   NETWORK_DEFAULTS,
   TOAST_TYPES,
   BANNER_STATE_VALUES,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import {
   NETWORK_MESSAGES,
@@ -172,7 +173,9 @@ function OfflineBannerComponent(): JSX.Element | null {
         aria-atomic={isVisible ? "true" : undefined}
         data-state={isVisible ? BANNER_STATE_VALUES.VISIBLE : BANNER_STATE_VALUES.HIDDEN}
         data-online-status={isOnline ? BANNER_STATE_VALUES.ONLINE : BANNER_STATE_VALUES.OFFLINE}
-        data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+        data-reduced-motion={
+          shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+        }
         className={`overflow-hidden ${
           // Outer container handles layout space via max-height
           // while the inner banner slides with GPU-composited transform.

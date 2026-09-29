@@ -54,6 +54,7 @@ import {
   SHORTCUT_LABELS,
   PERCENT_SCALE,
   TIME_UNITS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
@@ -283,8 +284,8 @@ const ToastItem = memo(
         aria-live={toastAriaLive}
         aria-label={toast.ariaLabel}
         data-toast-type={toast.type}
-        data-hovered={isHovered ? "true" : "false"}
-        data-is-alert={isAlert ? "true" : "false"}
+        data-hovered={isHovered ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+        data-is-alert={isAlert ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
       >
         <div
           className="absolute bottom-0 left-0 h-0.5 bg-current opacity-30"
@@ -549,7 +550,7 @@ function ToastContainerComponent(): JSX.Element {
       role="region"
       aria-label={ACCESSIBILITY_LABELS.TOAST.REGION}
       data-count={toasts.length}
-      data-has-toasts={toasts.length > 0 ? "true" : "false"}
+      data-has-toasts={toasts.length > 0 ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
       {...containerAnimation}
     >
       <AnimatePresence mode="popLayout">

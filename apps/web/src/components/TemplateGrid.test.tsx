@@ -1,5 +1,6 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { TEMPLATE_STATE_VALUES, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
 import { TemplateGrid } from "./TemplateGrid";
 
 vi.mock("framer-motion", () => ({
@@ -172,10 +173,10 @@ describe("TemplateGrid", () => {
 
     expect(webAppButton).toBeEnabled();
     expect(mobileAppButton).toBeEnabled();
-    expect(webAppButton).toHaveAttribute("data-state", "idle");
+    expect(webAppButton).toHaveAttribute("data-state", TEMPLATE_STATE_VALUES.IDLE);
     expect(webAppButton).toHaveAttribute("data-template-id", "web-app");
-    expect(webAppButton).toHaveAttribute("data-loading", "false");
-    expect(webAppButton).toHaveAttribute("data-reduced-motion", "false");
+    expect(webAppButton).toHaveAttribute("data-loading", DATA_BOOLEAN_VALUES.FALSE);
+    expect(webAppButton).toHaveAttribute("data-reduced-motion", DATA_BOOLEAN_VALUES.FALSE);
 
     fireEvent.click(webAppButton);
 
@@ -183,8 +184,8 @@ describe("TemplateGrid", () => {
     // drop keyboard focus to <body> the moment the focused card is disabled
     expect(webAppButton).toHaveAttribute("aria-disabled", "true");
     expect(mobileAppButton).toHaveAttribute("aria-disabled", "true");
-    expect(webAppButton).toHaveAttribute("data-state", "selected");
-    expect(webAppButton).toHaveAttribute("data-loading", "true");
+    expect(webAppButton).toHaveAttribute("data-state", TEMPLATE_STATE_VALUES.SELECTED);
+    expect(webAppButton).toHaveAttribute("data-loading", DATA_BOOLEAN_VALUES.TRUE);
   });
 
   it("keeps focus on the selected card during load (WCAG 2.4.3)", () => {

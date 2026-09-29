@@ -249,6 +249,10 @@ export {
   SKIP_LINK_STATE_VALUES,
   SAVE_STATE_VALUES,
   PROGRESS_STATE_VALUES,
+  DATA_BOOLEAN_VALUES,
+  TOOLTIP_STATE_VALUES,
+  COUNTER_STATE_VALUES,
+  TEMPLATE_GRID_DEFAULTS,
 } from "./config/ui.js";
 
 export type { RetryOptions } from "./config.js";

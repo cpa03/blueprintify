@@ -11,7 +11,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { AnimatedNumber, AnimatedCounter } from "./AnimatedNumber";
-import { COUNTER_DIRECTION_VALUES } from "@blueprint/shared";
+import { COUNTER_DIRECTION_VALUES, COUNTER_STATE_VALUES } from "@blueprint/shared";
 
 // Mock the ReducedMotionContext
 vi.mock("../context/ReducedMotionContext", () => ({
@@ -87,7 +87,7 @@ describe("AnimatedCounter", () => {
     expect(screen.getByText("42")).toBeInTheDocument();
     expect(screen.getByText("Projects")).toBeInTheDocument();
     const counterCard = screen.getByText("Projects").closest("[data-state]");
-    expect(counterCard).toHaveAttribute("data-state", "idle");
+    expect(counterCard).toHaveAttribute("data-state", COUNTER_STATE_VALUES.IDLE);
     expect(counterCard).toHaveAttribute("data-value", "42");
   });
 

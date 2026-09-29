@@ -22,7 +22,11 @@
  */
 
 import { useEffect, useCallback, useState, useRef, memo } from "react";
-import { WIZARD_STEP_KEYS, ANIMATION_ENTRANCE_DELAYS_MS } from "@blueprint/shared/config";
+import {
+  WIZARD_STEP_KEYS,
+  ANIMATION_ENTRANCE_DELAYS_MS,
+  DATA_BOOLEAN_VALUES,
+} from "@blueprint/shared/config";
 import type { WizardStep } from "@blueprint/shared/types";
 import { useWizardStore, useEditorStore, useToast } from "../store";
 import { Icon } from "./Icon";
@@ -207,9 +211,9 @@ function StepIndicatorComponent(): JSX.Element {
               onClick={() => handleStepClick(step.key, step.label)}
               data-step-index={index}
               data-step-key={step.key}
-              data-active={isActive ? "true" : "false"}
-              data-completed={isCompleted ? "true" : "false"}
-              data-clickable={isClickable ? "true" : "false"}
+              data-active={isActive ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+              data-completed={isCompleted ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
+              data-clickable={isClickable ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
               // aria-disabled keeps locked steps focusable so keyboard, touch,
               // and screen reader users can discover WHY the step is locked via
               // the aria-describedby hint (a native `disabled` attribute removes

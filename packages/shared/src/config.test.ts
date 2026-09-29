@@ -165,6 +165,10 @@ import {
   COPY_STATE_VALUES,
   VALIDATION_STATE_VALUES,
   BANNER_STATE_VALUES,
+  DATA_BOOLEAN_VALUES,
+  TOOLTIP_STATE_VALUES,
+  COUNTER_STATE_VALUES,
+  TEMPLATE_GRID_DEFAULTS,
 } from "./config.js";
 
 describe("RETRY_CONFIG", () => {
@@ -4781,5 +4785,44 @@ describe("PROXY_CONFIG (Flexy Iteration 186)", () => {
     expect(PROXY_CONFIG.ASSETS_PREFIX).toBe("/assets/");
     expect(PROXY_CONFIG.ROOT_FALLBACK).toBe("/");
     expect(PROXY_CONFIG.FILE_EXTENSION_MARKER).toBe(".");
+  });
+});
+
+describe("DATA_BOOLEAN_VALUES (Flexy Iteration 187)", () => {
+  it("should have TRUE and FALSE data attribute strings", () => {
+    expect(DATA_BOOLEAN_VALUES.TRUE).toBe("true");
+    expect(DATA_BOOLEAN_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(DATA_BOOLEAN_VALUES).length).toBe(2);
+  });
+});
+
+describe("TOOLTIP_STATE_VALUES (Flexy Iteration 187)", () => {
+  it("should have VISIBLE and HIDDEN tooltip states", () => {
+    expect(TOOLTIP_STATE_VALUES.VISIBLE).toBe("visible");
+    expect(TOOLTIP_STATE_VALUES.HIDDEN).toBe("hidden");
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(TOOLTIP_STATE_VALUES).length).toBe(2);
+  });
+});
+
+describe("COUNTER_STATE_VALUES (Flexy Iteration 187)", () => {
+  it("should have ACTIVE and IDLE counter states", () => {
+    expect(COUNTER_STATE_VALUES.ACTIVE).toBe("active");
+    expect(COUNTER_STATE_VALUES.IDLE).toBe("idle");
+  });
+
+  it("should have 2 properties", () => {
+    expect(Object.keys(COUNTER_STATE_VALUES).length).toBe(2);
+  });
+});
+
+describe("TEMPLATE_GRID_DEFAULTS (Flexy Iteration 187)", () => {
+  it("should show 3 tech tags before overflow", () => {
+    expect(TEMPLATE_GRID_DEFAULTS.VISIBLE_TECH_COUNT).toBe(3);
   });
 });

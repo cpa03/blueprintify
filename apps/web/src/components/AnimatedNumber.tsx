@@ -3,7 +3,7 @@ import * as motion from "framer-motion/m";
 import { useReducedMotionContext } from "../context/ReducedMotionContext";
 import { ANIMATION_COLORS, ANIMATION, EASING, CSS_CLASSES } from "../config/constants";
 import { TIME_UNITS } from "@blueprint/shared/config";
-import { COUNTER_DIRECTION_VALUES } from "@blueprint/shared";
+import { COUNTER_DIRECTION_VALUES, COUNTER_STATE_VALUES } from "@blueprint/shared";
 import { COUNTER_ANIMATION } from "../config/theme";
 
 interface AnimatedNumberProps {
@@ -159,7 +159,7 @@ function AnimatedCounterComponent({
     <motion.div
       key={pulseKey}
       className={`glass-card px-6 py-4 ${className}`}
-      data-state={pulseKey > 0 ? "active" : "idle"}
+      data-state={pulseKey > 0 ? COUNTER_STATE_VALUES.ACTIVE : COUNTER_STATE_VALUES.IDLE}
       data-value={value}
       initial={false}
       animate={
