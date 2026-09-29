@@ -44,6 +44,7 @@ import {
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   DIALOG_STATE_VALUES,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared";
 import {
   EASING,
@@ -189,7 +190,9 @@ export const ConfirmDialog = memo(function ConfirmDialog({
             aria-describedby="confirm-dialog-description"
             data-state={isOpen ? DIALOG_STATE_VALUES.OPEN : DIALOG_STATE_VALUES.CLOSED}
             data-icon={icon}
-            data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+            data-reduced-motion={
+              shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+            }
           >
             <div
               className="glass-card w-full max-w-md p-6 shadow-2xl shadow-dark-950/50 pointer-events-auto"

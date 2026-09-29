@@ -11,7 +11,7 @@
 import { useState, useCallback, useRef, useEffect, memo } from "react";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
-import { TYPING_STATE_VALUES, LOADING_DOTS_COUNT } from "@blueprint/shared";
+import { TYPING_STATE_VALUES, LOADING_DOTS_COUNT, DATA_BOOLEAN_VALUES } from "@blueprint/shared";
 import { ANIMATION, ANIMATION_MS } from "../config/constants";
 import { ANIMATION_TIMING } from "../config/theme";
 import { TYPING } from "../config/styles";
@@ -73,7 +73,9 @@ export const TypeIndicator = memo(function TypeIndicator({
           data-state={isTyping ? TYPING_STATE_VALUES.TYPING : TYPING_STATE_VALUES.IDLE}
           data-position={position}
           data-dots-count={LOADING_DOTS_COUNT}
-          data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+          data-reduced-motion={
+            shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+          }
         >
           <span className={TYPING.SR_ONLY}>Typing</span>
           {Array.from({ length: LOADING_DOTS_COUNT }, (_, index) => (

@@ -14,6 +14,7 @@
 
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { TOOLTIP_STATE_VALUES, DIRECTION } from "@blueprint/shared";
 import { SmartTooltip, KeyboardShortcutTooltip, InfoTooltip } from "./SmartTooltip";
 
 // JSDOM defines ontouchstart in window, which makes SmartTooltip treat
@@ -48,8 +49,8 @@ describe("SmartTooltip", () => {
     );
 
     const triggerContainer = screen.getByRole("button").parentElement!;
-    expect(triggerContainer).toHaveAttribute("data-state", "hidden");
-    expect(triggerContainer).toHaveAttribute("data-position", "top");
+    expect(triggerContainer).toHaveAttribute("data-state", TOOLTIP_STATE_VALUES.HIDDEN);
+    expect(triggerContainer).toHaveAttribute("data-position", DIRECTION.TOP);
     expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
   });
 
@@ -76,9 +77,9 @@ describe("SmartTooltip", () => {
 
     const tooltip = screen.getByRole("tooltip");
     expect(tooltip).toBeInTheDocument();
-    expect(tooltip).toHaveAttribute("data-state", "visible");
+    expect(tooltip).toHaveAttribute("data-state", TOOLTIP_STATE_VALUES.VISIBLE);
     expect(tooltip).toHaveAttribute("data-position");
-    expect(triggerWrapper).toHaveAttribute("data-state", "visible");
+    expect(triggerWrapper).toHaveAttribute("data-state", TOOLTIP_STATE_VALUES.VISIBLE);
     expect(screen.getByText("Tooltip text")).toBeInTheDocument();
   });
 

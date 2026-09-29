@@ -5,6 +5,7 @@ import {
   CHAR_COUNTER_COLORS,
   CHAR_COUNTER_STATE_VALUES,
   RATIO_LIMITS,
+  DATA_BOOLEAN_VALUES,
 } from "@blueprint/shared/config";
 
 interface CharacterCounterProps {
@@ -96,7 +97,7 @@ function CharacterCounterComponent({
         className={`text-xs tabular-nums transition-colors duration-200 inline-flex items-center ${colorClass} ${shakeClass} ${pulseClass} ${celebrateClass} ${className}`}
         aria-hidden="true"
         data-state={stateValue}
-        data-has-min={min !== undefined ? "true" : "false"}
+        data-has-min={min !== undefined ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE}
       >
         <span className={isAtLimit ? "font-bold" : ""}>{current}</span>
         <span className="text-dark-600">/{max}</span>

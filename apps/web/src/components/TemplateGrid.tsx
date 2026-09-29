@@ -28,7 +28,14 @@
  */
 
 import { useState, memo, useCallback, useRef, useMemo } from "react";
-import { STARTER_TEMPLATES, KEYBOARD_EVENT_KEYS, BREAKPOINT_DEFAULTS, TEMPLATE_STATE_VALUES } from "@blueprint/shared";
+import {
+  STARTER_TEMPLATES,
+  KEYBOARD_EVENT_KEYS,
+  BREAKPOINT_DEFAULTS,
+  TEMPLATE_STATE_VALUES,
+  DATA_BOOLEAN_VALUES,
+  TEMPLATE_GRID_DEFAULTS,
+} from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
@@ -150,7 +157,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
         {STARTER_TEMPLATES.map((template, index) => {
           const isSelected = selectedId === template.id;
           const hiddenTechNames = template.techStack
-            .slice(3)
+            .slice(TEMPLATE_GRID_DEFAULTS.VISIBLE_TECH_COUNT)
             .map((tech) => tech.name)
             .join(", ");
 
@@ -172,8 +179,12 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
               aria-selected={isSelected}
               data-state={isSelected ? TEMPLATE_STATE_VALUES.SELECTED : TEMPLATE_STATE_VALUES.IDLE}
               data-template-id={template.id}
-              data-loading={isSelected && isLoading ? "true" : "false"}
-              data-reduced-motion={shouldReduceMotion ? "true" : "false"}
+              data-loading={
+                isSelected && isLoading ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+              }
+              data-reduced-motion={
+                shouldReduceMotion ? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE
+              }
               role="option"
               tabIndex={focusIndex === index ? 0 : -1}
               style={
@@ -217,7 +228,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={3}
+                        strokeWidth={ICON.STROKE.BOLD}
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
@@ -261,13 +272,15 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                   </h3>
                   <p className="text-sm text-dark-400 mt-1 line-clamp-2">{template.description}</p>
                   <div className="flex flex-wrap gap-1.5 mt-3">
-                    {template.techStack.slice(0, 3).map((tech, tagIndex) => (
-                      <span
-                        key={tech.name}
-                        style={{
-                          animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY + ANIMATION.CARD_ENTRANCE_DURATION + tagIndex * STAGGER_CONFIG.TAG_ENTRANCE.STAGGER_S}s`,
-                        }}
-                        className={`
+                    {template.techStack
+                      .slice(0, TEMPLATE_GRID_DEFAULTS.VISIBLE_TECH_COUNT)
+                      .map((tech, tagIndex) => (
+                        <span
+                          key={tech.name}
+                          style={{
+                            animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY + ANIMATION.CARD_ENTRANCE_DURATION + tagIndex * STAGGER_CONFIG.TAG_ENTRANCE.STAGGER_S}s`,
+                          }}
+                          className={`
                           px-2 py-0.5 text-xs rounded motion-safe:transition-all motion-safe:duration-150
                           motion-safe:hover:scale-105
                           animate-tag-entrance
@@ -277,14 +290,14 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                               : "bg-dark-800 text-dark-300 group-hover:[box-shadow:var(--tech-glow)]"
                           }
                         `}
-                      >
-                        {tech.name}
-                      </span>
-                    ))}
-                    {template.techStack.length > 3 && (
+                        >
+                          {tech.name}
+                        </span>
+                      ))}
+                    {template.techStack.length > TEMPLATE_GRID_DEFAULTS.VISIBLE_TECH_COUNT && (
                       <span
                         style={{
-                          animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY + ANIMATION.CARD_ENTRANCE_DURATION + 3 * STAGGER_CONFIG.TAG_ENTRANCE.STAGGER_S}s`,
+                          animationDelay: `${index * ANIMATION.CARD_ENTRANCE_DELAY + ANIMATION.CARD_ENTRANCE_DURATION + TEMPLATE_GRID_DEFAULTS.VISIBLE_TECH_COUNT * STAGGER_CONFIG.TAG_ENTRANCE.STAGGER_S}s`,
                         }}
                         className={`
                           group/overflow relative px-2 py-0.5 text-xs rounded
@@ -298,7 +311,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                           }
                         `}
                       >
-                        +{template.techStack.length - 3}
+                        +{template.techStack.length - TEMPLATE_GRID_DEFAULTS.VISIBLE_TECH_COUNT}
                         <span className="sr-only">
                           {ACCESSIBILITY_LABELS.TEMPLATES.MORE_TECH(hiddenTechNames)}
                         </span>

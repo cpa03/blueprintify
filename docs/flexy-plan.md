@@ -3754,3 +3754,37 @@ Also lacked test coverage for the `isLoading` prop — no spinner rendering veri
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
 | TBD (this PR) | `flexy/iteration-182-icon-dedup-ratios` | refactor(flexy): deduplicate inline SVG icons and centralize ratio/geometry constants (Iteration 182) |
+
+---
+
+### ✅ Flexy Iteration 187: Centralize Data-Boolean, Tooltip/Counter States & TemplateGrid Display Defaults
+
+**Problem**: After Iteration 186, 20 hardcoded `? "true" : "false"` data-boolean ternaries survived across 10 web components (TypeIndicator, OfflineBanner, CharacterCounter, ErrorFallback, StepIndicator, TemplateGrid, CircularProgress, ConfirmDialog, Toast, RippleButton), plus raw `"visible"/"hidden"` in SmartTooltip, raw `"active"/"idle"` in AnimatedNumber, hardcoded `strokeWidth={3}` and `slice(0, 3)`/`slice(3)`/`length - 3` tech-count magic numbers in TemplateGrid, with tests asserting raw strings. Flexy says: No hardcoded data-attribute strings or display-count magic numbers!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/ui.ts` | Added `DATA_BOOLEAN_VALUES` (TRUE/FALSE), `TOOLTIP_STATE_VALUES` (VISIBLE/HIDDEN), `COUNTER_STATE_VALUES` (ACTIVE/IDLE), `TEMPLATE_GRID_DEFAULTS` (VISIBLE_TECH_COUNT: 3) |
+| `packages/shared/src/index.ts` | Exported 4 new config objects |
+| `packages/shared/src/config.test.ts` | Added 4 test blocks (7 assertions) for new config objects |
+| `apps/web/src/components/*` (10 files) | Replaced 20x `? "true" : "false"` with `? DATA_BOOLEAN_VALUES.TRUE : DATA_BOOLEAN_VALUES.FALSE` (TypeIndicator, OfflineBanner, CharacterCounter, ErrorFallback, StepIndicator, TemplateGrid, CircularProgress, ConfirmDialog, Toast, RippleButton) |
+| `apps/web/src/components/SmartTooltip.tsx` | Replaced 2x hardcoded `"visible"/"hidden"` with `TOOLTIP_STATE_VALUES.*` |
+| `apps/web/src/components/AnimatedNumber.tsx` | Replaced hardcoded `"active"/"idle"` with `COUNTER_STATE_VALUES.*` |
+| `apps/web/src/components/TemplateGrid.tsx` | Replaced `strokeWidth={3}` with `ICON.STROKE.BOLD`; replaced `slice(0, 3)`/`slice(3)`/`length > 3`/`length - 3`/`3 * STAGGER` with `TEMPLATE_GRID_DEFAULTS.VISIBLE_TECH_COUNT` refs |
+| `apps/web/src/components/TemplateGrid.test.tsx` | Replaced raw `"idle"/"selected"/"true"/"false"` assertions with `TEMPLATE_STATE_VALUES.*`/`DATA_BOOLEAN_VALUES.*` refs |
+| `apps/web/src/components/SmartTooltip.test.tsx` | Replaced raw `"hidden"/"visible"/"top"` with `TOOLTIP_STATE_VALUES.*`/`DIRECTION.TOP` refs |
+| `apps/web/src/components/AnimatedNumber.test.tsx` | Replaced raw `"idle"` with `COUNTER_STATE_VALUES.IDLE` |
+
+## Verification
+
+- ✅ `npm run typecheck` — clean (all 3 workspaces)
+- ✅ `npm run lint` — zero errors, zero warnings
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (338 files)
+- ✅ `prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1248 web + 535 api + 875 shared = 2,658 tests passing**
+
+## PR
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `agent` | refactor(flexy): centralize data-boolean, tooltip/counter states and template grid defaults (Iteration 187) |

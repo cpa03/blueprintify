@@ -11,7 +11,12 @@ import {
   isValidElement,
   type ReactElement,
 } from "react";
-import { KEYBOARD_EVENT_KEYS, MODIFIER_KEYS, DIRECTION } from "@blueprint/shared";
+import {
+  KEYBOARD_EVENT_KEYS,
+  MODIFIER_KEYS,
+  DIRECTION,
+  TOOLTIP_STATE_VALUES,
+} from "@blueprint/shared";
 import { TOOLTIP_CONFIG } from "../config/constants";
 import { formatShortcut } from "../lib/platform";
 import { Icon } from "./Icon";
@@ -285,7 +290,7 @@ function SmartTooltipComponent({
     <div
       ref={triggerRef}
       className="relative inline-flex"
-      data-state={isVisible ? "visible" : "hidden"}
+      data-state={isVisible ? TOOLTIP_STATE_VALUES.VISIBLE : TOOLTIP_STATE_VALUES.HIDDEN}
       data-position={computedPosition}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -300,7 +305,7 @@ function SmartTooltipComponent({
           ref={tooltipRef}
           id={tooltipId}
           role="tooltip"
-          data-state="visible"
+          data-state={TOOLTIP_STATE_VALUES.VISIBLE}
           data-position={computedPosition}
           className={`absolute ${positionStyle.container} z-50 pointer-events-none animate-tooltip-in ${className}`}
           style={{ maxWidth }}
