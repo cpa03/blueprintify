@@ -2,6 +2,31 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-09-29 — Dead code, unused exports, commented-out code scan)
+
+**Scope**: `agent/janitor` branch (synced to `origin/main` @ `c03cffd3` — merge-base equals tip, no new main commits). Re-scan following the three 2026-09-28 cycles; ran `scripts/janitor-scan.mjs` (127 orphan candidates, 81 unused-export candidates — unchanged, prior removals held) plus manual comment/`console.log`/duplicate/dependency/TODO/focused-test/type-safety sweeps.
+
+### Removed
+
+- None. No safe deletions this cycle — every candidate verified as live code or intentionally kept (see below). Zero source changes; scratch planner notes removed locally (untracked, not part of PR diff).
+
+**Verification**: `npm run build` ✅ green (8.61s).
+
+### Verified clean (no action needed)
+
+- **No orphaned source files**: ~124/127 "orphan" hits are test/e2e files discovered by vitest/playwright configs; `scripts/migrate.ts` is wired via `db:*` npm scripts; `apps/web/functions/api/[[path]].ts` is a deploy entry point (not imported by design).
+- **No dead unused exports**: all 81 candidates verified live via repo-wide grep — alias re-exports (`SHARED_SSE_CONFIG/HEADERS`, `SHARED_STAGGER_CONFIG` via `export { X as Y }`), same-file usage (`MigrationRunner` class + instantiation + export in `migrate.ts`; `InternalServerError` in `errors.ts:299`), namespace consumption (`CODEMIRROR_XSS_PATTERNS`/`SUSPICIOUS_JSON_KEYS` via `SECURITY_CONFIG` in `lib/security.ts`), test-asserted type surface (theme types in `theme.test.ts`), registry composition (all `generate*` template fns, 2 refs each), multi-ref barrel/config surface (`FIELD_LABELS/PATHS`, `Container` 42 files, `APIError`, `storageManager`, `ViewMode`, `ToastType`, `ExportContext`, `ReducedMotionContext`, `PREVIEW/OBSERVABILITY/QUEUE_DEFAULTS`, `PLAYWRIGHT_CONFIG`, shared result/request types). `ExportContext.tsx: that` is a scanner artifact from a prose comment; `react.ts: metadata` is a real Next.js-convention export — kept.
+- **No commented-out dead code**: `// <code-keyword>;` grep 0 hits in `apps/`; one block-comment hit is JSDoc prose (`ui.ts:263`).
+- **No production `console.log`**: all hits intentional (logging utils `logger.ts`/`secureLog.ts`, e2e spec output, JSDoc examples, template-generator output strings, `fix-esm.mjs` build script).
+- **No duplicate utilities**: `md5sum` sweep over `apps`/`packages`/`functions`/`scripts` found zero byte-identical pairs.
+- **Hygiene clean**: 0 TODO/FIXME/HACK in source, 0 focused tests (`.only`/`.skip`), 0 empty dirs, 0 merge markers, 0 `as any`/`@ts-ignore`/`@ts-expect-error`.
+- **No unused dependencies**: all root/workspace deps referenced (`clsx`/`jszip`/`framer-motion`/`zustand`/`dompurify`/`react-markdown` in source; `chrome-launcher`+`lighthouse` in brocula scripts; `concurrently` in `dev:all`).
+
+### Structural findings (recommended for future work, not removed)
+
+- [Janitor] `scripts/janitor-scan.mjs` exists only on `agent/janitor` (added in `f2d88233`, never on `main`, unreferenced by any npm script). Merging it adds ~240 lines against the leaner-before-merge goal. Carried over from 2026-09-28: **recommend human decides — promote to `npm run scan:janitor` or drop from the branch before merge.**
+- No new structural mess found this cycle (no duplicate `utils` folders, no repeated `formatDate`-style logic).
+
 ## Janitor Cleanup (2026-09-28 — Dead code, unused exports, commented-out code scan)
 
 **Scope**: `agent/janitor` branch (synced to `origin/main` @ `c03cffd3`). Re-scan following the 2026-09-27 cleanup; ran `scripts/janitor-scan.mjs` (127 orphan candidates, 81 unused-export candidates — down from 90, prior removals held) plus manual comment/`console.log`/duplicate/dependency sweeps.
