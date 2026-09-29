@@ -24,7 +24,7 @@ async function checkConsoleErrors() {
     try {
       // Try full chromium browser first, then headless shell, then any chrome/chromium binary
       pwChromiumPath = execSync(
-        'find /home/runner/.cache/ms-playwright -type f \\( -path "*/chrome-linux/chrome" -o -path "*/chrome-linux/headless_shell" -o -name "chrome" -o -name "chromium" \\) 2>/dev/null | head -1'
+        'find /home/runner/.cache/ms-playwright -type f \\( -path "*/chrome-linux*/chrome" -o -path "*/chrome-headless-shell-*/chrome-headless-shell" -o -name "chrome" -o -name "chromium" -o -name "chrome-headless-shell" -o -name "headless_shell" \\) 2>/dev/null | head -1'
       ).toString().trim();
     } catch (e) {
       pwChromiumPath = undefined;
@@ -137,7 +137,7 @@ async function runLighthouse() {
     if (!chromePath) {
       try {
         chromePath = execSync(
-          'find /home/runner/.cache/ms-playwright -type f \\( -path "*/chrome-linux/chrome" -o -path "*/chrome-linux/headless_shell" -o -name "chrome" -o -name "chromium" \\) 2>/dev/null | head -1'
+          'find /home/runner/.cache/ms-playwright -type f \\( -path "*/chrome-linux*/chrome" -o -path "*/chrome-headless-shell-*/chrome-headless-shell" -o -name "chrome" -o -name "chromium" -o -name "chrome-headless-shell" -o -name "headless_shell" \\) 2>/dev/null | head -1'
         ).toString().trim();
       } catch (e) {
         chromePath = undefined;
