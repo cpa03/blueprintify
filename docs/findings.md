@@ -2,6 +2,30 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-09-29 — Dead code, unused exports, commented-out code scan, post-flexy-186)
+
+**Scope**: `agent/janitor` branch (synced to `origin/main` @ `e56f56bf` via merge `97aa6c8e`; resolved one modify/delete conflict on `functions/api/[[path]].ts` with `--theirs`). Re-scan following the earlier 2026-09-29 cycle; ran `scripts/janitor-scan.mjs` (127 orphan candidates, 82 unused-export candidates) plus manual comment/`console.log`/duplicate/`utils`-folder sweeps.
+
+### Removed
+
+- None. No safe deletions this cycle — every candidate verified as live code or intentionally kept (see below). Zero source changes; scratch planner notes removed locally (untracked, not part of PR diff).
+
+**Verification**: `npm run build` ✅ green (8.82s); `typecheck` on `@blueprint/shared` ✅ green.
+
+### Verified clean (no action needed)
+
+- **No orphaned source files**: all 127 "orphan" hits are test/e2e files discovered by vitest/playwright configs; `scripts/migrate.ts` is wired via `db:*` npm scripts; `apps/web/functions/api/[[path]].ts` is a deploy entry point (not imported by design). Root `functions/api/[[path]].ts` is intentionally NOT counted here — see duplicate regression below.
+- **No dead unused exports**: all 82 candidates verified live via repo-wide grep — alias re-export chains (`SHARED_ROUTE_PATHS` used in same file `endpoints.ts`; `SHARED_SSE_CONFIG/HEADERS` re-exported as `SSE_CONFIG/SSE_HEADERS`; `SHARED_STAGGER_CONFIG` re-exported as `STAGGER_CONFIG`), shared config surface (`MAX_INPUT_length` via `prompt-security.ts` re-export chain; `PREVIEW/OBSERVABILITY/QUEUE_DEFAULTS`, `PLAYWRIGHT_CONFIG`, `TEMPLATE_NODE_PORT` in template output strings), multi-ref barrel/hook/store types (`Container` 192 refs, `ViewMode` 59, `APIError` 23, `FIELD_LABELS/PATHS` 18 each, `storageManager`, `ToastType`, `ExportContext`, `ValidatedContext`, template `generate*` fns, shared request/result types).
+- **No commented-out dead code**: `// <code-keyword>` grep across `apps/` → 1 prose false positive (`App.tsx:101` "…imports — and framer-motion —…"); no `/*`-block dead code.
+- **No production `console.log`**: all hits intentional — Workers structured logging (`middleware/logger.ts`, `utils/secureLog.ts` — `console.log` IS the Workers log sink), e2e spec output, JSDoc examples, `console.log` text inside template-generator output strings.
+- **No duplicate `utils` folders / logic**: `apps/api/src/utils` vs `apps/web/src/utils` vs `apps/web/src/lib` vs `packages/shared/src/utils` hold disjoint modules; zero `formatDate`-style duplication.
+- **depcheck unavailable**: `npx depcheck` not installed and offline install refused; dependency pruning skipped as unsafe without tooling — no manual `package.json` edits made.
+
+### Structural findings (recommended for future work, not removed)
+
+- [Janitor] **REGRESSION — duplicate proxy back**: `functions/api/[[path]].ts` (repo root) and `apps/web/functions/api/[[path]].ts` are **byte-identical again** (verified via `diff` this cycle). The root copy deleted in `9ecfb9d2` was re-added by flexy iterations 186/187 (`9b1c55cb`, `3935c5bf`) on `main`. Only one can be live for Cloudflare Pages, but the live root is still ambiguous (no Pages project config in repo; `apps/web/vercel.json` suggests Vercel where both are inert; file headers reference `*.pages.dev`). Carried over from 2026-09-28: **recommend human confirms the Pages project root, then deletes the dead copy — do NOT auto-delete.**
+- [Janitor] `scripts/janitor-scan.mjs` exists only on `agent/janitor` (never on `main`, unreferenced by any npm script). Carried over: **recommend human decides — promote to `npm run scan:janitor` or drop from the branch before merge.**
+
 ## Janitor Cleanup (2026-09-29 — Dead code, unused exports, commented-out code scan)
 
 **Scope**: `agent/janitor` branch (synced to `origin/main` @ `c03cffd3` — merge-base equals tip, no new main commits). Re-scan following the three 2026-09-28 cycles; ran `scripts/janitor-scan.mjs` (127 orphan candidates, 81 unused-export candidates — unchanged, prior removals held) plus manual comment/`console.log`/duplicate/dependency/TODO/focused-test/type-safety sweeps.
