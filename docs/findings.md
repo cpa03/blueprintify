@@ -11715,3 +11715,26 @@ pre-existing on main).
 **Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code
 fixes required — nothing to remove. `toast.ts` `Math.random()` UI IDs left
 untouched (pre-existing, non-security-sensitive).
+
+## Security Audit — PR re-verification vs origin/main (2026-09-29)
+
+**Scope**: 4-file diff vs origin/main (secret-removal: `apps/api/wrangler.toml`
+drops hardcoded `API_KEY` prod+staging → `wrangler secret put` comments;
+`apps/web/src/config/env.ts` drops hardcoded `VITE_API_KEY` fallback → `""`
+when unset; plus audit-history appends in `.opencode/memory/security.md` +
+`docs/findings.md`). Merge from `origin/main` conflict-resolved to HEAD
+(secure) side on both files.
+**Scans**: added-lines secret grep CLEAN (hits are benign audit prose +
+`wrangler secret put` comments + `getEnvVar("VITE_API_KEY")` ref; working-tree
+grep for `blueprintify-public-access` in both config files = zero matches) ·
+`scan:secrets` ✅ 334 files · added-lines XSS/injection grep CLEAN (single hit
+is audit prose quoting pattern names) · deprecated grep CLEAN · no sensitive
+filenames in diff · `.gitignore` covers `.dev.vars` + `.env*` · `npm audit`
+✅ 0 prod vulns (5 moderate dev-only: `undici` via jsdom/miniflare/wrangler
+transitives — fix requires breaking `@cloudflare/vitest-pool-workers` bump,
+untouched by this PR which has no package.json changes) · fail-closed
+re-verified (frontend `api.ts` omits `x-api-key` when empty via conditional
+spread; backend `auth.ts` 503s when unset).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code
+fixes required — nothing to remove. The PR *removes* a hardcoded credential —
+no rotation needed (public dev fallback, never a real secret).
