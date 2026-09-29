@@ -171,6 +171,47 @@ describe("PageScrollProgressBar", () => {
     expect(animate.opacity).toBe(0);
   });
 
+  it("smooth-scrolls on keyboard nudge by default", () => {
+    mockScrolledPage();
+    const scrollToSpy = vi.fn();
+    window.scrollTo = scrollToSpy as typeof window.scrollTo;
+    renderPageProgressBar();
+
+    const slider = screen.getByRole("slider");
+    fireEvent.keyDown(slider, { key: "ArrowRight" });
+
+    expect(scrollToSpy).toHaveBeenCalledWith(expect.objectContaining({ behavior: "smooth" }));
+  });
+
+  it("jumps instantly (auto) on keyboard nudge when reduced motion is preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    mockScrolledPage();
+    const scrollToSpy = vi.fn();
+    window.scrollTo = scrollToSpy as typeof window.scrollTo;
+    renderPageProgressBar();
+
+    const slider = screen.getByRole("slider");
+    fireEvent.keyDown(slider, { key: "ArrowRight" });
+
+    expect(scrollToSpy).toHaveBeenCalledWith(expect.objectContaining({ behavior: "auto" }));
+  });
+
+  it("click-to-scrub jumps instantly (auto) when reduced motion is preferred", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    mockScrolledPage();
+    const scrollToSpy = vi.fn();
+    window.scrollTo = scrollToSpy as typeof window.scrollTo;
+    const { container } = render(<PageScrollProgressBar />);
+    void container;
+
+    const slider = screen.getByRole("slider");
+    const track = slider.querySelector("div.relative") ?? slider.firstElementChild;
+    expect(track).not.toBeNull();
+    fireEvent.click(track as Element, { clientX: 100 });
+
+    expect(scrollToSpy).toHaveBeenCalledWith(expect.objectContaining({ behavior: "auto" }));
+  });
+
   it("exposes data-state, data-progress, data-hovered, and data-focused DOM inspection attributes", () => {
     mockScrolledPage();
     renderPageProgressBar();
