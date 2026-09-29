@@ -291,6 +291,16 @@ describe("StepIndicator", () => {
     expect(stepIndicator).toHaveClass("flex", "items-center", "justify-center", "gap-3", "mb-8");
   });
 
+  it("supports responsive overflow containment for mobile viewports", () => {
+    const { container } = render(<StepIndicator />);
+
+    const stepIndicator = container.firstChild as HTMLElement;
+    expect(stepIndicator).toHaveClass("max-w-full", "overflow-x-auto");
+
+    const buttons = screen.getAllByRole("button");
+    expect(buttons[0]).toHaveClass("shrink-0");
+  });
+
   it("renders connector lines between steps", () => {
     const { container } = render(<StepIndicator />);
 

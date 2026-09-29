@@ -135,9 +135,9 @@ function App(): JSX.Element {
   useEffect(() => {
     if (prevOnlineRef.current !== isOnline) {
       if (isOnline) {
-        toast.success(NETWORK_MESSAGES.ONLINE, NETWORK_MESSAGES.ONLINE_DURATION);
+        toast.success(NETWORK_MESSAGES.ONLINE, { duration: NETWORK_MESSAGES.ONLINE_DURATION });
       } else {
-        toast.warning(NETWORK_MESSAGES.OFFLINE, NETWORK_MESSAGES.OFFLINE_DURATION);
+        toast.warning(NETWORK_MESSAGES.OFFLINE, { duration: NETWORK_MESSAGES.OFFLINE_DURATION });
       }
     }
     prevOnlineRef.current = isOnline;

@@ -102,7 +102,7 @@ describe("toast store", () => {
     it("should accept custom duration", () => {
       const { addToast } = useToastStore.getState();
 
-      addToast("Custom duration", TOAST_TYPES.SUCCESS, 10000);
+      addToast("Custom duration", TOAST_TYPES.SUCCESS, { duration: 10000 });
 
       const state = useToastStore.getState();
       expect(state.toasts[0]?.duration).toBe(10000);
@@ -263,7 +263,7 @@ describe("useToast hook exports", () => {
 
   it("store addToast should support custom duration (used by hook)", () => {
     const { addToast } = useToastStore.getState();
-    addToast("Custom duration", TOAST_TYPES.SUCCESS, 2000);
+    addToast("Custom duration", TOAST_TYPES.SUCCESS, { duration: 2000 });
 
     const state = useToastStore.getState();
     expect(state.toasts[0]?.duration).toBe(2000);
