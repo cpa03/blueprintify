@@ -824,6 +824,20 @@ export const TYPING_STATE_VALUES = {
 } as const;
 
 /**
+ * Starter Template Selection State Values
+ * Centralized state tracking values for starter template cards (TemplateGrid).
+ * Flexy says: No hardcoded "selected"/"idle" strings in TemplateGrid!
+ * Usage: import { TEMPLATE_STATE_VALUES } from "@blueprint/shared";
+ *        data-state={isSelected ? TEMPLATE_STATE_VALUES.SELECTED : TEMPLATE_STATE_VALUES.IDLE}
+ */
+export const TEMPLATE_STATE_VALUES = {
+  /** Selected template state identifier */
+  SELECTED: "selected" as const,
+  /** Idle/unselected template state identifier */
+  IDLE: "idle" as const,
+} as const;
+
+/**
  * Save State Display Values
  * Centralized state tracking values for save status indicators (e.g. LastSavedIndicator).
  * Flexy says: No hardcoded "saved"/"unsaved" strings in LastSavedIndicator!
