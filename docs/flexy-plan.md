@@ -27,7 +27,7 @@ Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
 | PR # | Branch | Title |
 | ---- | ------ | ----- |
-| TBD (this PR) | `flexy/iteration-189-aria-live-values` | refactor(flexy): centralize ARIA live-region politeness, atomic & modal values into shared config (Iteration 189) |
+| #3668 | `flexy/iteration-189-aria-live-values` | refactor(flexy): centralize ARIA live-region politeness, atomic & modal values into shared config (Iteration 189) |
 
 ### ✅ Flexy Iteration 186: Centralize Deployment Origins, Proxy Routing & API-Key Fallback
 
