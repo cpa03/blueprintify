@@ -289,7 +289,7 @@ export const StepFeatures = memo(function StepFeatures({
                 <span aria-hidden="true">
                   {UI_CONTENT.WIZARD.STEP_FEATURES.MAX_FEATURES_REACHED}
                 </span>
-                <span className="sr-only">
+                <span className={CSS_CLASSES.SR_ONLY}>
                   {ACCESSIBILITY_LABELS.WIZARD_FEATURES.MAX_FEATURES_REACHED_ARIA}
                 </span>
               </motion.p>
