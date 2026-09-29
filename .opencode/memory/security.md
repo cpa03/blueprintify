@@ -98,6 +98,13 @@
 - **Verification**: Added-lines secret/XSS/deprecated greps CLEAN; `scan:secrets` ✅ 334 files; `npm audit` ✅ 0 vulns; fail-closed confirmed (frontend omits `x-api-key` when empty, backend 503s when unset); toast tests 44/44 pass; web source + shared typecheck clean.
 - **Lesson**: Removing a hardcoded *fallback* credential is only safe when both sides fail closed — verify the client omits the header on empty and the server rejects (not bypasses) on unset before approving. No rotation needed for a public dev fallback that was never a real secret.
 
+### 2026-09-29 09:00 UTC: Security Engineer Audit — vitest/ui 4.1.11→5.0.2 (dependabot)
+
+- **Finding**: PR bumps dev-only `@vitest/ui` to `5.0.2` (2 files: package.json + lock). No introduced vulnerabilities, secrets, or deprecated functions. Snyk 0 direct vulns; prior Vitest UI RCEs (GHSA-p63j-vcc4-9vmv, GHSA-5xrq-8626-4rwp) patched in both versions; Vite 8.3.0 + Node ≥22 satisfy Vitest 5 reqs.
+- **Verification**: PR-diff secret/XSS/deprecated greps CLEAN; `scan:secrets` ✅ 334 files; `npm audit --omit=dev` ✅ 0 vulns (full audit 5 moderate undici pre-existing via jsdom→miniflare chain); lockfile URLs + integrity ✅.
+- **Structural flag (report-only)**: `vitest` stays `4.1.11` while ui 5.0.2 peerRequires `vitest@5.0.2` → peer warning / possible `vitest --ui` breakage. Coordinated 5.x bump (vitest + coverage-v8 + ui) left to dependabot follow-ups.
+- **Lesson**: Major-range dev-tool bumps must be checked for peer-matrix coherence, not just CVEs — a lone UI major ahead of its runner is the classic dependabot interim state. Flag it, don't fix it (no functionality reduction).
+
 ### 2026-05-25 21:00 UTC: Security Engineer Audit - Lighthouse Dependency Upgrade
 
 - **Finding**: PR upgraded `lighthouse` from `^12.8.2` to `^13.3.0` (dev dependency). No introduced vulnerabilities, secrets, or deprecated functions.
