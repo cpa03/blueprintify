@@ -28,8 +28,9 @@
  */
 
 import { useState, memo, useCallback, useRef, useMemo } from "react";
-import { STARTER_TEMPLATES, KEYBOARD_EVENT_KEYS, BREAKPOINT_DEFAULTS } from "@blueprint/shared";
+import { STARTER_TEMPLATES, KEYBOARD_EVENT_KEYS, BREAKPOINT_DEFAULTS, TEMPLATE_STATE_VALUES } from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
+import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
   ANIMATION,
   TOAST_MESSAGES,
@@ -44,6 +45,7 @@ import { TEMPLATE_GLOW_SHADOW } from "../config/theme";
 
 function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Element {
   const loadTemplate = useWizardStore((s) => s.loadTemplate);
+  const shouldReduceMotion = useReducedMotion();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
@@ -168,6 +170,10 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
               aria-disabled={selectedId !== null}
               aria-busy={isSelected && isLoading}
               aria-selected={isSelected}
+              data-state={isSelected ? TEMPLATE_STATE_VALUES.SELECTED : TEMPLATE_STATE_VALUES.IDLE}
+              data-template-id={template.id}
+              data-loading={isSelected && isLoading ? "true" : "false"}
+              data-reduced-motion={shouldReduceMotion ? "true" : "false"}
               role="option"
               tabIndex={focusIndex === index ? 0 : -1}
               style={
