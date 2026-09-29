@@ -11738,3 +11738,25 @@ spread; backend `auth.ts` 503s when unset).
 **Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code
 fixes required — nothing to remove. The PR *removes* a hardcoded credential —
 no rotation needed (public dev fallback, never a real secret).
+
+## Security Audit — PR dependabot vitest/ui 5.0.2 vs origin/main (2026-09-29)
+
+**Scope**: 2-file diff (`apps/web/package.json` + `package-lock.json`):
+`@vitest/ui` `^4.1.11` → `^5.0.2` (dev-only test UI).
+**Scans**: PR-diff secret grep CLEAN · `scan:secrets` ✅ 334 files ·
+added-lines XSS/injection grep CLEAN (no eval/innerHTML/dangerouslySetInnerHTML) ·
+deprecated grep CLEAN · lockfile URLs all `registry.npmjs.org` with sha512
+integrity ✅ · no downgrades (only fflate/flatted/tinyrainbow patch bumps +
+tinyglobby drop per upstream) · `npm audit --omit=dev` ✅ 0 vulns ·
+`npm audit` full 5 moderate (undici GHSA-3wwx-pv8p-q78v via jsdom→miniflare→
+wrangler) PRE-EXISTING, not introduced · Snyk `@vitest/ui@5.0.2` no direct
+vulns · GHSA-p63j-vcc4-9vmv + GHSA-5xrq-8626-4rwp patched in both 4.1.11 and
+5.0.2 · Vite 8.3.0 satisfies Vitest 5 (≥6.4.0), Node ≥22 satisfies (≥22.12.0 —
+CI uses coarse `22` pin) · `vitest.config.ts` has no deprecated options, src
+uses only stable APIs (describe/it/expect/vi) ✅.
+**Structural flag (report-only, no fix)**: `vitest` stays `4.1.11` while
+`@vitest/ui@5.0.2` peerRequires `vitest@5.0.2` → npm peer warning, possible
+`vitest --ui` breakage. Coordinated bump (vitest + coverage-v8 + ui → 5.x)
+left to dependabot follow-ups — out of scope, no functionality reduction.
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code
+fixes required — nothing to remove.
