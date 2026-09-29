@@ -11912,3 +11912,23 @@ generated template strings, JSDoc examples).
 positive — imported by `Header.test.tsx` + `accessibility.test.tsx`).
 **Workspace-only**: deleted untracked root `build.log` / `lint.log` / `typecheck.log`
 (CI artifacts, never tracked). No source diff — build safety trivially preserved.
+
+---
+## [Janitor] Pre-merge dead-code sweep — 2026-09-29 (`agent/janitor`)
+
+**Merge sync**: merged `origin/main` (Flexy Iteration 186 deploy/proxy modularization)
+into `agent/janitor`. Resolved 1 unmerged path: root `functions/api/[[path]].ts`
+(deleted-by-us duplicate, modified on main) — kept deletion; canonical copy is
+`apps/web/functions/api/[[path]].ts` (now with Flexy parity constants). Verified
+Worker serves frontend via ASSETS binding (`apps/web/dist`), so root copy was dead.
+**Cleanup**: removed resurrected duplicate only; no other safe deletions found.
+**Sweep results**: 0 production `console.log` (all hits intentional: `secureLog`,
+request `logger`, e2e specs, generated template strings, JSDoc/doc examples),
+0 commented-out dead code (2 explanatory comments only), 0 unused deps (all 15
+web deps + testing libs verified imported), 0 `.bak/.orig` strays, 0 duplicate
+`formatDate`/`utils` folders. `task_plan.md`/`*.log` are gitignored, never committed.
+**Build safety**: `packages/shared` rebuild required first (stale `dist` caused
+phantom `TS2305/TS2339` errors in api+web typecheck); after rebuild,
+`typecheck` (api+web) and `npm run build` all pass.
+**Structural findings (report only)**: none new — prior note about hardcoded
+worker URL in Pages Function now mitigated via parity-constants comment block.
