@@ -172,6 +172,10 @@ describe("TemplateGrid", () => {
 
     expect(webAppButton).toBeEnabled();
     expect(mobileAppButton).toBeEnabled();
+    expect(webAppButton).toHaveAttribute("data-state", "idle");
+    expect(webAppButton).toHaveAttribute("data-template-id", "web-app");
+    expect(webAppButton).toHaveAttribute("data-loading", "false");
+    expect(webAppButton).toHaveAttribute("data-reduced-motion", "false");
 
     fireEvent.click(webAppButton);
 
@@ -179,6 +183,8 @@ describe("TemplateGrid", () => {
     // drop keyboard focus to <body> the moment the focused card is disabled
     expect(webAppButton).toHaveAttribute("aria-disabled", "true");
     expect(mobileAppButton).toHaveAttribute("aria-disabled", "true");
+    expect(webAppButton).toHaveAttribute("data-state", "selected");
+    expect(webAppButton).toHaveAttribute("data-loading", "true");
   });
 
   it("keeps focus on the selected card during load (WCAG 2.4.3)", () => {

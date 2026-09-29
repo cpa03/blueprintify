@@ -1,9 +1,4 @@
-import {
-  DEFAULT_URLS,
-  SHARED_DEFAULTS,
-  ENV_VAR_KEYS,
-  API_PROXY_PATH,
-} from "@blueprint/shared/config";
+import { DEFAULT_URLS, SHARED_DEFAULTS, ENV_VAR_KEYS, API_PROXY_PATH } from "@blueprint/shared";
 
 const { WEB: WEB_ENV } = ENV_VAR_KEYS;
 
@@ -26,7 +21,7 @@ export const ENV = {
   },
 
   get API_KEY(): string {
-    return getEnvVar("VITE_API_KEY", "blueprintify-public-access-2026");
+    return getEnvVar(WEB_ENV.VITE_API_KEY, SHARED_DEFAULTS.PUBLIC_ACCESS_KEY);
   },
 
   // Feature Flags
