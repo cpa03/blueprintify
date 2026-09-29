@@ -2,6 +2,10 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Merge Note (2026-09-29 — duplicate proxy resolution)
+
+- The byte-identical `functions/api/[[path]].ts` (repo root) vs `apps/web/functions/api/[[path]].ts` duplicate reported below was **resolved by Security Engineer in `739e6be5`**: root copy deleted, `apps/web` copy kept — rationale: Worker serves the frontend via the `[assets]` binding (`apps/api/wrangler.toml`), so repo-root `functions/` is not a live Pages project root. Janitor concurs and accepted the deletion in the merge resolution. Only `apps/web/functions/api/[[path]].ts` remains.
+
 ## Janitor Cleanup (2026-09-29 — Dead code scan, post-flexy-186, base e56f56bf)
 
 **Scope**: `agent/janitor` branch (synced to `origin/main` @ `e56f56bf` via merge `97aa6c8e`; resolved one modify/delete conflict on `functions/api/[[path]].ts` with `--theirs`). Re-scan following the earlier 2026-09-29 cycle; ran `scripts/janitor-scan.mjs` (127 orphan candidates, 82 unused-export candidates) plus manual comment/`console.log`/duplicate/`utils`-folder sweeps.
@@ -11937,3 +11941,23 @@ generated template strings, JSDoc examples).
 positive — imported by `Header.test.tsx` + `accessibility.test.tsx`).
 **Workspace-only**: deleted untracked root `build.log` / `lint.log` / `typecheck.log`
 (CI artifacts, never tracked). No source diff — build safety trivially preserved.
+
+---
+## [Janitor] Pre-merge dead-code sweep — 2026-09-29 (`agent/janitor`)
+
+**Merge sync**: merged `origin/main` (Flexy Iteration 186 deploy/proxy modularization)
+into `agent/janitor`. Resolved 1 unmerged path: root `functions/api/[[path]].ts`
+(deleted-by-us duplicate, modified on main) — kept deletion; canonical copy is
+`apps/web/functions/api/[[path]].ts` (now with Flexy parity constants). Verified
+Worker serves frontend via ASSETS binding (`apps/web/dist`), so root copy was dead.
+**Cleanup**: removed resurrected duplicate only; no other safe deletions found.
+**Sweep results**: 0 production `console.log` (all hits intentional: `secureLog`,
+request `logger`, e2e specs, generated template strings, JSDoc/doc examples),
+0 commented-out dead code (2 explanatory comments only), 0 unused deps (all 15
+web deps + testing libs verified imported), 0 `.bak/.orig` strays, 0 duplicate
+`formatDate`/`utils` folders. `task_plan.md`/`*.log` are gitignored, never committed.
+**Build safety**: `packages/shared` rebuild required first (stale `dist` caused
+phantom `TS2305/TS2339` errors in api+web typecheck); after rebuild,
+`typecheck` (api+web) and `npm run build` all pass.
+**Structural findings (report only)**: none new — prior note about hardcoded
+worker URL in Pages Function now mitigated via parity-constants comment block.
