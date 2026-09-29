@@ -3,6 +3,16 @@
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
 
+## RepoKeeper Cycle 2026-09-29 (HYGIENE AUDIT + DOC-SYNC, TYPECHECK FATAL PRE-EXISTING)
+
+**Phase 0**: `main` HEAD `c03cffd3` = `origin/main` (0-behind, merge-base = HEAD, no rebase needed); clean tree; branch `repokeeper/cleanup-20260929-ultra` created from `origin/main`.
+**Hygiene audit**: 697 tracked files; 0 temp/backup tracked (`*.tmp/*.bak/*.orig/*~/.DS_Store` grep empty); 0 untracked (`git status --porcelain` empty); 0 empty dirs; scripts 8/8 accounted (`brocula-hunt.mjs`↔`brocula`, `migrate.ts`↔`db:*`, `normalize-issue-labels.mjs`↔`normalize:issues`, `scan-secrets.mjs`↔`scan:secrets`, `validate-wrangler.mjs`↔`validate:wrangler`+`predeploy:api`; `brocula-sweep.mjs`+`lh-warm.mjs` intentionally committed reusable helpers per Run 71/74 audit records — not orphaned; `opencode-run.sh` CI helper); 28/28 agents + 25/25 skills + 8/8 commands cross-checked 1:1; audits index **98 rows ↔ 98 files** on disk (99 `.md` includes README itself), 1 `**Latest**` marker (Run 89, Aug 20).
+**Retention DEFERRED (no purge, avoid conflict)**: oldest top-level audits Jul 25 = 66d past 30d policy, and `docs/audits/archive/` Jul 21+ = 70d past policy — eligible for purge/archival, but open PR #3653 (`agent/repokeeper-cleanup-20260928`, Jul 25 → archive moves) already handles the same files; second mover would conflict. This cycle takes 0-deletion FAIL-SAFE, records the backlog for the next cycle after #3653 merges.
+**Doc-sync**: 0 new drift in README structure/counts (28 agents / 25 skills / 8 commands exact); 0 TODO/FIXME/HACK in source; console.log only intentional (logger/secureLog/template-string fixtures/docs examples). **1 STALE CLAIM flagged**: `docs/knowledge-review.md` "Current State (Sep 2026): All quality gates clean (typecheck ✅…)" is outdated — `main` typecheck now FAILS (see Baseline). Updated that file this cycle.
+**Baseline (LIVE on `main`, pre-existing, not caused by this docs-only change)**: lint ✅ exit 0 (0 errors/0 warnings) · build ✅ (`shared` + `web`, 9.42s) · shared typecheck ✅ · **typecheck ❌ FATAL PRE-EXISTING** — `apps/web` jest-dom matchers (`toBeInTheDocument`/`toBeDisabled`/`toHaveAttribute` etc., ~30 errors, vitest 5 upgrade fallout) + `apps/api` controller generics (`validatedData: unknown` vs `ValidatedContext`, 3 errors); fixes already in flight in open PRs #3652/#3644/#3639/#3638 — RepoKeeper takes no code scope, docs-only. Skills: `docs-update` (this record). Subagents: none (explore agents unavailable — model not found; direct probes used).
+**Final state: PR pending** — docs-only 2 files (findings + knowledge-review); branch sync + PR creation follows.
+
+
 ## Orchestration Cycle 601 (2026-09-06 — ERRORFALLBACK MICRO-UX & DOM STATE TRACKING)
 
 **Phase 0**: Local `agent` branch checked out; synced with `origin/main`. Working tree clean.

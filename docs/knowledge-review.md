@@ -11,8 +11,8 @@ This file is referenced by the Knowledge Steward step in `.github/workflows/main
 
 ## Current State (Sep 2026)
 
-**Last Review**: 2026-09-26 (consolidation pass)  
-**Status**: ✅ All quality gates clean (typecheck ✅ lint ✅ 0/0 build ✅ tests ✅ audit 0 vulns ✅ scan:secrets ✅ validate:wrangler ✅)
+**Last Review**: 2026-09-29 (RepoKeeper hygiene pass, docs-only)
+**Status**: ⚠️ Typecheck REGRESSED on `main` (pre-existing, not docs-caused) — web jest-dom matchers + api controller generics fail; fixes in flight (#3652/#3644/#3639/#3638). Lint ✅ 0/0 · build ✅ · shared typecheck ✅. Prior "All quality gates clean" claim (2026-09-26) is stale until typecheck PRs merge.
 
 ### Known Documentation Drift (Resolved)
 
