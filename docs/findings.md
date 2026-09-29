@@ -11760,3 +11760,25 @@ uses only stable APIs (describe/it/expect/vi) ✅.
 left to dependabot follow-ups — out of scope, no functionality reduction.
 **Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code
 fixes required — nothing to remove.
+
+## Security Audit — Dependabot dev-deps PR (development-dependencies-2da20e1db4) vs origin/main (2026-09-29)
+
+**Scope**: 5 files (root + api/web/shared package.json, package-lock.json). 9 bumps,
+all forward-only patch/minor, all dev-only: workers-types 5.20260918.1→5.20260926.1,
+eslint 10.10.0→10.11.0 (x4 workspaces), wrangler 4.134.0→4.141.0, jsdom 30.1.0→30.1.1,
+vite 8.3.0→8.3.1, @types/node 26.6.1→26.6.3, lighthouse 13.4.1→13.5.0,
+prettier 3.9.8→3.9.9, typescript-eslint 8.70.0→8.70.1.
+**Scans**: added-lines secret/XSS/deprecated grep CLEAN (both this PR and own-branch
+diff) · `scan:secrets` ✅ 334 files · `npm audit` 5 moderate, single chain undici
+GHSA-3wwx-pv8p-q78v (7.28.0–7.29.0 permessage-deflate DoS) via
+jsdom→miniflare→vitest-pool-workers→wrangler — dev-only test tooling, fix needs breaking
+`--force` downgrade → risk accepted · jsdom@30.1.1 moves to undici ^8.10.2 (out of
+vuln range, improves one leg) · residual pin wrangler@4.141.0→miniflare
+5.20260925.0-alpha→undici 7.29.0 exact requires upstream workers-sdk release, not
+fixable at project level · merge from origin/main tried to reintroduce hardcoded
+`blueprintify-public-access-2026` (wrangler.toml prod+staging, env.ts fallback) →
+conflicts resolved keeping secret-free HEAD version (tomllib parse OK, no markers,
+web typecheck exit 0) · stale gitignored apps/web/dist held old fallback → rebuilt,
+fresh bundle grep CLEAN (dist untracked, never committed).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code fixes
+required — nothing to remove.

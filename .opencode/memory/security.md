@@ -85,6 +85,14 @@
 - **Fix**: Updated runner to `ubuntu-24.04-arm`, actions/checkout and actions/setup-node to `@v4`
 - **Lesson**: CI workflows should be audited regularly for version consistency and security compliance per AGENTS.md standards
 
+### 2026-09-29 09:30 UTC: Security Engineer Audit — Dependabot Dev-Deps PR (9 bumps)
+
+- **Finding**: PR bumps 9 dev-only deps (eslint 10.11.0, wrangler 4.141.0, jsdom 30.1.1, vite 8.3.1, lighthouse 13.5.0, etc.). All forward-only, no introduced vulnerabilities, secrets, or deprecated functions.
+- **Verification**: Added-lines secret/XSS/deprecated greps CLEAN; `scan:secrets` ✅ 334 files; web typecheck clean; fresh `apps/web/dist` rebuild grep CLEAN (stale gitignored bundle had held the old hardcoded fallback — never committed).
+- **Pre-existing Issue**: `undici@7.28.0-7.29.0` (GHSA-3wwx-pv8p-q78v, moderate) persists via `miniflare@5.20260925.0-alpha` exact pin (`undici: "7.29.0"`) inside wrangler 4.141.0. `npm audit fix --force` would breaking-downgrade vitest-pool-workers → risk accepted (dev-only test tooling). jsdom 30.1.1 moving to undici ^8.10.2 improves one leg.
+- **Merge Hazard**: `origin/main` merge tried to reintroduce hardcoded `blueprintify-public-access-2026` into `wrangler.toml` + `env.ts` — conflicts resolved keeping secret-free version.
+- **Lesson**: When main regresses a prior secret-removal, the merge conflict itself is the security gate — always resolve toward the secret-free side and rebuild gitignored artifacts (dist/) that may still embed the old value.
+
 ### 2026-09-27 04:00 UTC: Security Engineer Audit — Model Fallback Hierarchy PR
 
 - **Finding**: PR (90 files: toast options→duration refactor, pro-tip removal, debounce retype, opencode.json model hierarchy, 2 new dev deps, new scripts/opencode-run.sh, 5 workflows migrated to wrapper). No introduced vulnerabilities, secrets, or deprecated functions.
