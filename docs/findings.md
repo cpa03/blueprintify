@@ -2,6 +2,31 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-09-30 — Redundant files, unused exports, commented-out dead code scan)
+
+**Scope**: `agent/janitor` branch, pre-merge hygiene scan per cleanup request. Ran `scripts/janitor-scan.mjs` (127 orphan candidates, 82 unused-export candidates — unchanged from prior cycles) plus repo-wide grep verification for commented-out code, production `console.log`, duplicate utilities, and `utils`/`lib` overlap.
+
+### Removed
+
+- None. No safe deletions this cycle — every candidate verified as live code or intentionally kept (see below). Zero source changes.
+
+**Verification**: `npm run build` ✅ green (9.34s, exit 0).
+
+### Verified clean (no action needed)
+
+- **No orphaned source files**: all 127 "orphan" hits are `*.test.ts` (vitest-discovered, never imported by design), e2e specs (playwright entry points), `scripts/migrate.ts` (wired via `db:*` npm scripts), and `apps/web/functions/api/[[path]].ts` (Pages deploy entry point, not imported by design).
+- **No dead unused exports**: all 82 candidates are false positives — alias/barrel re-exports (`SHARED_ROUTE_PATHS` used same-file in `endpoints.ts`, `SHARED_SSE_CONFIG/HEADERS` re-exported as `SSE_CONFIG/SSE_HEADERS`), same-file usage (`APIError` via `isAPIError` guard in `errors.ts`, `storageManager` backing `wizardStorage`/`editorStorage` in `lib/storage.ts`, `FIELD_LABELS/PATHS` composing live exports in `validation.ts`), registry composition (all `generate*` template fns wired via `lib/templates/index.ts`), intentional config surface (`PREVIEW/OBSERVABILITY/QUEUE_DEFAULTS`, `PLAYWRIGHT_CONFIG`, shared request/result types), inline-`type` imports the scanner misses (theme types, `Toast`/`ViewMode`), Cloudflare/Pages conventions (`onRequest`, `metadata`).
+- **No commented-out dead code**: `// <code-keyword>` grep across `apps/` + `packages/` → prose/explanatory comments only; no `/*`-block dead code.
+- **No production `console.log`**: all 16 hits intentional — Workers structured logging (`middleware/logger.ts`, `utils/secureLog.ts`), e2e spec output, JSDoc examples (`lib/api.ts`, `config/security.ts`), `console.log` text inside template-generator output strings (`node.ts`, `static.ts`).
+- **No duplicate utilities**: `apps/web/src/utils/` (motion, scroll, slug) vs `apps/web/src/lib/` (api, clipboard, debounce-test, dom, export, platform, security, storage) vs `packages/shared/src/utils/` (debounce) hold disjoint modules — web's `lib/debounce.test.ts` tests the *shared* `createDebouncedSaver`, confirming prior consolidation holds. Zero `formatDate`-style duplication.
+- **eslint-disables legitimate**: 3 targeted single-line suppressions (`react-hooks/set-state-in-effect`, `react-hooks/exhaustive-deps`) — intentional, not rot.
+
+### Structural findings (recommended for future work, not removed)
+
+- [Janitor] `scripts/janitor-scan.mjs` exists only on `agent/janitor` (never on `main`, unreferenced by any npm script). Merging it adds ~240 lines against the leaner-before-merge goal. Carried over from prior cycles: **recommend human decides — promote to `npm run scan:janitor` or drop from the branch before merge.**
+- No new structural mess found this cycle (no duplicate `utils` folders, no repeated `formatDate`-style logic).
+---
+
 ## Janitor Cleanup (2026-09-30 — Dead code, unused exports, commented-out code scan, base eaf3aa98)
 
 **Scope**: `agent/janitor` branch (merge-base `eaf3aa98` = `origin/main` tip — 0 behind; only new main commits since the 2026-09-30 scan at `9187cf2c` are #3682 dep-bump `brace-expansion`+`undici` overrides, zero new source). Re-scan per merge-cleanup request; ran `scripts/janitor-scan.mjs` (127 orphan candidates, 82 unused-export candidates — unchanged) plus manual comment/`console.log`/duplicate/TODO/focused-test/type-safety sweeps with repo-wide grep verification.
