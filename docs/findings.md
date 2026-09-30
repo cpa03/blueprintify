@@ -2,6 +2,18 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## RepoKeeper Cycle 2026-09-28 (REPOKEEPER MODE — hygiene + doc-sync + PR)
+
+**Phase 0**: Branch `agent/repokeeper-20260928-cleanup` created from `origin/main` (`c03cffd3`); `git fetch origin main` clean; working tree clean. `gh pr list --state open` → 16 PRs (typecheck/vitest fixes + palette/flexy/brocula) — NOT in PR-handler scope per explicit RepoKeeper mandate; left untouched.
+
+**Hygiene audit CLEAN — 0 deletions**: 697 tracked files; 0 tracked temp (`*.tmp/*.bak/*.orig/*~/.DS_Store/*.log` grep empty); 0 empty tracked dirs; 0 tracked build artifacts (`dist/build/coverage/.next`); 0 `*.patch` / `*.sqlite` / archives; 8/8 scripts wired (`brocula-hunt↔brocula`, `migrate↔db:*`, `normalize↔normalize:issues`, `scan-secrets↔scan:secrets`, `validate-wrangler↔validate:wrangler`, `opencode-run.sh↔workflows/main+pr-gatekeeper`, `brocula-sweep.mjs`+`lh-warm.mjs` intentionally committed/documented); 28 agents + 25 skills + 8 commands match README; 5/5 workflows `ubuntu-24.04-arm`; audits index in sync (98 audit files + README = 99 on-disk ↔ 98 rows + exactly 1 `**Latest**` marker; 14 archived excluded by design).
+
+**Doc-sync — 1 drift noted, not fixed (minimal scope)**: all README doc links resolve (0 missing); 1 UNLISTED `docs/ocr-review-summary-2026-09-26.md` (present on disk, absent from README index) — left for Technical Writer disposition; no other drift checked.
+
+**Baseline FATAL (per mandate build/lint error = fatal)**: `npm run lint` ✅ EXIT 0 (0 errors/0 warnings); `npm run typecheck` ❌ REAL EXIT 2 — `apps/web` `tsc --noEmit` fails on `jest-dom` vitest matchers (`toBeInTheDocument`/`toHaveAttribute`/`toHaveFocus`/`toBeDisabled`/`toBeEnabled`/`toHaveTextContent` TS2339 across `StepInfo/StepReview/StepStack.test.tsx` + wider suite) — matches 16 open fix PRs; NO code fix applied (out of Janitor scope, would duplicate/conflict); build/tests not run past fatal gate.
+
+Subagents: 3× explore delegation failed (`ProviderModelNotFoundError: sabila/cmz`) — manual deterministic probes used instead. Final state: docs-only single-file record; PR follows with fatal gate disclosed.
+
 
 ## Orchestration Cycle 601 (2026-09-06 — ERRORFALLBACK MICRO-UX & DOM STATE TRACKING)
 
