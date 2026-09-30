@@ -956,3 +956,31 @@ export const EDITOR_BUTTON_STATE_VALUES = {
   /** Idle state identifier */
   IDLE: "idle" as const,
 } as const;
+
+/**
+ * SVG Icon Rendering Defaults
+ * Centralized source of truth for inline SVG icon attributes.
+ * Flexy says: No hardcoded "0 0 24 24"/"none"/"currentColor"/"round"/strokeWidth in Icon components!
+ * Usage: import { SVG_ICON_DEFAULTS } from "@blueprint/shared";
+ *        <svg viewBox={SVG_ICON_DEFAULTS.VIEW_BOX} fill={SVG_ICON_DEFAULTS.FILL_NONE} ...>
+ */
+export const SVG_ICON_DEFAULTS = {
+  /** Default viewBox for 24x24 stroke icons */
+  VIEW_BOX: "0 0 24 24" as const,
+  /** Default fill for stroke-only icons */
+  FILL_NONE: "none" as const,
+  /** Default stroke color inheriting surrounding text color */
+  STROKE_CURRENT: "currentColor" as const,
+  /** Default rounded line caps */
+  STROKE_LINECAP_ROUND: "round" as const,
+  /** Default rounded line joins */
+  STROKE_LINEJOIN_ROUND: "round" as const,
+  /** Default stroke width for regular icons */
+  STROKE_WIDTH_DEFAULT: 2 as const,
+  /** Bold stroke width for emphasis icons */
+  STROKE_WIDTH_BOLD: 3 as const,
+  /** Default icon size class */
+  SIZE_DEFAULT: "w-5 h-5" as const,
+  /** Small icon size class */
+  SIZE_SMALL: "w-4 h-4" as const,
+} as const;
