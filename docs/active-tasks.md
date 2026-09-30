@@ -2,6 +2,17 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **TemplateGrid Micro-UX & State Inspection**
+- [CONNECT] Connected `TEMPLATE_STATE_VALUES` shared config export from `@blueprint/shared` and `useReducedMotion` hook to `TemplateGrid.tsx`.
+- [STRENGTHEN] Strengthened `TemplateGrid` DOM state inspection with `data-state` ("selected"/"idle"), `data-template-id`, `data-loading` ("true"/"false"), and `data-reduced-motion` ("true"/"false") attributes.
+- [CONSOLIDATE] Consolidated template selection state tracking in `packages/shared/src/config/ui.ts` and `@blueprint/shared`.
+- [REMOVE] Removed raw string literals for template card selection states in `TemplateGrid.tsx` and `TemplateGrid.test.tsx`.
+
+## ✅ BugLover Audit — **Phase 1 Complete (Sep 29 2026)**
+- [x] error Fixed workspace typecheck generics in `BaseController` and Vitest matcher types in `apps/web/src/vite-env.d.ts`.
+- [x] error Pinned `vitest` to `4.1.11` across packages for `@cloudflare/vitest-pool-workers` compatibility.
+- [x] error Phase 1 BugLover audit: zero unhandled errors, typecheck clean, lint clean, test suite 2,642/2,642 passing.
+
 ## ✅ StorX — **CircularProgress Micro-UX & State Inspection**
 - [CONNECT] Connected `PROGRESS_STATE_VALUES` shared config export from `@blueprint/shared` to `CircularProgress.tsx`.
 - [STRENGTHEN] Strengthened `CircularProgress` DOM state inspection with `data-state` ("complete"/"animating"/"idle"), `data-complete`, `data-animating`, and `data-reduced-motion` ("true"/"false") attributes.

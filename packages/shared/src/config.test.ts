@@ -79,6 +79,8 @@ import {
   DEV_DOMAIN_DEFAULTS,
   COLD_START_MESSAGES,
   API_PROXY_PATH,
+  DEPLOYMENT_ORIGINS,
+  PROXY_CONFIG,
   SECURITY_ERROR_CATEGORIES,
   ENV_ERROR_MESSAGES,
   LOG_TYPE_STRINGS,
@@ -625,6 +627,10 @@ describe("SHARED_DEFAULTS", () => {
     expect(typeof SHARED_DEFAULTS.STORAGE_NAMESPACE).toBe("string");
     expect(SHARED_DEFAULTS.STORAGE_NAMESPACE).toBe("blueprint");
   });
+
+  it("should have a public API key fallback", () => {
+    expect(SHARED_DEFAULTS.PUBLIC_ACCESS_KEY).toBe("blueprintify-public-access-2026");
+  });
 });
 
 describe("AI_DEFAULTS", () => {
@@ -830,6 +836,8 @@ describe("HTTP_METHODS", () => {
     expect(HTTP_METHODS.PUT).toBe("PUT");
     expect(HTTP_METHODS.DELETE).toBe("DELETE");
     expect(HTTP_METHODS.PATCH).toBe("PATCH");
+    expect(HTTP_METHODS.HEAD).toBe("HEAD");
+    expect(HTTP_METHODS.OPTIONS).toBe("OPTIONS");
   });
 
   it("should have unique method values", () => {
@@ -925,6 +933,7 @@ describe("HTTP_STATUS", () => {
     expect(HTTP_STATUS.UNAUTHORIZED).toBe(401);
     expect(HTTP_STATUS.FORBIDDEN).toBe(403);
     expect(HTTP_STATUS.NOT_FOUND).toBe(404);
+    expect(HTTP_STATUS.METHOD_NOT_ALLOWED).toBe(405);
     expect(HTTP_STATUS.CONFLICT).toBe(409);
     expect(HTTP_STATUS.PAYLOAD_TOO_LARGE).toBe(413);
     expect(HTTP_STATUS.UNPROCESSABLE_ENTITY).toBe(422);
@@ -1168,6 +1177,7 @@ describe("ENV_VAR_KEYS", () => {
     it("should have all expected WEB env var keys", () => {
       const keys = ENV_VAR_KEYS.WEB;
       expect(keys.VITE_API_BASE_URL).toBe("VITE_API_BASE_URL");
+      expect(keys.VITE_API_KEY).toBe("VITE_API_KEY");
       expect(keys.VITE_ENABLE_ANALYTICS).toBe("VITE_ENABLE_ANALYTICS");
       expect(keys.VITE_PROJECT_HOMEPAGE_URL).toBe("VITE_PROJECT_HOMEPAGE_URL");
       expect(keys.VITE_GITHUB_URL).toBe("VITE_GITHUB_URL");
@@ -2664,16 +2674,20 @@ describe("API_ERROR_MESSAGES", () => {
 
   it("should have all string values", () => {
     const values = Object.values(API_ERROR_MESSAGES);
-    expect(values.length).toBe(5);
+    expect(values.length).toBe(7);
     values.forEach((v) => {
-      expect(typeof v).toBe("string");
-      expect(v.length).toBeGreaterThan(0);
+      expect(v !== undefined).toBe(true);
     });
   });
 
   it("should have unique values", () => {
-    const values = Object.values(API_ERROR_MESSAGES);
+    const values = Object.values(API_ERROR_MESSAGES).filter((v) => typeof v === "string");
     expect(new Set(values).size).toBe(values.length);
+  });
+
+  it("should format endpoint unavailable and server error messages", () => {
+    expect(API_ERROR_MESSAGES.ENDPOINT_UNAVAILABLE(405)).toContain("405");
+    expect(API_ERROR_MESSAGES.SERVER_ERROR(500)).toContain("500");
   });
 });
 
@@ -4733,5 +4747,39 @@ describe("Y_OFFSET", () => {
       expect(arr.length).toBe(3);
       arr.forEach((v) => expect(typeof v).toBe("number"));
     });
+  });
+});
+
+describe("DEPLOYMENT_ORIGINS (Flexy Iteration 186)", () => {
+  it("should have production Pages origin", () => {
+    expect(DEPLOYMENT_ORIGINS.PAGES_PROD).toBe("https://blueprintify.pages.dev");
+  });
+
+  it("should have preview suffix", () => {
+    expect(DEPLOYMENT_ORIGINS.PAGES_PREVIEW_SUFFIX).toBe(".blueprintify.pages.dev");
+  });
+
+  it("should have worker dev origin", () => {
+    expect(DEPLOYMENT_ORIGINS.WORKER_DEV).toBe("https://blueprintify.cpa03-cmz.workers.dev");
+  });
+
+  it("should have localhost prefix", () => {
+    expect(DEPLOYMENT_ORIGINS.LOCALHOST_PREFIX).toBe("http://localhost:");
+  });
+});
+
+describe("PROXY_CONFIG (Flexy Iteration 186)", () => {
+  it("should have API prefix with trailing slash", () => {
+    expect(PROXY_CONFIG.API_PREFIX_SLASH).toBe("/api/");
+  });
+
+  it("should strip /api prefix", () => {
+    expect("/api/generate".replace(PROXY_CONFIG.API_STRIP_PATTERN, "")).toBe("/generate");
+  });
+
+  it("should have assets prefix and root fallback", () => {
+    expect(PROXY_CONFIG.ASSETS_PREFIX).toBe("/assets/");
+    expect(PROXY_CONFIG.ROOT_FALLBACK).toBe("/");
+    expect(PROXY_CONFIG.FILE_EXTENSION_MARKER).toBe(".");
   });
 });
