@@ -2,6 +2,33 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-09-30 — Post-#3687 resync: zero safe deletions, build green)
+
+**Scope**: `agent/janitor` branch, pre-merge hygiene scan per cleanup request. Merged `origin/main` @ `6b98b8a2` (#3687 free-model hierarchy + OpenAPI spec restore + prettier sync) then ran manual repo-wide grep verification (scanner script `scripts/janitor-scan.mjs` was dropped last cycle for leanness — manual grep replaces it: commented-out code, production `console.log`, md5 duplicates, deps, TODO/focused-test/type-safety, eslint-disables, merge markers, temp files, empty dirs).
+
+### Removed
+
+- None. No safe deletions this cycle — every candidate verified as live code or intentionally kept (see below). Zero source changes.
+
+**Verification**: `npm run build` ✅ green (9.37s, exit 0).
+
+### Verified clean (no action needed)
+
+- **New main changes all live**: #3687 touched only `.opencode/opencode.json` (model hierarchy), `.gitignore` (`notes.md` ignore — complements Janitor's prior cleanup), `docs/openapi.yaml` (1066-line OpenAPI 3.1.0 restore, 14 paths, valid spec — docs-only, intentionally kept), plus prettier-only formatting of `base.controller.ts` (signature join) and `TemplateGrid.tsx` (import block join). Zero new dead-code surface.
+- **No commented-out dead code**: `// <code-keyword>` grep → 6 prose false positives only (`App.tsx:97/101/292`, `OfflineBanner.tsx:178`, `StepGenerating.tsx:245`, `motion.test.ts:110`); single `/*` hit is a live route string (`authorize.test.ts:31`).
+- **No production `console.log`**: all hits intentional — Workers structured logging (`middleware/logger.ts:217/263`, `utils/secureLog.ts:256`), JSDoc examples (`secureLog.ts:97/141`, `lib/api.ts:21/23`, `config/security.ts:164`), `console.log` text inside template-generator output strings (`node.ts:141/169`, `static.ts:193`).
+- **No duplicate utilities**: `md5sum` sweep over `apps`/`packages`/`scripts`/`functions` found zero byte-identical pairs; `utils/` vs `lib/` vs `packages/shared` hold disjoint modules — no `formatDate`-style duplication.
+- **No dead unused exports**: spot-verified 13 names repo-wide — `Container` (188 refs), `ViewMode` (58), `APIError` (21), `FIELD_LABELS` (18), `ExportRequest` (16), `SHARED_ROUTE_PATHS` (14), `ToastType` (8), `GenerationResult`/`storageManager` (5 each), `generateHonoIndex`/`MigrationRunner` (3 each), `PREVIEW_DEFAULTS`/`PLAYWRIGHT_CONFIG` (2 each = definition + barrel re-export, documented config surface). All live.
+- **No unused dependencies**: all deps referenced in source or scripts (`clsx`/`jszip`/`framer-motion`/`zustand`/`dompurify`/`react-markdown` in source; `concurrently` in `dev:all`; `chrome-launcher`+`lighthouse` in brocula scripts; `jest-axe` in 3+ test files). `depcheck` unavailable offline — verified via manual grep, no `package.json` edits made.
+- **Hygiene clean**: 0 TODO/FIXME/HACK in source; 0 focused tests (`.only`/`.skip`); 0 `as any`/`@ts-ignore`/`@ts-expect-error`; 0 merge markers; 0 temp files; 0 empty dirs; untracked tree clean.
+- **eslint-disables legitimate**: 6 targeted suppressions (`require-yield`, `react-hooks/*`) — intentional, not rot.
+- **Branch stays leaner**: diff vs `origin/main` = 40 files, +495/−1093 (net −598 lines) — prior removals hold.
+
+### Structural findings (recommended for future work, not removed)
+
+- No new structural mess found this cycle (no duplicate `utils` folders, no repeated `formatDate`-style logic). Prior open decision (promote vs drop `scripts/janitor-scan.mjs`) is now resolved — dropped in `d847871d`.
+---
+
 ## Janitor Cleanup (2026-09-30 — Pre-merge hygiene: redundant files removed, build green)
 
 **Scope**: `agent/janitor` branch, pre-merge cleanup per request ("redundant files, unused exports, commented-out dead code"). Synced with `origin/main`; ran branch-local `scripts/janitor-scan.mjs` one final time (127 orphan / 82 unused-export candidates — unchanged baseline) plus repo-wide grep verification (commented-out code, production `console.log`, duplicate utilities, depcheck, TODO/focused-test, eslint-disables).
