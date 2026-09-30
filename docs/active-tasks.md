@@ -2,6 +2,12 @@
 
 > **Current work queue** for the AI agent orchestration system. Historical orchestration cycle records live in [`findings.md`](./findings.md); release history in [`../CHANGELOG.md`](../CHANGELOG.md).
 
+## ✅ StorX — **ScrollToTop Micro-UX & State Inspection**
+- [CONNECT] Connected `useReducedMotion` hook and `BANNER_STATE_VALUES` shared config export to `ScrollToTop.tsx`.
+- [STRENGTHEN] Strengthened `ScrollToTop` DOM state inspection with `data-state` ("visible"/"hidden") and `data-reduced-motion` ("true"/"false") attributes for state inspection and accessibility testing.
+- [CONSOLIDATE] Consolidated `ScrollToTop` floating navigation button DOM tracking across web components.
+- [REMOVE] Removed un-inspected DOM state for scroll-to-position buttons in test fixtures (`ScrollToTop.test.tsx`).
+
 ## ✅ StorX — **TemplateGrid Micro-UX & State Inspection**
 - [CONNECT] Connected `TEMPLATE_STATE_VALUES` shared config export from `@blueprint/shared` and `useReducedMotion` hook to `TemplateGrid.tsx`.
 - [STRENGTHEN] Strengthened `TemplateGrid` DOM state inspection with `data-state` ("selected"/"idle"), `data-template-id`, `data-loading` ("true"/"false"), and `data-reduced-motion` ("true"/"false") attributes.

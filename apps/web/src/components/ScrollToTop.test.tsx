@@ -83,7 +83,7 @@ describe("ScrollToTop", () => {
     expect(screen.queryByLabelText(topLabel())).not.toBeInTheDocument();
   });
 
-  it("becomes visible after the scroll threshold is exceeded with aria-keyshortcuts and data-direction", () => {
+  it("becomes visible after the scroll threshold is exceeded with aria-keyshortcuts and data attributes", () => {
     mockWindowScroll(SCROLL_THRESHOLDS.SCROLL_TO_TOP + 200);
     render(<ScrollToTop />);
 
@@ -95,6 +95,21 @@ describe("ScrollToTop", () => {
     expect(button).toBeInTheDocument();
     expect(button).toHaveAttribute("aria-keyshortcuts", KEYBOARD_SHORTCUTS.SCROLL_TO_TOP.KEY);
     expect(button).toHaveAttribute("data-direction", "top");
+    expect(button).toHaveAttribute("data-state", "visible");
+    expect(button).toHaveAttribute("data-reduced-motion", "false");
+  });
+
+  it("reflects reduced motion preference in data-reduced-motion attribute", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+    mockWindowScroll(SCROLL_THRESHOLDS.SCROLL_TO_TOP + 200);
+    render(<ScrollToTop />);
+
+    act(() => {
+      fireEvent.scroll(window);
+    });
+
+    const button = screen.getByLabelText(topLabel());
+    expect(button).toHaveAttribute("data-reduced-motion", "true");
   });
 
   it("scrolls the window to the top when clicked", () => {
