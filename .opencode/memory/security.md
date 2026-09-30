@@ -114,11 +114,17 @@
 - **Lesson**: Major-range dev-tool bumps must be checked for peer-matrix coherence, not just CVEs — a lone UI major ahead of its runner is the classic dependabot interim state. Flag it, don't fix it (no functionality reduction).
 
 ### 2026-09-30 09:00 UTC: Security Engineer Audit — TOML Typo + Override Downgrade Fixed
-
 - **Finding**: PR diff carried 2 introduced defects alongside valid secret removal: (1) stray `<` in `apps/api/wrangler.toml:76` (`<vars = {...}` — invalid TOML breaking staging deploy/validator); (2) silent overrides downgrade (`brace-expansion` 5.0.12→5.0.9, `undici` 7.30.0→7.29.0 behind origin/main; undici 7.29.0 in GHSA-3wwx-pv8p-q78v range).
 - **Fix**: Removed `<` → valid `vars = {...}`; bumped overrides forward to main's versions and re-resolved lockfile (`npm update undici`).
 - **Verification**: `validate:wrangler` ✅, `scan:secrets` ✅ 334 files, `npm audit` ✅ 0 vulns (prod + full), shared build + shared/web typecheck clean.
 - **Lesson**: Secret-removal edits to config files must be followed by a syntax-validate step (`validate:wrangler`/tomllib parse) — a one-char typo next to the removed secret can break deploys worse than the secret did. Always diff overrides against main; backward version moves are regressions even when the surrounding PR is a hardening PR.
+
+### 2026-09-30 10:30 UTC: Security Engineer Audit — Secret-Removal + Inline-Expansion PR Verified
+
+- **Finding**: 14-file diff vs origin/main removes hardcoded `API_KEY` from wrangler.toml (prod + staging) and `PUBLIC_ACCESS_KEY`/`VITE_API_KEY` from shared config; call sites inline byte-identical literals. No introduced vulnerabilities, secrets, or deprecated functions.
+- **Verification**: Secret value 0x in added code lines (4x removed only); `scan:secrets` ✅ 334 files; `npm audit` ✅ 0 vulns (full + prod); fail-closed verified both sides (frontend omits header, backend 503s, constant-time compare intact); valid TOML; typechecks clean (shared/web/api); zero stale refs.
+- **Structural flag (report-only)**: Inlining shared constants duplicates values across 4 files (drift risk, no behavior change) — left to owning team per no-functionality-reduction rule.
+- **Lesson**: Secret-counting on diff direction (`grep -c` on `+` vs `-` lines) is the fastest proof that a hardening PR only removes credentials; pair it with a fail-closed check on both client and server before approving.
 
 ### 2026-05-25 21:00 UTC: Security Engineer Audit - Lighthouse Dependency Upgrade
 

@@ -11808,3 +11808,23 @@ factories deleted from shared). Modularity regression, not exploitable — left 
 Flexy follow-up per no-functionality-reduction constraint.
 **Result**: Secret-removal direction preserved (fail-closed); 2 introduced defects
 removed; no secrets/XSS/deprecated introduced.
+
+## Security Audit — PR secret-removal + constants inline-expansion vs origin/main (2026-09-30)
+
+**Scope**: 14 changed files vs origin/main on agent/security-engineer. Headline change is
+secret hardening: `apps/api/wrangler.toml` drops hardcoded `API_KEY` (prod + staging →
+`wrangler secret put` comments); `packages/shared` drops `PUBLIC_ACCESS_KEY`, `VITE_API_KEY`
+key, `ENDPOINT_UNAVAILABLE`/`SERVER_ERROR` factories, `DEPLOYMENT_ORIGINS`, `PROXY_CONFIG`,
+`METHOD_NOT_ALLOWED`/`HEAD`/`OPTIONS` members; `apps/web/src/config/env.ts` API_KEY falls
+back to `""` when unset; call sites inline identical literals.
+**Scans**: secret value 0x in added code lines (4x in removed lines only) · `scan:secrets`
+✅ 334 files · added-lines XSS/injection grep CLEAN · deprecated-API grep CLEAN (0 hits) ·
+`npm audit` ✅ 0 vulns (full + prod) · wrangler.toml valid TOML · fail-closed verified
+(frontend omits `x-api-key` when empty per api.ts:142, backend 503s when unset per
+auth.ts + test, constant-time compare intact) · typechecks clean (shared/web/api) · zero
+stale refs to removed exports repo-wide · CORS values byte-identical (no widening).
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code fixes
+required; no rotation needed (public dev fallback, never a real secret).
+**Structural flag (report-only)**: inlining shared constants as literals duplicates
+values across index.ts + 2 proxy functions + api.ts (drift risk, no behavior change) —
+left to owning team per no-functionality-reduction constraint.
