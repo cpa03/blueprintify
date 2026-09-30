@@ -2,6 +2,31 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-09-30 — Pre-merge hygiene: redundant files removed, build green)
+
+**Scope**: `agent/janitor` branch, pre-merge cleanup per request ("redundant files, unused exports, commented-out dead code"). Synced with `origin/main`; ran branch-local `scripts/janitor-scan.mjs` one final time (127 orphan / 82 unused-export candidates — unchanged baseline) plus repo-wide grep verification (commented-out code, production `console.log`, duplicate utilities, depcheck, TODO/focused-test, eslint-disables).
+
+### Removed
+
+- `notes.md` (repo root): stale planning artifact from a prior janitor run, unreferenced by any code or doc. A concurrent cycle had since filled the stub with scan notes, but that content duplicates the `docs/findings.md` audit record below — single record of truth kept. `.gitignore` now covers `notes.md` so it cannot leak back in.
+- `scripts/janitor-scan.mjs` (240 lines, branch-only, never on `main`, unreferenced by any npm script): resolves the open decision carried over from prior cycles ("promote to `npm run scan:janitor` or drop before merge"). Dropped for leanness — a one-shot pre-merge scanner does not belong in the merge surface. **Recovery**: `git show <pre-delete-commit>:scripts/janitor-scan.mjs` (git history is the backup).
+- `.gitignore`: added `notes.md` alongside `task_plan.md` (transient planning artifacts must never be committed — closes the hole that let the stub leak in; `task_plan.md` was already ignored).
+
+**Verification**: `npm run build` ✅ green (9.19s, exit 0). `git rm` targets verified unimported before deletion.
+
+### Verified clean (no action needed — all scanner candidates are false positives)
+
+- **Orphans (127)**: all `*.test.ts` (vitest-discovered by design), e2e specs (playwright entry points), `scripts/migrate.ts` (wired via `db:*` scripts), `apps/web/functions/api/[[path]].ts` (Pages deploy entry, not imported by design).
+- **Unused exports (82)**: spot-verified live — `GenerationResult`/`ExportRequest`/`ImportRequest`/`ImportResult`/`StorageReportRequest` have 8–17 external refs each (scanner misses type-only/cross-package use); `PREVIEW/OBSERVABILITY/QUEUE_DEFAULTS` + `PLAYWRIGHT_CONFIG` are public config surface via `packages/shared/src/index.ts` barrel; `generateDjango*`/`generateFlask*` re-exported via `lib/templates/index.ts` registry; `ToastType` consumed by `Toast.tsx`; `PersistedStorage`/`CreatePersistedStoreOptions` used in store/test composition; `MigrationRunner` instantiated and exported in `migrate.ts`.
+- **No commented-out dead code**: zero `// <code-keyword>` blocks in `apps/`/`packages/`.
+- **No production `console.log`**: hits are template-generator output strings, intentional logging infra (`secureLog.ts`, `middleware/logger.ts`), JSDoc examples, tests/e2e.
+- **No unused dependencies**: `jest-axe`/`@types/jest-axe` imported by 4 test files; `@blueprint/shared` in root `playwright.config.ts` is a workspace package (depcheck false positives — do NOT uninstall).
+- **No duplicate utilities**: debounce consolidated in `@blueprint/shared`; `formatRelativeTime` single-sourced in `useLastSaved.ts`.
+- **Hygiene**: 0 TODO/FIXME/HACK in source; eslint-disables (7) are intentional scoped suppressions; `build.log`/`lint.log`/`typecheck.log` are untracked + ignored (`*.log`), local only.
+- **Structural**: `web/src/utils` vs `web/src/lib` vs `shared/src/utils` hold disjoint modules — no mass move recommended.
+
+---
+
 ## Janitor Cleanup (2026-09-30 — Redundant files, unused exports, commented-out dead code scan, base c4155e5e, follow-up)
 
 **Scope**: `agent/janitor` branch, pre-merge hygiene scan per cleanup request. Merge-base vs `origin/main` = `c4155e5e` (0 behind — no new main commits since the prior scan at the same base) then ran `scripts/janitor-scan.mjs` (127 orphan candidates, 82 unused-export candidates — unchanged) plus repo-wide grep verification for commented-out code, production `console.log`, duplicate utilities, deps, TODO/focused-test/type-safety, and eslint-disables.
