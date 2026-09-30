@@ -60,11 +60,15 @@ const mockOpenAIInstance = vi.hoisted(() => ({
  * vi.clearAllMocks() in beforeEach. vi.clearAllMocks only resets vi.fn() /
  * vi.spyOn() instances; regular functions are unaffected.
  */
-vi.mock("openai", () => ({
-  default: function () {
+vi.mock("openai", () => {
+  const OpenAIMock = function () {
     return mockOpenAIInstance;
-  },
-}));
+  };
+  return {
+    default: OpenAIMock,
+    OpenAI: OpenAIMock,
+  };
+});
 
 /** Hoisted retry mock — restored in beforeEach after clearAllMocks */
 const mockWithRetry = vi.hoisted(() => vi.fn(<T>(fn: () => T) => fn()));

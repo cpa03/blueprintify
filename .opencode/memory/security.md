@@ -126,6 +126,12 @@
 - **Structural flag (report-only)**: Inlining shared constants duplicates values across 4 files (drift risk, no behavior change) — left to owning team per no-functionality-reduction rule.
 - **Lesson**: Secret-counting on diff direction (`grep -c` on `+` vs `-` lines) is the fastest proof that a hardening PR only removes credentials; pair it with a fail-closed check on both client and server before approving.
 
+### 2026-09-30 11:00 UTC: Security Engineer Audit — Merge Reintroduction of Removed Secret Fixed
+- **Finding**: `origin/main` merge reintroduced hardcoded fallback `blueprintify-public-access-2026` as new `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY` with `env.ts` fallback wiring — regressing the prior fail-closed (`""`) hardening. Empty `git diff --name-only origin/main` on the source branch masked it; the staged merge diff (20 files) plus the `env.ts` conflict exposed it.
+- **Fix**: Removed the constant; resolved conflict as `getEnvVar(WEB_ENV.VITE_API_KEY)` (shared key name, no fallback); replaced hardcoding test with fail-closed absence assertion.
+- **Verification**: Secret value 0x in added code lines; `scan:secrets` ✅ 335 files; `npm audit` ✅ 0 vulns; shared 868/868, web 25/25, api openai 19/19; typechecks clean.
+- **Lesson**: When `git diff --name-only origin/main` is empty on a PR branch, audit the staged merge diff (`git diff --cached`) and every merge conflict instead — merges from main can silently reintroduce previously removed secrets, and the conflict resolver is the last security gate. Always resolve toward the secret-free side.
+
 ### 2026-05-25 21:00 UTC: Security Engineer Audit - Lighthouse Dependency Upgrade
 
 - **Finding**: PR upgraded `lighthouse` from `^12.8.2` to `^13.3.0` (dev dependency). No introduced vulnerabilities, secrets, or deprecated functions.

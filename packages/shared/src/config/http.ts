@@ -75,6 +75,7 @@ export const HTTP_STATUS = {
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
   NOT_FOUND: 404,
+  METHOD_NOT_ALLOWED: 405,
   CONFLICT: 409,
   PAYLOAD_TOO_LARGE: 413,
   UNPROCESSABLE_ENTITY: 422,
@@ -191,6 +192,8 @@ export const HTTP_METHODS = {
   PUT: "PUT",
   DELETE: "DELETE",
   PATCH: "PATCH",
+  HEAD: "HEAD",
+  OPTIONS: "OPTIONS",
 } as const;
 
 /**
@@ -227,6 +230,46 @@ export const NETWORK_DEFAULTS = {
  * Usage: import { API_PROXY_PATH } from "@blueprint/shared";
  */
 export const API_PROXY_PATH = "/api" as const;
+
+/**
+ * Deployment Origins
+ * Centralized source of truth for production/preview deployment origins used
+ * in CORS allowlists and Pages-to-Worker proxy targets.
+ * Flexy says: No hardcoded "blueprintify.pages.dev" strings in index.ts or functions!
+ * Usage: import { DEPLOYMENT_ORIGINS } from "@blueprint/shared";
+ *        origin === DEPLOYMENT_ORIGINS.PAGES_PROD
+ */
+export const DEPLOYMENT_ORIGINS = {
+  /** Production Cloudflare Pages origin */
+  PAGES_PROD: "https://blueprintify.pages.dev",
+  /** Preview-deployment suffix for *.blueprintify.pages.dev branches */
+  PAGES_PREVIEW_SUFFIX: ".blueprintify.pages.dev",
+  /** Backend Cloudflare Worker origin (Pages Functions proxy target) */
+  WORKER_DEV: "https://blueprintify.cpa03-cmz.workers.dev",
+  /** Local development origin prefix for CORS allowlisting */
+  LOCALHOST_PREFIX: "http://localhost:",
+} as const;
+
+/**
+ * API Proxy & Static Asset Routing Config
+ * Centralized source of truth for /api/* rewrite rules and static-asset
+ * detection used by the Workers entry and Pages Functions proxies.
+ * Flexy says: No hardcoded "/api/" or "/assets/" literals in fetch handlers!
+ * Usage: import { PROXY_CONFIG } from "@blueprint/shared";
+ *        url.pathname.startsWith(PROXY_CONFIG.API_PREFIX_SLASH)
+ */
+export const PROXY_CONFIG = {
+  /** Prefix identifying API requests (with trailing slash) */
+  API_PREFIX_SLASH: "/api/",
+  /** Pattern stripping the /api prefix when rewriting to Worker routes */
+  API_STRIP_PATTERN: /^\/api/,
+  /** Prefix identifying bundled static assets */
+  ASSETS_PREFIX: "/assets/",
+  /** Fallback root path used when proxy sub-path is empty */
+  ROOT_FALLBACK: "/",
+  /** Marker detecting file-extension paths (static assets) */
+  FILE_EXTENSION_MARKER: ".",
+} as const;
 
 /**
  * Common Security Header Values
