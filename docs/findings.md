@@ -11961,3 +11961,17 @@ phantom `TS2305/TS2339` errors in api+web typecheck); after rebuild,
 `typecheck` (api+web) and `npm run build` all pass.
 **Structural findings (report only)**: none new — prior note about hardcoded
 worker URL in Pages Function now mitigated via parity-constants comment block.
+
+---
+## [Janitor] Pre-merge hygiene scan — 2026-09-30 (`agent/janitor`)
+
+**Scope**: redundant files, unused exports, commented-out dead code, console.log sweep before merge.
+**Method**: `node scripts/janitor-scan.mjs` + repo-wide grep verification + `typecheck`/`build`/`lint`.
+**Results — zero safe deletions**:
+- `console.log` (16 hits): all intentional — template generator output strings (`node.ts`, `static.ts`), e2e console-audit specs, `secureLog`/`logger` utilities, JSDoc examples. None in production paths.
+- Commented-out code: 0 in production (3 explanatory `//` comments only; `====` hits are section banners in `storage.ts`). No TODO/FIXME/HACK.
+- Unused exports (82 scanner candidates): spot-verified false positives — `PLAYWRIGHT_CONFIG` live in `playwright.config.ts`; `PREVIEW/OBSERVABILITY/QUEUE_DEFAULTS` are documented config surface; `generateHonoIndex`/`generateStaticHTML`/`storageManager` consumed via registry/same-file. Prior cycle analysis still holds.
+- Orphaned files: only `*.test.ts` (vitest entry points, expected) + live `apps/web/functions/api/[[path]].ts` Pages Function. Root `functions/api/[[path]].ts` duplicate already deleted on this branch (verified byte-identical before deletion).
+- Strays: 0 backup/empty files; 0 merge markers; 0 `formatDate` duplicates; 3 `utils` dirs are by-design domain separation (api/web/shared).
+**Gates**: `typecheck` ✅ · `build` ✅ (9.0s) · `lint` ✅ 0 errors.
+**Structural findings (report only)**: none new.
