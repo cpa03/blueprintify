@@ -11782,3 +11782,29 @@ web typecheck exit 0) · stale gitignored apps/web/dist held old fallback → re
 fresh bundle grep CLEAN (dist untracked, never committed).
 **Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code fixes
 required — nothing to remove.
+
+## Security Audit — PR diff vs origin/main (2026-09-30)
+
+**Scope**: 16-file diff on `agent/security-engineer` vs `origin/main` (secret-removal
+direction: wrangler.toml drops hardcoded `API_KEY`, env.ts drops `VITE_API_KEY`
+fallback, shared drops `PUBLIC_ACCESS_KEY`/related constants; plus Flexy-186 revert
+inlining origin/proxy literals, and override version drift).
+**Scans**: added-lines secret grep CLEAN (hits are benign audit prose +
+`wrangler secret put` comments + `getEnvVar("VITE_API_KEY")` ref) ·
+added-lines XSS/injection grep CLEAN · deprecated grep CLEAN ·
+`scan:secrets` ✅ 334 files · `npm audit --omit=dev` ✅ 0 vulns, full `npm audit`
+✅ 0 vulns · `validate:wrangler` ✅ · shared build + shared/web typecheck clean.
+**Fixes applied (this cycle)**:
+1. `apps/api/wrangler.toml:76` — removed stray `<` in `<vars = {...}` (invalid TOML
+introduced alongside secret removal; broke staging deploy + validator) → `vars = {...}`.
+2. `package.json` overrides — reverted silent downgrades `brace-expansion 5.0.9→5.0.12`,
+`undici 7.29.0→7.30.0` to match `origin/main` forward-only versions (lockfile
+re-resolved via `npm update undici`); undici 7.29.0 sits in GHSA-3wwx-pv8p-q78v range.
+**Structural flag (report-only, no fix)**: `apps/api/src/index.ts` + both
+`functions/api/[[path]].ts` proxies reinline hardcoded origins/paths/patterns,
+reverting Flexy-186 shared-config centralization (`DEPLOYMENT_ORIGINS`,
+`PROXY_CONFIG`, `HTTP_STATUS`/`HTTP_METHODS` members, `API_ERROR_MESSAGES`
+factories deleted from shared). Modularity regression, not exploitable — left to
+Flexy follow-up per no-functionality-reduction constraint.
+**Result**: Secret-removal direction preserved (fail-closed); 2 introduced defects
+removed; no secrets/XSS/deprecated introduced.

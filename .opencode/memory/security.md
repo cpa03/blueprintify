@@ -113,6 +113,13 @@
 - **Structural flag (report-only)**: `vitest` stays `4.1.11` while ui 5.0.2 peerRequires `vitest@5.0.2` → peer warning / possible `vitest --ui` breakage. Coordinated 5.x bump (vitest + coverage-v8 + ui) left to dependabot follow-ups.
 - **Lesson**: Major-range dev-tool bumps must be checked for peer-matrix coherence, not just CVEs — a lone UI major ahead of its runner is the classic dependabot interim state. Flag it, don't fix it (no functionality reduction).
 
+### 2026-09-30 09:00 UTC: Security Engineer Audit — TOML Typo + Override Downgrade Fixed
+
+- **Finding**: PR diff carried 2 introduced defects alongside valid secret removal: (1) stray `<` in `apps/api/wrangler.toml:76` (`<vars = {...}` — invalid TOML breaking staging deploy/validator); (2) silent overrides downgrade (`brace-expansion` 5.0.12→5.0.9, `undici` 7.30.0→7.29.0 behind origin/main; undici 7.29.0 in GHSA-3wwx-pv8p-q78v range).
+- **Fix**: Removed `<` → valid `vars = {...}`; bumped overrides forward to main's versions and re-resolved lockfile (`npm update undici`).
+- **Verification**: `validate:wrangler` ✅, `scan:secrets` ✅ 334 files, `npm audit` ✅ 0 vulns (prod + full), shared build + shared/web typecheck clean.
+- **Lesson**: Secret-removal edits to config files must be followed by a syntax-validate step (`validate:wrangler`/tomllib parse) — a one-char typo next to the removed secret can break deploys worse than the secret did. Always diff overrides against main; backward version moves are regressions even when the surrounding PR is a hardening PR.
+
 ### 2026-05-25 21:00 UTC: Security Engineer Audit - Lighthouse Dependency Upgrade
 
 - **Finding**: PR upgraded `lighthouse` from `^12.8.2` to `^13.3.0` (dev dependency). No introduced vulnerabilities, secrets, or deprecated functions.
