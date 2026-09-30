@@ -3,7 +3,7 @@
  * across all wizard steps of the Blueprintify app.
  */
 import { test, expect, type Page, type ConsoleMessage } from "@playwright/test";
-import { DEV_DEFAULTS } from "@blueprint/shared";
+import { DEV_DEFAULTS, PLAYWRIGHT_DEFAULTS } from "@blueprint/shared";
 
 const BASE_URL = process.env.PLAYWRIGHT_TEST_URL || `http://localhost:${DEV_DEFAULTS.WEB_PORT}`;
 
@@ -53,7 +53,11 @@ test.describe("BroCula Console Audit", () => {
     const nextBtn = page
       .locator("button:has-text('Next'), button:has-text('Continue'), a:has-text('Next')")
       .first();
-    if (await nextBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
+    if (
+      await nextBtn
+        .isVisible({ timeout: PLAYWRIGHT_DEFAULTS.VISIBILITY_TIMEOUT_MS })
+        .catch(() => false)
+    ) {
       await nextBtn.click();
       await page.waitForTimeout(1500);
     }
@@ -70,7 +74,11 @@ test.describe("BroCula Console Audit", () => {
 
     for (let i = 0; i < 2; i++) {
       const nextBtn = page.locator("button:has-text('Next'), button:has-text('Continue')").first();
-      if (await nextBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
+      if (
+        await nextBtn
+          .isVisible({ timeout: PLAYWRIGHT_DEFAULTS.VISIBILITY_TIMEOUT_MS })
+          .catch(() => false)
+      ) {
         await nextBtn.click();
         await page.waitForTimeout(1000);
       }
@@ -89,7 +97,11 @@ test.describe("BroCula Console Audit", () => {
 
     for (let i = 0; i < 3; i++) {
       const nextBtn = page.locator("button:has-text('Next'), button:has-text('Continue')").first();
-      if (await nextBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
+      if (
+        await nextBtn
+          .isVisible({ timeout: PLAYWRIGHT_DEFAULTS.VISIBILITY_TIMEOUT_MS })
+          .catch(() => false)
+      ) {
         await nextBtn.click();
         await page.waitForTimeout(1000);
       }
