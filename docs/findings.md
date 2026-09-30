@@ -2,6 +2,32 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-09-30 — Dead code, unused exports, commented-out code scan, base e56f56bf)
+
+**Scope**: `agent/janitor` branch (merge-base `e56f56bf` = `origin/main` tip — 0 behind, 35 ahead; no new main commits since the 2026-09-30 scan at `9187cf2c`). Re-scan per merge-cleanup request; ran `scripts/janitor-scan.mjs` (127 orphan candidates, 82 unused-export candidates — unchanged) plus manual comment/`console.log`/duplicate/dependency/TODO/focused-test/type-safety sweeps with repo-wide grep verification.
+
+### Removed
+
+- None. No safe deletions this cycle — every candidate verified as live code or intentionally kept (see below). Zero source changes.
+
+**Verification**: `npm run build` ✅ green (9.17s); `eslint` ✅ 0 errors / 0 warnings.
+
+### Verified clean (no action needed)
+
+- **No orphaned source files**: orphan sample heads are all `*.test.ts` files (vitest-discovered, never imported by design); `scripts/migrate.ts` wired via `db:*` npm scripts; `apps/web/functions/api/[[path]].ts` deploy entry point (not imported by design).
+- **No dead unused exports**: spot-verified `ToastType` (imported by `Toast.tsx`), `MigrationRunner` (same-file class + instantiation + export, CLI), `PREVIEW_DEFAULTS` (barrel re-export in `packages/shared/src/index.ts`), `metadata` (Next.js-convention export in template file) — all live; remaining 78 candidates match the previously verified patterns (alias re-exports, same-file usage, namespace consumption, registry composition, barrel config surface).
+- **No commented-out dead code**: `// <code-keyword>` grep across `apps/*/src` + `packages/*/src` → prose/JSDoc false positives only; no `/*`-block dead code.
+- **No production `console.log`**: all hits intentional — Workers structured logging (`middleware/logger.ts`, `utils/secureLog.ts`), CLI output (`scripts/migrate.ts`), JSDoc examples (`lib/api.ts`, `config/security.ts`), `console.log` text inside template-generator output strings (`node.ts`, `static.ts`).
+- **No duplicate utilities**: zero `formatDate`-style duplication; `apps/api/src/utils` vs `apps/web/src/utils` vs `apps/web/src/lib` vs `packages/shared/src/utils` hold disjoint modules (`persistence.ts` inline debounce carries a documented rationale comment — kept as engineering decision, not rot).
+- **Hygiene clean**: 0 TODO/FIXME/HACK in source (only `node_modules` zod-test hits), 0 focused tests (`.only`/`.skip`), 0 `as any`/`@ts-ignore`/`@ts-expect-error` in prod sources, 0 merge markers, 0 temp files (`*.bak`/`*.tmp`/`*.orig`), 0 empty dirs, 0 tracked build artifacts (`build.log`/`lint.log`/`typecheck.log` gitignored).
+- **No unused dependencies**: dependency surface unchanged since the last manual grep audit and `main` is unmoved — prior verification stands (`clsx`/`jszip`/`framer-motion`/`zustand`/`dompurify`/`react-markdown` in source; `chrome-launcher`+`lighthouse` in brocula scripts; `concurrently` in `dev:all`); `depcheck` unavailable offline, so no `package.json` edits made.
+
+### Structural findings (recommended for future work, not removed)
+
+- [Janitor] `scripts/janitor-scan.mjs` exists only on `agent/janitor` (added in `f2d88233`, never on `main`, unreferenced by any npm script). Merging it adds ~240 lines against the leaner-before-merge goal. Carried over from 2026-09-28/29/30: **recommend human decides — promote to `npm run scan:janitor` or drop from the branch before merge.**
+- No new structural mess found this cycle (no duplicate `utils` folders, no repeated `formatDate`-style logic).
+---
+
 ## Janitor Merge Note (2026-09-29 — duplicate proxy resolution)
 
 - The byte-identical `functions/api/[[path]].ts` (repo root) vs `apps/web/functions/api/[[path]].ts` duplicate reported below was **resolved by Security Engineer in `739e6be5`**: root copy deleted, `apps/web` copy kept — rationale: Worker serves the frontend via the `[assets]` binding (`apps/api/wrangler.toml`), so repo-root `functions/` is not a live Pages project root. Janitor concurs and accepted the deletion in the merge resolution. Only `apps/web/functions/api/[[path]].ts` remains.
