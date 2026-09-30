@@ -109,6 +109,7 @@ temp/
 .sisyphus/
 .omo/
 .codegraph/
+.agent_memory/
 
 # Transient planning artifacts (agents are instructed to create task_plan.md;
 # it must never be committed — see RepoKeeper Cycle 352)
