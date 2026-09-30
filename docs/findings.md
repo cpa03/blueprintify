@@ -3,6 +3,14 @@
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
 
+## RepoKeeper Cycle 2026-09-30 (HYGIENE + DOC-SYNC)
+
+**Phase 0**: Branch `agent/repokeeper-cleanup-20260930` created from `origin/main` (`e56f56bf`); working tree clean; `git fetch` synced.
+**Hygiene CLEAN** — 697 tracked files; 0 redundant/temp/unused tracked (`*.tmp/*.bak/*.log/*.patch/task_plan.md` empty); 0 empty dirs; 0 tracked build artifacts (`dist/` gitignored); `functions/api/[[path]].ts` ↔ `apps/web/functions/api/[[path]].ts` byte-identical intentional dual-proxy (Pages + Web deploys); `.agent/` ↔ `.opencode/agent/` intentional mirror (both tracked, contents differ); scripts wired (`brocula-hunt`↔`brocula`, `migrate`↔`db:*`, `normalize`↔`normalize:issues`, `scan-secrets`, `validate-wrangler`; `brocula-sweep.mjs`+`lh-warm.mjs` documented helpers).
+**Doc-sync**: README architecture tree indexed missing `docs/ocr-review-summary-2026-09-26.md` + `docs/issues/` (7 files); tree now matches on-disk.
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ 0 errors/0 warnings · build ✅ exit 0 (PLUGIN_TIMINGS informational) · prettier ✅ README.
+
+
 ## Orchestration Cycle 601 (2026-09-06 — ERRORFALLBACK MICRO-UX & DOM STATE TRACKING)
 
 **Phase 0**: Local `agent` branch checked out; synced with `origin/main`. Working tree clean.

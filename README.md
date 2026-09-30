@@ -55,9 +55,11 @@ blueprintify/
 │   ├── findings.md
 │   ├── flexy-plan.md
 │   ├── issue-manager-plan-cycle-368.md
+│   ├── issues/           # Issue-specific design docs
 │   ├── knowledge-review.md
 │   ├── localstorage-schema.md
 │   ├── m2-technical-approach.md
+│   ├── ocr-review-summary-2026-09-26.md
 │   ├── refinement-workflow.md
 │   ├── release-process.md
 │   ├── repo-rules.md
