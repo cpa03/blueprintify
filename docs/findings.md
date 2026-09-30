@@ -2,6 +2,33 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-09-30 — Redundant files, unused exports, commented-out dead code scan, base c4155e5e, follow-up)
+
+**Scope**: `agent/janitor` branch, pre-merge hygiene scan per cleanup request. Merge-base vs `origin/main` = `c4155e5e` (0 behind — no new main commits since the prior scan at the same base) then ran `scripts/janitor-scan.mjs` (127 orphan candidates, 82 unused-export candidates — unchanged) plus repo-wide grep verification for commented-out code, production `console.log`, duplicate utilities, deps, TODO/focused-test/type-safety, and eslint-disables.
+
+### Removed
+
+- None. No safe deletions this cycle — every candidate verified as live code or intentionally kept (see below). Zero source changes.
+
+**Verification**: `npm run build` ✅ green (9.40s, exit 0).
+
+### Verified clean (no action needed)
+
+- **No orphaned source files**: all 127 "orphan" hits are `*.test.ts` (vitest-discovered, never imported by design), e2e specs (playwright entry points), `scripts/migrate.ts` (wired via `db:*` npm scripts), and `apps/web/functions/api/[[path]].ts` (Pages deploy entry point, not imported by design).
+- **No dead unused exports**: all 82 candidates are false positives — spot-verified 10 this cycle: `FIELD_LABELS` (18 refs, same-file composition in `validation.ts`), `SHARED_ROUTE_PATHS` (14 refs, same-file in `endpoints.ts` + `logger.ts` re-export chain), `storageManager` (5 refs, backing `wizardStorage`/`editorStorage`), `ToastType` (9 refs, consumed by `Toast.tsx`), `ViewMode` (59 refs, type-imported by `EditorHeader.tsx`), `generateHonoIndex` (registry via `lib/templates/index.ts`), `Container` (192 refs), `APIError` (23 refs), `PREVIEW_DEFAULTS`/`PLAYWRIGHT_CONFIG` (barrel re-export in `packages/shared/src/index.ts`, documented config surface).
+- **No commented-out dead code**: `// <code-keyword>` grep → 4 prose false positives only (`App.tsx:101/292`, `OfflineBanner.tsx:178`, `motion.test.ts:110`); `/*` hits are JSX comments (`App.tsx`), live route strings (`authorize.test.ts:31`), and JSDoc.
+- **No production `console.log`**: all 10 non-test hits intentional — Workers structured logging (`middleware/logger.ts:217/263`, `utils/secureLog.ts:256`), JSDoc examples (`secureLog.ts:97/141`, `lib/api.ts:21/23`, `config/security.ts:164`), `console.log` text inside template-generator output strings (`node.ts:141/169`, `static.ts:193`).
+- **No duplicate utilities**: `md5sum` sweep over `apps`/`packages`/`scripts`/`functions` found zero byte-identical pairs; `utils/` vs `lib/` vs `packages/shared` hold disjoint modules — no `formatDate`-style duplication.
+- **Hygiene clean**: 0 TODO/FIXME/HACK in source, 0 focused tests (`.only`/`.skip`), 0 `as any`/`@ts-ignore`/`@ts-expect-error`, 0 merge markers, 0 temp files, 0 empty dirs.
+- **No unused dependencies**: `depcheck` unavailable offline (npx install refused), so no `package.json` edits made — prior manual grep audit stands, dependency surface unchanged.
+- **eslint-disables legitimate**: 6 targeted suppressions (`react-hooks/*`, `require-yield`) — intentional, not rot.
+
+### Structural findings (recommended for future work, not removed)
+
+- [Janitor] `scripts/janitor-scan.mjs` exists only on `agent/janitor` (never on `main`, unreferenced by any npm script). Merging it adds ~240 lines against the leaner-before-merge goal. Carried over from prior cycles: **recommend human decides — promote to `npm run scan:janitor` or drop from the branch before merge.**
+- No new structural mess found this cycle (no duplicate `utils` folders, no repeated `formatDate`-style logic).
+---
+
 ## Janitor Cleanup (2026-09-30 — Redundant files, unused exports, commented-out dead code scan, base c4155e5e)
 
 **Scope**: `agent/janitor` branch, pre-merge hygiene scan per cleanup request. Merged `origin/main` @ `c4155e5e` (#3688 husky-prepare + api prebuild mkdir + openai named import — auto-merge clean) then ran `scripts/janitor-scan.mjs` (127 orphan candidates, 82 unused-export candidates — unchanged) plus repo-wide grep verification for commented-out code, production `console.log`, duplicate utilities, deps, TODO/focused-test/type-safety, and eslint-disables.
