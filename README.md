@@ -58,6 +58,7 @@ blueprintify/
 │   ├── knowledge-review.md
 │   ├── localstorage-schema.md
 │   ├── m2-technical-approach.md
+│   ├── ocr-review-summary-2026-09-26.md
 │   ├── refinement-workflow.md
 │   ├── release-process.md
 │   ├── repo-rules.md
@@ -333,6 +334,8 @@ See [docs/environment-variables.md](./docs/environment-variables.md) for the ful
 - **[Feature Specifications](./docs/features.md)** - Detailed feature documentation and status
 - **[Findings](./docs/findings.md)** - RepoKeeper observation and cleanup log
 - **[Flexy Plan](./docs/flexy-plan.md)** - Hardcoded value elimination and modularization plan
+- **[Issue Manager Plan (Cycle 368)](./docs/issue-manager-plan-cycle-368.md)** - 100-issue label normalization plan and analysis
+- **[OCR Review Summary (2026-09-26)](./docs/ocr-review-summary-2026-09-26.md)** - Full repo scan review and applied fixes
 - **[Known Bugs](./docs/bugs.md)** - Active bug tracking and known defects
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
 
