@@ -2,6 +2,32 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-09-30 — Dead code, unused exports, commented-out code scan, base eaf3aa98)
+
+**Scope**: `agent/janitor` branch (merge-base `eaf3aa98` = `origin/main` tip — 0 behind; only new main commits since the 2026-09-30 scan at `9187cf2c` are #3682 dep-bump `brace-expansion`+`undici` overrides, zero new source). Re-scan per merge-cleanup request; ran `scripts/janitor-scan.mjs` (127 orphan candidates, 82 unused-export candidates — unchanged) plus manual comment/`console.log`/duplicate/TODO/focused-test/type-safety sweeps with repo-wide grep verification.
+
+### Removed
+
+- None. No safe deletions this cycle — every candidate verified as live code or intentionally kept (see below). Zero source changes.
+
+**Verification**: `npm run build` ✅ green (exit 0).
+
+### Verified clean (no action needed)
+
+- **No orphaned source files**: all 127 "orphan" hits are test/e2e files discovered by vitest/playwright configs; `scripts/migrate.ts` wired via `db:*` npm scripts; `apps/web/functions/api/[[path]].ts` deploy entry point (not imported by design). Root `functions/api/[[path]].ts` remains absent on-branch (prior deletion holds — no live duplicate).
+- **No dead unused exports**: all 82 candidates match previously verified patterns (alias/barrel re-exports, same-file usage, namespace consumption, registry composition, intentional config surface). Spot-verified zero-code-ref names (`fadeIn`/`scaleIn`, `CreateShareRequest`/`VerifySharePassphraseRequest`/`StreamCallbacks`) are already removed on this branch; main still carries them — not re-deleting (branch diff already covers; avoids edit war).
+- **No commented-out dead code**: `// <code-keyword>` grep across `apps/` → 0 hits; no `/*`-block dead code.
+- **No production `console.log`**: all hits intentional — Workers structured logging (`middleware/logger.ts`, `utils/secureLog.ts`), e2e spec output, JSDoc examples, `console.log` text inside template-generator output strings (`node.ts`, `static.ts`), `fix-esm.mjs` build-script output.
+- **No duplicate utilities**: `md5sum` sweep over `apps`/`packages`/`functions`/`scripts` found zero byte-identical pairs; `utils/` vs `lib/` vs `packages/shared` hold disjoint modules.
+- **Hygiene clean**: 0 TODO/FIXME/HACK in source (single hit is README grep-example prose), 0 focused tests (`.only`/`.skip`), 0 `as any`/`@ts-ignore`/`@ts-expect-error`, 0 merge markers, 0 temp files, 0 empty dirs, 0 tracked build artifacts.
+- **No new dead-code surface from main**: #3682 touched only `package.json`/`package-lock.json` (override bumps) — no new source to audit.
+
+### Structural findings (recommended for future work, not removed)
+
+- [Janitor] `scripts/janitor-scan.mjs` exists only on `agent/janitor` (never on `main`, unreferenced by any npm script). Merging it adds ~240 lines against the leaner-before-merge goal. Carried over from 2026-09-28/29/30: **recommend human decides — promote to `npm run scan:janitor` or drop from the branch before merge.**
+- No new structural mess found this cycle (no duplicate `utils` folders, no repeated `formatDate`-style logic).
+---
+
 ## Janitor Cleanup (2026-09-30 — Dead code, unused exports, commented-out code scan, base e56f56bf)
 
 **Scope**: `agent/janitor` branch (merge-base `e56f56bf` = `origin/main` tip — 0 behind, 35 ahead; no new main commits since the 2026-09-30 scan at `9187cf2c`). Re-scan per merge-cleanup request; ran `scripts/janitor-scan.mjs` (127 orphan candidates, 82 unused-export candidates — unchanged) plus manual comment/`console.log`/duplicate/dependency/TODO/focused-test/type-safety sweeps with repo-wide grep verification.
