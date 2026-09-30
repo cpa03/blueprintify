@@ -25,6 +25,8 @@ import {
   ANIMATION_ENTRANCE_DELAYS,
   DISPLAY_SYMBOLS,
   EMPTY_STATE_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
 } from "@blueprint/shared/config";
 import { EDITOR_EMPTY_STATE_LABELS } from "../config/constants/content";
 import { staggerContainer, fadeInUp, floatingAnimation, pulseAnimation } from "../utils/motion";
@@ -190,8 +192,8 @@ export const EditorEmptyState = memo(function EditorEmptyState(): JSX.Element {
       <motion.div
         className="flex items-center gap-3 glass-card px-6 py-3 rounded-full"
         variants={fadeInUp}
-        aria-live="polite"
-        aria-atomic="true"
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         <div className="flex items-center gap-1">
           {WIZARD_STEPS.map((step, index) => {

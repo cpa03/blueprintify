@@ -38,6 +38,8 @@ import {
   NETWORK_DEFAULTS,
   TOAST_TYPES,
   BANNER_STATE_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
 } from "@blueprint/shared/config";
 import {
   NETWORK_MESSAGES,
@@ -275,8 +277,8 @@ function OfflineBannerComponent(): JSX.Element | null {
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
         role="status"
-        aria-live="assertive"
-        aria-atomic="true"
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {dismissAnnouncement}
       </div>

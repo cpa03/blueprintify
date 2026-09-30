@@ -140,6 +140,9 @@ import {
   KEYBOARD_EVENT_KEYS,
   DISPLAY_SYMBOLS,
   ARIA_KEYSHORTCUTS,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
+  ARIA_MODAL_VALUES,
   BREAKPOINT_DEFAULTS,
   CHAR_COUNTER_THRESHOLDS,
   CHAR_COUNTER_COLORS,
@@ -4106,6 +4109,59 @@ describe("ARIA_KEYSHORTCUTS", () => {
 
   it("should have 1 property", () => {
     expect(Object.keys(ARIA_KEYSHORTCUTS).length).toBe(1);
+  });
+});
+
+// ============================================================================
+// ARIA_LIVE_VALUES / ARIA_ATOMIC_VALUES / ARIA_MODAL_VALUES (Flexy Iteration 189)
+// ============================================================================
+describe("ARIA_LIVE_VALUES", () => {
+  it("should have POLITE = 'polite'", () => {
+    expect(ARIA_LIVE_VALUES.POLITE).toBe("polite");
+  });
+
+  it("should have ASSERTIVE = 'assertive'", () => {
+    expect(ARIA_LIVE_VALUES.ASSERTIVE).toBe("assertive");
+  });
+
+  it("should have OFF = 'off'", () => {
+    expect(ARIA_LIVE_VALUES.OFF).toBe("off");
+  });
+
+  it("should have 3 unique properties", () => {
+    const keys = Object.keys(ARIA_LIVE_VALUES);
+    expect(keys.length).toBe(3);
+    expect(new Set(Object.values(ARIA_LIVE_VALUES)).size).toBe(3);
+  });
+});
+
+describe("ARIA_ATOMIC_VALUES", () => {
+  it("should have TRUE = 'true'", () => {
+    expect(ARIA_ATOMIC_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have FALSE = 'false'", () => {
+    expect(ARIA_ATOMIC_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique properties", () => {
+    expect(Object.keys(ARIA_ATOMIC_VALUES).length).toBe(2);
+    expect(new Set(Object.values(ARIA_ATOMIC_VALUES)).size).toBe(2);
+  });
+});
+
+describe("ARIA_MODAL_VALUES", () => {
+  it("should have TRUE = 'true'", () => {
+    expect(ARIA_MODAL_VALUES.TRUE).toBe("true");
+  });
+
+  it("should have FALSE = 'false'", () => {
+    expect(ARIA_MODAL_VALUES.FALSE).toBe("false");
+  });
+
+  it("should have 2 unique properties", () => {
+    expect(Object.keys(ARIA_MODAL_VALUES).length).toBe(2);
+    expect(new Set(Object.values(ARIA_MODAL_VALUES)).size).toBe(2);
   });
 });
 

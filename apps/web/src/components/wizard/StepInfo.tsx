@@ -34,6 +34,8 @@ import {
   MODIFIER_KEYS,
   RATIO_LIMITS,
   UI_TIMEOUTS,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
 } from "@blueprint/shared/config";
 import * as motion from "framer-motion/m";
 import { AnimatePresence } from "framer-motion";
@@ -358,7 +360,7 @@ export const StepInfo = memo(function StepInfo({
             </div>
             <span
               className="text-dark-400 tabular-nums flex items-center gap-0.5"
-              aria-live="polite"
+              aria-live={ARIA_LIVE_VALUES.POLITE}
               aria-label={ACCESSIBILITY_LABELS.WIZARD_INFO.FIELDS_COMPLETED(
                 formProgress.completed,
                 formProgress.total
@@ -821,8 +823,8 @@ export const StepInfo = memo(function StepInfo({
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
         role="status"
-        aria-live="assertive"
-        aria-atomic="true"
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {clearAnnouncement}
       </div>

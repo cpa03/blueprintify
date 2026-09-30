@@ -54,6 +54,8 @@ import {
   SHORTCUT_LABELS,
   PERCENT_SCALE,
   TIME_UNITS,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { Icon } from "./Icon";
@@ -643,8 +645,8 @@ function ToastContainerComponent(): JSX.Element {
       <div
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
         role="status"
-        aria-live="assertive"
-        aria-atomic="true"
+        aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {dismissAnnouncement}
       </div>

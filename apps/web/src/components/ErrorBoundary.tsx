@@ -21,6 +21,7 @@
 import { useCallback, useMemo, lazy, Suspense } from "react";
 import { ErrorBoundary as ErrorBoundaryLib, FallbackProps } from "react-error-boundary";
 import { ERROR_BOUNDARY_TEXT, DEBUG_MESSAGES } from "../config/constants/content";
+import { ARIA_LIVE_VALUES } from "@blueprint/shared";
 import { isDev } from "../config/env";
 
 /**
@@ -44,7 +45,7 @@ function LoadingFallback(): JSX.Element {
     <div
       className="min-h-screen flex items-center justify-center bg-dark-900 p-4 animate-fade-in"
       role="alert"
-      aria-live="assertive"
+      aria-live={ARIA_LIVE_VALUES.ASSERTIVE}
     >
       <div className="glass-card p-8 max-w-md w-full text-center">
         <div

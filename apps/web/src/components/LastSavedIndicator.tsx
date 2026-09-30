@@ -19,6 +19,8 @@ import {
   FRAMER_TYPE,
   UI_TIMEOUTS,
   SAVE_STATE_VALUES,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
 } from "@blueprint/shared/config";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -88,8 +90,8 @@ export const LastSavedIndicator = React.memo(function LastSavedIndicator({
           className={`flex items-center gap-2 text-xs ${
             hasChanges ? "text-amber-400" : "text-dark-400"
           }`}
-          aria-live="polite"
-          aria-atomic="true"
+          aria-live={ARIA_LIVE_VALUES.POLITE}
+          aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
           data-state={hasChanges ? SAVE_STATE_VALUES.UNSAVED : SAVE_STATE_VALUES.SAVED}
           data-has-changes={hasChanges}
           data-reduced-motion={shouldReduceMotion}

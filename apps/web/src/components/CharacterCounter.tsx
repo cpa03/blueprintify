@@ -5,6 +5,8 @@ import {
   CHAR_COUNTER_COLORS,
   CHAR_COUNTER_STATE_VALUES,
   RATIO_LIMITS,
+  ARIA_LIVE_VALUES,
+  ARIA_ATOMIC_VALUES,
 } from "@blueprint/shared/config";
 
 interface CharacterCounterProps {
@@ -120,8 +122,8 @@ function CharacterCounterComponent({
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
         role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {announcement}
       </span>
@@ -187,8 +189,8 @@ function CharacterCounterCompactComponent({
       <span
         className={FOCUS_ANNOUNCER.LIVE_REGION_CLASS}
         role="status"
-        aria-live="polite"
-        aria-atomic="true"
+        aria-live={ARIA_LIVE_VALUES.POLITE}
+        aria-atomic={ARIA_ATOMIC_VALUES.TRUE}
       >
         {compactAnnouncement}
       </span>

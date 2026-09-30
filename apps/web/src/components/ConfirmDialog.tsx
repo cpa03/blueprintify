@@ -44,6 +44,7 @@ import {
   KEYBOARD_EVENT_KEYS,
   MODIFIER_KEYS,
   DIALOG_STATE_VALUES,
+  ARIA_MODAL_VALUES,
 } from "@blueprint/shared";
 import {
   EASING,
@@ -184,7 +185,7 @@ export const ConfirmDialog = memo(function ConfirmDialog({
             }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
             role="dialog"
-            aria-modal="true"
+            aria-modal={ARIA_MODAL_VALUES.TRUE}
             aria-labelledby="confirm-dialog-title"
             aria-describedby="confirm-dialog-description"
             data-state={isOpen ? DIALOG_STATE_VALUES.OPEN : DIALOG_STATE_VALUES.CLOSED}
