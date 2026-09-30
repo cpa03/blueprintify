@@ -724,6 +724,8 @@ export const EDITOR_EMPTY_STATE_LABELS = {
   SUBMIT_WIZARD: "Submit wizard",
   /** Hint badge — describes the next step keyboard shortcut */
   NEXT_STEP: "Next step",
+  /** Accessible label for the empty-state status region */
+  ARIA_LABEL: "Editor empty state",
 } as const;
 
 export const SKELETON_LAYOUT = {

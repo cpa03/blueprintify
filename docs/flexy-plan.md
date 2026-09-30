@@ -4,6 +4,38 @@
 
 Eliminate hardcoded values and build a modular, single-source-of-truth system.
 
+### ✅ Flexy Iteration 187: Centralize Hex Pad Char, DB ID Separator, sr-only Class & Empty-State Aria Label
+
+**Problem**: Hex-encoding call sites repeated the raw `"0"` pad character in 4× `padStart` invocations (auth `deriveUserId` + 3× share token/passphrase hashing) despite `CRYPTO_CONFIG.HEX_RADIX`/`HEX_PADDING_WIDTH` already existing; `deriveUserId` joined prefix and hash with a hardcoded `"_"` separator bypassing `DB_ID_PREFIXES`; 4× `<span className="sr-only">` live regions (TemplateGrid, StepFeatures, ShowEditorButton ×2) bypassed `CSS_CLASSES`; and `EditorEmptyState` hardcoded `aria-label="Editor empty state"` bypassing `EDITOR_EMPTY_STATE_LABELS`. Flexy says: no hardcoded pad chars, ID separators, screen-reader classes, or aria labels!
+
+| File | Change |
+|------|--------|
+| `packages/shared/src/config/core.ts` | Added `CRYPTO_CONFIG.HEX_PAD_CHAR` (`"0"`) + `DB_ID_SEPARATOR` (`"_"`); updated `CRYPTO_CONFIG` usage docblock to reference `HEX_PAD_CHAR` |
+| `packages/shared/src/index.ts` | Exported `DB_ID_SEPARATOR` on the root barrel |
+| `packages/shared/src/config.test.ts` | Added `HEX_PAD_CHAR` value + pad-behavior tests; added `DB_ID_SEPARATOR` value + join-format tests (import updated) |
+| `apps/api/src/middleware/auth.ts` | `padStart(..., "0")` → `CRYPTO_CONFIG.HEX_PAD_CHAR`; `` `${DB_ID_PREFIXES.USER}_${...}` `` → `` `${DB_ID_PREFIXES.USER}${DB_ID_SEPARATOR}${...}` `` |
+| `apps/api/src/routes/share.ts` | 3× `padStart(..., "0")` (verify-token sign, verify-token check, passphrase hash) → `CRYPTO_CONFIG.HEX_PAD_CHAR` |
+| `apps/web/src/config/constants/accessibility.ts` | Added `CSS_CLASSES.SR_ONLY` (`"sr-only"`) |
+| `apps/web/src/config/constants/accessibility.test.ts` | Added `SR_ONLY` value test |
+| `apps/web/src/config/constants/content.ts` | Added `EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL` (`"Editor empty state"`) |
+| `apps/web/src/components/TemplateGrid.tsx` + `wizard/StepFeatures.tsx` + `ShowEditorButton.tsx` (×2) | `className="sr-only"` → `className={CSS_CLASSES.SR_ONLY}` |
+| `apps/web/src/components/EditorEmptyState.tsx` | `aria-label="Editor empty state"` → `aria-label={EDITOR_EMPTY_STATE_LABELS.ARIA_LABEL}` |
+
+## Verification (Iteration 187)
+
+- ✅ `npm run typecheck` — clean (shared / api / web)
+- ✅ `npm run lint` — zero errors, zero warnings (fatal gate passes)
+- ✅ `npm run build` + `npm run build:api` — clean
+- ✅ `npm run scan:secrets` — clean (338 files)
+- ✅ `npx prettier --check` (touched files) — clean
+- ✅ `npm run test:all` — **1,249 web + 535 api + 872 shared = 2,656 tests passing**
+
+## PR (Iteration 187)
+
+| PR # | Branch | Title |
+| ---- | ------ | ----- |
+| TBD (this PR) | `flexy/iteration-187-hex-pad-id-separator-sr-only` | refactor(flexy): centralize hex pad char, DB ID separator, sr-only class & empty-state aria label (Iteration 187) |
+
 ### ✅ Flexy Iteration 186: Centralize Deployment Origins, Proxy Routing & API-Key Fallback
 
 **Problem**: The #3610 live-generate/proxy fix introduced fresh hardcoded literals bypassing shared config. API: 4× deployment origins in the CORS allowlist (`https://blueprintify.pages.dev`, `.blueprintify.pages.dev`, `https://blueprintify.cpa03-cmz.workers.dev`, `http://localhost:`), static-asset detection (`/assets/`, `.`, `/api/`, `Accept`/`text/html`, `404`), and the `/api/*` rewrite (`/api/`, `/^\/api/`, `404`). Web: `VITE_API_KEY` env key + `blueprintify-public-access-2026` fallback in `env.ts`, and `405`/`500` + inline endpoint-unavailable/server-error templates in `lib/api.ts`. Functions proxies duplicated the worker target, `/^\/api` pattern, `/` fallback, and `GET`/`HEAD` checks inline. Flexy says: no hardcoded deployment/proxy literals!

@@ -18,7 +18,13 @@ import {
   ROUTE_PATHS,
   LOG_CONTEXT,
 } from "../config/constants";
-import { AUTH_DEFAULTS, CONTEXT_KEYS, CRYPTO_CONFIG, DB_ID_PREFIXES } from "@blueprint/shared";
+import {
+  AUTH_DEFAULTS,
+  CONTEXT_KEYS,
+  CRYPTO_CONFIG,
+  DB_ID_PREFIXES,
+  DB_ID_SEPARATOR,
+} from "@blueprint/shared";
 import { ErrorType, createErrorJson } from "../errors";
 import { secureLogInfo, secureLogWarn } from "../utils/secureLog";
 
@@ -77,9 +83,13 @@ async function deriveUserId(apiKey: string): Promise<string> {
   const hashBuffer = await crypto.subtle.digest(CRYPTO_CONFIG.HASH_ALGORITHM, data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hashHex = hashArray
-    .map((b) => b.toString(CRYPTO_CONFIG.HEX_RADIX).padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, "0"))
+    .map((b) =>
+      b
+        .toString(CRYPTO_CONFIG.HEX_RADIX)
+        .padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, CRYPTO_CONFIG.HEX_PAD_CHAR)
+    )
     .join("");
-  return `${DB_ID_PREFIXES.USER}_${hashHex.substring(0, CRYPTO_CONFIG.USER_ID_HASH_LENGTH)}`;
+  return `${DB_ID_PREFIXES.USER}${DB_ID_SEPARATOR}${hashHex.substring(0, CRYPTO_CONFIG.USER_ID_HASH_LENGTH)}`;
 }
 
 /**

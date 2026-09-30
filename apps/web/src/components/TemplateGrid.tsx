@@ -28,7 +28,12 @@
  */
 
 import { useState, memo, useCallback, useRef, useMemo } from "react";
-import { STARTER_TEMPLATES, KEYBOARD_EVENT_KEYS, BREAKPOINT_DEFAULTS, TEMPLATE_STATE_VALUES } from "@blueprint/shared";
+import {
+  STARTER_TEMPLATES,
+  KEYBOARD_EVENT_KEYS,
+  BREAKPOINT_DEFAULTS,
+  TEMPLATE_STATE_VALUES,
+} from "@blueprint/shared";
 import { useWizardStore, useToast } from "../store";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
@@ -299,7 +304,7 @@ function TemplateGridComponent({ onSelect }: { onSelect?: () => void }): JSX.Ele
                         `}
                       >
                         +{template.techStack.length - 3}
-                        <span className="sr-only">
+                        <span className={CSS_CLASSES.SR_ONLY}>
                           {ACCESSIBILITY_LABELS.TEMPLATES.MORE_TECH(hiddenTechNames)}
                         </span>
                         <span

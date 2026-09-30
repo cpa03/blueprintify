@@ -42,6 +42,7 @@ import {
   SHORTCUT_DESCRIPTIONS,
   UI_TIMING,
   DB_ID_PREFIXES,
+  DB_ID_SEPARATOR,
   SECURITY_VALUES,
   UI_STRINGS,
   ENV_VAR_KEYS,
@@ -451,6 +452,18 @@ describe("CRYPTO_CONFIG", () => {
 
   it("should have hex padding width of 2", () => {
     expect(CRYPTO_CONFIG.HEX_PADDING_WIDTH).toBe(2);
+  });
+
+  it("should use zero as the hex pad character", () => {
+    expect(CRYPTO_CONFIG.HEX_PAD_CHAR).toBe("0");
+  });
+
+  it("should pad single-digit hex bytes to padding width with pad char", () => {
+    expect(
+      (5)
+        .toString(CRYPTO_CONFIG.HEX_RADIX)
+        .padStart(CRYPTO_CONFIG.HEX_PADDING_WIDTH, CRYPTO_CONFIG.HEX_PAD_CHAR)
+    ).toBe("05");
   });
 
   it("should have positive user id hash length", () => {
@@ -892,6 +905,16 @@ describe("DB_ID_PREFIXES", () => {
     values.forEach((value) => {
       expect(value).toMatch(/^[a-z]+$/);
     });
+  });
+
+  it("should join prefix and hash with the DB ID separator", () => {
+    expect(`${DB_ID_PREFIXES.USER}${DB_ID_SEPARATOR}abc123`).toBe("user_abc123");
+  });
+});
+
+describe("DB_ID_SEPARATOR", () => {
+  it("should be an underscore", () => {
+    expect(DB_ID_SEPARATOR).toBe("_");
   });
 });
 

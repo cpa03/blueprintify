@@ -10,6 +10,8 @@
 // ============================================================================
 
 export const CSS_CLASSES = {
+  /** Visually-hidden but screen-reader-accessible live region class. */
+  SR_ONLY: "sr-only" as const,
   GLASS_CARD: "glass-card",
   BTN_PRIMARY: "btn-primary",
   BTN_SECONDARY: "btn-secondary",
