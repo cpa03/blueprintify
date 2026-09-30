@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## RepoKeeper Cycle 2026-09-30 (CLEANUP + DOC SYNC)
+
+**Phase 0**: Branch `agent/repokeeper-20260930-cleanup` from `origin/main` (up to date, clean tree).
+**Audit**: No tracked temp/redundant files (`*.bak/*.tmp/*.log/~/.DS_Store` 0 hits; 0 empty tracked files); `.omo/`, `.opencode/node_modules`, `dist/` correctly ignored-only; `.agent/` vs `.opencode/` dual-track retained intentionally (different frontmatter schemas); `functions/api/[[path]].ts` Pages proxy intentional; `docs/audits/` 99 files retained as history.
+**Fixes**: Prettier `base.controller.ts` + `TemplateGrid.tsx`; synced `.opencode/opencode.json` stale `sabila/cmz` → `opencode/muse-spark-1.3-contributor-free` hierarchy per AGENTS.md (fixes subagent `ProviderModelNotFoundError`); synced `.opencode/tui.json` newline; README indexed `issue-manager-plan-cycle-368.md`, `ocr-review-summary-2026-09-26.md`, `docs/issues/`.
+**Gates**: typecheck ✅ EXIT 0 · lint ✅ EXIT 0 · format ✅ EXIT 0 · build ✅ EXIT 0 · scan:secrets ✅ 338 files · CI runners already `ubuntu-24.04-arm`.
+
 
 ## Orchestration Cycle 601 (2026-09-06 — ERRORFALLBACK MICRO-UX & DOM STATE TRACKING)
 

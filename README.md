@@ -337,6 +337,9 @@ See [docs/environment-variables.md](./docs/environment-variables.md) for the ful
 - **[Project Blueprint](./docs/blueprint.md)** - System architecture and design decisions
 
 - **[BroCula Audits](./docs/audits/README.md)** - Current audit reports (Jul 21–Aug 20)
+- **[Issue Manager Plan (Cycle 368)](./docs/issue-manager-plan-cycle-368.md)** - Issue triage and PR handling plan
+- **[OCR Review Summary](./docs/ocr-review-summary-2026-09-26.md)** - OCR review consolidation summary
+- **[Issue Specs](./docs/issues/)** - Tracked issue specifications (ISSUE-01 through ISSUE-07)
 - **[Roadmap](./docs/roadmap.md)** - Project roadmap and future plans
 - **[Roadmap M3 Proposal](./docs/roadmap-m3-proposal.md)** - M3 strategic expansion proposal
 
