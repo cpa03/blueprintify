@@ -11828,3 +11828,11 @@ required; no rotation needed (public dev fallback, never a real secret).
 **Structural flag (report-only)**: inlining shared constants as literals duplicates
 values across index.ts + 2 proxy functions + api.ts (drift risk, no behavior change) —
 left to owning team per no-functionality-reduction constraint.
+
+## Security Audit — PR diff vs origin/kilo/sandy-rocket-5a5 (2026-09-30)
+
+**Scope**: 18 changed files vs origin/kilo/sandy-rocket-5a5 on agent/security-engineer. Kilo base carries hardcoded `blueprintify-public-access-2026` in wrangler.toml (prod+staging) + SHARED_DEFAULTS.PUBLIC_ACCESS_KEY; our branch removes it (prod+staging → `wrangler secret put` comments, env.ts fallback → "" fail-closed).
+**Scans**: code-only added-lines secret value 0x (4x hits are audit prose in memory/findings docs, not code) · added-lines XSS/injection grep CLEAN · deprecated-API grep CLEAN (openai default import + max_completion_tokens correct for openai 7.18.0) · `scan:secrets` ✅ 334 files · `npm audit` ✅ 0 vulns (full + prod) · `validate:wrangler` ✅ · shared build + web rebuild clear stale gitignored dist (post-rebuild grep 0 hits).
+**Fixes applied (this cycle)**: none required in tracked source (already secret-free); rebuilt gitignored artifacts (packages/shared/dist + apps/web/dist) that still embedded old fallback — post-rebuild verified clean.
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No rotation needed (public dev fallback, never a real secret).
+**Structural flag (report-only)**: inlining shared constants (DEPLOYMENT_ORIGINS/PROXY_CONFIG/HTTP_STATUS members) duplicates literals across index.ts + 2 proxies + api.ts (drift risk, no behavior change) — left to owning team per no-functionality-reduction constraint.
