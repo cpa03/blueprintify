@@ -47,6 +47,12 @@ vi.mock("../config/constants", async (importOriginal) => {
       },
       STEP: {
         SHORTCUT_FORMAT: (label: string, shortcut: string) => `${label} (Alt+${shortcut})`,
+        BUTTON_LABEL: (
+          label: string,
+          index: number,
+          total: number,
+          state: "current" | "completed" | "locked" | "available"
+        ) => `${label}, step ${index + 1} of ${total}, ${state}`,
       },
     },
   };
