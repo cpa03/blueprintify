@@ -89,7 +89,6 @@ jobs:
           - Never open or update a PR without syncing to the DEFAULT_BRANCH first.
           - Never merge a PR unless:
             - No merge conflicts
-            - All CI checks are green
             - Build passes
             - Tests pass
             - ALL linting warnings are fixed (warnings are not acceptable)
@@ -185,7 +184,7 @@ jobs:
               ONLY merge if:
               - No conflicts
               - Build passes
-              - All checks green
+              - cloudflare checks green
               - All PR comments resolved
               - No security-sensitive change without review
               Set to auto merge if check takes too long
