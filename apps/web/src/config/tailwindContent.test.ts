@@ -69,9 +69,24 @@ const negationPatterns = normalizedPatterns
 
 const appDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const repoRoot = path.resolve(appDir, "../..");
-const scannedFiles = fg
-  .sync(contentPatterns)
-  .map((file) => path.relative(repoRoot, file).split(path.sep).join("/"));
+const toRepoPosix = (file: string): string =>
+  path.relative(repoRoot, file).split(path.sep).join("/");
+const scannedFiles = fg.sync(contentPatterns).map(toRepoPosix);
+
+const RESOLVABLE_EXTENSIONS = ["", ".ts", ".tsx", ".js", ".jsx", "/index.ts", "/index.tsx"];
+
+const resolveRelative = (fromFile: string, specifier: string): string =>
+  RESOLVABLE_EXTENSIONS.map((extension) =>
+    path.resolve(path.dirname(fromFile), specifier + extension)
+  ).find((candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile()) ?? "";
+
+const importSpecifiers = (file: string): string[] => {
+  if (!/\.[jt]sx?$/.test(file)) return [];
+  const source = fs.readFileSync(file, "utf8");
+  return [...source.matchAll(/(?:from|import)\s+["'](\.[^"']*)["']/g)].map(
+    (match) => match[1] ?? ""
+  );
+};
 
 describe("tailwind content globs", () => {
   let css: string;
@@ -85,7 +100,8 @@ describe("tailwind content globs", () => {
 
   // Neither tsconfig (allowJs/checkJs are off, include is src/**/*) nor ESLint
   // (ignores **/*.config.js) type-checks the .js that tailwind.config.d.ts describes, so
-  // this is the only check that the declaration has not drifted from the real export.
+  // nothing else would notice the declaration losing its Config type. This checks the
+  // declaration's own shape; it cannot type-check it against the export.
   it("matches the hand-written declaration shipped beside it", () => {
     expect(config.darkMode).toBe("class");
     expect(Array.isArray(config.plugins)).toBe(true);
@@ -136,12 +152,25 @@ describe("tailwind content globs", () => {
     expect(toPosixGlob("/repo/\\[id\\]/**")).toBe("/repo/\\[id\\]/**");
   });
 
-  it("reports the scanned file set with POSIX separators on every platform", () => {
-    // path.relative() emits path.sep, so these are the assertions that break on Windows
-    // unless the scanned paths — not just the pattern strings — are normalised.
-    expect(scannedFiles.length).toBeGreaterThan(0);
-    for (const file of scannedFiles) {
-      expect(file).not.toContain("\\");
+  it("excludes no module that a production file imports", () => {
+    // The directory negation is the one that can silently drop a *production* module, because
+    // it keys off a directory name rather than a test filename. Close that hole here: every
+    // file it drops is reachable only from test files, so a helper that production code starts
+    // importing becomes a red test instead of a silently purged class.
+    const inScope = fg.sync(positivePatterns);
+    const excluded = inScope
+      .map(toRepoPosix)
+      .filter((file) => !scannedFiles.includes(file) && !/\.(test|spec)\./.test(file));
+    expect(excluded.length).toBeGreaterThan(0);
+
+    const production = inScope.filter((file) => !/\.(test|spec)\./.test(file));
+    for (const module of excluded) {
+      const importers = production.filter((file) =>
+        importSpecifiers(file).some(
+          (specifier) => toRepoPosix(resolveRelative(file, specifier)) === module
+        )
+      );
+      expect(importers, `${module} is imported by production code`).toEqual([]);
     }
   });
 
