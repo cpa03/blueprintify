@@ -109,7 +109,9 @@ function App(): JSX.Element {
   const wizardActivated =
     userInteracted || currentStep !== WIZARD_STEP_KEYS.INFO || hasContent || isGenerating;
 
-  // Activate wizard on first user interaction (template select, step change)
+  // Activate wizard on first user interaction — template select (TemplateGrid)
+  // or step change (StepIndicator). Both are the only entry points that can
+  // mount the lazily-loaded Wizard, so both must be wired here.
   const activateWizard = useCallback(() => {
     setUserInteracted(true);
   }, []);
@@ -406,7 +408,7 @@ function App(): JSX.Element {
               animationFillMode: ENTRANCE_STAGGER.FILL_MODE,
             }}
           >
-            <StepIndicator />
+            <StepIndicator onActivate={activateWizard} />
           </div>
 
           {/* Split Pane Layout — slides up slightly after the step indicator for a staggered cascade */}

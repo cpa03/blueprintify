@@ -23,6 +23,16 @@ export interface CreatePersistedStoreOptions<T, S> {
   debounceDelay: number;
   /** Function to extract persistable data from store state */
   getPersistData: (state: S) => T;
+  /**
+   * Optional transform applied to freshly loaded data before it is merged into
+   * the store. Use it to repair values that are valid on the write side but
+   * cannot be honoured on restore — for example a step that depends on
+   * ephemeral state which is not itself persisted.
+   *
+   * Throwing here is treated like any other load failure (warn + keep
+   * initial state), so sanitizers must be total and never reject valid data.
+   */
+  sanitizeLoadedData?: (data: T) => Partial<S>;
 }
 
 /**
@@ -75,16 +85,17 @@ export function createPersistedStore<T, S>(
   flushSave: (get: () => S) => Promise<void>;
   cancelSave: () => void;
 } {
-  const { storage, debounceDelay, getPersistData } = options;
+  const { storage, debounceDelay, getPersistData, sanitizeLoadedData } = options;
 
   const loadState = async (set: StoreApi<S>["setState"]): Promise<void> => {
     try {
       const stored = await storage.get();
       if (stored !== null) {
+        const restored = sanitizeLoadedData ? sanitizeLoadedData(stored) : (stored as Partial<S>);
         // Use merge (default) to preserve action functions that Zustand sets up
         // in the store creator. Using `replace=true` would nuke all action functions
         // (setProjectName, nextStep, etc.) since persisted data only contains fields.
-        set(stored as Partial<S>);
+        set(restored);
       }
     } catch {
       console.warn(STORAGE_ERROR_MESSAGES.LOAD_FAILED);

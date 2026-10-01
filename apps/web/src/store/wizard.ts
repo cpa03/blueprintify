@@ -80,8 +80,40 @@ const initialState: WizardState = {
 /** Data shape persisted to storage */
 type PersistedWizardData = Pick<
   WizardStore,
-  "projectName" | "description" | "techStack" | "features" | "targetAudience" | "constraints"
+  | "currentStep"
+  | "projectName"
+  | "description"
+  | "techStack"
+  | "features"
+  | "targetAudience"
+  | "constraints"
 >;
+
+const RESUMABLE_STEPS: readonly WizardStep[] = STEPS.filter(
+  (step) => step !== WIZARD_STEP_KEYS.GENERATING
+);
+
+/**
+ * Repair `currentStep` on restore. Generation is driven by `isGenerating` and
+ * `generationProgress`, neither of which is persisted, so a restored GENERATING
+ * step would render a permanently stalled progress screen. REVIEW is the
+ * canonical resume point for a non-generating state — the same step the Escape
+ * and Cancel handlers already route to.
+ *
+ * An absent `currentStep` is left absent on purpose: payloads written before
+ * this field was persisted must keep the store's initial step rather than being
+ * silently promoted to Review.
+ */
+function sanitizePersistedWizard(data: PersistedWizardData): Partial<WizardStore> {
+  const { currentStep, ...rest } = data;
+  if (currentStep === undefined) {
+    return rest;
+  }
+  return {
+    ...rest,
+    currentStep: RESUMABLE_STEPS.includes(currentStep) ? currentStep : WIZARD_STEP_KEYS.REVIEW,
+  };
+}
 
 export const useWizardStore = create<WizardStore>()((set, get) => {
   // Use shared persistence utility
@@ -92,6 +124,7 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
     storage: wizardStorage as PersistedStorage<PersistedWizardData>,
     debounceDelay: DEBOUNCE_CONFIG.WIZARD,
     getPersistData: (state) => ({
+      currentStep: state.currentStep,
       projectName: state.projectName,
       description: state.description,
       techStack: state.techStack,
@@ -99,6 +132,7 @@ export const useWizardStore = create<WizardStore>()((set, get) => {
       targetAudience: state.targetAudience,
       constraints: state.constraints,
     }),
+    sanitizeLoadedData: sanitizePersistedWizard,
   });
 
   void loadState(set);

@@ -17,7 +17,7 @@
  * @example
  * ```tsx
  * // Render within the wizard layout
- * <StepIndicator />
+ * <StepIndicator onActivate={activateWizard} />
  * ```
  */
 
@@ -50,7 +50,17 @@ const STEPS: {
   shortcut: string;
 }[] = [...WIZARD_STEPS];
 
-function StepIndicatorComponent(): JSX.Element {
+export interface StepIndicatorProps {
+  /**
+   * Invoked when the user navigates to a step, including a no-op navigation to
+   * the step they are already on. The wizard is lazily mounted, so this is the
+   * only signal that lets a first-time visitor start the wizard by clicking a
+   * step button instead of picking a template.
+   */
+  onActivate?: () => void;
+}
+
+function StepIndicatorComponent({ onActivate }: StepIndicatorProps): JSX.Element {
   const currentStep = useWizardStore((s) => s.currentStep);
   const setStep = useWizardStore((s) => s.setStep);
   const isGenerating = useEditorStore((s) => s.isGenerating);
@@ -121,6 +131,7 @@ function StepIndicatorComponent(): JSX.Element {
     (stepKey: WizardStep, stepLabel: string) => {
       if (canNavigateTo(stepKey)) {
         setStep(stepKey);
+        onActivate?.();
       } else {
         setShakingStep(stepKey);
         setTimeout(() => setShakingStep(null), TIMEOUTS.SHAKE_ANIMATION);
@@ -128,7 +139,7 @@ function StepIndicatorComponent(): JSX.Element {
         toast.info(TOAST_MESSAGES.STEP_LOCKED(stepLabel));
       }
     },
-    [canNavigateTo, setStep, toast]
+    [canNavigateTo, setStep, onActivate, toast]
   );
 
   useEffect(() => {
@@ -140,13 +151,14 @@ function StepIndicatorComponent(): JSX.Element {
 
         if (targetStep && canNavigateTo(targetStep.key)) {
           setStep(targetStep.key);
+          onActivate?.();
         }
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [setStep, canNavigateTo]);
+  }, [setStep, canNavigateTo, onActivate]);
 
   return (
     <div className="flex items-center justify-center gap-3 mb-8 max-w-full overflow-x-auto scrollbar-none py-1">
