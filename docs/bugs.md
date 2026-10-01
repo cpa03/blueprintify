@@ -6,7 +6,7 @@
 
 - **Zero code defects**: Typecheck clean; ESLint clean (0 errors, 0 warnings).
 - **Zero known unhandled exceptions**: Clean console in production bundles.
-- **Zero security vulnerabilities**: `npm audit` reports 0 vulnerabilities (`ajv` 6.15.0, `hono` 4.13.2, `dompurify` 3.4.13, `sharp` 0.35.3).
+- **Zero security vulnerabilities**: `npm audit` reports 0 vulnerabilities (`ajv` 6.15.0, `hono` 4.13.2, `dompurify` 3.4.16, `sharp` 0.35.3).
 - **Quality gates**: typecheck, lint, build, tests, `scan:secrets`, and `validate:wrangler` all passing.
 
 ---
@@ -23,6 +23,7 @@
 | **BUG-048** | ESLint 10 peer dependency conflict | Low | Tooling | ✅ Resolved | ESLint pinned to 9.39.5 to match plugin peer ranges |
 | **BUG-049** | Storage route error response format | Low | API | ✅ Resolved | Standardized via `createErrorJson` |
 | **BUG-050** | Cloudflare placeholder resource IDs | Medium | Infra | ✅ Resolved | Real IDs provisioned in `apps/api/wrangler.toml` (`validate:wrangler` clean) |
+| **BUG-051** | dompurify GHSA-p98j-92pf-mc4p vulnerability | Medium | Deps | ✅ Resolved | Upgraded to `dompurify@3.4.16`; `npm audit` reports 0 vulnerabilities |
 
 ---
 
