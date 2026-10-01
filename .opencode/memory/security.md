@@ -132,6 +132,12 @@
 - **Verification**: Code-only secret value 0x; `scan:secrets` ✅ 335 files; `npm audit` ✅ 0 vulns (full + prod); `validate:wrangler` ✅; typecheck clean; shared 868/868, web 12/12 + 27/27, api 535/535.
 - **Lesson**: When `git diff origin/main` shows a security lib moving *backward*, check merge-base first — zero branch changes since MB means staleness, not introduction. Sync forward with `git checkout origin/main -- <files>` and never let a hardening PR delete main's newer hardening.
 
+### 2026-10-01 02:30 UTC: Security Engineer Audit — Introduced-Defect Removal (downgrades + localStorage + inline-expansion)
+- **Finding**: 18-file diff carried valid secret removal plus 3 introduced regression classes: (1) 5 dependency downgrades (hono 4.13.9→4.13.8, openai 7.23.0→7.18.0, codemirror 4.25.12→4.25.11, framer 13.4.4→13.4.0, error-boundary 6.1.6→6.1.5); (2) localStorage try/catch removal in 3 files (privacy-mode SecurityError crash/DoS); (3) shared-constant inline expansion (visibility timeouts, ELAPSED_ANNOUNCEMENT, test mocks, Iteration 187 docs).
+- **Fix**: Restored forward dep versions + origin/main lockfile; checked out App/StepGenerating/ReducedMotion/e2e/api.test/flexy-plan from origin/main; surgically restored PLAYWRIGHT/UI_TIMEOUTS constants + web import + config.test expectations (23-count) while keeping PUBLIC_ACCESS_KEY removal + fail-closed test. Final diff vs main = 6 files (secret removal + audit logs only).
+- **Verification**: Secret 0x; `scan:secrets` ✅ 335 files; `npm audit` ✅ 0 vulns; `validate:wrangler` ✅; typecheck clean; shared 869/869, web api.test 5/5.
+- **Lesson**: A hardening PR that also touches package.json or shared config must be diffed for direction — every version move must be forward-only and every shared-constant deletion must be secret-only; otherwise restore from main and re-apply only the secret removal.
+
 ### 2026-09-30 11:00 UTC: Security Engineer Audit — Merge Reintroduction of Removed Secret Fixed
 - **Finding**: `origin/main` merge reintroduced hardcoded fallback `blueprintify-public-access-2026` as new `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY` with `env.ts` fallback wiring — regressing the prior fail-closed (`""`) hardening. Empty `git diff --name-only origin/main` on the source branch masked it; the staged merge diff (20 files) plus the `env.ts` conflict exposed it.
 - **Fix**: Removed the constant; resolved conflict as `getEnvVar(WEB_ENV.VITE_API_KEY)` (shared key name, no fallback); replaced hardcoding test with fail-closed absence assertion.

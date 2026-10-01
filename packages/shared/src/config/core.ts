@@ -231,6 +231,10 @@ export const PLAYWRIGHT_DEFAULTS = {
   SCREENSHOT_MAX_DIFF_PIXELS: 100,
   /** Snapshot comparison threshold */
   SNAPSHOT_THRESHOLD: 0.2,
+  /** Default element visibility timeout in ms for e2e isVisible checks */
+  VISIBILITY_TIMEOUT_MS: 3000,
+  /** Short element visibility timeout in ms for optional e2e isVisible checks */
+  SHORT_VISIBILITY_TIMEOUT_MS: 2000,
 } as const;
 
 /**

@@ -79,7 +79,11 @@ function App(): JSX.Element {
   // first-time visitors, not on every page load for returning users.
   const [shortcutsDiscovered, setShortcutsDiscovered] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
-    return localStorage.getItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED) === "true";
+    try {
+      return localStorage.getItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED) === "true";
+    } catch {
+      return false;
+    }
   });
   const showShortcutsModalRef = useRef(showShortcutsModal);
   // Keep ref in sync so the global keydown handler reads the latest state
@@ -194,7 +198,11 @@ function App(): JSX.Element {
   const handleShowShortcuts = useCallback(() => {
     setShortcutsDiscovered(true);
     if (typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED, "true");
+      try {
+        localStorage.setItem(STORAGE_KEYS.SHORTCUTS_DISCOVERED, "true");
+      } catch {
+        // localStorage can throw in privacy mode — state update above still applies.
+      }
     }
     setShowShortcutsModal(true);
   }, []);

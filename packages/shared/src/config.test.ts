@@ -785,6 +785,11 @@ describe("PLAYWRIGHT_DEFAULTS", () => {
       PLAYWRIGHT_DEFAULTS.WEB_SERVER_TIMEOUT_MS
     );
   });
+
+  it("should have visibility timeouts for e2e checks (Flexy Iteration 187)", () => {
+    expect(PLAYWRIGHT_DEFAULTS.VISIBILITY_TIMEOUT_MS).toBe(3000);
+    expect(PLAYWRIGHT_DEFAULTS.SHORT_VISIBILITY_TIMEOUT_MS).toBe(2000);
+  });
 });
 
 describe("NETWORK_ERROR_CODES", () => {
@@ -2622,11 +2627,12 @@ describe("UI_TIMEOUTS", () => {
     expect(UI_TIMEOUTS.LOADING_DOTS_INTERVAL).toBe(500);
     expect(UI_TIMEOUTS.BANNER_EXIT_DURATION_MS).toBe(300);
     expect(UI_TIMEOUTS.READY_PULSE_MS).toBe(600);
+    expect(UI_TIMEOUTS.ELAPSED_ANNOUNCEMENT_INTERVAL_MS).toBe(30000);
   });
 
   it("should have all numeric values", () => {
     const values = Object.values(UI_TIMEOUTS);
-    expect(values.length).toBe(22);
+    expect(values.length).toBe(23);
     values.forEach((v) => {
       expect(typeof v).toBe("number");
       expect(v).toBeGreaterThan(0);

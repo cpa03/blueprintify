@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — PR introduced-defect removal vs origin/main (2026-10-01)
+
+**Scope**: `agent/security-engineer` vs `origin/main` (6-file diff). Intent is secret hardening (wrangler.toml drops hardcoded `API_KEY` prod+staging → `wrangler secret put` comments; `env.ts` fail-closed `""`; shared drops `PUBLIC_ACCESS_KEY` with fail-closed test).
+**Fixes applied (this cycle)**: Removed introduced regressions alongside hardening — (1) dependency downgrades restored forward (hono 4.13.8→4.13.9, openai 7.18.0→7.23.0, @uiw/react-codemirror 4.25.11→4.25.12, framer-motion 13.4.0→13.4.4, react-error-boundary 6.1.5→6.1.6; lockfile synced to origin/main); (2) localStorage try/catch guards restored (App.tsx 2 sites, StepGenerating.tsx, ReducedMotionContext.tsx 3 fns — prevents privacy-mode SecurityError crash); (3) shared-constant centralization restored (PLAYWRIGHT_DEFAULTS visibility timeouts, UI_TIMEOUTS.ELAPSED_ANNOUNCEMENT, web import, e2e specs, api.test mock, config.test 23-count, flexy Iteration 187 docs).
+**Scans**: secret value 0x in source · `scan:secrets` ✅ 335 files · XSS/injection/deprecated CLEAN · `npm audit` ✅ 0 vulns (full + prod) · `validate:wrangler` ✅ · typecheck clean · shared 869/869 ✅ · web api.test 5/5 ✅.
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No rotation needed (public dev fallback, never a real secret).
+
 ## Security Audit — PR stale-deps sync vs origin/main (2026-10-01)
 
 **Scope**: `agent/security-engineer` vs `origin/main` (merge-base 6b98b8a2). Branch intent is secret hardening (wrangler.toml drops hardcoded `API_KEY` prod+staging → `wrangler secret put` comments; `env.ts` fail-closed `""`; shared drops `PUBLIC_ACCESS_KEY`).
