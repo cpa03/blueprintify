@@ -47,8 +47,8 @@ vi.mock("../config/constants", async () => {
     },
     SSE_CONFIG: shared.SSE_CONFIG,
     TIMEOUTS: {
-      API_CONNECTION: 30000,
-      API_HEALTH_CHECK: 5000,
+      API_CONNECTION: shared.UI_TIMEOUTS.API_CONNECTION,
+      API_HEALTH_CHECK: shared.UI_TIMEOUTS.API_HEALTH_CHECK,
     },
   };
 });

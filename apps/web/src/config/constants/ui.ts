@@ -14,6 +14,7 @@ import {
   TEXTAREA_DEFAULTS,
   TOOLTIP_DEFAULTS,
   UI_DEFAULTS,
+  UI_TIMEOUTS as SHARED_UI_TIMEOUTS,
   UI_ANIMATION_DEFAULTS,
   EMPTY_STATE_LAYOUT as SHARED_EMPTY_STATE_LAYOUT,
 } from "@blueprint/shared/config";
@@ -199,7 +200,7 @@ export const UI = {
  * second. The visible on-screen timer still ticks at ELAPSED_TIMER_INTERVAL_MS;
  * only the assistive-tech announcement is throttled.
  */
-export const ELAPSED_ANNOUNCEMENT_INTERVAL_MS = 30000;
+export const ELAPSED_ANNOUNCEMENT_INTERVAL_MS = SHARED_UI_TIMEOUTS.ELAPSED_ANNOUNCEMENT_INTERVAL_MS;
 
 /** Tooltip configuration */
 export const TOOLTIP_CONFIG = {
