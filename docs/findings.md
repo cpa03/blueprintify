@@ -2,6 +2,30 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Janitor Cleanup (2026-10-01 — pre-merge hygiene scan, zero safe deletions, branch in sync)
+
+**Scope**: `agent/janitor` (merge-base `da76892c` = `origin/main` tip, 0-behind) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`, backup/empty files, merge markers.
+
+### Removed
+
+- None. No safe deletions — every candidate verified live or intentionally kept (see below). Zero source changes. Branch diff vs `origin/main` holds at 42 files, +659/−1095 (net −436 lines, prior removals intact).
+
+**Verification**: `npm run build` ✅ green (9.25s) · `npm run typecheck` ✅ exit 0 (shared/api/web) · `npm run lint` ✅ exit 0.
+
+### Verified clean (no action needed)
+
+- **No commented-out dead code**: `// <code-keyword>` grep over first-party `apps/*/src`, `packages/*/src`, `scripts/` → 3 prose false positives only (`App.tsx:105/300`, `OfflineBanner.tsx:178`); block-comment hits are JSDoc + live template strings (`react.ts` NextConfig/Tailwind types), not dead code.
+- **No production `console.log`**: remaining hits intentional only — Workers structured logging (`apps/api/src/middleware/logger.ts:217,263`, `apps/api/src/utils/secureLog.ts:256` sanitized), JSDoc `@example` snippets (`secureLog.ts:97/141`, `lib/api.ts:21/23`), generated-project template strings (`templates/node.ts:141/169`, `templates/static.ts:193`), docs comment (`config/security.ts:164`). `console.warn/error` kept per policy.
+- **No dead unused exports**: prior 16 removals hold — zero remaining refs to `scaleIn`/`slideInRight`/`slideInLeft`, `generateCompletion`, `validateXssSafe`/`isXssSafe`, `secureLogDebug`, `createTimeoutWrapper`/`withTimeoutAndRetry`, `getStorageErrorMessage`/`withStorageRecovery`, `CreateShareRequest`/`VerifySharePassphraseRequest`/`StreamCallbacks`; `fadeIn` hits are live `fadeInUp` variant (distinct name); `useShallow` appears only in guiding docs comments, no barrel re-export.
+- **No orphan/empty files**: zero empty first-party sources; no `*.bak`/`*.orig`/`*~`/`.DS_Store`; no `.only`/`.skip`/`debugger`; no `TODO|FIXME|HACK` in source; no merge markers; root `*.log` + `task_plan.md`/`notes.md` are gitignored transients — left alone, never committed.
+- **No unused deps**: import-verified (`framer-motion` 65 files, `clsx` 6 files, `jszip`/`zustand`/`dompurify`/`react-markdown` live; `hono`/`openai`/`zod` live; `concurrently`/`lighthouse`/`chrome-launcher`/`jest-axe` wired via scripts/tests).
+- **No duplicate `formatDate`**: zero hits; single `createDebouncedSaver` in `packages/shared/src/utils` (+ co-located test); `web/src/lib` vs `web/src/utils` hold disjoint modules.
+
+### Structural findings (recommended for future work, not refactored — out of janitor scope)
+
+- [Janitor] Dual `createPersistedStore` implementations persist: live `apps/web/src/store/persistence.ts` (used by `store/editor.ts` + `store/wizard.ts`) vs `apps/web/src/hooks/usePersistedStore.ts` (uses shared `createDebouncedSaver`, zero production importers — only its own test + barrel re-export). Recommend unifying on one — flagged, not executed, to keep pre-merge diff behavior-untouched.
+- [Janitor] 4-way util-home split persists (`apps/api/src/utils`, `apps/web/src/lib`, `apps/web/src/utils`, `packages/shared/src/utils`) — currently disjoint, no action; recommend a one-line ownership note in `apps/web/README.md`.
+
 ## Janitor Cleanup (2026-10-01 — pre-merge hygiene scan, zero safe deletions)
 
 **Scope**: `agent/janitor` (synced with `origin/main`, merge clean) per cleanup request. Scanned: redundant files, unused exports, commented-out dead code, production `console.log`, duplicate utils, unused deps, `.only`/`.skip`, backup/empty files, merge markers.
