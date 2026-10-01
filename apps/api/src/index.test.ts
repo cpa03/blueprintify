@@ -192,9 +192,20 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
     })),
   });
 
-  const createAssetFetcher = () => ({
+  /**
+   * @param missingAssetPaths Absolute URLs (not pathnames) the mock answers
+   * with a 404, modelling a stale or absent built filename.
+   */
+  const createAssetFetcher = (missingAssetPaths: ReadonlySet<string> = new Set()) => ({
     fetch: vi.fn(async (input: RequestInfo | URL) => {
-      new Request(input);
+      // Cloudflare's Fetcher re-wraps its input before serving; this
+      // reconstruction is what throws on an already-consumed body. Deleting it
+      // would leave the mock ignoring its argument and the regression below
+      // unable to fail.
+      const assetRequest = new Request(input);
+      if (missingAssetPaths.has(assetRequest.url)) {
+        return new Response("Not Found", { status: HTTP_STATUS.NOT_FOUND });
+      }
       return new Response(INDEX_HTML, {
         status: HTTP_STATUS.OK,
         headers: { [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_HTML },
@@ -202,8 +213,8 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
     }),
   });
 
-  const createEnv = () => {
-    const assets = createAssetFetcher();
+  const createEnv = (missingAssetPaths: ReadonlySet<string> = new Set()) => {
+    const assets = createAssetFetcher(missingAssetPaths);
     const env = {
       ...MOCK_ENV,
       API_KEY: TEST_API_KEY,
@@ -218,6 +229,31 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
     [HTTP_HEADER_NAMES.CONTENT_TYPE]: HTTP_HEADERS.CONTENT_TYPE_JSON,
     ...extra,
   });
+
+  /**
+   * Absolute filesystem roots a leaked path would realistically sit under on
+   * the platforms this repo is checked out on: Linux CI runners and dev
+   * containers, macOS dev machines, Windows contributors, and the Workers
+   * sandbox. Each requires a segment after the root so the plain path text in
+   * a message like "Route not found: GET /share/..." cannot match.
+   */
+  const FILESYSTEM_ROOTS: ReadonlyArray<readonly [label: string, pattern: RegExp]> = [
+    ["/Users/<user>", /\/Users\/[^\s"'\\]+/],
+    ["/home/<user>", /\/home\/[^\s"'\\]+/],
+    ["/root", /\/root\/[^\s"'\\]+/],
+    ["/workspace", /\/workspace\/[^\s"'\\]+/],
+    ["/var/task", /\/var\/task\/[^\s"'\\]+/],
+    ["/app", /\/app\/[^\s"'\\]+/],
+    ["C:\\", /[A-Za-z]:\\[^\s"']+/],
+  ];
+
+  const expectNoLeakedInternals = (raw: string): void => {
+    expect(raw).not.toContain("Cannot reconstruct a Request");
+    expect(raw).not.toMatch(/\n\s+at\s+\S/);
+    for (const [label, pattern] of FILESYSTEM_ROOTS) {
+      expect(raw, `response body leaked a filesystem path under ${label}`).not.toMatch(pattern);
+    }
+  };
 
   const expectStructuredNotFound = async (res: Response): Promise<void> => {
     expect(res.status).toBe(HTTP_STATUS.NOT_FOUND);
@@ -248,8 +284,7 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
     await expectStructuredNotFound(res);
     expect(assets.fetch).not.toHaveBeenCalled();
 
-    expect(raw).not.toContain("Cannot reconstruct a Request");
-    expect(raw).not.toMatch(/\/workspace\/|\/home\/[a-z]/);
+    expectNoLeakedInternals(raw);
   });
 
   it("keeps a structured NOT_FOUND_ERROR for GET requests carrying a JSON Accept header", async () => {
@@ -299,6 +334,25 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
     expect(res.status).toBe(HTTP_STATUS.OK);
     expect(await res.text()).toBe(INDEX_HTML);
     expect(assets.fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("falls through to the structured API 404 when a bundled asset is missing from the ASSETS binding", async () => {
+    const staleAssetUrl = "https://example.com/assets/index-stale123.js";
+    const { env, assets } = createEnv(new Set([staleAssetUrl]));
+
+    const res = await worker.fetch(
+      new Request(staleAssetUrl, {
+        method: HTTP_METHODS.GET,
+        headers: authedHeaders(),
+      }),
+      env,
+      mockCtx
+    );
+
+    const raw = await res.clone().text();
+    await expectStructuredNotFound(res);
+    expect(assets.fetch).toHaveBeenCalledTimes(1);
+    expect(raw).not.toContain(INDEX_HTML);
   });
 
   it("still serves bundled assets under the assets prefix without reaching the API app", async () => {
