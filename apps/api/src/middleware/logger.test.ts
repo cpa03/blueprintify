@@ -12,13 +12,15 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Hono } from "hono";
 import { HTTP_HEADERS, HTTP_HEADER_NAMES, HTTP_METHODS, HTTP_STATUS } from "@blueprint/shared";
-import { API_HEADERS, LOGGER_CONFIG } from "../config/constants";
+import { API_HEADERS } from "../config/constants";
+import { apiKeyAuth } from "./auth";
 import { requestLogger } from "./logger";
 
 const CREDENTIAL_CANARY = "CANARY-bug052-never-log-this-credential-9f3a1c7e2b4d";
 const SECOND_CANARY = "CANARY-bug052-second-case-keepothers-4a7d1e";
 const ALIAS_CANARY_PROXY = "CANARY-bug052-proxy-alias-6b2e8f0a";
 const ALIAS_CANARY_SUFFIX = "CANARY-bug052-suffix-alias-c14d7b3e";
+const DRIFT_CANARY = "CANARY-bug052-auth-default-drift-5e8c2a91";
 
 /** Lowercased header keys of the `"type":"request"` log entry inside `serialized`. */
 const loggedHeaderKeysFrom = (serialized: string): string[] => {
@@ -261,10 +263,39 @@ describe("requestLogger middleware", () => {
   });
 
   describe("credential redaction invariant", () => {
-    it("should redact the exact header name apiKeyAuth reads by default", () => {
-      // If the authenticator's default header is ever renamed, this fails until the
-      // redaction list is updated in lockstep — closing the drift window between the two.
-      expect(LOGGER_CONFIG.SANITIZED_HEADER_EXCLUDE).toContain(API_HEADERS.CUSTOM.API_KEY);
+    it("redacts the header apiKeyAuth actually reads, when named from the shared package", async () => {
+      // SECURITY: must stay `HTTP_HEADER_NAMES.X_API_KEY`, never `API_HEADERS.CUSTOM.API_KEY` —
+      // the latter is how the list is built, so it would compare the list to its own source.
+      const credentialHeader = HTTP_HEADER_NAMES.X_API_KEY;
+
+      const app = new Hono<{ Bindings: { API_KEY: string } }>();
+      app.use("*", async (c, next) => {
+        c.env = { API_KEY: DRIFT_CANARY } as unknown as { API_KEY: string };
+        await next();
+      });
+      app.use("*", requestLogger());
+      app.use("*", apiKeyAuth({ excludePaths: [] }));
+      app.get("/api/data", (c) => c.json({ ok: true }));
+
+      const callsBefore = consoleLogSpy.mock.calls.length;
+      const res = await app.request("/api/data", {
+        headers: { [credentialHeader]: DRIFT_CANARY },
+      });
+
+      // Proves `credentialHeader` is the header `apiKeyAuth` reads by default, so renaming
+      // that default (drift) turns this into a 401 and the guard red.
+      expect(res.status).toBe(HTTP_STATUS.OK);
+
+      const serialized = consoleLogSpy.mock.calls
+        .slice(callsBefore)
+        .map((call: unknown[]) => call[0] as string)
+        .join("\n");
+
+      // Proves the logger redacts that same name.
+      expect(serialized).toContain('"type":"request"');
+      expect(serialized).not.toContain(DRIFT_CANARY);
+      const loggedHeaderKeys = loggedHeaderKeysFrom(serialized);
+      expect(loggedHeaderKeys.some((key) => key.includes(HTTP_HEADER_NAMES.X_API_KEY))).toBe(false);
     });
   });
 

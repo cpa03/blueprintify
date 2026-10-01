@@ -30,7 +30,9 @@ export const LOGGER_CONFIG = {
    * default — dropping it leaks that secret into Workers logs on every authenticated
    * request. It is referenced through `API_HEADERS` rather than as the bare shared name so
    * this list and the authenticator's default read from one definition and cannot drift.
-   * `logger.test.ts` asserts that invariant independently.
+   * That shared derivation is the anti-drift guarantee; `logger.test.ts` pins it from the
+   * outside by naming the header via `HTTP_HEADER_NAMES` and exercising the real
+   * authenticator, so it stays meaningful if this list is ever rebuilt.
    *
    * Substring matching is deliberate: it also covers alias forms of the same credential
    * that a gateway or SDK may emit (`Proxy-X-Api-Key`, `x-api-key-id`, ...).
