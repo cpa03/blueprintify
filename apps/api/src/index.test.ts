@@ -233,26 +233,35 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
   /**
    * Absolute filesystem roots a leaked path would realistically sit under on
    * the platforms this repo is checked out on: Linux CI runners and dev
-   * containers, macOS dev machines, Windows contributors, and the Workers
-   * sandbox. Each requires a segment after the root so the plain path text in
-   * a message like "Route not found: GET /share/..." cannot match.
+   * containers, macOS dev machines, and the Workers sandbox. `C:\` is
+   * unambiguous on its own — a drive letter cannot occur in a URL path.
+   *
+   * The Unix roots cannot: `/users`, `/home`, `/workspace`, `/var/task`, `/app`
+   * and `/root` are all plausible request paths, and the 404 message embeds
+   * the request path, so a bare prefix would trip on its own output. Each
+   * therefore also requires a source file extension — a request path does not
+   * carry one under a filesystem root, a leaked build path does. The trade-off
+   * is that an extension-less leak (`open '/app/dist'`) is not caught.
    */
   const FILESYSTEM_ROOTS: ReadonlyArray<readonly [label: string, pattern: RegExp]> = [
-    ["/Users/<user>", /\/Users\/[^\s"'\\]+/],
-    ["/home/<user>", /\/home\/[^\s"'\\]+/],
-    ["/root", /\/root\/[^\s"'\\]+/],
-    ["/workspace", /\/workspace\/[^\s"'\\]+/],
-    ["/var/task", /\/var\/task\/[^\s"'\\]+/],
-    ["/app", /\/app\/[^\s"'\\]+/],
-    ["C:\\", /[A-Za-z]:\\[^\s"']+/],
+    ["/Users/<user>", /(?:^|[^\w./-])\/Users\/[^\s"'\\]*\.(?:ts|tsx|js|jsx|mjs|cjs|json)\b/],
+    ["/home/<user>", /(?:^|[^\w./-])\/home\/[^\s"'\\]*\.(?:ts|tsx|js|jsx|mjs|cjs|json)\b/],
+    ["/workspace", /(?:^|[^\w./-])\/workspace\/[^\s"'\\]*\.(?:ts|tsx|js|jsx|mjs|cjs|json)\b/],
+    ["/var/task", /(?:^|[^\w./-])\/var\/task\/[^\s"'\\]*\.(?:ts|tsx|js|jsx|mjs|cjs|json)\b/],
+    ["/root", /(?:^|[^\w./-])\/root\/[^\s"'\\]*\.(?:ts|tsx|js|jsx|mjs|cjs|json)\b/],
+    ["/app", /(?:^|[^\w./-])\/app\/[^\s"'\\]*\.(?:ts|tsx|js|jsx|mjs|cjs|json)\b/],
+    ["C:\\", /(?:^|[^\w./-])[A-Za-z]:\\[^\s"']+/],
   ];
 
   const expectNoLeakedInternals = (raw: string): void => {
     expect(raw).not.toContain("Cannot reconstruct a Request");
-    expect(raw).not.toMatch(/\n\s+at\s+\S/);
     for (const [label, pattern] of FILESYSTEM_ROOTS) {
       expect(raw, `response body leaked a filesystem path under ${label}`).not.toMatch(pattern);
     }
+    // A serialised stack frame reaches the wire as an escaped newline
+    // ("\\n    at ..."), so no raw-text pattern can see it. Decode first.
+    const { error } = JSON.parse(raw) as ErrorBody;
+    expect(error.message).not.toMatch(/(?:^|\n)\s+at\s+\S/);
   };
 
   const expectStructuredNotFound = async (res: Response): Promise<void> => {
@@ -334,6 +343,42 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
     expect(res.status).toBe(HTTP_STATUS.OK);
     expect(await res.text()).toBe(INDEX_HTML);
     expect(assets.fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("separates leaked filesystem paths from legitimate request paths", () => {
+    const leaked = [
+      "/Users/alice/dev/blueprintify/apps/api/src/index.ts",
+      "/home/runner/work/blueprintify/apps/api/src/index.ts",
+      "/root/blueprintify/apps/api/src/index.ts",
+      "/workspace/blueprintify/apps/api/src/index.ts",
+      "/app/src/index.ts",
+      "/var/task/src/index.ts",
+      "C:\\Users\\alice\\blueprintify\\apps\\api\\src\\index.ts",
+      "failed at /app/dist/index.js",
+    ];
+    for (const sample of leaked) {
+      expect(
+        FILESYSTEM_ROOTS.some(([, pattern]) => pattern.test(sample)),
+        `no FILESYSTEM_ROOTS entry matches the leaked path ${sample}`
+      ).toBe(true);
+    }
+
+    const legitimate = [
+      "Route not found: POST /share/abc123def456/verify",
+      "Route not found: GET /app/things/42",
+      "Route not found: GET /api/app/things/42",
+      "Route not found: GET /root/things/42",
+      "Route not found: GET /var/task/abc",
+      "Route not found: GET /Users/bob",
+      "Route not found: GET /assets/index-abc123.js",
+      "Route not found: GET /favicon.svg",
+    ];
+    for (const sample of legitimate) {
+      expect(
+        FILESYSTEM_ROOTS.filter(([, pattern]) => pattern.test(sample)).map(([label]) => label),
+        `a FILESYSTEM_ROOTS entry matched the legitimate request path ${sample}`
+      ).toEqual([]);
+    }
   });
 
   it("falls through to the structured API 404 when a bundled asset is missing from the ASSETS binding", async () => {
