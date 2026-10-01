@@ -104,7 +104,14 @@ const importSpecifiers = (file: string): string[] => {
   );
   const specifiers: string[] = [];
   const visit = (node: ts.Node): void => {
+    // `import type` / `export type` are erased at build time, so the imported module is never
+    // bundled and cannot contribute — or lose — a Tailwind class.
+    const typeOnly =
+      (ts.isImportDeclaration(node) && node.importClause?.isTypeOnly) ||
+      (ts.isExportDeclaration(node) && node.isTypeOnly);
+    if (!typeOnly && ts.isImportDeclaration(node) && node.importClause?.name) return;
     if (
+      !typeOnly &&
       (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
       node.moduleSpecifier &&
       ts.isStringLiteral(node.moduleSpecifier)
@@ -121,20 +128,38 @@ const importSpecifiers = (file: string): string[] => {
   return specifiers;
 };
 
+/**
+ * TypeScript rewrites an ESM `.js` specifier to its `.ts` source, so a specifier ending in a
+ * JS extension must also be tried with its TS counterparts — `packages/shared/src/config.ts`
+ * imports `./config/core.js`, which is `config/core.ts` on disk.
+ */
+const TS_REWRITES: Record<string, string[]> = {
+  ".js": [".ts", ".tsx"],
+  ".jsx": [".tsx"],
+  ".mjs": [".mts"],
+  ".cjs": [".cts"],
+};
+
 const resolveSpecifier = (fromFile: string, specifier: string): string => {
   const bases = specifier.startsWith("@/")
     ? [path.join(appDir, "src", specifier.slice(2))]
     : specifier.startsWith(".")
       ? [path.resolve(path.dirname(fromFile), specifier)]
       : [];
+  const isFile = (candidate: string): boolean =>
+    fs.existsSync(candidate) && fs.statSync(candidate).isFile();
   for (const base of bases) {
-    for (const suffix of RESOLVABLE_SUFFIXES) {
-      const candidate = base + suffix;
-      if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return candidate;
-    }
-    for (const suffix of RESOLVABLE_SUFFIXES.filter(Boolean)) {
-      const candidate = path.join(base, `index${suffix}`);
-      if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return candidate;
+    const extension = path.extname(base);
+    const stems =
+      TS_REWRITES[extension]?.map((rewrite) => base.slice(0, -extension.length) + rewrite) ?? [];
+    for (const candidate of [base, ...stems]) {
+      for (const suffix of RESOLVABLE_SUFFIXES) {
+        if (isFile(candidate + suffix)) return candidate + suffix;
+      }
+      for (const suffix of RESOLVABLE_SUFFIXES.filter(Boolean)) {
+        if (isFile(path.join(candidate, `index${suffix}`)))
+          return path.join(candidate, `index${suffix}`);
+      }
     }
   }
   return "";
@@ -221,17 +246,31 @@ describe("tailwind content globs", () => {
 
     // The excluded modules are not themselves production code, so they must not count as
     // importers of each other.
+    // The excluded modules are not themselves production code, so they must not count as
+    // importers of each other.
     const excludedSet = new Set(excluded);
     const production = inScope.filter(
       (file) => !/\.(test|spec)\./.test(file) && !excludedSet.has(toRepoPosix(file))
     );
-    for (const module of excluded) {
-      const importers = production.filter((file) =>
-        importSpecifiers(file).some(
-          (specifier) => toRepoPosix(resolveSpecifier(file, specifier)) === module
-        )
-      );
-      expect(importers, `${module} is imported by production code`).toEqual([]);
+    for (const file of production) {
+      for (const specifier of importSpecifiers(file)) {
+        // Bare specifiers resolve through package exports, not through a scanned root.
+        // @blueprint/shared exposes only four fixed subpaths and no wildcard, so no bare
+        // specifier can name a file under a negated directory; `unresolvable` below is the
+        // backstop if a wildcard export is ever added.
+        if (!specifier.startsWith(".") && !specifier.startsWith("@/")) continue;
+        // Assert on the raw resolution, not its repo-relative form: toRepoPosix("") is
+        // path.relative(repoRoot, cwd), a real-looking path that compares unequal to every
+        // excluded module and would make this branch permanently inert.
+        const resolvedPath = resolveSpecifier(file, specifier);
+        // A relative or aliased specifier that resolves to nothing is a real defect, and
+        // letting it degrade to "" is how this guard would go blind without saying so.
+        expect(resolvedPath, `${specifier} in ${toRepoPosix(file)} does not resolve`).not.toBe("");
+        expect(
+          excluded,
+          `${specifier} in ${toRepoPosix(file)} is excluded from the scan`
+        ).not.toContain(toRepoPosix(resolvedPath));
+      }
     }
   });
 
