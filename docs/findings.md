@@ -2,6 +2,13 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — PR tailwind content-glob fix vs head (2026-10-01)
+
+**Scope**: `origin/convoy/recover-lost-web-frontend-fixes-companio/2527e45b/gt/maple/1b8aca4a` vs `.../head` (3-file diff: `apps/web/tailwind.config.js` content-glob hardening, `apps/web/tailwind.config.d.ts` +5 new, `apps/web/src/config/tailwindContent.test.ts` +85 new).
+**Finding**: PR introduces 0 vulnerabilities / secrets / deprecated usage — it is a build-correctness FIX. `tailwind.config.js` derives content globs from `import.meta.url` via `fileURLToPath`+`path.join` (constants only, no user input → no path traversal), adds load-bearing `packages/shared/src` scan (TOAST_STYLES/CHAR_COUNTER_COLORS literal classes would otherwise purge) and `!**/*.{test,spec}.*` + `!**/__tests__/**` negations for both roots (prevents fixture/prose `.isolate` pollution). Test compiles real config via `postcss([tailwindcss(config)])` and asserts shared-only classes survive + test-only classes absent; `fast-glob` input comes from config constants (no injection). `tailwind.config.d.ts` is a trivial `Config` type re-export. No `eval`/`Function(`/`innerHTML`/`dangerouslySetInnerHTML`/`document.write`; no `Math.random`/weak hashing/auth logic; no `__dirname`/`require(`/`substr`/`max_tokens` (uses current ESM `fileURLToPath`, `String.includes`, `Array.filter/some`). Only `token` hit is English word "tokens" in a comment.
+**Scans**: `scan:secrets` ✅ 335 files · `npm audit` ✅ 0 vulns (full + `--omit=dev`) · added-lines secrets/injection/XSS/deprecated/weak-crypto CLEAN · no `package.json` in diff → no new CVEs.
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No code changes required on `agent/security-engineer`.
+
 ## Security Audit — PR toast credential-redaction vs head (2026-10-01)
 
 **Scope**: `origin/convoy/app-functionality-fixes-round-2-lost-rev/a6674c16/gt/toast/271503c9` vs `.../head` (2-file diff: `apps/api/src/config/constants/logger.ts` +18, `apps/api/src/middleware/logger.test.ts` +124/-1).
