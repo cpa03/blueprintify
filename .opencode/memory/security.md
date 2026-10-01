@@ -126,6 +126,12 @@
 - **Structural flag (report-only)**: Inlining shared constants duplicates values across 4 files (drift risk, no behavior change) — left to owning team per no-functionality-reduction rule.
 - **Lesson**: Secret-counting on diff direction (`grep -c` on `+` vs `-` lines) is the fastest proof that a hardening PR only removes credentials; pair it with a fail-closed check on both client and server before approving.
 
+### 2026-10-01 01:55 UTC: Security Engineer Audit — Stale-Deps Sync (dompurify GHSA-p98j-92pf-mc4p)
+- **Finding**: `agent/security-engineer` was behind `origin/main` (f0aa4fbb): stale `dompurify@3.4.15` + missing `overrides.dompurify` re-exposed GHSA-p98j-92pf-mc4p (1 low in `npm audit`); stale UI (`MarkdownRenderer` empty-src guard, `PreviewEmptyState` data-reduced-motion) and docs (BUG-051, Cycle 602) would have been deleted by the PR.
+- **Fix**: Checked out 9 stale files + Cycle 602 block forward from `origin/main`; kept the 4 secret-removal files untouched. Final diff vs main = secret removal + audit logs only.
+- **Verification**: Code-only secret value 0x; `scan:secrets` ✅ 335 files; `npm audit` ✅ 0 vulns (full + prod); `validate:wrangler` ✅; typecheck clean; shared 868/868, web 12/12 + 27/27, api 535/535.
+- **Lesson**: When `git diff origin/main` shows a security lib moving *backward*, check merge-base first — zero branch changes since MB means staleness, not introduction. Sync forward with `git checkout origin/main -- <files>` and never let a hardening PR delete main's newer hardening.
+
 ### 2026-09-30 11:00 UTC: Security Engineer Audit — Merge Reintroduction of Removed Secret Fixed
 - **Finding**: `origin/main` merge reintroduced hardcoded fallback `blueprintify-public-access-2026` as new `SHARED_DEFAULTS.PUBLIC_ACCESS_KEY` with `env.ts` fallback wiring — regressing the prior fail-closed (`""`) hardening. Empty `git diff --name-only origin/main` on the source branch masked it; the staged merge diff (20 files) plus the `env.ts` conflict exposed it.
 - **Fix**: Removed the constant; resolved conflict as `getEnvVar(WEB_ENV.VITE_API_KEY)` (shared key name, no fallback); replaced hardcoding test with fail-closed absence assertion.

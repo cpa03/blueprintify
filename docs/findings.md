@@ -2,6 +2,20 @@
 
 > **Incoming signals and observations** — append-only cycle record (one entry per orchestration cycle; prior cycles are retained here for auditability and also preserved in git history).
 
+## Security Audit — PR stale-deps sync vs origin/main (2026-10-01)
+
+**Scope**: `agent/security-engineer` vs `origin/main` (merge-base 6b98b8a2). Branch intent is secret hardening (wrangler.toml drops hardcoded `API_KEY` prod+staging → `wrangler secret put` comments; `env.ts` fail-closed `""`; shared drops `PUBLIC_ACCESS_KEY`).
+**Finding (fixed this cycle)**: Branch was behind main's f0aa4fbb — stale `dompurify@3.4.15` + missing `overrides.dompurify=3.4.16` re-exposed GHSA-p98j-92pf-mc4p (DOM XSS, `npm audit` 1 low); stale `MarkdownRenderer` (`src={src}` vs safe `src={src || undefined}`), stale `PreviewEmptyState` (missing `data-reduced-motion`), stale docs (README/active-tasks/bugs BUG-051, findings Cycle 602). Synced 9 stale files + Cycle 602 block forward from `origin/main`; kept the 4 secret-removal files untouched.
+**Scans**: code-only added-lines secret value 0x · `scan:secrets` ✅ 335 files · added-lines XSS/injection/deprecated CLEAN · `npm audit` ✅ 0 vulns (full + prod) · `validate:wrangler` ✅ · typecheck clean (shared/api/web) · shared 868/868 ✅ · web PreviewEmptyState 12/12 + MarkdownRenderer 27/27 ✅ · api 535/535 ✅.
+**Result**: 0 introduced vulnerabilities / secrets / deprecated usage. No rotation needed (public dev fallback, never a real secret).
+
+## ULW Loop Cycle 602 (2026-09-30 — REPOKEEPER DOC-SYNC)
+
+**Phase 0**: Branch `agent/repokeeper-20260930-sisyphus-loop` from `origin/main` (`3ae464da`), clean tree, 0-behind.
+**Hygiene**: 698 tracked files; 0 redundant/temp/unused (temp-artifact grep empty); 0 empty tracked dirs; 28/28 agents + 25/25 skills match README; 5/5 workflows `ubuntu-24.04-arm`; audits 99 top-level + 14 archived (retention: no purge, append-only per header).
+**Doc-sync**: README tree missing `ocr-review-summary-2026-09-26.md` → added; README index missing `issue-manager-plan-cycle-368.md` + `ocr-review-summary-2026-09-26.md` → added. TODO/FIXME 0; console.log only intentional (logger/secureLog).
+**Baseline ALL GREEN**: typecheck ✅ exit 0 · lint ✅ exit 0 · prettier ✅ · build ✅ exit 0 · scan:secrets ✅ 335 files · audit ✅ 0 vulns.
+**Stray state**: 20+ open PRs (incl. #3684/#3681/#3672 repokeeper) left untouched — human disposition pending; this cycle adds minimal docs-only PR.
 
 ## Orchestration Cycle 601 (2026-09-06 — ERRORFALLBACK MICRO-UX & DOM STATE TRACKING)
 
