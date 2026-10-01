@@ -259,13 +259,23 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
    */
   const STACK_FRAME = /\bat[^\S\n]+[^\n]*[/\\.][^\n]*:\d+:\d+/;
 
-  const collectStrings = (value: unknown): string[] => {
-    if (typeof value === "string") return [value];
-    if (Array.isArray(value)) return value.flatMap(collectStrings);
+  /** Yields each string with its dotted path, so a failure can name the field. */
+  const collectStrings = (value: unknown, path = "body"): Array<[string, string]> => {
+    if (typeof value === "string") return [[path, value]];
+    if (Array.isArray(value)) {
+      return value.flatMap((item, i) => collectStrings(item, `${path}[${i}]`));
+    }
     if (value !== null && typeof value === "object") {
-      return Object.values(value).flatMap(collectStrings);
+      return Object.entries(value).flatMap(([key, item]) => collectStrings(item, `${path}.${key}`));
     }
     return [];
+  };
+
+  /** Windows the value around the match so a head-slice cannot hide the leak. */
+  const excerptAround = (text: string, matchIndex: number): string => {
+    const start = Math.max(0, matchIndex - 40);
+    const end = Math.min(text.length, matchIndex + 80);
+    return `${start > 0 ? "…" : ""}${text.slice(start, end)}${end < text.length ? "…" : ""}`;
   };
 
   const escapeRegExp = (literal: string): string => literal.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -315,16 +325,18 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
     // pattern match halves from two different fields and name a leak that is
     // not present in any one of them. Decoding first is what makes a stack
     // frame visible at all — on the wire it carries an escaped newline.
-    for (const field of collectStrings(parseErrorEnvelope(raw))) {
+    for (const [path, field] of collectStrings(parseErrorEnvelope(raw))) {
       const scanned = stripEchoedPaths(field, requestPath);
-      const shown = field.length > 120 ? `${field.slice(0, 120)}…` : field;
+      const report = (what: string, pattern: RegExp): void => {
+        const at = scanned.search(pattern);
+        expect(at, `${what} in ${path}: ${at === -1 ? scanned : excerptAround(scanned, at)}`).toBe(
+          -1
+        );
+      };
       for (const [label, pattern] of FILESYSTEM_ROOTS) {
-        expect(
-          scanned,
-          `response body leaked a filesystem path under ${label} in: ${shown}`
-        ).not.toMatch(pattern);
+        report(`response body leaked a filesystem path under ${label}`, pattern);
       }
-      expect(scanned, `response body leaked a stack frame in: ${shown}`).not.toMatch(STACK_FRAME);
+      report("response body leaked a stack frame", STACK_FRAME);
     }
   };
 
@@ -507,6 +519,8 @@ describe("SPA asset fallback must not re-fetch a consumed request body (BUG-053)
       expect(assets.fetch).toHaveBeenLastCalledWith(
         expect.objectContaining({ url: `https://example.com${requestPath}` })
       );
+      // One lookup per request; a retry or double fetch is a behaviour change.
+      expect(assets.fetch).toHaveBeenCalledTimes(requestPaths.indexOf(requestPath) + 1);
       expectNoLeakedInternals(raw, requestPath);
     }
   });
